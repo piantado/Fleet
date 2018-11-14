@@ -1,6 +1,8 @@
 #ifndef INTERFACES_H
 #define INTERFACES_H
 
+#include "Miscellaneous.h"
+
 template<typename t_input, typename t_return>
 class VirtualMachineState;
 
@@ -19,11 +21,14 @@ public:
 
 // Just a clean interface to define what kinds of operations MCMC requires
 // This also defines class types for data
+// This also defines interfaces for storing hypotheses (equality, hash, comparison, etc)
 template<typename t_input, typename t_output>
 class Bayesable {
 public:
+	
 	// We'll define a vector of pairs of inputs and outputs
 	// this may be used externally to define what data is
+	
 	typedef struct {
 		t_input input;
 		t_output output;
@@ -39,7 +44,11 @@ public:
 	Bayesable() : prior(0.0), likelihood(0.0), posterior(0.0) {
 		
 	}
+	
+	Bayesable(const Bayesable& b) : prior(b.prior), likelihood(b.likelihood), posterior(b.posterior) {
+	}
 
+	
 	virtual double compute_prior() = 0; 
 	virtual double compute_single_likelihood(const t_datum& datum) = 0;
 	virtual double compute_likelihood(const t_data& data) {
@@ -52,15 +61,40 @@ public:
 	}
 	
 	virtual double compute_posterior(const t_data& data) {
-		compute_prior();
-		compute_likelihood(data);
-		posterior = prior + likelihood;	
+		
+		// Always compute a prior
+		prior = compute_prior();
+		
+		// if the prior is -inf, then 
+		if(prior == -infinity) {
+			likelihood = NaN;
+			posterior = -infinity;
+		}
+		else {		
+			likelihood = compute_likelihood(data);
+			posterior = prior + likelihood;	
+		}
+		
 		return posterior;
 	}
 	
-	// when we implement this, we defaulty sort by posterior (so that TopN works)
-	bool operator<(const Bayesable<t_input,t_output>& l) const {
-		return posterior < l.posterior; // sort defaultly by posterior
+	virtual size_t hash() const=0;
+	
+	virtual bool operator<(const Bayesable<t_input,t_output>& l) const {
+		// when we implement this, we defaulty sort by posterior (so that TopN works)
+		// But we need to be careful because std::set also uses this to determine equality
+		// so we will only 
+		if(posterior < l.posterior) {
+			return true;
+		}
+		else if(l.posterior < posterior) {
+			return false;
+		}
+		else {
+			// we could be equal, but we only want to say that if we are. 
+			// otherwise this is decided by the hash function 
+			return this->hash() < l.hash();
+		}
 	}
 };
 
@@ -75,7 +109,7 @@ public:
 		
 	}
 
-	MCMCable(const MCMCable<HYP,t_input,t_output>& h) : Bayesable<t_input,t_output>(h), fb(0.0) {
+	MCMCable(const MCMCable<HYP,t_input,t_output>& h) : Bayesable<t_input,t_output>(h), fb(0.0) {// don't copy FB
 		
 	}
 
@@ -92,7 +126,7 @@ class Searchable {
 public:
 	virtual int  neighbors() const = 0; // how many neighbors do I have?
 	virtual HYP* make_neighbor(int k) const = 0; // not const since its modified
-	virtual bool is_complete() const = 0; // can I call this hypothesis? Note it might still have neighbors (a in factorized lexica)
+	virtual bool is_evaluable() const = 0; // can I call this hypothesis? Note it might still have neighbors (a in factorized lexica)
 	// NOTE: here there is both neighbors() and can_evaluate becaucse it's possible that I can evaluate something
 	// that has neghbors but also can be evaluated
 	

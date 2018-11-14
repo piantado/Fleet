@@ -3,12 +3,27 @@
 
 #include<random>
 #include<cmath>
+#include <deque>
+#include <iostream>
+#include <sstream>
+
 
 // so sick of typing this horseshit
 #define TAB <<"\t"<< 
 #define ENDL <<std::endl;
 #define CERR std::cerr<<
 #define COUT std::cout<<
+
+#define MAX(a,b) \
+   ({ __typeof__ (a) _a = (a); \
+       __typeof__ (b) _b = (b); \
+     _a > _b ? _a : _b; })
+	 
+#define MIN(a,b) \
+	({ __typeof__ (a) _a = (a); \
+       __typeof__ (b) _b = (b); \
+     _a > _b ? _b : _a; })
+
 
 const double NaN = std::numeric_limits<double>::quiet_NaN();;
 const double pi  = 3.141592653589793238;
@@ -48,8 +63,11 @@ double random_cauchy() {
 }
 
 
-std::string Q(std::string x) {
+std::string QQ(std::string x) {
 	return std::string("\"") + x + std::string("\"");
+}
+std::string Q(std::string x) {
+	return std::string("\'") + x + std::string("\'");
 }
 
 /* If x is a prefix of y */
@@ -60,5 +78,43 @@ bool is_prefix(const std::string prefix, const std::string x) {
 	
 	return std::equal(prefix.begin(), prefix.end(), x.begin());
 }
+
+
+std::deque<std::string> split(const std::string& s, const char delimiter)
+{
+   std::deque<std::string> tokens;
+   std::string token;
+   std::istringstream ts(s);
+   while (std::getline(ts, token, delimiter))
+   {
+      tokens.push_back(token);
+   }
+   return tokens;
+}
+
+
+// From https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
+unsigned int levenshtein_distance(const std::string& s1, const std::string& s2)
+{
+	const std::size_t len1 = s1.size(), len2 = s2.size();
+	std::vector<std::vector<unsigned int>> d(len1 + 1, std::vector<unsigned int>(len2 + 1));
+
+	d[0][0] = 0;
+	for(unsigned int i = 1; i <= len1; ++i) d[i][0] = i;
+	for(unsigned int i = 1; i <= len2; ++i) d[0][i] = i;
+
+	for(unsigned int i = 1; i <= len1; ++i)
+		for(unsigned int j = 1; j <= len2; ++j)
+			  d[i][j] = std::min(d[i - 1][j] + 1, std::min(d[i][j - 1] + 1, d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1) ));
+			  
+	return d[len1][len2];
+}
+
+template<typename T>
+T myrandom(T max) {
+	std::uniform_int_distribution<T> r(0,max-1);
+	return r(rng);
+}
+
 
 #endif

@@ -6,6 +6,7 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "math.h"
+#include <iostream>
 #include <getopt.h>
 #include <pthread.h>
 #include <unistd.h>
@@ -48,10 +49,9 @@ enum t_abort {NO_ABORT=0, RECURSION_DEPTH, RANDOM_CHOICE, SIZE_EXCEPTION, OP_ERR
 // Define our opertions as an enum. NOTE: They can NOT be strongly typed (enum class) because
 // we store ints in an array of the same type.
 // These defined ones are processed in a VirtualMachineState, the rest are defined in a function dispatch_rule
-// op_ERR here is used to throw errors by push_program
-enum op_t { MY_OPS,
-			op_NOP,op_X,op_POPX,op_RECURSE,op_RECURSE_FACTORIZED,op_FLIP,op_IF,op_JMP,
-			N_OPs};
+enum op_t { op_NOP,op_X,op_POPX,op_RECURSE,op_RECURSE_FACTORIZED,op_FLIP,op_IF,op_JMP,
+			MY_OPS, // MY_OPS come at the end so that I can include additional, non-declared ones if I want to by int index
+			};
 
 enum t_nonterminal {NT_NAMES, N_NTs };
 
@@ -77,23 +77,25 @@ unsigned long mcmc_restart = 0;
 double        explore      = 1.0; // we want to exploit the string prefixes we find
 size_t        nthreads     = 1;
 unsigned long global_sample_count = 0;
+bool          concise      = false; // this is used to indicate that we want to not print much out (typically only posteriors and counts)
 std::string   input_path = "input.txt";
 std::string   tree_path  = "tree.txt";
+std::string   output_path = "output.txt";
 
-
-#define FLEET_HANDLE_GLOBAL_ARGS() \
+#define FLEET_DECLARE_GLOBAL_ARGS() \
     CLI::App app{"Fancier number model."};\
     app.add_option("-s,--steps",    mcts_steps, "Number of MCTS search steps to run");\
     app.add_option("-m,--mcmc",     mcmc_steps, "Number of mcmc steps to run");\
     app.add_option("-t,--thin",     thin, "Thinning on the number printed");\
-    app.add_option("-O,--top",      ntop, "The number to store");\
+    app.add_option("-o,--output",   output_path, "Where we write output");\
+	app.add_option("-O,--top",      ntop, "The number to store");\
 	app.add_option("-n,--threads",  nthreads, "Number of threads for parallel search");\
     app.add_option("-e,--explore",  explore, "Exploration parameter for MCTS");\
     app.add_option("-r,--restart",  mcmc_restart, "If we don't improve after this many, restart");\
     app.add_option("-i,--input",    input_path, "Read standard input from here");\
 	app.add_option("-T,--tree",     tree_path, "Write the tree here");\
-	CLI11_PARSE(app, argc, argv);\
-
+	app.add_option("-c,--concise",  concise, "Don't print very much and do so on one line");\
+	
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// This is how programs are represented
@@ -122,7 +124,6 @@ typedef std::stack<op_t> Opstack;
 
 #include "Inference/MCMC.h"
 #include "Inference/MCTS.h"
-#include "Inference/Playouts.h"
 
 #include "Top.h"
 #include "CL11.hpp"

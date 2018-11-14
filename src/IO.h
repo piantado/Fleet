@@ -28,12 +28,12 @@ void print(std::ostream& out, std::map<std::string,double> x) {
 	std::sort(v.begin(), v.end(), [x](std::string a, std::string b) { return x.at(a) > x.at(b); });
 	
 	
-	out << "{ ";
+	out << "{";
 	for(size_t i=0;i<v.size();i++){
 		out << "'" << v[i] << "'" << ":" << x[v[i]];
 		if(i < v.size()-1) { out << ", "; }
 	}
-	out << "} (Z=" << Z << ")";
+	out << "} [Z=" << Z << "]";
 }
 
 template<typename T>

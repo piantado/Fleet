@@ -1,5 +1,6 @@
 #ifndef GRAMMAR_H
 #define GRAMMAR_H
+#include <deque>
 
 class Grammar {
 	/* 
@@ -66,7 +67,104 @@ public:
 		CERR "*** Normalizer error in nonterminal " << nt;
 		assert(0); // Something bad happened in rule probabilities
 	}
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Computing log probabilities
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	template<typename T> // type needed so we dont' have to import node
+	double log_probability(const T* n) const {
+		assert(n != nullptr);
 		
+		double lp = log(n->rule->p) - log(rule_normalizer(n->rule->nonterminal_type));
+		
+		for(size_t i=0;i<n->rule->N;i++) {
+			if(n->child[i] != nullptr)
+				lp += log_probability<T>(n->child[i]);
+		}
+		return lp;		
+	}
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Implementation of converting strings to nodes 
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	Rule* get_from_string(const std::string s) const {
+		// find the first rule for which is a prefix
+		for(size_t nt=0;nt<N_NTs;nt++) {
+			for(auto r: rules[nt]) {
+				if(is_prefix(s, r->format)) return r; 
+			}
+		}
+		CERR "No rule found to match " TAB s ENDL;
+		assert(0);
+	}
+	
+	template<typename T> 
+	T* expand_from_names(std::deque<std::string>& q) const {
+		Rule* r = this->get_from_string(q.front());
+		q.pop_front();
+		T* v = make<T>(r);
+		for(size_t i=0;i<r->N;i++) {
+			v->child[i] = expand_from_names<T>(q);
+			assert(r->child_types[i] == v->child[i]->rule->nonterminal_type); // just check that we didn't miss this up
+		}
+		return v;
+	}
+	
+	template<typename T> 
+	T* expand_from_names(std::string s) const {
+		std::deque<std::string> stk = split(s, ':');    
+        return expand_from_names<T>(stk);
+	}
+		
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Implementation of replicating rules 
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//	
+//	virtual size_t count_replicating_rules(const t_nonterminal nt) const {
+//		size_t n=0;
+//		for(auto r: rules[nt]) {
+//			if(r->replicating_children() > 0) n++;
+//		}
+//		return n;
+//	}
+	
+	virtual double replicating_Z(const t_nonterminal nt) const {
+		// the normalizer for all replicating rules
+		double z = 0.0;
+		for(auto r: rules[nt]) {
+			if(r->replicating_children() > 0) z += r->p;
+		}
+		return z;
+	}
+	
+	
+	virtual Rule* sample_replicating_rule(const t_nonterminal nt) const {
+		
+		double z = replicating_Z(nt);
+		assert(z > 0);
+		double q = uniform(rng)*z;
+		for(auto r: rules[nt]) {
+			if(r->replicating_children() > 0) {
+				q -= r->p;
+				if(q <= 0.0)
+					return r;					
+			}
+		}
+		
+		CERR "*** Normalizer error in nonterminal " << nt;
+		assert(0); // Something bad happened in rule probabilities
+	}
+
+	
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Generation
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+
+	
 	virtual void add(Rule* r) {
 		rules[r->nonterminal_type].push_back(r);
 		Z[r->nonterminal_type] += r->p; // keep track of the total probability

@@ -10,6 +10,78 @@ unsigned long global_mcmc_acceptance_count = 0;
 unsigned long global_mcmc_proposal_count  = 0;
 
 template<typename HYP>
+struct parallel_MCMC_args { 
+	HYP* current;
+	typename HYP::t_data* data;
+	void (*callback)(HYP*);
+	unsigned long steps; 
+	unsigned long restart;
+	bool returnmax;
+};
+
+
+template<typename HYP>
+void* parallel_MCMC_helper( void* args) {
+	auto a = (parallel_MCMC_args<HYP>*)args;
+	a->current = MCMC(a->current, *a->data, a->callback, a->steps, a->restart, a->returnmax); // doesn't matter if we returnmax
+	pthread_exit(nullptr);
+}
+
+
+template<typename HYP>
+HYP* parallel_MCMC(size_t cores, HYP* current, typename HYP::t_data* data,  
+		void (*callback)(HYP* h), unsigned long steps, unsigned long restart=0, bool returnmax=true) {
+	// here we have no returnmax, always returns void
+	
+	
+	if(cores == 1)  { // don't use parallel, for easier debugging
+		return MCMC(current, *data, callback, steps, restart, returnmax);
+	}
+	else {
+	
+		pthread_t threads[cores]; 
+		struct parallel_MCMC_args<HYP> args[cores];
+		
+		for(unsigned long t=0;t<cores;t++) {
+			args[t].current = (t==cores-1 ? current : current->restart()); // have to make the *last* one current so we can use it to set up the others
+			args[t].data = data;
+			args[t].callback = callback;
+			args[t].steps=steps;
+			args[t].restart=restart;
+			args[t].returnmax = returnmax;
+			
+			// run
+			int rc = pthread_create(&threads[t], nullptr, parallel_MCMC_helper<HYP>, &args[t]);
+			if(rc) assert(0);
+		}
+		
+		// wait for all to complete
+		for(unsigned long t=0;t<cores;t++) {
+			pthread_join(threads[t], nullptr);     
+		}
+		
+		// find the max to return
+		size_t maxi = 0;
+		if(returnmax) { // find the max to retunr if we should, otherwise return maxi=0
+			for(size_t i=1;i<cores;i++){
+				if(args[i].current->posterior > args[maxi].current->posterior) {
+					maxi = i;
+				}
+			}
+		}
+		
+		// clean up everything except what you return
+		for(size_t i=0;i<cores;i++){
+			if(i != maxi) // 
+				delete args[i].current;
+		}
+		
+		return args[maxi].current; 		
+	}
+}
+
+
+template<typename HYP>
 HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), unsigned long steps, unsigned long restart=0, bool returnmax=true) {
     // run MCMC, returning the last sample, and calling callback on each sample. 
     // NOTE: If current has a -inf posterior, we always propose from restart() 
@@ -20,13 +92,15 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 	// compute the info for the curent
     current->compute_posterior(data);
     
-    if(callback != nullptr)
+    if(callback != nullptr) {
         callback(current);
+	}
 		
 	HYP* themax = nullptr;
-	if(returnmax) 
+	if(returnmax) {
 		themax = new HYP(*current);  		 
-    
+    }
+	
     unsigned long steps_since_improvement = 0; // how long have I been going without getting better?
     double        best_posterior = current->posterior; // used to measure steps since we've improved
 	
@@ -34,20 +108,26 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
     for(unsigned long i=1;i<steps && ! CTRL_C; i++){
         
 #ifdef DEBUG_MCMC
-        std::cerr << "# Current\t" << current->posterior << "\t" << current->string() << std::endl;
+        std::cerr << "# Current\t" << current->posterior TAB "0" TAB current->string() ENDL;
 #endif
         
-        HYP* proposal;
+//        HYP* proposal = current->propose();
+		HYP* proposal;
 		if(current->posterior > -infinity) 
 			proposal = current->propose();
 		else
 			proposal = current->restart();
+			
 		++global_mcmc_proposal_count;
 		
+#ifdef DEBUG_MCMC
+        std::cerr << "# Proposing\t" TAB proposal->string() ENDL;
+#endif
+				
 		proposal->compute_posterior(data);
 
 #ifdef DEBUG_MCMC
-        std::cerr << "# Proposing\t" << proposal->posterior << "\t" << proposal->string() << std::endl;
+        std::cerr << "# Proposed \t" << proposal->posterior TAB proposal->fb TAB proposal->string() ENDL;
 #endif
 		
 		// keep track of the max if we are supposed to
@@ -56,7 +136,8 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 			themax = new HYP(*proposal); 
 		}
 		
-		// keep track of the best
+		// keep track of the best on this run -- note we can't compute from themax because 
+		// that needs to be shared across runs
 	    if(proposal->posterior > best_posterior) {
 			best_posterior = proposal->posterior;
 			steps_since_improvement = 0;
@@ -66,7 +147,7 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 		}
 		
 		// use MH acceptance rule
-		double ratio = proposal->posterior-current->posterior-proposal->fb; // Remember: don't just check if proposal->posterior>current->posterior or all hell breaks loose
+		double ratio = proposal->posterior - current->posterior - proposal->fb; // Remember: don't just check if proposal->posterior>current->posterior or all hell breaks loose
 		
 		if(   (std::isnan(current->posterior)) ||
 		    ((!std::isnan(proposal->posterior)) &&
@@ -90,12 +171,12 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 
 		// and finally if we haven't improved then restart
 		if(restart>0 && steps_since_improvement > restart){
+			steps_since_improvement = 0; // reset the couter
 			auto tmp = current->restart();
 			delete current;
 			current = tmp;
 			current->compute_posterior(data);
 			best_posterior = current->posterior; // and reset what it means to be the best
-			steps_since_improvement = 0; // reset the couter
 			callback(current);
 		}
     } // end the main loop

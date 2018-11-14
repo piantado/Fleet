@@ -55,7 +55,8 @@ public:
 	}
 	
 	bool operator<(const VirtualMachineState& m) const {
-		/* These must be sortable by lp so that we can enumerate them from low to high probability in a VirtualMachinePool */
+		/* These must be sortable by lp so that we can enumerate them from low to high probability in a VirtualMachinePool 
+		 * NOTE: These shouldn't be put in a set because they might evaluate to equal! */
 		return lp < m.lp;
 	}
 	
@@ -93,8 +94,8 @@ public:
 	
 	virtual t_return run(VirtualMachinePool<t_x, t_return>* pool, Dispatchable<t_x,t_return>* dispatch, Dispatchable<t_x,t_return>* loader) {
 		// Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
-		// Here, dispatch is called to evaluate the function, and recurse is called on recursion (allowing us to handle recursion
-		// via a lexicon or just via a LOTHypothesi). Wow, it's confusing. 
+		// Here, dispatch is called to evaluate the function, and loader is called on recursion (allowing us to handle recursion
+		// via a lexicon or just via a LOTHypothesis). 
 
 		assert(!opstack.empty()); // let's catch attempts to run with empty opstack
 	
@@ -161,7 +162,7 @@ public:
 					
 					assert(pool != nullptr); // can't do that, for sure
 					
-					const double lp_true  = log(0.5);
+					const double lp_true  = log(0.5); // TODO: These must be updated when flip takes a param
 					const double lp_false = log(0.5);
 					
 					// In this implementation, we keep going as long as the lp doesn't drop too
@@ -170,26 +171,21 @@ public:
 					VirtualMachineState<t_x,t_return>* v0 = new VirtualMachineState<t_x,t_return>(*this);
 					v0->increment_lp(lp_false);
 					v0->push<bool>(false); // add this value to the stack since we make this choice
-					pool->push(v0);
-					
+					pool->push(v0);					
 					
 					// and then how we follow the true branch
 					increment_lp(lp_true);
+					push<bool>(true); // add this value to the stack since we make this choice
+						
+					// now if we can't just keep going, copy myself and put me on the stack
 					if(lp < pool->Q.top()->lp - LP_BREAKOUT) { // TODO: INCLUDE THE CONTEXT LIMIT HERE 
-						push<bool>(true); // we follow true and keep going
-						continue;
-					}
-					else {
-						// we make a new context and push it on the stack
-						VirtualMachineState<t_x,t_return>* v1 = new VirtualMachineState<t_x,t_return>(*this);
-						v1->increment_lp(lp_true);
-						v1->push<bool>(true); // add this value to the stack since we make this choice
-						pool->push(v1);
+						pool->push(new VirtualMachineState<t_x,t_return>(*this));
 						
 						aborted = RANDOM_CHOICE; // this context is aborted please 
 						
 						return err;
 					}
+					// else continue -- keep going now that true is pushed
 
 					break;
 					

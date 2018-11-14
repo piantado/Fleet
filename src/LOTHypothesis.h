@@ -2,6 +2,8 @@
 #define HYPOTHESIS_H
 
 #include<string.h>
+#include "Proposers.h"
+
 
 
 template<typename HYP, typename T, t_nonterminal nt, typename t_input, typename t_output>
@@ -61,15 +63,28 @@ public:
 	
 	// Stuff to create hypotheses:
 	virtual HYP* propose() const {
-		// Defaultly use a regeneration proposal
+		// tODO: Check how I do fb here?
 		
-		auto v = value->copy_resample(*grammar);
+		HYP* ret = new HYP(grammar, nullptr);
 		
-		auto ret = new HYP(grammar, v);
+		if(value == nullptr) {
+			ret->value = grammar->generate<Node>(nt);
+			ret->fb = 0.0; // TODO: hmm not sure what to do here
+			return ret;
+		}
 		
-		// then set the fb probabilities in ret
-		ret->fb =      (log(value->count_can_propose()) + ret->value->log_probability(*grammar)) -
-				  (log(ret->value->count_can_propose())      + value->log_probability(*grammar));		
+		// choose a type:
+		if(uniform(rng) < 0.1) { // p of regeneration
+			std::tie(ret->value, ret->fb) = regeneration_proposal(grammar, value);
+		}
+		else {
+			if(uniform(rng) < 0.5) {
+				std::tie(ret->value, ret->fb) = insert_proposal(grammar, value);
+			}
+			else {
+				std::tie(ret->value, ret->fb) = delete_proposal(grammar, value);
+			}
+		}
 		
 		return ret;
 	}
@@ -92,7 +107,7 @@ public:
 	}
 	
 	virtual double compute_prior() {
-		this->prior = value->log_probability(*grammar);
+		this->prior = grammar->log_probability(value);
 		return this->prior;
 	}
 	
@@ -134,7 +149,17 @@ public:
 	virtual t_output callOne(const t_input x, const t_output err) {
 		// wrapper for when we have only one output
 		auto v = call(x,err);
-		assert(v.size() == 1);
+		
+		if(v.size() == 0)  // if we get nothing, silently treat that as "err"
+			return err;
+			
+		if(v.size() > 1) { // complain if you got too much output -- this should not happen
+			CERR "Error in callOne  -- multiple outputs received" ENDL;
+			for(auto x: v) {
+				CERR "***" TAB x.first TAB x.second ENDL;
+			}
+			assert(false); // should not get this		
+		}
 		for(auto a : v){
 			return a.first;
 		}
@@ -143,11 +168,11 @@ public:
 	
 	virtual std::string string() const {
 		return std::string("\u03BBx.") + (value==nullptr ? Node::nulldisplay : value->string());
+//		return std::string("Lx.") + (value==nullptr ? Node::nulldisplay : value->string());
 	}
 	virtual size_t hash() const {
 		return value->hash();
 	}
-	
 	
 	virtual bool operator==(const LOTHypothesis<HYP,T,nt,t_input,t_output>& h) const {
 		return this->value->operator==(*h.value);
@@ -203,10 +228,10 @@ public:
 		}
 		return h;
 	}
-	virtual bool is_complete() const {
+	virtual bool is_evaluable() const {
 		// This checks whether it should be allowed to call "call" on this hypothesis. 
 		// Usually this means that that the value is complete, meaning no partial subtrees
-		return value != nullptr && value->is_complete();
+		return value != nullptr && value->is_evaluable();
 	}
 
 	 

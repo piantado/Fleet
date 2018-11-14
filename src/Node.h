@@ -1,6 +1,8 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include<functional>
+
 #include "Program.h"
 #include "Grammar.h"
 
@@ -38,8 +40,26 @@ public:
 		}
 	}
 	
+	virtual void takeover(Node* k) {
+		// take over all the resouces of k, and zero out k (without deleting)
+		// TODO: use a move operator here?
+		
+		for(size_t i=0;i<rule->N;i++) { // first, clear out my own children
+			delete child[i];
+		}
+
+		rule = k->rule;
+		lp = k-> lp;
+		can_resample = k->can_resample;
+		
+		for(size_t i=0;i<rule->N;i++) {
+			child[i] = k->child[i];
+		}
+		k->zero();
+	}
+	
 	virtual void zero() {
-		// set all my children to nullptr
+		// set all my children to nullptr, but DO NOT delete them
 		for(size_t i=0;i<rule->N;i++) {
 			child[i] = nullptr;
 		}
@@ -77,14 +97,23 @@ public:
 		return true;
 	}
 	
+//	template<typename T>
+//	T sum( T f(const Node*) ) const {
+//		T s = f(this);
+//		for(size_t i=0;i<rule->N;i++) {
+//			s += (child[i] == nullptr ? 0 : child[i]->sum<T>(f));
+//		}
+//		return s;
+//	}
 	template<typename T>
-	T sum( T f(const Node*) ) const {
+	T sum(std::function<T(const Node*)>& f ) const {
 		T s = f(this);
 		for(size_t i=0;i<rule->N;i++) {
 			s += (child[i] == nullptr ? 0 : child[i]->sum<T>(f));
 		}
 		return s;
 	}
+
 	
 	void map( void f(Node*) ) {
 		// NOTE: Because map calls f first on this, it allows us to modify the tree if we want to. 
@@ -94,32 +123,57 @@ public:
 				child[i]->map(f);
 		}
 	}
-	
 		
-	virtual double log_probability(const Grammar& g) const {
-		// compute the log probability under the grammar g
-		// NOTE: this ignores empty nodes
-		double s = log(rule->p) - log(g.rule_normalizer(rule->nonterminal_type));
-		for(size_t i=0;i<rule->N;i++){
-			s += (child[i] == nullptr ? 0.0 : child[i]->log_probability(g));
-		}
-		return s;
-	}
-	
+//	virtual double log_probability(const Grammar& g) const {
+//		// compute the log probability under the grammar g
+//		// NOTE: this ignores empty nodes
+//		double s = log(rule->p) - log(g.rule_normalizer(rule->nonterminal_type));
+//		for(size_t i=0;i<rule->N;i++){
+//			s += (child[i] == nullptr ? 0.0 : child[i]->log_probability(g));
+//		}
+//		return s;
+//	}
+//	
 	virtual size_t count() const {
-		return sum<size_t>( [](const Node* n){return (size_t)1;} );
+		std::function<size_t(const Node* n)> one = [](const Node* n){return (size_t)1;};
+		return sum<size_t>( one );
 	}
-	virtual size_t count_can_propose() const {
-		return sum<size_t>( [](const Node* n){ return (size_t)(n->can_resample?1:0); } );
-	}
-	
-	virtual bool is_complete() const {
+//	virtual size_t count(bool f(const Node*)) const {
+//		return sum<size_t>( [f](const Node* n){return (size_t)(f(n)?1:0);} );
+//	}
+//	virtual size_t count_can_propose() const {
+//		return sum<size_t>( [](const Node* n){ return (size_t)(n->can_resample?1:0); } );
+//	}
+//	
+	virtual bool is_evaluable() const {
 		// does this have any subnodes below that are null?
 		for(size_t i=0;i<rule->N;i++) {
-			if(child[i] == nullptr || !child[i]->is_complete() ) return false;
+			if(child[i] == nullptr || !child[i]->is_evaluable() ) return false;
 		}
 		return true;
 	}
+		
+	virtual Node* get_nth(int& n, std::function<int(const Node*)>& f) const {
+		// return a pointer to the nth  child satisfying f (f's output cast to bool)
+		// this uses nullptr as a setinel that the nth is not below us
+		if(f(this)) {
+			if(n == 0) {
+				return  (Node*)this;
+			}
+			else {
+				--n;
+			}
+		}
+		
+		for(size_t i=0;i<rule->N;i++) {
+			if(child[i] != nullptr){
+				Node* x = child[i]->get_nth(n,f);
+				if(x != nullptr) return x;				
+			}
+		}
+		return nullptr; // signal to above that the nth si not here. 
+	}
+	
 	
 	virtual Node* copy_resample(const Grammar& g, bool f(const Node* n)) const {
 		// this makes a copy of the current node where ALL nodes satifying f are resampled from the grammar
@@ -136,50 +190,12 @@ public:
 		return ret;
 	}
 		
-	virtual Node* copy_resample(const Grammar& g, int& which) const {
-		// this makes a copy of the current node where the which'th node has been resampled from the grammar
-		if(can_resample){
-			if(which == 0) {
-				--which; // must remember to decrement so we don't keep resampling
-				return g.generate<Node>(rule->nonterminal_type);
-			}
-			--which;
-		}
-		
-		// otherwise normal copy
-		auto ret = new Node(rule, lp, can_resample);
-		for(size_t i=0;i<rule->N;i++){
-			ret->child[i] = (child[i] == nullptr ? nullptr : child[i]->copy_resample(g, which));
-		}
-		return ret;
-	}
-	virtual Node* copy_resample(const Grammar& g) const {
-		int N = (int)count_can_propose(); // TODO: assuming we can fit size_t into int
-		if(N == 0) return copy(); // well I can't do anything
-		std::uniform_int_distribution<int> r(0, N-1);
-		int w = r(rng);
-		return copy_resample(g,w);
-	}
-	
-	
-	
-	
-	
-	
-//	virtual Node* copy_increment(const Grammar& g, bool& carry) const {
-//		// counting in base grammar g
-//		auto ret = new Node(rule, lp, can_resample); 
-//		for(size_t i=0;i<rule->N;i++){
-//			
-//		}
-//	}
-	
 
 	virtual std::string string() const {
 		// This converts my children to strings and then substitutes into rule->format using simple string substitution.
 		// the format just searches and replaces %s for each successive child. NOTE: That this therefore does NOT use the
 		// full power of printf formatting
-		std::string output = rule->format;
+		std::string output(rule->format);
 		for(size_t i=0;i<rule->N;i++) {
 			auto pos = output.find(child_str);
 			assert(pos != std::string::npos); // must contain the child_str for all children all children
@@ -188,6 +204,31 @@ public:
 		return output;
 	}
 	
+//	virtual bool structural_lt(const Node* n) {
+//		// test whether I am < n in an ordering determined by our rules. 
+//		// This should not satisfy !(a<b) && !(b<a)  unless a==b
+//		// this is used in LOTHypothesis to deterime < if the posteriors are equal
+//		if(rule->id != n->rule->id) 
+//			return rule->id < n->rule->id;
+//		
+//		if(rule->N != n->rule->N) 
+//			return rule->N < n->rule->N;
+//			
+//		// else we must have equally many children
+//		for(size_t i=0;i<rule->N;i++) {
+//			bool b = child[i]->structural_lt(n->child[i]);
+//			bool c = n->child[i]->structural_lt(child[i]);
+//			
+//			if((!b) && (!c)) { // e.g if !(b>=c && c>=b) or in other words !(b==c)
+//				return b;
+//			}	
+//			else {
+//				continue; // we have to be equal
+//			}
+//		}
+//		return false; // we are totally equal so not lt
+//	}
+//	
 	/********************************************************
 	 * Operaitons for running programs
 	 ********************************************************/
@@ -250,19 +291,28 @@ public:
 	virtual bool operator==(const Node &n) const{
 		// Check equality between notes. Note that this compares the rule *pointers* so we need to be careful with 
 		// serialization and storing/recovering full node trees with equality comparison
-		if(rule->id != n.rule->id) return false;
+		if(rule == n.rule) return false;
 		for(size_t i=0;i<rule->N;i++){
 			if(!(child[i]->operator==(*n.child[i]))) return false;
 		}
 		return true;
 	}
 
+	virtual size_t count_equal_child(const Node* n) const {
+		// how many of my IMMEDIATE children are equal to n?
+		size_t cnt = 0;
+		for(size_t i=0;i<rule->N;i++) {
+			cnt += (child[i] == n);
+		}
+		return cnt;
+	}
+
 
 	virtual size_t hash() const {
 		// Like equality checking, hashing also uses the rule pointers' numerical values, so beware!
-		size_t output = rule->id;
+		size_t output = (size_t) rule; // tunrs out, this is actually important to prevent hash collisions when rule_id and i are small
 		for(size_t i=0;i<rule->N;i++) {
-			output = hash_combine(output, (child[i] == nullptr ? i : child[i]->hash()));
+			output = hash_combine(output, hash_combine(i, (child[i] == nullptr ? i : child[i]->hash())));
 		}
 		return output;
 	}
@@ -318,7 +368,7 @@ public:
 	
 };
 const std::string Node::child_str = "%s";// we search for this in format strings in order to display a node
-const std::string Node::nulldisplay = "\u2b1c"; // this is shown for partial trees
+const std::string Node::nulldisplay = "null"; //\u2b1c"; // this is shown for partial trees
 
 
 #endif

@@ -1,6 +1,8 @@
 #ifndef LEXICON_H
 #define LEXICON_H
 
+#include <limits.h>
+
 #include "LOTHypothesis.h"
 
 template<typename HYP, typename T, typename t_input, typename t_output>
@@ -22,14 +24,10 @@ public:
 	Lexicon(Grammar* g, Node* v) { assert(0);}
 
 	
-	Lexicon(Lexicon& l) : grammar(l.grammar) {
+	Lexicon(Lexicon& l) : grammar(l.grammar), MCMCable<HYP,t_input,t_output>(l){
 		for(auto v : l.factors) {
 			factors.push_back(v->copy());
 		}
-		this->prior      = l->prior;
-		this->likelihood = l->likelihood;
-		this->posterior  = l->posterior;
-		this->fb         = l->fb;
 	}
 	
 	Lexicon(Lexicon&& l)=delete;
@@ -40,23 +38,42 @@ public:
 		}
 	}
 	
-	virtual std::string string() const {
-		
-		std::string out = "[";
-		for(size_t i =0;i<factors.size();i++){
-			out.append(std::string("F"));
-			out.append(std::to_string(i));
-			out.append(":=");
-			out.append(factors[i]->string());
-			out.append(".");
-			if(i<factors.size()-1) out.append(" ");
-		}
-		out.append("]");
-		return out;		
+	void replace(size_t i, T* val) {
+		// replace the i'th component here (deleting what we had there before)
+		// and NOT copying val
+		assert(i >= 0);
+		assert(i < factors.size());
+		auto tmp = factors[i];
+		factors[i] = val; // restart the last factor
+		delete tmp;
 	}
 	
+	virtual std::string string() const {
+		
+		std::string s = "[";
+		for(size_t i =0;i<factors.size();i++){
+			s.append(std::string("F"));
+			s.append(std::to_string(i));
+			s.append(":=");
+			s.append(factors[i]->string());
+			s.append(".");
+			if(i<factors.size()-1) s.append(" ");
+		}
+		s.append("]");
+		return s;		
+	}
 	
-	bool operator==(const Lexicon<HYP,T,t_input,t_output>& l) const {
+	virtual size_t hash() const {
+		size_t out = 0x0;
+		size_t i=1;
+		for(auto a: factors){
+			out = hash_combine(out, hash_combine(i, a->hash()));
+			i++;
+		}
+		return out;
+	}
+	
+	virtual bool operator==(const Lexicon<HYP,T,t_input,t_output>& l) const {
 		
 		// first, fewer factors are less
 		if(factors.size() != l.factors.size()) 
@@ -74,10 +91,11 @@ public:
 	 ********************************************************/
 	virtual void push_program(Opstack& s, short j) {
 		assert(factors.size() > 0);
+		assert(factors.size() < SHRT_MAX);
 		
 		 // or else badness -- NOTE: We could take mod or insert op_ERR, or any number of other options. 
 		 // here, we decide just to defer to the subclass of this
-		assert(j < factors.size());
+		assert(j < (short)factors.size());
 		
 		// dispath to the right factor
 		factors[j]->push_program(s); // on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)
@@ -120,28 +138,48 @@ public:
 	
 	
 	virtual double compute_prior() {
-		this->prior = 0.0;
+		// this uses a proper prior which flips a coin to determine the number of factors
+		this->prior = log(0.5)*(factors.size()+1); // +1 to end adding facators
 		for(auto a : factors) 
 			this->prior += a->compute_prior();
 		return this->prior;
 	}
 	
+//	virtual HYP* propose() const {
+//		HYP* x = this->copy();
+//		
+//		std::uniform_int_distribution<size_t> r(0,factors.size()-1);
+//		size_t k = r(rng);
+//		auto v = factors[k]->propose();
+//		delete x->factors[k];
+//		x->factors[k] = v;
+//		
+//		x->fb = v->fb; // copy the forward/backward
+//		
+//		return x;		
+//	}
+	
 	virtual HYP* propose() const {
 		HYP* x = this->copy();
 		
-		std::uniform_int_distribution<size_t> r(0,factors.size()-1);
-		size_t k = r(rng);
-		auto v = factors[k]->propose();
-		delete x->factors[k];
-		x->factors[k] = v;
-		
+		x->fb = 0.0;
+		for(size_t k=0;k<factors.size();k++) {
+			if(uniform(rng) < 0.5) {
+				x->replace(k, factors[k]->propose());
+				x->fb += factors[k]->fb;
+			}
+		}
+
 		return x;		
 	}
+//	
 	
 	virtual HYP* restart() const  {
 		HYP* x = this->copy();
-		for(auto a : x->factors) {
-			a->restart(); // restart each factor
+		for(size_t i=0;i<factors.size();i++){
+			auto tmp = x->factors[i];
+			x->factors[i] = tmp->restart(); // restart each factor
+			delete tmp;
 		}
 		return x;
 	}
@@ -157,7 +195,7 @@ public:
 	 // otherwise, no adding factors
 	 int neighbors() const {
 		 
-		if(is_complete() && factors.size() < MAX_FACTORS) {
+		if(is_evaluable() && factors.size() < MAX_FACTORS) {
 			T tmp(grammar, nullptr); // not a great way to do this -- this assumes this constructor will initialize to null (As it will for LOThypothesis)
 			return tmp.neighbors();
 		}
@@ -173,7 +211,7 @@ public:
 		 auto x = copy();
 		 		 
 		 // try adding a factor
-		 if(is_complete() && factors.size() < MAX_FACTORS){ 
+		 if(is_evaluable() && factors.size() < MAX_FACTORS){ 
 			T tmp(grammar, nullptr); // as above, assumes that this constructs will null
 			assert(k < tmp.neighbors());			
 			x->factors.push_back( tmp.make_neighbor(k) );	 
@@ -241,9 +279,9 @@ public:
 //	 }
 	 
 	 
-	 bool is_complete() const {
+	 bool is_evaluable() const {
 		for(auto a: factors) {
-			if(!a->is_complete()) return false;
+			if(!a->is_evaluable()) return false;
 		}
 		return true;
 	 }

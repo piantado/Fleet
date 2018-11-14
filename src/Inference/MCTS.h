@@ -102,7 +102,8 @@ public:
     ~MCTSNode() {
         for(auto c: children)
             delete c;
-        delete value;
+			
+        if(value != nullptr) delete value;
     }
     
     size_t size() const {
