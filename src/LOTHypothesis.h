@@ -132,8 +132,7 @@ public:
 
 		VirtualMachineState<t_input,t_output>* vms = new VirtualMachineState<t_input,t_output>(x, err);
 		
-		push_program(vms->opstack); // write my program into vms
-		// TODO: This copy is inefficient -- we should emplace into pool
+		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
 		
 		pool.push(vms); // add vms to the pool
 		

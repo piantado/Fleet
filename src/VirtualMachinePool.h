@@ -22,7 +22,7 @@ public:
 	VirtualMachinePool(double mlp=-10) : min_lp(mlp) {
 	}
 	
-	~VirtualMachinePool() {
+	virtual ~VirtualMachinePool() {
 		while(!Q.empty()){ 
 			VirtualMachineState<t_x,t_return>* vms = Q.top(); Q.pop();
 			delete vms;
@@ -50,27 +50,25 @@ public:
 		size_t steps = 0;
 		while(!Q.empty()) {
 			VirtualMachineState<t_x,t_return>* vms = Q.top(); Q.pop();
-			
 			assert(vms->lp >= min_lp);
 			
 			steps++;
 			
-			if(steps > MAX_STEPS) {
-				break;
+			if(steps < MAX_STEPS) {
+				
+				auto y = vms->run(this, dispatcher, loader);
+				
+				if(vms->aborted == NO_ABORT) { // can't add up probability for errors
+					if(out.find(y) == out.end()) {
+						out[y] = vms->lp;
+					}
+					else {
+						out[y] = logplusexp(out[y], vms->lp);
+					}
+				}
 			}
 			
-			auto y = vms->run(this, dispatcher, loader);
-			
-			if(vms->aborted == NO_ABORT) { // can't add up probability for errors
-				if(out.find(y) == out.end()) {
-					out[y] = vms->lp;
-				}
-				else {
-					out[y] = logplusexp(out[y], vms->lp);
-				}
-			}
-			
-			delete vms;
+			delete vms;// always must delete, even if not run (due to steps >= MAX_STEPS) bc otherwise it won't get caught in destructor
 		}
 		
 		return out;		
