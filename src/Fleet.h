@@ -49,7 +49,7 @@ enum t_abort {NO_ABORT=0, RECURSION_DEPTH, RANDOM_CHOICE, SIZE_EXCEPTION, OP_ERR
 // Define our opertions as an enum. NOTE: They can NOT be strongly typed (enum class) because
 // we store ints in an array of the same type.
 // These defined ones are processed in a VirtualMachineState, the rest are defined in a function dispatch_rule
-enum op_t { op_NOP,op_X,op_POPX,op_RECURSE,op_RECURSE_FACTORIZED,op_FLIP,op_IF,op_JMP,
+enum op_t { op_NOP,op_X,op_POPX,op_MEM,op_RECURSE,op_RECURSE_FACTORIZED,op_MEM_RECURSE,op_MEM_RECURSE_FACTORIZED,op_FLIP,op_IF,op_JMP,
 			MY_OPS, // MY_OPS come at the end so that I can include additional, non-declared ones if I want to by int index
 			};
 

@@ -12,8 +12,9 @@ class VirtualMachinePool {
 	// Basically each machine state stores the state of some evaluator and is able to push things back on to the Q
 	// if it encounters a random flip
 	
-	static const unsigned long MAX_STEPS = 1024;
+	static const unsigned long MAX_STEPS = 64;
 	double min_lp; // prune out stuff with less probability than this
+	double worst_lp = infinity;
 	
 public:
 	std::priority_queue<VirtualMachineState<t_x,t_return>*> Q; // Q of states sorted by probability
@@ -21,10 +22,20 @@ public:
 	VirtualMachinePool(double mlp=-10) : min_lp(mlp) {
 	}
 	
+	~VirtualMachinePool() {
+		while(!Q.empty()){ 
+			VirtualMachineState<t_x,t_return>* vms = Q.top(); Q.pop();
+			delete vms;
+		}
+	}
+	
 	void push(VirtualMachineState<t_x,t_return>* o) { //NOTE: can NOT take a reference
 		//CERR "POOL PUSHING " TAB &o ENDL;
-		if(o->lp >= min_lp){
+		if(o->lp >= min_lp && (Q.size() < MAX_STEPS || o->lp > worst_lp)){ // don't push if Q is full up to steps or we are better than the worst -- TODO: WE Should be using a TopN structure here
 			Q.push(o);
+			
+			if(o->lp < worst_lp) worst_lp = o->lp; //keep track of the worst we've seen
+			
 		}
 		else { // this assumes we take ownership of everything with o
 			delete o;
@@ -42,17 +53,20 @@ public:
 			
 			assert(vms->lp >= min_lp);
 			
-			if(steps++ < MAX_STEPS) { // do the actual stuff; otehrwise we just delete below
-				auto y = vms->run(this, dispatcher, loader);
-				
-				if(vms->aborted == NO_ABORT) { // can't add up probability for errors
-				//	CERR "Output " TAB y TAB vms.aborted TAB vms.x TAB vms.recursion_depth TAB vms.lp TAB Q.size() ENDL;
-					if(out.find(y) == out.end()) {
-						out[y] = vms->lp;
-					}
-					else {
-						out[y] = logplusexp(out[y], vms->lp);
-					}
+			steps++;
+			
+			if(steps > MAX_STEPS) {
+				break;
+			}
+			
+			auto y = vms->run(this, dispatcher, loader);
+			
+			if(vms->aborted == NO_ABORT) { // can't add up probability for errors
+				if(out.find(y) == out.end()) {
+					out[y] = vms->lp;
+				}
+				else {
+					out[y] = logplusexp(out[y], vms->lp);
 				}
 			}
 			

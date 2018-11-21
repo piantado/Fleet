@@ -50,7 +50,7 @@ dev.off()
 logsumexp <- function(x) { m=max(x); log(sum(exp(x-m)))+m }
 
 D <- NULL
-for(amt in seq(1,100,1)) {
+for(amt in seq(1,300,1)) {
 
     d$newpost <- d$prior + amt*d$likelihood/d$data.amount # compute a new approximate posterior by scaling the ll-per-datapoint 
     d$newpost <- exp(d$newpost - logsumexp(d$newpost)) #normalize and convert to probability
@@ -60,9 +60,9 @@ for(amt in seq(1,100,1)) {
     D <- rbind(D, a)    
 }
 
-plt <- ggplot(subset(D,!ANS), aes(x=data.amount,y=newpost,color=KnowerLevel,group=ANS)) + 
-    geom_line() + 
-    geom_line(data=subset(D,ANS)) +
+plt <- ggplot(subset(D,!ANS), aes(x=data.amount,y=newpost,color=KnowerLevel,group=KnowerLevel)) + 
+    geom_line(width=1.5) + 
+    geom_line(data=subset(D,ANS), linetype="dashed", width=1.5) +
     theme_bw() + theme(legend.position=c(.85,.5)) +
     xlab("Amount of data") + ylab("Posterior probability of knower-levels")
     

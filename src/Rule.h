@@ -27,6 +27,10 @@ public:
 		child_types = new t_nonterminal[c.size()];
 		std::copy(c.begin(), c.end(), child_types);
 	}
+	
+	~Rule() {
+		delete[] child_types;
+	}
 		
 	size_t count_children_of_type(const t_nonterminal nt) const {
 		size_t n=0;

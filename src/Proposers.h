@@ -8,7 +8,6 @@
 // TOOD: We could do insert/delete with entire trees -- replace any tree down below?
 
 
-
 std::pair<Node*,double> regeneration_proposal(Grammar* grammar, Node* from) {
 	// copy, regenerate a random node, and return that and forward-backward prob
 	
@@ -34,17 +33,6 @@ std::pair<Node*,double> regeneration_proposal(Grammar* grammar, Node* from) {
 				
 	return std::make_pair(ret, fb);
 }
-
-
-//double childen_log_probability_except(Grammar* g, Node* n, size_t c) {
-//	// give the log probability of my kids EXCEPT c
-//	double out = 0.0; 
-//	for(size_t i=0;i<r->rule->N;i++) {
-//		if(i != c) 
-//			out += g->log_probability(n->child[i]);
-//	}
-//	return out;
-//}
 
 
 std::pair<Node*, double> insert_proposal(Grammar* grammar, Node* from) {
@@ -81,13 +69,11 @@ std::pair<Node*, double> insert_proposal(Grammar* grammar, Node* from) {
 			olp += grammar->log_probability(x->child[i]);
 		}
 	}
-//
-//	CERR "INSERT: " ENDL;
-//	CERR "\t"<< n->string() ENDL;
-//	CERR "\t"<< x->string() ENDL;
 	
 	// n now takes the resources of x, and deletes its own
 	n->takeover(x); // this must come before computing fb, since it depends on the rest of the tree
+	delete x; // what's left of it 
+	
 	double forward_choose  = log(n->count_equal_child(n->child[c])) - log(n->rule->replicating_children()); // I could have put n in this many places
 	double backward_choose = log(n->count_equal_child(n->child[c])) - log(n->rule->replicating_children());
 	
@@ -141,8 +127,10 @@ std::pair<Node*, double> delete_proposal(Grammar* grammar, Node* from) {
 	
 	double forward_choose  = log(n->count_equal_child(n->child[c])) - log(n->rule->replicating_children());
 	double backward_choose = log(n->count_equal_child(n->child[c])) - log(n->rule->replicating_children());
+	
 	n->takeover(x);	 // this must come after computing fb above for deleting
-
+	delete x; // what's left of it 
+	
 	fb += (-log(N) + forward_choose) 
 		  // forward prob is choosing a node, choosing any equivalent child to the one we got to promote
 		  -

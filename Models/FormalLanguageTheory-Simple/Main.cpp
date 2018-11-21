@@ -3,7 +3,7 @@
 // these get incorporated into the op_t type
 #define MY_OPS op_STREQ,op_EMPTYSTRING,op_EMPTY,op_A,op_B,op_CDR,op_CAR,op_CONS //=7
 
-// Defie our types. Fleet should use these to create both t_nonterminal and 
+// Define our types. Fleet should use these to create both t_nonterminal and 
 // VMstack -- a tuple with these types
 // NOTE: We require that these types be unique or else all hell breaks loose
 // and correspondingly NT_NAMES are used to define an enum, t_nonterminal
@@ -44,10 +44,20 @@ public:
 	static const size_t MAX_LENGTH = 32; // longest strings cons will handle
 	static constexpr double gamma      = 0.99; // this coin flip says when we end 
 	static const std::string err;
+	static constexpr size_t maxnodes = 25;
 	
 	// I must implement all of these constructors
 	MyHypothesis(Grammar* g)            : LOTHypothesis<MyHypothesis,Node,nt_string,std::string,std::string>(g) {}
 	MyHypothesis(Grammar* g, Node* v)   : LOTHypothesis<MyHypothesis,Node,nt_string,std::string,std::string>(g,v) {}
+	
+	virtual double compute_prior() const {
+		size_t cnt = value->count();
+		
+		if(cnt > maxnodes) prior = -infinity;
+		else  			   prior = LOTHypothesis<MyHypothesis,Node,nt_string, std::string, std::string>::compute_prior();
+		
+		return prior;
+	}
 	
 	double compute_single_likelihood(const t_datum& x) {
 		auto out = call(x.input, err);

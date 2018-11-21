@@ -97,14 +97,6 @@ public:
 		return true;
 	}
 	
-//	template<typename T>
-//	T sum( T f(const Node*) ) const {
-//		T s = f(this);
-//		for(size_t i=0;i<rule->N;i++) {
-//			s += (child[i] == nullptr ? 0 : child[i]->sum<T>(f));
-//		}
-//		return s;
-//	}
 	template<typename T>
 	T sum(std::function<T(const Node*)>& f ) const {
 		T s = f(this);
@@ -124,27 +116,11 @@ public:
 		}
 	}
 		
-//	virtual double log_probability(const Grammar& g) const {
-//		// compute the log probability under the grammar g
-//		// NOTE: this ignores empty nodes
-//		double s = log(rule->p) - log(g.rule_normalizer(rule->nonterminal_type));
-//		for(size_t i=0;i<rule->N;i++){
-//			s += (child[i] == nullptr ? 0.0 : child[i]->log_probability(g));
-//		}
-//		return s;
-//	}
-//	
 	virtual size_t count() const {
 		std::function<size_t(const Node* n)> one = [](const Node* n){return (size_t)1;};
 		return sum<size_t>( one );
 	}
-//	virtual size_t count(bool f(const Node*)) const {
-//		return sum<size_t>( [f](const Node* n){return (size_t)(f(n)?1:0);} );
-//	}
-//	virtual size_t count_can_propose() const {
-//		return sum<size_t>( [](const Node* n){ return (size_t)(n->can_resample?1:0); } );
-//	}
-//	
+
 	virtual bool is_evaluable() const {
 		// does this have any subnodes below that are null?
 		for(size_t i=0;i<rule->N;i++) {
@@ -368,7 +344,7 @@ public:
 	
 };
 const std::string Node::child_str = "%s";// we search for this in format strings in order to display a node
-const std::string Node::nulldisplay = "null"; //\u2b1c"; // this is shown for partial trees
+const std::string Node::nulldisplay = "\u2b1c"; // this is shown for partial trees
 
 
 #endif

@@ -14,7 +14,6 @@
 
 
 #include "MyPrimitives.h"
-#include "Primitives.h"
 
 // Defie our types. Fleet should use these to create both t_nonterminal and 
 // VMstack -- a tuple with these types
@@ -192,9 +191,9 @@ public:
 			CASE_FUNC2(op_SelectObj,     Model::set, Model::set, Model::objtype, Model::selectObj)
 			CASE_FUNC2(op_Filter,        Model::set, Model::set, Model::objtype, Model::filter)
 			
-			CASE_FUNC2(op_And,           bool, bool, bool, and_)
-			CASE_FUNC2(op_Or,            bool, bool, bool, or_)
-			CASE_FUNC1(op_Not,           bool, bool,       not_)
+			CASE_FUNC2(op_And,           bool, bool, bool, [](const bool x, const bool y) { return x&&y;} )
+			CASE_FUNC2(op_Or,            bool, bool, bool, [](const bool x, const bool y) { return x||y;} )
+			CASE_FUNC1(op_Not,           bool, bool,       [](const bool x) { return !x;} );
 			
 			CASE_FUNC2(op_Match1to1,     bool, Model::wmset, Model::set,  Model::match1to1)
 			CASE_FUNC0(op_WM0,           Model::wmset, [](){ return 0; })
@@ -358,5 +357,7 @@ int main(int argc, char** argv){
 	COUT "# Global sample count:" TAB global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
 	COUT "# Samples per second:" TAB global_sample_count/elapsed_seconds() ENDL;
+
+	all.clear(); // clear up 
 	
 }

@@ -9,6 +9,7 @@ public:
 	unsigned long n; // how many steps have I been run?
 
 	Chain(HYP* h0) : current(h0), n(0) {
+		
 	}
 	
 	~Chain() {
@@ -25,10 +26,6 @@ public:
 	}
 	
 	void run(t_data mydata, size_t n, void (*callback)(HYP*)) {
-		
-		if(n == 0) 
-			current->compute_posterior(mydata); // if we haven't been run
-		
 		current = MCMC(current, n, 0, 0, 0, callback, mydata, 0, true); 
 	}
 		

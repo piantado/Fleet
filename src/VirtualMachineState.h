@@ -3,6 +3,20 @@
 
 // NOTE: CURRNTLY ERR IS NOT HANDLED RIGHT -- SHOULD HAVE A STACK I THINK?
 
+
+
+/* 
+ * 
+ * We should rewrite with an "index" stack, and an index type (e.g. short). 
+ * That would prevent us from having to use "short"
+ * and it will make memoization easier -- make mem a tuple
+ * 
+ * We can probably avoid doing nt_bool if we use an IF statement to check if we have
+ * defined op_FLIP?
+ * 
+ */
+
+
 unsigned long global_vm_ops = 0;
 
 // Remove n from the stack
@@ -34,6 +48,9 @@ public:
 	template<typename... args>
 	struct t_stack { std::tuple<std::stack<args>...> value; };
 	t_stack<NT_TYPES> stack; // our stacks of different types
+	
+	// must have a memoized return value, that permits factorized by requiring an index argument
+	std::map<std::pair<short, t_x>, t_return> mem; 
 
 	t_abort aborted; // have we aborted?
 	
@@ -44,10 +61,11 @@ public:
 	
 	VirtualMachineState(const VirtualMachineState& vms) : 
 		opstack(vms.opstack), xstack(vms.xstack), err(vms.err), lp(vms.lp), 
-		recursion_depth(vms.recursion_depth), stack(vms.stack), aborted(vms.aborted) {
+		recursion_depth(vms.recursion_depth), stack(vms.stack), mem(vms.mem), aborted(vms.aborted) {
 			
 		assert(opstack.size() == vms.opstack.size());
 		assert(xstack.size() == vms.xstack.size());
+		assert(mem.size() == vms.mem.size());
 	}
 	
 	virtual ~VirtualMachineState() {
@@ -122,6 +140,12 @@ public:
 					xstack.pop(); // NOTE: Remember NOT to pop from getpop<t_x>() since that's not where x is stored
 					break;
 				}
+				case op_MEM:
+				{
+					// by definition, this peeks at the top of t_x and t_return and caches
+//					mem[xstack.top()] = std::get<std::stack<t_return>>(stack.value).top();
+					
+				}
 				case op_RECURSE:
 				{
 					if(recursion_depth++ > MAX_RECURSE) { // there is one of these for each recurse
@@ -153,10 +177,80 @@ public:
 					opstack.push(op_POPX); 
 					
 					loader->push_program(opstack,idx);
-					continue;
-
+					
 					break;
 				}
+//				case op_MEM_RECURSE:
+//				{
+//					if(recursion_depth++ > MAX_RECURSE) { // there is one of these for each recurse
+//						aborted = RECURSION_DEPTH;
+//						return err;
+//					}
+//					
+//					// if we get here, then we have processed our arguments and they are stored in the t_x stack. 
+//					// so we must move them to the x stack (where there are accessible by op_X)
+//					auto m = std::make_pair(0, getpop<t_x>());
+//					
+//					if(mem.count(m)) {  // if we have done this already
+//						push<t_return>(mem[m]); // return this value
+//					}
+//					else { // we have to evaluate 
+// 						
+//						xstack.push(getpop<t_x>());
+//
+//						opstack.push(op_POPX); // we have to remember to remove X once the other program evaluates, *after* everything has evaluated
+//						opstack.push(op_MEM); // mem looks at the top of the stack and caches the current x value
+//						push<short>(0); // we used index zero since non-factorized 
+//						loader->push_program(opstack,0); // push this program 
+//					}
+//					
+//					break;
+//				}
+//				case op_MEM_RECURSE_FACTORIZED:
+//				{
+//					if(recursion_depth++ > MAX_RECURSE) {
+//						aborted = RECURSION_DEPTH;
+//						return err;
+//					}
+//					short idx = getpop<short>(); // shorts are *always* used to index into factorized lexica
+//					
+//					auto m = std::make_pair(0, getpop<t_x>());
+//					
+//					if(mem.count(m)) {  // if we have done this already
+//						push<t_return>(mem[m]); // return this value
+//					}
+//					else {
+//					
+//						xstack.push(getpop<t_x>());							
+//						opstack.push(op_POPX); 
+//						
+//						loader->push_program(opstack,idx);
+//						continue;
+//					}
+//					
+//					break;
+//				}
+//				case op_MEM_RECURSE_FACTORIZED:
+//				{
+//					if(recursion_depth++ > MAX_RECURSE) {
+//						aborted = RECURSION_DEPTH;
+//						return err;
+//					}
+//					short idx = getpop<short>(); // shorts are *always* used to index into factorized lexica
+//					
+//					xstack.push(getpop<t_x>());							
+//					opstack.push(op_POPX); 
+//					
+//					loader->push_program(opstack,idx);
+//					continue;
+//
+//					break;
+//				}
+//				case op_MEM: 
+//				{
+//					// need to get x and return value off stack
+//					break;
+//				}
 				case op_FLIP: 
 				{
 					
