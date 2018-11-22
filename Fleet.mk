@@ -5,5 +5,5 @@
 FLEET_INCLUDE=-I../../src/ -I../../src/Inference
 
 # Some standard/default flags
-FLEET_FLAGS=-std=gnu++14 -Wall -fdiagnostics-color=auto -lpthread
+FLEET_FLAGS=-std=gnu++14 -Wall  -fdiagnostics-color=auto -lpthread
 

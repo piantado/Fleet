@@ -1,5 +1,5 @@
-// TODO: Updatse with WM model version
-// TODO: Check the primtiives ar ethe oens we want (sample0?)
+//  TODO: Update ANS= to be something reasonable!
+
 
 // We require a macro to define our ops as a string BEFORE we import Fleet
 // these get incorporated into the op_t type
@@ -9,19 +9,21 @@
 		op_Union,op_Intersection,op_Difference,op_Select,op_SelectObj,op_Filter,\
 		op_And,op_Or,op_Not,\
 		op_Match1to1,op_WM0,op_WM1,op_WM2,op_WM3,\
-		op_ApproxEq_S_S,op_ApproxEq_S_M,op_ApproxEq_S_W,op_m1,op_m2,op_m3,op_m4,op_m5,op_m6,op_m7,op_m8,op_m9,op_m10
+		op_ApproxEq_S_S,op_ApproxEq_S_M,op_ApproxEq_S_W,\
+		op_ApproxLt_S_S,op_ApproxLt_S_M,op_ApproxLt_S_W,\
+		op_m1,op_m2,op_m3,op_m4,op_m5,op_m6,op_m7,op_m8,op_m9,op_m10
 //		op_p1,op_p2,op_p3,op_p4,op_p5,op_p6,op_p7,op_p8,op_p9,op_p10,op_ANScmpSet,op_ANScmpMagnitude
 
 
-#include "MyPrimitives.h"
+#include "Primitives.h"
 
 // Defie our types. Fleet should use these to create both t_nonterminal and 
 // VMstack -- a tuple with these types
 // NOTE: We require that these types be unique or else all hell breaks loose
 // and correspondingly NT_NAMES are used to define an enum, t_nonterminal
 // note we MUST define a short definition and a bool
-#define NT_TYPES bool,    Model::set,    Model::objtype, Model::word,  Model::X, Model::wmset, Model::magnitude, short
-#define NT_NAMES nt_bool, nt_set,         nt_type,       nt_word,       nt_X,    nt_wmset,     nt_magnitude,        nt_unused
+#define NT_TYPES bool,    Model::set,    Model::objtype, Model::word,  Model::X, Model::wmset, Model::magnitude,  double,      short
+#define NT_NAMES nt_bool, nt_set,         nt_type,       nt_word,       nt_X,    nt_wmset,     nt_magnitude,      nt_double,   nt_unused
 
 #include <vector>
 std::vector<char> OBJECTS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
@@ -85,6 +87,9 @@ public:
 		add( new Rule(nt_set,    op_IF,           "if(%s,%s,%s)", 3, {nt_bool, nt_set, nt_set},       1.0) );
 		add( new Rule(nt_word,   op_IF,           "if(%s,%s,%s)", 3, {nt_bool, nt_word, nt_word},     1.0) );
 		
+		
+		
+		add( new Rule(nt_bool,   op_FLIPP,       "flip(%s)",     1, {nt_double},               5.0) );
 		add( new Rule(nt_bool,   op_And,         "and(%s,%s)",   2, {nt_bool, nt_bool},               1.0) );
 		add( new Rule(nt_bool,   op_Or,          "or(%s,%s)",    2, {nt_bool, nt_bool},               1.0) );
 		add( new Rule(nt_bool,   op_Not,         "not(%s,%s)",   1, {nt_bool},                        1.0) );
@@ -97,9 +102,13 @@ public:
 		add( new Rule(nt_wmset,  op_WM3,   "{o,o,o}", 0, {},            1.0) );		
 
 		// approximate model
-		add( new Rule(nt_bool,   op_ApproxEq_S_S,  "ANS=(%s,%s)", 2,     {nt_set,   nt_set},            5.0/3.0) );
-//		add( new Rule(nt_bool,   op_ApproxEq_S_W,  "ANS=(%s,%s)", 2,     {nt_set,   nt_wmset},          5.0/3.0) );
-		add( new Rule(nt_bool,   op_ApproxEq_S_M,  "ANS=(%s,%s)", 2,     {nt_set,   nt_magnitude},      5.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxEq_S_S,  "ANS=(%s,%s)", 2,     {nt_set,   nt_set},            5.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxEq_S_W,  "ANS=(%s,%s)", 2,     {nt_set,   nt_wmset},          5.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxEq_S_M,  "ANS=(%s,%s)", 2,     {nt_set,   nt_magnitude},      5.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxLt_S_S,  "ANS<(%s,%s)", 2,     {nt_set,   nt_set},            5.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxLt_S_W,  "ANS<(%s,%s)", 2,     {nt_set,   nt_wmset},          5.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxLt_S_M,  "ANS<(%s,%s)", 2,     {nt_set,   nt_magnitude},      5.0/3.0) );
+		
 		add( new Rule(nt_magnitude,  op_m1,   "1", 0, {},            1) ); // magnitudes that only get used in ANS comparisons
 		add( new Rule(nt_magnitude,  op_m2,   "2", 0, {},            1) );
 		add( new Rule(nt_magnitude,  op_m3,   "3", 0, {},            1) );
@@ -125,6 +134,12 @@ public:
 	MyHypothesis(Grammar* g)            : LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word>(g) {}
 	MyHypothesis(Grammar* g, Node* v)   : LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word>(g,v) {}
 	
+	size_t recursion_count() {
+		// how many times do I use recursion?
+		std::function<size_t(const Node*)> f = [](const Node* n) { return 1*(n->rule->op == op_RECURSE); };
+		return value->sum<size_t>(f);
+	}
+	
 	
 	double compute_prior() {
 		if(value->count() > MAX_NODES) 
@@ -133,20 +148,29 @@ public:
 			prior = LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word>::compute_prior();
 			
 		// include recusion penalty
-		std::function<size_t(const Node*)> f = [](const Node* n) { return 1*(n->rule->op == op_RECURSE); };
-		prior += ( value->sum<size_t>(f) > 0 ? recursion_penalty : log(1.0-exp(recursion_penalty))); 
+		prior += ( recursion_count() > 0 ? recursion_penalty : log(1.0-exp(recursion_penalty))); 
 		
 		return prior;
 	}
 	
 	double compute_single_likelihood(const t_datum& d) {
-		Model::word v = callOne(d.input, Model::U); // something of the type
-		if(v == Model::U) { // no commitments
-			return log(1.0/10.0);
-		}
-		else { // commitments
-			return log( (1.0-d.reliability)/10.0 + (v == d.output ? d.reliability : 0.0));
-		}
+		auto v = call(d.input, Model::U); // something of the type
+		
+		double pU      = (v.count(Model::U) ? exp(v[Model::U]) : 0.0); // non-log probs
+		double pTarget = (v.count(d.output) ? exp(v[d.output]) : 0.0);
+//		assert(pU + pTarget <= 1.0);
+		double pNoise = 1.0 - (pU+pTarget);
+		
+		// average likelihood when sampling from this posterior
+		return log( pU*(1.0/10.0) + pNoise*(1.0-d.reliability)/10.0 + pTarget*d.reliability );
+		
+//		// non-stochastic version:
+//		if(v == Model::U) { // no commitments
+//			return log(1.0/10.0);
+//		}
+//		else { // commitments
+//			return log( (1.0-d.reliability)/10.0 + (v == d.output ? d.reliability : 0.0));
+//		}
 	}	
 	
 	t_abort dispatch_rule(op_t op, VirtualMachineState<Model::X, Model::word>& vms ) {
@@ -201,9 +225,13 @@ public:
 			CASE_FUNC0(op_WM2,           Model::wmset, [](){ return 2; })
 			CASE_FUNC0(op_WM3,           Model::wmset, [](){ return 3; })
 			
-			CASE_FUNC2(op_ApproxEq_S_S,  bool, Model::set, Model::set,        Model::ApproxEq)
-			CASE_FUNC2(op_ApproxEq_S_W,  bool, Model::set, Model::wmset,      Model::ApproxEq)
-			CASE_FUNC2(op_ApproxEq_S_M,  bool, Model::set, Model::magnitude,  Model::ApproxEq)
+			CASE_FUNC2(op_ApproxEq_S_S,  double, Model::set, Model::set,        Model::ANS_Eq)
+			CASE_FUNC2(op_ApproxEq_S_W,  double, Model::set, Model::wmset,      Model::ANS_Eq)
+			CASE_FUNC2(op_ApproxEq_S_M,  double, Model::set, Model::magnitude,  Model::ANS_Eq)
+			CASE_FUNC2(op_ApproxLt_S_S,  double, Model::set, Model::set,        Model::ANS_Lt)
+			CASE_FUNC2(op_ApproxLt_S_W,  double, Model::set, Model::wmset,      Model::ANS_Lt)
+			CASE_FUNC2(op_ApproxLt_S_M,  double, Model::set, Model::magnitude,  Model::ANS_Lt)
+
 			CASE_FUNC0(op_m1,           Model::magnitude, [](){ return 1.0; })
 			CASE_FUNC0(op_m2,           Model::magnitude, [](){ return 2.0; })
 			CASE_FUNC0(op_m3,           Model::magnitude, [](){ return 3.0; })
@@ -228,12 +256,15 @@ MyHypothesis::t_data data;
 TopN<MyHypothesis> top;
 TopN<MyHypothesis> all(std::numeric_limits<size_t>::max());
 
+
 void print(MyHypothesis& h) {
     COUT data.size() TAB top.count(h) TAB h.posterior TAB h.prior TAB h.likelihood << "\t";
 	
     for (int j = 1; j <= 9; j++) {
         Model::set theset = "" + std::string(j,'Z');
-		Model::word v = h.callOne(Model::X(theset,'Z'), Model::U);
+		auto out = h.call(Model::X(theset,'Z'), Model::U);
+//		out.print(); COUT "" ENDL;
+		Model::word v = out.argmax();
 		
         if(v < 0) COUT "U"; // must be undefined
         else COUT (int) v;
@@ -243,14 +274,15 @@ void print(MyHypothesis& h) {
     
     for (int j = 1; j <= 9; j++) {
         Model::set theset = "ABBCCCDDDDEEEEE" + std::string(j,'Z');        
-        Model::word v = h.callOne(Model::X(theset,'Z'), Model::U);
-        
+        auto out = h.call(Model::X(theset,'Z'), Model::U);
+        Model::word v = out.argmax();
+		
 		if(v < 0) COUT "U"; // must be undefined
         else COUT (int) v;
 		if(j < 9) COUT ".";
     }
     
-	COUT "\t" << QQ(h.string()) ENDL;
+	COUT "\t" << h.recursion_count() TAB QQ(h.string()) ENDL;
 }
 
 void callback(MyHypothesis* h) {

@@ -125,7 +125,7 @@ public:
 
 
 	// we defaultly map outputs to log probabilities
-	virtual std::map<t_output,double> call(const t_input x, const t_output err, Dispatchable<t_input,t_output>* loader, double minlp=0.0){
+	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err, Dispatchable<t_input,t_output>* loader, double minlp=-10.0){
 		assert(value != nullptr);
 		
 		VirtualMachinePool<t_input,t_output> pool(minlp);
@@ -138,7 +138,7 @@ public:
 		
 		return pool.run(this, loader);		
 	}
-	virtual std::map<t_output,double> call(const t_input x, const t_output err) {
+	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err) {
 		return call(x,err, this); // defaultly I myself am the recursion handler and dispatch
 	}
 	auto operator()(const t_input x, const t_output err){ // just fancy syntax for call
@@ -154,12 +154,12 @@ public:
 			
 		if(v.size() > 1) { // complain if you got too much output -- this should not happen
 			CERR "Error in callOne  -- multiple outputs received" ENDL;
-			for(auto x: v) {
+			for(auto x: v.values()) {
 				CERR "***" TAB x.first TAB x.second ENDL;
 			}
 			assert(false); // should not get this		
 		}
-		for(auto a : v){
+		for(auto a : v.values()){
 			return a.first;
 		}
 		assert(0);

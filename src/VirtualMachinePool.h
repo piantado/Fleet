@@ -2,6 +2,7 @@
 #define VIRTUAL_MACHINE_POOL
 
 #include "Fleet.h"
+#include "DiscreteDistribution.h"
 
 template<typename t_x, typename t_return>
 class VirtualMachineState;
@@ -12,7 +13,7 @@ class VirtualMachinePool {
 	// Basically each machine state stores the state of some evaluator and is able to push things back on to the Q
 	// if it encounters a random flip
 	
-	static const unsigned long MAX_STEPS = 64;
+	static const unsigned long MAX_STEPS = 256;
 	double min_lp; // prune out stuff with less probability than this
 	double worst_lp = infinity;
 	
@@ -42,10 +43,10 @@ public:
 		}
 	}
 	
-	std::map<t_return, double> run(Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) { 
+	DiscreteDistribution<t_return> run(Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) { 
 		// This runs and adds up the probability mass for everything, returning a dictionary outcomes->log_probabilities
 		
-		std::map<t_return,double> out;
+		DiscreteDistribution<t_return> out;
 		
 		size_t steps = 0;
 		while(!Q.empty()) {
@@ -55,16 +56,10 @@ public:
 			steps++;
 			
 			if(steps < MAX_STEPS) {
-				
 				auto y = vms->run(this, dispatcher, loader);
 				
 				if(vms->aborted == NO_ABORT) { // can't add up probability for errors
-					if(out.find(y) == out.end()) {
-						out[y] = vms->lp;
-					}
-					else {
-						out[y] = logplusexp(out[y], vms->lp);
-					}
+					out.addmass(y, vms->lp);
 				}
 			}
 			

@@ -253,22 +253,31 @@ public:
 //				}
 				case op_FLIP: 
 				{
+					// flip with default 0.5 arg
 					
 					assert(pool != nullptr); // can't do that, for sure
+				
+					push<double>(0.5);
 					
-					const double lp_true  = log(0.5); // TODO: These must be updated when flip takes a param
-					const double lp_false = log(0.5);
+					// and fall through
+				}
+				[[fallthrough]]; 
+				case op_FLIPP:
+				{
+					double p = getpop<double>(); // reads a double argfor the coin weight
+					if(isnan(p)) { p = 0.0; } // treat nans as 0s
+					assert(p <= 1.0 && p >= 0.0);
 					
 					// In this implementation, we keep going as long as the lp doesn't drop too
 					// low, always assuming if evaluates to true
 					
 					VirtualMachineState<t_x,t_return>* v0 = new VirtualMachineState<t_x,t_return>(*this);
-					v0->increment_lp(lp_false);
+					v0->increment_lp(log(1.0-p));
 					v0->push<bool>(false); // add this value to the stack since we make this choice
 					pool->push(v0);					
 					
 					// and then how we follow the true branch
-					increment_lp(lp_true);
+					increment_lp(log(p));
 					push<bool>(true); // add this value to the stack since we make this choice
 						
 					// now if we can't just keep going, copy myself and put me on the stack
@@ -283,25 +292,6 @@ public:
 
 					break;
 					
-					// In this implementation we push both possible routes onto the stack
-					// This is simpler but requires duplicating the context on every flip
-//					// TODO: Pointers might be faster with all this?
-
-//					VirtualMachineState<t_x,t_return>* v0 = new VirtualMachineState<t_x,t_return>(*this);
-//					v0->increment_lp(LOG05);
-//					v0->push<bool>(false); // add this value to the stack since we make this choice
-//					pool->push(v0);
-//					
-//					VirtualMachineState<t_x,t_return>* v1 = new VirtualMachineState<t_x,t_return>(*this);
-//					v1->increment_lp(LOG05);
-//					v1->push<bool>(true); // add this value to the stack since we make this choice
-//					pool->push(v1);
-//					
-//					aborted = RANDOM_CHOICE; // this context is aborted please (TODO: We can speed things up by re-using this context as v1 or v0)
-//					
-//					return err;
-//					
-//					break;
 				}
 				case op_JMP:
 				{
