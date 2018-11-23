@@ -70,6 +70,9 @@ template<typename t_value>
 class MCTSNode {
 public:
 
+	// use a strict enum of how children are scored in sampling them
+	enum class ScoringType { UCBMAX, SAMPLE };	
+
     std::vector<MCTSNode*> children;
 
     std::atomic<unsigned long> nvisits;  // how many times have I visited each node?
@@ -84,10 +87,12 @@ public:
     
 	StreamingStatistics statistics;
 	
+	
     MCTSNode* parent; // who is my parent?
     t_value* value;
-      
-    MCTSNode(MCTSNode* par, t_value* v) : parent(par), value(v) {
+    ScoringType scoring_type;// how do I score playouts?
+  
+    MCTSNode(MCTSNode* par, t_value* v) : parent(par), value(v), scoring_type(par->scoring_type) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
 		explore=par->explore;
 		compute_playouts=par->compute_playouts;
@@ -95,7 +100,8 @@ public:
         initialize();
     }
     
-    MCTSNode(double ex, t_value* h0, double cp(const t_value*) ) : compute_playouts(cp), explore(ex), parent(nullptr), value(h0) {
+    MCTSNode(double ex, t_value* h0, double cp(const t_value*), ScoringType st=ScoringType::SAMPLE ) : 
+		compute_playouts(cp), explore(ex), parent(nullptr), value(h0), scoring_type(st) {
         initialize();        
     }
     
@@ -125,7 +131,7 @@ public:
         std::string idnt = std::string(depth, '\t');
         
 		std::string opn = (open?" ":"*");
-		o << idnt TAB opn TAB this->sample_score() TAB statistics.median() TAB statistics.max TAB "S=" << nvisits TAB value->string() ENDL;
+		o << idnt TAB opn TAB score() TAB statistics.median() TAB statistics.max TAB "S=" << nvisits TAB value->string() ENDL;
 		
 		// optional sort
 		if(sort) {
@@ -153,39 +159,79 @@ public:
 		out.close();		
 	}
 
-	double sample_score() const {
+	double score() const {
 		
-		// I will add probability "explore" pseudocounts to my parent's distribution in order to form a prior 
-		// please change this parameter name later. 
-		if(uniform(rng) <= explore / (explore + statistics.N)) {
-			// here, if we are the base root node, we treat all "parent" samples as 0.0
-			return (this->parent == nullptr ? 0.0 : parent->sample_score()); // handle the base case			
-		} 
+		if(scoring_type == ScoringType::SAMPLE) {
+			// I will add probability "explore" pseudocounts to my parent's distribution in order to form a prior 
+			// please change this parameter name later. 
+			if(uniform(rng) <= explore / (explore + statistics.N)) {
+				// here, if we are the base root node, we treat all "parent" samples as 0.0
+				return (this->parent == nullptr ? 0.0 : parent->score()); // handle the base case			
+			} 
+			else {
+				return statistics.sample();			
+			}		
+		}
+		else if(scoring_type == ScoringType::UCBMAX) {
+			// score based on a UCB-inspired score, using the max found so far below this
+			if(statistics.N == 0 || parent == nullptr) return infinity; // preference for unexplored nodes at this level, thus otherwise my parent stats must be >0
+			if(statistics.max == -infinity) return -infinity; // otherwise we get nan with the below stuff
+			return statistics.max + explore * sqrt(log(parent->statistics.N+1) / log(1+statistics.N));
+			
+		}
 		else {
-			return statistics.sample();			
-		}		
+			assert(false);
+		}
 	}
 
-	int sample_child() const {
-		
+	size_t open_children() const {
+		size_t n = 0;
+		for(auto const c : children) {
+			n += c->open;
+		}
+		return n;
+	}
+
+
+	MCTSNode* best_child() {
+		// returns a pointer to the best child according to the function
+		MCTSNode* best = nullptr;
 		double best_score = -infinity;
-		int best_i = -1;
-		int i=0;
 		for(auto const c : children) {
 			if(c->open) {
-				double s = c->sample_score();
-				//std::cerr << "Sampling " TAB s TAB c->value->string() ENDL;
+				double s = c->score();
 				if(s >= best_score) {
 					best_score = s;
-					best_i = i;
+					best = c;
 				}
 			}
-			++i;
 		}
-		
-		return best_i;
-		
+		assert(best != nullptr); // we really should have chosen something
+		return best;
 	}
+
+//	int sample_child() const {
+//		// choose a child going down the tree
+//		
+//		double best_score = -infinity;
+//		int best_i = -1;
+//		int i=0;
+//		for(auto const c : children) {
+//			if(c->open) {
+//				double s = c->score();
+//				//std::cerr << "Sampling " TAB s TAB (s>=best_score) TAB statistics.max TAB statistics.N TAB c->value->string() ENDL;
+//				if(s >= best_score) { // need >= because otherwise we won't replace -infs we see
+//					best_score = s;
+//					best_i = i;
+//				}
+//			}
+//			++i;
+//		}
+////		CERR best_i ENDL;
+//		
+//		return best_i;
+//		
+//	}
 
     void add_sample(const double v, const size_t num){ // found something with v
         
@@ -276,21 +322,18 @@ public:
 				return; // this counts as a search move
 			}
 		}
+		else if(open_children() == 0) { // can't do anything
+			open = false;
+			return;
+		}
 		
-		// choose an existing child and expand (even if we just added them above!)
-			
-		// Now choose a child from their weights, but note that our weights will
-		// preferentially choose nodes with nvisits=0 since these are the unexpanded leaves
-		int which_child = this->sample_child(); 
+		// now if we get here, we must have at least one open child
+		// so we can pick the best and recurse 
 		
 		nvisits++; // increment our visit count on our way down so other threads don't follow
 		
-		if(which_child==-1) { // this is a sign this node is done
-			open = false;
-		}
-		else {
-			children[which_child]->search_one(); // and recurse         
-		}
+		// choose the best and recurse
+		best_child()->search_one();
 		
     } // end search
 
