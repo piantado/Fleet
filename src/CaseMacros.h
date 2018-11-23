@@ -13,31 +13,31 @@
 //Wow c++ uses this insane syntax for class member templates
 #define CASE_FUNC0(opcode, returntype, f)                                       \
 	case opcode: {                                                              \
-		vms.template push<returntype>(f());                                     \
+		vms->template push<returntype>(f());                                     \
 		break;									                                \
 	}                                                                           \
 	
 #define CASE_FUNC1(opcode, returntype, a1type, f)                               \
 	case opcode: {                                                              \
-		a1type a1 = vms.template getpop<a1type>();                              \
-		vms.template push<returntype>(f(a1));                                   \
+		a1type a1 = vms->template getpop<a1type>();                              \
+		vms->template push<returntype>(f(a1));                                   \
 		break;									                                \
 	}                                                                           \
 	
 #define CASE_FUNC2(opcode, returntype, a1type, a2type, f)                       \
 	case opcode: {                                                              \
-		a1type a1 = vms.template getpop<a1type>();                              \
-		a2type a2 = vms.template getpop<a2type>();                              \
-		vms.template push<returntype>(f(a1,a2));                                \
+		a1type a1 = vms->template getpop<a1type>();                              \
+		a2type a2 = vms->template getpop<a2type>();                              \
+		vms->template push<returntype>(f(a1,a2));                                \
 		break;									                                \
 	}                                                                           \
 
 #define CASE_FUNC3(opcode, returntype, a1type, a2type, a3type, f)               \
 	case opcode: {                                                              \
-		a1type a1 = vms.template getpop<a1type>();                              \
-		a2type a2 = vms.template getpop<a2type>();                              \
-		a3type a3 = vms.template getpop<a3type>();                              \
-		vms.template push<returntype>(f(a1,a2,a3));                             \
+		a1type a1 = vms->template getpop<a1type>();                              \
+		a2type a2 = vms->template getpop<a2type>();                              \
+		a3type a3 = vms->template getpop<a3type>();                              \
+		vms->template push<returntype>(f(a1,a2,a3));                             \
 		break;									                                \
 	}                                                                           \
 
@@ -50,37 +50,37 @@
 	case opcode: {                                                              \
 		t_abort e = errcheck();									                \
 		if(e != NO_ABORT) return e;								                \
-		vms.template push<returntype>(f());                                     \
+		vms->template push<returntype>(f());                                     \
 		break;									                                \
 	}                                                                           \
 	
 #define CASE_FUNC1e(opcode, returntype, a1type, f, errcheck)                    \
 	case opcode: {                                                              \
-		a1type a1 = vms.template getpop<a1type>();                              \
+		a1type a1 = vms->template getpop<a1type>();                              \
 		t_abort e = errcheck(a1);									            \
 		if(e != NO_ABORT) return e;								                \
-		vms.template push<returntype>(f(a1));                                   \
+		vms->template push<returntype>(f(a1));                                   \
 		break;									                                \
 	}                                                                           \
 	
 #define CASE_FUNC2e(opcode, returntype, a1type, a2type, f, errcheck)            \
 	case opcode: {                                                              \
-		a1type a1 = vms.template getpop<a1type>();                              \
-		a2type a2 = vms.template getpop<a2type>();                              \
+		a1type a1 = vms->template getpop<a1type>();                              \
+		a2type a2 = vms->template getpop<a2type>();                              \
 		t_abort e = errcheck(a1,a2);									        \
 		if(e != NO_ABORT) return e;								                \
-		vms.template push<returntype>(f(a1,a2));                                \
+		vms->template push<returntype>(f(a1,a2));                                \
 		break;									                                \
 	}                                                                           \
 
 #define CASE_FUNC3e(opcode, returntype, a1type, a2type, a3type, f, errcheck)    \
 	case opcode: {                                                              \
-		a1type a1 = vms.template getpop<a1type>();                              \
-		a2type a2 = vms.template getpop<a2type>();                              \
-		a3type a3 = vms.template getpop<a3type>();                              \
+		a1type a1 = vms->template getpop<a1type>();                              \
+		a2type a2 = vms->template getpop<a2type>();                              \
+		a3type a3 = vms->template getpop<a3type>();                              \
 		t_abort e = errcheck(a1,a2,a3);									        \
 		if(e != NO_ABORT) return e;								                \
-		vms.template push<returntype>(f(a1,a2,a3));                             \
+		vms->template push<returntype>(f(a1,a2,a3));                             \
 		break;									                                \
 	}                                                                           \
 

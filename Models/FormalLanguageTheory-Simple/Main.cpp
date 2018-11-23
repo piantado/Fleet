@@ -68,7 +68,7 @@ public:
 						   );
 	}
 	
-	t_abort dispatch_rule(op_t op, VirtualMachineState<std::string,std::string>& vms ) {
+	t_abort dispatch_rule(op_t op, VirtualMachinePool<std::string,std::string>* pool, VirtualMachineState<std::string,std::string>* vms ) {
 		/* Dispatch the functions that I have defined. Returns true on success. 
 		 * Note that errors might return from this 
 		 * */

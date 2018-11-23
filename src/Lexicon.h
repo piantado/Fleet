@@ -102,8 +102,8 @@ public:
 	}
 	
 	 // This should never be called because we should be dispatching throuhg a factor
-	 virtual t_abort dispatch_rule(op_t op, VirtualMachineState<t_input,t_output>& vms ) {
-		 assert(0);
+	 virtual t_abort dispatch_rule(op_t op, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms ) {
+		 assert(0 && "Should not be calling dispatch_rule on a lexicon, only on its factors");
 	 }
 	 
 	

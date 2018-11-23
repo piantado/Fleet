@@ -115,8 +115,6 @@ public:
 		// Here, dispatch is called to evaluate the function, and loader is called on recursion (allowing us to handle recursion
 		// via a lexicon or just via a LOTHypothesis). 
 
-		assert(!opstack.empty()); // let's catch attempts to run with empty opstack
-	
 		while(!opstack.empty()){
 			if(aborted) return err;
 			
@@ -329,7 +327,7 @@ public:
 				default: 
 				{
 					// otherwise call my dispatch and return if there is an error 
-					t_abort b = dispatch->dispatch_rule(op, *this);
+					t_abort b = dispatch->dispatch_rule(op, pool, this);
 					if(b != NO_ABORT) {
 						aborted = b;
 						return err;

@@ -97,7 +97,7 @@ std::string   output_path = "output.txt";
     app.add_option("-r,--restart",  mcmc_restart, "If we don't improve after this many, restart");\
     app.add_option("-i,--input",    input_path, "Read standard input from here");\
 	app.add_option("-T,--tree",     tree_path, "Write the tree here");\
-	app.add_option("-c,--concise",  concise, "Don't print very much and do so on one line");\
+	app.add_flag(  "-c,--concise",  concise, "Don't print very much and do so on one line");\
 	
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
