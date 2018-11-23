@@ -117,7 +117,7 @@ typedef std::stack<op_t> Opstack;
 #include "Grammar.h"
 #include "CaseMacros.h"
 #include "IO.h"
-#include "Distribution.h"
+#include "DiscreteDistribution.h"
 
 #include "LOTHypothesis.h"
 #include "Lexicon.h"
