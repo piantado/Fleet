@@ -63,7 +63,10 @@ enum t_nonterminal {NT_NAMES, N_NTs };
 // NOTE: this must be registered in main with signal(SIGINT, fleet_interrupt_handler);
 #include <signal.h>
 volatile sig_atomic_t CTRL_C = false;
-void fleet_interrupt_handler(int signum) { CTRL_C = true; } 
+void fleet_interrupt_handler(int signum) { 
+	if(signum == SIGINT)
+		CTRL_C = true; 
+} 
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// These are standard variables that occur nearly universally in these searches

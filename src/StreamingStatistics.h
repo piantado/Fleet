@@ -175,14 +175,13 @@ public:
 	}
 
 	void add(double x) {
+		++N; // always count N, even if we get nan/inf (this is required for MCTS, otherwise we fall into sampling nans)
 		if(std::isnan(x) || std::isinf(x)) return; // filter nans and inf(TODO: Should we filter inf?)
 		
+		pthread_mutex_lock(&lock);
+
 		streaming_median << x;
 		reservoir_sample << x;
-		
-		pthread_mutex_lock(&lock);
-		
-		++N;
 		
 		if(x < min) min = x;
 		if(x > max) max = x;

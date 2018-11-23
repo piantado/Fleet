@@ -82,11 +82,11 @@ public:
 	}
 	
     T max() { 
-		assert(!s.empty());
+		assert( (!s.empty()) && "You tried to get the max from a TopN that was empty");
 		return *s.rbegin();  
 	}
     T min() { 
-		assert(!s.empty());
+		assert( (!s.empty()) && "You tried to get the min from a TopN that was empty");
 		return *s.begin(); 
 	}
 	

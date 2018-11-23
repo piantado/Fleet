@@ -22,7 +22,7 @@ public:
 	Rule(const t_nonterminal rt, const op_t o, const std::string fmt, const size_t n, std::initializer_list<t_nonterminal> c, const double _p) :
 		nonterminal_type(rt), op(o), format(fmt), N(n), p(_p) {
 		
-		assert(c.size() == n); // if not, we are passing in the wrong number of arguments
+		assert(c.size() == n&& "Incorrect number of arguments provided"); // if not, we are passing in the wrong number of arguments
 		// mainly we just convert c to an array
 		child_types = new t_nonterminal[c.size()];
 		std::copy(c.begin(), c.end(), child_types);
@@ -54,7 +54,7 @@ public:
 				else     --r;
 			}
 		}
-		assert(0);
+		assert(false && "You tried to sample a replicating index when there were none!");
 	}
 	
 };

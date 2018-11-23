@@ -191,7 +191,7 @@ public:
 	 // on LOTHypothesis. To od this, we assume we can construct T with T tmp(grammar, nullptr) and 
 	 // use that temporary object to compute neighbors etc. 
 	 
-	 // for now, we define neighbors only for *complete* trees -- so you can add a factor if you have a complete tree already
+	 // for now, we define neighbors only for *complete* (evaluable) trees -- so you can add a factor if you have a complete tree already
 	 // otherwise, no adding factors
 	 int neighbors() const {
 		 
@@ -221,9 +221,7 @@ public:
 			// expand the last one
 			size_t s = x->factors.size();
 			assert(k < x->factors[s-1]->neighbors());
-			auto t = x->factors[s-1];
-			x->factors[s-1] = t->make_neighbor(k);
-			delete t;				
+			x->replace(s-1, x->factors[s-1]->make_neighbor(k));
 			return x;
 		}
 	 }
@@ -290,7 +288,7 @@ public:
 	/********************************************************
 	 * How to call 
 	 ********************************************************/
-	virtual std::map<t_output,double> call(const t_input x, const t_output err) = 0; // subclass must define what it means to call a lexicon
+	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err) = 0; // subclass must define what it means to call a lexicon
 	 
 };
 

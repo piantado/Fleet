@@ -2,6 +2,8 @@
 #define DATA_H
 
 #include <cstring>
+#include <vector>
+#include <algorithm>
 
 // Load data from a file and puts stringprobs into obs, which is a dictionary
 // of strings to ndata total elements, and obsv, which is a vector that is sorted by probability
@@ -46,20 +48,6 @@ void load_data_file(double ndata, std::vector<tdata> &data, const char* datapath
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // TODO: Put all this into another library
 
-template<typename T>
-std::map<T, double> highest(const std::map<T,double>& m, unsigned long N) {
-	// pull out the pairs with the highest probability
-	std::map<T, double> out;
-	
-	std::vector<std::pair<T,double>> v(m.size());
-	std::copy(m.begin(), m.end(), v.begin());
-	std::sort(v.begin(), v.end(), [](auto x, auto y){ return x.second > y.second; }); // put the big stuff first
-	
-	for(size_t i=0;i<MIN(N, v.size()); i++) {
-		out.insert(v[i]);
-	}
-	return out;
-}
 
 template<typename T, typename TDATA>
 std::map<T, double> highest(const std::vector<TDATA>& m, unsigned long N) {
@@ -80,24 +68,26 @@ std::map<T, double> highest(const std::vector<TDATA>& m, unsigned long N) {
 
 
 template<typename TDATA>
-void print_precision_and_recall(std::ostream& output, std::map<S,double>& x, std::vector<TDATA>& data, unsigned long N) {
+void print_precision_and_recall(std::ostream& output, DiscreteDistribution<std::string>& x, std::vector<TDATA>& data, unsigned long N) {
 	// compute the precision and the recall, as defined by the most frequent N strings 
 	// NOTE: Remember that the data reliability is not logged
 	// TODO: one problem is that if we happen not to sample enough strings (as in AnBnC2n) then we may not get everything
 	// and this shows tiny numbers
 	
-	auto A = highest<std::string>(x, N);
+	auto A = x.best(N);
 	auto B = highest<std::string,TDATA>(data,   N);
 	
 	unsigned long nprec = 0;
 	for(auto a: A) {
 		//CERR a.first TAB a.second ENDL;
-		if(B.count(a.first)) nprec++;
+		if(B.count(a)) 
+			nprec++;
 	}
 	
 	unsigned long nrec  = 0;
 	for(auto b : B){
-		if(A.count(b.first)) nrec++;
+		if(std::count(A.begin(), A.end(), b.first))
+			nrec++;
 	}
 	
 	output << double(nprec)/A.size() TAB double(nrec)/B.size();

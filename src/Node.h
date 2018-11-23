@@ -30,7 +30,7 @@ public:
 	}
 	
 	Node(const Node& n){
-		assert(false); // let's not use a copy constructor
+		assert(false && "Do not use a copy construtor for Node"); // let's not use a copy constructor
 	}
 	
 	virtual ~Node() {
@@ -174,7 +174,7 @@ public:
 		std::string output(rule->format);
 		for(size_t i=0;i<rule->N;i++) {
 			auto pos = output.find(child_str);
-			assert(pos != std::string::npos); // must contain the child_str for all children all children
+			assert(pos != std::string::npos && "Node format must contain the child_str (typically='%s')"); // must contain the child_str for all children all children
 			output.replace(pos, child_str.length(), (child[i]==nullptr ? nulldisplay : child[i]->string()));
 		}
 		return output;
@@ -229,13 +229,13 @@ public:
 		
 		// and just a little checking here
 		for(size_t i=0;i<rule->N;i++) {
-			assert(child[i] != nullptr);
-			assert(child[i]->rule->nonterminal_type == rule->child_types[i]); // make sure my kids types are what they should be
+			assert(child[i] != nullptr && "Cannot linearize a Node with null children");
+			assert(child[i]->rule->nonterminal_type == rule->child_types[i] && "Somehow the child has incorrect types"); // make sure my kids types are what they should be
 		}
 		
 		// Main code
 		if(rule->op == op_IF) {
-			assert(rule->N == 3); // must have 3 parts
+			assert(rule->N == 3 && "op_IF require three arguments"); // must have 3 parts
 			
 			int xsize = child[1]->program_size()+2; // must be +2 in order to skip over the [JMP ysize] part too
 			int ysize = child[2]->program_size();

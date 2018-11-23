@@ -339,6 +339,7 @@ int main(int argc, char** argv){
 		data.clear();
 		CERR "# Running on data " << ndata ENDL;
 		
+		// make some data here
 		std::uniform_int_distribution<> random_ntypes(1,3); // how many objects present?
 		std::uniform_int_distribution<> random_object(1,OBJECTS.size()-1);
 		std::uniform_int_distribution<> random_word(1,10);
@@ -373,14 +374,17 @@ int main(int argc, char** argv){
 			data.push_back(MyHypothesis::t_datum({x, w, alpha}));
 		}    		
 		
+		// now run MCMC
 		auto h0 = new MyHypothesis(&grammar);	
 		parallel_MCMC(nthreads, h0, &data, callback, mcmc_steps, mcmc_restart);
 
+		// and save what we found
 		all << top;
 		
 		top.clear();
 	}
 
+	// print out at the end
 	for(auto h : all.values()) {
 		h.compute_posterior(data); // run on the largest data amount
 		print(h);

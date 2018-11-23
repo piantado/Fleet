@@ -47,6 +47,16 @@ double logplusexp(const double a, const double b) {
     double m = (a>b?a:b);
     return m + log(exp(a-m)+exp(b-m));
 }
+float logplusexpf(const float a, const float b) {
+	// This ends up being very expensie to do in double precision
+	// so in some critical places (e.g. in FormalLanguageTheory) we use the float version with -fast-math, which is much faster
+    if(a==-infinity) return b;
+    if(b==-infinity) return a;
+    
+    float m = (a>b?a:b);
+    return m + log(exp(a-m)+exp(b-m));
+}
+
 
 double cauchy_lpdf(double x, double loc=0.0, double gamma=1.0) {
     return -log(pi) - log(gamma) - log(1+((x-loc)/gamma)*((x-loc)/gamma));
@@ -71,7 +81,7 @@ std::string Q(std::string x) {
 }
 
 /* If x is a prefix of y */
-bool is_prefix(const std::string prefix, const std::string x) {
+bool is_prefix(const std::string& prefix, const std::string& x) {
 	//https://stackoverflow.com/questions/7913835/check-if-one-string-is-a-prefix-of-another
 	
 	if(prefix.length() > x.length()) return false;
@@ -115,6 +125,5 @@ T myrandom(T max) {
 	std::uniform_int_distribution<T> r(0,max-1);
 	return r(rng);
 }
-
 
 #endif

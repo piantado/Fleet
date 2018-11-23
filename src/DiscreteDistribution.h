@@ -73,6 +73,27 @@ public:
 		return m;
 	}
 	
+	void operator<<(const DiscreteDistribution<T>& x) {
+		// adds all of x to me
+		for(auto a : x.values()) {
+			addmass(a.first, a.second);
+		}
+	}
+	
+	std::vector<T> best(size_t N) {
+		// get the N best
+		std::vector<std::pair<T,double>> v(m.size());
+		std::copy(m.begin(), m.end(), v.begin());
+		std::sort(v.begin(), v.end(), [](auto x, auto y){ return x.second > y.second; }); // put the big stuff first
+		
+		std::vector<T> out;
+		for(size_t i=0;i<MIN(N, v.size());i++){
+			out.push_back(v[i].first);
+		}
+
+		return out;
+	}
+	
 	// inherit some interfaces
 	size_t count(T x) const { return m.count(x); }
 	size_t size() const     { return m.size(); }

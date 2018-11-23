@@ -51,7 +51,7 @@ void parallel_MCTS(MCTSNode<t_value>* root, unsigned long steps, unsigned long c
 			args[t].root=root;
 			
 			int rc = pthread_create(&threads[t], nullptr, parallel_MCTS_helper<t_value>, &args[t]);
-			if(rc) assert(0);
+			if(rc) assert(0 && "Failure to create a pthread");
 		}
 		
 		for(unsigned long t=0;t<cores;t++)  
@@ -71,7 +71,10 @@ class MCTSNode {
 public:
 
 	// use a strict enum of how children are scored in sampling them
-	enum class ScoringType { UCBMAX, SAMPLE };	
+	// UCBMAX -- a method inspired by UCB sampling, but using the max of all hypotheses found by that route
+	// SAMPLE -- sample from (a subsample) of the posteriors we find below a node
+	// MEDIAN -- choose if my kid tends to beat the median of the parent
+	enum class ScoringType { UCBMAX, SAMPLE, MEDIAN};	
 
     std::vector<MCTSNode*> children;
 
@@ -175,12 +178,15 @@ public:
 		else if(scoring_type == ScoringType::UCBMAX) {
 			// score based on a UCB-inspired score, using the max found so far below this
 			if(statistics.N == 0 || parent == nullptr) return infinity; // preference for unexplored nodes at this level, thus otherwise my parent stats must be >0
-			if(statistics.max == -infinity) return -infinity; // otherwise we get nan with the below stuff
 			return statistics.max + explore * sqrt(log(parent->statistics.N+1) / log(1+statistics.N));
 			
 		}
+		else if(scoring_type == ScoringType::MEDIAN) {
+			if(statistics.N == 0 || parent == nullptr) return infinity; // preference for unexplored nodes at this level, thus otherwise my parent stats must be >0
+			return statistics.p_exceeds_median(parent->statistics) + explore * sqrt(log(parent->statistics.N+1) / log(1+statistics.N));
+		}
 		else {
-			assert(false);
+			assert(false && "Invalide ScoringType specified in MCTS::score");
 		}
 	}
 
@@ -206,32 +212,10 @@ public:
 				}
 			}
 		}
-		assert(best != nullptr); // we really should have chosen something
+		assert(best != nullptr && "Invalid selection of best_child (should never get here, but might have if we didn't correctly check for open children)"); // we really should have chosen something
 		return best;
 	}
 
-//	int sample_child() const {
-//		// choose a child going down the tree
-//		
-//		double best_score = -infinity;
-//		int best_i = -1;
-//		int i=0;
-//		for(auto const c : children) {
-//			if(c->open) {
-//				double s = c->score();
-//				//std::cerr << "Sampling " TAB s TAB (s>=best_score) TAB statistics.max TAB statistics.N TAB c->value->string() ENDL;
-//				if(s >= best_score) { // need >= because otherwise we won't replace -infs we see
-//					best_score = s;
-//					best_i = i;
-//				}
-//			}
-//			++i;
-//		}
-////		CERR best_i ENDL;
-//		
-//		return best_i;
-//		
-//	}
 
     void add_sample(const double v, const size_t num){ // found something with v
         

@@ -86,7 +86,7 @@ public:
 	T getpop() {
 		// retrieves and pops the element of type T from the stack
 		if(aborted) return T(); // don't try to access the stack because we're aborting
-		assert(std::get<std::stack<T>>(stack.value).size() > 0);
+		assert(std::get<std::stack<T>>(stack.value).size() > 0 && "Cannot pop from an empty stack -- this should not happen!");
 		
 		T x = std::get<std::stack<T>>(stack.value).top();
 		std::get<std::stack<T>>(stack.value).pop();
@@ -254,16 +254,17 @@ public:
 				case op_FLIP: 
 				{
 					// flip with default 0.5 arg
-					
-					assert(pool != nullptr); // can't do that, for sure
-				
 					push<double>(0.5);
 					
 					// and fall through
 				}
-				[[fallthrough]]; 
+				//[[fallthrough]];  // hmm I thought I needed this, to mark fallthroughs, but it gives me a warning!
 				case op_FLIPP:
 				{
+					
+					
+					assert(pool != nullptr && "op_FLIP and op_FLIPP require the pool to be non-null, since they push onto the pool"); // can't do that, for sure
+				
 					double p = getpop<double>(); // reads a double argfor the coin weight
 					if(isnan(p)) { p = 0.0; } // treat nans as 0s
 					assert(p <= 1.0 && p >= 0.0);
@@ -312,7 +313,6 @@ public:
 				case op_IF: 
 				{
 					// Here we evaluate op_IF, which has to short circuit and skip (pop some of the stack) 
-					assert(pool != nullptr);
 					bool b = getpop<bool>(); // bool has already evaluted
 					
 					int xsize = (int) opstack.top(); opstack.pop();
