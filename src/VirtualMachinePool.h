@@ -7,6 +7,17 @@
 template<typename t_x, typename t_return>
 class VirtualMachineState;
 
+
+template<typename T>
+struct compare_vms
+{
+    bool operator()(const T* lhs, const T* rhs)
+    {
+       return lhs->lp < rhs->lp;
+    }
+};
+
+
 template<typename t_x, typename t_return>
 class VirtualMachinePool {
 	// This manages a collection of VirtualMachines -- this is what handles the enumeration of flip by probability. 
@@ -18,7 +29,10 @@ class VirtualMachinePool {
 	double worst_lp = infinity;
 	
 public:
-	std::priority_queue<VirtualMachineState<t_x,t_return>*> Q; // Q of states sorted by probability
+
+	std::priority_queue<VirtualMachineState<t_x,t_return>*,
+						std::vector<VirtualMachineState<t_x,t_return>*>,
+						compare_vms<VirtualMachineState<t_x,t_return>> > Q; // Q of states sorted by probability
 
 	VirtualMachinePool(double mlp=-10) : min_lp(mlp) {
 	}
@@ -52,6 +66,7 @@ public:
 		while(!Q.empty()) {
 			VirtualMachineState<t_x,t_return>* vms = Q.top(); Q.pop();
 			assert(vms->lp >= min_lp);
+			//if(vms->lp != 0) CERR vms->lp ENDL;
 			
 			steps++;
 			
@@ -65,6 +80,7 @@ public:
 			
 			delete vms;// always must delete, even if not run (due to steps >= MAX_STEPS) bc otherwise it won't get caught in destructor
 		}
+		//CERR "*" ENDL;
 		
 		return out;		
 	}
