@@ -87,10 +87,17 @@ public:
 		// when we implement this, we defaulty sort by posterior (so that TopN works)
 		// But we need to be careful because std::set also uses this to determine equality
 		// so we will only 
+		// This first checks  postersios, then priors (to handle -inf likelihoods well)
 		if(posterior < l.posterior) {
 			return true;
 		}
 		else if(l.posterior < posterior) {
+			return false;
+		}
+		else if(prior < l.prior) {
+			return true;
+		}
+		else if(l.prior < prior) {
 			return false;
 		}
 		else {

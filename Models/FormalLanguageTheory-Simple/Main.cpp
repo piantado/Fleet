@@ -7,8 +7,8 @@
 // VMstack -- a tuple with these types
 // NOTE: We require that these types be unique or else all hell breaks loose
 // and correspondingly NT_NAMES are used to define an enum, t_nonterminal
-#define NT_TYPES bool,short,std::string
-#define NT_NAMES nt_bool,nt_short,nt_string
+#define NT_TYPES bool,short,std::string,     double
+#define NT_NAMES nt_bool,nt_short,nt_string, nt_unused
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
@@ -50,7 +50,7 @@ public:
 	MyHypothesis(Grammar* g)            : LOTHypothesis<MyHypothesis,Node,nt_string,std::string,std::string>(g) {}
 	MyHypothesis(Grammar* g, Node* v)   : LOTHypothesis<MyHypothesis,Node,nt_string,std::string,std::string>(g,v) {}
 	
-	virtual double compute_prior() const {
+	virtual double compute_prior() {
 		size_t cnt = value->count();
 		
 		if(cnt > maxnodes) prior = -infinity;
@@ -99,7 +99,7 @@ TopN<MyHypothesis> top;
 
 
 void print(MyHypothesis& h) {
-	print(h.call("", "<err>"));
+	h.call("", "<err>").print();
 	COUT "\t" << top.count(h) TAB  h.posterior TAB h.prior TAB h.likelihood TAB h.string() ENDL;
 }
 

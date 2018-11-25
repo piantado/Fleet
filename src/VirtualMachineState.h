@@ -74,8 +74,8 @@ public:
 	
 	bool operator<(const VirtualMachineState& m) const {
 		/* These must be sortable by lp so that we can enumerate them from low to high probability in a VirtualMachinePool 
-		 * NOTE: These shouldn't be put in a set because they might evaluate to equal! */
-		return lp < m.lp;
+		 * NOTE: VirtualMachineStates shouldn't be put in a set because they might evaluate to equal! */
+		return lp < m.lp; //(-lp) < (-m.lp);
 	}
 	
 	void increment_lp(double v) {
@@ -86,7 +86,7 @@ public:
 	T getpop() {
 		// retrieves and pops the element of type T from the stack
 		if(aborted) return T(); // don't try to access the stack because we're aborting
-		assert(std::get<std::stack<T>>(stack.value).size() > 0 && "Cannot pop from an empty stack -- this should not happen!");
+		assert(std::get<std::stack<T>>(stack.value).size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
 		T x = std::get<std::stack<T>>(stack.value).top();
 		std::get<std::stack<T>>(stack.value).pop();
@@ -264,7 +264,7 @@ public:
 					assert(pool != nullptr && "op_FLIP and op_FLIPP require the pool to be non-null, since they push onto the pool"); // can't do that, for sure
 				
 					double p = getpop<double>(); // reads a double argfor the coin weight
-					if(isnan(p)) { p = 0.0; } // treat nans as 0s
+					if(std::isnan(p)) { p = 0.0; } // treat nans as 0s
 					assert(p <= 1.0 && p >= 0.0);
 					
 					// In this implementation, we keep going as long as the lp doesn't drop too
@@ -275,6 +275,15 @@ public:
 					v0->push<bool>(false); // add this value to the stack since we make this choice
 					pool->push(v0);					
 					
+					
+					VirtualMachineState<t_x,t_return>* v1 = new VirtualMachineState<t_x,t_return>(*this);
+					v1->increment_lp(log(p));
+					v1->push<bool>(true); // add this value to the stack since we make this choice
+					pool->push(v1);	
+					
+					aborted = RANDOM_CHOICE; // this context is aborted please 
+					return err;
+					/*
 					// and then how we follow the true branch
 					increment_lp(log(p));
 					push<bool>(true); // add this value to the stack since we make this choice
@@ -288,6 +297,7 @@ public:
 						return err;
 					}
 					// else continue -- keep going now that true is pushed
+					*/
 
 					break;
 					

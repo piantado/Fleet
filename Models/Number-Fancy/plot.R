@@ -1,7 +1,7 @@
 library(ggplot2)
 
 d <- read.table("out/output.txt", header=F)
-names(d) <- c("data.amount", "cnt", "posterior", "prior", "likelihood", "KL1", "KL2", "hypothesis")
+names(d) <- c("data.amount", "cnt", "posterior", "prior", "likelihood", "KL1", "KL2", "recurse", "hypothesis")
 
 remap = list("U.U.U.U.U.U.U.U.U"="Non-Knower",
              "1.U.U.U.U.U.U.U.U"="1-knower",
@@ -35,8 +35,9 @@ for(n in names(remap)) {
 }
 
 plt <- ggplot(d, aes(x=-prior, y=-likelihood, color=KnowerLevel, group=KnowerLevel)) + 
-    geom_jitter(alpha=0.2, height=5.0, width=0.0) +
+    geom_jitter(aes(shape=ANS), alpha=0.7, height=5.0, width=0.0) +
     theme_bw() + theme(legend.position=c(.85,.75)) +
+    scale_shape_manual(values=c(1,4)) +
     geom_line(data=edge, aes(x=-x, y=-y, group=1), color="black", size=1.5, linetype="dashed", alpha=0.5) +
     xlab("Prior penalty \t(worse \U27f6 )") + ylab("Fit to data \t(worse \U27f6 )")
 
