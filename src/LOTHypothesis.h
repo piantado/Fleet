@@ -177,7 +177,7 @@ public:
 		return this->value->operator==(*h.value);
 	}
 	
-	virtual t_abort dispatch_rule(op_t op, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms )=0;
+	virtual t_abort dispatch_rule(op_t op, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms,  Dispatchable<t_input, t_output>* loader )=0;
 	
 	virtual HYP* copy_and_complete() const {
 		// make a copy and fill in the missing nodes.

@@ -74,7 +74,7 @@ public:
 	// UCBMAX -- a method inspired by UCB sampling, but using the max of all hypotheses found by that route
 	// SAMPLE -- sample from (a subsample) of the posteriors we find below a node
 	// MEDIAN -- choose if my kid tends to beat the median of the parent
-	enum class ScoringType { UCBMAX, SAMPLE, MEDIAN};	
+	enum class ScoringType { SAMPLE, UCBMAX, MEDIAN};	
 
     std::vector<MCTSNode*> children;
 
@@ -130,7 +130,7 @@ public:
     }
     
 	
-    void print(std::ostream& o, const int depth, const bool sort) const {
+    void print(std::ostream& o, const int depth, const bool sort) {
         std::string idnt = std::string(depth, '\t');
         
 		std::string opn = (open?" ":"*");
@@ -150,24 +150,27 @@ public:
     }
  
 	// wrappers for file io
-    void print(const bool sort=true) const { 
+    void print(const bool sort=true) { 
 		print(std::cout, 0, sort);		
 	}
-	void printerr(const bool sort=true) const {
+	void printerr(const bool sort=true) {
 		print(std::cerr, 0);
 	}    
-	void print(const char* filename, const bool sort=true) const {
+	void print(const char* filename, const bool sort=true) {
 		std::ofstream out(filename);
 		print(out, 0, sort);
 		out.close();		
 	}
 
-	double score() const {
+	double score() {
+		// Compute the score of this node, which is used in sampling down the tree
+		// NOTE: this can't be const because the StreamingStatistics need a mutex
 		
 		if(scoring_type == ScoringType::SAMPLE) {
 			// I will add probability "explore" pseudocounts to my parent's distribution in order to form a prior 
 			// please change this parameter name later. 
 			if(uniform(rng) <= explore / (explore + statistics.N)) {
+				
 				// here, if we are the base root node, we treat all "parent" samples as 0.0
 				return (this->parent == nullptr ? 0.0 : parent->score()); // handle the base case			
 			} 
@@ -205,8 +208,9 @@ public:
 		double best_score = -infinity;
 		for(auto const c : children) {
 			if(c->open) {
+				if(c->statistics.N==0) return c; // just take any unopened
 				double s = c->score();
-				if(s >= best_score) {
+				if((!std::isnan(s)) && s >= best_score) {
 					best_score = s;
 					best = c;
 				}
@@ -324,5 +328,12 @@ public:
 
 };
 
+//template<typename t_value>
+//class FullMCTSNode : public MCTSNode<t_value> {
+//	// In this version, when we go down to build a tree, we include ALL of the nodes
+//	
+//	void add_child_nodes()=delete; // we don't use this 
+//	
+//}
 
 #endif

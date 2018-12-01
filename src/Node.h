@@ -308,6 +308,18 @@ public:
 		return n;
 	}
 	
+	virtual size_t first_neighbors(const Grammar& g) const {
+		// How many neighbors does my first gap have?
+		for(size_t i=0;i<rule->N;i++){
+			if(child[i] == nullptr)
+				return g.count_expansions(rule->child_types[i]);
+			
+			size_t n = child[i]->first_neighbors(g);			
+			if(n > 0) return n;
+		}
+		return 0;
+	}
+	
 	virtual void expand_to_neighbor(const Grammar& g, int& which) {
 		// here we find the neighbor indicated by which and expand it into the which'th neighbor
 		// to do this, we loop through until which is less than the number of neighbors,

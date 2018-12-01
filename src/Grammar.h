@@ -117,6 +117,12 @@ public:
 		std::deque<std::string> stk = split(s, ':');    
         return expand_from_names<T>(stk);
 	}
+	
+	template<typename T> 
+	T* expand_from_names(const char* c) const {
+		std::string s = c;
+        return expand_from_names<T>(s);
+	}
 		
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Implementation of replicating rules 

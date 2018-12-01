@@ -87,11 +87,13 @@ public:
 	void operator<<(T x) {	add(x);}
 	
 	// Return a sample from my vals (e.g. a sample of the samples I happen to have saved)
-	T sample() const {
-		assert(N > 0);
+	T sample() {
+		pthread_mutex_lock(&lock);
+		if(N == 0) return NaN;
 		std::uniform_int_distribution<int> sampler(0,vals.size()-1);
 		auto pos = vals.begin();
 		std::advance(pos, sampler(rng));
+		pthread_mutex_unlock(&lock);
 		return *pos;
 	}
 	
@@ -120,12 +122,15 @@ public:
 	}	
 		
 	T median() const { 
-		return M;
+		if(n == 0) 
+			return NaN;
+		else
+			return M;
 	}
 	
 	void add(T x) {
 		
-		if(n==0) {
+		if(n == 0) {
 			M = x;
 			step = sqrt(abs(x)); // seems bad to initialize at x b/c then we start with giant sign swings; sqrt has a nice aesthetic
 		}
@@ -198,7 +203,7 @@ public:
 		add(x);
 	}
 	
-	double sample() const {
+	double sample() {
 		return reservoir_sample.sample();
 	}
 	

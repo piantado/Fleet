@@ -24,7 +24,7 @@ class VirtualMachinePool {
 	// Basically each machine state stores the state of some evaluator and is able to push things back on to the Q
 	// if it encounters a random flip
 	
-	static const unsigned long MAX_STEPS = 256;
+	static const unsigned long MAX_STEPS = 512;
 	double min_lp; // prune out stuff with less probability than this
 	double worst_lp = infinity;
 	

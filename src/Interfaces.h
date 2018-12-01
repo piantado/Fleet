@@ -3,6 +3,9 @@
 
 #include "Miscellaneous.h"
 
+unsigned long global_posterior_counter = 0;
+
+
 template<typename t_input, typename t_return>
 class VirtualMachineState;
 
@@ -14,7 +17,8 @@ class Dispatchable {
 public:
 	// A dispatchable class is one that implements the dispatch rule we need in order to call/evaluate.
 	// This is the interface that a Hypothesis requires
-	virtual t_abort dispatch_rule(op_t op, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms)=0;
+	virtual t_abort dispatch_rule(op_t op, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms,
+                                  Dispatchable<t_input,t_output>* loader )=0;
 	
 	// This loads a program into the stack. Short is passed here in case we have a factorized lexicon,
 	// which for now is a pretty inelegant hack. 
@@ -64,6 +68,8 @@ public:
 	}
 	
 	virtual double compute_posterior(const t_data& data) {
+		
+		++FleetStatistics::posterior_calls; // just keep track of how many calls 
 		
 		// Always compute a prior
 		prior = compute_prior();

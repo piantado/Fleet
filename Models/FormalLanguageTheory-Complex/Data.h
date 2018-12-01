@@ -66,32 +66,59 @@ std::map<T, double> highest(const std::vector<TDATA>& m, unsigned long N) {
 
 
 
-
 template<typename TDATA>
 void print_precision_and_recall(std::ostream& output, DiscreteDistribution<std::string>& x, std::vector<TDATA>& data, unsigned long N) {
-	// compute the precision and the recall, as defined by the most frequent N strings 
-	// NOTE: Remember that the data reliability is not logged
-	// TODO: one problem is that if we happen not to sample enough strings (as in AnBnC2n) then we may not get everything
-	// and this shows tiny numbers
+	// changing this to: how many of the top N generated strings appear *anywhere* in the data
+	// and how many of the top N data appear *anywhere* in the generated strings
 	
 	auto A = x.best(N);
 	auto B = highest<std::string,TDATA>(data,   N);
 	
+	std::set<std::string> mdata; // make a map of all observed output strings
+	for(auto v : data) mdata.insert(v.output); 
+	
 	unsigned long nprec = 0;
 	for(auto a: A) {
 		//CERR a.first TAB a.second ENDL;
-		if(B.count(a)) 
+		if(mdata.count(a)) 
 			nprec++;
 	}
 	
 	unsigned long nrec  = 0;
 	for(auto b : B){
-		if(std::count(A.begin(), A.end(), b.first))
+		if(x.count(b.first))
 			nrec++;
 	}
 	
 	output << double(nprec)/A.size() TAB double(nrec)/B.size();
 }
+
+
+//template<typename TDATA>
+//void print_precision_and_recall(std::ostream& output, DiscreteDistribution<std::string>& x, std::vector<TDATA>& data, unsigned long N) {
+//	// compute the precision and the recall, as defined by the most frequent N strings 
+//	// NOTE: Remember that the data reliability is not logged
+//	// TODO: one problem is that if we happen not to sample enough strings (as in AnBnC2n) then we may not get everything
+//	// and this shows tiny numbers
+//	
+//	auto A = x.best(N);
+//	auto B = highest<std::string,TDATA>(data,   N);
+//	
+//	unsigned long nprec = 0;
+//	for(auto a: A) {
+//		//CERR a.first TAB a.second ENDL;
+//		if(B.count(a)) 
+//			nprec++;
+//	}
+//	
+//	unsigned long nrec  = 0;
+//	for(auto b : B){
+//		if(std::count(A.begin(), A.end(), b.first))
+//			nrec++;
+//	}
+//	
+//	output << double(nprec)/A.size() TAB double(nrec)/B.size();
+//}
 
 
 

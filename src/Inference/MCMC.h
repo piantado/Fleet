@@ -6,9 +6,6 @@
 
 extern volatile sig_atomic_t CTRL_C;
 
-unsigned long global_mcmc_acceptance_count = 0;
-unsigned long global_mcmc_proposal_count  = 0;
-
 template<typename HYP>
 struct parallel_MCMC_args { 
 	HYP* current;
@@ -52,7 +49,7 @@ HYP* parallel_MCMC(size_t cores, HYP* current, typename HYP::t_data* data,
 			
 			// run
 			int rc = pthread_create(&threads[t], nullptr, parallel_MCMC_helper<HYP>, &args[t]);
-			if(rc) assert(0);
+			if(rc) assert(0 && "Failed to create thread");
 		}
 		
 		// wait for all to complete
@@ -82,8 +79,10 @@ HYP* parallel_MCMC(size_t cores, HYP* current, typename HYP::t_data* data,
 
 
 template<typename HYP>
-HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), unsigned long steps, unsigned long restart=0, bool returnmax=true) {
+HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), unsigned long steps, unsigned long time=0, unsigned long restart=0, bool returnmax=true) {
     // run MCMC, returning the last sample, and calling callback on each sample. 
+	// this either runs steps worth of time, or time worth of *seconds*
+	// if either of these is 0, then that is ignored; if both are nonzero, then it uses whatever is 
     // NOTE: If current has a -inf posterior, we always propose from restart() 
 	// NOTE: This requires that HYP implement: propose(), restart(), compute_posterior(const t_data&)
 	
@@ -105,7 +104,7 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
     double        best_posterior = current->posterior; // used to measure steps since we've improved
 	
     // we'll start at 1 since we did 1 callback on current
-    for(unsigned long i=1;i<steps && ! CTRL_C; i++){
+    for(unsigned long i=1; (i<steps || steps==0) && ! CTRL_C; i++){
         
 #ifdef DEBUG_MCMC
         std::cerr << "# Current\t" << current->posterior TAB "0" TAB current->string() ENDL;
@@ -118,7 +117,7 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 		else
 			proposal = current->restart();
 			
-		++global_mcmc_proposal_count;
+		++FleetStatistics::mcmc_proposal_calls;
 		
 #ifdef DEBUG_MCMC
         std::cerr << "# Proposing\t" TAB proposal->string() ENDL;
@@ -160,7 +159,7 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 			  current = proposal;
 			  
 			  // count total acceptances
-			  ++global_mcmc_acceptance_count;
+			  ++FleetStatistics::mcmc_acceptance_count;
 		}
 		else {
 			delete proposal; 
@@ -168,6 +167,7 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 			
         // and call on the sample if we meet all our criteria
         callback(current);
+		++FleetStatistics::global_sample_count;
 
 		// and finally if we haven't improved then restart
 		if(restart>0 && steps_since_improvement > restart){

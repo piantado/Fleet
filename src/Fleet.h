@@ -15,12 +15,14 @@
 #include <queue>
 #include <tuple>
 #include <map>
+#include <atomic>
 #include<iostream>
 #include <assert.h>
 #include <string.h>
 #include <memory>
 #include <pthread.h>
 #include <chrono>
+#include <thread>         // std::this_thread::sleep_for
 
 const std::string FLEET_VERSION = "0.0.1";
 
@@ -60,12 +62,31 @@ enum t_nonterminal {NT_NAMES, N_NTs };
 /// A Handler for CTRL_C
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+namespace FleetStatistics {
+	// Running MCMC/MCTS updates these standard statistics
+	
+	std::atomic<uintmax_t> posterior_calls(0);
+	
+	std::atomic<uintmax_t> mcmc_proposal_calls(0);
+	std::atomic<uintmax_t> mcmc_acceptance_count(0);
+	std::atomic<uintmax_t> global_sample_count(0);
+}
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// A Handler for CTRL_C
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 // NOTE: this must be registered in main with signal(SIGINT, fleet_interrupt_handler);
 #include <signal.h>
 volatile sig_atomic_t CTRL_C = false;
 void fleet_interrupt_handler(int signum) { 
-	if(signum == SIGINT)
+	if(signum == SIGINT) {
 		CTRL_C = true; 
+	}
+	else if(signum == SIGHUP) {
+		// do nothing -- defaultly Fleet mutes SIGHUP so that commands left in the terminal will continue
+		// this is so that if we get disconnected on a terminal run, the job is maintained
+	}	
 } 
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -79,7 +100,7 @@ unsigned long ntop         = 100;
 unsigned long mcmc_restart = 0;
 double        explore      = 1.0; // we want to exploit the string prefixes we find
 size_t        nthreads     = 1;
-unsigned long global_sample_count = 0;
+long          ctrlc_time   = 0;
 bool          concise      = false; // this is used to indicate that we want to not print much out (typically only posteriors and counts)
 std::string   input_path = "input.txt";
 std::string   tree_path  = "tree.txt";
@@ -96,7 +117,8 @@ std::string   output_path = "output.txt";
     app.add_option("-e,--explore",  explore, "Exploration parameter for MCTS");\
     app.add_option("-r,--restart",  mcmc_restart, "If we don't improve after this many, restart");\
     app.add_option("-i,--input",    input_path, "Read standard input from here");\
-	app.add_option("-T,--tree",     tree_path, "Write the tree here");\
+	app.add_option("-T,--time",     ctrlc_time, "Stop (via CTRL-C) after this much time");\
+	app.add_option("-E,--tree",     tree_path, "Write the tree here");\
 	app.add_flag(  "-c,--concise",  concise, "Don't print very much and do so on one line");\
 	
 
@@ -150,5 +172,42 @@ double elapsed_seconds() {
 	return elapsed.count(); 
 }
 
+
+struct call_ctrlc_args { long seconds; };
+void* _call_ctrlc(void* args) {
+	auto a = (call_ctrlc_args*)args;
+
+	CERR "# Will interrupt with CTRL-C in " << a->seconds << " seconds." ENDL;
+	
+	// sleep as long as we should
+    std::this_thread::sleep_for (std::chrono::seconds(a->seconds));
+
+	// set CTRL_C 
+	CTRL_C = true; 
+	
+	// all done
+	pthread_exit(NULL);
+}
+
+void call_ctrlc_after(long s) {
+	// waits s seconds and then sets Ctrl-C
+	// (which typically will have the effect of stopping MCMC/MCTS)
+	pthread_t t;
+	
+	call_ctrlc_args* a = new call_ctrlc_args();
+	a->seconds = s;
+	
+	int rc = pthread_create(&t, NULL, _call_ctrlc, a);
+	if(rc) assert(0 && "Failed to create thread");
+}
+
+
+void Fleet_initialize() {
+	
+	// set our own handlers
+	signal(SIGINT, fleet_interrupt_handler);
+	signal(SIGHUP, fleet_interrupt_handler);
+	
+}
 
 #endif

@@ -31,11 +31,11 @@ class VirtualMachineState {
 	// This stores the state of an evaluator of a node. The idea here is that we want to be able to encapsulate everything
 	// about the evaluation of a tree so that we can stop it in the middle and resume later, as is required for stochastics
 	// This must be automatically generated because it depends on the types in the grammar. 
+public:
 	
 	static const unsigned long MAX_RECURSE = 64;
 	static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
-public:
 	Opstack            opstack; 
 	std::stack<t_x>    xstack; //xstackthis stores a stack of the x values (for recursive calls)
 	t_return           err; // what error output do we return?
@@ -337,7 +337,7 @@ public:
 				default: 
 				{
 					// otherwise call my dispatch and return if there is an error 
-					t_abort b = dispatch->dispatch_rule(op, pool, this);
+					t_abort b = dispatch->dispatch_rule(op, pool, this, loader);
 					if(b != NO_ABORT) {
 						aborted = b;
 						return err;
