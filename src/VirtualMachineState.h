@@ -22,16 +22,10 @@ void popn(Program& s, size_t n) {
 }
 
 
-
-template<typename X, typename t>
-constexpr bool contains_type() { return std::is_same<X,t>::value; }
-template<typename X, typename t, typename... T>
+// Check if a variadic template Ts contains any type X
+template<typename X, typename... Ts>
 constexpr bool contains_type() {
-	// check if my template args contian a given type
-	if constexpr (std::is_same<X, t>::value) {  //|| contains_type<X,T...> 
-		return true;
-	}
-	else return false;
+	return std::disjunction_v<std::is_same<X, Ts>...>;
 }
 
 
