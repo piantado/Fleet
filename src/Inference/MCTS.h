@@ -269,7 +269,7 @@ public:
    
 	// search for some number of steps
 	void search(unsigned long steps) {
-		for(unsigned long i=0;i<steps && !CTRL_C;i++){
+		for(unsigned long i=0; (i<steps || steps==0) && !CTRL_C;i++){
 		   this->search_one();
 		}
 	}

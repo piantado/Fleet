@@ -14,20 +14,21 @@ struct parallel_MCMC_args {
 	unsigned long steps; 
 	unsigned long restart;
 	bool returnmax;
+	unsigned long time;
 };
 
 
 template<typename HYP>
 void* parallel_MCMC_helper( void* args) {
 	auto a = (parallel_MCMC_args<HYP>*)args;
-	a->current = MCMC(a->current, *a->data, a->callback, a->steps, a->restart, a->returnmax); // doesn't matter if we returnmax
+	a->current = MCMC(a->current, *a->data, a->callback, a->steps, a->restart, a->returnmax, a->time); // doesn't matter if we returnmax
 	pthread_exit(nullptr);
 }
 
 
 template<typename HYP>
 HYP* parallel_MCMC(size_t cores, HYP* current, typename HYP::t_data* data,  
-		void (*callback)(HYP* h), unsigned long steps, unsigned long restart=0, bool returnmax=true) {
+		void (*callback)(HYP* h), unsigned long steps, unsigned long restart=0, bool returnmax=true, unsigned long time=0) {
 	// here we have no returnmax, always returns void
 	
 	
@@ -46,6 +47,7 @@ HYP* parallel_MCMC(size_t cores, HYP* current, typename HYP::t_data* data,
 			args[t].steps=steps;
 			args[t].restart=restart;
 			args[t].returnmax = returnmax;
+			args[t].time = time;
 			
 			// run
 			int rc = pthread_create(&threads[t], nullptr, parallel_MCMC_helper<HYP>, &args[t]);
@@ -79,38 +81,44 @@ HYP* parallel_MCMC(size_t cores, HYP* current, typename HYP::t_data* data,
 
 
 template<typename HYP>
-HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), unsigned long steps, unsigned long time=0, unsigned long restart=0, bool returnmax=true) {
+HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), unsigned long steps, 
+		  unsigned long restart=0, bool returnmax=true, unsigned long time=0) {
     // run MCMC, returning the last sample, and calling callback on each sample. 
 	// this either runs steps worth of time, or time worth of *seconds*
 	// if either of these is 0, then that is ignored; if both are nonzero, then it uses whatever is 
     // NOTE: If current has a -inf posterior, we always propose from restart() 
 	// NOTE: This requires that HYP implement: propose(), restart(), compute_posterior(const t_data&)
 	
-	assert(callback != nullptr);
+	using clock = std::chrono::steady_clock;
+	
+	assert(callback != nullptr); // better not run with null callback
 	
 	// compute the info for the curent
     current->compute_posterior(data);
-    
-    if(callback != nullptr) {
-        callback(current);
-	}
+	callback(current);
 		
+	// copy the current to keep track of the max, if that's what we're supposed to return
 	HYP* themax = nullptr;
-	if(returnmax) {
-		themax = new HYP(*current);  		 
-    }
+	if(returnmax) themax = new HYP(*current);  	 
 	
     unsigned long steps_since_improvement = 0; // how long have I been going without getting better?
     double        best_posterior = current->posterior; // used to measure steps since we've improved
-	
-    // we'll start at 1 since we did 1 callback on current
-    for(unsigned long i=1; (i<steps || steps==0) && ! CTRL_C; i++){
+	auto          start_time = clock::now();
+		
+    // we'll start at 1 since we did 1 callback on current to begin
+    for(unsigned long i=1; (i<steps || steps==0) && !CTRL_C; i++){
         
+		// check the elapsed time 
+		if(time > 0) {
+			double elapsed_time = std::chrono::duration_cast<std::chrono::seconds>(clock::now() - start_time).count();
+			if(elapsed_time > time) break;
+		}
+		
 #ifdef DEBUG_MCMC
-        std::cerr << "# Current\t" << current->posterior TAB "0" TAB current->string() ENDL;
+        std::cerr << "\n# Current\t" << current->posterior TAB "\t" TAB current->string() ENDL;
 #endif
         
-//        HYP* proposal = current->propose();
+		// generate the proposal -- defaulty "restarting" if we're currently at -inf
 		HYP* proposal;
 		if(current->posterior > -infinity) 
 			proposal = current->propose();
@@ -120,7 +128,7 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 		++FleetStatistics::mcmc_proposal_calls;
 		
 #ifdef DEBUG_MCMC
-        std::cerr << "# Proposing\t" TAB proposal->string() ENDL;
+        std::cerr << "# Proposing\t\t\t" TAB proposal->string() ENDL;
 #endif
 				
 		proposal->compute_posterior(data);
@@ -145,9 +153,8 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 			steps_since_improvement++;
 		}
 		
-		// use MH acceptance rule
-		double ratio = proposal->posterior - current->posterior - proposal->fb; // Remember: don't just check if proposal->posterior>current->posterior or all hell breaks loose
-		
+		// use MH acceptance rule, with some fanciness for NaNs
+		double ratio = proposal->posterior - current->posterior - proposal->fb; // Remember: don't just check if proposal->posterior>current->posterior or all hell breaks loose		
 		if(   (std::isnan(current->posterior)) ||
 		    ((!std::isnan(proposal->posterior)) &&
 			  (ratio > 0 || uniform(rng) < exp(ratio)))) {

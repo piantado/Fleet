@@ -16,22 +16,22 @@
 class MyGrammar : public Grammar { 
 public:
 	MyGrammar() : Grammar() {
-		add( new Rule(nt_string, op_X,            "x",            0, {},                               5.0) );		
-		add( new Rule(nt_string, op_RECURSE,      "F(%s)",        1, {nt_string},                      2.0) );		
+		add( new Rule(nt_string, op_X,            "x",            {},                               5.0) );		
+		add( new Rule(nt_string, op_RECURSE,      "F(%s)",        {nt_string},                      2.0) );		
 
-		add( new Rule(nt_string, op_A,            "'a'",          0, {},                               2.50) );
-		add( new Rule(nt_string, op_B,            "'b'",          0, {},                               2.50) );
-		add( new Rule(nt_string, op_EMPTYSTRING,  "''",           0, {},                               1.0) );
+		add( new Rule(nt_string, op_A,            "'a'",          {},                               2.50) );
+		add( new Rule(nt_string, op_B,            "'b'",          {},                               2.50) );
+		add( new Rule(nt_string, op_EMPTYSTRING,  "''",           {},                               1.0) );
 		
-		add( new Rule(nt_string, op_CONS,         "cons(%s,%s)",  2, {nt_string,nt_string},            1.0) );
-		add( new Rule(nt_string, op_CAR,          "car(%s)",      1, {nt_string},                      1.0) );
-		add( new Rule(nt_string, op_CDR,          "cdr(%s)",      1, {nt_string},                      1.0) );
+		add( new Rule(nt_string, op_CONS,         "cons(%s,%s)",  {nt_string,nt_string},            1.0) );
+		add( new Rule(nt_string, op_CAR,          "car(%s)",      {nt_string},                      1.0) );
+		add( new Rule(nt_string, op_CDR,          "cdr(%s)",      {nt_string},                      1.0) );
 		
-		add( new Rule(nt_string, op_IF,           "if(%s,%s,%s)", 3, {nt_bool, nt_string, nt_string},  1.0) );
+		add( new Rule(nt_string, op_IF,           "if(%s,%s,%s)", {nt_bool, nt_string, nt_string},  1.0) );
 		
-		add( new Rule(nt_bool,   op_FLIP,         "flip()",       0, {},                               5.0) );
-		add( new Rule(nt_bool,   op_EMPTY,        "empty(%s)",    1, {nt_string},                      1.0) );
-		add( new Rule(nt_bool,   op_STREQ,        "(%s==%s)",     2, {nt_string,nt_string},            1.0) );
+		add( new Rule(nt_bool,   op_FLIP,         "flip()",       {},                               5.0) );
+		add( new Rule(nt_bool,   op_EMPTY,        "empty(%s)",    {nt_string},                      1.0) );
+		add( new Rule(nt_bool,   op_STREQ,        "(%s==%s)",     {nt_string,nt_string},            1.0) );
 	}
 };
 
@@ -68,7 +68,7 @@ public:
 						   );
 	}
 	
-	t_abort dispatch_rule(op_t op, VirtualMachinePool<std::string,std::string>* pool, VirtualMachineState<std::string,std::string>* vms, Dispatchable<std::string,std::string>* loader ) {
+	abort_t dispatch_rule(op_t op, VirtualMachinePool<std::string,std::string>* pool, VirtualMachineState<std::string,std::string>* vms, Dispatchable<std::string,std::string>* loader ) {
 		/* Dispatch the functions that I have defined. Returns true on success. 
 		 * Note that errors might return from this 
 		 * */

@@ -6,7 +6,7 @@
 
 
 
-template<typename HYP, typename T, t_nonterminal nt, typename t_input, typename t_output>
+template<typename HYP, typename T, nonterminal_t nt, typename t_input, typename t_output>
 class LOTHypothesis : public Dispatchable<t_input,t_output>, 
 				      public MCMCable<HYP,t_input,t_output>, // remember, this defines t_data, t_datum
 					  public Searchable<HYP,t_input,t_output>
@@ -116,7 +116,7 @@ public:
 		assert(0);// for base classes to implement, but don't set = 0 since then we can't create Hypothesis classes. 
 	}
 
-	virtual void push_program(Opstack& s, short k=0) {
+	virtual void push_program(Program& s, short k=0) {
 		assert(k==0); // this is only for lexica
 		assert(value != nullptr);
 		
@@ -177,7 +177,7 @@ public:
 		return this->value->operator==(*h.value);
 	}
 	
-	virtual t_abort dispatch_rule(op_t op, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms,  Dispatchable<t_input, t_output>* loader )=0;
+	virtual abort_t dispatch_rule(Instruction i, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms,  Dispatchable<t_input, t_output>* loader )=0;
 	
 	virtual HYP* copy_and_complete() const {
 		// make a copy and fill in the missing nodes.

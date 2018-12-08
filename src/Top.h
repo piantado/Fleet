@@ -24,7 +24,7 @@ protected:
 	
 public:
 
-	TopN(size_t n=1000) : N(n) {
+	TopN(size_t n=std::numeric_limits<size_t>::max()) : N(n) {
 		pthread_mutex_init(&lock, nullptr); 
 	}
 

@@ -8,17 +8,18 @@
 // Load data from a file and puts stringprobs into obs, which is a dictionary
 // of strings to ndata total elements, and obsv, which is a vector that is sorted by probability
 template<typename tdata>
-void load_data_file(std::vector<tdata> &data, const char* datapath) {
+void load_data_file(std::vector<tdata> &data, const char* datapath, size_t maxlines = 50) {
 
 	FILE* fp = fopen(datapath, "r");
 	if(fp==NULL) { fprintf(stderr, "*** ERROR: Cannot open file! [%s]", datapath); exit(1);}
 	
 	char* line = NULL; size_t len=0; 
         
-        char buffer[10000];
-        
-        double cnt;
-	while( getline(&line, &len, fp) != -1) {
+	char buffer[10000];
+    
+	size_t nlines = 0;
+	double cnt;
+	while( getline(&line, &len, fp) != -1 && (nlines++ < maxlines || maxlines==0)) {
 		if( line[0] == '#' ) continue;  // skip comments
 		else if (sscanf(line, "%s\t%lf\n", buffer, &cnt) == 2) { // floats
 			data.push_back(tdata({std::string(""), std::string(buffer), cnt}) );
@@ -30,17 +31,16 @@ void load_data_file(std::vector<tdata> &data, const char* datapath) {
 	}
 	fclose(fp);
 
-//	double z = 0.0;
-//	for(size_t i=0;i<data.size();i++) {
-//		z += data[i].reliability;
-//	}
-//	
-//	
-//	// now re-normalize to have ndata total counts
-//	// NOTE: This renormalizes ALL of data
-//	for(size_t i=0;i<data.size();i++) {
-//		data[i].reliability *= (ndata/z);
-//	}
+	double z = 0.0;
+	for(size_t i=0;i<data.size();i++) {
+		z += data[i].reliability;
+	}
+	
+	
+	// now re-normalize to have 1 total count
+	for(size_t i=0;i<data.size();i++) {
+		data[i].reliability /= z;
+	}
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

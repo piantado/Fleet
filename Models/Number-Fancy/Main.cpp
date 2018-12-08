@@ -3,7 +3,8 @@
 
 // We require a macro to define our ops as a string BEFORE we import Fleet
 // these get incorporated into the op_t type
-#define MY_OPS 	op_OBJa,op_OBJb,op_OBJc,op_OBJd,op_OBJe,op_OBJf,op_OBJg,op_OBJh,op_OBJi,op_OBJj,\
+enum CustomOp {
+		op_OBJa,op_OBJb,op_OBJc,op_OBJd,op_OBJe,op_OBJf,op_OBJg,op_OBJh,op_OBJi,op_OBJj,\
 		op_U,op_Word1,op_Word2,op_Word3,op_Word4,op_Word5,op_Word6,op_Word7,op_Word8,op_Word9,op_Word10,\
 		op_Next,op_Prev,op_Xset,op_Xtype,op_MakeX,\
 		op_Union,op_Intersection,op_Difference,op_Select,op_SelectObj,op_Filter,\
@@ -12,18 +13,14 @@
 		op_ApproxEq_S_S,op_ApproxEq_S_M,op_ApproxEq_S_W,\
 		op_ApproxLt_S_S,op_ApproxLt_S_M,op_ApproxLt_S_W,\
 		op_m1,op_m2,op_m3,op_m4,op_m5,op_m6,op_m7,op_m8,op_m9,op_m10
-//		op_p1,op_p2,op_p3,op_p4,op_p5,op_p6,op_p7,op_p8,op_p9,op_p10,op_ANScmpSet,op_ANScmpMagnitude
-
+};
+		
 
 #include "Primitives.h"
 
-// Defie our types. Fleet should use these to create both t_nonterminal and 
-// VMstack -- a tuple with these types
-// NOTE: We require that these types be unique or else all hell breaks loose
-// and correspondingly NT_NAMES are used to define an enum, t_nonterminal
-// note we MUST define a short definition and a bool
-#define NT_TYPES bool,    Model::set,    Model::objtype, Model::word,  Model::X, Model::wmset, Model::magnitude,  double,      short
-#define NT_NAMES nt_bool, nt_set,         nt_type,       nt_word,       nt_X,    nt_wmset,     nt_magnitude,      nt_double,   nt_unused
+// Defie our types. 
+#define NT_TYPES bool,    Model::set,    Model::objtype, Model::word,  Model::X, Model::wmset, Model::magnitude,  double
+#define NT_NAMES nt_bool, nt_set,         nt_type,       nt_word,       nt_X,    nt_wmset,     nt_magnitude,      nt_double
 
 #include <vector>
 std::vector<char> OBJECTS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
@@ -32,7 +29,7 @@ std::vector<char> OBJECTS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
 #include <random>
 std::discrete_distribution<> number_distribution({0, 7187, 1484, 593, 334, 297, 165, 151, 86, 105, 112}); // 0-indexed
 	
-std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200};
+std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600, 700, 800, 900, 1000};
 
 const size_t MAX_NODES = 30;
 double recursion_penalty = -20.0;
@@ -43,82 +40,81 @@ double recursion_penalty = -20.0;
 class MyGrammar : public Grammar { 
 public:
 	MyGrammar() : Grammar() {
-		add( new Rule(nt_type, op_OBJa,          "a",              0, {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJb,          "b",              0, {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJc,          "c",              0, {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJd,          "d",              0, {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJe,          "e",              0, {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJf,          "f",              0, {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJg,          "g",              0, {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJh,          "h",              0, {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJi,          "i",              0, {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJj,          "j",              0, {},                              0.1) );		
+		add( new Rule(nt_type, op_OBJa,          "a",              {},                              0.1) );		
+		add( new Rule(nt_type, op_OBJb,          "b",              {},                              0.1) );		
+		add( new Rule(nt_type, op_OBJc,          "c",              {},                              0.1) );		
+		add( new Rule(nt_type, op_OBJd,          "d",              {},                              0.1) );		
+		add( new Rule(nt_type, op_OBJe,          "e",              {},                              0.1) );		
+		add( new Rule(nt_type, op_OBJf,          "f",              {},                              0.1) );		
+		add( new Rule(nt_type, op_OBJg,          "g",              {},                              0.1) );		
+		add( new Rule(nt_type, op_OBJh,          "h",              {},                              0.1) );		
+		add( new Rule(nt_type, op_OBJi,          "i",              {},                              0.1) );		
+		add( new Rule(nt_type, op_OBJj,          "j",              {},                              0.1) );		
 		
-		add( new Rule(nt_word, op_U,              "U",             0, {},                               1.0) );		
-		add( new Rule(nt_word, op_Word1,          "one",           0, {},                           			   5.0/10.0) );				
-		add( new Rule(nt_word, op_Word2,          "two",           0, {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word3,          "three",         0, {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word4,          "four",          0, {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word5,          "five",          0, {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word6,          "six",           0, {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word7,          "seven",         0, {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word8,          "eight",         0, {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word9,          "nine",          0, {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word10,         "ten",           0, {},                           			   5.0/10.0) );	
+		add( new Rule(nt_word, op_U,              "U",             {},                               1.0) );		
+		add( new Rule(nt_word, op_Word1,          "one",           {},                           			   5.0/10.0) );				
+		add( new Rule(nt_word, op_Word2,          "two",           {},                           			   5.0/10.0) );		
+		add( new Rule(nt_word, op_Word3,          "three",         {},                           			   5.0/10.0) );		
+		add( new Rule(nt_word, op_Word4,          "four",          {},                           			   5.0/10.0) );		
+		add( new Rule(nt_word, op_Word5,          "five",          {},                           			   5.0/10.0) );		
+		add( new Rule(nt_word, op_Word6,          "six",           {},                           			   5.0/10.0) );		
+		add( new Rule(nt_word, op_Word7,          "seven",         {},                           			   5.0/10.0) );		
+		add( new Rule(nt_word, op_Word8,          "eight",         {},                           			   5.0/10.0) );		
+		add( new Rule(nt_word, op_Word9,          "nine",          {},                           			   5.0/10.0) );		
+		add( new Rule(nt_word, op_Word10,         "ten",           {},                           			   5.0/10.0) );	
 		
-		add( new Rule(nt_word, op_Next,           "next(%s)",      1, {nt_word},                      			   1.0) );	
-		add( new Rule(nt_word, op_Prev,           "prev(%s)",      1, {nt_word},                      			   1.0) );	
+		add( new Rule(nt_word, op_Next,           "next(%s)",      {nt_word},                      			   1.0) );	
+		add( new Rule(nt_word, op_Prev,           "prev(%s)",      {nt_word},                      			   1.0) );	
 		
 		// extracting from x
-		add( new Rule(nt_set,    op_Xset,        "set(%s)",                1, {nt_X},                          5.0) );		
-		add( new Rule(nt_type,   op_Xtype,       "type(%s)",               1, {nt_X},                          5.0) );		
-		add( new Rule(nt_X,      op_X,           "X",                      0, {},                              5.0) );		
+		add( new Rule(nt_set,    op_Xset,        "set(%s)",                {nt_X},                          10.0) );		
+		add( new Rule(nt_type,   op_Xtype,       "type(%s)",               {nt_X},                          5.0) );		
+		add( new Rule(nt_X,      op_X,           "X",                      {},                              5.0) );		
 		
-		add( new Rule(nt_X,      op_MakeX,        "<%s,%s>",              2, {nt_set, nt_type},              1.0) );		
-		add( new Rule(nt_word,   op_RECURSE,      "recurse(%s)",          1, {nt_X},                         1.0) );		
+		add( new Rule(nt_X,      op_MakeX,        "<%s,%s>",              {nt_set, nt_type},              1.0) );		
+		add( new Rule(nt_word,   op_RECURSE,      "recurse(%s)",          {nt_X},                         1.0) );		
 
-		add( new Rule(nt_set,    op_Union,        "union(%s,%s)",         2, {nt_set,nt_set},            1.0/3.0) );
-		add( new Rule(nt_set,    op_Intersection, "intersection(%s,%s)",  2, {nt_set,nt_set},            1.0/3.0) );
-		add( new Rule(nt_set,    op_Difference,   "difference(%s,%s)",    2, {nt_set,nt_set},            1.0/3.0) );
-		add( new Rule(nt_set,    op_Select,       "select(%s)",           1, {nt_set},                   1.0) );
-		add( new Rule(nt_set,    op_SelectObj,    "select(%s,%s)",        2, {nt_set,nt_type},           1.0) );
-		add( new Rule(nt_set,    op_Filter,       "filter(%s,%s)",        2, {nt_type,nt_set},           1.0) );
+		add( new Rule(nt_set,    op_Union,        "union(%s,%s)",         {nt_set,nt_set},            1.0/3.0) );
+		add( new Rule(nt_set,    op_Intersection, "intersection(%s,%s)",  {nt_set,nt_set},            1.0/3.0) );
+		add( new Rule(nt_set,    op_Difference,   "difference(%s,%s)",    {nt_set,nt_set},            1.0/3.0) );
+		add( new Rule(nt_set,    op_Select,       "select(%s)",           {nt_set},                   1.0/2.0) );
+		add( new Rule(nt_set,    op_SelectObj,    "select(%s,%s)",        {nt_set,nt_type},           1.0/2.0) );
+		add( new Rule(nt_set,    op_Filter,       "filter(%s,%s)",        {nt_type,nt_set},           1.0) );
 		
-		add( new Rule(nt_set,    op_IF,           "if(%s,%s,%s)", 3, {nt_bool, nt_set, nt_set},       1.0) );
-		add( new Rule(nt_word,   op_IF,           "if(%s,%s,%s)", 3, {nt_bool, nt_word, nt_word},     1.0) );
+		add( new Rule(nt_set,    op_IF,           "if(%s,%s,%s)", {nt_bool, nt_set, nt_set},       1.0) );
+		add( new Rule(nt_word,   op_IF,           "if(%s,%s,%s)", {nt_bool, nt_word, nt_word},     1.0) );
 		
 		
-		
-		add( new Rule(nt_bool,   op_FLIPP,       "flip(%s)",     1, {nt_double},               5.0) );
-		add( new Rule(nt_bool,   op_And,         "and(%s,%s)",   2, {nt_bool, nt_bool},               1.0) );
-		add( new Rule(nt_bool,   op_Or,          "or(%s,%s)",    2, {nt_bool, nt_bool},               1.0) );
-		add( new Rule(nt_bool,   op_Not,         "not(%s,%s)",   1, {nt_bool},                        1.0) );
+		add( new Rule(nt_bool,   op_FLIPP,       "flip(%s)",     {nt_double},               5.0) );
+		add( new Rule(nt_bool,   op_And,         "and(%s,%s)",   {nt_bool, nt_bool},               1.0) );
+		add( new Rule(nt_bool,   op_Or,          "or(%s,%s)",    {nt_bool, nt_bool},               1.0) );
+		add( new Rule(nt_bool,   op_Not,         "not(%s,%s)",   {nt_bool},                        1.0) );
 		
 		// Working memory model		
-		add( new Rule(nt_bool,   op_Match1to1,   "match1to1(%s,%s)", 2, {nt_wmset, nt_set},            5.0) );
-		add( new Rule(nt_wmset,  op_WM0,   "{}", 0, {},                1.0) );
-		add( new Rule(nt_wmset,  op_WM1,   "{o}", 0, {},                1.0) );
-		add( new Rule(nt_wmset,  op_WM2,   "{o,o}", 0, {},              1.0) );
-		add( new Rule(nt_wmset,  op_WM3,   "{o,o,o}", 0, {},            1.0) );		
+		add( new Rule(nt_bool,   op_Match1to1,   "match1to1(%s,%s)", {nt_wmset, nt_set},            5.0) );
+		add( new Rule(nt_wmset,  op_WM0,   "{}",                     {},                1.0) );
+		add( new Rule(nt_wmset,  op_WM1,   "{o}",                    {},                1.0) );
+		add( new Rule(nt_wmset,  op_WM2,   "{o,o}",                  {},              1.0) );
+		add( new Rule(nt_wmset,  op_WM3,   "{o,o,o}",                {},            1.0) );		
 
 		// approximate model
-		add( new Rule(nt_double,   op_ApproxEq_S_S,  "ANS=(%s,%s)", 2,     {nt_set,   nt_set},            5.0/3.0) );
-		add( new Rule(nt_double,   op_ApproxEq_S_W,  "ANS=(%s,%s)", 2,     {nt_set,   nt_wmset},          5.0/3.0) );
-		add( new Rule(nt_double,   op_ApproxEq_S_M,  "ANS=(%s,%s)", 2,     {nt_set,   nt_magnitude},      5.0/3.0) );
-		add( new Rule(nt_double,   op_ApproxLt_S_S,  "ANS<(%s,%s)", 2,     {nt_set,   nt_set},            5.0/3.0) );
-		add( new Rule(nt_double,   op_ApproxLt_S_W,  "ANS<(%s,%s)", 2,     {nt_set,   nt_wmset},          5.0/3.0) );
-		add( new Rule(nt_double,   op_ApproxLt_S_M,  "ANS<(%s,%s)", 2,     {nt_set,   nt_magnitude},      5.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxEq_S_S,  "ANS=(%s,%s)",  {nt_set,   nt_set},            5.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxEq_S_W,  "ANS=(%s,%s)",  {nt_set,   nt_wmset},          5.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxEq_S_M,  "ANS=(%s,%s)",  {nt_set,   nt_magnitude},      5.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxLt_S_S,  "ANS<(%s,%s)",  {nt_set,   nt_set},            5.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxLt_S_W,  "ANS<(%s,%s)",  {nt_set,   nt_wmset},          5.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxLt_S_M,  "ANS<(%s,%s)",  {nt_set,   nt_magnitude},      5.0/3.0) );
 		
-		add( new Rule(nt_magnitude,  op_m1,   "1", 0, {},            1) ); // magnitudes that only get used in ANS comparisons
-		add( new Rule(nt_magnitude,  op_m2,   "2", 0, {},            1) );
-		add( new Rule(nt_magnitude,  op_m3,   "3", 0, {},            1) );
-		add( new Rule(nt_magnitude,  op_m4,   "4", 0, {},            1) );
-		add( new Rule(nt_magnitude,  op_m5,   "5", 0, {},            1) );
-		add( new Rule(nt_magnitude,  op_m6,   "6", 0, {},            1) );
-		add( new Rule(nt_magnitude,  op_m7,   "7", 0, {},            1) );
-		add( new Rule(nt_magnitude,  op_m8,   "8", 0, {},            1) );
-		add( new Rule(nt_magnitude,  op_m9,   "9", 0, {},            1) );
-		add( new Rule(nt_magnitude,  op_m10,  "10", 0, {},           1) );
+		add( new Rule(nt_magnitude,  op_m1,   "1", {},            1) ); // magnitudes that only get used in ANS comparisons
+		add( new Rule(nt_magnitude,  op_m2,   "2", {},            1) );
+		add( new Rule(nt_magnitude,  op_m3,   "3", {},            1) );
+		add( new Rule(nt_magnitude,  op_m4,   "4", {},            1) );
+		add( new Rule(nt_magnitude,  op_m5,   "5", {},            1) );
+		add( new Rule(nt_magnitude,  op_m6,   "6", {},            1) );
+		add( new Rule(nt_magnitude,  op_m7,   "7", {},            1) );
+		add( new Rule(nt_magnitude,  op_m8,   "8", {},            1) );
+		add( new Rule(nt_magnitude,  op_m9,   "9", {},            1) );
+		add( new Rule(nt_magnitude,  op_m10,  "10", {},           1) );
 		
 		
 	}
@@ -136,7 +132,9 @@ public:
 	
 	size_t recursion_count() {
 		// how many times do I use recursion?
-		std::function<size_t(const Node*)> f = [](const Node* n) { return 1*(n->rule->op == op_RECURSE); };
+		std::function<size_t(const Node*)> f = [](const Node* n) { 
+			return 1*(n->rule->instr == Instruction(op_RECURSE)); 
+		};
 		return value->sum<size_t>(f);
 	}
 	
@@ -173,11 +171,12 @@ public:
 //		}
 	}	
 	
-	t_abort dispatch_rule(op_t op,  VirtualMachinePool<Model::X, Model::word>* pool, VirtualMachineState<Model::X, Model::word>* vms, Dispatchable<Model::X, Model::word>* loader) {
+	t_abort dispatch_rule(Instruction i,  VirtualMachinePool<Model::X, Model::word>* pool, VirtualMachineState<Model::X, Model::word>* vms, Dispatchable<Model::X, Model::word>* loader) {
 		/* Dispatch the functions that I have defined. Returns true on success. 
 		 * Note that errors might return from this 
 		 * */
-		switch(op) {
+		assert(i.is_custom);
+		switch(i.custom) {
 			CASE_FUNC0(op_OBJa,        Model::objtype, [](){ return 'a'; })
 			CASE_FUNC0(op_OBJb,        Model::objtype, [](){ return 'b'; })
 			CASE_FUNC0(op_OBJc,        Model::objtype, [](){ return 'c'; })
@@ -252,13 +251,13 @@ public:
 
 const double alpha = 0.9;
 
-MyHypothesis::t_data data;
+MyHypothesis::t_data mydata;
 TopN<MyHypothesis> top;
 TopN<MyHypothesis> all(std::numeric_limits<size_t>::max());
 
 
 void print(MyHypothesis& h) {
-    COUT data.size() TAB top.count(h) TAB h.posterior TAB h.prior TAB h.likelihood << "\t";
+    COUT mydata.size() TAB top.count(h) TAB h.posterior TAB h.prior TAB h.likelihood << "\t";
 	
     for (int j = 1; j <= 9; j++) {
         Model::set theset = "" + std::string(j,'Z');
@@ -288,10 +287,10 @@ void print(MyHypothesis& h) {
 void callback(MyHypothesis* h) {
 	top << *h; 
 	
-	global_sample_count++;
+	FleetStatistics::global_sample_count++;
 	
 	// print out with thinning
-	if(thin > 0 && global_sample_count % thin == 0) 
+	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) 
 		print(*h);
 }
 
@@ -336,7 +335,7 @@ int main(int argc, char** argv){
 	for(auto ndata : data_amounts) {
 		if(CTRL_C) break;
 		
-		data.clear();
+		mydata.clear();
 		CERR "# Running on data " << ndata ENDL;
 		
 		// make some data here
@@ -371,12 +370,12 @@ int main(int argc, char** argv){
 			Model::X x(s, t);
 			
 			// make the data point
-			data.push_back(MyHypothesis::t_datum({x, w, alpha}));
+			mydata.push_back(MyHypothesis::t_datum({x, w, alpha}));
 		}    		
 		
 		// now run MCMC
 		auto h0 = new MyHypothesis(&grammar);	
-		parallel_MCMC(nthreads, h0, &data, callback, mcmc_steps, mcmc_restart);
+		parallel_MCMC(nthreads, h0, &mydata, callback, mcmc_steps, mcmc_restart);
 
 		// and save what we found
 		all << top;
@@ -386,13 +385,13 @@ int main(int argc, char** argv){
 
 	// print out at the end
 	for(auto h : all.values()) {
-		h.compute_posterior(data); // run on the largest data amount
+		h.compute_posterior(mydata); // run on the largest data amount
 		print(h);
 	}
 	
-	COUT "# Global sample count:" TAB global_sample_count ENDL;
+	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
-	COUT "# Samples per second:" TAB global_sample_count/elapsed_seconds() ENDL;
+	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
 
 	all.clear(); // clear up 
 	

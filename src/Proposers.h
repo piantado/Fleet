@@ -23,7 +23,7 @@ std::pair<Node*,double> regeneration_proposal(Grammar* grammar, Node* from) {
 	int w = myrandom<int>( N); // which do I replace?
 
 	Node* n = ret->get_nth(w, resample_counter); // get the nth in ret		
-	Node* g = grammar->generate<Node>(n->rule->nonterminal_type); // make something new of the same type
+	Node* g = grammar->generate<Node>(n->rule->nt); // make something new of the same type
 	n->takeover(g); // and take its resources, zeroing it before deleting
 	delete g;
 	
@@ -39,7 +39,7 @@ std::pair<Node*, double> insert_proposal(Grammar* grammar, Node* from) {
 
 	// functions to check if we can insert or delete on a given node
 	// NOTE: the choice of which node is done uniformly within these functions
-	std::function<int(const Node* n)> iable = [grammar](const Node* n){ return (int)(n->can_resample && grammar->replicating_Z(n->rule->nonterminal_type) > 0.0 ? 1 : 0); }; 
+	std::function<int(const Node* n)> iable = [grammar](const Node* n){ return (int)(n->can_resample && grammar->replicating_Z(n->rule->nt) > 0 ? 1 : 0); }; 
 	std::function<int(const Node* n)> dable = [grammar](const Node* n){ return (int)(n->can_resample && n->rule->replicating_children() > 0 ? 1 : 0); }; 
 
 	auto  ret = from->copy();
@@ -53,7 +53,7 @@ std::pair<Node*, double> insert_proposal(Grammar* grammar, Node* from) {
 	Node* n = ret->get_nth(k, iable); // get a random kid
 	
 	double fb = 0.0;
-	t_nonterminal t = n->rule->nonterminal_type;
+	nonterminal_t t = n->rule->nt;
 	Rule* r = grammar->sample_replicating_rule(t); 
 	size_t c = r->random_replicating_index(); // choose one
 	
@@ -96,7 +96,7 @@ std::pair<Node*, double> delete_proposal(Grammar* grammar, Node* from) {
 	
 	// ASSUME: value is a Node*
 	
-	std::function<int(const Node* n)> iable = [grammar](const Node* n){ return (int)(n->can_resample && grammar->replicating_Z(n->rule->nonterminal_type) > 0 ? 1 : 0); }; 
+	std::function<int(const Node* n)> iable = [grammar](const Node* n){ return (int)(n->can_resample && grammar->replicating_Z(n->rule->nt) > 0 ? 1 : 0); }; 
 	std::function<int(const Node* n)> dable = [grammar](const Node* n){ return (int)(n->can_resample && n->rule->replicating_children() > 0 ? 1 : 0); }; 
 	
 	auto  ret = from->copy();
@@ -110,7 +110,7 @@ std::pair<Node*, double> delete_proposal(Grammar* grammar, Node* from) {
 	Node* n = ret->get_nth(k, dable); // pick a node
 	
 	double fb = 0.0;
-	t_nonterminal t = n->rule->nonterminal_type;
+	nonterminal_t t = n->rule->nt;
 	assert(grammar->replicating_Z(t) > 0.0);
 	size_t c = n->rule->random_replicating_index(); // choose a random replicating child (who therefore can be promoted to me)
 	

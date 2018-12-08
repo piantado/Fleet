@@ -89,7 +89,7 @@ public:
 	/********************************************************
 	 * Required for VMS to dispatch to the right sub
 	 ********************************************************/
-	virtual void push_program(Opstack& s, short j) {
+	virtual void push_program(Program& s, short j) {
 		assert(factors.size() > 0);
 		assert(factors.size() < SHRT_MAX);
 		
@@ -102,7 +102,7 @@ public:
 	}
 	
 	 // This should never be called because we should be dispatching throuhg a factor
-	 virtual t_abort dispatch_rule(op_t op, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms,  Dispatchable<t_input, t_output>* loader ) {
+	 virtual abort_t dispatch_rule(Instruction i, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms,  Dispatchable<t_input, t_output>* loader ) {
 		 assert(0 && "Should not be calling dispatch_rule on a lexicon, only on its factors");
 	 }
 	 

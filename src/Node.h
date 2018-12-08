@@ -3,7 +3,6 @@
 
 #include<functional>
 
-#include "Program.h"
 #include "Grammar.h"
 
 // Todo: replace grammar references wiht pointers
@@ -111,10 +110,17 @@ public:
 		// NOTE: Because map calls f first on this, it allows us to modify the tree if we want to. 
 		f(this);
 		for(size_t i=0;i<rule->N;i++) {
-			if(child[i] != nullptr) 
-				child[i]->map(f);
+			if(child[i] != nullptr) child[i]->map(f);
 		}
 	}
+		
+	void map( std::function<void(Node*)>& f ) {
+		f(this);
+		for(size_t i=0;i<rule->N;i++) {
+			if(child[i] != nullptr) child[i]->map(f);
+		}
+	}
+		
 		
 	virtual size_t count() const {
 		std::function<size_t(const Node* n)> one = [](const Node* n){return (size_t)1;};
@@ -155,7 +161,7 @@ public:
 		// this makes a copy of the current node where ALL nodes satifying f are resampled from the grammar
 		// NOTE: this does NOT allow f to apply to nullptr children (so cannot be used to fill in)
 		if(f(this)){
-			return g.generate<Node>(rule->nonterminal_type);
+			return g.generate<Node>(rule->nt);
 		}
 		
 		// otherwise normal copy
@@ -212,51 +218,54 @@ public:
 	virtual size_t program_size() const {
 		// compute the size of the program -- just number of nodes plus special stuff for IF
 		size_t n = 1; // I am one node
-		if(rule->op == op_IF) { n += 3; } // I have to add this many more instructions for an if
+		if( (!rule->instr.custom) && rule->instr.builtin == op_IF) { n += 1; } // I have to add this many more instructions for an if
 		for(size_t i=0;i<rule->N;i++) {
 			n += (child[i] == nullptr ? 0 : child[i]->program_size());
 		}
 		return n;
 	}
 	
-	virtual void linearize(Opstack &ops) const { 
+	virtual void linearize(Program &ops) const { 
 		// convert tree to a linear sequence of operations 
 		// to do this, we first linearize the kids, leaving their values as the top on the stack
 		// then we compute our value, remove our kids' values to clean up the stack, and push on our return
 		// the only fanciness is for if: here we will use the following layout 
-		// <TOP OF STACK> <bool> op_IF xsize [X-branch] JUMP ysize [Y-branch]
+		// <TOP OF STACK> <bool> op_IF(xsize) X-branch JUMP(ysize) Y-branch
 		
 		
 		// and just a little checking here
 		for(size_t i=0;i<rule->N;i++) {
 			assert(child[i] != nullptr && "Cannot linearize a Node with null children");
-			assert(child[i]->rule->nonterminal_type == rule->child_types[i] && "Somehow the child has incorrect types"); // make sure my kids types are what they should be
+			assert(child[i]->rule->nt == rule->child_types[i] && "Somehow the child has incorrect types"); // make sure my kids types are what they should be
 		}
 		
 		// Main code
-		if(rule->op == op_IF) {
+		if( (!rule->instr.custom) && rule->instr.builtin == op_IF) {
 			assert(rule->N == 3 && "op_IF require three arguments"); // must have 3 parts
 			
-			int xsize = child[1]->program_size()+2; // must be +2 in order to skip over the [JMP ysize] part too
+			int xsize = child[1]->program_size()+1; // must be +1 in order to skip over the JMP too
 			int ysize = child[2]->program_size();
-			
-			// TODO: should assert that these sizes fit in whatever an op_t is
+			assert(xsize < (1<<12) && "If statement jump size too large to be encoded in Instruction arg"); // these sizes come from the arg bitfield 
+			assert(ysize < (1<<12) && "If statement jump size too large to be encoded in Instruction arg");
 			
 			child[2]->linearize(ops);
-			ops.push( op_t(ysize) );
-			ops.push( op_JMP );
+			
+			// make the right instruction 
+			// TODO: Assert that ysize fits 
+			ops.push(Instruction(op_JMP,ysize));
+			
 			child[1]->linearize(ops);
 			
-			ops.push((op_t) xsize);
-			
-			ops.push(op_IF); // encode jump
+			// encode jump
+			ops.push(Instruction(op_IF, xsize)); 
 			
 			// evaluate the bool first so its on the stack when we get to if
 			child[0]->linearize(ops);
 			
 		}
 		else {
-			ops.push(rule->op);
+			Instruction i = rule->instr; // use this as a template
+			ops.push(i);
 			for(size_t i=0;i<rule->N;i++) {
 				child[i]->linearize(ops);
 			}

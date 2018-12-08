@@ -2,6 +2,7 @@
 #define VIRTUAL_MACHINE_STATE
 
 #include <type_traits>
+
 /* 
  * 
  * We should rewrite with an "index" stack, and an index type (e.g. short). 
@@ -14,7 +15,6 @@
  * NOTE: CURRNTLY ERR IS NOT HANDLED RIGHT -- SHOULD HAVE A STACK I THINK?
  */
 
-unsigned long global_vm_ops = 0;
 
 // Remove n from the stack
 void popn(Program& s, size_t n) {
@@ -25,7 +25,7 @@ void popn(Program& s, size_t n) {
 // Check if a variadic template Ts contains any type X
 template<typename X, typename... Ts>
 constexpr bool contains_type() {
-	return std::disjunction_v<std::is_same<X, Ts>...>;
+	return std::disjunction<std::is_same<X, Ts>...>::value;
 }
 
 
@@ -56,7 +56,7 @@ public:
 	// must have a memoized return value, that permits factorized by requiring an index argument
 	std::map<std::pair<short, t_x>, t_return> mem; 
 
-	t_abort aborted; // have we aborted?
+	abort_t aborted; // have we aborted?
 	
 	VirtualMachineState(t_x x, t_return e, size_t _recursion_depth=0) :
 		err(e), lp(0.0), recursion_depth(_recursion_depth), aborted(NO_ABORT) {
@@ -121,13 +121,12 @@ public:
 
 		while(!opstack.empty()){
 			if(aborted) return err;
+			FleetStatistics::vm_ops++;
 			
 			Instruction i = opstack.top(); opstack.pop();
 			
-			++global_vm_ops;
-			
 			if(i.is_custom) {
-				t_abort b = dispatch->dispatch_rule(i, pool, this, loader);
+				abort_t b = dispatch->dispatch_rule(i, pool, this, loader);
 				if(b != NO_ABORT) {
 					aborted = b;
 					return err;

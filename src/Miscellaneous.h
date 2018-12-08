@@ -126,4 +126,8 @@ T myrandom(T max) {
 	return r(rng);
 }
 
+bool flip() {
+	return uniform(rng) < 0.5;
+}
+
 #endif
