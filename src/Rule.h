@@ -9,25 +9,29 @@ class Rule {
 	
 public:
 	const t_nonterminal  nonterminal_type;
-	const op_t           op;
+	const Instruction    instr; // a template for my instruction, which here mainly stores my optype
 	const std::string    format; // how am I printed?
 	const size_t         N; // how many children?
 	t_nonterminal*       child_types; // An array of what I expand to; note that this should be const but isn't to allow list initialization (https://stackoverflow.com/questions/5549524/how-do-i-initialize-a-member-array-with-an-initializer-list)
 	const double         p;
-		
-	Rule(const t_nonterminal rt, const op_t o, const std::string fmt, const size_t n, t_nonterminal* c, const double _p) :
-		nonterminal_type(rt), op(o), format(fmt), N(n), child_types(c), p(_p) {
+
+	// Rule's constructors convert CustomOp and BuiltinOp to the appropriate instruction types
+	Rule(const t_nonterminal rt, const CustomOp o, const std::string fmt, std::initializer_list<t_nonterminal> c, const double _p, int arg=0) :
+		nonterminal_type(rt), instr(o,arg), format(fmt), N(c.size()), p(_p) {
+		// mainly we just convert c to an array
+		child_types = new t_nonterminal[c.size()];
+		std::copy(c.begin(), c.end(), child_types);
 	}
-	
-	Rule(const t_nonterminal rt, const op_t o, const std::string fmt, const size_t n, std::initializer_list<t_nonterminal> c, const double _p) :
-		nonterminal_type(rt), op(o), format(fmt), N(n), p(_p) {
 		
-		assert(c.size() == n&& "Incorrect number of arguments provided"); // if not, we are passing in the wrong number of arguments
+	Rule(const t_nonterminal rt, const BuiltinOp o, const std::string fmt, std::initializer_list<t_nonterminal> c, const double _p, int arg=0) :
+		nonterminal_type(rt), instr(o,arg), format(fmt), N(c.size()), p(_p) {
+		
 		// mainly we just convert c to an array
 		child_types = new t_nonterminal[c.size()];
 		std::copy(c.begin(), c.end(), child_types);
 	}
 	
+
 	~Rule() {
 		delete[] child_types;
 	}
