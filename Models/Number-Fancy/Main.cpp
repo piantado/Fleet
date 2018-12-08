@@ -171,7 +171,7 @@ public:
 //		}
 	}	
 	
-	t_abort dispatch_rule(Instruction i,  VirtualMachinePool<Model::X, Model::word>* pool, VirtualMachineState<Model::X, Model::word>* vms, Dispatchable<Model::X, Model::word>* loader) {
+	abort_t dispatch_rule(Instruction i,  VirtualMachinePool<Model::X, Model::word>* pool, VirtualMachineState<Model::X, Model::word>* vms, Dispatchable<Model::X, Model::word>* loader) {
 		/* Dispatch the functions that I have defined. Returns true on success. 
 		 * Note that errors might return from this 
 		 * */

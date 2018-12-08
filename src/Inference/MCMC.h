@@ -120,10 +120,13 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
         
 		// generate the proposal -- defaulty "restarting" if we're currently at -inf
 		HYP* proposal;
-		if(current->posterior > -infinity) 
-			proposal = current->propose();
-		else
+		double fb = 0.0;
+		if(current->posterior > -infinity) {
+			std::tie(proposal,fb) = current->propose();
+		}
+		else {
 			proposal = current->restart();
+		}
 			
 		++FleetStatistics::mcmc_proposal_calls;
 		
@@ -134,7 +137,7 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 		proposal->compute_posterior(data);
 
 #ifdef DEBUG_MCMC
-        std::cerr << "# Proposed \t" << proposal->posterior TAB proposal->fb TAB proposal->string() ENDL;
+        std::cerr << "# Proposed \t" << proposal->posterior TAB fb TAB proposal->string() ENDL;
 #endif
 		
 		// keep track of the max if we are supposed to
@@ -154,7 +157,7 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 		}
 		
 		// use MH acceptance rule, with some fanciness for NaNs
-		double ratio = proposal->posterior - current->posterior - proposal->fb; // Remember: don't just check if proposal->posterior>current->posterior or all hell breaks loose		
+		double ratio = proposal->posterior - current->posterior - fb; // Remember: don't just check if proposal->posterior>current->posterior or all hell breaks loose		
 		if(   (std::isnan(current->posterior)) ||
 		    ((!std::isnan(proposal->posterior)) &&
 			  (ratio > 0 || uniform(rng) < exp(ratio)))) {

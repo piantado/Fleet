@@ -121,7 +121,6 @@ public:
 		l->prior      = this->prior;
 		l->likelihood = this->likelihood;
 		l->posterior  = this->posterior;
-		l->fb         = this->fb;
 		
 		return l;
 	}
@@ -145,32 +144,20 @@ public:
 		return this->prior;
 	}
 	
-//	virtual HYP* propose() const {
-//		HYP* x = this->copy();
-//		
-//		std::uniform_int_distribution<size_t> r(0,factors.size()-1);
-//		size_t k = r(rng);
-//		auto v = factors[k]->propose();
-//		delete x->factors[k];
-//		x->factors[k] = v;
-//		
-//		x->fb = v->fb; // copy the forward/backward
-//		
-//		return x;		
-//	}
 	
-	virtual HYP* propose() const {
+	virtual std::pair<HYP*,double> propose() const {
 		HYP* x = this->copy();
 		
-		x->fb = 0.0;
+		double fb = 0.0;
 		for(size_t k=0;k<factors.size();k++) {
 			if(uniform(rng) < 0.5) {
-				x->replace(k, factors[k]->propose());
-				x->fb += factors[k]->fb;
+				auto [h, _fb] = factors[k]->propose();
+				x->replace(k, h);
+				fb += _fb;
 			}
 		}
 
-		return x;		
+		return std::make_pair(x, fb);		
 	}
 //	
 	

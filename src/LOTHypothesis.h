@@ -57,36 +57,35 @@ public:
 		x->prior      = this->prior;
 		x->likelihood = this->likelihood;
 		x->posterior  = this->posterior;
-		x->fb         = this->fb;
 		return x; 
 	}
 	
 	// Stuff to create hypotheses:
-	virtual HYP* propose() const {
+	virtual std::pair<HYP*,double> propose() const {
 		// tODO: Check how I do fb here?
 		
 		HYP* ret = new HYP(grammar, nullptr);
 		
 		if(value == nullptr) {
 			ret->value = grammar->generate<Node>(nt);
-			ret->fb = 0.0; // TODO: hmm not sure what to do here
-			return ret;
+			return std::make_pair(ret, 0.0);
 		}
 		
+		double fb; 
 		// choose a type:
 		if(uniform(rng) < 0.1) { // p of regeneration
-			std::tie(ret->value, ret->fb) = regeneration_proposal(grammar, value);
+			std::tie(ret->value, fb) = regeneration_proposal(grammar, value);
 		}
 		else {
 			if(uniform(rng) < 0.5) {
-				std::tie(ret->value, ret->fb) = insert_proposal(grammar, value);
+				std::tie(ret->value, fb) = insert_proposal(grammar, value);
 			}
 			else {
-				std::tie(ret->value, ret->fb) = delete_proposal(grammar, value);
+				std::tie(ret->value, fb) = delete_proposal(grammar, value);
 			}
 		}
 		
-		return ret;
+		return std::make_pair(ret, fb);
 	}
 	
 	virtual HYP* restart() const {
