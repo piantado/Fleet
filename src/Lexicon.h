@@ -33,9 +33,6 @@ public:
 	Lexicon(Lexicon&& l)=delete;
 	
 	virtual ~Lexicon() {
-		for(auto v: factors) {
-			delete v;
-		}
 	}
 	
 	void replace(size_t i, T* val) {
@@ -80,7 +77,7 @@ public:
 			return  false;
 		
 		for(size_t i=0;i<factors.size();i++) {
-			if(!(factors[i] == l.factors[i]))
+			if(!(*factors[i] == *l.factors[i]))
 				return false;
 		}
 		return true; 
@@ -91,12 +88,11 @@ public:
 	 ********************************************************/
 	virtual void push_program(Program& s, short j) {
 		assert(factors.size() > 0);
-		assert(factors.size() < SHRT_MAX);
 		
 		 // or else badness -- NOTE: We could take mod or insert op_ERR, or any number of other options. 
 		 // here, we decide just to defer to the subclass of this
 		assert(j < (short)factors.size());
-		
+
 		// dispath to the right factor
 		factors[j]->push_program(s); // on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)
 	}
@@ -126,6 +122,7 @@ public:
 	}
 	
 	virtual HYP* copy_and_complete() const {
+		
 		auto l = new HYP(grammar);
 		
 		for(auto v: factors){
