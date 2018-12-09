@@ -4,15 +4,13 @@
 // We require a macro to define our ops as a string BEFORE we import Fleet
 // these get incorporated into the op_t type
 enum CustomOp {
-		op_OBJa,op_OBJb,op_OBJc,op_OBJd,op_OBJe,op_OBJf,op_OBJg,op_OBJh,op_OBJi,op_OBJj,\
-		op_U,op_Word1,op_Word2,op_Word3,op_Word4,op_Word5,op_Word6,op_Word7,op_Word8,op_Word9,op_Word10,\
+		op_Object, op_Word, op_Magnitude,\
 		op_Next,op_Prev,op_Xset,op_Xtype,op_MakeX,\
 		op_Union,op_Intersection,op_Difference,op_Select,op_SelectObj,op_Filter,\
 		op_And,op_Or,op_Not,\
 		op_Match1to1,op_WM0,op_WM1,op_WM2,op_WM3,\
 		op_ApproxEq_S_S,op_ApproxEq_S_M,op_ApproxEq_S_W,\
-		op_ApproxLt_S_S,op_ApproxLt_S_M,op_ApproxLt_S_W,\
-		op_m1,op_m2,op_m3,op_m4,op_m5,op_m6,op_m7,op_m8,op_m9,op_m10
+		op_ApproxLt_S_S,op_ApproxLt_S_M,op_ApproxLt_S_W
 };
 		
 
@@ -23,13 +21,16 @@ enum CustomOp {
 #define NT_NAMES nt_bool, nt_set,         nt_type,       nt_word,       nt_X,    nt_wmset,     nt_magnitude,      nt_double
 
 #include <vector>
-std::vector<char> OBJECTS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
+
+std::vector<Model::objtype> OBJECTS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
+std::vector<Model::word>    WORDS = {"U", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+std::vector<Model::magnitude> MAGNITUDES = {1,2,3,4,5,6,7,8,9,10};
 
 // TODO: UPDATE WITH REAL DATA  -- From Gunderson & Levine?
 #include <random>
 std::discrete_distribution<> number_distribution({0, 7187, 1484, 593, 334, 297, 165, 151, 86, 105, 112}); // 0-indexed
 	
-std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600, 700, 800, 900, 1000};
+std::vector<int> data_amounts = {400}; //1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600, 700, 800, 900, 1000};
 
 const size_t MAX_NODES = 30;
 double recursion_penalty = -20.0;
@@ -40,28 +41,21 @@ double recursion_penalty = -20.0;
 class MyGrammar : public Grammar { 
 public:
 	MyGrammar() : Grammar() {
-		add( new Rule(nt_type, op_OBJa,          "a",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJb,          "b",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJc,          "c",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJd,          "d",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJe,          "e",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJf,          "f",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJg,          "g",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJh,          "h",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJi,          "i",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJj,          "j",              {},                              0.1) );		
 		
-		add( new Rule(nt_word, op_U,              "U",             {},                               1.0) );		
-		add( new Rule(nt_word, op_Word1,          "one",           {},                           			   5.0/10.0) );				
-		add( new Rule(nt_word, op_Word2,          "two",           {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word3,          "three",         {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word4,          "four",          {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word5,          "five",          {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word6,          "six",           {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word7,          "seven",         {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word8,          "eight",         {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word9,          "nine",          {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word10,         "ten",           {},                           			   5.0/10.0) );	
+		
+		
+		TODO: CHANGE THSEE SO THAT WE PASS ARG AND THEN FIX BELOW
+		
+		
+		
+		
+		
+		
+		for(auto o : OBJECTS)
+			add( new Rule(nt_type, op_Object,        std::string(1,o),        {},                              0.1) );		
+		
+		for(auto w : WORDS)
+			add( new Rule(nt_word, op_Word,             w,             {},                               1.0) );		
 		
 		add( new Rule(nt_word, op_Next,           "next(%s)",      {nt_word},                      			   1.0) );	
 		add( new Rule(nt_word, op_Prev,           "prev(%s)",      {nt_word},                      			   1.0) );	
@@ -104,17 +98,9 @@ public:
 		add( new Rule(nt_double,   op_ApproxLt_S_S,  "ANS<(%s,%s)",  {nt_set,   nt_set},            5.0/3.0) );
 		add( new Rule(nt_double,   op_ApproxLt_S_W,  "ANS<(%s,%s)",  {nt_set,   nt_wmset},          5.0/3.0) );
 		add( new Rule(nt_double,   op_ApproxLt_S_M,  "ANS<(%s,%s)",  {nt_set,   nt_magnitude},      5.0/3.0) );
-		
-		add( new Rule(nt_magnitude,  op_m1,   "1", {},            1) ); // magnitudes that only get used in ANS comparisons
-		add( new Rule(nt_magnitude,  op_m2,   "2", {},            1) );
-		add( new Rule(nt_magnitude,  op_m3,   "3", {},            1) );
-		add( new Rule(nt_magnitude,  op_m4,   "4", {},            1) );
-		add( new Rule(nt_magnitude,  op_m5,   "5", {},            1) );
-		add( new Rule(nt_magnitude,  op_m6,   "6", {},            1) );
-		add( new Rule(nt_magnitude,  op_m7,   "7", {},            1) );
-		add( new Rule(nt_magnitude,  op_m8,   "8", {},            1) );
-		add( new Rule(nt_magnitude,  op_m9,   "9", {},            1) );
-		add( new Rule(nt_magnitude,  op_m10,  "10", {},           1) );
+	
+		for(auto m : MAGNITUDES)
+			add( new Rule(nt_magnitude,  op_Magnitude,   std::to_string(m), {},            1) ); // magnitudes that only get used in ANS comparisons
 		
 		
 	}
@@ -294,27 +280,6 @@ void callback(MyHypothesis* h) {
 		print(*h);
 }
 
-
-//double structural_playouts(const MyHypothesis* h0) {
-//	// This does a "default" playout for MCTS that runs MCMC only if the structure (expression)
-//	// is incomplete, as determined by can_evaluate()
-//	if(h0->is_evaluable()) { // it has no gaps, so we don't need to do any structural search or anything
-//		auto h = h0->copy();
-//		h->compute_posterior(data);
-//		callback(h);
-//		double v = h->posterior;
-//		delete h;
-//		return v;
-//	}
-//	else { // we have to do some more search
-//		auto h = h0->copy_and_complete();
-//		auto q = MCMC(h, data, callback, mcmc_steps, mcmc_restart, true);
-//		double v = q->posterior;
-//		//std::cerr << v << "\t" << h0->string() << std::endl;
-//		delete q;
-//		return v;
-//	}
-//}
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
