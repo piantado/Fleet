@@ -24,7 +24,7 @@ public:
 
 	
 	Lexicon(Lexicon& l) : grammar(l.grammar), MCMCable<HYP,t_input,t_output>(l){
-		for(auto v : l.factors) {
+		for(T* v : l.factors) {
 			factors.push_back(v->copy());
 		}
 	}
@@ -32,6 +32,9 @@ public:
 	Lexicon(Lexicon&& l)=delete;
 	
 	virtual ~Lexicon() {
+		for(auto v : factors)
+			delete v;
+		
 	}
 	
 	void replace(size_t i, T* val) {
@@ -109,7 +112,7 @@ public:
 	virtual HYP* copy() const {
 		auto l = new HYP(grammar);
 		
-		for(auto v: factors){
+		for(T* v : factors){
 			l->factors.push_back(v->copy());
 		}
 		
@@ -146,7 +149,7 @@ public:
 		
 		double fb = 0.0;
 		for(size_t k=0;k<factors.size();k++) {
-			if(uniform(rng) < 0.5) {
+			if(flip()) {
 				auto [h, _fb] = factors[k]->propose();
 				x->replace(k, h);
 				fb += _fb;
