@@ -1,5 +1,4 @@
-#ifndef VIRTUAL_MACHINE_STATE
-#define VIRTUAL_MACHINE_STATE
+#pragma once
 
 #include <type_traits>
 
@@ -151,6 +150,7 @@ public:
 					}
 					case op_RECURSE:
 					{
+						
 						if(recursion_depth++ > MAX_RECURSE) { // there is one of these for each recurse
 							aborted = RECURSION_DEPTH;
 							return err;
@@ -285,5 +285,3 @@ public:
 	}	
 	
 };
-
-#endif

@@ -1,7 +1,6 @@
-#ifndef NODE_H
-#define NODE_H
+#pragma once
 
-#include<functional>
+#include <functional>
 
 #include "Grammar.h"
 
@@ -13,7 +12,6 @@ protected:
 	static const size_t MAX_CHILDREN = 3;
 	
 public:
-	static const std::string child_str; // what does format use to signify children's values?
 	static const std::string nulldisplay;// "?"; // what to print in trees for null nodes?
 
 	Node*        child[MAX_CHILDREN];
@@ -179,38 +177,14 @@ public:
 		// full power of printf formatting
 		std::string output(rule->format);
 		for(size_t i=0;i<rule->N;i++) {
-			auto pos = output.find(child_str);
-			assert(pos != std::string::npos && "Node format must contain the child_str (typically='%s')"); // must contain the child_str for all children all children
-			output.replace(pos, child_str.length(), (child[i]==nullptr ? nulldisplay : child[i]->string()));
+			auto pos = output.find(ChildStr);
+			assert(pos != std::string::npos && "Node format must contain the ChildStr (typically='%s')"); // must contain the ChildStr for all children all children
+			output.replace(pos, ChildStr.length(), (child[i]==nullptr ? nulldisplay : child[i]->string()));
 		}
 		return output;
 	}
 	
-//	virtual bool structural_lt(const Node* n) {
-//		// test whether I am < n in an ordering determined by our rules. 
-//		// This should not satisfy !(a<b) && !(b<a)  unless a==b
-//		// this is used in LOTHypothesis to deterime < if the posteriors are equal
-//		if(rule->id != n->rule->id) 
-//			return rule->id < n->rule->id;
-//		
-//		if(rule->N != n->rule->N) 
-//			return rule->N < n->rule->N;
-//			
-//		// else we must have equally many children
-//		for(size_t i=0;i<rule->N;i++) {
-//			bool b = child[i]->structural_lt(n->child[i]);
-//			bool c = n->child[i]->structural_lt(child[i]);
-//			
-//			if((!b) && (!c)) { // e.g if !(b>=c && c>=b) or in other words !(b==c)
-//				return b;
-//			}	
-//			else {
-//				continue; // we have to be equal
-//			}
-//		}
-//		return false; // we are totally equal so not lt
-//	}
-//	
+
 	/********************************************************
 	 * Operaitons for running programs
 	 ********************************************************/
@@ -364,8 +338,5 @@ public:
 	
 	
 };
-const std::string Node::child_str = "%s";// we search for this in format strings in order to display a node
 const std::string Node::nulldisplay = "\u2b1c"; // this is shown for partial trees
 
-
-#endif

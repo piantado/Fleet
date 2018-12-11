@@ -1,5 +1,4 @@
-#ifndef LEXICON_H
-#define LEXICON_H
+#pragma once
 
 #include <limits.h>
 
@@ -276,5 +275,3 @@ public:
 	 
 };
 
-
-#endif

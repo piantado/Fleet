@@ -1,10 +1,7 @@
-#ifndef HYPOTHESIS_H
-#define HYPOTHESIS_H
+#pragma once
 
 #include<string.h>
 #include "Proposers.h"
-
-
 
 template<typename HYP, typename T, nonterminal_t nt, typename t_input, typename t_output>
 class LOTHypothesis : public Dispatchable<t_input,t_output>, 
@@ -234,7 +231,3 @@ public:
 
 	 
 };
-
-
-
-#endif

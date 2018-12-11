@@ -1,8 +1,7 @@
-#ifndef MISCELLANEOUS_H
-#define MISCELLANEOUS_H
+#pragma once
 
-#include<random>
-#include<cmath>
+#include <random>
+#include <cmath>
 #include <deque>
 #include <iostream>
 #include <sstream>
@@ -130,4 +129,17 @@ bool flip() {
 	return uniform(rng) < 0.5;
 }
 
-#endif
+size_t count(const std::string& str, const std::string& sub) {
+	// how many times does sub occur in str?
+	// https://www.rosettacode.org/wiki/Count_occurrences_of_a_substring#C.2B.2B
+	
+    if (sub.length() == 0) return 0;
+    
+	size_t count = 0;
+    for (size_t offset = str.find(sub); 
+		 offset != std::string::npos;
+		 offset = str.find(sub, offset + sub.length())) {
+        ++count;
+    }
+    return count;
+}

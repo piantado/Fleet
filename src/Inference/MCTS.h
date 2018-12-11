@@ -14,27 +14,27 @@
 
 #include "StreamingStatistics.h"
 
-/// Wrapper for parlallel
+/// Wrapper for parallel
 
-template<typename t_value> class MCTSNode;
-template<typename t_value> void parallel_MCTS(MCTSNode<t_value>* root, unsigned long steps, unsigned long cores);
-template<typename t_value> void parallel_MCTS_helper( void* _args);
+template<typename HYP> class MCTSNode;
+template<typename HYP> void parallel_MCTS(MCTSNode<HYP>* root, unsigned long steps, unsigned long cores);
+template<typename HYP> void parallel_MCTS_helper( void* _args);
 
-template<typename t_value>
+template<typename HYP>
 struct parallel_MCTSargs { 
-	MCTSNode<t_value>* root;
+	MCTSNode<HYP>* root;
 	unsigned long steps; 
 };
 
-template<typename t_value>
+template<typename HYP>
 void* parallel_MCTS_helper( void* args) {
-	auto a = (parallel_MCTSargs<t_value>*)args;
+	auto a = (parallel_MCTSargs<HYP>*)args;
 	a->root->search(a->steps);
 	pthread_exit(nullptr);
 }
 
-template<typename t_value>
-void parallel_MCTS(MCTSNode<t_value>* root, unsigned long steps, unsigned long cores) {
+template<typename HYP>
+void parallel_MCTS(MCTSNode<HYP>* root, unsigned long steps, unsigned long cores) {
 	
 	
 	if(cores == 1)  { // don't use parallel, for easier debugging
@@ -43,14 +43,14 @@ void parallel_MCTS(MCTSNode<t_value>* root, unsigned long steps, unsigned long c
 	else {
 	
 		pthread_t threads[cores]; 
-		parallel_MCTSargs<t_value> args[cores];
+		parallel_MCTSargs<HYP> args[cores];
 		
 		for(unsigned long t=0;t<cores;t++) {
 			
 			args[t].steps=steps;
 			args[t].root=root;
 			
-			int rc = pthread_create(&threads[t], nullptr, parallel_MCTS_helper<t_value>, &args[t]);
+			int rc = pthread_create(&threads[t], nullptr, parallel_MCTS_helper<HYP>, &args[t]);
 			if(rc) assert(0 && "Failure to create a pthread");
 		}
 		
@@ -66,8 +66,10 @@ void parallel_MCTS(MCTSNode<t_value>* root, unsigned long steps, unsigned long c
 /// MCTS Implementation
 
 
-template<typename t_value>
+template<typename HYP>
 class MCTSNode {
+	// NOTE: When we initialize a MCTSNode, we typically will want it with a LOTHypothesis with a null value		
+	
 public:
 
 	// use a strict enum of how children are scored in sampling them
@@ -83,7 +85,7 @@ public:
 	 
 	const bool expand_all_children = false; // when we expand a new leaf, do we expand all children or just sample one (from their priors?) 
 	
-	double (*compute_playouts)(const t_value*); // a function point to how we compute playouts
+	double (*compute_playouts)(const HYP*); // a function point to how we compute playouts
 	double explore; 
 	
     pthread_mutex_t child_modification_lock; // for exploring below
@@ -92,18 +94,18 @@ public:
 	
 	
     MCTSNode* parent; // who is my parent?
-    t_value* value;
+    HYP* value;
     ScoringType scoring_type;// how do I score playouts?
   
-    MCTSNode(MCTSNode* par, t_value* v) : parent(par), value(v), scoring_type(par->scoring_type) {
+    MCTSNode(MCTSNode* par, HYP* v) : parent(par), value(v), scoring_type(par->scoring_type) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
 		explore=par->explore;
 		compute_playouts=par->compute_playouts;
 		
-        initialize();
+        initialize();	
     }
     
-    MCTSNode(double ex, t_value* h0, double cp(const t_value*), ScoringType st=ScoringType::SAMPLE ) : 
+    MCTSNode(double ex, HYP* h0, double cp(const HYP*), ScoringType st=ScoringType::SAMPLE ) : 
 		compute_playouts(cp), explore(ex), parent(nullptr), value(h0), scoring_type(st) {
         initialize();        
     }
@@ -257,7 +259,7 @@ public:
             std::cout TAB "Adding child " <<  pthread_self() << "\t" <<  this << "\t[" << v->string() << "] " ENDL;
         }
 #endif
-					MCTSNode<t_value>* c = new MCTSNode<t_value>(this, v);
+					MCTSNode<HYP>* c = new MCTSNode<HYP>(this, v);
 					
 					children.push_back(c);
 				}
@@ -328,8 +330,8 @@ public:
 
 };
 
-//template<typename t_value>
-//class FullMCTSNode : public MCTSNode<t_value> {
+//template<typename HYP>
+//class FullMCTSNode : public MCTSNode<HYP> {
 //	// In this version, when we go down to build a tree, we include ALL of the nodes
 //	
 //	void add_child_nodes()=delete; // we don't use this 

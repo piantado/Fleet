@@ -4,15 +4,13 @@
 // We require a macro to define our ops as a string BEFORE we import Fleet
 // these get incorporated into the op_t type
 enum CustomOp {
-		op_OBJa,op_OBJb,op_OBJc,op_OBJd,op_OBJe,op_OBJf,op_OBJg,op_OBJh,op_OBJi,op_OBJj,\
-		op_U,op_Word1,op_Word2,op_Word3,op_Word4,op_Word5,op_Word6,op_Word7,op_Word8,op_Word9,op_Word10,\
+		op_Object, op_Word, op_U, op_Magnitude,\
 		op_Next,op_Prev,op_Xset,op_Xtype,op_MakeX,\
 		op_Union,op_Intersection,op_Difference,op_Select,op_SelectObj,op_Filter,\
 		op_And,op_Or,op_Not,\
 		op_Match1to1,op_WM0,op_WM1,op_WM2,op_WM3,\
 		op_ApproxEq_S_S,op_ApproxEq_S_M,op_ApproxEq_S_W,\
-		op_ApproxLt_S_S,op_ApproxLt_S_M,op_ApproxLt_S_W,\
-		op_m1,op_m2,op_m3,op_m4,op_m5,op_m6,op_m7,op_m8,op_m9,op_m10
+		op_ApproxLt_S_S,op_ApproxLt_S_M,op_ApproxLt_S_W
 };
 		
 
@@ -21,9 +19,13 @@ enum CustomOp {
 // Defie our types. 
 #define NT_TYPES bool,    Model::set,    Model::objtype, Model::word,  Model::X, Model::wmset, Model::magnitude,  double
 #define NT_NAMES nt_bool, nt_set,         nt_type,       nt_word,       nt_X,    nt_wmset,     nt_magnitude,      nt_double
+///               0         1                2              3             4          5               6               7
 
 #include <vector>
-std::vector<char> OBJECTS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
+
+std::vector<Model::objtype>      OBJECTS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
+std::vector<std::string>           WORDS = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+std::vector<Model::magnitude> MAGNITUDES = {1,2,3,4,5,6,7,8,9,10};
 
 // TODO: UPDATE WITH REAL DATA  -- From Gunderson & Levine?
 #include <random>
@@ -40,36 +42,21 @@ double recursion_penalty = -20.0;
 class MyGrammar : public Grammar { 
 public:
 	MyGrammar() : Grammar() {
-		add( new Rule(nt_type, op_OBJa,          "a",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJb,          "b",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJc,          "c",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJd,          "d",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJe,          "e",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJf,          "f",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJg,          "g",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJh,          "h",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJi,          "i",              {},                              0.1) );		
-		add( new Rule(nt_type, op_OBJj,          "j",              {},                              0.1) );		
 		
-		add( new Rule(nt_word, op_U,              "U",             {},                               1.0) );		
-		add( new Rule(nt_word, op_Word1,          "one",           {},                           			   5.0/10.0) );				
-		add( new Rule(nt_word, op_Word2,          "two",           {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word3,          "three",         {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word4,          "four",          {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word5,          "five",          {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word6,          "six",           {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word7,          "seven",         {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word8,          "eight",         {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word9,          "nine",          {},                           			   5.0/10.0) );		
-		add( new Rule(nt_word, op_Word10,         "ten",           {},                           			   5.0/10.0) );	
+		for(size_t i=0;i<OBJECTS.size();i++)
+			add( new Rule(nt_type, op_Object,        std::string(1,OBJECTS[i]),        {},                   10.0/OBJECTS.size(), i) );		
 		
-		add( new Rule(nt_word, op_Next,           "next(%s)",      {nt_word},                      			   1.0) );	
-		add( new Rule(nt_word, op_Prev,           "prev(%s)",      {nt_word},                      			   1.0) );	
+		for(size_t i=0;i<WORDS.size();i++)
+			add( new Rule(nt_word, op_Word,             WORDS[i],             {},                         10.0/WORDS.size(), i+1) );		
+		
+		add( new Rule(nt_word, op_U,              "undef",         {},                      			   10.0) );	
+		add( new Rule(nt_word, op_Next,           "next(%s)",      {nt_word},                      		   1.0) );	
+		add( new Rule(nt_word, op_Prev,           "prev(%s)",      {nt_word},                      	       1.0) );	
 		
 		// extracting from x
-		add( new Rule(nt_set,    op_Xset,        "set(%s)",                {nt_X},                          10.0) );		
-		add( new Rule(nt_type,   op_Xtype,       "type(%s)",               {nt_X},                          5.0) );		
-		add( new Rule(nt_X,      op_X,           "X",                      {},                              5.0) );		
+		add( new Rule(nt_set,    op_Xset,        "set(%s)",                {nt_X},                         10.0) );		
+		add( new Rule(nt_type,   op_Xtype,       "type(%s)",               {nt_X},                         10.0) );		
+		add( new Rule(nt_X,      op_X,           "X",                      {},                             10.0) );		
 		
 		add( new Rule(nt_X,      op_MakeX,        "<%s,%s>",              {nt_set, nt_type},              1.0) );		
 		add( new Rule(nt_word,   op_RECURSE,      "recurse(%s)",          {nt_X},                         1.0) );		
@@ -78,17 +65,17 @@ public:
 		add( new Rule(nt_set,    op_Intersection, "intersection(%s,%s)",  {nt_set,nt_set},            1.0/3.0) );
 		add( new Rule(nt_set,    op_Difference,   "difference(%s,%s)",    {nt_set,nt_set},            1.0/3.0) );
 		add( new Rule(nt_set,    op_Select,       "select(%s)",           {nt_set},                   1.0/2.0) );
-		add( new Rule(nt_set,    op_SelectObj,    "select(%s,%s)",        {nt_set,nt_type},           1.0/2.0) );
+		add( new Rule(nt_set,    op_SelectObj,    "selectO(%s,%s)",       {nt_set,nt_type},           1.0/2.0) );
 		add( new Rule(nt_set,    op_Filter,       "filter(%s,%s)",        {nt_type,nt_set},           1.0) );
 		
-		add( new Rule(nt_set,    op_IF,           "if(%s,%s,%s)", {nt_bool, nt_set, nt_set},       1.0) );
-		add( new Rule(nt_word,   op_IF,           "if(%s,%s,%s)", {nt_bool, nt_word, nt_word},     1.0) );
+		add( new Rule(nt_set,    op_IF,           "ifS(%s,%s,%s)", {nt_bool, nt_set,  nt_set},       1.0/2.0) );
+		add( new Rule(nt_word,   op_IF,           "ifW(%s,%s,%s)", {nt_bool, nt_word, nt_word},      1.0/2.0) );
 		
 		
-		add( new Rule(nt_bool,   op_FLIPP,       "flip(%s)",     {nt_double},               5.0) );
+		add( new Rule(nt_bool,   op_FLIPP,       "flip(%s)",     {nt_double},               10.0) );
 		add( new Rule(nt_bool,   op_And,         "and(%s,%s)",   {nt_bool, nt_bool},               1.0) );
 		add( new Rule(nt_bool,   op_Or,          "or(%s,%s)",    {nt_bool, nt_bool},               1.0) );
-		add( new Rule(nt_bool,   op_Not,         "not(%s,%s)",   {nt_bool},                        1.0) );
+		add( new Rule(nt_bool,   op_Not,         "not(%s)",   {nt_bool},                        1.0) );
 		
 		// Working memory model		
 		add( new Rule(nt_bool,   op_Match1to1,   "match1to1(%s,%s)", {nt_wmset, nt_set},            5.0) );
@@ -98,23 +85,15 @@ public:
 		add( new Rule(nt_wmset,  op_WM3,   "{o,o,o}",                {},            1.0) );		
 
 		// approximate model
-		add( new Rule(nt_double,   op_ApproxEq_S_S,  "ANS=(%s,%s)",  {nt_set,   nt_set},            5.0/3.0) );
-		add( new Rule(nt_double,   op_ApproxEq_S_W,  "ANS=(%s,%s)",  {nt_set,   nt_wmset},          5.0/3.0) );
-		add( new Rule(nt_double,   op_ApproxEq_S_M,  "ANS=(%s,%s)",  {nt_set,   nt_magnitude},      5.0/3.0) );
-		add( new Rule(nt_double,   op_ApproxLt_S_S,  "ANS<(%s,%s)",  {nt_set,   nt_set},            5.0/3.0) );
-		add( new Rule(nt_double,   op_ApproxLt_S_W,  "ANS<(%s,%s)",  {nt_set,   nt_wmset},          5.0/3.0) );
-		add( new Rule(nt_double,   op_ApproxLt_S_M,  "ANS<(%s,%s)",  {nt_set,   nt_magnitude},      5.0/3.0) );
-		
-		add( new Rule(nt_magnitude,  op_m1,   "1", {},            1) ); // magnitudes that only get used in ANS comparisons
-		add( new Rule(nt_magnitude,  op_m2,   "2", {},            1) );
-		add( new Rule(nt_magnitude,  op_m3,   "3", {},            1) );
-		add( new Rule(nt_magnitude,  op_m4,   "4", {},            1) );
-		add( new Rule(nt_magnitude,  op_m5,   "5", {},            1) );
-		add( new Rule(nt_magnitude,  op_m6,   "6", {},            1) );
-		add( new Rule(nt_magnitude,  op_m7,   "7", {},            1) );
-		add( new Rule(nt_magnitude,  op_m8,   "8", {},            1) );
-		add( new Rule(nt_magnitude,  op_m9,   "9", {},            1) );
-		add( new Rule(nt_magnitude,  op_m10,  "10", {},           1) );
+		add( new Rule(nt_double,   op_ApproxEq_S_S,  "ANS=(%s,%s)",  {nt_set,   nt_set},            1.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxEq_S_W,  "ANS=(%s,%s)",  {nt_set,   nt_wmset},          1.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxEq_S_M,  "ANS=(%s,%s)",  {nt_set,   nt_magnitude},      1.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxLt_S_S,  "ANS<(%s,%s)",  {nt_set,   nt_set},            1.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxLt_S_W,  "ANS<(%s,%s)",  {nt_set,   nt_wmset},          1.0/3.0) );
+		add( new Rule(nt_double,   op_ApproxLt_S_M,  "ANS<(%s,%s)",  {nt_set,   nt_magnitude},      1.0/3.0) );
+	
+		for(size_t i=0;i<MAGNITUDES.size();i++)
+			add( new Rule(nt_magnitude,  op_Magnitude,   std::to_string(MAGNITUDES[i]).substr(0,3), {},           10.0/MAGNITUDES.size(), i)); // magnitudes that only get used in ANS comparisons
 		
 		
 	}
@@ -156,49 +135,21 @@ public:
 		
 		double pU      = (v.count(Model::U) ? exp(v[Model::U]) : 0.0); // non-log probs
 		double pTarget = (v.count(d.output) ? exp(v[d.output]) : 0.0);
-//		assert(pU + pTarget <= 1.0);
-		double pNoise = 1.0 - (pU+pTarget);
 		
 		// average likelihood when sampling from this posterior
-		return log( pU*(1.0/10.0) + pNoise*(1.0-d.reliability)/10.0 + pTarget*d.reliability );
-		
-//		// non-stochastic version:
-//		if(v == Model::U) { // no commitments
-//			return log(1.0/10.0);
-//		}
-//		else { // commitments
-//			return log( (1.0-d.reliability)/10.0 + (v == d.output ? d.reliability : 0.0));
-//		}
+		return log( pU*(1.0/10.0) + (1.0-d.reliability)/10.0 + d.reliability*pTarget );
 	}	
-	
+
 	abort_t dispatch_rule(Instruction i,  VirtualMachinePool<Model::X, Model::word>* pool, VirtualMachineState<Model::X, Model::word>* vms, Dispatchable<Model::X, Model::word>* loader) {
 		/* Dispatch the functions that I have defined. Returns true on success. 
 		 * Note that errors might return from this 
 		 * */
 		assert(i.is_custom);
 		switch(i.custom) {
-			CASE_FUNC0(op_OBJa,        Model::objtype, [](){ return 'a'; })
-			CASE_FUNC0(op_OBJb,        Model::objtype, [](){ return 'b'; })
-			CASE_FUNC0(op_OBJc,        Model::objtype, [](){ return 'c'; })
-			CASE_FUNC0(op_OBJd,        Model::objtype, [](){ return 'd'; })
-			CASE_FUNC0(op_OBJe,        Model::objtype, [](){ return 'e'; })
-			CASE_FUNC0(op_OBJf,        Model::objtype, [](){ return 'f'; })
-			CASE_FUNC0(op_OBJg,        Model::objtype, [](){ return 'g'; })
-			CASE_FUNC0(op_OBJh,        Model::objtype, [](){ return 'h'; })
-			CASE_FUNC0(op_OBJi,        Model::objtype, [](){ return 'i'; })
-			CASE_FUNC0(op_OBJj,        Model::objtype, [](){ return 'j'; })		
+			CASE_FUNC0(op_Object,      Model::objtype, [i](){ return OBJECTS[i.arg]; })
 			
+			CASE_FUNC0(op_Word,        Model::word, [i](){ return i.arg; })
 			CASE_FUNC0(op_U,           Model::word, [](){ return Model::U; })
-			CASE_FUNC0(op_Word1,       Model::word, [](){ return 1; })
-			CASE_FUNC0(op_Word2,       Model::word, [](){ return 2; })
-			CASE_FUNC0(op_Word3,       Model::word, [](){ return 3; })
-			CASE_FUNC0(op_Word4,       Model::word, [](){ return 4; })
-			CASE_FUNC0(op_Word5,       Model::word, [](){ return 5; })
-			CASE_FUNC0(op_Word6,       Model::word, [](){ return 6; })
-			CASE_FUNC0(op_Word7,       Model::word, [](){ return 7; })
-			CASE_FUNC0(op_Word8,       Model::word, [](){ return 8; })
-			CASE_FUNC0(op_Word9,       Model::word, [](){ return 9; })
-			CASE_FUNC0(op_Word10,       Model::word, [](){ return 10; })
 			
 			CASE_FUNC1(op_Next,        Model::word,  Model::word, Model::next )
 			CASE_FUNC1(op_Prev,        Model::word,  Model::word, Model::prev )
@@ -231,16 +182,7 @@ public:
 			CASE_FUNC2(op_ApproxLt_S_W,  double, Model::set, Model::wmset,      Model::ANS_Lt)
 			CASE_FUNC2(op_ApproxLt_S_M,  double, Model::set, Model::magnitude,  Model::ANS_Lt)
 
-			CASE_FUNC0(op_m1,           Model::magnitude, [](){ return 1.0; })
-			CASE_FUNC0(op_m2,           Model::magnitude, [](){ return 2.0; })
-			CASE_FUNC0(op_m3,           Model::magnitude, [](){ return 3.0; })
-			CASE_FUNC0(op_m4,           Model::magnitude, [](){ return 4.0; })
-			CASE_FUNC0(op_m5,           Model::magnitude, [](){ return 5.0; })
-			CASE_FUNC0(op_m6,           Model::magnitude, [](){ return 6.0; })
-			CASE_FUNC0(op_m7,           Model::magnitude, [](){ return 7.0; })
-			CASE_FUNC0(op_m8,           Model::magnitude, [](){ return 8.0; })
-			CASE_FUNC0(op_m9,           Model::magnitude, [](){ return 9.0; })
-			CASE_FUNC0(op_m10,          Model::magnitude, [](){ return 10.0; })
+			CASE_FUNC0(op_Magnitude,    Model::magnitude, [i](){ return MAGNITUDES[i.arg]; })
 
 			default:
 				assert(0); // should never get here
@@ -253,16 +195,14 @@ const double alpha = 0.9;
 
 MyHypothesis::t_data mydata;
 TopN<MyHypothesis> top;
-TopN<MyHypothesis> all(std::numeric_limits<size_t>::max());
+TopN<MyHypothesis> all;
 
-
-void print(MyHypothesis& h) {
-    COUT mydata.size() TAB top.count(h) TAB h.posterior TAB h.prior TAB h.likelihood << "\t";
+void print(MyHypothesis& h, std::string prefix) {
+    COUT prefix << mydata.size() TAB top.count(h) TAB h.posterior TAB h.prior TAB h.likelihood << "\t";
 	
     for (int j = 1; j <= 9; j++) {
         Model::set theset = "" + std::string(j,'Z');
 		auto out = h.call(Model::X(theset,'Z'), Model::U);
-//		out.print(); COUT "" ENDL;
 		Model::word v = out.argmax();
 		
         if(v < 0) COUT "U"; // must be undefined
@@ -283,8 +223,16 @@ void print(MyHypothesis& h) {
     
 	COUT "\t" << h.recursion_count() TAB QQ(h.string()) ENDL;
 }
+void print(MyHypothesis& h) {
+	print(h, std::string(""));
+}
 
 void callback(MyHypothesis* h) {
+	
+	// let's print each time we find a new best
+	if(h->posterior > top.best_score())
+		print(*h, "#TOP\t"); 
+	
 	top << *h; 
 	
 	FleetStatistics::global_sample_count++;
@@ -295,32 +243,30 @@ void callback(MyHypothesis* h) {
 }
 
 
-//double structural_playouts(const MyHypothesis* h0) {
-//	// This does a "default" playout for MCTS that runs MCMC only if the structure (expression)
-//	// is incomplete, as determined by can_evaluate()
-//	if(h0->is_evaluable()) { // it has no gaps, so we don't need to do any structural search or anything
-//		auto h = h0->copy();
-//		h->compute_posterior(data);
-//		callback(h);
-//		double v = h->posterior;
-//		delete h;
-//		return v;
-//	}
-//	else { // we have to do some more search
-//		auto h = h0->copy_and_complete();
-//		auto q = MCMC(h, data, callback, mcmc_steps, mcmc_restart, true);
-//		double v = q->posterior;
-//		//std::cerr << v << "\t" << h0->string() << std::endl;
-//		delete q;
-//		return v;
-//	}
-//}
+double playouts(const MyHypothesis* h0) {
+	if(h0->is_evaluable()) { // it has no gaps, so we don't need to do any structural search or anything
+		auto h = h0->copy();
+		h->compute_posterior(mydata);
+		callback(h);
+		double v = h->posterior;
+		delete h;
+		return v;
+	}
+	else { // we have to do some more search
+		auto h = h0->copy_and_complete();
+		auto q = MCMC(h, mydata, callback, mcmc_steps, mcmc_restart, true);
+		double v = q->posterior;
+		//std::cerr << v << "\t" << h0->string() << std::endl;
+		delete q;
+		return v;
+	}
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 
 int main(int argc, char** argv){ 
-	signal(SIGINT, fleet_interrupt_handler);
 	using namespace std;
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
@@ -328,10 +274,11 @@ int main(int argc, char** argv){
 	CLI11_PARSE(app, argc, argv);
 	top.set_size(ntop); // set by above macro
 	
+	Fleet_initialize();
+	
 	MyGrammar grammar;
 
 	// Set up the data
-//	int ndata = 100; // how many data points?
 	for(auto ndata : data_amounts) {
 		if(CTRL_C) break;
 		
@@ -373,9 +320,20 @@ int main(int argc, char** argv){
 			mydata.push_back(MyHypothesis::t_datum({x, w, alpha}));
 		}    		
 		
-		// now run MCMC
+		
+//		Node* n = grammar.expand_from_names<Node>("ifW:match:{o}:filter:type:X:set:X:one:next:recurse:<%s,%s>:difference:set:X:selectO:set:X:type:X:type:X");
+//		auto h0 = new MyHypothesis(&grammar, n);	
+//		h0->compute_posterior(mydata);
+//		callback(h0);
+		
+		// now run vanilla MCMC
 		auto h0 = new MyHypothesis(&grammar);	
 		parallel_MCMC(nthreads, h0, &mydata, callback, mcmc_steps, mcmc_restart);
+
+		// MCTS 
+//		auto h0 = new MyHypothesis(&grammar, nullptr);	
+//		MCTSNode<MyHypothesis> m(explore, h0, playouts, MCTSNode<MyHypothesis>::ScoringType::UCBMAX  );
+//		parallel_MCTS(&m, mcts_steps, nthreads);
 
 		// and save what we found
 		all << top;

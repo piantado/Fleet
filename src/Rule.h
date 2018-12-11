@@ -1,5 +1,4 @@
-#ifndef RULE_H
-#define RULE_H
+#pragma once
 
 class Rule {
 	// A rule stores nonterminal types and possible children
@@ -16,11 +15,14 @@ public:
 	const double         p;
 
 	// Rule's constructors convert CustomOp and BuiltinOp to the appropriate instruction types
-	Rule(const nonterminal_t rt, const CustomOp o, const std::string fmt, std::initializer_list<nonterminal_t> c, double _p, int arg=0) :
+	Rule(const nonterminal_t rt, const CustomOp o, const std::string fmt, std::initializer_list<nonterminal_t> c, double _p, const int arg=0) :
 		nt(rt), instr(o,arg), format(fmt), N(c.size()), p(_p) {
 		// mainly we just convert c to an array
 		child_types = new nonterminal_t[c.size()];
 		std::copy(c.begin(), c.end(), child_types);
+		
+		// check that the format string has the right number of %s
+		assert( N == count(fmt, ChildStr) && "*** Wrong number of format string arguments");
 	}
 		
 	Rule(const nonterminal_t rt, const BuiltinOp o, const std::string fmt, std::initializer_list<nonterminal_t> c, double _p, const int arg=0) :
@@ -29,6 +31,9 @@ public:
 		// mainly we just convert c to an array
 		child_types = new nonterminal_t[c.size()];
 		std::copy(c.begin(), c.end(), child_types);
+		
+		// check that the format string has the right number of %s
+		assert( N == count(fmt, ChildStr) && "*** Wrong number of format string arguments");
 	}
 	
 
@@ -62,5 +67,3 @@ public:
 	}
 	
 };
-
-#endif

@@ -127,8 +127,10 @@ void fleet_interrupt_handler(int signum) {
 /// These are standard variables that occur nearly universally in these searches
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+std::string ChildStr = "%s"; // how do strings get substituted?
+
 unsigned long mcts_steps   = 100; // note this also controls how quickly/deep the search goes into the lexicon
-unsigned long mcmc_steps   = 10000; // note this also controls how quickly/deep the search goes into the lexicon
+unsigned long mcmc_steps   = 100000; // note this also controls how quickly/deep the search goes into the lexicon
 unsigned long thin         = 0;
 unsigned long ntop         = 100;
 unsigned long mcmc_restart = 0;

@@ -1,5 +1,4 @@
-#ifndef DISCRETE_DISTRIBUTION
-#define DISCRETE_DISTRIBUTION
+#pragma once
 
 #include<map>
 #include<vector>
@@ -102,6 +101,3 @@ public:
 
 	
 };
-
-
-#endif

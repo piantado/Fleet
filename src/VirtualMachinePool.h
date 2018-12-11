@@ -1,5 +1,4 @@
-#ifndef VIRTUAL_MACHINE_POOL
-#define VIRTUAL_MACHINE_POOL
+#pragma once
 
 #include "Fleet.h"
 #include "DiscreteDistribution.h"
@@ -86,5 +85,3 @@ public:
 	}
 	
 };
-
-#endif

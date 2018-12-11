@@ -1,5 +1,4 @@
-#ifndef CASE_MACROS_H
-#define CASE_MACROS_H
+#pragma once
 
 /* This contains macros for the dispatch case that allow easier definitions of case statements. 
  * These extract from the stack in a VirtualMachineState and pass arguments so that we may 
@@ -84,5 +83,3 @@
 		break;									                                \
 	}                                                                           \
 
-
-#endif

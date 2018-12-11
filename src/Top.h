@@ -1,5 +1,4 @@
-#ifndef TOP_H
-#define TOP_H
+#pragma once
 
 #include "stdlib.h"
 #include "stdio.h"
@@ -40,17 +39,18 @@ public:
 		return s;
 	}
 
-	void add(const T x) { // NOTE: Do not use reference here, since we often pass in derefernce of pointer! And insert takes a reference
-		//std::cerr << x.posterior TAB x.string() TAB (s.empty()?-infinity:s.begin()->posterior) ENDL;
-	
+	void add(const T x) { 
+		// add something of type x if we should. 
+		
 		// toss out infs
-		if(std::isnan(x.posterior) || x.posterior == -infinity || CTRL_C) return;
+		if(std::isnan(x.posterior) || x.posterior == -infinity) return;
 		
 		pthread_mutex_lock(&lock);
 		
 		// if we aren't in there and our posterior is better than the worst
 		if(s.find(x) == s.end()) { 
 			if(s.size() < N || s.empty() || x.posterior > s.begin()->posterior) { // skip adding if its the worst
+			
 				s.insert(x); // add this one
 				assert(cnt.find(x) == cnt.end());
 				cnt[x] = 1;
@@ -90,6 +90,15 @@ public:
 		return *s.begin(); 
 	}
 	
+	double best_score() {
+		if(s.empty()) return -infinity;
+		return s.rbegin()->posterior;  
+	}
+	double worst_score() {
+		if(s.empty()) return infinity;
+		return s.begin()->posterior;  
+	}
+	
     bool empty() { return s.empty(); }
     
 	double Z() { // compute the normalizer
@@ -123,6 +132,3 @@ public:
 	
 };
 
-
-
-#endif

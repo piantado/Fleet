@@ -1,26 +1,27 @@
 
-// We require a macro to define our ops as a string BEFORE we import Fleet
-// these get incorporated into the op_t type
-#define MY_OPS op_STREQ,op_EMPTYSTRING,op_EMPTY,op_A,op_B,op_CDR,op_CAR,op_CONS //=7
+// We require a macro to define our custom operations as a string BEFORE we import Fleet
+enum CustomOp {
+	op_STREQ,op_EMPTYSTRING,op_EMPTY,op_A,op_B,op_CDR,op_CAR,op_CONS
+};
 
-// Define our types. Fleet should use these to create both t_nonterminal and 
-// VMstack -- a tuple with these types
-// NOTE: We require that these types be unique or else all hell breaks loose
-// and correspondingly NT_NAMES are used to define an enum, t_nonterminal
-#define NT_TYPES bool,short,std::string,     double
-#define NT_NAMES nt_bool,nt_short,nt_string, nt_unused
+// Define our types. 
+#define NT_TYPES bool,std::string
+#define NT_NAMES nt_bool,nt_string
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
+using S = std::string; // just for convenience
+
+// Define a grammar
 class MyGrammar : public Grammar { 
 public:
 	MyGrammar() : Grammar() {
 		add( new Rule(nt_string, op_X,            "x",            {},                               5.0) );		
 		add( new Rule(nt_string, op_RECURSE,      "F(%s)",        {nt_string},                      2.0) );		
 
-		add( new Rule(nt_string, op_A,            "'a'",          {},                               2.50) );
-		add( new Rule(nt_string, op_B,            "'b'",          {},                               2.50) );
+		add( new Rule(nt_string, op_A,            "'0'",          {},                               2.50) );
+		add( new Rule(nt_string, op_B,            "'1'",          {},                               2.50) );
 		add( new Rule(nt_string, op_EMPTYSTRING,  "''",           {},                               1.0) );
 		
 		add( new Rule(nt_string, op_CONS,         "cons(%s,%s)",  {nt_string,nt_string},            1.0) );
@@ -38,44 +39,32 @@ public:
 
 /* Define a class for handling my specific hypotheses and data. Everything is defaulty a PCFG prior and 
  * regeneration proposals, but I have to define a likelihood */
-class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_string, std::string, std::string> {
+class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_string, S, S> {
 public:
 
-	static const size_t MAX_LENGTH = 32; // longest strings cons will handle
+	static const size_t MAX_LENGTH = 64; // longest strings cons will handle
 	static constexpr double gamma      = 0.99; // this coin flip says when we end 
-	static const std::string err;
-	static constexpr size_t maxnodes = 25;
+	static const S err;
 	
 	// I must implement all of these constructors
-	MyHypothesis(Grammar* g)            : LOTHypothesis<MyHypothesis,Node,nt_string,std::string,std::string>(g) {}
-	MyHypothesis(Grammar* g, Node* v)   : LOTHypothesis<MyHypothesis,Node,nt_string,std::string,std::string>(g,v) {}
-	
-	virtual double compute_prior() {
-		size_t cnt = value->count();
-		
-		if(cnt > maxnodes) prior = -infinity;
-		else  			   prior = LOTHypothesis<MyHypothesis,Node,nt_string, std::string, std::string>::compute_prior();
-		
-		return prior;
-	}
+	MyHypothesis(Grammar* g)            : LOTHypothesis<MyHypothesis,Node,nt_string,S,S>(g) {}
+	MyHypothesis(Grammar* g, Node* v)   : LOTHypothesis<MyHypothesis,Node,nt_string,S,S>(g,v) {}
 	
 	double compute_single_likelihood(const t_datum& x) {
+		// Very simple likelihood that just counts up the probability assigned to the output strings
 		auto out = call(x.input, err);
-		//print(out);
-		//COUT x.input TAB "->" TAB x.output << "\t";
 		return logplusexp( log(x.reliability)+(out.count(x.output)?out[x.output]:-infinity),  // probability of generating the output
 					       log(1.0-x.reliability) + (x.output.length())*(log(1.0-gamma) + log(0.5)) + log(gamma) // probability under noise; 0.5 comes from alphabet size
 						   );
 	}
 	
-	abort_t dispatch_rule(op_t op, VirtualMachinePool<std::string,std::string>* pool, VirtualMachineState<std::string,std::string>* vms, Dispatchable<std::string,std::string>* loader ) {
-		/* Dispatch the functions that I have defined. Returns true on success. 
-		 * Note that errors might return from this 
+	abort_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>* vms, Dispatchable<S,S>* loader ) {
+		/* Dispatch the functions that I have defined. Returns NO_ABORT on success. 
 		 * */
-		using S = std::string;
-		switch(op) {
-			CASE_FUNC0(op_A,           S,          [](){ return S("a");} )
-			CASE_FUNC0(op_B,           S,          [](){ return S("b");} )
+		assert(i.is_custom);
+		switch(i.custom) {
+			CASE_FUNC0(op_A,           S,          [](){ return S("0");} )
+			CASE_FUNC0(op_B,           S,          [](){ return S("1");} )
 			CASE_FUNC0(op_EMPTYSTRING, S,          [](){ return S("");} )
 			CASE_FUNC1(op_EMPTY,       bool,  S,   [](const S s){ return s.size()==0;} )
 			CASE_FUNC2(op_STREQ,       bool,  S,S, [](const S a, const S b){return a==b;} )
@@ -91,87 +80,83 @@ public:
 		return NO_ABORT;
 	}
 };
-const std::string MyHypothesis::err = "<err>";
+const S MyHypothesis::err = "<err>";
 
 
-MyHypothesis::t_data data;
+MyHypothesis::t_data mydata;
 TopN<MyHypothesis> top;
 
 
 void print(MyHypothesis& h) {
+	COUT "# ";
 	h.call("", "<err>").print();
-	COUT "\t" << top.count(h) TAB  h.posterior TAB h.prior TAB h.likelihood TAB h.string() ENDL;
+	COUT "\n" << top.count(h) TAB  h.posterior TAB h.prior TAB h.likelihood TAB h.string() ENDL;
 }
 
 
+// This gets called on every sample -- here we add it to our best seen so far (top) and
+// print it every thin samples unless thin=0
 void callback(MyHypothesis* h) {
+	
 	top << *h; 
 	
-	global_sample_count++;
-	
 	// print out with thinning
-	if(thin > 0 && global_sample_count % thin == 0) 
+	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) 
 		print(*h);
 }
 
 
-double structural_playouts(const MyHypothesis* h0) {
-	// This does a "default" playout for MCTS that runs MCMC only if the structure (expression)
-	// is incomplete, as determined by can_evaluate()
-	if(h0->is_evaluable()) { // it has no gaps, so we don't need to do any structural search or anything
-		auto h = h0->copy();
-		h->compute_posterior(data);
-		callback(h);
-		double v = h->posterior;
-		delete h;
-		return v;
-	}
-	else { // we have to do some more search
-		auto h = h0->copy_and_complete();
-		auto q = MCMC(h, data, callback, mcmc_steps, mcmc_restart, true);
-		double v = q->posterior;
-		//std::cerr << v << "\t" << h0->string() << std::endl;
-		delete q;
-		return v;
-	}
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-
 int main(int argc, char** argv){ 
-	signal(SIGINT, fleet_interrupt_handler);
 	using namespace std;
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	FLEET_DECLARE_GLOBAL_ARGS()
 	CLI11_PARSE(app, argc, argv);
+	
 	top.set_size(ntop); // set by above macro
+
+	Fleet_initialize();
 	
 	MyGrammar grammar;
 	
+	//------------------
 	// set up the data
-	data.push_back(    MyHypothesis::t_datum({std::string(""), std::string("ab"), 0.99})    );
-
-//	auto h0 = new MyHypothesis(&grammar, nullptr);
+	//------------------
 	
-	//MCTSNode<MyHypothesis> m(explore, h0, structural_playouts );
-	//m.search(mcts_steps);
-//	tic();
-//	parallel_MCTS(&m, mcts_steps, nthreads);
-//	tic();
-//	m.print();
-//	COUT "# MCTS tree size:" TAB m.size() ENDL;	
+	// simple pattern
+//	mydata.push_back( MyHypothesis::t_datum({S(""), S("01011"), 0.99}) );
+//	mydata.push_back( MyHypothesis::t_datum({S(""), S("0101101011"), 0.99}) );
+//	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110101101011"), 0.99}) );
 
+	// Fibonacci data:
+	mydata.push_back( MyHypothesis::t_datum({S(""), S("01011"), 0.99}) );
+	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110111"), 0.99}) );
+	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110111011111"), 0.99}) );
+	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110111011111011111111"), 0.99}) );
+
+	// increasing count data
+//	mydata.push_back( MyHypothesis::t_datum({S(""), S("01011"), 0.99}) );
+//	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110111"), 0.99}) );
+//	mydata.push_back( MyHypothesis::t_datum({S(""), S("01011011101111"), 0.99}) );
+
+	//------------------
+	// Run
+	//------------------
+	
 	auto h0 = new MyHypothesis(&grammar);
-//	parallel_MCMC(nthreads, h0, &data, callback, mcmc_steps, mcmc_restart);
-	MCMC<MyHypothesis>(h0, data, callback, mcmc_steps);
-		
 	
+	tic(); // start the timer
+	parallel_MCMC(nthreads, h0, &mydata, callback, mcmc_steps, mcmc_restart);
+//	MCMC<MyHypothesis>(h0, mydata, callback, mcmc_steps);
+	tic(); // end timer
+	
+	// Show the best we've found
 	top.print(print);
 	
-	COUT "# Global sample count:" TAB global_sample_count ENDL;
+	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
-	COUT "# Samples per second:" TAB global_sample_count/elapsed_seconds() ENDL;
+	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
 	
 }

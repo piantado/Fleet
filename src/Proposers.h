@@ -1,5 +1,4 @@
-#ifndef PROPOSERS_H
-#define PROPOSERS_H
+#pragma once
 
 #include<utility>
 #include<tuple>
@@ -142,6 +141,3 @@ std::pair<Node*, double> delete_proposal(Grammar* grammar, Node* from) {
 }
 
 
-
-
-#endif

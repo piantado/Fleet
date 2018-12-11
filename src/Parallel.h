@@ -1,5 +1,4 @@
-#ifndef PARALLEL_H
-#define PARALLEL_H
+#pragma once
 
 void parallelize( void *f(void*), size_t cores ) {
 	
@@ -15,5 +14,3 @@ void parallelize( void *f(void*), size_t cores ) {
 		pthread_join(threads[t], nullptr);     
 	}
 }
-
-#endif

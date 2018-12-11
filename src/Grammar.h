@@ -1,6 +1,10 @@
-#ifndef GRAMMAR_H
-#define GRAMMAR_H
+#pragma once
+
 #include <deque>
+#include <exception>
+
+// an exception for recursing too deep so we can print a trace of what went wrong
+class DepthException: public std::exception {} depth_exception;
 
 class Grammar {
 	/* 
@@ -12,7 +16,7 @@ class Grammar {
 protected:
 	std::vector<Rule*> rules[N_NTs];
 	double			   Z[N_NTs]; // keep the normalizer handy for each rule
-	const unsigned long MAX_DEPTH = 128; 
+	const unsigned long MAX_DEPTH = 64; 
 	
 public:
 	Grammar() {
@@ -65,8 +69,7 @@ public:
 				return r;
 		}
 		
-		CERR "*** Normalizer error in nonterminal " << nt;
-		assert(0); // Something bad happened in rule probabilities
+		assert(0 && "*** Normalizer error in nonterminal "); // Something bad happened in rule probabilities
 	}
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const CustomOp o, const int a=0) {
@@ -74,7 +77,7 @@ public:
 			if(r->instr.is_custom && r->instr.custom == o && r->instr.arg == a) 
 				return r;
 		}
-		assert(0);		
+		assert(0 && "*** Could not find rule");		
 	}
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const BuiltinOp o, const int a=0) {
@@ -82,7 +85,7 @@ public:
 			if(r->instr.is_custom && r->instr.custom == o && r->instr.arg == a) 
 				return r;
 		}
-		assert(0);		
+		assert(0 && "*** Could not find rule");		
 	}
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -124,7 +127,12 @@ public:
 		T* v = make<T>(r);
 		for(size_t i=0;i<r->N;i++) {
 			v->child[i] = expand_from_names<T>(q);
-			assert(r->child_types[i] == v->child[i]->rule->nt); // just check that we didn't miss this up
+			if(r->child_types[i] != v->child[i]->rule->nt) {
+				CERR "*** Grammar expected type " << r->child_types[i] << 
+					 " but got type " << v->child[i]->rule->nt << " at " << 
+					 r->format << " argument " << i ENDL;
+				assert(false && "Bad names in expand_from_names."); // just check that we didn't miss this up
+			}
 		}
 		return v;
 	}
@@ -198,13 +206,22 @@ public:
 	T* generate(const nonterminal_t nt, unsigned long depth=0) const {
 		// Sample a rule and generate from this grammar. This has a template to avoid a circular dependency
 		// and allow us to generate other kinds of things from rules if we want. 
+		// We use exceptions here just catch depth exceptions so we can easily get a trace of what
+		// happened
 		
-		assert(depth < MAX_DEPTH && "*** Grammar has recursed beyond MAX_DEPTH, are you sure the probabilities are right?");
+		if(depth >= MAX_DEPTH) {
+			throw depth_exception; //assert(0);
+		}
 		
 		Rule* r = sample_rule(nt);
 		auto n = new T(r, log(r->p) - log(Z[nt])); // slightly inefficient because we compute this twice
 		for(size_t i=0;i<r->N;i++) {
-			n->child[i] = generate<T>(r->child_types[i], depth+1); // recurse down
+			try{
+				n->child[i] = generate<T>(r->child_types[i], depth+1); // recurse down
+			} catch(DepthException& e) {
+				CERR "*** Grammar has recursed beyond MAX_DEPTH (Are the probabilities right?). nt=" << nt << " d=" << depth TAB n->string() ENDL;
+				throw e;
+			}
 		}
 		return n;
 	}
@@ -216,4 +233,3 @@ public:
 	
 };
 
-#endif

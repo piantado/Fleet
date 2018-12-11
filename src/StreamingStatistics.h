@@ -1,6 +1,4 @@
-#ifndef STREAMING_STATISTICS
-#define STREAMING_STATISTICS
-
+#pragma once
 
 template<typename T>
 class ReservoirSample {
@@ -252,4 +250,3 @@ public:
 	
 };
 
-#endif
