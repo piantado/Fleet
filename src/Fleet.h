@@ -24,7 +24,7 @@
 #include <chrono>
 #include <thread>         // std::this_thread::sleep_for
 
-const std::string FLEET_VERSION = "0.0.1";
+const std::string FLEET_VERSION = "0.0.2";
 
 // First some error checking on Fleet's required macros
 // this is because we use some of them in enums, and so a failure 
