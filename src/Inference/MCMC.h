@@ -99,7 +99,7 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 		
 	// copy the current to keep track of the max, if that's what we're supposed to return
 	HYP* themax = nullptr;
-	if(returnmax) themax = new HYP(*current);  	 
+	if(returnmax) themax = current->copy();
 	
     unsigned long steps_since_improvement = 0; // how long have I been going without getting better?
     double        best_posterior = current->posterior; // used to measure steps since we've improved
@@ -143,7 +143,7 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 		// keep track of the max if we are supposed to
 		if(returnmax && (proposal->posterior > themax->posterior)) {
 			delete themax; 			
-			themax = new HYP(*proposal); 
+			themax = proposal->copy(); 
 		}
 		
 		// keep track of the best on this run -- note we can't compute from themax because 

@@ -183,38 +183,18 @@ public:
 		// hypothesis in order to prevent losing probability when we do so
 		// NOTE: this only makes sense if we do NOT automatically call prev in the input string below in call!
 		
-#ifdef CONCATENATIVE
-		Node* nxtval = grammar->expand_from_names<Node>((std::string)"\u00D8"); 
-#else
 		Node* nxtval = grammar->expand_from_names<Node>((std::string)"F:"+std::to_string(factors.size()-1)+":x"); 
-#endif
 		InnerHypothesis* h = new InnerHypothesis(grammar, nxtval);
 		factors.push_back(h);
 	}
 	
 	virtual MyHypothesis* restart() const  {
 		
-		// restart the last factor only
-		MyHypothesis* x = this->copy();
-		
-		size_t i = factors.size()-1;
-		x->replace(i, factors[i]->restart());
-		
+		MyHypothesis* x = new MyHypothesis(grammar);
+		x->factors.push_back(new InnerHypothesis(grammar));
 		return x;
 	}
 	 
-//#ifdef CONCATENATIVE
-//	virtual MyHypothesis* propose() const {
-//		// Propose to this hypothesis. If we are concatenative, we'll only propose the end; otherwise we'll propose everywhere,
-//		// which is the default for Lexicon
-//		MyHypothesis* x = this->copy();
-//		x->fb = 0.0;
-//		size_t k = factors.size()-1;
-//		x->replace(k, factors[k]->propose());
-//		x->fb += factors[k]->fb;		
-//		return x;		
-//	} 
-//#endif
 
 	virtual std::pair<MyHypothesis*,double> propose() const {
 		// propose with inserts/deletes
@@ -316,22 +296,6 @@ public:
 		// Now main code
 		cur.addmass(x, 0.0); // start with the only input
 		
-		
-#ifdef CONCATENATIVE
-		for(size_t i=0;i<factors.size();i++) {
-			DiscreteDistribution<S> newcur; 
-			for(auto input : cur.values()) { // for each input
-				if(input.second < MIN_LP) continue; // skip the low probability strings
-			    // call on this input, with myself as handling the recursion, and with an lp (thanks to the breakout) given by the input string
-				DiscreteDistribution<S> output = factors[i]->call(input.first,err,this,MIN_LP-input.second); // run with the min amount being the amount of lp remaining
-				for(auto o : output.values()) {
-					// and add up the probability mass
-					newcur.addmass(input.first+o.first, o.second+input.second); // concatenates the string ont he end
-				}
-			}
-			cur = newcur; // copy over and continue
-		}
-#else 
 		size_t i = factors.size()-1; 
 		DiscreteDistribution<S> newcur; 
 		for(auto input : cur.values()) { // for each input
@@ -343,8 +307,6 @@ public:
 		}
 		cur = newcur; // copy over and continue
 	
-
-#endif		
 		return cur;		
 	}
 	 
@@ -466,45 +428,6 @@ void callback(MyHypothesis* h) {
 }
 
 
-double structural_playouts(const MyHypothesis* h0) {
-	// This does a "default" playout for MCTS that runs MCMC only if the structure (expression)
-	// is incomplete, as determined by can_evaluate()
-//	CERR "PLAYOUTS ON " << h0->string() TAB h0->is_evaluable() ENDL;
-	if(h0->is_evaluable()) { // it has no gaps, so we don't need to do any structural search or anything
-		auto h = h0->copy();
-		h->compute_posterior(mydata);
-		callback(h);
-		double v = h->posterior;
-		delete h;
-		return v;
-	}
-	else { // we have to do some more search
-	
-		// we treat hte case of mcmc_steps=1 specially: we will try to complete it up till 50 times
-		// and try not to get a -inf posterior
-		if(mcmc_steps == 1){
-			for(size_t i=0;i<100;i++) {
-		
-				auto h = h0->copy_and_complete();
-				h->compute_posterior(mydata);
-				callback(h);
-				double v = h->posterior;
-				delete h;
-				if(v > -infinity) return v;
-			}
-			return -infinity; // grudgingly
-		}
-		else { // really run mcm
-	
-			auto h = h0->copy_and_complete();
-			auto q = MCMC(h, mydata, callback, mcmc_steps, mcmc_restart, true);
-			double v = q->posterior;
-			//std::cerr << v << "\t" << h0->string() << std::endl;
-			delete q;
-			return v;
-		}
-	}
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 #include "Parallel.h"
@@ -555,10 +478,11 @@ int main(int argc, char** argv){
 	// Vanilla MCMC
 //	MyHypothesis* h0 = new MyHypothesis(grammar);
 //	h0->factors.push_back(new InnerHypothesis(grammar));
-//	//h0->factors.push_back(new InnerHypothesis(grammar));
-//	//h0->factors.push_back(new InnerHypothesis(grammar));
-//	//MCMC(h0, data, callback, mcmc_steps, mcmc_restart, true);
-//	parallel_MCMC(nthreads, h0, &data, callback, mcmc_steps, mcmc_restart);
+	//h0->factors.push_back(new InnerHypothesis(grammar));
+	//h0->factors.push_back(new InnerHypothesis(grammar));
+	//MCMC(h0, mydata, callback, mcmc_steps, mcmc_restart, true);
+	
+	//	parallel_MCMC(nthreads, h0, &mydata, callback, mcmc_steps, mcmc_restart);
 //	top.print(print);
 
 	h0 = new MyHypothesis(grammar);

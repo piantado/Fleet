@@ -196,8 +196,10 @@ const double alpha = 0.9;
 MyHypothesis::t_data mydata;
 TopN<MyHypothesis> top;
 TopN<MyHypothesis> all;
+pthread_mutex_t output_lock;
 
 void print(MyHypothesis& h, std::string prefix) {
+	pthread_mutex_lock(&output_lock); 
     COUT prefix << mydata.size() TAB top.count(h) TAB h.posterior TAB h.prior TAB h.likelihood << "\t";
 	
     for (int j = 1; j <= 9; j++) {
@@ -222,6 +224,7 @@ void print(MyHypothesis& h, std::string prefix) {
     }
     
 	COUT "\t" << h.recursion_count() TAB QQ(h.string()) ENDL;
+	pthread_mutex_unlock(&output_lock); 
 }
 void print(MyHypothesis& h) {
 	print(h, std::string(""));
@@ -268,6 +271,8 @@ double playouts(const MyHypothesis* h0) {
 
 int main(int argc, char** argv){ 
 	using namespace std;
+	
+	pthread_mutex_init(&output_lock, nullptr); 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	FLEET_DECLARE_GLOBAL_ARGS()
@@ -328,7 +333,7 @@ int main(int argc, char** argv){
 		
 		// now run vanilla MCMC
 		auto h0 = new MyHypothesis(&grammar);	
-		parallel_MCMC(nthreads, h0, &mydata, callback, mcmc_steps, mcmc_restart);
+		parallel_MCMC(nthreads, h0, &mydata, callback, mcmc_steps, mcmc_restart, true, runtime/data_amounts.size());
 
 		// MCTS 
 //		auto h0 = new MyHypothesis(&grammar, nullptr);	

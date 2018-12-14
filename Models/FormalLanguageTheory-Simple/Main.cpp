@@ -1,7 +1,10 @@
 
-// We require a macro to define our custom operations as a string BEFORE we import Fleet
+// We require an enum to define our custom operations as a string before we import Fleet
+// These are the internal symbols that are used to represent each operation. The grammar
+// generates nodes with them, and then dispatch down below gets called with a switch
+// statement to see how to execute aech of them. 
 enum CustomOp {
-	op_STREQ,op_EMPTYSTRING,op_EMPTY,op_A,op_B,op_CDR,op_CAR,op_CONS
+	op_STREQ,op_EMPTYSTRING,op_EMPTY,op_A,op_CDR,op_CAR,op_CONS
 };
 
 // Define our types. 
@@ -13,6 +16,10 @@ enum CustomOp {
 
 using S = std::string; // just for convenience
 
+S alphabet = "01"; // the alphabet we use (possibly specified on command line)
+S datastr  = "01,01011,010110111"; // the data, comma separated
+const double strgamma = 0.99; // penalty on string length
+
 // Define a grammar
 class MyGrammar : public Grammar { 
 public:
@@ -20,8 +27,11 @@ public:
 		add( new Rule(nt_string, op_X,            "x",            {},                               5.0) );		
 		add( new Rule(nt_string, op_RECURSE,      "F(%s)",        {nt_string},                      2.0) );		
 
-		add( new Rule(nt_string, op_A,            "'0'",          {},                               2.50) );
-		add( new Rule(nt_string, op_B,            "'1'",          {},                               2.50) );
+		// here we create an alphabet op with an "arg" that is unpacked below to determine
+		// which character of the alphabet it corresponds to 
+		for(size_t i=0;i<alphabet.length();i++)
+			add( new Rule(nt_string, op_A,            alphabet.substr(i,1),          {},                   5.0/alphabet.length(), i) );
+
 		add( new Rule(nt_string, op_EMPTYSTRING,  "''",           {},                               1.0) );
 		
 		add( new Rule(nt_string, op_CONS,         "cons(%s,%s)",  {nt_string,nt_string},            1.0) );
@@ -43,28 +53,46 @@ class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_string, S, S> {
 public:
 
 	static const size_t MAX_LENGTH = 64; // longest strings cons will handle
-	static constexpr double gamma      = 0.99; // this coin flip says when we end 
-	static const S err;
 	
 	// I must implement all of these constructors
 	MyHypothesis(Grammar* g)            : LOTHypothesis<MyHypothesis,Node,nt_string,S,S>(g) {}
 	MyHypothesis(Grammar* g, Node* v)   : LOTHypothesis<MyHypothesis,Node,nt_string,S,S>(g,v) {}
 	
+	// Very simple likelihood that just counts up the probability assigned to the output strings
+//	double compute_single_likelihood(const t_datum& x) {
+//		auto out = call(x.input, "<err>");
+//		return logplusexp( log(x.reliability)+(out.count(x.output)?out[x.output]:-infinity),  // probability of generating the output
+//					       log(1.0-x.reliability) + (x.output.length())*(log(1.0-gamma) + log(0.5)) + log(gamma) // probability under noise; 0.5 comes from alphabet size
+//						   );
+//	}
 	double compute_single_likelihood(const t_datum& x) {
-		// Very simple likelihood that just counts up the probability assigned to the output strings
-		auto out = call(x.input, err);
-		return logplusexp( log(x.reliability)+(out.count(x.output)?out[x.output]:-infinity),  // probability of generating the output
-					       log(1.0-x.reliability) + (x.output.length())*(log(1.0-gamma) + log(0.5)) + log(gamma) // probability under noise; 0.5 comes from alphabet size
-						   );
+		auto out = call(x.input, "<err>");
+		
+		// a likelihood based on the prefix probability -- we assume that we generate from the hypothesis
+		// and then might glue on some number of additional strings, flipping a gamma-weighted coin to determine
+		// how many to add
+		double lp = -infinity;
+		for(auto o : out.values()) { // add up the probability from all of the strings
+			if(is_prefix(o.first, x.output)) {
+				lp = logplusexp(lp, o.second + log(strgamma) + log((1.0-strgamma)/alphabet.length()) * (x.output.length() - o.first.length()));
+			}
+		}
+		return lp;
 	}
 	
 	abort_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>* vms, Dispatchable<S,S>* loader ) {
 		/* Dispatch the functions that I have defined. Returns NO_ABORT on success. 
 		 * */
-		assert(i.is_custom);
+		assert(i.is_custom); // an "insturction" should only get here if it is a "custom" one, meaning defined in CustomOps up above
 		switch(i.custom) {
-			CASE_FUNC0(op_A,           S,          [](){ return S("0");} )
-			CASE_FUNC0(op_B,           S,          [](){ return S("1");} )
+			// this uses CASE_FUNCs which are defined in CaseMacros.h, and which give a nice interface for processing the
+			// different cases. They take a return type, some input types, and a functino to evaluate. 
+			// as in op_CONS below, this function (CASE_FUNC2e) can take an "error" (e) condition, which will cause
+			// an abort			
+			
+			// when we process op_A, we unpack the "arg" into an index into alphabet
+			CASE_FUNC0(op_A,           S,          [i](){ return alphabet.substr(i.arg, 1);} )
+			// the rest are straightforward:
 			CASE_FUNC0(op_EMPTYSTRING, S,          [](){ return S("");} )
 			CASE_FUNC1(op_EMPTY,       bool,  S,   [](const S s){ return s.size()==0;} )
 			CASE_FUNC2(op_STREQ,       bool,  S,S, [](const S a, const S b){return a==b;} )
@@ -75,22 +103,27 @@ public:
 								[](const S x, const S y){ return (x.length()+y.length()<MAX_LENGTH ? NO_ABORT : SIZE_EXCEPTION ); }
 								)
 			default:
-				assert(0); // should never get here
+				assert(0 && " *** You ended up with an invalid argument"); // should never get here
 		}
 		return NO_ABORT;
 	}
 };
-const S MyHypothesis::err = "<err>";
 
 
+// mydata stores the data for the inference model
 MyHypothesis::t_data mydata;
+// top stores the top hypotheses we have found
 TopN<MyHypothesis> top;
 
 
-void print(MyHypothesis& h) {
+// define some functions to print out a hypothesis
+void print(MyHypothesis& h, S prefix) {
 	COUT "# ";
 	h.call("", "<err>").print();
-	COUT "\n" << top.count(h) TAB  h.posterior TAB h.prior TAB h.likelihood TAB h.string() ENDL;
+	COUT "\n" << prefix << top.count(h) TAB  h.posterior TAB h.prior TAB h.likelihood TAB h.string() ENDL;
+}
+void print(MyHypothesis& h) {
+	print(h, S("")); // default null prefix
 }
 
 
@@ -98,6 +131,11 @@ void print(MyHypothesis& h) {
 // print it every thin samples unless thin=0
 void callback(MyHypothesis* h) {
 	
+	// if we find a new best, print it out
+	if(h->posterior > top.best_score()) 
+		print(*h, "# NewTop:");
+	
+	// add to the top
 	top << *h; 
 	
 	// print out with thinning
@@ -113,17 +151,25 @@ int main(int argc, char** argv){
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	FLEET_DECLARE_GLOBAL_ARGS()
+	app.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
+	app.add_option("-d,--data", datastr, "Comma separated list of input data strings");	
 	CLI11_PARSE(app, argc, argv);
 	
 	top.set_size(ntop); // set by above macro
 
-	Fleet_initialize();
+	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
 	
+	// declare a grammar
 	MyGrammar grammar;
 	
 	//------------------
 	// set up the data
 	//------------------
+	
+	// we will parse the data from a comma-separated list of "data" on the command line
+	for(auto di : split(datastr, ',')) {
+		mydata.push_back( MyHypothesis::t_datum({S(""), di}) );
+	}
 	
 	// simple pattern
 //	mydata.push_back( MyHypothesis::t_datum({S(""), S("01011"), 0.99}) );
@@ -131,10 +177,10 @@ int main(int argc, char** argv){
 //	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110101101011"), 0.99}) );
 
 	// Fibonacci data:
-	mydata.push_back( MyHypothesis::t_datum({S(""), S("01011"), 0.99}) );
-	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110111"), 0.99}) );
-	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110111011111"), 0.99}) );
-	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110111011111011111111"), 0.99}) );
+//	mydata.push_back( MyHypothesis::t_datum({S(""), S("01011"), 0.99}) );
+//	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110111"), 0.99}) );
+//	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110111011111"), 0.99}) );
+//	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110111011111011111111"), 0.99}) );
 
 	// increasing count data
 //	mydata.push_back( MyHypothesis::t_datum({S(""), S("01011"), 0.99}) );
@@ -148,8 +194,8 @@ int main(int argc, char** argv){
 	auto h0 = new MyHypothesis(&grammar);
 	
 	tic(); // start the timer
-	parallel_MCMC(nthreads, h0, &mydata, callback, mcmc_steps, mcmc_restart);
-//	MCMC<MyHypothesis>(h0, mydata, callback, mcmc_steps);
+	parallel_MCMC(nthreads, h0, &mydata, callback, mcmc_steps, mcmc_restart, true, runtime);
+//	MCMC<MyHypothesis>(h0, mydata, callback, mcmc_steps, true, runtime);
 	tic(); // end timer
 	
 	// Show the best we've found

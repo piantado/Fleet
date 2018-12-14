@@ -35,10 +35,13 @@ public:
 	// We'll define a vector of pairs of inputs and outputs
 	// this may be used externally to define what data is
 	
-	typedef struct {
+	typedef struct t_datum {
 		t_input input;
 		t_output output;
 		double   reliability; // the noise probability (typically required)
+		
+		t_datum(t_input i, t_output o, double r) : input(i), output(o), reliability(r) {};
+		t_datum(t_input i, t_output o) : input(i), output(o), reliability(NaN) {};		
 	} t_datum; // single data point
 	typedef std::vector<t_datum> t_data; 
 
