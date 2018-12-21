@@ -38,7 +38,7 @@ public:
 	}
 	
 	virtual void takeover(Node* k) {
-		// take over all the resouces of k, and zero out k (without deleting)
+		// take over all the resouces of k, and zero out k and then delete it
 		// TODO: use a move operator here?
 		
 		for(size_t i=0;i<rule->N;i++) { // first, clear out my own children
@@ -52,7 +52,9 @@ public:
 		for(size_t i=0;i<rule->N;i++) {
 			child[i] = k->child[i];
 		}
+		
 		k->zero();
+		delete k;
 	}
 	
 	virtual void zero() {
@@ -106,7 +108,7 @@ public:
 	
 	void map( void f(Node*) ) {
 		// NOTE: Because map calls f first on this, it allows us to modify the tree if we want to. 
-		f(this);
+		f(this); // call first, in case f modifies my children
 		for(size_t i=0;i<rule->N;i++) {
 			if(child[i] != nullptr) child[i]->map(f);
 		}
@@ -118,7 +120,28 @@ public:
 			if(child[i] != nullptr) child[i]->map(f);
 		}
 	}
+	
+	void map_conditionalrecurse( std::function<bool(Node*)>& f ) {
+		// f here returns a function and we only recurse if the function returns true
+		// This is often useful if we are modifying the tree and don't want to keep going once we've found something
+		bool b = f(this);
+		if(b){
+			for(size_t i=0;i<rule->N;i++) {
+				if(child[i] != nullptr) child[i]->map_conditionalrecurse(f);
+			}
+		}
+	}
 		
+	size_t count_equal(const Node* n) {
+		// how many of my descendants are equal to n?
+		size_t cnt = 1;
+		if(*this == *n) cnt++;
+		for(size_t i=0;i<rule->N;i++) { // TODO: probably don't have to recurse if we are equal
+			if(child[i] != nullptr) 
+				cnt += child[i]->count_equal(n);
+		}
+		return cnt;
+	}
 		
 	virtual size_t count() const {
 		std::function<size_t(const Node* n)> one = [](const Node* n){return (size_t)1;};
@@ -153,7 +176,10 @@ public:
 		}
 		return nullptr; // signal to above that the nth si not here. 
 	}
-	
+	virtual Node* get_nth(int& n) const { // default true on every node
+		std::function<int(const Node* n)> t = [](const Node* n) { return 1;};
+		return get_nth(n, t); 
+	}
 	
 	virtual Node* copy_resample(const Grammar& g, bool f(const Node* n)) const {
 		// this makes a copy of the current node where ALL nodes satifying f are resampled from the grammar
@@ -169,7 +195,7 @@ public:
 		}
 		return ret;
 	}
-		
+	
 
 	virtual std::string string() const {
 		// This converts my children to strings and then substitutes into rule->format using simple string substitution.
@@ -182,6 +208,20 @@ public:
 			output.replace(pos, ChildStr.length(), (child[i]==nullptr ? nulldisplay : child[i]->string()));
 		}
 		return output;
+	}
+	
+	virtual std::string parseable(std::string delim=":") const {
+		// get a string like one we could parse
+		std::string out = rule->format;
+		for(size_t i=0;i<rule->N;i++) {
+			if(child[i] == nullptr) {
+				out += delim + ChildStr;
+			} 
+			else {
+				out += delim + child[i]->parseable(delim);
+			}
+		}
+		return out;
 	}
 	
 
@@ -250,7 +290,10 @@ public:
 	virtual bool operator==(const Node &n) const{
 		// Check equality between notes. Note that this compares the rule *pointers* so we need to be careful with 
 		// serialization and storing/recovering full node trees with equality comparison
-		if(rule == n.rule) return false;
+		
+		if(rule != n.rule) 
+			return false;
+			
 		for(size_t i=0;i<rule->N;i++){
 			if(!(child[i]->operator==(*n.child[i]))) return false;
 		}
