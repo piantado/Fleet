@@ -53,7 +53,7 @@ public:
 			out << "'" << v[i] << "'" << ":" << m[v[i]];
 			if(i < v.size()-1) { out << ", "; }
 		}
-		out << "} [Z=" << Z << "]";
+		out << "} [Z=" << Z << ", N=" << v.size() << "]";
 	}
 	void print() {
 		print(std::cout);

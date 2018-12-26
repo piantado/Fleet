@@ -88,6 +88,8 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 	// if either of these is 0, then that is ignored; if both are nonzero, then it uses whatever is 
     // NOTE: If current has a -inf posterior, we always propose from restart() 
 	// NOTE: This requires that HYP implement: propose(), restart(), compute_posterior(const t_data&)
+	const double temperature = 1.0;
+	
 	
 	using clock = std::chrono::steady_clock;
 	
@@ -115,7 +117,7 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 		}
 		
 #ifdef DEBUG_MCMC
-        std::cerr << "\n# Current\t" << current->posterior TAB "\t" TAB current->string() ENDL;
+        std::cerr << "\n# Current\t" << current->posterior TAB current->prior TAB current->likelihood TAB "\t" TAB current->string() ENDL;
 #endif
         
 		// generate the proposal -- defaulty "restarting" if we're currently at -inf
@@ -130,14 +132,14 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 			
 		++FleetStatistics::mcmc_proposal_calls;
 		
-#ifdef DEBUG_MCMC
-        std::cerr << "# Proposing\t\t\t" TAB proposal->string() ENDL;
-#endif
-				
+//#ifdef DEBUG_MCMC
+//        std::cerr << "# Proposing\t\t\t" TAB proposal->string() ENDL;
+//#endif
+//				
 		proposal->compute_posterior(data);
 
 #ifdef DEBUG_MCMC
-        std::cerr << "# Proposed \t" << proposal->posterior TAB fb TAB proposal->string() ENDL;
+        std::cerr << "# Proposed \t" << proposal->posterior TAB proposal->prior TAB proposal->likelihood TAB fb TAB proposal->string() ENDL;
 #endif
 		
 		// keep track of the max if we are supposed to
@@ -157,7 +159,7 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 		}
 		
 		// use MH acceptance rule, with some fanciness for NaNs
-		double ratio = proposal->posterior - current->posterior - fb; // Remember: don't just check if proposal->posterior>current->posterior or all hell breaks loose		
+		double ratio = proposal->posterior/temperature - current->posterior/temperature - fb; // Remember: don't just check if proposal->posterior>current->posterior or all hell breaks loose		
 		if(   (std::isnan(current->posterior)) ||
 		    ((!std::isnan(proposal->posterior)) &&
 			  (ratio > 0 || uniform(rng) < exp(ratio)))) {

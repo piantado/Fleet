@@ -73,9 +73,9 @@ public:
 	}
 	
 	
-	// Returns the max of applying f to all of the non-null nodes 
+	// Returns the max of applying f to all of the non-null nodes 	
 	template<typename T>
-	T maxof( T f(Node*) ) {
+	T maxof( std::function<T(const Node*)>& f) const {
 		T mx = f(this);
 		for(size_t i=0;i<rule->N;i++) {
 			if(child[i] != nullptr) {
@@ -180,6 +180,36 @@ public:
 		std::function<int(const Node* n)> t = [](const Node* n) { return 1;};
 		return get_nth(n, t); 
 	}
+	
+	
+	
+	virtual Node* __sample_helper(std::function<double(const Node*)>& f, double& r) {
+		
+		r -= f(this);
+		if(r < 0.0) { 
+			return this; 
+		}
+		else {
+			for(size_t i=0;i<rule->N && r >= 0.0;i++) {
+				if(child[i] != nullptr){
+					auto q = child[i]->__sample_helper(f,r);
+					if(q != nullptr) return q;
+				}
+			}
+			return nullptr;
+		}		
+	}
+	
+	virtual Node* sample(std::function<double(const Node*)>& f) {
+		// sample a subnode satisfying f and return its probability
+		// where f maps each node to a probability (possibly zero)
+		// NOTE: this does NOT return a copy
+		
+		double z = sum<double>(f);
+		double r = z * uniform(rng);
+		return __sample_helper(f,r);
+	}
+	
 	
 	virtual Node* copy_resample(const Grammar& g, bool f(const Node* n)) const {
 		// this makes a copy of the current node where ALL nodes satifying f are resampled from the grammar

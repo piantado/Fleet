@@ -4,8 +4,8 @@
 
 #include "LOTHypothesis.h"
 
-template<typename HYP, typename T, typename t_input, typename t_output>
-class Lexicon : public MCMCable<HYP,t_input,t_output>,
+template<typename HYP, typename T, typename t_input, typename t_output, typename _t_datum=default_datum<t_input, t_output>>
+class Lexicon : public MCMCable<HYP,t_input,t_output,_t_datum>,
 				public Dispatchable<t_input,t_output>,
 				public Searchable<HYP,t_input,t_output>
 {
@@ -23,7 +23,7 @@ public:
 	Lexicon(Grammar* g, Node* v) { assert(0);}
 
 	
-	Lexicon(Lexicon& l) : grammar(l.grammar), MCMCable<HYP,t_input,t_output>(l){
+	Lexicon(Lexicon& l) : grammar(l.grammar), MCMCable<HYP,t_input,t_output,_t_datum>(l){
 		for(T* v : l.factors) {
 			factors.push_back(v->copy());
 		}
@@ -62,6 +62,14 @@ public:
 		return s;		
 	}
 	
+	virtual std::string parseable(std::string delim=":", std::string fdelim="|") const {
+		std::string out = "";
+		for(size_t i=0;i<factors.size();i++) {
+			out += factors[i]->parseable(delim) + fdelim;
+		}
+		return out;
+	}
+	
 	virtual size_t hash() const {
 		size_t out = 0x0;
 		size_t i=1;
@@ -72,7 +80,7 @@ public:
 		return out;
 	}
 	
-	virtual bool operator==(const Lexicon<HYP,T,t_input,t_output>& l) const {
+	virtual bool operator==(const Lexicon<HYP,T,t_input,t_output,_t_datum>& l) const {
 		
 		// first, fewer factors are less
 		if(factors.size() != l.factors.size()) 
@@ -84,6 +92,53 @@ public:
 		}
 		return true; 
 	}
+	
+	bool has_valid_indices() const {
+		// check to make sure that if we have rn recursive factors, we never try to call F on higher 
+		
+		// find the max op_idx used and be sure it isn't larger than the number of factors
+		std::function<size_t(const Node*)> f = [](const Node* n) {
+			if(n->rule->instr.is_custom && n->rule->instr.custom == op_IDX) {
+				return (size_t)n->rule->instr.arg;
+			}
+			else {
+				return (size_t)0;
+			}
+		};
+		
+		size_t mx = 0;
+		for(auto a : factors) {
+			auto m = a->value->maxof( f );
+			if(m > mx) mx = m;
+		}
+		
+		return mx>=0 && mx < factors.size();
+	}
+	 
+	
+	void fix_indices(size_t loc, int added) {
+		// go through and fix the indices assuming that we added added at loc
+		// note: Added can be positive (Adding) or negative (removing)
+		std::function<void(Node*)> adjuster = [this, loc, added](Node* n){
+			const Instruction ni = n->rule->instr;
+			if(ni.is_custom && ni.custom == op_IDX &&
+			   (size_t)ni.arg >= loc) { // we only have to increment when args is gt. loc
+			   
+				size_t newindex = n->rule->instr.arg+added;
+				
+				assert(newindex < MAX_FACTORS);
+				assert(newindex >= 0);
+				
+				n->rule = this->grammar->get_rule(n->rule->nt, n->rule->instr.custom, newindex); 
+			}
+		};
+			
+		for(size_t i=0;i<factors.size();i++) {
+			if(added > 0 || loc != i) // can't do this on the one we are removing, since we might remove f0 and it calls itself!
+				factors[i]->value->map(adjuster); // replacing function mapped through nodes				
+		}		
+	}
+	
 	
 	/********************************************************
 	 * Required for VMS to dispatch to the right sub
@@ -137,7 +192,10 @@ public:
 	
 	virtual double compute_prior() {
 		// this uses a proper prior which flips a coin to determine the number of factors
-		this->prior = log(0.5)*(factors.size()+1); // +1 to end adding facators
+		
+		this->prior = log(0.5)*(factors.size()+1); // +1 to end adding factors, as in a geometric
+		//this->prior = 0.0;
+		
 		for(auto a : factors) 
 			this->prior += a->compute_prior();
 		return this->prior;
@@ -147,9 +205,16 @@ public:
 	virtual std::pair<HYP*,double> propose() const {
 		HYP* x = this->copy();
 		
+		// we will always flip one,
+		// and flip the rest at random
+		// if we dont always flip one, one single 
+		// factors we waste half of our samples!
+		//auto i = myrandom(factors.size()); 
+		
 		double fb = 0.0;
 		for(size_t k=0;k<factors.size();k++) {
-			if(flip()) {
+			if( flip()) {
+			//if(k==i || flip()) {
 				auto [h, _fb] = factors[k]->propose();
 				x->replace(k, h);
 				fb += _fb;
@@ -163,9 +228,7 @@ public:
 	virtual HYP* restart() const  {
 		HYP* x = this->copy();
 		for(size_t i=0;i<factors.size();i++){
-			auto tmp = x->factors[i];
-			x->factors[i] = tmp->restart(); // restart each factor
-			delete tmp;
+			x->replace(i,x->factors[i]->restart());
 		}
 		return x;
 	}

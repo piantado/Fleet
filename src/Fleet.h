@@ -24,6 +24,8 @@
 #include <chrono>
 #include <thread>         // std::this_thread::sleep_for
 
+#include <sys/resource.h> // just for setting priority defaulty 
+
 const std::string FLEET_VERSION = "0.0.2";
 
 // First some error checking on Fleet's required macros
@@ -57,36 +59,7 @@ enum BuiltinOp {
 	op_NOP=0,op_X,op_POPX,op_MEM,op_RECURSE,op_RECURSE_FACTORIZED,op_MEM_RECURSE,op_MEM_RECURSE_FACTORIZED,op_FLIP,op_FLIPP,op_IF,op_JMP
 };
 
-typedef struct Instruction { 
-		// This is an operation in a program, which can store either a BuiltinOp or a CustomOp
-		// It is evaluated by dispatch and created from nodes by linearize, and in Rule's constructor.
-		// it has a flag (is_custom) to say whether it's a builtin or custom op. Some of the builtin ops
-		// take arguments (like jump) 
-		// The "arg" here is super useful since it essentially allows us to define classes of instructions
-		// for instance, jump takes an arg, factorized recursion use sarg for index, in FormalLanguageTheory
-		// we use arg to store which alphabet terminal, etc. 
-		
-		bool         is_custom  : 1; // what kind of op is this? custom or built in?
-		BuiltinOp    builtin    : 6; // if we are built in, which op is it?
-		int          arg        : 16; // 
-		CustomOp     custom     : 8; // custom ops go here
-		
-		// constructors to make this a little easier to deal with
-		Instruction(BuiltinOp x, int arg_=0x0) :
-			is_custom(false), builtin(x), arg(arg_), custom((CustomOp)0x0) {
-		}
-		Instruction(CustomOp x, int arg_=0x0) :
-			is_custom(true), builtin((BuiltinOp)0x0), arg(arg_), custom(x) {
-		}
-		
-		bool operator==(Instruction i) const {
-			// equality checking, but tossing the bits we don't need based on whether is_custom
-			if(! (is_custom == i.is_custom && arg == i.arg)) return false; // these always must match
-			if(is_custom) return custom  == i.custom;
-			else          return builtin == i.builtin;
-		}
-		
-} Instruction;
+#include "Instruction.h"
 
 //void print(Instruction i) {	std::cout << "[" << i.is_custom << "." << i.builtin << "." << i.arg << "." << i.custom << "]"; }
 
@@ -99,6 +72,8 @@ namespace FleetStatistics {
 	
 	std::atomic<uintmax_t> posterior_calls(0);
 	
+	std::atomic<uintmax_t> hypothesis_births(0);  // how many total hypotheses have been created? -- useful for tracking when we found a solution
+
 	std::atomic<uintmax_t> vm_ops(0);
 	
 	std::atomic<uintmax_t> mcmc_proposal_calls(0);
@@ -134,14 +109,15 @@ unsigned long mcmc_steps   = 100000; // note this also controls how quickly/deep
 unsigned long thin         = 0;
 unsigned long ntop         = 100;
 unsigned long mcmc_restart = 0;
+unsigned long checkpoint   = 0; 
 double        explore      = 1.0; // we want to exploit the string prefixes we find
 size_t        nthreads     = 1;
 long          runtime      = 0;
 unsigned long chains       = 1;
 bool          concise      = false; // this is used to indicate that we want to not print much out (typically only posteriors and counts)
-std::string   input_path = "input.txt";
-std::string   tree_path  = "tree.txt";
-std::string   output_path = "output.txt";
+std::string   input_path   = "input.txt";
+std::string   tree_path    = "tree.txt";
+std::string   output_path  = "output.txt";
 
 #define FLEET_DECLARE_GLOBAL_ARGS() \
     CLI::App app{"Fancier number model."};\
@@ -156,8 +132,9 @@ std::string   output_path = "output.txt";
     app.add_option("-i,--input",    input_path, "Read standard input from here");\
 	app.add_option("-T,--time",     runtime, "Stop (via CTRL-C) after this much time");\
 	app.add_option("-E,--tree",     tree_path, "Write the tree here");\
-	app.add_flag(  "-c,--concise",  concise, "Don't print very much and do so on one line");\
-	app.add_flag(  "-C,--chains",   chains, "How many chains to run");\
+	app.add_flag(  "-q,--concise",  concise, "Don't print very much and do so on one line");\
+	app.add_flag(  "-c,--chains",   chains, "How many chains to run");\
+	app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");\
 	
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -176,6 +153,7 @@ typedef std::stack<Instruction> Program;
 #include "VirtualMachinePool.h"
 #include "VirtualMachineState.h"
 #include "Node.h"
+//#include "Node.cpp"
 #include "Grammar.h"
 #include "CaseMacros.h"
 #include "DiscreteDistribution.h"
@@ -208,36 +186,6 @@ double elapsed_seconds() {
 	return elapsed.count(); 
 }
 
-
-//struct call_ctrlc_args { long seconds; };
-//void* _call_ctrlc(void* args) {
-//	auto a = (call_ctrlc_args*)args;
-//
-//	CERR "# Will interrupt with CTRL-C in " << a->seconds << " seconds." ENDL;
-//	
-//	// sleep as long as we should
-//    std::this_thread::sleep_for (std::chrono::seconds(a->seconds));
-//
-//	// set CTRL_C 
-//	CTRL_C = true; 
-//	
-//	// all done
-//	pthread_exit(NULL);
-//}
-//
-//void call_ctrlc_after(long s) {
-//	// waits s seconds and then sets Ctrl-C
-//	// (which typically will have the effect of stopping MCMC/MCTS)
-//	pthread_t t;
-//	
-//	call_ctrlc_args* a = new call_ctrlc_args();
-//	a->seconds = s;
-//	
-//	int rc = pthread_create(&t, NULL, _call_ctrlc, a);
-//	if(rc) assert(0 && "Failed to create thread");
-//}
-//
-
 #include <cstdio>
 #include <iostream>
 #include <memory>
@@ -265,9 +213,19 @@ void Fleet_initialize() {
 	// set our own handlers
 	signal(SIGINT, fleet_interrupt_handler);
 	signal(SIGHUP, fleet_interrupt_handler);
-	
+
+	// give us a default niceness
+	setpriority(PRIO_PROCESS, 0, 19);
 
 	// Print standard fleet header
+	
+	// apparently some OSes don't define this
+#ifndef HOST_NAME_MAX
+	size_t HOST_NAME_MAX = 256;
+#endif
+#ifndef LOGIN_NAME_MAX
+	size_t LOGIN_NAME_MAX = 256;
+#endif
 	char hostname[HOST_NAME_MAX];
 	char username[LOGIN_NAME_MAX];
 	gethostname(hostname, HOST_NAME_MAX);
@@ -282,6 +240,7 @@ void Fleet_initialize() {
 	
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
 	COUT "# Running Fleet on " << hostname << " with PID=" << getpid() << " by user " << username << " at " << ctime(&timenow);
+	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
 	COUT "# Executable checksum: " << system_exec(tmp);
 	COUT "# \t --input=" << input_path ENDL;
 	COUT "# \t --nthreads=" << nthreads ENDL;

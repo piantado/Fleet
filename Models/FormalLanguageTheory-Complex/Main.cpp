@@ -10,28 +10,53 @@
  * 		-- Ahha most differences between languages seem to be in how LONG we have run them for --- which is afunction of how much data we have for them. 
  * 
  * 		-- TODO: Change so that we can run infernece on a smaller subset of data than we compute precision/recall on, otherwise we have to get probs exactly right (and have no ties!)
- * 				 Fix the generation probabilities and how removed counts are handled 
- * 				 Fix lexicon proposals
+ * 		
+			What if we add something that lets you access the previous character generated? cons(x,y) where y gets acess to x? cons(x,F(x))?
+  * 					Not so easy to see exactly what it is, ithas to be a Fcons function where Fcons(x,i) = cons(x,Fi(x))
+  * 					It's a lot like a lambda -- apply(lambda x: cons(x, Y[x]), Z)
+  * 	- Make our own type to index into lexica
+  * 	- 
+  * 
+  * 		Do compositional proposals where we might run F[i-1](F[i-2](x)) for the last one...
+  * 	-
+  * 	- What if we evaluate the modelwith a predictive model, where we are always computing the probability underthe model of the next *character*
+  * 		Would that be faster?
+  * 
+  * 	-- might ber good to always give it a _ character that it can pass around as a non-emptystring for recursion
+  * *   -- what if you pass around an alphabet of internal signals, and have a dictionary mapping singals to strings
+  * 
+  * 	-- Seems like it could be important to have access to prior parts of the string that have been emitted?
+  * 
+  * 
+  * 	- Conert sets to sets of terminals only
+  * 
+  * 	-- Add checkpointing -- save file every N samples
+  * 	- Inverse inlining is going to help a lot with the FSM representations because "states" will correspond to functions, and we can pull some out. 
+  * 
+  * 	- maybe we can add those "smart proposal" rules as complex grammar productions -- extracted and parsed from what we specify?
+  * 
+  * 
+  * 	Change so that prec/recall is defined against the biggest
   * 
   * */
   
+// define some convenient types
 #include <set>
 #include <string>
 using S = std::string;
 using StrSet = std::set<S>;
 
 enum CustomOp { // NOTE: The type here MUST match the width in bitfield or else gcc complains
-	op_CUSTOM_NOP,op_STREQ,op_MyRecurse,op_EMPTYSTRING,op_EMPTY,\
-	op_CDR,op_CAR,op_CONS,op_FACTOR_RECURSE,op_IDX,\
+	op_CUSTOM_NOP,op_STREQ,op_MyRecurse,op_MyRecurseMem,op_EMPTYSTRING,op_EMPTY,\
+	op_CDR,op_CAR,op_CONS,op_IDX,\
 	op_P, op_TERMINAL,\
-	op_String2Set,op_Setcons,op_UniformSample
+	op_String2Set,op_Setcons,op_UniformSample,
+	op_Signal, op_SignalSwitch
 };
 
-// if we do this, then output from each Fi concatenates on the previous
-//#define CONCATENATIVE 1
 
-#define NT_TYPES bool,   short,  double,      std::string,  StrSet
-#define NT_NAMES nt_bool,nt_idx, nt_double,   nt_string,    nt_set 
+#define NT_TYPES bool,    short,  double,      std::string,  StrSet
+#define NT_NAMES nt_bool, nt_idx, nt_double,   nt_string,    nt_set
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
@@ -39,18 +64,64 @@ enum CustomOp { // NOTE: The type here MUST match the width in bitfield or else 
 S alphabet="nvadt";
 const double MIN_LP = -20.0; // -10 corresponds to 1/10000 approximately, but we go to -15 to catch some less frequent things that happen by chance; -18;  // in (ab)^n, top 25 strings will need this man lp
 const size_t PREC_REC_N = 50;  // if we make this too high, then the data is finite so we won't see some stuff
-//double ndata = 10000.0;
-const size_t MAX_LINES = 50; // how many lines of data do we load? The more data, the slower...
+const size_t MAX_LINES = 1000; // how many lines of data do we load? The more data, the slower...
+const size_t MAX_PR_LINES = 2048; 
+const size_t MAX_LENGTH = 128; // max string length, else throw an error
+const size_t MY_MAX_FACTORS = 5;
+std::vector<double> data_amounts = {100}; //1.0, 2.0, 5.0, 7.5, 10.0, 25.0, 50.0, 75.0, 100.0, 125.0, 150.0, 200.0, 300, 500.0, 750, 1000.0, 2000, 3000.0, 5000.0, 10000.0, 15000, 20000};
 
-std::vector<double> data_amounts = {1000}; //0.1, 1.0, 2.0, 5.0, 7.5, 10.0, 25.0, 50.0, 75.0, 100.0, 125.0, 150.0, 200.0, 300, 500.0, 750, 1000.0, 2000, 3000.0, 5000.0, 10000.0, 15000, 20000};
+std::vector<Node*> smart_proposals; // these are filled in in main
+
+
+class MyGrammar : public Grammar { 
+public:
+	MyGrammar() : Grammar() {
+		add( new Rule(nt_string, op_X,            "x",            {},                               10.0) );		
+		add( new Rule(nt_string, op_MyRecurse,    "F%s(%s)",      {nt_idx, nt_string},              10.0) );		
+		add( new Rule(nt_string, op_MyRecurseMem, "memF%s(%s)",   {nt_idx, nt_string},              1.0) );		
+
+		// push for each
+		for(size_t ai=0;ai<alphabet.length();ai++) {
+			add( new Rule(nt_string, op_TERMINAL,   Q(alphabet.substr(ai,1)),          {},       10.0/alphabet.length(), ai) );
+		}
+
+		add( new Rule(nt_string, op_EMPTYSTRING,  "\u00D8",          {},                            10.0) );
+		
+		add( new Rule(nt_string, op_CONS,         "%s+%s",        {nt_string,nt_string},            1.0) );
+		add( new Rule(nt_string, op_CAR,          "car(%s)",      {nt_string},                      1.0) );
+		add( new Rule(nt_string, op_CDR,          "cdr(%s)",      {nt_string},                      1.0) );
+		
+		add( new Rule(nt_string, op_IF,           "if(%s,%s,%s)", {nt_bool, nt_string, nt_string},  1.0) );
+		
+		// NOTE: This rule samples from the *characters* occuring in s
+		add( new Rule(nt_string, op_UniformSample,"{%s}",         {nt_set},                      1.0) );
+		add( new Rule(nt_set,    op_String2Set,   "%s",           {nt_string},                   1.0) );
+		add( new Rule(nt_set,    op_Setcons,      "%s,%s",        {nt_string, nt_set},           1.0) );
+		
+		add( new Rule(nt_bool,   op_FLIPP,        "flip(%s)",     {nt_double},                      1.0) );
+		add( new Rule(nt_bool,   op_EMPTY,        "empty(%s)",    {nt_string},                      1.0) );
+		add( new Rule(nt_bool,   op_STREQ,        "(%s==%s)",     {nt_string,nt_string},            1.0) );
+		
+		for(size_t a=0;a<MY_MAX_FACTORS;a++) {
+			add( new Rule(nt_idx, op_IDX,        std::to_string(a),         {},                              1.0, a) );
+		}
+		
+		for(size_t a=1;a<10;a++) { // pack probability into arg, out of 10
+			std::string s = std::to_string(double(a)/10.0).substr(1,3); // substr just truncates lesser digits
+			add( new Rule(nt_double, op_P,      s,          {},                              (a==5?10.0:1.0), a) );
+		}
+		
+	}
+};
+
 
 class InnerHypothesis;
 class InnerHypothesis : public  LOTHypothesis<InnerHypothesis,Node,nt_string,S,S> {
 public:
-	const static size_t MAX_LENGTH = 128; // max string length, else throw an error
 
-	InnerHypothesis(Grammar* g) :  LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>(g) {}
-	InnerHypothesis(Grammar* g, Node* v) :  LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>(g,v) {}
+	InnerHypothesis(Grammar* g)          : LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>(g)   {}
+	InnerHypothesis(Grammar* g, Node* v) : LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>(g,v) {}
+	InnerHypothesis(Grammar* g, S c)     : LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>(g,c) {}
 	
 	// to rein in the mcts branching factor, we'll count neighbors as just the first unfilled gap
 	// we should not need to change make_neighbor since it fills in the first, first
@@ -62,6 +133,22 @@ public:
 			return value->first_neighbors(*grammar);
 		}
 	} 
+	
+	
+//	virtual double compute_prior() {
+//		// define a prior that doesn't penalize F calls
+//		this->prior = grammar->log_probability(value);
+//		
+//		std::function<double(const Node*)> f = [this](const Node* n) {
+//			if(n->rule->instr == op_IDX) {
+//				return this->grammar->log_probability(n);
+//			}
+//			return 0.0;
+//		};
+//		
+//		this->prior -= this->value->sum<double>(f);
+//		return this->prior;
+//	}
 	
 	virtual abort_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>* vms, Dispatchable<S,S>* loader) {
 		/* Dispatch the functions that I have defined. Returns true on success. 
@@ -76,7 +163,7 @@ public:
 			CASE_FUNC1(op_CAR,         S, S,       [](const S s){ return (s.empty() ? S("") : S(1,s.at(0))); } )		
 			CASE_FUNC2e(op_CONS,       S, S,S,
 								[](const S x, const S y){ S a = x; a.append(y); return a; },
-								[](const S x, const S y){ return (x.length()+y.length()<InnerHypothesis::MAX_LENGTH ? NO_ABORT : SIZE_EXCEPTION ); }
+								[](const S x, const S y){ return (x.length()+y.length()<MAX_LENGTH ? NO_ABORT : SIZE_EXCEPTION ); }
 								)
 			CASE_FUNC0(op_IDX,            short,           [i](){ return i.arg;} ) // arg stores the index argument
 			CASE_FUNC0(op_TERMINAL,       S,     [i](){ return alphabet.substr(i.arg, 1);} ) // arg stores the index argument
@@ -85,7 +172,7 @@ public:
 			
 			CASE_FUNC1(op_String2Set,    StrSet, S, [](const S x){ StrSet s; s.insert(x); return s; }  )
 
-			CASE_FUNC2(op_Setcons,       StrSet, StrSet, StrSet, [](StrSet x, StrSet y){ x.insert(y.begin(), y.end()); return x; }  )
+			CASE_FUNC2(op_Setcons,       StrSet, S, StrSet, [](S x, StrSet y){ y.insert(x); return y; }  )
 			
 			case op_UniformSample: {
 					// implement sampling from the set.
@@ -105,27 +192,52 @@ public:
 					// TODO: we can make this faster, like in flip, by following one of the paths?
 					return RANDOM_CHOICE; // if we don't continue with this context 
 			}
+			case op_MyRecurseMem: {
+				if(vms->recursion_depth++ > vms->MAX_RECURSE) return RECURSION_DEPTH;
+				
+				short idx = vms->getpop<short>(); // shorts are *always* used to index into factorized lexica
+				
+				S x = vms->getpop<S>(); // get the string
+				
+				std::pair<short,S> memindex(idx,x);
+				
+				if(vms->mem.count(memindex)){
+					vms->push(vms->mem[memindex]); 
+				}
+				else {	// compute and recurse 
+//					if(x.length()==0 ) {
+//						vms->push(S(""));
+//					}
+//					else { // normal recursion
+						vms->xstack.push(x);	
+						vms->memstack.push(memindex); // popped off by op_MEM
+						vms->opstack.push(Instruction(op_MEM));
+						vms->opstack.push(Instruction(op_POPX));
+						loader->push_program(vms->opstack,idx); // this leaves the answer on top
+//					}
+				}
+				break;
+			}
 			case op_MyRecurse: {
 				// This is a versino of recurse factorized that always returns emptystring when given emptystring
 				// this prevents us from having to explicitly induce the recursion base/check conditions
 					
-					if(vms->recursion_depth++ > vms->MAX_RECURSE) {
-						return RECURSION_DEPTH;
-					}
+					if(vms->recursion_depth++ > vms->MAX_RECURSE) return RECURSION_DEPTH;
+					
 					short idx = vms->getpop<short>(); // shorts are *always* used to index into factorized lexica
 					
 					S x = vms->getpop<S>(); // get the string
 					
 					// the twist in our own recursion is that we want to treat empty strings
 					// as just returning emptystrings
-					if(x.length()==0) {
-						vms->push(S(""));
-					}
-					else { // normal recursion
+//					if(x.length()==0) {
+//						vms->push(S(""));
+//					}
+//					else { // normal recursion
 						vms->xstack.push(x);	
 						vms->opstack.push(Instruction(op_POPX));
 						loader->push_program(vms->opstack,idx);
-					}
+//					}
 					break;
 			}
 			default: {
@@ -137,6 +249,38 @@ public:
 	
 	
 };
+
+
+
+Node* smart_proposal(Grammar* grammar, size_t loc) { 
+	// return a random smart proposal
+	S lm1 = std::to_string(loc-1);
+	S l = std::to_string(loc);
+	
+	S _ = Node::nulldisplay; // for gaps to be filled in -- blanks
+	switch(myrandom(15)){
+		case 0:  return grammar->expand_from_names<Node>((S)"F:"+lm1+":x");
+		
+		case 1:  return grammar->expand_from_names<Node>((S)"%s+%s:F:"+lm1+":x:"+_);
+		case 2:  return grammar->expand_from_names<Node>((S)"%s+%s:"+_+":F:"+lm1+":x");
+		case 3:  return grammar->expand_from_names<Node>((S)"if:"+_+":F:"+lm1+":x:"+_);
+		case 4:  return grammar->expand_from_names<Node>((S)"memF:"+lm1+":x");
+		case 5:  return grammar->expand_from_names<Node>((S)"%s+%s:memF:"+lm1+":x:"+_);
+		case 6:  return grammar->expand_from_names<Node>((S)"%s+%s:"+_+":memF:"+lm1+":x");
+		case 7:  return grammar->expand_from_names<Node>((S)"if:"+_+":memF:"+lm1+":x:"+_);
+//
+		case 8:  return grammar->expand_from_names<Node>((S)"%s+%s:F:"+l+":x:"+_);
+		case 9:  return grammar->expand_from_names<Node>((S)"%s+%s:"+_+":F:"+l+":x");
+		case 10:  return grammar->expand_from_names<Node>((S)"if:"+_+":F:"+l+":x:"+_);
+		case 11:  return grammar->expand_from_names<Node>((S)"memF:"+l+":x");
+		case 12:  return grammar->expand_from_names<Node>((S)"%s+%s:memF:"+l+":x:"+_);
+		case 13:  return grammar->expand_from_names<Node>((S)"%s+%s:"+_+":memF:"+l+":x");
+		case 14:  return grammar->expand_from_names<Node>((S)"if:"+_+":memF:"+l+":x:"+_);
+
+		default: assert(0);
+	}
+}
+
 
 
 
@@ -195,92 +339,87 @@ public:
 		return x;
 	}
 	 
+	 
 
 	virtual std::pair<MyHypothesis*,double> propose() const {
 		// propose with inserts/deletes
+
+//		if(has_valid_indices() && uniform(rng) < 0.01) 
+//			return inverseInliningProposal<MyHypothesis, InnerHypothesis, nt_string>(grammar, this);
+			
+		return Lexicon::propose();
 		
-		if(uniform(rng)<0.5) { 
-			return Lexicon::propose(); // defaultly propose at random
-		} 
-		else {  // try adding/subtracting a factor
-			
-			MyHypothesis* x = this->copy();
-
-
-			// TODO: Need to compute detaile dbalance here 
-			double fb = 0.0;
-			if(flip() && factors.size() < 3) { // adding a factor
-			
-				size_t loc = myrandom(factors.size()+1); // where do we insert?
-				InnerHypothesis* h ;
-				if(flip() || loc==0){// TODO: Fix detailed balance here
-					h = new InnerHypothesis(grammar); // insert totally random factor
-				}
-				else {
-					h = new InnerHypothesis(grammar, grammar->expand_from_names<Node>((std::string)"F:"+std::to_string(loc-1)+":x")); 
-				}
-
-				x->factors.insert(x->factors.begin()+loc,h);
-
-				// now go through and fix the recursive calls, in case there are any
-				std::function<void(Node*)> increc = [this, loc](Node* n){
-					if(n->rule->instr.is_custom && n->rule->instr.custom == op_IDX && n->rule->instr.arg > loc) 
-						n->rule = this->grammar->get_rule(n->rule->nt, n->rule->instr.custom, n->rule->instr.arg+1); // change which rule we're using
-				};
-				for(size_t i=0;i<factors.size();i++) {
-					if(i != loc) // must skip what we just did, since that may recurse to something else
-						x->factors[i]->value->map(increc);
-				}
-
-				fb = grammar->log_probability(h->value); // the location choice probability cancels out
-			}
-			else if(factors.size() > 1) { // deleting a factor
-			
-				size_t loc = myrandom(factors.size()); // where do we delete
-				
-				// let's see, I could be removing the 0th position and then any references to F0 should 
-				// just be dropped (rather then decremented). I'll implement hat with MAX here
-				std::function<void(Node*)> decrec = [this, loc](Node* n){
-					if(n->rule->instr.is_custom && n->rule->instr.custom == op_IDX && n->rule->instr.arg >= loc) 
-						n->rule = this->grammar->get_rule(n->rule->nt, n->rule->instr.custom, MAX(0,n->rule->instr.arg-1)); // change which rule we're using
-				};
-				for(size_t i=0;i<factors.size();i++) {
-					x->factors[i]->value->map(decrec);
-				}
-				
-				fb = -grammar->log_probability(x->factors[loc]->value);
-				
-				delete x->factors[loc];
-				x->factors.erase(x->factors.begin()+loc);
-				
-			}
-			
-			return std::make_pair(x,fb);
-		}
+//		
+//		if(uniform(rng)<0.5 || factors.size() < 1 || factors.size() >= MY_MAX_FACTORS) { 
+//			return Lexicon::propose(); // defaultly propose at random
+//		} 
+//		else if(has_valid_indices()){ // only do this with valid indices or else it complains
+//			return inverseInliningProposal<MyHypothesis, InnerHypothesis, nt_string>(grammar, this);
+//		}
+//		else {
+//			return Lexicon::propose();
+//		}
+//		else {  // try adding/subtracting a factor
+//			
+//			MyHypothesis* x = this->copy();
+//
+//
+//			// TODO: Need to compute detailed balance here 
+//			double fb = 0.0;
+//			if(flip() && factors.size() < MY_MAX_FACTORS) { // adding a factor
+//			
+//				size_t loc = myrandom(factors.size()+1); // where do we insert?
+//				InnerHypothesis* h ;
+//				if(flip() || loc==0){// TODO: Fix detailed balance here
+//					h = new InnerHypothesis(grammar); // insert totally random factor
+//				}
+//				else {
+//					h = new InnerHypothesis(grammar, smart_proposal(grammar, loc)); 
+//					h->value->complete(*grammar);// must fill in gaps
+//				}
+//
+//				x->factors.insert(x->factors.begin()+loc,h);
+//
+//				// now go through andd fix the recursive calls, in case there are any
+//				std::function<void(Node*)> increc = [this, loc](Node* n){
+//					if(n->rule->instr.is_custom && n->rule->instr.custom == op_IDX && (size_t)n->rule->instr.arg > loc) 
+//						n->rule = this->grammar->get_rule(n->rule->nt, n->rule->instr.custom, MIN(MAX_FACTORS, n->rule->instr.arg+1)); // change which rule we're using
+//				};
+//				for(size_t i=0;i<factors.size();i++) {
+//					if(i != loc) // must skip what we just did, since that may recurse to something else
+//						x->factors[i]->value->map(increc);
+//				}
+//
+//				fb = grammar->log_probability(h->value); // the location choice probability cancels out
+//			}
+//			else if(factors.size() > 1) { // deleting a factor
+//			
+//				size_t loc = myrandom(factors.size()); // where do we delete
+//				
+//				// let's see, I could be removing the 0th position and then any references to F0 should 
+//				// just be dropped (rather then decremented). I'll implement hat with MAX here
+//				std::function<void(Node*)> decrec = [this, loc](Node* n){
+//					if(n->rule->instr.is_custom && n->rule->instr.custom == op_IDX && (size_t)n->rule->instr.arg >= loc) 
+//						n->rule = this->grammar->get_rule(n->rule->nt, n->rule->instr.custom, MAX(0,n->rule->instr.arg-1)); // change which rule we're using
+//				};
+//				for(size_t i=0;i<factors.size();i++) {
+//					x->factors[i]->value->map(decrec);
+//				}
+//				
+//				fb = -grammar->log_probability(x->factors[loc]->value);
+//				
+//				delete x->factors[loc];
+//				x->factors.erase(x->factors.begin()+loc);
+//				
+//			}
+//			
+//			return std::make_pair(x,fb);
+//		}
 	}
+	
+	
 
-	bool has_invalid_recursive_indices() {
-		// check to make sure that if we have rn recursive factors, we never try to call F on higher 
-		
-		// find the max op_idx used and be sure it isn't larger than the number of factors
-		auto f = [](Node* n) {
-			if(n->rule->instr.is_custom && n->rule->instr.custom == op_IDX) {
-				return (size_t)n->rule->instr.arg;
-			}
-			else {
-				return (size_t)0;
-			}
-		};
-		
-		size_t mx = 0;
-		for(auto a : factors) {
-			auto m = a->value->maxof<size_t>( f );
-			if(m > mx) mx = m;
-		}
-		
-		return mx >= factors.size();
-	}
-	 
+
 	/********************************************************
 	 * Calling
 	 ********************************************************/
@@ -290,7 +429,7 @@ public:
 	DiscreteDistribution<S> call(const S x, const S err) {
 		
 		DiscreteDistribution<S> cur;
-		if(has_invalid_recursive_indices()) return cur;
+		if(!has_valid_indices()) return cur;
 
 		
 		// Now main code
@@ -316,6 +455,55 @@ public:
 	 
 
 	 double compute_likelihood(const t_data& data) {
+		 // this versino goes through and computes the predictive probability of each prefix
+		 likelihood = 0.0;
+		 myndata = 0;
+		 
+		 // call -- treats all input as emptystrings
+		 auto M = call(S(""),S("<err>")); 
+
+		 // first pre-compute a prefix tree
+		 // TODO: This might be faster to store in an actual tree
+		 std::map<S,double> prefix_tree;
+		 for(auto m : M.values()){
+			 S mstr = m.first + "!"; // add a stop symbol
+			 for(size_t i=0;i<=mstr.length();i++){
+				 S pfx = mstr.substr(0,i);
+				 if(prefix_tree.count(pfx) == 0) {
+					 prefix_tree[pfx] = m.second;
+				 } else {
+					 prefix_tree[pfx] = logplusexp(prefix_tree[pfx], m.second);
+				 }
+			 }			 
+		 }
+		 
+		 // pulling these out seems to make things go faster
+		 const double lcor = log(alpha);
+		 const double lerr = log((1.0-alpha)/alphabet.size());
+		 
+		 // now go through and compute a character-by-character predictive likelihood
+		 for(auto a : data) {
+			 S astr = a.output + "!"; // add a stop symbol
+			 for(size_t i=0;i<=astr.length();i++) {
+				S pfx = astr.substr(0,i);
+				S prd = astr.substr(i,1); // get the next character we predict
+				
+				// get conditoinal probability
+				if(prefix_tree.count(pfx+prd)) { // conditional prob with outlier likelihood
+					likelihood += a.reliability * (lcor + prefix_tree[pfx+prd] - prefix_tree[pfx]); 
+				} else {
+					likelihood += a.reliability * lerr * (astr.length() - i); // we don't have to keep going -- we will have this many errors
+					break;
+				}	
+			 }
+			 myndata += a.reliability;
+		 }
+		 
+		 return likelihood;		 
+	 }
+	 
+/*
+	 double compute_likelihood(const t_data& data) {
 		 likelihood = 0.0;
 		 myndata = 0.0;
 		 
@@ -340,52 +528,13 @@ public:
 		 
 		 return likelihood;		 
 	 }
-	 
+*/
+
 };
 
-template<> size_t Lexicon<MyHypothesis, InnerHypothesis, S, S>::MAX_FACTORS = 5; // set this for me
+template<> size_t Lexicon<MyHypothesis, InnerHypothesis, S, S>::MAX_FACTORS = MY_MAX_FACTORS; // set this for me
 
 
-
-class MyGrammar : public Grammar { 
-public:
-	MyGrammar() : Grammar() {
-		add( new Rule(nt_string, op_X,           "x",            {},                               5.0) );		
-		add( new Rule(nt_string, op_MyRecurse,   "F%s(%s)",      {nt_idx, nt_string},               1.0) );		
-
-		// push for each
-		for(size_t ai=0;ai<alphabet.length();ai++) {
-			add( new Rule(nt_string, op_TERMINAL,   Q(alphabet.substr(ai,1)),          {},       5.0/alphabet.length(), ai) );
-		}
-
-		add( new Rule(nt_string, op_EMPTYSTRING,  "\u00D8",          {},                            5.0) );
-		
-		add( new Rule(nt_string, op_CONS,         "%s+%s",        {nt_string,nt_string},            1.0) );
-		add( new Rule(nt_string, op_CAR,          "car(%s)",      {nt_string},                      1.0) );
-		add( new Rule(nt_string, op_CDR,          "cdr(%s)",      {nt_string},                      1.0) );
-		
-		add( new Rule(nt_string, op_IF,           "if(%s,%s,%s)", {nt_bool, nt_string, nt_string},  1.0) );
-		
-		// NOTE: This rule samples from the *characters* occuring in s
-		add( new Rule(nt_string, op_UniformSample,"{%s}",         {nt_set},                      1.0) );
-		add( new Rule(nt_set,    op_String2Set,   "%s",           {nt_string},                   2.0) );
-		add( new Rule(nt_set,    op_Setcons,      "%s,%s",        {nt_set, nt_set},              1.0) );
-		
-		add( new Rule(nt_bool,   op_FLIPP,        "flip(%s)",     {nt_double},                      2.0) );
-		add( new Rule(nt_bool,   op_EMPTY,        "empty(%s)",    {nt_string},                      1.0) );
-		add( new Rule(nt_bool,   op_STREQ,        "(%s==%s)",     {nt_string,nt_string},            1.0) );
-		
-		for(size_t a=0;a<4;a++) {
-			add( new Rule(nt_idx, op_IDX,        std::to_string(a),         {},                              1.0, a) );
-		}
-		
-		for(size_t a=1;a<10;a++) { // pack probability into arg, out of 10
-			std::string s = std::to_string(double(a)/10.0).substr(0,3); // substr just truncates lesser digits
-			add( new Rule(nt_double, op_P,      s,          {},                              1.0, a) );
-		}
-		
-	}
-};
 
 
 #include "Data.h"
@@ -401,10 +550,11 @@ pthread_mutex_t output_lock;
 void print(MyHypothesis& h, std::string prefix) {
 	pthread_mutex_lock(&output_lock); 
 	auto o = h.call(S(""), S("<err>"));
-	COUT "#\n#\t";
+	COUT "#\n## ";
 	o.print();
 	COUT "\n";
-	COUT prefix << h.myndata TAB h.posterior TAB top.count(h) TAB h.prior TAB h.likelihood TAB h.likelihood/h.myndata TAB "";
+	COUT "### " << h.parseable() ENDL;
+	COUT prefix << h.born TAB h.myndata TAB h.posterior TAB top.count(h) TAB h.prior TAB h.likelihood TAB h.likelihood/h.myndata TAB "";
 	print_precision_and_recall(std::cout, o, prdata, PREC_REC_N);
 	COUT "" TAB QQ(h.string()) ENDL
 	pthread_mutex_unlock(&output_lock); 
@@ -417,7 +567,7 @@ void callback(MyHypothesis* h) {
 	
 	// print the next max
 	if(h->posterior > top.best_score())
-		print(*h, std::string("#TOP "));
+		print(*h, std::string("#### "));
 	
 	top << *h; 
 	
@@ -425,19 +575,19 @@ void callback(MyHypothesis* h) {
 	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) {
 		print(*h);
 	}
+	
+	// do checkpointing
+	if(checkpoint > 0 && FleetStatistics::global_sample_count % checkpoint == 0) {
+		all.print(print);
+	}
+	
 }
 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-#include "Parallel.h"
-void* parallel_mcmc(void* _null) {
-	
-	MyHypothesis* h = MCMC(h0->copy(), mydata, callback, mcmc_steps, mcmc_restart, true, runtime / data_amounts.size() );
-	delete h;
-	
-	return nullptr;
-}
+// Main
+////////////////////////////////////////////////////////////////////////////////////////////
 
 
 int main(int argc, char** argv){ 
@@ -461,11 +611,11 @@ int main(int argc, char** argv){
 	
 	top.set_size(ntop); // set by above macro
 	
-	load_data_file(prdata, input_path.c_str(), 0); // put all the data in prdata
-	load_data_file(mydata, input_path.c_str(), MAX_LINES);
+	load_data_file(prdata, input_path.c_str(), MAX_PR_LINES); // put all the data in prdata
+	//load_data_file(mydata, input_path.c_str(), MAX_LINES);
 	
 	// Add a check for any data not in the alphabet
-	for(auto d : mydata) {
+	for(auto d : prdata) {
 		for(size_t i=0;i<d.output.length();i++){
 			if(alphabet.find(d.output.at(i)) == std::string::npos) {
 				CERR "CHARACTER " << d.output.at(i) << " in " << d.output << " is not in the alphabet " << alphabet ENDL;
@@ -474,6 +624,12 @@ int main(int argc, char** argv){
 		}
 	}
 	tic();
+	
+//	h0 = new MyHypothesis(grammar);
+//	h0->factors.push_back(new InnerHypothesis(grammar, S("if:flip:.5:%s+%s:if:flip:.5:'a':'b':F:0:\u00D8:\u00D8")));
+//	//h0->compute_posterior(prdata);
+//	print(*h0);
+//	return 0;
 	
 	// Vanilla MCMC
 //	MyHypothesis* h0 = new MyHypothesis(grammar);
@@ -499,9 +655,8 @@ int main(int argc, char** argv){
 		}
 		h0->compute_posterior(mydata);
 		
-		// run mccm from h0, putting into top
-		parallelize(parallel_mcmc, nthreads);
-		
+		parallel_MCMC(nthreads, h0, &mydata, callback,  mcmc_steps, mcmc_restart, true, runtime / data_amounts.size() );
+				
 		// start on the best for the next round of data
 		if(!top.empty()) 
 			h0 = top.max().copy();
@@ -511,7 +666,7 @@ int main(int argc, char** argv){
 		if(CTRL_C) break; // so we don't clear top 
 	}	
 	
-	top.print(print);
+	all.print(print);
 	
 
 	// Standard MCTS	

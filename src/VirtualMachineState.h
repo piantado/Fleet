@@ -28,6 +28,9 @@ constexpr bool contains_type() {
 }
 
 
+
+
+
 template<typename t_x, typename t_return>
 class VirtualMachineState {
 	
@@ -37,7 +40,7 @@ class VirtualMachineState {
 public:
 	
 	static const unsigned long MAX_RECURSE = 64;
-	static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
+//	static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
 	Program            opstack; 
 	std::stack<t_x>    xstack; //xstackthis stores a stack of the x values (for recursive calls)
@@ -51,9 +54,13 @@ public:
 	template<typename... args>
 	struct t_stack { std::tuple<std::stack<args>...> value; };
 	t_stack<NT_TYPES> stack; // our stacks of different types
-	
+		
 	// must have a memoized return value, that permits factorized by requiring an index argument
 	std::map<std::pair<short, t_x>, t_return> mem; 
+
+	// when we recurse and memoize, this stores the arguments (index and t_x) for us to 
+	// rember after the program trace is done
+	std::stack<std::pair<short, t_x>> memstack;
 
 	abort_t aborted; // have we aborted?
 	
@@ -62,18 +69,9 @@ public:
 		xstack.push(x);
 	}
 	
-	VirtualMachineState(const VirtualMachineState& vms) : 
-		opstack(vms.opstack), xstack(vms.xstack), err(vms.err), lp(vms.lp), 
-		recursion_depth(vms.recursion_depth), stack(vms.stack), mem(vms.mem), aborted(vms.aborted) {
-			
-		assert(opstack.size() == vms.opstack.size());
-		assert(xstack.size() == vms.xstack.size());
-		assert(mem.size() == vms.mem.size());
-	}
+	virtual ~VirtualMachineState() { }
 	
-	virtual ~VirtualMachineState() {
-		
-	}
+//	VirtualMachineState(const VirtualMachineState& vms) // copy constructor automatically defined
 	
 	bool operator<(const VirtualMachineState& m) const {
 		/* These must be sortable by lp so that we can enumerate them from low to high probability in a VirtualMachinePool 
@@ -94,6 +92,14 @@ public:
 		T x = std::get<std::stack<T>>(stack.value).top();
 		std::get<std::stack<T>>(stack.value).pop();
 		return x;
+	}
+	template<typename T>
+	T gettop() {
+		// retrieves but does not remove
+		if(aborted) return T(); // don't try to access the stack because we're aborting
+		assert(std::get<std::stack<T>>(stack.value).size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
+		
+		return std::get<std::stack<T>>(stack.value).top();
 	}
 	
 	template<typename T>
@@ -117,13 +123,13 @@ public:
 		// Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
 		// Here, dispatch is called to evaluate the function, and loader is called on recursion (allowing us to handle recursion
 		// via a lexicon or just via a LOTHypothesis). 
-
+		
 		while(!opstack.empty()){
 			if(aborted) return err;
 			FleetStatistics::vm_ops++;
 			
 			Instruction i = opstack.top(); opstack.pop();
-			
+
 			if(i.is_custom) {
 				abort_t b = dispatch->dispatch_rule(i, pool, this, loader);
 				if(b != NO_ABORT) {
@@ -147,6 +153,14 @@ public:
 					{
 						xstack.pop(); // NOTE: Remember NOT to pop from getpop<t_x>() since that's not where x is stored
 						break;
+					}
+					case op_MEM:
+					{
+						auto v = gettop<t_return>(); // what I should memoize should be on top here, but dont' remove because we also return it
+						auto memindex = memstack.top(); memstack.pop();
+						if(mem.count(memindex)==0) { // you might actually have already placed mem in crazy recursive situations, so don't overwrte if you have
+							mem[memindex] = v;
+						}
 					}
 					case op_RECURSE:
 					{

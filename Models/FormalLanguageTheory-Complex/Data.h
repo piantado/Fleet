@@ -68,8 +68,10 @@ std::map<T, double> highest(const std::vector<TDATA>& m, unsigned long N) {
 
 template<typename TDATA>
 void print_precision_and_recall(std::ostream& output, DiscreteDistribution<std::string>& x, std::vector<TDATA>& data, unsigned long N) {
-	// changing this to: how many of the top N generated strings appear *anywhere* in the data
-	// and how many of the top N data appear *anywhere* in the generated strings
+	// How many of the top N generated strings appear *anywhere* in the data
+	// And how many of the top N data appear *anywhere* in the generated strings
+	
+	N = MIN(N, data.size()); // can't take more strings than are in the data, ok?
 	
 	auto A = x.best(N);
 	auto B = highest<std::string,TDATA>(data,   N);

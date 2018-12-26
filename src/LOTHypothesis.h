@@ -1,11 +1,11 @@
 #pragma once
 
-#include<string.h>
+#include <string.h>
 #include "Proposers.h"
 
-template<typename HYP, typename T, nonterminal_t nt, typename t_input, typename t_output>
+template<typename HYP, typename T, nonterminal_t nt, typename t_input, typename t_output, typename _t_datum=default_datum<t_input, t_output>>
 class LOTHypothesis : public Dispatchable<t_input,t_output>, 
-				      public MCMCable<HYP,t_input,t_output>, // remember, this defines t_data, t_datum
+				      public MCMCable<HYP,t_input,t_output,_t_datum>, // remember, this defines t_data, t_datum
 					  public Searchable<HYP,t_input,t_output>
 {
 	// stores values as a pointer to something of type T, whose memory I manage (I delete it when I go away)
@@ -13,8 +13,8 @@ class LOTHypothesis : public Dispatchable<t_input,t_output>,
 	// nt store the value of the root nonterminal
 	// HYP stores my own type (for subclasses) so I know how to cast copy and propose
 public:     
-	typedef typename MCMCable<HYP,t_input,t_output>::t_data t_data;
-	typedef typename MCMCable<HYP,t_input,t_output>::t_datum t_datum;
+	typedef typename MCMCable<HYP,t_input,t_output,_t_datum>::t_data t_data;
+	typedef typename MCMCable<HYP,t_input,t_output,_t_datum>::t_datum t_datum;
 	
 	Grammar* grammar;
 	T* value;
@@ -28,8 +28,14 @@ public:
 		set_value(grammar->generate<T>(nt));
 	}
 
+	// parse this from a string
+	LOTHypothesis(Grammar* g, std::string s) : grammar(g) {
+		CERR s ENDL;
+		set_value(grammar->expand_from_names<Node>(s));
+	}
+
 	// copy constructor
-	LOTHypothesis(const LOTHypothesis& h) : MCMCable<HYP,t_input,t_output>(h),
+	LOTHypothesis(const LOTHypothesis& h) : MCMCable<HYP,t_input,t_output,t_datum>(h),
 		grammar(h.grammar) { // prior, likelihood, etc. should get copied 
 		set_value(h.value==nullptr?nullptr:h.value->copy());
 	}
@@ -150,9 +156,9 @@ public:
 			
 		if(v.size() > 1) { // complain if you got too much output -- this should not happen
 			CERR "Error in callOne  -- multiple outputs received" ENDL;
-			for(auto x: v.values()) {
-				CERR "***" TAB x.first TAB x.second ENDL;
-			}
+//			for(auto x: v.values()) {
+//				CERR "***" TAB x.first TAB x.second ENDL;
+//			}
 			assert(false); // should not get this		
 		}
 		for(auto a : v.values()){
@@ -165,15 +171,19 @@ public:
 		return std::string("\u03BBx.") + (value==nullptr ? Node::nulldisplay : value->string());
 //		return std::string("Lx.") + (value==nullptr ? Node::nulldisplay : value->string());
 	}
+	virtual std::string parseable(std::string delim=":") const { 
+		return (value==nullptr ? Node::nulldisplay : value->parseable(delim)); 
+	}
 	virtual size_t hash() const {
 		return value->hash();
 	}
 	
-	virtual bool operator==(const LOTHypothesis<HYP,T,nt,t_input,t_output>& h) const {
-		return this->value->operator==(*h.value);
+	virtual bool operator==(const LOTHypothesis<HYP,T,nt,t_input,t_output,t_datum>& h) const {
+		return *this->value == *h.value;
 	}
 	
 	virtual abort_t dispatch_rule(Instruction i, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms,  Dispatchable<t_input, t_output>* loader )=0;
+
 	
 	virtual HYP* copy_and_complete() const {
 		// make a copy and fill in the missing nodes.

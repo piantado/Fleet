@@ -110,24 +110,46 @@ public:
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	Rule* get_from_string(const std::string s) const {
-		// find the first rule for which is a prefix
+		// returns the rule for which s is a prefix -- but throws errors
+		// if there aren't enough
+		Rule* ret = nullptr;
 		for(size_t nt=0;nt<N_NTs;nt++) {
 			for(auto r: rules[nt]) {
-				if(is_prefix(s, r->format)) return r; 
+				if(is_prefix(s, r->format)){
+					if(ret != nullptr) {
+						CERR "*** Multiple rules found matching " << s TAB r->format ENDL;
+						assert(0);
+					}
+					ret = r;
+				} 
 			}
 		}
-		CERR "No rule found to match " TAB s ENDL;
-		assert(0);
+		
+		if(ret != nullptr) { // successfully out
+			return ret;
+		}
+		else {			
+			CERR "*** No rule found to match " TAB s ENDL;
+			assert(0);
+		}
 	}
 	
 	template<typename T> 
 	T* expand_from_names(std::deque<std::string>& q) const {
-		Rule* r = this->get_from_string(q.front());
-		q.pop_front();
+		// expands an entire stack using nt as the nonterminal -- this is needed to correctly
+		// fill in Node::nulldisplay
+		assert(!q.empty() && "*** Should not ever get to here with an empty queue -- are you missing arguments?");
+		
+		S pfx = q.front(); q.pop_front();
+		if(pfx == T::nulldisplay) return nullptr; // for gaps!
+
+		// otherwise find the matching rule
+		Rule* r = this->get_from_string(pfx);
+		
 		T* v = make<T>(r);
 		for(size_t i=0;i<r->N;i++) {
 			v->child[i] = expand_from_names<T>(q);
-			if(r->child_types[i] != v->child[i]->rule->nt) {
+			if(v->child[i] != nullptr && r->child_types[i] != v->child[i]->rule->nt) {
 				CERR "*** Grammar expected type " << r->child_types[i] << 
 					 " but got type " << v->child[i]->rule->nt << " at " << 
 					 r->format << " argument " << i ENDL;
@@ -149,14 +171,6 @@ public:
         return expand_from_names<T>(s);
 	}
 		
-
-	// return a string which is parseable from expand_from_names
-//	std::string parseable_string(Node* n) {
-//		std::string out = n->rule->format;
-//		for(size_t i=0;i<r->N;i++) {
-//			
-//		}
-//	}
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Implementation of replicating rules 

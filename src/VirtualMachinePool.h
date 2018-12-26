@@ -7,6 +7,8 @@ template<typename t_x, typename t_return>
 class VirtualMachineState;
 
 
+// We need to define a comparator tht works on pointers, otherwise
+// we don't compare pointers in the right way
 template<typename T>
 struct compare_vms
 {
@@ -23,7 +25,9 @@ class VirtualMachinePool {
 	// Basically each machine state stores the state of some evaluator and is able to push things back on to the Q
 	// if it encounters a random flip
 	
-	static const unsigned long MAX_STEPS = 2048;
+	static const unsigned long MAX_STEPS   = 2048; ///2048;
+	static const unsigned long MAX_OUTPUTS = 256; // stop after our output has this many (NOTE: This may not correctly estimate the low probability strings, because we are summing over traces)
+	
 	double min_lp; // prune out stuff with less probability than this
 	double worst_lp = infinity;
 	
@@ -56,32 +60,38 @@ public:
 		}
 	}
 	
-	DiscreteDistribution<t_return> run(Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) { 
+	DiscreteDistribution<t_return> run(unsigned long max_steps, unsigned long max_outputs, 
+									   Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) { 
 		// This runs and adds up the probability mass for everything, returning a dictionary outcomes->log_probabilities
 		
 		DiscreteDistribution<t_return> out;
 		
 		size_t steps = 0;
-		while(!Q.empty()) {
+		while(steps < max_steps && out.size() < max_outputs && !Q.empty()) {
 			VirtualMachineState<t_x,t_return>* vms = Q.top(); Q.pop();
 			assert(vms->lp >= min_lp);
-			//if(vms->lp != 0) CERR vms->lp ENDL;
 			
 			steps++;
 			
-			if(steps < MAX_STEPS) {
-				auto y = vms->run(this, dispatcher, loader);
+			auto y = vms->run(this, dispatcher, loader);
 				
-				if(vms->aborted == NO_ABORT) { // can't add up probability for errors
-					out.addmass(y, vms->lp);
-				}
+			if(vms->aborted == NO_ABORT) { // can't add up probability for errors
+				out.addmass(y, vms->lp);
 			}
 			
 			delete vms;// always must delete, even if not run (due to steps >= MAX_STEPS) bc otherwise it won't get caught in destructor
 		}
-		//CERR "*" ENDL;
+		
+		// this leaves some in the stack, but they are cleaned up by the destructor
 		
 		return out;		
 	}
+	
+	// run with some default values
+	DiscreteDistribution<t_return> run(Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) {
+			return run(MAX_STEPS, MAX_OUTPUTS, dispatcher, loader);
+	}
+
+	
 	
 };

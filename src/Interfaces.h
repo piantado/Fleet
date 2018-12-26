@@ -1,9 +1,7 @@
 #pragma once
 
 #include "Miscellaneous.h"
-
-unsigned long global_posterior_counter = 0;
-
+#include "Data.h"
 
 template<typename t_input, typename t_return>
 class VirtualMachineState;
@@ -25,33 +23,27 @@ public:
 };
 
 
+
+
 // Just a clean interface to define what kinds of operations MCMC requires
 // This also defines class types for data
 // This also defines interfaces for storing hypotheses (equality, hash, comparison, etc)
-template<typename t_input, typename t_output>
+template<typename t_input, typename t_output, typename _t_datum=default_datum<t_input, t_output>>
 class Bayesable {
 public:
 	
 	// We'll define a vector of pairs of inputs and outputs
 	// this may be used externally to define what data is
-	
-	typedef struct t_datum {
-		t_input input;
-		t_output output;
-		double   reliability; // the noise probability (typically required)
-		
-		t_datum(t_input i, t_output o, double r) : input(i), output(o), reliability(r) {};
-		t_datum(t_input i, t_output o) : input(i), output(o), reliability(NaN) {};		
-	} t_datum; // single data point
+	typedef _t_datum t_datum;
 	typedef std::vector<t_datum> t_data; 
 
 	// log values for all
 	double prior; 
 	double likelihood;
-	double posterior;    
+	double posterior;
+	uintmax_t born; // what count were you born at?
 
-	Bayesable() : prior(0.0), likelihood(0.0), posterior(0.0) {
-		
+	Bayesable() : prior(0.0), likelihood(0.0), posterior(0.0), born(++FleetStatistics::hypothesis_births) {
 	}
 	
 	Bayesable(const Bayesable& b) : prior(b.prior), likelihood(b.likelihood), posterior(b.posterior) {
@@ -91,7 +83,7 @@ public:
 	
 	virtual size_t hash() const=0;
 	
-	virtual bool operator<(const Bayesable<t_input,t_output>& l) const {
+	virtual bool operator<(const Bayesable<t_input,t_output,t_datum>& l) const {
 		// when we implement this, we defaulty sort by posterior (so that TopN works)
 		// But we need to be careful because std::set also uses this to determine equality
 		// so we will only 
@@ -118,14 +110,14 @@ public:
 
 
 
-template<typename HYP, typename t_input, typename t_output>
-class MCMCable : public Bayesable<t_input,t_output> {
+template<typename HYP, typename t_input, typename t_output, typename _t_datum=default_datum<t_input, t_output>>
+class MCMCable : public Bayesable<t_input,t_output,_t_datum> {
 public:
 	MCMCable() {
 		
 	}
 
-	MCMCable(const MCMCable<HYP,t_input,t_output>& h) : Bayesable<t_input,t_output>(h) {// don't copy FB
+	MCMCable(const MCMCable<HYP,t_input,t_output,_t_datum>& h) : Bayesable<t_input,t_output,_t_datum>(h) {// don't copy FB
 		
 	}
 

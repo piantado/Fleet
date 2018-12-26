@@ -9,7 +9,9 @@
 
 std::pair<Node*,double> regeneration_proposal(Grammar* grammar, Node* from) {
 	// copy, regenerate a random node, and return that and forward-backward prob
-	
+#ifdef DEBUG_MCMC
+CERR "REGENERATE" ENDL;
+#endif
 	std::function<int(const Node* n)> resample_counter = [](const Node* n) { return n->can_resample*1;};
 	int N = from->sum<int>(resample_counter);
 			
@@ -24,18 +26,19 @@ std::pair<Node*,double> regeneration_proposal(Grammar* grammar, Node* from) {
 	Node* n = ret->get_nth(w, resample_counter); // get the nth in ret		
 	Node* g = grammar->generate<Node>(n->rule->nt); // make something new of the same type
 	n->takeover(g); // and take its resources, zeroing it before deleting
-	delete g;
 	
 	double fb =   (-log( from->sum<int>(resample_counter) ) + grammar->log_probability(ret)) 
 			     - 
 		          (-log(  ret->sum<int>(resample_counter) ) + grammar->log_probability(from));
-				
+	
 	return std::make_pair(ret, fb);
 }
 
 
 std::pair<Node*, double> insert_proposal(Grammar* grammar, Node* from) {
-
+#ifdef DEBUG_MCMC
+CERR "INSERT" ENDL;
+#endif
 	// functions to check if we can insert or delete on a given node
 	// NOTE: the choice of which node is done uniformly within these functions
 	std::function<int(const Node* n)> iable = [grammar](const Node* n){ return (int)(n->can_resample && grammar->replicating_Z(n->rule->nt) > 0 ? 1 : 0); }; 
@@ -71,7 +74,6 @@ std::pair<Node*, double> insert_proposal(Grammar* grammar, Node* from) {
 	
 	// n now takes the resources of x, and deletes its own
 	n->takeover(x); // this must come before computing fb, since it depends on the rest of the tree
-	delete x; // what's left of it 
 	
 	double forward_choose  = log(n->count_equal_child(n->child[c])) - log(n->rule->replicating_children()); // I could have put n in this many places
 	double backward_choose = log(n->count_equal_child(n->child[c])) - log(n->rule->replicating_children());
@@ -94,7 +96,10 @@ std::pair<Node*, double> delete_proposal(Grammar* grammar, Node* from) {
 	// NOTE: we do NOT choose a deleteable node here, as that's a little harder to compute
 	
 	// ASSUME: value is a Node*
-	
+#ifdef DEBUG_MCMC
+CERR "DELETE" ENDL;
+#endif 
+
 	std::function<int(const Node* n)> iable = [grammar](const Node* n){ return (int)(n->can_resample && grammar->replicating_Z(n->rule->nt) > 0 ? 1 : 0); }; 
 	std::function<int(const Node* n)> dable = [grammar](const Node* n){ return (int)(n->can_resample && n->rule->replicating_children() > 0 ? 1 : 0); }; 
 	
@@ -128,7 +133,6 @@ std::pair<Node*, double> delete_proposal(Grammar* grammar, Node* from) {
 	double backward_choose = log(n->count_equal_child(n->child[c])) - log(n->rule->replicating_children());
 	
 	n->takeover(x);	 // this must come after computing fb above for deleting
-	delete x; // what's left of it 
 	
 	fb += (-log(N) + forward_choose) 
 		  // forward prob is choosing a node, choosing any equivalent child to the one we got to promote
@@ -141,3 +145,107 @@ std::pair<Node*, double> delete_proposal(Grammar* grammar, Node* from) {
 }
 
 
+template<typename HYP, typename T, nonterminal_t targetnt> // takes a hypothesis type, an inner hypothesis T, and a nonterminal type
+std::pair<HYP*, double> inverseInliningProposal(Grammar* grammar, const HYP* h) {
+	// TODO: May not be right if we extract something with a recursive call?
+	
+	assert(h->factors.size() > 0);
+	std::function<double(const Node* n)> is_right_type = [](const Node* n) { return 1.0*(n->rule->nt == targetnt);};
+	
+	HYP* ret = h->copy(); 
+	double forward = -infinity, backward = -infinity;;
+	
+	// TODO: THESE IF STATEMENTS MESS UP F/B
+	if((flip()||h->factors.size()==1) && h->factors.size() < HYP::MAX_FACTORS-2){ // extract subtree to new factor
+		ret->fix_indices(0,1); // fix the indices for everything in ret if we inset 1 at position 0
+		
+		// now find a factor
+		size_t l   = h->factors.size();
+		size_t fi  = myrandom(l);
+		Node* t    = h->factors[fi]->value->sample(is_right_type)->copy();
+		
+		// now we need a node for calling that
+		Node* call = grammar->expand_from_names<Node>(S("F:0:x")); // call with x so x gets bound the right way in calls; 0 bc we put in front
+		
+		// to replace, we will extract each one that we see
+		std::function<bool(Node* n)> f = [call, t](Node* n) {
+			if(*n == *t) {
+				n->takeover(call->copy());
+				return false;
+			}
+			return true;
+		};
+		for(auto fac: ret->factors){
+			fac->value->map_conditionalrecurse(f); // replacing function mapped through nodes				
+		}
+		
+		// and add at the front so that if we are calling the last function, we don't mess anyhting up
+		ret->factors.insert(ret->factors.begin(), new T(grammar, t));
+		
+		
+		// forward probability is prob of choosing each factor times the prob of choosing 
+		// anything equal to t within them
+		
+		for(auto f : h->factors) {
+			auto cnt = f->value->count_equal(t);
+			if(cnt > 0) 
+				forward = logplusexp(forward, -log(l+1) + log(cnt) - log(f->value->count()));
+		}
+		
+		size_t cb = 0;
+		for(auto f: ret->factors) {
+			if(*f->value == *t) cb++;
+		}
+		backward = log(cb) - log(ret->factors.size());
+		
+		delete call;
+//			CERR forward TAB backward TAB cb TAB ret->factors.size() ENDL;
+		
+	} 
+	else if(h->factors.size() > 1) { // NOTE: for now this only works on calls with F(x) -- we could try to do it so we can substitute what x was
+			// TODO: Fix detailed balance from this if statement
+		
+		//CERR "REMOVE" ENDL;
+		
+		size_t l  = h->factors.size();
+		size_t fi = myrandom(l); // this one is going to be deleted
+		Node*  t  = ret->factors[fi]->value->copy();			
+		
+		Node* call = grammar->expand_from_names<Node>(S("F:"+std::to_string(fi)+":x")); // call with x so x gets bound the right way in calls
+		
+		std::function<bool(Node* n)> f = [call, t](Node* n) {
+			if(*n == *call) {
+				n->takeover(t->copy());
+				return false;
+			}
+			return true;
+		};
+		
+		for(size_t i=0;i<ret->factors.size();i++) {
+			if(i != fi) ret->factors[i]->value->map_conditionalrecurse(f);
+		}
+		
+		// and we can remove that factor
+		// also deletes t
+		ret->factors.erase(ret->factors.begin()+fi); 
+					
+		// we are going to remove position fi, so we have to fix anything that referneces it and higher
+		ret->fix_indices(fi,-1); 
+					
+		size_t cb = 0;
+		for(auto f: h->factors) {
+			if(*f->value == *call) cb++;
+		}
+		forward = log(cb) - log(h->factors.size());
+		
+		for(auto f : ret->factors) {
+			auto cnt = f->value->count_equal(t);
+			if(cnt > 0) 
+				backward = logplusexp(backward, -log(l) + log(cnt) - log(f->value->count()));
+		}
+		
+		delete call;
+	}
+	
+	return std::make_pair(ret,forward-backward);
+}
