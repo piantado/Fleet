@@ -1,6 +1,9 @@
 #pragma once
 
-typedef struct Instruction { 
+#include <variant>
+
+class Instruction { 
+public:
 		// This is an operation in a program, which can store either a BuiltinOp or a CustomOp
 		// It is evaluated by dispatch and created from nodes by linearize, and in Rule's constructor.
 		// it has a flag (is_custom) to say whether it's a builtin or custom op. Some of the builtin ops
@@ -9,37 +12,45 @@ typedef struct Instruction {
 		// for instance, jump takes an arg, factorized recursion use sarg for index, in FormalLanguageTheory
 		// we use arg to store which alphabet terminal, etc. 
 		
-		bool         is_custom  : 1; // what kind of op is this? custom or built in?
-		CustomOp     custom     : 8; // custom ops go here
-		BuiltinOp    builtin    : 6; // if we are built in, which op is it?
-		int          arg        : 16; // 
+		std::variant<CustomOp, BuiltinOp> op; // what kind of op is this? custom or built in?
+		int                              arg; // 
 		
 		// constructors to make this a little easier to deal with
-		Instruction(BuiltinOp x, int arg_=0x0) :
-			is_custom(false), custom((CustomOp)0x0), builtin(x), arg(arg_) {
+		Instruction(BuiltinOp x, int arg_=0x0) : op(x), arg(arg_) {
 		}
-		Instruction(CustomOp x, int arg_=0x0) :
-			is_custom(true), custom(x), builtin((BuiltinOp)0x0), arg(arg_) {
+		Instruction(CustomOp x, int arg_=0x0)  : op(x), arg(arg_)  {
 		}
 		
-		bool operator==(Instruction i) const {
-			// equality checking, but tossing the bits we don't need based on whether is_custom
-			if(! (is_custom == i.is_custom && arg == i.arg)) return false; // these always must match
-			if(is_custom) return custom  == i.custom;
-			else          return builtin == i.builtin;
+		bool is_custom() const {
+			return std::holds_alternative<CustomOp>(op);
+		}
+		
+		bool is_builtin() const {
+			return std::holds_alternative<BuiltinOp>(op);
+		}
+		
+		CustomOp getCustom() const { // will throw if op isn't storing custom
+			return std::get<CustomOp>(op);
+		}
+		
+		BuiltinOp getBuiltin() const { // will throw if op isn't storing custom
+			return std::get<BuiltinOp>(op); 
 		}
 		
 		// compare our ops, ignoring the arg
-		bool operator==(CustomOp c) {
-			return is_custom && custom == c;
+		bool is_a(const CustomOp c) const {
+			return is_custom() && getCustom() == c;
 		}
-		bool operator==(BuiltinOp b) {
-			return (!is_custom) && builtin == b;
+		bool is_a(const BuiltinOp b) const {
+			return (!is_custom()) && getBuiltin() == b;
 		}
 		
-} Instruction;
+		
+		
+};
 
-std::ostream& operator<<(std::ostream& stream, const Instruction& i) {
-	stream << "[" << (i.is_custom?"C":"B") << " " << (i.is_custom?(int)i.custom:(int)i.builtin) << "\t" << i.arg << "]";
+
+std::ostream& operator<<(std::ostream& stream, Instruction& i) {
+	stream << "[" << (i.is_custom()?"C":"B") << " " << (i.is_custom()?(int)i.getCustom():(int)i.getBuiltin()) << "\t" << i.arg << "]";
 	return stream;
 }
