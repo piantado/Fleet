@@ -24,8 +24,8 @@ const double strgamma = 0.99; // penalty on string length
 class MyGrammar : public Grammar { 
 public:
 	MyGrammar() : Grammar() {
-		add( new Rule(nt_string, op_X,            "x",            {},                               5.0) );		
-		add( new Rule(nt_string, op_RECURSE,      "F(%s)",        {nt_string},                      2.0) );		
+		add( new Rule(nt_string, BuiltinOp::op_X,            "x",            {},                               5.0) );		
+		add( new Rule(nt_string, BuiltinOp::op_RECURSE,      "F(%s)",        {nt_string},                      2.0) );		
 
 		// here we create an alphabet op with an "arg" that is unpacked below to determine
 		// which character of the alphabet it corresponds to 
@@ -38,9 +38,9 @@ public:
 		add( new Rule(nt_string, op_CAR,          "car(%s)",      {nt_string},                      1.0) );
 		add( new Rule(nt_string, op_CDR,          "cdr(%s)",      {nt_string},                      1.0) );
 		
-		add( new Rule(nt_string, op_IF,           "if(%s,%s,%s)", {nt_bool, nt_string, nt_string},  1.0) );
+		add( new Rule(nt_string, BuiltinOp::op_IF,           "if(%s,%s,%s)", {nt_bool, nt_string, nt_string},  1.0) );
 		
-		add( new Rule(nt_bool,   op_FLIP,         "flip()",       {},                               5.0) );
+		add( new Rule(nt_bool,   BuiltinOp::op_FLIP,         "flip()",       {},                               5.0) );
 		add( new Rule(nt_bool,   op_EMPTY,        "empty(%s)",    {nt_string},                      1.0) );
 		add( new Rule(nt_bool,   op_STREQ,        "(%s==%s)",     {nt_string,nt_string},            1.0) );
 	}
@@ -66,7 +66,7 @@ public:
 //						   );
 //	}
 	double compute_single_likelihood(const t_datum& x) {
-		auto out = call(x.input, "<err>");
+		auto out = call(x.input, "<err>", this, 256, 256);
 		
 		// a likelihood based on the prefix probability -- we assume that we generate from the hypothesis
 		// and then might glue on some number of additional strings, flipping a gamma-weighted coin to determine
@@ -83,8 +83,7 @@ public:
 	abort_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>* vms, Dispatchable<S,S>* loader ) {
 		/* Dispatch the functions that I have defined. Returns NO_ABORT on success. 
 		 * */
-		assert(i.is_custom); // an "insturction" should only get here if it is a "custom" one, meaning defined in CustomOps up above
-		switch(i.custom) {
+		switch(i.getCustom()) {
 			// this uses CASE_FUNCs which are defined in CaseMacros.h, and which give a nice interface for processing the
 			// different cases. They take a return type, some input types, and a functino to evaluate. 
 			// as in op_CONS below, this function (CASE_FUNC2e) can take an "error" (e) condition, which will cause
@@ -94,18 +93,18 @@ public:
 			CASE_FUNC0(op_A,           S,          [i](){ return alphabet.substr(i.arg, 1);} )
 			// the rest are straightforward:
 			CASE_FUNC0(op_EMPTYSTRING, S,          [](){ return S("");} )
-			CASE_FUNC1(op_EMPTY,       bool,  S,   [](const S s){ return s.size()==0;} )
-			CASE_FUNC2(op_STREQ,       bool,  S,S, [](const S a, const S b){return a==b;} )
-			CASE_FUNC1(op_CDR,         S, S,       [](const S s){ return (s.empty() ? S("") : s.substr(1,S::npos)); } )		
-			CASE_FUNC1(op_CAR,         S, S,       [](const S s){ return (s.empty() ? S("") : S(1,s.at(0))); } )		
+			CASE_FUNC1(op_EMPTY,       bool,  S,   [](const S& s){ return s.size()==0;} )
+			CASE_FUNC2(op_STREQ,       bool,  S,S, [](const S& a, const S& b){return a==b;} )
+			CASE_FUNC1(op_CDR,         S, S,       [](const S& s){ return (s.empty() ? S("") : s.substr(1,S::npos)); } )		
+			CASE_FUNC1(op_CAR,         S, S,       [](const S& s){ return (s.empty() ? S("") : S(1,s.at(0))); } )		
 			CASE_FUNC2e(op_CONS,       S, S,S,
-								[](const S x, const S y){ S a = x; a.append(y); return a; },
-								[](const S x, const S y){ return (x.length()+y.length()<MAX_LENGTH ? NO_ABORT : SIZE_EXCEPTION ); }
+								[](const S& x, const S& y){ S a = x; a.append(y); return a; },
+								[](const S& x, const S& y){ return (x.length()+y.length()<MAX_LENGTH ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
 								)
 			default:
 				assert(0 && " *** You ended up with an invalid argument"); // should never get here
 		}
-		return NO_ABORT;
+		return abort_t::NO_ABORT;
 	}
 };
 

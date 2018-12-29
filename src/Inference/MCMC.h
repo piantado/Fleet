@@ -21,6 +21,7 @@ struct parallel_MCMC_args {
 template<typename HYP>
 void* parallel_MCMC_helper( void* args) {
 	auto a = (parallel_MCMC_args<HYP>*)args;
+	
 	a->current = MCMC(a->current, *a->data, a->callback, a->steps, a->restart, a->returnmax, a->time); // doesn't matter if we returnmax
 	pthread_exit(nullptr);
 }
@@ -31,9 +32,8 @@ HYP* parallel_MCMC(size_t cores, HYP* current, typename HYP::t_data* data,
 		void (*callback)(HYP* h), unsigned long steps, unsigned long restart=0, bool returnmax=true, unsigned long time=0) {
 	// here we have no returnmax, always returns void
 	
-	
 	if(cores == 1)  { // don't use parallel, for easier debugging
-		return MCMC(current, *data, callback, steps, restart, returnmax);
+		return MCMC(current, *data, callback, steps, restart, returnmax, time);
 	}
 	else {
 	
@@ -48,7 +48,7 @@ HYP* parallel_MCMC(size_t cores, HYP* current, typename HYP::t_data* data,
 			args[t].restart=restart;
 			args[t].returnmax = returnmax;
 			args[t].time = time;
-			
+	
 			// run
 			int rc = pthread_create(&threads[t], nullptr, parallel_MCMC_helper<HYP>, &args[t]);
 			if(rc) assert(0 && "Failed to create thread");
@@ -89,7 +89,6 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
     // NOTE: If current has a -inf posterior, we always propose from restart() 
 	// NOTE: This requires that HYP implement: propose(), restart(), compute_posterior(const t_data&)
 	const double temperature = 1.0;
-	
 	
 	using clock = std::chrono::steady_clock;
 	

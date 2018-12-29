@@ -26,7 +26,7 @@
 
 #include <sys/resource.h> // just for setting priority defaulty 
 
-const std::string FLEET_VERSION = "0.0.2";
+const std::string FLEET_VERSION = "0.0.4";
 
 // First some error checking on Fleet's required macros
 // this is because we use some of them in enums, and so a failure 
@@ -42,7 +42,7 @@ const std::string FLEET_VERSION = "0.0.2";
 
 // TODO: Fix enum scoping for t_abort and t_nonterminal
 
-enum abort_t {NO_ABORT=0, RECURSION_DEPTH, RANDOM_CHOICE, SIZE_EXCEPTION, OP_ERR_ABORT, RANDOM_BREAKOUT}; // setting NO_ABORT=0 allows us to say if(aborted)...
+enum class abort_t {NO_ABORT=0, RECURSION_DEPTH, RANDOM_CHOICE, SIZE_EXCEPTION, OP_ERR_ABORT, RANDOM_BREAKOUT}; // setting NO_ABORT=0 allows us to say if(aborted)...
 
 // Define our opertions as an enum. NOTE: They can NOT be strongly typed (enum class) because
 // we store ints in an array of the same type.
@@ -55,8 +55,10 @@ enum nonterminal_t {NT_NAMES, N_NTs };
 
 
 // convenient to make op_NOP=0, so that the default initialization is a NOP
-enum BuiltinOp {
-	op_NOP=0,op_X,op_POPX,op_MEM,op_RECURSE,op_RECURSE_FACTORIZED,op_MEM_RECURSE,op_MEM_RECURSE_FACTORIZED,op_FLIP,op_FLIPP,op_IF,op_JMP
+enum class BuiltinOp {
+	op_NOP=0,op_X,op_POPX,
+	op_MEM,op_RECURSE,op_MEM_RECURSE, // thee can store the index of what hte loader calls in arg, so they can be used with lexica if you pass arg
+	op_FLIP,op_FLIPP,op_IF,op_JMP
 };
 
 #include "Instruction.h"
@@ -112,16 +114,17 @@ unsigned long mcmc_restart = 0;
 unsigned long checkpoint   = 0; 
 double        explore      = 1.0; // we want to exploit the string prefixes we find
 size_t        nthreads     = 1;
-long          runtime      = 0;
+unsigned long runtime      = 0;
 unsigned long chains       = 1;
 bool          concise      = false; // this is used to indicate that we want to not print much out (typically only posteriors and counts)
 std::string   input_path   = "input.txt";
 std::string   tree_path    = "tree.txt";
 std::string   output_path  = "output.txt";
+std::string   timestring   = "0s";
 
 #define FLEET_DECLARE_GLOBAL_ARGS() \
     CLI::App app{"Fancier number model."};\
-    app.add_option("-s,--steps",    mcts_steps, "Number of MCTS search steps to run");\
+    app.add_option("-s,--mcts",    mcts_steps, "Number of MCTS search steps to run");\
     app.add_option("-m,--mcmc",     mcmc_steps, "Number of mcmc steps to run");\
     app.add_option("-t,--thin",     thin, "Thinning on the number printed");\
     app.add_option("-o,--output",   output_path, "Where we write output");\
@@ -130,7 +133,7 @@ std::string   output_path  = "output.txt";
     app.add_option("-e,--explore",  explore, "Exploration parameter for MCTS");\
     app.add_option("-r,--restart",  mcmc_restart, "If we don't improve after this many, restart");\
     app.add_option("-i,--input",    input_path, "Read standard input from here");\
-	app.add_option("-T,--time",     runtime, "Stop (via CTRL-C) after this much time");\
+	app.add_option("-T,--time",     timestring, "Stop (via CTRL-C) after this much time (takes smhd as seconds/minutes/hour/day units)");\
 	app.add_option("-E,--tree",     tree_path, "Write the tree here");\
 	app.add_flag(  "-q,--concise",  concise, "Don't print very much and do so on one line");\
 	app.add_flag(  "-c,--chains",   chains, "How many chains to run");\
@@ -147,19 +150,19 @@ typedef std::stack<Instruction> Program;
 /// We defaultly include all of the major requirements for Fleet
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "Interfaces.h"
+#include "Hypotheses/Interfaces.h"
 #include "Miscellaneous.h"
 #include "Rule.h"
-#include "VirtualMachinePool.h"
-#include "VirtualMachineState.h"
+#include "VirtualMachine/VirtualMachinePool.h"
+#include "VirtualMachine/VirtualMachineState.h"
 #include "Node.h"
 //#include "Node.cpp"
 #include "Grammar.h"
 #include "CaseMacros.h"
 #include "DiscreteDistribution.h"
 
-#include "LOTHypothesis.h"
-#include "Lexicon.h"
+#include "Hypotheses/LOTHypothesis.h"
+#include "Hypotheses/Lexicon.h"
 
 #include "Inference/MCMC.h"
 #include "Inference/MCTS.h"
@@ -208,6 +211,41 @@ std::string system_exec(const char* cmd) {
 }
 
 
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Time conversions for fleet
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+unsigned long convert_time(std::string& s) {
+	// Converts our own time format to seconds, which is what Fleet's time utilities use
+	// the time format we accept is #+(.#+)[smhd] where shmd specifies seconds, minutes, hours days 
+	
+	// specila case of s="0" will be allowed
+	if(s == "0") return 0;
+		
+	// else we must specify a unit	
+	double multiplier; // for default multiplier of 1 is seconds
+	switch(s.at(s.length()-1)) {
+		case 's': multiplier = 1; break; 
+		case 'm': multiplier = 60; break;
+		case 'h': multiplier = 60*60; break;
+		case 'd': multiplier = 60*60*24; break;
+		default: 
+			CERR "*** Unknown time specifier: " << s.at(s.length()-1) << " in " << s << ". Did you forget a unit?" ENDL;
+			assert(0);
+	}
+	
+	double t = std::stod(s.substr(0,s.length()-1)); // all but the last character
+	
+	CERR "RUNTIME=" << t*multiplier ENDL;
+	
+	return (unsigned long)(t*multiplier); // note this effectively rounds to the nearest escond 
+	
+}
+
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Actual initialization
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void Fleet_initialize() {
 	// set our own handlers
@@ -238,6 +276,9 @@ void Fleet_initialize() {
 	char tmp[64];
 	sprintf(tmp, "md5sum /proc/%d/exe", getpid());
 	
+	// parse the time
+	runtime = convert_time(timestring);
+	
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
 	COUT "# Running Fleet on " << hostname << " with PID=" << getpid() << " by user " << username << " at " << ctime(&timenow);
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
@@ -245,10 +286,10 @@ void Fleet_initialize() {
 	COUT "# \t --input=" << input_path ENDL;
 	COUT "# \t --nthreads=" << nthreads ENDL;
 	COUT "# \t --mcmc=" << mcmc_steps ENDL;
-	COUT "# \t --time=" << runtime ENDL;
+	COUT "# \t --mcts=" << mcts_steps ENDL;
+	COUT "# \t --time=" << timestring << " (" << runtime << " seconds)" ENDL;
 	COUT "# \t --restart=" << mcmc_restart ENDL;
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
 	
 	
 }
-

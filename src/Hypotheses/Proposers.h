@@ -9,30 +9,107 @@
 
 std::pair<Node*,double> regeneration_proposal(Grammar* grammar, Node* from) {
 	// copy, regenerate a random node, and return that and forward-backward prob
-#ifdef DEBUG_MCMC
-CERR "REGENERATE" ENDL;
-#endif
-	std::function<int(const Node* n)> resample_counter = [](const Node* n) { return n->can_resample*1;};
-	int N = from->sum<int>(resample_counter);
+	#ifdef DEBUG_MCMC
+	CERR "REGENERATE" ENDL;
+	#endif
+	std::function<int(const Node* n)> can_resample = [](const Node* n) { return n->can_resample*1;};
 			
 	auto ret = from->copy();
 
-	if(N == 0) {
+	if(from->sum<int>(can_resample) == 0) {
 		return std::make_pair(ret, 0.0);
 	}
 	
-	int w = myrandom<int>( N); // which do I replace?
-
-	Node* n = ret->get_nth(w, resample_counter); // get the nth in ret		
+	Node* n = ret->sample(can_resample); // get the nth in ret		
 	Node* g = grammar->generate<Node>(n->rule->nt); // make something new of the same type
 	n->takeover(g); // and take its resources, zeroing it before deleting
 	
-	double fb =   (-log( from->sum<int>(resample_counter) ) + grammar->log_probability(ret)) 
+	double fb =   (-log( from->sum(can_resample) ) + grammar->log_probability(ret)) 
 			     - 
-		          (-log(  ret->sum<int>(resample_counter) ) + grammar->log_probability(from));
+		          (-log(  ret->sum(can_resample) ) + grammar->log_probability(from));
 	
 	return std::make_pair(ret, fb);
 }
+
+
+
+std::pair<Node*, double> insert_proposal_TREE(Grammar* grammar, Node* from) {
+	// This proposal selects a node, regenerates, and then copies what was there before somewhere below 
+	// in the replaced tree 
+	
+	#ifdef DEBUG_MCMC
+	CERR "INSERT-TREE" ENDL;
+	#endif
+
+	std::function<int(const Node* n)> can_resample = [](const Node* n) { return n->can_resample*1;};
+			
+	auto ret = from->copy();
+	int fcr = from->sum(can_resample); // from can resample
+
+	if(fcr == 0) 
+		return std::make_pair(ret, 0.0);
+	
+	Node* n = ret->sample(can_resample); // get the nth in ret		
+	Node* g = grammar->generate<Node>(n->rule->nt); // make something new of the same type
+	
+	// find something of the right type (don't check can_resample?)
+	std::function<int(const Node* n)> right_type = [=](const Node* x) { return (int)(n->rule->nt==x->rule->nt);};
+	int grt = g->sum(right_type);
+	if(grt == 0) 
+		return std::make_pair(ret, 0.0);
+	
+	// from dominates n
+	// g dominates x
+	
+	Node* x = g->sample(right_type);  // x is the node that gets replaced with n 
+	x->takeover(n->copy()); // hmm should be able to do this without copy, but its hard to think about 
+	
+	double fb = (-log(fcr) + log(g->count_equal(n)) - log(grt)) // g could have happened on anything equal to n out of grt
+				- 
+				(-log(g->sum(can_resample)));
+	
+	
+	n->takeover(g);
+	
+	return std::make_pair(ret, fb);		
+}
+
+std::pair<Node*, double> delete_proposal_TREE(Grammar* grammar, Node* from) {
+	// This proposal selects a node, regenerates, and then copies what was there before somewhere below 
+	// in the replaced tree 
+	
+	#ifdef DEBUG_MCMC
+	CERR "DELETE-TREE" ENDL;
+	#endif
+
+	std::function<int(const Node* n)> can_resample = [](const Node* n) { return n->can_resample*1;};
+			
+	auto ret = from->copy();
+	int fcr = from->sum(can_resample); // from can resample
+
+	if(fcr == 0) 
+		return std::make_pair(ret, 0.0);
+	
+	Node* n = ret->sample(can_resample); // pick a random node	
+	
+	// find something of the right type (don't check can_resample?)
+	std::function<int(const Node* n)> right_type = [=](const Node* x) { return (int)(n->rule->nt==x->rule->nt);};
+	int nrt = n->sum(right_type); // how many in n are the right type? 
+	if(nrt == 0) 
+		return std::make_pair(ret, 0.0);
+	
+	Node* x = n->sample(right_type); 
+	n->takeover(x->copy()); // hmm should be able to do this without copy, but its hard to think about, because Nodes will recursively destruct
+	
+	double fb = (-log(fcr) + -log(nrt))
+				- 
+				(0);
+	
+//	return std::make_pair(ret, fb);		
+}
+
+
+
 
 
 std::pair<Node*, double> insert_proposal(Grammar* grammar, Node* from) {
@@ -165,7 +242,7 @@ std::pair<HYP*, double> inverseInliningProposal(Grammar* grammar, const HYP* h) 
 		Node* t    = h->factors[fi]->value->sample(is_right_type)->copy();
 		
 		// now we need a node for calling that
-		Node* call = grammar->expand_from_names<Node>(S("F:0:x")); // call with x so x gets bound the right way in calls; 0 bc we put in front
+		Node* call = grammar->expand_from_names<Node>(std::string("F:0:x")); // call with x so x gets bound the right way in calls; 0 bc we put in front
 		
 		// to replace, we will extract each one that we see
 		std::function<bool(Node* n)> f = [call, t](Node* n) {
@@ -211,7 +288,7 @@ std::pair<HYP*, double> inverseInliningProposal(Grammar* grammar, const HYP* h) 
 		size_t fi = myrandom(l); // this one is going to be deleted
 		Node*  t  = ret->factors[fi]->value->copy();			
 		
-		Node* call = grammar->expand_from_names<Node>(S("F:"+std::to_string(fi)+":x")); // call with x so x gets bound the right way in calls
+		Node* call = grammar->expand_from_names<Node>(std::string("F:"+std::to_string(fi)+":x")); // call with x so x gets bound the right way in calls
 		
 		std::function<bool(Node* n)> f = [call, t](Node* n) {
 			if(*n == *call) {

@@ -127,10 +127,11 @@ public:
 
 
 	// we defaultly map outputs to log probabilities
-	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err, Dispatchable<t_input,t_output>* loader, double minlp=-10.0){
+	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err, Dispatchable<t_input,t_output>* loader, 
+				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
 		assert(value != nullptr);
 		
-		VirtualMachinePool<t_input,t_output> pool(minlp);
+		VirtualMachinePool<t_input,t_output> pool(max_steps, max_outputs, minlp);
 
 		VirtualMachineState<t_input,t_output>* vms = new VirtualMachineState<t_input,t_output>(x, err);
 		
@@ -195,7 +196,8 @@ public:
 			h->set_value(grammar->generate<Node>(nt));
 		}
 		else {
-			h->value->map( [](Node* n){n->can_resample=false;} );
+			const std::function<void(Node*)> myf =  [](Node* n){n->can_resample=false;};
+			h->value->map(myf);
 			auto t = h->value;
 			t->complete(*grammar);
 			h->set_value(t); // must call set once its changed
@@ -214,10 +216,13 @@ public:
 			return grammar->count_expansions(nt);
 		}
 		else {
-			return value->neighbors(*grammar);
+//			return value->neighbors(*grammar);
+			// to rein in the mcts branching factor, we'll count neighbors as just the first unfilled gap
+			// we should not need to change make_neighbor since it fills in the first, first
+			return value->first_neighbors(*grammar);
 		}
 	}
-	
+
 	virtual HYP* make_neighbor(int k) const {
 		HYP* h = new HYP(grammar, nullptr); // new hypothesis
 		if(value == nullptr) {

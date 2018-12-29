@@ -48,7 +48,7 @@
 #define CASE_FUNC0e(opcode, returntype, f, errcheck)                            \
 	case opcode: {                                                              \
 		abort_t e = errcheck();									                \
-		if(e != NO_ABORT) return e;								                \
+		if(e != abort_t::NO_ABORT) return e;								                \
 		vms->template push<returntype>(f());                                     \
 		break;									                                \
 	}                                                                           \
@@ -57,7 +57,7 @@
 	case opcode: {                                                              \
 		a1type a1 = vms->template getpop<a1type>();                              \
 		abort_t e = errcheck(a1);									            \
-		if(e != NO_ABORT) return e;								                \
+		if(e != abort_t::NO_ABORT) return e;								                \
 		vms->template push<returntype>(f(a1));                                   \
 		break;									                                \
 	}                                                                           \
@@ -67,7 +67,7 @@
 		a1type a1 = vms->template getpop<a1type>();                              \
 		a2type a2 = vms->template getpop<a2type>();                              \
 		abort_t e = errcheck(a1,a2);									        \
-		if(e != NO_ABORT) return e;								                \
+		if(e != abort_t::NO_ABORT) return e;								                \
 		vms->template push<returntype>(f(a1,a2));                                \
 		break;									                                \
 	}                                                                           \
@@ -78,7 +78,7 @@
 		a2type a2 = vms->template getpop<a2type>();                              \
 		a3type a3 = vms->template getpop<a3type>();                              \
 		abort_t e = errcheck(a1,a2,a3);									        \
-		if(e != NO_ABORT) return e;								                \
+		if(e != abort_t::NO_ABORT) return e;								                \
 		vms->template push<returntype>(f(a1,a2,a3));                             \
 		break;									                                \
 	}                                                                           \

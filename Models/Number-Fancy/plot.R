@@ -1,6 +1,6 @@
 library(ggplot2)
 
-d <- read.table("out/output.txt", header=F)
+d <- read.table("out/output.out", header=F)
 names(d) <- c("data.amount", "cnt", "posterior", "prior", "likelihood", "KL1", "KL2", "recurse", "hypothesis")
 
 remap = list("U.U.U.U.U.U.U.U.U"="Non-Knower",
@@ -45,13 +45,20 @@ cairo_pdf("banana.pdf", height=4, width=4) # Cairo needed for unicode arrow outp
 plt
 dev.off()
 
+
+plt <- ggplot(d, aes(x=-prior, y=-1000./likelihood, color=KnowerLevel, group=KnowerLevel)) + 
+    theme_bw() + theme(legend.position=c(.85,.75)) +
+    scale_shape_manual(values=c(1,4))   +
+    geom_point(aes(shape=ANS))
+    
+
 ###################################################################################################
 ## Plot learning curves
 
 logsumexp <- function(x) { m=max(x); log(sum(exp(x-m)))+m }
 
 D <- NULL
-for(amt in seq(1,300,1)) {
+for(amt in seq(1,100,1)) {
 
     d$newpost <- d$prior + amt*d$likelihood/d$data.amount # compute a new approximate posterior by scaling the ll-per-datapoint 
     d$newpost <- exp(d$newpost - logsumexp(d$newpost)) #normalize and convert to probability

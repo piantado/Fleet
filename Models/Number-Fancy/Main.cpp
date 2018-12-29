@@ -33,7 +33,7 @@ std::discrete_distribution<> number_distribution({0, 7187, 1484, 593, 334, 297, 
 	
 std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600, 700, 800, 900, 1000};
 
-const size_t MAX_NODES = 30;
+const size_t MAX_NODES = 50;
 double recursion_penalty = -20.0;
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
@@ -44,35 +44,37 @@ public:
 	MyGrammar() : Grammar() {
 		
 		for(size_t i=0;i<OBJECTS.size();i++)
-			add( new Rule(nt_type, op_Object,        std::string(1,OBJECTS[i]),        {},                   10.0/OBJECTS.size(), i) );		
+			add( new Rule(nt_type, op_Object,        std::string(1,OBJECTS[i]),        {},                1.0/OBJECTS.size(), i) );		
 		
 		for(size_t i=0;i<WORDS.size();i++)
-			add( new Rule(nt_word, op_Word,             WORDS[i],             {},                         10.0/WORDS.size(), i+1) );		
+			add( new Rule(nt_word, op_Word,             WORDS[i],             {},                         1.0/WORDS.size(), i+1) );		
 		
-		add( new Rule(nt_word, op_U,              "undef",         {},                      			   10.0) );	
+		add( new Rule(nt_word, op_U,              "undef",         {},                      			   5.0) );	
 		add( new Rule(nt_word, op_Next,           "next(%s)",      {nt_word},                      		   1.0) );	
 		add( new Rule(nt_word, op_Prev,           "prev(%s)",      {nt_word},                      	       1.0) );	
 		
 		// extracting from x
 		add( new Rule(nt_set,    op_Xset,        "set(%s)",                {nt_X},                         10.0) );		
 		add( new Rule(nt_type,   op_Xtype,       "type(%s)",               {nt_X},                         10.0) );		
-		add( new Rule(nt_X,      op_X,           "X",                      {},                             10.0) );		
+		add( new Rule(nt_X,      BuiltinOp::op_X,"X",                      {},                             10.0) );		
 		
 		add( new Rule(nt_X,      op_MakeX,        "<%s,%s>",              {nt_set, nt_type},              1.0) );		
-		add( new Rule(nt_word,   op_RECURSE,      "recurse(%s)",          {nt_X},                         1.0) );		
+		add( new Rule(nt_word,   BuiltinOp::op_RECURSE,      "recurse(%s)",          {nt_X},              5.0) );		
 
 		add( new Rule(nt_set,    op_Union,        "union(%s,%s)",         {nt_set,nt_set},            1.0/3.0) );
 		add( new Rule(nt_set,    op_Intersection, "intersection(%s,%s)",  {nt_set,nt_set},            1.0/3.0) );
 		add( new Rule(nt_set,    op_Difference,   "difference(%s,%s)",    {nt_set,nt_set},            1.0/3.0) );
-		add( new Rule(nt_set,    op_Select,       "select(%s)",           {nt_set},                   1.0/2.0) );
-		add( new Rule(nt_set,    op_SelectObj,    "selectO(%s,%s)",       {nt_set,nt_type},           1.0/2.0) );
 		add( new Rule(nt_set,    op_Filter,       "filter(%s,%s)",        {nt_type,nt_set},           1.0) );
 		
-		add( new Rule(nt_set,    op_IF,           "ifS(%s,%s,%s)", {nt_bool, nt_set,  nt_set},       1.0/2.0) );
-		add( new Rule(nt_word,   op_IF,           "ifW(%s,%s,%s)", {nt_bool, nt_word, nt_word},      1.0/2.0) );
+		add( new Rule(nt_set,    op_Select,       "select(%s)",           {nt_set},                   1.0/2.0) );
+		add( new Rule(nt_set,    op_SelectObj,    "selectO(%s,%s)",       {nt_set,nt_type},           1.0/2.0) );
+
+		
+		add( new Rule(nt_set,    BuiltinOp::op_IF,           "ifS(%s,%s,%s)", {nt_bool, nt_set,  nt_set},       1.0/2.0) );
+		add( new Rule(nt_word,   BuiltinOp::op_IF,           "ifW(%s,%s,%s)", {nt_bool, nt_word, nt_word},      1.0/2.0) );
 		
 		
-		add( new Rule(nt_bool,   op_FLIPP,       "flip(%s)",     {nt_double},               10.0) );
+		add( new Rule(nt_bool,   BuiltinOp::op_FLIPP,       "flip(%s)",     {nt_double},               5.0) );
 		add( new Rule(nt_bool,   op_And,         "and(%s,%s)",   {nt_bool, nt_bool},               1.0) );
 		add( new Rule(nt_bool,   op_Or,          "or(%s,%s)",    {nt_bool, nt_bool},               1.0) );
 		add( new Rule(nt_bool,   op_Not,         "not(%s)",   {nt_bool},                        1.0) );
@@ -112,7 +114,7 @@ public:
 	size_t recursion_count() {
 		// how many times do I use recursion?
 		std::function<size_t(const Node*)> f = [](const Node* n) { 
-			return 1*(n->rule->instr == Instruction(op_RECURSE)); 
+			return (size_t)1*(n->rule->instr.is_a(BuiltinOp::op_RECURSE)); 
 		};
 		return value->sum<size_t>(f);
 	}
@@ -131,7 +133,7 @@ public:
 	}
 	
 	double compute_single_likelihood(const t_datum& d) {
-		auto v = call(d.input, Model::U); // something of the type
+		auto v = call(d.input, Model::U, this, 64, 64); // something of the type
 		
 		double pU      = (v.count(Model::U) ? exp(v[Model::U]) : 0.0); // non-log probs
 		double pTarget = (v.count(d.output) ? exp(v[d.output]) : 0.0);
@@ -144,8 +146,7 @@ public:
 		/* Dispatch the functions that I have defined. Returns true on success. 
 		 * Note that errors might return from this 
 		 * */
-		assert(i.is_custom);
-		switch(i.custom) {
+		switch(i.getCustom()) {
 			CASE_FUNC0(op_Object,      Model::objtype, [i](){ return OBJECTS[i.arg]; })
 			
 			CASE_FUNC0(op_Word,        Model::word, [i](){ return i.arg; })
@@ -187,7 +188,7 @@ public:
 			default:
 				assert(0); // should never get here
 		}
-		return NO_ABORT;
+		return abort_t::NO_ABORT;
 	}
 };
 
@@ -282,7 +283,8 @@ int main(int argc, char** argv){
 	Fleet_initialize();
 	
 	MyGrammar grammar;
-
+	tic();
+	
 	// Set up the data
 	for(auto ndata : data_amounts) {
 		if(CTRL_C) break;
@@ -351,6 +353,8 @@ int main(int argc, char** argv){
 		h.compute_posterior(mydata); // run on the largest data amount
 		print(h);
 	}
+	
+	tic();
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;

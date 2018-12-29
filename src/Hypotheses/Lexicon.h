@@ -12,7 +12,6 @@ class Lexicon : public MCMCable<HYP,t_input,t_output,_t_datum>,
 		// Store a lexicon of type T elements
 	
 public:
-	static size_t MAX_FACTORS; // don't allow more than this many 
 	std::vector<T*> factors;
 	Grammar* grammar;
 	
@@ -98,7 +97,7 @@ public:
 		
 		// find the max op_idx used and be sure it isn't larger than the number of factors
 		std::function<size_t(const Node*)> f = [](const Node* n) {
-			if(n->rule->instr.is_custom && n->rule->instr.custom == op_IDX) {
+			if(n->rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE) ) {
 				return (size_t)n->rule->instr.arg;
 			}
 			else {
@@ -121,15 +120,14 @@ public:
 		// note: Added can be positive (Adding) or negative (removing)
 		std::function<void(Node*)> adjuster = [this, loc, added](Node* n){
 			const Instruction ni = n->rule->instr;
-			if(ni.is_custom && ni.custom == op_IDX &&
-			   (size_t)ni.arg >= loc) { // we only have to increment when args is gt. loc
+			if(ni.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE)
+				&& (size_t)ni.arg >= loc) { // we only have to increment when args is gt. loc
 			   
 				size_t newindex = n->rule->instr.arg+added;
 				
-				assert(newindex < MAX_FACTORS);
 				assert(newindex >= 0);
 				
-				n->rule = this->grammar->get_rule(n->rule->nt, n->rule->instr.custom, newindex); 
+				n->rule = this->grammar->get_rule(n->rule->nt, n->rule->instr.getCustom(), newindex); 
 			}
 		};
 			
@@ -213,14 +211,13 @@ public:
 		
 		double fb = 0.0;
 		for(size_t k=0;k<factors.size();k++) {
-			if( flip()) {
-			//if(k==i || flip()) {
-				auto [h, _fb] = factors[k]->propose();
-				x->replace(k, h);
-				fb += _fb;
-			}
+			// defaultly we'll propose to each factor -- many proposals do nothing anyways
+			auto [h, _fb] = factors[k]->propose();
+			x->replace(k, h);
+			fb += _fb;
 		}
 
+		assert(x->factors.size() == factors.size());
 		return std::make_pair(x, fb);		
 	}
 //	
@@ -244,7 +241,7 @@ public:
 	 // otherwise, no adding factors
 	 int neighbors() const {
 		 
-		if(is_evaluable() && factors.size() < MAX_FACTORS) {
+		if(is_evaluable()) {
 			T tmp(grammar, nullptr); // not a great way to do this -- this assumes this constructor will initialize to null (As it will for LOThypothesis)
 			return tmp.neighbors();
 		}
@@ -260,7 +257,7 @@ public:
 		 auto x = copy();
 		 		 
 		 // try adding a factor
-		 if(is_evaluable() && factors.size() < MAX_FACTORS){ 
+		 if(is_evaluable()){ 
 			T tmp(grammar, nullptr); // as above, assumes that this constructs will null
 			assert(k < tmp.neighbors());			
 			x->factors.push_back( tmp.make_neighbor(k) );	 

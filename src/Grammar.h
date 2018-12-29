@@ -74,7 +74,7 @@ public:
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const CustomOp o, const int a=0) {
 		for(auto r: rules[nt]) {
-			if(r->instr.is_custom && r->instr.custom == o && r->instr.arg == a) 
+			if(r->instr.is_a(o) && r->instr.arg == a) 
 				return r;
 		}
 		assert(0 && "*** Could not find rule");		
@@ -82,7 +82,7 @@ public:
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const BuiltinOp o, const int a=0) {
 		for(auto r: rules[nt]) {
-			if(r->instr.is_custom && r->instr.custom == o && r->instr.arg == a) 
+			if(r->instr.is_a(o) && r->instr.arg == a) 
 				return r;
 		}
 		assert(0 && "*** Could not find rule");		
@@ -140,7 +140,7 @@ public:
 		// fill in Node::nulldisplay
 		assert(!q.empty() && "*** Should not ever get to here with an empty queue -- are you missing arguments?");
 		
-		S pfx = q.front(); q.pop_front();
+		std::string pfx = q.front(); q.pop_front();
 		if(pfx == T::nulldisplay) return nullptr; // for gaps!
 
 		// otherwise find the matching rule

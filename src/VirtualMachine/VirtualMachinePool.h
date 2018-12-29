@@ -25,8 +25,8 @@ class VirtualMachinePool {
 	// Basically each machine state stores the state of some evaluator and is able to push things back on to the Q
 	// if it encounters a random flip
 	
-	static const unsigned long MAX_STEPS   = 2048; ///2048;
-	static const unsigned long MAX_OUTPUTS = 256; // stop after our output has this many (NOTE: This may not correctly estimate the low probability strings, because we are summing over traces)
+	const unsigned long max_steps;
+	const unsigned long max_outputs;
 	
 	double min_lp; // prune out stuff with less probability than this
 	double worst_lp = infinity;
@@ -37,31 +37,55 @@ public:
 						std::vector<VirtualMachineState<t_x,t_return>*>,
 						compare_vms<VirtualMachineState<t_x,t_return>> > Q; // Q of states sorted by probability
 
-	VirtualMachinePool(double mlp=-10) : min_lp(mlp) {
+	VirtualMachinePool(unsigned long ms=2048, unsigned long mo=256, double mlp=-20) 
+					   : max_steps(ms), max_outputs(mo), min_lp(mlp) {
 	}
 	
 	virtual ~VirtualMachinePool() {
 		while(!Q.empty()){ 
-			VirtualMachineState<t_x,t_return>* vms = Q.top(); Q.pop();
+			auto vms = Q.top(); Q.pop();
 			delete vms;
 		}
 	}
 	
+	bool wouldIadd(double lp) {
+		// returns true if I would add something with this lp, given my max_steps and the stack
+		return lp >= min_lp && (Q.size() < max_steps || lp > worst_lp);
+	}
+	
 	void push(VirtualMachineState<t_x,t_return>* o) { //NOTE: can NOT take a reference
 		//CERR "POOL PUSHING " TAB &o ENDL;
-		if(o->lp >= min_lp && (Q.size() < MAX_STEPS || o->lp > worst_lp)){ // don't push if Q is full up to steps or we are better than the worst -- TODO: WE Should be using a TopN structure here
+		if(wouldIadd(o->lp)){ // TODO: might be able to add an optimization here that doesn't push if we don't have enough steps left to get it 
 			Q.push(o);
 			
-			if(o->lp < worst_lp) worst_lp = o->lp; //keep track of the worst we've seen
-			
+			worst_lp = MIN(worst_lp, o->lp); //keep track of the worst we've seen
 		}
 		else { // this assumes we take ownership of everything with o
 			delete o;
 		}
 	}
 	
-	DiscreteDistribution<t_return> run(unsigned long max_steps, unsigned long max_outputs, 
-									   Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) { 
+	template<typename T>
+	void copy_increment_push(const VirtualMachineState<t_x,t_return>* x, T v, double lpinc) {
+		// This is an important opimization where we will make a copy of x, 
+		// push v into it's stack, and increment its lp by lpinc only if it will
+		// be added to the stack, whcih we check in the pool here. This saves us from
+		// having to use the VirtualMachineState constructor (e.g. making a copy, which is
+		// expensive if we are copying all the stacks) if the copy won't actually be added
+		// to the queue
+		if(wouldIadd(x->lp + lpinc)) {
+		
+			auto s = new VirtualMachineState<t_x,t_return>(*x);
+			s->template push<T>(v); // add this
+			s->increment_lp(lpinc);
+			this->push(s);	
+		}	
+		// else do nothing
+		
+	}
+	
+	
+	DiscreteDistribution<t_return> run(Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) { 
 		// This runs and adds up the probability mass for everything, returning a dictionary outcomes->log_probabilities
 		
 		DiscreteDistribution<t_return> out;
@@ -75,7 +99,7 @@ public:
 			
 			auto y = vms->run(this, dispatcher, loader);
 				
-			if(vms->aborted == NO_ABORT) { // can't add up probability for errors
+			if(vms->aborted == abort_t::NO_ABORT) { // can't add up probability for errors
 				out.addmass(y, vms->lp);
 			}
 			
@@ -86,12 +110,5 @@ public:
 		
 		return out;		
 	}
-	
-	// run with some default values
-	DiscreteDistribution<t_return> run(Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) {
-			return run(MAX_STEPS, MAX_OUTPUTS, dispatcher, loader);
-	}
-
-	
 	
 };

@@ -121,6 +121,14 @@ public:
 		}
 	}
 	
+	void map( const std::function<void(Node*)>& f ) {
+		f(this);
+		for(size_t i=0;i<rule->N;i++) {
+			if(child[i] != nullptr) child[i]->map(f);
+		}
+	}
+	
+	
 	void map_conditionalrecurse( std::function<bool(Node*)>& f ) {
 		// f here returns a function and we only recurse if the function returns true
 		// This is often useful if we are modifying the tree and don't want to keep going once we've found something
@@ -182,8 +190,8 @@ public:
 	}
 	
 	
-	
-	virtual Node* __sample_helper(std::function<double(const Node*)>& f, double& r) {
+	template<typename T>
+	Node* __sample_helper(std::function<T(const Node*)>& f, double& r) {
 		
 		r -= f(this);
 		if(r < 0.0) { 
@@ -200,16 +208,20 @@ public:
 		}		
 	}
 	
-	virtual Node* sample(std::function<double(const Node*)>& f) {
+	template<typename T>
+	Node* sample(std::function<T(const Node*)>& f) {
 		// sample a subnode satisfying f and return its probability
 		// where f maps each node to a probability (possibly zero)
+		// we allow T here to be a double, int, whatever 
 		// NOTE: this does NOT return a copy
 		
-		double z = sum<double>(f);
+		T z = sum<T>(f);
 		double r = z * uniform(rng);
-		return __sample_helper(f,r);
+		auto x = __sample_helper(f,r);
+		assert(x != nullptr && "*** Should not have gotten nullptr from __sample_helper");
+		return x; 
 	}
-	
+
 	
 	virtual Node* copy_resample(const Grammar& g, bool f(const Node* n)) const {
 		// this makes a copy of the current node where ALL nodes satifying f are resampled from the grammar
@@ -262,7 +274,7 @@ public:
 	virtual size_t program_size() const {
 		// compute the size of the program -- just number of nodes plus special stuff for IF
 		size_t n = 1; // I am one node
-		if( (!rule->instr.custom) && rule->instr.builtin == op_IF) { n += 1; } // I have to add this many more instructions for an if
+		if( rule->instr.is_a(BuiltinOp::op_IF) ) { n += 1; } // I have to add this many more instructions for an if
 		for(size_t i=0;i<rule->N;i++) {
 			n += (child[i] == nullptr ? 0 : child[i]->program_size());
 		}
@@ -284,8 +296,8 @@ public:
 		}
 		
 		// Main code
-		if( (!rule->instr.custom) && rule->instr.builtin == op_IF) {
-			assert(rule->N == 3 && "op_IF require three arguments"); // must have 3 parts
+		if( rule->instr.is_a(BuiltinOp::op_IF) ) {
+			assert(rule->N == 3 && "BuiltinOp::op_IF require three arguments"); // must have 3 parts
 			
 			int xsize = child[1]->program_size()+1; // must be +1 in order to skip over the JMP too
 			int ysize = child[2]->program_size();
@@ -296,12 +308,12 @@ public:
 			
 			// make the right instruction 
 			// TODO: Assert that ysize fits 
-			ops.push(Instruction(op_JMP,ysize));
+			ops.push(Instruction(BuiltinOp::op_JMP,ysize));
 			
 			child[1]->linearize(ops);
 			
 			// encode jump
-			ops.push(Instruction(op_IF, xsize)); 
+			ops.push(Instruction(BuiltinOp::op_IF, xsize)); 
 			
 			// evaluate the bool first so its on the stack when we get to if
 			child[0]->linearize(ops);
