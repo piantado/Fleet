@@ -73,9 +73,7 @@ const double MIN_LP = -20.0; // -10 corresponds to 1/10000 approximately, but we
 const unsigned long MAX_STEPS_PER_FACTOR   = 2048; //2048;
 const unsigned long MAX_OUTPUTS_PER_FACTOR = 256;
 
-std::vector<double> data_amounts = {1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 5000, 10000}; //1.0, 2.0, 5.0, 7.5, 10.0, 25.0, 50.0, 75.0, 100.0, 125.0, 150.0, 200.0, 300, 500.0, 750, 1000.0, 2000, 3000.0, 5000.0, 10000.0, 15000, 20000};
-
-std::vector<Node*> smart_proposals; // these are filled in in main
+std::vector<double> data_amounts = {1000}; //{1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 5000, 10000}; //1.0, 2.0, 5.0, 7.5, 10.0, 25.0, 50.0, 75.0, 100.0, 125.0, 150.0, 200.0, 300, 500.0, 750, 1000.0, 2000, 3000.0, 5000.0, 10000.0, 15000, 20000};
 
 
 class MyGrammar : public Grammar { 
@@ -473,7 +471,16 @@ int main(int argc, char** argv){
 		}
 		h0->compute_posterior(mydata);
 		
-		parallel_MCMC(nthreads, h0, &mydata, callback,  mcmc_steps, mcmc_restart, true, runtime / data_amounts.size() );
+		//parallel_MCMC(nthreads, h0, &mydata, callback,  mcmc_steps, mcmc_restart, true, runtime / data_amounts.size() );
+		//MCMCChain<MyHypothesis> mychain(h0, &mydata, callback);
+	//	mychain.run(mcmc_steps, runtime);
+		//CERR mychain.acceptance_rate() ENDL;
+		
+		ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, {1.0,1.05, 1.1, 1.2, 1.3, 1.4, 1.5, 1.7, 2.0, 3.0, 5.0, 8.0, 10.0, 15, 20, 30, 50, 100, 500, 1000} );
+		samp.run(0,0, 100, 10000);
+		
+		//ChainPool<MyHypothesis> pool(h0, &mydata, callback, 10);
+		//pool.run(0,0);
 		
 		// start on the best for the next round of data
 		if(!top.empty()) 

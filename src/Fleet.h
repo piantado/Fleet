@@ -165,7 +165,11 @@ typedef std::stack<Instruction> Program;
 #include "Hypotheses/Lexicon.h"
 
 #include "Inference/MCMC.h"
+#include "Inference/MCMCChain.h"
 #include "Inference/MCTS.h"
+#include "Inference/ParallelTempering.h"
+#include "Inference/ChainPool.h"
+
 
 #include "Top.h"
 #include "CL11.hpp"
@@ -235,9 +239,7 @@ unsigned long convert_time(std::string& s) {
 	}
 	
 	double t = std::stod(s.substr(0,s.length()-1)); // all but the last character
-	
-	CERR "RUNTIME=" << t*multiplier ENDL;
-	
+		
 	return (unsigned long)(t*multiplier); // note this effectively rounds to the nearest escond 
 	
 }

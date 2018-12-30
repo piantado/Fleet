@@ -115,9 +115,9 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 			if(elapsed_time > time) break;
 		}
 		
-#ifdef DEBUG_MCMC
-        std::cerr << "\n# Current\t" << current->posterior TAB current->prior TAB current->likelihood TAB "\t" TAB current->string() ENDL;
-#endif
+		#ifdef DEBUG_MCMC
+			std::cerr << "\n# Current\t" << current->posterior TAB current->prior TAB current->likelihood TAB "\t" TAB current->string() ENDL;
+		#endif
         
 		// generate the proposal -- defaulty "restarting" if we're currently at -inf
 		HYP* proposal;
@@ -131,15 +131,12 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 			
 		++FleetStatistics::mcmc_proposal_calls;
 		
-//#ifdef DEBUG_MCMC
-//        std::cerr << "# Proposing\t\t\t" TAB proposal->string() ENDL;
-//#endif
-//				
+		// actually compute the posterior on the dat 
 		proposal->compute_posterior(data);
 
-#ifdef DEBUG_MCMC
-        std::cerr << "# Proposed \t" << proposal->posterior TAB proposal->prior TAB proposal->likelihood TAB fb TAB proposal->string() ENDL;
-#endif
+		#ifdef DEBUG_MCMC
+			std::cerr << "# Proposed \t" << proposal->posterior TAB proposal->prior TAB proposal->likelihood TAB fb TAB proposal->string() ENDL;
+		#endif
 		
 		// keep track of the max if we are supposed to
 		if(returnmax && (proposal->posterior > themax->posterior)) {
@@ -163,9 +160,9 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 		    ((!std::isnan(proposal->posterior)) &&
 			  (ratio > 0 || uniform(rng) < exp(ratio)))) {
 				  
-#ifdef DEBUG_MCMC
+		#ifdef DEBUG_MCMC
 			  std::cerr << "# Accept" << std::endl;
-#endif
+		#endif
 			  delete current; 
 			  current = proposal;
 			  

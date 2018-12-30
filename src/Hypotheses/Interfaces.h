@@ -40,7 +40,7 @@ public:
 	// log values for all
 	double prior; 
 	double likelihood;
-	double posterior;
+	double posterior; // Posterior always stores at temperature 1
 	uintmax_t born; // what count were you born at?
 
 	Bayesable() : prior(0.0), likelihood(0.0), posterior(0.0), born(++FleetStatistics::hypothesis_births) {
@@ -62,6 +62,7 @@ public:
 	}
 	
 	virtual double compute_posterior(const t_data& data) {
+		// NOTE: Posterior *always* stores at temperature 1
 		
 		++FleetStatistics::posterior_calls; // just keep track of how many calls 
 		
@@ -79,6 +80,11 @@ public:
 		}
 		
 		return posterior;
+	}
+	
+	virtual double at_temperature(double t) {
+		// temperature here applies to the likelihood only
+		return prior + likelihood/t;
 	}
 	
 	virtual size_t hash() const=0;

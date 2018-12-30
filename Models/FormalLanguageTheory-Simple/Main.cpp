@@ -3,7 +3,7 @@
 // These are the internal symbols that are used to represent each operation. The grammar
 // generates nodes with them, and then dispatch down below gets called with a switch
 // statement to see how to execute aech of them. 
-enum CustomOp {
+enum class CustomOp {
 	op_STREQ,op_EMPTYSTRING,op_EMPTY,op_A,op_CDR,op_CAR,op_CONS
 };
 
@@ -30,19 +30,19 @@ public:
 		// here we create an alphabet op with an "arg" that is unpacked below to determine
 		// which character of the alphabet it corresponds to 
 		for(size_t i=0;i<alphabet.length();i++)
-			add( new Rule(nt_string, op_A,            alphabet.substr(i,1),          {},                   5.0/alphabet.length(), i) );
+			add( new Rule(nt_string, CustomOp::op_A,            alphabet.substr(i,1),          {},                   5.0/alphabet.length(), i) );
 
-		add( new Rule(nt_string, op_EMPTYSTRING,  "''",           {},                               1.0) );
+		add( new Rule(nt_string, CustomOp::op_EMPTYSTRING,  "''",           {},                               1.0) );
 		
-		add( new Rule(nt_string, op_CONS,         "cons(%s,%s)",  {nt_string,nt_string},            1.0) );
-		add( new Rule(nt_string, op_CAR,          "car(%s)",      {nt_string},                      1.0) );
-		add( new Rule(nt_string, op_CDR,          "cdr(%s)",      {nt_string},                      1.0) );
+		add( new Rule(nt_string, CustomOp::op_CONS,         "cons(%s,%s)",  {nt_string,nt_string},            1.0) );
+		add( new Rule(nt_string, CustomOp::op_CAR,          "car(%s)",      {nt_string},                      1.0) );
+		add( new Rule(nt_string, CustomOp::op_CDR,          "cdr(%s)",      {nt_string},                      1.0) );
 		
 		add( new Rule(nt_string, BuiltinOp::op_IF,           "if(%s,%s,%s)", {nt_bool, nt_string, nt_string},  1.0) );
 		
 		add( new Rule(nt_bool,   BuiltinOp::op_FLIP,         "flip()",       {},                               5.0) );
-		add( new Rule(nt_bool,   op_EMPTY,        "empty(%s)",    {nt_string},                      1.0) );
-		add( new Rule(nt_bool,   op_STREQ,        "(%s==%s)",     {nt_string,nt_string},            1.0) );
+		add( new Rule(nt_bool,   CustomOp::op_EMPTY,        "empty(%s)",    {nt_string},                      1.0) );
+		add( new Rule(nt_bool,   CustomOp::op_STREQ,        "(%s==%s)",     {nt_string,nt_string},            1.0) );
 	}
 };
 
@@ -90,14 +90,14 @@ public:
 			// an abort			
 			
 			// when we process op_A, we unpack the "arg" into an index into alphabet
-			CASE_FUNC0(op_A,           S,          [i](){ return alphabet.substr(i.arg, 1);} )
+			CASE_FUNC0(CustomOp::op_A,           S,          [i](){ return alphabet.substr(i.arg, 1);} )
 			// the rest are straightforward:
-			CASE_FUNC0(op_EMPTYSTRING, S,          [](){ return S("");} )
-			CASE_FUNC1(op_EMPTY,       bool,  S,   [](const S& s){ return s.size()==0;} )
-			CASE_FUNC2(op_STREQ,       bool,  S,S, [](const S& a, const S& b){return a==b;} )
-			CASE_FUNC1(op_CDR,         S, S,       [](const S& s){ return (s.empty() ? S("") : s.substr(1,S::npos)); } )		
-			CASE_FUNC1(op_CAR,         S, S,       [](const S& s){ return (s.empty() ? S("") : S(1,s.at(0))); } )		
-			CASE_FUNC2e(op_CONS,       S, S,S,
+			CASE_FUNC0(CustomOp::op_EMPTYSTRING, S,          [](){ return S("");} )
+			CASE_FUNC1(CustomOp::op_EMPTY,       bool,  S,   [](const S& s){ return s.size()==0;} )
+			CASE_FUNC2(CustomOp::op_STREQ,       bool,  S,S, [](const S& a, const S& b){return a==b;} )
+			CASE_FUNC1(CustomOp::op_CDR,         S, S,       [](const S& s){ return (s.empty() ? S("") : s.substr(1,S::npos)); } )		
+			CASE_FUNC1(CustomOp::op_CAR,         S, S,       [](const S& s){ return (s.empty() ? S("") : S(1,s.at(0))); } )		
+			CASE_FUNC2e(CustomOp::op_CONS,       S, S,S,
 								[](const S& x, const S& y){ S a = x; a.append(y); return a; },
 								[](const S& x, const S& y){ return (x.length()+y.length()<MAX_LENGTH ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
 								)

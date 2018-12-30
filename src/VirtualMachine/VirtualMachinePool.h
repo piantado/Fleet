@@ -69,7 +69,7 @@ public:
 	void copy_increment_push(const VirtualMachineState<t_x,t_return>* x, T v, double lpinc) {
 		// This is an important opimization where we will make a copy of x, 
 		// push v into it's stack, and increment its lp by lpinc only if it will
-		// be added to the stack, whcih we check in the pool here. This saves us from
+		// be added to the queue, whcih we check in the pool here. This saves us from
 		// having to use the VirtualMachineState constructor (e.g. making a copy, which is
 		// expensive if we are copying all the stacks) if the copy won't actually be added
 		// to the queue
