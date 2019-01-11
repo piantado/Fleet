@@ -23,6 +23,27 @@ public:
 		}
 	}
 	
+	
+	
+	
+	ParallelTempering(HYP* h0, typename HYP::t_data* d, void(*cb)(HYP*), unsigned long n, double maxT) : terminate(false) {
+		
+		for(size_t i=0;i<n;i++) {
+			
+			pool.push_back(new MCMCChain<HYP>(i==0?h0:h0->restart(), d, cb));
+			
+			if(i==0) {  // always initialize i=0 to T=1s
+				pool[i]->temperature = 1.0;
+			}
+			else {
+				// set its temperature with this kind of geometric scale  
+				pool[i]->temperature = 1.0 + (maxT-1.0) * pow(2.0, double(i)-double(n-1)); 
+			}
+			swap_history = new FiniteHistory<bool>[n];
+		}
+	}
+	
+	
 	~ParallelTempering() {
 		for(auto p : pool) 
 			delete p;
@@ -42,18 +63,13 @@ public:
 			pool[k-1]->current_mutex.lock(); // wait for lock
 			pool[k]->current_mutex.lock(); // wait for lock
 			
-			double Tnow = pool[k-1]->at_temperature(temperatures[k-1])   + pool[k]->at_temperature(temperatures[k]);
-			double Tswp =   pool[k]->at_temperature(temperatures[k-1]) + pool[k-1]->at_temperature(temperatures[k]);
+			double Tnow = pool[k-1]->at_temperature(pool[k-1]->temperature)   + pool[k]->at_temperature(pool[k]->temperature);
+			double Tswp = pool[k-1]->at_temperature(pool[k]->temperature)     + pool[k]->at_temperature(pool[k-1]->temperature);
 			// TODO: Compare to paper
 			if(Tswp > Tnow || uniform(rng) < exp(Tswp-Tnow)) { 
 				
-				// TODO: MUST MAKE THREAD SAFE 
-				
-				//CERR "SWAP" << k TAB pool[k]->current->string() TAB pool[k+1]->current->string() ENDL;
 				// swap the chains
-				auto tmp = pool[k-1]->current;
-				pool[k-1]->current = pool[k]->current;
-				pool[k]->current = tmp;	
+				std::swap(pool[k]->current, pool[k-1]->current);
 
 				swap_history[k] << true;
 			}
@@ -61,9 +77,9 @@ public:
 				swap_history[k] << false;
 			}
 			
-			pool[k-1]->current_mutex.unlock(); // wait for lock
-			pool[k]->current_mutex.unlock(); // wait for lock
-
+			pool[k-1]->current_mutex.unlock(); 
+			pool[k]->current_mutex.unlock(); 
+			
 		} // end while true
 	}
 	
@@ -102,19 +118,18 @@ public:
 	}
 	
 	void show_statistics() {
-		COUT "#Pool info: \t";
+		COUT "# Pool info: \n";
 		for(size_t i=0;i<pool.size();i++) {
-			COUT "(" <<pool[i]->temperature <<":" << pool[i]->current->posterior << "," 
-					 <<pool[i]->acceptance_ratio() << "," << swap_history[i].mean() << ")--";
+			COUT "# " << i TAB pool[i]->temperature TAB pool[i]->current->posterior TAB
+					     pool[i]->acceptance_ratio() TAB swap_history[i].mean() TAB pool[i]->samples ENDL;
 		}
-		COUT '\n';
 	}
 	
 	double k(unsigned long t, double v, double t0) {
 		return (1.0/v) * t0/(t+t0); 
 	}
 	
-	void adapt(double v=1, double t0=10) {
+	void adapt(double v=3, double t0=1000000) {
 		
 		double S[pool.size()];
 		

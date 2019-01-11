@@ -4,7 +4,7 @@
 // generates nodes with them, and then dispatch down below gets called with a switch
 // statement to see how to execute aech of them. 
 enum class CustomOp {
-	op_STREQ,op_EMPTYSTRING,op_EMPTY,op_A,op_CDR,op_CAR,op_CONS
+	op_STREQ,op_EMPTYSTRING,op_EMPTY,op_A,op_CDR,op_CAR,op_CONS,op_REPEAT,op_NUM
 };
 
 // Define our types. 
@@ -17,20 +17,21 @@ enum class CustomOp {
 using S = std::string; // just for convenience
 
 S alphabet = "01"; // the alphabet we use (possibly specified on command line)
-S datastr  = "01,01011,010110111"; // the data, comma separated
+//S datastr  = "01,01011,010110111"; // the data, comma separated
+S datastr  = "011,011011,011011011"; // the data, comma separated
 const double strgamma = 0.99; // penalty on string length
 
 // Define a grammar
 class MyGrammar : public Grammar { 
 public:
 	MyGrammar() : Grammar() {
-		add( new Rule(nt_string, BuiltinOp::op_X,            "x",            {},                               5.0) );		
+		add( new Rule(nt_string, BuiltinOp::op_X,            "x",            {},                               10.0) );		
 		add( new Rule(nt_string, BuiltinOp::op_RECURSE,      "F(%s)",        {nt_string},                      2.0) );		
 
 		// here we create an alphabet op with an "arg" that is unpacked below to determine
 		// which character of the alphabet it corresponds to 
 		for(size_t i=0;i<alphabet.length();i++)
-			add( new Rule(nt_string, CustomOp::op_A,            alphabet.substr(i,1),          {},                   5.0/alphabet.length(), i) );
+			add( new Rule(nt_string, CustomOp::op_A,            alphabet.substr(i,1),          {},                   10.0/alphabet.length(), i) );
 
 		add( new Rule(nt_string, CustomOp::op_EMPTYSTRING,  "''",           {},                               1.0) );
 		
@@ -48,7 +49,7 @@ public:
 
 
 /* Define a class for handling my specific hypotheses and data. Everything is defaulty a PCFG prior and 
- * regeneration proposals, but I have to define a likelihood */
+// * regeneration proposals, but I have to define a likelihood */
 class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_string, S, S> {
 public:
 
@@ -66,7 +67,7 @@ public:
 //						   );
 //	}
 	double compute_single_likelihood(const t_datum& x) {
-		auto out = call(x.input, "<err>", this, 256, 256);
+		auto out = call(x.input, "<err>", this, 256, 256); //256, 256);
 		
 		// a likelihood based on the prefix probability -- we assume that we generate from the hypothesis
 		// and then might glue on some number of additional strings, flipping a gamma-weighted coin to determine
@@ -97,6 +98,16 @@ public:
 			CASE_FUNC2(CustomOp::op_STREQ,       bool,  S,S, [](const S& a, const S& b){return a==b;} )
 			CASE_FUNC1(CustomOp::op_CDR,         S, S,       [](const S& s){ return (s.empty() ? S("") : s.substr(1,S::npos)); } )		
 			CASE_FUNC1(CustomOp::op_CAR,         S, S,       [](const S& s){ return (s.empty() ? S("") : S(1,s.at(0))); } )		
+			CASE_FUNC2e(CustomOp::op_REPEAT,      S,  S, int, [](const S& a, const int i){
+				S out;
+				for(int j=0;j<i;j++) out = out + a;
+				return out;				
+				},
+				[](const S& x, const int i){ return (x.length()*i<MAX_LENGTH ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
+			)
+			CASE_FUNC0(CustomOp::op_NUM,         int,       [i](){ return i.arg; } )		
+			
+			
 			CASE_FUNC2e(CustomOp::op_CONS,       S, S,S,
 								[](const S& x, const S& y){ S a = x; a.append(y); return a; },
 								[](const S& x, const S& y){ return (x.length()+y.length()<MAX_LENGTH ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
@@ -194,7 +205,6 @@ int main(int argc, char** argv){
 	
 	tic(); // start the timer
 	parallel_MCMC(nthreads, h0, &mydata, callback, mcmc_steps, mcmc_restart, true, runtime);
-//	MCMC<MyHypothesis>(h0, mydata, callback, mcmc_steps, true, runtime);
 	tic(); // end timer
 	
 	// Show the best we've found

@@ -168,6 +168,20 @@ public:
 						
 						break;
 					}
+					case BuiltinOp::op_TRUE: 
+					{
+						if constexpr (contains_type<bool,NT_TYPES>()) { 
+							push<bool>(true);
+						} else { assert(0 && "*** Must have bool defined to use op_TRUE");}
+						break;
+					}
+					case BuiltinOp::op_FALSE: 
+					{
+						if constexpr (contains_type<bool,NT_TYPES>()) { 
+							push<bool>(false);
+						} else { assert(0 && "*** Must have bool defined to use op_FALSE");}
+						break;
+					}
 					case BuiltinOp::op_RECURSE:
 					{
 						

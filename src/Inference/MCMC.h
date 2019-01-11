@@ -97,7 +97,8 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 	// compute the info for the curent
     current->compute_posterior(data);
 	callback(current);
-		
+	++FleetStatistics::global_sample_count;
+
 	// copy the current to keep track of the max, if that's what we're supposed to return
 	HYP* themax = nullptr;
 	if(returnmax) themax = current->copy();

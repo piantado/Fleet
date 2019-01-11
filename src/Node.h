@@ -105,6 +105,15 @@ public:
 		return s;
 	}
 
+	double logsumexp(std::function<double(const Node*)>& f ) const {
+		double s = f(this);
+		for(size_t i=0;i<rule->N;i++) {
+			if(child[i] != nullptr)
+				s = logplusexp(s, child[i]->logsumexp(f));
+		}
+		return s;
+	}
+
 	
 	void map( void f(Node*) ) {
 		// NOTE: Because map calls f first on this, it allows us to modify the tree if we want to. 
@@ -140,7 +149,7 @@ public:
 		}
 	}
 		
-	size_t count_equal(const Node* n) {
+	size_t count_equal(const Node* n) const {
 		// how many of my descendants are equal to n?
 		size_t cnt = 1;
 		if(*this == *n) cnt++;

@@ -50,7 +50,7 @@ enum class CustomOp { // NOTE: The type here MUST match the width in bitfield or
 	op_CUSTOM_NOP,op_STREQ,op_EMPTYSTRING,op_EMPTY,\
 	op_CDR,op_CAR,op_CONS,\
 	op_P, op_TERMINAL,\
-	op_String2Set,op_Setcons,op_UniformSample,
+	op_String2Set,op_Setcons,op_UniformSample,op_Setremove,\
 	op_Signal, op_SignalSwitch
 };
 
@@ -65,15 +65,13 @@ size_t maxlength = 128; // max string length, else throw an error (128 needed fo
 size_t nfactors = 2; // how may factors do we run on?
 S alphabet="nvadt";
 const size_t PREC_REC_N = 50;  // if we make this too high, then the data is finite so we won't see some stuff
-const size_t MAX_LINES = 1000; // how many lines of data do we load? The more data, the slower...
+const size_t MAX_LINES = 1000000; // how many lines of data do we load? The more data, the slower...
 const size_t MAX_PR_LINES = 1000000; 
 
 // Parameters for running a virtual machine
 const double MIN_LP = -20.0; // -10 corresponds to 1/10000 approximately, but we go to -15 to catch some less frequent things that happen by chance; -18;  // in (ab)^n, top 25 strings will need this man lp
-const unsigned long MAX_STEPS_PER_FACTOR   = 2048; //2048;
-const unsigned long MAX_OUTPUTS_PER_FACTOR = 256;
-
-std::vector<double> data_amounts = {1000}; //{1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 5000, 10000}; //1.0, 2.0, 5.0, 7.5, 10.0, 25.0, 50.0, 75.0, 100.0, 125.0, 150.0, 200.0, 300, 500.0, 750, 1000.0, 2000, 3000.0, 5000.0, 10000.0, 15000, 20000};
+const unsigned long MAX_STEPS_PER_FACTOR   = 4096; //2048; //2048;
+const unsigned long MAX_OUTPUTS_PER_FACTOR = 512; //256;
 
 
 class MyGrammar : public Grammar { 
@@ -101,9 +99,10 @@ public:
 		add( new Rule(nt_string, BuiltinOp::op_IF,           "if(%s,%s,%s)", {nt_bool, nt_string, nt_string},  1.0) );
 		
 		// NOTE: This rule samples from the *characters* occuring in s
-		add( new Rule(nt_string, CustomOp::op_UniformSample,"{%s}",         {nt_set},                      1.0) );
+		add( new Rule(nt_string, CustomOp::op_UniformSample,"sample(%s)",         {nt_set},                      1.0) );
 		add( new Rule(nt_set,    CustomOp::op_String2Set,   "%s",           {nt_string},                   1.0) );
 		add( new Rule(nt_set,    CustomOp::op_Setcons,      "%s,%s",        {nt_string, nt_set},           1.0) );
+		add( new Rule(nt_set,    CustomOp::op_Setremove,    "%s-%s",        {nt_set, nt_string},           1.0) );
 		
 		add( new Rule(nt_bool,   BuiltinOp::op_FLIPP,        "flip(%s)",     {nt_double},                      1.0) );
 		add( new Rule(nt_bool,   CustomOp::op_EMPTY,        "empty(%s)",    {nt_string},                      1.0) );
@@ -112,7 +111,7 @@ public:
 		
 		for(size_t a=1;a<10;a++) { // pack probability into arg, out of 10
 			std::string s = std::to_string(double(a)/10.0).substr(1,3); // substr just truncates lesser digits
-			add( new Rule(nt_double, CustomOp::op_P,      s,          {},                              (a==5?10.0:1.0), a) );
+			add( new Rule(nt_double, CustomOp::op_P,      s,          {},                              (a==5?5.0:1.0), a) );
 		}
 		
 	}
@@ -149,6 +148,8 @@ public:
 
 			CASE_FUNC2(CustomOp::op_Setcons,       StrSet, S, StrSet, [](S& x, StrSet& y){ y.insert(x); return y; }  )
 			
+			CASE_FUNC2(CustomOp::op_Setremove,     StrSet, StrSet, S, [](StrSet& y, S& x){ if(y.count(x)) { y.erase(x); } return y; }  )
+			
 			case CustomOp::op_UniformSample: {
 					// implement sampling from the set.
 					// to do this, we read the set and then push all the alternatives onto the stack
@@ -179,9 +180,6 @@ public:
 class MyHypothesis : public Lexicon<MyHypothesis, InnerHypothesis, S, S> {
 public:	
 	static constexpr double alpha = 0.99;
-//	static constexpr size_t maxnodes = 100; // toss anything with more than this many nodes total
-	
-	double myndata = NaN; // store this in compute likelihood so we can print it later
 	
 	MyHypothesis(Grammar* g) : Lexicon<MyHypothesis,InnerHypothesis,S,S>(g) {}
 	
@@ -192,7 +190,6 @@ public:
 		this->prior      = h.prior;
 		this->likelihood = h.likelihood;
 		this->posterior  = h.posterior;
-		this->myndata    = h.myndata;
 	}
 	
 	virtual ~MyHypothesis() {
@@ -253,12 +250,11 @@ public:
 	 * Calling
 	 ********************************************************/
 	 
-	// Define our own call without factors -- this will call each successively
-	// and pass the output to the next
 	DiscreteDistribution<S> call(const S x, const S err) {
+		// this calls by calling only the last factor, which, according to our prior,
+		// must call everything else
 		
-		DiscreteDistribution<S> cur;
-		if(!has_valid_indices()) return cur;
+		if(!has_valid_indices()) return DiscreteDistribution<S>();
 		
 		size_t i = factors.size()-1; 
 		return factors[i]->call(x,err,this,MAX_STEPS_PER_FACTOR,MAX_OUTPUTS_PER_FACTOR,MIN_LP); 
@@ -272,7 +268,6 @@ public:
 	 double compute_likelihood(const t_data& data) {
 		 // this versino goes through and computes the predictive probability of each prefix
 		 likelihood = 0.0;
-		 myndata = 0;
 		 
 		 // call -- treats all input as emptystrings
 		 auto M = call(S(""),S("<err>")); 
@@ -311,66 +306,36 @@ public:
 					break;
 				}	
 			 }
-			 myndata += a.reliability;
 		 }
 		 
 		 return likelihood;		 
 	 }
 	 
-/*
-	 double compute_likelihood(const t_data& data) {
-		 likelihood = 0.0;
-		 myndata = 0.0;
-		 
-		 auto M = call(S(""),S("<err>")); // assumes all input has empty strings
-		 
-		 for(auto a : data) {
-			 
-			 // sum up the probability of all of ways we could generate a.output 
-			 double lpa = -infinity; 
-			 
-			 for(auto m : M.values()) {
-//				 if(is_prefix(m.first, a.output)) { // we flip an alpha coin to decide how many to add, and then choose at random from those we do add
-//					// TODO: May not make sense to use prefix likelihood if we're not concatenative
-//					lpa = logplusexpf(lpa, m.second + log(alpha) + log((1.0-alpha)/alphabet.size())*(a.output.length()-m.first.length()));
-//				 }
-				 lpa = logplusexpf(lpa, m.second - (alphabet.size()) * levenshtein_distance(a.output, m.first));
-			 }
-			 
-			 likelihood += lpa * a.reliability; // scale by the amount of data
-			 myndata += a.reliability;
-		 }
-		 
-		 return likelihood;		 
-	 }
-*/
-
 };
 
 
 
 
 #include "Data.h"
+std::string prdata_path = ""; 
 MyHypothesis::t_data mydata;
 MyHypothesis::t_data prdata; // used for computing precision and recall -- in case we want to use more strings?
 
 TopN<MyHypothesis> top;
-TopN<MyHypothesis> all; // we build up this big hypothesis space over all data. 
 MyGrammar* grammar;
 MyHypothesis* h0; // used to initialize search chains in parallel search
-pthread_mutex_t output_lock;
  
 void print(MyHypothesis& h, std::string prefix) {
-	pthread_mutex_lock(&output_lock); 
+	std::lock_guard guard(output_lock);
+		
 	auto o = h.call(S(""), S("<err>"));
 	COUT "#\n## ";
 	o.print();
 	COUT "\n";
 	COUT "### " << h.parseable() ENDL;
-	COUT prefix << h.born TAB h.myndata TAB h.posterior TAB top.count(h) TAB h.prior TAB h.likelihood TAB h.likelihood/h.myndata TAB "";
+	COUT prefix << h.born TAB h.posterior TAB top.count(h) TAB h.prior TAB h.likelihood TAB "";
 	print_precision_and_recall(std::cout, o, prdata, PREC_REC_N);
 	COUT "" TAB QQ(h.string()) ENDL
-	pthread_mutex_unlock(&output_lock); 
 }
 void print(MyHypothesis& h) {
 	print(h, std::string(""));
@@ -389,11 +354,6 @@ void callback(MyHypothesis* h) {
 		print(*h);
 	}
 	
-	// do checkpointing
-	if(checkpoint > 0 && FleetStatistics::global_sample_count % checkpoint == 0) {
-		all.print(print);
-	}
-	
 }
 
 
@@ -404,41 +364,39 @@ void callback(MyHypothesis* h) {
 
 
 int main(int argc, char** argv){ 
-
-	pthread_mutex_init(&output_lock, nullptr); 
-	using namespace std;
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	FLEET_DECLARE_GLOBAL_ARGS()
 
-	int mcts_scoring = 0;
-
 	// and my own args
-	app.add_option("-S,--mcts-scoring",  mcts_scoring, "How to score MCTS?");
+//	app.add_option("-S,--mcts-scoring",  mcts_scoring, "How to score MCTS?");
 	app.add_option("-N,--nfactors",      nfactors, "How many factors do we run on?");
 	app.add_option("-L,--maxlength",     maxlength, "Max allowed string length");
 	app.add_option("-A,--alphabet",  alphabet, "The alphabet of characters to use");
+	app.add_option("-P,--prdata",  prdata_path, "What data do we use to compute precion/recall?");
 	CLI11_PARSE(app, argc, argv);
 
 	Fleet_initialize();
+	
+	if(prdata_path == "") prdata_path = input_path;
 	
 	grammar = new MyGrammar(); // must happen after alphabet is set
 	
 	top.set_size(ntop); // set by above macro
 	
-	load_data_file(prdata, input_path.c_str(), MAX_PR_LINES); // put all the data in prdata
-	//load_data_file(mydata, input_path.c_str(), MAX_LINES);
+	load_data_file(prdata, prdata_path.c_str()); // put all the data in prdata
+	load_data_file(mydata, input_path.c_str());
 	
 	// Add a check for any data not in the alphabet
 	for(auto d : prdata) {
 		for(size_t i=0;i<d.output.length();i++){
 			if(alphabet.find(d.output.at(i)) == std::string::npos) {
-				CERR "CHARACTER " << d.output.at(i) << " in " << d.output << " is not in the alphabet " << alphabet ENDL;
+				CERR "*** Character '" << d.output.at(i) << "' in " << d.output << " is not in the alphabet '" << alphabet << "'" ENDL;
 				assert(0);
 			}
 		}
 	}
-	tic();
+	
 	
 //	h0 = new MyHypothesis(grammar);
 //	h0->factors.push_back(new InnerHypothesis(grammar, S("if:flip:.5:%s+%s:if:flip:.5:'a':'b':F:0:\u00D8:\u00D8")));
@@ -460,65 +418,26 @@ int main(int argc, char** argv){
 	for(size_t fi=0;fi<nfactors;fi++) // start with the right number of factors
 		h0->factors.push_back(new InnerHypothesis(grammar));
 	
-	for(auto da : data_amounts) {
-		top.clear();
-		
-		// reload and scale the data to the right amount
-		mydata.clear();
-		load_data_file(mydata, input_path.c_str(), MAX_LINES);
-		for(size_t i=0;i<mydata.size();i++){
-			mydata[i].reliability *= da; 
-		}
-		h0->compute_posterior(mydata);
-		
-		//parallel_MCMC(nthreads, h0, &mydata, callback,  mcmc_steps, mcmc_restart, true, runtime / data_amounts.size() );
-		//MCMCChain<MyHypothesis> mychain(h0, &mydata, callback);
-	//	mychain.run(mcmc_steps, runtime);
-		//CERR mychain.acceptance_rate() ENDL;
-		
-		ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, {1.0,1.05, 1.1, 1.2, 1.3, 1.4, 1.5, 1.7, 2.0, 3.0, 5.0, 8.0, 10.0, 15, 20, 30, 50, 100, 500, 1000} );
-		samp.run(0,0, 100, 10000);
-		
-		//ChainPool<MyHypothesis> pool(h0, &mydata, callback, 10);
-		//pool.run(0,0);
-		
-		// start on the best for the next round of data
-		if(!top.empty()) 
-			h0 = top.max().copy();
-		
-		all << top;
-		
-		if(CTRL_C) break; // so we don't clear top 
-	}	
+	h0->compute_posterior(mydata);
 	
-	all.print(print);
-	
-
-	// Standard MCTS	
-//	MyHypothesis* h0 = new MyHypothesis(grammar);
-//	//h0->factors.push_back(new InnerHypothesis(grammar, grammar->expand_from_names<Node>("if:flip:0.5:'a':%s+%s:'a':F:0:'a'")));
-//	
-//	MyHypothesis::MAX_FACTORS = 3; // set the number of factors
-//	MCTSNode<MyHypothesis> m(explore, h0, structural_playouts, (MCTSNode<MyHypothesis>::ScoringType)mcts_scoring );
-//	parallel_MCTS(&m, mcts_steps, nthreads);
-//	tic();
-//	
-//	if(!concise) {
-//		m.print("tree.txt");
-//		top.print(print);
-//	}
-//
-
-	
-
-//	
-//	COUT mcts_steps TAB mcmc_steps TAB explore TAB mcmc_restart TAB mcts_scoring TAB (top.empty()?-infinity:top.max().posterior) TAB m.size() TAB global_sample_count TAB elapsed_seconds() ENDL;
-//	
-	//top.print(print);
-//	m.print("tree.txt");
-//	COUT "# MCTS tree size:"      TAB m.size() ENDL;		
-
 	tic();
+	
+	//parallel_MCMC(nthreads, h0, &mydata, callback,  mcmc_steps, mcmc_restart, true, runtime / data_amounts.size() );
+	//MCMCChain<MyHypothesis> mychain(h0, &mydata, callback);
+//	mychain.run(mcmc_steps, runtime);
+	//CERR mychain.acceptance_rate() ENDL;
+	
+	//ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, {1.0, 1.05, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.85, 2.0, 2.5, 3.0, 4.0, 5.0, 8.0, 10.0, 12, 15, 20, 25, 35, 50, 75, 100, 250, 500, 1000} );
+	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 10, 1000.0);
+	samp.run(mcmc_steps, runtime, 1000, 30000);
+	
+	//ChainPool<MyHypothesis> pool(h0, &mydata, callback, 10);
+	//pool.run(0,0);
+	
+	tic();
+	
+	top.print(print);
+	
 	CERR "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	CERR "# Elapsed time:"        TAB elapsed_seconds() << " seconds " ENDL;
 	CERR "# Samples per second:"  TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;

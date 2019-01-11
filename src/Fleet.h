@@ -16,13 +16,16 @@
 #include <tuple>
 #include <map>
 #include <atomic>
-#include<iostream>
 #include <assert.h>
 #include <string.h>
+#include <array>
 #include <memory>
 #include <pthread.h>
 #include <chrono>
 #include <thread>         // std::this_thread::sleep_for
+#include <cstdio>
+#include <stdexcept>
+
 
 #include <sys/resource.h> // just for setting priority defaulty 
 
@@ -40,16 +43,7 @@ const std::string FLEET_VERSION = "0.0.4";
 #error You must define a list NT_TYPES of types in the evaluation stack, or correspondingly nonterminals
 #endif
 
-// TODO: Fix enum scoping for t_abort and t_nonterminal
-
 enum class abort_t {NO_ABORT=0, RECURSION_DEPTH, RANDOM_CHOICE, SIZE_EXCEPTION, OP_ERR_ABORT, RANDOM_BREAKOUT}; // setting NO_ABORT=0 allows us to say if(aborted)...
-
-// Define our opertions as an enum. NOTE: They can NOT be strongly typed (enum class) because
-// we store ints in an array of the same type.
-// These defined ones are processed in a VirtualMachineState, the rest are defined in a function dispatch_rule
-//enum op_t { op_NOP,op_X,op_POPX,op_MEM,op_RECURSE,op_RECURSE_FACTORIZED,op_MEM_RECURSE,op_MEM_RECURSE_FACTORIZED,op_FLIP,op_FLIPP,op_IF,op_JMP,
-//			MY_OPS, // MY_OPS come at the end so that I can include additional, non-declared ones if I want to by int index
-//			};
 
 enum nonterminal_t {NT_NAMES, N_NTs };
 
@@ -58,7 +52,8 @@ enum nonterminal_t {NT_NAMES, N_NTs };
 enum class BuiltinOp {
 	op_NOP=0,op_X,op_POPX,
 	op_MEM,op_RECURSE,op_MEM_RECURSE, // thee can store the index of what hte loader calls in arg, so they can be used with lexica if you pass arg
-	op_FLIP,op_FLIPP,op_IF,op_JMP
+	op_FLIP,op_FLIPP,op_IF,op_JMP,
+	op_TRUE,op_FALSE
 };
 
 #include "Instruction.h"
@@ -106,8 +101,8 @@ void fleet_interrupt_handler(int signum) {
 
 std::string ChildStr = "%s"; // how do strings get substituted?
 
-unsigned long mcts_steps   = 100; // note this also controls how quickly/deep the search goes into the lexicon
-unsigned long mcmc_steps   = 100000; // note this also controls how quickly/deep the search goes into the lexicon
+unsigned long mcts_steps   = 0; // note this also controls how quickly/deep the search goes into the lexicon
+unsigned long mcmc_steps   = 0; // note this also controls how quickly/deep the search goes into the lexicon
 unsigned long thin         = 0;
 unsigned long ntop         = 100;
 unsigned long mcmc_restart = 0;
@@ -157,6 +152,7 @@ typedef std::stack<Instruction> Program;
 #include "VirtualMachine/VirtualMachineState.h"
 #include "Node.h"
 //#include "Node.cpp"
+#include "IO.h"
 #include "Grammar.h"
 #include "CaseMacros.h"
 #include "DiscreteDistribution.h"
@@ -192,13 +188,6 @@ void tic() {
 double elapsed_seconds() {
 	return elapsed.count(); 
 }
-
-#include <cstdio>
-#include <iostream>
-#include <memory>
-#include <stdexcept>
-#include <string>
-#include <array>
 
 // From https://stackoverflow.com/questions/478898/how-to-execute-a-command-and-get-output-of-command-within-c-using-posix
 std::string system_exec(const char* cmd) {

@@ -70,23 +70,50 @@ public:
 		HYP* ret = new HYP(grammar, nullptr);
 		
 		if(value == nullptr) {
-			ret->value = grammar->generate<Node>(nt);
+			ret->value = grammar->generate<Node>(nt); // really unclear what backward should be here. 
 			return std::make_pair(ret, 0.0);
 		}
 		
 		double fb; 
+		
+		// Just do regeneration proposals -- but require them to be unique 
+		// so we can more easily count accept/reject
+		while(true) {
+			std::tie(ret->value, fb) = regeneration_proposal(grammar, value);			
+			if(*ret->value == *value) delete ret->value; // keep going	
+			else					  break; // done		
+		}
+
+//		while(true) {
+//			if(uniform(rng) < 0.5) { // p of regeneration
+//				std::tie(ret->value, fb) = regeneration_proposal(grammar, value);
+//			}
+//			else {
+//				if(uniform(rng) < 0.5) {
+//					std::tie(ret->value, fb) = insert_proposal_tree(grammar, value);
+//				}
+//				else {
+//					std::tie(ret->value, fb) = delete_proposal_tree(grammar, value);
+//				}
+//			}
+//			
+//			if(*ret->value == *value) delete ret->value; // keep going	
+//			else					  break; // done	
+//		}
+
+
 		// choose a type:
-		if(uniform(rng) < 0.1) { // p of regeneration
-			std::tie(ret->value, fb) = regeneration_proposal(grammar, value);
-		}
-		else {
-			if(uniform(rng) < 0.5) {
-				std::tie(ret->value, fb) = insert_proposal(grammar, value);
-			}
-			else {
-				std::tie(ret->value, fb) = delete_proposal(grammar, value);
-			}
-		}
+//		if(uniform(rng) < 0.1) { // p of regeneration
+//			std::tie(ret->value, fb) = regeneration_proposal(grammar, value);
+//		}
+//		else {
+//			if(uniform(rng) < 0.5) {
+//				std::tie(ret->value, fb) = insert_proposal_tree(grammar, value);
+//			}
+//			else {
+//				std::tie(ret->value, fb) = delete_proposal_tree(grammar, value);
+//			}
+//		}
 		
 		return std::make_pair(ret, fb);
 	}
@@ -148,8 +175,30 @@ public:
 		return call(x,err);
 	}
 	
+//	virtual t_output callOne(const t_input x, const t_output err) {
+//		// wrapper for when we have only one output
+//		auto v = call(x,err);
+//		
+//		if(v.size() == 0)  // if we get nothing, silently treat that as "err"
+//			return err;
+//			
+//		if(v.size() > 1) { // complain if you got too much output -- this should not happen
+//			CERR "Error in callOne  -- multiple outputs received" ENDL;
+////			for(auto x: v.values()) {
+////				CERR "***" TAB x.first TAB x.second ENDL;
+////			}
+//			assert(false); // should not get this		
+//		}
+//		for(auto a : v.values()){
+//			return a.first;
+//		}
+//		assert(0);
+//	}
+//	
 	virtual t_output callOne(const t_input x, const t_output err) {
-		// wrapper for when we have only one output
+		// slightly different implementation if we just have one output -- prevents us 
+		// from having to require the returntypes to be sortable (as they would need to be
+		// for a DiscreteDistribution)
 		auto v = call(x,err);
 		
 		if(v.size() == 0)  // if we get nothing, silently treat that as "err"
@@ -168,6 +217,7 @@ public:
 		assert(0);
 	}
 	
+
 	virtual std::string string() const {
 		return std::string("\u03BBx.") + (value==nullptr ? Node::nulldisplay : value->string());
 //		return std::string("Lx.") + (value==nullptr ? Node::nulldisplay : value->string());

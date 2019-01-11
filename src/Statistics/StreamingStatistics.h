@@ -2,7 +2,7 @@
 #pragma once 
 
 #include "MedianFAME.h"
-#inlcude "ReservoirSample.h"
+#include "ReservoirSample.h"
 
 class StreamingStatistics {
 	// a class to store a bunch of statistics about incoming data points, including min, max, mean, etc. 

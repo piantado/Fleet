@@ -1,7 +1,7 @@
 #pragma once 
 
 #include "MCMCChain.h"
-#include "StreamingStatistics.h"
+#include "FiniteHistory.h"
 
 #include <mutex>
 
@@ -34,7 +34,7 @@ public:
 	
 	MCMCChain(HYP* h0, typename HYP::t_data* d, void(*cb)(HYP*) ) : 
 			current(h0), data(d), themax(nullptr), callback(cb), restart(mcmc_restart), 
-			returnmax(true), proposals(0), acceptances(0), steps_since_improvement(0),
+			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 	}
 	
@@ -136,6 +136,7 @@ public:
 
 			// and finally if we haven't improved then restart
 			if(restart>0 && steps_since_improvement > restart){
+				current_mutex.lock(); 
 				steps_since_improvement = 0; // reset the couter
 				auto tmp = current->restart();
 				delete current;
@@ -146,6 +147,7 @@ public:
 					delete themax; 			
 					themax = current->copy(); 	
 				}
+				current_mutex.unlock(); 
 			}
 			
 		} // end the main loop	

@@ -1,10 +1,32 @@
 #pragma once
 
-#include<utility>
-#include<tuple>
+// TODO: The insert_tree proposer is hard because we could potentially choose from a bunch of different g subtrees
+//       Perhaps there is an aux variable argument to help us out?
+//			Suppose we imagine placing two markers, A and B, on the tree uniformly at random. 
+// 			When A dominates B, then we promote B to A. This happens with a probability that depends on the relative size below A
+//			When A=B then we insert, this happens with a probability proportional to the tree size squared. 
+//			Otherwise nothing happens. 
+//			-- Seems like we must have violations of detailed balance with current scheme because we could have multiple possible
+// 				insertions, like in not(not(not(...)))
+
+#include <utility>
+#include <tuple>
 #include "Miscellaneous.h"
 
 // TOOD: We could do insert/delete with entire trees -- replace any tree down below?
+double lpsample(const Node* t, const Node* n, std::function<int(const Node*)> choose) {
+	// probability of choosing n out of all in t
+	// NOTE: n need not be in t -- we just assume sampling is done uniformly if choose(n)
+	if(choose(n)) return -log(t->sum(choose));
+	else          return -infinity;	
+}
+double lpsample_eq(const Node* t, const Node* n, std::function<int(const Node*)> choose) {
+	// probability of choosing anything equal to n out of t 
+	
+	if(choose(n)) return  log(t->count_equal(n))-log(t->sum(choose));
+	else          return -infinity;	
+}
+
 
 
 std::pair<Node*,double> regeneration_proposal(Grammar* grammar, Node* from) {
@@ -12,6 +34,7 @@ std::pair<Node*,double> regeneration_proposal(Grammar* grammar, Node* from) {
 	#ifdef DEBUG_MCMC
 	CERR "REGENERATE" ENDL;
 	#endif
+	
 	std::function<int(const Node* n)> can_resample = [](const Node* n) { return n->can_resample*1;};
 			
 	auto ret = from->copy();
@@ -24,16 +47,17 @@ std::pair<Node*,double> regeneration_proposal(Grammar* grammar, Node* from) {
 	Node* g = grammar->generate<Node>(n->rule->nt); // make something new of the same type
 	n->takeover(g); // and take its resources, zeroing it before deleting
 	
-	double fb =   (-log( from->sum(can_resample) ) + grammar->log_probability(ret)) 
+	double fb = (lpsample(from,n,can_resample) + grammar->log_probability(ret)) 
 			     - 
-		          (-log(  ret->sum(can_resample) ) + grammar->log_probability(from));
+				(lpsample(ret,n,can_resample) + grammar->log_probability(from));
 	
 	return std::make_pair(ret, fb);
 }
 
 
 
-std::pair<Node*, double> insert_proposal_TREE(Grammar* grammar, Node* from) {
+
+std::pair<Node*, double> insert_proposal_tree(Grammar* grammar, Node* from) {
 	// This proposal selects a node, regenerates, and then copies what was there before somewhere below 
 	// in the replaced tree 
 	
@@ -44,37 +68,40 @@ std::pair<Node*, double> insert_proposal_TREE(Grammar* grammar, Node* from) {
 	std::function<int(const Node* n)> can_resample = [](const Node* n) { return n->can_resample*1;};
 			
 	auto ret = from->copy();
-	int fcr = from->sum(can_resample); // from can resample
-
-	if(fcr == 0) 
+	
+	if(from->sum(can_resample) == 0) 
 		return std::make_pair(ret, 0.0);
 	
 	Node* n = ret->sample(can_resample); // get the nth in ret		
-	Node* g = grammar->generate<Node>(n->rule->nt); // make something new of the same type
+	Node* g = grammar->generate<Node>(n->rule->nt); // make something new of the same type 
 	
 	// find something of the right type (don't check can_resample?)
 	std::function<int(const Node* n)> right_type = [=](const Node* x) { return (int)(n->rule->nt==x->rule->nt);};
-	int grt = g->sum(right_type);
-	if(grt == 0) 
+	if(g->sum(right_type) == 0) 
 		return std::make_pair(ret, 0.0);
 	
-	// from dominates n
-	// g dominates x
+	// from dominates n; g dominates x
 	
 	Node* x = g->sample(right_type);  // x is the node that gets replaced with n 
 	x->takeover(n->copy()); // hmm should be able to do this without copy, but its hard to think about 
 	
-	double fb = (-log(fcr) + log(g->count_equal(n)) - log(grt)) // g could have happened on anything equal to n out of grt
-				- 
-				(-log(g->sum(can_resample)));
-	
+	double fb = 0.0;
+	fb += lpsample(ret,n,can_resample);
+	fb += grammar->log_probability(g) - grammar->log_probability(n); // probability of generating everything except n
+	fb += lpsample_eq(g,x,right_type); // probability of choosing x or anything equal out of all with right type
+ 
+	// this adds up all of the ways we could have gotten something equal to n, summing over all possible g
+	std::function<double(const Node*)> s = [=](const Node* gg) { 
+				return can_resample(gg) ? lpsample(ret, gg, can_resample) + lpsample_eq(gg,n,right_type) : -infinity;
+	};
+	fb -= ret->logsumexp(s);
 	
 	n->takeover(g);
 	
 	return std::make_pair(ret, fb);		
 }
 
-std::pair<Node*, double> delete_proposal_TREE(Grammar* grammar, Node* from) {
+std::pair<Node*, double> delete_proposal_tree(Grammar* grammar, Node* from) {
 	// This proposal selects a node, regenerates, and then copies what was there before somewhere below 
 	// in the replaced tree 
 	
@@ -85,27 +112,35 @@ std::pair<Node*, double> delete_proposal_TREE(Grammar* grammar, Node* from) {
 	std::function<int(const Node* n)> can_resample = [](const Node* n) { return n->can_resample*1;};
 			
 	auto ret = from->copy();
-	int fcr = from->sum(can_resample); // from can resample
 
-	if(fcr == 0) 
+	if(from->sum(can_resample) == 0) 
 		return std::make_pair(ret, 0.0);
 	
-	Node* n = ret->sample(can_resample); // pick a random node	
+	Node* g = ret->sample(can_resample); // pick a random node	
 	
 	// find something of the right type (don't check can_resample?)
-	std::function<int(const Node* n)> right_type = [=](const Node* x) { return (int)(n->rule->nt==x->rule->nt);};
-	int nrt = n->sum(right_type); // how many in n are the right type? 
-	if(nrt == 0) 
+	std::function<int(const Node*)> right_type = [=](const Node* z) { return (int)(g->rule->nt==z->rule->nt);};
+	if(g->sum(right_type) == 0) 
 		return std::make_pair(ret, 0.0);
 	
-	Node* x = n->sample(right_type); 
-	n->takeover(x->copy()); // hmm should be able to do this without copy, but its hard to think about, because Nodes will recursively destruct
+	Node* n = g->sample(right_type);  // pick a subtree
+
+	// add up all of the ways we could have gotten n
+	double fb = 0.0;
+	std::function<double(const Node*)> s = [=](const Node* gg) { 
+				return can_resample(gg) ? lpsample(ret, gg, can_resample) + lpsample_eq(gg,n,right_type) : -infinity;
+	};
+	fb += ret->logsumexp(s);
+
 	
-	double fb = (-log(fcr) + -log(nrt))
-				- 
-				(0);
+	fb -= grammar->log_probability(g) - grammar->log_probability(n); // generate everything but n 
 	
-//	return std::make_pair(ret, fb);		
+	g->takeover(n->copy()); // hmm should be able to do this without copy, but its hard to think about, because Nodes will recursively destruct
+	
+	fb -= lpsample(ret, g, can_resample); // pick that g out of ret
+	fb -= lpsample_eq(g, n, right_type); // backwards we sample g, then n from g
+	
+	return std::make_pair(ret, fb);		
 }
 
 

@@ -59,7 +59,7 @@ public:
 	virtual Rule* sample_rule(const nonterminal_t nt) const {
 		assert(nt >= 0);
 		assert(nt < N_NTs);
-		assert(Z[nt] > 0); 
+		assert(Z[nt] > 0 && "*** It seems there is zero probability of expanding this terminal -- did you include any rules?"); 
 		
 		double z = Z[nt];
 		double q = uniform(rng)*z;
