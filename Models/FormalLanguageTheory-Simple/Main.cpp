@@ -98,14 +98,14 @@ public:
 			CASE_FUNC2(CustomOp::op_STREQ,       bool,  S,S, [](const S& a, const S& b){return a==b;} )
 			CASE_FUNC1(CustomOp::op_CDR,         S, S,       [](const S& s){ return (s.empty() ? S("") : s.substr(1,S::npos)); } )		
 			CASE_FUNC1(CustomOp::op_CAR,         S, S,       [](const S& s){ return (s.empty() ? S("") : S(1,s.at(0))); } )		
-			CASE_FUNC2e(CustomOp::op_REPEAT,      S,  S, int, [](const S& a, const int i){
-				S out;
-				for(int j=0;j<i;j++) out = out + a;
-				return out;				
-				},
-				[](const S& x, const int i){ return (x.length()*i<MAX_LENGTH ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
-			)
-			CASE_FUNC0(CustomOp::op_NUM,         int,       [i](){ return i.arg; } )		
+//			CASE_FUNC2e(CustomOp::op_REPEAT,      S,  S, int, [](const S& a, const int i){
+//				S out;
+//				for(int j=0;j<i;j++) out = out + a;
+//				return out;				
+//				},
+//				[](const S& x, const int i){ return (x.length()*i<MAX_LENGTH ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
+//			)
+//			CASE_FUNC0(CustomOp::op_NUM,         int,       [i](){ return i.arg; } )		
 			
 			
 			CASE_FUNC2e(CustomOp::op_CONS,       S, S,S,
