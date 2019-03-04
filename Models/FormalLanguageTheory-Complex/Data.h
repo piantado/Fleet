@@ -66,10 +66,8 @@ void print_precision_and_recall(std::ostream& output, DiscreteDistribution<std::
 	// How many of the top N generated strings appear *anywhere* in the data
 	// And how many of the top N data appear *anywhere* in the generated strings
 	
-	N = MIN(N, data.size()); // can't take more strings than are in the data, ok?
-	
 	auto A = x.best(N);
-	auto B = highest<std::string,TDATA>(data,   N);
+	auto B = highest<std::string,TDATA>(data,   MIN(N, data.size())  );
 	
 	std::set<std::string> mdata; // make a map of all observed output strings
 	for(auto v : data) mdata.insert(v.output); 

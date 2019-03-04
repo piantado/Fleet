@@ -5,7 +5,8 @@
 template<typename HYP>
 class ParallelTempering  {
 	// follows https://arxiv.org/abs/1501.05823
-	// This is a kind of Chain Pool that 
+	// This is a kind of Chain Pool that runs mutliple chains at different temperatures
+	// and ajusts the temperatures in order to equate swaps up and down 
 	
 public:
 	std::vector<MCMCChain<HYP>*> pool;
@@ -22,8 +23,6 @@ public:
 			swap_history = new FiniteHistory<bool>[temperatures.size()];
 		}
 	}
-	
-	
 	
 	
 	ParallelTempering(HYP* h0, typename HYP::t_data* d, void(*cb)(HYP*), unsigned long n, double maxT) : terminate(false) {

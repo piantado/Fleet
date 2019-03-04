@@ -1,4 +1,11 @@
-/* Looks like it can still take a long time to run if we have many strings that get evaled -- can upper bound this too?
+/* 
+ * In this version, input specifies the prdata minus the txt 
+ * 	--input=data/NewportAslin
+ * and then we'll add in the data amounts, so that now each call will loop over amounts of data
+ * and preserve the top hypotheses
+ * 
+ * 
+ * Looks like it can still take a long time to run if we have many strings that get evaled -- can upper bound this too?
  * Problem is that number of strings might be exponential in probability (like if all are allowed)
 
 
@@ -6,37 +13,10 @@
  * Some notes -- 
  * 		-- seems like Saffran works best with levenshtein and doesn't work well with prefix
  * 		-- changing to run for a fixed amount of time seems to make a big difference in multithreading, otherwise lingering thereads just took forever
- * 		-- Now we load only the top 100 data lines (otherwise we are much slower on some langauges)
- * 		-- Ahha most differences between languages seem to be in how LONG we have run them for --- which is afunction of how much data we have for them. 
- * 
- * 		-- TODO: Change so that we can run infernece on a smaller subset of data than we compute precision/recall on, otherwise we have to get probs exactly right (and have no ties!)
  * 		
 			What if we add something that lets you access the previous character generated? cons(x,y) where y gets acess to x? cons(x,F(x))?
   * 					Not so easy to see exactly what it is, ithas to be a Fcons function where Fcons(x,i) = cons(x,Fi(x))
   * 					It's a lot like a lambda -- apply(lambda x: cons(x, Y[x]), Z)
-  * 	- Make our own type to index into lexica
-  * 	- 
-  * 
-  * 		Do compositional proposals where we might run F[i-1](F[i-2](x)) for the last one...
-  * 	-
-  * 	- What if we evaluate the modelwith a predictive model, where we are always computing the probability underthe model of the next *character*
-  * 		Would that be faster?
-  * 
-  * 	-- might ber good to always give it a _ character that it can pass around as a non-emptystring for recursion
-  * *   -- what if you pass around an alphabet of internal signals, and have a dictionary mapping singals to strings
-  * 
-  * 	-- Seems like it could be important to have access to prior parts of the string that have been emitted?
-  * 
-  * 
-  * 	- Conert sets to sets of terminals only
-  * 
-  * 	-- Add checkpointing -- save file every N samples
-  * 	- Inverse inlining is going to help a lot with the FSM representations because "states" will correspond to functions, and we can pull some out. 
-  * 
-  * 	- maybe we can add those "smart proposal" rules as complex grammar productions -- extracted and parsed from what we specify?
-  * 
-  * 
-  * 	Change so that prec/recall is defined against the biggest
   * 
   * */
   
@@ -67,6 +47,9 @@ S alphabet="nvadt";
 const size_t PREC_REC_N = 50;  // if we make this too high, then the data is finite so we won't see some stuff
 const size_t MAX_LINES = 1000000; // how many lines of data do we load? The more data, the slower...
 const size_t MAX_PR_LINES = 1000000; 
+
+std::vector<S> data_amounts= {"1", "5", "10", "50", "100", "500", "1000", "5000", "10000", "50000"}; // how many data points do we run on?
+//std::vector<S> data_amounts= {"1", "10", "100"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
 const double MIN_LP = -20.0; // -10 corresponds to 1/10000 approximately, but we go to -15 to catch some less frequent things that happen by chance; -18;  // in (ab)^n, top 25 strings will need this man lp
@@ -321,6 +304,7 @@ std::string prdata_path = "";
 MyHypothesis::t_data mydata;
 MyHypothesis::t_data prdata; // used for computing precision and recall -- in case we want to use more strings?
 
+S current_data = "";
 TopN<MyHypothesis> top;
 MyGrammar* grammar;
 MyHypothesis* h0; // used to initialize search chains in parallel search
@@ -329,11 +313,11 @@ void print(MyHypothesis& h, std::string prefix) {
 	std::lock_guard guard(output_lock);
 		
 	auto o = h.call(S(""), S("<err>"));
-	COUT "#\n## ";
+	COUT "#\n";
+	COUT prefix << "# ";
 	o.print();
 	COUT "\n";
-	COUT "### " << h.parseable() ENDL;
-	COUT prefix << h.born TAB h.posterior TAB top.count(h) TAB h.prior TAB h.likelihood TAB "";
+	COUT prefix << current_data TAB h.born TAB h.posterior TAB top.count(h) TAB h.prior TAB h.likelihood TAB QQ(h.parseable()) TAB "";
 	print_precision_and_recall(std::cout, o, prdata, PREC_REC_N);
 	COUT "" TAB QQ(h.string()) ENDL
 }
@@ -344,8 +328,8 @@ void print(MyHypothesis& h) {
 void callback(MyHypothesis* h) {
 	
 	// print the next max
-	if(h->posterior > top.best_score())
-		print(*h, std::string("#### "));
+	//if(h->posterior > top.best_score())
+	//	print(*h, std::string("#### "));
 	
 	top << *h; 
 	
@@ -357,11 +341,9 @@ void callback(MyHypothesis* h) {
 }
 
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Main
 ////////////////////////////////////////////////////////////////////////////////////////////
-
 
 int main(int argc, char** argv){ 
 	
@@ -378,17 +360,16 @@ int main(int argc, char** argv){
 
 	Fleet_initialize();
 	
-	if(prdata_path == "") prdata_path = input_path;
+	// Input here is going to specify the PRdata path, minus the txt
+	
+	if(prdata_path == "") prdata_path = input_path+".txt";
 	
 	grammar = new MyGrammar(); // must happen after alphabet is set
 	
 	top.set_size(ntop); // set by above macro
 	
 	load_data_file(prdata, prdata_path.c_str()); // put all the data in prdata
-	load_data_file(mydata, input_path.c_str());
-	
-	// Add a check for any data not in the alphabet
-	for(auto d : prdata) {
+	for(auto d : prdata) {	// Add a check for any data not in the alphabet
 		for(size_t i=0;i<d.output.length();i++){
 			if(alphabet.find(d.output.at(i)) == std::string::npos) {
 				CERR "*** Character '" << d.output.at(i) << "' in " << d.output << " is not in the alphabet '" << alphabet << "'" ENDL;
@@ -396,6 +377,49 @@ int main(int argc, char** argv){
 			}
 		}
 	}
+	
+	// we'll maintain h0 across 
+	h0 = new MyHypothesis(grammar);
+	for(size_t fi=0;fi<nfactors;fi++) // start with the right number of factors
+		h0->factors.push_back(new InnerHypothesis(grammar));
+	h0->compute_posterior(mydata);
+	
+	
+	// set up a paralle tempering object
+	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 12, 1000.0);
+		
+	tic();
+	for(auto da : data_amounts) {
+		current_data = da; // set this global variable so we can print it correctly.
+		
+		S data_path = input_path + "-" + da + ".txt";
+		
+		load_data_file(mydata, data_path.c_str());
+	
+		// update top for the new data file
+		TopN<MyHypothesis> newtop;
+		newtop.set_size(ntop);
+		
+		for(auto h : top.values()) {
+			h.compute_posterior(mydata); // update the posterior to the new data amount
+			newtop << h;
+		}
+		top = newtop; // take over the new top
+		
+		// update our parallel tempering pool
+		for(auto c: samp.pool) {
+			c->getCurrent()->compute_posterior(mydata);
+			c->data = &mydata;
+		}
+		
+		// run for real		
+		samp.run(mcmc_steps, runtime, 1000, 30000);		
+				
+		top.print(print);		
+	}
+	tic();
+	
+	
 	
 	
 //	h0 = new MyHypothesis(grammar);
@@ -414,13 +438,10 @@ int main(int argc, char** argv){
 	//	parallel_MCMC(nthreads, h0, &mydata, callback, mcmc_steps, mcmc_restart);
 //	top.print(print);
 
-	h0 = new MyHypothesis(grammar);
-	for(size_t fi=0;fi<nfactors;fi++) // start with the right number of factors
-		h0->factors.push_back(new InnerHypothesis(grammar));
 	
-	h0->compute_posterior(mydata);
 	
-	tic();
+	// Now load up the right data file
+	
 	
 	//parallel_MCMC(nthreads, h0, &mydata, callback,  mcmc_steps, mcmc_restart, true, runtime / data_amounts.size() );
 	//MCMCChain<MyHypothesis> mychain(h0, &mydata, callback);
@@ -428,15 +449,12 @@ int main(int argc, char** argv){
 	//CERR mychain.acceptance_rate() ENDL;
 	
 	//ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, {1.0, 1.05, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.85, 2.0, 2.5, 3.0, 4.0, 5.0, 8.0, 10.0, 12, 15, 20, 25, 35, 50, 75, 100, 250, 500, 1000} );
-	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 10, 1000.0);
-	samp.run(mcmc_steps, runtime, 1000, 30000);
+	
 	
 	//ChainPool<MyHypothesis> pool(h0, &mydata, callback, 10);
 	//pool.run(0,0);
 	
-	tic();
 	
-	top.print(print);
 	
 	CERR "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	CERR "# Elapsed time:"        TAB elapsed_seconds() << " seconds " ENDL;
