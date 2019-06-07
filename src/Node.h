@@ -70,8 +70,7 @@ public:
 			ret->child[i] = (child[i] == nullptr ? nullptr : child[i]->copy());
 		}
 		return ret;
-	}
-	
+	}	
 	
 	// Returns the max of applying f to all of the non-null nodes 	
 	template<typename T>
@@ -114,29 +113,39 @@ public:
 		return s;
 	}
 
-	
-	void map( void f(Node*) ) {
-		// NOTE: Because map calls f first on this, it allows us to modify the tree if we want to. 
-		f(this); // call first, in case f modifies my children
-		for(size_t i=0;i<rule->N;i++) {
-			if(child[i] != nullptr) child[i]->map(f);
-		}
-	}
+//	
+//	void map( void f(Node*), bool skipnull=true) {
+//		// NOTE: Because map calls f first on this, it allows us to modify the tree if we want to. 
+//		f(this); // call first, in case f modifies my children
+//		for(size_t i=0;i<rule->N;i++) {
+//			if(child[i] != nullptr) child[i]->map(f, skipnull); // I can only recurse on non-null children
+//			else if(not skipnull)   f(child[i]);                // but I can call f on null children if I want to
+//		}
+//	}
 		
-	void map( std::function<void(Node*)>& f ) {
+//	void map( std::function<void(Node*)>& f, bool skipnull=true) {
+//		f(this);
+//		for(size_t i=0;i<rule->N;i++) {
+//			if(child[i] != nullptr) child[i]->map(f, skipnull); // I can only recurse on non-null children
+//			else if(not skipnull)   f(child[i]);                // but I can call f on null children if I want to
+//		}
+//	}
+	
+	void map( const std::function<void(Node*)>& f, bool skipnull=true ) {
 		f(this);
 		for(size_t i=0;i<rule->N;i++) {
-			if(child[i] != nullptr) child[i]->map(f);
+			if(child[i] != nullptr) child[i]->map(f, skipnull); // I can only recurse on non-null children
+			else if(not skipnull)   f(child[i]);                // but I can call f on null children if I want to
 		}
 	}
 	
-	void map( const std::function<void(Node*)>& f ) {
+	void mapconst( const std::function<void(const Node*)>& f, bool skipnull=true ) const { // mapping that is constant
 		f(this);
 		for(size_t i=0;i<rule->N;i++) {
-			if(child[i] != nullptr) child[i]->map(f);
+			if(child[i] != nullptr) child[i]->mapconst(f, skipnull); // I can only recurse on non-null children
+			else if(not skipnull)   f(child[i]);                // but I can call f on null children if I want to
 		}
 	}
-	
 	
 	void map_conditionalrecurse( std::function<bool(Node*)>& f ) {
 		// f here returns a function and we only recurse if the function returns true
@@ -247,19 +256,58 @@ public:
 		return ret;
 	}
 	
-
-	virtual std::string string() const {
-		// This converts my children to strings and then substitutes into rule->format using simple string substitution.
-		// the format just searches and replaces %s for each successive child. NOTE: That this therefore does NOT use the
-		// full power of printf formatting
-		std::string output(rule->format);
-		for(size_t i=0;i<rule->N;i++) {
-			auto pos = output.find(ChildStr);
-			assert(pos != std::string::npos && "Node format must contain the ChildStr (typically='%s')"); // must contain the ChildStr for all children all children
-			output.replace(pos, ChildStr.length(), (child[i]==nullptr ? nulldisplay : child[i]->string()));
+	
+	virtual std::string string() const { 
+		// To convert to a string, we need to essentially simulate the evaluator
+		// and be careful to process the arguments in the right orders
+		
+		std::stack<const Node*> nodestack;		
+		const std::function<void(const Node*)> f = [&nodestack](const Node* n) { nodestack.push(n); };
+		mapconst( f, false );  // must walk the tree in the same order as linearization, push onto nodestack, and push null for null nodes
+		
+		// now go through and run just like in the program
+		// and concatenate the strings in the right orders
+		std::stack<std::string> strstack;
+		while(! nodestack.empty() ) {
+			const Node* n = nodestack.top(); nodestack.pop();
+			
+			if(n==nullptr) {
+				strstack.push(nulldisplay); 
+			}
+			else if(n->rule->N == 0) {
+				strstack.push(n->rule->format); 
+			}
+			else {
+				
+				std::string childStrings[n->rule->N];
+				
+				// need to reverse the order since that's how they are handled in CASE_MACROS
+				for(size_t i=0;i<n->rule->N;i++) {
+					childStrings[n->rule->N-1-i] = strstack.top();
+					strstack.pop();
+				}
+				
+				// now substitute the children into the format
+				std::string s = n->rule->format;
+				for(size_t i=0;i<n->rule->N;i++) {
+					auto pos = s.find(ChildStr);
+					assert(pos != std::string::npos && "Node format must contain one ChildStr (typically='%s') for each argument"); // must contain the ChildStr for all children all children
+					s.replace(pos, ChildStr.length(), childStrings[i] );
+				}
+				strstack.push(s); // put back on the stack so it can be processed for rest
+			}
 		}
-		return output;
+		
+		auto ret = strstack.top(); strstack.pop(); // what we return
+		
+		assert(strstack.empty()); // just some checks here -- there should have been one left on the stack
+		assert(nodestack.empty());
+		
+		return ret;
 	}
+
+	
+	
 	
 	virtual std::string parseable(std::string delim=":") const {
 		// get a string like one we could parse
@@ -304,6 +352,11 @@ public:
 			assert(child[i]->rule->nt == rule->child_types[i] && "Somehow the child has incorrect types"); // make sure my kids types are what they should be
 		}
 		
+		
+		
+		
+		
+		
 		// Main code
 		if( rule->instr.is_a(BuiltinOp::op_IF) ) {
 			assert(rule->N == 3 && "BuiltinOp::op_IF require three arguments"); // must have 3 parts
@@ -329,6 +382,8 @@ public:
 			
 		}
 		else {
+			/* Here we push the children in order, first first. So that means that when each evalutes, it will push its value to the *bottom* 
+			 * of the stack. so in caseMacros, we need to reverse the order of the arguments, so that the first popped is the last argument */
 			Instruction i = rule->instr; // use this as a template
 			ops.push(i);
 			for(size_t i=0;i<rule->N;i++) {
