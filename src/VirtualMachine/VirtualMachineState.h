@@ -150,6 +150,7 @@ public:
 					}
 					case BuiltinOp::op_X:
 					{
+						assert(!xstack.empty());
 						push<t_x>(xstack.top());
 						break;
 					}

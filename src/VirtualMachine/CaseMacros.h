@@ -25,17 +25,17 @@
 	
 #define CASE_FUNC2(opcode, returntype, a1type, a2type, f)                       \
 	case opcode: {                                                              \
-		a1type a1 = vms->template getpop<a1type>();                              \
 		a2type a2 = vms->template getpop<a2type>();                              \
+		a1type a1 = vms->template getpop<a1type>();                              \
 		vms->template push<returntype>(f(a1,a2));                                \
 		break;									                                \
 	}                                                                           \
 
 #define CASE_FUNC3(opcode, returntype, a1type, a2type, a3type, f)               \
 	case opcode: {                                                              \
-		a1type a1 = vms->template getpop<a1type>();                              \
-		a2type a2 = vms->template getpop<a2type>();                              \
 		a3type a3 = vms->template getpop<a3type>();                              \
+		a2type a2 = vms->template getpop<a2type>();                              \
+		a1type a1 = vms->template getpop<a1type>();                              \
 		vms->template push<returntype>(f(a1,a2,a3));                             \
 		break;									                                \
 	}                                                                           \
@@ -64,8 +64,8 @@
 	
 #define CASE_FUNC2e(opcode, returntype, a1type, a2type, f, errcheck)            \
 	case opcode: {                                                              \
-		a1type a1 = vms->template getpop<a1type>();                              \
 		a2type a2 = vms->template getpop<a2type>();                              \
+		a1type a1 = vms->template getpop<a1type>();                              \
 		abort_t e = errcheck(a1,a2);									        \
 		if(e != abort_t::NO_ABORT) return e;								                \
 		vms->template push<returntype>(f(a1,a2));                                \
@@ -74,9 +74,9 @@
 
 #define CASE_FUNC3e(opcode, returntype, a1type, a2type, a3type, f, errcheck)    \
 	case opcode: {                                                              \
-		a1type a1 = vms->template getpop<a1type>();                              \
-		a2type a2 = vms->template getpop<a2type>();                              \
 		a3type a3 = vms->template getpop<a3type>();                              \
+		a2type a2 = vms->template getpop<a2type>();                              \
+		a1type a1 = vms->template getpop<a1type>();                              \
 		abort_t e = errcheck(a1,a2,a3);									        \
 		if(e != abort_t::NO_ABORT) return e;								                \
 		vms->template push<returntype>(f(a1,a2,a3));                             \

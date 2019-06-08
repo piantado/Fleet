@@ -30,16 +30,14 @@ public:
 	unsigned long N; // how many have I seen? An time I *try* to add something to this, N gets incremented
 	
 protected:
-	pthread_mutex_t lock;		
+	std::mutex lock;		
 
 public:
 
 	ReservoirSample(size_t n, bool u=false) : reservoir_size(n), unique(u), N(0) {
-		pthread_mutex_init(&lock, nullptr);
 	}
 	
 	ReservoirSample(bool u=false) : reservoir_size(1000), unique(u), N(0) {
-		pthread_mutex_init(&lock, nullptr);
 	}
 	
 	void set_size(const size_t s) const {
@@ -50,15 +48,12 @@ public:
 		// How many am I currently storing?
 		return s.size();
 	}
-	void set_size(size_t n) {
-		reservoir_size = n;
-	}
 	
 	T max(){ return *vals.rbegin(); }
 	T min(){ return *vals.begin(); }
 	
 	void add(T x) {
-		pthread_mutex_lock(&lock);
+		lock.lock();
 		
 		if((!unique) || vals.find(x) == vals.end()) {
 		
@@ -75,23 +70,23 @@ public:
 				// NOTE: we might sometimes get identical x and r, and then this causes problems because it will delete all? Very rare though...
 			}
 			
-			assert(s.size() == vals.size());
+			assert( (!unique) or s.size() == vals.size());
 		}
 		
 		++N;
 		
-		pthread_mutex_unlock(&lock);
+		lock.unlock();
 	}
 	void operator<<(T x) {	add(x);}
 	
 	// Return a sample from my vals (e.g. a sample of the samples I happen to have saved)
 	T sample() {
-		pthread_mutex_lock(&lock);
+		lock.lock();
 		if(N == 0) return NaN;
 		std::uniform_int_distribution<int> sampler(0,vals.size()-1);
 		auto pos = vals.begin();
 		std::advance(pos, sampler(rng));
-		pthread_mutex_unlock(&lock);
+		lock.unlock();
 		return *pos;
 	}
 	

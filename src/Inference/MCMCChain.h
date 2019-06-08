@@ -47,7 +47,7 @@ public:
 	
 	void run(unsigned long steps, unsigned long time) {
 		
-		using clock = std::chrono::steady_clock;
+		using clock = std::chrono::high_resolution_clock;
 		
 		// compute the info for the curent
 		current->compute_posterior(*data);
@@ -61,6 +61,7 @@ public:
 			// check the elapsed time 
 			if(time > 0) {
 				double elapsed_time = std::chrono::duration_cast<std::chrono::seconds>(clock::now() - start_time).count();
+				//CERR elapsed_time;
 				if(elapsed_time > time) break;
 			}
 			
@@ -79,7 +80,7 @@ public:
 			else {
 				proposal = current->restart();
 			}
-			current_mutex.unlock();
+//			current_mutex.unlock();
 				
 			++proposals;
 			
@@ -99,37 +100,33 @@ public:
 			}
 						
 			// use MH acceptance rule, with some fanciness for NaNs
-			current_mutex.lock(); 
+//			current_mutex.lock();  // ~~~~~~~~~
 			double ratio = proposal->at_temperature(temperature) - current->at_temperature(temperature) - fb; // Remember: don't just check if proposal->posterior>current->posterior or all hell breaks loose		
 			if(   (std::isnan(current->posterior))  ||
 				  (current->posterior == -infinity) ||
 					((!std::isnan(proposal->posterior)) &&
 					 (ratio > 0 || uniform(rng) < exp(ratio)))) {
-				current_mutex.unlock();
- 
+				
 				#ifdef DEBUG_MCMC
 					  std::cerr << "# Accept" << std::endl;
 				#endif
 				
 				
-				current_mutex.lock(); // lock here when we are updating
 				delete current; 
 				current = proposal;
-				current_mutex.unlock(); // lock here when we are updating
   
 				history << true;
 				++acceptances;
 			}
 			else {
-				current_mutex.unlock();
 				history << false;
 				delete proposal; 
 			}
 				
 			// and call on the sample if we meet all our criteria
-			current_mutex.lock(); 
 			callback(current);
-			current_mutex.unlock();
+			
+			current_mutex.unlock(); // ~~~~~~~~~
 				
 			++samples;
 			++FleetStatistics::global_sample_count;

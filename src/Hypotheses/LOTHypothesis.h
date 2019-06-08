@@ -30,7 +30,6 @@ public:
 
 	// parse this from a string
 	LOTHypothesis(Grammar* g, std::string s) : grammar(g) {
-		CERR s ENDL;
 		set_value(grammar->expand_from_names<Node>(s));
 	}
 
@@ -47,7 +46,7 @@ public:
 		// don't delete grammar -- we don't own that. 
 	}
 	
-	virtual void set_value(T* x) {
+	virtual void set_value(T* x) final { // can't be virtual since its in the constructor
 		value = x;
 	}
 	
@@ -55,11 +54,12 @@ public:
 	HYP* copy() const {
 		// create a copy
 		HYP* x = new HYP(grammar, nullptr);
-		if(value != nullptr) 
-			x->set_value(value->copy());
+		if(value != nullptr) x->set_value(value->copy());
+		
 		x->prior      = this->prior;
 		x->likelihood = this->likelihood;
 		x->posterior  = this->posterior;
+		
 		return x; 
 	}
 	
@@ -70,19 +70,29 @@ public:
 		HYP* ret = new HYP(grammar, nullptr);
 		
 		if(value == nullptr) {
-			ret->value = grammar->generate<Node>(nt); // really unclear what backward should be here. 
+			ret->set_value(grammar->generate<Node>(nt)); // really unclear what backward should be here. 
 			return std::make_pair(ret, 0.0);
 		}
 		
-		double fb; 
+		double fb = 0.0; 
+
+		// simplest way of doing proposals
+		auto x = regeneration_proposal(grammar, value);	
+		ret->set_value(x.first); // please use setters -- needed for stuff like symbolicRegression
+		fb = x.second;
+	
 		
 		// Just do regeneration proposals -- but require them to be unique 
 		// so we can more easily count accept/reject
-		while(true) {
-			std::tie(ret->value, fb) = regeneration_proposal(grammar, value);			
-			if(*ret->value == *value) delete ret->value; // keep going	
-			else					  break; // done		
-		}
+//		while(!CTRL_C) {
+//			auto x = regeneration_proposal(grammar, value);	
+//			
+//			ret->set_value(x.first); // please use setters -- needed for stuff like symbolicRegression
+//			fb = x.second;
+//			
+//			if(*ret->value == *value) delete ret->value; // keep going	
+//			else					  break; // done		
+//		}
 
 //		while(true) {
 //			if(uniform(rng) < 0.5) { // p of regeneration
@@ -205,10 +215,10 @@ public:
 			return err;
 			
 		if(v.size() > 1) { // complain if you got too much output -- this should not happen
-			CERR "Error in callOne  -- multiple outputs received" ENDL;
-//			for(auto x: v.values()) {
-//				CERR "***" TAB x.first TAB x.second ENDL;
-//			}
+			CERR "Error in callOne  -- multiple outputs received. Outputs are:" ENDL;
+			for(auto x: v.values()) {
+				CERR "***" TAB x.first TAB x.second ENDL;
+			}
 			assert(false); // should not get this		
 		}
 		for(auto a : v.values()){

@@ -62,11 +62,13 @@ std::map<T, double> highest(const std::vector<TDATA>& m, unsigned long N) {
 
 
 template<typename TDATA>
-void print_precision_and_recall(std::ostream& output, DiscreteDistribution<std::string>& x, std::vector<TDATA>& data, unsigned long N) {
+void print_precision_and_recall(std::ostream& output, DiscreteDistribution<std::string>& model, std::vector<TDATA>& data, unsigned long N) {
 	// How many of the top N generated strings appear *anywhere* in the data
 	// And how many of the top N data appear *anywhere* in the generated strings
+	// Note: This is a little complicated if the data has fewer strings that the model, since we don't
+	// know the "true" precision and recall
 	
-	auto A = x.best(N);
+	auto A = model.best(N);
 	auto B = highest<std::string,TDATA>(data,   MIN(N, data.size())  );
 	
 	std::set<std::string> mdata; // make a map of all observed output strings
@@ -81,9 +83,21 @@ void print_precision_and_recall(std::ostream& output, DiscreteDistribution<std::
 	
 	unsigned long nrec  = 0;
 	for(auto b : B){
-		if(x.count(b.first))
+		if(model.count(b.first))
 			nrec++;
 	}
+	
+	// and compute the max probability difference
+	// between items of data and their 
+//	unsigned long z = 0; // get normalizing constant for data
+//	for(auto d : data) { z += d.reliability; }
+//	
+//	double maxpdiff = -infinity;
+//	for(auto a : model.values()) {
+//		double dp = 0;
+//		if(mdata)
+//		double d = exp(model.second) - 
+//	}
 	
 	output << double(nprec)/A.size() TAB double(nrec)/B.size();
 }

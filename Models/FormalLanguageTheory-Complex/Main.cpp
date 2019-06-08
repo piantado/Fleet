@@ -41,18 +41,17 @@ enum class CustomOp { // NOTE: The type here MUST match the width in bitfield or
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
-size_t maxlength = 128; // max string length, else throw an error (128 needed for count)
+size_t maxlength = 512; // max string length, else throw an error (128+ needed for count)
 size_t nfactors = 2; // how may factors do we run on?
 S alphabet="nvadt";
-const size_t PREC_REC_N = 50;  // if we make this too high, then the data is finite so we won't see some stuff
-const size_t MAX_LINES = 1000000; // how many lines of data do we load? The more data, the slower...
+const size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite so we won't see some stuff
+const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The more data, the slower...
 const size_t MAX_PR_LINES = 1000000; 
 
-std::vector<S> data_amounts= {"1", "5", "10", "50", "100", "500", "1000", "5000", "10000", "50000"}; // how many data points do we run on?
-//std::vector<S> data_amounts= {"1", "10", "100"}; // how many data points do we run on?
+std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "10000", "50000", "100000"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
-const double MIN_LP = -20.0; // -10 corresponds to 1/10000 approximately, but we go to -15 to catch some less frequent things that happen by chance; -18;  // in (ab)^n, top 25 strings will need this man lp
+const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -15 to catch some less frequent things that happen by chance; -18;  // in (ab)^n, top 25 strings will need this man lp
 const unsigned long MAX_STEPS_PER_FACTOR   = 4096; //2048; //2048;
 const unsigned long MAX_OUTPUTS_PER_FACTOR = 512; //256;
 
@@ -82,10 +81,10 @@ public:
 		add( new Rule(nt_string, BuiltinOp::op_IF,           "if(%s,%s,%s)", {nt_bool, nt_string, nt_string},  1.0) );
 		
 		// NOTE: This rule samples from the *characters* occuring in s
-		add( new Rule(nt_string, CustomOp::op_UniformSample,"sample(%s)",         {nt_set},                      1.0) );
-		add( new Rule(nt_set,    CustomOp::op_String2Set,   "%s",           {nt_string},                   1.0) );
+		add( new Rule(nt_string, CustomOp::op_UniformSample,"sample(%s)",         {nt_set},                1.0) );
+		add( new Rule(nt_set,    CustomOp::op_String2Set,   "%s",           {nt_string},                   5.0) );
 		add( new Rule(nt_set,    CustomOp::op_Setcons,      "%s,%s",        {nt_string, nt_set},           1.0) );
-		add( new Rule(nt_set,    CustomOp::op_Setremove,    "%s-%s",        {nt_set, nt_string},           1.0) );
+		add( new Rule(nt_set,    CustomOp::op_Setremove,    "%s\u2216%s",        {nt_set, nt_string},           1.0) );  // this uses a unicode setminus so its never treated as an escape char
 		
 		add( new Rule(nt_bool,   BuiltinOp::op_FLIPP,        "flip(%s)",     {nt_double},                      1.0) );
 		add( new Rule(nt_bool,   CustomOp::op_EMPTY,        "empty(%s)",    {nt_string},                      1.0) );
@@ -189,6 +188,7 @@ public:
 		
 		bool calls[N * N]; // is calls[i][j] stores whether factor i calls factor j
 		
+		// everyone calls themselves, zero the rest
 		for(size_t i=0;i<N;i++) {
 			for(size_t j=0;j<N;j++){
 				calls[i*N+j] = (i==j);
@@ -196,27 +196,29 @@ public:
 		}
 		
 		for(size_t i=0;i<N;i++){
-
+			// This function on nodes computes whether or not they use a recursive function
+			// and sets calls appropriately
 			std::function<void(Node*)> myfun = [&](Node* n) {
 				if(n->rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE)) {
 					calls[i*N + n->rule->instr.arg] = true;
 				}
 			};
-
+			// map this function along all nodes to see 
 			factors[i]->value->map(myfun);
 		}
 		
 		// now we take the transitive closure to see if calls[N-1] calls everything (eventually)
 		// otherwise it has probability of zero
+		// TOOD: This could probably be lazier because we really only need to check reachability
 		for(size_t a=0;a<N;a++) {	
 			for(size_t b=0;b<N;b++) {
 				for(size_t c=0;c<N;c++) {
-					calls[b*N + c] = calls[b*N+c] || (calls[b*N+a] && calls[a*N+c]);		
+					calls[b*N+c] = calls[b*N+c] || (calls[b*N+a] && calls[a*N+c]);		
 				}
 			}
 		}
 
-		// don't do anything if we have uncalled functions
+		// don't do anything if we have uncalled functions from the root
 		for(size_t i=0;i<N;i++) {
 			if(!calls[(N-1)*N+i]) {
 				return prior = -infinity;
@@ -281,7 +283,7 @@ public:
 				S pfx = astr.substr(0,i);
 				S prd = astr.substr(i,1); // get the next character we predict
 				
-				// get conditoinal probability
+				// get conditional probability
 				if(prefix_tree.count(pfx+prd)) { // conditional prob with outlier likelihood
 					likelihood += a.reliability * (lcor + prefix_tree[pfx+prd] - prefix_tree[pfx]); 
 				} else {
@@ -456,8 +458,8 @@ int main(int argc, char** argv){
 	
 	
 	
-	CERR "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
-	CERR "# Elapsed time:"        TAB elapsed_seconds() << " seconds " ENDL;
-	CERR "# Samples per second:"  TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
+	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
+	COUT "# Elapsed time:"        TAB elapsed_seconds() << " seconds " ENDL;
+	COUT "# Samples per second:"  TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
 //	
 }

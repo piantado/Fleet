@@ -176,6 +176,7 @@ HYP* MCMC(HYP* current, typename HYP::t_data& data,  void (*callback)(HYP* h), u
 			
         // and call on the sample if we meet all our criteria
         callback(current);
+		
 		++FleetStatistics::global_sample_count;
 
 		// and finally if we haven't improved then restart

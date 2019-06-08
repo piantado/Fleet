@@ -40,7 +40,7 @@ const std::string FLEET_VERSION = "0.0.4";
 #endif
 
 #ifndef NT_TYPES
-#error You must define a list NT_TYPES of types in the evaluation stack, or correspondingly nonterminals
+#error You must define a list NT_TYPES of types in the evaluation stack
 #endif
 
 enum class abort_t {NO_ABORT=0, RECURSION_DEPTH, RANDOM_CHOICE, SIZE_EXCEPTION, OP_ERR_ABORT, RANDOM_BREAKOUT}; // setting NO_ABORT=0 allows us to say if(aborted)...

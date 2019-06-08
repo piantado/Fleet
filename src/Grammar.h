@@ -25,14 +25,14 @@ public:
 		}
 	}
 	
-	virtual ~Grammar() {
-		for(size_t i=0;i<N_NTs;i++) {
-			for(auto rp : rules[i]) {
-				delete rp; // delete this rule
-			}
-		}
-	}
-	
+//	virtual ~Grammar() {
+//		for(size_t i=0;i<N_NTs;i++) {
+//			for(auto rp : rules[i]) {
+//				delete rp; // delete this rule
+//			}
+//		}
+//	}
+//	
 	size_t count_nonterminals() const {
 		return N_NTs;
 	}

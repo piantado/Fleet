@@ -1,5 +1,7 @@
 #pragma once 
 
+// TOOD: Fix this so that if we have fewer threads than parallel chains, everything still works ok
+
 #include "ChainPool.h"
 
 template<typename HYP>
@@ -54,7 +56,7 @@ public:
 		// runs a swapper
 		// swap_every is in ms
 		
-		while(!terminate) {
+		while(!(terminate or CTRL_C)) {
 			std::this_thread::sleep_for(std::chrono::milliseconds(swap_every));
 			
 			size_t k = 1+myrandom(pool.size()-1); // swap k with k-1
@@ -78,15 +80,16 @@ public:
 			
 			pool[k-1]->current_mutex.unlock(); 
 			pool[k]->current_mutex.unlock(); 
-			
+//			CERR  "SWAPPER" << terminate ENDL;
 		} // end while true
 	}
 	
 	void __adapter_thread(unsigned long adapt_every) {
-		while(!terminate) {
+		while(! (terminate or CTRL_C) ) {
 			std::this_thread::sleep_for(std::chrono::milliseconds(adapt_every));
 			show_statistics();
 			adapt(); // TOOD: Check what counts as t
+//			CERR  "ADAPTER" << terminate ENDL;
 		}
 	}
 	
@@ -95,7 +98,6 @@ public:
 	}
 	
 	void run(unsigned long steps, unsigned long time, unsigned long swap_every, unsigned long adapt_every) {
-		
 		std::thread threads[pool.size()]; 
 		
 		// start everyone runnig 
@@ -110,8 +112,9 @@ public:
 		for(unsigned long i=0;i<pool.size();i++) {
 			threads[i].join();
 		}
-		
+
 		terminate = true;
+		//terminate.store(true);
 		swapper.join();
 		adapter.join();
 	}
@@ -120,7 +123,8 @@ public:
 		COUT "# Pool info: \n";
 		for(size_t i=0;i<pool.size();i++) {
 			COUT "# " << i TAB pool[i]->temperature TAB pool[i]->current->posterior TAB
-					     pool[i]->acceptance_ratio() TAB swap_history[i].mean() TAB pool[i]->samples ENDL;
+					     pool[i]->acceptance_ratio() TAB swap_history[i].mean() TAB pool[i]->samples //TAB pool[i]->current->string()
+						 ENDL;
 		}
 	}
 	

@@ -345,16 +345,15 @@ public:
 		// the only fanciness is for if: here we will use the following layout 
 		// <TOP OF STACK> <bool> op_IF(xsize) X-branch JUMP(ysize) Y-branch
 		
+		// NOTE: If you change the order here ever, you have to change how string() works so that 
+		//       string order matches evaluation order
+		// TODO: We should restructure this to use "map" so that the order is always the same as for printing
 		
 		// and just a little checking here
 		for(size_t i=0;i<rule->N;i++) {
 			assert(child[i] != nullptr && "Cannot linearize a Node with null children");
 			assert(child[i]->rule->nt == rule->child_types[i] && "Somehow the child has incorrect types"); // make sure my kids types are what they should be
 		}
-		
-		
-		
-		
 		
 		
 		// Main code
