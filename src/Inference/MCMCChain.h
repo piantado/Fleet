@@ -51,7 +51,7 @@ public:
 		
 		// compute the info for the curent
 		current->compute_posterior(*data);
-		callback(current);
+		if(callback != nullptr) callback(current);
 		themax = current->copy();
 		
 		// we'll start at 1 since we did 1 callback on current to begin
@@ -124,7 +124,7 @@ public:
 			}
 				
 			// and call on the sample if we meet all our criteria
-			callback(current);
+			if(callback != nullptr) callback(current);
 			
 			current_mutex.unlock(); // ~~~~~~~~~
 				
@@ -139,7 +139,7 @@ public:
 				delete current;
 				current = tmp;
 				current->compute_posterior(*data);
-				callback(current);
+				if(callback != nullptr) callback(current);
 				if(current->posterior > themax->posterior) {
 					delete themax; 			
 					themax = current->copy(); 	

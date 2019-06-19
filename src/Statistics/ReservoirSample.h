@@ -57,9 +57,9 @@ public:
 		
 		if((!unique) || vals.find(x) == vals.end()) {
 		
-			double r = uniform(rng); // TODO: Can check r first here before doing all that below
+			double r = uniform(rng);
 			s.insert(Item(x,r));
-			
+						
 			vals.insert(x);
 			while(s.size() > reservoir_size) {
 				auto i = s.begin(); // which one we remove -- last one since set stores things sorted

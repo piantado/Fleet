@@ -256,57 +256,89 @@ public:
 		return ret;
 	}
 	
-	
+//	
+//	virtual std::string string() const { 
+//		// To convert to a string, we need to essentially simulate the evaluator
+//		// and be careful to process the arguments in the right orders
+//		
+//		std::stack<const Node*> nodestack;		
+//		const std::function<void(const Node*)> f = [&nodestack](const Node* n) { nodestack.push(n); };
+//		mapconst( f, false );  // must walk the tree in the same order as linearization, push onto nodestack, and push null for null nodes
+//		
+//		// now go through and run just like in the program
+//		// and concatenate the strings in the right orders
+//		std::stack<std::string> strstack;
+//		while(! nodestack.empty() ) {
+//			const Node* n = nodestack.top(); nodestack.pop();
+//			
+//			if(n==nullptr) {
+//				strstack.push(nulldisplay); 
+//			}
+//			else if(n->rule->N == 0) {
+//				strstack.push(n->rule->format); 
+//			}
+//			else {
+//				
+//				std::string childStrings[n->rule->N];
+//				
+//				// The order should be maintained (because that's how CaseMacros works)
+//				for(size_t i=0;i<n->rule->N;i++) {
+//					assert(not strstack.empty());
+//					childStrings[i] = strstack.top();
+//					strstack.pop();
+//				}
+//				
+//				// now substitute the children into the format
+//				std::string s = n->rule->format;
+//				for(size_t i=0;i<n->rule->N;i++) {
+//					auto pos = s.find(ChildStr);
+//					assert(pos != std::string::npos && "Node format must contain one ChildStr (typically='%s') for each argument"); // must contain the ChildStr for all children all children
+//					s.replace(pos, ChildStr.length(), childStrings[i] );
+//				}
+//				strstack.push(s); // put back on the stack so it can be processed for rest
+//			}
+//		}
+//		
+//		auto ret = strstack.top(); strstack.pop(); // what we return
+//		
+//		assert(strstack.empty()); // just some checks here -- there should have been one left on the stack
+//		assert(nodestack.empty());
+//		
+//		return ret;
+//	}
+//
+//	
+
+
 	virtual std::string string() const { 
 		// To convert to a string, we need to essentially simulate the evaluator
 		// and be careful to process the arguments in the right orders
-		
-		std::stack<const Node*> nodestack;		
-		const std::function<void(const Node*)> f = [&nodestack](const Node* n) { nodestack.push(n); };
-		mapconst( f, false );  // must walk the tree in the same order as linearization, push onto nodestack, and push null for null nodes
-		
-		// now go through and run just like in the program
-		// and concatenate the strings in the right orders
-		std::stack<std::string> strstack;
-		while(! nodestack.empty() ) {
-			const Node* n = nodestack.top(); nodestack.pop();
 			
-			if(n==nullptr) {
-				strstack.push(nulldisplay); 
-			}
-			else if(n->rule->N == 0) {
-				strstack.push(n->rule->format); 
-			}
-			else {
-				
-				std::string childStrings[n->rule->N];
-				
-				// need to reverse the order since that's how they are handled in CASE_MACROS
-				for(size_t i=0;i<n->rule->N;i++) {
-					childStrings[n->rule->N-1-i] = strstack.top();
-					strstack.pop();
-				}
-				
-				// now substitute the children into the format
-				std::string s = n->rule->format;
-				for(size_t i=0;i<n->rule->N;i++) {
-					auto pos = s.find(ChildStr);
-					assert(pos != std::string::npos && "Node format must contain one ChildStr (typically='%s') for each argument"); // must contain the ChildStr for all children all children
-					s.replace(pos, ChildStr.length(), childStrings[i] );
-				}
-				strstack.push(s); // put back on the stack so it can be processed for rest
-			}
+		if(rule->N == 0) {
+			return rule->format;
 		}
-		
-		auto ret = strstack.top(); strstack.pop(); // what we return
-		
-		assert(strstack.empty()); // just some checks here -- there should have been one left on the stack
-		assert(nodestack.empty());
-		
-		return ret;
+		else {
+			
+			std::string childStrings[rule->N];
+			
+			// The order should be maintained (because that's how CaseMacros works)
+			for(size_t i=0;i<rule->N;i++) {
+				childStrings[i] = (child[i] == nullptr ? nulldisplay : child[i]->string());
+			}
+			
+			// now substitute the children into the format
+			std::string s = rule->format;
+			for(size_t i=0;i<rule->N;i++) {
+				auto pos = s.find(ChildStr);
+				assert(pos != std::string::npos && "Node format must contain one ChildStr (typically='%s') for each argument"); // must contain the ChildStr for all children all children
+				s.replace(pos, ChildStr.length(), childStrings[i] );
+			}
+			return s;
+		}
 	}
 
 	
+
 	
 	
 	virtual std::string parseable(std::string delim=":") const {

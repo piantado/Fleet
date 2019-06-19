@@ -125,8 +125,6 @@ public:
 		// Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
 		// Here, dispatch is called to evaluate the function, and loader is called on recursion (allowing us to handle recursion
 		// via a lexicon or just via a LOTHypothesis). 
-		
-//		CERR "[" << mem.size() << " " << std::get<std::stack<std::string>>(stack.value).size() << " "  << memstack.size() << "]";
 
 		while(!opstack.empty()){
 			if(aborted != abort_t::NO_ABORT) return err;
