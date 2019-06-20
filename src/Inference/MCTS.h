@@ -1,15 +1,7 @@
 
+#pragma once 
 
-//change pthread to all std::thread
-
-
-
-
-
-#ifndef MCTS_H
-#define MCTS_H
-
-//#define DEBUG_MCTS 1
+#define DEBUG_MCTS 1
 
 #include <atomic>
 #include <mutex>
@@ -22,38 +14,10 @@
 
 #include "StreamingStatistics.h"
 
-/// Wrapper for parallel
-
-template<typename HYP> class MCTSNode;
-template<typename HYP> void parallel_MCTS(MCTSNode<HYP>* root, unsigned long steps, unsigned long cores);
-template<typename HYP> void parallel_MCTS_helper( void* _args);
-
-
-template<typename HYP>
-void parallel_MCTS(MCTSNode<HYP>* root, unsigned long cores, unsigned long steps) { 
-	
-	std::function<void(MCTSNode<HYP>*,unsigned long)> __helper = [](MCTSNode<HYP>* root, unsigned long steps) {
-		root->search(steps);
-	};
-	
-	std::thread threads[cores]; 
-		
-	// start everyone running 
-	for(unsigned long i=0;i<cores;i++) {
-		threads[i] = std::thread(__helper, root, steps);
-	}
-	
-	for(unsigned long i=0;i<cores;i++) {
-		threads[i].join();
-	}	
-}
-
 
 
 
 /// MCTS Implementation
-
-
 template<typename HYP>
 class MCTSNode {
 	// NOTE: When we initialize a MCTSNode, we typically will want it with a LOTHypothesis with a null value		
@@ -93,7 +57,7 @@ public:
         initialize();	
     }
     
-    MCTSNode(double ex, HYP* h0, double cp(const HYP*), ScoringType st=ScoringType::SAMPLE ) : 
+    MCTSNode(double ex, HYP* h0, double cp(const HYP*), ScoringType st=ScoringType::UCBMAX ) : 
 		compute_playouts(cp), explore(ex), parent(nullptr), value(h0), scoring_type(st) {
         initialize();        
     }
@@ -240,11 +204,11 @@ public:
 					
 					auto v = value->make_neighbor(eitmp);
 					
-#ifdef DEBUG_MCTS
-        if(value != nullptr) { // the root
-            std::cout TAB "Adding child " <<  pthread_self() << "\t" <<  this << "\t[" << v->string() << "] " ENDL;
-        }
-#endif
+//#ifdef DEBUG_MCTS
+//        if(value != nullptr) { // the root
+//            std::cout TAB "Adding child " <<  this << "\t[" << v->string() << "] " ENDL;
+//        }
+//#endif
 					MCTSNode<HYP>* c = new MCTSNode<HYP>(this, v);
 					
 					children.push_back(c);
@@ -255,11 +219,39 @@ public:
 	}
    
 	// search for some number of steps
-	void search(unsigned long steps) {
+	void search(unsigned long steps, unsigned long time) {
+		
+		using clock = std::chrono::high_resolution_clock;
+		
+		auto start_time = clock::now();
 		for(unsigned long i=0; (i<steps || steps==0) && !CTRL_C;i++){
+			if(time > 0) {
+				double elapsed_time = std::chrono::duration_cast<std::chrono::seconds>(clock::now() - start_time).count();
+				if(elapsed_time > time) break;
+			}
+			
 		   this->search_one();
 		}
 	}
+	static void __helper(MCTSNode<HYP>* h, unsigned long steps, unsigned long time) {
+		h->search(steps, time);
+	};
+	
+	void parallel_search(unsigned long cores, unsigned long steps, unsigned long time) { 
+		
+		std::thread threads[cores]; 
+			
+		// start everyone running 
+		for(unsigned long i=0;i<cores;i++) {
+			threads[i] = std::thread(__helper, this, steps, time);
+		}
+		
+		for(unsigned long i=0;i<cores;i++) {
+			threads[i].join();
+		}	
+	}
+
+	
 	
    
     void search_one() {
@@ -269,7 +261,7 @@ public:
 
 #ifdef DEBUG_MCTS
         if(value != nullptr) { // the root
-            std::cout << "MCTS SEARCH " <<  pthread_self() << "\t" <<  this << "\t[" << value->string() << "] " << nvisits << std::endl;
+            std::cout << "MCTS SEARCH " <<  this << "\t[" << value->string() << "] " << nvisits << std::endl;
         }
 #endif
 		
@@ -278,7 +270,9 @@ public:
 			open = value->neighbors() > 0; // only open if the value is partial
 			return;
 		}
-		else if(children.size() == 0) { // if I have no children
+		
+		
+		if(children.size() == 0) { // if I have no children
 			this->add_child_nodes(); // add child nodes if they don't exist
 				
 			if(expand_all_children){
@@ -322,5 +316,3 @@ public:
 //	void add_child_nodes()=delete; // we don't use this 
 //	
 //}
-
-#endif

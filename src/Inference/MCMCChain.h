@@ -3,8 +3,6 @@
 #include "MCMCChain.h"
 #include "FiniteHistory.h"
 
-#include <mutex>
-
 template<typename HYP>
 class MCMCChain {
 	// An MCMC chain object. 
