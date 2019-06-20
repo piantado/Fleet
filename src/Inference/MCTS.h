@@ -1,3 +1,11 @@
+
+
+//change pthread to all std::thread
+
+
+
+
+
 #ifndef MCTS_H
 #define MCTS_H
 
@@ -20,45 +28,25 @@ template<typename HYP> class MCTSNode;
 template<typename HYP> void parallel_MCTS(MCTSNode<HYP>* root, unsigned long steps, unsigned long cores);
 template<typename HYP> void parallel_MCTS_helper( void* _args);
 
-template<typename HYP>
-struct parallel_MCTSargs { 
-	MCTSNode<HYP>* root;
-	unsigned long steps; 
-};
 
 template<typename HYP>
-void* parallel_MCTS_helper( void* args) {
-	auto a = (parallel_MCTSargs<HYP>*)args;
-	a->root->search(a->steps);
-	pthread_exit(nullptr);
-}
-
-template<typename HYP>
-void parallel_MCTS(MCTSNode<HYP>* root, unsigned long steps, unsigned long cores) {
+void parallel_MCTS(MCTSNode<HYP>* root, unsigned long cores, unsigned long steps) { 
 	
-	
-	if(cores == 1)  { // don't use parallel, for easier debugging
+	std::function<void(MCTSNode<HYP>*,unsigned long)> __helper = [](MCTSNode<HYP>* root, unsigned long steps) {
 		root->search(steps);
-	}
-	else {
+	};
 	
-		pthread_t threads[cores]; 
-		parallel_MCTSargs<HYP> args[cores];
+	std::thread threads[cores]; 
 		
-		for(unsigned long t=0;t<cores;t++) {
-			
-			args[t].steps=steps;
-			args[t].root=root;
-			
-			int rc = pthread_create(&threads[t], nullptr, parallel_MCTS_helper<HYP>, &args[t]);
-			if(rc) assert(0 && "Failure to create a pthread");
-		}
-		
-		for(unsigned long t=0;t<cores;t++)  
-			pthread_join(threads[t], nullptr);     // wait for all to complete
+	// start everyone running 
+	for(unsigned long i=0;i<cores;i++) {
+		threads[i] = std::thread(__helper, root, steps);
 	}
+	
+	for(unsigned long i=0;i<cores;i++) {
+		threads[i].join();
+	}	
 }
-
 
 
 
@@ -88,7 +76,7 @@ public:
 	double (*compute_playouts)(const HYP*); // a function point to how we compute playouts
 	double explore; 
 	
-    pthread_mutex_t child_modification_lock; // for exploring below
+	std::mutex child_mutex; // for access in parallelTempering
     
 	StreamingStatistics statistics;
 	
@@ -125,8 +113,6 @@ public:
     }
     
     void initialize() {
-		pthread_mutex_init(&child_modification_lock, nullptr); 
-        
 		nvisits=0;
         open=true;
     }
@@ -136,7 +122,7 @@ public:
         std::string idnt = std::string(depth, '\t');
         
 		std::string opn = (open?" ":"*");
-		o << idnt TAB opn TAB score() TAB statistics.median() TAB statistics.max TAB "S=" << nvisits TAB value->string() ENDL;
+		o << idnt TAB opn TAB score() TAB statistics.median() TAB statistics.max TAB "S=" << nvisits TAB value->structure_string() ENDL;
 		
 		// optional sort
 		if(sort) {
@@ -238,7 +224,7 @@ public:
 	
 	void add_child_nodes() {
 
-		pthread_mutex_lock(&child_modification_lock); 
+		child_mutex.lock();
 		if(children.size() == 0) { // check again in case someone else has edited in the meantime
 			
 			size_t N = value->neighbors();
@@ -265,8 +251,7 @@ public:
 				}
 			}
 		}
-		pthread_mutex_unlock(&child_modification_lock); 
-				
+		child_mutex.unlock();			
 	}
    
 	// search for some number of steps
