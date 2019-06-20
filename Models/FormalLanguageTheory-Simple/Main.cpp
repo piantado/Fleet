@@ -202,11 +202,16 @@ int main(int argc, char** argv){
 	//------------------
 	
 	auto h0 = new MyHypothesis(&grammar);
+
 	
-	tic(); // start the timer
-	parallel_MCMC(nthreads, h0, &mydata, callback, mcmc_steps, mcmc_restart, true, runtime);
-	tic(); // end timer
+	auto thechain = MCMCChain(h0, &mydata, callback);
+	thechain.run(mcmc_steps, runtime);
 	
+//	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);
+//	tic();
+//	samp.run(mcmc_steps, runtime, 200, 3000); //30000);		
+//	tic();
+//	
 	// Show the best we've found
 	top.print(print);
 	

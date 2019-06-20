@@ -151,7 +151,6 @@ typedef std::stack<Instruction> Program;
 #include "VirtualMachine/VirtualMachinePool.h"
 #include "VirtualMachine/VirtualMachineState.h"
 #include "Node.h"
-//#include "Node.cpp"
 #include "IO.h"
 #include "Grammar.h"
 #include "CaseMacros.h"
@@ -160,7 +159,6 @@ typedef std::stack<Instruction> Program;
 #include "Hypotheses/LOTHypothesis.h"
 #include "Hypotheses/Lexicon.h"
 
-#include "Inference/MCMC.h"
 #include "Inference/MCMCChain.h"
 #include "Inference/MCTS.h"
 #include "Inference/ParallelTempering.h"
