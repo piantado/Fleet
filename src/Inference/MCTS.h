@@ -1,7 +1,7 @@
 
 #pragma once 
 
-#define DEBUG_MCTS 1
+//#define DEBUG_MCTS 1
 
 #include <atomic>
 #include <mutex>
@@ -154,9 +154,8 @@ public:
 
 	MCTSNode* best_child() {
 		// returns a pointer to the best child according to the scoring function
-		DebugFlag df("Entering best_child", "Exiting best_child");
+		// NOTE: This might return a nullptr in highly parallel situations
 		std::lock_guard guard(child_mutex);
-		CERR "Got child_mutex guard" ENDL;
 		
 		MCTSNode* best = nullptr;
 		double best_score = -infinity;
@@ -170,7 +169,6 @@ public:
 				}
 			}
 		}
-		assert(best != nullptr && "You tried to select a best_child which was null (should never get here, but might have if we didn't correctly check for open children)"); // we really should have chosen something
 		return best;
 	}
 
@@ -191,6 +189,7 @@ public:
 	void add_child_nodes() {
 
 		std::lock_guard guard(child_mutex);
+		
 		if(children.size() == 0) { // check again in case someone else has edited in the meantime
 			
 			size_t N = value->neighbors();
@@ -206,11 +205,11 @@ public:
 					
 					auto v = value->make_neighbor(eitmp);
 					
-//#ifdef DEBUG_MCTS
-//        if(value != nullptr) { // the root
-//            std::cout TAB "Adding child " <<  this << "\t[" << v->string() << "] " ENDL;
-//        }
-//#endif
+#ifdef DEBUG_MCTS
+        if(value != nullptr) { // the root
+            std::cout TAB "Adding child " <<  this << "\t[" << v->string() << "] " ENDL;
+        }
+#endif
 					MCTSNode<HYP>* c = new MCTSNode<HYP>(this, v);
 					
 					children.push_back(c);
@@ -267,7 +266,6 @@ public:
         assert(value != nullptr || parent==nullptr); // only the root gets a null value
 
 #ifdef DEBUG_MCTS
-		DebugFlag df("Entering SearchOne", "Exiting");
         if(value != nullptr) { // the root
             COUT "MCTS SEARCH " <<  this << "\t[" << value->string() << "] " << nvisits TAB std::this_thread::get_id() ENDL;
         }
@@ -314,7 +312,8 @@ public:
 		nvisits++; // increment our visit count on our way down so other threads don't follow
 		
 		// choose the best and recurse
-		best_child()->search_one();
+		auto b = best_child();
+		if(b != nullptr) b->search_one();
 		
     } // end search
 
