@@ -29,6 +29,7 @@ using StrSet = std::set<S>;
 enum class CustomOp { // NOTE: The type here MUST match the width in bitfield or else gcc complains
 	op_CUSTOM_NOP,op_STREQ,op_EMPTYSTRING,op_EMPTY,\
 	op_CDR,op_CAR,op_CONS,\
+	op_MIDINSERT, \
 	op_P, op_TERMINAL,\
 	op_String2Set,op_Setcons,op_UniformSample,op_Setremove,\
 	op_Signal, op_SignalSwitch
@@ -77,6 +78,9 @@ public:
 		add( new Rule(nt_string, CustomOp::op_CONS,         "%s+%s",        {nt_string,nt_string},            1.0) );
 		add( new Rule(nt_string, CustomOp::op_CAR,          "car(%s)",      {nt_string},                      1.0) );
 		add( new Rule(nt_string, CustomOp::op_CDR,          "cdr(%s)",      {nt_string},                      1.0) );
+		
+		add( new Rule(nt_string, CustomOp::op_MIDINSERT,    "insert(%s,%s)",      {nt_string,nt_string},      1.0) );
+		
 		
 		add( new Rule(nt_string, BuiltinOp::op_IF,           "if(%s,%s,%s)", {nt_bool, nt_string, nt_string},  1.0) );
 		
@@ -127,6 +131,26 @@ public:
 			CASE_FUNC0(CustomOp::op_P,             double,           [i](){ return double(i.arg)/10.0;} )
 			
 			CASE_FUNC1(CustomOp::op_String2Set,    StrSet, S, [](const S& x){ StrSet s; s.insert(x); return s; }  )
+
+			CASE_FUNC2e(CustomOp::op_MIDINSERT,     S, S, S, [](const S& x, const S& y){ 
+				
+				size_t l = x.length();
+				if(x.length() <= 1) {// just concatenation
+					S out = x;
+					out.append(y);
+					return out; 
+				} 
+				// put y into the middle of x
+				size_t pos = l/2;
+				S out = x.substr(0, pos); 
+				out.append(y);
+				out.append(x.substr(pos));
+				return out; 
+				
+			}, 
+				[](const S& x, const S& y){ return (x.length()+y.length()<maxlength ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
+			)
+			
 
 			CASE_FUNC2(CustomOp::op_Setcons,       StrSet, S, StrSet, [](S& x, StrSet& y){ y.insert(x); return y; }  )
 			
@@ -388,7 +412,7 @@ int main(int argc, char** argv){
 	
 	
 	// set up a paralle tempering object
-	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 12, 1000.0);
+	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 6, 1000.0);
 		
 	tic();
 	for(auto da : data_amounts) {

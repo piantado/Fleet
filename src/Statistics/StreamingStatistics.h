@@ -1,6 +1,7 @@
 
 #pragma once 
 
+#include <mutex>
 #include "MedianFAME.h"
 #include "ReservoirSample.h"
 
@@ -9,7 +10,7 @@ class StreamingStatistics {
 	// also stores a reservoir sample and allow us to compute how often one distribution exceeds another
 	
 protected:
-	pthread_mutex_t lock;		
+	mutable std::mutex lock;		
 	
 public:
 
@@ -24,14 +25,13 @@ public:
 	
 	StreamingStatistics(size_t rs=1000) : 
 		min(infinity), max(-infinity), sum(0.0), lse(-infinity), N(0), reservoir_sample(rs) {
-		pthread_mutex_init(&lock, nullptr);
 	}
 
 	void add(double x) {
 		++N; // always count N, even if we get nan/inf (this is required for MCTS, otherwise we fall into sampling nans)
 		if(std::isnan(x) || std::isinf(x)) return; // filter nans and inf(TODO: Should we filter inf?)
 		
-		pthread_mutex_lock(&lock);
+		std::lock_guard guard(lock);
 
 		streaming_median << x;
 		reservoir_sample << x;
@@ -43,8 +43,6 @@ public:
 			sum += x;
 			lse = logplusexp(lse, x);
 		}
-		
-		pthread_mutex_unlock(&lock);
 	}
 	
 	void operator<<(double x) { 
@@ -59,6 +57,7 @@ public:
 		
 		if(reservoir_sample.size() == 0) return -infinity;
 		else {
+			std::lock_guard guard(lock);
 			auto pos = reservoir_sample.vals.begin();
 			std::advance(pos,reservoir_sample.size()/2);
 			return *pos;

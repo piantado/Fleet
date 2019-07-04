@@ -1,7 +1,7 @@
 
 #pragma once 
 
-//#define DEBUG_MCTS 1
+#define DEBUG_MCTS 1
 
 #include <atomic>
 #include <mutex>
@@ -9,8 +9,6 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
-
-#include <pthread.h>
 
 #include "StreamingStatistics.h"
 
@@ -40,7 +38,7 @@ public:
 	double (*compute_playouts)(const HYP*); // a function point to how we compute playouts
 	double explore; 
 	
-	std::mutex child_mutex; // for access in parallelTempering
+	mutable std::mutex child_mutex; // for access in parallelTempering
     
 	StreamingStatistics statistics;
 	
@@ -57,7 +55,7 @@ public:
         initialize();	
     }
     
-    MCTSNode(double ex, HYP* h0, double cp(const HYP*), ScoringType st=ScoringType::UCBMAX ) : 
+    MCTSNode(double ex, HYP* h0, double cp(const HYP*), ScoringType st=ScoringType::SAMPLE ) : 
 		compute_playouts(cp), explore(ex), parent(nullptr), value(h0), scoring_type(st) {
         initialize();        
     }
@@ -86,7 +84,7 @@ public:
         std::string idnt = std::string(depth, '\t');
         
 		std::string opn = (open?" ":"*");
-		o << idnt TAB opn TAB score() TAB statistics.median() TAB statistics.max TAB "S=" << nvisits TAB value->structure_string() ENDL;
+		o << idnt TAB opn TAB score() TAB statistics.median() TAB statistics.max TAB "S=" << nvisits TAB value->string() ENDL;
 		
 		// optional sort
 		if(sort) {
@@ -124,7 +122,7 @@ public:
 			if(uniform(rng) <= explore / (explore + statistics.N)) {
 				
 				// here, if we are the base root node, we treat all "parent" samples as 0.0
-				return (this->parent == nullptr ? 0.0 : parent->score()); // handle the base case			
+				return (this->parent == nullptr ? statistics.sample() : parent->score()); // handle the base case			
 			} 
 			else {
 				return statistics.sample();			
@@ -155,20 +153,24 @@ public:
 
 
 	MCTSNode* best_child() {
-		// returns a pointer to the best child according to the function
+		// returns a pointer to the best child according to the scoring function
+		DebugFlag df("Entering best_child", "Exiting best_child");
+		std::lock_guard guard(child_mutex);
+		CERR "Got child_mutex guard" ENDL;
+		
 		MCTSNode* best = nullptr;
 		double best_score = -infinity;
 		for(auto const c : children) {
 			if(c->open) {
-				if(c->statistics.N==0) return c; // just take any unopened
+				//if(c->statistics.N==0) return c; // just take any unopened
 				double s = c->score();
-				if((!std::isnan(s)) && s >= best_score) {
+				if(s >= best_score) {
 					best_score = s;
 					best = c;
 				}
 			}
 		}
-		assert(best != nullptr && "Invalid selection of best_child (should never get here, but might have if we didn't correctly check for open children)"); // we really should have chosen something
+		assert(best != nullptr && "You tried to select a best_child which was null (should never get here, but might have if we didn't correctly check for open children)"); // we really should have chosen something
 		return best;
 	}
 
@@ -188,7 +190,7 @@ public:
 	
 	void add_child_nodes() {
 
-		child_mutex.lock();
+		std::lock_guard guard(child_mutex);
 		if(children.size() == 0) { // check again in case someone else has edited in the meantime
 			
 			size_t N = value->neighbors();
@@ -215,7 +217,6 @@ public:
 				}
 			}
 		}
-		child_mutex.unlock();			
 	}
    
 	// search for some number of steps
@@ -225,6 +226,12 @@ public:
 		
 		auto start_time = clock::now();
 		for(unsigned long i=0; (i<steps || steps==0) && !CTRL_C;i++){
+			
+#ifdef DEBUG_MCTS
+			if(value != nullptr) { // the root
+				COUT "MCTS SEARCH LOOP" TAB i TAB std::this_thread::get_id() ENDL;
+			}
+#endif
 			if(time > 0) {
 				double elapsed_time = std::chrono::duration_cast<std::chrono::seconds>(clock::now() - start_time).count();
 				if(elapsed_time > time) break;
@@ -260,8 +267,9 @@ public:
         assert(value != nullptr || parent==nullptr); // only the root gets a null value
 
 #ifdef DEBUG_MCTS
+		DebugFlag df("Entering SearchOne", "Exiting");
         if(value != nullptr) { // the root
-            std::cout << "MCTS SEARCH " <<  this << "\t[" << value->string() << "] " << nvisits << std::endl;
+            COUT "MCTS SEARCH " <<  this << "\t[" << value->string() << "] " << nvisits TAB std::this_thread::get_id() ENDL;
         }
 #endif
 		
@@ -288,10 +296,14 @@ public:
 					
 					open = open || c->open; // I'm open if any child is
 				}
-				return; // this counts as a search move
 			}
+			
+			
+			
 		}
-		else if(open_children() == 0) { // can't do anything
+		
+		// even after we try to add, we might not have any. If so, return
+		if(open_children() == 0) {
 			open = false;
 			return;
 		}

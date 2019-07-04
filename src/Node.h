@@ -112,24 +112,6 @@ public:
 		}
 		return s;
 	}
-
-//	
-//	void map( void f(Node*), bool skipnull=true) {
-//		// NOTE: Because map calls f first on this, it allows us to modify the tree if we want to. 
-//		f(this); // call first, in case f modifies my children
-//		for(size_t i=0;i<rule->N;i++) {
-//			if(child[i] != nullptr) child[i]->map(f, skipnull); // I can only recurse on non-null children
-//			else if(not skipnull)   f(child[i]);                // but I can call f on null children if I want to
-//		}
-//	}
-		
-//	void map( std::function<void(Node*)>& f, bool skipnull=true) {
-//		f(this);
-//		for(size_t i=0;i<rule->N;i++) {
-//			if(child[i] != nullptr) child[i]->map(f, skipnull); // I can only recurse on non-null children
-//			else if(not skipnull)   f(child[i]);                // but I can call f on null children if I want to
-//		}
-//	}
 	
 	void map( const std::function<void(Node*)>& f, bool skipnull=true ) {
 		f(this);

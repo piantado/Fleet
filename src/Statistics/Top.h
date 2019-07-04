@@ -3,7 +3,6 @@
 #include "stdlib.h"
 #include "stdio.h"
 
-#include <pthread.h>
 #include <cmath>
 #include <set>
 #include <queue>
@@ -17,14 +16,13 @@ class TopN {
 	
 protected:
 	std::map<T,unsigned long> cnt; // also let's count how many times we've seen each for easy debugging
-	pthread_mutex_t lock; 
+	std::mutex lock;
 	size_t N;
 	std::multiset<T> s; // important that it stores in sorted order by posterior!
 	
 public:
 
 	TopN(size_t n=std::numeric_limits<size_t>::max()) : N(n) {
-		pthread_mutex_init(&lock, nullptr); 
 	}
 
 	void set_size(size_t n) {
@@ -45,7 +43,7 @@ public:
 		// toss out infs
 		if(std::isnan(x.posterior) || x.posterior == -infinity) return;
 		
-		pthread_mutex_lock(&lock);
+		std::lock_guard guard(lock);
 		
 		// if we aren't in there and our posterior is better than the worst
 		if(s.find(x) == s.end()) { 
@@ -66,7 +64,6 @@ public:
 		else { // if its stored somewhere already
 			cnt[x]++;
 		}
-		pthread_mutex_unlock(&lock);
 	}
 	void operator<<(const T x) {
 		add(x);
@@ -103,25 +100,22 @@ public:
     
 	double Z() { // compute the normalizer
 		double z = -infinity;
-		pthread_mutex_lock(&lock);
+		std::lock_guard guard(lock);
 		for(auto x : s) z = logplusexp(z, x.posterior);
-		pthread_mutex_unlock(&lock);
 		return z;       
 	}
 	
     void print(void printer(T&)) {
-	   pthread_mutex_lock(&lock);
-       for(auto h : s) {
-          printer(h);
-       }
-	   pthread_mutex_unlock(&lock);
+		std::lock_guard guard(lock);
+		for(auto h : s) {
+			printer(h);
+		}
     }
 	
 	void clear() {
-		pthread_mutex_lock(&lock);
+		std::lock_guard guard(lock);
 		s.erase(s.begin(), s.end());
 		cnt.clear();
-		pthread_mutex_unlock(&lock);
 	}
 	
 	unsigned long count(const T x) const {

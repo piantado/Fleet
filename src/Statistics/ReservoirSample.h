@@ -53,7 +53,7 @@ public:
 	T min(){ return *vals.begin(); }
 	
 	void add(T x) {
-		lock.lock();
+		std::lock_guard guard(lock);
 		
 		if((!unique) || vals.find(x) == vals.end()) {
 		
@@ -75,18 +75,16 @@ public:
 		
 		++N;
 		
-		lock.unlock();
 	}
 	void operator<<(T x) {	add(x);}
 	
 	// Return a sample from my vals (e.g. a sample of the samples I happen to have saved)
 	T sample() {
-		lock.lock();
+		std::lock_guard guard(lock);
 		if(N == 0) return NaN;
 		std::uniform_int_distribution<int> sampler(0,vals.size()-1);
 		auto pos = vals.begin();
 		std::advance(pos, sampler(rng));
-		lock.unlock();
 		return *pos;
 	}
 	

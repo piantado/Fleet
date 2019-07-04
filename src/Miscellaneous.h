@@ -89,8 +89,8 @@ bool is_prefix(const std::string& prefix, const std::string& x) {
 }
 
 
-std::deque<std::string> split(const std::string& s, const char delimiter)
-{
+std::deque<std::string> split(const std::string& s, const char delimiter){
+		
    std::deque<std::string> tokens;
    std::string token;
    std::istringstream ts(s);

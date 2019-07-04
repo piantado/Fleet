@@ -144,6 +144,7 @@ typedef std::stack<Instruction> Program;
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We defaultly include all of the major requirements for Fleet
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include "Debug.h"
 
 #include "Hypotheses/Interfaces.h"
 #include "Miscellaneous.h"
@@ -163,6 +164,7 @@ typedef std::stack<Instruction> Program;
 #include "Inference/MCTS.h"
 #include "Inference/ParallelTempering.h"
 #include "Inference/ChainPool.h"
+
 
 
 #include "Top.h"
@@ -273,7 +275,7 @@ void Fleet_initialize() {
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
 	COUT "# Executable checksum: " << system_exec(tmp);
 	COUT "# \t --input=" << input_path ENDL;
-	COUT "# \t --nthreads=" << nthreads ENDL;
+	COUT "# \t --threads=" << nthreads ENDL;
 	COUT "# \t --mcmc=" << mcmc_steps ENDL;
 	COUT "# \t --mcts=" << mcts_steps ENDL;
 	COUT "# \t --time=" << timestring << " (" << runtime << " seconds)" ENDL;

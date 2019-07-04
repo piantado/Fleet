@@ -43,6 +43,8 @@ public:
 	
 	HYP* getCurrent() {	return current; }
 	
+	const HYP* getMax() { return themax; } 
+	
 	void run(unsigned long steps, unsigned long time) {
 		
 		using clock = std::chrono::high_resolution_clock;
