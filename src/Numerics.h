@@ -23,31 +23,16 @@ const double infinity = std::numeric_limits<double>::infinity();
 const double NaN = std::numeric_limits<double>::quiet_NaN();;
 const double pi  = 3.141592653589793238;
 
-
 /////////////////////////////////////////////////////////////
 // Probability
 /////////////////////////////////////////////////////////////
 
-//double logplusexp(const double a, const double b) {
-//    if(a==-infinity) return b;
-//    if(b==-infinity) return a;
-//    
-//    double m = (a>b?a:b);
-//    return m + log(exp(a-m)+exp(b-m));
-//}
-//float logplusexpf(const float a, const float b) {
-//	// This ends up being very expensie to do in double precision
-//	// so in some critical places (e.g. in FormalLanguageTheory) we use the float version with -fast-math, which is much faster
-//    if(a==-infinity) return b;
-//    if(b==-infinity) return a;
-//    
-//    float m = (a>b?a:b);
-//    return m + log(exp(a-m)+exp(b-m));
-//}
-
 template<typename t>
 t logplusexp(const t a, const t b) {
 	// An approximate logplusexp -- the check on z<-25 makes it much faster since it saves many log,exp operations
+	// It is easy to derive a good polynomial approximation that is a bit faster (using sollya) on [-25,0] but that appears
+	// not to be worth it at this point. 
+	
 	t mx = MAX(a,b);
 	t z  = MIN(a,b)-mx;
 	if(z < -25.0) return mx;
