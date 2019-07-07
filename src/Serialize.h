@@ -1,4 +1,0 @@
-
-/* Some very simple serialization */
-
-
