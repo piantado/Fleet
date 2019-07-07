@@ -49,7 +49,8 @@ const size_t PREC_REC_N   = 25;  // if we make this too high, then the data is f
 const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The more data, the slower...
 const size_t MAX_PR_LINES = 1000000; 
 
-std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "10000", "50000", "100000"}; // how many data points do we run on?
+//std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "10000", "50000", "100000"}; // how many data points do we run on?
+std::vector<S> data_amounts={"1000"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
 const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -15 to catch some less frequent things that happen by chance; -18;  // in (ab)^n, top 25 strings will need this man lp

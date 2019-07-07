@@ -13,7 +13,6 @@ enum CustomOp {
 		op_ApproxLt_S_S,op_ApproxLt_S_M,op_ApproxLt_S_W
 };
 		
-
 #include "Primitives.h"
 
 // Defie our types. 
@@ -27,14 +26,15 @@ std::vector<Model::objtype>      OBJECTS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', '
 std::vector<std::string>           WORDS = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
 std::vector<Model::magnitude> MAGNITUDES = {1,2,3,4,5,6,7,8,9,10};
 
-// TODO: UPDATE WITH REAL DATA  -- From Gunderson & Levine?
+// TODO: UPDATE WITH data from Gunderson & Levine?
 #include <random>
 std::discrete_distribution<> number_distribution({0, 7187, 1484, 593, 334, 297, 165, 151, 86, 105, 112}); // 0-indexed
 	
-std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600, 700, 800, 900, 1000};
+std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400};//, 500, 600, 700, 800, 900, 1000};
+//std::vector<int> data_amounts = {100};
 
 const size_t MAX_NODES = 50;
-double recursion_penalty = -20.0;
+double recursion_penalty = -50.0;
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
@@ -247,24 +247,24 @@ void callback(MyHypothesis* h) {
 }
 
 
-double playouts(const MyHypothesis* h0) {
-	if(h0->is_evaluable()) { // it has no gaps, so we don't need to do any structural search or anything
-		auto h = h0->copy();
-		h->compute_posterior(mydata);
-		callback(h);
-		double v = h->posterior;
-		delete h;
-		return v;
-	}
-	else { // we have to do some more search
-		auto h = h0->copy_and_complete();
-		auto q = MCMC(h, mydata, callback, mcmc_steps, mcmc_restart, true);
-		double v = q->posterior;
-		//std::cerr << v << "\t" << h0->string() << std::endl;
-		delete q;
-		return v;
-	}
-}
+//double playouts(const MyHypothesis* h0) {
+//	if(h0->is_evaluable()) { // it has no gaps, so we don't need to do any structural search or anything
+//		auto h = h0->copy();
+//		h->compute_posterior(mydata);
+//		callback(h);
+//		double v = h->posterior;
+//		delete h;
+//		return v;
+//	}
+//	else { // we have to do some more search
+//		auto h = h0->copy_and_complete();
+//		auto q = MCMC(h, mydata, callback, mcmc_steps, mcmc_restart, true);
+//		double v = q->posterior;
+//		//std::cerr << v << "\t" << h0->string() << std::endl;
+//		delete q;
+//		return v;
+//	}
+//}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -309,7 +309,7 @@ int main(int argc, char** argv){
 				s.append(std::string(nx,tx));
 				
 				if(i==0) { // first time captures the intended type
-					if(uniform(rng) < 1.0-alpha) w = static_cast<Model::word>(random_word(rng));  // are we noise?
+					if(uniform() < 1.0-alpha) w = static_cast<Model::word>(random_word(rng));  // are we noise?
 					else       				     w = nx; // not noise
 
 					t = tx; // the type is never considered to be noise here
@@ -317,7 +317,7 @@ int main(int argc, char** argv){
 				
 				ntypes++;     
 			}
-			std::random_shuffle( s.begin(), s.end() ); // randomize the order so select is not such a friendly strategy
+			std::random_shuffle( s.begin(), s.end() ); // randomize the order so select is not a friendly strategy
 
 			Model::X x(s, t);
 			
@@ -338,7 +338,10 @@ int main(int argc, char** argv){
 		tic();
 
 		// and save what we found
-		all << top;
+		for(auto h : top.values()){
+			h.clear_bayes(); // zero the prior, posterior, likelihood
+			all << h;
+		}
 		
 		top.clear();
 	}

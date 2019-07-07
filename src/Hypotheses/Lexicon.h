@@ -3,6 +3,7 @@
 #include <limits.h>
 
 #include "LOTHypothesis.h"
+#include "Hash.h"
 
 template<typename HYP, typename T, typename t_input, typename t_output, typename _t_datum=default_datum<t_input, t_output>>
 class Lexicon : public MCMCable<HYP,t_input,t_output,_t_datum>,

@@ -2,6 +2,7 @@
 
 #include <deque>
 #include <exception>
+#include "IO.h"
 
 // an exception for recursing too deep so we can print a trace of what went wrong
 class DepthException: public std::exception {} depth_exception;
@@ -19,9 +20,13 @@ protected:
 	const unsigned long MAX_DEPTH = 64; 
 	
 public:
+	size_t             rule_cumulative_count[N_NTs]; // how many rules are there less than a given nt? (used for indexing)
+
+
 	Grammar() {
 		for(size_t i=0;i<N_NTs;i++) {
 			Z[i] = 0.0;
+			rule_cumulative_count[i] = 0;
 		}
 	}
 	
@@ -36,6 +41,33 @@ public:
 	size_t count_nonterminals() const {
 		return N_NTs;
 	}
+	
+	
+	size_t get_packing_index(const Rule* r) const {
+		// A rule's packing index is a unique count index for this rule
+		// so that in the whole grammar, we can pack all indices into a vector
+		// NOTE: this is not efficiently computed
+		bool found = false;
+		size_t i=0;
+		for(;i<rules[r->nt].size();i++) {
+			if(rules[r->nt][i] == r) { found=true; break;}
+		}
+		assert(found);
+		
+		return rule_cumulative_count[r->nt]+i; 
+	}
+	
+	size_t count_rules(const nonterminal_t nt) const {
+		return rules[nt].size();
+	}	
+	size_t count_rules() const {
+		size_t n=0;
+		for(size_t i = 0;i<N_NTs;i++) {
+			n += count_rules((nonterminal_t)i);
+		}
+		return n;
+	}
+
 	
 	size_t count_expansions(const nonterminal_t nt) const {
 		assert(nt >= 0);
@@ -62,7 +94,7 @@ public:
 		assert(Z[nt] > 0 && "*** It seems there is zero probability of expanding this terminal -- did you include any rules?"); 
 		
 		double z = Z[nt];
-		double q = uniform(rng)*z;
+		double q = uniform()*z;
 		for(auto r: rules[nt]) {
 			q -= r->p;
 			if(q <= 0.0)
@@ -86,6 +118,11 @@ public:
 				return r;
 		}
 		assert(0 && "*** Could not find rule");		
+	}
+	
+	virtual Rule* get_rule(const nonterminal_t nt, size_t i) {
+		assert(i <= rules[nt].size());
+		return rules[nt][i];
 	}
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -190,7 +227,7 @@ public:
 		
 		double z = replicating_Z(nt);
 		assert(z > 0);
-		double q = uniform(rng)*z;
+		double q = uniform()*z;
 		for(auto r: rules[nt]) {
 			if(r->replicating_children() > 0) {
 				q -= r->p;
@@ -214,6 +251,11 @@ public:
 	virtual void add(Rule* r) {
 		rules[r->nt].push_back(r);
 		Z[r->nt] += r->p; // keep track of the total probability
+		
+		// and keep a count of the cumulative number of rules
+		for(size_t nt=r->nt+1;nt<N_NTs;nt++) {
+			rule_cumulative_count[nt]++;
+		}		
 	}
 
 	template<typename T>

@@ -68,7 +68,7 @@ public:
 			double Tnow = pool[k-1]->at_temperature(pool[k-1]->temperature)   + pool[k]->at_temperature(pool[k]->temperature);
 			double Tswp = pool[k-1]->at_temperature(pool[k]->temperature)     + pool[k]->at_temperature(pool[k-1]->temperature);
 			// TODO: Compare to paper
-			if(Tswp > Tnow || uniform(rng) < exp(Tswp-Tnow)) { 
+			if(Tswp > Tnow || uniform() < exp(Tswp-Tnow)) { 
 				
 				// swap the chains
 				std::swap(pool[k]->current, pool[k-1]->current);

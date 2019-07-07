@@ -10,14 +10,14 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <limits.h>
-#include <stack>
 #include <vector>
 #include <queue>
 #include <tuple>
 #include <map>
 #include <atomic>
 #include <assert.h>
-#include <string.h>
+#include <string>
+#include <sstream>
 #include <array>
 #include <memory>
 #include <pthread.h>
@@ -25,11 +25,13 @@
 #include <thread>         // std::this_thread::sleep_for
 #include <cstdio>
 #include <stdexcept>
+#include <random>
 #include <mutex>
 
 #include <sys/resource.h> // just for setting priority defaulty 
 
 const std::string FLEET_VERSION = "0.0.4";
+//const char SERIALIZATION_SEPERATOR = '~';
 
 // First some error checking on Fleet's required macros
 // this is because we use some of them in enums, and so a failure 
@@ -138,16 +140,19 @@ std::string   timestring   = "0s";
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// This is how programs are represented
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-typedef std::stack<Instruction> Program;
+#include "Stack.h"
+typedef Stack<Instruction> Program;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We defaultly include all of the major requirements for Fleet
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#include "Debug.h"
+#include "Numerics.h"
+
+#include "Strings.h"
+#include "Hash.h"
+#include "Miscellaneous.h"
 
 #include "Hypotheses/Interfaces.h"
-#include "Miscellaneous.h"
 #include "Rule.h"
 #include "VirtualMachine/VirtualMachinePool.h"
 #include "VirtualMachine/VirtualMachineState.h"
@@ -165,7 +170,7 @@ typedef std::stack<Instruction> Program;
 #include "Inference/ParallelTempering.h"
 #include "Inference/ChainPool.h"
 
-
+#include "Serialize.h"
 
 #include "Top.h"
 #include "CL11.hpp"

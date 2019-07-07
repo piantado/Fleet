@@ -16,14 +16,22 @@ class TopN {
 	
 protected:
 	std::map<T,unsigned long> cnt; // also let's count how many times we've seen each for easy debugging
-	std::mutex lock;
+	mutable std::mutex lock;
 	size_t N;
-	std::multiset<T> s; // important that it stores in sorted order by posterior!
+	std::multiset<T> s; // important that it stores in sorted order by posterior! Multiset because we may have multiple samples that are "equal" (as in SymbolicRegression)
+	bool noposterior;
 	
 public:
 
-	TopN(size_t n=std::numeric_limits<size_t>::max()) : N(n) {
+	TopN(size_t n=std::numeric_limits<size_t>::max(), bool np=false) : N(n), noposterior(np) {
 	}
+	
+	void operator=(const TopN<T>& x) {
+		clear();
+		set_size(x.size());
+		add(x);
+	}
+	
 
 	void set_size(size_t n) {
 		N = n;
@@ -69,12 +77,12 @@ public:
 		add(x);
 	}
 	
-	void add(TopN<T> x) { // add from a whole other topN
+	void add(const TopN<T>& x) { // add from a whole other topN
 		for(auto h: x.s){
 			add(h);
 		}
 	}
-	void operator<<(const TopN<T> x) {
+	void operator<<(const TopN<T>& x) {
 		add(x);
 	}
 	
@@ -126,3 +134,10 @@ public:
 	
 };
 
+// Handy to define this so we can put TopN into a set
+template<typename HYP>
+void operator<<(std::set<HYP>& s, TopN<HYP>& t){ 
+	for(auto h: t.values()) {
+		s.insert(h);
+	}
+}

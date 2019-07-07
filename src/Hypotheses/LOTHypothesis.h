@@ -6,7 +6,9 @@
 template<typename HYP, typename T, nonterminal_t nt, typename t_input, typename t_output, typename _t_datum=default_datum<t_input, t_output>>
 class LOTHypothesis : public Dispatchable<t_input,t_output>, 
 				      public MCMCable<HYP,t_input,t_output,_t_datum>, // remember, this defines t_data, t_datum
-					  public Searchable<HYP,t_input,t_output>
+					  public Searchable<HYP,t_input,t_output>,
+					  public Serializable<HYP,t_input,t_output>
+					  
 {
 	// stores values as a pointer to something of type T, whose memory I manage (I delete it when I go away)
 	// This also stores a pointer to a grammar, but I do not manage its memory
@@ -95,11 +97,11 @@ public:
 //		}
 
 //		while(true) {
-//			if(uniform(rng) < 0.5) { // p of regeneration
+//			if(uniform() < 0.5) { // p of regeneration
 //				std::tie(ret->value, fb) = regeneration_proposal(grammar, value);
 //			}
 //			else {
-//				if(uniform(rng) < 0.5) {
+//				if(uniform() < 0.5) {
 //					std::tie(ret->value, fb) = insert_proposal_tree(grammar, value);
 //				}
 //				else {
@@ -113,11 +115,11 @@ public:
 
 
 		// choose a type:
-//		if(uniform(rng) < 0.1) { // p of regeneration
+//		if(uniform() < 0.1) { // p of regeneration
 //			std::tie(ret->value, fb) = regeneration_proposal(grammar, value);
 //		}
 //		else {
-//			if(uniform(rng) < 0.5) {
+//			if(uniform() < 0.5) {
 //				std::tie(ret->value, fb) = insert_proposal_tree(grammar, value);
 //			}
 //			else {
@@ -127,6 +129,8 @@ public:
 		
 		return std::make_pair(ret, fb);
 	}
+	
+
 	
 	virtual HYP* restart() const {
 		// This is used in MCMC to restart chains 
@@ -303,6 +307,19 @@ public:
 		// Usually this means that that the value is complete, meaning no partial subtrees
 		return value != nullptr && value->is_evaluable();
 	}
+
+//
+//	virtual std::string serialize() const {
+//		return std::to_string(this->prior) + SERIALIZATION_SEPERATOR + std::to_string(this->likelihood) + SERIALIZATION_SEPERATOR + this->value->parseable();
+//	}
+//	
+//	virtual void deserialize(const std::string s) {	
+//		auto x = split(s, SERIALIZATION_SEPERATOR);
+//		this->prior      = std::stod(x[0]);
+//		this->likelihood = std::stod(x[1]);
+//		this->set_value(grammar->expand_from_names<Node>(x[2]));		
+//	}
+
 
 	 
 };

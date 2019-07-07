@@ -43,16 +43,16 @@ public:
 	static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
 	Program            opstack; 
-	std::stack<t_x>    xstack; //xstackthis stores a stack of the x values (for recursive calls)
+	Stack<t_x>    xstack; //xstackthis stores a stack of the x values (for recursive calls)
 	t_return           err; // what error output do we return?
 	double             lp; // the probability of this context
 	
 	unsigned long 	  recursion_depth; // when I was created, what was my depth?
 
 	// This is a little bit of fancy template metaprogramming that allows us to define a stack
-	// like std::tuple<std::stack<bool>, std::stack<std::string> > using a list of type names defined in NT_TYPES
+	// like std::tuple<Stack<bool>, Stack<std::string> > using a list of type names defined in NT_TYPES
 	template<typename... args>
-	struct t_stack { std::tuple<std::stack<args>...> value; };
+	struct t_stack { std::tuple<Stack<args>...> value; };
 	t_stack<NT_TYPES> stack; // our stacks of different types
 	
 	typedef int index_t; // how we index into factorized lexica -- NOTE: probably should be castable from Instruction.arg 
@@ -62,7 +62,7 @@ public:
 
 	// when we recurse and memoize, this stores the arguments (index and t_x) for us to 
 	// rember after the program trace is done
-	std::stack<std::pair<index_t, t_x>> memstack;
+	Stack<std::pair<index_t, t_x>> memstack;
 
 	abort_t aborted; // have we aborted?
 	
@@ -89,30 +89,30 @@ public:
 	T getpop() {
 		// retrieves and pops the element of type T from the stack
 		if(aborted != abort_t::NO_ABORT) return T(); // don't try to access the stack because we're aborting
-		assert(std::get<std::stack<T>>(stack.value).size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
+		assert(std::get<Stack<T>>(stack.value).size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
-		T x = std::get<std::stack<T>>(stack.value).top();
-		std::get<std::stack<T>>(stack.value).pop();
+		T x = std::get<Stack<T>>(stack.value).top();
+		std::get<Stack<T>>(stack.value).pop();
 		return x;
 	}
 	template<typename T>
 	T gettop() {
 		// retrieves but does not remove
 		if(aborted != abort_t::NO_ABORT) return T(); // don't try to access the stack because we're aborting
-		assert(std::get<std::stack<T>>(stack.value).size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
+		assert(std::get<Stack<T>>(stack.value).size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
-		return std::get<std::stack<T>>(stack.value).top();
+		return std::get<Stack<T>>(stack.value).top();
 	}
 	
 	template<typename T>
 	void push(T x){
 		// push things onto the appropriate stack
-		std::get<std::stack<T>>(stack.value).push(x);
+		std::get<Stack<T>>(stack.value).push(x);
 	}	
 	
 	template<typename T>
 	size_t stacksize() {
-		return std::get<std::stack<T>>(stack.value).size();
+		return std::get<Stack<T>>(stack.value).size();
 	}
 	
 	

@@ -4,8 +4,7 @@
 #include <string>
 #include <cmath>
 #include <math.h>
-
-#include "Miscellaneous.h"
+#include "Numerics.h"
 
 namespace Model {
 	

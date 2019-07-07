@@ -57,7 +57,7 @@ public:
 		
 		if((!unique) || vals.find(x) == vals.end()) {
 		
-			double r = uniform(rng);
+			double r = uniform();
 			s.insert(Item(x,r));
 						
 			vals.insert(x);

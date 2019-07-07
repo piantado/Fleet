@@ -119,7 +119,7 @@ public:
 		if(scoring_type == ScoringType::SAMPLE) {
 			// I will add probability "explore" pseudocounts to my parent's distribution in order to form a prior 
 			// please change this parameter name later. 
-			if(uniform(rng) <= explore / (explore + statistics.N)) {
+			if(uniform() <= explore / (explore + statistics.N)) {
 				
 				// here, if we are the base root node, we treat all "parent" samples as 0.0
 				return (this->parent == nullptr ? statistics.sample() : parent->score()); // handle the base case			
@@ -265,11 +265,13 @@ public:
         // use random playouts to see how well we do
         assert(value != nullptr || parent==nullptr); // only the root gets a null value
 
-#ifdef DEBUG_MCTS
-        if(value != nullptr) { // the root
-            COUT "MCTS SEARCH " <<  this << "\t[" << value->string() << "] " << nvisits TAB std::this_thread::get_id() ENDL;
-        }
-#endif
+	//	MYDEBUG(DEBUG_MCTS, "MCTS Search", this, value->string(), nvisits);
+
+//#ifdef DEBUG_MCTS
+//        if(value != nullptr) { // the root
+//            COUT "MCTS SEARCH " <<  this << "\t[" << value->string() << "] " << nvisits TAB std::this_thread::get_id() ENDL;
+//        }
+//#endif
 		
 		if(nvisits == 0) { // I am a leaf of the search who has not been expanded yet
 			add_sample(compute_playouts(value), 1); // update my internal counts

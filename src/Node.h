@@ -3,6 +3,7 @@
 #include <functional>
 
 #include "Grammar.h"
+#include "Hash.h"
 
 // Todo: replace grammar references wiht pointers
 
@@ -216,7 +217,7 @@ public:
 		// NOTE: this does NOT return a copy
 		
 		T z = sum<T>(f);
-		double r = z * uniform(rng);
+		double r = z * uniform();
 		auto x = __sample_helper(f,r);
 		assert(x != nullptr && "*** Should not have gotten nullptr from __sample_helper");
 		return x; 
@@ -318,9 +319,6 @@ public:
 			return s;
 		}
 	}
-
-	
-
 	
 	
 	virtual std::string parseable(std::string delim=":") const {

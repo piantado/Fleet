@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Miscellaneous.h"
-#include "Data.h"
+#include "Datum.h"
 
 template<typename t_input, typename t_return>
 class VirtualMachineState;
@@ -24,6 +23,10 @@ public:
 
 
 
+//class NodeContainer {
+//	/* Contains some number of nodes */
+//	
+//}
 
 // Just a clean interface to define what kinds of operations MCMC requires
 // This also defines class types for data
@@ -49,7 +52,12 @@ public:
 	Bayesable(const Bayesable& b) : prior(b.prior), likelihood(b.likelihood), posterior(b.posterior) {
 	}
 
-	
+	virtual void clear_bayes() {
+		// necessary for inserting into big collections not by prior
+		prior = 0.0;
+		likelihood = 0.0;
+		posterior = 0.0;
+	}
 	virtual double compute_prior() = 0; 
 	virtual double compute_single_likelihood(const t_datum& datum) = 0;
 	virtual double compute_likelihood(const t_data& data) {
@@ -149,3 +157,9 @@ public:
 	//       Maybe actually the evaluation function should be in here -- evaluate_state?
 };
 
+template<typename HYP, typename t_input, typename t_output>
+class Serializable {
+	
+//	virtual std::string serialize() const = 0;
+//	virtual void deserialize(const std::string) = 0; // sets this to the deserialization of the string	
+};

@@ -105,7 +105,7 @@ public:
 			if(   (std::isnan(current->posterior))  ||
 				  (current->posterior == -infinity) ||
 					((!std::isnan(proposal->posterior)) &&
-					 (ratio > 0 || uniform(rng) < exp(ratio)))) {
+					 (ratio > 0 || uniform() < exp(ratio)))) {
 				
 				#ifdef DEBUG_MCMC
 					  std::cerr << "# Accept" << std::endl;
