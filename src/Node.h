@@ -9,289 +9,188 @@
 
 class Node {
 	
-protected:
-	static const size_t MAX_CHILDREN = 3;
 	
 public:
-	static const std::string nulldisplay;// "?"; // what to print in trees for null nodes?
+//	static const std::string nulldisplay;// "?"; // what to print in trees for null nodes?
 
-	Node*        child[MAX_CHILDREN];
+	std::vector<Node> child;
 	const Rule*  rule; // which rule did I use?
 	double       lp; 
 	bool         can_resample;
 	
-	Node(const Rule* r, double _lp, bool cr=true) : rule(r), lp(_lp), can_resample(cr) {
-		// NOTE: This constructor is used to make a copy of a node but not its children
-		// so all class members should be here
-		// to handle partial trees, we automatically fill in nullptrs, which counts as partial values
-		zero();
+	Node(const Rule* r=nullptr, double _lp=0.0, bool cr=true) : 
+		child(r==nullptr ? 0 : r->N), rule(r), lp(_lp), can_resample(cr) {	
+		if(r==nullptr) r = NullRule<(nonterminal_t)0>; // just a default, empty rule (constant)	
 	}
-	
-	Node(const Node& n){
-		assert(false && "Do not use a copy construtor for Node"); // let's not use a copy constructor
+	Node(const Node& n)  : child(n.rule->N) {
+		child = n.child;
+		rule = n.rule;
+		lp = n.lp;
+		can_resample = n.can_resample;	
 	}
-	
-	virtual ~Node() {
-		for(size_t i=0;i<rule->N;i++) {
-			if(child[i] != nullptr)	
-				delete child[i];
-		}
+	Node(Node&& n) {
+		child = std::move(n.child); // TODO: is this right?
+		rule = n.rule;
+		lp = n.lp;
+		can_resample = n.can_resample;	
 	}
+	~Node() {};
 	
-	virtual void takeover(Node* k) {
-		// take over all the resouces of k, and zero out k and then delete it
-		// TODO: use a move operator here?
-		
-		for(size_t i=0;i<rule->N;i++) { // first, clear out my own children
-			delete child[i];
-		}
-
-		rule = k->rule;
-		lp = k-> lp;
-		can_resample = k->can_resample;
-		
-		for(size_t i=0;i<rule->N;i++) {
-			child[i] = k->child[i];
-		}
-		
-		k->zero();
-		delete k;
+	void operator=(const Node& n) {
+		child = n.child;
+		rule = n.rule;
+		lp = n.lp;
+		can_resample = n.can_resample;	
 	}
-	
-	virtual void zero() {
-		// set all my children to nullptr, but DO NOT delete them
-		for(size_t i=0;i<rule->N;i++) {
-			child[i] = nullptr;
-		}
-	}
-	
-	virtual Node* copy() const {
-		auto ret = new Node(rule, lp, can_resample); // copy myself and not my children
-		for(size_t i=0;i<rule->N;i++) {
-			ret->child[i] = (child[i] == nullptr ? nullptr : child[i]->copy());
-		}
-		return ret;
-	}	
-	
-	// Returns the max of applying f to all of the non-null nodes 	
-	template<typename T>
-	T maxof( std::function<T(const Node*)>& f) const {
-		T mx = f(this);
-		for(size_t i=0;i<rule->N;i++) {
-			if(child[i] != nullptr) {
-				T m = child[i]->maxof(f);
-				if(m > mx) mx = m;
-			}
-		}
-		return mx;
+	void operator=(const Node&& n) {
+		child.resize(n.child.size());
+		child = std::move(n.child);
+		rule = n.rule;
+		lp = n.lp;
+		can_resample = n.can_resample;	
 	}
 	
 	
-	bool all( bool f(Node*) ) {
-		if(!f(this)) return false;
-		for(size_t i=0;i<rule->N;i++) {
-			if(child[i] != nullptr && (!child[i]->all(f)))
-				return false;
-		}
-		return true;
+	
+	bool isnull() const { // a null node has no children
+		return child.size() == 0;
 	}
 	
 	template<typename T>
-	T sum(std::function<T(const Node*)>& f ) const {
-		T s = f(this);
-		for(size_t i=0;i<rule->N;i++) {
-			s += (child[i] == nullptr ? 0 : child[i]->sum<T>(f));
+	T sum(std::function<T(const Node&)>& f ) const {
+		T s = f(*this);
+		for(auto& c: child) {
+			s += c.sum<T>(f);
 		}
 		return s;
 	}
 
-	double logsumexp(std::function<double(const Node*)>& f ) const {
-		double s = f(this);
-		for(size_t i=0;i<rule->N;i++) {
-			if(child[i] != nullptr)
-				s = logplusexp(s, child[i]->logsumexp(f));
+	double logsumexp(std::function<double(const Node&)>& f ) const {
+		double s = f(*this);
+		for(auto& c: child) {
+			s = logplusexp(s, c.logsumexp(f));
 		}
 		return s;
 	}
 	
-	void map( const std::function<void(Node*)>& f, bool skipnull=true ) {
-		f(this);
-		for(size_t i=0;i<rule->N;i++) {
-			if(child[i] != nullptr) child[i]->map(f, skipnull); // I can only recurse on non-null children
-			else if(not skipnull)   f(child[i]);                // but I can call f on null children if I want to
+	void map( const std::function<void(Node&)>& f) {
+		f(*this);
+		for(auto& c: child) {
+			c.map(f); // I can only recurse on non-null children
 		}
 	}
 	
-	void mapconst( const std::function<void(const Node*)>& f, bool skipnull=true ) const { // mapping that is constant
-		f(this);
-		for(size_t i=0;i<rule->N;i++) {
-			if(child[i] != nullptr) child[i]->mapconst(f, skipnull); // I can only recurse on non-null children
-			else if(not skipnull)   f(child[i]);                // but I can call f on null children if I want to
+	void mapconst( const std::function<void(const Node&)>& f) const { // mapping that is constant
+		f(*this);
+		for(auto& c: child) {
+			c.mapconst(f); // I can only recurse on non-null children
 		}
 	}
 	
-	void map_conditionalrecurse( std::function<bool(Node*)>& f ) {
+	void map_conditionalrecurse( std::function<bool(Node&)>& f ) {
 		// f here returns a function and we only recurse if the function returns true
 		// This is often useful if we are modifying the tree and don't want to keep going once we've found something
-		bool b = f(this);
+		bool b = f(*this);
 		if(b){
-			for(size_t i=0;i<rule->N;i++) {
-				if(child[i] != nullptr) child[i]->map_conditionalrecurse(f);
+			for(auto& c: child) {
+				c.map_conditionalrecurse(f);
 			}
 		}
 	}
 		
-	size_t count_equal(const Node* n) const {
+	size_t count_equal(const Node& n) const {
 		// how many of my descendants are equal to n?
+		if(*this == n) return 1; // nothing below can be equal
 		size_t cnt = 1;
-		if(*this == *n) cnt++;
-		for(size_t i=0;i<rule->N;i++) { // TODO: probably don't have to recurse if we are equal
-			if(child[i] != nullptr) 
-				cnt += child[i]->count_equal(n);
+		for(auto& c: child) {
+			cnt += c.count_equal(n);
 		}
 		return cnt;
 	}
 		
 	virtual size_t count() const {
-		std::function<size_t(const Node* n)> one = [](const Node* n){return (size_t)1;};
+		std::function<size_t(const Node& n)> one = [](const Node& n){return (size_t)1;};
 		return sum<size_t>( one );
 	}
 
 	virtual bool is_evaluable() const {
 		// does this have any subnodes below that are null?
-		for(size_t i=0;i<rule->N;i++) {
-			if(child[i] == nullptr || !child[i]->is_evaluable() ) return false;
+		for(auto& c: child) {
+			if(not c.is_evaluable()) return false;
 		}
-		return true;
+		return child.size() == rule->N; // must have all my kids
 	}
 		
-	virtual Node* get_nth(int& n, std::function<int(const Node*)>& f) const {
+	virtual Node* get_nth(int& n, std::function<int(const Node&)>& f) {
 		// return a pointer to the nth  child satisfying f (f's output cast to bool)
 		// this uses nullptr as a setinel that the nth is not below us
-		if(f(this)) {
+		if(f(*this)) {
 			if(n == 0) {
-				return  (Node*)this;
+				return this;
 			}
 			else {
 				--n;
 			}
 		}
 		
-		for(size_t i=0;i<rule->N;i++) {
-			if(child[i] != nullptr){
-				Node* x = child[i]->get_nth(n,f);
-				if(x != nullptr) return x;				
-			}
+		for(auto& c: child) {
+			Node* x = c.get_nth(n,f);
+			if(x != nullptr) return x;
 		}
-		return nullptr; // signal to above that the nth si not here. 
+		return nullptr; // not here, losers
 	}
-	virtual Node* get_nth(int& n) const { // default true on every node
-		std::function<int(const Node* n)> t = [](const Node* n) { return 1;};
-		return get_nth(n, t); 
+	virtual Node* get_nth(int& n) { // default true on every node
+		std::function<int(const Node&)> f = [](const Node& n) { return 1;};
+		return get_nth(n, f); 
 	}
 	
 	
 	template<typename T>
-	Node* __sample_helper(std::function<T(const Node*)>& f, double& r) {
-		
-		r -= f(this);
-		if(r < 0.0) { 
+	Node* __sample_helper(std::function<T(const Node&)>& f, float& r) {
+		r -= f(*this);
+		if(r <= 0.0) { 
 			return this; 
 		}
 		else {
-			for(size_t i=0;i<rule->N && r >= 0.0;i++) {
-				if(child[i] != nullptr){
-					auto q = child[i]->__sample_helper(f,r);
-					if(q != nullptr) return q;
-				}
+			for(auto& c: child) {
+				auto x = c.__sample_helper(f,r);
+				if(x != nullptr) return x;
 			}
 			return nullptr;
 		}		
 	}
 	
 	template<typename T>
-	Node* sample(std::function<T(const Node*)>& f) {
+	Node* sample(std::function<T(const Node&)>& f) {
 		// sample a subnode satisfying f and return its probability
 		// where f maps each node to a probability (possibly zero)
 		// we allow T here to be a double, int, whatever 
 		// NOTE: this does NOT return a copy
 		
 		T z = sum<T>(f);
-		double r = z * uniform();
+		float r = z * uniform();
 		auto x = __sample_helper(f,r);
-		assert(x != nullptr && "*** Should not have gotten nullptr from __sample_helper");
-		return x; 
+		assert(x != nullptr && "*** Should have gotten value from __sample_helper");
+		return x;
 	}
 
 	
-	virtual Node* copy_resample(const Grammar& g, bool f(const Node* n)) const {
+	virtual Node copy_resample(const Grammar* g, bool f(const Node& n)) const {
 		// this makes a copy of the current node where ALL nodes satifying f are resampled from the grammar
 		// NOTE: this does NOT allow f to apply to nullptr children (so cannot be used to fill in)
-		if(f(this)){
-			return g.generate<Node>(rule->nt);
+		if(f(*this)){
+			return g->generate<Node>(rule->nt);
 		}
+		else {
 		
-		// otherwise normal copy
-		auto ret = new Node(rule, lp, can_resample);
-		for(size_t i=0;i<rule->N;i++){
-			ret->child[i] = (child[i] == nullptr ? nullptr : child[i]->copy_resample(g, f));
+			// otherwise normal copy
+			Node ret(*this);
+			for(auto& c: ret.child) {
+				c = c.copy_resample(g, f);
+			}
+			return ret;
 		}
-		return ret;
 	}
-	
-//	
-//	virtual std::string string() const { 
-//		// To convert to a string, we need to essentially simulate the evaluator
-//		// and be careful to process the arguments in the right orders
-//		
-//		std::stack<const Node*> nodestack;		
-//		const std::function<void(const Node*)> f = [&nodestack](const Node* n) { nodestack.push(n); };
-//		mapconst( f, false );  // must walk the tree in the same order as linearization, push onto nodestack, and push null for null nodes
-//		
-//		// now go through and run just like in the program
-//		// and concatenate the strings in the right orders
-//		std::stack<std::string> strstack;
-//		while(! nodestack.empty() ) {
-//			const Node* n = nodestack.top(); nodestack.pop();
-//			
-//			if(n==nullptr) {
-//				strstack.push(nulldisplay); 
-//			}
-//			else if(n->rule->N == 0) {
-//				strstack.push(n->rule->format); 
-//			}
-//			else {
-//				
-//				std::string childStrings[n->rule->N];
-//				
-//				// The order should be maintained (because that's how CaseMacros works)
-//				for(size_t i=0;i<n->rule->N;i++) {
-//					assert(not strstack.empty());
-//					childStrings[i] = strstack.top();
-//					strstack.pop();
-//				}
-//				
-//				// now substitute the children into the format
-//				std::string s = n->rule->format;
-//				for(size_t i=0;i<n->rule->N;i++) {
-//					auto pos = s.find(ChildStr);
-//					assert(pos != std::string::npos && "Node format must contain one ChildStr (typically='%s') for each argument"); // must contain the ChildStr for all children all children
-//					s.replace(pos, ChildStr.length(), childStrings[i] );
-//				}
-//				strstack.push(s); // put back on the stack so it can be processed for rest
-//			}
-//		}
-//		
-//		auto ret = strstack.top(); strstack.pop(); // what we return
-//		
-//		assert(strstack.empty()); // just some checks here -- there should have been one left on the stack
-//		assert(nodestack.empty());
-//		
-//		return ret;
-//	}
-//
-//	
-
 
 	virtual std::string string() const { 
 		// To convert to a string, we need to essentially simulate the evaluator
@@ -302,11 +201,11 @@ public:
 		}
 		else {
 			
-			std::string childStrings[rule->N];
+			std::string childStrings[child.size()];
 			
 			// The order should be maintained (because that's how CaseMacros works)
 			for(size_t i=0;i<rule->N;i++) {
-				childStrings[i] = (child[i] == nullptr ? nulldisplay : child[i]->string());
+				childStrings[i] = child[i].string();
 			}
 			
 			// now substitute the children into the format
@@ -324,13 +223,8 @@ public:
 	virtual std::string parseable(std::string delim=":") const {
 		// get a string like one we could parse
 		std::string out = rule->format;
-		for(size_t i=0;i<rule->N;i++) {
-			if(child[i] == nullptr) {
-				out += delim + ChildStr;
-			} 
-			else {
-				out += delim + child[i]->parseable(delim);
-			}
+		for(auto& c: child) {
+				out += delim + c.parseable(delim);
 		}
 		return out;
 	}
@@ -344,8 +238,8 @@ public:
 		// compute the size of the program -- just number of nodes plus special stuff for IF
 		size_t n = 1; // I am one node
 		if( rule->instr.is_a(BuiltinOp::op_IF) ) { n += 1; } // I have to add this many more instructions for an if
-		for(size_t i=0;i<rule->N;i++) {
-			n += (child[i] == nullptr ? 0 : child[i]->program_size());
+		for(auto& c: child) {
+			n += c.program_size();
 		}
 		return n;
 	}
@@ -363,8 +257,8 @@ public:
 		
 		// and just a little checking here
 		for(size_t i=0;i<rule->N;i++) {
-			assert(child[i] != nullptr && "Cannot linearize a Node with null children");
-			assert(child[i]->rule->nt == rule->child_types[i] && "Somehow the child has incorrect types"); // make sure my kids types are what they should be
+//			assert(child[i] != nullptr && "Cannot linearize a Node with null children");
+			assert(child[i].rule->nt == rule->child_types[i] && "Somehow the child has incorrect types"); // make sure my kids types are what they should be
 		}
 		
 		
@@ -372,24 +266,24 @@ public:
 		if( rule->instr.is_a(BuiltinOp::op_IF) ) {
 			assert(rule->N == 3 && "BuiltinOp::op_IF require three arguments"); // must have 3 parts
 			
-			int xsize = child[1]->program_size()+1; // must be +1 in order to skip over the JMP too
-			int ysize = child[2]->program_size();
+			int xsize = child[1].program_size()+1; // must be +1 in order to skip over the JMP too
+			int ysize = child[2].program_size();
 			assert(xsize < (1<<12) && "If statement jump size too large to be encoded in Instruction arg"); // these sizes come from the arg bitfield 
 			assert(ysize < (1<<12) && "If statement jump size too large to be encoded in Instruction arg");
 			
-			child[2]->linearize(ops);
+			child[2].linearize(ops);
 			
 			// make the right instruction 
 			// TODO: Assert that ysize fits 
 			ops.push(Instruction(BuiltinOp::op_JMP,ysize));
 			
-			child[1]->linearize(ops);
+			child[1].linearize(ops);
 			
 			// encode jump
 			ops.push(Instruction(BuiltinOp::op_IF, xsize)); 
 			
 			// evaluate the bool first so its on the stack when we get to if
-			child[0]->linearize(ops);
+			child[0].linearize(ops);
 			
 		}
 		else {
@@ -398,13 +292,13 @@ public:
 			Instruction i = rule->instr; // use this as a template
 			ops.push(i);
 			for(size_t i=0;i<rule->N;i++) {
-				child[i]->linearize(ops);
+				child[i].linearize(ops);
 			}
 		}
 		
 	}
 	
-	virtual bool operator==(const Node &n) const{
+	virtual bool operator==(const Node& n) const{
 		// Check equality between notes. Note that this compares the rule *pointers* so we need to be careful with 
 		// serialization and storing/recovering full node trees with equality comparison
 		
@@ -412,12 +306,12 @@ public:
 			return false;
 			
 		for(size_t i=0;i<rule->N;i++){
-			if(!(child[i]->operator==(*n.child[i]))) return false;
+			if(!(child[i] == n.child[i])) return false;
 		}
 		return true;
 	}
 
-	virtual size_t count_equal_child(const Node* n) const {
+	virtual size_t count_equal_child(const Node& n) const {
 		// how many of my IMMEDIATE children are equal to n?
 		size_t cnt = 0;
 		for(size_t i=0;i<rule->N;i++) {
@@ -431,7 +325,7 @@ public:
 		// Like equality checking, hashing also uses the rule pointers' numerical values, so beware!
 		size_t output = (size_t) rule; // tunrs out, this is actually important to prevent hash collisions when rule_id and i are small
 		for(size_t i=0;i<rule->N;i++) {
-			output = hash_combine(output, hash_combine(i, (child[i] == nullptr ? i : child[i]->hash())));
+			output = hash_combine(output, hash_combine(i, child[i].hash()));
 		}
 		return output;
 	}
@@ -444,23 +338,25 @@ public:
 	
 	virtual size_t neighbors(const Grammar& g) const {
 		// How many neighbors do I have? We have to find every gap (nullptr child) and count the ways to expand each
-		size_t n=0;
-		for(size_t i=0;i<rule->N;i++){
-			n += (child[i] == nullptr ? g.count_expansions(rule->child_types[i]) : child[i]->neighbors(g) );
-		}
-		return n;
+//		size_t n=0;
+//		for(size_t i=0;i<rule->N;i++){
+//			n += (child[i] == nullptr ? g.count_expansions(rule->child_types[i]) : child[i]->neighbors(g) );
+//		}
+//		return n;
+		assert(0);
 	}
 	
 	virtual size_t first_neighbors(const Grammar& g) const {
 		// How many neighbors does my first gap have?
-		for(size_t i=0;i<rule->N;i++){
-			if(child[i] == nullptr)
-				return g.count_expansions(rule->child_types[i]);
-			
-			size_t n = child[i]->first_neighbors(g);			
-			if(n > 0) return n;
-		}
-		return 0;
+//		for(size_t i=0;i<rule->N;i++){
+//			if(child[i] == nullptr)
+//				return g.count_expansions(rule->child_types[i]);
+//			
+//			size_t n = child[i]->first_neighbors(g);			
+//			if(n > 0) return n;
+//		}
+//		return 0;
+		assert(0);
 	}
 	
 	virtual void expand_to_neighbor(const Grammar& g, int& which) {
@@ -469,34 +365,35 @@ public:
 		// and then it must specify which expansion we want to take. This means that when we
 		// skip a nullptr, we have to subtract from it the number of neighbors (expansions)
 		// we could have taken. 
-		for(size_t i=0;i<rule->N;i++){
-			if(child[i] == nullptr) {
-				int c = g.count_expansions(rule->child_types[i]);
-				if(which >= 0 && which < c) {
-					auto r = g.get_expansion(rule->child_types[i], which);
-					child[i] = g.make<Node>(r);
-				}
-				which -= c;
-			}
-			else { // otherwise we have to process that which
-				child[i]->expand_to_neighbor(g,which);
-			}
-		}
+//		for(size_t i=0;i<rule->N;i++){
+//			if(child[i] == nullptr) {
+//				int c = g.count_expansions(rule->child_types[i]);
+//				if(which >= 0 && which < c) {
+//					auto r = g.get_expansion(rule->child_types[i], which);
+//					child[i] = g.make<Node>(r);
+//				}
+//				which -= c;
+//			}
+//			else { // otherwise we have to process that which
+//				child[i]->expand_to_neighbor(g,which);
+//			}
+//		}
+		assert(0);
 	}
 	
 	virtual void complete(const Grammar& g) {
 		// go through and fill in the tree at random
-		for(size_t i=0;i<rule->N;i++){
-			if(child[i] == nullptr) {
-				child[i] = g.generate<Node>(rule->child_types[i]);
-			}
-			else {
-				child[i]->complete(g);
-			}
-		}
+//		for(size_t i=0;i<rule->N;i++){
+//			if(child[i] == nullptr) {
+//				child[i] = g.generate<Node>(rule->child_types[i]);
+//			}
+//			else {
+//				child[i]->complete(g);
+//			}
+//		}
+		assert(0);
 	}
 	
 	
 };
-const std::string Node::nulldisplay = "\u2b1c"; // this is shown for partial trees
-
+//const std::string Node::nulldisplay = "\u2b1c"; // this is shown for partial trees

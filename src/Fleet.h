@@ -170,8 +170,6 @@ typedef Stack<Instruction> Program;
 #include "Inference/ParallelTempering.h"
 #include "Inference/ChainPool.h"
 
-#include "Serialize.h"
-
 #include "Top.h"
 #include "CL11.hpp"
 

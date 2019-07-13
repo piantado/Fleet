@@ -46,11 +46,13 @@ plt
 dev.off()
 
 
-plt <- ggplot(d, aes(x=-prior, y=-1000./likelihood, color=KnowerLevel, group=KnowerLevel)) + 
-    theme_bw() + theme(legend.position=c(.85,.75)) +
+plt <- ggplot(d, aes(x=prior, y=1.0/likelihood, color=KnowerLevel, group=KnowerLevel)) + 
+    theme_bw() + theme(legend.position=c(.15,.55)) +
     scale_shape_manual(values=c(1,4))   +
     geom_point(aes(shape=ANS))
-    
+cairo_pdf("banana.pdf", height=4, width=6) # Cairo needed for unicode arrow output
+plt
+dev.off()
 
 ###################################################################################################
 ## Plot learning curves
@@ -58,7 +60,7 @@ plt <- ggplot(d, aes(x=-prior, y=-1000./likelihood, color=KnowerLevel, group=Kno
 logsumexp <- function(x) { m=max(x); log(sum(exp(x-m)))+m }
 
 D <- NULL
-for(amt in seq(1,200,1)) {
+for(amt in seq(1,300,1)) {
 
     d$newpost <- d$prior + amt*d$likelihood/d$data.amount # compute a new approximate posterior by scaling the ll-per-datapoint 
     d$newpost <- exp(d$newpost - logsumexp(d$newpost)) #normalize and convert to probability

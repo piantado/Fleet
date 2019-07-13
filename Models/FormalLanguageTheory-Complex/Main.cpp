@@ -109,11 +109,12 @@ class InnerHypothesis;
 class InnerHypothesis : public  LOTHypothesis<InnerHypothesis,Node,nt_string,S,S> {
 public:
 
-	InnerHypothesis(Grammar* g)          : LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>(g)   {}
-	InnerHypothesis(Grammar* g, Node* v) : LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>(g,v) {}
+	InnerHypothesis(Grammar* g, Node v)  : LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>(g,v) {}
 	InnerHypothesis(Grammar* g, S c)     : LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>(g,c) {}
+	InnerHypothesis(Grammar* g)          : LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>(g)   {}
+	InnerHypothesis()                    : LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>()   {}
 	
-	virtual abort_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>* vms, Dispatchable<S,S>* loader) {
+	virtual abort_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>& vms, Dispatchable<S,S>* loader) {
 		/* Dispatch the functions that I have defined. Returns true on success. 
 		 * Note that errors might return from this 
 		 * */
@@ -160,7 +161,7 @@ public:
 			case CustomOp::op_UniformSample: {
 					// implement sampling from the set.
 					// to do this, we read the set and then push all the alternatives onto the stack
-					StrSet s = vms->getpop<StrSet>();
+					StrSet s = vms.getpop<StrSet>();
 					
 					// now just push on each, along with their probability
 					// which is here decided to be uniform.
@@ -189,19 +190,7 @@ public:
 	static constexpr double alpha = 0.99;
 	
 	MyHypothesis(Grammar* g) : Lexicon<MyHypothesis,InnerHypothesis,S,S>(g) {}
-	
-	MyHypothesis(const MyHypothesis& h) : Lexicon<MyHypothesis,InnerHypothesis,S,S>(h.grammar) {
-		for(auto v : h.factors) {
-			factors.push_back(v->copy());
-		}
-		this->prior      = h.prior;
-		this->likelihood = h.likelihood;
-		this->posterior  = h.posterior;
-	}
-	
-	virtual ~MyHypothesis() {
-		// do nothing, base class destructor called automatically
-	}
+	MyHypothesis()           : Lexicon<MyHypothesis,InnerHypothesis,S,S>()   {}
 
 	virtual double compute_prior() {
 		// since we aren't searching over nodes, we are going to enforce a prior that requires
@@ -223,13 +212,13 @@ public:
 		for(size_t i=0;i<N;i++){
 			// This function on nodes computes whether or not they use a recursive function
 			// and sets calls appropriately
-			std::function<void(Node*)> myfun = [&](Node* n) {
-				if(n->rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE)) {
-					calls[i*N + n->rule->instr.arg] = true;
+			const std::function<void(Node&)> myfun = [&](Node& n) {
+				if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE)) {
+					calls[i*N + n.rule->instr.arg] = true;
 				}
 			};
 			// map this function along all nodes to see 
-			factors[i]->value->map(myfun);
+			factors[i].value.map(myfun);
 		}
 		
 		// now we take the transitive closure to see if calls[N-1] calls everything (eventually)
@@ -267,7 +256,7 @@ public:
 		if(!has_valid_indices()) return DiscreteDistribution<S>();
 		
 		size_t i = factors.size()-1; 
-		return factors[i]->call(x,err,this,MAX_STEPS_PER_FACTOR,MAX_OUTPUTS_PER_FACTOR,MIN_LP); 
+		return factors[i].call(x,err,this,MAX_STEPS_PER_FACTOR,MAX_OUTPUTS_PER_FACTOR,MIN_LP); 
 	}
 	 
 	 
@@ -285,7 +274,7 @@ public:
 		 // first pre-compute a prefix tree
 		 // TODO: This might be faster to store in an actual tree
 		 std::map<S,double> prefix_tree;
-		 for(auto m : M.values()){
+		 for(auto m : M.values()){ 
 			 S mstr = m.first + "!"; // add a stop symbol
 			 for(size_t i=0;i<=mstr.length();i++){
 				 S pfx = mstr.substr(0,i);
@@ -318,6 +307,8 @@ public:
 			 }
 		 }
 		 
+//		 raise(SIGABRT); 
+		 
 		 return likelihood;		 
 	 }
 	 
@@ -333,8 +324,7 @@ MyHypothesis::t_data prdata; // used for computing precision and recall -- in ca
 
 S current_data = "";
 TopN<MyHypothesis> top;
-MyGrammar* grammar;
-MyHypothesis* h0; // used to initialize search chains in parallel search
+MyGrammar grammar;
  
 void print(MyHypothesis& h, std::string prefix) {
 	std::lock_guard guard(output_lock);
@@ -352,17 +342,17 @@ void print(MyHypothesis& h) {
 	print(h, std::string(""));
 }
 
-void callback(MyHypothesis* h) {
+void callback(MyHypothesis& h) {
 	
 	// print the next max
 	//if(h->posterior > top.best_score())
 	//	print(*h, std::string("#### "));
 	
-	top << *h; 
+	top << h; 
 	
 	// print out with thinning
 	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) {
-		print(*h);
+		print(h);
 	}
 	
 }
@@ -391,8 +381,6 @@ int main(int argc, char** argv){
 	
 	if(prdata_path == "") prdata_path = input_path+".txt";
 	
-	grammar = new MyGrammar(); // must happen after alphabet is set
-	
 	top.set_size(ntop); // set by above macro
 	
 	load_data_file(prdata, prdata_path.c_str()); // put all the data in prdata
@@ -406,15 +394,15 @@ int main(int argc, char** argv){
 	}
 	
 	// we'll maintain h0 across 
-	h0 = new MyHypothesis(grammar);
-	for(size_t fi=0;fi<nfactors;fi++) // start with the right number of factors
-		h0->factors.push_back(new InnerHypothesis(grammar));
-	h0->compute_posterior(mydata);
-	
-	
+	MyHypothesis h0(&grammar); 
+	for(size_t fi=0;fi<nfactors;fi++) {// start with the right number of factors
+		InnerHypothesis f(&grammar);
+		h0.factors.push_back(f.restart());
+	}
+	h0.compute_posterior(mydata);
+		
 	// set up a paralle tempering object
 	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 6, 1000.0);
-		
 	tic();
 	for(auto da : data_amounts) {
 		current_data = da; // set this global variable so we can print it correctly.
@@ -434,9 +422,9 @@ int main(int argc, char** argv){
 		top = newtop; // take over the new top
 		
 		// update our parallel tempering pool
-		for(auto c: samp.pool) {
-			c->getCurrent()->compute_posterior(mydata);
-			c->data = &mydata;
+		for(auto& c: samp.pool) {
+			c.getCurrent().compute_posterior(mydata);
+			c.data = &mydata;
 		}
 		
 		// run for real		
@@ -446,40 +434,18 @@ int main(int argc, char** argv){
 	}
 	tic();
 	
-	
-	
-	
-//	h0 = new MyHypothesis(grammar);
-//	h0->factors.push_back(new InnerHypothesis(grammar, S("if:flip:.5:%s+%s:if:flip:.5:'a':'b':F:0:\u00D8:\u00D8")));
-//	//h0->compute_posterior(prdata);
-//	print(*h0);
-//	return 0;
-	
 	// Vanilla MCMC
-//	MyHypothesis* h0 = new MyHypothesis(grammar);
-//	h0->factors.push_back(new InnerHypothesis(grammar));
-	//h0->factors.push_back(new InnerHypothesis(grammar));
-	//h0->factors.push_back(new InnerHypothesis(grammar));
-	//MCMC(h0, mydata, callback, mcmc_steps, mcmc_restart, true);
+//	for(auto da : data_amounts) {
+//		S data_path = input_path + "-" + da + ".txt";
+//		load_data_file(mydata, data_path.c_str());
+//		tic();
+//		MCMCChain chain(h0, &mydata, callback);
+//		chain.run(mcmc_steps, runtime);
+//		tic();	
+//	}
+//	
 	
-	//	parallel_MCMC(nthreads, h0, &mydata, callback, mcmc_steps, mcmc_restart);
 //	top.print(print);
-
-	
-	
-	// Now load up the right data file
-	
-	
-	//parallel_MCMC(nthreads, h0, &mydata, callback,  mcmc_steps, mcmc_restart, true, runtime / data_amounts.size() );
-	//MCMCChain<MyHypothesis> mychain(h0, &mydata, callback);
-//	mychain.run(mcmc_steps, runtime);
-	//CERR mychain.acceptance_rate() ENDL;
-	
-	//ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, {1.0, 1.05, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.85, 2.0, 2.5, 3.0, 4.0, 5.0, 8.0, 10.0, 12, 15, 20, 25, 35, 50, 75, 100, 250, 500, 1000} );
-	
-	
-	//ChainPool<MyHypothesis> pool(h0, &mydata, callback, 10);
-	//pool.run(0,0);
 	
 	
 	

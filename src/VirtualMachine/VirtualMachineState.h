@@ -8,8 +8,6 @@
  * That would prevent us from having to use "short"
  * and it will make memoization easier -- make mem a tuple
  * 
- * We can probably avoid doing nt_bool if we use an #ifdef statement to check if we have
- * defined op_FLIP?
  * 
  * NOTE: CURRNTLY ERR IS NOT HANDLED RIGHT -- SHOULD HAVE A STACK I THINK?
  */
@@ -43,7 +41,7 @@ public:
 	static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
 	Program            opstack; 
-	Stack<t_x>    xstack; //xstackthis stores a stack of the x values (for recursive calls)
+	Stack<t_x>         xstack; //xstackthis stores a stack of the x values (for recursive calls)
 	t_return           err; // what error output do we return?
 	double             lp; // the probability of this context
 	
@@ -110,10 +108,10 @@ public:
 		std::get<Stack<T>>(stack.value).push(x);
 	}	
 	
-	template<typename T>
-	size_t stacksize() {
-		return std::get<Stack<T>>(stack.value).size();
-	}
+//	template<typename T>
+//	size_t stacksize() {
+//		return std::get<Stack<T>>(stack.value).size();
+//	}
 	
 	
 	virtual t_return run(Dispatchable<t_x,t_return>* d) {
@@ -133,7 +131,7 @@ public:
 			Instruction i = opstack.top(); opstack.pop();
 
 			if(i.is_custom()) {
-				abort_t b = dispatch->dispatch_rule(i, pool, this, loader);
+				abort_t b = dispatch->dispatch_rule(i, pool, *this, loader);
 				if(b != abort_t::NO_ABORT) {
 					aborted = b;
 					return err;
@@ -237,8 +235,8 @@ public:
 						
 							const double p = 0.5; 
 				
-							pool->copy_increment_push(this, true,  log(p));
-							pool->copy_increment_push(this, false, log(1.0-p));
+							pool->copy_increment_push(*this, true,  log(p));
+							pool->copy_increment_push(*this, false, log(1.0-p));
 							aborted = abort_t::RANDOM_CHOICE;
 			
 
@@ -278,8 +276,8 @@ public:
 						assert(p <= 1.0 && p >= 0.0);
 						
 						
-						pool->copy_increment_push(this, true,  log(p));
-						pool->copy_increment_push(this, false, log(1.0-p));
+						pool->copy_increment_push(*this, true,  log(p));
+						pool->copy_increment_push(*this, false, log(1.0-p));
 						aborted = abort_t::RANDOM_CHOICE;
 						
 //						bool whichbranch = p>0.5; // follow the high probability branch

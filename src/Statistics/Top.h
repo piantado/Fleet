@@ -19,17 +19,32 @@ protected:
 	mutable std::mutex lock;
 	size_t N;
 	std::multiset<T> s; // important that it stores in sorted order by posterior! Multiset because we may have multiple samples that are "equal" (as in SymbolicRegression)
-	bool noposterior;
 	
 public:
 
-	TopN(size_t n=std::numeric_limits<size_t>::max(), bool np=false) : N(n), noposterior(np) {
+	TopN(size_t n=std::numeric_limits<size_t>::max(), bool np=false) : N(n) {
+	}
+	
+	TopN(const TopN<T>& x) {
+		clear();
+		set_size(x.size());
+		add(x);
+	}
+	TopN(TopN<T>&& x) {
+		cnt = std::move(x.cnt);
+		N = x.N;
+		s = std::move(x.s);
 	}
 	
 	void operator=(const TopN<T>& x) {
 		clear();
 		set_size(x.size());
 		add(x);
+	}
+	void operator=(TopN<T>&& x) {
+		cnt = std::move(x.cnt);
+		N = x.N;
+		s = std::move(x.s);
 	}
 	
 

@@ -13,39 +13,35 @@ class Lexicon : public MCMCable<HYP,t_input,t_output,_t_datum>,
 		// Store a lexicon of type T elements
 	
 public:
-	std::vector<T*> factors;
+	std::vector<T> factors;
 	Grammar* grammar;
 	
-	Lexicon(Grammar* g) : grammar(g) {
-		
+	Lexicon(Grammar* g) : grammar(g) {}
+	Lexicon(size_t n, Grammar* g) : grammar(g) { factors.resize(n); }
+	Lexicon()           : grammar(nullptr) {}
+	
+	Lexicon(const Lexicon& x) {
+		factors = x.factors;
+		grammar = x.grammar;
+		this->prior = x.prior; this->likelihood=x.likelihood; this->posterior=x.posterior;
+	}
+	Lexicon(const Lexicon&& x) {
+		factors = std::move(x.factors);
+		grammar = x.grammar;
+		this->prior = x.prior; this->likelihood=x.likelihood; this->posterior=x.posterior;
 	}
 	
-	Lexicon(Grammar* g, Node* v) { assert(0);}
-
-	
-	Lexicon(Lexicon& l) : grammar(l.grammar), MCMCable<HYP,t_input,t_output,_t_datum>(l){
-		for(T* v : l.factors) {
-			factors.push_back(v->copy());
-		}
+	void operator=(const Lexicon& x) {
+		factors = x.factors;
+		grammar = x.grammar;
+		this->prior = x.prior; this->likelihood=x.likelihood; this->posterior=x.posterior;
+	}
+	void operator=(const Lexicon&& x) {
+		factors = std::move(x.factors);
+		grammar = x.grammar;
+		this->prior = x.prior; this->likelihood=x.likelihood; this->posterior=x.posterior;
 	}
 	
-	Lexicon(Lexicon&& l)=delete;
-	
-	virtual ~Lexicon() {
-		for(auto v : factors)
-			delete v;
-		
-	}
-	
-	void replace(size_t i, T* val) {
-		// replace the i'th component here (deleting what we had there before)
-		// and NOT copying val
-		assert(i >= 0);
-		assert(i < factors.size());
-		auto tmp = factors[i];
-		factors[i] = val; // restart the last factor
-		delete tmp;
-	}
 	
 	virtual std::string string() const {
 		
@@ -54,7 +50,7 @@ public:
 			s.append(std::string("F"));
 			s.append(std::to_string(i));
 			s.append(":=");
-			s.append(factors[i]->string());
+			s.append(factors[i].string());
 			s.append(".");
 			if(i<factors.size()-1) s.append(" ");
 		}
@@ -65,7 +61,7 @@ public:
 	virtual std::string parseable(std::string delim=":", std::string fdelim="|") const {
 		std::string out = "";
 		for(size_t i=0;i<factors.size();i++) {
-			out += factors[i]->parseable(delim) + fdelim;
+			out += factors[i].parseable(delim) + fdelim;
 		}
 		return out;
 	}
@@ -73,8 +69,8 @@ public:
 	virtual size_t hash() const {
 		size_t out = 0x0;
 		size_t i=1;
-		for(auto a: factors){
-			out = hash_combine(out, hash_combine(i, a->hash()));
+		for(auto& a: factors){
+			out = hash_combine(out, hash_combine(i, a.hash()));
 			i++;
 		}
 		return out;
@@ -87,7 +83,7 @@ public:
 			return  false;
 		
 		for(size_t i=0;i<factors.size();i++) {
-			if(!(*factors[i] == *l.factors[i]))
+			if(!(factors[i] == l.factors[i]))
 				return false;
 		}
 		return true; 
@@ -97,46 +93,42 @@ public:
 		// check to make sure that if we have rn recursive factors, we never try to call F on higher 
 		
 		// find the max op_idx used and be sure it isn't larger than the number of factors
-		std::function<size_t(const Node*)> f = [](const Node* n) {
-			if(n->rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE) ) {
-				return (size_t)n->rule->instr.arg;
-			}
-			else {
-				return (size_t)0;
+		size_t mx = 0; 
+		const std::function<void(const Node&)> f = [&mx](const Node& n) {
+			if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE) ) {
+				mx = MAX(mx, (size_t)n.rule->instr.arg);
 			}
 		};
 		
-		size_t mx = 0;
-		for(auto a : factors) {
-			auto m = a->value->maxof( f );
-			if(m > mx) mx = m;
+		for(const auto& a : factors) {
+			a.value.mapconst( f );
 		}
 		
 		return mx>=0 && mx < factors.size();
 	}
 	 
-	
-	void fix_indices(size_t loc, int added) {
-		// go through and fix the indices assuming that we added added at loc
-		// note: Added can be positive (Adding) or negative (removing)
-		std::function<void(Node*)> adjuster = [this, loc, added](Node* n){
-			const Instruction ni = n->rule->instr;
-			if(ni.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE)
-				&& (size_t)ni.arg >= loc) { // we only have to increment when args is gt. loc
-			   
-				size_t newindex = n->rule->instr.arg+added;
-				
-				assert(newindex >= 0);
-				
-				n->rule = this->grammar->get_rule(n->rule->nt, n->rule->instr.getCustom(), newindex); 
-			}
-		};
-			
-		for(size_t i=0;i<factors.size();i++) {
-			if(added > 0 || loc != i) // can't do this on the one we are removing, since we might remove f0 and it calls itself!
-				factors[i]->value->map(adjuster); // replacing function mapped through nodes				
-		}		
-	}
+//	
+//	void fix_indices(size_t loc, int added) {
+//		// go through and fix the indices assuming that we added added at loc
+//		// note: Added can be positive (Adding) or negative (removing)
+//		std::function<void(Node*)> adjuster = [this, loc, added](Node* n){
+//			const Instruction ni = n->rule->instr;
+//			if(ni.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE)
+//				&& (size_t)ni.arg >= loc) { // we only have to increment when args is gt. loc
+//			   
+//				size_t newindex = n->rule->instr.arg+added;
+//				
+//				assert(newindex >= 0);
+//				
+//				n->rule = this->grammar->get_rule(n->rule->nt, n->rule->instr.getCustom(), newindex); 
+//			}
+//		};
+//			
+//		for(size_t i=0;i<factors.size();i++) {
+//			if(added > 0 || loc != i) // can't do this on the one we are removing, since we might remove f0 and it calls itself!
+//				factors[i]->value->map(adjuster); // replacing function mapped through nodes				
+//		}		
+//	}
 	
 	
 	/********************************************************
@@ -148,44 +140,45 @@ public:
 		 // or else badness -- NOTE: We could take mod or insert op_ERR, or any number of other options. 
 		 // here, we decide just to defer to the subclass of this
 		assert(j < (short)factors.size());
+		assert(j >= 0);
 
 		// dispath to the right factor
-		factors[j]->push_program(s); // on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)
+		factors[j].push_program(s); // on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)
 	}
 	
 	 // This should never be called because we should be dispatching throuhg a factor
-	 virtual abort_t dispatch_rule(Instruction i, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms,  Dispatchable<t_input, t_output>* loader ) {
-		 assert(0 && "Should not be calling dispatch_rule on a lexicon, only on its factors");
+	 virtual abort_t dispatch_rule(Instruction i, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>& vms,  Dispatchable<t_input, t_output>* loader ) {
+		 assert(0); // can't call this, must be implemented by kids
 	 }
 	 
 	
 	/********************************************************
 	 * Implementation of MCMCable interace 
 	 ********************************************************/
-	 
-	virtual HYP* copy() const {
-		auto l = new HYP(grammar);
-		
-		for(T* v : factors){
-			l->factors.push_back(v->copy());
-		}
-		
-		l->prior      = this->prior;
-		l->likelihood = this->likelihood;
-		l->posterior  = this->posterior;
-		
-		return l;
-	}
+//	 
+//	virtual HYP* copy() const {
+//		auto l = new HYP(grammar);
+//		
+//		for(T* v : factors){
+//			l->factors.push_back(v->copy());
+//		}
+//		
+//		l->prior      = this->prior;
+//		l->likelihood = this->likelihood;
+//		l->posterior  = this->posterior;
+//		
+//		return l;
+//	}
 	
 	virtual HYP* copy_and_complete() const {
 		
-		auto l = new HYP(grammar);
-		
-		for(auto v: factors){
-			l->factors.push_back(v->copy_and_complete());
-		}
-		
-		return l;
+//		auto l = new HYP(grammar);
+//		
+//		for(auto v: factors){
+//			l->factors.push_back(v->copy_and_complete());
+//		}
+//		
+//		return l;
 	}
 	
 	
@@ -193,16 +186,18 @@ public:
 		// this uses a proper prior which flips a coin to determine the number of factors
 		
 		this->prior = log(0.5)*(factors.size()+1); // +1 to end adding factors, as in a geometric
-		//this->prior = 0.0;
 		
-		for(auto a : factors) 
-			this->prior += a->compute_prior();
+		for(auto& a : factors) {
+			this->prior += a.compute_prior();
+		}
+		
 		return this->prior;
 	}
 	
 	
-	virtual std::pair<HYP*,double> propose() const {
-		HYP* x = this->copy();
+	virtual std::pair<HYP,double> propose() const {
+		HYP x(grammar); // set the size
+		x.factors.resize(factors.size());
 		
 		// we will always flip one,
 		// and flip the rest at random
@@ -213,20 +208,21 @@ public:
 		double fb = 0.0;
 		for(size_t k=0;k<factors.size();k++) {
 			// defaultly we'll propose to each factor -- many proposals do nothing anyways
-			auto [h, _fb] = factors[k]->propose();
-			x->replace(k, h);
+			auto [h, _fb] = factors[k].propose();
+			x.factors[k] = h;
 			fb += _fb;
 		}
 
-		assert(x->factors.size() == factors.size());
+		assert(x.factors.size() == factors.size());
 		return std::make_pair(x, fb);		
 	}
 //	
 	
-	virtual HYP* restart() const  {
-		HYP* x = this->copy();
+	virtual HYP restart() const  {
+		HYP x(grammar);
+		x.factors.resize(factors.size());
 		for(size_t i=0;i<factors.size();i++){
-			x->replace(i,x->factors[i]->restart());
+			x.factors[i] = factors[i].restart();
 		}
 		return x;
 	}
@@ -242,35 +238,35 @@ public:
 	 // otherwise, no adding factors
 	 int neighbors() const {
 		 
-		if(is_evaluable()) {
-			T tmp(grammar, nullptr); // not a great way to do this -- this assumes this constructor will initialize to null (As it will for LOThypothesis)
-			return tmp.neighbors();
-		}
-		else {
-			// we should have everything complete except the last
-			size_t s = factors.size();
-			return factors[s-1]->neighbors();
-		}
+//		if(is_evaluable()) {
+//			T tmp(grammar, nullptr); // not a great way to do this -- this assumes this constructor will initialize to null (As it will for LOThypothesis)
+//			return tmp.neighbors();
+//		}
+//		else {
+//			// we should have everything complete except the last
+//			size_t s = factors.size();
+//			return factors[s-1]->neighbors();
+//		}
 	 }
 	
-	 HYP* make_neighbor(int k) const {
+	 HYP make_neighbor(int k) const {
 		 
-		 auto x = copy();
-		 		 
+//		 auto x = *this; 
+		 
 		 // try adding a factor
-		 if(is_evaluable()){ 
-			T tmp(grammar, nullptr); // as above, assumes that this constructs will null
-			assert(k < tmp.neighbors());			
-			x->factors.push_back( tmp.make_neighbor(k) );	 
-			return x;
-		}
-		else {
-			// expand the last one
-			size_t s = x->factors.size();
-			assert(k < x->factors[s-1]->neighbors());
-			x->replace(s-1, x->factors[s-1]->make_neighbor(k));
-			return x;
-		}
+//		 if(is_evaluable()){ 
+//			T tmp(grammar, nullptr); // as above, assumes that this constructs will null
+//			assert(k < tmp.neighbors());			
+//			x->factors.push_back( tmp.make_neighbor(k) );	 
+//			return x;
+//		}
+//		else {
+//			// expand the last one
+//			size_t s = x->factors.size();
+//			assert(k < x->factors[s-1]->neighbors());
+//			x->replace(s-1, x->factors[s-1]->make_neighbor(k));
+//			return x;
+//		}
 	 }
 	
 	 ///////////////////////////////////
@@ -325,8 +321,8 @@ public:
 	 
 	 
 	 bool is_evaluable() const {
-		for(auto a: factors) {
-			if(!a->is_evaluable()) return false;
+		for(auto& a: factors) {
+			if(!a.is_evaluable()) return false;
 		}
 		return true;
 	 }

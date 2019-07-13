@@ -56,8 +56,9 @@ public:
 	static const size_t MAX_LENGTH = 64; // longest strings cons will handle
 	
 	// I must implement all of these constructors
+	MyHypothesis(Grammar* g, Node v)    : LOTHypothesis<MyHypothesis,Node,nt_string,S,S>(g,v) {}
 	MyHypothesis(Grammar* g)            : LOTHypothesis<MyHypothesis,Node,nt_string,S,S>(g) {}
-	MyHypothesis(Grammar* g, Node* v)   : LOTHypothesis<MyHypothesis,Node,nt_string,S,S>(g,v) {}
+	MyHypothesis()                      : LOTHypothesis<MyHypothesis,Node,nt_string,S,S>() {}
 	
 	// Very simple likelihood that just counts up the probability assigned to the output strings
 //	double compute_single_likelihood(const t_datum& x) {
@@ -81,7 +82,7 @@ public:
 		return lp;
 	}
 	
-	abort_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>* vms, Dispatchable<S,S>* loader ) {
+	abort_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>& vms, Dispatchable<S,S>* loader ) {
 		/* Dispatch the functions that I have defined. Returns NO_ABORT on success. 
 		 * */
 		switch(i.getCustom()) {
@@ -139,18 +140,18 @@ void print(MyHypothesis& h) {
 
 // This gets called on every sample -- here we add it to our best seen so far (top) and
 // print it every thin samples unless thin=0
-void callback(MyHypothesis* h) {
+void callback(MyHypothesis& h) {
 	
 	// if we find a new best, print it out
-	if(h->posterior > top.best_score()) 
-		print(*h, "# NewTop:");
+	if(h.posterior > top.best_score()) 
+		print(h, "# NewTop:");
 	
 	// add to the top
-	top << *h; 
+	top << h; 
 	
 	// print out with thinning
 	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) 
-		print(*h);
+		print(h);
 }
 
 
@@ -201,11 +202,12 @@ int main(int argc, char** argv){
 	// Run
 	//------------------
 	
-	auto h0 = new MyHypothesis(&grammar);
+	MyHypothesis h0(&grammar);
 
-	
-	auto thechain = MCMCChain(h0, &mydata, callback);
+	tic();
+	auto thechain = MCMCChain<MyHypothesis>(h0, &mydata, callback);
 	thechain.run(mcmc_steps, runtime);
+	tic();
 	
 //	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);
 //	tic();

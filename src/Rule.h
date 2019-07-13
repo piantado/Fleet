@@ -67,3 +67,9 @@ public:
 	}
 	
 };
+
+
+// This is a template that returns a constant null rule (initial for empty nodes) for any nonterminal type
+template<nonterminal_t nt> 
+const Rule* NullRule = new Rule(nt, BuiltinOp::op_NOP, "\u2b1c", {}, 0.0);
+ 

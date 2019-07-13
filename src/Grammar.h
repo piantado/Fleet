@@ -17,7 +17,7 @@ class Grammar {
 protected:
 	std::vector<Rule*> rules[N_NTs];
 	double			   Z[N_NTs]; // keep the normalizer handy for each rule
-	const unsigned long MAX_DEPTH = 64; 
+	static const unsigned long MAX_DEPTH = 64; 
 	
 public:
 	size_t             rule_cumulative_count[N_NTs]; // how many rules are there less than a given nt? (used for indexing)
@@ -29,6 +29,10 @@ public:
 			rule_cumulative_count[i] = 0;
 		}
 	}
+	
+	Grammar(const Grammar& g) = delete; // should not be doing these
+	Grammar(const Grammar&& g) = delete; // should not be doing these
+	
 	
 //	virtual ~Grammar() {
 //		for(size_t i=0;i<N_NTs;i++) {
@@ -130,14 +134,12 @@ public:
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	template<typename T> // type needed so we dont' have to import node
-	double log_probability(const T* n) const {
-		assert(n != nullptr);
+	double log_probability(const T& n) const {
 		
-		double lp = log(n->rule->p) - log(rule_normalizer(n->rule->nt));
+		double lp = log(n.rule->p) - log(rule_normalizer(n.rule->nt));
 		
-		for(size_t i=0;i<n->rule->N;i++) {
-			if(n->child[i] != nullptr)
-				lp += log_probability<T>(n->child[i]);
+		for(size_t i=0;i<n.rule->N;i++) {
+			lp += log_probability<T>(n.child[i]);
 		}
 		return lp;		
 	}
@@ -172,38 +174,40 @@ public:
 	}
 	
 	template<typename T> 
-	T* expand_from_names(std::deque<std::string>& q) const {
+	T expand_from_names(std::deque<std::string>& q) const {
 		// expands an entire stack using nt as the nonterminal -- this is needed to correctly
 		// fill in Node::nulldisplay
 		assert(!q.empty() && "*** Should not ever get to here with an empty queue -- are you missing arguments?");
 		
 		std::string pfx = q.front(); q.pop_front();
-		if(pfx == T::nulldisplay) return nullptr; // for gaps!
+		if(pfx == NullRule<(nonterminal_t)0>->format) return nullptr; // for gaps!
 
 		// otherwise find the matching rule
 		Rule* r = this->get_from_string(pfx);
 		
-		T* v = make<T>(r);
+		T v(r);
 		for(size_t i=0;i<r->N;i++) {
-			v->child[i] = expand_from_names<T>(q);
-			if(v->child[i] != nullptr && r->child_types[i] != v->child[i]->rule->nt) {
+			
+			if(r->child_types[i] != v.child[i].rule->nt) {
 				CERR "*** Grammar expected type " << r->child_types[i] << 
-					 " but got type " << v->child[i]->rule->nt << " at " << 
+					 " but got type " << v.child[i].rule->nt << " at " << 
 					 r->format << " argument " << i ENDL;
 				assert(false && "Bad names in expand_from_names."); // just check that we didn't miss this up
 			}
+			
+			v.child[i] = expand_from_names<T>(q);
 		}
 		return v;
 	}
 	
 	template<typename T> 
-	T* expand_from_names(std::string s) const {
+	T expand_from_names(std::string s) const {
 		std::deque<std::string> stk = split(s, ':');    
         return expand_from_names<T>(stk);
 	}
 	
 	template<typename T> 
-	T* expand_from_names(const char* c) const {
+	T expand_from_names(const char* c) const {
 		std::string s = c;
         return expand_from_names<T>(s);
 	}
@@ -212,33 +216,33 @@ public:
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Implementation of replicating rules 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
-	virtual double replicating_Z(const nonterminal_t nt) const {
-		// the normalizer for all replicating rules
-		double z = 0.0;
-		for(auto r: rules[nt]) {
-			if(r->replicating_children() > 0) z += r->p;
-		}
-		return z;
-	}
-	
-	
-	virtual Rule* sample_replicating_rule(const nonterminal_t nt) const {
-		
-		double z = replicating_Z(nt);
-		assert(z > 0);
-		double q = uniform()*z;
-		for(auto r: rules[nt]) {
-			if(r->replicating_children() > 0) {
-				q -= r->p;
-				if(q <= 0.0)
-					return r;					
-			}
-		}
-		
-		CERR "*** Normalizer error in nonterminal " << nt;
-		assert(0); // Something bad happened in rule probabilities
-	}
+//	
+//	virtual double replicating_Z(const nonterminal_t nt) const {
+//		// the normalizer for all replicating rules
+//		double z = 0.0;
+//		for(auto r: rules[nt]) {
+//			if(r->replicating_children() > 0) z += r->p;
+//		}
+//		return z;
+//	}
+//	
+//	
+//	virtual Rule* sample_replicating_rule(const nonterminal_t nt) const {
+//		
+//		double z = replicating_Z(nt);
+//		assert(z > 0);
+//		double q = uniform()*z;
+//		for(auto r: rules[nt]) {
+//			if(r->replicating_children() > 0) {
+//				q -= r->p;
+//				if(q <= 0.0)
+//					return r;					
+//			}
+//		}
+//		
+//		CERR "*** Normalizer error in nonterminal " << nt;
+//		assert(0); // Something bad happened in rule probabilities
+//	}
 
 	
 	
@@ -259,7 +263,7 @@ public:
 	}
 
 	template<typename T>
-	T* generate(const nonterminal_t nt, unsigned long depth=0) const {
+	T generate(const nonterminal_t nt, unsigned long depth=0) const {
 		// Sample a rule and generate from this grammar. This has a template to avoid a circular dependency
 		// and allow us to generate other kinds of things from rules if we want. 
 		// We use exceptions here just catch depth exceptions so we can easily get a trace of what
@@ -270,22 +274,22 @@ public:
 		}
 		
 		Rule* r = sample_rule(nt);
-		auto n = new T(r, log(r->p) - log(Z[nt])); // slightly inefficient because we compute this twice
+		T n(r, log(r->p) - log(Z[nt])); // slightly inefficient because we compute this twice
 		for(size_t i=0;i<r->N;i++) {
 			try{
-				n->child[i] = generate<T>(r->child_types[i], depth+1); // recurse down
+				n.child[i] = generate<T>(r->child_types[i], depth+1); // recurse down
 			} catch(DepthException& e) {
-				CERR "*** Grammar has recursed beyond MAX_DEPTH (Are the probabilities right?). nt=" << nt << " d=" << depth TAB n->string() ENDL;
+				CERR "*** Grammar has recursed beyond MAX_DEPTH (Are the probabilities right?). nt=" << nt << " d=" << depth TAB n.string() ENDL;
 				throw e;
 			}
 		}
 		return n;
 	}
 	
-	template<typename T>
-	T* make(const Rule* r) const {
-		return new T(r, log(r->p)-log(Z[r->nt]));
-	}
+//	template<typename T>
+//	T* make(const Rule* r) const {
+//		return new T(r, log(r->p)-log(Z[r->nt]));
+//	}
 	
 };
 

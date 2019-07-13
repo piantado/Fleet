@@ -22,13 +22,13 @@ public:
 };
 
 
-Polydeg get_polynomial_degree_rec(Node* n) {
+Polydeg get_polynomial_degree_rec(Node& n) {
 	
-	std::string fmt = n->rule->format;
+	std::string fmt = n.rule->format;
 	
     if(fmt == "(%s+%s)") {
-        Polydeg v1 = get_polynomial_degree_rec(n->child[0]); 
-        Polydeg v2 = get_polynomial_degree_rec(n->child[1]);
+        Polydeg v1 = get_polynomial_degree_rec(n.child[0]); 
+        Polydeg v2 = get_polynomial_degree_rec(n.child[1]);
 		if(v1.isnan() or v2.isnan()) return Polydeg(NaN,false); // doesn't matter whether its const or not
         else if(v1.is_const && v2.is_const) return Polydeg(v1.value+v2.value, true); // if both consts, then return their value
         else if (v1.is_const) return v2; // we can't let cosntants/nans interfere here
@@ -36,8 +36,8 @@ Polydeg get_polynomial_degree_rec(Node* n) {
         else return Polydeg(std::max(v1.value,v2.value), false);
     }
 	else if(fmt == "(%s-%s)") {
-        Polydeg v1 = get_polynomial_degree_rec(n->child[0]);
-        Polydeg v2 = get_polynomial_degree_rec(n->child[1]);
+        Polydeg v1 = get_polynomial_degree_rec(n.child[0]);
+        Polydeg v2 = get_polynomial_degree_rec(n.child[1]);
 		if(v1.isnan() or v2.isnan()) return Polydeg(NaN,false); 
         else if(v1.is_const && v2.is_const) return Polydeg(v1.value-v2.value, true); // if both consts, then return their value
         else if (v1.is_const) return v2;
@@ -45,8 +45,8 @@ Polydeg get_polynomial_degree_rec(Node* n) {
         else return Polydeg(std::max(v1.value,v2.value), false);
     }
     else if(fmt == "(%s*%s)") {
-        Polydeg v1 = get_polynomial_degree_rec(n->child[0]);
-        Polydeg v2 = get_polynomial_degree_rec(n->child[1]);
+        Polydeg v1 = get_polynomial_degree_rec(n.child[0]);
+        Polydeg v2 = get_polynomial_degree_rec(n.child[1]);
 		if(v1.isnan() or v2.isnan()) return Polydeg(NaN,false); 
         else if(v1.is_const && v2.is_const) return Polydeg(v1.value*v2.value,true); // if boths consts, then return their value
         else if(v1.is_const) return v2; // otherwise we ignore constants
@@ -54,8 +54,8 @@ Polydeg get_polynomial_degree_rec(Node* n) {
         else return Polydeg(v1.value+v2.value,false); // both are powers so they add
     }
     else if(fmt == "(%s/%s)") {
-        Polydeg v1 = get_polynomial_degree_rec(n->child[0]);
-        Polydeg v2 = get_polynomial_degree_rec(n->child[1]);
+        Polydeg v1 = get_polynomial_degree_rec(n.child[0]);
+        Polydeg v2 = get_polynomial_degree_rec(n.child[1]);
 		if(v1.isnan() or v2.isnan()) return Polydeg(NaN,false); 
         else if(v1.is_const && v2.is_const) return Polydeg(v1.value/v2.value,true); // if boths consts, then return their value
         else if(v1.is_const) return Polydeg(-v2.value, false); // negative powers
@@ -63,8 +63,8 @@ Polydeg get_polynomial_degree_rec(Node* n) {
         return Polydeg(NaN,true); //NOTE then (x...)/(x...) isn't a polynomial
     }
     else if(fmt == "(%s^%s)") {
-        Polydeg v1 = get_polynomial_degree_rec(n->child[0]);
-        Polydeg v2 = get_polynomial_degree_rec(n->child[1]);
+        Polydeg v1 = get_polynomial_degree_rec(n.child[0]);
+        Polydeg v2 = get_polynomial_degree_rec(n.child[1]);
 		if(v1.isnan() or v2.isnan()) return Polydeg(NaN,false); 
         else if(v1.is_const && v2.is_const) return Polydeg(pow(v1.value,v2.value),true); // if both constants, take their power
         else if(v1.is_const) return Polydeg(NaN,false); // 2.3 ^ x -- not a polynomial
@@ -72,7 +72,7 @@ Polydeg get_polynomial_degree_rec(Node* n) {
         return Polydeg(NaN,false); // both are exponents but not a polynomial so forget it
     }
     else if(fmt == "(- %s)") {
-        Polydeg v1 = get_polynomial_degree_rec(n->child[0]);
+        Polydeg v1 = get_polynomial_degree_rec(n.child[0]);
 		if(v1.isnan()) return Polydeg(NaN,false); 
 		else if(v1.is_const) return Polydeg(-v1.value, true);
 		else            return v1;
@@ -87,13 +87,13 @@ Polydeg get_polynomial_degree_rec(Node* n) {
         return Polydeg(1.0, true);
     }
 	else if(fmt == "log(%s)") { 
-        Polydeg v1 = get_polynomial_degree_rec(n->child[0]);
+        Polydeg v1 = get_polynomial_degree_rec(n.child[0]);
         if(v1.isnan()) return Polydeg(NaN,false); 
 		else if(v1.is_const) return Polydeg(log(v1.value), true); // handles cases like x^exp(3)
         else            return Polydeg(NaN,false);
     }
 	else if(fmt == "exp(%s)") { 
-        Polydeg v1 = get_polynomial_degree_rec(n->child[0]);
+        Polydeg v1 = get_polynomial_degree_rec(n.child[0]);
 		if(v1.isnan()) return Polydeg(NaN,false); 
 		else if(v1.is_const) return Polydeg(exp(v1.value), true);
         else            return Polydeg(NaN,false);
@@ -103,7 +103,7 @@ Polydeg get_polynomial_degree_rec(Node* n) {
 	}
 }
 
-double get_polynomial_degree(Node* n) {
+double get_polynomial_degree(Node& n) {
     Polydeg r = get_polynomial_degree_rec(n);
 	if(r.isnan()) return NaN;
 	else          return (r.is_const ? 0.0 : r.value);

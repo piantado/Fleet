@@ -1,5 +1,25 @@
 #pragma once
 
+
+
+
+
+//
+//
+//TODO: We shuold be making this one NOT have pointers for value, but rather
+//      store the value
+//
+//
+//
+
+
+
+
+
+
+
+
+
 #include <string.h>
 #include "Proposers.h"
 
@@ -19,73 +39,55 @@ public:
 	typedef typename MCMCable<HYP,t_input,t_output,_t_datum>::t_datum t_datum;
 	
 	Grammar* grammar;
-	T* value;
+	T value;
 
-	LOTHypothesis(Grammar* g, T* x) : grammar(g) {
-		set_value(x);
-	}
-
-	// create via sampling
-	LOTHypothesis(Grammar* g) : grammar(g) {
-		set_value(grammar->generate<T>(nt));
-	}
+	LOTHypothesis(Grammar* g=nullptr)  : grammar(g), value(NullRule<nt>,0.0,true) {}
+	LOTHypothesis(Grammar* g, T&& x)   : grammar(g), value(x) {}
+	LOTHypothesis(Grammar* g, T x)     : grammar(g), value(x) {}
 
 	// parse this from a string
 	LOTHypothesis(Grammar* g, std::string s) : grammar(g) {
-		set_value(grammar->expand_from_names<Node>(s));
+		value = grammar->expand_from_names<Node>(s);
 	}
 
 	// copy constructor
 	LOTHypothesis(const LOTHypothesis& h) : MCMCable<HYP,t_input,t_output,t_datum>(h),
-		grammar(h.grammar) { // prior, likelihood, etc. should get copied 
-		set_value(h.value==nullptr?nullptr:h.value->copy());
+		grammar(h.grammar), value(h.value) { // prior, likelihood, etc. should get copied 
+	}
+
+	LOTHypothesis(LOTHypothesis&& h) {
+		// move operator takes over 
+		grammar = h.grammar;
+		value = std::move(h.value);
 	}
 	
-	LOTHypothesis(LOTHypothesis&& h)=delete;
+	void operator=(const LOTHypothesis& h) {
+		MCMCable<HYP,t_input,t_output,t_datum>::operator=(h);
+		grammar = h.grammar;
+		value = h.value;
+	}
+	void operator=(LOTHypothesis&& h) {
+		MCMCable<HYP,t_input,t_output,t_datum>::operator=(h);
+		grammar = h.grammar;
+		value = std::move(h.value);
+	}
 	
 	virtual ~LOTHypothesis() {
-		delete value;
-		// don't delete grammar -- we don't own that. 
+		// don't delete anything
 	}
-	
-	virtual void set_value(T* x) final { // can't be virtual since its in the constructor
-		value = x;
-	}
-	
-	
-	HYP* copy() const {
-		// create a copy
-		HYP* x = new HYP(grammar, nullptr);
-		if(value != nullptr) x->set_value(value->copy());
 		
-		x->prior      = this->prior;
-		x->likelihood = this->likelihood;
-		x->posterior  = this->posterior;
-		
-		return x; 
-	}
 	
 	// Stuff to create hypotheses:
-	virtual std::pair<HYP*,double> propose() const {
+	virtual std::pair<HYP,double> propose() const {
 		// tODO: Check how I do fb here?
 		
-		HYP* ret = new HYP(grammar, nullptr);
-		
-		if(value == nullptr) {
-			ret->set_value(grammar->generate<Node>(nt)); // really unclear what backward should be here. 
-			return std::make_pair(ret, 0.0);
-		}
-		
-		double fb = 0.0; 
-
 		// simplest way of doing proposals
 		auto x = regeneration_proposal(grammar, value);	
-		ret->set_value(x.first); // please use setters -- needed for stuff like symbolicRegression
-		fb = x.second;
-	
+		return std::make_pair(HYP(this->grammar, x.first), x.second); // return HYP and fb
 		
 		// Just do regeneration proposals -- but require them to be unique 
 		// so we can more easily count accept/reject
+		/// Nooo I think we can't do this and keep detailed balance...
 //		while(!CTRL_C) {
 //			auto x = regeneration_proposal(grammar, value);	
 //			
@@ -127,30 +129,27 @@ public:
 //			}
 //		}
 		
-		return std::make_pair(ret, fb);
+//		return std::make_pair(ret, fb);
 	}
 	
 
 	
-	virtual HYP* restart() const {
+	virtual HYP restart() const {
 		// This is used in MCMC to restart chains 
 		// this ordinarily would be a resample from the grammar, but sometimes we have can_resample=false
 		// and in that case we want to leave the non-propose nodes alone. So her
 
-		if(value == nullptr || value->can_resample) {
-			// just sample from the prior if the root is like this
-			return new HYP(grammar);
+		if(!value.isnull()) { // if we are null
+			return HYP(grammar, value.copy_resample(grammar, [](const Node& n) { return n.can_resample; }));
 		}
 		else {
-			// recurse through the tree and replace anything that we can propose to
-			Node* n = value->copy_resample(*grammar, [](const Node* n) { return n->can_resample; }); 
-			return new HYP(grammar, n);
+			return HYP(grammar, grammar->generate<T>(nt));
 		}
-		
 	}
 	
 	virtual double compute_prior() {
-		this->prior = grammar->log_probability(value);
+		assert(grammar != nullptr && "Grammar was not initialized before trying to call compute_prior");
+		this->prior = grammar->log_probability<T>(value);
 		return this->prior;
 	}
 	
@@ -161,22 +160,20 @@ public:
 
 	virtual void push_program(Program& s, short k=0) {
 		assert(k==0); // this is only for lexica
-		assert(value != nullptr);
 		
-		value->linearize(s);
+		value.linearize(s);
 	}
 
 
 	// we defaultly map outputs to log probabilities
 	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err, Dispatchable<t_input,t_output>* loader, 
 				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
-		assert(value != nullptr);
 		
 		VirtualMachinePool<t_input,t_output> pool(max_steps, max_outputs, minlp);
 
-		VirtualMachineState<t_input,t_output>* vms = new VirtualMachineState<t_input,t_output>(x, err);
+		VirtualMachineState<t_input,t_output> vms(x, err);
 		
-		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
+		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
 		
 		pool.push(vms); // add vms to the pool
 		
@@ -188,27 +185,7 @@ public:
 	auto operator()(const t_input x, const t_output err){ // just fancy syntax for call
 		return call(x,err);
 	}
-	
-//	virtual t_output callOne(const t_input x, const t_output err) {
-//		// wrapper for when we have only one output
-//		auto v = call(x,err);
-//		
-//		if(v.size() == 0)  // if we get nothing, silently treat that as "err"
-//			return err;
-//			
-//		if(v.size() > 1) { // complain if you got too much output -- this should not happen
-//			CERR "Error in callOne  -- multiple outputs received" ENDL;
-////			for(auto x: v.values()) {
-////				CERR "***" TAB x.first TAB x.second ENDL;
-////			}
-//			assert(false); // should not get this		
-//		}
-//		for(auto a : v.values()){
-//			return a.first;
-//		}
-//		assert(0);
-//	}
-//	
+
 	virtual t_output callOne(const t_input x, const t_output err) {
 		// slightly different implementation if we just have one output -- prevents us 
 		// from having to require the returntypes to be sortable (as they would need to be
@@ -233,39 +210,33 @@ public:
 	
 
 	virtual std::string string() const {
-		return std::string("\u03BBx.") + (value==nullptr ? Node::nulldisplay : value->string());
-//		return std::string("Lx.") + (value==nullptr ? Node::nulldisplay : value->string());
+		return std::string("\u03BBx.") + value.string();
 	}
 	virtual std::string parseable(std::string delim=":") const { 
-		return (value==nullptr ? Node::nulldisplay : value->parseable(delim)); 
+		return value.parseable(delim); 
 	}
 	virtual size_t hash() const {
-		return value->hash();
+		return value.hash();
 	}
 	
 	virtual bool operator==(const LOTHypothesis<HYP,T,nt,t_input,t_output,t_datum>& h) const {
-		return *this->value == *h.value;
+		return this->value == h.value;
 	}
 	
-	virtual abort_t dispatch_rule(Instruction i, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms,  Dispatchable<t_input, t_output>* loader )=0;
+	virtual abort_t dispatch_rule(Instruction i, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>& vms,  Dispatchable<t_input, t_output>* loader )=0;
 
 	
-	virtual HYP* copy_and_complete() const {
+	virtual HYP copy_and_complete() const {
 		// make a copy and fill in the missing nodes.
 		// NOTE: here we set all of the above nodes to NOT resample
 		// TODO: That part should go somewhere else eventually I think?
-		HYP* h = copy();
-		h->prior=0.0;h->likelihood=0.0;h->posterior=0.0; // reset these just in case
-		if(h->value == nullptr) {
-			h->set_value(grammar->generate<Node>(nt));
-		}
-		else {
-			const std::function<void(Node*)> myf =  [](Node* n){n->can_resample=false;};
-			h->value->map(myf);
-			auto t = h->value;
-			t->complete(*grammar);
-			h->set_value(t); // must call set once its changed
-		}
+		HYP h(grammar, value);
+		h.prior=0.0;h.likelihood=0.0;h.posterior=0.0; // reset these just in case
+		
+		const std::function<void(Node&)> myf =  [](Node& n){n.can_resample=false;};
+		h.value.map(myf);
+		h.value.complete(*grammar);
+
 		return h;
 	}
 
@@ -276,41 +247,40 @@ public:
 	 // The main complication with these is that they handle nullptr 
 	 
 	virtual int neighbors() const {
-		if(value == nullptr) { // if the value is null, our neighbors is the number of ways we can do nt
-			return grammar->count_expansions(nt);
-		}
-		else {
-//			return value->neighbors(*grammar);
+//		if(value == nullptr) { // if the value is null, our neighbors is the number of ways we can do nt
+//			return grammar->count_expansions(nt);
+//		}
+//		else {
+//			return value.neighbors(*grammar);
 			// to rein in the mcts branching factor, we'll count neighbors as just the first unfilled gap
 			// we should not need to change make_neighbor since it fills in the first, first
-			return value->first_neighbors(*grammar);
-		}
+			return value.first_neighbors(*grammar);
+//		}
 	}
 
-	virtual HYP* make_neighbor(int k) const {
-		HYP* h = new HYP(grammar, nullptr); // new hypothesis
-		if(value == nullptr) {
-			assert(k >= 0);
-			assert(k < (int)grammar->count_expansions(nt));
-			auto r = grammar->get_expansion(nt,k);
-			h->set_value(grammar->make<Node>(r));
-		}
-		else {
-			auto t = value->copy();
-			t->expand_to_neighbor(*grammar,k);
-			h->set_value(t);
-		}
-		return h;
+	virtual HYP make_neighbor(int k) const {
+//		HYP h(grammar); // new hypothesis
+////		if(value == nullptr) {
+////			assert(k >= 0);
+////			assert(k < (int)grammar->count_expansions(nt));
+////			auto r = grammar->get_expansion(nt,k);
+////			h.value = std::unique_ptr<T>(grammar->make<Node>(r));
+////		}
+////		else {
+//			T t = value;
+//			h.value = t.expand_to_neighbor(*grammar,k);
+////		}
+//		return h;
 	}
 	virtual bool is_evaluable() const {
 		// This checks whether it should be allowed to call "call" on this hypothesis. 
 		// Usually this means that that the value is complete, meaning no partial subtrees
-		return value != nullptr && value->is_evaluable();
+		return value.is_evaluable();
 	}
 
 //
 //	virtual std::string serialize() const {
-//		return std::to_string(this->prior) + SERIALIZATION_SEPERATOR + std::to_string(this->likelihood) + SERIALIZATION_SEPERATOR + this->value->parseable();
+//		return std::to_string(this->prior) + SERIALIZATION_SEPERATOR + std::to_string(this->likelihood) + SERIALIZATION_SEPERATOR + this->value.parseable();
 //	}
 //	
 //	virtual void deserialize(const std::string s) {	

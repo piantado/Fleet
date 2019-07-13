@@ -13,7 +13,7 @@ class Dispatchable {
 public:
 	// A dispatchable class is one that implements the dispatch rule we need in order to call/evaluate.
 	// This is the interface that a Hypothesis requires
-	virtual abort_t dispatch_rule(Instruction i, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms,
+	virtual abort_t dispatch_rule(Instruction i, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>& vms,
                                   Dispatchable<t_input,t_output>* loader )=0;
 	
 	// This loads a program into the stack. Short is passed here in case we have a factorized lexicon,
@@ -51,7 +51,19 @@ public:
 	
 	Bayesable(const Bayesable& b) : prior(b.prior), likelihood(b.likelihood), posterior(b.posterior) {
 	}
-
+	void operator=(const Bayesable& b) {
+		prior = b.prior;
+		likelihood = b.likelihood;
+		posterior = b.posterior;
+		born = b.born;
+	}
+	void operator=(const Bayesable&& b) {
+		prior = b.prior;
+		likelihood = b.likelihood;
+		posterior = b.posterior;
+		born = b.born;
+	}
+	
 	virtual void clear_bayes() {
 		// necessary for inserting into big collections not by prior
 		prior = 0.0;
@@ -131,13 +143,19 @@ public:
 		
 	}
 
-	MCMCable(const MCMCable<HYP,t_input,t_output,_t_datum>& h) : Bayesable<t_input,t_output,_t_datum>(h) {// don't copy FB
-		
+	MCMCable(const MCMCable<HYP,t_input,t_output,_t_datum>& h) : Bayesable<t_input,t_output,_t_datum>(h) {}
+	MCMCable(const MCMCable<HYP,t_input,t_output,_t_datum>&& h) : Bayesable<t_input,t_output,_t_datum>(h) {}
+
+	void operator=(const MCMCable<HYP,t_input,t_output,_t_datum>& h) {
+		Bayesable<t_input,t_output,_t_datum>::operator=(h);
+	}
+	void operator=(const MCMCable<HYP,t_input,t_output,_t_datum>&& h) {
+		Bayesable<t_input,t_output,_t_datum>::operator=(h);
 	}
 
-	virtual HYP*                      copy() const = 0;
-	virtual std::pair<HYP*,double> propose() const = 0; // return a proposal and its forward-backward probs
-	virtual HYP*                   restart() const = 0; // restart a new chain -- typically by sampling from the prior 
+
+	virtual std::pair<HYP,double> propose() const = 0; // return a proposal and its forward-backward probs
+	virtual HYP                   restart() const = 0; // restart a new chain -- typically by sampling from the prior 
 };
 
 
@@ -147,7 +165,7 @@ template<typename HYP, typename t_input, typename t_output>
 class Searchable {
 public:
 	virtual int  neighbors() const = 0; // how many neighbors do I have?
-	virtual HYP* make_neighbor(int k) const = 0; // not const since its modified
+	virtual HYP  make_neighbor(int k) const = 0; // not const since its modified
 	virtual bool is_evaluable() const = 0; // can I call this hypothesis? Note it might still have neighbors (a in factorized lexica)
 	// NOTE: here there is both neighbors() and can_evaluate becaucse it's possible that I can evaluate something
 	// that has neghbors but also can be evaluated

@@ -11,7 +11,7 @@ public:
 	std::atomic<size_t> history_size;
 	std::atomic<size_t> history_index;
 	std::atomic<unsigned long> N;
-	std::mutex mutex;
+	mutable std::mutex mutex;
 	
 	FiniteHistory(size_t n) : history_size(n), history_index(0), N(0) {
 		
@@ -20,6 +20,38 @@ public:
 	// default size
 	FiniteHistory() : history_size(100), history_index(0), N(0) { 
 	}
+	
+	FiniteHistory(const FiniteHistory &fh) {
+		history = fh.history;
+		history_size = (size_t)fh.history_size;
+		history_index = (size_t)fh.history_index;
+		N = (unsigned long)fh.N;
+	}
+	
+	FiniteHistory(FiniteHistory&& fh) {
+		history = std::move(fh.history);
+		history_size = (size_t)fh.history_size;
+		history_index = (size_t)fh.history_index;
+		N = (unsigned long)fh.N;
+	}
+	
+	
+	void operator=(const FiniteHistory &fh) {
+		history = fh.history;
+		history_size = (size_t)fh.history_size;
+		history_index = (size_t)fh.history_index;
+		N = (unsigned long)fh.N;
+	}
+	
+	void operator=(FiniteHistory&& fh) {
+		history = std::move(fh.history);
+		history_size = (size_t)fh.history_size;
+		history_index = (size_t)fh.history_index;
+		N = (unsigned long)fh.N;
+	}
+	
+	
+	
 	
 	void add(T x) {
 		std::lock_guard guard(mutex);

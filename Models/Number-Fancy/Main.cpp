@@ -30,10 +30,9 @@ std::vector<Model::magnitude> MAGNITUDES = {1,2,3,4,5,6,7,8,9,10};
 #include <random>
 std::discrete_distribution<> number_distribution({0, 7187, 1484, 593, 334, 297, 165, 151, 86, 105, 112}); // 0-indexed
 	
-std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400};//, 500, 600, 700, 800, 900, 1000};
-//std::vector<int> data_amounts = {100};
+//std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400};//, 500, 600, 700, 800, 900, 1000};
+std::vector<int> data_amounts = {100};
 
-const size_t MAX_NODES = 50;
 double recursion_penalty = -50.0;
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
@@ -106,28 +105,23 @@ public:
  * regeneration proposals, but I have to define a likelihood */
 class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word> {
 public:
-	
-	// I must implement all of these constructors
+	MyHypothesis(Grammar* g, Node v)    : LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word>(g,v) {}
 	MyHypothesis(Grammar* g)            : LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word>(g) {}
-	MyHypothesis(Grammar* g, Node* v)   : LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word>(g,v) {}
+	MyHypothesis()                      : LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word>() {}
 	
 	size_t recursion_count() {
 		// how many times do I use recursion?
-		std::function<size_t(const Node*)> f = [](const Node* n) { 
-			return (size_t)1*(n->rule->instr.is_a(BuiltinOp::op_RECURSE)); 
+		std::function<size_t(const Node&)> f = [](const Node& n) { 
+			return (size_t)1*(n.rule->instr.is_a(BuiltinOp::op_RECURSE)); 
 		};
-		return value->sum<size_t>(f);
+		return value.sum<size_t>(f);
 	}
 	
 	
 	double compute_prior() {
-		if(value->count() > MAX_NODES) 
-			prior = -infinity;
-		else 
-			prior = LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word>::compute_prior();
-			
 		// include recusion penalty
-		prior += ( recursion_count() > 0 ? recursion_penalty : log(1.0-exp(recursion_penalty))); 
+		prior = LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word>::compute_prior() +
+		       (recursion_count() > 0 ? recursion_penalty : log(1.0-exp(recursion_penalty))); 
 		
 		return prior;
 	}
@@ -142,7 +136,7 @@ public:
 		return log( pU*(1.0/10.0) + (1.0-d.reliability)/10.0 + d.reliability*pTarget );
 	}	
 
-	abort_t dispatch_rule(Instruction i,  VirtualMachinePool<Model::X, Model::word>* pool, VirtualMachineState<Model::X, Model::word>* vms, Dispatchable<Model::X, Model::word>* loader) {
+	abort_t dispatch_rule(Instruction i,  VirtualMachinePool<Model::X, Model::word>* pool, VirtualMachineState<Model::X, Model::word>& vms, Dispatchable<Model::X, Model::word>* loader) {
 		/* Dispatch the functions that I have defined. Returns true on success. 
 		 * Note that errors might return from this 
 		 * */
@@ -231,19 +225,19 @@ void print(MyHypothesis& h) {
 	print(h, std::string(""));
 }
 
-void callback(MyHypothesis* h) {
+void callback(MyHypothesis& h) {
 	
 	// let's print each time we find a new best
-	if(h->posterior > top.best_score())
-		print(*h, "#TOP\t"); 
+	if(h.posterior > top.best_score())
+		print(h, "#TOP\t"); 
 	
-	top << *h; 
+	top << h; 
 	
 	FleetStatistics::global_sample_count++;
 	
 	// print out with thinning
 	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) 
-		print(*h);
+		print(h);
 }
 
 
@@ -331,7 +325,7 @@ int main(int argc, char** argv){
 //		h0->compute_posterior(mydata);
 //		callback(h0);
 		
-		auto h0 = new MyHypothesis(&grammar);
+		MyHypothesis h0(&grammar);
 		ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);
 		tic();
 		samp.run(mcmc_steps, runtime, 200, 3000); //30000);		
