@@ -14,16 +14,16 @@
 template<class T>
 class TopN {
 	
+	mutable std::mutex lock;
+	
 protected:
 	std::map<T,unsigned long> cnt; // also let's count how many times we've seen each for easy debugging
-	mutable std::mutex lock;
-	size_t N;
 	std::multiset<T> s; // important that it stores in sorted order by posterior! Multiset because we may have multiple samples that are "equal" (as in SymbolicRegression)
 	
 public:
-
-	TopN(size_t n=std::numeric_limits<size_t>::max(), bool np=false) : N(n) {
-	}
+	size_t N;
+	
+	TopN(size_t n=std::numeric_limits<size_t>::max()) : N(n) {}
 	
 	TopN(const TopN<T>& x) {
 		clear();
@@ -32,18 +32,18 @@ public:
 	}
 	TopN(TopN<T>&& x) {
 		cnt = std::move(x.cnt);
-		N = x.N;
+		set_size(x.size());
 		s = std::move(x.s);
 	}
 	
 	void operator=(const TopN<T>& x) {
 		clear();
-		set_size(x.size());
+		set_size(x.N);
 		add(x);
 	}
 	void operator=(TopN<T>&& x) {
+		set_size(x.N);
 		cnt = std::move(x.cnt);
-		N = x.N;
 		s = std::move(x.s);
 	}
 	
@@ -60,8 +60,8 @@ public:
 		return s;
 	}
 
-	void add(const T x) { 
-		// add something of type x if we should. 
+	void add(const T& x) { 
+		// add something of type x if we should - only makes a copy if we add it
 		
 		// toss out infs
 		if(std::isnan(x.posterior) || x.posterior == -infinity) return;
@@ -71,10 +71,11 @@ public:
 		// if we aren't in there and our posterior is better than the worst
 		if(s.find(x) == s.end()) { 
 			if(s.size() < N || s.empty() || x.posterior > s.begin()->posterior) { // skip adding if its the worst
+				T xcpy = x;
 			
-				s.insert(x); // add this one
-				assert(cnt.find(x) == cnt.end());
-				cnt[x] = 1;
+				s.insert(xcpy); // add this one
+				assert(cnt.find(xcpy) == cnt.end());
+				cnt[xcpy] = 1;
 				
 				// and remove until we are the right size
 				while(s.size() > N) {
@@ -82,18 +83,19 @@ public:
 					assert(n==1);
 					s.erase(s.begin()); 
 				}
+				
 			}
 		}
 		else { // if its stored somewhere already
 			cnt[x]++;
 		}
 	}
-	void operator<<(const T x) {
+	void operator<<(const T& x) {
 		add(x);
 	}
 	
 	void add(const TopN<T>& x) { // add from a whole other topN
-		for(auto h: x.s){
+		for(auto& h: x.s){
 			add(h);
 		}
 	}
@@ -111,10 +113,12 @@ public:
 	}
 	
 	double best_score() {
+		std::lock_guard guard(lock);
 		if(s.empty()) return -infinity;
 		return s.rbegin()->posterior;  
 	}
 	double worst_score() {
+		std::lock_guard guard(lock);
 		if(s.empty()) return infinity;
 		return s.begin()->posterior;  
 	}
