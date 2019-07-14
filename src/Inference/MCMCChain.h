@@ -31,13 +31,13 @@ public:
 	FiniteHistory<bool> history;
 	
 	MCMCChain(HYP& h0, typename HYP::t_data* d, void(*cb)(HYP&) ) : 
-			current(h0), data(d), themax(nullptr), callback(cb), restart(mcmc_restart), 
+			current(h0), data(d), themax(), callback(cb), restart(mcmc_restart), 
 			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 	}
 	
 	MCMCChain(HYP&& h0, typename HYP::t_data* d, void(*cb)(HYP&) ) : 
-			current(std::move(h0)), data(d), themax(nullptr), callback(cb), restart(mcmc_restart), 
+			current(std::move(h0)), data(d), themax(), callback(cb), restart(mcmc_restart), 
 			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 	}

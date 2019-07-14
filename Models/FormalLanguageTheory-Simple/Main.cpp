@@ -161,7 +161,7 @@ int main(int argc, char** argv){
 	using namespace std;
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	FLEET_DECLARE_GLOBAL_ARGS()
+	auto app = Fleet::DefaultArguments();
 	app.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
 	app.add_option("-d,--data", datastr, "Comma separated list of input data strings");	
 	CLI11_PARSE(app, argc, argv);

@@ -25,9 +25,7 @@ public:
 	VirtualMachinePool(unsigned long ms=2048, unsigned long mo=256, double mlp=-20) 
 					   : max_steps(ms), max_outputs(mo), min_lp(mlp) {
 	}
-	
-	virtual ~VirtualMachinePool() {	}
-	
+		
 	bool wouldIadd(double lp) {
 		// returns true if I would add something with this lp, given my max_steps and the stack
 		return lp >= min_lp && (Q.size() < max_steps || lp > worst_lp);
@@ -36,8 +34,7 @@ public:
 	void push(VirtualMachineState<t_x,t_return>& o) { 
 		//CERR "POOL PUSHING " TAB &o ENDL;
 		if(wouldIadd(o.lp)){ // TODO: might be able to add an optimization here that doesn't push if we don't have enough steps left to get it 
-			Q.push(o);
-			
+			Q.push(o);			
 			worst_lp = MIN(worst_lp, o.lp); //keep track of the worst we've seen
 		}
 	}
@@ -67,7 +64,7 @@ public:
 		size_t steps = 0;
 		while(steps < max_steps && out.size() < max_outputs && !Q.empty()) {
 
-			VirtualMachineState<t_x,t_return> vms = Q.top(); Q.pop();
+			VirtualMachineState<t_x,t_return> vms = std::move(Q.top()); Q.pop();
 			assert(vms.lp >= min_lp);
 			
 			steps++;

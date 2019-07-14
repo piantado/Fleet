@@ -42,7 +42,7 @@ enum class CustomOp { // NOTE: The type here MUST match the width in bitfield or
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
-size_t maxlength = 512; // max string length, else throw an error (128+ needed for count)
+size_t maxlength = 256; // max string length, else throw an error (128+ needed for count)
 size_t nfactors = 2; // how may factors do we run on?
 S alphabet="nvadt";
 const size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite so we won't see some stuff
@@ -189,8 +189,9 @@ class MyHypothesis : public Lexicon<MyHypothesis, InnerHypothesis, S, S> {
 public:	
 	static constexpr double alpha = 0.99;
 	
-	MyHypothesis(Grammar* g) : Lexicon<MyHypothesis,InnerHypothesis,S,S>(g) {}
 	MyHypothesis()           : Lexicon<MyHypothesis,InnerHypothesis,S,S>()   {}
+
+	MyHypothesis(const MyHypothesis& h)           : Lexicon<MyHypothesis,InnerHypothesis,S,S>(h)  {}
 
 	virtual double compute_prior() {
 		// since we aren't searching over nodes, we are going to enforce a prior that requires
@@ -328,7 +329,7 @@ MyGrammar grammar;
  
 void print(MyHypothesis& h, std::string prefix) {
 	std::lock_guard guard(output_lock);
-		
+	
 	auto o = h.call(S(""), S("<err>"));
 	COUT "#\n";
 	COUT prefix << "# ";
@@ -343,10 +344,11 @@ void print(MyHypothesis& h) {
 }
 
 void callback(MyHypothesis& h) {
-	
+
 	// print the next max
-	//if(h->posterior > top.best_score())
-	//	print(*h, std::string("#### "));
+	if(h.posterior > top.best_score()) {
+		print(h, std::string("#### "));
+	}
 	
 	top << h; 
 	
@@ -365,10 +367,7 @@ void callback(MyHypothesis& h) {
 int main(int argc, char** argv){ 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	FLEET_DECLARE_GLOBAL_ARGS()
-
-	// and my own args
-//	app.add_option("-S,--mcts-scoring",  mcts_scoring, "How to score MCTS?");
+	auto app = Fleet::DefaultArguments();
 	app.add_option("-N,--nfactors",      nfactors, "How many factors do we run on?");
 	app.add_option("-L,--maxlength",     maxlength, "Max allowed string length");
 	app.add_option("-A,--alphabet",  alphabet, "The alphabet of characters to use");
@@ -394,7 +393,7 @@ int main(int argc, char** argv){
 	}
 	
 	// we'll maintain h0 across 
-	MyHypothesis h0(&grammar); 
+	MyHypothesis h0; 
 	for(size_t fi=0;fi<nfactors;fi++) {// start with the right number of factors
 		InnerHypothesis f(&grammar);
 		h0.factors.push_back(f.restart());
@@ -406,31 +405,28 @@ int main(int argc, char** argv){
 	tic();
 	for(auto da : data_amounts) {
 		current_data = da; // set this global variable so we can print it correctly.
-		
-		S data_path = input_path + "-" + da + ".txt";
-		
+		S data_path = input_path + "-" + da + ".txt";	
 		load_data_file(mydata, data_path.c_str());
-	
+		
 		// update top for the new data file
 		TopN<MyHypothesis> newtop;
-		newtop.set_size(ntop);
-		
 		for(auto h : top.values()) {
 			h.compute_posterior(mydata); // update the posterior to the new data amount
 			newtop << h;
 		}
-		top = newtop; // take over the new top
+		top = std::move(newtop); // take over the new top
 		
 		// update our parallel tempering pool
 		for(auto& c: samp.pool) {
 			c.getCurrent().compute_posterior(mydata);
 			c.data = &mydata;
 		}
-		
+	
 		// run for real		
 		samp.run(mcmc_steps, runtime, 1000, 30000);		
-				
 		top.print(print);		
+	
+				
 	}
 	tic();
 	

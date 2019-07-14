@@ -1,5 +1,6 @@
 #pragma once 
 
+#include "Numerics.h"
 #include "EigenNumerics.h"
 
 class GrammarHypothesis {
@@ -74,7 +75,7 @@ public:
 			
 			double z = -infinity;
 			for(size_t i=0;i<nrules;i++) {
-				z = logplusexp(z, x(offset+i));
+				z = logplusexp<double>(z, x(offset+i));
 			}
 			for(size_t i=0;i<nrules;i++) {
 				x(offset+i) = x(offset+i)-z;
@@ -98,7 +99,7 @@ public:
 //		}
 		
 		size_t k = myrandom(x.size());
-		for(size_t i=0;i<x.size();i++) {
+		for(int i=0;i<x.size();i++) {
 			if(i==k) out.getX()(i) = x(i) + 0.1*norm(rng);
 			else     out.getX()(i) = x(i);
 		}

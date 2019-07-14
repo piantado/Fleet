@@ -19,43 +19,46 @@ public:
 	bool         can_resample;
 	
 	Node(const Rule* r=nullptr, double _lp=0.0, bool cr=true) : 
-		child(r==nullptr ? 0 : r->N), rule(r), lp(_lp), can_resample(cr) {	
-		if(r==nullptr) r = NullRule<(nonterminal_t)0>; // just a default, empty rule (constant)	
+		child(r==nullptr ? 0 : r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
 	}
-	Node(const Node& n)  : child(n.rule->N) {
-		child = n.child;
-		rule = n.rule;
-		lp = n.lp;
-		can_resample = n.can_resample;	
-	}
-	Node(Node&& n) {
-		child = std::move(n.child); // TODO: is this right?
-		rule = n.rule;
-		lp = n.lp;
-		can_resample = n.can_resample;	
-	}
-	~Node() {};
-	
-	void operator=(const Node& n) {
-		child = n.child;
-		rule = n.rule;
-		lp = n.lp;
-		can_resample = n.can_resample;	
-	}
-	void operator=(const Node&& n) {
-		child.resize(n.child.size());
-		child = std::move(n.child);
-		rule = n.rule;
-		lp = n.lp;
-		can_resample = n.can_resample;	
-	}
-	
+//	Node(const Node& n)  : child(n.rule->N) {
+//		child = n.child;
+//		rule = n.rule;
+//		lp = n.lp;
+//		can_resample = n.can_resample;	
+//	}
+//	Node(Node&& n) {
+//		child = std::move(n.child); // TODO: is this right?
+//		rule = n.rule;
+//		lp = n.lp;
+//		can_resample = n.can_resample;	
+//	}
+//	~Node() {};
+//	
+//	void operator=(const Node& n) {
+//		child = n.child;
+//		rule = n.rule;
+//		lp = n.lp;
+//		can_resample = n.can_resample;	
+//	}
+//	void operator=(const Node&& n) {
+//		child.resize(n.child.size());
+//		child = std::move(n.child);
+//		rule = n.rule;
+//		lp = n.lp;
+//		can_resample = n.can_resample;	
+//	}
 	
 	
-	bool isnull() const { // a null node has no children
-		return child.size() == 0;
-	}
 	
+//	bool isnull() const { // a null node has no children
+//		return child.size() == 0;
+//	}
+//	
+	bool is_null() const { // am I the null rule?
+		return rule == NullRule;
+	}
+
 	template<typename T>
 	T sum(std::function<T(const Node&)>& f ) const {
 		T s = f(*this);
@@ -114,8 +117,10 @@ public:
 	}
 
 	virtual bool is_evaluable() const {
+		
 		// does this have any subnodes below that are null?
 		for(auto& c: child) {
+			if(c.is_null()) return false; 
 			if(not c.is_evaluable()) return false;
 		}
 		return child.size() == rule->N; // must have all my kids
@@ -257,7 +262,7 @@ public:
 		
 		// and just a little checking here
 		for(size_t i=0;i<rule->N;i++) {
-//			assert(child[i] != nullptr && "Cannot linearize a Node with null children");
+			assert(not child[i].is_null() && "Cannot linearize a Node with null children");
 			assert(child[i].rule->nt == rule->child_types[i] && "Somehow the child has incorrect types"); // make sure my kids types are what they should be
 		}
 		
@@ -336,64 +341,65 @@ public:
 	 ********************************************************/
 
 	
-	virtual size_t neighbors(const Grammar& g) const {
+	virtual size_t neighbors(const Grammar* g) const {
 		// How many neighbors do I have? We have to find every gap (nullptr child) and count the ways to expand each
-//		size_t n=0;
-//		for(size_t i=0;i<rule->N;i++){
-//			n += (child[i] == nullptr ? g.count_expansions(rule->child_types[i]) : child[i]->neighbors(g) );
-//		}
-//		return n;
-		assert(0);
+		size_t n=0;
+		for(size_t i=0;i<rule->N;i++){
+			if(child[i].is_null()) {
+				return g->count_expansions(rule->child_types[i]); // NOTE: must use rule->child_types since child[i]->rule->nt is always 0 for NullRules
+			}
+			else {
+				return child[i].neighbors(g);
+			}
+		}
+		return n;
 	}
 	
-	virtual size_t first_neighbors(const Grammar& g) const {
+	virtual size_t first_neighbors(const Grammar* g) const {
 		// How many neighbors does my first gap have?
-//		for(size_t i=0;i<rule->N;i++){
-//			if(child[i] == nullptr)
-//				return g.count_expansions(rule->child_types[i]);
-//			
-//			size_t n = child[i]->first_neighbors(g);			
-//			if(n > 0) return n;
-//		}
-//		return 0;
-		assert(0);
+		for(size_t i=0;i<rule->N;i++){
+			if(child[i].is_null()) return g->count_expansions(rule->child_types[i]);
+			
+			size_t n = child[i].first_neighbors(g);			
+			if(n > 0) return n;
+		}
+		return 0;
 	}
 	
-	virtual void expand_to_neighbor(const Grammar& g, int& which) {
+	virtual void expand_to_neighbor(const Grammar* g, int& which) {
 		// here we find the neighbor indicated by which and expand it into the which'th neighbor
 		// to do this, we loop through until which is less than the number of neighbors,
 		// and then it must specify which expansion we want to take. This means that when we
 		// skip a nullptr, we have to subtract from it the number of neighbors (expansions)
 		// we could have taken. 
-//		for(size_t i=0;i<rule->N;i++){
-//			if(child[i] == nullptr) {
-//				int c = g.count_expansions(rule->child_types[i]);
-//				if(which >= 0 && which < c) {
-//					auto r = g.get_expansion(rule->child_types[i], which);
-//					child[i] = g.make<Node>(r);
-//				}
-//				which -= c;
-//			}
-//			else { // otherwise we have to process that which
-//				child[i]->expand_to_neighbor(g,which);
-//			}
-//		}
+		for(size_t i=0;i<rule->N;i++){
+			if(child[i].is_null()) {
+				int c = g->count_expansions(rule->child_types[i]);
+				if(which >= 0 && which < c) {
+					auto r = g->get_expansion(rule->child_types[i], which);
+					child[i] = g->make<Node>(r);
+				}
+				which -= c;
+			}
+			else { // otherwise we have to process that which
+				child[i].expand_to_neighbor(g,which);
+			}
+		}
 		assert(0);
 	}
 	
-	virtual void complete(const Grammar& g) {
+	virtual void complete(const Grammar* g) {
 		// go through and fill in the tree at random
-//		for(size_t i=0;i<rule->N;i++){
-//			if(child[i] == nullptr) {
-//				child[i] = g.generate<Node>(rule->child_types[i]);
-//			}
-//			else {
-//				child[i]->complete(g);
-//			}
-//		}
+		for(size_t i=0;i<rule->N;i++){
+			if(child[i].is_null()) {
+				child[i] = g->generate<Node>(rule->child_types[i]);
+			}
+			else {
+				child[i].complete(g);
+			}
+		}
 		assert(0);
 	}
 	
 	
 };
-//const std::string Node::nulldisplay = "\u2b1c"; // this is shown for partial trees

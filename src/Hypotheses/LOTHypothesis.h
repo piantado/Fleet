@@ -41,7 +41,7 @@ public:
 	Grammar* grammar;
 	T value;
 
-	LOTHypothesis(Grammar* g=nullptr)  : grammar(g), value(NullRule<nt>,0.0,true) {}
+	LOTHypothesis(Grammar* g=nullptr)  : grammar(g), value(NullRule,0.0,true) {}
 	LOTHypothesis(Grammar* g, T&& x)   : grammar(g), value(x) {}
 	LOTHypothesis(Grammar* g, T x)     : grammar(g), value(x) {}
 
@@ -139,7 +139,7 @@ public:
 		// this ordinarily would be a resample from the grammar, but sometimes we have can_resample=false
 		// and in that case we want to leave the non-propose nodes alone. So her
 
-		if(!value.isnull()) { // if we are null
+		if(!value.is_null()) { // if we are null
 			return HYP(grammar, value.copy_resample(grammar, [](const Node& n) { return n.can_resample; }));
 		}
 		else {
@@ -235,7 +235,7 @@ public:
 		
 		const std::function<void(Node&)> myf =  [](Node& n){n.can_resample=false;};
 		h.value.map(myf);
-		h.value.complete(*grammar);
+		h.value.complete(grammar);
 
 		return h;
 	}
@@ -247,30 +247,31 @@ public:
 	 // The main complication with these is that they handle nullptr 
 	 
 	virtual int neighbors() const {
-//		if(value == nullptr) { // if the value is null, our neighbors is the number of ways we can do nt
-//			return grammar->count_expansions(nt);
-//		}
-//		else {
-//			return value.neighbors(*grammar);
-			// to rein in the mcts branching factor, we'll count neighbors as just the first unfilled gap
-			// we should not need to change make_neighbor since it fills in the first, first
-			return value.first_neighbors(*grammar);
-//		}
+		if(value.is_null()) { // if the value is null, our neighbors is the number of ways we can do nt
+			return grammar->count_expansions(nt);
+		}
+		else {
+			return value.neighbors(grammar);
+//			 to rein in the mcts branching factor, we'll count neighbors as just the first unfilled gap
+//			 we should not need to change make_neighbor since it fills in the first, first
+//			return value.first_neighbors(*grammar);
+		}
 	}
 
 	virtual HYP make_neighbor(int k) const {
-//		HYP h(grammar); // new hypothesis
-////		if(value == nullptr) {
-////			assert(k >= 0);
-////			assert(k < (int)grammar->count_expansions(nt));
-////			auto r = grammar->get_expansion(nt,k);
-////			h.value = std::unique_ptr<T>(grammar->make<Node>(r));
-////		}
-////		else {
-//			T t = value;
-//			h.value = t.expand_to_neighbor(*grammar,k);
-////		}
-//		return h;
+		HYP h(grammar); // new hypothesis
+		if(value.is_null()) {
+			assert(k >= 0);
+			assert(k < (int)grammar->count_expansions(nt));
+			auto r = grammar->get_expansion(nt,k);
+			h.value = grammar->make<Node>(r);
+		}
+		else {
+			T t = value;
+			t.expand_to_neighbor(grammar,k);
+			h.value = t;
+		}
+		return h;
 	}
 	virtual bool is_evaluable() const {
 		// This checks whether it should be allowed to call "call" on this hypothesis. 

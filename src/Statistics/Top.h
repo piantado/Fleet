@@ -134,10 +134,16 @@ public:
 	
     void print(void printer(T&)) {
 		std::lock_guard guard(lock);
-		for(auto h : s) {
+		for(auto& h : s) {
 			printer(h);
 		}
     }
+	
+	void print(std::string prefix="") {
+		for(auto& h : s) {
+			COUT prefix << cnt[h] TAB h.posterior TAB h.prior TAB h.likelihood TAB q(h.string()) ENDL;
+		}
+	}
 	
 	void clear() {
 		std::lock_guard guard(lock);

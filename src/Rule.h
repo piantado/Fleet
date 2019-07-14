@@ -40,6 +40,10 @@ public:
 	~Rule() {
 		delete[] child_types;
 	}
+	Rule(const Rule& r) = delete;  // our code should not be using this
+	Rule(Rule&& r) = delete; 
+	void operator=(const Rule& r) = delete; 
+	void operator=( Rule&& r) = delete; 
 		
 	size_t count_children_of_type(const nonterminal_t nt) const {
 		size_t n=0;
@@ -69,7 +73,6 @@ public:
 };
 
 
-// This is a template that returns a constant null rule (initial for empty nodes) for any nonterminal type
-template<nonterminal_t nt> 
-const Rule* NullRule = new Rule(nt, BuiltinOp::op_NOP, "\u2b1c", {}, 0.0);
+// A single constant NullRule for gaps in trees. Always has type 0
+const Rule* NullRule = new Rule((nonterminal_t)0, BuiltinOp::op_NOP, "\u2b1c", {}, 0.0);
  

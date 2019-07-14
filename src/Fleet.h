@@ -28,6 +28,8 @@
 #include <random>
 #include <mutex>
 
+#include "CL11.hpp"
+
 #include <sys/resource.h> // just for setting priority defaulty 
 
 const std::string FLEET_VERSION = "0.0.4";
@@ -118,24 +120,29 @@ std::string   input_path   = "input.txt";
 std::string   tree_path    = "tree.txt";
 std::string   output_path  = "output.txt";
 std::string   timestring   = "0s";
+   
 
-#define FLEET_DECLARE_GLOBAL_ARGS() \
-    CLI::App app{"Fancier number model."};\
-    app.add_option("-s,--mcts",    mcts_steps, "Number of MCTS search steps to run");\
-    app.add_option("-m,--mcmc",     mcmc_steps, "Number of mcmc steps to run");\
-    app.add_option("-t,--thin",     thin, "Thinning on the number printed");\
-    app.add_option("-o,--output",   output_path, "Where we write output");\
-	app.add_option("-O,--top",      ntop, "The number to store");\
-	app.add_option("-n,--threads",  nthreads, "Number of threads for parallel search");\
-    app.add_option("-e,--explore",  explore, "Exploration parameter for MCTS");\
-    app.add_option("-r,--restart",  mcmc_restart, "If we don't improve after this many, restart");\
-    app.add_option("-i,--input",    input_path, "Read standard input from here");\
-	app.add_option("-T,--time",     timestring, "Stop (via CTRL-C) after this much time (takes smhd as seconds/minutes/hour/day units)");\
-	app.add_option("-E,--tree",     tree_path, "Write the tree here");\
-	app.add_flag(  "-q,--concise",  concise, "Don't print very much and do so on one line");\
-	app.add_flag(  "-c,--chains",   chains, "How many chains to run");\
-	app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");\
-	
+namespace Fleet { 	
+	CLI::App DefaultArguments() {
+		CLI::App app{"Fancier number model."};\
+		app.add_option("-s,--mcts",    mcts_steps, "Number of MCTS search steps to run");
+//		app.add_option("-S,--mcts-scoring",  mcts_scoring, "How to score MCTS?");
+		app.add_option("-m,--mcmc",     mcmc_steps, "Number of mcmc steps to run");
+		app.add_option("-t,--thin",     thin, "Thinning on the number printed");
+		app.add_option("-o,--output",   output_path, "Where we write output");
+		app.add_option("-O,--top",      ntop, "The number to store");
+		app.add_option("-n,--threads",  nthreads, "Number of threads for parallel search");
+		app.add_option("-e,--explore",  explore, "Exploration parameter for MCTS");
+		app.add_option("-r,--restart",  mcmc_restart, "If we don't improve after this many, restart");
+		app.add_option("-i,--input",    input_path, "Read standard input from here");
+		app.add_option("-T,--time",     timestring, "Stop (via CTRL-C) after this much time (takes smhd as seconds/minutes/hour/day units)");
+		app.add_option("-E,--tree",     tree_path, "Write the tree here");
+		app.add_flag(  "-q,--concise",  concise, "Don't print very much and do so on one line");
+		app.add_flag(  "-c,--chains",   chains, "How many chains to run");
+		app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");
+		return app; 
+	}
+}
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// This is how programs are represented
@@ -171,7 +178,6 @@ typedef Stack<Instruction> Program;
 #include "Inference/ChainPool.h"
 
 #include "Top.h"
-#include "CL11.hpp"
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Just a convenient wrapper for timing

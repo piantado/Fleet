@@ -23,8 +23,8 @@ Vector counts(HYP& h) {
 	
 	Vector out = Vector::Zero(nRules);
 		
-	h.value->map( [&out, grammar](const Node* n) {
-							size_t i = grammar->get_packing_index(n->rule);
+	h.value.map( [&out, grammar](const Node& n) {
+							size_t i = grammar->get_packing_index(n.rule);
 							out[i] = out[i]+1;
 					});		
 	return out;	
@@ -137,7 +137,7 @@ void simpleGrammarMCMC(std::vector<HYP> hypotheses,
 		
 		// Now get the posterior, with the llt scaling factor
 		Matrix posterior = (LL*(1.0/proposal.get_llT())).colwise() + hprior; 
-		for(size_t i=0;i<posterior.cols();i++) { 	// normalize (must be a faster way) for each amount of given data (column)
+		for(int i=0;i<posterior.cols();i++) { 	// normalize (must be a faster way) for each amount of given data (column)
 			posterior.col(i) = lognormalize(posterior.col(i)).array().exp();
 		}
 			

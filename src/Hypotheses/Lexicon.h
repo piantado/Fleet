@@ -14,33 +14,9 @@ class Lexicon : public MCMCable<HYP,t_input,t_output,_t_datum>,
 	
 public:
 	std::vector<T> factors;
-	Grammar* grammar;
 	
-	Lexicon(Grammar* g) : grammar(g) {}
-	Lexicon(size_t n, Grammar* g) : grammar(g) { factors.resize(n); }
-	Lexicon()           : grammar(nullptr) {}
-	
-	Lexicon(const Lexicon& x) {
-		factors = x.factors;
-		grammar = x.grammar;
-		this->prior = x.prior; this->likelihood=x.likelihood; this->posterior=x.posterior;
-	}
-	Lexicon(const Lexicon&& x) {
-		factors = std::move(x.factors);
-		grammar = x.grammar;
-		this->prior = x.prior; this->likelihood=x.likelihood; this->posterior=x.posterior;
-	}
-	
-	void operator=(const Lexicon& x) {
-		factors = x.factors;
-		grammar = x.grammar;
-		this->prior = x.prior; this->likelihood=x.likelihood; this->posterior=x.posterior;
-	}
-	void operator=(const Lexicon&& x) {
-		factors = std::move(x.factors);
-		grammar = x.grammar;
-		this->prior = x.prior; this->likelihood=x.likelihood; this->posterior=x.posterior;
-	}
+	Lexicon(size_t n)     { factors.resize(n); }
+	Lexicon()             {}
 	
 	
 	virtual std::string string() const {
@@ -170,15 +146,15 @@ public:
 //		return l;
 //	}
 	
-	virtual HYP* copy_and_complete() const {
+	virtual HYP copy_and_complete() const {
 		
-//		auto l = new HYP(grammar);
-//		
-//		for(auto v: factors){
-//			l->factors.push_back(v->copy_and_complete());
-//		}
-//		
-//		return l;
+		HYP l;
+		
+		for(auto& v: factors){
+			l.factors.push_back(v.copy_and_complete());
+		}
+		
+		return l;
 	}
 	
 	
@@ -196,7 +172,7 @@ public:
 	
 	
 	virtual std::pair<HYP,double> propose() const {
-		HYP x(grammar); // set the size
+		HYP x; // set the size
 		x.factors.resize(factors.size());
 		
 		// we will always flip one,
@@ -219,7 +195,7 @@ public:
 //	
 	
 	virtual HYP restart() const  {
-		HYP x(grammar);
+		HYP x;
 		x.factors.resize(factors.size());
 		for(size_t i=0;i<factors.size();i++){
 			x.factors[i] = factors[i].restart();
@@ -238,35 +214,38 @@ public:
 	 // otherwise, no adding factors
 	 int neighbors() const {
 		 
-//		if(is_evaluable()) {
-//			T tmp(grammar, nullptr); // not a great way to do this -- this assumes this constructor will initialize to null (As it will for LOThypothesis)
-//			return tmp.neighbors();
-//		}
-//		else {
-//			// we should have everything complete except the last
-//			size_t s = factors.size();
-//			return factors[s-1]->neighbors();
-//		}
+		if(is_evaluable()) {
+			T tmp;  // make something null, and then count its neighbors
+			return tmp.neighbors();
+		}
+		else {
+			// we should have everything complete except the last
+			size_t s = factors.size();
+			return factors[s-1].neighbors();
+		}
 	 }
 	
 	 HYP make_neighbor(int k) const {
 		 
-//		 auto x = *this; 
+		HYP x;
+		x.factors.resize(factors.size());
+		for(size_t i=0;i<factors.size();i++) {
+			x.factors[i] = factors[i];
+		}
 		 
 		 // try adding a factor
-//		 if(is_evaluable()){ 
-//			T tmp(grammar, nullptr); // as above, assumes that this constructs will null
-//			assert(k < tmp.neighbors());			
-//			x->factors.push_back( tmp.make_neighbor(k) );	 
-//			return x;
-//		}
-//		else {
-//			// expand the last one
-//			size_t s = x->factors.size();
-//			assert(k < x->factors[s-1]->neighbors());
-//			x->replace(s-1, x->factors[s-1]->make_neighbor(k));
-//			return x;
-//		}
+		 if(is_evaluable()){ 
+			T tmp; // as above, assumes that this constructs will null
+			assert(k < tmp.neighbors());			
+			x.factors.push_back( tmp.make_neighbor(k) );	 
+		}
+		else {
+			// expand the last one
+			size_t s = x.factors.size();
+			assert(k < x.factors[s-1].neighbors());
+			x.factors[s-1] = x.factors[s-1].make_neighbor(k);
+		}
+		return x;
 	 }
 	
 	 ///////////////////////////////////

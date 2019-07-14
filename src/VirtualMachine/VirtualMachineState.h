@@ -124,6 +124,8 @@ public:
 		// Here, dispatch is called to evaluate the function, and loader is called on recursion (allowing us to handle recursion
 		// via a lexicon or just via a LOTHypothesis). 
 
+		aborted = abort_t::NO_ABORT;
+
 		while(!opstack.empty()){
 			if(aborted != abort_t::NO_ABORT) return err;
 			FleetStatistics::vm_ops++;
@@ -231,44 +233,43 @@ public:
 					{
 						// We're going to duplicate code a little bit so that we 
 						// don't need to have double defined for FLIP (e.g. p=0.5 always)
-						if constexpr (contains_type<bool,NT_TYPES>()) { 
+if constexpr (contains_type<bool,NT_TYPES>()) { 
 						
 							const double p = 0.5; 
 				
 							pool->copy_increment_push(*this, true,  log(p));
 							pool->copy_increment_push(*this, false, log(1.0-p));
 							aborted = abort_t::RANDOM_CHOICE;
-			
-
-//							VirtualMachineState<t_x,t_return>* v0 = new VirtualMachineState<t_x,t_return>(*this);
-//							v0->increment_lp(log(1.0-p));
-//							v0->push<bool>(false); // add this value to the stack since we make this choice
-//							pool->push(v0);					
 								
 
-							// In this implementation, we keep going as long as the lp doesn't drop too
-							// low, always assuming if evaluates to true
-							// and then how we follow the true branch
-												
+//							 In this implementation, we keep going as long as the lp doesn't drop too
+//							 low, always assuming if evaluates to true
+//							 and then how we follow the true branch
+							
+//							pool->copy_increment_push(*this, false, log(1.0-p));	
+//							
+//							if(not pool->wouldIadd(lp+log(p))) {
+//								aborted = abort_t::RANDOM_CHOICE; // dont bother
+//								return err;
+//							}	
+//							
 //							increment_lp(log(p));
 //							push<bool>(true); // add this value to the stack since we make this choice
-//							
-//							if(lp < pool->Q.top()->lp - LP_BREAKOUT) { // TODO: INCLUDE THE CONTEXT LIMIT HERE 
-//								pool->push(new VirtualMachineState<t_x,t_return>(*this));
+//							if(lp < pool->Q.top().lp - LP_BREAKOUT) { // TODO: INCLUDE THE CONTEXT LIMIT HERE 
+//								pool->push(*this);
 //								aborted = abort_t::RANDOM_CHOICE; // this context is aborted please 
 //								return err;
 //							}
-							// else do nothing
 							
 							
 							break;
 		
 						// and fall through
-						} else { assert(0 && "*** Cannot use op_FLIP without defining bool in NT_TYPES"); }
+} else { assert(0 && "*** Cannot use op_FLIP without defining bool in NT_TYPES"); }
 					}
 					case BuiltinOp::op_FLIPP:
 					{
-						if constexpr (contains_type<bool,NT_TYPES>() && contains_type<double,NT_TYPES>() ) { 
+if constexpr (contains_type<bool,NT_TYPES>() && contains_type<double,NT_TYPES>() ) { 
 						assert(pool != nullptr && "op_FLIP and op_FLIPP require the pool to be non-null, since they push onto the pool"); // can't do that, for sure
 					
 						double p = getpop<double>(); // reads a double argfor the coin weight
@@ -282,26 +283,23 @@ public:
 						
 //						bool whichbranch = p>0.5; // follow the high probability branch
 //						
-//						VirtualMachineState<t_x,t_return>* v0 = new VirtualMachineState<t_x,t_return>(*this);
-//						v0->increment_lp(log(MIN(p,1.0-p))); // this is the low probability branch
-//						v0->push<bool>(!whichbranch); // add this value to the stack since we make this choice
-//						pool->push(v0);					
-//							
-//						increment_lp(log(MAX(p,1.0-p))); // the high prob branche
-//						push<bool>(whichbranch); // add this value to the stack since we make this choice
+//						pool->copy_increment_push(*this, not whichbranch,log(MIN(p,1.0-p)));	
 //							
 //						// now if we can't just keep going, copy myself and put me on the stack
-//						if(lp < pool->Q.top()->lp - LP_BREAKOUT) { // TODO: INCLUDE THE CONTEXT LIMIT HERE 
-//							pool->push(new VirtualMachineState<t_x,t_return>(*this));
+//						if(not pool->wouldIadd(lp+log(MAX(p,1.0-p)))) {
+//							aborted = abort_t::RANDOM_CHOICE; // dont bother
+//							return err;
+//						}
+//						if(lp < pool->Q.top().lp - LP_BREAKOUT) { // TODO: INCLUDE THE CONTEXT LIMIT HERE 
+//							pool->push(*this);
 //							
 //							aborted = abort_t::RANDOM_CHOICE; // this context is aborted please 
 //							
 //							return err;
 //						}
-						// else continue -- keep going now that the high prob is pushed 
 
 						break;
-						} else { assert(0 && "*** Cannot use op_FLIPP without defining bool and double in NT_TYPES"); }
+} else { assert(0 && "*** Cannot use op_FLIPP without defining bool and double in NT_TYPES"); }
 					}
 
 					case BuiltinOp::op_JMP:

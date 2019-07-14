@@ -180,7 +180,7 @@ public:
 		assert(!q.empty() && "*** Should not ever get to here with an empty queue -- are you missing arguments?");
 		
 		std::string pfx = q.front(); q.pop_front();
-		if(pfx == NullRule<(nonterminal_t)0>->format) return nullptr; // for gaps!
+		assert(pfx != NullRule->format && "NullRule not supported in expand_from_names");
 
 		// otherwise find the matching rule
 		Rule* r = this->get_from_string(pfx);
@@ -286,10 +286,10 @@ public:
 		return n;
 	}
 	
-//	template<typename T>
-//	T* make(const Rule* r) const {
-//		return new T(r, log(r->p)-log(Z[r->nt]));
-//	}
+	template<typename T>
+	T make(const Rule* r) const {
+		return T(r, log(r->p)-log(Z[r->nt]));
+	}
 	
 };
 
