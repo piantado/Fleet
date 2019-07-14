@@ -22,12 +22,6 @@ public:
 };
 
 
-
-//class NodeContainer {
-//	/* Contains some number of nodes */
-//	
-//}
-
 // Just a clean interface to define what kinds of operations MCMC requires
 // This also defines class types for data
 // This also defines interfaces for storing hypotheses (equality, hash, comparison, etc)
@@ -156,6 +150,7 @@ public:
 
 	virtual std::pair<HYP,double> propose() const = 0; // return a proposal and its forward-backward probs
 	virtual HYP                   restart() const = 0; // restart a new chain -- typically by sampling from the prior 
+	
 };
 
 

@@ -105,6 +105,7 @@ void fleet_interrupt_handler(int signum) {
 
 std::string ChildStr = "%s"; // how do strings get substituted?
 
+unsigned long random_seed  = 0; // note this also controls how quickly/deep the search goes into the lexicon
 unsigned long mcts_steps   = 0; // note this also controls how quickly/deep the search goes into the lexicon
 unsigned long mcmc_steps   = 0; // note this also controls how quickly/deep the search goes into the lexicon
 unsigned long thin         = 0;
@@ -124,7 +125,8 @@ std::string   timestring   = "0s";
 
 namespace Fleet { 	
 	CLI::App DefaultArguments() {
-		CLI::App app{"Fancier number model."};\
+		CLI::App app{"Fancier number model."};
+		app.add_option("-R,--seed",    random_seed, "Seed the rng (0 is no seed)");
 		app.add_option("-s,--mcts",    mcts_steps, "Number of MCTS search steps to run");
 //		app.add_option("-S,--mcts-scoring",  mcts_scoring, "How to score MCTS?");
 		app.add_option("-m,--mcmc",     mcmc_steps, "Number of mcmc steps to run");
@@ -154,7 +156,7 @@ typedef Stack<Instruction> Program;
 /// We defaultly include all of the major requirements for Fleet
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "Numerics.h"
-
+#include "Random.h"
 #include "Strings.h"
 #include "Hash.h"
 #include "Miscellaneous.h"
@@ -279,6 +281,8 @@ void Fleet_initialize() {
 	// parse the time
 	runtime = convert_time(timestring);
 	
+	if(random_seed != 0) rng.seed(random_seed);
+	
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
 	COUT "# Running Fleet on " << hostname << " with PID=" << getpid() << " by user " << username << " at " << ctime(&timenow);
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
@@ -289,6 +293,7 @@ void Fleet_initialize() {
 	COUT "# \t --mcts=" << mcts_steps ENDL;
 	COUT "# \t --time=" << timestring << " (" << runtime << " seconds)" ENDL;
 	COUT "# \t --restart=" << mcmc_restart ENDL;
+	COUT "# \t --seed=" << random_seed ENDL;
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
 	
 	

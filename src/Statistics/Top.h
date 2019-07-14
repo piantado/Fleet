@@ -103,11 +103,11 @@ public:
 		add(x);
 	}
 	
-    T max() { 
+    T best() { 
 		assert( (!s.empty()) && "You tried to get the max from a TopN that was empty");
 		return *s.rbegin();  
 	}
-    T min() { 
+    T worst() { 
 		assert( (!s.empty()) && "You tried to get the min from a TopN that was empty");
 		return *s.begin(); 
 	}
@@ -134,7 +134,7 @@ public:
 	
     void print(void printer(T&)) {
 		std::lock_guard guard(lock);
-		for(auto& h : s) {
+		for(auto h : s) {
 			printer(h);
 		}
     }

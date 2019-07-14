@@ -1,15 +1,5 @@
 #pragma once
 
-/* Handy string functions */
-
-
-
-std::string QQ(std::string x) {
-	return std::string("\"") + x + std::string("\"");
-}
-std::string Q(std::string x) {
-	return std::string("\'") + x + std::string("\'");
-}
 
 /* If x is a prefix of y */
 bool is_prefix(const std::string& prefix, const std::string& x) {
@@ -34,9 +24,9 @@ std::deque<std::string> split(const std::string& s, const char delimiter){
 }
 
 
-// From https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
-unsigned int levenshtein_distance(const std::string& s1, const std::string& s2)
-{
+unsigned int levenshtein_distance(const std::string& s1, const std::string& s2) {
+	// From https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
+
 	const std::size_t len1 = s1.size(), len2 = s2.size();
 	std::vector<std::vector<unsigned int>> d(len1 + 1, std::vector<unsigned int>(len2 + 1));
 

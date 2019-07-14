@@ -79,7 +79,7 @@ public:
 		return rules[nt].size(); 
 	}
 	
-	Rule* get_expansion(const nonterminal_t nt, size_t k) const {
+	Rule* get_rule(const nonterminal_t nt, size_t k) const {
 		assert(nt >= 0);
 		assert(nt < N_NTs);
 		assert(k < rules[nt].size());

@@ -376,7 +376,7 @@ public:
 			if(child[i].is_null()) {
 				int c = g->count_expansions(rule->child_types[i]);
 				if(which >= 0 && which < c) {
-					auto r = g->get_expansion(rule->child_types[i], which);
+					auto r = g->get_rule(rule->child_types[i], which);
 					child[i] = g->make<Node>(r);
 				}
 				which -= c;

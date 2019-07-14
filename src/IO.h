@@ -43,6 +43,14 @@ void coutall(T x, Args... args) {
 }
 
 
+std::string QQ(std::string x) {
+	return std::string("\"") + x + std::string("\"");
+}
+std::string Q(std::string x) {
+	return std::string("\'") + x + std::string("\'");
+}
+
+
 // Want: A handy debugging macro that takes a variable name and prints 
 // variadic tab separated list of args
 // Bleh can't seem to do this bc https://stackoverflow.com/questions/2831934/how-to-use-if-inside-define-in-the-c-preprocessor
