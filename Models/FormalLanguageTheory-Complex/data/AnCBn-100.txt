@@ -1,0 +1,12 @@
+acb	28
+aacbb	25
+aaaacbbbb	18
+aaacbbb	11
+aaaaaaacbbbbbbb	5
+aaaaacbbbbb	5
+aaaaaacbbbbbb	3
+aaaaaaaaaacbbbbbbbbbb	1
+aaaaaaaacbbbbbbbb	1
+aaaaaaaaaaaaaaacbbbbbbbbbbbbbbb	1
+aaaaaaaaacbbbbbbbbb	1
+aaaaaaaaaaacbbbbbbbbbbb	1

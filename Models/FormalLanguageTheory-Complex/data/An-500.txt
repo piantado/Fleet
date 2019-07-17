@@ -1,0 +1,16 @@
+a	184
+aa	104
+aaa	66
+aaaa	52
+aaaaa	30
+aaaaaa	22
+aaaaaaa	16
+aaaaaaaaa	9
+aaaaaaaa	4
+aaaaaaaaaaa	3
+aaaaaaaaaaaa	3
+aaaaaaaaaaaaa	3
+aaaaaaaaaaaaaaa	1
+aaaaaaaaaaaaaaaa	1
+aaaaaaaaaaaaaaaaaaaaaaa	1
+aaaaaaaaaaaaaa	1

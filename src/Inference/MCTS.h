@@ -28,7 +28,7 @@ public:
 	// MEDIAN -- choose if my kid tends to beat the median of the parent
 	enum class ScoringType { SAMPLE, UCBMAX, MEDIAN};	
 
-    std::vector<MCTSNode*> children;
+    std::vector<MCTSNode> children;
 
     std::atomic<unsigned long> nvisits;  // how many times have I visited each node?
     std::atomic<bool> open; // am I still an available node?
@@ -44,10 +44,10 @@ public:
 	
 	
     MCTSNode* parent; // who is my parent?
-    HYP* value;
+    HYP value;
     ScoringType scoring_type;// how do I score playouts?
   
-    MCTSNode(MCTSNode* par, HYP* v) : parent(par), value(v), scoring_type(par->scoring_type) {
+    MCTSNode(MCTSNode* par, HYP& v) : parent(par), value(v), scoring_type(par->scoring_type) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
 		explore=par->explore;
 		compute_playouts=par->compute_playouts;
@@ -55,7 +55,7 @@ public:
         initialize();	
     }
     
-    MCTSNode(double ex, HYP* h0, double cp(const HYP*), ScoringType st=ScoringType::SAMPLE ) : 
+    MCTSNode(double ex, HYP& h0, double cp(const HYP*), ScoringType st=ScoringType::SAMPLE ) : 
 		compute_playouts(cp), explore(ex), parent(nullptr), value(h0), scoring_type(st) {
         initialize();        
     }

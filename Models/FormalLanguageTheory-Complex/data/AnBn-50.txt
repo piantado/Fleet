@@ -1,0 +1,8 @@
+ab	19
+aaabbb	12
+aabb	6
+aaaabbbb	5
+aaaaaaabbbbbbb	3
+aaaaabbbbb	3
+aaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbb	1
+aaaaaabbbbbb	1

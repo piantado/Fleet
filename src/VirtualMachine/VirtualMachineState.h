@@ -69,10 +69,6 @@ public:
 		xstack.push(x);
 	}
 	
-	virtual ~VirtualMachineState() { }
-	
-//	VirtualMachineState(const VirtualMachineState& vms) // copy constructor automatically defined
-	
 	bool operator<(const VirtualMachineState& m) const {
 		/* These must be sortable by lp so that we can enumerate them from low to high probability in a VirtualMachinePool 
 		 * NOTE: VirtualMachineStates shouldn't be put in a set because they might evaluate to equal! */
@@ -107,12 +103,7 @@ public:
 		// push things onto the appropriate stack
 		std::get<Stack<T>>(stack.value).push(x);
 	}	
-	
-//	template<typename T>
-//	size_t stacksize() {
-//		return std::get<Stack<T>>(stack.value).size();
-//	}
-	
+		
 	
 	virtual t_return run(Dispatchable<t_x,t_return>* d) {
 		// defaulty run on a null pool with same dispatch and recurse handler

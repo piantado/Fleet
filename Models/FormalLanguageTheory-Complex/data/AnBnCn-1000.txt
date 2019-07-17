@@ -1,0 +1,16 @@
+abc	343
+aabbcc	224
+aaabbbccc	144
+aaaabbbbcccc	103
+aaaaabbbbbccccc	70
+aaaaaabbbbbbcccccc	48
+aaaaaaabbbbbbbccccccc	26
+aaaaaaaabbbbbbbbcccccccc	15
+aaaaaaaaabbbbbbbbbccccccccc	8
+aaaaaaaaaabbbbbbbbbbcccccccccc	6
+aaaaaaaaaaaabbbbbbbbbbbbcccccccccccc	4
+aaaaaaaaaaabbbbbbbbbbbccccccccccc	3
+aaaaaaaaaaaaaaabbbbbbbbbbbbbbbccccccccccccccc	2
+aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbcccccccccccccccc	2
+aaaaaaaaaaaaaabbbbbbbbbbbbbbcccccccccccccc	1
+aaaaaaaaaaaaabbbbbbbbbbbbbccccccccccccc	1

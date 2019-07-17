@@ -1,0 +1,9 @@
+ba	2
+bbaa	1
+ab	1
+babbababaaba	1
+aaabbb	1
+ababab	1
+baab	1
+baaabb	1
+baabaabbab	1

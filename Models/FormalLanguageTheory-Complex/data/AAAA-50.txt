@@ -1,0 +1,4 @@
+a	24
+aa	14
+aaa	7
+aaaa	5

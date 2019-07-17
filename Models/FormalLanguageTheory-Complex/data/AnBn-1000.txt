@@ -1,0 +1,15 @@
+ab	337
+aabb	215
+aaabbb	145
+aaaabbbb	120
+aaaaabbbbb	77
+aaaaaabbbbbb	38
+aaaaaaabbbbbbb	20
+aaaaaaaabbbbbbbb	18
+aaaaaaaaabbbbbbbbb	10
+aaaaaaaaaabbbbbbbbbb	9
+aaaaaaaaaaaabbbbbbbbbbbb	5
+aaaaaaaaaaabbbbbbbbbbb	3
+aaaaaaaaaaaaaabbbbbbbbbbbbbb	1
+aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb	1
+aaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbb	1

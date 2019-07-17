@@ -175,7 +175,7 @@ public:
 		
 		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
 		
-		pool.push(vms); // add vms to the pool
+		pool.push(std::move(vms)); // add vms to the pool
 		
 		return pool.run(this, loader);		
 	}

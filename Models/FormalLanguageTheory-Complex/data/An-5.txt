@@ -1,0 +1,4 @@
+a	2
+aa	1
+aaaa	1
+aaa	1

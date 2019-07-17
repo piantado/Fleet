@@ -1,0 +1,9 @@
+TnT	2
+LGL	1
+LNL	1
+ngn	1
+gLg	1
+lNl	1
+NtN	1
+NlN	1
+nln	1

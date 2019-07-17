@@ -1,0 +1,9 @@
+nTT	2
+nnn	1
+TLL	1
+tNN	1
+Gll	1
+Ggg	1
+gTT	1
+Tnn	1
+Tll	1

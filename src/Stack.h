@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector> 
-#include <stack>
 
 /* Many things in Fleet are stacks and this is designed to allow for
  * rapid changse to the stack type in order to improve speed. std::stack appears to be
@@ -25,6 +24,3 @@ public:
 		return this->back();
 	}	
 };
-//
-//template<typename T>
-//class Stack : public std::stack<T> { };

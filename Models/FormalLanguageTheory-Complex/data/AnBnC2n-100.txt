@@ -1,0 +1,10 @@
+abcc	33
+aabbcccc	29
+aaabbbcccccc	17
+aaaabbbbcccccccc	6
+aaaaaaabbbbbbbcccccccccccccc	4
+aaaaaaaabbbbbbbbcccccccccccccccc	3
+aaaaaabbbbbbcccccccccccc	3
+aaaaaaaaaaabbbbbbbbbbbcccccccccccccccccccccc	2
+aaaaabbbbbcccccccccc	2
+aaaaaaaaaaaaaabbbbbbbbbbbbbbcccccccccccccccccccccccccccc	1

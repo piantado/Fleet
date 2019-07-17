@@ -1,0 +1,5 @@
+ababab	5
+ab	2
+abab	1
+abababababab	1
+ababababababab	1

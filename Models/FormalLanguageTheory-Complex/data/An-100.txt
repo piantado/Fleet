@@ -1,0 +1,13 @@
+a	41
+aa	18
+aaa	11
+aaaa	10
+aaaaa	6
+aaaaaa	4
+aaaaaaaaaaaa	2
+aaaaaaaa	2
+aaaaaaa	2
+aaaaaaaaa	1
+aaaaaaaaaaa	1
+aaaaaaaaaa	1
+aaaaaaaaaaaaaa	1

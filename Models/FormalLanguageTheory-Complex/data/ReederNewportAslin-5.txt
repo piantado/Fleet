@@ -1,0 +1,5 @@
+axb	1
+qAcb	1
+qAxB	1
+qsxB	1
+scB	1

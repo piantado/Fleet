@@ -1,0 +1,7 @@
+ab	24
+ababbabbb	9
+ababbabbbabbbb	7
+ababb	4
+ababbabbbabbbbabbbbb	3
+ababbabbbabbbbabbbbbabbbbbbabbbbbbbabbbbbbbbabbbbbbbbb	2
+ababbabbbabbbbabbbbbabbbbbbabbbbbbbabbbbbbbbabbbbbbbbbabbbbbbbbbbabbbbbbbbbbbabbbbbbbbbbbbabbbbbbbbbbbbbabbbbbbbbbbbbbbabbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbb	1

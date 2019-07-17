@@ -1,0 +1,14 @@
+acb	176
+aacbb	111
+aaacbbb	78
+aaaacbbbb	50
+aaaaacbbbbb	36
+aaaaaacbbbbbb	21
+aaaaaaacbbbbbbb	13
+aaaaaaaacbbbbbbbb	5
+aaaaaaaaaaaacbbbbbbbbbbbb	4
+aaaaaaaaaaaaacbbbbbbbbbbbbb	2
+aaaaaaaaaacbbbbbbbbbb	1
+aaaaaaaaaaaaaaaacbbbbbbbbbbbbbbbb	1
+aaaaaaaaacbbbbbbbbb	1
+aaaaaaaaaaacbbbbbbbbbbb	1

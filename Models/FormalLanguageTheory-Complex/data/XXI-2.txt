@@ -1,0 +1,2 @@
+bbaa	1
+aabb	1

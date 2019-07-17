@@ -1,0 +1,12 @@
+!vn	78
+vn	67
+vnd	62
+!vnd	58
+Vnnd	44
+!Vnn	35
+Vndn	34
+Vnn	30
+Vndnd	26
+!Vndn	24
+!Vndnd	21
+!Vnnd	21

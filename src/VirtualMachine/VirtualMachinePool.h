@@ -3,7 +3,7 @@
 #include "Fleet.h"
 #include "DiscreteDistribution.h"
 
-
+#include <vector>
 
 template<typename t_x, typename t_return>
 class VirtualMachinePool {
@@ -31,7 +31,8 @@ public:
 		return lp >= min_lp && (Q.size() < max_steps || lp > worst_lp);
 	}
 	
-	void push(VirtualMachineState<t_x,t_return>& o) { 
+	void push(VirtualMachineState<t_x,t_return>&& o) { 
+		// For speed, we only allow rvalues for o -- that means that we can move them right into the stack
 		//CERR "POOL PUSHING " TAB &o ENDL;
 		if(wouldIadd(o.lp)){ // TODO: might be able to add an optimization here that doesn't push if we don't have enough steps left to get it 
 			Q.push(o);			
@@ -51,9 +52,19 @@ public:
 			VirtualMachineState<t_x,t_return> s = x;
 			s.template push<T>(v); // add this
 			s.increment_lp(lpinc);
-			this->push(s);	
+			this->push(std::move(s));	
 		}	
 	}
+//	
+//	template<typename T>
+//	void increment_push(const VirtualMachineState<t_x,t_return>&& x, T v, double lpinc) {
+//		// same as above, no copy though, so we take an rvalue
+//		if(wouldIadd(x.lp + lpinc)) {		
+//			x.template push<T>(v); // add this
+//			x.increment_lp(lpinc);
+//			this->push(x);	
+//		}	
+//	}
 	
 	
 	DiscreteDistribution<t_return> run(Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) { 

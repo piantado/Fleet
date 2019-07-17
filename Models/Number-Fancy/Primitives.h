@@ -4,7 +4,9 @@
 #include <string>
 #include <cmath>
 #include <math.h>
+
 #include "Numerics.h"
+#include "Random.h"
 
 namespace Model {
 	

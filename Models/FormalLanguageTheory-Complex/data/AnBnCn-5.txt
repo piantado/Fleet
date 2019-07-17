@@ -1,0 +1,2 @@
+abc	4
+aaabbbccc	1

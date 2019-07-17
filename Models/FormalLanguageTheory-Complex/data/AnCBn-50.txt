@@ -1,0 +1,9 @@
+acb	14
+aacbb	13
+aaaacbbbb	10
+aaaaaacbbbbbb	4
+aaaaaaacbbbbbbb	3
+aaacbbb	2
+aaaaaaaacbbbbbbbb	2
+aaaaaaaaaaaacbbbbbbbbbbbb	1
+aaaaacbbbbb	1

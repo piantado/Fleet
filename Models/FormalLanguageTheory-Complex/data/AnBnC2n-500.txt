@@ -1,0 +1,13 @@
+abcc	164
+aabbcccc	124
+aaabbbcccccc	71
+aaaabbbbcccccccc	57
+aaaaabbbbbcccccccccc	37
+aaaaaabbbbbbcccccccccccc	15
+aaaaaaabbbbbbbcccccccccccccc	9
+aaaaaaaabbbbbbbbcccccccccccccccc	9
+aaaaaaaaabbbbbbbbbcccccccccccccccccc	8
+aaaaaaaaaabbbbbbbbbbcccccccccccccccccccc	2
+aaaaaaaaaaabbbbbbbbbbbcccccccccccccccccccccc	2
+aaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccccccccccccccccccccccc	1
+aaaaaaaaaaaabbbbbbbbbbbbcccccccccccccccccccccccc	1

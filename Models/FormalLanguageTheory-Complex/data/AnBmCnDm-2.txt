@@ -1,0 +1,2 @@
+aaaabbbbccccdddd	1
+aabbccdd	1

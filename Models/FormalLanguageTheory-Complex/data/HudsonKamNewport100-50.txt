@@ -1,0 +1,12 @@
+VnDnD	7
+VndnD	6
+vnd	6
+!VnDnd	6
+Vndnd	5
+!vnd	4
+!vnD	4
+!VnDnD	3
+vnD	3
+!Vndnd	2
+!VndnD	2
+VnDnd	2

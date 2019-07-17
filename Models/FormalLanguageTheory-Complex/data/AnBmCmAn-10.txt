@@ -1,0 +1,8 @@
+abbcca	3
+abca	1
+abbbbbbcccccca	1
+aaaabbbcccaaaa	1
+aabbbbbcccccaa	1
+aaaabcaaaa	1
+aaabbccaaa	1
+aaaaabbbcccaaaaa	1

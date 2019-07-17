@@ -1,0 +1,9 @@
+abab	16
+ab	12
+ababab	11
+abababab	5
+abababababababab	2
+ababababab	1
+abababababab	1
+ababababababababab	1
+abababababababababababab	1

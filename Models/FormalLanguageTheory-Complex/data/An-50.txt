@@ -1,0 +1,10 @@
+a	19
+aa	12
+aaa	7
+aaaa	4
+aaaaa	2
+aaaaaaa	2
+aaaaaaaaa	1
+aaaaaaaaaaa	1
+aaaaaaaaaa	1
+aaaaaa	1

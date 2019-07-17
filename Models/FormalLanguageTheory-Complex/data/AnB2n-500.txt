@@ -1,0 +1,13 @@
+abb	178
+aabbbb	97
+aaabbbbbb	81
+aaaabbbbbbbb	52
+aaaaabbbbbbbbbb	37
+aaaaaabbbbbbbbbbbb	22
+aaaaaaaabbbbbbbbbbbbbbbb	13
+aaaaaaabbbbbbbbbbbbbb	8
+aaaaaaaaabbbbbbbbbbbbbbbbbb	5
+aaaaaaaaaabbbbbbbbbbbbbbbbbbbb	3
+aaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbb	2
+aaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbb	1
+aaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb	1

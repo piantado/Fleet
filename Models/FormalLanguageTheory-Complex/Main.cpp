@@ -401,44 +401,44 @@ int main(int argc, char** argv){
 	h0.compute_posterior(mydata);
 		
 	// set up a paralle tempering object
-	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 6, 1000.0);
-	tic();
-	for(auto da : data_amounts) {
-		current_data = da; // set this global variable so we can print it correctly.
-		S data_path = input_path + "-" + da + ".txt";	
-		load_data_file(mydata, data_path.c_str());
-		
-		// update top for the new data file
-		TopN<MyHypothesis> newtop;
-		for(auto h : top.values()) {
-			h.compute_posterior(mydata); // update the posterior to the new data amount
-			newtop << h;
-		}
-		top = std::move(newtop); // take over the new top
-		
-		// update our parallel tempering pool
-		for(auto& c: samp.pool) {
-			c.getCurrent().compute_posterior(mydata);
-			c.data = &mydata;
-		}
-	
-		// run for real		
-		samp.run(mcmc_steps, runtime, 1000, 30000);		
-		top.print(print);		
-	
-				
-	}
-	tic();
+//	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 6, 1000.0);
+//	tic();
+//	for(auto da : data_amounts) {
+//		current_data = da; // set this global variable so we can print it correctly.
+//		S data_path = input_path + "-" + da + ".txt";	
+//		load_data_file(mydata, data_path.c_str());
+//		
+//		// update top for the new data file
+//		TopN<MyHypothesis> newtop;
+//		for(auto h : top.values()) {
+//			h.compute_posterior(mydata); // update the posterior to the new data amount
+//			newtop << h;
+//		}
+//		top = std::move(newtop); // take over the new top
+//		
+//		// update our parallel tempering pool
+//		for(auto& c: samp.pool) {
+//			c.getCurrent().compute_posterior(mydata);
+//			c.data = &mydata;
+//		}
+//	
+//		// run for real		
+//		samp.run(mcmc_steps, runtime, 1000, 30000);		
+//		top.print(print);		
+//	
+//				
+//	}
+//	tic();
 	
 	// Vanilla MCMC
-//	for(auto da : data_amounts) {
-//		S data_path = input_path + "-" + da + ".txt";
-//		load_data_file(mydata, data_path.c_str());
-//		tic();
-//		MCMCChain chain(h0, &mydata, callback);
-//		chain.run(mcmc_steps, runtime);
-//		tic();	
-//	}
+	for(auto da : data_amounts) {
+		S data_path = input_path + "-" + da + ".txt";
+		load_data_file(mydata, data_path.c_str());
+		tic();
+		MCMCChain chain(h0, &mydata, callback);
+		chain.run(mcmc_steps, runtime);
+		tic();	
+	}
 //	
 	
 //	top.print(print);

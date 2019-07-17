@@ -1,0 +1,9 @@
+abab	26
+ab	26
+ababab	18
+abababab	13
+ababababab	7
+abababababababab	5
+abababababab	2
+ababababababab	2
+ababababababababababab	1

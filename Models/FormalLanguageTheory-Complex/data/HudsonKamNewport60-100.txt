@@ -1,0 +1,12 @@
+vnd	17
+!vnd	15
+!Vndnd	9
+Vndnd	9
+Vnnd	8
+!vn	7
+vn	7
+!Vnnd	7
+Vnn	6
+Vndn	6
+!Vndn	6
+!Vnn	3

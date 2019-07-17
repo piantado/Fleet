@@ -1,0 +1,10 @@
+abcd	19
+aabbccdd	9
+aaabbbcccddd	8
+aaaabbbbccccdddd	4
+aaaaabbbbbcccccddddd	3
+aaaaaaabbbbbbbcccccccddddddd	2
+aaaaaaaaabbbbbbbbbcccccccccddddddddd	2
+aaaaaaaaaaabbbbbbbbbbbcccccccccccddddddddddd	1
+aaaaaaaaaabbbbbbbbbbccccccccccdddddddddd	1
+aaaaaabbbbbbccccccdddddd	1

@@ -1,0 +1,4 @@
+lNN	2
+tnn	1
+gGG	1
+gNN	1

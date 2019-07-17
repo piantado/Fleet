@@ -1,0 +1,6 @@
+aa	89882
+aaaa	9148
+aaaaaaaa	861
+aaaaaaaaaaaaaaaa	104
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	4
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1

@@ -1,0 +1,14 @@
+ab	157
+abab	120
+ababab	85
+abababab	37
+abababababab	32
+ababababab	31
+ababababababab	11
+abababababababab	11
+ababababababababab	4
+ababababababababababab	4
+abababababababababababab	3
+ababababababababababababab	2
+ababababababababababababababab	2
+abababababababababab	1

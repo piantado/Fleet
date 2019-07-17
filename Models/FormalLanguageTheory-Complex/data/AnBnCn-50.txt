@@ -1,0 +1,12 @@
+abc	18
+aabbcc	10
+aaabbbccc	7
+aaaaaaaabbbbbbbbcccccccc	3
+aaaabbbbcccc	3
+aaaaabbbbbccccc	3
+aaaaaaaaaabbbbbbbbbbcccccccccc	1
+aaaaaabbbbbbcccccc	1
+aaaaaaaaaaaaaabbbbbbbbbbbbbbcccccccccccccc	1
+aaaaaaaaaaaabbbbbbbbbbbbcccccccccccc	1
+aaaaaaabbbbbbbccccccc	1
+aaaaaaaaabbbbbbbbbccccccccc	1
