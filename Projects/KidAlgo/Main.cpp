@@ -63,8 +63,9 @@ public:
 	static const size_t MAX_LENGTH = 64; // longest strings cons will handle
 	
 	// I must implement all of these constructors
+	MyHypothesis(Grammar* g, Node v)    : LOTHypothesis<MyHypothesis,Node,nt_string,S,S>(g,v) {}
 	MyHypothesis(Grammar* g)            : LOTHypothesis<MyHypothesis,Node,nt_string,S,S>(g) {}
-	MyHypothesis(Grammar* g, Node* v)   : LOTHypothesis<MyHypothesis,Node,nt_string,S,S>(g,v) {}
+	MyHypothesis()                      : LOTHypothesis<MyHypothesis,Node,nt_string,S,S>() {}
 	
 	// Very simple likelihood that just counts up the probability assigned to the output strings
 //	double compute_single_likelihood(const t_datum& x) {
@@ -97,12 +98,12 @@ public:
 		// a likelihood based on the levenshtein distance between hypothesis string and result string
 		double lp = -infinity;
 		for(auto o : out.values()) { // add up the probability from all of the strings
-			lp = logplusexp(lp, - editDisParam*uiLevenshteinDistance(o.first, x.output) + o.second);
+			lp = logplusexp(lp, - editDisParam*levenshtein_distance(o.first, x.output) + o.second);
 		}
 		return lp;
 	}
 	
-	abort_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>* vms, Dispatchable<S,S>* loader ) {
+	abort_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>& vms, Dispatchable<S,S>* loader ) {
 		/* Dispatch the functions that I have defined. Returns NO_ABORT on success. 
 		 * */
 		switch(i.getCustom()) {
@@ -143,6 +144,7 @@ public:
 
 // mydata stores the data for the inference model
 MyHypothesis::t_data mydata;
+MyGrammar grammar;
 // top stores the top hypotheses we have found
 TopN<MyHypothesis> top;
 
@@ -160,18 +162,18 @@ void print(MyHypothesis& h) {
 
 // This gets called on every sample -- here we add it to our best seen so far (top) and
 // print it every thin samples unless thin=0
-void callback(MyHypothesis* h) {
+void callback(MyHypothesis& h) {
 	
 	// if we find a new best, print it out
 //	if(h->posterior > top.best_score()) 
 //		print(*h, "# NewTop:");
 	
 	// add to the top
-	top << *h; 
+	top << h; 
 	
 	// print out with thinning
 	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) 
-		print(*h);
+		print(h);
 }
 
 
@@ -181,7 +183,7 @@ int main(int argc, char** argv){
 	using namespace std;
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	FLEET_DECLARE_GLOBAL_ARGS()
+	auto app = Fleet::DefaultArguments();
 	app.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
 	app.add_option("-d,--data", datastr, "escape-semicolon separated list of input data strings");	
 	CLI11_PARSE(app, argc, argv);
@@ -189,9 +191,6 @@ int main(int argc, char** argv){
 	top.set_size(ntop); // set by above macro
 
 	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
-	
-	// declare a grammar
-	MyGrammar grammar;
 	
 	//------------------
 	// set up the data
@@ -207,10 +206,11 @@ int main(int argc, char** argv){
 	// Run
 	//------------------
 	
-	auto h0 = new MyHypothesis(&grammar);
+	MyHypothesis h0(&grammar);
 	
 	tic(); // start the timer
-	parallel_MCMC(nthreads, h0, &mydata, callback, mcmc_steps, mcmc_restart, true, runtime);
+	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);
+	samp.run(mcmc_steps, runtime, 200, 3000); //30000);	
 	tic(); // end timer
 	
 	double Z = top.Z();
@@ -219,7 +219,7 @@ int main(int argc, char** argv){
 	DiscreteDistribution<S> string_marginals;
 	for(auto h : top.values()) {
 		auto o = h.call(S(""), S("<err>"), &h, 2048, 2048, -20.0);
-		
+		CERR h.string() ENDL; 
 		for(auto s : o.values()) { // for each string in the output
 			size_t commaCnt = std::count(s.first.begin(), s.first.end(), ',');
 			// if(s.first.length() == 10) { // TODO: This is not right -- should count the number of +s ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
