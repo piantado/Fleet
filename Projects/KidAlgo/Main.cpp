@@ -19,7 +19,7 @@ using S = std::string; // just for convenience
 
 S alphabet = "01"; // the alphabet we use (possibly specified on command line)
 //S datastr  = "01,01011,010110111"; // the data, comma separated
-S datastr  = "011\;011011\;011011011"; // the data, escape-semicolon separated
+S datastr  = "011;011011;011011011"; // the data, escape-semicolon separated
 const double strgamma = 0.99; // penalty on string length
 const double editDisParam = 0.85;
 
@@ -144,7 +144,6 @@ public:
 
 // mydata stores the data for the inference model
 MyHypothesis::t_data mydata;
-MyGrammar grammar;
 // top stores the top hypotheses we have found
 TopN<MyHypothesis> top;
 
@@ -192,6 +191,10 @@ int main(int argc, char** argv){
 
 	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
 	
+	
+	MyGrammar grammar;
+
+	
 	//------------------
 	// set up the data
 	//------------------
@@ -199,7 +202,7 @@ int main(int argc, char** argv){
 	// we will parse the data from a comma-separated list of "data" on the command line
 	for(auto di : split(datastr, ';')) {
 		mydata.push_back( MyHypothesis::t_datum({S(""), di}) );
-		// std::cerr << "======== di: " << di << "\n"; // output data to check
+		CERR "# Data: " << di ENDL; // output data to check
 	}
 	
 	//------------------
@@ -207,6 +210,7 @@ int main(int argc, char** argv){
 	//------------------
 	
 	MyHypothesis h0(&grammar);
+	h0 = h0.restart();
 	
 	tic(); // start the timer
 	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);
@@ -219,8 +223,8 @@ int main(int argc, char** argv){
 	DiscreteDistribution<S> string_marginals;
 	for(auto h : top.values()) {
 		auto o = h.call(S(""), S("<err>"), &h, 2048, 2048, -20.0);
-		CERR h.string() ENDL; 
-		for(auto s : o.values()) { // for each string in the output
+
+		for(auto& s : o.values()) { // for each string in the output
 			size_t commaCnt = std::count(s.first.begin(), s.first.end(), ',');
 			// if(s.first.length() == 10) { // TODO: This is not right -- should count the number of +s ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			if(commaCnt == 9) {
