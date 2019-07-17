@@ -40,7 +40,7 @@ public:
 	double posterior; // Posterior always stores at temperature 1
 	uintmax_t born; // what count were you born at?
 
-	Bayesable() : prior(0.0), likelihood(0.0), posterior(0.0), born(++FleetStatistics::hypothesis_births) {
+	Bayesable() : prior(NaN, likelihood(NaN), posterior(NaN), born(++FleetStatistics::hypothesis_births) {
 	}
 	
 	Bayesable(const Bayesable& b) : prior(b.prior), likelihood(b.likelihood), posterior(b.posterior) {

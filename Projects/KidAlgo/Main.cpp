@@ -212,17 +212,17 @@ int main(int argc, char** argv){
 	MyHypothesis h0(&grammar);
 	h0 = h0.restart();
 	
-//	tic(); // start the timer
-//	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);
-//	samp.run(mcmc_steps, runtime, 200, 3000); //30000);	
-//	tic(); // end timer
+	tic(); // start the timer
+	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);
+	samp.run(mcmc_steps, runtime, 200, 3000); //30000);	
+	tic(); // end timer
 
 	
-	tic();
-	auto thechain = MCMCChain<MyHypothesis>(h0, &mydata, callback);
-	thechain.run(mcmc_steps, runtime);
-	tic();
-	
+//	tic();
+//	auto thechain = MCMCChain<MyHypothesis>(h0, &mydata, callback);
+//	thechain.run(mcmc_steps, runtime);
+//	tic();
+//	
 	double Z = top.Z();
 	
 	// We have a bunch of hypotheses in "top"

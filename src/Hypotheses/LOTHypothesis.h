@@ -55,7 +55,7 @@ public:
 		grammar(h.grammar), value(h.value) { // prior, likelihood, etc. should get copied 
 	}
 
-	LOTHypothesis(LOTHypothesis&& h) {
+	LOTHypothesis(LOTHypothesis&& h) : MCMCable<HYP,t_input,t_output,t_datum>(h) {
 		// move operator takes over 
 		grammar = h.grammar;
 		value = std::move(h.value);
