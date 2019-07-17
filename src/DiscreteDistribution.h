@@ -93,6 +93,16 @@ public:
 		return out;
 	}
 	
+	std::vector<std::pair<T,double>> sorted(bool decreasing=false) {
+		// get a copy that is sorted
+		std::vector<std::pair<T,double>> v(m.size());
+		std::copy(m.begin(), m.end(), v.begin());
+		if(decreasing)	std::sort(v.begin(), v.end(), [](auto x, auto y){ return x.second > y.second; }); // put the big stuff first
+		else            std::sort(v.begin(), v.end(), [](auto x, auto y){ return x.second < y.second; }); // put the big stuff first
+		return v;		
+	}
+	
+	
 	// inherit some interfaces
 	size_t count(T x) const { return m.count(x); }
 	size_t size() const     { return m.size(); }

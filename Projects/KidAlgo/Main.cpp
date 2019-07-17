@@ -239,7 +239,7 @@ int main(int argc, char** argv){
 		}	
 	}
 	
-	for(auto s : string_marginals.values()) {
+	for(auto s : string_marginals.sorted()) {
 		COUT s.second TAB QQ(s.first) ENDL;
 	}
 		
