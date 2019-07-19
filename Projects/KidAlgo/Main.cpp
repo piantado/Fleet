@@ -21,7 +21,7 @@ S alphabet = "01"; // the alphabet we use (possibly specified on command line)
 //S datastr  = "01,01011,010110111"; // the data, comma separated
 S datastr  = "011;011011;011011011"; // the data, escape-semicolon separated
 const double strgamma = 0.99; // penalty on string length
-const double editDisParam = 0.85;
+const double editDisParam = 2.0;
 
 // Define a grammar
 class MyGrammar : public Grammar { 

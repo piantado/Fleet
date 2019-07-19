@@ -4,6 +4,9 @@
 // This is primarily used as an example and for debugging MCMC
 // My laptop gets around 200-300k samples per second
 
+// This is also used to check MCMC, as it prints out counts and log posteriors which
+// we can check for match
+
 // We require an enum to define our custom operations as a string before we import Fleet
 // These are the internal symbols that are used to represent each operation. The grammar
 // generates nodes with them, and then dispatch down below gets called with a switch
@@ -38,18 +41,18 @@ typedef struct Object {
 class MyGrammar : public Grammar { 
 public:
 	MyGrammar() : Grammar() {
-		add( new Rule(nt_object, BuiltinOp::op_X,            "x",            {},                               1.0) );		
-		add( new Rule(nt_bool,   CustomOp::op_Red,        "red(%s)",        {nt_object},               1.0) );		
-		add( new Rule(nt_bool,   CustomOp::op_Green,      "green(%s)",        {nt_object},             1.0) );
-		add( new Rule(nt_bool,   CustomOp::op_Blue,       "blue(%s)",        {nt_object},              1.0) );
+		add( new Rule(nt_object, BuiltinOp::op_X,         "x",             {},                   1.0) );		
+		add( new Rule(nt_bool,   CustomOp::op_Red,        "red(%s)",       {nt_object},          1.0) );		
+		add( new Rule(nt_bool,   CustomOp::op_Green,      "green(%s)",     {nt_object},          1.0) );
+		add( new Rule(nt_bool,   CustomOp::op_Blue,       "blue(%s)",      {nt_object},          1.0) );
 		
-		add( new Rule(nt_bool,   CustomOp::op_Square,     "square(%s)",          {nt_object},             1.0) );		
-		add( new Rule(nt_bool,   CustomOp::op_Triangle,   "triangle(%s)",        {nt_object},             1.0) );
-		add( new Rule(nt_bool,   CustomOp::op_Circle,     "circle(%s)",          {nt_object},             1.0) );
+		add( new Rule(nt_bool,   CustomOp::op_Square,     "square(%s)",    {nt_object},          1.0) );		
+		add( new Rule(nt_bool,   CustomOp::op_Triangle,   "triangle(%s)",  {nt_object},          1.0) );
+		add( new Rule(nt_bool,   CustomOp::op_Circle,     "circle(%s)",    {nt_object},          1.0) );
 		
-		add( new Rule(nt_bool, CustomOp::op_And,         "(%s and %s)",  {nt_bool, nt_bool},            1.0) );
-		add( new Rule(nt_bool, CustomOp::op_Or,          "(%s or %s)",   {nt_bool, nt_bool},            1.0) );
-		add( new Rule(nt_bool, CustomOp::op_Not,         "not(%s)",      {nt_bool},            1.0) );
+		add( new Rule(nt_bool, CustomOp::op_And,          "(%s and %s)",   {nt_bool, nt_bool},   1.0) );
+		add( new Rule(nt_bool, CustomOp::op_Or,           "(%s or %s)",    {nt_bool, nt_bool},   1.0) );
+		add( new Rule(nt_bool, CustomOp::op_Not,          "not(%s)",       {nt_bool},            1.0) );
 	}
 };
 
@@ -96,7 +99,7 @@ TopN<MyHypothesis> top;
 
 // define some functions to print out a hypothesis
 void print(MyHypothesis& h) {
-	COUT top.count(h) TAB  h.posterior TAB h.prior TAB h.likelihood TAB QQ(h.string()) ENDL;
+	COUT top.count(h) TAB  h.posterior TAB h.prior TAB h.likelihood TAB h.hash() TAB QQ(h.string()) ENDL;
 }
 
 // This gets called on every sample -- here we add it to our best seen so far (top) and
@@ -131,12 +134,22 @@ int main(int argc, char** argv){
 	mydata.push_back(   (MyHypothesis::t_datum){ (Object){Color::Red, Shape::Square},   false, 0.75 }  );
 	mydata.push_back(   (MyHypothesis::t_datum){ (Object){Color::Red, Shape::Square},   false, 0.75 }  );
 	
+	// just sample from the prior
+//	MyHypothesis h0(&grammar);
+//	for(size_t i=0;i<mcmc_steps;i++) {
+//		h0 = h0.restart(); // sample from prior
+//		h0.compute_posterior(mydata);
+//		callback(h0);
+//	}
+//	
+	
 	MyHypothesis h0(&grammar);
 	h0 = h0.restart();
 	MCMCChain<MyHypothesis> chain(h0, &mydata, callback);
 	tic();
 	chain.run(mcmc_steps,runtime);
 	tic();
+	
 //	MyHypothesis h0(&grammar);
 //	h0 = h0.restart();
 //	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);

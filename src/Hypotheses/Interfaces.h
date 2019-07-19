@@ -106,7 +106,6 @@ public:
 	virtual bool operator<(const Bayesable<t_input,t_output,t_datum>& l) const {
 		// when we implement this, we defaulty sort by posterior (so that TopN works)
 		// But we need to be careful because std::set also uses this to determine equality
-		// so we will only 
 		// This first checks  postersios, then priors (to handle -inf likelihoods well)
 		if(posterior < l.posterior) {
 			return true;
@@ -123,6 +122,7 @@ public:
 		else {
 			// we could be equal, but we only want to say that if we are. 
 			// otherwise this is decided by the hash function 
+			// so we must ensure that the hash function is only equal for equal values
 			return this->hash() < l.hash();
 		}
 	}

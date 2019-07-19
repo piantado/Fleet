@@ -186,26 +186,12 @@ public:
 		return call(x,err);
 	}
 
-	virtual t_output callOne(const t_input x, const t_output err) {
-		// slightly different implementation if we just have one output -- prevents us 
-		// from having to require the returntypes to be sortable (as they would need to be
-		// for a DiscreteDistribution)
-		auto v = call(x,err);
-		
-		if(v.size() == 0)  // if we get nothing, silently treat that as "err"
-			return err;
-			
-		if(v.size() > 1) { // complain if you got too much output -- this should not happen
-			CERR "Error in callOne  -- multiple outputs received. Outputs are:" ENDL;
-			for(auto x: v.values()) {
-				CERR "***" TAB x.first TAB x.second ENDL;
-			}
-			assert(false); // should not get this		
-		}
-		for(auto a : v.values()){
-			return a.first;
-		}
-		assert(0);
+	virtual t_output callOne(const t_input x, const t_output err, Dispatchable<t_input,t_output>* loader=nullptr) {
+		// we can use this if we are guaranteed that we don't have a stochastic hypothesis
+		// the savings is that we don't have to create a VirtualMachinePool		
+		VirtualMachineState<t_input,t_output> vms(x, err);		
+		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
+		return vms.run(nullptr, this, loader == nullptr? this : nullptr); // default to using "this" as the loader
 	}
 	
 
@@ -294,3 +280,10 @@ public:
 
 	 
 };
+//
+//
+//std::ostream& operator<<(std::ostream& os, const myclass& obj)
+//{
+//      os << obj.somevalue;
+//      return os;
+//}

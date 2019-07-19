@@ -13,18 +13,17 @@
 #include <tuple>
 
 // TOOD: We could do insert/delete with entire trees -- replace any tree down below?
-double lpsample(const Node& t, const Node& n, std::function<int(const Node&)> choose) {
-	// probability of choosing n out of all in t
-	// NOTE: n need not be in t -- we just assume sampling is done uniformly if choose(n)
-	if(choose(n)) return -log(t.sum(choose));
-	else          return -infinity;	
-}
-double lpsample_eq(const Node& t, const Node& n, std::function<int(const Node&)> choose) {
-	// probability of choosing anything equal to n out of t 
-	
-	if(choose(n)) return  log(t.count_equal(n))-log(t.sum(choose));
-	else          return -infinity;	
-}
+//double lpsample(const Node& t, const Node& n, std::function<int(const Node&)> choose) {
+//	// probability of choosing n out of all in t
+//	// NOTE: n need not be in t -- we just assume sampling is done uniformly if choose(n)
+//	if(choose(n)) return -log(t.sum(choose));
+//	else          return -infinity;	
+//}
+//double lpsample_eq(const Node& t, const Node& n, std::function<int(const Node&)> choose) {
+//	// probability of choosing anything equal to n out of t 
+//	if(choose(n)) return  log(t.count_equal(n))-log(t.sum(choose));
+//	else          return -infinity;	
+//}
 
 
 
@@ -38,19 +37,22 @@ CERR "REGENERATE" ENDL;
 			
 	Node ret = from; // copy
 
-
 	if(from.sum<int>(can_resample) == 0) {
 		return std::make_pair(ret, 0.0);
 	}
 	
-	Node* n = ret.sample(can_resample); // get the nth in ret
-
-	*n = grammar->generate<Node>(n->rule->nt); // make something new of the same type
+	auto s = ret.sample(can_resample); // get the nth in ret
 	
-	double fb = (lpsample(from,*n,can_resample) + grammar->log_probability<Node>(ret)) 
-			     - 
-				(lpsample(ret,*n,can_resample)  + grammar->log_probability<Node>(from));
+	double oldgp = grammar->log_probability(*s.first); // reverse probability generating 
 	
+	*s.first = grammar->generate<Node>(s.first->rule->nt); // make something new of the same type
+	
+	double fb = s.second + grammar->log_probability(*s.first) 
+			  - (log(can_resample(*s.first)) - log(ret.sum(can_resample)) + oldgp);
+	
+//	CERR fb ENDL;
+//	CERR from.string() ENDL;
+//	CERR ret.string() ENDL;
 	return std::make_pair(ret, fb);
 }
 

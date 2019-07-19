@@ -225,7 +225,8 @@ public:
 						// We're going to duplicate code a little bit so that we 
 						// don't need to have double defined for FLIP (e.g. p=0.5 always)
 if constexpr (contains_type<bool,NT_TYPES>()) { 
-						
+							assert(pool != nullptr && "op_FLIP and op_FLIPP require the pool to be non-null, since they push onto the pool"); // can't do that, for sure
+					
 							const double p = 0.5; 
 				
 							pool->copy_increment_push(*this, true,  log(p));

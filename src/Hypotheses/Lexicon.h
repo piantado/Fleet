@@ -43,10 +43,12 @@ public:
 	}
 	
 	virtual size_t hash() const {
-		size_t out = 0x0;
-		size_t i=1;
+		std::hash<size_t> h;
+		size_t out = h(factors.size());
+		size_t i=0;
 		for(auto& a: factors){
-			out = hash_combine(out, hash_combine(i, a.hash()));
+			hash_combine(out, a.hash());
+			hash_combine(out, i);			
 			i++;
 		}
 		return out;

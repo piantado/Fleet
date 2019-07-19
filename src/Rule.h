@@ -1,5 +1,8 @@
 #pragma once
 
+#include <functional>
+#include <string>
+
 class Rule {
 	// A rule stores nonterminal types and possible children
 	// Here we "emulate" a type system using t_nonterminal to store an integer for the types
@@ -13,13 +16,24 @@ public:
 	const size_t         N; // how many children?
 	nonterminal_t*       child_types; // An array of what I expand to; note that this should be const but isn't to allow list initialization (https://stackoverflow.com/questions/5549524/how-do-i-initialize-a-member-array-with-an-initializer-list)
 	const double         p;
-
+protected:
+	std::size_t          my_hash; // a hash value for this rule
+public:
 	// Rule's constructors convert CustomOp and BuiltinOp to the appropriate instruction types
 	Rule(const nonterminal_t rt, const CustomOp o, const std::string fmt, std::initializer_list<nonterminal_t> c, double _p, const int arg=0) :
 		nt(rt), instr(o,arg), format(fmt), N(c.size()), p(_p) {
 		// mainly we just convert c to an array
 		child_types = new nonterminal_t[c.size()];
 		std::copy(c.begin(), c.end(), child_types);
+		
+		// Set up hashing for rules (cached so we only do it once)
+		std::hash<std::string> h; 
+		my_hash = h(fmt);
+		hash_combine(my_hash, (size_t) o);
+		hash_combine(my_hash, (size_t) arg);
+		hash_combine(my_hash, (size_t) nt);
+		for(size_t i=0;i<N;i++) hash_combine(my_hash, (size_t)child_types[i]);
+		
 		
 		// check that the format string has the right number of %s
 		assert( N == count(fmt, ChildStr) && "*** Wrong number of format string arguments");
@@ -31,6 +45,14 @@ public:
 		// mainly we just convert c to an array
 		child_types = new nonterminal_t[c.size()];
 		std::copy(c.begin(), c.end(), child_types);
+		
+		// Set up hashing for rules (cached so we only do it once)
+		std::hash<std::string> h; 
+		my_hash = h(fmt);
+		hash_combine(my_hash, (size_t) o);
+		hash_combine(my_hash, (size_t) arg);
+		hash_combine(my_hash, (size_t) nt);
+		for(size_t i=0;i<N;i++) hash_combine(my_hash, (size_t)child_types[i]);
 		
 		// check that the format string has the right number of %s
 		assert( N == count(fmt, ChildStr) && "*** Wrong number of format string arguments");
@@ -44,7 +66,11 @@ public:
 	Rule(Rule&& r) = delete; 
 	void operator=(const Rule& r) = delete; 
 	void operator=( Rule&& r) = delete; 
-		
+	
+	size_t get_hash() const {
+		return my_hash;
+	}
+	
 	size_t count_children_of_type(const nonterminal_t nt) const {
 		size_t n=0;
 		for(size_t i=0;i<N;i++){

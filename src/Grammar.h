@@ -33,15 +33,6 @@ public:
 	Grammar(const Grammar& g) = delete; // should not be doing these
 	Grammar(const Grammar&& g) = delete; // should not be doing these
 	
-	
-//	virtual ~Grammar() {
-//		for(size_t i=0;i<N_NTs;i++) {
-//			for(auto rp : rules[i]) {
-//				delete rp; // delete this rule
-//			}
-//		}
-//	}
-//	
 	size_t count_nonterminals() const {
 		return N_NTs;
 	}
@@ -97,7 +88,7 @@ public:
 		assert(nt < N_NTs);
 		assert(Z[nt] > 0 && "*** It seems there is zero probability of expanding this terminal -- did you include any rules?"); 
 		
-		double z = Z[nt];
+		double z = rule_normalizer(nt);
 		double q = uniform()*z;
 		for(auto r: rules[nt]) {
 			q -= r->p;
@@ -138,7 +129,7 @@ public:
 		
 		double lp = log(n.rule->p) - log(rule_normalizer(n.rule->nt));
 		
-		for(size_t i=0;i<n.rule->N;i++) {
+		for(size_t i=0;i<n.child.size();i++) {
 			lp += log_probability<T>(n.child[i]);
 		}
 		return lp;		

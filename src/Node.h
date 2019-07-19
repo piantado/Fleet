@@ -151,7 +151,7 @@ public:
 	
 	
 	template<typename T>
-	Node* __sample_helper(std::function<T(const Node&)>& f, float& r) {
+	Node* __sample_helper(std::function<T(const Node&)>& f, double& r) {
 		r -= f(*this);
 		if(r <= 0.0) { 
 			return this; 
@@ -166,17 +166,20 @@ public:
 	}
 	
 	template<typename T>
-	Node* sample(std::function<T(const Node&)>& f) {
+	std::pair<Node*, double> sample(std::function<T(const Node&)>& f) {
 		// sample a subnode satisfying f and return its probability
 		// where f maps each node to a probability (possibly zero)
 		// we allow T here to be a double, int, whatever 
-		// NOTE: this does NOT return a copy
 		
 		T z = sum<T>(f);
-		float r = z * uniform();
-		auto x = __sample_helper(f,r);
+		double r = z * uniform();
+
+		Node* x = __sample_helper(f,r);
 		assert(x != nullptr && "*** Should have gotten value from __sample_helper");
-		return x;
+		
+		double lp = log(f(*x)) - log(z);
+		
+		return std::make_pair(x, lp);
 	}
 
 	
@@ -328,13 +331,25 @@ public:
 
 	virtual size_t hash() const {
 		// Like equality checking, hashing also uses the rule pointers' numerical values, so beware!
-		size_t output = (size_t) rule; // tunrs out, this is actually important to prevent hash collisions when rule_id and i are small
-		for(size_t i=0;i<rule->N;i++) {
-			output = hash_combine(output, hash_combine(i, child[i].hash()));
+		size_t output = rule->get_hash(); // tunrs out, this is actually important to prevent hash collisions when rule_id and i are small
+		for(size_t i=0;i<child.size();i++) {
+			hash_combine(output, child[i].hash()); // modifies output
+			hash_combine(output, i); 
 		}
 		return output;
 	}
 
+
+
+//	virtual size_t hash() const {
+//		// Like equality checking, hashing also uses the rule pointers' numerical values, so beware!
+//		size_t output = (size_t) rule; // tunrs out, this is actually important to prevent hash collisions when rule_id and i are small
+//		for(size_t i=0;i<child.size();i++) {
+//			output = hash_combine(hash_combine(child[i].hash(), i), output);
+//		}
+//		return output;
+//	}
+//
 	
 	/********************************************************
 	 * Enumeration

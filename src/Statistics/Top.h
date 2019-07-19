@@ -60,7 +60,7 @@ public:
 		return s;
 	}
 
-	void add(const T& x) { 
+	void add(const T& x, size_t count=1) { 
 		// add something of type x if we should - only makes a copy if we add it
 		
 		// toss out infs
@@ -70,7 +70,7 @@ public:
 		
 		// if we aren't in there and our posterior is better than the worst
 		if(s.find(x) == s.end()) { 
-			if(s.size() < N || s.empty() || x.posterior > s.begin()->posterior) { // skip adding if its the worst
+			if(s.size() < N || x.posterior > s.begin()->posterior) { // skip adding if its the worst
 				T xcpy = x;
 			
 				s.insert(xcpy); // add this one
@@ -96,7 +96,7 @@ public:
 	
 	void add(const TopN<T>& x) { // add from a whole other topN
 		for(auto& h: x.s){
-			add(h);
+			add(h, x.cnt[h]);
 		}
 	}
 	void operator<<(const TopN<T>& x) {
