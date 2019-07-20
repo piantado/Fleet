@@ -69,7 +69,7 @@ public:
 	virtual double compute_likelihood(const t_data& data) {
 		// defaultly a sum over datums in data (e.g. assuming independence)
 		likelihood = 0.0;
-		for(auto d : data) {
+		for(const auto& d : data) {
 			likelihood += compute_single_likelihood(d);
 		}
 		return likelihood;		

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <random>
+#include <iostream>
 
 /* Handy numeric functions */
 
@@ -36,6 +37,7 @@ t logplusexp(const t a, const t b) {
 	t mx = MAX(a,b);
 	t z  = MIN(a,b)-mx;
 	if(z < -25.0) return mx;
-	
-    return mx + log(exp(a-mx)+exp(b-mx));
+
+	return mx + log1p(exp(z));
+    //return mx + log(exp(a-mx)+exp(b-mx));
 }

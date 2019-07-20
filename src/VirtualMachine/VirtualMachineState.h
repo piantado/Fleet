@@ -220,80 +220,56 @@ public:
 						
 						break;						
 					}
+					
+					// Both flips come here so we don't duplicate code
+					// and then we sort out whether the p is a default value 
+					// or not				
 					case BuiltinOp::op_FLIP: 
+					case BuiltinOp::op_FLIPP:
 					{
-						// We're going to duplicate code a little bit so that we 
-						// don't need to have double defined for FLIP (e.g. p=0.5 always)
 if constexpr (contains_type<bool,NT_TYPES>()) { 
 							assert(pool != nullptr && "op_FLIP and op_FLIPP require the pool to be non-null, since they push onto the pool"); // can't do that, for sure
 					
-							const double p = 0.5; 
+							double p = 0.5; 
+							if(i.getBuiltin() == BuiltinOp::op_FLIPP) { // only for built-in ops do we 
+								static_assert(contains_type<double,NT_TYPES>()); // must have a double, right?
+								p = getpop<double>(); // reads a double argfor the coin weight
+								if(std::isnan(p)) { p = 0.0; } // treat nans as 0s
+								assert(p <= 1.0 && p >= 0.0);
+							}
+							
 				
 							pool->copy_increment_push(*this, true,  log(p));
-							pool->copy_increment_push(*this, false, log(1.0-p));
+//							pool->copy_increment_push(*this, false,  log(1.0-p));
+							pool->increment_push(std::move(*this), false, log(1.0-p)); // wow is this allowed?
 							aborted = abort_t::RANDOM_CHOICE;
-								
 
-//							 In this implementation, we keep going as long as the lp doesn't drop too
-//							 low, always assuming if evaluates to true
-//							 and then how we follow the true branch
-							
-//							pool->copy_increment_push(*this, false, log(1.0-p));	
+				
+							// which branch did we take?
+//							bool decision = (p >= 0.5); 
 //							
-//							if(not pool->wouldIadd(lp+log(p))) {
-//								aborted = abort_t::RANDOM_CHOICE; // dont bother
-//								return err;
-//							}	
+//							// save (possibly) the path not taken
+//							pool->copy_increment_push(*this, not decision, log( MIN(p,1.0-p) ));
 //							
-//							increment_lp(log(p));
-//							push<bool>(true); // add this value to the stack since we make this choice
-//							if(lp < pool->Q.top().lp - LP_BREAKOUT) { // TODO: INCLUDE THE CONTEXT LIMIT HERE 
-//								pool->push(*this);
-//								aborted = abort_t::RANDOM_CHOICE; // this context is aborted please 
-//								return err;
+//							// if I am still ok in terms of LP_BREAKOUT, push and keep running
+//							double decisionlp = log(MAX(p, 1.0-p));
+//							if(lp+decisionlp > MAX(pool->min_lp, pool->Q.top().lp - LP_BREAKOUT) ) { // if we can keep going and stay within the bound
+////							if(pool->wouldIadd(lp+decisionlp)){ // if I would be added here (a little imprecise because I may be allowing myself to run for too many steps)
+//								increment_lp(decisionlp);
+//								push<bool>(decision);
+//								// and just continue -- no need to do anything to the stack
 //							}
-							
-							
+//							else {
+//								
+//								// else we just push and return control to the stack
+//								pool->copy_increment_push(std::move(*this), decision, decisionlp);
+//								aborted = abort_t::RANDOM_CHOICE;
+//							}
+
 							break;
 		
-						// and fall through
 } else { assert(0 && "*** Cannot use op_FLIP without defining bool in NT_TYPES"); }
 					}
-					case BuiltinOp::op_FLIPP:
-					{
-if constexpr (contains_type<bool,NT_TYPES>() && contains_type<double,NT_TYPES>() ) { 
-						assert(pool != nullptr && "op_FLIP and op_FLIPP require the pool to be non-null, since they push onto the pool"); // can't do that, for sure
-					
-						double p = getpop<double>(); // reads a double argfor the coin weight
-						if(std::isnan(p)) { p = 0.0; } // treat nans as 0s
-						assert(p <= 1.0 && p >= 0.0);
-						
-						
-						pool->copy_increment_push(*this, true,  log(p));
-						pool->copy_increment_push(*this, false, log(1.0-p));
-						aborted = abort_t::RANDOM_CHOICE;
-						
-//						bool whichbranch = p>0.5; // follow the high probability branch
-//						
-//						pool->copy_increment_push(*this, not whichbranch,log(MIN(p,1.0-p)));	
-//							
-//						// now if we can't just keep going, copy myself and put me on the stack
-//						if(not pool->wouldIadd(lp+log(MAX(p,1.0-p)))) {
-//							aborted = abort_t::RANDOM_CHOICE; // dont bother
-//							return err;
-//						}
-//						if(lp < pool->Q.top().lp - LP_BREAKOUT) { // TODO: INCLUDE THE CONTEXT LIMIT HERE 
-//							pool->push(*this);
-//							
-//							aborted = abort_t::RANDOM_CHOICE; // this context is aborted please 
-//							
-//							return err;
-//						}
-
-						break;
-} else { assert(0 && "*** Cannot use op_FLIPP without defining bool and double in NT_TYPES"); }
-					}
-
 					case BuiltinOp::op_JMP:
 					{
 						popn(opstack, i.arg);

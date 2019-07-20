@@ -99,7 +99,7 @@ TopN<MyHypothesis> top;
 
 // define some functions to print out a hypothesis
 void print(MyHypothesis& h) {
-	COUT top.count(h) TAB  h.posterior TAB h.prior TAB h.likelihood TAB h.hash() TAB QQ(h.string()) ENDL;
+	COUT top.count(h) TAB  h.posterior TAB h.prior TAB h.likelihood TAB QQ(h.string()) ENDL;
 }
 
 // This gets called on every sample -- here we add it to our best seen so far (top) and

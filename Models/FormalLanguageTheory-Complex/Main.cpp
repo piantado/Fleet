@@ -292,7 +292,7 @@ public:
 		 const double lerr = log((1.0-alpha)/alphabet.size());
 		 
 		 // now go through and compute a character-by-character predictive likelihood
-		 for(auto a : data) {
+		 for(const auto& a : data) {
 			 S astr = a.output + "!"; // add a stop symbol
 			 for(size_t i=0;i<=astr.length();i++) {
 				S pfx = astr.substr(0,i);
