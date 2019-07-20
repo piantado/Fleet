@@ -15,8 +15,8 @@ class Lexicon : public MCMCable<HYP,t_input,t_output,_t_datum>,
 public:
 	std::vector<T> factors;
 	
-	Lexicon(size_t n)     { factors.resize(n); }
-	Lexicon()             {}
+	Lexicon(size_t n)  : MCMCable<HYP,t_input,t_output,_t_datum>()  { factors.resize(n); }
+	Lexicon()          : MCMCable<HYP,t_input,t_output,_t_datum>()  { }
 	
 	
 	virtual std::string string() const {

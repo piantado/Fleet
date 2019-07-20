@@ -167,7 +167,7 @@ public:
 					// which is here decided to be uniform.
 					const double lp = (s.empty()?-infinity:-log(s.size()));
 					for(auto x : s) {
-						pool->copy_increment_push(vms,x,lp);
+						pool->copy_increment_push(&vms,x,lp);
 					}
 					
 					// TODO: we can make this faster, like in flip, by following one of the paths?
@@ -183,6 +183,10 @@ public:
 	
 };
 
+
+#include <functional>
+#include <unordered_map>
+std::unordered_map<std::string, std::pair<double,double>> PosteriorCache; // cach our posteriors
 
 
 class MyHypothesis : public Lexicon<MyHypothesis, InnerHypothesis, S, S> {
@@ -259,6 +263,34 @@ public:
 		size_t i = factors.size()-1; 
 		return factors[i].call(x,err,this,MAX_STEPS_PER_FACTOR,MAX_OUTPUTS_PER_FACTOR,MIN_LP); 
 	}
+	 
+	 
+	 double compute_posterior(const t_data& data) {
+	
+		std::string h = this->string();
+		//auto h = std::hash<std::string>(s); //hash();
+		
+		auto loc = PosteriorCache.find(h);
+		if(loc != PosteriorCache.end()) {
+			prior = loc->second.second;
+			likelihood = loc->second.second;
+			posterior = prior + likelihood;
+		}
+		else {
+			Lexicon<MyHypothesis, InnerHypothesis, S, S>::compute_posterior(data);
+			
+			PosteriorCache[h] = std::make_pair(prior, likelihood);
+		} 
+		return posterior;
+	 }
+	 
+//	 double compute_posterior(const t_data& data) {
+//	
+//		auto h = this->hash();
+//		if(h < 12) { CERR h ENDL;}
+//		return Lexicon<MyHypothesis, InnerHypothesis, S, S>::compute_posterior(data);
+//	 }
+	 
 	 
 	 
 	 // We assume input,output with reliability as the number of counts that input was seen going to that output
@@ -346,10 +378,10 @@ void print(MyHypothesis& h) {
 void callback(MyHypothesis& h) {
 
 	// print the next max
-	if(h.posterior > top.best_score()) {
-		print(h, std::string("#### "));
-	}
-	
+//	if(h.posterior > top.best_score()) {
+//		print(h, std::string("#### "));
+//	}
+//	
 	top << h; 
 	
 	// print out with thinning
@@ -375,6 +407,9 @@ int main(int argc, char** argv){
 	CLI11_PARSE(app, argc, argv);
 
 	Fleet_initialize();
+	
+	PosteriorCache.reserve(10000000);
+
 	
 	// Input here is going to specify the PRdata path, minus the txt
 	

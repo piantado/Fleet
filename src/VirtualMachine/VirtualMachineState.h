@@ -69,6 +69,8 @@ public:
 		xstack.push(x);
 	}
 	
+	virtual ~VirtualMachineState() {};	
+	
 	bool operator<(const VirtualMachineState& m) const {
 		/* These must be sortable by lp so that we can enumerate them from low to high probability in a VirtualMachinePool 
 		 * NOTE: VirtualMachineStates shouldn't be put in a set because they might evaluate to equal! */
@@ -239,10 +241,20 @@ if constexpr (contains_type<bool,NT_TYPES>()) {
 							}
 							
 				
-							pool->copy_increment_push(*this, true,  log(p));
+							pool->copy_increment_push(this, true,  log(p));
 //							pool->copy_increment_push(*this, false,  log(1.0-p));
-							pool->increment_push(std::move(*this), false, log(1.0-p)); // wow is this allowed?
-							aborted = abort_t::RANDOM_CHOICE;
+							bool b = pool->increment_push(this, false, log(1.0-p)); // wow is this allowed?
+							
+							// TODO: This is clumsy, ugly mechanism -- need to re-do
+							
+							// since we pushed this back onto the queue (via increment_push), we need to tell the 
+							// pool not to delete this, so we send back this special signal
+							if(b) { // theoutcome of increment_push decides whether I am deleted or not
+								aborted = abort_t::RANDOM_CHOICE_NO_DELETE; 
+							}
+							else {
+								aborted = abort_t::RANDOM_CHOICE; 
+							}
 
 				
 							// which branch did we take?

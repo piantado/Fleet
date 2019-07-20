@@ -41,12 +41,12 @@ public:
 	Grammar* grammar;
 	T value;
 
-	LOTHypothesis(Grammar* g=nullptr)  : grammar(g), value(NullRule,0.0,true) {}
-	LOTHypothesis(Grammar* g, T&& x)   : grammar(g), value(x) {}
-	LOTHypothesis(Grammar* g, T x)     : grammar(g), value(x) {}
+	LOTHypothesis(Grammar* g=nullptr)  : MCMCable<HYP,t_input,t_output,_t_datum>(), grammar(g), value(NullRule,0.0,true) {}
+	LOTHypothesis(Grammar* g, T&& x)   : MCMCable<HYP,t_input,t_output,_t_datum>(), grammar(g), value(x) {}
+	LOTHypothesis(Grammar* g, T x)     : MCMCable<HYP,t_input,t_output,_t_datum>(), grammar(g), value(x) {}
 
 	// parse this from a string
-	LOTHypothesis(Grammar* g, std::string s) : grammar(g) {
+	LOTHypothesis(Grammar* g, std::string s) : MCMCable<HYP,t_input,t_output,_t_datum>(), grammar(g)  {
 		value = grammar->expand_from_names<Node>(s);
 	}
 
@@ -171,11 +171,11 @@ public:
 		
 		VirtualMachinePool<t_input,t_output> pool(max_steps, max_outputs, minlp);
 
-		VirtualMachineState<t_input,t_output> vms(x, err);
+		VirtualMachineState<t_input,t_output>* vms = new VirtualMachineState<t_input,t_output>(x, err);
 		
-		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
+		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
 		
-		pool.push(std::move(vms)); // add vms to the pool
+		pool.push(vms); // add vms to the pool
 		
 		return pool.run(this, loader);		
 	}
@@ -191,7 +191,7 @@ public:
 		// the savings is that we don't have to create a VirtualMachinePool		
 		VirtualMachineState<t_input,t_output> vms(x, err);		
 		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
-		return vms.run(nullptr, this, loader == nullptr? this : nullptr); // default to using "this" as the loader
+		return vms.run(nullptr, this, loader == nullptr? this : nullptr); // default to using "this" as the loader		
 	}
 	
 
