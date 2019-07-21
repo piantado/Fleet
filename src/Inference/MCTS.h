@@ -9,16 +9,14 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <functional>
 
 #include "StreamingStatistics.h"
 
-
-
-
-/// MCTS Implementation
 template<typename HYP>
 class MCTSNode {
-	// NOTE: When we initialize a MCTSNode, we typically will want it with a LOTHypothesis with a null value		
+
+	/// MCTS Implementation
 	
 public:
 
@@ -36,28 +34,28 @@ public:
 	 
 	bool expand_all_children = false; // when we expand a new leaf, do we expand all children or just sample one (from their priors?) 
 	
-	double (*compute_playouts)(const HYP&); // a function point to how we compute playouts
+	void (*callback)(HYP&); // a function point to how we compute playouts
 	double explore; 
 	
 	mutable std::mutex child_mutex; // for access in parallelTempering
     
 	StreamingStatistics statistics;
 	
-	
+	typename HYP::t_data* data;
     MCTSNode* parent; // who is my parent?
     HYP value;
     ScoringType scoring_type;// how do I score playouts?
   
     MCTSNode(MCTSNode* par, HYP& v) 
-		: expand_all_children(par->expand_all_children), compute_playouts(par->compute_playouts), 
-		  explore(par->explore), parent(par), value(v), scoring_type(par->scoring_type) {
+		: expand_all_children(par->expand_all_children), callback(par->callback), 
+		  explore(par->explore), data(par->data), parent(par), value(v), scoring_type(par->scoring_type) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
 		
         initialize();	
     }
     
-    MCTSNode(double ex, HYP& h0, double cp(const HYP&), ScoringType st=ScoringType::SAMPLE ) : 
-		compute_playouts(cp), explore(ex), parent(nullptr), value(h0), scoring_type(st) {
+    MCTSNode(double ex, HYP& h0, void cb(HYP&), typename HYP::t_data* d, ScoringType st=ScoringType::SAMPLE ) : 
+		callback(cb), explore(ex), parent(nullptr), value(h0), data(d), scoring_type(st) {
         initialize();        
     }
 	
@@ -71,13 +69,14 @@ public:
 		nvisits = m.nvisits;
 		open = m.open;
 		expand_all_children = m.expand_all_children;
-		compute_playouts = m.compute_playouts;
+		callback = m.callback;
 		explore = m.explore;
 		statistics = std::move(statistics);
 		parent = m.parent;
 		value = std::move(m.value);
 		scoring_type = m.scoring_type;
 		children = std::move(children);
+		data = m.data;
 		
 	}
 	
@@ -191,7 +190,7 @@ public:
 	}
 
 
-    void add_sample(const double v, const size_t num){ // found something with v
+    void add_sample(const double v, const size_t num=1){ // found something with v
         
 		nvisits += num; // we want to update this even if inf/nan since we did try searching here
 		
@@ -202,6 +201,33 @@ public:
 			parent->add_sample(v, 0); // we don't add num going up because we incremented it on the way down (while sampling)
 		}
     }
+	void operator<<(double v) { add_sample(v,1); }
+	
+	
+	
+	virtual void playout() {
+		// this is how we compute playouts here -- defaultly mcmc 
+		
+		HYP h0 = value; // need a copy to change resampling on 
+		
+		if(not h0.value.is_null()){
+			h0.value.map( [](Node& n) { n.can_resample = false; } ); // don't change this structural piece
+		}
+		
+#ifdef DEBUG_MCTS
+	COUT "\tPLAYOUT " <<  h0.string() TAB std::this_thread::get_id() ENDL;
+#endif
+				
+		std::function<void(HYP& h)> wrapped_callback = [this](HYP& h) -> void { 
+			this->callback(h);
+			this->add_sample(h.posterior);
+		};
+		
+		auto h = h0.copy_and_complete(); // fill in any structural gaps
+		
+		MCMCChain<HYP> chain(h, data, wrapped_callback);
+		chain.run(mcmc_steps, 0); // run mcmc with restarts 
+	}
 	
 	
 	void add_child_nodes() {
@@ -282,7 +308,7 @@ public:
 #endif
 		
 		if(nvisits == 0) { // I am a leaf of the search who has not been expanded yet
-			add_sample(compute_playouts(value), 1); // update my internal counts
+			this->playout(); // update my internal counts
 			open = value.neighbors() > 0; // only open if the value is partial
 			return;
 		}
@@ -299,7 +325,7 @@ public:
 				for(auto& c: children) {
 					nvisits++; // I am going to get a visit for each of these
 					
-					c.add_sample(c.compute_playouts(value), 1); // update my internal counts
+					c.playout(); // update my internal counts
 					c.open = c.value.neighbors() > 0; // only open if the value is partial
 					
 					open = open || c.open; // I'm open if any child is

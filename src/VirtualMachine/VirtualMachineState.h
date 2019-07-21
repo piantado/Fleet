@@ -248,13 +248,16 @@ if constexpr (contains_type<bool,NT_TYPES>()) {
 							assert(pool != nullptr && "op_FLIP and op_FLIPP require the pool to be non-null, since they push onto the pool"); // can't do that, for sure
 					
 							double p = 0.5; 
+							
+if constexpr (contains_type<double,NT_TYPES>()) {  // if we have double allowed we cna do this
 							if(i.getBuiltin() == BuiltinOp::op_FLIPP) { // only for built-in ops do we 
-								static_assert(contains_type<double,NT_TYPES>()); // must have a double, right?
 								p = getpop<double>(); // reads a double argfor the coin weight
 								if(std::isnan(p)) { p = 0.0; } // treat nans as 0s
 								assert(p <= 1.0 && p >= 0.0);
 							}
-							
+} else {					// tif there is no double, we can't use flipp
+							assert(i.getBuiltin() != BuiltinOp::op_FLIPP);
+}							
 				
 							pool->copy_increment_push(this, true,  log(p));
 //							pool->copy_increment_push(*this, false,  log(1.0-p));
