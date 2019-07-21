@@ -1,7 +1,7 @@
 
 #pragma once 
 
-#define DEBUG_MCTS 1
+//#define DEBUG_MCTS 1
 
 #include <atomic>
 #include <mutex>
@@ -198,7 +198,7 @@ public:
 		
 		// and add this sampel going up too
 		if(parent != nullptr) {
-			parent->add_sample(v, 0); // we don't add num going up because we incremented it on the way down (while sampling)
+			parent->add_sample(v, num);
 		}
     }
 	void operator<<(double v) { add_sample(v,1); }
@@ -208,17 +208,18 @@ public:
 	virtual void playout() {
 		// this is how we compute playouts here -- defaultly mcmc 
 		
+#ifdef DEBUG_MCTS
+	COUT "\tPLAYOUT " <<  value.string() TAB std::this_thread::get_id() ENDL;
+#endif
+
 		HYP h0 = value; // need a copy to change resampling on 
 		
 		if(not h0.value.is_null()){
 			h0.value.map( [](Node& n) { n.can_resample = false; } ); // don't change this structural piece
 		}
 		
-#ifdef DEBUG_MCTS
-	COUT "\tPLAYOUT " <<  h0.string() TAB std::this_thread::get_id() ENDL;
-#endif
-				
-		std::function<void(HYP& h)> wrapped_callback = [this](HYP& h) -> void { 
+		// make a wrapper to add samples
+		std::function<void(HYP& h)> wrapped_callback = [this](HYP& h) { 
 			this->callback(h);
 			this->add_sample(h.posterior);
 		};
@@ -226,6 +227,7 @@ public:
 		auto h = h0.copy_and_complete(); // fill in any structural gaps
 		
 		MCMCChain<HYP> chain(h, data, wrapped_callback);
+		
 		chain.run(mcmc_steps, 0); // run mcmc with restarts 
 	}
 	
@@ -330,10 +332,7 @@ public:
 					
 					open = open || c.open; // I'm open if any child is
 				}
-			}
-			
-			
-			
+			}			
 		}
 		
 		// even after we try to add, we might not have any. If so, return
@@ -341,16 +340,16 @@ public:
 			open = false;
 			return;
 		}
-		
-		// now if we get here, we must have at least one open child
-		// so we can pick the best and recurse 
-		
-		nvisits++; // increment our visit count on our way down so other threads don't follow
-		
-		// choose the best and recurse
-		size_t bi = best_child_index();
-		children[bi].search_one();
-		
+		else {
+			// now if we get here, we must have at least one open child
+			// so we can pick the best and recurse 
+			
+			nvisits++; // increment our visit count on our way down so other threads don't follow
+			
+			// choose the best and recurse
+			size_t bi = best_child_index();
+			children[bi].search_one();
+		}
     } // end search
 
 
