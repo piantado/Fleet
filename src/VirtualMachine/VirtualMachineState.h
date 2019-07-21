@@ -67,6 +67,7 @@ public:
 	VirtualMachineState(t_x x, t_return e, size_t _recursion_depth=0) :
 		err(e), lp(0.0), recursion_depth(_recursion_depth), aborted(abort_t::NO_ABORT) {
 		xstack.push(x);
+//		opstack.reserve(64);
 	}
 	
 	virtual ~VirtualMachineState() {};	
@@ -84,19 +85,33 @@ public:
 	template<typename T>
 	T getpop() {
 		// retrieves and pops the element of type T from the stack
-		if(aborted != abort_t::NO_ABORT) return T(); // don't try to access the stack because we're aborting
+		//if(aborted != abort_t::NO_ABORT) return T(); // don't try to access the stack because we're aborting
 		assert(std::get<Stack<T>>(stack.value).size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
-		T x = std::get<Stack<T>>(stack.value).top();
+		T x = std::move(std::get<Stack<T>>(stack.value).top());
 		std::get<Stack<T>>(stack.value).pop();
 		return x;
 	}
 	template<typename T>
 	T gettop() {
 		// retrieves but does not remove
-		if(aborted != abort_t::NO_ABORT) return T(); // don't try to access the stack because we're aborting
+		//if(aborted != abort_t::NO_ABORT) return T(); // don't try to access the stack because we're aborting
 		assert(std::get<Stack<T>>(stack.value).size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
+		return std::get<Stack<T>>(stack.value).top();
+	}
+	
+//	template<typename T>
+//	T gettopref() {
+//		// reference to the top, to save us making some copies
+//		assert(std::get<Stack<T>>(stack.value).size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
+//		
+//		return std::get<Stack<T>>(stack.value).topref();
+//	}
+//	
+	template<typename T>
+	auto top() {
+		// get a reference to the top. This is used by a major 
 		return std::get<Stack<T>>(stack.value).top();
 	}
 	

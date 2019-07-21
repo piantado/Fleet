@@ -30,12 +30,13 @@ public:
 
     std::vector<MCTSNode> children;
 
-    std::atomic<unsigned long> nvisits;  // how many times have I visited each node?
-    std::atomic<bool> open; // am I still an available node?
+	// NOTE: These used to be atomics?
+    unsigned long nvisits;  // how many times have I visited each node?
+    bool open; // am I still an available node?
 	 
-	const bool expand_all_children = false; // when we expand a new leaf, do we expand all children or just sample one (from their priors?) 
+	bool expand_all_children = false; // when we expand a new leaf, do we expand all children or just sample one (from their priors?) 
 	
-	double (*compute_playouts)(const HYP*); // a function point to how we compute playouts
+	double (*compute_playouts)(const HYP&); // a function point to how we compute playouts
 	double explore; 
 	
 	mutable std::mutex child_mutex; // for access in parallelTempering
@@ -47,26 +48,40 @@ public:
     HYP value;
     ScoringType scoring_type;// how do I score playouts?
   
-    MCTSNode(MCTSNode* par, HYP& v) : parent(par), value(v), scoring_type(par->scoring_type) {
+    MCTSNode(MCTSNode* par, HYP& v) 
+		: expand_all_children(par->expand_all_children), compute_playouts(par->compute_playouts), 
+		  explore(par->explore), parent(par), value(v), scoring_type(par->scoring_type) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
-		explore=par->explore;
-		compute_playouts=par->compute_playouts;
 		
         initialize();	
     }
     
-    MCTSNode(double ex, HYP& h0, double cp(const HYP*), ScoringType st=ScoringType::SAMPLE ) : 
+    MCTSNode(double ex, HYP& h0, double cp(const HYP&), ScoringType st=ScoringType::SAMPLE ) : 
 		compute_playouts(cp), explore(ex), parent(nullptr), value(h0), scoring_type(st) {
         initialize();        
     }
-    
-    ~MCTSNode() {
-        for(auto c: children)
-            delete c;
-			
-        if(value != nullptr) delete value;
-    }
-    
+	
+	// should not copy or move because then the parent pointers get all messed up 
+	MCTSNode(const MCTSNode& m) = delete;
+	MCTSNode(MCTSNode&& m) {
+		std::lock_guard guard(m.child_mutex); // get m's lock before moving
+		std::lock_guard guard2(child_mutex); // and mine to be sure
+		
+		assert(m.children.size() ==0); // else parent pointers get messed up
+		nvisits = m.nvisits;
+		open = m.open;
+		expand_all_children = m.expand_all_children;
+		compute_playouts = m.compute_playouts;
+		explore = m.explore;
+		statistics = std::move(statistics);
+		parent = m.parent;
+		value = std::move(m.value);
+		scoring_type = m.scoring_type;
+		children = std::move(children);
+		
+	}
+	
+	
     size_t size() const {
         int n = 1;
         for(auto c : children)
@@ -80,39 +95,40 @@ public:
     }
     
 	
-    void print(std::ostream& o, const int depth, const bool sort) {
+    void print(std::ostream& o, const int depth, const bool sort) const { 
         std::string idnt = std::string(depth, '\t');
         
 		std::string opn = (open?" ":"*");
-		o << idnt TAB opn TAB score() TAB statistics.median() TAB statistics.max TAB "S=" << nvisits TAB value->string() ENDL;
+		o << idnt TAB opn TAB score() TAB statistics.median() TAB statistics.max TAB "S=" << nvisits TAB value.string() ENDL;
 		
 		// optional sort
 		if(sort) {
 			// we have to make a copy of our pointer array because otherwise its not const			
-			std::vector<MCTSNode*> c2 = children;			
+			std::vector<const MCTSNode*> c2;
+			for(const auto& c : children) c2.push_back(&c);
 			std::sort(c2.begin(), c2.end(), [](const auto a, const auto b) {return a->statistics.N > b->statistics.N;}); // sort by how many samples
 
-			for(auto c : c2) c->print(o, depth+1, sort);
+			for(const auto& c : c2) c->print(o, depth+1, sort);
 		}
 		else {		
-			for(auto c : children) c->print(o, depth+1, sort);
+			for(auto& c : children) c.print(o, depth+1, sort);
 		}
     }
  
 	// wrappers for file io
-    void print(const bool sort=true) { 
+    void print(const bool sort=true) const { 
 		print(std::cout, 0, sort);		
 	}
-	void printerr(const bool sort=true) {
+	void printerr(const bool sort=true) const {
 		print(std::cerr, 0);
 	}    
-	void print(const char* filename, const bool sort=true) {
+	void print(const char* filename, const bool sort=true) const {
 		std::ofstream out(filename);
 		print(out, 0, sort);
 		out.close();		
 	}
 
-	double score() {
+	double score() const {
 		// Compute the score of this node, which is used in sampling down the tree
 		// NOTE: this can't be const because the StreamingStatistics need a mutex
 		
@@ -145,31 +161,33 @@ public:
 
 	size_t open_children() const {
 		size_t n = 0;
-		for(auto const c : children) {
-			n += c->open;
+		for(auto const& c : children) {
+			n += c.open;
 		}
 		return n;
 	}
 
 
-	MCTSNode* best_child() {
+	size_t best_child_index() const {
 		// returns a pointer to the best child according to the scoring function
 		// NOTE: This might return a nullptr in highly parallel situations
 		std::lock_guard guard(child_mutex);
 		
-		MCTSNode* best = nullptr;
+		size_t best_index = 0;
 		double best_score = -infinity;
-		for(auto const c : children) {
-			if(c->open) {
+		size_t idx = 0;
+		for(auto& c : children) {
+			if(c.open) {
 				//if(c->statistics.N==0) return c; // just take any unopened
-				double s = c->score();
+				double s = c.score();
 				if(s >= best_score) {
 					best_score = s;
-					best = c;
+					best_index = idx;
 				}
 			}
+			idx++;
 		}
-		return best;
+		return best_index;
 	}
 
 
@@ -192,7 +210,7 @@ public:
 		
 		if(children.size() == 0) { // check again in case someone else has edited in the meantime
 			
-			size_t N = value->neighbors();
+			size_t N = value.neighbors();
 			//std::cerr << N TAB value->string() ENDL;
 						
 			if(N==0) { // remove myself from the tree since these routes have been explored
@@ -203,16 +221,15 @@ public:
 				for(size_t ei = 0; ei<N; ei++) {
 					size_t eitmp = ei; // since this is passed by refernece
 					
-					auto v = value->make_neighbor(eitmp);
+					auto v = value.make_neighbor(eitmp);
 					
 #ifdef DEBUG_MCTS
         if(value != nullptr) { // the root
             std::cout TAB "Adding child " <<  this << "\t[" << v->string() << "] " ENDL;
         }
 #endif
-					MCTSNode<HYP>* c = new MCTSNode<HYP>(this, v);
-					
-					children.push_back(c);
+					//children.push_back(MCTSNode<HYP>(this,v));
+					children.emplace_back(this,v);
 				}
 			}
 		}
@@ -263,7 +280,7 @@ public:
     void search_one() {
         // sample a path down the tree and when we get to the end
         // use random playouts to see how well we do
-        assert(value != nullptr || parent==nullptr); // only the root gets a null value
+        assert(parent==nullptr); // only the root gets a null value
 
 	//	MYDEBUG(DEBUG_MCTS, "MCTS Search", this, value->string(), nvisits);
 
@@ -275,7 +292,7 @@ public:
 		
 		if(nvisits == 0) { // I am a leaf of the search who has not been expanded yet
 			add_sample(compute_playouts(value), 1); // update my internal counts
-			open = value->neighbors() > 0; // only open if the value is partial
+			open = value.neighbors() > 0; // only open if the value is partial
 			return;
 		}
 		
@@ -288,13 +305,13 @@ public:
 				// compute playouts on all of them. If we don't do this, we'd only choose one
 				// and then the one we choose the first time determines the probability of coming
 				// back to all the others, which may mislead us (e.g. we may never return to a good playout)
-				for(auto c: children) {
+				for(auto& c: children) {
 					nvisits++; // I am going to get a visit for each of these
 					
-					c->add_sample(c->compute_playouts(value), 1); // update my internal counts
-					c->open = c->value->neighbors() > 0; // only open if the value is partial
+					c.add_sample(c.compute_playouts(value), 1); // update my internal counts
+					c.open = c.value.neighbors() > 0; // only open if the value is partial
 					
-					open = open || c->open; // I'm open if any child is
+					open = open || c.open; // I'm open if any child is
 				}
 			}
 			
@@ -314,8 +331,8 @@ public:
 		nvisits++; // increment our visit count on our way down so other threads don't follow
 		
 		// choose the best and recurse
-		auto b = best_child();
-		if(b != nullptr) b->search_one();
+		size_t bi = best_child_index();
+		children[bi].search_one();
 		
     } // end search
 

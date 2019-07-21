@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <stack>
 
 #include "Grammar.h"
 #include "Hash.h"
@@ -17,6 +18,57 @@ public:
 	const Rule*  rule; // which rule did I use?
 	double       lp; 
 	bool         can_resample;
+	
+	
+	
+//	
+//	class NodeIterator : public std::iterator<std::forward_iterator_tag, Node>
+//	{
+//		Node* node;
+//		std::stack<Node*> ancestors; // who did I visit before I got here? Necessary for recursing and incrementing
+//		
+//		public:
+//			NodeIterator(Node* n) : node(n) {};
+//			NodeIterator()        : node(nullptr) {};
+//
+//			Node& operator*() const  { return *node; }
+//			Node* operator->() const { return  node; }
+// 
+//			NodeIterator& operator++() {
+//				// This is the primary update rule, that has to manage the ancestors stack
+//				// to iterate through 
+//				if(ancestors.empty()) {
+//					return *endNode;
+//				}
+//				else {
+//					// visit my next sibling
+////					Node* parent = ancestors.top();
+//					
+//				}
+//				
+//			}
+//			
+//			NodeIterator operator+(int n) {
+//				for(int i=0;i<n;i++) {
+//					this->operator++();
+//				}
+//			}
+//
+//			friend bool operator==(NodeIterator a, NodeIterator b) { return a==b; };
+//			friend bool operator!=(NodeIterator a, NodeIterator b) { return a!=b; };
+//
+//			// one way conversion: iterator -> const_iterator
+//			//operator IntrusiveSlistIterator<T const, Tag>() const;
+//	};
+//
+//	
+//	static const NodeIterator endNode;
+//	
+//	
+	
+	
+	
+	
 	
 	Node(const Rule* r=nullptr, double _lp=0.0, bool cr=true) : 
 		child(r==nullptr ? 0 : r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
@@ -263,6 +315,7 @@ public:
 		//       string order matches evaluation order
 		// TODO: We should restructure this to use "map" so that the order is always the same as for printing
 		
+		
 		// and just a little checking here
 		for(size_t i=0;i<rule->N;i++) {
 			assert(not child[i].is_null() && "Cannot linearize a Node with null children");
@@ -370,16 +423,16 @@ public:
 		return n;
 	}
 	
-	virtual size_t first_neighbors(const Grammar* g) const {
-		// How many neighbors does my first gap have?
-		for(size_t i=0;i<rule->N;i++){
-			if(child[i].is_null()) return g->count_expansions(rule->child_types[i]);
-			
-			size_t n = child[i].first_neighbors(g);			
-			if(n > 0) return n;
-		}
-		return 0;
-	}
+//	virtual size_t first_neighbors(const Grammar* g) const {
+//		// How many neighbors does my first gap have?
+//		for(size_t i=0;i<rule->N;i++){
+//			if(child[i].is_null()) return g->count_expansions(rule->child_types[i]);
+//			
+//			size_t n = child[i].first_neighbors(g);			
+//			if(n > 0) return n;
+//		}
+//		return 0;
+//	}
 	
 	virtual void expand_to_neighbor(const Grammar* g, int& which) {
 		// here we find the neighbor indicated by which and expand it into the which'th neighbor
@@ -413,7 +466,6 @@ public:
 				child[i].complete(g);
 			}
 		}
-		assert(0);
 	}
 	
 	

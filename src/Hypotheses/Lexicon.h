@@ -173,28 +173,54 @@ public:
 	}
 	
 	
+//	virtual std::pair<HYP,double> propose() const {
+//		HYP x; // set the size
+//		x.factors.resize(factors.size());
+//		
+//		// we will always flip one,
+//		// and flip the rest at random
+//		// if we dont always flip one, one single 
+//		// factors we waste half of our samples!
+//		//auto i = myrandom(factors.size()); 
+//		
+//		double fb = 0.0;
+//		for(size_t k=0;k<factors.size();k++) {
+//			// defaultly we'll propose to each factor -- many proposals do nothing anyways
+//			auto [h, _fb] = factors[k].propose();
+//			x.factors[k] = h;
+//			fb += _fb;
+//		}
+//
+//		assert(x.factors.size() == factors.size());
+//		return std::make_pair(x, fb);		
+//	}
+
 	virtual std::pair<HYP,double> propose() const {
 		HYP x; // set the size
 		x.factors.resize(factors.size());
 		
-		// we will always flip one,
-		// and flip the rest at random
-		// if we dont always flip one, one single 
-		// factors we waste half of our samples!
-		//auto i = myrandom(factors.size()); 
-		
 		double fb = 0.0;
-		for(size_t k=0;k<factors.size();k++) {
-			// defaultly we'll propose to each factor -- many proposals do nothing anyways
-			auto [h, _fb] = factors[k].propose();
-			x.factors[k] = h;
-			fb += _fb;
+		
+		// TODO: Check that detailed balance is ok here?
+		bool flipped = false;
+		while(not flipped) {
+			for(size_t k=0;k<factors.size();k++) {
+				if(flip()) {
+					auto [h, _fb] = factors[k].propose();
+					x.factors[k] = h;
+					fb += _fb;
+					flipped = true; //someone was flipped
+				}
+				else {
+					x.factors[k] = factors[k]; // no proposal
+				}
+			}
 		}
-
+		
 		assert(x.factors.size() == factors.size());
 		return std::make_pair(x, fb);		
 	}
-//	
+	
 	
 	virtual HYP restart() const  {
 		HYP x;

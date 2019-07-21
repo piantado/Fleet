@@ -30,7 +30,7 @@ public:
 	unsigned long N; // how many have I seen? An time I *try* to add something to this, N gets incremented
 	
 protected:
-	std::mutex lock;		
+	//mutable std::mutex lock;		
 
 public:
 
@@ -53,7 +53,7 @@ public:
 	T min(){ return *vals.begin(); }
 	
 	void add(T x) {
-		std::lock_guard guard(lock);
+		//std::lock_guard guard(lock);
 		
 		if((!unique) || vals.find(x) == vals.end()) {
 		
@@ -79,8 +79,8 @@ public:
 	void operator<<(T x) {	add(x);}
 	
 	// Return a sample from my vals (e.g. a sample of the samples I happen to have saved)
-	T sample() {
-		std::lock_guard guard(lock);
+	T sample() const {
+		//std::lock_guard guard(lock);
 		if(N == 0) return NaN;
 		std::uniform_int_distribution<int> sampler(0,vals.size()-1);
 		auto pos = vals.begin();

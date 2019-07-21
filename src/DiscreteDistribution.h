@@ -68,7 +68,7 @@ public:
 		}
 	}
 	
-	std::map<T,double>& values() {
+	const std::map<T,double>& values() const {
 		return m;
 	}
 	

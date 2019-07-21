@@ -84,54 +84,7 @@ public:
 		// simplest way of doing proposals
 		auto x = regeneration_proposal(grammar, value);	
 		return std::make_pair(HYP(this->grammar, x.first), x.second); // return HYP and fb
-		
-		// Just do regeneration proposals -- but require them to be unique 
-		// so we can more easily count accept/reject
-		/// Nooo I think we can't do this and keep detailed balance...
-//		while(!CTRL_C) {
-//			auto x = regeneration_proposal(grammar, value);	
-//			
-//			ret->set_value(x.first); // please use setters -- needed for stuff like symbolicRegression
-//			fb = x.second;
-//			
-//			if(*ret->value == *value) delete ret->value; // keep going	
-//			else					  break; // done		
-//		}
-
-//		while(true) {
-//			if(uniform() < 0.5) { // p of regeneration
-//				std::tie(ret->value, fb) = regeneration_proposal(grammar, value);
-//			}
-//			else {
-//				if(uniform() < 0.5) {
-//					std::tie(ret->value, fb) = insert_proposal_tree(grammar, value);
-//				}
-//				else {
-//					std::tie(ret->value, fb) = delete_proposal_tree(grammar, value);
-//				}
-//			}
-//			
-//			if(*ret->value == *value) delete ret->value; // keep going	
-//			else					  break; // done	
-//		}
-
-
-		// choose a type:
-//		if(uniform() < 0.1) { // p of regeneration
-//			std::tie(ret->value, fb) = regeneration_proposal(grammar, value);
-//		}
-//		else {
-//			if(uniform() < 0.5) {
-//				std::tie(ret->value, fb) = insert_proposal_tree(grammar, value);
-//			}
-//			else {
-//				std::tie(ret->value, fb) = delete_proposal_tree(grammar, value);
-//			}
-//		}
-		
-//		return std::make_pair(ret, fb);
-	}
-	
+	}	
 
 	
 	virtual HYP restart() const {
@@ -264,20 +217,6 @@ public:
 		// Usually this means that that the value is complete, meaning no partial subtrees
 		return value.is_evaluable();
 	}
-
-//
-//	virtual std::string serialize() const {
-//		return std::to_string(this->prior) + SERIALIZATION_SEPERATOR + std::to_string(this->likelihood) + SERIALIZATION_SEPERATOR + this->value.parseable();
-//	}
-//	
-//	virtual void deserialize(const std::string s) {	
-//		auto x = split(s, SERIALIZATION_SEPERATOR);
-//		this->prior      = std::stod(x[0]);
-//		this->likelihood = std::stod(x[1]);
-//		this->set_value(grammar->expand_from_names<Node>(x[2]));		
-//	}
-
-
 	 
 };
 //

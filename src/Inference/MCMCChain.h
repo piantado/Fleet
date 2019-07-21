@@ -111,8 +111,17 @@ public:
 				
 			++proposals;
 			
-			// actually compute the posterior on the dat 
-			proposal.compute_posterior(*data);
+			// A lot of proposals end up with the same function, so if so, save time by not
+			// computing the posterior
+			if(proposal == current) {
+				// copy all the properties
+				proposal.posterior  = current.posterior;
+				proposal.prior      = current.prior;
+				proposal.likelihood = current.likelihood;
+			}
+			else {
+				proposal.compute_posterior(*data);
+			}
 
 			#ifdef DEBUG_MCMC
 				std::cerr << "# Proposed \t" << proposal->posterior TAB proposal->prior TAB proposal->likelihood TAB fb TAB proposal->string() ENDL;

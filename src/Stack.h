@@ -19,8 +19,12 @@ public:
 	void pop() {
 		this->pop_back();
 	}
-	
+
 	T top() {
 		return this->back();
-	}	
+	}
+
+	T& topref() {
+		return this->back();
+	}
 };

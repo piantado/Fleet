@@ -26,6 +26,18 @@ public:
 	StreamingStatistics(size_t rs=1000) : 
 		min(infinity), max(-infinity), sum(0.0), lse(-infinity), N(0), reservoir_sample(rs) {
 	}
+	
+	void operator=(StreamingStatistics&& s) {
+		std::lock_guard guard(s.lock); // acquire s's lock
+		std::lock_guard guard2(lock);
+		min = s.min;
+		max = s.max;
+		sum = s.sum;
+		lse = s.lse;
+		N   = s.N;
+		streaming_median = std::move(s.streaming_median);
+		reservoir_sample = std::move(s.reservoir_sample);
+	}
 
 	void add(double x) {
 		++N; // always count N, even if we get nan/inf (this is required for MCTS, otherwise we fall into sampling nans)
@@ -49,7 +61,7 @@ public:
 		add(x);
 	}
 	
-	double sample() {
+	double sample() const {
 		return reservoir_sample.sample();
 	}
 	

@@ -122,12 +122,6 @@ public:
 			CASE_FUNC0(CustomOp::op_EMPTYSTRING, S,          [](){ return S("");} )
 			CASE_FUNC1(CustomOp::op_EMPTY,       bool,  S,   [](const S& s){ return s.size()==0;} )
 			CASE_FUNC2(CustomOp::op_STREQ,       bool,  S,S, [](const S& a, const S b){return a==b;} )
-			CASE_FUNC1(CustomOp::op_CDR,         S, S,       [](const S& s){ return (s.empty() ? S("") : s.substr(1,S::npos)); } )		
-			CASE_FUNC1(CustomOp::op_CAR,         S, S,       [](const S& s){ return (s.empty() ? S("") : S(1,s.at(0))); } )		
-			CASE_FUNC2e(CustomOp::op_CONS,       S, S,S,
-								[](const S& x, const S& y){ S a = x; a.append(y); return a; },
-								[](const S& x, const S& y){ return (x.length()+y.length()<maxlength ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
-								)
 			CASE_FUNC0(CustomOp::op_TERMINAL,       S,     [i](){ return alphabet.substr(i.arg, 1);} ) // arg stores the index argument
 			
 			CASE_FUNC0(CustomOp::op_P,             double,           [i](){ return double(i.arg)/10.0;} )
@@ -154,10 +148,64 @@ public:
 			)
 			
 
-			CASE_FUNC2(CustomOp::op_Setcons,       StrSet, S, StrSet, [](S& x, StrSet& y){ y.insert(x); return y; }  )
+
+			CASE_FUNC1(CustomOp::op_CDR,         S, S,       [](const S& s){ return (s.empty() ? S("") : s.substr(1,S::npos)); } )		
+			CASE_FUNC1(CustomOp::op_CAR,         S, S,       [](const S& s){ return (s.empty() ? S("") : S(1,s.at(0))); } )		
+			CASE_FUNC2e(CustomOp::op_CONS,       S, S,S,
+								[](const S& x, const S& y){ S a = x; a.append(y); return a; },
+								[](const S& x, const S& y){ return (x.length()+y.length()<maxlength ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
+								)
+
+//			case CustomOp::op_CDR: {
+//				auto t = vms.top<S>();
+//				if(t.length() > 0) {
+//					
+//					
+//					t = t.substr(1,S::npos);
+//					
+//				}
+//				break;
+//			}
+//			case CustomOp::op_CDR: {
+//				if(std::get<Stack<S>>(vms.stack.value).top().length() > 0)
+//					std::get<Stack<S>>(vms.stack.value).top() = std::get<Stack<S>>(vms.stack.value).top().substr(1,S::npos);
+//				break;
+//			}
+//			case CustomOp::op_CAR: {
+//				if(std::get<Stack<S>>(vms.stack.value).top().length() > 0)
+//					std::get<Stack<S>>(vms.stack.value).top() = S(1,std::get<Stack<S>>(vms.stack.value).top().at(0));
+//				break;
+//			}
+//			case CustomOp::op_CONS: {
+//				S y = vms.getpop<S>();
+//				
+//				if(y.length() + std::get<Stack<S>>(vms.stack.value).top().length() > maxlength) {
+//					return abort_t::SIZE_EXCEPTION;
+//				}
+//				
+//				std::get<Stack<S>>(vms.stack.value).top().append(y);
+//				
+//				
+//				
+//				break;
+//			}
 			
-			CASE_FUNC2(CustomOp::op_Setremove,     StrSet, StrSet, S, [](StrSet& y, S& x){ if(y.count(x)) { y.erase(x); } return y; }  )
+			// These are actually much faster if we leave the set on top, since we're just modifying the top value
+//			CASE_FUNC2(CustomOp::op_Setcons,       StrSet, S, StrSet, [](S& x, StrSet& y){ y.insert(x); return y; }  )
+//			CASE_FUNC2(CustomOp::op_Setremove,     StrSet, StrSet, S, [](StrSet& y, S& x){ if(y.count(x)) { y.erase(x); } return y; }  )
+			case CustomOp::op_Setcons: {
+				S y = vms.getpop<S>();
+				std::get<Stack<StrSet>>(vms.stack.value).top().insert(y);				
+				break;
+			}
+			case CustomOp::op_Setremove: {
+				S y = vms.getpop<S>();
+				std::get<Stack<StrSet>>(vms.stack.value).top().erase(y);				
+				break;
+			}
 			
+
+
 			case CustomOp::op_UniformSample: {
 					// implement sampling from the set.
 					// to do this, we read the set and then push all the alternatives onto the stack
@@ -166,10 +214,20 @@ public:
 					// now just push on each, along with their probability
 					// which is here decided to be uniform.
 					const double lp = (s.empty()?-infinity:-log(s.size()));
-					for(auto x : s) {
+					for(const auto& x : s) {
 						pool->copy_increment_push(&vms,x,lp);
 					}
+
+
+					// now just push on each, along with their probability
+					// which is here decided to be uniform.
+//					const double lp = (vms.gettopref<StrSet>().empty()?-infinity:-log(vms.gettopref<StrSet>().size()));
+//					for(const auto& x : vms.gettopref<StrSet>()) {
+//						pool->copy_increment_push(&vms,x,lp);
+//					}
+//					// no need to actually pop from vms since it will be destroyed
 					
+//					
 					// TODO: we can make this faster, like in flip, by following one of the paths?
 					return abort_t::RANDOM_CHOICE; // if we don't continue with this context 
 			}
@@ -184,18 +242,15 @@ public:
 };
 
 
-#include <functional>
-#include <unordered_map>
-std::unordered_map<std::string, std::pair<double,double>> PosteriorCache; // cach our posteriors
-
 
 class MyHypothesis : public Lexicon<MyHypothesis, InnerHypothesis, S, S> {
 public:	
 	static constexpr double alpha = 0.99;
+	using Super = Lexicon<MyHypothesis, InnerHypothesis, S, S>;
 	
-	MyHypothesis()           : Lexicon<MyHypothesis,InnerHypothesis,S,S>()   {}
+	MyHypothesis()                       : Super()   {}
 
-	MyHypothesis(const MyHypothesis& h)           : Lexicon<MyHypothesis,InnerHypothesis,S,S>(h)  {}
+	MyHypothesis(const MyHypothesis& h)  : Super(h)  {}
 
 	virtual double compute_prior() {
 		// since we aren't searching over nodes, we are going to enforce a prior that requires
@@ -263,34 +318,7 @@ public:
 		size_t i = factors.size()-1; 
 		return factors[i].call(x,err,this,MAX_STEPS_PER_FACTOR,MAX_OUTPUTS_PER_FACTOR,MIN_LP); 
 	}
-	 
-	 
-	 double compute_posterior(const t_data& data) {
 	
-		std::string h = this->string();
-		//auto h = std::hash<std::string>(s); //hash();
-		
-		auto loc = PosteriorCache.find(h);
-		if(loc != PosteriorCache.end()) {
-			prior = loc->second.second;
-			likelihood = loc->second.second;
-			posterior = prior + likelihood;
-		}
-		else {
-			Lexicon<MyHypothesis, InnerHypothesis, S, S>::compute_posterior(data);
-			
-			PosteriorCache[h] = std::make_pair(prior, likelihood);
-		} 
-		return posterior;
-	 }
-	 
-//	 double compute_posterior(const t_data& data) {
-//	
-//		auto h = this->hash();
-//		if(h < 12) { CERR h ENDL;}
-//		return Lexicon<MyHypothesis, InnerHypothesis, S, S>::compute_posterior(data);
-//	 }
-	 
 	 
 	 
 	 // We assume input,output with reliability as the number of counts that input was seen going to that output
@@ -302,20 +330,26 @@ public:
 		 likelihood = 0.0;
 		 
 		 // call -- treats all input as emptystrings
-		 auto M = call(S(""),S("<err>")); 
+		 const auto M = call(S(""),S("<err>")); 
 
 		 // first pre-compute a prefix tree
 		 // TODO: This might be faster to store in an actual tree
 		 std::map<S,double> prefix_tree;
-		 for(auto m : M.values()){ 
-			 S mstr = m.first + "!"; // add a stop symbol
-			 for(size_t i=0;i<=mstr.length();i++){
-				 S pfx = mstr.substr(0,i);
-				 if(prefix_tree.count(pfx) == 0) {
+		 for(const auto& m : M.values()){ 
+			 const S mstr = m.first + "!"; // add a stop symbol
+			 S pfx; pfx.reserve(mstr.length());
+			 
+			 for(size_t i=0;i<mstr.length();i++){
+				 auto loc = prefix_tree.find(pfx);
+				 if(loc == prefix_tree.end()) {
 					 prefix_tree[pfx] = m.second;
 				 } else {
-					 prefix_tree[pfx] = logplusexp(prefix_tree[pfx], m.second);
+					 prefix_tree[pfx] = logplusexp( (*loc).second, m.second);
 				 }
+				 
+				 // faster than computing substr is concatenating on with 
+				 // each character, assuming we have reserved the right size
+				 pfx += mstr.at(i); 
 			 }			 
 		 }
 		 
@@ -324,11 +358,12 @@ public:
 		 const double lerr = log((1.0-alpha)/alphabet.size());
 		 
 		 // now go through and compute a character-by-character predictive likelihood
+		 // This does not seem to benefit from the same character-by-character stuff as above
 		 for(const auto& a : data) {
-			 S astr = a.output + "!"; // add a stop symbol
+			 const S astr = a.output + "!"; // add a stop symbol
 			 for(size_t i=0;i<=astr.length();i++) {
-				S pfx = astr.substr(0,i);
-				S prd = astr.substr(i,1); // get the next character we predict
+				const    S pfx = astr.substr(0,i);
+				const char prd = astr.at(i); // get the next character we predict
 				
 				// get conditional probability
 				if(prefix_tree.count(pfx+prd)) { // conditional prob with outlier likelihood
@@ -340,13 +375,10 @@ public:
 			 }
 		 }
 		 
-//		 raise(SIGABRT); 
-		 
 		 return likelihood;		 
 	 }
 	 
 };
-
 
 
 
@@ -407,9 +439,6 @@ int main(int argc, char** argv){
 	CLI11_PARSE(app, argc, argv);
 
 	Fleet_initialize();
-	
-	PosteriorCache.reserve(10000000);
-
 	
 	// Input here is going to specify the PRdata path, minus the txt
 	
