@@ -453,7 +453,6 @@ public:
 				child[i].expand_to_neighbor(g,which);
 			}
 		}
-		assert(0);
 	}
 	
 	virtual void complete(const Grammar* g) {

@@ -29,7 +29,6 @@ public:
 	
 	void operator=(StreamingStatistics&& s) {
 		std::lock_guard guard(s.lock); // acquire s's lock
-		std::lock_guard guard2(lock);
 		min = s.min;
 		max = s.max;
 		sum = s.sum;

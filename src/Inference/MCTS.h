@@ -1,7 +1,7 @@
 
 #pragma once 
 
-//#define DEBUG_MCTS 1
+#define DEBUG_MCTS 1
 
 #include <atomic>
 #include <mutex>
@@ -224,9 +224,7 @@ public:
 					auto v = value.make_neighbor(eitmp);
 					
 #ifdef DEBUG_MCTS
-        if(value != nullptr) { // the root
-            std::cout TAB "Adding child " <<  this << "\t[" << v->string() << "] " ENDL;
-        }
+        COUT "\tAdding child " <<  this << "\t[" << v.string() << "] " ENDL;
 #endif
 					//children.push_back(MCTSNode<HYP>(this,v));
 					children.emplace_back(this,v);
@@ -244,9 +242,7 @@ public:
 		for(unsigned long i=0; (i<steps || steps==0) && !CTRL_C;i++){
 			
 #ifdef DEBUG_MCTS
-			if(value != nullptr) { // the root
-				COUT "MCTS SEARCH LOOP" TAB i TAB std::this_thread::get_id() ENDL;
-			}
+			COUT "\tMCTS SEARCH LOOP" TAB i TAB std::this_thread::get_id() ENDL;
 #endif
 			if(time > 0) {
 				double elapsed_time = std::chrono::duration_cast<std::chrono::seconds>(clock::now() - start_time).count();
@@ -280,15 +276,10 @@ public:
     void search_one() {
         // sample a path down the tree and when we get to the end
         // use random playouts to see how well we do
-        assert(parent==nullptr); // only the root gets a null value
-
-	//	MYDEBUG(DEBUG_MCTS, "MCTS Search", this, value->string(), nvisits);
-
-//#ifdef DEBUG_MCTS
-//        if(value != nullptr) { // the root
-//            COUT "MCTS SEARCH " <<  this << "\t[" << value->string() << "] " << nvisits TAB std::this_thread::get_id() ENDL;
-//        }
-//#endif
+       
+#ifdef DEBUG_MCTS
+		COUT "MCTS SEARCH " <<  this << "\t[" << value.string() << "] " << nvisits TAB std::this_thread::get_id() ENDL;
+#endif
 		
 		if(nvisits == 0) { // I am a leaf of the search who has not been expanded yet
 			add_sample(compute_playouts(value), 1); // update my internal counts
