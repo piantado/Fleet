@@ -45,7 +45,7 @@ public:
 			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 	}
-	
+
 	MCMCChain(const MCMCChain& m) :
 		current(m.current), data(m.data), themax(m.themax), callback(m.callback), restart(m.restart),
 		returnmax(m.returnmax), samples(m.samples), proposals(m.proposals), acceptances(m.acceptances), 

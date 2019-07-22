@@ -3,31 +3,19 @@
 #include <type_traits>
 
 /* 
- * 
- * We should rewrite with an "index" stack, and an index type (e.g. short). 
- * That would prevent us from having to use "short"
- * and it will make memoization easier -- make mem a tuple
- * 
- * 
  * NOTE: CURRNTLY ERR IS NOT HANDLED RIGHT -- SHOULD HAVE A STACK I THINK?
  */
-
 
 // Remove n from the stack
 void popn(Program& s, size_t n) {
 	for(size_t i=0;i<n;i++) s.pop();
 }
 
-
 // Check if a variadic template Ts contains any type X
 template<typename X, typename... Ts>
 constexpr bool contains_type() {
 	return std::disjunction<std::is_same<X, Ts>...>::value;
 }
-
-
-
-
 
 template<typename t_x, typename t_return>
 class VirtualMachineState {

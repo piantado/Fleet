@@ -49,14 +49,13 @@ const size_t PREC_REC_N   = 25;  // if we make this too high, then the data is f
 const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The more data, the slower...
 const size_t MAX_PR_LINES = 1000000; 
 
-//std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "10000", "50000", "100000"}; // how many data points do we run on?
-std::vector<S> data_amounts={"100"}; // how many data points do we run on?
+std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "10000", "50000", "100000"}; // how many data points do we run on?
+//std::vector<S> data_amounts={"100"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
 const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -15 to catch some less frequent things that happen by chance; -18;  // in (ab)^n, top 25 strings will need this man lp
 const unsigned long MAX_STEPS_PER_FACTOR   = 4096; //2048; //2048;
 const unsigned long MAX_OUTPUTS_PER_FACTOR = 512; //256;
-
 
 class MyGrammar : public Grammar { 
 public:
@@ -157,39 +156,6 @@ public:
 								[](const S& x, const S& y){ return (x.length()+y.length()<maxlength ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
 								)
 
-//			case CustomOp::op_CDR: {
-//				auto t = vms.top<S>();
-//				if(t.length() > 0) {
-//					
-//					
-//					t = t.substr(1,S::npos);
-//					
-//				}
-//				break;
-//			}
-//			case CustomOp::op_CDR: {
-//				if(std::get<Stack<S>>(vms.stack.value).top().length() > 0)
-//					std::get<Stack<S>>(vms.stack.value).top() = std::get<Stack<S>>(vms.stack.value).top().substr(1,S::npos);
-//				break;
-//			}
-//			case CustomOp::op_CAR: {
-//				if(std::get<Stack<S>>(vms.stack.value).top().length() > 0)
-//					std::get<Stack<S>>(vms.stack.value).top() = S(1,std::get<Stack<S>>(vms.stack.value).top().at(0));
-//				break;
-//			}
-//			case CustomOp::op_CONS: {
-//				S y = vms.getpop<S>();
-//				
-//				if(y.length() + std::get<Stack<S>>(vms.stack.value).top().length() > maxlength) {
-//					return abort_t::SIZE_EXCEPTION;
-//				}
-//				
-//				std::get<Stack<S>>(vms.stack.value).top().append(y);
-//				
-//				
-//				
-//				break;
-//			}
 			
 			// These are actually much faster if we leave the set on top, since we're just modifying the top value
 //			CASE_FUNC2(CustomOp::op_Setcons,       StrSet, S, StrSet, [](S& x, StrSet& y){ y.insert(x); return y; }  )
@@ -250,7 +216,6 @@ public:
 	using Super = Lexicon<MyHypothesis, InnerHypothesis, S, S>;
 	
 	MyHypothesis()                       : Super()   {}
-
 	MyHypothesis(const MyHypothesis& h)  : Super(h)  {}
 
 	virtual double compute_prior() {
@@ -469,14 +434,17 @@ int main(int argc, char** argv){
 		S data_path = input_path + "-" + da + ".txt";	
 		load_data_file(mydata, data_path.c_str());
 		
-		// update top for the new data file
-		TopN<MyHypothesis> newtop;
-		newtop.set_size(ntop);
+		// Now we need to update top for the new data
+		// we're going to keep around the old ones, so 
+		// we'll temporarily put everything into a temp top
+		// and then take it over
+		TopN<MyHypothesis> tmptop;
+		tmptop.set_size(ntop);
 		for(auto h : top.values()) {
 			h.compute_posterior(mydata); // update the posterior to the new data amount
-			newtop << h;
+			tmptop << h;
 		}
-		top = std::move(newtop); // take over the new top
+		top = std::move(tmptop); // restore top
 		
 		// update our parallel tempering pool
 		for(auto& c: samp.pool) {
@@ -485,8 +453,10 @@ int main(int argc, char** argv){
 		}
 	
 		// run for real		
-		samp.run(mcmc_steps, runtime, 1000, 30000);		
-		top.print();						
+		samp.run(mcmc_steps, runtime, 0.2, 3.0);		
+		top.print();	
+
+		if(CTRL_C) break;
 	}
 	tic();
 	

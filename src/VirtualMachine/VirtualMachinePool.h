@@ -96,6 +96,7 @@ public:
 		while(current_steps < max_steps && out.size() < max_outputs && !Q.empty()) {
 
 			VMState* vms = Q.top(); Q.pop();
+			// if we ever go back to the non-pointer version, we might need fanciness to move out of top https://stackoverflow.com/questions/20149471/move-out-element-of-std-priority-queue-in-c11
 			assert(vms->lp >= min_lp);
 			
 			current_steps++;

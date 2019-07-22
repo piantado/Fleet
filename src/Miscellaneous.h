@@ -28,15 +28,8 @@ std::vector<T> slice(const std::vector<T> &v, size_t start) {
 /// this times between successive calls to tic()
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-auto start = std::chrono::high_resolution_clock::now();
-std::chrono::duration<double> elapsed;
-
-void tic() {
-	// record the amount of time since the last tic()
-	auto x = std::chrono::high_resolution_clock::now();
-	elapsed = std::chrono::duration_cast<std::chrono::duration<double>>(x-start);
-	start = x;
-}
+auto ticstart = std::chrono::high_resolution_clock::now();
+std::chrono::duration<double> ticelapsed;
 
 auto now() { 
 	return std::chrono::high_resolution_clock::now();
@@ -46,8 +39,15 @@ double time_since(auto x) {
 	return std::chrono::duration_cast<std::chrono::duration<double>>(n-x).count();
 }
 
+void tic() {
+	// record the amount of time since the last tic()
+	auto x = now();
+	ticelapsed =  std::chrono::duration_cast<std::chrono::duration<double>>(x-ticstart);
+	ticstart = x;
+}
+
 double elapsed_seconds() {
-	return elapsed.count(); 
+	return ticelapsed.count(); 
 }
 
 // From https://stackoverflow.com/questions/478898/how-to-execute-a-command-and-get-output-of-command-within-c-using-posix
