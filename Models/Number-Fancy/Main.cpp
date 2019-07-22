@@ -30,8 +30,8 @@ std::vector<Model::magnitude> MAGNITUDES = {1,2,3,4,5,6,7,8,9,10};
 #include <random>
 std::discrete_distribution<> number_distribution({0, 7187, 1484, 593, 334, 297, 165, 151, 86, 105, 112}); // 0-indexed
 	
-//std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400};//, 500, 600, 700, 800, 900, 1000};
-std::vector<int> data_amounts = {600};
+std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400};//, 500, 600, 700, 800, 900, 1000};
+//std::vector<int> data_amounts = {600};
 
 double recursion_penalty = -50.0;
 
@@ -300,11 +300,6 @@ int main(int argc, char** argv){
 			mydata.push_back(MyHypothesis::t_datum({x, w, alpha}));
 		}    		
 		
-		
-//		Node* n = grammar.expand_from_names<Node>("ifW:match:{o}:filter:type:X:set:X:one:next:recurse:<%s,%s>:difference:set:X:selectO:set:X:type:X:type:X");
-//		auto h0 = new MyHypothesis(&grammar, n);	
-//		h0->compute_posterior(mydata);
-//		callback(h0);
 		
 		MyHypothesis h0(&grammar);
 		ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);

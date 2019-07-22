@@ -5,9 +5,7 @@
 template<typename HYP, typename t_input, typename t_output, typename _t_datum=default_datum<t_input, t_output>>
 class MCMCable : public Bayesable<t_input,t_output,_t_datum> {
 public:
-	MCMCable() {
-		
-	}
+	MCMCable() { }
 
 	MCMCable(const MCMCable<HYP,t_input,t_output,_t_datum>& h) : Bayesable<t_input,t_output,_t_datum>(h) {}
 	MCMCable(const MCMCable<HYP,t_input,t_output,_t_datum>&& h) : Bayesable<t_input,t_output,_t_datum>(h) {}

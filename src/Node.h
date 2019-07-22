@@ -382,12 +382,11 @@ public:
 	}
 
 
-	virtual size_t hash() const {
-		// Like equality checking, hashing also uses the rule pointers' numerical values, so beware!
+	virtual size_t hash(size_t depth=0) const {
+		// hash and include
 		size_t output = rule->get_hash(); // tunrs out, this is actually important to prevent hash collisions when rule_id and i are small
 		for(size_t i=0;i<child.size();i++) {
-			hash_combine(output, child[i].hash()); // modifies output
-			hash_combine(output, i); 
+			hash_combine(output, depth, child[i].hash(depth+1), i); // modifies output
 		}
 		return output;
 	}

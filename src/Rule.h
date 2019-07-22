@@ -29,10 +29,9 @@ public:
 		// Set up hashing for rules (cached so we only do it once)
 		std::hash<std::string> h; 
 		my_hash = h(fmt);
-		hash_combine(my_hash, (size_t) o);
-		hash_combine(my_hash, (size_t) arg);
-		hash_combine(my_hash, (size_t) nt);
-		for(size_t i=0;i<N;i++) hash_combine(my_hash, (size_t)child_types[i]);
+		hash_combine(my_hash, (size_t) o, (size_t) arg, (size_t)nt);
+		for(size_t i=0;i<N;i++) 
+			hash_combine(my_hash, i, (size_t)child_types[i]);
 		
 		
 		// check that the format string has the right number of %s

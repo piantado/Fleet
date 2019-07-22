@@ -93,7 +93,7 @@ public:
 	
 	void print(std::string prefix="") {
 		extern TopN<MyHypothesis> top;
-		Super::print( prefix + std::to_string(top.count(*this)) + "\t" ); // print but prepend my top count
+		Super::print( prefix + std::to_string(hash())+"\t"+std::to_string(top.count(*this)) + "\t" ); // print but prepend my top count
 	}
 };
 

@@ -21,7 +21,6 @@
 #include <array>
 #include <memory>
 #include <pthread.h>
-#include <chrono>
 #include <thread>         // std::this_thread::sleep_for
 #include <cstdio>
 #include <stdexcept>
@@ -104,7 +103,7 @@ void fleet_interrupt_handler(int signum) {
 /// These are standard variables that occur nearly universally in these searches
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-std::string ChildStr = "%s"; // how do strings get substituted?
+const std::string ChildStr = "%s"; // how do strings get substituted?
 
 unsigned long random_seed  = 0; // note this also controls how quickly/deep the search goes into the lexicon
 unsigned long mcts_steps   = 0; // note this also controls how quickly/deep the search goes into the lexicon
@@ -162,8 +161,6 @@ typedef Stack<Instruction> Program;
 #include "Hash.h"
 #include "Miscellaneous.h"
 
-//#include "Hypotheses/Interfaces.h"
-
 #include "Interfaces/Dispatchable.h"
 #include "Interfaces/Bayesable.h"
 #include "Interfaces/MCMCable.h"
@@ -187,70 +184,6 @@ typedef Stack<Instruction> Program;
 #include "Inference/ChainPool.h"
 
 #include "Top.h"
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Just a convenient wrapper for timing
-/// this times between successive calls to tic()
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-auto start = std::chrono::high_resolution_clock::now();
-std::chrono::duration<double> elapsed;
-
-void tic() {
-	// record the amount of time since the last tic()
-	auto x = std::chrono::high_resolution_clock::now();
-	elapsed = std::chrono::duration_cast<std::chrono::duration<double>>(x-start);
-	start = x;
-}
-
-double elapsed_seconds() {
-	return elapsed.count(); 
-}
-
-// From https://stackoverflow.com/questions/478898/how-to-execute-a-command-and-get-output-of-command-within-c-using-posix
-std::string system_exec(const char* cmd) {
-    std::array<char, 1024> buffer;
-    std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
-    if (!pipe) {
-        throw std::runtime_error("popen() failed!");
-    }
-    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-        result += buffer.data();
-    }
-    return result;
-}
-
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Time conversions for fleet
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-unsigned long convert_time(std::string& s) {
-	// Converts our own time format to seconds, which is what Fleet's time utilities use
-	// the time format we accept is #+(.#+)[smhd] where shmd specifies seconds, minutes, hours days 
-	
-	// specila case of s="0" will be allowed
-	if(s == "0") return 0;
-		
-	// else we must specify a unit	
-	double multiplier; // for default multiplier of 1 is seconds
-	switch(s.at(s.length()-1)) {
-		case 's': multiplier = 1; break; 
-		case 'm': multiplier = 60; break;
-		case 'h': multiplier = 60*60; break;
-		case 'd': multiplier = 60*60*24; break;
-		default: 
-			CERR "*** Unknown time specifier: " << s.at(s.length()-1) << " in " << s << ". Did you forget a unit?" ENDL;
-			assert(0);
-	}
-	
-	double t = std::stod(s.substr(0,s.length()-1)); // all but the last character
-		
-	return (unsigned long)(t*multiplier); // note this effectively rounds to the nearest escond 
-	
-}
-
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Actual initialization
