@@ -31,7 +31,7 @@ std::vector<Model::magnitude> MAGNITUDES = {1,2,3,4,5,6,7,8,9,10};
 std::discrete_distribution<> number_distribution({0, 7187, 1484, 593, 334, 297, 165, 151, 86, 105, 112}); // 0-indexed
 	
 //std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400};//, 500, 600, 700, 800, 900, 1000};
-std::vector<int> data_amounts = {100};
+std::vector<int> data_amounts = {600};
 
 double recursion_penalty = -50.0;
 
@@ -105,9 +105,10 @@ public:
  * regeneration proposals, but I have to define a likelihood */
 class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word> {
 public:
-	MyHypothesis(Grammar* g, Node v)    : LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word>(g,v) {}
-	MyHypothesis(Grammar* g)            : LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word>(g) {}
-	MyHypothesis()                      : LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word>() {}
+	using Super = LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word>;
+	MyHypothesis(Grammar* g, Node v)    : Super(g,v) {}
+	MyHypothesis(Grammar* g)            : Super(g) {}
+	MyHypothesis()                      : Super() {}
 	
 	size_t recursion_count() {
 		// how many times do I use recursion?
@@ -184,6 +185,43 @@ public:
 		}
 		return abort_t::NO_ABORT;
 	}
+	
+	virtual void print(std::string prefix=""){
+		assert(prefix=="");
+		
+		extern MyHypothesis::t_data mydata;
+		extern TopN<MyHypothesis> top;
+		
+		std::string s1 = "";
+		for (int j = 1; j <= 9; j++) {
+			Model::set theset = "" + std::string(j,'Z');
+			auto out = this->call(Model::X(theset,'Z'), Model::U);
+			Model::word v = out.argmax();
+			
+			if(v < 0) s1 += "U"; // must be undefined
+			else      s1 += std::to_string((int) v);
+			if(j < 9) s1 += ".";
+		}
+
+		std::string s2 = "";
+		for (int j = 1; j <= 9; j++) {
+			Model::set theset = "ABBCCCDDDDEEEEE" + std::string(j,'Z');        
+			auto out = this->call(Model::X(theset,'Z'), Model::U);
+			Model::word v = out.argmax();
+			
+			if(v < 0) s2 += "U"; // must be undefined
+			else      s2 += std::to_string( (int) v);
+			if(j < 9) s2 += ".";
+		}
+		
+
+		prefix = std::to_string(mydata.size()) +"\t"+ std::to_string(top.count(*this)) +
+				"\t"+s1+"\t"+s2+"\t"+std::to_string(this->recursion_count());
+			
+		Super::print(prefix);
+		
+		
+	}
 };
 
 const double alpha = 0.9;
@@ -191,74 +229,17 @@ const double alpha = 0.9;
 MyHypothesis::t_data mydata;
 TopN<MyHypothesis> top;
 TopN<MyHypothesis> all;
-std::mutex output_mutex;
-
-void print(MyHypothesis& h, std::string prefix) {
-	std::lock_guard<std::mutex> mutex(output_mutex);
-	
-    COUT prefix << mydata.size() TAB top.count(h) TAB h.posterior TAB h.prior TAB h.likelihood << "\t";
-	
-    for (int j = 1; j <= 9; j++) {
-        Model::set theset = "" + std::string(j,'Z');
-		auto out = h.call(Model::X(theset,'Z'), Model::U);
-		Model::word v = out.argmax();
-		
-        if(v < 0) COUT "U"; // must be undefined
-        else COUT (int) v;
-		if(j < 9) COUT ".";
-    }
-	COUT "\t";
-    
-    for (int j = 1; j <= 9; j++) {
-        Model::set theset = "ABBCCCDDDDEEEEE" + std::string(j,'Z');        
-        auto out = h.call(Model::X(theset,'Z'), Model::U);
-        Model::word v = out.argmax();
-		
-		if(v < 0) COUT "U"; // must be undefined
-        else COUT (int) v;
-		if(j < 9) COUT ".";
-    }
-    
-	COUT "\t" << h.recursion_count() TAB QQ(h.string()) ENDL;
-}
-void print(MyHypothesis& h) {
-	print(h, std::string(""));
-}
 
 void callback(MyHypothesis& h) {
-	
-	// let's print each time we find a new best
-	if(h.posterior > top.best_score())
-		print(h, "#TOP\t"); 
-	
+
 	top << h; 
 	
 	FleetStatistics::global_sample_count++;
 	
 	// print out with thinning
 	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) 
-		print(h);
+		h.print();
 }
-
-
-//double playouts(const MyHypothesis* h0) {
-//	if(h0->is_evaluable()) { // it has no gaps, so we don't need to do any structural search or anything
-//		auto h = h0->copy();
-//		h->compute_posterior(mydata);
-//		callback(h);
-//		double v = h->posterior;
-//		delete h;
-//		return v;
-//	}
-//	else { // we have to do some more search
-//		auto h = h0->copy_and_complete();
-//		auto q = MCMC(h, mydata, callback, mcmc_steps, mcmc_restart, true);
-//		double v = q->posterior;
-//		//std::cerr << v << "\t" << h0->string() << std::endl;
-//		delete q;
-//		return v;
-//	}
-//}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -340,11 +321,13 @@ int main(int argc, char** argv){
 		top.clear();
 	}
 
+	COUT "# Computing posterior on all final values |D|=" TAB mydata.size()  ENDL;
 	// print out at the end
 	for(auto h : all.values()) {
 		h.compute_posterior(mydata); // run on the largest data amount
-		print(h);
+		h.print();
 	}
+//	all.print();
 	
 	tic();
 	

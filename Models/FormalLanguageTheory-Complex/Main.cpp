@@ -50,7 +50,7 @@ const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The m
 const size_t MAX_PR_LINES = 1000000; 
 
 //std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "10000", "50000", "100000"}; // how many data points do we run on?
-std::vector<S> data_amounts={"1000"}; // how many data points do we run on?
+std::vector<S> data_amounts={"10000"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
 const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -15 to catch some less frequent things that happen by chance; -18;  // in (ab)^n, top 25 strings will need this man lp
@@ -71,10 +71,11 @@ public:
 		
 		// push for each
 		for(size_t ai=0;ai<alphabet.length();ai++) {
+//			CERR "# Alphabet rule" << alphabet.substr(ai,1) TAB alphabet ENDL;
 			add( new Rule(nt_string, CustomOp::op_TERMINAL,   Q(alphabet.substr(ai,1)),          {},       10.0/alphabet.length(), ai) );
 		}
 
-		add( new Rule(nt_string, CustomOp::op_EMPTYSTRING,  "\u00D8",          {},                            10.0) );
+		add( new Rule(nt_string, CustomOp::op_EMPTYSTRING,  "\u00D8",          {},                            1.0) );
 		
 		add( new Rule(nt_string, CustomOp::op_CONS,         "%s+%s",        {nt_string,nt_string},            1.0) );
 		add( new Rule(nt_string, CustomOp::op_CAR,          "car(%s)",      {nt_string},                      1.0) );
@@ -369,7 +370,7 @@ public:
 				if(prefix_tree.count(pfx+prd)) { // conditional prob with outlier likelihood
 					likelihood += a.reliability * (lcor + prefix_tree[pfx+prd] - prefix_tree[pfx]); 
 				} else {
-					likelihood += a.reliability * lerr * (astr.length() - i); // we don't have to keep going -- we will have this many errors
+					likelihood += (a.reliability * lerr) * (astr.length() - i); // we don't have to keep going -- we will have this many errors
 					break;
 				}	
 			 }
@@ -377,6 +378,20 @@ public:
 		 
 		 return likelihood;		 
 	 }
+	 
+	 void print(std::string prefix="") {
+		std::lock_guard guard(Fleet::output_lock);
+		extern MyHypothesis::t_data prdata;
+		extern TopN<MyHypothesis> top;
+		extern std::string current_data;
+		
+		auto o = this->call(S(""), S("<err>"));
+		COUT "#\n";
+		COUT prefix << "# "; o.print();	COUT "\n";
+		COUT prefix << current_data TAB this->born TAB this->posterior TAB top.count(*this) TAB this->prior TAB this->likelihood TAB QQ(this->parseable()) TAB "";
+		//print_precision_and_recall(std::cout, o, prdata, PREC_REC_N);
+		COUT "" TAB QQ(this->string()) ENDL
+	}
 	 
 };
 
@@ -389,36 +404,15 @@ MyHypothesis::t_data prdata; // used for computing precision and recall -- in ca
 
 S current_data = "";
 TopN<MyHypothesis> top;
-MyGrammar grammar;
- 
-void print(MyHypothesis& h, std::string prefix) {
-	std::lock_guard guard(output_lock);
-	
-	auto o = h.call(S(""), S("<err>"));
-	COUT "#\n";
-	COUT prefix << "# ";
-	o.print();
-	COUT "\n";
-	COUT prefix << current_data TAB h.born TAB h.posterior TAB top.count(h) TAB h.prior TAB h.likelihood TAB QQ(h.parseable()) TAB "";
-	print_precision_and_recall(std::cout, o, prdata, PREC_REC_N);
-	COUT "" TAB QQ(h.string()) ENDL
-}
-void print(MyHypothesis& h) {
-	print(h, std::string(""));
-}
+
 
 void callback(MyHypothesis& h) {
 
-	// print the next max
-//	if(h.posterior > top.best_score()) {
-//		print(h, std::string("#### "));
-//	}
-//	
 	top << h; 
 	
 	// print out with thinning
 	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) {
-		print(h);
+		h.print();
 	}
 	
 }
@@ -439,6 +433,9 @@ int main(int argc, char** argv){
 	CLI11_PARSE(app, argc, argv);
 
 	Fleet_initialize();
+	COUT "# Using alphabet=" << alphabet ENDL;
+	
+	MyGrammar grammar;
 	
 	// Input here is going to specify the PRdata path, minus the txt
 	
@@ -465,47 +462,46 @@ int main(int argc, char** argv){
 	h0.compute_posterior(mydata);
 		
 	// set up a paralle tempering object
-//	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 6, 1000.0);
-//	tic();
-//	for(auto da : data_amounts) {
-//		current_data = da; // set this global variable so we can print it correctly.
-//		S data_path = input_path + "-" + da + ".txt";	
-//		load_data_file(mydata, data_path.c_str());
-//		
-//		// update top for the new data file
-//		TopN<MyHypothesis> newtop;
-//		for(auto h : top.values()) {
-//			h.compute_posterior(mydata); // update the posterior to the new data amount
-//			newtop << h;
-//		}
-//		top = std::move(newtop); // take over the new top
-//		
-//		// update our parallel tempering pool
-//		for(auto& c: samp.pool) {
-//			c.getCurrent().compute_posterior(mydata);
-//			c.data = &mydata;
-//		}
-//	
-//		// run for real		
-//		samp.run(mcmc_steps, runtime, 1000, 30000);		
-//		top.print(print);		
-//	
-//				
-//	}
-//	tic();
+	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0);
+	tic();
+	for(auto da : data_amounts) {
+		current_data = da; // set this global variable so we can print it correctly.
+		S data_path = input_path + "-" + da + ".txt";	
+		load_data_file(mydata, data_path.c_str());
+		
+		// update top for the new data file
+		TopN<MyHypothesis> newtop;
+		newtop.set_size(ntop);
+		for(auto h : top.values()) {
+			h.compute_posterior(mydata); // update the posterior to the new data amount
+			newtop << h;
+		}
+		top = std::move(newtop); // take over the new top
+		
+		// update our parallel tempering pool
+		for(auto& c: samp.pool) {
+			c.getCurrent().compute_posterior(mydata);
+			c.data = &mydata;
+		}
+	
+		// run for real		
+		samp.run(mcmc_steps, runtime, 1000, 30000);		
+		top.print();						
+	}
+	tic();
 	
 	// Vanilla MCMC
-	for(auto da : data_amounts) {
-		S data_path = input_path + "-" + da + ".txt";
-		load_data_file(mydata, data_path.c_str());
-		tic();
-		MCMCChain chain(h0, &mydata, callback);
-		chain.run(mcmc_steps, runtime);
-		tic();	
-	}
+//	for(auto da : data_amounts) {
+//		S data_path = input_path + "-" + da + ".txt";
+//		load_data_file(mydata, data_path.c_str());
+//		tic();
+//		MCMCChain chain(h0, &mydata, (std::function<void(MyHypothesis&)>)callback);
+//		chain.run(mcmc_steps, runtime);
+//		tic();	
+//	}
 //	
 	
-//	top.print(print);
+	top.print();
 	
 	
 	

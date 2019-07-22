@@ -1,25 +1,6 @@
 #pragma once
 
 
-
-
-
-//
-//
-//TODO: We shuold be making this one NOT have pointers for value, but rather
-//      store the value
-//
-//
-//
-
-
-
-
-
-
-
-
-
 #include <string.h>
 #include "Proposers.h"
 

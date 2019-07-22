@@ -10,7 +10,15 @@
 template<typename T>
 class Stack : public std::vector<T> {
 	
+//	static const size_t INITIAL_SIZE = 8; 
+	
 public:
+//  Neither of these seem to speed stuff up
+//	Stack() : std::vector<T>() { 
+//		this->reserve(INITIAL_SIZE);		
+//	}
+//	Stack() : std::vector<T>(INITIAL_SIZE) { 
+//	}
 
 	void push(const T& val) {
 		this->push_back(val);

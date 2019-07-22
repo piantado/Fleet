@@ -132,16 +132,15 @@ public:
 		return z;       
 	}
 	
-    void print(void printer(T&)) {
-		std::lock_guard guard(lock);
-		for(auto h : s) {
-			printer(h);
-		}
-    }
-	
 	void print(std::string prefix="") {
-		for(auto& h : s) {
-			COUT prefix << cnt[h] TAB h.posterior TAB h.prior TAB h.likelihood TAB q(h.string()) ENDL;
+		
+		// this sorts so that the highest probability is last
+		std::vector<T> v(s.size());
+		std::copy(s.begin(), s.end(), v.begin());
+		std::sort(v.begin(), v.end()); 
+		
+		for(auto& h : v) {
+			h.print(prefix);
 		}
 	}
 	

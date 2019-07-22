@@ -2,6 +2,7 @@
 
 // TOOD: Fix this so that if we have fewer threads than parallel chains, everything still works ok
 
+#include <functional>
 #include "ChainPool.h"
 
 template<typename HYP>
@@ -17,10 +18,10 @@ public:
 	
 	std::atomic<bool> terminate; // used to kill swapper and adapter
 	
-	ParallelTempering(HYP& h0, typename HYP::t_data* d, void(*cb)(HYP&), std::initializer_list<double> t, bool allcallback=true) : temperatures(t), terminate(false) {
+	ParallelTempering(HYP& h0, typename HYP::t_data* d, std::function<void(HYP&)> cb, std::initializer_list<double> t, bool allcallback=true) : temperatures(t), terminate(false) {
 		// allcallback is true means that all chains call the callback, otherwise only t=0
 		for(size_t i=0;i<temperatures.size();i++) {
-			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), d, allcallback || i==0 ? cb : nullptr));
+			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), d, allcallback || i==0 ? cb : null_callback<HYP>));
 			pool[i].temperature = temperatures[i]; // set its temperature 
 			
 			swap_history = new FiniteHistory<bool>[temperatures.size()];
@@ -28,11 +29,11 @@ public:
 	}
 	
 	
-	ParallelTempering(HYP& h0, typename HYP::t_data* d, void(*cb)(HYP&), unsigned long n, double maxT, bool allcallback=true) : terminate(false) {
+	ParallelTempering(HYP& h0, typename HYP::t_data* d, std::function<void(HYP&)> cb, unsigned long n, double maxT, bool allcallback=true) : terminate(false) {
 		// allcallback is true means that all chains call the callback, otherwise only t=0
 		for(size_t i=0;i<n;i++) {
 			
-			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), d, allcallback || i==0 ? cb : nullptr));
+			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), d, allcallback || i==0 ? cb : null_callback<HYP>));
 			
 			if(i==0) {  // always initialize i=0 to T=1s
 				pool[i].temperature = 1.0;
@@ -86,7 +87,7 @@ public:
 	void __adapter_thread(unsigned long adapt_every) {
 		while(! (terminate or CTRL_C) ) {
 			std::this_thread::sleep_for(std::chrono::milliseconds(adapt_every));
-			show_statistics();
+			//show_statistics();
 			adapt(); // TOOD: Check what counts as t
 //			CERR  "ADAPTER" << terminate ENDL;
 		}

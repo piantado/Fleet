@@ -34,7 +34,11 @@ public:
 	}
 	
 	
-	void print(std::ostream& out) {
+	void print(std::ostream& out) { out << this->string();	}
+	void print()                  {	print(std::cout);	}
+	
+	
+	std::string string() {
 		
 		// put the strings into a vector
 		std::vector<T> v;
@@ -48,16 +52,16 @@ public:
 		std::sort(v.begin(), v.end(), [this](T a, T b) { return this->m.at(a) > this->m.at(b); });
 		
 		
-		out << "{";
+		std::string out = "{";
 		for(size_t i=0;i<v.size();i++){
-			out << "'" << v[i] << "'" << ":" << m[v[i]];
-			if(i < v.size()-1) { out << ", "; }
+			out += "'"  + v[i] + "':" + std::to_string(m[v[i]]);
+			if(i < v.size()-1) { out += ", "; }
 		}
-		out << "} [Z=" << Z << ", N=" << v.size() << "]";
+		out += "} [Z=" + std::to_string(Z) + ", N=" + std::to_string(v.size()) + "]";
+		
+		return out;
 	}
-	void print() {
-		print(std::cout);
-	}
+	
 		
 	void addmass(T x, double v) {
 		if(m.find(x) == m.end()) {

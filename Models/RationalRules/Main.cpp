@@ -61,9 +61,10 @@ public:
  * regeneration proposals, but I have to define a likelihood */
 class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool> {
 public:
-	MyHypothesis(Grammar* g, Node n)   : LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool>(g, n) {}
-	MyHypothesis(Grammar* g)           : LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool>(g) {}
-	MyHypothesis()                     : LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool>() {}
+	using Super = LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool>;
+	MyHypothesis(Grammar* g, Node n)   : Super(g, n) {}
+	MyHypothesis(Grammar* g)           : Super(g) {}
+	MyHypothesis()                     : Super() {}
 	
 	double compute_single_likelihood(const t_datum& x) {
 		bool out = callOne(x.input, false);
@@ -89,6 +90,11 @@ public:
 		}
 		return abort_t::NO_ABORT;
 	}
+	
+	void print(std::string prefix="") {
+		extern TopN<MyHypothesis> top;
+		Super::print( prefix + std::to_string(top.count(*this)) + "\t" ); // print but prepend my top count
+	}
 };
 
 
@@ -96,11 +102,6 @@ public:
 MyHypothesis::t_data mydata;
 // top stores the top hypotheses we have found
 TopN<MyHypothesis> top;
-
-// define some functions to print out a hypothesis
-void print(MyHypothesis& h) {
-	COUT top.count(h) TAB  h.posterior TAB h.prior TAB h.likelihood TAB QQ(h.string()) ENDL;
-}
 
 // This gets called on every sample -- here we add it to our best seen so far (top) and
 // print it every thin samples unless thin=0
@@ -158,7 +159,7 @@ int main(int argc, char** argv){
 //	tic();
 //	
 	// Show the best we've found
-	top.print(print);
+	top.print();
 		
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;

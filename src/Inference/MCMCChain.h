@@ -5,6 +5,8 @@
 #include "MCMCChain.h"
 #include "FiniteHistory.h"
 
+//#define DEBUG_MCMC 1
+
 template<typename HYP>
 class MCMCChain {
 	// An MCMC chain object. 
@@ -80,7 +82,7 @@ public:
 		
 		// compute the info for the curent
 		current.compute_posterior(*data);
-		if(callback != nullptr) callback(current);
+		callback(current);
 		++FleetStatistics::global_sample_count;
 		themax = current;
 		
@@ -95,9 +97,12 @@ public:
 				if(elapsed_time > time) break;
 			}
 			
-			#ifdef DEBUG_MCMC
-				std::cerr << "\n# Current\t" << current->posterior TAB current->prior TAB current->likelihood TAB "\t" TAB current->string() ENDL;
-			#endif
+#ifdef DEBUG_MCMC
+	COUT "\n# Current\t" << current.posterior TAB current.prior TAB current.likelihood TAB "\t" TAB current.string() ENDL;
+	auto oc = current.call(S(""), S("<err>"));
+	oc.print();
+	COUT "" ENDL;
+#endif
 			
 			// generate the proposal -- defaulty "restarting" if we're currently at -inf
 			HYP proposal; double fb = 0.0;
@@ -125,9 +130,12 @@ public:
 				proposal.compute_posterior(*data);
 			}
 
-			#ifdef DEBUG_MCMC
-				std::cerr << "# Proposed \t" << proposal->posterior TAB proposal->prior TAB proposal->likelihood TAB fb TAB proposal->string() ENDL;
-			#endif
+#ifdef DEBUG_MCMC
+	COUT "# Proposed \t" << proposal.posterior TAB proposal.prior TAB proposal.likelihood TAB fb TAB proposal.string() ENDL;
+	auto op = current.call(S(""), S("<err>"));
+	op.print();
+	COUT "" ENDL;
+#endif
 			
 			// keep track of the max if we are supposed to
 			
@@ -144,9 +152,9 @@ public:
 					((!std::isnan(proposal.posterior)) &&
 					 (ratio > 0 || uniform() < exp(ratio)))) {
 				
-				#ifdef DEBUG_MCMC
-					  std::cerr << "# Accept" << std::endl;
-				#endif
+#ifdef DEBUG_MCMC
+	  COUT "# Accept" << std::endl;
+#endif
 				
 				current = proposal;
   
@@ -158,7 +166,7 @@ public:
 			}
 				
 			// and call on the sample if we meet all our criteria
-			if(callback != nullptr) callback(current);
+			callback(current);
 			
 			current_mutex.unlock(); // ~~~~~~~~~
 				
@@ -171,7 +179,7 @@ public:
 				steps_since_improvement = 0; // reset the couter
 				current = current.restart();
 				current.compute_posterior(*data);
-				if(callback != nullptr) callback(current);
+				callback(current);
 				if(current.posterior > themax.posterior) {
 					themax = current; 	
 				}
@@ -197,3 +205,5 @@ public:
 	
 };
 
+template<typename HYP>
+std::function<void(HYP&)> null_callback = [](HYP&){};

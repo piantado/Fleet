@@ -258,6 +258,8 @@ void Fleet_initialize() {
 	// give us a default niceness
 	setpriority(PRIO_PROCESS, 0, 19);
 
+	FleetStatistics::hypothesis_births = 0;
+
 	// Print standard fleet header
 	
 	// apparently some OSes don't define this

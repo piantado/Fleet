@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Datum.h"
+#include "IO.h"
 
 template<typename t_input, typename t_return>
 class VirtualMachineState;
@@ -40,16 +41,15 @@ public:
 	double posterior; // Posterior always stores at temperature 1
 	uintmax_t born; // what count were you born at?
 
-	Bayesable() : prior(NaN), likelihood(NaN), posterior(NaN), born(++FleetStatistics::hypothesis_births) {
-	}
+	Bayesable() : prior(NaN), likelihood(NaN), posterior(NaN), born(++FleetStatistics::hypothesis_births) {	}
 	
-	Bayesable(const Bayesable& b) : prior(b.prior), likelihood(b.likelihood), posterior(b.posterior) {
-	}
+	Bayesable(const Bayesable& b) : prior(b.prior), likelihood(b.likelihood), posterior(b.posterior), born(++FleetStatistics::hypothesis_births) {	}
+	
 	void operator=(const Bayesable& b) {
 		prior = b.prior;
 		likelihood = b.likelihood;
 		posterior = b.posterior;
-		born = b.born;
+		born = ++FleetStatistics::hypothesis_births;
 	}
 	void operator=(const Bayesable&& b) {
 		prior = b.prior;
@@ -125,6 +125,13 @@ public:
 			// so we must ensure that the hash function is only equal for equal values
 			return this->hash() < l.hash();
 		}
+	}
+	
+	virtual std::string string() const = 0; // my subclasses must implement string
+	
+	virtual void print(std::string prefix="") {
+		std::lock_guard guard(Fleet::output_lock);
+		COUT prefix << this->born TAB this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->string()) ENDL;		
 	}
 };
 

@@ -8,7 +8,9 @@
 #define CERR std::cerr<<
 #define COUT std::cout<<
 
-std::mutex output_lock;
+namespace Fleet {
+	std::mutex output_lock;
+}
 
 /* Define some macros that make handling IO a little easier */
 

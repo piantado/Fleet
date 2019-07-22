@@ -52,13 +52,14 @@ public:
 // * regeneration proposals, but I have to define a likelihood */
 class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_string, S, S> {
 public:
-
+	using Super =  LOTHypothesis<MyHypothesis,Node,nt_string, S, S>;
+	
 	static const size_t MAX_LENGTH = 64; // longest strings cons will handle
 	
 	// I must implement all of these constructors
-	MyHypothesis(Grammar* g, Node v)    : LOTHypothesis<MyHypothesis,Node,nt_string,S,S>(g,v) {}
-	MyHypothesis(Grammar* g)            : LOTHypothesis<MyHypothesis,Node,nt_string,S,S>(g) {}
-	MyHypothesis()                      : LOTHypothesis<MyHypothesis,Node,nt_string,S,S>() {}
+	MyHypothesis(Grammar* g, Node v)    : Super(g,v) {}
+	MyHypothesis(Grammar* g)            : Super(g) {}
+	MyHypothesis()                      : Super() {}
 	
 	// Very simple likelihood that just counts up the probability assigned to the output strings
 //	double compute_single_likelihood(const t_datum& x) {
@@ -118,6 +119,16 @@ public:
 		}
 		return abort_t::NO_ABORT;
 	}
+	
+	void print(std::string prefix="") {
+		extern TopN<MyHypothesis> top;
+		assert(prefix == "");
+		
+		prefix  = "#\n#" +  this->call("", "<err>").string() + "\n"; 
+		prefix += std::to_string(top.count(*this)) + "\t";
+		
+		Super::print(prefix); // print but prepend my top count
+	}
 };
 
 
@@ -126,32 +137,16 @@ MyHypothesis::t_data mydata;
 // top stores the top hypotheses we have found
 TopN<MyHypothesis> top;
 
-
-// define some functions to print out a hypothesis
-void print(MyHypothesis& h, S prefix) {
-	COUT "# ";
-	h.call("", "<err>").print();
-	COUT "\n" << prefix << top.count(h) TAB  h.posterior TAB h.prior TAB h.likelihood TAB h.string() ENDL;
-}
-void print(MyHypothesis& h) {
-	print(h, S("")); // default null prefix
-}
-
-
 // This gets called on every sample -- here we add it to our best seen so far (top) and
 // print it every thin samples unless thin=0
 void callback(MyHypothesis& h) {
-	
-	// if we find a new best, print it out
-	if(h.posterior > top.best_score()) 
-		print(h, "# NewTop:");
 	
 	// add to the top
 	top << h; 
 	
 	// print out with thinning
 	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) 
-		print(h);
+		h.print();
 }
 
 
@@ -215,7 +210,7 @@ int main(int argc, char** argv){
 //	tic();
 //	
 	// Show the best we've found
-	top.print(print);
+	top.print();
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;

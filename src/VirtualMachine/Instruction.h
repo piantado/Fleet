@@ -16,6 +16,7 @@ public:
 		int                              arg; // 
 		
 		// constructors to make this a little easier to deal with
+		Instruction() : op(BuiltinOp::op_NOP), arg(0) {}
 		Instruction(BuiltinOp x, int arg_=0x0) : op(x), arg(arg_) {
 		}
 		Instruction(CustomOp x, int arg_=0x0)  : op(x), arg(arg_)  {
