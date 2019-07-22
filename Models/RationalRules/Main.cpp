@@ -144,19 +144,19 @@ int main(int argc, char** argv){
 //	}
 //	
 	
-	MyHypothesis h0(&grammar);
-	h0 = h0.restart();
-	MCMCChain<MyHypothesis> chain(h0, &mydata, callback);
-	tic();
-	chain.run(mcmc_steps,runtime);
-	tic();
-	
 //	MyHypothesis h0(&grammar);
 //	h0 = h0.restart();
-//	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);
+//	MCMCChain<MyHypothesis> chain(h0, &mydata, callback);
 //	tic();
-//	samp.run(mcmc_steps, runtime, 200, 3000); //30000);		
+//	chain.run(mcmc_steps,runtime);
 //	tic();
+	
+	MyHypothesis h0(&grammar);
+	h0 = h0.restart();
+	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);
+	tic();
+	samp.run(mcmc_steps, runtime, 0.2, 3.0); //30000);		
+	tic();
 //	
 	// Show the best we've found
 	top.print();

@@ -38,6 +38,14 @@ void tic() {
 	start = x;
 }
 
+auto now() { 
+	return std::chrono::high_resolution_clock::now();
+}
+double time_since(auto x) {
+	auto n = now();
+	return std::chrono::duration_cast<std::chrono::duration<double>>(n-x).count();
+}
+
 double elapsed_seconds() {
 	return elapsed.count(); 
 }

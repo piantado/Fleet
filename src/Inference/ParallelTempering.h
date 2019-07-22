@@ -11,6 +11,8 @@ class ParallelTempering  {
 	// This is a kind of Chain Pool that runs mutliple chains at different temperatures
 	// and ajusts the temperatures in order to equate swaps up and down 
 	
+	const unsigned long WAIT_AND_SLEEP = 250; // how many ms to wait between checking to see if it is time to swap/adapt
+	
 public:
 	std::vector<MCMCChain<HYP>> pool;
 	std::vector<double> temperatures;
@@ -52,44 +54,54 @@ public:
 		delete[] swap_history;
 	}
 	
-	void __swapper_thread(unsigned long swap_every ) {
-		// runs a swapper
-		// swap_every is in ms
+	void __swapper_thread(double swap_every ) {
+		// runs a swapper every swap_every seconds (double)
 		
+		auto last = now();
 		while(!(terminate or CTRL_C)) {
-			std::this_thread::sleep_for(std::chrono::milliseconds(swap_every));
 			
-			size_t k = 1+myrandom(pool.size()-1); // swap k with k-1
-			
-			pool[k-1].current_mutex.lock(); // wait for lock
-			pool[k].current_mutex.lock(); // wait for lock
-			
-			double Tnow = pool[k-1].at_temperature(pool[k-1].temperature)   + pool[k].at_temperature(pool[k].temperature);
-			double Tswp = pool[k-1].at_temperature(pool[k].temperature)     + pool[k].at_temperature(pool[k-1].temperature);
-			// TODO: Compare to paper
-			if(Tswp > Tnow || uniform() < exp(Tswp-Tnow)) { 
+			if(time_since(last) < swap_every){
+				std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_AND_SLEEP));
+			}
+			else { // do a swap
+				last = now();
 				
-				// swap the chains
-				std::swap(pool[k].current, pool[k-1].current);
+				size_t k = 1+myrandom(pool.size()-1); // swap k with k-1
 
-				swap_history[k] << true;
+				// get both of these thread locks
+				std::lock_guard(pool[k-1].current_mutex);
+				std::lock_guard(pool[k  ].current_mutex);
+								
+				double Tnow = pool[k-1].at_temperature(pool[k-1].temperature)   + pool[k].at_temperature(pool[k].temperature);
+				double Tswp = pool[k-1].at_temperature(pool[k].temperature)     + pool[k].at_temperature(pool[k-1].temperature);
+				// TODO: Compare to paper
+				if(Tswp > Tnow || uniform() < exp(Tswp-Tnow)) { 
+					
+					// swap the chains
+					std::swap(pool[k].current, pool[k-1].current);
+
+					swap_history[k] << true;
+				}
+				else {
+					swap_history[k] << false;
+				}
 			}
-			else {
-				swap_history[k] << false;
-			}
-			
-			pool[k-1].current_mutex.unlock(); 
-			pool[k].current_mutex.unlock(); 
-//			CERR  "SWAPPER" << terminate ENDL;
-		} // end while true
+		}
 	}
 	
-	void __adapter_thread(unsigned long adapt_every) {
+	void __adapter_thread(double adapt_every) {
+		
+		auto last = now();
 		while(! (terminate or CTRL_C) ) {
-			std::this_thread::sleep_for(std::chrono::milliseconds(adapt_every));
-			//show_statistics();
-			adapt(); // TOOD: Check what counts as t
-//			CERR  "ADAPTER" << terminate ENDL;
+			
+			if(time_since(last) < adapt_every){
+				std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_AND_SLEEP));
+			}
+			else {
+				last = now();
+				//show_statistics();
+				adapt(); // TOOD: Check what counts as t
+			}
 		}
 	}
 	
@@ -97,7 +109,7 @@ public:
 		c->run(steps, time);
 	}
 	
-	void run(unsigned long steps, unsigned long time, unsigned long swap_every, unsigned long adapt_every) {
+	void run(unsigned long steps, unsigned long time, double swap_every, double adapt_every) {
 		std::thread threads[pool.size()]; 
 		
 		// start everyone runnig 
@@ -114,7 +126,6 @@ public:
 		}
 
 		terminate = true;
-		//terminate.store(true);
 		swapper.join();
 		adapter.join();
 	}
