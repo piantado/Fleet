@@ -77,8 +77,8 @@ public:
 				size_t k = 1+myrandom(pool.size()-1); // swap k with k-1
 
 				// get both of these thread locks
-				std::lock_guard(pool[k-1].current_mutex);
-				std::lock_guard(pool[k  ].current_mutex);
+				std::lock_guard guard1(pool[k-1].current_mutex);
+				std::lock_guard guard2(pool[k  ].current_mutex);
 								
 				double Tnow = pool[k-1].at_temperature(pool[k-1].temperature)   + pool[k].at_temperature(pool[k].temperature);
 				double Tswp = pool[k-1].at_temperature(pool[k].temperature)     + pool[k].at_temperature(pool[k-1].temperature);
