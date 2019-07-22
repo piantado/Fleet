@@ -7,8 +7,7 @@
 template<typename HYP, typename T, nonterminal_t nt, typename t_input, typename t_output, typename _t_datum=default_datum<t_input, t_output>>
 class LOTHypothesis : public Dispatchable<t_input,t_output>, 
 				      public MCMCable<HYP,t_input,t_output,_t_datum>, // remember, this defines t_data, t_datum
-					  public Searchable<HYP,t_input,t_output>,
-					  public Serializable<HYP,t_input,t_output>
+					  public Searchable<HYP,t_input,t_output>
 					  
 {
 	// stores values as a pointer to something of type T, whose memory I manage (I delete it when I go away)

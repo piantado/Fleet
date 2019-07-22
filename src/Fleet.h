@@ -162,7 +162,13 @@ typedef Stack<Instruction> Program;
 #include "Hash.h"
 #include "Miscellaneous.h"
 
-#include "Hypotheses/Interfaces.h"
+//#include "Hypotheses/Interfaces.h"
+
+#include "Interfaces/Dispatchable.h"
+#include "Interfaces/Bayesable.h"
+#include "Interfaces/MCMCable.h"
+#include "Interfaces/Searchable.h"
+
 #include "Rule.h"
 #include "VirtualMachine/VirtualMachinePool.h"
 #include "VirtualMachine/VirtualMachineState.h"
