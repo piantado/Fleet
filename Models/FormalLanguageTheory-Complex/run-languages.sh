@@ -3,7 +3,7 @@
 
 # Run easy ones:: 10m on factors 1,2,3,4
 #30m, 4h 24h
-factors="2 4"
+factors="1 3"
 
 
 {

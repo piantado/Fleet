@@ -17,8 +17,7 @@ public:
 	
 	Lexicon(size_t n)  : MCMCable<HYP,t_input,t_output,_t_datum>()  { factors.resize(n); }
 	Lexicon()          : MCMCable<HYP,t_input,t_output,_t_datum>()  { }
-	
-	
+		
 	virtual std::string string() const {
 		
 		std::string s = "[";
@@ -196,29 +195,32 @@ public:
 //	}
 
 	virtual std::pair<HYP,double> propose() const {
-		HYP x; // set the size
-		x.factors.resize(factors.size());
-		
-		double fb = 0.0;
-		
 		// TODO: Check that detailed balance is ok here?
-		bool flipped = false;
-		while(not flipped) {
+		// tODO: Not the most efficient either
+		while(true) {
+			HYP x; 
+			double fb = 0.0;
+			bool flipped = false;
+			
 			for(size_t k=0;k<factors.size();k++) {
 				if(flip()) {
 					auto [h, _fb] = factors[k].propose();
-					x.factors[k] = h;
+					x.factors.push_back(h);
 					fb += _fb;
 					flipped = true; //someone was flipped
 				}
 				else {
-					x.factors[k] = factors[k]; // no proposal
+					T q = factors[k];
+					x.factors.push_back(q); /// this copy
 				}
+			}
+			
+			if(flipped) {
+				assert(x.factors.size() == factors.size());
+				return std::make_pair(x, fb);						
 			}
 		}
 		
-		assert(x.factors.size() == factors.size());
-		return std::make_pair(x, fb);		
 	}
 	
 	
