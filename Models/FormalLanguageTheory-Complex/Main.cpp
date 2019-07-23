@@ -61,8 +61,8 @@ public:
 
 		for(size_t a=0;a<nfactors;a++) {	
 			auto s = std::to_string(a);
-			add( new Rule(nt_string, BuiltinOp::op_RECURSE,     S("F")+s+"(%s)",      {nt_string},   1.0/nfactors, a) );		
-			add( new Rule(nt_string, BuiltinOp::op_MEM_RECURSE, S("memF")+s+"(%s)",   {nt_string},   1.0/nfactors, a) );		
+			add( new Rule(nt_string, BuiltinOp::op_SAFE_RECURSE,     S("F")+s+"(%s)",      {nt_string},   1.0/nfactors, a) );		
+			add( new Rule(nt_string, BuiltinOp::op_SAFE_MEM_RECURSE, S("memF")+s+"(%s)",   {nt_string},   1.0/nfactors, a) );		
 		}
 		
 		// push for each

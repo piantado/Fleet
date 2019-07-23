@@ -56,7 +56,10 @@ public:
     
     MCTSNode(double ex, HYP& h0, void cb(HYP&), typename HYP::t_data* d, ScoringType st=ScoringType::SAMPLE ) : 
 		callback(cb), explore(ex), parent(nullptr), value(h0), data(d), scoring_type(st) {
-        initialize();        
+        
+		initialize();        
+		
+		if(not h0.value.is_null()) { CERR "# Warning, initializing MCTS root with a non-null node." ENDL; }
     }
 	
 	// should not copy or move because then the parent pointers get all messed up 

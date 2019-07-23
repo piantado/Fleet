@@ -55,10 +55,9 @@ public:
 	VirtualMachineState(t_x x, t_return e, size_t _recursion_depth=0) :
 		err(e), lp(0.0), recursion_depth(_recursion_depth), aborted(abort_t::NO_ABORT) {
 		xstack.push(x);
-//		opstack.reserve(64);
 	}
 	
-	virtual ~VirtualMachineState() {};	
+	virtual ~VirtualMachineState() {};	// needed so VirtualMachinePool can delete
 	
 	bool operator<(const VirtualMachineState& m) const {
 		/* These must be sortable by lp so that we can enumerate them from low to high probability in a VirtualMachinePool 
@@ -89,14 +88,6 @@ public:
 		return std::get<Stack<T>>(stack.value).top();
 	}
 	
-//	template<typename T>
-//	T gettopref() {
-//		// reference to the top, to save us making some copies
-//		assert(std::get<Stack<T>>(stack.value).size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
-//		
-//		return std::get<Stack<T>>(stack.value).topref();
-//	}
-//	
 	template<typename T>
 	auto top() {
 		// get a reference to the top. This is used by a major 
@@ -177,6 +168,19 @@ public:
 						} else { assert(0 && "*** Must have bool defined to use op_FALSE");}
 						break;
 					}
+					case BuiltinOp::op_SAFE_RECURSE: {
+						// This is a recursion that returns empty for empty arguments 
+						// simplifying the condition
+						if constexpr (std::is_same<t_x, std::string>::value) { 						
+
+							if(xstack.empty() || xstack.top().size() == 0) {
+								getpop<t_x>(); //remove x
+								push(t_return{}); //push default (null) return
+							}
+						} else { assert(false && "*** Can only use SAFE_MEM_RECURSE on strings");}
+						// want to fallthrough here
+						[[fallthrough]];
+					}
 					case BuiltinOp::op_RECURSE:
 					{
 						
@@ -199,6 +203,18 @@ public:
 						// which is what gets returned when we are all done
 						
 						break;
+					}
+					case BuiltinOp::op_SAFE_MEM_RECURSE: {
+						// same as SAFE_RECURSE. Note that there is no memoization here
+						if constexpr (std::is_same<t_x, std::string>::value) { 						
+							if(xstack.empty() || xstack.top().size() == 0) {
+								getpop<t_x>(); //remove x
+								push(t_return{}); //push default (null) return
+							}
+						} else { assert(false && "*** Can only use SAFE_MEM_RECURSE on strings");}
+
+						// want to fallthrough here
+						[[fallthrough]];
 					}
 					case BuiltinOp::op_MEM_RECURSE:
 					{
@@ -230,22 +246,24 @@ public:
 					// and then we sort out whether the p is a default value 
 					// or not				
 					case BuiltinOp::op_FLIP: 
+					{
+						[[fallthrough]];
+					}
 					case BuiltinOp::op_FLIPP:
 					{
-if constexpr (contains_type<bool,NT_TYPES>()) { 
+						if constexpr (contains_type<bool,NT_TYPES>()) { 
 							assert(pool != nullptr && "op_FLIP and op_FLIPP require the pool to be non-null, since they push onto the pool"); // can't do that, for sure
 					
 							double p = 0.5; 
 							
-if constexpr (contains_type<double,NT_TYPES>()) {  // if we have double allowed we cna do this
-							if(i.getBuiltin() == BuiltinOp::op_FLIPP) { // only for built-in ops do we 
-								p = getpop<double>(); // reads a double argfor the coin weight
-								if(std::isnan(p)) { p = 0.0; } // treat nans as 0s
-								assert(p <= 1.0 && p >= 0.0);
-							}
-} else {					// tif there is no double, we can't use flipp
-							assert(i.getBuiltin() != BuiltinOp::op_FLIPP);
-}							
+							if constexpr (contains_type<double,NT_TYPES>()) {  // if we have double allowed we cna do this
+								if(i.getBuiltin() == BuiltinOp::op_FLIPP) { // only for built-in ops do we 
+									p = getpop<double>(); // reads a double argfor the coin weight
+									if(std::isnan(p)) { p = 0.0; } // treat nans as 0s
+									assert(p <= 1.0 && p >= 0.0);
+								}
+							} else { assert(i.getBuiltin() != BuiltinOp::op_FLIPP); } // tif there is no double, we can't use flipp
+							
 				
 							pool->copy_increment_push(this, true,  log(p));
 //							pool->copy_increment_push(*this, false,  log(1.0-p));
@@ -285,8 +303,8 @@ if constexpr (contains_type<double,NT_TYPES>()) {  // if we have double allowed 
 //							}
 
 							break;
-		
-} else { assert(0 && "*** Cannot use op_FLIP without defining bool in NT_TYPES"); }
+	
+						} else { assert(0 && "*** Cannot use op_FLIP without defining bool in NT_TYPES"); }
 					}
 					case BuiltinOp::op_JMP:
 					{
@@ -296,14 +314,14 @@ if constexpr (contains_type<double,NT_TYPES>()) {  // if we have double allowed 
 					case BuiltinOp::op_IF: 
 					{
 						if constexpr (contains_type<bool,NT_TYPES>()) { 
-						// Here we evaluate op_IF, which has to short circuit and skip (pop some of the stack) 
-						bool b = getpop<bool>(); // bool has already evaluted
-						
-						// now ops must skip the xbranch
-						if(!b) popn(opstack, i.arg);
-						else   {}; // do nothing, we pass through and then get to the jump we placed at the end of the x branch
-						
-						break;		
+							// Here we evaluate op_IF, which has to short circuit and skip (pop some of the stack) 
+							bool b = getpop<bool>(); // bool has already evaluted
+							
+							// now ops must skip the xbranch
+							if(!b) popn(opstack, i.arg);
+							else   {}; // do nothing, we pass through and then get to the jump we placed at the end of the x branch
+							
+							break;		
 						} else { assert(0 && "*** Cannot use op_IF without defining bool in NT_TYPES"); }			
 					}
 					default: 

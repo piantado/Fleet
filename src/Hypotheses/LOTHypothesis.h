@@ -80,6 +80,7 @@ public:
 
 		VirtualMachineState<t_input,t_output>* vms = new VirtualMachineState<t_input,t_output>(x, err);
 		
+		vms->opstack.reserve(value.program_size()); // not necessary but much faster in SymbolicRegression and others
 		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
 		
 		pool.push(vms); // add vms to the pool
@@ -173,10 +174,3 @@ public:
 	}
 	 
 };
-//
-//
-//std::ostream& operator<<(std::ostream& os, const myclass& obj)
-//{
-//      os << obj.somevalue;
-//      return os;
-//}

@@ -56,8 +56,9 @@ enum nonterminal_t {NT_NAMES, N_NTs };
 enum class BuiltinOp {
 	op_NOP=0,op_X,op_POPX,
 	op_MEM,op_RECURSE,op_MEM_RECURSE, // thee can store the index of what hte loader calls in arg, so they can be used with lexica if you pass arg
+	op_SAFE_RECURSE, op_SAFE_MEM_RECURSE,
 	op_FLIP,op_FLIPP,op_IF,op_JMP,
-	op_TRUE,op_FALSE
+	op_TRUE,op_FALSE,
 };
 
 #include "Instruction.h"

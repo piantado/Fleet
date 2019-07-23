@@ -71,7 +71,7 @@ Polydeg get_polynomial_degree_rec(Node& n) {
         else if(v2.is_const) return Polydeg(v1.value*v2.value,true); // x^{2.3} -- is a polynomial, so multiply the exponents
         return Polydeg(NaN,false); // both are exponents but not a polynomial so forget it
     }
-    else if(fmt == "(- %s)") {
+    else if(fmt == "(-%s)") {
         Polydeg v1 = get_polynomial_degree_rec(n.child[0]);
 		if(v1.isnan()) return Polydeg(NaN,false); 
 		else if(v1.is_const) return Polydeg(-v1.value, true);
@@ -99,7 +99,7 @@ Polydeg get_polynomial_degree_rec(Node& n) {
         else            return Polydeg(NaN,false);
     }
 	else {
-		assert(0);
+		assert(false && "*** Unmatched format string by polynomial. Did you change the primitives and not update this?");
 	}
 }
 
