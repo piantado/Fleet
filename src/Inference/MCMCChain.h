@@ -91,10 +91,8 @@ public:
 		for(unsigned long i=1; (i<steps || steps==0) && !CTRL_C; i++){
 			
 			// check the elapsed time 
-			if(time > 0) {
-				double elapsed_time = std::chrono::duration_cast<std::chrono::seconds>(clock::now() - start_time).count();
-				//CERR elapsed_time;
-				if(elapsed_time > time) break;
+			if(time > 0 && time_since(start_time) > time) {
+				break;
 			}
 			
 #ifdef DEBUG_MCMC
@@ -107,14 +105,14 @@ public:
 			// generate the proposal -- defaulty "restarting" if we're currently at -inf
 			HYP proposal; double fb = 0.0;
 			
-			current_mutex.lock(); // lock here when we are updating current -- otherwise we can modify it
+			std::lock_guard guard(current_mutex); // lock below otherwise others can modify
+
 			if(current.posterior > -infinity) {
 				std::tie(proposal,fb) = current.propose();
 			}
 			else {
 				proposal = current.restart();
 			}
-//			current_mutex.unlock();
 				
 			++proposals;
 			
@@ -138,14 +136,12 @@ public:
 #endif
 			
 			// keep track of the max if we are supposed to
-			
 			if(proposal.posterior > themax.posterior) {
 				themax = proposal;
 				steps_since_improvement = 0;
 			}
 						
 			// use MH acceptance rule, with some fanciness for NaNs
-//			current_mutex.lock();  // ~~~~~~~~~
 			double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb; // Remember: don't just check if proposal->posterior>current->posterior or all hell breaks loose		
 			if(   (std::isnan(current.posterior))  ||
 				  (current.posterior == -infinity) ||
@@ -167,15 +163,12 @@ public:
 				
 			// and call on the sample if we meet all our criteria
 			callback(current);
-			
-			current_mutex.unlock(); // ~~~~~~~~~
 				
 			++samples;
 			++FleetStatistics::global_sample_count;
 
 			// and finally if we haven't improved then restart
 			if(restart>0 && steps_since_improvement > restart){
-				current_mutex.lock(); 
 				steps_since_improvement = 0; // reset the couter
 				current = current.restart();
 				current.compute_posterior(*data);
@@ -183,7 +176,6 @@ public:
 				if(current.posterior > themax.posterior) {
 					themax = current; 	
 				}
-				current_mutex.unlock(); 
 			}
 			
 		} // end the main loop	
@@ -191,10 +183,8 @@ public:
 		
 		
 	}
-	void run() {
-		run(0,0); // run forever
-	}
-	
+	void run() { run(0,0); } // run forever
+
 	double acceptance_ratio() {
 		return history.mean();
 	}

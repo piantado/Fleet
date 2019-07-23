@@ -30,32 +30,6 @@ public:
 		value = grammar->expand_from_names<Node>(s);
 	}
 
-	// copy constructor
-	LOTHypothesis(const LOTHypothesis& h) : MCMCable<HYP,t_input,t_output,t_datum>(h),
-		grammar(h.grammar), value(h.value) { // prior, likelihood, etc. should get copied 
-	}
-
-	LOTHypothesis(LOTHypothesis&& h) : MCMCable<HYP,t_input,t_output,t_datum>(h) {
-		// move operator takes over 
-		grammar = h.grammar;
-		value = std::move(h.value);
-	}
-	
-	void operator=(const LOTHypothesis& h) {
-		MCMCable<HYP,t_input,t_output,t_datum>::operator=(h);
-		grammar = h.grammar;
-		value = h.value;
-	}
-	void operator=(LOTHypothesis&& h) {
-		MCMCable<HYP,t_input,t_output,t_datum>::operator=(h);
-		grammar = h.grammar;
-		value = std::move(h.value);
-	}
-	
-	virtual ~LOTHypothesis() {
-		// don't delete anything
-	}
-		
 	
 	// Stuff to create hypotheses:
 	virtual std::pair<HYP,double> propose() const {

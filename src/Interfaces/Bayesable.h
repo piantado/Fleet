@@ -22,22 +22,7 @@ public:
 	uintmax_t born; // what count were you born at?
 
 	Bayesable() : prior(NaN), likelihood(NaN), posterior(NaN), born(++FleetStatistics::hypothesis_births) {	}
-	
-	Bayesable(const Bayesable& b) : prior(b.prior), likelihood(b.likelihood), posterior(b.posterior), born(++FleetStatistics::hypothesis_births) {	}
-	
-//	void operator=(const Bayesable& b) {
-//		prior = b.prior;
-//		likelihood = b.likelihood;
-//		posterior = b.posterior;
-//		born = ++FleetStatistics::hypothesis_births;
-//	}
-//	void operator=(const Bayesable&& b) {
-//		prior = b.prior;
-//		likelihood = b.likelihood;
-//		posterior = b.posterior;
-//		born = b.born;
-//	}
-	
+		
 	virtual void clear_bayes() {
 		// necessary for inserting into big collections not by prior
 		prior = 0.0;

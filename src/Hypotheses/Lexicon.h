@@ -84,29 +84,7 @@ public:
 		return mx>=0 && mx < factors.size();
 	}
 	 
-//	
-//	void fix_indices(size_t loc, int added) {
-//		// go through and fix the indices assuming that we added added at loc
-//		// note: Added can be positive (Adding) or negative (removing)
-//		std::function<void(Node*)> adjuster = [this, loc, added](Node* n){
-//			const Instruction ni = n->rule->instr;
-//			if(ni.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE)
-//				&& (size_t)ni.arg >= loc) { // we only have to increment when args is gt. loc
-//			   
-//				size_t newindex = n->rule->instr.arg+added;
-//				
-//				assert(newindex >= 0);
-//				
-//				n->rule = this->grammar->get_rule(n->rule->nt, n->rule->instr.getCustom(), newindex); 
-//			}
-//		};
-//			
-//		for(size_t i=0;i<factors.size();i++) {
-//			if(added > 0 || loc != i) // can't do this on the one we are removing, since we might remove f0 and it calls itself!
-//				factors[i]->value->map(adjuster); // replacing function mapped through nodes				
-//		}		
-//	}
-	
+
 	
 	/********************************************************
 	 * Required for VMS to dispatch to the right sub
@@ -132,20 +110,6 @@ public:
 	/********************************************************
 	 * Implementation of MCMCable interace 
 	 ********************************************************/
-//	 
-//	virtual HYP* copy() const {
-//		auto l = new HYP(grammar);
-//		
-//		for(T* v : factors){
-//			l->factors.push_back(v->copy());
-//		}
-//		
-//		l->prior      = this->prior;
-//		l->likelihood = this->likelihood;
-//		l->posterior  = this->posterior;
-//		
-//		return l;
-//	}
 	
 	virtual HYP copy_and_complete() const {
 		
@@ -172,46 +136,26 @@ public:
 	}
 	
 	
-//	virtual std::pair<HYP,double> propose() const {
-//		HYP x; // set the size
-//		x.factors.resize(factors.size());
-//		
-//		// we will always flip one,
-//		// and flip the rest at random
-//		// if we dont always flip one, one single 
-//		// factors we waste half of our samples!
-//		//auto i = myrandom(factors.size()); 
-//		
-//		double fb = 0.0;
-//		for(size_t k=0;k<factors.size();k++) {
-//			// defaultly we'll propose to each factor -- many proposals do nothing anyways
-//			auto [h, _fb] = factors[k].propose();
-//			x.factors[k] = h;
-//			fb += _fb;
-//		}
-//
-//		assert(x.factors.size() == factors.size());
-//		return std::make_pair(x, fb);		
-//	}
-
 	virtual std::pair<HYP,double> propose() const {
 		// TODO: Check that detailed balance is ok here?
 		// tODO: Not the most efficient either
 		while(true) {
 			HYP x; 
+			x.factors = factors; // copy 
+			
+			//x.factors.resize(factors.size());
 			double fb = 0.0;
 			bool flipped = false;
 			
 			for(size_t k=0;k<factors.size();k++) {
 				if(flip()) {
 					auto [h, _fb] = factors[k].propose();
-					x.factors.push_back(h);
+					x.factors[k] = h;
 					fb += _fb;
 					flipped = true; //someone was flipped
 				}
 				else {
-					T q = factors[k];
-					x.factors.push_back(q); /// this copy
+					//x.factors[k] = factors[k]; /// this copy
 				}
 			}
 			

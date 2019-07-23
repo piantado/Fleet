@@ -23,15 +23,12 @@ public:
 	ParallelTempering(HYP& h0, typename HYP::t_data* d, std::function<void(HYP&)> cb, std::initializer_list<double> t, bool allcallback=true) : temperatures(t), terminate(false) {
 		// allcallback is true means that all chains call the callback, otherwise only t=0
 		for(size_t i=0;i<temperatures.size();i++) {
-			pool.push_back(MCMCChain<HYP>(h0.restart(), d, allcallback || i==0 ? cb : null_callback<HYP>));
+			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), d, allcallback || i==0 ? cb : null_callback<HYP>));
 			pool[i].temperature = temperatures[i]; // set its temperature 
 			
 			swap_history = new FiniteHistory<bool>[temperatures.size()];
 		}
 		
-		// we use this goofy order because otherwise we move h0 and that messes stuff up
-		// so this is slightly inefficient, with one extra restart/copy above
-		pool[0].current = h0;
 	}
 	
 	
@@ -39,7 +36,7 @@ public:
 		// allcallback is true means that all chains call the callback, otherwise only t=0
 		for(size_t i=0;i<n;i++) {
 			
-			pool.push_back(MCMCChain<HYP>(h0.restart(), d, allcallback || i==0 ? cb : null_callback<HYP>));
+			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), d, allcallback || i==0 ? cb : null_callback<HYP>));
 			
 			if(i==0) {  // always initialize i=0 to T=1s
 				pool[i].temperature = 1.0;
@@ -50,10 +47,6 @@ public:
 			}
 			swap_history = new FiniteHistory<bool>[n];
 		}
-		
-		// we use this goofy order because otherwise we move h0 and that messes stuff up
-		// so this is slightly inefficient, with one extra restart/copy above
-		pool[0].current = h0;
 
 	}
 	

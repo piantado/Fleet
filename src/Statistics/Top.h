@@ -14,7 +14,7 @@
 template<class T>
 class TopN {
 	
-	mutable std::mutex lock;
+	std::mutex lock;
 	
 protected:
 	std::map<T,unsigned long> cnt; // also let's count how many times we've seen each for easy debugging
@@ -43,6 +43,7 @@ public:
 	}
 	void operator=(TopN<T>&& x) {
 		set_size(x.N);
+//		add(x);
 		cnt = std::move(x.cnt);
 		s = std::move(x.s);
 	}
@@ -96,7 +97,7 @@ public:
 	
 	void add(const TopN<T>& x) { // add from a whole other topN
 		for(auto& h: x.s){
-			add(h, x.cnt[h]);
+			add(h, x.cnt.at(h));
 		}
 	}
 	void operator<<(const TopN<T>& x) {

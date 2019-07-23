@@ -73,40 +73,7 @@ public:
 	Node(const Rule* r=nullptr, double _lp=0.0, bool cr=true) : 
 		child(r==nullptr ? 0 : r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
 	}
-//	Node(const Node& n)  : child(n.rule->N) {
-//		child = n.child;
-//		rule = n.rule;
-//		lp = n.lp;
-//		can_resample = n.can_resample;	
-//	}
-//	Node(Node&& n) {
-//		child = std::move(n.child); // TODO: is this right?
-//		rule = n.rule;
-//		lp = n.lp;
-//		can_resample = n.can_resample;	
-//	}
-//	~Node() {};
-//	
-//	void operator=(const Node& n) {
-//		child = n.child;
-//		rule = n.rule;
-//		lp = n.lp;
-//		can_resample = n.can_resample;	
-//	}
-//	void operator=(const Node&& n) {
-//		child.resize(n.child.size());
-//		child = std::move(n.child);
-//		rule = n.rule;
-//		lp = n.lp;
-//		can_resample = n.can_resample;	
-//	}
 	
-	
-	
-//	bool isnull() const { // a null node has no children
-//		return child.size() == 0;
-//	}
-//	
 	bool is_null() const { // am I the null rule?
 		return rule == NullRule;
 	}
@@ -244,9 +211,9 @@ public:
 		else {
 		
 			// otherwise normal copy
-			Node ret(*this);
-			for(auto& c: ret.child) {
-				c = c.copy_resample(g, f);
+			Node ret = *this;
+			for(size_t i=0;i<child.size();i++) {
+				ret.child[i] = child[i].copy_resample(g, f);
 			}
 			return ret;
 		}
