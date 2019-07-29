@@ -38,7 +38,8 @@ public:
 	double explore; 
 	
 	mutable std::mutex child_mutex; // for access in parallelTempering
-    
+    mutable std::mutex stats_mutex;
+	
 	StreamingStatistics statistics;
 	
 	typename HYP::t_data* data;
@@ -55,7 +56,7 @@ public:
     }
     
     MCTSNode(double ex, HYP& h0, void cb(HYP&), typename HYP::t_data* d, ScoringType st=ScoringType::SAMPLE ) : 
-		callback(cb), explore(ex), parent(nullptr), value(h0), data(d), scoring_type(st) {
+		callback(cb), explore(ex), data(d), parent(nullptr), value(h0), scoring_type(st) {
         
 		initialize();        
 		
@@ -65,8 +66,10 @@ public:
 	// should not copy or move because then the parent pointers get all messed up 
 	MCTSNode(const MCTSNode& m) = delete;
 	MCTSNode(MCTSNode&& m) {
-		std::lock_guard guard(m.child_mutex); // get m's lock before moving
-		std::lock_guard guard2(child_mutex); // and mine to be sure
+		std::lock_guard guard1(m.child_mutex); // get m's lock before moving
+		std::lock_guard guard2(m.stats_mutex);
+		std::lock_guard guard3(  child_mutex); // and mine to be sure
+		std::lock_guard guard4(  stats_mutex);
 		
 		assert(m.children.size() ==0); // else parent pointers get messed up
 		nvisits = m.nvisits;
@@ -98,11 +101,16 @@ public:
     
 	
     void print(std::ostream& o, const int depth, const bool sort) const { 
-        std::string idnt = std::string(depth, '\t');
+        std::string idnt = std::string(depth, '\t'); // how far should we indent?
         
 		std::string opn = (open?" ":"*");
-		o << idnt TAB opn TAB score() TAB statistics.median() TAB statistics.max TAB "S=" << nvisits TAB value.string() ENDL;
 		
+		double s = score(); // must call before getting stats mutex, since this requests it too 
+		
+		{
+			std::lock_guard guard(stats_mutex);
+			o << idnt TAB opn TAB s TAB statistics.median() TAB statistics.max TAB "S=" << nvisits TAB value.string() ENDL;
+		}
 		// optional sort
 		if(sort) {
 			// we have to make a copy of our pointer array because otherwise its not const			
@@ -110,10 +118,12 @@ public:
 			for(const auto& c : children) c2.push_back(&c);
 			std::sort(c2.begin(), c2.end(), [](const auto a, const auto b) {return a->statistics.N > b->statistics.N;}); // sort by how many samples
 
-			for(const auto& c : c2) c->print(o, depth+1, sort);
+			for(const auto& c : c2) 
+				c->print(o, depth+1, sort);
 		}
 		else {		
-			for(auto& c : children) c.print(o, depth+1, sort);
+			for(auto& c : children) 
+				c.print(o, depth+1, sort);
 		}
     }
  
@@ -137,12 +147,11 @@ public:
 		if(scoring_type == ScoringType::SAMPLE) {
 			// I will add probability "explore" pseudocounts to my parent's distribution in order to form a prior 
 			// please change this parameter name later. 
-			if(uniform() <= explore / (explore + statistics.N)) {
-				
-				// here, if we are the base root node, we treat all "parent" samples as 0.0
-				return (this->parent == nullptr ? statistics.sample() : parent->score()); // handle the base case			
+			if(this->parent != nullptr and uniform() <= explore / (explore + statistics.N)) {
+				return parent->score(); 
 			} 
 			else {
+				std::lock_guard guard(stats_mutex); // lock our stats here
 				return statistics.sample();			
 			}		
 		}
@@ -197,7 +206,12 @@ public:
         
 		nvisits += num; // we want to update this even if inf/nan since we did try searching here
 		
-		statistics << v;
+		std::lock_guard guard(stats_mutex);
+		
+		// If we do the first of these, we sampling probabilities proportional to the probabilities
+		// otherwise we sample them uniformly
+		statistics.add(v,v); // it has itself as a log probability!
+		//statistics << v;
 		
 		// and add this sampel going up too
 		if(parent != nullptr) {
@@ -231,7 +245,7 @@ public:
 		
 		MCMCChain<HYP> chain(h, data, wrapped_callback);
 		
-		chain.run(mcmc_steps, 0); // run mcmc with restarts 
+		chain.run(mcmc_steps, runtime); // run mcmc with restarts; we sure shouldn't run more than runtime
 	}
 	
 	
@@ -357,11 +371,3 @@ public:
 
 
 };
-
-//template<typename HYP>
-//class FullMCTSNode : public MCTSNode<HYP> {
-//	// In this version, when we go down to build a tree, we include ALL of the nodes
-//	
-//	void add_child_nodes()=delete; // we don't use this 
-//	
-//}

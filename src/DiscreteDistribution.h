@@ -12,14 +12,7 @@ class DiscreteDistribution {
 public:
 	std::map<T,double> m; // map from values to log probabilities
 	
-	
 	DiscreteDistribution() {};
-	
-	DiscreteDistribution(const DiscreteDistribution& d) : m(d.m) {
-		
-	}
-	
-	virtual ~DiscreteDistribution() {};
 	
 	virtual T argmax() const {
 		T best{};

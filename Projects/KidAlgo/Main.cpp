@@ -243,11 +243,7 @@ int main(int argc, char** argv){
 		COUT s.second TAB QQ(s.first) ENDL;
 	}
 		
-	
-	// Show the best we've found
-//	top.print(print);
-	
-	
+		
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
 	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;

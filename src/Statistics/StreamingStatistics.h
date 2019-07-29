@@ -38,14 +38,14 @@ public:
 		reservoir_sample = std::move(s.reservoir_sample);
 	}
 
-	void add(double x) {
+	void add(double x, double lw=0.0) {
 		++N; // always count N, even if we get nan/inf (this is required for MCTS, otherwise we fall into sampling nans)
 		if(std::isnan(x) || std::isinf(x)) return; // filter nans and inf(TODO: Should we filter inf?)
 		
 		std::lock_guard guard(lock);
 
 		streaming_median << x;
-		reservoir_sample << x;
+		reservoir_sample.add(x,lw);
 		
 		if(x < min) min = x;
 		if(x > max) max = x;

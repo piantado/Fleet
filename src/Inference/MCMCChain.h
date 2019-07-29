@@ -82,6 +82,7 @@ public:
 		
 		// compute the info for the curent
 		current.compute_posterior(*data);
+		
 		callback(current);
 		++FleetStatistics::global_sample_count;
 		themax = current;

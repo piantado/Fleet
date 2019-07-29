@@ -39,6 +39,8 @@ enum class CustomOp { // NOTE: The type here MUST match the width in bitfield or
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
+#include "Data.h"
+
 size_t maxlength = 256; // max string length, else throw an error (128+ needed for count)
 size_t nfactors = 2; // how may factors do we run on?
 S alphabet="nvadt";
@@ -206,7 +208,6 @@ public:
 };
 
 
-
 class MyHypothesis : public Lexicon<MyHypothesis, InnerHypothesis, S, S> {
 public:	
 	static constexpr double alpha = 0.99;
@@ -236,7 +237,7 @@ public:
 			// This function on nodes computes whether or not they use a recursive function
 			// and sets calls appropriately
 			const std::function<void(Node&)> myfun = [&](Node& n) {
-				if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE)) {
+				if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE,BuiltinOp::op_SAFE_RECURSE,BuiltinOp::op_SAFE_MEM_RECURSE)) {
 					calls[i*N + n.rule->instr.arg] = true;
 				}
 			};
@@ -294,7 +295,7 @@ public:
 		 
 		 // call -- treats all input as emptystrings
 		 const auto M = call(S(""),S("<err>")); 
-
+	
 		 // first pre-compute a prefix tree
 		 // TODO: This might be faster to store in an actual tree
 		 std::map<S,double> prefix_tree;
@@ -346,12 +347,11 @@ public:
 		extern MyHypothesis::t_data prdata;
 		extern TopN<MyHypothesis> top;
 		extern std::string current_data;
-		
 		auto o = this->call(S(""), S("<err>"));
+		auto [prec, rec] = get_precision_and_recall(std::cout, o, prdata, PREC_REC_N);
 		COUT "#\n";
 		COUT prefix << "# "; o.print();	COUT "\n";
-		COUT prefix << current_data TAB this->born TAB this->posterior TAB top.count(*this) TAB this->prior TAB this->likelihood TAB QQ(this->parseable()) TAB "";
-		//print_precision_and_recall(std::cout, o, prdata, PREC_REC_N);
+		COUT prefix << current_data TAB this->born TAB this->posterior TAB top.count(*this) TAB this->prior TAB this->likelihood TAB QQ(this->parseable()) TAB prec TAB rec;
 		COUT "" TAB QQ(this->string()) ENDL
 	}
 	 
@@ -359,7 +359,6 @@ public:
 
 
 
-#include "Data.h"
 std::string prdata_path = ""; 
 MyHypothesis::t_data mydata;
 MyHypothesis::t_data prdata; // used for computing precision and recall -- in case we want to use more strings?
@@ -450,7 +449,9 @@ int main(int argc, char** argv){
 		}
 	
 		// run for real		
-		samp.run(mcmc_steps, runtime, 0.2, 3.0);		
+		samp.run(mcmc_steps, runtime, 0.2, 3.0);	
+	
+		if(top.empty()) CERR "# Zero (non negative inf) hypotheses found" ENDL;
 		top.print();	
 
 		if(CTRL_C) break;
@@ -466,7 +467,7 @@ int main(int argc, char** argv){
 //		chain.run(mcmc_steps, runtime);
 //		tic();	
 //	}
-////	
+//	
 	
 	top.print();
 	
