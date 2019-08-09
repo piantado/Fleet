@@ -49,12 +49,12 @@ const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The m
 const size_t MAX_PR_LINES = 1000000; 
 
 //std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "10000", "50000", "100000"}; // how many data points do we run on?
-std::vector<S> data_amounts={"100"}; // how many data points do we run on?
+std::vector<S> data_amounts={"50000"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
 const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -15 to catch some less frequent things that happen by chance; -18;  // in (ab)^n, top 25 strings will need this man lp
-const unsigned long MAX_STEPS_PER_FACTOR   = 4096; //2048; //2048;
-const unsigned long MAX_OUTPUTS_PER_FACTOR = 512; //256;
+const unsigned long MAX_STEPS_PER_FACTOR   = 2048; //4096; //2048; //2048;
+const unsigned long MAX_OUTPUTS_PER_FACTOR = 256; // 512; //256;
 
 class MyGrammar : public Grammar { 
 public:
@@ -210,7 +210,7 @@ public:
 
 class MyHypothesis : public Lexicon<MyHypothesis, InnerHypothesis, S, S> {
 public:	
-	static constexpr double alpha = 0.99;
+	static constexpr double alpha = 0.9;
 	using Super = Lexicon<MyHypothesis, InnerHypothesis, S, S>;
 	
 	MyHypothesis()                       : Super()   {}
@@ -290,56 +290,29 @@ public:
 	 
 
 	 double compute_likelihood(const t_data& data) {
-		 // this versino goes through and computes the predictive probability of each prefix
-		 likelihood = 0.0;
+		 // this version goes through and computes the predictive probability of each prefix
 		 
 		 // call -- treats all input as emptystrings
-		 const auto M = call(S(""),S("<err>")); 
+		 const auto M = call(S(""), S("<err>")); 
 	
-		 // first pre-compute a prefix tree
-		 // TODO: This might be faster to store in an actual tree
-		 std::map<S,double> prefix_tree;
-		 for(const auto& m : M.values()){ 
-			 const S mstr = m.first + "!"; // add a stop symbol
-			 S pfx; pfx.reserve(mstr.length());
-			 
-			 for(size_t i=0;i<mstr.length();i++){
-				 auto loc = prefix_tree.find(pfx);
-				 if(loc == prefix_tree.end()) {
-					 prefix_tree[pfx] = m.second;
-				 } else {
-					 prefix_tree[pfx] = logplusexp( (*loc).second, m.second);
-				 }
-				 
-				 // faster than computing substr is concatenating on with 
-				 // each character, assuming we have reserved the right size
-				 pfx += mstr.at(i); 
-			 }			 
-		 }
-		 
-		 // pulling these out seems to make things go faster
-		 const double lcor = log(alpha);
-		 const double lerr = log((1.0-alpha)/alphabet.size());
-		 
-		 // now go through and compute a character-by-character predictive likelihood
-		 // This does not seem to benefit from the same character-by-character stuff as above
-		 for(const auto& a : data) {
-			 const S astr = a.output + "!"; // add a stop symbol
-			 for(size_t i=0;i<=astr.length();i++) {
-				const    S pfx = astr.substr(0,i);
-				const char prd = astr.at(i); // get the next character we predict
-				
-				// get conditional probability
-				if(prefix_tree.count(pfx+prd)) { // conditional prob with outlier likelihood
-					likelihood += a.reliability * (lcor + prefix_tree[pfx+prd] - prefix_tree[pfx]); 
-				} else {
-					likelihood += (a.reliability * lerr) * (astr.length() - i); // we don't have to keep going -- we will have this many errors
-					break;
-				}	
-			 }
-		 }
-		 
-		 return likelihood;		 
+	
+		// old version:
+		likelihood = 0.0;
+		const double lpnoise = log((1.0-alpha)/alphabet.size());
+		const double lpend   = log(alpha); // end a string with this probability
+		for(const auto& a : data) {
+			S astr = a.output;
+			double alp = -infinity; // the model's probability of this
+			for(const auto& m : M.values()) {
+				const S mstr = m.first;
+				if(is_prefix(mstr, astr)) {
+					alp = logplusexp(alp, m.second + lpnoise * (astr.size() - mstr.size()) + lpend);
+				}
+			}
+			likelihood += alp; 
+		}
+		return likelihood; 
+	
 	 }
 	 
 	 void print(std::string prefix="") {
@@ -423,53 +396,56 @@ int main(int argc, char** argv){
 	h0.compute_posterior(mydata);
 		
 	// set up a paralle tempering object
-	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0);
-	tic();
-	for(auto da : data_amounts) {
-		current_data = da; // set this global variable so we can print it correctly.
-		S data_path = input_path + "-" + da + ".txt";	
-		load_data_file(mydata, data_path.c_str());
-		
-		// Now we need to update top for the new data
-		// we're going to keep around the old ones, so 
-		// we'll temporarily put everything into a temp top
-		// and then take it over
-		TopN<MyHypothesis> tmptop;
-		tmptop.set_size(ntop);
-		for(auto h : top.values()) {
-			h.compute_posterior(mydata); // update the posterior to the new data amount
-			tmptop << h;
-		}
-		top = std::move(tmptop); // restore top
-		
-		// update our parallel tempering pool
-		for(auto& c: samp.pool) {
-			c.getCurrent().compute_posterior(mydata);
-			c.data = &mydata;
-		}
-	
-		// run for real		
-		samp.run(mcmc_steps, runtime, 0.2, 3.0);	
-	
-		if(top.empty()) CERR "# Zero (non negative inf) hypotheses found" ENDL;
-		top.print();	
-
-		if(CTRL_C) break;
-	}
-	tic();
-//	
-	// Vanilla MCMC
-//	for(auto da : data_amounts) {
-//		S data_path = input_path + "-" + da + ".txt";
+//	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0);
+//	tic();
+//	for(auto da : data_amounts) { // This incrementally builds up the amount of data
+//		current_data = da; // set this global variable so we can print it correctly.
+//		S data_path = input_path + "-" + da + ".txt";	
 //		load_data_file(mydata, data_path.c_str());
-//		tic();
-//		MCMCChain chain(h0, &mydata, (std::function<void(MyHypothesis&)>)callback);
-//		chain.run(mcmc_steps, runtime);
-//		tic();	
-//	}
+//		
+//		// Now we need to update top for the new data
+//		// we're going to keep around the old ones, so 
+//		// we'll temporarily put everything into a temp top
+//		// and then take it over
+//		TopN<MyHypothesis> tmptop(ntop);
+//		for(auto h : top.values()) {
+//			CERR h.posterior << "\t";
+//			h.compute_posterior(mydata); // update the posterior to the new data amount
+//			CERR h.posterior ENDL;
+//			tmptop << h;
+//		}
+//		top = tmptop; // restore top
+//		
+//		// update our parallel tempering pool
+//		for(auto& c: samp.pool) {
+//			c.getCurrent().compute_posterior(mydata);
+//			c.data = &mydata;
+//		}
 //	
-	
+//		// run for real		
+//		samp.run(mcmc_steps, runtime, 0.2, 3.0);	
+//	
+//		if(top.empty()) CERR "# Zero (non negative inf) hypotheses found" ENDL;
+//		
+//		top.print();	
+//
+//		if(CTRL_C) break;
+//	}
+//	tic();
+//	
+
+
+	// Vanilla MCMC
+	for(auto da : data_amounts) {
+		S data_path = input_path + "-" + da + ".txt";
+		load_data_file(mydata, data_path.c_str());
+		tic();
+		MCMCChain chain(h0, &mydata, (std::function<void(MyHypothesis&)>)callback);
+		chain.run(mcmc_steps, runtime);
+		tic();	
+	}
 	top.print();
+	
 	
 		
 	
