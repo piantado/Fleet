@@ -16,7 +16,7 @@ class TopN {
 	
 	std::mutex lock;
 	
-protected:
+public:
 	std::map<T,unsigned long> cnt; // also let's count how many times we've seen each for easy debugging
 	std::multiset<T> s; // important that it stores in sorted order by posterior! Multiset because we may have multiple samples that are "equal" (as in SymbolicRegression)
 	
@@ -27,12 +27,12 @@ public:
 	
 	TopN(const TopN<T>& x) {
 		clear();
-		set_size(x.size());
+		set_size(x.N);
 		add(x);
 	}
 	TopN(TopN<T>&& x) {
 		cnt = std::move(x.cnt);
-		set_size(x.size());
+		set_size(x.N);
 		s = std::move(x.s);
 	}
 	
@@ -50,10 +50,12 @@ public:
 	
 
 	void set_size(size_t n) {
+		// DOES NOT RESIZE
 		N = n;
 	}
 
 	size_t size() const {
+		// returns the NUMBER in the set, not the total number allowed!
 		return s.size();
 	}
 	
@@ -76,7 +78,7 @@ public:
 			
 				s.insert(xcpy); // add this one
 				assert(cnt.find(xcpy) == cnt.end());
-				cnt[xcpy] = 1;
+				cnt[xcpy] = count;
 				
 				// and remove until we are the right size
 				while(s.size() > N) {
@@ -88,7 +90,7 @@ public:
 			}
 		}
 		else { // if its stored somewhere already
-			cnt[x]++;
+			cnt[x] += count;
 		}
 	}
 	void operator<<(const T& x) {
