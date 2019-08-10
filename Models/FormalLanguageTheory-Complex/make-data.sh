@@ -1,5 +1,5 @@
 
-# for lang in SimpleEnglish MediumEnglish FancyEnglish Fibo AnBnCn AnBnC2n ABAnBn AB ABn An AnB2n AnBn Dyck AnBm AAAA AAA ABAnBn AnBmCmAn AnBmCnDm ABA ABB Count AnBkCn XX XXX XXI XXR XXRI XY Man Reber Saffran BerwickPilato Gomez2 Gomez6 Gomez12 NewportAslin MorganNewport MorganMeierNewport HudsonKamNewport100 HudsonKamNewport75 HudsonKamNewport60 HudsonKamNewport45 ReederNewportAslin GoldenMean Even AnBnCnDn A2en ABnen AnCBn
+# for lang in SimpleEnglish MediumEnglish FancyEnglish Fibo AnBnCn AnBnC2n ABAnBn AB ABn An AnB2n AnBn Dyck AnBm AAAA AAA ABAnBn AnBmCmAn AnBmCnDm ABA ABB Count AnBkCn XX XXX XXI XXR XXRI XY Man Reber Saffran BerwickPilato Gomez2 Gomez6 Gomez12 NewportAslin MorganNewport MorganMeierNewport HudsonKamNewport100 HudsonKamNewport75 HudsonKamNewport60 HudsonKamNewport45 ReederNewportAslin GoldenMean Even AnBnCnDn A2en ABnen AnCBn AnABn AnABAn ABnABAn
 
 makeLang() {
 	echo "Making language " $1
@@ -15,7 +15,7 @@ export -f makeLang
 
 #languages=(SimpleEnglish MediumEnglish FancyEnglish AnBnCn AnBnC2n ABAnBn AB ABn An AnB2n AnBn Dyck AnBm AAAA AAA ABAnBn AnBmCmAn AnBmCnDm ABA ABB Count AnBkCn XX XXX XXI XXR XXRI XY Man Reber Saffran BerwickPilato Gomez2 Gomez6 Gomez12 NewportAslin MorganNewport MorganMeierNewport HudsonKamNewport100 HudsonKamNewport75 HudsonKamNewport60 HudsonKamNewport45 ReederNewportAslin GoldenMean Even AnBnCnDn A2en ABnen AnCBn)
 
-languages=(XX XXX XXI XXR XXRI XY)
+languages=(ABAnBn)
 
 # Run in parallel on all languages
 parallel makeLang ::: "${languages[@]}"

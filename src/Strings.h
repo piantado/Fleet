@@ -6,6 +6,7 @@ bool is_prefix(const std::string& prefix, const std::string& x) {
 	//https://stackoverflow.com/questions/7913835/check-if-one-string-is-a-prefix-of-another
 	
 	if(prefix.length() > x.length()) return false;
+	if(prefix.length() == 0) return true;
 	
 	return std::equal(prefix.begin(), prefix.end(), x.begin());
 }

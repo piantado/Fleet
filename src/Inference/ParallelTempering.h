@@ -18,6 +18,8 @@ public:
 	std::vector<double> temperatures;
 	FiniteHistory<bool>* swap_history;
 	
+	bool is_temperature; // set for whether we initialize according to a temperature ladder (true) or data
+	
 	std::atomic<bool> terminate; // used to kill swapper and adapter
 	
 	ParallelTempering(HYP& h0, typename HYP::t_data* d, std::function<void(HYP&)> cb, std::initializer_list<double> t, bool allcallback=true) : temperatures(t), terminate(false) {
@@ -25,10 +27,10 @@ public:
 		for(size_t i=0;i<temperatures.size();i++) {
 			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), d, allcallback || i==0 ? cb : null_callback<HYP>));
 			pool[i].temperature = temperatures[i]; // set its temperature 
-			
-			swap_history = new FiniteHistory<bool>[temperatures.size()];
 		}
 		
+		is_temperature = true;
+		swap_history = new FiniteHistory<bool>[temperatures.size()];
 	}
 	
 	
@@ -45,9 +47,20 @@ public:
 				// set its temperature with this kind of geometric scale  
 				pool[i].temperature = 1.0 + (maxT-1.0) * pow(2.0, double(i)-double(n-1)); 
 			}
-			swap_history = new FiniteHistory<bool>[n];
 		}
-
+		is_temperature = true;
+		swap_history = new FiniteHistory<bool>[n];
+	}
+	
+	
+	ParallelTempering(HYP& h0, std::vector<typename HYP::t_data>& datas, std::vector<std::function<void(HYP&)>> cb) {
+		// This version anneals on data, giving each chain a different amount in datas order
+		for(size_t i=0;i<datas.size();i++) {
+			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), &(datas[i]), cb[i]));
+			pool[i].temperature = 1.0;
+		}
+		is_temperature = false;
+		swap_history = new FiniteHistory<bool>[datas.size()];
 	}
 	
 	
@@ -72,14 +85,37 @@ public:
 				// get both of these thread locks
 				std::lock_guard guard1(pool[k-1].current_mutex);
 				std::lock_guard guard2(pool[k  ].current_mutex);
-								
-				double Tnow = pool[k-1].at_temperature(pool[k-1].temperature)   + pool[k].at_temperature(pool[k].temperature);
-				double Tswp = pool[k-1].at_temperature(pool[k].temperature)     + pool[k].at_temperature(pool[k-1].temperature);
+				
+				double R; //
+				if(is_temperature) {
+					// compute R based on data
+					double Tnow = pool[k-1].at_temperature(pool[k-1].temperature)   + pool[k].at_temperature(pool[k].temperature);
+					double Tswp = pool[k-1].at_temperature(pool[k].temperature)     + pool[k].at_temperature(pool[k-1].temperature);
+					R = Tswp-Tnow;
+				} else {
+					// must compute swaps based on data
+					double Pnow = pool[k-1].current.posterior + pool[k].current.posterior;
+					
+					// make copies and compute posterior on each other's data
+					HYP x = pool[k-1].current; x.compute_posterior(*pool[k].data);
+					HYP y = pool[k].current;   y.compute_posterior(*pool[k-1].data);
+					double Pswap = x.posterior + y.posterior;
+					
+					R = Pswap - Pnow;
+				}
+				
 				// TODO: Compare to paper
-				if(Tswp > Tnow || uniform() < exp(Tswp-Tnow)) { 
+				if(R>0 || uniform() < exp(R)) { 
 					
 					// swap the chains
 					std::swap(pool[k].current, pool[k-1].current);
+					
+					// and if we're doing data, we must recompute
+					// NOTE: This is slightly inefficient because we computed it above, but that's hard to keep track of
+					if(not is_temperature) {
+						pool[k].current.compute_posterior(*pool[k].data);
+						pool[k-1].current.compute_posterior(*pool[k-1].data);
+					}
 
 					swap_history[k] << true;
 				}

@@ -10,8 +10,8 @@ class ABAnBn(FormalLanguage):
         self.grammar = Grammar(start='S')
         self.grammar.add_rule('S', 'a%s', ['S'], 1.0)
         self.grammar.add_rule('S', 'b%s', ['S'], 1.0)
-        self.grammar.add_rule('S', 'a%s', ['Q'], 2.0)
-        self.grammar.add_rule('S', 'b%s', ['Q'], 2.0)
+        self.grammar.add_rule('S', '%s', ['Q'], 2.0)
+        self.grammar.add_rule('S', '%s', ['Q'], 2.0)
         
         self.grammar.add_rule('Q', 'a%sb', ['Q'], 2.0)
         self.grammar.add_rule('Q', 'ab',   None, 1.0)

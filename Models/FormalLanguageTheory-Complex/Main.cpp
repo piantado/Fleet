@@ -48,8 +48,8 @@ const size_t PREC_REC_N   = 25;  // if we make this too high, then the data is f
 const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The more data, the slower...
 const size_t MAX_PR_LINES = 1000000; 
 
-//std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "10000", "50000", "100000"}; // how many data points do we run on?
-std::vector<S> data_amounts={"50000"}; // how many data points do we run on?
+std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "10000", "50000", "100000"}; // how many data points do we run on?
+//std::vector<S> data_amounts={"1"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
 const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -15 to catch some less frequent things that happen by chance; -18;  // in (ab)^n, top 25 strings will need this man lp
@@ -290,13 +290,11 @@ public:
 	 
 
 	 double compute_likelihood(const t_data& data) {
-		 // this version goes through and computes the predictive probability of each prefix
+		// this version goes through and computes the predictive probability of each prefix
 		 
-		 // call -- treats all input as emptystrings
-		 const auto M = call(S(""), S("<err>")); 
-	
-	
-		// old version:
+		// call -- treats all input as emptystrings
+		const auto M = call(S(""), S("<err>")); 
+		
 		likelihood = 0.0;
 		const double lpnoise = log((1.0-alpha)/alphabet.size());
 		const double lpend   = log(alpha); // end a string with this probability
@@ -309,7 +307,9 @@ public:
 					alp = logplusexp(alp, m.second + lpnoise * (astr.size() - mstr.size()) + lpend);
 				}
 			}
-			likelihood += alp; 
+			likelihood += alp * a.reliability; 
+			
+			if(likelihood == -infinity) return likelihood;
 		}
 		return likelihood; 
 	
@@ -318,13 +318,13 @@ public:
 	 void print(std::string prefix="") {
 		std::lock_guard guard(Fleet::output_lock); // better not call Super wtih this here
 		extern MyHypothesis::t_data prdata;
-		extern TopN<MyHypothesis> top;
+//		extern TopN<MyHypothesis> top;
 		extern std::string current_data;
 		auto o = this->call(S(""), S("<err>"));
 		auto [prec, rec] = get_precision_and_recall(std::cout, o, prdata, PREC_REC_N);
 		COUT "#\n";
-		COUT prefix << "# "; o.print();	COUT "\n";
-		COUT prefix << current_data TAB this->born TAB this->posterior TAB top.count(*this) TAB this->prior TAB this->likelihood TAB QQ(this->parseable()) TAB prec TAB rec;
+		COUT "# "; o.print();	COUT "\n";
+		COUT prefix << current_data TAB this->born TAB this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->parseable()) TAB prec TAB rec;
 		COUT "" TAB QQ(this->string()) ENDL
 	}
 	 
@@ -333,20 +333,20 @@ public:
 
 
 std::string prdata_path = ""; 
-MyHypothesis::t_data mydata;
+
 MyHypothesis::t_data prdata; // used for computing precision and recall -- in case we want to use more strings?
 
 S current_data = "";
-TopN<MyHypothesis> top;
+//TopN<MyHypothesis> top;
+std::vector<TopN<MyHypothesis>> tops(0);
 
-
-void callback(MyHypothesis& h) {
-
-	top << h; 
+void callback(MyHypothesis& h, int i) {
+	
+	tops[i] << h;
 	
 	// print out with thinning
 	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) {
-		h.print();
+		h.print("RUNNING"+std::to_string(i));
 	}
 	
 }
@@ -375,7 +375,7 @@ int main(int argc, char** argv){
 	
 	if(prdata_path == "") prdata_path = input_path+".txt";
 	
-	top.set_size(ntop); // set by above macro
+//	top.set_size(ntop); // set by above macro
 	
 	load_data_file(prdata, prdata_path.c_str()); // put all the data in prdata
 	for(auto d : prdata) {	// Add a check for any data not in the alphabet
@@ -393,9 +393,37 @@ int main(int argc, char** argv){
 		InnerHypothesis f(&grammar);
 		h0.factors.push_back(f.restart());
 	}
-	h0.compute_posterior(mydata);
 		
-	// set up a paralle tempering object
+		
+	std::vector<MyHypothesis::t_data> datas; // load all the data	
+	std::vector<std::function<void(MyHypothesis&)>> callbacks;
+	
+	for(int i=data_amounts.size()-1;i>=0;i--){ // big  data on lower chains
+//	for(int i=0;i<data_amounts.size();i++){ // big  data on lower chains
+		MyHypothesis::t_data mydata;
+		
+		S data_path = input_path + "-" + data_amounts[i] + ".txt";	
+		load_data_file(mydata, data_path.c_str());
+		std::function<void(MyHypothesis&)> cbi = [i](MyHypothesis& h) { callback(h,i); };
+		
+		datas.push_back(mydata);
+		callbacks.push_back( cbi );
+		
+		tops.emplace_back(ntop);		
+	}
+	
+	// Run
+	ParallelTempering<MyHypothesis> samp(h0, datas, callbacks);
+	tic();	samp.run(mcmc_steps, runtime, 1.0, 10.0);	tic();
+	
+	// And finally print
+	CERR "# ------------------------" ENDL;
+	CERR data_amounts.size() ENDL;
+	for(size_t i=0;i<data_amounts.size();i++) {
+		tops[i].print(data_amounts[i]);
+	}
+//		
+//	// set up a parallel tempering object
 //	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0);
 //	tic();
 //	for(auto da : data_amounts) { // This incrementally builds up the amount of data
@@ -409,12 +437,12 @@ int main(int argc, char** argv){
 //		// and then take it over
 //		TopN<MyHypothesis> tmptop(ntop);
 //		for(auto h : top.values()) {
-//			CERR h.posterior << "\t";
+////			CERR h.likelihood TAB "-->" TAB "";
 //			h.compute_posterior(mydata); // update the posterior to the new data amount
-//			CERR h.posterior ENDL;
 //			tmptop << h;
+////			CERR h.likelihood ENDL;
 //		}
-//		top = tmptop; // restore top
+//		top = std::move(tmptop); // restore top
 //		
 //		// update our parallel tempering pool
 //		for(auto& c: samp.pool) {
@@ -436,16 +464,16 @@ int main(int argc, char** argv){
 
 
 	// Vanilla MCMC
-	for(auto da : data_amounts) {
-		S data_path = input_path + "-" + da + ".txt";
-		load_data_file(mydata, data_path.c_str());
-		tic();
-		MCMCChain chain(h0, &mydata, (std::function<void(MyHypothesis&)>)callback);
-		chain.run(mcmc_steps, runtime);
-		tic();	
-	}
-	top.print();
-	
+//	for(auto da : data_amounts) {
+//		S data_path = input_path + "-" + da + ".txt";
+//		load_data_file(mydata, data_path.c_str());
+//		tic();
+//		MCMCChain chain(h0, &mydata, (std::function<void(MyHypothesis&)>)callback);
+//		chain.run(mcmc_steps, runtime);
+//		tic();	
+//	}
+//	top.print();
+//	
 	
 		
 	

@@ -36,6 +36,7 @@ public:
 		likelihood = 0.0;
 		for(const auto& d : data) {
 			likelihood += compute_single_likelihood(d);
+			if(likelihood == -infinity) break; // no need to continue
 		}
 		return likelihood;		
 	}

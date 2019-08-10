@@ -30,10 +30,10 @@ void load_data_file(std::vector<tdata> &data, const char* datapath) {
 	}
 	fclose(fp);
 
-	double z = 0.0;
-	for(size_t i=0;i<data.size();i++) {
-		z += data[i].reliability;
-	}
+//	double z = 0.0;
+//	for(size_t i=0;i<data.size();i++) {
+//		z += data[i].reliability;
+//	}
 	
 	
 }
