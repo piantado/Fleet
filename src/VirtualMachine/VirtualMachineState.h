@@ -95,6 +95,11 @@ public:
 	}
 	
 	template<typename T>
+	bool empty() {
+		return std::get<Stack<T>>(stack.value).empty();
+	}
+
+	template<typename T>
 	void push(T x){
 		// push things onto the appropriate stack
 		std::get<Stack<T>>(stack.value).push(x);
@@ -173,11 +178,14 @@ public:
 						// simplifying the condition
 						if constexpr (std::is_same<t_x, std::string>::value) { 						
 
-							if(xstack.empty() || xstack.top().size() == 0) {
-								getpop<t_x>(); //remove x
-								push(t_return{}); //push default (null) return
+							// need to check if stack<t_x> is empty since thats where we get x
+							if(empty<t_x>() or top<t_x>().size() == 0) { 
+								getpop<t_x>(); // this would have been the argument
+								push<t_return>(t_return{}); //push default (null) return
+								continue;
 							}
 						} else { assert(false && "*** Can only use SAFE_MEM_RECURSE on strings");}
+						
 						// want to fallthrough here
 						[[fallthrough]];
 					}
@@ -207,9 +215,10 @@ public:
 					case BuiltinOp::op_SAFE_MEM_RECURSE: {
 						// same as SAFE_RECURSE. Note that there is no memoization here
 						if constexpr (std::is_same<t_x, std::string>::value) { 						
-							if(xstack.empty() || xstack.top().size() == 0) {
-								getpop<t_x>(); //remove x
-								push(t_return{}); //push default (null) return
+							if(empty<t_x>() or top<t_x>().size() == 0) { 
+								getpop<t_x>(); // this would have been the argument
+								push<t_return>(t_return{}); //push default (null) return
+								continue;
 							}
 						} else { assert(false && "*** Can only use SAFE_MEM_RECURSE on strings");}
 
