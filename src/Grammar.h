@@ -17,7 +17,6 @@ class Grammar {
 protected:
 	std::vector<Rule*> rules[N_NTs];
 	double			   Z[N_NTs]; // keep the normalizer handy for each rule
-	static const unsigned long MAX_DEPTH = 64; 
 	
 public:
 	size_t             rule_cumulative_count[N_NTs]; // how many rules are there less than a given nt? (used for indexing)
@@ -260,7 +259,7 @@ public:
 		// We use exceptions here just catch depth exceptions so we can easily get a trace of what
 		// happened
 		
-		if(depth >= MAX_DEPTH) {
+		if(depth >= Fleet::GRAMMAR_MAX_DEPTH) {
 			throw depth_exception; //assert(0);
 		}
 		
@@ -270,7 +269,7 @@ public:
 			try{
 				n.child[i] = generate<T>(r->child_types[i], depth+1); // recurse down
 			} catch(DepthException& e) {
-				CERR "*** Grammar has recursed beyond MAX_DEPTH (Are the probabilities right?). nt=" << nt << " d=" << depth TAB n.string() ENDL;
+				CERR "*** Grammar has recursed beyond Fleet::GRAMMAR_MAX_DEPTH (Are the probabilities right?). nt=" << nt << " d=" << depth TAB n.string() ENDL;
 				throw e;
 			}
 		}
