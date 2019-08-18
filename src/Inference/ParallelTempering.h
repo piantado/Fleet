@@ -136,7 +136,9 @@ public:
 			}
 			else {
 				last = now();
-				//show_statistics();
+#ifdef PARALLEL_TEMPERING_SHOW_STATISTICS
+				show_statistics();
+#endif
 				adapt(); // TOOD: Check what counts as t
 			}
 		}
@@ -171,7 +173,7 @@ public:
 		COUT "# Pool info: \n";
 		for(size_t i=0;i<pool.size();i++) {
 			COUT "# " << i TAB pool[i].temperature TAB pool[i].current.posterior TAB
-					     pool[i].acceptance_ratio() TAB swap_history[i].mean() TAB pool[i].samples //TAB pool[i]->current->string()
+					     pool[i].acceptance_ratio() TAB swap_history[i].mean() TAB pool[i].samples TAB pool[i].current.string()
 						 ENDL;
 		}
 	}
