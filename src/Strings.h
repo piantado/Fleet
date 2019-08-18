@@ -1,6 +1,14 @@
 #pragma once
 
 
+#include <string.h>
+
+template<typename T>
+std::string str(T x){
+	// Just a handy, pythonesque string function
+	return std::to_string(x);
+}
+
 /* If x is a prefix of y */
 bool is_prefix(const std::string& prefix, const std::string& x) {
 	//https://stackoverflow.com/questions/7913835/check-if-one-string-is-a-prefix-of-another
