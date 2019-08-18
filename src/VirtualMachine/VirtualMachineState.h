@@ -105,6 +105,17 @@ public:
 		std::get<Stack<T>>(stack.value).push(x);
 	}	
 		
+
+	template<typename... args>
+	bool _stacks_empty() const { 
+		return (... && std::get<Stack<args>>(stack.value).empty()); 
+	}
+	
+	bool stacks_empty() const { 
+		// return strue if stack is empty -- as a check at the end of a evaluation
+		return this->_stacks_empty<NT_TYPES>();
+		
+	}
 	
 	virtual t_return run(Dispatchable<t_x,t_return>* d) {
 		// defaulty run on a null pool with same dispatch and recurse handler
@@ -343,9 +354,14 @@ public:
 			} // end if not custom
 		} // end loop over ops
 	
-		if(aborted != abort_t::NO_ABORT) return err;		
+		if(aborted != abort_t::NO_ABORT) 
+			return err;		
 	
-		return getpop<t_return>(); 
+		auto ret = getpop<t_return>();
+		
+		assert(stacks_empty() and xstack.size() == 1 && "When we return, all of the stacks should be empty or else something is awry.");
+		
+		return ret; 
 	}	
 	
 };
