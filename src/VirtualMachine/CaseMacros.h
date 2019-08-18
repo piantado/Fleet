@@ -42,6 +42,17 @@
 		break;									                                \
 	}                                                                           \
 
+
+
+#define CASE_FUNC4(opcode, returntype, a1type, a2type, a3type, a4type, f)               \
+	case opcode: {                                                              \
+		a1type a1 = vms.template getpop<a1type>();                              \
+		a2type a2 = vms.template getpop<a2type>();                              \
+		a3type a3 = vms.template getpop<a3type>();                              \
+		a4type a4 = vms.template getpop<a4type>();                              \
+		vms.template push<returntype>(f(a1,a2,a3,a4));                             \
+		break;									                                \
+	}   
 /* We also define types that do error handling.
  * Here, errcheck is a function that takes the same arguments and if it returns
  * nonzero, that is the error code
@@ -85,3 +96,19 @@
 		break;									                                \
 	}                                                                           \
 
+#define CASE_FUNC4e(opcode, returntype, a1type, a2type, a3type, a4type, f, errcheck)    \
+	case opcode: {                                                              \
+		a1type a1 = vms.template getpop<a1type>();                              \
+		a2type a2 = vms.template getpop<a2type>();                              \
+		a3type a3 = vms.template getpop<a3type>();                              \
+		a4type a4 = vms.template getpop<a4type>();                              \
+		abort_t e = errcheck(a1,a2,a3,a4);									        \
+		if(e != abort_t::NO_ABORT) return e;								                \
+		vms.template push<returntype>(f(a1,a2,a3,a4));                             \
+		break;									                                \
+	}                                                                           \
+
+
+
+ 
+	
