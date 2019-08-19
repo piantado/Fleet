@@ -2,7 +2,7 @@ from An import An
 from ABA import ABA, ABB
 from ABAnBn import ABAnBn
 from AAAA import *
-from AB import AB
+from AB import AB, aABb, ABaaaAB
 from ABn import ABn
 from ABnen import ABnen
 from A2en import A2en
@@ -11,12 +11,13 @@ from AnABn import AnABn
 from AnABAn import AnABAn
 from ABnABAn import ABnABAn
 from AnCBn import AnCBn
-from AnBkCn import AnBkCn
+from AnBmCn import AnBmCn
 from AnB2n import AnB2n
-from AnBm import AnBm
+from AnBm import AnBm, AnBmCm, AnBmCnpm, AnBmCnm, AnBk
 from AnBnC2n import AnBnC2n
 from AnBmCmAn import AnBmCmAn
 from AnBmCnDm import AnBmCnDm
+from Bach import Bach2, Bach3
 from Reber import Reber
 from Saffran import Saffran
 from XX import XX
