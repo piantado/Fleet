@@ -66,6 +66,14 @@ public:
 	void operator=(const Rule& r) = delete; 
 	void operator=( Rule&& r) = delete; 
 	
+	bool operator==(const Rule& r) const {
+		if(not (nt==r.nt and instr==r.instr and format==r.format and N==r.N and p==r.p)) return false;
+		for(size_t i=0;i<N;i++) {
+			if(child_types[i] != r.child_types[i]) return false;
+		}
+		return true;
+	}
+	
 	size_t get_hash() const {
 		return my_hash;
 	}

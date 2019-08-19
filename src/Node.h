@@ -330,11 +330,11 @@ public:
 		// Check equality between notes. Note that this compares the rule *pointers* so we need to be careful with 
 		// serialization and storing/recovering full node trees with equality comparison
 		
-		if(rule != n.rule) 
+		if(not (*rule == *n.rule))
 			return false;
 			
 		for(size_t i=0;i<rule->N;i++){
-			if(!(child[i] == n.child[i])) return false;
+			if(not (child[i] == n.child[i])) return false;
 		}
 		return true;
 	}

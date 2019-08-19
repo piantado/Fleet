@@ -39,7 +39,7 @@ for(language in c("An", "ABn", "AnBn", "AB", "ABAnBn", "AnB2n", "AnBm", "AnBkCn"
             if(class(r)=='try-error') next;
                 
             print(f)
-            names(r) <- c("ndata", "born", "posterior", "cnt", "prior", "likelihood", "parseable", "precision", "recall", "h")
+            names(r) <- c("ndata", "born", "posterior", "prior", "likelihood", "parseable", "precision", "recall", "h")
             
             q <- rbind(q, r)
     }

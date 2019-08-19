@@ -50,6 +50,9 @@ public:
 			return (!is_custom()) && getBuiltin() == b;
 		}
 		
+		bool operator==(const Instruction& i) const {
+			return op==i.op and arg==i.arg;
+		}
 
 		template<typename T, typename... Ts>
 		bool is_a(T x, Ts... args) const {

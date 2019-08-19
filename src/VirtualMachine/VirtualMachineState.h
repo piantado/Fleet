@@ -287,7 +287,7 @@ public:
 				
 							pool->copy_increment_push(this, true,  log(p));
 //							pool->copy_increment_push(*this, false,  log(1.0-p));
-							bool b = pool->increment_push(this, false, log(1.0-p)); // wow is this allowed?
+							bool b = pool->increment_push(this, false, log(1.0-p)); 
 							
 							// TODO: This is clumsy, ugly mechanism -- need to re-do
 							

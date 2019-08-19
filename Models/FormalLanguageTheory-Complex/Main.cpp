@@ -394,12 +394,11 @@ int main(int argc, char** argv){
 		h0.factors.push_back(f.restart());
 	}
 		
-		
 	std::vector<MyHypothesis::t_data> datas; // load all the data	
 	std::vector<std::function<void(MyHypothesis&)>> callbacks;
 	
-	for(int i=data_amounts.size()-1;i>=0;i--){ // big  data on lower chains
-//	for(int i=0;i<data_amounts.size();i++){ // big  data on lower chains
+//	for(int i=data_amounts.size()-1;i>=0;i--){ // big  data on lower chains
+	for(int i=0;i<data_amounts.size();i++){ // big  data on lower chains -- shouldn't matter!
 		MyHypothesis::t_data mydata;
 		
 		S data_path = input_path + "-" + data_amounts[i] + ".txt";	
@@ -414,13 +413,22 @@ int main(int argc, char** argv){
 	
 	// Run
 	ParallelTempering<MyHypothesis> samp(h0, datas, callbacks);
-	tic();	samp.run(mcmc_steps, runtime, 1.0, 10.0);	tic();
+	
+	tic();	
+	samp.run(mcmc_steps, runtime, 1.0, 10.0);	
+	tic();
 	
 	// And finally print
-	CERR "# ------------------------" ENDL;
-	CERR data_amounts.size() ENDL;
+	TopN<MyHypothesis> all; 
+	for(auto& tn : tops) { all << tn; } // will occur in some weird order since they're not in all the data
+
 	for(size_t i=0;i<data_amounts.size();i++) {
-		tops[i].print(data_amounts[i]);
+		TopN<MyHypothesis> tmptop; // just so they print in order
+		for(auto h: all.values()) {
+			h.compute_posterior(datas[i]);
+			tmptop << h;
+		}
+		tmptop.print(data_amounts[i]);
 	}
 //		
 //	// set up a parallel tempering object

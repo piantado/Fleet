@@ -10,7 +10,7 @@ fi
 
 {
 	for nf in $factors; do
-                ARGS=( --time=5m --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
+                ARGS=( --time=30m --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
 
                 for lang in AAA AB ABn An AnB2n AnBn AnBm AAAA AnBnCn AnBkCn AnBnC2n XXR XX XXX GoldenMean Even AnBnCnDn AnCBn AnABn AnABAn ABnABAn
                 do
@@ -29,7 +29,7 @@ fi
 {
 
 	for nf in $factors; do
-                ARGS=( --time=1h --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
+                ARGS=( --time=8h --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
 
 #                 ARGS=( --time=4h --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
 
@@ -41,7 +41,7 @@ fi
 
 
 	for nf in $factors; do
-                ARGS=( --time=4h --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
+                ARGS=( --time=8h --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
 
 #                 ARGS=( --time=4h --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
 
@@ -56,7 +56,7 @@ fi
 
 {
     for nf in $factors; do
-        ARGS=( --time=1h --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
+        ARGS=( --time=12h --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
 #         ARGS=( --time=2h --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
         
         /usr/bin/time --output=out/SimpleEnglish-$nf.time --verbose ./main "${ARGS[@]}" --input=data/SimpleEnglish   --alphabet=dnavt >out/SimpleEnglish-$nf.out 2>out/SimpleEnglish-$nf.err 
@@ -82,7 +82,7 @@ fi
 
 {
     for nf in $factors; do
-        ARGS=( --time=1h --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
+        ARGS=( --time=12h --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
         
 #         ARGS=( --time=4h --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
     
@@ -102,7 +102,7 @@ fi
 
 {
     for nf in $factors; do
-            ARGS=( --time=2h --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
+            ARGS=( --time=12h --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
 #             ARGS=( --time=12h --thin=0 --mcmc=0  --threads=6 --top=1000 --restart=100000 --nfactors=$nf )
             
             /usr/bin/time --output=out/FancyEnglish-$nf.time --verbose ./main "${ARGS[@]}" --input=data/FancyEnglish   --alphabet=dnavtpih >out/FancyEnglish-$nf.out 2>out/FancyEnglish-$nf.err 

@@ -206,7 +206,7 @@ int main(int argc, char** argv){
 	
 //	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);
 //	tic();
-//	samp.run(mcmc_steps, runtime, 200, 3000); //30000);		
+//	samp.run(mcmc_steps, runtime, 1.0, 3.0); //30000);		
 //	tic();
 //	
 	// Show the best we've found

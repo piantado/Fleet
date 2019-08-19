@@ -14,9 +14,9 @@ namespace Fleet {
 
 /* Define some macros that make handling IO a little easier */
 
-#define PRINT(x) { output_lock.lock(); std::cout << x; output_lock.unlock() }
-
-#define PRINTN(x) { output_lock.lock(); std::cout << x << std::endl; output_lock.unlock() }
+//#define PRINT(x) { output_lock.lock(); std::cout << x; output_lock.unlock() }
+//
+//#define PRINTN(x) { output_lock.lock(); std::cout << x << std::endl; output_lock.unlock() }
 
 
 class DebugBlock {
@@ -33,16 +33,24 @@ class DebugBlock {
 };
 
 
-template<typename T>
-void coutall(T x) {
-	std::cout << x;
-}
-template<typename T, typename... Args>
-void coutall(T x, Args... args) {
-	coutall(x);
-	std::cout << "\t";
-	coutall(args...);
-}
+//template<typename T>
+//void _print_wrapper(T x, std::ostream& o) {
+//	o << x;
+//}
+//template<typename T, typename... Args>
+//void _print_wrapper(T x, Args... args, std::ostream& o, std::string sep) {
+//	_print_wrapper(x,o);
+//	o << sep;
+//	_print_wrapper(args..., o, sep);
+//}
+//
+//
+//template<typename... Args>
+//void PRINT(Args... args, std::string sep='\t', std::string end='\n') {
+//	// this appends end to the args
+//	std::lock_guard guard(Fleet::output_lock);
+//	_print_wrapper(args..., end, sep, std::cout);
+//}
 
 
 std::string QQ(std::string x) {

@@ -46,8 +46,7 @@ public:
 		size_t out = h(factors.size());
 		size_t i=0;
 		for(auto& a: factors){
-			hash_combine(out, a.hash());
-			hash_combine(out, i);			
+			hash_combine(out, a.hash(), i);
 			i++;
 		}
 		return out;
