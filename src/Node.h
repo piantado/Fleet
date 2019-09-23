@@ -13,7 +13,8 @@ class Node {
 	
 public:
 //	static const std::string nulldisplay;// "?"; // what to print in trees for null nodes?
-
+	
+	Node* parent; 
 	std::vector<Node> child;
 	const Rule*  rule; // which rule did I use?
 	double       lp; 
@@ -76,11 +77,17 @@ public:
 //	
 	
 	
+	Node( Node* p=nullptr, const Rule* r=nullptr, double _lp=0.0, bool cr=true) : 
+		parent(p), child(r==nullptr ? 0 : r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
+	}
 	
-	
-	
-	Node(const Rule* r=nullptr, double _lp=0.0, bool cr=true) : 
-		child(r==nullptr ? 0 : r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
+	void set_child(size_t i, Node& n) {
+		child[i] = n;
+		n.parent = this;
+	}
+	void set_child(size_t i, Node&& n) {
+		child[i] = n;
+		n.parent = this;
 	}
 	
 	bool is_null() const { // am I the null rule?
@@ -222,7 +229,7 @@ public:
 			// otherwise normal copy
 			Node ret = *this;
 			for(size_t i=0;i<child.size();i++) {
-				ret.child[i] = child[i].copy_resample(g, f);
+				ret.set_child(i, child[i].copy_resample(g, f));
 			}
 			return ret;
 		}
@@ -420,7 +427,7 @@ public:
 				int c = g->count_expansions(rule->child_types[i]);
 				if(which >= 0 && which < c) {
 					auto r = g->get_rule(rule->child_types[i], which);
-					child[i] = g->make<Node>(r);
+					set_child(i, g->make<Node>(r));
 				}
 				which -= c;
 			}
@@ -434,7 +441,7 @@ public:
 		// go through and fill in the tree at random
 		for(size_t i=0;i<rule->N;i++){
 			if(child[i].is_null()) {
-				child[i] = g->generate<Node>(rule->child_types[i]);
+				set_child(i, g->generate<Node>(rule->child_types[i]));
 			}
 			else {
 				child[i].complete(g);

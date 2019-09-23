@@ -264,10 +264,10 @@ public:
 		}
 		
 		Rule* r = sample_rule(nt);
-		T n(r, log(r->p) - log(Z[nt])); // slightly inefficient because we compute this twice
+		T n(nullptr, r, log(r->p) - log(Z[nt])); // slightly inefficient because we compute this twice
 		for(size_t i=0;i<r->N;i++) {
 			try{
-				n.child[i] = generate<T>(r->child_types[i], depth+1); // recurse down
+				n.set_child(i, generate<T>(r->child_types[i], depth+1)); // recurse down
 			} catch(DepthException& e) {
 				CERR "*** Grammar has recursed beyond Fleet::GRAMMAR_MAX_DEPTH (Are the probabilities right?). nt=" << nt << " d=" << depth TAB n.string() ENDL;
 				throw e;
@@ -278,7 +278,7 @@ public:
 	
 	template<typename T>
 	T make(const Rule* r) const {
-		return T(r, log(r->p)-log(Z[r->nt]));
+		return T(nullptr, r, log(r->p)-log(Z[r->nt]));
 	}
 	
 };
