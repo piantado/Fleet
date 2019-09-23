@@ -28,8 +28,8 @@ class AnBmCm(FormalLanguage):
         return list('abc')
     
     def sample_string(self):
-        s = self.grammar.generate()
-        return s + ('c'*s.count(b))
+        s = str(self.grammar.generate())
+        return s + ('c'*s.count('b'))
 
 class AnBmCnpm(FormalLanguage):
 
@@ -44,8 +44,8 @@ class AnBmCnpm(FormalLanguage):
         return list('abc')
     
     def sample_string(self):
-        s = self.grammar.generate()
-        return s + ('c'*(s.count(a) + s.count(b)))
+        s = str(self.grammar.generate())
+        return s + ('c'*(s.count('a') + s.count('b')))
 
 class AnBmCnm(FormalLanguage):
 
@@ -60,8 +60,8 @@ class AnBmCnm(FormalLanguage):
         return list('abc')
     
     def sample_string(self):
-        s = self.grammar.generate()
-        return s + ('c'*(s.count(a)*s.count(b)))
+        s = str(self.grammar.generate())
+        return s + ('c'*(s.count('a')*s.count('b')))
     
 
 class AnBk(FormalLanguage):

@@ -53,8 +53,8 @@ std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "1
 
 // Parameters for running a virtual machine
 const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -15 to catch some less frequent things that happen by chance; -18;  // in (ab)^n, top 25 strings will need this man lp
-const unsigned long MAX_STEPS_PER_FACTOR   = 2048; //4096; //2048; //2048;
-const unsigned long MAX_OUTPUTS_PER_FACTOR = 256; // 512; //256;
+const unsigned long MAX_STEPS_PER_FACTOR   = 4096; //2048; //2048;
+const unsigned long MAX_OUTPUTS_PER_FACTOR = 512; // 256; // 512; //256;
 
 class MyGrammar : public Grammar { 
 public:
@@ -210,7 +210,7 @@ public:
 
 class MyHypothesis : public Lexicon<MyHypothesis, InnerHypothesis, S, S> {
 public:	
-	static constexpr double alpha = 0.9;
+	static constexpr double alpha = 0.95;
 	using Super = Lexicon<MyHypothesis, InnerHypothesis, S, S>;
 	
 	MyHypothesis()                       : Super()   {}
@@ -289,7 +289,7 @@ public:
 	 double compute_single_likelihood(const t_datum& datum) { assert(0); }
 	 
 
-	 double compute_likelihood(const t_data& data) {
+	 double compute_likelihood(const t_data& data, const double breakout=-infinity) {
 		// this version goes through and computes the predictive probability of each prefix
 		 
 		// call -- treats all input as emptystrings
@@ -309,7 +309,13 @@ public:
 			}
 			likelihood += alp * a.reliability; 
 			
-			if(likelihood == -infinity) return likelihood;
+			if(likelihood == -infinity) {
+				return likelihood;
+			}
+			if(likelihood < breakout) {	
+				likelihood = -infinity;
+				break;				
+			}
 		}
 		return likelihood; 
 	
@@ -430,6 +436,9 @@ int main(int argc, char** argv){
 		}
 		tmptop.print(data_amounts[i]);
 	}
+
+
+
 //		
 //	// set up a parallel tempering object
 //	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0);

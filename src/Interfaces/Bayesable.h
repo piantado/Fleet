@@ -31,18 +31,27 @@ public:
 	}
 	virtual double compute_prior() = 0; 
 	virtual double compute_single_likelihood(const t_datum& datum) = 0;
-	virtual double compute_likelihood(const t_data& data) {
+	virtual double compute_likelihood(const t_data& data, const double breakout=-infinity) {
 		// defaultly a sum over datums in data (e.g. assuming independence)
 		likelihood = 0.0;
 		for(const auto& d : data) {
 			likelihood += compute_single_likelihood(d);
 			if(likelihood == -infinity or std::isnan(likelihood)) break; // no need to continue
+			
+			// This is a breakout in case our ll is too low
+			if(likelihood < breakout) {
+				likelihood = -infinity; // should not matter what value, but let's make it -infinity
+				break;
+			}
+			
 		}
 		return likelihood;		
 	}
-	
-	virtual double compute_posterior(const t_data& data) {
+
+	virtual double compute_posterior(const t_data& data, const double breakout=-infinity) {
 		// NOTE: Posterior *always* stores at temperature 1
+		// if we specify breakout,  when break when prior+likelihood is less than breakout
+		//                         (NOTE: this is different than compute_likelihood, which breaks only on likelihood)
 		
 		++FleetStatistics::posterior_calls; // just keep track of how many calls 
 		
@@ -55,7 +64,7 @@ public:
 			posterior = -infinity;
 		}
 		else {		
-			likelihood = compute_likelihood(data);
+			likelihood = compute_likelihood(data, breakout-prior);
 			posterior = prior + likelihood;	
 		}
 		

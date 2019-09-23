@@ -10,11 +10,11 @@ label <- list("An"=paste(TeX("A^n")),
               "Fibo"=paste(TeX("Fibonacci")),
               "AnBnCn"=paste(TeX("A^{n}B^{n}C^{n}")),
               "AnBnC2n"=paste(TeX("A^{n}B^{n}C^{2n}")),
-              "AnBkCn"=paste(TeX("A^{n}B^{k}C^{n}")),
+              "AnBmCn"=paste(TeX("A^{n}B^{m}C^{n}")),
               "AnBmCmAn"=paste(TeX("A^{n}B^{m}C^{m}A^{n}")),
               "AnBmCnDm"=paste(TeX("A^{n}B^{m}C^{n}D^{m}")),
               "AnBnCnDn"=paste(TeX("A^{n}B^{n}C^{n}D^{n}")),
-              "ABAnBn"=paste(TeX("{A,B}+A^{n}B^{n}")),              
+              "ABAnBn"=paste(TeX("\\{A,B\\}+A^{n}B^{n}")),              
               "XXR"=paste(TeX("XX^R")),
               "XXI"=paste(TeX("XX^I")),
               "A2en"=paste(TeX("A^{2^n}")),
@@ -26,9 +26,9 @@ label <- list("An"=paste(TeX("A^n")),
 D <- NULL
 # for(language in c("Gomez2", "Gomez6", "Gomez12" )) {
 # for(language in c("HudsonKamNewport45", "HudsonKamNewport60", "HudsonKamNewport75", "HudsonKamNewport100" )) {
-for(language in c("An", "ABn", "AnBn", "AB", "ABAnBn", "AnB2n", "AnBm", "AnBkCn", "XXR", "AAA", "AAAA", "Count", "AnBnCn", "AnBnC2n", "Dyck", "XX",  "XXI", "XY", "AnBmCmAn", "AnBmCnDm", "ABA", "ABB", "GoldenMean", "Even", "AnBnCnDn", "A2en", "ABnen", "AnCBn", "AnABn", "AnABAn", "ABnABAn")) {
+# for(language in c("An", "ABn", "AnBn", "AB", "ABAnBn", "AnB2n", "AnBm", "AnBmCn", "XXR", "AAA", "AAAA", "Count", "AnBnCn", "AnBnC2n", "Dyck", "XX", "XXX",  "XXI", "XY", "AnBmCmAn", "AnBmCnDm", "ABA", "ABB", "GoldenMean", "Even", "AnBnCnDn", "A2en", "ABnen", "AnCBn", "AnABn", "AnABAn", "ABnABAn", "Bach2", "Bach3", "AnBm", "AnBmCn", "AnBmCm", "AnBmCnpm", "AnBmCnm", "AnBk", "ABaaaAB", "aABb")) {
 # for(language in c("Reber", "Saffran", "NewportAslin", "MorganNewport", "MorganMeierNewport", "Man", "BerwickPilato", "ReederNewportAslin", "HudsonKamNewport60", "Gomez2", "Gomez6", "Gomez12" )) {
-# for(language in c("SimpleEnglish", "MediumEnglish", "FancyEnglish" )) {
+for(language in c("SimpleEnglish", "MediumEnglish", "FancyEnglish" )) {
 
     q <- NULL
     for(nf in c(1,2,3,4)) {
@@ -36,7 +36,10 @@ for(language in c("An", "ABn", "AnBn", "AB", "ABAnBn", "AnB2n", "AnBm", "AnBkCn"
             f <- paste("out/", language, "-", nf, ".out", sep="")
                 
             r <- try(read.table(f, quote="\""))
-            if(class(r)=='try-error') next;
+            if(class(r)=='try-error') {
+                print(c("Error reading ", f))
+                next;
+            }
                 
             print(f)
             names(r) <- c("ndata", "born", "posterior", "prior", "likelihood", "parseable", "precision", "recall", "h")
@@ -67,7 +70,7 @@ plt <- ggplot(D, aes(x=ndata, y=value, group=measure, color=measure)) +
 	  geom_line(position=position_dodge(.1)) +  # a little dodging here to show overlap
 	  theme_bw() +
 	  xlab("Amount of data") + ylab("") +
- 	  scale_x_log10(breaks=c(1,10,100,1000,10000,100000))  +
+ 	  scale_x_log10(breaks=c(1,100,10000))  +
 	  ylim(-1e-9,1.01) +
 	  facet_wrap( ~ language, labeller=label_parsed) + 
 	  theme(strip.background = element_rect(fill="white"))

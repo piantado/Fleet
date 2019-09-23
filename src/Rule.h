@@ -78,6 +78,11 @@ public:
 		return my_hash;
 	}
 	
+	bool is_terminal() const {
+		// I am a terminal rule if I have no children
+		return N==0;
+	}
+	
 	size_t count_children_of_type(const nonterminal_t nt) const {
 		size_t n=0;
 		for(size_t i=0;i<N;i++){

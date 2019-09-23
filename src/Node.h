@@ -20,50 +20,59 @@ public:
 	bool         can_resample;
 	
 	
-	
 //	
-//	class NodeIterator : public std::iterator<std::forward_iterator_tag, Node>
-//	{
-//		Node* node;
-//		std::stack<Node*> ancestors; // who did I visit before I got here? Necessary for recursing and incrementing
+//	
+//	class NodeIterator : public std::iterator<std::forward_iterator_tag, Node> {
+//		// Define an iterator class to make managing trees easier. 
+//		// This iterates in prefix order, which is a fixed standard in the library
+//		
+//		size_t current_index; // in the current node, where am I? 
+//		std::stack<Node*> s; // who did I visit before I got here? Necessary for recursing and incrementing
 //		
 //		public:
-//			NodeIterator(Node* n) : node(n) {};
-//			NodeIterator()        : node(nullptr) {};
-//
-//			Node& operator*() const  { return *node; }
-//			Node* operator->() const { return  node; }
+//			NodeIterator(Node* n) : current_index(0) {
+//				s.push(n);
+//			}
+//			
+//			Node& operator*() const  { return *s.top(); }
+//			Node* operator->() const { return  s.top(); }
 // 
 //			NodeIterator& operator++() {
 //				// This is the primary update rule, that has to manage the ancestors stack
 //				// to iterate through 
-//				if(ancestors.empty()) {
-//					return *endNode;
+//				if(s.empty()) {
+//					return *EndNode;
 //				}
 //				else {
-//					// visit my next sibling
-////					Node* parent = ancestors.top();
+//					
+//					if(current_index >= s.top()->child.size()) {
+//						// I have seen all of node's children, so 
+//					}
+//					else {
+//						s.push(&s.top().child[i]); // next to visit
+//					}
 //					
 //				}
 //				
 //			}
 //			
-//			NodeIterator operator+(int n) {
-//				for(int i=0;i<n;i++) {
+//			NodeIterator operator+(size_t n) {
+//				for(size_t i=0;i<n;i++)
 //					this->operator++();
-//				}
 //			}
 //
-//			friend bool operator==(NodeIterator a, NodeIterator b) { return a==b; };
-//			friend bool operator!=(NodeIterator a, NodeIterator b) { return a!=b; };
+//
+//			// HMM CURRENTLY CHECKS IF THEY POINT TO THE SAME NODE?
+//			friend bool operator==(NodeIterator a, NodeIterator b) { return a.s.top() == b.s.top(); };
+//			friend bool operator!=(NodeIterator a, NodeIterator b) { return a.s.top() != b.s.top(); };
 //
 //			// one way conversion: iterator -> const_iterator
 //			//operator IntrusiveSlistIterator<T const, Tag>() const;
 //	};
 //
 //	
-//	static const NodeIterator endNode;
-//	
+//	static const NodeIterator EndNode;
+////	
 //	
 	
 	

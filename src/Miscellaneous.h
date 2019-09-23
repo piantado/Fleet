@@ -94,3 +94,5 @@ unsigned long convert_time(std::string& s) {
 	
 }
 
+// Python-like pass statements
+#define pass ((void)0)
