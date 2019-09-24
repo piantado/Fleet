@@ -6,88 +6,132 @@
 #include "Grammar.h"
 #include "Hash.h"
 
-// Todo: replace grammar references wiht pointers
-
 class Node {
 	
-	
 public:
-//	static const std::string nulldisplay;// "?"; // what to print in trees for null nodes?
-	
 	Node* parent; 
+	size_t pi; // what index am I in the parent?
+
 	std::vector<Node> child;
 	const Rule*  rule; // which rule did I use?
 	double       lp; 
 	bool         can_resample;
 	
 	
-//	
-//	
-//	class NodeIterator : public std::iterator<std::forward_iterator_tag, Node> {
-//		// Define an iterator class to make managing trees easier. 
-//		// This iterates in prefix order, which is a fixed standard in the library
-//		
-//		size_t current_index; // in the current node, where am I? 
-//		std::stack<Node*> s; // who did I visit before I got here? Necessary for recursing and incrementing
-//		
-//		public:
-//			NodeIterator(Node* n) : current_index(0) {
-//				s.push(n);
-//			}
-//			
-//			Node& operator*() const  { return *s.top(); }
-//			Node* operator->() const { return  s.top(); }
-// 
-//			NodeIterator& operator++() {
-//				// This is the primary update rule, that has to manage the ancestors stack
-//				// to iterate through 
-//				if(s.empty()) {
-//					return *EndNode;
-//				}
-//				else {
-//					
-//					if(current_index >= s.top()->child.size()) {
-//						// I have seen all of node's children, so 
-//					}
-//					else {
-//						s.push(&s.top().child[i]); // next to visit
-//					}
-//					
-//				}
-//				
-//			}
-//			
-//			NodeIterator operator+(size_t n) {
-//				for(size_t i=0;i<n;i++)
-//					this->operator++();
-//			}
-//
-//
-//			// HMM CURRENTLY CHECKS IF THEY POINT TO THE SAME NODE?
-//			friend bool operator==(NodeIterator a, NodeIterator b) { return a.s.top() == b.s.top(); };
-//			friend bool operator!=(NodeIterator a, NodeIterator b) { return a.s.top() != b.s.top(); };
-//
-//			// one way conversion: iterator -> const_iterator
-//			//operator IntrusiveSlistIterator<T const, Tag>() const;
-//	};
-//
-//	
-//	static const NodeIterator EndNode;
-////	
-//	
+	class NodeIterator : public std::iterator<std::forward_iterator_tag, Node> {
+		// Define an iterator class to make managing trees easier. 
+		// This iterates in postfix order, which is standard in the library
+		// because it is the order of linearization
+		protected:
+			Node*  current;
+		
+		public:
+			NodeIterator(const Node* n) : current(left_descend(n)) { }
+			Node& operator*() const  { return *current; }
+			Node* operator->() const { return  current; }
+ 
+			Node* left_descend(const Node* _k) const {
+				Node* k = (Node*)_k; // hmm
+				while(k != nullptr && k->child.size() > 0) 
+					k = &(k->child[0]);
+				return k;
+			}
+			 
+			NodeIterator& operator++(int blah) { 
+				this->operator++(); return *this; 
+			}
+			NodeIterator& operator++() {
+//				CERR "IN++: " TAB current->string() TAB current->pi TAB current->parent TAB (current->parent == nullptr ? 0 : current->parent->child.size()) TAB current ENDL;
+				
+				if(current == nullptr) {
+					return EndNodeIterator; // just do nothing?
+				}
+				if(current->parent == nullptr) {
+					current = nullptr;
+					return EndNodeIterator;
+				}
+				
+				if(current->pi+1 < current->parent->child.size()) {
+					current = left_descend(&(current->parent->child[current->pi+1]));
+				}
+				else { 
+					// now we call the parent (if we're out of children)
+					current = current->parent; 
+				}
+				return *this;
+			}
+				
+			NodeIterator& operator+(size_t n) {
+				for(size_t i=0;i<n;i++)
+					this->operator++();
+				return *this;
+			}
+
+			bool operator==(const NodeIterator& rhs) { return current == rhs.current; };
+			bool operator!=(const NodeIterator& rhs) { return current != rhs.current; };
+
+			// one way conversion: iterator -> const_iterator
+			//operator IntrusiveSlistIterator<T const, Tag>() const;
+	};	
+	static NodeIterator EndNodeIterator;  // this by definition has nullptr as current
 	
 	
-	Node( Node* p=nullptr, const Rule* r=nullptr, double _lp=0.0, bool cr=true) : 
-		parent(p), child(r==nullptr ? 0 : r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
+	Node(const Rule* r=nullptr, double _lp=0.0, bool cr=true) : 
+		parent(nullptr), pi(0), child(r==nullptr ? 0 : r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
+		// NOTE: We don't allow parent to be set here bcause that maeks pi hard to set. We shuold only be placed
+		// in trees with set_child
 	}
+	
+	/* We must define our own copy and move since parent can't just be simply copied */
+	
+	Node(const Node& n) :
+		parent(nullptr), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
+		child.resize(n.child.size());
+		for(size_t i=0;i<n.child.size();i++) {
+			set_child(i, Node(n.child[i]));
+		}
+	}
+	Node(Node&& n) :
+		parent(nullptr), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
+		child.resize(n.child.size());
+		for(size_t i=0;i<n.child.size();i++) {
+			set_child(i, n.child[i]);
+		}
+	}
+	void operator=(const Node& n) {
+		parent = nullptr; 
+		rule = n.rule;
+		lp = n.lp;
+		can_resample = n.can_resample;
+		child.resize(n.child.size());
+		for(size_t i=0;i<n.child.size();i++) {
+			set_child(i, Node(n.child[i]));
+		}
+	}
+	void operator=(Node&& n) {
+		parent = nullptr; 
+		rule = n.rule;
+		lp = n.lp;
+		can_resample = n.can_resample;
+		child.resize(n.child.size());
+		for(size_t i=0;i<n.child.size();i++) {
+			set_child(i, n.child[i]);
+		}
+	}
+	
+	NodeIterator begin() const { return Node::NodeIterator(this); }
+	NodeIterator end()   const { return Node::EndNodeIterator; }
+	
 	
 	void set_child(size_t i, Node& n) {
 		child[i] = n;
-		n.parent = this;
+		child[i].pi = i;
+		child[i].parent = this;
 	}
 	void set_child(size_t i, Node&& n) {
 		child[i] = n;
-		n.parent = this;
+		child[i].pi = i;
+		child[i].parent = this;
 	}
 	
 	bool is_null() const { // am I the null rule?
@@ -103,48 +147,48 @@ public:
 		return s;
 	}
 
-	double logsumexp(std::function<double(const Node&)>& f ) const {
-		double s = f(*this);
-		for(auto& c: child) {
-			s = logplusexp(s, c.logsumexp(f));
-		}
-		return s;
-	}
-	
+//	double logsumexp(std::function<double(const Node&)>& f ) const {
+//		double s = f(*this);
+//		for(auto& c: child) {
+//			s = logplusexp(s, c.logsumexp(f));
+//		}
+//		return s;
+//	}
+//	
 	void map( const std::function<void(Node&)>& f) {
 		f(*this);
 		for(auto& c: child) {
-			c.map(f); // I can only recurse on non-null children
+			c.map(f); 
 		}
 	}
 	
 	void mapconst( const std::function<void(const Node&)>& f) const { // mapping that is constant
 		f(*this);
 		for(auto& c: child) {
-			c.mapconst(f); // I can only recurse on non-null children
+			c.mapconst(f); 
 		}
 	}
 	
-	void map_conditionalrecurse( std::function<bool(Node&)>& f ) {
-		// f here returns a function and we only recurse if the function returns true
-		// This is often useful if we are modifying the tree and don't want to keep going once we've found something
-		bool b = f(*this);
-		if(b){
-			for(auto& c: child) {
-				c.map_conditionalrecurse(f);
-			}
-		}
-	}
+//	void map_conditionalrecurse( std::function<bool(Node&)>& f ) {
+//		// f here returns a function and we only recurse if the function returns true
+//		// This is often useful if we are modifying the tree and don't want to keep going once we've found something
+//		bool b = f(*this);
+//		if(b){
+//			for(auto& c: child) {
+//				c.map_conditionalrecurse(f);
+//			}
+//		}
+//	}
 		
-	size_t count_equal(const Node& n) const {
-		// how many of my descendants are equal to n?
-		if(*this == n) return 1; // nothing below can be equal
-		size_t cnt = 1;
-		for(auto& c: child) {
-			cnt += c.count_equal(n);
-		}
-		return cnt;
-	}
+//	size_t count_equal(const Node& n) const {
+//		// how many of my descendants are equal to n?
+//		if(*this == n) return 1; // nothing below can be equal
+//		size_t cnt = 1;
+//		for(auto& c: child) {
+//			cnt += c.count_equal(n);
+//		}
+//		return cnt;
+//	}
 		
 	virtual size_t count() const {
 		std::function<size_t(const Node& n)> one = [](const Node& n){return (size_t)1;};
@@ -161,22 +205,16 @@ public:
 		return child.size() == rule->N; // must have all my kids
 	}
 		
-	virtual Node* get_nth(int& n, std::function<int(const Node&)>& f) {
+	virtual Node* get_nth(int n, std::function<int(const Node&)>& f) {
 		// return a pointer to the nth  child satisfying f (f's output cast to bool)
-		// this uses nullptr as a setinel that the nth is not below us
-		if(f(*this)) {
-			if(n == 0) {
-				return this;
+	
+		for(auto& x : *this) {
+			if(f(x)) {
+				if(n == 0) return &x;
+				else       --n;
 			}
-			else {
-				--n;
-			}
-		}
-		
-		for(auto& c: child) {
-			Node* x = c.get_nth(n,f);
-			if(x != nullptr) return x;
-		}
+		}	
+	
 		return nullptr; // not here, losers
 	}
 	virtual Node* get_nth(int& n) { // default true on every node
@@ -184,21 +222,6 @@ public:
 		return get_nth(n, f); 
 	}
 	
-	
-	template<typename T>
-	Node* __sample_helper(std::function<T(const Node&)>& f, double& r) {
-		r -= f(*this);
-		if(r <= 0.0) { 
-			return this; 
-		}
-		else {
-			for(auto& c: child) {
-				auto x = c.__sample_helper(f,r);
-				if(x != nullptr) return x;
-			}
-			return nullptr;
-		}		
-	}
 	
 	template<typename T>
 	std::pair<Node*, double> sample(std::function<T(const Node&)>& f) {
@@ -209,12 +232,15 @@ public:
 		T z = sum<T>(f);
 		double r = z * uniform();
 
-		Node* x = __sample_helper(f,r);
-		assert(x != nullptr && "*** Should have gotten value from __sample_helper");
-		
-		double lp = log(f(*x)) - log(z);
-		
-		return std::make_pair(x, lp);
+		for(auto& x : *this) {
+			double fx = f(x);
+			r -= fx;
+			if(r <= 0.0) {
+				return std::make_pair(&x, log(fx) - log(z));
+			}
+		}
+
+		assert(false && "*** Should not get here in sampling!");
 	}
 
 	
@@ -235,10 +261,11 @@ public:
 		}
 	}
 
+
 	virtual std::string string() const { 
 		// To convert to a string, we need to essentially simulate the evaluator
 		// and be careful to process the arguments in the right orders
-			
+	
 		if(rule->N == 0) {
 			return rule->format;
 		}
@@ -374,18 +401,6 @@ public:
 		return output;
 	}
 
-
-
-//	virtual size_t hash() const {
-//		// Like equality checking, hashing also uses the rule pointers' numerical values, so beware!
-//		size_t output = (size_t) rule; // tunrs out, this is actually important to prevent hash collisions when rule_id and i are small
-//		for(size_t i=0;i<child.size();i++) {
-//			output = hash_combine(hash_combine(child[i].hash(), i), output);
-//		}
-//		return output;
-//	}
-//
-	
 	/********************************************************
 	 * Enumeration
 	 ********************************************************/
@@ -451,3 +466,6 @@ public:
 	
 	
 };
+
+
+Node::NodeIterator Node::EndNodeIterator = Node::NodeIterator(nullptr);

@@ -124,13 +124,13 @@ public:
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	template<typename T> // type needed so we dont' have to import node
-	double log_probability(const T& n) const {
+	double log_probability(T& n) const {
 		
-		double lp = log(n.rule->p) - log(rule_normalizer(n.rule->nt));
-		
-		for(size_t i=0;i<n.child.size();i++) {
-			lp += log_probability<T>(n.child[i]);
+		double lp = 0.0;		
+		for(auto& x : n) {
+			lp += log(x.rule->p) - log(rule_normalizer(x.rule->nt));
 		}
+	
 		return lp;		
 	}
 	
@@ -264,7 +264,8 @@ public:
 		}
 		
 		Rule* r = sample_rule(nt);
-		T n(nullptr, r, log(r->p) - log(Z[nt])); // slightly inefficient because we compute this twice
+		//T n(r, log(r->p) - log(Z[nt])); // slightly inefficient because we compute this twice
+		T n = make<T>(r);
 		for(size_t i=0;i<r->N;i++) {
 			try{
 				n.set_child(i, generate<T>(r->child_types[i], depth+1)); // recurse down
@@ -278,7 +279,7 @@ public:
 	
 	template<typename T>
 	T make(const Rule* r) const {
-		return T(nullptr, r, log(r->p)-log(Z[r->nt]));
+		return T(r, log(r->p)-log(Z[r->nt]));
 	}
 	
 };

@@ -21,7 +21,7 @@ public:
 	Grammar* grammar;
 	T value;
 
-	LOTHypothesis(Grammar* g=nullptr)  : MCMCable<HYP,t_input,t_output,_t_datum>(), grammar(g), value(nullptr, NullRule,0.0,true) {}
+	LOTHypothesis(Grammar* g=nullptr)  : MCMCable<HYP,t_input,t_output,_t_datum>(), grammar(g), value(NullRule,0.0,true) {}
 	LOTHypothesis(Grammar* g, T&& x)   : MCMCable<HYP,t_input,t_output,_t_datum>(), grammar(g), value(x) {}
 	LOTHypothesis(Grammar* g, T x)     : MCMCable<HYP,t_input,t_output,_t_datum>(), grammar(g), value(x) {}
 

@@ -69,6 +69,16 @@ public:
 //						   );
 //	}
 	double compute_single_likelihood(const t_datum& x) {
+	
+//		CERR value.string() ENDL;
+//		for(auto n = value.begin(); n != value.end(); ++n) {
+//			CERR n->string() ENDL;
+//		}
+//		for(auto& n : value) {
+//			CERR n.string() ENDL;
+//		}
+//		CERR "------------" ENDL;
+		
 		auto out = call(x.input, "<err>", this, 256, 256); //256, 256);
 		
 		// a likelihood based on the prefix probability -- we assume that we generate from the hypothesis
