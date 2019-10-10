@@ -66,6 +66,12 @@ public:
 	void operator=(const Rule& r) = delete; 
 	void operator=( Rule&& r) = delete; 
 	
+	bool operator<(const Rule& r) const {
+		// This is structured so that we always put terminals first and then we put the HIGHER probability things first. 
+		// this helps in enumeration
+		if(N < r.N) return true;
+		else		return p > r.p; // weird, but helpful, that we sort in decreasing order of probability
+	}
 	bool operator==(const Rule& r) const {
 		if(not (nt==r.nt and instr==r.instr and format==r.format and N==r.N and p==r.p)) return false;
 		for(size_t i=0;i<N;i++) {
@@ -83,30 +89,30 @@ public:
 		return N==0;
 	}
 	
-	size_t count_children_of_type(const nonterminal_t nt) const {
-		size_t n=0;
-		for(size_t i=0;i<N;i++){
-			n += (child_types[i] == nt);
-		}
-		return n;
-	}
+//	size_t count_children_of_type(const nonterminal_t nt) const {
+//		size_t n=0;
+//		for(size_t i=0;i<N;i++){
+//			n += (child_types[i] == nt);
+//		}
+//		return n;
+//	}
+//	
+//	size_t replicating_children() const { // how many children are of  my type?
+//		return count_children_of_type(nt);
+//	}
 	
-	size_t replicating_children() const { // how many children are of  my type?
-		return count_children_of_type(nt);
-	}
-	
-	size_t random_replicating_index() const {
-		// return the index of something replicating
-		size_t R = replicating_children();
-		size_t r = myrandom(R);
-		for(size_t i=0;i<N;i++) {
-			if(child_types[i] == nt) { // if I'm replicating
-				if(r==0) return i;
-				else     --r;
-			}
-		}
-		assert(false && "You tried to sample a replicating index when there were none!");
-	}
+//	size_t random_replicating_index() const {
+//		// return the index of something replicating
+//		size_t R = replicating_children();
+//		size_t r = myrandom(R);
+//		for(size_t i=0;i<N;i++) {
+//			if(child_types[i] == nt) { // if I'm replicating
+//				if(r==0) return i;
+//				else     --r;
+//			}
+//		}
+//		assert(false && "You tried to sample a replicating index when there were none!");
+//	}
 	
 };
 

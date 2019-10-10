@@ -17,7 +17,6 @@ public:
 	double       lp; 
 	bool         can_resample;
 	
-	
 	class NodeIterator : public std::iterator<std::forward_iterator_tag, Node> {
 		// Define an iterator class to make managing trees easier. 
 		// This iterates in postfix order, which is standard in the library
@@ -26,33 +25,22 @@ public:
 			Node*  current;
 		
 		public:
-			NodeIterator(const Node* n) : current(left_descend(n)) { }
+			NodeIterator(const Node* n) : current(n->left_descend()) { }
 			Node& operator*() const  { return *current; }
 			Node* operator->() const { return  current; }
- 
-			Node* left_descend(const Node* _k) const {
-				Node* k = (Node*)_k; // hmm
-				while(k != nullptr && k->child.size() > 0) 
-					k = &(k->child[0]);
-				return k;
-			}
 			 
-			NodeIterator& operator++(int blah) { 
-				this->operator++(); return *this; 
-			}
+			NodeIterator& operator++(int blah) { this->operator++(); return *this; }
 			NodeIterator& operator++() {
-//				CERR "IN++: " TAB current->string() TAB current->pi TAB current->parent TAB (current->parent == nullptr ? 0 : current->parent->child.size()) TAB current ENDL;
-				
 				if(current == nullptr) {
-					return EndNodeIterator; // just do nothing?
+					return EndNodeIterator; 
 				}
-				if(current->parent == nullptr) {
+				if(current->is_root()) {
 					current = nullptr;
 					return EndNodeIterator;
 				}
 				
 				if(current->pi+1 < current->parent->child.size()) {
-					current = left_descend(&(current->parent->child[current->pi+1]));
+					current = current->parent->child[current->pi+1].left_descend();
 				}
 				else { 
 					// now we call the parent (if we're out of children)
@@ -69,9 +57,6 @@ public:
 
 			bool operator==(const NodeIterator& rhs) { return current == rhs.current; };
 			bool operator!=(const NodeIterator& rhs) { return current != rhs.current; };
-
-			// one way conversion: iterator -> const_iterator
-			//operator IntrusiveSlistIterator<T const, Tag>() const;
 	};	
 	static NodeIterator EndNodeIterator;  // this by definition has nullptr as current
 	
@@ -122,6 +107,14 @@ public:
 	NodeIterator begin() const { return Node::NodeIterator(this); }
 	NodeIterator end()   const { return Node::EndNodeIterator; }
 	
+	Node* left_descend() const {
+		Node* k = (Node*) this;
+		while(k != nullptr && k->child.size() > 0) 
+			k = &(k->child[0]);
+		return k;
+	}
+	
+
 	
 	void set_child(size_t i, Node& n) {
 		child[i] = n;
@@ -194,7 +187,11 @@ public:
 		std::function<size_t(const Node& n)> one = [](const Node& n){return (size_t)1;};
 		return sum<size_t>( one );
 	}
-
+	
+	bool is_root() const {
+		return parent == nullptr;
+	}
+	
 	virtual bool is_evaluable() const {
 		
 		// does this have any subnodes below that are null?
@@ -294,7 +291,7 @@ public:
 		// get a string like one we could parse
 		std::string out = rule->format;
 		for(auto& c: child) {
-				out += delim + c.parseable(delim);
+			out += delim + c.parseable(delim);
 		}
 		return out;
 	}
@@ -382,14 +379,14 @@ public:
 		return true;
 	}
 
-	virtual size_t count_equal_child(const Node& n) const {
-		// how many of my IMMEDIATE children are equal to n?
-		size_t cnt = 0;
-		for(size_t i=0;i<rule->N;i++) {
-			cnt += (child[i] == n);
-		}
-		return cnt;
-	}
+//	virtual size_t count_equal_child(const Node& n) const {
+//		// how many of my IMMEDIATE children are equal to n?
+//		size_t cnt = 0;
+//		for(size_t i=0;i<rule->N;i++) {
+//			cnt += (child[i] == n);
+//		}
+//		return cnt;
+//	}
 
 
 	virtual size_t hash(size_t depth=0) const {

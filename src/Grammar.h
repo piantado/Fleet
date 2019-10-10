@@ -6,6 +6,7 @@
 
 // an exception for recursing too deep so we can print a trace of what went wrong
 class DepthException: public std::exception {} depth_exception;
+class EnumerationException: public std::exception {} enumeration_exception;
 
 class Grammar {
 	/* 
@@ -58,6 +59,20 @@ public:
 		size_t n=0;
 		for(size_t i = 0;i<N_NTs;i++) {
 			n += count_rules((nonterminal_t)i);
+		}
+		return n;
+	}
+	size_t count_terminals(nonterminal_t nt) const {
+		size_t n=0;
+		for(auto r : rules[nt]) {
+			if(r->N == 0) n++;
+		}
+		return n;
+	}
+	size_t count_nonterminals(nonterminal_t nt) const {
+		size_t n=0;
+		for(auto r : rules[nt]) {
+			if(r->N != 0) n++;
 		}
 		return n;
 	}
@@ -119,26 +134,7 @@ public:
 		return rules[nt][i];
 	}
 	
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Computing log probabilities
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
-	template<typename T> // type needed so we dont' have to import node
-	double log_probability(T& n) const {
-		
-		double lp = 0.0;		
-		for(auto& x : n) {
-			lp += log(x.rule->p) - log(rule_normalizer(x.rule->nt));
-		}
-	
-		return lp;		
-	}
-	
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Implementation of converting strings to nodes 
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
-	Rule* get_from_string(const std::string s) const {
+	virtual Rule* get_rule(const std::string s) const {
 		// returns the rule for which s is a prefix -- but throws errors
 		// if there aren't enough
 		Rule* ret = nullptr;
@@ -163,6 +159,27 @@ public:
 		}
 	}
 	
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Computing log probabilities
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	template<typename T> // type needed so we dont' have to import node
+	double log_probability(T& n) const {
+		
+		double lp = 0.0;		
+		for(auto& x : n) {
+			lp += log(x.rule->p) - log(rule_normalizer(x.rule->nt));
+		}
+	
+		return lp;		
+	}
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Implementation of converting strings to nodes 
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	
 	template<typename T> 
 	T expand_from_names(std::deque<std::string>& q) const {
 		// expands an entire stack using nt as the nonterminal -- this is needed to correctly
@@ -173,7 +190,7 @@ public:
 		assert(pfx != NullRule->format && "NullRule not supported in expand_from_names");
 
 		// otherwise find the matching rule
-		Rule* r = this->get_from_string(pfx);
+		Rule* r = this->get_rule(pfx);
 		
 		T v(r);
 		for(size_t i=0;i<r->N;i++) {
@@ -189,7 +206,6 @@ public:
 		}
 		return v;
 	}
-	
 	template<typename T> 
 	T expand_from_names(std::string s) const {
 		std::deque<std::string> stk = split(s, ':');    
@@ -201,7 +217,44 @@ public:
 		std::string s = c;
         return expand_from_names<T>(s);
 	}
+	
+	
+	template<typename T> 
+	T expand_from_integer(nonterminal_t nt, size_t z) const {
+		// This has some better options than cantor: https://arxiv.org/pdf/1706.04129.pdf
 		
+		// What we really need is a pairing function where we can assume that
+		// the next paired integer is at most k (for whatever k we choose at any point)
+		
+
+		size_t numterm = count_terminals(nt);
+		if(z < numterm) {
+			return T(this->get_rule(nt, z));	// whatever terminal we wanted
+		}
+		else {
+			auto u =  mod_decode(z-numterm, count_nonterminals(nt));
+			
+			Rule* r = this->get_rule(nt, u.first+numterm); // shift index from terminals (because they are first!)
+			T out(r);
+			size_t rest = u.second; // the encoding of everything else
+			for(size_t i=0;i<r->N;i++) {
+				size_t zi; // what is the encoding for the i'th child?
+				if(i<r->N-1) { 
+					auto ui = rosenberg_strong_decode(rest);
+					zi = ui.first;
+					rest = ui.second;
+				}
+				else {
+					zi = rest;
+				}
+				out.child[i] = expand_from_integer<T>(r->child_types[i], zi); // since we are by reference, this should work right
+			}
+			return out;		
+			
+		}
+
+	}
+			
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Implementation of replicating rules 
@@ -283,4 +336,3 @@ public:
 	}
 	
 };
-
