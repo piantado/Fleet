@@ -34,7 +34,7 @@ std::chrono::duration<double> ticelapsed;
 auto now() { 
 	return std::chrono::high_resolution_clock::now();
 }
-double time_since(auto x) {
+double time_since(std::chrono::time_point<std::chrono::high_resolution_clock> x) {
 	auto n = now();
 	return std::chrono::duration_cast<std::chrono::duration<double>>(n-x).count();
 }
