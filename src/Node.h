@@ -51,8 +51,11 @@ public:
 			}
 				
 			NodeIterator& operator+(size_t n) {
-				for(size_t i=0;i<n;i++)
+				for(size_t i=0;i<n;i++) {
+					assert(not (*this == EndNodeIterator) && "Can't iterate past the end!");
 					this->operator++();
+					
+				}
 				return *this;
 			}
 
@@ -116,7 +119,12 @@ public:
 		return k;
 	}
 	
-
+//	size_t N() const { // how many children should I have?
+//		return rule->N;
+//	}
+//	nonterminal_t nt() const {
+//		return rule->nt;
+//	}
 	
 	void set_child(size_t i, Node& n) {
 		child[i] = n;
@@ -142,14 +150,6 @@ public:
 		return s;
 	}
 
-//	double logsumexp(std::function<double(const Node&)>& f ) const {
-//		double s = f(*this);
-//		for(auto& c: child) {
-//			s = logplusexp(s, c.logsumexp(f));
-//		}
-//		return s;
-//	}
-//	
 	void map( const std::function<void(Node&)>& f) {
 		f(*this);
 		for(auto& c: child) {
@@ -164,27 +164,6 @@ public:
 		}
 	}
 	
-//	void map_conditionalrecurse( std::function<bool(Node&)>& f ) {
-//		// f here returns a function and we only recurse if the function returns true
-//		// This is often useful if we are modifying the tree and don't want to keep going once we've found something
-//		bool b = f(*this);
-//		if(b){
-//			for(auto& c: child) {
-//				c.map_conditionalrecurse(f);
-//			}
-//		}
-//	}
-		
-//	size_t count_equal(const Node& n) const {
-//		// how many of my descendants are equal to n?
-//		if(*this == n) return 1; // nothing below can be equal
-//		size_t cnt = 1;
-//		for(auto& c: child) {
-//			cnt += c.count_equal(n);
-//		}
-//		return cnt;
-//	}
-		
 	virtual size_t count() const {
 		std::function<size_t(const Node& n)> one = [](const Node& n){return (size_t)1;};
 		return sum<size_t>( one );
@@ -222,25 +201,25 @@ public:
 	}
 	
 	
-	template<typename T>
-	std::pair<Node*, double> sample(std::function<T(const Node&)>& f) {
-		// sample a subnode satisfying f and return its probability
-		// where f maps each node to a probability (possibly zero)
-		// we allow T here to be a double, int, whatever 
-		
-		T z = sum<T>(f);
-		double r = z * uniform();
-
-		for(auto& x : *this) {
-			double fx = f(x);
-			r -= fx;
-			if(r <= 0.0) {
-				return std::make_pair(&x, log(fx) - log(z));
-			}
-		}
-
-		assert(false && "*** Should not get here in sampling!");
-	}
+//	template<typename T>
+//	std::pair<Node*, double> sample(std::function<T(const Node&)>& f) {
+//		// sample a subnode satisfying f and return its probability
+//		// where f maps each node to a probability (possibly zero)
+//		// we allow T here to be a double, int, whatever 
+//		
+//		T z = sum<T>(f);
+//		double r = z * uniform();
+//
+//		for(auto& x : *this) {
+//			double fx = f(x);
+//			r -= fx;
+//			if(r <= 0.0) {
+//				return std::make_pair(&x, log(fx) - log(z));
+//			}
+//		}
+//
+//		assert(false && "*** Should not get here in sampling!");
+//	}
 
 	virtual std::string string() const { 
 		// To convert to a string, we need to essentially simulate the evaluator
@@ -293,7 +272,7 @@ public:
 		}
 		return n;
 	}
-	
+		
 	virtual void linearize(Program &ops) const { 
 		// convert tree to a linear sequence of operations 
 		// to do this, we first linearize the kids, leaving their values as the top on the stack
@@ -339,7 +318,7 @@ public:
 		}
 		else {
 			/* Here we push the children in order, first first. So that means that when each evalutes, it will push its value to the *bottom* 
-			 * of the stack. so in caseMacros, we need to reverse the order of the arguments, so that the first popped is the last argument */
+			 * of the stack. So in caseMacros, we need to reverse the order of the arguments, so that the first popped is the last argument */
 			Instruction i = rule->instr; // use this as a template
 			ops.push(i);
 			for(size_t i=0;i<rule->N;i++) {
@@ -361,16 +340,6 @@ public:
 		}
 		return true;
 	}
-
-//	virtual size_t count_equal_child(const Node& n) const {
-//		// how many of my IMMEDIATE children are equal to n?
-//		size_t cnt = 0;
-//		for(size_t i=0;i<rule->N;i++) {
-//			cnt += (child[i] == n);
-//		}
-//		return cnt;
-//	}
-
 
 	virtual size_t hash(size_t depth=0) const {
 		// hash and include

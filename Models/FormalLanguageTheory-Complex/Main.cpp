@@ -59,45 +59,45 @@ const unsigned long MAX_OUTPUTS_PER_FACTOR = 512; // 256; // 512; //256;
 class MyGrammar : public Grammar { 
 public:
 	MyGrammar() : Grammar() {
-		add( new Rule(nt_string, BuiltinOp::op_X,            "x",            {},                               10.0) );	
+		add( Rule(nt_string, BuiltinOp::op_X,            "x",            {},                               10.0) );	
 
 		for(size_t a=0;a<nfactors;a++) {	
 			auto s = std::to_string(a);
-			add( new Rule(nt_string, BuiltinOp::op_SAFE_RECURSE,     S("F")+s+"(%s)",      {nt_string},   1.0/nfactors, a) );		
-			add( new Rule(nt_string, BuiltinOp::op_SAFE_MEM_RECURSE, S("memF")+s+"(%s)",   {nt_string},   1.0/nfactors, a) );		
+			add( Rule(nt_string, BuiltinOp::op_SAFE_RECURSE,     S("F")+s+"(%s)",      {nt_string},   1.0/nfactors, a) );		
+			add( Rule(nt_string, BuiltinOp::op_SAFE_MEM_RECURSE, S("memF")+s+"(%s)",   {nt_string},   1.0/nfactors, a) );		
 		}
 		
 		// push for each
 		for(size_t ai=0;ai<alphabet.length();ai++) {
 //			CERR "# Alphabet rule" << alphabet.substr(ai,1) TAB alphabet ENDL;
-			add( new Rule(nt_string, CustomOp::op_TERMINAL,   Q(alphabet.substr(ai,1)),          {},       10.0/alphabet.length(), ai) );
+			add( Rule(nt_string, CustomOp::op_TERMINAL,   Q(alphabet.substr(ai,1)),          {},       10.0/alphabet.length(), ai) );
 		}
 
-		add( new Rule(nt_string, CustomOp::op_EMPTYSTRING,  "\u00D8",          {},                            1.0) );
+		add( Rule(nt_string, CustomOp::op_EMPTYSTRING,  "\u00D8",          {},                            1.0) );
 		
-		add( new Rule(nt_string, CustomOp::op_CONS,         "%s+%s",        {nt_string,nt_string},            1.0) );
-		add( new Rule(nt_string, CustomOp::op_CAR,          "car(%s)",      {nt_string},                      1.0) );
-		add( new Rule(nt_string, CustomOp::op_CDR,          "cdr(%s)",      {nt_string},                      1.0) );
+		add( Rule(nt_string, CustomOp::op_CONS,         "%s+%s",        {nt_string,nt_string},            1.0) );
+		add( Rule(nt_string, CustomOp::op_CAR,          "car(%s)",      {nt_string},                      1.0) );
+		add( Rule(nt_string, CustomOp::op_CDR,          "cdr(%s)",      {nt_string},                      1.0) );
 		
-		add( new Rule(nt_string, CustomOp::op_MIDINSERT,    "insert(%s,%s)",      {nt_string,nt_string},      1.0) );
+		add( Rule(nt_string, CustomOp::op_MIDINSERT,    "insert(%s,%s)",      {nt_string,nt_string},      1.0) );
 		
 		
-		add( new Rule(nt_string, BuiltinOp::op_IF,           "if(%s,%s,%s)", {nt_bool, nt_string, nt_string},  1.0) );
+		add( Rule(nt_string, BuiltinOp::op_IF,           "if(%s,%s,%s)", {nt_bool, nt_string, nt_string},  1.0) );
 		
 		// NOTE: This rule samples from the *characters* occuring in s
-		add( new Rule(nt_string, CustomOp::op_UniformSample,"sample(%s)",         {nt_set},                1.0) );
-		add( new Rule(nt_set,    CustomOp::op_String2Set,   "%s",           {nt_string},                   5.0) );
-		add( new Rule(nt_set,    CustomOp::op_Setcons,      "%s,%s",        {nt_string, nt_set},           1.0) );
-		add( new Rule(nt_set,    CustomOp::op_Setremove,    "%s\u2216%s",        {nt_set, nt_string},           1.0) );  // this uses a unicode setminus so its never treated as an escape char
+		add( Rule(nt_string, CustomOp::op_UniformSample,"sample(%s)",         {nt_set},                1.0) );
+		add( Rule(nt_set,    CustomOp::op_String2Set,   "%s",           {nt_string},                   5.0) );
+		add( Rule(nt_set,    CustomOp::op_Setcons,      "%s,%s",        {nt_string, nt_set},           1.0) );
+		add( Rule(nt_set,    CustomOp::op_Setremove,    "%s\u2216%s",        {nt_set, nt_string},           1.0) );  // this uses a unicode setminus so its never treated as an escape char
 		
-		add( new Rule(nt_bool,   BuiltinOp::op_FLIPP,        "flip(%s)",     {nt_double},                      1.0) );
-		add( new Rule(nt_bool,   CustomOp::op_EMPTY,        "empty(%s)",    {nt_string},                      1.0) );
-		add( new Rule(nt_bool,   CustomOp::op_STREQ,        "(%s==%s)",     {nt_string,nt_string},            1.0) );
+		add( Rule(nt_bool,   BuiltinOp::op_FLIPP,        "flip(%s)",     {nt_double},                      1.0) );
+		add( Rule(nt_bool,   CustomOp::op_EMPTY,        "empty(%s)",    {nt_string},                      1.0) );
+		add( Rule(nt_bool,   CustomOp::op_STREQ,        "(%s==%s)",     {nt_string,nt_string},            1.0) );
 		
 		
 		for(size_t a=1;a<10;a++) { // pack probability into arg, out of 10
 			std::string s = std::to_string(double(a)/10.0).substr(1,3); // substr just truncates lesser digits
-			add( new Rule(nt_double, CustomOp::op_P,      s,          {},                              (a==5?5.0:1.0), a) );
+			add( Rule(nt_double, CustomOp::op_P,      s,          {},                              (a==5?5.0:1.0), a) );
 		}
 		
 	}

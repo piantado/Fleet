@@ -54,7 +54,7 @@ public:
 		//CERR "POOL PUSHING " TAB &o ENDL;
 		if(wouldIadd(o->lp)){ // TODO: might be able to add an optimization here that doesn't push if we don't have enough steps left to get it 
 			Q.push(o);			
-			worst_lp = MIN(worst_lp, o->lp); //keep track of the worst we've seen
+			worst_lp = std::min(worst_lp, o->lp); //keep track of the worst we've seen
 		}
 	}
 	

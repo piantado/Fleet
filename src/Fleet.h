@@ -51,7 +51,6 @@ enum class abort_t {NO_ABORT=0, RECURSION_DEPTH, RANDOM_CHOICE, RANDOM_CHOICE_NO
 
 enum nonterminal_t {NT_NAMES, N_NTs };
 
-
 // convenient to make op_NOP=0, so that the default initialization is a NOP
 enum class BuiltinOp {
 	op_NOP=0,op_X,op_POPX,
@@ -62,8 +61,6 @@ enum class BuiltinOp {
 };
 
 #include "Instruction.h"
-
-//void print(Instruction i) {	std::cout << "[" << i.is_custom << "." << i.builtin << "." << i.arg << "." << i.custom << "]"; }
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Tracking Fleet statistics 
@@ -85,6 +82,8 @@ namespace FleetStatistics {
 
 namespace Fleet { 
 	size_t GRAMMAR_MAX_DEPTH = 64;
+	const size_t MAX_CHILD_SIZE = 32; // rules can have at most this many children 
+
 }
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// A Handler for CTRL_C

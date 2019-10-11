@@ -18,5 +18,4 @@ cp main $mymain
   cat Parameters.csv | sed "s/$/,${factors[1]}/" ; } | 
         parallel --jobs=4 --joblog log.$myhost --csv --colsep ',' \
         /usr/bin/time --output=out/{1}-{4}.time --verbose \
-        ./$mymain "${GARGS[@]}" --input=data/{1} --alphabet=\"{2}\" --time={3} --nfactors={4} --thin=0 --mcmc=0 --top=100 --restart=100000 ">" out/{1}-{4}.out "2>" out/{1}-{4}.err 
-done
+        ./$mymain "${GARGS[@]}" --input=data/{1} --alphabet=\"{2}\" --time={3} --nfactors={4} --thin=0 --mcmc=0 --top=100 --restart=100000 ">" out/{1}-{4}.out "2>" out/{1}-{4}.err

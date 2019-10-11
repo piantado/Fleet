@@ -25,25 +25,27 @@ const double strgamma = 0.99; // penalty on string length
 class MyGrammar : public Grammar { 
 public:
 	MyGrammar() : Grammar() {
-		add( new Rule(nt_string, BuiltinOp::op_X,            "x",            {},                               10.0) );		
-		add( new Rule(nt_string, BuiltinOp::op_RECURSE,      "F(%s)",        {nt_string},                      2.0) );		
+		add( Rule(nt_string, BuiltinOp::op_X,            "x",            {},                               10.0) );		
 
 		// here we create an alphabet op with an "arg" that is unpacked below to determine
 		// which character of the alphabet it corresponds to 
 		for(size_t i=0;i<alphabet.length();i++)
-			add( new Rule(nt_string, CustomOp::op_A,            alphabet.substr(i,1),          {},                   10.0/alphabet.length(), i) );
+			add( Rule(nt_string, CustomOp::op_A,            alphabet.substr(i,1),          {},                   10.0/alphabet.length(), i) );
 
-		add( new Rule(nt_string, CustomOp::op_EMPTYSTRING,  "''",           {},                               1.0) );
+		add( Rule(nt_string, CustomOp::op_EMPTYSTRING,  "''",           {},                               1.0) );
 		
-		add( new Rule(nt_string, CustomOp::op_CONS,         "cons(%s,%s)",  {nt_string,nt_string},            1.0) );
-		add( new Rule(nt_string, CustomOp::op_CAR,          "car(%s)",      {nt_string},                      1.0) );
-		add( new Rule(nt_string, CustomOp::op_CDR,          "cdr(%s)",      {nt_string},                      1.0) );
+		add( Rule(nt_string, CustomOp::op_CONS,         "cons(%s,%s)",  {nt_string,nt_string},            1.0) );
+		add( Rule(nt_string, CustomOp::op_CAR,          "car(%s)",      {nt_string},                      1.0) );
+		add( Rule(nt_string, CustomOp::op_CDR,          "cdr(%s)",      {nt_string},                      1.0) );
 		
-		add( new Rule(nt_string, BuiltinOp::op_IF,           "if(%s,%s,%s)", {nt_bool, nt_string, nt_string},  1.0) );
+		add( Rule(nt_string, BuiltinOp::op_IF,          "if(%s,%s,%s)", {nt_bool, nt_string, nt_string},  1.0) );
 		
-		add( new Rule(nt_bool,   BuiltinOp::op_FLIP,         "flip()",       {},                               5.0) );
-		add( new Rule(nt_bool,   CustomOp::op_EMPTY,        "empty(%s)",    {nt_string},                      1.0) );
-		add( new Rule(nt_bool,   CustomOp::op_STREQ,        "(%s==%s)",     {nt_string,nt_string},            1.0) );
+		add( Rule(nt_bool,   BuiltinOp::op_FLIP,        "flip()",       {},                               5.0) );
+		add( Rule(nt_bool,   CustomOp::op_EMPTY,        "empty(%s)",    {nt_string},                      1.0) );
+		add( Rule(nt_bool,   CustomOp::op_STREQ,        "(%s==%s)",     {nt_string,nt_string},            1.0) );
+		
+		add( Rule(nt_string, BuiltinOp::op_RECURSE,      "F(%s)",        {nt_string},                      2.0) );		
+
 	}
 };
 
@@ -162,6 +164,7 @@ void callback(MyHypothesis& h) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+
 int main(int argc, char** argv){ 
 	using namespace std;
 	
@@ -177,6 +180,16 @@ int main(int argc, char** argv){
 	
 	// declare a grammar
 	MyGrammar grammar;
+			
+//	for(int i=1;i<100000 and !CTRL_C;i++){
+////		auto n = grammar.expand_from_integer(nt_string, i);
+////		COUT i TAB grammar.compute_enumeration_order(n) TAB n.string() ENDL;
+//		auto n = grammar.fancy_index(nullptr, nt_string, i);
+//		COUT i TAB n.string() ENDL;
+//
+//	}
+//	
+//	return 0;
 	
 	//------------------
 	// set up the data

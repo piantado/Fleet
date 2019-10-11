@@ -158,7 +158,7 @@ public:
 			assert(k >= 0);
 			assert(k < (int)grammar->count_expansions(nt));
 			auto r = grammar->get_rule(nt,k);
-			h.value = grammar->make(r);
+			h.value = grammar->makeNode(r);
 		}
 		else {
 			T t = value;

@@ -72,7 +72,7 @@ public:
 		size_t mx = 0; 
 		const std::function<void(const Node&)> f = [&mx](const Node& n) {
 			if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE) ) {
-				mx = MAX(mx, (size_t)n.rule->instr.arg);
+				mx = std::max(mx, (size_t)n.rule->instr.arg);
 			}
 		};
 		

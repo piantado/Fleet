@@ -43,58 +43,58 @@ public:
 	MyGrammar() : Grammar() {
 		
 		for(size_t i=0;i<OBJECTS.size();i++)
-			add( new Rule(nt_type, op_Object,        std::string(1,OBJECTS[i]),        {},                1.0/OBJECTS.size(), i) );		
+			add( Rule(nt_type, op_Object,        std::string(1,OBJECTS[i]),        {},                1.0/OBJECTS.size(), i) );		
 		
 		for(size_t i=0;i<WORDS.size();i++)
-			add( new Rule(nt_word, op_Word,             WORDS[i],             {},                         1.0/WORDS.size(), i+1) );		
+			add( Rule(nt_word, op_Word,             WORDS[i],             {},                         1.0/WORDS.size(), i+1) );		
 		
-		add( new Rule(nt_word, op_U,              "undef",         {},                      			   5.0) );	
-		add( new Rule(nt_word, op_Next,           "next(%s)",      {nt_word},                      		   1.0) );	
-		add( new Rule(nt_word, op_Prev,           "prev(%s)",      {nt_word},                      	       1.0) );	
+		add( Rule(nt_word, op_U,              "undef",         {},                      			   5.0) );	
+		add( Rule(nt_word, op_Next,           "next(%s)",      {nt_word},                      		   1.0) );	
+		add( Rule(nt_word, op_Prev,           "prev(%s)",      {nt_word},                      	       1.0) );	
 		
 		// extracting from x
-		add( new Rule(nt_set,    op_Xset,        "set(%s)",                {nt_X},                         10.0) );		
-		add( new Rule(nt_type,   op_Xtype,       "type(%s)",               {nt_X},                         10.0) );		
-		add( new Rule(nt_X,      BuiltinOp::op_X,"X",                      {},                             10.0) );		
+		add( Rule(nt_set,    op_Xset,        "set(%s)",                {nt_X},                         10.0) );		
+		add( Rule(nt_type,   op_Xtype,       "type(%s)",               {nt_X},                         10.0) );		
+		add( Rule(nt_X,      BuiltinOp::op_X,"X",                      {},                             10.0) );		
 		
-		add( new Rule(nt_X,      op_MakeX,        "<%s,%s>",              {nt_set, nt_type},              1.0) );		
-		add( new Rule(nt_word,   BuiltinOp::op_RECURSE,      "recurse(%s)",          {nt_X},              5.0) );		
+		add( Rule(nt_X,      op_MakeX,        "<%s,%s>",              {nt_set, nt_type},              1.0) );		
+		add( Rule(nt_word,   BuiltinOp::op_RECURSE,      "recurse(%s)",          {nt_X},              5.0) );		
 
-		add( new Rule(nt_set,    op_Union,        "union(%s,%s)",         {nt_set,nt_set},            1.0/3.0) );
-		add( new Rule(nt_set,    op_Intersection, "intersection(%s,%s)",  {nt_set,nt_set},            1.0/3.0) );
-		add( new Rule(nt_set,    op_Difference,   "difference(%s,%s)",    {nt_set,nt_set},            1.0/3.0) );
-		add( new Rule(nt_set,    op_Filter,       "filter(%s,%s)",        {nt_type,nt_set},           1.0) );
+		add( Rule(nt_set,    op_Union,        "union(%s,%s)",         {nt_set,nt_set},            1.0/3.0) );
+		add( Rule(nt_set,    op_Intersection, "intersection(%s,%s)",  {nt_set,nt_set},            1.0/3.0) );
+		add( Rule(nt_set,    op_Difference,   "difference(%s,%s)",    {nt_set,nt_set},            1.0/3.0) );
+		add( Rule(nt_set,    op_Filter,       "filter(%s,%s)",        {nt_type,nt_set},           1.0) );
 		
-		add( new Rule(nt_set,    op_Select,       "select(%s)",           {nt_set},                   1.0/2.0) );
-		add( new Rule(nt_set,    op_SelectObj,    "selectO(%s,%s)",       {nt_set,nt_type},           1.0/2.0) );
+		add( Rule(nt_set,    op_Select,       "select(%s)",           {nt_set},                   1.0/2.0) );
+		add( Rule(nt_set,    op_SelectObj,    "selectO(%s,%s)",       {nt_set,nt_type},           1.0/2.0) );
 
 		
-		add( new Rule(nt_set,    BuiltinOp::op_IF,           "ifS(%s,%s,%s)", {nt_bool, nt_set,  nt_set},       1.0/2.0) );
-		add( new Rule(nt_word,   BuiltinOp::op_IF,           "ifW(%s,%s,%s)", {nt_bool, nt_word, nt_word},      1.0/2.0) );
+		add( Rule(nt_set,    BuiltinOp::op_IF,           "ifS(%s,%s,%s)", {nt_bool, nt_set,  nt_set},       1.0/2.0) );
+		add( Rule(nt_word,   BuiltinOp::op_IF,           "ifW(%s,%s,%s)", {nt_bool, nt_word, nt_word},      1.0/2.0) );
 		
 		
-		add( new Rule(nt_bool,   BuiltinOp::op_FLIPP,       "flip(%s)",     {nt_double},               5.0) );
-		add( new Rule(nt_bool,   op_And,         "and(%s,%s)",   {nt_bool, nt_bool},               1.0) );
-		add( new Rule(nt_bool,   op_Or,          "or(%s,%s)",    {nt_bool, nt_bool},               1.0) );
-		add( new Rule(nt_bool,   op_Not,         "not(%s)",   {nt_bool},                        1.0) );
+		add( Rule(nt_bool,   BuiltinOp::op_FLIPP,       "flip(%s)",     {nt_double},               5.0) );
+		add( Rule(nt_bool,   op_And,         "and(%s,%s)",   {nt_bool, nt_bool},               1.0) );
+		add( Rule(nt_bool,   op_Or,          "or(%s,%s)",    {nt_bool, nt_bool},               1.0) );
+		add( Rule(nt_bool,   op_Not,         "not(%s)",   {nt_bool},                        1.0) );
 		
 		// Working memory model		
-		add( new Rule(nt_bool,   op_Match1to1,   "match1to1(%s,%s)", {nt_wmset, nt_set},            5.0) );
-		add( new Rule(nt_wmset,  op_WM0,   "{}",                     {},                1.0) );
-		add( new Rule(nt_wmset,  op_WM1,   "{o}",                    {},                1.0) );
-		add( new Rule(nt_wmset,  op_WM2,   "{o,o}",                  {},              1.0) );
-		add( new Rule(nt_wmset,  op_WM3,   "{o,o,o}",                {},            1.0) );		
+		add( Rule(nt_bool,   op_Match1to1,   "match1to1(%s,%s)", {nt_wmset, nt_set},            5.0) );
+		add( Rule(nt_wmset,  op_WM0,   "{}",                     {},                1.0) );
+		add( Rule(nt_wmset,  op_WM1,   "{o}",                    {},                1.0) );
+		add( Rule(nt_wmset,  op_WM2,   "{o,o}",                  {},              1.0) );
+		add( Rule(nt_wmset,  op_WM3,   "{o,o,o}",                {},            1.0) );		
 
 		// approximate model
-		add( new Rule(nt_double,   op_ApproxEq_S_S,  "ANS=(%s,%s)",  {nt_set,   nt_set},            1.0/3.0) );
-		add( new Rule(nt_double,   op_ApproxEq_S_W,  "ANS=(%s,%s)",  {nt_set,   nt_wmset},          1.0/3.0) );
-		add( new Rule(nt_double,   op_ApproxEq_S_M,  "ANS=(%s,%s)",  {nt_set,   nt_magnitude},      1.0/3.0) );
-		add( new Rule(nt_double,   op_ApproxLt_S_S,  "ANS<(%s,%s)",  {nt_set,   nt_set},            1.0/3.0) );
-		add( new Rule(nt_double,   op_ApproxLt_S_W,  "ANS<(%s,%s)",  {nt_set,   nt_wmset},          1.0/3.0) );
-		add( new Rule(nt_double,   op_ApproxLt_S_M,  "ANS<(%s,%s)",  {nt_set,   nt_magnitude},      1.0/3.0) );
+		add( Rule(nt_double,   op_ApproxEq_S_S,  "ANS=(%s,%s)",  {nt_set,   nt_set},            1.0/3.0) );
+		add( Rule(nt_double,   op_ApproxEq_S_W,  "ANS=(%s,%s)",  {nt_set,   nt_wmset},          1.0/3.0) );
+		add( Rule(nt_double,   op_ApproxEq_S_M,  "ANS=(%s,%s)",  {nt_set,   nt_magnitude},      1.0/3.0) );
+		add( Rule(nt_double,   op_ApproxLt_S_S,  "ANS<(%s,%s)",  {nt_set,   nt_set},            1.0/3.0) );
+		add( Rule(nt_double,   op_ApproxLt_S_W,  "ANS<(%s,%s)",  {nt_set,   nt_wmset},          1.0/3.0) );
+		add( Rule(nt_double,   op_ApproxLt_S_M,  "ANS<(%s,%s)",  {nt_set,   nt_magnitude},      1.0/3.0) );
 	
 		for(size_t i=0;i<MAGNITUDES.size();i++)
-			add( new Rule(nt_magnitude,  op_Magnitude,   std::to_string(MAGNITUDES[i]).substr(0,3), {},           10.0/MAGNITUDES.size(), i)); // magnitudes that only get used in ANS comparisons
+			add( Rule(nt_magnitude,  op_Magnitude,   std::to_string(MAGNITUDES[i]).substr(0,3), {},           10.0/MAGNITUDES.size(), i)); // magnitudes that only get used in ANS comparisons
 		
 		
 	}

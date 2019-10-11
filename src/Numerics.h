@@ -2,18 +2,7 @@
 
 #include <random>
 #include <iostream>
-
-/* Handy numeric functions */
-
-#define MAX(a,b) \
-   ({ __typeof__ (a) _a = (a); \
-       __typeof__ (b) _b = (b); \
-     _a > _b ? _a : _b; })
-	 
-#define MIN(a,b) \
-	({ __typeof__ (a) _a = (a); \
-       __typeof__ (b) _b = (b); \
-     _a > _b ? _b : _a; })
+#include <assert.h>
 
 /////////////////////////////////////////////////////////////
 // Constants
@@ -34,8 +23,8 @@ t logplusexp(const t a, const t b) {
 	// It is easy to derive a good polynomial approximation that is a bit faster (using sollya) on [-25,0] but that appears
 	// not to be worth it at this point. 
 	
-	t mx = MAX(a,b);
-	t z  = MIN(a,b)-mx;
+	t mx = std::max(a,b);
+	t z  = std::min(a,b)-mx;
 	if(z < -25.0) return mx;
 
 	return mx + log1p(exp(z));
@@ -48,15 +37,17 @@ t logplusexp(const t a, const t b) {
 // 		 they map 0 to 0 
 /////////////////////////////////////////////////////////////
 
-std::pair<size_t, size_t> cantor_decode(const size_t z) {
-	size_t w = (size_t)std::floor((std::sqrt(8*z+1)-1.0)/2);
-	size_t t = w*(w+1)/2;
+typedef size_t enumerationidx_t; // this is the type we use to store enuemration indices
+
+std::pair<enumerationidx_t, enumerationidx_t> cantor_decode(const enumerationidx_t z) {
+	enumerationidx_t w = (enumerationidx_t)std::floor((std::sqrt(8*z+1)-1.0)/2);
+	enumerationidx_t t = w*(w+1)/2;
 	return std::make_pair(z-t, w-(z-t));
 }
 
-std::pair<size_t, size_t> rosenberg_strong_decode(const size_t z) {
+std::pair<enumerationidx_t, enumerationidx_t> rosenberg_strong_decode(const enumerationidx_t z) {
 	// https:arxiv.org/pdf/1706.04129.pdf
-	size_t m = (size_t)std::floor(std::sqrt(z));
+	enumerationidx_t m = (enumerationidx_t)std::floor(std::sqrt(z));
 	if(z-m*m < m) {
 		return std::make_pair(z-m*m,m);
 	}
@@ -65,12 +56,17 @@ std::pair<size_t, size_t> rosenberg_strong_decode(const size_t z) {
 	}
 }
 
-size_t rosenberg_strong_encode(const size_t x, const size_t y){
+enumerationidx_t rosenberg_strong_encode(const enumerationidx_t x, const enumerationidx_t y){
 	auto m = std::max(x,y);
 	return m*(m+1)+x-y;
 }
 
-std::pair<size_t,size_t> mod_decode(const size_t z, const size_t k) {
+std::pair<enumerationidx_t,enumerationidx_t> mod_decode(const enumerationidx_t z, const enumerationidx_t k) {
 	auto x = z%k;
 	return std::make_pair(x, (z-x)/k);
+}
+
+enumerationidx_t mod_encode(const enumerationidx_t x, const enumerationidx_t y, const enumerationidx_t k) {
+	assert(x < k);
+	return x + y*k;
 }

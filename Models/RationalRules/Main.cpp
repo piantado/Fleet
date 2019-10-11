@@ -41,18 +41,18 @@ typedef struct Object {
 class MyGrammar : public Grammar { 
 public:
 	MyGrammar() : Grammar() {
-		add( new Rule(nt_object, BuiltinOp::op_X,         "x",             {},                   1.0) );		
-		add( new Rule(nt_bool,   CustomOp::op_Red,        "red(%s)",       {nt_object},          1.0) );		
-		add( new Rule(nt_bool,   CustomOp::op_Green,      "green(%s)",     {nt_object},          1.0) );
-		add( new Rule(nt_bool,   CustomOp::op_Blue,       "blue(%s)",      {nt_object},          1.0) );
+		add( Rule(nt_object, BuiltinOp::op_X,         "x",             {},                   1.0) );		
+		add( Rule(nt_bool,   CustomOp::op_Red,        "red(%s)",       {nt_object},          1.0) );		
+		add( Rule(nt_bool,   CustomOp::op_Green,      "green(%s)",     {nt_object},          1.0) );
+		add( Rule(nt_bool,   CustomOp::op_Blue,       "blue(%s)",      {nt_object},          1.0) );
 		
-		add( new Rule(nt_bool,   CustomOp::op_Square,     "square(%s)",    {nt_object},          1.0) );		
-		add( new Rule(nt_bool,   CustomOp::op_Triangle,   "triangle(%s)",  {nt_object},          1.0) );
-		add( new Rule(nt_bool,   CustomOp::op_Circle,     "circle(%s)",    {nt_object},          1.0) );
+		add( Rule(nt_bool,   CustomOp::op_Square,     "square(%s)",    {nt_object},          1.0) );		
+		add( Rule(nt_bool,   CustomOp::op_Triangle,   "triangle(%s)",  {nt_object},          1.0) );
+		add( Rule(nt_bool,   CustomOp::op_Circle,     "circle(%s)",    {nt_object},          1.0) );
 		
-		add( new Rule(nt_bool, CustomOp::op_And,          "(%s and %s)",   {nt_bool, nt_bool},   1.0) );
-		add( new Rule(nt_bool, CustomOp::op_Or,           "(%s or %s)",    {nt_bool, nt_bool},   1.0) );
-		add( new Rule(nt_bool, CustomOp::op_Not,          "not(%s)",       {nt_bool},            1.0) );
+		add( Rule(nt_bool, CustomOp::op_And,          "(%s and %s)",   {nt_bool, nt_bool},   1.0) );
+		add( Rule(nt_bool, CustomOp::op_Or,           "(%s or %s)",    {nt_bool, nt_bool},   1.0) );
+		add( Rule(nt_bool, CustomOp::op_Not,          "not(%s)",       {nt_bool},            1.0) );
 	}
 };
 

@@ -48,3 +48,25 @@ T myrandom(T max) {
 bool flip() {
 	return uniform() < 0.5;
 }
+
+template<typename t, typename T> 
+std::pair<t*,double> sample(const T& s, std::function<double(const t&)>& f = [](const t& v){return 1.0;}) {
+	// this takes a collection T of elements t, and a function f
+	// which assigns them each a probability, and samples from them according
+	// to the probabilities in f
+	
+	double z = 0.0; // find the normalizer
+	for(auto& x : s) 
+		z += f(x);
+	
+	double r = z * uniform();
+	
+	for(auto& x : s) {
+		double fx = f(x);
+		r -= fx;
+		if(r <= 0.0) 
+			return std::make_pair(const_cast<t*>(&x), log(fx)-log(z));
+	}
+	
+	assert(0 && "*** Should not get here in sampling");	
+}

@@ -5,6 +5,7 @@
 #include "IO.h"
 
 #include "Node.h"
+#include "Random.h"
 
 // an exception for recursing too deep so we can print a trace of what went wrong
 class DepthException: public std::exception {} depth_exception;
@@ -100,20 +101,10 @@ public:
 		assert(nt < N_NTs);
 		return Z[nt];
 	}
-	
+
 	virtual Rule* sample_rule(const nonterminal_t nt) const {
-		assert(nt >= 0);
-		assert(nt < N_NTs);
-		assert(Z[nt] > 0 && "*** It seems there is zero probability of expanding this terminal -- did you include any rules?"); 
-		
-		double z = rule_normalizer(nt);
-		double q = uniform()*z;
-		for(auto& r: rules[nt]) {
-			q -= r.p;
-			if(q <= 0.0) return const_cast<Rule*>(&r);
-		}
-		
-		assert(0 && "*** Normalizer error in nonterminal "); // Something bad happened in rule probabilities
+		std::function<double(const Rule& r)> f = [](const Rule& r){return r.p;};
+		return sample<Rule,std::vector<Rule>>(rules[nt], f).first; // ignore the probabiltiy 
 	}
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const CustomOp o, const int a=0) {
@@ -243,7 +234,7 @@ public:
 			Rule* r = this->get_rule(nt, u.first+numterm); // shift index from terminals (because they are first!)
 			Node out = makeNode(r);
 			enumerationidx_t rest = u.second; // the encoding of everything else
-			for(int i=0;i<r->N;i++) {
+			for(size_t i=0;i<r->N;i++) {
 				enumerationidx_t zi; // what is the encoding for the i'th child?
 				if(i<r->N-1) { 
 					auto ui = rosenberg_strong_decode(rest);
@@ -260,7 +251,7 @@ public:
 		}
 
 	}
-	
+
 	enumerationidx_t compute_enumeration_order(const Node& n) {
 		// inverse of the above function -- what order would we be enumerated in?
 		if(n.child.size() == 0) {
@@ -278,7 +269,62 @@ public:
 			return z;
 		}
 	}
+	
+
+
+	Node fancy_index(Node* root, nonterminal_t nt, enumerationidx_t z) const {
+		// NOTE: This is no longer unique...
+		
+		enumerationidx_t numterm = count_terminals(nt);
+		if(z < numterm) {
+			return makeNode(this->get_rule(nt, z));	// whatever terminal we wanted
+		}
+		else if(root != nullptr and z < numterm + root->count() - 1) {
+			// a reference to a prior node
+			auto it = root->begin();
+		//	CERR (z-numterm-1) TAB root->string() ENDL;
 			
+			// HMM root->begin() is hard with partial trees because it goes to a NullNode
+			
+			if(z > numterm)	// bc not signed		
+				it = it + (size_t)(z-numterm-1);
+			
+			
+			
+			// TODO: THIS MUST BE CHANGED SINCE *IT WILL CONTAIN HOLES -- MUST RECURSE DOWN THEM TOO!
+			
+			return Node(*it); // copy what we got there 
+		}
+		else {
+			
+			size_t rc = (root == nullptr ? 0 : root->count()-1);
+			
+			auto u =  mod_decode(z-numterm-rc, count_nonterminals(nt));
+			
+			Rule* r = this->get_rule(nt, u.first+numterm); // shift index from terminals (because they are first!)
+			Node out = makeNode(r);
+			
+			if(root == nullptr) root = &out; // set this if its not done yet
+			
+			enumerationidx_t rest = u.second; // the encoding of everything else
+			for(size_t i=0;i<r->N;i++) {
+				enumerationidx_t zi; // what is the encoding for the i'th child?
+				if(i<r->N-1) { 
+					auto ui = rosenberg_strong_decode(rest);
+					zi = ui.first;
+					rest = ui.second;
+				}
+				else {
+					zi = rest;
+				}
+				out.child[i] = fancy_index(root, r->child_types[i], zi); // since we are by reference, this should work right
+			}
+			return out;		
+			
+		}
+
+	}
+		
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Generation
@@ -297,8 +343,8 @@ public:
 		Z[nt] += r.p; // keep track of the total probability
 		
 		// and keep a count of the cumulative number of rules
-		for(size_t nt=nt+1;nt<N_NTs;nt++) {
-			rule_cumulative_count[nt]++;
+		for(size_t j=nt+1;j<N_NTs;j++) {
+			rule_cumulative_count[j]++;
 		}		
 	}
 	

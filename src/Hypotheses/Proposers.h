@@ -33,15 +33,16 @@ std::pair<Node,double> regeneration_proposal(Grammar* grammar, const Node& from)
 CERR "REGENERATE" ENDL;
 #endif
 
-	std::function<int(const Node& n)> can_resample = [](const Node& n) { return n.can_resample*1;};
+	std::function<double(const Node& n)> can_resample = [](const Node& n) { return n.can_resample*1;};
 			
 	Node ret = from; // copy
 
-	if(from.sum<int>(can_resample) == 0) {
+	if(from.sum<double>(can_resample) == 0.0) {
 		return std::make_pair(ret, 0.0);
 	}
 	
-	auto s = ret.sample(can_resample); // get the nth in ret
+	//auto s = ret.sample(can_resample); // get the nth in ret
+	auto s = sample<Node,Node>(ret, can_resample);
 	
 	double oldgp = grammar->log_probability(*s.first); // reverse probability generating 
 	

@@ -83,7 +83,7 @@ public:
 		std::sort(v.begin(), v.end(), [](auto x, auto y){ return x.second > y.second; }); // put the big stuff first
 		
 		std::vector<T> out;
-		for(size_t i=0;i<MIN(N, v.size());i++){
+		for(size_t i=0;i<std::min(N, v.size());i++){
 			out.push_back(v[i].first);
 		}
 
