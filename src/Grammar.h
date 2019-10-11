@@ -8,7 +8,6 @@
 
 // an exception for recursing too deep so we can print a trace of what went wrong
 class DepthException: public std::exception {} depth_exception;
-class EnumerationException: public std::exception {} enumeration_exception;
 
 class Grammar {
 	/* 
@@ -18,8 +17,8 @@ class Grammar {
 	 */
 
 protected:
-	std::vector<Rule*> rules[N_NTs];
-	double			   Z[N_NTs]; // keep the normalizer handy for each rule
+	std::vector<Rule> rules[N_NTs];
+	double	  	      Z[N_NTs]; // keep the normalizer handy for each rule
 	
 public:
 	size_t             rule_cumulative_count[N_NTs]; // how many rules are there less than a given nt? (used for indexing)
@@ -39,19 +38,22 @@ public:
 		return N_NTs;
 	}
 	
+	size_t get_index_of(const Rule* r) const {
+		// within an index, what index are we?
+		bool found = false;
+		size_t i=0;
+		for(;i<rules[r->nt].size();i++) {
+			if(rules[r->nt][i] == *r) { found=true; break;}
+		}
+		assert(found);
+		return i;
+	}
 	
 	size_t get_packing_index(const Rule* r) const {
 		// A rule's packing index is a unique count index for this rule
 		// so that in the whole grammar, we can pack all indices into a vector
 		// NOTE: this is not efficiently computed
-		bool found = false;
-		size_t i=0;
-		for(;i<rules[r->nt].size();i++) {
-			if(rules[r->nt][i] == r) { found=true; break;}
-		}
-		assert(found);
-		
-		return rule_cumulative_count[r->nt]+i; 
+		return rule_cumulative_count[r->nt]+get_index_of(r); 
 	}
 	
 	size_t count_rules(const nonterminal_t nt) const {
@@ -59,22 +61,22 @@ public:
 	}	
 	size_t count_rules() const {
 		size_t n=0;
-		for(size_t i = 0;i<N_NTs;i++) {
+		for(size_t i=0;i<N_NTs;i++) {
 			n += count_rules((nonterminal_t)i);
 		}
 		return n;
 	}
 	size_t count_terminals(nonterminal_t nt) const {
 		size_t n=0;
-		for(auto r : rules[nt]) {
-			if(r->N == 0) n++;
+		for(auto& r : rules[nt]) {
+			if(r.N == 0) n++;
 		}
 		return n;
 	}
 	size_t count_nonterminals(nonterminal_t nt) const {
 		size_t n=0;
-		for(auto r : rules[nt]) {
-			if(r->N != 0) n++;
+		for(auto& r : rules[nt]) {
+			if(r.N != 0) n++;
 		}
 		return n;
 	}
@@ -90,7 +92,7 @@ public:
 		assert(nt >= 0);
 		assert(nt < N_NTs);
 		assert(k < rules[nt].size());
-		return rules[nt][k];
+		return const_cast<Rule*>(&rules[nt][k]);
 	}
 	
 	double rule_normalizer(const nonterminal_t nt) const {
@@ -106,34 +108,33 @@ public:
 		
 		double z = rule_normalizer(nt);
 		double q = uniform()*z;
-		for(auto r: rules[nt]) {
-			q -= r->p;
-			if(q <= 0.0)
-				return r;
+		for(auto& r: rules[nt]) {
+			q -= r.p;
+			if(q <= 0.0) return const_cast<Rule*>(&r);
 		}
 		
 		assert(0 && "*** Normalizer error in nonterminal "); // Something bad happened in rule probabilities
 	}
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const CustomOp o, const int a=0) {
-		for(auto r: rules[nt]) {
-			if(r->instr.is_a(o) && r->instr.arg == a) 
-				return r;
+		for(auto& r: rules[nt]) {
+			if(r.instr.is_a(o) && r.instr.arg == a) 
+				return &r;
 		}
 		assert(0 && "*** Could not find rule");		
 	}
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const BuiltinOp o, const int a=0) {
-		for(auto r: rules[nt]) {
-			if(r->instr.is_a(o) && r->instr.arg == a) 
-				return r;
+		for(auto& r: rules[nt]) {
+			if(r.instr.is_a(o) && r.instr.arg == a) 
+				return &r;
 		}
 		assert(0 && "*** Could not find rule");		
 	}
 	
 	virtual Rule* get_rule(const nonterminal_t nt, size_t i) {
 		assert(i <= rules[nt].size());
-		return rules[nt][i];
+		return &rules[nt][i];
 	}
 	
 	virtual Rule* get_rule(const std::string s) const {
@@ -141,20 +142,18 @@ public:
 		// if there aren't enough
 		Rule* ret = nullptr;
 		for(size_t nt=0;nt<N_NTs;nt++) {
-			for(auto r: rules[nt]) {
-				if(is_prefix(s, r->format)){
+			for(auto& r: rules[nt]) {
+				if(is_prefix(s, r.format)){
 					if(ret != nullptr) {
-						CERR "*** Multiple rules found matching " << s TAB r->format ENDL;
+						CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
 						assert(0);
 					}
-					ret = r;
+					ret = const_cast<Rule*>(&r);
 				} 
 			}
 		}
 		
-		if(ret != nullptr) { // successfully out
-			return ret;
-		}
+		if(ret != nullptr) { return ret; }
 		else {			
 			CERR "*** No rule found to match " TAB s ENDL;
 			assert(0);
@@ -192,7 +191,7 @@ public:
 		// otherwise find the matching rule
 		Rule* r = this->get_rule(pfx);
 		
-		Node v = make(r);
+		Node v = makeNode(r);
 		for(size_t i=0;i<r->N;i++) {
 			
 			if(r->child_types[i] != v.child[i].rule->nt) {
@@ -217,26 +216,35 @@ public:
         return expand_from_names(s);
 	}
 	
+		
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Enumeration -- via encoding into integers
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	Node expand_from_integer(nonterminal_t nt, size_t z) const {
-		// This has some better options than cantor: https://arxiv.org/pdf/1706.04129.pdf
+	Node expand_from_integer(nonterminal_t nt, enumerationidx_t z) const {
+		// this is a handy function to enumerate trees produced by the grammar. 
+		// This works by encoding each tree into an integer using some "pairing functions"
+		// (see https://arxiv.org/pdf/1706.04129.pdf)
+		// Specifically, here is how we encode a tree: if it's a terminal,
+		// encode the index of the terminal in the grammar. 
+		// If it's a nonterminal, encode the rule with a modular pairing function
+		// and then use Rosenberg-Strong encoding to encode each of the children. 
+		// In this way, we can make a 1-1 pairing between trees and integers,
+		// and therefore store trees as integers in a reversible way
+		// as well as enumerate by giving this integers. 
 		
-		// What we really need is a pairing function where we can assume that
-		// the next paired integer is at most k (for whatever k we choose at any point)
-		
-
-		size_t numterm = count_terminals(nt);
+		enumerationidx_t numterm = count_terminals(nt);
 		if(z < numterm) {
-			return make(this->get_rule(nt, z));	// whatever terminal we wanted
+			return makeNode(this->get_rule(nt, z));	// whatever terminal we wanted
 		}
 		else {
 			auto u =  mod_decode(z-numterm, count_nonterminals(nt));
 			
 			Rule* r = this->get_rule(nt, u.first+numterm); // shift index from terminals (because they are first!)
-			Node out = make(r);
-			size_t rest = u.second; // the encoding of everything else
-			for(size_t i=0;i<r->N;i++) {
-				size_t zi; // what is the encoding for the i'th child?
+			Node out = makeNode(r);
+			enumerationidx_t rest = u.second; // the encoding of everything else
+			for(int i=0;i<r->N;i++) {
+				enumerationidx_t zi; // what is the encoding for the i'th child?
 				if(i<r->N-1) { 
 					auto ui = rosenberg_strong_decode(rest);
 					zi = ui.first;
@@ -252,40 +260,25 @@ public:
 		}
 
 	}
-			
-
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Implementation of replicating rules 
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//	
-//	virtual double replicating_Z(const nonterminal_t nt) const {
-//		// the normalizer for all replicating rules
-//		double z = 0.0;
-//		for(auto r: rules[nt]) {
-//			if(r->replicating_children() > 0) z += r->p;
-//		}
-//		return z;
-//	}
-//	
-//	
-//	virtual Rule* sample_replicating_rule(const nonterminal_t nt) const {
-//		
-//		double z = replicating_Z(nt);
-//		assert(z > 0);
-//		double q = uniform()*z;
-//		for(auto r: rules[nt]) {
-//			if(r->replicating_children() > 0) {
-//				q -= r->p;
-//				if(q <= 0.0)
-//					return r;					
-//			}
-//		}
-//		
-//		CERR "*** Normalizer error in nonterminal " << nt;
-//		assert(0); // Something bad happened in rule probabilities
-//	}
-
 	
+	enumerationidx_t compute_enumeration_order(const Node& n) {
+		// inverse of the above function -- what order would we be enumerated in?
+		if(n.child.size() == 0) {
+			return get_index_of(n.rule);
+		}
+		else {
+			// here we work backwards to encode 
+			nonterminal_t nt = n.rule->nt;
+			enumerationidx_t numterm = count_terminals(nt);
+			enumerationidx_t z = compute_enumeration_order(n.child[n.rule->N-1]);
+			for(int i=n.rule->N-2;i>=0;i--) {
+				z = rosenberg_strong_encode(compute_enumeration_order(n.child[i]),z);
+			}
+			z = numterm + mod_encode(get_index_of(n.rule)-numterm, z, count_nonterminals(nt));
+			return z;
+		}
+	}
+			
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Generation
@@ -293,16 +286,26 @@ public:
 	
 
 	
-	virtual void add(Rule* r) {
-		rules[r->nt].push_back(r);
-		Z[r->nt] += r->p; // keep track of the total probability
+	virtual void add(Rule r) {
+		
+		nonterminal_t nt = r.nt;
+		//rules[r.nt].push_back(r);
+		
+		auto pos = std::lower_bound( rules[nt].begin(), rules[nt].end(), r);
+		rules[nt].insert( pos, r ); // put this before
+		
+		Z[nt] += r.p; // keep track of the total probability
 		
 		// and keep a count of the cumulative number of rules
-		for(size_t nt=r->nt+1;nt<N_NTs;nt++) {
+		for(size_t nt=nt+1;nt<N_NTs;nt++) {
 			rule_cumulative_count[nt]++;
 		}		
 	}
-
+	
+	Node makeNode(const Rule* r) const {
+		return Node(r, log(r->p)-log(Z[r->nt]));
+	}
+	
 	Node generate(const nonterminal_t nt, unsigned long depth=0) const {
 		// Sample a rule and generate from this grammar. This has a template to avoid a circular dependency
 		// and allow us to generate other kinds of things from rules if we want. 
@@ -315,7 +318,7 @@ public:
 		
 		Rule* r = sample_rule(nt);
 		//T n(r, log(r->p) - log(Z[nt])); // slightly inefficient because we compute this twice
-		Node n = make(r);
+		Node n = makeNode(r);
 		for(size_t i=0;i<r->N;i++) {
 			try{
 				n.set_child(i, generate(r->child_types[i], depth+1)); // recurse down
@@ -325,12 +328,7 @@ public:
 			}
 		}
 		return n;
-	}
-	
-	Node make(const Rule* r) const {
-		return Node(r, log(r->p)-log(Z[r->nt]));
-	}
-	
+	}	
 	
 	Node copy_resample(const Node& node, bool f(const Node& n)) const {
 		// this makes a copy of the current node where ALL nodes satifying f are resampled from the grammar
@@ -380,7 +378,7 @@ public:
 				int c = count_expansions(node.rule->child_types[i]);
 				if(which >= 0 && which < c) {
 					auto r = get_rule(node.rule->child_types[i], which);
-					node.set_child(i, make(r));
+					node.set_child(i, makeNode(r));
 				}
 				which -= c;
 			}

@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <string>
+#include <vector>
 
 class Rule {
 	// A rule stores nonterminal types and possible children
@@ -10,12 +11,13 @@ class Rule {
 	// everything else can operate on a uniforntrules. 
 	
 public:
-	const nonterminal_t  nt;
-	const Instruction    instr; // a template for my instruction, which here mainly stores my optype
-	const std::string    format; // how am I printed?
-	const size_t         N; // how many children?
-	nonterminal_t*       child_types; // An array of what I expand to; note that this should be const but isn't to allow list initialization (https://stackoverflow.com/questions/5549524/how-do-i-initialize-a-member-array-with-an-initializer-list)
-	const double         p;
+	nonterminal_t         nt;
+	Instruction           instr; // a template for my instruction, which here mainly stores my optype
+	std::string           format; // how am I printed?
+	size_t                N; // how many children?
+	// this next one should be a vector, but gcc doesn't like copying it for some reason
+	nonterminal_t         child_types[MAX_CHILD_SIZE]; // An array of what I expand to; note that this should be const but isn't to allow list initialization (https://stackoverflow.com/questions/5549524/how-do-i-initialize-a-member-array-with-an-initializer-list)
+	double                p;
 protected:
 	std::size_t          my_hash; // a hash value for this rule
 public:
@@ -23,7 +25,7 @@ public:
 	Rule(const nonterminal_t rt, const CustomOp o, const std::string fmt, std::initializer_list<nonterminal_t> c, double _p, const int arg=0) :
 		nt(rt), instr(o,arg), format(fmt), N(c.size()), p(_p) {
 		// mainly we just convert c to an array
-		child_types = new nonterminal_t[c.size()];
+		assert(c.size() < MAX_CHILD_SIZE);
 		std::copy(c.begin(), c.end(), child_types);
 		
 		// Set up hashing for rules (cached so we only do it once)
@@ -42,7 +44,7 @@ public:
 		nt(rt), instr(o,arg), format(fmt), N(c.size()), p(_p) {
 		
 		// mainly we just convert c to an array
-		child_types = new nonterminal_t[c.size()];
+		assert(c.size() < MAX_CHILD_SIZE);
 		std::copy(c.begin(), c.end(), child_types);
 		
 		// Set up hashing for rules (cached so we only do it once)
@@ -56,15 +58,6 @@ public:
 		// check that the format string has the right number of %s
 		assert( N == count(fmt, ChildStr) && "*** Wrong number of format string arguments");
 	}
-	
-
-	~Rule() {
-		delete[] child_types;
-	}
-	Rule(const Rule& r) = delete;  // our code should not be using this
-	Rule(Rule&& r) = delete; 
-	void operator=(const Rule& r) = delete; 
-	void operator=( Rule&& r) = delete; 
 	
 	bool operator<(const Rule& r) const {
 		// This is structured so that we always put terminals first and then we put the HIGHER probability things first. 
@@ -88,31 +81,6 @@ public:
 		// I am a terminal rule if I have no children
 		return N==0;
 	}
-	
-//	size_t count_children_of_type(const nonterminal_t nt) const {
-//		size_t n=0;
-//		for(size_t i=0;i<N;i++){
-//			n += (child_types[i] == nt);
-//		}
-//		return n;
-//	}
-//	
-//	size_t replicating_children() const { // how many children are of  my type?
-//		return count_children_of_type(nt);
-//	}
-	
-//	size_t random_replicating_index() const {
-//		// return the index of something replicating
-//		size_t R = replicating_children();
-//		size_t r = myrandom(R);
-//		for(size_t i=0;i<N;i++) {
-//			if(child_types[i] == nt) { // if I'm replicating
-//				if(r==0) return i;
-//				else     --r;
-//			}
-//		}
-//		assert(false && "You tried to sample a replicating index when there were none!");
-//	}
 	
 };
 
