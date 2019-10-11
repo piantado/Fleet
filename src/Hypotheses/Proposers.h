@@ -46,10 +46,10 @@ CERR "REGENERATE" ENDL;
 	double oldgp = grammar->log_probability(*s.first); // reverse probability generating 
 	
 	if(s.first->parent == nullptr) {
-		*s.first = grammar->generate<Node>(s.first->rule->nt); // make something new of the same type
+		*s.first = grammar->generate(s.first->rule->nt); // make something new of the same type
 	}
 	else {
-		s.first->parent->set_child(s.first->pi, grammar->generate<Node>(s.first->rule->nt)); 
+		s.first->parent->set_child(s.first->pi, grammar->generate(s.first->rule->nt)); 
 	}
 //	*s.first = grammar->generate<Node>(s.first->rule->nt); // make something new of the same type
 	

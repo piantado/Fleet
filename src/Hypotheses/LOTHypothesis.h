@@ -27,7 +27,7 @@ public:
 
 	// parse this from a string
 	LOTHypothesis(Grammar* g, std::string s) : MCMCable<HYP,t_input,t_output,_t_datum>(), grammar(g)  {
-		value = grammar->expand_from_names<Node>(s);
+		value = grammar->expand_from_names(s);
 	}
 
 	
@@ -47,16 +47,16 @@ public:
 		// and in that case we want to leave the non-propose nodes alone. So her
 
 		if(!value.is_null()) { // if we are null
-			return HYP(grammar, value.copy_resample(grammar, [](const Node& n) { return n.can_resample; }));
+			return HYP(grammar, grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
 		}
 		else {
-			return HYP(grammar, grammar->generate<T>(nt));
+			return HYP(grammar, grammar->generate(nt));
 		}
 	}
 	
 	virtual double compute_prior() {
 		assert(grammar != nullptr && "Grammar was not initialized before trying to call compute_prior");
-		this->prior = grammar->log_probability<T>(value);
+		this->prior = grammar->log_probability(value);
 		return this->prior;
 	}
 	
@@ -129,7 +129,7 @@ public:
 		
 		const std::function<void(Node&)> myf =  [](Node& n){n.can_resample=false;};
 		h.value.map(myf);
-		h.value.complete(grammar);
+		grammar->complete(h.value);
 
 		return h;
 	}
@@ -145,7 +145,7 @@ public:
 			return grammar->count_expansions(nt);
 		}
 		else {
-			return value.neighbors(grammar);
+			return grammar->neighbors(value);
 //			 to rein in the mcts branching factor, we'll count neighbors as just the first unfilled gap
 //			 we should not need to change make_neighbor since it fills in the first, first
 //			return value.first_neighbors(*grammar);
@@ -158,11 +158,11 @@ public:
 			assert(k >= 0);
 			assert(k < (int)grammar->count_expansions(nt));
 			auto r = grammar->get_rule(nt,k);
-			h.value = grammar->make<Node>(r);
+			h.value = grammar->make(r);
 		}
 		else {
 			T t = value;
-			t.expand_to_neighbor(grammar,k);
+			grammar->expand_to_neighbor(t,k);
 			h.value = t;
 		}
 		return h;

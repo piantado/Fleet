@@ -4,6 +4,8 @@
 #include <exception>
 #include "IO.h"
 
+#include "Node.h"
+
 // an exception for recursing too deep so we can print a trace of what went wrong
 class DepthException: public std::exception {} depth_exception;
 class EnumerationException: public std::exception {} enumeration_exception;
@@ -164,8 +166,7 @@ public:
 	// Computing log probabilities
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	template<typename T> // type needed so we dont' have to import node
-	double log_probability(T& n) const {
+	double log_probability(Node& n) const {
 		
 		double lp = 0.0;		
 		for(auto& x : n) {
@@ -180,8 +181,7 @@ public:
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	
-	template<typename T> 
-	T expand_from_names(std::deque<std::string>& q) const {
+	Node expand_from_names(std::deque<std::string>& q) const {
 		// expands an entire stack using nt as the nonterminal -- this is needed to correctly
 		// fill in Node::nulldisplay
 		assert(!q.empty() && "*** Should not ever get to here with an empty queue -- are you missing arguments?");
@@ -192,7 +192,7 @@ public:
 		// otherwise find the matching rule
 		Rule* r = this->get_rule(pfx);
 		
-		T v(r);
+		Node v = make(r);
 		for(size_t i=0;i<r->N;i++) {
 			
 			if(r->child_types[i] != v.child[i].rule->nt) {
@@ -202,25 +202,23 @@ public:
 				assert(false && "Bad names in expand_from_names."); // just check that we didn't miss this up
 			}
 			
-			v.child[i] = expand_from_names<T>(q);
+			v.child[i] = expand_from_names(q);
 		}
 		return v;
 	}
-	template<typename T> 
-	T expand_from_names(std::string s) const {
+
+	Node expand_from_names(std::string s) const {
 		std::deque<std::string> stk = split(s, ':');    
-        return expand_from_names<T>(stk);
+        return expand_from_names(stk);
 	}
 	
-	template<typename T> 
-	T expand_from_names(const char* c) const {
+	Node expand_from_names(const char* c) const {
 		std::string s = c;
-        return expand_from_names<T>(s);
+        return expand_from_names(s);
 	}
 	
 	
-	template<typename T> 
-	T expand_from_integer(nonterminal_t nt, size_t z) const {
+	Node expand_from_integer(nonterminal_t nt, size_t z) const {
 		// This has some better options than cantor: https://arxiv.org/pdf/1706.04129.pdf
 		
 		// What we really need is a pairing function where we can assume that
@@ -229,13 +227,13 @@ public:
 
 		size_t numterm = count_terminals(nt);
 		if(z < numterm) {
-			return T(this->get_rule(nt, z));	// whatever terminal we wanted
+			return make(this->get_rule(nt, z));	// whatever terminal we wanted
 		}
 		else {
 			auto u =  mod_decode(z-numterm, count_nonterminals(nt));
 			
 			Rule* r = this->get_rule(nt, u.first+numterm); // shift index from terminals (because they are first!)
-			T out(r);
+			Node out = make(r);
 			size_t rest = u.second; // the encoding of everything else
 			for(size_t i=0;i<r->N;i++) {
 				size_t zi; // what is the encoding for the i'th child?
@@ -247,7 +245,7 @@ public:
 				else {
 					zi = rest;
 				}
-				out.child[i] = expand_from_integer<T>(r->child_types[i], zi); // since we are by reference, this should work right
+				out.child[i] = expand_from_integer(r->child_types[i], zi); // since we are by reference, this should work right
 			}
 			return out;		
 			
@@ -305,8 +303,7 @@ public:
 		}		
 	}
 
-	template<typename T>
-	T generate(const nonterminal_t nt, unsigned long depth=0) const {
+	Node generate(const nonterminal_t nt, unsigned long depth=0) const {
 		// Sample a rule and generate from this grammar. This has a template to avoid a circular dependency
 		// and allow us to generate other kinds of things from rules if we want. 
 		// We use exceptions here just catch depth exceptions so we can easily get a trace of what
@@ -318,10 +315,10 @@ public:
 		
 		Rule* r = sample_rule(nt);
 		//T n(r, log(r->p) - log(Z[nt])); // slightly inefficient because we compute this twice
-		T n = make<T>(r);
+		Node n = make(r);
 		for(size_t i=0;i<r->N;i++) {
 			try{
-				n.set_child(i, generate<T>(r->child_types[i], depth+1)); // recurse down
+				n.set_child(i, generate(r->child_types[i], depth+1)); // recurse down
 			} catch(DepthException& e) {
 				CERR "*** Grammar has recursed beyond Fleet::GRAMMAR_MAX_DEPTH (Are the probabilities right?). nt=" << nt << " d=" << depth TAB n.string() ENDL;
 				throw e;
@@ -330,9 +327,79 @@ public:
 		return n;
 	}
 	
-	template<typename T>
-	T make(const Rule* r) const {
-		return T(r, log(r->p)-log(Z[r->nt]));
+	Node make(const Rule* r) const {
+		return Node(r, log(r->p)-log(Z[r->nt]));
+	}
+	
+	
+	Node copy_resample(const Node& node, bool f(const Node& n)) const {
+		// this makes a copy of the current node where ALL nodes satifying f are resampled from the grammar
+		// NOTE: this does NOT allow f to apply to nullptr children (so cannot be used to fill in)
+		if(f(node)){
+			return generate(node.rule->nt);
+		}
+		else {
+		
+			// otherwise normal copy
+			Node ret = node;
+			for(size_t i=0;i<ret.child.size();i++) {
+				ret.set_child(i, copy_resample(ret.child[i], f));
+			}
+			return ret;
+		}
+	}
+		
+		
+	/********************************************************
+	 * Enumeration
+	 ********************************************************/
+
+
+	size_t neighbors(const Node& node) const {
+		// How many neighbors do I have? We have to find every gap (nullptr child) and count the ways to expand each
+		size_t n=0;
+		for(size_t i=0;i<node.rule->N;i++){
+			if(node.child[i].is_null()) {
+				return count_expansions(node.rule->child_types[i]); // NOTE: must use rule->child_types since child[i]->rule->nt is always 0 for NullRules
+			}
+			else {
+				return neighbors(node.child[i]);
+			}
+		}
+		return n;
+	}
+
+	void expand_to_neighbor(Node& node, int& which) {
+		// here we find the neighbor indicated by which and expand it into the which'th neighbor
+		// to do this, we loop through until which is less than the number of neighbors,
+		// and then it must specify which expansion we want to take. This means that when we
+		// skip a nullptr, we have to subtract from it the number of neighbors (expansions)
+		// we could have taken. 
+		for(size_t i=0;i<node.rule->N;i++){
+			if(node.child[i].is_null()) {
+				int c = count_expansions(node.rule->child_types[i]);
+				if(which >= 0 && which < c) {
+					auto r = get_rule(node.rule->child_types[i], which);
+					node.set_child(i, make(r));
+				}
+				which -= c;
+			}
+			else { // otherwise we have to process that which
+				expand_to_neighbor(node.child[i], which);
+			}
+		}
+	}
+
+	void complete(Node& node) {
+		// go through and fill in the tree at random
+		for(size_t i=0;i<node.rule->N;i++){
+			if(node.child[i].is_null()) {
+				node.set_child(i, generate(node.rule->child_types[i]));
+			}
+			else {
+				complete(node.child[i]);
+			}
+		}
 	}
 	
 };
