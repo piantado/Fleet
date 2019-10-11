@@ -31,7 +31,7 @@
 
 #include <sys/resource.h> // just for setting priority defaulty 
 
-const std::string FLEET_VERSION = "0.0.5";
+const std::string FLEET_VERSION = "0.0.6";
 //const char SERIALIZATION_SEPERATOR = '~';
 
 // First some error checking on Fleet's required macros
