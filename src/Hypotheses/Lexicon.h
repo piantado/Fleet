@@ -68,19 +68,16 @@ public:
 	bool has_valid_indices() const {
 		// check to make sure that if we have rn recursive factors, we never try to call F on higher 
 		
-		// find the max op_idx used and be sure it isn't larger than the number of factors
-		size_t mx = 0; 
-		const std::function<void(const Node&)> f = [&mx](const Node& n) {
-			if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE) ) {
-				mx = std::max(mx, (size_t)n.rule->instr.arg);
+		for(auto& a : factors) {
+			for(auto& n : a.value) {
+				if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE) ) {
+					int fi = (size_t)n.rule->instr.arg; // which factor is called?
+					if(fi >= (int)factors.size() or fi <= 0)
+						return false;
+				}
 			}
-		};
-		
-		for(const auto& a : factors) {
-			a.value.mapconst( f );
 		}
-		
-		return mx>=0 && mx < factors.size();
+		return true;
 	}
 	 
 

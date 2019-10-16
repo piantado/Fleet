@@ -3,14 +3,16 @@
  * We represent rule counts 
  * */
 
+#include <regex>
 #include <vector>
 #include <tuple>
 #include <functional>
 #include <Eigen/Dense>
-
+#include <cmath>
+#include <unsupported/Eigen/SpecialFunctions>
 
 #include "EigenNumerics.h"
-#include "GrammarProbabilities.h"
+#include "GrammarHypothesis.h"
 
 
 template<typename HYP>
@@ -18,21 +20,19 @@ Vector counts(HYP& h) {
 	// returns a 1xnRules matrix of how often each rule occurs
 	// TODO: This will not work right for Lexicons, where value is not there
 	
-	Grammar* grammar = h.grammar;
-	size_t nRules = h.grammar->count_rules();
+	auto c = h.grammar->get_counts(h.value);
+
+	Vector out = Vector::Zero(c.size());
+	for(size_t i=0;i<c.size();i++){
+		out(i) = c[i];
+	}
 	
-	Vector out = Vector::Zero(nRules);
-		
-	h.value.map( [&out, grammar](const Node& n) {
-							size_t i = grammar->get_packing_index(n.rule);
-							out[i] = out[i]+1;
-					});		
-	return out;	
+	return out;
 }
 
 
 template<typename HYP>
-Matrix counts(std::vector<HYP> hypotheses) {
+Matrix counts(std::vector<HYP>& hypotheses) {
 	/* Returns a matrix of hypotheses (rows) by counts of each grammar rule.
 	   (requires that each hypothesis use the same grammar) */
 	
@@ -48,7 +48,7 @@ Matrix counts(std::vector<HYP> hypotheses) {
 }
 
 template<typename HYP>
-Matrix incremental_likelihoods(std::vector<HYP> hypotheses, std::vector<typename HYP::t_data> alldata) {
+Matrix incremental_likelihoods(std::vector<HYP>& hypotheses, std::vector<typename HYP::t_data>& alldata) {
 	// Each row here is a hypothesis, and each column is the likelihood for a sequence of data sets
 	// Here we check if the previous data point is a subset of the current, and if so, 
 	// then we just do the additiona likelihood o fthe set difference 
@@ -58,10 +58,9 @@ Matrix incremental_likelihoods(std::vector<HYP> hypotheses, std::vector<typename
 	
 	for(size_t h=0;h<hypotheses.size();h++) {
 		for(size_t di=0;di<alldata.size();di++) {
-			if(di > 0 and alldata[di].size() >= alldata[di-1].size()) { // copy over the previous
-				if(std::equal(alldata[di-1].begin(), alldata[di-1].end(), alldata[di].begin())) {
+			if(di > 0 and alldata[di].size() >= alldata[di-1].size() and
+			   std::equal(alldata[di-1].begin(), alldata[di-1].end(), alldata[di].begin())) {
 					out(h, di) = out(h,di-1) + hypotheses[h].compute_likelihood(slice(alldata[di], alldata[di-1].size()));
-				}
 			}
 			else {
 				out(h,di) =  hypotheses[h].compute_likelihood(alldata[di]);				
@@ -73,7 +72,7 @@ Matrix incremental_likelihoods(std::vector<HYP> hypotheses, std::vector<typename
 }
 
 template<typename HYP>
-Matrix model_predictions(std::vector<HYP> hypotheses, std::vector<typename HYP::t_datum> predict_data) {
+Matrix model_predictions(std::vector<HYP>& hypotheses, std::vector<typename HYP::t_datum>& predict_data) {
 	
 	Matrix out = Matrix::Zero(hypotheses.size(), predict_data.size());
 	for(size_t h=0;h<hypotheses.size();h++) {
@@ -120,23 +119,21 @@ void simpleGrammarMCMC(std::vector<HYP> hypotheses,
 	
 	double currentPosterior = -infinity;
 	
-	// first just print the order
-	for(size_t nt=0;nt<N_NTs;nt++) {
-		size_t nrules = grammar->count_rules( (nonterminal_t) nt);
-		for(size_t i=0;i<nrules;i++) {
-			COUT grammar->get_rule((nonterminal_t)nt,i)->format << " ";
-		}
-	}
-	COUT "\n";
+	// print a header -- ggplot style
+	COUT "sample\tposterior\tvariable\tvalue\n";
+
 	
-	for(size_t samples=0;samples<10000000 && !CTRL_C;samples++) {
+	for(size_t samples=0;samples<10000000 && !CTRL_C; samples++) {
 		auto proposal = current.propose();
-		if(currentPosterior == -infinity) proposal.randomize(); // just random until we find something good
+		if(currentPosterior == -infinity) 
+			proposal.randomize(); // just random until we find something good
 		
-		Vector hprior = lognormalize(C*proposal.getX());
+		Vector hprior = proposal.hypothesis_prior(C); 
 		
 		// Now get the posterior, with the llt scaling factor
-		Matrix posterior = (LL*(1.0/proposal.get_llT())).colwise() + hprior; 
+		Matrix posterior = LL.colwise() + hprior; 
+
+		// now normalize it and convert to probabilities
 		for(int i=0;i<posterior.cols();i++) { 	// normalize (must be a faster way) for each amount of given data (column)
 			posterior.col(i) = lognormalize(posterior.col(i)).array().exp();
 		}
@@ -145,16 +142,18 @@ void simpleGrammarMCMC(std::vector<HYP> hypotheses,
 		
 		
 		// and now get the human likelihood, using a binomial likelihood (binomial term not needed)
-		double proposalLL = 0.0;
 		float forwardalpha = proposal.get_forwardalpha();
 		float baseline     = proposal.get_baseline();
+		double proposalLL = 0.0;
 		for(size_t i=0;i<yes_responses.size();i++) {
-			double p = predictive(i)*forwardalpha + (1.0-forwardalpha)*baseline;
+			double p = forwardalpha*predictive(i) + (1.0-forwardalpha)*baseline;
 			proposalLL += log(p)*yes_responses[i] + log(1.0-p)*no_responses[i];
 		}
+//		Vector o = Vector::Ones(predictive.size());
+//		Vector p = forwardalpha*predictive(i) + o*(1.0-forwardalpha)*baseline; // vector of probabilities
+//		double proposalLL = p.array.log()*yes_responses + (o-p).array.log()*no_responses;
 		
 		double proposalPosterior = proposalLL + proposal.prior();
-		
 		
 		// metropolis rule
 		if(uniform() < exp(proposalPosterior-currentPosterior) ) {
@@ -162,11 +161,22 @@ void simpleGrammarMCMC(std::vector<HYP> hypotheses,
 			currentPosterior = proposalPosterior;
 		}
 		
-//		COUT currentPosterior TAB proposalPosterior TAB current.get_llT() TAB current.get_baseline() TAB current.get_forwardalpha() TAB current.getX().transpose() ENDL;
-
-		//COUT proposalPosterior TAB proposal.get_llT() TAB proposal.get_baseline() TAB proposal.get_forwardalpha() TAB proposal.getX().transpose() ENDL;
-
-		COUT currentPosterior  TAB current.get_llT() TAB current.get_baseline() TAB current.get_forwardalpha() TAB current.getX().transpose() ENDL;
+		// And output, now in ggplot format
+		COUT "#" << samples TAB proposalPosterior ENDL;
+		COUT samples TAB currentPosterior TAB "baseline" TAB current.get_baseline() ENDL;
+		COUT samples TAB currentPosterior TAB "forwardalpha" TAB current.get_forwardalpha() ENDL;
+		size_t xi=0;
+		for(size_t nt=0;nt<N_NTs;nt++) {
+			for(size_t i=0;i<grammar->count_rules( (nonterminal_t) nt);i++) {
+				std::string rs = grammar->get_rule((nonterminal_t)nt,i)->format;
+				rs = std::regex_replace(rs, std::regex("\\%s"), "X");
+				COUT samples TAB currentPosterior TAB QQ(rs) TAB current.getX()(xi) ENDL;
+				xi++;
+			}
+		}
+			
+				
+//		COUT currentPosterior  TAB current.get_llT() TAB current.get_baseline() TAB current.get_forwardalpha() TAB current.getX().transpose() ENDL;
 	}
 
 	

@@ -1,10 +1,14 @@
 #pragma once
 
+#include <random>
+#include <functional>
+
 std::random_device rd;     // only used once to initialise (seed) engine
 std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
 
 std::uniform_real_distribution<double> uniform_dist(0,1.0);
-
+std::normal_distribution<float> normal(0.0, 1.0);
+		
 double uniform() {
 	return uniform_dist(rng);
 }

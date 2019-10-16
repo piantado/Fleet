@@ -57,12 +57,12 @@ public:
 		add( Rule(nt_bool,   CustomOp::op_Size2,     "size2(%s)",          {nt_object},             1.0) );
 		add( Rule(nt_bool,   CustomOp::op_Size3,     "size3(%s)",          {nt_object},             1.0) );
 		
-		add( Rule(nt_bool, CustomOp::op_And,         "(%s and %s)",  {nt_bool, nt_bool},            1.0/3.) );
-		add( Rule(nt_bool, CustomOp::op_Or,          "(%s or %s)",   {nt_bool, nt_bool},            1.0/3.) );
-		add( Rule(nt_bool, CustomOp::op_Not,         "(not %s)",      {nt_bool},            1.0/3.) );
-		add( Rule(nt_bool, CustomOp::op_Xor,         "(%s xor %s)",  {nt_bool, nt_bool},            1.0/3.) );
-		add( Rule(nt_bool, CustomOp::op_Iff,         "(%s <-> %s)",  {nt_bool, nt_bool},            1.0/3.) );
-		add( Rule(nt_bool, CustomOp::op_Implies,     "(%s -> %s)", {nt_bool, nt_bool},            1.0/3.) );
+		add( Rule(nt_bool, CustomOp::op_And,         "and(%s,%s)",  {nt_bool, nt_bool},            1.0/3.) );
+		add( Rule(nt_bool, CustomOp::op_Or,          "or(%s,%s)",   {nt_bool, nt_bool},            1.0/3.) );
+		add( Rule(nt_bool, CustomOp::op_Not,         "not(%s)",      {nt_bool},            1.0/3.) );
+		add( Rule(nt_bool, CustomOp::op_Xor,         "xor(%s,%s)",  {nt_bool, nt_bool},            1.0/3.) );
+		add( Rule(nt_bool, CustomOp::op_Iff,         "iff(%s,%s)",  {nt_bool, nt_bool},            1.0/3.) );
+		add( Rule(nt_bool, CustomOp::op_Implies,     "implies(%s,%s)", {nt_bool, nt_bool},            1.0/3.) );
 	}
 };
 
@@ -159,8 +159,8 @@ int main(int argc, char** argv){
 		
 		
 		
-		for(size_t i=0;i<v.second.size();i++) {
-//		for(size_t i=0;i<25;i++) {
+//		for(size_t i=0;i<v.second.size();i++) {
+		for(size_t i=0;i<25;i++) {
 			MyHypothesis::t_datum di = v.second[i];
 			MyHypothesis h0(&grammar);
 			h0 = h0.restart();
@@ -175,6 +175,35 @@ int main(int argc, char** argv){
 			
 			top.clear();
 		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		break;
+		
 	}
 
 	CERR "# Done running MCMC" ENDL;
@@ -199,8 +228,8 @@ int main(int argc, char** argv){
     std::vector<size_t> no_responses;
 	for(auto v : bigdata) {
 		
-		for(size_t i=0;i<v.second.size();i++) {
-//		for(size_t i=0;i<25;i++) { // look at hte first few sets, that's all
+//		for(size_t i=0;i<v.second.size();i++) {
+		for(size_t i=0;i<25;i++) { // look at hte first few sets, that's all
 			MyHypothesis::t_datum di = v.second[i];
 			
 			// the data we've seen is only to setnumber minus 1

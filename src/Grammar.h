@@ -14,7 +14,10 @@ class Grammar {
 	/* 
 	 * A grammar stores all of the rules associated with any kind of nonterminal and permits us
 	 * to sample as well as compute log probabilities. 
-	 * A grammar is considered to own a rule, so it is expected to destroy them in its destructor
+	 * A grammar is considered to own a rule, so it is expected to destroy them in its destructor.
+	 * A grammar also is nwo required to store them in a fixed (sorted) order that is guaranteed
+	 * not to change, adn that puts terminals first and (lower priority) high probability first
+	 * as determined by Rule's sort order. 
 	 */
 
 protected:
@@ -22,13 +25,11 @@ protected:
 	double	  	      Z[N_NTs]; // keep the normalizer handy for each rule
 	
 public:
-	size_t             rule_cumulative_count[N_NTs]; // how many rules are there less than a given nt? (used for indexing)
 
 
 	Grammar() {
 		for(size_t i=0;i<N_NTs;i++) {
 			Z[i] = 0.0;
-			rule_cumulative_count[i] = 0;
 		}
 	}
 	
@@ -37,24 +38,6 @@ public:
 	
 	size_t count_nonterminals() const {
 		return N_NTs;
-	}
-	
-	size_t get_index_of(const Rule* r) const {
-		// within an index, what index are we?
-		bool found = false;
-		size_t i=0;
-		for(;i<rules[r->nt].size();i++) {
-			if(rules[r->nt][i] == *r) { found=true; break;}
-		}
-		assert(found);
-		return i;
-	}
-	
-	size_t get_packing_index(const Rule* r) const {
-		// A rule's packing index is a unique count index for this rule
-		// so that in the whole grammar, we can pack all indices into a vector
-		// NOTE: this is not efficiently computed
-		return rule_cumulative_count[r->nt]+get_index_of(r); 
 	}
 	
 	size_t count_rules(const nonterminal_t nt) const {
@@ -81,12 +64,25 @@ public:
 		}
 		return n;
 	}
-
 	
 	size_t count_expansions(const nonterminal_t nt) const {
 		assert(nt >= 0);
 		assert(nt < N_NTs);
 		return rules[nt].size(); 
+	}
+
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Methods for getting rules by some info
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	size_t get_index_of(const Rule* r) const {
+		// within an index, what index are we?
+		for(size_t i=0;i<rules[r->nt].size();i++) {
+			if(rules[r->nt][i] == *r) { 
+				return i;
+			}
+		}
+		assert(false && "*** Did not find rule in get_index_of.");
 	}
 	
 	Rule* get_rule(const nonterminal_t nt, size_t k) const {
@@ -96,16 +92,6 @@ public:
 		return const_cast<Rule*>(&rules[nt][k]);
 	}
 	
-	double rule_normalizer(const nonterminal_t nt) const {
-		assert(nt >= 0);
-		assert(nt < N_NTs);
-		return Z[nt];
-	}
-
-	virtual Rule* sample_rule(const nonterminal_t nt) const {
-		std::function<double(const Rule& r)> f = [](const Rule& r){return r.p;};
-		return sample<Rule,std::vector<Rule>>(rules[nt], f).first; // ignore the probabiltiy 
-	}
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const CustomOp o, const int a=0) {
 		for(auto& r: rules[nt]) {
@@ -151,10 +137,50 @@ public:
 		}
 	}
 	
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Sampling rules
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	double rule_normalizer(const nonterminal_t nt) const {
+		assert(nt >= 0);
+		assert(nt < N_NTs);
+		return Z[nt];
+	}
+
+	virtual Rule* sample_rule(const nonterminal_t nt) const {
+		std::function<double(const Rule& r)> f = [](const Rule& r){return r.p;};
+		return sample<Rule,std::vector<Rule>>(rules[nt], f).first; // ignore the probabiltiy 
+	}
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Computing log probabilities
+	// Computing log probabilities and priors
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	std::vector<size_t> get_counts(const Node& node) const {
+		// returns a vector of counts of how often each rule was used, in a *standard* order
+		// given by iterating over nts and then iterating over rules 
+		
+		const size_t R = count_rules(); 
+		
+		std::vector<size_t> out(R,0.0);
+		
+		// NOTE: This is an inefficiency because we build this up each time
+		// We had a version of grammar that cached this, but it was complex and ugly
+		// so I think we'll take the small performance hit and put it all in here
+		const size_t NT = count_nonterminals();
+		size_t rule_cumulative[NT]; // how many rules are there before this (in our ordering)
+		rule_cumulative[0] = 0;
+		for(size_t nt=1;nt<NT;nt++) {
+			rule_cumulative[nt] = rule_cumulative[nt-1] + count_rules( nonterminal_t(nt-1) );
+		}
+		
+		for(auto& n : node) {
+			// now increment out, accounting for the number of rules that must have come before!
+			out[rule_cumulative[n.rule->nt] + get_index_of(n.rule)] += 1;
+		}
+		
+		return out;
+	}
 	
 	double log_probability(Node& n) const {
 		
@@ -271,60 +297,60 @@ public:
 	}
 	
 
-
-	Node fancy_index(Node* root, nonterminal_t nt, enumerationidx_t z) const {
-		// NOTE: This is no longer unique...
-		
-		enumerationidx_t numterm = count_terminals(nt);
-		if(z < numterm) {
-			return makeNode(this->get_rule(nt, z));	// whatever terminal we wanted
-		}
-		else if(root != nullptr and z < numterm + root->count() - 1) {
-			// a reference to a prior node
-			auto it = root->begin();
-		//	CERR (z-numterm-1) TAB root->string() ENDL;
-			
-			// HMM root->begin() is hard with partial trees because it goes to a NullNode
-			
-			if(z > numterm)	// bc not signed		
-				it = it + (size_t)(z-numterm-1);
-			
-			
-			
-			// TODO: THIS MUST BE CHANGED SINCE *IT WILL CONTAIN HOLES -- MUST RECURSE DOWN THEM TOO!
-			
-			return Node(*it); // copy what we got there 
-		}
-		else {
-			
-			size_t rc = (root == nullptr ? 0 : root->count()-1);
-			
-			auto u =  mod_decode(z-numterm-rc, count_nonterminals(nt));
-			
-			Rule* r = this->get_rule(nt, u.first+numterm); // shift index from terminals (because they are first!)
-			Node out = makeNode(r);
-			
-			if(root == nullptr) root = &out; // set this if its not done yet
-			
-			enumerationidx_t rest = u.second; // the encoding of everything else
-			for(size_t i=0;i<r->N;i++) {
-				enumerationidx_t zi; // what is the encoding for the i'th child?
-				if(i<r->N-1) { 
-					auto ui = rosenberg_strong_decode(rest);
-					zi = ui.first;
-					rest = ui.second;
-				}
-				else {
-					zi = rest;
-				}
-				out.child[i] = fancy_index(root, r->child_types[i], zi); // since we are by reference, this should work right
-			}
-			return out;		
-			
-		}
-
-	}
-		
+//
+//	Node lempel_ziv_enumeration(Node* root, nonterminal_t nt, enumerationidx_t z) const {
+//		// NOTE: This is no longer unique...
+//		
+//		enumerationidx_t numterm = count_terminals(nt);
+//		if(z < numterm) {
+//			return makeNode(this->get_rule(nt, z));	// whatever terminal we wanted
+//		}
+//		else if(root != nullptr and z < numterm + root->count() - 1) {
+//			// a reference to a prior node
+//			auto it = root->begin();
+//		//	CERR (z-numterm-1) TAB root->string() ENDL;
+//			
+//			// HMM root->begin() is hard with partial trees because it goes to a NullNode
+//			
+//			if(z > numterm)	// bc not signed		
+//				it = it + (size_t)(z-numterm-1);
+//			
+//			
+//			
+//			// TODO: THIS MUST BE CHANGED SINCE *IT WILL CONTAIN HOLES -- MUST RECURSE DOWN THEM TOO!
+//			
+//			return Node(*it); // copy what we got there 
+//		}
+//		else {
+//			
+//			size_t rc = (root == nullptr ? 0 : root->count()-1);
+//			
+//			auto u =  mod_decode(z-numterm-rc, count_nonterminals(nt));
+//			
+//			Rule* r = this->get_rule(nt, u.first+numterm); // shift index from terminals (because they are first!)
+//			Node out = makeNode(r);
+//			
+//			if(root == nullptr) root = &out; // set this if its not done yet
+//			
+//			enumerationidx_t rest = u.second; // the encoding of everything else
+//			for(size_t i=0;i<r->N;i++) {
+//				enumerationidx_t zi; // what is the encoding for the i'th child?
+//				if(i<r->N-1) { 
+//					auto ui = rosenberg_strong_decode(rest);
+//					zi = ui.first;
+//					rest = ui.second;
+//				}
+//				else {
+//					zi = rest;
+//				}
+//				out.child[i] = fancy_index(root, r->child_types[i], zi); // since we are by reference, this should work right
+//			}
+//			return out;		
+//			
+//		}
+//
+//	}
+//		
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Generation
@@ -341,11 +367,6 @@ public:
 		rules[nt].insert( pos, r ); // put this before
 		
 		Z[nt] += r.p; // keep track of the total probability
-		
-		// and keep a count of the cumulative number of rules
-		for(size_t j=nt+1;j<N_NTs;j++) {
-			rule_cumulative_count[j]++;
-		}		
 	}
 	
 	Node makeNode(const Rule* r) const {
@@ -363,7 +384,6 @@ public:
 		}
 		
 		Rule* r = sample_rule(nt);
-		//T n(r, log(r->p) - log(Z[nt])); // slightly inefficient because we compute this twice
 		Node n = makeNode(r);
 		for(size_t i=0;i<r->N;i++) {
 			try{

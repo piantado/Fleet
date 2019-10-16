@@ -157,10 +157,10 @@ public:
 		}
 	}
 	
-	void mapconst( const std::function<void(const Node&)>& f) const { // mapping that is constant
+	void map_const( const std::function<void(const Node&)>& f) const { // mapping that is constant
 		f(*this);
 		for(auto& c: child) {
-			c.mapconst(f); 
+			c.map_const(f); 
 		}
 	}
 	
@@ -173,12 +173,12 @@ public:
 		return parent == nullptr;
 	}
 	
-	virtual bool is_evaluable() const {
+	virtual bool is_complete() const {
 		
 		// does this have any subnodes below that are null?
 		for(auto& c: child) {
 			if(c.is_null()) return false; 
-			if(not c.is_evaluable()) return false;
+			if(not c.is_complete()) return false;
 		}
 		return child.size() == rule->N; // must have all my kids
 	}
@@ -200,26 +200,6 @@ public:
 		return get_nth(n, f); 
 	}
 	
-	
-//	template<typename T>
-//	std::pair<Node*, double> sample(std::function<T(const Node&)>& f) {
-//		// sample a subnode satisfying f and return its probability
-//		// where f maps each node to a probability (possibly zero)
-//		// we allow T here to be a double, int, whatever 
-//		
-//		T z = sum<T>(f);
-//		double r = z * uniform();
-//
-//		for(auto& x : *this) {
-//			double fx = f(x);
-//			r -= fx;
-//			if(r <= 0.0) {
-//				return std::make_pair(&x, log(fx) - log(z));
-//			}
-//		}
-//
-//		assert(false && "*** Should not get here in sampling!");
-//	}
 
 	virtual std::string string() const { 
 		// To convert to a string, we need to essentially simulate the evaluator

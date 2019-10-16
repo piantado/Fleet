@@ -404,7 +404,7 @@ int main(int argc, char** argv){
 	std::vector<std::function<void(MyHypothesis&)>> callbacks;
 	
 //	for(int i=data_amounts.size()-1;i>=0;i--){ // big  data on lower chains
-	for(int i=0;i<data_amounts.size();i++){ // big  data on lower chains -- shouldn't matter!
+	for(size_t i=0;i<data_amounts.size();i++){ // big  data on lower chains -- shouldn't matter!
 		MyHypothesis::t_data mydata;
 		
 		S data_path = input_path + "-" + data_amounts[i] + ".txt";	

@@ -22,7 +22,7 @@ std::map<std::string, MyHypothesis::t_data > load_SFL_data_file(std::string data
 		S concept = parts[0];
 		S list    = parts[1];
 		size_t setNumber = stoi(parts[2]);
-		size_t responseNumber = stoi(parts[3]);
+		size_t responseNumber __attribute__((unused)) = stoi(parts[3]);
 		bool   correctAnswer = parts[4] == "True";
 		
 		Shape  shape;

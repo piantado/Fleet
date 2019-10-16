@@ -170,7 +170,7 @@ public:
 	virtual bool is_evaluable() const {
 		// This checks whether it should be allowed to call "call" on this hypothesis. 
 		// Usually this means that that the value is complete, meaning no partial subtrees
-		return value.is_evaluable();
+		return value.is_complete();
 	}
 	 
 };
