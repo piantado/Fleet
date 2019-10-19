@@ -56,10 +56,8 @@ typedef struct MyInput {
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
-#include "GrammarInference/EigenNumerics.h"
-#include "GrammarInference/GrammarHypothesis.h"
-
-//#include "GrammarInference/GrammarMCMC.h"
+#include "EigenNumerics.h"
+#include "GrammarHypothesis.h"
 
 // Define a grammar
 class MyGrammar : public Grammar { 
@@ -281,9 +279,7 @@ int main(int argc, char** argv){
 	
 	Matrix P  = model_predictions(hypotheses, predict_data); // NOTE the transpose here
 	CERR "# Done computing model predictions" ENDL;
-	
-	
-	
+		
 	GrammarHypothesis<MyHypothesis> gh0(&grammar, &C, &LL, &P);
 	
 	auto gdata = std::make_tuple(given_data,predict_data,yes_responses,no_responses);
