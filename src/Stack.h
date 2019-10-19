@@ -5,20 +5,16 @@
 /* Many things in Fleet are stacks and this is designed to allow for
  * rapid changse to the stack type in order to improve speed. std::stack appears to be
  * slow. Using vector with some wrappers is faster
+ * 
+ * NOTE: We have tried reserving the intiial vector size and it doesn't seem to speed things up
+ * 
+ * 
  * */
 
 template<typename T>
 class Stack : public std::vector<T> {
-	
-//	static const size_t INITIAL_SIZE = 8; 
-	
+		
 public:
-//  Neither of these seem to speed stuff up
-//	Stack() : std::vector<T>() { 
-//		this->reserve(INITIAL_SIZE);		
-//	}
-//	Stack() : std::vector<T>(INITIAL_SIZE) { 
-//	}
 
 	void push(const T& val) {
 		this->push_back(val);
@@ -27,7 +23,13 @@ public:
 	void pop() {
 		this->pop_back();
 	}
-
+	
+	/* There is a little sublety here -- for integral types, it's a pain to return a reference
+	 * so we want to just return T. But some optimizations of the virtual machine will do better
+	 * with references, leaving the top value on the stack. So by default we don't return a reference
+	 * with top() but we do with topref
+	 */
+	
 	T top() {
 		return this->back();
 	}

@@ -144,10 +144,10 @@ public:
 						
 			// use MH acceptance rule, with some fanciness for NaNs
 			double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb; // Remember: don't just check if proposal->posterior>current->posterior or all hell breaks loose		
-			if(   (std::isnan(current.posterior))  ||
-				  (current.posterior == -infinity) ||
-					((!std::isnan(proposal.posterior)) &&
-					 (ratio > 0 || uniform() < exp(ratio)))) {
+			if(   (std::isnan(current.posterior))  or
+				  (current.posterior == -infinity) or
+					((!std::isnan(proposal.posterior)) and
+					 (ratio > 0 or uniform() < exp(ratio)))) {
 				
 #ifdef DEBUG_MCMC
 	  COUT "# Accept" << std::endl;

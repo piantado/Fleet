@@ -1,4 +1,14 @@
 #include <assert.h>
+#include <set>
+#include <regex>
+#include <vector>
+#include <tuple>
+#include <functional>
+#include <Eigen/Dense>
+#include <cmath>
+#include <unsupported/Eigen/SpecialFunctions>
+
+
 
 // A simple example of a version of the RationalRules model. 
 // This is primarily used as an example and for debugging MCMC
@@ -12,12 +22,13 @@ enum class CustomOp {
 	op_And, op_Or, op_Not, op_Xor, op_Iff, op_Implies,
 	op_Yellow, op_Green, op_Blue, 
 	op_Rectangle, op_Triangle, op_Circle,
-	op_Size1, op_Size2, op_Size3	
+	op_Size1, op_Size2, op_Size3, 
+	op_Y // this implements a simple form of quantification where if you use op_Y, it univerally quantifies over the whole set
 };
 
 enum class Shape { Rectangle, Triangle, Circle};
 enum class Color { Yellow, Green, Blue};
-enum class Size  { Size1, Size2, Size3 };
+enum class Size  { Size1, Size2, Size3};
 
 typedef struct Object {
 	Color color;
@@ -32,19 +43,31 @@ typedef struct Object {
 	}
 } Object;
 
+
+// An input type for a function that bundles the context set with the object we're querying. 
+typedef struct MyInput {
+	Object x;
+	std::set<Object> set;	
+} MyInput; 
+
 // Define our types. 
-#define NT_TYPES bool, Object, int
-#define NT_NAMES nt_bool,nt_object, nt_value
+#define NT_TYPES    bool,   Object,      int, std::set<Object>
+#define NT_NAMES nt_bool,nt_object, nt_value, nt_set
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
-#include "GrammarInference/GrammarMCMC.h"
+#include "GrammarInference/EigenNumerics.h"
+#include "GrammarInference/GrammarHypothesis.h"
+
+//#include "GrammarInference/GrammarMCMC.h"
 
 // Define a grammar
 class MyGrammar : public Grammar { 
 public:
 	MyGrammar() : Grammar() {
 		add( Rule(nt_object, BuiltinOp::op_X,        "x",            {},                               1.0) );		
+//		add( Rule(nt_object, BuiltinOp::op_Y,        "Any-Y",            {},                               1.0) );		
+		
 		add( Rule(nt_bool,   CustomOp::op_Yellow,    "yellow(%s)",        {nt_object},               1.0) );		
 		add( Rule(nt_bool,   CustomOp::op_Green,     "green(%s)",         {nt_object},             1.0) );
 		add( Rule(nt_bool,   CustomOp::op_Blue,      "blue(%s)",          {nt_object},              1.0) );
@@ -67,15 +90,35 @@ public:
 };
 
 
-/* Define a class for handling my specific hypotheses and data. Everything is defaulty a PCFG prior and 
- * regeneration proposals, but I have to define a likelihood */
 class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool> {
 public:
+	// This is going to assume that all variables other than x are universally quantified over. 
+	using Super = LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool>;
+	
+	MyHypothesis()                      : Super() {}
+	MyHypothesis(Grammar* g)            : Super(g) {}
+	MyHypothesis(Grammar* g, Node v)    : Super(g,v) {}
+	
+//	virtual bool callOne(const MyInput x, const t_output err, Dispatchable<MyInput,t_output>* loader=nullptr) {
+//		if(value.contains(op_Y)) {
+//			for(const auto& s: x.set) {
+//				if(not Super::callOne(s, x.set)) {
+//					return false;
+//				}
+//			}
+//			return true; 
+//		} else {
+//			// no quantification
+//			return Super::callOne(x, false);
+//		}
+//	}
 
-	// I must implement all of these constructors
-	MyHypothesis()                      : LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool>() {}
-	MyHypothesis(Grammar* g)            : LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool>(g) {}
-	MyHypothesis(Grammar* g, Node v)   : LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool>(g,v) {}
+//	virtual bool quantifierCall(const MyInput x){ 
+//		if(value.count([](const Node& n){ return n.rule.instr == op_Y;}) {
+//			
+//		}
+//	}
+
 	
 	double compute_single_likelihood(const t_datum& x) {
 		bool out = callOne(x.input, false);
@@ -102,7 +145,7 @@ public:
 			CASE_FUNC2(CustomOp::op_Xor,         bool,bool,bool,    [](const bool a, bool b){ return (a xor b); })
 			CASE_FUNC2(CustomOp::op_Iff,         bool,bool,bool,    [](const bool a, bool b){ return (a==b); })
 			CASE_FUNC2(CustomOp::op_Implies,     bool,bool,bool,    [](const bool a, bool b){ return (not a) or (a and b); })
-			
+						
 			default:
 				assert(0 && " *** You used an invalid operation"); // should never get here
 		}
@@ -128,6 +171,23 @@ void print(MyHypothesis& h) {
 void callback(MyHypothesis& h) {
 	top << h; // add to the top
 }
+
+// print it every thin samples unless thin=0
+void gcallback(GrammarHypothesis<MyHypothesis>& h) {
+	
+		COUT h.posterior TAB "baseline" TAB h.get_baseline() ENDL;
+		COUT h.posterior TAB "forwardalpha" TAB h.get_forwardalpha() ENDL;
+		size_t xi=0;
+		for(size_t nt=0;nt<N_NTs;nt++) {
+			for(size_t i=0;i<h.grammar->count_rules( (nonterminal_t) nt);i++) {
+				std::string rs = h.grammar->get_rule((nonterminal_t)nt,i)->format;
+				rs = std::regex_replace(rs, std::regex("\\%s"), "X");
+				COUT h.posterior TAB QQ(rs) TAB h.getX()(xi) ENDL;
+				xi++;
+			}
+		}
+}
+
 
 
 #include "LoadData.h"
@@ -157,8 +217,6 @@ int main(int argc, char** argv){
 		
 		CERR "# Running " TAB v.first ENDL;
 		
-		
-		
 //		for(size_t i=0;i<v.second.size();i++) {
 		for(size_t i=0;i<25;i++) {
 			MyHypothesis::t_datum di = v.second[i];
@@ -175,35 +233,6 @@ int main(int argc, char** argv){
 			
 			top.clear();
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		break;
-		
 	}
 
 	CERR "# Done running MCMC" ENDL;
@@ -213,6 +242,7 @@ int main(int argc, char** argv){
 		COUT "# Hypothesis ";
 		print(h);
 	}
+
 	
 	
 	// Now let's look a bit
@@ -243,8 +273,25 @@ int main(int argc, char** argv){
 	CERR "# Done vectorizing" ENDL;
 	
 	
-	simpleGrammarMCMC(hypotheses, given_data, predict_data, yes_responses, no_responses);
+	Matrix C  = counts(hypotheses);
+	CERR "# Done computing counts" ENDL;
 	
+	Matrix LL = incremental_likelihoods(hypotheses, given_data);
+	CERR "# Done computing incremental likelihoods " ENDL;
+	
+	Matrix P  = model_predictions(hypotheses, predict_data); // NOTE the transpose here
+	CERR "# Done computing model predictions" ENDL;
+	
+	
+	
+	GrammarHypothesis<MyHypothesis> gh0(&grammar, &C, &LL, &P);
+	
+	auto gdata = std::make_tuple(given_data,predict_data,yes_responses,no_responses);
+	
+	tic();
+	auto thechain = MCMCChain<GrammarHypothesis<MyHypothesis>>(gh0, &gdata, gcallback);
+	thechain.run(mcmc_steps, runtime);
+	tic();
 	
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;

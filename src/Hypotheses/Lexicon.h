@@ -5,8 +5,8 @@
 #include "LOTHypothesis.h"
 #include "Hash.h"
 
-template<typename HYP, typename T, typename t_input, typename t_output, typename _t_datum=default_datum<t_input, t_output>>
-class Lexicon : public MCMCable<HYP,t_input,t_output,_t_datum>,
+template<typename HYP, typename T, typename t_input, typename t_output, typename t_datum=default_datum<t_input, t_output>>
+class Lexicon : public MCMCable<HYP,t_datum>,
 				public Dispatchable<t_input,t_output>,
 				public Searchable<HYP,t_input,t_output>
 {
@@ -15,8 +15,8 @@ class Lexicon : public MCMCable<HYP,t_input,t_output,_t_datum>,
 public:
 	std::vector<T> factors;
 	
-	Lexicon(size_t n)  : MCMCable<HYP,t_input,t_output,_t_datum>()  { factors.resize(n); }
-	Lexicon()          : MCMCable<HYP,t_input,t_output,_t_datum>()  { }
+	Lexicon(size_t n)  : MCMCable<HYP,t_datum>()  { factors.resize(n); }
+	Lexicon()          : MCMCable<HYP,t_datum>()  { }
 		
 	virtual std::string string() const {
 		
@@ -52,7 +52,7 @@ public:
 		return out;
 	}
 	
-	virtual bool operator==(const Lexicon<HYP,T,t_input,t_output,_t_datum>& l) const {
+	virtual bool operator==(const Lexicon<HYP,T,t_input,t_output,t_datum>& l) const {
 		
 		// first, fewer factors are less
 		if(factors.size() != l.factors.size()) 
@@ -86,6 +86,7 @@ public:
 	 * Required for VMS to dispatch to the right sub
 	 ********************************************************/
 	virtual void push_program(Program& s, short j) {
+		
 		assert(factors.size() > 0);
 		
 		 // or else badness -- NOTE: We could take mod or insert op_ERR, or any number of other options. 
@@ -131,36 +132,65 @@ public:
 		return this->prior;
 	}
 	
-	
+//	
+//	virtual std::pair<HYP,double> propose() const {
+//		// TODO: Check that detailed balance is ok here?
+//		// tODO: Not the most efficient either
+//		while(true) {
+//			HYP x; 
+//			x.factors = factors; // copy 
+//			
+//			//x.factors.resize(factors.size());
+//			double fb = 0.0;
+//			bool flipped = false;
+//			
+//			for(size_t k=0;k<factors.size();k++) {
+//				if(flip()) {
+//					auto [h, _fb] = factors[k].propose();
+//					x.factors[k] = h;
+//					fb += _fb;
+//					flipped = true; //someone was flipped
+//				}
+//				else {
+//					//x.factors[k] = factors[k]; /// this copy
+//				}
+//			}
+//			
+//			if(flipped) {
+//				assert(x.factors.size() == factors.size());
+//				return std::make_pair(x, fb);						
+//			}
+//		}
+//		
+//	}
+
 	virtual std::pair<HYP,double> propose() const {
-		// TODO: Check that detailed balance is ok here?
-		// tODO: Not the most efficient either
-		while(true) {
-			HYP x; 
-			x.factors = factors; // copy 
-			
-			//x.factors.resize(factors.size());
-			double fb = 0.0;
-			bool flipped = false;
-			
-			for(size_t k=0;k<factors.size();k++) {
-				if(flip()) {
-					auto [h, _fb] = factors[k].propose();
-					x.factors[k] = h;
-					fb += _fb;
-					flipped = true; //someone was flipped
-				}
-				else {
-					//x.factors[k] = factors[k]; /// this copy
-				}
-			}
-			
-			if(flipped) {
-				assert(x.factors.size() == factors.size());
-				return std::make_pair(x, fb);						
-			}
-		}
 		
+		// We want to guaranteee that there is at least one factor that is changed
+		// To do this, we'll draw random numbers on the number of factors
+		// until we get one that isn't all zeros, and then use that to determine 
+		// what is proposed where. 
+		std::uniform_int_distribution<size_t> d(0, pow(2,factors.size()) );
+		size_t u;
+		do { u = d(rng); } while(u == 0);
+		
+		// now copy over
+		// TODO: Check that detailed balance is ok?
+		HYP x; double fb = 0.0;
+		for(size_t k=0;k<factors.size();k++) {
+			if(u & 0x1) {
+				auto [h, _fb] = factors[k].propose();
+				x.factors.push_back(h);
+				fb += _fb;
+			} else {
+				auto h = factors[k];
+				x.factors.push_back(h);
+			}
+			u = u>>1;
+		}
+
+		assert(x.factors.size() == factors.size());
+		return std::make_pair(x, fb);									
 	}
 	
 	

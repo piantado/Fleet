@@ -6,14 +6,14 @@
 // Just a clean interface to define what kinds of operations MCMC requires
 // This also defines class types for data
 // This also defines interfaces for storing hypotheses (equality, hash, comparison, etc)
-template<typename t_input, typename t_output, typename _t_datum=default_datum<t_input, t_output>>
+template<typename _t_datum, typename _t_data=std::vector<_t_datum>>
 class Bayesable {
 public:
 	
 	// We'll define a vector of pairs of inputs and outputs
 	// this may be used externally to define what data is
 	typedef _t_datum t_datum;
-	typedef std::vector<t_datum> t_data; 
+	typedef _t_data  t_data; 
 
 	// log values for all
 	double prior; 
@@ -32,20 +32,29 @@ public:
 	virtual double compute_prior() = 0; 
 	virtual double compute_single_likelihood(const t_datum& datum) = 0;
 	virtual double compute_likelihood(const t_data& data, const double breakout=-infinity) {
-		// defaultly a sum over datums in data (e.g. assuming independence)
-		likelihood = 0.0;
-		for(const auto& d : data) {
-			likelihood += compute_single_likelihood(d);
-			if(likelihood == -infinity or std::isnan(likelihood)) break; // no need to continue
+		
+		// include this in case a subclass overrides to make it non-iterable -- then it must define its own likelihood
+		if constexpr (is_iterable_v<t_data>) { 
 			
-			// This is a breakout in case our ll is too low
-			if(likelihood < breakout) {
-				likelihood = -infinity; // should not matter what value, but let's make it -infinity
-				break;
+			// defaultly a sum over datums in data (e.g. assuming independence)
+			likelihood = 0.0;
+			for(const auto& d : data) {
+				likelihood += compute_single_likelihood(d);
+				if(likelihood == -infinity or std::isnan(likelihood)) break; // no need to continue
+				
+				// This is a breakout in case our ll is too low
+				if(likelihood < breakout) {
+					likelihood = -infinity; // should not matter what value, but let's make it -infinity
+					break;
+				}
+				
 			}
-			
+			return likelihood;		
 		}
-		return likelihood;		
+		else {
+			// should never execute this because it must be defined
+			assert(0 && "*** If you use a non-iterable t_data, then you must define compute_likelihood on your own."); 
+		}
 	}
 
 	virtual double compute_posterior(const t_data& data, const double breakout=-infinity) {
@@ -78,7 +87,7 @@ public:
 	
 	virtual size_t hash() const=0;
 	
-	virtual bool operator<(const Bayesable<t_input,t_output,t_datum>& l) const {
+	virtual bool operator<(const Bayesable<t_datum,t_data>& l) const {
 		// when we implement this, we defaulty sort by posterior (so that TopN works)
 		// But we need to be careful because std::set also uses this to determine equality
 		// This first checks  postersios, then priors (to handle -inf likelihoods well)

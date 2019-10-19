@@ -25,8 +25,8 @@ class VirtualMachineState {
 	// This must be automatically generated because it depends on the types in the grammar. 
 public:
 	
-	static const unsigned long MAX_RECURSE = 64;
-	static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
+	static const unsigned long MAX_RECURSE = 64; // this is the max number of times we can call recurse, NOT the max depth
+	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
 	Program            opstack; 
 	Stack<t_x>         xstack; //xstackthis stores a stack of the x values (for recursive calls)
@@ -39,7 +39,7 @@ public:
 	// like std::tuple<Stack<bool>, Stack<std::string> > using a list of type names defined in NT_TYPES
 	template<typename... args>
 	struct t_stack { std::tuple<Stack<args>...> value; };
-	t_stack<NT_TYPES> stack; // our stacks of different types
+	t_stack<NT_TYPES> _stack; // our stacks of different types
 	
 	typedef int index_t; // how we index into factorized lexica -- NOTE: probably should be castable from Instruction.arg 
 	
@@ -69,46 +69,44 @@ public:
 		lp += v;
 	}
 	
+	// Functions to access the stack
+	template<typename T>
+	Stack<T>& stack()             { return std::get<Stack<T>>(_stack.value); }
+	template<typename T>
+	const Stack<T>& stack() const { return std::get<Stack<T>>(_stack.value); }
+	
 	template<typename T>
 	T getpop() {
 		// retrieves and pops the element of type T from the stack
 		//if(aborted != abort_t::NO_ABORT) return T(); // don't try to access the stack because we're aborting
-		assert(std::get<Stack<T>>(stack.value).size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
+		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
-		T x = std::move(std::get<Stack<T>>(stack.value).top());
-		std::get<Stack<T>>(stack.value).pop();
+		T x = std::move(stack<T>().top());
+		stack<T>().pop();
 		return x;
 	}
 	template<typename T>
 	T gettop() {
 		// retrieves but does not remove
 		//if(aborted != abort_t::NO_ABORT) return T(); // don't try to access the stack because we're aborting
-		assert(std::get<Stack<T>>(stack.value).size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
+		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
-		return std::get<Stack<T>>(stack.value).top();
-	}
-	
-	template<typename T>
-	auto top() {
-		// get a reference to the top. This is used by a major 
-		return std::get<Stack<T>>(stack.value).top();
+		return stack<T>().top();
 	}
 	
 	template<typename T>
 	bool empty() {
-		return std::get<Stack<T>>(stack.value).empty();
+		return stack<T>().empty();
 	}
 
 	template<typename T>
 	void push(T x){
 		// push things onto the appropriate stack
-		std::get<Stack<T>>(stack.value).push(x);
-	}	
-		
-
+		stack<T>().push(x);
+	}
 	template<typename... args>
 	bool _stacks_empty() const { 
-		return (... && std::get<Stack<args>>(stack.value).empty()); 
+		return (... && stack<args>().empty()); 
 	}
 	
 	bool stacks_empty() const { 
@@ -190,7 +188,7 @@ public:
 						if constexpr (std::is_same<t_x, std::string>::value) { 						
 
 							// need to check if stack<t_x> is empty since thats where we get x
-							if(empty<t_x>() or top<t_x>().size() == 0) { 
+							if(empty<t_x>() or stack<t_x>().top().size() == 0) { 
 								getpop<t_x>(); // this would have been the argument
 								push<t_return>(t_return{}); //push default (null) return
 								continue;
@@ -226,7 +224,7 @@ public:
 					case BuiltinOp::op_SAFE_MEM_RECURSE: {
 						// same as SAFE_RECURSE. Note that there is no memoization here
 						if constexpr (std::is_same<t_x, std::string>::value) { 						
-							if(empty<t_x>() or top<t_x>().size() == 0) { 
+							if(empty<t_x>() or stack<t_x>().top().size() == 0) { 
 								getpop<t_x>(); // this would have been the argument
 								push<t_return>(t_return{}); //push default (null) return
 								continue;

@@ -75,14 +75,14 @@ public:
 	/* We must define our own copy and move since parent can't just be simply copied */
 	
 	Node(const Node& n) :
-		parent(nullptr), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
-		child.resize(n.child.size());
+		parent(nullptr), child(n.child.size()), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
+//		child.resize(n.child.size());
 		for(size_t i=0;i<n.child.size();i++) {
 			set_child(i, Node(n.child[i]));
 		}
 	}
 	Node(Node&& n) :
-		parent(nullptr), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
+		parent(nullptr), child(n.child.size()), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
 		child.resize(n.child.size());
 		for(size_t i=0;i<n.child.size();i++) {
 			set_child(i, n.child[i]);

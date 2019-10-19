@@ -52,9 +52,9 @@ public:
 
 /* Define a class for handling my specific hypotheses and data. Everything is defaulty a PCFG prior and 
 // * regeneration proposals, but I have to define a likelihood */
-class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_string, S, S> {
+class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_string,S,S> {
 public:
-	using Super =  LOTHypothesis<MyHypothesis,Node,nt_string, S, S>;
+	using Super =  LOTHypothesis<MyHypothesis,Node,nt_string,S,S>;
 	
 	static const size_t MAX_LENGTH = 64; // longest strings cons will handle
 	

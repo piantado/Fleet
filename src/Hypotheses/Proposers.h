@@ -52,14 +52,10 @@ CERR "REGENERATE" ENDL;
 	else {
 		s.first->parent->set_child(s.first->pi, grammar->generate(s.first->rule->nt)); 
 	}
-//	*s.first = grammar->generate<Node>(s.first->rule->nt); // make something new of the same type
 	
 	double fb = s.second + grammar->log_probability(*s.first) 
 			  - (log(can_resample(*s.first)) - log(ret.sum(can_resample)) + oldgp);
 	
-//	CERR fb ENDL;
-//	CERR from.string() ENDL;
-//	CERR ret.string() ENDL;
 	return std::make_pair(ret, fb);
 }
 

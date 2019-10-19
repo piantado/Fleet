@@ -4,7 +4,7 @@ all:
 	g++ -o main Main.cpp -lm -O3 -ffast-math $(FLEET_FLAGS) $(FLEET_INCLUDE)
 	
 profiled:
-	g++ -o main Main.cpp -lm -O3 -pg -p -ffast-math $(FLEET_FLAGS) $(FLEET_INCLUDE)
+	g++ -o main Main.cpp -lm -O3 -pg -p -g -ffast-math $(FLEET_FLAGS) $(FLEET_INCLUDE)
 
 debug:
 	g++ -o main Main.cpp -lm -O3 -pg -p -g $(FLEET_FLAGS) $(FLEET_INCLUDE)

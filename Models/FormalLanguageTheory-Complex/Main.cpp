@@ -94,7 +94,6 @@ public:
 		add( Rule(nt_bool,   CustomOp::op_EMPTY,        "empty(%s)",    {nt_string},                      1.0) );
 		add( Rule(nt_bool,   CustomOp::op_STREQ,        "(%s==%s)",     {nt_string,nt_string},            1.0) );
 		
-		
 		for(size_t a=1;a<10;a++) { // pack probability into arg, out of 10
 			std::string s = std::to_string(double(a)/10.0).substr(1,3); // substr just truncates lesser digits
 			add( Rule(nt_double, CustomOp::op_P,      s,          {},                              (a==5?5.0:1.0), a) );
@@ -148,25 +147,55 @@ public:
 			
 
 
-			CASE_FUNC1(CustomOp::op_CDR,         S, S,       [](const S& s){ return (s.empty() ? S("") : s.substr(1,S::npos)); } )		
-			CASE_FUNC1(CustomOp::op_CAR,         S, S,       [](const S& s){ return (s.empty() ? S("") : S(1,s.at(0))); } )		
-			CASE_FUNC2e(CustomOp::op_CONS,       S, S,S,
-								[](const S& x, const S& y){ S a = x; a.append(y); return a; },
-								[](const S& x, const S& y){ return (x.length()+y.length()<maxlength ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
-								)
+//			CASE_FUNC1(CustomOp::op_CDR,         S, S,       [](const S& s){ return (s.empty() ? S("") : s.substr(1,S::npos)); } )		
+//			CASE_FUNC1(CustomOp::op_CAR,         S, S,       [](const S& s){ return (s.empty() ? S("") : S(1,s.at(0))); } )		
+//			CASE_FUNC2e(CustomOp::op_CONS,       S, S,S,
+//								[](const S& x, const S& y){ S a = x; a.append(y); return a; },
+//								[](const S& x, const S& y){ return (x.length()+y.length()<maxlength ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
+//								)
+			// Write some of these that modify the stack, for speed
+			case CustomOp::op_CDR: {
+				if(!vms.stack<S>().empty()) {
+					vms.stack<S>().topref().erase(0); // modify the first position
+				} // else do nothing -- leave empty string on stack
+				break;
+			}
+			case CustomOp::op_CAR: {
+				if(vms.stack<S>().topref().length() > 1) {
+					vms.stack<S>().topref() = S(1,vms.stack<S>().topref().at(0));
+				} // else do nothing -- leave empty string or one-length string
+				break;
+			}
+			case CustomOp::op_CONS: {
+				S y = vms.getpop<S>();
+				
+				// length check
+				if(vms.stack<S>().topref().length() + y.length() > maxlength) 
+					return abort_t::SIZE_EXCEPTION;
 
+				vms.stack<S>().topref().append(y);
+				
+				break;
+			}
+			
+//			CASE_FUNC1(CustomOp::op_CDR,         S, S,       [](const S& s){ return (s.empty() ? S("") : s.substr(1,S::npos)); } )		
+//			CASE_FUNC1(CustomOp::op_CAR,         S, S,       [](const S& s){ return (s.empty() ? S("") : S(1,s.at(0))); } )		
+//			CASE_FUNC2e(CustomOp::op_CONS,       S, S,S,
+//								[](const S& x, const S& y){ S a = x; a.append(y); return a; },
+//								[](const S& x, const S& y){ return (x.length()+y.length()<maxlength ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
+//								)
 			
 			// These are actually much faster if we leave the set on top, since we're just modifying the top value
 //			CASE_FUNC2(CustomOp::op_Setcons,       StrSet, S, StrSet, [](S& x, StrSet& y){ y.insert(x); return y; }  )
 //			CASE_FUNC2(CustomOp::op_Setremove,     StrSet, StrSet, S, [](StrSet& y, S& x){ if(y.count(x)) { y.erase(x); } return y; }  )
 			case CustomOp::op_Setcons: {
 				S y = vms.getpop<S>();
-				std::get<Stack<StrSet>>(vms.stack.value).top().insert(y);				
+				vms.stack<StrSet>().top().insert(y);				
 				break;
 			}
 			case CustomOp::op_Setremove: {
 				S y = vms.getpop<S>();
-				std::get<Stack<StrSet>>(vms.stack.value).top().erase(y);				
+				vms.stack<StrSet>().top().erase(y);				
 				break;
 			}
 			
@@ -403,7 +432,6 @@ int main(int argc, char** argv){
 	std::vector<MyHypothesis::t_data> datas; // load all the data	
 	std::vector<std::function<void(MyHypothesis&)>> callbacks;
 	
-//	for(int i=data_amounts.size()-1;i>=0;i--){ // big  data on lower chains
 	for(size_t i=0;i<data_amounts.size();i++){ // big  data on lower chains -- shouldn't matter!
 		MyHypothesis::t_data mydata;
 		
