@@ -32,7 +32,6 @@
 #include <sys/resource.h> // just for setting priority defaulty 
 
 const std::string FLEET_VERSION = "0.0.6";
-//const char SERIALIZATION_SEPERATOR = '~';
 
 // First some error checking on Fleet's required macros
 // this is because we use some of them in enums, and so a failure 
@@ -57,7 +56,8 @@ enum class BuiltinOp {
 	op_MEM,op_RECURSE,op_MEM_RECURSE, // thee can store the index of what hte loader calls in arg, so they can be used with lexica if you pass arg
 	op_SAFE_RECURSE, op_SAFE_MEM_RECURSE,
 	op_FLIP,op_FLIPP,op_IF,op_JMP,
-	op_TRUE,op_FALSE
+	op_TRUE,op_FALSE,
+	//op_LAMBDA,op_APPLY // simple, one-argument lambda functions (as in forall)
 };
 
 #include "Instruction.h"

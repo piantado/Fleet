@@ -7,11 +7,22 @@
 #include <string>
 
 
+//struct HumanData { 
+//	// a data structure to store our loaded human data
+//	size_t cntyes;
+//	size_t cntno;
+//	size_t setnumber;
+//	
+//	std::vector<std::set<Object>> previous;
+//	std::set<Object> currentSet;
+//	Object currentObject;
+//}
+
+
 std::map<std::string, MyHypothesis::t_data > load_SFL_data_file(std::string datapath) { // load data from the set function learning
 	using S = std::string;
 	
 	std::ifstream infile(datapath.c_str());
-	
 	
 	std::map<std::string, MyHypothesis::t_data > out;
 	

@@ -35,7 +35,6 @@ typedef struct Object {
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
-//#include "GrammarInference.h"
 
 // Define a grammar
 class MyGrammar : public Grammar { 

@@ -4,9 +4,12 @@
 #include <string.h>
 #include "Proposers.h"
 
-template<typename HYP, typename T, nonterminal_t nt, typename t_input, typename t_output, typename _t_datum=default_datum<t_input, t_output>>
+template<typename HYP, typename T, 
+		 nonterminal_t nt, typename t_input, typename t_output, 
+		 typename _t_datum=default_datum<t_input, t_output>, 
+		 typename _t_data=std::vector<_t_datum> >
 class LOTHypothesis : public Dispatchable<t_input,t_output>, 
-				      public MCMCable<HYP,_t_datum>, // remember, this defines t_data, t_datum
+				      public MCMCable<HYP,_t_datum,_t_data>, // remember, this defines t_data, t_datum
 					  public Searchable<HYP,t_input,t_output>
 					  
 {
@@ -15,18 +18,18 @@ class LOTHypothesis : public Dispatchable<t_input,t_output>,
 	// nt store the value of the root nonterminal
 	// HYP stores my own type (for subclasses) so I know how to cast copy and propose
 public:     
-	typedef typename Bayesable<_t_datum>::t_data   t_data;
-	typedef typename Bayesable<_t_datum>::t_datum t_datum;
+	typedef typename Bayesable<_t_datum,_t_data>::t_data   t_data;
+	typedef typename Bayesable<_t_datum,_t_data>::t_datum t_datum;
 	
 	Grammar* grammar;
 	T value;
 
-	LOTHypothesis(Grammar* g=nullptr)  : MCMCable<HYP,t_datum>(), grammar(g), value(NullRule,0.0,true) {}
-	LOTHypothesis(Grammar* g, T&& x)   : MCMCable<HYP,t_datum>(), grammar(g), value(x) {}
-	LOTHypothesis(Grammar* g, T x)     : MCMCable<HYP,t_datum>(), grammar(g), value(x) {}
+	LOTHypothesis(Grammar* g=nullptr)  : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
+	LOTHypothesis(Grammar* g, T&& x)   : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
+	LOTHypothesis(Grammar* g, T x)     : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
 
 	// parse this from a string
-	LOTHypothesis(Grammar* g, std::string s) : MCMCable<HYP,t_datum>(), grammar(g)  {
+	LOTHypothesis(Grammar* g, std::string s) : MCMCable<HYP,t_datum,t_data>(), grammar(g)  {
 		value = grammar->expand_from_names(s);
 	}
 

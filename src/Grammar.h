@@ -26,7 +26,6 @@ protected:
 	
 public:
 
-
 	Grammar() {
 		for(size_t i=0;i<N_NTs;i++) {
 			Z[i] = 0.0;

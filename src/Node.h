@@ -119,19 +119,29 @@ public:
 		return k;
 	}
 	
-//	size_t N() const { // how many children should I have?
+//	size_t N() const { // how many children do I have?
 //		return rule->N;
 //	}
-//	nonterminal_t nt() const {
-//		return rule->nt;
-//	}
+	nonterminal_t nt() const {
+		return rule->nt;
+	}
+	
+	Node& operator[](const size_t i) {
+		return child.at(i); // at does bounds checking
+	}
+	
+	const Node& operator[](const size_t i) const {
+		return child.at(i); // at does bounds checking
+	}
 	
 	void set_child(size_t i, Node& n) {
+		if(i > child.size()) child.resize(i);
 		child[i] = n;
 		child[i].pi = i;
 		child[i].parent = this;
 	}
 	void set_child(size_t i, Node&& n) {
+		if(i > child.size()) child.resize(i);
 		child[i] = n;
 		child[i].pi = i;
 		child[i].parent = this;
@@ -171,6 +181,18 @@ public:
 	
 	virtual bool is_root() const {
 		return parent == nullptr;
+	}
+	
+	virtual bool is_terminal() const {
+		return child.size() == 0;
+	}
+	
+	virtual size_t count_terminals() const {
+		size_t cnt = 0;
+		for(const auto& n : *this) {
+			if(n.is_terminal()) ++cnt;
+		}
+		return cnt;
 	}
 	
 	virtual bool is_complete() const {
@@ -296,6 +318,15 @@ public:
 			child[0].linearize(ops);
 			
 		}
+//		else if(rule->instr.is_a(BuiltinOp::op_LAMBDA)) {
+//			// Here we lay out in memory with LAMBDA<arg=function_length> function
+//			// and then when we interpret, we allow ourselves to copy the function applied 
+//			int fsize = child[0].program_size();
+//			
+//			child[0].linearize(ops);			
+//			ops.push(Instruction(BuiltinOp::op_LAMBDA, fsize));
+//			
+//		}
 		else {
 			/* Here we push the children in order, first first. So that means that when each evalutes, it will push its value to the *bottom* 
 			 * of the stack. So in caseMacros, we need to reverse the order of the arguments, so that the first popped is the last argument */

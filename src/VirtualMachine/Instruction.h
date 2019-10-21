@@ -9,7 +9,7 @@ public:
 		// it has a flag (is_custom) to say whether it's a builtin or custom op. Some of the builtin ops
 		// take arguments (like jump) 
 		// The "arg" here is super useful since it essentially allows us to define classes of instructions
-		// for instance, jump takes an arg, factorized recursion use sarg for index, in FormalLanguageTheory
+		// for instance, jump takes an arg, factorized recursion uses arg for index, in FormalLanguageTheory
 		// we use arg to store which alphabet terminal, etc. 
 		
 		std::variant<CustomOp, BuiltinOp> op; // what kind of op is this? custom or built in?

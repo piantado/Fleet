@@ -97,27 +97,6 @@ public:
 	MyHypothesis(Grammar* g)            : Super(g) {}
 	MyHypothesis(Grammar* g, Node v)    : Super(g,v) {}
 	
-//	virtual bool callOne(const MyInput x, const t_output err, Dispatchable<MyInput,t_output>* loader=nullptr) {
-//		if(value.contains(op_Y)) {
-//			for(const auto& s: x.set) {
-//				if(not Super::callOne(s, x.set)) {
-//					return false;
-//				}
-//			}
-//			return true; 
-//		} else {
-//			// no quantification
-//			return Super::callOne(x, false);
-//		}
-//	}
-
-//	virtual bool quantifierCall(const MyInput x){ 
-//		if(value.count([](const Node& n){ return n.rule.instr == op_Y;}) {
-//			
-//		}
-//	}
-
-	
 	double compute_single_likelihood(const t_datum& x) {
 		bool out = callOne(x.input, false);
 		return out == x.output ? log(x.reliability + (1.0-x.reliability)/2.0) : log((1.0-x.reliability)/2.0);
@@ -281,6 +260,7 @@ int main(int argc, char** argv){
 	CERR "# Done computing model predictions" ENDL;
 		
 	GrammarHypothesis<MyHypothesis> gh0(&grammar, &C, &LL, &P);
+	gh0 = gh0.restart();
 	
 	auto gdata = std::make_tuple(given_data,predict_data,yes_responses,no_responses);
 	
