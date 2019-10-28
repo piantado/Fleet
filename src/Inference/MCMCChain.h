@@ -96,6 +96,11 @@ public:
 				break;
 			}
 			
+			if(thin > 0 and FleetStatistics::global_sample_count % thin == 0) {
+				current.print();
+			}
+			
+			
 #ifdef DEBUG_MCMC
 	COUT "\n# Current\t" << current.posterior TAB current.prior TAB current.likelihood TAB "\t" TAB current.string() ENDL;
 	auto oc = current.call(S(""), S("<err>"));
