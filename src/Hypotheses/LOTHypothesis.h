@@ -35,7 +35,7 @@ public:
 
 	
 	// Stuff to create hypotheses:
-	virtual std::pair<HYP,double> propose() const {
+	[[nodiscard]] virtual std::pair<HYP,double> propose() const {
 		// tODO: Check how I do fb here?
 		
 		// simplest way of doing proposals
@@ -44,7 +44,7 @@ public:
 	}	
 
 	
-	virtual HYP restart() const {
+	[[nodiscard]] virtual HYP restart() const {
 		// This is used in MCMC to restart chains 
 		// this ordinarily would be a resample from the grammar, but sometimes we have can_resample=false
 		// and in that case we want to leave the non-propose nodes alone. So her
@@ -116,7 +116,7 @@ public:
 		return value.hash();
 	}
 	
-	virtual bool operator==(const LOTHypothesis<HYP,T,nt,t_input,t_output,t_datum>& h) const {
+	virtual bool operator==(const HYP& h) const {
 		return this->value == h.value;
 	}
 	

@@ -52,7 +52,7 @@ public:
 		return out;
 	}
 	
-	virtual bool operator==(const Lexicon<HYP,T,t_input,t_output,t_datum>& l) const {
+	virtual bool operator==(const HYP& l) const {
 		
 		// first, fewer factors are less
 		if(factors.size() != l.factors.size()) 
@@ -164,7 +164,7 @@ public:
 //		
 //	}
 
-	virtual std::pair<HYP,double> propose() const {
+	[[nodiscard]] virtual std::pair<HYP,double> propose() const {
 		
 		// We want to guaranteee that there is at least one factor that is changed
 		// To do this, we'll draw random numbers on the number of factors
@@ -177,6 +177,7 @@ public:
 		// now copy over
 		// TODO: Check that detailed balance is ok?
 		HYP x; double fb = 0.0;
+		x.factors.reserve(factors.size());
 		for(size_t k=0;k<factors.size();k++) {
 			if(u & 0x1) {
 				auto [h, _fb] = factors[k].propose();
@@ -194,7 +195,7 @@ public:
 	}
 	
 	
-	virtual HYP restart() const  {
+	[[nodiscard]] virtual HYP restart() const  {
 		HYP x;
 		x.factors.resize(factors.size());
 		for(size_t i=0;i<factors.size();i++){

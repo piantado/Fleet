@@ -76,22 +76,12 @@ Matrix model_predictions(std::vector<HYP>& hypotheses, std::vector<typename HYP:
 }
 
 
-template<typename HYP>	// HYP here is the type of the thing we do inference over
+template<typename HYP, t_data>	// HYP here is the type of the thing we do inference over
 class GrammarHypothesis : public MCMCable<GrammarHypothesis<HYP>, 
 										  t_null, 
-										  std::tuple<std::vector<typename HYP::t_data>,
-												     std::vector<typename HYP::t_datum>,
-													 std::vector<size_t>,
-													 std::vector<size_t>>>  {
+										  t_data>  {
 	/* This class stores a hypothesis of grammar probabilities. The t_data here is defined to be the above tuple and datum is ignored */
 public:
-
-	typedef std::tuple<std::vector<typename HYP::t_data>,
-					   std::vector<typename HYP::t_datum>,
-					   std::vector<size_t>,
-					   std::vector<size_t>>
-			t_data;
-	typedef t_null t_datum;
 			
 	Vector x; 
 	Grammar* grammar;
@@ -126,7 +116,7 @@ public:
 		return this->prior;
 	}
 	
-	virtual double compute_single_likelihood(const t_datum& datum) { assert(0); }
+	virtual double compute_single_likelihood(const t_datum& datum) { assert(0); } // defaultly we won't use this
 	
 	virtual double compute_likelihood(const t_data& data, const double breakout=-infinity) {
 		// This runs the entire model (computing its posterior) to get the likelihood
@@ -158,7 +148,7 @@ public:
 		return this->likelihood;		
 	}
 	
-	virtual GrammarHypothesis restart() const {
+	[[nodiscard]] virtual GrammarHypothesis restart() const {
 		GrammarHypothesis out(grammar, C, LL, P);
 		out.logodds_baseline = normal(rng);		
 		out.logodds_forwardalpha = normal(rng);		
@@ -170,7 +160,7 @@ public:
 	}
 	
 	
-	virtual std::pair<GrammarHypothesis,double> propose() const {
+	[[nodiscard]] virtual std::pair<GrammarHypothesis,double> propose() const {
 		GrammarHypothesis out = *this;
 		
 		if(flip()){
@@ -212,10 +202,6 @@ public:
 				     + (c.array() + a.array()).array().lgamma().sum() 
 					 - (c.array()+1).array().lgamma().sum() 
 					 - a.array().lgamma().sum();
-//				CERR nt TAB n TAB a0 TAB lp TAB std::lgamma(n+1) TAB std::lgamma(a0) TAB std::lgamma(n+a0) 
-//				     TAB (c.array() + a.array()).array().lgamma().sum() 
-//					 TAB (c.array()+1).array().lgamma().sum() 
-//					 TAB a.array().lgamma().sum() ENDL;
 				offset += nrules;
 			}
 		
