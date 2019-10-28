@@ -106,6 +106,11 @@ public:
 		add(x);
 	}
 	
+	void operator()(const T& x) {
+		// We also define this so we can pass TopN as a callback to MCMC sampling
+		add(x);
+	}
+	
     T best() { 
 		assert( (!s.empty()) && "You tried to get the max from a TopN that was empty");
 		return *s.rbegin();  
