@@ -7,7 +7,9 @@
 
 //#define DEBUG_MCMC 1
 
-template<typename HYP>
+// we take callback as a type (which hopefully can be deduce) so we can pass any callable object as callback (like a TopN)
+// This must be stored as a shared_ptr 
+template<typename HYP, typename callback_t> 
 class MCMCChain {
 	// An MCMC chain object. 
 	// NOTE: This defaultly loads its steps etc from the Fleet command line args
@@ -21,7 +23,7 @@ public:
 	typename HYP::t_data* data;
 	
 	HYP themax;
-	std::function<void(HYP&)> callback;
+	std::shared_ptr<callback_t> callback;
 	unsigned long restart;
 	bool          returnmax; 
 	
@@ -30,17 +32,29 @@ public:
 	unsigned long acceptances;
 	unsigned long steps_since_improvement; 
 	
-	std::atomic<double> temperature; // make atomic b/c ParallelTemperingn may try to change 
+	std::atomic<double> temperature; // make atomic b/c ParallelTempering may try to change 
 	
 	FiniteHistory<bool> history;
 	
-	MCMCChain(HYP& h0, typename HYP::t_data* d, std::function<void(HYP&)> cb ) : 
+	MCMCChain(HYP& h0, typename HYP::t_data* d, callback_t& cb ) : 
+			current(h0), data(d), themax(), callback(&cb), restart(mcmc_restart), 
+			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
+			temperature(1.0), history(100) {
+	}
+	
+	MCMCChain(HYP&& h0, typename HYP::t_data* d, callback_t& cb ) : 
+			current(std::move(h0)), data(d), themax(), callback(&cb), restart(mcmc_restart), 
+			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
+			temperature(1.0), history(100) {
+	}
+
+	MCMCChain(HYP& h0, typename HYP::t_data* d, callback_t* cb=nullptr ) : 
 			current(h0), data(d), themax(), callback(cb), restart(mcmc_restart), 
 			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 	}
 	
-	MCMCChain(HYP&& h0, typename HYP::t_data* d, std::function<void(HYP&)> cb ) : 
+	MCMCChain(HYP&& h0, typename HYP::t_data* d, callback_t* cb=nullptr) : 
 			current(std::move(h0)), data(d), themax(), callback(cb), restart(mcmc_restart), 
 			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
@@ -83,7 +97,7 @@ public:
 		// compute the info for the curent
 		current.compute_posterior(*data);
 		
-		callback(current);
+		if(callback != nullptr) (*callback)(current);
 		++FleetStatistics::global_sample_count;
 		themax = current;
 		
@@ -168,7 +182,7 @@ public:
 			}
 				
 			// and call on the sample if we meet all our criteria
-			callback(current);
+			if(callback != nullptr) (*callback)(current);
 				
 			++samples;
 			++FleetStatistics::global_sample_count;
@@ -178,7 +192,7 @@ public:
 				steps_since_improvement = 0; // reset the couter
 				current = current.restart();
 				current.compute_posterior(*data);
-				callback(current);
+				if(callback != nullptr) (*callback)(current);
 				if(current.posterior > themax.posterior) {
 					themax = current; 	
 				}

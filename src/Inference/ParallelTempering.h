@@ -5,8 +5,8 @@
 #include <functional>
 #include "ChainPool.h"
 
-template<typename HYP>
-class ParallelTempering  {
+template<typename HYP, typename callback_t>
+class ParallelTempering : public ChainPool<HYP,callback_t> {
 	// follows https://arxiv.org/abs/1501.05823
 	// This is a kind of Chain Pool that runs mutliple chains at different temperatures
 	// and ajusts the temperatures in order to equate swaps up and down 
@@ -14,7 +14,7 @@ class ParallelTempering  {
 	const unsigned long WAIT_AND_SLEEP = 250; // how many ms to wait between checking to see if it is time to swap/adapt
 	
 public:
-	std::vector<MCMCChain<HYP>> pool;
+//	std::vector<MCMCChain<HYP,callback_t>> pool;
 	std::vector<double> temperatures;
 	FiniteHistory<bool>* swap_history;
 	
@@ -22,11 +22,12 @@ public:
 	
 	std::atomic<bool> terminate; // used to kill swapper and adapter
 	
-	ParallelTempering(HYP& h0, typename HYP::t_data* d, std::function<void(HYP&)> cb, std::initializer_list<double> t, bool allcallback=true) : temperatures(t), terminate(false) {
+	ParallelTempering(HYP& h0, typename HYP::t_data* d, callback_t& cb, std::initializer_list<double> t, bool allcallback=true) : 
+		ChainPool<HYP,callback_t>(h0, d, cb, temperatures.size(),allcallback),
+		temperatures(t), terminate(false) {
 		// allcallback is true means that all chains call the callback, otherwise only t=0
 		for(size_t i=0;i<temperatures.size();i++) {
-			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), d, allcallback || i==0 ? cb : null_callback<HYP>));
-			pool[i].temperature = temperatures[i]; // set its temperature 
+			this->pool[i].temperature = temperatures[i]; // set its temperature 
 		}
 		
 		is_temperature = true;
@@ -34,18 +35,17 @@ public:
 	}
 	
 	
-	ParallelTempering(HYP& h0, typename HYP::t_data* d, std::function<void(HYP&)> cb, unsigned long n, double maxT, bool allcallback=true) : terminate(false) {
+	ParallelTempering(HYP& h0, typename HYP::t_data* d, callback_t& cb, unsigned long n, double maxT, bool allcallback=true) : 
+		ChainPool<HYP,callback_t>(h0, d, cb, n, allcallback),
+		terminate(false) {
 		// allcallback is true means that all chains call the callback, otherwise only t=0
 		for(size_t i=0;i<n;i++) {
-			
-			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), d, allcallback || i==0 ? cb : null_callback<HYP>));
-			
 			if(i==0) {  // always initialize i=0 to T=1s
-				pool[i].temperature = 1.0;
+				this->pool[i].temperature = 1.0;
 			}
 			else {
 				// set its temperature with this kind of geometric scale  
-				pool[i].temperature = 1.0 + (maxT-1.0) * pow(2.0, double(i)-double(n-1)); 
+				this->pool[i].temperature = 1.0 + (maxT-1.0) * pow(2.0, double(i)-double(n-1)); 
 			}
 		}
 		is_temperature = true;
@@ -53,11 +53,12 @@ public:
 	}
 	
 	
-	ParallelTempering(HYP& h0, std::vector<typename HYP::t_data>& datas, std::vector<std::function<void(HYP&)>> cb) {
+	ParallelTempering(HYP& h0, std::vector<typename HYP::t_data>& datas, std::vector<callback_t> cb) :
+		ChainPool<HYP,callback_t>() {
 		// This version anneals on data, giving each chain a different amount in datas order
 		for(size_t i=0;i<datas.size();i++) {
-			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), &(datas[i]), cb[i]));
-			pool[i].temperature = 1.0;
+			this->pool.push_back(MCMCChain(i==0?h0:h0.restart(), &(datas[i]), cb[i]));
+			this->pool[i].temperature = 1.0;
 		}
 		is_temperature = false;
 		swap_history = new FiniteHistory<bool>[datas.size()];
@@ -80,25 +81,25 @@ public:
 			else { // do a swap
 				last = now();
 				
-				size_t k = 1+myrandom(pool.size()-1); // swap k with k-1
+				size_t k = 1+myrandom(this->pool.size()-1); // swap k with k-1
 
 				// get both of these thread locks
-				std::lock_guard guard1(pool[k-1].current_mutex);
-				std::lock_guard guard2(pool[k  ].current_mutex);
+				std::lock_guard guard1(this->pool[k-1].current_mutex);
+				std::lock_guard guard2(this->pool[k  ].current_mutex);
 				
 				double R; //
 				if(is_temperature) {
 					// compute R based on data
-					double Tnow = pool[k-1].at_temperature(pool[k-1].temperature)   + pool[k].at_temperature(pool[k].temperature);
-					double Tswp = pool[k-1].at_temperature(pool[k].temperature)     + pool[k].at_temperature(pool[k-1].temperature);
+					double Tnow = this->pool[k-1].at_temperature(this->pool[k-1].temperature)   + this->pool[k].at_temperature(this->pool[k].temperature);
+					double Tswp = this->pool[k-1].at_temperature(this->pool[k].temperature)     + this->pool[k].at_temperature(this->pool[k-1].temperature);
 					R = Tswp-Tnow;
 				} else {
 					// must compute swaps based on data
-					double Pnow = pool[k-1].current.posterior + pool[k].current.posterior;
+					double Pnow = this->pool[k-1].current.posterior + this->pool[k].current.posterior;
 					
 					// make copies and compute posterior on each other's data
-					HYP x = pool[k-1].current; x.compute_posterior(*pool[k].data);
-					HYP y = pool[k].current;   y.compute_posterior(*pool[k-1].data);
+					HYP x = this->pool[k-1].current; x.compute_posterior(*this->pool[k].data);
+					HYP y = this->pool[k].current;   y.compute_posterior(*this->pool[k-1].data);
 					double Pswap = x.posterior + y.posterior;
 					
 					R = Pswap - Pnow;
@@ -108,13 +109,13 @@ public:
 				if(R>0 || uniform() < exp(R)) { 
 					
 					// swap the chains
-					std::swap(pool[k].current, pool[k-1].current);
+					std::swap(this->pool[k].current, this->pool[k-1].current);
 					
 					// and if we're doing data, we must recompute
 					// NOTE: This is slightly inefficient because we computed it above, but that's hard to keep track of
 					if(not is_temperature) {
-						pool[k].current.compute_posterior(*pool[k].data);
-						pool[k-1].current.compute_posterior(*pool[k-1].data);
+						this->pool[k].current.compute_posterior(*this->pool[k].data);
+						this->pool[k-1].current.compute_posterior(*this->pool[k-1].data);
 					}
 
 					swap_history[k] << true;
@@ -144,23 +145,24 @@ public:
 		}
 	}
 	
-	static void __run_helper(MCMCChain<HYP>* c, unsigned long steps, unsigned long time) {
-		c->run(steps, time);
-	}
+//	static void __run_helper(MCMCChain<HYP,callback_t>* c, unsigned long steps, unsigned long time) {
+//		c->run(steps, time);
+//	}
 	
-	void run(unsigned long steps, unsigned long time, double swap_every, double adapt_every) {
-		std::thread threads[pool.size()]; 
+	virtual void run(unsigned long steps, unsigned long time) { assert(0); }
+	virtual void run(unsigned long steps, unsigned long time, double swap_every, double adapt_every) {
+		std::thread threads[this->pool.size()]; 
 		
 		// start everyone runnig 
-		for(unsigned long i=0;i<pool.size();i++) {
-			threads[i] = std::thread(__run_helper, &pool[i], steps, time);
+		for(unsigned long i=0;i<this->pool.size();i++) {
+			threads[i] = std::thread(this->__run_helper, &this->pool[i], steps, time);
 		}
 		
 		// pass in the non-static mebers like this:
-		std::thread swapper(&ParallelTempering<HYP>::__swapper_thread, this, swap_every);
-		std::thread adapter(&ParallelTempering<HYP>::__adapter_thread, this, adapt_every);
+		std::thread swapper(&ParallelTempering<HYP,callback_t>::__swapper_thread, this, swap_every);
+		std::thread adapter(&ParallelTempering<HYP,callback_t>::__adapter_thread, this, adapt_every);
 
-		for(unsigned long i=0;i<pool.size();i++) {
+		for(unsigned long i=0;i<this->pool.size();i++) {
 			threads[i].join();
 		}
 
@@ -171,9 +173,9 @@ public:
 	
 	void show_statistics() {
 		COUT "# Pool info: \n";
-		for(size_t i=0;i<pool.size();i++) {
-			COUT "# " << i TAB pool[i].temperature TAB pool[i].current.posterior TAB
-					     pool[i].acceptance_ratio() TAB swap_history[i].mean() TAB pool[i].samples TAB pool[i].current.string()
+		for(size_t i=0;i<this->pool.size();i++) {
+			COUT "# " << i TAB this->pool[i].temperature TAB this->pool[i].current.posterior TAB
+					     this->pool[i].acceptance_ratio() TAB swap_history[i].mean() TAB this->pool[i].samples TAB this->pool[i].current.string()
 						 ENDL;
 		}
 	}
@@ -184,20 +186,20 @@ public:
 	
 	void adapt(double v=3, double t0=1000000) {
 		
-		double S[pool.size()];
+		double S[this->pool.size()];
 		
-		for(size_t i=1;i<pool.size()-1;i++) { // never adjust i=0 (T=1) or the max temperature
-			S[i] = log(pool[i].temperature - pool[i-1].temperature);
+		for(size_t i=1;i<this->pool.size()-1;i++) { // never adjust i=0 (T=1) or the max temperature
+			S[i] = log(this->pool[i].temperature - this->pool[i-1].temperature);
 			
 			if( swap_history[i].N>0 && swap_history[i+1].N>0 ) { // only adjust if there are samples
-				S[i] += k(pool[i].samples, v, t0) * (swap_history[i].mean()-swap_history[i+1].mean()); 
+				S[i] += k(this->pool[i].samples, v, t0) * (swap_history[i].mean()-swap_history[i+1].mean()); 
 			}
 			
 		}
 		
 		// and then convert S to temperatures again
-		for(size_t i=1;i<pool.size()-1;i++) { // never adjust i=0 (T=1)
-			pool[i].temperature = pool[i-1].temperature + exp(S[i]);
+		for(size_t i=1;i<this->pool.size()-1;i++) { // never adjust i=0 (T=1)
+			this->pool[i].temperature = this->pool[i-1].temperature + exp(S[i]);
 		}
 	}
 	
