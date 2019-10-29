@@ -19,13 +19,11 @@ S alphabet = "0123456789"; // the alphabet we use (possibly specified on command
 //S datastr  = "12345:1122334455,567:556677"; 
 //S datastr  = "12345:1223344556,513:561234"; 
 //S datastr  = "12345:1121314151,7123:777172737";
-
 //S datastr  = "12345:122333444455555,513:511333"; // probably this cannot be represented?
-
 S datastr  = "12345:54321,7123:3217";
 
 
-const double strgamma = 0.99; // penalty on string length
+const double strgamma = 0.9999; // penalty on string length
 
 // Define a grammar
 class MyGrammar : public Grammar { 
@@ -126,23 +124,9 @@ public:
 };
 
 
-// mydata stores the data for the inference model
 MyHypothesis::t_data mydata;
-// top stores the top hypotheses we have found
 TopN<MyHypothesis> top;
 
-
-// This gets called on every sample -- here we add it to our best seen so far (top) and
-// print it every thin samples unless thin=0
-void callback(MyHypothesis& h) {
-	
-	// add to the top
-	top << h; 
-	
-	// print out with thinning
-	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) 
-		h.print();
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -178,13 +162,14 @@ int main(int argc, char** argv){
 	//------------------
 	
 
-//	auto h0 = new MyHypothesis(&grammar);	
-//	auto thechain = MCMCChain(h0, &mydata, callback);
+//	MyHypothesis h0(&grammar);
+//	h0 = h0.restart();
+//	auto thechain = MCMCChain(h0, &mydata, static_cast<std::function<void(MyHypothesis&)>&>(top));
 //	thechain.run(mcmc_steps, runtime);
-	
+//	
 	MyHypothesis h0(&grammar);
 	h0 = h0.restart();
-	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);
+	ParallelTempering samp(h0, &mydata, top, 8, 1000.0, false);
 	tic();
 	samp.run(mcmc_steps, runtime, 0.2, 3.0); //30000);		
 	tic();
@@ -196,6 +181,7 @@ int main(int argc, char** argv){
 //	tic();
 //	m.print("tree.txt");
 	
+	CERR top.size() ENDL;
 	// Show the best we've found
 	top.print();
 	

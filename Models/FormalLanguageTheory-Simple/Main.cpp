@@ -70,17 +70,7 @@ public:
 //					       log(1.0-x.reliability) + (x.output.length())*(log(1.0-gamma) + log(0.5)) + log(gamma) // probability under noise; 0.5 comes from alphabet size
 //						   );
 //	}
-	double compute_single_likelihood(const t_datum& x) {
-	
-//		CERR value.string() ENDL;
-//		for(auto n = value.begin(); n != value.end(); ++n) {
-//			CERR n->string() ENDL;
-//		}
-//		for(auto& n : value) {
-//			CERR n.string() ENDL;
-//		}
-//		CERR "------------" ENDL;
-		
+	double compute_single_likelihood(const t_datum& x) {		
 		auto out = call(x.input, "<err>", this, 256, 256); //256, 256);
 		
 		// a likelihood based on the prefix probability -- we assume that we generate from the hypothesis
@@ -149,18 +139,6 @@ MyHypothesis::t_data mydata;
 // top stores the top hypotheses we have found
 TopN<MyHypothesis> top;
 
-// This gets called on every sample -- here we add it to our best seen so far (top) and
-// print it every thin samples unless thin=0
-void callback(MyHypothesis& h) {
-	
-	// add to the top
-	top << h; 
-	
-	// print out with thinning
-	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) 
-		h.print();
-}
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -221,16 +199,16 @@ int main(int argc, char** argv){
 	//------------------
 	
 	MyHypothesis h0(&grammar);
-
-	tic();
-	auto thechain = MCMCChain<MyHypothesis>(h0, &mydata, callback);
-	thechain.run(mcmc_steps, runtime);
-	tic();
-	
-//	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);
+//
 //	tic();
-//	samp.run(mcmc_steps, runtime, 1.0, 3.0); //30000);		
+//	MCMCChain thechain(h0, &mydata, top);
+//	thechain.run(mcmc_steps, runtime);
 //	tic();
+//	
+	ParallelTempering samp(h0, &mydata, top, 8, 1000.0, false);
+	tic();
+	samp.run(mcmc_steps, runtime, 1.0, 3.0); //30000);		
+	tic();
 //	
 	// Show the best we've found
 	top.print();

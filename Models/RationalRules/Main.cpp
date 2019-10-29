@@ -49,8 +49,8 @@ public:
 		add( Rule(nt_bool,   CustomOp::op_Triangle,   "triangle(%s)",  {nt_object},          1.0) );
 		add( Rule(nt_bool,   CustomOp::op_Circle,     "circle(%s)",    {nt_object},          1.0) );
 		
-		add( Rule(nt_bool, CustomOp::op_And,          "(%s and %s)",   {nt_bool, nt_bool},   1.0) );
-		add( Rule(nt_bool, CustomOp::op_Or,           "(%s or %s)",    {nt_bool, nt_bool},   1.0) );
+		add( Rule(nt_bool, CustomOp::op_And,          "and(%s,%s)",    {nt_bool, nt_bool},   1.0) );
+		add( Rule(nt_bool, CustomOp::op_Or,           "or(%s,%s)",     {nt_bool, nt_bool},   1.0) );
 		add( Rule(nt_bool, CustomOp::op_Not,          "not(%s)",       {nt_bool},            1.0) );
 	}
 };
@@ -92,7 +92,7 @@ public:
 	
 	void print(std::string prefix="") {
 		extern TopN<MyHypothesis> top;
-		Super::print( prefix + std::to_string(hash())+"\t"+std::to_string(top.count(*this)) + "\t" ); // print but prepend my top count
+		Super::print( prefix + std::to_string(top.count(*this)) + "\t" ); // print but prepend my top count
 	}
 };
 
@@ -101,13 +101,6 @@ public:
 MyHypothesis::t_data mydata;
 // top stores the top hypotheses we have found
 TopN<MyHypothesis> top;
-
-// This gets called on every sample -- here we add it to our best seen so far (top) and
-// print it every thin samples unless thin=0
-void callback(MyHypothesis& h) {
-	top << h; // add to the top
-}
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -139,20 +132,19 @@ int main(int argc, char** argv){
 //	for(size_t i=0;i<mcmc_steps;i++) {
 //		h0 = h0.restart(); // sample from prior
 //		h0.compute_posterior(mydata);
-//		callback(h0);
+//		top(h0);
 //	}
-//	
-	
+//		
 //	MyHypothesis h0(&grammar);
 //	h0 = h0.restart();
-//	MCMCChain<MyHypothesis> chain(h0, &mydata, callback);
+//	MCMCChain chain(h0, &mydata, top);
 //	tic();
 //	chain.run(mcmc_steps,runtime);
 //	tic();
 	
 	MyHypothesis h0(&grammar);
 	h0 = h0.restart();
-	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);
+	ParallelTempering samp(h0, &mydata, top, 8, 1000.0, false);
 	tic();
 	samp.run(mcmc_steps, runtime, 0.2, 3.0); //30000);		
 	tic();

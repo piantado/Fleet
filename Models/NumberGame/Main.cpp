@@ -110,20 +110,6 @@ TopN<MyHypothesis> top;
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 
-void callback(MyHypothesis& h) {
-	top << h; 
-		
-	// print out with thinning
-	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) 
-		h.print();
-}
-		
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////
-
-
 int main(int argc, char** argv){ 
 	signal(SIGINT, fleet_interrupt_handler);
 	using namespace std;
@@ -142,7 +128,7 @@ int main(int argc, char** argv){
 	MyHypothesis h0(&grammar);
 	h0 = h0.restart();
 	
-	MCMCChain<MyHypothesis> samp(h0, &mydata, callback);
+	MCMCChain samp(h0, &mydata, top);
 	tic();
 	samp.run(mcmc_steps, runtime); //30000);		
 	tic();

@@ -57,6 +57,8 @@ const unsigned long MAX_STEPS_PER_FACTOR   = 4096; //2048; //2048;
 const unsigned long MAX_OUTPUTS_PER_FACTOR = 512; // 256; // 512; //256;
 
 class MyGrammar : public Grammar { 
+class MyGrammar : public Grammar { 
+class MyGrammar : public Grammar { 
 public:
 	MyGrammar() : Grammar() {
 		add( Rule(nt_string, BuiltinOp::op_X,            "x",            {},                               10.0) );	
@@ -446,7 +448,7 @@ int main(int argc, char** argv){
 	}
 	
 	// Run
-	ParallelTempering<MyHypothesis> samp(h0, datas, callbacks);
+	ParallelTempering samp(h0, datas, callbacks);
 	
 	tic();	
 	samp.run(mcmc_steps, runtime, 1.0, 10.0);	

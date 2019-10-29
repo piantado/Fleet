@@ -25,6 +25,14 @@ std::vector<T> slice(const std::vector<T> &v, size_t start) {
 	return slice(v, start, v.size()-start);
 }
 
+/* If x is a prefix of y -- works for strings and vectors */
+template<typename T>
+bool is_prefix(const T& prefix, const T& x) {
+	if(prefix.size() > x.size()) return false;
+	if(prefix.size() == 0) return true;
+	
+	return std::equal(prefix.begin(), prefix.end(), x.begin());
+}
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Just a convenient wrapper for timing

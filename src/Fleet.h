@@ -27,7 +27,7 @@
 #include <random>
 #include <mutex>
 
-#include "CL11.hpp"
+#include "dependencies/CL11.hpp"
 
 #include <sys/resource.h> // just for setting priority defaulty 
 
@@ -182,7 +182,7 @@ typedef Stack<Instruction> Program;
 #include "Hypotheses/Lexicon.h"
 
 #include "Inference/MCMCChain.h"
-#include "Inference/MCTS.h"
+//#include "Inference/MCTS.h"
 #include "Inference/ParallelTempering.h"
 #include "Inference/ChainPool.h"
 

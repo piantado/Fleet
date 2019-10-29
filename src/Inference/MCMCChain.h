@@ -23,7 +23,7 @@ public:
 	typename HYP::t_data* data;
 	
 	HYP themax;
-	std::shared_ptr<callback_t> callback;
+	callback_t* callback; // we don't want a shared_ptr because we don't want this deleted, it's owned elsewhere
 	unsigned long restart;
 	bool          returnmax; 
 	
@@ -117,9 +117,6 @@ public:
 			
 #ifdef DEBUG_MCMC
 	COUT "\n# Current\t" << current.posterior TAB current.prior TAB current.likelihood TAB "\t" TAB current.string() ENDL;
-	auto oc = current.call(S(""), S("<err>"));
-	oc.print();
-	COUT "" ENDL;
 #endif
 			
 			// generate the proposal -- defaulty "restarting" if we're currently at -inf
@@ -150,9 +147,6 @@ public:
 
 #ifdef DEBUG_MCMC
 	COUT "# Proposed \t" << proposal.posterior TAB proposal.prior TAB proposal.likelihood TAB fb TAB proposal.string() ENDL;
-	auto op = current.call(S(""), S("<err>"));
-	op.print();
-	COUT "" ENDL;
 #endif
 			
 			// keep track of the max if we are supposed to

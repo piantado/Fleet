@@ -65,8 +65,8 @@ public:
 
 	void add(const T& x, size_t count=1) { 
 		// add something of type x if we should - only makes a copy if we add it
+		// NOTE: we do not add -inf things
 		
-		// toss out infs
 		if(std::isnan(x.posterior) || x.posterior == -infinity) return;
 		
 		std::lock_guard guard(lock);
@@ -106,10 +106,10 @@ public:
 		add(x);
 	}
 	
-	void operator()(const T& x) {
-		// We also define this so we can pass TopN as a callback to MCMC sampling
-		add(x);
-	}
+	// We also define this so we can pass TopN as a callback to MCMC sampling
+	//void operator()(const T& x) { add(x); }
+	void operator()(T& x)       { add(x); }
+	
 	
     T best() { 
 		assert( (!s.empty()) && "You tried to get the max from a TopN that was empty");

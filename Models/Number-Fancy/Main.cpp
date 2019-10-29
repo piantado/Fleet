@@ -230,17 +230,6 @@ MyHypothesis::t_data mydata;
 TopN<MyHypothesis> top;
 TopN<MyHypothesis> all;
 
-void callback(MyHypothesis& h) {
-
-	top << h; 
-	
-	FleetStatistics::global_sample_count++;
-	
-	// print out with thinning
-	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) 
-		h.print();
-}
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -302,7 +291,7 @@ int main(int argc, char** argv){
 		
 		
 		MyHypothesis h0(&grammar);
-		ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);
+		ParallelTempering samp(h0, &mydata, top, 8, 1000.0, false);
 		tic();
 		samp.run(mcmc_steps, runtime, 0.2, 3.); //30000);		
 		tic();

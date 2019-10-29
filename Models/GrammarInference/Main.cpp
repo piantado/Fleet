@@ -1,3 +1,7 @@
+
+// TODO: We can use this to clean up enums below in reading the file
+//#include "dependencies/magic_enum.hpp"
+
 #include <assert.h>
 #include <set>
 #include <regex>
@@ -8,16 +12,6 @@
 #include <cmath>
 #include <unsupported/Eigen/SpecialFunctions>
 
-
-
-// A simple example of a version of the RationalRules model. 
-// This is primarily used as an example and for debugging MCMC
-// My laptop gets around 200-300k samples per second
-
-// We require an enum to define our custom operations as a string before we import Fleet
-// These are the internal symbols that are used to represent each operation. The grammar
-// generates nodes with them, and then dispatch down below gets called with a switch
-// statement to see how to execute aech of them. 
 enum class CustomOp {
 	op_And, op_Or, op_Not, op_Xor, op_Iff, op_Implies,
 	op_Yellow, op_Green, op_Blue, 
@@ -26,29 +20,43 @@ enum class CustomOp {
 	op_Y // this implements a simple form of quantification where if you use op_Y, it univerally quantifies over the whole set
 };
 
-enum class Shape { Rectangle, Triangle, Circle};
-enum class Color { Yellow, Green, Blue};
-enum class Size  { Size1, Size2, Size3};
+enum class Shape { rectangle, triangle, circle};
+enum class Color { yellow, green, blue};
+enum class Size  { size1, size2, size3};
 
 typedef struct Object {
 	Color color;
 	Shape shape;
 	Size  size;
 	
-	// we must define this to compile because memoization requires sorting
-	// but if we don't call op_MEM then we never will need it
-	bool operator<(const Object& o) const { assert(false); }
+	bool operator<(const Object& o) const { 
+		if(color != o.color) return color < o.color;
+		if(shape != o.shape) return shape < o.shape;
+		if(size  != o.size)  return size  < o.size;
+		return false;
+	}
 	bool operator==(const Object& o) const { 
 		return color==o.color and shape==o.shape and size==o.size;
 	}
 } Object;
 
-
-// An input type for a function that bundles the context set with the object we're querying. 
-typedef struct MyInput {
+typedef struct LearnerDatum {
+	// What the learner takes as input
 	Object x;
-	std::set<Object> set;	
-} MyInput; 
+	bool correctAnswer;
+	double alpha;
+	std::set<Object>* set;// a pointer makes it easy to modify as we read in the file
+	size_t setNumber;
+	size_t responseInSet;
+	
+	bool operator==(const LearnerDatum& o) const { 
+		return (*set) == (*o.set) and x == o.x;
+	}
+} LearnerDatum; 
+
+
+
+const double alpha = 0.9; // fixed for the learning part of the model
 
 // Define our types. 
 #define NT_TYPES    bool,   Object,      int, std::set<Object>
@@ -57,7 +65,11 @@ typedef struct MyInput {
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 #include "EigenNumerics.h"
-#include "GrammarHypothesis.h"
+
+// Grammar hypothesis is not automatically included because it depends on Eigen
+#include "GrammarHypothesis.h" 
+
+typedef HumanDatum<LearnerDatum> MyHumanDatum;
 
 // Define a grammar
 class MyGrammar : public Grammar { 
@@ -88,33 +100,33 @@ public:
 };
 
 
-class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool> {
+class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool,LearnerDatum> {
 public:
 	// This is going to assume that all variables other than x are universally quantified over. 
-	using Super = LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool>;
+	using Super = LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool,LearnerDatum>;
 	
 	MyHypothesis()                      : Super() {}
 	MyHypothesis(Grammar* g)            : Super(g) {}
 	MyHypothesis(Grammar* g, Node v)    : Super(g,v) {}
 	
-	double compute_single_likelihood(const t_datum& x) {
-		bool out = callOne(x.input, false);
-		return out == x.output ? log(x.reliability + (1.0-x.reliability)/2.0) : log((1.0-x.reliability)/2.0);
+	double compute_single_likelihood(const t_datum& di) {
+		bool out = callOne(di.x, false);
+		return (out == di.correctAnswer ? log(di.alpha + (1.0-di.alpha)/2.0) : log((1.0-di.alpha)/2.0));
 	}
 	
 	abort_t dispatch_rule(Instruction i, VirtualMachinePool<Object, bool>* pool, VirtualMachineState<Object,bool>& vms, Dispatchable<Object,bool>* loader ) {
 		switch(i.getCustom()) {
-			CASE_FUNC1(CustomOp::op_Yellow,         bool,  Object,    [](const Object& x){ return x.color == Color::Yellow; })
-			CASE_FUNC1(CustomOp::op_Green,       bool,  Object,    [](const Object& x){ return x.color == Color::Green; })
-			CASE_FUNC1(CustomOp::op_Blue,        bool,  Object,    [](const Object& x){ return x.color == Color::Blue; })
+			CASE_FUNC1(CustomOp::op_Yellow,         bool,  Object,    [](const Object& x){ return x.color == Color::yellow; })
+			CASE_FUNC1(CustomOp::op_Green,       bool,  Object,    [](const Object& x){ return x.color == Color::green; })
+			CASE_FUNC1(CustomOp::op_Blue,        bool,  Object,    [](const Object& x){ return x.color == Color::blue; })
 			
-			CASE_FUNC1(CustomOp::op_Rectangle,      bool,  Object,    [](const Object& x){ return x.shape == Shape::Rectangle; })
-			CASE_FUNC1(CustomOp::op_Triangle,    bool,  Object,    [](const Object& x){ return x.shape == Shape::Triangle; })
-			CASE_FUNC1(CustomOp::op_Circle,      bool,  Object,    [](const Object& x){ return x.shape == Shape::Circle; })
+			CASE_FUNC1(CustomOp::op_Rectangle,      bool,  Object,    [](const Object& x){ return x.shape == Shape::rectangle; })
+			CASE_FUNC1(CustomOp::op_Triangle,    bool,  Object,    [](const Object& x){ return x.shape == Shape::triangle; })
+			CASE_FUNC1(CustomOp::op_Circle,      bool,  Object,    [](const Object& x){ return x.shape == Shape::circle; })
 			
-			CASE_FUNC1(CustomOp::op_Size1,      bool,  Object,    [](const Object& x){ return x.size == Size::Size1; })
-			CASE_FUNC1(CustomOp::op_Size2,      bool,  Object,    [](const Object& x){ return x.size == Size::Size2; })
-			CASE_FUNC1(CustomOp::op_Size3,      bool,  Object,    [](const Object& x){ return x.size == Size::Size3; })
+			CASE_FUNC1(CustomOp::op_Size1,      bool,  Object,    [](const Object& x){ return x.size == Size::size1; })
+			CASE_FUNC1(CustomOp::op_Size2,      bool,  Object,    [](const Object& x){ return x.size == Size::size2; })
+			CASE_FUNC1(CustomOp::op_Size3,      bool,  Object,    [](const Object& x){ return x.size == Size::size3; })
 			
 			CASE_FUNC2(CustomOp::op_And,         bool,bool,bool,    [](const bool a, bool b){ return a and b; })
 			CASE_FUNC2(CustomOp::op_Or,          bool,bool,bool,    [](const bool a, bool b){ return a or b; })
@@ -131,6 +143,49 @@ public:
 };
 
 
+Matrix my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, std::vector<MyHumanDatum>& human_data) {
+	// special case of incremental likelihood since we are accumulating data (by sets)
+	// So we have written a special case here
+	
+	Matrix out = Matrix::Zero(hypotheses.size(), human_data.size()); 
+	
+	for(size_t h=0;h<hypotheses.size() and !CTRL_C;h++) {
+		for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
+			if(human_data[di].given_data.size() == 0) {
+				// shoudl catch di=0
+				out(h,di) = 0.0;
+				continue;
+			}
+			else {
+				assert(di>0);
+				size_t prevsetno = human_data[di-1].given_data.empty() ? 0 : human_data[di-1].given_data.back().setNumber; // what was the previous set number?
+			
+				if(human_data[di].given_data.back().setNumber == prevsetno) {
+					// same likelihood since we presented a set at a time
+					// NOTE: We don't need to check concept/list since rows are sorted, so if the condition is met, we will be the same concept/list
+					out(h,di) = out(h,di-1);
+				}
+				else if(human_data[di].given_data.back().setNumber == prevsetno+1) {
+					// add up all of the new set (which hasn't been included)
+					out(h,di) = out(h,di-1); 				
+					for(auto& d : human_data[di].given_data) {
+						if(d.setNumber == prevsetno+1) {
+							out(h,di) += hypotheses[h].compute_single_likelihood(d);
+						}
+					}
+				}
+				else { // recompute the whole damn thing
+					out(h,di) =  hypotheses[h].compute_likelihood(human_data[di].given_data);			
+				}
+			}
+			
+		}	
+	}
+	
+	return out;
+}
+
+
 // mydata stores the data for the inference model
 MyHypothesis::t_data mydata;
 // top stores the top hypotheses we have found
@@ -143,14 +198,7 @@ void print(MyHypothesis& h) {
 	COUT top.count(h) TAB  h.posterior TAB h.prior TAB h.likelihood TAB QQ(h.string()) ENDL;
 }
 
-// This gets called on every sample -- here we add it to our best seen so far (top) and
-// print it every thin samples unless thin=0
-void callback(MyHypothesis& h) {
-	top << h; // add to the top
-}
-
-// print it every thin samples unless thin=0
-void gcallback(GrammarHypothesis<MyHypothesis>& h) {
+void gcallback(GrammarHypothesis<MyHypothesis,MyHumanDatum>& h) {
 	
 		COUT h.posterior TAB "baseline" TAB h.get_baseline() ENDL;
 		COUT h.posterior TAB "forwardalpha" TAB h.get_forwardalpha() ENDL;
@@ -158,7 +206,7 @@ void gcallback(GrammarHypothesis<MyHypothesis>& h) {
 		for(size_t nt=0;nt<N_NTs;nt++) {
 			for(size_t i=0;i<h.grammar->count_rules( (nonterminal_t) nt);i++) {
 				std::string rs = h.grammar->get_rule((nonterminal_t)nt,i)->format;
-				rs = std::regex_replace(rs, std::regex("\\%s"), "X");
+		 		rs = std::regex_replace(rs, std::regex("\\%s"), "X");
 				COUT h.posterior TAB QQ(rs) TAB h.getX()(xi) ENDL;
 				xi++;
 			}
@@ -166,12 +214,10 @@ void gcallback(GrammarHypothesis<MyHypothesis>& h) {
 }
 
 
-
-#include "LoadData.h"
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char** argv){ 
+	using S = std::string;
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	auto app = Fleet::DefaultArguments();
@@ -185,23 +231,82 @@ int main(int argc, char** argv){
 	// set up the data
 	//------------------
 	
-	auto bigdata = load_SFL_data_file("preprocessing/data.txt");
-	CERR "# Loaded data" ENDL;
+	std::map<std::string, std::vector<LearnerDatum>> learner_data;
+	std::vector<MyHumanDatum> human_data;	// map conceptlist, setnumber, responsnumber to cntyes,cntno
+	
+	std::ifstream infile("preprocessing/data.txt");
+	
+	S line;
+	auto theset = new std::set<Object>(); 
+	int setidx = -1;
+	while(std::getline(infile, line)) {
+		auto parts = split(line, ' ');
+		S conceptlist         = parts[0] + "__" + parts[1]; // concept/list pair
+		size_t setNumber      = stoi(parts[2]);
+		size_t responseInSet  = stoi(parts[3]);
+		bool   correctAnswer  = (parts[4] == "True");
+		
+		// keep track of what set we're adding to
+		if(setidx != -1) {
+			if(setidx != (int)setNumber) {
+				theset = new std::set<Object>(); // make a new set
+			}
+		}
+		else {
+			setidx = setNumber;
+		}
+		
+		Shape  shape; // = magic_enum::enum_cast<Color>(parts[5]);
+		if     (parts[5] == "triangle")  shape = Shape::triangle;
+		else if(parts[5] == "rectangle") shape = Shape::rectangle;
+		else if(parts[5] == "circle")    shape = Shape::circle;
+		else assert(0);
+		
+		Color  color;
+		if     (parts[6] == "blue")     color = Color::blue;
+		else if(parts[6] == "yellow")   color = Color::yellow;
+		else if(parts[6] == "green")    color = Color::green;
+		else assert(0);
+		
+		Size  size;
+		if     (parts[7] == "1")   size = Size::size1;
+		else if(parts[7] == "2")   size = Size::size2;
+		else if(parts[7] == "3")   size = Size::size3;
+		else assert(0);
+
+		size_t cntyes = stoi(parts[8]);
+		size_t cntno  = stoi(parts[9]);
+
+		// figure out our class
+		Object o{color, shape, size};
+
+		// add this to the set
+		theset->insert(o);
+		
+		LearnerDatum ld{o, correctAnswer, alpha, theset, setNumber, responseInSet};
+		
+		MyHumanDatum hd{cntyes, cntno, learner_data[conceptlist], ld}; // we copy learnerdata[cl] before we've loaded the next one (so it might be empty)
+		human_data.push_back(hd);
+		
+		// add the next learning data
+		learner_data[conceptlist].push_back(ld);
+	}
+	
+	COUT "# Loaded data" ENDL;
 	
 	std::set<MyHypothesis> all;
 	
-	for(auto v : bigdata) {
+	for(const auto& v : learner_data) {
 		
-		CERR "# Running " TAB v.first ENDL;
+		COUT "# Running " TAB v.first ENDL;
 		
-//		for(size_t i=0;i<v.second.size();i++) {
-		for(size_t i=0;i<25;i++) {
-			MyHypothesis::t_datum di = v.second[i];
+		for(size_t i=0;i<v.second.size();i++) {
+			auto di = v.second[i];
 			MyHypothesis h0(&grammar);
 			h0 = h0.restart();
-			auto givendata = slice(v.second, 0, (di.setnumber-1)-1);
-			MCMCChain<MyHypothesis> chain(h0, &givendata, callback);
-			chain.run(100, 0); // run it super fast
+			auto givendata = slice(v.second, 0, (di.setNumber-1)-1);
+			MCMCChain chain(h0, &givendata, top);
+			chain.run(1000, 0); // run it super fast
 		
 			for(auto h : top.values()) {
 				h.clear_bayes(); // zero and insert
@@ -212,66 +317,38 @@ int main(int argc, char** argv){
 		}
 	}
 
-	CERR "# Done running MCMC" ENDL;
+	COUT "# Done running MCMC" ENDL;
 	
 	// Show the best we've found
 	for(auto h : all) { 
 		COUT "# Hypothesis ";
 		print(h);
 	}
-
-	
 	
 	// Now let's look a bit
 	std::vector<MyHypothesis> hypotheses;
 	for(auto h : all) hypotheses.push_back(h);
-	CERR "# Found " TAB hypotheses.size() TAB "hypotheses" ENDL;
-	
-	
-	// Now we go through and vectorize everything
-	std::vector<MyHypothesis::t_data>   given_data;
-	std::vector<MyHypothesis::t_datum>  predict_data;
-	std::vector<size_t> yes_responses;
-    std::vector<size_t> no_responses;
-	for(auto v : bigdata) {
-		
-//		for(size_t i=0;i<v.second.size();i++) {
-		for(size_t i=0;i<25;i++) { // look at hte first few sets, that's all
-			MyHypothesis::t_datum di = v.second[i];
-			
-			// the data we've seen is only to setnumber minus 1
-			given_data.push_back(slice(v.second, 0, (di.setnumber-1)-1)); // setnumber is 1-indexed
-			
-			predict_data.push_back(di);
-			yes_responses.push_back(di.cntyes);
-			no_responses.push_back(di.cntno);
-		}
-	}
-	CERR "# Done vectorizing" ENDL;
-	
+	COUT "# Found " TAB hypotheses.size() TAB "hypotheses" ENDL;
 	
 	Matrix C  = counts(hypotheses);
-	CERR "# Done computing counts" ENDL;
+	COUT "# Done computing prior counts" ENDL;
 	
-	Matrix LL = incremental_likelihoods(hypotheses, given_data);
-	CERR "# Done computing incremental likelihoods " ENDL;
-	
-	Matrix P  = model_predictions(hypotheses, predict_data); // NOTE the transpose here
-	CERR "# Done computing model predictions" ENDL;
+	Matrix LL = my_compute_incremental_likelihood(hypotheses, human_data); // using MY version
+	COUT "# Done computing incremental likelihoods " ENDL;
 		
-	GrammarHypothesis<MyHypothesis> gh0(&grammar, &C, &LL, &P);
+	auto P = model_predictions(hypotheses, human_data);
+	COUT "# Done computing model predictions" ENDL;
+
+		
+	GrammarHypothesis<MyHypothesis,MyHumanDatum> gh0(&grammar, &C, &LL, &P);
 	gh0 = gh0.restart();
 	
-	auto gdata = std::make_tuple(given_data,predict_data,yes_responses,no_responses);
-	
 	tic();
-	auto thechain = MCMCChain<GrammarHypothesis<MyHypothesis>>(gh0, &gdata, gcallback);
+	auto thechain = MCMCChain(gh0, &human_data, &gcallback);
 	thechain.run(mcmc_steps, runtime);
 	tic();
-	
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
 	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
-	
 }
