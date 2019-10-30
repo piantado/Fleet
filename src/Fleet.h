@@ -78,6 +78,15 @@ namespace FleetStatistics {
 	std::atomic<uintmax_t> mcmc_proposal_calls(0);
 	std::atomic<uintmax_t> mcmc_acceptance_count(0);
 	std::atomic<uintmax_t> global_sample_count(0);
+	
+	void reset() {
+		posterior_calls = 0;
+		hypothesis_births = 0;
+		vm_ops = 0;
+		mcmc_proposal_calls = 0;
+		mcmc_acceptance_count = 0;
+		global_sample_count = 0;
+	}
 }
 
 namespace Fleet { 
