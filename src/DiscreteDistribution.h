@@ -103,8 +103,14 @@ public:
 	// inherit some interfaces
 	size_t count(T x) const { return m.count(x); }
 	size_t size() const     { return m.size(); }
-	double operator[](T x)  { return m[x]; }
-	double at(T x) const         { return m.at(x); }
+	double operator[](T x)  {
+		if(m.count(x)) return m[x];
+		else		   return -infinity;
+	}
+	double at(T x) const         { 
+		if(m.count(x)) return m.at(x);
+		else		   return -infinity;
+	}
 
 	
 };
