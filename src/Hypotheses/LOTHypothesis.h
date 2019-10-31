@@ -21,6 +21,8 @@ public:
 	typedef typename Bayesable<_t_datum,_t_data>::t_data   t_data;
 	typedef typename Bayesable<_t_datum,_t_data>::t_datum t_datum;
 	
+	static const MAX_NODES = 32; // max number of nodes we allow; otherwise -inf prior
+	
 	Grammar* grammar;
 	T value;
 
@@ -59,6 +61,12 @@ public:
 	
 	virtual double compute_prior() {
 		assert(grammar != nullptr && "Grammar was not initialized before trying to call compute_prior");
+		
+		if(this->value->count() > MAX_NODES) {
+			this->prior = -infinity;
+			return this->prior;
+		}
+		
 		this->prior = grammar->log_probability(value);
 		return this->prior;
 	}
