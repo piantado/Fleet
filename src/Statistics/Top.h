@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include "stdlib.h"
@@ -136,7 +137,7 @@ public:
 	double Z() { // compute the normalizer
 		double z = -infinity;
 		std::lock_guard guard(lock);
-		for(auto x : s) z = logplusexp(z, x.posterior);
+		for(const auto& x : s) z = logplusexp(z, x.posterior);
 		return z;       
 	}
 	

@@ -291,7 +291,7 @@ int main(int argc, char** argv){
 		
 		
 		MyHypothesis h0(&grammar);
-		ParallelTempering samp(h0, &mydata, top, 8, 1000.0, false);
+		ParallelTempering samp(h0, &mydata, top, 8, 1000.0);
 		tic();
 		samp.run(mcmc_steps, runtime, 0.2, 3.); //30000);		
 		tic();

@@ -144,7 +144,7 @@ int main(int argc, char** argv){
 	
 	MyHypothesis h0(&grammar);
 	h0 = h0.restart();
-	ParallelTempering samp(h0, &mydata, top, 8, 1000.0, false);
+	ParallelTempering samp(h0, &mydata, top, 8, 1000.0);
 	tic();
 	samp.run(mcmc_steps, runtime, 0.2, 3.0); //30000);		
 	tic();
