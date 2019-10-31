@@ -235,7 +235,6 @@ void Fleet_initialize() {
 	// parse the time
 	runtime = convert_time(timestring);
 	
-	if(random_seed != 0) rng.seed(random_seed);
 	
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
 	COUT "# Running Fleet on " << hostname << " with PID=" << getpid() << " by user " << username << " at " << ctime(&timenow);

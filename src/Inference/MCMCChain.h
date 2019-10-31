@@ -92,6 +92,8 @@ public:
 	
 	void run(unsigned long steps, unsigned long time) {
 		
+		UniformDistribution uniform;
+		
 		using clock = std::chrono::high_resolution_clock;
 		
 		// compute the info for the curent

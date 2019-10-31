@@ -112,11 +112,11 @@ public:
 	void operator()(T& x)       { add(x); }
 	
 	
-    T best() { 
+    const T& best() { 
 		assert( (!s.empty()) && "You tried to get the max from a TopN that was empty");
 		return *s.rbegin();  
 	}
-    T worst() { 
+    const T& worst() { 
 		assert( (!s.empty()) && "You tried to get the min from a TopN that was empty");
 		return *s.begin(); 
 	}
@@ -137,7 +137,8 @@ public:
 	double Z() { // compute the normalizer
 		double z = -infinity;
 		std::lock_guard guard(lock);
-		for(const auto& x : s) z = logplusexp(z, x.posterior);
+		for(const auto& x : s) 
+			z = logplusexp(z, x.posterior);
 		return z;       
 	}
 	
@@ -159,8 +160,9 @@ public:
 		cnt.clear();
 	}
 	
-	unsigned long count(const T x) const {
-		// This migth get called by something not in here, so we can't assume x is in 
+	unsigned long count(const T x) {
+		std::lock_guard guard(lock);
+		// This mightt get called by something not in here, so we can't assume x is in 
 		if(cnt.count(x)) return cnt.at(x);
 		else             return 0;
 	}
