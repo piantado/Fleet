@@ -2,36 +2,16 @@
 
 #include <random>
 #include <functional>
-std::normal_distribution<float> normal(0.0, 1.0);
-		
-class UniformDistribution {
-	/* We define a uniform distribution (rather than a global one) because 
-	 * otherwise there is a block in multithreading in accessing the same rng.
-	 * NOTE: Seeding does not quite work here because we don't guarantee that thread_seed is set consistently across threads
-	 * */
-	
-	std::random_device rd;     // only used once to initialise (seed) engine
-	std::mt19937 rng;    // random-number engine used (Mersenne-Twister in this case)
-	std::uniform_real_distribution<double> u;
-	
-	static std::atomic<uintmax_t> thread_seed; // when we seed, this must be shared across threads
-public:
-	UniformDistribution() : u(0,1) {
-		if(random_seed != 0)  {
-			++thread_seed;
-			rng.seed(thread_seed*random_seed);
-		}
-		else {
-			rng.seed(rd());
-		}
-	}
-	
-	double operator() () {
-		return u(rng);
-	}
-};
-std::atomic<uintmax_t> UniformDistribution::thread_seed = 0;
 
+// it's important to make these thread-local or else they block each other in parallel cores
+thread_local std::random_device rd;     // only used once to initialise (seed) engine
+thread_local std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
+thread_local std::uniform_real_distribution<double> uniform_dist(0,1.0);
+thread_local std::normal_distribution<float> normal(0.0, 1.0);
+	
+double uniform() {
+	return uniform_dist(rng);
+}
 
 double cauchy_lpdf(double x, double loc=0.0, double gamma=1.0) {
     return -log(pi) - log(gamma) - log(1+((x-loc)/gamma)*((x-loc)/gamma));
@@ -44,15 +24,12 @@ double normal_lpdf(double x, double mu=0.0, double sd=1.0) {
 }
 
 double random_cauchy() {
-	UniformDistribution uniform;
 	return tan(pi*(uniform()-0.5));
 }
 
 template<typename t>
 std::vector<t> random_multinomial(t alpha, size_t len) {
 	// give back a random multinomial distribution 
-	std::random_device rd;     // only used once to initialise (seed) engine
-	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)	
 	std::gamma_distribution<t> g(alpha, 1.0);
 	std::vector<t> out(len);
 	t total = 0.0;
@@ -66,8 +43,13 @@ std::vector<t> random_multinomial(t alpha, size_t len) {
 	return out;	
 }
 
+template<typename T>
+T myrandom(T max) {
+	std::uniform_int_distribution<T> r(0,max-1);
+	return r(rng);
+}
+
 bool flip() {
-	UniformDistribution uniform;
 	return uniform() < 0.5;
 }
 
@@ -76,7 +58,6 @@ std::pair<t*,double> sample(const T& s, std::function<double(const t&)>& f = [](
 	// this takes a collection T of elements t, and a function f
 	// which assigns them each a probability, and samples from them according
 	// to the probabilities in f
-	UniformDistribution uniform;
 	
 	double z = 0.0; // find the normalizer
 	for(auto& x : s) 

@@ -31,10 +31,12 @@ public:
 	double min_lp; // prune out stuff with less probability than this
 	double worst_lp = infinity;
 	
+	//std::priority_queue<VMState, std::vector<VMState>> Q; // Q of states sorted by probability
 	std::priority_queue<VMState*, std::vector<VMState*>, VirtualMachinePool::compare_VMState_prt> Q; // Q of states sorted by probability
 
 	VirtualMachinePool(unsigned long ms=2048, unsigned long mo=256, double mlp=-20) 
 					   : max_steps(ms), max_outputs(mo), current_steps(0), min_lp(mlp) {
+						   
 	}
 	
 	virtual ~VirtualMachinePool() {
@@ -46,7 +48,8 @@ public:
 		
 	bool wouldIadd(double lp) {
 		// returns true if I would add something with this lp, given my max_steps and the stack
-		return lp >= min_lp && (Q.size() < max_steps || lp > worst_lp);
+		return lp >= min_lp and 
+			   (Q.size() <= (max_steps-current_steps) or lp > worst_lp);
 	}
 	
 	void push(VMState* o) { 
@@ -59,7 +62,7 @@ public:
 	}
 	
 	template<typename T>
-	void copy_increment_push(const VMState* x, T v, double lpinc) {
+	bool copy_increment_push(const VMState* x, T v, double lpinc) {
 		// This is an important opimization where we will make a copy of x, 
 		// push v into it's stack, and increment its lp by lpinc only if it will
 		// be added to the queue, whcih we check in the pool here. This saves us from
@@ -71,7 +74,9 @@ public:
 			s->template push<T>(v); // add v
 			s->increment_lp(lpinc);
 			this->push(s);	
+			return true;
 		}	
+		return false;
 	}
 	
 	template<typename T>

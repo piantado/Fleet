@@ -57,8 +57,6 @@ const unsigned long MAX_STEPS_PER_FACTOR   = 4096; //2048; //2048;
 const unsigned long MAX_OUTPUTS_PER_FACTOR = 512; // 256; // 512; //256;
 
 class MyGrammar : public Grammar { 
-class MyGrammar : public Grammar { 
-class MyGrammar : public Grammar { 
 public:
 	MyGrammar() : Grammar() {
 		add( Rule(nt_string, BuiltinOp::op_X,            "x",            {},                               10.0) );	
@@ -72,7 +70,7 @@ public:
 		// push for each
 		for(size_t ai=0;ai<alphabet.length();ai++) {
 //			CERR "# Alphabet rule" << alphabet.substr(ai,1) TAB alphabet ENDL;
-			add( Rule(nt_string, CustomOp::op_TERMINAL,   Q(alphabet.substr(ai,1)),          {},       10.0/alphabet.length(), ai) );
+			add( Rule(nt_string, CustomOp::op_TERMINAL,   Q(alphabet.substr(ai,1)),          {},       10.0/alphabet.length(), (int)alphabet.at(ai) ));
 		}
 
 		add( Rule(nt_string, CustomOp::op_EMPTYSTRING,  "\u00D8",          {},                            1.0) );
@@ -122,8 +120,7 @@ public:
 			CASE_FUNC0(CustomOp::op_EMPTYSTRING, S,          [](){ return S("");} )
 			CASE_FUNC1(CustomOp::op_EMPTY,       bool,  S,   [](const S& s){ return s.size()==0;} )
 			CASE_FUNC2(CustomOp::op_STREQ,       bool,  S,S, [](const S& a, const S b){return a==b;} )
-			CASE_FUNC0(CustomOp::op_TERMINAL,       S,     [i](){ return alphabet.substr(i.arg, 1);} ) // arg stores the index argument
-			
+			CASE_FUNC0(CustomOp::op_TERMINAL,       S,     [i](){ return S(1,(char)i.arg);})  
 			CASE_FUNC0(CustomOp::op_P,             double,           [i](){ return double(i.arg)/10.0;} )
 			
 			CASE_FUNC1(CustomOp::op_String2Set,    StrSet, S, [](const S& x){ StrSet s; s.insert(x); return s; }  )

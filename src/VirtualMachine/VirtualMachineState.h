@@ -100,7 +100,12 @@ public:
 	}
 
 	template<typename T>
-	void push(T x){
+	void push(T& x){
+		// push things onto the appropriate stack
+		stack<T>().push(x);
+	}
+	template<typename T>
+	void push(T&& x){
 		// push things onto the appropriate stack
 		stack<T>().push(x);
 	}

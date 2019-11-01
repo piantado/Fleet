@@ -27,10 +27,9 @@ public:
 	MyGrammar() : Grammar() {
 		add( Rule(nt_string, BuiltinOp::op_X,            "x",            {},                               10.0) );		
 
-		// here we create an alphabet op with an "arg" that is unpacked below to determine
-		// which character of the alphabet it corresponds to 
+		// here we create an alphabet op with an "arg" that stores the character (this is fater than alphabet.substring with i.arg as an index) 
 		for(size_t i=0;i<alphabet.length();i++)
-			add( Rule(nt_string, CustomOp::op_A,            alphabet.substr(i,1),          {},                   10.0/alphabet.length(), i) );
+			add( Rule(nt_string, CustomOp::op_A,            alphabet.substr(i,1),          {},                   10.0/alphabet.length(), (int)alphabet.at(i) ) );
 
 		add( Rule(nt_string, CustomOp::op_EMPTYSTRING,  "''",           {},                               1.0) );
 		
@@ -95,7 +94,7 @@ public:
 			// an abort			
 			
 			// when we process op_A, we unpack the "arg" into an index into alphabet
-			CASE_FUNC0(CustomOp::op_A,           S,          [i](){ return alphabet.substr(i.arg, 1);} )
+			CASE_FUNC0(CustomOp::op_A,           S,          [i](){ return std::string(1,(char)i.arg);}) // alphabet.substr(i.arg, 1);} )
 			// the rest are straightforward:
 			CASE_FUNC0(CustomOp::op_EMPTYSTRING, S,          [](){ return S("");} )
 			CASE_FUNC1(CustomOp::op_EMPTY,       bool,  S,   [](const S& s){ return s.size()==0;} )
@@ -112,10 +111,22 @@ public:
 //			CASE_FUNC0(CustomOp::op_NUM,         int,       [i](){ return i.arg; } )		
 			
 			
-			CASE_FUNC2e(CustomOp::op_CONS,       S, S,S,
-								[](const S& x, const S& y){ S a = x; a.append(y); return a; },
-								[](const S& x, const S& y){ return (x.length()+y.length()<MAX_LENGTH ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
-								)
+//			CASE_FUNC2e(CustomOp::op_CONS,       S, S,S,
+//								[](const S& x, const S& y){ S a = x; a.append(y); return a; },
+//								[](const S& x, const S& y){ return (x.length()+y.length()<MAX_LENGTH ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
+//								)
+			case CustomOp::op_CONS: {
+				// Above is one way to implement cons, but here we can do it faster by not removing it from the stack
+				S y = vms.getpop<S>();
+				
+				// length check
+				if(vms.stack<S>().topref().length() + y.length() > MAX_LENGTH) 
+					return abort_t::SIZE_EXCEPTION;
+
+				vms.stack<S>().topref().append(y);
+				
+				break;
+			}
 			default:
 				assert(0 && " *** You ended up with an invalid argument"); // should never get here
 		}

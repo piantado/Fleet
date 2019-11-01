@@ -88,6 +88,11 @@ public:
 			set_child(i, n.child[i]);
 		}
 	}
+//	Node(Node&& n) :
+//		parent(nullptr), child(n.child), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
+//		for(size_t i=0;i<child.size();i++) child[i].parent = this;
+//	}
+
 	void operator=(const Node& n) {
 		parent = nullptr; 
 		rule = n.rule;
@@ -95,14 +100,27 @@ public:
 		can_resample = n.can_resample;
 		child.resize(n.child.size());
 		for(size_t i=0;i<n.child.size();i++) {
-			set_child(i, Node(n.child[i]));
+			set_child(i, std::move(Node(n.child[i])));
 		}
 	}
+//	void operator=(Node&& n) {
+//		parent = nullptr; 
+//		rule = n.rule;
+//		lp = n.lp;
+//		can_resample = n.can_resample;
+//		
+//		// just move the vector and then set the parents after
+//		// this is a speed optimization rather than using set_child
+//		child = std::move(n.child); 
+//		for(size_t i=0;i<child.size();i++) child[i].parent = this; 
+//	}
+
 	void operator=(Node&& n) {
 		parent = nullptr; 
 		rule = n.rule;
 		lp = n.lp;
 		can_resample = n.can_resample;
+		
 		child.resize(n.child.size());
 		for(size_t i=0;i<n.child.size();i++) {
 			set_child(i, n.child[i]);
@@ -135,14 +153,16 @@ public:
 	}
 	
 	void set_child(size_t i, Node& n) {
-		if(i > child.size()) child.resize(i);
+		// NOTE: if you add anything fancy to this, be sure to update the copy and move constructors
+		if(i >= child.size()) child.resize(i);
 		child[i] = n;
 		child[i].pi = i;
 		child[i].parent = this;
 	}
 	void set_child(size_t i, Node&& n) {
-		if(i > child.size()) child.resize(i);
-		child[i] = n;
+		// NOTE: if you add anything fancy to this, be sure to update the copy and move constructors
+		if(i >= child.size()) child.resize(i);
+		child[i] = std::move(n);
 		child[i].pi = i;
 		child[i].parent = this;
 	}

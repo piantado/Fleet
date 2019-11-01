@@ -170,8 +170,7 @@ public:
 		// To do this, we'll draw random numbers on the number of factors
 		// until we get one that isn't all zeros, and then use that to determine 
 		// what is proposed where. 
-		std::random_device rd;     // only used once to initialise (seed) engine
-		std::mt19937 rng(rd);    // random-number engine used (Mersenne-Twister in this case)
+		
 		std::uniform_int_distribution<size_t> d(0, pow(2,factors.size()) );
 		size_t u;
 		do { u = d(rng); } while(u == 0);

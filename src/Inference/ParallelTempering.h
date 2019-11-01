@@ -71,7 +71,6 @@ public:
 	
 	void __swapper_thread(double swap_every ) {
 		// runs a swapper every swap_every seconds (double)
-		UniformDistribution uniform;
 		
 		auto last = now();
 		while(!(terminate or CTRL_C)) {
