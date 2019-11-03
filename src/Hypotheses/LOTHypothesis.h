@@ -34,7 +34,6 @@ public:
 	LOTHypothesis(Grammar* g, std::string s) : MCMCable<HYP,t_datum,t_data>(), grammar(g)  {
 		value = grammar->expand_from_names(s);
 	}
-
 	
 	// Stuff to create hypotheses:
 	[[nodiscard]] virtual std::pair<HYP,double> propose() const {
@@ -81,6 +80,7 @@ public:
 	virtual void push_program(Program& s, short k=0) {
 		assert(k==0); // this is only for lexica
 		
+		s.reserve(s.size()+value.program_size()+1);
 		value.linearize(s);
 	}
 
@@ -93,7 +93,6 @@ public:
 
 		VirtualMachineState<t_input,t_output>* vms = new VirtualMachineState<t_input,t_output>(x, err);
 		
-		vms->opstack.reserve(value.program_size()); // not necessary but much faster in SymbolicRegression and others
 		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
 		
 		pool.push(vms); // add vms to the pool

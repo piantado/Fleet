@@ -85,7 +85,7 @@ public:
 		parent(nullptr), child(n.child.size()), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
 		child.resize(n.child.size());
 		for(size_t i=0;i<n.child.size();i++) {
-			set_child(i, n.child[i]);
+			set_child(i, std::move(n.child[i]));
 		}
 	}
 //	Node(Node&& n) :
@@ -100,7 +100,7 @@ public:
 		can_resample = n.can_resample;
 		child.resize(n.child.size());
 		for(size_t i=0;i<n.child.size();i++) {
-			set_child(i, std::move(Node(n.child[i])));
+			set_child(i, Node(n.child[i]));
 		}
 	}
 //	void operator=(Node&& n) {
@@ -123,7 +123,7 @@ public:
 		
 		child.resize(n.child.size());
 		for(size_t i=0;i<n.child.size();i++) {
-			set_child(i, n.child[i]);
+			set_child(i, std::move(n.child[i]));
 		}
 	}
 	

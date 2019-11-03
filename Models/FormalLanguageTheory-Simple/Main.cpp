@@ -170,16 +170,6 @@ int main(int argc, char** argv){
 	// declare a grammar
 	MyGrammar grammar;
 			
-//	for(int i=1;i<100000 and !CTRL_C;i++){
-////		auto n = grammar.expand_from_integer(nt_string, i);
-////		COUT i TAB grammar.compute_enumeration_order(n) TAB n.string() ENDL;
-//		auto n = grammar.fancy_index(nullptr, nt_string, i);
-//		COUT i TAB n.string() ENDL;
-//
-//	}
-//	
-//	return 0;
-	
 	//------------------
 	// set up the data
 	//------------------
@@ -189,22 +179,6 @@ int main(int argc, char** argv){
 		mydata.push_back( MyHypothesis::t_datum({S(""), di}) );
 	}
 	
-	// simple pattern
-//	mydata.push_back( MyHypothesis::t_datum({S(""), S("01011"), 0.99}) );
-//	mydata.push_back( MyHypothesis::t_datum({S(""), S("0101101011"), 0.99}) );
-//	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110101101011"), 0.99}) );
-
-	// Fibonacci data:
-//	mydata.push_back( MyHypothesis::t_datum({S(""), S("01011"), 0.99}) );
-//	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110111"), 0.99}) );
-//	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110111011111"), 0.99}) );
-//	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110111011111011111111"), 0.99}) );
-
-	// increasing count data
-//	mydata.push_back( MyHypothesis::t_datum({S(""), S("01011"), 0.99}) );
-//	mydata.push_back( MyHypothesis::t_datum({S(""), S("010110111"), 0.99}) );
-//	mydata.push_back( MyHypothesis::t_datum({S(""), S("01011011101111"), 0.99}) );
-
 	//------------------
 	// Run
 	//------------------
@@ -216,17 +190,17 @@ int main(int argc, char** argv){
 //	thechain.run(mcmc_steps, runtime);
 //	tic();
 //	
-//	ParallelTempering samp(h0, &mydata, top, 8, 1000.0);
-//	tic();
-//	samp.run(mcmc_steps, runtime, 1.0, 3.0); //30000);		
-//	tic();
-//	
+	ParallelTempering samp(h0, &mydata, top, nthreads, 1000.0);
+	tic();
+	samp.run(mcmc_steps, runtime, 1.0, 3.0); //30000);		
+	tic();
+	
 
-	std::function<void(const MyHypothesis& h)> cb = [](const MyHypothesis& h) {return;};
-	tic();
-	ChainPool samp(h0, &mydata, cb, nthreads);
-	samp.run(mcmc_steps, runtime);
-	tic();
+//	std::function<void(const MyHypothesis& h)> cb = [](const MyHypothesis& h) {return;};
+//	tic();
+//	ChainPool samp(h0, &mydata, cb, nthreads);
+//	samp.run(mcmc_steps, runtime);
+//	tic();
 	
 	// Show the best we've found
 	top.print();

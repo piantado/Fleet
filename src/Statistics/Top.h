@@ -22,7 +22,7 @@ public:
 	std::multiset<T> s; // important that it stores in sorted order by posterior! Multiset because we may have multiple samples that are "equal" (as in SymbolicRegression)
 	
 public:
-	size_t N;
+	std::atomic<size_t> N;
 	
 	TopN(size_t n=std::numeric_limits<size_t>::max()) : N(n) {}
 	
@@ -68,26 +68,24 @@ public:
 		// add something of type x if we should - only makes a copy if we add it
 		// NOTE: we do not add -inf things
 		
-		if(std::isnan(x.posterior) || x.posterior == -infinity) return;
+		if(std::isnan(x.posterior) or x.posterior == -infinity or N == 0) return;
 		
 		std::lock_guard guard(lock);
-		
+
 		// if we aren't in there and our posterior is better than the worst
-		if(s.find(x) == s.end()) { 
-			if(s.size() < N || x.posterior > s.begin()->posterior) { // skip adding if its the worst
-				T xcpy = x;
+		if(s.find(x) == s.end() and 
+			(s.size() < N or x.posterior > s.begin()->posterior)) { // skip adding if its the worst
+			T xcpy = x;
+		
+			s.insert(xcpy); // add this one
+			assert(cnt.find(xcpy) == cnt.end());
+			cnt[xcpy] = count;
 			
-				s.insert(xcpy); // add this one
-				assert(cnt.find(xcpy) == cnt.end());
-				cnt[xcpy] = count;
-				
-				// and remove until we are the right size
-				while(s.size() > N) {
-					size_t n = cnt.erase(*s.begin());
-					assert(n==1);
-					s.erase(s.begin()); 
-				}
-				
+			// and remove until we are the right size
+			while(s.size() > N) {
+				size_t n = cnt.erase(*s.begin());
+				assert(n==1);
+				s.erase(s.begin()); 
 			}
 		}
 		else { // if its stored somewhere already

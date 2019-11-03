@@ -54,7 +54,6 @@ public:
 	
 	void push(VMState* o) { 
 		// For speed, we only allow rvalues for o -- that means that we can move them right into the stack
-		//CERR "POOL PUSHING " TAB &o ENDL;
 		if(wouldIadd(o->lp)){ // TODO: might be able to add an optimization here that doesn't push if we don't have enough steps left to get it 
 			Q.push(o);			
 			worst_lp = std::min(worst_lp, o->lp); //keep track of the worst we've seen
@@ -90,6 +89,7 @@ public:
 		}	
 		return false;
 	}
+
 
 	
 	DiscreteDistribution<t_return> run(Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) { 

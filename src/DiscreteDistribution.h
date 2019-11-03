@@ -27,11 +27,11 @@ public:
 	}
 	
 	
-	void print(std::ostream& out) { out << this->string();	}
-	void print()                  {	print(std::cout);	}
+	void print(std::ostream& out) const { out << this->string();	}
+	void print()                  const {	print(std::cout);	}
 	
 	
-	std::string string() {
+	std::string string() const {
 		
 		// put the strings into a vector
 		std::vector<T> v;
@@ -47,7 +47,7 @@ public:
 		
 		std::string out = "{";
 		for(size_t i=0;i<v.size();i++){
-			out += "'"  + v[i] + "':" + std::to_string(m[v[i]]);
+			out += "'"  + v[i] + "':" + std::to_string(m.at(v[i]));
 			if(i < v.size()-1) { out += ", "; }
 		}
 		out += "} [Z=" + std::to_string(Z) + ", N=" + std::to_string(v.size()) + "]";
@@ -76,7 +76,7 @@ public:
 		}
 	}
 	
-	std::vector<T> best(size_t N) {
+	std::vector<T> best(size_t N) const {
 		// get the N best
 		std::vector<std::pair<T,double>> v(m.size());
 		std::copy(m.begin(), m.end(), v.begin());
@@ -90,7 +90,7 @@ public:
 		return out;
 	}
 	
-	std::vector<std::pair<T,double>> sorted(bool decreasing=false) {
+	std::vector<std::pair<T,double>> sorted(bool decreasing=false) const {
 		// get a copy that is sorted
 		std::vector<std::pair<T,double>> v(m.size());
 		std::copy(m.begin(), m.end(), v.begin());

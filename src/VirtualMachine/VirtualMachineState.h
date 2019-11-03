@@ -117,7 +117,6 @@ public:
 	bool stacks_empty() const { 
 		// return strue if stack is empty -- as a check at the end of a evaluation
 		return this->_stacks_empty<NT_TYPES>();
-		
 	}
 	
 	virtual t_return run(Dispatchable<t_x,t_return>* d) {
@@ -193,12 +192,17 @@ public:
 						if constexpr (std::is_same<t_x, std::string>::value) { 						
 
 							// need to check if stack<t_x> is empty since thats where we get x
-							if(empty<t_x>() or stack<t_x>().top().size() == 0) { 
+							if (empty<t_x>()) {
+								push<t_return>(t_return{});
+								continue;
+							}
+							else if(stack<t_x>().top().size() == 0) { 
 								getpop<t_x>(); // this would have been the argument
 								push<t_return>(t_return{}); //push default (null) return
 								continue;
 							}
-						} else { assert(false && "*** Can only use SAFE_MEM_RECURSE on strings");}
+							
+						} else { assert(false && "*** Can only use SAFE_RECURSE on strings");}
 						
 						// want to fallthrough here
 						[[fallthrough]];
@@ -229,7 +233,11 @@ public:
 					case BuiltinOp::op_SAFE_MEM_RECURSE: {
 						// same as SAFE_RECURSE. Note that there is no memoization here
 						if constexpr (std::is_same<t_x, std::string>::value) { 						
-							if(empty<t_x>() or stack<t_x>().top().size() == 0) { 
+							if (empty<t_x>()) {
+								push<t_return>(t_return{});
+								continue;
+							}
+							else if(stack<t_x>().top().size() == 0) { 
 								getpop<t_x>(); // this would have been the argument
 								push<t_return>(t_return{}); //push default (null) return
 								continue;

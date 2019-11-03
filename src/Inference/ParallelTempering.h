@@ -25,6 +25,8 @@ public:
 	ParallelTempering(HYP& h0, typename HYP::t_data* d, callback_t& cb, std::initializer_list<double> t, bool allcallback=true) : 
 		ChainPool<HYP,callback_t>(h0, d, cb, temperatures.size(),allcallback),
 		temperatures(t), terminate(false) {
+		assert(temperatures.size() > 1);
+
 		// allcallback is true means that all chains call the callback, otherwise only t=0
 		for(size_t i=0;i<temperatures.size();i++) {
 			this->pool[i].temperature = temperatures[i]; // set its temperature 
@@ -32,12 +34,15 @@ public:
 		
 		is_temperature = true;
 		swap_history = new FiniteHistory<bool>[temperatures.size()];
+		
+
 	}
 	
 	
 	ParallelTempering(HYP& h0, typename HYP::t_data* d, callback_t& cb, unsigned long n, double maxT, bool allcallback=true) : 
 		ChainPool<HYP,callback_t>(h0, d, cb, n, allcallback),
 		terminate(false) {
+		assert(n > 1);
 		// allcallback is true means that all chains call the callback, otherwise only t=0
 		for(size_t i=0;i<n;i++) {
 			if(i==0) {  // always initialize i=0 to T=1s
@@ -55,6 +60,8 @@ public:
 	
 	ParallelTempering(HYP& h0, std::vector<typename HYP::t_data>& datas, std::vector<callback_t> cb) :
 		ChainPool<HYP,callback_t>() {
+		assert(datas.size() > 1);
+		assert(datas.size() == cb.size());
 		// This version anneals on data, giving each chain a different amount in datas order
 		for(size_t i=0;i<datas.size();i++) {
 			this->pool.push_back(MCMCChain(i==0?h0:h0.restart(), &(datas[i]), cb[i]));

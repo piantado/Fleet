@@ -70,9 +70,9 @@ public:
 		
 		for(auto& a : factors) {
 			for(auto& n : a.value) {
-				if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE) ) {
+				if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE,BuiltinOp::op_SAFE_RECURSE,BuiltinOp::op_SAFE_MEM_RECURSE) ) {
 					int fi = (size_t)n.rule->instr.arg; // which factor is called?
-					if(fi >= (int)factors.size() or fi <= 0)
+					if(fi >= (int)factors.size() or fi < 0)
 						return false;
 				}
 			}
@@ -132,38 +132,6 @@ public:
 		return this->prior;
 	}
 	
-//	
-//	virtual std::pair<HYP,double> propose() const {
-//		// TODO: Check that detailed balance is ok here?
-//		// tODO: Not the most efficient either
-//		while(true) {
-//			HYP x; 
-//			x.factors = factors; // copy 
-//			
-//			//x.factors.resize(factors.size());
-//			double fb = 0.0;
-//			bool flipped = false;
-//			
-//			for(size_t k=0;k<factors.size();k++) {
-//				if(flip()) {
-//					auto [h, _fb] = factors[k].propose();
-//					x.factors[k] = h;
-//					fb += _fb;
-//					flipped = true; //someone was flipped
-//				}
-//				else {
-//					//x.factors[k] = factors[k]; /// this copy
-//				}
-//			}
-//			
-//			if(flipped) {
-//				assert(x.factors.size() == factors.size());
-//				return std::make_pair(x, fb);						
-//			}
-//		}
-//		
-//	}
-
 	[[nodiscard]] virtual std::pair<HYP,double> propose() const {
 		
 		// We want to guaranteee that there is at least one factor that is changed
@@ -171,9 +139,8 @@ public:
 		// until we get one that isn't all zeros, and then use that to determine 
 		// what is proposed where. 
 		
-		std::uniform_int_distribution<size_t> d(0, pow(2,factors.size()) );
-		size_t u;
-		do { u = d(rng); } while(u == 0);
+		std::uniform_int_distribution<size_t> d(1, pow(2,factors.size())-1 );
+		size_t u = d(rng); // cannot be 1, since that is not proposing to anything
 		
 		// now copy over
 		// TODO: Check that detailed balance is ok?

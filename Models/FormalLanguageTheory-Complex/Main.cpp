@@ -301,7 +301,7 @@ public:
 	 * Calling
 	 ********************************************************/
 	 
-	DiscreteDistribution<S> call(const S x, const S err) {
+	virtual DiscreteDistribution<S> call(const S x, const S err) {
 		// this calls by calling only the last factor, which, according to our prior,
 		// must call everything else
 		
@@ -322,6 +322,8 @@ public:
 		 
 		// call -- treats all input as emptystrings
 		const auto M = call(S(""), S("<err>")); 
+		
+//		COUT string() TAB ""; M.print(); COUT "\n";
 		
 		likelihood = 0.0;
 		const double lpnoise = log((1.0-alpha)/alphabet.size());
@@ -371,19 +373,6 @@ std::string prdata_path = "";
 MyHypothesis::t_data prdata; // used for computing precision and recall -- in case we want to use more strings?
 
 S current_data = "";
-//TopN<MyHypothesis> top;
-std::vector<TopN<MyHypothesis>> tops(0);
-
-void callback(MyHypothesis& h, int i) {
-	
-	tops[i] << h;
-	
-	// print out with thinning
-	if(thin > 0 && FleetStatistics::global_sample_count % thin == 0) {
-		h.print("RUNNING"+std::to_string(i));
-	}
-	
-}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -420,8 +409,7 @@ int main(int argc, char** argv){
 			}
 		}
 	}
-	
-	// we'll maintain h0 across 
+
 	MyHypothesis h0; 
 	for(size_t fi=0;fi<nfactors;fi++) {// start with the right number of factors
 		InnerHypothesis f(&grammar);
@@ -429,23 +417,21 @@ int main(int argc, char** argv){
 	}
 		
 	std::vector<MyHypothesis::t_data> datas; // load all the data	
-	std::vector<std::function<void(MyHypothesis&)>> callbacks;
-	
+	std::vector<TopN<MyHypothesis>> tops;
+
 	for(size_t i=0;i<data_amounts.size();i++){ // big  data on lower chains -- shouldn't matter!
 		MyHypothesis::t_data mydata;
 		
 		S data_path = input_path + "-" + data_amounts[i] + ".txt";	
 		load_data_file(mydata, data_path.c_str());
-		std::function<void(MyHypothesis&)> cbi = [i](MyHypothesis& h) { callback(h,i); };
 		
 		datas.push_back(mydata);
-		callbacks.push_back( cbi );
-		
-		tops.emplace_back(ntop);		
+		tops.push_back(TopN<MyHypothesis>(ntop));
+
 	}
 	
 	// Run
-	ParallelTempering samp(h0, datas, callbacks);
+	ParallelTempering samp(h0, datas, tops);
 	
 	tic();	
 	samp.run(mcmc_steps, runtime, 1.0, 10.0);	
@@ -465,54 +451,12 @@ int main(int argc, char** argv){
 	}
 
 
-
-//		
-//	// set up a parallel tempering object
-//	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0);
-//	tic();
-//	for(auto da : data_amounts) { // This incrementally builds up the amount of data
-//		current_data = da; // set this global variable so we can print it correctly.
-//		S data_path = input_path + "-" + da + ".txt";	
-//		load_data_file(mydata, data_path.c_str());
-//		
-//		// Now we need to update top for the new data
-//		// we're going to keep around the old ones, so 
-//		// we'll temporarily put everything into a temp top
-//		// and then take it over
-//		TopN<MyHypothesis> tmptop(ntop);
-//		for(auto h : top.values()) {
-////			CERR h.likelihood TAB "-->" TAB "";
-//			h.compute_posterior(mydata); // update the posterior to the new data amount
-//			tmptop << h;
-////			CERR h.likelihood ENDL;
-//		}
-//		top = std::move(tmptop); // restore top
-//		
-//		// update our parallel tempering pool
-//		for(auto& c: samp.pool) {
-//			c.getCurrent().compute_posterior(mydata);
-//			c.data = &mydata;
-//		}
-//	
-//		// run for real		
-//		samp.run(mcmc_steps, runtime, 0.2, 3.0);	
-//	
-//		if(top.empty()) CERR "# Zero (non negative inf) hypotheses found" ENDL;
-//		
-//		top.print();	
-//
-//		if(CTRL_C) break;
-//	}
-//	tic();
-//	
-
-
 	// Vanilla MCMC
 //	for(auto da : data_amounts) {
 //		S data_path = input_path + "-" + da + ".txt";
 //		load_data_file(mydata, data_path.c_str());
 //		tic();
-//		MCMCChain chain(h0, &mydata, (std::function<void(MyHypothesis&)>)callback);
+//		MCMCChain chain(h0, &mydata, all);
 //		chain.run(mcmc_steps, runtime);
 //		tic();	
 //	}
