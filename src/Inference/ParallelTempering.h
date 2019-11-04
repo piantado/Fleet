@@ -58,7 +58,7 @@ public:
 	}
 	
 	
-	ParallelTempering(HYP& h0, std::vector<typename HYP::t_data>& datas, std::vector<callback_t> cb) :
+	ParallelTempering(HYP& h0, std::vector<typename HYP::t_data>& datas, std::vector<callback_t>& cb) :
 		ChainPool<HYP,callback_t>() {
 		assert(datas.size() > 1);
 		assert(datas.size() == cb.size());
@@ -152,27 +152,18 @@ public:
 		}
 	}
 	
-//	static void __run_helper(MCMCChain<HYP,callback_t>* c, unsigned long steps, unsigned long time) {
-//		c->run(steps, time);
-//	}
 	
 	virtual void run(unsigned long steps, unsigned long time) { assert(0); }
 	virtual void run(unsigned long steps, unsigned long time, double swap_every, double adapt_every) {
-		std::thread threads[this->pool.size()]; 
 		
-		// start everyone runnig 
-		for(unsigned long i=0;i<this->pool.size();i++) {
-			threads[i] = std::thread(this->__run_helper, &this->pool[i], steps, time);
-		}
-		
-		// pass in the non-static mebers like this:
-		std::thread swapper(&ParallelTempering<HYP,callback_t>::__swapper_thread, this, swap_every);
+		// Start a swapper and adapter thread
+		std::thread swapper(&ParallelTempering<HYP,callback_t>::__swapper_thread, this, swap_every); // pass in the non-static mebers like this:
 		std::thread adapter(&ParallelTempering<HYP,callback_t>::__adapter_thread, this, adapt_every);
 
-		for(unsigned long i=0;i<this->pool.size();i++) {
-			threads[i].join();
-		}
-
+		// run normal pool run
+		ChainPool<HYP,callback_t>::run(steps, time);
+		
+		// kill everything else once that thread is done
 		terminate = true;
 		swapper.join();
 		adapter.join();
@@ -201,7 +192,6 @@ public:
 			if( swap_history[i].N>0 && swap_history[i+1].N>0 ) { // only adjust if there are samples
 				S[i] += k(this->pool[i].samples, v, t0) * (swap_history[i].mean()-swap_history[i+1].mean()); 
 			}
-			
 		}
 		
 		// and then convert S to temperatures again

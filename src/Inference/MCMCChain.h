@@ -90,19 +90,20 @@ public:
 	
 	const HYP& getMax() { return themax; } 
 	
-	void run(unsigned long steps, unsigned long time) {
-		
-		using clock = std::chrono::high_resolution_clock;
+	void run(unsigned long steps, unsigned long time, bool resume=false) {
+		// run for steps or time, whichever comes first. 
+		// If resume, we don't need to recompute anything about the current
 		
 		// compute the info for the curent
-		current.compute_posterior(*data);
-		
-		if(callback != nullptr) (*callback)(current);
-		++FleetStatistics::global_sample_count;
+		if(not resume) {
+			current.compute_posterior(*data);
+			if(callback != nullptr) (*callback)(current);
+			++FleetStatistics::global_sample_count;
+		}
 		themax = current;
 		
 		// we'll start at 1 since we did 1 callback on current to begin
-		auto start_time = clock::now();
+		auto start_time = now();
 		for(unsigned long i=1; (i<steps || steps==0) && !CTRL_C; i++){
 			
 			// check the elapsed time 
