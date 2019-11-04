@@ -192,7 +192,7 @@ typedef Stack<Instruction> Program;
 #include "Hypotheses/Lexicon.h"
 
 #include "Inference/MCMCChain.h"
-//#include "Inference/MCTS.h"
+#include "Inference/MCTS.h"
 #include "Inference/ParallelTempering.h"
 #include "Inference/ChainPool.h"
 

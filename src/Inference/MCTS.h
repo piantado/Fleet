@@ -13,7 +13,7 @@
 
 #include "StreamingStatistics.h"
 
-template<typename HYP>
+template<typename HYP, typename callback_t>
 class MCTSNode {
 
 	/// MCTS Implementation
@@ -34,7 +34,7 @@ public:
 	 
 	bool expand_all_children = false; // when we expand a new leaf, do we expand all children or just sample one (from their priors?) 
 	
-	void (*callback)(HYP&); // a function point to how we compute playouts
+	callback_t* callback; // a function point to how we compute playouts
 	double explore; 
 	
 	mutable std::mutex child_mutex; // for access in parallelTempering
@@ -55,7 +55,7 @@ public:
         initialize();	
     }
     
-    MCTSNode(double ex, HYP& h0, void cb(HYP&), typename HYP::t_data* d, ScoringType st=ScoringType::SAMPLE ) : 
+    MCTSNode(double ex, HYP& h0, callback_t* cb, typename HYP::t_data* d, ScoringType st=ScoringType::SAMPLE ) : 
 		callback(cb), explore(ex), data(d), parent(nullptr), value(h0), scoring_type(st) {
         
 		initialize();        
@@ -243,7 +243,7 @@ public:
 		
 		auto h = h0.copy_and_complete(); // fill in any structural gaps
 		
-		MCMCChain<HYP> chain(h, data, wrapped_callback);
+		MCMCChain chain(h, data, wrapped_callback);
 		
 		chain.run(mcmc_steps, runtime); // run mcmc with restarts; we sure shouldn't run more than runtime
 	}
@@ -297,7 +297,7 @@ public:
 		   this->search_one();
 		}
 	}
-	static void __helper(MCTSNode<HYP>* h, unsigned long steps, unsigned long time) {
+	static void __helper(MCTSNode<HYP,callback_t>* h, unsigned long steps, unsigned long time) {
 		h->search(steps, time);
 	};
 	

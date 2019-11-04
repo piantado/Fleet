@@ -11,6 +11,8 @@ public:
 	std::mutex running_mutex; // modify index of who is running
 	
 	// these parameters define the amount of a thread spends on each chain before changing to another
+	// NOTE: these interact with ParallelTempering swap/adapt values (because if these are too small, then
+	// we won't have time to update every chain before proposing more swaps)
 	static const unsigned long steps_before_change = 0;
 	static const unsigned long time_before_change  = 1; 
 	
@@ -56,7 +58,7 @@ public:
 		size_t idx = next_index(0); // what pool item am I running on?
 		
 		while(my_steps <= steps and time_since(my_time) < time and !CTRL_C) {			
-			CERR "# Running thread " <<std::this_thread::get_id() << " on "<< idx ENDL;
+//			CERR "# Running thread " <<std::this_thread::get_id() << " on "<< idx ENDL;
 			
 			(*pool)[idx].run(steps_before_change, time_before_change);
 			
@@ -71,7 +73,10 @@ public:
 	
 	virtual void run(unsigned long steps, unsigned long time) {
 		
-		assert(nthreads <= pool.size() && "*** Should not run with more threads than chains.");
+		if(nthreads > pool.size()){
+			CERR "# Warning: more threads (" << nthreads << ") than chains ("<<pool.size()<<") is probably dumb.";
+			assert(0); // let's not allow it for now -- make __run_helper much more complex
+		}
 		
 		std::thread threads[nthreads]; 
 		std::vector<bool> running(pool.size()); // what chain is running?

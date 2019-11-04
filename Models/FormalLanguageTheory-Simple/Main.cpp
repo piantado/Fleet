@@ -197,13 +197,6 @@ int main(int argc, char** argv){
 	samp.run(mcmc_steps, runtime, 1.0, 3.0); //30000);		
 	tic();
 	
-
-//	std::function<void(const MyHypothesis& h)> cb = [](const MyHypothesis& h) {return;};
-//	tic();
-//	ChainPool samp(h0, &mydata, cb, nthreads);
-//	samp.run(mcmc_steps, runtime);
-//	tic();
-	
 	// Show the best we've found
 	top.print();
 	

@@ -417,7 +417,7 @@ int main(int argc, char** argv){
 	ParallelTempering samp(h0, datas, tops);
 	
 	tic();	
-	samp.run(mcmc_steps, runtime, 1.0, 10.0);	
+	samp.run(mcmc_steps, runtime, 15.0, 60.0);	
 	tic();
 	
 	// And finally print
