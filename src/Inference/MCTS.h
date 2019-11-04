@@ -89,8 +89,8 @@ public:
 	
     size_t size() const {
         int n = 1;
-        for(auto c : children)
-            n += c->size();
+        for(const auto& c : children)
+            n += c.size();
         return n;
     }
     
