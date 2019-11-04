@@ -21,7 +21,7 @@
 #include <array>
 #include <memory>
 #include <pthread.h>
-#include <thread>         // std::this_thread::sleep_for
+#include <thread>        
 #include <cstdio>
 #include <stdexcept>
 #include <random>
@@ -69,12 +69,9 @@ enum class BuiltinOp {
 namespace FleetStatistics {
 	// Running MCMC/MCTS updates these standard statistics
 	
-	std::atomic<uintmax_t> posterior_calls(0);
-	
+	std::atomic<uintmax_t> posterior_calls(0);	
 	std::atomic<uintmax_t> hypothesis_births(0);  // how many total hypotheses have been created? -- useful for tracking when we found a solution
-
-	std::atomic<uintmax_t> vm_ops(0);
-	
+	std::atomic<uintmax_t> vm_ops(0);	
 	std::atomic<uintmax_t> mcmc_proposal_calls(0);
 	std::atomic<uintmax_t> mcmc_acceptance_count(0);
 	std::atomic<uintmax_t> global_sample_count(0);
@@ -117,9 +114,9 @@ void fleet_interrupt_handler(int signum) {
 
 const std::string ChildStr = "%s"; // how do strings get substituted?
 
-unsigned long random_seed  = 0; // note this also controls how quickly/deep the search goes into the lexicon
-unsigned long mcts_steps   = 0; // note this also controls how quickly/deep the search goes into the lexicon
-unsigned long mcmc_steps   = 0; // note this also controls how quickly/deep the search goes into the lexicon
+unsigned long random_seed  = 0;
+unsigned long mcts_steps   = 0;
+unsigned long mcmc_steps   = 0; 
 unsigned long thin         = 0;
 unsigned long ntop         = 100;
 unsigned long mcmc_restart = 0;
@@ -127,7 +124,8 @@ unsigned long checkpoint   = 0;
 double        explore      = 1.0; // we want to exploit the string prefixes we find
 size_t        nthreads     = 1;
 unsigned long runtime      = 0;
-unsigned long chains       = 1;
+unsigned long nchains      = 1;
+unsigned long blah      = 1;
 bool          concise      = false; // this is used to indicate that we want to not print much out (typically only posteriors and counts)
 std::string   input_path   = "input.txt";
 std::string   tree_path    = "tree.txt";
@@ -136,8 +134,9 @@ std::string   timestring   = "0s";
    
 
 namespace Fleet { 	
-	CLI::App DefaultArguments() {
-		CLI::App app{"Fancier number model."};
+	CLI::App DefaultArguments(const char* brief) {
+		CLI::App app{brief};
+		
 		app.add_option("-R,--seed",    random_seed, "Seed the rng (0 is no seed)");
 		app.add_option("-s,--mcts",    mcts_steps, "Number of MCTS search steps to run");
 //		app.add_option("-S,--mcts-scoring",  mcts_scoring, "How to score MCTS?");
@@ -151,9 +150,11 @@ namespace Fleet {
 		app.add_option("-i,--input",    input_path, "Read standard input from here");
 		app.add_option("-T,--time",     timestring, "Stop (via CTRL-C) after this much time (takes smhd as seconds/minutes/hour/day units)");
 		app.add_option("-E,--tree",     tree_path, "Write the tree here");
+		app.add_option(  "-c,--chains",   nchains, "How many chains to run");
+		
 		app.add_flag(  "-q,--concise",  concise, "Don't print very much and do so on one line");
-		app.add_flag(  "-c,--chains",   chains, "How many chains to run");
-		app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");
+//		app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");
+
 		return app; 
 	}
 }

@@ -10,9 +10,7 @@ template<typename HYP, typename T,
 		 typename _t_data=std::vector<_t_datum> >
 class LOTHypothesis : public Dispatchable<t_input,t_output>, 
 				      public MCMCable<HYP,_t_datum,_t_data>, // remember, this defines t_data, t_datum
-					  public Searchable<HYP,t_input,t_output>
-					  
-{
+					  public Searchable<HYP,t_input,t_output>	{
 	// stores values as a pointer to something of type T, whose memory I manage (I delete it when I go away)
 	// This also stores a pointer to a grammar, but I do not manage its memory
 	// nt store the value of the root nonterminal
@@ -129,7 +127,10 @@ public:
 		return this->value == h.value;
 	}
 	
-	virtual abort_t dispatch_rule(Instruction i, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>& vms,  Dispatchable<t_input, t_output>* loader )=0;
+	virtual abort_t dispatch_rule(Instruction i, 
+								  VirtualMachinePool<t_input,t_output>* pool, 
+								  VirtualMachineState<t_input,t_output>& vms,  
+								  Dispatchable<t_input, t_output>* loader)=0;
 
 	
 	virtual HYP copy_and_complete() const {

@@ -5,11 +5,6 @@
  * and preserve the top hypotheses
  * 
  * 
- * Looks like it can still take a long time to run if we have many strings that get evaled -- can upper bound this too?
- * Problem is that number of strings might be exponential in probability (like if all are allowed)
-
-
- * 
  * Some notes -- 
 				What if we add something that lets you access the previous character generated? cons(x,y) where y gets acess to x? cons(x,F(x))?
   * 					Not so easy to see exactly what it is, ithas to be a Fcons function where Fcons(x,i) = cons(x,Fi(x))
@@ -28,31 +23,31 @@ enum class CustomOp { // NOTE: The type here MUST match the width in bitfield or
 	op_CDR,op_CAR,op_CONS,\
 	op_MIDINSERT, \
 	op_P, op_TERMINAL,\
-	op_String2Set,op_Setcons,op_UniformSample,op_Setremove,\
-	op_Signal, op_SignalSwitch
+	op_String2Set,op_Setcons,op_UniformSample,op_Setremove
 };
 
 
 #define NT_TYPES bool,    double,    std::string,  StrSet
 #define NT_NAMES nt_bool, nt_double, nt_string,    nt_set
 
-// Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
-
 #include "Data.h"
 
+const std::string my_default_input = "data/SimpleEnglish"; 
+S alphabet="nvadt";
 size_t maxlength = 256; // max string length, else throw an error (128+ needed for count)
 size_t nfactors = 2; // how may factors do we run on?
-S alphabet="nvadt";
+static const double alpha = 0.95; // reliability of the data
+
 const size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite so we won't see some stuff
 const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The more data, the slower...
 const size_t MAX_PR_LINES = 1000000; 
 
+
 std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "10000", "50000", "100000"}; // how many data points do we run on?
-//std::vector<S> data_amounts={"1"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
-const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -15 to catch some less frequent things that happen by chance; -18;  // in (ab)^n, top 25 strings will need this man lp
+const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -25 to catch some less frequent things that happen by chance
 const unsigned long MAX_STEPS_PER_FACTOR   = 4096; //2048; //2048;
 const unsigned long MAX_OUTPUTS_PER_FACTOR = 512; // 256; // 512; //256;
 
@@ -69,7 +64,6 @@ public:
 		
 		// push for each
 		for(size_t ai=0;ai<alphabet.length();ai++) {
-//			CERR "# Alphabet rule" << alphabet.substr(ai,1) TAB alphabet ENDL;
 			add( Rule(nt_string, CustomOp::op_TERMINAL,   Q(alphabet.substr(ai,1)),          {},       10.0/alphabet.length(), (int)alphabet.at(ai) ));
 		}
 
@@ -80,8 +74,6 @@ public:
 		add( Rule(nt_string, CustomOp::op_CDR,          "cdr(%s)",      {nt_string},                      1.0) );
 		
 		add( Rule(nt_string, CustomOp::op_MIDINSERT,    "insert(%s,%s)",      {nt_string,nt_string},      1.0) );
-		
-		
 		add( Rule(nt_string, BuiltinOp::op_IF,           "if(%s,%s,%s)", {nt_bool, nt_string, nt_string},  1.0) );
 		
 		// NOTE: This rule samples from the *characters* occuring in s
@@ -106,7 +98,6 @@ public:
 class InnerHypothesis;
 class InnerHypothesis : public  LOTHypothesis<InnerHypothesis,Node,nt_string,S,S> {
 public:
-
 	InnerHypothesis(Grammar* g, Node v)  : LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>(g,v) {}
 	InnerHypothesis(Grammar* g, S c)     : LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>(g,c) {}
 	InnerHypothesis(Grammar* g)          : LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>(g)   {}
@@ -177,13 +168,6 @@ public:
 				break;
 			}
 			
-//			CASE_FUNC1(CustomOp::op_CDR,         S, S,       [](const S& s){ return (s.empty() ? S("") : s.substr(1,S::npos)); } )		
-//			CASE_FUNC1(CustomOp::op_CAR,         S, S,       [](const S& s){ return (s.empty() ? S("") : S(1,s.at(0))); } )		
-//			CASE_FUNC2e(CustomOp::op_CONS,       S, S,S,
-//								[](const S& x, const S& y){ S a = x; a.append(y); return a; },
-//								[](const S& x, const S& y){ return (x.length()+y.length()<maxlength ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
-//								)
-			
 			// These are actually much faster if we leave the set on top, since we're just modifying the top value
 //			CASE_FUNC2(CustomOp::op_Setcons,       StrSet, S, StrSet, [](S& x, StrSet& y){ y.insert(x); return y; }  )
 //			CASE_FUNC2(CustomOp::op_Setremove,     StrSet, StrSet, S, [](StrSet& y, S& x){ if(y.count(x)) { y.erase(x); } return y; }  )
@@ -212,16 +196,6 @@ public:
 						pool->copy_increment_push(&vms,x,lp);
 					}
 
-
-					// now just push on each, along with their probability
-					// which is here decided to be uniform.
-//					const double lp = (vms.gettopref<StrSet>().empty()?-infinity:-log(vms.gettopref<StrSet>().size()));
-//					for(const auto& x : vms.gettopref<StrSet>()) {
-//						pool->copy_increment_push(&vms,x,lp);
-//					}
-//					// no need to actually pop from vms since it will be destroyed
-					
-//					
 					// TODO: we can make this faster, like in flip, by following one of the paths?
 					return abort_t::RANDOM_CHOICE; // if we don't continue with this context 
 			}
@@ -238,61 +212,74 @@ public:
 
 class MyHypothesis : public Lexicon<MyHypothesis, InnerHypothesis, S, S> {
 public:	
-	static constexpr double alpha = 0.95;
+	
 	using Super = Lexicon<MyHypothesis, InnerHypothesis, S, S>;
 	
 	MyHypothesis()                       : Super()   {}
 	MyHypothesis(const MyHypothesis& h)  : Super(h)  {}
 
-	virtual double compute_prior() {
-		// since we aren't searching over nodes, we are going to enforce a prior that requires
-		// each function to be called -- this should make the search a bit more efficient by 
-		// allowing us to prune out the functions which could be found with a smaller number of factors
+
+	bool check_reachable() const {
+		// checks if the last factor calls all the earlier (else we're "wasting" factors)
+		// We do this by making the graph of what factors calls which other, and then
+		// computing the transitive closure
 		
-		size_t N = factors.size();
-		if(N==0) return prior = -infinity;
+		const size_t N = factors.size();
+		assert(N > 0); 
 		
-		bool calls[N * N]; // is calls[i][j] stores whether factor i calls factor j
+		// is calls[i][j] stores whether factor i calls factor j
+		bool calls[N][N]; 
 		
 		// everyone calls themselves, zero the rest
 		for(size_t i=0;i<N;i++) {
 			for(size_t j=0;j<N;j++){
-				calls[i*N+j] = (i==j);
+				calls[i][j] = (i==j);
 			}
 		}
 		
 		for(size_t i=0;i<N;i++){
-			// This function on nodes computes whether or not they use a recursive function
-			// and sets calls appropriately
-			const std::function<void(Node&)> myfun = [&](Node& n) {
-				if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE,BuiltinOp::op_SAFE_RECURSE,BuiltinOp::op_SAFE_MEM_RECURSE)) {
-					calls[i*N + n.rule->instr.arg] = true;
+			
+			for(const auto& n : factors[i].value) {
+				if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,
+									  BuiltinOp::op_MEM_RECURSE,
+									  BuiltinOp::op_SAFE_RECURSE,
+									  BuiltinOp::op_SAFE_MEM_RECURSE)) {
+					calls[i][n.rule->instr.arg] = true;
 				}
-			};
-			// map this function along all nodes to see 
-			factors[i].value.map(myfun);
+			}
 		}
 		
 		// now we take the transitive closure to see if calls[N-1] calls everything (eventually)
 		// otherwise it has probability of zero
 		// TOOD: This could probably be lazier because we really only need to check reachability
 		for(size_t a=0;a<N;a++) {	
-			for(size_t b=0;b<N;b++) {
-				for(size_t c=0;c<N;c++) {
-					calls[b*N+c] = calls[b*N+c] || (calls[b*N+a] && calls[a*N+c]);		
-				}
-			}
+		for(size_t b=0;b<N;b++) {
+		for(size_t c=0;c<N;c++) {
+			calls[b][c] = calls[b][c] or (calls[b][a] and calls[a][c]);		
+		}
+		}
 		}
 
 		// don't do anything if we have uncalled functions from the root
 		for(size_t i=0;i<N;i++) {
-			if(!calls[(N-1)*N+i]) {
-				return prior = -infinity;
+			if(not calls[N-1][i]) {
+				return false;
 			}
-		}
+		}		
+		return true;		
+	}
+
+	virtual double compute_prior() {
+		// since we aren't searching over nodes, we are going to enforce a prior that requires
+		// each function to be called -- this should make the search a bit more efficient by 
+		// allowing us to prune out the functions which could be found with a smaller number of factors
 		
-		// else default call 
-		return prior = Lexicon<MyHypothesis,InnerHypothesis,S,S>::compute_prior();
+		if(not check_reachable()) {
+			return prior = -infinity;
+		}
+		else {
+			return prior = Lexicon<MyHypothesis,InnerHypothesis,S,S>::compute_prior();
+		}
 	}
 	
 
@@ -314,7 +301,7 @@ public:
 	 
 	 
 	 // We assume input,output with reliability as the number of counts that input was seen going to that output
-	 double compute_single_likelihood(const t_datum& datum) { assert(0); }
+	 virtual double compute_single_likelihood(const t_datum& datum) { assert(0); }
 	 
 
 	 double compute_likelihood(const t_data& data, const double breakout=-infinity) {
@@ -322,8 +309,6 @@ public:
 		 
 		// call -- treats all input as emptystrings
 		const auto M = call(S(""), S("<err>")); 
-		
-//		COUT string() TAB ""; M.print(); COUT "\n";
 		
 		likelihood = 0.0;
 		const double lpnoise = log((1.0-alpha)/alphabet.size());
@@ -354,7 +339,6 @@ public:
 	 void print(std::string prefix="") {
 		std::lock_guard guard(Fleet::output_lock); // better not call Super wtih this here
 		extern MyHypothesis::t_data prdata;
-//		extern TopN<MyHypothesis> top;
 		extern std::string current_data;
 		auto o = this->call(S(""), S("<err>"));
 		auto [prec, rec] = get_precision_and_recall(std::cout, o, prdata, PREC_REC_N);
@@ -369,9 +353,8 @@ public:
 
 
 std::string prdata_path = ""; 
-
 MyHypothesis::t_data prdata; // used for computing precision and recall -- in case we want to use more strings?
-
+MyGrammar grammar;	
 S current_data = "";
 
 
@@ -381,8 +364,10 @@ S current_data = "";
 
 int main(int argc, char** argv){ 
 	
+	input_path = my_default_input; // set this so it's not fleet's normal input default
+	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	auto app = Fleet::DefaultArguments();
+	auto app = Fleet::DefaultArguments("Formal language learner");
 	app.add_option("-N,--nfactors",      nfactors, "How many factors do we run on?");
 	app.add_option("-L,--maxlength",     maxlength, "Max allowed string length");
 	app.add_option("-A,--alphabet",  alphabet, "The alphabet of characters to use");
@@ -392,13 +377,12 @@ int main(int argc, char** argv){
 	Fleet_initialize();
 	COUT "# Using alphabet=" << alphabet ENDL;
 	
-	MyGrammar grammar;
 	
 	// Input here is going to specify the PRdata path, minus the txt
 	
-	if(prdata_path == "") prdata_path = input_path+".txt";
-	
-//	top.set_size(ntop); // set by above macro
+	if(prdata_path == "") {
+		prdata_path = input_path+".txt";
+	}
 	
 	load_data_file(prdata, prdata_path.c_str()); // put all the data in prdata
 	for(auto d : prdata) {	// Add a check for any data not in the alphabet
@@ -416,18 +400,17 @@ int main(int argc, char** argv){
 		h0.factors.push_back(f.restart());
 	}
 		
+	// we are building up data and TopNs to give t parallel tempering
 	std::vector<MyHypothesis::t_data> datas; // load all the data	
 	std::vector<TopN<MyHypothesis>> tops;
-
-	for(size_t i=0;i<data_amounts.size();i++){ // big  data on lower chains -- shouldn't matter!
-		MyHypothesis::t_data mydata;
+	for(size_t i=0;i<data_amounts.size();i++){ 
+		MyHypothesis::t_data d;
 		
 		S data_path = input_path + "-" + data_amounts[i] + ".txt";	
-		load_data_file(mydata, data_path.c_str());
+		load_data_file(d, data_path.c_str());
 		
-		datas.push_back(mydata);
+		datas.push_back(d);
 		tops.push_back(TopN<MyHypothesis>(ntop));
-
 	}
 	
 	// Run
@@ -439,7 +422,9 @@ int main(int argc, char** argv){
 	
 	// And finally print
 	TopN<MyHypothesis> all; 
-	for(auto& tn : tops) { all << tn; } // will occur in some weird order since they're not in all the data
+	for(auto& tn : tops) { 
+		all << tn; // will occur in some weird order since they're not in all the data
+	} 
 
 	for(size_t i=0;i<data_amounts.size();i++) {
 		TopN<MyHypothesis> tmptop; // just so they print in order
@@ -462,8 +447,6 @@ int main(int argc, char** argv){
 //	}
 //	top.print();
 //	
-	
-		
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:"        TAB elapsed_seconds() << " seconds " ENDL;

@@ -112,8 +112,7 @@ public:
 	template<typename... args>
 	bool _stacks_empty() const { 
 		return (... && stack<args>().empty()); 
-	}
-	
+	}	
 	bool stacks_empty() const { 
 		// return strue if stack is empty -- as a check at the end of a evaluation
 		return this->_stacks_empty<NT_TYPES>();
@@ -370,7 +369,7 @@ public:
 	
 		auto ret = getpop<t_return>();
 		
-		assert(stacks_empty() and xstack.size() == 1 && "When we return, all of the stacks should be empty or else something is awry.");
+		assert(stacks_empty() and xstack.size() == 1 and "When we return, all of the stacks should be empty or else something is awry.");
 		
 		return ret; 
 	}	

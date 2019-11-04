@@ -107,7 +107,7 @@ TopN<MyHypothesis> top;
 int main(int argc, char** argv){ 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	auto app = Fleet::DefaultArguments();
+	auto app = Fleet::DefaultArguments("Rational rules");
 	CLI11_PARSE(app, argc, argv);
 	
 	top.set_size(ntop); // set by above macro

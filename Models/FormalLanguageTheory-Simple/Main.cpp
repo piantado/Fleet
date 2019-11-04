@@ -158,7 +158,7 @@ int main(int argc, char** argv){
 	using namespace std;
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	auto app = Fleet::DefaultArguments();
+	auto app = Fleet::DefaultArguments("A simple, one-factor formal language learner");
 	app.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
 	app.add_option("-d,--data", datastr, "Comma separated list of input data strings");	
 	CLI11_PARSE(app, argc, argv);
@@ -190,7 +190,9 @@ int main(int argc, char** argv){
 //	thechain.run(mcmc_steps, runtime);
 //	tic();
 //	
-	ParallelTempering samp(h0, &mydata, top, nthreads, 1000.0);
+
+	
+	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
 	tic();
 	samp.run(mcmc_steps, runtime, 1.0, 3.0); //30000);		
 	tic();
