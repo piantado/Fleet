@@ -96,6 +96,7 @@ public:
 		
 		// compute the info for the curent
 		if(not resume) {
+			std::lock_guard guard(current_mutex);
 			current.compute_posterior(*data);
 			if(callback != nullptr) (*callback)(current);
 			++FleetStatistics::global_sample_count;
@@ -111,10 +112,6 @@ public:
 				break;
 			}
 			
-			if(thin > 0 and FleetStatistics::global_sample_count % thin == 0) {
-				current.print();
-			}
-			
 			
 #ifdef DEBUG_MCMC
 	COUT "\n# Current\t" << current.posterior TAB current.prior TAB current.likelihood TAB "\t" TAB current.string() ENDL;
@@ -124,6 +121,10 @@ public:
 			HYP proposal; double fb = 0.0;
 			
 			std::lock_guard guard(current_mutex); // lock below otherwise others can modify
+
+			if(thin > 0 and FleetStatistics::global_sample_count % thin == 0) {
+				current.print();
+			}
 
 			if(current.posterior > -infinity) {
 				std::tie(proposal,fb) = current.propose();

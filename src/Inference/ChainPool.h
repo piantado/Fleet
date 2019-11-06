@@ -16,7 +16,7 @@ public:
 	static const unsigned long steps_before_change = 0;
 	static const unsigned long time_before_change  = 1; 
 	
-	ChainPool() { }
+//	ChainPool() { }
 	
 	ChainPool(HYP& h0, typename HYP::t_data* d, callback_t& cb, size_t n, bool allcallback=true) {
 		for(size_t i=0;i<n;i++) {
@@ -32,41 +32,45 @@ public:
 							 unsigned long steps, 
 							 unsigned long time) {
 		
-		// A helper function to get the lock and get the next pool thats not running anymore
-		// starting from frm+1 
-		std::function<size_t(size_t)> next_index = [running_mutex,running](const size_t frm) -> size_t {
-			std::lock_guard lock(*running_mutex);
-			
-			// for simplicity, we'll update this here
-			(*running)[frm] = false;			
-			
-			// and then find the next
+		std::function<size_t(size_t)> next_index = [running](const size_t frm) -> size_t {
+			// assuming running is locked, find teh first not running
 			for(size_t o=0;o<running->size();o++) {
 				size_t idx = (o+frm+1)%running->size(); // offset of 1 so we start at frm+1
 				if(not (*running)[idx]) {
-					(*running)[idx] = true;
 					return idx;
 				}
 			}
 			// should not get here if we have fewer threads than chains
-			assert(0);
+			assert(0 && "*** We should only get here if running is out of sync (very bad) or you got here with more threads than chains, which should have been caught.");
 		};						 
 								 
 		// run_helper looks at the number of chains and number of threads and runs each for swap_steps and swap_time
 		auto          my_time  = now();
 		unsigned long my_steps = 0;
-		size_t idx = next_index(0); // what pool item am I running on?
+		size_t idx = 0; // what pool item am I running on?
 		
-		while(my_steps <= steps and time_since(my_time) < time and !CTRL_C) {			
+		while( (steps == 0 or my_steps <= steps)          and 
+			   (time  == 0 or time_since(my_time) < time) and 
+			   !CTRL_C) {			
 //			CERR "# Running thread " <<std::this_thread::get_id() << " on "<< idx ENDL;
+
+			do {
+				// find the next running we can update and do it
+				std::lock_guard lock(*running_mutex);
+				std::lock_guard guard1((*pool)[idx].current_mutex);
+				(*running)[idx] = false;	
+				idx = next_index(idx);
+				(*running)[idx] = true;
+			} while(0);		
 			
+			// now run that chain
 			(*pool)[idx].run(steps_before_change, time_before_change);
 			
 			// pick the next index (and free mine)
-			idx = next_index(idx);
 			my_steps += steps_before_change;
 		}
-			
+		
+		// and unlock this
 		std::lock_guard lock(*running_mutex);
 		(*running)[idx] = false;	
 	}

@@ -131,7 +131,7 @@ std::string   input_path   = "input.txt";
 std::string   tree_path    = "tree.txt";
 std::string   output_path  = "output.txt";
 std::string   timestring   = "0s";
-   
+
 
 namespace Fleet { 	
 	CLI::App DefaultArguments(const char* brief) {
@@ -203,14 +203,12 @@ typedef Stack<Instruction> Program;
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void Fleet_initialize() {
-	// set our own handlers
+	// set our own handlers -- defaulty HUP won't stop
 	signal(SIGINT, fleet_interrupt_handler);
 	signal(SIGHUP, fleet_interrupt_handler);
 
-	// give us a default niceness
+	// give us a defaultly nice niceness
 	setpriority(PRIO_PROCESS, 0, 19);
-
-	FleetStatistics::hypothesis_births = 0;
 
 	// Print standard fleet header
 	
@@ -221,21 +219,17 @@ void Fleet_initialize() {
 #ifndef LOGIN_NAME_MAX
 	size_t LOGIN_NAME_MAX = 256;
 #endif
-	char hostname[HOST_NAME_MAX];
-	char username[LOGIN_NAME_MAX];
-	gethostname(hostname, HOST_NAME_MAX);
-	getlogin_r(username, LOGIN_NAME_MAX);
+	char hostname[HOST_NAME_MAX]; 	gethostname(hostname, HOST_NAME_MAX);
+	char username[LOGIN_NAME_MAX];	getlogin_r(username, LOGIN_NAME_MAX);
 
 	// Get the start time
-    auto timenow = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()); 
+    auto timenow = std::chrono::system_clock::to_time_t(now()); 
 
 	// and build the command to get the md5 checksum of myself
-	char tmp[64];
-	sprintf(tmp, "md5sum /proc/%d/exe", getpid());
+	char tmp[64]; sprintf(tmp, "md5sum /proc/%d/exe", getpid());
 	
 	// parse the time
-	runtime = convert_time(timestring);
-	
+	runtime = convert_time(timestring);	
 	
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
 	COUT "# Running Fleet on " << hostname << " with PID=" << getpid() << " by user " << username << " at " << ctime(&timenow);
@@ -243,12 +237,11 @@ void Fleet_initialize() {
 	COUT "# Executable checksum: " << system_exec(tmp);
 	COUT "# \t --input=" << input_path ENDL;
 	COUT "# \t --threads=" << nthreads ENDL;
+	COUT "# \t --chains=" << nchains ENDL;
 	COUT "# \t --mcmc=" << mcmc_steps ENDL;
 	COUT "# \t --mcts=" << mcts_steps ENDL;
 	COUT "# \t --time=" << timestring << " (" << runtime << " seconds)" ENDL;
 	COUT "# \t --restart=" << mcmc_restart ENDL;
 	COUT "# \t --seed=" << random_seed ENDL;
-	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
-	
-	
+	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;	
 }

@@ -86,7 +86,6 @@ public:
 		
 	}
 	
-	
     size_t size() const {
         int n = 1;
         for(const auto& c : children)
@@ -99,8 +98,7 @@ public:
         open=true;
     }
     
-	
-    void print(std::ostream& o, const int depth, const bool sort) const { 
+	void print(std::ostream& o, const int depth, const bool sort) const { 
         std::string idnt = std::string(depth, '\t'); // how far should we indent?
         
 		std::string opn = (open?" ":"*");

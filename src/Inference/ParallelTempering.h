@@ -10,11 +10,12 @@ class ParallelTempering : public ChainPool<HYP,callback_t> {
 	// follows https://arxiv.org/abs/1501.05823
 	// This is a kind of Chain Pool that runs mutliple chains at different temperatures
 	// and ajusts the temperatures in order to equate swaps up and down 
+	// NOTE: This always starts two extra threads, one for adapting and one for swapping
+	// but these threads mostly sit around, waiting WAIT_AND_SLEEP ms between trying to do stuff
 	
 	const unsigned long WAIT_AND_SLEEP = 250; // how many ms to wait between checking to see if it is time to swap/adapt
 	
 public:
-//	std::vector<MCMCChain<HYP,callback_t>> pool;
 	std::vector<double> temperatures;
 	FiniteHistory<bool>* swap_history;
 	
@@ -25,8 +26,7 @@ public:
 	ParallelTempering(HYP& h0, typename HYP::t_data* d, callback_t& cb, std::initializer_list<double> t, bool allcallback=true) : 
 		ChainPool<HYP,callback_t>(h0, d, cb, temperatures.size(),allcallback),
 		temperatures(t), terminate(false) {
-		assert(temperatures.size() > 1);
-
+		
 		// allcallback is true means that all chains call the callback, otherwise only t=0
 		for(size_t i=0;i<temperatures.size();i++) {
 			this->pool[i].temperature = temperatures[i]; // set its temperature 
@@ -34,15 +34,13 @@ public:
 		
 		is_temperature = true;
 		swap_history = new FiniteHistory<bool>[temperatures.size()];
-		
-
 	}
 	
 	
 	ParallelTempering(HYP& h0, typename HYP::t_data* d, callback_t& cb, unsigned long n, double maxT, bool allcallback=true) : 
 		ChainPool<HYP,callback_t>(h0, d, cb, n, allcallback),
 		terminate(false) {
-		assert(n > 1);
+		
 		// allcallback is true means that all chains call the callback, otherwise only t=0
 		for(size_t i=0;i<n;i++) {
 			if(i==0) {  // always initialize i=0 to T=1s
@@ -60,7 +58,6 @@ public:
 	
 	ParallelTempering(HYP& h0, std::vector<typename HYP::t_data>& datas, std::vector<callback_t>& cb) :
 		ChainPool<HYP,callback_t>() {
-		assert(datas.size() > 1);
 		assert(datas.size() == cb.size());
 		// This version anneals on data, giving each chain a different amount in datas order
 		for(size_t i=0;i<datas.size();i++) {
@@ -78,11 +75,11 @@ public:
 	
 	void __swapper_thread(double swap_every ) {
 		// runs a swapper every swap_every seconds (double)
-		
+		// NOTE: If we have 1 element in the pool, it is caught below
 		auto last = now();
 		while(!(terminate or CTRL_C)) {
 			
-			if(time_since(last) < swap_every){
+			if(time_since(last) < swap_every or this->pool.size() == 1){
 				std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_AND_SLEEP));
 			}
 			else { // do a swap
@@ -93,6 +90,7 @@ public:
 				// get both of these thread locks
 				std::lock_guard guard1(this->pool[k-1].current_mutex);
 				std::lock_guard guard2(this->pool[k  ].current_mutex);
+				std::lock_guard guard3(this->running_mutex); // can't be modifying running while we do this
 				
 				double R; //
 				if(is_temperature) {
