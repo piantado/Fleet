@@ -90,7 +90,6 @@ public:
 				// get both of these thread locks
 				std::lock_guard guard1(this->pool[k-1].current_mutex);
 				std::lock_guard guard2(this->pool[k  ].current_mutex);
-				std::lock_guard guard3(this->running_mutex); // can't be modifying running while we do this
 				
 				double R; //
 				if(is_temperature) {

@@ -11,16 +11,51 @@ std::string str(T x){
 
 
 std::deque<std::string> split(const std::string& s, const char delimiter){
+	// split is a little bit of a pair -- we want to split the string at delimiter
+	// but handle nulls correctly too. 
+	// special cases:
+	// split("a:", ':') -> ["a", ""]
+	// split(":", ':')  -> [""]
+	// split(":a", ':') -> ["", "a"]
+	
+	std::deque<std::string> tokens;
+	
+	if(s.length() == 0) {
+		return tokens;
+	}
+	
+	size_t i = 0;
+	while(i < s.size()) {
+		size_t k = s.find(delimiter, i);
 		
-   std::deque<std::string> tokens;
-   std::string token;
-   std::istringstream ts(s);
-   while (std::getline(ts, token, delimiter))
-   {
-      tokens.push_back(token);
-   }
-   return tokens;
+		if(k == std::string::npos) {
+			tokens.push_back(s.substr(i,std::string::npos));
+			return tokens;
+		}
+		else {		
+			tokens.push_back(s.substr(i,k-i));
+			i=k+1;
+		}
+	}	
+
+	// if we get here, that means that the last foudn k was the last
+	// character, which means we need to append ""
+	tokens.push_back("");
+	return tokens;
+
+//	std::deque<std::string> tokens;
+//	std::string token;
+//	std::istringstream ts(s);
+//	while (std::getline(ts, token, delimiter)) {
+//		std::cerr << "TOKEN =" << token << std::endl;
+//		tokens.push_back(token);
+//	}
+//	
+//	if(s.at(s.length()-1) == delimiter) {
+//		tokens.push_back("");
+//	}
 }
+
 
 
 unsigned int levenshtein_distance(const std::string& s1, const std::string& s2) {

@@ -57,7 +57,6 @@ public:
 			do {
 				// find the next running we can update and do it
 				std::lock_guard lock(*running_mutex);
-				std::lock_guard guard1((*pool)[idx].current_mutex);
 				(*running)[idx] = false;	
 				idx = next_index(idx);
 				(*running)[idx] = true;
