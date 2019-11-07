@@ -63,8 +63,8 @@ public:
 	bool operator<(const Rule& r) const {
 		// This is structured so that we always put terminals first and then we put the HIGHER probability things first. 
 		// this helps in enumeration
-		if(N < r.N) return true;
-		else		return p > r.p; // weird, but helpful, that we sort in decreasing order of probability
+		if(N != r.N) return N < r.N;
+		else		 return p > r.p; // weird, but helpful, that we sort in decreasing order of probability
 	}
 	bool operator==(const Rule& r) const {
 		if(not (nt==r.nt and instr==r.instr and format==r.format and N==r.N and p==r.p)) return false;
