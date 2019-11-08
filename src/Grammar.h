@@ -19,12 +19,23 @@ class Grammar {
 	 * not to change, adn that puts terminals first and (lower priority) high probability first
 	 * as determined by Rule's sort order. 
 	 */
+	// how many nonterminal types do we have?
+	static constexpr size_t N_NTs = std::tuple_size<std::tuple<FLEET_GRAMMAR_TYPES>>::value;
 
 protected:
 	std::vector<Rule> rules[N_NTs];
-	double	  	      Z[N_NTs]; // keep the normalizer handy for each rule
+	double	  	      Z[N_NTs]; // keep the normalizer handy for each nonterminal
 	
 public:
+
+	// This function converts a type (passed as a template parameter) into a 
+	// size_t index for which one it in in FLEET_GRAMMAR_TYPES. 
+	// This is used so that a Rule doesn't need type subclasses/templates, it can
+	// store a type as e.g. nt<double>() -> size_t 
+	template <class T>
+	constexpr nonterminal_t nt() {
+		return TypeIndex<T, std::tuple<FLEET_GRAMMAR_TYPES>>::value;
+	}
 
 	Grammar() {
 		for(size_t i=0;i<N_NTs;i++) {
@@ -90,7 +101,6 @@ public:
 		assert(k < rules[nt].size());
 		return const_cast<Rule*>(&rules[nt][k]);
 	}
-	
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const CustomOp o, const int a=0) {
 		for(auto& r: rules[nt]) {
@@ -357,7 +367,7 @@ public:
 	
 
 	
-	virtual void add(Rule r) {
+	virtual void add(Rule&& r) {
 		
 		nonterminal_t nt = r.nt;
 		//rules[r.nt].push_back(r);
@@ -368,10 +378,20 @@ public:
 		Z[nt] += r.p; // keep track of the total probability
 	}
 	
+	template<typename RT, typename... ARGS>
+	void add(BuiltinOp o, const std::string fmt, double p, const int arg=0) {
+		add(Rule(nt<RT>(), o, fmt, {nt<ARGS>()...}, p, arg));
+	}
+	template<typename RT, typename... ARGS>
+	void add(CustomOp o, const std::string fmt, double p, const int arg=0) {
+		add(Rule(nt<RT>(), o, fmt, {nt<ARGS>()...}, p, arg));
+	}
+	
 	Node makeNode(const Rule* r) const {
 		return Node(r, log(r->p)-log(Z[r->nt]));
 	}
 	
+
 	Node generate(const nonterminal_t nt, unsigned long depth=0) const {
 		// Sample a rule and generate from this grammar. This has a template to avoid a circular dependency
 		// and allow us to generate other kinds of things from rules if we want. 
@@ -394,6 +414,14 @@ public:
 		}
 		return n;
 	}	
+	
+	// a wrapper so we can call by type	
+	template<class t>
+	Node generate(unsigned long depth=0) {
+		return generate(nt<t>(),depth);
+	}
+	
+	
 	
 	Node copy_resample(const Node& node, bool f(const Node& n)) const {
 		// this makes a copy of the current node where ALL nodes satifying f are resampled from the grammar

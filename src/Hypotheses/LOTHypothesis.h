@@ -5,7 +5,7 @@
 #include "Proposers.h"
 
 template<typename HYP, typename T, 
-		 nonterminal_t nt, typename t_input, typename t_output, 
+		 typename t_input, typename t_output, 
 		 typename _t_datum=default_datum<t_input, t_output>, 
 		 typename _t_data=std::vector<_t_datum> >
 class LOTHypothesis : public Dispatchable<t_input,t_output>, 
@@ -52,7 +52,7 @@ public:
 			return HYP(grammar, grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
 		}
 		else {
-			return HYP(grammar, grammar->generate(nt));
+			return HYP(grammar, grammar->generate<t_output>());
 		}
 	}
 	
@@ -159,6 +159,7 @@ public:
 	 
 	virtual int neighbors() const {
 		if(value.is_null()) { // if the value is null, our neighbors is the number of ways we can do nt
+			auto nt = grammar->nt<t_output>();
 			return grammar->count_expansions(nt);
 		}
 		else {
@@ -171,6 +172,7 @@ public:
 
 	virtual HYP make_neighbor(int k) const {
 		HYP h(grammar); // new hypothesis
+		auto nt = grammar->nt<t_output>();
 		if(value.is_null()) {
 			assert(k >= 0);
 			assert(k < (int)grammar->count_expansions(nt));

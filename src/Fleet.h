@@ -78,13 +78,8 @@ struct TypeIndex<T, std::tuple<U, Types...>> {
     static const nonterminal_t value = 1 + TypeIndex<T, std::tuple<Types...>>::value;
 };
 
-template <class T>
-constexpr nonterminal_t type2nt() {
-    return TypeIndex<T, std::tuple<FLEET_GRAMMAR_TYPES>>::value;
-}
 
-// the number of nonterminals (which is the number of grammar types)
-constexpr size_t N_NTs = std::tuple_size<std::tuple<FLEET_GRAMMAR_TYPES>>::value;
+
 
 // This handy template extracts the types from a function/lambda so that
 // we can define rules just by a single lambda 

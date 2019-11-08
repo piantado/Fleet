@@ -53,20 +53,12 @@ typedef struct Object {
 	bool operator<(const Object& o) const { assert(false); }
 } Object;
 
-// Define our types. 
 #define FLEET_GRAMMAR_TYPES bool,Object,int
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
 // handy to define some nonterminal types
-constexpr nonterminal_t nt_double = type2nt<int>();
-constexpr nonterminal_t nt_object = type2nt<Object>();
-constexpr nonterminal_t nt_bool   = type2nt<bool>();
-
-bool my_and(bool a, bool b) { return a && b; }
-
-
 //
 // struct { 
 //	std::string format = "and(%s,%s)";
@@ -79,36 +71,27 @@ bool my_and(bool a, bool b) { return a && b; }
 class MyGrammar : public Grammar { 
 public:
 	MyGrammar() : Grammar() {
-		add( Rule(nt_object, BuiltinOp::op_X,         "x",             {},                   1.0) );		
-		add( Rule(nt_bool,   CustomOp::op_Red,        "red(%s)",       {nt_object},          1.0) );		
-		add( Rule(nt_bool,   CustomOp::op_Green,      "green(%s)",     {nt_object},          1.0) );
-		add( Rule(nt_bool,   CustomOp::op_Blue,       "blue(%s)",      {nt_object},          1.0) );
+		add<Object>     (BuiltinOp::op_X,         "x",            1.0);		
+		add<bool,Object>(CustomOp::op_Red,        "red(%s)",      1.0);		
+		add<bool,Object>(CustomOp::op_Green,        "green(%s)",      1.0);		
+		add<bool,Object>(CustomOp::op_Blue,        "blue(%s)",      1.0);		
+
+		add<bool,Object>(CustomOp::op_Square,        "square(%s)",      1.0);		
+		add<bool,Object>(CustomOp::op_Triangle,        "triangle(%s)",      1.0);		
+		add<bool,Object>(CustomOp::op_Circle,        "circle(%s)",      1.0);		
 		
-		add( Rule(nt_bool,   CustomOp::op_Square,     "square(%s)",    {nt_object},          1.0) );		
-		add( Rule(nt_bool,   CustomOp::op_Triangle,   "triangle(%s)",  {nt_object},          1.0) );
-		add( Rule(nt_bool,   CustomOp::op_Circle,     "circle(%s)",    {nt_object},          1.0) );
-		
-		// First, do a syntax like
-//		add<bool,object>(CustomOp::op_Square, "square(%s)", 1.0);
-		
-		// Then we may want a syntax like:
-//		add("and(%s,%s)", [](bool a, bool b) -> bool { return a&&b;},  1.0) );
-//		add("and(%s,%s)", my_and, 1.0);
-		// here, the types are read from the function
-		
-		
-		add( Rule(nt_bool, CustomOp::op_And,          "and(%s,%s)",    {nt_bool, nt_bool},   1.0) );
-		add( Rule(nt_bool, CustomOp::op_Or,           "or(%s,%s)",     {nt_bool, nt_bool},   1.0) );
-		add( Rule(nt_bool, CustomOp::op_Not,          "not(%s)",       {nt_bool},            1.0) );
+		add<bool,bool,bool>(CustomOp::op_And,        "and(%s,%s)",      1.0);		
+		add<bool,bool,bool>(CustomOp::op_Or,        "or(%s,%s)",      1.0);		
+		add<bool,bool>     (CustomOp::op_Not,        "not(%s)",      1.0);		
 	}
 };
 
 
 /* Define a class for handling my specific hypotheses and data. Everything is defaulty a PCFG prior and 
  * regeneration proposals, but I have to define a likelihood */
-class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool> {
+class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,Object,bool> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool>;
+	using Super = LOTHypothesis<MyHypothesis,Node,Object,bool>;
 	MyHypothesis(Grammar* g, Node n)   : Super(g, n) {}
 	MyHypothesis(Grammar* g)           : Super(g) {}
 	MyHypothesis()                     : Super() {}
