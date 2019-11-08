@@ -58,14 +58,32 @@ typedef struct Object {
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
-// handy to define some nonterminal types
-//
-// struct { 
-//	std::string format = "and(%s,%s)";
-//	bool operator(bool a, bool b) { return a && b; }
-// }
-//bool my_and(bool a, bool b) { return a && b; }
+// or we could define a primitive class
+// and each primtiive we create could get a new id, for a new operator
+// and could support a call either in VMS or somewhere else
 
+Primitive my_and("and(%s,%s)", [](bool a, bool b) -> bool { return a&&b; } );
+
+
+// 
+
+template<typename F> // function type
+class Primitive {
+	// A primitive associates a string name (format) with a function, 
+	// and allows grammars to extract all the relevant function pieces,
+	// and also defines a VMS function that can be called in dispatch
+	// TODO: put grammar into the constructor so we can 
+	
+	static size_t op;
+	F f;
+	
+	Primitive(std::string fmt, F _f) : f(_f) {
+	}
+	
+	FunctionTraits<F>::ReturnType operator(VirtualMachineState& vms) {
+		return
+	}
+}
 
 // Define a grammar
 class MyGrammar : public Grammar { 
@@ -108,7 +126,8 @@ public:
 			// case grammar.getOp("and"): return my_and(x,y)
 			// CASE_FUNC("and", my_and)
 			
-			
+			// Maybe syntax like CASEFUNC1
+			// CASE(my_and) // extract everything from the Primitive class
 			
 			CASE_FUNC1(CustomOp::op_Red,         bool,  Object,    [](const Object& x){ return x.color == Color::Red; })
 			CASE_FUNC1(CustomOp::op_Green,       bool,  Object,    [](const Object& x){ return x.color == Color::Green; })
