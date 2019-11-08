@@ -1,3 +1,27 @@
+// TODO: We can probably put all of the GRAMMAR_TYPE stuff into 
+// 		the grammar class itself -- have it take some types as arguments
+//		and then have add take template arguments, which maybe it can
+// 		deduce from a lambda etc -- then al the nt_types are just stored
+//      internally to the grammar
+// 		maybe the grammar can also store a grammar_dispatch function
+//		that takes a constexpr string and converts it to an "op" code
+//		so that we can use it as a switch?
+//		 
+
+// Steps:
+// - move FLEET_GRAMMAR_TYPES into grammar as a template argument, and put all that code in too
+// - may need to template the grammar so we can use subtypes etc on the constructor
+// - define a constexpr way to conver strings into customOps stored internally in grammar 
+//		this function is getOp and will convert a prefix of format into the internal customOp it uses
+
+//- What if we put format and function call (as Operator) together in a struct?
+
+
+
+
+
+
+
 #include <assert.h>
 
 // A simple example of a version of the RationalRules model. 
@@ -35,10 +59,21 @@ typedef struct Object {
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
-// handy to define some types
+// handy to define some nonterminal types
 constexpr nonterminal_t nt_double = type2nt<int>();
 constexpr nonterminal_t nt_object = type2nt<Object>();
 constexpr nonterminal_t nt_bool   = type2nt<bool>();
+
+bool my_and(bool a, bool b) { return a && b; }
+
+
+//
+// struct { 
+//	std::string format = "and(%s,%s)";
+//	bool operator(bool a, bool b) { return a && b; }
+// }
+//bool my_and(bool a, bool b) { return a && b; }
+
 
 // Define a grammar
 class MyGrammar : public Grammar { 
@@ -52,6 +87,15 @@ public:
 		add( Rule(nt_bool,   CustomOp::op_Square,     "square(%s)",    {nt_object},          1.0) );		
 		add( Rule(nt_bool,   CustomOp::op_Triangle,   "triangle(%s)",  {nt_object},          1.0) );
 		add( Rule(nt_bool,   CustomOp::op_Circle,     "circle(%s)",    {nt_object},          1.0) );
+		
+		// First, do a syntax like
+//		add<bool,object>(CustomOp::op_Square, "square(%s)", 1.0);
+		
+		// Then we may want a syntax like:
+//		add("and(%s,%s)", [](bool a, bool b) -> bool { return a&&b;},  1.0) );
+//		add("and(%s,%s)", my_and, 1.0);
+		// here, the types are read from the function
+		
 		
 		add( Rule(nt_bool, CustomOp::op_And,          "and(%s,%s)",    {nt_bool, nt_bool},   1.0) );
 		add( Rule(nt_bool, CustomOp::op_Or,           "or(%s,%s)",     {nt_bool, nt_bool},   1.0) );
@@ -76,6 +120,13 @@ public:
 	
 	abort_t dispatch_rule(Instruction i, VirtualMachinePool<Object, bool>* pool, VirtualMachineState<Object,bool>& vms, Dispatchable<Object,bool>* loader ) {
 		switch(i.getCustom()) {
+			
+			// We want a syntax like:
+			// case grammar.getOp("and"): return my_and(x,y)
+			// CASE_FUNC("and", my_and)
+			
+			
+			
 			CASE_FUNC1(CustomOp::op_Red,         bool,  Object,    [](const Object& x){ return x.color == Color::Red; })
 			CASE_FUNC1(CustomOp::op_Green,       bool,  Object,    [](const Object& x){ return x.color == Color::Green; })
 			CASE_FUNC1(CustomOp::op_Blue,        bool,  Object,    [](const Object& x){ return x.color == Color::Blue; })

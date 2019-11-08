@@ -18,6 +18,7 @@ public:
 	// this next one should be a vector, but gcc doesn't like copying it for some reason
 	nonterminal_t         child_types[Fleet::MAX_CHILD_SIZE]; // An array of what I expand to; note that this should be const but isn't to allow list initialization (https://stackoverflow.com/questions/5549524/how-do-i-initialize-a-member-array-with-an-initializer-list)
 	double                p;
+		
 protected:
 	std::size_t          my_hash; // a hash value for this rule
 	
