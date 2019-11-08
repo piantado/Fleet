@@ -30,11 +30,15 @@ typedef struct Object {
 } Object;
 
 // Define our types. 
-#define NT_TYPES bool, Object, int
-#define NT_NAMES nt_bool,nt_object, nt_value
+#define FLEET_GRAMMAR_TYPES bool,Object,int
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
+
+// handy to define some types
+constexpr nonterminal_t nt_double = type2nt<int>();
+constexpr nonterminal_t nt_object = type2nt<Object>();
+constexpr nonterminal_t nt_bool   = type2nt<bool>();
 
 // Define a grammar
 class MyGrammar : public Grammar { 

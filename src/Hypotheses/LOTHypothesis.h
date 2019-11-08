@@ -56,6 +56,10 @@ public:
 		}
 	}
 	
+	void set_value(T&  v) { value = v; }
+	void set_value(T&& v) { value = std::move(v); }
+	
+	
 	virtual double compute_prior() {
 		assert(grammar != nullptr && "Grammar was not initialized before trying to call compute_prior");
 		

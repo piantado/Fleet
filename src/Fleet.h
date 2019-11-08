@@ -33,22 +33,8 @@
 
 const std::string FLEET_VERSION = "0.0.7";
 
-// First some error checking on Fleet's required macros
-// this is because we use some of them in enums, and so a failure 
-// to define them might cause an error that is silent or hard 
-// to detect. 
-#ifndef NT_NAMES
-#error You must define NT_NAMES (the names of nonterminals)
-#endif
-
-#ifndef NT_TYPES
-#error You must define a list NT_TYPES of types in the evaluation stack
-#endif
-
 // These are returned from the virtual machine to signal how evlauation of a program went
 enum class abort_t {NO_ABORT=0, RECURSION_DEPTH, RANDOM_CHOICE, RANDOM_CHOICE_NO_DELETE, SIZE_EXCEPTION, OP_ERR_ABORT, RANDOM_BREAKOUT}; // setting NO_ABORT=0 allows us to say if(aborted)...
-
-enum nonterminal_t {NT_NAMES, N_NTs };
 
 // convenient to make op_NOP=0, so that the default initialization is a NOP
 enum class BuiltinOp {
@@ -61,6 +47,75 @@ enum class BuiltinOp {
 };
 
 #include "Instruction.h"
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+///  Some template magic
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// When users define the macro FLEET_GRAMMAR_TYPES, as in 
+// #define FLEET_GRAMMAR_TYPES int,double,char
+// then we can use type2int to map each to a unique int. This mapping to ints is
+// for example how Fleet stores information in the grammar
+
+// When users define the macro FLEET_GRAMMAR_TYPES, as in 
+// #define FLEET_GRAMMAR_TYPES int,double,char
+// then we can use type2int to map each to a unique int. This mapping to ints is
+// for example how Fleet stores information in the grammar
+
+typedef size_t nonterminal_t;
+
+// from https://stackoverflow.com/questions/42258608/c-constexpr-values-for-types
+template <class T, class Tuple>
+struct TypeIndex;
+
+template <class T, class... Types>
+struct TypeIndex<T, std::tuple<T, Types...>> {
+    static const nonterminal_t value = 0;
+};
+
+template <class T, class U, class... Types>
+struct TypeIndex<T, std::tuple<U, Types...>> {
+    static const nonterminal_t value = 1 + TypeIndex<T, std::tuple<Types...>>::value;
+};
+
+template <class T>
+constexpr nonterminal_t type2nt() {
+    return TypeIndex<T, std::tuple<FLEET_GRAMMAR_TYPES>>::value;
+}
+
+// the number of nonterminals (which is the number of grammar types)
+constexpr size_t N_NTs = std::tuple_size<std::tuple<FLEET_GRAMMAR_TYPES>>::value;
+
+// This handy template extracts the types from a function/lambda so that
+// we can define rules just by a single lambda 
+// modified from https://stackoverflow.com/questions/43560492/how-to-extract-lambdas-return-type-and-variadic-parameters-pack-back-from-gener
+
+//template <typename T>
+//struct FunctionTraits : public FunctionTraits<decltype(&T::operator())>
+//{};
+//
+//template <typename ClassType, typename ReturnType, typename... Args>
+//struct FunctionTraits<ReturnType(ClassType::*)(Args...) const> {
+//    
+//	enum { arity = sizeof...(Args) }; // how many arguments -- TODO: Why must this be an enum?
+//	
+//    typedef ReturnType returntype;
+//
+//    template <size_t i>
+//    struct arg {
+//        typedef typename std::tuple_element<i, std::tuple<Args...>>::type type;
+//    };
+//};
+
+// This handy template extracts the types from a function/lambda so that
+// we can define rules just by their lambdas
+
+/* Define an evaluator -- this updates a VirtualMachineState with the outcome
+ * of instruction i
+ * 
+ * */
+// template<Instruction i, typename V> evaluate(V& vms);
+
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Tracking Fleet statistics 
@@ -125,7 +180,6 @@ double        explore      = 1.0; // we want to exploit the string prefixes we f
 size_t        nthreads     = 1;
 unsigned long runtime      = 0;
 unsigned long nchains      = 1;
-unsigned long blah      = 1;
 bool          concise      = false; // this is used to indicate that we want to not print much out (typically only posteriors and counts)
 std::string   input_path   = "input.txt";
 std::string   tree_path    = "tree.txt";

@@ -71,3 +71,7 @@ std::string Q(std::string x) {
 		std::cout std::endl; \
 	#endif
 */
+
+
+//template<typename a, typename... ARGS>
+//void PRINT()

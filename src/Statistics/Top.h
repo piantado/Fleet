@@ -20,33 +20,39 @@ class TopN {
 public:
 	std::map<T,unsigned long> cnt; // also let's count how many times we've seen each for easy debugging
 	std::multiset<T> s; // important that it stores in sorted order by posterior! Multiset because we may have multiple samples that are "equal" (as in SymbolicRegression)
+	bool print_best; // should we print the best?
+	
 	
 public:
 	std::atomic<size_t> N;
 	
-	TopN(size_t n=std::numeric_limits<size_t>::max()) : N(n) {}
+	TopN(size_t n=std::numeric_limits<size_t>::max()) :  print_best(false), N(n) {}
 	
 	TopN(const TopN<T>& x) {
 		clear();
 		set_size(x.N);
 		add(x);
+		print_best = x.print_best;
 	}
 	TopN(TopN<T>&& x) {
 		cnt = std::move(x.cnt);
 		set_size(x.N);
 		s = std::move(x.s);
+		print_best = x.print_best;
 	}
 	
 	void operator=(const TopN<T>& x) {
 		clear();
 		set_size(x.N);
 		add(x);
+		print_best = x.print_best;
 	}
 	void operator=(TopN<T>&& x) {
 		set_size(x.N);
 //		add(x);
 		cnt = std::move(x.cnt);
 		s = std::move(x.s);
+		print_best = x.print_best;
 	}
 	
 
@@ -54,10 +60,16 @@ public:
 		// DOES NOT RESIZE
 		N = n;
 	}
+	void set_print_best(bool b) {
+		print_best = b;
+	}
 
 	size_t size() const {
 		// returns the NUMBER in the set, not the total number allowed!
 		return s.size();
+	}
+	bool empty() const {
+		return s.size() == 0;
 	}
 	
 	std::multiset<T>& values(){
@@ -77,8 +89,12 @@ public:
 			(s.size() < N or x.posterior > s.begin()->posterior)) { // skip adding if its the worst
 			T xcpy = x;
 		
+			if(print_best && (empty() or x.posterior > best().posterior))  {
+				xcpy.print();
+			}
+		
 			s.insert(xcpy); // add this one
-			assert(cnt.find(xcpy) == cnt.end());
+//			assert(cnt.find(xcpy) == cnt.end());
 			cnt[xcpy] = count;
 			
 			// and remove until we are the right size

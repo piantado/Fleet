@@ -36,10 +36,10 @@ public:
 	unsigned long 	  recursion_depth; // when I was created, what was my depth?
 
 	// This is a little bit of fancy template metaprogramming that allows us to define a stack
-	// like std::tuple<Stack<bool>, Stack<std::string> > using a list of type names defined in NT_TYPES
+	// like std::tuple<Stack<bool>, Stack<std::string> > using a list of type names defined in FLEET_GRAMMAR_TYPES
 	template<typename... args>
 	struct t_stack { std::tuple<Stack<args>...> value; };
-	t_stack<NT_TYPES> _stack; // our stacks of different types
+	t_stack<FLEET_GRAMMAR_TYPES> _stack; // our stacks of different types
 	
 	typedef int index_t; // how we index into factorized lexica -- NOTE: probably should be castable from Instruction.arg 
 	
@@ -94,6 +94,13 @@ public:
 		return stack<T>().top();
 	}
 	
+	
+//	template<typename T>
+//	T& topref() {
+//		return stack<T>().topref();
+//	}
+	
+	
 	template<typename T>
 	bool empty() {
 		return stack<T>().empty();
@@ -115,7 +122,7 @@ public:
 	}	
 	bool stacks_empty() const { 
 		// return strue if stack is empty -- as a check at the end of a evaluation
-		return this->_stacks_empty<NT_TYPES>();
+		return this->_stacks_empty<FLEET_GRAMMAR_TYPES>();
 	}
 	
 	virtual t_return run(Dispatchable<t_x,t_return>* d) {
@@ -173,14 +180,14 @@ public:
 					}
 					case BuiltinOp::op_TRUE: 
 					{
-						if constexpr (contains_type<bool,NT_TYPES>()) { 
+						if constexpr (contains_type<bool,FLEET_GRAMMAR_TYPES>()) { 
 							push<bool>(true);
 						} else { assert(0 && "*** Must have bool defined to use op_TRUE");}
 						break;
 					}
 					case BuiltinOp::op_FALSE: 
 					{
-						if constexpr (contains_type<bool,NT_TYPES>()) { 
+						if constexpr (contains_type<bool,FLEET_GRAMMAR_TYPES>()) { 
 							push<bool>(false);
 						} else { assert(0 && "*** Must have bool defined to use op_FALSE");}
 						break;
@@ -281,12 +288,12 @@ public:
 					}
 					case BuiltinOp::op_FLIPP:
 					{
-						if constexpr (contains_type<bool,NT_TYPES>()) { 
+						if constexpr (contains_type<bool,FLEET_GRAMMAR_TYPES>()) { 
 							assert(pool != nullptr && "op_FLIP and op_FLIPP require the pool to be non-null, since they push onto the pool"); // can't do that, for sure
 					
 							double p = 0.5; 
 							
-							if constexpr (contains_type<double,NT_TYPES>()) {  // if we have double allowed we cna do this
+							if constexpr (contains_type<double,FLEET_GRAMMAR_TYPES>()) {  // if we have double allowed we cna do this
 								if(i.getBuiltin() == BuiltinOp::op_FLIPP) { // only for built-in ops do we 
 									p = getpop<double>(); // reads a double argfor the coin weight
 									if(std::isnan(p)) { p = 0.0; } // treat nans as 0s
@@ -334,7 +341,7 @@ public:
 
 							break;
 	
-						} else { assert(0 && "*** Cannot use op_FLIP without defining bool in NT_TYPES"); }
+						} else { assert(0 && "*** Cannot use op_FLIP without defining bool in FLEET_GRAMMAR_TYPES"); }
 					}
 					case BuiltinOp::op_JMP:
 					{
@@ -343,7 +350,7 @@ public:
 					}
 					case BuiltinOp::op_IF: 
 					{
-						if constexpr (contains_type<bool,NT_TYPES>()) { 
+						if constexpr (contains_type<bool,FLEET_GRAMMAR_TYPES>()) { 
 							// Here we evaluate op_IF, which has to short circuit and skip (pop some of the stack) 
 							bool b = getpop<bool>(); // bool has already evaluted
 							
@@ -352,7 +359,7 @@ public:
 							else   {}; // do nothing, we pass through and then get to the jump we placed at the end of the x branch
 							
 							break;		
-						} else { assert(0 && "*** Cannot use op_IF without defining bool in NT_TYPES"); }			
+						} else { assert(0 && "*** Cannot use op_IF without defining bool in FLEET_GRAMMAR_TYPES"); }			
 					}
 					default: 
 					{
