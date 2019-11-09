@@ -55,6 +55,13 @@ typedef struct Object {
 
 #define FLEET_GRAMMAR_TYPES bool,Object,int
 
+
+
+#include <string>
+#include <cstdlib>
+#include <functional>
+
+
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
@@ -62,28 +69,70 @@ typedef struct Object {
 // and each primtiive we create could get a new id, for a new operator
 // and could support a call either in VMS or somewhere else
 
-Primitive my_and("and(%s,%s)", [](bool a, bool b) -> bool { return a&&b; } );
-
-
-// 
-
-template<typename F> // function type
-class Primitive {
+struct PrePrimitive {
+	// need to define something all Primtiives inherit from so that
+	// we can share op_counters across them	
+	static size_t op_counter; // this gives each primitive we define a unique identifier	
+};
+size_t PrePrimitive::op_counter = 0;
+	
+// TODO: Make primtiive detect whether T is a VMS or not
+// so we can give it a lambda of VMS if we wanted
+template<typename T, typename... args> // function type
+struct Primitive : PrePrimitive {
 	// A primitive associates a string name (format) with a function, 
-	// and allows grammars to extract all the relevant function pieces,
+	// and allows grammars to extract all the relevant function pieces via constexpr,
 	// and also defines a VMS function that can be called in dispatch
-	// TODO: put grammar into the constructor so we can 
+	// op here is generated uniquely for each Primitive, which is how LOTHypothesis 
+	// knows which to call. 
+	// SO: grammars use this op (statically updated) in nodes, and then when they 
+	// are linearized the op is processed in a switch statement to evaluate
 	
-	static size_t op;
-	F f;
+	std::string format;
+	T(*call)(args...); //call)(Args...);
+	size_t op;
 	
-	Primitive(std::string fmt, F _f) : f(_f) {
+	Primitive(std::string fmt, T(*f)(args...) ) :
+		format(fmt), call(f), op(op_counter++) {
 	}
 	
-	FunctionTraits<F>::ReturnType operator(VirtualMachineState& vms) {
-		return
+
+	template<typename V>
+	void VMScall(V& vms) {
+		// a way of calling from a VMS if we want it
+		
+		// Can't expand liek this because its only for arguments, not 
+		assert(not vms._stacks_empty<args>()); // TODO: Implement this... -- need to define empty for variadic TYPES, not arguments...
+//		
+//		auto ret = this->call(vms.getpop<Args>(), ...);
+//		
+//		vms.push(ret);
+		
+		
+		// TODO: NEED TO POP TOO DUMMY 
+		
 	}
-}
+	
+};
+
+
+
+
+// NO -- we need to use a constexpr counter because it can't be the same across types
+
+//bool theand(bool a, bool b) { return a&&b; }
+//Primitive my_and("and(%s,%s)",theand);
+//
+//Primitive my_and("and(%s,%s)", [](bool a, bool b) -> bool { return a && b; });
+
+
+// TODO: Must get rid of bools here...
+Primitive<bool,bool,bool> my_and("and(%s,%s)", [](bool a, bool b) -> bool { return a && b; });
+
+//Primitive my_or("or(%s,%s)",  [](bool a, bool b) -> bool { return a||b; } );
+//Primitive my_not("not(%s)",    [](bool a)         -> bool { return not a; } );
+
+
 
 // Define a grammar
 class MyGrammar : public Grammar { 
@@ -91,14 +140,15 @@ public:
 	MyGrammar() : Grammar() {
 		add<Object>     (BuiltinOp::op_X,         "x",            1.0);		
 		add<bool,Object>(CustomOp::op_Red,        "red(%s)",      1.0);		
-		add<bool,Object>(CustomOp::op_Green,        "green(%s)",      1.0);		
-		add<bool,Object>(CustomOp::op_Blue,        "blue(%s)",      1.0);		
+		add<bool,Object>(CustomOp::op_Green,      "green(%s)",      1.0);		
+		add<bool,Object>(CustomOp::op_Blue,       "blue(%s)",      1.0);		
 
-		add<bool,Object>(CustomOp::op_Square,        "square(%s)",      1.0);		
-		add<bool,Object>(CustomOp::op_Triangle,        "triangle(%s)",      1.0);		
-		add<bool,Object>(CustomOp::op_Circle,        "circle(%s)",      1.0);		
+		add<bool,Object>(CustomOp::op_Square,     "square(%s)",      1.0);		
+		add<bool,Object>(CustomOp::op_Triangle,   "triangle(%s)",      1.0);		
+		add<bool,Object>(CustomOp::op_Circle,     "circle(%s)",      1.0);		
 		
-		add<bool,bool,bool>(CustomOp::op_And,        "and(%s,%s)",      1.0);		
+		add(my_and, 1.0);
+		//add<bool,bool,bool>(CustomOp::op_And,        "and(%s,%s)",      1.0);		
 		add<bool,bool,bool>(CustomOp::op_Or,        "or(%s,%s)",      1.0);		
 		add<bool,bool>     (CustomOp::op_Not,        "not(%s)",      1.0);		
 	}
@@ -122,6 +172,9 @@ public:
 	abort_t dispatch_rule(Instruction i, VirtualMachinePool<Object, bool>* pool, VirtualMachineState<Object,bool>& vms, Dispatchable<Object,bool>* loader ) {
 		switch(i.getCustom()) {
 			
+//			CASE(my_and)
+			
+			case my_and.op:	my_and.VMScall(vms); break;
 			// We want a syntax like:
 			// case grammar.getOp("and"): return my_and(x,y)
 			// CASE_FUNC("and", my_and)
@@ -176,6 +229,7 @@ int main(int argc, char** argv){
 	//------------------
 	MyGrammar grammar;
 	
+	CERR my_and.op ENDL;
 	//------------------
 	// set up the data
 	//------------------

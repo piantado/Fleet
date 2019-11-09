@@ -85,22 +85,22 @@ struct TypeIndex<T, std::tuple<U, Types...>> {
 // we can define rules just by a single lambda 
 // modified from https://stackoverflow.com/questions/43560492/how-to-extract-lambdas-return-type-and-variadic-parameters-pack-back-from-gener
 
-//template <typename T>
-//struct FunctionTraits : public FunctionTraits<decltype(&T::operator())>
-//{};
-//
-//template <typename ClassType, typename ReturnType, typename... Args>
-//struct FunctionTraits<ReturnType(ClassType::*)(Args...) const> {
-//    
-//	enum { arity = sizeof...(Args) }; // how many arguments -- TODO: Why must this be an enum?
-//	
-//    typedef ReturnType returntype;
-//
-//    template <size_t i>
-//    struct arg {
-//        typedef typename std::tuple_element<i, std::tuple<Args...>>::type type;
-//    };
-//};
+template <typename T>
+struct FunctionTraits : public FunctionTraits<decltype(&T::operator())>
+{};
+
+template <typename ClassType, typename ReturnType, typename... Args>
+struct FunctionTraits<ReturnType(ClassType::*)(Args...) const> {
+    
+	enum { arity = sizeof...(Args) }; // how many arguments -- TODO: Why must this be an enum?
+	
+    typedef ReturnType returntype;
+
+    template <size_t i>
+    struct arg {
+        typedef typename std::tuple_element<i, std::tuple<Args...>>::type type;
+    };
+};
 
 // This handy template extracts the types from a function/lambda so that
 // we can define rules just by their lambdas

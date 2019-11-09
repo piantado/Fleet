@@ -387,6 +387,12 @@ public:
 		add(Rule(nt<RT>(), o, fmt, {nt<ARGS>()...}, p, arg));
 	}
 	
+//	template<typename F>
+//	void add(Primitive<F> p, double prob, const int arg=0) {
+//		add(Rule(nt<typename FunctionTraits<F>::returntype>(), p.op, p.format, {nt<typename FunctionTraits<F>::arg>()...}, prob, arg));
+//	}
+//	
+	
 	Node makeNode(const Rule* r) const {
 		return Node(r, log(r->p)-log(Z[r->nt]));
 	}
