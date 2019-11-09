@@ -176,7 +176,7 @@ public:
 		if(value.is_null()) {
 			assert(k >= 0);
 			assert(k < (int)grammar->count_expansions(nt));
-			auto r = grammar->get_rule(nt,k);
+			auto r = grammar->get_rule(nt,(size_t)k);
 			h.value = grammar->makeNode(r);
 		}
 		else {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <tuple>
 #include <deque>
 #include <exception>
 #include "IO.h"
@@ -9,6 +10,10 @@
 
 // an exception for recursing too deep so we can print a trace of what went wrong
 class DepthException: public std::exception {} depth_exception;
+
+
+template<typename T, typename... args> // function type
+struct Primitive ;
 
 class Grammar {
 	/* 
@@ -38,6 +43,15 @@ public:
 	}
 
 	Grammar() {
+		for(size_t i=0;i<N_NTs;i++) {
+			Z[i] = 0.0;
+		}
+	}
+	
+	template<typename... T>
+	Grammar(std::tuple<T...> tup) {
+		(add(std::get<T>(tup)), ...); // just call add on everything
+
 		for(size_t i=0;i<N_NTs;i++) {
 			Z[i] = 0.0;
 		}
@@ -387,11 +401,10 @@ public:
 		add(Rule(nt<RT>(), o, fmt, {nt<ARGS>()...}, p, arg));
 	}
 	
-//	template<typename F>
-//	void add(Primitive<F> p, double prob, const int arg=0) {
-//		add(Rule(nt<typename FunctionTraits<F>::returntype>(), p.op, p.format, {nt<typename FunctionTraits<F>::arg>()...}, prob, arg));
-//	}
-//	
+	template<typename T, typename... args>
+	void add(Primitive<T, args...> p, const int arg=0) {
+		add(Rule(nt<T>(), p.op, p.format, {nt<args>()...}, p.p, arg));
+	}
 	
 	Node makeNode(const Rule* r) const {
 		return Node(r, log(r->p)-log(Z[r->nt]));
@@ -476,7 +489,7 @@ public:
 			if(node.child[i].is_null()) {
 				int c = count_expansions(node.rule->child_types[i]);
 				if(which >= 0 && which < c) {
-					auto r = get_rule(node.rule->child_types[i], which);
+					auto r = get_rule(node.rule->child_types[i], (size_t)which);
 					node.set_child(i, makeNode(r));
 				}
 				which -= c;

@@ -35,11 +35,12 @@
 // These are the internal symbols that are used to represent each operation. The grammar
 // generates nodes with them, and then dispatch down below gets called with a switch
 // statement to see how to execute aech of them. 
-enum class CustomOp {
-	op_And, op_Or, op_Not, 
-	op_Red, op_Green, op_Blue, 
-	op_Square, op_Triangle, op_Circle
-};
+//enum class CustomOp {
+//	op_And, op_Or, op_Not, 
+//	op_Red, op_Green, op_Blue, 
+//	op_Square, op_Triangle, op_Circle
+//};
+
 
 enum class Shape { Square, Triangle, Circle};
 enum class Color { Red, Green, Blue};
@@ -91,25 +92,30 @@ struct Primitive : PrePrimitive {
 	std::string format;
 	T(*call)(args...); //call)(Args...);
 	size_t op;
+	double p;
 	
-	Primitive(std::string fmt, T(*f)(args...) ) :
-		format(fmt), call(f), op(op_counter++) {
+	Primitive(std::string fmt, T(*f)(args...), double _p=1.0 ) :
+		format(fmt), call(f), op(op_counter++), p(_p) {
 	}
 	
-
 	template<typename V>
-	void VMScall(V& vms) {
+	abort_t VMScall(V& vms) {
 		// a way of calling from a VMS if we want it
 		
 		// Can't expand liek this because its only for arguments, not 
-		assert(not vms._stacks_empty<args>()); // TODO: Implement this... -- need to define empty for variadic TYPES, not arguments...
-//		
-//		auto ret = this->call(vms.getpop<Args>(), ...);
-//		
-//		vms.push(ret);
+		assert(not vms.template _stacks_empty<args...>()); // TODO: Implement this... -- need to define empty for variadic TYPES, not arguments...
+		
+		auto ret = this->call(vms.template getpop<args>()...);
+		
+		vms.push(ret);
+		
+		
+		
+		
 		
 		
 		// TODO: NEED TO POP TOO DUMMY 
+		// and return -- shold be t_abort
 		
 	}
 	
@@ -120,39 +126,24 @@ struct Primitive : PrePrimitive {
 
 // NO -- we need to use a constexpr counter because it can't be the same across types
 
-//bool theand(bool a, bool b) { return a&&b; }
-//Primitive my_and("and(%s,%s)",theand);
-//
-//Primitive my_and("and(%s,%s)", [](bool a, bool b) -> bool { return a && b; });
-
-
-// TODO: Must get rid of bools here...
-Primitive<bool,bool,bool> my_and("and(%s,%s)", [](bool a, bool b) -> bool { return a && b; });
 
 //Primitive my_or("or(%s,%s)",  [](bool a, bool b) -> bool { return a||b; } );
 //Primitive my_not("not(%s)",    [](bool a)         -> bool { return not a; } );
-
-
-
-// Define a grammar
-class MyGrammar : public Grammar { 
-public:
-	MyGrammar() : Grammar() {
-		add<Object>     (BuiltinOp::op_X,         "x",            1.0);		
-		add<bool,Object>(CustomOp::op_Red,        "red(%s)",      1.0);		
-		add<bool,Object>(CustomOp::op_Green,      "green(%s)",      1.0);		
-		add<bool,Object>(CustomOp::op_Blue,       "blue(%s)",      1.0);		
-
-		add<bool,Object>(CustomOp::op_Square,     "square(%s)",      1.0);		
-		add<bool,Object>(CustomOp::op_Triangle,   "triangle(%s)",      1.0);		
-		add<bool,Object>(CustomOp::op_Circle,     "circle(%s)",      1.0);		
-		
-		add(my_and, 1.0);
-		//add<bool,bool,bool>(CustomOp::op_And,        "and(%s,%s)",      1.0);		
-		add<bool,bool,bool>(CustomOp::op_Or,        "or(%s,%s)",      1.0);		
-		add<bool,bool>     (CustomOp::op_Not,        "not(%s)",      1.0);		
-	}
+std::tuple PRIMITIVES = {
+	Primitive("and(%s,%s)",  +[](bool a, bool b)   -> bool { return a && b; }, 2.0),
+	Primitive("blah(%s,%s)", +[](bool a, double b) -> bool { return a && b; }),
 };
+// that + is really insane, but is needed to convert a lambda to a function pointer
+
+/// NOW Pass this to Grammar and build it in to 
+Grammar grammar(PRIMITIVES);
+
+
+// TODO: Then we just have to figure out the case statement....
+// Probably we want to have primitive store whether its a customOp or not, and if not
+// we just index into Primitives
+// *otherwise* we can call and overwrite dispatch_rules
+
 
 
 /* Define a class for handling my specific hypotheses and data. Everything is defaulty a PCFG prior and 
@@ -169,12 +160,19 @@ public:
 		return out == x.output ? log(x.reliability + (1.0-x.reliability)/2.0) : log((1.0-x.reliability)/2.0);
 	}
 	
+	
 	abort_t dispatch_rule(Instruction i, VirtualMachinePool<Object, bool>* pool, VirtualMachineState<Object,bool>& vms, Dispatchable<Object,bool>* loader ) {
+			
 		switch(i.getCustom()) {
+			case 0: return std::get<0>(PRIMITIVES).VMScall(vms);
+//			case 1: return std::get<1>(PRIMITIVES).VMScall(vms);
+//			case 2: return std::get<2>(PRIMITIVES).VMScall(vms);
+//			case 3: return std::get<3>(PRIMITIVES).VMScall(vms);
 			
 //			CASE(my_and)
 			
-			case my_and.op:	my_and.VMScall(vms); break;
+			//case my_and.op:	return my_and.VMScall(vms); 
+			
 			// We want a syntax like:
 			// case grammar.getOp("and"): return my_and(x,y)
 			// CASE_FUNC("and", my_and)
@@ -182,17 +180,17 @@ public:
 			// Maybe syntax like CASEFUNC1
 			// CASE(my_and) // extract everything from the Primitive class
 			
-			CASE_FUNC1(CustomOp::op_Red,         bool,  Object,    [](const Object& x){ return x.color == Color::Red; })
-			CASE_FUNC1(CustomOp::op_Green,       bool,  Object,    [](const Object& x){ return x.color == Color::Green; })
-			CASE_FUNC1(CustomOp::op_Blue,        bool,  Object,    [](const Object& x){ return x.color == Color::Blue; })
-			
-			CASE_FUNC1(CustomOp::op_Square,      bool,  Object,    [](const Object& x){ return x.shape == Shape::Square; })
-			CASE_FUNC1(CustomOp::op_Triangle,    bool,  Object,    [](const Object& x){ return x.shape == Shape::Triangle; })
-			CASE_FUNC1(CustomOp::op_Circle,      bool,  Object,    [](const Object& x){ return x.shape == Shape::Circle; })
-			
-			CASE_FUNC2(CustomOp::op_And,         bool,bool,bool,    [](const bool a, bool b){ return a&&b; })
-			CASE_FUNC2(CustomOp::op_Or,          bool,bool,bool,    [](const bool a, bool b){ return a||b; })
-			CASE_FUNC1(CustomOp::op_Not,         bool,bool,         [](const bool a){ return !a; })
+//			CASE_FUNC1(CustomOp::op_Red,         bool,  Object,    [](const Object& x){ return x.color == Color::Red; })
+//			CASE_FUNC1(CustomOp::op_Green,       bool,  Object,    [](const Object& x){ return x.color == Color::Green; })
+//			CASE_FUNC1(CustomOp::op_Blue,        bool,  Object,    [](const Object& x){ return x.color == Color::Blue; })
+//			
+//			CASE_FUNC1(CustomOp::op_Square,      bool,  Object,    [](const Object& x){ return x.shape == Shape::Square; })
+//			CASE_FUNC1(CustomOp::op_Triangle,    bool,  Object,    [](const Object& x){ return x.shape == Shape::Triangle; })
+//			CASE_FUNC1(CustomOp::op_Circle,      bool,  Object,    [](const Object& x){ return x.shape == Shape::Circle; })
+//			
+//			CASE_FUNC2(CustomOp::op_And,         bool,bool,bool,    [](const bool a, bool b){ return a&&b; })
+//			CASE_FUNC2(CustomOp::op_Or,          bool,bool,bool,    [](const bool a, bool b){ return a||b; })
+//			CASE_FUNC1(CustomOp::op_Not,         bool,bool,         [](const bool a){ return !a; })
 			
 			default:
 				assert(0 && " *** You used an invalid operation"); // should never get here
@@ -224,12 +222,6 @@ int main(int argc, char** argv){
 
 	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
 	
-	//------------------
-	// declare a grammar
-	//------------------
-	MyGrammar grammar;
-	
-	CERR my_and.op ENDL;
 	//------------------
 	// set up the data
 	//------------------

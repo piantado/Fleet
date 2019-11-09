@@ -46,6 +46,8 @@ enum class BuiltinOp {
 	//op_LAMBDA,op_APPLY // simple, one-argument lambda functions (as in forall)
 };
 
+typedef short CustomOp;
+
 #include "Instruction.h"
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -63,6 +65,9 @@ enum class BuiltinOp {
 // for example how Fleet stores information in the grammar
 
 typedef size_t nonterminal_t;
+
+
+
 
 // from https://stackoverflow.com/questions/42258608/c-constexpr-values-for-types
 template <class T, class Tuple>
