@@ -2,6 +2,13 @@
 
 // A problem here is that its hard to manage Primitives and BuiltinOps
 
+// TOOD: What if we store a std::vector of rules, which allowed for heterogeneous function types
+// and then instruction i could index into the grammar to pull out the rule+function that we needed?
+// But part of the problem is that we need to define everything at compile time too 
+//
+//
+// OR Can we just add a std::function list that stores them all??
+
 
 // A simple example of a version of the RationalRules model. 
 // This is primarily used as an example and for debugging MCMC
@@ -40,13 +47,20 @@ std::tuple PRIMITIVES = {
 	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Circle; })
 };
 // that + is really insane, but is needed to convert a lambda to a function pointer
-//
+
+//template<typename... args>
+//std::vector make_primitives(std::tuple<args> tup) {
+//}
+
+
 //typedef t_abort(VirtualMachinePool<Object, bool>&) V;
-//std::vector<V> primitive_functions {
-//	std::get<0>(PRIMITIVES).VMScall,
-//	std::get<1>(PRIMITIVES).VMScall,
-//	std::get<2>(PRIMITIVES).VMScall
-//};
+std::vector primitive_functions {
+	static_cast<int>(&std::get<0>(PRIMITIVES).VMScall),
+	static_cast<int>(&std::get<0>(PRIMITIVES).VMScall)
+	//,
+	//std::get<1>(PRIMITIVES).VMScall,
+	//std::get<2>(PRIMITIVES).VMScall
+};
 
 //template<size_t... Is>
 //struct PrimitiveLookup {
