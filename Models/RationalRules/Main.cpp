@@ -31,13 +31,13 @@ std::tuple PRIMITIVES = {
 	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return a || b; }),
 	Primitive("not(%s)",       +[](bool a)         -> bool { return not a; }),
 
-	Primitive("red(%s)",       +[](Object x)      -> bool { return x.color == Color::Red; }),
-	Primitive("green(%s)",     +[](Object x)      -> bool { return x.color == Color::Green; }),
-	Primitive("blue(%s)",      +[](Object x)      -> bool { return x.color == Color::Blue; }),
+	Primitive("red(%s)",       +[](Object x)       -> bool { return x.color == Color::Red; }),
+	Primitive("green(%s)",     +[](Object x)       -> bool { return x.color == Color::Green; }),
+	Primitive("blue(%s)",      +[](Object x)       -> bool { return x.color == Color::Blue; }),
 
-	Primitive("square(%s)",    +[](Object x)      -> bool { return x.shape == Shape::Square; }),
-	Primitive("triangle(%s)",  +[](Object x)      -> bool { return x.shape == Shape::Triangle; }),
-	Primitive("circle(%s)",    +[](Object x)      -> bool { return x.shape == Shape::Circle; })
+	Primitive("square(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Square; }),
+	Primitive("triangle(%s)",  +[](Object x)       -> bool { return x.shape == Shape::Triangle; }),
+	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Circle; })
 };
 // that + is really insane, but is needed to convert a lambda to a function pointer
 //
