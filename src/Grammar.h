@@ -57,11 +57,13 @@ public:
 	template<typename... T>
 	Grammar(std::tuple<T...> tup) : Grammar() {
 		add(tup, std::make_index_sequence<sizeof...(T)>{});
-			
-		for(size_t i=0;i<N_NTs;i++) {
-			Z[i] = 0.0;
-		}
 	}	
+	
+//	template<typename T>
+//	Grammar(std::vector<T> prims) : Grammar() {
+////		for(auto& a : primes) {
+////			add(a);
+//	}	
 	
 	Grammar(const Grammar& g) = delete; // should not be doing these
 	Grammar(const Grammar&& g) = delete; // should not be doing these
@@ -178,6 +180,7 @@ public:
 
 	virtual Rule* sample_rule(const nonterminal_t nt) const {
 		std::function<double(const Rule& r)> f = [](const Rule& r){return r.p;};
+		assert(rules[nt].size() > 0 && "*** You are trying to sample from a nonterminal with no rules!");
 		return sample<Rule,std::vector<Rule>>(rules[nt], f).first; // ignore the probabiltiy 
 	}
 	

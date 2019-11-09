@@ -1,5 +1,8 @@
 #pragma once
 
+
+// TODO: ADD ERR CATCHES
+
 #include <string>
 #include <cstdlib>
 #include <functional>
@@ -43,6 +46,9 @@ struct Primitive : PrePrimitive {
 			
 	}
 	
+	Primitive(std::string fmt, BuiltinOp o, double _p=1.0) : format(fmt), op((size_t)o), p(_p) {
+	}
+	
 	template<typename V>
 	abort_t VMScall(V& vms) {
 		// a way of calling from a VMS if we want it
@@ -53,15 +59,8 @@ struct Primitive : PrePrimitive {
 		auto ret = this->call(vms.template getpop<args>()...);
 		
 		vms.push(ret);
-		
-		
-		
+				
 		return abort_t::NO_ABORT;
-		
-		
-		// TODO: NEED TO POP TOO DUMMY 
-		// and return -- shold be t_abort
-		
 	}
 	
 };
