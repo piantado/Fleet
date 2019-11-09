@@ -19,10 +19,16 @@ class Grammar {
 	/* 
 	 * A grammar stores all of the rules associated with any kind of nonterminal and permits us
 	 * to sample as well as compute log probabilities. 
-	 * A grammar is considered to own a rule, so it is expected to destroy them in its destructor.
 	 * A grammar also is nwo required to store them in a fixed (sorted) order that is guaranteed
 	 * not to change, adn that puts terminals first and (lower priority) high probability first
-	 * as determined by Rule's sort order. 
+	 * as determined by Rule's sort order.
+	 * 
+	 * Note that Primitives are used to initialize a grammar, and they get "parsed" by Gramar.add
+	 * to store them in the right places according to their return types (the index comes from
+	 * the index of each type in FLEET_GRAMMAR_TYPES).
+	 * The trees that Grammar generates use nt<T>() -> size_t to represent types, not the types
+	 * themselves. 
+	 * The trees also use Primitive.op (a size_t) to represent operations
 	 */
 	// how many nonterminal types do we have?
 	static constexpr size_t N_NTs = std::tuple_size<std::tuple<FLEET_GRAMMAR_TYPES>>::value;
@@ -49,13 +55,13 @@ public:
 	}
 	
 	template<typename... T>
-	Grammar(std::tuple<T...> tup) {
-		(add(std::get<T>(tup)), ...); // just call add on everything
-
+	Grammar(std::tuple<T...> tup) : Grammar() {
+		add(tup, std::make_index_sequence<sizeof...(T)>{});
+			
 		for(size_t i=0;i<N_NTs;i++) {
 			Z[i] = 0.0;
 		}
-	}
+	}	
 	
 	Grammar(const Grammar& g) = delete; // should not be doing these
 	Grammar(const Grammar&& g) = delete; // should not be doing these
@@ -392,19 +398,19 @@ public:
 		Z[nt] += r.p; // keep track of the total probability
 	}
 	
-	template<typename RT, typename... ARGS>
-	void add(BuiltinOp o, const std::string fmt, double p, const int arg=0) {
-		add(Rule(nt<RT>(), o, fmt, {nt<ARGS>()...}, p, arg));
-	}
-	template<typename RT, typename... ARGS>
-	void add(CustomOp o, const std::string fmt, double p, const int arg=0) {
-		add(Rule(nt<RT>(), o, fmt, {nt<ARGS>()...}, p, arg));
+	// recursively add a bunch of rules in a tuple -- called via
+	// Grammar(std::tuple<T...> tup)
+	template<typename... args, size_t... Is>
+	void add(std::tuple<args...> t, std::index_sequence<Is...>) {
+		(add(std::get<Is>(t)), ...);
 	}
 	
 	template<typename T, typename... args>
 	void add(Primitive<T, args...> p, const int arg=0) {
+		// add a single primitive -- unpacks the types to put the rule into the right place
 		add(Rule(nt<T>(), p.op, p.format, {nt<args>()...}, p.p, arg));
 	}
+	
 	
 	Node makeNode(const Rule* r) const {
 		return Node(r, log(r->p)-log(Z[r->nt]));
@@ -439,8 +445,6 @@ public:
 	Node generate(unsigned long depth=0) {
 		return generate(nt<t>(),depth);
 	}
-	
-	
 	
 	Node copy_resample(const Node& node, bool f(const Node& n)) const {
 		// this makes a copy of the current node where ALL nodes satifying f are resampled from the grammar

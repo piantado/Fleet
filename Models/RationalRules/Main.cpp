@@ -1,46 +1,12 @@
-// TODO: We can probably put all of the GRAMMAR_TYPE stuff into 
-// 		the grammar class itself -- have it take some types as arguments
-//		and then have add take template arguments, which maybe it can
-// 		deduce from a lambda etc -- then al the nt_types are just stored
-//      internally to the grammar
-// 		maybe the grammar can also store a grammar_dispatch function
-//		that takes a constexpr string and converts it to an "op" code
-//		so that we can use it as a switch?
-//		 
-
-// Steps:
-// - move FLEET_GRAMMAR_TYPES into grammar as a template argument, and put all that code in too
-// - may need to template the grammar so we can use subtypes etc on the constructor
-// - define a constexpr way to conver strings into customOps stored internally in grammar 
-//		this function is getOp and will convert a prefix of format into the internal customOp it uses
-
-//- What if we put format and function call (as Operator) together in a struct?
+// - update description of primitives, instructions, etc. 
 
 
-
-
-
-
-
-#include <assert.h>
 
 // A simple example of a version of the RationalRules model. 
 // This is primarily used as an example and for debugging MCMC
 // My laptop gets around 200-300k samples per second
 
-// This is also used to check MCMC, as it prints out counts and log posteriors which
-// we can check for match
-
-// We require an enum to define our custom operations as a string before we import Fleet
-// These are the internal symbols that are used to represent each operation. The grammar
-// generates nodes with them, and then dispatch down below gets called with a switch
-// statement to see how to execute aech of them. 
-//enum class CustomOp {
-//	op_And, op_Or, op_Not, 
-//	op_Red, op_Green, op_Blue, 
-//	op_Square, op_Triangle, op_Circle
-//};
-
+#include "assert.h"
 
 enum class Shape { Square, Triangle, Circle};
 enum class Color { Red, Green, Blue};
@@ -54,96 +20,22 @@ typedef struct Object {
 	bool operator<(const Object& o) const { assert(false); }
 } Object;
 
-#define FLEET_GRAMMAR_TYPES bool,Object,int
-
-
-
-#include <string>
-#include <cstdlib>
-#include <functional>
-
+// These define all of the types that are used in the grammar -- must be defined
+// before we import Fleet
+#define FLEET_GRAMMAR_TYPES bool,Object
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
-// or we could define a primitive class
-// and each primtiive we create could get a new id, for a new operator
-// and could support a call either in VMS or somewhere else
-
-struct PrePrimitive {
-	// need to define something all Primtiives inherit from so that
-	// we can share op_counters across them	
-	static size_t op_counter; // this gives each primitive we define a unique identifier	
-};
-size_t PrePrimitive::op_counter = 0;
-	
-// TODO: Make primtiive detect whether T is a VMS or not
-// so we can give it a lambda of VMS if we wanted
-template<typename T, typename... args> // function type
-struct Primitive : PrePrimitive {
-	// A primitive associates a string name (format) with a function, 
-	// and allows grammars to extract all the relevant function pieces via constexpr,
-	// and also defines a VMS function that can be called in dispatch
-	// op here is generated uniquely for each Primitive, which is how LOTHypothesis 
-	// knows which to call. 
-	// SO: grammars use this op (statically updated) in nodes, and then when they 
-	// are linearized the op is processed in a switch statement to evaluate
-	
-	std::string format;
-	T(*call)(args...); //call)(Args...);
-	size_t op;
-	double p;
-	
-	Primitive(std::string fmt, T(*f)(args...), double _p=1.0 ) :
-		format(fmt), call(f), op(op_counter++), p(_p) {
-	}
-	
-	template<typename V>
-	abort_t VMScall(V& vms) {
-		// a way of calling from a VMS if we want it
-		
-		// Can't expand liek this because its only for arguments, not 
-		assert(not vms.template _stacks_empty<args...>()); // TODO: Implement this... -- need to define empty for variadic TYPES, not arguments...
-		
-		auto ret = this->call(vms.template getpop<args>()...);
-		
-		vms.push(ret);
-		
-		
-		
-		
-		
-		
-		// TODO: NEED TO POP TOO DUMMY 
-		// and return -- shold be t_abort
-		
-	}
-	
-};
-
-
-
-
-// NO -- we need to use a constexpr counter because it can't be the same across types
-
-
-//Primitive my_or("or(%s,%s)",  [](bool a, bool b) -> bool { return a||b; } );
-//Primitive my_not("not(%s)",    [](bool a)         -> bool { return not a; } );
 std::tuple PRIMITIVES = {
-	Primitive("and(%s,%s)",  +[](bool a, bool b)   -> bool { return a && b; }, 2.0),
-	Primitive("blah(%s,%s)", +[](bool a, double b) -> bool { return a && b; }),
+	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return a && b; }, 2.0),
+	Primitive("blah(%s,%s)",   +[](bool a, bool b) -> bool { return a && b; }),
+	Primitive("red(%s)",       +[](Object x)       -> bool { return x.color == Color::Red; }),
 };
 // that + is really insane, but is needed to convert a lambda to a function pointer
-
-/// NOW Pass this to Grammar and build it in to 
+//
+///// NOW Pass this to Grammar and build it in to 
 Grammar grammar(PRIMITIVES);
-
-
-// TODO: Then we just have to figure out the case statement....
-// Probably we want to have primitive store whether its a customOp or not, and if not
-// we just index into Primitives
-// *otherwise* we can call and overwrite dispatch_rules
-
 
 
 /* Define a class for handling my specific hypotheses and data. Everything is defaulty a PCFG prior and 
@@ -162,9 +54,20 @@ public:
 	
 	
 	abort_t dispatch_rule(Instruction i, VirtualMachinePool<Object, bool>* pool, VirtualMachineState<Object,bool>& vms, Dispatchable<Object,bool>* loader ) {
-			
-		switch(i.getCustom()) {
-			case 0: return std::get<0>(PRIMITIVES).VMScall(vms);
+	
+		auto op = i.getCustom();
+		
+		switch(op) {
+//			if constexpr (std::tuple_size<PRIMITIVES>::value > 0) { case 0: return std::get<0>(PRIMITIVES).VMScall(vms); };
+//			if constexpr(std::tuple_size<PRIMITIVES>::value > 1) { case 1: return std::get<1>(PRIMITIVES).VMScall(vms); };
+//			if constexpr(std::tuple_size<PRIMITIVES>::value > 2) { case 2: return std::get<2>(PRIMITIVES).VMScall(vms); };
+//			if constexpr(std::tuple_size<PRIMITIVES>::value > 3) { case 3: return std::get<3>(PRIMITIVES).VMScall(vms); };
+//			if constexpr(std::tuple_size<PRIMITIVES>::value > 4) { case 4: return std::get<4>(PRIMITIVES).VMScall(vms); };
+		}
+		
+//		switch(i.getCustom()) {
+
+//			case 0: return std::get<0>(PRIMITIVES).VMScall(vms);
 //			case 1: return std::get<1>(PRIMITIVES).VMScall(vms);
 //			case 2: return std::get<2>(PRIMITIVES).VMScall(vms);
 //			case 3: return std::get<3>(PRIMITIVES).VMScall(vms);
@@ -192,10 +95,10 @@ public:
 //			CASE_FUNC2(CustomOp::op_Or,          bool,bool,bool,    [](const bool a, bool b){ return a||b; })
 //			CASE_FUNC1(CustomOp::op_Not,         bool,bool,         [](const bool a){ return !a; })
 			
-			default:
-				assert(0 && " *** You used an invalid operation"); // should never get here
-		}
-		return abort_t::NO_ABORT;
+//			default:
+//				assert(0 && " *** You used an invalid operation"); // should never get here
+//		}
+//		return abort_t::NO_ABORT;
 	}
 	
 	void print(std::string prefix="") {

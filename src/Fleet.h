@@ -78,6 +78,7 @@ struct TypeIndex<T, std::tuple<T, Types...>> {
     static const nonterminal_t value = 0;
 };
 
+
 template <class T, class U, class... Types>
 struct TypeIndex<T, std::tuple<U, Types...>> {
     static const nonterminal_t value = 1 + TypeIndex<T, std::tuple<Types...>>::value;
@@ -251,6 +252,7 @@ typedef Stack<Instruction> Program;
 #include "Inference/ChainPool.h"
 
 #include "Top.h"
+#include "Primitives.h"
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Actual initialization
