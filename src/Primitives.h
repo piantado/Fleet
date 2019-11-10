@@ -11,6 +11,11 @@
 #include <string>
 #include <cstdlib>
 #include <functional>
+#include <tuple>
+
+#include "Instruction.h"
+#include "TemplateMagic.h"
+
 
 struct PrePrimitive {
 	// need to define something all Primitives inherit from so that

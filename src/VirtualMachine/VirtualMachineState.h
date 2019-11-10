@@ -11,11 +11,6 @@ void popn(Program& s, size_t n) {
 	for(size_t i=0;i<n;i++) s.pop();
 }
 
-// Check if a variadic template Ts contains any type X
-template<typename X, typename... Ts>
-constexpr bool contains_type() {
-	return std::disjunction<std::is_same<X, Ts>...>::value;
-}
 
 template<typename t_x, typename t_return>
 class VirtualMachineState {
@@ -143,39 +138,11 @@ public:
 			Instruction i = opstack.top(); opstack.pop();
 
 			if(i.is<CustomOp>()) {
-				abort_t b = dispatch->dispatch_custom(i, pool, *this, loader);
-				if(b != abort_t::NO_ABORT) {
-					aborted = b;
-					return err;
-				}
+				aborted = dispatch->dispatch_custom(i, pool, *this, loader);
 			}
 			else if(i.is<PrimitiveOp>()) {
 				// call this fancy template magic to index into the global tuple variable PRIMITIVES
-				
-//				extern std::tuple PRIMITIVES;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				
-				abort_t b;// = applyToVMS(PRIMITIVES, (size_t)i.getCustom(), this);
-				if(b != abort_t::NO_ABORT) {
-					aborted = b;
-					return err;
-				}
+				aborted = applyToVMS(PRIMITIVES, i.as<PrimitiveOp>(), this);
 			}
 			else {
 				assert(i.is<BuiltinOp>());
@@ -198,13 +165,18 @@ public:
 					}
 					case BuiltinOp::op_MEM:
 					{
-						auto v = gettop<t_return>(); // what I should memoize should be on top here, but dont' remove because we also return it
-						auto memindex = memstack.top(); memstack.pop();
-						if(mem.count(memindex)==0) { // you might actually have already placed mem in crazy recursive situations, so don't overwrte if you have
-							mem[memindex] = v;
-						}
-						
-						break;
+						// Let's not make a big deal when 
+						if constexpr (has_operator_lt<t_x>::value) {
+							
+							auto v = gettop<t_return>(); // what I should memoize should be on top here, but dont' remove because we also return it
+							auto memindex = memstack.top(); memstack.pop();
+							if(mem.count(memindex)==0) { // you might actually have already placed mem in crazy recursive situations, so don't overwrte if you have
+								mem[memindex] = v;
+							}
+							
+							break;
+							
+						} else { assert(0 && "*** Cannot call op_MEM without defining operator< on t_input"); }
 					}
 					case BuiltinOp::op_TRUE: 
 					{
@@ -266,7 +238,7 @@ public:
 					}
 					case BuiltinOp::op_SAFE_MEM_RECURSE: {
 						// same as SAFE_RECURSE. Note that there is no memoization here
-						if constexpr (std::is_same<t_x, std::string>::value) { 						
+						if constexpr (std::is_same<t_x, std::string>::value and has_operator_lt<t_x>::value) { 						
 							if (empty<t_x>()) {
 								push<t_return>(t_return{});
 								continue;
@@ -276,35 +248,37 @@ public:
 								push<t_return>(t_return{}); //push default (null) return
 								continue;
 							}
-						} else { assert(false && "*** Can only use SAFE_MEM_RECURSE on strings");}
+						} else { assert(false && "*** Can only use SAFE_MEM_RECURSE on strings with operator< defined");}
 
 						// want to fallthrough here
 						[[fallthrough]];
 					}
 					case BuiltinOp::op_MEM_RECURSE:
 					{
+						if constexpr (has_operator_lt<t_x>::value) {
+							if(recursion_depth++ > MAX_RECURSE) {
+								aborted = abort_t::RECURSION_DEPTH;
+								return err;
+							}
+							
+							t_x x = getpop<t_x>(); // get the argument
 						
-						if(recursion_depth++ > MAX_RECURSE) {
-							aborted = abort_t::RECURSION_DEPTH;
-							return err;
-						}
-						
-						t_x x = getpop<t_x>(); // get the argument
-					
-						std::pair<index_t,t_x> memindex(i.getArg(),x);
-						
-						if(mem.count(memindex)){
-							push(mem[memindex]); 
-						}
-						else {	
-							xstack.push(x);	
-							memstack.push(memindex); // popped off by op_MEM
-							opstack.push(Instruction(BuiltinOp::op_MEM));
-							opstack.push(Instruction(BuiltinOp::op_POPX));
-							loader->push_program(opstack,i.arg); // this leaves the answer on top
-						}
-						
-						break;						
+							std::pair<index_t,t_x> memindex(i.getArg(),x);
+							
+							if(mem.count(memindex)){
+								push(mem[memindex]); 
+							}
+							else {	
+								xstack.push(x);	
+								memstack.push(memindex); // popped off by op_MEM
+								opstack.push(Instruction(BuiltinOp::op_MEM));
+								opstack.push(Instruction(BuiltinOp::op_POPX));
+								loader->push_program(opstack,i.arg); // this leaves the answer on top
+							}
+							
+							break;						
+							
+						} else { assert(false && "*** Cannot MEM_RECURSE unless t_x has operator< defined"); }
 					}
 					
 					// Both flips come here so we don't duplicate code
