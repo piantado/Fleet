@@ -31,7 +31,7 @@
 
 #include <sys/resource.h> // just for setting priority defaulty 
 
-const std::string FLEET_VERSION = "0.0.7";
+const std::string FLEET_VERSION = "0.0.8";
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Tracking Fleet statistics 
@@ -96,7 +96,7 @@ double        explore      = 1.0; // we want to exploit the string prefixes we f
 size_t        nthreads     = 1;
 unsigned long runtime      = 0;
 unsigned long nchains      = 1;
-bool          concise      = false; // this is used to indicate that we want to not print much out (typically only posteriors and counts)
+bool          quiet      = false; // this is used to indicate that we want to not print much out (typically only posteriors and counts)
 std::string   input_path   = "input.txt";
 std::string   tree_path    = "tree.txt";
 std::string   output_path  = "output.txt";
@@ -109,7 +109,6 @@ namespace Fleet {
 		
 		app.add_option("-R,--seed",    random_seed, "Seed the rng (0 is no seed)");
 		app.add_option("-s,--mcts",    mcts_steps, "Number of MCTS search steps to run");
-//		app.add_option("-S,--mcts-scoring",  mcts_scoring, "How to score MCTS?");
 		app.add_option("-m,--mcmc",     mcmc_steps, "Number of mcmc steps to run");
 		app.add_option("-t,--thin",     thin, "Thinning on the number printed");
 		app.add_option("-o,--output",   output_path, "Where we write output");
@@ -122,7 +121,7 @@ namespace Fleet {
 		app.add_option("-E,--tree",     tree_path, "Write the tree here");
 		app.add_option(  "-c,--chains",   nchains, "How many chains to run");
 		
-		app.add_flag(  "-q,--concise",  concise, "Don't print very much and do so on one line");
+		app.add_flag(  "-q,--quiet",  quiet, "Don't print very much and do so on one line");
 //		app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");
 
 		return app; 

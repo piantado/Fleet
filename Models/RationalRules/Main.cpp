@@ -1,11 +1,10 @@
 
 
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+///########################################################################################
 // A simple example of a version of the RationalRules model. 
 // This is primarily used as an example and for debugging MCMC
-// My laptop gets around 200-300k samples per second
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+// My laptop gets around 200-300k samples per second on 4 threads
+///########################################################################################
 
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,9 +34,9 @@ typedef struct Object {	Color color; Shape shape; } Object;
 #include "Primitives.h"
 
 std::tuple PRIMITIVES = {
-	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return a && b; }, 2.0),
-	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return a || b; }),
-	Primitive("not(%s)",       +[](bool a)         -> bool { return not a; }),
+	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 2.0),
+	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }),
+	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }),
 	// that + is really insane, but is needed to convert a lambda to a function pointer
 
 	Primitive("red(%s)",       +[](Object x)       -> bool { return x.color == Color::Red; }),
@@ -130,5 +129,6 @@ int main(int argc, char** argv){
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
 	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
-	
+	COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds() ENDL;
+
 }
