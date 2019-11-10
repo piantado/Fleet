@@ -45,7 +45,8 @@ public:
 	// store a type as e.g. nt<double>() -> size_t 
 	template <class T>
 	constexpr nonterminal_t nt() {
-		return TypeIndex<T, std::tuple<FLEET_GRAMMAR_TYPES>>::value;
+		// NOTE: the names here are decayed 
+		return TypeIndex<typename std::decay<T>::type, std::tuple<FLEET_GRAMMAR_TYPES>>::value;
 	}
 
 	Grammar() {

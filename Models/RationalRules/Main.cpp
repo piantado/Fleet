@@ -1,5 +1,3 @@
-// TODO:
-//  See about having the primitives take references
 
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -91,7 +89,7 @@ int main(int argc, char** argv){
 	Grammar grammar(PRIMITIVES);
 	
 	// but we also have to add a rule for the BuiltinOp that access x, our argument
-	grammar.add(Rule(grammar.nt<Object>(), BuiltinOp::op_X, "x", {}, 5.0));
+	grammar.add<Object>(BuiltinOp::op_X, "x", 5.0);
 	
 	// mydata stores the data for the inference model
 	MyHypothesis::t_data mydata;

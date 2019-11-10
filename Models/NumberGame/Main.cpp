@@ -79,7 +79,7 @@ public:
 		return likelihood;
 	}
 	
-	abort_t dispatch_rule(Instruction i, VirtualMachinePool<float,float>* pool, VirtualMachineState<float,float>& vms, Dispatchable<float, float>* loader ) {
+	abovmstatus_tspatch_rule(Instruction i, VirtualMachinePool<float,float>* pool, VirtualMachineState<float,float>& vms, Dispatchable<float, float>* loader ) {
 		switch(i.getCustom()) {
 			CASE_FUNC0(op_One,         float,           [](){ return 1.0;} )
 			CASE_FUNC1(op_Neg,         float, float,      [](const float x){ return -x;} )
@@ -93,7 +93,7 @@ public:
 			
 			default: assert(0); // should never get here
 		}
-		return abort_t::NO_ABORT;
+		return vmstatus_t::GOOD;
 	}
 	
 	virtual bool operator==(const MyHypothesis& h) const {

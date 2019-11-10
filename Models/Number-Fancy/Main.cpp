@@ -137,7 +137,7 @@ public:
 		return log( pU*(1.0/10.0) + (1.0-d.reliability)/10.0 + d.reliability*pTarget );
 	}	
 
-	abort_t dispatch_rule(Instruction i,  VirtualMachinePool<Model::X, Model::word>* pool, VirtualMachineState<Model::X, Model::word>& vms, Dispatchable<Model::X, Model::word>* loader) {
+	abovmstatus_tspatch_rule(Instruction i,  VirtualMachinePool<Model::X, Model::word>* pool, VirtualMachineState<Model::X, Model::word>& vms, Dispatchable<Model::X, Model::word>* loader) {
 		/* Dispatch the functions that I have defined. Returns true on success. 
 		 * Note that errors might return from this 
 		 * */
@@ -183,7 +183,7 @@ public:
 			default:
 				assert(0); // should never get here
 		}
-		return abort_t::NO_ABORT;
+		return vmstatus_t::GOOD;
 	}
 	
 	virtual void print(std::string prefix=""){

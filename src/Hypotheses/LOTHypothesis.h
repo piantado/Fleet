@@ -131,7 +131,7 @@ public:
 		return this->value == h.value;
 	}
 	
-	virtual abort_t dispatch_custom(Instruction i, 
+	virtual vmstatus_t dispatch_custom(Instruction i, 
 								  VirtualMachinePool<t_input,t_output>* pool, 
 								  VirtualMachineState<t_input,t_output>& vms,  
 								  Dispatchable<t_input, t_output>* loader) {

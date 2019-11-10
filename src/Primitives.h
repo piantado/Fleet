@@ -52,22 +52,21 @@ struct Primitive : PrePrimitive {
 		// or else we get obscure errors;
 		static_assert(contains_type<T,FLEET_GRAMMAR_TYPES>(), 
 					  "*** Type is not in FLEET_GRAMMAR_TYPES");
-		constexpr bool b = (contains_type<args,FLEET_GRAMMAR_TYPES>() && ...);
+		constexpr bool b = (contains_type<typename std::decay<args>::type,FLEET_GRAMMAR_TYPES>() && ...);
 		static_assert(b, "*** Type is not in FLEET_GRAMMAR_TYPES");
 			
 	}
 	
 	template<typename V>
-	abort_t VMScall(V* vms) {
+	vmstatus_t VMScall(V* vms) {
 		// This is the default way of evaluating a PrimitiveOp
 		
-		assert(not vms->template _stacks_empty<args...>()); // TODO: Implement this... -- need to define empty for variadic TYPES, not arguments...
+		assert(not vms->template any_stacks_empty<typename std::decay<args>::type...>()); // TODO: Implement this... -- need to define empty for variadic TYPES, not arguments...
 		
-		auto ret = this->call(vms->template getpop<args>()...);
-		
+		auto ret = this->call(vms->template getpop<typename std::decay<args>::type>()...);		
 		vms->push(ret);
 				
-		return abort_t::NO_ABORT;
+		return vmstatus_t::GOOD;
 	}
 	
 };
@@ -89,19 +88,19 @@ namespace Fleet::applyVMS {
 	template<int... Is>        struct gen_seq<0, Is...> : seq<Is...> {};
 
 	template<int N, class T, class V>
-	abort_t applyToVMS_one(T& p, V vms) {
+	vmstatus_t applyToVMS_one(T& p, V vms) {
 		return std::get<N>(p).VMScall(vms);
 	}
 
 	template<class T, class V, int... Is>
-	abort_t applyToVMS(T& p, int index, V func, seq<Is...>) {
-		using FT = abort_t(T&, V);
+	vmstatus_t applyToVMS(T& p, int index, V func, seq<Is...>) {
+		using FT = vmstatus_t(T&, V);
 		static constexpr FT* arr[] = { &applyToVMS_one<Is, T, V>... };
 		return arr[index](p, func);
 	}
 }
 template<class T, class V>
-abort_t applyToVMS(T& p, int index, V vms) {
+vmstatus_t applyToVMS(T& p, int index, V vms) {
     return Fleet::applyVMS::applyToVMS(p, index, vms, Fleet::applyVMS::gen_seq<std::tuple_size<T>::value>{});
 	// TODO: I think we can probably get away without gen_seq, using something like below
 //    return Fleet::applyVMS::applyToVMS(p, index, vms, std::make_integer_sequence<std::tuple_size<T>>{});

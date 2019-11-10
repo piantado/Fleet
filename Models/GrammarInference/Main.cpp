@@ -114,7 +114,7 @@ public:
 		return (out == di.correctAnswer ? log(di.alpha + (1.0-di.alpha)/2.0) : log((1.0-di.alpha)/2.0));
 	}
 	
-	abort_t dispatch_rule(Instruction i, VirtualMachinePool<Object, bool>* pool, VirtualMachineState<Object,bool>& vms, Dispatchable<Object,bool>* loader ) {
+	abovmstatus_tspatch_rule(Instruction i, VirtualMachinePool<Object, bool>* pool, VirtualMachineState<Object,bool>& vms, Dispatchable<Object,bool>* loader ) {
 		switch(i.getCustom()) {
 			CASE_FUNC1(CustomOp::op_Yellow,         bool,  Object,    [](const Object& x){ return x.color == Color::yellow; })
 			CASE_FUNC1(CustomOp::op_Green,       bool,  Object,    [](const Object& x){ return x.color == Color::green; })
@@ -138,7 +138,7 @@ public:
 			default:
 				assert(0 && " *** You used an invalid operation"); // should never get here
 		}
-		return abort_t::NO_ABORT;
+		return vmstatus_t::GOOD;
 	}
 };
 

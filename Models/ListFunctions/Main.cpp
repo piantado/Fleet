@@ -84,7 +84,7 @@ public:
 		return lp;
 	}
 	
-	abort_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>& vms, Dispatchable<S,S>* loader ) {
+	vmstatus_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>& vms, Dispatchable<S,S>* loader ) {
 		switch(i.getCustom()) {
 			CASE_FUNC0(CustomOp::op_A,           S,          [i](){ return alphabet.substr(i.arg, 1);} )
 			CASE_FUNC0(CustomOp::op_EMPTYSTRING, S,          [](){ return S("");} )
@@ -105,16 +105,16 @@ public:
 			
 			CASE_FUNC2e(CustomOp::op_CONS,       S, S,S,
 								[](const S& x, const S& y){ S a = x; a.append(y); return a; },
-								[](const S& x, const S& y){ return (x.length()+y.length()<MAX_LENGTH ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
+								[](const S& x, const S& y){ return (x.length()+y.length()<MAX_LENGTH ? vmstatus_t::GOOD : vmstatus_t::SIZE_EXCEPTION ); }
 								)
 			CASE_FUNC1e(CustomOp::op_REPEAT,       S, S,
 								[](const S& x){ return x+x; },
-								[](const S& x){ return (2*x.length()<MAX_LENGTH ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
+								[](const S& x){ return (2*x.length()<MAX_LENGTH ? vmstatus_t::GOOD : vmstatus_t::SIZE_EXCEPTION ); }
 								)
 								
 			default: assert(0 && " *** You ended up with an invalid argument"); // should never get here
 		}
-		return abort_t::NO_ABORT;
+		return vmstatus_t::GOOD;
 	}
 	
 	void print(std::string prefix="") {

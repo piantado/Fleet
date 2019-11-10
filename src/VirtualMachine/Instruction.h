@@ -3,10 +3,13 @@
 #include <iostream>
 #include <variant>
 
+// PrimitiveOps are defined by the PRIMITIVES global variable (if we want one)
+// and then they each are automatically given a type number, which is here
+// defined just to be short
 typedef short PrimitiveOp;
 
-enum class abort_t {NO_ABORT=0, RECURSION_DEPTH, RANDOM_CHOICE, RANDOM_CHOICE_NO_DELETE, SIZE_EXCEPTION, OP_ERR_ABORT, RANDOM_BREAKOUT}; // setting NO_ABORT=0 allows us to say if(aborted)...
-
+// This class stores the possible statuses of a VirtualMachine
+enum class vmstatus_t {GOOD=0, RECURSION_DEPTH, RANDOM_CHOICE, RANDOM_CHOICE_NO_DELETE, SIZE_EXCEPTION, OP_ERR_ABORT, RANDOM_BREAKOUT}; // setting GOOD=0 allows us to say if(aborted)...
 
 // make sure CustomOp is something if it hasn't been defined
 #ifndef CUSTOM_OPS
@@ -14,6 +17,7 @@ enum class abort_t {NO_ABORT=0, RECURSION_DEPTH, RANDOM_CHOICE, RANDOM_CHOICE_NO
 #endif 
 enum class CustomOp { CUSTOM_OPS }; 
 
+// These operations are build-in and implemented in VirtualMachineState
 // convenient to make op_NOP=0, so that the default initialization is a NOP
 enum class BuiltinOp {
 	op_NOP=0,op_X,op_POPX,

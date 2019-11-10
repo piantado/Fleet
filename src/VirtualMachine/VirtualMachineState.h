@@ -45,10 +45,10 @@ public:
 	// rember after the program trace is done
 	Stack<std::pair<index_t, t_x>> memstack;
 
-	abort_t aborted; // have we aborted?
+	vmstatus_t status; // are we still running? Did we get an error?
 	
 	VirtualMachineState(t_x x, t_return e, size_t _recursion_depth=0) :
-		err(e), lp(0.0), recursion_depth(_recursion_depth), aborted(abort_t::NO_ABORT) {
+		err(e), lp(0.0), recursion_depth(_recursion_depth), status(vmstatus_t::GOOD) {
 		xstack.push(x);
 	}
 	
@@ -73,7 +73,7 @@ public:
 	template<typename T>
 	T getpop() {
 		// retrieves and pops the element of type T from the stack
-		//if(aborted != abort_t::NO_ABORT) return T(); // don't try to access the stack because we're aborting
+		//if(status != vmstatus_t::GOOD) return T(); // don't try to access the stack because we're aborting
 		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
 		T x = std::move(stack<T>().top());
@@ -83,7 +83,7 @@ public:
 	template<typename T>
 	T gettop() {
 		// retrieves but does not remove
-		//if(aborted != abort_t::NO_ABORT) return T(); // don't try to access the stack because we're aborting
+		//if(status != vmstatus_t::GOOD) return T(); // don't try to access the stack because we're aborting
 		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
 		return stack<T>().top();
@@ -112,12 +112,16 @@ public:
 		stack<T>().push(x);
 	}
 	template<typename... args>
-	bool _stacks_empty() const { 
+	bool any_stacks_empty() const { 
+		return (... || stack<args>().empty()); 
+	}
+	template<typename... args>
+	bool all_stacks_empty() const { 
 		return (... && stack<args>().empty()); 
 	}	
 	bool stacks_empty() const { 
 		// return strue if stack is empty -- as a check at the end of a evaluation
-		return this->_stacks_empty<FLEET_GRAMMAR_TYPES>();
+		return this->all_stacks_empty<FLEET_GRAMMAR_TYPES>();
 	}
 	
 	virtual t_return run(Dispatchable<t_x,t_return>* d) {
@@ -129,20 +133,20 @@ public:
 		// Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
 		// Here, dispatch is called to evaluate the function, and loader is called on recursion (allowing us to handle recursion
 		// via a lexicon or just via a LOTHypothesis). 
-		aborted = abort_t::NO_ABORT;
+		status = vmstatus_t::GOOD;
 		
 		while(!opstack.empty()){
-			if(aborted != abort_t::NO_ABORT) return err;
+			if(status != vmstatus_t::GOOD) return err;
 			FleetStatistics::vm_ops++;
 			
 			Instruction i = opstack.top(); opstack.pop();
 
 			if(i.is<CustomOp>()) {
-				aborted = dispatch->dispatch_custom(i, pool, *this, loader);
+				status = dispatch->dispatch_custom(i, pool, *this, loader);
 			}
 			else if(i.is<PrimitiveOp>()) {
 				// call this fancy template magic to index into the global tuple variable PRIMITIVES
-				aborted = applyToVMS(PRIMITIVES, i.as<PrimitiveOp>(), this);
+				status = applyToVMS(PRIMITIVES, i.as<PrimitiveOp>(), this);
 			}
 			else {
 				assert(i.is<BuiltinOp>());
@@ -165,9 +169,11 @@ public:
 					}
 					case BuiltinOp::op_ALPHABET: 
 					{
-						// convert the instruction arg to a string and push it
-						push(std::string(1,(char)i.arg));
-						break;
+						if constexpr (contains_type<std::string,FLEET_GRAMMAR_TYPES>()) { 
+							// convert the instruction arg to a string and push it
+							push(std::string(1,(char)i.arg));
+							break;
+						} else { assert(false && "*** Cannot use op_ALPHABET if std::string is not in FLEET_GRAMMAR_TYPES"); }
 					}
 					case BuiltinOp::op_MEM:
 					{
@@ -223,7 +229,7 @@ public:
 					{
 						
 						if(recursion_depth++ > MAX_RECURSE) { // there is one of these for each recurse
-							aborted = abort_t::RECURSION_DEPTH;
+							status = vmstatus_t::RECURSION_DEPTH;
 							return err;
 						}
 						
@@ -263,7 +269,7 @@ public:
 					{
 						if constexpr (has_operator_lt<t_x>::value) {
 							if(recursion_depth++ > MAX_RECURSE) {
-								aborted = abort_t::RECURSION_DEPTH;
+								status = vmstatus_t::RECURSION_DEPTH;
 								return err;
 							}
 							
@@ -319,10 +325,10 @@ public:
 							// since we pushed this back onto the queue (via increment_push), we need to tell the 
 							// pool not to delete this, so we send back this special signal
 							if(b) { // theoutcome of increment_push decides whether I am deleted or not
-								aborted = abort_t::RANDOM_CHOICE_NO_DELETE; 
+								status = vmstatus_t::RANDOM_CHOICE_NO_DELETE; 
 							}
 							else {
-								aborted = abort_t::RANDOM_CHOICE; 
+								status = vmstatus_t::RANDOM_CHOICE; 
 							}
 
 				
@@ -344,7 +350,7 @@ public:
 //								
 //								// else we just push and return control to the stack
 //								pool->copy_increment_push(std::move(*this), decision, decisionlp);
-//								aborted = abort_t::RANDOM_CHOICE;
+//								status = vmstatus_t::RANDOM_CHOICE;
 //							}
 
 							break;
@@ -379,7 +385,7 @@ public:
 			} // end if not custom
 		} // end loop over ops
 	
-		if(aborted != abort_t::NO_ABORT) 
+		if(status != vmstatus_t::GOOD) 
 			return err;		
 	
 		auto ret = getpop<t_return>();

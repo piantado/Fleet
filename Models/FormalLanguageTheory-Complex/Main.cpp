@@ -103,7 +103,7 @@ public:
 	InnerHypothesis(Grammar* g)          : LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>(g)   {}
 	InnerHypothesis()                    : LOTHypothesis<InnerHypothesis,Node,nt_string,S,S>()   {}
 	
-	virtual abort_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>& vms, Dispatchable<S,S>* loader) {
+	virtual vmstatus_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>& vms, Dispatchable<S,S>* loader) {
 		/* Dispatch the functions that I have defined. Returns true on success. 
 		 * Note that errors might return from this 
 		 * */
@@ -132,7 +132,7 @@ public:
 				return out; 
 				
 			}, 
-				[](const S& x, const S& y){ return (x.length()+y.length()<maxlength ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
+				[](const S& x, const S& y){ return (x.length()+y.length()<maxlength ? vmstatus_t::GOOD : vmstatus_t::SIZE_EXCEPTION ); }
 			)
 			
 
@@ -141,7 +141,7 @@ public:
 //			CASE_FUNC1(CustomOp::op_CAR,         S, S,       [](const S& s){ return (s.empty() ? S("") : S(1,s.at(0))); } )		
 //			CASE_FUNC2e(CustomOp::op_CONS,       S, S,S,
 //								[](const S& x, const S& y){ S a = x; a.append(y); return a; },
-//								[](const S& x, const S& y){ return (x.length()+y.length()<maxlength ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
+//								[](const S& x, const S& y){ return (x.length()+y.length()<maxlength ? abort_t::GOOD : abort_t::SIZE_EXCEPTION ); }
 //								)
 			// Write some of these that modify the stack, for speed
 			case CustomOp::op_CDR: {
@@ -161,7 +161,7 @@ public:
 				
 				// length check
 				if(vms.stack<S>().topref().length() + y.length() > maxlength) 
-					return abort_t::SIZE_EXCEPTION;
+					return vmstatus_t::SIZE_EXCEPTION;
 
 				vms.stack<S>().topref().append(y);
 				
@@ -197,13 +197,13 @@ public:
 					}
 
 					// TODO: we can make this faster, like in flip, by following one of the paths?
-					return abort_t::RANDOM_CHOICE; // if we don't continue with this context 
+					return vmstatus_t::RANDOM_CHOICE; // if we don't continue with this context 
 			}
 			default: {
 				assert(0 && "Should not get here!");
 			}
 		}
-		return abort_t::NO_ABORT;
+		return vmstatus_t::GOOD;
 	}
 	
 	
