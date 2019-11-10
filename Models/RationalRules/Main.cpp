@@ -1,14 +1,4 @@
-// - update description of primitives, instructions, etc. 
-
-// A problem here is that its hard to manage Primitives and BuiltinOps
-
-// TOOD: What if we store a std::vector of rules, which allowed for heterogeneous function types
-// and then instruction i could index into the grammar to pull out the rule+function that we needed?
-// But part of the problem is that we need to define everything at compile time too 
-//
-//
-// OR Can we just add a std::function list that stores them all??
-
+// TODO: Refactor instruction and vms pointer vs ref
 
 // A simple example of a version of the RationalRules model. 
 // This is primarily used as an example and for debugging MCMC
@@ -33,10 +23,15 @@ typedef struct Object {
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
+// This is a global variable that provides a convenient way to wrap our primitives
+// where we can pair up a function with a name, and pass that as a constructor
+// to the grammar. We need a tuple here because Primitive has a bunch of template
+// types to handle thee function it has, so each is actually a different type.
 std::tuple PRIMITIVES = {
 	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return a && b; }, 2.0),
 	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return a || b; }),
 	Primitive("not(%s)",       +[](bool a)         -> bool { return not a; }),
+	// that + is really insane, but is needed to convert a lambda to a function pointer
 
 	Primitive("red(%s)",       +[](Object x)       -> bool { return x.color == Color::Red; }),
 	Primitive("green(%s)",     +[](Object x)       -> bool { return x.color == Color::Green; }),
@@ -46,47 +41,6 @@ std::tuple PRIMITIVES = {
 	Primitive("triangle(%s)",  +[](Object x)       -> bool { return x.shape == Shape::Triangle; }),
 	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Circle; })
 };
-// that + is really insane, but is needed to convert a lambda to a function pointer
-
-//template<typename... args>
-//std::vector make_primitives(std::tuple<args> tup) {
-//}
-
-
-//typedef t_abort(VirtualMachinePool<Object, bool>&) V;
-std::vector primitive_functions {
-	static_cast<int>(&std::get<0>(PRIMITIVES).VMScall),
-	static_cast<int>(&std::get<0>(PRIMITIVES).VMScall)
-	//,
-	//std::get<1>(PRIMITIVES).VMScall,
-	//std::get<2>(PRIMITIVES).VMScall
-};
-
-//template<size_t... Is>
-//struct PrimitiveLookup {
-//	
-//	PrimitiveLookup() 
-//	{}
-//	
-//	PrimitiveLookup(std::index_sequence<Is...>)
-//	{}
-//	
-//	// define pointers to each of their lookups
-//	static constexpr void* lookup[] = { (void*)&std::get<Is>(PRIMITIVES).VMScall... };
-//};
-//
-//PrimitiveLookup PL(std::make_index_sequence< std::tuple_size<PRIMITIVES>::value >{});
-
-//template<int N>
-//void tuple_call() {
-//	
-//}
-
-///// NOW Pass this to Grammar and build it in to 
-Grammar grammar(PRIMITIVES);
-
-
-#define PRIMITIVE_CASE(n) case n: return std::get<n>(PRIMITIVES).VMScall(vms);
 
 /* Define a class for handling my specific hypotheses and data. Everything is defaulty a PCFG prior and 
  * regeneration proposals, but I have to define a likelihood */
@@ -103,23 +57,7 @@ public:
 	}
 		
 	abort_t dispatch_rule(Instruction i, VirtualMachinePool<Object, bool>* pool, VirtualMachineState<Object,bool>& vms, Dispatchable<Object,bool>* loader ) {
-		
-//		PRIMITIVES[op].VMScall(vms);
-		switch(i.getCustom()) {
-//			case 0: return std::get<0>(PRIMITIVES).VMScall(vms);
-			PRIMITIVE_CASE(0)
-			PRIMITIVE_CASE(1)
-			PRIMITIVE_CASE(2)
-			PRIMITIVE_CASE(3)
-			PRIMITIVE_CASE(4)
-			PRIMITIVE_CASE(5)
-			PRIMITIVE_CASE(6)
-			PRIMITIVE_CASE(7)
-			PRIMITIVE_CASE(8)
-			
-			default:
-				assert(0 && " *** You used an invalid operation"); // should never get here
-		}
+		return applyToVMS(PRIMITIVES, (size_t)i.getCustom(), &vms);
 	}
 	
 	void print(std::string prefix="") {
@@ -128,6 +66,7 @@ public:
 	}
 };
 
+Grammar grammar(PRIMITIVES);
 
 // mydata stores the data for the inference model
 MyHypothesis::t_data mydata;
