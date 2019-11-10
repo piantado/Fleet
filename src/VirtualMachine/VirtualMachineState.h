@@ -171,7 +171,7 @@ public:
 					{
 						if constexpr (contains_type<std::string,FLEET_GRAMMAR_TYPES>()) { 
 							// convert the instruction arg to a string and push it
-							push(std::string(1,(char)i.arg));
+							push(Q(std::string(1,(char)i.arg)));
 							break;
 						} else { assert(false && "*** Cannot use op_ALPHABET if std::string is not in FLEET_GRAMMAR_TYPES"); }
 					}

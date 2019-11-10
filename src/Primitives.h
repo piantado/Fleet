@@ -42,11 +42,12 @@ struct Primitive : PrePrimitive {
 	
 	std::string format;
 	T(*call)(args...); //call)(Args...);
+	vmstatus_t(*errcheck)(args...); //  error checking function -- if it returns anything other than vmstatus_t::GOOD, then that's returned
 	PrimitiveOp op;
 	double p;
-	
-	Primitive(std::string fmt, T(*f)(args...), double _p=1.0 ) :
-		format(fmt), call(f), op(op_counter++), p(_p) {
+
+	Primitive(std::string fmt, T(*f)(args...), vmstatus_t(*e)(args...), double _p=1.0 ) :
+		format(fmt), call(f), errcheck(e), op(op_counter++), p(_p) {
 			
 		// check that each type here is in FLEET_GRAMMAR_TYPES
 		// or else we get obscure errors;
@@ -54,14 +55,21 @@ struct Primitive : PrePrimitive {
 					  "*** Type is not in FLEET_GRAMMAR_TYPES");
 		constexpr bool b = (contains_type<typename std::decay<args>::type,FLEET_GRAMMAR_TYPES>() && ...);
 		static_assert(b, "*** Type is not in FLEET_GRAMMAR_TYPES");
-			
 	}
+	// We can construct without calling 
+	Primitive(std::string fmt, T(*f)(args...), double p=1.0 ) : Primitive(fmt, f, nullptr, p) {}
 	
 	template<typename V>
 	vmstatus_t VMScall(V* vms) {
 		// This is the default way of evaluating a PrimitiveOp
 		
-		assert(not vms->template any_stacks_empty<typename std::decay<args>::type...>()); // TODO: Implement this... -- need to define empty for variadic TYPES, not arguments...
+		assert(not vms->template any_stacks_empty<typename std::decay<args>::type...>() &&
+				"*** Somehow we ended up with empty arguments -- something is deeply wrong."); 
+		
+		// we'll get this from the top references (which leaves them on the check
+		// TODO: NOTE: This gettop is not great because we make copies intead of leaving them on the stacks
+		auto check = (errcheck == nullptr ? vmstatus_t::GOOD : errcheck(vms->template gettop<typename std::decay<args>::type>()...));
+		if(check != vmstatus_t::GOOD) return check;
 		
 		auto ret = this->call(vms->template getpop<typename std::decay<args>::type>()...);		
 		vms->push(ret);

@@ -60,10 +60,11 @@ std::tuple PRIMITIVES = {
 class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,Object,bool> {
 public:
 	using Super = LOTHypothesis<MyHypothesis,Node,Object,bool>;
-	MyHypothesis(Grammar* g, Node n)   : Super(g, n) {}
-	MyHypothesis(Grammar* g)           : Super(g) {}
-	MyHypothesis()                     : Super() {}
+	using Super::Super; // inherit the constructors
 	
+	// Now, if we defaultly assume that our data is a std::vector of t_data, then we 
+	// can just define the likelihood of a single data point, which is here the true
+	// value with probability x.reliability, and otherwise a coin flip. 
 	double compute_single_likelihood(const t_datum& x) {
 		bool out = callOne(x.input, false);
 		return out == x.output ? log(x.reliability + (1.0-x.reliability)/2.0) : log((1.0-x.reliability)/2.0);

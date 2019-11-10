@@ -3,11 +3,6 @@
 
 using S = std::string; // just for convenience
 
-// These define a collection of CustomOps (must be a macro so we can define it if 
-// this is left out) and these are ones whose instructions are processed by 
-// dispatch_custom
-#define CUSTOM_OPS op_PAIR
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Set up some basic variables (which may get overwritten)
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -34,9 +29,10 @@ const size_t MAX_LENGTH = 64; // longest strings cons will handle
 #include "Primitives.h"
 
 std::tuple PRIMITIVES = {
-//	Primitive("cons(%s,%s)",   +[](S a, S b) -> S { return a && b; }, 2.0), // NOTE: This is defined below
-	Primitive("cdr(%s)",       +[](S s)      -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); }),
-	Primitive("car(%s)",       +[](S s)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); }),
+	Primitive("tail(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); }),
+	Primitive("head(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); }),
+	Primitive("pair(%s,%s)",   +[](S a, S b) -> S { return a+b; }, // also add a function to check length to throw an error if its getting too long
+							   +[](S a, S b) -> vmstatus_t { return (a.length() + b.length() < MAX_LENGTH ? vmstatus_t::GOOD : vmstatus_t::SIZE_EXCEPTION);}),
 	Primitive("\u00D8",        +[]()         -> S { return  S(""); }),
 	Primitive("(%s==%s)",      +[](S x, S y) -> bool { return x==y; }),
 };
@@ -47,16 +43,13 @@ std::tuple PRIMITIVES = {
 class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,S,S> {
 public:
 	using Super =  LOTHypothesis<MyHypothesis,Node,S,S>;
-	MyHypothesis(Grammar* g, Node v)    : Super(g,v) {}
-	MyHypothesis(Grammar* g)            : Super(g) {}
-	MyHypothesis()                      : Super() {}
+	using Super::Super; // inherit the constructors
 	
 	double compute_single_likelihood(const t_datum& x) {		
 		auto out = call(x.input, "<err>", this, 256, 256); //256, 256);
 		
 		// a likelihood based on the prefix probability -- we assume that we generate from the hypothesis
-		// and then might glue on some number of additional strings, flipping a gamma-weighted coin to determine
-		// how many to add
+		// and then glue on additional strings, flipping a gamma-weighted coin to determine how many characters to add
 		double lp = -infinity;
 		for(auto o : out.values()) { // add up the probability from all of the strings
 			if(is_prefix(o.first, x.output)) {
@@ -66,35 +59,10 @@ public:
 		return lp;
 	}
 	
-	vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>& vms, Dispatchable<S,S>* loader ) {
-		// This is a custom dispatch 
-		assert(i.is<CustomOp>());
-		assert(i.as<CustomOp>() == CustomOp::op_PAIR); // this is the only one we've implemented
-		switch(i.as<CustomOp>()) {
-			case CustomOp::op_PAIR: {
-				// Above is one way to implement cons, but here we can do it faster by not removing it from the stack
-				S y = vms.getpop<S>();
-				
-				// length check
-				if(vms.stack<S>().topref().length() + y.length() > MAX_LENGTH) 
-					return vmstatus_t::SIZE_EXCEPTION;
-
-				vms.stack<S>().topref().append(y);
-						
-				return vmstatus_t::GOOD;
-			}
-			default: assert(false && "*** Should not get here -- must be an undefined CustomOp");
-		}
-	}
-	
 	void print(std::string prefix="") {
-		assert(prefix == "");
-		
-		prefix  = "#\n#" +  this->call("", "<err>").string() + "\n"; 
-//		extern TopN<MyHypothesis> top;
-//		prefix += std::to_string(top.count(*this)) + "\t";
-		
-		Super::print(prefix); // print but prepend my top count
+		// we're going to make this print by showing the language we created on the line before
+		prefix  = prefix+"#\n#" +  this->call("", "<err>").string() + "\n"; 
+		Super::print(prefix); 
 	}
 };
 
@@ -113,7 +81,6 @@ int main(int argc, char** argv){
 	app.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
 	app.add_option("-d,--data",     datastr, "Comma separated list of input data strings");	
 	CLI11_PARSE(app, argc, argv);
-	
 	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
 	
 	// mydata stores the data for the inference model
@@ -134,11 +101,8 @@ int main(int argc, char** argv){
 	// here we create an alphabet op with an "arg" that stores the character (this is fater than alphabet.substring with i.arg as an index) 
 	// here, op_ALPHABET converts arg to a string (and pushes it)
 	for(size_t i=0;i<alphabet.length();i++) {
-		grammar.add<S>   (BuiltinOp::op_ALPHABET, alphabet.substr(i,1), 10.0/alphabet.length(), (int)alphabet.at(i)); 
+		grammar.add<S>     (BuiltinOp::op_ALPHABET, alphabet.substr(i,1), 10.0/alphabet.length(), (int)alphabet.at(i)); 
 	}
-	
-	// we've said we will define and implement cons ourself
-	grammar.add<S,S,S>   (CustomOp::op_PAIR, "pair(%s,%s)"); 
 	
 	//------------------
 	// set up the data
@@ -154,11 +118,7 @@ int main(int argc, char** argv){
 	//------------------
 	
 	MyHypothesis h0(&grammar);
-//
-//	tic();
-//	MCMCChain thechain(h0, &mydata, top);
-//	thechain.run(mcmc_steps, runtime);
-//	tic();
+	h0 = h0.restart();
 	
 	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
 	tic();

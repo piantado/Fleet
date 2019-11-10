@@ -26,7 +26,6 @@ public:
 
 	LOTHypothesis(Grammar* g=nullptr)  : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
 	LOTHypothesis(Grammar* g, T&& x)   : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
-	LOTHypothesis(Grammar* g, T x)     : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
 
 	// parse this from a string
 	LOTHypothesis(Grammar* g, std::string s) : MCMCable<HYP,t_datum,t_data>(), grammar(g)  {
@@ -39,7 +38,7 @@ public:
 		
 		// simplest way of doing proposals
 		auto x = regeneration_proposal(grammar, value);	
-		return std::make_pair(HYP(this->grammar, x.first), x.second); // return HYP and fb
+		return std::make_pair(HYP(this->grammar, std::move(x.first)), x.second); // return HYP and fb
 	}	
 
 	
@@ -143,7 +142,7 @@ public:
 		// make a copy and fill in the missing nodes.
 		// NOTE: here we set all of the above nodes to NOT resample
 		// TODO: That part should go somewhere else eventually I think?
-		HYP h(grammar, value);
+		HYP h(grammar, T(value));
 		h.prior=0.0;h.likelihood=0.0;h.posterior=0.0; // reset these just in case
 		
 		const std::function<void(Node&)> myf =  [](Node& n){n.can_resample=false;};
