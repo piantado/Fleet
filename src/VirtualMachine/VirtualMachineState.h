@@ -134,25 +134,53 @@ public:
 		// Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
 		// Here, dispatch is called to evaluate the function, and loader is called on recursion (allowing us to handle recursion
 		// via a lexicon or just via a LOTHypothesis). 
-
 		aborted = abort_t::NO_ABORT;
-
+		
 		while(!opstack.empty()){
 			if(aborted != abort_t::NO_ABORT) return err;
 			FleetStatistics::vm_ops++;
 			
 			Instruction i = opstack.top(); opstack.pop();
 
-			if(i.is_custom()) {
-				abort_t b = dispatch->dispatch_rule(i, pool, *this, loader);
+			if(i.is<CustomOp>()) {
+				abort_t b = dispatch->dispatch_custom(i, pool, *this, loader);
+				if(b != abort_t::NO_ABORT) {
+					aborted = b;
+					return err;
+				}
+			}
+			else if(i.is<PrimitiveOp>()) {
+				// call this fancy template magic to index into the global tuple variable PRIMITIVES
+				
+//				extern std::tuple PRIMITIVES;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+				abort_t b;// = applyToVMS(PRIMITIVES, (size_t)i.getCustom(), this);
 				if(b != abort_t::NO_ABORT) {
 					aborted = b;
 					return err;
 				}
 			}
 			else {
+				assert(i.is<BuiltinOp>());
 				
-				switch(i.getBuiltin()) {
+				switch(i.as<BuiltinOp>()) {
 					case BuiltinOp::op_NOP: 
 					{
 						break;
@@ -294,12 +322,12 @@ public:
 							double p = 0.5; 
 							
 							if constexpr (contains_type<double,FLEET_GRAMMAR_TYPES>()) {  // if we have double allowed we cna do this
-								if(i.getBuiltin() == BuiltinOp::op_FLIPP) { // only for built-in ops do we 
+								if(i.is_a(BuiltinOp::op_FLIPP)) { // only for built-in ops do we 
 									p = getpop<double>(); // reads a double argfor the coin weight
 									if(std::isnan(p)) { p = 0.0; } // treat nans as 0s
 									assert(p <= 1.0 && p >= 0.0);
 								}
-							} else { assert(i.getBuiltin() != BuiltinOp::op_FLIPP); } // tif there is no double, we can't use flipp
+							} else { assert(! i.is_a(BuiltinOp::op_FLIPP)); } // tif there is no double, we can't use flipp
 							
 				
 							pool->copy_increment_push(this, true,  log(p));

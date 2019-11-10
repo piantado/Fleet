@@ -24,8 +24,10 @@ protected:
 	
 public:
 	// Rule's constructors convert CustomOp and BuiltinOp to the appropriate instruction types
-	Rule(const nonterminal_t rt, const CustomOp o, const std::string fmt, std::initializer_list<nonterminal_t> c, double _p, const int arg=0) :
+	template<typename OPT> // same constructor for CustomOp, BuiltinOp,PrimitiveOp
+	Rule(const nonterminal_t rt, const OPT o, const std::string fmt, std::initializer_list<nonterminal_t> c, double _p, const int arg=0) :
 		nt(rt), instr(o,arg), format(fmt), N(c.size()), p(_p) {
+			
 		// mainly we just convert c to an array
 		assert(c.size() < Fleet::MAX_CHILD_SIZE);
 		std::copy(c.begin(), c.end(), child_types);
@@ -42,25 +44,6 @@ public:
 		assert( N == count(fmt, ChildStr) && "*** Wrong number of format string arguments");
 	}
 		
-	Rule(const nonterminal_t rt, const BuiltinOp o, const std::string fmt, std::initializer_list<nonterminal_t> c, double _p, const int arg=0) :
-		nt(rt), instr(o,arg), format(fmt), N(c.size()), p(_p) {
-		
-		// mainly we just convert c to an array
-		assert(c.size() < Fleet::MAX_CHILD_SIZE);
-		std::copy(c.begin(), c.end(), child_types);
-		
-		// Set up hashing for rules (cached so we only do it once)
-		std::hash<std::string> h; 
-		my_hash = h(fmt);
-		hash_combine(my_hash, (size_t) o);
-		hash_combine(my_hash, (size_t) arg);
-		hash_combine(my_hash, (size_t) nt);
-		for(size_t i=0;i<N;i++) hash_combine(my_hash, (size_t)child_types[i]);
-		
-		// check that the format string has the right number of %s
-		assert( N == count(fmt, ChildStr) && "*** Wrong number of format string arguments");
-	}
-	
 	bool operator<(const Rule& r) const {
 		// This is structured so that we always put terminals first and then we put the HIGHER probability things first. 
 		// this helps in enumeration

@@ -46,7 +46,9 @@ enum class BuiltinOp {
 	//op_LAMBDA,op_APPLY // simple, one-argument lambda functions (as in forall)
 };
 
-typedef short CustomOp;
+enum class CustomOp { };
+ 
+typedef short PrimitiveOp;
 
 #include "Instruction.h"
 

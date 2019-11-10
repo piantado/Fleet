@@ -13,11 +13,13 @@
 #include <functional>
 
 struct PrePrimitive {
-	// need to define something all Primtiives inherit from so that
-	// we can share op_counters across them	
-	static size_t op_counter; // this gives each primitive we define a unique identifier	
+	// need to define something all Primitives inherit from so that
+	// we can share op_counters across them.
+	// op_counter here is what we use to assign each Primitive a unique 
+	// PrimitiveOp number
+	static PrimitiveOp op_counter; // this gives each primitive we define a unique identifier	
 };
-size_t PrePrimitive::op_counter = 0;
+PrimitiveOp PrePrimitive::op_counter = 0;
 	
 // TODO: Make primtiive detect whether T is a VMS or not
 // so we can give it a lambda of VMS if we wanted
@@ -35,7 +37,7 @@ struct Primitive : PrePrimitive {
 	
 	std::string format;
 	T(*call)(args...); //call)(Args...);
-	size_t op;
+	PrimitiveOp op;
 	double p;
 	
 	Primitive(std::string fmt, T(*f)(args...), double _p=1.0 ) :
@@ -50,14 +52,10 @@ struct Primitive : PrePrimitive {
 			
 	}
 	
-	Primitive(std::string fmt, BuiltinOp o, double _p=1.0) : format(fmt), op((size_t)o), p(_p) {
-	}
-	
 	template<typename V>
 	abort_t VMScall(V* vms) {
-		// a way of calling from a VMS if we want it
+		// This is the default way of evaluating a PrimitiveOp
 		
-		// Can't expand liek this because its only for arguments, not 
 		assert(not vms->template _stacks_empty<args...>()); // TODO: Implement this... -- need to define empty for variadic TYPES, not arguments...
 		
 		auto ret = this->call(vms->template getpop<args>()...);

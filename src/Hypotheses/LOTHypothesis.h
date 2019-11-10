@@ -131,10 +131,12 @@ public:
 		return this->value == h.value;
 	}
 	
-	virtual abort_t dispatch_rule(Instruction i, 
+	virtual abort_t dispatch_custom(Instruction i, 
 								  VirtualMachinePool<t_input,t_output>* pool, 
 								  VirtualMachineState<t_input,t_output>& vms,  
-								  Dispatchable<t_input, t_output>* loader)=0;
+								  Dispatchable<t_input, t_output>* loader) {
+		assert(false && "*** To use dispatch_rule you must inherit and define it");
+	}
 
 	
 	virtual HYP copy_and_complete() const {

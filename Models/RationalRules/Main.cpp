@@ -1,4 +1,7 @@
 // TODO: Refactor instruction and vms pointer vs ref
+// -- change to dispatch_custom
+// - change Instruction ostream<< oeprator 
+// fix needing to define operator< -- if we don't use op_MEM then we shouldn't need it!
 
 // A simple example of a version of the RationalRules model. 
 // This is primarily used as an example and for debugging MCMC
@@ -56,10 +59,6 @@ public:
 		return out == x.output ? log(x.reliability + (1.0-x.reliability)/2.0) : log((1.0-x.reliability)/2.0);
 	}
 		
-	abort_t dispatch_rule(Instruction i, VirtualMachinePool<Object, bool>* pool, VirtualMachineState<Object,bool>& vms, Dispatchable<Object,bool>* loader ) {
-		return applyToVMS(PRIMITIVES, (size_t)i.getCustom(), &vms);
-	}
-	
 	void print(std::string prefix="") {
 		extern TopN<MyHypothesis> top;
 		Super::print( prefix + std::to_string(top.count(*this)) + "\t" ); // print but prepend my top count
