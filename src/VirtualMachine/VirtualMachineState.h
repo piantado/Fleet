@@ -163,6 +163,12 @@ public:
 						xstack.pop(); // NOTE: Remember NOT to pop from getpop<t_x>() since that's not where x is stored
 						break;
 					}
+					case BuiltinOp::op_ALPHABET: 
+					{
+						// convert the instruction arg to a string and push it
+						push(std::string(1,(char)i.arg));
+						break;
+					}
 					case BuiltinOp::op_MEM:
 					{
 						// Let's not make a big deal when 

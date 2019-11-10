@@ -7,7 +7,12 @@ typedef short PrimitiveOp;
 
 enum class abort_t {NO_ABORT=0, RECURSION_DEPTH, RANDOM_CHOICE, RANDOM_CHOICE_NO_DELETE, SIZE_EXCEPTION, OP_ERR_ABORT, RANDOM_BREAKOUT}; // setting NO_ABORT=0 allows us to say if(aborted)...
 
-enum class CustomOp { }; /// TODO: May be overwritten
+
+// make sure CustomOp is something if it hasn't been defined
+#ifndef CUSTOM_OPS
+#define CUSTOM_OPS
+#endif 
+enum class CustomOp { CUSTOM_OPS }; 
 
 // convenient to make op_NOP=0, so that the default initialization is a NOP
 enum class BuiltinOp {
@@ -15,7 +20,7 @@ enum class BuiltinOp {
 	op_MEM,op_RECURSE,op_MEM_RECURSE, // thee can store the index of what hte loader calls in arg, so they can be used with lexica if you pass arg
 	op_SAFE_RECURSE, op_SAFE_MEM_RECURSE,
 	op_FLIP,op_FLIPP,op_IF,op_JMP,
-	op_TRUE,op_FALSE,
+	op_TRUE,op_FALSE,op_ALPHABET
 	//op_LAMBDA,op_APPLY // simple, one-argument lambda functions (as in forall)
 };
 

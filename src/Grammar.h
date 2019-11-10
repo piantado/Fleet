@@ -415,6 +415,24 @@ public:
 	}
 	
 	
+	template<typename T, typename... args>
+	void add(BuiltinOp o, std::string format, const double p=1.0, const int arg=0) {
+		// add a single primitive -- unpacks the types to put the rule into the right place
+		add(Rule(nt<T>(), o, format, {nt<args>()...}, p, arg));
+	}
+	
+	template<typename T, typename... args>
+	void add(CustomOp o, std::string format, const double p=1.0, const int arg=0) {
+		// add a single primitive -- unpacks the types to put the rule into the right place
+		add(Rule(nt<T>(), o, format, {nt<args>()...}, p, arg));
+	}
+	
+//	template<typename T, typename... args>
+//	void add(PrimitiveOp o, std::string format, const double p=1.0, const int arg=0) {
+//		// add a single primitive -- unpacks the types to put the rule into the right place
+//		add(Rule(nt<T>(), o, format, {nt<args>()...}, p, arg));
+//	}
+	
 	Node makeNode(const Rule* r) const {
 		return Node(r, log(r->p)-log(Z[r->nt]));
 	}

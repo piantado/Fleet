@@ -2,35 +2,40 @@
 //  See about having the primitives take references
 
 
-
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // A simple example of a version of the RationalRules model. 
 // This is primarily used as an example and for debugging MCMC
 // My laptop gets around 200-300k samples per second
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "assert.h"
 
-// These define all of the types that are used in the grammar -- must be defined
-// before we import Fleet
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// These define all of the types that are used in the grammar.
+/// This macro must be defined before we import Fleet.
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 #define FLEET_GRAMMAR_TYPES bool,Object
 
-// We need to define some structs to hold the object features
-enum    class  Shape { Square, Triangle, Circle};
-enum    class  Color { Red, Green, Blue};
-typedef struct Object {
-	Color color;
-	Shape shape;
-	
-	// we must define this to compile because memoization requires sorting (but its only neded in op_MEM)
-	//bool operator<(const Object& o) const { assert(false); }
-} Object;
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// We need to define some structs to hold the object features
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+enum    class  Shape  { Square, Triangle, Circle};
+enum    class  Color  { Red, Green, Blue};
+typedef struct Object {	Color color; Shape shape; } Object;
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// This is a global variable that provides a convenient way to wrap our primitives
+/// where we can pair up a function with a name, and pass that as a constructor
+/// to the grammar. We need a tuple here because Primitive has a bunch of template
+/// types to handle thee function it has, so each is actually a different type.
+/// This must be defined before we import Fleet because Fleet does some template
+/// magic internally
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Primitives.h"
 
-// This is a global variable that provides a convenient way to wrap our primitives
-// where we can pair up a function with a name, and pass that as a constructor
-// to the grammar. We need a tuple here because Primitive has a bunch of template
-// types to handle thee function it has, so each is actually a different type.
 std::tuple PRIMITIVES = {
 	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return a && b; }, 2.0),
 	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return a || b; }),
@@ -49,8 +54,11 @@ std::tuple PRIMITIVES = {
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
-/* Define a class for handling my specific hypotheses and data. Everything is defaulty a PCFG prior and 
- * regeneration proposals, but I have to define a likelihood */
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Define a class for handling my specific hypotheses and data. Everything is defaultly 
+/// a PCFG prior and regeneration proposals, but I have to define a likelihood
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,Object,bool> {
 public:
 	using Super = LOTHypothesis<MyHypothesis,Node,Object,bool>;
@@ -64,7 +72,9 @@ public:
 	}
 };
 
-////////////////////////////////////////////////////////////////////////////////////////////
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Main code
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 int main(int argc, char** argv){ 
 	
@@ -87,8 +97,7 @@ int main(int argc, char** argv){
 	MyHypothesis::t_data mydata;
 	
 	// top stores the top hypotheses we have found
-	TopN<MyHypothesis> top;
-	top.set_size(ntop); // set by above macro
+	TopN<MyHypothesis> top(ntop);
 	
 	//------------------
 	// set up the data
@@ -99,7 +108,7 @@ int main(int argc, char** argv){
 	mydata.push_back(   (MyHypothesis::t_datum){ (Object){Color::Red, Shape::Square},   false, 0.75 }  );
 	
 	//------------------
-	// Actuall run
+	// Actually run
 	//------------------
 	
 //	MyHypothesis h0(&grammar);

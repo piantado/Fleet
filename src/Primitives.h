@@ -12,10 +12,10 @@
 #include <cstdlib>
 #include <functional>
 #include <tuple>
+#include <assert.h>
 
 #include "Instruction.h"
 #include "TemplateMagic.h"
-
 
 struct PrePrimitive {
 	// need to define something all Primitives inherit from so that

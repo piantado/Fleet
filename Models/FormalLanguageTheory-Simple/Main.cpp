@@ -1,74 +1,56 @@
 
-// We require an enum to define our custom operations as a string before we import Fleet
-// These are the internal symbols that are used to represent each operation. The grammar
-// generates nodes with them, and then dispatch down below gets called with a switch
-// statement to see how to execute aech of them. 
-enum class CustomOp {
-	op_STREQ,op_EMPTYSTRING,op_EMPTY,op_A,op_CDR,op_CAR,op_CONS,op_REPEAT,op_NUM
-};
+#include <string>
 
-// Define our types. 
-#define NT_TYPES bool,std::string
-#define NT_NAMES nt_bool,nt_string
+using S = std::string; // just for convenience
+
+// These define a collection of CustomOps (must be a macro so we can define it if 
+// this is left out) and these are ones whose instructions are processed by 
+// dispatch_custom
+#define CUSTOM_OPS op_CONS
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Set up some basic variables (which may get overwritten)
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+S alphabet = "01"; // the alphabet we use (possibly specified on command line)
+S datastr  = "011,011011,011011011"; // the data, comma separated
+const double strgamma = 0.99; // penalty on string length
+const size_t MAX_LENGTH = 64; // longest strings cons will handle
+	
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// These define all of the types that are used in the grammar.
+/// This macro must be defined before we import Fleet.
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#define FLEET_GRAMMAR_TYPES bool,Object
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// This is a global variable that provides a convenient way to wrap our primitives
+/// where we can pair up a function with a name, and pass that as a constructor
+/// to the grammar. We need a tuple here because Primitive has a bunch of template
+/// types to handle thee function it has, so each is actually a different type.
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include "Primitives.h"
+
+std::tuple PRIMITIVES = {
+//	Primitive("cons(%s,%s)",   +[](S a, S b) -> S { return a && b; }, 2.0), // NOTE: This is defined below
+	Primitive("cdr(%s)",       +[](S a, S b) -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); }),
+	Primitive("car(%s)",       +[](S a)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); }),
+	Primitive("\u00D8",        +[]()       -> S { return  S(""); }),
+	Primitive("(%s==%s)",      +[](S x, Sy) -> bool { return x==y; }),
+};
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
-using S = std::string; // just for convenience
-
-S alphabet = "01"; // the alphabet we use (possibly specified on command line)
-//S datastr  = "01,01011,010110111"; // the data, comma separated
-S datastr  = "011,011011,011011011"; // the data, comma separated
-const double strgamma = 0.99; // penalty on string length
-
-// Define a grammar
-class MyGrammar : public Grammar { 
-public:
-	MyGrammar() : Grammar() {
-		add( Rule(nt_string, BuiltinOp::op_X,            "x",            {},                               10.0) );		
-
-		// here we create an alphabet op with an "arg" that stores the character (this is fater than alphabet.substring with i.arg as an index) 
-		for(size_t i=0;i<alphabet.length();i++)
-			add( Rule(nt_string, CustomOp::op_A,            alphabet.substr(i,1),          {},                   10.0/alphabet.length(), (int)alphabet.at(i) ) );
-
-		add( Rule(nt_string, CustomOp::op_EMPTYSTRING,  "''",           {},                               1.0) );
-		
-		add( Rule(nt_string, CustomOp::op_CONS,         "cons(%s,%s)",  {nt_string,nt_string},            1.0) );
-		add( Rule(nt_string, CustomOp::op_CAR,          "car(%s)",      {nt_string},                      1.0) );
-		add( Rule(nt_string, CustomOp::op_CDR,          "cdr(%s)",      {nt_string},                      1.0) );
-		
-		add( Rule(nt_string, BuiltinOp::op_IF,          "if(%s,%s,%s)", {nt_bool, nt_string, nt_string},  1.0) );
-		
-		add( Rule(nt_bool,   BuiltinOp::op_FLIP,        "flip()",       {},                               5.0) );
-		add( Rule(nt_bool,   CustomOp::op_EMPTY,        "empty(%s)",    {nt_string},                      1.0) );
-		add( Rule(nt_bool,   CustomOp::op_STREQ,        "(%s==%s)",     {nt_string,nt_string},            1.0) );
-		
-		add( Rule(nt_string, BuiltinOp::op_RECURSE,      "F(%s)",        {nt_string},                      2.0) );		
-
-	}
-};
-
-
-/* Define a class for handling my specific hypotheses and data. Everything is defaulty a PCFG prior and 
-// * regeneration proposals, but I have to define a likelihood */
 class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_string,S,S> {
 public:
 	using Super =  LOTHypothesis<MyHypothesis,Node,nt_string,S,S>;
-	
-	static const size_t MAX_LENGTH = 64; // longest strings cons will handle
-	
-	// I must implement all of these constructors
 	MyHypothesis(Grammar* g, Node v)    : Super(g,v) {}
 	MyHypothesis(Grammar* g)            : Super(g) {}
 	MyHypothesis()                      : Super() {}
 	
-	// Very simple likelihood that just counts up the probability assigned to the output strings
-//	double compute_single_likelihood(const t_datum& x) {
-//		auto out = call(x.input, "<err>");
-//		return logplusexp( log(x.reliability)+(out.count(x.output)?out[x.output]:-infinity),  // probability of generating the output
-//					       log(1.0-x.reliability) + (x.output.length())*(log(1.0-gamma) + log(0.5)) + log(gamma) // probability under noise; 0.5 comes from alphabet size
-//						   );
-//	}
 	double compute_single_likelihood(const t_datum& x) {		
 		auto out = call(x.input, "<err>", this, 256, 256); //256, 256);
 		
@@ -84,52 +66,20 @@ public:
 		return lp;
 	}
 	
-	abort_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>& vms, Dispatchable<S,S>* loader ) {
-		/* Dispatch the functions that I have defined. Returns NO_ABORT on success. 
-		 * */
-		switch(i.getCustom()) {
-			// this uses CASE_FUNCs which are defined in CaseMacros.h, and which give a nice interface for processing the
-			// different cases. They take a return type, some input types, and a functino to evaluate. 
-			// as in op_CONS below, this function (CASE_FUNC2e) can take an "error" (e) condition, which will cause
-			// an abort			
-			
-			// when we process op_A, we unpack the "arg" into an index into alphabet
-			CASE_FUNC0(CustomOp::op_A,           S,          [i](){ return std::string(1,(char)i.arg);}) // alphabet.substr(i.arg, 1);} )
-			// the rest are straightforward:
-			CASE_FUNC0(CustomOp::op_EMPTYSTRING, S,          [](){ return S("");} )
-			CASE_FUNC1(CustomOp::op_EMPTY,       bool,  S,   [](const S& s){ return s.size()==0;} )
-			CASE_FUNC2(CustomOp::op_STREQ,       bool,  S,S, [](const S& a, const S& b){return a==b;} )
-			CASE_FUNC1(CustomOp::op_CDR,         S, S,       [](const S& s){ return (s.empty() ? S("") : s.substr(1,S::npos)); } )		
-			CASE_FUNC1(CustomOp::op_CAR,         S, S,       [](const S& s){ return (s.empty() ? S("") : S(1,s.at(0))); } )		
-//			CASE_FUNC2e(CustomOp::op_REPEAT,      S,  S, int, [](const S& a, const int i){
-//				S out;
-//				for(int j=0;j<i;j++) out = out + a;
-//				return out;				
-//				},
-//				[](const S& x, const int i){ return (x.length()*i<MAX_LENGTH ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
-//			)
-//			CASE_FUNC0(CustomOp::op_NUM,         int,       [i](){ return i.arg; } )		
-			
-			
-//			CASE_FUNC2e(CustomOp::op_CONS,       S, S,S,
-//								[](const S& x, const S& y){ S a = x; a.append(y); return a; },
-//								[](const S& x, const S& y){ return (x.length()+y.length()<MAX_LENGTH ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
-//								)
-			case CustomOp::op_CONS: {
-				// Above is one way to implement cons, but here we can do it faster by not removing it from the stack
-				S y = vms.getpop<S>();
-				
-				// length check
-				if(vms.stack<S>().topref().length() + y.length() > MAX_LENGTH) 
-					return abort_t::SIZE_EXCEPTION;
+	abort_t dispatch_custom(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>& vms, Dispatchable<S,S>* loader ) {
+		// This is a custom dispatch 
+		assert(i.is<CustomOp>());
+		assert(i.as<CustomOp> == CustomOp::op_CONS); // this is the only one we've implemented
+		
+		// Above is one way to implement cons, but here we can do it faster by not removing it from the stack
+		S y = vms.getpop<S>();
+		
+		// length check
+		if(vms.stack<S>().topref().length() + y.length() > MAX_LENGTH) 
+			return abort_t::SIZE_EXCEPTION;
 
-				vms.stack<S>().topref().append(y);
+		vms.stack<S>().topref().append(y);
 				
-				break;
-			}
-			default:
-				assert(0 && " *** You ended up with an invalid argument"); // should never get here
-		}
 		return abort_t::NO_ABORT;
 	}
 	
@@ -145,10 +95,7 @@ public:
 };
 
 
-// mydata stores the data for the inference model
-MyHypothesis::t_data mydata;
-// top stores the top hypotheses we have found
-TopN<MyHypothesis> top;
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -160,15 +107,31 @@ int main(int argc, char** argv){
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	auto app = Fleet::DefaultArguments("A simple, one-factor formal language learner");
 	app.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
-	app.add_option("-d,--data", datastr, "Comma separated list of input data strings");	
+	app.add_option("-d,--data",     datastr, "Comma separated list of input data strings");	
 	CLI11_PARSE(app, argc, argv);
 	
-	top.set_size(ntop); // set by above macro
-
 	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
+	
+	// mydata stores the data for the inference model
+	MyHypothesis::t_data mydata;
+	
+	// top stores the top hypotheses we have found
+	TopN<MyHypothesis> top(ntop);
 	
 	// declare a grammar
 	MyGrammar grammar;
+	
+	// Add the builtins we want
+	grammar.add<S>         (BuiltinOp::op_X,       "x", 10.0); 
+	grammar.add<S,bool,S,S>(BuiltinOp::op_IF,      "if(%s,%s,%s)"); 
+	grammar.add<bool>      (BuiltinOp::op_FLIP,    "flip()"); 
+	grammar.add<S,S>       (BuiltinOp::op_RECURSE, "F(%s)"); 
+	
+	// here we create an alphabet op with an "arg" that stores the character (this is fater than alphabet.substring with i.arg as an index) 
+	// here, op_ALPHABET converts arg to a string (and pushes it)
+	for(size_t i=0;i<alphabet.length();i++) {
+		grammar.add<S>   (BuiltinOp::op_ALPHABET, alphabet.substr(i,1), 10.0/alphabet.length(), (int)alphabet.at(i)); 
+	}
 			
 	//------------------
 	// set up the data
