@@ -65,6 +65,7 @@ public:
 
 	template<typename t>
 	t as() const {
+		assert(is<t>() && "*** Something is very wrong if we can't get it as type t");
 		return std::get<t>(op);
 	}
 

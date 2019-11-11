@@ -10,6 +10,8 @@ const int N = 100; // what number do we go up to?
 
 #define FLEET_GRAMMAR_TYPES float
 
+// We're going to need to define our own constant, which will be an instruction
+// corresponding to a single float
 #define CUSTOM_OPS op_Constant
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,6 +64,8 @@ public:
 	}
 	
 	vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<float,float>* pool, VirtualMachineState<float,float>& vms, Dispatchable<float, float>* loader ) {
+		// When we use a custom operation, we must define it here (typically with a switch statement)
+		// it operates on the VirtualMachineState (and possibly the pool)
 		switch(i.as<CustomOp>()) {
 			case CustomOp::op_Constant: {
 				vms.push<float>(i.arg);
@@ -70,12 +74,7 @@ public:
 			default: assert(0); // should never get here
 		}
 		return vmstatus_t::GOOD;
-	}
-//	
-//	virtual bool operator==(const MyHypothesis& h) const {
-//		return value == h.value;
-//	}
-	
+	}	
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,9 +114,7 @@ int main(int argc, char** argv){
 	top.print();
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
-//	COUT "# MCTS tree size:" TAB m.size() ENDL;	
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
 	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
 	COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds() ENDL;
-//	COUT "# MCTS steps per second:" TAB m.statistics.N/elapsed_seconds() ENDL;	
 }
