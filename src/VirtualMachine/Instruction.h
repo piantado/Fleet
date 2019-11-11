@@ -9,7 +9,9 @@
 typedef short PrimitiveOp;
 
 // This class stores the possible statuses of a VirtualMachine
-enum class vmstatus_t {GOOD=0, RECURSION_DEPTH, RANDOM_CHOICE, RANDOM_CHOICE_NO_DELETE, SIZE_EXCEPTION, OP_ERR_ABORT, RANDOM_BREAKOUT}; // setting GOOD=0 allows us to say if(aborted)...
+enum class vmstatus_t {GOOD=0, ERROR, RECURSION_DEPTH, RANDOM_CHOICE, RANDOM_CHOICE_NO_DELETE, SIZE_EXCEPTION, OP_ERR_ABORT, RANDOM_BREAKOUT}; // setting GOOD=0 allows us to say if(aborted)...
+
+class VMSRuntimeError_t : public std::exception {} VMSRuntimeError;
 
 // make sure CustomOp is something if it hasn't been defined
 #ifndef CUSTOM_OPS
