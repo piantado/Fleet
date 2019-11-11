@@ -29,12 +29,12 @@ const size_t MAX_LENGTH = 64; // longest strings cons will handle
 #include "Primitives.h"
 
 std::tuple PRIMITIVES = {
-	Primitive("tail(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); }),
-	Primitive("head(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); }),
-	Primitive("pair(%s,%s)",   +[](S a, S b) -> S { return a+b; }, // also add a function to check length to throw an error if its getting too long
+	Primitive("tail(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : s.substr(1,S::npos)); }),
+	Primitive("head(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : S(1,s.at(0))); }),
+	Primitive("pair(%s,%s)",   +[](S a, S b) -> S          { return a+b; }, // also add a function to check length to throw an error if its getting too long
 							   +[](S a, S b) -> vmstatus_t { return (a.length() + b.length() < MAX_LENGTH ? vmstatus_t::GOOD : vmstatus_t::SIZE_EXCEPTION);}),
-	Primitive("\u00D8",        +[]()         -> S { return  S(""); }),
-	Primitive("(%s==%s)",      +[](S x, S y) -> bool { return x==y; }),
+	Primitive("\u00D8",        +[]()         -> S          { return  S(""); }),
+	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
 };
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 

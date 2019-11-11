@@ -20,7 +20,7 @@
 
 enum    class  Shape  { Square, Triangle, Circle};
 enum    class  Color  { Red, Green, Blue};
-typedef struct Object {	Color color; Shape shape; } Object;
+typedef struct { Color color; Shape shape; } Object;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// This is a global variable that provides a convenient way to wrap our primitives
