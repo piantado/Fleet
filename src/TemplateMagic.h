@@ -87,3 +87,27 @@ struct CheckReferenceIsFirst {
 };
 template <class T>
 struct CheckReferenceIsFirst<T> { static const bool value = true; };
+
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// List operations on args
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+template<class... Args>
+struct TypeHead {
+	// get hte first type in Args
+	typedef typename std::tuple_element<0, std::tuple<Args...>>::type type;
+};
+
+//define a default template<T,args...> that gives head(args)::value if head(args)::value is a reference, otherwise T...
+template<class T, class... args>
+struct HeadIfReferenceElseT {
+	typedef typename std::conditional<std::is_reference<typename TypeHead<args...>::type>::value,
+									  typename std::decay<typename TypeHead<args...>::type>::type,
+									  T
+									  >::type type;
+};	
+template<class T> 
+struct HeadIfReferenceElseT<T> { 
+	typedef T type;
+};

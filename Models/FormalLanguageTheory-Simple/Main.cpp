@@ -36,12 +36,10 @@ std::tuple PRIMITIVES = {
 //																throw VMSRuntimeError;
 //															else return a+b; 
 //															}),
-	// TODO: The version with the reference to the top still doesnt' work 
-	Primitive("pair(%s,%s)",   +[](S& a, S b) -> S        { 
+	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void        { 
 			if(a.length() + b.length() > MAX_LENGTH) 
 				throw VMSRuntimeError;
 			a = a+b; // modify on stack
-			return S{}; // seems to need this, not sure why
 	}), // also add a function to check length to throw an error if its getting too long
 	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),
 	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),

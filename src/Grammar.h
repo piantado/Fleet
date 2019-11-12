@@ -46,7 +46,10 @@ public:
 	template <class T>
 	constexpr nonterminal_t nt() {
 		// NOTE: the names here are decayed 
-		return TypeIndex<typename std::decay<T>::type, std::tuple<FLEET_GRAMMAR_TYPES>>::value;
+		using DT = typename std::decay<T>::type;
+		
+		static_assert(contains_type<DT, FLEET_GRAMMAR_TYPES>(), "*** The type T (decayed) must be in FLEET_GRAMMAR_TYPES");
+		return TypeIndex<DT, std::tuple<FLEET_GRAMMAR_TYPES>>::value;
 	}
 
 	Grammar() {
@@ -412,7 +415,9 @@ public:
 	template<typename T, typename... args>
 	void add(Primitive<T, args...> p, const int arg=0) {
 		// add a single primitive -- unpacks the types to put the rule into the right place
-		add(Rule(nt<T>(), p.op, p.format, {nt<args>()...}, p.p, arg));
+		// NOTE: we can't use T as the return type, we have ot use p::GrammarReturnType in order to handle
+		// return-by-reference primitives
+		add(Rule(this->template nt<typename decltype(p)::GrammarReturnType>(), p.op, p.format, {nt<args>()...}, p.p, arg));
 	}
 	
 	

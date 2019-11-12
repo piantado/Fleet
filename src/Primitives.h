@@ -35,12 +35,21 @@ struct Primitive : PrePrimitive {
 	PrimitiveOp op;
 	double p;
 
+	// First we figure out what the return type of the function is. This determines
+	// where we put it in the grammar (e.g. which nonterminal it is associated with).
+	// When it's a simple function with no reference, this is just T, but when
+	// we have a reference, then the reference is the nonterminal type (and
+	// remember that the reference must be first!
+	// NOTE: we wrap T in head so conditional operates on structs
+	typedef typename std::decay<typename HeadIfReferenceElseT<T,args...>::type>::type GrammarReturnType;
+									  
+
 	Primitive(std::string fmt, T(*f)(args...), double _p=1.0 ) :
 		format(fmt), call(f), op(op_counter++), p(_p) {
 			
 		// check that each type here is in FLEET_GRAMMAR_TYPES
 		// or else we get obscure errors;
-		static_assert(contains_type<typename std::decay<T>::type,FLEET_GRAMMAR_TYPES>(), 
+		static_assert(contains_type<GrammarReturnType,FLEET_GRAMMAR_TYPES>(), 
 					  "*** Type is not in FLEET_GRAMMAR_TYPES");
 		
 		static_assert((contains_type<typename std::decay<args>::type,FLEET_GRAMMAR_TYPES>() && ...), 
@@ -52,14 +61,15 @@ struct Primitive : PrePrimitive {
 		// (i) there is only one reference type (since it corresponds to the return type), and 
 		// (ii) the reference is the FIRST argument to the function. This is because the first argument is
 		//		typically the last to be evaluated (TODO: We should fix this in the future because its not true on all compilers)
-		
+		// (iii) if we return void, then we must have a reference (for return value) and vice versa
 		
 		// TODO: ALSO ASSERT that the return type is the same as the reference (otherwise the grammar doesn't know what ot do)
 		// BUT Note we shouldn't actually return
 		if constexpr(sizeof...(args) > 0) {
 			static_assert(CountReferences<args...>::value <= 1, "*** Cannot contain more than one reference in arguments, since the reference is where we put the return value.");
 			static_assert(CheckReferenceIsFirst<args...>::value, "*** Reference must be the first argument so it will be popped from the stack last (in fact, it is left in place).");
- 		}
+			static_assert( (CountReferences<args...>::value == 1) == std::is_same<T,void>::value, "*** If you have a reference, you must return void and vice versa.");
+		}
 //		static_assert(CountReferences<args...>::value == 0 or std::is_void<T>::value, "*** If you use a reference, returntype must be the same -- though note you won't actually return anything");
 		
 	}
@@ -93,22 +103,17 @@ struct Primitive : PrePrimitive {
 //				|
 //				|
 //				|
-//				|
-//				|
-//				|
-//				|	
-//				|
-//				|
-//				|
-//				|
-//				|
-//				|	
-//				|
-//				|
-//				|
-//				|
-//				|
-//				|	
+//.----------------.  .----------------.  .----------------.  .----------------. 
+//| .--------------. || .--------------. || .--------------. || .--------------. |
+//| |  _________   | || |     ____     | || |  ________    | || |     ____     | |
+//| | |  _   _  |  | || |   .'    `.   | || | |_   ___ `.  | || |   .'    `.   | |
+//| | |_/ | | \_|  | || |  /  .--.  \  | || |   | |   `. \ | || |  /  .--.  \  | |
+//| |     | |      | || |  | |    | |  | || |   | |    | | | || |  | |    | |  | |
+//| |    _| |_     | || |  \  `--'  /  | || |  _| |___.' / | || |  \  `--'  /  | |
+//| |   |_____|    | || |   `.____.'   | || | |________.'  | || |   `.____.'   | |
+//| |              | || |              | || |              | || |              | |
+//| '--------------' || '--------------' || '--------------' || '--------------' |
+// '----------------'  '----------------'  '----------------'  '----------------' 
 //				|
 //				|
 //				|				
