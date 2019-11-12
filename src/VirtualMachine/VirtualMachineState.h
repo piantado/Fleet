@@ -90,32 +90,30 @@ public:
 		return stack<T>().top();
 	}
 
-
 	// this is some fanciness that will return a reference to the top of the stack if we give it a reference type
 	// otherwise it will return the type. This lets us get the top of a stack with a reference in PRIMITIVES
 	// as though we were some kind of wizards
 	template<typename T>
 	typename std::conditional<std::is_reference<T>::value, T&, T>::type
 	get() {
+		using Tdecay = typename std::decay<T>::type; // remove the ref from it since that's how we access the stack -- TODO: put this into this->stack() maybe?
+		
+		assert(stack<Tdecay>().size() > 0 && "Cannot get from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
+		
 		// some magic: if its a reference, we return a reference to the top of the stack
 		// otherwise we move off and return
 		if constexpr (std::is_reference<T>::value) { 
+//			CERR "GIVING REFERENCE " TAB stack<Tdecay>().topref()  ENDL;
 			// if its a reference, reference the un-referenced stack type and return a reference to its top
-			return stack<typename std::decay<T>::type>().topref();
+			return std::forward<T>(stack<Tdecay>().topref());
 		}
 		else {
-			// retrieves and pops the element of type T from the stack
-			//if(status != vmstatus_t::GOOD) return T(); // don't try to access the stack because we're aborting
-			assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
-			
-			T x = std::move(stack<T>().top());
-			stack<T>().pop();
-			return x;
+			T x = std::move(stack<Tdecay>().top());
+//			CERR "POPPING ONE " TAB x  ENDL;
+			stack<Tdecay>().pop();
+			return std::move(x);
 		}
 	}
-	
-	
-	
 	
 	template<typename T>
 	bool empty() {

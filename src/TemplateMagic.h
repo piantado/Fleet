@@ -80,21 +80,10 @@ template <class T>
 struct CountReferences<T> { static const size_t value = std::is_reference<T>::value; };
 
 
-//  Checks whether any reference we have is the LAST one
-// so (T, T&, T) fails but (T, T&, F) and (T, T, T&) succeed
-// This is required for VMS arguments because we pop the arguments from the stack,
-// so the only one we can reference is the last one (the rest are removed from the stack)
+// If there ar eany references in the arguments, only the first can be a reference
 template <class T, class... Types>
-struct CheckReferenceIsLastOfItsType {
-	// if T is a reference, value = true only if there are no others of the same (decayed) type
-	
-	
-	static const bool value = std::is_reference<T>::value ? 
-							  not contains_type<T, std::decay<Types>...>() : 
-							  CheckReferenceIsLastOfItsType<Types...>::value;
+struct CheckReferenceIsFirst {
+	static const bool value = (CountReferences<Types...>::value == 0);
 };
 template <class T>
-struct CheckReferenceIsLastOfItsType<T> { static const bool value = true; };
-
-// So now the requirement is that a list of arg types to a Primitive lambda must have 
-// at most reference and that reference is the last of its type. 
+struct CheckReferenceIsFirst<T> { static const bool value = true; };

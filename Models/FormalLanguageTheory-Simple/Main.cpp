@@ -8,6 +8,7 @@ using S = std::string; // just for convenience
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 S alphabet = "01"; // the alphabet we use (possibly specified on command line)
+//S datastr = "";
 S datastr  = "011,011011,011011011"; // the data, comma separated
 const double strgamma = 0.99; // penalty on string length
 const size_t MAX_LENGTH = 64; // longest strings cons will handle
@@ -31,13 +32,17 @@ const size_t MAX_LENGTH = 64; // longest strings cons will handle
 std::tuple PRIMITIVES = {
 	Primitive("tail(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : s.substr(1,S::npos)); }),
 	Primitive("head(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : S(1,s.at(0))); }),
-	Primitive("pair(%s,%s)",   +[](S a, S b) -> S         { if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError;
-															 return a+b; }),
-//	Primitive("rpair(%s,%s)",   +[](S a, S& b) -> S         { 
-//			if(a.length() + b.length() < MAX_LENGTH) 
-//				b.append(a); 
-//			else throw VMSRuntimeError; 
-//	}), // also add a function to check length to throw an error if its getting too long
+//	Primitive("pair(%s,%s)",   +[](S a, S b) -> S          { if(a.length() + b.length() > MAX_LENGTH) 
+//																throw VMSRuntimeError;
+//															else return a+b; 
+//															}),
+	// TODO: The version with the reference to the top still doesnt' work 
+	Primitive("pair(%s,%s)",   +[](S& a, S b) -> S        { 
+			if(a.length() + b.length() > MAX_LENGTH) 
+				throw VMSRuntimeError;
+			a = a+b; // modify on stack
+			return S{}; // seems to need this, not sure why
+	}), // also add a function to check length to throw an error if its getting too long
 	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),
 	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
 };
@@ -73,13 +78,10 @@ public:
 
 
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-
 int main(int argc, char** argv){ 
-
+	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	auto app = Fleet::DefaultArguments("A simple, one-factor formal language learner");
 	app.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
@@ -102,7 +104,7 @@ int main(int argc, char** argv){
 	grammar.add<bool>      (BuiltinOp::op_FLIP,         "flip()"); 
 	grammar.add<S,S>       (BuiltinOp::op_SAFE_RECURSE, "F(%s)"); 
 	
-	// here we create an alphabet op with an "arg" that stores the character (this is fater than alphabet.substring with i.arg as an index) 
+	// here we create an alphabet op with an "arg" that stores the character (this is faster than alphabet.substring with i.arg as an index) 
 	// here, op_ALPHABET converts arg to a string (and pushes it)
 	for(size_t i=0;i<alphabet.length();i++) {
 		grammar.add<S>     (BuiltinOp::op_ALPHABET, Q(alphabet.substr(i,1)), 5.0/alphabet.length(), (int)alphabet.at(i)); 

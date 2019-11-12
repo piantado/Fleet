@@ -35,6 +35,6 @@ public:
 	}
 
 	T& topref() {
-		return this->back();
+		return std::forward<T&>(this->back());
 	}
 };

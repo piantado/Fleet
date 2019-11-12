@@ -1,40 +1,67 @@
 //  TODO: Update ANS= to be something reasonable!
 
 
-// We require a macro to define our ops as a string BEFORE we import Fleet
-// these get incorporated into the op_t type
-enum CustomOp {
-		op_Object, op_Word, op_U, op_Magnitude,\
-		op_Next,op_Prev,op_Xset,op_Xtype,op_MakeX,\
-		op_Union,op_Intersection,op_Difference,op_Select,op_SelectObj,op_Filter,\
-		op_And,op_Or,op_Not,\
-		op_Match1to1,op_WM0,op_WM1,op_WM2,op_WM3,\
-		op_ApproxEq_S_S,op_ApproxEq_S_M,op_ApproxEq_S_W,\
-		op_ApproxLt_S_S,op_ApproxLt_S_M,op_ApproxLt_S_W
-};
-		
-#include "Primitives.h"
-
-// Defie our types. 
-#define NT_TYPES bool,    Model::set,    Model::objtype, Model::word,  Model::X, Model::wmset, Model::magnitude,  double
-#define NT_NAMES nt_bool, nt_set,         nt_type,       nt_word,       nt_X,    nt_wmset,     nt_magnitude,      nt_double
-///               0         1                2              3             4          5               6               7
 
 #include <vector>
+#include <string>
+#include <random>
+#include "MyPrimitives.h"
+
+double recursion_penalty = -50.0;
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Set up some basic variables for the model
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 std::vector<Model::objtype>      OBJECTS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
 std::vector<std::string>           WORDS = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
 std::vector<Model::magnitude> MAGNITUDES = {1,2,3,4,5,6,7,8,9,10};
 
 // TODO: UPDATE WITH data from Gunderson & Levine?
-#include <random>
 std::discrete_distribution<> number_distribution({0, 7187, 1484, 593, 334, 297, 165, 151, 86, 105, 112}); // 0-indexed
 	
 std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400};//, 500, 600, 700, 800, 900, 1000};
 //std::vector<int> data_amounts = {600};
 
-double recursion_penalty = -50.0;
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// These define all of the types that are used in the grammar.
+/// This macro must be defined before we import Fleet.
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#define FLEET_GRAMMAR_TYPES bool,Model::set,Model::objtype,Model::word,Model::X,Model::wmset,Model::magnitude,double
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Define the primitives (which are already defined in MyPrimitives
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include "Primitives.h"
+
+std::tuple PRIMITIVES = {
+	Primitive("undef",         +[]() -> word {
+
+
+
+
+
+
+
+
+
+	Primitive("tail(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : s.substr(1,S::npos)); }),
+	Primitive("head(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : S(1,s.at(0))); }),
+	Primitive("pair(%s,%s)",   +[](S a, S b) -> S         { if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError;
+															 return a+b; }),
+//	Primitive("rpair(%s,%s)",   +[](S a, S& b) -> S         { 
+//			if(a.length() + b.length() < MAX_LENGTH) 
+//				b.append(a); 
+//			else throw VMSRuntimeError; 
+//	}), // also add a function to check length to throw an error if its getting too long
+	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),
+	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
+};
+
+// Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
+#include "Fleet.h" 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
