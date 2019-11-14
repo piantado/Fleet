@@ -31,9 +31,6 @@ public:
 	// This is how we store an instruction in the program. It can take one of three types:
 	// BuiltinOp -- these are operations that are defined as part of Fleet's core library,
 	// 				and are implemented automatically in VirtualMachineState::run
-	// CustomOp -- These are handled via dispatch just like BuiltinOps, and require you to write
-	//			   a switch statement and override dispatch_custom. They allow you to do fancy things to
-	// 			   the stack
 	// PrimitiveOp -- these are defined *automatically* through the global variable PRIMITIVES
 	//				  (see Models/RationalRules). When you construct a grammar with these, it automatically
 	//				  figures out all the types and automatically gives each a sequential numbering, which
