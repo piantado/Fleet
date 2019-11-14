@@ -77,8 +77,8 @@ struct Primitive : PrePrimitive {
 	}
 	
 	
-	template<typename V>
-	vmstatus_t VMScall(V* vms) {
+	template<typename V, typename P, typename L>
+	vmstatus_t VMScall(V* vms, P* pool, L* loader) {
 		// This is the default way of evaluating a PrimitiveOp
 		
 		assert(not vms->template any_stacks_empty<typename std::decay<args>::type...>() &&
@@ -146,22 +146,22 @@ namespace Fleet::applyVMS {
 	template<int N, int... Is> struct gen_seq : gen_seq<N-1, N-1, Is...> {};
 	template<int... Is>        struct gen_seq<0, Is...> : seq<Is...> {};
 
-	template<int n, class T, class V>
-	vmstatus_t applyToVMS_one(T& p, V vms) {
-		return std::get<n>(p).VMScall(vms);
+	template<int n, class T, typename V, typename P, typename L>
+	vmstatus_t applyToVMS_one(T& p, V* vms, P* pool, L* loader) {
+		return std::get<n>(p).VMScall(vms, pool, loader);
 	}
 
-	template<class T, class V, int... Is>
-	vmstatus_t applyToVMS(T& p, int index, V func, seq<Is...>) {
-		using FT = vmstatus_t(T&, V);
-		static constexpr FT* arr[] = { &applyToVMS_one<Is, T, V>... };
-		return arr[index](p, func);
+	template<class T, typename V, typename P, typename L, int... Is>
+	vmstatus_t applyToVMS(T& p, int index, V* vms, P* pool, L* loader, seq<Is...>) {
+		using FT = vmstatus_t(T&, V*, P*, L*);
+		static constexpr FT* arr[] = { &applyToVMS_one<Is, T, V, P, L>... };
+		return arr[index](p, vms, pool, loader);
 	}
 }
-template<class T, class V>
-vmstatus_t applyToVMS(T& p, int index, V vms) {
+template<class T, typename V, typename P, typename L>
+vmstatus_t applyToVMS(T& p, int index, V* vms, P* pool, L* loader) {
 //    return Fleet::applyVMS::applyToVMS(p, index, vms, std::make_index_sequence<std::tuple_size<T>::value>{} );
-    return Fleet::applyVMS::applyToVMS(p, index, vms, Fleet::applyVMS::gen_seq<std::tuple_size<T>::value>{});
+    return Fleet::applyVMS::applyToVMS(p, index, vms, pool, loader, Fleet::applyVMS::gen_seq<std::tuple_size<T>::value>{});
 	// TODO: I think we can probably get away without gen_seq, using something like below
 //    return Fleet::applyVMS::applyToVMS(p, index, vms, std::make_integer_sequence<std::tuple_size<T>>{});
 

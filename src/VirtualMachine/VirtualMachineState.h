@@ -2,15 +2,10 @@
 
 #include <type_traits>
 
-/* 
- * NOTE: CURRNTLY ERR IS NOT HANDLED RIGHT -- SHOULD HAVE A STACK I THINK?
- */
-
 // Remove n from the stack
 void popn(Program& s, size_t n) {
 	for(size_t i=0;i<n;i++) s.pop();
 }
-
 
 
 template<typename t_x, typename t_return>
@@ -151,7 +146,7 @@ public:
 	virtual t_return run(VirtualMachinePool<t_x, t_return>* pool, Dispatchable<t_x,t_return>* dispatch, Dispatchable<t_x,t_return>* loader) {
 		// Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
 		// Here, dispatch is called to evaluate the function, and loader is called on recursion (allowing us to handle recursion
-		// via a lexicon or just via a LOTHypothesis). 
+		// via a lexicon or just via a LOTHypothesis). NOTE that anything NOT built-in is handled via applyToVMS defined in Primitives.h
 		status = vmstatus_t::GOOD;
 		
 		try { 
@@ -164,7 +159,7 @@ public:
 
 				if(i.is<PrimitiveOp>()) {
 					// call this fancy template magic to index into the global tuple variable PRIMITIVES
-					status = applyToVMS(PRIMITIVES, i.as<PrimitiveOp>(), this);
+					status = applyToVMS(PRIMITIVES, i.as<PrimitiveOp>(), this, pool, loader);
 				}
 				else {
 					assert(i.is<BuiltinOp>());

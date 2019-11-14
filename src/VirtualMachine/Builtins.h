@@ -3,6 +3,9 @@
 // These are convenient wrappers for built-in operations that just bundle toegether format, op, and p
 // this is useful because then we can put the builtins in the same PRIMITIVES bundle
 // so for instance we can have Primitives::If<S>("if(%s,%s,%s)", 1.0) in PRIMITIVES, even though If is a built-in
+// So these are just data structures that hold this information until grammar.add, where they are
+// mapped onto Rules for builtins
+
 template<typename t, typename... args>
 struct BuiltinPrimitive {
 	// This is just an interface that wraps builtins so we can add them to our Tuples primitive
@@ -11,8 +14,8 @@ struct BuiltinPrimitive {
 	BuiltinOp op;
 	double p;
 	
-	template<typename V>
-	vmstatus_t VMScall(V* vms) { assert(0); } // must be defined but not used 
+	template<typename V, typename P, typename L>
+	vmstatus_t VMScall(V* vms, P* pool, L* loader) { assert(0); } // must be defined but not used 
 };
 
 namespace Builtin {

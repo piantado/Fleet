@@ -32,9 +32,10 @@ typedef struct { Color color; Shape shape; } Object;
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Primitives.h"
+#include "Builtins.h"
 
 std::tuple PRIMITIVES = {
-	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 2.0),
+	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 2.0), // optional specification of prior weight (default=1.0)
 	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }),
 	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }),
 	// that + is really insane, but is needed to convert a lambda to a function pointer
@@ -45,7 +46,12 @@ std::tuple PRIMITIVES = {
 
 	Primitive("square(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Square; }),
 	Primitive("triangle(%s)",  +[](Object x)       -> bool { return x.shape == Shape::Triangle; }),
-	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Circle; })
+	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Circle; }),
+	
+		
+	// but we also have to add a rule for the BuiltinOp that access x, our argument
+	Builtin::X<Object>("x", 10.0)
+
 };
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
@@ -87,9 +93,6 @@ int main(int argc, char** argv){
 	
 	// Define the grammar (default initialize using our primitives will add all those rules)	
 	Grammar grammar(PRIMITIVES);
-	
-	// but we also have to add a rule for the BuiltinOp that access x, our argument
-	grammar.add<Object>(BuiltinOp::op_X, "x", 5.0);
 	
 	// mydata stores the data for the inference model
 	MyHypothesis::t_data mydata;

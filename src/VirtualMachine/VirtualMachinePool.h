@@ -90,8 +90,6 @@ public:
 		return false;
 	}
 
-
-	
 	DiscreteDistribution<t_return> run(Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) { 
 		// This runs and adds up the probability mass for everything, returning a dictionary outcomes->log_probabilities
 		
