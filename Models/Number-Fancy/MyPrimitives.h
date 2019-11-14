@@ -127,26 +127,6 @@ namespace Model {
 		return 1.0-normcdf(ANSdiff(s.length(), m)); // we'll call differences w/in 1 SD equal 		
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	word next(const word w)   { 
 		if(w >= 1) return w+1;
 		else       return U;

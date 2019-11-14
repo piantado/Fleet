@@ -1,123 +1,104 @@
-#include <assert.h>
 
+
+///########################################################################################
 // A simple example of a version of the RationalRules model. 
 // This is primarily used as an example and for debugging MCMC
-// My laptop gets around 200-300k samples per second
+// My laptop gets around 200-300k samples per second on 4 threads
+///########################################################################################
 
-// This is also used to check MCMC, as it prints out counts and log posteriors which
-// we can check for match
 
-// We require an enum to define our custom operations as a string before we import Fleet
-// These are the internal symbols that are used to represent each operation. The grammar
-// generates nodes with them, and then dispatch down below gets called with a switch
-// statement to see how to execute aech of them. 
-enum class CustomOp {
-	op_And, op_Or, op_Not, 
-	op_Red, op_Green, op_Blue, 
-	op_Square, op_Triangle, op_Circle
-};
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// These define all of the types that are used in the grammar.
+/// This macro must be defined before we import Fleet.
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-enum class Shape { Square, Triangle, Circle};
-enum class Color { Red, Green, Blue};
+#define FLEET_GRAMMAR_TYPES bool,Object
 
-typedef struct Object {
-	Color color;
-	Shape shape;
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// We need to define some structs to hold the object features
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+enum    class  Shape  { Square, Triangle, Circle};
+enum    class  Color  { Red, Green, Blue};
+typedef struct { Color color; Shape shape; } Object;
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// This is a global variable that provides a convenient way to wrap our primitives
+/// where we can pair up a function with a name, and pass that as a constructor
+/// to the grammar. We need a tuple here because Primitive has a bunch of template
+/// types to handle thee function it has, so each is actually a different type.
+/// This must be defined before we import Fleet because Fleet does some template
+/// magic internally
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include "Primitives.h"
+#include "Builtins.h"
+
+std::tuple PRIMITIVES = {
+	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 2.0), // optional specification of prior weight (default=1.0)
+	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }),
+	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }),
+	// that + is really insane, but is needed to convert a lambda to a function pointer
+
+	Primitive("red(%s)",       +[](Object x)       -> bool { return x.color == Color::Red; }),
+	Primitive("green(%s)",     +[](Object x)       -> bool { return x.color == Color::Green; }),
+	Primitive("blue(%s)",      +[](Object x)       -> bool { return x.color == Color::Blue; }),
+
+	Primitive("square(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Square; }),
+	Primitive("triangle(%s)",  +[](Object x)       -> bool { return x.shape == Shape::Triangle; }),
+	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Circle; }),
 	
-	// we must define this to compile because memoization requires sorting
-	// but if we don't call op_MEM then we never will need it
-	bool operator<(const Object& o) const { assert(false); }
-} Object;
+		
+	// but we also have to add a rule for the BuiltinOp that access x, our argument
+	Builtin::X<Object>("x", 10.0)
 
-// Define our types. 
-#define NT_TYPES bool, Object, int
-#define NT_NAMES nt_bool,nt_object, nt_value
+};
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
-// Define a grammar
-class MyGrammar : public Grammar { 
-public:
-	MyGrammar() : Grammar() {
-		add( Rule(nt_object, BuiltinOp::op_X,         "x",             {},                   1.0) );		
-		add( Rule(nt_bool,   CustomOp::op_Red,        "red(%s)",       {nt_object},          1.0) );		
-		add( Rule(nt_bool,   CustomOp::op_Green,      "green(%s)",     {nt_object},          1.0) );
-		add( Rule(nt_bool,   CustomOp::op_Blue,       "blue(%s)",      {nt_object},          1.0) );
-		
-		add( Rule(nt_bool,   CustomOp::op_Square,     "square(%s)",    {nt_object},          1.0) );		
-		add( Rule(nt_bool,   CustomOp::op_Triangle,   "triangle(%s)",  {nt_object},          1.0) );
-		add( Rule(nt_bool,   CustomOp::op_Circle,     "circle(%s)",    {nt_object},          1.0) );
-		
-		add( Rule(nt_bool, CustomOp::op_And,          "and(%s,%s)",    {nt_bool, nt_bool},   1.0) );
-		add( Rule(nt_bool, CustomOp::op_Or,           "or(%s,%s)",     {nt_bool, nt_bool},   1.0) );
-		add( Rule(nt_bool, CustomOp::op_Not,          "not(%s)",       {nt_bool},            1.0) );
-	}
-};
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Define a class for handling my specific hypotheses and data. Everything is defaultly 
+/// a PCFG prior and regeneration proposals, but I have to define a likelihood
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-/* Define a class for handling my specific hypotheses and data. Everything is defaulty a PCFG prior and 
- * regeneration proposals, but I have to define a likelihood */
-class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool> {
+class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,Object,bool> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool>;
-	MyHypothesis(Grammar* g, Node n)   : Super(g, n) {}
-	MyHypothesis(Grammar* g)           : Super(g) {}
-	MyHypothesis()                     : Super() {}
+	using Super = LOTHypothesis<MyHypothesis,Node,Object,bool>;
+	using Super::Super; // inherit the constructors
 	
+	// Now, if we defaultly assume that our data is a std::vector of t_data, then we 
+	// can just define the likelihood of a single data point, which is here the true
+	// value with probability x.reliability, and otherwise a coin flip. 
 	double compute_single_likelihood(const t_datum& x) {
 		bool out = callOne(x.input, false);
 		return out == x.output ? log(x.reliability + (1.0-x.reliability)/2.0) : log((1.0-x.reliability)/2.0);
 	}
-	
-	abort_t dispatch_rule(Instruction i, VirtualMachinePool<Object, bool>* pool, VirtualMachineState<Object,bool>& vms, Dispatchable<Object,bool>* loader ) {
-		switch(i.getCustom()) {
-			CASE_FUNC1(CustomOp::op_Red,         bool,  Object,    [](const Object& x){ return x.color == Color::Red; })
-			CASE_FUNC1(CustomOp::op_Green,       bool,  Object,    [](const Object& x){ return x.color == Color::Green; })
-			CASE_FUNC1(CustomOp::op_Blue,        bool,  Object,    [](const Object& x){ return x.color == Color::Blue; })
-			
-			CASE_FUNC1(CustomOp::op_Square,      bool,  Object,    [](const Object& x){ return x.shape == Shape::Square; })
-			CASE_FUNC1(CustomOp::op_Triangle,    bool,  Object,    [](const Object& x){ return x.shape == Shape::Triangle; })
-			CASE_FUNC1(CustomOp::op_Circle,      bool,  Object,    [](const Object& x){ return x.shape == Shape::Circle; })
-			
-			CASE_FUNC2(CustomOp::op_And,         bool,bool,bool,    [](const bool a, bool b){ return a&&b; })
-			CASE_FUNC2(CustomOp::op_Or,          bool,bool,bool,    [](const bool a, bool b){ return a||b; })
-			CASE_FUNC1(CustomOp::op_Not,         bool,bool,         [](const bool a){ return !a; })
-			
-			default:
-				assert(0 && " *** You used an invalid operation"); // should never get here
-		}
-		return abort_t::NO_ABORT;
-	}
-	
-	void print(std::string prefix="") {
-		extern TopN<MyHypothesis> top;
-		Super::print( prefix + std::to_string(top.count(*this)) + "\t" ); // print but prepend my top count
-	}
 };
 
-
-// mydata stores the data for the inference model
-MyHypothesis::t_data mydata;
-// top stores the top hypotheses we have found
-TopN<MyHypothesis> top;
-
-////////////////////////////////////////////////////////////////////////////////////////////
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Main code
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 int main(int argc, char** argv){ 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	auto app = Fleet::DefaultArguments("Rational rules");
 	CLI11_PARSE(app, argc, argv);
-	
-	top.set_size(ntop); // set by above macro
-
 	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
 	
 	//------------------
-	// declare a grammar
+	// Basic setup
 	//------------------
-	MyGrammar grammar;
+	
+	// Define the grammar (default initialize using our primitives will add all those rules)	
+	Grammar grammar(PRIMITIVES);
+	
+	// mydata stores the data for the inference model
+	MyHypothesis::t_data mydata;
+	
+	// top stores the top hypotheses we have found
+	TopN<MyHypothesis> top(ntop);
 	
 	//------------------
 	// set up the data
@@ -127,14 +108,10 @@ int main(int argc, char** argv){
 	mydata.push_back(   (MyHypothesis::t_datum){ (Object){Color::Red, Shape::Square},   false, 0.75 }  );
 	mydata.push_back(   (MyHypothesis::t_datum){ (Object){Color::Red, Shape::Square},   false, 0.75 }  );
 	
-	// just sample from the prior
-//	MyHypothesis h0(&grammar);
-//	for(size_t i=0;i<mcmc_steps;i++) {
-//		h0 = h0.restart(); // sample from prior
-//		h0.compute_posterior(mydata);
-//		top(h0);
-//	}
-//		
+	//------------------
+	// Actually run
+	//------------------
+	
 //	MyHypothesis h0(&grammar);
 //	h0 = h0.restart();
 //	MCMCChain chain(h0, &mydata, top);
@@ -159,5 +136,6 @@ int main(int argc, char** argv){
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
 	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
-	
+	COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds() ENDL;
+
 }

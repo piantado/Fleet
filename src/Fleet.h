@@ -31,36 +31,7 @@
 
 #include <sys/resource.h> // just for setting priority defaulty 
 
-const std::string FLEET_VERSION = "0.0.7";
-
-// First some error checking on Fleet's required macros
-// this is because we use some of them in enums, and so a failure 
-// to define them might cause an error that is silent or hard 
-// to detect. 
-#ifndef NT_NAMES
-#error You must define NT_NAMES (the names of nonterminals)
-#endif
-
-#ifndef NT_TYPES
-#error You must define a list NT_TYPES of types in the evaluation stack
-#endif
-
-// These are returned from the virtual machine to signal how evlauation of a program went
-enum class abort_t {NO_ABORT=0, RECURSION_DEPTH, RANDOM_CHOICE, RANDOM_CHOICE_NO_DELETE, SIZE_EXCEPTION, OP_ERR_ABORT, RANDOM_BREAKOUT}; // setting NO_ABORT=0 allows us to say if(aborted)...
-
-enum nonterminal_t {NT_NAMES, N_NTs };
-
-// convenient to make op_NOP=0, so that the default initialization is a NOP
-enum class BuiltinOp {
-	op_NOP=0,op_X,op_POPX,
-	op_MEM,op_RECURSE,op_MEM_RECURSE, // thee can store the index of what hte loader calls in arg, so they can be used with lexica if you pass arg
-	op_SAFE_RECURSE, op_SAFE_MEM_RECURSE,
-	op_FLIP,op_FLIPP,op_IF,op_JMP,
-	op_TRUE,op_FALSE,
-	//op_LAMBDA,op_APPLY // simple, one-argument lambda functions (as in forall)
-};
-
-#include "Instruction.h"
+const std::string FLEET_VERSION = "0.0.8";
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Tracking Fleet statistics 
@@ -125,8 +96,7 @@ double        explore      = 1.0; // we want to exploit the string prefixes we f
 size_t        nthreads     = 1;
 unsigned long runtime      = 0;
 unsigned long nchains      = 1;
-unsigned long blah      = 1;
-bool          concise      = false; // this is used to indicate that we want to not print much out (typically only posteriors and counts)
+bool          quiet      = false; // this is used to indicate that we want to not print much out (typically only posteriors and counts)
 std::string   input_path   = "input.txt";
 std::string   tree_path    = "tree.txt";
 std::string   output_path  = "output.txt";
@@ -139,7 +109,6 @@ namespace Fleet {
 		
 		app.add_option("-R,--seed",    random_seed, "Seed the rng (0 is no seed)");
 		app.add_option("-s,--mcts",    mcts_steps, "Number of MCTS search steps to run");
-//		app.add_option("-S,--mcts-scoring",  mcts_scoring, "How to score MCTS?");
 		app.add_option("-m,--mcmc",     mcmc_steps, "Number of mcmc steps to run");
 		app.add_option("-t,--thin",     thin, "Thinning on the number printed");
 		app.add_option("-o,--output",   output_path, "Where we write output");
@@ -152,7 +121,7 @@ namespace Fleet {
 		app.add_option("-E,--tree",     tree_path, "Write the tree here");
 		app.add_option(  "-c,--chains",   nchains, "How many chains to run");
 		
-		app.add_flag(  "-q,--concise",  concise, "Don't print very much and do so on one line");
+		app.add_flag(  "-q,--quiet",  quiet, "Don't print very much and do so on one line");
 //		app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");
 
 		return app; 
@@ -197,6 +166,7 @@ typedef Stack<Instruction> Program;
 #include "Inference/ChainPool.h"
 
 #include "Top.h"
+#include "Primitives.h"
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Actual initialization

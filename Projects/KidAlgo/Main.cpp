@@ -103,8 +103,8 @@ public:
 		return lp;
 	}
 	
-	abort_t dispatch_rule(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>& vms, Dispatchable<S,S>* loader ) {
-		/* Dispatch the functions that I have defined. Returns NO_ABORT on success. 
+	abort_t dispatch_rulevmstatus_tction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>& vms, Dispatchable<S,S>* loader ) {
+		/* Dispatch the functions that I have defined. Returns GOOD on success. 
 		 * */
 		switch(i.getCustom()) {
 			// this uses CASE_FUNCs which are defined in CaseMacros.h, and which give a nice interface for processing the
@@ -124,20 +124,20 @@ public:
 			
 			CASE_FUNC2e(CustomOp::op_CONS,       S, S,S,
 								[](const S& x, const S& y){ S a = x; a.append(y); return a; },
-								[](const S& x, const S& y){ return (x.length()+y.length()<MAX_LENGTH ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
+								[](const S& x, const S& y){ return (x.length()+y.length()<MAX_LENGTH ? abort_t::GOOD vmstatus_t_t::SIZE_Evmstatus_tN ); }
 								)
 			CASE_FUNC2e(CustomOp::op_SEPERATOR,       S, S,S,
 								[](const S& x, const S& y){ S a = x; a.append("/").append(y); return a; },
-								[](const S& x, const S& y){ return (x.length()+y.length()<MAX_LENGTH ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
+								[](const S& x, const S& y){ return (x.length()+y.length()<MAX_LENGTH ? abort_t::NO_vmstatus_t abort_t::vmstatus_tCEPTION ); }
 								)
 			CASE_FUNC2e(CustomOp::op_ACTION,       S, S,S,
 								[](const S& x, const S& y){ S a = x; a.append(",").append(y); return a; },
-								[](const S& x, const S& y){ return (x.length()+y.length()<MAX_LENGTH ? abort_t::NO_ABORT : abort_t::SIZE_EXCEPTION ); }
+								[](const S& x, const S& y){ return (x.length()+y.length()<MAX_LENGTH ? abort_vmstatus_tBORT : abovmstatus_tIZE_EXCEPTION ); }
 								)
 			default:
 				assert(0 && " *** You ended up with an invalid argument"); // should never get here
 		}
-		return abort_t::NO_ABORT;
+		return vmstatus_t::GOOD;
 	}
 };
 

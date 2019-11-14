@@ -3,6 +3,13 @@
 #include<map>
 #include<vector>
 #include<algorithm>
+#include <iostream>
+#include <assert.h>
+#include <memory>
+
+#include "Miscellaneous.h"
+#include "Numerics.h"
+#include "IO.h"
 
 template<typename T>
 class DiscreteDistribution {

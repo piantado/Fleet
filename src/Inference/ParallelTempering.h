@@ -56,9 +56,8 @@ public:
 	}
 	
 	
-	ParallelTempering(HYP& h0, std::vector<typename HYP::t_data>& datas, std::vector<callback_t>& cb) :
-		ChainPool<HYP,callback_t>() {
-		assert(datas.size() == cb.size());
+	ParallelTempering(HYP& h0, std::vector<typename HYP::t_data>& datas, std::vector<callback_t>& cb) {
+		assert(datas.size() == cb.size() && "*** Must provide equal length vectors of datas and callbacks");
 		// This version anneals on data, giving each chain a different amount in datas order
 		for(size_t i=0;i<datas.size();i++) {
 			this->pool.push_back(MCMCChain(i==0?h0:h0.restart(), &(datas[i]), cb[i]));

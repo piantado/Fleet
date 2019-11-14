@@ -90,8 +90,6 @@ public:
 		return false;
 	}
 
-
-	
 	DiscreteDistribution<t_return> run(Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) { 
 		// This runs and adds up the probability mass for everything, returning a dictionary outcomes->log_probabilities
 		
@@ -108,11 +106,11 @@ public:
 			
 			auto y = vms->run(this, dispatcher, loader);
 				
-			if(vms->aborted == abort_t::NO_ABORT) { // can't add up probability for errors
+			if(vms->status == vmstatus_t::GOOD) { // can't add up probability for errors
 				out.addmass(y, vms->lp);
 			}
 			
-			if(vms->aborted != abort_t::RANDOM_CHOICE_NO_DELETE) {
+			if(vms->status != vmstatus_t::RANDOM_CHOICE_NO_DELETE) {
 				delete vms; // if our previous copy isn't pushed back on the stack, delete it
 			}
 		}

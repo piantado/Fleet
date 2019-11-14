@@ -3,7 +3,10 @@
 
 #include <cstring>
 #include <vector>
+#include <map>
 #include <algorithm>
+#include "DiscreteDistribution.h"
+
 
 // Load data from a file and puts stringprobs into obs, which is a dictionary
 // of strings to ndata total elements, and obsv, which is a vector that is sorted by probability

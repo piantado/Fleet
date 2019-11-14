@@ -5,7 +5,7 @@
 #include "Proposers.h"
 
 template<typename HYP, typename T, 
-		 nonterminal_t nt, typename t_input, typename t_output, 
+		 typename t_input, typename t_output, 
 		 typename _t_datum=default_datum<t_input, t_output>, 
 		 typename _t_data=std::vector<_t_datum> >
 class LOTHypothesis : public Dispatchable<t_input,t_output>, 
@@ -26,7 +26,6 @@ public:
 
 	LOTHypothesis(Grammar* g=nullptr)  : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
 	LOTHypothesis(Grammar* g, T&& x)   : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
-	LOTHypothesis(Grammar* g, T x)     : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
 
 	// parse this from a string
 	LOTHypothesis(Grammar* g, std::string s) : MCMCable<HYP,t_datum,t_data>(), grammar(g)  {
@@ -39,7 +38,7 @@ public:
 		
 		// simplest way of doing proposals
 		auto x = regeneration_proposal(grammar, value);	
-		return std::make_pair(HYP(this->grammar, x.first), x.second); // return HYP and fb
+		return std::make_pair(HYP(this->grammar, std::move(x.first)), x.second); // return HYP and fb
 	}	
 
 	
@@ -52,9 +51,13 @@ public:
 			return HYP(grammar, grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
 		}
 		else {
-			return HYP(grammar, grammar->generate(nt));
+			return HYP(grammar, grammar->generate<t_output>());
 		}
 	}
+	
+	void set_value(T&  v) { value = v; }
+	void set_value(T&& v) { value = std::move(v); }
+	
 	
 	virtual double compute_prior() {
 		assert(grammar != nullptr && "Grammar was not initialized before trying to call compute_prior");
@@ -127,17 +130,19 @@ public:
 		return this->value == h.value;
 	}
 	
-	virtual abort_t dispatch_rule(Instruction i, 
+	virtual vmstatus_t dispatch_custom(Instruction i, 
 								  VirtualMachinePool<t_input,t_output>* pool, 
-								  VirtualMachineState<t_input,t_output>& vms,  
-								  Dispatchable<t_input, t_output>* loader)=0;
+								  VirtualMachineState<t_input,t_output>* vms,  
+								  Dispatchable<t_input, t_output>* loader) {
+		assert(false && "*** To use dispatch_custom (e.g. with defined CustomOps) you must override it to process these instructions.");
+	}
 
 	
 	virtual HYP copy_and_complete() const {
 		// make a copy and fill in the missing nodes.
 		// NOTE: here we set all of the above nodes to NOT resample
 		// TODO: That part should go somewhere else eventually I think?
-		HYP h(grammar, value);
+		HYP h(grammar, T(value));
 		h.prior=0.0;h.likelihood=0.0;h.posterior=0.0; // reset these just in case
 		
 		const std::function<void(Node&)> myf =  [](Node& n){n.can_resample=false;};
@@ -155,6 +160,7 @@ public:
 	 
 	virtual int neighbors() const {
 		if(value.is_null()) { // if the value is null, our neighbors is the number of ways we can do nt
+			auto nt = grammar->nt<t_output>();
 			return grammar->count_expansions(nt);
 		}
 		else {
@@ -167,10 +173,11 @@ public:
 
 	virtual HYP make_neighbor(int k) const {
 		HYP h(grammar); // new hypothesis
+		auto nt = grammar->nt<t_output>();
 		if(value.is_null()) {
 			assert(k >= 0);
 			assert(k < (int)grammar->count_expansions(nt));
-			auto r = grammar->get_rule(nt,k);
+			auto r = grammar->get_rule(nt,(size_t)k);
 			h.value = grammar->makeNode(r);
 		}
 		else {
