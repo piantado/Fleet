@@ -128,14 +128,6 @@ public:
 		return const_cast<Rule*>(&rules[nt][k]);
 	}
 	
-	virtual Rule* get_rule(const nonterminal_t nt, const CustomOp o, const int a=0) {
-		for(auto& r: rules[nt]) {
-			if(r.instr.is_a(o) && r.instr.arg == a) 
-				return &r;
-		}
-		assert(0 && "*** Could not find rule");		
-	}
-	
 	virtual Rule* get_rule(const nonterminal_t nt, const BuiltinOp o, const int a=0) {
 		for(auto& r: rules[nt]) {
 			if(r.instr.is_a(o) && r.instr.arg == a) 
@@ -409,7 +401,7 @@ public:
 	// Grammar(std::tuple<T...> tup)
 	template<typename... args, size_t... Is>
 	void add(std::tuple<args...> t, std::index_sequence<Is...>) {
-		(add(std::get<Is>(t)), ...);
+		(add(std::get<Is>(t)), ...); // dispatches to Primtiive or Primitives::BuiltinPrimitive
 	}
 	
 	template<typename T, typename... args>
@@ -420,19 +412,27 @@ public:
 		add(Rule(this->template nt<typename decltype(p)::GrammarReturnType>(), p.op, p.format, {nt<args>()...}, p.p, arg));
 	}
 	
+	template<typename T, typename... args>
+	void add(BuiltinPrimitive<T, args...> p, const int arg=0) {
+		// add a single primitive -- unpacks the types to put the rule into the right place
+		// NOTE: we can't use T as the return type, we have ot use p::GrammarReturnType in order to handle
+		// return-by-reference primitives
+		add(Rule(this->template nt<T>(), p.op, p.format, {nt<args>()...}, p.p, arg));
+	}
+	
 	
 	template<typename T, typename... args>
 	void add(BuiltinOp o, std::string format, const double p=1.0, const int arg=0) {
 		// add a single primitive -- unpacks the types to put the rule into the right place
 		add(Rule(nt<T>(), o, format, {nt<args>()...}, p, arg));
 	}
-	
-	template<typename T, typename... args>
-	void add(CustomOp o, std::string format, const double p=1.0, const int arg=0) {
-		// add a single primitive -- unpacks the types to put the rule into the right place
-		add(Rule(nt<T>(), o, format, {nt<args>()...}, p, arg));
-	}
-	
+//	
+//	template<typename T, typename... args>
+//	void add(CustomOp o, std::string format, const double p=1.0, const int arg=0) {
+//		// add a single primitive -- unpacks the types to put the rule into the right place
+//		add(Rule(nt<T>(), o, format, {nt<args>()...}, p, arg));
+//	}
+//	
 //	template<typename T, typename... args>
 //	void add(PrimitiveOp o, std::string format, const double p=1.0, const int arg=0) {
 //		// add a single primitive -- unpacks the types to put the rule into the right place

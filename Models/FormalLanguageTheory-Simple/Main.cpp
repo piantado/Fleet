@@ -28,6 +28,7 @@ const size_t MAX_LENGTH = 64; // longest strings cons will handle
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Primitives.h"
+#include "Builtins.h"
 
 std::tuple PRIMITIVES = {
 	Primitive("tail(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : s.substr(1,S::npos)); }),
@@ -43,6 +44,12 @@ std::tuple PRIMITIVES = {
 	}), // also add a function to check length to throw an error if its getting too long
 	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),
 	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
+	
+	// And add built-ins:
+	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
+	Builtin::X<S>("x"),
+	Builtin::Flip("flip()"),
+	Builtin::SafeRecurse<S,S>("F(%s)")	
 };
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
@@ -95,12 +102,6 @@ int main(int argc, char** argv){
 	
 	// declare a grammar with our primitives
 	Grammar grammar(PRIMITIVES);
-	
-	// Add the builtins we want
-	grammar.add<S>         (BuiltinOp::op_X,            "x", 5.0); 
-	grammar.add<S,bool,S,S>(BuiltinOp::op_IF,           "if(%s,%s,%s)"); 
-	grammar.add<bool>      (BuiltinOp::op_FLIP,         "flip()"); 
-	grammar.add<S,S>       (BuiltinOp::op_SAFE_RECURSE, "F(%s)"); 
 	
 	// here we create an alphabet op with an "arg" that stores the character (this is faster than alphabet.substring with i.arg as an index) 
 	// here, op_ALPHABET converts arg to a string (and pushes it)

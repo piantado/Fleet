@@ -13,12 +13,6 @@ enum class vmstatus_t {GOOD=0, ERROR, RECURSION_DEPTH, RANDOM_CHOICE, RANDOM_CHO
 
 class VMSRuntimeError_t : public std::exception {} VMSRuntimeError;
 
-// make sure CustomOp is something if it hasn't been defined
-#ifndef CUSTOM_OPS
-#define CUSTOM_OPS
-#endif 
-enum class CustomOp { CUSTOM_OPS }; 
-
 // These operations are build-in and implemented in VirtualMachineState
 // convenient to make op_NOP=0, so that the default initialization is a NOP
 enum class BuiltinOp {
@@ -49,15 +43,13 @@ public:
 	// for instance, jump takes an arg, factorized recursion uses arg for index, in FormalLanguageTheory
 	// we use arg to store which alphabet terminal, etc. 
 
-	std::variant<CustomOp, 
-				 BuiltinOp, 
+	std::variant<BuiltinOp, 
 				 PrimitiveOp> op; // what kind of op is this? custom or built in?
 	int                              arg; // 
 
 	// constructors to make this a little easier to deal with
 	Instruction()                            : op(BuiltinOp::op_NOP), arg(0x0) {}
-	Instruction(BuiltinOp x,   int arg_=0x0) : op(x), arg(arg_) {	}
-	Instruction(CustomOp x,    int arg_=0x0) : op(x), arg(arg_)  { }
+	Instruction(BuiltinOp x,    int arg_=0x0) : op(x), arg(arg_)  { }
 	Instruction(PrimitiveOp x, int arg_=0x0) : op(x), arg(arg_) { }
 
 	template<typename t>
@@ -99,7 +91,7 @@ std::ostream& operator<<(std::ostream& stream, Instruction& i) {
 	size_t      o;
 	if(i.is<BuiltinOp>())          { t = "B"; o = (size_t)i.as<BuiltinOp>(); }
 	else if(i.is<PrimitiveOp>())   { t = "P"; o = (size_t)i.as<PrimitiveOp>(); }
-	else if(i.is<CustomOp>())      { t = "C"; o = (size_t)i.as<CustomOp>(); }
+	
 	
 	stream << "[" << t << "" << o << "_" << i.arg << "]";
 	return stream;

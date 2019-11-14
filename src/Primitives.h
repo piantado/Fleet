@@ -17,6 +17,8 @@ struct PrePrimitive {
 };
 PrimitiveOp PrePrimitive::op_counter = 0;
 
+
+
 //// so we can give it a lambda of VMS if we wanted
 template<typename T, typename... args> // function type
 struct Primitive : PrePrimitive {
@@ -73,7 +75,7 @@ struct Primitive : PrePrimitive {
 //		static_assert(CountReferences<args...>::value == 0 or std::is_void<T>::value, "*** If you use a reference, returntype must be the same -- though note you won't actually return anything");
 		
 	}
-
+	
 	
 	template<typename V>
 	vmstatus_t VMScall(V* vms) {
@@ -164,3 +166,5 @@ vmstatus_t applyToVMS(T& p, int index, V vms) {
 //    return Fleet::applyVMS::applyToVMS(p, index, vms, std::make_integer_sequence<std::tuple_size<T>>{});
 
 }
+
+
