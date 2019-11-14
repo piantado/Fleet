@@ -16,7 +16,7 @@ public:
 	static const unsigned long steps_before_change = 0;
 	static const unsigned long time_before_change  = 1; 
 	
-//	ChainPool() { }
+	ChainPool() { }
 	
 	ChainPool(HYP& h0, typename HYP::t_data* d, callback_t& cb, size_t n, bool allcallback=true) {
 		for(size_t i=0;i<n;i++) {
