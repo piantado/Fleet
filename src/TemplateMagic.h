@@ -50,18 +50,22 @@ struct TypeIndex<T, std::tuple<U, Types...>> {
 /// as long as no op_MEM is called
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-template <typename T>
-class has_operator_lt {
-	// from https://stackoverflow.com/questions/257288/is-it-possible-to-write-a-template-to-check-for-a-functions-existence
-    typedef char one;
-    struct two { char x[2]; };
+#include <type_traits>
+#include <utility>
+// https://stackoverflow.com/questions/6534041/how-to-check-whether-operator-exists
+template<class T, class EqualTo>
+struct has_operator_lessthan_impl
+{
+    template<class U, class V>
+    static auto test(U*) -> decltype(std::declval<U>() < std::declval<V>());
+    template<typename, typename>
+    static auto test(...) -> std::false_type;
 
-    template <typename C> static one test( typeof(&C::operator<) ) ;
-    template <typename C> static two test(...);    
-
-public:
-    enum { value = sizeof(test<T>(0)) == sizeof(char) };
+    using type = typename std::is_same<bool, decltype(test<T, EqualTo>(0))>::type;
 };
+
+template<class T, class EqualTo = T>
+struct has_operator_lessthan : has_operator_lessthan_impl<T, EqualTo>::type {};
 
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

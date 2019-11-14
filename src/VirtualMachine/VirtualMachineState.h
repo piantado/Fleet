@@ -156,8 +156,10 @@ public:
 				FleetStatistics::vm_ops++;
 				
 				Instruction i = opstack.top(); opstack.pop();
-
-				if(i.is<PrimitiveOp>()) {
+				if(i.is<CustomOp>()) {
+					status= dispatch->dispatch_custom(i, pool, this, loader);
+				}
+				else if(i.is<PrimitiveOp>()) {
 					// call this fancy template magic to index into the global tuple variable PRIMITIVES
 					status = applyToVMS(PRIMITIVES, i.as<PrimitiveOp>(), this, pool, loader);
 				}
@@ -191,7 +193,7 @@ public:
 						case BuiltinOp::op_MEM:
 						{
 							// Let's not make a big deal when 
-							if constexpr (has_operator_lt<t_x>::value) {
+							if constexpr (has_operator_lessthan<t_x>::value) {
 								
 								auto v = gettop<t_return>(); // what I should memoize should be on top here, but dont' remove because we also return it
 								auto memindex = memstack.top(); memstack.pop();
@@ -263,7 +265,7 @@ public:
 						}
 						case BuiltinOp::op_SAFE_MEM_RECURSE: {
 							// same as SAFE_RECURSE. Note that there is no memoization here
-							if constexpr (std::is_same<t_x, std::string>::value and has_operator_lt<t_x>::value) { 						
+							if constexpr (has_operator_lessthan<t_x>::value) {				
 								if (empty<t_x>()) {
 									push<t_return>(t_return{});
 									continue;
@@ -273,14 +275,14 @@ public:
 									push<t_return>(t_return{}); //push default (null) return
 									continue;
 								}
-							} else { assert(false && "*** Can only use SAFE_MEM_RECURSE on strings with operator< defined");}
+							} else { assert(false && "*** Can only use SAFE_MEM_RECURSE on strings.");}
 
 							// want to fallthrough here
 							[[fallthrough]];
 						}
 						case BuiltinOp::op_MEM_RECURSE:
 						{
-							if constexpr (has_operator_lt<t_x>::value) {
+							if constexpr (has_operator_lessthan<t_x>::value) {
 								if(recursion_depth++ > MAX_RECURSE) {
 									status = vmstatus_t::RECURSION_DEPTH;
 									return err;

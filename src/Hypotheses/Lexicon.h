@@ -99,7 +99,7 @@ public:
 	}
 	
 	 // This should never be called because we should be dispatching throuhg a factor
-	 virtual vmstatus_t dispatch_rule(Instruction i, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>& vms,  Dispatchable<t_input, t_output>* loader ) {
+	 virtual vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms,  Dispatchable<t_input, t_output>* loader ) {
 		 assert(0); // can't call this, must be implemented by kids
 	 }
 	 

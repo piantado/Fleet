@@ -132,7 +132,7 @@ public:
 	
 	virtual vmstatus_t dispatch_custom(Instruction i, 
 								  VirtualMachinePool<t_input,t_output>* pool, 
-								  VirtualMachineState<t_input,t_output>& vms,  
+								  VirtualMachineState<t_input,t_output>* vms,  
 								  Dispatchable<t_input, t_output>* loader) {
 		assert(false && "*** To use dispatch_custom (e.g. with defined CustomOps) you must override it to process these instructions.");
 	}

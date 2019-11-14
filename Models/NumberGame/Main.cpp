@@ -19,6 +19,7 @@ const int N = 100; // what number do we go up to?
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Primitives.h"
+#include "Builtins.h"
 
 std::tuple PRIMITIVES = {
 	Primitive("(%s+%s)",    +[](float a, float b) -> float { return a+b; }),
@@ -63,12 +64,12 @@ public:
 		return likelihood;
 	}
 	
-	vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<float,float>* pool, VirtualMachineState<float,float>& vms, Dispatchable<float, float>* loader ) {
+	vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<float,float>* pool, VirtualMachineState<float,float>* vms, Dispatchable<float, float>* loader ) {
 		// When we use a custom operation, we must define it here (typically with a switch statement)
 		// it operates on the VirtualMachineState (and possibly the pool)
 		switch(i.as<CustomOp>()) {
 			case CustomOp::op_Constant: {
-				vms.push<float>(i.arg);
+				vms->push<float>(i.arg);
 				break;
 			}
 			default: assert(0); // should never get here

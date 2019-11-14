@@ -13,6 +13,13 @@ enum class vmstatus_t {GOOD=0, ERROR, RECURSION_DEPTH, RANDOM_CHOICE, RANDOM_CHO
 
 class VMSRuntimeError_t : public std::exception {} VMSRuntimeError;
 
+
+#ifndef CUSTOM_OPS
+#define CUSTOM_OPS 
+#endif 
+
+enum class CustomOp { CUSTOM_OPS };
+
 // These operations are build-in and implemented in VirtualMachineState
 // convenient to make op_NOP=0, so that the default initialization is a NOP
 enum class BuiltinOp {
@@ -41,12 +48,14 @@ public:
 	// we use arg to store which alphabet terminal, etc. 
 
 	std::variant<BuiltinOp, 
+				 CustomOp,
 				 PrimitiveOp> op; // what kind of op is this? custom or built in?
-	int                              arg; // 
+	int                       arg; // 
 
 	// constructors to make this a little easier to deal with
 	Instruction()                            : op(BuiltinOp::op_NOP), arg(0x0) {}
 	Instruction(BuiltinOp x,    int arg_=0x0) : op(x), arg(arg_)  { }
+	Instruction(CustomOp x,    int arg_=0x0) : op(x), arg(arg_)  { }
 	Instruction(PrimitiveOp x, int arg_=0x0) : op(x), arg(arg_) { }
 
 	template<typename t>
