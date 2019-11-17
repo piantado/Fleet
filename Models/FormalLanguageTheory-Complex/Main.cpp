@@ -59,16 +59,15 @@ const unsigned long MAX_OUTPUTS_PER_FACTOR = 512; // 256; // 512; //256;
 #include "Builtins.h"
 
 std::tuple PRIMITIVES = {
-	Primitive("tail(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : s.substr(1,S::npos)); }), // REPLACE: if(s.length() >0) s.erase(0)
+	Primitive("tail(%s)",      +[](S& s)     -> void       { if(s.length()>0) s.erase(0); }), //sreturn (s.empty() ? S("") : s.substr(1,S::npos)); }), // REPLACE: if(s.length() >0) s.erase(0)
 	Primitive("head(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : S(1,s.at(0))); }), // MAYBE REPLACE:  S(1,vms.stack<S>().topref().at(0));
-	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void        { 
-			if(a.length() + b.length() > max_length) 
-				throw VMSRuntimeError;
+	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void      { 
+			if(a.length() + b.length() > max_length) throw VMSRuntimeError;
 			a = a+b; // modify on stack
 	}), // also add a function to check length to throw an error if its getting too long
 	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),
 	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
-	Primitive("empty(%s)",     +[](S x) -> bool       { return x.length()==0; }),
+	Primitive("empty(%s)",     +[](S x) -> bool            { return x.length()==0; }),
 	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
 	
 	Primitive("insert(%s,%s)", +[](S x, S y) -> S { 
@@ -89,8 +88,8 @@ std::tuple PRIMITIVES = {
 			}),
 	
 	// set operations:
-	Primitive("%s", +[](S x) -> StrSet { StrSet s; s.insert(x); return s; } ),
-	Primitive("%s,%s", +[](StrSet& s, S x) -> void { if(s.size() > max_setsize) throw VMSRuntimeError; else s.insert(x); } ),
+	Primitive("%s",         +[](S x) -> StrSet          { StrSet s; s.insert(x); return s; } ),
+	Primitive("%s,%s",      +[](StrSet& s, S x) -> void { if(s.size() > max_setsize) throw VMSRuntimeError; else s.insert(x); } ),
 	Primitive("%s\u2216%s", +[](StrSet& s, S x) -> void { s.erase(x); } ),
 	
 	// And add built-ins:

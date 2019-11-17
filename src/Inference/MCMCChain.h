@@ -27,7 +27,7 @@ public:
 	unsigned long restart;
 	bool          returnmax; 
 	
-	unsigned long samples; 
+	unsigned long samples; // total number of samples (callbacks) we've done
 	unsigned long proposals;
 	unsigned long acceptances;
 	unsigned long steps_since_improvement; 
@@ -100,6 +100,7 @@ public:
 			current.compute_posterior(*data);
 			if(callback != nullptr) (*callback)(current);
 			++FleetStatistics::global_sample_count;
+			++samples;
 		}
 		themax = current;
 		

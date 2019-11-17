@@ -81,7 +81,7 @@ public:
 	virtual void push_program(Program& s, short k=0) {
 		assert(k==0); // this is only for lexica
 		
-		s.reserve(s.size()+value.program_size()+1);
+		//s.reserve(s.size()+value.program_size()+1); NOT faster since program.size() is slow
 		value.linearize(s);
 	}
 

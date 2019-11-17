@@ -106,7 +106,7 @@ public:
 			T x = std::move(stack<Tdecay>().top());
 //			CERR "POPPING ONE " TAB x  ENDL;
 			stack<Tdecay>().pop();
-			return std::move(x);
+			return x;
 		}
 	}
 	
@@ -265,12 +265,13 @@ public:
 						}
 						case BuiltinOp::op_SAFE_MEM_RECURSE: {
 							// same as SAFE_RECURSE. Note that there is no memoization here
-							if constexpr (has_operator_lessthan<t_x>::value) {				
+							if constexpr (std::is_same<t_x,std::string>::value and has_operator_lessthan<t_x>::value) {				
+								// Here we don't need to memoize because it will always give us the same answer!
 								if (empty<t_x>()) {
 									push<t_return>(t_return{});
 									continue;
 								}
-								else if(stack<t_x>().top().size() == 0) { 
+								else if(stack<t_x>().top().size() == 0) { //exists but is empty
 									getpop<t_x>(); // this would have been the argument
 									push<t_return>(t_return{}); //push default (null) return
 									continue;

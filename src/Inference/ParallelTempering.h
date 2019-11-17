@@ -56,7 +56,7 @@ public:
 	}
 	
 	
-	ParallelTempering(HYP& h0, std::vector<typename HYP::t_data>& datas, std::vector<callback_t>& cb) {
+	ParallelTempering(HYP& h0, std::vector<typename HYP::t_data>& datas, std::vector<callback_t>& cb)  : terminate(false) {
 		assert(datas.size() == cb.size() && "*** Must provide equal length vectors of datas and callbacks");
 		// This version anneals on data, giving each chain a different amount in datas order
 		for(size_t i=0;i<datas.size();i++) {

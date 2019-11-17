@@ -16,6 +16,10 @@ class Stack : public std::vector<T> {
 		
 public:
 
+	Stack() {
+//		this->reserve(32); /// chosen with a little experimetnation for FormalLanguageTheory-Complex
+	}
+
 	void push(const T& val) {
 		this->push_back(val);
 	}

@@ -42,6 +42,8 @@ public:
 	//				  (see Models/RationalRules). When you construct a grammar with these, it automatically
 	//				  figures out all the types and automatically gives each a sequential numbering, which
 	//				  it takes some template magic to access at runtime
+	// CustomOp -- these are for when you need more access to VMS' stack, and they require you to implement
+	//			   custom_dispatch (where the instruction is handled)
 	//
 	// For any op type, an Instruction always takes an "arg" type that essentially allow us to define classes of instructions
 	// for instance, jump takes an arg, factorized recursion uses arg for index, in FormalLanguageTheory

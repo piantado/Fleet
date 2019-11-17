@@ -101,7 +101,7 @@ unsigned long convert_time(std::string& s) {
 	
 	double t = std::stod(s.substr(0,s.length()-1)); // all but the last character
 		
-	return (unsigned long)(t*multiplier); // note this effectively rounds to the nearest escond 
+	return (unsigned long)(t*multiplier); // note this effectively rounds to the nearest second 
 	
 }
 

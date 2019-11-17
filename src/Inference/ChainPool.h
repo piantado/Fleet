@@ -16,7 +16,7 @@ public:
 	static const unsigned long steps_before_change = 0;
 	static const unsigned long time_before_change  = 1; 
 	
-	ChainPool() { }
+	ChainPool() {}
 	
 	ChainPool(HYP& h0, typename HYP::t_data* d, callback_t& cb, size_t n, bool allcallback=true) {
 		for(size_t i=0;i<n;i++) {
@@ -62,11 +62,16 @@ public:
 				(*running)[idx] = true;
 			} while(0);		
 			
-			// now run that chain
+			// we need to store how many samples we did 
+			// so we can keep track of our total number
+			auto old_samples = (*pool)[idx].samples; 
+			
+			// now run that chain -- TODO: Can update this to be more precise by running 
+			// a set number of samples computed from steps and old_samples
 			(*pool)[idx].run(steps_before_change, time_before_change);
 			
 			// pick the next index (and free mine)
-			my_steps += steps_before_change;
+			my_steps += (*pool)[idx].samples - old_samples; // add up how many we've done
 		}
 		
 		// and unlock this

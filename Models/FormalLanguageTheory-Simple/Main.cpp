@@ -33,15 +33,20 @@ const size_t MAX_LENGTH = 64; // longest strings cons will handle
 std::tuple PRIMITIVES = {
 	Primitive("tail(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : s.substr(1,S::npos)); }),
 	Primitive("head(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : S(1,s.at(0))); }),
+	// We could call like this, but it's a little inefficient since it pops a string from the stack
+	// and then pushes a result on.. much better to modify it
 //	Primitive("pair(%s,%s)",   +[](S a, S b) -> S          { if(a.length() + b.length() > MAX_LENGTH) 
 //																throw VMSRuntimeError;
 //															else return a+b; 
 //															}),
+	// This version takes a reference for the first argument and that is assumed (by Fleet) to be the
+	// return value. It is never popped off the stack and should just be modified. 
 	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void        { 
 			if(a.length() + b.length() > MAX_LENGTH) 
 				throw VMSRuntimeError;
 			a = a+b; // modify on stack
-	}), // also add a function to check length to throw an error if its getting too long
+	}), 
+	
 	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),
 	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
 	

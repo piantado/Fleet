@@ -137,7 +137,7 @@ public:
 		return k;
 	}
 	
-//	size_t N() const { // how many children do I have?
+//	size_t N() const { // how many children do I have? -- we don't define this because it' sambiguous between child.size() and rule->N, which may be different
 //		return rule->N;
 //	}
 	nonterminal_t nt() const {
@@ -189,9 +189,16 @@ public:
 	
 	void map_const( const std::function<void(const Node&)>& f) const { // mapping that is constant
 		f(*this);
-		for(auto& c: child) {
+		for(const auto& c: child) {
 			c.map_const(f); 
 		}
+	}
+	
+	void rmap_const( const std::function<void(const Node&)>& f) const { // mapping that is constant
+		for(int i=child.size()-1;i>=0;i--) {
+			child[i].rmap_const(f); 
+		}		
+		f(*this);
 	}
 	
 	virtual size_t count() const {
@@ -246,7 +253,7 @@ public:
 	virtual std::string string() const { 
 		// To convert to a string, we need to essentially simulate the evaluator
 		// and be careful to process the arguments in the right orders
-	
+		
 		if(rule->N == 0) {
 			return rule->format;
 		}
@@ -348,11 +355,12 @@ public:
 //			
 //		}
 		else {
-			/* Here we push the children in order, first first. So that means that when each evalutes, it will push its value to the *bottom* 
-			 * of the stack. So in caseMacros, we need to reverse the order of the arguments, so that the first popped is the last argument */
+			/* Here we push the children in increasing order. Then, when we pop rightmost first (as Primitive does), it 
+			 * assigns the correct index.  */
 			Instruction i = rule->instr; // use this as a template
 			ops.push(i);
-			for(size_t i=0;i<rule->N;i++) {
+//			for(size_t i=0;i<rule->N;i++) {
+			for(int i=rule->N-1;i>=0;i--) { // here we linearize right to left so that when we call right to left, it matches string order			
 				child[i].linearize(ops);
 			}
 		}

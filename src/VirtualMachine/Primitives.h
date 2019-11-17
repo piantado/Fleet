@@ -100,25 +100,22 @@ struct Primitive : PrePrimitive {
 				// don't push -- we assuming the reference handled the return value
 				// NOTE: here the order of evaluation of function arguments is RIGHT to LEFT
 				// which is why we require references in the way that we do (see Fleet.h)
-//				|
-//				|
-//				|
-//				|
-//				|
-//.----------------.  .----------------.  .----------------.  .----------------. 
-//| .--------------. || .--------------. || .--------------. || .--------------. |
-//| |  _________   | || |     ____     | || |  ________    | || |     ____     | |
-//| | |  _   _  |  | || |   .'    `.   | || | |_   ___ `.  | || |   .'    `.   | |
-//| | |_/ | | \_|  | || |  /  .--.  \  | || |   | |   `. \ | || |  /  .--.  \  | |
-//| |     | |      | || |  | |    | |  | || |   | |    | | | || |  | |    | |  | |
-//| |    _| |_     | || |  \  `--'  /  | || |  _| |___.' / | || |  \  `--'  /  | |
-//| |   |_____|    | || |   `.____.'   | || | |________.'  | || |   `.____.'   | |
-//| |              | || |              | || |              | || |              | |
-//| '--------------' || '--------------' || '--------------' || '--------------' |
-// '----------------'  '----------------'  '----------------'  '----------------' 
-//				|
-//				|
-//				|				
+
+
+
+
+				//.----------------.  .----------------.  .----------------.  .----------------. 
+				//| .--------------. || .--------------. || .--------------. || .--------------. |
+				//| |  _________   | || |     ____     | || |  ________    | || |     ____     | |
+				//| | |  _   _  |  | || |   .'    `.   | || | |_   ___ `.  | || |   .'    `.   | |
+				//| | |_/ | | \_|  | || |  /  .--.  \  | || |   | |   `. \ | || |  /  .--.  \  | |
+				//| |     | |      | || |  | |    | |  | || |   | |    | | | || |  | |    | |  | |
+				//| |    _| |_     | || |  \  `--'  /  | || |  _| |___.' / | || |  \  `--'  /  | |
+				//| |   |_____|    | || |   `.____.'   | || | |________.'  | || |   `.____.'   | |
+				//| |              | || |              | || |              | || |              | |
+				//| '--------------' || '--------------' || '--------------' || '--------------' |
+				// '----------------'  '----------------'  '----------------'  '----------------' 
+
 				// TODO: ENSURE ORDER OF CALLS.... GCC does it right-to-left
 				// but this is not specified in the standard
 				this->call(std::forward<args>(vms->template get<args>())...);
@@ -129,6 +126,19 @@ struct Primitive : PrePrimitive {
 	
 };
 
+
+
+// We need some way to ensure that our arguments are gotten in order L->R, otherwise
+// the printing etc stuff we do doesn't work right -- there would be a reversal of
+// argument orders in printing otherwise. Also teh C standard doesn't specify the order
+// of calls so, making VMScall do something like
+// this->call(std::forward<args>(vms->template get<args>())...);
+// wouldn't guarantee any particular order
+//template<typename a, typename... args>
+//constexpr std::tuple<args...> get_args_LR(V* vms) {
+//	return std::tuple_cat(std::forward<a>(vms->template get<a>()),
+//				          std::forward_as_tuple(args...)
+//}
 
 
 
@@ -154,7 +164,7 @@ namespace Fleet::applyVMS {
 	template<class T, typename V, typename P, typename L, int... Is>
 	vmstatus_t applyToVMS(T& p, int index, V* vms, P* pool, L* loader, seq<Is...>) {
 		using FT = vmstatus_t(T&, V*, P*, L*);
-		static constexpr FT* arr[] = { &applyToVMS_one<Is, T, V, P, L>... };
+		thread_local static constexpr FT* arr[] = { &applyToVMS_one<Is, T, V, P, L>... }; //thread_local here seems to matter a lot
 		return arr[index](p, vms, pool, loader);
 	}
 }
