@@ -100,6 +100,8 @@ public:
 		if constexpr (std::is_reference<T>::value) { 
 //			CERR "GIVING REFERENCE " TAB stack<Tdecay>().topref()  ENDL;
 			// if its a reference, reference the un-referenced stack type and return a reference to its top
+			// NOTE: It is important that this does not pop, because that means it doesn't matter when we call it
+			// in Primitives
 			return std::forward<T>(stack<Tdecay>().topref());
 		}
 		else {

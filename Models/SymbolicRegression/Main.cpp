@@ -103,8 +103,11 @@ public:
 			// strings are evaluated in right->left order so we have to 
 			// use that here (since we use them to index idx)
 			std::string childStrings[n->rule->N];
-//			for(int i=n->rule->N-1;i>=0;i--) {
-			for(int i=0;i<n->rule->N;i++) {
+			
+			// no, we evaluate left to right, but things are pushed in that order
+			// so here we want to ru nright to left
+			for(size_t i=0;i<n->rule->N;i++) {
+//			for(int i=(int)n->rule->N-1;i>=0;i--) {
 				childStrings[i] = __my_string_recurse(&n->child[i],idx);
 			}
 			
@@ -128,61 +131,7 @@ public:
 		if(!value.is_complete()) return structure_string(); // don't fill in constants if we aren't complete
 		
 		size_t idx = 0;
-		auto ret = __my_string_recurse(&value,idx);
-		
-//		
-//		Stack<const Node*> nodestack;		
-//		value.map_const( [&nodestack](const Node& n) { nodestack.push(&n);} );
-//
-//		
-//		// now go through and run just like in the program, with a stack to store the state
-//		Stack<std::string> strstack;
-//		size_t idx = 0; 
-//		while( not nodestack.empty() ) {
-//			const Node* n = nodestack.top(); nodestack.pop();
-//			
-//			if(n->rule->instr.is_a(CustomOp::op_Constant)) { // I handle constants specially
-//				assert(n->rule->N == 0);
-//				auto s = "("+str(constants[idx++])+")";
-//				strstack.push(s); // add parens or else powers and stuff get broken in R's precedence rules
-//			}
-//			else if(n->rule->N == 0) {
-//				strstack.push(n->rule->format); 
-//			}
-//			else {
-//				std::string childStrings[n->rule->N];
-//				
-//				// need to reverse the order since that's the order they are popped off in evaluation
-//				// NOTE: By putting them in this order, we put the first popped as the 
-//				// last in the string replacement
-//				for(size_t i=0;i<n->rule->N;i++) {
-//					childStrings[n->rule->N-1-i] = strstack.top(); strstack.pop();
-//				}
-//				
-//				// do not need to reverse since we switched the order in linearize:
-////				for(size_t i=0;i<n->rule->N;i++) {
-////					childStrings[i] = strstack.top(); strstack.pop();
-////				}
-//				
-//				
-//				std::string s = n->rule->format;
-//				for(size_t i=0;i<n->rule->N;i++) { // can't be size_t for counting down
-//
-////				for(int i=n->rule->N-1;i>=0;i--) { // can't be size_t for counting down
-//					//CERR "\t CHILD " << i TAB s TAB n->rule->N TAB n->rule->format ENDL;
-//					auto pos = s.find(ChildStr);
-//					assert(pos != std::string::npos); // must contain the ChildStr for all children all children
-//					s.replace(pos, ChildStr.length(), childStrings[i]);
-//				}
-//				strstack.push(s);				
-//			}
-//		}
-//		
-//		auto ret = strstack.top(); strstack.pop();
-//		assert(strstack.empty());
-//		assert(nodestack.empty());
-		
-		return  std::string("\u03BBx.") + ret;
+		return  std::string("\u03BBx.") +  __my_string_recurse(&value,idx);
 	}
 	
 	virtual std::string structure_string() const {

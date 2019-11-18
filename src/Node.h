@@ -260,8 +260,7 @@ public:
 		else {
 			
 			std::string childStrings[child.size()];
-			
-			// The order should be maintained (because that's how CaseMacros works)
+		
 			for(size_t i=0;i<rule->N;i++) {
 				childStrings[i] = child[i].string();
 			}

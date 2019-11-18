@@ -91,60 +91,59 @@ struct Primitive : PrePrimitive {
 			vms->push(this->call());
 		}
 		else {
+			
+			// Ok here we deal with order of evaluation of nodes. We evaluate RIGHT to LEFT so that the 
+			// rightmost args get popped from the stack first. This means that the last to be popped
+			// is the first argument, which is why we allow references on the first arg. 
+			// NOTE: we can't just do something like call(get<args>()...) because the order of evaluation
+			// of that is not defined in C!
+			
 			// deal with those references etc. 
 			if constexpr (CountReferences<args...>::value == 0) {
 				// if its not a reference, we just call normally
 				// and push the result 
-				if constexpr (sizeof...(args) == 0) {
-					vms->push(vms->template get<>());
-				}
 				if constexpr (sizeof...(args) ==  1) {
 					auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
 					vms->push(this->call(a0));
 				}
 				else if constexpr (sizeof...(args) ==  2) {
-					auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
 					auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
+					auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();	
 					vms->push(this->call(a0, a1));
 				}
 				else if constexpr (sizeof...(args) ==  3) {
-					auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
-					auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
 					auto a2 =  vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
+					auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
+					auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
 					vms->push(this->call(a0, a1, a2));
 				}
-				else {
-					assert(false && "*** Not defined for >3 arguments");
+				else if constexpr (sizeof...(args) ==  3) {
+					auto a3 =  vms->template get<typename std::tuple_element<3, std::tuple<args...> >::type>();
+					auto a2 =  vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
+					auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
+					auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
+					vms->push(this->call(a0, a1, a2, a3));
 				}
+				else { assert(false && "*** VMScall not defined for >4 arguments -- you may add more cases in Primitives.h"); }
 				
 			}
 			else { 
-				// don't push -- we assuming the reference handled the return value
-				// NOTE: here the order of evaluation of function arguments is RIGHT to LEFT
-				// which is why we require references in the way that we do (see Fleet.h)
-				
+				// Same as above except we don't push and the a0 argument is a reference
 				
 				if constexpr (sizeof...(args) ==  1) {
-					auto& a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
-					this->call(a0);
+					this->call(vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>());
 				}
 				else if constexpr (sizeof...(args) ==  2) {
-					auto& a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
-					auto a1  =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
-					
-//					std::cerr << std::is_reference<decltype(a1)>::value << std::endl;
-					
-					this->call(a0, a1);
+					auto  a1 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
+					this->call(vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>(), a1);
 				}
 				else if constexpr (sizeof...(args) ==  3) {
-					auto& a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
-					auto a1  =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
-					auto a2  =  vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
-					this->call(a0, a1, a2);
+					auto a3 =  vms->template get<typename std::tuple_element<3, std::tuple<args...> >::type>();
+					auto a2 =  vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
+					auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
+					this->call(vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>(), a1, a2. a3);
 				}
-				else {
-					assert(false && "*** Not defined for >3 arguments");
-				}
+				else { assert(false && "*** VMScall not defined for >4 arguments -- you may add more cases in Primitives.h"); }
 
 			}
 		}
@@ -152,20 +151,6 @@ struct Primitive : PrePrimitive {
 	}
 	
 };
-
-
-
-// We need some way to ensure that our arguments are gotten in order L->R, otherwise
-// the printing etc stuff we do doesn't work right -- there would be a reversal of
-// argument orders in printing otherwise. Also teh C standard doesn't specify the order
-// of calls so, making VMScall do something like
-// this->call(std::forward<args>(vms->template get<args>())...);
-// wouldn't guarantee any particular order
-//template<typename a, typename... args>
-//constexpr std::tuple<args...> get_args_LR(V* vms) {
-//	return std::tuple_cat(std::forward<a>(vms->template get<a>()),
-//				          std::forward_as_tuple(args...)
-//}
 
 
 

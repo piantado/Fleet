@@ -85,7 +85,7 @@ public:
 	double p_exceeds_median(const StreamingStatistics &q) const {
 		// how often do I exceed the median of q?
 		size_t k = 0;
-		double qm = median();
+		double qm = q.median();
 		for(auto a : reservoir_sample.s) {
 			if(a.x > qm) k++;
 		}
