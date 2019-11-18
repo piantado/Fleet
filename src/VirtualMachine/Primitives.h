@@ -94,31 +94,58 @@ struct Primitive : PrePrimitive {
 			// deal with those references etc. 
 			if constexpr (CountReferences<args...>::value == 0) {
 				// if its not a reference, we just call normally
-				vms->push(this->call(vms->template get<args>()...));
+				// and push the result 
+				if constexpr (sizeof...(args) == 0) {
+					vms->push(vms->template get<>());
+				}
+				if constexpr (sizeof...(args) ==  1) {
+					auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
+					vms->push(this->call(a0));
+				}
+				else if constexpr (sizeof...(args) ==  2) {
+					auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
+					auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
+					vms->push(this->call(a0, a1));
+				}
+				else if constexpr (sizeof...(args) ==  3) {
+					auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
+					auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
+					auto a2 =  vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
+					vms->push(this->call(a0, a1, a2));
+				}
+				else {
+					assert(false && "*** Not defined for >3 arguments");
+				}
+				
 			}
 			else { 
 				// don't push -- we assuming the reference handled the return value
 				// NOTE: here the order of evaluation of function arguments is RIGHT to LEFT
 				// which is why we require references in the way that we do (see Fleet.h)
+				
+				
+				if constexpr (sizeof...(args) ==  1) {
+					auto& a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
+					this->call(a0);
+				}
+				else if constexpr (sizeof...(args) ==  2) {
+					auto& a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
+					auto a1  =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
+					
+//					std::cerr << std::is_reference<decltype(a1)>::value << std::endl;
+					
+					this->call(a0, a1);
+				}
+				else if constexpr (sizeof...(args) ==  3) {
+					auto& a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
+					auto a1  =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
+					auto a2  =  vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
+					this->call(a0, a1, a2);
+				}
+				else {
+					assert(false && "*** Not defined for >3 arguments");
+				}
 
-
-
-
-				//.----------------.  .----------------.  .----------------.  .----------------. 
-				//| .--------------. || .--------------. || .--------------. || .--------------. |
-				//| |  _________   | || |     ____     | || |  ________    | || |     ____     | |
-				//| | |  _   _  |  | || |   .'    `.   | || | |_   ___ `.  | || |   .'    `.   | |
-				//| | |_/ | | \_|  | || |  /  .--.  \  | || |   | |   `. \ | || |  /  .--.  \  | |
-				//| |     | |      | || |  | |    | |  | || |   | |    | | | || |  | |    | |  | |
-				//| |    _| |_     | || |  \  `--'  /  | || |  _| |___.' / | || |  \  `--'  /  | |
-				//| |   |_____|    | || |   `.____.'   | || | |________.'  | || |   `.____.'   | |
-				//| |              | || |              | || |              | || |              | |
-				//| '--------------' || '--------------' || '--------------' || '--------------' |
-				// '----------------'  '----------------'  '----------------'  '----------------' 
-
-				// TODO: ENSURE ORDER OF CALLS.... GCC does it right-to-left
-				// but this is not specified in the standard
-				this->call(std::forward<args>(vms->template get<args>())...);
 			}
 		}
 		return vmstatus_t::GOOD;

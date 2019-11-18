@@ -115,3 +115,14 @@ template<class T>
 struct HeadIfReferenceElseT<T> { 
 	typedef T type;
 };
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Access the n'th argument of tuples
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//https://stackoverflow.com/questions/20162903/template-parameter-packs-access-nth-type-and-nth-element
+
+template <int I, class... Ts>
+decltype(auto) va_get(Ts&&... ts) {
+  return std::get<I>(std::forward_as_tuple(ts...));
+}
