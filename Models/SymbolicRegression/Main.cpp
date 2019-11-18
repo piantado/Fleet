@@ -104,8 +104,8 @@ public:
 			// use that here (since we use them to index idx)
 			std::string childStrings[n->rule->N];
 			
-			// no, we evaluate left to right, but things are pushed in that order
-			// so here we want to ru nright to left
+			/// recurse on the children. NOTE: they are linearized left->right, 
+			// which means that they are popped 
 			for(size_t i=0;i<n->rule->N;i++) {
 //			for(int i=(int)n->rule->N-1;i>=0;i--) {
 				childStrings[i] = __my_string_recurse(&n->child[i],idx);

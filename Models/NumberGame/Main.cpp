@@ -27,6 +27,7 @@ std::tuple PRIMITIVES = {
 	Primitive("(%s*%s)",    +[](float a, float b) -> float { return a*b; }),
 	Primitive("(%s/%s)",    +[](float a, float b) -> float { return (b==0 ? 0 : a/b); }),
 	Primitive("(%s^%s)",    +[](float a, float b) -> float { return pow(a,b); }),
+	Builtin::X<D>("x")
 };
 
 
@@ -90,7 +91,6 @@ int main(int argc, char** argv){
 	Fleet_initialize();
 
 	Grammar grammar(PRIMITIVES);
-	grammar.add<float>(BuiltinOp::op_X,   "x", 5.0);		
 	for(int i=0;i<=N;i++) {
 		grammar.add<float>(CustomOp::op_Constant, str(i), 10.0/N, i);		
 	}

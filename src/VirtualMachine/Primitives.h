@@ -72,7 +72,6 @@ struct Primitive : PrePrimitive {
 			static_assert(CheckReferenceIsFirst<args...>::value, "*** Reference must be the first argument so it will be popped from the stack last (in fact, it is left in place).");
 			static_assert( (CountReferences<args...>::value == 1) == std::is_same<T,void>::value, "*** If you have a reference, you must return void and vice versa.");
 		}
-//		static_assert(CountReferences<args...>::value == 0 or std::is_void<T>::value, "*** If you use a reference, returntype must be the same -- though note you won't actually return anything");
 		
 	}
 	
@@ -97,6 +96,8 @@ struct Primitive : PrePrimitive {
 			// is the first argument, which is why we allow references on the first arg. 
 			// NOTE: we can't just do something like call(get<args>()...) because the order of evaluation
 			// of that is not defined in C!
+			
+			// TODO: Replace the below with some template magic
 			
 			// deal with those references etc. 
 			if constexpr (CountReferences<args...>::value == 0) {
