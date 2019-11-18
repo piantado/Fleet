@@ -117,7 +117,7 @@ struct Primitive : PrePrimitive {
 					auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
 					vms->push(this->call(a0, a1, a2));
 				}
-				else if constexpr (sizeof...(args) ==  3) {
+				else if constexpr (sizeof...(args) ==  4) {
 					auto a3 =  vms->template get<typename std::tuple_element<3, std::tuple<args...> >::type>();
 					auto a2 =  vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
 					auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
@@ -138,6 +138,11 @@ struct Primitive : PrePrimitive {
 					this->call(vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>(), a1);
 				}
 				else if constexpr (sizeof...(args) ==  3) {
+					auto  a1 = vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
+					auto  a2 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
+					this->call(vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>(), a1. a2);
+				}
+				else if constexpr (sizeof...(args) ==  4) {
 					auto a3 =  vms->template get<typename std::tuple_element<3, std::tuple<args...> >::type>();
 					auto a2 =  vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
 					auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
