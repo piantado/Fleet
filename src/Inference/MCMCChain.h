@@ -135,11 +135,15 @@ public:
 			if(thin > 0 and FleetStatistics::global_sample_count % thin == 0) {
 				current.print();
 			}
-
+			
 			if(current.posterior > -infinity) {
+			
+				CERR "# Proposing " ENDL;
 				std::tie(proposal,fb) = current.propose();
 			}
 			else {
+				CERR "# Restarting " ENDL;
+				
 				proposal = current.restart();
 			}
 				
@@ -154,6 +158,7 @@ public:
 				proposal.likelihood = current.likelihood;
 			}
 			else {
+				CERR "# Computing proposal posterior " ENDL;
 				proposal.compute_posterior(*data);
 			}
 

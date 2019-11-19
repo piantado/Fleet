@@ -118,7 +118,7 @@ int main(int argc, char** argv){
 //	tic();
 //	chain.run(mcmc_steps,runtime);
 //	tic();
-	
+//	
 	
 	MyHypothesis h0(&grammar);
 	h0 = h0.restart();

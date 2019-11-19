@@ -77,16 +77,13 @@ public:
 	Node(const Node& n) :
 		parent(nullptr), child(n.child.size()), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
 //		child.resize(n.child.size());
-		for(size_t i=0;i<n.child.size();i++) {
-			set_child(i, Node(n.child[i]));
-		}
+		child = n.child;
+		fix_child_info();
 	}
 	Node(Node&& n) :
 		parent(nullptr), child(n.child.size()), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
-		child.resize(n.child.size());
-		for(size_t i=0;i<n.child.size();i++) {
-			set_child(i, std::move(n.child[i]));
-		}
+		child = std::move(n.child);
+		fix_child_info();
 	}
 //	Node(Node&& n) :
 //		parent(nullptr), child(n.child), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
@@ -98,10 +95,8 @@ public:
 		rule = n.rule;
 		lp = n.lp;
 		can_resample = n.can_resample;
-		child.resize(n.child.size());
-		for(size_t i=0;i<n.child.size();i++) {
-			set_child(i, Node(n.child[i]));
-		}
+		child = n.child;
+		fix_child_info();
 	}
 //	void operator=(Node&& n) {
 //		parent = nullptr; 
@@ -121,14 +116,8 @@ public:
 		lp = n.lp;
 		can_resample = n.can_resample;
 
-//		child = std::move(n.child);
-//		for(size_t i=0;i<child.size();i++) 
-//			child[i].parent = this;
-		
-		child.resize(n.child.size());
-		for(size_t i=0;i<n.child.size();i++) {
-			set_child(i, std::move(n.child[i]) );
-		}
+		child = std::move(n.child);
+		fix_child_info();
 	}
 	
 	NodeIterator begin() const { return Node::NodeIterator(this); }
@@ -139,6 +128,15 @@ public:
 		while(k != nullptr && k->child.size() > 0) 
 			k = &(k->child[0]);
 		return k;
+	}
+	
+	void fix_child_info() {
+		// go through children and assign their parents to me
+		// and fix their pi's
+		for(size_t i=0;i<child.size();i++) {
+			child[i].pi = i;
+			child[i].parent = this;
+		}
 	}
 	
 //	size_t N() const { // how many children do I have? -- we don't define this because it' sambiguous between child.size() and rule->N, which may be different

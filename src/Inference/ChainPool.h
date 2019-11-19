@@ -33,7 +33,7 @@ public:
 							 unsigned long time) {
 		
 		std::function<size_t(size_t)> next_index = [running](const size_t frm) -> size_t {
-			// assuming running is locked, find teh first not running
+			// assuming running is locked, find the first not running
 			for(size_t o=0;o<running->size();o++) {
 				size_t idx = (o+frm+1)%running->size(); // offset of 1 so we start at frm+1
 				if(not (*running)[idx]) {
@@ -61,8 +61,7 @@ public:
 				(*running)[idx] = false;	
 				idx = next_index(idx);
 				(*running)[idx] = true;
-				
-				if(CTRL_C) return;
+
 			} while(0);		
 			
 			// we need to store how many samples we did 
