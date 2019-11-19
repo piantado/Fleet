@@ -120,10 +120,14 @@ public:
 		rule = n.rule;
 		lp = n.lp;
 		can_resample = n.can_resample;
+
+//		child = std::move(n.child);
+//		for(size_t i=0;i<child.size();i++) 
+//			child[i].parent = this;
 		
 		child.resize(n.child.size());
 		for(size_t i=0;i<n.child.size();i++) {
-			set_child(i, std::move(n.child[i]));
+			set_child(i, std::move(n.child[i]) );
 		}
 	}
 	
@@ -162,7 +166,7 @@ public:
 	void set_child(size_t i, Node&& n) {
 		// NOTE: if you add anything fancy to this, be sure to update the copy and move constructors
 		if(i >= child.size()) child.resize(i);
-		child[i] = std::move(n);
+		child[i] = n;
 		child[i].pi = i;
 		child[i].parent = this;
 	}

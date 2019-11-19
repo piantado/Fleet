@@ -51,7 +51,8 @@ public:
 		
 		while( (steps == 0 or my_steps <= steps)          and 
 			   (time  == 0 or time_since(my_time) < time) and 
-			   !CTRL_C) {			
+			   !CTRL_C) {
+					
 //			CERR "# Running thread " <<std::this_thread::get_id() << " on "<< idx ENDL;
 
 			do {

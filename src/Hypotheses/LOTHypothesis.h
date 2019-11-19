@@ -56,7 +56,7 @@ public:
 	}
 	
 	void set_value(T&  v) { value = v; }
-	void set_value(T&& v) { value = std::move(v); }
+	void set_value(T&& v) { value = v; }
 	
 	
 	virtual double compute_prior() {

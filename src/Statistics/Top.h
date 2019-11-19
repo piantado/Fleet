@@ -35,9 +35,9 @@ public:
 		print_best = x.print_best;
 	}
 	TopN(TopN<T>&& x) {
-		cnt = std::move(x.cnt);
+		cnt = x.cnt;
 		set_size(x.N);
-		s = std::move(x.s);
+		s = x.s;
 		print_best = x.print_best;
 	}
 	
@@ -50,8 +50,8 @@ public:
 	void operator=(TopN<T>&& x) {
 		set_size(x.N);
 //		add(x);
-		cnt = std::move(x.cnt);
-		s = std::move(x.s);
+		cnt = x.cnt;
+		s =  x.s;
 		print_best = x.print_best;
 	}
 	
@@ -179,6 +179,17 @@ public:
 		// This mightt get called by something not in here, so we can't assume x is in 
 		if(cnt.count(x)) return cnt.at(x);
 		else             return 0;
+	}
+ 	
+	template<typename t_data>
+	TopN compute_posterior(t_data& data){
+		// NOTE: Since this modifies the hypotheses, it returns a NEW TopN
+		TopN o(N);
+		for(auto h : values() ){
+			h.compute_posterior(data);
+			o << h;
+		}
+		return o;
 	}
 	
 };

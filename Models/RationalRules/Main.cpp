@@ -124,7 +124,7 @@ int main(int argc, char** argv){
 	h0 = h0.restart();
 	ParallelTempering samp(h0, &mydata, top, 8, 1000.0);
 	tic();
-	samp.run(mcmc_steps, runtime, 0.2, 3.0); //30000);		
+	samp.run(mcmc_steps, runtime, 5.0, 17.0); //30000);		
 	// NOTE: Running ParallelTempering with allcallback (default) will try to put
 	// *everything* into top, which means that the counts you get will no longer 
 	// be samples (and in fact should be biased towards high-prior hypotheses)	

@@ -1,11 +1,9 @@
 //  TODO: Update ANS= to be something reasonable!
-
-
+//			- ANSeq needs to normalize by the integers, right?
 
 #include <vector>
 #include <string>
 #include <random>
-#include "MyPrimitives.h"
 
 double recursion_penalty = -50.0;
 
@@ -13,14 +11,27 @@ double recursion_penalty = -50.0;
 /// Set up some basic variables for the model
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-std::vector<Model::objtype>      OBJECTS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
-std::vector<std::string>           WORDS = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
-std::vector<Model::magnitude> MAGNITUDES = {1,2,3,4,5,6,7,8,9,10};
+typedef int         word;
+typedef std::string set; 	/* This models sets as strings */
+typedef char        objectkind; // store this as that
+typedef struct { set s; objectkind o; } utterance; 
+typedef short       wmset; // just need an integerish type
+typedef float       magnitude; 
+
+std::vector<objectkind>   OBJECTS = {'a', 'b', 'c', 'd', 'e'}; //, 'f', 'g', 'h', 'i', 'j'};
+std::vector<std::string>    WORDS = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+std::vector<magnitude> MAGNITUDES = {1,2,3,4,5,6,7,8,9,10};
+
+const word U = -999;
+
+const size_t MAX_SET_SIZE = 25;
+const double alpha = 0.9;
+const double W = 0.3; // weber ratio for ans
 
 // TODO: UPDATE WITH data from Gunderson & Levine?
 std::discrete_distribution<> number_distribution({0, 7187, 1484, 593, 334, 297, 165, 151, 86, 105, 112}); // 0-indexed
 	
-std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400};//, 500, 600, 700, 800, 900, 1000};
+std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600};//, 500, 600, 700, 800, 900, 1000};
 //std::vector<int> data_amounts = {600};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,324 +39,301 @@ std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 
 /// This macro must be defined before we import Fleet.
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#define FLEET_GRAMMAR_TYPES bool,Model::set,Model::objtype,Model::word,Model::X,Model::wmset,Model::magnitude,double
+#define FLEET_GRAMMAR_TYPES bool,word,set,objectkind,utterance,wmset,magnitude,double
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define the primitives (which are already defined in MyPrimitives
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "Primitives.h"
+#include "Random.h"
 
-std::tuple PRIMITIVES = {
-	Primitive("undef",         +[]() -> word {
+double ANSzero(const double n1, const double n2) {
+	// probability mass assigned to exactly 0 under weber scaling
+	// TODO: May want to make this be between -0.5-0.5? 
+	return exp(normal_lpdf(0, n1-n2, W*sqrt(n1*n1+n2*n2)));
+}
+double normcdf(const double x) { 
+	return 0.5 * (1 + erf(x * M_SQRT1_2));
+}
 
-
-
-
-
-
-
-
-
-	Primitive("tail(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : s.substr(1,S::npos)); }),
-	Primitive("head(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : S(1,s.at(0))); }),
-	Primitive("pair(%s,%s)",   +[](S a, S b) -> S         { if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError;
-															 return a+b; }),
-//	Primitive("rpair(%s,%s)",   +[](S a, S& b) -> S         { 
-//			if(a.length() + b.length() < MAX_LENGTH) 
-//				b.append(a); 
-//			else throw VMSRuntimeError; 
-//	}), // also add a function to check length to throw an error if its getting too long
-	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),
-	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
-};
-
-// Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
-#include "Fleet.h" 
-// Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
-#include "Fleet.h" 
-
-class MyGrammar : public Grammar { 
-public:
-	MyGrammar() : Grammar() {
-		
-		for(size_t i=0;i<OBJECTS.size();i++)
-			add( Rule(nt_type, op_Object,        std::string(1,OBJECTS[i]),        {},                1.0/OBJECTS.size(), i) );		
-		
-		for(size_t i=0;i<WORDS.size();i++)
-			add( Rule(nt_word, op_Word,             WORDS[i],             {},                         1.0/WORDS.size(), i+1) );		
-		
-		add( Rule(nt_word, op_U,              "undef",         {},                      			   5.0) );	
-		add( Rule(nt_word, op_Next,           "next(%s)",      {nt_word},                      		   1.0) );	
-		add( Rule(nt_word, op_Prev,           "prev(%s)",      {nt_word},                      	       1.0) );	
-		
-		// extracting from x
-		add( Rule(nt_set,    op_Xset,        "set(%s)",                {nt_X},                         10.0) );		
-		add( Rule(nt_type,   op_Xtype,       "type(%s)",               {nt_X},                         10.0) );		
-		add( Rule(nt_X,      BuiltinOp::op_X,"X",                      {},                             10.0) );		
-		
-		add( Rule(nt_X,      op_MakeX,        "<%s,%s>",              {nt_set, nt_type},              1.0) );		
-		add( Rule(nt_word,   BuiltinOp::op_RECURSE,      "recurse(%s)",          {nt_X},              5.0) );		
-
-		add( Rule(nt_set,    op_Union,        "union(%s,%s)",         {nt_set,nt_set},            1.0/3.0) );
-		add( Rule(nt_set,    op_Intersection, "intersection(%s,%s)",  {nt_set,nt_set},            1.0/3.0) );
-		add( Rule(nt_set,    op_Difference,   "difference(%s,%s)",    {nt_set,nt_set},            1.0/3.0) );
-		add( Rule(nt_set,    op_Filter,       "filter(%s,%s)",        {nt_type,nt_set},           1.0) );
-		
-		add( Rule(nt_set,    op_Select,       "select(%s)",           {nt_set},                   1.0/2.0) );
-		add( Rule(nt_set,    op_SelectObj,    "selectO(%s,%s)",       {nt_set,nt_type},           1.0/2.0) );
-
-		
-		add( Rule(nt_set,    BuiltinOp::op_IF,           "ifS(%s,%s,%s)", {nt_bool, nt_set,  nt_set},       1.0/2.0) );
-		add( Rule(nt_word,   BuiltinOp::op_IF,           "ifW(%s,%s,%s)", {nt_bool, nt_word, nt_word},      1.0/2.0) );
-		
-		
-		add( Rule(nt_bool,   BuiltinOp::op_FLIPP,       "flip(%s)",     {nt_double},               5.0) );
-		add( Rule(nt_bool,   op_And,         "and(%s,%s)",   {nt_bool, nt_bool},               1.0) );
-		add( Rule(nt_bool,   op_Or,          "or(%s,%s)",    {nt_bool, nt_bool},               1.0) );
-		add( Rule(nt_bool,   op_Not,         "not(%s)",   {nt_bool},                        1.0) );
-		
-		// Working memory model		
-		add( Rule(nt_bool,   op_Match1to1,   "match1to1(%s,%s)", {nt_wmset, nt_set},            5.0) );
-		add( Rule(nt_wmset,  op_WM0,   "{}",                     {},                1.0) );
-		add( Rule(nt_wmset,  op_WM1,   "{o}",                    {},                1.0) );
-		add( Rule(nt_wmset,  op_WM2,   "{o,o}",                  {},              1.0) );
-		add( Rule(nt_wmset,  op_WM3,   "{o,o,o}",                {},            1.0) );		
-
-		// approximate model
-		add( Rule(nt_double,   op_ApproxEq_S_S,  "ANS=(%s,%s)",  {nt_set,   nt_set},            1.0/3.0) );
-		add( Rule(nt_double,   op_ApproxEq_S_W,  "ANS=(%s,%s)",  {nt_set,   nt_wmset},          1.0/3.0) );
-		add( Rule(nt_double,   op_ApproxEq_S_M,  "ANS=(%s,%s)",  {nt_set,   nt_magnitude},      1.0/3.0) );
-		add( Rule(nt_double,   op_ApproxLt_S_S,  "ANS<(%s,%s)",  {nt_set,   nt_set},            1.0/3.0) );
-		add( Rule(nt_double,   op_ApproxLt_S_W,  "ANS<(%s,%s)",  {nt_set,   nt_wmset},          1.0/3.0) );
-		add( Rule(nt_double,   op_ApproxLt_S_M,  "ANS<(%s,%s)",  {nt_set,   nt_magnitude},      1.0/3.0) );
+double ANSdiff(const double n1, const double n2) {  // SD of the weber value
+	if(n1 == 0.0 && n2 == 0.0) return 0.0; // hmm is this right?
 	
-		for(size_t i=0;i<MAGNITUDES.size();i++)
-			add( Rule(nt_magnitude,  op_Magnitude,   std::to_string(MAGNITUDES[i]).substr(0,3), {},           10.0/MAGNITUDES.size(), i)); // magnitudes that only get used in ANS comparisons
-		
-		
-	}
+	return (n1-n2) / (W*sqrt(n1*n1+n2*n2));
+}
+
+#include "Primitives.h"
+#include "Builtins.h"	
+	
+std::tuple PRIMITIVES = {
+	Primitive("undef",         +[]() -> word { return U; }),
+	
+	Primitive("a",         +[]() -> objectkind { return 'a'; }),
+	Primitive("b",         +[]() -> objectkind { return 'b'; }),
+	Primitive("c",         +[]() -> objectkind { return 'c'; }),
+	Primitive("d",         +[]() -> objectkind { return 'd'; }),
+	Primitive("e",         +[]() -> objectkind { return 'e'; }), // TODO: Older versions had through j 
+	
+	Primitive("one",         +[]() -> word { return 1; }, 0.1),
+	Primitive("two",         +[]() -> word { return 2; }, 0.1),
+	Primitive("three",       +[]() -> word { return 3; }, 0.1),
+	Primitive("four",        +[]() -> word { return 4; }, 0.1),
+	Primitive("five",        +[]() -> word { return 5; }, 0.1),
+	Primitive("six",         +[]() -> word { return 6; }, 0.1),
+	Primitive("seven",       +[]() -> word { return 7; }, 0.1),
+	Primitive("eight",       +[]() -> word { return 8; }, 0.1),
+	Primitive("nine",        +[]() -> word { return 9; }, 0.1),
+	Primitive("ten",         +[]() -> word { return 10; }, 0.1),
+	
+	Primitive("next(%s)",    +[](word w) -> word { if(w >= 1) return w+1; else return U; }),
+	Primitive("prev(%s)",    +[](word w) -> word { if(w > 1) return w-1; else return U; }),
+	
+	// extract from the context/utterance
+	Primitive("%s.set",      +[](utterance u) -> set    { return u.s; }, 25.0),
+	Primitive("%s.obj",      +[](utterance u) -> objectkind { return u.o; }, 10.0),
+	
+	// build utterances -- needed for useful recursion
+	Primitive("<%s,%s>",     +[](set s, objectkind o) -> utterance { return utterance{s,o}; }),
+	
+	Primitive("union(%s,%s)", +[](set x, set y) -> set { 
+		if(x.size()+y.size() > MAX_SET_SIZE) 
+			throw VMSRuntimeError; 
+		return x+y; 
+	}),
+	Primitive("intersection(%s,%s)", +[](set x, set y) -> set {
+		std::string out = "";
+		for(size_t yi=0;yi<y.length();yi++) {
+			std::string s = y.substr(yi,1);
+			size_t pos = x.find(s); // do I occur?
+			if(pos != std::string::npos) {
+				out.append(s);
+			}
+		}
+		return out;
+	}),
+	Primitive("difference(%s,%s)", +[](set x, set y) -> set {
+		std::string out = x;
+		for(size_t yi=0;yi<y.length();yi++) {
+			std::string s = y.substr(yi,1);
+			size_t pos = out.find(s); // do I occur?
+			if(pos != std::string::npos) {
+				out.erase(pos,1); // remove that character
+			}
+		}
+		return out;
+	}),
+	Primitive("filter(%s,%s)", +[](set x, objectkind t) -> set {
+		std::string tstr = std::string(1,t); // a std::string to find
+		std::string out = "";
+		size_t pos = x.find(tstr);
+		while (pos != std::string::npos) {
+			out = out + tstr;
+			pos = x.find(tstr,pos+1);
+		}
+		return out;
+	}),
+	Primitive("select(%s)",      +[](set x) -> set { return x.substr(0,1); }),
+	Primitive("selectO(%s,%s)",  +[](set x, objectkind o) -> set {
+		if(x.find(o) != std::string::npos){
+			return std::string(1,o); // must exist there
+		}
+		else {
+			return set("");
+		}
+	}),
+	Primitive("match(%s,%s)",  +[](wmset x, set s) -> bool { return x == (wmset)s.size(); }, 1.0),
+	Primitive("{}",            +[]() -> wmset { return (wmset)0; }),
+	Primitive("{o}",           +[]() -> wmset { return (wmset)1; }),
+	Primitive("{o,o}",         +[]() -> wmset { return (wmset)2; }),
+	Primitive("{o,o,o}",       +[]() -> wmset { return (wmset)3; }),
+	
+	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 1.0/3.0),
+	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }, 1.0/3.0),
+	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }, 1.0/3.0),
+	
+	// AND operations 
+	Primitive("ANSeq(%s,%s)",     +[](set a, set b)       -> double { return ANSzero(a.length(), b.length()); }, 1.0/3.0),
+	Primitive("ANSeq(%s,%s)",     +[](set a, wmset b)     -> double { return ANSzero(a.length(), b); }, 1.0/3.0),
+	Primitive("ANSeq(%s,%s)",     +[](set a, magnitude b) -> double { return ANSzero(a.length(), b); }, 1.0/3.0),
+	
+	Primitive("ANSlt(%s,%s)",     +[](set a, set b)       -> double { return 1.0-normcdf(ANSdiff(a.length(), b.length())); }, 1.0/5.0),
+	Primitive("ANSlt(%s,%s)",     +[](set a, wmset b)     -> double { return 1.0-normcdf(ANSdiff(a.length(), b)); }, 1.0/5.0),
+	Primitive("ANSlt(%s,%s)",     +[](set a, magnitude b) -> double { return 1.0-normcdf(ANSdiff(a.length(), b)); }, 1.0/5.0),
+	Primitive("ANSlt(%s,%s)",     +[](wmset b, set a)     -> double { return 1.0-normcdf(ANSdiff(b, a.length())); }, 1.0/5.0),
+	Primitive("ANSlt(%s,%s)",     +[](magnitude b, set a) -> double { return 1.0-normcdf(ANSdiff(b, a.length())); }, 1.0/5.0),
+	
+	Primitive("1",     +[]() -> magnitude { return 1; }),
+	Primitive("2",     +[]() -> magnitude { return 2; }),
+	Primitive("3",     +[]() -> magnitude { return 3; }),
+	Primitive("4",     +[]() -> magnitude { return 4; }),
+	Primitive("5",     +[]() -> magnitude { return 5; }),
+	Primitive("6",     +[]() -> magnitude { return 6; }),
+	Primitive("7",     +[]() -> magnitude { return 7; }),
+	Primitive("8",     +[]() -> magnitude { return 8; }),
+	Primitive("9",     +[]() -> magnitude { return 9; }),
+	Primitive("10",    +[]() -> magnitude { return 10; }),
+	
+	//x, recurse, ifset, ifword
+	Builtin::If<set>("if(%s,%s,%s)"),		
+	Builtin::If<word>("if(%s,%s,%s)"),	
+	Builtin::If<wmset>("if(%s,%s,%s)"),		
+	Builtin::If<objectkind>("if(%s,%s,%s)"),
+	Builtin::If<magnitude>("if(%s,%s,%s)"),		
+	Builtin::X<utterance>("x", 5.0),
+	Builtin::FlipP("flip(%s)", 5.0),
+	Builtin::Recurse<word,utterance>("F(%s)")	
 };
 
+// Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
+#include "Fleet.h" 
 
-/* Define a class for handling my specific hypotheses and data. Everything is defaulty a PCFG prior and 
- * regeneration proposals, but I have to define a likelihood */
-class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word> {
+class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,utterance,word> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word>;
-	MyHypothesis(Grammar* g, Node v)    : Super(g,v) {}
-	MyHypothesis(Grammar* g)            : Super(g) {}
-	MyHypothesis()                      : Super() {}
+	using Super = LOTHypothesis<MyHypothesis,Node,utterance,word>;
+	using Super::Super;
 	
 	size_t recursion_count() {
-		// how many times do I use recursion?
-		std::function<size_t(const Node&)> f = [](const Node& n) { 
-			return (size_t)1*(n.rule->instr.is_a(BuiltinOp::op_RECURSE)); 
-		};
-		return value.sum<size_t>(f);
+		size_t cnt = 0;
+		for(auto& n : value) {
+			cnt += n.rule->instr.is_a(BuiltinOp::op_RECURSE);
+		}
+		return cnt;
 	}
-	
-	
+		
 	double compute_prior() {
 		// include recusion penalty
-		prior = LOTHypothesis<MyHypothesis,Node,nt_word,Model::X,Model::word>::compute_prior() +
+		prior = Super::compute_prior() +
 		       (recursion_count() > 0 ? recursion_penalty : log(1.0-exp(recursion_penalty))); 
 		
 		return prior;
 	}
 	
 	double compute_single_likelihood(const t_datum& d) {
-		auto v = call(d.input, Model::U, this, 64, 64); // something of the type
+		auto v = call(d.input, U, this, 64, 64); // something of the type
 		
-		double pU      = (v.count(Model::U) ? exp(v[Model::U]) : 0.0); // non-log probs
+		double pU      = (v.count(U) ? exp(v[U]) : 0.0); // non-log probs
 		double pTarget = (v.count(d.output) ? exp(v[d.output]) : 0.0);
 		
 		// average likelihood when sampling from this posterior
 		return log( pU*(1.0/10.0) + (1.0-d.reliability)/10.0 + d.reliability*pTarget );
 	}	
 
-	abovmstatus_tspatch_rule(Instruction i,  VirtualMachinePool<Model::X, Model::word>* pool, VirtualMachineState<Model::X, Model::word>& vms, Dispatchable<Model::X, Model::word>* loader) {
-		/* Dispatch the functions that I have defined. Returns true on success. 
-		 * Note that errors might return from this 
-		 * */
-		switch(i.getCustom()) {
-			CASE_FUNC0(op_Object,      Model::objtype, [i](){ return OBJECTS[i.arg]; })
-			
-			CASE_FUNC0(op_Word,        Model::word, [i](){ return i.arg; })
-			CASE_FUNC0(op_U,           Model::word, [](){ return Model::U; })
-			
-			CASE_FUNC1(op_Next,        Model::word,  Model::word, Model::next )
-			CASE_FUNC1(op_Prev,        Model::word,  Model::word, Model::prev )
-			
-			CASE_FUNC1(op_Xset,        Model::set,  Model::X, [](const Model::X x) { return std::get<0>(x); })
-			CASE_FUNC1(op_Xtype,       Model::objtype, Model::X, [](const Model::X x) { return std::get<1>(x); })
-			
-			CASE_FUNC2(op_MakeX,         Model::X, Model::set, Model::objtype, [](const Model::set s, const Model::objtype t) { return std::make_tuple(s,t); })
-			CASE_FUNC2(op_Union,         Model::set, Model::set, Model::set,     Model::myunion)
-			CASE_FUNC2(op_Intersection,  Model::set, Model::set, Model::set,     Model::intersection)
-			CASE_FUNC2(op_Difference,    Model::set, Model::set, Model::set,     Model::difference)
-			CASE_FUNC1(op_Select,        Model::set, Model::set,                 Model::select)
-			CASE_FUNC2(op_SelectObj,     Model::set, Model::set, Model::objtype, Model::selectObj)
-			CASE_FUNC2(op_Filter,        Model::set, Model::set, Model::objtype, Model::filter)
-			
-			CASE_FUNC2(op_And,           bool, bool, bool, [](const bool x, const bool y) { return x&&y;} )
-			CASE_FUNC2(op_Or,            bool, bool, bool, [](const bool x, const bool y) { return x||y;} )
-			CASE_FUNC1(op_Not,           bool, bool,       [](const bool x) { return !x;} );
-			
-			CASE_FUNC2(op_Match1to1,     bool, Model::wmset, Model::set,  Model::match1to1)
-			CASE_FUNC0(op_WM0,           Model::wmset, [](){ return 0; })
-			CASE_FUNC0(op_WM1,           Model::wmset, [](){ return 1; })
-			CASE_FUNC0(op_WM2,           Model::wmset, [](){ return 2; })
-			CASE_FUNC0(op_WM3,           Model::wmset, [](){ return 3; })
-			
-			CASE_FUNC2(op_ApproxEq_S_S,  double, Model::set, Model::set,        Model::ANS_Eq)
-			CASE_FUNC2(op_ApproxEq_S_W,  double, Model::set, Model::wmset,      Model::ANS_Eq)
-			CASE_FUNC2(op_ApproxEq_S_M,  double, Model::set, Model::magnitude,  Model::ANS_Eq)
-			CASE_FUNC2(op_ApproxLt_S_S,  double, Model::set, Model::set,        Model::ANS_Lt)
-			CASE_FUNC2(op_ApproxLt_S_W,  double, Model::set, Model::wmset,      Model::ANS_Lt)
-			CASE_FUNC2(op_ApproxLt_S_M,  double, Model::set, Model::magnitude,  Model::ANS_Lt)
-
-			CASE_FUNC0(op_Magnitude,    Model::magnitude, [i](){ return MAGNITUDES[i.arg]; })
-
-			default:
-				assert(0); // should never get here
-		}
-		return vmstatus_t::GOOD;
-	}
 	
 	virtual void print(std::string prefix=""){
 		assert(prefix=="");
-		
-		extern MyHypothesis::t_data mydata;
-		extern TopN<MyHypothesis> top;
-		
+	
 		std::string s1 = "";
 		for (int j = 1; j <= 9; j++) {
-			Model::set theset = "" + std::string(j,'Z');
-			auto out = this->call(Model::X(theset,'Z'), Model::U);
-			Model::word v = out.argmax();
+			set theset = "" + std::string(j,'Z');
+			auto out = this->call(utterance{theset,'Z'}, U);
+			word v = out.argmax();
 			
-			if(v < 0) s1 += "U"; // must be undefined
-			else      s1 += std::to_string((int) v);
-			if(j < 9) s1 += ".";
+			if(v <= 0) s1 += "U"; // must be undefined
+			else       s1 += std::to_string((int) v);
+			if(j < 9)  s1 += ".";
 		}
 
 		std::string s2 = "";
 		for (int j = 1; j <= 9; j++) {
-			Model::set theset = "ABBCCCDDDDEEEEE" + std::string(j,'Z');        
-			auto out = this->call(Model::X(theset,'Z'), Model::U);
-			Model::word v = out.argmax();
+			set theset = "ABBCCCDDDDEEEEE" + std::string(j,'Z');        
+			auto out = this->call(utterance{theset,'Z'}, U);
+			word v = out.argmax();
 			
-			if(v < 0) s2 += "U"; // must be undefined
-			else      s2 += std::to_string( (int) v);
-			if(j < 9) s2 += ".";
+			if(v <= 0) s2 += "U"; // must be undefined
+			else       s2 += std::to_string( (int) v);
+			if(j < 9)  s2 += ".";
 		}
 		
 
-		prefix = std::to_string(mydata.size()) +"\t"+ std::to_string(top.count(*this)) +
-				"\t"+s1+"\t"+s2+"\t"+std::to_string(this->recursion_count());
+		prefix = s1+"\t"+s2+"\t"+std::to_string(this->recursion_count())+"\t";
 			
 		Super::print(prefix);
-		
-		
 	}
 };
 
-const double alpha = 0.9;
-
-MyHypothesis::t_data mydata;
-TopN<MyHypothesis> top;
-TopN<MyHypothesis> all;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 
 int main(int argc, char** argv){ 
-	using namespace std;
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	auto app = Fleet::DefaultArguments("Fancy number inference model");
 	CLI11_PARSE(app, argc, argv);
-	top.set_size(ntop); // set by above macro
-	
 	Fleet_initialize();
+
+	TopN<MyHypothesis> all;
 	
-	MyGrammar grammar;
-	tic();
+	Grammar grammar(PRIMITIVES);
 	
-	// Set up the data
+	typedef MyHypothesis::t_data t_data;
+	
+	// Set up the data -- we'll do this so we can run a parallel
+	// chain across all of it at once
+	std::vector<t_data> alldata;
+	std::vector<TopN<MyHypothesis>>   alltops;
 	for(auto ndata : data_amounts) {
-		if(CTRL_C) break;
-		
-		mydata.clear();
-		CERR "# Running on data " << ndata ENDL;
+		t_data mydata;
 		
 		// make some data here
-		std::uniform_int_distribution<> random_ntypes(1,3); // how many objects present?
-		std::uniform_int_distribution<> random_object(1,OBJECTS.size()-1);
-		std::uniform_int_distribution<> random_word(1,10);
-		for(int i=0;i<ndata;i++) {
-			Model::set s = ""; Model::word w = Model::U; Model::objtype t;  // Set, word, and type (w initialized to U just to suppress warnings)
+		for(int di=0;di<ndata;di++) {
+			set s = ""; word w = U; objectkind t;
 			
 			int ntypes=0;
-			int NT = random_ntypes(rng);
+			int NT = myrandom(1,4); // how many times do I try to add types?
 			for(int i=0;i<NT;i++) {
 				int nx = number_distribution(rng);  // sample how many things we'll do
-				Model::objtype tx;
+				objectkind tx;
 				do { 
-					tx = OBJECTS[random_object(rng)];
+					tx = OBJECTS[myrandom<size_t>(0,OBJECTS.size()+1)];
 				} while(s.find(std::string(1,tx)) != std::string::npos); // keep trying until we find an unused one
 				
 				s.append(std::string(nx,tx));
 				
 				if(i==0) { // first time captures the intended type
-					if(uniform() < 1.0-alpha) w = static_cast<Model::word>(random_word(rng));  // are we noise?
-					else       				     w = nx; // not noise
-
+					if(uniform() < 1.0-alpha) w = myrandom(1,11);  // are we noise?
+					else       				  w = nx; // not noise
 					t = tx; // the type is never considered to be noise here
-				}
-				
+				}				
 				ntypes++;     
 			}
 			std::random_shuffle( s.begin(), s.end() ); // randomize the order so select is not a friendly strategy
-
-			Model::X x(s, t);
 			
 			// make the data point
-			mydata.push_back(MyHypothesis::t_datum({x, w, alpha}));
-		}    		
-		
-		
-		MyHypothesis h0(&grammar);
-		ParallelTempering samp(h0, &mydata, top, 8, 1000.0);
-		tic();
-		samp.run(mcmc_steps, runtime, 0.2, 3.); //30000);		
-		tic();
+			mydata.push_back(MyHypothesis::t_datum({utterance{s,t}, w, alpha}));
+		}
 
-		// and save what we found
-		for(auto h : top.values()){
+		alldata.push_back(mydata);
+		alltops.push_back(TopN<MyHypothesis>(ntop));
+	}
+	CERR "# Starting sampling." ENDL;
+	
+	t_data biggestData = *alldata.rbegin();
+	
+	// Run parallel tempering
+	MyHypothesis h0(&grammar);
+	h0 = h0.restart();
+	ParallelTempering samp(h0, alldata, alltops);
+	tic();
+	samp.run(mcmc_steps, runtime, 0.2, 3.); //30000);		
+	tic();
+
+	// and save what we found
+	for(auto& tn : alltops) {
+		for(auto h : tn.values()) {
 			h.clear_bayes(); // zero the prior, posterior, likelihood
 			all << h;
 		}
-		
-		top.clear();
 	}
-
-	COUT "# Computing posterior on all final values |D|=" TAB mydata.size()  ENDL;
-	// print out at the end
-	for(auto h : all.values()) {
-		h.compute_posterior(mydata); // run on the largest data amount
-		h.print();
-	}
-//	all.print();
 	
-	tic();
+	COUT "# Computing posterior on all final values |D|=" << biggestData.size()  ENDL;
+	
+	// print out at the end
+	all.compute_posterior(biggestData).print();
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
 	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
-
-	all.clear(); // clear up 
-	
 }
+

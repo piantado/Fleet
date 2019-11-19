@@ -3,6 +3,8 @@
 #include <random>
 #include <functional>
 
+#include "Numerics.h"
+
 // it's important to make these thread-local or else they block each other in parallel cores
 thread_local std::random_device rd;     // only used once to initialise (seed) engine
 thread_local std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
@@ -48,6 +50,13 @@ T myrandom(T max) {
 	std::uniform_int_distribution<T> r(0,max-1);
 	return r(rng);
 }
+
+template<typename T>
+T myrandom(T min, T max) {
+	std::uniform_int_distribution<T> r(min,max-1);
+	return r(rng);
+}
+
 
 bool flip() {
 	return uniform() < 0.5;

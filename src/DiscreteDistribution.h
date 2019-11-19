@@ -22,7 +22,7 @@ public:
 	DiscreteDistribution() {};
 	
 	virtual T argmax() const {
-		T best{};
+		T best{}; // Note defaults to this when there are none!
 		double bestv = -infinity;
 		for(auto a : m) {
 			if(a.second > bestv) {

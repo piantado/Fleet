@@ -40,24 +40,29 @@ public:
 			current(h0), data(d), themax(), callback(&cb), restart(mcmc_restart), 
 			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
+			runOnCurrent();
 	}
 	
 	MCMCChain(HYP&& h0, typename HYP::t_data* d, callback_t& cb ) : 
 			current(std::move(h0)), data(d), themax(), callback(&cb), restart(mcmc_restart), 
 			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
+			runOnCurrent();
 	}
 
 	MCMCChain(HYP& h0, typename HYP::t_data* d, callback_t* cb=nullptr ) : 
 			current(h0), data(d), themax(), callback(cb), restart(mcmc_restart), 
 			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
+			runOnCurrent();
 	}
 	
 	MCMCChain(HYP&& h0, typename HYP::t_data* d, callback_t* cb=nullptr) : 
 			current(std::move(h0)), data(d), themax(), callback(cb), restart(mcmc_restart), 
 			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
+				
+			runOnCurrent();
 	}
 
 	MCMCChain(const MCMCChain& m) :
@@ -88,20 +93,22 @@ public:
 	
 	HYP& getCurrent() {	return current; }
 	
+	void runOnCurrent() {
+		// updates current and calls callback (in constructor)
+		std::lock_guard guard(current_mutex);
+		current.compute_posterior(*data);
+		if(callback != nullptr) (*callback)(current);
+		++FleetStatistics::global_sample_count;
+		++samples;
+	}
+	
+	
 	const HYP& getMax() { return themax; } 
 	
-	void run(unsigned long steps, unsigned long time, bool resume=false) {
+	void run(unsigned long steps, unsigned long time) {
 		// run for steps or time, whichever comes first. 
 		// If resume, we don't need to recompute anything about the current
-		
-		// compute the info for the curent
-		if(not resume) {
-			std::lock_guard guard(current_mutex);
-			current.compute_posterior(*data);
-			if(callback != nullptr) (*callback)(current);
-			++FleetStatistics::global_sample_count;
-			++samples;
-		}
+		// NOTE: intializer should have runOnCurrent() so it should have a posterior
 		themax = current;
 		
 		// we'll start at 1 since we did 1 callback on current to begin
@@ -112,7 +119,6 @@ public:
 			if(time > 0 && time_since(start_time) > time) {
 				break;
 			}
-			
 			
 #ifdef DEBUG_MCMC
 	COUT "\n# Current\t" << current.posterior TAB current.prior TAB current.likelihood TAB "\t" TAB current.string() ENDL;
