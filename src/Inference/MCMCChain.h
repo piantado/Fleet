@@ -154,7 +154,6 @@ public:
 				proposal.likelihood = current.likelihood;
 			}
 			else {
-				CERR "# Computing proposal posterior " ENDL;
 				proposal.compute_posterior(*data);
 			}
 
