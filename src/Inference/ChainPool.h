@@ -61,6 +61,8 @@ public:
 				(*running)[idx] = false;	
 				idx = next_index(idx);
 				(*running)[idx] = true;
+				
+				if(CTRL_C) return;
 			} while(0);		
 			
 			// we need to store how many samples we did 

@@ -44,7 +44,7 @@ public:
 	}
 	
 	MCMCChain(HYP&& h0, typename HYP::t_data* d, callback_t& cb ) : 
-			current(std::move(h0)), data(d), themax(), callback(&cb), restart(mcmc_restart), 
+			current(h0), data(d), themax(), callback(&cb), restart(mcmc_restart), 
 			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 			runOnCurrent();
@@ -58,7 +58,7 @@ public:
 	}
 	
 	MCMCChain(HYP&& h0, typename HYP::t_data* d, callback_t* cb=nullptr) : 
-			current(std::move(h0)), data(d), themax(), callback(cb), restart(mcmc_restart), 
+			current(h0), data(d), themax(), callback(cb), restart(mcmc_restart), 
 			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 				
@@ -74,9 +74,9 @@ public:
 		
 	}
 	MCMCChain(MCMCChain&& m) {
-		current = std::move(m.current);
+		current = m.current;
 		data = m.data;
-		themax = std::move(m.themax);
+		themax = m.themax;
 		callback = m.callback;
 		restart = m.restart;
 		returnmax = m.returnmax;
@@ -109,7 +109,10 @@ public:
 		// run for steps or time, whichever comes first. 
 		// If resume, we don't need to recompute anything about the current
 		// NOTE: intializer should have runOnCurrent() so it should have a posterior
-		themax = current;
+		{
+			std::lock_guard guard(current_mutex);
+			themax = current;
+		}
 		
 		// we'll start at 1 since we did 1 callback on current to begin
 		auto start_time = now();

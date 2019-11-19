@@ -29,7 +29,7 @@ public:
 	}
 	
 	FiniteHistory(FiniteHistory&& fh) {
-		history = std::move(fh.history);
+		history = fh.history;
 		history_size = (size_t)fh.history_size;
 		history_index = (size_t)fh.history_index;
 		N = (unsigned long)fh.N;

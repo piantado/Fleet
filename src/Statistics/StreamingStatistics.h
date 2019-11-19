@@ -34,8 +34,8 @@ public:
 		sum = s.sum;
 		lse = s.lse;
 		N   = s.N;
-		streaming_median = std::move(s.streaming_median);
-		reservoir_sample = std::move(s.reservoir_sample);
+		streaming_median = s.streaming_median;
+		reservoir_sample = s.reservoir_sample;
 	}
 
 	void add(double x, double lw=0.0) {

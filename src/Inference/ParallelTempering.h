@@ -140,6 +140,7 @@ public:
 			}
 			else {
 				last = now();
+				
 #ifdef PARALLEL_TEMPERING_SHOW_STATISTICS
 				show_statistics();
 #endif
