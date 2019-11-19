@@ -137,13 +137,9 @@ public:
 			}
 			
 			if(current.posterior > -infinity) {
-			
-				CERR "# Proposing " ENDL;
 				std::tie(proposal,fb) = current.propose();
 			}
 			else {
-				CERR "# Restarting " ENDL;
-				
 				proposal = current.restart();
 			}
 				
