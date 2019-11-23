@@ -58,9 +58,9 @@ Polydeg get_polynomial_degree_rec(Node& n) {
         Polydeg v2 = get_polynomial_degree_rec(n.child[1]);
 		if(v1.isnan() or v2.isnan()) return Polydeg(NaN,false); 
         else if(v1.is_const && v2.is_const) return Polydeg(v1.value/v2.value,true); // if boths consts, then return their value
-        else if(v1.is_const) return Polydeg(-v2.value, false); // negative powers
+        else if(v1.is_const) return Polydeg(NaN, false); // negative powers not allowed -- since otherwise things like x/(1+x) are counted as polynomials
         else if(v2.is_const) return v1; // v1 is an exponent, constant doesn't matter
-        return Polydeg(NaN,true); //NOTE then (x...)/(x...) isn't a polynomial
+        return Polydeg(NaN,true); 
     }
     else if(fmt == "(%s^%s)") {
         Polydeg v1 = get_polynomial_degree_rec(n.child[0]);

@@ -2,7 +2,7 @@
 
 myhost=$(hostname -s)
 threads=2 # for running on simon and garfunkel, multithreads don't seem to go well
-jobs=20 # on the other hand, we can have lots of jobs
+jobs=30 # on the other hand, we can have lots of jobs
 
 factors=(1 2 3 4)
 #if [ $myhost = "colala-hastings" ] || [ $myhost = "garfunkel" ] ; then
