@@ -358,7 +358,7 @@ int main(int argc, char** argv){
 					 ( (h.posterior-sz) + (m.second.max().posterior-Z)) TAB // b/c I am using reservoir sampling, I am just one out of the size
 					 h.posterior TAB h.prior TAB h.likelihood TAB
 					 h.callOne(0.0, NaN) TAB h.callOne(1.0, NaN) TAB 
-					 get_polynomial_degree(h.value) TAB 
+					 get_polynomial_degree(h.value, h.constants) TAB 
 					 Q(h.string()) TAB Q(h.parseable()) ENDL;
 			}
 		}
