@@ -85,28 +85,33 @@ public:
 		std::lock_guard guard(lock);
 
 		// if we aren't in there and our posterior is better than the worst
-		if(s.find(x) == s.end() and 
-			(s.size() < N or x.posterior > s.begin()->posterior)) { // skip adding if its the worst
-			T xcpy = x;
-		
-			if(print_best && (empty() or x.posterior > best().posterior))  {
-				xcpy.print();
-			}
-		
-			s.insert(xcpy); // add this one
-//			assert(cnt.find(xcpy) == cnt.end());
-			cnt[xcpy] = count;
+		if(s.find(x) == s.end()) {
 			
-			// and remove until we are the right size
-			while(s.size() > N) {
-				size_t n = cnt.erase(*s.begin());
-				assert(n==1);
-				s.erase(s.begin()); 
+			if(s.size() < N or x.posterior > worst().posterior) { // skip adding if its the worst -- can't call worst_score due to lock
+				T xcpy = x;
+			
+				if(print_best && (empty() or x.posterior > best().posterior))  {
+					xcpy.print();
+				}
+			
+				s.insert(xcpy); // add this one
+				cnt[xcpy] = count;
+				
+				// and remove until we are the right size
+				while(s.size() > N) {
+					size_t n = cnt.erase(*s.begin());
+					assert(n==1);
+					s.erase(s.begin()); 
+				}
 			}
-		}
-		else { // if its stored somewhere already
+			else { 			
+				// it's not in there so don't increment the count
+			}
+		} 
+		else { // it's in there already
 			cnt[x] += count;
-		}
+		} 
+		
 	}
 	void operator<<(const T& x) {
 		add(x);
@@ -135,12 +140,12 @@ public:
 		return *s.begin(); 
 	}
 	
-	double best_score() {
+	double best_score() { // thread safe
 		std::lock_guard guard(lock);
 		if(s.empty()) return -infinity;
 		return s.rbegin()->posterior;  
 	}
-	double worst_score() {
+	double worst_score() { // thread safe
 		std::lock_guard guard(lock);
 		if(s.empty()) return infinity;
 		return s.begin()->posterior;  
