@@ -329,9 +329,9 @@ public:
 									if(i.is_a(BuiltinOp::op_FLIPP)) { // only for built-in ops do we 
 										p = getpop<double>(); // reads a double argfor the coin weight
 										if(std::isnan(p)) { p = 0.0; } // treat nans as 0s
-										assert(p <= 1.0 && p >= 0.0);
+										assert(p <= 1.0 and p >= 0.0);
 									}
-								} else { assert(! i.is_a(BuiltinOp::op_FLIPP)); } // tif there is no double, we can't use flipp
+								} else { assert( (!i.is_a(BuiltinOp::op_FLIPP) && "*** Cannot us flipp without double defined")); } // if there is no double, we can't use flipp
 								
 					
 								pool->copy_increment_push(this, true,  log(p));

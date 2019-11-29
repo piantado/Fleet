@@ -1,13 +1,16 @@
 library(ggplot2)
 
-d <- read.table("out/output.out", header=F)
-names(d) <- c("data.amount", "cnt", "posterior", "prior", "likelihood", "KL1", "KL2", "recurse", "hypothesis")
+NDATA <- 600 # the amount of data we computed on 
+
+d <- read.table("out/out.txt", header=F)
+names(d) <- c("KL1", "KL2", "recurse", "posterior", "prior", "likelihood",  "hypothesis")
+d$likelihood.per <- d$likelihood / NDATA
 
 remap = list("U.U.U.U.U.U.U.U.U"="Non-Knower",
              "1.U.U.U.U.U.U.U.U"="1-knower",
              "1.2.U.U.U.U.U.U.U"="2-knower",
              "1.2.3.U.U.U.U.U.U"="3-knower",
-             #"1.2.3.4.U.U.U.U.U"="4-knower",
+             "1.2.3.4.U.U.U.U.U"="4-knower",
              "1.2.3.4.5.6.7.8.9"="Full Counter")           
 
 # Check if we include the ANS
@@ -60,9 +63,9 @@ dev.off()
 logsumexp <- function(x) { m=max(x); log(sum(exp(x-m)))+m }
 
 D <- NULL
-for(amt in seq(1,300,1)) {
+for(amt in seq(1,600,5)) {
 
-    d$newpost <- d$prior + amt*d$likelihood/d$data.amount # compute a new approximate posterior by scaling the ll-per-datapoint 
+    d$newpost <- d$prior + amt*d$likelihood.per # compute a new approximate posterior by scaling the ll-per-datapoint 
     d$newpost <- exp(d$newpost - logsumexp(d$newpost)) #normalize and convert to probability
     a <- aggregate(newpost ~ KnowerLevel + ANS, d, sum)
     a$data.amount=amt
@@ -75,8 +78,8 @@ plt <- ggplot(subset(D,!ANS), aes(x=data.amount,y=newpost,color=KnowerLevel,grou
     geom_line(data=subset(D,ANS), linetype="dashed", width=1.5) +
     theme_bw() + theme(legend.position=c(.85,.5)) +
     xlab("Amount of data") + ylab("Posterior probability of knower-levels")
-    
-cairo_pdf("curves.pdf", height=4, width=6) # Cairo needed for unicode arrow output
+
+cairo_pdf("curves.pdf", height=3, width=6) # Cairo needed for unicode arrow output
 plt
 dev.off()
 

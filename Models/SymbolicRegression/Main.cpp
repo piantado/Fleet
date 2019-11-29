@@ -325,7 +325,7 @@ int main(int argc, char** argv){
 	double cutoff = -infinity;
 	std::vector<double> structureScores;
 	for(auto& q: master_samples)  {
-		structureScores.push_back(q.second.max().posterior);
+		structureScores.push_back(q.second.best_posterior());
 	}
 	
 	double maxscore = -infinity;
@@ -339,26 +339,37 @@ int main(int argc, char** argv){
 	// figure out the structure normalizer
 	double Z = -infinity;
 	for(auto s : structureScores) {
-		if(s >= cutoff) Z = logplusexp(Z, s); // accumulate all of this -- TODO: Should we only be adding up ones over the cutoff?
+		if(s >= cutoff) 
+			Z = logplusexp(Z, s); // accumulate all of this -- TODO: Should we only be adding up ones over the cutoff?
 	}
 	COUT "# Cutting off at " << cutoff ENDL;
 	
 	// And display!
-	COUT "structure\tstructure.max\testimated.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\th\tparseable.h" ENDL;
+	COUT "structure\tstructure.max\testimated.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\tmade.cutoff\th\tparseable.h" ENDL;
 	for(auto& m : master_samples) {
-		if(m.second.max().posterior >= cutoff) {
+		double best_posterior = m.second.best_posterior();
+		MyHypothesis hm = m.second.max();
+		double pd = get_polynomial_degree(hm.value, hm.constants);
+		// NOTE: we are picking just one example from this structure -- this may not be a great idea, but should work fine since
+		// we are next checking whether the degree is exactly 1 or 0, which should only happen if the degree is right based on the structure
+		
+		// Look at structures that are above the cutoff or linear
+		// NOTE: This might miss a measure zero chance when the constants make you exactly linear
+		if(best_posterior >= cutoff){ // or (pd==0.0 or pd==1.0))  {
 
 			// find the normalizer for this structure
 			double sz = -infinity;
-			for(auto& h : m.second) sz = logplusexp(sz, h.posterior);
+			for(auto& h : m.second) 
+				sz = logplusexp(sz, h.posterior);
 			
 			for(auto h : m.second) {
 				COUT QQ(h.structure_string()) TAB 
-				     m.second.max().posterior TAB 
-					 ( (h.posterior-sz) + (m.second.max().posterior-Z)) TAB // b/c I am using reservoir sampling, I am just one out of the size
+				     best_posterior TAB 
+					 ( (h.posterior-sz) + (best_posterior-Z)) TAB 
 					 h.posterior TAB h.prior TAB h.likelihood TAB
 					 h.callOne(0.0, NaN) TAB h.callOne(1.0, NaN) TAB 
 					 get_polynomial_degree(h.value, h.constants) TAB 
+					 1*(best_posterior >= cutoff) TAB
 					 Q(h.string()) TAB Q(h.parseable()) ENDL;
 			}
 		}

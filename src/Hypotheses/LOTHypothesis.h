@@ -26,6 +26,7 @@ public:
 
 	LOTHypothesis(Grammar* g=nullptr)  : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
 	LOTHypothesis(Grammar* g, T&& x)   : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
+	LOTHypothesis(Grammar* g, T& x)    : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
 
 	// parse this from a string
 	LOTHypothesis(Grammar* g, std::string s) : MCMCable<HYP,t_datum,t_data>(), grammar(g)  {

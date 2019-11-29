@@ -76,7 +76,6 @@ public:
 	
 	Node(const Node& n) :
 		parent(nullptr), child(n.child.size()), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
-//		child.resize(n.child.size());
 		child = n.child;
 		fix_child_info();
 	}
@@ -85,11 +84,7 @@ public:
 		child = std::move(n.child);
 		fix_child_info();
 	}
-//	Node(Node&& n) :
-//		parent(nullptr), child(n.child), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
-//		for(size_t i=0;i<child.size();i++) child[i].parent = this;
-//	}
-
+	
 	void operator=(const Node& n) {
 		parent = nullptr; 
 		rule = n.rule;
@@ -98,17 +93,6 @@ public:
 		child = n.child;
 		fix_child_info();
 	}
-//	void operator=(Node&& n) {
-//		parent = nullptr; 
-//		rule = n.rule;
-//		lp = n.lp;
-//		can_resample = n.can_resample;
-//		
-//		// just move the vector and then set the parents after
-//		// this is a speed optimization rather than using set_child
-//		child = std::move(n.child); 
-//		for(size_t i=0;i<child.size();i++) child[i].parent = this; 
-//	}
 
 	void operator=(Node&& n) {
 		parent = nullptr; 

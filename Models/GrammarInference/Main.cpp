@@ -118,7 +118,7 @@ Matrix my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, 
 	for(size_t h=0;h<hypotheses.size() and !CTRL_C;h++) {
 		for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
 			if(human_data[di].given_data.size() == 0) {
-				// shoudl catch di=0
+				// should catch di=0
 				out(h,di) = 0.0;
 				continue;
 			}

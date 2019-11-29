@@ -61,6 +61,16 @@ public:
 	auto begin() { return vals.begin(); }
 	auto end()   { return vals.end(); }
 
+	double best_posterior() const {
+		// what is the best posterior score here?		
+		double bp = -infinity;
+		for(const auto& h : vals) {
+			if(h.posterior > bp) 
+				bp = h.posterior;
+		}
+		return bp;
+	}
+
 	void add(T x, double lw=0.0) {
 		//std::lock_guard guard(lock);
 		
@@ -70,12 +80,12 @@ public:
 			s.insert(Item(x,r,lw));
 						
 			vals.insert(x);
+			
 			while(s.size() > reservoir_size) {
-				auto i = s.begin(); // which one we remove -- last one since set stores things sorted
-				auto pos = vals.find(x); 
-				assert(pos != vals.end());
+				auto y   = s.begin(); // which one we remove -- first one since set stores things sorted
+				auto pos = vals.find(y->x); assert(pos != vals.end());
 				vals.erase(pos); // this only deletes one? 
-				s.erase(i); // erase the item
+				s.erase(y); // erase the item
 				// NOTE: we might sometimes get identical x and r, and then this causes problems because it will delete all? Very rare though...
 			}
 			
@@ -104,11 +114,6 @@ public:
 			if(zz >= r) return i.x;			
 		}
 		assert(0 && "*** Should not get here");
-		
-//		std::uniform_int_distribution<int> sampler(0,vals.size()-1);
-//		auto pos = vals.begin();
-//		std::advance(pos, sampler(rng));
-//		return *pos;
 	}
 	
 };

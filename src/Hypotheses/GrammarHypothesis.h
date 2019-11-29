@@ -198,7 +198,7 @@ public:
 			
 			double lp = 0.0;
 			size_t offset = 0; // 
-			for(size_t nt=0;nt<N_NTs;nt++) { // each nonterminal in the grammar is a DM
+			for(size_t nt=0;nt<grammar->count_nonterminals();nt++) { // each nonterminal in the grammar is a DM
 				size_t nrules = grammar->count_rules( (nonterminal_t) nt);
 				if(nrules==1) continue;
 				Vector a = eigenslice(etothex,offset,nrules); // TODO: seqN doesn't seem tow ork with this c++ version

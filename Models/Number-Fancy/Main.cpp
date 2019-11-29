@@ -1,11 +1,13 @@
 //  TODO: Update ANS= to be something reasonable!
 //			- ANSeq needs to normalize by the integers, right?
 
+// TODO: Add set operations for wmsets?
+
 #include <vector>
 #include <string>
 #include <random>
 
-double recursion_penalty = -50.0;
+double recursion_penalty = -75.0;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Set up some basic variables for the model
@@ -174,13 +176,13 @@ std::tuple PRIMITIVES = {
 	Primitive("10",    +[]() -> magnitude { return 10; }),
 	
 	//x, recurse, ifset, ifword
-	Builtin::If<set>("if(%s,%s,%s)"),		
-	Builtin::If<word>("if(%s,%s,%s)"),	
-	Builtin::If<wmset>("if(%s,%s,%s)"),		
+	Builtin::If<set>("if(%s,%s,%s)", 1/3.),		
+	Builtin::If<word>("if(%s,%s,%s)", 1/3.),	
+	Builtin::If<wmset>("if(%s,%s,%s)", 1./3.),		
 	Builtin::If<objectkind>("if(%s,%s,%s)"),
 	Builtin::If<magnitude>("if(%s,%s,%s)"),		
-	Builtin::X<utterance>("x", 5.0),
-	Builtin::FlipP("flip(%s)", 5.0),
+	Builtin::X<utterance>("x", 10.0),
+	Builtin::FlipP("flip(%s)", 2.0),
 	Builtin::Recurse<word,utterance>("F(%s)")	
 };
 
