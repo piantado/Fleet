@@ -12,14 +12,6 @@
 #include <cmath>
 #include <unsupported/Eigen/SpecialFunctions>
 
-enum class CustomOp {
-	op_And, op_Or, op_Not, op_Xor, op_Iff, op_Implies,
-	op_Yellow, op_Green, op_Blue, 
-	op_Rectangle, op_Triangle, op_Circle,
-	op_Size1, op_Size2, op_Size3, 
-	op_Y // this implements a simple form of quantification where if you use op_Y, it univerally quantifies over the whole set
-};
-
 enum class Shape { rectangle, triangle, circle};
 enum class Color { yellow, green, blue};
 enum class Size  { size1, size2, size3};
@@ -54,13 +46,46 @@ typedef struct LearnerDatum {
 	}
 } LearnerDatum; 
 
-
-
 const double alpha = 0.9; // fixed for the learning part of the model
 
-// Define our types. 
-#define NT_TYPES    bool,   Object,      int, std::set<Object>
-#define NT_NAMES nt_bool,nt_object, nt_value, nt_set
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#define FLEET_GRAMMAR_TYPES bool,Object
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include "Primitives.h"
+#include "Builtins.h"
+
+std::tuple PRIMITIVES = {
+	Primitive("and(%s,%s)",     +[](bool a, bool b) -> bool { return (a and b); }, 2.0), // optional specification of prior weight (default=1.0)
+	Primitive("or(%s,%s)",      +[](bool a, bool b) -> bool { return (a or b); }),
+	Primitive("iff(%s,%s)",     +[](bool a, bool b) -> bool { return (a == b); }),
+	Primitive("xor(%s,%s)",     +[](bool a, bool b) -> bool { return (a xor b); }),
+	Primitive("implies(%s,%s)", +[](bool a, bool b) -> bool { return ((not a) or (a and b)); }),
+	Primitive("not(%s)",        +[](bool a)         -> bool { return (not a); }),
+	// that + is really insane, but is needed to convert a lambda to a function pointer
+
+	Primitive("yellow(%s)",    +[](Object x)       -> bool { return x.color == Color::yellow; }),
+	Primitive("green(%s)",     +[](Object x)       -> bool { return x.color == Color::green; }),
+	Primitive("blue(%s)",      +[](Object x)       -> bool { return x.color == Color::blue; }),
+
+	Primitive("rectangle(%s)", +[](Object x)       -> bool { return x.shape == Shape::rectangle; }),
+	Primitive("triangle(%s)",  +[](Object x)       -> bool { return x.shape == Shape::triangle; }),
+	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::circle; }),
+	
+	Primitive("size1(%s)",     +[](Object x)       -> bool { return x.size == Size::size1; }),
+	Primitive("size2(%s)",     +[](Object x)       -> bool { return x.size == Size::size2; }),
+	Primitive("size3(%s)",     +[](Object x)       -> bool { return x.size == Size::size3; }),
+		
+	// but we also have to add a rule for the BuiltinOp that access x, our argument
+	Builtin::X<Object>("x", 10.0)
+};
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
@@ -71,74 +96,15 @@ const double alpha = 0.9; // fixed for the learning part of the model
 
 typedef HumanDatum<LearnerDatum> MyHumanDatum;
 
-// Define a grammar
-class MyGrammar : public Grammar { 
-public:
-	MyGrammar() : Grammar() {
-		add( Rule(nt_object, BuiltinOp::op_X,        "x",            {},                               1.0) );		
-//		add( Rule(nt_object, BuiltinOp::op_Y,        "Any-Y",            {},                               1.0) );		
-		
-		add( Rule(nt_bool,   CustomOp::op_Yellow,    "yellow(%s)",        {nt_object},               1.0) );		
-		add( Rule(nt_bool,   CustomOp::op_Green,     "green(%s)",         {nt_object},             1.0) );
-		add( Rule(nt_bool,   CustomOp::op_Blue,      "blue(%s)",          {nt_object},              1.0) );
-		
-		add( Rule(nt_bool,   CustomOp::op_Rectangle, "rectangle(%s)",       {nt_object},             1.0) );		
-		add( Rule(nt_bool,   CustomOp::op_Triangle,  "triangle(%s)",        {nt_object},             1.0) );
-		add( Rule(nt_bool,   CustomOp::op_Circle,    "circle(%s)",          {nt_object},             1.0) );
-		
-		add( Rule(nt_bool,   CustomOp::op_Size1,     "size1(%s)",          {nt_object},             1.0) );		
-		add( Rule(nt_bool,   CustomOp::op_Size2,     "size2(%s)",          {nt_object},             1.0) );
-		add( Rule(nt_bool,   CustomOp::op_Size3,     "size3(%s)",          {nt_object},             1.0) );
-		
-		add( Rule(nt_bool, CustomOp::op_And,         "and(%s,%s)",  {nt_bool, nt_bool},            1.0/3.) );
-		add( Rule(nt_bool, CustomOp::op_Or,          "or(%s,%s)",   {nt_bool, nt_bool},            1.0/3.) );
-		add( Rule(nt_bool, CustomOp::op_Not,         "not(%s)",      {nt_bool},            1.0/3.) );
-		add( Rule(nt_bool, CustomOp::op_Xor,         "xor(%s,%s)",  {nt_bool, nt_bool},            1.0/3.) );
-		add( Rule(nt_bool, CustomOp::op_Iff,         "iff(%s,%s)",  {nt_bool, nt_bool},            1.0/3.) );
-		add( Rule(nt_bool, CustomOp::op_Implies,     "implies(%s,%s)", {nt_bool, nt_bool},            1.0/3.) );
-	}
-};
-
-
-class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool,LearnerDatum> {
+class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,Object,bool,LearnerDatum> {
 public:
 	// This is going to assume that all variables other than x are universally quantified over. 
-	using Super = LOTHypothesis<MyHypothesis,Node,nt_bool,Object,bool,LearnerDatum>;
-	
-	MyHypothesis()                      : Super() {}
-	MyHypothesis(Grammar* g)            : Super(g) {}
-	MyHypothesis(Grammar* g, Node v)    : Super(g,v) {}
+	using Super = LOTHypothesis<MyHypothesis,Node,Object,bool,LearnerDatum>;
+	using Super::Super;
 	
 	double compute_single_likelihood(const t_datum& di) {
 		bool out = callOne(di.x, false);
 		return (out == di.correctAnswer ? log(di.alpha + (1.0-di.alpha)/2.0) : log((1.0-di.alpha)/2.0));
-	}
-	
-	abovmstatus_tspatch_rule(Instruction i, VirtualMachinePool<Object, bool>* pool, VirtualMachineState<Object,bool>& vms, Dispatchable<Object,bool>* loader ) {
-		switch(i.getCustom()) {
-			CASE_FUNC1(CustomOp::op_Yellow,         bool,  Object,    [](const Object& x){ return x.color == Color::yellow; })
-			CASE_FUNC1(CustomOp::op_Green,       bool,  Object,    [](const Object& x){ return x.color == Color::green; })
-			CASE_FUNC1(CustomOp::op_Blue,        bool,  Object,    [](const Object& x){ return x.color == Color::blue; })
-			
-			CASE_FUNC1(CustomOp::op_Rectangle,      bool,  Object,    [](const Object& x){ return x.shape == Shape::rectangle; })
-			CASE_FUNC1(CustomOp::op_Triangle,    bool,  Object,    [](const Object& x){ return x.shape == Shape::triangle; })
-			CASE_FUNC1(CustomOp::op_Circle,      bool,  Object,    [](const Object& x){ return x.shape == Shape::circle; })
-			
-			CASE_FUNC1(CustomOp::op_Size1,      bool,  Object,    [](const Object& x){ return x.size == Size::size1; })
-			CASE_FUNC1(CustomOp::op_Size2,      bool,  Object,    [](const Object& x){ return x.size == Size::size2; })
-			CASE_FUNC1(CustomOp::op_Size3,      bool,  Object,    [](const Object& x){ return x.size == Size::size3; })
-			
-			CASE_FUNC2(CustomOp::op_And,         bool,bool,bool,    [](const bool a, bool b){ return a and b; })
-			CASE_FUNC2(CustomOp::op_Or,          bool,bool,bool,    [](const bool a, bool b){ return a or b; })
-			CASE_FUNC1(CustomOp::op_Not,         bool,bool,         [](const bool a){ return  not a; })
-			CASE_FUNC2(CustomOp::op_Xor,         bool,bool,bool,    [](const bool a, bool b){ return (a xor b); })
-			CASE_FUNC2(CustomOp::op_Iff,         bool,bool,bool,    [](const bool a, bool b){ return (a==b); })
-			CASE_FUNC2(CustomOp::op_Implies,     bool,bool,bool,    [](const bool a, bool b){ return (not a) or (a and b); })
-						
-			default:
-				assert(0 && " *** You used an invalid operation"); // should never get here
-		}
-		return vmstatus_t::GOOD;
 	}
 };
 
@@ -186,13 +152,10 @@ Matrix my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, 
 }
 
 
-// mydata stores the data for the inference model
 MyHypothesis::t_data mydata;
-// top stores the top hypotheses we have found
 TopN<MyHypothesis> top;
-MyGrammar grammar;
+Grammar grammar(PRIMITIVES);
 	
-
 // define some functions to print out a hypothesis
 void print(MyHypothesis& h) {
 	COUT top.count(h) TAB  h.posterior TAB h.prior TAB h.likelihood TAB QQ(h.string()) ENDL;
@@ -203,7 +166,7 @@ void gcallback(GrammarHypothesis<MyHypothesis,MyHumanDatum>& h) {
 		COUT h.posterior TAB "baseline" TAB h.get_baseline() ENDL;
 		COUT h.posterior TAB "forwardalpha" TAB h.get_forwardalpha() ENDL;
 		size_t xi=0;
-		for(size_t nt=0;nt<N_NTs;nt++) {
+		for(size_t nt=0;nt<h.grammar->count_nonterminals();nt++) {
 			for(size_t i=0;i<h.grammar->count_rules( (nonterminal_t) nt);i++) {
 				std::string rs = h.grammar->get_rule((nonterminal_t)nt,i)->format;
 		 		rs = std::regex_replace(rs, std::regex("\\%s"), "X");
@@ -212,7 +175,6 @@ void gcallback(GrammarHypothesis<MyHypothesis,MyHumanDatum>& h) {
 			}
 		}
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
