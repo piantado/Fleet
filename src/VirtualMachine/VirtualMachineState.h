@@ -46,6 +46,9 @@ public:
 	VirtualMachineState(t_x x, t_return e, size_t _recursion_depth=0) :
 		err(e), lp(0.0), recursion_depth(_recursion_depth), status(vmstatus_t::GOOD) {
 		xstack.push(x);
+		
+//		opstack.reserve(32); // Doesn't speed up!
+		
 	}
 	
 	virtual ~VirtualMachineState() {};	// needed so VirtualMachinePool can delete
@@ -190,7 +193,17 @@ public:
 								// convert the instruction arg to a string and push it
 								push(std::string(1,(char)i.arg));
 								break;
-							} else { assert(false && "*** Cannot use op_ALPHABET if std::string is not in FLEET_GRAMMAR_TYPES"); }
+							}
+							else { assert(false && "*** Cannot use op_ALPHABET if std::string is not in FLEET_GRAMMAR_TYPES"); }
+						}
+						case BuiltinOp::op_ALPHABETchar: 
+						{
+							if constexpr (contains_type<char,FLEET_GRAMMAR_TYPES>()) { 
+								// convert the instruction arg to a string and push it
+								push((char)i.arg);
+								break;
+							}
+							else { assert(false && "*** Cannot use op_ALPHABET if std::string is not in FLEET_GRAMMAR_TYPES"); }
 						}
 						case BuiltinOp::op_MEM:
 						{
@@ -236,7 +249,11 @@ public:
 									push<t_return>(t_return{}); //push default (null) return
 									continue;
 								}
-								
+								else if(recursion_depth+1 > MAX_RECURSE) {
+									getpop<t_x>(); // ignored b/c we're bumping out
+									push<t_return>(t_return{});
+									continue;
+								}
 							} else { assert(false && "*** Can only use SAFE_RECURSE on strings");}
 							
 							// want to fallthrough here
@@ -276,6 +293,11 @@ public:
 								else if(stack<t_x>().top().size() == 0) { //exists but is empty
 									getpop<t_x>(); // this would have been the argument
 									push<t_return>(t_return{}); //push default (null) return
+									continue;
+								}
+								else if(recursion_depth+1 > MAX_RECURSE) {
+									getpop<t_x>();
+									push<t_return>(t_return{});
 									continue;
 								}
 							} else { assert(false && "*** Can only use SAFE_MEM_RECURSE on strings.");}
