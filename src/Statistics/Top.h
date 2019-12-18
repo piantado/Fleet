@@ -87,10 +87,10 @@ public:
 		// if we aren't in there and our posterior is better than the worst
 		if(s.find(x) == s.end()) {
 			
-			if(s.size() < N or x.posterior > worst().posterior) { // skip adding if its the worst -- can't call worst_score due to lock
+			if(s.size() < N or (empty() or x.posterior > worst().posterior)) { // skip adding if its the worst -- can't call worst_score due to lock
 				T xcpy = x;
-			
-				if(print_best && (empty() or x.posterior > best().posterior))  {
+				\
+				if(print_best and (empty() or x.posterior > best().posterior))  {
 					xcpy.print();
 				}
 			

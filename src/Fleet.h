@@ -128,6 +128,50 @@ namespace Fleet {
 	}
 }
 
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Time is a goddamn nightmare, we are going to define our own time type
+/// In Fleet, EVERYTHING is going to be stored as an unsigned long for ms
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include <chrono>
+
+typedef unsigned long time_ms;
+typedef std::chrono::steady_clock::time_point timept;
+
+timept now() { 
+	return std::chrono::steady_clock::now();
+}
+
+time_ms time_since(timept x) {
+	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now()-x).count();
+}
+
+
+// this is just handy for timing stuff -- put blocks of code between tic() and tic()
+timept tic_start;
+time_ms tic_elapsed;
+void tic() {
+	// record the amount of time since the last tic()
+	tic_elapsed =  time_since(tic_start);
+	tic_start = now();
+}
+double elapsed_seconds() { return tic_elapsed / 1000.0; }
+
+
+std::string datestring() {
+	//https://stackoverflow.com/questions/40100507/how-do-i-get-the-current-date-in-c
+	
+	time_t rawtime;
+	struct tm * timeinfo;
+	char buffer[80];
+
+	time (&rawtime);
+	timeinfo = localtime(&rawtime);
+
+	strftime(buffer,80,"%Y-%m-%d %I:%M:%S",timeinfo);
+	return std::string(buffer);
+}
+
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// This is how programs are represented
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -137,6 +181,7 @@ typedef Stack<Instruction> Program;
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We defaultly include all of the major requirements for Fleet
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include "Control.h"
 #include "Numerics.h"
 #include "Random.h"
 #include "Strings.h"
@@ -192,17 +237,14 @@ void Fleet_initialize() {
 	char hostname[HOST_NAME_MAX]; 	gethostname(hostname, HOST_NAME_MAX);
 	char username[LOGIN_NAME_MAX];	getlogin_r(username, LOGIN_NAME_MAX);
 
-	// Get the start time
-    auto timenow = std::chrono::system_clock::to_time_t(now()); 
-
 	// and build the command to get the md5 checksum of myself
 	char tmp[64]; sprintf(tmp, "md5sum /proc/%d/exe", getpid());
 	
-	// parse the time
+	// convert everything to ms
 	runtime = convert_time(timestring);	
 	
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
-	COUT "# Running Fleet on " << hostname << " with PID=" << getpid() << " by user " << username << " at " << ctime(&timenow);
+	COUT "# Running Fleet on " << hostname << " with PID=" << getpid() << " by user " << username << " at " <<  datestring() ENDL;
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
 	COUT "# Executable checksum: " << system_exec(tmp);
 	COUT "# \t --input=" << input_path ENDL;
@@ -210,7 +252,7 @@ void Fleet_initialize() {
 	COUT "# \t --chains=" << nchains ENDL;
 	COUT "# \t --mcmc=" << mcmc_steps ENDL;
 	COUT "# \t --mcts=" << mcts_steps ENDL;
-	COUT "# \t --time=" << timestring << " (" << runtime << " seconds)" ENDL;
+	COUT "# \t --time=" << timestring << " (" << runtime << " ms)" ENDL;
 	COUT "# \t --restart=" << mcmc_restart ENDL;
 	COUT "# \t --seed=" << random_seed ENDL;
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;	

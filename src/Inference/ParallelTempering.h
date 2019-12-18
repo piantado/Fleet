@@ -1,6 +1,6 @@
 #pragma once 
 
-// TOOD: Fix this so that if we have fewer threads than parallel chains, everything still works ok
+//#define PARALLEL_TEMPERING_SHOW_DETAIL
 
 #include <functional>
 #include "ChainPool.h"
@@ -72,7 +72,7 @@ public:
 		delete[] swap_history;
 	}
 	
-	void __swapper_thread(double swap_every ) {
+	void __swapper_thread(time_ms swap_every ) {
 		// runs a swapper every swap_every seconds (double)
 		// NOTE: If we have 1 element in the pool, it is caught below
 		auto last = now();
@@ -111,6 +111,10 @@ public:
 				// TODO: Compare to paper
 				if(R>0 || uniform() < exp(R)) { 
 					
+#ifdef PARALLEL_TEMPERING_SHOW_DETAIL
+					COUT "# Swapping " <<k<< " and " <<(k-1)<<"." TAB this->pool[k].current.posterior TAB this->pool[k-1].current.posterior TAB this->pool[k].current.string() TAB this->pool[k-1].current.string() ENDL;
+#endif
+					
 					// swap the chains
 					std::swap(this->pool[k].current, this->pool[k-1].current);
 					
@@ -130,7 +134,7 @@ public:
 		}
 	}
 	
-	void __adapter_thread(double adapt_every) {
+	void __adapter_thread(time_ms adapt_every) {
 		
 		auto last = now();
 		while(! (terminate or CTRL_C) ) {
@@ -141,7 +145,7 @@ public:
 			else {
 				last = now();
 				
-#ifdef PARALLEL_TEMPERING_SHOW_STATISTICS
+#ifdef PARALLEL_TEMPERING_SHOW_DETAIL
 				show_statistics();
 #endif
 				adapt(); // TOOD: Check what counts as t
@@ -150,20 +154,32 @@ public:
 	}
 	
 	
-	virtual void run(unsigned long steps, unsigned long time) { assert(0); }
-	virtual void run(unsigned long steps, unsigned long time, double swap_every, double adapt_every) {
+	virtual void run(unsigned long steps, time_ms time) { assert(0); }
+	virtual void run(unsigned long steps, time_ms time, time_ms swap_every, time_ms adapt_every) {
 		
-		// Start a swapper and adapter thread
-		std::thread swapper(&ParallelTempering<HYP,callback_t>::__swapper_thread, this, swap_every); // pass in the non-static mebers like this:
-		std::thread adapter(&ParallelTempering<HYP,callback_t>::__adapter_thread, this, adapt_every);
+		if(is_temperature) {
+			
+			// Start a swapper and adapter thread
+			std::thread swapper(&ParallelTempering<HYP,callback_t>::__swapper_thread, this, swap_every); // pass in the non-static mebers like this:
+			std::thread adapter(&ParallelTempering<HYP,callback_t>::__adapter_thread, this, adapt_every);
 
-		// run normal pool run
-		ChainPool<HYP,callback_t>::run(steps, time);
-		
-		// kill everything else once that thread is done
-		terminate = true;
-		swapper.join();
-		adapter.join();
+			// run normal pool run
+			ChainPool<HYP,callback_t>::run(steps, time);
+			
+			// kill everything else once that thread is done
+			terminate = true;
+			swapper.join();
+			adapter.join();
+			
+		}
+		else {
+			// no adapting if not temperature
+			
+			std::thread swapper(&ParallelTempering<HYP,callback_t>::__swapper_thread, this, swap_every); // pass in the non-static mebers like this:
+			ChainPool<HYP,callback_t>::run(steps, time);
+			terminate = true;
+			swapper.join();
+		}
 	}
 	
 	void show_statistics() {

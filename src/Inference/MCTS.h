@@ -220,7 +220,7 @@ public:
 	
 	
 	
-	virtual void playout() {
+	virtual void playout(unsigned long my_mcmc_steps, unsigned long my_mcmc_time) {
 		// this is how we compute playouts here -- defaultly mcmc 
 		
 #ifdef DEBUG_MCTS
@@ -235,7 +235,8 @@ public:
 		
 		// make a wrapper to add samples
 		std::function<void(HYP& h)> wrapped_callback = [this](HYP& h) { 
-			this->callback(h);
+			//this->callback(h);
+			(*callback)(h);
 			this->add_sample(h.posterior);
 		};
 		
@@ -243,7 +244,7 @@ public:
 		
 		MCMCChain chain(h, data, wrapped_callback);
 		
-		chain.run(mcmc_steps, runtime); // run mcmc with restarts; we sure shouldn't run more than runtime
+		chain.run(my_mcmc_steps, my_mcmc_time); // run mcmc with restarts; we sure shouldn't run more than runtime
 	}
 	
 	
@@ -277,7 +278,7 @@ public:
 	}
    
 	// search for some number of steps
-	void search(unsigned long steps, unsigned long time) {
+	void search(unsigned long steps, unsigned long time, unsigned long my_mcmc_steps, unsigned long my_mcmc_time) {
 		
 		using clock = std::chrono::high_resolution_clock;
 		
@@ -292,20 +293,20 @@ public:
 				if(elapsed_time > time) break;
 			}
 			
-		   this->search_one();
+		   this->search_one(my_mcmc_steps, my_mcmc_time);
 		}
 	}
-	static void __helper(MCTSNode<HYP,callback_t>* h, unsigned long steps, unsigned long time) {
-		h->search(steps, time);
+	static void __helper(MCTSNode<HYP,callback_t>* h, unsigned long steps, unsigned long time, unsigned long my_mcmc_steps, unsigned long my_mcmc_time) {
+		h->search(steps, time, my_mcmc_steps, my_mcmc_time);
 	};
 	
-	void parallel_search(unsigned long cores, unsigned long steps, unsigned long time) { 
+	void parallel_search(unsigned long cores, unsigned long steps, unsigned long time, unsigned long my_mcmc_steps, unsigned long my_mcmc_time) { 
 		
 		std::thread threads[cores]; 
 			
 		// start everyone running 
 		for(unsigned long i=0;i<cores;i++) {
-			threads[i] = std::thread(__helper, this, steps, time);
+			threads[i] = std::thread(__helper, this, steps, time, my_mcmc_steps, my_mcmc_time);
 		}
 		
 		for(unsigned long i=0;i<cores;i++) {
@@ -316,7 +317,7 @@ public:
 	
 	
    
-    void search_one() {
+    void search_one(unsigned long my_mcmc_steps, unsigned long my_mcmc_time) {
         // sample a path down the tree and when we get to the end
         // use random playouts to see how well we do
        
@@ -325,7 +326,7 @@ public:
 #endif
 		
 		if(nvisits == 0) { // I am a leaf of the search who has not been expanded yet
-			this->playout(); // update my internal counts
+			this->playout(my_mcmc_steps, my_mcmc_time); // update my internal counts
 			open = value.neighbors() > 0; // only open if the value is partial
 			return;
 		}
@@ -342,7 +343,7 @@ public:
 				for(auto& c: children) {
 					nvisits++; // I am going to get a visit for each of these
 					
-					c.playout(); // update my internal counts
+					c.playout(my_mcmc_steps, my_mcmc_time); // update my internal counts
 					c.open = c.value.neighbors() > 0; // only open if the value is partial
 					
 					open = open || c.open; // I'm open if any child is
@@ -363,7 +364,7 @@ public:
 			
 			// choose the best and recurse
 			size_t bi = best_child_index();
-			children[bi].search_one();
+			children[bi].search_one(mcts_steps, my_mcmc_time);
 		}
     } // end search
 

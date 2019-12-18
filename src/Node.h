@@ -302,7 +302,7 @@ public:
 		// and just a little checking here
 		for(size_t i=0;i<rule->N;i++) {
 			assert(not child[i].is_null() && "Cannot linearize a Node with null children");
-			assert(child[i].rule->nt == rule->child_types[i] && "Somehow the child has incorrect types"); // make sure my kids types are what they should be
+			assert(child[i].rule->nt == rule->child_types[i] && "Somehow the child has incorrect types -- this is bad news for you."); // make sure my kids types are what they should be
 		}
 		
 		
@@ -312,19 +312,21 @@ public:
 			
 			int xsize = child[1].program_size()+1; // must be +1 in order to skip over the JMP too
 			int ysize = child[2].program_size();
-			assert(xsize < (1<<12) && "If statement jump size too large to be encoded in Instruction arg"); // these sizes come from the arg bitfield 
-			assert(ysize < (1<<12) && "If statement jump size too large to be encoded in Instruction arg");
+			assert(xsize < (1<<12) && "If statement jump size too large to be encoded in Instruction arg. Your program is too large for Fleet."); // these sizes come from the arg bitfield 
+			assert(ysize < (1<<12) && "If statement jump size too large to be encoded in Instruction arg. Your program is too large for Fleet.");
 			
 			child[2].linearize(ops);
 			
 			// make the right instruction 
 			// TODO: Assert that ysize fits 
 			ops.push(Instruction(BuiltinOp::op_JMP,ysize));
+//			ops.emplace_back(BuiltinOp::op_JMP, ysize);
 			
 			child[1].linearize(ops);
 			
 			// encode jump
 			ops.push(Instruction(BuiltinOp::op_IF, xsize)); 
+//			ops.emplace_back(BuiltinOp::op_IF, xsize);
 			
 			// evaluate the bool first so its on the stack when we get to if
 			child[0].linearize(ops);
@@ -343,7 +345,9 @@ public:
 			/* Here we push the children in increasing order. Then, when we pop rightmost first (as Primitive does), it 
 			 * assigns the correct index.  */
 			Instruction i = rule->instr; // use this as a template
-			ops.push(i);
+			ops.push(i);			
+//			ops.emplace_back(rule->instr); // these don't seem to speed thing up...
+			
 //			for(size_t i=0;i<rule->N;i++) {
 			for(int i=rule->N-1;i>=0;i--) { // here we linearize right to left so that when we call right to left, it matches string order			
 				child[i].linearize(ops);

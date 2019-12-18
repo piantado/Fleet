@@ -28,7 +28,7 @@ enum class BuiltinOp {
 	op_SAFE_RECURSE, op_SAFE_MEM_RECURSE,
 	op_FLIP,op_FLIPP,op_IF,op_JMP,
 	op_TRUE,op_FALSE,
-	op_ALPHABET
+	op_ALPHABET,op_ALPHABETchar // strings by default, also can do chars
 	//op_LAMBDA,op_APPLY // simple, one-argument lambda functions (as in forall)
 };
 

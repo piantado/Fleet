@@ -34,32 +34,6 @@ bool is_prefix(const T& prefix, const T& x) {
 	return std::equal(prefix.begin(), prefix.end(), x.begin());
 }
 
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Just a convenient wrapper for timing
-/// this times between successive calls to tic()
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-auto ticstart = std::chrono::high_resolution_clock::now();
-std::chrono::duration<double> ticelapsed;
-
-auto now() { 
-	return std::chrono::high_resolution_clock::now();
-}
-double time_since(std::chrono::time_point<std::chrono::high_resolution_clock> x) {
-	auto n = now();
-	return std::chrono::duration_cast<std::chrono::duration<double>>(n-x).count();
-}
-
-void tic() {
-	// record the amount of time since the last tic()
-	auto x = now();
-	ticelapsed =  std::chrono::duration_cast<std::chrono::duration<double>>(x-ticstart);
-	ticstart = x;
-}
-
-double elapsed_seconds() {
-	return ticelapsed.count(); 
-}
 
 // From https://stackoverflow.com/questions/478898/how-to-execute-a-command-and-get-output-of-command-within-c-using-posix
 std::string system_exec(const char* cmd) {
@@ -80,8 +54,8 @@ std::string system_exec(const char* cmd) {
 /// Time conversions for fleet
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-unsigned long convert_time(std::string& s) {
-	// Converts our own time format to seconds, which is what Fleet's time utilities use
+time_t convert_time(std::string& s) {
+	// Converts our own time format to ms, which is what Fleet's time utilities use
 	// the time format we accept is #+(.#+)[smhd] where shmd specifies seconds, minutes, hours days 
 	
 	// specila case of s="0" will be allowed
@@ -90,10 +64,10 @@ unsigned long convert_time(std::string& s) {
 	// else we must specify a unit	
 	double multiplier; // for default multiplier of 1 is seconds
 	switch(s.at(s.length()-1)) {
-		case 's': multiplier = 1; break; 
-		case 'm': multiplier = 60; break;
-		case 'h': multiplier = 60*60; break;
-		case 'd': multiplier = 60*60*24; break;
+		case 's': multiplier = 1000; break; 
+		case 'm': multiplier = 60*1000; break;
+		case 'h': multiplier = 60*60*1000; break;
+		case 'd': multiplier = 60*60*24*1000; break;
 		default: 
 			CERR "*** Unknown time specifier: " << s.at(s.length()-1) << " in " << s << ". Did you forget a unit?" ENDL;
 			assert(0);

@@ -2,6 +2,8 @@
 
 #include <thread>
 
+//#define DEBUG_CHAINPOOL
+
 template<typename HYP, typename callback_t>
 class ChainPool { 
 	// Run n chains in parallel to set up a parallel scheme
@@ -14,7 +16,7 @@ public:
 	// NOTE: these interact with ParallelTempering swap/adapt values (because if these are too small, then
 	// we won't have time to update every chain before proposing more swaps)
 	static const unsigned long steps_before_change = 0;
-	static const unsigned long time_before_change  = 1; 
+	static const time_ms time_before_change = 250; 
 	
 	ChainPool() {}
 	
@@ -30,7 +32,7 @@ public:
 							 std::vector<bool>* running, 
 							 std::mutex* running_mutex,
 							 unsigned long steps, 
-							 unsigned long time) {
+							 time_ms time) {
 		
 		std::function<size_t(size_t)> next_index = [running](const size_t frm) -> size_t {
 			// assuming running is locked, find the first not running
@@ -49,12 +51,11 @@ public:
 		unsigned long my_steps = 0;
 		size_t idx = 0; // what pool item am I running on?
 		
+		
 		while( (steps == 0 or my_steps <= steps)          and 
 			   (time  == 0 or time_since(my_time) < time) and 
 			   !CTRL_C) {
-					
-//			CERR "# Running thread " <<std::this_thread::get_id() << " on "<< idx ENDL;
-
+		
 			do {
 				// find the next running we can update and do it
 				std::lock_guard lock(*running_mutex);
@@ -63,7 +64,11 @@ public:
 				(*running)[idx] = true;
 
 			} while(0);		
-			
+
+#ifdef DEBUG_CHAINPOOL
+			COUT "# Running thread " <<std::this_thread::get_id() << " on "<< idx TAB (*pool)[idx].current.posterior TAB (*pool)[idx].current.string() ENDL;
+#endif
+
 			// we need to store how many samples we did 
 			// so we can keep track of our total number
 			auto old_samples = (*pool)[idx].samples; 
@@ -81,7 +86,7 @@ public:
 		(*running)[idx] = false;	
 	}
 	
-	virtual void run(unsigned long steps, unsigned long time) {
+	virtual void run(unsigned long steps, time_ms time) {
 		
 		if(nthreads > pool.size()){
 			CERR "# Warning: more threads (" << nthreads << ") than chains ("<<pool.size()<<") is probably dumb.";

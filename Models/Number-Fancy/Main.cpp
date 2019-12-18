@@ -309,9 +309,24 @@ int main(int argc, char** argv){
 		alldata.push_back(mydata);
 		alltops.push_back(TopN<MyHypothesis>(ntop));
 	}
+	t_data biggestData = *alldata.rbegin();
+	
+	
+	
+	
+	// MCTS 
+	MyHypothesis h0(&grammar);
+	MCTSNode m(1.0, h0, &all, &biggestData);
+	tic();
+	m.parallel_search(nthreads, mcts_steps, runtime, 0, 1.0);
+	tic();
+	
+	m.print();
+	
+/*
+	
 	CERR "# Starting sampling." ENDL;
 	
-	t_data biggestData = *alldata.rbegin();
 	
 	// Run parallel tempering
 	MyHypothesis h0(&grammar);
@@ -330,9 +345,10 @@ int main(int argc, char** argv){
 	}
 	
 	COUT "# Computing posterior on all final values |D|=" << biggestData.size()  ENDL;
-	
+
 	// print out at the end
 	all.compute_posterior(biggestData).print();
+*/
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;

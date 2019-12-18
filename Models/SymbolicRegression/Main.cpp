@@ -70,7 +70,7 @@ public:
 	virtual double compute_constants_prior() const {
 		double lp = 0.0;
 		for(auto& c : constants) {
-			lp += normal_lpdf(c);
+			lp += cauchy_lpdf(c);
 		}
 		return lp;
 	}
@@ -292,7 +292,7 @@ int main(int argc, char** argv){
 	MyHypothesis h0(&grammar);
 	MCTSNode m(explore, h0, callback, &mydata);
 	tic();
-	m.parallel_search(nthreads, mcts_steps, runtime);
+	m.parallel_search(nthreads, mcts_steps, runtime, 0, 1.0);
 	tic();
 	
 	m.print(tree_path.c_str());

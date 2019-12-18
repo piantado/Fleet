@@ -26,18 +26,24 @@ S alphabet="nvadt";
 size_t max_length = 256; // max string length, else throw an error (128+ needed for count)
 size_t max_setsize = 64; // throw error if we have more than this
 size_t nfactors = 2; // how may factors do we run on?
-static const double alpha = 0.95; // reliability of the data
+
+// Run completed on Dec 12th static const double alpha = 0.95; // reliability of the data
+static const double alpha = 0.90; // reliability of the data
 
 const size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite so we won't see some stuff
 const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The more data, the slower...
 const size_t MAX_PR_LINES = 1000000; 
 
-std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "10000", "50000", "100000"}; // how many data points do we run on?
+const size_t NTEMPS = 10;
+const size_t MAXTEMP = 1000.0;
+
+std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
+//std::vector<S> data_amounts={"50000"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
 const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -25 to catch some less frequent things that happen by chance
-const unsigned long MAX_STEPS_PER_FACTOR   = 4096; //2048; //2048;
-const unsigned long MAX_OUTPUTS_PER_FACTOR = 512; // 256; // 512; //256;
+const unsigned long MAX_STEPS_PER_FACTOR   = 4096; //4096; 
+const unsigned long MAX_OUTPUTS_PER_FACTOR = 512; //512; 
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// These define all of the types that are used in the grammar.
@@ -94,9 +100,10 @@ std::tuple PRIMITIVES = {
 	
 	// And add built-ins:
 	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
+	Builtin::If<StrSet>("if(%s,%s,%s)", 1.0),		
+	Builtin::If<double>("if(%s,%s,%s)", 1.0),		
 	Builtin::X<S>("x"),
-	Builtin::Flip("flip()"),
-	Builtin::SafeRecurse<S,S>("F(%s)")	
+	Builtin::FlipP("flip(%s)")
 };
 
 #include "Fleet.h" 
@@ -223,7 +230,7 @@ public:
 		if(!has_valid_indices()) return DiscreteDistribution<S>();
 		
 		size_t i = factors.size()-1; 
-		return factors[i].call(x,err,this,MAX_STEPS_PER_FACTOR,MAX_OUTPUTS_PER_FACTOR,MIN_LP); 
+		return factors[i].call(x, err, this, MAX_STEPS_PER_FACTOR, MAX_OUTPUTS_PER_FACTOR,MIN_LP); 
 	}
 	
 	 
@@ -318,8 +325,6 @@ int main(int argc, char** argv){
 		}
 	}
 	
-	
-	
 	Grammar grammar(PRIMITIVES);
 	
 	for(size_t a=1;a<10;a++) { // pack probability into arg, out of 10
@@ -357,42 +362,104 @@ int main(int argc, char** argv){
 		datas.push_back(d);
 		tops.push_back(TopN<MyHypothesis>(ntop));
 	}
+
+
+//	TopN<MyHypothesis> top(100);
+//
+//	MyHypothesis h;
+//	for(size_t fi=0;fi<nfactors;fi++) {// start with the right number of factors
+//		InnerHypothesis f(&grammar);
+//		h.factors.push_back(f.restart());
+//	}
+//
+//	tic();
+////	ChainPool t(h,&datas[10], top, nthreads);
+//	ParallelTempering t(h0, &datas[10], top, nthreads, 1.0);
+//	t.run(10000,0, 100000, 100000);
+//	tic();
 	
-	// Run
-	ParallelTempering samp(h0, datas, tops);
+	// TODO: Let's check out heap allocators again -- seems like that msut be where most of our time is going...
+//	
+//	auto f = [&]() {
+//		MyHypothesis h;
+//		for(size_t fi=0;fi<nfactors;fi++) {// start with the right number of factors
+//			InnerHypothesis f(&grammar);
+//			h.factors.push_back(f.restart());
+//		}
+//	
+////		MCMCChain t(h, &datas[10], top);
+////		t.run(100000,0);
+//
+////		for(size_t i=0;i<1000000;i++) {
+////			h.compute_posterior(datas[10]);
+////			top << h;
+////			h = h.restart();
+////			FleetStatistics::global_sample_count++;
+////		}
+//	};
+//
+//
+//	tic();
+//	std::thread threads[nthreads]; 
+//	for(unsigned long t=0;t<nthreads;t++) {
+//		threads[t] = std::thread(f);
+//	}
+//	
+//	// wait for all to complete
+//	for(unsigned long t=0;t<nthreads;t++) {
+//		threads[t].join();
+//	}
+//	tic();
+
+
+//	for(auto& tn : tops) { 
+//		tn.set_print_best(true);
+//	}
+//	tops[tops.size()-1].set_print_best(true);
+	
+	// Run Parallel Tempering on data -- doesn't work great because it rarely swaps
+//	ParallelTempering samp(h0, datas, tops);
+//	tic();	
+//	samp.run(mcmc_steps, runtime, 200, 6000);	
+//	tic();
+
+	TopN<MyHypothesis> all(ntop); 
+//	all.set_print_best(true);
 	
 	tic();	
-	samp.run(mcmc_steps, runtime, 15.0, 60.0);	
+	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
+		
+		ParallelTempering samp(h0, &datas[di], all, NTEMPS, MAXTEMP);
+		samp.run(mcmc_steps, runtime/datas.size(), 1000, 60*1000);	
+		
+		all.print(data_amounts[di]);
+
+		h0 = all.best();
+		
+		if(di+1 < datas.size())
+			all = all.compute_posterior(datas[di+1]); // update for next time
+	}
 	tic();
 	
+	
 	// And finally print
-	TopN<MyHypothesis> all; 
-	for(auto& tn : tops) { 
-		all << tn; // will occur in some weird order since they're not in all the data
-	} 
-
-	for(size_t i=0;i<data_amounts.size();i++) {
-		TopN<MyHypothesis> tmptop; // just so they print in order - but note this will remove the NAs, so some later strings may have fewer!
-		for(auto h: all.values()) {
-			h.compute_posterior(datas[i]);
-			tmptop << h;
-		}
-		tmptop.print(data_amounts[i]);
-	}
+//	for(auto& tn : tops) { 
+//		all << tn; // will occur in some weird order since they're not in all the data
+//	} 
 
 
-	// Vanilla MCMC
-//	for(auto da : data_amounts) {
-//		S data_path = input_path + "-" + da + ".txt";
-//		load_data_file(mydata, data_path.c_str());
+//	// Vanilla MCMC, serial
+//	for(size_t i=0;i<datas.size();i++){
 //		tic();
-//		MCMCChain chain(h0, &mydata, all);
+//		MCMCChain chain(h0, &datas[i], all);
 //		chain.run(mcmc_steps, runtime);
 //		tic();	
 //	}
-//	top.print();
 //	
-	
+//	for(size_t i=0;i<data_amounts.size();i++) {
+//		all.compute_posterior(datas[i]).print(data_amounts[i]);
+//	}
+//	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:"        TAB elapsed_seconds() << " seconds " ENDL;
 	COUT "# Samples per second:"  TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;

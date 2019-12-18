@@ -1,8 +1,16 @@
 library(latex2exp)
 
 logsumexp <- function(x) { log(sum(exp(x-max(x))))+max(x)}
-
+# paste(\"\", \"\", \"{\", paste(\"\", \"A\", \",\", \"B\", \"\"), \"}\", \"\", phantom()^{\n    paste(phantom() + phantom())\n}, \"\", \"\")
 label <- list("An"=paste(TeX("A^n")),
+              "aABb"="paste(\"\", \"A\", \"\", \"{\", paste(\"\", \"A\", \",\", \"B\", \"\"), \"}\", \"\", phantom()^{\n    paste(phantom() + phantom())\n}, \"\", \"B\", \"\")",
+              #paste(TeX("$A \\left{ A,B \\right}^+ B$")),
+              "AB"="paste(\"\", \"\", \"{\", paste(\"\", \"A\", \",\", \"B\", \"\"), \"}\", \"\", phantom()^{\n    paste(phantom() + phantom())\n}, \"\", \"\")", #,paste(TeX("$\\left{ A,B \\right}^+$")),
+              "ABaaaAB"="paste(\"\", \"\", \"{\", paste(\"\", \"A\", \",\", \"B\", \"\"), \"}\", \"\", phantom()^{\n    paste(phantom() + phantom())\n}, \"\", \"AAA\", \"\", \"{\", paste(\"\", \"A\", \",\", \"B\", \"\"), \"}\", \"\", phantom()^{\n    paste(phantom() + phantom())\n}, \"\", \"\", \"\")",
+              #paste(TeX("$\\left{ A,B \\right}^+ AAA \\left{ A,B \\right}^+ $")),
+              "AnABn"=paste(TeX("A^n(AB)^n")),
+              "AnABAn"=paste(TeX("A^n(ABA)^n")),
+              "ABnABAn"=paste(TeX("(AB)^n(ABA)^n")),
               "ABn"=paste(TeX("(AB)^n")),
               "AnBn"=paste(TeX("A^{n}B^{n}")),
               "AnB2n"=paste(TeX("A^{n}B^{2n}")),
@@ -11,25 +19,32 @@ label <- list("An"=paste(TeX("A^n")),
               "AnBnCn"=paste(TeX("A^{n}B^{n}C^{n}")),
               "AnBnC2n"=paste(TeX("A^{n}B^{n}C^{2n}")),
               "AnBmCn"=paste(TeX("A^{n}B^{m}C^{n}")),
+              "AnBk"=paste(TeX("A^{n}B^{k}, k>m")),
+              "AnBmCm"=paste(TeX("A^{n}B^{m}C^{m}")),
+              "AnBmCnpm"=paste(TeX("A^{n}B^{m}C^{n+m}")),
+              "AnBmCnm"=paste(TeX("A^{n}B^{m}C^{nm}")),
               "AnBmCmAn"=paste(TeX("A^{n}B^{m}C^{m}A^{n}")),
               "AnBmCnDm"=paste(TeX("A^{n}B^{m}C^{n}D^{m}")),
               "AnBnCnDn"=paste(TeX("A^{n}B^{n}C^{n}D^{n}")),
-              "ABAnBn"=paste(TeX("\\{A,B\\}+A^{n}B^{n}")),              
+              "ABAnBn"="paste(\"\", \"\", \"{\", paste(\"\", \"A\", \",\", \"B\", \"\"), \"}\", \"\", phantom()^{\n    paste(phantom() + phantom())\n}, \"\", \"A\", phantom()^{\n    paste(\"n\")\n}, \"B\", phantom()^{\n    paste(\"n\")\n}, \"\")",
+              #paste(TeX("$\\left{ A,B \\right}^+ A^{n}B^{n}$")),              
               "XXR"=paste(TeX("XX^R")),
               "XXI"=paste(TeX("XX^I")),
               "A2en"=paste(TeX("A^{2^n}")),
               "ABnen"=paste(TeX("((AB)^n)^n")),
               "AnCBn"=paste(TeX("A^n C B^n")),
               "MorganMeierNewport"="MMN",
-              "ReederNewportAslin"="RNA"
+              "ReederNewportAslin"="RNA",
+              "HudsonKamNewport60"="HKN60"
               )
 D <- NULL
 # for(language in c("Gomez2", "Gomez6", "Gomez12" )) {
 # for(language in c("HudsonKamNewport45", "HudsonKamNewport60", "HudsonKamNewport75", "HudsonKamNewport100" )) {
-# for(language in c("An", "ABn", "AnBn", "AB", "ABAnBn", "AnB2n", "AnBm", "AnBmCn", "XXR", "AAA", "AAAA", "Count", "AnBnCn", "AnBnC2n", "Dyck", "XX", "XXX",  "XXI", "XY", "AnBmCmAn", "AnBmCnDm", "ABA", "ABB", "GoldenMean", "Even", "AnBnCnDn", "A2en", "ABnen", "AnCBn", "AnABn", "AnABAn", "ABnABAn", "Bach2", "Bach3", "AnBm", "AnBmCn", "AnBmCm", "AnBmCnpm", "AnBmCnm", "AnBk", "ABaaaAB", "aABb")) {
-# for(language in c("Reber", "Saffran", "NewportAslin", "MorganNewport", "MorganMeierNewport", "Man", "BerwickPilato", "ReederNewportAslin", "HudsonKamNewport60", "Gomez2", "Gomez6", "Gomez12" )) {
-# for(language in c("SimpleEnglish", "MediumEnglish", "FancyEnglish" )) {
-
+# for(language in c("An", "ABn", "AnBn", "AB", "ABAnBn", "AnB2n", "AnBm", "AnBmCn", "XXR", "AAA", "AAAA", "Count", "AnBnCn", "AnBnC2n", "Dyck", "XX", "XXX",  "XXI", "XY", "AnBmCmAn", "AnBmCnDm", "GoldenMean", "Even", "AnBnCnDn", "A2en", "ABnen", "AnCBn", "AnABn", "AnABAn", "ABnABAn", "Bach2", "Bach3", "AnBm", "AnBmCn", "AnBmCm", "AnBmCnpm", "AnBmCnm", "AnBk", "ABaaaAB", "aABb")) {
+# for(language in c("Reber", "Saffran",  "ABA", "ABB", "NewportAslin", "MorganNewport", "MorganMeierNewport", "Man", "BerwickPilato", "ReederNewportAslin", "HudsonKamNewport60", "Gomez2", "Gomez6", "Gomez12" )) {
+for(language in c("SimpleEnglish", "MediumEnglish", "FancyEnglish" )) {
+#  for(language in c("MorganMeierNewport" )) {
+                    
     q <- NULL
     for(nf in c(1,2,3,4)) {
 
@@ -46,8 +61,6 @@ D <- NULL
             
             q <- rbind(q, r)
     }
-    
-    
     
     if(!is.null(q)) {
         for(Q in split(q, q$ndata)) {
@@ -76,6 +89,6 @@ plt <- ggplot(D, aes(x=ndata, y=value, group=measure, color=measure)) +
 	  theme(strip.background = element_rect(fill="white"))
 plt
 
-# ggsave("ArtificialLanguages.pdf", plt)
 # ggsave("SimpleLanguages.pdf", plt)
+# ggsave("ArtificialLanguages.pdf", plt)
 # ggsave("EnglishLanguages.pdf", plt)

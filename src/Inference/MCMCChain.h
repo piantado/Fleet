@@ -5,7 +5,7 @@
 #include "MCMCChain.h"
 #include "FiniteHistory.h"
 
-//#define DEBUG_MCMC 1
+//#define DEBUG_MCMC
 
 // we take callback as a type (which hopefully can be deduce) so we can pass any callable object as callback (like a TopN)
 // This must be stored as a shared_ptr 
@@ -105,7 +105,7 @@ public:
 	
 	const HYP& getMax() { return themax; } 
 	
-	void run(unsigned long steps, unsigned long time) {
+	void run(unsigned long steps, time_ms time) {
 		// run for steps or time, whichever comes first. 
 		// If resume, we don't need to recompute anything about the current
 		// NOTE: intializer should have runOnCurrent() so it should have a posterior
@@ -113,6 +113,12 @@ public:
 			std::lock_guard guard(current_mutex);
 			themax = current;
 		}
+		
+		
+//#ifdef DEBUG_MCMC
+//	COUT "# Starting MCMC Chain on\t" << current.posterior TAB current.prior TAB current.likelihood TAB "\t" TAB current.string() ENDL;
+//#endif
+			
 		
 		// we'll start at 1 since we did 1 callback on current to begin
 		auto start_time = now();
@@ -124,7 +130,8 @@ public:
 			}
 			
 #ifdef DEBUG_MCMC
-	COUT "\n# Current\t" << current.posterior TAB current.prior TAB current.likelihood TAB "\t" TAB current.string() ENDL;
+	COUT "\n# Current\t" << data->size() TAB current.posterior TAB current.prior TAB current.likelihood TAB "\t"  ENDL;
+	current.print("# \t");
 #endif
 			
 			// generate the proposal -- defaulty "restarting" if we're currently at -inf
@@ -158,7 +165,8 @@ public:
 			}
 
 #ifdef DEBUG_MCMC
-	COUT "# Proposed \t" << proposal.posterior TAB proposal.prior TAB proposal.likelihood TAB fb TAB proposal.string() ENDL;
+	COUT "# Proposed \t" << proposal.posterior TAB proposal.prior TAB proposal.likelihood TAB fb ENDL;
+	proposal.print("#\t");
 #endif
 			
 			// keep track of the max if we are supposed to
