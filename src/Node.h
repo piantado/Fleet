@@ -253,6 +253,8 @@ public:
 			
 			// now substitute the children into the format
 			std::string s = rule->format;
+			if(not can_resample) s = "\u2022"+s; // just to help out in some cases, we'll add this to nodes that we can't resample
+			
 			for(size_t i=0;i<rule->N;i++) {
 				auto pos = s.find(ChildStr);
 				assert(pos != std::string::npos && "Node format must contain one ChildStr (typically='%s') for each argument"); // must contain the ChildStr for all children all children
