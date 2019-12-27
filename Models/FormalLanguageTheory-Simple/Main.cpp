@@ -132,7 +132,7 @@ int main(int argc, char** argv){
 	
 	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
 	tic();
-	samp.run(mcmc_steps, runtime, 1.0, 3.0); //30000);		
+	samp.run(Control(mcmc_steps, runtime, nthreads), 1.0, 3.0); //30000);		
 	tic();
 	
 	// Show the best we've found

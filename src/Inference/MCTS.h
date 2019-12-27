@@ -31,9 +31,7 @@ public:
 	// NOTE: These used to be atomics?
     unsigned long nvisits;  // how many times have I visited each node?
     bool open; // am I still an available node?
-	 
-	bool expand_all_children = false; // when we expand a new leaf, do we expand all children or just sample one (from their priors?) 
-	
+
 	callback_t* callback; // a function point to how we compute playouts
 	double explore; 
 	
@@ -48,7 +46,7 @@ public:
     ScoringType scoring_type;// how do I score playouts?
   
     MCTSNode(MCTSNode* par, HYP& v) 
-		: expand_all_children(par->expand_all_children), callback(par->callback), 
+		: callback(par->callback), 
 		  explore(par->explore), data(par->data), parent(par), value(v), scoring_type(par->scoring_type) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
 		
@@ -74,7 +72,6 @@ public:
 		assert(m.children.size() ==0); // else parent pointers get messed up
 		nvisits = m.nvisits;
 		open = m.open;
-		expand_all_children = m.expand_all_children;
 		callback = m.callback;
 		explore = m.explore;
 		statistics = std::move(statistics);
@@ -220,22 +217,21 @@ public:
 	
 	
 	
-	virtual void playout(unsigned long my_mcmc_steps, unsigned long my_mcmc_time) {
+	virtual void playout(Control inner_ctl) {
 		// this is how we compute playouts here -- defaultly mcmc 
-		
+
 #ifdef DEBUG_MCTS
 	COUT "\tPLAYOUT " <<  value.string() TAB std::this_thread::get_id() ENDL;
 #endif
 
 		HYP h0 = value; // need a copy to change resampling on 
 		
-		if(not h0.value.is_null()){
-			h0.value.map( [](Node& n) { n.can_resample = false; } ); // don't change this structural piece
+		for(auto& n : h0.value ){
+			n.can_resample = false;
 		}
 		
 		// make a wrapper to add samples
 		std::function<void(HYP& h)> wrapped_callback = [this](HYP& h) { 
-			//this->callback(h);
 			(*callback)(h);
 			this->add_sample(h.posterior);
 		};
@@ -243,8 +239,7 @@ public:
 		auto h = h0.copy_and_complete(); // fill in any structural gaps
 		
 		MCMCChain chain(h, data, wrapped_callback);
-		
-		chain.run(my_mcmc_steps, my_mcmc_time); // run mcmc with restarts; we sure shouldn't run more than runtime
+		chain.run(inner_ctl); // run mcmc with restarts; we sure shouldn't run more than runtime
 	}
 	
 	
@@ -278,38 +273,36 @@ public:
 	}
    
 	// search for some number of steps
-	void search(unsigned long steps, unsigned long time, unsigned long my_mcmc_steps, unsigned long my_mcmc_time) {
+	void search(Control ctl, Control inner_ctl) {
+		// ctl controls the mcts path through nodes, inner_ctl controls each playout expansion
+		assert(ctl.threads == 1);
+		ctl.start();
 		
-		using clock = std::chrono::high_resolution_clock;
-		
-		auto start_time = clock::now();
-		for(unsigned long i=0; (i<steps || steps==0) && !CTRL_C;i++){
+		while(ctl.running()) {
+			#ifdef DEBUG_MCTS
+			COUT "\tMCTS SEARCH LOOP" TAB std::this_thread::get_id() ENDL;
+			#endif
 			
-#ifdef DEBUG_MCTS
-			COUT "\tMCTS SEARCH LOOP" TAB i TAB std::this_thread::get_id() ENDL;
-#endif
-			if(time > 0) {
-				double elapsed_time = std::chrono::duration_cast<std::chrono::seconds>(clock::now() - start_time).count();
-				if(elapsed_time > time) break;
-			}
-			
-		   this->search_one(my_mcmc_steps, my_mcmc_time);
+			this->search_one(inner_ctl);
 		}
 	}
-	static void __helper(MCTSNode<HYP,callback_t>* h, unsigned long steps, unsigned long time, unsigned long my_mcmc_steps, unsigned long my_mcmc_time) {
-		h->search(steps, time, my_mcmc_steps, my_mcmc_time);
-	};
+
 	
-	void parallel_search(unsigned long cores, unsigned long steps, unsigned long time, unsigned long my_mcmc_steps, unsigned long my_mcmc_time) { 
+	void parallel_search(Control ctl, Control inner_ctl) { 
 		
-		std::thread threads[cores]; 
-			
+		auto __helper = [](MCTSNode<HYP,callback_t>* h, Control ctl, Control inner_ctl) {
+			h->search(ctl, inner_ctl);
+		};
+		
+		std::thread threads[ctl.threads]; 
+		
 		// start everyone running 
-		for(unsigned long i=0;i<cores;i++) {
-			threads[i] = std::thread(__helper, this, steps, time, my_mcmc_steps, my_mcmc_time);
+		for(unsigned long i=0;i<ctl.threads;i++) {
+			Control ctl2 = ctl; ctl2.threads=1;
+			threads[i] = std::thread(__helper, this, ctl2, inner_ctl);
 		}
 		
-		for(unsigned long i=0;i<cores;i++) {
+		for(unsigned long i=0;i<ctl.threads;i++) {
 			threads[i].join();
 		}	
 	}
@@ -317,16 +310,16 @@ public:
 	
 	
    
-    void search_one(unsigned long my_mcmc_steps, unsigned long my_mcmc_time) {
+    void search_one(Control inner_ctl) {
         // sample a path down the tree and when we get to the end
         // use random playouts to see how well we do
        
 #ifdef DEBUG_MCTS
-		COUT "MCTS SEARCH " <<  this << "\t[" << value.string() << "] " << nvisits TAB std::this_thread::get_id() ENDL;
+		COUT "MCTS SEARCH ONE " <<  this << "\t[" << value.string() << "] " << nvisits TAB std::this_thread::get_id() ENDL;
 #endif
 		
 		if(nvisits == 0) { // I am a leaf of the search who has not been expanded yet
-			this->playout(my_mcmc_steps, my_mcmc_time); // update my internal counts
+			this->playout(inner_ctl); // update my internal counts
 			open = value.neighbors() > 0; // only open if the value is partial
 			return;
 		}
@@ -334,21 +327,6 @@ public:
 		
 		if(children.size() == 0) { // if I have no children
 			this->add_child_nodes(); // add child nodes if they don't exist
-				
-			if(expand_all_children){
-				// Include this if when we add child nodes, we need to go through and
-				// compute playouts on all of them. If we don't do this, we'd only choose one
-				// and then the one we choose the first time determines the probability of coming
-				// back to all the others, which may mislead us (e.g. we may never return to a good playout)
-				for(auto& c: children) {
-					nvisits++; // I am going to get a visit for each of these
-					
-					c.playout(my_mcmc_steps, my_mcmc_time); // update my internal counts
-					c.open = c.value.neighbors() > 0; // only open if the value is partial
-					
-					open = open || c.open; // I'm open if any child is
-				}
-			}			
 		}
 		
 		// even after we try to add, we might not have any. If so, return
@@ -364,7 +342,7 @@ public:
 			
 			// choose the best and recurse
 			size_t bi = best_child_index();
-			children[bi].search_one(mcts_steps, my_mcmc_time);
+			children[bi].search_one(inner_ctl);
 		}
     } // end search
 

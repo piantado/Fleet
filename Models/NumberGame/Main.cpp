@@ -108,7 +108,7 @@ int main(int argc, char** argv){
 	// and sample with just one chain
 	MCMCChain samp(h0, &mydata, top);
 	tic();
-	samp.run(mcmc_steps, runtime); //30000);		
+	samp.run(Control(mcmc_steps, runtime)); //30000);		
 	tic();
 
 	// print the results

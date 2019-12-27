@@ -28,7 +28,7 @@ size_t max_setsize = 64; // throw error if we have more than this
 size_t nfactors = 2; // how may factors do we run on?
 
 // Run completed on Dec 12th static const double alpha = 0.95; // reliability of the data
-static const double alpha = 0.90; // reliability of the data
+static const double alpha = 0.99; // reliability of the data
 
 const size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite so we won't see some stuff
 const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The more data, the slower...
@@ -43,7 +43,7 @@ std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "5
 // Parameters for running a virtual machine
 const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -25 to catch some less frequent things that happen by chance
 const unsigned long MAX_STEPS_PER_FACTOR   = 4096; //4096; 
-const unsigned long MAX_OUTPUTS_PER_FACTOR = 512; //512; 
+const unsigned long MAX_OUTPUTS_PER_FACTOR = 1024; //512; - make it bigger than
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// These define all of the types that are used in the grammar.
@@ -430,14 +430,15 @@ int main(int argc, char** argv){
 	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
 		
 		ParallelTempering samp(h0, &datas[di], all, NTEMPS, MAXTEMP);
-		samp.run(mcmc_steps, runtime/datas.size(), 1000, 60*1000);	
+		samp.run(Control(mcmc_steps, runtime/datas.size()), 1000, 60*1000);	
 		
 		all.print(data_amounts[di]);
 
 		h0 = all.best();
 		
-		if(di+1 < datas.size())
+		if(di+1 < datas.size()) {
 			all = all.compute_posterior(datas[di+1]); // update for next time
+		}
 	}
 	tic();
 	

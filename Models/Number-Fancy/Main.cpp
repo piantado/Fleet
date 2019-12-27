@@ -222,8 +222,6 @@ public:
 
 	
 	virtual void print(std::string prefix=""){
-		assert(prefix=="");
-	
 		std::string s1 = "";
 		for (int j = 1; j <= 9; j++) {
 			set theset = "" + std::string(j,'Z');
@@ -247,7 +245,7 @@ public:
 		}
 		
 
-		prefix = s1+"\t"+s2+"\t"+std::to_string(this->recursion_count())+"\t";
+		prefix += s1+"\t"+s2+"\t"+std::to_string(this->recursion_count())+"\t";
 			
 		Super::print(prefix);
 	}
@@ -280,7 +278,7 @@ int main(int argc, char** argv){
 		
 		// make some data here
 		for(int di=0;di<ndata;di++) {
-			set s = ""; word w = U; objectkind t;
+			set s = ""; word w = U; objectkind t{};
 			
 			int ntypes=0;
 			int NT = myrandom(1,4); // how many times do I try to add types?
@@ -314,41 +312,43 @@ int main(int argc, char** argv){
 	
 	
 	
-	// MCTS 
+	
+	
+
+// MCTS 
+	all.set_print_best(true);
 	MyHypothesis h0(&grammar);
 	MCTSNode m(1.0, h0, &all, &biggestData);
 	tic();
-	m.parallel_search(nthreads, mcts_steps, runtime, 0, 1.0);
+	m.parallel_search(Control(mcts_steps, runtime, nthreads), Control(1000, 0));
 	tic();
-	
 	m.print();
+
 	
-/*
-	
-	CERR "# Starting sampling." ENDL;
+//	CERR "# Starting sampling." ENDL;
 	
 	
 	// Run parallel tempering
-	MyHypothesis h0(&grammar);
-	h0 = h0.restart();
-	ParallelTempering samp(h0, alldata, alltops);
-	tic();
-	samp.run(mcmc_steps, runtime, 0.2, 3.); //30000);		
-	tic();
+//	MyHypothesis h0(&grammar);
+//	h0 = h0.restart();
+//	ParallelTempering samp(h0, alldata, alltops);
+//	tic();
+//	samp.run(Control(mcmc_steps, runtime), 200, 5000); 
+//	tic();
+//
+//	// and save what we found
+//	for(auto& tn : alltops) {
+//		for(auto h : tn.values()) {
+//			h.clear_bayes(); // zero the prior, posterior, likelihood
+//			all << h;
+//		}
+//	}
+//	
+//	COUT "# Computing posterior on all final values |D|=" << biggestData.size()  ENDL;
+//
+//	// print out at the end
+//	all.compute_posterior(biggestData).print();
 
-	// and save what we found
-	for(auto& tn : alltops) {
-		for(auto h : tn.values()) {
-			h.clear_bayes(); // zero the prior, posterior, likelihood
-			all << h;
-		}
-	}
-	
-	COUT "# Computing posterior on all final values |D|=" << biggestData.size()  ENDL;
-
-	// print out at the end
-	all.compute_posterior(biggestData).print();
-*/
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;

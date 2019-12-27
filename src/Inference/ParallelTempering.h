@@ -154,8 +154,8 @@ public:
 	}
 	
 	
-	virtual void run(unsigned long steps, time_ms time) { assert(0); }
-	virtual void run(unsigned long steps, time_ms time, time_ms swap_every, time_ms adapt_every) {
+	virtual void run(Control ctl) { assert(0); }
+	virtual void run(Control ctl, time_ms swap_every, time_ms adapt_every) {
 		
 		if(is_temperature) {
 			
@@ -164,8 +164,8 @@ public:
 			std::thread adapter(&ParallelTempering<HYP,callback_t>::__adapter_thread, this, adapt_every);
 
 			// run normal pool run
-			ChainPool<HYP,callback_t>::run(steps, time);
-			
+			ChainPool<HYP,callback_t>::run(ctl); // passing copies here
+  			
 			// kill everything else once that thread is done
 			terminate = true;
 			swapper.join();
@@ -176,7 +176,7 @@ public:
 			// no adapting if not temperature
 			
 			std::thread swapper(&ParallelTempering<HYP,callback_t>::__swapper_thread, this, swap_every); // pass in the non-static mebers like this:
-			ChainPool<HYP,callback_t>::run(steps, time);
+			ChainPool<HYP,callback_t>::run(ctl);
 			terminate = true;
 			swapper.join();
 		}

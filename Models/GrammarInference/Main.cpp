@@ -268,7 +268,7 @@ int main(int argc, char** argv){
 			h0 = h0.restart();
 			auto givendata = slice(v.second, 0, (di.setNumber-1)-1);
 			MCMCChain chain(h0, &givendata, top);
-			chain.run(1000, 0); // run it super fast
+			chain.run(Control(1000)); // run it super fast
 		
 			for(auto h : top.values()) {
 				h.clear_bayes(); // zero and insert
@@ -307,7 +307,7 @@ int main(int argc, char** argv){
 	
 	tic();
 	auto thechain = MCMCChain(gh0, &human_data, &gcallback);
-	thechain.run(mcmc_steps, runtime);
+	thechain.run(Control(mcmc_steps, runtime));
 	tic();
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;

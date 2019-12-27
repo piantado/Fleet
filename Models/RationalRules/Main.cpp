@@ -115,7 +115,7 @@ int main(int argc, char** argv){
 	h0 = h0.restart();
 	MCMCChain chain(h0, &mydata, top);
 	tic();
-	chain.run(mcmc_steps,runtime);
+	chain.run(Control(mcmc_steps,runtime));
 	tic();
 //	
 	

@@ -31,8 +31,9 @@ public:
 	static void __run_helper(std::vector<MCMCChain<HYP,callback_t>>* pool, 
 							 std::vector<bool>* running, 
 							 std::mutex* running_mutex,
-							 unsigned long steps, 
-							 time_ms time) {
+							 Control ctl) {
+		// NOTE: There are two controls here -- one for the outer loop (which operates on different chains)
+		// and one for the inner loop 
 		
 		std::function<size_t(size_t)> next_index = [running](const size_t frm) -> size_t {
 			// assuming running is locked, find the first not running
@@ -46,15 +47,8 @@ public:
 			assert(0 && "*** We should only get here if running is out of sync (very bad) or you got here with more threads than chains, which should have been caught.");
 		};						 
 								 
-		// run_helper looks at the number of chains and number of threads and runs each for swap_steps and swap_time
-		auto          my_time  = now();
-		unsigned long my_steps = 0;
 		size_t idx = 0; // what pool item am I running on?
-		
-		
-		while( (steps == 0 or my_steps <= steps)          and 
-			   (time  == 0 or time_since(my_time) < time) and 
-			   !CTRL_C) {
+		while( ctl.running() ) {
 		
 			do {
 				// find the next running we can update and do it
@@ -75,10 +69,10 @@ public:
 			
 			// now run that chain -- TODO: Can update this to be more precise by running 
 			// a set number of samples computed from steps and old_samples
-			(*pool)[idx].run(steps_before_change, time_before_change);
+			(*pool)[idx].run(Control(steps_before_change, time_before_change));
 			
-			// pick the next index (and free mine)
-			my_steps += (*pool)[idx].samples - old_samples; // add up how many we've done
+			// now update ctl's number of steps (since it might have been anything
+			ctl.done_steps += (*pool)[idx].samples - old_samples; // add up how many we've done
 		}
 		
 		// and unlock this
@@ -86,26 +80,27 @@ public:
 		(*running)[idx] = false;	
 	}
 	
-	virtual void run(unsigned long steps, time_ms time) {
+	virtual void run(Control ctl) {
 		
-		if(nthreads > pool.size()){
-			CERR "# Warning: more threads (" << nthreads << ") than chains ("<<pool.size()<<") is probably dumb.";
+		if(ctl.threads > pool.size()){
+			CERR "# Warning: more threads (" << ctl.threads << ") than chains ("<<pool.size()<<") is probably dumb.";
 			assert(0); // let's not allow it for now -- make __run_helper much more complex
 		}
 		
-		std::thread threads[nthreads]; 
+		std::thread threads[ctl.threads]; 
 		std::vector<bool> running(pool.size()); // what chain is running?
 
 		for(unsigned long i=0;i<pool.size();i++) {
 			running[i] = false;
 		}
 		
-		for(unsigned long t=0;t<nthreads;t++) {
-			threads[t] = std::thread(this->__run_helper, &pool, &running, &running_mutex, steps, time);
+		for(unsigned long t=0;t<ctl.threads;t++) {
+			Control ctl2 = ctl; ctl2.threads=1; // we'll make each thread just one
+			threads[t] = std::thread(this->__run_helper, &pool, &running, &running_mutex, ctl2);
 		}
 		
 		// wait for all to complete
-		for(unsigned long t=0;t<nthreads;t++) {
+		for(unsigned long t=0;t<ctl.threads;t++) {
 			threads[t].join();
 		}
 	}
