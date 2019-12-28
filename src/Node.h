@@ -140,14 +140,19 @@ public:
 	
 	void set_child(size_t i, Node& n) {
 		// NOTE: if you add anything fancy to this, be sure to update the copy and move constructors
-		if(i >= child.size()) child.resize(i);
+		
+		while(child.size() <= i) // make it big enough for i  
+			child.push_back(Node());
+
 		child[i] = n;
 		child[i].pi = i;
 		child[i].parent = this;
 	}
 	void set_child(size_t i, Node&& n) {
 		// NOTE: if you add anything fancy to this, be sure to update the copy and move constructors
-		if(i >= child.size()) child.resize(i);
+		while(child.size() <= i) // make it big enough for i  
+			child.push_back(Node());
+
 		child[i] = n;
 		child[i].pi = i;
 		child[i].parent = this;
