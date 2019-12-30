@@ -15,11 +15,12 @@ public:
 	Instruction           instr; // a template for my instruction, which here mainly stores my optype
 	std::string           format; // how am I printed?
 	size_t                N; // how many children?
-	// this next one should be a vector, but gcc doesn't like copying it for some reason
-	nonterminal_t         child_types[Fleet::MAX_CHILD_SIZE]; // An array of what I expand to; note that this should be const but isn't to allow list initialization (https://stackoverflow.com/questions/5549524/how-do-i-initialize-a-member-array-with-an-initializer-list)
 	double                p;
 		
 protected:
+	// this next one should be a vector, but gcc doesn't like copying it for some reason
+	nonterminal_t         child_types[Fleet::MAX_CHILD_SIZE]; // An array of what I expand to; note that this should be const but isn't to allow list initialization (https://stackoverflow.com/questions/5549524/how-do-i-initialize-a-member-array-with-an-initializer-list)
+
 	std::size_t          my_hash; // a hash value for this rule
 	
 public:
@@ -65,6 +66,11 @@ public:
 	bool is_terminal() const {
 		// I am a terminal rule if I have no children
 		return N==0;
+	}
+	
+	nonterminal_t type(size_t i) const {
+		assert(i >=0 and i <= N && "*** Cannot get the type of something out of range");
+		return child_types[i];
 	}
 	
 };

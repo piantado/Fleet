@@ -98,6 +98,13 @@ public:
 		return children.size();
 	}
 	
+	void fill() {
+		// ensure that all of my children are empty nodes
+		for(size_t i=0;i<rule->N;i++) {
+			set_child(i, Node());
+		}
+	}
+	
 	void operator=(const Node& n) {
 		parent = nullptr; 
 		rule = n.rule;
@@ -115,6 +122,11 @@ public:
 
 		children = std::move(n.children);
 		fix_child_info();
+	}
+	
+	bool operator<(const Node& n) const {
+		// for sorting/storing in sets -- for now just inherit the rule sort
+		return *rule < *n.rule;
 	}
 	
 	NodeIterator begin() const { return Node::NodeIterator(this); }
@@ -136,9 +148,6 @@ public:
 		}
 	}
 	
-//	size_t N() const { // how many children do I have? -- we don't define this because it' sambiguous between child.size() and rule->N, which may be different
-//		return rule->N;
-//	}
 	nonterminal_t nt() const {
 		return rule->nt;
 	}
@@ -228,6 +237,8 @@ public:
 	
 	virtual bool is_complete() const {
 		
+		if(is_null()) return false;
+		
 		// does this have any subnodes below that are null?
 		for(auto& c: children) {
 			if(c.is_null()) return false; 
@@ -252,7 +263,6 @@ public:
 		std::function<int(const Node&)> f = [](const Node& n) { return 1;};
 		return get_nth(n, f); 
 	}
-	
 
 	virtual std::string string() const { 
 		// To convert to a string, we need to essentially simulate the evaluator
@@ -323,7 +333,7 @@ public:
 		// and just a little checking here
 		for(size_t i=0;i<rule->N;i++) {
 			assert(not children[i].is_null() && "Cannot linearize a Node with null children");
-			assert(children[i].rule->nt == rule->child_types[i] && "Somehow the child has incorrect types -- this is bad news for you."); // make sure my kids types are what they should be
+			assert(children[i].rule->nt == rule->type(i) && "Somehow the child has incorrect types -- this is bad news for you."); // make sure my kids types are what they should be
 		}
 		
 		
@@ -405,3 +415,9 @@ public:
 
 
 Node::NodeIterator Node::EndNodeIterator = NodeIterator(nullptr);
+
+
+std::ostream& operator<<(std::ostream& o, Node& n) {
+	o << n.string();
+	return o;
+}
