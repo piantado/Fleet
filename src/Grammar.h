@@ -101,6 +101,61 @@ public:
 		return rules[nt].size(); 
 	}
 
+
+
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Managing rules 
+	// (this holds a lot of complexity for how we initialize from PRIMITIVES)
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	virtual void add(Rule&& r) {
+		
+		nonterminal_t nt = r.nt;
+		//rules[r.nt].push_back(r);
+		
+		auto pos = std::lower_bound( rules[nt].begin(), rules[nt].end(), r);
+		rules[nt].insert( pos, r ); // put this before
+		
+		Z[nt] += r.p; // keep track of the total probability
+	}
+	
+	// recursively add a bunch of rules in a tuple -- called via
+	// Grammar(std::tuple<T...> tup)
+	template<typename... args, size_t... Is>
+	void add(std::tuple<args...> t, std::index_sequence<Is...>) {
+		(add(std::get<Is>(t)), ...); // dispatches to Primtiive or Primitives::BuiltinPrimitive
+	}
+	
+	template<typename T, typename... args>
+	void add(Primitive<T, args...> p, const int arg=0) {
+		// add a single primitive -- unpacks the types to put the rule into the right place
+		// NOTE: we can't use T as the return type, we have ot use p::GrammarReturnType in order to handle
+		// return-by-reference primitives
+		add(Rule(this->template nt<typename decltype(p)::GrammarReturnType>(), p.op, p.format, {nt<args>()...}, p.p, arg));
+	}
+	
+	template<typename T, typename... args>
+	void add(BuiltinPrimitive<T, args...> p, const int arg=0) {
+		// add a single primitive -- unpacks the types to put the rule into the right place
+		// NOTE: we can't use T as the return type, we have ot use p::GrammarReturnType in order to handle
+		// return-by-reference primitives
+		add(Rule(this->template nt<T>(), p.op, p.format, {nt<args>()...}, p.p, arg));
+	}
+	
+	
+	template<typename T, typename... args>
+	void add(BuiltinOp o, std::string format, const double p=1.0, const int arg=0) {
+		// add a single primitive -- unpacks the types to put the rule into the right place
+		add(Rule(nt<T>(), o, format, {nt<args>()...}, p, arg));
+	}
+//	
+	template<typename T, typename... args>
+	void add(CustomOp o, std::string format, const double p=1.0, const int arg=0) {
+		// add a single primitive -- unpacks the types to put the rule into the right place
+		add(Rule(nt<T>(), o, format, {nt<args>()...}, p, arg));
+	}
+
+
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Methods for getting rules by some info
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -402,97 +457,42 @@ public:
 	// Subtrees
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	virtual size_t count_subtrees(const Node& n) const {
+	virtual size_t count_partial_subtrees(const Node& n) const {
 		// how many possible subtrees do I have? (e.g. where each node can be replaced by null node?)
 		// to compute, we just take the *product* of all non-null kids
 		// (NOTE: This function could/should live in Node? The reason its not is that copy_subtree must live here)
-		size_t k=1; // I can be replaced by null
+		size_t k=1; 
 		for(size_t i=0;i<n.nchildren();i++){
 			if(not n.child(i).is_null()) {
 				// for each child independently, I can either make them null, or I can include them
 				// and choose one of their own subtrees
-				k = k * (1+count_subtrees(n.child(i))); 
+				k = k * count_partial_subtrees(n.child(i)); 
 			}
 		}
-		return k;		
+		return k+1;	// or I can be replaced by null
 	}
 
 
-protected: 
-	virtual Node _copy_subtree(const Node& n, size_t& z) const {
+	virtual Node copy_partial_subtree(const Node& n, int z) const {
+		// make a copy of the z'th partial subtree 
+ 
+		if(z == 0) // it was me, I was the empty subtree
+			return Node();
+		z -= 1; // get rid of that bit
+		
 		Node out = makeNode(n.rule);
 		for(size_t i=0;i<out.nchildren();i++) {
-			bool b = z & 0x1;
-			z >>= 1;
-			if(b) { // lowest bit encodes whether this child is null
-				out.set_child(i,Node()); // null child
-			}
-			else {
-				out.set_child(i, _copy_subtree(n.child(i), z)); // copy that child with z
-			}
+			auto u = mod_decode(z, count_partial_subtrees(n.child(i)) );
+			z = u.second;
+			out.set_child(i, copy_partial_subtree(n.child(i), u.first));
 		}
 		return out;
 	}
-	
-public: 
-	
-	virtual Node copy_subtree(const Node& n, size_t z) const {
-		// create a copy of the n'th subtree
-		return _copy_subtree(n,z);		
-	}
-
-	
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Generation
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	virtual void add(Rule&& r) {
-		
-		nonterminal_t nt = r.nt;
-		//rules[r.nt].push_back(r);
-		
-		auto pos = std::lower_bound( rules[nt].begin(), rules[nt].end(), r);
-		rules[nt].insert( pos, r ); // put this before
-		
-		Z[nt] += r.p; // keep track of the total probability
-	}
-	
-	// recursively add a bunch of rules in a tuple -- called via
-	// Grammar(std::tuple<T...> tup)
-	template<typename... args, size_t... Is>
-	void add(std::tuple<args...> t, std::index_sequence<Is...>) {
-		(add(std::get<Is>(t)), ...); // dispatches to Primtiive or Primitives::BuiltinPrimitive
-	}
-	
-	template<typename T, typename... args>
-	void add(Primitive<T, args...> p, const int arg=0) {
-		// add a single primitive -- unpacks the types to put the rule into the right place
-		// NOTE: we can't use T as the return type, we have ot use p::GrammarReturnType in order to handle
-		// return-by-reference primitives
-		add(Rule(this->template nt<typename decltype(p)::GrammarReturnType>(), p.op, p.format, {nt<args>()...}, p.p, arg));
-	}
-	
-	template<typename T, typename... args>
-	void add(BuiltinPrimitive<T, args...> p, const int arg=0) {
-		// add a single primitive -- unpacks the types to put the rule into the right place
-		// NOTE: we can't use T as the return type, we have ot use p::GrammarReturnType in order to handle
-		// return-by-reference primitives
-		add(Rule(this->template nt<T>(), p.op, p.format, {nt<args>()...}, p.p, arg));
-	}
-	
-	
-	template<typename T, typename... args>
-	void add(BuiltinOp o, std::string format, const double p=1.0, const int arg=0) {
-		// add a single primitive -- unpacks the types to put the rule into the right place
-		add(Rule(nt<T>(), o, format, {nt<args>()...}, p, arg));
-	}
-//	
-	template<typename T, typename... args>
-	void add(CustomOp o, std::string format, const double p=1.0, const int arg=0) {
-		// add a single primitive -- unpacks the types to put the rule into the right place
-		add(Rule(nt<T>(), o, format, {nt<args>()...}, p, arg));
-	}
 	
 	Node makeNode(const Rule* r) const {
 		return Node(r, log(r->p)-log(Z[r->nt]));
