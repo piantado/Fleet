@@ -11,11 +11,13 @@ public:
 	Node* parent; 
 	size_t pi; // what index am I in the parent?
 
-	std::vector<Node> child;
+protected:
+	std::vector<Node> children; // TODO make this protected so we don't set children -- must use set_child
+	
+public:
 	const Rule*  rule; // which rule did I use?
 	double       lp; 
-	bool         can_resample;
-	
+	bool         can_resample;	
 	
 	class NodeIterator : public std::iterator<std::forward_iterator_tag, Node> {
 		// Define an iterator class to make managing trees easier. 
@@ -40,8 +42,8 @@ public:
 					return EndNodeIterator;
 				}
 				
-				if(current->pi+1 < current->parent->child.size()) {
-					current = current->parent->child[current->pi+1].left_descend();
+				if(current->pi+1 < current->parent->children.size()) {
+					current = current->parent->children[current->pi+1].left_descend();
 				}
 				else { 
 					// now we call the parent (if we're out of children)
@@ -62,12 +64,11 @@ public:
 			bool operator==(const NodeIterator& rhs) { return current == rhs.current; };
 			bool operator!=(const NodeIterator& rhs) { return current != rhs.current; };
 	};	
-
-		
 	static NodeIterator EndNodeIterator;
 	
+	
 	Node(const Rule* r=nullptr, double _lp=0.0, bool cr=true) : 
-		parent(nullptr), pi(0), child(r==nullptr ? 0 : r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
+		parent(nullptr), pi(0), children(r==nullptr ? 0 : r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
 		// NOTE: We don't allow parent to be set here bcause that maeks pi hard to set. We shuold only be placed
 		// in trees with set_child
 	}
@@ -75,14 +76,26 @@ public:
 	/* We must define our own copy and move since parent can't just be simply copied */
 	
 	Node(const Node& n) :
-		parent(nullptr), child(n.child.size()), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
-		child = n.child;
+		parent(nullptr), children(n.children.size()), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
+		children = n.children;
 		fix_child_info();
 	}
 	Node(Node&& n) :
-		parent(nullptr), child(n.child.size()), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
-		child = std::move(n.child);
+		parent(nullptr), children(n.children.size()), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
+		children = std::move(n.children);
 		fix_child_info();
+	}
+	
+	Node& child(const size_t i) {
+		return children.at(i);
+	}
+	
+	const Node& child(const size_t i) const {
+		return children.at(i);
+	}
+	
+	const size_t nchildren() const {
+		return children.size();
 	}
 	
 	void operator=(const Node& n) {
@@ -90,7 +103,7 @@ public:
 		rule = n.rule;
 		lp = n.lp;
 		can_resample = n.can_resample;
-		child = n.child;
+		children = n.children;
 		fix_child_info();
 	}
 
@@ -100,7 +113,7 @@ public:
 		lp = n.lp;
 		can_resample = n.can_resample;
 
-		child = std::move(n.child);
+		children = std::move(n.children);
 		fix_child_info();
 	}
 	
@@ -109,17 +122,17 @@ public:
 	
 	Node* left_descend() const {
 		Node* k = (Node*) this;
-		while(k != nullptr && k->child.size() > 0) 
-			k = &(k->child[0]);
+		while(k != nullptr && k->children.size() > 0) 
+			k = &(k->children[0]);
 		return k;
 	}
 	
 	void fix_child_info() {
 		// go through children and assign their parents to me
 		// and fix their pi's
-		for(size_t i=0;i<child.size();i++) {
-			child[i].pi = i;
-			child[i].parent = this;
+		for(size_t i=0;i<children.size();i++) {
+			children[i].pi = i;
+			children[i].parent = this;
 		}
 	}
 	
@@ -131,31 +144,31 @@ public:
 	}
 	
 	Node& operator[](const size_t i) {
-		return child.at(i); // at does bounds checking
+		return children.at(i); // at does bounds checking
 	}
 	
 	const Node& operator[](const size_t i) const {
-		return child.at(i); // at does bounds checking
+		return children.at(i); 
 	}
 	
 	void set_child(size_t i, Node& n) {
 		// NOTE: if you add anything fancy to this, be sure to update the copy and move constructors
 		
-		while(child.size() <= i) // make it big enough for i  
-			child.push_back(Node());
+		while(children.size() <= i) // make it big enough for i  
+			children.push_back(Node());
 
-		child[i] = n;
-		child[i].pi = i;
-		child[i].parent = this;
+		children[i] = n;
+		children[i].pi = i;
+		children[i].parent = this;
 	}
 	void set_child(size_t i, Node&& n) {
 		// NOTE: if you add anything fancy to this, be sure to update the copy and move constructors
-		while(child.size() <= i) // make it big enough for i  
-			child.push_back(Node());
+		while(children.size() <= i) // make it big enough for i  
+			children.push_back(Node());
 
-		child[i] = n;
-		child[i].pi = i;
-		child[i].parent = this;
+		children[i] = n;
+		children[i].pi = i;
+		children[i].parent = this;
 	}
 	
 	bool is_null() const { // am I the null rule?
@@ -165,7 +178,7 @@ public:
 	template<typename T>
 	T sum(std::function<T(const Node&)>& f ) const {
 		T s = f(*this);
-		for(auto& c: child) {
+		for(auto& c: children) {
 			s += c.sum<T>(f);
 		}
 		return s;
@@ -173,21 +186,21 @@ public:
 
 	void map( const std::function<void(Node&)>& f) {
 		f(*this);
-		for(auto& c: child) {
+		for(auto& c: children) {
 			c.map(f); 
 		}
 	}
 	
 	void map_const( const std::function<void(const Node&)>& f) const { // mapping that is constant
 		f(*this);
-		for(const auto& c: child) {
+		for(const auto& c: children) {
 			c.map_const(f); 
 		}
 	}
 	
 	void rmap_const( const std::function<void(const Node&)>& f) const { // mapping that is constant
-		for(int i=child.size()-1;i>=0;i--) {
-			child[i].rmap_const(f); 
+		for(int i=children.size()-1;i>=0;i--) {
+			children[i].rmap_const(f); 
 		}		
 		f(*this);
 	}
@@ -202,7 +215,7 @@ public:
 	}
 	
 	virtual bool is_terminal() const {
-		return child.size() == 0;
+		return children.size() == 0;
 	}
 	
 	virtual size_t count_terminals() const {
@@ -216,11 +229,11 @@ public:
 	virtual bool is_complete() const {
 		
 		// does this have any subnodes below that are null?
-		for(auto& c: child) {
+		for(auto& c: children) {
 			if(c.is_null()) return false; 
 			if(not c.is_complete()) return false;
 		}
-		return child.size() == rule->N; // must have all my kids
+		return children.size() == rule->N; // must have all my kids
 	}
 		
 	virtual Node* get_nth(int n, std::function<int(const Node&)>& f) {
@@ -235,7 +248,7 @@ public:
 	
 		return nullptr; // not here, losers
 	}
-	virtual Node* get_nth(int& n) { // default true on every node
+	virtual Node* get_nth(int n) { // default true on every node
 		std::function<int(const Node&)> f = [](const Node& n) { return 1;};
 		return get_nth(n, f); 
 	}
@@ -246,14 +259,15 @@ public:
 		// and be careful to process the arguments in the right orders
 		
 		if(rule->N == 0) {
+			assert(children.size() == 0 && "*** Should have zero children -- did you accidentally add children to a null node (that doesn't have a format)?");
 			return rule->format;
 		}
 		else {
 			
-			std::string childStrings[child.size()];
+			std::string childStrings[children.size()];
 		
 			for(size_t i=0;i<rule->N;i++) {
-				childStrings[i] = child[i].string();
+				childStrings[i] = children[i].string();
 			}
 			
 			// now substitute the children into the format
@@ -273,7 +287,7 @@ public:
 	virtual std::string parseable(std::string delim=":") const {
 		// get a string like one we could parse
 		std::string out = rule->format;
-		for(auto& c: child) {
+		for(auto& c: children) {
 			out += delim + c.parseable(delim);
 		}
 		return out;
@@ -288,7 +302,7 @@ public:
 		// compute the size of the program -- just number of nodes plus special stuff for IF
 		size_t n = 1; // I am one node
 		if( rule->instr.is_a(BuiltinOp::op_IF) ) { n += 1; } // I have to add this many more instructions for an if
-		for(auto& c: child) {
+		for(auto& c: children) {
 			n += c.program_size();
 		}
 		return n;
@@ -308,8 +322,8 @@ public:
 		
 		// and just a little checking here
 		for(size_t i=0;i<rule->N;i++) {
-			assert(not child[i].is_null() && "Cannot linearize a Node with null children");
-			assert(child[i].rule->nt == rule->child_types[i] && "Somehow the child has incorrect types -- this is bad news for you."); // make sure my kids types are what they should be
+			assert(not children[i].is_null() && "Cannot linearize a Node with null children");
+			assert(children[i].rule->nt == rule->child_types[i] && "Somehow the child has incorrect types -- this is bad news for you."); // make sure my kids types are what they should be
 		}
 		
 		
@@ -317,26 +331,26 @@ public:
 		if( rule->instr.is_a(BuiltinOp::op_IF) ) {
 			assert(rule->N == 3 && "BuiltinOp::op_IF require three arguments"); // must have 3 parts
 			
-			int xsize = child[1].program_size()+1; // must be +1 in order to skip over the JMP too
-			int ysize = child[2].program_size();
+			int xsize = children[1].program_size()+1; // must be +1 in order to skip over the JMP too
+			int ysize = children[2].program_size();
 			assert(xsize < (1<<12) && "If statement jump size too large to be encoded in Instruction arg. Your program is too large for Fleet."); // these sizes come from the arg bitfield 
 			assert(ysize < (1<<12) && "If statement jump size too large to be encoded in Instruction arg. Your program is too large for Fleet.");
 			
-			child[2].linearize(ops);
+			children[2].linearize(ops);
 			
 			// make the right instruction 
 			// TODO: Assert that ysize fits 
 			ops.push(Instruction(BuiltinOp::op_JMP,ysize));
 //			ops.emplace_back(BuiltinOp::op_JMP, ysize);
 			
-			child[1].linearize(ops);
+			children[1].linearize(ops);
 			
 			// encode jump
 			ops.push(Instruction(BuiltinOp::op_IF, xsize)); 
 //			ops.emplace_back(BuiltinOp::op_IF, xsize);
 			
 			// evaluate the bool first so its on the stack when we get to if
-			child[0].linearize(ops);
+			children[0].linearize(ops);
 			
 		}
 //		else if(rule->instr.is_a(BuiltinOp::op_LAMBDA)) {
@@ -357,7 +371,7 @@ public:
 			
 //			for(size_t i=0;i<rule->N;i++) {
 			for(int i=rule->N-1;i>=0;i--) { // here we linearize right to left so that when we call right to left, it matches string order			
-				child[i].linearize(ops);
+				children[i].linearize(ops);
 			}
 		}
 		
@@ -371,7 +385,7 @@ public:
 			return false;
 			
 		for(size_t i=0;i<rule->N;i++){
-			if(not (child[i] == n.child[i])) return false;
+			if(not (children[i] == n.children[i])) return false;
 		}
 		return true;
 	}
@@ -379,8 +393,8 @@ public:
 	virtual size_t hash(size_t depth=0) const {
 		// hash and include
 		size_t output = rule->get_hash(); // tunrs out, this is actually important to prevent hash collisions when rule_id and i are small
-		for(size_t i=0;i<child.size();i++) {
-			hash_combine(output, depth, child[i].hash(depth+1), i); // modifies output
+		for(size_t i=0;i<children.size();i++) {
+			hash_combine(output, depth, children[i].hash(depth+1), i); // modifies output
 		}
 		return output;
 	}

@@ -165,6 +165,7 @@ public:
 					status= dispatch->dispatch_custom(i, pool, this, loader);
 				}
 				else if(i.is<PrimitiveOp>()) {
+					
 					// call this fancy template magic to index into the global tuple variable PRIMITIVES
 					status = applyToVMS(PRIMITIVES, i.as<PrimitiveOp>(), this, pool, loader);
 				}

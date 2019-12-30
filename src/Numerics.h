@@ -65,6 +65,7 @@ enumerationidx_t rosenberg_strong_encode(const enumerationidx_t x, const enumera
 }
 
 std::pair<enumerationidx_t,enumerationidx_t> mod_decode(const enumerationidx_t z, const enumerationidx_t k) {
+	
 	auto x = z%k;
 	return std::make_pair(x, (z-x)/k);
 }

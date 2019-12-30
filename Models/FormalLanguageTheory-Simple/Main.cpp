@@ -50,10 +50,15 @@ std::tuple PRIMITIVES = {
 	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),
 	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
 	
+	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }), // optional specification of prior weight (default=1.0)
+	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }),
+	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }),
+	
+	
 	// And add built-ins:
 	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
 	Builtin::X<S>("x"),
-	Builtin::Flip("flip()"),
+	Builtin::Flip("flip()", 10.0),
 	Builtin::SafeRecurse<S,S>("F(%s)")	
 };
 
@@ -126,15 +131,31 @@ int main(int argc, char** argv){
 	//------------------
 	// Run
 	//------------------
+
+			
+//	auto v = grammar.expand_from_names("F:NULL");
+//	
+//	auto nt = v.nt();
+//	std::function isnt = [nt](const Node& n){ return (int)(n.nt() == nt and not n.is_null() );};
+//	
+//	CERR v.string() ENDL;
+//	CERR v.get_nth(0, isnt)->string() ENDL;
+
+	for(size_t z=0;z<1000;z++) {
+		CERR z TAB grammar.lempel_ziv_expand(0, z).string() ENDL;
+//		CERR z TAB grammar.expand_from_integer(0, z).string() TAB grammar.lempel_ziv_expand(0, z).string() ENDL;
+//		CERR z TAB grammar.expand_from_integer(0, z).string() ENDL;
+	}
+
 	
-	MyHypothesis h0(&grammar);
-	h0 = h0.restart();
-	
-	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
-	tic();
-	samp.run(Control(mcmc_steps, runtime, nthreads), 1.0, 3.0); //30000);		
-	tic();
-	
+//	MyHypothesis h0(&grammar);
+//	h0 = h0.restart();
+//	
+//	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
+//	tic();
+//	samp.run(Control(mcmc_steps, runtime, nthreads), 1.0, 3.0); //30000);		
+//	tic();
+//	
 	// Show the best we've found
 	top.print();
 	

@@ -63,12 +63,6 @@ public:
 		add(tup, std::make_index_sequence<sizeof...(T)>{});
 	}	
 	
-//	template<typename T>
-//	Grammar(std::vector<T> prims) : Grammar() {
-////		for(auto& a : primes) {
-////			add(a);
-//	}	
-	
 	Grammar(const Grammar& g) = delete; // should not be doing these
 	Grammar(const Grammar&& g) = delete; // should not be doing these
 	
@@ -126,6 +120,14 @@ public:
 		assert(nt < N_NTs);
 		assert(k < rules[nt].size());
 		return const_cast<Rule*>(&rules[nt][k]);
+	}
+	
+	virtual Rule* get_rule(const nonterminal_t nt, const CustomOp o, const int a=0) {
+		for(auto& r: rules[nt]) {
+			if(r.instr.is_a(o) && r.instr.arg == a) 
+				return &r;
+		}
+		assert(0 && "*** Could not find rule");		
 	}
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const BuiltinOp o, const int a=0) {
@@ -231,7 +233,11 @@ public:
 		assert(!q.empty() && "*** Should not ever get to here with an empty queue -- are you missing arguments?");
 		
 		std::string pfx = q.front(); q.pop_front();
-		assert(pfx != NullRule->format && "NullRule not supported in expand_from_names");
+		
+		// null rules:
+//		assert(pfx != NullRule->format && "NullRule not supported in expand_from_names");
+		if(pfx == "NULL") 
+			return makeNode(NullRule);
 
 		// otherwise find the matching rule
 		Rule* r = this->get_rule(pfx);
@@ -239,14 +245,14 @@ public:
 		Node v = makeNode(r);
 		for(size_t i=0;i<r->N;i++) {
 			
-			if(r->child_types[i] != v.child[i].rule->nt) {
+			if(r->child_types[i] != v.child(i).rule->nt) {
 				CERR "*** Grammar expected type " << r->child_types[i] << 
-					 " but got type " << v.child[i].rule->nt << " at " << 
+					 " but got type " << v.child(i).rule->nt << " at " << 
 					 r->format << " argument " << i ENDL;
 				assert(false && "Bad names in expand_from_names."); // just check that we didn't miss this up
 			}
 			
-			v.child[i] = expand_from_names(q);
+			v.set_child(i, expand_from_names(q));
 		}
 		return v;
 	}
@@ -278,6 +284,9 @@ public:
 		// and therefore store trees as integers in a reversible way
 		// as well as enumerate by giving this integers. 
 		
+		// NOTE: for now this doesn't work when nt only has finitely many expansions/trees
+		// below it. Otherwise we'll get an assertion error eventually.
+		
 		enumerationidx_t numterm = count_terminals(nt);
 		if(z < numterm) {
 			return makeNode(this->get_rule(nt, z));	// whatever terminal we wanted
@@ -290,7 +299,7 @@ public:
 			enumerationidx_t rest = u.second; // the encoding of everything else
 			for(size_t i=0;i<r->N;i++) {
 				enumerationidx_t zi; // what is the encoding for the i'th child?
-				if(i<r->N-1) { 
+				if(i < r->N-1) { 
 					auto ui = rosenberg_strong_decode(rest);
 					zi = ui.first;
 					rest = ui.second;
@@ -298,87 +307,126 @@ public:
 				else {
 					zi = rest;
 				}
-				out.child[i] = expand_from_integer(r->child_types[i], zi); // since we are by reference, this should work right
+				out.set_child(i, expand_from_integer(r->child_types[i], zi)); // since we are by reference, this should work right
 			}
-			return out;		
-			
+			return out;					
 		}
 
 	}
 
 	enumerationidx_t compute_enumeration_order(const Node& n) {
 		// inverse of the above function -- what order would we be enumerated in?
-		if(n.child.size() == 0) {
+		if(n.nchildren() == 0) {
 			return get_index_of(n.rule);
 		}
 		else {
 			// here we work backwards to encode 
 			nonterminal_t nt = n.rule->nt;
 			enumerationidx_t numterm = count_terminals(nt);
-			enumerationidx_t z = compute_enumeration_order(n.child[n.rule->N-1]);
+			enumerationidx_t z = compute_enumeration_order(n.child(n.rule->N-1));
 			for(int i=n.rule->N-2;i>=0;i--) {
-				z = rosenberg_strong_encode(compute_enumeration_order(n.child[i]),z);
+				z = rosenberg_strong_encode(compute_enumeration_order(n.child(i)),z);
 			}
 			z = numterm + mod_encode(get_index_of(n.rule)-numterm, z, count_nonterminals(nt));
 			return z;
 		}
 	}
 	
-
-//
-//	Node lempel_ziv_enumeration(Node* root, nonterminal_t nt, enumerationidx_t z) const {
-//		// NOTE: This is no longer unique...
-//		
-//		enumerationidx_t numterm = count_terminals(nt);
-//		if(z < numterm) {
-//			return makeNode(this->get_rule(nt, z));	// whatever terminal we wanted
-//		}
-//		else if(root != nullptr and z < numterm + root->count() - 1) {
-//			// a reference to a prior node
-//			auto it = root->begin();
-//		//	CERR (z-numterm-1) TAB root->string() ENDL;
-//			
-//			// HMM root->begin() is hard with partial trees because it goes to a NullNode
-//			
-//			if(z > numterm)	// bc not signed		
-//				it = it + (size_t)(z-numterm-1);
-//			
-//			
-//			
-//			// TODO: THIS MUST BE CHANGED SINCE *IT WILL CONTAIN HOLES -- MUST RECURSE DOWN THEM TOO!
-//			
-//			return Node(*it); // copy what we got there 
-//		}
-//		else {
-//			
-//			size_t rc = (root == nullptr ? 0 : root->count()-1);
-//			
-//			auto u =  mod_decode(z-numterm-rc, count_nonterminals(nt));
-//			
-//			Rule* r = this->get_rule(nt, u.first+numterm); // shift index from terminals (because they are first!)
-//			Node out = makeNode(r);
-//			
-//			if(root == nullptr) root = &out; // set this if its not done yet
-//			
-//			enumerationidx_t rest = u.second; // the encoding of everything else
-//			for(size_t i=0;i<r->N;i++) {
-//				enumerationidx_t zi; // what is the encoding for the i'th child?
-//				if(i<r->N-1) { 
-//					auto ui = rosenberg_strong_decode(rest);
-//					zi = ui.first;
-//					rest = ui.second;
-//				}
-//				else {
-//					zi = rest;
-//				}
-//				out.child[i] = fancy_index(root, r->child_types[i], zi); // since we are by reference, this should work right
-//			}
-//			return out;		
-//			
-//		}
-//
-//	}
-//		
+	
+	Node lempel_ziv_expand(nonterminal_t nt, enumerationidx_t z, Node* root=nullptr) const {
+		// This implements "lempel-ziv" decoding on trees, where each integer
+		// can be a reference to prior subtrees (of type nt) or 
+		
+		
+		
+		// TODO: We should build a list of things in root we can expand to
+		// there is some choice on this -- partial trees, subtrees etc
+		// but disallow terminals
+		// we should make terminals the lowest numbers (above)
+		// and then we should design a proposer that recurses through the tree and
+		// proposes on some sub-integer
+	
+		
+		
+		// TODO: EXPERIMENTAL 
+		// Still not right -- doesn't do it uniquely (which makes sense because I can reference prior strings
+		// Maybe for each node, we should have the trees that DO occur, and an enumeration of those
+		// that DON'T occur, and we'll code those....
+		
+		
+		
+		
+		
+		if(root != nullptr) { // don't do this if we are the first node 
+		
+		
+		
+		
+		
+		
+		
+			// how many of these things are of type nt?
+			// here we require references to complete prior trees, but in general we could make this partial 
+			// (or even partially filled in here)
+			
+			
+			std::function isnt = [nt](const Node& n){ return (int)(n.nt() == nt and n.is_complete() and not n.is_null() );};
+			int ntcount = root->sum(isnt);
+			
+			if(z < ntcount and ntcount > 0) {
+				// if we reference a prior node
+				Node out = *root->get_nth(z, isnt);
+				return out; 
+			}
+			
+			z -= ntcount;
+		}
+		
+		enumerationidx_t numterm = count_terminals(nt);
+		if(z < numterm) {
+			return makeNode(this->get_rule(nt, z));	// whatever terminal we wanted
+		}
+		
+		z -= numterm;
+		
+		auto u =  mod_decode(z, count_nonterminals(nt));
+		Rule* r = this->get_rule(nt, u.first+numterm); // shift index from terminals (because they are first!)
+		
+		
+		
+		
+		/* 
+		 * TODO: Change so defaultly when we make a node it fills in the kids blank
+		 * 
+		 * */
+		
+		
+		
+		// we need to fill in out's children with null for it to work
+		Node out = makeNode(r);
+		for(size_t i=0;i<r->N;i++) {
+			out.set_child(i, Node());
+		}		
+		if(root == nullptr) 
+			root = &out; // if not defined, out is our root
+		
+		enumerationidx_t rest = u.second; // the encoding of everything else
+		for(size_t i=0;i<r->N;i++) {
+			enumerationidx_t zi; // what is the encoding for the i'th child?
+			if(i < r->N-1) { 
+				auto ui = rosenberg_strong_decode(rest);
+				zi = ui.first;
+				rest = ui.second;
+			}
+			else {
+				zi = rest;
+			}
+			out.set_child(i, lempel_ziv_expand(r->child_types[i], zi, root)); // since we are by reference, this should work right
+		}
+		return out;		
+		
+	}
+	
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Generation
@@ -477,8 +525,8 @@ public:
 		
 			// otherwise normal copy
 			Node ret = node;
-			for(size_t i=0;i<ret.child.size();i++) {
-				ret.set_child(i, copy_resample(ret.child[i], f));
+			for(size_t i=0;i<ret.nchildren();i++) {
+				ret.set_child(i, copy_resample(ret.child(i), f));
 			}
 			return ret;
 		}
@@ -494,11 +542,11 @@ public:
 		// How many neighbors do I have? We have to find every gap (nullptr child) and count the ways to expand each
 		size_t n=0;
 		for(size_t i=0;i<node.rule->N;i++){
-			if(node.child[i].is_null()) {
+			if(node.child(i).is_null()) {
 				return count_expansions(node.rule->child_types[i]); // NOTE: must use rule->child_types since child[i]->rule->nt is always 0 for NullRules
 			}
 			else {
-				return neighbors(node.child[i]);
+				return neighbors(node.child(i));
 			}
 		}
 		return n;
@@ -511,7 +559,7 @@ public:
 		// skip a nullptr, we have to subtract from it the number of neighbors (expansions)
 		// we could have taken. 
 		for(size_t i=0;i<node.rule->N;i++){
-			if(node.child[i].is_null()) {
+			if(node.child(i).is_null()) {
 				int c = count_expansions(node.rule->child_types[i]);
 				if(which >= 0 && which < c) {
 					auto r = get_rule(node.rule->child_types[i], (size_t)which);
@@ -520,7 +568,7 @@ public:
 				which -= c;
 			}
 			else { // otherwise we have to process that which
-				expand_to_neighbor(node.child[i], which);
+				expand_to_neighbor(node.child(i), which);
 			}
 		}
 	}
@@ -528,11 +576,11 @@ public:
 	void complete(Node& node) {
 		// go through and fill in the tree at random
 		for(size_t i=0;i<node.rule->N;i++){
-			if(node.child[i].is_null()) {
+			if(node.child(i).is_null()) {
 				node.set_child(i, generate(node.rule->child_types[i]));
 			}
 			else {
-				complete(node.child[i]);
+				complete(node.child(i));
 			}
 		}
 	}

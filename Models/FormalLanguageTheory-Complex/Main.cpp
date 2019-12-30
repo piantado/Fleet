@@ -71,10 +71,17 @@ std::tuple PRIMITIVES = {
 			if(a.length() + b.length() > max_length) throw VMSRuntimeError;
 			a = a+b; // modify on stack
 	}), // also add a function to check length to throw an error if its getting too long
+
 	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),
+	
 	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
 	Primitive("empty(%s)",     +[](S x) -> bool            { return x.length()==0; }),
-	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
+	
+
+	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }), // optional specification of prior weight (default=1.0)
+	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }),
+	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }),
+	
 	
 	Primitive("insert(%s,%s)", +[](S x, S y) -> S { 
 				
@@ -94,16 +101,28 @@ std::tuple PRIMITIVES = {
 			}),
 	
 	// set operations:
-	Primitive("%s",         +[](S x) -> StrSet          { StrSet s; s.insert(x); return s; } ),
-	Primitive("%s,%s",      +[](StrSet& s, S x) -> void { if(s.size() > max_setsize) throw VMSRuntimeError; else s.insert(x); } ),
-	Primitive("%s\u2216%s", +[](StrSet& s, S x) -> void { s.erase(x); } ),
+	Primitive("{%s}",         +[](S x) -> StrSet          { StrSet s; s.insert(x); return s; }, 10.0),
+	Primitive("(%s \u222A %s)", +[](StrSet& s, StrSet x) -> void { 
+		if(s.size() + x.size() > max_setsize) 
+			throw VMSRuntimeError; 
+		
+		for(auto& a: x) {
+			s.insert(a);
+		}
+	}),
+	
+	Primitive("(%s \u2216 %s)", +[](StrSet& s, StrSet x) -> void {
+		for(auto& a: x) {
+			s.erase(a);
+		}
+	}),
 	
 	// And add built-ins:
 	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
 	Builtin::If<StrSet>("if(%s,%s,%s)", 1.0),		
 	Builtin::If<double>("if(%s,%s,%s)", 1.0),		
 	Builtin::X<S>("x"),
-	Builtin::FlipP("flip(%s)")
+	Builtin::FlipP("flip(%s)", 10.0)
 };
 
 #include "Fleet.h" 
@@ -327,10 +346,12 @@ int main(int argc, char** argv){
 	
 	Grammar grammar(PRIMITIVES);
 	
-	for(size_t a=1;a<10;a++) { // pack probability into arg, out of 10
-		std::string s = std::to_string(double(a)/10.0).substr(1,3); // substr just truncates lesser digits
-		grammar.add<double>(CustomOp::op_P, s, (a==5?5.0:1.0), a);
+	for(size_t a=1;a<=10;a++) { // pack probability into arg, out of 20, since it never needs to be greater than 1/2
+		std::string s = std::to_string(double(a)/20.0).substr(1,4); // substr just truncates lesser digits
+		grammar.add<double>(CustomOp::op_P, s, (a==10.0?5.0:1.0), a);
 	}	
+	
+	grammar.add<S,StrSet>(CustomOp::op_UniformSample, "sample(%s)");
 
 	for(size_t a=0;a<nfactors;a++) {	
 		auto s = std::to_string(a);
@@ -342,6 +363,9 @@ int main(int argc, char** argv){
 	for(size_t ai=0;ai<alphabet.length();ai++) {
 		grammar.add<S>(BuiltinOp::op_ALPHABET,   Q(alphabet.substr(ai,1)),  10.0/alphabet.length(), (int)alphabet.at(ai) );
 	}
+	
+	
+	
 	
 	
 	MyHypothesis h0; 

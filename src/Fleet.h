@@ -59,7 +59,7 @@ namespace FleetStatistics {
 
 namespace Fleet { 
 	size_t GRAMMAR_MAX_DEPTH = 64;
-	const size_t MAX_CHILD_SIZE = 32; // rules can have at most this many children 
+	const size_t MAX_CHILD_SIZE = 4; // rules can have at most this many children  -- for now (we can change if needed)
 
 }
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

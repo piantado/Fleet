@@ -18,6 +18,8 @@ from AnBnC2n import AnBnC2n
 from AnBmCmAn import AnBmCmAn
 from AnBmCnDm import AnBmCnDm
 from Bach import Bach2, Bach3
+from Braine66 import Braine66
+from Elman import Elman
 from Reber import Reber
 from Saffran import Saffran
 from XX import XX
