@@ -237,6 +237,63 @@ public:
 		return sample<Rule,std::vector<Rule>>(rules[nt], f).first; // ignore the probabiltiy 
 	}
 	
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Generation
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	
+	Node makeNode(const Rule* r) const {
+		return Node(r, log(r->p)-log(Z[r->nt]));
+	}
+	
+
+	Node generate(const nonterminal_t nt, unsigned long depth=0) const {
+		// Sample a rule and generate from this grammar. This has a template to avoid a circular dependency
+		// and allow us to generate other kinds of things from rules if we want. 
+		// We use exceptions here just catch depth exceptions so we can easily get a trace of what
+		// happened
+		
+		if(depth >= Fleet::GRAMMAR_MAX_DEPTH) {
+			throw depth_exception; //assert(0);
+		}
+		
+		Rule* r = sample_rule(nt);
+		Node n = makeNode(r);
+		for(size_t i=0;i<r->N;i++) {
+			try{
+				n.set_child(i, generate(r->type(i), depth+1)); // recurse down
+			} catch(DepthException& e) {
+				CERR "*** Grammar has recursed beyond Fleet::GRAMMAR_MAX_DEPTH (Are the probabilities right?). nt=" << nt << " d=" << depth TAB n.string() ENDL;
+				throw e;
+			}
+		}
+		return n;
+	}	
+	
+	// a wrapper so we can call by type	
+	template<class t>
+	Node generate(unsigned long depth=0) {
+		return generate(nt<t>(),depth);
+	}
+	
+	Node copy_resample(const Node& node, bool f(const Node& n)) const {
+		// this makes a copy of the current node where ALL nodes satifying f are resampled from the grammar
+		// NOTE: this does NOT allow f to apply to nullptr children (so cannot be used to fill in)
+		if(f(node)){
+			return generate(node.rule->nt);
+		}
+		else {
+		
+			// otherwise normal copy
+			Node ret = node;
+			for(size_t i=0;i<ret.nchildren();i++) {
+				ret.set_child(i, copy_resample(ret.child(i), f));
+			}
+			return ret;
+		}
+	}
+	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Computing log probabilities and priors
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -387,11 +444,28 @@ public:
 		}
 	}
 	
+	void lemepl_ziv_fill(enumerationidx_t& z, Node& n) {
+		// *modifies* n by filling in according to z (and modifies z!)
+		// This is used to fill in partial subtrees
+		
+		if(n.is_null()) {
+//			n = lempel_ziv_expand()..
+		}	
+	
+	}
 	
 	Node lempel_ziv_expand(nonterminal_t nt, enumerationidx_t z, Node* root=nullptr) const {
 		// This implements "lempel-ziv" decoding on trees, where each integer
 		// can be a reference to prior subtrees (of type nt) or 
 		
+		/* Still not finished -- should be filling in the bottom of the tree
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * */
 		// our first integers encode terminals
 		enumerationidx_t numterm = count_terminals(nt);
 		if(z < numterm) {
@@ -402,28 +476,14 @@ public:
 		// then the next encode some subtrees
 		if(root != nullptr) {
 			
-			// build up the set of things we could encode via
-			std::set<Node> encode;
-			for(auto& n : *root) {
-				// decide what kinds of trees we can encode -- for now, only complete, but 
-				// we could have any trees if we wanted
-				if(n.nt() == nt and n.is_complete() and not n.is_terminal()) {
-					encode.insert(n);
-//					CERR "HERE" TAB *root TAB z TAB n ENDL;					
-				}
+			auto t = count_partial_subtrees(*root);
+		
+			if(z < t) {
+				return copy_partial_subtree(*root, z); // just get the z'th tree
 			}
-			
-			if((not encode.empty()) and z < encode.size()) {
-				// if we encoded one of these
-				auto ptr = encode.begin();
-				for(size_t i=0;i<z;i++)  {
-					ptr++;
-				
-				}
-				return *ptr;
+			else {
+				z -= t;
 			}
-			
-			z -= encode.size(); // account for the fact that we could have coded these			
 		}
 		
 		// now just decode		
@@ -457,12 +517,12 @@ public:
 	// Subtrees
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	virtual size_t count_partial_subtrees(const Node& n) const {
+	virtual enumerationidx_t count_partial_subtrees(const Node& n) const {
 		// how many possible subtrees do I have? (e.g. where each node can be replaced by null node?)
 		// to compute, we just take the *product* of all non-null kids
 		// (NOTE: This function could/should live in Node? The reason its not is that copy_subtree must live here)
-		size_t k=1; 
-		for(size_t i=0;i<n.nchildren();i++){
+		enumerationidx_t k=1; 
+		for(enumerationidx_t i=0;i<n.nchildren();i++){
 			if(not n.child(i).is_null()) {
 				// for each child independently, I can either make them null, or I can include them
 				// and choose one of their own subtrees
@@ -481,7 +541,7 @@ public:
 		z -= 1; // get rid of that bit
 		
 		Node out = makeNode(n.rule);
-		for(size_t i=0;i<out.nchildren();i++) {
+		for(enumerationidx_t i=0;i<out.nchildren();i++) {
 			auto u = mod_decode(z, count_partial_subtrees(n.child(i)) );
 			z = u.second;
 			out.set_child(i, copy_partial_subtree(n.child(i), u.first));
@@ -489,61 +549,6 @@ public:
 		return out;
 	}
 	
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Generation
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
-	
-	Node makeNode(const Rule* r) const {
-		return Node(r, log(r->p)-log(Z[r->nt]));
-	}
-	
-
-	Node generate(const nonterminal_t nt, unsigned long depth=0) const {
-		// Sample a rule and generate from this grammar. This has a template to avoid a circular dependency
-		// and allow us to generate other kinds of things from rules if we want. 
-		// We use exceptions here just catch depth exceptions so we can easily get a trace of what
-		// happened
-		
-		if(depth >= Fleet::GRAMMAR_MAX_DEPTH) {
-			throw depth_exception; //assert(0);
-		}
-		
-		Rule* r = sample_rule(nt);
-		Node n = makeNode(r);
-		for(size_t i=0;i<r->N;i++) {
-			try{
-				n.set_child(i, generate(r->type(i), depth+1)); // recurse down
-			} catch(DepthException& e) {
-				CERR "*** Grammar has recursed beyond Fleet::GRAMMAR_MAX_DEPTH (Are the probabilities right?). nt=" << nt << " d=" << depth TAB n.string() ENDL;
-				throw e;
-			}
-		}
-		return n;
-	}	
-	
-	// a wrapper so we can call by type	
-	template<class t>
-	Node generate(unsigned long depth=0) {
-		return generate(nt<t>(),depth);
-	}
-	
-	Node copy_resample(const Node& node, bool f(const Node& n)) const {
-		// this makes a copy of the current node where ALL nodes satifying f are resampled from the grammar
-		// NOTE: this does NOT allow f to apply to nullptr children (so cannot be used to fill in)
-		if(f(node)){
-			return generate(node.rule->nt);
-		}
-		else {
-		
-			// otherwise normal copy
-			Node ret = node;
-			for(size_t i=0;i<ret.nchildren();i++) {
-				ret.set_child(i, copy_resample(ret.child(i), f));
-			}
-			return ret;
-		}
-	}
 		
 		
 	/********************************************************

@@ -41,36 +41,52 @@ t logplusexp(const t a, const t b) {
 /////////////////////////////////////////////////////////////
 
 typedef size_t enumerationidx_t; // this is the type we use to store enuemration indices
+//namespace Fleet {
+//	namespace Enumeration {
 
-std::pair<enumerationidx_t, enumerationidx_t> cantor_decode(const enumerationidx_t z) {
-	enumerationidx_t w = (enumerationidx_t)std::floor((std::sqrt(8*z+1)-1.0)/2);
-	enumerationidx_t t = w*(w+1)/2;
-	return std::make_pair(z-t, w-(z-t));
-}
+		std::pair<enumerationidx_t, enumerationidx_t> cantor_decode(const enumerationidx_t z) {
+			enumerationidx_t w = (enumerationidx_t)std::floor((std::sqrt(8*z+1)-1.0)/2);
+			enumerationidx_t t = w*(w+1)/2;
+			return std::make_pair(z-t, w-(z-t));
+		}
 
-std::pair<enumerationidx_t, enumerationidx_t> rosenberg_strong_decode(const enumerationidx_t z) {
-	// https:arxiv.org/pdf/1706.04129.pdf
-	enumerationidx_t m = (enumerationidx_t)std::floor(std::sqrt(z));
-	if(z-m*m < m) {
-		return std::make_pair(z-m*m,m);
-	}
-	else {
-		return std::make_pair(m, m*(m+2)-z);
-	}
-}
+		std::pair<enumerationidx_t, enumerationidx_t> rosenberg_strong_decode(const enumerationidx_t z) {
+			// https:arxiv.org/pdf/1706.04129.pdf
+			enumerationidx_t m = (enumerationidx_t)std::floor(std::sqrt(z));
+			if(z-m*m < m) {
+				return std::make_pair(z-m*m,m);
+			}
+			else {
+				return std::make_pair(m, m*(m+2)-z);
+			}
+		}
 
-enumerationidx_t rosenberg_strong_encode(const enumerationidx_t x, const enumerationidx_t y){
-	auto m = std::max(x,y);
-	return m*(m+1)+x-y;
-}
+		enumerationidx_t rosenberg_strong_encode(const enumerationidx_t x, const enumerationidx_t y){
+			auto m = std::max(x,y);
+			return m*(m+1)+x-y;
+		}
 
-std::pair<enumerationidx_t,enumerationidx_t> mod_decode(const enumerationidx_t z, const enumerationidx_t k) {
+		std::pair<enumerationidx_t,enumerationidx_t> mod_decode(const enumerationidx_t z, const enumerationidx_t k) {
+			
+			auto x = z%k;
+			return std::make_pair(x, (z-x)/k);
+		}
+
+		enumerationidx_t mod_encode(const enumerationidx_t x, const enumerationidx_t y, const enumerationidx_t k) {
+			assert(x < k);
+			return x + y*k;
+		}
+
+//		enumerationidx_t rosenberg_strong_pop(enumerationidx_t& z) {
+//			u = rosenberg_strong_decode(z);
+//			z = u.first;
+//			return u.second;
+//		}
+//		enumerationidx_t mod_pop(enumerationidx_t& z) {
+//			u = rosenberg_strong_decode(z);
+//			z = u.first;
+//			return u.second;
+//		}
 	
-	auto x = z%k;
-	return std::make_pair(x, (z-x)/k);
-}
-
-enumerationidx_t mod_encode(const enumerationidx_t x, const enumerationidx_t y, const enumerationidx_t k) {
-	assert(x < k);
-	return x + y*k;
-}
+//	}
+//}

@@ -15,6 +15,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <numeric> // for gcd
 
 #include "Data.h"
 
@@ -42,8 +43,14 @@ std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "5
 
 // Parameters for running a virtual machine
 const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -25 to catch some less frequent things that happen by chance
-const unsigned long MAX_STEPS_PER_FACTOR   = 4096; //4096; 
-const unsigned long MAX_OUTPUTS_PER_FACTOR = 1024; //512; - make it bigger than
+
+
+/// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+unsigned long MAX_STEPS_PER_FACTOR   = 2048; //4096;  
+unsigned long MAX_OUTPUTS_PER_FACTOR = 512; //512; - make it bigger than
+/// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+const unsigned long PRINT_STRINGS = 128; // print at most this many strings for each hypothesis
+
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// These define all of the types that are used in the grammar.
@@ -102,7 +109,7 @@ std::tuple PRIMITIVES = {
 	
 	// set operations:
 	Primitive("{%s}",         +[](S x) -> StrSet          { StrSet s; s.insert(x); return s; }, 10.0),
-	Primitive("(%s \u222A %s)", +[](StrSet& s, StrSet x) -> void { 
+	Primitive("(%s\u222A%s)", +[](StrSet& s, StrSet x) -> void { 
 		if(s.size() + x.size() > max_setsize) 
 			throw VMSRuntimeError; 
 		
@@ -111,7 +118,7 @@ std::tuple PRIMITIVES = {
 		}
 	}),
 	
-	Primitive("(%s \u2216 %s)", +[](StrSet& s, StrSet x) -> void {
+	Primitive("(%s\u2216%s)", +[](StrSet& s, StrSet x) -> void {
 		for(auto& a: x) {
 			s.erase(a);
 		}
@@ -136,10 +143,6 @@ public:
 	virtual vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>* vms, Dispatchable<S,S>* loader) {
 		assert(i.is<CustomOp>());
 		switch(i.as<CustomOp>()) {
-			case CustomOp::op_P: {
-				vms->template push<double>( double(i.arg)/10.0 );
-				break;
-			}			
 			case CustomOp::op_UniformSample: {
 					// implement sampling from the set.
 					// to do this, we read the set and then push all the alternatives onto the stack
@@ -297,7 +300,7 @@ public:
 		auto o = this->call(S(""), S("<err>"));
 		auto [prec, rec] = get_precision_and_recall(std::cout, o, prdata, PREC_REC_N);
 		COUT "#\n";
-		COUT "# "; o.print();	COUT "\n";
+		COUT "# "; o.print(PRINT_STRINGS);	COUT "\n";
 		COUT prefix << current_data TAB this->born TAB this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->parseable()) TAB prec TAB rec;
 		COUT "" TAB QQ(this->string()) ENDL
 	}
@@ -346,17 +349,18 @@ int main(int argc, char** argv){
 	
 	Grammar grammar(PRIMITIVES);
 	
-	for(size_t a=1;a<=10;a++) { // pack probability into arg, out of 20, since it never needs to be greater than 1/2
-		std::string s = std::to_string(double(a)/20.0).substr(1,4); // substr just truncates lesser digits
-		grammar.add<double>(CustomOp::op_P, s, (a==10.0?5.0:1.0), a);
-	}	
+	
+	for(int a=1;a<=Fleet::Pdenom/2;a++) { // pack probability into arg, out of 20, since it never needs to be greater than 1/2	
+		std::string s = str(a/std::gcd(a,Fleet::Pdenom)) + "/" + str(Fleet::Pdenom/std::gcd(a,Fleet::Pdenom)); // std::to_string(double(a)/24.0).substr(1,4); // substr just truncates lesser digits
+		grammar.add<double>(BuiltinOp::op_P, s, (a==Fleet::Pdenom/2?5.0:1.0), a);
+	}
 	
 	grammar.add<S,StrSet>(CustomOp::op_UniformSample, "sample(%s)");
 
 	for(size_t a=0;a<nfactors;a++) {	
 		auto s = std::to_string(a);
 		grammar.add<S,S>(BuiltinOp::op_SAFE_RECURSE, S("F")+s+"(%s)", 1.0/nfactors, a);
-		grammar.add<S,S>(BuiltinOp::op_SAFE_MEM_RECURSE, S("memF")+s+"(%s)", 1.0/nfactors, a);
+		grammar.add<S,S>(BuiltinOp::op_SAFE_MEM_RECURSE, S("memF")+s+"(%s)", 0.5/nfactors, a); // disprefer mem when we don't need it
 	}
 
 	// push for each
@@ -455,8 +459,14 @@ int main(int argc, char** argv){
 		
 		ParallelTempering samp(h0, &datas[di], all, NTEMPS, MAXTEMP);
 		samp.run(Control(mcmc_steps, runtime/datas.size()), 1000, 60*1000);	
-		
+
+		// set up to print using a larger set
+		MAX_STEPS_PER_FACTOR   = 32000; //4096; 
+		MAX_OUTPUTS_PER_FACTOR = 8000; //512; - make it bigger than
 		all.print(data_amounts[di]);
+		MAX_STEPS_PER_FACTOR   = 2048; 
+		MAX_OUTPUTS_PER_FACTOR = 512; 
+
 
 		h0 = all.best();
 		

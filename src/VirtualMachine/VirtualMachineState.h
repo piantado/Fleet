@@ -206,6 +206,23 @@ public:
 							}
 							else { assert(false && "*** Cannot use op_ALPHABET if std::string is not in FLEET_GRAMMAR_TYPES"); }
 						}
+						case BuiltinOp::op_INT: 
+						{
+							if constexpr (contains_type<int,FLEET_GRAMMAR_TYPES>()) { 
+								// convert the instruction arg to a string and push it
+								push((int)i.arg);
+								break;
+							}
+							else { assert(false && "*** Cannot use op_INT if std::string is not in FLEET_GRAMMAR_TYPES"); }
+						}			
+						case BuiltinOp::op_P: {
+							if constexpr (contains_type<double,FLEET_GRAMMAR_TYPES>()) { 
+								push( double(i.arg)/double(Fleet::Pdenom) );
+								break;
+							} 
+							else { assert(false && "*** Cannot use op_P if std::string is not in FLEET_GRAMMAR_TYPES"); }
+
+						}					
 						case BuiltinOp::op_MEM:
 						{
 							// Let's not make a big deal when 

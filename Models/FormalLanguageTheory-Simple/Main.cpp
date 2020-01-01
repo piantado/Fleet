@@ -141,8 +141,14 @@ int main(int argc, char** argv){
 //	CERR v.string() ENDL;
 //	CERR v.get_nth(0, isnt)->string() ENDL;
 
-	for(size_t z=0;z<1000;z++) {
-		CERR z TAB grammar.lempel_ziv_expand(0, z).string() ENDL;
+	for(size_t z=0;z<1000000 and !CTRL_C;z++) {
+		CERR z TAB grammar.lempel_ziv_expand(0, z).string() ENDL; 
+//		auto n =  grammar.lempel_ziv_expand(0, z);
+//		auto S = grammar.count_partial_subtrees(n);
+//		CERR z TAB S TAB n ENDL;
+//		for(size_t s=0;s<S;s++){
+//			CERR "\t" TAB s TAB grammar.copy_partial_subtree(n, s).string() ENDL;
+//		}
 //		CERR z TAB grammar.expand_from_integer(0, z).string() TAB grammar.lempel_ziv_expand(0, z).string() ENDL;
 //		CERR z TAB grammar.expand_from_integer(0, z).string() ENDL;
 	}

@@ -25,15 +25,15 @@ class NewportAslin(FormalLanguage):
     """
     def __init__(self):
         self.grammar = Grammar(start='S')
-        self.grammar.add_rule('S', 'b%st', ['MID'], 5.0) # We're going to put a probability distribution on this so that it can be evaluated like everything else (otherwise its top 25 strings are not meaningful since its all uniform!)
-        self.grammar.add_rule('S', 'g%sd', ['MID'], 4.0)
-        self.grammar.add_rule('S', 'p%sr', ['MID'], 3.0)
-        self.grammar.add_rule('S', 'k%su', ['MID'], 2.0)
+        self.grammar.add_rule('S', 'b%st', ['MID'], 1.0) # We're going to put a probability distribution on this so that it can be evaluated like everything else (otherwise its top 25 strings are not meaningful since its all uniform!)
+        self.grammar.add_rule('S', 'g%sd', ['MID'], 1.0)
+        self.grammar.add_rule('S', 'p%sr', ['MID'], 1.0)
+        self.grammar.add_rule('S', 'k%su', ['MID'], 1.0)
         self.grammar.add_rule('S', 'l%si', ['MID'], 1.0)
 
-        self.grammar.add_rule('MID', '1', None, 4.0)
-        self.grammar.add_rule('MID', '2', None, 3.0)
-        self.grammar.add_rule('MID', '3', None, 2.0)
+        self.grammar.add_rule('MID', '1', None, 1.0)
+        self.grammar.add_rule('MID', '2', None, 1.0)
+        self.grammar.add_rule('MID', '3', None, 1.0)
         self.grammar.add_rule('MID', '4', None, 1.0)
 
 

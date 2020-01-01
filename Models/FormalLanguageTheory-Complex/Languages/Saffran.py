@@ -12,9 +12,9 @@ class Saffran(FormalLanguage):
         self.grammar = Grammar(start='S')
         self.grammar.add_rule('S', '%s%s', ['T', 'S'], 2.0)
         self.grammar.add_rule('S', '%s',   ['T'], 1.0)
-        self.grammar.add_rule('T', 'tpr',    None, 4.0) # We are going to put a probability distribution on the words so that they can be evaluated reasonably, otherwise its hard to score uniform
-        self.grammar.add_rule('T', 'glb',    None, 3.0)
-        self.grammar.add_rule('T', 'Bdk',    None, 2.0)
+        self.grammar.add_rule('T', 'tpr',    None, 1.0) # We are going to put a probability distribution on the words so that they can be evaluated reasonably, otherwise its hard to score uniform
+        self.grammar.add_rule('T', 'glb',    None, 1.0)
+        self.grammar.add_rule('T', 'Bdk',    None, 1.0)
         self.grammar.add_rule('T', 'PDT',    None, 1.0)
 
     def terminals(self):

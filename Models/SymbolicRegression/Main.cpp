@@ -108,7 +108,7 @@ public:
 			// which means that they are popped 
 			for(size_t i=0;i<n->rule->N;i++) {
 //			for(int i=(int)n->rule->N-1;i>=0;i--) {
-				childStrings[i] = __my_string_recurse(&n->child[i],idx);
+				childStrings[i] = __my_string_recurse(&n->child(i),idx);
 			}
 			
 			std::string s = n->rule->format;
@@ -292,7 +292,7 @@ int main(int argc, char** argv){
 	MyHypothesis h0(&grammar);
 	MCTSNode m(explore, h0, callback, &mydata);
 	tic();
-	m.parallel_search(nthreads, mcts_steps, runtime, 0, 1.0);
+	m.parallel_search(Control(mcts_steps, runtime, nthreads), Control(0, 1000));
 	tic();
 	
 	m.print(tree_path.c_str());
@@ -349,7 +349,7 @@ int main(int argc, char** argv){
 	for(auto& m : master_samples) {
 		double best_posterior = m.second.best_posterior();
 		MyHypothesis hm = m.second.max();
-		double pd = get_polynomial_degree(hm.value, hm.constants);
+		//double pd = get_polynomial_degree(hm.value, hm.constants);
 		// NOTE: we are picking just one example from this structure -- this may not be a great idea, but should work fine since
 		// we are next checking whether the degree is exactly 1 or 0, which should only happen if the degree is right based on the structure
 		

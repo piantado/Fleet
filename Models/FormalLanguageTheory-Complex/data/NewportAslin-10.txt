@@ -1,7 +1,7 @@
-k4u	2
-g1d	2
+p2r	3
 b1t	2
 k3u	1
 b4t	1
-g2d	1
-p1r	1
+g1d	1
+l1i	1
+p4r	1

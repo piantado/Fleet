@@ -1,4 +1,5 @@
-tpr	2
-glb	1
-tprtprtpr	1
-PDTPDT	1
+PDTtpr	1
+tprtprPDTglb	1
+BdkglbPDT	1
+BdkBdk	1
+tpr	1

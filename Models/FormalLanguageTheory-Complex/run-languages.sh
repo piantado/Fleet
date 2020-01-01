@@ -10,19 +10,22 @@ mymain=run/main.$myhost
 cp main $mymain
 cp Main.cpp run/Main.cpp.$myhost # for a record 
 
-
 if [ $myhost = "colala-hastings" ] ; then
-    factors=(1 4)
-    jobs=30
-    parameters=Parameters/LongRun.csv
+    factors=(4)
+    jobs=35
+    parameters=AllParameters.csv
 elif [ $myhost = "colala-metropolis" ] ; then
-    factors=(2 3)
-    jobs=30
-    parameters=Parameters/LongRun.csv
+    factors=(3)
+    jobs=35
+    parameters=AllParameters.csv
 elif [ $myhost = "simon" ] ; then
-    factors=(1 2 3 4)
+    factors=(1)
     jobs=70
-    parameters=Parameters/ShortRun.csv
+    parameters=AllParameters.csv
+elif [ $myhost = "garfunkel" ] ; then
+    factors=(2)
+    jobs=70
+    parameters=AllParameters.csv
 fi
 
 rm -f run/parameters.$myhost
@@ -34,5 +37,5 @@ do
 done
 
 cat run/parameters.$myhost | parallel --jobs=$jobs --joblog run/log.$myhost --csv --colsep ',' \
-        /usr/bin/time --output=out/{1}-{5}.time --verbose \
-        ./$mymain "${GARGS[@]}" --input=data/{1} --alphabet=\"{2}\" --time={3} --nfactors={5} --threads=$threads --thin=0 --mcmc=0 --top=$top --restart=100000 ">" out/{1}-{5}.out "2>" out/{1}-{5}.err
+        /usr/bin/time --output=out/{1}-{7}.time --verbose \
+        ./$mymain "${GARGS[@]}" --input=data/{1} --alphabet=\"{2}\" --time={4} --nfactors={7} --threads=$threads --thin=0 --mcmc=0 --top=$top --restart=100000 ">" out/{1}-{7}.out "2>" out/{1}-{7}.err

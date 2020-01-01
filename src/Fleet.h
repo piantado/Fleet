@@ -59,7 +59,11 @@ namespace FleetStatistics {
 
 namespace Fleet { 
 	size_t GRAMMAR_MAX_DEPTH = 64;
-	const size_t MAX_CHILD_SIZE = 4; // rules can have at most this many children  -- for now (we can change if needed)
+	const size_t MAX_CHILD_SIZE = 8; // rules can have at most this many children  -- for now (we can change if needed)
+	
+	int Pdenom = 24; // the denominator for probabilities in op_P --  we're going to enumeraet fractions in 24ths -- just so we can get thirds, quarters, fourths	
+
+	
 
 }
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -188,10 +192,10 @@ typedef Stack<Instruction> Program;
 #include "Hash.h"
 #include "Miscellaneous.h"
 
-#include "Interfaces/Dispatchable.h"
-#include "Interfaces/Bayesable.h"
-#include "Interfaces/MCMCable.h"
-#include "Interfaces/Searchable.h"
+#include "Hypotheses/Interfaces/Dispatchable.h"
+#include "Hypotheses/Interfaces/Bayesable.h"
+#include "Hypotheses/Interfaces/MCMCable.h"
+#include "Hypotheses/Interfaces/Searchable.h"
 
 #include "Rule.h"
 #include "VirtualMachine/VirtualMachinePool.h"
@@ -222,8 +226,8 @@ void Fleet_initialize() {
 	signal(SIGINT, fleet_interrupt_handler);
 	signal(SIGHUP, fleet_interrupt_handler);
 
-	// give us a defaultly nice niceness
-	setpriority(PRIO_PROCESS, 0, 19);
+	// give us a defaultly kinda nice niceness
+	setpriority(PRIO_PROCESS, 0, 5);
 
 	// Print standard fleet header
 	

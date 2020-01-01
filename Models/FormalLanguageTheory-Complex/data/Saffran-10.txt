@@ -1,9 +1,8 @@
-glb	2
-glbBdktprglbBdkBdkPDTglb	1
-glbtprglbglbBdkBdk	1
-glbglb	1
-Bdk	1
+Bdk	3
+glbBdk	1
+tprtpr	1
+PDTtpr	1
+PDT	1
+BdkBdk	1
 Bdktpr	1
-glbglbtprtpr	1
-PDTglb	1
-BdkglbBdkglbtprglb	1
+tpr	1

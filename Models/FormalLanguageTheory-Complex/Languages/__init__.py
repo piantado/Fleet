@@ -44,4 +44,10 @@ from NewportAslin import NewportAslin
 from ReederNewportAslin import ReederNewportAslin
 from HudsonKamNewport import *
 from Count import Count
+from Pullum import *
+from Fibo import Fibo
+from AnBnCnDnEn import AnBnCnDnEn
+from AnBmAnBmCCC import AnBmAnBmCCC
+from WeW import WeW
+from An2 import An2
 

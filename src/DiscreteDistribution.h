@@ -34,11 +34,11 @@ public:
 	}
 	
 	
-	void print(std::ostream& out) const { out << this->string();	}
-	void print()                  const {	print(std::cout);	}
+	void print(std::ostream& out, unsigned long nprint=0) const { out << this->string(nprint);	}
+	void print(unsigned long nprint=0)                  const {	print(std::cout, nprint);	}
 	
 	
-	std::string string() const {
+	std::string string(unsigned long nprint=0) const {
 		
 		// put the strings into a vector
 		std::vector<T> v;
@@ -53,9 +53,10 @@ public:
 		
 		
 		std::string out = "{";
-		for(size_t i=0;i<v.size();i++){
+		auto upper_bound = (nprint == 0 ? v.size() : std::min(v.size(), nprint));
+		for(size_t i=0;i<upper_bound;i++){
 			out += "'"  + v[i] + "':" + std::to_string(m.at(v[i]));
-			if(i < v.size()-1) { out += ", "; }
+			if(i < upper_bound-1) { out += ", "; }
 		}
 		out += "} [Z=" + std::to_string(Z) + ", N=" + std::to_string(v.size()) + "]";
 		
