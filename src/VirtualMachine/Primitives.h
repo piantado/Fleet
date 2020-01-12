@@ -170,17 +170,13 @@ struct Primitive : PrePrimitive {
 // https://stackoverflow.com/questions/21062864/optimal-way-to-access-stdtuple-element-in-runtime-by-index
 namespace Fleet::applyVMS { 
 	
-	template<int... Is>        struct seq {};
-	template<int N, int... Is> struct gen_seq : gen_seq<N-1, N-1, Is...> {};
-	template<int... Is>        struct gen_seq<0, Is...> : seq<Is...> {};
-
 	template<int n, class T, typename V, typename P, typename L>
 	vmstatus_t applyToVMS_one(T& p, V* vms, P* pool, L* loader) {
 		return std::get<n>(p).VMScall(vms, pool, loader);
 	}
 
-	template<class T, typename V, typename P, typename L, int... Is>
-	vmstatus_t applyToVMS(T& p, int index, V* vms, P* pool, L* loader, seq<Is...>) {
+	template<class T, typename V, typename P, typename L, size_t... Is>
+	vmstatus_t applyToVMS(T& p, int index, V* vms, P* pool, L* loader, std::index_sequence<Is...>) {
 		using FT = vmstatus_t(T&, V*, P*, L*);
 		thread_local static constexpr FT* arr[] = { &applyToVMS_one<Is, T, V, P, L>... }; //thread_local here seems to matter a lot
 		return arr[index](p, vms, pool, loader);
@@ -188,10 +184,15 @@ namespace Fleet::applyVMS {
 }
 template<class T, typename V, typename P, typename L>
 vmstatus_t applyToVMS(T& p, int index, V* vms, P* pool, L* loader) {
-//    return Fleet::applyVMS::applyToVMS(p, index, vms, std::make_index_sequence<std::tuple_size<T>::value>{} );
-    return Fleet::applyVMS::applyToVMS(p, index, vms, pool, loader, Fleet::applyVMS::gen_seq<std::tuple_size<T>::value>{});
-	// TODO: I think we can probably get away without gen_seq, using something like below
-//    return Fleet::applyVMS::applyToVMS(p, index, vms, std::make_integer_sequence<std::tuple_size<T>>{});
+	
+	// We need to put a check in here to ensure that nobody tries to do grammar.add(Primtive(...)) because
+	// then it won't be included in our standard PRIMITIVES table, and so it cannot be called in this way
+	// This is a problem in the library that should be addressed.
+	assert( (size_t)index < std::tuple_size<T>::value && "*** You cannot index a higher primitive op than the size of PRIMITIVES. Perhaps you used grammar.add(Primitive(...)), which is not allowed, instead of putting it into the tuple?");
+	assert(index >= 0);
+	
+	
+    return Fleet::applyVMS::applyToVMS(p, index, vms, pool, loader, std::make_index_sequence<std::tuple_size<T>::value>{});
 
 }
 
