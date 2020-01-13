@@ -48,5 +48,14 @@ public:
 		// not necessarily empty, just will forever return 0
 		return value == 0;
 	}
+	
+	void operator=(value_t z) {
+		// just set my value
+		value = z;
+	}
+	void operator-=(value_t x) {
+		// subtract off my value
+		value -= x;
+	}
 };
 

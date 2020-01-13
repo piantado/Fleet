@@ -191,6 +191,7 @@ typedef Stack<Instruction> Program;
 #include "Strings.h"
 #include "Hash.h"
 #include "Miscellaneous.h"
+#include "IntegerizedStack.h"
 
 #include "Hypotheses/Interfaces/Dispatchable.h"
 #include "Hypotheses/Interfaces/Bayesable.h"

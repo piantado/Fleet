@@ -384,8 +384,9 @@ public:
 	// Enumeration -- via encoding into integers
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
+
 	
-	Node expand_from_integer(nonterminal_t nt, enumerationidx_t z) const {
+	Node expand_from_integer(nonterminal_t nt, IntegerizedStack& is) const {
 		// this is a handy function to enumerate trees produced by the grammar. 
 		// This works by encoding each tree into an integer using some "pairing functions"
 		// (see https://arxiv.org/pdf/1706.04129.pdf)
@@ -401,32 +402,29 @@ public:
 		// below it. Otherwise we'll get an assertion error eventually.
 		
 		enumerationidx_t numterm = count_terminals(nt);
-		if(z < numterm) {
-			return makeNode(this->get_rule(nt, z));	// whatever terminal we wanted
+		if(is.get_value() < numterm) {
+			return makeNode(this->get_rule(nt, is.get_value()));	// whatever terminal we wanted
 		}
 		else {
-			auto u =  mod_decode(z-numterm, count_nonterminals(nt));
 			
-			Rule* r = this->get_rule(nt, u.first+numterm); // shift index from terminals (because they are first!)
+			is -= numterm; // remove this from is
+			auto ri =  is.pop(count_nonterminals(nt));			
+			Rule* r = this->get_rule(nt, ri+numterm); // shift index from terminals (because they are first!)
 			Node out = makeNode(r);
-			enumerationidx_t rest = u.second; // the encoding of everything else
 			for(size_t i=0;i<r->N;i++) {
-				enumerationidx_t zi; // what is the encoding for the i'th child?
-				if(i < r->N-1) { 
-					auto ui = rosenberg_strong_decode(rest);
-					zi = ui.first;
-					rest = ui.second;
-				}
-				else {
-					zi = rest;
-				}
-				out.set_child(i, expand_from_integer(r->type(i), zi)); // since we are by reference, this should work right
+				// note that this recurses on the z format -- so it makes a new IntegerizedStack for each child
+				out.set_child(i, expand_from_integer(r->type(i), (enumerationidx_t)is.pop()) ) ; 
 			}
 			return out;					
 		}
 
 	}
-
+	Node exapnd_from_integer(nonterminal_t nt, enumerationidx_t z) const {
+		IntegerizedStack is = z;
+		return expand_from_integer(nt, is);
+	}
+	
+	
 	enumerationidx_t compute_enumeration_order(const Node& n) {
 		// inverse of the above function -- what order would we be enumerated in?
 		if(n.nchildren() == 0) {
