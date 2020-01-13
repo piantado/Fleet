@@ -19,7 +19,7 @@ class Stack : public std::vector<T> {
 public:
 
 	Stack() {
-//		this->reserve(32); /// chosen with a little experimetnation for FormalLanguageTheory-Complex
+//		this->reserve(8); /// chosen with a little experimetnation for FormalLanguageTheory-Complex
 	}
 
 	void push(const T& val) {
@@ -36,11 +36,11 @@ public:
 	 * with top() but we do with topref
 	 */
 	
-	T top() {
+	[[nodiscard]] T top() {
 		return this->back();
 	}
 
-	T& topref() {
+	[[nodiscard]] T& topref() {
 		return std::forward<T&>(this->back());
 	}
 };

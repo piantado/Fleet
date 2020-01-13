@@ -45,10 +45,7 @@ public:
 	
 	VirtualMachineState(t_x x, t_return e, size_t _recursion_depth=0) :
 		err(e), lp(0.0), recursion_depth(_recursion_depth), status(vmstatus_t::GOOD) {
-		xstack.push(x);
-		
-//		opstack.reserve(32); // Doesn't speed up!
-		
+		xstack.push(x);	
 	}
 	
 	virtual ~VirtualMachineState() {};	// needed so VirtualMachinePool can delete

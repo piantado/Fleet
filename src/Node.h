@@ -318,12 +318,16 @@ public:
 		return n;
 	}
 		
-	virtual void linearize(Program &ops) const { 
+	inline virtual void linearize(Program &ops) const { 
 		// convert tree to a linear sequence of operations 
 		// to do this, we first linearize the kids, leaving their values as the top on the stack
 		// then we compute our value, remove our kids' values to clean up the stack, and push on our return
 		// the only fanciness is for if: here we will use the following layout 
 		// <TOP OF STACK> <bool> op_IF(xsize) X-branch JUMP(ysize) Y-branch
+		
+		// NOTE: Inline here lets gcc inline a few recursions of this function, which ends up speeding
+		// us up a bit (otherwise recursive inlining only happens at -O3)
+		// This optimization is why we do set max-inline-insns-recursive in Fleet.mk
 		
 		// NOTE: If you change the order here ever, you have to change how string() works so that 
 		//       string order matches evaluation order

@@ -11,7 +11,7 @@
 const double LOG05 = -log(2.0);
 const double infinity = std::numeric_limits<double>::infinity();
 const double NaN = std::numeric_limits<double>::quiet_NaN();;
-const double pi  = 3.141592653589793238;
+const double pi  = M_PI;
 
 /////////////////////////////////////////////////////////////
 // Probability
@@ -60,7 +60,7 @@ typedef size_t enumerationidx_t; // this is the type we use to store enuemration
 				return std::make_pair(m, m*(m+2)-z);
 			}
 		}
-
+		
 		enumerationidx_t rosenberg_strong_encode(const enumerationidx_t x, const enumerationidx_t y){
 			auto m = std::max(x,y);
 			return m*(m+1)+x-y;
@@ -76,6 +76,28 @@ typedef size_t enumerationidx_t; // this is the type we use to store enuemration
 			assert(x < k);
 			return x + y*k;
 		}
+		
+		// Stack-like operations on z
+		enumerationidx_t rosenberg_strong_pop(enumerationidx_t &z) {
+			// https:arxiv.org/pdf/1706.04129.pdf
+			enumerationidx_t m = (enumerationidx_t)std::floor(std::sqrt(z));
+			if(z-m*m < m) {
+				auto ret = z-m*m;
+				z = m;
+				return ret;
+			}
+			else {
+				auto ret = m;
+				z = m*(m+2)-z;
+				return ret;
+			}
+		}
+		enumerationidx_t mod_pop(enumerationidx_t& z, const enumerationidx_t k) {			
+			auto x = z%k;
+			z = (z-x)/k;
+			return x;
+		}
+		
 
 //		enumerationidx_t rosenberg_strong_pop(enumerationidx_t& z) {
 //			u = rosenberg_strong_decode(z);

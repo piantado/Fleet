@@ -75,8 +75,9 @@ std::tuple PRIMITIVES = {
 	Primitive("tail(%s)",      +[](S& s)     -> void       { if(s.length()>0) s.erase(0); }), //sreturn (s.empty() ? S("") : s.substr(1,S::npos)); }), // REPLACE: if(s.length() >0) s.erase(0)
 	Primitive("head(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : S(1,s.at(0))); }), // MAYBE REPLACE:  S(1,vms.stack<S>().topref().at(0));
 	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void      { 
-			if(a.length() + b.length() > max_length) throw VMSRuntimeError;
-			a = a+b; // modify on stack
+			if(a.length() + b.length() > max_length) 
+				throw VMSRuntimeError;
+			a.append(b); // modify on stack
 	}), // also add a function to check length to throw an error if its getting too long
 
 	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),
@@ -106,6 +107,15 @@ std::tuple PRIMITIVES = {
 					return out;
 				}				
 			}),
+	
+	
+		// add an alphabet symbol
+	Primitive("\u03A3", +[]() -> StrSet {
+		StrSet out; 
+		for(const auto& a: alphabet) 
+			out.insert(S(a,1));
+		return out;
+	}, 5.0),
 	
 	// set operations:
 	Primitive("{%s}",         +[](S x) -> StrSet          { StrSet s; s.insert(x); return s; }, 10.0),
@@ -365,8 +375,22 @@ int main(int argc, char** argv){
 
 	// push for each
 	for(size_t ai=0;ai<alphabet.length();ai++) {
-		grammar.add<S>(BuiltinOp::op_ALPHABET,   Q(alphabet.substr(ai,1)),  10.0/alphabet.length(), (int)alphabet.at(ai) );
+		grammar.add<S>(BuiltinOp::op_ALPHABET,   Q(alphabet.substr(ai,1)),  20.0/alphabet.length(), (int)alphabet.at(ai) );
 	}
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// TODO: ADD the alphabet as a set?
+	
 	
 	
 	

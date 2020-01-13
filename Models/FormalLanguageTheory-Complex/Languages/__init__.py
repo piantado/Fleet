@@ -13,7 +13,7 @@ from ABnABAn import ABnABAn
 from AnCBn import AnCBn
 from AnBmCn import AnBmCn
 from AnB2n import AnB2n
-from AnBm import AnBm, AnBmCm, AnBmCnpm, AnBmCnm, AnBk
+from AnBm import AnBm, AnBmCm, AnBmCnpm, AnBmCnm, AnBk, AnBmA2n
 from AnBnC2n import AnBnC2n
 from AnBmCmAn import AnBmCmAn
 from AnBmCnDm import AnBmCnDm
@@ -50,4 +50,5 @@ from AnBnCnDnEn import AnBnCnDnEn
 from AnBmAnBmCCC import AnBmAnBmCCC
 from WeW import WeW
 from An2 import An2
-
+from ChineseNumeral import ChineseNumeral
+from Unequal import Unequal

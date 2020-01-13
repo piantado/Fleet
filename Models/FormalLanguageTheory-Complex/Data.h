@@ -18,7 +18,7 @@ void load_data_file(std::vector<tdata> &data, const char* datapath) {
 	
 	char* line = NULL; size_t len=0; 
         
-	char buffer[10000];
+	char buffer[100000];
     
 	double cnt;
 	while( getline(&line, &len, fp) != -1 ) {

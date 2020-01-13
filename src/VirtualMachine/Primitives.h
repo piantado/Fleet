@@ -171,19 +171,19 @@ struct Primitive : PrePrimitive {
 namespace Fleet::applyVMS { 
 	
 	template<int n, class T, typename V, typename P, typename L>
-	vmstatus_t applyToVMS_one(T& p, V* vms, P* pool, L* loader) {
+	inline vmstatus_t applyToVMS_one(T& p, V* vms, P* pool, L* loader) {
 		return std::get<n>(p).VMScall(vms, pool, loader);
 	}
 
 	template<class T, typename V, typename P, typename L, size_t... Is>
-	vmstatus_t applyToVMS(T& p, int index, V* vms, P* pool, L* loader, std::index_sequence<Is...>) {
+	inline vmstatus_t applyToVMS(T& p, int index, V* vms, P* pool, L* loader, std::index_sequence<Is...>) {
 		using FT = vmstatus_t(T&, V*, P*, L*);
 		thread_local static constexpr FT* arr[] = { &applyToVMS_one<Is, T, V, P, L>... }; //thread_local here seems to matter a lot
 		return arr[index](p, vms, pool, loader);
 	}
 }
 template<class T, typename V, typename P, typename L>
-vmstatus_t applyToVMS(T& p, int index, V* vms, P* pool, L* loader) {
+inline vmstatus_t applyToVMS(T& p, int index, V* vms, P* pool, L* loader) {
 	
 	// We need to put a check in here to ensure that nobody tries to do grammar.add(Primtive(...)) because
 	// then it won't be included in our standard PRIMITIVES table, and so it cannot be called in this way

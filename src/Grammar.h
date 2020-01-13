@@ -384,6 +384,7 @@ public:
 	// Enumeration -- via encoding into integers
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
+	
 	Node expand_from_integer(nonterminal_t nt, enumerationidx_t z) const {
 		// this is a handy function to enumerate trees produced by the grammar. 
 		// This works by encoding each tree into an integer using some "pairing functions"
@@ -444,28 +445,89 @@ public:
 		}
 	}
 	
-	void lemepl_ziv_fill(enumerationidx_t& z, Node& n) {
+	void lemepl_ziv_fill(enumerationidx_t& z, Node& n, Node* root=nullptr) {
 		// *modifies* n by filling in according to z (and modifies z!)
 		// This is used to fill in partial subtrees
 		
-		if(n.is_null()) {
-//			n = lempel_ziv_expand()..
-		}	
-	
+		// NOTE TODO: Does not work whe n.is_null()
+
+	// TODO: Just code stubs, does not work!
+//		for(size_t i=0;i<n.nchildren();i++) {
+//			if(n.child(i).is_null()) {
+//				n.set_child(i, lempel_ziv_expand(n.rule.child_types[i], z, root));
+//			}
+//			else {
+//				lempel_ziv_expand(z,n.child(i),root);
+//			}			
+//		}
+//	
 	}
-	
-	Node lempel_ziv_expand(nonterminal_t nt, enumerationidx_t z, Node* root=nullptr) const {
-		// This implements "lempel-ziv" decoding on trees, where each integer
-		// can be a reference to prior subtrees (of type nt) or 
+//	
+//	Node lempel_ziv_expand(nonterminal_t nt, enumerationidx_t z, Node* root=nullptr) const {
+//		// This implements "lempel-ziv" decoding on trees, where each integer
+//		// can be a reference to prior subtrees (of type nt) or 
+//		
+//		/* Still not finished -- should be filling in the bottom of the tree
+//		 * 
+//		 * 
+//		 * 
+//		 * 
+//		 * 
+//		 * 
+//		 * */
+//		// our first integers encode terminals
+//		enumerationidx_t numterm = count_terminals(nt);
+//		if(z < numterm) {
+//			return makeNode(this->get_rule(nt, z));	// whatever terminal we wanted
+//		}
+//		z -= numterm; // we weren't any of those 
+//		
+//		// then the next encode some subtrees
+//		if(root != nullptr) {
+//			
+//			auto t = count_partial_subtrees(*root);
+////			auto t = root->count();
+//			if(z < t) {
+//				//return *root->get_nth(z); //copy_partial_subtree(*root, z); // just get the z'th tree
+//				return copy_partial_subtree(*root, z); // just get the z'th tree
+//			}
+//			else {
+//				z -= t;
+//			}
+//		}
+//		
+//		// now just decode		
+//		auto u =  mod_decode(z, count_nonterminals(nt));
+//		Rule* r = this->get_rule(nt, u.first+numterm); // shift index from terminals (because they are first!)
+//		
+//		// we need to fill in out's children with null for it to work
+//		Node out = makeNode(r);
+//		out.fill(); // retuired below because we'll be iterating		
+//		if(root == nullptr) 
+//			root = &out; // if not defined, out is our root
+//		
+//		enumerationidx_t rest = u.second; // the encoding of everything else
+//		for(size_t i=0;i<r->N;i++) {
+//			enumerationidx_t zi; // what is the encoding for the i'th child?
+//			if(i < r->N-1) { 
+//				auto ui = rosenberg_strong_decode(rest);
+//				zi = ui.first;
+//				rest = ui.second;
+//			}
+//			else {
+//				zi = rest;
+//			}
+//			out.set_child(i, lempel_ziv_expand(r->type(i), zi, root)); // since we are by reference, this should work right
+//		}
+//		return out;		
+//		
+//	}
+
+
+	Node lempel_ziv_partial_expand(nonterminal_t nt, enumerationidx_t z, Node* root=nullptr) const {
+		// coding where we expand to a partial tree -- this is easier because we can more easily reference prior
+		// partial trees
 		
-		/* Still not finished -- should be filling in the bottom of the tree
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * */
 		// our first integers encode terminals
 		enumerationidx_t numterm = count_terminals(nt);
 		if(z < numterm) {
@@ -477,7 +539,6 @@ public:
 		if(root != nullptr) {
 			
 			auto t = count_partial_subtrees(*root);
-		
 			if(z < t) {
 				return copy_partial_subtree(*root, z); // just get the z'th tree
 			}
@@ -488,11 +549,12 @@ public:
 		
 		// now just decode		
 		auto u =  mod_decode(z, count_nonterminals(nt));
+		
 		Rule* r = this->get_rule(nt, u.first+numterm); // shift index from terminals (because they are first!)
 		
 		// we need to fill in out's children with null for it to work
 		Node out = makeNode(r);
-		out.fill(); // retuired below because we'll be iterating		
+		out.fill(); // returned below because we'll be iterating		
 		if(root == nullptr) 
 			root = &out; // if not defined, out is our root
 		
@@ -507,7 +569,7 @@ public:
 			else {
 				zi = rest;
 			}
-			out.set_child(i, lempel_ziv_expand(r->type(i), zi, root)); // since we are by reference, this should work right
+			out.set_child(i, lempel_ziv_partial_expand(r->type(i), zi, root)); // since we are by reference, this should work right
 		}
 		return out;		
 		

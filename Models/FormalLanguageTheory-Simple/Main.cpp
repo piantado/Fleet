@@ -92,7 +92,6 @@ public:
 };
 
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char** argv){ 
@@ -141,26 +140,39 @@ int main(int argc, char** argv){
 //	CERR v.string() ENDL;
 //	CERR v.get_nth(0, isnt)->string() ENDL;
 
-	for(size_t z=0;z<1000000 and !CTRL_C;z++) {
-		CERR z TAB grammar.lempel_ziv_expand(0, z).string() ENDL; 
-//		auto n =  grammar.lempel_ziv_expand(0, z);
-//		auto S = grammar.count_partial_subtrees(n);
-//		CERR z TAB S TAB n ENDL;
-//		for(size_t s=0;s<S;s++){
-//			CERR "\t" TAB s TAB grammar.copy_partial_subtree(n, s).string() ENDL;
-//		}
-//		CERR z TAB grammar.expand_from_integer(0, z).string() TAB grammar.lempel_ziv_expand(0, z).string() ENDL;
-//		CERR z TAB grammar.expand_from_integer(0, z).string() ENDL;
-	}
+//	IntegerStack is;
+//	is.push(12);
+//	is.push(33);
+//	is.push(400);
+//	CERR is.get_value() ENDL;
+//	CERR is.pop() ENDL;
+//	CERR is.pop() ENDL;
+//	CERR is.pop() ENDL;
+//	CERR is.pop() ENDL;
+//	
+//	return 0;
+//	
+//
+//	for(size_t z=0;z<1000000 and !CTRL_C;z++) {
+//		CERR z TAB grammar.lempel_ziv_partial_expand(0, z).string() ENDL; 
+////		auto n =  grammar.lempel_ziv_expand(0, z);
+////		auto S = grammar.count_partial_subtrees(n);
+////		CERR z TAB S TAB n ENDL;
+////		for(size_t s=0;s<S;s++){
+////			CERR "\t" TAB s TAB grammar.copy_partial_subtree(n, s).string() ENDL;
+////		}
+////		CERR z TAB grammar.expand_from_integer(0, z).string() TAB grammar.lempel_ziv_expand(0, z).string() ENDL;
+////		CERR z TAB grammar.expand_from_integer(0, z).string() ENDL;
+//	}
 
 	
-//	MyHypothesis h0(&grammar);
-//	h0 = h0.restart();
-//	
-//	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
-//	tic();
-//	samp.run(Control(mcmc_steps, runtime, nthreads), 1.0, 3.0); //30000);		
-//	tic();
+	MyHypothesis h0(&grammar);
+	h0 = h0.restart();
+	
+	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
+	tic();
+	samp.run(Control(mcmc_steps, runtime, nthreads), 1.0, 3.0); //30000);		
+	tic();
 //	
 	// Show the best we've found
 	top.print();

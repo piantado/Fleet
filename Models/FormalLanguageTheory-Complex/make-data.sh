@@ -13,9 +13,9 @@ makeLang() {
 
 export -f makeLang
 
-#languages=(SimpleEnglish MediumEnglish FancyEnglish AnBnCn AnBnC2n ABAnBn AB ABn An AnB2n AnBn Dyck AnBm AAAA AAA ABAnBn AnBmCmAn AnBmCnDm ABA ABB Count AnBkCn XX XXX XXI XXR XXRI XY Man Reber Saffran BerwickPilato Gomez2 Gomez6 Gomez12 NewportAslin MorganNewport MorganMeierNewport HudsonKamNewport100 HudsonKamNewport75 HudsonKamNewport60 HudsonKamNewport45 ReederNewportAslin GoldenMean Even AnBnCnDn A2en ABnen AnCBn Bach2 Bach3 AnBmCn AnBmCm AnBmCnpm AnBmCnm AnBk ABaaaAB aABb Elman Braine66 PullumR ApBAp AsBAsp ApBApp CountA2 CountAEven Fibo AnBnCnDnEn AnBmAnBmCCC)
+#languages=(SimpleEnglish MediumEnglish FancyEnglish AnBnCn AnBnC2n ABAnBn AB ABn An AnB2n AnBn Dyck AnBm AAAA AAA ABAnBn AnBmCmAn AnBmCnDm ABA ABB Count AnBkCn XX XXX XXI XXR XXRI XY Man Reber Saffran BerwickPilato Gomez2 Gomez6 Gomez12 NewportAslin MorganNewport MorganMeierNewport HudsonKamNewport100 HudsonKamNewport75 HudsonKamNewport60 HudsonKamNewport45 ReederNewportAslin GoldenMean Even AnBnCnDn A2en ABnen AnCBn Bach2 Bach3 AnBmCn AnBmCm AnBmCnpm AnBmCnm AnBk ABaaaAB aABb Elman Braine66 PullumR ApBAp AsBAsp ApBApp CountA2 CountAEven Fibo AnBnCnDnEn AnBmAnBmCCC WeW An2 ChineseNumeral AnBmA2n Unequal) 
 
-languages=(WeW An2) 
+languages=(AnBmA2n Unequal) 
 
 # Run in parallel on all languages
 parallel makeLang ::: "${languages[@]}"

@@ -15,6 +15,21 @@ class AnBm(FormalLanguage):
     def terminals(self):
         return list('ab')
 
+class AnBmA2n(FormalLanguage):
+    def __init__(self):
+        self.grammar = Grammar(start='S')
+        self.grammar.add_rule('S', 'a%s', ['S'], 2.0)
+        self.grammar.add_rule('S', 'a%s', ['T'], 1.0)
+        self.grammar.add_rule('T', 'b%s',  ['T'], 2.0)
+        self.grammar.add_rule('T', 'b',    None, 1.0)
+        
+    def sample_string(self):
+        s = str(self.grammar.generate())
+        return s + 'a'*(s.count("a")*2)
+
+    def terminals(self):
+        return list('ab')
+
 class AnBmCm(FormalLanguage):
 
     def __init__(self):
