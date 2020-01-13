@@ -229,6 +229,11 @@ void Fleet_initialize() {
 	// give us a defaultly kinda nice niceness
 	setpriority(PRIO_PROCESS, 0, 5);
 
+	// set up the random seed:
+	if(random_seed != 0) {
+		rng.seed(random_seed);
+	}
+
 	// Print standard fleet header
 	
 	// apparently some OSes don't define this
