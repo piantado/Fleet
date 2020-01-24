@@ -33,10 +33,10 @@ public:
 		return s;		
 	}
 	
-	virtual std::string parseable(std::string delim=":", std::string fdelim="|") const {
+	virtual std::string parseable() const {
 		std::string out = "";
 		for(size_t i=0;i<factors.size();i++) {
-			out += factors[i].parseable(delim) + fdelim;
+			out += factors[i].parseable() + "|";
 		}
 		return out;
 	}
@@ -80,6 +80,56 @@ public:
 		return true;
 	}
 	 
+
+	bool check_reachable() const {
+		// checks if the last factor calls all the earlier (else we're "wasting" factors)
+		// We do this by making the graph of what factors calls which other, and then
+		// computing the transitive closure
+		
+		const size_t N = factors.size();
+		assert(N > 0); 
+		
+		// is calls[i][j] stores whether factor i calls factor j
+		bool calls[N][N]; 
+		
+		// everyone calls themselves, zero the rest
+		for(size_t i=0;i<N;i++) {
+			for(size_t j=0;j<N;j++){
+				calls[i][j] = (i==j);
+			}
+		}
+		
+		for(size_t i=0;i<N;i++){
+			
+			for(const auto& n : factors[i].value) {
+				if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,
+									  BuiltinOp::op_MEM_RECURSE,
+									  BuiltinOp::op_SAFE_RECURSE,
+									  BuiltinOp::op_SAFE_MEM_RECURSE)) {
+					calls[i][n.rule->instr.arg] = true;
+				}
+			}
+		}
+		
+		// now we take the transitive closure to see if calls[N-1] calls everything (eventually)
+		// otherwise it has probability of zero
+		// TOOD: This could probably be lazier because we really only need to check reachability
+		for(size_t a=0;a<N;a++) {	
+		for(size_t b=0;b<N;b++) {
+		for(size_t c=0;c<N;c++) {
+			calls[b][c] = calls[b][c] or (calls[b][a] and calls[a][c]);		
+		}
+		}
+		}
+
+		// don't do anything if we have uncalled functions from the root
+		for(size_t i=0;i<N;i++) {
+			if(not calls[N-1][i]) {
+				return false;
+			}
+		}		
+		return true;		
+	}
 
 	
 	/********************************************************

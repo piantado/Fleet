@@ -151,18 +151,20 @@ int main(int argc, char** argv){
 //	CERR is.pop() ENDL;
 //	
 	
-
-	for(enumerationidx_t z=0;z<1000000 and !CTRL_C;z++) {
-//		CERR z TAB grammar.lempel_ziv_partial_expand(0, z).string() ENDL; 
-//		auto n =  grammar.lempel_ziv_expand(0, z);
-//		auto S = grammar.count_partial_subtrees(n);
-//		CERR z TAB S TAB n ENDL;
-//		for(size_t s=0;s<S;s++){
-//			CERR "\t" TAB s TAB grammar.copy_partial_subtree(n, s).string() ENDL;
-//		}
-//		CERR z TAB grammar.expand_from_integer(0, z).string() TAB grammar.lempel_ziv_expand(0, z).string() ENDL;
-		CERR z TAB grammar.expand_from_integer(0, z).string() ENDL;
+	TopN<MyHypothesis> tn(10);
+	for(enumerationidx_t z=0;z<10000000 and !CTRL_C;z++) {
+//		auto n = grammar.expand_from_integer(0, z);
+		auto n = grammar.lempel_ziv_full_expand(0, z);
+		
+		MyHypothesis h(&grammar);
+		h.set_value(n);
+		h.compute_posterior(mydata);
+		
+		tn << h;
+		auto o  = grammar.compute_enumeration_order(n);
+		COUT z TAB o TAB h.posterior TAB h ENDL;
 	}
+	tn.print();
 
 	return 0;
 	

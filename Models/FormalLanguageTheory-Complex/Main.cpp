@@ -109,7 +109,7 @@ std::tuple PRIMITIVES = {
 			}),
 	
 	
-		// add an alphabet symbol
+	// add an alphabet symbol
 	Primitive("\u03A3", +[]() -> StrSet {
 		StrSet out; 
 		for(const auto& a: alphabet) 
@@ -185,68 +185,12 @@ public:
 	MyHypothesis()                       : Super()   {}
 	MyHypothesis(const MyHypothesis& h)  : Super(h)  {}
 
-
-	bool check_reachable() const {
-		// checks if the last factor calls all the earlier (else we're "wasting" factors)
-		// We do this by making the graph of what factors calls which other, and then
-		// computing the transitive closure
-		
-		const size_t N = factors.size();
-		assert(N > 0); 
-		
-		// is calls[i][j] stores whether factor i calls factor j
-		bool calls[N][N]; 
-		
-		// everyone calls themselves, zero the rest
-		for(size_t i=0;i<N;i++) {
-			for(size_t j=0;j<N;j++){
-				calls[i][j] = (i==j);
-			}
-		}
-		
-		for(size_t i=0;i<N;i++){
-			
-			for(const auto& n : factors[i].value) {
-				if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,
-									  BuiltinOp::op_MEM_RECURSE,
-									  BuiltinOp::op_SAFE_RECURSE,
-									  BuiltinOp::op_SAFE_MEM_RECURSE)) {
-					calls[i][n.rule->instr.arg] = true;
-				}
-			}
-		}
-		
-		// now we take the transitive closure to see if calls[N-1] calls everything (eventually)
-		// otherwise it has probability of zero
-		// TOOD: This could probably be lazier because we really only need to check reachability
-		for(size_t a=0;a<N;a++) {	
-		for(size_t b=0;b<N;b++) {
-		for(size_t c=0;c<N;c++) {
-			calls[b][c] = calls[b][c] or (calls[b][a] and calls[a][c]);		
-		}
-		}
-		}
-
-		// don't do anything if we have uncalled functions from the root
-		for(size_t i=0;i<N;i++) {
-			if(not calls[N-1][i]) {
-				return false;
-			}
-		}		
-		return true;		
-	}
-
 	virtual double compute_prior() {
 		// since we aren't searching over nodes, we are going to enforce a prior that requires
 		// each function to be called -- this should make the search a bit more efficient by 
 		// allowing us to prune out the functions which could be found with a smaller number of factors
 		
-		if(not check_reachable()) {
-			return prior = -infinity;
-		}
-		else {
-			return prior = Lexicon<MyHypothesis,InnerHypothesis,S,S>::compute_prior();
-		}
+		return prior = (check_reachable() ? Lexicon<MyHypothesis,InnerHypothesis,S,S>::compute_prior() : -infinity);
 	}
 	
 
@@ -378,22 +322,6 @@ int main(int argc, char** argv){
 		grammar.add<S>(BuiltinOp::op_ALPHABET,   Q(alphabet.substr(ai,1)),  20.0/alphabet.length(), (int)alphabet.at(ai) );
 	}
 	
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// TODO: ADD the alphabet as a set?
-	
-	
-	
-	
 	
 	
 	MyHypothesis h0; 
@@ -416,64 +344,7 @@ int main(int argc, char** argv){
 	}
 
 
-//	TopN<MyHypothesis> top(100);
-//
-//	MyHypothesis h;
-//	for(size_t fi=0;fi<nfactors;fi++) {// start with the right number of factors
-//		InnerHypothesis f(&grammar);
-//		h.factors.push_back(f.restart());
-//	}
-//
-//	tic();
-////	ChainPool t(h,&datas[10], top, nthreads);
-//	ParallelTempering t(h0, &datas[10], top, nthreads, 1.0);
-//	t.run(10000,0, 100000, 100000);
-//	tic();
-	
-	// TODO: Let's check out heap allocators again -- seems like that msut be where most of our time is going...
-//	
-//	auto f = [&]() {
-//		MyHypothesis h;
-//		for(size_t fi=0;fi<nfactors;fi++) {// start with the right number of factors
-//			InnerHypothesis f(&grammar);
-//			h.factors.push_back(f.restart());
-//		}
-//	
-////		MCMCChain t(h, &datas[10], top);
-////		t.run(100000,0);
-//
-////		for(size_t i=0;i<1000000;i++) {
-////			h.compute_posterior(datas[10]);
-////			top << h;
-////			h = h.restart();
-////			FleetStatistics::global_sample_count++;
-////		}
-//	};
-//
-//
-//	tic();
-//	std::thread threads[nthreads]; 
-//	for(unsigned long t=0;t<nthreads;t++) {
-//		threads[t] = std::thread(f);
-//	}
-//	
-//	// wait for all to complete
-//	for(unsigned long t=0;t<nthreads;t++) {
-//		threads[t].join();
-//	}
-//	tic();
 
-
-//	for(auto& tn : tops) { 
-//		tn.set_print_best(true);
-//	}
-//	tops[tops.size()-1].set_print_best(true);
-	
-	// Run Parallel Tempering on data -- doesn't work great because it rarely swaps
-//	ParallelTempering samp(h0, datas, tops);
-//	tic();	
-//	samp.run(mcmc_steps, runtime, 200, 6000);	
-//	tic();
 
 	TopN<MyHypothesis> all(ntop); 
 //	all.set_print_best(true);
@@ -482,7 +353,7 @@ int main(int argc, char** argv){
 	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
 		
 		ParallelTempering samp(h0, &datas[di], all, NTEMPS, MAXTEMP);
-		samp.run(Control(mcmc_steps, runtime/datas.size()), 1000, 60*1000);	
+		samp.run(Control(mcmc_steps/datas.size(), runtime/datas.size()), 1000, 60*1000);	
 
 		// set up to print using a larger set
 		MAX_STEPS_PER_FACTOR   = 32000; //4096; 
@@ -491,22 +362,19 @@ int main(int argc, char** argv){
 		MAX_STEPS_PER_FACTOR   = 2048; 
 		MAX_OUTPUTS_PER_FACTOR = 512; 
 
-
-		h0 = all.best();
-		
 		if(di+1 < datas.size()) {
 			all = all.compute_posterior(datas[di+1]); // update for next time
 		}
+		
+		// start next time on the best hypothesis we've found so far
+		if(not all.empty()) {
+			h0 = all.best();			
+		}	
+		
 	}
 	tic();
 	
 	
-	// And finally print
-//	for(auto& tn : tops) { 
-//		all << tn; // will occur in some weird order since they're not in all the data
-//	} 
-
-
 //	// Vanilla MCMC, serial
 //	for(size_t i=0;i<datas.size();i++){
 //		tic();

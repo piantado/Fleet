@@ -94,6 +94,10 @@ public:
 		return children.at(i);
 	}
 	
+	nonterminal_t type(const size_t i) const {
+		return rule->type(i);
+	}
+	
 	const size_t nchildren() const {
 		return children.size();
 	}
@@ -294,11 +298,11 @@ public:
 	}
 	
 	
-	virtual std::string parseable(std::string delim=":") const {
+	virtual std::string parseable() const {
 		// get a string like one we could parse
-		std::string out = rule->format;
+		std::string out = str(this->nt()) + ":" + rule->format;
 		for(auto& c: children) {
-			out += delim + c.parseable(delim);
+			out += ";" + c.parseable();
 		}
 		return out;
 	}

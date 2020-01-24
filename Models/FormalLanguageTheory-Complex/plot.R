@@ -40,14 +40,14 @@ label <- list("An"=paste(TeX("A^n")),
 D <- NULL
 # for(language in c("Gomez2", "Gomez6", "Gomez12" )) {
 # for(language in c("HudsonKamNewport45", "HudsonKamNewport60", "HudsonKamNewport75", "HudsonKamNewport100" )) {
-for(language in c("An", "ABn", "AnBn", "AB", "ABAnBn", "AnB2n", "AnBm", "AnBmCn", "XXR", "AAA", "AAAA", "Count", "AnBnCn", "AnBnC2n", "Dyck", "XX", "XXX",  "XXI", "XY", "AnBmCmAn", "AnBmCnDm", "GoldenMean", "Even", "AnBnCnDn", "A2en", "ABnen", "AnCBn", "AnABn", "AnABAn", "ABnABAn", "Bach2", "Bach3", "AnBm", "AnBmCn", "AnBmCm", "AnBmCnpm", "AnBmCnm", "AnBk", "ABaaaAB", "aABb", "Elman", "Braine66", "PullumR", "ApBAp", "AsBAsp", "ApBApp", "CountA2", "CountAEven", "Fibo", "AnBnCnDnEn", "AnBmAnBmCCC", "WeW", "An2", "ChineseNumeral", "AnBmA2n", "Unequal")) {
-# for(language in c("Reber", "Elman", "Saffran",  "ABA", "ABB", "NewportAslin", "MorganNewport", "MorganMeierNewport", "Man", "BerwickPilato", "ReederNewportAslin", "HudsonKamNewport60", "Gomez2", "Gomez6", "Gomez12" )) {
+# for(language in c("An", "ABn", "AnBn", "AB", "ABAnBn", "AnB2n", "AnBm", "AnBmCn", "XXR", "AAA", "AAAA", "Count", "AnBnCn", "AnBnC2n", "Dyck", "XX", "XXX",  "XXI", "XY", "AnBmCmAn", "AnBmCnDm", "GoldenMean", "Even", "AnBnCnDn", "A2en", "ABnen", "AnCBn", "AnABn", "AnABAn", "ABnABAn", "Bach2", "Bach3", "AnBm", "AnBmCn", "AnBmCm", "AnBmCnpm", "AnBmCnm", "AnBk", "ABaaaAB", "aABb", "Elman", "Braine66", "PullumR", "ApBAp", "AsBAsp", "ApBApp", "CountA2", "CountAEven", "Fibo", "AnBnCnDnEn", "AnBmAnBmCCC", "WeW", "An2", "ChineseNumeral", "AnBmA2n", "Unequal")) {
+for(language in c("Reber", "Elman", "Saffran",  "ABA", "ABB", "NewportAslin", "MorganNewport", "MorganMeierNewport", "Man", "BerwickPilato", "ReederNewportAslin", "HudsonKamNewport60", "Gomez2", "Gomez6", "Gomez12" )) {
 # for(language in c("SimpleEnglish", "MediumEnglish", "FancyEnglish" )) {
                     
     q <- NULL
     for(nf in c(1,2,3,4)) {
 
-            f <- paste("out-2020Jan12/", language, "-", nf, ".out", sep="")
+            f <- paste("/home/piantado/Desktop/Science/out-2020Jan22/", language, "-", nf, ".out", sep="")
                 
             r <- try(read.table(f, quote="\""))
             if(class(r)=='try-error') {

@@ -31,13 +31,13 @@ public:
 	void push(value_t x) {
 		auto before = value;
 		value = rosenberg_strong_encode(x, value);
-		assert(before < value);
+		assert(before <= value && "*** Overflow in encoding IntegerizedStack::push");
 	}
 
-	void push_mod(value_t x, value_t modulus) {
+	void push(value_t x, value_t modulus) {
 		auto before = value;
 		value = mod_encode(x, value, modulus);
-		assert(before < value);
+		assert(before <= value && "*** Overflow in encoding IntegerizedStack::push");
 	}
 	
 	value_t get_value() {
@@ -56,6 +56,10 @@ public:
 	void operator-=(value_t x) {
 		// subtract off my value
 		value -= x;
+	}
+	void operator+=(value_t x) {
+		// add to value
+		value += x;
 	}
 };
 

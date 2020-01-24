@@ -118,8 +118,8 @@ public:
 	virtual std::string string() const {
 		return std::string("\u03BBx.") + value.string();
 	}
-	virtual std::string parseable(std::string delim=":") const { 
-		return value.parseable(delim); 
+	virtual std::string parseable() const { 
+		return value.parseable(); 
 	}
 	virtual size_t hash() const {
 		return value.hash();

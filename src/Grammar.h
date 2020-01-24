@@ -413,14 +413,14 @@ public:
 			Node out = makeNode(r);
 			for(size_t i=0;i<r->N;i++) {
 				// note that this recurses on the z format -- so it makes a new IntegerizedStack for each child
-				out.set_child(i, expand_from_integer(r->type(i), (enumerationidx_t)is.pop()) ) ; 
+				out.set_child(i, expand_from_integer(r->type(i), i==r->N-1 ? is.get_value() : is.pop()) ) ; 
 			}
 			return out;					
 		}
 
 	}
-	Node exapnd_from_integer(nonterminal_t nt, enumerationidx_t z) const {
-		IntegerizedStack is = z;
+	Node expand_from_integer(nonterminal_t nt, enumerationidx_t z) const {
+		IntegerizedStack is(z);
 		return expand_from_integer(nt, is);
 	}
 	
@@ -434,69 +434,166 @@ public:
 			// here we work backwards to encode 
 			nonterminal_t nt = n.rule->nt;
 			enumerationidx_t numterm = count_terminals(nt);
-			enumerationidx_t z = compute_enumeration_order(n.child(n.rule->N-1));
+			
+			IntegerizedStack is(compute_enumeration_order(n.child(n.rule->N-1)));
 			for(int i=n.rule->N-2;i>=0;i--) {
-				z = rosenberg_strong_encode(compute_enumeration_order(n.child(i)),z);
+				is.push(compute_enumeration_order(n.child(i)));
 			}
-			z = numterm + mod_encode(get_index_of(n.rule)-numterm, z, count_nonterminals(nt));
-			return z;
+			is.push(get_index_of(n.rule)-numterm, count_nonterminals(nt));
+			is += numterm;
+			return is.get_value();
 		}
 	}
 	
-	void lemepl_ziv_fill(enumerationidx_t& z, Node& n, Node* root=nullptr) {
-		// *modifies* n by filling in according to z (and modifies z!)
-		// This is used to fill in partial subtrees
-		
-		// NOTE TODO: Does not work whe n.is_null()
 
-	// TODO: Just code stubs, does not work!
-//		for(size_t i=0;i<n.nchildren();i++) {
-//			if(n.child(i).is_null()) {
-//				n.set_child(i, lempel_ziv_expand(n.rule.child_types[i], z, root));
-//			}
-//			else {
-//				lempel_ziv_expand(z,n.child(i),root);
-//			}			
-//		}
-//	
+	Node lempel_ziv_full_expand(nonterminal_t nt, enumerationidx_t z, Node* root=nullptr) const {
+		IntegerizedStack is(z);
+		return lempel_ziv_full_expand(nt, is, root);
 	}
-//	
-//	Node lempel_ziv_expand(nonterminal_t nt, enumerationidx_t z, Node* root=nullptr) const {
+		
+	Node lempel_ziv_full_expand(nonterminal_t nt, IntegerizedStack& is, Node* root=nullptr) const {
+		// This implements "lempel-ziv" decoding on trees, where each integer
+		// can be a reference to prior *full* subtree
+#ifdef BLAHBLAH		
+		// First, lowest numbers will reference prior complete subtrees
+		// that are not terminals
+		std::function is_full_tree = [&](const Node& ni) -> int {
+			return 1*(ni.rule->nt == nt and (not ni.is_terminal()) and ni.is_complete() );
+		};
+		
+		// might be a reference to a prior full tree
+		int t = (root == nullptr ? 0 : root->sum(is_full_tree));
+		if(is.get_value() < (size_t)t) {
+			return *root->get_nth(is.get_value(), is_full_tree); 
+		}
+		is -= t;
+
+		// next numbers are terminals first integers encode terminals
+		enumerationidx_t numterm = count_terminals(nt);
+		if(is.get_value() < numterm) {
+			return makeNode(this->get_rule(nt, is.get_value() ));	// whatever terminal we wanted
+		}
+		is -= numterm;
+
+		// now we choose whether we have encoded children directly
+		// or a reference to prior *subtree* 
+		if(root != nullptr and is.pop(2) == 0) {
+			
+			// count up the number
+			size_t T=0;
+			for(auto& n : *root) {
+				if(n.nt() == nt) {
+					T += count_connected_partial_subtrees(n)-1; // I could code any of these subtrees, but not their roots (so -1)
+				}
+			}
+			
+			// which subtree did I get?
+			int t = is.pop(T);
+
+			// ugh go back and find it
+			Node out;
+			for(auto& n : *root) {
+				if(n.nt() == nt) {
+					T += count_connected_partial_subtrees(n)-1; // I could code any of these subtrees, but not their roots (so -1)
+				}
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			auto out = copy_partial_subtree(*root, t); // get this partial tree
+			
+			// TODO: Make it so that a subtree we reference cannot be ONE node (so therefore
+			//       the node is not null)
+			
+			// and now fill it in
+			if(out.is_null()) {
+				out = lempel_ziv_full_expand(out.nt(), is.get_value(), root);
+			}
+			else {
+				
+				std::function is_null = +[](const Node& ni) -> size_t { return 1*ni.is_null(); };
+				auto b = out.sum(is_null);
+
+				for(auto& ni : out) {
+					if(ni.is_null()) {
+						auto p = ni.parent; // need to set the parent to the new value
+						auto pi = ni.pi;
+						--b;
+						// TODO: NOt right because the parent links are now broken
+						p->set_child(pi, lempel_ziv_full_expand(p->rule->type(pi), (b==0 ? is.get_value() : is.pop()), root));
+					}
+				}
+			}
+			
+			return out;
+		}
+		else { 
+			// we must have encoded a normal tree expansion
+
+			// otherwise just a direct coding
+			Rule* r = this->get_rule(nt, is.pop(count_nonterminals(nt))+numterm); // shift index from terminals (because they are first!)
+			
+			// we need to fill in out's children with null for it to work
+			Node out = makeNode(r);
+			out.fill(); // retuired below because we'll be iterating		
+			if(root == nullptr) 
+				root = &out; // if not defined, out is our root
+			
+			for(size_t i=0;i<r->N;i++) {
+				out.set_child(i, lempel_ziv_full_expand(r->type(i), i==r->N-1 ? is.get_value() : is.pop(), root));
+			}
+			return out;		
+		}
+#endif
+	}
+
+
+//	Node lempel_ziv_full_expand(nonterminal_t nt, enumerationidx_t z, Node* root=nullptr) const {
+//		IntegerizedStack is(z);
+//		return lempel_ziv_full_expand(nt, is, root);
+//	}
+//		
+//	Node lempel_ziv_full_expand(nonterminal_t nt, IntegerizedStack& is, Node* root=nullptr) const {
 //		// This implements "lempel-ziv" decoding on trees, where each integer
-//		// can be a reference to prior subtrees (of type nt) or 
+//		// can be a reference to prior *full* subtree
 //		
-//		/* Still not finished -- should be filling in the bottom of the tree
-//		 * 
-//		 * 
-//		 * 
-//		 * 
-//		 * 
-//		 * 
-//		 * */
-//		// our first integers encode terminals
-//		enumerationidx_t numterm = count_terminals(nt);
-//		if(z < numterm) {
-//			return makeNode(this->get_rule(nt, z));	// whatever terminal we wanted
-//		}
-//		z -= numterm; // we weren't any of those 
+//		// First, lowest numbers will reference prior complete subtrees
+//		// that are not terminals
+//		std::function is_full_tree = [&](const Node& ni) -> int {
+//			return 1*(ni.rule->nt == nt and (not ni.is_terminal()) and ni.is_complete() );
+//		};
 //		
-//		// then the next encode some subtrees
-//		if(root != nullptr) {
+//		std::function is_partial_tree = [&](const Node& ni) -> int {
+//			return 1*(ni.rule->nt == nt and (not ni.is_terminal()) and (not ni.is_complete()) );
+//		};
 //			
-//			auto t = count_partial_subtrees(*root);
-////			auto t = root->count();
-//			if(z < t) {
-//				//return *root->get_nth(z); //copy_partial_subtree(*root, z); // just get the z'th tree
-//				return copy_partial_subtree(*root, z); // just get the z'th tree
-//			}
-//			else {
-//				z -= t;
-//			}
-//		}
+//		int t = 0;
+//		if(root != nullptr) 
+//			t = root->sum(is_full_tree);
 //		
-//		// now just decode		
-//		auto u =  mod_decode(z, count_nonterminals(nt));
-//		Rule* r = this->get_rule(nt, u.first+numterm); // shift index from terminals (because they are first!)
+//		if(is.get_value() < (size_t)t) {
+//			return *root->get_nth(is.get_value(), is_full_tree); 
+//		}
+//		is -= t;
+//		
+//		// next numbers are terminals first integers encode terminals
+//		enumerationidx_t numterm = count_terminals(nt);
+//		if(is.get_value() < numterm) {
+//			return makeNode(this->get_rule(nt, is.get_value() ));	// whatever terminal we wanted
+//		}
+//		is -= numterm;
+//					
+//		
+//		// otherwise just a direct coding
+//		Rule* r = this->get_rule(nt, is.pop(count_nonterminals(nt))+numterm); // shift index from terminals (because they are first!)
 //		
 //		// we need to fill in out's children with null for it to work
 //		Node out = makeNode(r);
@@ -504,112 +601,94 @@ public:
 //		if(root == nullptr) 
 //			root = &out; // if not defined, out is our root
 //		
-//		enumerationidx_t rest = u.second; // the encoding of everything else
 //		for(size_t i=0;i<r->N;i++) {
-//			enumerationidx_t zi; // what is the encoding for the i'th child?
-//			if(i < r->N-1) { 
-//				auto ui = rosenberg_strong_decode(rest);
-//				zi = ui.first;
-//				rest = ui.second;
-//			}
-//			else {
-//				zi = rest;
-//			}
-//			out.set_child(i, lempel_ziv_expand(r->type(i), zi, root)); // since we are by reference, this should work right
+//			out.set_child(i, lempel_ziv_full_expand(r->type(i), i==r->N-1 ? is.get_value() : is.pop(), root));
 //		}
 //		return out;		
 //		
 //	}
 
 
-	Node lempel_ziv_partial_expand(nonterminal_t nt, enumerationidx_t z, Node* root=nullptr) const {
-		// coding where we expand to a partial tree -- this is easier because we can more easily reference prior
-		// partial trees
-		
-		// our first integers encode terminals
-		enumerationidx_t numterm = count_terminals(nt);
-		if(z < numterm) {
-			return makeNode(this->get_rule(nt, z));	// whatever terminal we wanted
-		}
-		z -= numterm; // we weren't any of those 
-		
-		// then the next encode some subtrees
-		if(root != nullptr) {
-			
-			auto t = count_partial_subtrees(*root);
-			if(z < t) {
-				return copy_partial_subtree(*root, z); // just get the z'th tree
-			}
-			else {
-				z -= t;
-			}
-		}
-		
-		// now just decode		
-		auto u =  mod_decode(z, count_nonterminals(nt));
-		
-		Rule* r = this->get_rule(nt, u.first+numterm); // shift index from terminals (because they are first!)
-		
-		// we need to fill in out's children with null for it to work
-		Node out = makeNode(r);
-		out.fill(); // returned below because we'll be iterating		
-		if(root == nullptr) 
-			root = &out; // if not defined, out is our root
-		
-		enumerationidx_t rest = u.second; // the encoding of everything else
-		for(size_t i=0;i<r->N;i++) {
-			enumerationidx_t zi; // what is the encoding for the i'th child?
-			if(i < r->N-1) { 
-				auto ui = rosenberg_strong_decode(rest);
-				zi = ui.first;
-				rest = ui.second;
-			}
-			else {
-				zi = rest;
-			}
-			out.set_child(i, lempel_ziv_partial_expand(r->type(i), zi, root)); // since we are by reference, this should work right
-		}
-		return out;		
-		
-	}
+//	Node lempel_ziv_partial_expand(nonterminal_t nt, enumerationidx_t z, Node* root=nullptr) const {
+//		IntegerizedStack is(z);
+//		return lempel_ziv_partial_expand(nt, is, root);
+//	}
+//	Node lempel_ziv_partial_expand(nonterminal_t nt, IntegerizedStack& is, Node* root=nullptr) const {
+//		// coding where we expand to a partial tree -- this is easier because we can more easily reference prior
+//		// partial trees
+//		
+//		// our first integers encode terminals
+//		enumerationidx_t numterm = count_terminals(nt);
+//		if(is.get_value() < numterm) {
+//			return makeNode(this->get_rule(nt, is.get_value() ));	// whatever terminal we wanted
+//		}
+//		
+//		is -= numterm; // we weren't any of those 
+//		
+//		// then the next encode some subtrees
+//		if(root != nullptr) {
+//			
+//			auto t = count_partial_subtrees(*root);
+//			if(is.get_value() < t) {
+//				return copy_partial_subtree(*root, is.get_value() ); // just get the z'th tree
+//			}
+//			
+//			is -= t;
+//		}
+//		
+//		// now just decode		
+//		auto ri = is.pop(count_nonterminals(nt)); // mod pop		
+//		Rule* r = this->get_rule(nt, ri+numterm); // shift index from terminals (because they are first!)
+//		
+//		// we need to fill in out's children with null for it to work
+//		Node out = makeNode(r);
+//		out.fill(); // returned below because we'll be iterating		
+//		
+//		if(root == nullptr) 
+//			root = &out; // if not defined, out is our root
+//		
+//		for(size_t i=0;i<r->N;i++) {
+//			out.set_child(i, lempel_ziv_partial_expand(r->type(i), is.get_value() == r->N-1 ? is.get_value() : is.pop(), root)); // since we are by reference, this should work right
+//		}
+//		return out;		
+//		
+//	}
 		
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Subtrees
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	virtual enumerationidx_t count_partial_subtrees(const Node& n) const {
-		// how many possible subtrees do I have? (e.g. where each node can be replaced by null node?)
-		// to compute, we just take the *product* of all non-null kids
-		// (NOTE: This function could/should live in Node? The reason its not is that copy_subtree must live here)
+	virtual enumerationidx_t count_connected_partial_subtrees(const Node& n) const {
+		// how many possible connected, partial subtrees do I have
+		// (e.g. including a path back to my root)
+				
+		assert(not n.is_null()); // can't really be connected if I'm null
+	
 		enumerationidx_t k=1; 
 		for(enumerationidx_t i=0;i<n.nchildren();i++){
-			if(not n.child(i).is_null()) {
+			if(not n.child(i).is_null())  {
 				// for each child independently, I can either make them null, or I can include them
 				// and choose one of their own subtrees
-				k = k * count_partial_subtrees(n.child(i)); 
+				k = k * count_connected_partial_subtrees(n.child(i)); 
 			}
 		}
-		return k+1;	// or I can be replaced by null
+		return k+1; // +1 because I could make the root null
 	}
 
 
-	virtual Node copy_partial_subtree(const Node& n, int z) const {
-		// make a copy of the z'th partial subtree 
- 
-		if(z == 0) // it was me, I was the empty subtree
-			return Node();
-		z -= 1; // get rid of that bit
-		
-		Node out = makeNode(n.rule);
-		for(enumerationidx_t i=0;i<out.nchildren();i++) {
-			auto u = mod_decode(z, count_partial_subtrees(n.child(i)) );
-			z = u.second;
-			out.set_child(i, copy_partial_subtree(n.child(i), u.first));
-		}
-		return out;
-	}
-	
-		
+//	virtual Node copy_connected_partial_subtree(const Node& n, IntegerizedStack is) const {
+//		// make a copy of the z'th partial subtree 
+// 
+//		if(z == 0) 
+//			return Node(); // return null for me
+//		
+//		Node out = makeNode(n.rule); // copy the first level
+//		for(enumerationidx_t i=0;i<out.nchildren();i++) {
+//			out.set_child(i, copy_connected_partial_subtree(n.child(i), (i==out.nchildren() ? is.value() : is.pop() )));
+//		}
+//		return out;
+//	}
+//	
 		
 	/********************************************************
 	 * Enumeration

@@ -36,6 +36,6 @@ do
     cat $parameters | sed "s/$/,$f/" >> run/parameters.$myhost  
 done
 
-cat run/parameters.$myhost | nohup parallel --jobs=$jobs --joblog run/log.$myhost --csv --colsep ',' \
+cat run/parameters.$myhost | parallel --jobs=$jobs --joblog run/log.$myhost --csv --colsep ',' \
         /usr/bin/time --output=out/{1}-{7}.time --verbose \
         ./$mymain "${GARGS[@]}" --input=data/{1} --alphabet=\"{2}\" --time={4} --nfactors={7} --threads=$threads --thin=0 --mcmc=0 --top=$top --restart=100000 ">" out/{1}-{7}.out "2>" out/{1}-{7}.err
