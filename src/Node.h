@@ -34,6 +34,7 @@ public:
 			 
 			NodeIterator& operator++(int blah) { this->operator++(); return *this; }
 			NodeIterator& operator++() {
+				assert(not (*this == EndNodeIterator) && "Can't iterate past the end!");
 				if(current == nullptr) {
 					return EndNodeIterator; 
 				}
@@ -54,7 +55,6 @@ public:
 				
 			NodeIterator& operator+(size_t n) {
 				for(size_t i=0;i<n;i++) {
-					assert(not (*this == EndNodeIterator) && "Can't iterate past the end!");
 					this->operator++();
 					
 				}
@@ -358,34 +358,25 @@ public:
 			
 			// make the right instruction 
 			// TODO: Assert that ysize fits 
-			ops.push(Instruction(BuiltinOp::op_JMP,ysize));
-//			ops.emplace_back(BuiltinOp::op_JMP, ysize);
+//			ops.push(Instruction(BuiltinOp::op_JMP,ysize));
+			ops.emplace_back(BuiltinOp::op_JMP, ysize);
 			
 			children[1].linearize(ops);
 			
 			// encode jump
-			ops.push(Instruction(BuiltinOp::op_IF, xsize)); 
-//			ops.emplace_back(BuiltinOp::op_IF, xsize);
+//			ops.push(Instruction(BuiltinOp::op_IF, xsize)); 
+			ops.emplace_back(BuiltinOp::op_IF, xsize);
 			
 			// evaluate the bool first so its on the stack when we get to if
 			children[0].linearize(ops);
 			
 		}
-//		else if(rule->instr.is_a(BuiltinOp::op_LAMBDA)) {
-//			// Here we lay out in memory with LAMBDA<arg=function_length> function
-//			// and then when we interpret, we allow ourselves to copy the function applied 
-//			int fsize = child[0].program_size();
-//			
-//			child[0].linearize(ops);			
-//			ops.push(Instruction(BuiltinOp::op_LAMBDA, fsize));
-//			
-//		}
 		else {
 			/* Here we push the children in increasing order. Then, when we pop rightmost first (as Primitive does), it 
 			 * assigns the correct index.  */
-			Instruction i = rule->instr; // use this as a template
-			ops.push(i);			
-//			ops.emplace_back(rule->instr); // these don't seem to speed thing up...
+//			Instruction i = rule->instr; // use this as a template
+//			ops.push(i);			
+			ops.emplace_back(rule->instr); // these don't seem to speed thing up...
 			
 //			for(size_t i=0;i<rule->N;i++) {
 			for(int i=rule->N-1;i>=0;i--) { // here we linearize right to left so that when we call right to left, it matches string order			

@@ -49,6 +49,7 @@ const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we
 unsigned long MAX_STEPS_PER_FACTOR   = 2048; //4096;  
 unsigned long MAX_OUTPUTS_PER_FACTOR = 512; //512; - make it bigger than
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 const unsigned long PRINT_STRINGS = 128; // print at most this many strings for each hypothesis
 
 
@@ -112,8 +113,9 @@ std::tuple PRIMITIVES = {
 	// add an alphabet symbol
 	Primitive("\u03A3", +[]() -> StrSet {
 		StrSet out; 
-		for(const auto& a: alphabet) 
-			out.insert(S(a,1));
+		for(const auto& a: alphabet) {
+			out.emplace(a,1);
+		}
 		return out;
 	}, 5.0),
 	
@@ -122,18 +124,23 @@ std::tuple PRIMITIVES = {
 	Primitive("(%s\u222A%s)", +[](StrSet& s, StrSet x) -> void { 
 		if(s.size() + x.size() > max_setsize) 
 			throw VMSRuntimeError; 
-		
-		for(auto& a: x) {
-			s.insert(a);
-		}
+
+		s.insert(x.begin(), x.end());
+//		for(auto& a: x) {
+//			s.insert(a);
+//		}
 	}),
 	
-	Primitive("(%s\u2216%s)", +[](StrSet& s, StrSet x) -> void {
-		for(auto& a: x) {
-			s.erase(a);
-		}
-	}),
-	
+//	Primitive("(%s\u2216%s)", +[](StrSet& s, StrSet x) -> void {
+//		for(auto& a: x) {
+//			s.erase(a);
+//		}
+//	}),
+	Primitive("(%s\u2216%s)", +[](StrSet s, StrSet x) -> StrSet {
+		StrSet output; 
+		std::set_difference(s.begin(), s.end(), x.begin(), x.end(), std::inserter(output, output.begin()));
+		return output;		
+	}),	
 	// And add built-ins:
 	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
 	Builtin::If<StrSet>("if(%s,%s,%s)", 1.0),		
