@@ -73,8 +73,7 @@ public:
 		// in trees with set_child
 	}
 	
-	/* We must define our own copy and move since parent can't just be simply copied */
-	
+	/* We must define our own copy and move since parent can't just be simply copied */	
 	Node(const Node& n) :
 		parent(nullptr), children(n.children.size()), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
 		children = n.children;
@@ -166,6 +165,9 @@ public:
 	
 	void set_child(size_t i, Node& n) {
 		// NOTE: if you add anything fancy to this, be sure to update the copy and move constructors
+
+		assert(i < rule->N);
+		assert(n.nt() == rule->type(i));
 		
 		while(children.size() <= i) // make it big enough for i  
 			children.push_back(Node());
@@ -176,12 +178,32 @@ public:
 	}
 	void set_child(size_t i, Node&& n) {
 		// NOTE: if you add anything fancy to this, be sure to update the copy and move constructors
+		
+		assert(i < rule->N);
+		assert(n.nt() == rule->type(i));
+		
 		while(children.size() <= i) // make it big enough for i  
 			children.push_back(Node());
 
 		children[i] = n;
 		children[i].pi = i;
 		children[i].parent = this;
+	}
+	
+	void set_to(Node& n) {
+		// sometimes it is easier to set a node rather than setting on parent
+		// this conveniently handles the case when parent is nullptr
+		
+		
+		if(parent == nullptr) {
+			assert(n.nt() == nt());
+			*this = n;
+			parent = nullptr;
+		}
+		else {
+			assert(parent->type(pi) == n.nt());
+			parent->set_child(pi, n);
+		}
 	}
 	
 	bool is_null() const { // am I the null rule?
@@ -196,6 +218,16 @@ public:
 		}
 		return s;
 	}
+
+	template<typename T>
+	T sum(T(*f)(const Node&) ) const {
+		T s = f(*this);
+		for(auto& c: children) {
+			s += c.sum<T>(f);
+		}
+		return s;
+	}
+
 
 	void map( const std::function<void(Node&)>& f) {
 		f(*this);
@@ -350,8 +382,9 @@ public:
 			assert(rule->N == 3 && "BuiltinOp::op_IF require three arguments"); // must have 3 parts
 			
 			int xsize = children[1].program_size()+1; // must be +1 in order to skip over the JMP too
-			int ysize = children[2].program_size();
 			assert(xsize < (1<<12) && "If statement jump size too large to be encoded in Instruction arg. Your program is too large for Fleet."); // these sizes come from the arg bitfield 
+			
+			int ysize = children[2].program_size();
 			assert(ysize < (1<<12) && "If statement jump size too large to be encoded in Instruction arg. Your program is too large for Fleet.");
 			
 			children[2].linearize(ops);
@@ -374,11 +407,8 @@ public:
 		else {
 			/* Here we push the children in increasing order. Then, when we pop rightmost first (as Primitive does), it 
 			 * assigns the correct index.  */
-//			Instruction i = rule->instr; // use this as a template
-//			ops.push(i);			
-			ops.emplace_back(rule->instr); // these don't seem to speed thing up...
+			ops.emplace_back(rule->instr); 
 			
-//			for(size_t i=0;i<rule->N;i++) {
 			for(int i=rule->N-1;i>=0;i--) { // here we linearize right to left so that when we call right to left, it matches string order			
 				children[i].linearize(ops);
 			}
@@ -393,6 +423,9 @@ public:
 		if(not (*rule == *n.rule))
 			return false;
 			
+		if(children.size() != n.children.size())
+			return false; 
+	
 		for(size_t i=0;i<rule->N;i++){
 			if(not (children[i] == n.children[i])) return false;
 		}
