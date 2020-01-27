@@ -4,11 +4,6 @@
  * and then we'll add in the data amounts, so that now each call will loop over amounts of data
  * and preserve the top hypotheses
  * 
- * 
- * Some notes -- 
-				What if we add something that lets you access the previous character generated? cons(x,y) where y gets acess to x? cons(x,F(x))?
-  * 					Not so easy to see exactly what it is, ithas to be a Fcons function where Fcons(x,i) = cons(x,Fi(x))
-  * 					It's a lot like a lambda -- apply(lambda x: cons(x, Y[x]), Z)
   * 
   * */
   
@@ -28,7 +23,6 @@ size_t max_length = 256; // max string length, else throw an error (128+ needed 
 size_t max_setsize = 64; // throw error if we have more than this
 size_t nfactors = 2; // how may factors do we run on?
 
-// Run completed on Dec 12th static const double alpha = 0.95; // reliability of the data
 static const double alpha = 0.99; // reliability of the data
 
 const size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite so we won't see some stuff
@@ -126,16 +120,8 @@ std::tuple PRIMITIVES = {
 			throw VMSRuntimeError; 
 
 		s.insert(x.begin(), x.end());
-//		for(auto& a: x) {
-//			s.insert(a);
-//		}
 	}),
 	
-//	Primitive("(%s\u2216%s)", +[](StrSet& s, StrSet x) -> void {
-//		for(auto& a: x) {
-//			s.erase(a);
-//		}
-//	}),
 	Primitive("(%s\u2216%s)", +[](StrSet s, StrSet x) -> StrSet {
 		StrSet output; 
 		std::set_difference(s.begin(), s.end(), x.begin(), x.end(), std::inserter(output, output.begin()));
@@ -330,7 +316,6 @@ int main(int argc, char** argv){
 	}
 	
 	
-	
 	MyHypothesis h0; 
 	for(size_t fi=0;fi<nfactors;fi++) {// start with the right number of factors
 		InnerHypothesis f(&grammar);
@@ -351,8 +336,6 @@ int main(int argc, char** argv){
 	}
 
 
-
-
 	TopN<MyHypothesis> all(ntop); 
 //	all.set_print_best(true);
 	
@@ -360,7 +343,7 @@ int main(int argc, char** argv){
 	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
 		
 		ParallelTempering samp(h0, &datas[di], all, NTEMPS, MAXTEMP);
-		samp.run(Control(mcmc_steps/datas.size(), runtime/datas.size()), 1000, 60*1000);	
+		samp.run(Control(mcmc_steps/datas.size(), runtime/datas.size(), nthreads), 1000, 60*1000);	
 
 		// set up to print using a larger set
 		MAX_STEPS_PER_FACTOR   = 32000; //4096; 

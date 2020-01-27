@@ -25,22 +25,27 @@ public:
 		// because it is the order of linearization
 		protected:
 			Node*  current;
+			
+			// we need to store the start because when we start at a subtree, we want to iteratre through its subnodes
+			// and so we need to know when to stop
+			const Node* start; 
 		
 	public:
 		
-			NodeIterator(const Node* n) : current(n->left_descend()) { }
-			Node& operator*() const  { return *current; }
-			Node* operator->() const { return  current; }
+			NodeIterator(const Node* n) : current(n->left_descend()), start(n) { }
+			Node& operator*() const  { 
+				return *current; 
+			}
+			Node* operator->() const { 
+				return  current; 
+			}
 			 
 			NodeIterator& operator++(int blah) { this->operator++(); return *this; }
 			NodeIterator& operator++() {
 				assert(not (*this == EndNodeIterator) && "Can't iterate past the end!");
-				if(current == nullptr) {
+				if(current == nullptr or current == start or current->is_root()) {
+					current = nullptr; 
 					return EndNodeIterator; 
-				}
-				if(current->is_root()) {
-					current = nullptr;
-					return EndNodeIterator;
 				}
 				
 				if(current->pi+1 < current->parent->children.size()) {
@@ -195,6 +200,18 @@ public:
 		// this conveniently handles the case when parent is nullptr
 		
 		
+		if(parent == nullptr) {
+			assert(n.nt() == nt());
+			*this = n;
+			parent = nullptr;
+		}
+		else {
+			assert(parent->type(pi) == n.nt());
+			parent->set_child(pi, n);
+		}
+	}
+	
+	void set_to(Node&& n) {
 		if(parent == nullptr) {
 			assert(n.nt() == nt());
 			*this = n;
@@ -426,7 +443,7 @@ public:
 		if(children.size() != n.children.size())
 			return false; 
 	
-		for(size_t i=0;i<rule->N;i++){
+		for(size_t i=0;i<children.size();i++){
 			if(not (children[i] == n.children[i])) return false;
 		}
 		return true;

@@ -9,7 +9,8 @@ using S = std::string; // just for convenience
 
 S alphabet = "01"; // the alphabet we use (possibly specified on command line)
 //S datastr = "";
-S datastr  = "011,011011,011011011"; // the data, comma separated
+//S datastr  = "011,011011,011011011"; // the data, comma separated
+S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated
 const double strgamma = 0.99; // penalty on string length
 const size_t MAX_LENGTH = 64; // longest strings cons will handle
 	
@@ -84,6 +85,24 @@ public:
 		return lp;
 	}
 	
+	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const {
+		if(flip()) {
+			auto x = Proposals::regenerate(grammar, value);	
+			return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second); 
+		}
+		else {
+			if(flip()) {
+				auto x = Proposals::insert_tree(grammar, value);	
+				return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second); 
+			}
+			else {
+				auto x = Proposals::delete_tree(grammar, value);	
+				return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second); 
+			}
+		}
+	}	
+	
+	
 	void print(std::string prefix="") {
 		// we're going to make this print by showing the language we created on the line before
 		prefix  = prefix+"#\n#" +  this->call("", "<err>").string() + "\n"; 
@@ -151,29 +170,29 @@ int main(int argc, char** argv){
 //	CERR is.pop() ENDL;
 //	
 	
-	TopN<MyHypothesis> tn(10);
-	for(enumerationidx_t z=0;z<10000000 and !CTRL_C;z++) {
-//		auto n = grammar.expand_from_integer(0, z);
-		auto n = grammar.lempel_ziv_full_expand(0, z);
-		
-		MyHypothesis h(&grammar);
-		h.set_value(n);
-		h.compute_posterior(mydata);
-		
-		tn << h;
-		auto o  = grammar.compute_enumeration_order(n);
-		COUT z TAB o TAB h.posterior TAB h ENDL;
-	}
-	tn.print();
-
-	return 0;
+//	TopN<MyHypothesis> tn(10);
+//	for(enumerationidx_t z=0;z<10000000 and !CTRL_C;z++) {
+////		auto n = grammar.expand_from_integer(0, z);
+//		auto n = grammar.lempel_ziv_full_expand(0, z);
+//		
+//		MyHypothesis h(&grammar);
+//		h.set_value(n);
+//		h.compute_posterior(mydata);
+//		
+//		tn << h;
+//		auto o  = grammar.compute_enumeration_order(n);
+//		COUT z TAB o TAB h.posterior TAB h ENDL;
+//	}
+//	tn.print();
+//
+//	return 0;
 	
 	MyHypothesis h0(&grammar);
 	h0 = h0.restart();
 	
 	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
 	tic();
-	samp.run(Control(mcmc_steps, runtime, nthreads), 1.0, 3.0); //30000);		
+	samp.run(Control(mcmc_steps, runtime, nthreads), 1000, 3000); //30000);		
 	tic();
 //	
 	// Show the best we've found

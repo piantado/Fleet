@@ -38,7 +38,7 @@ public:
 		// tODO: Check how I do fb here?
 		
 		// simplest way of doing proposals
-		auto x = regeneration_proposal(grammar, value);	
+		auto x = Proposals::regenerate(grammar, value);	
 		return std::make_pair(HYP(this->grammar, std::move(x.first)), x.second); // return HYP and fb
 	}	
 
