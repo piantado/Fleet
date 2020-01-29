@@ -39,6 +39,11 @@ public:
 	
 	
 	std::string string(unsigned long nprint=0) const {
+		/**
+		 * @brief Convert this distribution into a string, printing at most nprint
+		 * @param nprint
+		 * @return 
+		 */
 		
 		// put the strings into a vector
 		std::vector<T> v;
@@ -65,6 +70,12 @@ public:
 	
 		
 	void addmass(T x, double v) {
+		/**
+		 * @brief Add log probability v to type x
+		 * @param x
+		 * @param v
+		 */
+		
 		if(m.find(x) == m.end()) {
 			m[x] = v;
 		}
@@ -74,6 +85,11 @@ public:
 	}
 	
 	const std::map<T,double>& values() const {
+		/**
+		 * @brief Get all of the values in this distribution
+		 * @return 
+		 */
+		
 		return m;
 	}
 	
@@ -85,7 +101,12 @@ public:
 	}
 	
 	std::vector<T> best(size_t N) const {
-		// get the N best
+		/**
+		 * @brief Get the N best from this distribution
+		 * @param N
+		 * @return 
+		 */
+		
 		std::vector<std::pair<T,double>> v(m.size());
 		std::copy(m.begin(), m.end(), v.begin());
 		std::sort(v.begin(), v.end(), [](auto x, auto y){ return x.second > y.second; }); // put the big stuff first
@@ -99,7 +120,10 @@ public:
 	}
 	
 	std::vector<std::pair<T,double>> sorted(bool decreasing=false) const {
-		// get a copy that is sorted
+		/**
+		 * @brief Get this distribution as a sorted vector of pairs
+		 * @param decreasing
+		 */
 		std::vector<std::pair<T,double>> v(m.size());
 		std::copy(m.begin(), m.end(), v.begin());
 		if(decreasing)	std::sort(v.begin(), v.end(), [](auto x, auto y){ return x.second > y.second; }); // put the big stuff first

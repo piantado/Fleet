@@ -4,6 +4,10 @@
 #include <string>
 #include <vector>
 
+/* 
+ * A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that
+ * gets executed, a forma string, a number of children, and an array of types of each child. 
+ * */
 class Rule {
 	// A rule stores nonterminal types and possible children
 	// Here we "emulate" a type system using t_nonterminal to store an integer for the types
@@ -46,12 +50,25 @@ public:
 	}
 		
 	bool operator<(const Rule& r) const {
+		/**
+		 * @brief We sort rules so that they can be stored in arrays in a standard order. For enumeration, it's actually important that we sort them with the terminals first. 
+		 * 		  So we sort first by terminals and then by probability (higher first). 
+		 * @param r
+		 * @return 
+		 */
+		
 		// This is structured so that we always put terminals first and then we put the HIGHER probability things first. 
 		// this helps in enumeration
-		if(N != r.N) return N < r.N;
+		if( (N==0) != (r.N==0) ) return (N==0) < (r.N==0);
 		else		 return p > r.p; // weird, but helpful, that we sort in decreasing order of probability
 	}
 	bool operator==(const Rule& r) const {
+		/**
+		 * @brief Two rules are equal if they have the same instructions, nonterminal, format, children, and children types
+		 * @param r
+		 * @return 
+		 */
+		
 		if(not (nt==r.nt and instr==r.instr and format==r.format and N==r.N and p==r.p)) return false;
 		for(size_t i=0;i<N;i++) {
 			if(child_types[i] != r.child_types[i]) return false;
@@ -64,11 +81,21 @@ public:
 	}
 	
 	bool is_terminal() const {
-		// I am a terminal rule if I have no children
+		/**
+		 * @brief A terminal rule has no children. 
+		 * @return 
+		 */
+		
 		return N==0;
 	}
 	
 	nonterminal_t type(size_t i) const {
+		/**
+		 * @brief What type is my i'th child?
+		 * @param i
+		 * @return 
+		 */
+		
 		assert(i >=0 and i <= N && "*** Cannot get the type of something out of range");
 		return child_types[i];
 	}

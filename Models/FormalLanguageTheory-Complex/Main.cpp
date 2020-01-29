@@ -166,7 +166,18 @@ public:
 		return vmstatus_t::GOOD;
 	}
 	
-	
+//	[[nodiscard]] virtual std::pair<InnerHypothesis,double> propose() const {
+//		
+//		std::pair<Node,double> x;
+//		if(flip()) {
+//			x = Proposals::regenerate(grammar, value);	
+//		}
+//		else {
+//			if(flip()) x = Proposals::insert_tree(grammar, value);	
+//			else       x = Proposals::delete_tree(grammar, value);	
+//		}
+//		return std::make_pair(InnerHypothesis(this->grammar, std::move(x.first)), x.second); 
+//	}	
 };
 
 
@@ -182,7 +193,6 @@ public:
 		// since we aren't searching over nodes, we are going to enforce a prior that requires
 		// each function to be called -- this should make the search a bit more efficient by 
 		// allowing us to prune out the functions which could be found with a smaller number of factors
-		
 		return prior = (check_reachable() ? Lexicon<MyHypothesis,InnerHypothesis,S,S>::compute_prior() : -infinity);
 	}
 	

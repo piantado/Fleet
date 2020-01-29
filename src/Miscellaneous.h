@@ -7,10 +7,16 @@
 
 typedef struct t_null {} t_null; // just a blank type
 
-
 template<typename T>
 std::vector<T> slice(const std::vector<T> &v, size_t start, int len) {
-	// slice of a vector
+	/**
+	 * @brief Take a slice of a vector v starting at start of length len
+	 * @param v
+	 * @param start
+	 * @param len
+	 * @return 
+	 */
+	
 	std::vector<T> out;
 	if(len > 0) {
 		out.resize(len); // in case len=-1
@@ -21,6 +27,13 @@ std::vector<T> slice(const std::vector<T> &v, size_t start, int len) {
 
 template<typename T>
 std::vector<T> slice(const std::vector<T> &v, size_t start) {
+	/**
+	 * @brief Take a slice of a vector until its end
+	 * @param v
+	 * @param start
+	 * @return 
+	 */
+		
 	// just chop off the end 
 	return slice(v, start, v.size()-start);
 }
@@ -28,6 +41,13 @@ std::vector<T> slice(const std::vector<T> &v, size_t start) {
 /* If x is a prefix of y -- works for strings and vectors */
 template<typename T>
 bool is_prefix(const T& prefix, const T& x) {
+	/**
+	 * @brief For any number of iterable types, is prefix a prefix of x
+	 * @param prefix
+	 * @param x
+	 * @return 
+	 */
+		
 	if(prefix.size() > x.size()) return false;
 	if(prefix.size() == 0) return true;
 	
@@ -55,8 +75,12 @@ std::string system_exec(const char* cmd) {
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 time_t convert_time(std::string& s) {
-	// Converts our own time format to ms, which is what Fleet's time utilities use
-	// the time format we accept is #+(.#+)[smhd] where shmd specifies seconds, minutes, hours days 
+	/**
+	 * @brief Converts our own time format to ms, which is what Fleet's time utilities use
+	 * 		  The time format we accept is #+(.#+)[smhd] where shmd specifies seconds, minutes, hours days 
+	 * @param s
+	 * @return 
+	 */
 	
 	// specila case of s="0" will be allowed
 	if(s == "0") return 0;

@@ -29,9 +29,15 @@ public:
 		likelihood = 0.0;
 		posterior = 0.0;
 	}
-	virtual double compute_prior() = 0; 
+	virtual double compute_prior() = 0; 	
 	virtual double compute_single_likelihood(const t_datum& datum) = 0;
 	virtual double compute_likelihood(const t_data& data, const double breakout=-infinity) {
+		/**
+		 * @brief Compute the likelihood of all of the data -- stopping if we get below breakout
+		 * @param data
+		 * @param breakout
+		 * @return 
+		 */
 		
 		// include this in case a subclass overrides to make it non-iterable -- then it must define its own likelihood
 		if constexpr (is_iterable_v<t_data>) { 

@@ -12,9 +12,11 @@
 #include <unordered_map>
 #include <cassert>
 
+/**
+ * A TopN is a n object you can "add" hypotheses to (via add or <<) and it stores the best N of them 
+ * */
 template<class T>
-class TopN {
-	
+class TopN {	
 	std::mutex lock;
 	
 public:
@@ -57,28 +59,54 @@ public:
 	
 
 	void set_size(size_t n) {
-		// DOES NOT RESIZE
+		/**
+		 * @brief Set the size of n that I cna have. NOTE: this does not resize the existing data. 
+		 * @param n
+		 */
 		N = n;
 	}
 	void set_print_best(bool b) {
+		/**
+		 * @brief As I add things, should I print the best I've seen so far? 
+		 * @param b
+		 */
+		
 		print_best = b;
 	}
 
 	size_t size() const {
-		// returns the NUMBER in the set, not the total number allowed!
+		/**
+		 * @brief How many are currently in the set? (NOT the total number allowed)
+		 * @return 
+		 */
+		
 		return s.size();
 	}
 	bool empty() const {
+		/**
+		 * @brief Is it empty?
+		 * @return 
+		 */
+		
 		return s.size() == 0;
 	}
 	
 	std::multiset<T>& values(){
+		/**
+		 * @brief Return a multiset of all the values in TopN
+		 * @return 
+		 */
+		
 		return s;
 	}
 
 	void add(const T& x, size_t count=1) { 
-		// add something of type x if we should - only makes a copy if we add it
-		// NOTE: we do not add -inf things
+		/**
+		 * @brief Add x. If count is set, that will add that many counts.
+		 * 		  NOTE that we do not add objects x such that x.posterior == -infinity or NaN
+		 * @param x
+		 * @param count
+		 */
 		
 		if(std::isnan(x.posterior) or x.posterior == -infinity or N == 0) return;
 		
@@ -114,10 +142,20 @@ public:
 		
 	}
 	void operator<<(const T& x) {
+		/**
+		 * @brief Friendlier syntax for adding.
+		 * @param x
+		 */
+		
 		add(x);
 	}
 	
 	void add(const TopN<T>& x) { // add from a whole other topN
+		/**
+		 * @brief Add everything in x to this one. 
+		 * @param x
+		 */
+	
 		for(auto& h: x.s){
 			add(h, x.cnt.at(h));
 		}
@@ -131,29 +169,63 @@ public:
 	void operator()(T& x)       { add(x); }
 	
 	
+	// get the count
+	size_t operator[](const T& x) {
+		/**
+		 * @brief Access the counts for a given element x
+		 * @param x
+		 * @return 
+		 */
+		
+		return cnt[x];
+	}
+	
     const T& best() { 
+		/**
+		 * @brief Returns a reference to the best element currently stored
+		 * @return 
+		 */
+		
 		assert( (!s.empty()) && "You tried to get the max from a TopN that was empty");
 		return *s.rbegin();  
 	}
     const T& worst() { 
+		/**
+		 * @brief Returns a reference to the worst element currently stored
+		 * @return 
+		 */
+		
 		assert( (!s.empty()) && "You tried to get the min from a TopN that was empty");
 		return *s.begin(); 
 	}
 	
 	double best_score() { // thread safe
+		/**
+		 * @brief Return the score of the best element (thread-safe)
+		 * @return 
+		 */
+	
 		std::lock_guard guard(lock);
 		if(s.empty()) return -infinity;
 		return s.rbegin()->posterior;  
 	}
 	double worst_score() { // thread safe
+		/**
+		 * @brief Return the score of the worst element
+		 * @return 
+		 */
+	
 		std::lock_guard guard(lock);
 		if(s.empty()) return infinity;
 		return s.begin()->posterior;  
 	}
 	
-    bool empty() { return s.empty(); }
-    
 	double Z() { // compute the normalizer
+		/**
+		 * @brief Compute the logsumexp of all of the elements stored. 
+		 * @return 
+		 */
+	
 		double z = -infinity;
 		std::lock_guard guard(lock);
 		for(const auto& x : s) 
@@ -162,6 +234,10 @@ public:
 	}
 	
 	void print(std::string prefix="") {
+		/**
+		 * @brief Sort and print from worst to best
+		 * @param prefix - an optional prefix to print before each line
+		 */
 		
 		// this sorts so that the highest probability is last
 		std::vector<T> v(s.size());
@@ -174,12 +250,22 @@ public:
 	}
 	
 	void clear() {
+		/**
+		 * @brief Remove everything 
+		 */
+		
 		std::lock_guard guard(lock);
 		s.erase(s.begin(), s.end());
 		cnt.clear();
 	}
 	
 	unsigned long count(const T x) {
+		/**
+		 * @brief How many times have we seen x?
+		 * @param x
+		 * @return 
+		 */
+		
 		std::lock_guard guard(lock);
 		// This mightt get called by something not in here, so we can't assume x is in 
 		if(cnt.count(x)) return cnt.at(x);
@@ -188,6 +274,12 @@ public:
  	
 	template<typename t_data>
 	TopN compute_posterior(t_data& data){
+		/**
+		 * @brief Returns a NEW TopN where each current hypothesis is evaluated on the data. NOTE: If a hypothesis has a new posterior of -inf or NaN, it won't be added. 
+		 * @param data
+		 * @return 
+		 */
+		
 		// NOTE: Since this modifies the hypotheses, it returns a NEW TopN
 		TopN o(N);
 		for(auto h : values() ){

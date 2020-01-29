@@ -2,11 +2,13 @@
 
 //#define DEBUG_CONTROL
 
+/* 
+ * This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc.
+ * NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here)
+ * */
 struct Control {
 	// Parameters for running MCMC or MCTS
-	// NOTE: In general this should NOT be passed by reference because we want
-	// start_time to be the time we started the function it is passed to 
-	// (start time is the time of construction, here)
+	// 
 	unsigned long steps;
 	time_ms time;
 	size_t threads;
@@ -25,12 +27,19 @@ struct Control {
 	}
 	
 	void start() {
+		/**
+		 * @brief Start running
+		 */
+		
 		done_steps = 0;
 		start_time = now();
 	}
 	
 	bool running() {
-		// returns true if we are still running and updates done_steps etc. 
+		/**
+		 * @brief Check if we are currently running. 
+		 * @return 
+		*/		
 		
 		++done_steps;
 		

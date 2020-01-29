@@ -9,9 +9,9 @@ using S = std::string; // just for convenience
 
 S alphabet = "01"; // the alphabet we use (possibly specified on command line)
 //S datastr = "";
-//S datastr  = "011,011011,011011011"; // the data, comma separated
-S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated
-const double strgamma = 0.99; // penalty on string length
+S datastr  = "011,011011,011011011"; // the data, comma separated
+//S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated
+const double strgamma = 0.75; // penalty on string length
 const size_t MAX_LENGTH = 64; // longest strings cons will handle
 	
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -85,22 +85,18 @@ public:
 		return lp;
 	}
 	
-	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const {
-		if(flip()) {
-			auto x = Proposals::regenerate(grammar, value);	
-			return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second); 
-		}
-		else {
-			if(flip()) {
-				auto x = Proposals::insert_tree(grammar, value);	
-				return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second); 
-			}
-			else {
-				auto x = Proposals::delete_tree(grammar, value);	
-				return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second); 
-			}
-		}
-	}	
+//	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const {
+//		
+//		std::pair<Node,double> x;
+//		if(flip()) {
+//			x = Proposals::regenerate(grammar, value);	
+//		}
+//		else {
+//			if(flip()) x = Proposals::insert_tree(grammar, value);	
+//			else       x = Proposals::delete_tree(grammar, value);	
+//		}
+//		return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second); 
+//	}	
 	
 	
 	void print(std::string prefix="") {
@@ -190,13 +186,23 @@ int main(int argc, char** argv){
 	MyHypothesis h0(&grammar);
 	h0 = h0.restart();
 	
-	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
-	tic();
-	samp.run(Control(mcmc_steps, runtime, nthreads), 1000, 3000); //30000);		
-	tic();
+//	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
+//	tic();
+//	samp.run(Control(mcmc_steps, runtime, nthreads), 1000, 3000); //30000);		
+//	tic();
 //	
 	// Show the best we've found
-	top.print();
+//	top.print();
+
+	
+	MCMCChain c(h0, &mydata, top);
+	tic();
+	c.run(Control(mcmc_steps, runtime, nthreads));
+	tic();
+	
+	for(auto& h : top.values()) {
+		COUT top[h] TAB h.posterior TAB h.string() ENDL;		
+	}
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;

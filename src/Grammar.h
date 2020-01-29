@@ -16,6 +16,8 @@ template<typename T, typename... args> // function type
 struct Primitive ;
 
 class Grammar {
+	
+	
 	/* 
 	 * A grammar stores all of the rules associated with any kind of nonterminal and permits us
 	 * to sample as well as compute log probabilities. 
@@ -45,7 +47,10 @@ public:
 	// store a type as e.g. nt<double>() -> size_t 
 	template <class T>
 	constexpr nonterminal_t nt() {
-		// NOTE: the names here are decayed 
+		/**
+		 * @brief template function giving the index of its template argument (index in FLEET_GRAMMAR_TYPES). 
+		 * NOTE: The names here are decayed (meaning that references and base types are the same. 
+		 */
 		using DT = typename std::decay<T>::type;
 		
 		static_assert(contains_type<DT, FLEET_GRAMMAR_TYPES>(), "*** The type T (decayed) must be in FLEET_GRAMMAR_TYPES");
@@ -60,6 +65,11 @@ public:
 	
 	template<typename... T>
 	Grammar(std::tuple<T...> tup) : Grammar() {
+		/**
+		 * @brief Constructor for grammar that uses a tuple of Primitives.
+		 * @param tup - a tuple of Primitives
+		 */
+		
 		add(tup, std::make_index_sequence<sizeof...(T)>{});
 	}	
 	
@@ -67,13 +77,28 @@ public:
 	Grammar(const Grammar&& g) = delete; // should not be doing these
 	
 	size_t count_nonterminals() const {
+		/**
+		 * @brief How many nonterminals are there in the grammar. 
+		 * @return 
+		 */
+		
 		return N_NTs;
 	}
 	
 	size_t count_rules(const nonterminal_t nt) const {
+		/**
+		 * @brief Returns the number of rules of return type nt
+		 * @param nt
+		 * @return 
+		 */		
 		return rules[nt].size();
 	}	
 	size_t count_rules() const {
+		/**
+		 * @brief Total number of rules
+		 * @return 
+		 */
+		
 		size_t n=0;
 		for(size_t i=0;i<N_NTs;i++) {
 			n += count_rules((nonterminal_t)i);
@@ -81,21 +106,33 @@ public:
 		return n;
 	}
 	size_t count_terminals(nonterminal_t nt) const {
+		/**
+		 * @brief Count the number of terminal rules of return type nt
+		 * @param nt
+		 * @return 
+		 */
+		
 		size_t n=0;
 		for(auto& r : rules[nt]) {
-			if(r.N == 0) n++;
+			if(r.is_terminal()) n++;
 		}
 		return n;
 	}
 	size_t count_nonterminals(nonterminal_t nt) const {
+		/**
+		 * @brief Count th enumber of non-terminal rules of return type nt
+		 * @param nt
+		 * @return 
+		 */
+		
 		size_t n=0;
 		for(auto& r : rules[nt]) {
-			if(r.N != 0) n++;
+			if(not r.is_terminal()) n++;
 		}
 		return n;
 	}
 	
-	size_t count_expansions(const nonterminal_t nt) const {
+	size_t count_expansions(const nonterminal_t nt) const {	
 		assert(nt >= 0);
 		assert(nt < N_NTs);
 		return rules[nt].size(); 
@@ -109,7 +146,9 @@ public:
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	virtual void add(Rule&& r) {
-		
+		/**
+		 * @brief Add a rule
+		 */		
 		nonterminal_t nt = r.nt;
 		//rules[r.nt].push_back(r);
 		
@@ -161,16 +200,28 @@ public:
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	size_t get_index_of(const Rule* r) const {
-		// within an index, what index are we?
+		/**
+		 * @brief Find the index in rules of where r is.
+		 * @param r
+		 * @return 
+		 */
+		
 		for(size_t i=0;i<rules[r->nt].size();i++) {
-			if(rules[r->nt][i] == *r) { 
+			if(*get_rule(r->nt,i) == *r) { 
 				return i;
 			}
 		}
 		assert(false && "*** Did not find rule in get_index_of.");
 	}
 	
-	Rule* get_rule(const nonterminal_t nt, size_t k) const {
+	virtual Rule* get_rule(const nonterminal_t nt, size_t k) const {
+		/**
+		 * @brief Get the k'th rule of type nt 
+		 * @param nt
+		 * @param k
+		 * @return 
+		 */
+		
 		assert(nt >= 0);
 		assert(nt < N_NTs);
 		assert(k < rules[nt].size());
@@ -178,6 +229,14 @@ public:
 	}
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const CustomOp o, const int a=0) {
+		/**
+		 * @brief Get rule of type nt with a given CustomOp and argument a
+		 * @param nt
+		 * @param o
+		 * @param a
+		 * @return 
+		 */
+		
 		for(auto& r: rules[nt]) {
 			if(r.instr.is_a(o) && r.instr.arg == a) 
 				return &r;
@@ -186,6 +245,13 @@ public:
 	}
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const BuiltinOp o, const int a=0) {
+		/**
+		 * @brief Get rule of type nt with a given BuiltinOp and argument a
+		 * @param nt
+		 * @param o
+		 * @param a
+		 * @return 
+		 */
 		for(auto& r: rules[nt]) {
 			if(r.instr.is_a(o) && r.instr.arg == a) 
 				return &r;
@@ -193,14 +259,18 @@ public:
 		assert(0 && "*** Could not find rule");		
 	}
 	
-	virtual Rule* get_rule(const nonterminal_t nt, size_t i) {
-		assert(i <= rules[nt].size());
-		return &rules[nt][i];
-	}
+//	virtual Rule* get_rule(const nonterminal_t nt, size_t i) {
+//		assert(i <= rules[nt].size());
+//		return &rules[nt][i];
+//	}
 	
 	virtual Rule* get_rule(const std::string s) const {
-		// returns the rule for which s is a prefix -- but throws errors
-		// if there aren't enough
+		/**
+		 * @brief Return a rule based on s, which must uniquely be a prefix of the rule's format
+		 * @param s
+		 * @return 
+		 */
+		
 		Rule* ret = nullptr;
 		for(size_t nt=0;nt<N_NTs;nt++) {
 			for(auto& r: rules[nt]) {
@@ -226,12 +296,24 @@ public:
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	double rule_normalizer(const nonterminal_t nt) const {
+		/**
+		 * @brief Return the normalizing constant (NOT log) for all rules of type nt
+		 * @param nt
+		 * @return 
+		 */
+		
 		assert(nt >= 0);
 		assert(nt < N_NTs);
 		return Z[nt];
 	}
 
 	virtual Rule* sample_rule(const nonterminal_t nt) const {
+		/**
+		 * @brief Randomly sample a rule of type nt. 
+		 * @param nt
+		 * @return 
+		 */
+		
 		std::function<double(const Rule& r)> f = [](const Rule& r){return r.p;};
 		assert(rules[nt].size() > 0 && "*** You are trying to sample from a nonterminal with no rules!");
 		return sample<Rule,std::vector<Rule>>(rules[nt], f).first; // ignore the probabiltiy 
@@ -244,18 +326,29 @@ public:
 	
 	
 	Node makeNode(const Rule* r) const {
-		return Node(r, log(r->p)-log(Z[r->nt]));
+		/**
+		 * @brief Helper function to create a node according to this grammar. This is how nodes get their log probabilities. 
+		 * @param r
+		 * @return 
+		 */
+		
+		return Node(r, log(r->p)-log(rule_normalizer(r->nt)));
 	}
 	
 
 	Node generate(const nonterminal_t nt, unsigned long depth=0) const {
-		// Sample a rule and generate from this grammar. This has a template to avoid a circular dependency
-		// and allow us to generate other kinds of things from rules if we want. 
-		// We use exceptions here just catch depth exceptions so we can easily get a trace of what
-		// happened
+		/**
+		 * @brief Sample an entire tree from this grammar (keeping track of depth in case we recurse too far) of return type nt. This samples a rule, makes them with makeNode, and then recurses. 
+		 * @param nt
+		 * @param depth
+		 * @return Returns a Node sampled from the grammar. 
+		 * 
+		 * NOTE: this may throw a DepthException if the grammar recurses too far (usually that means the grammar is improper)
+		 */
+		
 		
 		if(depth >= Fleet::GRAMMAR_MAX_DEPTH) {
-			throw depth_exception; //assert(0);
+			throw depth_exception; 
 		}
 		
 		Rule* r = sample_rule(nt);
@@ -271,15 +364,26 @@ public:
 		return n;
 	}	
 	
-	// a wrapper so we can call by type	
 	template<class t>
 	Node generate(unsigned long depth=0) {
+		/**
+		 * @brief A friendly version of generate that can be called with template by type.  
+		 * @param depth
+		 * @return 
+		 */
+		
 		return generate(nt<t>(),depth);
 	}
 	
 	Node copy_resample(const Node& node, bool f(const Node& n)) const {
-		// this makes a copy of the current node where ALL nodes satifying f are resampled from the grammar
-		// NOTE: this does NOT allow f to apply to nullptr children (so cannot be used to fill in)
+		/**
+		 * @brief Make a copy of node where all nodes satisfying f are regenerated from the grammar. 
+		 * @param node
+		 * @param f - a function saying what we should resample
+		 * @return 
+		 *  NOTE: this does NOT allow f to apply to nullptr children (so cannot be used to fill in)
+		 */
+		
 		if(f(node)){
 			return generate(node.rule->nt);
 		}
@@ -299,8 +403,11 @@ public:
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	std::vector<size_t> get_counts(const Node& node) const {
-		// returns a vector of counts of how often each rule was used, in a *standard* order
-		// given by iterating over nts and then iterating over rules 
+		/**
+		 * @brief Compute a vector of counts of how often each rule was used, in a *standard* order given by iterating over nts and then iterating over rules
+		 * @param node
+		 * @return 
+		 */
 		
 		const size_t R = count_rules(); 
 		
@@ -325,6 +432,11 @@ public:
 	}
 	
 	double log_probability(Node& n) const {
+		/**
+		 * @brief Compute the log probability of a tree according to the grammar
+		 * @param n
+		 * @return 
+		 */
 		
 		double lp = 0.0;		
 		for(auto& x : n) {
@@ -340,8 +452,12 @@ public:
 	
 	
 	Node expand_from_names(std::deque<std::string>& q) const {
-		// expands an entire stack using nt as the nonterminal -- this is needed to correctly
-		// fill in Node::nulldisplay
+		/**
+		 * @brief Fills an entire tree using the string format prefixes -- see get_rule(std::string)
+		 * @param q
+		 * @return 
+		 */
+		
 		assert(!q.empty() && "*** Should not ever get to here with an empty queue -- are you missing arguments?");
 		
 		std::string pfx = q.front(); q.pop_front();
@@ -370,6 +486,12 @@ public:
 	}
 
 	Node expand_from_names(std::string s) const {
+		/**
+		 * @brief Expand from names where s is delimited by ':'
+		 * @param s
+		 * @return 
+		 */
+		
 		std::deque<std::string> stk = split(s, ':');    
         return expand_from_names(stk);
 	}
@@ -696,6 +818,7 @@ public:
 
 
 	size_t neighbors(const Node& node) const {
+		
 		// How many neighbors do I have? We have to find every gap (nullptr child) and count the ways to expand each
 		size_t n=0;
 		for(size_t i=0;i<node.rule->N;i++){

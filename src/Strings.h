@@ -5,19 +5,28 @@
 
 template<typename T>
 std::string str(T x){
-	// Just a handy, pythonesque string function
+	/**
+	 * @brief A pythonesque string function
+	 * @param x
+	 * @return 
+	 */
+		
 	return std::to_string(x);
 }
 
 
 std::deque<std::string> split(const std::string& s, const char delimiter){
-	// split is a little bit of a pair -- we want to split the string at delimiter
-	// but handle nulls correctly too. 
-	// special cases:
-	// split("a:", ':') -> ["a", ""]
-	// split(":", ':')  -> [""]
-	// split(":a", ':') -> ["", "a"]
-	
+	/**
+	 * @brief Split is returns a deque of s split up at the character delimiter. 
+	 * It handles these special cases:
+	 * split("a:", ':') -> ["a", ""]
+	 * split(":", ':')  -> [""]
+	 * split(":a", ':') -> ["", "a"]
+	 * @param s
+	 * @param delimiter
+	 * @return 
+	 */
+		
 	std::deque<std::string> tokens;
 	
 	if(s.length() == 0) {
@@ -42,23 +51,18 @@ std::deque<std::string> split(const std::string& s, const char delimiter){
 	// character, which means we need to append ""
 	tokens.push_back("");
 	return tokens;
-
-//	std::deque<std::string> tokens;
-//	std::string token;
-//	std::istringstream ts(s);
-//	while (std::getline(ts, token, delimiter)) {
-//		std::cerr << "TOKEN =" << token << std::endl;
-//		tokens.push_back(token);
-//	}
-//	
-//	if(s.at(s.length()-1) == delimiter) {
-//		tokens.push_back("");
-//	}
 }
 
 
 
 unsigned int levenshtein_distance(const std::string& s1, const std::string& s2) {
+	/**
+	 * @brief Compute levenshtein distiance between two strings (NOTE: Or O(N^2))
+	 * @param s1
+	 * @param s2
+	 * @return 
+	 */
+	
 	// From https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
 
 	const std::size_t len1 = s1.size(), len2 = s2.size();
@@ -77,7 +81,13 @@ unsigned int levenshtein_distance(const std::string& s1, const std::string& s2) 
 
 
 size_t count(const std::string& str, const std::string& sub) {
-	// how many times does sub occur in str?
+	/**
+	 * @brief How many times does sub occur in str?
+	 * @param str
+	 * @param sub
+	 * @return 
+	 */
+	
 	// https://www.rosettacode.org/wiki/Count_occurrences_of_a_substring#C.2B.2B
 	
     if (sub.length() == 0) return 0;
@@ -89,4 +99,24 @@ size_t count(const std::string& str, const std::string& sub) {
         ++count;
     }
     return count;
+}
+
+
+std::string QQ(std::string x) {
+	/**
+	 * @brief Handy adding double quotes to a string
+	 * @param x - input string
+	 * @return 
+	 */
+	
+	return std::string("\"") + x + std::string("\"");
+}
+std::string Q(std::string x) {
+	/**
+	 * @brief Handy adding single quotes to a string 
+	 * @param x - input string
+	 * @return 
+	 */
+		
+	return std::string("\'") + x + std::string("\'");
 }

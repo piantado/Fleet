@@ -19,18 +19,18 @@ namespace Fleet {
 //#define PRINTN(x) { output_lock.lock(); std::cout << x << std::endl; output_lock.unlock() }
 
 
-class DebugBlock {
-	// Handy debug printing when a variable enters and exists scope
-	std::string enter;
-	std::string exit; 
-	public:
-	DebugBlock(std::string en, std::string ex) : enter(en), exit(ex) {
-		COUT enter ENDL;
-	}
-	~DebugBlock() {
-		COUT exit ENDL;
-	}
-};
+//class DebugBlock {
+//	// Handy debug printing when a variable enters and exists scope
+//	std::string enter;
+//	std::string exit; 
+//	public:
+//	DebugBlock(std::string en, std::string ex) : enter(en), exit(ex) {
+//		COUT enter ENDL;
+//	}
+//	~DebugBlock() {
+//		COUT exit ENDL;
+//	}
+//};
 
 
 //template<typename T>
@@ -53,12 +53,6 @@ class DebugBlock {
 //}
 
 
-std::string QQ(std::string x) {
-	return std::string("\"") + x + std::string("\"");
-}
-std::string Q(std::string x) {
-	return std::string("\'") + x + std::string("\'");
-}
 
 
 // Want: A handy debugging macro that takes a variable name and prints 

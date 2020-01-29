@@ -1,6 +1,7 @@
 #pragma once
 
-// Define a default data type 
+/* 
+ * A datum is the default data type for a given input and output */
 template<typename t_input, typename t_output>
 class default_datum { // a single data point
 public:
