@@ -57,6 +57,12 @@ bool is_prefix(const T& prefix, const T& x) {
 
 // From https://stackoverflow.com/questions/478898/how-to-execute-a-command-and-get-output-of-command-within-c-using-posix
 std::string system_exec(const char* cmd) {
+	/**
+	 * @brief Call cmd on the system
+	 * @param cmd
+	 * @return 
+	 */
+		
     std::array<char, 1024> buffer;
     std::string result;
     std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);

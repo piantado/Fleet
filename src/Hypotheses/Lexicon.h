@@ -5,6 +5,16 @@
 #include "LOTHypothesis.h"
 #include "Hash.h"
 
+
+/**
+ * @class Lexicon
+ * @author piantado
+ * @date 29/01/20
+ * @file Lexicon.h
+ * @brief A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically a LOTHypothesis).
+ * 		  Each of these components is called a "factor." 
+ */
+
 template<typename HYP, typename T, typename t_input, typename t_output, typename t_datum=default_datum<t_input, t_output>>
 class Lexicon : public MCMCable<HYP,t_datum>,
 				public Dispatchable<t_input,t_output>,
@@ -19,6 +29,10 @@ public:
 	Lexicon()          : MCMCable<HYP,t_datum>()  { }
 		
 	virtual std::string string() const {
+		/**
+		 * @brief AConvert a lexicon to a string -- defaultly includes all arguments. 
+		 * @return 
+		 */
 		
 		std::string s = "[";
 		for(size_t i =0;i<factors.size();i++){
@@ -34,6 +48,11 @@ public:
 	}
 	
 	virtual std::string parseable() const {
+		/**
+		 * @brief Convert to a parseable format (using a delimiter for each factor)
+		 * @return 
+		 */
+		
 		std::string out = "";
 		for(size_t i=0;i<factors.size();i++) {
 			out += factors[i].parseable() + "|";
@@ -42,6 +61,11 @@ public:
 	}
 	
 	virtual size_t hash() const {
+		/**
+		 * @brief Hash a Lexicon by hashing each part
+		 * @return 
+		 */
+		
 		std::hash<size_t> h;
 		size_t out = h(factors.size());
 		size_t i=0;
@@ -53,7 +77,12 @@ public:
 	}
 	
 	virtual bool operator==(const HYP& l) const {
-		
+		/**
+		 * @brief Equality checks equality on each part
+		 * @param l
+		 * @return 
+		 */
+			
 		// first, fewer factors are less
 		if(factors.size() != l.factors.size()) 
 			return  false;
@@ -66,6 +95,12 @@ public:
 	}
 	
 	bool has_valid_indices() const {
+		/**
+		 * @brief A lexicon has valid indices if calls to  op_RECURSE, op_MEM_RECURSE, op_SAFE_RECURSE, and op_SAFE_MEM_RECURSE all have arguments that are less than the size. 
+		 *  	  (So this places no restrictions on the calling earlier factors)
+		 * @return 
+		 */
+		
 		// check to make sure that if we have rn recursive factors, we never try to call F on higher 
 		
 		for(auto& a : factors) {
@@ -82,9 +117,11 @@ public:
 	 
 
 	bool check_reachable() const {
-		// checks if the last factor calls all the earlier (else we're "wasting" factors)
-		// We do this by making the graph of what factors calls which other, and then
-		// computing the transitive closure
+		/**
+		 * @brief Check if the last factor call everything else transitively (e.g. are we "wasting" factors)
+		 * 		  We do this by making a graph of what factors call which others and then computing the transitive closure. 
+		 * @return 
+		 */
 		
 		const size_t N = factors.size();
 		assert(N > 0); 
@@ -136,6 +173,11 @@ public:
 	 * Required for VMS to dispatch to the right sub
 	 ********************************************************/
 	virtual void push_program(Program& s, short j) {
+		/**
+		 * @brief Put factor j onto program s
+		 * @param s
+		 * @param j
+		 */
 		
 		assert(factors.size() > 0);
 		
@@ -183,11 +225,12 @@ public:
 	}
 	
 	[[nodiscard]] virtual std::pair<HYP,double> propose() const {
-		
-		// We want to guaranteee that there is at least one factor that is changed
-		// To do this, we'll draw random numbers on the number of factors
-		// until we get one that isn't all zeros, and then use that to determine 
-		// what is proposed where. 
+		/**
+		 * @brief This proposal guarantees that there will be at least one factor that is proposed to. 
+		 * 		  To do this, we draw random numbers on 2**factors.size()-1 and then use the bits of that
+		 * 		  integer to determine which factors to propose to. 
+		 * @return 
+		 */
 		
 		std::uniform_int_distribution<size_t> d(1, pow(2,factors.size())-1 );
 		size_t u = d(rng); // cannot be 1, since that is not proposing to anything

@@ -7,13 +7,22 @@ void popn(Program& s, size_t n) {
 	for(size_t i=0;i<n;i++) s.pop();
 }
 
-
+/**
+ * @class VirtualMachineState
+ * @author piantado
+ * @date 02/02/20
+ * @file VirtualMachineState.h
+ * @brief This represents the state of a partial evaluation of a program, corresponding to the value of all of the stacks
+ * 			of various types (which are stored as templates from FLEET_GRAMMAR_TYPES).  
+ *  		The idea here is that we want to be able to encapsulate everything about the evaluation of a tree so 
+ * 			that we can stop it in the middle and resume later, as is required for stochastics. This must be 
+ * 			templated because it depends on the types in the grammar. 
+ * 			These will typically be stored in a VirtualMachinePool and not called directly, unless you know
+ * 			that there are no stochastics. 
+ */
 template<typename t_x, typename t_return>
 class VirtualMachineState {
 	
-	// This stores the state of an evaluator of a node. The idea here is that we want to be able to encapsulate everything
-	// about the evaluation of a tree so that we can stop it in the middle and resume later, as is required for stochastics
-	// This must be automatically generated because it depends on the types in the grammar. 
 public:
 	
 	static const unsigned long MAX_RECURSE = 64; // this is the max number of times we can call recurse, NOT the max depth
@@ -51,25 +60,48 @@ public:
 	virtual ~VirtualMachineState() {};	// needed so VirtualMachinePool can delete
 	
 	bool operator<(const VirtualMachineState& m) const {
-		/* These must be sortable by lp so that we can enumerate them from low to high probability in a VirtualMachinePool 
-		 * NOTE: VirtualMachineStates shouldn't be put in a set because they might evaluate to equal! */
+		/**
+		 * @brief These must be sortable by lp so that we can enumerate them from low to high probability in a VirtualMachinePool 
+		 * 		  NOTE: VirtualMachineStates shouldn't be put in a set because they might evaluate to equal! 
+		 * @param m
+		 * @return 
+		 */
 		return lp < m.lp; 
 	}
 	
 	void increment_lp(double v) {
+		/**
+		 * @brief Add v to my lp
+		 * @param v
+		 */
+		
 		lp += v;
 	}
 	
 	// Functions to access the stack
 	template<typename T>
-	Stack<T>& stack()             { return std::get<Stack<T>>(_stack.value); }
+	Stack<T>& stack()             { 
+		/**
+		 * @brief Returns a reference to the stack (of a given type)
+		 * @return 
+		 */
+		return std::get<Stack<T>>(_stack.value); 
+	}
 	template<typename T>
-	const Stack<T>& stack() const { return std::get<Stack<T>>(_stack.value); }
+	const Stack<T>& stack() const { 
+		/**
+		 * @brief Const reference to top of stack
+		 * @return 
+		 */		
+		return std::get<Stack<T>>(_stack.value); 
+	}
 	
 	template<typename T>
 	T getpop() {
-		// retrieves and pops the element of type T from the stack
-		//if(status != vmstatus_t::GOOD) return T(); // don't try to access the stack because we're aborting
+		/**
+		 * @brief Retrieves and pops the element of type T from the stack
+		 * @return 
+		 */
 		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
 		T x = std::move(stack<T>().top());
@@ -78,19 +110,24 @@ public:
 	}
 	template<typename T>
 	T gettop() {
-		// retrieves but does not remove
-		//if(status != vmstatus_t::GOOD) return T(); // don't try to access the stack because we're aborting
+		/**
+		* @brief Retrieves the top of the stack as a copy and does *not* remove
+		* @return 
+		*/
 		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
 		return stack<T>().top();
 	}
 
-	// this is some fanciness that will return a reference to the top of the stack if we give it a reference type
-	// otherwise it will return the type. This lets us get the top of a stack with a reference in PRIMITIVES
-	// as though we were some kind of wizards
 	template<typename T>
 	typename std::conditional<std::is_reference<T>::value, T&, T>::type
 	get() {
+		/**
+		 * @brief This is some fanciness that will return a reference to the top of the stack if we give it a reference type 
+		 * 			otherwise it will return the type. This lets us get the top of a stack with a reference in PRIMITIVES
+		 * 			as though we were some kind of wizards
+		 * @return 
+		 */		
 		using Tdecay = typename std::decay<T>::type; // remove the ref from it since that's how we access the stack -- TODO: put this into this->stack() maybe?
 		
 		assert(stack<Tdecay>().size() > 0 && "Cannot get from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
@@ -98,7 +135,6 @@ public:
 		// some magic: if its a reference, we return a reference to the top of the stack
 		// otherwise we move off and return
 		if constexpr (std::is_reference<T>::value) { 
-//			CERR "GIVING REFERENCE " TAB stack<Tdecay>().topref()  ENDL;
 			// if its a reference, reference the un-referenced stack type and return a reference to its top
 			// NOTE: It is important that this does not pop, because that means it doesn't matter when we call it
 			// in Primitives
@@ -114,41 +150,69 @@ public:
 	
 	template<typename T>
 	bool empty() {
+		/**
+		 * @brief Is this stack empty?
+		 * @return 
+		 */
 		return stack<T>().empty();
 	}
 
 	template<typename T>
 	void push(T& x){
-		// push things onto the appropriate stack
+		/**
+		 * @brief Push things onto the appropriate stack
+		 * @param x
+		 */
 		stack<T>().push(x);
 	}
 	template<typename T>
 	void push(T&& x){
-		// push things onto the appropriate stack
 		stack<T>().push(x);
 	}
 	template<typename... args>
 	bool any_stacks_empty() const { 
+		/**
+		 * @brief Check if any of the stacks are empty
+		 * @return 
+		 */		
 		return (... || stack<args>().empty()); 
 	}
 	template<typename... args>
 	bool all_stacks_empty() const { 
+		/**
+		 * @brief Check if all of the stacks are empty (should be at the end of evaluation)
+		 * @return 
+		 */
 		return (... && stack<args>().empty()); 
 	}	
 	bool stacks_empty() const { 
-		// return strue if stack is empty -- as a check at the end of a evaluation
+		/**
+		 * @brief True if all stacks are empty for the FLEET_GRAMMAR_TYPES
+		 * @return 
+		 */
 		return this->all_stacks_empty<FLEET_GRAMMAR_TYPES>();
 	}
 	
 	virtual t_return run(Dispatchable<t_x,t_return>* d) {
-		// defaulty run on a null pool with same dispatch and recurse handler
+		/**
+		 * @brief Defaultly run a non-recursive hypothesis
+		 * @param d
+		 * @return 
+		 */
 		return run(nullptr, d, d);
 	}
 	
 	virtual t_return run(VirtualMachinePool<t_x, t_return>* pool, Dispatchable<t_x,t_return>* dispatch, Dispatchable<t_x,t_return>* loader) {
-		// Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
-		// Here, dispatch is called to evaluate the function, and loader is called on recursion (allowing us to handle recursion
-		// via a lexicon or just via a LOTHypothesis). NOTE that anything NOT built-in is handled via applyToVMS defined in Primitives.h
+		/**
+		 * @brief Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
+		 * 			Here, dispatch is called to evaluate the function, and loader is called on recursion (allowing us to handle recursion
+		 * 			via a lexicon or just via a LOTHypothesis). NOTE that anything NOT built-in is handled via applyToVMS defined in Primitives.h
+		 * @param pool
+		 * @param dispatch
+		 * @param loader
+		 * @return 
+		 */
+
 		status = vmstatus_t::GOOD;
 		
 		try { 

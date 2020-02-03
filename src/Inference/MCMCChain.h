@@ -89,9 +89,20 @@ public:
 	
 	virtual ~MCMCChain() { }
 	
-	HYP& getCurrent() {	return current; }
+	HYP& getCurrent() {
+		/**
+		 * @brief get a reference to the current value
+		 * @return 
+		 */
+		
+		return current; 
+	}
 	
 	void runOnCurrent() {
+		/**
+		 * @brief This is called by the constructor to compute the posterior and callback for an initial h0
+		 */
+				
 		// updates current and calls callback (in constructor)
 		std::lock_guard guard(current_mutex);
 		current.compute_posterior(*data);
@@ -104,13 +115,17 @@ public:
 	const HYP& getMax() { return themax; } 
 	
 	void run(Control ctl) {
-		// ctl can NOT be passed by reference
+		/**
+		 * @brief Run MCMC according to the control parameters passed in.
+		 * 		  NOTE: ctl cannot be passed by reference. 
+		 * @param ctl
+		 */
 		assert(ctl.threads == 1); // this is not how we run parallel 
 		
 		// I may have copied its start time from somewhere else, so change that here
 		ctl.start();
 		
-		
+	
 		// NOTE: intializer should have runOnCurrent() so it should have a posterior
 		{
 			std::lock_guard guard(current_mutex);
@@ -130,22 +145,31 @@ public:
 //	current.print("# \t");
 #endif
 			
-			// generate the proposal -- defaulty "restarting" if we're currently at -inf
-			HYP proposal; double fb = 0.0;
-			
 			std::lock_guard guard(current_mutex); // lock below otherwise others can modify
 
 			if(thin > 0 and FleetStatistics::global_sample_count % thin == 0) {
 				current.print();
 			}
 			
-			if(current.posterior > -infinity) {
-				std::tie(proposal,fb) = current.propose();
-			}
-			else {
-				proposal = current.restart();
-			}
-				
+			
+			/* Not entirely sure what's going on, but it seems like it might depend on this -- how we
+			 * handle -inf and what happens for proposals... */
+			// generate the proposal -- defaulty "restarting" if we're currently at -inf
+//			HYP proposal; double fb = 0.0;			
+//			std::tie(proposal,fb) = current.propose();
+////			auto [proposal, fb] = current.propose();
+//			if(current.posterior > -infinity) {
+//				std::tie(proposal,fb) = current.propose();
+//			}
+//			else {
+//				proposal = current.restart();
+//			}
+//				
+
+			auto [proposal, fb] = current.posterior > -infinity ? current.propose() : std::make_tuple(current.restart(), 0.0);
+//			auto [proposal, fb] = current.propose();
+			
+			
 			++proposals;
 			
 			// A lot of proposals end up with the same function, so if so, save time by not
@@ -170,19 +194,20 @@ public:
 				themax = proposal;
 				steps_since_improvement = 0;
 			}
-						
+			
 			// use MH acceptance rule, with some fanciness for NaNs
-			double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb; // Remember: don't just check if proposal->posterior>current->posterior or all hell breaks loose		
+			double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb; 		
 			if(   (std::isnan(current.posterior))  or
 				  (current.posterior == -infinity) or
-					((!std::isnan(proposal.posterior)) and
-					 (ratio > 0 or uniform() < exp(ratio)))) {
+					((not std::isnan(proposal.posterior)) and
+					 (ratio >= 0.0 or  uniform() < exp(ratio) ))) {
 				
 #ifdef DEBUG_MCMC
 	  COUT "# Accept" << std::endl;
 #endif
 				
 				current = proposal;
+//				assert(current.posterior == proposal.posterior);
   
 				history << true;
 				++acceptances;
@@ -202,7 +227,9 @@ public:
 				steps_since_improvement = 0; // reset the couter
 				current = current.restart();
 				current.compute_posterior(*data);
+				
 				if(callback != nullptr and samples >= ctl.burn) (*callback)(current);
+				
 				if(current.posterior > themax.posterior) {
 					themax = current; 	
 				}
@@ -213,13 +240,30 @@ public:
 		
 		
 	}
-	void run() { run(Control(0,0)); } // run forever
+	void run() { 
+		/**
+		 * @brief Run forever
+		 */
+		
+		run(Control(0,0)); 
+	}
 
 	double acceptance_ratio() {
+		/**
+		 * @brief Get my acceptance ratio
+		 * @return 
+		 */
+		
 		return history.mean();
 	}
 	
 	double at_temperature(double t){
+		/**
+		 * @brief Return my current posterior at a given temperature t
+		 * @param t
+		 * @return 
+		 */
+		
 		return current.at_temperature(t);
 	}
 	

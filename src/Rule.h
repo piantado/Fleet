@@ -100,6 +100,15 @@ public:
 		return child_types[i];
 	}
 	
+	std::string string() {
+		std::string out = str(nt) + " -> " + format + " : ";
+		for(size_t i =0;i<N;i++) {
+			out += " " + str(child_types[i]);
+		}
+		out += "\t w/ p=" + str(p);
+		return out;
+	}
+	
 };
 
 

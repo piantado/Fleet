@@ -5,10 +5,17 @@
 #include "MedianFAME.h"
 #include "ReservoirSample.h"
 
+
+/**
+ * @class StreamingStatistics
+ * @author piantado
+ * @date 29/01/20
+ * @file StreamingStatistics.h
+ * @brief A class to store a bunch of statistics about incoming data points, including min, max, mean, etc. 
+ * 		  Thsi also stores a reservoir sample and allow us to compute how often one distribution exceeds another
+ */
+
 class StreamingStatistics {
-	// a class to store a bunch of statistics about incoming data points, including min, max, mean, etc. 
-	// also stores a reservoir sample and allow us to compute how often one distribution exceeds another
-	
 protected:
 	mutable std::mutex lock;		
 	
@@ -39,6 +46,12 @@ public:
 	}
 
 	void add(double x, double lw=0.0) {
+		/**
+		 * @brief Add sample x (with log weight lw) to these statistics. 
+		 * @param x
+		 * @param lw
+		 */
+		
 		++N; // always count N, even if we get nan/inf (this is required for MCTS, otherwise we fall into sampling nans)
 		if(std::isnan(x) || std::isinf(x)) return; // filter nans and inf(TODO: Should we filter inf?)
 		
@@ -57,14 +70,29 @@ public:
 	}
 	
 	void operator<<(double x) { 
+		/**
+		 * @brief Add x
+		 * @param x
+		 */
+				
 		add(x);
 	}
 	
 	double sample() const {
+		/**
+		 * @brief Treat as a reservoir sample to sample an element. 
+		 * @return 
+		 */
+		
 		return reservoir_sample.sample();
 	}
 	
 	double median() const {
+		/**
+		 * @brief Compute the median according to my reservoir sample. 
+		 * @return 
+		 */
+		
 		
 		if(reservoir_sample.size() == 0) return -infinity;
 		else {
@@ -83,7 +111,11 @@ public:
 	}
 	
 	double p_exceeds_median(const StreamingStatistics &q) const {
-		// how often do I exceed the median of q?
+		/**
+		 * @brief What proportion of my samples exceed the median of q?
+		 * @param q
+		 * @return 
+		 */
 		size_t k = 0;
 		double qm = q.median();
 		for(auto a : reservoir_sample.s) {

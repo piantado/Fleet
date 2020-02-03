@@ -1,7 +1,15 @@
 #pragma once
 
-/* 
- * A datum is the default data type for a given input and output */
+
+/**
+* @class default_datum
+* @author piantado
+* @date 29/01/20
+* @file Datum.h
+* @brief A datum is the default data point for likelihoods, consisting of an input and output type.
+* 		 The reliability is measures the reliability of the data (sometimes number of effective data 
+* 		 points, sometimes its the noise in the likelihood. 
+*/ 
 template<typename t_input, typename t_output>
 class default_datum { // a single data point
 public:

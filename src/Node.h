@@ -141,7 +141,8 @@ public:
 	}
 	
 	void operator=(const Node& n) {
-		parent = nullptr; 
+		parent = n.parent; 
+		pi = n.pi;
 		rule = n.rule;
 		lp = n.lp;
 		can_resample = n.can_resample;
@@ -150,7 +151,8 @@ public:
 	}
 
 	void operator=(Node&& n) {
-		parent = nullptr; 
+		parent = n.parent; 
+		pi = n.pi;
 		rule = n.rule;
 		lp = n.lp;
 		can_resample = n.can_resample;
@@ -181,7 +183,7 @@ public:
 	
 	void fix_child_info() {
 		/**
-		 * @brief Recursing from the top, ensure that children's parent pointers and indices are correct. 
+		 * @brief Fix my immediate children's pointers to ensure that children's parent pointers and indices are correct. 
 		 */
 		
 		// go through children and assign their parents to me

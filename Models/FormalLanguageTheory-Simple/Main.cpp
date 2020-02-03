@@ -9,9 +9,10 @@ using S = std::string; // just for convenience
 
 S alphabet = "01"; // the alphabet we use (possibly specified on command line)
 //S datastr = "";
-S datastr  = "011,011011,011011011"; // the data, comma separated
-//S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated
-const double strgamma = 0.75; // penalty on string length
+//S datastr  = "011,011011,011011011"; // the data, comma separated
+//S datastr = "01,01001";
+S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated
+const double strgamma = 0.95; //75; // penalty on string length
 const size_t MAX_LENGTH = 64; // longest strings cons will handle
 	
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -71,13 +72,13 @@ public:
 	using Super =  LOTHypothesis<MyHypothesis,Node,S,S>;
 	using Super::Super; // inherit the constructors
 	
-	double compute_single_likelihood(const t_datum& x) {		
+	double compute_single_likelihood(const t_datum& x) {	
 		auto out = call(x.input, "<err>", this, 256, 256); //256, 256);
 		
 		// a likelihood based on the prefix probability -- we assume that we generate from the hypothesis
 		// and then glue on additional strings, flipping a gamma-weighted coin to determine how many characters to add
 		double lp = -infinity;
-		for(auto o : out.values()) { // add up the probability from all of the strings
+		for(auto& o : out.values()) { // add up the probability from all of the strings
 			if(is_prefix(o.first, x.output)) {
 				lp = logplusexp(lp, o.second + log(strgamma) + log((1.0-strgamma)/alphabet.length()) * (x.output.length() - o.first.length()));
 			}
@@ -85,19 +86,23 @@ public:
 		return lp;
 	}
 	
+	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const {
+		
+		std::pair<Node,double> x;
+		if(flip()) {
+			x = Proposals::regenerate(grammar, value);	
+		}
+		else {
+			if(flip()) x = Proposals::insert_tree(grammar, value);	
+			else       x = Proposals::delete_tree(grammar, value);	
+		}
+		return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second); 
+	}	
+//
 //	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const {
-//		
-//		std::pair<Node,double> x;
-//		if(flip()) {
-//			x = Proposals::regenerate(grammar, value);	
-//		}
-//		else {
-//			if(flip()) x = Proposals::insert_tree(grammar, value);	
-//			else       x = Proposals::delete_tree(grammar, value);	
-//		}
-//		return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second); 
+//		auto g = grammar->generate<S>();
+//		return std::make_pair(MyHypothesis(grammar, g), grammar->log_probability(g) - grammar->log_probability(value));
 //	}	
-	
 	
 	void print(std::string prefix="") {
 		// we're going to make this print by showing the language we created on the line before
@@ -185,6 +190,36 @@ int main(int argc, char** argv){
 	
 	MyHypothesis h0(&grammar);
 	h0 = h0.restart();
+
+//	MyHypothesis h(&grammar);
+//	h = h.restart();
+//	h.compute_posterior(mydata);
+//	for(size_t i=0;i<mcmc_steps and !CTRL_C;i++) {
+//		auto [p,fb] = h.propose();
+//		p.compute_posterior(mydata);
+//		if( uniform() < exp(p.posterior - h.posterior - fb) ) {
+//			h = p;
+//		}
+//		top << h;
+//	}
+
+//	for(size_t i =0;i<100;i++) {
+//		MyHypothesis h = h0.restart();
+//		CERR grammar.log_probability(h.value) TAB h ENDL;
+//	}
+//	
+//	return 0;
+	
+//	COUT h0 ENDL;
+//	for(auto& x : h0.value) {
+//		COUT x.can_resample TAB x ENDL;
+//	}
+//	
+//	for(size_t j=0;j<100;j++) {
+//		COUT sample<Node,Node>(h0.value, Proposals::can_resample).first->string() ENDL;
+//	}
+//	
+////	return 0;
 	
 //	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
 //	tic();
@@ -201,7 +236,7 @@ int main(int argc, char** argv){
 	tic();
 	
 	for(auto& h : top.values()) {
-		COUT top[h] TAB h.posterior TAB h.string() ENDL;		
+		COUT top[h] TAB h.posterior TAB h.prior TAB h.likelihood TAB h.string() ENDL;		
 	}
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;

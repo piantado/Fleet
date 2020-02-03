@@ -35,8 +35,11 @@ public:
 	
 	// Stuff to create hypotheses:
 	[[nodiscard]] virtual std::pair<HYP,double> propose() const {
-		// tODO: Check how I do fb here?
-		
+		/**
+		 * @brief Default proposal is rational-rules style regeneration. 
+		 * @return 
+		 */
+	
 		// simplest way of doing proposals
 		auto x = Proposals::regenerate(grammar, value);	
 		return std::make_pair(HYP(this->grammar, std::move(x.first)), x.second); // return HYP and fb
@@ -44,6 +47,11 @@ public:
 
 	
 	[[nodiscard]] virtual HYP restart() const {
+		/**
+		 * @brief This is used to restart chains, sampling from prior
+		 * @return 
+		 */
+		
 		// This is used in MCMC to restart chains 
 		// this ordinarily would be a resample from the grammar, but sometimes we have can_resample=false
 		// and in that case we want to leave the non-propose nodes alone. So her
@@ -65,12 +73,10 @@ public:
 		/* This ends up being a really important check -- otherwise we spend tons of time on really long
 		 * hypotheses */
 		if(this->value.count() > MAX_NODES) {
-			this->prior = -infinity;
-			return this->prior;
+			return this->prior = -infinity;
 		}
 		
-		this->prior = grammar->log_probability(value);
-		return this->prior;
+		return this->prior = grammar->log_probability(value);
 	}
 	
 	virtual double compute_single_likelihood(const t_datum& datum) {

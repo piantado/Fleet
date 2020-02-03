@@ -4,6 +4,13 @@
 
 //#define DEBUG_CHAINPOOL
 
+/**
+ * @class ChainPool
+ * @author steven piantadosi
+ * @date 29/01/20
+ * @file ChainPool.h
+ * @brief A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel. 
+ */
 template<typename HYP, typename callback_t>
 class ChainPool { 
 	// Run n chains in parallel to set up a parallel scheme
@@ -32,6 +39,11 @@ public:
 							 std::vector<bool>* running, 
 							 std::mutex* running_mutex,
 							 Control ctl) {
+		/**
+		 * @brief This run helper is called internally by multiple different threads, and runs a given pool. 
+		 * @param ctl
+		 */
+								 
 		// NOTE: There are two controls here -- one for the outer loop (which operates on different chains)
 		// and one for the inner loop 
 		

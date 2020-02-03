@@ -23,10 +23,12 @@ t logplusexp(const t a, const t b) {
 	// It is easy to derive a good polynomial approximation that is a bit faster (using sollya) on [-25,0] but that appears
 	// not to be worth it at this point. 
 	
-	if(a == -infinity) return b;
-	else if(b==-infinity) return a;
+	if     (a == -infinity) return b;
+	else if(b == -infinity) return a;
 	
 	t mx = std::max(a,b);
+//	return mx + log(exp(a-mx)+exp(b-mx));
+	
 	t z  = std::min(a,b)-mx;
 	if(z < -25.0) return mx;
 

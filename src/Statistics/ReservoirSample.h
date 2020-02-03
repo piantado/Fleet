@@ -1,17 +1,30 @@
 #pragma once
 
+/**
+ * @class ReservoirSample
+ * @author piantado
+ * @date 29/01/20
+ * @file ReservoirSample.h
+ * @brief  A special weighted reservoir sampling class that allows for logarithmic weights
+ * 	       to do this, we use a transformation following https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_using_Reservoir
+ * 		   basically, we want to give a weight that is r^1/w, 
+ * 	 	   or log(r)/w, or log(log(r))-log(w). But the problem is that log(r) is negative so log(log(r)) is not defined. 
+ * 	 	   Instead, we'll use the function f(x)=-log(-log(x)), which is monotonic. So then,
+ * 		   -log(-log(r^1/w)) = -log(-log(r)/w) = -log(-log(r)*1/w) = -[log(-log(r)) - log(w)] = -log(-log(r)) + log(w)
+ */
 template<typename T>
 class ReservoirSample {
 	
-	// A special weighted reservoir sampling class that allows for logarithmic weights
-	// to do this, we use a transformation following https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_using_Reservoir
-	// basically, we want to give a weight that is r^1/w, 
-	// or log(r)/w, or log(log(r))-log(w). But the problem is that log(r) is negative so log(log(r)) is not defined. 
-	// Instead, we'll use the function f(x)=-log(-log(x)), which is monotonic. So then,
-	// -log(-log(r^1/w)) = -log(-log(r)/w) = -log(-log(r)*1/w) = -[log(-log(r)) - log(w)] = -log(-log(r)) + log(w)
-	
 public:
 
+
+	/**
+	 * @class Item
+	 * @author piantado
+	 * @date 29/01/20
+	 * @file ReservoirSample.h
+	 * @brief An item in a reservoir sample, grouping together an element x and its log weights, value, etc. 
+	 */
 	class Item {
 	public:
 		T x;
@@ -47,12 +60,20 @@ public:
 	ReservoirSample(size_t n, bool u=false) : reservoir_size(n), unique(u), N(0) {}	
 	ReservoirSample(bool u=false) : reservoir_size(1000), unique(u), N(0) {}
 	
-	void set_size(const size_t s) const {
+	void set_reservoir_size(const size_t s) const {
+		/**
+		 * @brief How big should the reservoir size be?
+		 * @param s
+		 */
+		
 		reservoir_size = s;
 	}
 	
 	size_t size() const {
-		// How many am I currently storing?
+		/**
+		 * @brief How many elements are currently stored?
+		 * @return 
+		 */
 		return s.size();
 	}
 	
@@ -62,7 +83,11 @@ public:
 	auto end()   { return vals.end(); }
 
 	double best_posterior() const {
-		// what is the best posterior score here?		
+		/**
+		 * @brief What has the best posterior?
+		 * @return 
+		 */
+		
 		double bp = -infinity;
 		for(const auto& h : vals) {
 			if(h.posterior > bp) 
@@ -97,8 +122,12 @@ public:
 	}
 	void operator<<(T x) {	add(x);}
 	
-	// Return a sample from my vals (e.g. a sample of the samples I happen to have saved)
 	T sample() const {
+		/**
+		 * @brief Return a sample from my vals (e.g. a sample of the samples I happen to have saved)
+		 * @return 
+		 */
+		
 		if(N == 0) return NaN;
 		
 		

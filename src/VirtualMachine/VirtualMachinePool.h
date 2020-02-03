@@ -5,13 +5,19 @@
 
 #include <vector>
 
+/**
+ * @class VirtualMachinePool
+ * @author piantado
+ * @date 02/02/20
+ * @file VirtualMachinePool.h
+ * @brief  This manages a collection of VirtualMachines -- this is what handles the enumeration of flip by probability. 
+ * 			Basically each machine state stores the state of some evaluator and is able to push things back on to the Q
+ * 			if it encounters a random flip
+ * 			This stores pointers because it is impossible to copy out of std collections, so we are constantly
+ * 			having to call VirtualMachineState constructors. Using pointers speeds us up by about 20%.
+ */
 template<typename t_x, typename t_return>
 class VirtualMachinePool {
-	// This manages a collection of VirtualMachines -- this is what handles the enumeration of flip by probability. 
-	// Basically each machine state stores the state of some evaluator and is able to push things back on to the Q
-	// if it encounters a random flip
-	// This stores pointers because it is impossible to copy out of std collections, so we are constantly
-	// having to call VirtualMachineState constructors. Using pointers speeds us up by about 20%
 	
 	using VMState = VirtualMachineState<t_x,t_return>;
 	
@@ -46,13 +52,21 @@ public:
 	}
 		
 	bool wouldIadd(double lp) {
-		// returns true if I would add something with this lp, given my max_steps and the stack
+		/**
+		 * @brief Returns true if I would add something with this lp, given my max_steps and the stack. This lets us speed up by checking if we would add before copying/constructing a VMS
+		 * @param lp
+		 * @return 
+		 */
 		return lp >= min_lp and 
 			   (Q.size() <= (max_steps-current_steps) or lp > worst_lp);
 	}
 	
 	void push(VMState* o) { 
-		// For speed, we only allow rvalues for o -- that means that we can move them right into the stack
+		/**
+		 * @brief Add the VMState o to this pool (but again checking if I'd add)
+		 * @param o
+		 */
+
 		if(wouldIadd(o->lp)){ // TODO: might be able to add an optimization here that doesn't push if we don't have enough steps left to get it 
 			Q.push(o);			
 			worst_lp = std::min(worst_lp, o->lp); //keep track of the worst we've seen
@@ -61,12 +75,16 @@ public:
 	
 	template<typename T>
 	bool copy_increment_push(const VMState* x, T v, double lpinc) {
-		// This is an important opimization where we will make a copy of x, 
-		// push v into it's stack, and increment its lp by lpinc only if it will
-		// be added to the queue, whcih we check in the pool here. This saves us from
-		// having to use the VirtualMachineState constructor (e.g. making a copy, which is
-		// expensive if we are copying all the stacks) if the copy won't actually be added
-		// to the queue
+		/**
+		 * @brief This is an important opimization where we will make a copy of x, push v into it's stack, and increment its lp by lpinc only if it will 
+		 * 			be added to the queue, which we check in the pool here. This saves us from having to use the VirtualMachineState constructor (e.g. making a 
+		 * 			copy, which is expensive if we are copying all the stacks) if the copy won't actually be added to the queue.
+		 * @param x
+		 * @param v
+		 * @param lpinc
+		 * @return 
+		 */
+ 
 		if(wouldIadd(x->lp + lpinc)) {	
 			auto s = new VirtualMachineState(*x); // copy
 			s->template push<T>(v); // add v
@@ -79,7 +97,13 @@ public:
 	
 	template<typename T>
 	bool increment_push(VMState* s, T v, double lpinc) {
-		// same as above but takes an rvalue and does not make a copy
+		/**
+		 * @brief Same as copy_increment_push, but does not make a copy -- just add
+		 * @param s
+		 * @param v
+		 * @param lpinc
+		 * @return 
+		 */
 		if(wouldIadd(s->lp + lpinc)) {		
 			s->template push<T>(v); // add this
 			s->increment_lp(lpinc);
@@ -90,7 +114,14 @@ public:
 	}
 
 	DiscreteDistribution<t_return> run(Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) { 
-		// This runs and adds up the probability mass for everything, returning a dictionary outcomes->log_probabilities
+		/**
+		 * @brief This runs and adds up the probability mass for everything, returning a dictionary outcomes->log_probabilities. This is the main 
+		 * 		  running loop, which pops frmo the top of our queue, runs, and continues until we've done enough or all. 
+		 * 		  Note that objects lower than min_lp are not ever pushed onto the queue.
+		 * @param dispatcher
+		 * @param loader
+		 * @return 
+		 */
 		
 		DiscreteDistribution<t_return> out;
 		

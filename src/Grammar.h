@@ -138,7 +138,17 @@ public:
 		return rules[nt].size(); 
 	}
 
-
+	void show(std::string prefix="# ") {
+		/**
+		 * @brief Show the grammar by printing each rule
+		 */
+		
+		for(nonterminal_t nt=0;nt<N_NTs;nt++) {
+			for(size_t i=0;i<count_rules(nt);i++) {
+				COUT prefix << get_rule(nt,i)->string() ENDL;
+			}
+		}
+	}
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Managing rules 
@@ -353,13 +363,14 @@ public:
 		
 		Rule* r = sample_rule(nt);
 		Node n = makeNode(r);
-		for(size_t i=0;i<r->N;i++) {
-			try{
+		
+		try{
+			for(size_t i=0;i<r->N;i++) {
 				n.set_child(i, generate(r->type(i), depth+1)); // recurse down
-			} catch(DepthException& e) {
-				CERR "*** Grammar has recursed beyond Fleet::GRAMMAR_MAX_DEPTH (Are the probabilities right?). nt=" << nt << " d=" << depth TAB n.string() ENDL;
-				throw e;
 			}
+		} catch(DepthException& e) {
+			CERR "*** Grammar has recursed beyond Fleet::GRAMMAR_MAX_DEPTH (Are the probabilities right?). nt=" << nt << " d=" << depth TAB n.string() ENDL;
+			throw e;
 		}
 		return n;
 	}	
@@ -431,7 +442,7 @@ public:
 		return out;
 	}
 	
-	double log_probability(Node& n) const {
+	double log_probability(const Node& n) const {
 		/**
 		 * @brief Compute the log probability of a tree according to the grammar
 		 * @param n

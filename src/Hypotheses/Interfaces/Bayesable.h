@@ -3,9 +3,17 @@
 #include "Datum.h"
 #include "IO.h"
 
-// Just a clean interface to define what kinds of operations MCMC requires
-// This also defines class types for data
-// This also defines interfaces for storing hypotheses (equality, hash, comparison, etc)
+
+/**
+ * @class Bayesable
+ * @author steven piantadosi
+ * @date 29/01/20
+ * @file Bayesable.h
+ * @brief The Bayesable class provides an interface for hypotheses that support Bayesian inference (e.g. computing priors, likelihoods, and posteriors)
+ * 		  Note that this class stores prior, likelihood, posterior always at temperature 1.0, and you can get the values of the 
+ * 		  posterior at other temperatures via Bayesable.at_temperature(double t)
+ */
+
 template<typename _t_datum, typename _t_data=std::vector<_t_datum>>
 class Bayesable {
 public:
@@ -24,20 +32,36 @@ public:
 	Bayesable() : prior(NaN), likelihood(NaN), posterior(NaN), born(++FleetStatistics::hypothesis_births) {	}
 		
 	virtual void clear_bayes() {
+		/**
+		 * @brief Zero by prior, likelihood, posterior
+		 */
+		
 		// necessary for inserting into big collections not by prior
 		prior = 0.0;
 		likelihood = 0.0;
 		posterior = 0.0;
 	}
+	
+	/**
+	 * @brief Compute the prior -- defaultly not defined
+	 */
 	virtual double compute_prior() = 0; 	
+	
+	/**
+	 * @brief Compute the likelihood of a single data point
+	 * @param datum
+	 */	
 	virtual double compute_single_likelihood(const t_datum& datum) = 0;
+	
+	/**
+	 * @brief Compute the likelihood of a collection of data, by calling compute_single_likelihood on each.
+	 * 		  This stops if our likelihood falls below breakout
+	 * @param data
+	 * @param breakout
+	 * @return 
+	 */	
 	virtual double compute_likelihood(const t_data& data, const double breakout=-infinity) {
-		/**
-		 * @brief Compute the likelihood of all of the data -- stopping if we get below breakout
-		 * @param data
-		 * @param breakout
-		 * @return 
-		 */
+
 		
 		// include this in case a subclass overrides to make it non-iterable -- then it must define its own likelihood
 		if constexpr (is_iterable_v<t_data>) { 
@@ -63,17 +87,23 @@ public:
 		}
 	}
 
+
 	virtual double compute_posterior(const t_data& data, const double breakout=-infinity) {
-		// NOTE: Posterior *always* stores at temperature 1
-		// if we specify breakout,  when break when prior+likelihood is less than breakout
-		//                         (NOTE: this is different than compute_likelihood, which breaks only on likelihood)
+		/**
+		 * @brief Compute the posterior, by calling prior and likelihood. 
+		 * 		  This involves only a little bit of fanciness, which is that if our prior is -inf, then
+		 *        we don't both computing the likelihood. 
+		 * @param data
+		 * @param breakout
+		 * @return 
+		 */
 		
 		++FleetStatistics::posterior_calls; // just keep track of how many calls 
 		
 		// Always compute a prior
 		prior = compute_prior();
 		
-		// if the prior is -inf, then 
+		// if the prior is -inf, then we don't have to compute likelihood
 		if(prior == -infinity) {
 			likelihood = NaN;
 			posterior = -infinity;
@@ -87,16 +117,30 @@ public:
 	}
 	
 	virtual double at_temperature(double t) {
+		/**
+		 * @brief Return my posterior score at a given (likelihood) temperature
+		 * @param t
+		 * @return 
+		 */
+		
 		// temperature here applies to the likelihood only
 		return prior + likelihood/t;
 	}
 	
+	/**
+	 * @brief Default hash function
+	 */	
 	virtual size_t hash() const=0;
 	
 	virtual bool operator<(const Bayesable<t_datum,t_data>& l) const {
-		// when we implement this, we defaulty sort by posterior (so that TopN works)
-		// But we need to be careful because std::set also uses this to determine equality
-		// This first checks  postersios, then priors (to handle -inf likelihoods well)
+		/**
+		 * @brief Allow sorting of Bayesable hypotheses. We defaultly sort by posterior so that TopN works right. 
+		 * 		  But we also need to be careful because std::set uses this to determine equality, so this
+		 *        also checks priors and then hashes. 
+		 * @param l
+		 * @return 
+		 */		
+		
 		if(posterior < l.posterior) {
 			return true;
 		}
@@ -120,6 +164,11 @@ public:
 	virtual std::string string() const = 0; // my subclasses must implement string
 	
 	virtual void print(std::string prefix="") {
+		/**
+		 * @brief Default printing of a hypothesis includes its posterior, prior, likelihood, and quoted string version 
+		 * @param prefix
+		 */
+		
 		std::lock_guard guard(Fleet::output_lock);
 		// TODO: Include  this->born  once that is updated correctly
 		COUT prefix << this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->string()) ENDL;		
