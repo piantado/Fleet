@@ -32,8 +32,8 @@ const size_t MAX_PR_LINES = 1000000;
 const size_t NTEMPS = 10;
 const size_t MAXTEMP = 1000.0;
 
-std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
-//std::vector<S> data_amounts={"50000"}; // how many data points do we run on?
+//std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
+std::vector<S> data_amounts={"5000"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
 const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -25 to catch some less frequent things that happen by chance
@@ -166,18 +166,18 @@ public:
 		return vmstatus_t::GOOD;
 	}
 	
-//	[[nodiscard]] virtual std::pair<InnerHypothesis,double> propose() const {
-//		
-//		std::pair<Node,double> x;
-//		if(flip()) {
-//			x = Proposals::regenerate(grammar, value);	
-//		}
-//		else {
-//			if(flip()) x = Proposals::insert_tree(grammar, value);	
-//			else       x = Proposals::delete_tree(grammar, value);	
-//		}
-//		return std::make_pair(InnerHypothesis(this->grammar, std::move(x.first)), x.second); 
-//	}	
+	[[nodiscard]] virtual std::pair<InnerHypothesis,double> propose() const {
+		
+		std::pair<Node,double> x;
+		if(flip()) {
+			x = Proposals::regenerate(grammar, value);	
+		}
+		else {
+			if(flip()) x = Proposals::insert_tree(grammar, value);	
+			else       x = Proposals::delete_tree(grammar, value);	
+		}
+		return std::make_pair(InnerHypothesis(this->grammar, std::move(x.first)), x.second); 
+	}	
 };
 
 
@@ -334,7 +334,7 @@ int main(int argc, char** argv){
 		
 	// we are building up data and TopNs to give t parallel tempering
 	std::vector<MyHypothesis::t_data> datas; // load all the data	
-	std::vector<TopN<MyHypothesis>> tops;
+	std::vector<Fleet::Statistics::TopN<MyHypothesis>> tops;
 	for(size_t i=0;i<data_amounts.size();i++){ 
 		MyHypothesis::t_data d;
 		
@@ -342,46 +342,54 @@ int main(int argc, char** argv){
 		load_data_file(d, data_path.c_str());
 		
 		datas.push_back(d);
-		tops.push_back(TopN<MyHypothesis>(ntop));
+		tops.push_back(Fleet::Statistics::TopN<MyHypothesis>(ntop));
 	}
 
 
-	TopN<MyHypothesis> all(ntop); 
+	Fleet::Statistics::TopN<MyHypothesis> all(ntop); 
 //	all.set_print_best(true);
 	
-	tic();	
-	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
-		
-		ParallelTempering samp(h0, &datas[di], all, NTEMPS, MAXTEMP);
-		samp.run(Control(mcmc_steps/datas.size(), runtime/datas.size(), nthreads), 1000, 60*1000);	
-
-		// set up to print using a larger set
-		MAX_STEPS_PER_FACTOR   = 32000; //4096; 
-		MAX_OUTPUTS_PER_FACTOR = 8000; //512; - make it bigger than
-		all.print(data_amounts[di]);
-		MAX_STEPS_PER_FACTOR   = 2048; 
-		MAX_OUTPUTS_PER_FACTOR = 512; 
-
-		if(di+1 < datas.size()) {
-			all = all.compute_posterior(datas[di+1]); // update for next time
-		}
-		
-		// start next time on the best hypothesis we've found so far
-		if(not all.empty()) {
-			h0 = all.best();			
-		}	
-		
-	}
-	tic();
+//	tic();	
+//	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
+//		
+//		ParallelTempering samp(h0, &datas[di], all, NTEMPS, MAXTEMP);
+//		samp.run(Control(mcmc_steps/datas.size(), runtime/datas.size(), nthreads), 1000, 60*1000);	
+//
+//		// set up to print using a larger set
+//		MAX_STEPS_PER_FACTOR   = 32000; //4096; 
+//		MAX_OUTPUTS_PER_FACTOR = 8000; //512; - make it bigger than
+//		all.print(data_amounts[di]);
+//		MAX_STEPS_PER_FACTOR   = 2048; 
+//		MAX_OUTPUTS_PER_FACTOR = 512; 
+//
+//		if(di+1 < datas.size()) {
+//			all = all.compute_posterior(datas[di+1]); // update for next time
+//		}
+//		
+//		// start next time on the best hypothesis we've found so far
+//		if(not all.empty()) {
+//			h0 = all.best();			
+//		}	
+//		
+//	}
+//	tic();
 	
 	
 //	// Vanilla MCMC, serial
 //	for(size_t i=0;i<datas.size();i++){
 //		tic();
 //		MCMCChain chain(h0, &datas[i], all);
-//		chain.run(mcmc_steps, runtime);
+//		chain.run(Control(mcmc_steps/data.size(), runtime/datas.size()));
 //		tic();	
 //	}
+
+	for(size_t i=0;i<datas.size();i++){
+		tic();
+		ChainPool chains(h0, &datas[i], all, 1);
+		assert(chains.pool.size() == 1);
+		chains.run(Control(mcmc_steps/datas.size(), runtime/datas.size()));
+		tic();	
+	}
 //	
 //	for(size_t i=0;i<data_amounts.size();i++) {
 //		all.compute_posterior(datas[i]).print(data_amounts[i]);

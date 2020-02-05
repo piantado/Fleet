@@ -1,7 +1,14 @@
 #pragma once 
 
 
-// This class is used by MCTS and allows us to incrementally search a hypothesis
+/**
+ * @class Searchable
+ * @author steven piantadosi
+ * @date 03/02/20
+ * @file Searchable.h
+ * @brief A class is searchable if permits us to enumerate and make its neighbors.
+ * This class is used by MCTS and allows us to incrementally search a hypothesis.
+ */
 template<typename HYP, typename t_input, typename t_output>
 class Searchable {
 public:

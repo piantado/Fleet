@@ -8,11 +8,14 @@
 #include "DiscreteDistribution.h"
 
 
-// Load data from a file and puts stringprobs into obs, which is a dictionary
-// of strings to ndata total elements, and obsv, which is a vector that is sorted by probability
 template<typename tdata>
 void load_data_file(std::vector<tdata> &data, const char* datapath) {
-
+	/**
+	 * @brief Load data from a file and puts stringprobs into obs, which is a dictionary of strings to ndata total elements, and obsv, which is a vector that is sorted by probability
+	 * @param data
+	 * @param datapath
+	 */
+	
 	FILE* fp = fopen(datapath, "r");
 	if(fp==NULL) { fprintf(stderr, "*** ERROR: Cannot open file! [%s]", datapath); exit(1);}
 	
@@ -32,12 +35,6 @@ void load_data_file(std::vector<tdata> &data, const char* datapath) {
 		}
 	}
 	fclose(fp);
-
-//	double z = 0.0;
-//	for(size_t i=0;i<data.size();i++) {
-//		z += data[i].reliability;
-//	}
-	
 	
 }
 
@@ -45,7 +42,6 @@ void load_data_file(std::vector<tdata> &data, const char* datapath) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // TODO: Put all this into another library
-
 
 template<typename T, typename TDATA>
 std::map<T, double> highest(const std::vector<TDATA>& m, unsigned long N) {

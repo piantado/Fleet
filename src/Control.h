@@ -2,10 +2,14 @@
 
 //#define DEBUG_CONTROL
 
-/* 
- * This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc.
- * NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here)
- * */
+/**
+* @class Control
+* @author steven piantadosi
+* @date 03/02/20
+* @file Control.h
+* @brief This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc.
+* NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here)
+*/ 
 struct Control {
 	// Parameters for running MCMC or MCTS
 	// 

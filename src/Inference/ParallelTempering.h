@@ -17,7 +17,7 @@ class ParallelTempering : public ChainPool<HYP,callback_t> {
 	
 public:
 	std::vector<double> temperatures;
-	FiniteHistory<bool>* swap_history;
+	Fleet::Statistics::FiniteHistory<bool>* swap_history;
 	
 	bool is_temperature; // set for whether we initialize according to a temperature ladder (true) or data
 	
@@ -33,7 +33,7 @@ public:
 		}
 		
 		is_temperature = true;
-		swap_history = new FiniteHistory<bool>[temperatures.size()];
+		swap_history = new Fleet::Statistics::FiniteHistory<bool>[temperatures.size()];
 	}
 	
 	
@@ -52,7 +52,7 @@ public:
 			}
 		}
 		is_temperature = true;
-		swap_history = new FiniteHistory<bool>[n];
+		swap_history = new Fleet::Statistics::FiniteHistory<bool>[n];
 	}
 	
 	
@@ -64,7 +64,7 @@ public:
 			this->pool[i].temperature = 1.0;
 		}
 		is_temperature = false;
-		swap_history = new FiniteHistory<bool>[datas.size()];
+		swap_history = new Fleet::Statistics::FiniteHistory<bool>[datas.size()];
 	}
 	
 	
@@ -78,7 +78,7 @@ public:
 		auto last = now();
 		while(!(terminate or CTRL_C)) {
 			
-			if(time_since(last) < swap_every or this->pool.size() == 1){
+			if(time_since(last) < swap_every or this->pool.size() <= 1){
 				std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_AND_SLEEP));
 			}
 			else { // do a swap
@@ -108,8 +108,7 @@ public:
 					R = Pswap - Pnow;
 				}
 				
-				// TODO: Compare to paper
-				if(R>0 || uniform() < exp(R)) { 
+				if(R>0 or uniform() < exp(R)) { 
 					
 #ifdef PARALLEL_TEMPERING_SHOW_DETAIL
 					COUT "# Swapping " <<k<< " and " <<(k-1)<<"." TAB this->pool[k].current.posterior TAB this->pool[k-1].current.posterior TAB this->pool[k].current.string() TAB this->pool[k-1].current.string() ENDL;

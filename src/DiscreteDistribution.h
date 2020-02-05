@@ -11,10 +11,15 @@
 #include "Numerics.h"
 #include "IO.h"
 
+/**
+ * @class DiscreteDistribution
+ * @author steven piantadosi
+ * @date 03/02/20
+ * @file DiscreteDistribution.h
+ * @brief This stores a distribution from values of T to log probabilities. It is used as the return value from calls with randomness
+ */
 template<typename T>
 class DiscreteDistribution {
-	// This stores a distribution from values of T to log probabilities
-	// it is used as the return value from calls with randomness
 	
 public:
 	std::map<T,double> m; // map from values to log probabilities

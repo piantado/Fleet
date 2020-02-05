@@ -38,7 +38,7 @@ public:
 	mutable std::mutex child_mutex; // for access in parallelTempering
     mutable std::mutex stats_mutex;
 	
-	StreamingStatistics statistics;
+	Fleet::Statistics::StreamingStatistics statistics;
 	
 	typename HYP::t_data* data;
     MCTSNode* parent; // who is my parent?

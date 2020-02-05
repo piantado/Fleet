@@ -33,7 +33,7 @@ public:
 	
 	std::atomic<double> temperature; // make atomic b/c ParallelTempering may try to change 
 	
-	FiniteHistory<bool> history;
+	Fleet::Statistics::FiniteHistory<bool> history;
 	
 	MCMCChain(HYP& h0, typename HYP::t_data* d, callback_t& cb ) : 
 			current(h0), data(d), themax(), callback(&cb), 
@@ -150,22 +150,8 @@ public:
 			if(thin > 0 and FleetStatistics::global_sample_count % thin == 0) {
 				current.print();
 			}
-			
-			
-			/* Not entirely sure what's going on, but it seems like it might depend on this -- how we
-			 * handle -inf and what happens for proposals... */
-			// generate the proposal -- defaulty "restarting" if we're currently at -inf
-//			HYP proposal; double fb = 0.0;			
-//			std::tie(proposal,fb) = current.propose();
-////			auto [proposal, fb] = current.propose();
-//			if(current.posterior > -infinity) {
-//				std::tie(proposal,fb) = current.propose();
-//			}
-//			else {
-//				proposal = current.restart();
-//			}
-//				
 
+			// propose, but restart if we're -infinity
 			auto [proposal, fb] = current.posterior > -infinity ? current.propose() : std::make_tuple(current.restart(), 0.0);
 //			auto [proposal, fb] = current.propose();
 			

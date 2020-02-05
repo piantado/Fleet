@@ -11,12 +11,20 @@ typedef short PrimitiveOp;
 // This class stores the possible statuses of a VirtualMachine
 enum class vmstatus_t {GOOD=0, ERROR, RECURSION_DEPTH, RANDOM_CHOICE, RANDOM_CHOICE_NO_DELETE, SIZE_EXCEPTION, OP_ERR_ABORT, RANDOM_BREAKOUT}; // setting GOOD=0 allows us to say if(aborted)...
 
+/**
+ * @class VMSRuntimeError_t
+ * @author steven piantadosi
+ * @date 03/02/20
+ * @file Instruction.h
+ * @brief This is an error type that is returned if we get a runtime error (e.g. string length, etc.)
+ */
 class VMSRuntimeError_t : public std::exception {} VMSRuntimeError;
 
 
 #ifndef CUSTOM_OPS
 #define CUSTOM_OPS 
 #endif 
+
 
 enum class CustomOp { CUSTOM_OPS };
 
@@ -124,6 +132,13 @@ public:
 
 
 std::ostream& operator<<(std::ostream& stream, Instruction& i) {
+	/**
+	 * @brief Output for instructions. 
+	 * @param stream
+	 * @param i
+	 * @return 
+	 */
+	
 	std::string t;
 	size_t      o;
 	if(i.is<BuiltinOp>())          { t = "B"; o = (size_t)i.as<BuiltinOp>(); }
