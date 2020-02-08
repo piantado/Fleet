@@ -55,7 +55,9 @@ public:
 		
 		std::string out = "";
 		for(size_t i=0;i<factors.size();i++) {
-			out += factors[i].parseable() + "|";
+			out += factors[i].parseable();
+			if(i < factors.size()-1) 
+				out += "|";
 		}
 		return out;
 	}

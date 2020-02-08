@@ -53,6 +53,15 @@ std::deque<std::string> split(const std::string& s, const char delimiter){
 	return tokens;
 }
 
+std::pair<std::string, std::string> divide(const std::string& s, const char delimiter) {
+	// divide this string into two pieces at the first occurance of delimiter
+	
+	auto k = s.find(delimiter);
+	assert(k != std::string::npos && "*** Cannot divide a string without delmiiter");
+	return std::make_pair(s.substr(0,k), s.substr(k+1));
+	
+}
+
 
 
 unsigned int levenshtein_distance(const std::string& s1, const std::string& s2) {
@@ -120,3 +129,16 @@ std::string Q(std::string x) {
 		
 	return std::string("\'") + x + std::string("\'");
 }
+
+
+// Some functions for converting to and from strings:
+//namespace Fleet {
+//	
+//	
+//	
+//	const char NodeDelimiter = ';';
+//	const char FactorDelimiter = '|';
+//	
+//	
+//	
+//}

@@ -274,6 +274,31 @@ public:
 //		return &rules[nt][i];
 //	}
 	
+	virtual Rule* get_rule(const nonterminal_t nt, const std::string s) const {
+		/**
+		 * @brief Return a rule based on s, which must uniquely be a prefix of the rule's format of a given nonterminal type
+		 * @param s
+		 * @return 
+		 */
+		
+		Rule* ret = nullptr;
+		for(auto& r: rules[nt]) {
+			if(is_prefix(s, r.format)){
+				if(ret != nullptr) {
+					CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
+					assert(0);
+				}
+				ret = const_cast<Rule*>(&r);
+			} 
+		}
+		
+		if(ret != nullptr) { return ret; }
+		else {			
+			CERR "*** No rule found to match " TAB s ENDL;
+			assert(0);
+		}
+	}
+	
 	virtual Rule* get_rule(const std::string s) const {
 		/**
 		 * @brief Return a rule based on s, which must uniquely be a prefix of the rule's format
@@ -464,26 +489,29 @@ public:
 	
 	Node expand_from_names(std::deque<std::string>& q) const {
 		/**
-		 * @brief Fills an entire tree using the string format prefixes -- see get_rule(std::string)
+		 * @brief Fills an entire tree using the string format prefixes -- see get_rule(std::string).
+		 * 		  Here q should contain strings like "3:'a'" which says expand nonterminal type 3 to the rule matching 'a'
 		 * @param q
 		 * @return 
 		 */
 		
 		assert(!q.empty() && "*** Should not ever get to here with an empty queue -- are you missing arguments?");
 		
-		std::string pfx = q.front(); q.pop_front();
+		auto [nts, pfx] = divide(q.front(), ':');
+		q.pop_front();
 		
 		// null rules:
-//		assert(pfx != NullRule->format && "NullRule not supported in expand_from_names");
-		if(pfx == "NULL") 
+		if(pfx == NullRule->format) 
 			return makeNode(NullRule);
 
 		// otherwise find the matching rule
-		Rule* r = this->get_rule(pfx);
-		
+		Rule* r = this->get_rule(stoi(nts), pfx);
+
 		Node v = makeNode(r);
-		for(size_t i=0;i<r->N;i++) {
-			
+		for(size_t i=0;i<r->N;i++) {	
+		
+			v.set_child(i, expand_from_names(q));
+
 			if(r->type(i) != v.child(i).rule->nt) {
 				CERR "*** Grammar expected type " << r->type(i) << 
 					 " but got type " << v.child(i).rule->nt << " at " << 
@@ -491,7 +519,6 @@ public:
 				assert(false && "Bad names in expand_from_names."); // just check that we didn't miss this up
 			}
 			
-			v.set_child(i, expand_from_names(q));
 		}
 		return v;
 	}
@@ -503,7 +530,7 @@ public:
 		 * @return 
 		 */
 		
-		std::deque<std::string> stk = split(s, ':');    
+		std::deque<std::string> stk = split(s, ';');    
         return expand_from_names(stk);
 	}
 	
