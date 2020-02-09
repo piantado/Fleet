@@ -1,7 +1,7 @@
 
 #pragma once 
 
-#define DEBUG_MCTS 1
+#define DEBUG_MCTS 0
 
 #include <atomic>
 #include <mutex>

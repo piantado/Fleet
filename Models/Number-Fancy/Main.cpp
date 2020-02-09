@@ -263,7 +263,7 @@ int main(int argc, char** argv){
 	CLI11_PARSE(app, argc, argv);
 	Fleet_initialize();
 
-	TopN<MyHypothesis> all;
+	Fleet::Statistics::TopN<MyHypothesis> all;
 	
 	Grammar grammar(PRIMITIVES);
 	
@@ -272,7 +272,7 @@ int main(int argc, char** argv){
 	// Set up the data -- we'll do this so we can run a parallel
 	// chain across all of it at once
 	std::vector<t_data> alldata;
-	std::vector<TopN<MyHypothesis>>   alltops;
+	std::vector<Fleet::Statistics::TopN<MyHypothesis>>   alltops;
 	for(auto ndata : data_amounts) {
 		t_data mydata;
 		
@@ -305,7 +305,7 @@ int main(int argc, char** argv){
 		}
 
 		alldata.push_back(mydata);
-		alltops.push_back(TopN<MyHypothesis>(ntop));
+		alltops.push_back(Fleet::Statistics::TopN<MyHypothesis>(ntop));
 	}
 	t_data biggestData = *alldata.rbegin();
 	
@@ -316,38 +316,38 @@ int main(int argc, char** argv){
 	
 
 // MCTS 
-	all.set_print_best(true);
-	MyHypothesis h0(&grammar);
-	MCTSNode m(1.0, h0, &all, &biggestData);
-	tic();
-	m.parallel_search(Control(mcts_steps, runtime, nthreads), Control(1000, 0));
-	tic();
-	m.print();
+//	all.set_print_best(true);
+//	MyHypothesis h0(&grammar);
+//	MCTSNode m(1.0, h0, &all, &biggestData);
+//	tic();
+//	m.parallel_search(Control(mcts_steps, runtime, nthreads), Control(1000, 0));
+//	tic();
+//	m.print();
 
 	
 //	CERR "# Starting sampling." ENDL;
 	
 	
 	// Run parallel tempering
-//	MyHypothesis h0(&grammar);
-//	h0 = h0.restart();
-//	ParallelTempering samp(h0, alldata, alltops);
-//	tic();
-//	samp.run(Control(mcmc_steps, runtime), 200, 5000); 
-//	tic();
-//
-//	// and save what we found
-//	for(auto& tn : alltops) {
-//		for(auto h : tn.values()) {
-//			h.clear_bayes(); // zero the prior, posterior, likelihood
-//			all << h;
-//		}
-//	}
-//	
-//	COUT "# Computing posterior on all final values |D|=" << biggestData.size()  ENDL;
-//
-//	// print out at the end
-//	all.compute_posterior(biggestData).print();
+	MyHypothesis h0(&grammar);
+	h0 = h0.restart();
+	ParallelTempering samp(h0, alldata, alltops);
+	tic();
+	samp.run(Control(mcmc_steps, runtime, nthreads), 200, 5000); 
+	tic();
+
+	// and save what we found
+	for(auto& tn : alltops) {
+		for(auto h : tn.values()) {
+			h.clear_bayes(); // zero the prior, posterior, likelihood
+			all << h;
+		}
+	}
+	
+	COUT "# Computing posterior on all final values |D|=" << biggestData.size()  ENDL;
+
+	// print out at the end
+	all.compute_posterior(biggestData).print();
 
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
