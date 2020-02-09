@@ -1,0 +1,34 @@
+\hypertarget{_reservoir_sample_8h}{}\section{src/\+Statistics/\+Reservoir\+Sample.h File Reference}
+\label{_reservoir_sample_8h}\index{src/\+Statistics/\+Reservoir\+Sample.\+h@{src/\+Statistics/\+Reservoir\+Sample.\+h}}
+
+
+A special weighted reservoir sampling class that allows for logarithmic weights to do this, we use a transformation following \href{https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_using_Reservoir}{\tt https\+://en.\+wikipedia.\+org/wiki/\+Reservoir\+\_\+sampling\#\+Weighted\+\_\+random\+\_\+sampling\+\_\+using\+\_\+\+Reservoir} basically, we want to give a weight that is r$^\wedge$1/w, or log(r)/w, or log(log(r))-\/log(w). But the problem is that log(r) is negative so log(log(r)) is not defined. Instead, we\textquotesingle{}ll use the function f(x)=-\/log(-\/log(x)), which is monotonic. So then, -\/log(-\/log(r$^\wedge$1/w)) = -\/log(-\/log(r)/w) = -\/log(-\/log(r)$\ast$1/w) = -\/\mbox{[}log(-\/log(r)) -\/ log(w)\mbox{]} = -\/log(-\/log(r)) + log(w)  
+
+
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_reservoir_sample_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample$<$ T $>$}
+\item 
+class \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample$<$ T $>$\+::\+Item}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespace_fleet}{Fleet}
+\item 
+ \hyperlink{namespace_fleet_1_1_statistics}{Fleet\+::\+Statistics}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A special weighted reservoir sampling class that allows for logarithmic weights to do this, we use a transformation following \href{https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_using_Reservoir}{\tt https\+://en.\+wikipedia.\+org/wiki/\+Reservoir\+\_\+sampling\#\+Weighted\+\_\+random\+\_\+sampling\+\_\+using\+\_\+\+Reservoir} basically, we want to give a weight that is r$^\wedge$1/w, or log(r)/w, or log(log(r))-\/log(w). But the problem is that log(r) is negative so log(log(r)) is not defined. Instead, we\textquotesingle{}ll use the function f(x)=-\/log(-\/log(x)), which is monotonic. So then, -\/log(-\/log(r$^\wedge$1/w)) = -\/log(-\/log(r)/w) = -\/log(-\/log(r)$\ast$1/w) = -\/\mbox{[}log(-\/log(r)) -\/ log(w)\mbox{]} = -\/log(-\/log(r)) + log(w) 
+
+An item in a reservoir sample, grouping together an element x and its log weights, value, etc.

@@ -1,0 +1,61 @@
+\hypertarget{_grammar_hypothesis_8h}{}\section{src/\+Hypotheses/\+Grammar\+Hypothesis.h File Reference}
+\label{_grammar_hypothesis_8h}\index{src/\+Hypotheses/\+Grammar\+Hypothesis.\+h@{src/\+Hypotheses/\+Grammar\+Hypothesis.\+h}}
+{\ttfamily \#include $<$Eigen/\+Core$>$}\newline
+{\ttfamily \#include \char`\"{}Numerics.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Eigen\+Numerics.\+h\char`\"{}}\newline
+Include dependency graph for Grammar\+Hypothesis.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_grammar_hypothesis_8h__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_human_datum}{Human\+Datum$<$ t\+\_\+learnerdatum, t\+\_\+learnerdata $>$}
+\item 
+class \hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis$<$ H\+Y\+P, t\+\_\+datum, t\+\_\+data $>$}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename H\+YP $>$ }\\\hyperlink{_eigen_numerics_8h_aca2956bc379bce2ed88ab3c0e1b61d1d}{Vector} \hyperlink{_grammar_hypothesis_8h_ae5fe4a8381157a1e6b65f806a80e941e}{counts} (H\+YP \&h)
+\item 
+{\footnotesize template$<$typename H\+YP $>$ }\\\hyperlink{_eigen_numerics_8h_a645222978e81acfb2523a9bce34aecc0}{Matrix} \hyperlink{_grammar_hypothesis_8h_aa9cc572967622742aa6eb6603f58dbd0}{counts} (std\+::vector$<$ H\+YP $>$ \&hypotheses)
+\item 
+{\footnotesize template$<$typename H\+YP , typename t\+\_\+data $>$ }\\\hyperlink{_eigen_numerics_8h_a645222978e81acfb2523a9bce34aecc0}{Matrix} \hyperlink{_grammar_hypothesis_8h_a9a48b68b9617c8ece4f550196dd275d9}{incremental\+\_\+likelihoods} (std\+::vector$<$ H\+YP $>$ \&hypotheses, t\+\_\+data \&human\+\_\+data)
+\item 
+{\footnotesize template$<$typename H\+YP , typename t\+\_\+data $>$ }\\\hyperlink{_eigen_numerics_8h_a645222978e81acfb2523a9bce34aecc0}{Matrix} \hyperlink{_grammar_hypothesis_8h_a63b3177c1d70c31bab2e3e55564e45c4}{model\+\_\+predictions} (std\+::vector$<$ H\+YP $>$ \&hypotheses, t\+\_\+data \&human\+\_\+data)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_grammar_hypothesis_8h_ae5fe4a8381157a1e6b65f806a80e941e}\label{_grammar_hypothesis_8h_ae5fe4a8381157a1e6b65f806a80e941e}} 
+\index{Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}!counts@{counts}}
+\index{counts@{counts}!Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}}
+\subsubsection{\texorpdfstring{counts()}{counts()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+\hyperlink{_eigen_numerics_8h_aca2956bc379bce2ed88ab3c0e1b61d1d}{Vector} counts (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_grammar_hypothesis_8h_aa9cc572967622742aa6eb6603f58dbd0}\label{_grammar_hypothesis_8h_aa9cc572967622742aa6eb6603f58dbd0}} 
+\index{Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}!counts@{counts}}
+\index{counts@{counts}!Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}}
+\subsubsection{\texorpdfstring{counts()}{counts()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+\hyperlink{_eigen_numerics_8h_a645222978e81acfb2523a9bce34aecc0}{Matrix} counts (\begin{DoxyParamCaption}\item[{std\+::vector$<$ H\+YP $>$ \&}]{hypotheses }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_grammar_hypothesis_8h_a9a48b68b9617c8ece4f550196dd275d9}\label{_grammar_hypothesis_8h_a9a48b68b9617c8ece4f550196dd275d9}} 
+\index{Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}!incremental\+\_\+likelihoods@{incremental\+\_\+likelihoods}}
+\index{incremental\+\_\+likelihoods@{incremental\+\_\+likelihoods}!Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}}
+\subsubsection{\texorpdfstring{incremental\+\_\+likelihoods()}{incremental\_likelihoods()}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename t\+\_\+data $>$ \\
+\hyperlink{_eigen_numerics_8h_a645222978e81acfb2523a9bce34aecc0}{Matrix} incremental\+\_\+likelihoods (\begin{DoxyParamCaption}\item[{std\+::vector$<$ H\+YP $>$ \&}]{hypotheses,  }\item[{t\+\_\+data \&}]{human\+\_\+data }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_grammar_hypothesis_8h_a63b3177c1d70c31bab2e3e55564e45c4}\label{_grammar_hypothesis_8h_a63b3177c1d70c31bab2e3e55564e45c4}} 
+\index{Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}!model\+\_\+predictions@{model\+\_\+predictions}}
+\index{model\+\_\+predictions@{model\+\_\+predictions}!Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}}
+\subsubsection{\texorpdfstring{model\+\_\+predictions()}{model\_predictions()}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename t\+\_\+data $>$ \\
+\hyperlink{_eigen_numerics_8h_a645222978e81acfb2523a9bce34aecc0}{Matrix} model\+\_\+predictions (\begin{DoxyParamCaption}\item[{std\+::vector$<$ H\+YP $>$ \&}]{hypotheses,  }\item[{t\+\_\+data \&}]{human\+\_\+data }\end{DoxyParamCaption})}
+

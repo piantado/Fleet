@@ -1,0 +1,142 @@
+\hypertarget{_numerics_8h}{}\section{src/\+Numerics.h File Reference}
+\label{_numerics_8h}\index{src/\+Numerics.\+h@{src/\+Numerics.\+h}}
+{\ttfamily \#include $<$random$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+Include dependency graph for Numerics.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=272pt]{_numerics_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_numerics_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef size\+\_\+t \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename t $>$ }\\t \hyperlink{_numerics_8h_ab14d303cd7381ad0a6d197bab317144e}{logplusexp} (const t a, const t b)
+\item 
+std\+::pair$<$ \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}, \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} $>$ \hyperlink{_numerics_8h_a80df2a7c0c7cb7ea93213d2998de3a92}{cantor\+\_\+decode} (const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} z)
+\item 
+std\+::pair$<$ \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}, \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} $>$ \hyperlink{_numerics_8h_a5376558a2cd1320415307932b4705a15}{rosenberg\+\_\+strong\+\_\+decode} (const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} z)
+\item 
+\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \hyperlink{_numerics_8h_aca2b5ec9be38b05f995a1b27b1c41bfa}{rosenberg\+\_\+strong\+\_\+encode} (const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} x, const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} y)
+\item 
+std\+::pair$<$ \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}, \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} $>$ \hyperlink{_numerics_8h_a85679187db301ca06541c7bf63edaaeb}{mod\+\_\+decode} (const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} z, const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} k)
+\item 
+\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \hyperlink{_numerics_8h_a956e43ece37e8290b0e3ee896a6d816c}{mod\+\_\+encode} (const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} x, const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} y, const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} k)
+\item 
+\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \hyperlink{_numerics_8h_a20b6ceba89f804700d4aa26ce01088c1}{rosenberg\+\_\+strong\+\_\+pop} (\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \&z)
+\item 
+\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \hyperlink{_numerics_8h_a5e7d281df24734a0b311520519b5562b}{mod\+\_\+pop} (\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \&z, const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} k)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const double \hyperlink{_numerics_8h_a63a7b698258aa319aacc36776054c7b5}{L\+O\+G05} = -\/log(2.\+0)
+\item 
+const double \hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity} = std\+::numeric\+\_\+limits$<$double$>$\+::infinity()
+\item 
+const double \hyperlink{_numerics_8h_ab4ff070ea4fc5d50ffe530252867dc44}{NaN} = std\+::numeric\+\_\+limits$<$double$>$\+::quiet\+\_\+\+NaN()
+\item 
+const double \hyperlink{_numerics_8h_a43016d873124d39034edb8cd164794db}{pi} = M\+\_\+\+PI
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}\label{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}} 
+\index{Numerics.\+h@{Numerics.\+h}!enumerationidx\+\_\+t@{enumerationidx\+\_\+t}}
+\index{enumerationidx\+\_\+t@{enumerationidx\+\_\+t}!Numerics.\+h@{Numerics.\+h}}
+\subsubsection{\texorpdfstring{enumerationidx\+\_\+t}{enumerationidx\_t}}
+{\footnotesize\ttfamily typedef size\+\_\+t \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_numerics_8h_a80df2a7c0c7cb7ea93213d2998de3a92}\label{_numerics_8h_a80df2a7c0c7cb7ea93213d2998de3a92}} 
+\index{Numerics.\+h@{Numerics.\+h}!cantor\+\_\+decode@{cantor\+\_\+decode}}
+\index{cantor\+\_\+decode@{cantor\+\_\+decode}!Numerics.\+h@{Numerics.\+h}}
+\subsubsection{\texorpdfstring{cantor\+\_\+decode()}{cantor\_decode()}}
+{\footnotesize\ttfamily std\+::pair$<$\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}, \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}$>$ cantor\+\_\+decode (\begin{DoxyParamCaption}\item[{const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{z }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_numerics_8h_ab14d303cd7381ad0a6d197bab317144e}\label{_numerics_8h_ab14d303cd7381ad0a6d197bab317144e}} 
+\index{Numerics.\+h@{Numerics.\+h}!logplusexp@{logplusexp}}
+\index{logplusexp@{logplusexp}!Numerics.\+h@{Numerics.\+h}}
+\subsubsection{\texorpdfstring{logplusexp()}{logplusexp()}}
+{\footnotesize\ttfamily template$<$typename t $>$ \\
+t logplusexp (\begin{DoxyParamCaption}\item[{const t}]{a,  }\item[{const t}]{b }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_numerics_8h_a85679187db301ca06541c7bf63edaaeb}\label{_numerics_8h_a85679187db301ca06541c7bf63edaaeb}} 
+\index{Numerics.\+h@{Numerics.\+h}!mod\+\_\+decode@{mod\+\_\+decode}}
+\index{mod\+\_\+decode@{mod\+\_\+decode}!Numerics.\+h@{Numerics.\+h}}
+\subsubsection{\texorpdfstring{mod\+\_\+decode()}{mod\_decode()}}
+{\footnotesize\ttfamily std\+::pair$<$\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t},\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}$>$ mod\+\_\+decode (\begin{DoxyParamCaption}\item[{const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{z,  }\item[{const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{k }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_numerics_8h_a956e43ece37e8290b0e3ee896a6d816c}\label{_numerics_8h_a956e43ece37e8290b0e3ee896a6d816c}} 
+\index{Numerics.\+h@{Numerics.\+h}!mod\+\_\+encode@{mod\+\_\+encode}}
+\index{mod\+\_\+encode@{mod\+\_\+encode}!Numerics.\+h@{Numerics.\+h}}
+\subsubsection{\texorpdfstring{mod\+\_\+encode()}{mod\_encode()}}
+{\footnotesize\ttfamily \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} mod\+\_\+encode (\begin{DoxyParamCaption}\item[{const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{x,  }\item[{const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{y,  }\item[{const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{k }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_numerics_8h_a5e7d281df24734a0b311520519b5562b}\label{_numerics_8h_a5e7d281df24734a0b311520519b5562b}} 
+\index{Numerics.\+h@{Numerics.\+h}!mod\+\_\+pop@{mod\+\_\+pop}}
+\index{mod\+\_\+pop@{mod\+\_\+pop}!Numerics.\+h@{Numerics.\+h}}
+\subsubsection{\texorpdfstring{mod\+\_\+pop()}{mod\_pop()}}
+{\footnotesize\ttfamily \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} mod\+\_\+pop (\begin{DoxyParamCaption}\item[{\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \&}]{z,  }\item[{const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{k }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_numerics_8h_a5376558a2cd1320415307932b4705a15}\label{_numerics_8h_a5376558a2cd1320415307932b4705a15}} 
+\index{Numerics.\+h@{Numerics.\+h}!rosenberg\+\_\+strong\+\_\+decode@{rosenberg\+\_\+strong\+\_\+decode}}
+\index{rosenberg\+\_\+strong\+\_\+decode@{rosenberg\+\_\+strong\+\_\+decode}!Numerics.\+h@{Numerics.\+h}}
+\subsubsection{\texorpdfstring{rosenberg\+\_\+strong\+\_\+decode()}{rosenberg\_strong\_decode()}}
+{\footnotesize\ttfamily std\+::pair$<$\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}, \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}$>$ rosenberg\+\_\+strong\+\_\+decode (\begin{DoxyParamCaption}\item[{const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{z }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_numerics_8h_aca2b5ec9be38b05f995a1b27b1c41bfa}\label{_numerics_8h_aca2b5ec9be38b05f995a1b27b1c41bfa}} 
+\index{Numerics.\+h@{Numerics.\+h}!rosenberg\+\_\+strong\+\_\+encode@{rosenberg\+\_\+strong\+\_\+encode}}
+\index{rosenberg\+\_\+strong\+\_\+encode@{rosenberg\+\_\+strong\+\_\+encode}!Numerics.\+h@{Numerics.\+h}}
+\subsubsection{\texorpdfstring{rosenberg\+\_\+strong\+\_\+encode()}{rosenberg\_strong\_encode()}}
+{\footnotesize\ttfamily \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} rosenberg\+\_\+strong\+\_\+encode (\begin{DoxyParamCaption}\item[{const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{x,  }\item[{const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{y }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_numerics_8h_a20b6ceba89f804700d4aa26ce01088c1}\label{_numerics_8h_a20b6ceba89f804700d4aa26ce01088c1}} 
+\index{Numerics.\+h@{Numerics.\+h}!rosenberg\+\_\+strong\+\_\+pop@{rosenberg\+\_\+strong\+\_\+pop}}
+\index{rosenberg\+\_\+strong\+\_\+pop@{rosenberg\+\_\+strong\+\_\+pop}!Numerics.\+h@{Numerics.\+h}}
+\subsubsection{\texorpdfstring{rosenberg\+\_\+strong\+\_\+pop()}{rosenberg\_strong\_pop()}}
+{\footnotesize\ttfamily \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} rosenberg\+\_\+strong\+\_\+pop (\begin{DoxyParamCaption}\item[{\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \&}]{z }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}\label{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}} 
+\index{Numerics.\+h@{Numerics.\+h}!infinity@{infinity}}
+\index{infinity@{infinity}!Numerics.\+h@{Numerics.\+h}}
+\subsubsection{\texorpdfstring{infinity}{infinity}}
+{\footnotesize\ttfamily const double infinity = std\+::numeric\+\_\+limits$<$double$>$\+::infinity()}
+
+\mbox{\Hypertarget{_numerics_8h_a63a7b698258aa319aacc36776054c7b5}\label{_numerics_8h_a63a7b698258aa319aacc36776054c7b5}} 
+\index{Numerics.\+h@{Numerics.\+h}!L\+O\+G05@{L\+O\+G05}}
+\index{L\+O\+G05@{L\+O\+G05}!Numerics.\+h@{Numerics.\+h}}
+\subsubsection{\texorpdfstring{L\+O\+G05}{LOG05}}
+{\footnotesize\ttfamily const double L\+O\+G05 = -\/log(2.\+0)}
+
+\mbox{\Hypertarget{_numerics_8h_ab4ff070ea4fc5d50ffe530252867dc44}\label{_numerics_8h_ab4ff070ea4fc5d50ffe530252867dc44}} 
+\index{Numerics.\+h@{Numerics.\+h}!NaN@{NaN}}
+\index{NaN@{NaN}!Numerics.\+h@{Numerics.\+h}}
+\subsubsection{\texorpdfstring{NaN}{NaN}}
+{\footnotesize\ttfamily const double NaN = std\+::numeric\+\_\+limits$<$double$>$\+::quiet\+\_\+\+NaN()}
+
+\mbox{\Hypertarget{_numerics_8h_a43016d873124d39034edb8cd164794db}\label{_numerics_8h_a43016d873124d39034edb8cd164794db}} 
+\index{Numerics.\+h@{Numerics.\+h}!pi@{pi}}
+\index{pi@{pi}!Numerics.\+h@{Numerics.\+h}}
+\subsubsection{\texorpdfstring{pi}{pi}}
+{\footnotesize\ttfamily const double pi = M\+\_\+\+PI}
+

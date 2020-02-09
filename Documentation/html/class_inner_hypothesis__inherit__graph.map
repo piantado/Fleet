@@ -1,0 +1,7 @@
+<map id="InnerHypothesis" name="InnerHypothesis">
+<area shape="rect" id="node2" href="$class_l_o_t_hypothesis.html" title="LOTHypothesis\&lt; InnerHypothesis,\l Node, S, S \&gt;" alt="" coords="447,71,671,113"/>
+<area shape="rect" id="node3" href="$class_dispatchable.html" title="Dispatchable\&lt; S, S \&gt;" alt="" coords="225,5,373,32"/>
+<area shape="rect" id="node4" href="$class_m_c_m_cable.html" title="MCMCable\&lt; InnerHypothesis,\l default_datum\&lt; S, S \&gt;,\l std::vector\&lt; default_datum\l\&lt; S, S \&gt; \&gt; \&gt;" alt="" coords="200,57,399,127"/>
+<area shape="rect" id="node5" href="$class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="5,79,152,105"/>
+<area shape="rect" id="node6" href="$class_searchable.html" title="Searchable\&lt; InnerHypothesis,\l S, S \&gt;" alt="" coords="200,151,399,193"/>
+</map>

@@ -1,0 +1,14 @@
+<map id="src/Numerics.h" name="src/Numerics.h">
+<area shape="rect" id="node2" href="$_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="362,80,533,107"/>
+<area shape="rect" id="node6" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="523,251,607,278"/>
+<area shape="rect" id="node11" href="$_random_8h.html" title="src/Random.h" alt="" coords="627,80,731,107"/>
+<area shape="rect" id="node13" href="$_grammar_hypothesis_8h.html" title="src/Hypotheses/GrammarHypothesis.h" alt="" coords="756,80,1005,107"/>
+<area shape="rect" id="node3" href="$_data_8h.html" title="Models/FormalLanguageTheory\l&#45;Complex/Data.h" alt="" coords="77,244,281,285"/>
+<area shape="rect" id="node5" href="$_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="353,155,502,196"/>
+<area shape="rect" id="node4" href="$_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,333,209,375"/>
+<area shape="rect" id="node7" href="$_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,333,437,375"/>
+<area shape="rect" id="node8" href="$_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="867,333,1022,375"/>
+<area shape="rect" id="node9" href="$_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="461,341,668,367"/>
+<area shape="rect" id="node10" href="$_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="692,333,843,375"/>
+<area shape="rect" id="node12" href="$_grammar_8h.html" title="src/Grammar.h" alt="" coords="678,162,787,189"/>
+</map>

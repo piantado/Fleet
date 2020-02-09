@@ -1,0 +1,178 @@
+\hypertarget{class_rule}{}\section{Rule Class Reference}
+\label{class_rule}\index{Rule@{Rule}}
+
+
+{\ttfamily \#include $<$Rule.\+h$>$}
+
+
+
+Collaboration diagram for Rule\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=142pt]{class_rule__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename O\+PT $>$ }\\\hyperlink{class_rule_a1e65fa1bce404b1513038a9dd4ffcb9f}{Rule} (const nonterminal\+\_\+t rt, const O\+PT o, const std\+::string fmt, std\+::initializer\+\_\+list$<$ nonterminal\+\_\+t $>$ c, double \+\_\+p, const int arg=0)
+\item 
+bool \hyperlink{class_rule_a706819fbede2c5a1b0b59f1d28cae30b}{operator$<$} (const \hyperlink{class_rule}{Rule} \&r) const
+\item 
+bool \hyperlink{class_rule_a183fafc8a6b43515436a1de8f63ec98d}{operator==} (const \hyperlink{class_rule}{Rule} \&r) const
+\item 
+size\+\_\+t \hyperlink{class_rule_a62e4d931266a65d4aad9ca3c058d7e25}{get\+\_\+hash} () const
+\item 
+bool \hyperlink{class_rule_a9d557e302f94bd85f5505733e8856f97}{is\+\_\+terminal} () const
+\item 
+nonterminal\+\_\+t \hyperlink{class_rule_a97db8e22bb8445b92779eb165bb29ae5}{type} (size\+\_\+t i) const
+\item 
+std\+::string \hyperlink{class_rule_a4a75588d7821c1bcf087ec6ebf82bd0f}{string} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+nonterminal\+\_\+t \hyperlink{class_rule_a980385e76137909454bd6a585bd2e138}{nt}
+\item 
+\hyperlink{class_instruction}{Instruction} \hyperlink{class_rule_a367e578f5e1427ef04d1d77477565c67}{instr}
+\item 
+std\+::string \hyperlink{class_rule_aa48c15aaaf5242afea0439607f2a2177}{format}
+\item 
+size\+\_\+t \hyperlink{class_rule_a0a2a742af39b60831ad1ac5eb5ba7498}{N}
+\item 
+double \hyperlink{class_rule_acd7e4d41d59dec76f60ca16238ab391a}{p}
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+nonterminal\+\_\+t \hyperlink{class_rule_a2d5160625d3d15f60690c4323522a33e}{child\+\_\+types} \mbox{[}Fleet\+::\+M\+A\+X\+\_\+\+C\+H\+I\+L\+D\+\_\+\+S\+I\+ZE\mbox{]}
+\item 
+std\+::size\+\_\+t \hyperlink{class_rule_af2d873c97e2de425f14a5a980dbcc104}{my\+\_\+hash}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_rule_a1e65fa1bce404b1513038a9dd4ffcb9f}\label{class_rule_a1e65fa1bce404b1513038a9dd4ffcb9f}} 
+\index{Rule@{Rule}!Rule@{Rule}}
+\index{Rule@{Rule}!Rule@{Rule}}
+\subsubsection{\texorpdfstring{Rule()}{Rule()}}
+{\footnotesize\ttfamily template$<$typename O\+PT $>$ \\
+Rule\+::\+Rule (\begin{DoxyParamCaption}\item[{const nonterminal\+\_\+t}]{rt,  }\item[{const O\+PT}]{o,  }\item[{const std\+::string}]{fmt,  }\item[{std\+::initializer\+\_\+list$<$ nonterminal\+\_\+t $>$}]{c,  }\item[{double}]{\+\_\+p,  }\item[{const int}]{arg = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_rule_a62e4d931266a65d4aad9ca3c058d7e25}\label{class_rule_a62e4d931266a65d4aad9ca3c058d7e25}} 
+\index{Rule@{Rule}!get\+\_\+hash@{get\+\_\+hash}}
+\index{get\+\_\+hash@{get\+\_\+hash}!Rule@{Rule}}
+\subsubsection{\texorpdfstring{get\+\_\+hash()}{get\_hash()}}
+{\footnotesize\ttfamily size\+\_\+t Rule\+::get\+\_\+hash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_rule_a9d557e302f94bd85f5505733e8856f97}\label{class_rule_a9d557e302f94bd85f5505733e8856f97}} 
+\index{Rule@{Rule}!is\+\_\+terminal@{is\+\_\+terminal}}
+\index{is\+\_\+terminal@{is\+\_\+terminal}!Rule@{Rule}}
+\subsubsection{\texorpdfstring{is\+\_\+terminal()}{is\_terminal()}}
+{\footnotesize\ttfamily bool Rule\+::is\+\_\+terminal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+A terminal rule has no children. \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_rule_a706819fbede2c5a1b0b59f1d28cae30b}\label{class_rule_a706819fbede2c5a1b0b59f1d28cae30b}} 
+\index{Rule@{Rule}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!Rule@{Rule}}
+\subsubsection{\texorpdfstring{operator$<$()}{operator<()}}
+{\footnotesize\ttfamily bool Rule\+::operator$<$ (\begin{DoxyParamCaption}\item[{const \hyperlink{class_rule}{Rule} \&}]{r }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+We sort rules so that they can be stored in arrays in a standard order. For enumeration, it\textquotesingle{}s actually important that we sort them with the terminals first. So we sort first by terminals and then by probability (higher first). 
+\begin{DoxyParams}{Parameters}
+{\em r} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_rule_a183fafc8a6b43515436a1de8f63ec98d}\label{class_rule_a183fafc8a6b43515436a1de8f63ec98d}} 
+\index{Rule@{Rule}!operator==@{operator==}}
+\index{operator==@{operator==}!Rule@{Rule}}
+\subsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily bool Rule\+::operator== (\begin{DoxyParamCaption}\item[{const \hyperlink{class_rule}{Rule} \&}]{r }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Two rules are equal if they have the same instructions, nonterminal, format, children, and children types 
+\begin{DoxyParams}{Parameters}
+{\em r} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_rule_a4a75588d7821c1bcf087ec6ebf82bd0f}\label{class_rule_a4a75588d7821c1bcf087ec6ebf82bd0f}} 
+\index{Rule@{Rule}!string@{string}}
+\index{string@{string}!Rule@{Rule}}
+\subsubsection{\texorpdfstring{string()}{string()}}
+{\footnotesize\ttfamily std\+::string Rule\+::string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_rule_a97db8e22bb8445b92779eb165bb29ae5}\label{class_rule_a97db8e22bb8445b92779eb165bb29ae5}} 
+\index{Rule@{Rule}!type@{type}}
+\index{type@{type}!Rule@{Rule}}
+\subsubsection{\texorpdfstring{type()}{type()}}
+{\footnotesize\ttfamily nonterminal\+\_\+t Rule\+::type (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+What type is my i\textquotesingle{}th child? 
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_rule_a2d5160625d3d15f60690c4323522a33e}\label{class_rule_a2d5160625d3d15f60690c4323522a33e}} 
+\index{Rule@{Rule}!child\+\_\+types@{child\+\_\+types}}
+\index{child\+\_\+types@{child\+\_\+types}!Rule@{Rule}}
+\subsubsection{\texorpdfstring{child\+\_\+types}{child\_types}}
+{\footnotesize\ttfamily nonterminal\+\_\+t Rule\+::child\+\_\+types\mbox{[}Fleet\+::\+M\+A\+X\+\_\+\+C\+H\+I\+L\+D\+\_\+\+S\+I\+ZE\mbox{]}\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{class_rule_aa48c15aaaf5242afea0439607f2a2177}\label{class_rule_aa48c15aaaf5242afea0439607f2a2177}} 
+\index{Rule@{Rule}!format@{format}}
+\index{format@{format}!Rule@{Rule}}
+\subsubsection{\texorpdfstring{format}{format}}
+{\footnotesize\ttfamily std\+::string Rule\+::format}
+
+\mbox{\Hypertarget{class_rule_a367e578f5e1427ef04d1d77477565c67}\label{class_rule_a367e578f5e1427ef04d1d77477565c67}} 
+\index{Rule@{Rule}!instr@{instr}}
+\index{instr@{instr}!Rule@{Rule}}
+\subsubsection{\texorpdfstring{instr}{instr}}
+{\footnotesize\ttfamily \hyperlink{class_instruction}{Instruction} Rule\+::instr}
+
+\mbox{\Hypertarget{class_rule_af2d873c97e2de425f14a5a980dbcc104}\label{class_rule_af2d873c97e2de425f14a5a980dbcc104}} 
+\index{Rule@{Rule}!my\+\_\+hash@{my\+\_\+hash}}
+\index{my\+\_\+hash@{my\+\_\+hash}!Rule@{Rule}}
+\subsubsection{\texorpdfstring{my\+\_\+hash}{my\_hash}}
+{\footnotesize\ttfamily std\+::size\+\_\+t Rule\+::my\+\_\+hash\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{class_rule_a0a2a742af39b60831ad1ac5eb5ba7498}\label{class_rule_a0a2a742af39b60831ad1ac5eb5ba7498}} 
+\index{Rule@{Rule}!N@{N}}
+\index{N@{N}!Rule@{Rule}}
+\subsubsection{\texorpdfstring{N}{N}}
+{\footnotesize\ttfamily size\+\_\+t Rule\+::N}
+
+\mbox{\Hypertarget{class_rule_a980385e76137909454bd6a585bd2e138}\label{class_rule_a980385e76137909454bd6a585bd2e138}} 
+\index{Rule@{Rule}!nt@{nt}}
+\index{nt@{nt}!Rule@{Rule}}
+\subsubsection{\texorpdfstring{nt}{nt}}
+{\footnotesize\ttfamily nonterminal\+\_\+t Rule\+::nt}
+
+\mbox{\Hypertarget{class_rule_acd7e4d41d59dec76f60ca16238ab391a}\label{class_rule_acd7e4d41d59dec76f60ca16238ab391a}} 
+\index{Rule@{Rule}!p@{p}}
+\index{p@{p}!Rule@{Rule}}
+\subsubsection{\texorpdfstring{p}{p}}
+{\footnotesize\ttfamily double Rule\+::p}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{_rule_8h}{Rule.\+h}\end{DoxyCompactItemize}

@@ -1,0 +1,2 @@
+<map id="is_iterable&lt; T, std::void_t&lt; decltype(std::begin(std::declval&lt; T &gt;())), decltype(std::end(std::declval&lt; T &gt;())) &gt; &gt;" name="is_iterable&lt; T, std::void_t&lt; decltype(std::begin(std::declval&lt; T &gt;())), decltype(std::end(std::declval&lt; T &gt;())) &gt; &gt;">
+</map>

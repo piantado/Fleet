@@ -1,0 +1,281 @@
+\hypertarget{_instruction_8h}{}\section{src/\+Virtual\+Machine/\+Instruction.h File Reference}
+\label{_instruction_8h}\index{src/\+Virtual\+Machine/\+Instruction.\+h@{src/\+Virtual\+Machine/\+Instruction.\+h}}
+
+
+This is an error type that is returned if we get a runtime error (e.\+g. string length, etc.)  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$variant$>$}\newline
+Include dependency graph for Instruction.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=198pt]{_instruction_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_instruction_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_v_m_s_runtime_error__t}{V\+M\+S\+Runtime\+Error\+\_\+t}
+\item 
+class \hyperlink{class_instruction}{Instruction}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_instruction_8h_a1287a8584548a58c8bff414efbac2ac4}{C\+U\+S\+T\+O\+M\+\_\+\+O\+PS}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef short \hyperlink{_instruction_8h_a227278394efd1e2313c727102db09ea9}{Primitive\+Op}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \{ \newline
+\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64a45802158e78dd9584161629098018fe8}{vmstatus\+\_\+t\+::\+G\+O\+OD} =0, 
+\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64abb1ca97ec761fc37101737ba0aa2e7c5}{vmstatus\+\_\+t\+::\+E\+R\+R\+OR}, 
+\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64a8427e4c0e4c7fc8456948b268f81ec6c}{vmstatus\+\_\+t\+::\+R\+E\+C\+U\+R\+S\+I\+O\+N\+\_\+\+D\+E\+P\+TH}, 
+\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE}, 
+\newline
+\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE}, 
+\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64a67b10974a97cedee08e6161b8f81e1cb}{vmstatus\+\_\+t\+::\+S\+I\+Z\+E\+\_\+\+E\+X\+C\+E\+P\+T\+I\+ON}, 
+\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64acb15e3bbc847e78a1b1352165d03f157}{vmstatus\+\_\+t\+::\+O\+P\+\_\+\+E\+R\+R\+\_\+\+A\+B\+O\+RT}, 
+\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64a744399cc9222b7fb2eb79740e4fd0c34}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+B\+R\+E\+A\+K\+O\+UT}
+ \}
+\item 
+enum \hyperlink{_instruction_8h_a3a20ca4a8f0ab220518b030cc23ffee4}{Custom\+Op} \{ \hyperlink{_instruction_8h_a3a20ca4a8f0ab220518b030cc23ffee4ae0bd898fd0e37f2458573cdce0b6318a}{Custom\+Op\+::\+C\+U\+S\+T\+O\+M\+\_\+\+O\+PS}
+ \}
+\item 
+enum \hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}{Builtin\+Op} \{ \newline
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad4a8b4f8133e76e25475d25a38d66b84}{Builtin\+Op\+::op\+\_\+\+N\+OP} =0, 
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7abb368ec2ea2dad144edceda5af4d3c91}{Builtin\+Op\+::op\+\_\+X}, 
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a0c25df1402043c1b63892dc40546fbae}{Builtin\+Op\+::op\+\_\+\+P\+O\+PX}, 
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a7bed11c79cc13a4323499087fb9f2916}{Builtin\+Op\+::op\+\_\+\+M\+EM}, 
+\newline
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5fa4edc259e6408058c0df50fb88138a}{Builtin\+Op\+::op\+\_\+\+R\+E\+C\+U\+R\+SE}, 
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad5967a709ff8c12814543509f10bb97c}{Builtin\+Op\+::op\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE}, 
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae5cb64ef0fd9566611fff6a9f5e4ff8e}{Builtin\+Op\+::op\+\_\+\+S\+A\+F\+E\+\_\+\+R\+E\+C\+U\+R\+SE}, 
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae5bdbf72adbf50e3b4a1da86087ce808}{Builtin\+Op\+::op\+\_\+\+S\+A\+F\+E\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE}, 
+\newline
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a44f109761f9ab5171f4ac61a3a1e27c9}{Builtin\+Op\+::op\+\_\+\+F\+L\+IP}, 
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ab369d693d8c216d6e3d5192349435ef8}{Builtin\+Op\+::op\+\_\+\+F\+L\+I\+PP}, 
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a8f69a9fe993189d72cf7b07e8517801d}{Builtin\+Op\+::op\+\_\+\+IF}, 
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7aa83fd4252a4bb350a85e58c8c381c721}{Builtin\+Op\+::op\+\_\+\+J\+MP}, 
+\newline
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a0e8b8a53eb40824e4c185936aba607cd}{Builtin\+Op\+::op\+\_\+\+T\+R\+UE}, 
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5bdb1bb7e493d8d7eafb7fc5e328f33b}{Builtin\+Op\+::op\+\_\+\+F\+A\+L\+SE}, 
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a4f5b048d1b1b175da91b5241b56aaa2d}{Builtin\+Op\+::op\+\_\+\+A\+L\+P\+H\+A\+B\+ET}, 
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7af58eeb2c4016cc74b9a2081cad1ff12b}{Builtin\+Op\+::op\+\_\+\+A\+L\+P\+H\+A\+B\+E\+Tchar}, 
+\newline
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5aba0a5bece4ccca57a34a235691a938}{Builtin\+Op\+::op\+\_\+\+I\+NT}, 
+\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ab96043283e424acda93488de3a6ece5f}{Builtin\+Op\+::op\+\_\+P}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \hyperlink{_instruction_8h_aa8616c19ad0730c798f233cc34778b7c}{operator$<$$<$} (std\+::ostream \&stream, \hyperlink{class_instruction}{Instruction} \&i)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_v_m_s_runtime_error__t}{V\+M\+S\+Runtime\+Error\+\_\+t} \hyperlink{_instruction_8h_a131a2404cbfb5ce8799fbf09928bfe45}{V\+M\+S\+Runtime\+Error}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is an error type that is returned if we get a runtime error (e.\+g. string length, etc.) 
+
+This is how we store an instruction in the program. It can take one of three types\+: Builtin\+Op -- these are operations that are defined as part of \hyperlink{namespace_fleet}{Fleet}\textquotesingle{}s core library, and are implemented automatically in \hyperlink{class_virtual_machine_state_a40ab4e4c5ba5dd5a2940df1a6823acee}{Virtual\+Machine\+State\+::run} Primitive\+Op -- these are defined {\itshape automatically} through the global variable P\+R\+I\+M\+I\+T\+I\+V\+ES (see Models/\+Rational\+Rules). When you construct a grammar with these, it automatically figures out all the types and automatically gives each a sequential numbering, which it takes some template magic to access at runtime Custom\+Op -- these are for when you need more access to V\+MS\textquotesingle{} stack, and they require you to implement custom\+\_\+dispatch (where the instruction is handled)
+
+For any op type, an \hyperlink{class_instruction}{Instruction} always takes an \char`\"{}arg\char`\"{} type that essentially allow us to define classes of instructions for instance, jump takes an arg, factorized recursion uses arg for index, in Formal\+Language\+Theory we use arg to store which alphabet terminal, etc. 
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_instruction_8h_a1287a8584548a58c8bff414efbac2ac4}\label{_instruction_8h_a1287a8584548a58c8bff414efbac2ac4}} 
+\index{Instruction.\+h@{Instruction.\+h}!C\+U\+S\+T\+O\+M\+\_\+\+O\+PS@{C\+U\+S\+T\+O\+M\+\_\+\+O\+PS}}
+\index{C\+U\+S\+T\+O\+M\+\_\+\+O\+PS@{C\+U\+S\+T\+O\+M\+\_\+\+O\+PS}!Instruction.\+h@{Instruction.\+h}}
+\subsubsection{\texorpdfstring{C\+U\+S\+T\+O\+M\+\_\+\+O\+PS}{CUSTOM\_OPS}}
+{\footnotesize\ttfamily \#define C\+U\+S\+T\+O\+M\+\_\+\+O\+PS}
+
+
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{_instruction_8h_a227278394efd1e2313c727102db09ea9}\label{_instruction_8h_a227278394efd1e2313c727102db09ea9}} 
+\index{Instruction.\+h@{Instruction.\+h}!Primitive\+Op@{Primitive\+Op}}
+\index{Primitive\+Op@{Primitive\+Op}!Instruction.\+h@{Instruction.\+h}}
+\subsubsection{\texorpdfstring{Primitive\+Op}{PrimitiveOp}}
+{\footnotesize\ttfamily typedef short \hyperlink{_instruction_8h_a227278394efd1e2313c727102db09ea9}{Primitive\+Op}}
+
+
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}} 
+\index{Instruction.\+h@{Instruction.\+h}!Builtin\+Op@{Builtin\+Op}}
+\index{Builtin\+Op@{Builtin\+Op}!Instruction.\+h@{Instruction.\+h}}
+\subsubsection{\texorpdfstring{Builtin\+Op}{BuiltinOp}}
+{\footnotesize\ttfamily enum \hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}{Builtin\+Op}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+N\+OP@{op\+\_\+\+N\+OP}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+N\+OP@{op\+\_\+\+N\+OP}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad4a8b4f8133e76e25475d25a38d66b84}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad4a8b4f8133e76e25475d25a38d66b84}} 
+op\+\_\+\+N\+OP&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+X@{op\+\_\+X}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+X@{op\+\_\+X}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7abb368ec2ea2dad144edceda5af4d3c91}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7abb368ec2ea2dad144edceda5af4d3c91}} 
+op\+\_\+X&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+P\+O\+PX@{op\+\_\+\+P\+O\+PX}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+P\+O\+PX@{op\+\_\+\+P\+O\+PX}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a0c25df1402043c1b63892dc40546fbae}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a0c25df1402043c1b63892dc40546fbae}} 
+op\+\_\+\+P\+O\+PX&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+M\+EM@{op\+\_\+\+M\+EM}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+M\+EM@{op\+\_\+\+M\+EM}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a7bed11c79cc13a4323499087fb9f2916}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a7bed11c79cc13a4323499087fb9f2916}} 
+op\+\_\+\+M\+EM&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+R\+E\+C\+U\+R\+SE@{op\+\_\+\+R\+E\+C\+U\+R\+SE}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+R\+E\+C\+U\+R\+SE@{op\+\_\+\+R\+E\+C\+U\+R\+SE}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5fa4edc259e6408058c0df50fb88138a}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5fa4edc259e6408058c0df50fb88138a}} 
+op\+\_\+\+R\+E\+C\+U\+R\+SE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE@{op\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE@{op\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad5967a709ff8c12814543509f10bb97c}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad5967a709ff8c12814543509f10bb97c}} 
+op\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+S\+A\+F\+E\+\_\+\+R\+E\+C\+U\+R\+SE@{op\+\_\+\+S\+A\+F\+E\+\_\+\+R\+E\+C\+U\+R\+SE}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+S\+A\+F\+E\+\_\+\+R\+E\+C\+U\+R\+SE@{op\+\_\+\+S\+A\+F\+E\+\_\+\+R\+E\+C\+U\+R\+SE}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae5cb64ef0fd9566611fff6a9f5e4ff8e}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae5cb64ef0fd9566611fff6a9f5e4ff8e}} 
+op\+\_\+\+S\+A\+F\+E\+\_\+\+R\+E\+C\+U\+R\+SE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+S\+A\+F\+E\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE@{op\+\_\+\+S\+A\+F\+E\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+S\+A\+F\+E\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE@{op\+\_\+\+S\+A\+F\+E\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae5bdbf72adbf50e3b4a1da86087ce808}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae5bdbf72adbf50e3b4a1da86087ce808}} 
+op\+\_\+\+S\+A\+F\+E\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+F\+L\+IP@{op\+\_\+\+F\+L\+IP}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+F\+L\+IP@{op\+\_\+\+F\+L\+IP}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a44f109761f9ab5171f4ac61a3a1e27c9}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a44f109761f9ab5171f4ac61a3a1e27c9}} 
+op\+\_\+\+F\+L\+IP&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+F\+L\+I\+PP@{op\+\_\+\+F\+L\+I\+PP}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+F\+L\+I\+PP@{op\+\_\+\+F\+L\+I\+PP}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ab369d693d8c216d6e3d5192349435ef8}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ab369d693d8c216d6e3d5192349435ef8}} 
+op\+\_\+\+F\+L\+I\+PP&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+IF@{op\+\_\+\+IF}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+IF@{op\+\_\+\+IF}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a8f69a9fe993189d72cf7b07e8517801d}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a8f69a9fe993189d72cf7b07e8517801d}} 
+op\+\_\+\+IF&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+J\+MP@{op\+\_\+\+J\+MP}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+J\+MP@{op\+\_\+\+J\+MP}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7aa83fd4252a4bb350a85e58c8c381c721}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7aa83fd4252a4bb350a85e58c8c381c721}} 
+op\+\_\+\+J\+MP&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+T\+R\+UE@{op\+\_\+\+T\+R\+UE}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+T\+R\+UE@{op\+\_\+\+T\+R\+UE}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a0e8b8a53eb40824e4c185936aba607cd}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a0e8b8a53eb40824e4c185936aba607cd}} 
+op\+\_\+\+T\+R\+UE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+F\+A\+L\+SE@{op\+\_\+\+F\+A\+L\+SE}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+F\+A\+L\+SE@{op\+\_\+\+F\+A\+L\+SE}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5bdb1bb7e493d8d7eafb7fc5e328f33b}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5bdb1bb7e493d8d7eafb7fc5e328f33b}} 
+op\+\_\+\+F\+A\+L\+SE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+A\+L\+P\+H\+A\+B\+ET@{op\+\_\+\+A\+L\+P\+H\+A\+B\+ET}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+A\+L\+P\+H\+A\+B\+ET@{op\+\_\+\+A\+L\+P\+H\+A\+B\+ET}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a4f5b048d1b1b175da91b5241b56aaa2d}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a4f5b048d1b1b175da91b5241b56aaa2d}} 
+op\+\_\+\+A\+L\+P\+H\+A\+B\+ET&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+A\+L\+P\+H\+A\+B\+E\+Tchar@{op\+\_\+\+A\+L\+P\+H\+A\+B\+E\+Tchar}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+A\+L\+P\+H\+A\+B\+E\+Tchar@{op\+\_\+\+A\+L\+P\+H\+A\+B\+E\+Tchar}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7af58eeb2c4016cc74b9a2081cad1ff12b}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7af58eeb2c4016cc74b9a2081cad1ff12b}} 
+op\+\_\+\+A\+L\+P\+H\+A\+B\+E\+Tchar&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+\+I\+NT@{op\+\_\+\+I\+NT}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+\+I\+NT@{op\+\_\+\+I\+NT}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5aba0a5bece4ccca57a34a235691a938}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5aba0a5bece4ccca57a34a235691a938}} 
+op\+\_\+\+I\+NT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{op\+\_\+P@{op\+\_\+P}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!op\+\_\+P@{op\+\_\+P}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ab96043283e424acda93488de3a6ece5f}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ab96043283e424acda93488de3a6ece5f}} 
+op\+\_\+P&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{_instruction_8h_a3a20ca4a8f0ab220518b030cc23ffee4}\label{_instruction_8h_a3a20ca4a8f0ab220518b030cc23ffee4}} 
+\index{Instruction.\+h@{Instruction.\+h}!Custom\+Op@{Custom\+Op}}
+\index{Custom\+Op@{Custom\+Op}!Instruction.\+h@{Instruction.\+h}}
+\subsubsection{\texorpdfstring{Custom\+Op}{CustomOp}}
+{\footnotesize\ttfamily enum \hyperlink{_instruction_8h_a3a20ca4a8f0ab220518b030cc23ffee4}{Custom\+Op}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{C\+U\+S\+T\+O\+M\+\_\+\+O\+PS@{C\+U\+S\+T\+O\+M\+\_\+\+O\+PS}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!C\+U\+S\+T\+O\+M\+\_\+\+O\+PS@{C\+U\+S\+T\+O\+M\+\_\+\+O\+PS}}}\mbox{\Hypertarget{_instruction_8h_a3a20ca4a8f0ab220518b030cc23ffee4ae0bd898fd0e37f2458573cdce0b6318a}\label{_instruction_8h_a3a20ca4a8f0ab220518b030cc23ffee4ae0bd898fd0e37f2458573cdce0b6318a}} 
+C\+U\+S\+T\+O\+M\+\_\+\+O\+PS&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64}} 
+\index{Instruction.\+h@{Instruction.\+h}!vmstatus\+\_\+t@{vmstatus\+\_\+t}}
+\index{vmstatus\+\_\+t@{vmstatus\+\_\+t}!Instruction.\+h@{Instruction.\+h}}
+\subsubsection{\texorpdfstring{vmstatus\+\_\+t}{vmstatus\_t}}
+{\footnotesize\ttfamily enum \hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{G\+O\+OD@{G\+O\+OD}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!G\+O\+OD@{G\+O\+OD}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64a45802158e78dd9584161629098018fe8}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64a45802158e78dd9584161629098018fe8}} 
+G\+O\+OD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{E\+R\+R\+OR@{E\+R\+R\+OR}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!E\+R\+R\+OR@{E\+R\+R\+OR}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64abb1ca97ec761fc37101737ba0aa2e7c5}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64abb1ca97ec761fc37101737ba0aa2e7c5}} 
+E\+R\+R\+OR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{R\+E\+C\+U\+R\+S\+I\+O\+N\+\_\+\+D\+E\+P\+TH@{R\+E\+C\+U\+R\+S\+I\+O\+N\+\_\+\+D\+E\+P\+TH}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!R\+E\+C\+U\+R\+S\+I\+O\+N\+\_\+\+D\+E\+P\+TH@{R\+E\+C\+U\+R\+S\+I\+O\+N\+\_\+\+D\+E\+P\+TH}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64a8427e4c0e4c7fc8456948b268f81ec6c}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64a8427e4c0e4c7fc8456948b268f81ec6c}} 
+R\+E\+C\+U\+R\+S\+I\+O\+N\+\_\+\+D\+E\+P\+TH&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE@{R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE@{R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}} 
+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE@{R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE@{R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460}} 
+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+I\+Z\+E\+\_\+\+E\+X\+C\+E\+P\+T\+I\+ON@{S\+I\+Z\+E\+\_\+\+E\+X\+C\+E\+P\+T\+I\+ON}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!S\+I\+Z\+E\+\_\+\+E\+X\+C\+E\+P\+T\+I\+ON@{S\+I\+Z\+E\+\_\+\+E\+X\+C\+E\+P\+T\+I\+ON}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64a67b10974a97cedee08e6161b8f81e1cb}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64a67b10974a97cedee08e6161b8f81e1cb}} 
+S\+I\+Z\+E\+\_\+\+E\+X\+C\+E\+P\+T\+I\+ON&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{O\+P\+\_\+\+E\+R\+R\+\_\+\+A\+B\+O\+RT@{O\+P\+\_\+\+E\+R\+R\+\_\+\+A\+B\+O\+RT}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!O\+P\+\_\+\+E\+R\+R\+\_\+\+A\+B\+O\+RT@{O\+P\+\_\+\+E\+R\+R\+\_\+\+A\+B\+O\+RT}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64acb15e3bbc847e78a1b1352165d03f157}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64acb15e3bbc847e78a1b1352165d03f157}} 
+O\+P\+\_\+\+E\+R\+R\+\_\+\+A\+B\+O\+RT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{R\+A\+N\+D\+O\+M\+\_\+\+B\+R\+E\+A\+K\+O\+UT@{R\+A\+N\+D\+O\+M\+\_\+\+B\+R\+E\+A\+K\+O\+UT}!Instruction.\+h@{Instruction.\+h}}\index{Instruction.\+h@{Instruction.\+h}!R\+A\+N\+D\+O\+M\+\_\+\+B\+R\+E\+A\+K\+O\+UT@{R\+A\+N\+D\+O\+M\+\_\+\+B\+R\+E\+A\+K\+O\+UT}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64a744399cc9222b7fb2eb79740e4fd0c34}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64a744399cc9222b7fb2eb79740e4fd0c34}} 
+R\+A\+N\+D\+O\+M\+\_\+\+B\+R\+E\+A\+K\+O\+UT&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_instruction_8h_aa8616c19ad0730c798f233cc34778b7c}\label{_instruction_8h_aa8616c19ad0730c798f233cc34778b7c}} 
+\index{Instruction.\+h@{Instruction.\+h}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Instruction.\+h@{Instruction.\+h}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{stream,  }\item[{\hyperlink{class_instruction}{Instruction} \&}]{i }\end{DoxyParamCaption})}
+
+Output for instructions. 
+\begin{DoxyParams}{Parameters}
+{\em stream} & \\
+\hline
+{\em i} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{_instruction_8h_a131a2404cbfb5ce8799fbf09928bfe45}\label{_instruction_8h_a131a2404cbfb5ce8799fbf09928bfe45}} 
+\index{Instruction.\+h@{Instruction.\+h}!V\+M\+S\+Runtime\+Error@{V\+M\+S\+Runtime\+Error}}
+\index{V\+M\+S\+Runtime\+Error@{V\+M\+S\+Runtime\+Error}!Instruction.\+h@{Instruction.\+h}}
+\subsubsection{\texorpdfstring{V\+M\+S\+Runtime\+Error}{VMSRuntimeError}}
+{\footnotesize\ttfamily  \hyperlink{class_v_m_s_runtime_error__t}{V\+M\+S\+Runtime\+Error\+\_\+t}  V\+M\+S\+Runtime\+Error}
+

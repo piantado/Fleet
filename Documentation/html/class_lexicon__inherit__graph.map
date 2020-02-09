@@ -1,0 +1,6 @@
+<map id="Lexicon&lt; HYP, T, t_input, t_output, t_datum &gt;" name="Lexicon&lt; HYP, T, t_input, t_output, t_datum &gt;">
+<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title="MCMCable\&lt; HYP, t_datum \&gt;" alt="" coords="200,5,395,32"/>
+<area shape="rect" id="node3" href="$class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="5,5,152,32"/>
+<area shape="rect" id="node4" href="$class_dispatchable.html" title="Dispatchable\&lt; t_input,\l t_output \&gt;" alt="" coords="221,57,374,98"/>
+<area shape="rect" id="node5" href="$class_searchable.html" title="Searchable\&lt; HYP, t\l_input, t_output \&gt;" alt="" coords="228,122,367,163"/>
+</map>

@@ -1,0 +1,57 @@
+\hypertarget{_formal_language_theory-_simple_2_main_8cpp}{}\section{Models/\+Formal\+Language\+Theory-\/\+Simple/\+Main.cpp File Reference}
+\label{_formal_language_theory-_simple_2_main_8cpp}\index{Models/\+Formal\+Language\+Theory-\/\+Simple/\+Main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Simple/\+Main.\+cpp}}
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include \char`\"{}Primitives.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Builtins.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Fleet.\+h\char`\"{}}\newline
+Include dependency graph for Main.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_formal_language_theory-_simple_2_main_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_formal_language_theory-_simple_2_main_8cpp_a89fb8e7826ca09e23da0ce4b39ee03c0}{F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES}~\hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S},bool
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{_formal_language_theory-_simple_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} = std\+::string
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_formal_language_theory-_simple_2_main_8cpp_a89fb8e7826ca09e23da0ce4b39ee03c0}\label{_formal_language_theory-_simple_2_main_8cpp_a89fb8e7826ca09e23da0ce4b39ee03c0}} 
+\index{Formal\+Language\+Theory-\/\+Simple/\+Main.\+cpp@{Formal\+Language\+Theory-\/\+Simple/\+Main.\+cpp}!F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES@{F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES}}
+\index{F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES@{F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES}!Formal\+Language\+Theory-\/\+Simple/\+Main.\+cpp@{Formal\+Language\+Theory-\/\+Simple/\+Main.\+cpp}}
+\subsubsection{\texorpdfstring{F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES}{FLEET\_GRAMMAR\_TYPES}}
+{\footnotesize\ttfamily \#define F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES~\hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S},bool}
+
+
+\begin{DoxyCode}
+    Set up some basic variables (which may \textcolor{keyword}{get} overwritten)
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+\hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} \hyperlink{_formal_language_theory-_complex_2_main_8cpp_ad762aabf5f551e4c7632fb389b3e2209}{alphabet} = \textcolor{stringliteral}{"01"}; \textcolor{comment}{// the alphabet we use (possibly specified on command line)}
+\textcolor{comment}{//S datastr = "1011001110";}
+\textcolor{comment}{//S datastr  = "011,011011,011011011"; // the data, comma separated}
+\textcolor{comment}{//S datastr = "01,01001";}
+\hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} datastr  = \textcolor{stringliteral}{"01,01001,010010001,01001000100001"}; \textcolor{comment}{// the data, comma separated}
+\textcolor{keyword}{const} \textcolor{keywordtype}{double} strgamma = 0.95; \textcolor{comment}{//75; // penalty on string length}
+\textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} MAX\_LENGTH = 64; \textcolor{comment}{// longest strings cons will handle}
+
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ These define all of the types that are used in the grammar. This macro must be defined before we import \hyperlink{namespace_fleet}{Fleet}. $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{_formal_language_theory-_simple_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}\label{_formal_language_theory-_simple_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}} 
+\index{Formal\+Language\+Theory-\/\+Simple/\+Main.\+cpp@{Formal\+Language\+Theory-\/\+Simple/\+Main.\+cpp}!S@{S}}
+\index{S@{S}!Formal\+Language\+Theory-\/\+Simple/\+Main.\+cpp@{Formal\+Language\+Theory-\/\+Simple/\+Main.\+cpp}}
+\subsubsection{\texorpdfstring{S}{S}}
+{\footnotesize\ttfamily using \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} =  std\+::string}
+

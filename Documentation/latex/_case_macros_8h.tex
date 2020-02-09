@@ -1,0 +1,195 @@
+\hypertarget{_case_macros_8h}{}\section{src/\+Virtual\+Machine/\+Case\+Macros.h File Reference}
+\label{_case_macros_8h}\index{src/\+Virtual\+Machine/\+Case\+Macros.\+h@{src/\+Virtual\+Machine/\+Case\+Macros.\+h}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_case_macros_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_case_macros_8h_a45cdd161dd71f5ec5b87cc94cff8fb77}{C\+A\+S\+E\+\_\+\+F\+U\+N\+C0}(opcode,  returntype,  f)
+\item 
+\#define \hyperlink{_case_macros_8h_acee203dfdc0ffcf87082914c886ef813}{C\+A\+S\+E\+\_\+\+F\+U\+N\+C1}(opcode,  returntype,  a1type,  f)
+\item 
+\#define \hyperlink{_case_macros_8h_a996e12406c5cd89ff5570e4ecac8385c}{C\+A\+S\+E\+\_\+\+F\+U\+N\+C2}(opcode,  returntype,  a1type,  a2type,  f)
+\item 
+\#define \hyperlink{_case_macros_8h_a53dc090008a96dc923550c305bcda0ff}{C\+A\+S\+E\+\_\+\+F\+U\+N\+C3}(opcode,  returntype,  a1type,  a2type,  a3type,  f)
+\item 
+\#define \hyperlink{_case_macros_8h_a26bf1b2d91061ee996dfc1f9bf238707}{C\+A\+S\+E\+\_\+\+F\+U\+N\+C4}(opcode,  returntype,  a1type,  a2type,  a3type,  a4type,  f)
+\item 
+\#define \hyperlink{_case_macros_8h_a0036adb426ffed77a6b9e25070f3a357}{C\+A\+S\+E\+\_\+\+F\+U\+N\+C0e}(opcode,  returntype,  f,  errcheck)
+\item 
+\#define \hyperlink{_case_macros_8h_ad7cf4f953c4a89bbc4a606d30ff2191a}{C\+A\+S\+E\+\_\+\+F\+U\+N\+C1e}(opcode,  returntype,  a1type,  f,  errcheck)
+\item 
+\#define \hyperlink{_case_macros_8h_a78d9bf8cb9d9a9e34de8a5104fb02fac}{C\+A\+S\+E\+\_\+\+F\+U\+N\+C2e}(opcode,  returntype,  a1type,  a2type,  f,  errcheck)
+\item 
+\#define \hyperlink{_case_macros_8h_a6ff61e79bed2c6a2e777f851e93968c4}{C\+A\+S\+E\+\_\+\+F\+U\+N\+C3e}(opcode,  returntype,  a1type,  a2type,  a3type,  f,  errcheck)
+\item 
+\#define \hyperlink{_case_macros_8h_ad17d842f2d32f3327335921fa78e50bc}{C\+A\+S\+E\+\_\+\+F\+U\+N\+C4e}(opcode,  returntype,  a1type,  a2type,  a3type,  a4type,  f,  errcheck)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_case_macros_8h_a45cdd161dd71f5ec5b87cc94cff8fb77}\label{_case_macros_8h_a45cdd161dd71f5ec5b87cc94cff8fb77}} 
+\index{Case\+Macros.\+h@{Case\+Macros.\+h}!C\+A\+S\+E\+\_\+\+F\+U\+N\+C0@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C0}}
+\index{C\+A\+S\+E\+\_\+\+F\+U\+N\+C0@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C0}!Case\+Macros.\+h@{Case\+Macros.\+h}}
+\subsubsection{\texorpdfstring{C\+A\+S\+E\+\_\+\+F\+U\+N\+C0}{CASE\_FUNC0}}
+{\footnotesize\ttfamily \#define C\+A\+S\+E\+\_\+\+F\+U\+N\+C0(\begin{DoxyParamCaption}\item[{}]{opcode,  }\item[{}]{returntype,  }\item[{}]{f }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{case} opcode: \{                                                              \(\backslash\)
+        vms.template push<returntype>(std::move(f()));                                     \(\backslash\)
+        break;                                                                  \(\backslash\)
+    \}                                                                           \(\backslash\)
+\end{DoxyCode}
+\mbox{\Hypertarget{_case_macros_8h_a0036adb426ffed77a6b9e25070f3a357}\label{_case_macros_8h_a0036adb426ffed77a6b9e25070f3a357}} 
+\index{Case\+Macros.\+h@{Case\+Macros.\+h}!C\+A\+S\+E\+\_\+\+F\+U\+N\+C0e@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C0e}}
+\index{C\+A\+S\+E\+\_\+\+F\+U\+N\+C0e@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C0e}!Case\+Macros.\+h@{Case\+Macros.\+h}}
+\subsubsection{\texorpdfstring{C\+A\+S\+E\+\_\+\+F\+U\+N\+C0e}{CASE\_FUNC0e}}
+{\footnotesize\ttfamily \#define C\+A\+S\+E\+\_\+\+F\+U\+N\+C0e(\begin{DoxyParamCaption}\item[{}]{opcode,  }\item[{}]{returntype,  }\item[{}]{f,  }\item[{}]{errcheck }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{case} opcode: \{                                                              \(\backslash\)
+        abort\_t e = errcheck();                                                 \(\backslash\)
+        if(e != abort\_t::GOOD) \textcolor{keywordflow}{return} e;                                                \(\backslash\)
+        vms.template push<returntype>(std::move(f()));                                     \(\backslash\)
+        break;                                                                  \(\backslash\)
+    \}                                                                           \(\backslash\)
+\end{DoxyCode}
+\mbox{\Hypertarget{_case_macros_8h_acee203dfdc0ffcf87082914c886ef813}\label{_case_macros_8h_acee203dfdc0ffcf87082914c886ef813}} 
+\index{Case\+Macros.\+h@{Case\+Macros.\+h}!C\+A\+S\+E\+\_\+\+F\+U\+N\+C1@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C1}}
+\index{C\+A\+S\+E\+\_\+\+F\+U\+N\+C1@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C1}!Case\+Macros.\+h@{Case\+Macros.\+h}}
+\subsubsection{\texorpdfstring{C\+A\+S\+E\+\_\+\+F\+U\+N\+C1}{CASE\_FUNC1}}
+{\footnotesize\ttfamily \#define C\+A\+S\+E\+\_\+\+F\+U\+N\+C1(\begin{DoxyParamCaption}\item[{}]{opcode,  }\item[{}]{returntype,  }\item[{}]{a1type,  }\item[{}]{f }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{case} opcode: \{                                                              \(\backslash\)
+        a1type a1 = vms.template getpop<a1type>();                              \(\backslash\)
+        vms.template push<returntype>(std::move(f(a1)));                                   \(\backslash\)
+        break;                                                                  \(\backslash\)
+    \}                                                                           \(\backslash\)
+\end{DoxyCode}
+\mbox{\Hypertarget{_case_macros_8h_ad7cf4f953c4a89bbc4a606d30ff2191a}\label{_case_macros_8h_ad7cf4f953c4a89bbc4a606d30ff2191a}} 
+\index{Case\+Macros.\+h@{Case\+Macros.\+h}!C\+A\+S\+E\+\_\+\+F\+U\+N\+C1e@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C1e}}
+\index{C\+A\+S\+E\+\_\+\+F\+U\+N\+C1e@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C1e}!Case\+Macros.\+h@{Case\+Macros.\+h}}
+\subsubsection{\texorpdfstring{C\+A\+S\+E\+\_\+\+F\+U\+N\+C1e}{CASE\_FUNC1e}}
+{\footnotesize\ttfamily \#define C\+A\+S\+E\+\_\+\+F\+U\+N\+C1e(\begin{DoxyParamCaption}\item[{}]{opcode,  }\item[{}]{returntype,  }\item[{}]{a1type,  }\item[{}]{f,  }\item[{}]{errcheck }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{case} opcode: \{                                                              \(\backslash\)
+        a1type a1 = vms.template getpop<a1type>();                              \(\backslash\)
+        abort\_t e = errcheck(a1);                                               \(\backslash\)
+        if(e != abort\_t::GOOD) \textcolor{keywordflow}{return} e;                                                \(\backslash\)
+        vms.template push<returntype>(std::move(f(a1)));                                   \(\backslash\)
+        break;                                                                  \(\backslash\)
+    \}                                                                           \(\backslash\)
+\end{DoxyCode}
+\mbox{\Hypertarget{_case_macros_8h_a996e12406c5cd89ff5570e4ecac8385c}\label{_case_macros_8h_a996e12406c5cd89ff5570e4ecac8385c}} 
+\index{Case\+Macros.\+h@{Case\+Macros.\+h}!C\+A\+S\+E\+\_\+\+F\+U\+N\+C2@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C2}}
+\index{C\+A\+S\+E\+\_\+\+F\+U\+N\+C2@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C2}!Case\+Macros.\+h@{Case\+Macros.\+h}}
+\subsubsection{\texorpdfstring{C\+A\+S\+E\+\_\+\+F\+U\+N\+C2}{CASE\_FUNC2}}
+{\footnotesize\ttfamily \#define C\+A\+S\+E\+\_\+\+F\+U\+N\+C2(\begin{DoxyParamCaption}\item[{}]{opcode,  }\item[{}]{returntype,  }\item[{}]{a1type,  }\item[{}]{a2type,  }\item[{}]{f }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{case} opcode: \{                                                              \(\backslash\)
+        a1type a1 = vms.template getpop<a1type>();                              \(\backslash\)
+        a2type a2 = vms.template getpop<a2type>();                              \(\backslash\)
+        vms.template push<returntype>(std::move(f(a1,a2)));                                \(\backslash\)
+        break;                                                                  \(\backslash\)
+    \}                                                                           \(\backslash\)
+\end{DoxyCode}
+\mbox{\Hypertarget{_case_macros_8h_a78d9bf8cb9d9a9e34de8a5104fb02fac}\label{_case_macros_8h_a78d9bf8cb9d9a9e34de8a5104fb02fac}} 
+\index{Case\+Macros.\+h@{Case\+Macros.\+h}!C\+A\+S\+E\+\_\+\+F\+U\+N\+C2e@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C2e}}
+\index{C\+A\+S\+E\+\_\+\+F\+U\+N\+C2e@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C2e}!Case\+Macros.\+h@{Case\+Macros.\+h}}
+\subsubsection{\texorpdfstring{C\+A\+S\+E\+\_\+\+F\+U\+N\+C2e}{CASE\_FUNC2e}}
+{\footnotesize\ttfamily \#define C\+A\+S\+E\+\_\+\+F\+U\+N\+C2e(\begin{DoxyParamCaption}\item[{}]{opcode,  }\item[{}]{returntype,  }\item[{}]{a1type,  }\item[{}]{a2type,  }\item[{}]{f,  }\item[{}]{errcheck }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{case} opcode: \{                                                              \(\backslash\)
+        a1type a1 = vms.template getpop<a1type>();                              \(\backslash\)
+        a2type a2 = vms.template getpop<a2type>();                              \(\backslash\)
+        abort\_t e = errcheck(a1,a2);                                            \(\backslash\)
+        if(e != abort\_t::GOOD) \textcolor{keywordflow}{return} e;                                                \(\backslash\)
+        vms.template push<returntype>(std::move(f(a1,a2)));                                \(\backslash\)
+        break;                                                                  \(\backslash\)
+    \}                                                                           \(\backslash\)
+\end{DoxyCode}
+\mbox{\Hypertarget{_case_macros_8h_a53dc090008a96dc923550c305bcda0ff}\label{_case_macros_8h_a53dc090008a96dc923550c305bcda0ff}} 
+\index{Case\+Macros.\+h@{Case\+Macros.\+h}!C\+A\+S\+E\+\_\+\+F\+U\+N\+C3@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C3}}
+\index{C\+A\+S\+E\+\_\+\+F\+U\+N\+C3@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C3}!Case\+Macros.\+h@{Case\+Macros.\+h}}
+\subsubsection{\texorpdfstring{C\+A\+S\+E\+\_\+\+F\+U\+N\+C3}{CASE\_FUNC3}}
+{\footnotesize\ttfamily \#define C\+A\+S\+E\+\_\+\+F\+U\+N\+C3(\begin{DoxyParamCaption}\item[{}]{opcode,  }\item[{}]{returntype,  }\item[{}]{a1type,  }\item[{}]{a2type,  }\item[{}]{a3type,  }\item[{}]{f }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{case} opcode: \{                                                              \(\backslash\)
+        a1type a1 = vms.template getpop<a1type>();                              \(\backslash\)
+        a2type a2 = vms.template getpop<a2type>();                              \(\backslash\)
+        a3type a3 = vms.template getpop<a3type>();                              \(\backslash\)
+        vms.template push<returntype>(std::move(f(a1,a2,a3)));                             \(\backslash\)
+        break;                                                                  \(\backslash\)
+    \}                                                                           \(\backslash\)
+\end{DoxyCode}
+\mbox{\Hypertarget{_case_macros_8h_a6ff61e79bed2c6a2e777f851e93968c4}\label{_case_macros_8h_a6ff61e79bed2c6a2e777f851e93968c4}} 
+\index{Case\+Macros.\+h@{Case\+Macros.\+h}!C\+A\+S\+E\+\_\+\+F\+U\+N\+C3e@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C3e}}
+\index{C\+A\+S\+E\+\_\+\+F\+U\+N\+C3e@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C3e}!Case\+Macros.\+h@{Case\+Macros.\+h}}
+\subsubsection{\texorpdfstring{C\+A\+S\+E\+\_\+\+F\+U\+N\+C3e}{CASE\_FUNC3e}}
+{\footnotesize\ttfamily \#define C\+A\+S\+E\+\_\+\+F\+U\+N\+C3e(\begin{DoxyParamCaption}\item[{}]{opcode,  }\item[{}]{returntype,  }\item[{}]{a1type,  }\item[{}]{a2type,  }\item[{}]{a3type,  }\item[{}]{f,  }\item[{}]{errcheck }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{case} opcode: \{                                                              \(\backslash\)
+        a1type a1 = vms.template getpop<a1type>();                              \(\backslash\)
+        a2type a2 = vms.template getpop<a2type>();                              \(\backslash\)
+        a3type a3 = vms.template getpop<a3type>();                              \(\backslash\)
+        abort\_t e = errcheck(a1,a2,a3);                                         \(\backslash\)
+        if(e != abort\_t::GOOD) \textcolor{keywordflow}{return} e;                                                \(\backslash\)
+        vms.template push<returntype>(std::move(f(a1,a2,a3)));                             \(\backslash\)
+        break;                                                                  \(\backslash\)
+    \}                                                                           \(\backslash\)
+\end{DoxyCode}
+\mbox{\Hypertarget{_case_macros_8h_a26bf1b2d91061ee996dfc1f9bf238707}\label{_case_macros_8h_a26bf1b2d91061ee996dfc1f9bf238707}} 
+\index{Case\+Macros.\+h@{Case\+Macros.\+h}!C\+A\+S\+E\+\_\+\+F\+U\+N\+C4@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C4}}
+\index{C\+A\+S\+E\+\_\+\+F\+U\+N\+C4@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C4}!Case\+Macros.\+h@{Case\+Macros.\+h}}
+\subsubsection{\texorpdfstring{C\+A\+S\+E\+\_\+\+F\+U\+N\+C4}{CASE\_FUNC4}}
+{\footnotesize\ttfamily \#define C\+A\+S\+E\+\_\+\+F\+U\+N\+C4(\begin{DoxyParamCaption}\item[{}]{opcode,  }\item[{}]{returntype,  }\item[{}]{a1type,  }\item[{}]{a2type,  }\item[{}]{a3type,  }\item[{}]{a4type,  }\item[{}]{f }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{case} opcode: \{                                                              \(\backslash\)
+        a1type a1 = vms.template getpop<a1type>();                              \(\backslash\)
+        a2type a2 = vms.template getpop<a2type>();                              \(\backslash\)
+        a3type a3 = vms.template getpop<a3type>();                              \(\backslash\)
+        a4type a4 = vms.template getpop<a4type>();                              \(\backslash\)
+        vms.template push<returntype>(std::move(f(a1,a2,a3,a4)));                             \(\backslash\)
+        break;                                                                  \(\backslash\)
+    \}
+\end{DoxyCode}
+\mbox{\Hypertarget{_case_macros_8h_ad17d842f2d32f3327335921fa78e50bc}\label{_case_macros_8h_ad17d842f2d32f3327335921fa78e50bc}} 
+\index{Case\+Macros.\+h@{Case\+Macros.\+h}!C\+A\+S\+E\+\_\+\+F\+U\+N\+C4e@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C4e}}
+\index{C\+A\+S\+E\+\_\+\+F\+U\+N\+C4e@{C\+A\+S\+E\+\_\+\+F\+U\+N\+C4e}!Case\+Macros.\+h@{Case\+Macros.\+h}}
+\subsubsection{\texorpdfstring{C\+A\+S\+E\+\_\+\+F\+U\+N\+C4e}{CASE\_FUNC4e}}
+{\footnotesize\ttfamily \#define C\+A\+S\+E\+\_\+\+F\+U\+N\+C4e(\begin{DoxyParamCaption}\item[{}]{opcode,  }\item[{}]{returntype,  }\item[{}]{a1type,  }\item[{}]{a2type,  }\item[{}]{a3type,  }\item[{}]{a4type,  }\item[{}]{f,  }\item[{}]{errcheck }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{case} opcode: \{                                                              \(\backslash\)
+        a1type a1 = vms.template getpop<a1type>();                              \(\backslash\)
+        a2type a2 = vms.template getpop<a2type>();                              \(\backslash\)
+        a3type a3 = vms.template getpop<a3type>();                              \(\backslash\)
+        a4type a4 = vms.template getpop<a4type>();                              \(\backslash\)
+        abort\_t e = errcheck(a1,a2,a3,a4);                                          \(\backslash\)
+        if(e != abort\_t::GOOD) \textcolor{keywordflow}{return} e;                                                \(\backslash\)
+        vms.template push<returntype>(std::move(f(a1,a2,a3,a4)));                             \(\backslash\)
+        break;                                                                  \(\backslash\)
+    \}                                                                           \(\backslash\)
+\end{DoxyCode}

@@ -1,0 +1,5 @@
+<map id="src/Hypotheses/Interfaces/MCMCable.h" name="src/Hypotheses/Interfaces/MCMCable.h">
+<area shape="rect" id="node2" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="79,95,174,121"/>
+<area shape="rect" id="node3" href="$_datum_8h.html" title="A datum is the default data point for likelihoods, consisting of an input and output type..." alt="" coords="49,169,121,196"/>
+<area shape="rect" id="node4" href="$_i_o_8h.html" title="IO.h" alt="" coords="146,169,193,196"/>
+</map>

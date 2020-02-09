@@ -1,0 +1,210 @@
+\hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample}{}\section{Fleet\+:\+:Statistics\+:\+:Reservoir\+Sample$<$ T $>$ Class Template Reference}
+\label{class_fleet_1_1_statistics_1_1_reservoir_sample}\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample$<$ T $>$@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample$<$ T $>$}}
+
+
+{\ttfamily \#include $<$Reservoir\+Sample.\+h$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item}{Item}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_a0dde0cb8cfbb14a0bbf8db7f4bb316e9}{Reservoir\+Sample} (size\+\_\+t n, bool u=false)
+\item 
+\hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_a39c8b405654eaca4c943263a485bc015}{Reservoir\+Sample} (bool u=false)
+\item 
+void \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_adabe7f40c91657950a67df7d20ace543}{set\+\_\+reservoir\+\_\+size} (const size\+\_\+t \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_a7cf0266d882988e2a61b857d123c8b58}{s}) const
+\item 
+size\+\_\+t \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_abdfad455c8b8da8cb2ab30d0f60053e0}{size} () const
+\item 
+T \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_af2d03d8d0e93ddedc61a43d1827ae48d}{max} ()
+\item 
+T \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_ab2f186b828351e164e1ed6e60c8c9be8}{min} ()
+\item 
+auto \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_af441a020b7a7244e9ca56c8d293fb59a}{begin} ()
+\item 
+auto \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_a4e3cf1195fcb255f2b0281d9307bfd16}{end} ()
+\item 
+double \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_aa802a85955db2941b99851f3b98e5252}{best\+\_\+posterior} () const
+\item 
+void \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_a374930296f502c957a925a5f7ba9087b}{add} (T x, double lw=0.\+0)
+\item 
+void \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_ad6e4d50ef1acefce7f5d66013720c1ef}{operator$<$$<$} (T x)
+\item 
+T \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_a1b66a8f27512ebd6a48370621a43db87}{sample} () const
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::multiset$<$ \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item}{Item} $>$ \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_a7cf0266d882988e2a61b857d123c8b58}{s}
+\item 
+std\+::multiset$<$ T $>$ \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_a9ffdb177a62651a2280099553124c433}{vals}
+\item 
+size\+\_\+t \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_a94ccb7246b63257eeee446ab4574387a}{reservoir\+\_\+size}
+\item 
+bool \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_ae3376d7008fd736ff141fa811aad4b65}{unique}
+\item 
+unsigned long \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_a1e0c5104f173107e23900ff707df05ab}{N}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Fleet\+::\+Statistics\+::\+Reservoir\+Sample$<$ T $>$}
+
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+29/01/20 
+\end{DoxyDate}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_a0dde0cb8cfbb14a0bbf8db7f4bb316e9}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_a0dde0cb8cfbb14a0bbf8db7f4bb316e9}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!Reservoir\+Sample@{Reservoir\+Sample}}
+\index{Reservoir\+Sample@{Reservoir\+Sample}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{Reservoir\+Sample()}{ReservoirSample()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::\hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Reservoir\+Sample} (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n,  }\item[{bool}]{u = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_a39c8b405654eaca4c943263a485bc015}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_a39c8b405654eaca4c943263a485bc015}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!Reservoir\+Sample@{Reservoir\+Sample}}
+\index{Reservoir\+Sample@{Reservoir\+Sample}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{Reservoir\+Sample()}{ReservoirSample()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::\hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Reservoir\+Sample} (\begin{DoxyParamCaption}\item[{bool}]{u = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_a374930296f502c957a925a5f7ba9087b}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_a374930296f502c957a925a5f7ba9087b}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!add@{add}}
+\index{add@{add}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+void \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::add (\begin{DoxyParamCaption}\item[{T}]{x,  }\item[{double}]{lw = {\ttfamily 0.0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_af441a020b7a7244e9ca56c8d293fb59a}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_af441a020b7a7244e9ca56c8d293fb59a}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!begin@{begin}}
+\index{begin@{begin}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{begin()}{begin()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+auto \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_aa802a85955db2941b99851f3b98e5252}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_aa802a85955db2941b99851f3b98e5252}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!best\+\_\+posterior@{best\+\_\+posterior}}
+\index{best\+\_\+posterior@{best\+\_\+posterior}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{best\+\_\+posterior()}{best\_posterior()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+double \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::best\+\_\+posterior (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+What has the best posterior? \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_a4e3cf1195fcb255f2b0281d9307bfd16}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_a4e3cf1195fcb255f2b0281d9307bfd16}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!end@{end}}
+\index{end@{end}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+auto \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_af2d03d8d0e93ddedc61a43d1827ae48d}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_af2d03d8d0e93ddedc61a43d1827ae48d}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!max@{max}}
+\index{max@{max}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{max()}{max()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::max (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_ab2f186b828351e164e1ed6e60c8c9be8}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_ab2f186b828351e164e1ed6e60c8c9be8}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!min@{min}}
+\index{min@{min}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{min()}{min()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::min (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_ad6e4d50ef1acefce7f5d66013720c1ef}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_ad6e4d50ef1acefce7f5d66013720c1ef}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+void \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{T}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_a1b66a8f27512ebd6a48370621a43db87}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_a1b66a8f27512ebd6a48370621a43db87}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!sample@{sample}}
+\index{sample@{sample}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{sample()}{sample()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::sample (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Return a sample from my vals (e.\+g. a sample of the samples I happen to have saved) \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_adabe7f40c91657950a67df7d20ace543}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_adabe7f40c91657950a67df7d20ace543}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!set\+\_\+reservoir\+\_\+size@{set\+\_\+reservoir\+\_\+size}}
+\index{set\+\_\+reservoir\+\_\+size@{set\+\_\+reservoir\+\_\+size}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{set\+\_\+reservoir\+\_\+size()}{set\_reservoir\_size()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+void \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::set\+\_\+reservoir\+\_\+size (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{s }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+How big should the reservoir size be? 
+\begin{DoxyParams}{Parameters}
+{\em s} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_abdfad455c8b8da8cb2ab30d0f60053e0}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_abdfad455c8b8da8cb2ab30d0f60053e0}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!size@{size}}
+\index{size@{size}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+size\+\_\+t \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+How many elements are currently stored? \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_a1e0c5104f173107e23900ff707df05ab}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_a1e0c5104f173107e23900ff707df05ab}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!N@{N}}
+\index{N@{N}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{N}{N}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+unsigned long \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::N}
+
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_a94ccb7246b63257eeee446ab4574387a}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_a94ccb7246b63257eeee446ab4574387a}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!reservoir\+\_\+size@{reservoir\+\_\+size}}
+\index{reservoir\+\_\+size@{reservoir\+\_\+size}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{reservoir\+\_\+size}{reservoir\_size}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+size\+\_\+t \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::reservoir\+\_\+size}
+
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_a7cf0266d882988e2a61b857d123c8b58}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_a7cf0266d882988e2a61b857d123c8b58}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!s@{s}}
+\index{s@{s}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{s}{s}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+std\+::multiset$<$\hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item}{Item}$>$ \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::s}
+
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_ae3376d7008fd736ff141fa811aad4b65}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_ae3376d7008fd736ff141fa811aad4b65}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!unique@{unique}}
+\index{unique@{unique}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{unique}{unique}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+bool \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::unique}
+
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_reservoir_sample_a9ffdb177a62651a2280099553124c433}\label{class_fleet_1_1_statistics_1_1_reservoir_sample_a9ffdb177a62651a2280099553124c433}} 
+\index{Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}!vals@{vals}}
+\index{vals@{vals}!Fleet\+::\+Statistics\+::\+Reservoir\+Sample@{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}}
+\subsubsection{\texorpdfstring{vals}{vals}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+std\+::multiset$<$T$>$ \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample}$<$ T $>$\+::vals}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Statistics/\hyperlink{_reservoir_sample_8h}{Reservoir\+Sample.\+h}\end{DoxyCompactItemize}

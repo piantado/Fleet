@@ -1,0 +1,52 @@
+\hypertarget{_top_8h}{}\section{src/\+Statistics/\+Top.h File Reference}
+\label{_top_8h}\index{src/\+Statistics/\+Top.\+h@{src/\+Statistics/\+Top.\+h}}
+
+
+A TopN is a n object you can \char`\"{}add\char`\"{} hypotheses to (via add or $<$$<$) and it stores the best N of them. This is widely used in \hyperlink{namespace_fleet}{Fleet} in order to find good approximations to the top hypotheses found in M\+C\+TS or M\+C\+MC.  
+
+
+{\ttfamily \#include \char`\"{}stdlib.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}stdio.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$set$>$}\newline
+{\ttfamily \#include $<$queue$>$}\newline
+{\ttfamily \#include $<$list$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+set$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$cassert$>$}\newline
+Include dependency graph for Top.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_top_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_top_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+Top\+N$<$ T $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespace_fleet}{Fleet}
+\item 
+ \hyperlink{namespace_fleet_1_1_statistics}{Fleet\+::\+Statistics}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename H\+YP $>$ }\\void \hyperlink{namespace_fleet_1_1_statistics_a5723aae50d2da58a711e2e88af291dc8}{Fleet\+::\+Statistics\+::operator$<$$<$} (std\+::set$<$ H\+YP $>$ \&s, TopN$<$ H\+YP $>$ \&t)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A TopN is a n object you can \char`\"{}add\char`\"{} hypotheses to (via add or $<$$<$) and it stores the best N of them. This is widely used in \hyperlink{namespace_fleet}{Fleet} in order to find good approximations to the top hypotheses found in M\+C\+TS or M\+C\+MC. 
+

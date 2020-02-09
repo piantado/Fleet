@@ -1,0 +1,389 @@
+\hypertarget{class_virtual_machine_state}{}\section{Virtual\+Machine\+State$<$ t\+\_\+x, t\+\_\+return $>$ Class Template Reference}
+\label{class_virtual_machine_state}\index{Virtual\+Machine\+State$<$ t\+\_\+x, t\+\_\+return $>$@{Virtual\+Machine\+State$<$ t\+\_\+x, t\+\_\+return $>$}}
+
+
+{\ttfamily \#include $<$Dispatchable.\+h$>$}
+
+
+
+Collaboration diagram for Virtual\+Machine\+State$<$ t\+\_\+x, t\+\_\+return $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_virtual_machine_state__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_virtual_machine_state_1_1t__stack}{t\+\_\+stack}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef int \hyperlink{class_virtual_machine_state_ad082a1996e3cce1eb04bc788c24a3214}{index\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_virtual_machine_state_a650ed7d917a116595deb00e7136c0824}{Virtual\+Machine\+State} (t\+\_\+x x, t\+\_\+return e, size\+\_\+t \+\_\+recursion\+\_\+depth=0)
+\item 
+virtual \hyperlink{class_virtual_machine_state_a2ad904247c9b67eb9467890d484e82a8}{$\sim$\+Virtual\+Machine\+State} ()
+\item 
+bool \hyperlink{class_virtual_machine_state_adc1ead080f59258b39565d16cb836629}{operator$<$} (const \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State} \&m) const
+\item 
+void \hyperlink{class_virtual_machine_state_affbb1cc7171793735cbc4cdd94b987bb}{increment\+\_\+lp} (double v)
+\item 
+{\footnotesize template$<$typename T $>$ }\\\hyperlink{class_stack}{Stack}$<$ T $>$ \& \hyperlink{class_virtual_machine_state_a25fc669934ea3f85f0875ee272c69c2d}{stack} ()
+\item 
+{\footnotesize template$<$typename T $>$ }\\const \hyperlink{class_stack}{Stack}$<$ T $>$ \& \hyperlink{class_virtual_machine_state_a791721cfdddd5f3134a201c3a2250af9}{stack} () const
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{class_virtual_machine_state_a0d5aba3d124a9e987113a1440fec64b5}{getpop} ()
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{class_virtual_machine_state_aa721c5fcd32593015f48c44af8edd594}{gettop} ()
+\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::conditional$<$ std\+::is\+\_\+reference$<$ T $>$\+::value, T \&, T $>$\+::type \hyperlink{class_virtual_machine_state_ad29d1a4f0a8943dccf98cdcbe16089fe}{get} ()
+\item 
+{\footnotesize template$<$typename T $>$ }\\bool \hyperlink{class_virtual_machine_state_a15659c007860b21ccb0cb15aa32d778a}{empty} ()
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \hyperlink{class_virtual_machine_state_a48711af9c2908c6f5e6f4edb1bc803ed}{push} (T \&x)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \hyperlink{class_virtual_machine_state_a38b4d61ff92f6f13ab184c5411332c2c}{push} (T \&\&x)
+\item 
+{\footnotesize template$<$typename... args$>$ }\\bool \hyperlink{class_virtual_machine_state_ae62e9afd2ae0922a1e77eb6822972b7c}{any\+\_\+stacks\+\_\+empty} () const
+\item 
+{\footnotesize template$<$typename... args$>$ }\\bool \hyperlink{class_virtual_machine_state_af5c8da89ae5f3ef809d22f1bf0a1147b}{all\+\_\+stacks\+\_\+empty} () const
+\item 
+bool \hyperlink{class_virtual_machine_state_aa9290fe5ec7bc78a3b57c9623c856f32}{stacks\+\_\+empty} () const
+\item 
+virtual t\+\_\+return \hyperlink{class_virtual_machine_state_a40ab4e4c5ba5dd5a2940df1a6823acee}{run} (\hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+x, t\+\_\+return $>$ $\ast$d)
+\item 
+virtual t\+\_\+return \hyperlink{class_virtual_machine_state_acfeedf82cf17b47d18fc592f8031e0a8}{run} (\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ t\+\_\+x, t\+\_\+return $>$ $\ast$pool, \hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+x, t\+\_\+return $>$ $\ast$dispatch, \hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+x, t\+\_\+return $>$ $\ast$loader)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Program \hyperlink{class_virtual_machine_state_a37b2fdff8af77aea5b45afb6644099b0}{opstack}
+\item 
+\hyperlink{class_stack}{Stack}$<$ t\+\_\+x $>$ \hyperlink{class_virtual_machine_state_a83d4e418eee2f9208641bb12c99bd7fb}{xstack}
+\item 
+t\+\_\+return \hyperlink{class_virtual_machine_state_aca5b21a6e1babe0d57086ae49ebf6c7d}{err}
+\item 
+double \hyperlink{class_virtual_machine_state_adce04f52049f686272022e4f1b8c0257}{lp}
+\item 
+unsigned long \hyperlink{class_virtual_machine_state_a9d28667bb71e7a7aad5dabdc41dd55d0}{recursion\+\_\+depth}
+\item 
+\hyperlink{struct_virtual_machine_state_1_1t__stack}{t\+\_\+stack}$<$ \hyperlink{_rational_rules_2_main_8cpp_a89fb8e7826ca09e23da0ce4b39ee03c0}{F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES} $>$ \hyperlink{class_virtual_machine_state_a6a5b8666e3c3a5d8b951abd6ba876c39}{\+\_\+stack}
+\item 
+std\+::map$<$ std\+::pair$<$ \hyperlink{class_virtual_machine_state_ad082a1996e3cce1eb04bc788c24a3214}{index\+\_\+t}, t\+\_\+x $>$, t\+\_\+return $>$ \hyperlink{class_virtual_machine_state_a73a2f267d4140241389b1fcab4a981b0}{mem}
+\item 
+\hyperlink{class_stack}{Stack}$<$ std\+::pair$<$ \hyperlink{class_virtual_machine_state_ad082a1996e3cce1eb04bc788c24a3214}{index\+\_\+t}, t\+\_\+x $>$ $>$ \hyperlink{class_virtual_machine_state_ac7c71aba54fb5fce40ee1854cb5204b6}{memstack}
+\item 
+\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{class_virtual_machine_state_aa78c1891f8a2a656a0b60cd8a698b41d}{status}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const unsigned long \hyperlink{class_virtual_machine_state_a61a1809d19f878d8de34198d0b7671b2}{M\+A\+X\+\_\+\+R\+E\+C\+U\+R\+SE} = 64
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename t\+\_\+x, typename t\+\_\+return$>$\newline
+class Virtual\+Machine\+State$<$ t\+\_\+x, t\+\_\+return $>$}
+
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+02/02/20 
+\end{DoxyDate}
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_virtual_machine_state_ad082a1996e3cce1eb04bc788c24a3214}\label{class_virtual_machine_state_ad082a1996e3cce1eb04bc788c24a3214}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!index\+\_\+t@{index\+\_\+t}}
+\index{index\+\_\+t@{index\+\_\+t}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{index\+\_\+t}{index\_t}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+typedef int \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::\hyperlink{class_virtual_machine_state_ad082a1996e3cce1eb04bc788c24a3214}{index\+\_\+t}}
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_virtual_machine_state_a650ed7d917a116595deb00e7136c0824}\label{class_virtual_machine_state_a650ed7d917a116595deb00e7136c0824}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{Virtual\+Machine\+State()}{VirtualMachineState()}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State} (\begin{DoxyParamCaption}\item[{t\+\_\+x}]{x,  }\item[{t\+\_\+return}]{e,  }\item[{size\+\_\+t}]{\+\_\+recursion\+\_\+depth = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_virtual_machine_state_a2ad904247c9b67eb9467890d484e82a8}\label{class_virtual_machine_state_a2ad904247c9b67eb9467890d484e82a8}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!````~Virtual\+Machine\+State@{$\sim$\+Virtual\+Machine\+State}}
+\index{````~Virtual\+Machine\+State@{$\sim$\+Virtual\+Machine\+State}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{$\sim$\+Virtual\+Machine\+State()}{~VirtualMachineState()}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+virtual \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::$\sim$\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_virtual_machine_state_af5c8da89ae5f3ef809d22f1bf0a1147b}\label{class_virtual_machine_state_af5c8da89ae5f3ef809d22f1bf0a1147b}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!all\+\_\+stacks\+\_\+empty@{all\+\_\+stacks\+\_\+empty}}
+\index{all\+\_\+stacks\+\_\+empty@{all\+\_\+stacks\+\_\+empty}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{all\+\_\+stacks\+\_\+empty()}{all\_stacks\_empty()}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+template$<$typename... args$>$ \\
+bool \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::all\+\_\+stacks\+\_\+empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Check if all of the stacks are empty (should be at the end of evaluation) \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_virtual_machine_state_ae62e9afd2ae0922a1e77eb6822972b7c}\label{class_virtual_machine_state_ae62e9afd2ae0922a1e77eb6822972b7c}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!any\+\_\+stacks\+\_\+empty@{any\+\_\+stacks\+\_\+empty}}
+\index{any\+\_\+stacks\+\_\+empty@{any\+\_\+stacks\+\_\+empty}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{any\+\_\+stacks\+\_\+empty()}{any\_stacks\_empty()}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+template$<$typename... args$>$ \\
+bool \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::any\+\_\+stacks\+\_\+empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Check if any of the stacks are empty \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_virtual_machine_state_a15659c007860b21ccb0cb15aa32d778a}\label{class_virtual_machine_state_a15659c007860b21ccb0cb15aa32d778a}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!empty@{empty}}
+\index{empty@{empty}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{empty()}{empty()}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+template$<$typename T $>$ \\
+bool \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Is this stack empty? \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_virtual_machine_state_ad29d1a4f0a8943dccf98cdcbe16089fe}\label{class_virtual_machine_state_ad29d1a4f0a8943dccf98cdcbe16089fe}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!get@{get}}
+\index{get@{get}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+template$<$typename T $>$ \\
+std\+::conditional$<$std\+::is\+\_\+reference$<$T$>$\+::value, T\&, T$>$\+::type \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::get (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+This is some fanciness that will return a reference to the top of the stack if we give it a reference type otherwise it will return the type. This lets us get the top of a stack with a reference in P\+R\+I\+M\+I\+T\+I\+V\+ES as though we were some kind of wizards \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_virtual_machine_state_a0d5aba3d124a9e987113a1440fec64b5}\label{class_virtual_machine_state_a0d5aba3d124a9e987113a1440fec64b5}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!getpop@{getpop}}
+\index{getpop@{getpop}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{getpop()}{getpop()}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+template$<$typename T $>$ \\
+T \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::getpop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Retrieves and pops the element of type T from the stack \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_virtual_machine_state_aa721c5fcd32593015f48c44af8edd594}\label{class_virtual_machine_state_aa721c5fcd32593015f48c44af8edd594}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!gettop@{gettop}}
+\index{gettop@{gettop}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{gettop()}{gettop()}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+template$<$typename T $>$ \\
+T \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::gettop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Retrieves the top of the stack as a copy and does {\itshape not} remove \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_virtual_machine_state_affbb1cc7171793735cbc4cdd94b987bb}\label{class_virtual_machine_state_affbb1cc7171793735cbc4cdd94b987bb}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!increment\+\_\+lp@{increment\+\_\+lp}}
+\index{increment\+\_\+lp@{increment\+\_\+lp}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{increment\+\_\+lp()}{increment\_lp()}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+void \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::increment\+\_\+lp (\begin{DoxyParamCaption}\item[{double}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Add v to my lp 
+\begin{DoxyParams}{Parameters}
+{\em v} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_virtual_machine_state_adc1ead080f59258b39565d16cb836629}\label{class_virtual_machine_state_adc1ead080f59258b39565d16cb836629}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{operator$<$()}{operator<()}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+bool \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::operator$<$ (\begin{DoxyParamCaption}\item[{const \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$ \&}]{m }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+These must be sortable by lp so that we can enumerate them from low to high probability in a \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool} N\+O\+TE\+: Virtual\+Machine\+States shouldn\textquotesingle{}t be put in a set because they might evaluate to equal! 
+\begin{DoxyParams}{Parameters}
+{\em m} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_virtual_machine_state_a48711af9c2908c6f5e6f4edb1bc803ed}\label{class_virtual_machine_state_a48711af9c2908c6f5e6f4edb1bc803ed}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!push@{push}}
+\index{push@{push}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{push()}{push()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+template$<$typename T $>$ \\
+void \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::push (\begin{DoxyParamCaption}\item[{T \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Push things onto the appropriate stack 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_virtual_machine_state_a38b4d61ff92f6f13ab184c5411332c2c}\label{class_virtual_machine_state_a38b4d61ff92f6f13ab184c5411332c2c}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!push@{push}}
+\index{push@{push}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{push()}{push()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+template$<$typename T $>$ \\
+void \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::push (\begin{DoxyParamCaption}\item[{T \&\&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_virtual_machine_state_a40ab4e4c5ba5dd5a2940df1a6823acee}\label{class_virtual_machine_state_a40ab4e4c5ba5dd5a2940df1a6823acee}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!run@{run}}
+\index{run@{run}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{run()}{run()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+virtual t\+\_\+return \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::run (\begin{DoxyParamCaption}\item[{\hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+x, t\+\_\+return $>$ $\ast$}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Defaultly run a non-\/recursive hypothesis 
+\begin{DoxyParams}{Parameters}
+{\em d} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_virtual_machine_state_acfeedf82cf17b47d18fc592f8031e0a8}\label{class_virtual_machine_state_acfeedf82cf17b47d18fc592f8031e0a8}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!run@{run}}
+\index{run@{run}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{run()}{run()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+virtual t\+\_\+return \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::run (\begin{DoxyParamCaption}\item[{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ t\+\_\+x, t\+\_\+return $>$ $\ast$}]{pool,  }\item[{\hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+x, t\+\_\+return $>$ $\ast$}]{dispatch,  }\item[{\hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+x, t\+\_\+return $>$ $\ast$}]{loader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Run with a pointer back to pool p. This is required because \char`\"{}flip\char`\"{} may push things onto the pool. Here, dispatch is called to evaluate the function, and loader is called on recursion (allowing us to handle recursion via a lexicon or just via a \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}). N\+O\+TE that anything N\+OT built-\/in is handled via apply\+To\+V\+MS defined in \hyperlink{_primitives_8h}{Primitives.\+h} 
+\begin{DoxyParams}{Parameters}
+{\em pool} & \\
+\hline
+{\em dispatch} & \\
+\hline
+{\em loader} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_virtual_machine_state_a25fc669934ea3f85f0875ee272c69c2d}\label{class_virtual_machine_state_a25fc669934ea3f85f0875ee272c69c2d}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!stack@{stack}}
+\index{stack@{stack}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{stack()}{stack()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+template$<$typename T $>$ \\
+\hyperlink{class_stack}{Stack}$<$T$>$\& \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::stack (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns a reference to the stack (of a given type) \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_virtual_machine_state_a791721cfdddd5f3134a201c3a2250af9}\label{class_virtual_machine_state_a791721cfdddd5f3134a201c3a2250af9}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!stack@{stack}}
+\index{stack@{stack}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{stack()}{stack()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+template$<$typename T $>$ \\
+const \hyperlink{class_stack}{Stack}$<$T$>$\& \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::stack (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Const reference to top of stack \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_virtual_machine_state_aa9290fe5ec7bc78a3b57c9623c856f32}\label{class_virtual_machine_state_aa9290fe5ec7bc78a3b57c9623c856f32}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!stacks\+\_\+empty@{stacks\+\_\+empty}}
+\index{stacks\+\_\+empty@{stacks\+\_\+empty}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{stacks\+\_\+empty()}{stacks\_empty()}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+bool \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::stacks\+\_\+empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+True if all stacks are empty for the F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_virtual_machine_state_a6a5b8666e3c3a5d8b951abd6ba876c39}\label{class_virtual_machine_state_a6a5b8666e3c3a5d8b951abd6ba876c39}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!\+\_\+stack@{\+\_\+stack}}
+\index{\+\_\+stack@{\+\_\+stack}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{\+\_\+stack}{\_stack}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+\hyperlink{struct_virtual_machine_state_1_1t__stack}{t\+\_\+stack}$<$\hyperlink{_rational_rules_2_main_8cpp_a89fb8e7826ca09e23da0ce4b39ee03c0}{F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES}$>$ \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::\+\_\+stack}
+
+\mbox{\Hypertarget{class_virtual_machine_state_aca5b21a6e1babe0d57086ae49ebf6c7d}\label{class_virtual_machine_state_aca5b21a6e1babe0d57086ae49ebf6c7d}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!err@{err}}
+\index{err@{err}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{err}{err}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+t\+\_\+return \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::err}
+
+\mbox{\Hypertarget{class_virtual_machine_state_adce04f52049f686272022e4f1b8c0257}\label{class_virtual_machine_state_adce04f52049f686272022e4f1b8c0257}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!lp@{lp}}
+\index{lp@{lp}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{lp}{lp}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+double \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::lp}
+
+\mbox{\Hypertarget{class_virtual_machine_state_a61a1809d19f878d8de34198d0b7671b2}\label{class_virtual_machine_state_a61a1809d19f878d8de34198d0b7671b2}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!M\+A\+X\+\_\+\+R\+E\+C\+U\+R\+SE@{M\+A\+X\+\_\+\+R\+E\+C\+U\+R\+SE}}
+\index{M\+A\+X\+\_\+\+R\+E\+C\+U\+R\+SE@{M\+A\+X\+\_\+\+R\+E\+C\+U\+R\+SE}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+R\+E\+C\+U\+R\+SE}{MAX\_RECURSE}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+const unsigned long \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::M\+A\+X\+\_\+\+R\+E\+C\+U\+R\+SE = 64\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_virtual_machine_state_a73a2f267d4140241389b1fcab4a981b0}\label{class_virtual_machine_state_a73a2f267d4140241389b1fcab4a981b0}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!mem@{mem}}
+\index{mem@{mem}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{mem}{mem}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+std\+::map$<$std\+::pair$<$\hyperlink{class_virtual_machine_state_ad082a1996e3cce1eb04bc788c24a3214}{index\+\_\+t}, t\+\_\+x$>$, t\+\_\+return$>$ \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::mem}
+
+\mbox{\Hypertarget{class_virtual_machine_state_ac7c71aba54fb5fce40ee1854cb5204b6}\label{class_virtual_machine_state_ac7c71aba54fb5fce40ee1854cb5204b6}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!memstack@{memstack}}
+\index{memstack@{memstack}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{memstack}{memstack}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+\hyperlink{class_stack}{Stack}$<$std\+::pair$<$\hyperlink{class_virtual_machine_state_ad082a1996e3cce1eb04bc788c24a3214}{index\+\_\+t}, t\+\_\+x$>$ $>$ \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::memstack}
+
+\mbox{\Hypertarget{class_virtual_machine_state_a37b2fdff8af77aea5b45afb6644099b0}\label{class_virtual_machine_state_a37b2fdff8af77aea5b45afb6644099b0}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!opstack@{opstack}}
+\index{opstack@{opstack}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{opstack}{opstack}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+Program \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::opstack}
+
+\mbox{\Hypertarget{class_virtual_machine_state_a9d28667bb71e7a7aad5dabdc41dd55d0}\label{class_virtual_machine_state_a9d28667bb71e7a7aad5dabdc41dd55d0}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!recursion\+\_\+depth@{recursion\+\_\+depth}}
+\index{recursion\+\_\+depth@{recursion\+\_\+depth}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{recursion\+\_\+depth}{recursion\_depth}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+unsigned long \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::recursion\+\_\+depth}
+
+\mbox{\Hypertarget{class_virtual_machine_state_aa78c1891f8a2a656a0b60cd8a698b41d}\label{class_virtual_machine_state_aa78c1891f8a2a656a0b60cd8a698b41d}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!status@{status}}
+\index{status@{status}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{status}{status}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::status}
+
+\mbox{\Hypertarget{class_virtual_machine_state_a83d4e418eee2f9208641bb12c99bd7fb}\label{class_virtual_machine_state_a83d4e418eee2f9208641bb12c99bd7fb}} 
+\index{Virtual\+Machine\+State@{Virtual\+Machine\+State}!xstack@{xstack}}
+\index{xstack@{xstack}!Virtual\+Machine\+State@{Virtual\+Machine\+State}}
+\subsubsection{\texorpdfstring{xstack}{xstack}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+x, typename t\+\_\+return$>$ \\
+\hyperlink{class_stack}{Stack}$<$t\+\_\+x$>$ \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+x, t\+\_\+return $>$\+::xstack}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Hypotheses/\+Interfaces/\hyperlink{_dispatchable_8h}{Dispatchable.\+h}\item 
+src/\+Virtual\+Machine/\hyperlink{_virtual_machine_state_8h}{Virtual\+Machine\+State.\+h}\end{DoxyCompactItemize}

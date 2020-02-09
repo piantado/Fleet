@@ -1,0 +1,15 @@
+<map id="MyHypothesis" name="MyHypothesis">
+<area shape="rect" id="node2" href="$class_l_o_t_hypothesis.html" title="LOTHypothesis\&lt; MyHypothesis,\l Node, Object, bool \&gt;" alt="" coords="436,125,649,167"/>
+<area shape="rect" id="node3" href="$class_dispatchable.html" title="Dispatchable\&lt; Object,\l bool \&gt;" alt="" coords="218,5,370,47"/>
+<area shape="rect" id="node4" href="$class_m_c_m_cable.html" title="MCMCable\&lt; MyHypothesis,\l default_datum\&lt; Object,\l bool \&gt;, std::vector\&lt; default\l_datum\&lt; Object, bool \&gt; \&gt; \&gt;" alt="" coords="200,71,388,141"/>
+<area shape="rect" id="node5" href="$class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="5,246,152,273"/>
+<area shape="rect" id="node9" href="$class_m_c_m_cable.html" title="MCMCable\&lt; MyHypothesis,\l float, std::multiset\l\&lt; float \&gt; \&gt;" alt="" coords="200,231,388,287"/>
+<area shape="rect" id="node12" href="$class_m_c_m_cable.html" title="MCMCable\&lt; MyHypothesis,\l default_datum\&lt; S, S \&gt; \&gt;" alt="" coords="200,443,388,484"/>
+<area shape="rect" id="node6" href="$class_searchable.html" title="Searchable\&lt; MyHypothesis,\l Object, bool \&gt;" alt="" coords="201,165,387,207"/>
+<area shape="rect" id="node7" href="$class_l_o_t_hypothesis.html" title="LOTHypothesis\&lt; MyHypothesis,\l Node, float, float, float,\l std::multiset\&lt; float \&gt; \&gt;" alt="" coords="436,305,649,361"/>
+<area shape="rect" id="node8" href="$class_dispatchable.html" title="Dispatchable\&lt; float,\l float \&gt;" alt="" coords="225,312,363,353"/>
+<area shape="rect" id="node10" href="$class_searchable.html" title="Searchable\&lt; MyHypothesis,\l float, float \&gt;" alt="" coords="201,377,387,419"/>
+<area shape="rect" id="node11" href="$class_lexicon.html" title="Lexicon\&lt; MyHypothesis,\l InnerHypothesis, S, S \&gt;" alt="" coords="459,472,626,513"/>
+<area shape="rect" id="node13" href="$class_dispatchable.html" title="Dispatchable\&lt; S, S \&gt;" alt="" coords="220,509,368,535"/>
+<area shape="rect" id="node14" href="$class_searchable.html" title="Searchable\&lt; MyHypothesis,\l S, S \&gt;" alt="" coords="201,560,387,601"/>
+</map>

@@ -1,0 +1,156 @@
+\hypertarget{class_instruction}{}\section{Instruction Class Reference}
+\label{class_instruction}\index{Instruction@{Instruction}}
+
+
+{\ttfamily \#include $<$Instruction.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_instruction_aebd15229c1651af49dcb203707e7a2d5}{Instruction} ()
+\item 
+\hyperlink{class_instruction_a7f672d88ba4ec174716bbac9adb8b1b0}{Instruction} (\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}{Builtin\+Op} x, int arg\+\_\+=0x0)
+\item 
+\hyperlink{class_instruction_afbd8f0bdce88feee59e23abf82c8a718}{Instruction} (\hyperlink{_instruction_8h_a3a20ca4a8f0ab220518b030cc23ffee4}{Custom\+Op} x, int arg\+\_\+=0x0)
+\item 
+\hyperlink{class_instruction_a62d7782f809fa55635a6ced1e971eb3b}{Instruction} (\hyperlink{_instruction_8h_a227278394efd1e2313c727102db09ea9}{Primitive\+Op} x, int arg\+\_\+=0x0)
+\item 
+{\footnotesize template$<$typename t $>$ }\\bool \hyperlink{class_instruction_ade73e12471250fd191362d462e2f4970}{is} () const
+\item 
+{\footnotesize template$<$typename t $>$ }\\t \hyperlink{class_instruction_ac99272000afeb9015a9d40ceed8c139b}{as} () const
+\item 
+int \hyperlink{class_instruction_a83a2763aa1dab5281b27dd99925f683e}{get\+Arg} () const
+\item 
+bool \hyperlink{class_instruction_a75e0ecee9ec917bcc47488a1fbeb6a24}{operator==} (const \hyperlink{class_instruction}{Instruction} \&i) const
+\item 
+{\footnotesize template$<$typename T $>$ }\\bool \hyperlink{class_instruction_a924203cd9a0516d64556ecbf6a79df8a}{is\+\_\+a} (const T x) const
+\begin{DoxyCompactList}\small\item\em compare the instruction types (ignores the arg) \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T , typename... Ts$>$ }\\bool \hyperlink{class_instruction_ae670ee58f9acdfd60b7213f77dfca794}{is\+\_\+a} (T x, Ts... args) const
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::variant$<$ \hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}{Builtin\+Op}, \hyperlink{_instruction_8h_a3a20ca4a8f0ab220518b030cc23ffee4}{Custom\+Op}, \hyperlink{_instruction_8h_a227278394efd1e2313c727102db09ea9}{Primitive\+Op} $>$ \hyperlink{class_instruction_ace2bace7950c18f67d1568fb56e9e6de}{op}
+\item 
+int \hyperlink{class_instruction_a7ed399e29ec58e97a7b6311919f5d5ca}{arg}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+29/01/20 
+\end{DoxyDate}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_instruction_aebd15229c1651af49dcb203707e7a2d5}\label{class_instruction_aebd15229c1651af49dcb203707e7a2d5}} 
+\index{Instruction@{Instruction}!Instruction@{Instruction}}
+\index{Instruction@{Instruction}!Instruction@{Instruction}}
+\subsubsection{\texorpdfstring{Instruction()}{Instruction()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily Instruction\+::\+Instruction (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_instruction_a7f672d88ba4ec174716bbac9adb8b1b0}\label{class_instruction_a7f672d88ba4ec174716bbac9adb8b1b0}} 
+\index{Instruction@{Instruction}!Instruction@{Instruction}}
+\index{Instruction@{Instruction}!Instruction@{Instruction}}
+\subsubsection{\texorpdfstring{Instruction()}{Instruction()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily Instruction\+::\+Instruction (\begin{DoxyParamCaption}\item[{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}{Builtin\+Op}}]{x,  }\item[{int}]{arg\+\_\+ = {\ttfamily 0x0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_instruction_afbd8f0bdce88feee59e23abf82c8a718}\label{class_instruction_afbd8f0bdce88feee59e23abf82c8a718}} 
+\index{Instruction@{Instruction}!Instruction@{Instruction}}
+\index{Instruction@{Instruction}!Instruction@{Instruction}}
+\subsubsection{\texorpdfstring{Instruction()}{Instruction()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily Instruction\+::\+Instruction (\begin{DoxyParamCaption}\item[{\hyperlink{_instruction_8h_a3a20ca4a8f0ab220518b030cc23ffee4}{Custom\+Op}}]{x,  }\item[{int}]{arg\+\_\+ = {\ttfamily 0x0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_instruction_a62d7782f809fa55635a6ced1e971eb3b}\label{class_instruction_a62d7782f809fa55635a6ced1e971eb3b}} 
+\index{Instruction@{Instruction}!Instruction@{Instruction}}
+\index{Instruction@{Instruction}!Instruction@{Instruction}}
+\subsubsection{\texorpdfstring{Instruction()}{Instruction()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily Instruction\+::\+Instruction (\begin{DoxyParamCaption}\item[{\hyperlink{_instruction_8h_a227278394efd1e2313c727102db09ea9}{Primitive\+Op}}]{x,  }\item[{int}]{arg\+\_\+ = {\ttfamily 0x0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_instruction_ac99272000afeb9015a9d40ceed8c139b}\label{class_instruction_ac99272000afeb9015a9d40ceed8c139b}} 
+\index{Instruction@{Instruction}!as@{as}}
+\index{as@{as}!Instruction@{Instruction}}
+\subsubsection{\texorpdfstring{as()}{as()}}
+{\footnotesize\ttfamily template$<$typename t $>$ \\
+t Instruction\+::as (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get as type t \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_a83a2763aa1dab5281b27dd99925f683e}\label{class_instruction_a83a2763aa1dab5281b27dd99925f683e}} 
+\index{Instruction@{Instruction}!get\+Arg@{get\+Arg}}
+\index{get\+Arg@{get\+Arg}!Instruction@{Instruction}}
+\subsubsection{\texorpdfstring{get\+Arg()}{getArg()}}
+{\footnotesize\ttfamily int Instruction\+::get\+Arg (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Return the argument (an int) \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_ade73e12471250fd191362d462e2f4970}\label{class_instruction_ade73e12471250fd191362d462e2f4970}} 
+\index{Instruction@{Instruction}!is@{is}}
+\index{is@{is}!Instruction@{Instruction}}
+\subsubsection{\texorpdfstring{is()}{is()}}
+{\footnotesize\ttfamily template$<$typename t $>$ \\
+bool Instruction\+::is (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Template to check if this instruction is holding type t \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_a924203cd9a0516d64556ecbf6a79df8a}\label{class_instruction_a924203cd9a0516d64556ecbf6a79df8a}} 
+\index{Instruction@{Instruction}!is\+\_\+a@{is\+\_\+a}}
+\index{is\+\_\+a@{is\+\_\+a}!Instruction@{Instruction}}
+\subsubsection{\texorpdfstring{is\+\_\+a()}{is\_a()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool Instruction\+::is\+\_\+a (\begin{DoxyParamCaption}\item[{const T}]{x }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+compare the instruction types (ignores the arg) 
+
+\mbox{\Hypertarget{class_instruction_ae670ee58f9acdfd60b7213f77dfca794}\label{class_instruction_ae670ee58f9acdfd60b7213f77dfca794}} 
+\index{Instruction@{Instruction}!is\+\_\+a@{is\+\_\+a}}
+\index{is\+\_\+a@{is\+\_\+a}!Instruction@{Instruction}}
+\subsubsection{\texorpdfstring{is\+\_\+a()}{is\_a()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T , typename... Ts$>$ \\
+bool Instruction\+::is\+\_\+a (\begin{DoxyParamCaption}\item[{T}]{x,  }\item[{Ts...}]{args }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Variadic checking of whether this is a given op type 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_a75e0ecee9ec917bcc47488a1fbeb6a24}\label{class_instruction_a75e0ecee9ec917bcc47488a1fbeb6a24}} 
+\index{Instruction@{Instruction}!operator==@{operator==}}
+\index{operator==@{operator==}!Instruction@{Instruction}}
+\subsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily bool Instruction\+::operator== (\begin{DoxyParamCaption}\item[{const \hyperlink{class_instruction}{Instruction} \&}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_instruction_a7ed399e29ec58e97a7b6311919f5d5ca}\label{class_instruction_a7ed399e29ec58e97a7b6311919f5d5ca}} 
+\index{Instruction@{Instruction}!arg@{arg}}
+\index{arg@{arg}!Instruction@{Instruction}}
+\subsubsection{\texorpdfstring{arg}{arg}}
+{\footnotesize\ttfamily int Instruction\+::arg}
+
+\mbox{\Hypertarget{class_instruction_ace2bace7950c18f67d1568fb56e9e6de}\label{class_instruction_ace2bace7950c18f67d1568fb56e9e6de}} 
+\index{Instruction@{Instruction}!op@{op}}
+\index{op@{op}!Instruction@{Instruction}}
+\subsubsection{\texorpdfstring{op}{op}}
+{\footnotesize\ttfamily std\+::variant$<$\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}{Builtin\+Op}, \hyperlink{_instruction_8h_a3a20ca4a8f0ab220518b030cc23ffee4}{Custom\+Op}, \hyperlink{_instruction_8h_a227278394efd1e2313c727102db09ea9}{Primitive\+Op}$>$ Instruction\+::op}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Virtual\+Machine/\hyperlink{_instruction_8h}{Instruction.\+h}\end{DoxyCompactItemize}

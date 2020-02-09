@@ -1,0 +1,78 @@
+\hypertarget{_number-_fancy_2_main_8cpp}{}\section{Models/\+Number-\/\+Fancy/\+Main.cpp File Reference}
+\label{_number-_fancy_2_main_8cpp}\index{Models/\+Number-\/\+Fancy/\+Main.\+cpp@{Models/\+Number-\/\+Fancy/\+Main.\+cpp}}
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$random$>$}\newline
+{\ttfamily \#include \char`\"{}Random.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Primitives.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Builtins.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Fleet.\+h\char`\"{}}\newline
+Include dependency graph for Main.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_number-_fancy_2_main_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_number-_fancy_2_main_8cpp_a89fb8e7826ca09e23da0ce4b39ee03c0}{F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES}~bool,word,set,objectkind,utterance,wmset,magnitude,double
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{_number-_fancy_2_main_8cpp_a2b89a3942775c189ae481ab8af21076e}{recursion\+\_\+penalty} = -\/75.\+0
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_number-_fancy_2_main_8cpp_a89fb8e7826ca09e23da0ce4b39ee03c0}\label{_number-_fancy_2_main_8cpp_a89fb8e7826ca09e23da0ce4b39ee03c0}} 
+\index{Number-\/\+Fancy/\+Main.\+cpp@{Number-\/\+Fancy/\+Main.\+cpp}!F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES@{F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES}}
+\index{F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES@{F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES}!Number-\/\+Fancy/\+Main.\+cpp@{Number-\/\+Fancy/\+Main.\+cpp}}
+\subsubsection{\texorpdfstring{F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES}{FLEET\_GRAMMAR\_TYPES}}
+{\footnotesize\ttfamily \#define F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES~bool,word,set,objectkind,utterance,wmset,magnitude,double}
+
+
+\begin{DoxyCode}
+    Set up some basic variables \textcolor{keywordflow}{for} the model
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+\textcolor{keyword}{typedef} \textcolor{keywordtype}{int}         word;
+\textcolor{keyword}{typedef} std::string \textcolor{keyword}{set};    \textcolor{comment}{/* This models sets as strings */}
+\textcolor{keyword}{typedef} \textcolor{keywordtype}{char}        objectkind; \textcolor{comment}{// store this as that}
+\textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{ \textcolor{keyword}{set} s; objectkind o; \} utterance; 
+\textcolor{keyword}{typedef} \textcolor{keywordtype}{short}       wmset; \textcolor{comment}{// just need an integerish type}
+\textcolor{keyword}{typedef} \textcolor{keywordtype}{float}       magnitude; 
+
+std::vector<objectkind>   OBJECTS = \{\textcolor{charliteral}{'a'}, \textcolor{charliteral}{'b'}, \textcolor{charliteral}{'c'}, \textcolor{charliteral}{'d'}, \textcolor{charliteral}{'e'}\}; \textcolor{comment}{//, 'f', 'g', 'h', 'i', 'j'\};}
+std::vector<std::string>    WORDS = \{\textcolor{stringliteral}{"one"}, \textcolor{stringliteral}{"two"}, \textcolor{stringliteral}{"three"}, \textcolor{stringliteral}{"four"}, \textcolor{stringliteral}{"five"}, \textcolor{stringliteral}{"six"}, \textcolor{stringliteral}{"seven"}, \textcolor{stringliteral}{"eight"}, \textcolor{stringliteral}{"nine"}
+      , \textcolor{stringliteral}{"ten"}\};
+std::vector<magnitude> MAGNITUDES = \{1,2,3,4,5,6,7,8,9,10\};
+
+\textcolor{keyword}{const} word U = -999;
+
+\textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} MAX\_SET\_SIZE = 25;
+\textcolor{keyword}{const} \textcolor{keywordtype}{double} alpha = 0.9;
+\textcolor{keyword}{const} \textcolor{keywordtype}{double} W = 0.3; \textcolor{comment}{// weber ratio for ans}
+
+\textcolor{comment}{// TODO: UPDATE WITH data from Gunderson & Levine?}
+std::discrete\_distribution<> number\_distribution(\{0, 7187, 1484, 593, 334, 297, 165, 151, 86, 105, 112\}); \textcolor{comment}{
+      // 0-indexed}
+
+std::vector<int> data\_amounts = \{1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 
+      200, 250, 300, 350, 400, 500, 600\};\textcolor{comment}{//, 500, 600, 700, 800, 900, 1000\};}
+\textcolor{comment}{//std::vector<int> data\_amounts = \{600\};}
+
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ These define all of the types that are used in the grammar. This macro must be defined before we import \hyperlink{namespace_fleet}{Fleet}. $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{_number-_fancy_2_main_8cpp_a2b89a3942775c189ae481ab8af21076e}\label{_number-_fancy_2_main_8cpp_a2b89a3942775c189ae481ab8af21076e}} 
+\index{Number-\/\+Fancy/\+Main.\+cpp@{Number-\/\+Fancy/\+Main.\+cpp}!recursion\+\_\+penalty@{recursion\+\_\+penalty}}
+\index{recursion\+\_\+penalty@{recursion\+\_\+penalty}!Number-\/\+Fancy/\+Main.\+cpp@{Number-\/\+Fancy/\+Main.\+cpp}}
+\subsubsection{\texorpdfstring{recursion\+\_\+penalty}{recursion\_penalty}}
+{\footnotesize\ttfamily double recursion\+\_\+penalty = -\/75.\+0}
+

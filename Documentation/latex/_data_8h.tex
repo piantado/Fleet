@@ -1,0 +1,63 @@
+\hypertarget{_data_8h}{}\section{Models/\+Formal\+Language\+Theory-\/\+Complex/\+Data.h File Reference}
+\label{_data_8h}\index{Models/\+Formal\+Language\+Theory-\/\+Complex/\+Data.\+h@{Models/\+Formal\+Language\+Theory-\/\+Complex/\+Data.\+h}}
+{\ttfamily \#include $<$cstring$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include \char`\"{}Discrete\+Distribution.\+h\char`\"{}}\newline
+Include dependency graph for Data.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_data_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{_data_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename tdata $>$ }\\void \hyperlink{_data_8h_a03738fb766b9c06aa69c1ebccac3ba4b}{load\+\_\+data\+\_\+file} (std\+::vector$<$ tdata $>$ \&data, const char $\ast$datapath)
+\item 
+{\footnotesize template$<$typename T , typename T\+D\+A\+TA $>$ }\\std\+::map$<$ T, double $>$ \hyperlink{_data_8h_a02faed154febcd38647bbac1df4b4647}{highest} (const std\+::vector$<$ T\+D\+A\+TA $>$ \&m, unsigned long N)
+\item 
+{\footnotesize template$<$typename T\+D\+A\+TA $>$ }\\std\+::pair$<$ double, double $>$ \hyperlink{_data_8h_a06110706df92fc1598fba64d5379362c}{get\+\_\+precision\+\_\+and\+\_\+recall} (std\+::ostream \&output, \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ std\+::string $>$ \&model, std\+::vector$<$ T\+D\+A\+TA $>$ \&data, unsigned long N)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_data_8h_a06110706df92fc1598fba64d5379362c}\label{_data_8h_a06110706df92fc1598fba64d5379362c}} 
+\index{Data.\+h@{Data.\+h}!get\+\_\+precision\+\_\+and\+\_\+recall@{get\+\_\+precision\+\_\+and\+\_\+recall}}
+\index{get\+\_\+precision\+\_\+and\+\_\+recall@{get\+\_\+precision\+\_\+and\+\_\+recall}!Data.\+h@{Data.\+h}}
+\subsubsection{\texorpdfstring{get\+\_\+precision\+\_\+and\+\_\+recall()}{get\_precision\_and\_recall()}}
+{\footnotesize\ttfamily template$<$typename T\+D\+A\+TA $>$ \\
+std\+::pair$<$double, double$>$ get\+\_\+precision\+\_\+and\+\_\+recall (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{output,  }\item[{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ std\+::string $>$ \&}]{model,  }\item[{std\+::vector$<$ T\+D\+A\+TA $>$ \&}]{data,  }\item[{unsigned long}]{N }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_data_8h_a02faed154febcd38647bbac1df4b4647}\label{_data_8h_a02faed154febcd38647bbac1df4b4647}} 
+\index{Data.\+h@{Data.\+h}!highest@{highest}}
+\index{highest@{highest}!Data.\+h@{Data.\+h}}
+\subsubsection{\texorpdfstring{highest()}{highest()}}
+{\footnotesize\ttfamily template$<$typename T , typename T\+D\+A\+TA $>$ \\
+std\+::map$<$T, double$>$ highest (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T\+D\+A\+TA $>$ \&}]{m,  }\item[{unsigned long}]{N }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_data_8h_a03738fb766b9c06aa69c1ebccac3ba4b}\label{_data_8h_a03738fb766b9c06aa69c1ebccac3ba4b}} 
+\index{Data.\+h@{Data.\+h}!load\+\_\+data\+\_\+file@{load\+\_\+data\+\_\+file}}
+\index{load\+\_\+data\+\_\+file@{load\+\_\+data\+\_\+file}!Data.\+h@{Data.\+h}}
+\subsubsection{\texorpdfstring{load\+\_\+data\+\_\+file()}{load\_data\_file()}}
+{\footnotesize\ttfamily template$<$typename tdata $>$ \\
+void load\+\_\+data\+\_\+file (\begin{DoxyParamCaption}\item[{std\+::vector$<$ tdata $>$ \&}]{data,  }\item[{const char $\ast$}]{datapath }\end{DoxyParamCaption})}
+
+Load data from a file and puts stringprobs into obs, which is a dictionary of strings to ndata total elements, and obsv, which is a vector that is sorted by probability 
+\begin{DoxyParams}{Parameters}
+{\em data} & \\
+\hline
+{\em datapath} & \\
+\hline
+\end{DoxyParams}

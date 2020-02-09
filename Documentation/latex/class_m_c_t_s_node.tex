@@ -1,0 +1,359 @@
+\hypertarget{class_m_c_t_s_node}{}\section{M\+C\+T\+S\+Node$<$ H\+YP, callback\+\_\+t $>$ Class Template Reference}
+\label{class_m_c_t_s_node}\index{M\+C\+T\+S\+Node$<$ H\+Y\+P, callback\+\_\+t $>$@{M\+C\+T\+S\+Node$<$ H\+Y\+P, callback\+\_\+t $>$}}
+
+
+{\ttfamily \#include $<$M\+C\+T\+S.\+h$>$}
+
+
+
+Collaboration diagram for M\+C\+T\+S\+Node$<$ H\+YP, callback\+\_\+t $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_m_c_t_s_node__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6}{Scoring\+Type} \{ \hyperlink{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6af5a2496cf66cb8cffe66cb1b27d7dede}{Scoring\+Type\+::\+S\+A\+M\+P\+LE}, 
+\hyperlink{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6a16e3acc5a0f586b6e37536492dfbc47f}{Scoring\+Type\+::\+U\+C\+B\+M\+AX}, 
+\hyperlink{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6a8ab0c3a037e882577dec378985477074}{Scoring\+Type\+::\+M\+E\+D\+I\+AN}
+ \}\begin{DoxyCompactList}\small\item\em M\+C\+TS Implementation. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_m_c_t_s_node_aacbf672bfe2acc5ad2396a021d1b2d03}{M\+C\+T\+S\+Node} (\hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node} $\ast$par, H\+YP \&v)
+\item 
+\hyperlink{class_m_c_t_s_node_aeb45ef5d519e94298c4a6f6169287b15}{M\+C\+T\+S\+Node} (double ex, H\+YP \&h0, callback\+\_\+t $\ast$cb, typename H\+Y\+P\+::t\+\_\+data $\ast$d, \hyperlink{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6}{Scoring\+Type} st=\hyperlink{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6af5a2496cf66cb8cffe66cb1b27d7dede}{Scoring\+Type\+::\+S\+A\+M\+P\+LE})
+\item 
+\hyperlink{class_m_c_t_s_node_a6c20efdd42178c22ad3f34446150b705}{M\+C\+T\+S\+Node} (const \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node} \&m)=delete
+\item 
+\hyperlink{class_m_c_t_s_node_af737d4dda4132092ab99d0ef4254c856}{M\+C\+T\+S\+Node} (\hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node} \&\&m)
+\item 
+size\+\_\+t \hyperlink{class_m_c_t_s_node_a9e6997465d24c26cadd556346d722959}{size} () const
+\item 
+void \hyperlink{class_m_c_t_s_node_ad0644bc487fe620c67a3c8fb4a609ac2}{initialize} ()
+\item 
+void \hyperlink{class_m_c_t_s_node_ae672141481eb0da89defec2c562b95e1}{print} (std\+::ostream \&o, const int depth, const bool sort) const
+\item 
+void \hyperlink{class_m_c_t_s_node_a35f1dd261e8d76f652c21a53ac78137c}{print} (const bool sort=true) const
+\item 
+void \hyperlink{class_m_c_t_s_node_aabe3f97545bc6e46220fef78537882ec}{printerr} (const bool sort=true) const
+\item 
+void \hyperlink{class_m_c_t_s_node_ac49067508200793a8cb63524114b5c01}{print} (const char $\ast$filename, const bool sort=true) const
+\item 
+double \hyperlink{class_m_c_t_s_node_acd7b0a82ce6fce44bff99a844ccfee32}{score} () const
+\item 
+size\+\_\+t \hyperlink{class_m_c_t_s_node_a678226e918e97f7b83821c9196cb84d4}{open\+\_\+children} () const
+\item 
+size\+\_\+t \hyperlink{class_m_c_t_s_node_af2b12868a41dcce77a34283be4baf4fa}{best\+\_\+child\+\_\+index} () const
+\item 
+void \hyperlink{class_m_c_t_s_node_abf621592d6d9add273696fa2b7cce9f1}{add\+\_\+sample} (const double v, const size\+\_\+t num=1)
+\item 
+void \hyperlink{class_m_c_t_s_node_a8bcef9cd7a6e04b9835b632bc98faa6d}{operator$<$$<$} (double v)
+\item 
+virtual void \hyperlink{class_m_c_t_s_node_aee6d20621c57a00b8abe0ef4f7d0ee8c}{playout} (\hyperlink{struct_control}{Control} inner\+\_\+ctl)
+\item 
+void \hyperlink{class_m_c_t_s_node_aaaa81cd44588bfa06d172881d22722ab}{add\+\_\+child\+\_\+nodes} ()
+\item 
+void \hyperlink{class_m_c_t_s_node_ac62bd50472a606d1002f44de2021c77e}{search} (\hyperlink{struct_control}{Control} ctl, \hyperlink{struct_control}{Control} inner\+\_\+ctl)
+\item 
+void \hyperlink{class_m_c_t_s_node_a3053a6c46cf2205879c555ddc3936be9}{parallel\+\_\+search} (\hyperlink{struct_control}{Control} ctl, \hyperlink{struct_control}{Control} inner\+\_\+ctl)
+\item 
+void \hyperlink{class_m_c_t_s_node_ad35e1c5b66975ff4fea36fbec33e2acd}{search\+\_\+one} (\hyperlink{struct_control}{Control} inner\+\_\+ctl)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node} $>$ \hyperlink{class_m_c_t_s_node_aeb74f8b007995f5a3bd7da2b37e8ae2c}{children}
+\item 
+unsigned long \hyperlink{class_m_c_t_s_node_afe230ccb2748cb60328c7e9bbfdfc0a2}{nvisits}
+\item 
+bool \hyperlink{class_m_c_t_s_node_a406077cff81145c885ee395cd8553744}{open}
+\item 
+callback\+\_\+t $\ast$ \hyperlink{class_m_c_t_s_node_aa02cc56ca94e1ce0449aed1c3def8737}{callback}
+\item 
+double \hyperlink{class_m_c_t_s_node_a4d21a4368a893b5ccb4acb2ea3286a52}{explore}
+\item 
+std\+::mutex \hyperlink{class_m_c_t_s_node_a7e8d861893740e86d183475ab4314c86}{child\+\_\+mutex}
+\item 
+std\+::mutex \hyperlink{class_m_c_t_s_node_a949477285b64ab1f84f81834f1a7ab0d}{stats\+\_\+mutex}
+\item 
+\hyperlink{class_fleet_1_1_statistics_1_1_streaming_statistics}{Fleet\+::\+Statistics\+::\+Streaming\+Statistics} \hyperlink{class_m_c_t_s_node_af223a24db35d4f81d0ab73a42cb7e1bc}{statistics}
+\item 
+H\+Y\+P\+::t\+\_\+data $\ast$ \hyperlink{class_m_c_t_s_node_aa09754a1e98bcacb4eecb0840a11fced}{data}
+\item 
+\hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node} $\ast$ \hyperlink{class_m_c_t_s_node_afd7d3f1262b41d10b42a5721ac95af68}{parent}
+\item 
+H\+YP \hyperlink{class_m_c_t_s_node_a5bf1a60214369c7a5bc6b166dcdffe3d}{value}
+\item 
+\hyperlink{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6}{Scoring\+Type} \hyperlink{class_m_c_t_s_node_a4bf717abcd090cc24d9a9d6452246c09}{scoring\+\_\+type}
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6}\label{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!Scoring\+Type@{Scoring\+Type}}
+\index{Scoring\+Type@{Scoring\+Type}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{Scoring\+Type}{ScoringType}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+enum \hyperlink{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6}{M\+C\+T\+S\+Node\+::\+Scoring\+Type}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+M\+C\+TS Implementation. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+A\+M\+P\+LE@{S\+A\+M\+P\+LE}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!S\+A\+M\+P\+LE@{S\+A\+M\+P\+LE}}}\mbox{\Hypertarget{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6af5a2496cf66cb8cffe66cb1b27d7dede}\label{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6af5a2496cf66cb8cffe66cb1b27d7dede}} 
+S\+A\+M\+P\+LE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{U\+C\+B\+M\+AX@{U\+C\+B\+M\+AX}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!U\+C\+B\+M\+AX@{U\+C\+B\+M\+AX}}}\mbox{\Hypertarget{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6a16e3acc5a0f586b6e37536492dfbc47f}\label{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6a16e3acc5a0f586b6e37536492dfbc47f}} 
+U\+C\+B\+M\+AX&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{M\+E\+D\+I\+AN@{M\+E\+D\+I\+AN}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!M\+E\+D\+I\+AN@{M\+E\+D\+I\+AN}}}\mbox{\Hypertarget{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6a8ab0c3a037e882577dec378985477074}\label{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6a8ab0c3a037e882577dec378985477074}} 
+M\+E\+D\+I\+AN&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_m_c_t_s_node_aacbf672bfe2acc5ad2396a021d1b2d03}\label{class_m_c_t_s_node_aacbf672bfe2acc5ad2396a021d1b2d03}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{M\+C\+T\+S\+Node()}{MCTSNode()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+\hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node} (\begin{DoxyParamCaption}\item[{\hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$ $\ast$}]{par,  }\item[{H\+YP \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_aeb45ef5d519e94298c4a6f6169287b15}\label{class_m_c_t_s_node_aeb45ef5d519e94298c4a6f6169287b15}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{M\+C\+T\+S\+Node()}{MCTSNode()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+\hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node} (\begin{DoxyParamCaption}\item[{double}]{ex,  }\item[{H\+YP \&}]{h0,  }\item[{callback\+\_\+t $\ast$}]{cb,  }\item[{typename H\+Y\+P\+::t\+\_\+data $\ast$}]{d,  }\item[{\hyperlink{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6}{Scoring\+Type}}]{st = {\ttfamily \hyperlink{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6af5a2496cf66cb8cffe66cb1b27d7dede}{Scoring\+Type\+::\+S\+A\+M\+P\+LE}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_a6c20efdd42178c22ad3f34446150b705}\label{class_m_c_t_s_node_a6c20efdd42178c22ad3f34446150b705}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{M\+C\+T\+S\+Node()}{MCTSNode()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+\hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node} (\begin{DoxyParamCaption}\item[{const \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$ \&}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_af737d4dda4132092ab99d0ef4254c856}\label{class_m_c_t_s_node_af737d4dda4132092ab99d0ef4254c856}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{M\+C\+T\+S\+Node()}{MCTSNode()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+\hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node} (\begin{DoxyParamCaption}\item[{\hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$ \&\&}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_m_c_t_s_node_aaaa81cd44588bfa06d172881d22722ab}\label{class_m_c_t_s_node_aaaa81cd44588bfa06d172881d22722ab}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!add\+\_\+child\+\_\+nodes@{add\+\_\+child\+\_\+nodes}}
+\index{add\+\_\+child\+\_\+nodes@{add\+\_\+child\+\_\+nodes}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{add\+\_\+child\+\_\+nodes()}{add\_child\_nodes()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+void \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::add\+\_\+child\+\_\+nodes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_abf621592d6d9add273696fa2b7cce9f1}\label{class_m_c_t_s_node_abf621592d6d9add273696fa2b7cce9f1}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!add\+\_\+sample@{add\+\_\+sample}}
+\index{add\+\_\+sample@{add\+\_\+sample}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{add\+\_\+sample()}{add\_sample()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+void \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::add\+\_\+sample (\begin{DoxyParamCaption}\item[{const double}]{v,  }\item[{const size\+\_\+t}]{num = {\ttfamily 1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_af2b12868a41dcce77a34283be4baf4fa}\label{class_m_c_t_s_node_af2b12868a41dcce77a34283be4baf4fa}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!best\+\_\+child\+\_\+index@{best\+\_\+child\+\_\+index}}
+\index{best\+\_\+child\+\_\+index@{best\+\_\+child\+\_\+index}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{best\+\_\+child\+\_\+index()}{best\_child\_index()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+size\+\_\+t \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::best\+\_\+child\+\_\+index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_ad0644bc487fe620c67a3c8fb4a609ac2}\label{class_m_c_t_s_node_ad0644bc487fe620c67a3c8fb4a609ac2}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!initialize@{initialize}}
+\index{initialize@{initialize}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+void \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::initialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_a678226e918e97f7b83821c9196cb84d4}\label{class_m_c_t_s_node_a678226e918e97f7b83821c9196cb84d4}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!open\+\_\+children@{open\+\_\+children}}
+\index{open\+\_\+children@{open\+\_\+children}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{open\+\_\+children()}{open\_children()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+size\+\_\+t \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::open\+\_\+children (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_a8bcef9cd7a6e04b9835b632bc98faa6d}\label{class_m_c_t_s_node_a8bcef9cd7a6e04b9835b632bc98faa6d}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+void \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{double}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_a3053a6c46cf2205879c555ddc3936be9}\label{class_m_c_t_s_node_a3053a6c46cf2205879c555ddc3936be9}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!parallel\+\_\+search@{parallel\+\_\+search}}
+\index{parallel\+\_\+search@{parallel\+\_\+search}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{parallel\+\_\+search()}{parallel\_search()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+void \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::parallel\+\_\+search (\begin{DoxyParamCaption}\item[{\hyperlink{struct_control}{Control}}]{ctl,  }\item[{\hyperlink{struct_control}{Control}}]{inner\+\_\+ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_aee6d20621c57a00b8abe0ef4f7d0ee8c}\label{class_m_c_t_s_node_aee6d20621c57a00b8abe0ef4f7d0ee8c}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!playout@{playout}}
+\index{playout@{playout}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{playout()}{playout()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+virtual void \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::playout (\begin{DoxyParamCaption}\item[{\hyperlink{struct_control}{Control}}]{inner\+\_\+ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_ae672141481eb0da89defec2c562b95e1}\label{class_m_c_t_s_node_ae672141481eb0da89defec2c562b95e1}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!print@{print}}
+\index{print@{print}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+void \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::print (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{o,  }\item[{const int}]{depth,  }\item[{const bool}]{sort }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_a35f1dd261e8d76f652c21a53ac78137c}\label{class_m_c_t_s_node_a35f1dd261e8d76f652c21a53ac78137c}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!print@{print}}
+\index{print@{print}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+void \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::print (\begin{DoxyParamCaption}\item[{const bool}]{sort = {\ttfamily true} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_ac49067508200793a8cb63524114b5c01}\label{class_m_c_t_s_node_ac49067508200793a8cb63524114b5c01}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!print@{print}}
+\index{print@{print}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+void \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::print (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filename,  }\item[{const bool}]{sort = {\ttfamily true} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_aabe3f97545bc6e46220fef78537882ec}\label{class_m_c_t_s_node_aabe3f97545bc6e46220fef78537882ec}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!printerr@{printerr}}
+\index{printerr@{printerr}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{printerr()}{printerr()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+void \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::printerr (\begin{DoxyParamCaption}\item[{const bool}]{sort = {\ttfamily true} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_acd7b0a82ce6fce44bff99a844ccfee32}\label{class_m_c_t_s_node_acd7b0a82ce6fce44bff99a844ccfee32}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!score@{score}}
+\index{score@{score}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{score()}{score()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+double \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::score (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_ac62bd50472a606d1002f44de2021c77e}\label{class_m_c_t_s_node_ac62bd50472a606d1002f44de2021c77e}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!search@{search}}
+\index{search@{search}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{search()}{search()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+void \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::search (\begin{DoxyParamCaption}\item[{\hyperlink{struct_control}{Control}}]{ctl,  }\item[{\hyperlink{struct_control}{Control}}]{inner\+\_\+ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_ad35e1c5b66975ff4fea36fbec33e2acd}\label{class_m_c_t_s_node_ad35e1c5b66975ff4fea36fbec33e2acd}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!search\+\_\+one@{search\+\_\+one}}
+\index{search\+\_\+one@{search\+\_\+one}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{search\+\_\+one()}{search\_one()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+void \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::search\+\_\+one (\begin{DoxyParamCaption}\item[{\hyperlink{struct_control}{Control}}]{inner\+\_\+ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_a9e6997465d24c26cadd556346d722959}\label{class_m_c_t_s_node_a9e6997465d24c26cadd556346d722959}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!size@{size}}
+\index{size@{size}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+size\+\_\+t \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_m_c_t_s_node_aa02cc56ca94e1ce0449aed1c3def8737}\label{class_m_c_t_s_node_aa02cc56ca94e1ce0449aed1c3def8737}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!callback@{callback}}
+\index{callback@{callback}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{callback}{callback}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+callback\+\_\+t$\ast$ \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::callback}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_a7e8d861893740e86d183475ab4314c86}\label{class_m_c_t_s_node_a7e8d861893740e86d183475ab4314c86}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!child\+\_\+mutex@{child\+\_\+mutex}}
+\index{child\+\_\+mutex@{child\+\_\+mutex}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{child\+\_\+mutex}{child\_mutex}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+std\+::mutex \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::child\+\_\+mutex\hspace{0.3cm}{\ttfamily [mutable]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_aeb74f8b007995f5a3bd7da2b37e8ae2c}\label{class_m_c_t_s_node_aeb74f8b007995f5a3bd7da2b37e8ae2c}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!children@{children}}
+\index{children@{children}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{children}{children}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+std\+::vector$<$\hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$>$ \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::children}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_aa09754a1e98bcacb4eecb0840a11fced}\label{class_m_c_t_s_node_aa09754a1e98bcacb4eecb0840a11fced}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!data@{data}}
+\index{data@{data}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+H\+Y\+P\+::t\+\_\+data$\ast$ \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::data}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_a4d21a4368a893b5ccb4acb2ea3286a52}\label{class_m_c_t_s_node_a4d21a4368a893b5ccb4acb2ea3286a52}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!explore@{explore}}
+\index{explore@{explore}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{explore}{explore}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+double \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::explore}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_afe230ccb2748cb60328c7e9bbfdfc0a2}\label{class_m_c_t_s_node_afe230ccb2748cb60328c7e9bbfdfc0a2}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!nvisits@{nvisits}}
+\index{nvisits@{nvisits}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{nvisits}{nvisits}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+unsigned long \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::nvisits}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_a406077cff81145c885ee395cd8553744}\label{class_m_c_t_s_node_a406077cff81145c885ee395cd8553744}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!open@{open}}
+\index{open@{open}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{open}{open}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+bool \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::open}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_afd7d3f1262b41d10b42a5721ac95af68}\label{class_m_c_t_s_node_afd7d3f1262b41d10b42a5721ac95af68}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!parent@{parent}}
+\index{parent@{parent}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{parent}{parent}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+\hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$\ast$ \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::parent}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_a4bf717abcd090cc24d9a9d6452246c09}\label{class_m_c_t_s_node_a4bf717abcd090cc24d9a9d6452246c09}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!scoring\+\_\+type@{scoring\+\_\+type}}
+\index{scoring\+\_\+type@{scoring\+\_\+type}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{scoring\+\_\+type}{scoring\_type}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+\hyperlink{class_m_c_t_s_node_a5a201dc80c97c1b65503161f7e5603f6}{Scoring\+Type} \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::scoring\+\_\+type}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_af223a24db35d4f81d0ab73a42cb7e1bc}\label{class_m_c_t_s_node_af223a24db35d4f81d0ab73a42cb7e1bc}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!statistics@{statistics}}
+\index{statistics@{statistics}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{statistics}{statistics}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+\hyperlink{class_fleet_1_1_statistics_1_1_streaming_statistics}{Fleet\+::\+Statistics\+::\+Streaming\+Statistics} \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::statistics}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_a949477285b64ab1f84f81834f1a7ab0d}\label{class_m_c_t_s_node_a949477285b64ab1f84f81834f1a7ab0d}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!stats\+\_\+mutex@{stats\+\_\+mutex}}
+\index{stats\+\_\+mutex@{stats\+\_\+mutex}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{stats\+\_\+mutex}{stats\_mutex}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+std\+::mutex \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::stats\+\_\+mutex\hspace{0.3cm}{\ttfamily [mutable]}}
+
+\mbox{\Hypertarget{class_m_c_t_s_node_a5bf1a60214369c7a5bc6b166dcdffe3d}\label{class_m_c_t_s_node_a5bf1a60214369c7a5bc6b166dcdffe3d}} 
+\index{M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}!value@{value}}
+\index{value@{value}!M\+C\+T\+S\+Node@{M\+C\+T\+S\+Node}}
+\subsubsection{\texorpdfstring{value}{value}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename callback\+\_\+t$>$ \\
+H\+YP \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node}$<$ H\+YP, callback\+\_\+t $>$\+::value}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Inference/\hyperlink{_m_c_t_s_8h}{M\+C\+T\+S.\+h}\end{DoxyCompactItemize}

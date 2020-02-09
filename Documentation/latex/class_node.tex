@@ -1,0 +1,603 @@
+\hypertarget{class_node}{}\section{Node Class Reference}
+\label{class_node}\index{Node@{Node}}
+
+
+{\ttfamily \#include $<$Node.\+h$>$}
+
+
+
+Collaboration diagram for Node\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=299pt]{class_node__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_node_1_1_node_iterator}{Node\+Iterator}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_node_ae33050869651f64551da2d13ad2a9dbc}{Node} (const \hyperlink{class_rule}{Rule} $\ast$r=nullptr, double \+\_\+lp=0.\+0, bool cr=true)
+\item 
+\hyperlink{class_node_a277918b68827f6ffd8150f450b0c12c3}{Node} (const \hyperlink{class_node}{Node} \&n)
+\item 
+\hyperlink{class_node_a87c9938dcd77c169802a732c98204945}{Node} (\hyperlink{class_node}{Node} \&\&n)
+\item 
+\hyperlink{class_node}{Node} \& \hyperlink{class_node_a23adfa03c20f4141b1105c5b4b1bca3f}{child} (const size\+\_\+t i)
+\item 
+const \hyperlink{class_node}{Node} \& \hyperlink{class_node_acc2b20cdba470853f1c137e26546ed3c}{child} (const size\+\_\+t i) const
+\item 
+nonterminal\+\_\+t \hyperlink{class_node_aa727c354e38f60fb1560d72ae1aaa9af}{type} (const size\+\_\+t i) const
+\item 
+const size\+\_\+t \hyperlink{class_node_a8a7ea0e9f9bac373dbcdd427cb5ebe48}{nchildren} () const
+\item 
+void \hyperlink{class_node_a1c03973664fcfdfb191feb67f565168b}{fill} ()
+\item 
+void \hyperlink{class_node_addbfe90949f473c91203389f48095cf0}{operator=} (const \hyperlink{class_node}{Node} \&n)
+\item 
+void \hyperlink{class_node_abcd5c8ca2ea54716a72f7e27f9a9c937}{operator=} (\hyperlink{class_node}{Node} \&\&n)
+\item 
+bool \hyperlink{class_node_a8b05feb361beb04d465619751a2297b1}{operator$<$} (const \hyperlink{class_node}{Node} \&n) const
+\item 
+\hyperlink{class_node_1_1_node_iterator}{Node\+Iterator} \hyperlink{class_node_a319b65eca94c9438201ebda99ab90a65}{begin} () const
+\item 
+\hyperlink{class_node_1_1_node_iterator}{Node\+Iterator} \hyperlink{class_node_aea7c6e778d4720fb8071af71c57b1628}{end} () const
+\item 
+\hyperlink{class_node}{Node} $\ast$ \hyperlink{class_node_ac6d1a1d71a28168b34e9092568570738}{left\+\_\+descend} () const
+\item 
+void \hyperlink{class_node_a8f25f44608c0b19fe02eaf19ade9ea68}{fix\+\_\+child\+\_\+info} ()
+\item 
+nonterminal\+\_\+t \hyperlink{class_node_a4abe3acdc804489a01ef13a25b130fd8}{nt} () const
+\item 
+\hyperlink{class_node}{Node} \& \hyperlink{class_node_a0b89084e2c7416379edb7c537edcc8f2}{operator\mbox{[}$\,$\mbox{]}} (const size\+\_\+t i)
+\item 
+const \hyperlink{class_node}{Node} \& \hyperlink{class_node_a8bdfdaa5eb291ae5fb417f45fb8a3633}{operator\mbox{[}$\,$\mbox{]}} (const size\+\_\+t i) const
+\item 
+void \hyperlink{class_node_afff50c3712b8e30fffd479cad4eee023}{set\+\_\+child} (size\+\_\+t i, \hyperlink{class_node}{Node} \&n)
+\item 
+void \hyperlink{class_node_a486882370d2c9592c6eabb52a3289253}{set\+\_\+child} (size\+\_\+t i, \hyperlink{class_node}{Node} \&\&n)
+\item 
+void \hyperlink{class_node_a1a6f6c8062e66046c302a80cc7e8d817}{set\+\_\+to} (\hyperlink{class_node}{Node} \&n)
+\item 
+void \hyperlink{class_node_a10c63ea2ec819dc5b195c4df33cde113}{set\+\_\+to} (\hyperlink{class_node}{Node} \&\&n)
+\item 
+bool \hyperlink{class_node_a895ef3b66f975fbaec1e5866a57afbed}{is\+\_\+null} () const
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{class_node_ac91282056a0df2835f1579bdd21c93e1}{sum} (std\+::function$<$ T(const \hyperlink{class_node}{Node} \&)$>$ \&f) const
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{class_node_a089e99addd93f91b2ef5a9d0c3e6bdeb}{sum} (T($\ast$f)(const \hyperlink{class_node}{Node} \&)) const
+\item 
+void \hyperlink{class_node_adefac3cb7b411321c5af15dad1484834}{map} (const std\+::function$<$ void(\hyperlink{class_node}{Node} \&)$>$ \&f)
+\item 
+void \hyperlink{class_node_a4337bb93da78e142c6171fd81acab93c}{map\+\_\+const} (const std\+::function$<$ void(const \hyperlink{class_node}{Node} \&)$>$ \&f) const
+\item 
+void \hyperlink{class_node_a59da25cea338385d73b898b86492f97e}{rmap\+\_\+const} (const std\+::function$<$ void(const \hyperlink{class_node}{Node} \&)$>$ \&f) const
+\item 
+virtual size\+\_\+t \hyperlink{class_node_abd387b27e1deb45b789ad7b7abd8c6e6}{count} () const
+\item 
+virtual size\+\_\+t \hyperlink{class_node_a0cc58478d98361566830a8d3db745718}{count} (const \hyperlink{class_node}{Node} \&n) const
+\item 
+virtual bool \hyperlink{class_node_ad12a96da2fe796616aa22e20429f41d5}{is\+\_\+root} () const
+\item 
+virtual bool \hyperlink{class_node_ac3c263a4e0c734c34aaf62f80f84cd9a}{is\+\_\+terminal} () const
+\item 
+virtual size\+\_\+t \hyperlink{class_node_a70c820eaeaa852e3c0a46cf006026c1b}{count\+\_\+terminals} () const
+\item 
+virtual bool \hyperlink{class_node_ac2e36754ba8b1b1d452deeb2bdbd346f}{is\+\_\+complete} () const
+\item 
+virtual \hyperlink{class_node}{Node} $\ast$ \hyperlink{class_node_a93fc84b584f080593978d3a39631d3e5}{get\+\_\+nth} (int n, std\+::function$<$ int(const \hyperlink{class_node}{Node} \&)$>$ \&f)
+\item 
+virtual \hyperlink{class_node}{Node} $\ast$ \hyperlink{class_node_a224c0ee6dae35ddce70f8fd3b91e0b1c}{get\+\_\+nth} (int n)
+\item 
+virtual std\+::string \hyperlink{class_node_a0590ae269543416be9c4ebdf70bad73b}{string} () const
+\item 
+virtual std\+::string \hyperlink{class_node_a70e879ceb71f47787137572d9bee8efa}{parseable} () const
+\item 
+virtual size\+\_\+t \hyperlink{class_node_a377548bcf1be99ac5181f9434c33c81e}{program\+\_\+size} () const
+\item 
+virtual void \hyperlink{class_node_ac995508e96e112675fde53e7748e41bc}{linearize} (Program \&ops) const
+\item 
+virtual bool \hyperlink{class_node_a90aeee00ccda27f36bea9cdd774eae8d}{operator==} (const \hyperlink{class_node}{Node} \&n) const
+\item 
+virtual size\+\_\+t \hyperlink{class_node_a212f2e1ba4ff71de6954b0b791d89979}{hash} (size\+\_\+t depth=0) const
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_node}{Node} $\ast$ \hyperlink{class_node_ad8184598cdea70e4bbdfd76f2b0f9e85}{parent}
+\item 
+size\+\_\+t \hyperlink{class_node_ad8e140a5af4e5c312141f2b7af255520}{pi}
+\item 
+const \hyperlink{class_rule}{Rule} $\ast$ \hyperlink{class_node_a02f5c9463cceb270ad5730760f19c722}{rule}
+\item 
+double \hyperlink{class_node_a298eaa3743b774a3f9ef396e1dc42a08}{lp}
+\item 
+bool \hyperlink{class_node_a98c14a51b240fbc7e438f40a12276257}{can\+\_\+resample}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const char \hyperlink{class_node_abd26102ffbe2a3e00c34bed5508b3234}{N\+T\+Delimiter} = \textquotesingle{}\+:\textquotesingle{}
+\item 
+static const char \hyperlink{class_node_ab58932e82964fb75ba806870c4069dc2}{Rule\+Delimiter} = \textquotesingle{};\textquotesingle{}
+\item 
+static \hyperlink{class_node_1_1_node_iterator}{Node\+Iterator} \hyperlink{class_node_a336943f2e37a2b6fcbe8b47634719dec}{End\+Node\+Iterator} = \hyperlink{class_node_1_1_node_iterator}{Node\+Iterator}(nullptr)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \hyperlink{class_node}{Node} $>$ \hyperlink{class_node_af7ddc81358470c3bf7a7819c8b77f53d}{children}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_node_ae33050869651f64551da2d13ad2a9dbc}\label{class_node_ae33050869651f64551da2d13ad2a9dbc}} 
+\index{Node@{Node}!Node@{Node}}
+\index{Node@{Node}!Node@{Node}}
+\subsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily Node\+::\+Node (\begin{DoxyParamCaption}\item[{const \hyperlink{class_rule}{Rule} $\ast$}]{r = {\ttfamily nullptr},  }\item[{double}]{\+\_\+lp = {\ttfamily 0.0},  }\item[{bool}]{cr = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_node_a277918b68827f6ffd8150f450b0c12c3}\label{class_node_a277918b68827f6ffd8150f450b0c12c3}} 
+\index{Node@{Node}!Node@{Node}}
+\index{Node@{Node}!Node@{Node}}
+\subsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily Node\+::\+Node (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_node_a87c9938dcd77c169802a732c98204945}\label{class_node_a87c9938dcd77c169802a732c98204945}} 
+\index{Node@{Node}!Node@{Node}}
+\index{Node@{Node}!Node@{Node}}
+\subsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily Node\+::\+Node (\begin{DoxyParamCaption}\item[{\hyperlink{class_node}{Node} \&\&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_node_a319b65eca94c9438201ebda99ab90a65}\label{class_node_a319b65eca94c9438201ebda99ab90a65}} 
+\index{Node@{Node}!begin@{begin}}
+\index{begin@{begin}!Node@{Node}}
+\subsubsection{\texorpdfstring{begin()}{begin()}}
+{\footnotesize\ttfamily \hyperlink{class_node_1_1_node_iterator}{Node\+Iterator} Node\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_node_a23adfa03c20f4141b1105c5b4b1bca3f}\label{class_node_a23adfa03c20f4141b1105c5b4b1bca3f}} 
+\index{Node@{Node}!child@{child}}
+\index{child@{child}!Node@{Node}}
+\subsubsection{\texorpdfstring{child()}{child()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{class_node}{Node}\& Node\+::child (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get a reference to my i\textquotesingle{}th child 
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_acc2b20cdba470853f1c137e26546ed3c}\label{class_node_acc2b20cdba470853f1c137e26546ed3c}} 
+\index{Node@{Node}!child@{child}}
+\index{child@{child}!Node@{Node}}
+\subsubsection{\texorpdfstring{child()}{child()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const \hyperlink{class_node}{Node}\& Node\+::child (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Constant reference to the i\textquotesingle{}th child 
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_abd387b27e1deb45b789ad7b7abd8c6e6}\label{class_node_abd387b27e1deb45b789ad7b7abd8c6e6}} 
+\index{Node@{Node}!count@{count}}
+\index{count@{count}!Node@{Node}}
+\subsubsection{\texorpdfstring{count()}{count()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual size\+\_\+t Node\+::count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+How many nodes are below me? \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_a0cc58478d98361566830a8d3db745718}\label{class_node_a0cc58478d98361566830a8d3db745718}} 
+\index{Node@{Node}!count@{count}}
+\index{count@{count}!Node@{Node}}
+\subsubsection{\texorpdfstring{count()}{count()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual size\+\_\+t Node\+::count (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+How many nodes below me are equal to n? 
+\begin{DoxyParams}{Parameters}
+{\em n} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_a70c820eaeaa852e3c0a46cf006026c1b}\label{class_node_a70c820eaeaa852e3c0a46cf006026c1b}} 
+\index{Node@{Node}!count\+\_\+terminals@{count\+\_\+terminals}}
+\index{count\+\_\+terminals@{count\+\_\+terminals}!Node@{Node}}
+\subsubsection{\texorpdfstring{count\+\_\+terminals()}{count\_terminals()}}
+{\footnotesize\ttfamily virtual size\+\_\+t Node\+::count\+\_\+terminals (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+How many terminals are below me? \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_aea7c6e778d4720fb8071af71c57b1628}\label{class_node_aea7c6e778d4720fb8071af71c57b1628}} 
+\index{Node@{Node}!end@{end}}
+\index{end@{end}!Node@{Node}}
+\subsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily \hyperlink{class_node_1_1_node_iterator}{Node\+Iterator} Node\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_node_a1c03973664fcfdfb191feb67f565168b}\label{class_node_a1c03973664fcfdfb191feb67f565168b}} 
+\index{Node@{Node}!fill@{fill}}
+\index{fill@{fill}!Node@{Node}}
+\subsubsection{\texorpdfstring{fill()}{fill()}}
+{\footnotesize\ttfamily void Node\+::fill (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Fill in all of my immediate children with Null nodes (via Null\+Rule)\mbox{\Hypertarget{class_node_a8f25f44608c0b19fe02eaf19ade9ea68}\label{class_node_a8f25f44608c0b19fe02eaf19ade9ea68}} 
+\index{Node@{Node}!fix\+\_\+child\+\_\+info@{fix\+\_\+child\+\_\+info}}
+\index{fix\+\_\+child\+\_\+info@{fix\+\_\+child\+\_\+info}!Node@{Node}}
+\subsubsection{\texorpdfstring{fix\+\_\+child\+\_\+info()}{fix\_child\_info()}}
+{\footnotesize\ttfamily void Node\+::fix\+\_\+child\+\_\+info (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Fix my immediate children\textquotesingle{}s pointers to ensure that children\textquotesingle{}s parent pointers and indices are correct.\mbox{\Hypertarget{class_node_a93fc84b584f080593978d3a39631d3e5}\label{class_node_a93fc84b584f080593978d3a39631d3e5}} 
+\index{Node@{Node}!get\+\_\+nth@{get\+\_\+nth}}
+\index{get\+\_\+nth@{get\+\_\+nth}!Node@{Node}}
+\subsubsection{\texorpdfstring{get\+\_\+nth()}{get\_nth()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual \hyperlink{class_node}{Node}$\ast$ Node\+::get\+\_\+nth (\begin{DoxyParamCaption}\item[{int}]{n,  }\item[{std\+::function$<$ int(const \hyperlink{class_node}{Node} \&)$>$ \&}]{f }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Return a pointer to the n\textquotesingle{}th child satisfying f (f\textquotesingle{}s output is cast to bool) 
+\begin{DoxyParams}{Parameters}
+{\em n} & \\
+\hline
+{\em f} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_a224c0ee6dae35ddce70f8fd3b91e0b1c}\label{class_node_a224c0ee6dae35ddce70f8fd3b91e0b1c}} 
+\index{Node@{Node}!get\+\_\+nth@{get\+\_\+nth}}
+\index{get\+\_\+nth@{get\+\_\+nth}!Node@{Node}}
+\subsubsection{\texorpdfstring{get\+\_\+nth()}{get\_nth()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual \hyperlink{class_node}{Node}$\ast$ Node\+::get\+\_\+nth (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_node_a212f2e1ba4ff71de6954b0b791d89979}\label{class_node_a212f2e1ba4ff71de6954b0b791d89979}} 
+\index{Node@{Node}!hash@{hash}}
+\index{hash@{hash}!Node@{Node}}
+\subsubsection{\texorpdfstring{hash()}{hash()}}
+{\footnotesize\ttfamily virtual size\+\_\+t Node\+::hash (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{depth = {\ttfamily 0} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Hash a tree by hashing the rule and everything below. 
+\begin{DoxyParams}{Parameters}
+{\em depth} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_ac2e36754ba8b1b1d452deeb2bdbd346f}\label{class_node_ac2e36754ba8b1b1d452deeb2bdbd346f}} 
+\index{Node@{Node}!is\+\_\+complete@{is\+\_\+complete}}
+\index{is\+\_\+complete@{is\+\_\+complete}!Node@{Node}}
+\subsubsection{\texorpdfstring{is\+\_\+complete()}{is\_complete()}}
+{\footnotesize\ttfamily virtual bool Node\+::is\+\_\+complete (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+A tree is complete if it contains no null nodes below it. \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_a895ef3b66f975fbaec1e5866a57afbed}\label{class_node_a895ef3b66f975fbaec1e5866a57afbed}} 
+\index{Node@{Node}!is\+\_\+null@{is\+\_\+null}}
+\index{is\+\_\+null@{is\+\_\+null}!Node@{Node}}
+\subsubsection{\texorpdfstring{is\+\_\+null()}{is\_null()}}
+{\footnotesize\ttfamily bool Node\+::is\+\_\+null (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Am I a null node? \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_ad12a96da2fe796616aa22e20429f41d5}\label{class_node_ad12a96da2fe796616aa22e20429f41d5}} 
+\index{Node@{Node}!is\+\_\+root@{is\+\_\+root}}
+\index{is\+\_\+root@{is\+\_\+root}!Node@{Node}}
+\subsubsection{\texorpdfstring{is\+\_\+root()}{is\_root()}}
+{\footnotesize\ttfamily virtual bool Node\+::is\+\_\+root (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Am I a root node? I am if my parent is nullptr. \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_ac3c263a4e0c734c34aaf62f80f84cd9a}\label{class_node_ac3c263a4e0c734c34aaf62f80f84cd9a}} 
+\index{Node@{Node}!is\+\_\+terminal@{is\+\_\+terminal}}
+\index{is\+\_\+terminal@{is\+\_\+terminal}!Node@{Node}}
+\subsubsection{\texorpdfstring{is\+\_\+terminal()}{is\_terminal()}}
+{\footnotesize\ttfamily virtual bool Node\+::is\+\_\+terminal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Am I a terminal? I am if I have no children. \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_ac6d1a1d71a28168b34e9092568570738}\label{class_node_ac6d1a1d71a28168b34e9092568570738}} 
+\index{Node@{Node}!left\+\_\+descend@{left\+\_\+descend}}
+\index{left\+\_\+descend@{left\+\_\+descend}!Node@{Node}}
+\subsubsection{\texorpdfstring{left\+\_\+descend()}{left\_descend()}}
+{\footnotesize\ttfamily \hyperlink{class_node}{Node}$\ast$ Node\+::left\+\_\+descend (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Go down a tree and find the leftmost child \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_ac995508e96e112675fde53e7748e41bc}\label{class_node_ac995508e96e112675fde53e7748e41bc}} 
+\index{Node@{Node}!linearize@{linearize}}
+\index{linearize@{linearize}!Node@{Node}}
+\subsubsection{\texorpdfstring{linearize()}{linearize()}}
+{\footnotesize\ttfamily virtual void Node\+::linearize (\begin{DoxyParamCaption}\item[{Program \&}]{ops }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+convert tree to a linear sequence of operations. To do this, we first linearize the kids, leaving their values as the top on the stack then we compute our value, remove our kids\textquotesingle{} values to clean up the stack, and push on our return the only fanciness is for if\+: here we will use the following layout $<$\+T\+O\+P of=\char`\"{}\char`\"{} stack$>$=\char`\"{}\char`\"{}$>$ $<$bool$>$ \hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a8f69a9fe993189d72cf7b07e8517801d}{op\+\_\+\+I\+F(xsize)} X-\/branch J\+U\+M\+P(ysize) Y-\/branch
+
+N\+O\+TE\+: Inline here lets gcc inline a few recursions of this function, which ends up speeding us up a bit (otherwise recursive inlining only happens at -\/\+O3) This optimization is why we do set max-\/inline-\/insns-\/recursive in Fleet.\+mk 
+\begin{DoxyParams}{Parameters}
+{\em ops} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_node_adefac3cb7b411321c5af15dad1484834}\label{class_node_adefac3cb7b411321c5af15dad1484834}} 
+\index{Node@{Node}!map@{map}}
+\index{map@{map}!Node@{Node}}
+\subsubsection{\texorpdfstring{map()}{map()}}
+{\footnotesize\ttfamily void Node\+::map (\begin{DoxyParamCaption}\item[{const std\+::function$<$ void(\hyperlink{class_node}{Node} \&)$>$ \&}]{f }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Apply f to me and everything below. 
+\begin{DoxyParams}{Parameters}
+{\em f} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_node_a4337bb93da78e142c6171fd81acab93c}\label{class_node_a4337bb93da78e142c6171fd81acab93c}} 
+\index{Node@{Node}!map\+\_\+const@{map\+\_\+const}}
+\index{map\+\_\+const@{map\+\_\+const}!Node@{Node}}
+\subsubsection{\texorpdfstring{map\+\_\+const()}{map\_const()}}
+{\footnotesize\ttfamily void Node\+::map\+\_\+const (\begin{DoxyParamCaption}\item[{const std\+::function$<$ void(const \hyperlink{class_node}{Node} \&)$>$ \&}]{f }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_node_a8a7ea0e9f9bac373dbcdd427cb5ebe48}\label{class_node_a8a7ea0e9f9bac373dbcdd427cb5ebe48}} 
+\index{Node@{Node}!nchildren@{nchildren}}
+\index{nchildren@{nchildren}!Node@{Node}}
+\subsubsection{\texorpdfstring{nchildren()}{nchildren()}}
+{\footnotesize\ttfamily const size\+\_\+t Node\+::nchildren (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+How many children do I have? \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_a4abe3acdc804489a01ef13a25b130fd8}\label{class_node_a4abe3acdc804489a01ef13a25b130fd8}} 
+\index{Node@{Node}!nt@{nt}}
+\index{nt@{nt}!Node@{Node}}
+\subsubsection{\texorpdfstring{nt()}{nt()}}
+{\footnotesize\ttfamily nonterminal\+\_\+t Node\+::nt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+What nonterminal type do I return? \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_a8b05feb361beb04d465619751a2297b1}\label{class_node_a8b05feb361beb04d465619751a2297b1}} 
+\index{Node@{Node}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!Node@{Node}}
+\subsubsection{\texorpdfstring{operator$<$()}{operator<()}}
+{\footnotesize\ttfamily bool Node\+::operator$<$ (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_node_addbfe90949f473c91203389f48095cf0}\label{class_node_addbfe90949f473c91203389f48095cf0}} 
+\index{Node@{Node}!operator=@{operator=}}
+\index{operator=@{operator=}!Node@{Node}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Node\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_node_abcd5c8ca2ea54716a72f7e27f9a9c937}\label{class_node_abcd5c8ca2ea54716a72f7e27f9a9c937}} 
+\index{Node@{Node}!operator=@{operator=}}
+\index{operator=@{operator=}!Node@{Node}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Node\+::operator= (\begin{DoxyParamCaption}\item[{\hyperlink{class_node}{Node} \&\&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_node_a90aeee00ccda27f36bea9cdd774eae8d}\label{class_node_a90aeee00ccda27f36bea9cdd774eae8d}} 
+\index{Node@{Node}!operator==@{operator==}}
+\index{operator==@{operator==}!Node@{Node}}
+\subsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily virtual bool Node\+::operator== (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Check equality between notes. Note this compares rule objects. 
+\begin{DoxyParams}{Parameters}
+{\em n} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_a0b89084e2c7416379edb7c537edcc8f2}\label{class_node_a0b89084e2c7416379edb7c537edcc8f2}} 
+\index{Node@{Node}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!Node@{Node}}
+\subsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{class_node}{Node}\& Node\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Index my i\textquotesingle{}th child 
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_a8bdfdaa5eb291ae5fb417f45fb8a3633}\label{class_node_a8bdfdaa5eb291ae5fb417f45fb8a3633}} 
+\index{Node@{Node}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!Node@{Node}}
+\subsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const \hyperlink{class_node}{Node}\& Node\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_node_a70e879ceb71f47787137572d9bee8efa}\label{class_node_a70e879ceb71f47787137572d9bee8efa}} 
+\index{Node@{Node}!parseable@{parseable}}
+\index{parseable@{parseable}!Node@{Node}}
+\subsubsection{\texorpdfstring{parseable()}{parseable()}}
+{\footnotesize\ttfamily virtual std\+::string Node\+::parseable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Create a string that can be parsed according to \hyperlink{class_grammar_ab5bd3d35545bcab4dbd3ca1d136bd4ce}{Grammar.\+expand\+\_\+from\+\_\+names} \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_a377548bcf1be99ac5181f9434c33c81e}\label{class_node_a377548bcf1be99ac5181f9434c33c81e}} 
+\index{Node@{Node}!program\+\_\+size@{program\+\_\+size}}
+\index{program\+\_\+size@{program\+\_\+size}!Node@{Node}}
+\subsubsection{\texorpdfstring{program\+\_\+size()}{program\_size()}}
+{\footnotesize\ttfamily virtual size\+\_\+t Node\+::program\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+How big of a program does this correspond to? This is mostly the number of nodes, except that short-\/circuit evaluation of IF makes things a little more complex. \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_a59da25cea338385d73b898b86492f97e}\label{class_node_a59da25cea338385d73b898b86492f97e}} 
+\index{Node@{Node}!rmap\+\_\+const@{rmap\+\_\+const}}
+\index{rmap\+\_\+const@{rmap\+\_\+const}!Node@{Node}}
+\subsubsection{\texorpdfstring{rmap\+\_\+const()}{rmap\_const()}}
+{\footnotesize\ttfamily void Node\+::rmap\+\_\+const (\begin{DoxyParamCaption}\item[{const std\+::function$<$ void(const \hyperlink{class_node}{Node} \&)$>$ \&}]{f }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_node_afff50c3712b8e30fffd479cad4eee023}\label{class_node_afff50c3712b8e30fffd479cad4eee023}} 
+\index{Node@{Node}!set\+\_\+child@{set\+\_\+child}}
+\index{set\+\_\+child@{set\+\_\+child}!Node@{Node}}
+\subsubsection{\texorpdfstring{set\+\_\+child()}{set\_child()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Node\+::set\+\_\+child (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{\hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set my child to n. N\+O\+TE\+: This one needs to be used, rather than accessing children directly, because we have to set parent pointers and indices. 
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+{\em n} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_node_a486882370d2c9592c6eabb52a3289253}\label{class_node_a486882370d2c9592c6eabb52a3289253}} 
+\index{Node@{Node}!set\+\_\+child@{set\+\_\+child}}
+\index{set\+\_\+child@{set\+\_\+child}!Node@{Node}}
+\subsubsection{\texorpdfstring{set\+\_\+child()}{set\_child()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Node\+::set\+\_\+child (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{\hyperlink{class_node}{Node} \&\&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Child setter for move 
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_node_a1a6f6c8062e66046c302a80cc7e8d817}\label{class_node_a1a6f6c8062e66046c302a80cc7e8d817}} 
+\index{Node@{Node}!set\+\_\+to@{set\+\_\+to}}
+\index{set\+\_\+to@{set\+\_\+to}!Node@{Node}}
+\subsubsection{\texorpdfstring{set\+\_\+to()}{set\_to()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Node\+::set\+\_\+to (\begin{DoxyParamCaption}\item[{\hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set myself to n. This should be used so that parent pointers etc. can be updated. 
+\begin{DoxyParams}{Parameters}
+{\em n} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_node_a10c63ea2ec819dc5b195c4df33cde113}\label{class_node_a10c63ea2ec819dc5b195c4df33cde113}} 
+\index{Node@{Node}!set\+\_\+to@{set\+\_\+to}}
+\index{set\+\_\+to@{set\+\_\+to}!Node@{Node}}
+\subsubsection{\texorpdfstring{set\+\_\+to()}{set\_to()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Node\+::set\+\_\+to (\begin{DoxyParamCaption}\item[{\hyperlink{class_node}{Node} \&\&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set myself to n (move version)\mbox{\Hypertarget{class_node_a0590ae269543416be9c4ebdf70bad73b}\label{class_node_a0590ae269543416be9c4ebdf70bad73b}} 
+\index{Node@{Node}!string@{string}}
+\index{string@{string}!Node@{Node}}
+\subsubsection{\texorpdfstring{string()}{string()}}
+{\footnotesize\ttfamily virtual std\+::string Node\+::string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Convert a tree to a string, using each node\textquotesingle{}s format. \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_ac91282056a0df2835f1579bdd21c93e1}\label{class_node_ac91282056a0df2835f1579bdd21c93e1}} 
+\index{Node@{Node}!sum@{sum}}
+\index{sum@{sum}!Node@{Node}}
+\subsubsection{\texorpdfstring{sum()}{sum()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T Node\+::sum (\begin{DoxyParamCaption}\item[{std\+::function$<$ T(const \hyperlink{class_node}{Node} \&)$>$ \&}]{f }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Apply f to me and everything below me, adding up the result. 
+\begin{DoxyParams}{Parameters}
+{\em f} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_a089e99addd93f91b2ef5a9d0c3e6bdeb}\label{class_node_a089e99addd93f91b2ef5a9d0c3e6bdeb}} 
+\index{Node@{Node}!sum@{sum}}
+\index{sum@{sum}!Node@{Node}}
+\subsubsection{\texorpdfstring{sum()}{sum()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T Node\+::sum (\begin{DoxyParamCaption}\item[{T($\ast$)(const \hyperlink{class_node}{Node} \&)}]{f }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Apply f to me and everything below me, adding up the result. 
+\begin{DoxyParams}{Parameters}
+{\em f} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_node_aa727c354e38f60fb1560d72ae1aaa9af}\label{class_node_aa727c354e38f60fb1560d72ae1aaa9af}} 
+\index{Node@{Node}!type@{type}}
+\index{type@{type}!Node@{Node}}
+\subsubsection{\texorpdfstring{type()}{type()}}
+{\footnotesize\ttfamily nonterminal\+\_\+t Node\+::type (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Return the type of the i\textquotesingle{}th child 
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_node_a98c14a51b240fbc7e438f40a12276257}\label{class_node_a98c14a51b240fbc7e438f40a12276257}} 
+\index{Node@{Node}!can\+\_\+resample@{can\+\_\+resample}}
+\index{can\+\_\+resample@{can\+\_\+resample}!Node@{Node}}
+\subsubsection{\texorpdfstring{can\+\_\+resample}{can\_resample}}
+{\footnotesize\ttfamily bool Node\+::can\+\_\+resample}
+
+\mbox{\Hypertarget{class_node_af7ddc81358470c3bf7a7819c8b77f53d}\label{class_node_af7ddc81358470c3bf7a7819c8b77f53d}} 
+\index{Node@{Node}!children@{children}}
+\index{children@{children}!Node@{Node}}
+\subsubsection{\texorpdfstring{children}{children}}
+{\footnotesize\ttfamily std\+::vector$<$\hyperlink{class_node}{Node}$>$ Node\+::children\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{class_node_a336943f2e37a2b6fcbe8b47634719dec}\label{class_node_a336943f2e37a2b6fcbe8b47634719dec}} 
+\index{Node@{Node}!End\+Node\+Iterator@{End\+Node\+Iterator}}
+\index{End\+Node\+Iterator@{End\+Node\+Iterator}!Node@{Node}}
+\subsubsection{\texorpdfstring{End\+Node\+Iterator}{EndNodeIterator}}
+{\footnotesize\ttfamily \hyperlink{class_node_1_1_node_iterator}{Node\+::\+Node\+Iterator} Node\+::\+End\+Node\+Iterator = \hyperlink{class_node_1_1_node_iterator}{Node\+Iterator}(nullptr)\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_node_a298eaa3743b774a3f9ef396e1dc42a08}\label{class_node_a298eaa3743b774a3f9ef396e1dc42a08}} 
+\index{Node@{Node}!lp@{lp}}
+\index{lp@{lp}!Node@{Node}}
+\subsubsection{\texorpdfstring{lp}{lp}}
+{\footnotesize\ttfamily double Node\+::lp}
+
+\mbox{\Hypertarget{class_node_abd26102ffbe2a3e00c34bed5508b3234}\label{class_node_abd26102ffbe2a3e00c34bed5508b3234}} 
+\index{Node@{Node}!N\+T\+Delimiter@{N\+T\+Delimiter}}
+\index{N\+T\+Delimiter@{N\+T\+Delimiter}!Node@{Node}}
+\subsubsection{\texorpdfstring{N\+T\+Delimiter}{NTDelimiter}}
+{\footnotesize\ttfamily const char Node\+::\+N\+T\+Delimiter = \textquotesingle{}\+:\textquotesingle{}\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_node_ad8184598cdea70e4bbdfd76f2b0f9e85}\label{class_node_ad8184598cdea70e4bbdfd76f2b0f9e85}} 
+\index{Node@{Node}!parent@{parent}}
+\index{parent@{parent}!Node@{Node}}
+\subsubsection{\texorpdfstring{parent}{parent}}
+{\footnotesize\ttfamily \hyperlink{class_node}{Node}$\ast$ Node\+::parent}
+
+\mbox{\Hypertarget{class_node_ad8e140a5af4e5c312141f2b7af255520}\label{class_node_ad8e140a5af4e5c312141f2b7af255520}} 
+\index{Node@{Node}!pi@{pi}}
+\index{pi@{pi}!Node@{Node}}
+\subsubsection{\texorpdfstring{pi}{pi}}
+{\footnotesize\ttfamily size\+\_\+t Node\+::pi}
+
+\mbox{\Hypertarget{class_node_a02f5c9463cceb270ad5730760f19c722}\label{class_node_a02f5c9463cceb270ad5730760f19c722}} 
+\index{Node@{Node}!rule@{rule}}
+\index{rule@{rule}!Node@{Node}}
+\subsubsection{\texorpdfstring{rule}{rule}}
+{\footnotesize\ttfamily const \hyperlink{class_rule}{Rule}$\ast$ Node\+::rule}
+
+\mbox{\Hypertarget{class_node_ab58932e82964fb75ba806870c4069dc2}\label{class_node_ab58932e82964fb75ba806870c4069dc2}} 
+\index{Node@{Node}!Rule\+Delimiter@{Rule\+Delimiter}}
+\index{Rule\+Delimiter@{Rule\+Delimiter}!Node@{Node}}
+\subsubsection{\texorpdfstring{Rule\+Delimiter}{RuleDelimiter}}
+{\footnotesize\ttfamily const char Node\+::\+Rule\+Delimiter = \textquotesingle{};\textquotesingle{}\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{_node_8h}{Node.\+h}\end{DoxyCompactItemize}

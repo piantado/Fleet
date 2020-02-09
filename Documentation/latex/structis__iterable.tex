@@ -1,0 +1,76 @@
+\hypertarget{structis__iterable}{}\section{is\+\_\+iterable$<$ T, typename $>$ Struct Template Reference}
+\label{structis__iterable}\index{is\+\_\+iterable$<$ T, typename $>$@{is\+\_\+iterable$<$ T, typename $>$}}
+
+
+Converts our own time format to ms, which is what \hyperlink{namespace_fleet}{Fleet}\textquotesingle{}s time utilities use The time format we accept is \#+(.\#+)\mbox{[}smhd\mbox{]} where shmd specifies seconds, minutes, hours days.  
+
+
+
+
+{\ttfamily \#include $<$Miscellaneous.\+h$>$}
+
+
+
+Inheritance diagram for is\+\_\+iterable$<$ T, typename $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{structis__iterable__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for is\+\_\+iterable$<$ T, typename $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{structis__iterable__coll__graph}
+\end{center}
+\end{figure}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T, typename = void$>$\newline
+struct is\+\_\+iterable$<$ T, typename $>$}
+
+Converts our own time format to ms, which is what \hyperlink{namespace_fleet}{Fleet}\textquotesingle{}s time utilities use The time format we accept is \#+(.\#+)\mbox{[}smhd\mbox{]} where shmd specifies seconds, minutes, hours days. 
+
+
+\begin{DoxyCode}
+    Time conversions \textcolor{keywordflow}{for} fleet
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+time\_t convert\_time(std::string& s) \{
+    \textcolor{comment}{// specila case of s="0" will be allowed}
+    \textcolor{keywordflow}{if}(s == \textcolor{stringliteral}{"0"}) \textcolor{keywordflow}{return} 0;
+
+    \textcolor{comment}{// else we must specify a unit  }
+    \textcolor{keywordtype}{double} multiplier; \textcolor{comment}{// for default multiplier of 1 is seconds}
+    \textcolor{keywordflow}{switch}(s.at(s.length()-1)) \{
+        \textcolor{keywordflow}{case} \textcolor{charliteral}{'s'}: multiplier = 1000; \textcolor{keywordflow}{break}; 
+        \textcolor{keywordflow}{case} \textcolor{charliteral}{'m'}: multiplier = 60*1000; \textcolor{keywordflow}{break};
+        \textcolor{keywordflow}{case} \textcolor{charliteral}{'h'}: multiplier = 60*60*1000; \textcolor{keywordflow}{break};
+        \textcolor{keywordflow}{case} \textcolor{charliteral}{'d'}: multiplier = 60*60*24*1000; \textcolor{keywordflow}{break};
+        \textcolor{keywordflow}{default}: 
+            \hyperlink{_i_o_8h_a176c0577baa96c686397bca42f7ee6ff}{CERR} \textcolor{stringliteral}{"*** Unknown time specifier: "} << s.at(s.length()-1) << \textcolor{stringliteral}{" in "} << s << \textcolor{stringliteral}{". Did you
+       forget a unit?"} \hyperlink{_i_o_8h_a90dc3f3ee970394e0080300526390a84}{ENDL};
+            assert(0);
+    \}
+
+    \textcolor{keywordtype}{double} t = std::stod(s.substr(0,s.length()-1)); \textcolor{comment}{// all but the last character}
+
+    \textcolor{keywordflow}{return} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long})(t*multiplier); \textcolor{comment}{// note this effectively rounds to the nearest second }
+
+\}
+
+\textcolor{comment}{// Python-like pass statements}
+\textcolor{preprocessor}{#define pass}
+
+
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ Template magic to check if a class is iterable $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{_miscellaneous_8h}{Miscellaneous.\+h}\end{DoxyCompactItemize}

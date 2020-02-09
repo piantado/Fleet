@@ -1,0 +1,47 @@
+\hypertarget{_hash_8h}{}\section{src/\+Hash.h File Reference}
+\label{_hash_8h}\index{src/\+Hash.\+h@{src/\+Hash.\+h}}
+{\ttfamily \#include $<$functional$>$}\newline
+Include dependency graph for Hash.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=145pt]{_hash_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_hash_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_hash_8h_a3889263b112d3cf0441f8306419bd40f}{hash\+\_\+combine} (std\+::size\+\_\+t \&seed)
+\item 
+{\footnotesize template$<$typename T , typename... Rest$>$ }\\void \hyperlink{_hash_8h_a82f7966be3aea0476ded2ac21f703595}{hash\+\_\+combine} (std\+::size\+\_\+t \&seed, const T \&v, Rest... rest)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_hash_8h_a3889263b112d3cf0441f8306419bd40f}\label{_hash_8h_a3889263b112d3cf0441f8306419bd40f}} 
+\index{Hash.\+h@{Hash.\+h}!hash\+\_\+combine@{hash\+\_\+combine}}
+\index{hash\+\_\+combine@{hash\+\_\+combine}!Hash.\+h@{Hash.\+h}}
+\subsubsection{\texorpdfstring{hash\+\_\+combine()}{hash\_combine()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void hash\+\_\+combine (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t \&}]{seed }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{_hash_8h_a82f7966be3aea0476ded2ac21f703595}\label{_hash_8h_a82f7966be3aea0476ded2ac21f703595}} 
+\index{Hash.\+h@{Hash.\+h}!hash\+\_\+combine@{hash\+\_\+combine}}
+\index{hash\+\_\+combine@{hash\+\_\+combine}!Hash.\+h@{Hash.\+h}}
+\subsubsection{\texorpdfstring{hash\+\_\+combine()}{hash\_combine()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T , typename... Rest$>$ \\
+void hash\+\_\+combine (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t \&}]{seed,  }\item[{const T \&}]{v,  }\item[{Rest...}]{rest }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Simple way to combine hash functions 
+\begin{DoxyParams}{Parameters}
+{\em seed} & \\
+\hline
+{\em v} & \\
+\hline
+\end{DoxyParams}

@@ -1,0 +1,20 @@
+\hypertarget{dir_67097051198f01804fd0491398ca5ff2}{}\section{src/\+Hypotheses/\+Interfaces Directory Reference}
+\label{dir_67097051198f01804fd0491398ca5ff2}\index{src/\+Hypotheses/\+Interfaces Directory Reference@{src/\+Hypotheses/\+Interfaces Directory Reference}}
+Directory dependency graph for Interfaces\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=172pt]{dir_67097051198f01804fd0491398ca5ff2_dep}
+\end{center}
+\end{figure}
+\subsection*{Files}
+\begin{DoxyCompactItemize}
+\item 
+file \hyperlink{_bayesable_8h}{Bayesable.\+h}
+\begin{DoxyCompactList}\small\item\em The \hyperlink{class_bayesable}{Bayesable} class provides an interface for hypotheses that support Bayesian inference (e.\+g. computing priors, likelihoods, and posteriors) Note that this class stores prior, likelihood, posterior always at temperature 1.\+0, and you can get the values of the posterior at other temperatures via \hyperlink{class_bayesable_ac9ba96f829785f07919610941077b4c9}{Bayesable.\+at\+\_\+temperature(double t)} \end{DoxyCompactList}\item 
+file \hyperlink{_dispatchable_8h}{Dispatchable.\+h}
+\begin{DoxyCompactList}\small\item\em A class is dispatchable if it is able to implement custom operations and put its program onto a Program. \end{DoxyCompactList}\item 
+file \hyperlink{_m_c_m_cable_8h}{M\+C\+M\+Cable.\+h}
+\begin{DoxyCompactList}\small\item\em A class is \hyperlink{class_m_c_m_cable}{M\+C\+M\+Cable} if it is \hyperlink{class_bayesable}{Bayesable} and lets us propose, restart, and check equality (which M\+C\+MC does for speed). \end{DoxyCompactList}\item 
+file \hyperlink{_searchable_8h}{Searchable.\+h}
+\begin{DoxyCompactList}\small\item\em A class is searchable if permits us to enumerate and make its neighbors. This class is used by M\+C\+TS and allows us to incrementally search a hypothesis. \end{DoxyCompactList}\end{DoxyCompactItemize}

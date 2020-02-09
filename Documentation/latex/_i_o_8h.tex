@@ -1,0 +1,233 @@
+\hypertarget{_i_o_8h}{}\section{src/\+IO.h File Reference}
+\label{_i_o_8h}\index{src/\+I\+O.\+h@{src/\+I\+O.\+h}}
+{\ttfamily \#include $<$mutex$>$}\newline
+{\ttfamily \#include \char`\"{}dependencies/\+C\+L11.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+Include dependency graph for I\+O.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=332pt]{_i_o_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_i_o_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespace_fleet}{Fleet}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_i_o_8h_ad58a1fbfc85c7e4790fc55e654f50221}{T\+AB}~$<$$<$\char`\"{}\textbackslash{}t\char`\"{}$<$$<$
+\item 
+\#define \hyperlink{_i_o_8h_a90dc3f3ee970394e0080300526390a84}{E\+N\+DL}~$<$$<$std\+::endl;
+\item 
+\#define \hyperlink{_i_o_8h_a176c0577baa96c686397bca42f7ee6ff}{C\+E\+RR}~std\+::cerr$<$$<$
+\item 
+\#define \hyperlink{_i_o_8h_a8c54b10b84183429bcbcbc82c92fcca9}{C\+O\+UT}~std\+::cout$<$$<$
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+C\+L\+I\+::\+App \hyperlink{namespace_fleet_a92846af38313a15b39c9ddc67e3d4f67}{Fleet\+::\+Default\+Arguments} (const char $\ast$brief)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+std\+::mutex \hyperlink{namespace_fleet_a491597c9b994a0860400d0eacf5af996}{Fleet\+::output\+\_\+lock}
+\item 
+const std\+::string \hyperlink{_i_o_8h_a76c8bc895608bbc674b79ee983253c2c}{Child\+Str} = \char`\"{}\%s\char`\"{}
+\item 
+unsigned long \hyperlink{_i_o_8h_a12c1770dd59218653e93654929217160}{random\+\_\+seed} = 0
+\item 
+unsigned long \hyperlink{_i_o_8h_ad833ee178f01ff5581557af0202e8fe8}{mcts\+\_\+steps} = 0
+\item 
+unsigned long \hyperlink{_i_o_8h_a7ce35df3004d645fbdd9af351534a8e2}{mcmc\+\_\+steps} = 0
+\item 
+unsigned long \hyperlink{_i_o_8h_a7ebce42e92f5a5f423bd53058bc55055}{thin} = 0
+\item 
+unsigned long \hyperlink{_i_o_8h_affafd1fd79c4b9326a59ab232ed717b5}{ntop} = 100
+\item 
+unsigned long \hyperlink{_i_o_8h_a00dbecb78c8e24ca54abc2fa11ca686d}{mcmc\+\_\+restart} = 0
+\item 
+unsigned long \hyperlink{_i_o_8h_a327e442f01b74eff38e6d52f113c8614}{checkpoint} = 0
+\item 
+double \hyperlink{_i_o_8h_a561c6966fb4883979872cb97465409b8}{explore} = 1.\+0
+\item 
+size\+\_\+t \hyperlink{_i_o_8h_a66a588988a3bc62a9ba92966365696f2}{nthreads} = 1
+\item 
+unsigned long \hyperlink{_i_o_8h_ad0c33678732e81d04a53bcf7b5ca690d}{runtime} = 0
+\item 
+unsigned long \hyperlink{_i_o_8h_a92f429398e8ed8dfb94d1648d8f13610}{nchains} = 1
+\item 
+bool \hyperlink{_i_o_8h_ae4426f467d61ae456b95844d4d9c2dcd}{quiet} = false
+\item 
+std\+::string \hyperlink{_i_o_8h_aa14dbbb4b5614a1e7a5b4281baa64b89}{input\+\_\+path} = \char`\"{}input.\+txt\char`\"{}
+\item 
+std\+::string \hyperlink{_i_o_8h_ac5f6d990a0bcb9e8a0734beaf02ac77a}{tree\+\_\+path} = \char`\"{}tree.\+txt\char`\"{}
+\item 
+std\+::string \hyperlink{_i_o_8h_ad050f6983575482fc1cde1793c1eff44}{output\+\_\+path} = \char`\"{}output.\+txt\char`\"{}
+\item 
+std\+::string \hyperlink{_i_o_8h_ab6ef3c9af61a275db097767959de6125}{timestring} = \char`\"{}0s\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_i_o_8h_a176c0577baa96c686397bca42f7ee6ff}\label{_i_o_8h_a176c0577baa96c686397bca42f7ee6ff}} 
+\index{I\+O.\+h@{I\+O.\+h}!C\+E\+RR@{C\+E\+RR}}
+\index{C\+E\+RR@{C\+E\+RR}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{C\+E\+RR}{CERR}}
+{\footnotesize\ttfamily \#define C\+E\+RR~std\+::cerr$<$$<$}
+
+\mbox{\Hypertarget{_i_o_8h_a8c54b10b84183429bcbcbc82c92fcca9}\label{_i_o_8h_a8c54b10b84183429bcbcbc82c92fcca9}} 
+\index{I\+O.\+h@{I\+O.\+h}!C\+O\+UT@{C\+O\+UT}}
+\index{C\+O\+UT@{C\+O\+UT}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{C\+O\+UT}{COUT}}
+{\footnotesize\ttfamily \#define C\+O\+UT~std\+::cout$<$$<$}
+
+\mbox{\Hypertarget{_i_o_8h_a90dc3f3ee970394e0080300526390a84}\label{_i_o_8h_a90dc3f3ee970394e0080300526390a84}} 
+\index{I\+O.\+h@{I\+O.\+h}!E\+N\+DL@{E\+N\+DL}}
+\index{E\+N\+DL@{E\+N\+DL}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{E\+N\+DL}{ENDL}}
+{\footnotesize\ttfamily \#define E\+N\+DL~$<$$<$std\+::endl;}
+
+\mbox{\Hypertarget{_i_o_8h_ad58a1fbfc85c7e4790fc55e654f50221}\label{_i_o_8h_ad58a1fbfc85c7e4790fc55e654f50221}} 
+\index{I\+O.\+h@{I\+O.\+h}!T\+AB@{T\+AB}}
+\index{T\+AB@{T\+AB}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{T\+AB}{TAB}}
+{\footnotesize\ttfamily \#define T\+AB~$<$$<$\char`\"{}\textbackslash{}t\char`\"{}$<$$<$}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{_i_o_8h_a327e442f01b74eff38e6d52f113c8614}\label{_i_o_8h_a327e442f01b74eff38e6d52f113c8614}} 
+\index{I\+O.\+h@{I\+O.\+h}!checkpoint@{checkpoint}}
+\index{checkpoint@{checkpoint}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{checkpoint}{checkpoint}}
+{\footnotesize\ttfamily unsigned long checkpoint = 0}
+
+\mbox{\Hypertarget{_i_o_8h_a76c8bc895608bbc674b79ee983253c2c}\label{_i_o_8h_a76c8bc895608bbc674b79ee983253c2c}} 
+\index{I\+O.\+h@{I\+O.\+h}!Child\+Str@{Child\+Str}}
+\index{Child\+Str@{Child\+Str}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{Child\+Str}{ChildStr}}
+{\footnotesize\ttfamily const std\+::string Child\+Str = \char`\"{}\%s\char`\"{}}
+
+
+\begin{DoxyCode}
+    A Handler \textcolor{keywordflow}{for} CTRL\_C
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+\textcolor{comment}{// NOTE: this must be registered in main with signal(SIGINT, fleet\_interrupt\_handler);}
+
+\textcolor{keyword}{volatile} sig\_atomic\_t CTRL\_C = \textcolor{keyword}{false};
+\textcolor{keywordtype}{void} fleet\_interrupt\_handler(\textcolor{keywordtype}{int} signum) \{ 
+    \textcolor{keywordflow}{if}(signum == SIGINT) \{
+        CTRL\_C = \textcolor{keyword}{true}; 
+    \}
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(signum == SIGHUP) \{
+        \textcolor{comment}{// do nothing -- defaultly Fleet mutes SIGHUP so that commands left in the terminal will continue}
+        \textcolor{comment}{// this is so that if we get disconnected on a terminal run, the job is maintained}
+    \}   
+\} 
+
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ These are standard variables that occur nearly universally in these searches $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ \mbox{\Hypertarget{_i_o_8h_a561c6966fb4883979872cb97465409b8}\label{_i_o_8h_a561c6966fb4883979872cb97465409b8}} 
+\index{I\+O.\+h@{I\+O.\+h}!explore@{explore}}
+\index{explore@{explore}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{explore}{explore}}
+{\footnotesize\ttfamily double explore = 1.\+0}
+
+\mbox{\Hypertarget{_i_o_8h_aa14dbbb4b5614a1e7a5b4281baa64b89}\label{_i_o_8h_aa14dbbb4b5614a1e7a5b4281baa64b89}} 
+\index{I\+O.\+h@{I\+O.\+h}!input\+\_\+path@{input\+\_\+path}}
+\index{input\+\_\+path@{input\+\_\+path}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{input\+\_\+path}{input\_path}}
+{\footnotesize\ttfamily std\+::string input\+\_\+path = \char`\"{}input.\+txt\char`\"{}}
+
+\mbox{\Hypertarget{_i_o_8h_a00dbecb78c8e24ca54abc2fa11ca686d}\label{_i_o_8h_a00dbecb78c8e24ca54abc2fa11ca686d}} 
+\index{I\+O.\+h@{I\+O.\+h}!mcmc\+\_\+restart@{mcmc\+\_\+restart}}
+\index{mcmc\+\_\+restart@{mcmc\+\_\+restart}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{mcmc\+\_\+restart}{mcmc\_restart}}
+{\footnotesize\ttfamily unsigned long mcmc\+\_\+restart = 0}
+
+\mbox{\Hypertarget{_i_o_8h_a7ce35df3004d645fbdd9af351534a8e2}\label{_i_o_8h_a7ce35df3004d645fbdd9af351534a8e2}} 
+\index{I\+O.\+h@{I\+O.\+h}!mcmc\+\_\+steps@{mcmc\+\_\+steps}}
+\index{mcmc\+\_\+steps@{mcmc\+\_\+steps}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{mcmc\+\_\+steps}{mcmc\_steps}}
+{\footnotesize\ttfamily unsigned long mcmc\+\_\+steps = 0}
+
+\mbox{\Hypertarget{_i_o_8h_ad833ee178f01ff5581557af0202e8fe8}\label{_i_o_8h_ad833ee178f01ff5581557af0202e8fe8}} 
+\index{I\+O.\+h@{I\+O.\+h}!mcts\+\_\+steps@{mcts\+\_\+steps}}
+\index{mcts\+\_\+steps@{mcts\+\_\+steps}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{mcts\+\_\+steps}{mcts\_steps}}
+{\footnotesize\ttfamily unsigned long mcts\+\_\+steps = 0}
+
+\mbox{\Hypertarget{_i_o_8h_a92f429398e8ed8dfb94d1648d8f13610}\label{_i_o_8h_a92f429398e8ed8dfb94d1648d8f13610}} 
+\index{I\+O.\+h@{I\+O.\+h}!nchains@{nchains}}
+\index{nchains@{nchains}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{nchains}{nchains}}
+{\footnotesize\ttfamily unsigned long nchains = 1}
+
+\mbox{\Hypertarget{_i_o_8h_a66a588988a3bc62a9ba92966365696f2}\label{_i_o_8h_a66a588988a3bc62a9ba92966365696f2}} 
+\index{I\+O.\+h@{I\+O.\+h}!nthreads@{nthreads}}
+\index{nthreads@{nthreads}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{nthreads}{nthreads}}
+{\footnotesize\ttfamily size\+\_\+t nthreads = 1}
+
+\mbox{\Hypertarget{_i_o_8h_affafd1fd79c4b9326a59ab232ed717b5}\label{_i_o_8h_affafd1fd79c4b9326a59ab232ed717b5}} 
+\index{I\+O.\+h@{I\+O.\+h}!ntop@{ntop}}
+\index{ntop@{ntop}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{ntop}{ntop}}
+{\footnotesize\ttfamily unsigned long ntop = 100}
+
+\mbox{\Hypertarget{_i_o_8h_ad050f6983575482fc1cde1793c1eff44}\label{_i_o_8h_ad050f6983575482fc1cde1793c1eff44}} 
+\index{I\+O.\+h@{I\+O.\+h}!output\+\_\+path@{output\+\_\+path}}
+\index{output\+\_\+path@{output\+\_\+path}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{output\+\_\+path}{output\_path}}
+{\footnotesize\ttfamily std\+::string output\+\_\+path = \char`\"{}output.\+txt\char`\"{}}
+
+\mbox{\Hypertarget{_i_o_8h_ae4426f467d61ae456b95844d4d9c2dcd}\label{_i_o_8h_ae4426f467d61ae456b95844d4d9c2dcd}} 
+\index{I\+O.\+h@{I\+O.\+h}!quiet@{quiet}}
+\index{quiet@{quiet}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{quiet}{quiet}}
+{\footnotesize\ttfamily bool quiet = false}
+
+\mbox{\Hypertarget{_i_o_8h_a12c1770dd59218653e93654929217160}\label{_i_o_8h_a12c1770dd59218653e93654929217160}} 
+\index{I\+O.\+h@{I\+O.\+h}!random\+\_\+seed@{random\+\_\+seed}}
+\index{random\+\_\+seed@{random\+\_\+seed}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{random\+\_\+seed}{random\_seed}}
+{\footnotesize\ttfamily unsigned long random\+\_\+seed = 0}
+
+\mbox{\Hypertarget{_i_o_8h_ad0c33678732e81d04a53bcf7b5ca690d}\label{_i_o_8h_ad0c33678732e81d04a53bcf7b5ca690d}} 
+\index{I\+O.\+h@{I\+O.\+h}!runtime@{runtime}}
+\index{runtime@{runtime}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{runtime}{runtime}}
+{\footnotesize\ttfamily unsigned long runtime = 0}
+
+\mbox{\Hypertarget{_i_o_8h_a7ebce42e92f5a5f423bd53058bc55055}\label{_i_o_8h_a7ebce42e92f5a5f423bd53058bc55055}} 
+\index{I\+O.\+h@{I\+O.\+h}!thin@{thin}}
+\index{thin@{thin}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{thin}{thin}}
+{\footnotesize\ttfamily unsigned long thin = 0}
+
+\mbox{\Hypertarget{_i_o_8h_ab6ef3c9af61a275db097767959de6125}\label{_i_o_8h_ab6ef3c9af61a275db097767959de6125}} 
+\index{I\+O.\+h@{I\+O.\+h}!timestring@{timestring}}
+\index{timestring@{timestring}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{timestring}{timestring}}
+{\footnotesize\ttfamily std\+::string timestring = \char`\"{}0s\char`\"{}}
+
+\mbox{\Hypertarget{_i_o_8h_ac5f6d990a0bcb9e8a0734beaf02ac77a}\label{_i_o_8h_ac5f6d990a0bcb9e8a0734beaf02ac77a}} 
+\index{I\+O.\+h@{I\+O.\+h}!tree\+\_\+path@{tree\+\_\+path}}
+\index{tree\+\_\+path@{tree\+\_\+path}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{tree\+\_\+path}{tree\_path}}
+{\footnotesize\ttfamily std\+::string tree\+\_\+path = \char`\"{}tree.\+txt\char`\"{}}
+

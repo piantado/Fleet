@@ -1,0 +1,5 @@
+<map id="VirtualMachineState&lt; t_x, t_return &gt;" name="VirtualMachineState&lt; t_x, t_return &gt;">
+<area shape="rect" id="node2" href="$class_stack.html" title="Stack\&lt; t_x \&gt;" alt="" coords="243,5,342,32"/>
+<area shape="rect" id="node4" href="$struct_virtual_machine_state_1_1t__stack.html" title="VirtualMachineState\l\&lt; t_x, t_return \&gt;::t\l_stack\&lt; FLEET_GRAMMAR\l_TYPES \&gt;" alt="" coords="197,57,388,127"/>
+<area shape="rect" id="node5" href="$class_stack.html" title="Stack\&lt; std::pair\&lt; index\l_t, t_x \&gt; \&gt;" alt="" coords="213,151,372,193"/>
+</map>

@@ -1,0 +1,91 @@
+\hypertarget{structhas__operator__lessthan__impl}{}\section{has\+\_\+operator\+\_\+lessthan\+\_\+impl$<$ T, Equal\+To $>$ Struct Template Reference}
+\label{structhas__operator__lessthan__impl}\index{has\+\_\+operator\+\_\+lessthan\+\_\+impl$<$ T, Equal\+To $>$@{has\+\_\+operator\+\_\+lessthan\+\_\+impl$<$ T, Equal\+To $>$}}
+
+
+{\ttfamily \#include $<$Template\+Magic.\+h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{structhas__operator__lessthan__impl_a94158125949ce4db0eefedbdc4cbad73}{type} = typename std\+::is\+\_\+same$<$ bool, decltype(\hyperlink{structhas__operator__lessthan__impl_a5eee8607153dcb4ac5ed91df37251062}{test}$<$ T, Equal\+To $>$(0))$>$\+::\hyperlink{structhas__operator__lessthan__impl_a94158125949ce4db0eefedbdc4cbad73}{type}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$class U , class V $>$ }\\static auto \hyperlink{structhas__operator__lessthan__impl_a5eee8607153dcb4ac5ed91df37251062}{test} (U $\ast$) -\/$>$ decltype(std\+::declval$<$ U $>$()$<$ std\+::declval$<$ V $>$())
+\item 
+{\footnotesize template$<$typename , typename $>$ }\\static auto \hyperlink{structhas__operator__lessthan__impl_ae64af96a16053f6ded781dda66fc5fb1}{test} (...) -\/$>$ std\+::false\+\_\+type
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class T, class Equal\+To$>$\newline
+struct has\+\_\+operator\+\_\+lessthan\+\_\+impl$<$ T, Equal\+To $>$}
+
+
+\begin{DoxyCode}
+    Find the numerical index (as a nonterminal\_t) in a tuple of a given \hyperlink{structhas__operator__lessthan__impl_a94158125949ce4db0eefedbdc4cbad73}{type}
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+\textcolor{comment}{// When users define the macro FLEET\_GRAMMAR\_TYPES, as in }
+\textcolor{comment}{// #define FLEET\_GRAMMAR\_TYPES int,double,char}
+\textcolor{comment}{// then we can use type2int to map each to a unique int. This mapping to ints is}
+\textcolor{comment}{// for example how Fleet stores information in the grammar}
+
+\textcolor{comment}{// When users define the macro FLEET\_GRAMMAR\_TYPES, as in }
+\textcolor{comment}{// #define FLEET\_GRAMMAR\_TYPES int,double,char}
+\textcolor{comment}{// then we can use type2int to map each to a unique int. This mapping to ints is}
+\textcolor{comment}{// for example how Fleet stores information in the grammar}
+
+\textcolor{keyword}{typedef} \textcolor{keywordtype}{size\_t} nonterminal\_t;
+
+\textcolor{comment}{// from https://stackoverflow.com/questions/42258608/c-constexpr-values-for-types}
+\textcolor{keyword}{template} <\textcolor{keyword}{class} T, \textcolor{keyword}{class} Tuple>
+\textcolor{keyword}{struct }TypeIndex;
+
+\textcolor{keyword}{template} <\textcolor{keyword}{class }T, \textcolor{keyword}{class}... Types>
+\textcolor{keyword}{struct }TypeIndex<T, std::tuple<T, Types...>> \{
+    \textcolor{keyword}{static} \textcolor{keyword}{const} nonterminal\_t value = 0;
+\};
+
+\textcolor{keyword}{template} <\textcolor{keyword}{class }T, \textcolor{keyword}{class }U, \textcolor{keyword}{class}... Types>
+\textcolor{keyword}{struct }TypeIndex<T, std::tuple<U, Types...>> \{
+    \textcolor{keyword}{static} \textcolor{keyword}{const} nonterminal\_t value = 1 + TypeIndex<T, std::tuple<Types...>>::value;
+\};
+
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ Fancy trick to see if a class implements operator$<$ (for filtering out in op\+\_\+\+M\+EM code so it doesn\textquotesingle{}t give an error if we use t\+\_\+input that doesn\textquotesingle{}t implement operator$<$ as long as no op\+\_\+\+M\+EM is called $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{structhas__operator__lessthan__impl_a94158125949ce4db0eefedbdc4cbad73}\label{structhas__operator__lessthan__impl_a94158125949ce4db0eefedbdc4cbad73}} 
+\index{has\+\_\+operator\+\_\+lessthan\+\_\+impl@{has\+\_\+operator\+\_\+lessthan\+\_\+impl}!type@{type}}
+\index{type@{type}!has\+\_\+operator\+\_\+lessthan\+\_\+impl@{has\+\_\+operator\+\_\+lessthan\+\_\+impl}}
+\subsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily template$<$class T, class Equal\+To$>$ \\
+using \hyperlink{structhas__operator__lessthan__impl}{has\+\_\+operator\+\_\+lessthan\+\_\+impl}$<$ T, Equal\+To $>$\+::\hyperlink{structhas__operator__lessthan__impl_a94158125949ce4db0eefedbdc4cbad73}{type} =  typename std\+::is\+\_\+same$<$bool, decltype(\hyperlink{structhas__operator__lessthan__impl_a5eee8607153dcb4ac5ed91df37251062}{test}$<$T, Equal\+To$>$(0))$>$\+::\hyperlink{structhas__operator__lessthan__impl_a94158125949ce4db0eefedbdc4cbad73}{type}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{structhas__operator__lessthan__impl_a5eee8607153dcb4ac5ed91df37251062}\label{structhas__operator__lessthan__impl_a5eee8607153dcb4ac5ed91df37251062}} 
+\index{has\+\_\+operator\+\_\+lessthan\+\_\+impl@{has\+\_\+operator\+\_\+lessthan\+\_\+impl}!test@{test}}
+\index{test@{test}!has\+\_\+operator\+\_\+lessthan\+\_\+impl@{has\+\_\+operator\+\_\+lessthan\+\_\+impl}}
+\subsubsection{\texorpdfstring{test()}{test()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class T, class Equal\+To$>$ \\
+template$<$class U , class V $>$ \\
+static auto \hyperlink{structhas__operator__lessthan__impl}{has\+\_\+operator\+\_\+lessthan\+\_\+impl}$<$ T, Equal\+To $>$\+::test (\begin{DoxyParamCaption}\item[{U $\ast$}]{ }\end{DoxyParamCaption}) -\/$>$  decltype(std\+::declval$<$ U $>$()$<$ std\+::declval$<$ V $>$())\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{structhas__operator__lessthan__impl_ae64af96a16053f6ded781dda66fc5fb1}\label{structhas__operator__lessthan__impl_ae64af96a16053f6ded781dda66fc5fb1}} 
+\index{has\+\_\+operator\+\_\+lessthan\+\_\+impl@{has\+\_\+operator\+\_\+lessthan\+\_\+impl}!test@{test}}
+\index{test@{test}!has\+\_\+operator\+\_\+lessthan\+\_\+impl@{has\+\_\+operator\+\_\+lessthan\+\_\+impl}}
+\subsubsection{\texorpdfstring{test()}{test()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class T, class Equal\+To$>$ \\
+template$<$typename , typename $>$ \\
+static auto \hyperlink{structhas__operator__lessthan__impl}{has\+\_\+operator\+\_\+lessthan\+\_\+impl}$<$ T, Equal\+To $>$\+::test (\begin{DoxyParamCaption}\item[{}]{... }\end{DoxyParamCaption}) -\/$>$  std\+::false\+\_\+type\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{_template_magic_8h}{Template\+Magic.\+h}\end{DoxyCompactItemize}
