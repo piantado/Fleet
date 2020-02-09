@@ -171,7 +171,7 @@ public:
 	virtual int neighbors() const {
 		if(value.is_null()) { // if the value is null, our neighbors is the number of ways we can do nt
 			auto nt = grammar->nt<t_output>();
-			return grammar->count_expansions(nt);
+			return grammar->count_rules(nt);
 		}
 		else {
 			return grammar->neighbors(value);
@@ -186,7 +186,7 @@ public:
 		auto nt = grammar->nt<t_output>();
 		if(value.is_null()) {
 			assert(k >= 0);
-			assert(k < (int)grammar->count_expansions(nt));
+			assert(k < (int)grammar->count_rules(nt));
 			auto r = grammar->get_rule(nt,(size_t)k);
 			h.value = grammar->makeNode(r);
 		}

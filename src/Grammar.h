@@ -91,6 +91,8 @@ public:
 		 * @param nt
 		 * @return 
 		 */		
+		assert(nt >= 0);
+		assert(nt < N_NTs);
 		return rules[nt].size();
 	}	
 	size_t count_rules() const {
@@ -131,12 +133,7 @@ public:
 		}
 		return n;
 	}
-	
-	size_t count_expansions(const nonterminal_t nt) const {	
-		assert(nt >= 0);
-		assert(nt < N_NTs);
-		return rules[nt].size(); 
-	}
+
 
 	void show(std::string prefix="# ") {
 		/**
@@ -859,7 +856,7 @@ public:
 		size_t n=0;
 		for(size_t i=0;i<node.rule->N;i++){
 			if(node.child(i).is_null()) {
-				return count_expansions(node.rule->type(i)); // NOTE: must use rule->child_types since child[i]->rule->nt is always 0 for NullRules
+				return count_rules(node.rule->type(i)); // NOTE: must use rule->child_types since child[i]->rule->nt is always 0 for NullRules
 			}
 			else {
 				return neighbors(node.child(i));
@@ -876,7 +873,7 @@ public:
 		// we could have taken. 
 		for(size_t i=0;i<node.rule->N;i++){
 			if(node.child(i).is_null()) {
-				int c = count_expansions(node.rule->type(i));
+				int c = count_rules(node.rule->type(i));
 				if(which >= 0 && which < c) {
 					auto r = get_rule(node.rule->type(i), (size_t)which);
 					node.set_child(i, makeNode(r));
