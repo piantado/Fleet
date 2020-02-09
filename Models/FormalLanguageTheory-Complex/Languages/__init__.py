@@ -47,7 +47,7 @@ from Count import Count
 from Pullum import *
 from Fibo import Fibo
 from AnBnCnDnEn import AnBnCnDnEn
-from AnBmAnBmCCC import AnBmAnBmCCC
+from AnBmAnBmCCC import AnBmAnBmCCC, AnBmAnBm
 from WeW import WeW
 from An2 import An2
 from ChineseNumeral import ChineseNumeral

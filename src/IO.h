@@ -20,6 +20,9 @@ namespace Fleet {
 //#define PRINTN(x) { output_lock.lock(); std::cout << x << std::endl; output_lock.unlock() }
 
 
+// ADD DEBUG(...) that is only there if we have a defined debug symbol....
+
+
 //class DebugBlock {
 //	// Handy debug printing when a variable enters and exists scope
 //	std::string enter;
@@ -52,9 +55,6 @@ namespace Fleet {
 //	std::lock_guard guard(Fleet::output_lock);
 //	_print_wrapper(args..., end, sep, std::cout);
 //}
-
-
-
 
 // Want: A handy debugging macro that takes a variable name and prints 
 // variadic tab separated list of args

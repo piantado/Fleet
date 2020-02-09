@@ -105,7 +105,7 @@ public:
 		for(size_t i =0;i<N;i++) {
 			out += " " + str(child_types[i]);
 		}
-		out += "\t w/ p=" + str(p);
+		out += "\t w/ p \u221D " + str(p);
 		return out;
 	}
 	

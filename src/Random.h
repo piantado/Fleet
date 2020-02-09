@@ -168,6 +168,8 @@ double lp_sample_eq(const t& x, const T& s, std::function<double(const t&)>& f =
 			px += f(y); 
 	}
 	
+	assert(px <= z);
+	
 	return log(px)-log(z);
 }
 

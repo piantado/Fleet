@@ -21,7 +21,7 @@ class Lexicon : public MCMCable<HYP,t_datum>,
 				public Searchable<HYP,t_input,t_output>
 {
 		// Store a lexicon of type T elements
-	
+	const static char FactorDelimiter = '|';
 public:
 	std::vector<T> factors;
 	
@@ -57,10 +57,27 @@ public:
 		for(size_t i=0;i<factors.size();i++) {
 			out += factors[i].parseable();
 			if(i < factors.size()-1) 
-				out += "|";
+				out += Lexicon::FactorDelimiter;
 		}
 		return out;
 	}
+	
+	static HYP from_string(Grammar& g, std::string s) {
+		/**
+		 * @brief Convert a string to a lexicon of this type
+		 * @param g
+		 * @param s
+		 * @return 
+		 */
+
+		HYP h;
+		for(auto f : split(s, Lexicon::FactorDelimiter)) {
+			T ih(&g, g.expand_from_names(f));
+			h.factors.push_back(ih);
+		}
+		return h;
+	}
+
 	
 	virtual size_t hash() const {
 		/**

@@ -8,7 +8,7 @@ using S = std::string; // just for convenience
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 S alphabet = "01"; // the alphabet we use (possibly specified on command line)
-//S datastr = "";
+//S datastr = "1011001110";
 //S datastr  = "011,011011,011011011"; // the data, comma separated
 //S datastr = "01,01001";
 S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated
@@ -106,7 +106,8 @@ public:
 	
 	void print(std::string prefix="") {
 		// we're going to make this print by showing the language we created on the line before
-		prefix  = prefix+"#\n#" +  this->call("", "<err>").string() + "\n"; 
+		prefix = prefix+"#\n#" +  this->call("", "<err>").string() + "\n";
+//		prefix += str(grammar->compute_enumeration_order(value)) + "\t"; 
 		Super::print(prefix); 
 	}
 };
@@ -221,23 +222,23 @@ int main(int argc, char** argv){
 //	
 ////	return 0;
 	
-//	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
-//	tic();
-//	samp.run(Control(mcmc_steps, runtime, nthreads), 1000, 3000); //30000);		
-//	tic();
-//	
-	// Show the best we've found
-//	top.print();
+	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
+	tic();
+	samp.run(Control(mcmc_steps, runtime, nthreads), 1000, 3000); //30000);		
+	tic();
+	
+//	 Show the best we've found
+	top.print();
 
 	
-	MCMCChain c(h0, &mydata, top);
-	tic();
-	c.run(Control(mcmc_steps, runtime, nthreads));
-	tic();
-	
-	for(auto& h : top.values()) {
-		COUT top[h] TAB h.posterior TAB h.prior TAB h.likelihood TAB h.string() ENDL;		
-	}
+//	MCMCChain c(h0, &mydata, top);
+//	tic();
+//	c.run(Control(mcmc_steps, runtime, nthreads));
+//	tic();
+//	
+//	for(auto& h : top.values()) {
+//		COUT top[h] TAB h.posterior TAB h.prior TAB h.likelihood TAB h.string() ENDL;		
+//	}
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;

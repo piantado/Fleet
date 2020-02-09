@@ -83,7 +83,6 @@ namespace Proposals {
 		Node old_s = *s.first; // the old value of s, copied -- needed for fb
 		std::function can_resample_nt = [=](const Node& n) -> double { return can_resample(n)*(n.nt() == s.first->nt()); };
 		
-		double slp = grammar->log_probability(*s.first);
 		Node t = grammar->generate(s.first->nt()); // make something new of the same type as s
 		auto q = sample<Node,Node>(t, can_resample_nt); // q points to something below in t of type s
 		
@@ -91,17 +90,26 @@ namespace Proposals {
 	
 		// now if we replace something below t with s, there are multiples ones we could have done...
 		auto lpq = lp_sample_eq(*s.first, t, can_resample_nt); // 
+			
+//		CERR "----INSERT-----------" ENDL;
+//		CERR from ENDL;
+//		CERR *s.first ENDL;
+//		CERR t ENDL;
+//		CERR s.second TAB grammar->log_probability(t) TAB grammar->log_probability(old_s) TAB lpq ENDL;
+		
 	
 		s.first->set_to(t); // now since s pointed to something in ret, we're done  
 		
 		// forward is choosing s, generating everything *except* what replaced s, and then replacing
 		double forward = s.second +  // must get exactly this s
-						 (grammar->log_probability(t)-slp) +  // generate the rest of the tree
+						 (grammar->log_probability(t)-grammar->log_probability(old_s)) +  // generate the rest of the tree
 						 lpq; // probability of getting any s
 		
 		/// backward is we choose t exactly, then we pick anything below that is equal to s
 		double backward = lp_sample_one<Node,Node>(*s.first, ret, can_resample) + 
 						  lp_sample_eq<Node,Node>(old_s, *s.first, can_resample_nt);
+//		CERR forward TAB backward ENDL;
+//		CERR ret ENDL;
 		
 		return std::make_pair(ret, forward-backward);		
 	}
@@ -129,8 +137,14 @@ namespace Proposals {
 		
 		auto q = sample(*s.first, can_resample_nt);
 		
+		
+//		CERR "----DELETE-----------" ENDL;
+//		CERR from ENDL;
+//		CERR old_s ENDL;		
+//		CERR *q.first ENDL;
+		
 		// forward is choosing s, and then anything equal to q within
-		double forward = s.second + lp_sample_eq<Node,Node>(*q.first, old_s, can_resample_nt); 
+		double forward = s.second + lp_sample_eq<Node,Node>(*q.first, *s.first, can_resample_nt); 
 		
 		// probability of generating everything in s except q
 		double tlp = grammar->log_probability(old_s) - grammar->log_probability(*q.first); 
@@ -142,10 +156,8 @@ namespace Proposals {
 						  tlp + 
 						  lp_sample_eq<Node,Node>(*q.first,old_s,can_resample_nt);
 							
-		
-		// NOTE: TODO: The above is not quite right because we could have chosen a bunch of different ses
-		// I think we need to use an aux variable argument on choosing s
-//		CERR "DELETE" TAB from.string() TAB ret.string() ENDL;
+//		CERR forward TAB backward ENDL;
+//		CERR ret ENDL;
 		
 		return std::make_pair(ret, forward-backward);		
 	}

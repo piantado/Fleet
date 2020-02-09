@@ -497,7 +497,7 @@ public:
 		
 		assert(!q.empty() && "*** Should not ever get to here with an empty queue -- are you missing arguments?");
 		
-		auto [nts, pfx] = divide(q.front(), ':');
+		auto [nts, pfx] = divide(q.front(), Node::NTDelimiter);
 		q.pop_front();
 		
 		// null rules:
@@ -513,9 +513,7 @@ public:
 			v.set_child(i, expand_from_names(q));
 
 			if(r->type(i) != v.child(i).rule->nt) {
-				CERR "*** Grammar expected type " << r->type(i) << 
-					 " but got type " << v.child(i).rule->nt << " at " << 
-					 r->format << " argument " << i ENDL;
+				CERR "*** Grammar expected type " << r->type(i) << " but got type " << v.child(i).rule->nt << " at " << r->format << " argument " << i ENDL;
 				assert(false && "Bad names in expand_from_names."); // just check that we didn't miss this up
 			}
 			
@@ -530,7 +528,7 @@ public:
 		 * @return 
 		 */
 		
-		std::deque<std::string> stk = split(s, ';');    
+		std::deque<std::string> stk = split(s, Node::RuleDelimiter);    
         return expand_from_names(stk);
 	}
 	

@@ -127,6 +127,11 @@ public:
 	virtual std::string parseable() const { 
 		return value.parseable(); 
 	}
+	static HYP from_string(Grammar& g, std::string s) {
+		return HYP(g, g.expand_from_names(s));
+	}
+	
+	
 	virtual size_t hash() const {
 		return value.hash();
 	}

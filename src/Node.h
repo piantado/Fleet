@@ -7,9 +7,15 @@
 
 class Node {
 	
+	
 public:
 	Node* parent; 
 	size_t pi; // what index am I in the parent?
+
+	// These are used in parseable to delimit nodes nonterminals and multiple nodes in a tree
+	const static char NTDelimiter = ':'; // delimit nt:format 
+	const static char RuleDelimiter = ';'; // delimit a sequence of nt:format;nt:format; etc
+
 
 protected:
 	std::vector<Node> children; // TODO make this protected so we don't set children -- must use set_child
@@ -487,9 +493,9 @@ public:
 		 */
 		
 		// get a string like one we could parse
-		std::string out = str(this->nt()) + ":" + rule->format;
+		std::string out = str(this->nt()) + NTDelimiter + rule->format;
 		for(auto& c: children) {
-			out += ";" + c.parseable();
+			out += RuleDelimiter + c.parseable();
 		}
 		return out;
 	}
@@ -623,7 +629,7 @@ public:
 Node::NodeIterator Node::EndNodeIterator = NodeIterator(nullptr);
 
 
-std::ostream& operator<<(std::ostream& o, Node& n) {
+std::ostream& operator<<(std::ostream& o, const Node& n) {
 	o << n.string();
 	return o;
 }

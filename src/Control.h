@@ -48,23 +48,23 @@ struct Control {
 		++done_steps;
 		
 		if(break_CTRLC and CTRL_C) {
-#ifdef DEBUG_CONTROL
-	std::cerr << "Control break on CTRL_C"  << std::endl;
-#endif			
+			#ifdef DEBUG_CONTROL
+				std::cerr << "Control break on CTRL_C"  << std::endl;
+			#endif			
 			return false; 
 		}
 		
 		if(steps > 0 and done_steps > steps) {
-#ifdef DEBUG_CONTROL
-	std::cerr << "Control break on steps"  << std::endl;
-#endif			
+			#ifdef DEBUG_CONTROL
+				std::cerr << "Control break on steps"  << std::endl;
+			#endif			
 			return false;
 		}
 		
 		if(time > 0 and time_since(start_time) > time) {
-#ifdef DEBUG_CONTROL
-	std::cerr << "Control break on time\t"<< time << std::endl;
-#endif	
+			#ifdef DEBUG_CONTROL
+				std::cerr << "Control break on time\t"<< time << std::endl;
+			#endif	
 			return false;
 		}
 			
