@@ -1,7 +1,7 @@
 
 #pragma once 
 
-//#define DEBUG_MCTS 1
+#define DEBUG_MCTS 1
 
 #include <atomic>
 #include <mutex>
@@ -46,8 +46,7 @@ public:
     ScoringType scoring_type;// how do I score playouts?
   
     MCTSNode(MCTSNode* par, HYP& v) 
-		: callback(par->callback), 
-		  explore(par->explore), data(par->data), parent(par), value(v), scoring_type(par->scoring_type) {
+		: callback(par->callback), explore(par->explore), data(par->data), parent(par), value(v), scoring_type(par->scoring_type) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
 		
         initialize();	
@@ -220,9 +219,7 @@ public:
 	virtual void playout(Control inner_ctl) {
 		// this is how we compute playouts here -- defaultly mcmc 
 
-#ifdef DEBUG_MCTS
-	COUT "\tPLAYOUT " <<  value.string() TAB std::this_thread::get_id() ENDL;
-#endif
+		if(DEBUG_MCTS) DEBUG( "\tPLAYOUT ", value.string());
 
 		HYP h0 = value; // need a copy to change resampling on 
 		
@@ -262,9 +259,8 @@ public:
 					
 					auto v = value.make_neighbor(eitmp);
 					
-#ifdef DEBUG_MCTS
-        COUT "\tAdding child " <<  this << "\t[" << v.string() << "] " ENDL;
-#endif
+					if(DEBUG_MCTS) DEBUG("\tAdding child ", this, "\t["+v.string()+"] ");
+					
 					//children.push_back(MCTSNode<HYP>(this,v));
 					children.emplace_back(this,v);
 				}
@@ -279,9 +275,7 @@ public:
 		ctl.start();
 		
 		while(ctl.running()) {
-			#ifdef DEBUG_MCTS
-			COUT "\tMCTS SEARCH LOOP" TAB std::this_thread::get_id() ENDL;
-			#endif
+			if(DEBUG_MCTS) DEBUG("\tMCTS SEARCH LOOP");
 			
 			this->search_one(inner_ctl);
 		}
@@ -314,9 +308,7 @@ public:
         // sample a path down the tree and when we get to the end
         // use random playouts to see how well we do
        
-#ifdef DEBUG_MCTS
-		COUT "MCTS SEARCH ONE " <<  this << "\t[" << value.string() << "] " << nvisits TAB std::this_thread::get_id() ENDL;
-#endif
+		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+value.string()+"] ", nvisits);
 		
 		if(nvisits == 0) { // I am a leaf of the search who has not been expanded yet
 			this->playout(inner_ctl); // update my internal counts

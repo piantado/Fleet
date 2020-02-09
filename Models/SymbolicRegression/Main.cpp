@@ -241,7 +241,7 @@ using t_datum = MyHypothesis::t_datum;
 #include "Data.h"
 #include "Polynomial.h"
 
-std::map<std::string,ReservoirSample<MyHypothesis>> master_samples; // master set of samples
+std::map<std::string,Fleet::Statistics::ReservoirSample<MyHypothesis>> master_samples; // master set of samples
 std::mutex master_sample_lock;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -283,7 +283,7 @@ int main(int argc, char** argv){
 	// set up the data
 	//------------------
 
-	t_data mydata = load_data_file(input_path.c_str()); // "data-sources/Science/COBE/data.txt");
+	t_data mydata = load_data_file(input_path.c_str()); 
  
  	//------------------
 	// Run

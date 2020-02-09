@@ -15,14 +15,38 @@ namespace Fleet {
 
 /* Define some macros that make handling IO a little easier */
 
-//#define PRINT(x) { output_lock.lock(); std::cout << x; output_lock.unlock() }
-//
-//#define PRINTN(x) { output_lock.lock(); std::cout << x << std::endl; output_lock.unlock() }
+void __PRINT(){}
+template<typename First, typename ...Rest>
+void __PRINT(First && first, Rest && ...rest) {
+    std::cout << std::forward<First>(first) << "\t";
+    __PRINT(std::forward<Rest>(rest)...);
+}
+template<typename First, typename ...Rest>
+void PRINT(First && first, Rest && ...rest) {
+	std::lock_guard guard(Fleet::output_lock);
+	__PRINT(first,std::forward<Rest>(rest)...);
+}
+template<typename First, typename ...Rest>
+void PRINTN(First && first, Rest && ...rest) {
+	std::lock_guard guard(Fleet::output_lock);
+	__PRINT(first,std::forward<Rest>(rest)...);
+	std::cout << std::endl;
+}
 
+template<typename First, typename ...Rest>
+void DEBUG(First && first, Rest && ...rest) {
+	std::lock_guard guard(Fleet::output_lock);
+	std::cout << "DEBUG." << std::this_thread::get_id() << ": ";
+	__PRINT(first,std::forward<Rest>(rest)...);
+	std::cout << std::endl;
+}
 
 // ADD DEBUG(...) that is only there if we have a defined debug symbol....
+// DEBUG(DEBUG_MCMC, ....)
 
-
+//#define DEBUG(fmt, ...) 
+// do { if (DEBUG) fprintf(stderr, fmt, ##__VA_ARGS__); } while (0)
+				
 //class DebugBlock {
 //	// Handy debug printing when a variable enters and exists scope
 //	std::string enter;

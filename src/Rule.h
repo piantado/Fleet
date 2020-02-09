@@ -8,14 +8,18 @@
 #include "Nonterminal.h"
 
 /* 
- * A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that
- * gets executed, a forma string, a number of children, and an array of types of each child. 
+ * 
  * */
+ 
+ /**
+  * @class Rule
+  * @author piantado
+  * @date 08/02/20
+  * @file Rule.h
+  * @brief A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. 
+  *  Here we "emulate" a type system using t_nonterminal to store an integer for the types.   * 
+  */ 
 class Rule {
-	// A rule stores nonterminal types and possible children
-	// Here we "emulate" a type system using t_nonterminal to store an integer for the types
-	// this means that the type only needs to be finally discovered in VirtualMachineState, since
-	// everything else can operate on a uniforntrules. 
 	
 public:
 	nonterminal_t         nt;

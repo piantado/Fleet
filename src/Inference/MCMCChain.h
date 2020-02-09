@@ -5,7 +5,7 @@
 #include "MCMCChain.h"
 #include "FiniteHistory.h"
 
-//#define DEBUG_MCMC
+#define DEBUG_MCMC 0
 
 // we take callback as a type (which hopefully can be deduce) so we can pass any callable object as callback (like a TopN)
 // This must be stored as a shared_ptr 
@@ -22,9 +22,8 @@ public:
 	mutable std::mutex current_mutex; // for access in parallelTempering
 	typename HYP::t_data* data;
 	
-	HYP themax;
+	double maxval;
 	callback_t* callback; // we don't want a shared_ptr because we don't want this deleted, it's owned elsewhere
-	bool          returnmax; 
 	
 	unsigned long samples; // total number of samples (callbacks) we've done
 	unsigned long proposals;
@@ -36,37 +35,37 @@ public:
 	Fleet::Statistics::FiniteHistory<bool> history;
 	
 	MCMCChain(HYP& h0, typename HYP::t_data* d, callback_t& cb ) : 
-			current(h0), data(d), themax(), callback(&cb), 
-			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
+			current(h0), data(d), maxval(-infinity), callback(&cb), 
+			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 			runOnCurrent();
 	}
 	
 	MCMCChain(HYP&& h0, typename HYP::t_data* d, callback_t& cb ) : 
-			current(h0), data(d), themax(), callback(&cb), 
-			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
+			current(h0), data(d), maxval(-infinity), callback(&cb), 
+			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 			runOnCurrent();
 	}
 
 	MCMCChain(HYP& h0, typename HYP::t_data* d, callback_t* cb=nullptr ) : 
-			current(h0), data(d), themax(), callback(cb), 
-			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
+			current(h0), data(d), maxval(-infinity), callback(cb), 
+			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 			runOnCurrent();
 	}
 	
 	MCMCChain(HYP&& h0, typename HYP::t_data* d, callback_t* cb=nullptr) : 
-			current(h0), data(d), themax(), callback(cb), 
-			returnmax(true), samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
+			current(h0), data(d), maxval(-infinity), callback(cb), 
+			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 				
 			runOnCurrent();
 	}
 
 	MCMCChain(const MCMCChain& m) :
-		current(m.current), data(m.data), themax(m.themax), callback(m.callback),
-		returnmax(m.returnmax), samples(m.samples), proposals(m.proposals), acceptances(m.acceptances), 
+		current(m.current), data(m.data), maxval(m.maxval), callback(m.callback),
+		samples(m.samples), proposals(m.proposals), acceptances(m.acceptances), 
 		steps_since_improvement(m.steps_since_improvement)	{
 			temperature = (double)m.temperature;
 			history     = m.history;
@@ -75,9 +74,8 @@ public:
 	MCMCChain(MCMCChain&& m) {
 		current = m.current;
 		data = m.data;
-		themax = m.themax;
+		maxval = m.maxval;
 		callback = m.callback;
-		returnmax = m.returnmax;
 		samples = m.samples;
 		proposals = m.proposals;
 		acceptances = m.acceptances;
@@ -112,7 +110,9 @@ public:
 	}
 	
 	
-	const HYP& getMax() { return themax; } 
+	const HYP& getMax() { 
+		return maxval; 
+	} 
 	
 	void run(Control ctl) {
 		/**
@@ -125,25 +125,34 @@ public:
 		// I may have copied its start time from somewhere else, so change that here
 		ctl.start();
 		
-	
-		// NOTE: intializer should have runOnCurrent() so it should have a posterior
-		{
-			std::lock_guard guard(current_mutex);
-			themax = current;
-		}
-		
-		
-		#ifdef DEBUG_MCMC
-			COUT "# Starting MCMC Chain on\t" << current.posterior TAB current.prior TAB current.likelihood TAB "\t" TAB current.string() ENDL;
-		#endif	
+		if(DEBUG_MCMC) DEBUG("# Starting MCMC Chain on\t", current.posterior, current.prior, current.likelihood, current.string());
 				
 		// we'll start at 1 since we did 1 callback on current to begin
 		while(ctl.running()) {
 			
-			#ifdef DEBUG_MCMC
-				COUT "\n# Current\t" << data->size() TAB current.posterior TAB current.prior TAB current.likelihood TAB current.string() ENDL;
-			//	current.print("# \t");
-			#endif
+			if(current.posterior > maxval) {
+				maxval = current.posterior;
+				steps_since_improvement = 0;
+			}
+			
+			// if we haven't improved
+			if(ctl.restart>0 && steps_since_improvement > ctl.restart){
+				steps_since_improvement = 0; // reset the couter
+				current = current.restart();
+				current.compute_posterior(*data);
+				
+				++samples;
+				++FleetStatistics::global_sample_count;
+
+				if(callback != nullptr and samples >= ctl.burn) {
+					(*callback)(current);
+				}
+				
+				continue;
+			}
+			
+			
+			if(DEBUG_MCMC) DEBUG("\n# Current\t", data->size(), current.posterior, current.prior, current.likelihood, current.string());
 			
 			std::lock_guard guard(current_mutex); // lock below otherwise others can modify
 
@@ -165,35 +174,24 @@ public:
 				proposal.posterior  = current.posterior;
 				proposal.prior      = current.prior;
 				proposal.likelihood = current.likelihood;
+				proposal.born       = current.born;
 			}
 			else {
 				proposal.compute_posterior(*data);
 			}
 
-			#ifdef DEBUG_MCMC
-				COUT "# Proposed \t" << proposal.posterior TAB proposal.prior TAB proposal.likelihood TAB fb TAB proposal.string() ENDL;
-			//	proposal.print("#\t");
-			#endif
-			
-			// keep track of the max if we are supposed to
-			if(proposal.posterior > themax.posterior) {
-				themax = proposal;
-				steps_since_improvement = 0;
-			}
+			if(DEBUG_MCMC) DEBUG("# Proposed \t", proposal.posterior, proposal.prior, proposal.likelihood, fb, proposal.string());
 			
 			// use MH acceptance rule, with some fanciness for NaNs
 			double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb; 		
-			if(   (std::isnan(current.posterior))  or
-				  (current.posterior == -infinity) or
-					((not std::isnan(proposal.posterior)) and
-					 (ratio >= 0.0 or  uniform() < exp(ratio) ))) {
+			if((std::isnan(current.posterior))  or
+			   (current.posterior == -infinity) or
+			   ((not std::isnan(proposal.posterior)) and
+				(ratio >= 0.0 or  uniform() < exp(ratio) ))) {
 							
-			#ifdef DEBUG_MCMC
-				  COUT "# Accept" << std::endl;
-			#endif
-							
+				if(DEBUG_MCMC) DEBUG("# Accept");
+								
 				current = proposal;
-//				assert(current.posterior == proposal.posterior);
   
 				history << true;
 				++acceptances;
@@ -203,23 +201,12 @@ public:
 			}
 				
 			// and call on the sample if we meet all our criteria
-			if(callback != nullptr and samples >= ctl.burn) (*callback)(current);
+			if(callback != nullptr and samples >= ctl.burn) {
+				(*callback)(current);
+			}
 				
 			++samples;
 			++FleetStatistics::global_sample_count;
-
-			// and finally if we haven't improved then restart
-			if(ctl.restart>0 && steps_since_improvement > ctl.restart){
-				steps_since_improvement = 0; // reset the couter
-				current = current.restart();
-				current.compute_posterior(*data);
-				
-				if(callback != nullptr and samples >= ctl.burn) (*callback)(current);
-				
-				if(current.posterior > themax.posterior) {
-					themax = current; 	
-				}
-			}
 			
 		} // end the main loop	
 		
