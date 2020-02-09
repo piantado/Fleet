@@ -10,6 +10,9 @@
 * @brief This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc.
 * NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here)
 */ 
+
+#include "IO.h"
+
 struct Control {
 	// Parameters for running MCMC or MCTS
 	// 
