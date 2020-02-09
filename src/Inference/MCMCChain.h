@@ -133,17 +133,17 @@ public:
 		}
 		
 		
-#ifdef DEBUG_MCMC
-	COUT "# Starting MCMC Chain on\t" << current.posterior TAB current.prior TAB current.likelihood TAB "\t" TAB current.string() ENDL;
-#endif	
-		
+		#ifdef DEBUG_MCMC
+			COUT "# Starting MCMC Chain on\t" << current.posterior TAB current.prior TAB current.likelihood TAB "\t" TAB current.string() ENDL;
+		#endif	
+				
 		// we'll start at 1 since we did 1 callback on current to begin
 		while(ctl.running()) {
 			
-#ifdef DEBUG_MCMC
-	COUT "\n# Current\t" << data->size() TAB current.posterior TAB current.prior TAB current.likelihood TAB current.string() ENDL;
-//	current.print("# \t");
-#endif
+			#ifdef DEBUG_MCMC
+				COUT "\n# Current\t" << data->size() TAB current.posterior TAB current.prior TAB current.likelihood TAB current.string() ENDL;
+			//	current.print("# \t");
+			#endif
 			
 			std::lock_guard guard(current_mutex); // lock below otherwise others can modify
 
@@ -170,10 +170,10 @@ public:
 				proposal.compute_posterior(*data);
 			}
 
-#ifdef DEBUG_MCMC
-	COUT "# Proposed \t" << proposal.posterior TAB proposal.prior TAB proposal.likelihood TAB fb TAB proposal.string() ENDL;
-//	proposal.print("#\t");
-#endif
+			#ifdef DEBUG_MCMC
+				COUT "# Proposed \t" << proposal.posterior TAB proposal.prior TAB proposal.likelihood TAB fb TAB proposal.string() ENDL;
+			//	proposal.print("#\t");
+			#endif
 			
 			// keep track of the max if we are supposed to
 			if(proposal.posterior > themax.posterior) {
@@ -187,11 +187,11 @@ public:
 				  (current.posterior == -infinity) or
 					((not std::isnan(proposal.posterior)) and
 					 (ratio >= 0.0 or  uniform() < exp(ratio) ))) {
-				
-#ifdef DEBUG_MCMC
-	  COUT "# Accept" << std::endl;
-#endif
-				
+							
+			#ifdef DEBUG_MCMC
+				  COUT "# Accept" << std::endl;
+			#endif
+							
 				current = proposal;
 //				assert(current.posterior == proposal.posterior);
   

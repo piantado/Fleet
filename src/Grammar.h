@@ -7,6 +7,7 @@
 
 #include "Node.h"
 #include "Random.h"
+#include "Nonterminal.h"
 
 // an exception for recursing too deep so we can print a trace of what went wrong
 class DepthException: public std::exception {} depth_exception;

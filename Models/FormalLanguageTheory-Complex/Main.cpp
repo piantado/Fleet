@@ -395,7 +395,9 @@ int main(int argc, char** argv){
 		// set up to print using a larger set
 		MAX_STEPS_PER_FACTOR   = 32000; //4096; 
 		MAX_OUTPUTS_PER_FACTOR = 8000; //512; - make it bigger than
+		max_length = 2048; 
 		all.print(data_amounts[di]);
+		max_length = 256;
 		MAX_STEPS_PER_FACTOR   = 2048; 
 		MAX_OUTPUTS_PER_FACTOR = 512; 
 

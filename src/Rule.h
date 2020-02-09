@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 
+
+#include "Nonterminal.h"
+
 /* 
  * A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that
  * gets executed, a forma string, a number of children, and an array of types of each child. 
