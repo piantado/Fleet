@@ -58,7 +58,6 @@ namespace Fleet {
 			}
 			void operator=(TopN<T>&& x) {
 				set_size(x.N);
-		//		add(x);
 				cnt = x.cnt;
 				s =  x.s;
 				print_best = x.print_best;
@@ -98,7 +97,7 @@ namespace Fleet {
 				return s.size() == 0;
 			}
 			
-			std::multiset<T>& values(){
+			const std::multiset<T>& values() const {
 				/**
 				 * @brief Return a multiset of all the values in TopN
 				 * @return 
@@ -115,17 +114,22 @@ namespace Fleet {
 				 * @param count
 				 */
 				
-				if(std::isnan(x.posterior) or x.posterior == -infinity or N == 0) return;
+				if(N == 0) return;
+				
+				// enable this when we use posterior as the variable, we don't add -inf values
+				if constexpr (HasPosterior<T>::value) {			
+					if(std::isnan(x.posterior) or x.posterior == -infinity) return;
+				}
 				
 				std::lock_guard guard(lock);
 
 				// if we aren't in there and our posterior is better than the worst
 				if(s.find(x) == s.end()) {
 					
-					if(s.size() < N or (empty() or x.posterior > worst().posterior)) { // skip adding if its the worst -- can't call worst_score due to lock
+					if(s.size() < N or (empty() or worst() < x )) { // skip adding if its the worst -- can't call worst_score due to lock
 						T xcpy = x;
-						\
-						if(print_best and (empty() or x.posterior > best().posterior))  {
+						
+						if(print_best and (empty() or best() < x ))  {
 							xcpy.print();
 						}
 					

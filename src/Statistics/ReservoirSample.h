@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Top.h"
+
 namespace Fleet {
 	namespace Statistics {
 				
@@ -14,7 +16,10 @@ namespace Fleet {
 		 * 		   basically, we want to give a weight that is r^1/w, 
 		 * 	 	   or log(r)/w, or log(log(r))-log(w). But the problem is that log(r) is negative so log(log(r)) is not defined. 
 		 * 	 	   Instead, we'll use the function f(x)=-log(-log(x)), which is monotonic. So then,
-		 * 		   -log(-log(r^1/w)) = -log(-log(r)/w) = -log(-log(r)*1/w) = -[log(-log(r)) - log(w)] = -log(-log(r)) + log(w)
+		 * 		   -log(-log(r^1/w)) = -log(-log(r)/w) = -log(-log(r)*1/w) = -[log(-log(r)) - log(w)] = -log(-log(r)) + log(w).
+		 * 
+		 * 		   NOTE: Because we use TopN internally, we can access the Item values with ReservoirSample.top.values() and we can get
+		 *               the stuff that's stored with ReservoirSample.values()
 		 */
 		template<typename T>
 		class ReservoirSample {
@@ -44,33 +49,37 @@ namespace Fleet {
 				}
 				
 				bool operator==(const Item& b) const {
+					// equality here checks lv and r
 					return x==b.x && r==b.r && lw==b.lw;
+				}
+				
+				void print() const {
+					assert(0); // not needed here but must be defined to use in TopN
 				}
 			};
 			
 		public:
 
-			std::multiset<Item>   s; //
-			std::multiset<T> vals; // store this so we can efficiently check membership in the set (otherwise its items, sorted by values)
-			size_t reservoir_size;
-			bool unique; // do I allow multiple samples?
-			unsigned long N; // how many have I seen? An time I *try* to add something to this, N gets incremented
+			Fleet::Statistics::TopN<Item> top;
+			unsigned long N; // how many have I seen? Any time I *try* to add something to this, N gets incremented
 			
 		protected:
 			//mutable std::mutex lock;		
 
 		public:
 
-			ReservoirSample(size_t n, bool u=false) : reservoir_size(n), unique(u), N(0) {}	
-			ReservoirSample(bool u=false) : reservoir_size(1000), unique(u), N(0) {}
+			ReservoirSample(size_t n) : N(0){
+				top.set_size(n);
+			}	
+			ReservoirSample() : N(0) {
+			}
 			
 			void set_reservoir_size(const size_t s) const {
 				/**
 				 * @brief How big should the reservoir size be?
 				 * @param s
 				 */
-				
-				reservoir_size = s;
+				top.set_size(s);
 			}
 			
 			size_t size() const {
@@ -78,53 +87,29 @@ namespace Fleet {
 				 * @brief How many elements are currently stored?
 				 * @return 
 				 */
-				return s.size();
-			}
-			
-			T max(){ return *vals.rbegin(); }
-			T min(){ return *vals.begin(); }
-			auto begin() { return vals.begin(); }
-			auto end()   { return vals.end(); }
-
-			double best_posterior() const {
-				/**
-				 * @brief What has the best posterior?
-				 * @return 
-				 */
-				
-				double bp = -infinity;
-				for(const auto& h : vals) {
-					if(h.posterior > bp) 
-						bp = h.posterior;
-				}
-				return bp;
+				return top.size();
 			}
 
 			void add(T x, double lw=0.0) {
 				//std::lock_guard guard(lock);
-				
-				if((!unique) || vals.find(x) == vals.end()) {
-				
-					double r = uniform();
-					s.insert(Item(x,r,lw));
-								
-					vals.insert(x);
-					
-					while(s.size() > reservoir_size) {
-						auto y   = s.begin(); // which one we remove -- first one since set stores things sorted
-						auto pos = vals.find(y->x); assert(pos != vals.end());
-						vals.erase(pos); // this only deletes one? 
-						s.erase(y); // erase the item
-						// NOTE: we might sometimes get identical x and r, and then this causes problems because it will delete all? Very rare though...
-					}
-					
-					assert( (!unique) or s.size() == vals.size());
-				}
-				
-				++N;
-				
+				top << Item(x, uniform(), lw);
+				++N;				
 			}
-			void operator<<(T x) {	add(x);}
+			void operator<<(T x) {	add(x); }
+			
+			
+			/**
+			 * @brief Get a multiset of values (ignoring the reservoir weights)
+			 * @return 
+			 */			
+			std::vector<T> values() const {
+				
+				std::vector<T> out;
+				for(auto& i : top.values()){
+					out.push_back(i.x);
+				}
+				return out;
+			}
 			
 			T sample() const {
 				/**
@@ -136,17 +121,21 @@ namespace Fleet {
 				
 				
 				double lz = -infinity;
-				for(auto& i : s) {
+				for(auto& i : top.values()) {
 					lz = logplusexp(lz, i.lw); // the log normalizer
 				}
 				
 				double zz = -infinity;
 				double r = log(uniform()) + lz; // random number -- uniform*z 
-				for(auto& i : s) {
+				for(auto& i : top.values()) {
 					zz = logplusexp(zz, i.lw); // NOTE: This may be slightly imperfect with our approximations to lse, but it should not matter much
 					if(zz >= r) return i.x;			
 				}
 				assert(0 && "*** Should not get here");
+			}
+			
+			void clear() {
+				top.clear();
 			}
 			
 		};
