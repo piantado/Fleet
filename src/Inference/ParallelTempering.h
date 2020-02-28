@@ -43,7 +43,7 @@ public:
 		
 		// allcallback is true means that all chains call the callback, otherwise only t=0
 		for(size_t i=0;i<n;i++) {
-			this->pool[i].temperature = exp(i * log(maxT)/n);
+			this->pool[i].temperature = exp(i * log(maxT)/(n-1));
 		}
 		is_temperature = true;
 		swap_history = new Fleet::Statistics::FiniteHistory<bool>[n];
