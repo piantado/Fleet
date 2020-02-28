@@ -1,6 +1,6 @@
 #pragma once 
 
-//#define PARALLEL_TEMPERING_SHOW_DETAIL
+#define PARALLEL_TEMPERING_SHOW_DETAIL
 
 #include <functional>
 #include "ChainPool.h"
@@ -43,13 +43,7 @@ public:
 		
 		// allcallback is true means that all chains call the callback, otherwise only t=0
 		for(size_t i=0;i<n;i++) {
-			if(i==0) {  // always initialize i=0 to T=1s
-				this->pool[i].temperature = 1.0;
-			}
-			else {
-				// set its temperature with this kind of geometric scale  
-				this->pool[i].temperature = 1.0 + (maxT-1.0) * pow(2.0, double(i)-double(n-1)); 
-			}
+			this->pool[i].temperature = exp(i * log(maxT)/n);
 		}
 		is_temperature = true;
 		swap_history = new Fleet::Statistics::FiniteHistory<bool>[n];
