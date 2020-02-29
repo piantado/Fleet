@@ -8,7 +8,7 @@
 #include <chrono>
 
 typedef unsigned long time_ms;
-typedef std::chrono::steady_clock::time_point timept;
+typedef std::chrono::high_resolution_clock::time_point timept;
 
 timept now() { 
 	/**
@@ -16,7 +16,7 @@ timept now() {
 	 * @return 
 	 */
 	
-	return std::chrono::steady_clock::now();
+	return std::chrono::high_resolution_clock::now();
 }
 
 time_ms time_since(timept x) {
@@ -25,7 +25,7 @@ time_ms time_since(timept x) {
 	 * @param x
 	 * @return 
 	 */	
-	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now()-x).count();
+	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-x).count();
 }
 
 

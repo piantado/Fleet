@@ -14,6 +14,39 @@ std::string str(T x){
 	return std::to_string(x);
 }
 
+/**
+ * @brief Probability of converting x into y by deleting some number (each with del_p, then stopping with prob 1-del_p), adding with 
+ * 		  probability add_p, and then when we add selecting from an alphabet of size alpha_n
+ * @param x
+ * @param y
+ * @param del_p - probability of deleting the next character (geometric)
+ * @param add_p - probability of adding (geometric)
+ * @param alpha_n - size of alphabet
+ * @return The probability of converting x to y by deleting characters with probability del_p and then adding with probability add_p
+ */
+inline double p_delete_append(const std::string& x, const std::string& y, double del_p, double add_p, double alpha_n) {
+	
+	// Well we can always delete the whole thing and add on the remainder
+	double lp = log(del_p)*x.length()         + log(1.0-del_p) + 
+				log(add_p/alpha_n)*y.length() + log(1.0-add_p);
+	
+	// now as log as they are equal, we can take only down that far if we want
+	// here we index over mi, the length of the string that so far is equal
+	for(size_t mi=1;mi<=std::min(x.length(),y.length());mi++){
+		if(x[mi-1] == y[mi-1]) {
+			lp = logplusexp(lp, log(del_p)*(x.length()-mi)         + log(1.0-del_p) + 
+							    log(add_p/alpha_n)*(y.length()-mi) + log(1.0-add_p));
+		}
+		else {
+			break;
+		}
+	}
+	
+//	CERR lp TAB x TAB y ENDL;
+	
+	return lp;
+}
+
 
 std::deque<std::string> split(const std::string& s, const char delimiter){
 	/**

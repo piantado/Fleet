@@ -92,7 +92,6 @@ public:
 		 * @param nt
 		 * @return 
 		 */		
-		assert(nt >= 0);
 		assert(nt < N_NTs);
 		return rules[nt].size();
 	}	
@@ -230,7 +229,6 @@ public:
 		 * @return 
 		 */
 		
-		assert(nt >= 0);
 		assert(nt < N_NTs);
 		assert(k < rules[nt].size());
 		return const_cast<Rule*>(&rules[nt][k]);
@@ -335,7 +333,6 @@ public:
 		 * @return 
 		 */
 		
-		assert(nt >= 0);
 		assert(nt < N_NTs);
 		return Z[nt];
 	}
@@ -709,6 +706,11 @@ public:
 			return out;		
 		}
 #endif
+		
+		
+		return Node(); // just to avoid warning
+		
+		
 	}
 
 

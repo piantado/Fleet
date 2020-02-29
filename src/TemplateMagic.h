@@ -21,7 +21,6 @@ constexpr bool contains_type() {
 /// as long as no op_MEM is called
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <type_traits>
 #include <utility>
 // https://stackoverflow.com/questions/6534041/how-to-check-whether-operator-exists
 template<class T, class EqualTo>
@@ -86,3 +85,16 @@ template<class T>
 struct HeadIfReferenceElseT<T> { 
 	typedef T type;
 };
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Check if a given function as a .posterior or not
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//https://stackoverflow.com/questions/1005476/how-to-detect-whether-there-is-a-specific-member-variable-in-class
+
+#include <type_traits>
+
+template <typename T, typename = double>
+struct HasPosterior : std::false_type { };
+
+template <typename T>
+struct HasPosterior <T, decltype((void) T::posterior, 0)> : std::true_type { };

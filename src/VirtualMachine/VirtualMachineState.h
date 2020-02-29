@@ -57,7 +57,7 @@ public:
 		xstack.push(x);	
 	}
 	
-	virtual ~VirtualMachineState() {};	// needed so VirtualMachinePool can delete
+	virtual ~VirtualMachineState() {}	// needed so VirtualMachinePool can delete
 	
 	bool operator<(const VirtualMachineState& m) const {
 		/**

@@ -255,7 +255,6 @@ void callback(MyHypothesis& h) {
 	std::lock_guard guard(master_sample_lock);
 	if(!master_samples.count(ss)) { // create this if it doesn't exist
 		master_samples.emplace(ss,nsamples);
-		master_samples[ss].unique = true;
 	}
 	
 	// and add it
@@ -292,7 +291,7 @@ int main(int argc, char** argv){
 	MyHypothesis h0(&grammar);
 	MCTSNode m(explore, h0, callback, &mydata);
 	tic();
-	m.parallel_search(Control(mcts_steps, runtime, nthreads), Control(0, 1000));
+	m.parallel_search(Control(mcts_steps, runtime, nthreads), Control(0, 10000, 1, 10000));
 	tic();
 	
 	m.print(tree_path.c_str());
@@ -325,7 +324,7 @@ int main(int argc, char** argv){
 	double cutoff = -infinity;
 	std::vector<double> structureScores;
 	for(auto& q: master_samples)  {
-		structureScores.push_back(q.second.best_posterior());
+		structureScores.push_back(q.second.best().posterior_score);
 	}
 	
 	double maxscore = -infinity;
@@ -347,8 +346,8 @@ int main(int argc, char** argv){
 	// And display!
 	COUT "structure\tstructure.max\testimated.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\tmade.cutoff\th\tparseable.h" ENDL;
 	for(auto& m : master_samples) {
-		double best_posterior = m.second.best_posterior();
-		MyHypothesis hm = m.second.max();
+		double best_posterior = m.second.best().posterior_score;
+		MyHypothesis hm = m.second.best();
 		//double pd = get_polynomial_degree(hm.value, hm.constants);
 		// NOTE: we are picking just one example from this structure -- this may not be a great idea, but should work fine since
 		// we are next checking whether the degree is exactly 1 or 0, which should only happen if the degree is right based on the structure
@@ -359,10 +358,10 @@ int main(int argc, char** argv){
 
 			// find the normalizer for this structure
 			double sz = -infinity;
-			for(auto& h : m.second) 
+			for(auto& h : m.second.top.values()) 
 				sz = logplusexp(sz, h.posterior);
 			
-			for(auto h : m.second) {
+			for(auto h : m.second.top.values()) {
 				COUT QQ(h.structure_string()) TAB 
 				     best_posterior TAB 
 					 ( (h.posterior-sz) + (best_posterior-Z)) TAB 

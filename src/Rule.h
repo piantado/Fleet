@@ -103,7 +103,7 @@ public:
 		 * @return 
 		 */
 		
-		assert(i >=0 and i <= N && "*** Cannot get the type of something out of range");
+		assert(i <= N && "*** Cannot get the type of something out of range");
 		return child_types[i];
 	}
 	

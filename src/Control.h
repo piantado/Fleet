@@ -28,8 +28,8 @@ struct Control {
 
 	bool break_CTRLC; // should we break on ctrl_c?
 
-	Control(unsigned long s=0, time_ms t=0, size_t thr=1) : steps(s), time(t), threads(thr), burn(0), 
-					thin(0), restart(0), done_steps(0), break_CTRLC(true) {
+	Control(unsigned long s=0, time_ms t=0, size_t thr=1, unsigned long r=0) : steps(s), time(t), threads(thr), burn(0), 
+					thin(0), restart(r), done_steps(0), break_CTRLC(true) {
 		start(); // just defaultly because it's easier
 	}
 	

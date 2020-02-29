@@ -93,20 +93,11 @@ namespace Fleet {
 				 * @brief Compute the median according to my reservoir sample. 
 				 * @return 
 				 */
-				
-				
-				if(reservoir_sample.size() == 0) return -infinity;
-				else {
-					std::lock_guard guard(lock);
-					auto pos = reservoir_sample.vals.begin();
-					std::advance(pos,reservoir_sample.size()/2);
-					return *pos;
-				}
-				//return streaming_median.median();
+				return streaming_median.median();
 			}
 			
 			void print() const {
-				for(auto a : reservoir_sample.s){
+				for(auto& a : reservoir_sample.top.values()){
 					std::cout << a.x << "[" << a.r << "]" << std::endl;
 				}
 			}
@@ -119,7 +110,7 @@ namespace Fleet {
 				 */
 				size_t k = 0;
 				double qm = q.median();
-				for(auto a : reservoir_sample.s) {
+				for(auto& a : reservoir_sample.top.values()) {
 					if(a.x > qm) k++;
 				}
 				return double(k)/reservoir_sample.size();

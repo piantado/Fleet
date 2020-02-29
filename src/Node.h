@@ -72,8 +72,8 @@ public:
 				return *this;
 			}
 
-			bool operator==(const NodeIterator& rhs) { return current == rhs.current; };
-			bool operator!=(const NodeIterator& rhs) { return current != rhs.current; };
+			bool operator==(const NodeIterator& rhs) { return current == rhs.current; }
+			bool operator!=(const NodeIterator& rhs) { return current != rhs.current; }
 	};	
 	static NodeIterator EndNodeIterator;
 	
@@ -126,7 +126,7 @@ public:
 		return rule->type(i);
 	}
 	
-	const size_t nchildren() const {
+	size_t nchildren() const {
 		/**
 		 * @brief How many children do I have?
 		 * @return 

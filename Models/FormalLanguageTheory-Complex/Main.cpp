@@ -4,8 +4,7 @@
  * and then we'll add in the data amounts, so that now each call will loop over amounts of data
  * and preserve the top hypotheses
  * 
-  * 
-  * */
+ * */
   
 #include <set>
 #include <string>
@@ -29,11 +28,13 @@ const size_t PREC_REC_N   = 25;  // if we make this too high, then the data is f
 const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The more data, the slower...
 const size_t MAX_PR_LINES = 1000000; 
 
-const size_t NTEMPS = 10;
-const size_t MAXTEMP = 1000.0;
+const size_t RESTART = 0;
+const size_t NTEMPS = 20;
+//const size_t MAXTEMP = 50000.0; // set to be the data size
+unsigned long SWAP_EVERY = 500; // ms
 
 std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
-//std::vector<S> data_amounts={"100000"}; // how many data points do we run on?
+//std::vector<S> data_amounts={"1000"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
 const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -25 to catch some less frequent things that happen by chance
@@ -225,22 +226,14 @@ public:
 		
 		likelihood = 0.0;
 
-		const double lpnoise = log((1.0-alpha)/alphabet.size());
-		const double lpend   = log(alpha); // end a string with this probability
 		for(const auto& a : data) {
 			S astr = a.output;
 			double alp = -infinity; // the model's probability of this
 			for(const auto& m : M.values()) {
 				const S mstr = m.first;
 				
-				// here's a slow way to compute this: try removing each tail of mi
-				// and doing the below prefix computation
-				for(size_t mi=0;mi<mstr.length();mi++){
-					if(std::equal(mstr.begin(), mstr.begin()+mi, astr.begin())) {
-						size_t pl = mstr.length() - mi; // how long was that prefix?
-						alp = logplusexp(alp, m.second + lpnoise * ((mstr.length()-pl) + (astr.size()-pl)) + 2.0 * lpend);
-					}
-				}
+				// we can always take away all character and generate a anew
+				alp = logplusexp(alp, m.second + p_delete_append(mstr, astr, 1.0-alpha, 1.0-alpha, alphabet.size()));
 				
 				// In an old version of this, we considered a noise model where you just add characters on the end
 				// with probability gamma. The trouble with that is that sometimes long new data has strings that
@@ -389,8 +382,12 @@ int main(int argc, char** argv){
 	tic();	
 	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
 		
-		ParallelTempering samp(h0, &datas[di], all, NTEMPS, MAXTEMP);
-		samp.run(Control(mcmc_steps/datas.size(), runtime/datas.size(), nthreads), 1000, 60*1000);	
+		// the max temperature here is going to be the amount of data!
+		// that's because if we make it much bigger, we waste lower chains; if we make it much smaller, 
+		// we don't get good mixing in the lowest chains. 
+		// No theory here, this just seems to be about what works well. 
+		ParallelTempering samp(h0, &datas[di], all, NTEMPS, std::max(1.0, stoi(data_amounts[di]))); 
+		samp.run(Control(mcmc_steps/datas.size(), runtime/datas.size(), nthreads, RESTART), SWAP_EVERY, 60*1000);	
 
 		// set up to print using a larger set
 		MAX_STEPS_PER_FACTOR   = 32000; //4096; 

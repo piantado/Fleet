@@ -153,7 +153,7 @@ Matrix my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, 
 
 
 MyHypothesis::t_data mydata;
-TopN<MyHypothesis> top;
+Fleet::Statistics::TopN<MyHypothesis> top;
 Grammar grammar(PRIMITIVES);
 	
 // define some functions to print out a hypothesis
@@ -185,7 +185,7 @@ int main(int argc, char** argv){
 	auto app = Fleet::DefaultArguments("Simple grammar inference example");
 	CLI11_PARSE(app, argc, argv);
 	
-	top.set_size(ntop); // set by above macro
+	top.set_size(ntop); 
 
 	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
 	
@@ -268,7 +268,7 @@ int main(int argc, char** argv){
 			h0 = h0.restart();
 			auto givendata = slice(v.second, 0, (di.setNumber-1)-1);
 			MCMCChain chain(h0, &givendata, top);
-			chain.run(Control(1000)); // run it super fast
+			chain.run(Control(100)); // run it super fast
 		
 			for(auto h : top.values()) {
 				h.clear_bayes(); // zero and insert

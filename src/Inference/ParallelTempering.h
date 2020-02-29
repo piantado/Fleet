@@ -1,6 +1,6 @@
 #pragma once 
 
-#define PARALLEL_TEMPERING_SHOW_DETAIL
+//#define PARALLEL_TEMPERING_SHOW_DETAIL
 
 #include <functional>
 #include "ChainPool.h"
@@ -147,7 +147,7 @@ public:
 	}
 	
 	
-	virtual void run(Control ctl) { assert(0); }
+	virtual void run(Control ctl) override { assert(0); }
 	virtual void run(Control ctl, time_ms swap_every, time_ms adapt_every) {
 		
 		if(is_temperature) {

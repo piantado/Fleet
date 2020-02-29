@@ -1,5 +1,6 @@
 #pragma once
 
+#include <thread>
 #include <mutex>
 #include "dependencies/CL11.hpp"
 
@@ -132,7 +133,7 @@ unsigned long nchains      = 1;
 bool          quiet      = false; // this is used to indicate that we want to not print much out (typically only posteriors and counts)
 std::string   input_path   = "input.txt";
 std::string   tree_path    = "tree.txt";
-std::string   output_path  = "output.txt";
+std::string   output_path  = "output";
 std::string   timestring   = "0s";
 
 namespace Fleet { 	

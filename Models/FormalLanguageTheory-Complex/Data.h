@@ -75,7 +75,6 @@ std::pair<double, double> get_precision_and_recall(std::ostream& output, Discret
 	
 	unsigned long nprec = 0;
 	for(auto a: A) {
-		//CERR a.first TAB a.second ENDL;
 		if(mdata.count(a)) 
 			nprec++;
 	}

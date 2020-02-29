@@ -34,7 +34,7 @@ public:
 	}
 	
 	// Stuff to create hypotheses:
-	[[nodiscard]] virtual std::pair<HYP,double> propose() const {
+	[[nodiscard]] virtual std::pair<HYP,double> propose() const override {
 		/**
 		 * @brief Default proposal is rational-rules style regeneration. 
 		 * @return 
@@ -46,7 +46,7 @@ public:
 	}	
 
 	
-	[[nodiscard]] virtual HYP restart() const {
+	[[nodiscard]] virtual HYP restart() const override {
 		/**
 		 * @brief This is used to restart chains, sampling from prior
 		 * @return 
@@ -67,7 +67,7 @@ public:
 	void set_value(T&  v) { value = v; }
 	void set_value(T&& v) { value = v; }
 	
-	virtual double compute_prior() {
+	virtual double compute_prior() override {
 		assert(grammar != nullptr && "Grammar was not initialized before trying to call compute_prior");
 		
 		/* This ends up being a really important check -- otherwise we spend tons of time on really long
@@ -79,12 +79,12 @@ public:
 		return this->prior = grammar->log_probability(value);
 	}
 	
-	virtual double compute_single_likelihood(const t_datum& datum) {
+	virtual double compute_single_likelihood(const t_datum& datum) override {
 		// compute the likelihood of a *single* data point. 
 		assert(0);// for base classes to implement, but don't set = 0 since then we can't create Hypothesis classes. 
 	}
 
-	virtual void push_program(Program& s, short k=0) {
+	virtual void push_program(Program& s, short k=0) override {
 		assert(k==0); // this is only for lexica
 		s.reserve(128); // seems to help to reserve some
 		value.linearize(s);
@@ -121,7 +121,7 @@ public:
 	}
 	
 
-	virtual std::string string() const {
+	virtual std::string string() const override {
 		return std::string("\u03BBx.") + value.string();
 	}
 	virtual std::string parseable() const { 
@@ -132,18 +132,18 @@ public:
 	}
 	
 	
-	virtual size_t hash() const {
+	virtual size_t hash() const override {
 		return value.hash();
 	}
 	
-	virtual bool operator==(const HYP& h) const {
+	virtual bool operator==(const HYP& h) const override {
 		return this->value == h.value;
 	}
 	
 	virtual vmstatus_t dispatch_custom(Instruction i, 
 								  VirtualMachinePool<t_input,t_output>* pool, 
 								  VirtualMachineState<t_input,t_output>* vms,  
-								  Dispatchable<t_input, t_output>* loader) {
+								  Dispatchable<t_input, t_output>* loader) override {
 		assert(false && "*** To use dispatch_custom (e.g. with defined CustomOps) you must override it to process these instructions.");
 	}
 
@@ -168,7 +168,7 @@ public:
 	 ********************************************************/
 	 // The main complication with these is that they handle nullptr 
 	 
-	virtual int neighbors() const {
+	virtual int neighbors() const override {
 		if(value.is_null()) { // if the value is null, our neighbors is the number of ways we can do nt
 			auto nt = grammar->nt<t_output>();
 			return grammar->count_rules(nt);
@@ -181,7 +181,7 @@ public:
 		}
 	}
 
-	virtual HYP make_neighbor(int k) const {
+	virtual HYP make_neighbor(int k) const override {
 		HYP h(grammar); // new hypothesis
 		auto nt = grammar->nt<t_output>();
 		if(value.is_null()) {
@@ -197,7 +197,7 @@ public:
 		}
 		return h;
 	}
-	virtual bool is_evaluable() const {
+	virtual bool is_evaluable() const override {
 		// This checks whether it should be allowed to call "call" on this hypothesis. 
 		// Usually this means that that the value is complete, meaning no partial subtrees
 		return value.is_complete();

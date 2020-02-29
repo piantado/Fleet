@@ -97,7 +97,7 @@ int main(int argc, char** argv){
 	MyHypothesis::t_data mydata;
 	
 	// top stores the top hypotheses we have found
-	TopN<MyHypothesis> top(ntop);
+	Fleet::Statistics::TopN<MyHypothesis> top(ntop);
 	
 	//------------------
 	// set up the data

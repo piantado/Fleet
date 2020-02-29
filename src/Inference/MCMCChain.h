@@ -136,7 +136,7 @@ public:
 			}
 			
 			// if we haven't improved
-			if(ctl.restart>0 && steps_since_improvement > ctl.restart){
+			if(ctl.restart>0 and steps_since_improvement > ctl.restart){
 				steps_since_improvement = 0; // reset the couter
 				current = current.restart();
 				current.compute_posterior(*data);

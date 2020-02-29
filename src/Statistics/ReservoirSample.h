@@ -49,7 +49,7 @@ namespace Fleet {
 				}
 				
 				bool operator==(const Item& b) const {
-					// equality here checks lv and r
+					// equality here checks r and lw (which determine lv)
 					return x==b.x && r==b.r && lw==b.lw;
 				}
 				

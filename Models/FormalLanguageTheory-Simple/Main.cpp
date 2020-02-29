@@ -75,13 +75,10 @@ public:
 	double compute_single_likelihood(const t_datum& x) {	
 		auto out = call(x.input, "<err>", this, 256, 256); //256, 256);
 		
-		// a likelihood based on the prefix probability -- we assume that we generate from the hypothesis
-		// and then glue on additional strings, flipping a gamma-weighted coin to determine how many characters to add
+		// Likelihood comes from all of the ways that we can delete from the end and the append to make the observed output. 
 		double lp = -infinity;
 		for(auto& o : out.values()) { // add up the probability from all of the strings
-			if(is_prefix(o.first, x.output)) {
-				lp = logplusexp(lp, o.second + log(strgamma) + log((1.0-strgamma)/alphabet.length()) * (x.output.length() - o.first.length()));
-			}
+			lp = logplusexp(lp, o.second + p_delete_append(o.first, x.output, 1.-strgamma, 1.-strgamma, alphabet.size()));
 		}
 		return lp;
 	}

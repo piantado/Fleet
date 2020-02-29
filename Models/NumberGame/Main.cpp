@@ -27,7 +27,16 @@ std::tuple PRIMITIVES = {
 	Primitive("(%s*%s)",    +[](float a, float b) -> float { return a*b; }),
 	Primitive("(%s/%s)",    +[](float a, float b) -> float { return (b==0 ? 0 : a/b); }),
 	Primitive("(%s^%s)",    +[](float a, float b) -> float { return pow(a,b); }),
-	Builtin::X<D>("x")
+	
+	// set operations
+//	Primitive("union(%s,%s)",    +[](float a, float b) -> float { return pow(a,b); }),
+//	Primitive("intersection(%s,%s)",    +[](float a, float b) -> float { return pow(a,b); }),
+//	Primitive("difference(%s,%s)",    +[](float a, float b) -> float { return pow(a,b); }),
+//	Primitive("complement(%s,%s)",    +[](float a, float b) -> float { return pow(a,b); }),
+//	Primitive("[%s..%s]",    +[](float a, float b) -> float { return pow(a,b); }),
+	// map(lambda x: x**2, R)
+	
+	Builtin::X<float>("x")
 };
 
 
@@ -96,10 +105,10 @@ int main(int argc, char** argv){
 	}
 
 	// Define something to hold the best hypotheses
-	TopN<MyHypothesis> top(ntop);
+	Fleet::Statistics::TopN<MyHypothesis> top(ntop);
 
 	// our data
-	MyHypothesis::t_data mydata = {2,8,16,2,8,16};	
+	MyHypothesis::t_data mydata = {2,8,16};	
 
 	// create a hypothesis
 	MyHypothesis h0(&grammar);
