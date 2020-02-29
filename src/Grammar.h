@@ -448,7 +448,7 @@ public:
 		// We had a version of grammar that cached this, but it was complex and ugly
 		// so I think we'll take the small performance hit and put it all in here
 		const size_t NT = count_nonterminals();
-		size_t rule_cumulative[NT]; // how many rules are there before this (in our ordering)
+		std::vector<size_t> rule_cumulative(NT); // how many rules are there before this (in our ordering)
 		rule_cumulative[0] = 0;
 		for(size_t nt=1;nt<NT;nt++) {
 			rule_cumulative[nt] = rule_cumulative[nt-1] + count_rules( nonterminal_t(nt-1) );

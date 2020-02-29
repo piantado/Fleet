@@ -190,7 +190,7 @@ public:
 	
 	void adapt(double v=3, double t0=1000000) {
 		
-		double S[this->pool.size()];
+		std::vector<double> S(this->pool.size());
 		
 		for(size_t i=1;i<this->pool.size()-1;i++) { // never adjust i=0 (T=1) or the max temperature
 			S[i] = log(this->pool[i].temperature - this->pool[i-1].temperature);

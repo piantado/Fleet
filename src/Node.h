@@ -466,7 +466,7 @@ public:
 		}
 		else {
 			
-			std::string childStrings[children.size()];
+			std::vector<std::string> childStrings(children.size());
 		
 			for(size_t i=0;i<rule->N;i++) {
 				childStrings[i] = children[i].string();

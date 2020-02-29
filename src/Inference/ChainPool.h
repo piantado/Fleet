@@ -99,7 +99,7 @@ public:
 			assert(0); // let's not allow it for now -- make __run_helper much more complex
 		}
 		
-		std::thread threads[ctl.threads]; 
+		std::vector<std::thread> threads(ctl.threads); 
 		std::vector<bool> running(pool.size()); // what chain is running?
 
 		for(unsigned long i=0;i<pool.size();i++) {
