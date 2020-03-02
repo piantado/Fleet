@@ -3,7 +3,7 @@
 
 const double sdscale = 1.0; // can change if we want
 const size_t nsamples = 250; // how many per structure?
-const size_t nstructs = 20; // print out all the samples from the top this many structures
+const size_t nstructs = 50; // print out all the samples from the top this many structures
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// These define all of the types that are used in the grammar.
@@ -75,7 +75,7 @@ public:
 		return lp;
 	}
 	
-	virtual double compute_prior() {
+	virtual double compute_prior() override {
 		this->prior = Super::compute_prior() + compute_constants_prior();
 		return this->prior;
 	}
@@ -102,7 +102,7 @@ public:
 			
 			// strings are evaluated in right->left order so we have to 
 			// use that here (since we use them to index idx)
-			std::string childStrings[n->rule->N];
+			std::vector<std::string> childStrings(n->nchildren());
 			
 			/// recurse on the children. NOTE: they are linearized left->right, 
 			// which means that they are popped 
@@ -122,7 +122,7 @@ public:
 		}
 	}
 	
-	virtual std::string string() const { 
+	virtual std::string string() const override { 
 		// Here we need to simulate the stack used in evaluation in order to get the 
 		// order of the constants and operators right 
 		// I think we could do this by iterating through the kids in the right way..
@@ -138,10 +138,10 @@ public:
 		return Super::string();
 	}
 	
-	vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<D,D>* pool, VirtualMachineState<D,D>* vms, Dispatchable<D,D>* loader ) {
+	vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<D,D>* pool, VirtualMachineState<D,D>* vms, Dispatchable<D,D>* loader ) override {
 		switch(i.as<CustomOp>()) {
 			case CustomOp::op_Constant: {
-				assert(this->constant_idx < this->constants.size() && this->constant_idx >= 0); 
+				assert(this->constant_idx < this->constants.size()); 
 				vms->push(this->constants.at(constant_idx++));
 				break;
 			}			
@@ -154,7 +154,7 @@ public:
 	/// Change equality to include equality of constants
 	/// *****************************************************************************
 	
-	virtual bool operator==(const MyHypothesis& h) const {
+	virtual bool operator==(const MyHypothesis& h) const override {
 		// equality requires our constants to be equal 
 		if(! this->Super::operator==(h) ) return false;
 		
@@ -165,7 +165,7 @@ public:
 		return true;
 	}
 
-	virtual size_t hash() const {
+	virtual size_t hash() const override {
 		// hash includes constants so they are only ever equal if constants are equal
 		size_t h = Super::hash();
 		for(size_t i=0;i<constants.size();i++) {
@@ -178,7 +178,7 @@ public:
 	/// Implement MCMC moves as changes to constants
 	/// *****************************************************************************
 	
-	virtual std::pair<MyHypothesis,double> propose() const {
+	virtual std::pair<MyHypothesis,double> propose() const override {
 		// Our proposals will either be to constants, or entirely from the prior
 		
 		if(flip()){
@@ -206,20 +206,20 @@ public:
 		}
 	}
 
-	virtual MyHypothesis restart() const {
+	virtual MyHypothesis restart() const override {
 		MyHypothesis ret = Super::restart(); // may reset my structure
 		ret.randomize_constants();
 		return ret;
 	}
 	
-	virtual MyHypothesis copy_and_complete() const {
+	virtual MyHypothesis copy_and_complete() const override {
 		auto ret = Super::copy_and_complete();
 		ret.constants.resize(ret.count_constants());
 		ret.randomize_constants();
 		return ret;
 	}
 	
-	virtual MyHypothesis make_neighbor(int k) const {
+	virtual MyHypothesis make_neighbor(int k) const override {
 		auto ret = Super::make_neighbor(k);
 		ret.constants.resize(ret.count_constants());
 		ret.randomize_constants();
@@ -244,22 +244,65 @@ using t_datum = MyHypothesis::t_datum;
 std::map<std::string,Fleet::Statistics::ReservoirSample<MyHypothesis>> master_samples; // master set of samples
 std::mutex master_sample_lock;
 
+
+class MyMCTS;
+MyMCTS* root;
+t_data mydata;
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 
-void callback(MyHypothesis& h) {
-	if(h.posterior == -infinity) return;
+class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
+	using MCTSNode::MCTSNode;
+
+	virtual void playout() override {
+		//if(DEBUG_MCTS) DEBUG( "\tPLAYOUT ", value.string());
+
+
+	/// Can't jsut do this because it might be a constant...
+//		if(value.value.is_complete()) {
+//			MyHypothesis h0 = value;
+//			h0.compute_posterior(*data);
+//			add_sample(h0.posterior);
+//			return; 
+//		}
+
+
+		MyHypothesis h0 = value; // need a copy to change resampling on 
+		for(auto& n : h0.value ){
+			n.can_resample = false;
+		}
+		
+		// make a wrapper to add samples
+		std::function<void(MyHypothesis& h)> cb = [&](MyHypothesis& h) { 
+			if(h.posterior == -infinity) return;
 	
-	auto ss = h.structure_string();
-	std::lock_guard guard(master_sample_lock);
-	if(!master_samples.count(ss)) { // create this if it doesn't exist
-		master_samples.emplace(ss,nsamples);
+			auto ss = h.structure_string();
+			std::lock_guard guard(master_sample_lock);
+			if(!master_samples.count(ss)) { // create this if it doesn't exist
+				master_samples.emplace(ss,nsamples);
+			}
+			
+			// and add it
+			master_samples[ss] << h;
+			
+			// and update MCTS -- here every sample
+			add_sample(h.posterior);
+		};
+		
+		
+		
+		auto h = h0.copy_and_complete(); // fill in any structural gaps
+		
+		MCMCChain chain(h, data, cb);
+		chain.run(Control(0, 1000, 1, 1-000)); // run mcmc with restarts; we sure shouldn't run more than runtime
+		
+//		COUT "---------------------------------------------------------------" ENDL;
+//		root->print();
 	}
 	
-	// and add it
-	master_samples[ss] << h;
-}
+};
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -282,16 +325,17 @@ int main(int argc, char** argv){
 	// set up the data
 	//------------------
 
-	t_data mydata = load_data_file(input_path.c_str()); 
+	mydata = load_data_file(input_path.c_str()); 
  
  	//------------------
 	// Run
 	//------------------
  
 	MyHypothesis h0(&grammar);
-	MCTSNode m(explore, h0, callback, &mydata);
+	MyMCTS m(explore, h0, &mydata);
+	root = &m;
 	tic();
-	m.parallel_search(Control(mcts_steps, runtime, nthreads), Control(0, 10000, 1, 10000));
+	m.parallel_search(Control(mcts_steps, runtime, nthreads));
 	tic();
 	
 	m.print(tree_path.c_str());
@@ -323,8 +367,15 @@ int main(int argc, char** argv){
 	// and print out structures that have their top N
 	double cutoff = -infinity;
 	std::vector<double> structureScores;
-	for(auto& q: master_samples)  {
-		structureScores.push_back(q.second.best().posterior_score);
+	for(auto& m: master_samples)  {
+		
+		double best_posterior = -infinity;
+		for(auto& x: m.second.values()) {
+			if(x.posterior > best_posterior)
+				best_posterior = x.posterior;
+		}
+		
+		structureScores.push_back(best_posterior);
 	}
 	
 	double maxscore = -infinity;
@@ -346,22 +397,24 @@ int main(int argc, char** argv){
 	// And display!
 	COUT "structure\tstructure.max\testimated.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\tmade.cutoff\th\tparseable.h" ENDL;
 	for(auto& m : master_samples) {
-		double best_posterior = m.second.best().posterior_score;
-		MyHypothesis hm = m.second.best();
-		//double pd = get_polynomial_degree(hm.value, hm.constants);
-		// NOTE: we are picking just one example from this structure -- this may not be a great idea, but should work fine since
-		// we are next checking whether the degree is exactly 1 or 0, which should only happen if the degree is right based on the structure
+		
+		
+		double best_posterior = -infinity;
+		for(auto& x: m.second.values()) {
+			if(x.posterior > best_posterior)
+				best_posterior = x.posterior;
+		}
 		
 		// Look at structures that are above the cutoff or linear
 		// NOTE: This might miss a measure zero chance when the constants make you exactly linear
-		if(best_posterior >= cutoff){ // or (pd==0.0 or pd==1.0))  {
+		if(best_posterior >= cutoff){ 
 
 			// find the normalizer for this structure
 			double sz = -infinity;
-			for(auto& h : m.second.top.values()) 
+			for(auto& h : m.second.values()) 
 				sz = logplusexp(sz, h.posterior);
 			
-			for(auto h : m.second.top.values()) {
+			for(auto h : m.second.values()) {
 				COUT QQ(h.structure_string()) TAB 
 				     best_posterior TAB 
 					 ( (h.posterior-sz) + (best_posterior-Z)) TAB 

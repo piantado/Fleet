@@ -35,6 +35,16 @@ namespace Fleet {
 				min(infinity), max(-infinity), sum(0.0), lse(-infinity), N(0), reservoir_sample(rs) {
 			}
 			
+			StreamingStatistics(const StreamingStatistics& s) {
+				min = s.min;
+				max = s.max;
+				sum = s.sum;
+				lse = s.lse;
+				N   = s.N;
+				streaming_median = s.streaming_median;
+				reservoir_sample = s.reservoir_sample;
+			}
+			
 			void operator=(StreamingStatistics&& s) {
 				std::lock_guard guard(s.lock); // acquire s's lock
 				min = s.min;
