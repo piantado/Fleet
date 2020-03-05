@@ -11,12 +11,8 @@ namespace Fleet {
 		 * @author piantado
 		 * @date 29/01/20
 		 * @file ReservoirSample.h
-		 * @brief  A special weighted reservoir sampling class that allows for logarithmic weights
-		 * 	       to do this, we use a transformation following https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_using_Reservoir
-		 * 		   basically, we want to give a weight that is r^1/w, 
-		 * 	 	   or log(r)/w, or log(log(r))-log(w). But the problem is that log(r) is negative so log(log(r)) is not defined. 
-		 * 	 	   Instead, we'll use the function f(x)=-log(-log(x)), which is monotonic. So then,
-		 * 		   -log(-log(r^1/w)) = -log(-log(r)/w) = -log(-log(r)*1/w) = -[log(-log(r)) - log(w)] = -log(-log(r)) + log(w).
+		 * @brief A reservoir sampling algorithm. 
+		 * 		  NOTE: This was simplified from an old version that permitted unequal weights among elements. We may go back to that eventually - https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_
 		 * 
 		 * 		   NOTE: Because we use TopN internally, we can access the Item values with ReservoirSample.top.values() and we can get
 		 *               the stuff that's stored with ReservoirSample.values()
@@ -38,19 +34,16 @@ namespace Fleet {
 			public:
 				T x;
 				const double r; 
-				const double lw; // the log weight -- passed in in log form (as in a posterior probability)
-				const double lv; // my value -- a function of my r and w.
 				
-				Item(T x_, double r_, double lw_=0.0) : x(x_), r(r_), lw(lw_), 
-					lv(-log(-log(r)) + lw_) {}
+				Item(T x_, double r_) : x(x_), r(r_) {}
 				
 				bool operator<(const Item& b) const {
-					return lv < b.lv;
+					return r < b.r;
 				}
 				
 				bool operator==(const Item& b) const {
 					// equality here checks r and lw (which determine lv)
-					return x==b.x && r==b.r && lw==b.lw;
+					return x==b.x && r==b.r;
 				}
 				
 				void print() const {
@@ -90,9 +83,9 @@ namespace Fleet {
 				return top.size();
 			}
 
-			void add(T x, double lw=0.0) {
+			void add(T x) {
 				//std::lock_guard guard(lock);
-				top << Item(x, uniform(), lw);
+				top << Item(x, uniform());
 				++N;				
 			}
 			void operator<<(T x) {	add(x); }
@@ -113,25 +106,16 @@ namespace Fleet {
 			
 			T sample() const {
 				/**
-				 * @brief Return a sample from my vals (e.g. a sample of the samples I happen to have saved)
+				 * @brief Return a sample from my vals
 				 * @return 
 				 */
-				
 				if(N == 0) return NaN;
+
+				auto it = top.s.begin();
 				
+				std::advance(it, myrandom(top.size()));
 				
-				double lz = -infinity;
-				for(auto& i : top.values()) {
-					lz = logplusexp(lz, i.lw); // the log normalizer
-				}
-				
-				double zz = -infinity;
-				double r = log(uniform()) + lz; // random number -- uniform*z 
-				for(auto& i : top.values()) {
-					zz = logplusexp(zz, i.lw); // NOTE: This may be slightly imperfect with our approximations to lse, but it should not matter much
-					if(zz >= r) return i.x;			
-				}
-				assert(0 && "*** Should not get here");
+				return it->x;
 			}
 			
 			void clear() {
