@@ -210,27 +210,6 @@ namespace Fleet {
 				return *s.begin(); 
 			}
 			
-			double best_score() { // thread safe
-				/**
-				 * @brief Return the score of the best element (thread-safe)
-				 * @return 
-				 */
-			
-				std::lock_guard guard(lock);
-				if(s.empty()) return -infinity;
-				return s.rbegin()->posterior;  
-			}
-			double worst_score() { // thread safe
-				/**
-				 * @brief Return the score of the worst element
-				 * @return 
-				 */
-			
-				std::lock_guard guard(lock);
-				if(s.empty()) return infinity;
-				return s.begin()->posterior;  
-			}
-			
 			double Z() { // compute the normalizer
 				/**
 				 * @brief Compute the logsumexp of all of the elements stored. 
