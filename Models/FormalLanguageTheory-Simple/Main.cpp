@@ -82,7 +82,7 @@ public:
 		}
 		return lp;
 	}
-	
+		
 	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const {
 		
 		std::pair<Node,double> x;

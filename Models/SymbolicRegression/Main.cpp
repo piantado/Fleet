@@ -52,7 +52,7 @@ public:
 	using Super = LOTHypothesis<MyHypothesis,Node,D,D>;
 	using Super::Super;
 	
-	double compute_single_likelihood(const t_datum& datum) {
+	double compute_single_likelihood(const t_datum& datum) override {
 		double fx = this->callOne(datum.input, NaN);
 		if(std::isnan(fx)) return -infinity;
             
@@ -260,7 +260,7 @@ class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 		//if(DEBUG_MCTS) DEBUG( "\tPLAYOUT ", value.string());
 
 
-	/// Can't jsut do this because it might be a constant...
+	/// Can't just do this because it might be a constant...
 //		if(value.value.is_complete()) {
 //			MyHypothesis h0 = value;
 //			h0.compute_posterior(*data);
@@ -296,7 +296,7 @@ class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 		auto h = h0.copy_and_complete(); // fill in any structural gaps
 		
 		MCMCChain chain(h, data, cb);
-		chain.run(Control(0, 1000, 1, 1-000)); // run mcmc with restarts; we sure shouldn't run more than runtime
+		chain.run(Control(0, 100000, 1, 10000)); // run mcmc with restarts; we sure shouldn't run more than runtime
 		
 //		COUT "---------------------------------------------------------------" ENDL;
 //		root->print();
