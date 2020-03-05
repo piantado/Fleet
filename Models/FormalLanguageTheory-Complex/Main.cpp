@@ -54,7 +54,7 @@ const unsigned long PRINT_STRINGS = 128; // print at most this many strings for 
 
 #define FLEET_GRAMMAR_TYPES S,bool,double,StrSet
 
-#define CUSTOM_OPS op_UniformSample,op_P
+#define CUSTOM_OPS op_UniformSample
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// This is a global variable that provides a convenient way to wrap our primitives
@@ -143,7 +143,7 @@ public:
 	using Super = LOTHypothesis<InnerHypothesis,Node,S,S>;
 	using Super::Super; // inherit constructors
 	
-	virtual vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>* vms, Dispatchable<S,S>* loader) {
+	virtual vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>* vms, Dispatchable<S,S>* loader) override {
 		assert(i.is<CustomOp>());
 		switch(i.as<CustomOp>()) {
 			case CustomOp::op_UniformSample: {
@@ -190,7 +190,7 @@ public:
 	MyHypothesis()                       : Super()   {}
 	MyHypothesis(const MyHypothesis& h)  : Super(h)  {}
 
-	virtual double compute_prior() {
+	virtual double compute_prior() override {
 		// since we aren't searching over nodes, we are going to enforce a prior that requires
 		// each function to be called -- this should make the search a bit more efficient by 
 		// allowing us to prune out the functions which could be found with a smaller number of factors
@@ -203,7 +203,7 @@ public:
 	 * Calling
 	 ********************************************************/
 	 
-	virtual DiscreteDistribution<S> call(const S x, const S err) {
+	virtual DiscreteDistribution<S> call(const S x, const S err) override {
 		// this calls by calling only the last factor, which, according to our prior,
 		// must call everything else
 		
@@ -216,10 +216,10 @@ public:
 	 
 	 
 	 // We assume input,output with reliability as the number of counts that input was seen going to that output
-	 virtual double compute_single_likelihood(const t_datum& datum) { assert(0); }
+	 virtual double compute_single_likelihood(const t_datum& datum) override { assert(0); }
 	 
 
-	 double compute_likelihood(const t_data& data, const double breakout=-infinity) {
+	 double compute_likelihood(const t_data& data, const double breakout=-infinity) override {
 		// this version goes through and computes the predictive probability of each prefix
 		 
 		const auto M = call(S(""), S("<err>")); 
@@ -259,7 +259,7 @@ public:
 	
 	 }
 	 
-	 void print(std::string prefix="") {
+	 void print(std::string prefix="") override {
 		std::lock_guard guard(Fleet::output_lock); // better not call Super wtih this here
 		extern MyHypothesis::t_data prdata;
 		extern std::string current_data;
@@ -386,7 +386,7 @@ int main(int argc, char** argv){
 		// that's because if we make it much bigger, we waste lower chains; if we make it much smaller, 
 		// we don't get good mixing in the lowest chains. 
 		// No theory here, this just seems to be about what works well. 
-		ParallelTempering samp(h0, &datas[di], all, NTEMPS, std::max(1.0, stoi(data_amounts[di]))); 
+		ParallelTempering samp(h0, &datas[di], all, NTEMPS, std::max(1, stoi(data_amounts[di]))); 
 		samp.run(Control(mcmc_steps/datas.size(), runtime/datas.size(), nthreads, RESTART), SWAP_EVERY, 60*1000);	
 
 		// set up to print using a larger set

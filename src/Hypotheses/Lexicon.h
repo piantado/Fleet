@@ -28,7 +28,7 @@ public:
 	Lexicon(size_t n)  : MCMCable<HYP,t_datum>()  { factors.resize(n); }
 	Lexicon()          : MCMCable<HYP,t_datum>()  { }
 		
-	virtual std::string string() const {
+	virtual std::string string() const override {
 		/**
 		 * @brief AConvert a lexicon to a string -- defaultly includes all arguments. 
 		 * @return 
@@ -79,7 +79,7 @@ public:
 	}
 
 	
-	virtual size_t hash() const {
+	virtual size_t hash() const override {
 		/**
 		 * @brief Hash a Lexicon by hashing each part
 		 * @return 
@@ -95,7 +95,7 @@ public:
 		return out;
 	}
 	
-	virtual bool operator==(const HYP& l) const {
+	virtual bool operator==(const HYP& l) const override {
 		/**
 		 * @brief Equality checks equality on each part
 		 * @param l
@@ -191,7 +191,7 @@ public:
 	/********************************************************
 	 * Required for VMS to dispatch to the right sub
 	 ********************************************************/
-	virtual void push_program(Program& s, short j) {
+	virtual void push_program(Program& s, short j) override {
 		/**
 		 * @brief Put factor j onto program s
 		 * @param s
@@ -210,7 +210,7 @@ public:
 	}
 	
 	 // This should never be called because we should be dispatching throuhg a factor
-	 virtual vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms,  Dispatchable<t_input, t_output>* loader ) {
+	 virtual vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms,  Dispatchable<t_input, t_output>* loader ) override {
 		 assert(0); // can't call this, must be implemented by kids
 	 }
 	 
@@ -231,7 +231,7 @@ public:
 	}
 	
 	
-	virtual double compute_prior() {
+	virtual double compute_prior() override {
 		// this uses a proper prior which flips a coin to determine the number of factors
 		
 		this->prior = log(0.5)*(factors.size()+1); // +1 to end adding factors, as in a geometric
@@ -243,7 +243,7 @@ public:
 		return this->prior;
 	}
 	
-	[[nodiscard]] virtual std::pair<HYP,double> propose() const {
+	[[nodiscard]] virtual std::pair<HYP,double> propose() const override {
 		/**
 		 * @brief This proposal guarantees that there will be at least one factor that is proposed to. 
 		 * 		  To do this, we draw random numbers on 2**factors.size()-1 and then use the bits of that
@@ -275,7 +275,7 @@ public:
 	}
 	
 	
-	[[nodiscard]] virtual HYP restart() const  {
+	[[nodiscard]] virtual HYP restart() const override {
 		HYP x;
 		x.factors.resize(factors.size());
 		for(size_t i=0;i<factors.size();i++){
@@ -293,7 +293,7 @@ public:
 	 
 	 // for now, we define neighbors only for *complete* (evaluable) trees -- so you can add a factor if you have a complete tree already
 	 // otherwise, no adding factors
-	 int neighbors() const {
+	 int neighbors() const override {
 		 
 		if(is_evaluable()) {
 			T tmp;  // make something null, and then count its neighbors
@@ -306,7 +306,7 @@ public:
 		}
 	 }
 	
-	 HYP make_neighbor(int k) const {
+	 HYP make_neighbor(int k) const override {
 		 
 		HYP x;
 		x.factors.resize(factors.size());
@@ -380,7 +380,7 @@ public:
 //	 }
 	 
 	 
-	 bool is_evaluable() const {
+	 bool is_evaluable() const override {
 		for(auto& a: factors) {
 			if(!a.is_evaluable()) return false;
 		}

@@ -72,7 +72,7 @@ public:
 	using Super =  LOTHypothesis<MyHypothesis,Node,S,S>;
 	using Super::Super; // inherit the constructors
 	
-	double compute_single_likelihood(const t_datum& x) {	
+	double compute_single_likelihood(const t_datum& x) override {	
 		auto out = call(x.input, "<err>", this, 256, 256); //256, 256);
 		
 		// Likelihood comes from all of the ways that we can delete from the end and the append to make the observed output. 
@@ -83,7 +83,7 @@ public:
 		return lp;
 	}
 		
-	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const {
+	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const override {
 		
 		std::pair<Node,double> x;
 		if(flip()) {
@@ -101,7 +101,7 @@ public:
 //		return std::make_pair(MyHypothesis(grammar, g), grammar->log_probability(g) - grammar->log_probability(value));
 //	}	
 	
-	void print(std::string prefix="") {
+	void print(std::string prefix="") override {
 		// we're going to make this print by showing the language we created on the line before
 		prefix = prefix+"#\n#" +  this->call("", "<err>").string() + "\n";
 //		prefix += str(grammar->compute_enumeration_order(value)) + "\t"; 

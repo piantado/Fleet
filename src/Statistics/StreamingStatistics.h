@@ -56,20 +56,19 @@ namespace Fleet {
 				reservoir_sample = s.reservoir_sample;
 			}
 
-			void add(double x, double lw=0.0) {
+			void add(double x) {
 				/**
-				 * @brief Add sample x (with log weight lw) to these statistics. 
+				 * @brief Add sample x to these statistics. 
 				 * @param x
-				 * @param lw
 				 */
 				
 				++N; // always count N, even if we get nan/inf (this is required for MCTS, otherwise we fall into sampling nans)
-				if(std::isnan(x) || std::isinf(x)) return; // filter nans and inf(TODO: Should we filter inf?)
+				if(std::isnan(x) or std::isinf(x)) return; // filter nans and inf(TODO: Should we filter inf?)
 				
 				std::lock_guard guard(lock);
 
 				streaming_median << x;
-				reservoir_sample.add(x,lw);
+				reservoir_sample << x;
 				
 				if(x < min) min = x;
 				if(x > max) max = x;

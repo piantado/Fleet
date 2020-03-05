@@ -202,7 +202,7 @@ public:
 		return cnt;
 	}
 		
-	double compute_prior() {
+	double compute_prior() override {
 		// include recusion penalty
 		prior = Super::compute_prior() +
 		       (recursion_count() > 0 ? recursion_penalty : log(1.0-exp(recursion_penalty))); 
@@ -210,7 +210,7 @@ public:
 		return prior;
 	}
 	
-	double compute_single_likelihood(const t_datum& d) {
+	double compute_single_likelihood(const t_datum& d) override {
 		auto v = call(d.input, U, this, 64, 64); // something of the type
 		
 		double pU      = (v.count(U) ? exp(v[U]) : 0.0); // non-log probs
@@ -221,7 +221,7 @@ public:
 	}	
 
 	
-	virtual void print(std::string prefix=""){
+	virtual void print(std::string prefix="") override {
 		std::string s1 = "";
 		for (int j = 1; j <= 9; j++) {
 			set theset = "" + std::string(j,'Z');
@@ -251,10 +251,43 @@ public:
 	}
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////
+// Declare global set
 
+Fleet::Statistics::TopN<MyHypothesis> all;
+	
 
 ////////////////////////////////////////////////////////////////////////////////////////////
+// If we want to do MCTS
+class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
+	using MCTSNode::MCTSNode;
 
+	virtual void playout() override {
+
+		MyHypothesis h0 = value; // need a copy to change resampling on 
+		for(auto& n : h0.value ){
+			n.can_resample = false;
+		}
+		
+		// make a wrapper to add samples
+		std::function<void(MyHypothesis& h)> cb = [&](MyHypothesis& h) { 
+			if(h.posterior == -infinity) return;
+
+			all << h;
+			
+			add_sample(h.posterior);
+		};
+		
+		
+		
+		auto h = h0.copy_and_complete(); // fill in any structural gaps
+		
+		MCMCChain chain(h, data, cb);
+		chain.run(Control(0, 1000, 1)); // run mcmc with restarts; we sure shouldn't run more than runtime
+	}
+	
+};
+////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char** argv){ 
 	
@@ -263,7 +296,6 @@ int main(int argc, char** argv){
 	CLI11_PARSE(app, argc, argv);
 	Fleet_initialize();
 
-	Fleet::Statistics::TopN<MyHypothesis> all;
 	
 	Grammar grammar(PRIMITIVES);
 	
@@ -315,34 +347,32 @@ int main(int argc, char** argv){
 	
 	
 
-// MCTS 
-//	all.set_print_best(true);
-//	MyHypothesis h0(&grammar);
-//	MCTSNode m(1.0, h0, &all, &biggestData);
-//	tic();
-//	m.parallel_search(Control(mcts_steps, runtime, nthreads), Control(1000, 0));
-//	tic();
-//	m.print();
-
+	// MCTS  - here just on the last data
+	MyHypothesis h0(&grammar);
+	MyMCTS m(explore, h0, &alldata[alldata.size()-1]);
+	tic();
+	m.parallel_search(Control(mcts_steps, runtime, nthreads));
+	tic();
+	m.print();
 	
 //	CERR "# Starting sampling." ENDL;
 	
 	
 	// Run parallel tempering
-	MyHypothesis h0(&grammar);
-	h0 = h0.restart();
-	ParallelTempering samp(h0, alldata, alltops);
-	tic();
-	samp.run(Control(mcmc_steps, runtime, nthreads), 200, 5000); 
-	tic();
+//	MyHypothesis h0(&grammar);
+//	h0 = h0.restart();
+//	ParallelTempering samp(h0, alldata, alltops);
+//	tic();
+//	samp.run(Control(mcmc_steps, runtime, nthreads), 200, 5000); 
+//	tic();
 
 	// and save what we found
-	for(auto& tn : alltops) {
-		for(auto h : tn.values()) {
-			h.clear_bayes(); // zero the prior, posterior, likelihood
-			all << h;
-		}
-	}
+//	for(auto& tn : alltops) {
+//		for(auto h : tn.values()) {
+//			h.clear_bayes(); // zero the prior, posterior, likelihood
+//			all << h;
+//		}
+//	}
 	
 	COUT "# Computing posterior on all final values |D|=" << biggestData.size()  ENDL;
 
