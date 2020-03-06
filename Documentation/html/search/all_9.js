@@ -7,7 +7,7 @@ var searchData=
   ['incremental_5flikelihoods',['incremental_likelihoods',['../_grammar_hypothesis_8h.html#a9a48b68b9617c8ece4f550196dd275d9',1,'GrammarHypothesis.h']]],
   ['index_5ft',['index_t',['../class_virtual_machine_state.html#ad082a1996e3cce1eb04bc788c24a3214',1,'VirtualMachineState']]],
   ['infinity',['infinity',['../_numerics_8h.html#a1bb1e42ae1b40cad6e99da0aab8a5576',1,'Numerics.h']]],
-  ['initialize',['initialize',['../class_m_c_t_s_node.html#ad0644bc487fe620c67a3c8fb4a609ac2',1,'MCTSNode']]],
+  ['initialize',['initialize',['../class_m_c_t_s_node.html#aadbe8d42f6761eb3e4f28fb9157a873d',1,'MCTSNode']]],
   ['innerhypothesis',['InnerHypothesis',['../class_inner_hypothesis.html',1,'']]],
   ['input',['input',['../classdefault__datum.html#a19f8427ac058ad008f5b2541e17d42e7',1,'default_datum']]],
   ['input_5fpath',['input_path',['../_i_o_8h.html#aa14dbbb4b5614a1e7a5b4281baa64b89',1,'IO.h']]],
@@ -21,7 +21,7 @@ var searchData=
   ['is',['is',['../class_instruction.html#ade73e12471250fd191362d462e2f4970',1,'Instruction']]],
   ['is_5fa',['is_a',['../class_instruction.html#a924203cd9a0516d64556ecbf6a79df8a',1,'Instruction::is_a(const T x) const'],['../class_instruction.html#ae670ee58f9acdfd60b7213f77dfca794',1,'Instruction::is_a(T x, Ts... args) const']]],
   ['is_5fcomplete',['is_complete',['../class_node.html#ac2e36754ba8b1b1d452deeb2bdbd346f',1,'Node']]],
-  ['is_5fevaluable',['is_evaluable',['../class_searchable.html#aae16f1cb01f140f4033f6f67dc9753b6',1,'Searchable::is_evaluable()'],['../class_lexicon.html#ad48a8d79b77aed51caff4d10c7de43a1',1,'Lexicon::is_evaluable()'],['../class_l_o_t_hypothesis.html#ad43c57ed606c0f5af6cce0752725f583',1,'LOTHypothesis::is_evaluable()']]],
+  ['is_5fevaluable',['is_evaluable',['../class_searchable.html#aae16f1cb01f140f4033f6f67dc9753b6',1,'Searchable::is_evaluable()'],['../class_lexicon.html#a4928f2db73eb7d675f347429a4167820',1,'Lexicon::is_evaluable()'],['../class_l_o_t_hypothesis.html#a68dedaeae92b25b0450f2dc1bd95a35b',1,'LOTHypothesis::is_evaluable()']]],
   ['is_5fiterable',['is_iterable',['../structis__iterable.html',1,'']]],
   ['is_5fiterable_3c_20t_2c_20std_3a_3avoid_5ft_3c_20decltype_28std_3a_3abegin_28std_3a_3adeclval_3c_20t_20_3e_28_29_29_29_2c_20decltype_28std_3a_3aend_28std_3a_3adeclval_3c_20t_20_3e_28_29_29_29_20_3e_20_3e',['is_iterable&lt; T, std::void_t&lt; decltype(std::begin(std::declval&lt; T &gt;())), decltype(std::end(std::declval&lt; T &gt;())) &gt; &gt;',['../structis__iterable_3_01_t_00_01std_1_1void__t_3_01decltype_07std_1_1begin_07std_1_1declval_3_01_6e9fb167ef7cf6be085c68f3355f458c.html',1,'']]],
   ['is_5fiterable_5fv',['is_iterable_v',['../_miscellaneous_8h.html#adf72477d5b96869bf84dffe9ef52037c',1,'Miscellaneous.h']]],
@@ -30,5 +30,5 @@ var searchData=
   ['is_5froot',['is_root',['../class_node.html#ad12a96da2fe796616aa22e20429f41d5',1,'Node']]],
   ['is_5ftemperature',['is_temperature',['../class_parallel_tempering.html#ae9f0a2af938df838cc4010983860394e',1,'ParallelTempering']]],
   ['is_5fterminal',['is_terminal',['../class_node.html#ac3c263a4e0c734c34aaf62f80f84cd9a',1,'Node::is_terminal()'],['../class_rule.html#a9d557e302f94bd85f5505733e8856f97',1,'Rule::is_terminal()']]],
-  ['item',['Item',['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html',1,'Fleet::Statistics::ReservoirSample&lt; T &gt;::Item'],['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#acad6abfadffe65005f14a4c9616aabde',1,'Fleet::Statistics::ReservoirSample::Item::Item()']]]
+  ['item',['Item',['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html',1,'Fleet::Statistics::ReservoirSample&lt; T &gt;::Item'],['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#a355a3b655f4aa8e9cd151cb46054ee0e',1,'Fleet::Statistics::ReservoirSample::Item::Item(T x_, double r_)'],['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#acad6abfadffe65005f14a4c9616aabde',1,'Fleet::Statistics::ReservoirSample::Item::Item(T x_, double r_, double lw_=0.0)']]]
 ];

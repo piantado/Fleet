@@ -16,7 +16,7 @@ Collaboration diagram for Rule\+:\nopagebreak
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename O\+PT $>$ }\\\hyperlink{class_rule_a1e65fa1bce404b1513038a9dd4ffcb9f}{Rule} (const nonterminal\+\_\+t rt, const O\+PT o, const std\+::string fmt, std\+::initializer\+\_\+list$<$ nonterminal\+\_\+t $>$ c, double \+\_\+p, const int arg=0)
+{\footnotesize template$<$typename O\+PT $>$ }\\\hyperlink{class_rule_a1e65fa1bce404b1513038a9dd4ffcb9f}{Rule} (const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} rt, const O\+PT o, const std\+::string fmt, std\+::initializer\+\_\+list$<$ \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} $>$ c, double \+\_\+p, const int arg=0)
 \item 
 bool \hyperlink{class_rule_a706819fbede2c5a1b0b59f1d28cae30b}{operator$<$} (const \hyperlink{class_rule}{Rule} \&r) const
 \item 
@@ -26,14 +26,14 @@ size\+\_\+t \hyperlink{class_rule_a62e4d931266a65d4aad9ca3c058d7e25}{get\+\_\+ha
 \item 
 bool \hyperlink{class_rule_a9d557e302f94bd85f5505733e8856f97}{is\+\_\+terminal} () const
 \item 
-nonterminal\+\_\+t \hyperlink{class_rule_a97db8e22bb8445b92779eb165bb29ae5}{type} (size\+\_\+t i) const
+\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_rule_a97db8e22bb8445b92779eb165bb29ae5}{type} (size\+\_\+t i) const
 \item 
 std\+::string \hyperlink{class_rule_a4a75588d7821c1bcf087ec6ebf82bd0f}{string} ()
 \end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-nonterminal\+\_\+t \hyperlink{class_rule_a980385e76137909454bd6a585bd2e138}{nt}
+\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_rule_a980385e76137909454bd6a585bd2e138}{nt}
 \item 
 \hyperlink{class_instruction}{Instruction} \hyperlink{class_rule_a367e578f5e1427ef04d1d77477565c67}{instr}
 \item 
@@ -46,10 +46,19 @@ double \hyperlink{class_rule_acd7e4d41d59dec76f60ca16238ab391a}{p}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
-nonterminal\+\_\+t \hyperlink{class_rule_a2d5160625d3d15f60690c4323522a33e}{child\+\_\+types} \mbox{[}Fleet\+::\+M\+A\+X\+\_\+\+C\+H\+I\+L\+D\+\_\+\+S\+I\+ZE\mbox{]}
+\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_rule_a2d5160625d3d15f60690c4323522a33e}{child\+\_\+types} \mbox{[}Fleet\+::\+M\+A\+X\+\_\+\+C\+H\+I\+L\+D\+\_\+\+S\+I\+ZE\mbox{]}
 \item 
 std\+::size\+\_\+t \hyperlink{class_rule_af2d873c97e2de425f14a5a980dbcc104}{my\+\_\+hash}
 \end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+08/02/20 
+\end{DoxyDate}
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -58,7 +67,7 @@ std\+::size\+\_\+t \hyperlink{class_rule_af2d873c97e2de425f14a5a980dbcc104}{my\+
 \index{Rule@{Rule}!Rule@{Rule}}
 \subsubsection{\texorpdfstring{Rule()}{Rule()}}
 {\footnotesize\ttfamily template$<$typename O\+PT $>$ \\
-Rule\+::\+Rule (\begin{DoxyParamCaption}\item[{const nonterminal\+\_\+t}]{rt,  }\item[{const O\+PT}]{o,  }\item[{const std\+::string}]{fmt,  }\item[{std\+::initializer\+\_\+list$<$ nonterminal\+\_\+t $>$}]{c,  }\item[{double}]{\+\_\+p,  }\item[{const int}]{arg = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+Rule\+::\+Rule (\begin{DoxyParamCaption}\item[{const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t}}]{rt,  }\item[{const O\+PT}]{o,  }\item[{const std\+::string}]{fmt,  }\item[{std\+::initializer\+\_\+list$<$ \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} $>$}]{c,  }\item[{double}]{\+\_\+p,  }\item[{const int}]{arg = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -116,7 +125,7 @@ Two rules are equal if they have the same instructions, nonterminal, format, chi
 \index{Rule@{Rule}!type@{type}}
 \index{type@{type}!Rule@{Rule}}
 \subsubsection{\texorpdfstring{type()}{type()}}
-{\footnotesize\ttfamily nonterminal\+\_\+t Rule\+::type (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} Rule\+::type (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 What type is my i\textquotesingle{}th child? 
 \begin{DoxyParams}{Parameters}
@@ -133,7 +142,7 @@ What type is my i\textquotesingle{}th child?
 \index{Rule@{Rule}!child\+\_\+types@{child\+\_\+types}}
 \index{child\+\_\+types@{child\+\_\+types}!Rule@{Rule}}
 \subsubsection{\texorpdfstring{child\+\_\+types}{child\_types}}
-{\footnotesize\ttfamily nonterminal\+\_\+t Rule\+::child\+\_\+types\mbox{[}Fleet\+::\+M\+A\+X\+\_\+\+C\+H\+I\+L\+D\+\_\+\+S\+I\+ZE\mbox{]}\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} Rule\+::child\+\_\+types\mbox{[}Fleet\+::\+M\+A\+X\+\_\+\+C\+H\+I\+L\+D\+\_\+\+S\+I\+ZE\mbox{]}\hspace{0.3cm}{\ttfamily [protected]}}
 
 \mbox{\Hypertarget{class_rule_aa48c15aaaf5242afea0439607f2a2177}\label{class_rule_aa48c15aaaf5242afea0439607f2a2177}} 
 \index{Rule@{Rule}!format@{format}}
@@ -163,7 +172,7 @@ What type is my i\textquotesingle{}th child?
 \index{Rule@{Rule}!nt@{nt}}
 \index{nt@{nt}!Rule@{Rule}}
 \subsubsection{\texorpdfstring{nt}{nt}}
-{\footnotesize\ttfamily nonterminal\+\_\+t Rule\+::nt}
+{\footnotesize\ttfamily \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} Rule\+::nt}
 
 \mbox{\Hypertarget{class_rule_acd7e4d41d59dec76f60ca16238ab391a}\label{class_rule_acd7e4d41d59dec76f60ca16238ab391a}} 
 \index{Rule@{Rule}!p@{p}}

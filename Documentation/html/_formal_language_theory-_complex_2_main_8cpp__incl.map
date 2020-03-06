@@ -1,6 +1,6 @@
 <map id="Models/FormalLanguageTheory&#45;Complex/Main.cpp" name="Models/FormalLanguageTheory&#45;Complex/Main.cpp">
 <area shape="rect" id="node6" href="$_data_8h.html" title="Data.h" alt="" coords="320,95,381,121"/>
-<area shape="rect" id="node17" href="$_primitives_8h.html" title="Primitives.h" alt="" coords="3829,177,3920,203"/>
+<area shape="rect" id="node17" href="$_primitives_8h.html" title="A preprimitive is a class that primitives inherit. We use a static op_counter so that at compile time..." alt="" coords="3829,177,3920,203"/>
 <area shape="rect" id="node23" href="$_builtins_8h.html" title="Builtins.h" alt="" coords="3779,95,3855,121"/>
 <area shape="rect" id="node24" href="$_fleet_8h.html" title="Fleet.h" alt="" coords="2277,95,2339,121"/>
 <area shape="rect" id="node10" href="$_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="358,177,506,203"/>

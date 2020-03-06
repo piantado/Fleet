@@ -31,9 +31,9 @@ class \hyperlink{class_node_1_1_node_iterator}{Node\+Iterator}
 \item 
 const \hyperlink{class_node}{Node} \& \hyperlink{class_node_acc2b20cdba470853f1c137e26546ed3c}{child} (const size\+\_\+t i) const
 \item 
-nonterminal\+\_\+t \hyperlink{class_node_aa727c354e38f60fb1560d72ae1aaa9af}{type} (const size\+\_\+t i) const
+\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_node_aa727c354e38f60fb1560d72ae1aaa9af}{type} (const size\+\_\+t i) const
 \item 
-const size\+\_\+t \hyperlink{class_node_a8a7ea0e9f9bac373dbcdd427cb5ebe48}{nchildren} () const
+size\+\_\+t \hyperlink{class_node_a5d42219573573f6a91cdfe68fe415505}{nchildren} () const
 \item 
 void \hyperlink{class_node_a1c03973664fcfdfb191feb67f565168b}{fill} ()
 \item 
@@ -51,7 +51,7 @@ bool \hyperlink{class_node_a8b05feb361beb04d465619751a2297b1}{operator$<$} (cons
 \item 
 void \hyperlink{class_node_a8f25f44608c0b19fe02eaf19ade9ea68}{fix\+\_\+child\+\_\+info} ()
 \item 
-nonterminal\+\_\+t \hyperlink{class_node_a4abe3acdc804489a01ef13a25b130fd8}{nt} () const
+\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_node_a4abe3acdc804489a01ef13a25b130fd8}{nt} () const
 \item 
 \hyperlink{class_node}{Node} \& \hyperlink{class_node_a0b89084e2c7416379edb7c537edcc8f2}{operator\mbox{[}$\,$\mbox{]}} (const size\+\_\+t i)
 \item 
@@ -351,11 +351,11 @@ Apply f to me and everything below.
 \subsubsection{\texorpdfstring{map\+\_\+const()}{map\_const()}}
 {\footnotesize\ttfamily void Node\+::map\+\_\+const (\begin{DoxyParamCaption}\item[{const std\+::function$<$ void(const \hyperlink{class_node}{Node} \&)$>$ \&}]{f }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_node_a8a7ea0e9f9bac373dbcdd427cb5ebe48}\label{class_node_a8a7ea0e9f9bac373dbcdd427cb5ebe48}} 
+\mbox{\Hypertarget{class_node_a5d42219573573f6a91cdfe68fe415505}\label{class_node_a5d42219573573f6a91cdfe68fe415505}} 
 \index{Node@{Node}!nchildren@{nchildren}}
 \index{nchildren@{nchildren}!Node@{Node}}
 \subsubsection{\texorpdfstring{nchildren()}{nchildren()}}
-{\footnotesize\ttfamily const size\+\_\+t Node\+::nchildren (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily size\+\_\+t Node\+::nchildren (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 How many children do I have? \begin{DoxyReturn}{Returns}
 
@@ -364,7 +364,7 @@ How many children do I have? \begin{DoxyReturn}{Returns}
 \index{Node@{Node}!nt@{nt}}
 \index{nt@{nt}!Node@{Node}}
 \subsubsection{\texorpdfstring{nt()}{nt()}}
-{\footnotesize\ttfamily nonterminal\+\_\+t Node\+::nt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} Node\+::nt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 What nonterminal type do I return? \begin{DoxyReturn}{Returns}
 
@@ -529,7 +529,7 @@ Apply f to me and everything below me, adding up the result.
 \index{Node@{Node}!type@{type}}
 \index{type@{type}!Node@{Node}}
 \subsubsection{\texorpdfstring{type()}{type()}}
-{\footnotesize\ttfamily nonterminal\+\_\+t Node\+::type (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} Node\+::type (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 Return the type of the i\textquotesingle{}th child 
 \begin{DoxyParams}{Parameters}

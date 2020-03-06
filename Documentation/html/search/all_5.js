@@ -13,5 +13,5 @@ var searchData=
   ['expand_5ffrom_5finteger',['expand_from_integer',['../class_grammar.html#a221f1a43488624ce78138d7d5045a816',1,'Grammar::expand_from_integer(nonterminal_t nt, IntegerizedStack &amp;is) const'],['../class_grammar.html#a7b478d4ad5955b7489074e106afce5a4',1,'Grammar::expand_from_integer(nonterminal_t nt, enumerationidx_t z) const']]],
   ['expand_5ffrom_5fnames',['expand_from_names',['../class_grammar.html#ab5bd3d35545bcab4dbd3ca1d136bd4ce',1,'Grammar::expand_from_names(std::deque&lt; std::string &gt; &amp;q) const'],['../class_grammar.html#a44954a36c11d58c23bef02ca7d541005',1,'Grammar::expand_from_names(std::string s) const'],['../class_grammar.html#a0addff494602ebb19852c2d4314eaac6',1,'Grammar::expand_from_names(const char *c) const']]],
   ['expand_5fto_5fneighbor',['expand_to_neighbor',['../class_grammar.html#abd380ec308907ddc26acb22196610b83',1,'Grammar']]],
-  ['explore',['explore',['../class_m_c_t_s_node.html#a4d21a4368a893b5ccb4acb2ea3286a52',1,'MCTSNode::explore()'],['../_i_o_8h.html#a561c6966fb4883979872cb97465409b8',1,'explore():&#160;IO.h']]]
+  ['explore',['explore',['../class_m_c_t_s_node.html#ad1a742de2cdd0e208079bc35f943cacc',1,'MCTSNode::explore()'],['../_i_o_8h.html#a561c6966fb4883979872cb97465409b8',1,'explore():&#160;IO.h']]]
 ];

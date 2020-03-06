@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Fleet: MCTSNode&lt; HYP, callback_t &gt; Class Template Reference</title>
+<title>Fleet: MCTSNode&lt; M, HYP &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,154 +62,114 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_m_c_t_s_node-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">MCTSNode&lt; HYP, callback_t &gt; Class Template Reference</div>  </div>
+<div class="title">MCTSNode&lt; M, HYP &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="_m_c_t_s_8h_source.html">MCTS.h</a>&gt;</code></p>
 <div class="dynheader">
-Collaboration diagram for MCTSNode&lt; HYP, callback_t &gt;:</div>
+Collaboration diagram for MCTSNode&lt; M, HYP &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="class_m_c_t_s_node__coll__graph.png" border="0" usemap="#_m_c_t_s_node_3_01_h_y_p_00_01callback__t_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="_m_c_t_s_node_3_01_h_y_p_00_01callback__t_01_4_coll__map" id="_m_c_t_s_node_3_01_h_y_p_00_01callback__t_01_4_coll__map">
-<area shape="rect" id="node2" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html" title="Fleet::Statistics::\lStreamingStatistics" alt="" coords="348,39,484,80"/>
-<area shape="rect" id="node3" href="class_fleet_1_1_statistics_1_1_median_f_a_m_e.html" title="Fleet::Statistics::\lMedianFAME\&lt; double \&gt;" alt="" coords="16,5,179,47"/>
-<area shape="rect" id="node4" href="class_fleet_1_1_statistics_1_1_reservoir_sample.html" title="Fleet::Statistics::\lReservoirSample\&lt; double \&gt;" alt="" coords="5,71,189,112"/>
+<div class="center"><img src="class_m_c_t_s_node__coll__graph.png" border="0" usemap="#_m_c_t_s_node_3_01_m_00_01_h_y_p_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="_m_c_t_s_node_3_01_m_00_01_h_y_p_01_4_coll__map" id="_m_c_t_s_node_3_01_m_00_01_h_y_p_01_4_coll__map">
+<area shape="rect" id="node2" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html" title="Fleet::Statistics::\lStreamingStatistics" alt="" coords="595,37,731,79"/>
+<area shape="rect" id="node3" href="class_fleet_1_1_statistics_1_1_median_f_a_m_e.html" title="Fleet::Statistics::\lMedianFAME\&lt; double \&gt;" alt="" coords="263,5,425,47"/>
+<area shape="rect" id="node4" href="class_fleet_1_1_statistics_1_1_reservoir_sample.html" title="Fleet::Statistics::\lReservoirSample\&lt; double \&gt;" alt="" coords="252,71,436,112"/>
+<area shape="rect" id="node5" href="class_fleet_1_1_statistics_1_1_top_n.html" title="Fleet::Statistics::\lTopN\&lt; Fleet::Statistics\l::ReservoirSample::Item \&gt;" alt="" coords="5,63,181,119"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a5a201dc80c97c1b65503161f7e5603f6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a5a201dc80c97c1b65503161f7e5603f6">ScoringType</a> { <a class="el" href="class_m_c_t_s_node.html#a5a201dc80c97c1b65503161f7e5603f6af5a2496cf66cb8cffe66cb1b27d7dede">ScoringType::SAMPLE</a>, 
-<a class="el" href="class_m_c_t_s_node.html#a5a201dc80c97c1b65503161f7e5603f6a16e3acc5a0f586b6e37536492dfbc47f">ScoringType::UCBMAX</a>, 
-<a class="el" href="class_m_c_t_s_node.html#a5a201dc80c97c1b65503161f7e5603f6a8ab0c3a037e882577dec378985477074">ScoringType::MEDIAN</a>
- }<tr class="memdesc:a5a201dc80c97c1b65503161f7e5603f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">MCTS Implementation.  <a href="class_m_c_t_s_node.html#a5a201dc80c97c1b65503161f7e5603f6">More...</a><br /></td></tr>
-</td></tr>
-<tr class="separator:a5a201dc80c97c1b65503161f7e5603f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aacbf672bfe2acc5ad2396a021d1b2d03"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#aacbf672bfe2acc5ad2396a021d1b2d03">MCTSNode</a> (<a class="el" href="class_m_c_t_s_node.html">MCTSNode</a> *par, HYP &amp;v)</td></tr>
-<tr class="separator:aacbf672bfe2acc5ad2396a021d1b2d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb45ef5d519e94298c4a6f6169287b15"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#aeb45ef5d519e94298c4a6f6169287b15">MCTSNode</a> (double ex, HYP &amp;h0, callback_t *cb, typename HYP::t_data *d, <a class="el" href="class_m_c_t_s_node.html#a5a201dc80c97c1b65503161f7e5603f6">ScoringType</a> st=<a class="el" href="class_m_c_t_s_node.html#a5a201dc80c97c1b65503161f7e5603f6af5a2496cf66cb8cffe66cb1b27d7dede">ScoringType::SAMPLE</a>)</td></tr>
-<tr class="separator:aeb45ef5d519e94298c4a6f6169287b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c20efdd42178c22ad3f34446150b705"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a6c20efdd42178c22ad3f34446150b705">MCTSNode</a> (const <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a> &amp;m)=delete</td></tr>
-<tr class="separator:a6c20efdd42178c22ad3f34446150b705"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af737d4dda4132092ab99d0ef4254c856"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#af737d4dda4132092ab99d0ef4254c856">MCTSNode</a> (<a class="el" href="class_m_c_t_s_node.html">MCTSNode</a> &amp;&amp;m)</td></tr>
-<tr class="separator:af737d4dda4132092ab99d0ef4254c856"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e6997465d24c26cadd556346d722959"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a9e6997465d24c26cadd556346d722959">size</a> () const</td></tr>
-<tr class="separator:a9e6997465d24c26cadd556346d722959"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0644bc487fe620c67a3c8fb4a609ac2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#ad0644bc487fe620c67a3c8fb4a609ac2">initialize</a> ()</td></tr>
-<tr class="separator:ad0644bc487fe620c67a3c8fb4a609ac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae672141481eb0da89defec2c562b95e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#ae672141481eb0da89defec2c562b95e1">print</a> (std::ostream &amp;o, const int depth, const bool sort) const</td></tr>
-<tr class="separator:ae672141481eb0da89defec2c562b95e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35f1dd261e8d76f652c21a53ac78137c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a35f1dd261e8d76f652c21a53ac78137c">print</a> (const bool sort=true) const</td></tr>
-<tr class="separator:a35f1dd261e8d76f652c21a53ac78137c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabe3f97545bc6e46220fef78537882ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#aabe3f97545bc6e46220fef78537882ec">printerr</a> (const bool sort=true) const</td></tr>
-<tr class="separator:aabe3f97545bc6e46220fef78537882ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac49067508200793a8cb63524114b5c01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#ac49067508200793a8cb63524114b5c01">print</a> (const char *filename, const bool sort=true) const</td></tr>
-<tr class="separator:ac49067508200793a8cb63524114b5c01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd7b0a82ce6fce44bff99a844ccfee32"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#acd7b0a82ce6fce44bff99a844ccfee32">score</a> () const</td></tr>
-<tr class="separator:acd7b0a82ce6fce44bff99a844ccfee32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a678226e918e97f7b83821c9196cb84d4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a678226e918e97f7b83821c9196cb84d4">open_children</a> () const</td></tr>
-<tr class="separator:a678226e918e97f7b83821c9196cb84d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2b12868a41dcce77a34283be4baf4fa"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#af2b12868a41dcce77a34283be4baf4fa">best_child_index</a> () const</td></tr>
-<tr class="separator:af2b12868a41dcce77a34283be4baf4fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf621592d6d9add273696fa2b7cce9f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#abf621592d6d9add273696fa2b7cce9f1">add_sample</a> (const double v, const size_t num=1)</td></tr>
-<tr class="separator:abf621592d6d9add273696fa2b7cce9f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bcef9cd7a6e04b9835b632bc98faa6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a8bcef9cd7a6e04b9835b632bc98faa6d">operator&lt;&lt;</a> (double v)</td></tr>
-<tr class="separator:a8bcef9cd7a6e04b9835b632bc98faa6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee6d20621c57a00b8abe0ef4f7d0ee8c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#aee6d20621c57a00b8abe0ef4f7d0ee8c">playout</a> (<a class="el" href="struct_control.html">Control</a> inner_ctl)</td></tr>
-<tr class="separator:aee6d20621c57a00b8abe0ef4f7d0ee8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaaa81cd44588bfa06d172881d22722ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#aaaa81cd44588bfa06d172881d22722ab">add_child_nodes</a> ()</td></tr>
-<tr class="separator:aaaa81cd44588bfa06d172881d22722ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac62bd50472a606d1002f44de2021c77e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#ac62bd50472a606d1002f44de2021c77e">search</a> (<a class="el" href="struct_control.html">Control</a> ctl, <a class="el" href="struct_control.html">Control</a> inner_ctl)</td></tr>
-<tr class="separator:ac62bd50472a606d1002f44de2021c77e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3053a6c46cf2205879c555ddc3936be9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a3053a6c46cf2205879c555ddc3936be9">parallel_search</a> (<a class="el" href="struct_control.html">Control</a> ctl, <a class="el" href="struct_control.html">Control</a> inner_ctl)</td></tr>
-<tr class="separator:a3053a6c46cf2205879c555ddc3936be9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad35e1c5b66975ff4fea36fbec33e2acd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#ad35e1c5b66975ff4fea36fbec33e2acd">search_one</a> (<a class="el" href="struct_control.html">Control</a> inner_ctl)</td></tr>
-<tr class="separator:ad35e1c5b66975ff4fea36fbec33e2acd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94e679ddbb9f4eeaaa45b6214889f47c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a94e679ddbb9f4eeaaa45b6214889f47c">MCTSNode</a> (M *par, HYP &amp;v)</td></tr>
+<tr class="separator:a94e679ddbb9f4eeaaa45b6214889f47c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a944daa7d3d710b6e8000dc8dc076c674"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a944daa7d3d710b6e8000dc8dc076c674">MCTSNode</a> (double ex, HYP &amp;h0, typename HYP::t_data *d)</td></tr>
+<tr class="separator:a944daa7d3d710b6e8000dc8dc076c674"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa84f65b021fd06667185b4b9c5931e6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#aaa84f65b021fd06667185b4b9c5931e6">MCTSNode</a> (const <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a> &amp;m)=delete</td></tr>
+<tr class="separator:aaa84f65b021fd06667185b4b9c5931e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf0c6f2110d0acb7dd1a281d3138056d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#acf0c6f2110d0acb7dd1a281d3138056d">MCTSNode</a> (<a class="el" href="class_m_c_t_s_node.html">MCTSNode</a> &amp;&amp;m)</td></tr>
+<tr class="separator:acf0c6f2110d0acb7dd1a281d3138056d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b98535db702f0e9ee221615bd658214"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a9b98535db702f0e9ee221615bd658214">playout</a> ()=0</td></tr>
+<tr class="memdesc:a9b98535db702f0e9ee221615bd658214"><td class="mdescLeft">&#160;</td><td class="mdescRight">This must get overwritten when we want to use a MCTS node.  <a href="#a9b98535db702f0e9ee221615bd658214">More...</a><br /></td></tr>
+<tr class="separator:a9b98535db702f0e9ee221615bd658214"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7996e64e69b1fc705c4e21b4a6e41c39"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a7996e64e69b1fc705c4e21b4a6e41c39">size</a> () const</td></tr>
+<tr class="separator:a7996e64e69b1fc705c4e21b4a6e41c39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadbe8d42f6761eb3e4f28fb9157a873d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#aadbe8d42f6761eb3e4f28fb9157a873d">initialize</a> ()</td></tr>
+<tr class="separator:aadbe8d42f6761eb3e4f28fb9157a873d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4d95f5a7a753b39d30771b4e385a934"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#ab4d95f5a7a753b39d30771b4e385a934">print</a> (std::ostream &amp;o, const int depth, const bool sort) const</td></tr>
+<tr class="separator:ab4d95f5a7a753b39d30771b4e385a934"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad82ca09e761b18033a2418c3f564151f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#ad82ca09e761b18033a2418c3f564151f">print</a> (const bool sort=true) const</td></tr>
+<tr class="separator:ad82ca09e761b18033a2418c3f564151f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a258317ddcd07a57a34a9a2eeec6f10b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a258317ddcd07a57a34a9a2eeec6f10b9">printerr</a> (const bool sort=true) const</td></tr>
+<tr class="separator:a258317ddcd07a57a34a9a2eeec6f10b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0d17485c455b8d7e4fa9ee1a179d631"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#ae0d17485c455b8d7e4fa9ee1a179d631">print</a> (const char *filename, const bool sort=true) const</td></tr>
+<tr class="separator:ae0d17485c455b8d7e4fa9ee1a179d631"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a051c22b8821704a10bf33dbd426c4d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a1a051c22b8821704a10bf33dbd426c4d">score</a> () const</td></tr>
+<tr class="separator:a1a051c22b8821704a10bf33dbd426c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40ca22fadfb24bed0ccbd15d3958c674"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a40ca22fadfb24bed0ccbd15d3958c674">open_children</a> () const</td></tr>
+<tr class="separator:a40ca22fadfb24bed0ccbd15d3958c674"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64290d7134b6841a49e84a244512bd19"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a64290d7134b6841a49e84a244512bd19">best_child_index</a> () const</td></tr>
+<tr class="separator:a64290d7134b6841a49e84a244512bd19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c6a25035bdfd87764072f3a5df16715"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a1c6a25035bdfd87764072f3a5df16715">add_sample</a> (const double v, const size_t num=1)</td></tr>
+<tr class="separator:a1c6a25035bdfd87764072f3a5df16715"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad72e84b8b8c6e814dfae4a697ddb6acd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#ad72e84b8b8c6e814dfae4a697ddb6acd">operator&lt;&lt;</a> (double v)</td></tr>
+<tr class="separator:ad72e84b8b8c6e814dfae4a697ddb6acd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf984e74107202a9891e6338eef53ea2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#adf984e74107202a9891e6338eef53ea2">add_child_nodes</a> ()</td></tr>
+<tr class="separator:adf984e74107202a9891e6338eef53ea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cf85ac07dd2a3f21fea0737834b8cf1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a0cf85ac07dd2a3f21fea0737834b8cf1">search</a> (<a class="el" href="struct_control.html">Control</a> ctl)</td></tr>
+<tr class="separator:a0cf85ac07dd2a3f21fea0737834b8cf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd94e02e155886ab71a2922815cd8285"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#acd94e02e155886ab71a2922815cd8285">parallel_search</a> (<a class="el" href="struct_control.html">Control</a> ctl)</td></tr>
+<tr class="separator:acd94e02e155886ab71a2922815cd8285"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0766d2829bb1cb252dd6aac51ac0d95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#ad0766d2829bb1cb252dd6aac51ac0d95">search_one</a> ()</td></tr>
+<tr class="separator:ad0766d2829bb1cb252dd6aac51ac0d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aeb74f8b007995f5a3bd7da2b37e8ae2c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#aeb74f8b007995f5a3bd7da2b37e8ae2c">children</a></td></tr>
-<tr class="separator:aeb74f8b007995f5a3bd7da2b37e8ae2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe230ccb2748cb60328c7e9bbfdfc0a2"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#afe230ccb2748cb60328c7e9bbfdfc0a2">nvisits</a></td></tr>
-<tr class="separator:afe230ccb2748cb60328c7e9bbfdfc0a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a406077cff81145c885ee395cd8553744"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a406077cff81145c885ee395cd8553744">open</a></td></tr>
-<tr class="separator:a406077cff81145c885ee395cd8553744"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa02cc56ca94e1ce0449aed1c3def8737"><td class="memItemLeft" align="right" valign="top">callback_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#aa02cc56ca94e1ce0449aed1c3def8737">callback</a></td></tr>
-<tr class="separator:aa02cc56ca94e1ce0449aed1c3def8737"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d21a4368a893b5ccb4acb2ea3286a52"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a4d21a4368a893b5ccb4acb2ea3286a52">explore</a></td></tr>
-<tr class="separator:a4d21a4368a893b5ccb4acb2ea3286a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e8d861893740e86d183475ab4314c86"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a7e8d861893740e86d183475ab4314c86">child_mutex</a></td></tr>
-<tr class="separator:a7e8d861893740e86d183475ab4314c86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a949477285b64ab1f84f81834f1a7ab0d"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a949477285b64ab1f84f81834f1a7ab0d">stats_mutex</a></td></tr>
-<tr class="separator:a949477285b64ab1f84f81834f1a7ab0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af223a24db35d4f81d0ab73a42cb7e1bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html">Fleet::Statistics::StreamingStatistics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#af223a24db35d4f81d0ab73a42cb7e1bc">statistics</a></td></tr>
-<tr class="separator:af223a24db35d4f81d0ab73a42cb7e1bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa09754a1e98bcacb4eecb0840a11fced"><td class="memItemLeft" align="right" valign="top">HYP::t_data *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#aa09754a1e98bcacb4eecb0840a11fced">data</a></td></tr>
-<tr class="separator:aa09754a1e98bcacb4eecb0840a11fced"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd7d3f1262b41d10b42a5721ac95af68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_m_c_t_s_node.html">MCTSNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#afd7d3f1262b41d10b42a5721ac95af68">parent</a></td></tr>
-<tr class="separator:afd7d3f1262b41d10b42a5721ac95af68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5bf1a60214369c7a5bc6b166dcdffe3d"><td class="memItemLeft" align="right" valign="top">HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a5bf1a60214369c7a5bc6b166dcdffe3d">value</a></td></tr>
-<tr class="separator:a5bf1a60214369c7a5bc6b166dcdffe3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bf717abcd090cc24d9a9d6452246c09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_m_c_t_s_node.html#a5a201dc80c97c1b65503161f7e5603f6">ScoringType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a4bf717abcd090cc24d9a9d6452246c09">scoring_type</a></td></tr>
-<tr class="separator:a4bf717abcd090cc24d9a9d6452246c09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a243b348036c57a54af3a48a708851b80"><td class="memItemLeft" align="right" valign="top">std::vector&lt; M &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a243b348036c57a54af3a48a708851b80">children</a></td></tr>
+<tr class="separator:a243b348036c57a54af3a48a708851b80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a277d083d477ab4aaeeadfadada1cdc24"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a277d083d477ab4aaeeadfadada1cdc24">nvisits</a></td></tr>
+<tr class="separator:a277d083d477ab4aaeeadfadada1cdc24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4d0f6bb2603cfe995aaafc5d208ec16"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#aa4d0f6bb2603cfe995aaafc5d208ec16">open</a></td></tr>
+<tr class="separator:aa4d0f6bb2603cfe995aaafc5d208ec16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1a742de2cdd0e208079bc35f943cacc"><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#ad1a742de2cdd0e208079bc35f943cacc">explore</a></td></tr>
+<tr class="separator:ad1a742de2cdd0e208079bc35f943cacc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66790ec812754c13bab5f6f14966bacf"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a66790ec812754c13bab5f6f14966bacf">child_mutex</a></td></tr>
+<tr class="separator:a66790ec812754c13bab5f6f14966bacf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47cdbf0ef4f1e6ccbb6e911d4d384f39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html">Fleet::Statistics::StreamingStatistics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a47cdbf0ef4f1e6ccbb6e911d4d384f39">statistics</a></td></tr>
+<tr class="separator:a47cdbf0ef4f1e6ccbb6e911d4d384f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af58c9958a7092d4e09b58bd94b7c9f58"><td class="memItemLeft" align="right" valign="top">HYP::t_data *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#af58c9958a7092d4e09b58bd94b7c9f58">data</a></td></tr>
+<tr class="separator:af58c9958a7092d4e09b58bd94b7c9f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab451a032b940daa976b7a5773d3246ca"><td class="memItemLeft" align="right" valign="top">M *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#ab451a032b940daa976b7a5773d3246ca">parent</a></td></tr>
+<tr class="separator:ab451a032b940daa976b7a5773d3246ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0442ab9a9378dabcd98ac7254b2e70a8"><td class="memItemLeft" align="right" valign="top">HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a0442ab9a9378dabcd98ac7254b2e70a8">value</a></td></tr>
+<tr class="separator:a0442ab9a9378dabcd98ac7254b2e70a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a5a201dc80c97c1b65503161f7e5603f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a201dc80c97c1b65503161f7e5603f6">&#9670;&nbsp;</a></span>ScoringType</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename M, typename HYP&gt;<br />
+class MCTSNode&lt; M, HYP &gt;</h3>
+
+<dl class="section author"><dt>Author</dt><dd>piantado </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>01/03/20 </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a94e679ddbb9f4eeaaa45b6214889f47c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94e679ddbb9f4eeaaa45b6214889f47c">&#9670;&nbsp;</a></span>MCTSNode() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="class_m_c_t_s_node.html#a5a201dc80c97c1b65503161f7e5603f6">MCTSNode::ScoringType</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>MCTS Implementation. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5a201dc80c97c1b65503161f7e5603f6af5a2496cf66cb8cffe66cb1b27d7dede"></a>SAMPLE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a5a201dc80c97c1b65503161f7e5603f6a16e3acc5a0f586b6e37536492dfbc47f"></a>UCBMAX&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a5a201dc80c97c1b65503161f7e5603f6a8ab0c3a037e882577dec378985477074"></a>MEDIAN&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aacbf672bfe2acc5ad2396a021d1b2d03"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacbf672bfe2acc5ad2396a021d1b2d03">&#9670;&nbsp;</a></span>MCTSNode() <span class="overload">[1/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::<a class="el" href="class_m_c_t_s_node.html">MCTSNode</a> </td>
+          <td class="memname"><a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::<a class="el" href="class_m_c_t_s_node.html">MCTSNode</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt; *&#160;</td>
+          <td class="paramtype">M *&#160;</td>
           <td class="paramname"><em>par</em>, </td>
         </tr>
         <tr>
@@ -233,19 +193,19 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="aeb45ef5d519e94298c4a6f6169287b15"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb45ef5d519e94298c4a6f6169287b15">&#9670;&nbsp;</a></span>MCTSNode() <span class="overload">[2/4]</span></h2>
+<a id="a944daa7d3d710b6e8000dc8dc076c674"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a944daa7d3d710b6e8000dc8dc076c674">&#9670;&nbsp;</a></span>MCTSNode() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::<a class="el" href="class_m_c_t_s_node.html">MCTSNode</a> </td>
+          <td class="memname"><a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::<a class="el" href="class_m_c_t_s_node.html">MCTSNode</a> </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>ex</em>, </td>
@@ -259,20 +219,8 @@ template&lt;typename HYP, typename callback_t&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">callback_t *&#160;</td>
-          <td class="paramname"><em>cb</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">typename HYP::t_data *&#160;</td>
-          <td class="paramname"><em>d</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_m_c_t_s_node.html#a5a201dc80c97c1b65503161f7e5603f6">ScoringType</a>&#160;</td>
-          <td class="paramname"><em>st</em> = <code><a class="el" href="class_m_c_t_s_node.html#a5a201dc80c97c1b65503161f7e5603f6af5a2496cf66cb8cffe66cb1b27d7dede">ScoringType::SAMPLE</a></code>&#160;</td>
+          <td class="paramname"><em>d</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -289,21 +237,21 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="a6c20efdd42178c22ad3f34446150b705"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c20efdd42178c22ad3f34446150b705">&#9670;&nbsp;</a></span>MCTSNode() <span class="overload">[3/4]</span></h2>
+<a id="aaa84f65b021fd06667185b4b9c5931e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa84f65b021fd06667185b4b9c5931e6">&#9670;&nbsp;</a></span>MCTSNode() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::<a class="el" href="class_m_c_t_s_node.html">MCTSNode</a> </td>
+          <td class="memname"><a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::<a class="el" href="class_m_c_t_s_node.html">MCTSNode</a> </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt; &amp;&#160;</td>
           <td class="paramname"><em>m</em></td><td>)</td>
           <td></td>
         </tr>
@@ -317,21 +265,21 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="af737d4dda4132092ab99d0ef4254c856"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af737d4dda4132092ab99d0ef4254c856">&#9670;&nbsp;</a></span>MCTSNode() <span class="overload">[4/4]</span></h2>
+<a id="acf0c6f2110d0acb7dd1a281d3138056d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf0c6f2110d0acb7dd1a281d3138056d">&#9670;&nbsp;</a></span>MCTSNode() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::<a class="el" href="class_m_c_t_s_node.html">MCTSNode</a> </td>
+          <td class="memname"><a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::<a class="el" href="class_m_c_t_s_node.html">MCTSNode</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt; &amp;&amp;&#160;</td>
           <td class="paramname"><em>m</em></td><td>)</td>
           <td></td>
         </tr>
@@ -346,19 +294,19 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aaaa81cd44588bfa06d172881d22722ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaaa81cd44588bfa06d172881d22722ab">&#9670;&nbsp;</a></span>add_child_nodes()</h2>
+<a id="adf984e74107202a9891e6338eef53ea2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf984e74107202a9891e6338eef53ea2">&#9670;&nbsp;</a></span>add_child_nodes()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::add_child_nodes </td>
+          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::add_child_nodes </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -373,19 +321,19 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="abf621592d6d9add273696fa2b7cce9f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf621592d6d9add273696fa2b7cce9f1">&#9670;&nbsp;</a></span>add_sample()</h2>
+<a id="a1c6a25035bdfd87764072f3a5df16715"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c6a25035bdfd87764072f3a5df16715">&#9670;&nbsp;</a></span>add_sample()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::add_sample </td>
+          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::add_sample </td>
           <td>(</td>
           <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>v</em>, </td>
@@ -411,19 +359,19 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="af2b12868a41dcce77a34283be4baf4fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2b12868a41dcce77a34283be4baf4fa">&#9670;&nbsp;</a></span>best_child_index()</h2>
+<a id="a64290d7134b6841a49e84a244512bd19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64290d7134b6841a49e84a244512bd19">&#9670;&nbsp;</a></span>best_child_index()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::best_child_index </td>
+          <td class="memname">size_t <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::best_child_index </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -438,19 +386,19 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="ad0644bc487fe620c67a3c8fb4a609ac2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0644bc487fe620c67a3c8fb4a609ac2">&#9670;&nbsp;</a></span>initialize()</h2>
+<a id="aadbe8d42f6761eb3e4f28fb9157a873d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadbe8d42f6761eb3e4f28fb9157a873d">&#9670;&nbsp;</a></span>initialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::initialize </td>
+          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::initialize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -465,19 +413,19 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="a678226e918e97f7b83821c9196cb84d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a678226e918e97f7b83821c9196cb84d4">&#9670;&nbsp;</a></span>open_children()</h2>
+<a id="a40ca22fadfb24bed0ccbd15d3958c674"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40ca22fadfb24bed0ccbd15d3958c674">&#9670;&nbsp;</a></span>open_children()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::open_children </td>
+          <td class="memname">size_t <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::open_children </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -492,19 +440,19 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="a8bcef9cd7a6e04b9835b632bc98faa6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bcef9cd7a6e04b9835b632bc98faa6d">&#9670;&nbsp;</a></span>operator<<()</h2>
+<a id="ad72e84b8b8c6e814dfae4a697ddb6acd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad72e84b8b8c6e814dfae4a697ddb6acd">&#9670;&nbsp;</a></span>operator<<()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::operator&lt;&lt; </td>
+          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::operator&lt;&lt; </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
@@ -520,33 +468,23 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="a3053a6c46cf2205879c555ddc3936be9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3053a6c46cf2205879c555ddc3936be9">&#9670;&nbsp;</a></span>parallel_search()</h2>
+<a id="acd94e02e155886ab71a2922815cd8285"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd94e02e155886ab71a2922815cd8285">&#9670;&nbsp;</a></span>parallel_search()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::parallel_search </td>
+          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::parallel_search </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_control.html">Control</a>&#160;</td>
-          <td class="paramname"><em>ctl</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>ctl</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_control.html">Control</a>&#160;</td>
-          <td class="paramname"><em>inner_ctl</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -558,47 +496,54 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="aee6d20621c57a00b8abe0ef4f7d0ee8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee6d20621c57a00b8abe0ef4f7d0ee8c">&#9670;&nbsp;</a></span>playout()</h2>
+<a id="a9b98535db702f0e9ee221615bd658214"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b98535db702f0e9ee221615bd658214">&#9670;&nbsp;</a></span>playout()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::playout </td>
+          <td class="memname">virtual void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::playout </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_control.html">Control</a>&#160;</td>
-          <td class="paramname"><em>inner_ctl</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p>This must get overwritten when we want to use a MCTS node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">m</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="ae672141481eb0da89defec2c562b95e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae672141481eb0da89defec2c562b95e1">&#9670;&nbsp;</a></span>print() <span class="overload">[1/3]</span></h2>
+<a id="ab4d95f5a7a753b39d30771b4e385a934"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4d95f5a7a753b39d30771b4e385a934">&#9670;&nbsp;</a></span>print() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::print </td>
+          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::print </td>
           <td>(</td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
           <td class="paramname"><em>o</em>, </td>
@@ -630,19 +575,19 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="a35f1dd261e8d76f652c21a53ac78137c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35f1dd261e8d76f652c21a53ac78137c">&#9670;&nbsp;</a></span>print() <span class="overload">[2/3]</span></h2>
+<a id="ad82ca09e761b18033a2418c3f564151f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad82ca09e761b18033a2418c3f564151f">&#9670;&nbsp;</a></span>print() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::print </td>
+          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::print </td>
           <td>(</td>
           <td class="paramtype">const bool&#160;</td>
           <td class="paramname"><em>sort</em> = <code>true</code></td><td>)</td>
@@ -658,19 +603,19 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="ac49067508200793a8cb63524114b5c01"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac49067508200793a8cb63524114b5c01">&#9670;&nbsp;</a></span>print() <span class="overload">[3/3]</span></h2>
+<a id="ae0d17485c455b8d7e4fa9ee1a179d631"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0d17485c455b8d7e4fa9ee1a179d631">&#9670;&nbsp;</a></span>print() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::print </td>
+          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::print </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>filename</em>, </td>
@@ -696,19 +641,19 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="aabe3f97545bc6e46220fef78537882ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aabe3f97545bc6e46220fef78537882ec">&#9670;&nbsp;</a></span>printerr()</h2>
+<a id="a258317ddcd07a57a34a9a2eeec6f10b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a258317ddcd07a57a34a9a2eeec6f10b9">&#9670;&nbsp;</a></span>printerr()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::printerr </td>
+          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::printerr </td>
           <td>(</td>
           <td class="paramtype">const bool&#160;</td>
           <td class="paramname"><em>sort</em> = <code>true</code></td><td>)</td>
@@ -724,19 +669,19 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="acd7b0a82ce6fce44bff99a844ccfee32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd7b0a82ce6fce44bff99a844ccfee32">&#9670;&nbsp;</a></span>score()</h2>
+<a id="a1a051c22b8821704a10bf33dbd426c4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a051c22b8821704a10bf33dbd426c4d">&#9670;&nbsp;</a></span>score()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::score </td>
+          <td class="memname">double <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::score </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -751,60 +696,22 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="ac62bd50472a606d1002f44de2021c77e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac62bd50472a606d1002f44de2021c77e">&#9670;&nbsp;</a></span>search()</h2>
+<a id="a0cf85ac07dd2a3f21fea0737834b8cf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cf85ac07dd2a3f21fea0737834b8cf1">&#9670;&nbsp;</a></span>search()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::search </td>
+          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::search </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_control.html">Control</a>&#160;</td>
-          <td class="paramname"><em>ctl</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="struct_control.html">Control</a>&#160;</td>
-          <td class="paramname"><em>inner_ctl</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ad35e1c5b66975ff4fea36fbec33e2acd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad35e1c5b66975ff4fea36fbec33e2acd">&#9670;&nbsp;</a></span>search_one()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::search_one </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_control.html">Control</a>&#160;</td>
-          <td class="paramname"><em>inner_ctl</em></td><td>)</td>
+          <td class="paramname"><em>ctl</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -817,19 +724,46 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="a9e6997465d24c26cadd556346d722959"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e6997465d24c26cadd556346d722959">&#9670;&nbsp;</a></span>size()</h2>
+<a id="ad0766d2829bb1cb252dd6aac51ac0d95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0766d2829bb1cb252dd6aac51ac0d95">&#9670;&nbsp;</a></span>search_one()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::size </td>
+          <td class="memname">void <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::search_one </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7996e64e69b1fc705c4e21b4a6e41c39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7996e64e69b1fc705c4e21b4a6e41c39">&#9670;&nbsp;</a></span>size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename M, typename HYP&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::size </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -845,35 +779,19 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="aa02cc56ca94e1ce0449aed1c3def8737"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa02cc56ca94e1ce0449aed1c3def8737">&#9670;&nbsp;</a></span>callback</h2>
+<a id="a66790ec812754c13bab5f6f14966bacf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66790ec812754c13bab5f6f14966bacf">&#9670;&nbsp;</a></span>child_mutex</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">callback_t* <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::callback</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a7e8d861893740e86d183475ab4314c86"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e8d861893740e86d183475ab4314c86">&#9670;&nbsp;</a></span>child_mutex</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::mutex <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::child_mutex</td>
+          <td class="memname">std::mutex <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::child_mutex</td>
         </tr>
       </table>
   </td>
@@ -885,168 +803,128 @@ template&lt;typename HYP, typename callback_t&gt; </div>
 
 </div>
 </div>
-<a id="aeb74f8b007995f5a3bd7da2b37e8ae2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb74f8b007995f5a3bd7da2b37e8ae2c">&#9670;&nbsp;</a></span>children</h2>
+<a id="a243b348036c57a54af3a48a708851b80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a243b348036c57a54af3a48a708851b80">&#9670;&nbsp;</a></span>children</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&gt; <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::children</td>
+          <td class="memname">std::vector&lt;M&gt; <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::children</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="aa09754a1e98bcacb4eecb0840a11fced"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa09754a1e98bcacb4eecb0840a11fced">&#9670;&nbsp;</a></span>data</h2>
+<a id="af58c9958a7092d4e09b58bd94b7c9f58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af58c9958a7092d4e09b58bd94b7c9f58">&#9670;&nbsp;</a></span>data</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">HYP::t_data* <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::data</td>
+          <td class="memname">HYP::t_data* <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::data</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a4d21a4368a893b5ccb4acb2ea3286a52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d21a4368a893b5ccb4acb2ea3286a52">&#9670;&nbsp;</a></span>explore</h2>
+<a id="ad1a742de2cdd0e208079bc35f943cacc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1a742de2cdd0e208079bc35f943cacc">&#9670;&nbsp;</a></span>explore</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::explore</td>
+          <td class="memname">const double <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::explore</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="afe230ccb2748cb60328c7e9bbfdfc0a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe230ccb2748cb60328c7e9bbfdfc0a2">&#9670;&nbsp;</a></span>nvisits</h2>
+<a id="a277d083d477ab4aaeeadfadada1cdc24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a277d083d477ab4aaeeadfadada1cdc24">&#9670;&nbsp;</a></span>nvisits</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">unsigned long <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::nvisits</td>
+          <td class="memname">unsigned long <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::nvisits</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a406077cff81145c885ee395cd8553744"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a406077cff81145c885ee395cd8553744">&#9670;&nbsp;</a></span>open</h2>
+<a id="aa4d0f6bb2603cfe995aaafc5d208ec16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4d0f6bb2603cfe995aaafc5d208ec16">&#9670;&nbsp;</a></span>open</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::open</td>
+          <td class="memname">bool <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::open</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="afd7d3f1262b41d10b42a5721ac95af68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd7d3f1262b41d10b42a5721ac95af68">&#9670;&nbsp;</a></span>parent</h2>
+<a id="ab451a032b940daa976b7a5773d3246ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab451a032b940daa976b7a5773d3246ca">&#9670;&nbsp;</a></span>parent</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>* <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::parent</td>
+          <td class="memname">M* <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::parent</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a4bf717abcd090cc24d9a9d6452246c09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4bf717abcd090cc24d9a9d6452246c09">&#9670;&nbsp;</a></span>scoring_type</h2>
+<a id="a47cdbf0ef4f1e6ccbb6e911d4d384f39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47cdbf0ef4f1e6ccbb6e911d4d384f39">&#9670;&nbsp;</a></span>statistics</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_m_c_t_s_node.html#a5a201dc80c97c1b65503161f7e5603f6">ScoringType</a> <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::scoring_type</td>
+          <td class="memname"><a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html">Fleet::Statistics::StreamingStatistics</a> <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::statistics</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="af223a24db35d4f81d0ab73a42cb7e1bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af223a24db35d4f81d0ab73a42cb7e1bc">&#9670;&nbsp;</a></span>statistics</h2>
+<a id="a0442ab9a9378dabcd98ac7254b2e70a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0442ab9a9378dabcd98ac7254b2e70a8">&#9670;&nbsp;</a></span>value</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
+template&lt;typename M, typename HYP&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html">Fleet::Statistics::StreamingStatistics</a> <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::statistics</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a949477285b64ab1f84f81834f1a7ab0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a949477285b64ab1f84f81834f1a7ab0d">&#9670;&nbsp;</a></span>stats_mutex</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::mutex <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::stats_mutex</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">mutable</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a5bf1a60214369c7a5bc6b166dcdffe3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5bf1a60214369c7a5bc6b166dcdffe3d">&#9670;&nbsp;</a></span>value</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename HYP, typename callback_t&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">HYP <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; HYP, callback_t &gt;::value</td>
+          <td class="memname">HYP <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::value</td>
         </tr>
       </table>
 </div><div class="memdoc">

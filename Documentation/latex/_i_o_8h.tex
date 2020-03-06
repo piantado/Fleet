@@ -1,5 +1,6 @@
 \hypertarget{_i_o_8h}{}\section{src/\+IO.h File Reference}
 \label{_i_o_8h}\index{src/\+I\+O.\+h@{src/\+I\+O.\+h}}
+{\ttfamily \#include $<$thread$>$}\newline
 {\ttfamily \#include $<$mutex$>$}\newline
 {\ttfamily \#include \char`\"{}dependencies/\+C\+L11.\+hpp\char`\"{}}\newline
 {\ttfamily \#include $<$signal.\+h$>$}\newline
@@ -8,7 +9,7 @@ Include dependency graph for I\+O.\+h\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=332pt]{_i_o_8h__incl}
+\includegraphics[width=350pt]{_i_o_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:
@@ -37,6 +38,16 @@ This graph shows which files directly or indirectly include this file\+:
 \end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_i_o_8h_a1336250e0870b09c7f0d7b168a5e804f}{\+\_\+\+\_\+\+P\+R\+I\+NT} ()
+\item 
+{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \hyperlink{_i_o_8h_aebfb8498bc8d95c7a344068feaa59f94}{\+\_\+\+\_\+\+P\+R\+I\+NT} (First \&\&first, Rest \&\&...rest)
+\item 
+{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \hyperlink{_i_o_8h_a00a6f97bb3962ae0a898045f28e71a9b}{P\+R\+I\+NT} (First \&\&first, Rest \&\&...rest)
+\item 
+{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \hyperlink{_i_o_8h_acfec45821653aafe56188146ad2a98cc}{P\+R\+I\+N\+TN} (First \&\&first, Rest \&\&...rest)
+\item 
+{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \hyperlink{_i_o_8h_a06738d9fd0166a7a5c1f7864b2f67595}{D\+E\+B\+UG} (First \&\&first, Rest \&\&...rest)
 \item 
 C\+L\+I\+::\+App \hyperlink{namespace_fleet_a92846af38313a15b39c9ddc67e3d4f67}{Fleet\+::\+Default\+Arguments} (const char $\ast$brief)
 \end{DoxyCompactItemize}
@@ -75,7 +86,7 @@ std\+::string \hyperlink{_i_o_8h_aa14dbbb4b5614a1e7a5b4281baa64b89}{input\+\_\+p
 \item 
 std\+::string \hyperlink{_i_o_8h_ac5f6d990a0bcb9e8a0734beaf02ac77a}{tree\+\_\+path} = \char`\"{}tree.\+txt\char`\"{}
 \item 
-std\+::string \hyperlink{_i_o_8h_ad050f6983575482fc1cde1793c1eff44}{output\+\_\+path} = \char`\"{}output.\+txt\char`\"{}
+std\+::string \hyperlink{_i_o_8h_ad050f6983575482fc1cde1793c1eff44}{output\+\_\+path} = \char`\"{}output\char`\"{}
 \item 
 std\+::string \hyperlink{_i_o_8h_ab6ef3c9af61a275db097767959de6125}{timestring} = \char`\"{}0s\char`\"{}
 \end{DoxyCompactItemize}
@@ -105,6 +116,43 @@ std\+::string \hyperlink{_i_o_8h_ab6ef3c9af61a275db097767959de6125}{timestring} 
 \index{T\+AB@{T\+AB}!I\+O.\+h@{I\+O.\+h}}
 \subsubsection{\texorpdfstring{T\+AB}{TAB}}
 {\footnotesize\ttfamily \#define T\+AB~$<$$<$\char`\"{}\textbackslash{}t\char`\"{}$<$$<$}
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_i_o_8h_a1336250e0870b09c7f0d7b168a5e804f}\label{_i_o_8h_a1336250e0870b09c7f0d7b168a5e804f}} 
+\index{I\+O.\+h@{I\+O.\+h}!\+\_\+\+\_\+\+P\+R\+I\+NT@{\+\_\+\+\_\+\+P\+R\+I\+NT}}
+\index{\+\_\+\+\_\+\+P\+R\+I\+NT@{\+\_\+\+\_\+\+P\+R\+I\+NT}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+\+P\+R\+I\+N\+T()}{\_\_PRINT()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void \+\_\+\+\_\+\+P\+R\+I\+NT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_i_o_8h_aebfb8498bc8d95c7a344068feaa59f94}\label{_i_o_8h_aebfb8498bc8d95c7a344068feaa59f94}} 
+\index{I\+O.\+h@{I\+O.\+h}!\+\_\+\+\_\+\+P\+R\+I\+NT@{\+\_\+\+\_\+\+P\+R\+I\+NT}}
+\index{\+\_\+\+\_\+\+P\+R\+I\+NT@{\+\_\+\+\_\+\+P\+R\+I\+NT}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+\+P\+R\+I\+N\+T()}{\_\_PRINT()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
+void \+\_\+\+\_\+\+P\+R\+I\+NT (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_i_o_8h_a06738d9fd0166a7a5c1f7864b2f67595}\label{_i_o_8h_a06738d9fd0166a7a5c1f7864b2f67595}} 
+\index{I\+O.\+h@{I\+O.\+h}!D\+E\+B\+UG@{D\+E\+B\+UG}}
+\index{D\+E\+B\+UG@{D\+E\+B\+UG}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{D\+E\+B\+U\+G()}{DEBUG()}}
+{\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
+void D\+E\+B\+UG (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_i_o_8h_a00a6f97bb3962ae0a898045f28e71a9b}\label{_i_o_8h_a00a6f97bb3962ae0a898045f28e71a9b}} 
+\index{I\+O.\+h@{I\+O.\+h}!P\+R\+I\+NT@{P\+R\+I\+NT}}
+\index{P\+R\+I\+NT@{P\+R\+I\+NT}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{P\+R\+I\+N\+T()}{PRINT()}}
+{\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
+void P\+R\+I\+NT (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_i_o_8h_acfec45821653aafe56188146ad2a98cc}\label{_i_o_8h_acfec45821653aafe56188146ad2a98cc}} 
+\index{I\+O.\+h@{I\+O.\+h}!P\+R\+I\+N\+TN@{P\+R\+I\+N\+TN}}
+\index{P\+R\+I\+N\+TN@{P\+R\+I\+N\+TN}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{P\+R\+I\+N\+T\+N()}{PRINTN()}}
+{\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
+void P\+R\+I\+N\+TN (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
 
 
 
@@ -193,7 +241,7 @@ std\+::string \hyperlink{_i_o_8h_ab6ef3c9af61a275db097767959de6125}{timestring} 
 \index{I\+O.\+h@{I\+O.\+h}!output\+\_\+path@{output\+\_\+path}}
 \index{output\+\_\+path@{output\+\_\+path}!I\+O.\+h@{I\+O.\+h}}
 \subsubsection{\texorpdfstring{output\+\_\+path}{output\_path}}
-{\footnotesize\ttfamily std\+::string output\+\_\+path = \char`\"{}output.\+txt\char`\"{}}
+{\footnotesize\ttfamily std\+::string output\+\_\+path = \char`\"{}output\char`\"{}}
 
 \mbox{\Hypertarget{_i_o_8h_ae4426f467d61ae456b95844d4d9c2dcd}\label{_i_o_8h_ae4426f467d61ae456b95844d4d9c2dcd}} 
 \index{I\+O.\+h@{I\+O.\+h}!quiet@{quiet}}

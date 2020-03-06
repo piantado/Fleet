@@ -64,7 +64,10 @@ namespace Fleet {
 			
 			
 			
-			
+			/**
+			 * @brief Add x to this history
+			 * @param x
+			 */			
 			void add(T x) {
 				std::lock_guard guard(mutex);
 				++N;
@@ -76,9 +79,17 @@ namespace Fleet {
 					history[history_index++ % history_size] = x;
 				}
 			}
-			
+
+			/**
+			 * @brief Convenient adding
+			 * @param x
+			 */
 			void operator<<(T x) { add(x); }
 			
+			/**
+			 * @brief Compute the average
+			 * @return 
+			 */			
 			double mean() {
 				std::lock_guard guard(mutex);
 				double sm=0;

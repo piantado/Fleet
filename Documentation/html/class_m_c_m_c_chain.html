@@ -119,12 +119,10 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a42c355121fce0476426a49d5498c38a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62ffa9a3d173a79c82f09174b58aebaf"><td class="memItemLeft" align="right" valign="top">HYP::t_data *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_m_c_chain.html#a62ffa9a3d173a79c82f09174b58aebaf">data</a></td></tr>
 <tr class="separator:a62ffa9a3d173a79c82f09174b58aebaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a966ec00d236d4df6c477c6fd5575fd87"><td class="memItemLeft" align="right" valign="top">HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_m_c_chain.html#a966ec00d236d4df6c477c6fd5575fd87">themax</a></td></tr>
-<tr class="separator:a966ec00d236d4df6c477c6fd5575fd87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b8d31f47d75503321b432eeac0bb13b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_m_c_chain.html#a3b8d31f47d75503321b432eeac0bb13b">maxval</a></td></tr>
+<tr class="separator:a3b8d31f47d75503321b432eeac0bb13b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7a4a0d46ae2d9818c2f076f839badd7"><td class="memItemLeft" align="right" valign="top">callback_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_m_c_chain.html#aa7a4a0d46ae2d9818c2f076f839badd7">callback</a></td></tr>
 <tr class="separator:aa7a4a0d46ae2d9818c2f076f839badd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad51e645f9de68d3f008b62ada6375099"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_m_c_chain.html#ad51e645f9de68d3f008b62ada6375099">returnmax</a></td></tr>
-<tr class="separator:ad51e645f9de68d3f008b62ada6375099"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d3ac649b04077cd0ffea236df560c91"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_m_c_chain.html#a0d3ac649b04077cd0ffea236df560c91">samples</a></td></tr>
 <tr class="separator:a0d3ac649b04077cd0ffea236df560c91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec2cdd6a3e25447c7f34e31d0d98dbcb"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_m_c_chain.html#aec2cdd6a3e25447c7f34e31d0d98dbcb">proposals</a></td></tr>
@@ -712,6 +710,22 @@ template&lt;typename HYP , typename callback_t &gt; </div>
 
 </div>
 </div>
+<a id="a3b8d31f47d75503321b432eeac0bb13b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b8d31f47d75503321b432eeac0bb13b">&#9670;&nbsp;</a></span>maxval</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename HYP , typename callback_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="class_m_c_m_c_chain.html">MCMCChain</a>&lt; HYP, callback_t &gt;::maxval</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aec2cdd6a3e25447c7f34e31d0d98dbcb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aec2cdd6a3e25447c7f34e31d0d98dbcb">&#9670;&nbsp;</a></span>proposals</h2>
 
@@ -722,22 +736,6 @@ template&lt;typename HYP , typename callback_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">unsigned long <a class="el" href="class_m_c_m_c_chain.html">MCMCChain</a>&lt; HYP, callback_t &gt;::proposals</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ad51e645f9de68d3f008b62ada6375099"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad51e645f9de68d3f008b62ada6375099">&#9670;&nbsp;</a></span>returnmax</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename HYP , typename callback_t &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="class_m_c_m_c_chain.html">MCMCChain</a>&lt; HYP, callback_t &gt;::returnmax</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -786,22 +784,6 @@ template&lt;typename HYP , typename callback_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::atomic&lt;double&gt; <a class="el" href="class_m_c_m_c_chain.html">MCMCChain</a>&lt; HYP, callback_t &gt;::temperature</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a966ec00d236d4df6c477c6fd5575fd87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a966ec00d236d4df6c477c6fd5575fd87">&#9670;&nbsp;</a></span>themax</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename HYP , typename callback_t &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">HYP <a class="el" href="class_m_c_m_c_chain.html">MCMCChain</a>&lt; HYP, callback_t &gt;::themax</td>
         </tr>
       </table>
 </div><div class="memdoc">

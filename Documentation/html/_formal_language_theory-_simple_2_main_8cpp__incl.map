@@ -1,26 +1,26 @@
 <map id="Models/FormalLanguageTheory&#45;Simple/Main.cpp" name="Models/FormalLanguageTheory&#45;Simple/Main.cpp">
-<area shape="rect" id="node3" href="$_primitives_8h.html" title="Primitives.h" alt="" coords="227,177,318,203"/>
-<area shape="rect" id="node11" href="$_builtins_8h.html" title="Builtins.h" alt="" coords="2165,95,2241,121"/>
-<area shape="rect" id="node12" href="$_fleet_8h.html" title="Fleet.h" alt="" coords="2079,95,2141,121"/>
+<area shape="rect" id="node3" href="$_primitives_8h.html" title="A preprimitive is a class that primitives inherit. We use a static op_counter so that at compile time..." alt="" coords="275,177,366,203"/>
+<area shape="rect" id="node11" href="$_builtins_8h.html" title="Builtins.h" alt="" coords="2060,95,2136,121"/>
+<area shape="rect" id="node12" href="$_fleet_8h.html" title="Fleet.h" alt="" coords="1973,95,2036,121"/>
 <area shape="rect" id="node8" href="$_instruction_8h.html" title="This is an error type that is returned if we get a runtime error (e.g. string length, etc.) " alt="" coords="141,348,236,375"/>
-<area shape="rect" id="node10" href="$_template_magic_8h.html" title="TemplateMagic.h" alt="" coords="310,266,433,293"/>
-<area shape="rect" id="node32" href="$_timing_8h.html" title="Timing.h" alt="" coords="2943,177,3015,203"/>
-<area shape="rect" id="node33" href="$_program_8h.html" title="Program.h" alt="" coords="3039,177,3122,203"/>
-<area shape="rect" id="node34" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="886,266,961,293"/>
-<area shape="rect" id="node35" href="$_i_o_8h.html" title="IO.h" alt="" coords="1040,348,1087,375"/>
-<area shape="rect" id="node36" href="$_numerics_8h.html" title="Numerics.h" alt="" coords="4205,348,4295,375"/>
-<area shape="rect" id="node37" href="$_random_8h.html" title="Random.h" alt="" coords="4197,266,4279,293"/>
-<area shape="rect" id="node38" href="$_strings_8h.html" title="Strings.h" alt="" coords="3146,177,3221,203"/>
-<area shape="rect" id="node39" href="$_hash_8h.html" title="Hash.h" alt="" coords="723,348,787,375"/>
-<area shape="rect" id="node40" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="1267,177,1383,203"/>
-<area shape="rect" id="node41" href="$_integerized_stack_8h.html" title="IntegerizedStack.h" alt="" coords="3245,177,3375,203"/>
-<area shape="rect" id="node42" href="$_dispatchable_8h.html" title="A class is dispatchable if it is able to implement custom operations and put its program onto a Progr..." alt="" coords="3399,169,3554,211"/>
-<area shape="rect" id="node43" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="986,259,1141,300"/>
-<area shape="rect" id="node44" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="986,169,1141,211"/>
-<area shape="rect" id="node45" href="$_searchable_8h.html" title="A class is searchable if permits us to enumerate and make its neighbors. This class is used by MCTS a..." alt="" coords="3578,169,3733,211"/>
-<area shape="rect" id="node46" href="$_rule_8h.html" title="Rule.h" alt="" coords="587,177,647,203"/>
-<area shape="rect" id="node47" href="$_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="3980,169,4179,211"/>
-<area shape="rect" id="node48" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="3757,169,3956,211"/>
-<area shape="rect" id="node49" href="$_node_8h.html" title="Node.h" alt="" coords="689,266,753,293"/>
-<area shape="rect" id="node50" href="$_grammar_8h.html" title="Grammar.h" alt="" coords="773,177,860,203"/>
+<area shape="rect" id="node10" href="$_template_magic_8h.html" title="TemplateMagic.h" alt="" coords="259,266,382,293"/>
+<area shape="rect" id="node32" href="$_timing_8h.html" title="Timing.h" alt="" coords="2507,177,2579,203"/>
+<area shape="rect" id="node33" href="$_program_8h.html" title="Program.h" alt="" coords="2603,177,2686,203"/>
+<area shape="rect" id="node34" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="4349,266,4423,293"/>
+<area shape="rect" id="node35" href="$_i_o_8h.html" title="IO.h" alt="" coords="4257,348,4304,375"/>
+<area shape="rect" id="node36" href="$_numerics_8h.html" title="Numerics.h" alt="" coords="708,348,797,375"/>
+<area shape="rect" id="node37" href="$_random_8h.html" title="Random.h" alt="" coords="845,266,927,293"/>
+<area shape="rect" id="node38" href="$_strings_8h.html" title="Strings.h" alt="" coords="2710,177,2785,203"/>
+<area shape="rect" id="node39" href="$_hash_8h.html" title="Hash.h" alt="" coords="1046,348,1110,375"/>
+<area shape="rect" id="node40" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="4181,177,4297,203"/>
+<area shape="rect" id="node41" href="$_integerized_stack_8h.html" title="IntegerizedStack.h" alt="" coords="2809,177,2939,203"/>
+<area shape="rect" id="node42" href="$_dispatchable_8h.html" title="A class is dispatchable if it is able to implement custom operations and put its program onto a Progr..." alt="" coords="2963,169,3118,211"/>
+<area shape="rect" id="node43" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="3794,259,3949,300"/>
+<area shape="rect" id="node44" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="3679,169,3834,211"/>
+<area shape="rect" id="node45" href="$_searchable_8h.html" title="A class is searchable if permits us to enumerate and make its neighbors. This class is used by MCTS a..." alt="" coords="3142,169,3297,211"/>
+<area shape="rect" id="node46" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we &quot;emulate&quot; a type system using t_nonterminal to store an integer for the types. *. " alt="" coords="3595,177,3655,203"/>
+<area shape="rect" id="node47" href="$_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="3908,169,4107,211"/>
+<area shape="rect" id="node48" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="3321,169,3520,211"/>
+<area shape="rect" id="node49" href="$_node_8h.html" title="Node.h" alt="" coords="981,266,1045,293"/>
+<area shape="rect" id="node50" href="$_grammar_8h.html" title="Grammar.h" alt="" coords="892,177,979,203"/>
 </map>

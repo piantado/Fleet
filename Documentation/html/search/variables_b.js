@@ -13,7 +13,7 @@ var searchData=
   ['max_5fsetsize',['max_setsize',['../_formal_language_theory-_complex_2_main_8cpp.html#aafa4cc7b8a249ecb81ad63ca7a2a6150',1,'Main.cpp']]],
   ['max_5fsteps',['max_steps',['../class_virtual_machine_pool.html#ae87303ebbcbff239ff4f3217087420a9',1,'VirtualMachinePool']]],
   ['max_5fsteps_5fper_5ffactor',['MAX_STEPS_PER_FACTOR',['../_formal_language_theory-_complex_2_main_8cpp.html#a33cfa353d2570ba1bc9b45b924e890ff',1,'Main.cpp']]],
-  ['maxtemp',['MAXTEMP',['../_formal_language_theory-_complex_2_main_8cpp.html#aa34d3d5e11e3f8deb784edc7bca023bb',1,'Main.cpp']]],
+  ['maxval',['maxval',['../class_m_c_m_c_chain.html#a3b8d31f47d75503321b432eeac0bb13b',1,'MCMCChain']]],
   ['mcmc_5frestart',['mcmc_restart',['../_i_o_8h.html#a00dbecb78c8e24ca54abc2fa11ca686d',1,'IO.h']]],
   ['mcmc_5fsteps',['mcmc_steps',['../_i_o_8h.html#a7ce35df3004d645fbdd9af351534a8e2',1,'IO.h']]],
   ['mcts_5fsteps',['mcts_steps',['../_i_o_8h.html#ad833ee178f01ff5581557af0202e8fe8',1,'IO.h']]],

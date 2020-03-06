@@ -2,10 +2,20 @@
 \label{_reservoir_sample_8h}\index{src/\+Statistics/\+Reservoir\+Sample.\+h@{src/\+Statistics/\+Reservoir\+Sample.\+h}}
 
 
-A special weighted reservoir sampling class that allows for logarithmic weights to do this, we use a transformation following \href{https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_using_Reservoir}{\tt https\+://en.\+wikipedia.\+org/wiki/\+Reservoir\+\_\+sampling\#\+Weighted\+\_\+random\+\_\+sampling\+\_\+using\+\_\+\+Reservoir} basically, we want to give a weight that is r$^\wedge$1/w, or log(r)/w, or log(log(r))-\/log(w). But the problem is that log(r) is negative so log(log(r)) is not defined. Instead, we\textquotesingle{}ll use the function f(x)=-\/log(-\/log(x)), which is monotonic. So then, -\/log(-\/log(r$^\wedge$1/w)) = -\/log(-\/log(r)/w) = -\/log(-\/log(r)$\ast$1/w) = -\/\mbox{[}log(-\/log(r)) -\/ log(w)\mbox{]} = -\/log(-\/log(r)) + log(w)  
+A reservoir sampling algorithm. N\+O\+TE\+: This was simplified from an old version that permitted unequal weights among elements. We may go back to that eventually -\/ \href{https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_}{\tt https\+://en.\+wikipedia.\+org/wiki/\+Reservoir\+\_\+sampling\#\+Weighted\+\_\+random\+\_\+sampling\+\_\+}.  
 
 
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+{\ttfamily \#include \char`\"{}Top.\+h\char`\"{}}\newline
+Include dependency graph for Reservoir\+Sample.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_reservoir_sample_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -29,6 +39,10 @@ class \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item}{Fleet
 
 
 \subsection{Detailed Description}
-A special weighted reservoir sampling class that allows for logarithmic weights to do this, we use a transformation following \href{https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_using_Reservoir}{\tt https\+://en.\+wikipedia.\+org/wiki/\+Reservoir\+\_\+sampling\#\+Weighted\+\_\+random\+\_\+sampling\+\_\+using\+\_\+\+Reservoir} basically, we want to give a weight that is r$^\wedge$1/w, or log(r)/w, or log(log(r))-\/log(w). But the problem is that log(r) is negative so log(log(r)) is not defined. Instead, we\textquotesingle{}ll use the function f(x)=-\/log(-\/log(x)), which is monotonic. So then, -\/log(-\/log(r$^\wedge$1/w)) = -\/log(-\/log(r)/w) = -\/log(-\/log(r)$\ast$1/w) = -\/\mbox{[}log(-\/log(r)) -\/ log(w)\mbox{]} = -\/log(-\/log(r)) + log(w) 
+A reservoir sampling algorithm. N\+O\+TE\+: This was simplified from an old version that permitted unequal weights among elements. We may go back to that eventually -\/ \href{https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_}{\tt https\+://en.\+wikipedia.\+org/wiki/\+Reservoir\+\_\+sampling\#\+Weighted\+\_\+random\+\_\+sampling\+\_\+}. 
+
+A special weighted reservoir sampling class that allows for logarithmic weights to do this, we use a transformation following \href{https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_using_Reservoir}{\tt https\+://en.\+wikipedia.\+org/wiki/\+Reservoir\+\_\+sampling\#\+Weighted\+\_\+random\+\_\+sampling\+\_\+using\+\_\+\+Reservoir} basically, we want to give a weight that is r$^\wedge$1/w, or log(r)/w, or log(log(r))-\/log(w). But the problem is that log(r) is negative so log(log(r)) is not defined. Instead, we\textquotesingle{}ll use the function f(x)=-\/log(-\/log(x)), which is monotonic. So then, -\/log(-\/log(r$^\wedge$1/w)) = -\/log(-\/log(r)/w) = -\/log(-\/log(r)$\ast$1/w) = -\/\mbox{[}log(-\/log(r)) -\/ log(w)\mbox{]} = -\/log(-\/log(r)) + log(w)
 
 An item in a reservoir sample, grouping together an element x and its log weights, value, etc.
+
+N\+O\+TE\+: Because we use TopN internally, we can access the Item values with Reservoir\+Sample.\+top.\+values() and we can get the stuff that\textquotesingle{}s stored with Reservoir\+Sample.\+values()

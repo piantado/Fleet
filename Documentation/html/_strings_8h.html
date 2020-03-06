@@ -99,6 +99,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a4bc77a6f47e3046cc934b49f5e03a56f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a4bc77a6f47e3046cc934b49f5e03a56f"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_strings_8h.html#a4bc77a6f47e3046cc934b49f5e03a56f">str</a> (T x)</td></tr>
 <tr class="separator:a4bc77a6f47e3046cc934b49f5e03a56f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a016b5927e1efc9ffbf6f23c856483a84"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_strings_8h.html#a016b5927e1efc9ffbf6f23c856483a84">p_delete_append</a> (const std::string &amp;x, const std::string &amp;y, double del_p, double add_p, double alpha_n)</td></tr>
+<tr class="memdesc:a016b5927e1efc9ffbf6f23c856483a84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Probability of converting x into y by deleting some number (each with del_p, then stopping with prob 1-del_p), adding with probability add_p, and then when we add selecting from an alphabet of size alpha_n.  <a href="#a016b5927e1efc9ffbf6f23c856483a84">More...</a><br /></td></tr>
+<tr class="separator:a016b5927e1efc9ffbf6f23c856483a84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60d3a9b47a988443407a595730086318"><td class="memItemLeft" align="right" valign="top">std::deque&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_strings_8h.html#a60d3a9b47a988443407a595730086318">split</a> (const std::string &amp;s, const char delimiter)</td></tr>
 <tr class="separator:a60d3a9b47a988443407a595730086318"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8ae1cb99a3ece3691d6673b40b9d621"><td class="memItemLeft" align="right" valign="top">std::pair&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_strings_8h.html#af8ae1cb99a3ece3691d6673b40b9d621">divide</a> (const std::string &amp;s, const char delimiter)</td></tr>
@@ -210,6 +213,73 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a016b5927e1efc9ffbf6f23c856483a84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a016b5927e1efc9ffbf6f23c856483a84">&#9670;&nbsp;</a></span>p_delete_append()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double p_delete_append </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>del_p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>add_p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>alpha_n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Probability of converting x into y by deleting some number (each with del_p, then stopping with prob 1-del_p), adding with probability add_p, and then when we add selecting from an alphabet of size alpha_n. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td></td></tr>
+    <tr><td class="paramname">y</td><td></td></tr>
+    <tr><td class="paramname">del_p</td><td>- probability of deleting the next character (geometric) </td></tr>
+    <tr><td class="paramname">add_p</td><td>- probability of adding (geometric) </td></tr>
+    <tr><td class="paramname">alpha_n</td><td>- size of alphabet </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The probability of converting x to y by deleting characters with probability del_p and then adding with probability add_p </dd></dl>
 
 </div>
 </div>

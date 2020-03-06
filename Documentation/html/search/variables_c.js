@@ -11,5 +11,5 @@ var searchData=
   ['ntop',['ntop',['../_i_o_8h.html#affafd1fd79c4b9326a59ab232ed717b5',1,'IO.h']]],
   ['null_5fcallback',['null_callback',['../_m_c_m_c_chain_8h.html#a854206811ea069aaf94d8c0fd90dc828',1,'MCMCChain.h']]],
   ['nullrule',['NullRule',['../_rule_8h.html#aa3fc95ef973d7c99a41e470aed7fe03b',1,'Rule.h']]],
-  ['nvisits',['nvisits',['../class_m_c_t_s_node.html#afe230ccb2748cb60328c7e9bbfdfc0a2',1,'MCTSNode']]]
+  ['nvisits',['nvisits',['../class_m_c_t_s_node.html#a277d083d477ab4aaeeadfadada1cdc24',1,'MCTSNode']]]
 ];

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['p',['P',['../class_grammar_hypothesis.html#a7154fb0938913f01dfd85efb76c46250',1,'GrammarHypothesis::P()'],['../class_rule.html#acd7e4d41d59dec76f60ca16238ab391a',1,'Rule::p()'],['../struct_builtin_primitive.html#a1a8d8e62426c9454355412b80faf684c',1,'BuiltinPrimitive::p()'],['../struct_primitive.html#a43fac47ebf8ec63a70443d80dcd04687',1,'Primitive::p()']]],
-  ['parent',['parent',['../class_m_c_t_s_node.html#afd7d3f1262b41d10b42a5721ac95af68',1,'MCTSNode::parent()'],['../class_node.html#ad8184598cdea70e4bbdfd76f2b0f9e85',1,'Node::parent()']]],
+  ['parent',['parent',['../class_m_c_t_s_node.html#ab451a032b940daa976b7a5773d3246ca',1,'MCTSNode::parent()'],['../class_node.html#ad8184598cdea70e4bbdfd76f2b0f9e85',1,'Node::parent()']]],
   ['pi',['pi',['../class_node.html#ad8e140a5af4e5c312141f2b7af255520',1,'Node::pi()'],['../_numerics_8h.html#a43016d873124d39034edb8cd164794db',1,'pi():&#160;Numerics.h']]],
   ['pool',['pool',['../class_chain_pool.html#af89400f6e9a2312fe2ee7873745a6e91',1,'ChainPool']]],
   ['posterior',['posterior',['../class_bayesable.html#ab27fd7227331366093ac8d47e0be1f8a',1,'Bayesable']]],

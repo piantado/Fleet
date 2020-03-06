@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Fleet: Primitive&lt; T, args &gt; Struct Template Reference</title>
+<title>Fleet: Primitive&lt; T, args &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -67,7 +67,7 @@ $(function() {
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="struct_primitive-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Primitive&lt; T, args &gt; Struct Template Reference</div>  </div>
+<div class="title">Primitive&lt; T, args &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -91,9 +91,9 @@ Collaboration diagram for Primitive&lt; T, args &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a1f2d2db3fb7869d03d65112e30d22101"><td class="memItemLeft" align="right" valign="top">typedef std::decay&lt; typename <a class="el" href="struct_head_if_reference_else_t.html">HeadIfReferenceElseT</a>&lt; T, args... &gt;::type &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_primitive.html#a1f2d2db3fb7869d03d65112e30d22101">GrammarReturnType</a></td></tr>
+<tr class="memitem:a1f2d2db3fb7869d03d65112e30d22101"><td class="memItemLeft" align="right" valign="top">typedef std::decay&lt; typename HeadIfReferenceElseT&lt; T, args... &gt;::type &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_primitive.html#a1f2d2db3fb7869d03d65112e30d22101">GrammarReturnType</a></td></tr>
 <tr class="separator:a1f2d2db3fb7869d03d65112e30d22101"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f2d2db3fb7869d03d65112e30d22101"><td class="memItemLeft" align="right" valign="top">typedef std::decay&lt; typename <a class="el" href="struct_head_if_reference_else_t.html">HeadIfReferenceElseT</a>&lt; T, args... &gt;::type &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_primitive.html#a1f2d2db3fb7869d03d65112e30d22101">GrammarReturnType</a></td></tr>
+<tr class="memitem:a1f2d2db3fb7869d03d65112e30d22101"><td class="memItemLeft" align="right" valign="top">typedef std::decay&lt; typename HeadIfReferenceElseT&lt; T, args... &gt;::type &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_primitive.html#a1f2d2db3fb7869d03d65112e30d22101">GrammarReturnType</a></td></tr>
 <tr class="separator:a1f2d2db3fb7869d03d65112e30d22101"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -102,6 +102,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4303c3567a7bb2921d298f48b07b0add"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10cedec90ed4a3ff01be2bd3b9c36528"><td class="memTemplParams" colspan="2">template&lt;typename V , typename P , typename L &gt; </td></tr>
 <tr class="memitem:a10cedec90ed4a3ff01be2bd3b9c36528"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_instruction_8h.html#a6202215407ab29590bb936ca2996cf64">vmstatus_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="struct_primitive.html#a10cedec90ed4a3ff01be2bd3b9c36528">VMScall</a> (V *vms, P *pool, L *loader)</td></tr>
+<tr class="memdesc:a10cedec90ed4a3ff01be2bd3b9c36528"><td class="mdescLeft">&#160;</td><td class="mdescRight">This gets called by a <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a> to evaluate the primitive on some arguments.  <a href="#a10cedec90ed4a3ff01be2bd3b9c36528">More...</a><br /></td></tr>
 <tr class="separator:a10cedec90ed4a3ff01be2bd3b9c36528"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4303c3567a7bb2921d298f48b07b0add"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_primitive.html#a4303c3567a7bb2921d298f48b07b0add">Primitive</a> (std::string fmt, T(*f)(args...), double _p=1.0)</td></tr>
 <tr class="separator:a4303c3567a7bb2921d298f48b07b0add"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -138,7 +139,13 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a286cab59ea91d634e75f435cd9812dd1 inherit pub_static_attribs_struct_pre_primitive"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_pre_primitive.html">PrePrimitive</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_pre_primitive.html#a286cab59ea91d634e75f435cd9812dd1">primitive_lookup</a> [<a class="el" href="struct_pre_primitive.html#aaa931d0f215c4a79ab4920c13a82a32b">MAX_PRIMITIVES</a>]</td></tr>
 <tr class="separator:a286cab59ea91d634e75f435cd9812dd1 inherit pub_static_attribs_struct_pre_primitive"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename T, typename... args&gt;<br />
+class Primitive&lt; T, args &gt;</h3>
+
+<dl class="section author"><dt>Author</dt><dd>piantado </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>05/03/20 </dd></dl>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a1f2d2db3fb7869d03d65112e30d22101"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1f2d2db3fb7869d03d65112e30d22101">&#9670;&nbsp;</a></span>GrammarReturnType <span class="overload">[1/2]</span></h2>
 
@@ -148,7 +155,7 @@ Additional Inherited Members</h2></td></tr>
 template&lt;typename T, typename... args&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::decay&lt;typename <a class="el" href="struct_head_if_reference_else_t.html">HeadIfReferenceElseT</a>&lt;T,args...&gt;::type&gt;::type <a class="el" href="struct_primitive.html">Primitive</a>&lt; T, args &gt;::<a class="el" href="struct_primitive.html#a1f2d2db3fb7869d03d65112e30d22101">GrammarReturnType</a></td>
+          <td class="memname">typedef std::decay&lt;typename HeadIfReferenceElseT&lt;T,args...&gt;::type&gt;::type <a class="el" href="struct_primitive.html">Primitive</a>&lt; T, args &gt;::<a class="el" href="struct_primitive.html#a1f2d2db3fb7869d03d65112e30d22101">GrammarReturnType</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -164,7 +171,7 @@ template&lt;typename T, typename... args&gt; </div>
 template&lt;typename T, typename... args&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::decay&lt;typename <a class="el" href="struct_head_if_reference_else_t.html">HeadIfReferenceElseT</a>&lt;T,args...&gt;::type&gt;::type <a class="el" href="struct_primitive.html">Primitive</a>&lt; T, args &gt;::<a class="el" href="struct_primitive.html#a1f2d2db3fb7869d03d65112e30d22101">GrammarReturnType</a></td>
+          <td class="memname">typedef std::decay&lt;typename HeadIfReferenceElseT&lt;T,args...&gt;::type&gt;::type <a class="el" href="struct_primitive.html">Primitive</a>&lt; T, args &gt;::<a class="el" href="struct_primitive.html#a1f2d2db3fb7869d03d65112e30d22101">GrammarReturnType</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -335,6 +342,17 @@ template&lt;typename V , typename P , typename L &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>This gets called by a <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a> to evaluate the primitive on some arguments. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vms</td><td></td></tr>
+    <tr><td class="paramname">pool</td><td></td></tr>
+    <tr><td class="paramname">loader</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -402,7 +420,7 @@ template&lt;typename T, typename... args&gt; </div>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following files:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="_grammar_8h_source.html">Grammar.h</a></li>
 <li>src/VirtualMachine/<a class="el" href="_primitives_8h_source.html">Primitives.h</a></li>
 <li>src/VirtualMachine/<a class="el" href="_primitives2_8h_source.html">Primitives2.h</a></li>

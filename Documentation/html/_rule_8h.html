@@ -72,13 +72,20 @@ $(function() {
 <div class="title">Rule.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A <a class="el" href="class_rule.html">Rule</a> stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we "emulate" a type system using t_nonterminal to store an integer for the types. *.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
+<code>#include &quot;<a class="el" href="_nonterminal_8h_source.html">Nonterminal.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Rule.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_rule_8h__incl.png" border="0" usemap="#src_2_rule_8h" alt=""/></div>
+<map name="src_2_rule_8h" id="src_2_rule_8h">
+<area shape="rect" id="node5" href="_nonterminal_8h.html" title="Nonterminal.h" alt="" coords="271,80,373,107"/>
+</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -104,10 +111,12 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:aa3fc95ef973d7c99a41e470aed7fe03b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_rule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_rule_8h.html#aa3fc95ef973d7c99a41e470aed7fe03b">NullRule</a> = new <a class="el" href="class_rule.html">Rule</a>((nonterminal_t)0, <a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7ad4a8b4f8133e76e25475d25a38d66b84">BuiltinOp::op_NOP</a>, &quot;\u2b1c&quot;, {}, 0.0)</td></tr>
+<tr class="memitem:aa3fc95ef973d7c99a41e470aed7fe03b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_rule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_rule_8h.html#aa3fc95ef973d7c99a41e470aed7fe03b">NullRule</a> = new <a class="el" href="class_rule.html">Rule</a>((<a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>)0, <a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7ad4a8b4f8133e76e25475d25a38d66b84">BuiltinOp::op_NOP</a>, &quot;\u2b1c&quot;, {}, 0.0)</td></tr>
 <tr class="separator:aa3fc95ef973d7c99a41e470aed7fe03b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Variable Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A <a class="el" href="class_rule.html">Rule</a> stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we "emulate" a type system using t_nonterminal to store an integer for the types. *. </p>
+</div><h2 class="groupheader">Variable Documentation</h2>
 <a id="aa3fc95ef973d7c99a41e470aed7fe03b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa3fc95ef973d7c99a41e470aed7fe03b">&#9670;&nbsp;</a></span>NullRule</h2>
 
@@ -115,7 +124,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="class_rule.html">Rule</a>* NullRule = new <a class="el" href="class_rule.html">Rule</a>((nonterminal_t)0, <a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7ad4a8b4f8133e76e25475d25a38d66b84">BuiltinOp::op_NOP</a>, &quot;\u2b1c&quot;, {}, 0.0)</td>
+          <td class="memname">const <a class="el" href="class_rule.html">Rule</a>* NullRule = new <a class="el" href="class_rule.html">Rule</a>((<a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>)0, <a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7ad4a8b4f8133e76e25475d25a38d66b84">BuiltinOp::op_NOP</a>, &quot;\u2b1c&quot;, {}, 0.0)</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -25,7 +25,7 @@ size\+\_\+t \hyperlink{class_fleet_1_1_statistics_1_1_top_n_a0ce96f95fbac59ba2a8
 \item 
 bool \hyperlink{class_fleet_1_1_statistics_1_1_top_n_ac2b70eef6c75a0459acc88b2539dbc0b}{empty} () const
 \item 
-std\+::multiset$<$ T $>$ \& \hyperlink{class_fleet_1_1_statistics_1_1_top_n_ab271ffaa959392966d1d00407485bfc9}{values} ()
+const std\+::multiset$<$ T $>$ \& \hyperlink{class_fleet_1_1_statistics_1_1_top_n_ab7ab88abe1dd8afe6ffecf9206cbceb7}{values} () const
 \item 
 void \hyperlink{class_fleet_1_1_statistics_1_1_top_n_a71f34724832a34c029bfeeb6e1dea24f}{add} (const T \&x, size\+\_\+t \hyperlink{class_fleet_1_1_statistics_1_1_top_n_a341df027d3283fe3a9bf3766521e126d}{count}=1)
 \item 
@@ -42,10 +42,6 @@ size\+\_\+t \hyperlink{class_fleet_1_1_statistics_1_1_top_n_acb11e623b45dbec10f2
 const T \& \hyperlink{class_fleet_1_1_statistics_1_1_top_n_a61aa70a203ecf97f79d26cb4bcfe2071}{best} ()
 \item 
 const T \& \hyperlink{class_fleet_1_1_statistics_1_1_top_n_a7be596fb7defba492b503371c58b30ce}{worst} ()
-\item 
-double \hyperlink{class_fleet_1_1_statistics_1_1_top_n_a2881453d64d161d43d55eacdfc97627c}{best\+\_\+score} ()
-\item 
-double \hyperlink{class_fleet_1_1_statistics_1_1_top_n_abb7a4016cfe775eb7b5058f1dd8edd0d}{worst\+\_\+score} ()
 \item 
 double \hyperlink{class_fleet_1_1_statistics_1_1_top_n_aa94e0f1e4df0ba70b35abcc540b7cb03}{Z} ()
 \item 
@@ -141,16 +137,6 @@ Add everything in x to this one.
 const T\& \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+TopN}$<$ T $>$\+::best (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Returns a reference to the best element currently stored \begin{DoxyReturn}{Returns}
-
-\end{DoxyReturn}
-\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_top_n_a2881453d64d161d43d55eacdfc97627c}\label{class_fleet_1_1_statistics_1_1_top_n_a2881453d64d161d43d55eacdfc97627c}} 
-\index{Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}!best\+\_\+score@{best\+\_\+score}}
-\index{best\+\_\+score@{best\+\_\+score}!Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}}
-\subsubsection{\texorpdfstring{best\+\_\+score()}{best\_score()}}
-{\footnotesize\ttfamily template$<$class T$>$ \\
-double \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+TopN}$<$ T $>$\+::best\+\_\+score (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
-Return the score of the best element (thread-\/safe) \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_top_n_ab57188b1858802dcf1f26dbcf702c6ae}\label{class_fleet_1_1_statistics_1_1_top_n_ab57188b1858802dcf1f26dbcf702c6ae}} 
@@ -302,12 +288,12 @@ size\+\_\+t \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statisti
 How many are currently in the set? (N\+OT the total number allowed) \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_top_n_ab271ffaa959392966d1d00407485bfc9}\label{class_fleet_1_1_statistics_1_1_top_n_ab271ffaa959392966d1d00407485bfc9}} 
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_top_n_ab7ab88abe1dd8afe6ffecf9206cbceb7}\label{class_fleet_1_1_statistics_1_1_top_n_ab7ab88abe1dd8afe6ffecf9206cbceb7}} 
 \index{Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}!values@{values}}
 \index{values@{values}!Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}}
 \subsubsection{\texorpdfstring{values()}{values()}}
 {\footnotesize\ttfamily template$<$class T$>$ \\
-std\+::multiset$<$T$>$\& \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+TopN}$<$ T $>$\+::values (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+const std\+::multiset$<$T$>$\& \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+TopN}$<$ T $>$\+::values (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 Return a multiset of all the values in \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{TopN} \begin{DoxyReturn}{Returns}
 
@@ -320,16 +306,6 @@ Return a multiset of all the values in \hyperlink{class_fleet_1_1_statistics_1_1
 const T\& \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+TopN}$<$ T $>$\+::worst (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Returns a reference to the worst element currently stored \begin{DoxyReturn}{Returns}
-
-\end{DoxyReturn}
-\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_top_n_abb7a4016cfe775eb7b5058f1dd8edd0d}\label{class_fleet_1_1_statistics_1_1_top_n_abb7a4016cfe775eb7b5058f1dd8edd0d}} 
-\index{Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}!worst\+\_\+score@{worst\+\_\+score}}
-\index{worst\+\_\+score@{worst\+\_\+score}!Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}}
-\subsubsection{\texorpdfstring{worst\+\_\+score()}{worst\_score()}}
-{\footnotesize\ttfamily template$<$class T$>$ \\
-double \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+TopN}$<$ T $>$\+::worst\+\_\+score (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
-Return the score of the worst element \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_top_n_aa94e0f1e4df0ba70b35abcc540b7cb03}\label{class_fleet_1_1_statistics_1_1_top_n_aa94e0f1e4df0ba70b35abcc540b7cb03}} 

@@ -1,5 +1,10 @@
 \hypertarget{_primitives_8h}{}\section{src/\+Virtual\+Machine/\+Primitives.h File Reference}
 \label{_primitives_8h}\index{src/\+Virtual\+Machine/\+Primitives.\+h@{src/\+Virtual\+Machine/\+Primitives.\+h}}
+
+
+A preprimitive is a class that primitives inherit. We use a static op\+\_\+counter so that at compile time thsi can be used to compute an op number for each separate primitive.  
+
+
 {\ttfamily \#include $<$string$>$}\newline
 {\ttfamily \#include $<$cstdlib$>$}\newline
 {\ttfamily \#include $<$functional$>$}\newline
@@ -24,9 +29,9 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \hyperlink{struct_pre_primitive}{Pre\+Primitive}
+class \hyperlink{struct_pre_primitive}{Pre\+Primitive}
 \item 
-struct \hyperlink{struct_primitive}{Primitive$<$ T, args $>$}
+class \hyperlink{struct_primitive}{Primitive$<$ T, args $>$}
 \end{DoxyCompactItemize}
 \subsection*{Namespaces}
 \begin{DoxyCompactItemize}
@@ -43,6 +48,11 @@ struct \hyperlink{struct_primitive}{Primitive$<$ T, args $>$}
 {\footnotesize template$<$class T , typename V , typename P , typename L $>$ }\\\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{_primitives_8h_a99488b23e9756ffef54d78db8a7e6d2e}{apply\+To\+V\+MS} (T \&p, int index, V $\ast$vms, P $\ast$pool, L $\ast$loader)
 \end{DoxyCompactItemize}
 
+
+\subsection{Detailed Description}
+A preprimitive is a class that primitives inherit. We use a static op\+\_\+counter so that at compile time thsi can be used to compute an op number for each separate primitive. 
+
+A primitive associates a string name (format) with a function, and allows grammars to extract all the relevant function pieces via constexpr, and also defines a V\+MS function that can be called in dispatch op here is generated uniquely for each \hyperlink{struct_primitive}{Primitive}, which is how \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis} knows which to call. SO\+: grammars use this op (statically updated) in nodes, and then when they are linearized the op is processed in a switch statement to evaluate This is a funny intermediate type that essentially helps us associate functions, formats, and nonterminal types all together.
 
 \subsection{Function Documentation}
 \mbox{\Hypertarget{_primitives_8h_a99488b23e9756ffef54d78db8a7e6d2e}\label{_primitives_8h_a99488b23e9756ffef54d78db8a7e6d2e}} 

@@ -1,4 +1,4 @@
-\hypertarget{struct_primitive}{}\section{Primitive$<$ T, args $>$ Struct Template Reference}
+\hypertarget{struct_primitive}{}\section{Primitive$<$ T, args $>$ Class Template Reference}
 \label{struct_primitive}\index{Primitive$<$ T, args $>$@{Primitive$<$ T, args $>$}}
 
 
@@ -25,9 +25,9 @@ Collaboration diagram for Primitive$<$ T, args $>$\+:\nopagebreak
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
-typedef std\+::decay$<$ typename \hyperlink{struct_head_if_reference_else_t}{Head\+If\+Reference\+ElseT}$<$ T, args... $>$\+::type $>$\+::type \hyperlink{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}{Grammar\+Return\+Type}
+typedef std\+::decay$<$ typename Head\+If\+Reference\+ElseT$<$ T, args... $>$\+::type $>$\+::type \hyperlink{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}{Grammar\+Return\+Type}
 \item 
-typedef std\+::decay$<$ typename \hyperlink{struct_head_if_reference_else_t}{Head\+If\+Reference\+ElseT}$<$ T, args... $>$\+::type $>$\+::type \hyperlink{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}{Grammar\+Return\+Type}
+typedef std\+::decay$<$ typename Head\+If\+Reference\+ElseT$<$ T, args... $>$\+::type $>$\+::type \hyperlink{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}{Grammar\+Return\+Type}
 \end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
@@ -35,7 +35,7 @@ typedef std\+::decay$<$ typename \hyperlink{struct_head_if_reference_else_t}{Hea
 \hyperlink{struct_primitive_a4303c3567a7bb2921d298f48b07b0add}{Primitive} (std\+::string fmt, T($\ast$f)(args...), double \+\_\+p=1.\+0)
 \item 
 {\footnotesize template$<$typename V , typename P , typename L $>$ }\\\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{struct_primitive_a10cedec90ed4a3ff01be2bd3b9c36528}{V\+M\+Scall} (V $\ast$vms, P $\ast$pool, L $\ast$loader)
-\item 
+\begin{DoxyCompactList}\small\item\em This gets called by a \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State} to evaluate the primitive on some arguments. \end{DoxyCompactList}\item 
 \hyperlink{struct_primitive_a4303c3567a7bb2921d298f48b07b0add}{Primitive} (std\+::string fmt, T($\ast$f)(args...), double \+\_\+p=1.\+0)
 \item 
 {\footnotesize template$<$typename V $>$ }\\\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{struct_primitive_aa776657a1c5101422799c33a8d2cfaef}{call} (V $\ast$vms)
@@ -54,20 +54,32 @@ double \hyperlink{struct_primitive_a43fac47ebf8ec63a70443d80dcd04687}{p}
 \subsection*{Additional Inherited Members}
 
 
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T, typename... args$>$\newline
+class Primitive$<$ T, args $>$}
+
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+05/03/20 
+\end{DoxyDate}
+
+
 \subsection{Member Typedef Documentation}
 \mbox{\Hypertarget{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}\label{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}} 
 \index{Primitive@{Primitive}!Grammar\+Return\+Type@{Grammar\+Return\+Type}}
 \index{Grammar\+Return\+Type@{Grammar\+Return\+Type}!Primitive@{Primitive}}
 \subsubsection{\texorpdfstring{Grammar\+Return\+Type}{GrammarReturnType}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily template$<$typename T, typename... args$>$ \\
-typedef std\+::decay$<$typename \hyperlink{struct_head_if_reference_else_t}{Head\+If\+Reference\+ElseT}$<$T,args...$>$\+::type$>$\+::type \hyperlink{struct_primitive}{Primitive}$<$ T, args $>$\+::\hyperlink{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}{Grammar\+Return\+Type}}
+typedef std\+::decay$<$typename Head\+If\+Reference\+ElseT$<$T,args...$>$\+::type$>$\+::type \hyperlink{struct_primitive}{Primitive}$<$ T, args $>$\+::\hyperlink{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}{Grammar\+Return\+Type}}
 
 \mbox{\Hypertarget{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}\label{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}} 
 \index{Primitive@{Primitive}!Grammar\+Return\+Type@{Grammar\+Return\+Type}}
 \index{Grammar\+Return\+Type@{Grammar\+Return\+Type}!Primitive@{Primitive}}
 \subsubsection{\texorpdfstring{Grammar\+Return\+Type}{GrammarReturnType}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily template$<$typename T, typename... args$>$ \\
-typedef std\+::decay$<$typename \hyperlink{struct_head_if_reference_else_t}{Head\+If\+Reference\+ElseT}$<$T,args...$>$\+::type$>$\+::type \hyperlink{struct_primitive}{Primitive}$<$ T, args $>$\+::\hyperlink{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}{Grammar\+Return\+Type}}
+typedef std\+::decay$<$typename Head\+If\+Reference\+ElseT$<$T,args...$>$\+::type$>$\+::type \hyperlink{struct_primitive}{Primitive}$<$ T, args $>$\+::\hyperlink{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}{Grammar\+Return\+Type}}
 
 
 
@@ -107,6 +119,22 @@ template$<$typename V , typename P , typename L $>$ \\
 
 
 
+This gets called by a \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State} to evaluate the primitive on some arguments. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vms} & \\
+\hline
+{\em pool} & \\
+\hline
+{\em loader} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
 \subsection{Member Data Documentation}
 \mbox{\Hypertarget{struct_primitive_a31a16d23d239e574ba4e47f6b8e41a9d}\label{struct_primitive_a31a16d23d239e574ba4e47f6b8e41a9d}} 
 \index{Primitive@{Primitive}!call@{call}}
@@ -138,7 +166,7 @@ double \hyperlink{struct_primitive}{Primitive}$<$ T, args $>$\+::p}
 
 
 
-The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
 src/\hyperlink{_grammar_8h}{Grammar.\+h}\item 
 src/\+Virtual\+Machine/\hyperlink{_primitives_8h}{Primitives.\+h}\item 

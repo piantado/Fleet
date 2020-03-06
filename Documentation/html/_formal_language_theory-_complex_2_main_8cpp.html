@@ -89,7 +89,7 @@ Include dependency graph for Main.cpp:</div>
 <div class="center"><img src="_formal_language_theory-_complex_2_main_8cpp__incl.png" border="0" usemap="#_models_2_formal_language_theory-_complex_2_main_8cpp" alt=""/></div>
 <map name="_models_2_formal_language_theory-_complex_2_main_8cpp" id="_models_2_formal_language_theory-_complex_2_main_8cpp">
 <area shape="rect" id="node6" href="_data_8h.html" title="Data.h" alt="" coords="320,95,381,121"/>
-<area shape="rect" id="node17" href="_primitives_8h.html" title="Primitives.h" alt="" coords="3829,177,3920,203"/>
+<area shape="rect" id="node17" href="_primitives_8h.html" title="A preprimitive is a class that primitives inherit. We use a static op_counter so that at compile time..." alt="" coords="3829,177,3920,203"/>
 <area shape="rect" id="node23" href="_builtins_8h.html" title="Builtins.h" alt="" coords="3779,95,3855,121"/>
 <area shape="rect" id="node24" href="_fleet_8h.html" title="Fleet.h" alt="" coords="2277,95,2339,121"/>
 <area shape="rect" id="node10" href="_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="358,177,506,203"/>
@@ -122,7 +122,7 @@ Classes</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:a89fb8e7826ca09e23da0ce4b39ee03c0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_formal_language_theory-_complex_2_main_8cpp.html#a89fb8e7826ca09e23da0ce4b39ee03c0">FLEET_GRAMMAR_TYPES</a>&#160;&#160;&#160;<a class="el" href="_formal_language_theory-_complex_2_main_8cpp.html#a51c40915539205f0b5add30b0d68a4cb">S</a>,bool,double,<a class="el" href="_formal_language_theory-_complex_2_main_8cpp.html#a809d982ed20fa378f251596c3b5ad6b7">StrSet</a></td></tr>
 <tr class="separator:a89fb8e7826ca09e23da0ce4b39ee03c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1287a8584548a58c8bff414efbac2ac4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_formal_language_theory-_complex_2_main_8cpp.html#a1287a8584548a58c8bff414efbac2ac4">CUSTOM_OPS</a>&#160;&#160;&#160;op_UniformSample,op_P</td></tr>
+<tr class="memitem:a1287a8584548a58c8bff414efbac2ac4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_formal_language_theory-_complex_2_main_8cpp.html#a1287a8584548a58c8bff414efbac2ac4">CUSTOM_OPS</a>&#160;&#160;&#160;op_UniformSample</td></tr>
 <tr class="separator:a1287a8584548a58c8bff414efbac2ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -155,10 +155,12 @@ Variables</h2></td></tr>
 <tr class="separator:a40344102d720622016c257aa59a33b6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5923038d8dfed7c8eaac4111396b490f"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_formal_language_theory-_complex_2_main_8cpp.html#a5923038d8dfed7c8eaac4111396b490f">MAX_PR_LINES</a> = 1000000</td></tr>
 <tr class="separator:a5923038d8dfed7c8eaac4111396b490f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6aa2c568bc3a4f1e1f586980b31b6699"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_formal_language_theory-_complex_2_main_8cpp.html#a6aa2c568bc3a4f1e1f586980b31b6699">NTEMPS</a> = 10</td></tr>
+<tr class="memitem:ada34ee41f51e229e0d5e00b99aed5991"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_formal_language_theory-_complex_2_main_8cpp.html#ada34ee41f51e229e0d5e00b99aed5991">RESTART</a> = 0</td></tr>
+<tr class="separator:ada34ee41f51e229e0d5e00b99aed5991"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6aa2c568bc3a4f1e1f586980b31b6699"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_formal_language_theory-_complex_2_main_8cpp.html#a6aa2c568bc3a4f1e1f586980b31b6699">NTEMPS</a> = 20</td></tr>
 <tr class="separator:a6aa2c568bc3a4f1e1f586980b31b6699"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa34d3d5e11e3f8deb784edc7bca023bb"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_formal_language_theory-_complex_2_main_8cpp.html#aa34d3d5e11e3f8deb784edc7bca023bb">MAXTEMP</a> = 1000.0</td></tr>
-<tr class="separator:aa34d3d5e11e3f8deb784edc7bca023bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30d8f792c547d6073063d862794d030a"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_formal_language_theory-_complex_2_main_8cpp.html#a30d8f792c547d6073063d862794d030a">SWAP_EVERY</a> = 500</td></tr>
+<tr class="separator:a30d8f792c547d6073063d862794d030a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb338cf650cba49a5be5dabfffad0dbd"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="_formal_language_theory-_complex_2_main_8cpp.html#a51c40915539205f0b5add30b0d68a4cb">S</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_formal_language_theory-_complex_2_main_8cpp.html#acb338cf650cba49a5be5dabfffad0dbd">data_amounts</a> ={&quot;1&quot;, &quot;2&quot;, &quot;5&quot;, &quot;10&quot;, &quot;50&quot;, &quot;100&quot;, &quot;500&quot;, &quot;1000&quot;, &quot;5000&quot;, &quot;10000&quot;, &quot;50000&quot;, &quot;100000&quot;}</td></tr>
 <tr class="separator:acb338cf650cba49a5be5dabfffad0dbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd489951f6acf58f00e714472db8b9f9"><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_formal_language_theory-_complex_2_main_8cpp.html#afd489951f6acf58f00e714472db8b9f9">MIN_LP</a> = -25.0</td></tr>
@@ -188,7 +190,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CUSTOM_OPS&#160;&#160;&#160;op_UniformSample,op_P</td>
+          <td class="memname">#define CUSTOM_OPS&#160;&#160;&#160;op_UniformSample</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -396,20 +398,6 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="aa34d3d5e11e3f8deb784edc7bca023bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa34d3d5e11e3f8deb784edc7bca023bb">&#9670;&nbsp;</a></span>MAXTEMP</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const size_t MAXTEMP = 1000.0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="afd489951f6acf58f00e714472db8b9f9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afd489951f6acf58f00e714472db8b9f9">&#9670;&nbsp;</a></span>MIN_LP</h2>
 
@@ -459,7 +447,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const size_t NTEMPS = 10</td>
+          <td class="memname">const size_t NTEMPS = 20</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -536,6 +524,34 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~. </p>
+
+</div>
+</div>
+<a id="ada34ee41f51e229e0d5e00b99aed5991"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada34ee41f51e229e0d5e00b99aed5991">&#9670;&nbsp;</a></span>RESTART</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const size_t RESTART = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a30d8f792c547d6073063d862794d030a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30d8f792c547d6073063d862794d030a">&#9670;&nbsp;</a></span>SWAP_EVERY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long SWAP_EVERY = 500</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

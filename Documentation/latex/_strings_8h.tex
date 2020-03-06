@@ -20,6 +20,8 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \item 
 {\footnotesize template$<$typename T $>$ }\\std\+::string \hyperlink{_strings_8h_a4bc77a6f47e3046cc934b49f5e03a56f}{str} (T x)
 \item 
+double \hyperlink{_strings_8h_a016b5927e1efc9ffbf6f23c856483a84}{p\+\_\+delete\+\_\+append} (const std\+::string \&x, const std\+::string \&y, double del\+\_\+p, double add\+\_\+p, double alpha\+\_\+n)
+\begin{DoxyCompactList}\small\item\em Probability of converting x into y by deleting some number (each with del\+\_\+p, then stopping with prob 1-\/del\+\_\+p), adding with probability add\+\_\+p, and then when we add selecting from an alphabet of size alpha\+\_\+n. \end{DoxyCompactList}\item 
 std\+::deque$<$ std\+::string $>$ \hyperlink{_strings_8h_a60d3a9b47a988443407a595730086318}{split} (const std\+::string \&s, const char delimiter)
 \item 
 std\+::pair$<$ std\+::string, std\+::string $>$ \hyperlink{_strings_8h_af8ae1cb99a3ece3691d6673b40b9d621}{divide} (const std\+::string \&s, const char delimiter)
@@ -72,6 +74,32 @@ Compute levenshtein distiance between two strings (N\+O\+TE\+: Or O(\+N$^\wedge$
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_strings_8h_a016b5927e1efc9ffbf6f23c856483a84}\label{_strings_8h_a016b5927e1efc9ffbf6f23c856483a84}} 
+\index{Strings.\+h@{Strings.\+h}!p\+\_\+delete\+\_\+append@{p\+\_\+delete\+\_\+append}}
+\index{p\+\_\+delete\+\_\+append@{p\+\_\+delete\+\_\+append}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{p\+\_\+delete\+\_\+append()}{p\_delete\_append()}}
+{\footnotesize\ttfamily double p\+\_\+delete\+\_\+append (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{x,  }\item[{const std\+::string \&}]{y,  }\item[{double}]{del\+\_\+p,  }\item[{double}]{add\+\_\+p,  }\item[{double}]{alpha\+\_\+n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Probability of converting x into y by deleting some number (each with del\+\_\+p, then stopping with prob 1-\/del\+\_\+p), adding with probability add\+\_\+p, and then when we add selecting from an alphabet of size alpha\+\_\+n. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+{\em del\+\_\+p} & -\/ probability of deleting the next character (geometric) \\
+\hline
+{\em add\+\_\+p} & -\/ probability of adding (geometric) \\
+\hline
+{\em alpha\+\_\+n} & -\/ size of alphabet \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The probability of converting x to y by deleting characters with probability del\+\_\+p and then adding with probability add\+\_\+p 
 \end{DoxyReturn}
 \mbox{\Hypertarget{_strings_8h_a1bb5ec0bee0c8456e3fcc87cc012d055}\label{_strings_8h_a1bb5ec0bee0c8456e3fcc87cc012d055}} 
 \index{Strings.\+h@{Strings.\+h}!Q@{Q}}

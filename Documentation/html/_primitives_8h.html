@@ -73,6 +73,9 @@ $(function() {
 <div class="title">Primitives.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A preprimitive is a class that primitives inherit. We use a static op_counter so that at compile time thsi can be used to compute an op number for each separate primitive.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;string&gt;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
@@ -108,9 +111,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_pre_primitive.html">PrePrimitive</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_pre_primitive.html">PrePrimitive</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_primitive.html">Primitive&lt; T, args &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_primitive.html">Primitive&lt; T, args &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -130,7 +133,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a99488b23e9756ffef54d78db8a7e6d2e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_instruction_8h.html#a6202215407ab29590bb936ca2996cf64">vmstatus_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_primitives_8h.html#a99488b23e9756ffef54d78db8a7e6d2e">applyToVMS</a> (T &amp;p, int index, V *vms, P *pool, L *loader)</td></tr>
 <tr class="separator:a99488b23e9756ffef54d78db8a7e6d2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A preprimitive is a class that primitives inherit. We use a static op_counter so that at compile time thsi can be used to compute an op number for each separate primitive. </p>
+<p>A primitive associates a string name (format) with a function, and allows grammars to extract all the relevant function pieces via constexpr, and also defines a VMS function that can be called in dispatch op here is generated uniquely for each <a class="el" href="struct_primitive.html">Primitive</a>, which is how <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a> knows which to call. SO: grammars use this op (statically updated) in nodes, and then when they are linearized the op is processed in a switch statement to evaluate This is a funny intermediate type that essentially helps us associate functions, formats, and nonterminal types all together.</p>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="a99488b23e9756ffef54d78db8a7e6d2e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a99488b23e9756ffef54d78db8a7e6d2e">&#9670;&nbsp;</a></span>applyToVMS()</h2>
 

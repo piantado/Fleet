@@ -9,10 +9,15 @@
 #include "Instruction.h"
 #include "TemplateMagic.h"
 
+/**
+ * @class PrePrimitive
+ * @author piantado
+ * @date 05/03/20
+ * @file Primitives.h
+ * @brief A preprimitive is a class that primitives inherit. We use a static op_counter so that at compile time
+ * 		  thsi can be used to compute an op number for each separate primitive
+ */
 struct PrePrimitive {
-	// need to define something all Primitives inherit from so that
-	// we can share op_counters across them.
-	// op_counter here is what we use to assign each Primitive a unique PrimitiveOp number
 	static PrimitiveOp op_counter; 
 };
 PrimitiveOp PrePrimitive::op_counter = 0;
@@ -20,17 +25,25 @@ PrimitiveOp PrePrimitive::op_counter = 0;
 
 
 //// so we can give it a lambda of VMS if we wanted
+
+/**
+ * @class Primitive
+ * @author piantado
+ * @date 05/03/20
+ * @file Primitives.h
+ * @brief A primitive associates a string name (format) with a function, 
+ * and allows grammars to extract all the relevant function pieces via constexpr,
+ * and also defines a VMS function that can be called in dispatch
+ * op here is generated uniquely for each Primitive, which is how LOTHypothesis 
+ * knows which to call. 
+ * SO: grammars use this op (statically updated) in nodes, and then when they 
+ * are linearized the op is processed in a switch statement to evaluate
+ * This is a funny intermediate type that essentially helps us associate 
+ * functions, formats, and nonterminal types all together. 
+ */
+
 template<typename T, typename... args> // function type
 struct Primitive : PrePrimitive {
-	// A primitive associates a string name (format) with a function, 
-	// and allows grammars to extract all the relevant function pieces via constexpr,
-	// and also defines a VMS function that can be called in dispatch
-	// op here is generated uniquely for each Primitive, which is how LOTHypothesis 
-	// knows which to call. 
-	// SO: grammars use this op (statically updated) in nodes, and then when they 
-	// are linearized the op is processed in a switch statement to evaluate
-	// This is a funny intermediate type that essentially helps us associate 
-	// functions, formats, and nonterminal types all together. 
 	
 	std::string format;
 	T(*call)(args...); 
@@ -76,9 +89,15 @@ struct Primitive : PrePrimitive {
 	}
 	
 	
+	/**
+	 * @brief This gets called by a VirtualMachineState to evaluate the primitive on some arguments
+	 * @param vms
+	 * @param pool
+	 * @param loader
+	 * @return 
+	 */	
 	template<typename V, typename P, typename L>
 	vmstatus_t VMScall(V* vms, P* pool, L* loader) {
-		// This is the default way of evaluating a PrimitiveOp
 		
 		assert(not vms->template any_stacks_empty<typename std::decay<args>::type...>() &&
 				"*** Somehow we ended up with empty arguments -- something is deeply wrong and you're in big trouble."); 

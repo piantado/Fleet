@@ -81,8 +81,9 @@ Collaboration diagram for Fleet::Statistics::StreamingStatistics:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_fleet_1_1_statistics_1_1_streaming_statistics__coll__graph.png" border="0" usemap="#_fleet_1_1_statistics_1_1_streaming_statistics_coll__map" alt="Collaboration graph"/></div>
 <map name="_fleet_1_1_statistics_1_1_streaming_statistics_coll__map" id="_fleet_1_1_statistics_1_1_streaming_statistics_coll__map">
-<area shape="rect" id="node2" href="class_fleet_1_1_statistics_1_1_median_f_a_m_e.html" title="Fleet::Statistics::\lMedianFAME\&lt; double \&gt;" alt="" coords="16,5,179,47"/>
-<area shape="rect" id="node3" href="class_fleet_1_1_statistics_1_1_reservoir_sample.html" title="Fleet::Statistics::\lReservoirSample\&lt; double \&gt;" alt="" coords="5,71,189,112"/>
+<area shape="rect" id="node2" href="class_fleet_1_1_statistics_1_1_median_f_a_m_e.html" title="Fleet::Statistics::\lMedianFAME\&lt; double \&gt;" alt="" coords="263,5,425,47"/>
+<area shape="rect" id="node3" href="class_fleet_1_1_statistics_1_1_reservoir_sample.html" title="Fleet::Statistics::\lReservoirSample\&lt; double \&gt;" alt="" coords="252,71,436,112"/>
+<area shape="rect" id="node4" href="class_fleet_1_1_statistics_1_1_top_n.html" title="Fleet::Statistics::\lTopN\&lt; Fleet::Statistics\l::ReservoirSample::Item \&gt;" alt="" coords="5,63,181,119"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -90,10 +91,12 @@ Collaboration diagram for Fleet::Statistics::StreamingStatistics:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7b22725325625cc7f8c89cce4a19c719"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#a7b22725325625cc7f8c89cce4a19c719">StreamingStatistics</a> (size_t rs=1000)</td></tr>
 <tr class="separator:a7b22725325625cc7f8c89cce4a19c719"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad49b1027b011502f29c9df1d211cf40d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#ad49b1027b011502f29c9df1d211cf40d">StreamingStatistics</a> (const <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html">StreamingStatistics</a> &amp;s)</td></tr>
+<tr class="separator:ad49b1027b011502f29c9df1d211cf40d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78daaf22f5e2abd44f82b2e8d2f2cb55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#a78daaf22f5e2abd44f82b2e8d2f2cb55">operator=</a> (<a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html">StreamingStatistics</a> &amp;&amp;s)</td></tr>
 <tr class="separator:a78daaf22f5e2abd44f82b2e8d2f2cb55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19575656208452c5ea2bb66257a09c0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#a19575656208452c5ea2bb66257a09c0f">add</a> (double x, double lw=0.0)</td></tr>
-<tr class="separator:a19575656208452c5ea2bb66257a09c0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7e44e59ea2472186926250f0de54831"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#ad7e44e59ea2472186926250f0de54831">add</a> (double x)</td></tr>
+<tr class="separator:ad7e44e59ea2472186926250f0de54831"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5bcdaff2f20a0048a5b28af8582adf3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#af5bcdaff2f20a0048a5b28af8582adf3">operator&lt;&lt;</a> (double x)</td></tr>
 <tr class="separator:af5bcdaff2f20a0048a5b28af8582adf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65b06c5de083ac12d5b74facd5444973"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#a65b06c5de083ac12d5b74facd5444973">sample</a> () const</td></tr>
@@ -132,7 +135,7 @@ Protected Attributes</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>29/01/20 </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7b22725325625cc7f8c89cce4a19c719"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b22725325625cc7f8c89cce4a19c719">&#9670;&nbsp;</a></span>StreamingStatistics()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b22725325625cc7f8c89cce4a19c719">&#9670;&nbsp;</a></span>StreamingStatistics() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -157,9 +160,35 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ad49b1027b011502f29c9df1d211cf40d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad49b1027b011502f29c9df1d211cf40d">&#9670;&nbsp;</a></span>StreamingStatistics() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Fleet::Statistics::StreamingStatistics::StreamingStatistics </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html">StreamingStatistics</a> &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a19575656208452c5ea2bb66257a09c0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19575656208452c5ea2bb66257a09c0f">&#9670;&nbsp;</a></span>add()</h2>
+<a id="ad7e44e59ea2472186926250f0de54831"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7e44e59ea2472186926250f0de54831">&#9670;&nbsp;</a></span>add()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -171,18 +200,8 @@ Protected Attributes</h2></td></tr>
           <td class="memname">void Fleet::Statistics::StreamingStatistics::add </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>lw</em> = <code>0.0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -191,10 +210,9 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Add sample x (with log weight lw) to these statistics. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Add sample x to these statistics. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td></td></tr>
-    <tr><td class="paramname">lw</td><td></td></tr>
   </table>
   </dd>
 </dl>

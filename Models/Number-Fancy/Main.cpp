@@ -348,31 +348,31 @@ int main(int argc, char** argv){
 	
 
 	// MCTS  - here just on the last data
-	MyHypothesis h0(&grammar);
-	MyMCTS m(explore, h0, &alldata[alldata.size()-1]);
-	tic();
-	m.parallel_search(Control(mcts_steps, runtime, nthreads));
-	tic();
-	m.print();
+//	MyHypothesis h0(&grammar);
+//	MyMCTS m(explore, h0, &alldata[alldata.size()-1]);
+//	tic();
+//	m.parallel_search(Control(mcts_steps, runtime, nthreads));
+//	tic();
+//	m.print();
 	
 //	CERR "# Starting sampling." ENDL;
 	
 	
 	// Run parallel tempering
-//	MyHypothesis h0(&grammar);
-//	h0 = h0.restart();
-//	ParallelTempering samp(h0, alldata, alltops);
-//	tic();
-//	samp.run(Control(mcmc_steps, runtime, nthreads), 200, 5000); 
-//	tic();
+	MyHypothesis h0(&grammar);
+	h0 = h0.restart();
+	ParallelTempering samp(h0, alldata, alltops);
+	tic();
+	samp.run(Control(mcmc_steps, runtime, nthreads), 200, 5000); 
+	tic();
 
 	// and save what we found
-//	for(auto& tn : alltops) {
-//		for(auto h : tn.values()) {
-//			h.clear_bayes(); // zero the prior, posterior, likelihood
-//			all << h;
-//		}
-//	}
+	for(auto& tn : alltops) {
+		for(auto h : tn.values()) {
+			h.clear_bayes(); // zero the prior, posterior, likelihood
+			all << h;
+		}
+	}
 	
 	COUT "# Computing posterior on all final values |D|=" << biggestData.size()  ENDL;
 

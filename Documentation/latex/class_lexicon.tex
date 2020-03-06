@@ -29,35 +29,35 @@ Collaboration diagram for Lexicon$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, t\+\
 \item 
 \hyperlink{class_lexicon_a1b81e27f60f3e1cb7c0b376ac66aff45}{Lexicon} ()
 \item 
-virtual std\+::string \hyperlink{class_lexicon_a25895445cc5f7337e299e8d9dd14822c}{string} () const
+virtual std\+::string \hyperlink{class_lexicon_aad37474da522d811415c1ba45ca72dff}{string} () const override
 \item 
 virtual std\+::string \hyperlink{class_lexicon_a8eda74c4e7500b31a382c182ac60436a}{parseable} () const
 \item 
-virtual size\+\_\+t \hyperlink{class_lexicon_a4fed68bd543c0be81dfd63a2c8d219bd}{hash} () const
+virtual size\+\_\+t \hyperlink{class_lexicon_ab3180c29ad8ec74de2a89ce109226047}{hash} () const override
 \begin{DoxyCompactList}\small\item\em Default hash function. \end{DoxyCompactList}\item 
-virtual bool \hyperlink{class_lexicon_a852faeedb6cd12e629e601ebcad41729}{operator==} (const H\+YP \&l) const
+virtual bool \hyperlink{class_lexicon_aff3b862ab4c3db34b3c354c2d205725f}{operator==} (const H\+YP \&l) const override
 \item 
 bool \hyperlink{class_lexicon_a6d6b1b025ca707815a6776c3898503e4}{has\+\_\+valid\+\_\+indices} () const
 \item 
 bool \hyperlink{class_lexicon_aeb3e5f9f75e43f2147a22dee67fc8527}{check\+\_\+reachable} () const
 \item 
-virtual void \hyperlink{class_lexicon_af85ffc6944b66e92f760aaf7e3521d23}{push\+\_\+program} (Program \&s, short j)
+virtual void \hyperlink{class_lexicon_a4473f60c7ebdded00ac5cc9b00a2f4f6}{push\+\_\+program} (Program \&s, short j) override
 \item 
-virtual \hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{class_lexicon_a1c6b61ac505114f23441e3097163685b}{dispatch\+\_\+custom} (\hyperlink{class_instruction}{Instruction} i, \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$pool, \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$vms, \hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$loader)
+virtual \hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{class_lexicon_a4aad4c15b3193acf498e24a206533e86}{dispatch\+\_\+custom} (\hyperlink{class_instruction}{Instruction} i, \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$pool, \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$vms, \hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$loader) override
 \item 
 virtual H\+YP \hyperlink{class_lexicon_a52a6e819264e04584320adca868aec4a}{copy\+\_\+and\+\_\+complete} () const
 \item 
-virtual double \hyperlink{class_lexicon_a1ac27e460a361cc90566b92365909324}{compute\+\_\+prior} ()
+virtual double \hyperlink{class_lexicon_a1edc72e7c3b422d1c13b6cc3eb33d08d}{compute\+\_\+prior} () override
 \begin{DoxyCompactList}\small\item\em Compute the prior -- defaultly not defined. \end{DoxyCompactList}\item 
-virtual std\+::pair$<$ H\+YP, double $>$ \hyperlink{class_lexicon_a41a1955c8d373e85c3b926f161bf7e31}{propose} () const
+virtual std\+::pair$<$ H\+YP, double $>$ \hyperlink{class_lexicon_a94910b8357fe18f3ae13df8bdd56ca4e}{propose} () const override
 \item 
-virtual H\+YP \hyperlink{class_lexicon_a4ffff098d0f444d3e9ec543bbd228595}{restart} () const
+virtual H\+YP \hyperlink{class_lexicon_a5817e922e09a2723c53eb69506f647fb}{restart} () const override
 \item 
-int \hyperlink{class_lexicon_a1bad37e75741d1f9f9cf3fb11e9410d1}{neighbors} () const
+int \hyperlink{class_lexicon_abccf49d0f313b9f6e0c3ae286d13ac82}{neighbors} () const override
 \item 
-H\+YP \hyperlink{class_lexicon_a2a5b2b625f4c7477c049c1fd8f0a2e3e}{make\+\_\+neighbor} (int k) const
+H\+YP \hyperlink{class_lexicon_a3d4fb7e4545267221eb38acba4d52a6b}{make\+\_\+neighbor} (int k) const override
 \item 
-bool \hyperlink{class_lexicon_ad48a8d79b77aed51caff4d10c7de43a1}{is\+\_\+evaluable} () const
+bool \hyperlink{class_lexicon_a4928f2db73eb7d675f347429a4167820}{is\+\_\+evaluable} () const override
 \item 
 virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ t\+\_\+output $>$ \hyperlink{class_lexicon_aaaff682145f9cb15f7252420fe76f111}{call} (const t\+\_\+input x, const t\+\_\+output err)=0
 \end{DoxyCompactItemize}
@@ -113,7 +113,7 @@ virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$t\+\_\
 
 
 
-Implemented in \hyperlink{class_my_hypothesis_a016146970c06041b3133f60152a80a24}{My\+Hypothesis}.
+Implemented in \hyperlink{class_my_hypothesis_a61391d3f1f6fbbe37663b22e2068ac90}{My\+Hypothesis}.
 
 \mbox{\Hypertarget{class_lexicon_aeb3e5f9f75e43f2147a22dee67fc8527}\label{class_lexicon_aeb3e5f9f75e43f2147a22dee67fc8527}} 
 \index{Lexicon@{Lexicon}!check\+\_\+reachable@{check\+\_\+reachable}}
@@ -125,12 +125,12 @@ bool \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output
 Check if the last factor call everything else transitively (e.\+g. are we \char`\"{}wasting\char`\"{} factors) We do this by making a graph of what factors call which others and then computing the transitive closure. \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_lexicon_a1ac27e460a361cc90566b92365909324}\label{class_lexicon_a1ac27e460a361cc90566b92365909324}} 
+\mbox{\Hypertarget{class_lexicon_a1edc72e7c3b422d1c13b6cc3eb33d08d}\label{class_lexicon_a1edc72e7c3b422d1c13b6cc3eb33d08d}} 
 \index{Lexicon@{Lexicon}!compute\+\_\+prior@{compute\+\_\+prior}}
 \index{compute\+\_\+prior@{compute\+\_\+prior}!Lexicon@{Lexicon}}
 \subsubsection{\texorpdfstring{compute\+\_\+prior()}{compute\_prior()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$$>$ \\
-virtual double \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::compute\+\_\+prior (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+virtual double \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::compute\+\_\+prior (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -142,7 +142,7 @@ Implements \hyperlink{class_bayesable_a9aa752f0adff1b95f8957b91fc928649}{Bayesab
 
 
 
-Reimplemented in \hyperlink{class_my_hypothesis_a67752bb4ba61994ef0cb64f7f9031f7f}{My\+Hypothesis}.
+Reimplemented in \hyperlink{class_my_hypothesis_ab092094c5fc31730de4f40609220bb18}{My\+Hypothesis}.
 
 \mbox{\Hypertarget{class_lexicon_a52a6e819264e04584320adca868aec4a}\label{class_lexicon_a52a6e819264e04584320adca868aec4a}} 
 \index{Lexicon@{Lexicon}!copy\+\_\+and\+\_\+complete@{copy\+\_\+and\+\_\+complete}}
@@ -151,12 +151,12 @@ Reimplemented in \hyperlink{class_my_hypothesis_a67752bb4ba61994ef0cb64f7f9031f7
 {\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$$>$ \\
 virtual H\+YP \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::copy\+\_\+and\+\_\+complete (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-\mbox{\Hypertarget{class_lexicon_a1c6b61ac505114f23441e3097163685b}\label{class_lexicon_a1c6b61ac505114f23441e3097163685b}} 
+\mbox{\Hypertarget{class_lexicon_a4aad4c15b3193acf498e24a206533e86}\label{class_lexicon_a4aad4c15b3193acf498e24a206533e86}} 
 \index{Lexicon@{Lexicon}!dispatch\+\_\+custom@{dispatch\+\_\+custom}}
 \index{dispatch\+\_\+custom@{dispatch\+\_\+custom}!Lexicon@{Lexicon}}
 \subsubsection{\texorpdfstring{dispatch\+\_\+custom()}{dispatch\_custom()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$$>$ \\
-virtual \hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::dispatch\+\_\+custom (\begin{DoxyParamCaption}\item[{\hyperlink{class_instruction}{Instruction}}]{i,  }\item[{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$}]{pool,  }\item[{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$}]{vms,  }\item[{\hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$}]{loader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+virtual \hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::dispatch\+\_\+custom (\begin{DoxyParamCaption}\item[{\hyperlink{class_instruction}{Instruction}}]{i,  }\item[{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$}]{pool,  }\item[{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$}]{vms,  }\item[{\hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$}]{loader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -189,12 +189,12 @@ bool \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output
 A lexicon has valid indices if calls to op\+\_\+\+R\+E\+C\+U\+R\+SE, op\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE, op\+\_\+\+S\+A\+F\+E\+\_\+\+R\+E\+C\+U\+R\+SE, and op\+\_\+\+S\+A\+F\+E\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE all have arguments that are less than the size. (So this places no restrictions on the calling earlier factors) \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_lexicon_a4fed68bd543c0be81dfd63a2c8d219bd}\label{class_lexicon_a4fed68bd543c0be81dfd63a2c8d219bd}} 
+\mbox{\Hypertarget{class_lexicon_ab3180c29ad8ec74de2a89ce109226047}\label{class_lexicon_ab3180c29ad8ec74de2a89ce109226047}} 
 \index{Lexicon@{Lexicon}!hash@{hash}}
 \index{hash@{hash}!Lexicon@{Lexicon}}
 \subsubsection{\texorpdfstring{hash()}{hash()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$$>$ \\
-virtual size\+\_\+t \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::hash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+virtual size\+\_\+t \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::hash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -207,45 +207,45 @@ Hash a \hyperlink{class_lexicon}{Lexicon} by hashing each part \begin{DoxyReturn
 
 Implements \hyperlink{class_bayesable_ab77a023d33951448e6edb2e1bc79c5ae}{Bayesable$<$ Args... $>$}.
 
-\mbox{\Hypertarget{class_lexicon_ad48a8d79b77aed51caff4d10c7de43a1}\label{class_lexicon_ad48a8d79b77aed51caff4d10c7de43a1}} 
+\mbox{\Hypertarget{class_lexicon_a4928f2db73eb7d675f347429a4167820}\label{class_lexicon_a4928f2db73eb7d675f347429a4167820}} 
 \index{Lexicon@{Lexicon}!is\+\_\+evaluable@{is\+\_\+evaluable}}
 \index{is\+\_\+evaluable@{is\+\_\+evaluable}!Lexicon@{Lexicon}}
 \subsubsection{\texorpdfstring{is\+\_\+evaluable()}{is\_evaluable()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$$>$ \\
-bool \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::is\+\_\+evaluable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+bool \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::is\+\_\+evaluable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
 Implements \hyperlink{class_searchable_aae16f1cb01f140f4033f6f67dc9753b6}{Searchable$<$ H\+Y\+P, t\+\_\+input, t\+\_\+output $>$}.
 
-\mbox{\Hypertarget{class_lexicon_a2a5b2b625f4c7477c049c1fd8f0a2e3e}\label{class_lexicon_a2a5b2b625f4c7477c049c1fd8f0a2e3e}} 
+\mbox{\Hypertarget{class_lexicon_a3d4fb7e4545267221eb38acba4d52a6b}\label{class_lexicon_a3d4fb7e4545267221eb38acba4d52a6b}} 
 \index{Lexicon@{Lexicon}!make\+\_\+neighbor@{make\+\_\+neighbor}}
 \index{make\+\_\+neighbor@{make\+\_\+neighbor}!Lexicon@{Lexicon}}
 \subsubsection{\texorpdfstring{make\+\_\+neighbor()}{make\_neighbor()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$$>$ \\
-H\+YP \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::make\+\_\+neighbor (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+H\+YP \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::make\+\_\+neighbor (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
 Implements \hyperlink{class_searchable_a64bda92cc9314dae7aff31f4444a93e6}{Searchable$<$ H\+Y\+P, t\+\_\+input, t\+\_\+output $>$}.
 
-\mbox{\Hypertarget{class_lexicon_a1bad37e75741d1f9f9cf3fb11e9410d1}\label{class_lexicon_a1bad37e75741d1f9f9cf3fb11e9410d1}} 
+\mbox{\Hypertarget{class_lexicon_abccf49d0f313b9f6e0c3ae286d13ac82}\label{class_lexicon_abccf49d0f313b9f6e0c3ae286d13ac82}} 
 \index{Lexicon@{Lexicon}!neighbors@{neighbors}}
 \index{neighbors@{neighbors}!Lexicon@{Lexicon}}
 \subsubsection{\texorpdfstring{neighbors()}{neighbors()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$$>$ \\
-int \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::neighbors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+int \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::neighbors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
 Implements \hyperlink{class_searchable_a0450c35a21c5940a63560aa24b4ff0cc}{Searchable$<$ H\+Y\+P, t\+\_\+input, t\+\_\+output $>$}.
 
-\mbox{\Hypertarget{class_lexicon_a852faeedb6cd12e629e601ebcad41729}\label{class_lexicon_a852faeedb6cd12e629e601ebcad41729}} 
+\mbox{\Hypertarget{class_lexicon_aff3b862ab4c3db34b3c354c2d205725f}\label{class_lexicon_aff3b862ab4c3db34b3c354c2d205725f}} 
 \index{Lexicon@{Lexicon}!operator==@{operator==}}
 \index{operator==@{operator==}!Lexicon@{Lexicon}}
 \subsubsection{\texorpdfstring{operator==()}{operator==()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$$>$ \\
-virtual bool \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::operator== (\begin{DoxyParamCaption}\item[{const H\+YP \&}]{l }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+virtual bool \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::operator== (\begin{DoxyParamCaption}\item[{const H\+YP \&}]{l }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 Equality checks equality on each part 
 \begin{DoxyParams}{Parameters}
@@ -269,12 +269,12 @@ virtual std\+::string \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+inp
 Convert to a parseable format (using a delimiter for each factor) \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_lexicon_a41a1955c8d373e85c3b926f161bf7e31}\label{class_lexicon_a41a1955c8d373e85c3b926f161bf7e31}} 
+\mbox{\Hypertarget{class_lexicon_a94910b8357fe18f3ae13df8bdd56ca4e}\label{class_lexicon_a94910b8357fe18f3ae13df8bdd56ca4e}} 
 \index{Lexicon@{Lexicon}!propose@{propose}}
 \index{propose@{propose}!Lexicon@{Lexicon}}
 \subsubsection{\texorpdfstring{propose()}{propose()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$$>$ \\
-virtual std\+::pair$<$H\+YP,double$>$ \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::propose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+virtual std\+::pair$<$H\+YP,double$>$ \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::propose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 This proposal guarantees that there will be at least one factor that is proposed to. To do this, we draw random numbers on 2$\ast$$\ast$factors.size()-\/1 and then use the bits of that integer to determine which factors to propose to. \begin{DoxyReturn}{Returns}
 
@@ -283,12 +283,12 @@ This proposal guarantees that there will be at least one factor that is proposed
 
 Implements \hyperlink{class_m_c_m_cable_ab119a14256ab92c5c1e941f8492df830}{M\+C\+M\+Cable$<$ H\+Y\+P, t\+\_\+datum $>$}.
 
-\mbox{\Hypertarget{class_lexicon_af85ffc6944b66e92f760aaf7e3521d23}\label{class_lexicon_af85ffc6944b66e92f760aaf7e3521d23}} 
+\mbox{\Hypertarget{class_lexicon_a4473f60c7ebdded00ac5cc9b00a2f4f6}\label{class_lexicon_a4473f60c7ebdded00ac5cc9b00a2f4f6}} 
 \index{Lexicon@{Lexicon}!push\+\_\+program@{push\+\_\+program}}
 \index{push\+\_\+program@{push\+\_\+program}!Lexicon@{Lexicon}}
 \subsubsection{\texorpdfstring{push\+\_\+program()}{push\_program()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$$>$ \\
-virtual void \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::push\+\_\+program (\begin{DoxyParamCaption}\item[{Program \&}]{s,  }\item[{short}]{j }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+virtual void \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::push\+\_\+program (\begin{DoxyParamCaption}\item[{Program \&}]{s,  }\item[{short}]{j }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 Put factor j onto program s 
 \begin{DoxyParams}{Parameters}
@@ -301,23 +301,23 @@ Put factor j onto program s
 
 Implements \hyperlink{class_dispatchable_a9339c2906f7c8dadbe1d0ca79dd9bb11}{Dispatchable$<$ t\+\_\+input, t\+\_\+output $>$}.
 
-\mbox{\Hypertarget{class_lexicon_a4ffff098d0f444d3e9ec543bbd228595}\label{class_lexicon_a4ffff098d0f444d3e9ec543bbd228595}} 
+\mbox{\Hypertarget{class_lexicon_a5817e922e09a2723c53eb69506f647fb}\label{class_lexicon_a5817e922e09a2723c53eb69506f647fb}} 
 \index{Lexicon@{Lexicon}!restart@{restart}}
 \index{restart@{restart}!Lexicon@{Lexicon}}
 \subsubsection{\texorpdfstring{restart()}{restart()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$$>$ \\
-virtual H\+YP \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::restart (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+virtual H\+YP \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::restart (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
 Implements \hyperlink{class_m_c_m_cable_a220d6c4ca73e20441c14fa5bd3e090d3}{M\+C\+M\+Cable$<$ H\+Y\+P, t\+\_\+datum $>$}.
 
-\mbox{\Hypertarget{class_lexicon_a25895445cc5f7337e299e8d9dd14822c}\label{class_lexicon_a25895445cc5f7337e299e8d9dd14822c}} 
+\mbox{\Hypertarget{class_lexicon_aad37474da522d811415c1ba45ca72dff}\label{class_lexicon_aad37474da522d811415c1ba45ca72dff}} 
 \index{Lexicon@{Lexicon}!string@{string}}
 \index{string@{string}!Lexicon@{Lexicon}}
 \subsubsection{\texorpdfstring{string()}{string()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$$>$ \\
-virtual std\+::string \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+virtual std\+::string \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} $>$\+::string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 A\+Convert a lexicon to a string -- defaultly includes all arguments. \begin{DoxyReturn}{Returns}
 
