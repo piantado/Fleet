@@ -31,7 +31,7 @@ namespace Fleet {
 			MedianFAME<double>      streaming_median;
 			ReservoirSample<double> reservoir_sample;
 			
-			StreamingStatistics(size_t rs=1000) : 
+			StreamingStatistics(size_t rs=100) : 
 				min(infinity), max(-infinity), sum(0.0), lse(-infinity), N(0), reservoir_sample(rs) {
 			}
 			

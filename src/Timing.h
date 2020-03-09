@@ -68,3 +68,38 @@ std::string datestring() {
 	strftime(buffer,80,"%Y-%m-%d %I:%M:%S",timeinfo);
 	return std::string(buffer);
 }
+
+
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Time conversions for fleet
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+time_t convert_time(std::string& s) {
+	/**
+	 * @brief Converts our own time format to ms, which is what Fleet's time utilities use
+	 * 		  The time format we accept is #+(.#+)[smhd] where shmd specifies seconds, minutes, hours days 
+	 * @param s
+	 * @return 
+	 */
+	
+	// specila case of s="0" will be allowed
+	if(s == "0") return 0;
+		
+	// else we must specify a unit	
+	double multiplier; // for default multiplier of 1 is seconds
+	switch(s.at(s.length()-1)) {
+		case 's': multiplier = 1000; break; 
+		case 'm': multiplier = 60*1000; break;
+		case 'h': multiplier = 60*60*1000; break;
+		case 'd': multiplier = 60*60*24*1000; break;
+		default: 
+			std::cout << "*** Unknown time specifier: " << s.at(s.length()-1) << " in " << s << ". Did you forget a unit?" << std::endl;
+			assert(0);
+	}
+	
+	double t = std::stod(s.substr(0,s.length()-1)); // all but the last character
+		
+	return (unsigned long)(t*multiplier); // note this effectively rounds to the nearest second 
+	
+}

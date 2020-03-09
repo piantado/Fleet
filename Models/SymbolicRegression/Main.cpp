@@ -244,7 +244,7 @@ using t_datum = MyHypothesis::t_datum;
 std::map<std::string,Fleet::Statistics::ReservoirSample<MyHypothesis>> master_samples; // master set of samples
 std::mutex master_sample_lock;
 
-
+size_t innertime;
 class MyMCTS;
 MyMCTS* root;
 t_data mydata;
@@ -296,7 +296,7 @@ class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 		auto h = h0.copy_and_complete(); // fill in any structural gaps
 		
 		MCMCChain chain(h, data, cb);
-		chain.run(Control(0, 100000, 1, 10000)); // run mcmc with restarts; we sure shouldn't run more than runtime
+		chain.run(Control(0, innertime, 1, 10000)); // run mcmc with restarts; we sure shouldn't run more than runtime
 		
 //		COUT "---------------------------------------------------------------" ENDL;
 //		root->print();
@@ -309,10 +309,16 @@ class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char** argv){ 
+	
+	std::string innertimestr = "1m";
+	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	auto app = Fleet::DefaultArguments("Symbolic regression");
+	app.add_option("-I,--inner-time", innertimestr, "Alphabet we will use"); 	// add my own args
 	CLI11_PARSE(app, argc, argv);
 	Fleet_initialize();
+
+	innertime = convert_time(innertimestr);
 
 	//------------------
 	// Set up the grammar
