@@ -45,9 +45,9 @@ D <- NULL
 for(language in c("SimpleEnglish", "MediumEnglish", "FancyEnglish" )) {
                     
     q <- NULL
-    for(nf in c(1,2,3,4)) {
+    for(nf in c(1,2,3,4,5,6,7,8)) {
 
-            f <- paste("./out-2020Feb23/", language, "-", nf, ".out", sep="")
+            f <- paste("./out/", language, "-", nf, ".out", sep="")
 #               f <- paste("/home/piantado/Desktop/Science/out/", language, "-", nf, ".out", sep="")
              
             r <- try(read.table(f, quote="\""))

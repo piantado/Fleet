@@ -180,7 +180,7 @@ struct Primitive : PrePrimitive {
 
 
 // This is some real template magic that lets us index into "PRIMITIVES" 
-// by index at runtime to call vsm. 
+// by index at runtime to call vsm. Otherwise, we can't do this. 
 // For instance, in LOTHypothesis this is used as
 //	abort_t dispatch_rule(Instruction i, VirtualMachinePool<Object, bool>* pool, VirtualMachineState<Object,bool>& vms, Dispatchable<Object,bool>* loader ) {
 //		return apply(PRIMITIVES, (size_t)i.getCustom(), &vms);
@@ -197,7 +197,7 @@ namespace Fleet::applyVMS {
 	template<class T, typename V, typename P, typename L, size_t... Is>
 	inline vmstatus_t applyToVMS(T& p, int index, V* vms, P* pool, L* loader, std::index_sequence<Is...>) {
 		using FT = vmstatus_t(T&, V*, P*, L*);
-		thread_local static constexpr FT* arr[] = { &applyToVMS_one<Is, T, V, P, L>... }; //thread_local here seems to matter a lot
+		thread_local static constexpr FT* arr[] = { &applyToVMS_one<Is,T,V,P,L>... }; //thread_local here seems to matter a lot
 		return arr[index](p, vms, pool, loader);
 	}
 }

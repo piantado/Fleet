@@ -194,9 +194,11 @@ public:
 		
 		// go through children and assign their parents to me
 		// and fix their pi's
-		for(size_t i=0;i<children.size();i++) {
-			children[i].pi = i;
-			children[i].parent = this;
+		int i = 0;
+		for(auto& c : children) {
+			c.pi = i;
+			c.parent = this;
+			i++;
 		}
 	}
 	

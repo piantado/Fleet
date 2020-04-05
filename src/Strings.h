@@ -90,7 +90,7 @@ std::pair<std::string, std::string> divide(const std::string& s, const char deli
 	// divide this string into two pieces at the first occurance of delimiter
 	
 	auto k = s.find(delimiter);
-	assert(k != std::string::npos && "*** Cannot divide a string without delmiiter");
+	assert(k != std::string::npos && "*** Cannot divide a string without delimiter");
 	return std::make_pair(s.substr(0,k), s.substr(k+1));
 	
 }

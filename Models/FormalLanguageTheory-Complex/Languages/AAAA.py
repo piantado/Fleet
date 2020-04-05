@@ -13,7 +13,7 @@ class AAAA(FormalLanguage):
         self.probs   = [ 2**-len(x) for x in self.strings] # geometric distribution
 
     def terminals(self):
-        return list('man')
+        return list('a')
 
     def sample_string(self): # fix that this is not CF
         return weighted_sample(self.strings, probs=self.probs)

@@ -26,3 +26,23 @@ public:
 	}
 	
 }; 
+
+template<typename t_input, typename t_output>
+std::ostream& operator<<(std::ostream& o, const default_datum<t_input,t_output>& d) {
+	
+	if constexpr( std::is_pointer<t_input>::value and std::is_pointer<t_output>::value) {
+		o << "[DATA: PTR " << *d.input << " -> PTR " << *d.output << " w/ reliability " << d.reliability << "]";
+	}
+	if constexpr( std::is_pointer<t_input>::value and not std::is_pointer<t_output>::value) {
+		o << "[DATA: PTR " << *d.input << " -> " << d.output << " w/ reliability " << d.reliability << "]";
+	}
+	if constexpr( (not std::is_pointer<t_input>::value) and std::is_pointer<t_output>::value) {
+		o << "[DATA: " << d.input << " -> " << *d.output << " w/ reliability " << d.reliability << "]";
+	}
+	if constexpr( (not std::is_pointer<t_input>::value) and (not std::is_pointer<t_output>::value)) {
+		o << "[DATA: " << d.input << " -> " << d.output << " w/ reliability " << d.reliability << "]";
+	}
+
+	// TODO: Check if pointer and deref for printing
+	return o;
+}

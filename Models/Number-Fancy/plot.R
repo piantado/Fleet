@@ -1,23 +1,23 @@
 library(ggplot2)
 
-NDATA <- 600 # the amount of data we computed on 
+NDATA <- 2000 # the amount of data we computed on 
 
 d <- read.table("out/out.txt", header=F)
-names(d) <- c("KL1", "KL2", "recurse", "posterior", "prior", "likelihood",  "hypothesis")
+names(d) <- c("KL", "recurse", "posterior", "prior", "likelihood",  "hypothesis")
 d$likelihood.per <- d$likelihood / NDATA
 
-remap = list("U.U.U.U.U.U.U.U.U"="Non-Knower",
-             "1.U.U.U.U.U.U.U.U"="1-knower",
-             "1.2.U.U.U.U.U.U.U"="2-knower",
-             "1.2.3.U.U.U.U.U.U"="3-knower",
-             "1.2.3.4.U.U.U.U.U"="4-knower",
-             "1.2.3.4.5.6.7.8.9"="Full Counter")           
+remap = list("U.U.U.U.U.U.U.U.U.U."="Non-Knower",
+             "1.U.U.U.U.U.U.U.U.U."="1-knower",
+             "1.2.U.U.U.U.U.U.U.U."="2-knower",
+             "1.2.3.U.U.U.U.U.U.U."="3-knower",
+             "1.2.3.4.U.U.U.U.U.U."="4-knower",
+             "1.2.3.4.5.6.7.8.9.10."="Full Counter")           
 
 # Check if we include the ANS
 d$ANS <- grepl("ANS", as.character(d$hypothesis))
              
 # Define knower-levels from model output 
-d$KnowerLevel <- ifelse(d$KL2 %in% names(remap), remap[as.character(d$KL2)], "Other")
+d$KnowerLevel <- ifelse(d$KL %in% names(remap), remap[as.character(d$KL)], "Other")
 d$KnowerLevel <- unlist(d$KnowerLevel) # R is such horseshit
 
 print(table(d$KnowerLevel))

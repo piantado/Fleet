@@ -52,10 +52,10 @@ public:
 		
 		// put the strings into a vector
 		std::vector<T> v;
-		double Z = -infinity; // add up the mass
-		for(auto a : m){ 
-			v.push_back(a.first); 
-			Z = logplusexp(Z, a.second);
+		double z = Z();
+		
+		for(const auto& a : m) {
+			v.push_back(a.first);
 		}
 		
 		// sort them to be increasing
@@ -68,7 +68,7 @@ public:
 			out += "'"  + v[i] + "':" + std::to_string(m.at(v[i]));
 			if(i < upper_bound-1) { out += ", "; }
 		}
-		out += "} [Z=" + std::to_string(Z) + ", N=" + std::to_string(v.size()) + "]";
+		out += "} [Z=" + str(z) + ", N=" + std::to_string(v.size()) + "]";
 		
 		return out;
 	}
@@ -93,8 +93,7 @@ public:
 		/**
 		 * @brief Get all of the values in this distribution
 		 * @return 
-		 */
-		
+		 */		
 		return m;
 	}
 	
@@ -104,6 +103,29 @@ public:
 			addmass(a.first, a.second);
 		}
 	}
+	
+	double Z() const {
+		double Z = -infinity; // add up the mass
+		for(const auto& a : m){ 
+			Z = logplusexp(Z, a.second);
+		}
+		return Z;
+	}
+	
+	double lp(const T& x) {
+		/**
+		 * @brief Retun the log probability of x, including the normalizing term (NOTE: This makes this O(N) to compute theo normalizer. So this is bad to use if you have to iterate over the set -- you shoul call Z() separately then
+		 * @param N
+		 * @return 
+		 */
+		if(m.count(x)) {
+			return m[x]-Z();
+		}
+		else {
+			return -infinity;
+		}
+	}
+	
 	
 	std::vector<T> best(size_t N) const {
 		/**
@@ -140,10 +162,13 @@ public:
 	// inherit some interfaces
 	size_t count(T x) const { return m.count(x); }
 	size_t size() const     { return m.size(); }
-	double operator[](T x)  {
+	double operator[](const T x)  {
 		if(m.count(x)) return m[x];
 		else		   return -infinity;
 	}
+//	double& operator[](const T x)  {
+//		return m[x];
+//	}
 	double at(T x) const         { 
 		if(m.count(x)) return m.at(x);
 		else		   return -infinity;

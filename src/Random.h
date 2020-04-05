@@ -8,7 +8,7 @@
 // it's important to make these thread-local or else they block each other in parallel cores
 thread_local std::random_device rd;     // only used once to initialise (seed) engine
 thread_local std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
-thread_local std::uniform_real_distribution<double> uniform_dist(0,1.0);
+thread_local std::uniform_real_distribution<double> uniform_dist(0.0, 1.0);
 thread_local std::normal_distribution<float> normal(0.0, 1.0);
 	
 double uniform() {
@@ -85,7 +85,7 @@ T myrandom(T max) {
 	 * @return 
 	 */
 	
-	std::uniform_int_distribution<T> r(0,max-1);
+	std::uniform_int_distribution<T> r(0, max-1);
 	return r(rng);
 }
 

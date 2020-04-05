@@ -15,15 +15,15 @@
  * 		  Each of these components is called a "factor." 
  */
 
-template<typename HYP, typename T, typename t_input, typename t_output, typename t_datum=default_datum<t_input, t_output>>
+template<typename HYP, typename INNER, typename t_input, typename t_output, typename t_datum=default_datum<t_input, t_output>>
 class Lexicon : public MCMCable<HYP,t_datum>,
 				public Dispatchable<t_input,t_output>,
 				public Searchable<HYP,t_input,t_output>
 {
-		// Store a lexicon of type T elements
+		// Store a lexicon of type INNER elements
 	const static char FactorDelimiter = '|';
 public:
-	std::vector<T> factors;
+	std::vector<INNER> factors;
 	
 	Lexicon(size_t n)  : MCMCable<HYP,t_datum>()  { factors.resize(n); }
 	Lexicon()          : MCMCable<HYP,t_datum>()  { }
@@ -72,7 +72,7 @@ public:
 
 		HYP h;
 		for(auto f : split(s, Lexicon::FactorDelimiter)) {
-			T ih(&g, g.expand_from_names(f));
+			INNER ih(&g, g.expand_from_names(f));
 			h.factors.push_back(ih);
 		}
 		return h;
@@ -296,7 +296,7 @@ public:
 	 int neighbors() const override {
 		 
 		if(is_evaluable()) {
-			T tmp;  // make something null, and then count its neighbors
+			INNER tmp;  // make something null, and then count its neighbors
 			return tmp.neighbors();
 		}
 		else {
@@ -316,7 +316,7 @@ public:
 		 
 		 // try adding a factor
 		 if(is_evaluable()){ 
-			T tmp; // as above, assumes that this constructs will null
+			INNER tmp; // as above, assumes that this constructs will null
 			assert(k < tmp.neighbors());			
 			x.factors.push_back( tmp.make_neighbor(k) );	 
 		}
@@ -391,7 +391,10 @@ public:
 	/********************************************************
 	 * How to call 
 	 ********************************************************/
-	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err) = 0; // subclass must define what it means to call a lexicon
+	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err) {
+		// subclass must define what it means to call a lexicon
+		throw NotImplementedError();
+	}
 	 
 };
 

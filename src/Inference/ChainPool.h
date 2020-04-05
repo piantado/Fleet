@@ -10,6 +10,8 @@
  * @date 29/01/20
  * @file ChainPool.h
  * @brief A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel. 
+ * 		  NOTE: When you use a ChainPool, the results will not be reproducible with seed because timing determines when you
+ *        switch chains. 
  */
 template<typename HYP, typename callback_t>
 class ChainPool { 

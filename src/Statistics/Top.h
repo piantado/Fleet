@@ -114,7 +114,7 @@ namespace Fleet {
 				 * @param count
 				 */
 				
-				if(N == 0) return;
+				if(N == 0) return; // if we happen to not store anything
 				
 				// enable this when we use posterior as the variable, we don't add -inf values
 				if constexpr (HasPosterior<T>::value) {			
@@ -263,7 +263,7 @@ namespace Fleet {
 			}
 			
 			template<typename t_data>
-			TopN compute_posterior(t_data& data){
+			[[nodiscard]] TopN compute_posterior(t_data& data){
 				/**
 				 * @brief Returns a NEW TopN where each current hypothesis is evaluated on the data. NOTE: If a hypothesis has a new posterior of -inf or NaN, it won't be added. 
 				 * @param data

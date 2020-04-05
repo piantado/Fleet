@@ -7,6 +7,7 @@
 #include <string>
 #include <random>
 
+
 double recursion_penalty = -75.0;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -33,7 +34,7 @@ const double W = 0.3; // weber ratio for ans
 // TODO: UPDATE WITH data from Gunderson & Levine?
 std::discrete_distribution<> number_distribution({0, 7187, 1484, 593, 334, 297, 165, 151, 86, 105, 112}); // 0-indexed
 	
-std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600};//, 500, 600, 700, 800, 900, 1000};
+std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600, 1000, 1500, 2000};//, 500, 600, 700, 800, 900, 1000};
 //std::vector<int> data_amounts = {600};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,7 +89,7 @@ std::tuple PRIMITIVES = {
 	Primitive("ten",         +[]() -> word { return 10; }, 0.1),
 	
 	Primitive("next(%s)",    +[](word w) -> word { if(w >= 1) return w+1; else return U; }),
-	Primitive("prev(%s)",    +[](word w) -> word { if(w > 1) return w-1; else return U; }),
+	Primitive("prev(%s)",    +[](word w) -> word { if(w > 1)  return w-1; else return U; }),
 	
 	// extract from the context/utterance
 	Primitive("%s.set",      +[](utterance u) -> set    { return u.s; }, 25.0),
@@ -134,7 +135,9 @@ std::tuple PRIMITIVES = {
 		}
 		return out;
 	}),
-	Primitive("select(%s)",      +[](set x) -> set { return x.substr(0,1); }),
+	Primitive("select(%s)",      +[](set x) -> set { 
+		return x.substr(0,1); 
+	}),
 	Primitive("selectO(%s,%s)",  +[](set x, objectkind o) -> set {
 		if(x.find(o) != std::string::npos){
 			return std::string(1,o); // must exist there
@@ -150,8 +153,8 @@ std::tuple PRIMITIVES = {
 	Primitive("{o,o,o}",       +[]() -> wmset { return (wmset)3; }),
 	
 	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 1.0/3.0),
-	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }, 1.0/3.0),
-	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }, 1.0/3.0),
+	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); },  1.0/3.0),
+	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); },   1.0/3.0),
 	
 	// AND operations 
 	Primitive("ANSeq(%s,%s)",     +[](set a, set b)       -> double { return ANSzero(a.length(), b.length()); }, 1.0/3.0),
@@ -210,43 +213,42 @@ public:
 		return prior;
 	}
 	
+	DiscreteDistribution<word> call(const utterance& input) {
+		return Super::call(input, U, this, 128, 128);
+	}
+	
 	double compute_single_likelihood(const t_datum& d) override {
-		auto v = call(d.input, U, this, 64, 64); // something of the type
-		
-		double pU      = (v.count(U) ? exp(v[U]) : 0.0); // non-log probs
-		double pTarget = (v.count(d.output) ? exp(v[d.output]) : 0.0);
+		auto v = call(d.input); // something of the type
 		
 		// average likelihood when sampling from this posterior
-		return log( pU*(1.0/10.0) + (1.0-d.reliability)/10.0 + d.reliability*pTarget );
+		return log( exp(v.lp(U)) * (1.0/10.0) + (1.0-d.reliability)/10.0 + d.reliability * exp(v.lp(d.output)) );
 	}	
 
 	
 	virtual void print(std::string prefix="") override {
-		std::string s1 = "";
-		for (int j = 1; j <= 9; j++) {
-			set theset = "" + std::string(j,'Z');
-			auto out = this->call(utterance{theset,'Z'}, U);
-			word v = out.argmax();
-			
-			if(v <= 0) s1 += "U"; // must be undefined
-			else       s1 += std::to_string((int) v);
-			if(j < 9)  s1 += ".";
+		
+		// Hmm let's run over all the data and just get the modal response
+		// for each data output from the training data set 
+		std::map<word,DiscreteDistribution<word>> p; // probability of W given target
+		extern std::vector<t_data> alldata;
+		for(auto& di : alldata[alldata.size()-1]) {
+			const word target = di.output; 
+			auto v = call(di.input); // something of the type
+
+			for(const auto& o : v.values()) {
+				p[target].addmass(o.first, o.second);
+				
+			}
 		}
 
-		std::string s2 = "";
-		for (int j = 1; j <= 9; j++) {
-			set theset = "ABBCCCDDDDEEEEE" + std::string(j,'Z');        
-			auto out = this->call(utterance{theset,'Z'}, U);
-			word v = out.argmax();
-			
-			if(v <= 0) s2 += "U"; // must be undefined
-			else       s2 += std::to_string( (int) v);
-			if(j < 9)  s2 += ".";
+		std::string outputstring;
+		for(const auto& x : p) {
+			const word m = x.second.argmax();
+			outputstring += (m == U ? "U" : str(m)) + ".";
 		}
 		
-
-		prefix += s1+"\t"+s2+"\t"+std::to_string(this->recursion_count())+"\t";
-			
+		prefix += outputstring+"\t"+std::to_string(this->recursion_count())+"\t";
+	
 		Super::print(prefix);
 	}
 };
@@ -254,8 +256,9 @@ public:
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Declare global set
 
-Fleet::Statistics::TopN<MyHypothesis> all;
-	
+Fleet::Statistics::TopN<MyHypothesis> all; // used by MCMC and MCTS locally
+
+std::vector<MyHypothesis::t_data> alldata;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // If we want to do MCTS
@@ -278,8 +281,6 @@ class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 			add_sample(h.posterior);
 		};
 		
-		
-		
 		auto h = h0.copy_and_complete(); // fill in any structural gaps
 		
 		MCMCChain chain(h, data, cb);
@@ -289,7 +290,7 @@ class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-int main(int argc, char** argv){ 
+int main(int argc, char** argv) { 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	auto app = Fleet::DefaultArguments("Fancy number inference model");
@@ -303,7 +304,6 @@ int main(int argc, char** argv){
 	
 	// Set up the data -- we'll do this so we can run a parallel
 	// chain across all of it at once
-	std::vector<t_data> alldata;
 	std::vector<Fleet::Statistics::TopN<MyHypothesis>>   alltops;
 	for(auto ndata : data_amounts) {
 		t_data mydata;
@@ -318,7 +318,7 @@ int main(int argc, char** argv){
 				int nx = number_distribution(rng);  // sample how many things we'll do
 				objectkind tx;
 				do { 
-					tx = OBJECTS[myrandom<size_t>(0,OBJECTS.size()+1)];
+					tx = OBJECTS[myrandom<size_t>(0,OBJECTS.size())];
 				} while(s.find(std::string(1,tx)) != std::string::npos); // keep trying until we find an unused one
 				
 				s.append(std::string(nx,tx));
@@ -332,6 +332,7 @@ int main(int argc, char** argv){
 			}
 			std::random_shuffle( s.begin(), s.end() ); // randomize the order so select is not a friendly strategy
 			
+//			CERR w TAB t TAB s ENDL;
 			// make the data point
 			mydata.push_back(MyHypothesis::t_datum({utterance{s,t}, w, alpha}));
 		}
@@ -340,11 +341,6 @@ int main(int argc, char** argv){
 		alltops.push_back(Fleet::Statistics::TopN<MyHypothesis>(ntop));
 	}
 	t_data biggestData = *alldata.rbegin();
-	
-	
-	
-	
-	
 	
 
 	// MCTS  - here just on the last data
@@ -373,12 +369,16 @@ int main(int argc, char** argv){
 			all << h;
 		}
 	}
-	
+		
 	COUT "# Computing posterior on all final values |D|=" << biggestData.size()  ENDL;
 
 	// print out at the end
 	all.compute_posterior(biggestData).print();
-
+	
+	COUT "#Parseables:" ENDL;
+	for(auto& h : all.values() ){
+		COUT "#PARSEABLE " << h.parseable() ENDL;
+	}
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;

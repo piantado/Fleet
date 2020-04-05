@@ -52,3 +52,5 @@ from WeW import WeW
 from An2 import An2
 from ChineseNumeral import ChineseNumeral
 from Unequal import Unequal
+from Milne import Milne
+

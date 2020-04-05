@@ -82,7 +82,7 @@
 
 #include <sys/resource.h> // just for setting priority defaulty 
 
-const std::string FLEET_VERSION = "0.0.9";
+const std::string FLEET_VERSION = "0.0.91";
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Tracking Fleet statistics 
@@ -109,11 +109,41 @@ namespace FleetStatistics {
 }
 
 namespace Fleet { 
-	size_t GRAMMAR_MAX_DEPTH = 64;
-	const size_t MAX_CHILD_SIZE = 8; // rules can have at most this many children  -- for now (we can change if needed)
+
+	static size_t GRAMMAR_MAX_DEPTH = 64;
+	static const size_t MAX_CHILD_SIZE = 8; // rules can have at most this many children  -- for now (we can change if needed)
+	static int Pdenom = 24; // the denominator for probabilities in op_P --  we're going to enumeraet fractions in 24ths -- just so we can get thirds, quarters, fourths	
+
 	
-	int Pdenom = 24; // the denominator for probabilities in op_P --  we're going to enumeraet fractions in 24ths -- just so we can get thirds, quarters, fourths	
 }
+
+#include <stdexcept>
+
+class NotImplementedError : public std::logic_error {
+public:
+
+	NotImplementedError() : std::logic_error("*** Function not yet implemented.") { }
+
+    virtual char const* what() const noexcept override { 
+		return "*** Function not yet implemented."; 
+	}
+};
+
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// We defaultly define a fleet object which stores all our info, prints our options
+// and our runtime on construction and destruction respectively
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//class Fleet {
+//public:
+//
+//
+//	void Fleet() {
+//		
+//	}
+//	
+//};
+//
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We defaultly include all of the major requirements for Fleet
@@ -193,7 +223,9 @@ void Fleet_initialize() {
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
 	COUT "# Running Fleet on " << hostname << " with PID=" << getpid() << " by user " << username << " at " <<  datestring() ENDL;
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
+	COUT "# Fleet version: " << FLEET_VERSION ENDL;
 	COUT "# Executable checksum: " << system_exec(tmp);
+	COUT "# Run options: " ENDL;
 	COUT "# \t --input=" << input_path ENDL;
 	COUT "# \t --threads=" << nthreads ENDL;
 	COUT "# \t --chains=" << nchains ENDL;
@@ -204,3 +236,24 @@ void Fleet_initialize() {
 	COUT "# \t --seed=" << random_seed ENDL;
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;	
 }
+
+//void Fleet_completed() {
+//	
+//	COUT "# Elapsed time:"        TAB elapsed_seconds() << " seconds " ENDL;
+//	COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds() ENDL;
+//
+//	if(FleetStatistics::global_sample_count > 0) {
+//		COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
+//		COUT "# Samples per second:"  TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
+//	}
+//	
+//	if(FleetStatistics::) {
+//	
+//		
+//		// HMM CANT DO THIS BC THERE MAY BE MORE THAN ONE TREE....
+//	COUT "# MCTS tree size:" TAB m.size() ENDL;	
+//	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
+//	COUT "# Max score: " TAB maxscore ENDL;
+//	COUT "# MCTS steps per second:" TAB m.statistics.N/elapsed_seconds() ENDL;	
+//	}
+//}

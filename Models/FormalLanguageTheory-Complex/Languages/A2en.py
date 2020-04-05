@@ -13,9 +13,7 @@ class A2en(FormalLanguage):
     
     def sample_string(self):
         
-        n=1
-        while random() < (0.1): # use a different rate here so we don't get crazy things
-            n += 1
+        n = numpy.random.geometric(0.9)
             
         return 'a'*(2**n)
 

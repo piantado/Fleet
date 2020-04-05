@@ -37,15 +37,14 @@ std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "5
 //std::vector<S> data_amounts={"1000"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
-const double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -25 to catch some less frequent things that happen by chance
 
 
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 unsigned long MAX_STEPS_PER_FACTOR   = 2048; //4096;  
 unsigned long MAX_OUTPUTS_PER_FACTOR = 512; //512; - make it bigger than
+unsigned long PRINT_STRINGS = 128; // print at most this many strings for each hypothesis
+double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -25 to catch some less frequent things that happen by chance
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-const unsigned long PRINT_STRINGS = 128; // print at most this many strings for each hypothesis
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// These define all of the types that are used in the grammar.
@@ -391,12 +390,18 @@ int main(int argc, char** argv){
 
 		// set up to print using a larger set
 		MAX_STEPS_PER_FACTOR   = 32000; //4096; 
-		MAX_OUTPUTS_PER_FACTOR = 8000; //512; - make it bigger than
+		MAX_OUTPUTS_PER_FACTOR = 12000; //512; - make it bigger than
+		PRINT_STRINGS = 1024;
 		max_length = 2048; 
+		MIN_LP = -100;
+		
 		all.print(data_amounts[di]);
+		
 		max_length = 256;
 		MAX_STEPS_PER_FACTOR   = 2048; 
 		MAX_OUTPUTS_PER_FACTOR = 512; 
+		PRINT_STRINGS = 128;
+		MIN_LP = -25;
 
 		if(di+1 < datas.size()) {
 			all = all.compute_posterior(datas[di+1]); // update for next time

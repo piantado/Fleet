@@ -51,7 +51,9 @@ public:
 	 * @brief Compute the likelihood of a single data point
 	 * @param datum
 	 */	
-	virtual double compute_single_likelihood(const t_datum& datum) = 0;
+	virtual double compute_single_likelihood(const t_datum& datum)  {
+		throw NotImplementedError();
+	}
 	
 	/**
 	 * @brief Compute the likelihood of a collection of data, by calling compute_single_likelihood on each.

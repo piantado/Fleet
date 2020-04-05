@@ -33,7 +33,7 @@ public:
 		value = grammar->expand_from_names(s);
 	}
 	
-	// Stuff to create hypotheses:
+	
 	[[nodiscard]] virtual std::pair<HYP,double> propose() const override {
 		/**
 		 * @brief Default proposal is rational-rules style regeneration. 
@@ -42,6 +42,8 @@ public:
 	
 		// simplest way of doing proposals
 		auto x = Proposals::regenerate(grammar, value);	
+		
+		// return a pair of hypothesis and forward-backward probabilities
 		return std::make_pair(HYP(this->grammar, std::move(x.first)), x.second); // return HYP and fb
 	}	
 
