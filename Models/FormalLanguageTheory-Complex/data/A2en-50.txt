@@ -1,3 +1,0 @@
-aa	42
-aaaa	7
-aaaaaaaa	1

@@ -1,4 +1,0 @@
-aa	448
-aaaa	42
-aaaaaaaa	8
-aaaaaaaaaaaaaaaa	2

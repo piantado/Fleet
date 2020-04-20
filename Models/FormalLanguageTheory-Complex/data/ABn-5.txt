@@ -1,3 +1,2 @@
-abab	2
-ab	2
-abababab	1
+ab	4
+ababab	1

@@ -1,5 +1,0 @@
-aa	1
-bbbbabaababbbb	1
-baabaabaab	1
-abababbabaaaababbababa	1
-abaabaababbaabbabaabaaba	1

@@ -1,2 +1,2 @@
-aaaaaabbbbbbbaabb	1
-baabbab	1
+abaaaaabbbbb	1
+aaaaabbbbbbbab	1

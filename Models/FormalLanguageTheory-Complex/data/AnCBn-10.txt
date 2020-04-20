@@ -1,4 +1,0 @@
-acb	4
-aacbb	3
-aaacbbb	2
-aaaaaacbbbbbb	1

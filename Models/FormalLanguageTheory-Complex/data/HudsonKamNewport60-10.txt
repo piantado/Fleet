@@ -1,6 +1,0 @@
-!vn	3
-Vndnd	2
-!vnd	2
-vnd	1
-!Vndnd	1
-Vnn	1

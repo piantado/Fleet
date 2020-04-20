@@ -1,6 +1,0 @@
-vnd	4
-vn	2
-!Vndnd	1
-Vndnd	1
-!vnd	1
-!Vndn	1

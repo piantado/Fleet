@@ -1,9 +1,0 @@
-abb	17
-aabbbb	9
-aaabbbbbb	7
-aaaabbbbbbbb	6
-aaaaabbbbbbbbbb	4
-aaaaaabbbbbbbbbbbb	3
-aaaaaaaabbbbbbbbbbbbbbbb	2
-aaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb	1
-aaaaaaaaaabbbbbbbbbbbbbbbbbbbb	1

@@ -1,3 +1,0 @@
-aabbccaa	3
-aaaaabbbbbbbbbbbbbbbbccccccccccccccccaaaaa	1
-abbbbcccca	1

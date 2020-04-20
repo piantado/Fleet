@@ -184,3 +184,17 @@ std::ostream& operator<<(std::ostream& o, Bayesable<_t_datum,_t_data>& x) {
 	o << x.string();
 	return o;
 }
+
+
+// Interface for std::fmt
+//#include "fmt/format.h"
+//
+//template<typename _t_datum, typename _t_data>
+//struct fmt::formatter<Bayesable<_t_datum,_t_data>&> {
+//  constexpr auto parse(format_parse_context& ctx) { return ctx.begin(); }
+//
+//  template <typename FormatContext>
+//  auto format(const Bayesable<_t_datum,_t_data>& h, FormatContext& ctx) {
+//    return format_to(ctx.out(), "{}", h.string());
+//  }
+//};

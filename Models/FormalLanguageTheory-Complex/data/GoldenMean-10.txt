@@ -1,7 +1,0 @@
-a	3
-abbb	2
-abab	1
-babbba	1
-b	1
-ababb	1
-abbbab	1

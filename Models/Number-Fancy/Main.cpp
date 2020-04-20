@@ -53,10 +53,10 @@ std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 
 double ANSzero(const double n1, const double n2) {
 	// probability mass assigned to exactly 0 under weber scaling
 	// TODO: May want to make this be between -0.5-0.5? 
-	return exp(normal_lpdf(0, n1-n2, W*sqrt(n1*n1+n2*n2)));
+	return exp(normal_lpdf(0.0, n1-n2, W*sqrt(n1*n1+n2*n2+1))); // NOTE: The +1 here because we need to be able to compare zeros!
 }
 double normcdf(const double x) { 
-	return 0.5 * (1 + erf(x * M_SQRT1_2));
+	return 0.5 * (1.0 + erf(x * M_SQRT1_2));
 }
 
 double ANSdiff(const double n1, const double n2) {  // SD of the weber value
@@ -247,7 +247,7 @@ public:
 			outputstring += (m == U ? "U" : str(m)) + ".";
 		}
 		
-		prefix += outputstring+"\t"+std::to_string(this->recursion_count())+"\t";
+		prefix += QQ(outputstring)+"\t"+std::to_string(this->recursion_count())+"\t"+QQ(parseable())+"\t";
 	
 		Super::print(prefix);
 	}
@@ -289,6 +289,51 @@ class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 	
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
+// Make data 
+////////////////////////////////////////////////////////////////////////////////////////////
+MyHypothesis::t_datum sample_datum() { 
+	
+	set s = ""; word w = U; objectkind t{};
+	int ntypes=0;
+	int NT = myrandom(1,4); // how many times do I try to add types?
+	
+	for(int i=0;i<NT;i++) {
+		int nx = number_distribution(rng);  // sample how many things we'll do
+		objectkind tx;
+		do { 
+			tx = OBJECTS[myrandom<size_t>(0,OBJECTS.size())];
+		} while(s.find(std::string(1,tx)) != std::string::npos); // keep trying until we find an unused one
+		
+		s.append(std::string(nx,tx));
+		
+		if(i==0) { // first time captures the intended type
+			if(uniform() < 1.0-alpha) w = myrandom(1,11);  // are we noise?
+			else       				  w = nx; // not noise
+			t = tx; // the type is never considered to be noise here
+		}				
+		ntypes++;     
+	}
+	std::random_shuffle( s.begin(), s.end() ); // randomize the order so select is not a friendly strategy
+	
+	return {utterance{s,t}, w, alpha};
+}
+
+MyHypothesis::t_datum sample_adjusted_datum(std::function<double(MyHypothesis::t_datum&)>& f) {
+	// use some rejection sampling to adjust our samplign distribution via f
+	// here, f gives the probability of accepting each word so that we can
+	// upweight certain kinds of data. 
+	do {
+		auto d = sample_datum();
+		if(uniform() < f(d)) {
+			return d;
+		}
+	} while(true);
+	
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// Main
+////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char** argv) { 
 	
@@ -300,7 +345,8 @@ int main(int argc, char** argv) {
 	
 	Grammar grammar(PRIMITIVES);
 	
-	typedef MyHypothesis::t_data t_data;
+	typedef MyHypothesis::t_data  t_data;
+	typedef MyHypothesis::t_datum t_datum;
 	
 	// Set up the data -- we'll do this so we can run a parallel
 	// chain across all of it at once
@@ -310,31 +356,8 @@ int main(int argc, char** argv) {
 		
 		// make some data here
 		for(int di=0;di<ndata;di++) {
-			set s = ""; word w = U; objectkind t{};
-			
-			int ntypes=0;
-			int NT = myrandom(1,4); // how many times do I try to add types?
-			for(int i=0;i<NT;i++) {
-				int nx = number_distribution(rng);  // sample how many things we'll do
-				objectkind tx;
-				do { 
-					tx = OBJECTS[myrandom<size_t>(0,OBJECTS.size())];
-				} while(s.find(std::string(1,tx)) != std::string::npos); // keep trying until we find an unused one
-				
-				s.append(std::string(nx,tx));
-				
-				if(i==0) { // first time captures the intended type
-					if(uniform() < 1.0-alpha) w = myrandom(1,11);  // are we noise?
-					else       				  w = nx; // not noise
-					t = tx; // the type is never considered to be noise here
-				}				
-				ntypes++;     
-			}
-			std::random_shuffle( s.begin(), s.end() ); // randomize the order so select is not a friendly strategy
-			
-//			CERR w TAB t TAB s ENDL;
 			// make the data point
-			mydata.push_back(MyHypothesis::t_datum({utterance{s,t}, w, alpha}));
+			mydata.push_back(sample_datum());
 		}
 
 		alldata.push_back(mydata);
@@ -373,12 +396,60 @@ int main(int argc, char** argv) {
 	COUT "# Computing posterior on all final values |D|=" << biggestData.size()  ENDL;
 
 	// print out at the end
-	all.compute_posterior(biggestData).print();
+	all.compute_posterior(biggestData).print("normal\t");
 	
-	COUT "#Parseables:" ENDL;
-	for(auto& h : all.values() ){
-		COUT "#PARSEABLE " << h.parseable() ENDL;
-	}
+//	COUT "#Parseables:" ENDL;
+//	for(auto& h : all.values() ){
+//		COUT "#PARSEABLE " << h.parseable() ENDL;
+//	}
+	
+	/// Make some datasets
+	
+	
+	
+//	std::vector<size_t> cnt(20,0);
+	
+	COUT "# Computing posterior for extra data <= 4" ENDL;
+	{
+		std::function<double(t_datum&)> f = [](t_datum d) {
+			return (d.output <= (word)4 ? 1.0 : 0.1);			
+		};
+		
+		// make some data
+		t_data newdata;
+		for(size_t i=0;i<biggestData.size();i++) {
+			auto di = sample_adjusted_datum(f);
+			//cnt[di.output]++;
+			newdata.push_back(di);
+		}
+		
+		all.compute_posterior(newdata).print("lt4\t");
+	}	
+	
+//	for(int i=0;i<20;i++){ COUT cnt[i] << "\t"; }
+//	COUT "" ENDL;
+//	for(int i=0;i<20;i++){ cnt[i] = 0; }
+		
+	COUT "# Computing posterior for extra data > 4" ENDL;
+	{
+		std::function<double(t_datum&)> f = [](t_datum d) {
+			return (d.output > (word)4 ? 1.0 : 0.1);			
+		};
+		
+		// make some data
+		t_data newdata;
+		for(size_t i=0;i<biggestData.size();i++) {
+			auto di = sample_adjusted_datum(f);
+			//cnt[di.output]++;
+			newdata.push_back(di);
+		}
+		
+		all.compute_posterior(newdata).print("gt4\t");
+	}	
+	
+//	for(int i=0;i<20;i++){ COUT cnt[i] << "\t"; }
+//	COUT "" ENDL;
+	
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;

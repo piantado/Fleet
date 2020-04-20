@@ -1,9 +1,0 @@
-b	2
-bbaa	1
-bbbaaaa	1
-bb	1
-aabb	1
-aabbbbbbbbaabaab	1
-aabaa	1
-bbaabaa	1
-baa	1

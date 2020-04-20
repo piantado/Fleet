@@ -1,5 +1,0 @@
-PDTtpr	1
-tprtprPDTglb	1
-BdkglbPDT	1
-BdkBdk	1
-tpr	1

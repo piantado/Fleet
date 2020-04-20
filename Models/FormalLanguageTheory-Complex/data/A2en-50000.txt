@@ -1,7 +1,0 @@
-aa	45124
-aaaa	4370
-aaaaaaaa	453
-aaaaaaaaaaaaaaaa	44
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	7
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1

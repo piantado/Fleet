@@ -1,8 +1,0 @@
-abcd	3
-aaabbbcccddd	1
-aaabbcccdd	1
-aabccd	1
-aabbbbbbbbccdddddddd	1
-aabbbbbccddddd	1
-aaaaaabbccccccdd	1
-aaabbbbcccdddd	1

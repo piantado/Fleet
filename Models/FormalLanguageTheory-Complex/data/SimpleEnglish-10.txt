@@ -1,9 +1,8 @@
-danv	2
-nvtdanvn	1
-nvtdanvdn	1
+danvdn	2
+danvdan	2
+danv	1
+daaanvtdnvtdanvdan	1
+daanvdn	1
 dnv	1
+nvn	1
 nvtnv	1
-dnvtnvdn	1
-danvtdnvdn	1
-nv	1
-dnvdan	1

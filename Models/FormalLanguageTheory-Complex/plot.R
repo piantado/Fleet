@@ -33,6 +33,16 @@ label <- list("An"=paste(TeX("A^n")),
               "A2en"=paste(TeX("A^{2^n}")),
               "ABnen"=paste(TeX("((AB)^n)^n")),
               "AnCBn"=paste(TeX("A^n C B^n")),
+              "An2"=paste(TeX("a^{n^2}")),
+              "AnBmAnBm"=paste(TeX("a^n b^m a^n b^m")),
+              "AnBmA2n"=paste(TeX("a^n b^m a^{2n}")),
+              "AnBmAnBmCCC"=paste(TeX("a^n b^m a^n b^m ccc")),
+              "PullumR"=paste(TeX("a (c^x d c^y d c^z)^w b")),
+              "ApBAp"=paste(TeX("a^+ b a^+")),
+              "AsBAsp"=paste(TeX("a^* (b a^*)^+")),
+              "ApBApp"=paste(TeX("a^* (b a^+)^+")),
+              "CountAEven"=paste(TeX("\lbrace w \in \lbrace a,b \rbrace^+ : count(a,w) \text{ is even} \brace")),              
+              "WeW"=paste(TeX("\lbrace w^{|w|} : w \in \lbrace a,b \rbrace^* \rbrace")),
               "MorganMeierNewport"="MMN",
               "ReederNewportAslin"="RNA",
               "HudsonKamNewport60"="HKN60"
@@ -40,14 +50,14 @@ label <- list("An"=paste(TeX("A^n")),
 D <- NULL
 # for(language in c("Gomez2", "Gomez6", "Gomez12" )) {
 # for(language in c("HudsonKamNewport45", "HudsonKamNewport60", "HudsonKamNewport75", "HudsonKamNewport100" )) {
-# for(language in c("An", "ABn", "AnBn", "AB", "ABAnBn", "AnB2n", "AnBm", "AnBmCn", "XXR", "AAA", "AAAA", "Count", "AnBnCn", "AnBnC2n", "Dyck", "XX", "XXX",  "XXI", "XY", "AnBmCmAn", "AnBmCnDm", "GoldenMean", "Even", "AnBnCnDn", "A2en", "ABnen", "AnCBn", "AnABn", "AnABAn", "ABnABAn", "Bach2", "Bach3", "AnBm", "AnBmCn", "AnBmCm", "AnBmCnpm", "AnBmCnm", "AnBk", "ABaaaAB", "aABb", "Elman", "Braine66", "PullumR", "ApBAp", "AsBAsp", "ApBApp", "CountA2", "CountAEven", "Fibo", "AnBnCnDnEn", "AnBmAnBmCCC", "WeW", "An2", "AnBmAnBm", "ChineseNumeral", "AnBmA2n", "Unequal")) {
+for(language in c("An", "ABn", "AnBn", "AB", "ABAnBn", "AnB2n", "AnBm", "AnBmCn", "XXR", "AAA", "AAAA", "Count", "AnBnCn", "AnBnC2n", "Dyck", "XX", "XXX",  "XXI", "XY", "AnBmCmAn", "AnBmCnDm", "GoldenMean", "Even", "AnBnCnDn", "A2en", "ABnen", "AnCBn", "AnABn", "AnABAn", "ABnABAn", "Bach2", "Bach3", "AnBm", "AnBmCn", "AnBmCm", "AnBmCnpm", "AnBmCnm", "AnBk", "ABaaaAB", "aABb", "Elman", "Braine66", "PullumR", "ApBAp", "AsBAsp", "ApBApp", "CountA2", "CountAEven", "Fibo", "AnBnCnDnEn", "AnBmAnBmCCC", "WeW", "An2", "AnBmAnBm", "ChineseNumeral", "AnBmA2n", "Unequal", "Milne")) {
 # for(language in c("Reber", "Elman", "Saffran",  "ABA", "ABB", "NewportAslin", "MorganNewport", "MorganMeierNewport", "Man", "BerwickPilato", "ReederNewportAslin", "HudsonKamNewport60", "Gomez2", "Gomez6", "Gomez12" )) {
-for(language in c("SimpleEnglish", "MediumEnglish", "FancyEnglish" )) {
-                    
+# for(language in c("SimpleEnglish", "MediumEnglish", "FancyEnglish" )) {
+# for(language in c("MediumEnglish")) {
     q <- NULL
     for(nf in c(1,2,3,4,5,6,7,8)) {
 
-            f <- paste("./out/", language, "-", nf, ".out", sep="")
+            f <- paste("./out-2020Feb23/", language, "-", nf, ".out", sep="")
 #               f <- paste("/home/piantado/Desktop/Science/out/", language, "-", nf, ".out", sep="")
              
             r <- try(read.table(f, quote="\""))
@@ -68,9 +78,9 @@ for(language in c("SimpleEnglish", "MediumEnglish", "FancyEnglish" )) {
             Q$z <- logsumexp(Q$posterior)
             
             l <- ifelse(language %in% names(label), label[[language]], language)
-            D <- rbind(D, data.frame(language=l, ndata=Q$ndata[1], file=f, measure="precision", value=sum( exp(Q$posterior-Q$z) * Q$precision)))
-            D <- rbind(D, data.frame(language=l, ndata=Q$ndata[1], file=f, measure="recall",    value=sum( exp(Q$posterior-Q$z) * Q$recall)))
-            D <- rbind(D, data.frame(language=l, ndata=Q$ndata[1], file=f, measure="F",         value=sum( exp(Q$posterior-Q$z) * 2.0/(1.0/Q$recall + 1.0/Q$precision))))
+            D <- rbind(D, data.frame(language=l, ndata=Q$ndata[1], file=f, Measure="precision", value=sum( exp(Q$posterior-Q$z) * Q$precision)))
+            D <- rbind(D, data.frame(language=l, ndata=Q$ndata[1], file=f, Measure="recall",    value=sum( exp(Q$posterior-Q$z) * Q$recall)))
+            D <- rbind(D, data.frame(language=l, ndata=Q$ndata[1], file=f, Measure="F",         value=sum( exp(Q$posterior-Q$z) * 2.0/(1.0/Q$recall + 1.0/Q$precision))))
         }
     }
 }
@@ -78,16 +88,31 @@ for(language in c("SimpleEnglish", "MediumEnglish", "FancyEnglish" )) {
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
 
 library(ggplot2)
+require(scales)
 
-plt <- ggplot(D, aes(x=ndata, y=value, group=measure, color=measure)) + 
-	  geom_line(position=position_dodge(.1)) +  # a little dodging here to show overlap
+plt <- ggplot(D, aes(x=ndata, y=value, group=Measure, color=Measure)) + 
+	  geom_line(size=0.70, position=position_dodge(.1)) +  # a little dodging here to show overlap
 	  theme_bw() +
 	  xlab("Amount of data") + ylab("") +
- 	  scale_x_log10(breaks=c(1,100,10000))  +
+ 	  scale_x_log10(breaks=c(1,10,100,1000,10000,100000), labels=c("1", "10", "100", expression(10^3), expression(10^4), expression(10^5)))  +
+      #scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
+      #        labels = trans_format("log10", math_format(10^.x))) +
 	  ylim(-1e-9,1.01) +
-	  facet_wrap( ~ language, labeller=label_parsed) + 
+ 	  facet_wrap( ~ language, labeller=label_parsed) + 
 	  theme(strip.background = element_rect(fill="white"))
 plt
+ggsave("SimpleLanguages.pdf", plt, width=12, height=9)
+
+## For plotting English:
+# plt <- ggplot(D, aes(x=ndata, y=value, group=Measure, color=Measure)) + 
+# 	  geom_line(size=1.2, position=position_dodge(.1)) +  # a little dodging here to show overlap
+# 	  theme_bw() +
+# 	  xlab("Amount of data") + ylab("") +
+#  	  scale_x_log10(breaks=c(1,100,10000))  +
+# 	  ylim(-1e-9,1.01) +
+# 	  theme(strip.background = element_rect(fill="white"))
+# plt
+# ggsave("English.pdf", plt)
 
 # ggsave("SimpleLanguages.pdf", plt)
 # ggsave("ArtificialLanguages.pdf", plt)

@@ -2,9 +2,12 @@ library(ggplot2)
 
 NDATA <- 2000 # the amount of data we computed on 
 
-d <- read.table("out/out.txt", header=F)
-names(d) <- c("KL", "recurse", "posterior", "prior", "likelihood",  "hypothesis")
-d$likelihood.per <- d$likelihood / NDATA
+logsumexp <- function(x) { m=max(x); log(sum(exp(x-m)))+m }
+
+alld <- read.table("out/out.txt", header=F)
+names(alld) <- c("type", "KL", "recurse", "parseable", "posterior", "prior", "likelihood",  "hypothesis")
+
+alld$likelihood.per <- alld$likelihood / NDATA
 
 remap = list("U.U.U.U.U.U.U.U.U.U."="Non-Knower",
              "1.U.U.U.U.U.U.U.U.U."="1-knower",
@@ -14,11 +17,14 @@ remap = list("U.U.U.U.U.U.U.U.U.U."="Non-Knower",
              "1.2.3.4.5.6.7.8.9.10."="Full Counter")           
 
 # Check if we include the ANS
-d$ANS <- grepl("ANS", as.character(d$hypothesis))
+alld$ANS <- grepl("ANS", as.character(alld$hypothesis))
              
 # Define knower-levels from model output 
-d$KnowerLevel <- ifelse(d$KL %in% names(remap), remap[as.character(d$KL)], "Other")
-d$KnowerLevel <- unlist(d$KnowerLevel) # R is such horseshit
+alld$KnowerLevel <- ifelse(alld$KL %in% names(remap), remap[as.character(alld$KL)], "Other")
+alld$KnowerLevel <- unlist(alld$KnowerLevel) # R is such horseshit
+
+
+d <- subset(alld, type=="normal")
 
 print(table(d$KnowerLevel))
 
@@ -61,18 +67,24 @@ dev.off()
 ###################################################################################################
 ## Plot learning curves
 
-logsumexp <- function(x) { m=max(x); log(sum(exp(x-m)))+m }
 
-D <- NULL
-for(amt in seq(1,600,5)) {
+make_learning_curves <- function(q) {
+    D <- NULL
+    for(amt in seq(1,600,5)) {
 
-    d$newpost <- d$prior + amt*d$likelihood.per # compute a new approximate posterior by scaling the ll-per-datapoint 
-    d$newpost <- exp(d$newpost - logsumexp(d$newpost)) #normalize and convert to probability
-    a <- aggregate(newpost ~ KnowerLevel + ANS, d, sum)
-    a$data.amount=amt
-    
-    D <- rbind(D, a)    
+        q$newpost <- q$prior + amt*q$likelihood.per # compute a new approximate posterior by scaling the ll-per-datapoint 
+        q$newpost <- exp(q$newpost - logsumexp(q$newpost)) #normalize and convert to probability
+        a <- aggregate(newpost ~ KnowerLevel + ANS, q, sum)
+        a$data.amount=amt
+        
+        D <- rbind(D, a)    
+    }
+    return(D)
 }
+
+
+D <- make_learning_curves(subset(alld, type=="normal"))
+
 
 plt <- ggplot(D, aes(x=data.amount,y=newpost,color=KnowerLevel,group=KnowerLevel)) + 
     geom_line(width=1.5, data=subset(D,!ANS)) + 
@@ -86,4 +98,24 @@ ggsave("curves.pdf")
 # plt
 # dev.off()
 
+###################################################################################################
+## Plot with variable kinds of data
+
+Dgt <- make_learning_curves(subset(alld, type=="gt4"))
+Dlt <- make_learning_curves(subset(alld, type=="lt4"))
+
+
+
+plt <- ggplot(Dlt, aes(x=data.amount,y=newpost,color=KnowerLevel,group=KnowerLevel)) + 
+    geom_line(width=1.5, data=subset(D,!ANS)) + 
+    geom_line(data=subset(D,ANS), linetype="dashed", width=1.5) +
+    theme_bw() + theme(legend.position=c(.85,.5)) +
+    xlab("Amount of data") + ylab("Posterior probability of knower-levels")
+    
+
+plt <- ggplot(Dgt, aes(x=data.amount,y=newpost,color=KnowerLevel,group=KnowerLevel)) + 
+    geom_line(width=1.5, data=subset(D,!ANS)) + 
+    geom_line(data=subset(D,ANS), linetype="dashed", width=1.5) +
+    theme_bw() + theme(legend.position=c(.85,.5)) +
+    xlab("Amount of data") + ylab("Posterior probability of knower-levels")
 

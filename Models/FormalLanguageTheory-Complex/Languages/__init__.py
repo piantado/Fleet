@@ -37,8 +37,7 @@ from AnBnCnDn import AnBnCnDn
 from BerwickPilato import BerwickPilato
 from Man import Man
 from SimpleEnglish import SimpleEnglish
-from MediumEnglish import MediumEnglish
-from FancyEnglish import FancyEnglish
+from English import English
 from MorganNewport import *
 from NewportAslin import NewportAslin
 from ReederNewportAslin import ReederNewportAslin

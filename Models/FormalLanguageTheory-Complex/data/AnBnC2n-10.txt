@@ -1,5 +1,3 @@
 aabbcccc	5
-aaaabbbbcccccccc	2
+abcc	4
 aaabbbcccccc	1
-aaaaabbbbbcccccccccc	1
-aaaaaaaaaabbbbbbbbbbcccccccccccccccccccc	1

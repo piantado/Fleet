@@ -1,5 +1,5 @@
-baabbbaaabbb	1
-aaaaaaaaaabbbbbbbbbbaaaaaabbbb	1
-aaaaabbbbbab	1
-abaaabbb	1
-aaabbbab	1
+abbbaaabbaaab	1
+aabbaaabbb	1
+bababaaaaabbbbaaaaabbbbb	1
+abbaaaabbb	1
+babbaaaabbbb	1

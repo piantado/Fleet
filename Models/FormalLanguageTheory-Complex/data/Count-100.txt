@@ -1,8 +1,0 @@
-ab	43
-ababb	20
-ababbabbbabbbb	13
-ababbabbb	9
-ababbabbbabbbbabbbbb	8
-ababbabbbabbbbabbbbbabbbbbb	5
-ababbabbbabbbbabbbbbabbbbbbabbbbbbb	1
-ababbabbbabbbbabbbbbabbbbbbabbbbbbbabbbbbbbb	1

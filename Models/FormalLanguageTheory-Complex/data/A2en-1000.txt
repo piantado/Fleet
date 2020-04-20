@@ -1,4 +1,0 @@
-aa	902
-aaaa	89
-aaaaaaaa	8
-aaaaaaaaaaaaaaaa	1

@@ -1,4 +1,0 @@
-ab	28
-abababab	13
-ababababababababab	8
-abababababababababababababababab	1

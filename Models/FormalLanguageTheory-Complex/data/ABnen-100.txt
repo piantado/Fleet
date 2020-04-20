@@ -1,5 +1,0 @@
-ab	79
-abababab	12
-ababababababababab	6
-ababababababababababababababababababababababababab	2
-abababababababababababababababab	1

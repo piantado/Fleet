@@ -1,4 +1,0 @@
-aa	2
-aaaa	1
-aaa	1
-a	1

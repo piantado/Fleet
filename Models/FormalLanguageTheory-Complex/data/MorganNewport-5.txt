@@ -1,5 +1,0 @@
-ACDFC	1
-ACFCD	1
-AE	1
-AEC	1
-ACF	1

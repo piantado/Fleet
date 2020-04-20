@@ -1,10 +1,7 @@
-a	1
+a	4
 b	1
+abbb	1
+bbabb	1
+bbbb	1
+bbaaaba	1
 ba	1
-bb	1
-bbbbbabb	1
-aaabab	1
-aaba	1
-aaaaaa	1
-bab	1
-abbaaab	1

@@ -1,5 +1,0 @@
-a	3
-man	3
-an	2
-am	1
-mam	1

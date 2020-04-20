@@ -1,6 +1,0 @@
-ababab	4
-bababa	2
-aaa	1
-bbbbbb	1
-bbbababbabaaabbbbababbabaaabbbbababbabaaab	1
-bbb	1

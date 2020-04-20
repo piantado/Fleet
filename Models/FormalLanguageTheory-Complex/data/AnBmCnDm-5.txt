@@ -1,4 +1,0 @@
-aabccd	2
-aaaabbbccccddd	1
-abbbbcdddd	1
-abbcdd	1
