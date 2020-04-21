@@ -1,12 +1,7 @@
-abcc	37
+abcc	34
+aabbcccc	19
 aaabbbcccccc	17
-aabbcccc	12
-aaaabbbbcccccccc	10
+aaaabbbbcccccccc	14
+aaaaaabbbbbbcccccccccccc	6
 aaaaabbbbbcccccccccc	6
-aaaaaaabbbbbbbcccccccccccccc	5
-aaaaaabbbbbbcccccccccccc	4
-aaaaaaaabbbbbbbbcccccccccccccccc	3
-aaaaaaaaabbbbbbbbbcccccccccccccccccc	3
-aaaaaaaaaaaaaabbbbbbbbbbbbbbcccccccccccccccccccccccccccc	1
-aaaaaaaaaaabbbbbbbbbbbcccccccccccccccccccccc	1
-aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbcccccccccccccccccccccccccccccccc	1
+aaaaaaabbbbbbbcccccccccccccc	4

@@ -1,2 +1,2 @@
 abab	1
-ab	1
+ababababababab	1

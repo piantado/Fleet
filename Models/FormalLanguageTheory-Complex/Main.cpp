@@ -389,19 +389,19 @@ int main(int argc, char** argv){
 		samp.run(Control(mcmc_steps/datas.size(), runtime/datas.size(), nthreads, RESTART), SWAP_EVERY, 60*1000);	
 
 		// set up to print using a larger set
-		MAX_STEPS_PER_FACTOR   = 32000; //4096; 
-		MAX_OUTPUTS_PER_FACTOR = 12000; //512; - make it bigger than
-		PRINT_STRINGS = 1024;
-		max_length = 2048; 
-		MIN_LP = -100;
+		//MAX_STEPS_PER_FACTOR   = 32000; //4096; 
+		//MAX_OUTPUTS_PER_FACTOR = 12000; //512; - make it bigger than
+		//PRINT_STRINGS = 1024;
+		//max_length = 2048; 
+		//MIN_LP = -100;
 		
 		all.print(data_amounts[di]);
 		
-		max_length = 256;
-		MAX_STEPS_PER_FACTOR   = 2048; 
-		MAX_OUTPUTS_PER_FACTOR = 512; 
-		PRINT_STRINGS = 128;
-		MIN_LP = -25;
+		//max_length = 256;
+		//MAX_STEPS_PER_FACTOR   = 2048; 
+		//MAX_OUTPUTS_PER_FACTOR = 512; 
+		//PRINT_STRINGS = 128;
+		//MIN_LP = -25;
 
 		if(di+1 < datas.size()) {
 			all = all.compute_posterior(datas[di+1]); // update for next time

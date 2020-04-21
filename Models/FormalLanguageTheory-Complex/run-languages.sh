@@ -19,11 +19,11 @@ elif [ $myhost = "colala-metropolis" ] ; then
     jobs=35
     parameters=AllParameters.csv
 elif [ $myhost = "simon" ] ; then
-    factors=(1)
+    factors=(1,5)
     jobs=70
     parameters=AllParameters.csv
 elif [ $myhost = "garfunkel" ] ; then
-    factors=(2)
+    factors=(2,6)
     jobs=70
     parameters=AllParameters.csv
 fi

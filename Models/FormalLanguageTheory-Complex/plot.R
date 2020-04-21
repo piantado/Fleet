@@ -41,8 +41,8 @@ label <- list("An"=paste(TeX("A^n")),
               "ApBAp"=paste(TeX("a^+ b a^+")),
               "AsBAsp"=paste(TeX("a^* (b a^*)^+")),
               "ApBApp"=paste(TeX("a^* (b a^+)^+")),
-              "CountAEven"=paste(TeX("\lbrace w \in \lbrace a,b \rbrace^+ : count(a,w) \text{ is even} \brace")),              
-              "WeW"=paste(TeX("\lbrace w^{|w|} : w \in \lbrace a,b \rbrace^* \rbrace")),
+              #"CountAEven"=paste(TeX("\lbrace w \in \lbrace a,b \rbrace^+ : count(a,w) \text{ is even} \brace")),              
+              #"WeW"=paste(TeX("\lbrace w^{|w|} : w \in \lbrace a,b \rbrace^* \rbrace")),
               "MorganMeierNewport"="MMN",
               "ReederNewportAslin"="RNA",
               "HudsonKamNewport60"="HKN60"
@@ -50,8 +50,8 @@ label <- list("An"=paste(TeX("A^n")),
 D <- NULL
 # for(language in c("Gomez2", "Gomez6", "Gomez12" )) {
 # for(language in c("HudsonKamNewport45", "HudsonKamNewport60", "HudsonKamNewport75", "HudsonKamNewport100" )) {
-for(language in c("An", "ABn", "AnBn", "AB", "ABAnBn", "AnB2n", "AnBm", "AnBmCn", "XXR", "AAA", "AAAA", "Count", "AnBnCn", "AnBnC2n", "Dyck", "XX", "XXX",  "XXI", "XY", "AnBmCmAn", "AnBmCnDm", "GoldenMean", "Even", "AnBnCnDn", "A2en", "ABnen", "AnCBn", "AnABn", "AnABAn", "ABnABAn", "Bach2", "Bach3", "AnBm", "AnBmCn", "AnBmCm", "AnBmCnpm", "AnBmCnm", "AnBk", "ABaaaAB", "aABb", "Elman", "Braine66", "PullumR", "ApBAp", "AsBAsp", "ApBApp", "CountA2", "CountAEven", "Fibo", "AnBnCnDnEn", "AnBmAnBmCCC", "WeW", "An2", "AnBmAnBm", "ChineseNumeral", "AnBmA2n", "Unequal", "Milne")) {
-# for(language in c("Reber", "Elman", "Saffran",  "ABA", "ABB", "NewportAslin", "MorganNewport", "MorganMeierNewport", "Man", "BerwickPilato", "ReederNewportAslin", "HudsonKamNewport60", "Gomez2", "Gomez6", "Gomez12" )) {
+# for(language in c("An", "ABn", "AnBn", "AB", "ABAnBn", "AnB2n", "AnBm", "AnBmCn", "XXR", "AAA", "AAAA", "Count", "AnBnCn", "AnBnC2n", "Dyck", "XX", "XXX",  "XXI", "XY", "AnBmCmAn", "AnBmCnDm", "GoldenMean", "Even", "AnBnCnDn", "A2en", "ABnen", "AnCBn", "AnABn", "AnABAn", "ABnABAn", "Bach2", "Bach3", "AnBm", "AnBmCn", "AnBmCm", "AnBmCnpm", "AnBmCnm", "AnBk", "ABaaaAB", "aABb", "Elman", "Braine66", "PullumR", "ApBAp", "AsBAsp", "ApBApp", "CountA2", "CountAEven", "Fibo", "AnBnCnDnEn", "AnBmAnBmCCC", "WeW", "An2", "AnBmAnBm", "ChineseNumeral", "AnBmA2n", "Unequal", "Milne")) {
+for(language in c("Reber", "Elman", "Saffran",  "ABA", "ABB", "NewportAslin", "MorganNewport", "MorganMeierNewport", "Man", "BerwickPilato", "ReederNewportAslin", "HudsonKamNewport60", "Gomez2", "Gomez6", "Gomez12" )) {
 # for(language in c("SimpleEnglish", "MediumEnglish", "FancyEnglish" )) {
 # for(language in c("MediumEnglish")) {
     q <- NULL
@@ -114,6 +114,21 @@ ggsave("SimpleLanguages.pdf", plt, width=12, height=9)
 # plt
 # ggsave("English.pdf", plt)
 
+## For plotting the artificial languages
+plt <- ggplot(D, aes(x=ndata, y=value, group=Measure, color=Measure)) + 
+	  geom_line(size=0.70, position=position_dodge(.1)) +  # a little dodging here to show overlap
+	  theme_bw() +
+	  xlab("Amount of data") + ylab("") +
+ 	  scale_x_log10(breaks=c(1,10,100,1000,10000,100000), labels=c("1", "10", "100", expression(10^3), expression(10^4), expression(10^5)))  +
+      #scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
+      #        labels = trans_format("log10", math_format(10^.x))) +
+	  ylim(-1e-9,1.01) +
+ 	  facet_wrap( ~ language, labeller=label_parsed, nrow=2) + 
+	  theme(strip.background = element_rect(fill="white"))
+plt
+ggsave("ArtificialLanguages.pdf", plt, height=4, width=14)
+
+
 # ggsave("SimpleLanguages.pdf", plt)
-# ggsave("ArtificialLanguages.pdf", plt)
+# 
 # ggsave("EnglishLanguages.pdf", plt)

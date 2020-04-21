@@ -1,5 +1,5 @@
-abc	4
-aaabbbccc	2
-aabbcc	2
-aaaabbbbcccc	1
+aabbcc	4
+abc	3
+aaaaaaaaabbbbbbbbbccccccccc	1
+aaaaaaabbbbbbbccccccc	1
 aaaaabbbbbccccc	1

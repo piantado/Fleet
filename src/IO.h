@@ -4,7 +4,7 @@
 #include <mutex>
 #include "dependencies/CL11.hpp"
 
-#include "fmt/format.h"
+//#include "fmt/format.h"
 
 // so sick of typing this horseshit
 #define TAB <<"\t"<< 

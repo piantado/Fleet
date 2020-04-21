@@ -1,10 +1,9 @@
-a	14
-aa	13
-aaa	6
-aaaaaaa	5
-aaaaa	5
-aaaa	3
-aaaaaa	1
-aaaaaaaa	1
+a	22
+aa	14
+aaaa	5
+aaa	3
+aaaaaaa	2
 aaaaaaaaaaa	1
+aaaaaaaaaa	1
+aaaaa	1
 aaaaaaaaa	1

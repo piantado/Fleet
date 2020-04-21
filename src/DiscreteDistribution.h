@@ -10,6 +10,7 @@
 #include "Miscellaneous.h"
 #include "Numerics.h"
 #include "IO.h"
+#include "Strings.h"
 
 /**
  * @class DiscreteDistribution

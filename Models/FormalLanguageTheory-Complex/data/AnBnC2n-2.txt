@@ -1,1 +1,2 @@
-abcc	2
+aaabbbcccccc	1
+aabbcccc	1
