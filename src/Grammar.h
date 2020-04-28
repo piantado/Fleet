@@ -36,7 +36,7 @@ class Grammar {
 	// how many nonterminal types do we have?
 	static constexpr size_t N_NTs = std::tuple_size<std::tuple<FLEET_GRAMMAR_TYPES>>::value;
 
-protected:
+public:
 	std::vector<Rule> rules[N_NTs];
 	double	  	      Z[N_NTs]; // keep the normalizer handy for each nonterminal
 	
@@ -561,7 +561,7 @@ public:
 		else {
 			
 			is -= numterm; // remove this from is
-			auto ri =  is.pop(count_nonterminals(nt));			
+			auto ri =  is.pop(count_nonterminals(nt));	
 			Rule* r = this->get_rule(nt, ri+numterm); // shift index from terminals (because they are first!)
 			Node out = makeNode(r);
 			for(size_t i=0;i<r->N;i++) {

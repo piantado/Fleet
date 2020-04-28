@@ -66,8 +66,10 @@ public:
 		
 		// This is structured so that we always put terminals first and then we put the HIGHER probability things first. 
 		// this helps in enumeration
-		if( (N==0) != (r.N==0) ) return (N==0) < (r.N==0);
-		else		 return p > r.p; // weird, but helpful, that we sort in decreasing order of probability
+		if( (N==0) != (r.N==0) ) 
+			return (r.N==0) < (N==0);
+		else		 
+			return p > r.p; // weird, but helpful, that we sort in decreasing order of probability
 	}
 	bool operator==(const Rule& r) const {
 		/**
@@ -107,17 +109,21 @@ public:
 		return child_types[i];
 	}
 	
-	std::string string() {
-		std::string out = str(nt) + " -> " + format + " : ";
+	std::string string() const {
+		std::string out = "<" + str(nt) + " -> " + format + " : ";
 		for(size_t i =0;i<N;i++) {
 			out += " " + str(child_types[i]);
 		}
-		out += "\t w/ p \u221D " + str(p);
+		out += "\t w/ p \u221D " + str(p) + ">";
 		return out;
 	}
 	
 };
 
+std::ostream& operator<<(std::ostream& o, const Rule& r) {
+	o << r.string();
+	return o;
+}
 
 // A single constant NullRule for gaps in trees. Always has type 0
 const Rule* NullRule = new Rule((nonterminal_t)0, BuiltinOp::op_NOP, "\u2b1c", {}, 0.0);
