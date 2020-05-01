@@ -16,10 +16,10 @@
  * 			This stores pointers because it is impossible to copy out of std collections, so we are constantly
  * 			having to call VirtualMachineState constructors. Using pointers speeds us up by about 20%.
  */
-template<typename t_x, typename t_return>
+template<typename t_x, typename t_return, typename... VM_TYPES>
 class VirtualMachinePool {
 	
-	using VMState = VirtualMachineState<t_x,t_return>;
+	using VMState = VirtualMachineState<t_x,t_return, VM_TYPES...>;
 	
 	struct compare_VMState_prt {
 		bool operator()(const VMState* lhs, const VMState* rhs) { return lhs->lp < rhs->lp;	}

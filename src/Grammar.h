@@ -39,6 +39,10 @@ class Grammar {
 	static const size_t GRAMMAR_MAX_DEPTH = 64;
 	
 public:
+	// Keep track of what types we are using here as our types -- thesee types are 
+	// stored in this tuple so they can be extracted
+	typedef std::tuple<GRAMMAR_TYPES...> GrammarTypesAsTuple;
+
 	std::vector<Rule> rules[N_NTs];
 	double	  	      Z[N_NTs]; // keep the normalizer handy for each nonterminal
 	

@@ -60,10 +60,10 @@ public:
 		// and in that case we want to leave the non-propose nodes alone. 
 
 		if(!value.is_null()) { // if we are null
-			return HYP(grammar, grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
+			return HYP(this->grammar, this->grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
 		}
 		else {
-			return HYP(grammar, grammar->generate<t_output>());
+			return HYP(this->grammar, this->grammar->template generate<t_output>());
 		}
 	}
 	
@@ -98,9 +98,9 @@ public:
 	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err, Dispatchable<t_input,t_output>* loader, 
 				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
 		
-		VirtualMachinePool<t_input,t_output> pool(max_steps, max_outputs, minlp);
+		VirtualMachinePool<t_input,t_output,GrammarType::GrammarTypesAsTuple> pool(max_steps, max_outputs, minlp);
 
-		VirtualMachineState<t_input,t_output>* vms = new VirtualMachineState<t_input,t_output>(x, err);
+		VirtualMachineState<t_input,t_output,GrammarType::GrammarTypesAsTuple>* vms = new VirtualMachineState<t_input,t_output>(x, err);
 		
 		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
 		
@@ -173,7 +173,7 @@ public:
 	 
 	virtual int neighbors() const override {
 		if(value.is_null()) { // if the value is null, our neighbors is the number of ways we can do nt
-			auto nt = grammar->nt<t_output>();
+			auto nt = grammar->template nt<t_output>();
 			return grammar->count_rules(nt);
 		}
 		else {
@@ -186,7 +186,7 @@ public:
 
 	virtual HYP make_neighbor(int k) const override {
 		HYP h(grammar); // new hypothesis
-		auto nt = grammar->nt<t_output>();
+		auto nt = grammar->template nt<t_output>();
 		if(value.is_null()) {
 			assert(k >= 0);
 			assert(k < (int)grammar->count_rules(nt));
