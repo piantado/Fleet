@@ -44,7 +44,7 @@ std::tuple PRIMITIVES = {
 #include "Fleet.h" 
 
 
-class MyHypothesis : public LOTHypothesis<MyHypothesis,float,float,     float, std::multiset<float> > {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,float,float,     float, std::multiset<float> > {
 public:
 	using Super = LOTHypothesis<MyHypothesis,float,float,               float, std::multiset<float>>;
 	using Super::Super; // inherit the constructors

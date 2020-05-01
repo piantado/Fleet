@@ -96,7 +96,7 @@ std::tuple PRIMITIVES = {
 
 typedef HumanDatum<LearnerDatum> MyHumanDatum;
 
-class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,Object,bool,LearnerDatum> {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,Node,Object,bool,LearnerDatum> {
 public:
 	// This is going to assume that all variables other than x are universally quantified over. 
 	using Super = LOTHypothesis<MyHypothesis,Node,Object,bool,LearnerDatum>;

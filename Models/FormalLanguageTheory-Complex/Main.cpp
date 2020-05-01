@@ -136,8 +136,8 @@ std::tuple PRIMITIVES = {
 
 #include "Fleet.h" 
 
-class InnerHypothesis;
-class InnerHypothesis : public  LOTHypothesis<InnerHypothesis,S,S> {
+
+class InnerHypothesis final : public  LOTHypothesis<InnerHypothesis,S,S> {
 public:
 	using Super = LOTHypothesis<InnerHypothesis,S,S>;
 	using Super::Super; // inherit constructors
@@ -181,7 +181,7 @@ public:
 };
 
 
-class MyHypothesis : public Lexicon<MyHypothesis, InnerHypothesis, S, S> {
+class MyHypothesis final : public Lexicon<MyHypothesis, InnerHypothesis, S, S> {
 public:	
 	
 	using Super = Lexicon<MyHypothesis, InnerHypothesis, S, S>;

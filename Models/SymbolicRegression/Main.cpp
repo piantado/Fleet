@@ -42,7 +42,7 @@ std::tuple PRIMITIVES = {
 #include "Fleet.h" 
 
 
-class MyHypothesis : public LOTHypothesis<MyHypothesis,D,D> {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,D,D> {
 	/* This class handles enumeration of the structure but critically does MCMC over the constants */
 	
 public:

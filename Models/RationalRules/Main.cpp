@@ -61,7 +61,7 @@ std::tuple PRIMITIVES = {
 /// a PCFG prior and regeneration proposals, but I have to define a likelihood
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-class MyHypothesis : public LOTHypothesis<MyHypothesis,Object,bool> {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,Object,bool> {
 public:
 	using Super = LOTHypothesis<MyHypothesis,Object,bool>;
 	using Super::Super; // inherit the constructors

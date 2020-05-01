@@ -67,7 +67,7 @@ std::tuple PRIMITIVES = {
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
-class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S> {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,S,S> {
 public:
 	using Super =  LOTHypothesis<MyHypothesis,S,S>;
 	using Super::Super; // inherit the constructors
@@ -219,19 +219,19 @@ int main(int argc, char** argv){
 //	
 ////	return 0;
 	
-	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
-	tic();
-	samp.run(Control(mcmc_steps, runtime, nthreads), 1000, 3000); //30000);		
-	tic();
-	
+//	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
+//	tic();
+//	samp.run(Control(mcmc_steps, runtime, nthreads), 1000, 3000); //30000);		
+//	tic();
+//	
 //	 Show the best we've found
 	top.print();
 
 	
-//	MCMCChain c(h0, &mydata, top);
-//	tic();
-//	c.run(Control(mcmc_steps, runtime, nthreads));
-//	tic();
+	MCMCChain c(h0, &mydata, top);
+	tic();
+	c.run(Control(mcmc_steps, runtime, nthreads));
+	tic();
 //	
 //	for(auto& h : top.values()) {
 //		COUT top[h] TAB h.posterior TAB h.prior TAB h.likelihood TAB h.string() ENDL;		
