@@ -9,13 +9,7 @@
 #include "Random.h"
 #include "Nonterminal.h"
 
-// an exception for recursing too deep so we can print a trace of what went wrong
-class DepthException: public std::exception {} depth_exception;
-
-
-template<typename T, typename... args> // function type
-struct Primitive;
-
+template<typename T, typename... args> struct Primitive; // function type
 
 class Grammar {
 	/* 
@@ -35,6 +29,10 @@ class Grammar {
 	// how many nonterminal types do we have?
 	static constexpr size_t N_NTs = std::tuple_size<std::tuple<FLEET_GRAMMAR_TYPES>>::value;
 	static const size_t GRAMMAR_MAX_DEPTH = 64;
+	
+	// an exception for recursing too deep so we can print a trace of what went wrong
+	class DepthException: public std::exception {} depth_exception;
+
 	
 public:
 	std::vector<Rule> rules[N_NTs];

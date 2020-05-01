@@ -198,9 +198,9 @@ std::tuple PRIMITIVES = {
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
-class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,utterance,word> {
+class MyHypothesis : public LOTHypothesis<MyHypothesis,utterance,word> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,Node,utterance,word>;
+	using Super = LOTHypothesis<MyHypothesis,utterance,word>;
 	using Super::Super;
 	
 	size_t recursion_count() {

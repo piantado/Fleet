@@ -67,9 +67,9 @@ std::tuple PRIMITIVES = {
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
-class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,S,S> {
+class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S> {
 public:
-	using Super =  LOTHypothesis<MyHypothesis,Node,S,S>;
+	using Super =  LOTHypothesis<MyHypothesis,S,S>;
 	using Super::Super; // inherit the constructors
 	
 	double compute_single_likelihood(const t_datum& x) override {	

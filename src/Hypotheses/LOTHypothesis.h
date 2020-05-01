@@ -4,7 +4,7 @@
 #include <string.h>
 #include "Proposers.h"
 
-template<typename HYP, typename T, 
+template<typename HYP, 
 		 typename t_input, typename t_output, 
 		 typename _t_datum=default_datum<t_input, t_output>, 
 		 typename _t_data=std::vector<_t_datum> >
@@ -22,11 +22,11 @@ public:
 	static const size_t MAX_NODES = 64; // 32 -- does not work for FancyEnglish!; // max number of nodes we allow; otherwise -inf prior
 	
 	Grammar* grammar;
-	T value;
+	Node value;
 
 	LOTHypothesis(Grammar* g=nullptr)  : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
-	LOTHypothesis(Grammar* g, T&& x)   : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
-	LOTHypothesis(Grammar* g, T& x)    : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
+	LOTHypothesis(Grammar* g, Node&& x)   : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
+	LOTHypothesis(Grammar* g, Node& x)    : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
 
 	// parse this from a string
 	LOTHypothesis(Grammar* g, std::string s) : MCMCable<HYP,t_datum,t_data>(), grammar(g)  {
@@ -66,8 +66,8 @@ public:
 		}
 	}
 	
-	void set_value(T&  v) { value = v; }
-	void set_value(T&& v) { value = v; }
+	void set_value(Node&  v) { value = v; }
+	void set_value(Node&& v) { value = v; }
 	
 	virtual double compute_prior() override {
 		assert(grammar != nullptr && "Grammar was not initialized before trying to call compute_prior");
@@ -154,7 +154,7 @@ public:
 		// make a copy and fill in the missing nodes.
 		// NOTE: here we set all of the above nodes to NOT resample
 		// TODO: That part should go somewhere else eventually I think?
-		HYP h(grammar, T(value));
+		HYP h(grammar, Node(value));
 		h.prior=0.0;h.likelihood=0.0;h.posterior=0.0; // reset these just in case
 		
 		const std::function<void(Node&)> myf =  [](Node& n){n.can_resample=false;};
@@ -193,7 +193,7 @@ public:
 			h.value = grammar->makeNode(r);
 		}
 		else {
-			T t = value;
+			Node t = value;
 			grammar->expand_to_neighbor(t,k);
 			h.value = t;
 		}

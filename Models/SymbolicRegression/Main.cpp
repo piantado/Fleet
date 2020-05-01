@@ -42,14 +42,14 @@ std::tuple PRIMITIVES = {
 #include "Fleet.h" 
 
 
-class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,D,D> {
+class MyHypothesis : public LOTHypothesis<MyHypothesis,D,D> {
 	/* This class handles enumeration of the structure but critically does MCMC over the constants */
 	
 public:
 	std::vector<D> constants;
 	size_t         constant_idx; // in evaluation, this variable stores what constant we are in 
 	
-	using Super = LOTHypothesis<MyHypothesis,Node,D,D>;
+	using Super = LOTHypothesis<MyHypothesis,D,D>;
 	using Super::Super;
 	
 	double compute_single_likelihood(const t_datum& datum) override {

@@ -61,9 +61,9 @@ std::tuple PRIMITIVES = {
 /// a PCFG prior and regeneration proposals, but I have to define a likelihood
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,Object,bool> {
+class MyHypothesis : public LOTHypothesis<MyHypothesis,Object,bool> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,Node,Object,bool>;
+	using Super = LOTHypothesis<MyHypothesis,Object,bool>;
 	using Super::Super; // inherit the constructors
 	
 	// Now, if we defaultly assume that our data is a std::vector of t_data, then we 

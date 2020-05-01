@@ -16,8 +16,8 @@
 using S = std::string;
 using StrSet = std::set<S>;
 
-const std::string my_default_input = "data/SimpleEnglish"; 
-S alphabet="nvadt";
+const std::string my_default_input = "data/English"; 
+S alphabet="nvadtp";
 size_t max_length = 256; // max string length, else throw an error (128+ needed for count)
 size_t max_setsize = 64; // throw error if we have more than this
 size_t nfactors = 2; // how may factors do we run on?
@@ -137,9 +137,9 @@ std::tuple PRIMITIVES = {
 #include "Fleet.h" 
 
 class InnerHypothesis;
-class InnerHypothesis : public  LOTHypothesis<InnerHypothesis,Node,S,S> {
+class InnerHypothesis : public  LOTHypothesis<InnerHypothesis,S,S> {
 public:
-	using Super = LOTHypothesis<InnerHypothesis,Node,S,S>;
+	using Super = LOTHypothesis<InnerHypothesis,S,S>;
 	using Super::Super; // inherit constructors
 	
 	virtual vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>* vms, Dispatchable<S,S>* loader) override {
