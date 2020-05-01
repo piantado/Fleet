@@ -74,7 +74,7 @@ public:
 
 	// constructors to make this a little easier to deal with
 	Instruction()                            : op(BuiltinOp::op_NOP), arg(0x0) {}
-	Instruction(BuiltinOp x,    int arg_=0x0) : op(x), arg(arg_)  { }
+	Instruction(BuiltinOp x,   int arg_=0x0) : op(x), arg(arg_)  { }
 	Instruction(CustomOp x,    int arg_=0x0) : op(x), arg(arg_)  { }
 	Instruction(PrimitiveOp x, int arg_=0x0) : op(x), arg(arg_) { }
 
@@ -141,7 +141,7 @@ std::ostream& operator<<(std::ostream& stream, Instruction& i) {
 	 */
 	
 	std::string t;
-	size_t      o;
+	size_t      o{};
 	if(i.is<BuiltinOp>())          { t = "B"; o = (size_t)i.as<BuiltinOp>(); }
 	else if(i.is<PrimitiveOp>())   { t = "P"; o = (size_t)i.as<PrimitiveOp>(); }
 	
