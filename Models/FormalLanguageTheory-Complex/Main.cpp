@@ -187,7 +187,7 @@ public:
 	using Super = Lexicon<MyHypothesis, InnerHypothesis, S, S>;
 	
 	MyHypothesis()                       : Super()   {}
-	MyHypothesis(const MyHypothesis& h)  : Super(h)  {}
+	//MyHypothesis(const MyHypothesis& h)  : Super(h)  {}
 
 	virtual double compute_prior() override {
 		// since we aren't searching over nodes, we are going to enforce a prior that requires

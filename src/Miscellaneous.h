@@ -97,3 +97,16 @@ struct is_iterable<T, std::void_t<decltype(std::begin(std::declval<T>())),
 // Here is a helper:
 template <typename T>
 constexpr bool is_iterable_v = is_iterable<T>::value;
+
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// A reserved size vector type
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+template<typename T, size_t N>
+class ReservedVector : public std::vector<T> {
+public:
+	ReservedVector() { 
+		this->reserve(N);
+	}
+};
