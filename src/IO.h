@@ -154,7 +154,7 @@ namespace Fleet {
 		app.add_option("-i,--input",    input_path, "Read standard input from here");
 		app.add_option("-T,--time",     timestring, "Stop (via CTRL-C) after this much time (takes smhd as seconds/minutes/hour/day units)");
 		app.add_option("-E,--tree",     tree_path, "Write the tree here");
-		app.add_option(  "-c,--chains",   nchains, "How many chains to run");
+		app.add_option("-c,--chains",   nchains, "How many chains to run");
 		
 		app.add_flag(  "-q,--quiet",  quiet, "Don't print very much and do so on one line");
 //		app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");

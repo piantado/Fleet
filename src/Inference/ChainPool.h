@@ -73,9 +73,9 @@ public:
 
 			} while(0);		
 
-#ifdef DEBUG_CHAINPOOL
-			COUT "# Running thread " <<std::this_thread::get_id() << " on "<< idx TAB (*pool)[idx].current.posterior TAB (*pool)[idx].current.string() ENDL;
-#endif
+//#ifdef DEBUG_CHAINPOOL
+//			COUT "# Running thread " <<std::this_thread::get_id() << " on "<< idx TAB (*pool)[idx].current.posterior TAB (*pool)[idx].current.string() ENDL;
+//#endif
 
 			// we need to store how many samples we did 
 			// so we can keep track of our total number
@@ -87,6 +87,12 @@ public:
 			
 			// now update ctl's number of steps (since it might have been anything
 			ctl.done_steps += (*pool)[idx].samples - old_samples; // add up how many we've done
+			
+			
+#ifdef DEBUG_CHAINPOOL
+			COUT "# Thread " <<std::this_thread::get_id() << " stopping chain "<< idx TAB "at " TAB (*pool)[idx].current.posterior TAB (*pool)[idx].current.string() ENDL;
+#endif
+			
 		}
 		
 		// and unlock this

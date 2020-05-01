@@ -4,8 +4,10 @@
 #include <string>
 #include <vector>
 
-
+#include "Instruction.h"
 #include "Nonterminal.h"
+#include "Miscellaneous.h"
+#include "Strings.h"
 
 /* 
  * 
@@ -20,8 +22,11 @@
   *  Here we "emulate" a type system using t_nonterminal to store an integer for the types.   * 
   */ 
 class Rule {
-	
+
+
 public:
+	static const size_t MAX_CHILD_SIZE = 8; // rules can have at most this many children  -- for now (we can change if needed)
+
 	nonterminal_t         nt;
 	Instruction           instr; // a template for my instruction, which here mainly stores my optype
 	std::string           format; // how am I printed?
@@ -30,7 +35,7 @@ public:
 		
 protected:
 	// this next one should be a vector, but gcc doesn't like copying it for some reason
-	nonterminal_t         child_types[Fleet::MAX_CHILD_SIZE]; // An array of what I expand to; note that this should be const but isn't to allow list initialization (https://stackoverflow.com/questions/5549524/how-do-i-initialize-a-member-array-with-an-initializer-list)
+	nonterminal_t         child_types[MAX_CHILD_SIZE]; // An array of what I expand to; note that this should be const but isn't to allow list initialization (https://stackoverflow.com/questions/5549524/how-do-i-initialize-a-member-array-with-an-initializer-list)
 
 	std::size_t          my_hash; // a hash value for this rule
 	
@@ -41,7 +46,7 @@ public:
 		nt(rt), instr(o,arg), format(fmt), N(c.size()), p(_p) {
 			
 		// mainly we just convert c to an array
-		assert(c.size() < Fleet::MAX_CHILD_SIZE);
+		assert(c.size() < MAX_CHILD_SIZE);
 		std::copy(c.begin(), c.end(), child_types);
 		
 		// Set up hashing for rules (cached so we only do it once)

@@ -6,15 +6,20 @@ from AB import AB, aABb, ABaaaAB
 from ABn import ABn
 from ABnen import ABnen
 from A2en import A2en
+from AnUBn import AnUBn
+from AnUAnBn import AnUAnBn
 from AnBn import AnBn
 from AnABn import AnABn
 from AnABAn import AnABAn
 from ABnABAn import ABnABAn
+from ABnUBAn import ABnUBAn
 from AnCBn import AnCBn
 from AnBmCn import AnBmCn
 from AnB2n import AnB2n
 from AnBm import AnBm, AnBmCm, AnBmCnpm, AnBmCnm, AnBk, AnBmA2n
 from AnBnC2n import AnBnC2n
+from AnB2nC3n import AnB2nC3n
+from AnBnp1Cnp2 import AnBnp1Cnp2
 from AnBmCmAn import AnBmCmAn
 from AnBmCnDm import AnBmCnDm
 from Bach import Bach2, Bach3
@@ -36,7 +41,6 @@ from Gomez import *
 from AnBnCnDn import AnBnCnDn
 from BerwickPilato import BerwickPilato
 from Man import Man
-from SimpleEnglish import SimpleEnglish
 from English import English
 from MorganNewport import *
 from NewportAslin import NewportAslin

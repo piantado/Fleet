@@ -1,7 +1,8 @@
 #pragma once
 
-
+#include <math.h>
 #include <string.h>
+#include "Numerics.h"
 
 template<typename T>
 std::string str(T x){

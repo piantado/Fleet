@@ -74,7 +74,7 @@ std::tuple PRIMITIVES = {
 			a.append(b); // modify on stack
 	}), // also add a function to check length to throw an error if its getting too long
 
-	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),
+	Primitive("\u00D8",        +[]()         -> S          { return S(""); }, 10.0), // same general prob as entire alphabet
 	
 	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
 	Primitive("empty(%s)",     +[](S x) -> bool            { return x.length()==0; }),
@@ -279,6 +279,7 @@ public:
 std::string prdata_path = ""; 
 MyHypothesis::t_data prdata; // used for computing precision and recall -- in case we want to use more strings?
 S current_data = "";
+bool long_output = false; // if true, we allow extra strings, recursions etc. on output
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -295,6 +296,7 @@ int main(int argc, char** argv){
 	app.add_option("-L,--maxlength",     max_length, "Max allowed string length");
 	app.add_option("-A,--alphabet",  alphabet, "The alphabet of characters to use");
 	app.add_option("-P,--prdata",  prdata_path, "What data do we use to compute precion/recall?");
+	app.add_flag("-l,--long-output",  long_output, "Allow extra computation/recursion/strings when we output");
 	CLI11_PARSE(app, argc, argv);
 
 	Fleet_initialize();
@@ -335,7 +337,7 @@ int main(int argc, char** argv){
 
 	// push for each
 	for(size_t ai=0;ai<alphabet.length();ai++) {
-		grammar.add<S>(BuiltinOp::op_ALPHABET,   Q(alphabet.substr(ai,1)),  20.0/alphabet.length(), (int)alphabet.at(ai) );
+		grammar.add<S>(BuiltinOp::op_ALPHABET,   Q(alphabet.substr(ai,1)),  10.0/alphabet.length(), (int)alphabet.at(ai) );
 	}
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -388,21 +390,25 @@ int main(int argc, char** argv){
 		ParallelTempering samp(h0, &datas[di], all, NTEMPS, std::max(1, stoi(data_amounts[di]))); 
 		samp.run(Control(mcmc_steps/datas.size(), runtime/datas.size(), nthreads, RESTART), SWAP_EVERY, 60*1000);	
 
-		// set up to print using a larger set
-		//MAX_STEPS_PER_FACTOR   = 32000; //4096; 
-		//MAX_OUTPUTS_PER_FACTOR = 12000; //512; - make it bigger than
-		//PRINT_STRINGS = 1024;
-		//max_length = 2048; 
-		//MIN_LP = -100;
+		// set up to print using a larger set if we were given this option
+		if(long_output){
+			MAX_STEPS_PER_FACTOR   = 32000; //4096; 
+			MAX_OUTPUTS_PER_FACTOR = 12000; //512; - make it bigger than
+			PRINT_STRINGS = 1024;
+			max_length = 2048; 
+			MIN_LP = -100;
+		}
 		
 		all.print(data_amounts[di]);
 		
-		//max_length = 256;
-		//MAX_STEPS_PER_FACTOR   = 2048; 
-		//MAX_OUTPUTS_PER_FACTOR = 512; 
-		//PRINT_STRINGS = 128;
-		//MIN_LP = -25;
-
+		if(long_output) {
+			max_length = 256;
+			MAX_STEPS_PER_FACTOR   = 2048; 
+			MAX_OUTPUTS_PER_FACTOR = 512; 
+			PRINT_STRINGS = 128;
+			MIN_LP = -25;
+		}	
+		
 		if(di+1 < datas.size()) {
 			all = all.compute_posterior(datas[di+1]); // update for next time
 		}

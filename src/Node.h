@@ -4,6 +4,8 @@
 #include <stack>
 
 #include "Hash.h"
+#include "Rule.h"
+#include "Program.h"
 
 class Node {
 	

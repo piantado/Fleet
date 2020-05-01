@@ -14,11 +14,10 @@ class DepthException: public std::exception {} depth_exception;
 
 
 template<typename T, typename... args> // function type
-struct Primitive ;
+struct Primitive;
+
 
 class Grammar {
-	
-	
 	/* 
 	 * A grammar stores all of the rules associated with any kind of nonterminal and permits us
 	 * to sample as well as compute log probabilities. 
@@ -35,7 +34,8 @@ class Grammar {
 	 */
 	// how many nonterminal types do we have?
 	static constexpr size_t N_NTs = std::tuple_size<std::tuple<FLEET_GRAMMAR_TYPES>>::value;
-
+	static const size_t GRAMMAR_MAX_DEPTH = 64;
+	
 public:
 	std::vector<Rule> rules[N_NTs];
 	double	  	      Z[N_NTs]; // keep the normalizer handy for each nonterminal
@@ -377,7 +377,7 @@ public:
 		 */
 		
 		
-		if(depth >= Fleet::GRAMMAR_MAX_DEPTH) {
+		if(depth >= GRAMMAR_MAX_DEPTH) {
 			throw depth_exception; 
 		}
 		
@@ -389,7 +389,7 @@ public:
 				n.set_child(i, generate(r->type(i), depth+1)); // recurse down
 			}
 		} catch(DepthException& e) {
-			CERR "*** Grammar has recursed beyond Fleet::GRAMMAR_MAX_DEPTH (Are the probabilities right?). nt=" << nt << " d=" << depth TAB n.string() ENDL;
+			CERR "*** Grammar has recursed beyond GRAMMAR_MAX_DEPTH (Are the probabilities right?). nt=" << nt << " d=" << depth TAB n.string() ENDL;
 			throw e;
 		}
 		return n;
@@ -607,105 +607,95 @@ public:
 	Node lempel_ziv_full_expand(nonterminal_t nt, IntegerizedStack& is, Node* root=nullptr) const {
 		// This implements "lempel-ziv" decoding on trees, where each integer
 		// can be a reference to prior *full* subtree
-#ifdef BLAHBLAH		
+//#ifdef BLAHBLAH		
 		// First, lowest numbers will reference prior complete subtrees
 		// that are not terminals
-		std::function is_full_tree = [&](const Node& ni) -> int {
-			return 1*(ni.rule->nt == nt and (not ni.is_terminal()) and ni.is_complete() );
-		};
-		
-		// might be a reference to a prior full tree
-		int t = (root == nullptr ? 0 : root->sum(is_full_tree));
-		if(is.get_value() < (size_t)t) {
-			return *root->get_nth(is.get_value(), is_full_tree); 
-		}
-		is -= t;
-
-		// next numbers are terminals first integers encode terminals
-		enumerationidx_t numterm = count_terminals(nt);
-		if(is.get_value() < numterm) {
-			return makeNode(this->get_rule(nt, is.get_value() ));	// whatever terminal we wanted
-		}
-		is -= numterm;
-
-		// now we choose whether we have encoded children directly
-		// or a reference to prior *subtree* 
-		if(root != nullptr and is.pop(2) == 0) {
-			
-			// count up the number
-			size_t T=0;
-			for(auto& n : *root) {
-				if(n.nt() == nt) {
-					T += count_connected_partial_subtrees(n)-1; // I could code any of these subtrees, but not their roots (so -1)
-				}
-			}
-			
-			// which subtree did I get?
-			int t = is.pop(T);
-
-			// ugh go back and find it
-			Node out;
-			for(auto& n : *root) {
-				if(n.nt() == nt) {
-					T += count_connected_partial_subtrees(n)-1; // I could code any of these subtrees, but not their roots (so -1)
-				}
-			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			auto out = copy_partial_subtree(*root, t); // get this partial tree
-			
-			// TODO: Make it so that a subtree we reference cannot be ONE node (so therefore
-			//       the node is not null)
-			
-			// and now fill it in
-			if(out.is_null()) {
-				out = lempel_ziv_full_expand(out.nt(), is.get_value(), root);
-			}
-			else {
-				
-				std::function is_null = +[](const Node& ni) -> size_t { return 1*ni.is_null(); };
-				auto b = out.sum(is_null);
-
-				for(auto& ni : out) {
-					if(ni.is_null()) {
-						auto p = ni.parent; // need to set the parent to the new value
-						auto pi = ni.pi;
-						--b;
-						// TODO: NOt right because the parent links are now broken
-						p->set_child(pi, lempel_ziv_full_expand(p->rule->type(pi), (b==0 ? is.get_value() : is.pop()), root));
-					}
-				}
-			}
-			
-			return out;
-		}
-		else { 
-			// we must have encoded a normal tree expansion
-
-			// otherwise just a direct coding
-			Rule* r = this->get_rule(nt, is.pop(count_nonterminals(nt))+numterm); // shift index from terminals (because they are first!)
-			
-			// we need to fill in out's children with null for it to work
-			Node out = makeNode(r);
-			out.fill(); // retuired below because we'll be iterating		
-			if(root == nullptr) 
-				root = &out; // if not defined, out is our root
-			
-			for(size_t i=0;i<r->N;i++) {
-				out.set_child(i, lempel_ziv_full_expand(r->type(i), i==r->N-1 ? is.get_value() : is.pop(), root));
-			}
-			return out;		
-		}
-#endif
+//		std::function is_full_tree = [&](const Node& ni) -> int {
+//			return 1*(ni.rule->nt == nt and (not ni.is_terminal()) and ni.is_complete() );
+//		};
+//		
+//		// might be a reference to a prior full tree
+//		int t = (root == nullptr ? 0 : root->sum(is_full_tree));
+//		if(is.get_value() < (size_t)t) {
+//			return *root->get_nth(is.get_value(), is_full_tree); 
+//		}
+//		is -= t;
+//
+//		// next numbers are terminals first integers encode terminals
+//		enumerationidx_t numterm = count_terminals(nt);
+//		if(is.get_value() < numterm) {
+//			return makeNode(this->get_rule(nt, is.get_value() ));	// whatever terminal we wanted
+//		}
+//		is -= numterm;
+//
+//		// now we choose whether we have encoded children directly
+//		// or a reference to prior *subtree* 
+//		if(root != nullptr and is.pop(2) == 0) {
+//			
+//			// count up the number
+//			size_t T=0;
+//			for(auto& n : *root) {
+//				if(n.nt() == nt) {
+//					T += count_connected_partial_subtrees(n)-1; // I could code any of these subtrees, but not their roots (so -1)
+//				}
+//			}
+//			
+//			// which subtree did I get?
+//			int t = is.pop(T);
+//
+//			// ugh go back and find it
+//			//Node out;
+//			for(auto& n : *root) {
+//				if(n.nt() == nt) {
+//					T += count_connected_partial_subtrees(n)-1; // I could code any of these subtrees, but not their roots (so -1)
+//				}
+//			}
+//			
+//			auto out = copy_connected_partial_subtree(*root, t); // get this partial tree
+//			
+//			// TODO: Make it so that a subtree we reference cannot be ONE node (so therefore
+//			//       the node is not null)
+//			
+//			// and now fill it in
+//			if(out.is_null()) {
+//				out = lempel_ziv_full_expand(out.nt(), is.get_value(), root);
+//			}
+//			else {
+//				
+//				std::function is_null = +[](const Node& ni) -> size_t { return 1*ni.is_null(); };
+//				auto b = out.sum(is_null);
+//
+//				for(auto& ni : out) {
+//					if(ni.is_null()) {
+//						auto p = ni.parent; // need to set the parent to the new value
+//						auto pi = ni.pi;
+//						--b;
+//						// TODO: NOt right because the parent links are now broken
+//						p->set_child(pi, lempel_ziv_full_expand(p->rule->type(pi), (b==0 ? is.get_value() : is.pop()), root));
+//					}
+//				}
+//			}
+//			
+//			return out;
+//		}
+//		else { 
+//			// we must have encoded a normal tree expansion
+//
+//			// otherwise just a direct coding
+//			Rule* r = this->get_rule(nt, is.pop(count_nonterminals(nt))+numterm); // shift index from terminals (because they are first!)
+//			
+//			// we need to fill in out's children with null for it to work
+//			Node out = makeNode(r);
+//			out.fill(); // retuired below because we'll be iterating		
+//			if(root == nullptr) 
+//				root = &out; // if not defined, out is our root
+//			
+//			for(size_t i=0;i<r->N;i++) {
+//				out.set_child(i, lempel_ziv_full_expand(r->type(i), i==r->N-1 ? is.get_value() : is.pop(), root));
+//			}
+//			return out;		
+//		}
+////#endif
 		
 		
 		return Node(); // just to avoid warning
@@ -837,12 +827,12 @@ public:
 //	virtual Node copy_connected_partial_subtree(const Node& n, IntegerizedStack is) const {
 //		// make a copy of the z'th partial subtree 
 // 
-//		if(z == 0) 
+//		if(is.get_value() == 0) 
 //			return Node(); // return null for me
 //		
 //		Node out = makeNode(n.rule); // copy the first level
 //		for(enumerationidx_t i=0;i<out.nchildren();i++) {
-//			out.set_child(i, copy_connected_partial_subtree(n.child(i), (i==out.nchildren() ? is.value() : is.pop() )));
+//			out.set_child(i, copy_connected_partial_subtree(n.child(i), (i==out.nchildren() ? is.get_value() : is.pop() )));
 //		}
 //		return out;
 //	}

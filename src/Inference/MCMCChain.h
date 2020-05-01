@@ -5,7 +5,7 @@
 #include "MCMCChain.h"
 #include "FiniteHistory.h"
 
-#define DEBUG_MCMC 0
+//#define DEBUG_MCMC 
 
 // we take callback as a type (which hopefully can be deduce) so we can pass any callable object as callback (like a TopN)
 // This must be stored as a shared_ptr 
@@ -91,8 +91,7 @@ public:
 		/**
 		 * @brief get a reference to the current value
 		 * @return 
-		 */
-		
+		 */		
 		return current; 
 	}
 	
@@ -122,12 +121,13 @@ public:
 		 */
 		assert(ctl.threads == 1); // this is not how we run parallel 
 		
+		#ifdef DEBUG_MCMC
+		DEBUG("# Starting MCMC Chain on\t", current.posterior, current.prior, current.likelihood, current.string());
+		#endif 
+		
 		// I may have copied its start time from somewhere else, so change that here
 		ctl.start();
 		
-		if(DEBUG_MCMC) DEBUG("# Starting MCMC Chain on\t", current.posterior, current.prior, current.likelihood, current.string());
-				
-		// we'll start at 1 since we did 1 callback on current to begin
 		while(ctl.running()) {
 			
 			if(current.posterior > maxval) {
@@ -138,6 +138,9 @@ public:
 			// if we haven't improved
 			if(ctl.restart>0 and steps_since_improvement > ctl.restart){
 				steps_since_improvement = 0; // reset the couter
+				
+				std::lock_guard guard(current_mutex);
+				
 				current = current.restart();
 				current.compute_posterior(*data);
 				
@@ -152,7 +155,9 @@ public:
 			}
 			
 			
-			if(DEBUG_MCMC) DEBUG("\n# Current\t", data->size(), current.posterior, current.prior, current.likelihood, current.string());
+			#ifdef DEBUG_MCMC
+			DEBUG("\n# Current\t", data->size(), current.posterior, current.prior, current.likelihood, current.string());
+			#endif 
 			
 			std::lock_guard guard(current_mutex); // lock below otherwise others can modify
 
@@ -161,9 +166,7 @@ public:
 			}
 
 			// propose, but restart if we're -infinity
-			auto [proposal, fb] = current.posterior > -infinity ? current.propose() : std::make_tuple(current.restart(), 0.0);
-//			auto [proposal, fb] = current.propose();
-			
+			auto [proposal, fb] = current.posterior > -infinity ? current.propose() : std::make_tuple(current.restart(), 0.0);			
 			
 			++proposals;
 			
@@ -180,18 +183,22 @@ public:
 				proposal.compute_posterior(*data);
 			}
 
-			if(DEBUG_MCMC) DEBUG("# Proposed \t", proposal.posterior, proposal.prior, proposal.likelihood, fb, proposal.string());
+			#ifdef DEBUG_MCMC
+			DEBUG("# Proposed \t", proposal.posterior, proposal.prior, proposal.likelihood, fb, proposal.string());
+			#endif 
 			
 			// use MH acceptance rule, with some fanciness for NaNs
 			double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb; 		
 			if((std::isnan(current.posterior))  or
 			   (current.posterior == -infinity) or
 			   ((not std::isnan(proposal.posterior)) and
-				(ratio >= 0.0 or  uniform() < exp(ratio) ))) {
+				(ratio >= 0.0 or uniform() < exp(ratio) ))) {
 							
-				if(DEBUG_MCMC) DEBUG("# Accept");
-								
-				current = proposal;
+				#ifdef DEBUG_MCMC
+				DEBUG("# Accept");
+				#endif 
+				
+				current = std::move(proposal);
   
 				history << true;
 				++acceptances;
@@ -217,7 +224,6 @@ public:
 		/**
 		 * @brief Run forever
 		 */
-		
 		run(Control(0,0)); 
 	}
 
@@ -226,7 +232,6 @@ public:
 		 * @brief Get my acceptance ratio
 		 * @return 
 		 */
-		
 		return history.mean();
 	}
 	
@@ -236,7 +241,6 @@ public:
 		 * @param t
 		 * @return 
 		 */
-		
 		return current.at_temperature(t);
 	}
 	

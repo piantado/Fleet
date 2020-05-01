@@ -76,7 +76,6 @@ public:
 				std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_AND_SLEEP));
 			}
 			else { // do a swap
-				last = now();
 				
 				size_t k = 1+myrandom(this->pool.size()-1); // swap k with k-1
 
@@ -102,7 +101,7 @@ public:
 					R = Pswap - Pnow;
 				}
 				
-				if(R>0 or uniform() < exp(R)) { 
+				if(R >= 0 or uniform() < exp(R)) { 
 					
 #ifdef PARALLEL_TEMPERING_SHOW_DETAIL
 					COUT "# Swapping " <<k<< " and " <<(k-1)<<"." TAB this->pool[k].current.posterior TAB this->pool[k-1].current.posterior TAB this->pool[k].current.string() TAB this->pool[k-1].current.string() ENDL;
@@ -123,6 +122,9 @@ public:
 				else {
 					swap_history[k] << false;
 				}
+				
+				last = now();
+				
 			}
 		}
 	}

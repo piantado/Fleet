@@ -101,21 +101,19 @@ ggsave("curves.pdf")
 ###################################################################################################
 ## Plot with variable kinds of data
 
-Dgt <- make_learning_curves(subset(alld, type=="gt4"))
 Dlt <- make_learning_curves(subset(alld, type=="lt4"))
 
-
-
 plt <- ggplot(Dlt, aes(x=data.amount,y=newpost,color=KnowerLevel,group=KnowerLevel)) + 
-    geom_line(width=1.5, data=subset(D,!ANS)) + 
-    geom_line(data=subset(D,ANS), linetype="dashed", width=1.5) +
+    geom_line(width=1.5, data=subset(Dlt,!ANS)) + 
+    geom_line(data=subset(Dlt,ANS), linetype="dashed", width=1.5) +
     theme_bw() + theme(legend.position=c(.85,.5)) +
     xlab("Amount of data") + ylab("Posterior probability of knower-levels")
     
+Dgt <- make_learning_curves(subset(alld, type=="gt4"))
 
 plt <- ggplot(Dgt, aes(x=data.amount,y=newpost,color=KnowerLevel,group=KnowerLevel)) + 
-    geom_line(width=1.5, data=subset(D,!ANS)) + 
-    geom_line(data=subset(D,ANS), linetype="dashed", width=1.5) +
+    geom_line(width=1.5, data=subset(Dgt,!ANS)) + 
+    geom_line(data=subset(Dgt,ANS), linetype="dashed", width=1.5) +
     theme_bw() + theme(legend.position=c(.85,.5)) +
     xlab("Amount of data") + ylab("Posterior probability of knower-levels")
 

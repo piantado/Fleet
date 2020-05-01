@@ -171,8 +171,8 @@ int main(int argc, char** argv){
 	
 //	Fleet::Statistics::TopN<MyHypothesis> tn(10);
 //	for(enumerationidx_t z=0;z<10000000 and !CTRL_C;z++) {
-////		auto n = grammar.expand_from_integer(0, z);
-//		auto n = grammar.lempel_ziv_full_expand(0, z);
+//		auto n = grammar.expand_from_integer(0, z);
+////		auto n = grammar.lempel_ziv_full_expand(0, z);
 //		
 //		MyHypothesis h(&grammar);
 //		h.set_value(n);

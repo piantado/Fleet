@@ -494,6 +494,12 @@ public:
 								break;		
 							} else { assert(0 && "*** Cannot use op_IF without defining bool in FLEET_GRAMMAR_TYPES"); }			
 						}
+						case BuiltinOp::op_I:
+						case BuiltinOp::op_S:
+						case BuiltinOp::op_K:
+						case BuiltinOp::op_SKAPPLY: {
+								assert(0 && "*** Should not call these -- instead use Fleet::Combinator::Reduce");
+						}												
 						default: 
 						{
 							// otherwise call my dispatch and return if there is an error 

@@ -82,7 +82,7 @@
 
 #include <sys/resource.h> // just for setting priority defaulty 
 
-const std::string FLEET_VERSION = "0.0.91";
+const std::string FLEET_VERSION = "0.0.92";
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Tracking Fleet statistics 
@@ -110,8 +110,7 @@ namespace FleetStatistics {
 
 namespace Fleet { 
 
-	static size_t GRAMMAR_MAX_DEPTH = 64;
-	static const size_t MAX_CHILD_SIZE = 8; // rules can have at most this many children  -- for now (we can change if needed)
+
 	static int Pdenom = 24; // the denominator for probabilities in op_P --  we're going to enumeraet fractions in 24ths -- just so we can get thirds, quarters, fourths	
 
 	

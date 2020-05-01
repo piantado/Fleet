@@ -3,10 +3,14 @@
 
 // TODO: Add set operations for wmsets?
 
+
+
+//#define PARALLEL_TEMPERING_SHOW_DETAIL
+//#define DEBUG_CHAINPOOL
+
 #include <vector>
 #include <string>
 #include <random>
-
 
 double recursion_penalty = -75.0;
 
@@ -29,13 +33,15 @@ const word U = -999;
 
 const size_t MAX_SET_SIZE = 25;
 const double alpha = 0.9;
-const double W = 0.3; // weber ratio for ans
+const double W = 0.2; // weber ratio for ans
 
 // TODO: UPDATE WITH data from Gunderson & Levine?
 std::discrete_distribution<> number_distribution({0, 7187, 1484, 593, 334, 297, 165, 151, 86, 105, 112}); // 0-indexed
 	
-std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600, 1000, 1500, 2000};//, 500, 600, 700, 800, 900, 1000};
-//std::vector<int> data_amounts = {600};
+std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600, 1000};//, 500, 600, 700, 800, 900, 1000};
+//std::vector<int> data_amounts = {1000};
+//std::vector<int> data_amounts = {1, 5, 10, 50, 100};//, 500, 600, 700, 800, 900, 1000};
+
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// These define all of the types that are used in the grammar.
@@ -88,8 +94,8 @@ std::tuple PRIMITIVES = {
 	Primitive("nine",        +[]() -> word { return 9; }, 0.1),
 	Primitive("ten",         +[]() -> word { return 10; }, 0.1),
 	
-	Primitive("next(%s)",    +[](word w) -> word { if(w >= 1) return w+1; else return U; }),
-	Primitive("prev(%s)",    +[](word w) -> word { if(w > 1)  return w-1; else return U; }),
+	Primitive("next(%s)",    +[](word w) -> word { return w == U ? U : w+1;}),
+	Primitive("prev(%s)",    +[](word w) -> word { return w == U or w == 1 ? U : w-1; }),
 	
 	// extract from the context/utterance
 	Primitive("%s.set",      +[](utterance u) -> set    { return u.s; }, 25.0),
@@ -156,7 +162,7 @@ std::tuple PRIMITIVES = {
 	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); },  1.0/3.0),
 	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); },   1.0/3.0),
 	
-	// AND operations 
+	// ANS operations 
 	Primitive("ANSeq(%s,%s)",     +[](set a, set b)       -> double { return ANSzero(a.length(), b.length()); }, 1.0/3.0),
 	Primitive("ANSeq(%s,%s)",     +[](set a, wmset b)     -> double { return ANSzero(a.length(), b); }, 1.0/3.0),
 	Primitive("ANSeq(%s,%s)",     +[](set a, magnitude b) -> double { return ANSzero(a.length(), b); }, 1.0/3.0),
@@ -166,7 +172,7 @@ std::tuple PRIMITIVES = {
 	Primitive("ANSlt(%s,%s)",     +[](set a, magnitude b) -> double { return 1.0-normcdf(ANSdiff(a.length(), b)); }, 1.0/5.0),
 	Primitive("ANSlt(%s,%s)",     +[](wmset b, set a)     -> double { return 1.0-normcdf(ANSdiff(b, a.length())); }, 1.0/5.0),
 	Primitive("ANSlt(%s,%s)",     +[](magnitude b, set a) -> double { return 1.0-normcdf(ANSdiff(b, a.length())); }, 1.0/5.0),
-	
+
 	Primitive("1",     +[]() -> magnitude { return 1; }),
 	Primitive("2",     +[]() -> magnitude { return 2; }),
 	Primitive("3",     +[]() -> magnitude { return 3; }),
@@ -247,9 +253,9 @@ public:
 			outputstring += (m == U ? "U" : str(m)) + ".";
 		}
 		
-		prefix += QQ(outputstring)+"\t"+std::to_string(this->recursion_count())+"\t"+QQ(parseable())+"\t";
-	
+		prefix += QQ(outputstring)+"\t"+std::to_string(this->recursion_count())+"\t";
 		Super::print(prefix);
+		
 	}
 };
 
@@ -385,6 +391,20 @@ int main(int argc, char** argv) {
 	samp.run(Control(mcmc_steps, runtime, nthreads), 200, 5000); 
 	tic();
 
+	// just simple mcmc on one
+//	tic();
+//	for(size_t di=0;di<alldata.size();di++){
+//		MyHypothesis h0(&grammar);
+//		h0 = h0.restart();
+//		MCMCChain samp(h0, &alldata[0], alltops[0]);
+//		samp.run(Control(mcmc_steps, runtime, nthreads)); 
+//	}
+//	tic();
+	
+	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
+	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
+	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
+	
 	// and save what we found
 	for(auto& tn : alltops) {
 		for(auto h : tn.values()) {
@@ -398,21 +418,10 @@ int main(int argc, char** argv) {
 	// print out at the end
 	all.compute_posterior(biggestData).print("normal\t");
 	
-//	COUT "#Parseables:" ENDL;
-//	for(auto& h : all.values() ){
-//		COUT "#PARSEABLE " << h.parseable() ENDL;
-//	}
-	
-	/// Make some datasets
-	
-	
-	
-//	std::vector<size_t> cnt(20,0);
-	
 	COUT "# Computing posterior for extra data <= 4" ENDL;
 	{
 		std::function<double(t_datum&)> f = [](t_datum d) {
-			return (d.output <= (word)4 ? 1.0 : 0.1);			
+			return (d.output <= (word)4 ? 1.0 : 0.25);			
 		};
 		
 		// make some data
@@ -426,14 +435,10 @@ int main(int argc, char** argv) {
 		all.compute_posterior(newdata).print("lt4\t");
 	}	
 	
-//	for(int i=0;i<20;i++){ COUT cnt[i] << "\t"; }
-//	COUT "" ENDL;
-//	for(int i=0;i<20;i++){ cnt[i] = 0; }
-		
 	COUT "# Computing posterior for extra data > 4" ENDL;
 	{
 		std::function<double(t_datum&)> f = [](t_datum d) {
-			return (d.output > (word)4 ? 1.0 : 0.1);			
+			return (d.output > (word)4 ? 1.0 : 0.25);			
 		};
 		
 		// make some data
@@ -447,12 +452,8 @@ int main(int argc, char** argv) {
 		all.compute_posterior(newdata).print("gt4\t");
 	}	
 	
-//	for(int i=0;i<20;i++){ COUT cnt[i] << "\t"; }
-//	COUT "" ENDL;
 	
 	
-	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
-	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
-	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
+
 }
 
