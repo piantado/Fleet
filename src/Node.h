@@ -98,6 +98,8 @@ public:
 		fix_child_info();
 	}
 	
+	virtual ~Node() {}
+	
 	Node& child(const size_t i) {
 		/**
 		 * @brief Get a reference to my i'th child
