@@ -8,6 +8,8 @@
 #include "Node.h"
 #include "Random.h"
 #include "Nonterminal.h"
+#include "Primitives.h"
+#include "IntegerizedStack.h"
 
 // an exception for recursing too deep so we can print a trace of what went wrong
 class DepthException: public std::exception {} depth_exception;
@@ -16,7 +18,7 @@ class DepthException: public std::exception {} depth_exception;
 template<typename T, typename... args> // function type
 struct Primitive;
 
-
+template<typename... GRAMMAR_TYPES>
 class Grammar {
 	/* 
 	 * A grammar stores all of the rules associated with any kind of nonterminal and permits us
@@ -27,13 +29,13 @@ class Grammar {
 	 * 
 	 * Note that Primitives are used to initialize a grammar, and they get "parsed" by Gramar.add
 	 * to store them in the right places according to their return types (the index comes from
-	 * the index of each type in FLEET_GRAMMAR_TYPES).
+	 * the index of each type in GRAMMAR_TYPES).
 	 * The trees that Grammar generates use nt<T>() -> size_t to represent types, not the types
 	 * themselves. 
 	 * The trees also use Primitive.op (a size_t) to represent operations
 	 */
 	// how many nonterminal types do we have?
-	static constexpr size_t N_NTs = std::tuple_size<std::tuple<FLEET_GRAMMAR_TYPES>>::value;
+	static constexpr size_t N_NTs = std::tuple_size<std::tuple<GRAMMAR_TYPES...>>::value;
 	static const size_t GRAMMAR_MAX_DEPTH = 64;
 	
 public:
@@ -43,19 +45,19 @@ public:
 public:
 
 	// This function converts a type (passed as a template parameter) into a 
-	// size_t index for which one it in in FLEET_GRAMMAR_TYPES. 
+	// size_t index for which one it in in GRAMMAR_TYPES. 
 	// This is used so that a Rule doesn't need type subclasses/templates, it can
 	// store a type as e.g. nt<double>() -> size_t 
 	template <class T>
 	constexpr nonterminal_t nt() {
 		/**
-		 * @brief template function giving the index of its template argument (index in FLEET_GRAMMAR_TYPES). 
+		 * @brief template function giving the index of its template argument (index in GRAMMAR_TYPES). 
 		 * NOTE: The names here are decayed (meaning that references and base types are the same. 
 		 */
 		using DT = typename std::decay<T>::type;
 		
-		static_assert(contains_type<DT, FLEET_GRAMMAR_TYPES>(), "*** The type T (decayed) must be in FLEET_GRAMMAR_TYPES");
-		return TypeIndex<DT, std::tuple<FLEET_GRAMMAR_TYPES>>::value;
+		static_assert(contains_type<DT, GRAMMAR_TYPES...>(), "*** The type T (decayed) must be in GRAMMAR_TYPES");
+		return TypeIndex<DT, std::tuple<GRAMMAR_TYPES...>>::value;
 	}
 
 	Grammar() {

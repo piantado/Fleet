@@ -67,9 +67,12 @@ std::tuple PRIMITIVES = {
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 #include "Fleet.h" 
 
-class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,S,S> {
+
+
+template<typename GrammarType>
+class MyHypothesis : public LOTHypothesis<MyHypothesis,Node,S,S,GrammarType> {
 public:
-	using Super =  LOTHypothesis<MyHypothesis,Node,S,S>;
+	using Super =  LOTHypothesis<MyHypothesis,Node,S,S,GrammarType>;
 	using Super::Super; // inherit the constructors
 	
 	double compute_single_likelihood(const t_datum& x) override {	
@@ -121,14 +124,14 @@ int main(int argc, char** argv){
 	CLI11_PARSE(app, argc, argv);
 	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
 	
+	// declare a grammar with our primitives
+	Grammar grammar(PRIMITIVES);
+	
 	// mydata stores the data for the inference model
-	MyHypothesis::t_data mydata;
+	MyHypothesis::t_data mydata(grammar);
 	
 	// top stores the top hypotheses we have found
 	Fleet::Statistics::TopN<MyHypothesis> top(ntop);
-	
-	// declare a grammar with our primitives
-	Grammar grammar(PRIMITIVES);
 	
 	// here we create an alphabet op with an "arg" that stores the character (this is faster than alphabet.substring with i.arg as an index) 
 	// here, op_ALPHABET converts arg to a string (and pushes it)

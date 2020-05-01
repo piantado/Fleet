@@ -6,6 +6,7 @@
 
 template<typename HYP, typename T, 
 		 typename t_input, typename t_output, 
+		 typename GrammarType,
 		 typename _t_datum=default_datum<t_input, t_output>, 
 		 typename _t_data=std::vector<_t_datum> >
 class LOTHypothesis : public Dispatchable<t_input,t_output>, 
@@ -21,15 +22,15 @@ public:
 	
 	static const size_t MAX_NODES = 64; // 32 -- does not work for FancyEnglish!; // max number of nodes we allow; otherwise -inf prior
 	
-	Grammar* grammar;
+	GrammarType* grammar;
 	T value;
 
-	LOTHypothesis(Grammar* g=nullptr)  : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
-	LOTHypothesis(Grammar* g, T&& x)   : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
-	LOTHypothesis(Grammar* g, T& x)    : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
+	LOTHypothesis(GrammarType* g=nullptr)  : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
+	LOTHypothesis(GrammarType* g, T&& x)   : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
+	LOTHypothesis(GrammarType* g, T& x)    : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
 
 	// parse this from a string
-	LOTHypothesis(Grammar* g, std::string s) : MCMCable<HYP,t_datum,t_data>(), grammar(g)  {
+	LOTHypothesis(GrammarType* g, std::string s) : MCMCable<HYP,t_datum,t_data>(), grammar(g)  {
 		value = grammar->expand_from_names(s);
 	}
 	
@@ -56,7 +57,7 @@ public:
 		
 		// This is used in MCMC to restart chains 
 		// this ordinarily would be a resample from the grammar, but sometimes we have can_resample=false
-		// and in that case we want to leave the non-propose nodes alone. So her
+		// and in that case we want to leave the non-propose nodes alone. 
 
 		if(!value.is_null()) { // if we are null
 			return HYP(grammar, grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
@@ -129,7 +130,7 @@ public:
 	virtual std::string parseable() const { 
 		return value.parseable(); 
 	}
-	static HYP from_string(Grammar& g, std::string s) {
+	static HYP from_string(GrammarType& g, std::string s) {
 		return HYP(g, g.expand_from_names(s));
 	}
 	
