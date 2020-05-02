@@ -8,7 +8,9 @@ template<typename HYP, typename T,
 		 typename t_input, typename t_output, 
 		 typename GrammarType,
 		 typename _t_datum=default_datum<t_input, t_output>, 
-		 typename _t_data=std::vector<_t_datum> >
+		 typename _t_data=std::vector<_t_datum>, 
+		 typename VM_TYPES_TUPLE=typename GrammarType::GrammarTypesAsTuple // used for deducing VM_TYPES in VirtualMachineState
+		 >
 class LOTHypothesis : public Dispatchable<t_input,t_output>, 
 				      public MCMCable<HYP,_t_datum,_t_data>, // remember, this defines t_data, t_datum
 					  public Searchable<HYP,t_input,t_output>	{
@@ -23,6 +25,8 @@ public:
 	static const size_t MAX_NODES = 64; // 32 -- does not work for FancyEnglish!; // max number of nodes we allow; otherwise -inf prior
 	
 	GrammarType* grammar;
+	const static VM_TYPES_TUPLE grammarTypeTuple; // this is a tuple of the virtual machine types which gets passed to them in their constructor so they can deduce types
+	
 	T value;
 
 	LOTHypothesis(GrammarType* g=nullptr)  : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
@@ -98,10 +102,11 @@ public:
 	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err, Dispatchable<t_input,t_output>* loader, 
 				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
 		
-		VirtualMachinePool<t_input,t_output,GrammarType::GrammarTypesAsTuple> pool(max_steps, max_outputs, minlp);
 
-		VirtualMachineState<t_input,t_output,GrammarType::GrammarTypesAsTuple>* vms = new VirtualMachineState<t_input,t_output>(x, err);
-		
+		auto vms = new VirtualMachineState(x, err, grammarTypeTuple );	
+
+		VirtualMachinePool<decltype(*vms)> pool(max_steps, max_outputs, minlp); // vms is passed here just to deduce the type
+ 		
 		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
 		
 		pool.push(vms); // add vms to the pool
@@ -118,7 +123,7 @@ public:
 	virtual t_output callOne(const t_input x, const t_output err, Dispatchable<t_input,t_output>* loader=nullptr) {
 		// we can use this if we are guaranteed that we don't have a stochastic hypothesis
 		// the savings is that we don't have to create a VirtualMachinePool		
-		VirtualMachineState<t_input,t_output> vms(x, err);		
+		VirtualMachineState vms(x, err, grammarTypeTuple);		
 		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
 		return vms.run(nullptr, this, loader == nullptr? this : nullptr); // default to using "this" as the loader		
 	}
@@ -144,7 +149,7 @@ public:
 	}
 	
 	virtual vmstatus_t dispatch_custom(Instruction i, 
-								  VirtualMachinePool<t_input,t_output>* pool, 
+								  VirtualMachinePool<VirtualMachineState<t_input,t_output>>* pool, 
 								  VirtualMachineState<t_input,t_output>* vms,  
 								  Dispatchable<t_input, t_output>* loader) override {
 		assert(false && "*** To use dispatch_custom (e.g. with defined CustomOps) you must override it to process these instructions.");

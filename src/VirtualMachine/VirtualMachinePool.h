@@ -16,11 +16,9 @@
  * 			This stores pointers because it is impossible to copy out of std collections, so we are constantly
  * 			having to call VirtualMachineState constructors. Using pointers speeds us up by about 20%.
  */
-template<typename t_x, typename t_return, typename... VM_TYPES>
+template<typename VMState>
 class VirtualMachinePool {
-	
-	using VMState = VirtualMachineState<t_x,t_return, VM_TYPES...>;
-	
+		
 	struct compare_VMState_prt {
 		bool operator()(const VMState* lhs, const VMState* rhs) { return lhs->lp < rhs->lp;	}
 	};
@@ -39,7 +37,7 @@ public:
 	
 	std::priority_queue<VMState*, std::vector<VMState*>, VirtualMachinePool::compare_VMState_prt> Q; // Q of states sorted by probability
 
-	VirtualMachinePool(unsigned long ms=2048, unsigned long mo=256, double mlp=-20) 
+	VirtualMachinePool(unsigned long ms, unsigned long mo, double mlp) 
 					   : max_steps(ms), max_outputs(mo), current_steps(0), min_lp(mlp) {
 						   
 	}
@@ -113,7 +111,7 @@ public:
 		return false;
 	}
 
-	DiscreteDistribution<t_return> run(Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) { 
+	DiscreteDistribution<typename VMState::t_return> run(typename VMState::MyDispatchable* dispatcher, VMState::MyDispatchable* loader) { 
 		/**
 		 * @brief This runs and adds up the probability mass for everything, returning a dictionary outcomes->log_probabilities. This is the main 
 		 * 		  running loop, which pops frmo the top of our queue, runs, and continues until we've done enough or all. 
@@ -123,7 +121,7 @@ public:
 		 * @return 
 		 */
 		
-		DiscreteDistribution<t_return> out;
+		DiscreteDistribution<typename VMState::t_return> out;
 		
 		current_steps = 0;
 		while(current_steps < max_steps && out.size() < max_outputs && !Q.empty()) {

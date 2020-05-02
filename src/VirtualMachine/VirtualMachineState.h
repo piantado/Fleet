@@ -27,6 +27,8 @@ class VirtualMachineState {
 	
 public:
 	
+	typedef Dispatchable<t_x, t_return, VM_TYPES...> MyDispatchable;
+	
 	static const unsigned long MAX_RECURSE = 64; // this is the max number of times we can call recurse, NOT the max depth
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
@@ -54,7 +56,7 @@ public:
 
 	vmstatus_t status; // are we still running? Did we get an error?
 	
-	VirtualMachineState(t_x x, t_return e, size_t _recursion_depth=0) :
+	VirtualMachineState(t_x x, t_return e, const std::tuple<VM_TYPES...>& tup, size_t _recursion_depth=0) :
 		err(e), lp(0.0), recursion_depth(_recursion_depth), status(vmstatus_t::GOOD) {
 		xstack.push(x);	
 	}
@@ -195,7 +197,7 @@ public:
 		return this->all_stacks_empty<VM_TYPES...>();
 	}
 	
-	virtual t_return run(Dispatchable<t_x,t_return>* d) {
+	virtual t_return run(MyDispatchable* d) {
 		/**
 		 * @brief Defaultly run a non-recursive hypothesis
 		 * @param d
@@ -204,7 +206,9 @@ public:
 		return run(nullptr, d, d);
 	}
 	
-	virtual t_return run(VirtualMachinePool<t_x, t_return>* pool, Dispatchable<t_x,t_return>* dispatch, Dispatchable<t_x,t_return>* loader) {
+	virtual t_return run(VirtualMachinePool<VirtualMachineState<t_x, t_return, VM_TYPES...>>* pool, 
+						 MyDispatchable* dispatch, 
+						 MyDispatchable* loader) {
 		/**
 		 * @brief Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
 		 * 			Here, dispatch is called to evaluate the function, and loader is called on recursion (allowing us to handle recursion

@@ -3,7 +3,7 @@
 template<typename t_input, typename t_return, typename... VM_ARGS>
 class VirtualMachineState;
 
-template<typename t_x, typename t_return, typename... VM_ARGS>
+template<typename VMState>
 class VirtualMachinePool;
 
 /**
@@ -19,7 +19,7 @@ public:
 	// A dispatchable class is one that implements the dispatch rule we need in order to call/evaluate.
 	// This is the interface that a Hypothesis requires
 	virtual vmstatus_t dispatch_custom(Instruction i, 
-									   VirtualMachinePool<t_input,t_output,VM_ARGS...>* pool, 
+									   VirtualMachinePool<VirtualMachineState<t_input,t_output,VM_ARGS...>>* pool, 
 									   VirtualMachineState<t_input,t_output,VM_ARGS...>* vms,
 									   Dispatchable<t_input,t_output, VM_ARGS...>* loader )=0;
 	
