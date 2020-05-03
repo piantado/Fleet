@@ -1,5 +1,6 @@
 #pragma once
 
+#include <any>
 #include <string>
 #include <cstdlib>
 #include <functional>
@@ -53,9 +54,9 @@ struct Primitive : PrePrimitive {
 	// dispatch operates on vms
 	T(*call)(args...); 
 	
-	template<typename V, typename P, typename L>
-	vmstatus_t dispatch(V*, P*, L*);
-	
+//	template<typename V, typename P, typename L>
+//	vmstatus_t(*dispatch)(V*, P*, L*);
+	std::any dispatch; 
 	
 	PrimitiveOp op;
 	double p;
@@ -70,10 +71,9 @@ struct Primitive : PrePrimitive {
 	typedef typename std::decay<typename HeadIfReferenceElseT<T,args...>::type>::type GrammarReturnType;
 									  
 
-	Primitive(std::string fmt, T(*_call)(args...), double _p=1.0 ) :
+	constexpr Primitive(std::string fmt, T(*_call)(args...), double _p=1.0 ) :
 		format(fmt), call(_call), op(op_counter++), p(_p), is_dispatch(false) {
 			
-\
 		// check that each type here is in FLEET_GRAMMAR_TYPES
 		// or else we get obscure errors;
 	
@@ -105,10 +105,8 @@ struct Primitive : PrePrimitive {
 	
 	
 	template<typename V, typename P, typename L>
-	Primitive(std::string fmt, T(*_call)(args...), vmstatus_t _dispatch(V*, P*, L*), double _p=1.0 ) :
-		format(fmt), call(_call), op(op_counter++), p(_p), is_dispatch(true) {
-			
-		this->dispatch = _dispatch;
+	constexpr Primitive(std::string fmt, T(*_call)(args...), vmstatus_t _dispatch(V*, P*, L*), double _p=1.0 ) :
+		format(fmt), call(_call), op(op_counter++), p(_p), is_dispatch(true), dispatch(_dispatch) {
 			
 		// check that each type here is in FLEET_GRAMMAR_TYPES
 		// or else we get obscure errors;
@@ -154,11 +152,12 @@ struct Primitive : PrePrimitive {
 		
 
 		if (is_dispatch) { 
-			static_assert(sizeof...(args)==4 and std::is_same<get_Nth_type<1,args...>, V>::value and std::is_same<get_Nth_type<2,args...>, V>::value and std::is_same<get_Nth_type<3,args...>, V>::value, 
+			assert((sizeof...(args)==4 and std::is_same<get_Nth_type<1,args...>, V>::value and std::is_same<get_Nth_type<2,args...>, P>::value and std::is_same<get_Nth_type<3,args...>, L>::value) && 
 					"*** When a primitive takes VMS as its first arugment, it must also take pool and loader as the next two");
 					
 			// and we call with vms, pool, loader, and note that we DO NOT push the result since its a vmstatus_t
-			return this->dispatch(vms, pool, loader);					
+			auto f = std::any_cast<vmstatus_t(*)(V*, P*, L*)>(this->dispatch);
+			return f(vms, pool, loader);					
 		}
 		else {
 		

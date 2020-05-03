@@ -63,17 +63,20 @@ double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to
 #include "Primitives.h"
 #include "Builtins.h"
 //
-#include "VirtualMachine/VirtualMachineState.h"
-#include "VirtualMachine/VirtualMachinePool.h"
+//#include "VirtualMachine/VirtualMachineState.h"
+//#include "VirtualMachine/VirtualMachinePool.h"
 #include "Hypotheses/Interfaces/Dispatchable.h"
+
+
+template<typename X, typename Y> class VirtualMachineState;
+template<typename X> class VirtualMachinePool;
 
 
 //extern template class VirtualMachineState<S,S>;
 //extern template class VirtualMachinePool<VirtualMachineState<S,S>>;
 //extern template class Dispatchable<S,S>;
-class VirtualMachineState<S,S>;
-class VirtualMachinePool<VirtualMachineState<S,S>>;
-class Dispatchable<S,S>;
+//class VirtualMachineState<S,S>;
+//class VirtualMachinePool<VirtualMachineState<S,S>>;
 
 std::tuple PRIMITIVES = {
 	Primitive("tail(%s)",      +[](S& s)     -> void       { if(s.length()>0) s.erase(0); }), //sreturn (s.empty() ? S("") : s.substr(1,S::npos)); }), // REPLACE: if(s.length() >0) s.erase(0)
@@ -148,7 +151,7 @@ std::tuple PRIMITIVES = {
 	Primitive("sample(%s)", +[](StrSet s) -> S { return S(); }, 
 						    +[](VirtualMachineState<S,S>* vms, VirtualMachinePool<VirtualMachineState<S,S>>* pool, Dispatchable<S,S>* loader) -> vmstatus_t {
 		// implement sampling from the set.
-		// to do this, we read the set and then push all the alternatives onto the stack
+//		// to do this, we read the set and then push all the alternatives onto the stack
 		StrSet s = vms->template getpop<StrSet>();
 		
 		// now just push on each, along with their probability
@@ -169,20 +172,6 @@ class InnerHypothesis final : public  LOTHypothesis<InnerHypothesis,S,S> {
 public:
 	using Super = LOTHypothesis<InnerHypothesis,S,S>;
 	using Super::Super; // inherit constructors
-	
-	// if we want insert/delete proposals
-//	[[nodiscard]] virtual std::pair<InnerHypothesis,double> propose() const {
-//		
-//		std::pair<Node,double> x;
-//		if(flip()) {
-//			x = Proposals::regenerate(grammar, value);	
-//		}
-//		else {
-//			if(flip()) x = Proposals::insert_tree(grammar, value);	
-//			else       x = Proposals::delete_tree(grammar, value);	
-//		}
-//		return std::make_pair(InnerHypothesis(this->grammar, std::move(x.first)), x.second); 
-//	}	
 };
 
 
