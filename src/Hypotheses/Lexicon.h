@@ -209,15 +209,6 @@ public:
 		factors[j].push_program(s); // on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)
 	}
 	
-	 // This should never be called because we should be dispatching throuhg a factor
-//	 virtual vmstatus_t dispatch_custom(Instruction i, 
-//										VirtualMachinePool<VirtualMachineState<t_input,t_output>>* pool, 
-//										VirtualMachineState<t_input,t_output>* vms,  
-//										Dispatchable<t_input, t_output>* loader ) override {
-//		 assert(0); // can't call this, must be implemented by kids
-//	 }
-//	 
-	
 	/********************************************************
 	 * Implementation of MCMCable interace 
 	 ********************************************************/
