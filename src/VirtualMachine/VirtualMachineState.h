@@ -202,7 +202,9 @@ public:
 		return run(nullptr, d, d);
 	}
 	
-	virtual t_return run(VirtualMachinePool<t_x, t_return>* pool, Dispatchable<t_x,t_return>* dispatch, Dispatchable<t_x,t_return>* loader) {
+	virtual t_return run(VirtualMachinePool<VirtualMachineState<t_x,t_return>>* pool, 
+					     Dispatchable<t_x,t_return>* dispatch, 
+						 Dispatchable<t_x,t_return>* loader) {
 		/**
 		 * @brief Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
 		 * 			Here, dispatch is called to evaluate the function, and loader is called on recursion (allowing us to handle recursion

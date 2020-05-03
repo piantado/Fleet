@@ -17,10 +17,8 @@
  * 			This stores pointers because it is impossible to copy out of std collections, so we are constantly
  * 			having to call VirtualMachineState constructors. Using pointers speeds us up by about 20%.
  */
-template<typename t_x, typename t_return>
+template<typename VMState> // template on the VMS state
 class VirtualMachinePool {
-	
-	using VMState = VirtualMachineState<t_x,t_return>;
 	
 	struct compare_VMState_prt {
 		bool operator()(const VMState* lhs, const VMState* rhs) { return lhs->lp < rhs->lp;	}
@@ -115,6 +113,8 @@ public:
 		return false;
 	}
 
+
+	template<typename t_x, typename t_return>
 	DiscreteDistribution<t_return> run(Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) { 
 		/**
 		 * @brief This runs and adds up the probability mass for everything, returning a dictionary outcomes->log_probabilities. This is the main 

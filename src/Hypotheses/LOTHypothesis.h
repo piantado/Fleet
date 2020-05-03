@@ -24,7 +24,7 @@ public:
 	Grammar* grammar;
 	Node value;
 
-	LOTHypothesis(Grammar* g=nullptr)  : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
+	LOTHypothesis(Grammar* g=nullptr)     : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
 	LOTHypothesis(Grammar* g, Node&& x)   : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
 	LOTHypothesis(Grammar* g, Node& x)    : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
 
@@ -97,7 +97,7 @@ public:
 	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err, Dispatchable<t_input,t_output>* loader, 
 				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
 		
-		VirtualMachinePool<t_input,t_output> pool(max_steps, max_outputs, minlp);
+		VirtualMachinePool<VirtualMachineState<t_input,t_output>> pool(max_steps, max_outputs, minlp);
 
 		VirtualMachineState<t_input,t_output>* vms = new VirtualMachineState<t_input,t_output>(x, err);
 		
@@ -117,7 +117,7 @@ public:
 	virtual t_output callOne(const t_input x, const t_output err, Dispatchable<t_input,t_output>* loader=nullptr) {
 		// we can use this if we are guaranteed that we don't have a stochastic hypothesis
 		// the savings is that we don't have to create a VirtualMachinePool		
-		VirtualMachineState<t_input,t_output> vms(x, err);		
+		VirtualMachineState vms(x, err);		
 		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
 		return vms.run(nullptr, this, loader == nullptr? this : nullptr); // default to using "this" as the loader		
 	}
@@ -143,7 +143,7 @@ public:
 	}
 	
 	virtual vmstatus_t dispatch_custom(Instruction i, 
-								  VirtualMachinePool<t_input,t_output>* pool, 
+								  VirtualMachinePool<VirtualMachineState<t_input,t_output>>* pool, 
 								  VirtualMachineState<t_input,t_output>* vms,  
 								  Dispatchable<t_input, t_output>* loader) override {
 		assert(false && "*** To use dispatch_custom (e.g. with defined CustomOps) you must override it to process these instructions.");

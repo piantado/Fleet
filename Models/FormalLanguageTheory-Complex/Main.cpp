@@ -142,7 +142,10 @@ public:
 	using Super = LOTHypothesis<InnerHypothesis,S,S>;
 	using Super::Super; // inherit constructors
 	
-	virtual vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<S,S>* pool, VirtualMachineState<S,S>* vms, Dispatchable<S,S>* loader) override {
+	virtual vmstatus_t dispatch_custom(Instruction i, 
+									   VirtualMachinePool<VirtualMachineState<S,S>>* pool, 
+									   VirtualMachineState<S,S>* vms, 
+									   Dispatchable<S,S>* loader) override {
 		assert(i.is<CustomOp>());
 		switch(i.as<CustomOp>()) {
 			case CustomOp::op_UniformSample: {

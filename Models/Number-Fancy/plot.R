@@ -5,7 +5,7 @@ NDATA <- 2000 # the amount of data we computed on
 logsumexp <- function(x) { m=max(x); log(sum(exp(x-m)))+m }
 
 alld <- read.table("out/out.txt", header=F)
-names(alld) <- c("type", "KL", "recurse", "parseable", "posterior", "prior", "likelihood",  "hypothesis")
+names(alld) <- c("type", "KL", "recurse", "posterior", "prior", "likelihood",  "hypothesis")
 
 alld$likelihood.per <- alld$likelihood / NDATA
 

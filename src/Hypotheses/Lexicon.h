@@ -210,7 +210,10 @@ public:
 	}
 	
 	 // This should never be called because we should be dispatching throuhg a factor
-	 virtual vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<t_input,t_output>* pool, VirtualMachineState<t_input,t_output>* vms,  Dispatchable<t_input, t_output>* loader ) override {
+	 virtual vmstatus_t dispatch_custom(Instruction i, 
+										VirtualMachinePool<VirtualMachineState<t_input,t_output>>* pool, 
+										VirtualMachineState<t_input,t_output>* vms,  
+										Dispatchable<t_input, t_output>* loader ) override {
 		 assert(0); // can't call this, must be implemented by kids
 	 }
 	 
