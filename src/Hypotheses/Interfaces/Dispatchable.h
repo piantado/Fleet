@@ -18,10 +18,10 @@ class Dispatchable {
 public:
 	// A dispatchable class is one that implements the dispatch rule we need in order to call/evaluate.
 	// This is the interface that a Hypothesis requires
-	virtual vmstatus_t dispatch_custom(Instruction i, 
-									   VirtualMachinePool<VirtualMachineState<t_input,t_output>>* pool, 
-									   VirtualMachineState<t_input,t_output>* vms,
-									   Dispatchable<t_input,t_output>* loader )=0;
+//	virtual vmstatus_t dispatch_custom(Instruction i, 
+//									   VirtualMachinePool<VirtualMachineState<t_input,t_output>>* pool, 
+//									   VirtualMachineState<t_input,t_output>* vms,
+//									   Dispatchable<t_input,t_output>* loader )=0;
 	
 	// This loads a program into the stack. Short is passed here in case we have a factorized lexicon,
 	// which for now is a pretty inelegant hack. 

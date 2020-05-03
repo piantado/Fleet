@@ -142,12 +142,12 @@ public:
 		return this->value == h.value;
 	}
 	
-	virtual vmstatus_t dispatch_custom(Instruction i, 
-								  VirtualMachinePool<VirtualMachineState<t_input,t_output>>* pool, 
-								  VirtualMachineState<t_input,t_output>* vms,  
-								  Dispatchable<t_input, t_output>* loader) override {
-		assert(false && "*** To use dispatch_custom (e.g. with defined CustomOps) you must override it to process these instructions.");
-	}
+//	virtual vmstatus_t dispatch_custom(Instruction i, 
+//								  VirtualMachinePool<VirtualMachineState<t_input,t_output>>* pool, 
+//								  VirtualMachineState<t_input,t_output>* vms,  
+//								  Dispatchable<t_input, t_output>* loader) override {
+//		assert(false && "*** To use dispatch_custom (e.g. with defined CustomOps) you must override it to process these instructions.");
+//	}
 
 	
 	virtual HYP copy_and_complete() const {

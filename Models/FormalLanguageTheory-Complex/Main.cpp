@@ -152,7 +152,8 @@ std::tuple PRIMITIVES = {
 	
 	// Define our custom op here. To do this, we simply define a primitive whose first argument is vmstatus_t&. This servers as our return value
 	// since the return value of this lambda is needed by grammar to decide the nonterminal. If so, we must also take vms, pool, and loader.
-	Primitive("sample(%s)", +[](vmstatus_t &status, VirtualMachineState<S,S>* vms, VirtualMachinePool<VirtualMachineState<S,S>>* pool, Dispatchable<S,S>* loader) -> S {
+	Primitive("sample(%s)", +[](StrSet s) -> S { return S(); }, 
+						    +[](VirtualMachineState<S,S>* vms, VirtualMachinePool<VirtualMachineState<S,S>>* pool, Dispatchable<S,S>* loader) -> vmstatus_t {
 		// implement sampling from the set.
 		// to do this, we read the set and then push all the alternatives onto the stack
 		StrSet s = vms->template getpop<StrSet>();
@@ -164,7 +165,7 @@ std::tuple PRIMITIVES = {
 			pool->copy_increment_push(vms,x,lp);
 		}
 
-		status = vmstatus_t::RANDOM_CHOICE; // if we don't continue with this context		
+		return vmstatus_t::RANDOM_CHOICE; // if we don't continue with this context		
 	})
 };
 
@@ -176,13 +177,6 @@ public:
 	using Super = LOTHypothesis<InnerHypothesis,S,S>;
 	using Super::Super; // inherit constructors
 	
-	virtual vmstatus_t dispatch_custom(Instruction i, 
-									   VirtualMachinePool<VirtualMachineState<S,S>>* pool, 
-									   VirtualMachineState<S,S>* vms, 
-									   Dispatchable<S,S>* loader) override {
-		assert(false);
-	}
-
 	// if we want insert/delete proposals
 //	[[nodiscard]] virtual std::pair<InnerHypothesis,double> propose() const {
 //		
