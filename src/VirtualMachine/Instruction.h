@@ -20,13 +20,10 @@ enum class vmstatus_t {GOOD=0, ERROR, RECURSION_DEPTH, RANDOM_CHOICE, RANDOM_CHO
  */
 class VMSRuntimeError_t : public std::exception {} VMSRuntimeError;
 
-
-#ifndef CUSTOM_OPS
-#define CUSTOM_OPS 
-#endif 
-
-
-enum class CustomOp { CUSTOM_OPS };
+namespace Fleet {
+	// Not sure Where to put this...
+	static int Pdenom = 24; // the denominator for probabilities in op_P --  we're going to enumerate fractions in 24ths -- just so we can get thirds, quarters, fourths		
+}
 
 // These operations are build-in and implemented in VirtualMachineState
 // convenient to make op_NOP=0, so that the default initialization is a NOP
@@ -56,8 +53,8 @@ enum class BuiltinOp {
 					  (see Models/RationalRules). When you construct a grammar with these, it automatically
 					  figures out all the types and automatically gives each a sequential numbering, which
 					  it takes some template magic to access at runtime
-	 CustomOp -- these are for when you need more access to VMS' stack, and they require you to implement
-				   custom_dispatch (where the instruction is handled)
+	 DispatchOp -- if we store this kind, our primitive gets called with teh VMS stuff (vms, pool, loader) rather than the stuff on 
+				   the stack. This permits us to access these pieces in fancier primitives
 
 	 For any op type, an Instruction always takes an "arg" type that essentially allow us to define classes of instructions
 	 for instance, jump takes an arg, factorized recursion uses arg for index, in FormalLanguageTheory
@@ -68,14 +65,12 @@ class Instruction {
 public:
 
 	std::variant<BuiltinOp, 
-				 CustomOp,
 				 PrimitiveOp> op; // what kind of op is this? custom or built in?
 	int                       arg; // 
 
 	// constructors to make this a little easier to deal with
 	Instruction()                            : op(BuiltinOp::op_NOP), arg(0x0) {}
 	Instruction(BuiltinOp x,   int arg_=0x0) : op(x), arg(arg_)  { }
-	Instruction(CustomOp x,    int arg_=0x0) : op(x), arg(arg_)  { }
 	Instruction(PrimitiveOp x, int arg_=0x0) : op(x), arg(arg_) { }
 
 	template<typename t>

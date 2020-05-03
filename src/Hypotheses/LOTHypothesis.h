@@ -3,12 +3,20 @@
 
 #include <string.h>
 #include "Proposers.h"
+#include "Program.h"
+
+
+#include "Hypotheses/Interfaces/Bayesable.h"
+#include "Hypotheses/Interfaces/MCMCable.h"
+#include "Hypotheses/Interfaces/Searchable.h"
+
+#include "VirtualMachine/VirtualMachineState.h"
 
 template<typename HYP, 
 		 typename t_input, typename t_output, 
 		 typename _t_datum=default_datum<t_input, t_output>, 
 		 typename _t_data=std::vector<_t_datum> >
-class LOTHypothesis : public Dispatchable<t_input,t_output>, 
+class LOTHypothesis : public ProgramLoader, 
 				      public MCMCable<HYP,_t_datum,_t_data>, // remember, this defines t_data, t_datum
 					  public Searchable<HYP,t_input,t_output>	{
 	// stores values as a pointer to something of type T, whose memory I manage (I delete it when I go away)
@@ -94,7 +102,7 @@ public:
 
 
 	// we defaultly map outputs to log probabilities
-	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err, Dispatchable<t_input,t_output>* loader, 
+	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err, ProgramLoader* loader, 
 				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
 		
 		VirtualMachinePool<VirtualMachineState<t_input,t_output>> pool(max_steps, max_outputs, minlp);
@@ -105,21 +113,21 @@ public:
 		
 		pool.push(vms); // add vms to the pool
 		
-		return pool.run(this, loader);		
+		return pool.template run<t_input, t_output>(loader);		
 	}
 	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err) {
-		return call(x,err, this); // defaultly I myself am the recursion handler and dispatch
+		return call(x, err, this); // defaultly I myself am the recursion handler and dispatch
 	}
 	auto operator()(const t_input x, const t_output err){ // just fancy syntax for call
 		return call(x,err);
 	}
 
-	virtual t_output callOne(const t_input x, const t_output err, Dispatchable<t_input,t_output>* loader=nullptr) {
+	virtual t_output callOne(const t_input x, const t_output err, ProgramLoader* loader=nullptr) {
 		// we can use this if we are guaranteed that we don't have a stochastic hypothesis
 		// the savings is that we don't have to create a VirtualMachinePool		
 		VirtualMachineState vms(x, err);		
 		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
-		return vms.run(nullptr, this, loader == nullptr? this : nullptr); // default to using "this" as the loader		
+		return vms.run(loader == nullptr? this : nullptr); // default to using "this" as the loader		
 	}
 	
 
@@ -140,13 +148,6 @@ public:
 	
 	virtual bool operator==(const HYP& h) const override {
 		return this->value == h.value;
-	}
-	
-	virtual vmstatus_t dispatch_custom(Instruction i, 
-								  VirtualMachinePool<VirtualMachineState<t_input,t_output>>* pool, 
-								  VirtualMachineState<t_input,t_output>* vms,  
-								  Dispatchable<t_input, t_output>* loader) override {
-		assert(false && "*** To use dispatch_custom (e.g. with defined CustomOps) you must override it to process these instructions.");
 	}
 
 	

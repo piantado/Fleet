@@ -115,7 +115,7 @@ public:
 
 
 	template<typename t_x, typename t_return>
-	DiscreteDistribution<t_return> run(Dispatchable<t_x,t_return>* dispatcher, Dispatchable<t_x,t_return>* loader) { 
+	DiscreteDistribution<t_return> run(ProgramLoader* loader) { 
 		/**
 		 * @brief This runs and adds up the probability mass for everything, returning a dictionary outcomes->log_probabilities. This is the main 
 		 * 		  running loop, which pops frmo the top of our queue, runs, and continues until we've done enough or all. 
@@ -136,7 +136,7 @@ public:
 			
 			current_steps++;
 			
-			auto y = vms->run(this, dispatcher, loader);
+			auto y = vms->run(this, loader);
 				
 			if(vms->status == vmstatus_t::GOOD) { // can't add up probability for errors
 				out.addmass(y, vms->lp);

@@ -2,10 +2,20 @@
 
 #include <type_traits>
 
+#include "Program.h"
+#include "Stack.h"
+#include "Statistics/FleetStatistics.h"
+
 // Remove n from the stack
 void popn(Program& s, size_t n) {
 	for(size_t i=0;i<n;i++) s.pop();
 }
+
+
+namespace FleetStatistics {}
+template<typename X> class VirtualMachinePool;
+extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
+extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
 
 /**
  * @class VirtualMachineState
@@ -193,24 +203,19 @@ public:
 		return this->all_stacks_empty<FLEET_GRAMMAR_TYPES>();
 	}
 	
-	virtual t_return run(Dispatchable<t_x,t_return>* d) {
+	virtual t_return run(ProgramLoader* d) {
 		/**
 		 * @brief Defaultly run a non-recursive hypothesis
 		 * @param d
 		 * @return 
 		 */
-		return run(nullptr, d, d);
+		return run(nullptr, d);
 	}
 	
-	virtual t_return run(VirtualMachinePool<VirtualMachineState<t_x,t_return>>* pool, 
-					     Dispatchable<t_x,t_return>* dispatch, 
-						 Dispatchable<t_x,t_return>* loader) {
+	virtual t_return run(VirtualMachinePool<VirtualMachineState<t_x,t_return>>* pool, ProgramLoader* loader) {
 		/**
 		 * @brief Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
-		 * 			Here, dispatch is called to evaluate the function, and loader is called on recursion (allowing us to handle recursion
-		 * 			via a lexicon or just via a LOTHypothesis). NOTE that anything NOT built-in is handled via applyToVMS defined in Primitives.h
 		 * @param pool
-		 * @param dispatch
 		 * @param loader
 		 * @return 
 		 */
@@ -224,13 +229,11 @@ public:
 				FleetStatistics::vm_ops++;
 				
 				Instruction i = opstack.top(); opstack.pop();
-				if(i.is<CustomOp>()) {
-					status= dispatch->dispatch_custom(i, pool, this, loader);
-				}
-				else if(i.is<PrimitiveOp>()) {
+				
+				if(i.is<PrimitiveOp>()) {
 					
 					// call this fancy template magic to index into the global tuple variable PRIMITIVES
-					status = applyToVMS(PRIMITIVES, i.as<PrimitiveOp>(), this, pool, loader);
+					status = applyPRIMITIVEStoVMS(i.as<PrimitiveOp>(), this, pool, loader);
 				}
 				else {
 					assert(i.is<BuiltinOp>());
@@ -504,7 +507,6 @@ public:
 						}												
 						default: 
 						{
-							// otherwise call my dispatch and return if there is an error 
 							assert(0 && "Bad op name");
 						}
 					} // end switch
