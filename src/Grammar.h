@@ -192,12 +192,6 @@ public:
 		// add a single primitive -- unpacks the types to put the rule into the right place
 		add(Rule(nt<T>(), o, format, {nt<args>()...}, p, arg));
 	}
-//	
-	template<typename T, typename... args>
-	void add(CustomOp o, std::string format, const double p=1.0, const int arg=0) {
-		// add a single primitive -- unpacks the types to put the rule into the right place
-		add(Rule(nt<T>(), o, format, {nt<args>()...}, p, arg));
-	}
 
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -230,22 +224,6 @@ public:
 		assert(nt < N_NTs);
 		assert(k < rules[nt].size());
 		return const_cast<Rule*>(&rules[nt][k]);
-	}
-	
-	virtual Rule* get_rule(const nonterminal_t nt, const CustomOp o, const int a=0) {
-		/**
-		 * @brief Get rule of type nt with a given CustomOp and argument a
-		 * @param nt
-		 * @param o
-		 * @param a
-		 * @return 
-		 */
-		
-		for(auto& r: rules[nt]) {
-			if(r.instr.is_a(o) && r.instr.arg == a) 
-				return &r;
-		}
-		assert(0 && "*** Could not find rule");		
 	}
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const BuiltinOp o, const int a=0) {

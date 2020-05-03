@@ -98,3 +98,35 @@ struct HasPosterior : std::false_type { };
 
 template <typename T>
 struct HasPosterior <T, decltype((void) T::posterior, 0)> : std::true_type { };
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Check if something is a base class of something else
+// https://stackoverflow.com/questions/34672441/stdis-base-of-for-template-classes
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+template< template<typename...> class base, typename derived>
+struct is_base_of_template_impl {
+    template<typename... Ts>
+    static constexpr std::true_type  test(const base<Ts...> *);
+    static constexpr std::false_type test(...);
+    using type = decltype(test(std::declval<derived*>()));
+};
+
+template < template <typename...> class base,typename derived>
+using is_base_of_template = typename is_base_of_template_impl<base,derived>::type;
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Get the n'th type in a parameter pack
+// https://stackoverflow.com/questions/15953139/get-the-nth-type-of-variadic-template-templates
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+template<std::size_t N, typename... types>
+struct get_Nth_type {
+    using type = typename get_Nth_type<N - 1, types...>::type;
+};
+
+template<typename T, typename... types>
+struct get_Nth_type<0, T, types...> {
+    using type = T;
+};

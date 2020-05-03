@@ -53,8 +53,6 @@ double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to
 
 #define FLEET_GRAMMAR_TYPES S,bool,double,StrSet
 
-#define CUSTOM_OPS op_UniformSample
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// This is a global variable that provides a convenient way to wrap our primitives
 /// where we can pair up a function with a name, and pass that as a constructor
@@ -64,6 +62,25 @@ double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to
 
 #include "Primitives.h"
 #include "Builtins.h"
+//
+//#include "VirtualMachine/VirtualMachineState.h"
+//#include "VirtualMachine/VirtualMachinePool.h"
+//#include "Hypotheses/Interfaces/Dispatchable.h"
+
+// need to declare these so we can use them below
+template<typename X, typename Y> 
+class VirtualMachineState;
+template<typename X>    
+class VirtualMachinePool;
+template<typename X, typename Y>
+class Dispatchable;
+
+//extern template class VirtualMachineState<S,S>;
+//extern template class VirtualMachinePool<VirtualMachineState<S,S>>;
+//extern template class Dispatchable<S,S>;
+class VirtualMachineState<S,S>;
+class VirtualMachinePool<VirtualMachineState<S,S>>;
+class Dispatchable<S,S>;
 
 std::tuple PRIMITIVES = {
 	Primitive("tail(%s)",      +[](S& s)     -> void       { if(s.length()>0) s.erase(0); }), //sreturn (s.empty() ? S("") : s.substr(1,S::npos)); }), // REPLACE: if(s.length() >0) s.erase(0)
@@ -131,7 +148,24 @@ std::tuple PRIMITIVES = {
 	Builtin::If<StrSet>("if(%s,%s,%s)", 1.0),		
 	Builtin::If<double>("if(%s,%s,%s)", 1.0),		
 	Builtin::X<S>("x"),
-	Builtin::FlipP("flip(%s)", 10.0)
+	Builtin::FlipP("flip(%s)", 10.0),
+	
+	// Define our custom op here. To do this, we simply define a primitive whose first argument is vmstatus_t&. This servers as our return value
+	// since the return value of this lambda is needed by grammar to decide the nonterminal. If so, we must also take vms, pool, and loader.
+	Primitive("sample(%s)", +[](vmstatus_t &status, VirtualMachineState<S,S>* vms, VirtualMachinePool<VirtualMachineState<S,S>>* pool, Dispatchable<S,S>* loader) -> S {
+		// implement sampling from the set.
+		// to do this, we read the set and then push all the alternatives onto the stack
+		StrSet s = vms->template getpop<StrSet>();
+		
+		// now just push on each, along with their probability
+		// which is here decided to be uniform.
+		const double lp = (s.empty()?-infinity:-log(s.size()));
+		for(const auto& x : s) {
+			pool->copy_increment_push(vms,x,lp);
+		}
+
+		status = vmstatus_t::RANDOM_CHOICE; // if we don't continue with this context		
+	})
 };
 
 #include "Fleet.h" 
@@ -146,26 +180,7 @@ public:
 									   VirtualMachinePool<VirtualMachineState<S,S>>* pool, 
 									   VirtualMachineState<S,S>* vms, 
 									   Dispatchable<S,S>* loader) override {
-		assert(i.is<CustomOp>());
-		switch(i.as<CustomOp>()) {
-			case CustomOp::op_UniformSample: {
-					// implement sampling from the set.
-					// to do this, we read the set and then push all the alternatives onto the stack
-					StrSet s = vms->template getpop<StrSet>();
-					
-					// now just push on each, along with their probability
-					// which is here decided to be uniform.
-					const double lp = (s.empty()?-infinity:-log(s.size()));
-					for(const auto& x : s) {
-						pool->copy_increment_push(vms,x,lp);
-					}
-
-					// TODO: we can make this faster, like in flip, by following one of the paths?
-					return vmstatus_t::RANDOM_CHOICE; // if we don't continue with this context 
-			}
-			default: {assert(0 && "Should not get here!");}
-		}
-		return vmstatus_t::GOOD;
+		assert(false);
 	}
 
 	// if we want insert/delete proposals
@@ -330,8 +345,6 @@ int main(int argc, char** argv){
 		grammar.add<double>(BuiltinOp::op_P, s, (a==Fleet::Pdenom/2?5.0:1.0), a);
 	}
 	
-	grammar.add<S,StrSet>(CustomOp::op_UniformSample, "sample(%s)");
-
 	for(size_t a=0;a<nfactors;a++) {	
 		auto s = std::to_string(a);
 		grammar.add<S,S>(BuiltinOp::op_SAFE_RECURSE, S("F")+s+"(%s)", 1.0/nfactors, a);

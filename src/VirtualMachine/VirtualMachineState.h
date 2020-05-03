@@ -1,6 +1,12 @@
 #pragma once
 
 #include <type_traits>
+#include "Fleet.h"
+
+#include "Program.h"
+#include "Stack.h"
+#include "VirtualMachinePool.h"
+#include "Interfaces/Dispatchable.h"
 
 // Remove n from the stack
 void popn(Program& s, size_t n) {
@@ -224,10 +230,7 @@ public:
 				FleetStatistics::vm_ops++;
 				
 				Instruction i = opstack.top(); opstack.pop();
-				if(i.is<CustomOp>()) {
-					status= dispatch->dispatch_custom(i, pool, this, loader);
-				}
-				else if(i.is<PrimitiveOp>()) {
+				if(i.is<PrimitiveOp>()) {
 					
 					// call this fancy template magic to index into the global tuple variable PRIMITIVES
 					status = applyToVMS(PRIMITIVES, i.as<PrimitiveOp>(), this, pool, loader);

@@ -5,6 +5,9 @@
 
 #include "IO.h"
 
+// This disables unusued parameter warnings. 
+#define UNUSED(x) (void)(x) 
+
 typedef struct t_null {} t_null; // just a blank type
 
 template<typename T>

@@ -8,6 +8,7 @@
 
 #include "Instruction.h"
 #include "TemplateMagic.h"
+#include "Miscellaneous.h"
 
 /**
  * @class PrePrimitive
@@ -62,13 +63,16 @@ struct Primitive : PrePrimitive {
 	Primitive(std::string fmt, T(*f)(args...), double _p=1.0 ) :
 		format(fmt), call(f), op(op_counter++), p(_p) {
 			
+\
 		// check that each type here is in FLEET_GRAMMAR_TYPES
 		// or else we get obscure errors;
-		static_assert(contains_type<GrammarReturnType,FLEET_GRAMMAR_TYPES>(), 
-					  "*** Type is not in FLEET_GRAMMAR_TYPES");
-		
-		static_assert((contains_type<typename std::decay<args>::type,FLEET_GRAMMAR_TYPES>() && ...), 
-					  "*** Type is not in FLEET_GRAMMAR_TYPES");
+	
+		static_assert(contains_type<GrammarReturnType,FLEET_GRAMMAR_TYPES>() , 
+					"*** Type is not in FLEET_GRAMMAR_TYPES");
+	
+		static_assert(std::is_same<T,vmstatus_t&>::value or (contains_type<typename std::decay<args>::type,FLEET_GRAMMAR_TYPES>() && ...), 
+					"*** Type is not in FLEET_GRAMMAR_TYPES");
+	
 		
 		// Next, we check reference types. We are allowed to have a reference in a primitive 
 		// which allows us to modify a value on the stack without copying it out. This tends
@@ -80,7 +84,7 @@ struct Primitive : PrePrimitive {
 		
 		// TODO: ALSO ASSERT that the return type is the same as the reference (otherwise the grammar doesn't know what ot do)
 		// BUT Note we shouldn't actually return
-		if constexpr(sizeof...(args) > 0) {
+		if constexpr(sizeof...(args) > 0 and not std::is_same<T,vmstatus_t&>::value) {
 			static_assert(CountReferences<args...>::value <= 1, "*** Cannot contain more than one reference in arguments, since the reference is where we put the return value.");
 			static_assert(CheckReferenceIsFirst<args...>::value, "*** Reference must be the first argument so it will be popped from the stack last (in fact, it is left in place).");
 			static_assert( (CountReferences<args...>::value == 1) == std::is_same<T,void>::value, "*** If you have a reference, you must return void and vice versa.");
@@ -102,13 +106,29 @@ struct Primitive : PrePrimitive {
 		assert(not vms->template any_stacks_empty<typename std::decay<args>::type...>() &&
 				"*** Somehow we ended up with empty arguments -- something is deeply wrong and you're in big trouble."); 
 		
-		// We let the compiler decide whether to push or not -- there is no push if we have a reference arg,
-		// since that is left on the stack and we modify it. 		
-		if constexpr (sizeof...(args) == 0) {
+
+		if constexpr (std::is_same<get_Nth_type<0,args...>, vmstatus_t&>::value) { 
+			// FWE use the first argument, and whether its a VirtualMachineState, to check whether this primitive 
+			// acts on vms, poool, loader, or on its normal arguments 
+			// This is because the return type of this function is needed in the grammar!
+			
+			static_assert(sizeof...(args)==4 and std::is_same<get_Nth_type<1,args...>, V>::value and std::is_same<get_Nth_type<2,args...>, V>::value and std::is_same<get_Nth_type<3,args...>, V>::value, 
+					"*** When a primitive takes VMS as its first arugment, it must also take pool and loader as the next two");
+					
+			// and we call with vms, pool, loader, and note that we DO NOT push the result since its a vmstatus_t
+			vmstatus_t ret;
+			this->call(ret, vms, pool, loader);
+			return ret; 
+					
+		}
+		else if constexpr (sizeof...(args) == 0) {
+			UNUSED(vms); UNUSED(pool); UNUSED(loader);
+
 			// simple -- no arguments, no references, etc .
 			vms->push(this->call());
 		}
 		else {
+			UNUSED(vms); UNUSED(pool); UNUSED(loader);
 			
 			// Ok here we deal with order of evaluation of nodes. We evaluate RIGHT to LEFT so that the 
 			// rightmost args get popped from the stack first. This means that the last to be popped
@@ -180,11 +200,7 @@ struct Primitive : PrePrimitive {
 
 
 // This is some real template magic that lets us index into "PRIMITIVES" 
-// by index at runtime to call vsm. Otherwise, we can't do this. 
-// For instance, in LOTHypothesis this is used as
-//	abort_t dispatch_rule(Instruction i, VirtualMachinePool<Object, bool>* pool, VirtualMachineState<Object,bool>& vms, Dispatchable<Object,bool>* loader ) {
-//		return apply(PRIMITIVES, (size_t)i.getCustom(), &vms);
-// (Otherwise you can't index into a tuple at runtime)
+// by index at runtime to call vsm. 
 // This is from here:
 // https://stackoverflow.com/questions/21062864/optimal-way-to-access-stdtuple-element-in-runtime-by-index
 namespace Fleet::applyVMS { 
