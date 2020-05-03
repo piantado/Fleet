@@ -65,14 +65,6 @@ double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to
 //
 #include "VirtualMachine/VirtualMachineState.h"
 #include "VirtualMachine/VirtualMachinePool.h"
-#include "Hypotheses/Interfaces/Dispatchable.h"
-
-
-//extern template class VirtualMachineState<S,S>;
-//extern template class VirtualMachinePool<VirtualMachineState<S,S>>;
-//extern template class Dispatchable<S,S>;
-//class VirtualMachineState<S,S>;
-//class VirtualMachinePool<VirtualMachineState<S,S>>;
 
 std::tuple PRIMITIVES = {
 	Primitive("tail(%s)",      +[](S& s)     -> void       { if(s.length()>0) s.erase(0); }), //sreturn (s.empty() ? S("") : s.substr(1,S::npos)); }), // REPLACE: if(s.length() >0) s.erase(0)
@@ -142,7 +134,7 @@ std::tuple PRIMITIVES = {
 	// Define our custom op here. To do this, we simply define a primitive whose first argument is vmstatus_t&. This servers as our return value
 	// since the return value of this lambda is needed by grammar to decide the nonterminal. If so, we must also take vms, pool, and loader.
 	Primitive("sample(%s)", +[](StrSet s) -> S { return S(); }, 
-						    +[](VirtualMachineState<S,S>* vms, VirtualMachinePool<VirtualMachineState<S,S>>* pool, Dispatchable<S,S>* loader) -> vmstatus_t {
+						    +[](VirtualMachineState<S,S>* vms, VirtualMachinePool<VirtualMachineState<S,S>>* pool, ProgramLoader* loader) -> vmstatus_t {
 		// implement sampling from the set.
 		// to do this, we read the set and then push all the alternatives onto the stack
 		StrSet s = vms->template getpop<StrSet>();

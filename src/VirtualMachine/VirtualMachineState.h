@@ -4,7 +4,6 @@
 
 #include "Program.h"
 #include "Stack.h"
-#include "Interfaces/Dispatchable.h"
 #include "Statistics/FleetStatistics.h"
 
 // Remove n from the stack
@@ -204,24 +203,19 @@ public:
 		return this->all_stacks_empty<FLEET_GRAMMAR_TYPES>();
 	}
 	
-	virtual t_return run(Dispatchable<t_x,t_return>* d) {
+	virtual t_return run(ProgramLoader* d) {
 		/**
 		 * @brief Defaultly run a non-recursive hypothesis
 		 * @param d
 		 * @return 
 		 */
-		return run(nullptr, d, d);
+		return run(nullptr, d);
 	}
 	
-	virtual t_return run(VirtualMachinePool<VirtualMachineState<t_x,t_return>>* pool, 
-					     Dispatchable<t_x,t_return>* dispatch, 
-						 Dispatchable<t_x,t_return>* loader) {
+	virtual t_return run(VirtualMachinePool<VirtualMachineState<t_x,t_return>>* pool, ProgramLoader* loader) {
 		/**
 		 * @brief Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
-		 * 			Here, dispatch is called to evaluate the function, and loader is called on recursion (allowing us to handle recursion
-		 * 			via a lexicon or just via a LOTHypothesis). NOTE that anything NOT built-in is handled via applyToVMS defined in Primitives.h
 		 * @param pool
-		 * @param dispatch
 		 * @param loader
 		 * @return 
 		 */
@@ -513,7 +507,6 @@ public:
 						}												
 						default: 
 						{
-							// otherwise call my dispatch and return if there is an error 
 							assert(0 && "Bad op name");
 						}
 					} // end switch

@@ -2,8 +2,11 @@
 
 #include <limits.h>
 
-#include "LOTHypothesis.h"
+
 #include "Hash.h"
+#include "Hypotheses/Interfaces/Bayesable.h"
+#include "Hypotheses/Interfaces/MCMCable.h"
+#include "Hypotheses/Interfaces/Searchable.h"
 
 
 /**
@@ -17,7 +20,7 @@
 
 template<typename HYP, typename INNER, typename t_input, typename t_output, typename t_datum=default_datum<t_input, t_output>>
 class Lexicon : public MCMCable<HYP,t_datum>,
-				public Dispatchable<t_input,t_output>,
+				public ProgramLoader,
 				public Searchable<HYP,t_input,t_output>
 {
 		// Store a lexicon of type INNER elements

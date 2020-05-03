@@ -138,11 +138,6 @@ public:
 #include "Miscellaneous.h"
 #include "IntegerizedStack.h"
 
-#include "Hypotheses/Interfaces/Dispatchable.h"
-#include "Hypotheses/Interfaces/Bayesable.h"
-#include "Hypotheses/Interfaces/MCMCable.h"
-#include "Hypotheses/Interfaces/Searchable.h"
-
 #include "Rule.h"
 #include "VirtualMachine/VirtualMachinePool.h"
 #include "VirtualMachine/VirtualMachineState.h"
