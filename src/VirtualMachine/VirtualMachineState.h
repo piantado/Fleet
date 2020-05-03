@@ -1,17 +1,22 @@
 #pragma once
 
 #include <type_traits>
-#include "Fleet.h"
 
 #include "Program.h"
 #include "Stack.h"
-#include "VirtualMachinePool.h"
 #include "Interfaces/Dispatchable.h"
+#include "Statistics/FleetStatistics.h"
 
 // Remove n from the stack
 void popn(Program& s, size_t n) {
 	for(size_t i=0;i<n;i++) s.pop();
 }
+
+
+namespace FleetStatistics {}
+template<typename X> class VirtualMachinePool;
+extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
+extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
 
 /**
  * @class VirtualMachineState
@@ -230,10 +235,11 @@ public:
 				FleetStatistics::vm_ops++;
 				
 				Instruction i = opstack.top(); opstack.pop();
+				
 				if(i.is<PrimitiveOp>()) {
 					
 					// call this fancy template magic to index into the global tuple variable PRIMITIVES
-					status = applyToVMS(PRIMITIVES, i.as<PrimitiveOp>(), this, pool, loader);
+					status = applyPRIMITIVEStoVMS(i.as<PrimitiveOp>(), this, pool, loader);
 				}
 				else {
 					assert(i.is<BuiltinOp>());

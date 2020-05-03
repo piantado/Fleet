@@ -106,7 +106,7 @@ struct Primitive : PrePrimitive {
 	
 	template<typename V, typename P, typename L>
 	constexpr Primitive(std::string fmt, T(*_call)(args...), vmstatus_t _dispatch(V*, P*, L*), double _p=1.0 ) :
-		format(fmt), call(_call), op(op_counter++), p(_p), is_dispatch(true), dispatch(_dispatch) {
+		format(fmt), call(_call), dispatch(_dispatch), op(op_counter++), p(_p), is_dispatch(true) {
 			
 		// check that each type here is in FLEET_GRAMMAR_TYPES
 		// or else we get obscure errors;
@@ -117,22 +117,7 @@ struct Primitive : PrePrimitive {
 		static_assert(std::is_same<T,vmstatus_t&>::value or (contains_type<typename std::decay<args>::type,FLEET_GRAMMAR_TYPES>() && ...), 
 					"*** Type is not in FLEET_GRAMMAR_TYPES");
 	
-		
-		// Next, we check reference types. We are allowed to have a reference in a primitive 
-		// which allows us to modify a value on the stack without copying it out. This tends
-		// to be faster for some data types. The requirements are:
-		// (i) there is only one reference type (since it corresponds to the return type), and 
-		// (ii) the reference is the FIRST argument to the function. This is because the first argument is
-		//		typically the last to be evaluated (TODO: We should fix this in the future because its not true on all compilers)
-		// (iii) if we return void, then we must have a reference (for return value) and vice versa
-		
-		// TODO: ALSO ASSERT that the return type is the same as the reference (otherwise the grammar doesn't know what ot do)
-		// BUT Note we shouldn't actually return
-		if constexpr(sizeof...(args) > 0 and not std::is_same<T,vmstatus_t&>::value) {
-			static_assert(CountReferences<args...>::value <= 1, "*** Cannot contain more than one reference in arguments, since the reference is where we put the return value.");
-			static_assert(CheckReferenceIsFirst<args...>::value, "*** Reference must be the first argument so it will be popped from the stack last (in fact, it is left in place).");
-			static_assert( (CountReferences<args...>::value == 1) == std::is_same<T,void>::value, "*** If you have a reference, you must return void and vice versa.");
-		}
+		static_assert(CountReferences<args...>::value == 0, "*** Cannot contain any references in VMS primitives");
 		
 	}
 	
@@ -152,12 +137,10 @@ struct Primitive : PrePrimitive {
 		
 
 		if (is_dispatch) { 
-			assert((sizeof...(args)==4 and std::is_same<get_Nth_type<1,args...>, V>::value and std::is_same<get_Nth_type<2,args...>, P>::value and std::is_same<get_Nth_type<3,args...>, L>::value) && 
-					"*** When a primitive takes VMS as its first arugment, it must also take pool and loader as the next two");
-					
 			// and we call with vms, pool, loader, and note that we DO NOT push the result since its a vmstatus_t
 			auto f = std::any_cast<vmstatus_t(*)(V*, P*, L*)>(this->dispatch);
-			return f(vms, pool, loader);					
+			return f(vms, pool, loader);	
+				
 		}
 		else {
 		
@@ -238,39 +221,5 @@ struct Primitive : PrePrimitive {
 	}
 	
 };
-
-
-
-// This is some real template magic that lets us index into "PRIMITIVES" 
-// by index at runtime to call vsm. 
-// This is from here:
-// https://stackoverflow.com/questions/21062864/optimal-way-to-access-stdtuple-element-in-runtime-by-index
-namespace Fleet::applyVMS { 
-	
-	template<int n, class T, typename V, typename P, typename L>
-	inline vmstatus_t applyToVMS_one(T& p, V* vms, P* pool, L* loader) {
-		return std::get<n>(p).VMScall(vms, pool, loader);
-	}
-
-	template<class T, typename V, typename P, typename L, size_t... Is>
-	inline vmstatus_t applyToVMS(T& p, int index, V* vms, P* pool, L* loader, std::index_sequence<Is...>) {
-		using FT = vmstatus_t(T&, V*, P*, L*);
-		thread_local static constexpr FT* arr[] = { &applyToVMS_one<Is,T,V,P,L>... }; //thread_local here seems to matter a lot
-		return arr[index](p, vms, pool, loader);
-	}
-}
-template<class T, typename V, typename P, typename L>
-inline vmstatus_t applyToVMS(T& p, int index, V* vms, P* pool, L* loader) {
-	
-	// We need to put a check in here to ensure that nobody tries to do grammar.add(Primtive(...)) because
-	// then it won't be included in our standard PRIMITIVES table, and so it cannot be called in this way
-	// This is a problem in the library that should be addressed.
-	assert( (size_t)index < std::tuple_size<T>::value && "*** You cannot index a higher primitive op than the size of PRIMITIVES. Perhaps you used grammar.add(Primitive(...)), which is not allowed, instead of putting it into the tuple?");
-	assert(index >= 0);
-	
-	
-    return Fleet::applyVMS::applyToVMS(p, index, vms, pool, loader, std::make_index_sequence<std::tuple_size<T>::value>{});
-
-}
 
 

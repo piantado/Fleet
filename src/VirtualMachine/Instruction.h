@@ -20,6 +20,11 @@ enum class vmstatus_t {GOOD=0, ERROR, RECURSION_DEPTH, RANDOM_CHOICE, RANDOM_CHO
  */
 class VMSRuntimeError_t : public std::exception {} VMSRuntimeError;
 
+namespace Fleet {
+	// Not sure Where to put this...
+	static int Pdenom = 24; // the denominator for probabilities in op_P --  we're going to enumerate fractions in 24ths -- just so we can get thirds, quarters, fourths		
+}
+
 // These operations are build-in and implemented in VirtualMachineState
 // convenient to make op_NOP=0, so that the default initialization is a NOP
 enum class BuiltinOp {

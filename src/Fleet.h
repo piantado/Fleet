@@ -88,30 +88,9 @@ const std::string FLEET_VERSION = "0.0.92";
 /// Tracking Fleet statistics 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-namespace FleetStatistics {
-	// Running MCMC/MCTS updates these standard statistics
-	
-	std::atomic<uintmax_t> posterior_calls(0);	
-	std::atomic<uintmax_t> hypothesis_births(0);  // how many total hypotheses have been created? -- useful for tracking when we found a solution
-	std::atomic<uintmax_t> vm_ops(0);	
-	std::atomic<uintmax_t> mcmc_proposal_calls(0);
-	std::atomic<uintmax_t> mcmc_acceptance_count(0);
-	std::atomic<uintmax_t> global_sample_count(0);
-	
-	void reset() {
-		posterior_calls = 0;
-		hypothesis_births = 0;
-		vm_ops = 0;
-		mcmc_proposal_calls = 0;
-		mcmc_acceptance_count = 0;
-		global_sample_count = 0;
-	}
-}
 
 namespace Fleet { 
 
-
-	static int Pdenom = 24; // the denominator for probabilities in op_P --  we're going to enumerate fractions in 24ths -- just so we can get thirds, quarters, fourths	
 
 	
 }
@@ -147,6 +126,7 @@ public:
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We defaultly include all of the major requirements for Fleet
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include "Statistics/FleetStatistics.h"
 
 #include "Timing.h"
 #include "Program.h"
@@ -182,6 +162,7 @@ public:
 
 #include "Top.h"
 #include "Primitives.h"
+
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Actual initialization

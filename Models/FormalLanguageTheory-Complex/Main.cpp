@@ -63,13 +63,9 @@ double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to
 #include "Primitives.h"
 #include "Builtins.h"
 //
-//#include "VirtualMachine/VirtualMachineState.h"
-//#include "VirtualMachine/VirtualMachinePool.h"
+#include "VirtualMachine/VirtualMachineState.h"
+#include "VirtualMachine/VirtualMachinePool.h"
 #include "Hypotheses/Interfaces/Dispatchable.h"
-
-
-template<typename X, typename Y> class VirtualMachineState;
-template<typename X> class VirtualMachinePool;
 
 
 //extern template class VirtualMachineState<S,S>;
@@ -139,19 +135,16 @@ std::tuple PRIMITIVES = {
 		std::set_difference(s.begin(), s.end(), x.begin(), x.end(), std::inserter(output, output.begin()));
 		return output;		
 	}),	
-	// And add built-ins:
-	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
-	Builtin::If<StrSet>("if(%s,%s,%s)", 1.0),		
-	Builtin::If<double>("if(%s,%s,%s)", 1.0),		
-	Builtin::X<S>("x"),
-	Builtin::FlipP("flip(%s)", 10.0),
+	
+	
+	// NOTE: All custom ops must come before Builtins 
 	
 	// Define our custom op here. To do this, we simply define a primitive whose first argument is vmstatus_t&. This servers as our return value
 	// since the return value of this lambda is needed by grammar to decide the nonterminal. If so, we must also take vms, pool, and loader.
 	Primitive("sample(%s)", +[](StrSet s) -> S { return S(); }, 
 						    +[](VirtualMachineState<S,S>* vms, VirtualMachinePool<VirtualMachineState<S,S>>* pool, Dispatchable<S,S>* loader) -> vmstatus_t {
 		// implement sampling from the set.
-//		// to do this, we read the set and then push all the alternatives onto the stack
+		// to do this, we read the set and then push all the alternatives onto the stack
 		StrSet s = vms->template getpop<StrSet>();
 		
 		// now just push on each, along with their probability
@@ -162,7 +155,16 @@ std::tuple PRIMITIVES = {
 		}
 
 		return vmstatus_t::RANDOM_CHOICE; // if we don't continue with this context		
-	})
+	}),
+	
+	
+	// And add built-ins:
+	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
+	Builtin::If<StrSet>("if(%s,%s,%s)", 1.0),		
+	Builtin::If<double>("if(%s,%s,%s)", 1.0),		
+	Builtin::X<S>("x"),
+	Builtin::FlipP("flip(%s)", 10.0)
+
 };
 
 #include "Fleet.h" 
@@ -275,6 +277,8 @@ MyHypothesis::t_data prdata; // used for computing precision and recall -- in ca
 S current_data = "";
 bool long_output = false; // if true, we allow extra strings, recursions etc. on output
 
+// Must include thi slast 
+#include "VirtualMachine/applyPrimitives.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Main
