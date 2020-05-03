@@ -86,7 +86,7 @@ public:
 		 */
  
 		if(wouldIadd(x->lp + lpinc)) {	
-			auto s = new VirtualMachineState(*x); // copy
+			auto s = new VMState(*x); // copy
 			s->template push<T>(v); // add v
 			s->increment_lp(lpinc);
 			this->push(s);	

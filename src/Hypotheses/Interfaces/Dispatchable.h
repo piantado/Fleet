@@ -1,5 +1,7 @@
 #pragma once 
 
+#include "Program.h"
+
 /**
  * @class Dispatchable
  * @author steven piantadosi

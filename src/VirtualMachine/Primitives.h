@@ -56,11 +56,11 @@ struct Primitive : PrePrimitive {
 	template<typename V, typename P, typename L>
 	vmstatus_t dispatch(V*, P*, L*);
 	
-	bool is_dispatch; // do we use dispatch (or call?)
 	
 	PrimitiveOp op;
 	double p;
-
+	bool is_dispatch; // do we use dispatch (or call?)
+	
 	// First we figure out what the return type of the function is. This determines
 	// where we put it in the grammar (e.g. which nonterminal it is associated with).
 	// When it's a simple function with no reference, this is just T, but when

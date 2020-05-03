@@ -63,17 +63,10 @@ double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to
 #include "Primitives.h"
 #include "Builtins.h"
 //
-//#include "VirtualMachine/VirtualMachineState.h"
-//#include "VirtualMachine/VirtualMachinePool.h"
-//#include "Hypotheses/Interfaces/Dispatchable.h"
+#include "VirtualMachine/VirtualMachineState.h"
+#include "VirtualMachine/VirtualMachinePool.h"
+#include "Hypotheses/Interfaces/Dispatchable.h"
 
-// need to declare these so we can use them below
-template<typename X, typename Y> 
-class VirtualMachineState;
-template<typename X>    
-class VirtualMachinePool;
-template<typename X, typename Y>
-class Dispatchable;
 
 //extern template class VirtualMachineState<S,S>;
 //extern template class VirtualMachinePool<VirtualMachineState<S,S>>;

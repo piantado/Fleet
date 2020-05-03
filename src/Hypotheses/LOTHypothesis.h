@@ -3,6 +3,8 @@
 
 #include <string.h>
 #include "Proposers.h"
+#include "VirtualMachine/VirtualMachineState.h"
+#include "VirtualMachine/VirtualMachinePool.h"
 
 template<typename HYP, 
 		 typename t_input, typename t_output, 
