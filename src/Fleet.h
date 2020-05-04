@@ -84,11 +84,11 @@ const std::string FLEET_VERSION = "0.0.93";
 #include "VirtualMachine/VirtualMachinePool.h"
 #include "VirtualMachine/VirtualMachineState.h"
 #include "Node.h"
-#include "IO.h"
 #include "Grammar.h"
 #include "CaseMacros.h"
 #include "DiscreteDistribution.h"
 
+#include "IO.h"
 #include "Hypotheses/LOTHypothesis.h"
 #include "Hypotheses/Lexicon.h"
 

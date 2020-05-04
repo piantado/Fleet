@@ -1,7 +1,7 @@
 include ../../Fleet.mk
 
 all:
-	g++-8 -o main Main.cpp -lm -O2 $(FLEET_FLAGS) $(FLEET_INCLUDE)
+	g++ -o main Main.cpp -lm -O2 $(FLEET_FLAGS) $(FLEET_INCLUDE)
 	
 profiled:
 	g++ -o main Main.cpp -lm -O2 -pg -p -g $(FLEET_FLAGS) $(FLEET_INCLUDE)

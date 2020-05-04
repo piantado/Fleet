@@ -30,21 +30,25 @@ const size_t MAX_PR_LINES = 1000000;
 
 const size_t RESTART = 0;
 const size_t NTEMPS = 20;
-//const size_t MAXTEMP = 50000.0; // set to be the data size
 unsigned long SWAP_EVERY = 500; // ms
 
 std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
 //std::vector<S> data_amounts={"1000"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
-
-
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 unsigned long MAX_STEPS_PER_FACTOR   = 2048; //4096;  
 unsigned long MAX_OUTPUTS_PER_FACTOR = 512; //512; - make it bigger than
 unsigned long PRINT_STRINGS = 128; // print at most this many strings for each hypothesis
 double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -25 to catch some less frequent things that happen by chance
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// We declare these because we use a custom primitive below, which needs them in the 
+/// same order as the grammar
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+#define MY_TYPES S,bool,double,StrSet
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// This is a global variable that provides a convenient way to wrap our primitives
@@ -56,8 +60,8 @@ double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to
 #include "Primitives.h"
 #include "Builtins.h"
 //
-//#include "VirtualMachine/VirtualMachineState.h"
-//#include "VirtualMachine/VirtualMachinePool.h"
+#include "VirtualMachine/VirtualMachineState.h"
+#include "VirtualMachine/VirtualMachinePool.h"
 
 std::tuple PRIMITIVES = {
 	Primitive("tail(%s)",      +[](S& s)     -> void       { if(s.length()>0) s.erase(0); }), //sreturn (s.empty() ? S("") : s.substr(1,S::npos)); }), // REPLACE: if(s.length() >0) s.erase(0)
@@ -126,22 +130,21 @@ std::tuple PRIMITIVES = {
 	
 	// Define our custom op here. To do this, we simply define a primitive whose first argument is vmstatus_t&. This servers as our return value
 	// since the return value of this lambda is needed by grammar to decide the nonterminal. If so, we must also take vms, pool, and loader.
-//	Primitive("sample(%s)", +[](StrSet s) -> S { return S(); }, 
-//						    +[](VirtualMachineState<S,S>* vms, VirtualMachinePool<VirtualMachineState<S,S>>* pool, ProgramLoader* loader) -> vmstatus_t {
-//		// implement sampling from the set.
-//		// to do this, we read the set and then push all the alternatives onto the stack
-//		StrSet s = vms->template getpop<StrSet>();
-//		
-//		// now just push on each, along with their probability
-//		// which is here decided to be uniform.
-//		const double lp = (s.empty()?-infinity:-log(s.size()));
-//		for(const auto& x : s) {
-//			pool->copy_increment_push(vms,x,lp);
-//		}
-//
-//		return vmstatus_t::RANDOM_CHOICE; // if we don't continue with this context		
-//	}),
-//	
+	Primitive("sample(%s)", +[](StrSet s) -> S { return S(); }, 
+						    +[](VirtualMachineState<S,S,MY_TYPES>* vms, VirtualMachinePool<VirtualMachineState<S,S,MY_TYPES>>* pool, ProgramLoader* loader) -> vmstatus_t {
+		// implement sampling from the set.
+		// to do this, we read the set and then push all the alternatives onto the stack
+		StrSet s = vms->template getpop<StrSet>();
+		
+		// now just push on each, along with their probability
+		// which is here decided to be uniform.
+		const double lp = (s.empty()?-infinity:-log(s.size()));
+		for(const auto& x : s) {
+			pool->copy_increment_push(vms,x,lp);
+		}
+
+		return vmstatus_t::RANDOM_CHOICE; // if we don't continue with this context		
+	}),
 	
 	// And add built-ins:
 	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
@@ -158,8 +161,8 @@ std::tuple PRIMITIVES = {
  
 #include "Grammar.h"
 
-class MyGrammar : public Grammar<S,bool,double,StrSet> {
-	using Super = Grammar<S,bool,double,StrSet>;
+class MyGrammar : public Grammar<MY_TYPES> {
+	using Super = Grammar<MY_TYPES>;
 	using Super::Super;
 };
 
@@ -169,8 +172,7 @@ class MyGrammar : public Grammar<S,bool,double,StrSet> {
 
 #include "LOTHypothesis.h"
 
-
-class InnerHypothesis final : public  LOTHypothesis<InnerHypothesis,S,S,MyGrammar> {
+class InnerHypothesis final : public LOTHypothesis<InnerHypothesis,S,S,MyGrammar> {
 public:
 	using Super = LOTHypothesis<InnerHypothesis,S,S,MyGrammar>;
 	using Super::Super; // inherit constructors
