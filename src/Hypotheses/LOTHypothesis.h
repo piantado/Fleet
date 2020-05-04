@@ -14,7 +14,8 @@
 #include "VirtualMachine/VirtualMachineState.h"
 
 template<typename HYP, 
-		 typename t_input, typename t_output, 
+		 typename t_input, 
+		 typename t_output, 
 		 typename GrammarType,
 		 typename VM_TYPES_TUPLE=typename GrammarType::GrammarTypesAsTuple, // used for deducing VM_TYPES in VirtualMachineState
 		 typename _t_datum=default_datum<t_input, t_output>, 
@@ -111,8 +112,6 @@ public:
 	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err, ProgramLoader* loader, 
 				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
 		
-		//VirtualMachinePool<VirtualMachineState<t_input,t_output>> pool(max_steps, max_outputs, minlp);
-
 		auto vms = new VirtualMachineState(x, err, grammarTypeTuple );	
 
 		VirtualMachinePool<typename std::remove_reference<decltype(*vms)>::type> pool(max_steps, max_outputs, minlp); // vms is passed here just to deduce the type

@@ -4,7 +4,7 @@
 #include "DiscreteDistribution.h"
 
 #include <vector>
-
+#include <queue>
 
 /**
  * @class VirtualMachinePool

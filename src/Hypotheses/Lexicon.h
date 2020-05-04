@@ -18,8 +18,10 @@
  * 		  Each of these components is called a "factor." 
  */
 
-template<typename HYP, typename INNER, 
-		 typename t_input, typename t_output, 
+template<typename HYP, 
+		 typename INNER, 
+		 typename t_input,
+		 typename t_output, 
 		 typename t_datum=default_datum<t_input, t_output>>
 class Lexicon : public MCMCable<HYP,t_datum>,
 				public ProgramLoader,

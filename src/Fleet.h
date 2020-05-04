@@ -56,30 +56,6 @@
 
 #pragma once 
 
-#include "stdlib.h"
-#include "stdio.h"
-#include "math.h"
-#include <iostream>
-#include <getopt.h>
-#include <pthread.h>
-#include <unistd.h>
-#include <limits.h>
-#include <vector>
-#include <queue>
-#include <tuple>
-#include <map>
-#include <atomic>
-#include <assert.h>
-#include <string>
-#include <sstream>
-#include <array>
-#include <memory>
-#include <pthread.h>
-#include <thread>        
-#include <cstdio>
-#include <stdexcept>
-#include <random>
-
 #include <sys/resource.h> // just for setting priority defaulty 
 
 const std::string FLEET_VERSION = "0.0.93";
@@ -130,6 +106,8 @@ const std::string FLEET_VERSION = "0.0.93";
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Actual initialization
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include <unistd.h>
 
 void Fleet_initialize() {
 	

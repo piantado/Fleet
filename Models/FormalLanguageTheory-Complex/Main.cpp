@@ -47,13 +47,6 @@ double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// These define all of the types that are used in the grammar.
-/// This macro must be defined before we import Fleet.
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#define FLEET_GRAMMAR_TYPES S,bool,double,StrSet
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// This is a global variable that provides a convenient way to wrap our primitives
 /// where we can pair up a function with a name, and pass that as a constructor
 /// to the grammar. We need a tuple here because Primitive has a bunch of template
@@ -63,8 +56,8 @@ double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to
 #include "Primitives.h"
 #include "Builtins.h"
 //
-#include "VirtualMachine/VirtualMachineState.h"
-#include "VirtualMachine/VirtualMachinePool.h"
+//#include "VirtualMachine/VirtualMachineState.h"
+//#include "VirtualMachine/VirtualMachinePool.h"
 
 std::tuple PRIMITIVES = {
 	Primitive("tail(%s)",      +[](S& s)     -> void       { if(s.length()>0) s.erase(0); }), //sreturn (s.empty() ? S("") : s.substr(1,S::npos)); }), // REPLACE: if(s.length() >0) s.erase(0)
@@ -133,22 +126,22 @@ std::tuple PRIMITIVES = {
 	
 	// Define our custom op here. To do this, we simply define a primitive whose first argument is vmstatus_t&. This servers as our return value
 	// since the return value of this lambda is needed by grammar to decide the nonterminal. If so, we must also take vms, pool, and loader.
-	Primitive("sample(%s)", +[](StrSet s) -> S { return S(); }, 
-						    +[](VirtualMachineState<S,S>* vms, VirtualMachinePool<VirtualMachineState<S,S>>* pool, ProgramLoader* loader) -> vmstatus_t {
-		// implement sampling from the set.
-		// to do this, we read the set and then push all the alternatives onto the stack
-		StrSet s = vms->template getpop<StrSet>();
-		
-		// now just push on each, along with their probability
-		// which is here decided to be uniform.
-		const double lp = (s.empty()?-infinity:-log(s.size()));
-		for(const auto& x : s) {
-			pool->copy_increment_push(vms,x,lp);
-		}
-
-		return vmstatus_t::RANDOM_CHOICE; // if we don't continue with this context		
-	}),
-	
+//	Primitive("sample(%s)", +[](StrSet s) -> S { return S(); }, 
+//						    +[](VirtualMachineState<S,S>* vms, VirtualMachinePool<VirtualMachineState<S,S>>* pool, ProgramLoader* loader) -> vmstatus_t {
+//		// implement sampling from the set.
+//		// to do this, we read the set and then push all the alternatives onto the stack
+//		StrSet s = vms->template getpop<StrSet>();
+//		
+//		// now just push on each, along with their probability
+//		// which is here decided to be uniform.
+//		const double lp = (s.empty()?-infinity:-log(s.size()));
+//		for(const auto& x : s) {
+//			pool->copy_increment_push(vms,x,lp);
+//		}
+//
+//		return vmstatus_t::RANDOM_CHOICE; // if we don't continue with this context		
+//	}),
+//	
 	
 	// And add built-ins:
 	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
@@ -159,23 +152,37 @@ std::tuple PRIMITIVES = {
 
 };
 
-#include "Fleet.h" 
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Declare a grammar
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+#include "Grammar.h"
+
+class MyGrammar : public Grammar<S,bool,double,StrSet> {
+	using Super = Grammar<S,bool,double,StrSet>;
+	using Super::Super;
+};
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Declare our hypothesis type
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include "LOTHypothesis.h"
 
 
-class InnerHypothesis final : public  LOTHypothesis<InnerHypothesis,S,S> {
+class InnerHypothesis final : public  LOTHypothesis<InnerHypothesis,S,S,MyGrammar> {
 public:
-	using Super = LOTHypothesis<InnerHypothesis,S,S>;
+	using Super = LOTHypothesis<InnerHypothesis,S,S,MyGrammar>;
 	using Super::Super; // inherit constructors
 };
 
+#include "Lexicon.h"
 
 class MyHypothesis final : public Lexicon<MyHypothesis, InnerHypothesis, S, S> {
 public:	
 	
 	using Super = Lexicon<MyHypothesis, InnerHypothesis, S, S>;
-	
-	MyHypothesis()                       : Super()   {}
-	//MyHypothesis(const MyHypothesis& h)  : Super(h)  {}
+	using Super::Super;
 
 	virtual double compute_prior() override {
 		// since we aren't searching over nodes, we are going to enforce a prior that requires
@@ -184,7 +191,6 @@ public:
 		return prior = (check_reachable() ? Lexicon<MyHypothesis,InnerHypothesis,S,S>::compute_prior() : -infinity);
 	}
 	
-
 
 	/********************************************************
 	 * Calling
@@ -199,8 +205,6 @@ public:
 		size_t i = factors.size()-1; 
 		return factors[i].call(x, err, this, MAX_STEPS_PER_FACTOR, MAX_OUTPUTS_PER_FACTOR,MIN_LP); 
 	}
-	
-	 
 	 
 	 // We assume input,output with reliability as the number of counts that input was seen going to that output
 	 virtual double compute_single_likelihood(const t_datum& datum) override { assert(0); }
@@ -262,8 +266,6 @@ public:
 };
 
 
-
-
 std::string prdata_path = ""; 
 MyHypothesis::t_data prdata; // used for computing precision and recall -- in case we want to use more strings?
 S current_data = "";
@@ -273,8 +275,7 @@ bool long_output = false; // if true, we allow extra strings, recursions etc. on
 // Main
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-// Must include this last 
-#include "VirtualMachine/applyPrimitives.h"
+#include "Fleet.h" 
 
 int main(int argc, char** argv){ 
 	
@@ -310,7 +311,7 @@ int main(int argc, char** argv){
 	// Define the grammar
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	Grammar grammar(PRIMITIVES);
+	MyGrammar grammar(PRIMITIVES);
 		
 	for(int a=1;a<=Fleet::Pdenom/2;a++) { // pack probability into arg, out of 20, since it never needs to be greater than 1/2	
 		std::string s = str(a/std::gcd(a,Fleet::Pdenom)) + "/" + str(Fleet::Pdenom/std::gcd(a,Fleet::Pdenom)); // std::to_string(double(a)/24.0).substr(1,4); // substr just truncates lesser digits

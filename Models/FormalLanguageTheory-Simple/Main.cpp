@@ -214,10 +214,10 @@ int main(int argc, char** argv){
 	tic();
 	c.run(Control(mcmc_steps, runtime, nthreads));
 	tic();
-//	
-//	for(auto& h : top.values()) {
-//		COUT top[h] TAB h.posterior TAB h.prior TAB h.likelihood TAB h.string() ENDL;		
-//	}
+	
+	for(auto& h : top.values()) {
+		COUT top[h] TAB h.posterior TAB h.prior TAB h.likelihood TAB h.string() ENDL;		
+	}
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
