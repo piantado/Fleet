@@ -365,14 +365,14 @@ int main(int argc, char** argv){
 		master_samples[ss] << h;
 	};
  
-//	MyHypothesis h0(&grammar);
-//	MyMCTS m(explore, h0, &mydata);
-//	root = &m;
-//	tic();
-//	m.parallel_search(Control(mcts_steps, runtime, nthreads));
-//	tic();
-//	
-//	m.print(tree_path.c_str());
+	MyHypothesis h0(&grammar);
+	MyMCTS m(explore, h0, &mydata);
+	root = &m;
+	tic();
+	m.parallel_search(Control(mcts_steps, runtime, nthreads));
+	tic();
+	
+	m.print(tree_path.c_str());
 
 //	std::function cb = callback;
 //	ChainPool samp(h0, &mydata, cb, nchains, true);
@@ -386,12 +386,12 @@ int main(int argc, char** argv){
 //	samp.run(mcmc_steps, runtime, .25, 3.00); 
 //	tic();
 
-	MyHypothesis h0(&grammar);
-	h0 = h0.restart();
-	MCMCChain samp(h0, &mydata, cb);
-	tic();
-	samp.run(Control(mcts_steps, runtime)); //30000);		
-	tic();
+//	MyHypothesis h0(&grammar);
+//	h0 = h0.restart();
+//	MCMCChain samp(h0, &mydata, cb);
+//	tic();
+//	samp.run(Control(mcts_steps, runtime)); //30000);		
+//	tic();
 
 	
 	//------------------

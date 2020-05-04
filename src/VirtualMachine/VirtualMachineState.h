@@ -204,20 +204,23 @@ public:
 		return this->all_stacks_empty<VM_TYPES...>();
 	}
 	
-	template<typename LoaderType>
-	t_return run(LoaderType* d) {
+	template<typename HYP>
+	t_return run(HYP* d) {
 		/**
-		 * @brief Defaultly run a non-recursive hypothesis
+		 * @brief Defaultly run a non-random hypothesis
 		 * @param d
 		 * @return 
 		 */
 		return run(nullptr, d);
 	}
 	
-	template<typename LoaderType>
-	t_return run(VirtualMachinePool<VirtualMachineState<t_x,t_return, VM_TYPES...>>* pool, LoaderType* loader) {
+	template<typename HYP>
+	t_return run(VirtualMachinePool<VirtualMachineState<t_x,t_return, VM_TYPES...>>* pool, HYP* loader) {
 		/**
 		 * @brief Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
+		 * 		  Note that here we allow a tempalte on HYP, which actually gets passed all the way down to 
+		 *        applyPrimitives, which means that whatever arguments we give here are passed all teh way back 
+		 *        to the VMS Primitives when they are called. They really should be loaders, but they could be anything. 
 		 * @param pool
 		 * @param loader
 		 * @return 
@@ -234,9 +237,13 @@ public:
 				Instruction i = opstack.top(); opstack.pop();
 				
 				if(i.is<PrimitiveOp>()) {
-					
-					// call this fancy template magic to index into the global tuple variable PRIMITIVES
-					status = applyPRIMITIVEStoVMS(i.as<PrimitiveOp>(), this, pool, loader);
+					if constexpr(sizeof...(VM_TYPES) > 0) {
+						// call this fancy template magic to index into the global tuple variable PRIMITIVES
+						status = applyPRIMITIVEStoVMS(i.as<PrimitiveOp>(), this, pool, loader);
+					}
+					else {
+						assert(0 && "*** Cannot call PrimitiveOp without defining VM_TYPES");
+					}
 				}
 				else {
 					assert(i.is<BuiltinOp>());
@@ -273,7 +280,7 @@ public:
 								push((char)i.arg);
 								break;
 							}
-							else { assert(false && "*** Cannot use op_ALPHABET if std::string is not in VM_TYPES"); }
+							else { assert(false && "*** Cannot use op_ALPHABET if char is not in VM_TYPES"); }
 						}
 						case BuiltinOp::op_INT: 
 						{
@@ -282,14 +289,23 @@ public:
 								push((int)i.arg);
 								break;
 							}
-							else { assert(false && "*** Cannot use op_INT if std::string is not in VM_TYPES"); }
-						}			
+							else { assert(false && "*** Cannot use op_INT if int is not in VM_TYPES"); }
+						}	
+						case BuiltinOp::op_FLOAT: 
+						{
+							if constexpr (contains_type<float,VM_TYPES...>()) { 
+								// convert the instruction arg to a string and push it
+								push((float)i.arg);
+								break;
+							}
+							else { assert(false && "*** Cannot use op_FLOAT if float is not in VM_TYPES"); }
+						}				
 						case BuiltinOp::op_P: {
 							if constexpr (contains_type<double,VM_TYPES...>()) { 
 								push( double(i.arg)/double(Fleet::Pdenom) );
 								break;
 							} 
-							else { assert(false && "*** Cannot use op_P if std::string is not in VM_TYPES"); }
+							else { assert(false && "*** Cannot use op_P if double is not in VM_TYPES"); }
 
 						}					
 						case BuiltinOp::op_MEM:

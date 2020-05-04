@@ -8,12 +8,6 @@
 const double reliability = 0.99;
 const int N = 100; // what number do we go up to?
 
-#define FLEET_GRAMMAR_TYPES float
-
-// We're going to need to define our own constant, which will be an instruction
-// corresponding to a single float
-#define CUSTOM_OPS op_Constant
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define magic primitives
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,25 +22,32 @@ std::tuple PRIMITIVES = {
 	Primitive("(%s/%s)",    +[](float a, float b) -> float { return (b==0 ? 0 : a/b); }),
 	Primitive("(%s^%s)",    +[](float a, float b) -> float { return pow(a,b); }),
 	
-	// set operations
-//	Primitive("union(%s,%s)",    +[](float a, float b) -> float { return pow(a,b); }),
-//	Primitive("intersection(%s,%s)",    +[](float a, float b) -> float { return pow(a,b); }),
-//	Primitive("difference(%s,%s)",    +[](float a, float b) -> float { return pow(a,b); }),
-//	Primitive("complement(%s,%s)",    +[](float a, float b) -> float { return pow(a,b); }),
-//	Primitive("[%s..%s]",    +[](float a, float b) -> float { return pow(a,b); }),
-	// map(lambda x: x**2, R)
-	
 	Builtin::X<float>("x")
 };
 
 
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Define the grammar
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "Fleet.h" 
+#include "Grammar.h"
+
+class MyGrammar : public Grammar<float> {
+	using Super=Grammar<float>;
+	using Super::Super;
+};
 
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,float,float,     float, std::multiset<float> > {
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Define hypothesis
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include<set>
+#include "LOTHypothesis.h"
+
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,float,float,MyGrammar, float, std::multiset<float> > {
 public:
-	using Super = LOTHypothesis<MyHypothesis,float,float,               float, std::multiset<float>>;
+	using Super = LOTHypothesis<MyHypothesis,float,float,MyGrammar, float, std::multiset<float>>;
 	using Super::Super; // inherit the constructors
 	
 	virtual double compute_likelihood(const t_data& data, const double breakout=-infinity) {
@@ -55,7 +56,7 @@ public:
 		std::set<float> s;
 		float fx;
 		for(int i=0;i<=N and !CTRL_C;i++) {
-			fx = this->callOne(i, 0);
+			fx = this->callOne(i, 0, this);
 			
 			if(fx >=0 and fx <= N and !std::isnan(fx)) { // important to check bounds for size principle
 				s.insert(fx);
@@ -74,18 +75,6 @@ public:
 		return likelihood;
 	}
 	
-	vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<float,float>* pool, VirtualMachineState<float,float>* vms, Dispatchable<float, float>* loader ) {
-		// When we use a custom operation, we must define it here (typically with a switch statement)
-		// it operates on the VirtualMachineState (and possibly the pool)
-		switch(i.as<CustomOp>()) {
-			case CustomOp::op_Constant: {
-				vms->push<float>(i.arg);
-				break;
-			}
-			default: assert(0); // should never get here
-		}
-		return vmstatus_t::GOOD;
-	}	
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,16 +82,21 @@ public:
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+#include "Fleet.h"
+#include "Top.h"
+#include "MCMCChain.h"
 
 int main(int argc, char** argv){ 
 	auto app = Fleet::DefaultArguments("Number game");
 	CLI11_PARSE(app, argc, argv);
 	Fleet_initialize();
 
-	Grammar grammar(PRIMITIVES);
+	MyGrammar grammar(PRIMITIVES);
+	
 	for(int i=0;i<=N;i++) {
-		grammar.add<float>(CustomOp::op_Constant, str(i), 10.0/N, i);		
+		grammar.add<float>(CustomOp::op_FLOAT, str(i), 10.0/N, i);		
 	}
+
 
 	// Define something to hold the best hypotheses
 	Fleet::Statistics::TopN<MyHypothesis> top(ntop);

@@ -612,6 +612,11 @@ public:
 		}
 		return true;
 	}
+	
+	virtual bool operator!=(const Node& n) const{
+		return not (*this == n);
+	}
+
 
 	virtual size_t hash(size_t depth=0) const {
 		/**

@@ -1,7 +1,4 @@
 
-// TODO: We can use this to clean up enums below in reading the file
-//#include "dependencies/magic_enum.hpp"
-
 #include <assert.h>
 #include <set>
 #include <regex>
@@ -48,12 +45,7 @@ typedef struct LearnerDatum {
 
 const double alpha = 0.9; // fixed for the learning part of the model
 
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#define FLEET_GRAMMAR_TYPES bool,Object
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Primitives.h"
@@ -85,14 +77,20 @@ std::tuple PRIMITIVES = {
 };
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#include "Grammar.h"
+
+class MyGrammar : public Grammar<bool,Object> {
+	using Super=Grammar<bool,Object>;
+	using Super::Super;
+}
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
-#include "Fleet.h" 
-#include "EigenNumerics.h"
 
 // Grammar hypothesis is not automatically included because it depends on Eigen
 #include "GrammarHypothesis.h" 
+#include "EigenNumerics.h"
 
 typedef HumanDatum<LearnerDatum> MyHumanDatum;
 
@@ -177,6 +175,8 @@ void gcallback(GrammarHypothesis<MyHypothesis,MyHumanDatum>& h) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
+
+#include "Fleet.h"
 
 int main(int argc, char** argv){ 
 	using S = std::string;

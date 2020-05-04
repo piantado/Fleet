@@ -34,9 +34,13 @@ inline vmstatus_t applyPRIMITIVEStoVMS(int index, V* vms, P* pool, L* loader) {
 		"*** You cannot index a higher primitive op than the size of PRIMITIVES. Perhaps you used grammar.add(Primitive(...)), which is not allowed, instead of putting it into the tuple?");
 	assert(index >= 0);
 	
-	
-    return Fleet::applyVMS::applyToVMS(PRIMITIVES, index, vms, pool, loader, std::make_index_sequence<std::tuple_size<decltype(PRIMITIVES)>::value>{});
-
+	if constexpr (std::tuple_size<decltype(PRIMITIVES)>::value > 0) {
+		return Fleet::applyVMS::applyToVMS(PRIMITIVES, index, vms, pool, loader, std::make_index_sequence<std::tuple_size<decltype(PRIMITIVES)>::value>{});
+	}
+	else {
+		UNUSED(vms); UNUSED(pool); UNUSED(loader);
+		assert(0 && "*** Cannot call applyPRIMITIVEStoVMS without PRIMITIVES defined");
+	}
 }
 
 

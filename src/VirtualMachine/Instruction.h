@@ -36,6 +36,7 @@ enum class BuiltinOp {
 	op_TRUE,op_FALSE,
 	op_ALPHABET,op_ALPHABETchar, // strings by default, also can do chars
 	op_INT,// decode integers from arg
+	op_FLOAT,
 	op_P, // probability 
 	op_SKAPPLY, op_S, op_K, op_I // for combinatory logic
 	//op_LAMBDA,op_APPLY // simple, one-argument lambda functions (as in forall)

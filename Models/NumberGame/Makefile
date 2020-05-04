@@ -1,8 +1,8 @@
 include ../../Fleet.mk
 
 all:
-	g++ -std=gnu++14 -Wall -fdiagnostics-color=auto -o main Main.cpp -lm -O3 $(FLEET_FLAGS) $(FLEET_INCLUDE)
+	g++ -o main Main.cpp -O3 $(FLEET_FLAGS) $(FLEET_INCLUDE) $(FLEET_LIBS)
 
 debug:
-	g++ -std=gnu++14 -Wall -fdiagnostics-color=auto -o main Main.cpp -lm -g -pg $(FLEET_FLAGS) $(FLEET_INCLUDE)
+	g++ -o main Main.cpp -g -pg $(FLEET_FLAGS) $(FLEET_INCLUDE) $(FLEET_LIBS)
 	

@@ -8,7 +8,7 @@
 // This disables unusued parameter warnings. 
 #define UNUSED(x) (void)(x) 
 
-typedef struct t_null {} t_null; // just a blank type
+typedef struct null_t {} null_t; // just a blank type
 
 template<typename T>
 std::vector<T> slice(const std::vector<T> &v, size_t start, int len) {

@@ -205,7 +205,7 @@ public:
 		if(!has_valid_indices()) return DiscreteDistribution<S>();
 		
 		size_t i = factors.size()-1; 
-		return factors[i].call(x, err, this, MAX_STEPS_PER_FACTOR, MAX_OUTPUTS_PER_FACTOR,MIN_LP); 
+		return factors[i].call(x, err, this, MAX_STEPS_PER_FACTOR, MAX_OUTPUTS_PER_FACTOR, MIN_LP); 
 	}
 	 
 	 // We assume input,output with reliability as the number of counts that input was seen going to that output
