@@ -35,11 +35,11 @@ public:
 	static const size_t MAX_NODES = 64; // 32 -- does not work for FancyEnglish!; // max number of nodes we allow; otherwise -inf prior
 	
 	GrammarType* grammar;
-	const static VM_TYPES_TUPLE grammarTypeTuple; // this is a tuple of the virtual machine types which gets passed to them in their constructor so they can deduce types
+	VM_TYPES_TUPLE grammarTypeTuple; // this is a tuple of the virtual machine types which gets passed to them in their constructor so they can deduce types
 	
 	Node value;
 
-	LOTHypothesis(GrammarType* g=nullptr)  : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
+	LOTHypothesis(GrammarType* g=nullptr)     : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
 	LOTHypothesis(GrammarType* g, Node&& x)   : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
 	LOTHypothesis(GrammarType* g, Node& x)    : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
 
@@ -55,6 +55,8 @@ public:
 		 * @return 
 		 */
 	
+		assert(grammar != nullptr);
+
 		// simplest way of doing proposals
 		auto x = Proposals::regenerate(grammar, value);	
 		
@@ -68,6 +70,8 @@ public:
 		 * @brief This is used to restart chains, sampling from prior
 		 * @return 
 		 */
+		
+		assert(grammar != nullptr);
 		
 		// This is used in MCMC to restart chains 
 		// this ordinarily would be a resample from the grammar, but sometimes we have can_resample=false
@@ -195,6 +199,8 @@ public:
 	}
 
 	virtual HYP make_neighbor(int k) const override {
+		assert(grammar != nullptr);
+		
 		HYP h(grammar); // new hypothesis
 		auto nt = grammar->template nt<t_output>();
 		if(value.is_null()) {
