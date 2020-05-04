@@ -30,6 +30,10 @@ class Grammar {
 	 * The trees that Grammar generates use nt<T>() -> size_t to represent types, not the types
 	 * themselves. 
 	 * The trees also use Primitive.op (a size_t) to represent operations
+	 * 
+	 * The template args GRAMMAR_TYPES stores the types used in this grammar. This is inherited
+	 * by LOTHypothesis, which also passes them along to VirtualMachineState (in the form of
+	 * a Tuple). So the types used and order are fixed/standardized in the grammar
 	 */
 	// how many nonterminal types do we have?
 	static constexpr size_t N_NTs = std::tuple_size<std::tuple<GRAMMAR_TYPES...>>::value;

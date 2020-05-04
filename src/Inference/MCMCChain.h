@@ -4,6 +4,7 @@
 
 #include "MCMCChain.h"
 #include "FiniteHistory.h"
+#include "Control.h"
 
 //#define DEBUG_MCMC 
 

@@ -42,14 +42,6 @@ std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 
 //std::vector<int> data_amounts = {1000};
 //std::vector<int> data_amounts = {1, 5, 10, 50, 100};//, 500, 600, 700, 800, 900, 1000};
 
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// These define all of the types that are used in the grammar.
-/// This macro must be defined before we import Fleet.
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#define FLEET_GRAMMAR_TYPES bool,word,set,objectkind,utterance,wmset,magnitude,double
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define the primitives (which are already defined in MyPrimitives
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -195,12 +187,26 @@ std::tuple PRIMITIVES = {
 	Builtin::Recurse<word,utterance>("F(%s)")	
 };
 
-// Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
-#include "Fleet.h" 
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Declare a grammar
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+#include "Grammar.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,utterance,word> {
+class MyGrammar : public Grammar<bool,word,set,objectkind,utterance,wmset,magnitude,double> {
+	using Super=Grammar<bool,word,set,objectkind,utterance,wmset,magnitude,double>;
+	using Super::Super;
+};
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Declare our hypothesis type
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include "LOTHypothesis.h"
+
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,utterance,word,MyGrammar> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,utterance,word>;
+	using Super = LOTHypothesis<MyHypothesis,utterance,word,MyGrammar>;
 	using Super::Super;
 	
 	size_t recursion_count() {
@@ -259,15 +265,22 @@ public:
 	}
 };
 
-////////////////////////////////////////////////////////////////////////////////////////////
-// Declare global set
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Declare global set of data
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#include "Statistics/Top.h"
 Fleet::Statistics::TopN<MyHypothesis> all; // used by MCMC and MCTS locally
 
 std::vector<MyHypothesis::t_data> alldata;
 
-////////////////////////////////////////////////////////////////////////////////////////////
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // If we want to do MCTS
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include "Inference/MCTS.h"
+#include "Inference/MCMCChain.h"
+
 class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 	using MCTSNode::MCTSNode;
 
@@ -294,9 +307,11 @@ class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 	}
 	
 };
-////////////////////////////////////////////////////////////////////////////////////////////
-// Make data 
-////////////////////////////////////////////////////////////////////////////////////////////
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Sampling for the data
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 MyHypothesis::t_datum sample_datum() { 
 	
 	set s = ""; word w = U; objectkind t{};
@@ -337,12 +352,11 @@ MyHypothesis::t_datum sample_adjusted_datum(std::function<double(MyHypothesis::t
 	
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Main
-////////////////////////////////////////////////////////////////////////////////////////////
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// Must include this last 
-#include "VirtualMachine/applyPrimitives.h"
+#include "Fleet.h"
 
 int main(int argc, char** argv) { 
 	
@@ -352,7 +366,7 @@ int main(int argc, char** argv) {
 	Fleet_initialize();
 
 	
-	Grammar grammar(PRIMITIVES);
+	MyGrammar grammar(PRIMITIVES);
 	
 	typedef MyHypothesis::t_data  t_data;
 	typedef MyHypothesis::t_datum t_datum;

@@ -43,6 +43,13 @@ public:
 					   : max_steps(ms), max_outputs(mo), current_steps(0), min_lp(mlp) {
 	}
 	
+	// a constructor that also allows us to deduce VMState type
+	VirtualMachinePool(VMState* vms, unsigned long ms, unsigned long mo, double mlp) 
+					   : max_steps(ms), max_outputs(mo), current_steps(0), min_lp(mlp) {
+		push(vms);
+	}
+	
+	
 	virtual ~VirtualMachinePool() {
 		while(!Q.empty()) {
 			VMState* vms = Q.top(); Q.pop();

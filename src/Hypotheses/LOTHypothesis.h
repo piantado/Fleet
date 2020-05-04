@@ -113,14 +113,9 @@ public:
 				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
 		
 		auto* vms = new VirtualMachineState(x, err, grammarTypeTuple );	
-		//VirtualMachineState vms(x, err, grammarTypeTuple );	
-		//auto vms = new VirtualMachineState(x, err, grammarTypeTuple );	
-
-		VirtualMachinePool<typename std::remove_reference<decltype(*vms)>::type> pool(max_steps, max_outputs, minlp); // vms is passed here just to deduce the type
- 		
 		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
-		
-		pool.push(vms); // add vms to the pool
+
+		VirtualMachinePool pool(vms, max_steps, max_outputs, minlp); // vms is passed here just to deduce the type
 		
 		return pool.template run(loader);		
 	}

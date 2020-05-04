@@ -25,9 +25,6 @@ struct PrePrimitive {
 PrimitiveOp PrePrimitive::op_counter = 0;
 
 
-
-//// so we can give it a lambda of VMS if we wanted
-
 /**
  * @class Primitive
  * @author piantado
@@ -54,6 +51,8 @@ struct Primitive : PrePrimitive {
 	// dispatch operates on vms
 	T(*call)(args...); 
 	
+	// should be this, but we can't do that apparently. 
+	// so instead, we use std::any (which I think gets all compiled away)
 //	template<typename V, typename P, typename L>
 //	vmstatus_t(*dispatch)(V*, P*, L*);
 	std::any dispatch; 

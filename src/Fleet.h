@@ -64,6 +64,16 @@ const std::string FLEET_VERSION = "0.0.93";
 // We defaultly define a fleet object which stores all our info, prints our options
 // and our runtime on construction and destruction respectively
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+//class Fleet {
+//	
+//	Fleet() {
+//		
+//	}
+//	
+//};
+
+
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We defaultly include all of the major requirements for Fleet
@@ -108,6 +118,7 @@ const std::string FLEET_VERSION = "0.0.93";
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <unistd.h>
+#include <stdlib.h>
 
 void Fleet_initialize() {
 	
@@ -129,11 +140,12 @@ void Fleet_initialize() {
 	#ifndef HOST_NAME_MAX
 		size_t HOST_NAME_MAX = 256;
 	#endif
-	#ifndef LOGIN_NAME_MAX
-		size_t LOGIN_NAME_MAX = 256;
-	#endif
 	char hostname[HOST_NAME_MAX]; 	gethostname(hostname, HOST_NAME_MAX);
-	char username[LOGIN_NAME_MAX];	getlogin_r(username, LOGIN_NAME_MAX);
+
+//	#ifndef LOGIN_NAME_MAX
+//		size_t LOGIN_NAME_MAX = 256;
+//	#endif
+//	char username[LOGIN_NAME_MAX];	getlogin_r(username, LOGIN_NAME_MAX);
 
 	// and build the command to get the md5 checksum of myself
 	char tmp[64]; sprintf(tmp, "md5sum /proc/%d/exe", getpid());
@@ -142,7 +154,7 @@ void Fleet_initialize() {
 	runtime = convert_time(timestring);	
 	
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
-	COUT "# Running Fleet on " << hostname << " with PID=" << getpid() << " by user " << username << " at " <<  datestring() ENDL;
+	COUT "# Running Fleet on " << hostname << " with PID=" << getpid() << " by user " << getenv("USER") << " at " <<  datestring() ENDL;
 	COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
 	COUT "# Fleet version: " << FLEET_VERSION ENDL;
 	COUT "# Executable checksum: " << system_exec(tmp);

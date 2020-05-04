@@ -9,15 +9,8 @@
 #include "Stack.h"
 #include "Statistics/FleetStatistics.h"
 
-// Remove n from the stack
-void popn(Program& s, size_t n) {
-	for(size_t i=0;i<n;i++) s.pop();
-}
-
-
 namespace FleetStatistics {}
 template<typename X> class VirtualMachinePool;
-extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
 extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
 
 /**

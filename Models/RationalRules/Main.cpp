@@ -8,13 +8,6 @@
 
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// These define all of the types that are used in the grammar.
-/// This macro must be defined before we import Fleet.
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#define FLEET_GRAMMAR_TYPES bool,Object
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We need to define some structs to hold the object features
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -53,17 +46,28 @@ std::tuple PRIMITIVES = {
 	Builtin::X<Object>("x", 10.0)
 };
 
-// Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
-#include "Fleet.h" 
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Define the grammar
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include "Grammar.h"
+
+class MyGrammar : public Grammar<bool,Object> {
+	using Super =  Grammar<bool,Object>;
+	using Super::Super;
+};
+
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define a class for handling my specific hypotheses and data. Everything is defaultly 
 /// a PCFG prior and regeneration proposals, but I have to define a likelihood
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,Object,bool> {
+#include "LOTHypothesis.h"
+
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,Object,bool,MyGrammar> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,Object,bool>;
+	using Super = LOTHypothesis<MyHypothesis,Object,bool,MyGrammar>;
 	using Super::Super; // inherit the constructors
 	
 	// Now, if we defaultly assume that our data is a std::vector of t_data, then we 
@@ -79,6 +83,8 @@ public:
 /// Main code
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#include "Fleet.h" 
+
 int main(int argc, char** argv){ 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
@@ -91,7 +97,7 @@ int main(int argc, char** argv){
 	//------------------
 	
 	// Define the grammar (default initialize using our primitives will add all those rules)	
-	Grammar grammar(PRIMITIVES);
+	MyGrammar grammar(PRIMITIVES);
 	
 	// mydata stores the data for the inference model
 	MyHypothesis::t_data mydata;

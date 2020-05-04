@@ -11,6 +11,7 @@
 * NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here)
 */ 
 
+#include "Timing.h"
 #include "IO.h"
 
 struct Control {

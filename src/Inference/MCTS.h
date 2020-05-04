@@ -12,6 +12,7 @@
 #include <functional>
 
 #include "StreamingStatistics.h"
+#include "Control.h"
 
 /**
  * @class MCTSNode
