@@ -8,9 +8,6 @@ using S = std::string; // just for convenience
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 S alphabet = "01"; // the alphabet we use (possibly specified on command line)
-//S datastr = "1011001110";
-//S datastr  = "011,011011,011011011"; // the data, comma separated
-//S datastr = "01,01001";
 S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated
 const double strgamma = 0.95; //75; // penalty on string length
 const size_t MAX_LENGTH = 64; // longest strings cons will handle
@@ -95,18 +92,18 @@ public:
 		return lp;
 	}
 		
-	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const override {
-		
-		std::pair<Node,double> x;
-		if(flip()) {
-			x = Proposals::regenerate(grammar, value);	
-		}
-		else {
-			if(flip()) x = Proposals::insert_tree(grammar, value);	
-			else       x = Proposals::delete_tree(grammar, value);	
-		}
-		return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second); 
-	}	
+//	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const override {
+//		
+//		std::pair<Node,double> x;
+//		if(flip()) {
+//			x = Proposals::regenerate(grammar, value);	
+//		}
+//		else {
+//			if(flip()) x = Proposals::insert_tree(grammar, value);	
+//			else       x = Proposals::delete_tree(grammar, value);	
+//		}
+//		return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second); 
+//	}	
 //
 //	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const {
 //		auto g = grammar->generate<S>();
@@ -123,12 +120,10 @@ public:
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-// Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
+// This needs to be included last because it includes VirtualMachine/applyPrimitives
+// which really requires Primitives to be defined already
 
 #include "Fleet.h" 
-
-// Must include this last 
-#include "VirtualMachine/applyPrimitives.h"
 
 int main(int argc, char** argv){ 
 	
@@ -205,36 +200,6 @@ int main(int argc, char** argv){
 	
 	MyHypothesis h0(&grammar);
 	h0 = h0.restart();
-
-//	MyHypothesis h(&grammar);
-//	h = h.restart();
-//	h.compute_posterior(mydata);
-//	for(size_t i=0;i<mcmc_steps and !CTRL_C;i++) {
-//		auto [p,fb] = h.propose();
-//		p.compute_posterior(mydata);
-//		if( uniform() < exp(p.posterior - h.posterior - fb) ) {
-//			h = p;
-//		}
-//		top << h;
-//	}
-
-//	for(size_t i =0;i<100;i++) {
-//		MyHypothesis h = h0.restart();
-//		CERR grammar.log_probability(h.value) TAB h ENDL;
-//	}
-//	
-//	return 0;
-	
-//	COUT h0 ENDL;
-//	for(auto& x : h0.value) {
-//		COUT x.can_resample TAB x ENDL;
-//	}
-//	
-//	for(size_t j=0;j<100;j++) {
-//		COUT sample<Node,Node>(h0.value, Proposals::can_resample).first->string() ENDL;
-//	}
-//	
-////	return 0;
 	
 //	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
 //	tic();

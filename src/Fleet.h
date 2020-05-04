@@ -82,7 +82,7 @@
 
 #include <sys/resource.h> // just for setting priority defaulty 
 
-const std::string FLEET_VERSION = "0.0.92";
+const std::string FLEET_VERSION = "0.0.93";
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // We defaultly define a fleet object which stores all our info, prints our options
@@ -124,6 +124,8 @@ const std::string FLEET_VERSION = "0.0.92";
 #include "Top.h"
 #include "Primitives.h"
 
+// Thie one really should be included last because it depends on Primitves
+#include "VirtualMachine/applyPrimitives.h"
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Actual initialization
