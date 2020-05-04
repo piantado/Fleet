@@ -46,13 +46,13 @@ struct has_operator_lessthan : has_operator_lessthan_impl<T, EqualTo>::type {};
 // Count how many reference types
 //template <class T, class... Types>
 //struct CountReferences;
+
 template <class T, class... Types>
 struct CountReferences {
     static const size_t value = std::is_reference<T>::value + CountReferences<Types...>::value;
 };
 template <class T>
 struct CountReferences<T> { static const size_t value = std::is_reference<T>::value; };
-
 
 // If there ar eany references in the arguments, only the first can be a reference
 template <class T, class... Types>

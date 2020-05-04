@@ -204,7 +204,8 @@ public:
 		return this->all_stacks_empty<VM_TYPES...>();
 	}
 	
-	virtual t_return run(ProgramLoader* d) {
+	template<typename LoaderType>
+	t_return run(LoaderType* d) {
 		/**
 		 * @brief Defaultly run a non-recursive hypothesis
 		 * @param d
@@ -213,7 +214,8 @@ public:
 		return run(nullptr, d);
 	}
 	
-	virtual t_return run(VirtualMachinePool<VirtualMachineState<t_x,t_return, VM_TYPES...>>* pool, ProgramLoader* loader) {
+	template<typename LoaderType>
+	t_return run(VirtualMachinePool<VirtualMachineState<t_x,t_return, VM_TYPES...>>* pool, LoaderType* loader) {
 		/**
 		 * @brief Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
 		 * @param pool

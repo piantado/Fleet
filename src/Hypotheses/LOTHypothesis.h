@@ -109,7 +109,10 @@ public:
 
 
 	// we defaultly map outputs to log probabilities
-	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err, ProgramLoader* loader, 
+	// the LoaderType must be a ProgramLoader, but other than that we don't care. NOte that this type gets passed all the way down to VirtualMachine
+	// and potentially back to primitives, allowing us to access the current hypothesis if we want
+	template<typename LoaderType> 
+	DiscreteDistribution<t_output> call(const t_input x, const t_output err, LoaderType* loader, 
 				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
 		
 		auto* vms = new VirtualMachineState(x, err, grammarTypeTuple );	
@@ -126,13 +129,14 @@ public:
 		return call(x,err);
 	}
 
-	virtual t_output callOne(const t_input x, const t_output err, ProgramLoader* loader=nullptr) {
+	template<typename LoaderType>
+	t_output callOne(const t_input x, const t_output err, LoaderType* loader=nullptr) {
 		// we can use this if we are guaranteed that we don't have a stochastic hypothesis
 		// the savings is that we don't have to create a VirtualMachinePool		
 		VirtualMachineState vms(x, err, grammarTypeTuple);		
 
 		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
-		return vms.run(loader == nullptr? this : nullptr); // default to using "this" as the loader		
+		return vms.run(loader); // default to using "this" as the loader		
 	}
 	
 

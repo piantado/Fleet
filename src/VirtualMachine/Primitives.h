@@ -97,8 +97,9 @@ struct Primitive : PrePrimitive {
 	constexpr Primitive(std::string fmt, T(*_call)(args...), vmstatus_t _dispatch(V*, P*, L*), double _p=1.0 ) :
 		format(fmt), call(_call), dispatch(_dispatch), op(op_counter++), p(_p), is_dispatch(true) {
 			
-		static_assert(CountReferences<args...>::value == 0, "*** Cannot contain any references in VMS primitives");
-		
+		if constexpr (sizeof...(args)> 0) 
+			static_assert(CountReferences<args...>::value == 0, "*** Cannot contain any references in VMS primitives");
+				
 	}
 	
 	

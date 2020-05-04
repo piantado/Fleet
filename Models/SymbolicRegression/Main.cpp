@@ -1,59 +1,46 @@
 #include <cmath>
 
+using D = double;
 
 const double sdscale = 1.0; // can change if we want
 const size_t nsamples = 250; // how many per structure?
 const size_t nstructs = 50; // print out all the samples from the top this many structures
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// These define all of the types that are used in the grammar.
-/// This macro must be defined before we import Fleet.
+/// Define grammar
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-using D = double; // this must match the below type (both can be changed to float if we want)
-#define FLEET_GRAMMAR_TYPES D
+#include "Grammar.h"
 
-// constants must be processed by the stack internal to each hypothesis!
-#define CUSTOM_OPS op_Constant
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Define magic primitives
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#include "Primitives.h"
-#include "Builtins.h"
-
-std::tuple PRIMITIVES = {
-	Primitive("(%s+%s)",    +[](D a, D b) -> D     { return a+b; }),
-	Primitive("(%s-%s)",    +[](D a, D b) -> D     { return a-b; }),
-	Primitive("(%s*%s)",    +[](D a, D b) -> D     { return a*b; }),
-	Primitive("(%s/%s)",    +[](D a, D b) -> D     { return (b==0 ? 0 : a/b); }),
-	Primitive("(%s^%s)",    +[](D a, D b) -> D     { return pow(a,b); }),
-	Primitive("(-%s)",      +[](D a)          -> D { return -a; }),
-	Primitive("exp(%s)",    +[](D a)          -> D { return exp(a); }),
-	Primitive("log(%s)",    +[](D a)          -> D { return log(a); }),
-	
-	Primitive("1",          +[]()             -> D { return 1.0; }),
-	
-	Builtin::X<D>("x", 5.0)
+class MyGrammar : public Grammar<D> {
+	using Super=Grammar<D>;
+	using Super::Super;
 };
 
 
-#include "Fleet.h" 
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Define hypothesis
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include "LOTHypothesis.h"
 
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,D,D> {
+// check fi a rule is constant
+bool isConstant(const Rule* r) { return r->format == "C"; }
+
+
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,D,D,MyGrammar> {
 	/* This class handles enumeration of the structure but critically does MCMC over the constants */
 	
 public:
 	std::vector<D> constants;
 	size_t         constant_idx; // in evaluation, this variable stores what constant we are in 
 	
-	using Super = LOTHypothesis<MyHypothesis,D,D>;
+	using Super = LOTHypothesis<MyHypothesis,D,D,MyGrammar>;
 	using Super::Super;
 	
 	double compute_single_likelihood(const t_datum& datum) override {
-		double fx = this->callOne(datum.input, NaN);
+		double fx = this->zeroAndCallOne(datum.input, NaN);
 		if(std::isnan(fx)) return -infinity;
             
 		return normal_lpdf( (fx-datum.output)/datum.reliability );		
@@ -62,7 +49,7 @@ public:
 	size_t count_constants() const {
 		size_t cnt=0;
 		for(const auto& x : value) {
-			cnt += x.rule->instr.is_a(CustomOp::op_Constant);
+			cnt += isConstant(x.rule);
 		}
 		return cnt;
 	}
@@ -80,10 +67,11 @@ public:
 		return this->prior;
 	}
 	
-	virtual D callOne(const D x, const D err) {
+
+	virtual D zeroAndCallOne(const D x, const D err) {
 		// my own wrapper that zeros the constant_i counter
 		constant_idx = 0;
-		auto out = Super::callOne(x,err);
+		auto out = callOne<MyHypothesis>(x,err,this);
 		assert(constant_idx == constants.size()); // just check
 		return out;
 	}
@@ -92,7 +80,7 @@ public:
 	virtual std::string __my_string_recurse(const Node* n, size_t& idx) const {
 		// we need this to print strings -- its in a similar format to evaluation
 		
-		if(n->rule->instr.is_a(CustomOp::op_Constant)) {
+		if(isConstant(n->rule)) {
 			return "("+str(constants[idx++])+")";
 		}
 		else if(n->rule->N == 0) {
@@ -136,18 +124,6 @@ public:
 	
 	virtual std::string structure_string() const {
 		return Super::string();
-	}
-	
-	vmstatus_t dispatch_custom(Instruction i, VirtualMachinePool<D,D>* pool, VirtualMachineState<D,D>* vms, Dispatchable<D,D>* loader ) override {
-		switch(i.as<CustomOp>()) {
-			case CustomOp::op_Constant: {
-				assert(this->constant_idx < this->constants.size()); 
-				vms->push(this->constants.at(constant_idx++));
-				break;
-			}			
-			default: assert(0); 
-		}
-		return vmstatus_t::GOOD;
 	}
 	
 	/// *****************************************************************************
@@ -232,6 +208,41 @@ public:
 	
 };
 
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Define primitives -- these must come after MyHypothesis since 
+/// we have to define a custom function that depends on them
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include "Primitives.h"
+#include "Builtins.h"
+
+#include "VirtualMachine/VirtualMachineState.h"
+#include "VirtualMachine/VirtualMachinePool.h"
+
+std::tuple PRIMITIVES = {
+	Primitive("(%s+%s)",    +[](D a, D b) -> D     { return a+b; }),
+	Primitive("(%s-%s)",    +[](D a, D b) -> D     { return a-b; }),
+	Primitive("(%s*%s)",    +[](D a, D b) -> D     { return a*b; }),
+	Primitive("(%s/%s)",    +[](D a, D b) -> D     { return (b==0 ? 0 : a/b); }),
+	Primitive("(%s^%s)",    +[](D a, D b) -> D     { return pow(a,b); }),
+	Primitive("(-%s)",      +[](D a)          -> D { return -a; }),
+	Primitive("exp(%s)",    +[](D a)          -> D { return exp(a); }),
+	Primitive("log(%s)",    +[](D a)          -> D { return log(a); }),
+	
+	Primitive("1",          +[]()             -> D { return 1.0; }),
+	
+	
+	Primitive("C", +[]() -> D {return 0.0;}, 
+				   +[](VirtualMachineState<D,D,D>* vms, VirtualMachinePool<VirtualMachineState<D,D,D>>* pool, MyHypothesis* h) -> vmstatus_t {
+						assert(h->constant_idx < h->constants.size()); 
+						vms->push(h->constants.at(h->constant_idx++));
+						return vmstatus_t::GOOD;
+				   }, 5.0),
+				   
+	Builtin::X<D>("x", 5.0)
+};
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -240,6 +251,8 @@ using t_data  = MyHypothesis::t_data;
 using t_datum = MyHypothesis::t_datum;
 #include "Data.h"
 #include "Polynomial.h"
+
+#include "ReservoirSample.h"
 
 std::map<std::string,Fleet::Statistics::ReservoirSample<MyHypothesis>> master_samples; // master set of samples
 std::mutex master_sample_lock;
@@ -252,6 +265,8 @@ t_data mydata;
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+#include "MCTS.h"
+#include "MCMCChain.h"
 
 class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 	using MCTSNode::MCTSNode;
@@ -304,9 +319,10 @@ class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 	
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////
+#include "Fleet.h" 
 
 int main(int argc, char** argv){ 
 	
@@ -324,8 +340,7 @@ int main(int argc, char** argv){
 	// Set up the grammar
 	//------------------
 	
-	Grammar grammar(PRIMITIVES);
-	grammar.add<double>(CustomOp::op_Constant, "C", 5.0);	
+	MyGrammar grammar(PRIMITIVES);
 	
 	//------------------
 	// set up the data
@@ -337,14 +352,27 @@ int main(int argc, char** argv){
 	// Run
 	//------------------
  
-	MyHypothesis h0(&grammar);
-	MyMCTS m(explore, h0, &mydata);
-	root = &m;
-	tic();
-	m.parallel_search(Control(mcts_steps, runtime, nthreads));
-	tic();
-	
-	m.print(tree_path.c_str());
+	std::function<void(MyHypothesis& h)> cb = [&](MyHypothesis& h) { 
+		if(h.posterior == -infinity) return;
+
+		auto ss = h.structure_string();
+		std::lock_guard guard(master_sample_lock);
+		if(!master_samples.count(ss)) { // create this if it doesn't exist
+			master_samples.emplace(ss,nsamples);
+		}
+		
+		// and add it
+		master_samples[ss] << h;
+	};
+ 
+//	MyHypothesis h0(&grammar);
+//	MyMCTS m(explore, h0, &mydata);
+//	root = &m;
+//	tic();
+//	m.parallel_search(Control(mcts_steps, runtime, nthreads));
+//	tic();
+//	
+//	m.print(tree_path.c_str());
 
 //	std::function cb = callback;
 //	ChainPool samp(h0, &mydata, cb, nchains, true);
@@ -358,12 +386,12 @@ int main(int argc, char** argv){
 //	samp.run(mcmc_steps, runtime, .25, 3.00); 
 //	tic();
 
-//	MyHypothesis h0(&grammar);
-//	h0 = h0.restart();
-//	MCMCChain<MyHypothesis> samp(h0, &mydata, callback);
-//	tic();
-//	samp.run(mcmc_steps, runtime); //30000);		
-//	tic();
+	MyHypothesis h0(&grammar);
+	h0 = h0.restart();
+	MCMCChain samp(h0, &mydata, cb);
+	tic();
+	samp.run(Control(mcts_steps, runtime)); //30000);		
+	tic();
 
 	
 	//------------------
@@ -425,7 +453,7 @@ int main(int argc, char** argv){
 				     best_posterior TAB 
 					 ( (h.posterior-sz) + (best_posterior-Z)) TAB 
 					 h.posterior TAB h.prior TAB h.likelihood TAB
-					 h.callOne(0.0, NaN) TAB h.callOne(1.0, NaN) TAB 
+					 h.zeroAndCallOne(0.0, NaN) TAB h.zeroAndCallOne(1.0, NaN) TAB 
 					 get_polynomial_degree(h.value, h.constants) TAB 
 					 1*(best_posterior >= cutoff) TAB
 					 Q(h.string()) TAB Q(h.parseable()) ENDL;
@@ -436,10 +464,10 @@ int main(int argc, char** argv){
 	
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
-	COUT "# MCTS tree size:" TAB m.size() ENDL;	
+//	COUT "# MCTS tree size:" TAB m.size() ENDL;	
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
 	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
 	COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds() ENDL;
 	COUT "# Max score: " TAB maxscore ENDL;
-	COUT "# MCTS steps per second:" TAB m.statistics.N/elapsed_seconds() ENDL;	
+//	COUT "# MCTS steps per second:" TAB m.statistics.N/elapsed_seconds() ENDL;	
 }

@@ -11,6 +11,8 @@
 #include "Primitives.h"
 #include "IntegerizedStack.h"
 
+#include "Primitives.h"
+#include "Builtins.h"
 
 template<typename T, typename... args> // function type
 struct Primitive;
