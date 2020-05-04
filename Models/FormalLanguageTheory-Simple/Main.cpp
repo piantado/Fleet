@@ -112,6 +112,8 @@ public:
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+#include "VirtualMachine/applyPrimitives.h"
+
 int main(int argc, char** argv){ 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
