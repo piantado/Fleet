@@ -269,12 +269,12 @@ MyHypothesis::t_data prdata; // used for computing precision and recall -- in ca
 S current_data = "";
 bool long_output = false; // if true, we allow extra strings, recursions etc. on output
 
-// Must include thi slast 
-#include "VirtualMachine/applyPrimitives.h"
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Main
 ////////////////////////////////////////////////////////////////////////////////////////////
+
+// Must include this last 
+#include "VirtualMachine/applyPrimitives.h"
 
 int main(int argc, char** argv){ 
 	

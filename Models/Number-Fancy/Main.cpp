@@ -341,6 +341,9 @@ MyHypothesis::t_datum sample_adjusted_datum(std::function<double(MyHypothesis::t
 // Main
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+// Must include this last 
+#include "VirtualMachine/applyPrimitives.h"
+
 int main(int argc, char** argv) { 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc

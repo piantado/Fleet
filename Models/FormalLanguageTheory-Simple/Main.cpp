@@ -14,13 +14,6 @@ S alphabet = "01"; // the alphabet we use (possibly specified on command line)
 S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated
 const double strgamma = 0.95; //75; // penalty on string length
 const size_t MAX_LENGTH = 64; // longest strings cons will handle
-	
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// These define all of the types that are used in the grammar.
-/// This macro must be defined before we import Fleet.
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#define FLEET_GRAMMAR_TYPES S,bool
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// This is a global variable that provides a convenient way to wrap our primitives
@@ -57,19 +50,38 @@ std::tuple PRIMITIVES = {
 	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }),
 	
 	
-	// And add built-ins:
+	// And add built-ins - NOTE these must come last
 	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
 	Builtin::X<S>("x"),
 	Builtin::Flip("flip()", 10.0),
 	Builtin::SafeRecurse<S,S>("F(%s)")	
 };
 
-// Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
-#include "Fleet.h" 
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,S,S> {
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Declare a grammar
+/// This requires a template to specify what types they are (and what order they are stored in)
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+#include "Grammar.h"
+
+// declare a grammar with our primitives
+// Note that this ordering of primitives defines the order in Grammar
+class MyGrammar : public Grammar<S,bool> {
+	using Super = Grammar<S,bool>;
+	using Super::Super;
+};
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Declare our hypothesis type
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include "LOTHypothesis.h"
+
+// Declare a hypothesis class
+class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S,MyGrammar> {
 public:
-	using Super =  LOTHypothesis<MyHypothesis,S,S>;
+	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar>;
 	using Super::Super; // inherit the constructors
 	
 	double compute_single_likelihood(const t_datum& x) override {	
@@ -111,6 +123,12 @@ public:
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
+// Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
+
+#include "Fleet.h" 
+
+// Must include this last 
+#include "VirtualMachine/applyPrimitives.h"
 
 int main(int argc, char** argv){ 
 	
@@ -121,14 +139,13 @@ int main(int argc, char** argv){
 	CLI11_PARSE(app, argc, argv);
 	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
 	
+	MyGrammar grammar(PRIMITIVES);
+
 	// mydata stores the data for the inference model
 	MyHypothesis::t_data mydata;
 	
 	// top stores the top hypotheses we have found
 	Fleet::Statistics::TopN<MyHypothesis> top(ntop);
-	
-	// declare a grammar with our primitives
-	Grammar grammar(PRIMITIVES);
 	
 	// here we create an alphabet op with an "arg" that stores the character (this is faster than alphabet.substring with i.arg as an index) 
 	// here, op_ALPHABET converts arg to a string (and pushes it)

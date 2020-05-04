@@ -18,7 +18,9 @@
  * 		  Each of these components is called a "factor." 
  */
 
-template<typename HYP, typename INNER, typename t_input, typename t_output, typename t_datum=default_datum<t_input, t_output>>
+template<typename HYP, typename INNER, 
+		 typename t_input, typename t_output, 
+		 typename t_datum=default_datum<t_input, t_output>>
 class Lexicon : public MCMCable<HYP,t_datum>,
 				public ProgramLoader,
 				public Searchable<HYP,t_input,t_output>
@@ -65,7 +67,8 @@ public:
 		return out;
 	}
 	
-	static HYP from_string(Grammar& g, std::string s) {
+	template<typename GrammarType>
+	static HYP from_string(GrammarType& g, std::string s) {
 		/**
 		 * @brief Convert a string to a lexicon of this type
 		 * @param g

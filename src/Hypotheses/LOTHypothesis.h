@@ -4,7 +4,8 @@
 #include <string.h>
 #include "Proposers.h"
 #include "Program.h"
-
+#include "Node.h"
+#include "DiscreteDistribution.h"
 
 #include "Hypotheses/Interfaces/Bayesable.h"
 #include "Hypotheses/Interfaces/MCMCable.h"
@@ -14,12 +15,15 @@
 
 template<typename HYP, 
 		 typename t_input, typename t_output, 
+		 typename GrammarType,
+		 typename VM_TYPES_TUPLE=typename GrammarType::GrammarTypesAsTuple, // used for deducing VM_TYPES in VirtualMachineState
 		 typename _t_datum=default_datum<t_input, t_output>, 
-		 typename _t_data=std::vector<_t_datum> >
-class LOTHypothesis : public ProgramLoader, 
+		 typename _t_data=std::vector<_t_datum>
+		 >
+class LOTHypothesis : public ProgramLoader,
 				      public MCMCable<HYP,_t_datum,_t_data>, // remember, this defines t_data, t_datum
 					  public Searchable<HYP,t_input,t_output>	{
-	// stores values as a pointer to something of type T, whose memory I manage (I delete it when I go away)
+	// stores values as a pointer to something of type Node, whose memory I manage (I delete it when I go away)
 	// This also stores a pointer to a grammar, but I do not manage its memory
 	// nt store the value of the root nonterminal
 	// HYP stores my own type (for subclasses) so I know how to cast copy and propose
@@ -29,15 +33,17 @@ public:
 	
 	static const size_t MAX_NODES = 64; // 32 -- does not work for FancyEnglish!; // max number of nodes we allow; otherwise -inf prior
 	
-	Grammar* grammar;
+	GrammarType* grammar;
+	const static VM_TYPES_TUPLE grammarTypeTuple; // this is a tuple of the virtual machine types which gets passed to them in their constructor so they can deduce types
+	
 	Node value;
 
-	LOTHypothesis(Grammar* g=nullptr)     : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
-	LOTHypothesis(Grammar* g, Node&& x)   : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
-	LOTHypothesis(Grammar* g, Node& x)    : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
+	LOTHypothesis(GrammarType* g=nullptr)  : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
+	LOTHypothesis(GrammarType* g, Node&& x)   : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
+	LOTHypothesis(GrammarType* g, Node& x)    : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
 
 	// parse this from a string
-	LOTHypothesis(Grammar* g, std::string s) : MCMCable<HYP,t_datum,t_data>(), grammar(g)  {
+	LOTHypothesis(GrammarType* g, std::string s) : MCMCable<HYP,t_datum,t_data>(), grammar(g)  {
 		value = grammar->expand_from_names(s);
 	}
 	
@@ -64,13 +70,13 @@ public:
 		
 		// This is used in MCMC to restart chains 
 		// this ordinarily would be a resample from the grammar, but sometimes we have can_resample=false
-		// and in that case we want to leave the non-propose nodes alone. So her
+		// and in that case we want to leave the non-propose nodes alone. 
 
 		if(!value.is_null()) { // if we are null
-			return HYP(grammar, grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
+			return HYP(this->grammar, this->grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
 		}
 		else {
-			return HYP(grammar, grammar->generate<t_output>());
+			return HYP(this->grammar, this->grammar->template generate<t_output>());
 		}
 	}
 	
@@ -105,15 +111,17 @@ public:
 	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err, ProgramLoader* loader, 
 				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
 		
-		VirtualMachinePool<VirtualMachineState<t_input,t_output>> pool(max_steps, max_outputs, minlp);
+		//VirtualMachinePool<VirtualMachineState<t_input,t_output>> pool(max_steps, max_outputs, minlp);
 
-		VirtualMachineState<t_input,t_output>* vms = new VirtualMachineState<t_input,t_output>(x, err);
-		
+		auto vms = new VirtualMachineState(x, err, grammarTypeTuple );	
+
+		VirtualMachinePool<typename std::remove_reference<decltype(*vms)>::type> pool(max_steps, max_outputs, minlp); // vms is passed here just to deduce the type
+ 		
 		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
 		
 		pool.push(vms); // add vms to the pool
 		
-		return pool.template run<t_input, t_output>(loader);		
+		return pool.template run(loader);		
 	}
 	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err) {
 		return call(x, err, this); // defaultly I myself am the recursion handler and dispatch
@@ -125,7 +133,8 @@ public:
 	virtual t_output callOne(const t_input x, const t_output err, ProgramLoader* loader=nullptr) {
 		// we can use this if we are guaranteed that we don't have a stochastic hypothesis
 		// the savings is that we don't have to create a VirtualMachinePool		
-		VirtualMachineState vms(x, err);		
+		VirtualMachineState vms(x, err, grammarTypeTuple);		
+
 		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
 		return vms.run(loader == nullptr? this : nullptr); // default to using "this" as the loader		
 	}
@@ -137,7 +146,7 @@ public:
 	virtual std::string parseable() const { 
 		return value.parseable(); 
 	}
-	static HYP from_string(Grammar& g, std::string s) {
+	static HYP from_string(GrammarType& g, std::string s) {
 		return HYP(g, g.expand_from_names(s));
 	}
 	
@@ -149,7 +158,6 @@ public:
 	virtual bool operator==(const HYP& h) const override {
 		return this->value == h.value;
 	}
-
 	
 	virtual HYP copy_and_complete() const {
 		// make a copy and fill in the missing nodes.
@@ -173,7 +181,7 @@ public:
 	 
 	virtual int neighbors() const override {
 		if(value.is_null()) { // if the value is null, our neighbors is the number of ways we can do nt
-			auto nt = grammar->nt<t_output>();
+			auto nt = grammar->template nt<t_output>();
 			return grammar->count_rules(nt);
 		}
 		else {
@@ -186,7 +194,7 @@ public:
 
 	virtual HYP make_neighbor(int k) const override {
 		HYP h(grammar); // new hypothesis
-		auto nt = grammar->nt<t_output>();
+		auto nt = grammar->template nt<t_output>();
 		if(value.is_null()) {
 			assert(k >= 0);
 			assert(k < (int)grammar->count_rules(nt));

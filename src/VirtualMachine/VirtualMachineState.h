@@ -1,6 +1,8 @@
 #pragma once
 
 #include <type_traits>
+#include <map>
+#include <utility>
 
 #include "Program.h"
 #include "Stack.h"
@@ -23,17 +25,22 @@ extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
  * @date 02/02/20
  * @file VirtualMachineState.h
  * @brief This represents the state of a partial evaluation of a program, corresponding to the value of all of the stacks
- * 			of various types (which are stored as templates from FLEET_GRAMMAR_TYPES).  
+ * 			of various types (which are stored as templates from VM_TYPES).  
  *  		The idea here is that we want to be able to encapsulate everything about the evaluation of a tree so 
  * 			that we can stop it in the middle and resume later, as is required for stochastics. This must be 
  * 			templated because it depends on the types in the grammar. 
  * 			These will typically be stored in a VirtualMachinePool and not called directly, unless you know
  * 			that there are no stochastics. 
  */
-template<typename t_x, typename t_return>
+ 
+ 
+template<typename _t_x, typename _t_return, typename... VM_TYPES>
 class VirtualMachineState {
 	
 public:
+
+	typedef _t_x t_x;
+	typedef _t_return t_return;
 	
 	static const unsigned long MAX_RECURSE = 64; // this is the max number of times we can call recurse, NOT the max depth
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
@@ -46,10 +53,10 @@ public:
 	unsigned long 	  recursion_depth; // when I was created, what was my depth?
 
 	// This is a little bit of fancy template metaprogramming that allows us to define a stack
-	// like std::tuple<Stack<bool>, Stack<std::string> > using a list of type names defined in FLEET_GRAMMAR_TYPES
+	// like std::tuple<Stack<bool>, Stack<std::string> > using a list of type names defined in VM_TYPES
 	template<typename... args>
 	struct t_stack { std::tuple<Stack<args>...> value; };
-	t_stack<FLEET_GRAMMAR_TYPES> _stack; // our stacks of different types
+	t_stack<VM_TYPES...> _stack; // our stacks of different types
 	
 	typedef int index_t; // how we index into factorized lexica -- NOTE: probably should be castable from Instruction.arg 
 	
@@ -62,7 +69,7 @@ public:
 
 	vmstatus_t status; // are we still running? Did we get an error?
 	
-	VirtualMachineState(t_x x, t_return e, size_t _recursion_depth=0) :
+	VirtualMachineState(t_x x, t_return e, const std::tuple<VM_TYPES...>& tup, size_t _recursion_depth=0) :
 		err(e), lp(0.0), recursion_depth(_recursion_depth), status(vmstatus_t::GOOD) {
 		xstack.push(x);	
 	}
@@ -197,10 +204,10 @@ public:
 	}	
 	bool stacks_empty() const { 
 		/**
-		 * @brief True if all stacks are empty for the FLEET_GRAMMAR_TYPES
+		 * @brief True if all stacks are empty for the VM_TYPES
 		 * @return 
 		 */
-		return this->all_stacks_empty<FLEET_GRAMMAR_TYPES>();
+		return this->all_stacks_empty<VM_TYPES...>();
 	}
 	
 	virtual t_return run(ProgramLoader* d) {
@@ -212,7 +219,7 @@ public:
 		return run(nullptr, d);
 	}
 	
-	virtual t_return run(VirtualMachinePool<VirtualMachineState<t_x,t_return>>* pool, ProgramLoader* loader) {
+	virtual t_return run(VirtualMachinePool<VirtualMachineState<t_x,t_return, VM_TYPES...>>* pool, ProgramLoader* loader) {
 		/**
 		 * @brief Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
 		 * @param pool
@@ -256,37 +263,37 @@ public:
 						}
 						case BuiltinOp::op_ALPHABET: 
 						{
-							if constexpr (contains_type<std::string,FLEET_GRAMMAR_TYPES>()) { 
+							if constexpr (contains_type<std::string,VM_TYPES...>()) { 
 								// convert the instruction arg to a string and push it
 								push(std::string(1,(char)i.arg));
 								break;
 							}
-							else { assert(false && "*** Cannot use op_ALPHABET if std::string is not in FLEET_GRAMMAR_TYPES"); }
+							else { assert(false && "*** Cannot use op_ALPHABET if std::string is not in VM_TYPES"); }
 						}
 						case BuiltinOp::op_ALPHABETchar: 
 						{
-							if constexpr (contains_type<char,FLEET_GRAMMAR_TYPES>()) { 
+							if constexpr (contains_type<char,VM_TYPES...>()) { 
 								// convert the instruction arg to a string and push it
 								push((char)i.arg);
 								break;
 							}
-							else { assert(false && "*** Cannot use op_ALPHABET if std::string is not in FLEET_GRAMMAR_TYPES"); }
+							else { assert(false && "*** Cannot use op_ALPHABET if std::string is not in VM_TYPES"); }
 						}
 						case BuiltinOp::op_INT: 
 						{
-							if constexpr (contains_type<int,FLEET_GRAMMAR_TYPES>()) { 
+							if constexpr (contains_type<int,VM_TYPES...>()) { 
 								// convert the instruction arg to a string and push it
 								push((int)i.arg);
 								break;
 							}
-							else { assert(false && "*** Cannot use op_INT if std::string is not in FLEET_GRAMMAR_TYPES"); }
+							else { assert(false && "*** Cannot use op_INT if std::string is not in VM_TYPES"); }
 						}			
 						case BuiltinOp::op_P: {
-							if constexpr (contains_type<double,FLEET_GRAMMAR_TYPES>()) { 
+							if constexpr (contains_type<double,VM_TYPES...>()) { 
 								push( double(i.arg)/double(Fleet::Pdenom) );
 								break;
 							} 
-							else { assert(false && "*** Cannot use op_P if std::string is not in FLEET_GRAMMAR_TYPES"); }
+							else { assert(false && "*** Cannot use op_P if std::string is not in VM_TYPES"); }
 
 						}					
 						case BuiltinOp::op_MEM:
@@ -306,14 +313,14 @@ public:
 						}
 						case BuiltinOp::op_TRUE: 
 						{
-							if constexpr (contains_type<bool,FLEET_GRAMMAR_TYPES>()) { 
+							if constexpr (contains_type<bool,VM_TYPES...>()) { 
 								push<bool>(true);
 							} else { assert(0 && "*** Must have bool defined to use op_TRUE");}
 							break;
 						}
 						case BuiltinOp::op_FALSE: 
 						{
-							if constexpr (contains_type<bool,FLEET_GRAMMAR_TYPES>()) { 
+							if constexpr (contains_type<bool,VM_TYPES...>()) { 
 								push<bool>(false);
 							} else { assert(0 && "*** Must have bool defined to use op_FALSE");}
 							break;
@@ -426,12 +433,12 @@ public:
 						}
 						case BuiltinOp::op_FLIPP:
 						{
-							if constexpr (contains_type<bool,FLEET_GRAMMAR_TYPES>()) { 
+							if constexpr (contains_type<bool,VM_TYPES...>()) { 
 								assert(pool != nullptr && "op_FLIP and op_FLIPP require the pool to be non-null, since they push onto the pool"); // can't do that, for sure
 						
 								double p = 0.5; 
 								
-								if constexpr (contains_type<double,FLEET_GRAMMAR_TYPES>()) {  // if we have double allowed we cna do this
+								if constexpr (contains_type<double,VM_TYPES...>()) {  // if we have double allowed we cna do this
 									if(i.is_a(BuiltinOp::op_FLIPP)) { // only for built-in ops do we 
 										p = getpop<double>(); // reads a double argfor the coin weight
 										if(std::isnan(p)) { p = 0.0; } // treat nans as 0s
@@ -479,7 +486,7 @@ public:
 
 								break;
 		
-							} else { assert(0 && "*** Cannot use op_FLIP without defining bool in FLEET_GRAMMAR_TYPES"); }
+							} else { assert(0 && "*** Cannot use op_FLIP without defining bool in VM_TYPES"); }
 						}
 						case BuiltinOp::op_JMP:
 						{
@@ -488,7 +495,7 @@ public:
 						}
 						case BuiltinOp::op_IF: 
 						{
-							if constexpr (contains_type<bool,FLEET_GRAMMAR_TYPES>()) { 
+							if constexpr (contains_type<bool,VM_TYPES...>()) { 
 								// Here we evaluate op_IF, which has to short circuit and skip (pop some of the stack) 
 								bool b = getpop<bool>(); // bool has already evaluted
 								
@@ -497,7 +504,7 @@ public:
 								else   {}; // do nothing, we pass through and then get to the jump we placed at the end of the x branch
 								
 								break;		
-							} else { assert(0 && "*** Cannot use op_IF without defining bool in FLEET_GRAMMAR_TYPES"); }			
+							} else { assert(0 && "*** Cannot use op_IF without defining bool in VM_TYPES"); }			
 						}
 						case BuiltinOp::op_I:
 						case BuiltinOp::op_S:
