@@ -120,7 +120,7 @@ public:
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-// This needs to be included last because it includes VirtualMachine/applyPrimitives
+// This needs to be included last because it includes VirtualMachine/applyPrimitives.h
 // which really requires Primitives to be defined already
 
 #include "Fleet.h" 
