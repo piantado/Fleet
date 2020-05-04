@@ -8,9 +8,14 @@
 #include "Node.h"
 #include "Random.h"
 #include "Nonterminal.h"
+#include "Primitives.h"
+#include "IntegerizedStack.h"
 
-template<typename T, typename... args> struct Primitive; // function type
 
+template<typename T, typename... args> // function type
+struct Primitive;
+
+template<typename... GRAMMAR_TYPES>
 class Grammar {
 	/* 
 	 * A grammar stores all of the rules associated with any kind of nonterminal and permits us
@@ -21,13 +26,13 @@ class Grammar {
 	 * 
 	 * Note that Primitives are used to initialize a grammar, and they get "parsed" by Gramar.add
 	 * to store them in the right places according to their return types (the index comes from
-	 * the index of each type in FLEET_GRAMMAR_TYPES).
+	 * the index of each type in GRAMMAR_TYPES).
 	 * The trees that Grammar generates use nt<T>() -> size_t to represent types, not the types
 	 * themselves. 
 	 * The trees also use Primitive.op (a size_t) to represent operations
 	 */
 	// how many nonterminal types do we have?
-	static constexpr size_t N_NTs = std::tuple_size<std::tuple<FLEET_GRAMMAR_TYPES>>::value;
+	static constexpr size_t N_NTs = std::tuple_size<std::tuple<GRAMMAR_TYPES...>>::value;
 	static const size_t GRAMMAR_MAX_DEPTH = 64;
 	
 	// an exception for recursing too deep so we can print a trace of what went wrong
@@ -35,25 +40,29 @@ class Grammar {
 
 	
 public:
+	// Keep track of what types we are using here as our types -- thesee types are 
+	// stored in this tuple so they can be extracted
+	typedef std::tuple<GRAMMAR_TYPES...> GrammarTypesAsTuple;
+
 	std::vector<Rule> rules[N_NTs];
 	double	  	      Z[N_NTs]; // keep the normalizer handy for each nonterminal
 	
 public:
 
 	// This function converts a type (passed as a template parameter) into a 
-	// size_t index for which one it in in FLEET_GRAMMAR_TYPES. 
+	// size_t index for which one it in in GRAMMAR_TYPES. 
 	// This is used so that a Rule doesn't need type subclasses/templates, it can
 	// store a type as e.g. nt<double>() -> size_t 
 	template <class T>
 	constexpr nonterminal_t nt() {
 		/**
-		 * @brief template function giving the index of its template argument (index in FLEET_GRAMMAR_TYPES). 
+		 * @brief template function giving the index of its template argument (index in GRAMMAR_TYPES). 
 		 * NOTE: The names here are decayed (meaning that references and base types are the same. 
 		 */
 		using DT = typename std::decay<T>::type;
 		
-		static_assert(contains_type<DT, FLEET_GRAMMAR_TYPES>(), "*** The type T (decayed) must be in FLEET_GRAMMAR_TYPES");
-		return TypeIndex<DT, std::tuple<FLEET_GRAMMAR_TYPES>>::value;
+		static_assert(contains_type<DT, GRAMMAR_TYPES...>(), "*** The type T (decayed) must be in GRAMMAR_TYPES");
+		return TypeIndex<DT, std::tuple<GRAMMAR_TYPES...>>::value;
 	}
 
 	Grammar() {
@@ -162,6 +171,13 @@ public:
 		
 		Z[nt] += r.p; // keep track of the total probability
 	}
+
+	template<typename X>
+	static constexpr bool is_in_GRAMMAR_TYPES() {
+		// check if X is in GRAMMAR_TYPES
+		return std::is_same<typename std::decay<X>::type,void>::value or 
+			   contains_type<typename std::decay<X>::type,GRAMMAR_TYPES...>();
+	}
 	
 	// recursively add a bunch of rules in a tuple -- called via
 	// Grammar(std::tuple<T...> tup)
@@ -172,6 +188,10 @@ public:
 	
 	template<typename T, typename... args>
 	void add(Primitive<T, args...> p, const int arg=0) {
+		
+		static_assert(is_in_GRAMMAR_TYPES<T>() , "*** Type is not in GRAMMAR_TYPES");
+		static_assert((is_in_GRAMMAR_TYPES<args>() && ...),	"*** Type is not in GRAMMAR_TYPES");
+				
 		// add a single primitive -- unpacks the types to put the rule into the right place
 		// NOTE: we can't use T as the return type, we have ot use p::GrammarReturnType in order to handle
 		// return-by-reference primitives
@@ -180,6 +200,10 @@ public:
 	
 	template<typename T, typename... args>
 	void add(BuiltinPrimitive<T, args...> p, const int arg=0) {
+	
+		static_assert(is_in_GRAMMAR_TYPES<T>() , "*** Type is not in GRAMMAR_TYPES");
+		static_assert((is_in_GRAMMAR_TYPES<args>() && ...),	"*** Type is not in GRAMMAR_TYPES");
+	
 		// add a single primitive -- unpacks the types to put the rule into the right place
 		// NOTE: we can't use T as the return type, we have ot use p::GrammarReturnType in order to handle
 		// return-by-reference primitives
@@ -189,6 +213,10 @@ public:
 	
 	template<typename T, typename... args>
 	void add(BuiltinOp o, std::string format, const double p=1.0, const int arg=0) {
+		
+		static_assert(is_in_GRAMMAR_TYPES<T>() , "*** Type is not in GRAMMAR_TYPES");
+		static_assert((is_in_GRAMMAR_TYPES<args>() && ...),	"*** Type is not in GRAMMAR_TYPES");
+	
 		// add a single primitive -- unpacks the types to put the rule into the right place
 		add(Rule(nt<T>(), o, format, {nt<args>()...}, p, arg));
 	}

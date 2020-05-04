@@ -2,7 +2,8 @@
 
 #include "Datum.h"
 #include "IO.h"
-
+#include "Statistics/FleetStatistics.h"
+#include "Miscellaneous.h"
 
 /**
  * @class Bayesable

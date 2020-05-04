@@ -74,16 +74,6 @@ struct Primitive : PrePrimitive {
 	constexpr Primitive(std::string fmt, T(*_call)(args...), double _p=1.0 ) :
 		format(fmt), call(_call), op(op_counter++), p(_p), is_dispatch(false) {
 			
-		// check that each type here is in FLEET_GRAMMAR_TYPES
-		// or else we get obscure errors;
-	
-		static_assert(contains_type<GrammarReturnType,FLEET_GRAMMAR_TYPES>() , 
-					"*** Type is not in FLEET_GRAMMAR_TYPES");
-	
-		static_assert(std::is_same<T,vmstatus_t&>::value or (contains_type<typename std::decay<args>::type,FLEET_GRAMMAR_TYPES>() && ...), 
-					"*** Type is not in FLEET_GRAMMAR_TYPES");
-	
-		
 		// Next, we check reference types. We are allowed to have a reference in a primitive 
 		// which allows us to modify a value on the stack without copying it out. This tends
 		// to be faster for some data types. The requirements are:
@@ -108,15 +98,6 @@ struct Primitive : PrePrimitive {
 	constexpr Primitive(std::string fmt, T(*_call)(args...), vmstatus_t _dispatch(V*, P*, L*), double _p=1.0 ) :
 		format(fmt), call(_call), dispatch(_dispatch), op(op_counter++), p(_p), is_dispatch(true) {
 			
-		// check that each type here is in FLEET_GRAMMAR_TYPES
-		// or else we get obscure errors;
-	
-		static_assert(contains_type<GrammarReturnType,FLEET_GRAMMAR_TYPES>() , 
-					"*** Type is not in FLEET_GRAMMAR_TYPES");
-	
-		static_assert(std::is_same<T,vmstatus_t&>::value or (contains_type<typename std::decay<args>::type,FLEET_GRAMMAR_TYPES>() && ...), 
-					"*** Type is not in FLEET_GRAMMAR_TYPES");
-	
 		static_assert(CountReferences<args...>::value == 0, "*** Cannot contain any references in VMS primitives");
 		
 	}

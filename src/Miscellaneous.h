@@ -113,3 +113,20 @@ public:
 		this->reserve(N);
 	}
 };
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Not implemented error
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+#include <stdexcept>
+
+class NotImplementedError : public std::logic_error {
+public:
+
+	NotImplementedError() : std::logic_error("*** Function not yet implemented.") { }
+
+    virtual char const* what() const noexcept override { 
+		return "*** Function not yet implemented."; 
+	}
+};

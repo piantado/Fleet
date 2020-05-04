@@ -22,12 +22,14 @@ namespace Proposals {
 		return n.can_resample*1.0;
 	}
 	
-	std::pair<Node,double> prior_proposal(Grammar* grammar, const Node& from) {
+	template<typename GrammarType>
+	std::pair<Node,double> prior_proposal(GrammarType* grammar, const Node& from) {
 		auto g = grammar->generate(from.nt());
 		return std::make_pair(g, grammar->log_probability(g) - grammar->log_probability(from));
 	}
 
-	std::pair<Node,double> regenerate(Grammar* grammar, const Node& from) {
+	template<typename GrammarType>
+	std::pair<Node,double> regenerate(GrammarType* grammar, const Node& from) {
 		/**
 		 * @brief Regenerate with a rational-rules (Goodman et al.) style regeneration proposal: pick a node uniformly and regenerate it from the grammar. 
 		 * @param grammar - what grammar to use
@@ -58,8 +60,8 @@ namespace Proposals {
 		return std::make_pair(ret, fb);
 	}
 
-
-	std::pair<Node, double> insert_tree(Grammar* grammar, const Node& from) {
+	template<typename GrammarType>
+	std::pair<Node, double> insert_tree(GrammarType* grammar, const Node& from) {
 		// This proposal selects a node, regenerates, and then copies what was there before somewhere below 
 		// in the replaced tree. NOTE: it must regenerate something with the right nonterminal
 		// since that's what's being replaced! 
@@ -114,8 +116,8 @@ namespace Proposals {
 		return std::make_pair(ret, forward-backward);		
 	}
 	
-		
-	std::pair<Node, double> delete_tree(Grammar* grammar, const Node& from) {
+	template<typename GrammarType>
+	std::pair<Node, double> delete_tree(GrammarType* grammar, const Node& from) {
 		// This proposal selects a node, regenerates, and then copies what was there before somewhere below 
 		// in the replaced tree. NOTE: it must regenerate something with the right nonterminal
 		// since that's what's being replaced! 

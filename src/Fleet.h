@@ -82,46 +82,12 @@
 
 #include <sys/resource.h> // just for setting priority defaulty 
 
-const std::string FLEET_VERSION = "0.0.92";
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Tracking Fleet statistics 
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-namespace Fleet { 
-
-
-	
-}
-
-#include <stdexcept>
-
-class NotImplementedError : public std::logic_error {
-public:
-
-	NotImplementedError() : std::logic_error("*** Function not yet implemented.") { }
-
-    virtual char const* what() const noexcept override { 
-		return "*** Function not yet implemented."; 
-	}
-};
-
+const std::string FLEET_VERSION = "0.0.93";
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // We defaultly define a fleet object which stores all our info, prints our options
 // and our runtime on construction and destruction respectively
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//class Fleet {
-//public:
-//
-//
-//	void Fleet() {
-//		
-//	}
-//	
-//};
-//
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We defaultly include all of the major requirements for Fleet
@@ -158,6 +124,8 @@ public:
 #include "Top.h"
 #include "Primitives.h"
 
+// Thie one really should be included last because it depends on Primitves
+#include "VirtualMachine/applyPrimitives.h"
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Actual initialization

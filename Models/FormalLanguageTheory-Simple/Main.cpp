@@ -8,19 +8,9 @@ using S = std::string; // just for convenience
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 S alphabet = "01"; // the alphabet we use (possibly specified on command line)
-//S datastr = "1011001110";
-//S datastr  = "011,011011,011011011"; // the data, comma separated
-//S datastr = "01,01001";
 S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated
 const double strgamma = 0.95; //75; // penalty on string length
 const size_t MAX_LENGTH = 64; // longest strings cons will handle
-	
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// These define all of the types that are used in the grammar.
-/// This macro must be defined before we import Fleet.
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#define FLEET_GRAMMAR_TYPES S,bool
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// This is a global variable that provides a convenient way to wrap our primitives
@@ -57,19 +47,38 @@ std::tuple PRIMITIVES = {
 	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }),
 	
 	
-	// And add built-ins:
+	// And add built-ins - NOTE these must come last
 	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
 	Builtin::X<S>("x"),
 	Builtin::Flip("flip()", 10.0),
 	Builtin::SafeRecurse<S,S>("F(%s)")	
 };
 
-// Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
-#include "Fleet.h" 
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,S,S> {
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Declare a grammar
+/// This requires a template to specify what types they are (and what order they are stored in)
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+#include "Grammar.h"
+
+// declare a grammar with our primitives
+// Note that this ordering of primitives defines the order in Grammar
+class MyGrammar : public Grammar<S,bool> {
+	using Super = Grammar<S,bool>;
+	using Super::Super;
+};
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Declare our hypothesis type
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include "LOTHypothesis.h"
+
+// Declare a hypothesis class
+class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S,MyGrammar> {
 public:
-	using Super =  LOTHypothesis<MyHypothesis,S,S>;
+	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar>;
 	using Super::Super; // inherit the constructors
 	
 	double compute_single_likelihood(const t_datum& x) override {	
@@ -83,18 +92,18 @@ public:
 		return lp;
 	}
 		
-	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const override {
-		
-		std::pair<Node,double> x;
-		if(flip()) {
-			x = Proposals::regenerate(grammar, value);	
-		}
-		else {
-			if(flip()) x = Proposals::insert_tree(grammar, value);	
-			else       x = Proposals::delete_tree(grammar, value);	
-		}
-		return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second); 
-	}	
+//	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const override {
+//		
+//		std::pair<Node,double> x;
+//		if(flip()) {
+//			x = Proposals::regenerate(grammar, value);	
+//		}
+//		else {
+//			if(flip()) x = Proposals::insert_tree(grammar, value);	
+//			else       x = Proposals::delete_tree(grammar, value);	
+//		}
+//		return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second); 
+//	}	
 //
 //	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const {
 //		auto g = grammar->generate<S>();
@@ -111,8 +120,10 @@ public:
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
+// This needs to be included last because it includes VirtualMachine/applyPrimitives.h
+// which really requires Primitives to be defined already
 
-#include "VirtualMachine/applyPrimitives.h"
+#include "Fleet.h" 
 
 int main(int argc, char** argv){ 
 	
@@ -123,14 +134,13 @@ int main(int argc, char** argv){
 	CLI11_PARSE(app, argc, argv);
 	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
 	
+	MyGrammar grammar(PRIMITIVES);
+
 	// mydata stores the data for the inference model
 	MyHypothesis::t_data mydata;
 	
 	// top stores the top hypotheses we have found
 	Fleet::Statistics::TopN<MyHypothesis> top(ntop);
-	
-	// declare a grammar with our primitives
-	Grammar grammar(PRIMITIVES);
 	
 	// here we create an alphabet op with an "arg" that stores the character (this is faster than alphabet.substring with i.arg as an index) 
 	// here, op_ALPHABET converts arg to a string (and pushes it)
@@ -190,36 +200,6 @@ int main(int argc, char** argv){
 	
 	MyHypothesis h0(&grammar);
 	h0 = h0.restart();
-
-//	MyHypothesis h(&grammar);
-//	h = h.restart();
-//	h.compute_posterior(mydata);
-//	for(size_t i=0;i<mcmc_steps and !CTRL_C;i++) {
-//		auto [p,fb] = h.propose();
-//		p.compute_posterior(mydata);
-//		if( uniform() < exp(p.posterior - h.posterior - fb) ) {
-//			h = p;
-//		}
-//		top << h;
-//	}
-
-//	for(size_t i =0;i<100;i++) {
-//		MyHypothesis h = h0.restart();
-//		CERR grammar.log_probability(h.value) TAB h ENDL;
-//	}
-//	
-//	return 0;
-	
-//	COUT h0 ENDL;
-//	for(auto& x : h0.value) {
-//		COUT x.can_resample TAB x ENDL;
-//	}
-//	
-//	for(size_t j=0;j<100;j++) {
-//		COUT sample<Node,Node>(h0.value, Proposals::can_resample).first->string() ENDL;
-//	}
-//	
-////	return 0;
 	
 //	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
 //	tic();
