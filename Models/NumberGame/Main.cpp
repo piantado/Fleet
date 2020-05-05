@@ -40,17 +40,18 @@ class MyGrammar : public Grammar<float> {
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define hypothesis
+/// This is an example where our data is different -- it's a set instead of a vector
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include<set>
 #include "LOTHypothesis.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,float,float,MyGrammar, float, std::multiset<float> > {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,float,float,MyGrammar,float,std::multiset<float> > {
 public:
-	using Super = LOTHypothesis<MyHypothesis,float,float,MyGrammar, float, std::multiset<float>>;
+	using Super = LOTHypothesis<MyHypothesis,float,float,MyGrammar,float,std::multiset<float>>;
 	using Super::Super; // inherit the constructors
 	
-	virtual double compute_likelihood(const t_data& data, const double breakout=-infinity) {
+	virtual double compute_likelihood(const t_data& data, const double breakout=-infinity) override {
 		// TODO: This uses 0 for NAN -- probably not the best...
 		
 		std::set<float> s;
@@ -94,7 +95,7 @@ int main(int argc, char** argv){
 	MyGrammar grammar(PRIMITIVES);
 	
 	for(int i=0;i<=N;i++) {
-		grammar.add<float>(CustomOp::op_FLOAT, str(i), 10.0/N, i);		
+		grammar.add<float>(BuiltinOp::op_FLOAT, str(i), 10.0/N, i);		
 	}
 
 

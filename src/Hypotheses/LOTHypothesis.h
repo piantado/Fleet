@@ -17,9 +17,9 @@ template<typename HYP,
 		 typename t_input, 
 		 typename t_output, 
 		 typename GrammarType,
-		 typename VM_TYPES_TUPLE=typename GrammarType::GrammarTypesAsTuple, // used for deducing VM_TYPES in VirtualMachineState
 		 typename _t_datum=default_datum<t_input, t_output>, 
-		 typename _t_data=std::vector<_t_datum>
+		 typename _t_data=std::vector<_t_datum>,
+		 typename VM_TYPES_TUPLE=typename GrammarType::GrammarTypesAsTuple // used for deducing VM_TYPES in VirtualMachineState
 		 >
 class LOTHypothesis : public ProgramLoader,
 				      public MCMCable<HYP,_t_datum,_t_data>, // remember, this defines t_data, t_datum
