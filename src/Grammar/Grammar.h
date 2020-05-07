@@ -18,6 +18,9 @@
 template<typename T, typename... args> // function type
 struct Primitive;
 
+
+
+
 template<typename... GRAMMAR_TYPES>
 class Grammar {
 	/* 
@@ -93,6 +96,8 @@ public:
 		 * @brief Constructor for grammar that uses a tuple of Primitives.
 		 * @param tup - a tuple of Primitives
 		 */
+		
+		static_assert(checkBuiltinsAreLast<T...>(), "*** You cannot have a Primitive (or something else) after a BuiltinPrimitive, due to how applyPrimitives.h works. Just reorder.");
 		
 		add(tup, std::make_index_sequence<sizeof...(T)>{});
 	}	
