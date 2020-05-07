@@ -1,7 +1,6 @@
 #pragma once 
 
 #include "Instruction.h"
-#include "TemplateMagic.h"
 #include "Miscellaneous.h"
 
 // We have to include this after PRIMITIVES has been defined

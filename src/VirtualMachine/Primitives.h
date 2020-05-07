@@ -8,8 +8,79 @@
 #include <assert.h>
 
 #include "Instruction.h"
-#include "TemplateMagic.h"
 #include "Miscellaneous.h"
+
+
+/**
+ * @class CountReferences
+ * @author piantado
+ * @date 07/05/20
+ * @file VirtualMachineState.h
+ * @brief Count references in lambda arguments (used to ensure we only passs one)
+ */
+template <class T, class... Types>
+struct CountReferences {
+    static const size_t value = std::is_reference<T>::value + CountReferences<Types...>::value;
+};
+template <class T>
+struct CountReferences<T> { static const size_t value = std::is_reference<T>::value; };
+
+/**
+ * @class CheckReferenceIsFirst
+ * @author piantado
+ * @date 07/05/20
+ * @file Primitives.h
+ * @brief If there are any references in the arguments, only the first can be a reference
+ */
+template <class T, class... Types>
+struct CheckReferenceIsFirst {
+	static const bool value = (CountReferences<Types...>::value == 0);
+};
+template <class T>
+struct CheckReferenceIsFirst<T> { static const bool value = true; };
+
+
+/**
+ * @class TypeHead
+ * @author piantado
+ * @date 07/05/20
+ * @file Primitives.h
+ * @brief The first type in Args
+ */
+template<class... Args>
+struct TypeHead {
+	typedef typename std::tuple_element<0, std::tuple<Args...>>::type type;
+};
+
+/**
+ * @class HeadIfReferenceElseT
+ * @author piantado
+ * @date 07/05/20
+ * @file Primitives.h
+ * @brief Gives head(args)::value if head(args)::value is a reference, otherwise T...
+ */
+template<class T, class... args>
+struct HeadIfReferenceElseT {
+	typedef typename std::conditional<std::is_reference<typename TypeHead<args...>::type>::value,
+									  typename std::decay<typename TypeHead<args...>::type>::type,
+									  T
+									  >::type type;
+};	
+template<class T> 
+struct HeadIfReferenceElseT<T> { 
+	typedef T type;
+};
+
+
+/**
+ * @brief Check if a type is contained in parameter pack
+ * @return 
+ */
+template<typename X, typename... Ts>
+constexpr bool contains_type() {
+	return std::disjunction<std::is_same<X, Ts>...>::value;
+}
+
 
 /**
  * @class PrePrimitive

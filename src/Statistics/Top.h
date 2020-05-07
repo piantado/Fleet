@@ -5,12 +5,32 @@
 #include "stdio.h"
 
 #include <cmath>
+#include <type_traits>
 #include <set>
 #include <queue>
 #include <list>
 #include <unordered_set>
 #include <unordered_map>
 #include <cassert>
+
+
+
+/**
+ * @class HasPosterior
+ * @author piantado
+ * @date 07/05/20
+ * @file Top.h
+ * @brief Check if a type has a posterior function or not
+ */
+template <typename T, typename = double>
+struct HasPosterior : std::false_type { };
+
+template <typename T>
+struct HasPosterior <T, decltype((void) T::posterior, 0)> : std::true_type { };
+//https://stackoverflow.com/questions/1005476/how-to-detect-whether-there-is-a-specific-member-variable-in-class
+
+
+
 
 namespace Fleet {
 	namespace Statistics {

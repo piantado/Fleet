@@ -9,6 +9,34 @@
 #include "Stack.h"
 #include "Statistics/FleetStatistics.h"
 
+
+
+/**
+ * @class has_operator_lessthan_impl
+ * @author piantado
+ * @date 07/05/20
+ * @file VirtualMachineState.h
+ * @brief See if a class implements operator< (for filtering out in op_MEM code so it doesn't give an error if we use input_t that doesn't implement operator<
+ * 		  as long as no op_MEM is called
+ */
+template<class T, class EqualTo>
+struct has_operator_lessthan_impl
+{
+    template<class U, class V>
+    static auto test(U*) -> decltype(std::declval<U>() < std::declval<V>());
+    template<typename, typename>
+    static auto test(...) -> std::false_type;
+
+    using type = typename std::is_same<bool, decltype(test<T, EqualTo>(0))>::type;
+};
+
+template<class T, class EqualTo = T>
+struct has_operator_lessthan : has_operator_lessthan_impl<T, EqualTo>::type {};
+// https://stackoverflow.com/questions/6534041/how-to-check-whether-operator-exists
+
+
+
+
 namespace FleetStatistics {}
 template<typename X> class VirtualMachinePool;
 extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
@@ -25,9 +53,7 @@ extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
  * 			templated because it depends on the types in the grammar. 
  * 			These will typically be stored in a VirtualMachinePool and not called directly, unless you know
  * 			that there are no stochastics. 
- */
- 
- 
+ */ 
 template<typename _t_input, typename _t_output, typename... VM_TYPES>
 class VirtualMachineState {
 	
