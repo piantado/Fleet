@@ -18,13 +18,6 @@
 template<typename T, typename... args> // function type
 struct Primitive;
 
-
-
-
-
-
-
-
 template<typename... GRAMMAR_TYPES>
 class Grammar {
 	/* 

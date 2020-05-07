@@ -206,6 +206,29 @@ public:
 		}
 	}
 	
+	
+	void check_child_info() const {
+		/**
+		 * @brief assert that all of the child info is correct
+		 */
+		
+		int i = 0;
+		for(auto& c : children) {
+			
+			// check that the kids point to the right things
+			assert(c.pi == i);
+			assert(c.parent == this);
+			
+			// and that they are of the right type
+			assert(c.rule->nt == this->rule->type(i));
+
+			i++;
+		}
+		
+
+	}
+	
+	
 	nonterminal_t nt() const {
 		/**
 		 * @brief What nonterminal type do I return?

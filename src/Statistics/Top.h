@@ -51,6 +51,7 @@ namespace Fleet {
 			std::multiset<T> s; // important that it stores in sorted order by posterior! Multiset because we may have multiple samples that are "equal" (as in SymbolicRegression)
 			bool print_best; // should we print the best?
 			
+			using Hypothesis_t = T;
 			
 		public:
 			std::atomic<size_t> N;
@@ -125,6 +126,16 @@ namespace Fleet {
 				
 				return s;
 			}
+			
+			/**
+			 * @brief Does this contain x?
+			 * @param x
+			 * @return 
+			 */
+			bool contains(const T& x) const {
+				// TODO: Lock guard?
+				return s.find(x) == s.end();
+			}
 
 			void add(const T& x, size_t count=1) { 
 				/**
@@ -144,7 +155,7 @@ namespace Fleet {
 				std::lock_guard guard(lock);
 
 				// if we aren't in there and our posterior is better than the worst
-				if(s.find(x) == s.end()) {
+				if(not contains(x)) {
 					
 					if(s.size() < N or (empty() or worst() < x )) { // skip adding if its the worst -- can't call worst_score due to lock
 						T xcpy = x;
@@ -211,7 +222,7 @@ namespace Fleet {
 				return cnt[x];
 			}
 			
-			const T& best() { 
+			const T& best() const { 
 				/**
 				 * @brief Returns a reference to the best element currently stored
 				 * @return 
@@ -220,7 +231,7 @@ namespace Fleet {
 				assert( (!s.empty()) && "You tried to get the max from a TopN that was empty");
 				return *s.rbegin();  
 			}
-			const T& worst() { 
+			const T& worst() const { 
 				/**
 				 * @brief Returns a reference to the worst element currently stored
 				 * @return 
@@ -230,7 +241,7 @@ namespace Fleet {
 				return *s.begin(); 
 			}
 			
-			double Z() { // compute the normalizer
+			double Z() { // compute the normalizer (can't be const because it locks)
 				/**
 				 * @brief Compute the logsumexp of all of the elements stored. 
 				 * @return 

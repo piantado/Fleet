@@ -28,10 +28,10 @@
 template<typename HYP, 
 		 typename input_t, 
 		 typename output_t, 
-		 typename Grammar_t,
+		 typename _Grammar_t,
 		 typename _datum_t=defauldatum_t<input_t, output_t>, 
 		 typename _data_t=std::vector<_datum_t>,
-		 typename VirtualMachineState_t=typename Grammar_t::template VirtualMachineState_t<input_t, output_t> // used for deducing VM_TYPES in VirtualMachineState
+		 typename VirtualMachineState_t=typename _Grammar_t::template VirtualMachineState_t<input_t, output_t> // used for deducing VM_TYPES in VirtualMachineState
 		 >
 class LOTHypothesis : public ProgramLoader,
 				      public MCMCable<HYP,_datum_t,_data_t>, // remember, this defines data_t, datum_t
@@ -39,6 +39,7 @@ class LOTHypothesis : public ProgramLoader,
 public:     
 	typedef typename Bayesable<_datum_t,_data_t>::datum_t datum_t;
 	typedef typename Bayesable<_datum_t,_data_t>::data_t   data_t;
+	using Grammar_t = _Grammar_t;
 	
 	static const size_t MAX_NODES = 64; // max number of nodes we allow; otherwise -inf prior
 	
