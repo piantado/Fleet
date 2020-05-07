@@ -63,7 +63,7 @@ public:
 
 	vmstatus_t status; // are we still running? Did we get an error?
 	
-	VirtualMachineState(t_x x, t_return e, const std::tuple<VM_TYPES...>& tup, size_t _recursion_depth=0) :
+	VirtualMachineState(t_x x, t_return e, size_t _recursion_depth=0) :
 		err(e), lp(0.0), recursion_depth(_recursion_depth), status(vmstatus_t::GOOD) {
 		xstack.push(x);	
 	}

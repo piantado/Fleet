@@ -13,13 +13,25 @@
 
 #include "VirtualMachine/VirtualMachineState.h"
 
+/**
+ * @class LOTHypothesis
+ * @author piantado
+ * @date 05/05/20
+ * @file LOTHypothesis.h
+ * @brief A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously recurring tempalte
+ *        pattern), an input type, and output type, a grammar type, and types for the individual data elements and vector
+ *        of data. Usually you will subclass this (or a Lexicon) as hypotheses in a LOT model. 
+ * 		  
+ * 		  The kind of virtual machinse that are called here are defined inside Grammar (even though LOTHypothesis would be a 
+ *        more natural palce) because we need access to the Grammar's parameter pack over types. 
+ */
 template<typename HYP, 
 		 typename t_input, 
 		 typename t_output, 
-		 typename GrammarType,
+		 typename Grammar_t,
 		 typename _t_datum=default_datum<t_input, t_output>, 
 		 typename _t_data=std::vector<_t_datum>,
-		 typename VM_TYPES_TUPLE=typename GrammarType::GrammarTypesAsTuple // used for deducing VM_TYPES in VirtualMachineState
+		 typename VirtualMachineState_t=typename Grammar_t::template VirtualMachineState_t<t_input, t_output> // used for deducing VM_TYPES in VirtualMachineState
 		 >
 class LOTHypothesis : public ProgramLoader,
 				      public MCMCable<HYP,_t_datum,_t_data>, // remember, this defines t_data, t_datum
@@ -34,17 +46,16 @@ public:
 	
 	static const size_t MAX_NODES = 64; // 32 -- does not work for FancyEnglish!; // max number of nodes we allow; otherwise -inf prior
 	
-	GrammarType* grammar;
-	VM_TYPES_TUPLE grammarTypeTuple; // this is a tuple of the virtual machine types which gets passed to them in their constructor so they can deduce types
+	Grammar_t* grammar;
 	
 	Node value;
 
-	LOTHypothesis(GrammarType* g=nullptr)     : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
-	LOTHypothesis(GrammarType* g, Node&& x)   : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
-	LOTHypothesis(GrammarType* g, Node& x)    : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
+	LOTHypothesis(Grammar_t* g=nullptr)     : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
+	LOTHypothesis(Grammar_t* g, Node&& x)   : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
+	LOTHypothesis(Grammar_t* g, Node& x)    : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
 
 	// parse this from a string
-	LOTHypothesis(GrammarType* g, std::string s) : MCMCable<HYP,t_datum,t_data>(), grammar(g)  {
+	LOTHypothesis(Grammar_t* g, std::string s) : MCMCable<HYP,t_datum,t_data>(), grammar(g)  {
 		value = grammar->expand_from_names(s);
 	}
 	
@@ -121,7 +132,7 @@ public:
 	DiscreteDistribution<t_output> call(const t_input x, const t_output err, LOADERHYP* loader, 
 				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
 		
-		auto* vms = new VirtualMachineState(x, err, grammarTypeTuple );	
+		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err);	
 		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
 
 		VirtualMachinePool pool(vms, max_steps, max_outputs, minlp); // vms is passed here just to deduce the type
@@ -139,7 +150,7 @@ public:
 	t_output callOne(const t_input x, const t_output err, LOADERHYP* loader=nullptr) {
 		// we can use this if we are guaranteed that we don't have a stochastic hypothesis
 		// the savings is that we don't have to create a VirtualMachinePool		
-		VirtualMachineState vms(x, err, grammarTypeTuple);		
+		VirtualMachineState_t vms(x, err);		
 
 		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
 		return vms.run(loader); // default to using "this" as the loader		
@@ -152,7 +163,7 @@ public:
 	virtual std::string parseable() const { 
 		return value.parseable(); 
 	}
-	static HYP from_string(GrammarType& g, std::string s) {
+	static HYP from_string(Grammar_t& g, std::string s) {
 		return HYP(g, g.expand_from_names(s));
 	}
 	

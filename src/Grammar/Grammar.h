@@ -11,6 +11,7 @@
 #include "Primitives.h"
 #include "IntegerizedStack.h"
 
+#include "VirtualMachineState.h"
 #include "Primitives.h"
 #include "Builtins.h"
 
@@ -37,6 +38,9 @@ class Grammar {
 	 * by LOTHypothesis, which also passes them along to VirtualMachineState (in the form of
 	 * a Tuple). So the types used and order are fixed/standardized in the grammar
 	 */
+		
+public:
+
 	// how many nonterminal types do we have?
 	static constexpr size_t N_NTs = std::tuple_size<std::tuple<GRAMMAR_TYPES...>>::value;
 	static const size_t GRAMMAR_MAX_DEPTH = 64;
@@ -44,8 +48,14 @@ class Grammar {
 	// an exception for recursing too deep so we can print a trace of what went wrong
 	class DepthException: public std::exception {} depth_exception;
 
+	// We define a type for the VM. This would be more natural to have in LOTHypothesis, except that 
+	// it doesn't have nice access to GRAMMAR_TYPES. So, defaultly, we will define a VM type here 
+	// so that when a LOTHypothesis gets a grammar, it can read the VM type from it (assuming that
+	// it wants the VM type from it!) This is defaultly chosen as teh VirtualMachineState_t for a 
+	// LOTHypothesis, but it can be overridden. 
+	template<typename t_input, typename t_output>
+	using VirtualMachineState_t = VirtualMachineState<t_input, t_output, GRAMMAR_TYPES...>;
 	
-public:
 	// Keep track of what types we are using here as our types -- thesee types are 
 	// stored in this tuple so they can be extracted
 	typedef std::tuple<GRAMMAR_TYPES...> GrammarTypesAsTuple;
