@@ -81,7 +81,7 @@ public:
 	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar>;
 	using Super::Super; // inherit the constructors
 	
-	double compute_single_likelihood(const t_datum& x) override {	
+	double compute_single_likelihood(const datum_t& x) override {	
 		auto out = call(x.input, "<err>", this, 256, 256); //256, 256);
 		
 		// Likelihood comes from all of the ways that we can delete from the end and the append to make the observed output. 
@@ -137,7 +137,7 @@ int main(int argc, char** argv){
 	MyGrammar grammar(PRIMITIVES);
 
 	// mydata stores the data for the inference model
-	MyHypothesis::t_data mydata;
+	MyHypothesis::data_t mydata;
 	
 	// top stores the top hypotheses we have found
 	Fleet::Statistics::TopN<MyHypothesis> top(ntop);
@@ -154,7 +154,7 @@ int main(int argc, char** argv){
 	
 	// we will parse the data from a comma-separated list of "data" on the command line
 	for(auto di : split(datastr, ',')) {
-		mydata.push_back( MyHypothesis::t_datum({S(""), di}) );
+		mydata.push_back( MyHypothesis::datum_t({S(""), di}) );
 	}
 	
 	//------------------

@@ -15,14 +15,14 @@
  * 		  posterior at other temperatures via Bayesable.at_temperature(double t)
  */
 
-template<typename _t_datum, typename _t_data=std::vector<_t_datum>>
+template<typename _datum_t, typename _data_t=std::vector<_datum_t>>
 class Bayesable {
 public:
 	
 	// We'll define a vector of pairs of inputs and outputs
 	// this may be used externally to define what data is
-	typedef _t_datum t_datum;
-	typedef _t_data  t_data; 
+	typedef _datum_t datum_t;
+	typedef _data_t  data_t; 
 
 	// log values for all
 	double prior; 
@@ -52,7 +52,7 @@ public:
 	 * @brief Compute the likelihood of a single data point
 	 * @param datum
 	 */	
-	virtual double compute_single_likelihood(const t_datum& datum)  {
+	virtual double compute_single_likelihood(const datum_t& datum)  {
 		throw NotImplementedError();
 	}
 	
@@ -63,11 +63,11 @@ public:
 	 * @param breakout
 	 * @return 
 	 */	
-	virtual double compute_likelihood(const t_data& data, const double breakout=-infinity) {
+	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) {
 
 		
 		// include this in case a subclass overrides to make it non-iterable -- then it must define its own likelihood
-		if constexpr (is_iterable_v<t_data>) { 
+		if constexpr (is_iterable_v<data_t>) { 
 			
 			// defaultly a sum over datums in data (e.g. assuming independence)
 			likelihood = 0.0;
@@ -86,12 +86,12 @@ public:
 		}
 		else {
 			// should never execute this because it must be defined
-			assert(0 && "*** If you use a non-iterable t_data, then you must define compute_likelihood on your own."); 
+			assert(0 && "*** If you use a non-iterable data_t, then you must define compute_likelihood on your own."); 
 		}
 	}
 
 
-	virtual double compute_posterior(const t_data& data, const double breakout=-infinity) {
+	virtual double compute_posterior(const data_t& data, const double breakout=-infinity) {
 		/**
 		 * @brief Compute the posterior, by calling prior and likelihood. 
 		 * 		  This involves only a little bit of fanciness, which is that if our prior is -inf, then
@@ -135,7 +135,7 @@ public:
 	 */	
 	virtual size_t hash() const=0;
 	
-	virtual bool operator<(const Bayesable<t_datum,t_data>& l) const {
+	virtual bool operator<(const Bayesable<datum_t,data_t>& l) const {
 		/**
 		 * @brief Allow sorting of Bayesable hypotheses. We defaultly sort by posterior so that TopN works right. 
 		 * 		  But we also need to be careful because std::set uses this to determine equality, so this
@@ -180,8 +180,8 @@ public:
 
 
 
-template<typename _t_datum, typename _t_data>
-std::ostream& operator<<(std::ostream& o, Bayesable<_t_datum,_t_data>& x) {
+template<typename _datum_t, typename _data_t>
+std::ostream& operator<<(std::ostream& o, Bayesable<_datum_t,_data_t>& x) {
 	o << x.string();
 	return o;
 }
@@ -190,12 +190,12 @@ std::ostream& operator<<(std::ostream& o, Bayesable<_t_datum,_t_data>& x) {
 // Interface for std::fmt
 //#include "fmt/format.h"
 //
-//template<typename _t_datum, typename _t_data>
-//struct fmt::formatter<Bayesable<_t_datum,_t_data>&> {
+//template<typename _datum_t, typename _data_t>
+//struct fmt::formatter<Bayesable<_datum_t,_data_t>&> {
 //  constexpr auto parse(format_parse_context& ctx) { return ctx.begin(); }
 //
 //  template <typename FormatContext>
-//  auto format(const Bayesable<_t_datum,_t_data>& h, FormatContext& ctx) {
+//  auto format(const Bayesable<_datum_t,_data_t>& h, FormatContext& ctx) {
 //    return format_to(ctx.out(), "{}", h.string());
 //  }
 //};

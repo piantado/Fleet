@@ -29,7 +29,7 @@ public:
 	
 	ChainPool() {}
 	
-	ChainPool(HYP& h0, typename HYP::t_data* d, callback_t& cb, size_t n, bool allcallback=true) {
+	ChainPool(HYP& h0, typename HYP::data_t* d, callback_t& cb, size_t n, bool allcallback=true) {
 		for(size_t i=0;i<n;i++) {
 			if(allcallback or i==0) pool.push_back(MCMCChain<HYP,callback_t>(i==0?h0:h0.restart(), d, cb));
 			else                    pool.push_back(MCMCChain<HYP,callback_t>(i==0?h0:h0.restart(), d));

@@ -15,7 +15,7 @@ struct HumanDatum {
 	size_t cntyes; // yes and no responses
 	size_t cntno;
 	t_learnerdata  given_data;   // what data they saw
-	t_learnerdatum predict_data; // what they responded to
+	t_learnerdatum predicdata_t; // what they responded to
 };
 
 
@@ -56,8 +56,8 @@ Matrix counts(std::vector<HYP>& hypotheses) {
 }
 
 
-template<typename HYP, typename t_data>
-Matrix incremental_likelihoods(std::vector<HYP>& hypotheses, t_data& human_data) {
+template<typename HYP, typename data_t>
+Matrix incremental_likelihoods(std::vector<HYP>& hypotheses, data_t& human_data) {
 	// Each row here is a hypothesis, and each column is the likelihood for a sequence of data sets
 	// Here we check if the previous data point is a subset of the current, and if so, 
 	// then we just do the additiona likelihood o fthe set difference 
@@ -74,22 +74,22 @@ Matrix incremental_likelihoods(std::vector<HYP>& hypotheses, t_data& human_data)
 	return out;
 }
 
-template<typename HYP, typename t_data>
-Matrix model_predictions(std::vector<HYP>& hypotheses, t_data& human_data) {
+template<typename HYP, typename data_t>
+Matrix model_predictions(std::vector<HYP>& hypotheses, data_t& human_data) {
 	
 	Matrix out = Matrix::Zero(hypotheses.size(), human_data.size());
 	for(size_t h=0;h<hypotheses.size();h++) {
 	for(size_t di=0;di<human_data.size();di++) {
-		out(h,di) =  1.0*hypotheses[h].callOne(human_data[di].predict_data.x, 0);
+		out(h,di) =  1.0*hypotheses[h].callOne(human_data[di].predicdata_t.x, 0);
 	}
 	}
 	return out;	
 }
 
 
-template<typename HYP, typename t_datum, typename t_data=std::vector<t_datum>>	// HYP here is the type of the thing we do inference over
-class GrammarHypothesis : public MCMCable<GrammarHypothesis<HYP, t_datum, t_data>, t_datum, t_data>  {
-	/* This class stores a hypothesis of grammar probabilities. The t_data here is defined to be the above tuple and datum is ignored */
+template<typename HYP, typename datum_t, typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
+class GrammarHypothesis : public MCMCable<GrammarHypothesis<HYP, datum_t, data_t>, datum_t, data_t>  {
+	/* This class stores a hypothesis of grammar probabilities. The data_t here is defined to be the above tuple and datum is ignored */
 public:
 			
 	Vector x; 
@@ -126,9 +126,9 @@ public:
 	}
 	
 	// We should not use compute_single_likelihood
-	virtual double compute_single_likelihood(const t_datum& datum) { assert(0); } 
+	virtual double compute_single_likelihood(const datum_t& datum) { assert(0); } 
 	
-	virtual double compute_likelihood(const t_data& data, const double breakout=-infinity) {
+	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) {
 		// This runs the entire model (computing its posterior) to get the likelihood
 		// of the human data
 		
@@ -222,7 +222,7 @@ public:
 	}
 	
 	
-	virtual bool operator==(const GrammarHypothesis<HYP,t_datum,t_data>& h) const {
+	virtual bool operator==(const GrammarHypothesis<HYP,datum_t,data_t>& h) const {
 		return C == h.C and LL == h.LL and P == h.P and 
 				(getX()-h.getX()).array().abs().sum() == 0.0 and
 				logodds_baseline == h.logodds_baseline and

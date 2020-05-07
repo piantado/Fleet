@@ -64,7 +64,7 @@ public:
 		return n;
 	}
 
-	double compute_likelihood(const t_data& data, const double breakout=-infinity) override {
+	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		// Here we have just written by hand all of the relations we want
 		// This differs from churiso in that churiso will push constraints when possible
 		

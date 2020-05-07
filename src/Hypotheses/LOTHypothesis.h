@@ -26,36 +26,32 @@
  *        more natural palce) because we need access to the Grammar's parameter pack over types. 
  */
 template<typename HYP, 
-		 typename t_input, 
-		 typename t_output, 
+		 typename input_t, 
+		 typename output_t, 
 		 typename Grammar_t,
-		 typename _t_datum=default_datum<t_input, t_output>, 
-		 typename _t_data=std::vector<_t_datum>,
-		 typename VirtualMachineState_t=typename Grammar_t::template VirtualMachineState_t<t_input, t_output> // used for deducing VM_TYPES in VirtualMachineState
+		 typename _datum_t=defauldatum_t<input_t, output_t>, 
+		 typename _data_t=std::vector<_datum_t>,
+		 typename VirtualMachineState_t=typename Grammar_t::template VirtualMachineState_t<input_t, output_t> // used for deducing VM_TYPES in VirtualMachineState
 		 >
 class LOTHypothesis : public ProgramLoader,
-				      public MCMCable<HYP,_t_datum,_t_data>, // remember, this defines t_data, t_datum
-					  public Searchable<HYP,t_input,t_output>	{
-	// stores values as a pointer to something of type Node, whose memory I manage (I delete it when I go away)
-	// This also stores a pointer to a grammar, but I do not manage its memory
-	// nt store the value of the root nonterminal
-	// HYP stores my own type (for subclasses) so I know how to cast copy and propose
+				      public MCMCable<HYP,_datum_t,_data_t>, // remember, this defines data_t, datum_t
+					  public Searchable<HYP,input_t,output_t>	{
 public:     
-	typedef typename Bayesable<_t_datum,_t_data>::t_data   t_data;
-	typedef typename Bayesable<_t_datum,_t_data>::t_datum t_datum;
+	typedef typename Bayesable<_datum_t,_data_t>::datum_t datum_t;
+	typedef typename Bayesable<_datum_t,_data_t>::data_t   data_t;
 	
-	static const size_t MAX_NODES = 64; // 32 -- does not work for FancyEnglish!; // max number of nodes we allow; otherwise -inf prior
+	static const size_t MAX_NODES = 64; // max number of nodes we allow; otherwise -inf prior
 	
 	Grammar_t* grammar;
 	
 	Node value;
 
-	LOTHypothesis(Grammar_t* g=nullptr)     : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(NullRule,0.0,true) {}
-	LOTHypothesis(Grammar_t* g, Node&& x)   : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
-	LOTHypothesis(Grammar_t* g, Node& x)    : MCMCable<HYP,t_datum,t_data>(), grammar(g), value(x) {}
+	LOTHypothesis(Grammar_t* g=nullptr)     : MCMCable<HYP,datum_t,data_t>(), grammar(g), value(NullRule,0.0,true) {}
+	LOTHypothesis(Grammar_t* g, Node&& x)   : MCMCable<HYP,datum_t,data_t>(), grammar(g), value(x) {}
+	LOTHypothesis(Grammar_t* g, Node& x)    : MCMCable<HYP,datum_t,data_t>(), grammar(g), value(x) {}
 
 	// parse this from a string
-	LOTHypothesis(Grammar_t* g, std::string s) : MCMCable<HYP,t_datum,t_data>(), grammar(g)  {
+	LOTHypothesis(Grammar_t* g, std::string s) : MCMCable<HYP,datum_t,data_t>(), grammar(g)  {
 		value = grammar->expand_from_names(s);
 	}
 	
@@ -92,7 +88,7 @@ public:
 			return HYP(this->grammar, this->grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
 		}
 		else {
-			return HYP(this->grammar, this->grammar->template generate<t_output>());
+			return HYP(this->grammar, this->grammar->template generate<output_t>());
 		}
 	}
 	
@@ -111,7 +107,7 @@ public:
 		return this->prior = grammar->log_probability(value);
 	}
 	
-	virtual double compute_single_likelihood(const t_datum& datum) override {
+	virtual double compute_single_likelihood(const datum_t& datum) override {
 		// compute the likelihood of a *single* data point. 
 		assert(0);// for base classes to implement, but don't set = 0 since then we can't create Hypothesis classes. 
 	}
@@ -129,7 +125,7 @@ public:
 	// LOADERHYP is the kind of hypothesis we use to load, and it is not the same as HYP
 	// because in a Lexicon, we want to use its InnerHypothesis
 	template<typename LOADERHYP> 
-	DiscreteDistribution<t_output> call(const t_input x, const t_output err, LOADERHYP* loader, 
+	DiscreteDistribution<output_t> call(const input_t x, const output_t err, LOADERHYP* loader, 
 				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
 		
 		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err);	
@@ -139,21 +135,30 @@ public:
 		
 		return pool.template run(loader);		
 	}
-	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err) {
+	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t err) {
 		return call(x, err, this); // defaultly I myself am the recursion handler and dispatch
 	}
-	auto operator()(const t_input x, const t_output err){ // just fancy syntax for call
+	auto operator()(const input_t x, const output_t err){ // just fancy syntax for call
 		return call(x,err);
 	}
 
 	template<typename LOADERHYP>
-	t_output callOne(const t_input x, const t_output err, LOADERHYP* loader=nullptr) {
+	output_t callOne(const input_t x, const output_t err, LOADERHYP* loader) {
 		// we can use this if we are guaranteed that we don't have a stochastic hypothesis
 		// the savings is that we don't have to create a VirtualMachinePool		
 		VirtualMachineState_t vms(x, err);		
 
 		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
 		return vms.run(loader); // default to using "this" as the loader		
+	}
+	
+	output_t callOne(const input_t x, const output_t err) {
+		// we can use this if we are guaranteed that we don't have a stochastic hypothesis
+		// the savings is that we don't have to create a VirtualMachinePool		
+		VirtualMachineState_t vms(x, err);		
+
+		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
+		return vms.run(this); // default to using "this" as the loader		
 	}
 	
 
@@ -198,7 +203,7 @@ public:
 	 
 	virtual int neighbors() const override {
 		if(value.is_null()) { // if the value is null, our neighbors is the number of ways we can do nt
-			auto nt = grammar->template nt<t_output>();
+			auto nt = grammar->template nt<output_t>();
 			return grammar->count_rules(nt);
 		}
 		else {
@@ -213,7 +218,7 @@ public:
 		assert(grammar != nullptr);
 		
 		HYP h(grammar); // new hypothesis
-		auto nt = grammar->template nt<t_output>();
+		auto nt = grammar->template nt<output_t>();
 		if(value.is_null()) {
 			assert(k >= 0);
 			assert(k < (int)grammar->count_rules(nt));

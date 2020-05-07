@@ -9,7 +9,7 @@
  * @brief A class is searchable if permits us to enumerate and make its neighbors.
  * This class is used by MCTS and allows us to incrementally search a hypothesis.
  */
-template<typename HYP, typename t_input, typename t_output>
+template<typename HYP, typename... Args>
 class Searchable {
 public:
 	virtual int  neighbors() const = 0; // how many neighbors do I have?

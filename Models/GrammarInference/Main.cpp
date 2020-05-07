@@ -100,7 +100,7 @@ public:
 	using Super = LOTHypothesis<MyHypothesis,Node,Object,bool,LearnerDatum>;
 	using Super::Super;
 	
-	double compute_single_likelihood(const t_datum& di) {
+	double compute_single_likelihood(const datum_t& di) {
 		bool out = callOne(di.x, false);
 		return (out == di.correctAnswer ? log(di.alpha + (1.0-di.alpha)/2.0) : log((1.0-di.alpha)/2.0));
 	}

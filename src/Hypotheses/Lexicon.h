@@ -20,20 +20,20 @@
 
 template<typename HYP, 
 		 typename INNER, 
-		 typename t_input,
-		 typename t_output, 
-		 typename t_datum=default_datum<t_input, t_output>>
-class Lexicon : public MCMCable<HYP,t_datum>,
+		 typename input_t,
+		 typename output_t, 
+		 typename datum_t=defauldatum_t<input_t, output_t>>
+class Lexicon : public MCMCable<HYP,datum_t>,
 				public ProgramLoader,
-				public Searchable<HYP,t_input,t_output>
+				public Searchable<HYP,input_t,output_t>
 {
 		// Store a lexicon of type INNER elements
 	const static char FactorDelimiter = '|';
 public:
 	std::vector<INNER> factors;
 	
-	Lexicon(size_t n)  : MCMCable<HYP,t_datum>()  { factors.resize(n); }
-	Lexicon()          : MCMCable<HYP,t_datum>()  { }
+	Lexicon(size_t n)  : MCMCable<HYP,datum_t>()  { factors.resize(n); }
+	Lexicon()          : MCMCable<HYP,datum_t>()  { }
 		
 	virtual std::string string() const override {
 		/**
@@ -393,7 +393,7 @@ public:
 	/********************************************************
 	 * How to call 
 	 ********************************************************/
-	virtual DiscreteDistribution<t_output> call(const t_input x, const t_output err) {
+	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t err) {
 		// subclass must define what it means to call a lexicon
 		throw NotImplementedError();
 	}

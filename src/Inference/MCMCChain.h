@@ -21,7 +21,7 @@ public:
 	
 	HYP current;
 	mutable std::mutex current_mutex; // for access in parallelTempering
-	typename HYP::t_data* data;
+	typename HYP::data_t* data;
 	
 	double maxval;
 	callback_t* callback; // we don't want a shared_ptr because we don't want this deleted, it's owned elsewhere
@@ -35,28 +35,28 @@ public:
 	
 	Fleet::Statistics::FiniteHistory<bool> history;
 	
-	MCMCChain(HYP& h0, typename HYP::t_data* d, callback_t& cb ) : 
+	MCMCChain(HYP& h0, typename HYP::data_t* d, callback_t& cb ) : 
 			current(h0), data(d), maxval(-infinity), callback(&cb), 
 			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 			runOnCurrent();
 	}
 	
-	MCMCChain(HYP&& h0, typename HYP::t_data* d, callback_t& cb ) : 
+	MCMCChain(HYP&& h0, typename HYP::data_t* d, callback_t& cb ) : 
 			current(h0), data(d), maxval(-infinity), callback(&cb), 
 			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 			runOnCurrent();
 	}
 
-	MCMCChain(HYP& h0, typename HYP::t_data* d, callback_t* cb=nullptr ) : 
+	MCMCChain(HYP& h0, typename HYP::data_t* d, callback_t* cb=nullptr ) : 
 			current(h0), data(d), maxval(-infinity), callback(cb), 
 			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 			runOnCurrent();
 	}
 	
-	MCMCChain(HYP&& h0, typename HYP::t_data* d, callback_t* cb=nullptr) : 
+	MCMCChain(HYP&& h0, typename HYP::data_t* d, callback_t* cb=nullptr) : 
 			current(h0), data(d), maxval(-infinity), callback(cb), 
 			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {

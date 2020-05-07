@@ -53,8 +53,8 @@ public:
 	// so that when a LOTHypothesis gets a grammar, it can read the VM type from it (assuming that
 	// it wants the VM type from it!) This is defaultly chosen as teh VirtualMachineState_t for a 
 	// LOTHypothesis, but it can be overridden. 
-	template<typename t_input, typename t_output>
-	using VirtualMachineState_t = VirtualMachineState<t_input, t_output, GRAMMAR_TYPES...>;
+	template<typename input_t, typename output_t>
+	using VirtualMachineState_t = VirtualMachineState<input_t, output_t, GRAMMAR_TYPES...>;
 	
 	// Keep track of what types we are using here as our types -- thesee types are 
 	// stored in this tuple so they can be extracted

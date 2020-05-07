@@ -39,7 +39,7 @@ public:
 	using Super = LOTHypothesis<MyHypothesis,D,D,MyGrammar>;
 	using Super::Super;
 	
-	double compute_single_likelihood(const t_datum& datum) override {
+	double compute_single_likelihood(const datum_t& datum) override {
 		double fx = this->zeroAndCallOne(datum.input, NaN);
 		if(std::isnan(fx)) return -infinity;
             
@@ -247,8 +247,8 @@ std::tuple PRIMITIVES = {
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 // Define these types -- they are needed below
-using t_data  = MyHypothesis::t_data;
-using t_datum = MyHypothesis::t_datum;
+using data_t  = MyHypothesis::data_t;
+using datum_t = MyHypothesis::datum_t;
 #include "Data.h"
 #include "Polynomial.h"
 
@@ -260,7 +260,7 @@ std::mutex master_sample_lock;
 size_t innertime;
 class MyMCTS;
 MyMCTS* root;
-t_data mydata;
+data_t mydata;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////

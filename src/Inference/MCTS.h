@@ -38,7 +38,7 @@ public:
 	
 	Fleet::Statistics::StreamingStatistics statistics;
 	
-	typename HYP::t_data* data;
+	typename HYP::data_t* data;
     M* parent; // who is my parent?
     HYP value;
     
@@ -48,7 +48,7 @@ public:
         initialize();	
     }
     
-    MCTSNode(double ex, HYP& h0, typename HYP::t_data* d ) : 
+    MCTSNode(double ex, HYP& h0, typename HYP::data_t* d ) : 
 		explore(ex), data(d), parent(nullptr), value(h0) {
         
 		initialize();        

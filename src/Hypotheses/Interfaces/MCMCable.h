@@ -9,7 +9,7 @@
  * @file MCMCable.h
  * @brief A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC does for speed).
  */
-template<typename HYP, typename ...Args>
+template<typename HYP, typename... Args>
 class MCMCable : public Bayesable<Args...> {
 public:
 	MCMCable() { }

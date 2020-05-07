@@ -229,7 +229,7 @@ public:
 		return Super::call(input, U, this, 128, 128);
 	}
 	
-	double compute_single_likelihood(const t_datum& d) override {
+	double compute_single_likelihood(const datum_t& d) override {
 		auto v = call(d.input); // something of the type
 		
 		// average likelihood when sampling from this posterior
@@ -242,7 +242,7 @@ public:
 		// Hmm let's run over all the data and just get the modal response
 		// for each data output from the training data set 
 		std::map<word,DiscreteDistribution<word>> p; // probability of W given target
-		extern std::vector<t_data> alldata;
+		extern std::vector<data_t> alldata;
 		for(auto& di : alldata[alldata.size()-1]) {
 			const word target = di.output; 
 			auto v = call(di.input); // something of the type
@@ -272,7 +272,7 @@ public:
 #include "Statistics/Top.h"
 Fleet::Statistics::TopN<MyHypothesis> all; // used by MCMC and MCTS locally
 
-std::vector<MyHypothesis::t_data> alldata;
+std::vector<MyHypothesis::data_t> alldata;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // If we want to do MCTS
@@ -312,7 +312,7 @@ class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 // Sampling for the data
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MyHypothesis::t_datum sample_datum() { 
+MyHypothesis::datum_t sample_datum() { 
 	
 	set s = ""; word w = U; objectkind t{};
 	int ntypes=0;
@@ -339,7 +339,7 @@ MyHypothesis::t_datum sample_datum() {
 	return {utterance{s,t}, w, alpha};
 }
 
-MyHypothesis::t_datum sample_adjusted_datum(std::function<double(MyHypothesis::t_datum&)>& f) {
+MyHypothesis::datum_t sample_adjusted_datum(std::function<double(MyHypothesis::datum_t&)>& f) {
 	// use some rejection sampling to adjust our samplign distribution via f
 	// here, f gives the probability of accepting each word so that we can
 	// upweight certain kinds of data. 
@@ -368,14 +368,14 @@ int main(int argc, char** argv) {
 	
 	MyGrammar grammar(PRIMITIVES);
 	
-	typedef MyHypothesis::t_data  t_data;
-	typedef MyHypothesis::t_datum t_datum;
+	typedef MyHypothesis::data_t  data_t;
+	typedef MyHypothesis::datum_t datum_t;
 	
 	// Set up the data -- we'll do this so we can run a parallel
 	// chain across all of it at once
 	std::vector<Fleet::Statistics::TopN<MyHypothesis>>   alltops;
 	for(auto ndata : data_amounts) {
-		t_data mydata;
+		data_t mydata;
 		
 		// make some data here
 		for(int di=0;di<ndata;di++) {
@@ -386,7 +386,7 @@ int main(int argc, char** argv) {
 		alldata.push_back(mydata);
 		alltops.push_back(Fleet::Statistics::TopN<MyHypothesis>(ntop));
 	}
-	t_data biggestData = *alldata.rbegin();
+	data_t biggestData = *alldata.rbegin();
 	
 
 	// MCTS  - here just on the last data
@@ -437,12 +437,12 @@ int main(int argc, char** argv) {
 	
 	COUT "# Computing posterior for extra data <= 4" ENDL;
 	{
-		std::function<double(t_datum&)> f = [](t_datum d) {
+		std::function<double(datum_t&)> f = [](datum_t d) {
 			return (d.output <= (word)4 ? 1.0 : 0.25);			
 		};
 		
 		// make some data
-		t_data newdata;
+		data_t newdata;
 		for(size_t i=0;i<biggestData.size();i++) {
 			auto di = sample_adjusted_datum(f);
 			//cnt[di.output]++;
@@ -454,12 +454,12 @@ int main(int argc, char** argv) {
 	
 	COUT "# Computing posterior for extra data > 4" ENDL;
 	{
-		std::function<double(t_datum&)> f = [](t_datum d) {
+		std::function<double(datum_t&)> f = [](datum_t d) {
 			return (d.output > (word)4 ? 1.0 : 0.25);			
 		};
 		
 		// make some data
-		t_data newdata;
+		data_t newdata;
 		for(size_t i=0;i<biggestData.size();i++) {
 			auto di = sample_adjusted_datum(f);
 			//cnt[di.output]++;

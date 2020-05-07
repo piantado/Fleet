@@ -17,7 +17,7 @@ constexpr bool contains_type() {
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Fancy trick to see if a class implements operator< (for filtering out in op_MEM code
-/// so it doesn't give an error if we use t_input that doesn't implement operator<
+/// so it doesn't give an error if we use input_t that doesn't implement operator<
 /// as long as no op_MEM is called
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

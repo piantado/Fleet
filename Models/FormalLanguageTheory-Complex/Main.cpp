@@ -209,10 +209,10 @@ public:
 	}
 	 
 	 // We assume input,output with reliability as the number of counts that input was seen going to that output
-	 virtual double compute_single_likelihood(const t_datum& datum) override { assert(0); }
+	 virtual double compute_single_likelihood(const datum_t& datum) override { assert(0); }
 	 
 
-	 double compute_likelihood(const t_data& data, const double breakout=-infinity) override {
+	 double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		// this version goes through and computes the predictive probability of each prefix
 		 
 		const auto M = call(S(""), S("<err>")); 
@@ -254,7 +254,7 @@ public:
 	 
 	 void print(std::string prefix="") override {
 		std::lock_guard guard(Fleet::output_lock); // better not call Super wtih this here
-		extern MyHypothesis::t_data prdata;
+		extern MyHypothesis::data_t prdata;
 		extern std::string current_data;
 		auto o = this->call(S(""), S("<err>"));
 		auto [prec, rec] = get_precision_and_recall(std::cout, o, prdata, PREC_REC_N);
@@ -269,7 +269,7 @@ public:
 
 
 std::string prdata_path = ""; 
-MyHypothesis::t_data prdata; // used for computing precision and recall -- in case we want to use more strings?
+MyHypothesis::data_t prdata; // used for computing precision and recall -- in case we want to use more strings?
 S current_data = "";
 bool long_output = false; // if true, we allow extra strings, recursions etc. on output
 
@@ -342,10 +342,10 @@ int main(int argc, char** argv){
 	}
 		
 	// we are building up data and TopNs to give t parallel tempering
-	std::vector<MyHypothesis::t_data> datas; // load all the data	
+	std::vector<MyHypothesis::data_t> datas; // load all the data	
 	std::vector<Fleet::Statistics::TopN<MyHypothesis>> tops;
 	for(size_t i=0;i<data_amounts.size();i++){ 
-		MyHypothesis::t_data d;
+		MyHypothesis::data_t d;
 		
 		S data_path = input_path + "-" + data_amounts[i] + ".txt";	
 		load_data_file(d, data_path.c_str());

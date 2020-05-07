@@ -51,7 +51,7 @@ public:
 	using Super = LOTHypothesis<MyHypothesis,float,float,MyGrammar,float,std::multiset<float>>;
 	using Super::Super; // inherit the constructors
 	
-	virtual double compute_likelihood(const t_data& data, const double breakout=-infinity) override {
+	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		// TODO: This uses 0 for NAN -- probably not the best...
 		
 		std::set<float> s;
@@ -103,7 +103,7 @@ int main(int argc, char** argv){
 	Fleet::Statistics::TopN<MyHypothesis> top(ntop);
 
 	// our data
-	MyHypothesis::t_data mydata = {2,8,16};	
+	MyHypothesis::data_t mydata = {2,8,16};	
 
 	// create a hypothesis
 	MyHypothesis h0(&grammar);

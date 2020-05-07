@@ -23,7 +23,7 @@ public:
 	
 	std::atomic<bool> terminate; // used to kill swapper and adapter
 	
-	ParallelTempering(HYP& h0, typename HYP::t_data* d, callback_t& cb, std::initializer_list<double> t, bool allcallback=true) : 
+	ParallelTempering(HYP& h0, typename HYP::data_t* d, callback_t& cb, std::initializer_list<double> t, bool allcallback=true) : 
 		ChainPool<HYP,callback_t>(h0, d, cb, temperatures.size(),allcallback),
 		temperatures(t), terminate(false) {
 		
@@ -37,7 +37,7 @@ public:
 	}
 	
 	
-	ParallelTempering(HYP& h0, typename HYP::t_data* d, callback_t& cb, unsigned long n, double maxT, bool allcallback=true) : 
+	ParallelTempering(HYP& h0, typename HYP::data_t* d, callback_t& cb, unsigned long n, double maxT, bool allcallback=true) : 
 		ChainPool<HYP,callback_t>(h0, d, cb, n, allcallback),
 		terminate(false) {
 		
@@ -50,7 +50,7 @@ public:
 	}
 	
 	
-	ParallelTempering(HYP& h0, std::vector<typename HYP::t_data>& datas, std::vector<callback_t>& cb)  : terminate(false) {
+	ParallelTempering(HYP& h0, std::vector<typename HYP::data_t>& datas, std::vector<callback_t>& cb)  : terminate(false) {
 		assert(datas.size() == cb.size() && "*** Must provide equal length vectors of datas and callbacks");
 		// This version anneals on data, giving each chain a different amount in datas order
 		for(size_t i=0;i<datas.size();i++) {

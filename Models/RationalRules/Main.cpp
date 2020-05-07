@@ -73,7 +73,7 @@ public:
 	// Now, if we defaultly assume that our data is a std::vector of t_data, then we 
 	// can just define the likelihood of a single data point, which is here the true
 	// value with probability x.reliability, and otherwise a coin flip. 
-	double compute_single_likelihood(const t_datum& x) {
+	double compute_single_likelihood(const datum_t& x) override {
 		bool out = callOne(x.input, false);
 		return out == x.output ? log(x.reliability + (1.0-x.reliability)/2.0) : log((1.0-x.reliability)/2.0);
 	}
@@ -100,7 +100,7 @@ int main(int argc, char** argv){
 	MyGrammar grammar(PRIMITIVES);
 	
 	// mydata stores the data for the inference model
-	MyHypothesis::t_data mydata;
+	MyHypothesis::data_t mydata;
 	
 	// top stores the top hypotheses we have found
 	Fleet::Statistics::TopN<MyHypothesis> top(ntop);
@@ -109,9 +109,9 @@ int main(int argc, char** argv){
 	// set up the data
 	//------------------
 	
-	mydata.push_back(   (MyHypothesis::t_datum){ (Object){Color::Red, Shape::Triangle}, true,  0.75 }  );
-	mydata.push_back(   (MyHypothesis::t_datum){ (Object){Color::Red, Shape::Square},   false, 0.75 }  );
-	mydata.push_back(   (MyHypothesis::t_datum){ (Object){Color::Red, Shape::Square},   false, 0.75 }  );
+	mydata.push_back(   (MyHypothesis::datum_t){ (Object){Color::Red, Shape::Triangle}, true,  0.75 }  );
+	mydata.push_back(   (MyHypothesis::datum_t){ (Object){Color::Red, Shape::Square},   false, 0.75 }  );
+	mydata.push_back(   (MyHypothesis::datum_t){ (Object){Color::Red, Shape::Square},   false, 0.75 }  );
 	
 	//------------------
 	// Actually run

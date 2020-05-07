@@ -28,20 +28,20 @@ extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
  */
  
  
-template<typename _t_x, typename _t_return, typename... VM_TYPES>
+template<typename _t_input, typename _t_output, typename... VM_TYPES>
 class VirtualMachineState {
 	
 public:
 
-	typedef _t_x t_x;
-	typedef _t_return t_return;
+	typedef _t_input  input_t;
+	typedef _t_output output_t;
 	
 	static const unsigned long MAX_RECURSE = 64; // this is the max number of times we can call recurse, NOT the max depth
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
 	Program            opstack; 
-	Stack<t_x>         xstack; //xstackthis stores a stack of the x values (for recursive calls)
-	t_return           err; // what error output do we return?
+	Stack<input_t>     xstack; //xstackthis stores a stack of the x values (for recursive calls)
+	output_t           err; // what error output do we return?
 	double             lp; // the probability of this context
 	
 	unsigned long 	  recursion_depth; // when I was created, what was my depth?
@@ -55,15 +55,15 @@ public:
 	typedef int index_t; // how we index into factorized lexica -- NOTE: probably should be castable from Instruction.arg 
 	
 	// must have a memoized return value, that permits factorized by requiring an index argument
-	std::map<std::pair<index_t, t_x>, t_return> mem; 
+	std::map<std::pair<index_t, input_t>, output_t> mem; 
 
-	// when we recurse and memoize, this stores the arguments (index and t_x) for us to 
+	// when we recurse and memoize, this stores the arguments (index and input_t) for us to 
 	// rember after the program trace is done
-	Stack<std::pair<index_t, t_x>> memstack;
+	Stack<std::pair<index_t, input_t>> memstack;
 
 	vmstatus_t status; // are we still running? Did we get an error?
 	
-	VirtualMachineState(t_x x, t_return e, size_t _recursion_depth=0) :
+	VirtualMachineState(input_t x, output_t e, size_t _recursion_depth=0) :
 		err(e), lp(0.0), recursion_depth(_recursion_depth), status(vmstatus_t::GOOD) {
 		xstack.push(x);	
 	}
@@ -205,7 +205,7 @@ public:
 	}
 	
 	template<typename HYP>
-	t_return run(HYP* d) {
+	output_t run(HYP* d) {
 		/**
 		 * @brief Defaultly run a non-random hypothesis
 		 * @param d
@@ -215,7 +215,7 @@ public:
 	}
 	
 	template<typename HYP>
-	t_return run(VirtualMachinePool<VirtualMachineState<t_x,t_return, VM_TYPES...>>* pool, HYP* loader) {
+	output_t run(VirtualMachinePool<VirtualMachineState<input_t,output_t, VM_TYPES...>>* pool, HYP* loader) {
 		/**
 		 * @brief Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
 		 * 		  Note that here we allow a tempalte on HYP, which actually gets passed all the way down to 
@@ -256,12 +256,12 @@ public:
 						case BuiltinOp::op_X:
 						{
 							assert(!xstack.empty());
-							push<t_x>(xstack.top());
+							push<input_t>(xstack.top());
 							break;
 						}
 						case BuiltinOp::op_POPX:
 						{
-							xstack.pop(); // NOTE: Remember NOT to pop from getpop<t_x>() since that's not where x is stored
+							xstack.pop(); // NOTE: Remember NOT to pop from getpop<input_t>() since that's not where x is stored
 							break;
 						}
 						case BuiltinOp::op_ALPHABET: 
@@ -311,9 +311,9 @@ public:
 						case BuiltinOp::op_MEM:
 						{
 							// Let's not make a big deal when 
-							if constexpr (has_operator_lessthan<t_x>::value) {
+							if constexpr (has_operator_lessthan<input_t>::value) {
 								
-								auto v = gettop<t_return>(); // what I should memoize should be on top here, but dont' remove because we also return it
+								auto v = gettop<output_t>(); // what I should memoize should be on top here, but dont' remove because we also return it
 								auto memindex = memstack.top(); memstack.pop();
 								if(mem.count(memindex)==0) { // you might actually have already placed mem in crazy recursive situations, so don't overwrte if you have
 									mem[memindex] = v;
@@ -321,7 +321,7 @@ public:
 								
 								break;
 								
-							} else { assert(0 && "*** Cannot call op_MEM without defining operator< on t_input"); }
+							} else { assert(0 && "*** Cannot call op_MEM without defining operator< on input_t"); }
 						}
 						case BuiltinOp::op_TRUE: 
 						{
@@ -340,21 +340,23 @@ public:
 						case BuiltinOp::op_SAFE_RECURSE: {
 							// This is a recursion that returns empty for empty arguments 
 							// simplifying the condition
-							if constexpr (std::is_same<t_x, std::string>::value) { 						
+							if constexpr (std::is_same<input_t, std::string>::value) { 						
 
-								// need to check if stack<t_x> is empty since thats where we get x
-								if (empty<t_x>()) {
-									push<t_return>(t_return{});
+								assert(loader != nullptr);
+								
+								// need to check if stack<input_t> is empty since thats where we get x
+								if (empty<input_t>()) {
+									push<output_t>(output_t{});
 									continue;
 								}
-								else if(stack<t_x>().top().size() == 0) { 
-									getpop<t_x>(); // this would have been the argument
-									push<t_return>(t_return{}); //push default (null) return
+								else if(stack<input_t>().top().size() == 0) { 
+									getpop<input_t>(); // this would have been the argument
+									push<output_t>(output_t{}); //push default (null) return
 									continue;
 								}
 								else if(recursion_depth+1 > MAX_RECURSE) {
-									getpop<t_x>(); // ignored b/c we're bumping out
-									push<t_return>(t_return{});
+									getpop<input_t>(); // ignored b/c we're bumping out
+									push<output_t>(output_t{});
 									continue;
 								}
 							} else { assert(false && "*** Can only use SAFE_RECURSE on strings");}
@@ -365,14 +367,16 @@ public:
 						case BuiltinOp::op_RECURSE:
 						{
 							
+							assert(loader != nullptr);
+							
 							if(recursion_depth++ > MAX_RECURSE) { // there is one of these for each recurse
 								status = vmstatus_t::RECURSION_DEPTH;
 								return err;
 							}
 							
-							// if we get here, then we have processed our arguments and they are stored in the t_x stack. 
+							// if we get here, then we have processed our arguments and they are stored in the input_t stack. 
 							// so we must move them to the x stack (where there are accessible by op_X)
-							xstack.push(getpop<t_x>());
+							xstack.push(getpop<input_t>());
 							opstack.push(Instruction(BuiltinOp::op_POPX)); // we have to remember to remove X once the other program evaluates, *after* everything has evaluated
 							
 							// push this program 
@@ -380,27 +384,30 @@ public:
 							// in argument if we want to
 							loader->push_program(opstack,i.arg); 
 							
-							// after execution is done, the result will be pushed onto t_return
+							// after execution is done, the result will be pushed onto output_t
 							// which is what gets returned when we are all done
 							
 							break;
 						}
 						case BuiltinOp::op_SAFE_MEM_RECURSE: {
 							// same as SAFE_RECURSE. Note that there is no memoization here
-							if constexpr (std::is_same<t_x,std::string>::value and has_operator_lessthan<t_x>::value) {				
+							if constexpr (std::is_same<input_t,std::string>::value and has_operator_lessthan<input_t>::value) {				
+								
+								assert(loader != nullptr);
+								
 								// Here we don't need to memoize because it will always give us the same answer!
-								if (empty<t_x>()) {
-									push<t_return>(t_return{});
+								if (empty<input_t>()) {
+									push<output_t>(output_t{});
 									continue;
 								}
-								else if(stack<t_x>().top().size() == 0) { //exists but is empty
-									getpop<t_x>(); // this would have been the argument
-									push<t_return>(t_return{}); //push default (null) return
+								else if(stack<input_t>().top().size() == 0) { //exists but is empty
+									getpop<input_t>(); // this would have been the argument
+									push<output_t>(output_t{}); //push default (null) return
 									continue;
 								}
 								else if(recursion_depth+1 > MAX_RECURSE) {
-									getpop<t_x>();
-									push<t_return>(t_return{});
+									getpop<input_t>();
+									push<output_t>(output_t{});
 									continue;
 								}
 							} else { assert(false && "*** Can only use SAFE_MEM_RECURSE on strings.");}
@@ -410,15 +417,17 @@ public:
 						}
 						case BuiltinOp::op_MEM_RECURSE:
 						{
-							if constexpr (has_operator_lessthan<t_x>::value) {
+							if constexpr (has_operator_lessthan<input_t>::value) {
 								if(recursion_depth++ > MAX_RECURSE) {
 									status = vmstatus_t::RECURSION_DEPTH;
 									return err;
 								}
 								
-								t_x x = getpop<t_x>(); // get the argument
+								assert(loader != nullptr);
+								
+								input_t x = getpop<input_t>(); // get the argument
 							
-								std::pair<index_t,t_x> memindex(i.getArg(),x);
+								std::pair<index_t,input_t> memindex(i.getArg(),x);
 								
 								if(mem.count(memindex)){
 									push(mem[memindex]); 
@@ -433,7 +442,7 @@ public:
 								
 								break;						
 								
-							} else { assert(false && "*** Cannot MEM_RECURSE unless t_x has operator< defined"); }
+							} else { assert(false && "*** Cannot MEM_RECURSE unless input_t has operator< defined"); }
 						}
 						
 						// Both flips come here so we don't duplicate code
@@ -542,7 +551,7 @@ public:
 		if(status != vmstatus_t::GOOD) 
 			return err;		
 	
-		auto ret = getpop<t_return>();
+		auto ret = getpop<output_t>();
 		
 		assert(stacks_empty() and xstack.size() == 1 and "When we return, all of the stacks should be empty or else something is awry.");
 		
