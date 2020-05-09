@@ -36,6 +36,15 @@ t logplusexp(const t a, const t b) {
     //return mx + log(exp(a-mx)+exp(b-mx));
 }
 
+template<typename t>
+double logsumexp(const t& v) {
+	double lse = -infinity;
+	for(auto& x : v) {
+		lse = logplusexp(lse,x);
+	}
+	return lse;
+}
+
 /////////////////////////////////////////////////////////////
 // Pairing function for integer encoding of trees
 // NOTE: These generally should have the property that
@@ -69,6 +78,9 @@ typedef size_t enumerationidx_t; // this is the type we use to store enuemration
 		}
 
 		std::pair<enumerationidx_t,enumerationidx_t> mod_decode(const enumerationidx_t z, const enumerationidx_t k) {
+			
+			if(z == 0) 
+				return std::make_pair(0,0); // I think?
 			
 			auto x = z%k;
 			return std::make_pair(x, (z-x)/k);

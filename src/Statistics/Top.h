@@ -60,28 +60,28 @@ namespace Fleet {
 			
 			TopN(const TopN<T>& x) {
 				clear();
+				print_best = x.print_best; // must be set before we add!
 				set_size(x.N);
 				add(x);
-				print_best = x.print_best;
 			}
 			TopN(TopN<T>&& x) {
+				print_best = x.print_best;
 				cnt = x.cnt;
 				set_size(x.N);
 				s = x.s;
-				print_best = x.print_best;
 			}
 			
 			void operator=(const TopN<T>& x) {
 				clear();
+				print_best = x.print_best;				
 				set_size(x.N);
 				add(x);
-				print_best = x.print_best;
 			}
 			void operator=(TopN<T>&& x) {
+				print_best = x.print_best;
 				set_size(x.N);
 				cnt = x.cnt;
 				s =  x.s;
-				print_best = x.print_best;
 			}
 			
 
@@ -134,7 +134,7 @@ namespace Fleet {
 			 */
 			bool contains(const T& x) const {
 				// TODO: Lock guard?
-				return s.find(x) == s.end();
+				return s.find(x) != s.end();
 			}
 
 			void add(const T& x, size_t count=1) { 
@@ -144,7 +144,6 @@ namespace Fleet {
 				 * @param x
 				 * @param count
 				 */
-				
 				if(N == 0) return; // if we happen to not store anything
 				
 				// enable this when we use posterior as the variable, we don't add -inf values
@@ -208,7 +207,9 @@ namespace Fleet {
 			
 			// We also define this so we can pass TopN as a callback to MCMC sampling
 			//void operator()(const T& x) { add(x); }
-			void operator()(T& x)       { add(x); }
+			void operator()(T& x) { 
+				add(x); 
+			}
 			
 			
 			// get the count

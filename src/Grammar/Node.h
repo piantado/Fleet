@@ -198,7 +198,7 @@ public:
 		
 		// go through children and assign their parents to me
 		// and fix their pi's
-		int i = 0;
+		size_t i = 0;
 		for(auto& c : children) {
 			c.pi = i;
 			c.parent = this;
@@ -212,7 +212,7 @@ public:
 		 * @brief assert that all of the child info is correct
 		 */
 		
-		int i = 0;
+		size_t i = 0;
 		for(auto& c : children) {
 			
 			// check that the kids point to the right things

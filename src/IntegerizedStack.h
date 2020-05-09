@@ -63,3 +63,8 @@ public:
 	}
 };
 
+
+std::ostream& operator<<(std::ostream& o, const IntegerizedStack& n) {
+	o << n.value;
+	return o;
+}

@@ -1,4 +1,5 @@
-
+#include <string>
+#include <map>
 
 ///########################################################################################
 // A simple example of a version of the RationalRules model. 
@@ -18,23 +19,37 @@ typedef struct { Color color; Shape shape; } Object;
 #include "Primitives.h"
 #include "Builtins.h"
 
+std::map<std::string, double> probs = {
+										{"and", 1.82}, {"or", 0.11}, {"not", 1.07},
+										{"red", 2.4},  {"green", 0.2}, {"blue", 1.4},
+										{"square", 5.1}, {"triangle", 4.5}, {"circle", 2.49}
+									   };
+									   
+double zprob() {
+	double z = 0.0;
+	for(auto& i : probs) {
+		z += i.second;
+	}
+	return z;
+}
+
 std::tuple PRIMITIVES = {
-	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 2.0), // optional specification of prior weight (default=1.0)
-	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }),
-	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }),
-	// that + is really insane, but is needed to convert a lambda to a function pointer
+	// We've set some arbitrary weights here -- be sure you change them below
+	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, probs["and"]), 
+	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); },  probs["or"]),
+	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); },   probs["not"]),
+	
+	Primitive("red(%s)",       +[](Object x)       -> bool { return x.color == Color::Red; }, probs["red"]),
+	Primitive("green(%s)",     +[](Object x)       -> bool { return x.color == Color::Green; }, probs["green"]),
+	Primitive("blue(%s)",      +[](Object x)       -> bool { return x.color == Color::Blue; }, probs["blue"]),
 
-	Primitive("red(%s)",       +[](Object x)       -> bool { return x.color == Color::Red; }),
-	Primitive("green(%s)",     +[](Object x)       -> bool { return x.color == Color::Green; }),
-	Primitive("blue(%s)",      +[](Object x)       -> bool { return x.color == Color::Blue; }),
-
-	Primitive("square(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Square; }),
-	Primitive("triangle(%s)",  +[](Object x)       -> bool { return x.shape == Shape::Triangle; }),
-	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Circle; }),
+	Primitive("square(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Square; }, probs["square"]),
+	Primitive("triangle(%s)",  +[](Object x)       -> bool { return x.shape == Shape::Triangle; }, probs["triangle"]),
+	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Circle; }, probs["circle"]),
 	
 		
 	// but we also have to add a rule for the BuiltinOp that access x, our argument
-	Builtin::X<Object>("x", 10.0)
+	Builtin::X<Object>("x", 41.11) /// different type so shouldn't matter
 };
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -91,14 +106,17 @@ void checkNode(const Grammar_t* g, const Node& n) {
 		ni.check_child_info();
 	}
 
-
-	// check that each rule is recovered correctly
-//	for(auto ni : n) {
-//		assert(g.get_rule(ni.nt, ni.rule->format)
-//	}
-
 	// check the log probability that I get out. 
-	
+	// by counting how things are mapped to strings
+	// NOTE: This is specific to this grammar
+	std::string s = n.string();
+	double mylp = 0.0;
+	double lz = log(zprob()); // TODO: This should only be computed once...
+	for(auto& i : probs) { 
+		mylp += count(s, i.first) * (log(i.second) - lz); // TODO: 
+	}
+	//CERR mylp TAB g->log_probability(n) TAB n ENDL;
+	assert(abs(mylp-g->log_probability(n)) < 0.00001);
 }
 
 
@@ -116,18 +134,16 @@ void checkLOTHypothesis(const Grammar_t* g, const Hypothesis_t h){
 	assert(newH.likelihood == h.likelihood);
 	assert(newH.posterior == newH.prior + newH.likelihood);
 	assert(newH.hash() == h.hash());	
-//	assert(newH.prior == g.log_probability(newH.value));
 }
 
 /**
  * @brief Check the stuff stored in a TopN. 
  * @param g - the grammar
  * @param top
- * @param check_counts -- should I check that the probabilities and counts are what they should be? 
  */
 
 template<typename Grammar_t, typename Top_t>
-void checkTop(const Grammar_t* g, const Top_t& top, const bool check_counts=false) {
+void checkTop(const Grammar_t* g, const Top_t& top) {
 	
 	// check each hypothesis -- make sure it copies correctly
 	for(auto& h : top.values()) {
@@ -148,11 +164,6 @@ void checkTop(const Grammar_t* g, const Top_t& top, const bool check_counts=fals
 		
 		assert(h.posterior >= worst);
 		assert(h.posterior <= best);
-	}
-	
-	if(check_counts) {
-		
-		
 	}
 }
 
@@ -218,7 +229,7 @@ int main(int argc, char** argv){
 	mydata.push_back(   (MyHypothesis::datum_t){ (Object){Color::Red, Shape::Square},   false, 0.75 }  );
 	mydata.push_back(   (MyHypothesis::datum_t){ (Object){Color::Red, Shape::Square},   false, 0.75 }  );
 	
-	const size_t N = 100; // check equality on the top this many
+	const size_t N = 100000; // check equality on the top this many
 	
 	//------------------
 	// Actually run
@@ -230,6 +241,20 @@ int main(int argc, char** argv){
 	MCMCChain chain(h0, &mydata, top_mcmc);
 	chain.run(Control(mcmc_steps,runtime));
 	checkTop(&grammar, top_mcmc);
+	assert(not top_mcmc.empty());
+	
+	// just check out copying
+	Fleet::Statistics::TopN<MyHypothesis> top_mcmc_copy = top_mcmc;
+	checkTop(&grammar, top_mcmc_copy);
+	assert(top_difference(top_mcmc, top_mcmc_copy)==0.0);
+	assert(not top_mcmc_copy.empty());
+	
+	// check moving
+	Fleet::Statistics::TopN<MyHypothesis> top_mcmc_mv = std::move(top_mcmc_copy);
+	checkTop(&grammar, top_mcmc_mv);
+	assert(top_difference(top_mcmc, top_mcmc_mv)==0.0);
+	assert(not top_mcmc_mv.empty());
+	
 	
 	COUT "# Parallel Tempering..." ENDL;
 	Fleet::Statistics::TopN<MyHypothesis> top_tempering(N);
@@ -240,16 +265,16 @@ int main(int argc, char** argv){
 	// *everything* into top, which means that the counts you get will no longer 
 	// be samples (and in fact should be biased towards high-prior hypotheses)	
 	checkTop(&grammar, top_tempering);
+	assert(not top_tempering.empty());
 	
-	CERR top_difference(top_mcmc, top_tempering) ENDL;
-	
-//
-//
+	COUT "# top_difference(top_mcmc, top_tempering) = " << top_difference(top_mcmc, top_tempering) ENDL;
+
 //	COUT "# Enumerating...." ENDL;
 //	Fleet::Statistics::TopN<MyHypothesis> top_enumerate(N);
 //	for(enumerationidx_t z=1;z<1000 and !CTRL_C;z++) {
-//		auto n = grammar.expand_from_integer(0, z);
+//		auto n = grammar.expand_from_integer(grammar->nt<bool>(), z);
 //		checkNode(&grammar, n);
+//		CERR n ENDL;
 //	
 //		MyHypothesis h(&grammar);
 //		h.set_value(n);
@@ -261,8 +286,9 @@ int main(int argc, char** argv){
 //		auto o  = grammar.compute_enumeration_order(n);
 //		assert(o == z); // check our enumeration order
 //	}
+//	assert(not top_enumerate.empty());
 //	checkTop(&grammar, top_enumerate);
-
+	
 	COUT "# PriorSampling...." ENDL;
 	Fleet::Statistics::TopN<MyHypothesis> top_generate(N);
 	for(enumerationidx_t z=0;z<1000 and !CTRL_C;z++) {
@@ -276,22 +302,23 @@ int main(int argc, char** argv){
 		top_generate << h;
 	}
 	checkTop(&grammar, top_generate);
+	assert(not top_generate.empty());
+	
+	COUT "# top_difference(top_mcmc, top_generate) = " << top_difference(top_mcmc, top_generate) ENDL;
 	
 	/*
+	
 	 * What we want to check:
 	 * 	- each tree matches its probability
 	 *  - each node enumeration counts correctly
 	 *  - check multicore performance 
 	 *  - Check evaluation? Or maybe that's captured by ensuring the posterior is right?
 	 *  - check on numerics -- logsumexp
+	 *  - check iterator for Nodes -- let's push everything into a pointer structure and be sure we get them all 
 	*/
 	
-
-	
-
-	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
-	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
-	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
-	COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds() ENDL;
+//	paste(as.character(-exp(rnorm(10))), collapse=",")
+	std::vector<double> lps = {-3.06772779477656,-0.977654036813297,-3.01475169747216,-0.578898745873913,-0.444846222063099,-6.65476914326284,-2.06142236468469,-3.9048004594152,-0.29627744117047,-2.79668565176668};
+	assert(abs(logsumexp(lps)-0.965657562406778) < 0.000001);
 
 }
