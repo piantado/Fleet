@@ -198,6 +198,7 @@ double top_difference(Top_t& x, Top_t& y) {
 
 #include "MCMCChain.h"
 #include "ParallelTempering.h"
+#include "Enumeration.h"
 
 #include "Fleet.h" 
 
@@ -235,59 +236,59 @@ int main(int argc, char** argv){
 	// Actually run
 	//------------------
 		
-	COUT "# MCMC..." ENDL;
-	Fleet::Statistics::TopN<MyHypothesis> top_mcmc(N);
-	h0 = h0.restart();
-	MCMCChain chain(h0, &mydata, top_mcmc);
-	chain.run(Control(mcmc_steps,runtime));
-	checkTop(&grammar, top_mcmc);
-	assert(not top_mcmc.empty());
-	
-	// just check out copying
-	Fleet::Statistics::TopN<MyHypothesis> top_mcmc_copy = top_mcmc;
-	checkTop(&grammar, top_mcmc_copy);
-	assert(top_difference(top_mcmc, top_mcmc_copy)==0.0);
-	assert(not top_mcmc_copy.empty());
-	
-	// check moving
-	Fleet::Statistics::TopN<MyHypothesis> top_mcmc_mv = std::move(top_mcmc_copy);
-	checkTop(&grammar, top_mcmc_mv);
-	assert(top_difference(top_mcmc, top_mcmc_mv)==0.0);
-	assert(not top_mcmc_mv.empty());
-	
-	
-	COUT "# Parallel Tempering..." ENDL;
-	Fleet::Statistics::TopN<MyHypothesis> top_tempering(N);
-	h0 = h0.restart();
-	ParallelTempering samp(h0, &mydata, top_tempering, 8, 1000.0, false);
-	samp.run(Control(mcmc_steps, runtime, nthreads), 500, 1000);	// we run here with fast swaps, adaptation to fit more in 
- 	// NOTE: Running ParallelTempering with allcallback (default) will try to put
-	// *everything* into top, which means that the counts you get will no longer 
-	// be samples (and in fact should be biased towards high-prior hypotheses)	
-	checkTop(&grammar, top_tempering);
-	assert(not top_tempering.empty());
-	
-	COUT "# top_difference(top_mcmc, top_tempering) = " << top_difference(top_mcmc, top_tempering) ENDL;
-
-//	COUT "# Enumerating...." ENDL;
-//	Fleet::Statistics::TopN<MyHypothesis> top_enumerate(N);
-//	for(enumerationidx_t z=1;z<1000 and !CTRL_C;z++) {
-//		auto n = grammar.expand_from_integer(grammar->nt<bool>(), z);
-//		checkNode(&grammar, n);
-//		CERR n ENDL;
+//	COUT "# MCMC..." ENDL;
+//	Fleet::Statistics::TopN<MyHypothesis> top_mcmc(N);
+//	h0 = h0.restart();
+//	MCMCChain chain(h0, &mydata, top_mcmc);
+//	chain.run(Control(mcmc_steps,runtime));
+//	checkTop(&grammar, top_mcmc);
+//	assert(not top_mcmc.empty());
 //	
-//		MyHypothesis h(&grammar);
-//		h.set_value(n);
-//		h.compute_posterior(mydata);
-//		
-//		top_enumerate << h;
-//		
-//		// check our enumeration order
-//		auto o  = grammar.compute_enumeration_order(n);
-//		assert(o == z); // check our enumeration order
-//	}
-//	assert(not top_enumerate.empty());
-//	checkTop(&grammar, top_enumerate);
+//	// just check out copying
+//	Fleet::Statistics::TopN<MyHypothesis> top_mcmc_copy = top_mcmc;
+//	checkTop(&grammar, top_mcmc_copy);
+//	assert(top_difference(top_mcmc, top_mcmc_copy)==0.0);
+//	assert(not top_mcmc_copy.empty());
+//	
+//	// check moving
+//	Fleet::Statistics::TopN<MyHypothesis> top_mcmc_mv = std::move(top_mcmc_copy);
+//	checkTop(&grammar, top_mcmc_mv);
+//	assert(top_difference(top_mcmc, top_mcmc_mv)==0.0);
+//	assert(not top_mcmc_mv.empty());
+//	
+//	
+//	COUT "# Parallel Tempering..." ENDL;
+//	Fleet::Statistics::TopN<MyHypothesis> top_tempering(N);
+//	h0 = h0.restart();
+//	ParallelTempering samp(h0, &mydata, top_tempering, 8, 1000.0, false);
+//	samp.run(Control(mcmc_steps, runtime, nthreads), 500, 1000);	// we run here with fast swaps, adaptation to fit more in 
+// 	// NOTE: Running ParallelTempering with allcallback (default) will try to put
+//	// *everything* into top, which means that the counts you get will no longer 
+//	// be samples (and in fact should be biased towards high-prior hypotheses)	
+//	checkTop(&grammar, top_tempering);
+//	assert(not top_tempering.empty());
+//	
+//	COUT "# top_difference(top_mcmc, top_tempering) = " << top_difference(top_mcmc, top_tempering) ENDL;
+
+	COUT "# Enumerating...." ENDL;
+	Fleet::Statistics::TopN<MyHypothesis> top_enumerate(N);
+	for(enumerationidx_t z=1;z<1000 and !CTRL_C;z++) {
+		auto n = expand_from_integer(&grammar, grammar.nt<bool>(), z);
+		checkNode(&grammar, n);
+		CERR n ENDL;
+	
+		MyHypothesis h(&grammar);
+		h.set_value(n);
+		h.compute_posterior(mydata);
+		
+		top_enumerate << h;
+		
+		// check our enumeration order
+		auto o  = compute_enumeration_order(&grammar, n);
+		assert(o == z); // check our enumeration order
+	}
+	assert(not top_enumerate.empty());
+	checkTop(&grammar, top_enumerate);
 	
 	COUT "# PriorSampling...." ENDL;
 	Fleet::Statistics::TopN<MyHypothesis> top_generate(N);
@@ -304,7 +305,7 @@ int main(int argc, char** argv){
 	checkTop(&grammar, top_generate);
 	assert(not top_generate.empty());
 	
-	COUT "# top_difference(top_mcmc, top_generate) = " << top_difference(top_mcmc, top_generate) ENDL;
+//	COUT "# top_difference(top_mcmc, top_generate) = " << top_difference(top_mcmc, top_generate) ENDL;
 	
 	/*
 	

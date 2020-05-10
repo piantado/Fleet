@@ -88,7 +88,6 @@ const std::string FLEET_VERSION = "0.0.94";
 #include "Strings.h"
 #include "Hash.h"
 #include "Miscellaneous.h"
-#include "IntegerizedStack.h"
 
 #include "Rule.h"
 #include "VirtualMachine/VirtualMachinePool.h"
