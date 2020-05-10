@@ -177,11 +177,11 @@ std::tuple PRIMITIVES = {
 	Primitive("10",    +[]() -> magnitude { return 10; }),
 	
 	//x, recurse, ifset, ifword
-	Builtin::If<set>("if(%s,%s,%s)", 1/3.),		
-	Builtin::If<word>("if(%s,%s,%s)", 1/3.),	
-	Builtin::If<wmset>("if(%s,%s,%s)", 1./3.),		
-	Builtin::If<objectkind>("if(%s,%s,%s)"),
-	Builtin::If<magnitude>("if(%s,%s,%s)"),		
+	Builtin::If<set>("if(%s,%s,%s)", 1/5.),		
+	Builtin::If<word>("if(%s,%s,%s)", 1/5.),	
+	Builtin::If<wmset>("if(%s,%s,%s)", 1./5.),		
+	Builtin::If<objectkind>("if(%s,%s,%s)", 1./5.),
+	Builtin::If<magnitude>("if(%s,%s,%s)", 1./5.),		
 	Builtin::X<utterance>("x", 10.0),
 	Builtin::FlipP("flip(%s)", 2.0),
 	Builtin::Recurse<word,utterance>("F(%s)")	
@@ -244,7 +244,10 @@ public:
 		std::map<word,DiscreteDistribution<word>> p; // probability of W given target
 		extern std::vector<data_t> alldata;
 		for(auto& di : alldata[alldata.size()-1]) {
-			const word target = di.output; 
+			// count how many times the object occurs
+			// NOTE: We cannot use di.output here since that's generated with noise
+			const word target  = count(di.input.s, std::string(1,di.input.o)); 
+			
 			auto v = call(di.input); // something of the type
 
 			for(const auto& o : v.values()) {

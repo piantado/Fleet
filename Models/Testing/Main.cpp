@@ -315,6 +315,7 @@ int main(int argc, char** argv){
 	 *  - Check evaluation? Or maybe that's captured by ensuring the posterior is right?
 	 *  - check on numerics -- logsumexp
 	 *  - check iterator for Nodes -- let's push everything into a pointer structure and be sure we get them all 
+	 *  - Check that parseable is parseable..
 	*/
 	
 //	paste(as.character(-exp(rnorm(10))), collapse=",")

@@ -40,7 +40,7 @@ public:
 		assert(before <= value && "*** Overflow in encoding IntegerizedStack::push");
 	}
 	
-	value_t get_value() {
+	value_t get_value() const {
 		return value; 
 	}
 	
@@ -65,6 +65,6 @@ public:
 
 
 std::ostream& operator<<(std::ostream& o, const IntegerizedStack& n) {
-	o << n.value;
+	o << n.get_value();
 	return o;
 }

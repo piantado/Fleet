@@ -58,7 +58,7 @@
 
 #include <sys/resource.h> // just for setting priority defaulty 
 
-const std::string FLEET_VERSION = "0.0.93";
+const std::string FLEET_VERSION = "0.0.94";
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // We defaultly define a fleet object which stores all our info, prints our options
