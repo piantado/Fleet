@@ -9,7 +9,6 @@
 #include "Random.h"
 #include "Nonterminal.h"
 #include "Primitives.h"
-#include "IntegerizedStack.h"
 
 #include "VirtualMachineState.h"
 #include "Primitives.h"
