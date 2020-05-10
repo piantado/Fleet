@@ -134,7 +134,7 @@ public:
 
 		VirtualMachinePool pool(vms, max_steps, max_outputs, minlp); // vms is passed here just to deduce the type
 		
-		return pool.template run(loader);		
+		return pool.run(loader);		
 	}
 	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t err) {
 		return call(x, err, this); // defaultly I myself am the recursion handler and dispatch
