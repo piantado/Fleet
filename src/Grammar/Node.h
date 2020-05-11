@@ -550,18 +550,18 @@ public:
 	}
 		
 	inline virtual void linearize(Program &ops) const { 
-/**
- * @brief convert tree to a linear sequence of operations. 
- * 		To do this, we first linearize the kids, leaving their values as the top on the stack
- *		then we compute our value, remove our kids' values to clean up the stack, and push on our return
- *		the only fanciness is for if: here we will use the following layout 
- *		<TOP OF STACK> <bool> op_IF(xsize) X-branch JUMP(ysize) Y-branch
- *		
- *		NOTE: Inline here lets gcc inline a few recursions of this function, which ends up speeding
- *		us up a bit (otherwise recursive inlining only happens at -O3)
- *		This optimization is why we do set max-inline-insns-recursive in Fleet.mk
- * @param ops
- */
+		/**
+		 * @brief convert tree to a linear sequence of operations. 
+		 * 		To do this, we first linearize the kids, leaving their values as the top on the stack
+		 *		then we compute our value, remove our kids' values to clean up the stack, and push on our return
+		 *		the only fanciness is for if: here we will use the following layout 
+		 *		<TOP OF STACK> <bool> op_IF(xsize) X-branch JUMP(ysize) Y-branch
+		 *		
+		 *		NOTE: Inline here lets gcc inline a few recursions of this function, which ends up speeding
+		 *		us up a bit (otherwise recursive inlining only happens at -O3)
+		 *		This optimization is why we do set max-inline-insns-recursive in Fleet.mk
+		 * @param ops
+		 */
 		
 		//  
 
@@ -588,17 +588,16 @@ public:
 			int ysize = children[2].program_size();
 			assert(ysize < (1<<12) && "If statement jump size too large to be encoded in Instruction arg. Your program is too large for Fleet.");
 			
+			//ops.reserve(ops.size() + xsize + ysize + children[0].program_size() + 3);
+			
 			children[2].linearize(ops);
 			
 			// make the right instruction 
-			// TODO: Assert that ysize fits 
-//			ops.push(Instruction(BuiltinOp::op_JMP,ysize));
 			ops.emplace_back(BuiltinOp::op_JMP, ysize);
 			
 			children[1].linearize(ops);
 			
 			// encode jump
-//			ops.push(Instruction(BuiltinOp::op_IF, xsize)); 
 			ops.emplace_back(BuiltinOp::op_IF, xsize);
 			
 			// evaluate the bool first so its on the stack when we get to if
@@ -614,8 +613,66 @@ public:
 				children[i].linearize(ops);
 			}
 		}
-		
 	}
+		
+//	inline virtual void linearize(Program &ops) const { 
+//		/**
+//		 * @brief convert tree to a linear sequence of operations. 
+//		 * 		To do this, we first linearize the kids, leaving their values as the top on the stack
+//		 *		then we compute our value, remove our kids' values to clean up the stack, and push on our return
+//		 *		the only fanciness is for if: here we will use the following layout 
+//		 *		<TOP OF STACK> <bool> op_IF(xsize) X-branch JUMP(ysize) Y-branch
+//		 *		
+//		 *		NOTE: Inline here lets gcc inline a few recursions of this function, which ends up speeding
+//		 *		us up a bit (otherwise recursive inlining only happens at -O3)
+//		 *		This optimization is why we do set max-inline-insns-recursive in Fleet.mk
+//		 * @param ops
+//		 */
+//		
+//		// NOTE: If you change the order here ever, you have to change how string() works so that 
+//		//       string order matches evaluation order
+//		// TODO: We should restructure this to use "map" so that the order is always the same as for printing
+//		
+//		// and just a little checking here
+//		for(size_t i=0;i<rule->N;i++) {
+//			assert(not children[i].is_null() && "Cannot linearize a Node with null children");
+//			assert(children[i].rule->nt == rule->type(i) && "Somehow the child has incorrect types -- this is bad news for you."); // make sure my kids types are what they should be
+//		}
+//		
+//		size_t ops_start_size = ops.size();
+//		
+//		// Main code
+//		if( rule->instr.is_a(BuiltinOp::op_IF) ) {
+//			assert(rule->N == 3 && "BuiltinOp::op_IF require three arguments"); // must have 3 parts
+//						
+//			children[2].linearize(ops);
+//			size_t ysize = ops.size() - ops_start_size; assert(ysize == children[2].program_size());
+//			assert(ysize < std::numeric_limits<decltype(Instruction::arg)>::max() && "If statement jump size too large to be encoded in Instruction arg. Your program is too large for Fleet.");
+//			
+//			ops.emplace_back(BuiltinOp::op_JMP, ysize);
+//			
+//			children[1].linearize(ops);
+//			// note here for xsize we jump over the JMP, which is why its program_size + 1
+//			size_t xsize = ops.size() - (ops_start_size+ysize); assert(xsize == children[1].program_size()+1);
+//			assert(xsize < std::numeric_limits<decltype(Instruction::arg)>::max() && "If statement jump size too large to be encoded in Instruction arg. Your program is too large for Fleet."); // these sizes come from the arg bitfield 
+//			
+//			// encode jump
+//			ops.emplace_back(BuiltinOp::op_IF, xsize);
+//			
+//			// evaluate the bool first so its on the stack when we get to if
+//			children[0].linearize(ops);
+//			
+//		}
+//		else {
+//			/* Here we push the children in increasing order. Then, when we pop rightmost first (as Primitive does), it 
+//			 * assigns the correct index.  */
+//			ops.emplace_back(rule->instr); 
+//			
+//			for(int i=rule->N-1;i>=0;i--) { // here we linearize right to left so that when we call right to left, it matches string order			
+//				children[i].linearize(ops);
+//			}
+//		}
+//	}
 	
 	virtual bool operator==(const Node& n) const{
 		/**

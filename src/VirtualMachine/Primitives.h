@@ -152,8 +152,6 @@ struct Primitive : PrePrimitive {
 		//		typically the last to be evaluated (TODO: We should fix this in the future because its not true on all compilers)
 		// (iii) if we return void, then we must have a reference (for return value) and vice versa
 		
-		// TODO: ALSO ASSERT that the return type is the same as the reference (otherwise the grammar doesn't know what ot do)
-		// BUT Note we shouldn't actually return
 		if constexpr(sizeof...(args) > 0 and not std::is_same<T,vmstatus_t&>::value) {
 			static_assert(CountReferences<args...>::value <= 1, "*** Cannot contain more than one reference in arguments, since the reference is where we put the return value.");
 			static_assert(CheckReferenceIsFirst<args...>::value, "*** Reference must be the first argument so it will be popped from the stack last (in fact, it is left in place).");
@@ -161,8 +159,6 @@ struct Primitive : PrePrimitive {
 		}
 		
 	}
-	
-	
 	
 	template<typename V, typename P, typename L>
 	constexpr Primitive(std::string fmt, T(*_call)(args...), vmstatus_t _dispatch(V*, P*, L*), double _p=1.0 ) :
@@ -172,7 +168,6 @@ struct Primitive : PrePrimitive {
 			static_assert(CountReferences<args...>::value == 0, "*** Cannot contain any references in VMS primitives");
 				
 	}
-	
 	
 	/**
 	 * @brief This gets called by a VirtualMachineState to evaluate the primitive on some arguments

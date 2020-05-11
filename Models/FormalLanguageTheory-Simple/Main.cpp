@@ -8,7 +8,7 @@ using S = std::string; // just for convenience
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 S alphabet = "01"; // the alphabet we use (possibly specified on command line)
-S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated
+thread_local S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated
 const double strgamma = 0.95; //75; // penalty on string length
 const size_t MAX_LENGTH = 64; // longest strings cons will handle
 
@@ -201,19 +201,19 @@ int main(int argc, char** argv){
 	MyHypothesis h0(&grammar);
 	h0 = h0.restart();
 	
-//	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
-//	tic();
-//	samp.run(Control(mcmc_steps, runtime, nthreads), 1000, 3000); //30000);		
-//	tic();
+	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
+	tic();
+	samp.run(Control(mcmc_steps, runtime, nthreads), 100, 300); //30000);		
+	tic();
 //	
 //	 Show the best we've found
 	top.print();
 
 	
-	MCMCChain c(h0, &mydata, top);
-	tic();
-	c.run(Control(mcmc_steps, runtime, nthreads));
-	tic();
+//	MCMCChain c(h0, &mydata, top);
+//	tic();
+//	c.run(Control(mcmc_steps, runtime, nthreads));
+//	tic();
 	
 	for(auto& h : top.values()) {
 		COUT top[h] TAB h.posterior TAB h.prior TAB h.likelihood TAB h.string() ENDL;		

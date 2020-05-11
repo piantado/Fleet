@@ -117,23 +117,20 @@ int main(int argc, char** argv){
 	// Actually run
 	//------------------
 	
-	MyHypothesis h0(&grammar);
-	h0 = h0.restart();
-	MCMCChain chain(h0, &mydata, top);
-	tic();
-	chain.run(Control(mcmc_steps,runtime));
-	tic();
-//	
-	
 //	MyHypothesis h0(&grammar);
 //	h0 = h0.restart();
-//	ParallelTempering samp(h0, &mydata, top, 8, 1000.0);
+//	MCMCChain chain(h0, &mydata, top);
 //	tic();
-//	samp.run(mcmc_steps, runtime, 5.0, 17.0); //30000);		
-//	// NOTE: Running ParallelTempering with allcallback (default) will try to put
-//	// *everything* into top, which means that the counts you get will no longer 
-//	// be samples (and in fact should be biased towards high-prior hypotheses)	
+//	chain.run(Control(mcmc_steps,runtime));
 //	tic();
+//	
+	
+	MyHypothesis h0(&grammar);
+	h0 = h0.restart();
+	ParallelTempering samp(h0, &mydata, top, 16, 10.0); 
+	tic();
+	samp.run(Control(mcmc_steps,runtime,nthreads), 100, 1000); 		
+	tic();
 
 	// Show the best we've found
 	top.print();

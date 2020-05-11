@@ -25,8 +25,8 @@ class VirtualMachinePool {
 
 	
 public:	
-	const unsigned long max_steps;
-	const unsigned long max_outputs;
+	unsigned long max_steps;
+	unsigned long max_outputs;
 	
 	// how many steps have I run so far? -- this needs to be global so that we can keep track of 
 	// whether we should push a new state that occurs too late. 
@@ -39,7 +39,7 @@ public:
 	//std::priority_queue<VMState*, ReservedVector<VMState*,1024>, VirtualMachinePool::compare_VMState_prt> Q; // Q of states sorted by probability
 
 
-	VirtualMachinePool(unsigned long ms, unsigned long mo, double mlp) 
+	VirtualMachinePool(unsigned long ms=2048, unsigned long mo=256, double mlp=-10) 
 					   : max_steps(ms), max_outputs(mo), current_steps(0), min_lp(mlp) {
 	}
 	
@@ -51,10 +51,17 @@ public:
 	
 	
 	virtual ~VirtualMachinePool() {
+		clear();
+	}
+		
+	virtual void clear() {
 		while(!Q.empty()) {
 			VMState* vms = Q.top(); Q.pop();
 			delete vms;
 		}
+		
+		current_steps = 0;
+		worst_lp = infinity;
 	}
 		
 	bool wouldIadd(double lp) {
