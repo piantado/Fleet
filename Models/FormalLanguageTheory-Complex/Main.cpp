@@ -101,11 +101,11 @@ std::tuple PRIMITIVES = {
 			}),
 	
 	
-	// add an alphabet symbol
+	// add an alphabet symbol (\Sigma)
 	Primitive("\u03A3", +[]() -> StrSet {
 		StrSet out; 
 		for(const auto& a: alphabet) {
-			out.emplace(a,1);
+			out.emplace(1,a);
 		}
 		return out;
 	}, 5.0),
