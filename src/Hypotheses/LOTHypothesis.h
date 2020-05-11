@@ -138,17 +138,17 @@ public:
 		// so we have to be sure that LOTHypotheses runs are not being interrupted and reusmed or anything
 		// if so, we can't use thread_local
 		// See: https://stackoverflow.com/questions/22794382/are-c11-thread-local-variables-automatically-static
-		thread_local VirtualMachinePool<VirtualMachineState_t> pool(max_steps, max_outputs, minlp); 		
-		pool.push(vms);		
-		auto ret = pool.run(loader);		
-		pool.clear(); // we MUST call this if thread_local since its now static
-		return ret; 
-		
+//		thread_local VirtualMachinePool<VirtualMachineState_t> pool(max_steps, max_outputs, minlp); 		
+//		pool.push(vms);		
+//		auto ret = pool.run(loader);		
+//		pool.clear(); // we MUST call this if thread_local since its now static
+//		return ret; 
+//		
 		// The non-thread_local alternative is:
 		// (NOTE we don't have to clean up pool)
-//		VirtualMachinePool<VirtualMachineState_t> pool(max_steps, max_outputs, minlp); 		
-//		pool.push(vms);		
-//		return pool.run(loader);				
+		VirtualMachinePool<VirtualMachineState_t> pool(max_steps, max_outputs, minlp); 		
+		pool.push(vms);		
+		return pool.run(loader);				
 	}
 	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t err) {
 		return call(x, err, this); // defaultly I myself am the recursion handler and dispatch
