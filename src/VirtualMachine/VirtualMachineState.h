@@ -154,7 +154,17 @@ public:
 		
 		return stack<T>().top();
 	}
-
+	template<typename T>
+	T& gettopref() {
+		/**
+		* @brief Retrieves the top of the stack as a copy and does *not* remove
+		* @return 
+		*/
+		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
+		
+		return stack<T>().topref();
+	}
+	
 	template<typename T>
 	typename std::conditional<std::is_reference<T>::value, T&, T>::type
 	get() {

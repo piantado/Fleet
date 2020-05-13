@@ -213,7 +213,7 @@ public:
 		// add a single primitive -- unpacks the types to put the rule into the right place
 		// NOTE: we can't use T as the return type, we have ot use p::GrammarReturnType in order to handle
 		// return-by-reference primitives
-		add(Rule(this->template nt<typename decltype(p)::GrammarReturnType>(), p.op, p.format, {nt<args>()...}, p.p, arg));
+		add(Rule(this->template nt<typename decltype(p)::GrammarReturnType>(), p.op, p.format.c_str(), {nt<args>()...}, p.p, arg));
 	}
 	
 	template<typename T, typename... args>
@@ -225,7 +225,7 @@ public:
 		// add a single primitive -- unpacks the types to put the rule into the right place
 		// NOTE: we can't use T as the return type, we have ot use p::GrammarReturnType in order to handle
 		// return-by-reference primitives
-		add(Rule(this->template nt<T>(), p.op, p.format, {nt<args>()...}, p.p, arg));
+		add(Rule(this->template nt<T>(), p.op, p.format.c_str(), {nt<args>()...}, p.p, arg));
 	}
 	
 	
@@ -236,7 +236,7 @@ public:
 		static_assert((is_in_GRAMMAR_TYPES<args>() && ...),	"*** Type is not in GRAMMAR_TYPES");
 	
 		// add a single primitive -- unpacks the types to put the rule into the right place
-		add(Rule(nt<T>(), o, format, {nt<args>()...}, p, arg));
+		add(Rule(nt<T>(), o, format.c_str(), {nt<args>()...}, p, arg));
 	}
 
 

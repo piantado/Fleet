@@ -36,7 +36,7 @@ std::tuple PRIMITIVES = {
 	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void        { 
 			if(a.length() + b.length() > MAX_LENGTH) 
 				throw VMSRuntimeError;
-			a = a+b; // modify on stack
+			a.append(b); // modify on stack
 	}), 
 	
 	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),

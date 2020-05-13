@@ -1,5 +1,6 @@
 #pragma once 
 
+#include<tuple>
 #include "Instruction.h"
 #include "Miscellaneous.h"
 
@@ -29,12 +30,12 @@ inline vmstatus_t applyPRIMITIVEStoVMS(int index, V* vms, P* pool, L* loader) {
 	// We need to put a check in here to ensure that nobody tries to do grammar.add(Primtive(...)) because
 	// then it won't be included in our standard PRIMITIVES table, and so it cannot be called in this way
 	// This is a problem in the library that should be addressed.
-	assert( (size_t)index < std::tuple_size<decltype(PRIMITIVES)>::value && 
+	assert( ((size_t)index < std::tuple_size<decltype(PRIMITIVES)>::value) && 
 		"*** You cannot index a higher primitive op than the size of PRIMITIVES. Perhaps you used grammar.add(Primitive(...)), which is not allowed, instead of putting it into the tuple?");
 	assert(index >= 0);
 	
-	if constexpr (std::tuple_size<decltype(PRIMITIVES)>::value > 0) {
-		return Fleet::applyVMS::applyToVMS(PRIMITIVES, index, vms, pool, loader, std::make_index_sequence<std::tuple_size<decltype(PRIMITIVES)>::value>{});
+	if constexpr ( (std::tuple_size<decltype(PRIMITIVES)>::value > 0) ) {
+		return Fleet::applyVMS::applyToVMS(PRIMITIVES, index, vms, pool, loader, std::make_index_sequence<(std::tuple_size<decltype(PRIMITIVES)>::value)>{});
 	}
 	else {
 		UNUSED(vms); UNUSED(pool); UNUSED(loader);

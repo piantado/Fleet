@@ -141,7 +141,7 @@ struct Primitive : PrePrimitive {
 	typedef typename std::decay<typename HeadIfReferenceElseT<T,args...>::type>::type GrammarReturnType;
 									  
 
-	constexpr Primitive(std::string fmt, T(*_call)(args...), double _p=1.0 ) :
+	constexpr Primitive(const char* fmt, T(*_call)(args...), double _p=1.0 ) :
 		format(fmt), call(_call), op(op_counter++), p(_p), is_dispatch(false) {
 			
 		// Next, we check reference types. We are allowed to have a reference in a primitive 
@@ -161,7 +161,7 @@ struct Primitive : PrePrimitive {
 	}
 	
 	template<typename V, typename P, typename L>
-	constexpr Primitive(std::string fmt, T(*_call)(args...), vmstatus_t _dispatch(V*, P*, L*), double _p=1.0 ) :
+	constexpr Primitive(const char* fmt, T(*_call)(args...), vmstatus_t _dispatch(V*, P*, L*), double _p=1.0 ) :
 		format(fmt), call(_call), dispatch(_dispatch), op(op_counter++), p(_p), is_dispatch(true) {
 			
 		if constexpr (sizeof...(args)> 0) 

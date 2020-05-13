@@ -42,7 +42,7 @@ protected:
 public:
 	// Rule's constructors convert CustomOp and BuiltinOp to the appropriate instruction types
 	template<typename OPT> // same constructor for CustomOp, BuiltinOp,PrimitiveOp
-	constexpr Rule(const nonterminal_t rt, const OPT o, const std::string fmt, std::initializer_list<nonterminal_t> c, double _p, const int arg=0) :
+	constexpr Rule(const nonterminal_t rt, const OPT o, const char* fmt, std::initializer_list<nonterminal_t> c, double _p, const int arg=0) :
 		nt(rt), instr(o,arg), format(fmt), N(c.size()), p(_p) {
 			
 		// mainly we just convert c to an array
