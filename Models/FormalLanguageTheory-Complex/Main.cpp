@@ -131,20 +131,44 @@ std::tuple PRIMITIVES = {
 	// Define our custom op here. To do this, we simply define a primitive whose first argument is vmstatus_t&. This servers as our return value
 	// since the return value of this lambda is needed by grammar to decide the nonterminal. If so, we must also take vms, pool, and loader.
 	Primitive("sample(%s)", +[](StrSet s) -> S { return S{}; }, 
-						    +[](VirtualMachineState<S,S,MY_TYPES>* vms, VirtualMachinePool<VirtualMachineState<S,S,MY_TYPES>>* pool, ProgramLoader* loader) -> vmstatus_t {
-		// implement sampling from the set.
-		// to do this, we read the set and then push all the alternatives onto the stack
-		StrSet s = vms->template getpop<StrSet>();
+						    +[](VirtualMachineState<S,S,MY_TYPES>* vms, VirtualMachinePool<VirtualMachineState<S,S,MY_TYPES>>* pool, ProgramLoader* loader) -> vmstatus_t  {
 		
-		// now just push on each, along with their probability
-		// which is here decided to be uniform.
-		const double lp = (s.empty()?-infinity:-log(s.size()));
-		for(const auto& x : s) {
-			pool->copy_increment_push(vms,x,lp);
+		// This function is a bit more complex than it otherwise would be because this was taking 40% of time initially. 
+		// The reason was that it was copying the entire vms stack for single elements (which are the most common sets) 
+		// and so we have optimized this out. 
+								
+		// One useful optimization here is that sometimes that set only has one element. So first we check that, and if so we don't need to do anything 
+		// also this is especially convenient because we only have one element to pop
+		if(vms->template gettopref<StrSet>().size() == 1) {
+			auto it = vms->template gettopref<StrSet>().begin();
+			S x = *it;
+			vms->push<S>(std::move(x));
+			assert(++it == vms->template gettopref<StrSet>().end()); // just double-check its empty
+			
+			vms->template stack<StrSet>().pop();
 		}
-
+		else {
+			// else there is more than one, so we have to copy the stack and increment the lp etc for each
+			// NOTE: The function could just be this latter branch, but that's much slower because it copies vms
+			// even for single stack elements
+			
+			// implement sampling from the set.
+			// to do this, we read the set and then push all the alternatives onto the stack
+			StrSet s = vms->template getpop<StrSet>();
+			
+			// now just push on each, along with their probability
+			// which is here decided to be uniform.
+			const double lp = (s.empty()?-infinity:-log(s.size()));
+			for(const auto& x : s) {
+				bool b = pool->copy_increment_push(vms,x,lp);
+				if(not b) break; // we can break since all of these have the same lp -- if we don't add one, we won't add any!
+			}
+		}
+			
 		return vmstatus_t::RANDOM_CHOICE; // if we don't continue with this context		
+		
 	}),
+	
 	
 	// And add built-ins:
 	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
