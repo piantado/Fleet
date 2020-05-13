@@ -130,7 +130,7 @@ std::tuple PRIMITIVES = {
 	
 	// Define our custom op here. To do this, we simply define a primitive whose first argument is vmstatus_t&. This servers as our return value
 	// since the return value of this lambda is needed by grammar to decide the nonterminal. If so, we must also take vms, pool, and loader.
-	Primitive("sample(%s)", +[](StrSet s) -> S { return S(); }, 
+	Primitive("sample(%s)", +[](StrSet s) -> S { return S{}; }, 
 						    +[](VirtualMachineState<S,S,MY_TYPES>* vms, VirtualMachinePool<VirtualMachineState<S,S,MY_TYPES>>* pool, ProgramLoader* loader) -> vmstatus_t {
 		// implement sampling from the set.
 		// to do this, we read the set and then push all the alternatives onto the stack
@@ -215,18 +215,20 @@ public:
 	 double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		// this version goes through and computes the predictive probability of each prefix
 		 
-		const auto M = call(S(""), S("<err>")); 
+		const auto& M = call(S(""), S("<err>")); 
 		
 		likelihood = 0.0;
+		
+		auto A = alphabet.size();
 
 		for(const auto& a : data) {
-			S astr = a.output;
+			const S& astr = a.output;
 			double alp = -infinity; // the model's probability of this
 			for(const auto& m : M.values()) {
-				const S mstr = m.first;
+				const S& mstr = m.first;
 				
 				// we can always take away all character and generate a anew
-				alp = logplusexp(alp, m.second + p_delete_append(mstr, astr, 1.0-alpha, 1.0-alpha, alphabet.size()));
+				alp = logplusexp(alp, m.second + p_delete_append(mstr, astr, 1.0-alpha, 1.0-alpha, A));
 				
 				// In an old version of this, we considered a noise model where you just add characters on the end
 				// with probability gamma. The trouble with that is that sometimes long new data has strings that

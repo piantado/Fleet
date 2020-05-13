@@ -169,6 +169,7 @@ struct Primitive : PrePrimitive {
 				
 	}
 	
+	
 	/**
 	 * @brief This gets called by a VirtualMachineState to evaluate the primitive on some arguments
 	 * @param vms
@@ -214,25 +215,25 @@ struct Primitive : PrePrimitive {
 					// and push the result 
 					if constexpr (sizeof...(args) ==  1) {
 						auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
-						vms->push(this->call(a0));
+						vms->push(this->call(std::move(a0)));
 					}
 					else if constexpr (sizeof...(args) ==  2) {
 						auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
 						auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();	
-						vms->push(this->call(a0, a1));
+						vms->push(this->call(std::move(a0), std::move(a1)));
 					}
 					else if constexpr (sizeof...(args) ==  3) {
 						auto a2 =  vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
 						auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
 						auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
-						vms->push(this->call(a0, a1, a2));
+						vms->push(this->call(std::move(a0), std::move(a1), std::move(a2)));
 					}
 					else if constexpr (sizeof...(args) ==  4) {
 						auto a3 =  vms->template get<typename std::tuple_element<3, std::tuple<args...> >::type>();
 						auto a2 =  vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
 						auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
 						auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
-						vms->push(this->call(a0, a1, a2, a3));
+						vms->push(this->call(std::move(a0), std::move(a1), std::move(a2), std::move(a3)));
 					}
 					else { assert(false && "*** VMScall not defined for >4 arguments -- you may add more cases in Primitives.h"); }
 					
@@ -245,18 +246,18 @@ struct Primitive : PrePrimitive {
 					}
 					else if constexpr (sizeof...(args) ==  2) {
 						auto  a1 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
-						this->call(vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>(), a1);
+						this->call(vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>(), std::move(a1));
 					}
 					else if constexpr (sizeof...(args) ==  3) {
 						auto  a1 = vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
 						auto  a2 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
-						this->call(vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>(), a1. a2);
+						this->call(vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>(), std::move(a1), std::move(a2));
 					}
 					else if constexpr (sizeof...(args) ==  4) {
 						auto a3 =  vms->template get<typename std::tuple_element<3, std::tuple<args...> >::type>();
 						auto a2 =  vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
 						auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
-						this->call(vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>(), a1, a2. a3);
+						this->call(vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>(), std::move(a1), std::move(a2), std::move(a3));
 					}
 					else { assert(false && "*** VMScall not defined for >4 arguments -- you may add more cases in Primitives.h"); }
 

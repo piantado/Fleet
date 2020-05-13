@@ -82,12 +82,14 @@ public:
 	using Super::Super; // inherit the constructors
 	
 	double compute_single_likelihood(const datum_t& x) override {	
-		auto out = call(x.input, "<err>", this, 256, 256); //256, 256);
+		const auto out = call(x.input, "<err>", this, 256, 256); //256, 256);
+		
+		auto A = alphabet.size();
 		
 		// Likelihood comes from all of the ways that we can delete from the end and the append to make the observed output. 
 		double lp = -infinity;
 		for(auto& o : out.values()) { // add up the probability from all of the strings
-			lp = logplusexp(lp, o.second + p_delete_append(o.first, x.output, 1.-strgamma, 1.-strgamma, alphabet.size()));
+			lp = logplusexp(lp, o.second + p_delete_append(o.first, x.output, 1.-strgamma, 1.-strgamma, A));
 		}
 		return lp;
 	}

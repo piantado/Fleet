@@ -20,8 +20,7 @@
  * 		  as long as no op_MEM is called
  */
 template<class T, class EqualTo>
-struct has_operator_lessthan_impl
-{
+struct has_operator_lessthan_impl {
     template<class U, class V>
     static auto test(U*) -> decltype(std::declval<U>() < std::declval<V>());
     template<typename, typename>
@@ -204,7 +203,7 @@ public:
 	}
 	template<typename T>
 	void push(T&& x){
-		stack<T>().push(x);
+		stack<T>().push(std::move(x));
 	}
 	template<typename... args>
 	bool any_stacks_empty() const { 
@@ -282,7 +281,7 @@ public:
 						case BuiltinOp::op_X:
 						{
 							assert(!xstack.empty());
-							push<input_t>(xstack.top());
+							push<input_t>(std::move(xstack.top()));
 							break;
 						}
 						case BuiltinOp::op_POPX:
@@ -294,7 +293,7 @@ public:
 						{
 							if constexpr (contains_type<std::string,VM_TYPES...>()) { 
 								// convert the instruction arg to a string and push it
-								push(std::string(1,(char)i.arg));
+								push(std::move(std::string(1,(char)i.arg)));
 								break;
 							}
 							else { assert(false && "*** Cannot use op_ALPHABET if std::string is not in VM_TYPES"); }
@@ -339,7 +338,7 @@ public:
 							// Let's not make a big deal when 
 							if constexpr (has_operator_lessthan<input_t>::value) {
 								
-								auto v = gettop<output_t>(); // what I should memoize should be on top here, but dont' remove because we also return it
+								auto v = gettop<output_t>(); // what I should memoize should be on top here, but don't remove because we also return it
 								auto memindex = memstack.top(); memstack.pop();
 								if(mem.count(memindex)==0) { // you might actually have already placed mem in crazy recursive situations, so don't overwrte if you have
 									mem[memindex] = v;
@@ -402,7 +401,7 @@ public:
 							
 							// if we get here, then we have processed our arguments and they are stored in the input_t stack. 
 							// so we must move them to the x stack (where there are accessible by op_X)
-							xstack.push(getpop<input_t>());
+							xstack.push(std::move(getpop<input_t>()));
 							opstack.push(Instruction(BuiltinOp::op_POPX)); // we have to remember to remove X once the other program evaluates, *after* everything has evaluated
 							
 							// push this program 
@@ -456,7 +455,7 @@ public:
 								std::pair<index_t,input_t> memindex(i.getArg(),x);
 								
 								if(mem.count(memindex)){
-									push(mem[memindex]); 
+									push(std::move(mem[memindex])); 
 								}
 								else {	
 									xstack.push(x);	
