@@ -25,7 +25,8 @@ class DiscreteDistribution {
 public:
 	std::map<T,double> m; // map from values to log probabilities
 	
-	DiscreteDistribution() {}
+	DiscreteDistribution() {
+	}
 	
 	virtual T argmax() const {
 		T best{}; // Note defaults to this when there are none!

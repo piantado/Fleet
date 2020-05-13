@@ -5,6 +5,8 @@
 #include <vector>
 #include <queue>
 
+
+
 /**
  * @class VirtualMachinePool
  * @author piantado
@@ -140,7 +142,7 @@ public:
 		
 		current_steps = 0;
 		while(current_steps < max_steps && out.size() < max_outputs && !Q.empty()) {
-
+			
 			VMState* vms = Q.top(); Q.pop();
 			// if we ever go back to the non-pointer version, we might need fanciness to move out of top https://stackoverflow.com/questions/20149471/move-out-element-of-std-priority-queue-in-c11
 			assert(vms->lp >= min_lp);
@@ -157,7 +159,7 @@ public:
 				delete vms; // if our previous copy isn't pushed back on the stack, delete it
 			}
 		}
-		
+
 		// this leaves some in the stack, but they are cleaned up by the destructor
 		
 		return out;		

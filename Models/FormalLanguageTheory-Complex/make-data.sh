@@ -11,9 +11,9 @@ makeLang() {
 
 export -f makeLang
 
-#languages=(SimpleEnglish English AnBnCn AnBnC2n ABAnBn AB ABn An AnB2n AnBn Dyck AnBm AAAA AAA AnABn ABnABAn AnBmCmAn AnBmCnDm ABA ABB Count AnBmCn XX XXX XXI XXR XXRI XY Man Reber Saffran BerwickPilato Gomez2 Gomez6 Gomez12 NewportAslin MorganNewport MorganMeierNewport HudsonKamNewport100 HudsonKamNewport75 HudsonKamNewport60 HudsonKamNewport45 ReederNewportAslin GoldenMean Even AnBnCnDn A2en ABnen AnCBn Bach2 Bach3 AnBmCn AnBmCm AnBmCnpm AnBmCnm AnBk ABaaaAB aABb Elman Braine66 PullumR ApBAp AsBAsp ApBApp CountA2 CountAEven Fibo AnBnCnDnEn AnBmAnBm AnBmAnBmCCC WeW An2 ChineseNumeral AnBmA2n Unequal Milne) 
+#languages=(SimpleEnglish English AnBnCn AnBnC2n ABAnBn AB ABn An AnB2n AnBn Dyck AnBm AAAA AAA AnABn ABnABAn AnBmCmAn AnBmCnDm ABA ABB Count AnBmCn XX XXX XXI XXR XXRI XY Man Reber Saffran BerwickPilato Gomez2 Gomez6 Gomez12 NewportAslin MorganNewport MorganMeierNewport HudsonKamNewport100 HudsonKamNewport75 HudsonKamNewport60 HudsonKamNewport45 ReederNewportAslin GoldenMean Even AnBnCnDn A2en ABnen AnCBn Bach2 Bach3 AnBmCn AnBmCm AnBmCnpm AnBmCnm AnBk ABaaaAB aABb Elman Braine66 PullumR ApBAp AsBAsp ApBApp CountA2 CountAEven Fibo AnBnCnDnEn AnBmAnBm AnBmAnBmCCC WeW An2 ChineseNumeral AnBmA2n Unequal Milne AnB2nC3n AnBnp1Cnp2 AnUBn AnUAnBn ABnUBAn) 
 
-languages=(AnB2nC3n AnBnp1Cnp2 AnUBn AnUAnBn ABnUBAn) 
+languages=(A2en) 
 
 # Run in parallel on all languages
 parallel --j 12 makeLang ::: "${languages[@]}"

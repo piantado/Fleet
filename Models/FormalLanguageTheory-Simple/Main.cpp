@@ -200,24 +200,17 @@ int main(int argc, char** argv){
 	
 	MyHypothesis h0(&grammar);
 	h0 = h0.restart();
-	
-	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
-	tic();
-	samp.run(Control(mcmc_steps, runtime, nthreads), 100, 300); //30000);		
 	tic();
 //	
-//	 Show the best we've found
-	top.print();
-
-	
+	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
+	samp.run(Control(mcmc_steps, runtime, nthreads), 100, 300); //30000);		
+//	
 //	MCMCChain c(h0, &mydata, top);
-//	tic();
 //	c.run(Control(mcmc_steps, runtime, nthreads));
-//	tic();
+
+	tic();
 	
-	for(auto& h : top.values()) {
-		COUT top[h] TAB h.posterior TAB h.prior TAB h.likelihood TAB h.string() ENDL;		
-	}
+	top.print();
 	
 	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
