@@ -9,7 +9,7 @@ using S = std::string; // just for convenience
 
 S alphabet = "01"; // the alphabet we use (possibly specified on command line)
 thread_local S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated
-const double strgamma = 0.95; //75; // penalty on string length
+const float strgamma = 0.01; //75; // penalty on string length
 const size_t MAX_LENGTH = 64; // longest strings cons will handle
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -84,12 +84,12 @@ public:
 	double compute_single_likelihood(const datum_t& x) override {	
 		const auto out = call(x.input, "<err>", this, 256, 256); //256, 256);
 		
-		auto A = alphabet.size();
+		const auto log_A = log(alphabet.size());
 		
 		// Likelihood comes from all of the ways that we can delete from the end and the append to make the observed output. 
 		double lp = -infinity;
 		for(auto& o : out.values()) { // add up the probability from all of the strings
-			lp = logplusexp(lp, o.second + p_delete_append(o.first, x.output, 1.-strgamma, 1.-strgamma, A));
+			lp = logplusexp(lp, o.second + p_delete_append<strgamma,strgamma>(o.first, x.output, log_A));
 		}
 		return lp;
 	}
