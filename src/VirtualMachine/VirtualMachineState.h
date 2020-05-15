@@ -62,6 +62,8 @@ public:
 	typedef _t_output output_t;
 	
 	static const unsigned long MAX_RECURSE = 64; // this is the max number of times we can call recurse, NOT the max depth
+	unsigned long MAX_RUN_PROGRAM = 1024; // what is the longest I'll run a single program for? If we try to do more than this many ops, we're done
+	
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
 	Program            opstack; 
@@ -70,7 +72,8 @@ public:
 	double             lp; // the probability of this context
 	
 	unsigned long 	  recursion_depth; // when I was created, what was my depth?
-
+	unsigned long     run_program; // how many program ops have I done?
+	
 	// This is a little bit of fancy template metaprogramming that allows us to define a stack
 	// like std::tuple<Stack<bool>, Stack<std::string> > using a list of type names defined in VM_TYPES
 	template<typename... args>
@@ -89,7 +92,7 @@ public:
 	vmstatus_t status; // are we still running? Did we get an error?
 	
 	VirtualMachineState(input_t x, output_t e, size_t _recursion_depth=0) :
-		err(e), lp(0.0), recursion_depth(_recursion_depth), status(vmstatus_t::GOOD) {
+		err(e), lp(0.0), recursion_depth(_recursion_depth), run_program(0), status(vmstatus_t::GOOD) {
 		xstack.push(x);	
 	}
 	
@@ -112,6 +115,14 @@ public:
 		 */
 		
 		lp += v;
+	}
+	
+	unsigned long remaining_steps() {
+		/**
+		 * @brief How many more steps can I be run for? This is useful for not adding programs that contain too many ops
+		 * @return 
+		 */		
+		return MAX_RUN_PROGRAM - run_program;
 	}
 	
 	// Functions to access the stack
@@ -266,7 +277,16 @@ public:
 		try { 
 			
 			while(!opstack.empty()){
-				if(status != vmstatus_t::GOOD) return err;
+				if(opstack.size() > remaining_steps() ) {  // if we've run too long or we couldn't possibly finish
+					status = vmstatus_t::RUN_TOO_LONG;
+				}
+				
+				if(status != vmstatus_t::GOOD)  {
+					return err;
+				}
+					
+				
+				run_program++;
 				FleetStatistics::vm_ops++;
 				
 				Instruction i = opstack.top(); opstack.pop();
@@ -408,7 +428,10 @@ public:
 								status = vmstatus_t::RECURSION_DEPTH;
 								return err;
 							}
-							
+							else if( loader->program_size(i.getArg()) + opstack.size() > remaining_steps()) { // check if we have too many
+								status = vmstatus_t::RUN_TOO_LONG;
+								return err;
+							}
 							// if we get here, then we have processed our arguments and they are stored in the input_t stack. 
 							// so we must move them to the x stack (where there are accessible by op_X)
 							xstack.push(std::move(getpop<input_t>()));
@@ -417,7 +440,7 @@ public:
 							// push this program 
 							// but we give i.arg so that we can pass factorized recursed
 							// in argument if we want to
-							loader->push_program(opstack,i.arg); 
+							loader->push_program(opstack,i.getArg()); 
 							
 							// after execution is done, the result will be pushed onto output_t
 							// which is what gets returned when we are all done
@@ -457,7 +480,10 @@ public:
 									status = vmstatus_t::RECURSION_DEPTH;
 									return err;
 								}
-								
+								else if( loader->program_size(i.getArg()) + opstack.size() > remaining_steps()) { // check if we have too many
+									status = vmstatus_t::RUN_TOO_LONG;
+									return err;
+								}
 								assert(loader != nullptr);
 								
 								input_t x = getpop<input_t>(); // get the argument
@@ -472,7 +498,7 @@ public:
 									memstack.push(memindex); // popped off by op_MEM
 									opstack.push(Instruction(BuiltinOp::op_MEM));
 									opstack.push(Instruction(BuiltinOp::op_POPX));
-									loader->push_program(opstack,i.arg); // this leaves the answer on top
+									loader->push_program(opstack,i.getArg()); // this leaves the answer on top
 								}
 								
 								break;						

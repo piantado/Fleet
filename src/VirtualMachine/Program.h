@@ -26,5 +26,6 @@ public:
 	// This loads a program into the stack. Short is passed here in case we have a factorized lexicon,
 	// which for now is a pretty inelegant hack. 
 	virtual void push_program(Program&, short)=0;
+	virtual size_t program_size(short) = 0;
 };
 

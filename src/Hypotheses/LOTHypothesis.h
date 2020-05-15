@@ -113,6 +113,11 @@ public:
 		assert(0);// for base classes to implement, but don't set = 0 since then we can't create Hypothesis classes. 
 	}
 
+	virtual size_t program_size(short s) override {
+		assert(s == 0 && "*** You shouldn't be passing nonzero s to a LOTHypothesis because it does nothing!");
+		return value.program_size();
+	}
+
 	virtual void push_program(Program& s, short k=0) override {
 		assert(k==0); // this is only for lexica
 		//s.reserve(128); // seems to help to reserve some

@@ -27,7 +27,7 @@ class VirtualMachinePool {
 
 	
 public:	
-	unsigned long max_steps;
+	unsigned long max_state_run;
 	unsigned long max_outputs;
 	
 	// how many steps have I run so far? -- this needs to be global so that we can keep track of 
@@ -42,12 +42,12 @@ public:
 
 
 	VirtualMachinePool(unsigned long ms=2048, unsigned long mo=256, double mlp=-10) 
-					   : max_steps(ms), max_outputs(mo), current_steps(0), min_lp(mlp) {
+					   : max_state_run(ms), max_outputs(mo), current_steps(0), min_lp(mlp) {
 	}
 	
 	// a constructor that also allows us to deduce VMState type
 	VirtualMachinePool(VMState* vms, unsigned long ms, unsigned long mo, double mlp) 
-					   : max_steps(ms), max_outputs(mo), current_steps(0), min_lp(mlp) {
+					   : max_state_run(ms), max_outputs(mo), current_steps(0), min_lp(mlp) {
 		push(vms);
 	}
 	
@@ -65,15 +65,16 @@ public:
 		current_steps = 0;
 		worst_lp = infinity;
 	}
+	
 		
 	bool wouldIadd(double lp) {
 		/**
-		 * @brief Returns true if I would add something with this lp, given my max_steps and the stack. This lets us speed up by checking if we would add before copying/constructing a VMS
+		 * @brief Returns true if I would add something with this lp, given my max_state_run and the stack. This lets us speed up by checking if we would add before copying/constructing a VMS
 		 * @param lp
 		 * @return 
 		 */
 		return lp >= min_lp and 
-			   (Q.size() <= (max_steps-current_steps) or lp > worst_lp);
+			   (Q.size() <= (max_state_run-current_steps) or lp > worst_lp);
 	}
 	
 	void push(VMState* o) { 
@@ -141,7 +142,7 @@ public:
 		DiscreteDistribution<typename VMState::output_t> out;
 		
 		current_steps = 0;
-		while(current_steps < max_steps && out.size() < max_outputs && !Q.empty()) {
+		while(current_steps < max_state_run && out.size() < max_outputs && !Q.empty()) {
 			
 			VMState* vms = Q.top(); Q.pop();
 			// if we ever go back to the non-pointer version, we might need fanciness to move out of top https://stackoverflow.com/questions/20149471/move-out-element-of-std-priority-queue-in-c11
