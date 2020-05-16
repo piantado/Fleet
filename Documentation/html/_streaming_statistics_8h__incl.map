@@ -1,5 +1,5 @@
 <map id="src/Statistics/StreamingStatistics.h" name="src/Statistics/StreamingStatistics.h">
-<area shape="rect" id="node3" href="$_median_f_a_m_e_8h.html" title="A streaming median class implementing the FAME algorithm Here, we initialize both the step size and M..." alt="" coords="152,95,264,121"/>
-<area shape="rect" id="node4" href="$_reservoir_sample_8h.html" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="288,95,421,121"/>
-<area shape="rect" id="node5" href="$_top_8h.html" title="A TopN is a n object you can &quot;add&quot; hypotheses to (via add or &lt;&lt;) and it stores the best N of them..." alt="" coords="327,169,382,196"/>
+<area shape="rect" id="node3" href="$_median_f_a_m_e_8h.html" title="A streaming median class implementing the FAME algorithm Here, we initialize both the step size and M..." alt="" coords="221,95,333,121"/>
+<area shape="rect" id="node4" href="$_reservoir_sample_8h.html" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="357,95,491,121"/>
+<area shape="rect" id="node5" href="$_top_8h.html" title="Check if a type has a posterior function or not. " alt="" coords="397,169,451,196"/>
 </map>

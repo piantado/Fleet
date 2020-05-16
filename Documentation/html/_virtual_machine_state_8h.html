@@ -67,32 +67,47 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
 <div class="title">VirtualMachineState.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This represents the state of a partial evaluation of a program, corresponding to the value of all of the stacks of various types (which are stored as templates from FLEET_GRAMMAR_TYPES). The idea here is that we want to be able to encapsulate everything about the evaluation of a tree so that we can stop it in the middle and resume later, as is required for stochastics. This must be templated because it depends on the types in the grammar. These will typically be stored in a <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a> and not called directly, unless you know that there are no stochastics.  
+<p>Count references in lambda arguments (used to ensure we only passs one)  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;type_traits&gt;</code><br />
+<code>#include &lt;map&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
+<code>#include &lt;tuple&gt;</code><br />
+<code>#include &quot;<a class="el" href="_program_8h_source.html">Program.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_stack_8h_source.html">Stack.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_fleet_statistics_8h_source.html">Statistics/FleetStatistics.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for VirtualMachineState.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_virtual_machine_state_8h__incl.png" border="0" usemap="#src_2_virtual_machine_2_virtual_machine_state_8h" alt=""/></div>
+<map name="src_2_virtual_machine_2_virtual_machine_state_8h" id="src_2_virtual_machine_2_virtual_machine_state_8h">
+<area shape="rect" id="node6" href="_program_8h.html" title="Program.h" alt="" coords="336,95,419,121"/>
+<area shape="rect" id="node7" href="_stack_8h.html" title="Stack.h" alt="" coords="384,169,451,196"/>
+<area shape="rect" id="node9" href="_fleet_statistics_8h.html" title="Statistics/FleetStatistics.h" alt="" coords="493,95,669,121"/>
+</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_virtual_machine_state_8h__dep__incl.png" border="0" usemap="#src_2_virtual_machine_2_virtual_machine_state_8hdep" alt=""/></div>
 <map name="src_2_virtual_machine_2_virtual_machine_state_8hdep" id="src_2_virtual_machine_2_virtual_machine_state_8hdep">
-<area shape="rect" id="node2" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="703,95,787,121"/>
-<area shape="rect" id="node3" href="_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,169,209,211"/>
-<area shape="rect" id="node4" href="_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,169,437,211"/>
-<area shape="rect" id="node5" href="_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,169,617,211"/>
-<area shape="rect" id="node6" href="_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="641,177,848,203"/>
-<area shape="rect" id="node7" href="_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="872,169,1023,211"/>
-<area shape="rect" id="node8" href="_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="1047,169,1197,211"/>
+<area shape="rect" id="node2" href="_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,244,209,285"/>
+<area shape="rect" id="node3" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="592,169,676,196"/>
+<area shape="rect" id="node10" href="_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="405,95,625,121"/>
+<area shape="rect" id="node11" href="_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="701,95,868,121"/>
+<area shape="rect" id="node4" href="_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="1241,244,1414,285"/>
+<area shape="rect" id="node5" href="_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="1012,244,1216,285"/>
+<area shape="rect" id="node6" href="_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="234,244,389,285"/>
+<area shape="rect" id="node7" href="_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="413,251,620,278"/>
+<area shape="rect" id="node8" href="_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="644,244,795,285"/>
+<area shape="rect" id="node9" href="_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="819,251,987,278"/>
+<area shape="rect" id="node12" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="1207,169,1336,196"/>
 </map>
 </div>
 </div>
@@ -100,48 +115,27 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html">VirtualMachineState&lt; t_x, t_return &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhas__operator__lessthan__impl.html">has_operator_lessthan_impl&lt; T, EqualTo &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_virtual_machine_state_1_1t__stack.html">VirtualMachineState&lt; t_x, t_return &gt;::t_stack&lt; args &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhas__operator__lessthan.html">has_operator_lessthan&lt; T, EqualTo &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool&lt; VMState &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_virtual_machine_state_1_1t__stack.html">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;::t_stack&lt; args &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a1e67905ea5479de4490c1234a2fc5369"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_virtual_machine_state_8h.html#a1e67905ea5479de4490c1234a2fc5369">popn</a> (Program &amp;s, size_t n)</td></tr>
-<tr class="separator:a1e67905ea5479de4490c1234a2fc5369"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespace_fleet_statistics"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_fleet_statistics.html">FleetStatistics</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This represents the state of a partial evaluation of a program, corresponding to the value of all of the stacks of various types (which are stored as templates from FLEET_GRAMMAR_TYPES). The idea here is that we want to be able to encapsulate everything about the evaluation of a tree so that we can stop it in the middle and resume later, as is required for stochastics. This must be templated because it depends on the types in the grammar. These will typically be stored in a <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a> and not called directly, unless you know that there are no stochastics. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a id="a1e67905ea5479de4490c1234a2fc5369"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e67905ea5479de4490c1234a2fc5369">&#9670;&nbsp;</a></span>popn()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void popn </td>
-          <td>(</td>
-          <td class="paramtype">Program &amp;&#160;</td>
-          <td class="paramname"><em>s</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>n</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-</div><!-- contents -->
+<div class="textblock"><p>Count references in lambda arguments (used to ensure we only passs one) </p>
+<p>This represents the state of a partial evaluation of a program, corresponding to the value of all of the stacks of various types (which are stored as templates from VM_TYPES). The idea here is that we want to be able to encapsulate everything about the evaluation of a tree so that we can stop it in the middle and resume later, as is required for stochastics. This must be templated because it depends on the types in the grammar. These will typically be stored in a <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a> and not called directly, unless you know that there are no stochastics.</p>
+<p>See if a class implements operator&lt; (for filtering out in op_MEM code so it doesn't give an error if we use input_t that doesn't implement operator&lt; as long as no op_MEM is called.</p>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

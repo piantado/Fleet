@@ -6,7 +6,8 @@
 
 
 
-Collaboration diagram for M\+C\+M\+C\+Chain$<$ H\+YP, callback\+\_\+t $>$\+:\nopagebreak
+Collaboration diagram for M\+C\+M\+C\+Chain$<$ H\+YP, callback\+\_\+t $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -16,13 +17,13 @@ Collaboration diagram for M\+C\+M\+C\+Chain$<$ H\+YP, callback\+\_\+t $>$\+:\nop
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_m_c_m_c_chain_a60b036bec195eaa5a8081b2b8cc18eed}{M\+C\+M\+C\+Chain} (H\+YP \&h0, typename H\+Y\+P\+::t\+\_\+data $\ast$d, callback\+\_\+t \&cb)
+\hyperlink{class_m_c_m_c_chain_aed5ffea5a46a380b8b0d78cd46c96a97}{M\+C\+M\+C\+Chain} (H\+YP \&h0, typename H\+Y\+P\+::data\+\_\+t $\ast$d, callback\+\_\+t \&cb)
 \item 
-\hyperlink{class_m_c_m_c_chain_ac75dc993bdc19b193ef6f128d62f8208}{M\+C\+M\+C\+Chain} (H\+YP \&\&h0, typename H\+Y\+P\+::t\+\_\+data $\ast$d, callback\+\_\+t \&cb)
+\hyperlink{class_m_c_m_c_chain_a731f2ca6416f1daa84cd54cd3f9281b2}{M\+C\+M\+C\+Chain} (H\+YP \&\&h0, typename H\+Y\+P\+::data\+\_\+t $\ast$d, callback\+\_\+t \&cb)
 \item 
-\hyperlink{class_m_c_m_c_chain_a60ef818850d6836a21169d6e9bc14221}{M\+C\+M\+C\+Chain} (H\+YP \&h0, typename H\+Y\+P\+::t\+\_\+data $\ast$d, callback\+\_\+t $\ast$cb=nullptr)
+\hyperlink{class_m_c_m_c_chain_afaa9a75b515252a8c6237aad0211a2f2}{M\+C\+M\+C\+Chain} (H\+YP \&h0, typename H\+Y\+P\+::data\+\_\+t $\ast$d, callback\+\_\+t $\ast$cb=nullptr)
 \item 
-\hyperlink{class_m_c_m_c_chain_a02d18b967945d40689cbe327bfd453e3}{M\+C\+M\+C\+Chain} (H\+YP \&\&h0, typename H\+Y\+P\+::t\+\_\+data $\ast$d, callback\+\_\+t $\ast$cb=nullptr)
+\hyperlink{class_m_c_m_c_chain_a8df81470759ddd5654c5a82ad3b185cf}{M\+C\+M\+C\+Chain} (H\+YP \&\&h0, typename H\+Y\+P\+::data\+\_\+t $\ast$d, callback\+\_\+t $\ast$cb=nullptr)
 \item 
 \hyperlink{class_m_c_m_c_chain_a3942ff362dcc0bdfdad296f95048f14e}{M\+C\+M\+C\+Chain} (const \hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain} \&m)
 \item 
@@ -51,7 +52,7 @@ H\+YP \hyperlink{class_m_c_m_c_chain_ab0c3b31e96d1f703bb8cf55c0575b4bd}{current}
 \item 
 std\+::mutex \hyperlink{class_m_c_m_c_chain_a42c355121fce0476426a49d5498c38a1}{current\+\_\+mutex}
 \item 
-H\+Y\+P\+::t\+\_\+data $\ast$ \hyperlink{class_m_c_m_c_chain_a62ffa9a3d173a79c82f09174b58aebaf}{data}
+H\+Y\+P\+::data\+\_\+t $\ast$ \hyperlink{class_m_c_m_c_chain_ab235f08fad93a9626ffb566c001ed5c9}{data}
 \item 
 double \hyperlink{class_m_c_m_c_chain_a3b8d31f47d75503321b432eeac0bb13b}{maxval}
 \item 
@@ -72,33 +73,33 @@ std\+::atomic$<$ double $>$ \hyperlink{class_m_c_m_c_chain_a7173287e1c0e681a9912
 
 
 \subsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{class_m_c_m_c_chain_a60b036bec195eaa5a8081b2b8cc18eed}\label{class_m_c_m_c_chain_a60b036bec195eaa5a8081b2b8cc18eed}} 
+\mbox{\Hypertarget{class_m_c_m_c_chain_aed5ffea5a46a380b8b0d78cd46c96a97}\label{class_m_c_m_c_chain_aed5ffea5a46a380b8b0d78cd46c96a97}} 
 \index{M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}!M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}}
 \index{M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}!M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}}
 \subsubsection{\texorpdfstring{M\+C\+M\+C\+Chain()}{MCMCChain()}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain} (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{typename H\+Y\+P\+::t\+\_\+data $\ast$}]{d,  }\item[{callback\+\_\+t \&}]{cb }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain} (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{callback\+\_\+t \&}]{cb }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_m_c_m_c_chain_ac75dc993bdc19b193ef6f128d62f8208}\label{class_m_c_m_c_chain_ac75dc993bdc19b193ef6f128d62f8208}} 
+\mbox{\Hypertarget{class_m_c_m_c_chain_a731f2ca6416f1daa84cd54cd3f9281b2}\label{class_m_c_m_c_chain_a731f2ca6416f1daa84cd54cd3f9281b2}} 
 \index{M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}!M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}}
 \index{M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}!M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}}
 \subsubsection{\texorpdfstring{M\+C\+M\+C\+Chain()}{MCMCChain()}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain} (\begin{DoxyParamCaption}\item[{H\+YP \&\&}]{h0,  }\item[{typename H\+Y\+P\+::t\+\_\+data $\ast$}]{d,  }\item[{callback\+\_\+t \&}]{cb }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain} (\begin{DoxyParamCaption}\item[{H\+YP \&\&}]{h0,  }\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{callback\+\_\+t \&}]{cb }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_m_c_m_c_chain_a60ef818850d6836a21169d6e9bc14221}\label{class_m_c_m_c_chain_a60ef818850d6836a21169d6e9bc14221}} 
+\mbox{\Hypertarget{class_m_c_m_c_chain_afaa9a75b515252a8c6237aad0211a2f2}\label{class_m_c_m_c_chain_afaa9a75b515252a8c6237aad0211a2f2}} 
 \index{M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}!M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}}
 \index{M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}!M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}}
 \subsubsection{\texorpdfstring{M\+C\+M\+C\+Chain()}{MCMCChain()}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain} (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{typename H\+Y\+P\+::t\+\_\+data $\ast$}]{d,  }\item[{callback\+\_\+t $\ast$}]{cb = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain} (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{callback\+\_\+t $\ast$}]{cb = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_m_c_m_c_chain_a02d18b967945d40689cbe327bfd453e3}\label{class_m_c_m_c_chain_a02d18b967945d40689cbe327bfd453e3}} 
+\mbox{\Hypertarget{class_m_c_m_c_chain_a8df81470759ddd5654c5a82ad3b185cf}\label{class_m_c_m_c_chain_a8df81470759ddd5654c5a82ad3b185cf}} 
 \index{M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}!M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}}
 \index{M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}!M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}}
 \subsubsection{\texorpdfstring{M\+C\+M\+C\+Chain()}{MCMCChain()}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain} (\begin{DoxyParamCaption}\item[{H\+YP \&\&}]{h0,  }\item[{typename H\+Y\+P\+::t\+\_\+data $\ast$}]{d,  }\item[{callback\+\_\+t $\ast$}]{cb = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain} (\begin{DoxyParamCaption}\item[{H\+YP \&\&}]{h0,  }\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{callback\+\_\+t $\ast$}]{cb = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_m_c_m_c_chain_a3942ff362dcc0bdfdad296f95048f14e}\label{class_m_c_m_c_chain_a3942ff362dcc0bdfdad296f95048f14e}} 
 \index{M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}!M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}}
@@ -223,12 +224,12 @@ H\+YP \hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
 std\+::mutex \hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\+t $>$\+::current\+\_\+mutex\hspace{0.3cm}{\ttfamily [mutable]}}
 
-\mbox{\Hypertarget{class_m_c_m_c_chain_a62ffa9a3d173a79c82f09174b58aebaf}\label{class_m_c_m_c_chain_a62ffa9a3d173a79c82f09174b58aebaf}} 
+\mbox{\Hypertarget{class_m_c_m_c_chain_ab235f08fad93a9626ffb566c001ed5c9}\label{class_m_c_m_c_chain_ab235f08fad93a9626ffb566c001ed5c9}} 
 \index{M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}!data@{data}}
 \index{data@{data}!M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}}
 \subsubsection{\texorpdfstring{data}{data}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-H\+Y\+P\+::t\+\_\+data$\ast$ \hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\+t $>$\+::data}
+H\+Y\+P\+::data\+\_\+t$\ast$ \hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\+t $>$\+::data}
 
 \mbox{\Hypertarget{class_m_c_m_c_chain_a2595f417e0c9cc847ac1dd70ed8b0763}\label{class_m_c_m_c_chain_a2595f417e0c9cc847ac1dd70ed8b0763}} 
 \index{M\+C\+M\+C\+Chain@{M\+C\+M\+C\+Chain}!history@{history}}

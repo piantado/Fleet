@@ -1,5 +1,7 @@
 <map id="src/Hypotheses/Interfaces/MCMCable.h" name="src/Hypotheses/Interfaces/MCMCable.h">
-<area shape="rect" id="node2" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="94,95,189,121"/>
-<area shape="rect" id="node3" href="$_datum_8h.html" title="A datum is the default data point for likelihoods, consisting of an input and output type..." alt="" coords="64,169,136,196"/>
-<area shape="rect" id="node4" href="$_i_o_8h.html" title="IO.h" alt="" coords="161,169,207,196"/>
+<area shape="rect" id="node2" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="205,95,299,121"/>
+<area shape="rect" id="node3" href="$_datum_8h.html" title="A datum is the default data point for likelihoods, consisting of an input and output type..." alt="" coords="5,169,77,196"/>
+<area shape="rect" id="node4" href="$_i_o_8h.html" title="IO.h" alt="" coords="291,244,338,271"/>
+<area shape="rect" id="node9" href="$_fleet_statistics_8h.html" title="Statistics/FleetStatistics.h" alt="" coords="101,169,277,196"/>
+<area shape="rect" id="node11" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="353,169,469,196"/>
 </map>

@@ -1,14 +1,26 @@
-\hypertarget{struct_head_if_reference_else_t}{}\section{Head\+If\+Reference\+ElseT$<$ T, args $>$ Struct Template Reference}
+\hypertarget{struct_head_if_reference_else_t}{}\section{Head\+If\+Reference\+ElseT$<$ T, args $>$ Class Template Reference}
 \label{struct_head_if_reference_else_t}\index{Head\+If\+Reference\+Else\+T$<$ T, args $>$@{Head\+If\+Reference\+Else\+T$<$ T, args $>$}}
 
 
-{\ttfamily \#include $<$Template\+Magic.\+h$>$}
+{\ttfamily \#include $<$Primitives.\+h$>$}
 
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
 typedef std\+::conditional$<$ std\+::is\+\_\+reference$<$ typename \hyperlink{struct_type_head}{Type\+Head}$<$ args... $>$\+::\hyperlink{struct_head_if_reference_else_t_aa668af542560a9a8541b1ff59f23d51a}{type} $>$\+::value, typename std\+::decay$<$ typename \hyperlink{struct_type_head}{Type\+Head}$<$ args... $>$\+::\hyperlink{struct_head_if_reference_else_t_aa668af542560a9a8541b1ff59f23d51a}{type} $>$\+::\hyperlink{struct_head_if_reference_else_t_aa668af542560a9a8541b1ff59f23d51a}{type}, T $>$\+::\hyperlink{struct_head_if_reference_else_t_aa668af542560a9a8541b1ff59f23d51a}{type} \hyperlink{struct_head_if_reference_else_t_aa668af542560a9a8541b1ff59f23d51a}{type}
 \end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class T, class... args$>$\newline
+class Head\+If\+Reference\+Else\+T$<$ T, args $>$}
+
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+07/05/20 
+\end{DoxyDate}
 
 
 \subsection{Member Typedef Documentation}
@@ -21,6 +33,6 @@ typedef std\+::conditional$<$std\+::is\+\_\+reference$<$typename \hyperlink{stru
 
 
 
-The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/\hyperlink{_template_magic_8h}{Template\+Magic.\+h}\end{DoxyCompactItemize}
+src/\+Virtual\+Machine/\hyperlink{_primitives_8h}{Primitives.\+h}\end{DoxyCompactItemize}

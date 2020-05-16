@@ -74,40 +74,19 @@ $(function() {
 
 <p>This manages a collection of VirtualMachines &ndash; this is what handles the enumeration of flip by probability. Basically each machine state stores the state of some evaluator and is able to push things back on to the Q if it encounters a random flip This stores pointers because it is impossible to copy out of std collections, so we are constantly having to call <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a> constructors. Using pointers speeds us up by about 20%.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="_fleet_8h_source.html">Fleet.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_discrete_distribution_8h_source.html">DiscreteDistribution.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_discrete_distribution_8h_source.html">DiscreteDistribution.h</a>&quot;</code><br />
 <code>#include &lt;vector&gt;</code><br />
+<code>#include &lt;queue&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for VirtualMachinePool.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_virtual_machine_pool_8h__incl.png" border="0" usemap="#src_2_virtual_machine_2_virtual_machine_pool_8h" alt=""/></div>
 <map name="src_2_virtual_machine_2_virtual_machine_pool_8h" id="src_2_virtual_machine_2_virtual_machine_pool_8h">
-<area shape="rect" id="node2" href="_fleet_8h.html" title="Fleet.h" alt="" coords="1667,95,1729,121"/>
-<area shape="rect" id="node45" href="_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="152,177,300,203"/>
-<area shape="rect" id="node26" href="_timing_8h.html" title="Timing.h" alt="" coords="2553,177,2625,203"/>
-<area shape="rect" id="node27" href="_program_8h.html" title="Program.h" alt="" coords="2649,177,2731,203"/>
-<area shape="rect" id="node28" href="_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="4609,266,4683,293"/>
-<area shape="rect" id="node29" href="_i_o_8h.html" title="IO.h" alt="" coords="1833,348,1880,375"/>
-<area shape="rect" id="node30" href="_numerics_8h.html" title="Numerics.h" alt="" coords="951,348,1040,375"/>
-<area shape="rect" id="node31" href="_random_8h.html" title="Random.h" alt="" coords="1214,266,1297,293"/>
-<area shape="rect" id="node32" href="_strings_8h.html" title="Strings.h" alt="" coords="2755,177,2830,203"/>
-<area shape="rect" id="node33" href="_hash_8h.html" title="Hash.h" alt="" coords="1126,348,1190,375"/>
-<area shape="rect" id="node34" href="_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="480,266,596,293"/>
-<area shape="rect" id="node35" href="_integerized_stack_8h.html" title="IntegerizedStack.h" alt="" coords="2854,177,2985,203"/>
-<area shape="rect" id="node36" href="_dispatchable_8h.html" title="A class is dispatchable if it is able to implement custom operations and put its program onto a Progr..." alt="" coords="3009,169,3163,211"/>
-<area shape="rect" id="node37" href="_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="4265,259,4419,300"/>
-<area shape="rect" id="node38" href="_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="4379,169,4534,211"/>
-<area shape="rect" id="node39" href="_searchable_8h.html" title="A class is searchable if permits us to enumerate and make its neighbors. This class is used by MCTS a..." alt="" coords="3187,169,3342,211"/>
-<area shape="rect" id="node40" href="_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we &quot;emulate&quot; a type system using t_nonterminal to store an integer for the types. *. " alt="" coords="564,177,624,203"/>
-<area shape="rect" id="node41" href="_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="3367,169,3565,211"/>
-<area shape="rect" id="node42" href="_node_8h.html" title="Node.h" alt="" coords="1126,266,1190,293"/>
-<area shape="rect" id="node43" href="_grammar_8h.html" title="Grammar.h" alt="" coords="1159,177,1245,203"/>
-<area shape="rect" id="node44" href="_case_macros_8h.html" title="CaseMacros.h" alt="" coords="3590,177,3697,203"/>
-<area shape="rect" id="node46" href="_l_o_t_hypothesis_8h.html" title="Hypotheses/LOTHypothesis.h" alt="" coords="1560,266,1759,293"/>
-<area shape="rect" id="node47" href="_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="1422,177,1574,203"/>
-<area shape="rect" id="node48" href="_m_c_m_c_chain_8h.html" title="Inference/MCMCChain.h" alt="" coords="3721,177,3888,203"/>
-<area shape="rect" id="node49" href="_m_c_t_s_8h.html" title="Template of self type M, hypothesis type HYP. This requires us to inherit and override playout to do ..." alt="" coords="700,177,829,203"/>
-<area shape="rect" id="node50" href="_parallel_tempering_8h.html" title="Inference/ParallelTempering.h" alt="" coords="3937,177,4131,203"/>
+<area shape="rect" id="node2" href="_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="323,95,471,121"/>
+<area shape="rect" id="node9" href="_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="193,169,309,196"/>
+<area shape="rect" id="node11" href="_i_o_8h.html" title="IO.h" alt="" coords="302,244,349,271"/>
+<area shape="rect" id="node17" href="_numerics_8h.html" title="Numerics.h" alt="" coords="533,244,622,271"/>
+<area shape="rect" id="node19" href="_strings_8h.html" title="Strings.h" alt="" coords="701,169,776,196"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -115,12 +94,14 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_virtual_machine_pool_8h__dep__incl.png" border="0" usemap="#src_2_virtual_machine_2_virtual_machine_pool_8hdep" alt=""/></div>
 <map name="src_2_virtual_machine_2_virtual_machine_pool_8hdep" id="src_2_virtual_machine_2_virtual_machine_pool_8hdep">
-<area shape="rect" id="node2" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="497,95,581,121"/>
-<area shape="rect" id="node3" href="_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,169,209,211"/>
-<area shape="rect" id="node4" href="_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,169,437,211"/>
-<area shape="rect" id="node5" href="_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,169,617,211"/>
-<area shape="rect" id="node6" href="_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="641,177,848,203"/>
-<area shape="rect" id="node7" href="_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="872,169,1023,211"/>
+<area shape="rect" id="node2" href="_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,169,209,211"/>
+<area shape="rect" id="node3" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="593,95,677,121"/>
+<area shape="rect" id="node4" href="_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="234,169,407,211"/>
+<area shape="rect" id="node5" href="_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="432,169,636,211"/>
+<area shape="rect" id="node6" href="_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="661,169,815,211"/>
+<area shape="rect" id="node7" href="_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="840,177,1047,203"/>
+<area shape="rect" id="node8" href="_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1071,169,1221,211"/>
+<area shape="rect" id="node9" href="_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="1246,177,1414,203"/>
 </map>
 </div>
 </div>
@@ -128,7 +109,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool&lt; t_x, t_return &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool&lt; VMState &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Fleet: Grammar Class Reference</title>
+<title>Fleet: Grammar&lt; GRAMMAR_TYPES &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,132 +62,204 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="class_grammar-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Grammar Class Reference</div>  </div>
+<div class="title">Grammar&lt; GRAMMAR_TYPES &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="_grammar_8h_source.html">Grammar.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for Grammar&lt; GRAMMAR_TYPES &gt;:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_grammar__coll__graph.png" border="0" usemap="#_grammar_3_01_g_r_a_m_m_a_r___t_y_p_e_s_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="_grammar_3_01_g_r_a_m_m_a_r___t_y_p_e_s_01_4_coll__map" id="_grammar_3_01_g_r_a_m_m_a_r___t_y_p_e_s_01_4_coll__map">
+<area shape="rect" id="node2" href="class_grammar_1_1_depth_exception.html" title="Grammar\&lt; GRAMMAR_TYPES\l \&gt;::DepthException" alt="" coords="11,81,221,123"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar_1_1_depth_exception.html">DepthException</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a30c2eaa4b378738686365fc6d8697f61"><td class="memTemplParams" colspan="2">template&lt;typename input_t , typename output_t &gt; </td></tr>
+<tr class="memitem:a30c2eaa4b378738686365fc6d8697f61"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#a30c2eaa4b378738686365fc6d8697f61">VirtualMachineState_t</a> = <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; input_t, output_t, GRAMMAR_TYPES... &gt;</td></tr>
+<tr class="separator:a30c2eaa4b378738686365fc6d8697f61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ba44586d1c6f847cbbeeead91964e3c"><td class="memItemLeft" align="right" valign="top">typedef std::tuple&lt; GRAMMAR_TYPES... &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a5ba44586d1c6f847cbbeeead91964e3c">GrammarTypesAsTuple</a></td></tr>
+<tr class="separator:a5ba44586d1c6f847cbbeeead91964e3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa5c9afa0e7e1aa989b54402b02a677a3"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:aa5c9afa0e7e1aa989b54402b02a677a3"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#aa5c9afa0e7e1aa989b54402b02a677a3">nt</a> ()</td></tr>
-<tr class="separator:aa5c9afa0e7e1aa989b54402b02a677a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa201250a002a7d07d398fee189a74427"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#aa201250a002a7d07d398fee189a74427">Grammar</a> ()</td></tr>
-<tr class="separator:aa201250a002a7d07d398fee189a74427"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e0a3b86d64eba75726b7355308c4649"><td class="memTemplParams" colspan="2">template&lt;typename... T&gt; </td></tr>
-<tr class="memitem:a4e0a3b86d64eba75726b7355308c4649"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#a4e0a3b86d64eba75726b7355308c4649">Grammar</a> (std::tuple&lt; T... &gt; tup)</td></tr>
-<tr class="separator:a4e0a3b86d64eba75726b7355308c4649"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfb7e4ea64210d03de896e300447e760"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#acfb7e4ea64210d03de896e300447e760">Grammar</a> (const <a class="el" href="class_grammar.html">Grammar</a> &amp;g)=delete</td></tr>
-<tr class="separator:acfb7e4ea64210d03de896e300447e760"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28f97335602afe8b1a612679de2f80d9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a28f97335602afe8b1a612679de2f80d9">Grammar</a> (const <a class="el" href="class_grammar.html">Grammar</a> &amp;&amp;g)=delete</td></tr>
-<tr class="separator:a28f97335602afe8b1a612679de2f80d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf841bc64ac19cb9872a8362f5e5731a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#abf841bc64ac19cb9872a8362f5e5731a">count_nonterminals</a> () const</td></tr>
-<tr class="separator:abf841bc64ac19cb9872a8362f5e5731a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af25c47a2c5cae2a11720c8454e59290f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#af25c47a2c5cae2a11720c8454e59290f">count_rules</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#aa5c9afa0e7e1aa989b54402b02a677a3">nt</a>) const</td></tr>
-<tr class="separator:af25c47a2c5cae2a11720c8454e59290f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8f0fdd9cb368a608bee5626774360d4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#af8f0fdd9cb368a608bee5626774360d4">count_rules</a> () const</td></tr>
-<tr class="separator:af8f0fdd9cb368a608bee5626774360d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7cf0515f3ca761590da05455a417896b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a7cf0515f3ca761590da05455a417896b">count_terminals</a> (<a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#aa5c9afa0e7e1aa989b54402b02a677a3">nt</a>) const</td></tr>
-<tr class="separator:a7cf0515f3ca761590da05455a417896b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0714d68070749932d876fe868bde94bd"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a0714d68070749932d876fe868bde94bd">count_nonterminals</a> (<a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#aa5c9afa0e7e1aa989b54402b02a677a3">nt</a>) const</td></tr>
-<tr class="separator:a0714d68070749932d876fe868bde94bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3c730ea64c8ca5d93fecb4275f2e380"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#aa3c730ea64c8ca5d93fecb4275f2e380">show</a> (std::string prefix=&quot;# &quot;)</td></tr>
-<tr class="separator:aa3c730ea64c8ca5d93fecb4275f2e380"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0b97cbaf14fc6be7495c8bb9e888002"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#af0b97cbaf14fc6be7495c8bb9e888002">add</a> (<a class="el" href="class_rule.html">Rule</a> &amp;&amp;r)</td></tr>
-<tr class="separator:af0b97cbaf14fc6be7495c8bb9e888002"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37a1dd90b7a315fe97bbdefad7c09df9"><td class="memTemplParams" colspan="2">template&lt;typename... args, size_t... Is&gt; </td></tr>
-<tr class="memitem:a37a1dd90b7a315fe97bbdefad7c09df9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#a37a1dd90b7a315fe97bbdefad7c09df9">add</a> (std::tuple&lt; args... &gt; t, std::index_sequence&lt; Is... &gt;)</td></tr>
-<tr class="separator:a37a1dd90b7a315fe97bbdefad7c09df9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0af8f369b948cde8ee5d403311ec8fa9"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... args&gt; </td></tr>
-<tr class="memitem:a0af8f369b948cde8ee5d403311ec8fa9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#a0af8f369b948cde8ee5d403311ec8fa9">add</a> (<a class="el" href="struct_primitive.html">Primitive</a>&lt; T, args... &gt; p, const int arg=0)</td></tr>
-<tr class="separator:a0af8f369b948cde8ee5d403311ec8fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af96467de4413d3e5a0d2f291992365d9"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... args&gt; </td></tr>
-<tr class="memitem:af96467de4413d3e5a0d2f291992365d9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#af96467de4413d3e5a0d2f291992365d9">add</a> (<a class="el" href="struct_builtin_primitive.html">BuiltinPrimitive</a>&lt; T, args... &gt; p, const int arg=0)</td></tr>
-<tr class="separator:af96467de4413d3e5a0d2f291992365d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a562f3b4113e3f2764832ac828ffb58fc"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... args&gt; </td></tr>
-<tr class="memitem:a562f3b4113e3f2764832ac828ffb58fc"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#a562f3b4113e3f2764832ac828ffb58fc">add</a> (<a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7">BuiltinOp</a> o, std::string format, const double p=1.0, const int arg=0)</td></tr>
-<tr class="separator:a562f3b4113e3f2764832ac828ffb58fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba61b4a7563c249a27ad7b6b808ee575"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... args&gt; </td></tr>
-<tr class="memitem:aba61b4a7563c249a27ad7b6b808ee575"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#aba61b4a7563c249a27ad7b6b808ee575">add</a> (<a class="el" href="_instruction_8h.html#a3a20ca4a8f0ab220518b030cc23ffee4">CustomOp</a> o, std::string format, const double p=1.0, const int arg=0)</td></tr>
-<tr class="separator:aba61b4a7563c249a27ad7b6b808ee575"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affec19f6e91201c8d29119bf50ffa3e6"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#affec19f6e91201c8d29119bf50ffa3e6">get_index_of</a> (const <a class="el" href="class_rule.html">Rule</a> *r) const</td></tr>
-<tr class="separator:affec19f6e91201c8d29119bf50ffa3e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea24b7ae4a2d61f322504a9f49478bb4"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_rule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#aea24b7ae4a2d61f322504a9f49478bb4">get_rule</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#aa5c9afa0e7e1aa989b54402b02a677a3">nt</a>, size_t k) const</td></tr>
-<tr class="separator:aea24b7ae4a2d61f322504a9f49478bb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa642e370571830772b8d3be70cb5a5c7"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_rule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#aa642e370571830772b8d3be70cb5a5c7">get_rule</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#aa5c9afa0e7e1aa989b54402b02a677a3">nt</a>, const <a class="el" href="_instruction_8h.html#a3a20ca4a8f0ab220518b030cc23ffee4">CustomOp</a> o, const int a=0)</td></tr>
-<tr class="separator:aa642e370571830772b8d3be70cb5a5c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab82ed6614e4fcced4d0e7c742e1c5e4b"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_rule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#ab82ed6614e4fcced4d0e7c742e1c5e4b">get_rule</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#aa5c9afa0e7e1aa989b54402b02a677a3">nt</a>, const <a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7">BuiltinOp</a> o, const int a=0)</td></tr>
-<tr class="separator:ab82ed6614e4fcced4d0e7c742e1c5e4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0198e1a6c052fad5cba950e0ad60d67"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_rule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#ae0198e1a6c052fad5cba950e0ad60d67">get_rule</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#aa5c9afa0e7e1aa989b54402b02a677a3">nt</a>, const std::string s) const</td></tr>
-<tr class="separator:ae0198e1a6c052fad5cba950e0ad60d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adecdec03b3211bd3b6800511c7ed5dd9"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_rule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#adecdec03b3211bd3b6800511c7ed5dd9">get_rule</a> (const std::string s) const</td></tr>
-<tr class="separator:adecdec03b3211bd3b6800511c7ed5dd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2182b3ded5171ba3e84be952176798e9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a2182b3ded5171ba3e84be952176798e9">rule_normalizer</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#aa5c9afa0e7e1aa989b54402b02a677a3">nt</a>) const</td></tr>
-<tr class="separator:a2182b3ded5171ba3e84be952176798e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50c30e020e54743d5ede0ca9469fdb91"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_rule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a50c30e020e54743d5ede0ca9469fdb91">sample_rule</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#aa5c9afa0e7e1aa989b54402b02a677a3">nt</a>) const</td></tr>
-<tr class="separator:a50c30e020e54743d5ede0ca9469fdb91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d60795be5b288d74a87f2cc52008f71"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a5d60795be5b288d74a87f2cc52008f71">makeNode</a> (const <a class="el" href="class_rule.html">Rule</a> *r) const</td></tr>
-<tr class="separator:a5d60795be5b288d74a87f2cc52008f71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a08c44dbbba7406d3638bdc549fddad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a6a08c44dbbba7406d3638bdc549fddad">generate</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#aa5c9afa0e7e1aa989b54402b02a677a3">nt</a>, unsigned long depth=0) const</td></tr>
-<tr class="separator:a6a08c44dbbba7406d3638bdc549fddad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee4cda199ab92f79b55e73f6cbd90c8b"><td class="memTemplParams" colspan="2">template&lt;class t &gt; </td></tr>
-<tr class="memitem:aee4cda199ab92f79b55e73f6cbd90c8b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#aee4cda199ab92f79b55e73f6cbd90c8b">generate</a> (unsigned long depth=0)</td></tr>
-<tr class="separator:aee4cda199ab92f79b55e73f6cbd90c8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6333cce88a2fe7ce56a897a6a930c28"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#ad6333cce88a2fe7ce56a897a6a930c28">copy_resample</a> (const <a class="el" href="class_node.html">Node</a> &amp;node, bool f(const <a class="el" href="class_node.html">Node</a> &amp;n)) const</td></tr>
-<tr class="separator:ad6333cce88a2fe7ce56a897a6a930c28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0823f7af30a851a968dae46adbd49a5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#ae0823f7af30a851a968dae46adbd49a5">get_counts</a> (const <a class="el" href="class_node.html">Node</a> &amp;node) const</td></tr>
-<tr class="separator:ae0823f7af30a851a968dae46adbd49a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11f1788026f68e7ddb7fca1ec04915f5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a11f1788026f68e7ddb7fca1ec04915f5">log_probability</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
-<tr class="separator:a11f1788026f68e7ddb7fca1ec04915f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5bd3d35545bcab4dbd3ca1d136bd4ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#ab5bd3d35545bcab4dbd3ca1d136bd4ce">expand_from_names</a> (std::deque&lt; std::string &gt; &amp;q) const</td></tr>
-<tr class="separator:ab5bd3d35545bcab4dbd3ca1d136bd4ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44954a36c11d58c23bef02ca7d541005"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a44954a36c11d58c23bef02ca7d541005">expand_from_names</a> (std::string s) const</td></tr>
-<tr class="separator:a44954a36c11d58c23bef02ca7d541005"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0addff494602ebb19852c2d4314eaac6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a0addff494602ebb19852c2d4314eaac6">expand_from_names</a> (const char *c) const</td></tr>
-<tr class="separator:a0addff494602ebb19852c2d4314eaac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a221f1a43488624ce78138d7d5045a816"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a221f1a43488624ce78138d7d5045a816">expand_from_integer</a> (<a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#aa5c9afa0e7e1aa989b54402b02a677a3">nt</a>, <a class="el" href="class_integerized_stack.html">IntegerizedStack</a> &amp;is) const</td></tr>
-<tr class="separator:a221f1a43488624ce78138d7d5045a816"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b478d4ad5955b7489074e106afce5a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a7b478d4ad5955b7489074e106afce5a4">expand_from_integer</a> (<a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#aa5c9afa0e7e1aa989b54402b02a677a3">nt</a>, <a class="el" href="_numerics_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a> z) const</td></tr>
-<tr class="separator:a7b478d4ad5955b7489074e106afce5a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6970c88fc6f5ed56020fe0dfac302f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_numerics_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#ab6970c88fc6f5ed56020fe0dfac302f4">compute_enumeration_order</a> (const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
-<tr class="separator:ab6970c88fc6f5ed56020fe0dfac302f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a607aa205d57a1b61b07f9ef57adcf697"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a607aa205d57a1b61b07f9ef57adcf697">lempel_ziv_full_expand</a> (<a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#aa5c9afa0e7e1aa989b54402b02a677a3">nt</a>, <a class="el" href="_numerics_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a> z, <a class="el" href="class_node.html">Node</a> *root=nullptr) const</td></tr>
-<tr class="separator:a607aa205d57a1b61b07f9ef57adcf697"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98fd19c7b9c1d92c59365a693ec12547"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a98fd19c7b9c1d92c59365a693ec12547">lempel_ziv_full_expand</a> (<a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#aa5c9afa0e7e1aa989b54402b02a677a3">nt</a>, <a class="el" href="class_integerized_stack.html">IntegerizedStack</a> &amp;is, <a class="el" href="class_node.html">Node</a> *root=nullptr) const</td></tr>
-<tr class="separator:a98fd19c7b9c1d92c59365a693ec12547"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad56da50581cbebe1427ebf2f73018328"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_numerics_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#ad56da50581cbebe1427ebf2f73018328">count_connected_partial_subtrees</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
-<tr class="separator:ad56da50581cbebe1427ebf2f73018328"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9115c2743b054ec44ef513843d84f5d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#ae9115c2743b054ec44ef513843d84f5d">neighbors</a> (const <a class="el" href="class_node.html">Node</a> &amp;node) const</td></tr>
-<tr class="separator:ae9115c2743b054ec44ef513843d84f5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd380ec308907ddc26acb22196610b83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#abd380ec308907ddc26acb22196610b83">expand_to_neighbor</a> (<a class="el" href="class_node.html">Node</a> &amp;node, int &amp;which)</td></tr>
-<tr class="separator:abd380ec308907ddc26acb22196610b83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68f767b06f9675461be94242c89dfdb9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a68f767b06f9675461be94242c89dfdb9">complete</a> (<a class="el" href="class_node.html">Node</a> &amp;node)</td></tr>
-<tr class="separator:a68f767b06f9675461be94242c89dfdb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a047b55bfbd87c52e9d969af62c2932ab"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a047b55bfbd87c52e9d969af62c2932ab"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#a047b55bfbd87c52e9d969af62c2932ab">nt</a> ()</td></tr>
+<tr class="separator:a047b55bfbd87c52e9d969af62c2932ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fa1d41e021616790a5ec8f4b3de9b08"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a2fa1d41e021616790a5ec8f4b3de9b08">Grammar</a> ()</td></tr>
+<tr class="separator:a2fa1d41e021616790a5ec8f4b3de9b08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7db6840d96e910a788968ebb2fe62df4"><td class="memTemplParams" colspan="2">template&lt;typename... T&gt; </td></tr>
+<tr class="memitem:a7db6840d96e910a788968ebb2fe62df4"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#a7db6840d96e910a788968ebb2fe62df4">Grammar</a> (std::tuple&lt; T... &gt; tup)</td></tr>
+<tr class="separator:a7db6840d96e910a788968ebb2fe62df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70df918794a43cbd26bae1096c92dead"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a70df918794a43cbd26bae1096c92dead">Grammar</a> (const <a class="el" href="class_grammar.html">Grammar</a> &amp;g)=delete</td></tr>
+<tr class="separator:a70df918794a43cbd26bae1096c92dead"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a008b2bd47d150afe8ab304e6d213f0ba"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a008b2bd47d150afe8ab304e6d213f0ba">Grammar</a> (const <a class="el" href="class_grammar.html">Grammar</a> &amp;&amp;g)=delete</td></tr>
+<tr class="separator:a008b2bd47d150afe8ab304e6d213f0ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aa05c747026932672a24fa1f7134115"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a4aa05c747026932672a24fa1f7134115">count_nonterminals</a> () const</td></tr>
+<tr class="separator:a4aa05c747026932672a24fa1f7134115"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90a765c97b89f2f4cf12b6b4c2a3d019"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a90a765c97b89f2f4cf12b6b4c2a3d019">count_rules</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#a047b55bfbd87c52e9d969af62c2932ab">nt</a>) const</td></tr>
+<tr class="separator:a90a765c97b89f2f4cf12b6b4c2a3d019"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a576605ca6ee9693b762a40c477aa4889"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a576605ca6ee9693b762a40c477aa4889">count_rules</a> () const</td></tr>
+<tr class="separator:a576605ca6ee9693b762a40c477aa4889"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5121201035b5d5cd0a1d4251b1f73056"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a5121201035b5d5cd0a1d4251b1f73056">count_terminals</a> (<a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#a047b55bfbd87c52e9d969af62c2932ab">nt</a>) const</td></tr>
+<tr class="separator:a5121201035b5d5cd0a1d4251b1f73056"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a335c2679b0db2290a1a0da8910f0bcdd"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a335c2679b0db2290a1a0da8910f0bcdd">count_nonterminals</a> (<a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#a047b55bfbd87c52e9d969af62c2932ab">nt</a>) const</td></tr>
+<tr class="separator:a335c2679b0db2290a1a0da8910f0bcdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d661258f08b7cc4d154d59bfbbc1f68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a8d661258f08b7cc4d154d59bfbbc1f68">show</a> (std::string prefix=&quot;# &quot;)</td></tr>
+<tr class="separator:a8d661258f08b7cc4d154d59bfbbc1f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0be4926e40ea476152a5a87a1c83f167"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a0be4926e40ea476152a5a87a1c83f167">add</a> (<a class="el" href="class_rule.html">Rule</a> &amp;&amp;r)</td></tr>
+<tr class="separator:a0be4926e40ea476152a5a87a1c83f167"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c4f41d4b1ff3c9973cb13ccea2c57fb"><td class="memTemplParams" colspan="2">template&lt;typename... args, size_t... Is&gt; </td></tr>
+<tr class="memitem:a3c4f41d4b1ff3c9973cb13ccea2c57fb"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#a3c4f41d4b1ff3c9973cb13ccea2c57fb">add</a> (std::tuple&lt; args... &gt; t, std::index_sequence&lt; Is... &gt;)</td></tr>
+<tr class="separator:a3c4f41d4b1ff3c9973cb13ccea2c57fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86dfa9ce87af1779799e617bb3252220"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... args&gt; </td></tr>
+<tr class="memitem:a86dfa9ce87af1779799e617bb3252220"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#a86dfa9ce87af1779799e617bb3252220">add</a> (<a class="el" href="struct_primitive.html">Primitive</a>&lt; T, args... &gt; p, const int arg=0)</td></tr>
+<tr class="separator:a86dfa9ce87af1779799e617bb3252220"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52b751ef5987563d4045692199dba16c"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... args&gt; </td></tr>
+<tr class="memitem:a52b751ef5987563d4045692199dba16c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#a52b751ef5987563d4045692199dba16c">add</a> (<a class="el" href="struct_builtin_primitive.html">BuiltinPrimitive</a>&lt; T, args... &gt; p, const int arg=0)</td></tr>
+<tr class="separator:a52b751ef5987563d4045692199dba16c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada3a7374f7aa01a1db5b938e8b9dfa2d"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... args&gt; </td></tr>
+<tr class="memitem:ada3a7374f7aa01a1db5b938e8b9dfa2d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#ada3a7374f7aa01a1db5b938e8b9dfa2d">add</a> (<a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7">BuiltinOp</a> o, std::string format, const double p=1.0, const int arg=0)</td></tr>
+<tr class="separator:ada3a7374f7aa01a1db5b938e8b9dfa2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16885c3de4a6e3fd31ddab136cd9fea8"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a16885c3de4a6e3fd31ddab136cd9fea8">get_index_of</a> (const <a class="el" href="class_rule.html">Rule</a> *r) const</td></tr>
+<tr class="separator:a16885c3de4a6e3fd31ddab136cd9fea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ed04fb2a2a8e2f0e4f11b711647a02c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_rule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a9ed04fb2a2a8e2f0e4f11b711647a02c">get_rule</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#a047b55bfbd87c52e9d969af62c2932ab">nt</a>, size_t k) const</td></tr>
+<tr class="separator:a9ed04fb2a2a8e2f0e4f11b711647a02c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57835af24b91d1c193f2906b43282350"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_rule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a57835af24b91d1c193f2906b43282350">get_rule</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#a047b55bfbd87c52e9d969af62c2932ab">nt</a>, const <a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7">BuiltinOp</a> o, const int a=0)</td></tr>
+<tr class="separator:a57835af24b91d1c193f2906b43282350"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d13aad0e640f20e9eb7d0d148915576"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_rule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a3d13aad0e640f20e9eb7d0d148915576">get_rule</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#a047b55bfbd87c52e9d969af62c2932ab">nt</a>, const std::string s) const</td></tr>
+<tr class="separator:a3d13aad0e640f20e9eb7d0d148915576"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a48e2e6b4757c3398c60a20d759d307"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_rule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a1a48e2e6b4757c3398c60a20d759d307">get_rule</a> (const std::string s) const</td></tr>
+<tr class="separator:a1a48e2e6b4757c3398c60a20d759d307"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a240019987945a694e26bebcebcf463fc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a240019987945a694e26bebcebcf463fc">rule_normalizer</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#a047b55bfbd87c52e9d969af62c2932ab">nt</a>) const</td></tr>
+<tr class="separator:a240019987945a694e26bebcebcf463fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba4d092714b8420d8c0a1be63e8566b6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_rule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#aba4d092714b8420d8c0a1be63e8566b6">sample_rule</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#a047b55bfbd87c52e9d969af62c2932ab">nt</a>) const</td></tr>
+<tr class="separator:aba4d092714b8420d8c0a1be63e8566b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc6f2a046bdf8df0be45912b5d8fe410"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#abc6f2a046bdf8df0be45912b5d8fe410">makeNode</a> (const <a class="el" href="class_rule.html">Rule</a> *r) const</td></tr>
+<tr class="separator:abc6f2a046bdf8df0be45912b5d8fe410"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5dee7ec88bdd66edd023b3c935d2765"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#af5dee7ec88bdd66edd023b3c935d2765">generate</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#a047b55bfbd87c52e9d969af62c2932ab">nt</a>, unsigned long depth=0) const</td></tr>
+<tr class="separator:af5dee7ec88bdd66edd023b3c935d2765"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01bf556e22bfdd5ec87868869fd9330f"><td class="memTemplParams" colspan="2">template&lt;class t &gt; </td></tr>
+<tr class="memitem:a01bf556e22bfdd5ec87868869fd9330f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#a01bf556e22bfdd5ec87868869fd9330f">generate</a> (unsigned long depth=0)</td></tr>
+<tr class="separator:a01bf556e22bfdd5ec87868869fd9330f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28b35de7e71ac8f451cd3a65818fc1db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a28b35de7e71ac8f451cd3a65818fc1db">copy_resample</a> (const <a class="el" href="class_node.html">Node</a> &amp;node, bool f(const <a class="el" href="class_node.html">Node</a> &amp;n)) const</td></tr>
+<tr class="separator:a28b35de7e71ac8f451cd3a65818fc1db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e192e96e623cf9beb927cbd35bd7470"><td class="memItemLeft" align="right" valign="top">std::vector&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a1e192e96e623cf9beb927cbd35bd7470">get_counts</a> (const <a class="el" href="class_node.html">Node</a> &amp;node) const</td></tr>
+<tr class="separator:a1e192e96e623cf9beb927cbd35bd7470"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b19c0b8d0b4d792181ae47bd2f68268"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a4b19c0b8d0b4d792181ae47bd2f68268">log_probability</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
+<tr class="separator:a4b19c0b8d0b4d792181ae47bd2f68268"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef582b15696b97c3376cba935a76acef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#aef582b15696b97c3376cba935a76acef">expand_from_names</a> (std::deque&lt; std::string &gt; &amp;q) const</td></tr>
+<tr class="separator:aef582b15696b97c3376cba935a76acef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53a651b1fb2cad39efc4717b635b922e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a53a651b1fb2cad39efc4717b635b922e">expand_from_names</a> (std::string s) const</td></tr>
+<tr class="separator:a53a651b1fb2cad39efc4717b635b922e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4f8e4c2b0ad93970e579ea56c2fde60"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#af4f8e4c2b0ad93970e579ea56c2fde60">expand_from_names</a> (const char *c) const</td></tr>
+<tr class="separator:af4f8e4c2b0ad93970e579ea56c2fde60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab20256e7e9e4c6077043465b3d440be9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#ab20256e7e9e4c6077043465b3d440be9">expand_from_integer</a> (<a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#a047b55bfbd87c52e9d969af62c2932ab">nt</a>, <a class="el" href="class_integerized_stack.html">IntegerizedStack</a> &amp;is) const</td></tr>
+<tr class="separator:ab20256e7e9e4c6077043465b3d440be9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a795d45fbbafb5c5dc17e5898a2016ce2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a795d45fbbafb5c5dc17e5898a2016ce2">expand_from_integer</a> (<a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#a047b55bfbd87c52e9d969af62c2932ab">nt</a>, <a class="el" href="_numerics_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a> z) const</td></tr>
+<tr class="separator:a795d45fbbafb5c5dc17e5898a2016ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37b475b665c37057084d9244abcf25f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_numerics_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a37b475b665c37057084d9244abcf25f9">compute_enumeration_order</a> (const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
+<tr class="separator:a37b475b665c37057084d9244abcf25f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adea898b27f2cf76417e4b686c1045e54"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#adea898b27f2cf76417e4b686c1045e54">lempel_ziv_full_expand</a> (<a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#a047b55bfbd87c52e9d969af62c2932ab">nt</a>, <a class="el" href="_numerics_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a> z, <a class="el" href="class_node.html">Node</a> *root=nullptr) const</td></tr>
+<tr class="separator:adea898b27f2cf76417e4b686c1045e54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37ccd1307ac9cb13a9653ba6c2134498"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a37ccd1307ac9cb13a9653ba6c2134498">lempel_ziv_full_expand</a> (<a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html#a047b55bfbd87c52e9d969af62c2932ab">nt</a>, <a class="el" href="class_integerized_stack.html">IntegerizedStack</a> &amp;is, <a class="el" href="class_node.html">Node</a> *root=nullptr) const</td></tr>
+<tr class="separator:a37ccd1307ac9cb13a9653ba6c2134498"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1e2c22753f18d1dcdd9d81576045e9f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_numerics_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#ad1e2c22753f18d1dcdd9d81576045e9f">count_connected_partial_subtrees</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
+<tr class="separator:ad1e2c22753f18d1dcdd9d81576045e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a486cec3b8e6c757eb348031ff8118a99"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a486cec3b8e6c757eb348031ff8118a99">neighbors</a> (const <a class="el" href="class_node.html">Node</a> &amp;node) const</td></tr>
+<tr class="separator:a486cec3b8e6c757eb348031ff8118a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0765273e6b0957410447ad5d74e424bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a0765273e6b0957410447ad5d74e424bf">expand_to_neighbor</a> (<a class="el" href="class_node.html">Node</a> &amp;node, int &amp;which)</td></tr>
+<tr class="separator:a0765273e6b0957410447ad5d74e424bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51a44e86d41c6e8a8ff7665208ac55da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a51a44e86d41c6e8a8ff7665208ac55da">complete</a> (<a class="el" href="class_node.html">Node</a> &amp;node)</td></tr>
+<tr class="separator:a51a44e86d41c6e8a8ff7665208ac55da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:aae1036bcd35025ff7512252c7aa06e9c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_rule.html">Rule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#aae1036bcd35025ff7512252c7aa06e9c">rules</a> [N_NTs]</td></tr>
-<tr class="separator:aae1036bcd35025ff7512252c7aa06e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af55b1376566113fecd05b2c99b9f0014"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#af55b1376566113fecd05b2c99b9f0014">Z</a> [N_NTs]</td></tr>
-<tr class="separator:af55b1376566113fecd05b2c99b9f0014"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a9ec7418e0263e2ade2340e248c04275d"><td class="memTemplParams" colspan="2">template&lt;typename X &gt; </td></tr>
+<tr class="memitem:a9ec7418e0263e2ade2340e248c04275d"><td class="memTemplItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#a9ec7418e0263e2ade2340e248c04275d">is_in_GRAMMAR_TYPES</a> ()</td></tr>
+<tr class="separator:a9ec7418e0263e2ade2340e248c04275d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a3a9a86328940c89b66088b2807c88b68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_grammar_1_1_depth_exception.html">Grammar::DepthException</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a3a9a86328940c89b66088b2807c88b68">depth_exception</a></td></tr>
+<tr class="separator:a3a9a86328940c89b66088b2807c88b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a89ced0753d72f52ccf2b04c0ccc82b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_rule.html">Rule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a8a89ced0753d72f52ccf2b04c0ccc82b">rules</a> [<a class="el" href="class_grammar.html#a45877d4d7a5ee98bf6753af593d6ca08">N_NTs</a>]</td></tr>
+<tr class="separator:a8a89ced0753d72f52ccf2b04c0ccc82b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63420ee4232c46523a46bd881cb3e2f5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a63420ee4232c46523a46bd881cb3e2f5">Z</a> [<a class="el" href="class_grammar.html#a45877d4d7a5ee98bf6753af593d6ca08">N_NTs</a>]</td></tr>
+<tr class="separator:a63420ee4232c46523a46bd881cb3e2f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a45877d4d7a5ee98bf6753af593d6ca08"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a45877d4d7a5ee98bf6753af593d6ca08">N_NTs</a> = std::tuple_size&lt;std::tuple&lt;GRAMMAR_TYPES...&gt;&gt;::value</td></tr>
+<tr class="separator:a45877d4d7a5ee98bf6753af593d6ca08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a0d1d38426ce7f1b68c001e9ddec064"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a4a0d1d38426ce7f1b68c001e9ddec064">GRAMMAR_MAX_DEPTH</a> = 64</td></tr>
+<tr class="separator:a4a0d1d38426ce7f1b68c001e9ddec064"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa201250a002a7d07d398fee189a74427"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa201250a002a7d07d398fee189a74427">&#9670;&nbsp;</a></span>Grammar() <span class="overload">[1/4]</span></h2>
+<h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a5ba44586d1c6f847cbbeeead91964e3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ba44586d1c6f847cbbeeead91964e3c">&#9670;&nbsp;</a></span>GrammarTypesAsTuple</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::tuple&lt;GRAMMAR_TYPES...&gt; <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::<a class="el" href="class_grammar.html#a5ba44586d1c6f847cbbeeead91964e3c">GrammarTypesAsTuple</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a30c2eaa4b378738686365fc6d8697f61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30c2eaa4b378738686365fc6d8697f61">&#9670;&nbsp;</a></span>VirtualMachineState_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
+<div class="memtemplate">
+template&lt;typename input_t , typename output_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::<a class="el" href="class_grammar.html#a30c2eaa4b378738686365fc6d8697f61">VirtualMachineState_t</a> =  <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt;input_t, output_t, GRAMMAR_TYPES...&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a2fa1d41e021616790a5ec8f4b3de9b08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fa1d41e021616790a5ec8f4b3de9b08">&#9670;&nbsp;</a></span>Grammar() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Grammar::Grammar </td>
+          <td class="memname"><a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::<a class="el" href="class_grammar.html">Grammar</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -202,11 +274,13 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a4e0a3b86d64eba75726b7355308c4649"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e0a3b86d64eba75726b7355308c4649">&#9670;&nbsp;</a></span>Grammar() <span class="overload">[2/4]</span></h2>
+<a id="a7db6840d96e910a788968ebb2fe62df4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7db6840d96e910a788968ebb2fe62df4">&#9670;&nbsp;</a></span>Grammar() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <div class="memtemplate">
 template&lt;typename... T&gt; </div>
 <table class="mlabels">
@@ -214,7 +288,7 @@ template&lt;typename... T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Grammar::Grammar </td>
+          <td class="memname"><a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::<a class="el" href="class_grammar.html">Grammar</a> </td>
           <td>(</td>
           <td class="paramtype">std::tuple&lt; T... &gt;&#160;</td>
           <td class="paramname"><em>tup</em></td><td>)</td>
@@ -236,19 +310,21 @@ template&lt;typename... T&gt; </div>
 
 </div>
 </div>
-<a id="acfb7e4ea64210d03de896e300447e760"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acfb7e4ea64210d03de896e300447e760">&#9670;&nbsp;</a></span>Grammar() <span class="overload">[3/4]</span></h2>
+<a id="a70df918794a43cbd26bae1096c92dead"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70df918794a43cbd26bae1096c92dead">&#9670;&nbsp;</a></span>Grammar() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Grammar::Grammar </td>
+          <td class="memname"><a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::<a class="el" href="class_grammar.html">Grammar</a> </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_grammar.html">Grammar</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt; &amp;&#160;</td>
           <td class="paramname"><em>g</em></td><td>)</td>
           <td></td>
         </tr>
@@ -262,19 +338,21 @@ template&lt;typename... T&gt; </div>
 
 </div>
 </div>
-<a id="a28f97335602afe8b1a612679de2f80d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28f97335602afe8b1a612679de2f80d9">&#9670;&nbsp;</a></span>Grammar() <span class="overload">[4/4]</span></h2>
+<a id="a008b2bd47d150afe8ab304e6d213f0ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a008b2bd47d150afe8ab304e6d213f0ba">&#9670;&nbsp;</a></span>Grammar() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Grammar::Grammar </td>
+          <td class="memname"><a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::<a class="el" href="class_grammar.html">Grammar</a> </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_grammar.html">Grammar</a> &amp;&amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt; &amp;&amp;&#160;</td>
           <td class="paramname"><em>g</em></td><td>)</td>
           <td></td>
         </tr>
@@ -289,17 +367,19 @@ template&lt;typename... T&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="af0b97cbaf14fc6be7495c8bb9e888002"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0b97cbaf14fc6be7495c8bb9e888002">&#9670;&nbsp;</a></span>add() <span class="overload">[1/6]</span></h2>
+<a id="a0be4926e40ea476152a5a87a1c83f167"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0be4926e40ea476152a5a87a1c83f167">&#9670;&nbsp;</a></span>add() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void Grammar::add </td>
+          <td class="memname">virtual void <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::add </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_rule.html">Rule</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>r</em></td><td>)</td>
@@ -316,11 +396,13 @@ template&lt;typename... T&gt; </div>
 
 </div>
 </div>
-<a id="a37a1dd90b7a315fe97bbdefad7c09df9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37a1dd90b7a315fe97bbdefad7c09df9">&#9670;&nbsp;</a></span>add() <span class="overload">[2/6]</span></h2>
+<a id="a3c4f41d4b1ff3c9973cb13ccea2c57fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c4f41d4b1ff3c9973cb13ccea2c57fb">&#9670;&nbsp;</a></span>add() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <div class="memtemplate">
 template&lt;typename... args, size_t... Is&gt; </div>
 <table class="mlabels">
@@ -328,7 +410,7 @@ template&lt;typename... args, size_t... Is&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Grammar::add </td>
+          <td class="memname">void <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::add </td>
           <td>(</td>
           <td class="paramtype">std::tuple&lt; args... &gt;&#160;</td>
           <td class="paramname"><em>t</em>, </td>
@@ -354,11 +436,13 @@ template&lt;typename... args, size_t... Is&gt; </div>
 
 </div>
 </div>
-<a id="a0af8f369b948cde8ee5d403311ec8fa9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0af8f369b948cde8ee5d403311ec8fa9">&#9670;&nbsp;</a></span>add() <span class="overload">[3/6]</span></h2>
+<a id="a86dfa9ce87af1779799e617bb3252220"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86dfa9ce87af1779799e617bb3252220">&#9670;&nbsp;</a></span>add() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <div class="memtemplate">
 template&lt;typename T , typename... args&gt; </div>
 <table class="mlabels">
@@ -366,7 +450,7 @@ template&lt;typename T , typename... args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Grammar::add </td>
+          <td class="memname">void <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::add </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_primitive.html">Primitive</a>&lt; T, args... &gt;&#160;</td>
           <td class="paramname"><em>p</em>, </td>
@@ -392,11 +476,13 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="af96467de4413d3e5a0d2f291992365d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af96467de4413d3e5a0d2f291992365d9">&#9670;&nbsp;</a></span>add() <span class="overload">[4/6]</span></h2>
+<a id="a52b751ef5987563d4045692199dba16c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52b751ef5987563d4045692199dba16c">&#9670;&nbsp;</a></span>add() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <div class="memtemplate">
 template&lt;typename T , typename... args&gt; </div>
 <table class="mlabels">
@@ -404,7 +490,7 @@ template&lt;typename T , typename... args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Grammar::add </td>
+          <td class="memname">void <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::add </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_builtin_primitive.html">BuiltinPrimitive</a>&lt; T, args... &gt;&#160;</td>
           <td class="paramname"><em>p</em>, </td>
@@ -430,11 +516,13 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="a562f3b4113e3f2764832ac828ffb58fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a562f3b4113e3f2764832ac828ffb58fc">&#9670;&nbsp;</a></span>add() <span class="overload">[5/6]</span></h2>
+<a id="ada3a7374f7aa01a1db5b938e8b9dfa2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada3a7374f7aa01a1db5b938e8b9dfa2d">&#9670;&nbsp;</a></span>add() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <div class="memtemplate">
 template&lt;typename T , typename... args&gt; </div>
 <table class="mlabels">
@@ -442,7 +530,7 @@ template&lt;typename T , typename... args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Grammar::add </td>
+          <td class="memname">void <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::add </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7">BuiltinOp</a>&#160;</td>
           <td class="paramname"><em>o</em>, </td>
@@ -480,67 +568,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="aba61b4a7563c249a27ad7b6b808ee575"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba61b4a7563c249a27ad7b6b808ee575">&#9670;&nbsp;</a></span>add() <span class="overload">[6/6]</span></h2>
+<a id="a51a44e86d41c6e8a8ff7665208ac55da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51a44e86d41c6e8a8ff7665208ac55da">&#9670;&nbsp;</a></span>complete()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename... args&gt; </div>
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Grammar::add </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="_instruction_8h.html#a3a20ca4a8f0ab220518b030cc23ffee4">CustomOp</a>&#160;</td>
-          <td class="paramname"><em>o</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>format</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>p</em> = <code>1.0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>arg</em> = <code>0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a68f767b06f9675461be94242c89dfdb9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68f767b06f9675461be94242c89dfdb9">&#9670;&nbsp;</a></span>complete()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Grammar::complete </td>
+          <td class="memname">void <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::complete </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
           <td class="paramname"><em>node</em></td><td>)</td>
@@ -556,17 +596,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="ab6970c88fc6f5ed56020fe0dfac302f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6970c88fc6f5ed56020fe0dfac302f4">&#9670;&nbsp;</a></span>compute_enumeration_order()</h2>
+<a id="a37b475b665c37057084d9244abcf25f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37b475b665c37057084d9244abcf25f9">&#9670;&nbsp;</a></span>compute_enumeration_order()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_numerics_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a> Grammar::compute_enumeration_order </td>
+          <td class="memname"><a class="el" href="_numerics_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a> <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::compute_enumeration_order </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -582,17 +624,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="ad6333cce88a2fe7ce56a897a6a930c28"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6333cce88a2fe7ce56a897a6a930c28">&#9670;&nbsp;</a></span>copy_resample()</h2>
+<a id="a28b35de7e71ac8f451cd3a65818fc1db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28b35de7e71ac8f451cd3a65818fc1db">&#9670;&nbsp;</a></span>copy_resample()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a> Grammar::copy_resample </td>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::copy_resample </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
           <td class="paramname"><em>node</em>, </td>
@@ -626,17 +670,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="ad56da50581cbebe1427ebf2f73018328"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad56da50581cbebe1427ebf2f73018328">&#9670;&nbsp;</a></span>count_connected_partial_subtrees()</h2>
+<a id="ad1e2c22753f18d1dcdd9d81576045e9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1e2c22753f18d1dcdd9d81576045e9f">&#9670;&nbsp;</a></span>count_connected_partial_subtrees()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="_numerics_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a> Grammar::count_connected_partial_subtrees </td>
+          <td class="memname">virtual <a class="el" href="_numerics_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a> <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::count_connected_partial_subtrees </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -652,17 +698,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="abf841bc64ac19cb9872a8362f5e5731a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf841bc64ac19cb9872a8362f5e5731a">&#9670;&nbsp;</a></span>count_nonterminals() <span class="overload">[1/2]</span></h2>
+<a id="a4aa05c747026932672a24fa1f7134115"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4aa05c747026932672a24fa1f7134115">&#9670;&nbsp;</a></span>count_nonterminals() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t Grammar::count_nonterminals </td>
+          <td class="memname">size_t <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::count_nonterminals </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -678,17 +726,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="a0714d68070749932d876fe868bde94bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0714d68070749932d876fe868bde94bd">&#9670;&nbsp;</a></span>count_nonterminals() <span class="overload">[2/2]</span></h2>
+<a id="a335c2679b0db2290a1a0da8910f0bcdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a335c2679b0db2290a1a0da8910f0bcdd">&#9670;&nbsp;</a></span>count_nonterminals() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t Grammar::count_nonterminals </td>
+          <td class="memname">size_t <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::count_nonterminals </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td>
           <td class="paramname"><em>nt</em></td><td>)</td>
@@ -711,17 +761,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="af25c47a2c5cae2a11720c8454e59290f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af25c47a2c5cae2a11720c8454e59290f">&#9670;&nbsp;</a></span>count_rules() <span class="overload">[1/2]</span></h2>
+<a id="a90a765c97b89f2f4cf12b6b4c2a3d019"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90a765c97b89f2f4cf12b6b4c2a3d019">&#9670;&nbsp;</a></span>count_rules() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t Grammar::count_rules </td>
+          <td class="memname">size_t <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::count_rules </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td>
           <td class="paramname"><em>nt</em></td><td>)</td>
@@ -744,17 +796,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="af8f0fdd9cb368a608bee5626774360d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8f0fdd9cb368a608bee5626774360d4">&#9670;&nbsp;</a></span>count_rules() <span class="overload">[2/2]</span></h2>
+<a id="a576605ca6ee9693b762a40c477aa4889"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a576605ca6ee9693b762a40c477aa4889">&#9670;&nbsp;</a></span>count_rules() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t Grammar::count_rules </td>
+          <td class="memname">size_t <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::count_rules </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -770,17 +824,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="a7cf0515f3ca761590da05455a417896b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7cf0515f3ca761590da05455a417896b">&#9670;&nbsp;</a></span>count_terminals()</h2>
+<a id="a5121201035b5d5cd0a1d4251b1f73056"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5121201035b5d5cd0a1d4251b1f73056">&#9670;&nbsp;</a></span>count_terminals()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t Grammar::count_terminals </td>
+          <td class="memname">size_t <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::count_terminals </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td>
           <td class="paramname"><em>nt</em></td><td>)</td>
@@ -803,17 +859,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="a221f1a43488624ce78138d7d5045a816"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a221f1a43488624ce78138d7d5045a816">&#9670;&nbsp;</a></span>expand_from_integer() <span class="overload">[1/2]</span></h2>
+<a id="ab20256e7e9e4c6077043465b3d440be9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab20256e7e9e4c6077043465b3d440be9">&#9670;&nbsp;</a></span>expand_from_integer() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a> Grammar::expand_from_integer </td>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::expand_from_integer </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td>
           <td class="paramname"><em>nt</em>, </td>
@@ -839,17 +897,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="a7b478d4ad5955b7489074e106afce5a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b478d4ad5955b7489074e106afce5a4">&#9670;&nbsp;</a></span>expand_from_integer() <span class="overload">[2/2]</span></h2>
+<a id="a795d45fbbafb5c5dc17e5898a2016ce2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a795d45fbbafb5c5dc17e5898a2016ce2">&#9670;&nbsp;</a></span>expand_from_integer() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a> Grammar::expand_from_integer </td>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::expand_from_integer </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td>
           <td class="paramname"><em>nt</em>, </td>
@@ -875,17 +935,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="ab5bd3d35545bcab4dbd3ca1d136bd4ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5bd3d35545bcab4dbd3ca1d136bd4ce">&#9670;&nbsp;</a></span>expand_from_names() <span class="overload">[1/3]</span></h2>
+<a id="aef582b15696b97c3376cba935a76acef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef582b15696b97c3376cba935a76acef">&#9670;&nbsp;</a></span>expand_from_names() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a> Grammar::expand_from_names </td>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::expand_from_names </td>
           <td>(</td>
           <td class="paramtype">std::deque&lt; std::string &gt; &amp;&#160;</td>
           <td class="paramname"><em>q</em></td><td>)</td>
@@ -908,17 +970,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="a44954a36c11d58c23bef02ca7d541005"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44954a36c11d58c23bef02ca7d541005">&#9670;&nbsp;</a></span>expand_from_names() <span class="overload">[2/3]</span></h2>
+<a id="a53a651b1fb2cad39efc4717b635b922e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53a651b1fb2cad39efc4717b635b922e">&#9670;&nbsp;</a></span>expand_from_names() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a> Grammar::expand_from_names </td>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::expand_from_names </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>s</em></td><td>)</td>
@@ -941,17 +1005,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="a0addff494602ebb19852c2d4314eaac6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0addff494602ebb19852c2d4314eaac6">&#9670;&nbsp;</a></span>expand_from_names() <span class="overload">[3/3]</span></h2>
+<a id="af4f8e4c2b0ad93970e579ea56c2fde60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4f8e4c2b0ad93970e579ea56c2fde60">&#9670;&nbsp;</a></span>expand_from_names() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a> Grammar::expand_from_names </td>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::expand_from_names </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>c</em></td><td>)</td>
@@ -967,17 +1033,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="abd380ec308907ddc26acb22196610b83"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd380ec308907ddc26acb22196610b83">&#9670;&nbsp;</a></span>expand_to_neighbor()</h2>
+<a id="a0765273e6b0957410447ad5d74e424bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0765273e6b0957410447ad5d74e424bf">&#9670;&nbsp;</a></span>expand_to_neighbor()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Grammar::expand_to_neighbor </td>
+          <td class="memname">void <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::expand_to_neighbor </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
           <td class="paramname"><em>node</em>, </td>
@@ -1003,17 +1071,19 @@ template&lt;typename T , typename... args&gt; </div>
 
 </div>
 </div>
-<a id="a6a08c44dbbba7406d3638bdc549fddad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a08c44dbbba7406d3638bdc549fddad">&#9670;&nbsp;</a></span>generate() <span class="overload">[1/2]</span></h2>
+<a id="af5dee7ec88bdd66edd023b3c935d2765"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5dee7ec88bdd66edd023b3c935d2765">&#9670;&nbsp;</a></span>generate() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a> Grammar::generate </td>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::generate </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td>
           <td class="paramname"><em>nt</em>, </td>
@@ -1044,15 +1114,17 @@ template&lt;typename T , typename... args&gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns a <a class="el" href="class_node.html">Node</a> sampled from the grammar.</dd></dl>
-<p>NOTE: this may throw a <a class="el" href="class_depth_exception.html">DepthException</a> if the grammar recurses too far (usually that means the grammar is improper)</p>
+<p>NOTE: this may throw a <a class="el" href="class_grammar_1_1_depth_exception.html">DepthException</a> if the grammar recurses too far (usually that means the grammar is improper)</p>
 
 </div>
 </div>
-<a id="aee4cda199ab92f79b55e73f6cbd90c8b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee4cda199ab92f79b55e73f6cbd90c8b">&#9670;&nbsp;</a></span>generate() <span class="overload">[2/2]</span></h2>
+<a id="a01bf556e22bfdd5ec87868869fd9330f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01bf556e22bfdd5ec87868869fd9330f">&#9670;&nbsp;</a></span>generate() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <div class="memtemplate">
 template&lt;class t &gt; </div>
 <table class="mlabels">
@@ -1060,7 +1132,7 @@ template&lt;class t &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a> Grammar::generate </td>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::generate </td>
           <td>(</td>
           <td class="paramtype">unsigned long&#160;</td>
           <td class="paramname"><em>depth</em> = <code>0</code></td><td>)</td>
@@ -1083,17 +1155,19 @@ template&lt;class t &gt; </div>
 
 </div>
 </div>
-<a id="ae0823f7af30a851a968dae46adbd49a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0823f7af30a851a968dae46adbd49a5">&#9670;&nbsp;</a></span>get_counts()</h2>
+<a id="a1e192e96e623cf9beb927cbd35bd7470"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e192e96e623cf9beb927cbd35bd7470">&#9670;&nbsp;</a></span>get_counts()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;size_t&gt; Grammar::get_counts </td>
+          <td class="memname">std::vector&lt;size_t&gt; <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::get_counts </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
           <td class="paramname"><em>node</em></td><td>)</td>
@@ -1116,17 +1190,19 @@ template&lt;class t &gt; </div>
 
 </div>
 </div>
-<a id="affec19f6e91201c8d29119bf50ffa3e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#affec19f6e91201c8d29119bf50ffa3e6">&#9670;&nbsp;</a></span>get_index_of()</h2>
+<a id="a16885c3de4a6e3fd31ddab136cd9fea8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16885c3de4a6e3fd31ddab136cd9fea8">&#9670;&nbsp;</a></span>get_index_of()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t Grammar::get_index_of </td>
+          <td class="memname">size_t <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::get_index_of </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_rule.html">Rule</a> *&#160;</td>
           <td class="paramname"><em>r</em></td><td>)</td>
@@ -1149,17 +1225,19 @@ template&lt;class t &gt; </div>
 
 </div>
 </div>
-<a id="aea24b7ae4a2d61f322504a9f49478bb4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea24b7ae4a2d61f322504a9f49478bb4">&#9670;&nbsp;</a></span>get_rule() <span class="overload">[1/5]</span></h2>
+<a id="a9ed04fb2a2a8e2f0e4f11b711647a02c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ed04fb2a2a8e2f0e4f11b711647a02c">&#9670;&nbsp;</a></span>get_rule() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="class_rule.html">Rule</a>* Grammar::get_rule </td>
+          <td class="memname">virtual <a class="el" href="class_rule.html">Rule</a>* <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::get_rule </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td>
           <td class="paramname"><em>nt</em>, </td>
@@ -1193,68 +1271,19 @@ template&lt;class t &gt; </div>
 
 </div>
 </div>
-<a id="aa642e370571830772b8d3be70cb5a5c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa642e370571830772b8d3be70cb5a5c7">&#9670;&nbsp;</a></span>get_rule() <span class="overload">[2/5]</span></h2>
+<a id="a57835af24b91d1c193f2906b43282350"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57835af24b91d1c193f2906b43282350">&#9670;&nbsp;</a></span>get_rule() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="class_rule.html">Rule</a>* Grammar::get_rule </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td>
-          <td class="paramname"><em>nt</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="_instruction_8h.html#a3a20ca4a8f0ab220518b030cc23ffee4">CustomOp</a>&#160;</td>
-          <td class="paramname"><em>o</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>a</em> = <code>0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Get rule of type nt with a given CustomOp and argument a </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">nt</td><td></td></tr>
-    <tr><td class="paramname">o</td><td></td></tr>
-    <tr><td class="paramname">a</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="ab82ed6614e4fcced4d0e7c742e1c5e4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab82ed6614e4fcced4d0e7c742e1c5e4b">&#9670;&nbsp;</a></span>get_rule() <span class="overload">[3/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="class_rule.html">Rule</a>* Grammar::get_rule </td>
+          <td class="memname">virtual <a class="el" href="class_rule.html">Rule</a>* <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::get_rule </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td>
           <td class="paramname"><em>nt</em>, </td>
@@ -1295,17 +1324,19 @@ template&lt;class t &gt; </div>
 
 </div>
 </div>
-<a id="ae0198e1a6c052fad5cba950e0ad60d67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0198e1a6c052fad5cba950e0ad60d67">&#9670;&nbsp;</a></span>get_rule() <span class="overload">[4/5]</span></h2>
+<a id="a3d13aad0e640f20e9eb7d0d148915576"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d13aad0e640f20e9eb7d0d148915576">&#9670;&nbsp;</a></span>get_rule() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="class_rule.html">Rule</a>* Grammar::get_rule </td>
+          <td class="memname">virtual <a class="el" href="class_rule.html">Rule</a>* <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::get_rule </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td>
           <td class="paramname"><em>nt</em>, </td>
@@ -1338,17 +1369,19 @@ template&lt;class t &gt; </div>
 
 </div>
 </div>
-<a id="adecdec03b3211bd3b6800511c7ed5dd9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adecdec03b3211bd3b6800511c7ed5dd9">&#9670;&nbsp;</a></span>get_rule() <span class="overload">[5/5]</span></h2>
+<a id="a1a48e2e6b4757c3398c60a20d759d307"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a48e2e6b4757c3398c60a20d759d307">&#9670;&nbsp;</a></span>get_rule() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="class_rule.html">Rule</a>* Grammar::get_rule </td>
+          <td class="memname">virtual <a class="el" href="class_rule.html">Rule</a>* <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::get_rule </td>
           <td>(</td>
           <td class="paramtype">const std::string&#160;</td>
           <td class="paramname"><em>s</em></td><td>)</td>
@@ -1371,17 +1404,48 @@ template&lt;class t &gt; </div>
 
 </div>
 </div>
-<a id="a607aa205d57a1b61b07f9ef57adcf697"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a607aa205d57a1b61b07f9ef57adcf697">&#9670;&nbsp;</a></span>lempel_ziv_full_expand() <span class="overload">[1/2]</span></h2>
+<a id="a9ec7418e0263e2ade2340e248c04275d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ec7418e0263e2ade2340e248c04275d">&#9670;&nbsp;</a></span>is_in_GRAMMAR_TYPES()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
+<div class="memtemplate">
+template&lt;typename X &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a> Grammar::lempel_ziv_full_expand </td>
+          <td class="memname">static constexpr bool <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::is_in_GRAMMAR_TYPES </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adea898b27f2cf76417e4b686c1045e54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adea898b27f2cf76417e4b686c1045e54">&#9670;&nbsp;</a></span>lempel_ziv_full_expand() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::lempel_ziv_full_expand </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td>
           <td class="paramname"><em>nt</em>, </td>
@@ -1413,17 +1477,19 @@ template&lt;class t &gt; </div>
 
 </div>
 </div>
-<a id="a98fd19c7b9c1d92c59365a693ec12547"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98fd19c7b9c1d92c59365a693ec12547">&#9670;&nbsp;</a></span>lempel_ziv_full_expand() <span class="overload">[2/2]</span></h2>
+<a id="a37ccd1307ac9cb13a9653ba6c2134498"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37ccd1307ac9cb13a9653ba6c2134498">&#9670;&nbsp;</a></span>lempel_ziv_full_expand() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a> Grammar::lempel_ziv_full_expand </td>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::lempel_ziv_full_expand </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td>
           <td class="paramname"><em>nt</em>, </td>
@@ -1455,17 +1521,19 @@ template&lt;class t &gt; </div>
 
 </div>
 </div>
-<a id="a11f1788026f68e7ddb7fca1ec04915f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11f1788026f68e7ddb7fca1ec04915f5">&#9670;&nbsp;</a></span>log_probability()</h2>
+<a id="a4b19c0b8d0b4d792181ae47bd2f68268"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b19c0b8d0b4d792181ae47bd2f68268">&#9670;&nbsp;</a></span>log_probability()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double Grammar::log_probability </td>
+          <td class="memname">double <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::log_probability </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -1488,17 +1556,19 @@ template&lt;class t &gt; </div>
 
 </div>
 </div>
-<a id="a5d60795be5b288d74a87f2cc52008f71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d60795be5b288d74a87f2cc52008f71">&#9670;&nbsp;</a></span>makeNode()</h2>
+<a id="abc6f2a046bdf8df0be45912b5d8fe410"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc6f2a046bdf8df0be45912b5d8fe410">&#9670;&nbsp;</a></span>makeNode()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a> Grammar::makeNode </td>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::makeNode </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_rule.html">Rule</a> *&#160;</td>
           <td class="paramname"><em>r</em></td><td>)</td>
@@ -1521,17 +1591,19 @@ template&lt;class t &gt; </div>
 
 </div>
 </div>
-<a id="ae9115c2743b054ec44ef513843d84f5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9115c2743b054ec44ef513843d84f5d">&#9670;&nbsp;</a></span>neighbors()</h2>
+<a id="a486cec3b8e6c757eb348031ff8118a99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a486cec3b8e6c757eb348031ff8118a99">&#9670;&nbsp;</a></span>neighbors()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t Grammar::neighbors </td>
+          <td class="memname">size_t <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::neighbors </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
           <td class="paramname"><em>node</em></td><td>)</td>
@@ -1547,11 +1619,13 @@ template&lt;class t &gt; </div>
 
 </div>
 </div>
-<a id="aa5c9afa0e7e1aa989b54402b02a677a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5c9afa0e7e1aa989b54402b02a677a3">&#9670;&nbsp;</a></span>nt()</h2>
+<a id="a047b55bfbd87c52e9d969af62c2932ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a047b55bfbd87c52e9d969af62c2932ab">&#9670;&nbsp;</a></span>nt()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <div class="memtemplate">
 template&lt;class T &gt; </div>
 <table class="mlabels">
@@ -1559,7 +1633,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> Grammar::nt </td>
+          <td class="memname">constexpr <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::nt </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1571,21 +1645,23 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>template function giving the index of its template argument (index in FLEET_GRAMMAR_TYPES). NOTE: The names here are decayed (meaning that references and base types are the same.</p>
+<p>template function giving the index of its template argument (index in GRAMMAR_TYPES). NOTE: The names here are decayed (meaning that references and base types are the same.</p>
 
 </div>
 </div>
-<a id="a2182b3ded5171ba3e84be952176798e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2182b3ded5171ba3e84be952176798e9">&#9670;&nbsp;</a></span>rule_normalizer()</h2>
+<a id="a240019987945a694e26bebcebcf463fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a240019987945a694e26bebcebcf463fc">&#9670;&nbsp;</a></span>rule_normalizer()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double Grammar::rule_normalizer </td>
+          <td class="memname">double <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::rule_normalizer </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td>
           <td class="paramname"><em>nt</em></td><td>)</td>
@@ -1608,17 +1684,19 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="a50c30e020e54743d5ede0ca9469fdb91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50c30e020e54743d5ede0ca9469fdb91">&#9670;&nbsp;</a></span>sample_rule()</h2>
+<a id="aba4d092714b8420d8c0a1be63e8566b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba4d092714b8420d8c0a1be63e8566b6">&#9670;&nbsp;</a></span>sample_rule()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="class_rule.html">Rule</a>* Grammar::sample_rule </td>
+          <td class="memname">virtual <a class="el" href="class_rule.html">Rule</a>* <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::sample_rule </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td>
           <td class="paramname"><em>nt</em></td><td>)</td>
@@ -1641,17 +1719,19 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="aa3c730ea64c8ca5d93fecb4275f2e380"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3c730ea64c8ca5d93fecb4275f2e380">&#9670;&nbsp;</a></span>show()</h2>
+<a id="a8d661258f08b7cc4d154d59bfbbc1f68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d661258f08b7cc4d154d59bfbbc1f68">&#9670;&nbsp;</a></span>show()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Grammar::show </td>
+          <td class="memname">void <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::show </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>prefix</em> = <code>&quot;#&#160;&quot;</code></td><td>)</td>
@@ -1669,52 +1749,104 @@ template&lt;class T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="aae1036bcd35025ff7512252c7aa06e9c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae1036bcd35025ff7512252c7aa06e9c">&#9670;&nbsp;</a></span>rules</h2>
+<a id="a3a9a86328940c89b66088b2807c88b68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a9a86328940c89b66088b2807c88b68">&#9670;&nbsp;</a></span>depth_exception</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"> <a class="el" href="class_grammar_1_1_depth_exception.html">Grammar::DepthException</a>  <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::depth_exception</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4a0d1d38426ce7f1b68c001e9ddec064"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a0d1d38426ce7f1b68c001e9ddec064">&#9670;&nbsp;</a></span>GRAMMAR_MAX_DEPTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="class_rule.html">Rule</a>&gt; Grammar::rules[N_NTs]</td>
+          <td class="memname">const size_t <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::GRAMMAR_MAX_DEPTH = 64</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="af55b1376566113fecd05b2c99b9f0014"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af55b1376566113fecd05b2c99b9f0014">&#9670;&nbsp;</a></span>Z</h2>
+<a id="a45877d4d7a5ee98bf6753af593d6ca08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45877d4d7a5ee98bf6753af593d6ca08">&#9670;&nbsp;</a></span>N_NTs</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double Grammar::Z[N_NTs]</td>
+          <td class="memname">constexpr size_t <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::N_NTs = std::tuple_size&lt;std::tuple&lt;GRAMMAR_TYPES...&gt;&gt;::value</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8a89ced0753d72f52ccf2b04c0ccc82b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a89ced0753d72f52ccf2b04c0ccc82b">&#9670;&nbsp;</a></span>rules</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="class_rule.html">Rule</a>&gt; <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::rules[<a class="el" href="class_grammar.html#a45877d4d7a5ee98bf6753af593d6ca08">N_NTs</a>]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a63420ee4232c46523a46bd881cb3e2f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63420ee4232c46523a46bd881cb3e2f5">&#9670;&nbsp;</a></span>Z</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::Z[<a class="el" href="class_grammar.html#a45877d4d7a5ee98bf6753af593d6ca08">N_NTs</a>]</td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/<a class="el" href="_grammar_8h_source.html">Grammar.h</a></li>
+<li>src/Grammar/<a class="el" href="_grammar_8h_source.html">Grammar.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

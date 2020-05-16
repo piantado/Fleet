@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Fleet: src/Rule.h File Reference</title>
+<title>Fleet: src/Grammar/Rule.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,12 +61,13 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_e5a2d76c3976cd5606b337c2d908f10b.html">Grammar</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">Rule.h File Reference</div>  </div>
@@ -78,27 +79,40 @@ $(function() {
 <div class="textblock"><code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
+<code>#include &quot;<a class="el" href="_instruction_8h_source.html">Instruction.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_nonterminal_8h_source.html">Nonterminal.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_miscellaneous_8h_source.html">Miscellaneous.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_strings_8h_source.html">Strings.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Rule.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="_rule_8h__incl.png" border="0" usemap="#src_2_rule_8h" alt=""/></div>
-<map name="src_2_rule_8h" id="src_2_rule_8h">
-<area shape="rect" id="node5" href="_nonterminal_8h.html" title="Nonterminal.h" alt="" coords="271,80,373,107"/>
+<div class="center"><img src="_rule_8h__incl.png" border="0" usemap="#src_2_grammar_2_rule_8h" alt=""/></div>
+<map name="src_2_grammar_2_rule_8h" id="src_2_grammar_2_rule_8h">
+<area shape="rect" id="node5" href="_instruction_8h.html" title="This is an error type that is returned if we get a runtime error (e.g. string length, etc.) " alt="" coords="465,155,559,181"/>
+<area shape="rect" id="node9" href="_nonterminal_8h.html" title="Nonterminal.h" alt="" coords="690,80,793,107"/>
+<area shape="rect" id="node10" href="_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="301,80,417,107"/>
+<area shape="rect" id="node18" href="_strings_8h.html" title="Strings.h" alt="" coords="591,80,665,107"/>
+<area shape="rect" id="node12" href="_i_o_8h.html" title="IO.h" alt="" coords="291,155,338,181"/>
+<area shape="rect" id="node21" href="_numerics_8h.html" title="Numerics.h" alt="" coords="583,155,673,181"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><img src="_rule_8h__dep__incl.png" border="0" usemap="#src_2_rule_8hdep" alt=""/></div>
-<map name="src_2_rule_8hdep" id="src_2_rule_8hdep">
-<area shape="rect" id="node2" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="703,80,787,107"/>
-<area shape="rect" id="node3" href="_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,155,209,196"/>
-<area shape="rect" id="node4" href="_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,155,437,196"/>
-<area shape="rect" id="node5" href="_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,155,617,196"/>
-<area shape="rect" id="node6" href="_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="641,162,848,189"/>
-<area shape="rect" id="node7" href="_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="872,155,1023,196"/>
-<area shape="rect" id="node8" href="_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="1047,155,1197,196"/>
+<div class="center"><img src="_rule_8h__dep__incl.png" border="0" usemap="#src_2_grammar_2_rule_8hdep" alt=""/></div>
+<map name="src_2_grammar_2_rule_8hdep" id="src_2_grammar_2_rule_8hdep">
+<area shape="rect" id="node2" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="699,229,783,256"/>
+<area shape="rect" id="node10" href="_node_8h.html" title="src/Grammar/Node.h" alt="" coords="778,80,922,107"/>
+<area shape="rect" id="node3" href="_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="1238,304,1411,345"/>
+<area shape="rect" id="node4" href="_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="639,304,843,345"/>
+<area shape="rect" id="node5" href="_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="236,304,440,345"/>
+<area shape="rect" id="node6" href="_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="1059,304,1214,345"/>
+<area shape="rect" id="node7" href="_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="5,311,212,338"/>
+<area shape="rect" id="node8" href="_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="464,304,615,345"/>
+<area shape="rect" id="node9" href="_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="867,311,1035,338"/>
+<area shape="rect" id="node11" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="1112,229,1241,256"/>
+<area shape="rect" id="node12" href="_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="483,155,703,181"/>
+<area shape="rect" id="node13" href="_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="829,155,996,181"/>
 </map>
 </div>
 </div>
@@ -109,6 +123,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rule.html">Rule</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a0872babe65702e1f4484c72844a60700"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_rule_8h.html#a0872babe65702e1f4484c72844a60700">operator&lt;&lt;</a> (std::ostream &amp;o, const <a class="el" href="class_rule.html">Rule</a> &amp;r)</td></tr>
+<tr class="separator:a0872babe65702e1f4484c72844a60700"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:aa3fc95ef973d7c99a41e470aed7fe03b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_rule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_rule_8h.html#aa3fc95ef973d7c99a41e470aed7fe03b">NullRule</a> = new <a class="el" href="class_rule.html">Rule</a>((<a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>)0, <a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7ad4a8b4f8133e76e25475d25a38d66b84">BuiltinOp::op_NOP</a>, &quot;\u2b1c&quot;, {}, 0.0)</td></tr>
@@ -116,7 +135,36 @@ Variables</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A <a class="el" href="class_rule.html">Rule</a> stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we "emulate" a type system using t_nonterminal to store an integer for the types. *. </p>
-</div><h2 class="groupheader">Variable Documentation</h2>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="a0872babe65702e1f4484c72844a60700"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0872babe65702e1f4484c72844a60700">&#9670;&nbsp;</a></span>operator<<()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>o</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="class_rule.html">Rule</a> &amp;&#160;</td>
+          <td class="paramname"><em>r</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
 <a id="aa3fc95ef973d7c99a41e470aed7fe03b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa3fc95ef973d7c99a41e470aed7fe03b">&#9670;&nbsp;</a></span>NullRule</h2>
 

@@ -1,9 +1,12 @@
 <map id="src/Hypotheses/Interfaces/Searchable.h" name="src/Hypotheses/Interfaces/Searchable.h">
-<area shape="rect" id="node2" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="703,95,787,121"/>
-<area shape="rect" id="node3" href="$_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,169,209,211"/>
-<area shape="rect" id="node4" href="$_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,169,437,211"/>
-<area shape="rect" id="node5" href="$_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,169,617,211"/>
-<area shape="rect" id="node6" href="$_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="641,177,848,203"/>
-<area shape="rect" id="node7" href="$_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="872,169,1023,211"/>
-<area shape="rect" id="node8" href="$_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="1047,169,1197,211"/>
+<area shape="rect" id="node2" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="492,95,712,121"/>
+<area shape="rect" id="node11" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="268,95,443,121"/>
+<area shape="rect" id="node3" href="$_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="234,244,407,285"/>
+<area shape="rect" id="node4" href="$_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,244,209,285"/>
+<area shape="rect" id="node5" href="$_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="800,244,1004,285"/>
+<area shape="rect" id="node6" href="$_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="1029,244,1183,285"/>
+<area shape="rect" id="node7" href="$_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="1208,251,1415,278"/>
+<area shape="rect" id="node8" href="$_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="432,244,583,285"/>
+<area shape="rect" id="node9" href="$_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="607,251,775,278"/>
+<area shape="rect" id="node10" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="560,169,644,196"/>
 </map>

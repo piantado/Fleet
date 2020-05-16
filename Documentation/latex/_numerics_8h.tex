@@ -3,14 +3,16 @@
 {\ttfamily \#include $<$random$>$}\newline
 {\ttfamily \#include $<$iostream$>$}\newline
 {\ttfamily \#include $<$assert.\+h$>$}\newline
-Include dependency graph for Numerics.\+h\+:\nopagebreak
+Include dependency graph for Numerics.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=272pt]{_numerics_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -25,8 +27,12 @@ typedef size\+\_\+t \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{e
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename t $>$ }\\t \hyperlink{_numerics_8h_ab14d303cd7381ad0a6d197bab317144e}{logplusexp} (const t a, const t b)
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{_numerics_8h_a8b71b974f44117f5ce7f5d0a23feebde}{get\+\_\+log1pexp\+\_\+breakout\+\_\+bound} (const double precision, T f(T), const T lower=-\/1e6, const T upper=1e6)
+\begin{DoxyCompactList}\small\item\em Tis takes a function f(x) and finds a bound B so that f(x) $<$ precision for all x $<$ B. This is useful in logsumexp where at compile time we don\textquotesingle{}t bother adding if the addition will be too tiny. For instance\+: constexpr auto f = +\mbox{[}\mbox{]}(T x) -\/$>$ const double \{return log1p(exp(x));\}; const T bound = get\+\_\+fx\+\_\+compiletime\+\_\+bound$<$\+T$>$(1e-\/6, f);. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{_numerics_8h_a558a1133b9942f8debd559bb9317bca3}{logplusexp} (const T a, const T b)
 \item 
+{\footnotesize template$<$typename t $>$ }\\double \hyperlink{_numerics_8h_abb96a05282957c6c5c3d226b357ed134}{logsumexp} (const t \&v)
+\begin{DoxyCompactList}\small\item\em Compute log(sum(exp(v)). For now, this just unrolls logplusexp, but we might consider the faster (standard) variant where we pull out the max. \end{DoxyCompactList}\item 
 std\+::pair$<$ \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}, \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} $>$ \hyperlink{_numerics_8h_a80df2a7c0c7cb7ea93213d2998de3a92}{cantor\+\_\+decode} (const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} z)
 \item 
 std\+::pair$<$ \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}, \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} $>$ \hyperlink{_numerics_8h_a5376558a2cd1320415307932b4705a15}{rosenberg\+\_\+strong\+\_\+decode} (const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} z)
@@ -70,13 +76,57 @@ const double \hyperlink{_numerics_8h_a43016d873124d39034edb8cd164794db}{pi} = M\
 \subsubsection{\texorpdfstring{cantor\+\_\+decode()}{cantor\_decode()}}
 {\footnotesize\ttfamily std\+::pair$<$\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}, \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}$>$ cantor\+\_\+decode (\begin{DoxyParamCaption}\item[{const \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{z }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{_numerics_8h_ab14d303cd7381ad0a6d197bab317144e}\label{_numerics_8h_ab14d303cd7381ad0a6d197bab317144e}} 
+\mbox{\Hypertarget{_numerics_8h_a8b71b974f44117f5ce7f5d0a23feebde}\label{_numerics_8h_a8b71b974f44117f5ce7f5d0a23feebde}} 
+\index{Numerics.\+h@{Numerics.\+h}!get\+\_\+log1pexp\+\_\+breakout\+\_\+bound@{get\+\_\+log1pexp\+\_\+breakout\+\_\+bound}}
+\index{get\+\_\+log1pexp\+\_\+breakout\+\_\+bound@{get\+\_\+log1pexp\+\_\+breakout\+\_\+bound}!Numerics.\+h@{Numerics.\+h}}
+\subsubsection{\texorpdfstring{get\+\_\+log1pexp\+\_\+breakout\+\_\+bound()}{get\_log1pexp\_breakout\_bound()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T get\+\_\+log1pexp\+\_\+breakout\+\_\+bound (\begin{DoxyParamCaption}\item[{const double}]{precision,  }\item[{T }]{fT,  }\item[{const T}]{lower = {\ttfamily -\/1e6},  }\item[{const T}]{upper = {\ttfamily 1e6} }\end{DoxyParamCaption})}
+
+
+
+Tis takes a function f(x) and finds a bound B so that f(x) $<$ precision for all x $<$ B. This is useful in logsumexp where at compile time we don\textquotesingle{}t bother adding if the addition will be too tiny. For instance\+: constexpr auto f = +\mbox{[}\mbox{]}(T x) -\/$>$ const double \{return log1p(exp(x));\}; const T bound = get\+\_\+fx\+\_\+compiletime\+\_\+bound$<$\+T$>$(1e-\/6, f);. 
+
+
+\begin{DoxyItemize}
+\item natural log on \mbox{[}0x1.\+f7a5ecp-\/127, 0x1.\+fffffep127\mbox{]}. Maximum relative error 9.\+4529e-\/5 $\ast$/ / From \href{https://stackoverflow.com/questions/39821367/very-fast-approximate-logarithm-natural-log-function-in-c}{\tt https\+://stackoverflow.\+com/questions/39821367/very-\/fast-\/approximate-\/logarithm-\/natural-\/log-\/function-\/in-\/c} 
+\begin{DoxyParams}{Parameters}
+{\em precision} & \\
+\hline
+{\em f} & \\
+\hline
+{\em lower} & \\
+\hline
+{\em upper} & \\
+\hline
+\end{DoxyParams}
+
+\end{DoxyItemize}\mbox{\Hypertarget{_numerics_8h_a558a1133b9942f8debd559bb9317bca3}\label{_numerics_8h_a558a1133b9942f8debd559bb9317bca3}} 
 \index{Numerics.\+h@{Numerics.\+h}!logplusexp@{logplusexp}}
 \index{logplusexp@{logplusexp}!Numerics.\+h@{Numerics.\+h}}
 \subsubsection{\texorpdfstring{logplusexp()}{logplusexp()}}
-{\footnotesize\ttfamily template$<$typename t $>$ \\
-t logplusexp (\begin{DoxyParamCaption}\item[{const t}]{a,  }\item[{const t}]{b }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T logplusexp (\begin{DoxyParamCaption}\item[{const T}]{a,  }\item[{const T}]{b }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{_numerics_8h_abb96a05282957c6c5c3d226b357ed134}\label{_numerics_8h_abb96a05282957c6c5c3d226b357ed134}} 
+\index{Numerics.\+h@{Numerics.\+h}!logsumexp@{logsumexp}}
+\index{logsumexp@{logsumexp}!Numerics.\+h@{Numerics.\+h}}
+\subsubsection{\texorpdfstring{logsumexp()}{logsumexp()}}
+{\footnotesize\ttfamily template$<$typename t $>$ \\
+double logsumexp (\begin{DoxyParamCaption}\item[{const t \&}]{v }\end{DoxyParamCaption})}
+
+
+
+Compute log(sum(exp(v)). For now, this just unrolls logplusexp, but we might consider the faster (standard) variant where we pull out the max. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
 \mbox{\Hypertarget{_numerics_8h_a85679187db301ca06541c7bf63edaaeb}\label{_numerics_8h_a85679187db301ca06541c7bf63edaaeb}} 
 \index{Numerics.\+h@{Numerics.\+h}!mod\+\_\+decode@{mod\+\_\+decode}}
 \index{mod\+\_\+decode@{mod\+\_\+decode}!Numerics.\+h@{Numerics.\+h}}

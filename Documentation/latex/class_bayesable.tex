@@ -1,5 +1,5 @@
-\hypertarget{class_bayesable}{}\section{Bayesable$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$ Class Template Reference}
-\label{class_bayesable}\index{Bayesable$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$@{Bayesable$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$}}
+\hypertarget{class_bayesable}{}\section{Bayesable$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$ Class Template Reference}
+\label{class_bayesable}\index{Bayesable$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$@{Bayesable$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}}
 
 
 {\ttfamily \#include $<$Bayesable.\+h$>$}
@@ -7,51 +7,51 @@
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
-typedef \+\_\+t\+\_\+datum \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum}
+typedef \+\_\+datum\+\_\+t \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}
 \item 
-typedef \+\_\+t\+\_\+data \hyperlink{class_bayesable_a70a593a67c7d43239ecc06bb4fd06a6b}{t\+\_\+data}
+typedef \+\_\+data\+\_\+t \hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}
 \end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_bayesable_ab011f9e26a5c6e742d1239e7569df9eb}{Bayesable} ()
+\hyperlink{class_bayesable_aec41e7016c9c1eb6978e1360c23f20cd}{Bayesable} ()
 \item 
-virtual void \hyperlink{class_bayesable_a3c7deaa8b0a270f806507a2a0768c54b}{clear\+\_\+bayes} ()
+virtual void \hyperlink{class_bayesable_ac8ab4bb38c8782d2dcd57f3a43a3c605}{clear\+\_\+bayes} ()
 \item 
-virtual double \hyperlink{class_bayesable_a9aa752f0adff1b95f8957b91fc928649}{compute\+\_\+prior} ()=0
+virtual double \hyperlink{class_bayesable_a1b057a17212ced123545133e2297c01b}{compute\+\_\+prior} ()=0
 \begin{DoxyCompactList}\small\item\em Compute the prior -- defaultly not defined. \end{DoxyCompactList}\item 
-virtual double \hyperlink{class_bayesable_a5e0237ec7a40a2c45c990f93a8dc8e00}{compute\+\_\+single\+\_\+likelihood} (const \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} \&datum)=0
+virtual double \hyperlink{class_bayesable_a87d195bfe5cdf6d293dae5fc01ae2e6c}{compute\+\_\+single\+\_\+likelihood} (const \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} \&datum)
 \begin{DoxyCompactList}\small\item\em Compute the likelihood of a single data point. \end{DoxyCompactList}\item 
-virtual double \hyperlink{class_bayesable_af9547335ae15a5068b10d29aee5056ae}{compute\+\_\+likelihood} (const \hyperlink{class_bayesable_a70a593a67c7d43239ecc06bb4fd06a6b}{t\+\_\+data} \&data, const double breakout=-\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity})
+virtual double \hyperlink{class_bayesable_a202493156cec15937bee304d807fdbdb}{compute\+\_\+likelihood} (const \hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t} \&data, const double breakout=-\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity})
 \begin{DoxyCompactList}\small\item\em Compute the likelihood of a collection of data, by calling compute\+\_\+single\+\_\+likelihood on each. This stops if our likelihood falls below breakout. \end{DoxyCompactList}\item 
-virtual double \hyperlink{class_bayesable_a6fb74010b3725f610f52746cc652f92a}{compute\+\_\+posterior} (const \hyperlink{class_bayesable_a70a593a67c7d43239ecc06bb4fd06a6b}{t\+\_\+data} \&data, const double breakout=-\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity})
+virtual double \hyperlink{class_bayesable_a0b0552923602bcab6c768581ab8c7df8}{compute\+\_\+posterior} (const \hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t} \&data, const double breakout=-\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity})
 \item 
-virtual double \hyperlink{class_bayesable_ac9ba96f829785f07919610941077b4c9}{at\+\_\+temperature} (double t)
+virtual double \hyperlink{class_bayesable_acf805473a9eea0df96d6267dca0e9c87}{at\+\_\+temperature} (double t)
 \item 
-virtual size\+\_\+t \hyperlink{class_bayesable_ab77a023d33951448e6edb2e1bc79c5ae}{hash} () const =0
+virtual size\+\_\+t \hyperlink{class_bayesable_a26f6d55e7526ebd897cbb27c757b611b}{hash} () const =0
 \begin{DoxyCompactList}\small\item\em Default hash function. \end{DoxyCompactList}\item 
-virtual bool \hyperlink{class_bayesable_aae3f461c90ffd2a4b7b3e5418cbb1054}{operator$<$} (const \hyperlink{class_bayesable}{Bayesable}$<$ \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum}, \hyperlink{class_bayesable_a70a593a67c7d43239ecc06bb4fd06a6b}{t\+\_\+data} $>$ \&l) const
+virtual bool \hyperlink{class_bayesable_ac356e7e5b11c266b8442064186dbe89d}{operator$<$} (const \hyperlink{class_bayesable}{Bayesable}$<$ \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}, \hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t} $>$ \&l) const
 \item 
-virtual std\+::string \hyperlink{class_bayesable_a2ec58e98bf37a90ac3d45a7713c6d5ea}{string} () const =0
+virtual std\+::string \hyperlink{class_bayesable_afcea9b439bcf321d5354710d8861cb54}{string} () const =0
 \item 
-virtual void \hyperlink{class_bayesable_a3f31fa34270083429fb23da21ad50432}{print} (std\+::string prefix=\char`\"{}\char`\"{})
+virtual void \hyperlink{class_bayesable_a87d5d9481d6a72b017e44b175071fa5e}{print} (std\+::string prefix=\char`\"{}\char`\"{})
 \end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-double \hyperlink{class_bayesable_ae09840f8bbd3fb92993970bc7b28dc79}{prior}
+double \hyperlink{class_bayesable_a473790922c2dd73e227350d029d73003}{prior}
 \item 
-double \hyperlink{class_bayesable_ad54a4585cd8861c8002fca6f75aa92c0}{likelihood}
+double \hyperlink{class_bayesable_a4d1a9ed826013bf079cea1867b6d4183}{likelihood}
 \item 
-double \hyperlink{class_bayesable_ab27fd7227331366093ac8d47e0be1f8a}{posterior}
+double \hyperlink{class_bayesable_a268442b9aae5b763c17ca29c39231915}{posterior}
 \item 
-uintmax\+\_\+t \hyperlink{class_bayesable_a39fc0e86fa7395d8fc1ec9c8bf5dc1b5}{born}
+uintmax\+\_\+t \hyperlink{class_bayesable_a898e03a20e1851c868b77ef4e844f0bf}{born}
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-\subsubsection*{template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$\newline
-class Bayesable$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$}
+\subsubsection*{template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$\newline
+class Bayesable$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}
 
 \begin{DoxyAuthor}{Author}
 steven piantadosi 
@@ -62,39 +62,39 @@ steven piantadosi
 
 
 \subsection{Member Typedef Documentation}
-\mbox{\Hypertarget{class_bayesable_a70a593a67c7d43239ecc06bb4fd06a6b}\label{class_bayesable_a70a593a67c7d43239ecc06bb4fd06a6b}} 
-\index{Bayesable@{Bayesable}!t\+\_\+data@{t\+\_\+data}}
-\index{t\+\_\+data@{t\+\_\+data}!Bayesable@{Bayesable}}
-\subsubsection{\texorpdfstring{t\+\_\+data}{t\_data}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-typedef \+\_\+t\+\_\+data \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::\hyperlink{class_bayesable_a70a593a67c7d43239ecc06bb4fd06a6b}{t\+\_\+data}}
+\mbox{\Hypertarget{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}\label{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}} 
+\index{Bayesable@{Bayesable}!data\+\_\+t@{data\+\_\+t}}
+\index{data\+\_\+t@{data\+\_\+t}!Bayesable@{Bayesable}}
+\subsubsection{\texorpdfstring{data\+\_\+t}{data\_t}}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+typedef \+\_\+data\+\_\+t \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}}
 
-\mbox{\Hypertarget{class_bayesable_a7c93a2eeab708378eb321745908718d4}\label{class_bayesable_a7c93a2eeab708378eb321745908718d4}} 
-\index{Bayesable@{Bayesable}!t\+\_\+datum@{t\+\_\+datum}}
-\index{t\+\_\+datum@{t\+\_\+datum}!Bayesable@{Bayesable}}
-\subsubsection{\texorpdfstring{t\+\_\+datum}{t\_datum}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-typedef \+\_\+t\+\_\+datum \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::\hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum}}
+\mbox{\Hypertarget{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}\label{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}} 
+\index{Bayesable@{Bayesable}!datum\+\_\+t@{datum\+\_\+t}}
+\index{datum\+\_\+t@{datum\+\_\+t}!Bayesable@{Bayesable}}
+\subsubsection{\texorpdfstring{datum\+\_\+t}{datum\_t}}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+typedef \+\_\+datum\+\_\+t \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}
 
 
 
 \subsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{class_bayesable_ab011f9e26a5c6e742d1239e7569df9eb}\label{class_bayesable_ab011f9e26a5c6e742d1239e7569df9eb}} 
+\mbox{\Hypertarget{class_bayesable_aec41e7016c9c1eb6978e1360c23f20cd}\label{class_bayesable_aec41e7016c9c1eb6978e1360c23f20cd}} 
 \index{Bayesable@{Bayesable}!Bayesable@{Bayesable}}
 \index{Bayesable@{Bayesable}!Bayesable@{Bayesable}}
 \subsubsection{\texorpdfstring{Bayesable()}{Bayesable()}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-\hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::\hyperlink{class_bayesable}{Bayesable} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+\hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::\hyperlink{class_bayesable}{Bayesable} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
 \subsection{Member Function Documentation}
-\mbox{\Hypertarget{class_bayesable_ac9ba96f829785f07919610941077b4c9}\label{class_bayesable_ac9ba96f829785f07919610941077b4c9}} 
+\mbox{\Hypertarget{class_bayesable_acf805473a9eea0df96d6267dca0e9c87}\label{class_bayesable_acf805473a9eea0df96d6267dca0e9c87}} 
 \index{Bayesable@{Bayesable}!at\+\_\+temperature@{at\+\_\+temperature}}
 \index{at\+\_\+temperature@{at\+\_\+temperature}!Bayesable@{Bayesable}}
 \subsubsection{\texorpdfstring{at\+\_\+temperature()}{at\_temperature()}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::at\+\_\+temperature (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+virtual double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::at\+\_\+temperature (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
 Return my posterior score at a given (likelihood) temperature 
 \begin{DoxyParams}{Parameters}
@@ -104,19 +104,19 @@ Return my posterior score at a given (likelihood) temperature
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_bayesable_a3c7deaa8b0a270f806507a2a0768c54b}\label{class_bayesable_a3c7deaa8b0a270f806507a2a0768c54b}} 
+\mbox{\Hypertarget{class_bayesable_ac8ab4bb38c8782d2dcd57f3a43a3c605}\label{class_bayesable_ac8ab4bb38c8782d2dcd57f3a43a3c605}} 
 \index{Bayesable@{Bayesable}!clear\+\_\+bayes@{clear\+\_\+bayes}}
 \index{clear\+\_\+bayes@{clear\+\_\+bayes}!Bayesable@{Bayesable}}
 \subsubsection{\texorpdfstring{clear\+\_\+bayes()}{clear\_bayes()}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual void \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::clear\+\_\+bayes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+virtual void \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::clear\+\_\+bayes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-Zero by prior, likelihood, posterior\mbox{\Hypertarget{class_bayesable_af9547335ae15a5068b10d29aee5056ae}\label{class_bayesable_af9547335ae15a5068b10d29aee5056ae}} 
+Zero by prior, likelihood, posterior\mbox{\Hypertarget{class_bayesable_a202493156cec15937bee304d807fdbdb}\label{class_bayesable_a202493156cec15937bee304d807fdbdb}} 
 \index{Bayesable@{Bayesable}!compute\+\_\+likelihood@{compute\+\_\+likelihood}}
 \index{compute\+\_\+likelihood@{compute\+\_\+likelihood}!Bayesable@{Bayesable}}
 \subsubsection{\texorpdfstring{compute\+\_\+likelihood()}{compute\_likelihood()}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::compute\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_a70a593a67c7d43239ecc06bb4fd06a6b}{t\+\_\+data} \&}]{data,  }\item[{const double}]{breakout = {\ttfamily -\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+virtual double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::compute\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t} \&}]{data,  }\item[{const double}]{breakout = {\ttfamily -\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
 
 
@@ -134,14 +134,14 @@ Compute the likelihood of a collection of data, by calling compute\+\_\+single\+
 \end{DoxyReturn}
 
 
-Reimplemented in \hyperlink{class_my_hypothesis_a557264ea2caf1b983d621a112cb762c6}{My\+Hypothesis}, \hyperlink{class_grammar_hypothesis_ae565db71afc24d042450e9ed471b4908}{Grammar\+Hypothesis$<$ H\+Y\+P, t\+\_\+datum, t\+\_\+data $>$}, and \hyperlink{class_my_hypothesis_a85348639689176eaf456aaadd63cef2f}{My\+Hypothesis}.
+Reimplemented in \hyperlink{class_my_hypothesis_a42d7d139cd23f30342e1393fd0873dd1}{My\+Hypothesis}, \hyperlink{class_grammar_hypothesis_a35008279d3455087b7ea541f3259becb}{Grammar\+Hypothesis$<$ H\+Y\+P, datum\+\_\+t, data\+\_\+t $>$}, and \hyperlink{class_my_hypothesis_ad5cd40d67c9b6fb61311a5f4a08df426}{My\+Hypothesis}.
 
-\mbox{\Hypertarget{class_bayesable_a6fb74010b3725f610f52746cc652f92a}\label{class_bayesable_a6fb74010b3725f610f52746cc652f92a}} 
+\mbox{\Hypertarget{class_bayesable_a0b0552923602bcab6c768581ab8c7df8}\label{class_bayesable_a0b0552923602bcab6c768581ab8c7df8}} 
 \index{Bayesable@{Bayesable}!compute\+\_\+posterior@{compute\+\_\+posterior}}
 \index{compute\+\_\+posterior@{compute\+\_\+posterior}!Bayesable@{Bayesable}}
 \subsubsection{\texorpdfstring{compute\+\_\+posterior()}{compute\_posterior()}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::compute\+\_\+posterior (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_a70a593a67c7d43239ecc06bb4fd06a6b}{t\+\_\+data} \&}]{data,  }\item[{const double}]{breakout = {\ttfamily -\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+virtual double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::compute\+\_\+posterior (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t} \&}]{data,  }\item[{const double}]{breakout = {\ttfamily -\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
 Compute the posterior, by calling prior and likelihood. This involves only a little bit of fanciness, which is that if our prior is -\/inf, then we don\textquotesingle{}t both computing the likelihood. 
 \begin{DoxyParams}{Parameters}
@@ -153,12 +153,12 @@ Compute the posterior, by calling prior and likelihood. This involves only a lit
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_bayesable_a9aa752f0adff1b95f8957b91fc928649}\label{class_bayesable_a9aa752f0adff1b95f8957b91fc928649}} 
+\mbox{\Hypertarget{class_bayesable_a1b057a17212ced123545133e2297c01b}\label{class_bayesable_a1b057a17212ced123545133e2297c01b}} 
 \index{Bayesable@{Bayesable}!compute\+\_\+prior@{compute\+\_\+prior}}
 \index{compute\+\_\+prior@{compute\+\_\+prior}!Bayesable@{Bayesable}}
 \subsubsection{\texorpdfstring{compute\+\_\+prior()}{compute\_prior()}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::compute\+\_\+prior (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+virtual double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::compute\+\_\+prior (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 
 
@@ -166,14 +166,14 @@ Compute the prior -- defaultly not defined.
 
 
 
-Implemented in \hyperlink{class_lexicon_a1edc72e7c3b422d1c13b6cc3eb33d08d}{Lexicon$<$ H\+Y\+P, T, t\+\_\+input, t\+\_\+output, t\+\_\+datum $>$}, \hyperlink{class_lexicon_a1edc72e7c3b422d1c13b6cc3eb33d08d}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}, \hyperlink{class_my_hypothesis_ab092094c5fc31730de4f40609220bb18}{My\+Hypothesis}, \hyperlink{class_grammar_hypothesis_a11fd75eee387330535601c9ee9d2f0f9}{Grammar\+Hypothesis$<$ H\+Y\+P, t\+\_\+datum, t\+\_\+data $>$}, \hyperlink{class_l_o_t_hypothesis_a80eea871bc115e4ef585f75f06857b39}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$}, \hyperlink{class_l_o_t_hypothesis_a80eea871bc115e4ef585f75f06857b39}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, Node, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_a80eea871bc115e4ef585f75f06857b39}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, Object, bool $>$}, and \hyperlink{class_l_o_t_hypothesis_a80eea871bc115e4ef585f75f06857b39}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, float, float, float, std\+::multiset$<$ float $>$ $>$}.
+Implemented in \hyperlink{class_lexicon_a2e099a68dd08d62897b40647f92eba1c}{Lexicon$<$ H\+Y\+P, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}, \hyperlink{class_lexicon_a2e099a68dd08d62897b40647f92eba1c}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}, \hyperlink{class_my_hypothesis_ab092094c5fc31730de4f40609220bb18}{My\+Hypothesis}, \hyperlink{class_my_hypothesis_a67477313b60b21158bbfaad35dc5d275}{My\+Hypothesis}, \hyperlink{class_grammar_hypothesis_a36c0ec17fb79f56fb4c71ed58f2625f6}{Grammar\+Hypothesis$<$ H\+Y\+P, datum\+\_\+t, data\+\_\+t $>$}, \hyperlink{class_l_o_t_hypothesis_af215c4833e81984364703b2e4cb78dc7}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}, \hyperlink{class_l_o_t_hypothesis_af215c4833e81984364703b2e4cb78dc7}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_af215c4833e81984364703b2e4cb78dc7}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, utterance, word, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_af215c4833e81984364703b2e4cb78dc7}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_af215c4833e81984364703b2e4cb78dc7}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, float, float, My\+Grammar, float, std\+::multiset$<$ float $>$ $>$}, and \hyperlink{class_l_o_t_hypothesis_af215c4833e81984364703b2e4cb78dc7}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Object, bool, My\+Grammar $>$}.
 
-\mbox{\Hypertarget{class_bayesable_a5e0237ec7a40a2c45c990f93a8dc8e00}\label{class_bayesable_a5e0237ec7a40a2c45c990f93a8dc8e00}} 
+\mbox{\Hypertarget{class_bayesable_a87d195bfe5cdf6d293dae5fc01ae2e6c}\label{class_bayesable_a87d195bfe5cdf6d293dae5fc01ae2e6c}} 
 \index{Bayesable@{Bayesable}!compute\+\_\+single\+\_\+likelihood@{compute\+\_\+single\+\_\+likelihood}}
 \index{compute\+\_\+single\+\_\+likelihood@{compute\+\_\+single\+\_\+likelihood}!Bayesable@{Bayesable}}
 \subsubsection{\texorpdfstring{compute\+\_\+single\+\_\+likelihood()}{compute\_single\_likelihood()}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::compute\+\_\+single\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} \&}]{datum }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+virtual double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::compute\+\_\+single\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} \&}]{datum }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
 
 
@@ -186,14 +186,14 @@ Compute the likelihood of a single data point.
 \end{DoxyParams}
 
 
-Implemented in \hyperlink{class_my_hypothesis_af60601a7db23e9ed8d1e3343af506733}{My\+Hypothesis}, \hyperlink{class_grammar_hypothesis_a848ed67089c24b55cc61a4d84e350d05}{Grammar\+Hypothesis$<$ H\+Y\+P, t\+\_\+datum, t\+\_\+data $>$}, \hyperlink{class_l_o_t_hypothesis_a835f1aafdd4bc4748c343edb80517956}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, Node, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_a835f1aafdd4bc4748c343edb80517956}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, Object, bool $>$}, \hyperlink{class_l_o_t_hypothesis_a835f1aafdd4bc4748c343edb80517956}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, float, float, float, std\+::multiset$<$ float $>$ $>$}, and \hyperlink{class_my_hypothesis_a5e6bd5e0ebcb987aa4f0adf4295dba11}{My\+Hypothesis}.
+Reimplemented in \hyperlink{class_my_hypothesis_af2470b1e04711c06ee551deae15af4c1}{My\+Hypothesis}, \hyperlink{class_my_hypothesis_a480fc9e50d0faa0f5226f56187fd2eec}{My\+Hypothesis}, \hyperlink{class_grammar_hypothesis_ad8e5300800646a0c0af9a0f7d0b86422}{Grammar\+Hypothesis$<$ H\+Y\+P, datum\+\_\+t, data\+\_\+t $>$}, \hyperlink{class_l_o_t_hypothesis_a0ff11e5e328fcfa819a8dd9b5d57bd65}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a0ff11e5e328fcfa819a8dd9b5d57bd65}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, utterance, word, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a0ff11e5e328fcfa819a8dd9b5d57bd65}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a0ff11e5e328fcfa819a8dd9b5d57bd65}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, float, float, My\+Grammar, float, std\+::multiset$<$ float $>$ $>$}, \hyperlink{class_l_o_t_hypothesis_a0ff11e5e328fcfa819a8dd9b5d57bd65}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Object, bool, My\+Grammar $>$}, \hyperlink{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}{My\+Hypothesis}, and \hyperlink{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}{My\+Hypothesis}.
 
-\mbox{\Hypertarget{class_bayesable_ab77a023d33951448e6edb2e1bc79c5ae}\label{class_bayesable_ab77a023d33951448e6edb2e1bc79c5ae}} 
+\mbox{\Hypertarget{class_bayesable_a26f6d55e7526ebd897cbb27c757b611b}\label{class_bayesable_a26f6d55e7526ebd897cbb27c757b611b}} 
 \index{Bayesable@{Bayesable}!hash@{hash}}
 \index{hash@{hash}!Bayesable@{Bayesable}}
 \subsubsection{\texorpdfstring{hash()}{hash()}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual size\+\_\+t \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::hash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+virtual size\+\_\+t \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::hash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 
 
@@ -201,14 +201,14 @@ Default hash function.
 
 
 
-Implemented in \hyperlink{class_grammar_hypothesis_a5b269a5ed433b94f6b2796f30a15fd9e}{Grammar\+Hypothesis$<$ H\+Y\+P, t\+\_\+datum, t\+\_\+data $>$}, \hyperlink{class_l_o_t_hypothesis_aa6859da0a3b422c32b1be2ffa025631a}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$}, \hyperlink{class_l_o_t_hypothesis_aa6859da0a3b422c32b1be2ffa025631a}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, Node, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_aa6859da0a3b422c32b1be2ffa025631a}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, Object, bool $>$}, \hyperlink{class_l_o_t_hypothesis_aa6859da0a3b422c32b1be2ffa025631a}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, float, float, float, std\+::multiset$<$ float $>$ $>$}, \hyperlink{class_lexicon_ab3180c29ad8ec74de2a89ce109226047}{Lexicon$<$ H\+Y\+P, T, t\+\_\+input, t\+\_\+output, t\+\_\+datum $>$}, and \hyperlink{class_lexicon_ab3180c29ad8ec74de2a89ce109226047}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}.
+Implemented in \hyperlink{class_grammar_hypothesis_a55297e7d1dac48158efa012445b93137}{Grammar\+Hypothesis$<$ H\+Y\+P, datum\+\_\+t, data\+\_\+t $>$}, \hyperlink{class_l_o_t_hypothesis_a7c33d51f8d81762b1eca7f86b596236a}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}, \hyperlink{class_l_o_t_hypothesis_a7c33d51f8d81762b1eca7f86b596236a}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a7c33d51f8d81762b1eca7f86b596236a}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, utterance, word, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a7c33d51f8d81762b1eca7f86b596236a}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a7c33d51f8d81762b1eca7f86b596236a}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, float, float, My\+Grammar, float, std\+::multiset$<$ float $>$ $>$}, \hyperlink{class_l_o_t_hypothesis_a7c33d51f8d81762b1eca7f86b596236a}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Object, bool, My\+Grammar $>$}, \hyperlink{class_lexicon_afbefa510e623ee4a407a1e1e04f42fb2}{Lexicon$<$ H\+Y\+P, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}, and \hyperlink{class_lexicon_afbefa510e623ee4a407a1e1e04f42fb2}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}.
 
-\mbox{\Hypertarget{class_bayesable_aae3f461c90ffd2a4b7b3e5418cbb1054}\label{class_bayesable_aae3f461c90ffd2a4b7b3e5418cbb1054}} 
+\mbox{\Hypertarget{class_bayesable_ac356e7e5b11c266b8442064186dbe89d}\label{class_bayesable_ac356e7e5b11c266b8442064186dbe89d}} 
 \index{Bayesable@{Bayesable}!operator$<$@{operator$<$}}
 \index{operator$<$@{operator$<$}!Bayesable@{Bayesable}}
 \subsubsection{\texorpdfstring{operator$<$()}{operator<()}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual bool \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::operator$<$ (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable}{Bayesable}$<$ \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum}, \hyperlink{class_bayesable_a70a593a67c7d43239ecc06bb4fd06a6b}{t\+\_\+data} $>$ \&}]{l }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+virtual bool \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::operator$<$ (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable}{Bayesable}$<$ \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}, \hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t} $>$ \&}]{l }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
 Allow sorting of \hyperlink{class_bayesable}{Bayesable} hypotheses. We defaultly sort by posterior so that TopN works right. But we also need to be careful because std\+::set uses this to determine equality, so this also checks priors and then hashes. 
 \begin{DoxyParams}{Parameters}
@@ -218,12 +218,12 @@ Allow sorting of \hyperlink{class_bayesable}{Bayesable} hypotheses. We defaultly
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_bayesable_a3f31fa34270083429fb23da21ad50432}\label{class_bayesable_a3f31fa34270083429fb23da21ad50432}} 
+\mbox{\Hypertarget{class_bayesable_a87d5d9481d6a72b017e44b175071fa5e}\label{class_bayesable_a87d5d9481d6a72b017e44b175071fa5e}} 
 \index{Bayesable@{Bayesable}!print@{print}}
 \index{print@{print}!Bayesable@{Bayesable}}
 \subsubsection{\texorpdfstring{print()}{print()}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual void \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::print (\begin{DoxyParamCaption}\item[{std\+::string}]{prefix = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+virtual void \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::print (\begin{DoxyParamCaption}\item[{std\+::string}]{prefix = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
 Default printing of a hypothesis includes its posterior, prior, likelihood, and quoted string version 
 \begin{DoxyParams}{Parameters}
@@ -232,49 +232,49 @@ Default printing of a hypothesis includes its posterior, prior, likelihood, and 
 \end{DoxyParams}
 
 
-Reimplemented in \hyperlink{class_my_hypothesis_a91fd22a2724e04c0e7c67ea4282beac4}{My\+Hypothesis}.
+Reimplemented in \hyperlink{class_my_hypothesis_a91fd22a2724e04c0e7c67ea4282beac4}{My\+Hypothesis}, \hyperlink{class_my_hypothesis_a81fa991ffd2cabe6f71ec129ae26ca6c}{My\+Hypothesis}, and \hyperlink{class_my_hypothesis_a91fd22a2724e04c0e7c67ea4282beac4}{My\+Hypothesis}.
 
-\mbox{\Hypertarget{class_bayesable_a2ec58e98bf37a90ac3d45a7713c6d5ea}\label{class_bayesable_a2ec58e98bf37a90ac3d45a7713c6d5ea}} 
+\mbox{\Hypertarget{class_bayesable_afcea9b439bcf321d5354710d8861cb54}\label{class_bayesable_afcea9b439bcf321d5354710d8861cb54}} 
 \index{Bayesable@{Bayesable}!string@{string}}
 \index{string@{string}!Bayesable@{Bayesable}}
 \subsubsection{\texorpdfstring{string()}{string()}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual std\+::string \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+virtual std\+::string \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 
 
-Implemented in \hyperlink{class_grammar_hypothesis_a75267d7b68cd9b3634f84a464877c07c}{Grammar\+Hypothesis$<$ H\+Y\+P, t\+\_\+datum, t\+\_\+data $>$}, \hyperlink{class_l_o_t_hypothesis_a5c91fd3b7ef4ebc585413d723cd17e7e}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$}, \hyperlink{class_l_o_t_hypothesis_a5c91fd3b7ef4ebc585413d723cd17e7e}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, Node, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_a5c91fd3b7ef4ebc585413d723cd17e7e}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, Object, bool $>$}, \hyperlink{class_l_o_t_hypothesis_a5c91fd3b7ef4ebc585413d723cd17e7e}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, float, float, float, std\+::multiset$<$ float $>$ $>$}, \hyperlink{class_lexicon_aad37474da522d811415c1ba45ca72dff}{Lexicon$<$ H\+Y\+P, T, t\+\_\+input, t\+\_\+output, t\+\_\+datum $>$}, and \hyperlink{class_lexicon_aad37474da522d811415c1ba45ca72dff}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}.
+Implemented in \hyperlink{class_grammar_hypothesis_a55ee98de75a30cea35fdaf62ccf14a90}{Grammar\+Hypothesis$<$ H\+Y\+P, datum\+\_\+t, data\+\_\+t $>$}, \hyperlink{class_l_o_t_hypothesis_acda322aef217a0d358ae6cea19969904}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}, \hyperlink{class_l_o_t_hypothesis_acda322aef217a0d358ae6cea19969904}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_acda322aef217a0d358ae6cea19969904}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, utterance, word, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_acda322aef217a0d358ae6cea19969904}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_acda322aef217a0d358ae6cea19969904}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, float, float, My\+Grammar, float, std\+::multiset$<$ float $>$ $>$}, \hyperlink{class_l_o_t_hypothesis_acda322aef217a0d358ae6cea19969904}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Object, bool, My\+Grammar $>$}, \hyperlink{class_lexicon_a5c584d2885a21542082332a26eb0961b}{Lexicon$<$ H\+Y\+P, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}, and \hyperlink{class_lexicon_a5c584d2885a21542082332a26eb0961b}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}.
 
 
 
 \subsection{Member Data Documentation}
-\mbox{\Hypertarget{class_bayesable_a39fc0e86fa7395d8fc1ec9c8bf5dc1b5}\label{class_bayesable_a39fc0e86fa7395d8fc1ec9c8bf5dc1b5}} 
+\mbox{\Hypertarget{class_bayesable_a898e03a20e1851c868b77ef4e844f0bf}\label{class_bayesable_a898e03a20e1851c868b77ef4e844f0bf}} 
 \index{Bayesable@{Bayesable}!born@{born}}
 \index{born@{born}!Bayesable@{Bayesable}}
 \subsubsection{\texorpdfstring{born}{born}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-uintmax\+\_\+t \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::born}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+uintmax\+\_\+t \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::born}
 
-\mbox{\Hypertarget{class_bayesable_ad54a4585cd8861c8002fca6f75aa92c0}\label{class_bayesable_ad54a4585cd8861c8002fca6f75aa92c0}} 
+\mbox{\Hypertarget{class_bayesable_a4d1a9ed826013bf079cea1867b6d4183}\label{class_bayesable_a4d1a9ed826013bf079cea1867b6d4183}} 
 \index{Bayesable@{Bayesable}!likelihood@{likelihood}}
 \index{likelihood@{likelihood}!Bayesable@{Bayesable}}
 \subsubsection{\texorpdfstring{likelihood}{likelihood}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::likelihood}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::likelihood}
 
-\mbox{\Hypertarget{class_bayesable_ab27fd7227331366093ac8d47e0be1f8a}\label{class_bayesable_ab27fd7227331366093ac8d47e0be1f8a}} 
+\mbox{\Hypertarget{class_bayesable_a268442b9aae5b763c17ca29c39231915}\label{class_bayesable_a268442b9aae5b763c17ca29c39231915}} 
 \index{Bayesable@{Bayesable}!posterior@{posterior}}
 \index{posterior@{posterior}!Bayesable@{Bayesable}}
 \subsubsection{\texorpdfstring{posterior}{posterior}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::posterior}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::posterior}
 
-\mbox{\Hypertarget{class_bayesable_ae09840f8bbd3fb92993970bc7b28dc79}\label{class_bayesable_ae09840f8bbd3fb92993970bc7b28dc79}} 
+\mbox{\Hypertarget{class_bayesable_a473790922c2dd73e227350d029d73003}\label{class_bayesable_a473790922c2dd73e227350d029d73003}} 
 \index{Bayesable@{Bayesable}!prior@{prior}}
 \index{prior@{prior}!Bayesable@{Bayesable}}
 \subsubsection{\texorpdfstring{prior}{prior}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::prior}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
+double \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::prior}
 
 
 

@@ -1,15 +1,17 @@
 <map id="MyHypothesis" name="MyHypothesis">
-<area shape="rect" id="node2" href="$class_l_o_t_hypothesis.html" title="LOTHypothesis\&lt; MyHypothesis,\l Node, Object, bool \&gt;" alt="" coords="436,125,649,167"/>
-<area shape="rect" id="node3" href="$class_dispatchable.html" title="Dispatchable\&lt; Object,\l bool \&gt;" alt="" coords="218,5,370,47"/>
-<area shape="rect" id="node4" href="$class_m_c_m_cable.html" title="MCMCable\&lt; MyHypothesis,\l default_datum\&lt; Object,\l bool \&gt;, std::vector\&lt; default\l_datum\&lt; Object, bool \&gt; \&gt; \&gt;" alt="" coords="200,71,388,141"/>
-<area shape="rect" id="node5" href="$class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="5,246,152,273"/>
-<area shape="rect" id="node9" href="$class_m_c_m_cable.html" title="MCMCable\&lt; MyHypothesis,\l float, std::multiset\l\&lt; float \&gt; \&gt;" alt="" coords="200,231,388,287"/>
-<area shape="rect" id="node12" href="$class_m_c_m_cable.html" title="MCMCable\&lt; MyHypothesis,\l default_datum\&lt; S, S \&gt; \&gt;" alt="" coords="200,443,388,484"/>
-<area shape="rect" id="node6" href="$class_searchable.html" title="Searchable\&lt; MyHypothesis,\l Object, bool \&gt;" alt="" coords="201,165,387,207"/>
-<area shape="rect" id="node7" href="$class_l_o_t_hypothesis.html" title="LOTHypothesis\&lt; MyHypothesis,\l Node, float, float, float,\l std::multiset\&lt; float \&gt; \&gt;" alt="" coords="436,305,649,361"/>
-<area shape="rect" id="node8" href="$class_dispatchable.html" title="Dispatchable\&lt; float,\l float \&gt;" alt="" coords="225,312,363,353"/>
-<area shape="rect" id="node10" href="$class_searchable.html" title="Searchable\&lt; MyHypothesis,\l float, float \&gt;" alt="" coords="201,377,387,419"/>
-<area shape="rect" id="node11" href="$class_lexicon.html" title="Lexicon\&lt; MyHypothesis,\l InnerHypothesis, S, S \&gt;" alt="" coords="459,472,626,513"/>
-<area shape="rect" id="node13" href="$class_dispatchable.html" title="Dispatchable\&lt; S, S \&gt;" alt="" coords="220,509,368,535"/>
-<area shape="rect" id="node14" href="$class_searchable.html" title="Searchable\&lt; MyHypothesis,\l S, S \&gt;" alt="" coords="201,560,387,601"/>
+<area shape="rect" id="node2" href="$class_l_o_t_hypothesis.html" title="LOTHypothesis\&lt; MyHypothesis,\l Object, bool, MyGrammar \&gt;" alt="" coords="467,148,680,189"/>
+<area shape="rect" id="node7" href="$class_l_o_t_hypothesis.html" title="LOTHypothesis\&lt; MyHypothesis,\l float, float, MyGrammar,\l float, std::multiset\&lt; float \&gt; \&gt;" alt="" coords="467,262,680,318"/>
+<area shape="rect" id="node10" href="$class_l_o_t_hypothesis.html" title="LOTHypothesis\&lt; MyHypothesis,\l utterance, word, MyGrammar \&gt;" alt="" coords="467,364,680,405"/>
+<area shape="rect" id="node13" href="$class_l_o_t_hypothesis.html" title="LOTHypothesis\&lt; MyHypothesis,\l S, S, MyGrammar \&gt;" alt="" coords="467,460,680,501"/>
+<area shape="rect" id="node16" href="$class_lexicon.html" title="Lexicon\&lt; MyHypothesis,\l InnerHypothesis, S, S \&gt;" alt="" coords="490,587,657,628"/>
+<area shape="rect" id="node4" href="$class_m_c_m_cable.html" title="MCMCable\&lt; MyHypothesis,\l defauldatum_t\&lt; Object,\l bool \&gt;, std::vector\&lt; defauldatum\l_t\&lt; Object, bool \&gt; \&gt; \&gt;" alt="" coords="202,5,417,76"/>
+<area shape="rect" id="node5" href="$class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="5,451,152,478"/>
+<area shape="rect" id="node8" href="$class_m_c_m_cable.html" title="MCMCable\&lt; MyHypothesis,\l float, std::multiset\l\&lt; float \&gt; \&gt;" alt="" coords="215,166,403,222"/>
+<area shape="rect" id="node11" href="$class_m_c_m_cable.html" title="MCMCable\&lt; MyHypothesis,\l defauldatum_t\&lt; utterance,\l word \&gt;, std::vector\&lt; defauldatum\l_t\&lt; utterance, word \&gt; \&gt; \&gt;" alt="" coords="200,429,419,500"/>
+<area shape="rect" id="node14" href="$class_m_c_m_cable.html" title="MCMCable\&lt; MyHypothesis,\l defauldatum_t\&lt; S, S \&gt;\l, std::vector\&lt; defauldatum\l_t\&lt; S, S \&gt; \&gt; \&gt;" alt="" coords="215,524,403,595"/>
+<area shape="rect" id="node17" href="$class_m_c_m_cable.html" title="MCMCable\&lt; MyHypothesis,\l defauldatum_t\&lt; S, S \&gt; \&gt;" alt="" coords="215,684,403,725"/>
+<area shape="rect" id="node6" href="$class_searchable.html" title="Searchable\&lt; MyHypothesis,\l Object, bool \&gt;" alt="" coords="216,100,403,141"/>
+<area shape="rect" id="node9" href="$class_searchable.html" title="Searchable\&lt; MyHypothesis,\l float, float \&gt;" alt="" coords="216,247,403,288"/>
+<area shape="rect" id="node12" href="$class_searchable.html" title="Searchable\&lt; MyHypothesis,\l utterance, word \&gt;" alt="" coords="216,364,403,405"/>
+<area shape="rect" id="node15" href="$class_searchable.html" title="Searchable\&lt; MyHypothesis,\l S, S \&gt;" alt="" coords="216,619,403,660"/>
 </map>

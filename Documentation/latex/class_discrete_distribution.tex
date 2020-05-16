@@ -23,6 +23,10 @@ const std\+::map$<$ T, double $>$ \& \hyperlink{class_discrete_distribution_a995
 \item 
 void \hyperlink{class_discrete_distribution_a5c93983e2375a2353b10b82ebb11f751}{operator$<$$<$} (const \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ T $>$ \&x)
 \item 
+double \hyperlink{class_discrete_distribution_ad634a339172a69c006fded1beb423bb7}{Z} () const
+\item 
+double \hyperlink{class_discrete_distribution_a185ef689b1e133b962fff5bcf1443ba1}{lp} (const T \&x)
+\item 
 std\+::vector$<$ T $>$ \hyperlink{class_discrete_distribution_adee72a8e4c93aa03d841c0c73d6b5498}{best} (size\+\_\+t N) const
 \item 
 std\+::vector$<$ std\+::pair$<$ T, double $>$ $>$ \hyperlink{class_discrete_distribution_a94488cfd094f6cde47f15a1f4c7cdbb9}{sorted} (bool decreasing=false) const
@@ -31,7 +35,7 @@ size\+\_\+t \hyperlink{class_discrete_distribution_afd3fd83dc776f5616e826de18093
 \item 
 size\+\_\+t \hyperlink{class_discrete_distribution_ad74207d32c2ed6c5c26b3f991f4fedba}{size} () const
 \item 
-double \hyperlink{class_discrete_distribution_aa06afa5c16edf065b1567ea7b6b4356a}{operator\mbox{[}$\,$\mbox{]}} (T x)
+double \hyperlink{class_discrete_distribution_a374bcf1a5b302e6ac618afe9d78e265f}{operator\mbox{[}$\,$\mbox{]}} (const T x)
 \item 
 double \hyperlink{class_discrete_distribution_acb11f1cfbf4ef039c538f06cde8249fd}{at} (T x) const
 \end{DoxyCompactItemize}
@@ -115,6 +119,21 @@ Get the N best from this distribution
 {\footnotesize\ttfamily template$<$typename T$>$ \\
 size\+\_\+t \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ T $>$\+::count (\begin{DoxyParamCaption}\item[{T}]{x }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
+\mbox{\Hypertarget{class_discrete_distribution_a185ef689b1e133b962fff5bcf1443ba1}\label{class_discrete_distribution_a185ef689b1e133b962fff5bcf1443ba1}} 
+\index{Discrete\+Distribution@{Discrete\+Distribution}!lp@{lp}}
+\index{lp@{lp}!Discrete\+Distribution@{Discrete\+Distribution}}
+\subsubsection{\texorpdfstring{lp()}{lp()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+double \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ T $>$\+::lp (\begin{DoxyParamCaption}\item[{const T \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Retun the log probability of x, including the normalizing term (N\+O\+TE\+: This makes this O(\+N) to compute theo normalizer. So this is bad to use if you have to iterate over the set -- you shoul call \hyperlink{class_discrete_distribution_ad634a339172a69c006fded1beb423bb7}{Z()} separately then 
+\begin{DoxyParams}{Parameters}
+{\em N} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
 \mbox{\Hypertarget{class_discrete_distribution_a5c93983e2375a2353b10b82ebb11f751}\label{class_discrete_distribution_a5c93983e2375a2353b10b82ebb11f751}} 
 \index{Discrete\+Distribution@{Discrete\+Distribution}!operator$<$$<$@{operator$<$$<$}}
 \index{operator$<$$<$@{operator$<$$<$}!Discrete\+Distribution@{Discrete\+Distribution}}
@@ -122,12 +141,12 @@ size\+\_\+t \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ T
 {\footnotesize\ttfamily template$<$typename T$>$ \\
 void \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ T $>$\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{const \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ T $>$ \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_discrete_distribution_aa06afa5c16edf065b1567ea7b6b4356a}\label{class_discrete_distribution_aa06afa5c16edf065b1567ea7b6b4356a}} 
+\mbox{\Hypertarget{class_discrete_distribution_a374bcf1a5b302e6ac618afe9d78e265f}\label{class_discrete_distribution_a374bcf1a5b302e6ac618afe9d78e265f}} 
 \index{Discrete\+Distribution@{Discrete\+Distribution}!operator\mbox{[}\mbox{]}@{operator[]}}
 \index{operator\mbox{[}\mbox{]}@{operator[]}!Discrete\+Distribution@{Discrete\+Distribution}}
 \subsubsection{\texorpdfstring{operator[]()}{operator[]()}}
 {\footnotesize\ttfamily template$<$typename T$>$ \\
-double \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{T}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+double \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{const T}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_discrete_distribution_a6ec6f590a3659c8bef32aaab77a8052e}\label{class_discrete_distribution_a6ec6f590a3659c8bef32aaab77a8052e}} 
 \index{Discrete\+Distribution@{Discrete\+Distribution}!print@{print}}
@@ -187,6 +206,13 @@ const std\+::map$<$T,double$>$\& \hyperlink{class_discrete_distribution}{Discret
 Get all of the values in this distribution \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\mbox{\Hypertarget{class_discrete_distribution_ad634a339172a69c006fded1beb423bb7}\label{class_discrete_distribution_ad634a339172a69c006fded1beb423bb7}} 
+\index{Discrete\+Distribution@{Discrete\+Distribution}!Z@{Z}}
+\index{Z@{Z}!Discrete\+Distribution@{Discrete\+Distribution}}
+\subsubsection{\texorpdfstring{Z()}{Z()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+double \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ T $>$\+::Z (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
 
 
 \subsection{Member Data Documentation}
@@ -201,4 +227,4 @@ std\+::map$<$T,double$>$ \hyperlink{class_discrete_distribution}{Discrete\+Distr
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/\hyperlink{_discrete_distribution_8h}{Discrete\+Distribution.\+h}\end{DoxyCompactItemize}
+src/\+Statistics/\hyperlink{_discrete_distribution_8h}{Discrete\+Distribution.\+h}\end{DoxyCompactItemize}

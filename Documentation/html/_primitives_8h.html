@@ -67,29 +67,30 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Primitives.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A preprimitive is a class that primitives inherit. We use a static op_counter so that at compile time thsi can be used to compute an op number for each separate primitive.  
+<p>If there are any references in the arguments, only the first can be a reference.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;string&gt;</code><br />
+<div class="textblock"><code>#include &lt;any&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;tuple&gt;</code><br />
 <code>#include &lt;assert.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="_instruction_8h_source.html">Instruction.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_template_magic_8h_source.html">TemplateMagic.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_miscellaneous_8h_source.html">Miscellaneous.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Primitives.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_primitives_8h__incl.png" border="0" usemap="#src_2_virtual_machine_2_primitives_8h" alt=""/></div>
 <map name="src_2_virtual_machine_2_primitives_8h" id="src_2_virtual_machine_2_primitives_8h">
-<area shape="rect" id="node7" href="_instruction_8h.html" title="This is an error type that is returned if we get a runtime error (e.g. string length, etc.) " alt="" coords="271,95,365,121"/>
-<area shape="rect" id="node10" href="_template_magic_8h.html" title="TemplateMagic.h" alt="" coords="534,95,657,121"/>
+<area shape="rect" id="node8" href="_instruction_8h.html" title="This is an error type that is returned if we get a runtime error (e.g. string length, etc.) " alt="" coords="465,95,559,121"/>
+<area shape="rect" id="node11" href="_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="714,95,830,121"/>
+<area shape="rect" id="node14" href="_i_o_8h.html" title="IO.h" alt="" coords="826,169,873,196"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -97,13 +98,16 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_primitives_8h__dep__incl.png" border="0" usemap="#src_2_virtual_machine_2_primitives_8hdep" alt=""/></div>
 <map name="src_2_virtual_machine_2_primitives_8hdep" id="src_2_virtual_machine_2_primitives_8hdep">
-<area shape="rect" id="node2" href="_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,169,209,211"/>
-<area shape="rect" id="node3" href="_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,169,437,211"/>
-<area shape="rect" id="node4" href="_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,169,617,211"/>
-<area shape="rect" id="node5" href="_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="815,177,1021,203"/>
-<area shape="rect" id="node6" href="_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1045,169,1196,211"/>
-<area shape="rect" id="node7" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="649,95,733,121"/>
-<area shape="rect" id="node8" href="_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="641,169,790,211"/>
+<area shape="rect" id="node2" href="_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="413,244,617,285"/>
+<area shape="rect" id="node3" href="_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="5,244,209,285"/>
+<area shape="rect" id="node4" href="_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="234,244,389,285"/>
+<area shape="rect" id="node5" href="_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="840,251,1047,278"/>
+<area shape="rect" id="node6" href="_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1071,244,1221,285"/>
+<area shape="rect" id="node7" href="_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="1246,251,1414,278"/>
+<area shape="rect" id="node8" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="579,169,663,196"/>
+<area shape="rect" id="node10" href="_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="659,95,825,121"/>
+<area shape="rect" id="node9" href="_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="642,244,815,285"/>
+<area shape="rect" id="node11" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="687,169,816,196"/>
 </map>
 </div>
 </div>
@@ -111,85 +115,58 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_count_references.html">CountReferences&lt; T, Types &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_count_references_3_01_t_01_4.html">CountReferences&lt; T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_check_reference_is_first.html">CheckReferenceIsFirst&lt; T, Types &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_check_reference_is_first_3_01_t_01_4.html">CheckReferenceIsFirst&lt; T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_type_head.html">TypeHead&lt; Args &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_head_if_reference_else_t.html">HeadIfReferenceElseT&lt; T, args &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_head_if_reference_else_t_3_01_t_01_4.html">HeadIfReferenceElseT&lt; T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_pre_primitive.html">PrePrimitive</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_primitive.html">Primitive&lt; T, args &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespace_fleet_1_1apply_v_m_s"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_fleet_1_1apply_v_m_s.html">Fleet::applyVMS</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a7961ca5a819b4db7e4261f7ff18d272d"><td class="memTemplParams" colspan="2">template&lt;int n, class T , typename V , typename P , typename L &gt; </td></tr>
-<tr class="memitem:a7961ca5a819b4db7e4261f7ff18d272d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_instruction_8h.html#a6202215407ab29590bb936ca2996cf64">vmstatus_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_fleet_1_1apply_v_m_s.html#a7961ca5a819b4db7e4261f7ff18d272d">Fleet::applyVMS::applyToVMS_one</a> (T &amp;p, V *vms, P *pool, L *loader)</td></tr>
-<tr class="separator:a7961ca5a819b4db7e4261f7ff18d272d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7309104b033509b889fd07bff2dc5ff4"><td class="memTemplParams" colspan="2">template&lt;class T , typename V , typename P , typename L , size_t... Is&gt; </td></tr>
-<tr class="memitem:a7309104b033509b889fd07bff2dc5ff4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_instruction_8h.html#a6202215407ab29590bb936ca2996cf64">vmstatus_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_fleet_1_1apply_v_m_s.html#a7309104b033509b889fd07bff2dc5ff4">Fleet::applyVMS::applyToVMS</a> (T &amp;p, int index, V *vms, P *pool, L *loader, std::index_sequence&lt; Is... &gt;)</td></tr>
-<tr class="separator:a7309104b033509b889fd07bff2dc5ff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99488b23e9756ffef54d78db8a7e6d2e"><td class="memTemplParams" colspan="2">template&lt;class T , typename V , typename P , typename L &gt; </td></tr>
-<tr class="memitem:a99488b23e9756ffef54d78db8a7e6d2e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_instruction_8h.html#a6202215407ab29590bb936ca2996cf64">vmstatus_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_primitives_8h.html#a99488b23e9756ffef54d78db8a7e6d2e">applyToVMS</a> (T &amp;p, int index, V *vms, P *pool, L *loader)</td></tr>
-<tr class="separator:a99488b23e9756ffef54d78db8a7e6d2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88e3d8e9f8a97406cabe4044308e649b"><td class="memTemplParams" colspan="2">template&lt;typename X , typename... Ts&gt; </td></tr>
+<tr class="memitem:a88e3d8e9f8a97406cabe4044308e649b"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_primitives_8h.html#a88e3d8e9f8a97406cabe4044308e649b">contains_type</a> ()</td></tr>
+<tr class="memdesc:a88e3d8e9f8a97406cabe4044308e649b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a type is contained in parameter pack.  <a href="#a88e3d8e9f8a97406cabe4044308e649b">More...</a><br /></td></tr>
+<tr class="separator:a88e3d8e9f8a97406cabe4044308e649b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A preprimitive is a class that primitives inherit. We use a static op_counter so that at compile time thsi can be used to compute an op number for each separate primitive. </p>
+<div class="textblock"><p>If there are any references in the arguments, only the first can be a reference. </p>
 <p>A primitive associates a string name (format) with a function, and allows grammars to extract all the relevant function pieces via constexpr, and also defines a VMS function that can be called in dispatch op here is generated uniquely for each <a class="el" href="struct_primitive.html">Primitive</a>, which is how <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a> knows which to call. SO: grammars use this op (statically updated) in nodes, and then when they are linearized the op is processed in a switch statement to evaluate This is a funny intermediate type that essentially helps us associate functions, formats, and nonterminal types all together.</p>
+<p>A preprimitive is a class that primitives inherit. We use a static op_counter so that at compile time thsi can be used to compute an op number for each separate primitive.</p>
+<p>Gives head(args)::value if head(args)::value is a reference, otherwise T...</p>
+<p>The first type in Args.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a99488b23e9756ffef54d78db8a7e6d2e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99488b23e9756ffef54d78db8a7e6d2e">&#9670;&nbsp;</a></span>applyToVMS()</h2>
+<a id="a88e3d8e9f8a97406cabe4044308e649b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88e3d8e9f8a97406cabe4044308e649b">&#9670;&nbsp;</a></span>contains_type()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , typename V , typename P , typename L &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
+template&lt;typename X , typename... Ts&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_instruction_8h.html#a6202215407ab29590bb936ca2996cf64">vmstatus_t</a> applyToVMS </td>
+          <td class="memname">constexpr bool contains_type </td>
           <td>(</td>
-          <td class="paramtype">T &amp;&#160;</td>
-          <td class="paramname"><em>p</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">V *&#160;</td>
-          <td class="paramname"><em>vms</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">P *&#160;</td>
-          <td class="paramname"><em>pool</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">L *&#160;</td>
-          <td class="paramname"><em>loader</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
+
+<p>Check if a type is contained in parameter pack. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

@@ -2,7 +2,8 @@
 \label{class_my_hypothesis}\index{My\+Hypothesis@{My\+Hypothesis}}
 
 
-Inheritance diagram for My\+Hypothesis\+:\nopagebreak
+Inheritance diagram for My\+Hypothesis\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -11,7 +12,8 @@ Inheritance diagram for My\+Hypothesis\+:\nopagebreak
 \end{figure}
 
 
-Collaboration diagram for My\+Hypothesis\+:\nopagebreak
+Collaboration diagram for My\+Hypothesis\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -21,34 +23,46 @@ Collaboration diagram for My\+Hypothesis\+:\nopagebreak
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
-using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{Super} = \hyperlink{class_lexicon}{Lexicon}$<$ \hyperlink{class_my_hypothesis}{My\+Hypothesis}, \hyperlink{class_inner_hypothesis}{Inner\+Hypothesis}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$
+using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{Super} = \hyperlink{class_lexicon}{Lexicon}$<$ \hyperlink{class_my_hypothesis}{My\+Hypothesis}, \hyperlink{class_inner_hypothesis}{Inner\+Hypothesis}, \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$
 \item 
-using \hyperlink{class_my_hypothesis_aab716e490381d01aeb22e525eb90e863}{Super} = \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ \hyperlink{class_my_hypothesis}{My\+Hypothesis}, \hyperlink{class_node}{Node}, float, float, float, std\+::multiset$<$ float $>$ $>$
+using \hyperlink{class_my_hypothesis_ae5fab2ea7ef7729968ac60a2ce267168}{Super} = \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ \hyperlink{class_my_hypothesis}{My\+Hypothesis}, \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{class_my_grammar}{My\+Grammar} $>$
 \item 
-using \hyperlink{class_my_hypothesis_a8621c1813f3fb8590df10e75be30d4cb}{Super} = \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ \hyperlink{class_my_hypothesis}{My\+Hypothesis}, \hyperlink{class_node}{Node}, \hyperlink{struct_object}{Object}, bool $>$
+using \hyperlink{class_my_hypothesis_a1c1cfa95f1a49b273f8a93b3246342e6}{Super} = \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ \hyperlink{class_my_hypothesis}{My\+Hypothesis}, utterance, word, \hyperlink{class_my_grammar}{My\+Grammar} $>$
+\item 
+using \hyperlink{class_my_hypothesis_aebf7eaf0477f8b39639e917bc87d208f}{Super} = \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ \hyperlink{class_my_hypothesis}{My\+Hypothesis}, float, float, \hyperlink{class_my_grammar}{My\+Grammar}, float, std\+::multiset$<$ float $>$ $>$
+\item 
+using \hyperlink{class_my_hypothesis_af34a1c11e5b0aae4a52b54bfdd7a0617}{Super} = \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ \hyperlink{class_my_hypothesis}{My\+Hypothesis}, Object, bool, \hyperlink{class_my_grammar}{My\+Grammar} $>$
 \end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_my_hypothesis_ab3ad1dfa93e404fd827df6a57185f5a7}{My\+Hypothesis} ()
-\item 
-\hyperlink{class_my_hypothesis_a63709659c875c246a506dcff907e1cdd}{My\+Hypothesis} (const \hyperlink{class_my_hypothesis}{My\+Hypothesis} \&h)
-\item 
 virtual double \hyperlink{class_my_hypothesis_ab092094c5fc31730de4f40609220bb18}{compute\+\_\+prior} () override
 \begin{DoxyCompactList}\small\item\em Compute the prior -- defaultly not defined. \end{DoxyCompactList}\item 
-virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$ \hyperlink{class_my_hypothesis_a61391d3f1f6fbbe37663b22e2068ac90}{call} (const \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} x, const \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} err) override
+virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$ \hyperlink{class_my_hypothesis_a61391d3f1f6fbbe37663b22e2068ac90}{call} (const \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} x, const \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} err) override
 \item 
-virtual double \hyperlink{class_my_hypothesis_af60601a7db23e9ed8d1e3343af506733}{compute\+\_\+single\+\_\+likelihood} (const \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} \&datum) override
+virtual double \hyperlink{class_my_hypothesis_af2470b1e04711c06ee551deae15af4c1}{compute\+\_\+single\+\_\+likelihood} (const \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} \&datum) override
 \begin{DoxyCompactList}\small\item\em Compute the likelihood of a single data point. \end{DoxyCompactList}\item 
-double \hyperlink{class_my_hypothesis_a557264ea2caf1b983d621a112cb762c6}{compute\+\_\+likelihood} (const \hyperlink{class_bayesable_a70a593a67c7d43239ecc06bb4fd06a6b}{t\+\_\+data} \&data, const double breakout=-\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity}) override
+double \hyperlink{class_my_hypothesis_a42d7d139cd23f30342e1393fd0873dd1}{compute\+\_\+likelihood} (const \hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t} \&data, const double breakout=-\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity}) override
 \begin{DoxyCompactList}\small\item\em Compute the likelihood of a collection of data, by calling compute\+\_\+single\+\_\+likelihood on each. This stops if our likelihood falls below breakout. \end{DoxyCompactList}\item 
 void \hyperlink{class_my_hypothesis_a91fd22a2724e04c0e7c67ea4282beac4}{print} (std\+::string prefix=\char`\"{}\char`\"{}) override
 \item 
-virtual double \hyperlink{class_my_hypothesis_a85348639689176eaf456aaadd63cef2f}{compute\+\_\+likelihood} (const \hyperlink{class_bayesable_a70a593a67c7d43239ecc06bb4fd06a6b}{t\+\_\+data} \&data, const double breakout=-\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity})
-\begin{DoxyCompactList}\small\item\em Compute the likelihood of a collection of data, by calling compute\+\_\+single\+\_\+likelihood on each. This stops if our likelihood falls below breakout. \end{DoxyCompactList}\item 
-\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{class_my_hypothesis_a3de47a545e8824bb8c63181965c62a01}{dispatch\+\_\+custom} (\hyperlink{class_instruction}{Instruction} i, \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ float, float $>$ $\ast$pool, \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ float, float $>$ $\ast$vms, \hyperlink{class_dispatchable}{Dispatchable}$<$ float, float $>$ $\ast$loader)
+double \hyperlink{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}{compute\+\_\+single\+\_\+likelihood} (const \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} \&x) override
+\begin{DoxyCompactList}\small\item\em Compute the likelihood of a single data point. \end{DoxyCompactList}\item 
+void \hyperlink{class_my_hypothesis_a91fd22a2724e04c0e7c67ea4282beac4}{print} (std\+::string prefix=\char`\"{}\char`\"{}) override
 \item 
-double \hyperlink{class_my_hypothesis_a5e6bd5e0ebcb987aa4f0adf4295dba11}{compute\+\_\+single\+\_\+likelihood} (const \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} \&x)
+size\+\_\+t \hyperlink{class_my_hypothesis_a536a607a2008f50fb1062fd540c60063}{recursion\+\_\+count} ()
+\item 
+double \hyperlink{class_my_hypothesis_a67477313b60b21158bbfaad35dc5d275}{compute\+\_\+prior} () override
+\begin{DoxyCompactList}\small\item\em Compute the prior -- defaultly not defined. \end{DoxyCompactList}\item 
+\hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ word $>$ \hyperlink{class_my_hypothesis_a88c6c3c093e040601d7283abf09b6348}{call} (const utterance \&input)
+\item 
+double \hyperlink{class_my_hypothesis_a480fc9e50d0faa0f5226f56187fd2eec}{compute\+\_\+single\+\_\+likelihood} (const \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} \&d) override
+\begin{DoxyCompactList}\small\item\em Compute the likelihood of a single data point. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_my_hypothesis_a81fa991ffd2cabe6f71ec129ae26ca6c}{print} (std\+::string prefix=\char`\"{}\char`\"{}) override
+\item 
+virtual double \hyperlink{class_my_hypothesis_ad5cd40d67c9b6fb61311a5f4a08df426}{compute\+\_\+likelihood} (const \hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t} \&data, const double breakout=-\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity}) override
+\begin{DoxyCompactList}\small\item\em Compute the likelihood of a collection of data, by calling compute\+\_\+single\+\_\+likelihood on each. This stops if our likelihood falls below breakout. \end{DoxyCompactList}\item 
+double \hyperlink{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}{compute\+\_\+single\+\_\+likelihood} (const \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} \&x) override
 \begin{DoxyCompactList}\small\item\em Compute the likelihood of a single data point. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
 
@@ -56,45 +70,70 @@ double \hyperlink{class_my_hypothesis_a5e6bd5e0ebcb987aa4f0adf4295dba11}{compute
 \subsection{Detailed Description}
 
 \begin{DoxyCode}
-    This is a global variable that provides a convenient way to wrap our primitives
-    where we can pair up a \textcolor{keyword}{function} with a name, and \hyperlink{_miscellaneous_8h_a9f2587d1070b8924b276ba83988d3667}{pass} that as a constructor
-    to the \hyperlink{class_l_o_t_hypothesis_aa7cf638b5d680794e33aa5eb4bd36b09}{grammar}. We need a tuple here because \hyperlink{struct_primitive}{Primitive} has a bunch of \textcolor{keyword}{template}
-    types to handle thee \textcolor{keyword}{function} it has, so each is actually a different type.
-    This must be defined before we \textcolor{keyword}{import} \hyperlink{namespace_fleet}{Fleet} because \hyperlink{namespace_fleet}{Fleet} does some \textcolor{keyword}{template}
-    magic internally
+    Declare a \hyperlink{class_l_o_t_hypothesis_affae32db28c39df676809ae47e14e7cf}{grammar}
+    This requires a \textcolor{keyword}{template} to specify what types they are (and what order they are stored in)
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
 
-
-std::tuple PRIMITIVES = \{
-    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"and(%s,%s)"},    +[](\textcolor{keywordtype}{bool} a, \textcolor{keywordtype}{bool} b) -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} (a and b); \}, 2.0), \textcolor{comment}{//
-       optional specification of prior weight (default=1.0)}
-    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"or(%s,%s)"},     +[](\textcolor{keywordtype}{bool} a, \textcolor{keywordtype}{bool} b) -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} (a or b); \}),
-    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"not(%s)"},       +[](\textcolor{keywordtype}{bool} a)         -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} (not a); \}),
-    \textcolor{comment}{// that + is really insane, but is needed to convert a lambda to a function pointer}
-
-    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"red(%s)"},       +[](\hyperlink{struct_object}{Object} x)       -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} x.
-      \hyperlink{struct_object_a3ed85d6e0b0b62ff2501d421cb55c5e9}{color} == \hyperlink{_rational_rules_2_main_8cpp_ab87bacfdad76e61b9412d7124be44c1caee38e4d5dd68c4e440825018d549cb47}{Color::Red}; \}),
-    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"green(%s)"},     +[](\hyperlink{struct_object}{Object} x)       -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} x.
-      \hyperlink{struct_object_a3ed85d6e0b0b62ff2501d421cb55c5e9}{color} == \hyperlink{_rational_rules_2_main_8cpp_ab87bacfdad76e61b9412d7124be44c1cad382816a3cbeed082c9e216e7392eed1}{Color::Green}; \}),
-    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"blue(%s)"},      +[](\hyperlink{struct_object}{Object} x)       -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} x.
-      \hyperlink{struct_object_a3ed85d6e0b0b62ff2501d421cb55c5e9}{color} == \hyperlink{_rational_rules_2_main_8cpp_ab87bacfdad76e61b9412d7124be44c1ca9594eec95be70e7b1710f730fdda33d9}{Color::Blue}; \}),
-
-    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"square(%s)"},    +[](\hyperlink{struct_object}{Object} x)       -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} x.
-      \hyperlink{struct_object_a09a35e7356709e994637bd66c2c69fc4}{shape} == \hyperlink{_rational_rules_2_main_8cpp_a55b506070847a13554f8b879c1bfb37caceb46ca115d05c51aa5a16a8867c3304}{Shape::Square}; \}),
-    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"triangle(%s)"},  +[](\hyperlink{struct_object}{Object} x)       -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} x.
-      \hyperlink{struct_object_a09a35e7356709e994637bd66c2c69fc4}{shape} == \hyperlink{_rational_rules_2_main_8cpp_a55b506070847a13554f8b879c1bfb37ca5e5500cb2b82eb72d550de644bd1b64b}{Shape::Triangle}; \}),
-    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"circle(%s)"},    +[](\hyperlink{struct_object}{Object} x)       -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} x.
-      \hyperlink{struct_object_a09a35e7356709e994637bd66c2c69fc4}{shape} == \hyperlink{_rational_rules_2_main_8cpp_a55b506070847a13554f8b879c1bfb37ca30954d90085f6eaaf5817917fc5fecb3}{Shape::Circle}; \}),
-
-
-    \textcolor{comment}{// but we also have to add a rule for the BuiltinOp that access x, our argument}
-    \hyperlink{struct_builtin_1_1_x}{Builtin::X<Object>}(\textcolor{stringliteral}{"x"}, 10.0)
+\textcolor{comment}{// declare a grammar with our primitives}
+\textcolor{comment}{// Note that this ordering of primitives defines the order in Grammar}
+\textcolor{keyword}{class }\hyperlink{class_my_grammar}{MyGrammar} : \textcolor{keyword}{public} \hyperlink{class_grammar}{Grammar<S,bool>} \{
+    \textcolor{keyword}{using} \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{Super} = \hyperlink{class_grammar}{Grammar<S,bool>};
+    \textcolor{keyword}{using} Super::Super;
 \};
 
-\textcolor{comment}{// Includes critical files. Also defines some variables (mcts\_steps, explore, etc.) that get processed from
-       argv }
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ Declare our hypothesis type $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$
+
+
+\begin{DoxyCode}
+    Declare a \hyperlink{class_l_o_t_hypothesis_affae32db28c39df676809ae47e14e7cf}{grammar}
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+\textcolor{keyword}{class }\hyperlink{class_my_grammar}{MyGrammar} : \textcolor{keyword}{public} \hyperlink{class_grammar}{Grammar}<bool,word,set,objectkind,utterance,wmset,magnitude,double>
+       \{
+    \textcolor{keyword}{using} \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{Super}=
+      \hyperlink{class_grammar}{Grammar<bool,word,set,objectkind,utterance,wmset,magnitude,double>}
+      ;
+    \textcolor{keyword}{using} Super::Super;
+\};
+
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ Declare our hypothesis type $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$
+
+
+\begin{DoxyCode}
+    Define the \hyperlink{class_l_o_t_hypothesis_affae32db28c39df676809ae47e14e7cf}{grammar}
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+\textcolor{keyword}{class }\hyperlink{class_my_grammar}{MyGrammar} : \textcolor{keyword}{public} \hyperlink{class_grammar}{Grammar}<float> \{
+    \textcolor{keyword}{using} \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{Super}=\hyperlink{class_grammar}{Grammar<float>};
+    \textcolor{keyword}{using} Super::Super;
+\};
+
+
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ Define hypothesis This is an example where our data is different -- it\textquotesingle{}s a set instead of a vector $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$
+
+
+\begin{DoxyCode}
+    Define the \hyperlink{class_l_o_t_hypothesis_affae32db28c39df676809ae47e14e7cf}{grammar}
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+\textcolor{keyword}{class }\hyperlink{class_my_grammar}{MyGrammar} : \textcolor{keyword}{public} \hyperlink{class_grammar}{Grammar}<bool,Object> \{
+    \textcolor{keyword}{using} \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{Super} =  \hyperlink{class_grammar}{Grammar<bool,Object>};
+    \textcolor{keyword}{using} Super::Super;
+\};
 
 
 \textcolor{comment}{/*}
@@ -102,57 +141,60 @@ std::tuple PRIMITIVES = \{
  Define a class for handling my specific hypotheses and data. Everything is defaultly a P\+C\+FG prior and regeneration proposals, but I have to define a likelihood $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
 
 \subsection{Member Typedef Documentation}
-\mbox{\Hypertarget{class_my_hypothesis_aab716e490381d01aeb22e525eb90e863}\label{class_my_hypothesis_aab716e490381d01aeb22e525eb90e863}} 
+\mbox{\Hypertarget{class_my_hypothesis_aebf7eaf0477f8b39639e917bc87d208f}\label{class_my_hypothesis_aebf7eaf0477f8b39639e917bc87d208f}} 
 \index{My\+Hypothesis@{My\+Hypothesis}!Super@{Super}}
 \index{Super@{Super}!My\+Hypothesis@{My\+Hypothesis}}
-\subsubsection{\texorpdfstring{Super}{Super}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
-{\footnotesize\ttfamily using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{My\+Hypothesis\+::\+Super} =  \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$\hyperlink{class_my_hypothesis}{My\+Hypothesis},\hyperlink{class_node}{Node},float,float, float, std\+::multiset$<$float$>$ $>$}
+\subsubsection{\texorpdfstring{Super}{Super}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{My\+Hypothesis\+::\+Super} =  \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$\hyperlink{class_my_hypothesis}{My\+Hypothesis},float,float,\hyperlink{class_my_grammar}{My\+Grammar},float,std\+::multiset$<$float$>$ $>$}
 
-\mbox{\Hypertarget{class_my_hypothesis_a8621c1813f3fb8590df10e75be30d4cb}\label{class_my_hypothesis_a8621c1813f3fb8590df10e75be30d4cb}} 
+\mbox{\Hypertarget{class_my_hypothesis_af34a1c11e5b0aae4a52b54bfdd7a0617}\label{class_my_hypothesis_af34a1c11e5b0aae4a52b54bfdd7a0617}} 
 \index{My\+Hypothesis@{My\+Hypothesis}!Super@{Super}}
 \index{Super@{Super}!My\+Hypothesis@{My\+Hypothesis}}
-\subsubsection{\texorpdfstring{Super}{Super}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
-{\footnotesize\ttfamily using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{My\+Hypothesis\+::\+Super} =  \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$\hyperlink{class_my_hypothesis}{My\+Hypothesis},\hyperlink{class_node}{Node},\hyperlink{struct_object}{Object},bool$>$}
+\subsubsection{\texorpdfstring{Super}{Super}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{My\+Hypothesis\+::\+Super} =  \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$\hyperlink{class_my_hypothesis}{My\+Hypothesis},Object,bool,\hyperlink{class_my_grammar}{My\+Grammar}$>$}
+
+\mbox{\Hypertarget{class_my_hypothesis_ae5fab2ea7ef7729968ac60a2ce267168}\label{class_my_hypothesis_ae5fab2ea7ef7729968ac60a2ce267168}} 
+\index{My\+Hypothesis@{My\+Hypothesis}!Super@{Super}}
+\index{Super@{Super}!My\+Hypothesis@{My\+Hypothesis}}
+\subsubsection{\texorpdfstring{Super}{Super}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{My\+Hypothesis\+::\+Super} =  \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$\hyperlink{class_my_hypothesis}{My\+Hypothesis},\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S},\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S},\hyperlink{class_my_grammar}{My\+Grammar}$>$}
+
+\mbox{\Hypertarget{class_my_hypothesis_a1c1cfa95f1a49b273f8a93b3246342e6}\label{class_my_hypothesis_a1c1cfa95f1a49b273f8a93b3246342e6}} 
+\index{My\+Hypothesis@{My\+Hypothesis}!Super@{Super}}
+\index{Super@{Super}!My\+Hypothesis@{My\+Hypothesis}}
+\subsubsection{\texorpdfstring{Super}{Super}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{My\+Hypothesis\+::\+Super} =  \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$\hyperlink{class_my_hypothesis}{My\+Hypothesis},utterance,word,\hyperlink{class_my_grammar}{My\+Grammar}$>$}
 
 \mbox{\Hypertarget{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}\label{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}} 
 \index{My\+Hypothesis@{My\+Hypothesis}!Super@{Super}}
 \index{Super@{Super}!My\+Hypothesis@{My\+Hypothesis}}
-\subsubsection{\texorpdfstring{Super}{Super}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
-{\footnotesize\ttfamily using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{My\+Hypothesis\+::\+Super} =  \hyperlink{class_lexicon}{Lexicon}$<$\hyperlink{class_my_hypothesis}{My\+Hypothesis}, \hyperlink{class_inner_hypothesis}{Inner\+Hypothesis}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}$>$}
-
-
-
-\subsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{class_my_hypothesis_ab3ad1dfa93e404fd827df6a57185f5a7}\label{class_my_hypothesis_ab3ad1dfa93e404fd827df6a57185f5a7}} 
-\index{My\+Hypothesis@{My\+Hypothesis}!My\+Hypothesis@{My\+Hypothesis}}
-\index{My\+Hypothesis@{My\+Hypothesis}!My\+Hypothesis@{My\+Hypothesis}}
-\subsubsection{\texorpdfstring{My\+Hypothesis()}{MyHypothesis()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily My\+Hypothesis\+::\+My\+Hypothesis (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
-\mbox{\Hypertarget{class_my_hypothesis_a63709659c875c246a506dcff907e1cdd}\label{class_my_hypothesis_a63709659c875c246a506dcff907e1cdd}} 
-\index{My\+Hypothesis@{My\+Hypothesis}!My\+Hypothesis@{My\+Hypothesis}}
-\index{My\+Hypothesis@{My\+Hypothesis}!My\+Hypothesis@{My\+Hypothesis}}
-\subsubsection{\texorpdfstring{My\+Hypothesis()}{MyHypothesis()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily My\+Hypothesis\+::\+My\+Hypothesis (\begin{DoxyParamCaption}\item[{const \hyperlink{class_my_hypothesis}{My\+Hypothesis} \&}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\subsubsection{\texorpdfstring{Super}{Super}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{My\+Hypothesis\+::\+Super} =  \hyperlink{class_lexicon}{Lexicon}$<$\hyperlink{class_my_hypothesis}{My\+Hypothesis}, \hyperlink{class_inner_hypothesis}{Inner\+Hypothesis}, \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}$>$}
 
 
 
 \subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_my_hypothesis_a88c6c3c093e040601d7283abf09b6348}\label{class_my_hypothesis_a88c6c3c093e040601d7283abf09b6348}} 
+\index{My\+Hypothesis@{My\+Hypothesis}!call@{call}}
+\index{call@{call}!My\+Hypothesis@{My\+Hypothesis}}
+\subsubsection{\texorpdfstring{call()}{call()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$word$>$ My\+Hypothesis\+::call (\begin{DoxyParamCaption}\item[{const utterance \&}]{input }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
 \mbox{\Hypertarget{class_my_hypothesis_a61391d3f1f6fbbe37663b22e2068ac90}\label{class_my_hypothesis_a61391d3f1f6fbbe37663b22e2068ac90}} 
 \index{My\+Hypothesis@{My\+Hypothesis}!call@{call}}
 \index{call@{call}!My\+Hypothesis@{My\+Hypothesis}}
-\subsubsection{\texorpdfstring{call()}{call()}}
-{\footnotesize\ttfamily virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$\hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}$>$ My\+Hypothesis\+::call (\begin{DoxyParamCaption}\item[{const \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}}]{x,  }\item[{const \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}}]{err }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+\subsubsection{\texorpdfstring{call()}{call()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}$>$ My\+Hypothesis\+::call (\begin{DoxyParamCaption}\item[{const \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}}]{x,  }\item[{const \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}}]{err }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-Implements \hyperlink{class_lexicon_aaaff682145f9cb15f7252420fe76f111}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}.
+Reimplemented from \hyperlink{class_lexicon_afc6b762f68c6033a501ce7ca04b01ece}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}.
 
-\mbox{\Hypertarget{class_my_hypothesis_a85348639689176eaf456aaadd63cef2f}\label{class_my_hypothesis_a85348639689176eaf456aaadd63cef2f}} 
+\mbox{\Hypertarget{class_my_hypothesis_ad5cd40d67c9b6fb61311a5f4a08df426}\label{class_my_hypothesis_ad5cd40d67c9b6fb61311a5f4a08df426}} 
 \index{My\+Hypothesis@{My\+Hypothesis}!compute\+\_\+likelihood@{compute\+\_\+likelihood}}
 \index{compute\+\_\+likelihood@{compute\+\_\+likelihood}!My\+Hypothesis@{My\+Hypothesis}}
 \subsubsection{\texorpdfstring{compute\+\_\+likelihood()}{compute\_likelihood()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily virtual double My\+Hypothesis\+::compute\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_a70a593a67c7d43239ecc06bb4fd06a6b}{t\+\_\+data} \&}]{data,  }\item[{const double}]{breakout = {\ttfamily -\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily virtual double My\+Hypothesis\+::compute\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t} \&}]{data,  }\item[{const double}]{breakout = {\ttfamily -\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -170,13 +212,13 @@ Compute the likelihood of a collection of data, by calling compute\+\_\+single\+
 \end{DoxyReturn}
 
 
-Reimplemented from \hyperlink{class_bayesable_af9547335ae15a5068b10d29aee5056ae}{Bayesable$<$ Args... $>$}.
+Reimplemented from \hyperlink{class_bayesable_a202493156cec15937bee304d807fdbdb}{Bayesable$<$ Args... $>$}.
 
-\mbox{\Hypertarget{class_my_hypothesis_a557264ea2caf1b983d621a112cb762c6}\label{class_my_hypothesis_a557264ea2caf1b983d621a112cb762c6}} 
+\mbox{\Hypertarget{class_my_hypothesis_a42d7d139cd23f30342e1393fd0873dd1}\label{class_my_hypothesis_a42d7d139cd23f30342e1393fd0873dd1}} 
 \index{My\+Hypothesis@{My\+Hypothesis}!compute\+\_\+likelihood@{compute\+\_\+likelihood}}
 \index{compute\+\_\+likelihood@{compute\+\_\+likelihood}!My\+Hypothesis@{My\+Hypothesis}}
 \subsubsection{\texorpdfstring{compute\+\_\+likelihood()}{compute\_likelihood()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily double My\+Hypothesis\+::compute\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_a70a593a67c7d43239ecc06bb4fd06a6b}{t\+\_\+data} \&}]{data,  }\item[{const double}]{breakout = {\ttfamily -\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily double My\+Hypothesis\+::compute\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t} \&}]{data,  }\item[{const double}]{breakout = {\ttfamily -\/\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -194,12 +236,26 @@ Compute the likelihood of a collection of data, by calling compute\+\_\+single\+
 \end{DoxyReturn}
 
 
-Reimplemented from \hyperlink{class_bayesable_af9547335ae15a5068b10d29aee5056ae}{Bayesable$<$ Args... $>$}.
+Reimplemented from \hyperlink{class_bayesable_a202493156cec15937bee304d807fdbdb}{Bayesable$<$ Args... $>$}.
+
+\mbox{\Hypertarget{class_my_hypothesis_a67477313b60b21158bbfaad35dc5d275}\label{class_my_hypothesis_a67477313b60b21158bbfaad35dc5d275}} 
+\index{My\+Hypothesis@{My\+Hypothesis}!compute\+\_\+prior@{compute\+\_\+prior}}
+\index{compute\+\_\+prior@{compute\+\_\+prior}!My\+Hypothesis@{My\+Hypothesis}}
+\subsubsection{\texorpdfstring{compute\+\_\+prior()}{compute\_prior()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double My\+Hypothesis\+::compute\+\_\+prior (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Compute the prior -- defaultly not defined. 
+
+
+
+Reimplemented from \hyperlink{class_lexicon_a2e099a68dd08d62897b40647f92eba1c}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}.
 
 \mbox{\Hypertarget{class_my_hypothesis_ab092094c5fc31730de4f40609220bb18}\label{class_my_hypothesis_ab092094c5fc31730de4f40609220bb18}} 
 \index{My\+Hypothesis@{My\+Hypothesis}!compute\+\_\+prior@{compute\+\_\+prior}}
 \index{compute\+\_\+prior@{compute\+\_\+prior}!My\+Hypothesis@{My\+Hypothesis}}
-\subsubsection{\texorpdfstring{compute\+\_\+prior()}{compute\_prior()}}
+\subsubsection{\texorpdfstring{compute\+\_\+prior()}{compute\_prior()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily virtual double My\+Hypothesis\+::compute\+\_\+prior (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
@@ -208,13 +264,13 @@ Compute the prior -- defaultly not defined.
 
 
 
-Reimplemented from \hyperlink{class_lexicon_a1edc72e7c3b422d1c13b6cc3eb33d08d}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}.
+Reimplemented from \hyperlink{class_lexicon_a2e099a68dd08d62897b40647f92eba1c}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}.
 
-\mbox{\Hypertarget{class_my_hypothesis_a5e6bd5e0ebcb987aa4f0adf4295dba11}\label{class_my_hypothesis_a5e6bd5e0ebcb987aa4f0adf4295dba11}} 
+\mbox{\Hypertarget{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}\label{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}} 
 \index{My\+Hypothesis@{My\+Hypothesis}!compute\+\_\+single\+\_\+likelihood@{compute\+\_\+single\+\_\+likelihood}}
 \index{compute\+\_\+single\+\_\+likelihood@{compute\+\_\+single\+\_\+likelihood}!My\+Hypothesis@{My\+Hypothesis}}
-\subsubsection{\texorpdfstring{compute\+\_\+single\+\_\+likelihood()}{compute\_single\_likelihood()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily double My\+Hypothesis\+::compute\+\_\+single\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} \&}]{datum }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+\subsubsection{\texorpdfstring{compute\+\_\+single\+\_\+likelihood()}{compute\_single\_likelihood()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily double My\+Hypothesis\+::compute\+\_\+single\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} \&}]{datum }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -227,13 +283,13 @@ Compute the likelihood of a single data point.
 \end{DoxyParams}
 
 
-Reimplemented from \hyperlink{class_l_o_t_hypothesis_a835f1aafdd4bc4748c343edb80517956}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, Object, bool $>$}.
+Reimplemented from \hyperlink{class_l_o_t_hypothesis_a0ff11e5e328fcfa819a8dd9b5d57bd65}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}.
 
-\mbox{\Hypertarget{class_my_hypothesis_af60601a7db23e9ed8d1e3343af506733}\label{class_my_hypothesis_af60601a7db23e9ed8d1e3343af506733}} 
+\mbox{\Hypertarget{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}\label{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}} 
 \index{My\+Hypothesis@{My\+Hypothesis}!compute\+\_\+single\+\_\+likelihood@{compute\+\_\+single\+\_\+likelihood}}
 \index{compute\+\_\+single\+\_\+likelihood@{compute\+\_\+single\+\_\+likelihood}!My\+Hypothesis@{My\+Hypothesis}}
-\subsubsection{\texorpdfstring{compute\+\_\+single\+\_\+likelihood()}{compute\_single\_likelihood()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily virtual double My\+Hypothesis\+::compute\+\_\+single\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_a7c93a2eeab708378eb321745908718d4}{t\+\_\+datum} \&}]{datum }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+\subsubsection{\texorpdfstring{compute\+\_\+single\+\_\+likelihood()}{compute\_single\_likelihood()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily double My\+Hypothesis\+::compute\+\_\+single\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} \&}]{datum }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -246,30 +302,84 @@ Compute the likelihood of a single data point.
 \end{DoxyParams}
 
 
-Reimplemented from \hyperlink{class_l_o_t_hypothesis_a835f1aafdd4bc4748c343edb80517956}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, Object, bool $>$}.
+Reimplemented from \hyperlink{class_l_o_t_hypothesis_a0ff11e5e328fcfa819a8dd9b5d57bd65}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}.
 
-\mbox{\Hypertarget{class_my_hypothesis_a3de47a545e8824bb8c63181965c62a01}\label{class_my_hypothesis_a3de47a545e8824bb8c63181965c62a01}} 
-\index{My\+Hypothesis@{My\+Hypothesis}!dispatch\+\_\+custom@{dispatch\+\_\+custom}}
-\index{dispatch\+\_\+custom@{dispatch\+\_\+custom}!My\+Hypothesis@{My\+Hypothesis}}
-\subsubsection{\texorpdfstring{dispatch\+\_\+custom()}{dispatch\_custom()}}
-{\footnotesize\ttfamily \hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} My\+Hypothesis\+::dispatch\+\_\+custom (\begin{DoxyParamCaption}\item[{\hyperlink{class_instruction}{Instruction}}]{i,  }\item[{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ float, float $>$ $\ast$}]{pool,  }\item[{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ float, float $>$ $\ast$}]{vms,  }\item[{\hyperlink{class_dispatchable}{Dispatchable}$<$ float, float $>$ $\ast$}]{loader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{class_my_hypothesis_a480fc9e50d0faa0f5226f56187fd2eec}\label{class_my_hypothesis_a480fc9e50d0faa0f5226f56187fd2eec}} 
+\index{My\+Hypothesis@{My\+Hypothesis}!compute\+\_\+single\+\_\+likelihood@{compute\+\_\+single\+\_\+likelihood}}
+\index{compute\+\_\+single\+\_\+likelihood@{compute\+\_\+single\+\_\+likelihood}!My\+Hypothesis@{My\+Hypothesis}}
+\subsubsection{\texorpdfstring{compute\+\_\+single\+\_\+likelihood()}{compute\_single\_likelihood()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily double My\+Hypothesis\+::compute\+\_\+single\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} \&}]{datum }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-Reimplemented from \hyperlink{class_l_o_t_hypothesis_a9aade3ee6939a58e5d5b53505cfb2e7a}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, float, float, float, std\+::multiset$<$ float $>$ $>$}.
+Compute the likelihood of a single data point. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em datum} & \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_l_o_t_hypothesis_a0ff11e5e328fcfa819a8dd9b5d57bd65}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}.
+
+\mbox{\Hypertarget{class_my_hypothesis_af2470b1e04711c06ee551deae15af4c1}\label{class_my_hypothesis_af2470b1e04711c06ee551deae15af4c1}} 
+\index{My\+Hypothesis@{My\+Hypothesis}!compute\+\_\+single\+\_\+likelihood@{compute\+\_\+single\+\_\+likelihood}}
+\index{compute\+\_\+single\+\_\+likelihood@{compute\+\_\+single\+\_\+likelihood}!My\+Hypothesis@{My\+Hypothesis}}
+\subsubsection{\texorpdfstring{compute\+\_\+single\+\_\+likelihood()}{compute\_single\_likelihood()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily virtual double My\+Hypothesis\+::compute\+\_\+single\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} \&}]{datum }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Compute the likelihood of a single data point. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em datum} & \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_l_o_t_hypothesis_a0ff11e5e328fcfa819a8dd9b5d57bd65}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}.
 
 \mbox{\Hypertarget{class_my_hypothesis_a91fd22a2724e04c0e7c67ea4282beac4}\label{class_my_hypothesis_a91fd22a2724e04c0e7c67ea4282beac4}} 
 \index{My\+Hypothesis@{My\+Hypothesis}!print@{print}}
 \index{print@{print}!My\+Hypothesis@{My\+Hypothesis}}
-\subsubsection{\texorpdfstring{print()}{print()}}
+\subsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
 {\footnotesize\ttfamily void My\+Hypothesis\+::print (\begin{DoxyParamCaption}\item[{std\+::string}]{prefix = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-Reimplemented from \hyperlink{class_bayesable_a3f31fa34270083429fb23da21ad50432}{Bayesable$<$ Args... $>$}.
+Reimplemented from \hyperlink{class_bayesable_a87d5d9481d6a72b017e44b175071fa5e}{Bayesable$<$ Args... $>$}.
+
+\mbox{\Hypertarget{class_my_hypothesis_a81fa991ffd2cabe6f71ec129ae26ca6c}\label{class_my_hypothesis_a81fa991ffd2cabe6f71ec129ae26ca6c}} 
+\index{My\+Hypothesis@{My\+Hypothesis}!print@{print}}
+\index{print@{print}!My\+Hypothesis@{My\+Hypothesis}}
+\subsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily virtual void My\+Hypothesis\+::print (\begin{DoxyParamCaption}\item[{std\+::string}]{prefix = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{class_bayesable_a87d5d9481d6a72b017e44b175071fa5e}{Bayesable$<$ Args... $>$}.
+
+\mbox{\Hypertarget{class_my_hypothesis_a91fd22a2724e04c0e7c67ea4282beac4}\label{class_my_hypothesis_a91fd22a2724e04c0e7c67ea4282beac4}} 
+\index{My\+Hypothesis@{My\+Hypothesis}!print@{print}}
+\index{print@{print}!My\+Hypothesis@{My\+Hypothesis}}
+\subsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily void My\+Hypothesis\+::print (\begin{DoxyParamCaption}\item[{std\+::string}]{prefix = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{class_bayesable_a87d5d9481d6a72b017e44b175071fa5e}{Bayesable$<$ Args... $>$}.
+
+\mbox{\Hypertarget{class_my_hypothesis_a536a607a2008f50fb1062fd540c60063}\label{class_my_hypothesis_a536a607a2008f50fb1062fd540c60063}} 
+\index{My\+Hypothesis@{My\+Hypothesis}!recursion\+\_\+count@{recursion\+\_\+count}}
+\index{recursion\+\_\+count@{recursion\+\_\+count}!My\+Hypothesis@{My\+Hypothesis}}
+\subsubsection{\texorpdfstring{recursion\+\_\+count()}{recursion\_count()}}
+{\footnotesize\ttfamily size\+\_\+t My\+Hypothesis\+::recursion\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-Models/\+Formal\+Language\+Theory-\/\+Complex/\hyperlink{_formal_language_theory-_complex_2_main_8cpp}{Main.\+cpp}\end{DoxyCompactItemize}
+Models/\+Formal\+Language\+Theory-\/\+Complex/\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp}{Main.\+cpp}\end{DoxyCompactItemize}

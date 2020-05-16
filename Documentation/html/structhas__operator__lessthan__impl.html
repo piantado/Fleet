@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Fleet: has_operator_lessthan_impl&lt; T, EqualTo &gt; Struct Template Reference</title>
+<title>Fleet: has_operator_lessthan_impl&lt; T, EqualTo &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,11 +66,11 @@ $(function() {
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structhas__operator__lessthan__impl-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">has_operator_lessthan_impl&lt; T, EqualTo &gt; Struct Template Reference</div>  </div>
+<div class="title">has_operator_lessthan_impl&lt; T, EqualTo &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="_template_magic_8h_source.html">TemplateMagic.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_virtual_machine_state_8h_source.html">VirtualMachineState.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -88,9 +88,10 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class T, class EqualTo&gt;<br />
-struct has_operator_lessthan_impl&lt; T, EqualTo &gt;</h3>
+class has_operator_lessthan_impl&lt; T, EqualTo &gt;</h3>
 
-<div class="fragment"><div class="line">    Find the numerical index (as a nonterminal_t) in a tuple of a given <a class="code" href="structhas__operator__lessthan__impl.html#a94158125949ce4db0eefedbdc4cbad73">type</a></div><div class="line">   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */</div><div class="line"></div><div class="line"><span class="comment">// When users define the macro FLEET_GRAMMAR_TYPES, as in </span></div><div class="line"><span class="comment">// #define FLEET_GRAMMAR_TYPES int,double,char</span></div><div class="line"><span class="comment">// then we can use type2int to map each to a unique int. This mapping to ints is</span></div><div class="line"><span class="comment">// for example how Fleet stores information in the grammar</span></div><div class="line"></div><div class="line"><span class="comment">// When users define the macro FLEET_GRAMMAR_TYPES, as in </span></div><div class="line"><span class="comment">// #define FLEET_GRAMMAR_TYPES int,double,char</span></div><div class="line"><span class="comment">// then we can use type2int to map each to a unique int. This mapping to ints is</span></div><div class="line"><span class="comment">// for example how Fleet stores information in the grammar</span></div><div class="line"></div><div class="line"><span class="keyword">typedef</span> <span class="keywordtype">size_t</span> nonterminal_t;</div><div class="line"></div><div class="line"><span class="comment">// from https://stackoverflow.com/questions/42258608/c-constexpr-values-for-types</span></div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keyword">class</span> Tuple&gt;</div><div class="line"><span class="keyword">struct </span>TypeIndex;</div><div class="line"></div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class </span>T, <span class="keyword">class</span>... Types&gt;</div><div class="line"><span class="keyword">struct </span>TypeIndex&lt;T, std::tuple&lt;T, Types...&gt;&gt; {</div><div class="line">    <span class="keyword">static</span> <span class="keyword">const</span> nonterminal_t value = 0;</div><div class="line">};</div><div class="line"></div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class </span>T, <span class="keyword">class </span>U, <span class="keyword">class</span>... Types&gt;</div><div class="line"><span class="keyword">struct </span>TypeIndex&lt;T, std::tuple&lt;U, Types...&gt;&gt; {</div><div class="line">    <span class="keyword">static</span> <span class="keyword">const</span> nonterminal_t value = 1 + TypeIndex&lt;T, std::tuple&lt;Types...&gt;&gt;::value;</div><div class="line">};</div><div class="line"></div><div class="line"><span class="comment">/*</span></div></div><!-- fragment --><p> Fancy trick to see if a class implements operator&lt; (for filtering out in op_MEM code so it doesn't give an error if we use t_input that doesn't implement operator&lt; as long as no op_MEM is called ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ </p>
+<dl class="section author"><dt>Author</dt><dd>piantado </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>07/05/20 </dd></dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a94158125949ce4db0eefedbdc4cbad73"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a94158125949ce4db0eefedbdc4cbad73">&#9670;&nbsp;</a></span>type</h2>
@@ -169,8 +170,8 @@ template&lt;typename , typename &gt; </div>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li>src/<a class="el" href="_template_magic_8h_source.html">TemplateMagic.h</a></li>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>src/VirtualMachine/<a class="el" href="_virtual_machine_state_8h_source.html">VirtualMachineState.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

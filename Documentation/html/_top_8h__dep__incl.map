@@ -1,12 +1,13 @@
 <map id="src/Statistics/Top.h" name="src/Statistics/Top.h">
-<area shape="rect" id="node2" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="703,333,787,360"/>
-<area shape="rect" id="node9" href="$_reservoir_sample_8h.html" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="727,80,885,121"/>
-<area shape="rect" id="node3" href="$_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,408,209,449"/>
-<area shape="rect" id="node4" href="$_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,408,437,449"/>
-<area shape="rect" id="node5" href="$_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,408,617,449"/>
-<area shape="rect" id="node6" href="$_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="641,415,848,442"/>
-<area shape="rect" id="node7" href="$_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="872,408,1023,449"/>
-<area shape="rect" id="node8" href="$_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="1047,408,1197,449"/>
-<area shape="rect" id="node10" href="$_streaming_statistics_8h.html" title="A class to store a bunch of statistics about incoming data points, including min, max..." alt="" coords="726,169,889,211"/>
-<area shape="rect" id="node11" href="$_m_c_t_s_8h.html" title="Template of self type M, hypothesis type HYP. This requires us to inherit and override playout to do ..." alt="" coords="729,259,880,285"/>
+<area shape="rect" id="node2" href="$_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="5,408,179,449"/>
+<area shape="rect" id="node3" href="$_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="1259,408,1413,449"/>
+<area shape="rect" id="node4" href="$_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="203,415,410,442"/>
+<area shape="rect" id="node5" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="651,333,735,360"/>
+<area shape="rect" id="node10" href="$_reservoir_sample_8h.html" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="619,80,778,121"/>
+<area shape="rect" id="node6" href="$_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="802,408,1006,449"/>
+<area shape="rect" id="node7" href="$_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="1030,408,1234,449"/>
+<area shape="rect" id="node8" href="$_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="434,408,585,449"/>
+<area shape="rect" id="node9" href="$_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="609,415,777,442"/>
+<area shape="rect" id="node11" href="$_streaming_statistics_8h.html" title="A class to store a bunch of statistics about incoming data points, including min, max..." alt="" coords="617,169,780,211"/>
+<area shape="rect" id="node12" href="$_m_c_t_s_8h.html" title="Template of self type M, hypothesis type HYP. This requires us to inherit and override playout to do ..." alt="" coords="623,259,774,285"/>
 </map>

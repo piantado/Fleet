@@ -1,6 +1,7 @@
 \hypertarget{dir_69acd907a0659b8a578a2751af70f096}{}\section{src/\+Virtual\+Machine Directory Reference}
 \label{dir_69acd907a0659b8a578a2751af70f096}\index{src/\+Virtual\+Machine Directory Reference@{src/\+Virtual\+Machine Directory Reference}}
-Directory dependency graph for Virtual\+Machine\+:\nopagebreak
+Directory dependency graph for Virtual\+Machine\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -10,17 +11,19 @@ Directory dependency graph for Virtual\+Machine\+:\nopagebreak
 \subsection*{Files}
 \begin{DoxyCompactItemize}
 \item 
-file \hyperlink{_builtins_8h}{Builtins.\+h}
+file \hyperlink{apply_primitives_8h}{apply\+Primitives.\+h}
 \item 
+file \hyperlink{_builtins_8h}{Builtins.\+h}
+\begin{DoxyCompactList}\small\item\em This is needed below so we can check if something is a \hyperlink{namespace_builtin}{Builtin} without template args. \end{DoxyCompactList}\item 
 file \hyperlink{_case_macros_8h}{Case\+Macros.\+h}
 \item 
 file \hyperlink{_instruction_8h}{Instruction.\+h}
 \begin{DoxyCompactList}\small\item\em This is an error type that is returned if we get a runtime error (e.\+g. string length, etc.) \end{DoxyCompactList}\item 
 file \hyperlink{_primitives_8h}{Primitives.\+h}
-\begin{DoxyCompactList}\small\item\em A preprimitive is a class that primitives inherit. We use a static op\+\_\+counter so that at compile time thsi can be used to compute an op number for each separate primitive. \end{DoxyCompactList}\item 
-file \hyperlink{_primitives2_8h}{Primitives2.\+h}
+\begin{DoxyCompactList}\small\item\em If there are any references in the arguments, only the first can be a reference. \end{DoxyCompactList}\item 
+file \hyperlink{_program_8h}{Program.\+h}
 \item 
 file \hyperlink{_virtual_machine_pool_8h}{Virtual\+Machine\+Pool.\+h}
 \begin{DoxyCompactList}\small\item\em This manages a collection of Virtual\+Machines -- this is what handles the enumeration of flip by probability. Basically each machine state stores the state of some evaluator and is able to push things back on to the Q if it encounters a random flip This stores pointers because it is impossible to copy out of std collections, so we are constantly having to call \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State} constructors. Using pointers speeds us up by about 20\%. \end{DoxyCompactList}\item 
 file \hyperlink{_virtual_machine_state_8h}{Virtual\+Machine\+State.\+h}
-\begin{DoxyCompactList}\small\item\em This represents the state of a partial evaluation of a program, corresponding to the value of all of the stacks of various types (which are stored as templates from F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES). The idea here is that we want to be able to encapsulate everything about the evaluation of a tree so that we can stop it in the middle and resume later, as is required for stochastics. This must be templated because it depends on the types in the grammar. These will typically be stored in a \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool} and not called directly, unless you know that there are no stochastics. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Count references in lambda arguments (used to ensure we only passs one) \end{DoxyCompactList}\end{DoxyCompactItemize}

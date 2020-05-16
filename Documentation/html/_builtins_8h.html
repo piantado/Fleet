@@ -67,21 +67,30 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Builtins.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This is needed below so we can check if something is a <a class="el" href="namespace_builtin.html">Builtin</a> without template args.  
+<a href="#details">More...</a></p>
 <div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_builtins_8h__dep__incl.png" border="0" usemap="#src_2_virtual_machine_2_builtins_8hdep" alt=""/></div>
 <map name="src_2_virtual_machine_2_builtins_8hdep" id="src_2_virtual_machine_2_builtins_8hdep">
-<area shape="rect" id="node2" href="_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,95,209,136"/>
-<area shape="rect" id="node3" href="_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,95,437,136"/>
-<area shape="rect" id="node4" href="_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,95,617,136"/>
-<area shape="rect" id="node5" href="_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="641,102,848,129"/>
-<area shape="rect" id="node6" href="_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="872,95,1023,136"/>
+<area shape="rect" id="node2" href="_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="611,244,815,285"/>
+<area shape="rect" id="node3" href="_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="5,244,209,285"/>
+<area shape="rect" id="node4" href="_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="234,244,389,285"/>
+<area shape="rect" id="node5" href="_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="839,251,1045,278"/>
+<area shape="rect" id="node6" href="_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1069,244,1220,285"/>
+<area shape="rect" id="node7" href="_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="1245,251,1413,278"/>
+<area shape="rect" id="node8" href="_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="628,95,795,121"/>
+<area shape="rect" id="node9" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="463,169,592,196"/>
+<area shape="rect" id="node11" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="669,169,753,196"/>
+<area shape="rect" id="node10" href="_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="413,244,586,285"/>
 </map>
 </div>
 </div>
@@ -89,7 +98,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_builtin_primitive.html">BuiltinPrimitive&lt; t, args &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_builtin_primitive_base.html">BuiltinPrimitiveBase</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_builtin_primitive.html">BuiltinPrimitive&lt; t, args &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_builtin_1_1_if.html">Builtin::If&lt; t &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,7 +121,36 @@ Classes</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespace_builtin"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_builtin.html">Builtin</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a0f3fbc6f42c53cae5f3becc62f320261"><td class="memTemplParams" colspan="2">template&lt;typename T  = void, typename U  = void, typename... Args&gt; </td></tr>
+<tr class="memitem:a0f3fbc6f42c53cae5f3becc62f320261"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_builtins_8h.html#a0f3fbc6f42c53cae5f3becc62f320261">checkBuiltinsAreLast</a> ()</td></tr>
+<tr class="separator:a0f3fbc6f42c53cae5f3becc62f320261"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This is needed below so we can check if something is a <a class="el" href="namespace_builtin.html">Builtin</a> without template args. </p>
+<p>These are convenient wrappers for built-in operations that just bundle toegether format, op, and p this is useful because then we can put the builtins in the same PRIMITIVES bundle so for instance we can have Primitives::If&lt;S&gt;("if(%s,%s,%s)", 1.0) in PRIMITIVES, even though If is a built-in. So these are just data structures that hold this information until grammar.add, where they are mapped onto Rules for builtins.</p>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="a0f3fbc6f42c53cae5f3becc62f320261"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f3fbc6f42c53cae5f3becc62f320261">&#9670;&nbsp;</a></span>checkBuiltinsAreLast()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T  = void, typename U  = void, typename... Args&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="classcheck_builtins_are_last.html">checkBuiltinsAreLast</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

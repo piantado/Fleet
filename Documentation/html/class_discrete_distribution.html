@@ -90,6 +90,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a995377a760a6fe0d44077892053acdbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c93983e2375a2353b10b82ebb11f751"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#a5c93983e2375a2353b10b82ebb11f751">operator&lt;&lt;</a> (const <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; T &gt; &amp;x)</td></tr>
 <tr class="separator:a5c93983e2375a2353b10b82ebb11f751"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad634a339172a69c006fded1beb423bb7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#ad634a339172a69c006fded1beb423bb7">Z</a> () const</td></tr>
+<tr class="separator:ad634a339172a69c006fded1beb423bb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a185ef689b1e133b962fff5bcf1443ba1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#a185ef689b1e133b962fff5bcf1443ba1">lp</a> (const T &amp;x)</td></tr>
+<tr class="separator:a185ef689b1e133b962fff5bcf1443ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adee72a8e4c93aa03d841c0c73d6b5498"><td class="memItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#adee72a8e4c93aa03d841c0c73d6b5498">best</a> (size_t N) const</td></tr>
 <tr class="separator:adee72a8e4c93aa03d841c0c73d6b5498"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94488cfd094f6cde47f15a1f4c7cdbb9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; T, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#a94488cfd094f6cde47f15a1f4c7cdbb9">sorted</a> (bool decreasing=false) const</td></tr>
@@ -98,8 +102,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:afd3fd83dc776f5616e826de18093328b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad74207d32c2ed6c5c26b3f991f4fedba"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#ad74207d32c2ed6c5c26b3f991f4fedba">size</a> () const</td></tr>
 <tr class="separator:ad74207d32c2ed6c5c26b3f991f4fedba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa06afa5c16edf065b1567ea7b6b4356a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#aa06afa5c16edf065b1567ea7b6b4356a">operator[]</a> (T x)</td></tr>
-<tr class="separator:aa06afa5c16edf065b1567ea7b6b4356a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a374bcf1a5b302e6ac618afe9d78e265f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#a374bcf1a5b302e6ac618afe9d78e265f">operator[]</a> (const T x)</td></tr>
+<tr class="separator:a374bcf1a5b302e6ac618afe9d78e265f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb11f1cfbf4ef039c538f06cde8249fd"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#acb11f1cfbf4ef039c538f06cde8249fd">at</a> (T x) const</td></tr>
 <tr class="separator:acb11f1cfbf4ef039c538f06cde8249fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -306,6 +310,41 @@ template&lt;typename T&gt; </div>
 
 </div>
 </div>
+<a id="a185ef689b1e133b962fff5bcf1443ba1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a185ef689b1e133b962fff5bcf1443ba1">&#9670;&nbsp;</a></span>lp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; T &gt;::lp </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Retun the log probability of x, including the normalizing term (NOTE: This makes this O(N) to compute theo normalizer. So this is bad to use if you have to iterate over the set &ndash; you shoul call <a class="el" href="class_discrete_distribution.html#ad634a339172a69c006fded1beb423bb7">Z()</a> separately then </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">N</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a id="a5c93983e2375a2353b10b82ebb11f751"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5c93983e2375a2353b10b82ebb11f751">&#9670;&nbsp;</a></span>operator<<()</h2>
 
@@ -334,8 +373,8 @@ template&lt;typename T&gt; </div>
 
 </div>
 </div>
-<a id="aa06afa5c16edf065b1567ea7b6b4356a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa06afa5c16edf065b1567ea7b6b4356a">&#9670;&nbsp;</a></span>operator[]()</h2>
+<a id="a374bcf1a5b302e6ac618afe9d78e265f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a374bcf1a5b302e6ac618afe9d78e265f">&#9670;&nbsp;</a></span>operator[]()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -348,7 +387,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">double <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; T &gt;::operator[] </td>
           <td>(</td>
-          <td class="paramtype">T&#160;</td>
+          <td class="paramtype">const T&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
         </tr>
@@ -552,6 +591,33 @@ template&lt;typename T&gt; </div>
 
 </div>
 </div>
+<a id="ad634a339172a69c006fded1beb423bb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad634a339172a69c006fded1beb423bb7">&#9670;&nbsp;</a></span>Z()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; T &gt;::Z </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a72a09b5b79a5bf0c55f780b9a81271fb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a72a09b5b79a5bf0c55f780b9a81271fb">&#9670;&nbsp;</a></span>m</h2>
@@ -570,7 +636,7 @@ template&lt;typename T&gt; </div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/<a class="el" href="_discrete_distribution_8h_source.html">DiscreteDistribution.h</a></li>
+<li>src/Statistics/<a class="el" href="_discrete_distribution_8h_source.html">DiscreteDistribution.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -79,7 +79,7 @@ $(function() {
 , <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#a65b06c5de083ac12d5b74facd5444973">Fleet::Statistics::StreamingStatistics</a>
 </li>
 <li>sample_rule()
-: <a class="el" href="class_grammar.html#a50c30e020e54743d5ede0ca9469fdb91">Grammar</a>
+: <a class="el" href="class_grammar.html#aba4d092714b8420d8c0a1be63e8566b6">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>samples
 : <a class="el" href="class_m_c_m_c_chain.html#a0d3ac649b04077cd0ffea236df560c91">MCMCChain&lt; HYP, callback_t &gt;</a>
@@ -109,13 +109,10 @@ $(function() {
 : <a class="el" href="class_node.html#a1a6f6c8062e66046c302a80cc7e8d817">Node</a>
 </li>
 <li>set_value()
-: <a class="el" href="class_l_o_t_hypothesis.html#a873355cca03609ac0ab405d29314e591">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>
-</li>
-<li>shape
-: <a class="el" href="struct_object.html#a09a35e7356709e994637bd66c2c69fc4">Object</a>
+: <a class="el" href="class_l_o_t_hypothesis.html#aac23de5143f24323a05ed32774387ff7">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
 </li>
 <li>show()
-: <a class="el" href="class_grammar.html#aa3c730ea64c8ca5d93fecb4275f2e380">Grammar</a>
+: <a class="el" href="class_grammar.html#a8d661258f08b7cc4d154d59bfbbc1f68">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>show_statistics()
 : <a class="el" href="class_parallel_tempering.html#a9e1960158b12a4dadfab54eb4fb895d3">ParallelTempering&lt; HYP, callback_t &gt;</a>
@@ -126,6 +123,9 @@ $(function() {
 , <a class="el" href="class_fleet_1_1_statistics_1_1_top_n.html#a0ce96f95fbac59ba2a858b66b5a6690a">Fleet::Statistics::TopN&lt; T &gt;</a>
 , <a class="el" href="class_m_c_t_s_node.html#a7996e64e69b1fc705c4e21b4a6e41c39">MCTSNode&lt; M, HYP &gt;</a>
 </li>
+<li>SKGrammar()
+: <a class="el" href="class_fleet_1_1_combinators_1_1_s_k_grammar.html#a92f0ff506d59ba4f0f5c200ec3da4c3b">Fleet::Combinators::SKGrammar</a>
+</li>
 <li>sorted()
 : <a class="el" href="class_discrete_distribution.html#a94488cfd094f6cde47f15a1f4c7cdbb9">DiscreteDistribution&lt; T &gt;</a>
 </li>
@@ -133,10 +133,10 @@ $(function() {
 : <a class="el" href="class_stack.html#aefee698059467258bbd79045aca62a63">Stack&lt; T &gt;</a>
 </li>
 <li>stack()
-: <a class="el" href="class_virtual_machine_state.html#a25fc669934ea3f85f0875ee272c69c2d">VirtualMachineState&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#aa44adbacc52d720bff01098c34275d0e">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>stacks_empty()
-: <a class="el" href="class_virtual_machine_state.html#aa9290fe5ec7bc78a3b57c9623c856f32">VirtualMachineState&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#a08cc1e3bf25e9bf58f798102e364856a">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>start()
 : <a class="el" href="struct_control.html#a933994a3524f2f6d7ef0a17086e7cf66">Control</a>
@@ -149,7 +149,7 @@ $(function() {
 : <a class="el" href="class_m_c_t_s_node.html#a47cdbf0ef4f1e6ccbb6e911d4d384f39">MCTSNode&lt; M, HYP &gt;</a>
 </li>
 <li>status
-: <a class="el" href="class_virtual_machine_state.html#aa78c1891f8a2a656a0b60cd8a698b41d">VirtualMachineState&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#a6e561a217081654b4187620953e86fff">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>step
 : <a class="el" href="class_fleet_1_1_statistics_1_1_median_f_a_m_e.html#a3451548541aad22bb7a1c35291faa357">Fleet::Statistics::MedianFAME&lt; T &gt;</a>
@@ -167,24 +167,24 @@ $(function() {
 : <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#af01ce0d7840f68c8ea68f858ba6760ce">Fleet::Statistics::StreamingStatistics</a>
 </li>
 <li>StreamingStatistics()
-: <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#a7b22725325625cc7f8c89cce4a19c719">Fleet::Statistics::StreamingStatistics</a>
+: <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#ad49b1027b011502f29c9df1d211cf40d">Fleet::Statistics::StreamingStatistics</a>
 </li>
 <li>string()
-: <a class="el" href="class_bayesable.html#a2ec58e98bf37a90ac3d45a7713c6d5ea">Bayesable&lt; _t_datum, _t_data &gt;</a>
+: <a class="el" href="class_bayesable.html#afcea9b439bcf321d5354710d8861cb54">Bayesable&lt; _datum_t, _data_t &gt;</a>
 , <a class="el" href="class_discrete_distribution.html#a87d866919f4698e488aee9ce4bc42ed5">DiscreteDistribution&lt; T &gt;</a>
-, <a class="el" href="class_grammar_hypothesis.html#a75267d7b68cd9b3634f84a464877c07c">GrammarHypothesis&lt; HYP, t_datum, t_data &gt;</a>
-, <a class="el" href="class_lexicon.html#aad37474da522d811415c1ba45ca72dff">Lexicon&lt; HYP, T, t_input, t_output, t_datum &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#a5c91fd3b7ef4ebc585413d723cd17e7e">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>
+, <a class="el" href="class_grammar_hypothesis.html#a55ee98de75a30cea35fdaf62ccf14a90">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
+, <a class="el" href="class_lexicon.html#a5c584d2885a21542082332a26eb0961b">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#acda322aef217a0d358ae6cea19969904">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_node.html#a0590ae269543416be9c4ebdf70bad73b">Node</a>
-, <a class="el" href="class_rule.html#a4a75588d7821c1bcf087ec6ebf82bd0f">Rule</a>
+, <a class="el" href="class_rule.html#a7f16256eabd7bd8b94fbcf857bf1e45b">Rule</a>
 </li>
 <li>sum
 : <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#ab635c93398bfd1cc8c0c65b012d87d83">Fleet::Statistics::StreamingStatistics</a>
 , <a class="el" href="class_node.html#a089e99addd93f91b2ef5a9d0c3e6bdeb">Node</a>
 </li>
 <li>Super
-: <a class="el" href="class_inner_hypothesis.html#a2c15665b923d905f1f7441282780abc2">InnerHypothesis</a>
-, <a class="el" href="class_my_hypothesis.html#a8621c1813f3fb8590df10e75be30d4cb">MyHypothesis</a>
+: <a class="el" href="class_inner_hypothesis.html#a1a69a8dd433b64b725be0b2436d6df0c">InnerHypothesis</a>
+, <a class="el" href="class_my_hypothesis.html#af34a1c11e5b0aae4a52b54bfdd7a0617">MyHypothesis</a>
 </li>
 <li>swap_history
 : <a class="el" href="class_parallel_tempering.html#a86a7b77250a04b5df502f1c770cf51bf">ParallelTempering&lt; HYP, callback_t &gt;</a>

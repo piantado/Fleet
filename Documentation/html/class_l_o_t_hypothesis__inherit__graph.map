@@ -1,6 +1,5 @@
-<map id="LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;" name="LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;">
-<area shape="rect" id="node2" href="$class_dispatchable.html" title="Dispatchable\&lt; t_input,\l t_output \&gt;" alt="" coords="221,5,374,47"/>
-<area shape="rect" id="node3" href="$class_m_c_m_cable.html" title="MCMCable\&lt; HYP, _t_datum,\l _t_data \&gt;" alt="" coords="200,71,395,112"/>
-<area shape="rect" id="node4" href="$class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="5,78,152,105"/>
-<area shape="rect" id="node5" href="$class_searchable.html" title="Searchable\&lt; HYP, t\l_input, t_output \&gt;" alt="" coords="228,136,367,177"/>
+<map id="LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;" name="LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;">
+<area shape="rect" id="node3" href="$class_m_c_m_cable.html" title="MCMCable\&lt; HYP, _datum\l_t, _data_t \&gt;" alt="" coords="200,57,379,98"/>
+<area shape="rect" id="node4" href="$class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="5,64,152,91"/>
+<area shape="rect" id="node5" href="$class_searchable.html" title="Searchable\&lt; HYP, input\l_t, output_t \&gt;" alt="" coords="208,122,371,163"/>
 </map>

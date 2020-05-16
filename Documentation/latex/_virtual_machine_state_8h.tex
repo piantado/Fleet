@@ -2,18 +2,26 @@
 \label{_virtual_machine_state_8h}\index{src/\+Virtual\+Machine/\+Virtual\+Machine\+State.\+h@{src/\+Virtual\+Machine/\+Virtual\+Machine\+State.\+h}}
 
 
-This represents the state of a partial evaluation of a program, corresponding to the value of all of the stacks of various types (which are stored as templates from F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES). The idea here is that we want to be able to encapsulate everything about the evaluation of a tree so that we can stop it in the middle and resume later, as is required for stochastics. This must be templated because it depends on the types in the grammar. These will typically be stored in a \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool} and not called directly, unless you know that there are no stochastics.  
+Count references in lambda arguments (used to ensure we only passs one)  
 
 
 {\ttfamily \#include $<$type\+\_\+traits$>$}\newline
-Include dependency graph for Virtual\+Machine\+State.\+h\+:\nopagebreak
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$tuple$>$}\newline
+{\ttfamily \#include \char`\"{}Program.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Stack.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Statistics/\+Fleet\+Statistics.\+h\char`\"{}}\newline
+Include dependency graph for Virtual\+Machine\+State.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=196pt]{_virtual_machine_state_8h__incl}
+\includegraphics[width=350pt]{_virtual_machine_state_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -23,26 +31,26 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State$<$ t\+\_\+x, t\+\_\+return $>$}
+class \hyperlink{structhas__operator__lessthan__impl}{has\+\_\+operator\+\_\+lessthan\+\_\+impl$<$ T, Equal\+To $>$}
 \item 
-struct \hyperlink{struct_virtual_machine_state_1_1t__stack}{Virtual\+Machine\+State$<$ t\+\_\+x, t\+\_\+return $>$\+::t\+\_\+stack$<$ args $>$}
+struct \hyperlink{structhas__operator__lessthan}{has\+\_\+operator\+\_\+lessthan$<$ T, Equal\+To $>$}
+\item 
+class \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool$<$ V\+M\+State $>$}
+\item 
+class \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+E\+S $>$}
+\item 
+struct \hyperlink{struct_virtual_machine_state_1_1t__stack}{Virtual\+Machine\+State$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+E\+S $>$\+::t\+\_\+stack$<$ args $>$}
 \end{DoxyCompactItemize}
-\subsection*{Functions}
+\subsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
-void \hyperlink{_virtual_machine_state_8h_a1e67905ea5479de4490c1234a2fc5369}{popn} (Program \&s, size\+\_\+t n)
+ \hyperlink{namespace_fleet_statistics}{Fleet\+Statistics}
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-This represents the state of a partial evaluation of a program, corresponding to the value of all of the stacks of various types (which are stored as templates from F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES). The idea here is that we want to be able to encapsulate everything about the evaluation of a tree so that we can stop it in the middle and resume later, as is required for stochastics. This must be templated because it depends on the types in the grammar. These will typically be stored in a \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool} and not called directly, unless you know that there are no stochastics. 
+Count references in lambda arguments (used to ensure we only passs one) 
 
+This represents the state of a partial evaluation of a program, corresponding to the value of all of the stacks of various types (which are stored as templates from V\+M\+\_\+\+T\+Y\+P\+ES). The idea here is that we want to be able to encapsulate everything about the evaluation of a tree so that we can stop it in the middle and resume later, as is required for stochastics. This must be templated because it depends on the types in the grammar. These will typically be stored in a \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool} and not called directly, unless you know that there are no stochastics.
 
-
-\subsection{Function Documentation}
-\mbox{\Hypertarget{_virtual_machine_state_8h_a1e67905ea5479de4490c1234a2fc5369}\label{_virtual_machine_state_8h_a1e67905ea5479de4490c1234a2fc5369}} 
-\index{Virtual\+Machine\+State.\+h@{Virtual\+Machine\+State.\+h}!popn@{popn}}
-\index{popn@{popn}!Virtual\+Machine\+State.\+h@{Virtual\+Machine\+State.\+h}}
-\subsubsection{\texorpdfstring{popn()}{popn()}}
-{\footnotesize\ttfamily void popn (\begin{DoxyParamCaption}\item[{Program \&}]{s,  }\item[{size\+\_\+t}]{n }\end{DoxyParamCaption})}
-
+See if a class implements operator$<$ (for filtering out in op\+\_\+\+M\+EM code so it doesn\textquotesingle{}t give an error if we use input\+\_\+t that doesn\textquotesingle{}t implement operator$<$ as long as no op\+\_\+\+M\+EM is called.

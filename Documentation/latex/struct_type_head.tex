@@ -1,8 +1,8 @@
-\hypertarget{struct_type_head}{}\section{Type\+Head$<$ Args $>$ Struct Template Reference}
+\hypertarget{struct_type_head}{}\section{Type\+Head$<$ Args $>$ Class Template Reference}
 \label{struct_type_head}\index{Type\+Head$<$ Args $>$@{Type\+Head$<$ Args $>$}}
 
 
-{\ttfamily \#include $<$Template\+Magic.\+h$>$}
+{\ttfamily \#include $<$Primitives.\+h$>$}
 
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
@@ -13,37 +13,15 @@ typedef std\+::tuple\+\_\+element$<$ 0, std\+::tuple$<$ Args... $>$ $>$\+::\hype
 
 \subsection{Detailed Description}
 \subsubsection*{template$<$class... Args$>$\newline
-struct Type\+Head$<$ Args $>$}
+class Type\+Head$<$ Args $>$}
 
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+07/05/20 
+\end{DoxyDate}
 
-\begin{DoxyCode}
-    For managing references in lambda arguments 
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
-\textcolor{comment}{// Count how many reference types}
-\textcolor{comment}{//template <class T, class... Types>}
-\textcolor{comment}{//struct CountReferences;}
-\textcolor{keyword}{template} <\textcolor{keyword}{class }T, \textcolor{keyword}{class}... Types>
-\textcolor{keyword}{struct }CountReferences \{
-    \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} value = std::is\_reference<T>::value + CountReferences<Types...>::value;
-\};
-\textcolor{keyword}{template} <\textcolor{keyword}{class} T>
-\textcolor{keyword}{struct }CountReferences<T> \{ \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} value = std::is\_reference<T>::value; \};
-
-
-\textcolor{comment}{// If there ar eany references in the arguments, only the first can be a reference}
-\textcolor{keyword}{template} <\textcolor{keyword}{class }T, \textcolor{keyword}{class}... Types>
-\textcolor{keyword}{struct }CheckReferenceIsFirst \{
-    \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{bool} value = (CountReferences<Types...>::value == 0);
-\};
-\textcolor{keyword}{template} <\textcolor{keyword}{class} T>
-\textcolor{keyword}{struct }CheckReferenceIsFirst<T> \{ \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{bool} value = \textcolor{keyword}{true}; \};
-
-
-\textcolor{comment}{/*}
-\end{DoxyCode}
- List operations on args $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
 
 \subsection{Member Typedef Documentation}
 \mbox{\Hypertarget{struct_type_head_a9595415877619fea585771991836e9a2}\label{struct_type_head_a9595415877619fea585771991836e9a2}} 
@@ -55,6 +33,6 @@ typedef std\+::tuple\+\_\+element$<$0, std\+::tuple$<$Args...$>$ $>$\+::\hyperli
 
 
 
-The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/\hyperlink{_template_magic_8h}{Template\+Magic.\+h}\end{DoxyCompactItemize}
+src/\+Virtual\+Machine/\hyperlink{_primitives_8h}{Primitives.\+h}\end{DoxyCompactItemize}

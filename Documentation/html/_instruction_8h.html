@@ -67,7 +67,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Macros</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
@@ -79,27 +79,36 @@ $(function() {
 
 <p>This is an error type that is returned if we get a runtime error (e.g. string length, etc.)  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;iostream&gt;</code><br />
+<div class="textblock"><code>#include &lt;assert.h&gt;</code><br />
+<code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;variant&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Instruction.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_instruction_8h__incl.png" border="0" usemap="#src_2_virtual_machine_2_instruction_8h" alt=""/></div>
+<map name="src_2_virtual_machine_2_instruction_8h" id="src_2_virtual_machine_2_instruction_8h">
+</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_instruction_8h__dep__incl.png" border="0" usemap="#src_2_virtual_machine_2_instruction_8hdep" alt=""/></div>
 <map name="src_2_virtual_machine_2_instruction_8hdep" id="src_2_virtual_machine_2_instruction_8hdep">
-<area shape="rect" id="node2" href="_primitives_8h.html" title="A preprimitive is a class that primitives inherit. We use a static op_counter so that at compile time..." alt="" coords="538,95,669,136"/>
-<area shape="rect" id="node10" href="_primitives2_8h.html" title="src/VirtualMachine\l/Primitives2.h" alt="" coords="693,95,823,136"/>
-<area shape="rect" id="node3" href="_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,259,209,300"/>
-<area shape="rect" id="node4" href="_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,259,437,300"/>
-<area shape="rect" id="node5" href="_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,259,617,300"/>
-<area shape="rect" id="node6" href="_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="815,266,1021,293"/>
-<area shape="rect" id="node7" href="_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1045,259,1196,300"/>
-<area shape="rect" id="node8" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="649,184,733,211"/>
-<area shape="rect" id="node9" href="_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="641,259,790,300"/>
+<area shape="rect" id="node2" href="apply_primitives_8h.html" title="src/VirtualMachine\l/applyPrimitives.h" alt="" coords="687,95,817,136"/>
+<area shape="rect" id="node11" href="_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we &quot;emulate&quot; a type system using t_nonterminal to store an integer for the types. *. " alt="" coords="522,102,662,129"/>
+<area shape="rect" id="node16" href="_primitives_8h.html" title="If there are any references in the arguments, only the first can be a reference. " alt="" coords="841,184,972,225"/>
+<area shape="rect" id="node3" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="631,348,715,375"/>
+<area shape="rect" id="node4" href="_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="5,423,179,464"/>
+<area shape="rect" id="node5" href="_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="395,423,599,464"/>
+<area shape="rect" id="node6" href="_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="854,423,1058,464"/>
+<area shape="rect" id="node7" href="_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="1083,423,1237,464"/>
+<area shape="rect" id="node8" href="_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="623,430,830,457"/>
+<area shape="rect" id="node9" href="_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1262,423,1413,464"/>
+<area shape="rect" id="node10" href="_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="203,430,371,457"/>
+<area shape="rect" id="node12" href="_node_8h.html" title="src/Grammar/Node.h" alt="" coords="503,191,647,218"/>
+<area shape="rect" id="node13" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="69,348,198,375"/>
+<area shape="rect" id="node14" href="_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="375,273,595,300"/>
+<area shape="rect" id="node15" href="_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="823,273,990,300"/>
 </map>
 </div>
 </div>
@@ -112,10 +121,10 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction.html">Instruction</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a1287a8584548a58c8bff414efbac2ac4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_instruction_8h.html#a1287a8584548a58c8bff414efbac2ac4">CUSTOM_OPS</a></td></tr>
-<tr class="separator:a1287a8584548a58c8bff414efbac2ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespace_fleet"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_fleet.html">Fleet</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -132,14 +141,13 @@ Enumerations</h2></td></tr>
 <br />
 &#160;&#160;<a class="el" href="_instruction_8h.html#a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460">vmstatus_t::RANDOM_CHOICE_NO_DELETE</a>, 
 <a class="el" href="_instruction_8h.html#a6202215407ab29590bb936ca2996cf64a67b10974a97cedee08e6161b8f81e1cb">vmstatus_t::SIZE_EXCEPTION</a>, 
+<a class="el" href="_instruction_8h.html#a6202215407ab29590bb936ca2996cf64a18a6a8e9b2c160d9894261b480283a6b">vmstatus_t::RUN_TOO_LONG</a>, 
 <a class="el" href="_instruction_8h.html#a6202215407ab29590bb936ca2996cf64acb15e3bbc847e78a1b1352165d03f157">vmstatus_t::OP_ERR_ABORT</a>, 
-<a class="el" href="_instruction_8h.html#a6202215407ab29590bb936ca2996cf64a744399cc9222b7fb2eb79740e4fd0c34">vmstatus_t::RANDOM_BREAKOUT</a>
+<br />
+&#160;&#160;<a class="el" href="_instruction_8h.html#a6202215407ab29590bb936ca2996cf64a744399cc9222b7fb2eb79740e4fd0c34">vmstatus_t::RANDOM_BREAKOUT</a>
 <br />
  }</td></tr>
 <tr class="separator:a6202215407ab29590bb936ca2996cf64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a20ca4a8f0ab220518b030cc23ffee4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_instruction_8h.html#a3a20ca4a8f0ab220518b030cc23ffee4">CustomOp</a> { <a class="el" href="_instruction_8h.html#a3a20ca4a8f0ab220518b030cc23ffee4ae0bd898fd0e37f2458573cdce0b6318a">CustomOp::CUSTOM_OPS</a>
- }</td></tr>
-<tr class="separator:a3a20ca4a8f0ab220518b030cc23ffee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2fb7c87c5854c5733d7bb0506b06de7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7">BuiltinOp</a> { <br />
 &#160;&#160;<a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7ad4a8b4f8133e76e25475d25a38d66b84">BuiltinOp::op_NOP</a> =0, 
 <a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7abb368ec2ea2dad144edceda5af4d3c91">BuiltinOp::op_X</a>, 
@@ -162,7 +170,13 @@ Enumerations</h2></td></tr>
 <a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7af58eeb2c4016cc74b9a2081cad1ff12b">BuiltinOp::op_ALPHABETchar</a>, 
 <br />
 &#160;&#160;<a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7a5aba0a5bece4ccca57a34a235691a938">BuiltinOp::op_INT</a>, 
-<a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7ab96043283e424acda93488de3a6ece5f">BuiltinOp::op_P</a>
+<a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7a26edb709754b83f524bf3287fff0d264">BuiltinOp::op_FLOAT</a>, 
+<a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7ab96043283e424acda93488de3a6ece5f">BuiltinOp::op_P</a>, 
+<a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7ada11f6673f193a79dc1fcf36e27f2e2b">BuiltinOp::op_SKAPPLY</a>, 
+<br />
+&#160;&#160;<a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7ae77dc89233eb1fc00d3d1f1a1c1c462e">BuiltinOp::op_S</a>, 
+<a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7a2fb436da7a3a42d51ead8de1ff97583b">BuiltinOp::op_K</a>, 
+<a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7ad44d28cb2a17778a81beb232dd72759a">BuiltinOp::op_I</a>
 <br />
  }</td></tr>
 <tr class="separator:af2fb7c87c5854c5733d7bb0506b06de7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,24 +193,9 @@ Variables</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is an error type that is returned if we get a runtime error (e.g. string length, etc.) </p>
-<p>This is how we store an instruction in the program. It can take one of three types: BuiltinOp &ndash; these are operations that are defined as part of <a class="el" href="namespace_fleet.html">Fleet</a>'s core library, and are implemented automatically in <a class="el" href="class_virtual_machine_state.html#a40ab4e4c5ba5dd5a2940df1a6823acee">VirtualMachineState::run</a> PrimitiveOp &ndash; these are defined <em>automatically</em> through the global variable PRIMITIVES (see Models/RationalRules). When you construct a grammar with these, it automatically figures out all the types and automatically gives each a sequential numbering, which it takes some template magic to access at runtime CustomOp &ndash; these are for when you need more access to VMS' stack, and they require you to implement custom_dispatch (where the instruction is handled)</p>
+<p>This is how we store an instruction in the program. It can take one of three types: BuiltinOp &ndash; these are operations that are defined as part of <a class="el" href="namespace_fleet.html">Fleet</a>'s core library, and are implemented automatically in <a class="el" href="class_virtual_machine_state.html#a815d2e072590b97e314aa947130efb70">VirtualMachineState::run</a> PrimitiveOp &ndash; these are defined <em>automatically</em> through the global variable PRIMITIVES (see Models/RationalRules). When you construct a grammar with these, it automatically figures out all the types and automatically gives each a sequential numbering, which it takes some template magic to access at runtime DispatchOp &ndash; if we store this kind, our primitive gets called with teh VMS stuff (vms, pool, loader) rather than the stuff on the stack. This permits us to access these pieces in fancier primitives.</p>
 <p>For any op type, an <a class="el" href="class_instruction.html">Instruction</a> always takes an "arg" type that essentially allow us to define classes of instructions for instance, jump takes an arg, factorized recursion uses arg for index, in FormalLanguageTheory we use arg to store which alphabet terminal, etc. </p>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a1287a8584548a58c8bff414efbac2ac4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1287a8584548a58c8bff414efbac2ac4">&#9670;&nbsp;</a></span>CUSTOM_OPS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CUSTOM_OPS</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Typedef Documentation</h2>
+</div><h2 class="groupheader">Typedef Documentation</h2>
 <a id="a227278394efd1e2313c727102db09ea9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a227278394efd1e2313c727102db09ea9">&#9670;&nbsp;</a></span>PrimitiveOp</h2>
 
@@ -249,32 +248,12 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="af2fb7c87c5854c5733d7bb0506b06de7a4f5b048d1b1b175da91b5241b56aaa2d"></a>op_ALPHABET&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af2fb7c87c5854c5733d7bb0506b06de7af58eeb2c4016cc74b9a2081cad1ff12b"></a>op_ALPHABETchar&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af2fb7c87c5854c5733d7bb0506b06de7a5aba0a5bece4ccca57a34a235691a938"></a>op_INT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af2fb7c87c5854c5733d7bb0506b06de7a26edb709754b83f524bf3287fff0d264"></a>op_FLOAT&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af2fb7c87c5854c5733d7bb0506b06de7ab96043283e424acda93488de3a6ece5f"></a>op_P&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
-<a id="a3a20ca4a8f0ab220518b030cc23ffee4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a20ca4a8f0ab220518b030cc23ffee4">&#9670;&nbsp;</a></span>CustomOp</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="_instruction_8h.html#a3a20ca4a8f0ab220518b030cc23ffee4">CustomOp</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3a20ca4a8f0ab220518b030cc23ffee4ae0bd898fd0e37f2458573cdce0b6318a"></a>CUSTOM_OPS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af2fb7c87c5854c5733d7bb0506b06de7ada11f6673f193a79dc1fcf36e27f2e2b"></a>op_SKAPPLY&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af2fb7c87c5854c5733d7bb0506b06de7ae77dc89233eb1fc00d3d1f1a1c1c462e"></a>op_S&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af2fb7c87c5854c5733d7bb0506b06de7a2fb436da7a3a42d51ead8de1ff97583b"></a>op_K&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af2fb7c87c5854c5733d7bb0506b06de7ad44d28cb2a17778a81beb232dd72759a"></a>op_I&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -305,6 +284,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974"></a>RANDOM_CHOICE&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460"></a>RANDOM_CHOICE_NO_DELETE&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a6202215407ab29590bb936ca2996cf64a67b10974a97cedee08e6161b8f81e1cb"></a>SIZE_EXCEPTION&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a6202215407ab29590bb936ca2996cf64a18a6a8e9b2c160d9894261b480283a6b"></a>RUN_TOO_LONG&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a6202215407ab29590bb936ca2996cf64acb15e3bbc847e78a1b1352165d03f157"></a>OP_ERR_ABORT&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a6202215407ab29590bb936ca2996cf64a744399cc9222b7fb2eb79740e4fd0c34"></a>RANDOM_BREAKOUT&#160;</td><td class="fielddoc"></td></tr>
 </table>

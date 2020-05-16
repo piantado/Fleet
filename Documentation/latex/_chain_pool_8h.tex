@@ -2,18 +2,22 @@
 \label{_chain_pool_8h}\index{src/\+Inference/\+Chain\+Pool.\+h@{src/\+Inference/\+Chain\+Pool.\+h}}
 
 
-A \hyperlink{class_chain_pool}{Chain\+Pool} stores a bunch of M\+C\+M\+C\+Chains and allows you to run them serially or in parallel.  
+A \hyperlink{class_chain_pool}{Chain\+Pool} stores a bunch of M\+C\+M\+C\+Chains and allows you to run them serially or in parallel. N\+O\+TE\+: When you use a \hyperlink{class_chain_pool}{Chain\+Pool}, the results will not be reproducible with seed because timing determines when you switch chains.  
 
 
 {\ttfamily \#include $<$thread$>$}\newline
-Include dependency graph for Chain\+Pool.\+h\+:\nopagebreak
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$boost/align/aligned\+\_\+allocator.\+hpp$>$}\newline
+Include dependency graph for Chain\+Pool.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=210pt]{_chain_pool_8h__incl}
+\includegraphics[width=302pt]{_chain_pool_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -28,5 +32,5 @@ class \hyperlink{class_chain_pool}{Chain\+Pool$<$ H\+Y\+P, callback\+\_\+t $>$}
 
 
 \subsection{Detailed Description}
-A \hyperlink{class_chain_pool}{Chain\+Pool} stores a bunch of M\+C\+M\+C\+Chains and allows you to run them serially or in parallel. 
+A \hyperlink{class_chain_pool}{Chain\+Pool} stores a bunch of M\+C\+M\+C\+Chains and allows you to run them serially or in parallel. N\+O\+TE\+: When you use a \hyperlink{class_chain_pool}{Chain\+Pool}, the results will not be reproducible with seed because timing determines when you switch chains. 
 

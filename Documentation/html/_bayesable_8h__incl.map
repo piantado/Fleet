@@ -1,4 +1,6 @@
 <map id="src/Hypotheses/Interfaces/Bayesable.h" name="src/Hypotheses/Interfaces/Bayesable.h">
-<area shape="rect" id="node2" href="$_datum_8h.html" title="A datum is the default data point for likelihoods, consisting of an input and output type..." alt="" coords="64,95,136,121"/>
-<area shape="rect" id="node3" href="$_i_o_8h.html" title="IO.h" alt="" coords="161,95,207,121"/>
+<area shape="rect" id="node2" href="$_datum_8h.html" title="A datum is the default data point for likelihoods, consisting of an input and output type..." alt="" coords="5,95,77,121"/>
+<area shape="rect" id="node3" href="$_i_o_8h.html" title="IO.h" alt="" coords="291,169,338,196"/>
+<area shape="rect" id="node8" href="$_fleet_statistics_8h.html" title="Statistics/FleetStatistics.h" alt="" coords="101,95,277,121"/>
+<area shape="rect" id="node10" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="353,95,469,121"/>
 </map>

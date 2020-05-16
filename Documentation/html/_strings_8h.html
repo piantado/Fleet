@@ -71,24 +71,38 @@ $(function() {
 <div class="title">Strings.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;string.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;math.h&gt;</code><br />
+<code>#include &lt;string.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="_numerics_8h_source.html">Numerics.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Strings.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_strings_8h__incl.png" border="0" usemap="#src_2_strings_8h" alt=""/></div>
+<map name="src_2_strings_8h" id="src_2_strings_8h">
+<area shape="rect" id="node4" href="_numerics_8h.html" title="Numerics.h" alt="" coords="181,80,271,107"/>
+</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_strings_8h__dep__incl.png" border="0" usemap="#src_2_strings_8hdep" alt=""/></div>
 <map name="src_2_strings_8hdep" id="src_2_strings_8hdep">
-<area shape="rect" id="node2" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="703,80,787,107"/>
-<area shape="rect" id="node3" href="_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,155,209,196"/>
-<area shape="rect" id="node4" href="_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,155,437,196"/>
-<area shape="rect" id="node5" href="_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,155,617,196"/>
-<area shape="rect" id="node6" href="_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="641,162,848,189"/>
-<area shape="rect" id="node7" href="_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="872,155,1023,196"/>
-<area shape="rect" id="node8" href="_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="1047,155,1197,196"/>
+<area shape="rect" id="node2" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="898,326,982,353"/>
+<area shape="rect" id="node10" href="_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we &quot;emulate&quot; a type system using t_nonterminal to store an integer for the types. *. " alt="" coords="830,80,970,107"/>
+<area shape="rect" id="node15" href="_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="1045,155,1275,181"/>
+<area shape="rect" id="node3" href="_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="5,408,179,449"/>
+<area shape="rect" id="node4" href="_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="1209,408,1413,449"/>
+<area shape="rect" id="node5" href="_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="557,408,761,449"/>
+<area shape="rect" id="node6" href="_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="203,408,357,449"/>
+<area shape="rect" id="node7" href="_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="978,415,1185,442"/>
+<area shape="rect" id="node8" href="_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="382,408,533,449"/>
+<area shape="rect" id="node9" href="_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="785,415,953,442"/>
+<area shape="rect" id="node11" href="_node_8h.html" title="src/Grammar/Node.h" alt="" coords="687,155,831,181"/>
+<area shape="rect" id="node12" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="186,326,315,353"/>
+<area shape="rect" id="node13" href="_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="649,237,869,263"/>
+<area shape="rect" id="node14" href="_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="458,237,625,263"/>
+<area shape="rect" id="node16" href="_data_8h.html" title="Models/FormalLanguageTheory\l&#45;Complex/Data.h" alt="" coords="1209,319,1413,360"/>
+<area shape="rect" id="node17" href="_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="1096,229,1245,271"/>
 </map>
 </div>
 </div>
@@ -99,9 +113,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a4bc77a6f47e3046cc934b49f5e03a56f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a4bc77a6f47e3046cc934b49f5e03a56f"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_strings_8h.html#a4bc77a6f47e3046cc934b49f5e03a56f">str</a> (T x)</td></tr>
 <tr class="separator:a4bc77a6f47e3046cc934b49f5e03a56f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a016b5927e1efc9ffbf6f23c856483a84"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_strings_8h.html#a016b5927e1efc9ffbf6f23c856483a84">p_delete_append</a> (const std::string &amp;x, const std::string &amp;y, double del_p, double add_p, double alpha_n)</td></tr>
-<tr class="memdesc:a016b5927e1efc9ffbf6f23c856483a84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Probability of converting x into y by deleting some number (each with del_p, then stopping with prob 1-del_p), adding with probability add_p, and then when we add selecting from an alphabet of size alpha_n.  <a href="#a016b5927e1efc9ffbf6f23c856483a84">More...</a><br /></td></tr>
-<tr class="separator:a016b5927e1efc9ffbf6f23c856483a84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a006f42339c42d12497ad559987a8597c"><td class="memTemplParams" colspan="2">template&lt;const float &amp; add_p, const float &amp; del_p&gt; </td></tr>
+<tr class="memitem:a006f42339c42d12497ad559987a8597c"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_strings_8h.html#a006f42339c42d12497ad559987a8597c">p_delete_append</a> (const std::string &amp;x, const std::string &amp;y, const float log_alphabet)</td></tr>
+<tr class="memdesc:a006f42339c42d12497ad559987a8597c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Probability of converting x into y by deleting some number (each with del_p, then stopping with prob 1-del_p), adding with probability add_p, and then when we add selecting from an alphabet of size alpha_n.  <a href="#a006f42339c42d12497ad559987a8597c">More...</a><br /></td></tr>
+<tr class="separator:a006f42339c42d12497ad559987a8597c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60d3a9b47a988443407a595730086318"><td class="memItemLeft" align="right" valign="top">std::deque&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_strings_8h.html#a60d3a9b47a988443407a595730086318">split</a> (const std::string &amp;s, const char delimiter)</td></tr>
 <tr class="separator:a60d3a9b47a988443407a595730086318"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8ae1cb99a3ece3691d6673b40b9d621"><td class="memItemLeft" align="right" valign="top">std::pair&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_strings_8h.html#af8ae1cb99a3ece3691d6673b40b9d621">divide</a> (const std::string &amp;s, const char delimiter)</td></tr>
@@ -216,11 +231,13 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a016b5927e1efc9ffbf6f23c856483a84"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a016b5927e1efc9ffbf6f23c856483a84">&#9670;&nbsp;</a></span>p_delete_append()</h2>
+<a id="a006f42339c42d12497ad559987a8597c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a006f42339c42d12497ad559987a8597c">&#9670;&nbsp;</a></span>p_delete_append()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;const float &amp; add_p, const float &amp; del_p&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -240,20 +257,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>del_p</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>add_p</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>alpha_n</em>&#160;</td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>log_alphabet</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -280,6 +285,15 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The probability of converting x to y by deleting characters with probability del_p and then adding with probability add_p </dd></dl>
+<p>This function computes the probability that x would be converted into y, when we insert with probability add_p and delete with probabiltiy del_p and when we add we add from an alphabet of size log_alphabet. Note that this is a template function because otherwise we end up computing log(add_p) and log(del_p) a lot, and these are in fact constant. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td></td></tr>
+    <tr><td class="paramname">y</td><td></td></tr>
+    <tr><td class="paramname">log_alphabet</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

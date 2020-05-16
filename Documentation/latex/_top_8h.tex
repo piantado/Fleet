@@ -2,19 +2,21 @@
 \label{_top_8h}\index{src/\+Statistics/\+Top.\+h@{src/\+Statistics/\+Top.\+h}}
 
 
-A TopN is a n object you can \char`\"{}add\char`\"{} hypotheses to (via add or $<$$<$) and it stores the best N of them. This is widely used in \hyperlink{namespace_fleet}{Fleet} in order to find good approximations to the top hypotheses found in M\+C\+TS or M\+C\+MC.  
+Check if a type has a posterior function or not.  
 
 
 {\ttfamily \#include \char`\"{}stdlib.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}stdio.\+h\char`\"{}}\newline
 {\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$type\+\_\+traits$>$}\newline
 {\ttfamily \#include $<$set$>$}\newline
 {\ttfamily \#include $<$queue$>$}\newline
 {\ttfamily \#include $<$list$>$}\newline
 {\ttfamily \#include $<$unordered\+\_\+set$>$}\newline
 {\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
 {\ttfamily \#include $<$cassert$>$}\newline
-Include dependency graph for Top.\+h\+:\nopagebreak
+Include dependency graph for Top.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -31,6 +33,10 @@ This graph shows which files directly or indirectly include this file\+:
 \end{figure}
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
+\item 
+class \hyperlink{struct_has_posterior}{Has\+Posterior$<$ T, typename $>$}
+\item 
+struct \hyperlink{struct_has_posterior_3_01_t_00_01decltype_07_07void_08_01_t_1_1posterior_00_010_08_4}{Has\+Posterior$<$ T, decltype((void) T\+::posterior, 0)$>$}
 \item 
 class \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+Top\+N$<$ T $>$}
 \end{DoxyCompactItemize}
@@ -49,5 +55,6 @@ class \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::
 
 
 \subsection{Detailed Description}
-A TopN is a n object you can \char`\"{}add\char`\"{} hypotheses to (via add or $<$$<$) and it stores the best N of them. This is widely used in \hyperlink{namespace_fleet}{Fleet} in order to find good approximations to the top hypotheses found in M\+C\+TS or M\+C\+MC. 
+Check if a type has a posterior function or not. 
 
+A TopN is a n object you can \char`\"{}add\char`\"{} hypotheses to (via add or $<$$<$) and it stores the best N of them. This is widely used in \hyperlink{namespace_fleet}{Fleet} in order to find good approximations to the top hypotheses found in M\+C\+TS or M\+C\+MC.

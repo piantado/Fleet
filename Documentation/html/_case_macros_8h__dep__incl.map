@@ -1,9 +1,10 @@
 <map id="src/VirtualMachine/CaseMacros.h" name="src/VirtualMachine/CaseMacros.h">
-<area shape="rect" id="node2" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="703,95,787,121"/>
-<area shape="rect" id="node3" href="$_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,169,209,211"/>
-<area shape="rect" id="node4" href="$_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,169,437,211"/>
-<area shape="rect" id="node5" href="$_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,169,617,211"/>
-<area shape="rect" id="node6" href="$_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="641,177,848,203"/>
-<area shape="rect" id="node7" href="$_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="872,169,1023,211"/>
-<area shape="rect" id="node8" href="$_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="1047,169,1197,211"/>
+<area shape="rect" id="node2" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="695,95,779,121"/>
+<area shape="rect" id="node3" href="$_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="5,169,179,211"/>
+<area shape="rect" id="node4" href="$_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="203,169,407,211"/>
+<area shape="rect" id="node5" href="$_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="431,169,635,211"/>
+<area shape="rect" id="node6" href="$_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="660,169,815,211"/>
+<area shape="rect" id="node7" href="$_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="839,177,1046,203"/>
+<area shape="rect" id="node8" href="$_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1070,169,1221,211"/>
+<area shape="rect" id="node9" href="$_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="1245,177,1413,203"/>
 </map>

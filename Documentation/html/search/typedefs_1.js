@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['grammarreturntype',['GrammarReturnType',['../struct_primitive.html#a1f2d2db3fb7869d03d65112e30d22101',1,'Primitive::GrammarReturnType()'],['../struct_primitive.html#a1f2d2db3fb7869d03d65112e30d22101',1,'Primitive::GrammarReturnType()']]]
+  ['enumerationidx_5ft',['enumerationidx_t',['../_numerics_8h.html#a9fe2bbca873b046b2bd276fc6856bb88',1,'Numerics.h']]]
 ];

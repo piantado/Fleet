@@ -1,6 +1,12 @@
 \hypertarget{_builtins_8h}{}\section{src/\+Virtual\+Machine/\+Builtins.h File Reference}
 \label{_builtins_8h}\index{src/\+Virtual\+Machine/\+Builtins.\+h@{src/\+Virtual\+Machine/\+Builtins.\+h}}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+
+
+This is needed below so we can check if something is a \hyperlink{namespace_builtin}{Builtin} without template args.  
+
+
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -10,7 +16,9 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \hyperlink{struct_builtin_primitive}{Builtin\+Primitive$<$ t, args $>$}
+struct \hyperlink{struct_builtin_primitive_base}{Builtin\+Primitive\+Base}
+\item 
+class \hyperlink{struct_builtin_primitive}{Builtin\+Primitive$<$ t, args $>$}
 \item 
 struct \hyperlink{struct_builtin_1_1_if}{Builtin\+::\+If$<$ t $>$}
 \item 
@@ -31,3 +39,23 @@ struct \hyperlink{struct_builtin_1_1_safe_mem_recurse}{Builtin\+::\+Safe\+Mem\+R
 \item 
  \hyperlink{namespace_builtin}{Builtin}
 \end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T  = void, typename U  = void, typename... Args$>$ }\\constexpr bool \hyperlink{_builtins_8h_a0f3fbc6f42c53cae5f3becc62f320261}{check\+Builtins\+Are\+Last} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is needed below so we can check if something is a \hyperlink{namespace_builtin}{Builtin} without template args. 
+
+These are convenient wrappers for built-\/in operations that just bundle toegether format, op, and p this is useful because then we can put the builtins in the same P\+R\+I\+M\+I\+T\+I\+V\+ES bundle so for instance we can have Primitives\+::\+If$<$\+S$>$(\char`\"{}if(\%s,\%s,\%s)\char`\"{}, 1.\+0) in P\+R\+I\+M\+I\+T\+I\+V\+ES, even though If is a built-\/in. So these are just data structures that hold this information until grammar.\+add, where they are mapped onto Rules for builtins.
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_builtins_8h_a0f3fbc6f42c53cae5f3becc62f320261}\label{_builtins_8h_a0f3fbc6f42c53cae5f3becc62f320261}} 
+\index{Builtins.\+h@{Builtins.\+h}!check\+Builtins\+Are\+Last@{check\+Builtins\+Are\+Last}}
+\index{check\+Builtins\+Are\+Last@{check\+Builtins\+Are\+Last}!Builtins.\+h@{Builtins.\+h}}
+\subsubsection{\texorpdfstring{check\+Builtins\+Are\+Last()}{checkBuiltinsAreLast()}}
+{\footnotesize\ttfamily template$<$typename T  = void, typename U  = void, typename... Args$>$ \\
+constexpr bool \hyperlink{classcheck_builtins_are_last}{check\+Builtins\+Are\+Last} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+

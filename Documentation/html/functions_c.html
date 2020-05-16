@@ -65,19 +65,19 @@ $(function() {
 
 <h3><a id="index_c"></a>- c -</h3><ul>
 <li>C
-: <a class="el" href="class_grammar_hypothesis.html#a2147efc4d1268e115803bd34f63f1c35">GrammarHypothesis&lt; HYP, t_datum, t_data &gt;</a>
+: <a class="el" href="class_grammar_hypothesis.html#a687b9ff3ffd2c19439707530a5ace6f2">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
 </li>
 <li>call()
-: <a class="el" href="class_lexicon.html#aaaff682145f9cb15f7252420fe76f111">Lexicon&lt; HYP, T, t_input, t_output, t_datum &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#a592d67c976a67982251239b415e0a861">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>
-, <a class="el" href="class_my_hypothesis.html#a61391d3f1f6fbbe37663b22e2068ac90">MyHypothesis</a>
-, <a class="el" href="struct_primitive.html#a31a16d23d239e574ba4e47f6b8e41a9d">Primitive&lt; T, args &gt;</a>
+: <a class="el" href="class_lexicon.html#afc6b762f68c6033a501ce7ca04b01ece">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#a9f528a8b204b87cc6fcf8d81c8c2b036">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_my_hypothesis.html#a88c6c3c093e040601d7283abf09b6348">MyHypothesis</a>
+, <a class="el" href="struct_primitive.html#a4a183f50daf033866abc34fa2da9e703">Primitive&lt; T, args &gt;</a>
 </li>
 <li>callback
 : <a class="el" href="class_m_c_m_c_chain.html#aa7a4a0d46ae2d9818c2f076f839badd7">MCMCChain&lt; HYP, callback_t &gt;</a>
 </li>
 <li>callOne()
-: <a class="el" href="class_l_o_t_hypothesis.html#ad792b258bdb4b0828f11ac721f52e704">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>
+: <a class="el" href="class_l_o_t_hypothesis.html#a34051e59cc251c4d6bb3caddbe594414">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
 </li>
 <li>can_resample
 : <a class="el" href="class_node.html#a98c14a51b240fbc7e438f40a12276257">Node</a>
@@ -85,8 +85,11 @@ $(function() {
 <li>ChainPool()
 : <a class="el" href="class_chain_pool.html#ae8795a9a7c0fff45c82334fa821c8c3c">ChainPool&lt; HYP, callback_t &gt;</a>
 </li>
+<li>check_child_info()
+: <a class="el" href="class_node.html#ab8f9492893b0e2b2d7b3d1819dacc92b">Node</a>
+</li>
 <li>check_reachable()
-: <a class="el" href="class_lexicon.html#aeb3e5f9f75e43f2147a22dee67fc8527">Lexicon&lt; HYP, T, t_input, t_output, t_datum &gt;</a>
+: <a class="el" href="class_lexicon.html#a1e58bf42fb2388eff629bc899d8ef5ed">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>
 </li>
 <li>child()
 : <a class="el" href="class_node.html#a23adfa03c20f4141b1105c5b4b1bca3f">Node</a>
@@ -95,7 +98,7 @@ $(function() {
 : <a class="el" href="class_m_c_t_s_node.html#a66790ec812754c13bab5f6f14966bacf">MCTSNode&lt; M, HYP &gt;</a>
 </li>
 <li>child_types
-: <a class="el" href="class_rule.html#a2d5160625d3d15f60690c4323522a33e">Rule</a>
+: <a class="el" href="class_rule.html#ac29b59e23c3327fed7a1e99b06512057">Rule</a>
 </li>
 <li>children
 : <a class="el" href="class_m_c_t_s_node.html#a243b348036c57a54af3a48a708851b80">MCTSNode&lt; M, HYP &gt;</a>
@@ -104,9 +107,10 @@ $(function() {
 <li>clear()
 : <a class="el" href="class_fleet_1_1_statistics_1_1_reservoir_sample.html#aadf45c574db6a4ab93da3df2b3f1df03">Fleet::Statistics::ReservoirSample&lt; T &gt;</a>
 , <a class="el" href="class_fleet_1_1_statistics_1_1_top_n.html#ab57188b1858802dcf1f26dbcf702c6ae">Fleet::Statistics::TopN&lt; T &gt;</a>
+, <a class="el" href="class_virtual_machine_pool.html#a9725415d6cff1c51d78545e7c905af8c">VirtualMachinePool&lt; VMState &gt;</a>
 </li>
 <li>clear_bayes()
-: <a class="el" href="class_bayesable.html#a3c7deaa8b0a270f806507a2a0768c54b">Bayesable&lt; _t_datum, _t_data &gt;</a>
+: <a class="el" href="class_bayesable.html#ac8ab4bb38c8782d2dcd57f3a43a3c605">Bayesable&lt; _datum_t, _data_t &gt;</a>
 </li>
 <li>cnt
 : <a class="el" href="class_fleet_1_1_statistics_1_1_top_n.html#a0f5ecded3f85aeeb85da2f2b3056b466">Fleet::Statistics::TopN&lt; T &gt;</a>
@@ -117,49 +121,49 @@ $(function() {
 <li>cntyes
 : <a class="el" href="struct_human_datum.html#a3569e7634ea9badbe48105cb3a4e5800">HumanDatum&lt; t_learnerdatum, t_learnerdata &gt;</a>
 </li>
-<li>color
-: <a class="el" href="struct_object.html#a3ed85d6e0b0b62ff2501d421cb55c5e9">Object</a>
-</li>
 <li>complete()
-: <a class="el" href="class_grammar.html#a68f767b06f9675461be94242c89dfdb9">Grammar</a>
+: <a class="el" href="class_grammar.html#a51a44e86d41c6e8a8ff7665208ac55da">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>compute_enumeration_order()
-: <a class="el" href="class_grammar.html#ab6970c88fc6f5ed56020fe0dfac302f4">Grammar</a>
+: <a class="el" href="class_grammar.html#a37b475b665c37057084d9244abcf25f9">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>compute_likelihood()
-: <a class="el" href="class_bayesable.html#af9547335ae15a5068b10d29aee5056ae">Bayesable&lt; _t_datum, _t_data &gt;</a>
-, <a class="el" href="class_grammar_hypothesis.html#ae565db71afc24d042450e9ed471b4908">GrammarHypothesis&lt; HYP, t_datum, t_data &gt;</a>
-, <a class="el" href="class_my_hypothesis.html#a557264ea2caf1b983d621a112cb762c6">MyHypothesis</a>
+: <a class="el" href="class_bayesable.html#a202493156cec15937bee304d807fdbdb">Bayesable&lt; _datum_t, _data_t &gt;</a>
+, <a class="el" href="class_grammar_hypothesis.html#a35008279d3455087b7ea541f3259becb">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
+, <a class="el" href="class_my_hypothesis.html#a42d7d139cd23f30342e1393fd0873dd1">MyHypothesis</a>
 </li>
 <li>compute_posterior()
-: <a class="el" href="class_bayesable.html#a6fb74010b3725f610f52746cc652f92a">Bayesable&lt; _t_datum, _t_data &gt;</a>
-, <a class="el" href="class_fleet_1_1_statistics_1_1_top_n.html#ac6ab403d6833e58352e24110ee379fbf">Fleet::Statistics::TopN&lt; T &gt;</a>
+: <a class="el" href="class_bayesable.html#a0b0552923602bcab6c768581ab8c7df8">Bayesable&lt; _datum_t, _data_t &gt;</a>
+, <a class="el" href="class_fleet_1_1_statistics_1_1_top_n.html#a620e95f050930e7aa5d02e72365f8e88">Fleet::Statistics::TopN&lt; T &gt;</a>
 </li>
 <li>compute_prior()
-: <a class="el" href="class_bayesable.html#a9aa752f0adff1b95f8957b91fc928649">Bayesable&lt; _t_datum, _t_data &gt;</a>
-, <a class="el" href="class_grammar_hypothesis.html#a11fd75eee387330535601c9ee9d2f0f9">GrammarHypothesis&lt; HYP, t_datum, t_data &gt;</a>
-, <a class="el" href="class_lexicon.html#a1edc72e7c3b422d1c13b6cc3eb33d08d">Lexicon&lt; HYP, T, t_input, t_output, t_datum &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#a80eea871bc115e4ef585f75f06857b39">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>
-, <a class="el" href="class_my_hypothesis.html#ab092094c5fc31730de4f40609220bb18">MyHypothesis</a>
+: <a class="el" href="class_bayesable.html#a1b057a17212ced123545133e2297c01b">Bayesable&lt; _datum_t, _data_t &gt;</a>
+, <a class="el" href="class_grammar_hypothesis.html#a36c0ec17fb79f56fb4c71ed58f2625f6">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
+, <a class="el" href="class_lexicon.html#a2e099a68dd08d62897b40647f92eba1c">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#af215c4833e81984364703b2e4cb78dc7">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_my_hypothesis.html#a67477313b60b21158bbfaad35dc5d275">MyHypothesis</a>
 </li>
 <li>compute_single_likelihood()
-: <a class="el" href="class_bayesable.html#a5e0237ec7a40a2c45c990f93a8dc8e00">Bayesable&lt; _t_datum, _t_data &gt;</a>
-, <a class="el" href="class_grammar_hypothesis.html#a848ed67089c24b55cc61a4d84e350d05">GrammarHypothesis&lt; HYP, t_datum, t_data &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#a835f1aafdd4bc4748c343edb80517956">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>
-, <a class="el" href="class_my_hypothesis.html#af60601a7db23e9ed8d1e3343af506733">MyHypothesis</a>
+: <a class="el" href="class_bayesable.html#a87d195bfe5cdf6d293dae5fc01ae2e6c">Bayesable&lt; _datum_t, _data_t &gt;</a>
+, <a class="el" href="class_grammar_hypothesis.html#ad8e5300800646a0c0af9a0f7d0b86422">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#a0ff11e5e328fcfa819a8dd9b5d57bd65">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_my_hypothesis.html#af2470b1e04711c06ee551deae15af4c1">MyHypothesis</a>
+</li>
+<li>contains()
+: <a class="el" href="class_fleet_1_1_statistics_1_1_top_n.html#a0e09337a1f36d16a25b03d63f68952a0">Fleet::Statistics::TopN&lt; T &gt;</a>
 </li>
 <li>Control()
 : <a class="el" href="struct_control.html#a4ff9d1cb18c06b5438f09ef6a8e7af80">Control</a>
 </li>
 <li>copy_and_complete()
-: <a class="el" href="class_lexicon.html#a52a6e819264e04584320adca868aec4a">Lexicon&lt; HYP, T, t_input, t_output, t_datum &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#af0274e15c0e19e8f42324b7099e2b4a1">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>
+: <a class="el" href="class_lexicon.html#a9c1bf25acf10591531c3a9f49f2cfd57">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#af643fa8b19e3bd0fa4682ab3566e29fc">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
 </li>
 <li>copy_increment_push()
-: <a class="el" href="class_virtual_machine_pool.html#a022aad4a11f24264fd7d11060d041852">VirtualMachinePool&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_pool.html#a12fc289f4e95e856416aa5ea55389f30">VirtualMachinePool&lt; VMState &gt;</a>
 </li>
 <li>copy_resample()
-: <a class="el" href="class_grammar.html#ad6333cce88a2fe7ce56a897a6a930c28">Grammar</a>
+: <a class="el" href="class_grammar.html#a28b35de7e71ac8f451cd3a65818fc1db">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>count()
 : <a class="el" href="class_discrete_distribution.html#afd3fd83dc776f5616e826de18093328b">DiscreteDistribution&lt; T &gt;</a>
@@ -167,16 +171,16 @@ $(function() {
 , <a class="el" href="class_node.html#abd387b27e1deb45b789ad7b7abd8c6e6">Node</a>
 </li>
 <li>count_connected_partial_subtrees()
-: <a class="el" href="class_grammar.html#ad56da50581cbebe1427ebf2f73018328">Grammar</a>
+: <a class="el" href="class_grammar.html#ad1e2c22753f18d1dcdd9d81576045e9f">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>count_nonterminals()
-: <a class="el" href="class_grammar.html#abf841bc64ac19cb9872a8362f5e5731a">Grammar</a>
+: <a class="el" href="class_grammar.html#a335c2679b0db2290a1a0da8910f0bcdd">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>count_rules()
-: <a class="el" href="class_grammar.html#af25c47a2c5cae2a11720c8454e59290f">Grammar</a>
+: <a class="el" href="class_grammar.html#a90a765c97b89f2f4cf12b6b4c2a3d019">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>count_terminals()
-: <a class="el" href="class_grammar.html#a7cf0515f3ca761590da05455a417896b">Grammar</a>
+: <a class="el" href="class_grammar.html#a5121201035b5d5cd0a1d4251b1f73056">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 , <a class="el" href="class_node.html#a70c820eaeaa852e3c0a46cf006026c1b">Node</a>
 </li>
 <li>current
@@ -187,7 +191,7 @@ $(function() {
 : <a class="el" href="class_m_c_m_c_chain.html#a42c355121fce0476426a49d5498c38a1">MCMCChain&lt; HYP, callback_t &gt;</a>
 </li>
 <li>current_steps
-: <a class="el" href="class_virtual_machine_pool.html#a31cd55d7c9c7daf930bcc7f57b67d930">VirtualMachinePool&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_pool.html#a63db532386cd929a09525f7ab569ff81">VirtualMachinePool&lt; VMState &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->

@@ -6,7 +6,8 @@
 
 
 
-Collaboration diagram for Node\+:\nopagebreak
+Collaboration diagram for Node\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -26,6 +27,8 @@ class \hyperlink{class_node_1_1_node_iterator}{Node\+Iterator}
 \hyperlink{class_node_a277918b68827f6ffd8150f450b0c12c3}{Node} (const \hyperlink{class_node}{Node} \&n)
 \item 
 \hyperlink{class_node_a87c9938dcd77c169802a732c98204945}{Node} (\hyperlink{class_node}{Node} \&\&n)
+\item 
+virtual \hyperlink{class_node_af5e3fa79300bf5f3f2f3ecae6e795a94}{$\sim$\+Node} ()
 \item 
 \hyperlink{class_node}{Node} \& \hyperlink{class_node_a23adfa03c20f4141b1105c5b4b1bca3f}{child} (const size\+\_\+t i)
 \item 
@@ -50,6 +53,8 @@ bool \hyperlink{class_node_a8b05feb361beb04d465619751a2297b1}{operator$<$} (cons
 \hyperlink{class_node}{Node} $\ast$ \hyperlink{class_node_ac6d1a1d71a28168b34e9092568570738}{left\+\_\+descend} () const
 \item 
 void \hyperlink{class_node_a8f25f44608c0b19fe02eaf19ade9ea68}{fix\+\_\+child\+\_\+info} ()
+\item 
+void \hyperlink{class_node_ab8f9492893b0e2b2d7b3d1819dacc92b}{check\+\_\+child\+\_\+info} () const
 \item 
 \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_node_a4abe3acdc804489a01ef13a25b130fd8}{nt} () const
 \item 
@@ -102,6 +107,8 @@ virtual size\+\_\+t \hyperlink{class_node_a377548bcf1be99ac5181f9434c33c81e}{pro
 virtual void \hyperlink{class_node_ac995508e96e112675fde53e7748e41bc}{linearize} (Program \&ops) const
 \item 
 virtual bool \hyperlink{class_node_a90aeee00ccda27f36bea9cdd774eae8d}{operator==} (const \hyperlink{class_node}{Node} \&n) const
+\begin{DoxyCompactList}\small\item\em convert tree to a linear sequence of operations. To do this, we first linearize the kids, leaving their values as the top on the stack then we compute our value, remove our kids\textquotesingle{} values to clean up the stack, and push on our return the only fanciness is for if\+: here we will use the following layout $<$\+T\+O\+P of=\char`\"{}\char`\"{} stack$>$=\char`\"{}\char`\"{}$>$ $<$bool$>$ \hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a8f69a9fe993189d72cf7b07e8517801d}{op\+\_\+\+I\+F(xsize)} X-\/branch J\+U\+M\+P(ysize) Y-\/branch \end{DoxyCompactList}\item 
+virtual bool \hyperlink{class_node_a1ff12be4d2355edddee1fbe893f0c8a8}{operator!=} (const \hyperlink{class_node}{Node} \&n) const
 \item 
 virtual size\+\_\+t \hyperlink{class_node_a212f2e1ba4ff71de6954b0b791d89979}{hash} (size\+\_\+t depth=0) const
 \end{DoxyCompactItemize}
@@ -153,6 +160,12 @@ std\+::vector$<$ \hyperlink{class_node}{Node} $>$ \hyperlink{class_node_af7ddc81
 \subsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
 {\footnotesize\ttfamily Node\+::\+Node (\begin{DoxyParamCaption}\item[{\hyperlink{class_node}{Node} \&\&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
+\mbox{\Hypertarget{class_node_af5e3fa79300bf5f3f2f3ecae6e795a94}\label{class_node_af5e3fa79300bf5f3f2f3ecae6e795a94}} 
+\index{Node@{Node}!````~Node@{$\sim$\+Node}}
+\index{````~Node@{$\sim$\+Node}!Node@{Node}}
+\subsubsection{\texorpdfstring{$\sim$\+Node()}{~Node()}}
+{\footnotesize\ttfamily virtual Node\+::$\sim$\+Node (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
 
 
 \subsection{Member Function Documentation}
@@ -162,7 +175,13 @@ std\+::vector$<$ \hyperlink{class_node}{Node} $>$ \hyperlink{class_node_af7ddc81
 \subsubsection{\texorpdfstring{begin()}{begin()}}
 {\footnotesize\ttfamily \hyperlink{class_node_1_1_node_iterator}{Node\+Iterator} Node\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_node_a23adfa03c20f4141b1105c5b4b1bca3f}\label{class_node_a23adfa03c20f4141b1105c5b4b1bca3f}} 
+\mbox{\Hypertarget{class_node_ab8f9492893b0e2b2d7b3d1819dacc92b}\label{class_node_ab8f9492893b0e2b2d7b3d1819dacc92b}} 
+\index{Node@{Node}!check\+\_\+child\+\_\+info@{check\+\_\+child\+\_\+info}}
+\index{check\+\_\+child\+\_\+info@{check\+\_\+child\+\_\+info}!Node@{Node}}
+\subsubsection{\texorpdfstring{check\+\_\+child\+\_\+info()}{check\_child\_info()}}
+{\footnotesize\ttfamily void Node\+::check\+\_\+child\+\_\+info (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+assert that all of the child info is correct\mbox{\Hypertarget{class_node_a23adfa03c20f4141b1105c5b4b1bca3f}\label{class_node_a23adfa03c20f4141b1105c5b4b1bca3f}} 
 \index{Node@{Node}!child@{child}}
 \index{child@{child}!Node@{Node}}
 \subsubsection{\texorpdfstring{child()}{child()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
@@ -369,6 +388,12 @@ How many children do I have? \begin{DoxyReturn}{Returns}
 What nonterminal type do I return? \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\mbox{\Hypertarget{class_node_a1ff12be4d2355edddee1fbe893f0c8a8}\label{class_node_a1ff12be4d2355edddee1fbe893f0c8a8}} 
+\index{Node@{Node}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!Node@{Node}}
+\subsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily virtual bool Node\+::operator!= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
 \mbox{\Hypertarget{class_node_a8b05feb361beb04d465619751a2297b1}\label{class_node_a8b05feb361beb04d465619751a2297b1}} 
 \index{Node@{Node}!operator$<$@{operator$<$}}
 \index{operator$<$@{operator$<$}!Node@{Node}}
@@ -393,6 +418,15 @@ What nonterminal type do I return? \begin{DoxyReturn}{Returns}
 \subsubsection{\texorpdfstring{operator==()}{operator==()}}
 {\footnotesize\ttfamily virtual bool Node\+::operator== (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
+
+
+convert tree to a linear sequence of operations. To do this, we first linearize the kids, leaving their values as the top on the stack then we compute our value, remove our kids\textquotesingle{} values to clean up the stack, and push on our return the only fanciness is for if\+: here we will use the following layout $<$\+T\+O\+P of=\char`\"{}\char`\"{} stack$>$=\char`\"{}\char`\"{}$>$ $<$bool$>$ \hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a8f69a9fe993189d72cf7b07e8517801d}{op\+\_\+\+I\+F(xsize)} X-\/branch J\+U\+M\+P(ysize) Y-\/branch 
+
+N\+O\+TE\+: Inline here lets gcc inline a few recursions of this function, which ends up speeding us up a bit (otherwise recursive inlining only happens at -\/\+O3) This optimization is why we do set max-\/inline-\/insns-\/recursive in Fleet.\+mk 
+\begin{DoxyParams}{Parameters}
+{\em ops} & \\
+\hline
+\end{DoxyParams}
 Check equality between notes. Note this compares rule objects. 
 \begin{DoxyParams}{Parameters}
 {\em n} & \\
@@ -427,7 +461,7 @@ Index my i\textquotesingle{}th child
 \subsubsection{\texorpdfstring{parseable()}{parseable()}}
 {\footnotesize\ttfamily virtual std\+::string Node\+::parseable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-Create a string that can be parsed according to \hyperlink{class_grammar_ab5bd3d35545bcab4dbd3ca1d136bd4ce}{Grammar.\+expand\+\_\+from\+\_\+names} \begin{DoxyReturn}{Returns}
+Create a string that can be parsed according to \hyperlink{class_grammar_aef582b15696b97c3376cba935a76acef}{Grammar.\+expand\+\_\+from\+\_\+names} \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_node_a377548bcf1be99ac5181f9434c33c81e}\label{class_node_a377548bcf1be99ac5181f9434c33c81e}} 
@@ -600,4 +634,4 @@ Return the type of the i\textquotesingle{}th child
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/\hyperlink{_node_8h}{Node.\+h}\end{DoxyCompactItemize}
+src/\+Grammar/\hyperlink{_node_8h}{Node.\+h}\end{DoxyCompactItemize}

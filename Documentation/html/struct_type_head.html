@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Fleet: TypeHead&lt; Args &gt; Struct Template Reference</title>
+<title>Fleet: TypeHead&lt; Args &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,11 +65,11 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="struct_type_head-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TypeHead&lt; Args &gt; Struct Template Reference</div>  </div>
+<div class="title">TypeHead&lt; Args &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="_template_magic_8h_source.html">TemplateMagic.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_primitives_8h_source.html">Primitives.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -78,9 +78,10 @@ Public Types</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class... Args&gt;<br />
-struct TypeHead&lt; Args &gt;</h3>
+class TypeHead&lt; Args &gt;</h3>
 
-<div class="fragment"><div class="line">    For managing references in lambda arguments </div><div class="line">   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// Count how many reference types</span></div><div class="line"><span class="comment">//template &lt;class T, class... Types&gt;</span></div><div class="line"><span class="comment">//struct CountReferences;</span></div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class </span>T, <span class="keyword">class</span>... Types&gt;</div><div class="line"><span class="keyword">struct </span>CountReferences {</div><div class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">size_t</span> value = std::is_reference&lt;T&gt;::value + CountReferences&lt;Types...&gt;::value;</div><div class="line">};</div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div><div class="line"><span class="keyword">struct </span>CountReferences&lt;T&gt; { <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">size_t</span> value = std::is_reference&lt;T&gt;::value; };</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// If there ar eany references in the arguments, only the first can be a reference</span></div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class </span>T, <span class="keyword">class</span>... Types&gt;</div><div class="line"><span class="keyword">struct </span>CheckReferenceIsFirst {</div><div class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> value = (CountReferences&lt;Types...&gt;::value == 0);</div><div class="line">};</div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div><div class="line"><span class="keyword">struct </span>CheckReferenceIsFirst&lt;T&gt; { <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> value = <span class="keyword">true</span>; };</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/*</span></div></div><!-- fragment --><p> List operations on args ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ </p>
+<dl class="section author"><dt>Author</dt><dd>piantado </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>07/05/20 </dd></dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a9595415877619fea585771991836e9a2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9595415877619fea585771991836e9a2">&#9670;&nbsp;</a></span>type</h2>
@@ -98,8 +99,8 @@ template&lt;class... Args&gt; </div>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li>src/<a class="el" href="_template_magic_8h_source.html">TemplateMagic.h</a></li>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>src/VirtualMachine/<a class="el" href="_primitives_8h_source.html">Primitives.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

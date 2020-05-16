@@ -65,7 +65,7 @@ $(function() {
 
 <h3><a id="index__"></a>- _ -</h3><ul>
 <li>_stack
-: <a class="el" href="class_virtual_machine_state.html#a6a5b8666e3c3a5d8b951abd6ba876c39">VirtualMachineState&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#a55e2a8e32597a15740e9e38ae539200c">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 </ul>
 
@@ -82,7 +82,7 @@ $(function() {
 
 <h3><a id="index_b"></a>- b -</h3><ul>
 <li>born
-: <a class="el" href="class_bayesable.html#a39fc0e86fa7395d8fc1ec9c8bf5dc1b5">Bayesable&lt; _t_datum, _t_data &gt;</a>
+: <a class="el" href="class_bayesable.html#a898e03a20e1851c868b77ef4e844f0bf">Bayesable&lt; _datum_t, _data_t &gt;</a>
 </li>
 <li>break_CTRLC
 : <a class="el" href="struct_control.html#a3a1856c582efd2a6a1b8f40351038d0c">Control</a>
@@ -95,10 +95,10 @@ $(function() {
 
 <h3><a id="index_c"></a>- c -</h3><ul>
 <li>C
-: <a class="el" href="class_grammar_hypothesis.html#a2147efc4d1268e115803bd34f63f1c35">GrammarHypothesis&lt; HYP, t_datum, t_data &gt;</a>
+: <a class="el" href="class_grammar_hypothesis.html#a687b9ff3ffd2c19439707530a5ace6f2">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
 </li>
 <li>call
-: <a class="el" href="struct_primitive.html#a31a16d23d239e574ba4e47f6b8e41a9d">Primitive&lt; T, args &gt;</a>
+: <a class="el" href="struct_primitive.html#a4a183f50daf033866abc34fa2da9e703">Primitive&lt; T, args &gt;</a>
 </li>
 <li>callback
 : <a class="el" href="class_m_c_m_c_chain.html#aa7a4a0d46ae2d9818c2f076f839badd7">MCMCChain&lt; HYP, callback_t &gt;</a>
@@ -110,7 +110,7 @@ $(function() {
 : <a class="el" href="class_m_c_t_s_node.html#a66790ec812754c13bab5f6f14966bacf">MCTSNode&lt; M, HYP &gt;</a>
 </li>
 <li>child_types
-: <a class="el" href="class_rule.html#a2d5160625d3d15f60690c4323522a33e">Rule</a>
+: <a class="el" href="class_rule.html#ac29b59e23c3327fed7a1e99b06512057">Rule</a>
 </li>
 <li>children
 : <a class="el" href="class_m_c_t_s_node.html#a243b348036c57a54af3a48a708851b80">MCTSNode&lt; M, HYP &gt;</a>
@@ -125,9 +125,6 @@ $(function() {
 <li>cntyes
 : <a class="el" href="struct_human_datum.html#a3569e7634ea9badbe48105cb3a4e5800">HumanDatum&lt; t_learnerdatum, t_learnerdata &gt;</a>
 </li>
-<li>color
-: <a class="el" href="struct_object.html#a3ed85d6e0b0b62ff2501d421cb55c5e9">Object</a>
-</li>
 <li>current
 : <a class="el" href="class_m_c_m_c_chain.html#ab0c3b31e96d1f703bb8cf55c0575b4bd">MCMCChain&lt; HYP, callback_t &gt;</a>
 , <a class="el" href="class_node_1_1_node_iterator.html#aef4bbf58890919058172facd8b91238a">Node::NodeIterator</a>
@@ -136,15 +133,21 @@ $(function() {
 : <a class="el" href="class_m_c_m_c_chain.html#a42c355121fce0476426a49d5498c38a1">MCMCChain&lt; HYP, callback_t &gt;</a>
 </li>
 <li>current_steps
-: <a class="el" href="class_virtual_machine_pool.html#a31cd55d7c9c7daf930bcc7f57b67d930">VirtualMachinePool&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_pool.html#a63db532386cd929a09525f7ab569ff81">VirtualMachinePool&lt; VMState &gt;</a>
 </li>
 </ul>
 
 
 <h3><a id="index_d"></a>- d -</h3><ul>
 <li>data
-: <a class="el" href="class_m_c_m_c_chain.html#a62ffa9a3d173a79c82f09174b58aebaf">MCMCChain&lt; HYP, callback_t &gt;</a>
-, <a class="el" href="class_m_c_t_s_node.html#af58c9958a7092d4e09b58bd94b7c9f58">MCTSNode&lt; M, HYP &gt;</a>
+: <a class="el" href="class_m_c_m_c_chain.html#ab235f08fad93a9626ffb566c001ed5c9">MCMCChain&lt; HYP, callback_t &gt;</a>
+, <a class="el" href="class_m_c_t_s_node.html#a736868beae8f1925081e2ec471742b8c">MCTSNode&lt; M, HYP &gt;</a>
+</li>
+<li>depth_exception
+: <a class="el" href="class_grammar.html#a3a9a86328940c89b66088b2807c88b68">Grammar&lt; GRAMMAR_TYPES &gt;</a>
+</li>
+<li>dispatch
+: <a class="el" href="struct_primitive.html#a8fe52297e3da666ec08e2328a3fe92e9">Primitive&lt; T, args &gt;</a>
 </li>
 <li>done_steps
 : <a class="el" href="struct_control.html#a4a1867401c3e89aecaf14949521ed247">Control</a>
@@ -157,7 +160,7 @@ $(function() {
 : <a class="el" href="class_node.html#a336943f2e37a2b6fcbe8b47634719dec">Node</a>
 </li>
 <li>err
-: <a class="el" href="class_virtual_machine_state.html#aca5b21a6e1babe0d57086ae49ebf6c7d">VirtualMachineState&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#aa3eaa4b1432d1604b86039d2ff0faae1">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>explore
 : <a class="el" href="class_m_c_t_s_node.html#ad1a742de2cdd0e208079bc35f943cacc">MCTSNode&lt; M, HYP &gt;</a>
@@ -167,7 +170,7 @@ $(function() {
 
 <h3><a id="index_f"></a>- f -</h3><ul>
 <li>factors
-: <a class="el" href="class_lexicon.html#a030dd03b0f892b4bda7f8bc6ff3fc7df">Lexicon&lt; HYP, T, t_input, t_output, t_datum &gt;</a>
+: <a class="el" href="class_lexicon.html#ac70865eb23b1e23f53f21e1760adac00">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>
 </li>
 <li>format
 : <a class="el" href="struct_builtin_primitive.html#aabf1561380f8c387cf3bf768f97bd4bd">BuiltinPrimitive&lt; t, args &gt;</a>
@@ -181,12 +184,13 @@ $(function() {
 <li>given_data
 : <a class="el" href="struct_human_datum.html#aab13b229dfedb8c2466f47a58e710431">HumanDatum&lt; t_learnerdatum, t_learnerdata &gt;</a>
 </li>
-<li>global_primitive_counter
-: <a class="el" href="struct_pre_primitive.html#a42ca9726dd60d24f8148e766d5e8ecc8">PrePrimitive</a>
-</li>
 <li>grammar
-: <a class="el" href="class_grammar_hypothesis.html#ae3aa5981689e75e3eccc343c838b8f47">GrammarHypothesis&lt; HYP, t_datum, t_data &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#aa7cf638b5d680794e33aa5eb4bd36b09">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>
+: <a class="el" href="class_fleet_1_1_combinators_1_1_lazy_normal_forms.html#a8c03ec76969610b3caad9e309fb05338">Fleet::Combinators::LazyNormalForms</a>
+, <a class="el" href="class_grammar_hypothesis.html#a33e2e7cbb1cbf31c5ec87216ac0494e1">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#affae32db28c39df676809ae47e14e7cf">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
+</li>
+<li>GRAMMAR_MAX_DEPTH
+: <a class="el" href="class_grammar.html#a4a0d1d38426ce7f1b68c001e9ddec064">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 </ul>
 
@@ -206,11 +210,17 @@ $(function() {
 
 
 <h3><a id="index_i"></a>- i -</h3><ul>
+<li>idx
+: <a class="el" href="class_fleet_1_1_combinators_1_1_lazy_normal_forms.html#aac1fda9a6b718165e3ea8f4e8a953f48">Fleet::Combinators::LazyNormalForms</a>
+</li>
 <li>input
-: <a class="el" href="classdefault__datum.html#a19f8427ac058ad008f5b2541e17d42e7">default_datum&lt; t_input, t_output &gt;</a>
+: <a class="el" href="classdefauldatum__t.html#a282269cf029cd4068c94db8c8edee01e">defauldatum_t&lt; input_t, output_t &gt;</a>
 </li>
 <li>instr
 : <a class="el" href="class_rule.html#a367e578f5e1427ef04d1d77477565c67">Rule</a>
+</li>
+<li>is_dispatch
+: <a class="el" href="struct_primitive.html#a599bf4b9b5115d99c203b51dc028ba4e">Primitive&lt; T, args &gt;</a>
 </li>
 <li>is_temperature
 : <a class="el" href="class_parallel_tempering.html#ae9f0a2af938df838cc4010983860394e">ParallelTempering&lt; HYP, callback_t &gt;</a>
@@ -220,23 +230,26 @@ $(function() {
 
 <h3><a id="index_l"></a>- l -</h3><ul>
 <li>likelihood
-: <a class="el" href="class_bayesable.html#ad54a4585cd8861c8002fca6f75aa92c0">Bayesable&lt; _t_datum, _t_data &gt;</a>
+: <a class="el" href="class_bayesable.html#a4d1a9ed826013bf079cea1867b6d4183">Bayesable&lt; _datum_t, _data_t &gt;</a>
+</li>
+<li>list
+: <a class="el" href="class_fleet_1_1_combinators_1_1_lazy_normal_forms.html#a81bc4f4f4739c583fd3aaaaf38c7742d">Fleet::Combinators::LazyNormalForms</a>
 </li>
 <li>LL
-: <a class="el" href="class_grammar_hypothesis.html#a90aea1a98b122b01e7a10cc2c7c251d4">GrammarHypothesis&lt; HYP, t_datum, t_data &gt;</a>
+: <a class="el" href="class_grammar_hypothesis.html#a39667d9ed2d286c993e28c68e26ddf23">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
 </li>
 <li>lock
 : <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#a5651ed8dd36b6586ac64aeb8870d3760">Fleet::Statistics::StreamingStatistics</a>
 </li>
 <li>logodds_baseline
-: <a class="el" href="class_grammar_hypothesis.html#a41985a24a133b009328deed14a2b8802">GrammarHypothesis&lt; HYP, t_datum, t_data &gt;</a>
+: <a class="el" href="class_grammar_hypothesis.html#a3a18c5d9774339cc2f5e202fd61b0c67">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
 </li>
 <li>logodds_forwardalpha
-: <a class="el" href="class_grammar_hypothesis.html#a1027d3f52f4d1adddd923a18fb393955">GrammarHypothesis&lt; HYP, t_datum, t_data &gt;</a>
+: <a class="el" href="class_grammar_hypothesis.html#a06e85e0c1a7726714f7f06a4fc0a0618">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
 </li>
 <li>lp
 : <a class="el" href="class_node.html#a298eaa3743b774a3f9ef396e1dc42a08">Node</a>
-, <a class="el" href="class_virtual_machine_state.html#adce04f52049f686272022e4f1b8c0257">VirtualMachineState&lt; t_x, t_return &gt;</a>
+, <a class="el" href="class_virtual_machine_state.html#a5937b2c3afdfe35b9bba71dbdd83d5bd">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>lse
 : <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#a4ffa58fb5fd8ce43f06bb8bf56115bd5">Fleet::Statistics::StreamingStatistics</a>
@@ -260,35 +273,38 @@ $(function() {
 <li>max
 : <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#a39d330cb8b112aa23d5460011c161f54">Fleet::Statistics::StreamingStatistics</a>
 </li>
+<li>MAX_CHILD_SIZE
+: <a class="el" href="class_rule.html#ac78a2201dfba27f803111205396f0027">Rule</a>
+</li>
 <li>MAX_NODES
-: <a class="el" href="class_l_o_t_hypothesis.html#ab262eb592887136a986f5b2649397eca">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>
+: <a class="el" href="class_l_o_t_hypothesis.html#a0231650d938c098118a4c4bdb201fc61">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
 </li>
 <li>max_outputs
-: <a class="el" href="class_virtual_machine_pool.html#ad32df5f3c78137c35a4fcc22916c8598">VirtualMachinePool&lt; t_x, t_return &gt;</a>
-</li>
-<li>MAX_PRIMITIVES
-: <a class="el" href="struct_pre_primitive.html#aaa931d0f215c4a79ab4920c13a82a32b">PrePrimitive</a>
+: <a class="el" href="class_virtual_machine_pool.html#a042d1b151817c99638f8b35303eb508f">VirtualMachinePool&lt; VMState &gt;</a>
 </li>
 <li>MAX_RECURSE
-: <a class="el" href="class_virtual_machine_state.html#a61a1809d19f878d8de34198d0b7671b2">VirtualMachineState&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#a39865beb5e6573148615231897c677de">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
-<li>max_steps
-: <a class="el" href="class_virtual_machine_pool.html#ae87303ebbcbff239ff4f3217087420a9">VirtualMachinePool&lt; t_x, t_return &gt;</a>
+<li>MAX_RUN_PROGRAM
+: <a class="el" href="class_virtual_machine_state.html#a8ad0bb79907ef1babd0a7b3a9cc88d46">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
+</li>
+<li>max_state_run
+: <a class="el" href="class_virtual_machine_pool.html#ac64fb33b9ff42650839f8b10f2b11a4a">VirtualMachinePool&lt; VMState &gt;</a>
 </li>
 <li>maxval
 : <a class="el" href="class_m_c_m_c_chain.html#a3b8d31f47d75503321b432eeac0bb13b">MCMCChain&lt; HYP, callback_t &gt;</a>
 </li>
 <li>mem
-: <a class="el" href="class_virtual_machine_state.html#a73a2f267d4140241389b1fcab4a981b0">VirtualMachineState&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#a8f36d4040b98a1e85fb7edf61e6085c9">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>memstack
-: <a class="el" href="class_virtual_machine_state.html#ac7c71aba54fb5fce40ee1854cb5204b6">VirtualMachineState&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#af7a7d7f942825d6f819a791dcb53617b">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>min
 : <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#a780941dece7b39cc2feaf7ad95da1ae3">Fleet::Statistics::StreamingStatistics</a>
 </li>
 <li>min_lp
-: <a class="el" href="class_virtual_machine_pool.html#a3705ed3241bdd47aa2e585cfd67509d6">VirtualMachinePool&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_pool.html#adef21b421dc051008ba0bd4ee59a3809">VirtualMachinePool&lt; VMState &gt;</a>
 </li>
 <li>mutex
 : <a class="el" href="class_fleet_1_1_statistics_1_1_finite_history.html#abae96d2bf212abbf0bcfb74ac41b7165">Fleet::Statistics::FiniteHistory&lt; T &gt;</a>
@@ -312,6 +328,9 @@ $(function() {
 , <a class="el" href="class_fleet_1_1_statistics_1_1_top_n.html#a7a9612e75b42451eef7db77498050e7a">Fleet::Statistics::TopN&lt; T &gt;</a>
 , <a class="el" href="class_rule.html#a0a2a742af39b60831ad1ac5eb5ba7498">Rule</a>
 </li>
+<li>N_NTs
+: <a class="el" href="class_grammar.html#a45877d4d7a5ee98bf6753af593d6ca08">Grammar&lt; GRAMMAR_TYPES &gt;</a>
+</li>
 <li>nt
 : <a class="el" href="class_rule.html#a980385e76137909454bd6a585bd2e138">Rule</a>
 </li>
@@ -327,8 +346,7 @@ $(function() {
 <h3><a id="index_o"></a>- o -</h3><ul>
 <li>op
 : <a class="el" href="struct_builtin_primitive.html#a996bd520f47a299728229774117d6188">BuiltinPrimitive&lt; t, args &gt;</a>
-, <a class="el" href="class_instruction.html#ace2bace7950c18f67d1568fb56e9e6de">Instruction</a>
-, <a class="el" href="struct_pre_primitive.html#a209912eb2296e524388fa1f83e7d834b">PrePrimitive</a>
+, <a class="el" href="class_instruction.html#ad6b1f252f404568d2fe80644a7caa224">Instruction</a>
 , <a class="el" href="struct_primitive.html#a45ef953a37468a97b5a4b5531e5f21ce">Primitive&lt; T, args &gt;</a>
 </li>
 <li>op_counter
@@ -338,10 +356,10 @@ $(function() {
 : <a class="el" href="class_m_c_t_s_node.html#aa4d0f6bb2603cfe995aaafc5d208ec16">MCTSNode&lt; M, HYP &gt;</a>
 </li>
 <li>opstack
-: <a class="el" href="class_virtual_machine_state.html#a37b2fdff8af77aea5b45afb6644099b0">VirtualMachineState&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#af154a184be7061c9fc1ee7fa875cffa0">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>output
-: <a class="el" href="classdefault__datum.html#afafbe2c709ff57daca0fd60289bdd13a">default_datum&lt; t_input, t_output &gt;</a>
+: <a class="el" href="classdefauldatum__t.html#abe0955067e70651670dfe3031eda1efb">defauldatum_t&lt; input_t, output_t &gt;</a>
 </li>
 </ul>
 
@@ -351,7 +369,7 @@ $(function() {
 : <a class="el" href="struct_builtin_primitive.html#a1a8d8e62426c9454355412b80faf684c">BuiltinPrimitive&lt; t, args &gt;</a>
 </li>
 <li>P
-: <a class="el" href="class_grammar_hypothesis.html#a7154fb0938913f01dfd85efb76c46250">GrammarHypothesis&lt; HYP, t_datum, t_data &gt;</a>
+: <a class="el" href="class_grammar_hypothesis.html#aac415f896cdeb3ab3b93bdbc87dc50a4">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
 </li>
 <li>p
 : <a class="el" href="struct_primitive.html#a43fac47ebf8ec63a70443d80dcd04687">Primitive&lt; T, args &gt;</a>
@@ -368,19 +386,16 @@ $(function() {
 : <a class="el" href="class_chain_pool.html#af89400f6e9a2312fe2ee7873745a6e91">ChainPool&lt; HYP, callback_t &gt;</a>
 </li>
 <li>posterior
-: <a class="el" href="class_bayesable.html#ab27fd7227331366093ac8d47e0be1f8a">Bayesable&lt; _t_datum, _t_data &gt;</a>
+: <a class="el" href="class_bayesable.html#a268442b9aae5b763c17ca29c39231915">Bayesable&lt; _datum_t, _data_t &gt;</a>
 </li>
-<li>predict_data
-: <a class="el" href="struct_human_datum.html#ab4676fce2bedc28aca179a17fce99be2">HumanDatum&lt; t_learnerdatum, t_learnerdata &gt;</a>
-</li>
-<li>primitive_lookup
-: <a class="el" href="struct_pre_primitive.html#a286cab59ea91d634e75f435cd9812dd1">PrePrimitive</a>
+<li>predicdata_t
+: <a class="el" href="struct_human_datum.html#a1c46fa659d01c8108fc694b4332836ff">HumanDatum&lt; t_learnerdatum, t_learnerdata &gt;</a>
 </li>
 <li>print_best
 : <a class="el" href="class_fleet_1_1_statistics_1_1_top_n.html#a1ee284a643f14a5c4670b4c5f61f5262">Fleet::Statistics::TopN&lt; T &gt;</a>
 </li>
 <li>prior
-: <a class="el" href="class_bayesable.html#ae09840f8bbd3fb92993970bc7b28dc79">Bayesable&lt; _t_datum, _t_data &gt;</a>
+: <a class="el" href="class_bayesable.html#a473790922c2dd73e227350d029d73003">Bayesable&lt; _datum_t, _data_t &gt;</a>
 </li>
 <li>proposals
 : <a class="el" href="class_m_c_m_c_chain.html#aec2cdd6a3e25447c7f34e31d0d98dbcb">MCMCChain&lt; HYP, callback_t &gt;</a>
@@ -390,7 +405,7 @@ $(function() {
 
 <h3><a id="index_q"></a>- q -</h3><ul>
 <li>Q
-: <a class="el" href="class_virtual_machine_pool.html#aab39827c242ded3fcc4675d2c24687a7">VirtualMachinePool&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_pool.html#a6bb6ec72e4b6fb87bb3b7ea6eb0e4d6e">VirtualMachinePool&lt; VMState &gt;</a>
 </li>
 </ul>
 
@@ -400,10 +415,10 @@ $(function() {
 : <a class="el" href="class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#a45c460752bf4e0b27ee406d2560479da">Fleet::Statistics::ReservoirSample&lt; T &gt;::Item</a>
 </li>
 <li>recursion_depth
-: <a class="el" href="class_virtual_machine_state.html#a9d28667bb71e7a7aad5dabdc41dd55d0">VirtualMachineState&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#aa35593f67d1ea4e838fec8e7a8d33897">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>reliability
-: <a class="el" href="classdefault__datum.html#ad9d6b81d35ca8107e8c810186cef9270">default_datum&lt; t_input, t_output &gt;</a>
+: <a class="el" href="classdefauldatum__t.html#a113548381865b87bd1332d8c73e56608">defauldatum_t&lt; input_t, output_t &gt;</a>
 </li>
 <li>reservoir_sample
 : <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#adb520be6722da7da835ac097a5602278">Fleet::Statistics::StreamingStatistics</a>
@@ -421,7 +436,10 @@ $(function() {
 : <a class="el" href="class_node.html#ab58932e82964fb75ba806870c4069dc2">Node</a>
 </li>
 <li>rules
-: <a class="el" href="class_grammar.html#aae1036bcd35025ff7512252c7aa06e9c">Grammar</a>
+: <a class="el" href="class_grammar.html#a8a89ced0753d72f52ccf2b04c0ccc82b">Grammar&lt; GRAMMAR_TYPES &gt;</a>
+</li>
+<li>run_program
+: <a class="el" href="class_virtual_machine_state.html#afc2691c3bd3c7c3feba0708c2929ffe2">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>running_mutex
 : <a class="el" href="class_chain_pool.html#a6efe006156a22132b452d50dab9f76c0">ChainPool&lt; HYP, callback_t &gt;</a>
@@ -437,9 +455,6 @@ $(function() {
 <li>samples
 : <a class="el" href="class_m_c_m_c_chain.html#a0d3ac649b04077cd0ffea236df560c91">MCMCChain&lt; HYP, callback_t &gt;</a>
 </li>
-<li>shape
-: <a class="el" href="struct_object.html#a09a35e7356709e994637bd66c2c69fc4">Object</a>
-</li>
 <li>start
 : <a class="el" href="class_node_1_1_node_iterator.html#a7f1dc14103049a99cd9929946ecbd0f0">Node::NodeIterator</a>
 </li>
@@ -450,7 +465,7 @@ $(function() {
 : <a class="el" href="class_m_c_t_s_node.html#a47cdbf0ef4f1e6ccbb6e911d4d384f39">MCTSNode&lt; M, HYP &gt;</a>
 </li>
 <li>status
-: <a class="el" href="class_virtual_machine_state.html#aa78c1891f8a2a656a0b60cd8a698b41d">VirtualMachineState&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#a6e561a217081654b4187620953e86fff">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>step
 : <a class="el" href="class_fleet_1_1_statistics_1_1_median_f_a_m_e.html#a3451548541aad22bb7a1c35291faa357">Fleet::Statistics::MedianFAME&lt; T &gt;</a>
@@ -521,18 +536,18 @@ $(function() {
 , <a class="el" href="struct_count_references.html#abeeaf4de9f66ebc6c15965a5cf92455a">CountReferences&lt; T, Types &gt;</a>
 , <a class="el" href="struct_count_references_3_01_t_01_4.html#a9e9c1c7749c5c42903d7115afe453ab2">CountReferences&lt; T &gt;</a>
 , <a class="el" href="class_integerized_stack.html#afcfb2d32d51c88b556f3bb7ff2544be5">IntegerizedStack</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#aff7455a900ffb91790e5235119676a80">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#ac759b3eab77ead1749b905a3dde74961">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_m_c_t_s_node.html#a0442ab9a9378dabcd98ac7254b2e70a8">MCTSNode&lt; M, HYP &gt;</a>
 , <a class="el" href="struct_type_index_3_01_t_00_01std_1_1tuple_3_01_t_00_01_types_8_8_8_01_4_01_4.html#a163ba00344b287c191f05761d34556d2">TypeIndex&lt; T, std::tuple&lt; T, Types... &gt; &gt;</a>
 , <a class="el" href="struct_type_index_3_01_t_00_01std_1_1tuple_3_01_u_00_01_types_8_8_8_01_4_01_4.html#a87bb4c7885986ec91881b421ad1758b7">TypeIndex&lt; T, std::tuple&lt; U, Types... &gt; &gt;</a>
-, <a class="el" href="struct_virtual_machine_state_1_1t__stack.html#a455e35013f15a7e7b328da628d711e49">VirtualMachineState&lt; t_x, t_return &gt;::t_stack&lt; args &gt;</a>
+, <a class="el" href="struct_virtual_machine_state_1_1t__stack.html#a15f3d1b1bc4fbbd9bf53ae62fc6096cb">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;::t_stack&lt; args &gt;</a>
 </li>
 </ul>
 
 
 <h3><a id="index_w"></a>- w -</h3><ul>
 <li>worst_lp
-: <a class="el" href="class_virtual_machine_pool.html#a9d5d6a1e078b9790f4193af8845d060f">VirtualMachinePool&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_pool.html#ac5ffa14dc0e298c9fae3cddfa04779bb">VirtualMachinePool&lt; VMState &gt;</a>
 </li>
 </ul>
 
@@ -540,17 +555,17 @@ $(function() {
 <h3><a id="index_x"></a>- x -</h3><ul>
 <li>x
 : <a class="el" href="class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#ae845a0d698a99e1508241fd25b63dd3a">Fleet::Statistics::ReservoirSample&lt; T &gt;::Item</a>
-, <a class="el" href="class_grammar_hypothesis.html#a27fdb926401378fc46373ee57bb2a21f">GrammarHypothesis&lt; HYP, t_datum, t_data &gt;</a>
+, <a class="el" href="class_grammar_hypothesis.html#a57d7f73f465b70294a8b4ef2b3f5dbbb">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
 </li>
 <li>xstack
-: <a class="el" href="class_virtual_machine_state.html#a83d4e418eee2f9208641bb12c99bd7fb">VirtualMachineState&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#a80b006dac38f49c469941d65bdc239fe">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 </ul>
 
 
 <h3><a id="index_z"></a>- z -</h3><ul>
 <li>Z
-: <a class="el" href="class_grammar.html#af55b1376566113fecd05b2c99b9f0014">Grammar</a>
+: <a class="el" href="class_grammar.html#a63420ee4232c46523a46bd881cb3e2f5">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->

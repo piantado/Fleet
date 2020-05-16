@@ -1,14 +1,18 @@
 \hypertarget{_strings_8h}{}\section{src/\+Strings.h File Reference}
 \label{_strings_8h}\index{src/\+Strings.\+h@{src/\+Strings.\+h}}
+{\ttfamily \#include $<$math.\+h$>$}\newline
 {\ttfamily \#include $<$string.\+h$>$}\newline
-Include dependency graph for Strings.\+h\+:\nopagebreak
+{\ttfamily \#include \char`\"{}Numerics.\+h\char`\"{}}\newline
+Include dependency graph for Strings.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=152pt]{_strings_8h__incl}
+\includegraphics[width=343pt]{_strings_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -20,7 +24,7 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \item 
 {\footnotesize template$<$typename T $>$ }\\std\+::string \hyperlink{_strings_8h_a4bc77a6f47e3046cc934b49f5e03a56f}{str} (T x)
 \item 
-double \hyperlink{_strings_8h_a016b5927e1efc9ffbf6f23c856483a84}{p\+\_\+delete\+\_\+append} (const std\+::string \&x, const std\+::string \&y, double del\+\_\+p, double add\+\_\+p, double alpha\+\_\+n)
+{\footnotesize template$<$const float \& add\+\_\+p, const float \& del\+\_\+p$>$ }\\double \hyperlink{_strings_8h_a006f42339c42d12497ad559987a8597c}{p\+\_\+delete\+\_\+append} (const std\+::string \&x, const std\+::string \&y, const float log\+\_\+alphabet)
 \begin{DoxyCompactList}\small\item\em Probability of converting x into y by deleting some number (each with del\+\_\+p, then stopping with prob 1-\/del\+\_\+p), adding with probability add\+\_\+p, and then when we add selecting from an alphabet of size alpha\+\_\+n. \end{DoxyCompactList}\item 
 std\+::deque$<$ std\+::string $>$ \hyperlink{_strings_8h_a60d3a9b47a988443407a595730086318}{split} (const std\+::string \&s, const char delimiter)
 \item 
@@ -75,11 +79,12 @@ Compute levenshtein distiance between two strings (N\+O\+TE\+: Or O(\+N$^\wedge$
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{_strings_8h_a016b5927e1efc9ffbf6f23c856483a84}\label{_strings_8h_a016b5927e1efc9ffbf6f23c856483a84}} 
+\mbox{\Hypertarget{_strings_8h_a006f42339c42d12497ad559987a8597c}\label{_strings_8h_a006f42339c42d12497ad559987a8597c}} 
 \index{Strings.\+h@{Strings.\+h}!p\+\_\+delete\+\_\+append@{p\+\_\+delete\+\_\+append}}
 \index{p\+\_\+delete\+\_\+append@{p\+\_\+delete\+\_\+append}!Strings.\+h@{Strings.\+h}}
 \subsubsection{\texorpdfstring{p\+\_\+delete\+\_\+append()}{p\_delete\_append()}}
-{\footnotesize\ttfamily double p\+\_\+delete\+\_\+append (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{x,  }\item[{const std\+::string \&}]{y,  }\item[{double}]{del\+\_\+p,  }\item[{double}]{add\+\_\+p,  }\item[{double}]{alpha\+\_\+n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$const float \& add\+\_\+p, const float \& del\+\_\+p$>$ \\
+double p\+\_\+delete\+\_\+append (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{x,  }\item[{const std\+::string \&}]{y,  }\item[{const float}]{log\+\_\+alphabet }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -100,6 +105,18 @@ Probability of converting x into y by deleting some number (each with del\+\_\+p
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 The probability of converting x to y by deleting characters with probability del\+\_\+p and then adding with probability add\+\_\+p 
+\end{DoxyReturn}
+This function computes the probability that x would be converted into y, when we insert with probability add\+\_\+p and delete with probabiltiy del\+\_\+p and when we add we add from an alphabet of size log\+\_\+alphabet. Note that this is a template function because otherwise we end up computing log(add\+\_\+p) and log(del\+\_\+p) a lot, and these are in fact constant. 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+{\em log\+\_\+alphabet} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
 \end{DoxyReturn}
 \mbox{\Hypertarget{_strings_8h_a1bb5ec0bee0c8456e3fcc87cc012d055}\label{_strings_8h_a1bb5ec0bee0c8456e3fcc87cc012d055}} 
 \index{Strings.\+h@{Strings.\+h}!Q@{Q}}

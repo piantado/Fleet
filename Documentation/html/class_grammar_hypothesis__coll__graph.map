@@ -1,5 +1,6 @@
-<map id="GrammarHypothesis&lt; HYP, t_datum, t_data &gt;" name="GrammarHypothesis&lt; HYP, t_datum, t_data &gt;">
-<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title="MCMCable\&lt; GrammarHypothesis\l\&lt; HYP, t_datum, t_data \&gt;\l, t_datum, t_data \&gt;" alt="" coords="5,81,225,137"/>
-<area shape="rect" id="node3" href="$class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="42,5,189,32"/>
-<area shape="rect" id="node4" href="$class_grammar.html" title="Grammar" alt="" coords="249,96,325,123"/>
+<map id="GrammarHypothesis&lt; HYP, datum_t, data_t &gt;" name="GrammarHypothesis&lt; HYP, datum_t, data_t &gt;">
+<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title="MCMCable\&lt; GrammarHypothesis\l\&lt; HYP, datum_t, data_t \&gt;\l, datum_t, data_t \&gt;" alt="" coords="491,5,711,61"/>
+<area shape="rect" id="node3" href="$class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="165,20,311,47"/>
+<area shape="rect" id="node4" href="$class_grammar.html" title="Grammar\&lt; GRAMMAR_TYPES \&gt;" alt="" coords="491,85,712,112"/>
+<area shape="rect" id="node5" href="$class_grammar_1_1_depth_exception.html" title="Grammar\&lt; GRAMMAR_TYPES\l \&gt;::DepthException" alt="" coords="133,78,343,119"/>
 </map>

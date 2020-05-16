@@ -1,17 +1,96 @@
 \hypertarget{_timing_8h}{}\section{src/\+Timing.h File Reference}
 \label{_timing_8h}\index{src/\+Timing.\+h@{src/\+Timing.\+h}}
 {\ttfamily \#include $<$chrono$>$}\newline
-Include dependency graph for Timing.\+h\+:\nopagebreak
+Include dependency graph for Timing.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=151pt]{_timing_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_timing_8h__dep__incl}
 \end{center}
 \end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+time\+\_\+t \hyperlink{_timing_8h_aba95791cdf05e46e95d8cda8075717c2}{convert\+\_\+time} (std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em Give a timepoint for the current time. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_timing_8h_aba95791cdf05e46e95d8cda8075717c2}\label{_timing_8h_aba95791cdf05e46e95d8cda8075717c2}} 
+\index{Timing.\+h@{Timing.\+h}!convert\+\_\+time@{convert\+\_\+time}}
+\index{convert\+\_\+time@{convert\+\_\+time}!Timing.\+h@{Timing.\+h}}
+\subsubsection{\texorpdfstring{convert\+\_\+time()}{convert\_time()}}
+{\footnotesize\ttfamily time\+\_\+t convert\+\_\+time (\begin{DoxyParamCaption}\item[{std\+::string \&}]{s }\end{DoxyParamCaption})}
+
+
+
+Give a timepoint for the current time. 
+
+
+\begin{DoxyCode}
+    Time is a goddamn nightmare, we are going to define our own time type
+    In Fleet, EVERYTHING is going to be stored as an \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordflow}{for} ms
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+\textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} time\_ms;
+\textcolor{keyword}{typedef} std::chrono::high\_resolution\_clock::time\_point timept;
+
+timept now() \{ 
+    \textcolor{keywordflow}{return} std::chrono::high\_resolution\_clock::now();
+\}
+
+time\_ms time\_since(timept x) \{
+    \textcolor{keywordflow}{return} std::chrono::duration\_cast<std::chrono::milliseconds>(std::chrono::high\_resolution\_clock::now()-
+      x).\hyperlink{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}{count}();
+\}
+
+
+\textcolor{comment}{// this is just handy for timing stuff -- put blocks of code between tic() and tic()}
+timept tic\_start;
+time\_ms tic\_elapsed;
+\textcolor{keywordtype}{void} tic() \{
+    tic\_elapsed =  time\_since(tic\_start);
+    tic\_start = now();
+\}
+\textcolor{keywordtype}{double} elapsed\_seconds() \{ 
+    \textcolor{keywordflow}{return} tic\_elapsed / 1000.0; 
+\}
+
+
+std::string datestring() \{
+    \textcolor{comment}{//https://stackoverflow.com/questions/40100507/how-do-i-get-the-current-date-in-c}
+
+    time\_t rawtime;
+    \textcolor{keyword}{struct }tm * timeinfo;
+    \textcolor{keywordtype}{char} buffer[80];
+
+    time (&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    strftime(buffer,80,\textcolor{stringliteral}{"%Y-%m-%d %I:%M:%S"},timeinfo);
+    \textcolor{keywordflow}{return} std::string(buffer);
+\}
+
+
+
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ Time conversions for fleet $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ Converts our own time format to ms, which is what \hyperlink{namespace_fleet}{Fleet}\textquotesingle{}s time utilities use The time format we accept is \#+(.\#+)\mbox{[}smhd\mbox{]} where shmd specifies seconds, minutes, hours days 
+\begin{DoxyParams}{Parameters}
+{\em s} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}

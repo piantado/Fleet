@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['searchable_2eh',['Searchable.h',['../_searchable_8h.html',1,'']]],
-  ['stack_2eh',['Stack.h',['../_stack_8h.html',1,'']]],
-  ['streamingstatistics_2eh',['StreamingStatistics.h',['../_streaming_statistics_8h.html',1,'']]],
-  ['strings_2eh',['Strings.h',['../_strings_8h.html',1,'']]]
+  ['random_2eh',['Random.h',['../_random_8h.html',1,'']]],
+  ['reservoirsample_2eh',['ReservoirSample.h',['../_reservoir_sample_8h.html',1,'']]],
+  ['reservoirsample_5fold_2eh',['ReservoirSample_old.h',['../_reservoir_sample__old_8h.html',1,'']]],
+  ['rule_2eh',['Rule.h',['../_rule_8h.html',1,'']]]
 ];

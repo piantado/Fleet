@@ -4,6 +4,11 @@
 
 {\ttfamily \#include $<$Top.\+h$>$}
 
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_fleet_1_1_statistics_1_1_top_n_af115f2778a79fca8e1f499d351af1b8b}{Hypothesis\+\_\+t} = T
+\end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -27,6 +32,8 @@ bool \hyperlink{class_fleet_1_1_statistics_1_1_top_n_ac2b70eef6c75a0459acc88b253
 \item 
 const std\+::multiset$<$ T $>$ \& \hyperlink{class_fleet_1_1_statistics_1_1_top_n_ab7ab88abe1dd8afe6ffecf9206cbceb7}{values} () const
 \item 
+bool \hyperlink{class_fleet_1_1_statistics_1_1_top_n_a0e09337a1f36d16a25b03d63f68952a0}{contains} (const T \&x) const
+\begin{DoxyCompactList}\small\item\em Does this contain x? \end{DoxyCompactList}\item 
 void \hyperlink{class_fleet_1_1_statistics_1_1_top_n_a71f34724832a34c029bfeeb6e1dea24f}{add} (const T \&x, size\+\_\+t \hyperlink{class_fleet_1_1_statistics_1_1_top_n_a341df027d3283fe3a9bf3766521e126d}{count}=1)
 \item 
 void \hyperlink{class_fleet_1_1_statistics_1_1_top_n_af54651d8e83bdcc6b3ffbcef3aa3fd6e}{operator$<$$<$} (const T \&x)
@@ -39,9 +46,9 @@ void \hyperlink{class_fleet_1_1_statistics_1_1_top_n_a3300639fe8eef303fb66e1630d
 \item 
 size\+\_\+t \hyperlink{class_fleet_1_1_statistics_1_1_top_n_acb11e623b45dbec10f2c1ac9a48b0eef}{operator\mbox{[}$\,$\mbox{]}} (const T \&x)
 \item 
-const T \& \hyperlink{class_fleet_1_1_statistics_1_1_top_n_a61aa70a203ecf97f79d26cb4bcfe2071}{best} ()
+const T \& \hyperlink{class_fleet_1_1_statistics_1_1_top_n_aeab09f4da77161e1743d03780eb4d6b8}{best} () const
 \item 
-const T \& \hyperlink{class_fleet_1_1_statistics_1_1_top_n_a7be596fb7defba492b503371c58b30ce}{worst} ()
+const T \& \hyperlink{class_fleet_1_1_statistics_1_1_top_n_aab552495129498fc792b8d5990c6a746}{worst} () const
 \item 
 double \hyperlink{class_fleet_1_1_statistics_1_1_top_n_aa94e0f1e4df0ba70b35abcc540b7cb03}{Z} ()
 \item 
@@ -51,7 +58,7 @@ void \hyperlink{class_fleet_1_1_statistics_1_1_top_n_ab57188b1858802dcf1f26dbcf7
 \item 
 unsigned long \hyperlink{class_fleet_1_1_statistics_1_1_top_n_a341df027d3283fe3a9bf3766521e126d}{count} (const T x)
 \item 
-{\footnotesize template$<$typename t\+\_\+data $>$ }\\\hyperlink{class_fleet_1_1_statistics_1_1_top_n}{TopN} \hyperlink{class_fleet_1_1_statistics_1_1_top_n_ac6ab403d6833e58352e24110ee379fbf}{compute\+\_\+posterior} (t\+\_\+data \&data)
+{\footnotesize template$<$typename data\+\_\+t $>$ }\\\hyperlink{class_fleet_1_1_statistics_1_1_top_n}{TopN} \hyperlink{class_fleet_1_1_statistics_1_1_top_n_a620e95f050930e7aa5d02e72365f8e88}{compute\+\_\+posterior} (data\+\_\+t \&data)
 \end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -76,6 +83,16 @@ steven piantadosi
 \begin{DoxyDate}{Date}
 03/02/20 
 \end{DoxyDate}
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_top_n_af115f2778a79fca8e1f499d351af1b8b}\label{class_fleet_1_1_statistics_1_1_top_n_af115f2778a79fca8e1f499d351af1b8b}} 
+\index{Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}!Hypothesis\+\_\+t@{Hypothesis\+\_\+t}}
+\index{Hypothesis\+\_\+t@{Hypothesis\+\_\+t}!Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}}
+\subsubsection{\texorpdfstring{Hypothesis\+\_\+t}{Hypothesis\_t}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+using \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+TopN}$<$ T $>$\+::\hyperlink{class_fleet_1_1_statistics_1_1_top_n_af115f2778a79fca8e1f499d351af1b8b}{Hypothesis\+\_\+t} =  T}
+
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -129,12 +146,12 @@ Add everything in x to this one.
 {\em x} & \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_top_n_a61aa70a203ecf97f79d26cb4bcfe2071}\label{class_fleet_1_1_statistics_1_1_top_n_a61aa70a203ecf97f79d26cb4bcfe2071}} 
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_top_n_aeab09f4da77161e1743d03780eb4d6b8}\label{class_fleet_1_1_statistics_1_1_top_n_aeab09f4da77161e1743d03780eb4d6b8}} 
 \index{Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}!best@{best}}
 \index{best@{best}!Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}}
 \subsubsection{\texorpdfstring{best()}{best()}}
 {\footnotesize\ttfamily template$<$class T$>$ \\
-const T\& \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+TopN}$<$ T $>$\+::best (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+const T\& \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+TopN}$<$ T $>$\+::best (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 Returns a reference to the best element currently stored \begin{DoxyReturn}{Returns}
 
@@ -146,17 +163,36 @@ Returns a reference to the best element currently stored \begin{DoxyReturn}{Retu
 {\footnotesize\ttfamily template$<$class T$>$ \\
 void \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+TopN}$<$ T $>$\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-Remove everything\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_top_n_ac6ab403d6833e58352e24110ee379fbf}\label{class_fleet_1_1_statistics_1_1_top_n_ac6ab403d6833e58352e24110ee379fbf}} 
+Remove everything\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_top_n_a620e95f050930e7aa5d02e72365f8e88}\label{class_fleet_1_1_statistics_1_1_top_n_a620e95f050930e7aa5d02e72365f8e88}} 
 \index{Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}!compute\+\_\+posterior@{compute\+\_\+posterior}}
 \index{compute\+\_\+posterior@{compute\+\_\+posterior}!Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}}
 \subsubsection{\texorpdfstring{compute\+\_\+posterior()}{compute\_posterior()}}
 {\footnotesize\ttfamily template$<$class T$>$ \\
-template$<$typename t\+\_\+data $>$ \\
-\hyperlink{class_fleet_1_1_statistics_1_1_top_n}{TopN} \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+TopN}$<$ T $>$\+::compute\+\_\+posterior (\begin{DoxyParamCaption}\item[{t\+\_\+data \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+template$<$typename data\+\_\+t $>$ \\
+\hyperlink{class_fleet_1_1_statistics_1_1_top_n}{TopN} \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+TopN}$<$ T $>$\+::compute\+\_\+posterior (\begin{DoxyParamCaption}\item[{data\+\_\+t \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Returns a N\+EW \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{TopN} where each current hypothesis is evaluated on the data. N\+O\+TE\+: If a hypothesis has a new posterior of -\/inf or NaN, it won\textquotesingle{}t be added. 
 \begin{DoxyParams}{Parameters}
 {\em data} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_top_n_a0e09337a1f36d16a25b03d63f68952a0}\label{class_fleet_1_1_statistics_1_1_top_n_a0e09337a1f36d16a25b03d63f68952a0}} 
+\index{Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}!contains@{contains}}
+\index{contains@{contains}!Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}}
+\subsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+bool \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+TopN}$<$ T $>$\+::contains (\begin{DoxyParamCaption}\item[{const T \&}]{x }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Does this contain x? 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -298,12 +334,12 @@ const std\+::multiset$<$T$>$\& \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{
 Return a multiset of all the values in \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{TopN} \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_top_n_a7be596fb7defba492b503371c58b30ce}\label{class_fleet_1_1_statistics_1_1_top_n_a7be596fb7defba492b503371c58b30ce}} 
+\mbox{\Hypertarget{class_fleet_1_1_statistics_1_1_top_n_aab552495129498fc792b8d5990c6a746}\label{class_fleet_1_1_statistics_1_1_top_n_aab552495129498fc792b8d5990c6a746}} 
 \index{Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}!worst@{worst}}
 \index{worst@{worst}!Fleet\+::\+Statistics\+::\+TopN@{Fleet\+::\+Statistics\+::\+TopN}}
 \subsubsection{\texorpdfstring{worst()}{worst()}}
 {\footnotesize\ttfamily template$<$class T$>$ \\
-const T\& \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+TopN}$<$ T $>$\+::worst (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+const T\& \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+TopN}$<$ T $>$\+::worst (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 Returns a reference to the worst element currently stored \begin{DoxyReturn}{Returns}
 

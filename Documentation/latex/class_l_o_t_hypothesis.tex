@@ -1,12 +1,13 @@
-\hypertarget{class_l_o_t_hypothesis}{}\section{L\+O\+T\+Hypothesis$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$ Class Template Reference}
-\label{class_l_o_t_hypothesis}\index{L\+O\+T\+Hypothesis$<$ H\+Y\+P, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$@{L\+O\+T\+Hypothesis$<$ H\+Y\+P, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$}}
+\hypertarget{class_l_o_t_hypothesis}{}\section{L\+O\+T\+Hypothesis$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$ Class Template Reference}
+\label{class_l_o_t_hypothesis}\index{L\+O\+T\+Hypothesis$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$@{L\+O\+T\+Hypothesis$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}}
 
 
 {\ttfamily \#include $<$L\+O\+T\+Hypothesis.\+h$>$}
 
 
 
-Inheritance diagram for L\+O\+T\+Hypothesis$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+:\nopagebreak
+Inheritance diagram for L\+O\+T\+Hypothesis$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -15,7 +16,8 @@ Inheritance diagram for L\+O\+T\+Hypothesis$<$ H\+YP, T, t\+\_\+input, t\+\_\+ou
 \end{figure}
 
 
-Collaboration diagram for L\+O\+T\+Hypothesis$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+:\nopagebreak
+Collaboration diagram for L\+O\+T\+Hypothesis$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -25,156 +27,192 @@ Collaboration diagram for L\+O\+T\+Hypothesis$<$ H\+YP, T, t\+\_\+input, t\+\_\+
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
-typedef \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::\hyperlink{class_l_o_t_hypothesis_a3a7b2c5fb3e2b5d70fa80b485b0b98f5}{t\+\_\+data} \hyperlink{class_l_o_t_hypothesis_a3a7b2c5fb3e2b5d70fa80b485b0b98f5}{t\+\_\+data}
+typedef \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::\hyperlink{class_l_o_t_hypothesis_ae36b1f113f45ee5ac82660028672739b}{datum\+\_\+t} \hyperlink{class_l_o_t_hypothesis_ae36b1f113f45ee5ac82660028672739b}{datum\+\_\+t}
 \item 
-typedef \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::\hyperlink{class_l_o_t_hypothesis_a26d0ecfa6a367f32276d36cd01c0cead}{t\+\_\+datum} \hyperlink{class_l_o_t_hypothesis_a26d0ecfa6a367f32276d36cd01c0cead}{t\+\_\+datum}
+typedef \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::\hyperlink{class_l_o_t_hypothesis_abd9c848100dfaaf2870f5dfa9ea91c65}{data\+\_\+t} \hyperlink{class_l_o_t_hypothesis_abd9c848100dfaaf2870f5dfa9ea91c65}{data\+\_\+t}
+\item 
+using \hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t} = \+\_\+\+Grammar\+\_\+t
 \end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_l_o_t_hypothesis_a47dcb988a9cb4bba00263851d697fc12}{L\+O\+T\+Hypothesis} (\hyperlink{class_grammar}{Grammar} $\ast$g=nullptr)
+\hyperlink{class_l_o_t_hypothesis_a2c1ff366f7a839d9acae415823ceb112}{L\+O\+T\+Hypothesis} (\hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t} $\ast$g=nullptr)
 \item 
-\hyperlink{class_l_o_t_hypothesis_abfb19603c9bdda8b8b8c682b6cdc6e03}{L\+O\+T\+Hypothesis} (\hyperlink{class_grammar}{Grammar} $\ast$g, T \&\&x)
+\hyperlink{class_l_o_t_hypothesis_aa14b68e8efcb570186fe289bc4a791d5}{L\+O\+T\+Hypothesis} (\hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t} $\ast$g, \hyperlink{class_node}{Node} \&\&x)
 \item 
-\hyperlink{class_l_o_t_hypothesis_a3123d5e4e140ca24fdaa568bd2b17644}{L\+O\+T\+Hypothesis} (\hyperlink{class_grammar}{Grammar} $\ast$g, T \&x)
+\hyperlink{class_l_o_t_hypothesis_a877ff1340bdf69fa2d9ed290c70f1cfb}{L\+O\+T\+Hypothesis} (\hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t} $\ast$g, \hyperlink{class_node}{Node} \&x)
 \item 
-\hyperlink{class_l_o_t_hypothesis_a09216df69fea175ccb5ffc1a947b8287}{L\+O\+T\+Hypothesis} (\hyperlink{class_grammar}{Grammar} $\ast$g, std\+::string s)
+\hyperlink{class_l_o_t_hypothesis_a9361067f4f283bc21f77eee178965b39}{L\+O\+T\+Hypothesis} (\hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t} $\ast$g, std\+::string s)
 \item 
-virtual std\+::pair$<$ H\+YP, double $>$ \hyperlink{class_l_o_t_hypothesis_a5ae913b145b15308d5817c6e7b1da14d}{propose} () const override
+virtual std\+::pair$<$ H\+YP, double $>$ \hyperlink{class_l_o_t_hypothesis_a9a03abc8a6d96995c0f13524f8500747}{propose} () const override
 \item 
-virtual H\+YP \hyperlink{class_l_o_t_hypothesis_aec55db1efe43a1ce4bb4a2daacd0f1b7}{restart} () const override
+virtual H\+YP \hyperlink{class_l_o_t_hypothesis_a0791b7ba0105870a2094877445570b61}{restart} () const override
 \item 
-void \hyperlink{class_l_o_t_hypothesis_a873355cca03609ac0ab405d29314e591}{set\+\_\+value} (T \&v)
+void \hyperlink{class_l_o_t_hypothesis_aac23de5143f24323a05ed32774387ff7}{set\+\_\+value} (\hyperlink{class_node}{Node} \&v)
 \item 
-void \hyperlink{class_l_o_t_hypothesis_ac07e0957d2e586f2cc84821795d5c462}{set\+\_\+value} (T \&\&v)
+void \hyperlink{class_l_o_t_hypothesis_a51a0d09f0f15a185d2b9a7efce48fc98}{set\+\_\+value} (\hyperlink{class_node}{Node} \&\&v)
 \item 
-virtual double \hyperlink{class_l_o_t_hypothesis_a80eea871bc115e4ef585f75f06857b39}{compute\+\_\+prior} () override
+virtual double \hyperlink{class_l_o_t_hypothesis_af215c4833e81984364703b2e4cb78dc7}{compute\+\_\+prior} () override
 \begin{DoxyCompactList}\small\item\em Compute the prior -- defaultly not defined. \end{DoxyCompactList}\item 
-virtual double \hyperlink{class_l_o_t_hypothesis_a835f1aafdd4bc4748c343edb80517956}{compute\+\_\+single\+\_\+likelihood} (const \hyperlink{class_l_o_t_hypothesis_a26d0ecfa6a367f32276d36cd01c0cead}{t\+\_\+datum} \&datum) override
+virtual double \hyperlink{class_l_o_t_hypothesis_a0ff11e5e328fcfa819a8dd9b5d57bd65}{compute\+\_\+single\+\_\+likelihood} (const \hyperlink{class_l_o_t_hypothesis_ae36b1f113f45ee5ac82660028672739b}{datum\+\_\+t} \&datum) override
 \item 
-virtual void \hyperlink{class_l_o_t_hypothesis_aff3a378ab1137e2b46f225a028343a1c}{push\+\_\+program} (Program \&s, short k=0) override
+virtual size\+\_\+t \hyperlink{class_l_o_t_hypothesis_a9fb7caa245a82c53bcfbac846ab1b327}{program\+\_\+size} (short s) override
 \item 
-virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ t\+\_\+output $>$ \hyperlink{class_l_o_t_hypothesis_a592d67c976a67982251239b415e0a861}{call} (const t\+\_\+input x, const t\+\_\+output err, \hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$loader, unsigned long max\+\_\+steps=2048, unsigned long max\+\_\+outputs=256, double minlp=-\/10.\+0)
+virtual void \hyperlink{class_l_o_t_hypothesis_a2b9a0eca1e2124f92bd34d8da929fe71}{push\+\_\+program} (Program \&s, short k=0) override
 \item 
-virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ t\+\_\+output $>$ \hyperlink{class_l_o_t_hypothesis_a48858f5add54c1886d946e641b08062a}{call} (const t\+\_\+input x, const t\+\_\+output err)
+{\footnotesize template$<$typename L\+O\+A\+D\+E\+R\+H\+YP $>$ }\\\hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ output\+\_\+t $>$ \hyperlink{class_l_o_t_hypothesis_a9f528a8b204b87cc6fcf8d81c8c2b036}{call} (const input\+\_\+t x, const output\+\_\+t err, L\+O\+A\+D\+E\+R\+H\+YP $\ast$loader, unsigned long max\+\_\+steps=2048, unsigned long max\+\_\+outputs=256, double minlp=-\/10.\+0)
 \item 
-auto \hyperlink{class_l_o_t_hypothesis_ae64a27eeb271316fd76cf26a86fff7e6}{operator()} (const t\+\_\+input x, const t\+\_\+output err)
+virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ output\+\_\+t $>$ \hyperlink{class_l_o_t_hypothesis_a3e46160113b9602cff4c4765c768b57d}{call} (const input\+\_\+t x, const output\+\_\+t err)
 \item 
-virtual t\+\_\+output \hyperlink{class_l_o_t_hypothesis_ad792b258bdb4b0828f11ac721f52e704}{call\+One} (const t\+\_\+input x, const t\+\_\+output err, \hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$loader=nullptr)
+auto \hyperlink{class_l_o_t_hypothesis_a7275626861140284ee08512fd0641ce1}{operator()} (const input\+\_\+t x, const output\+\_\+t err)
 \item 
-virtual std\+::string \hyperlink{class_l_o_t_hypothesis_a5c91fd3b7ef4ebc585413d723cd17e7e}{string} () const override
+{\footnotesize template$<$typename L\+O\+A\+D\+E\+R\+H\+YP $>$ }\\output\+\_\+t \hyperlink{class_l_o_t_hypothesis_a34051e59cc251c4d6bb3caddbe594414}{call\+One} (const input\+\_\+t x, const output\+\_\+t err, L\+O\+A\+D\+E\+R\+H\+YP $\ast$loader)
 \item 
-virtual std\+::string \hyperlink{class_l_o_t_hypothesis_a1584633d01abe30a6f69d0664c1e137a}{parseable} () const
+output\+\_\+t \hyperlink{class_l_o_t_hypothesis_a834197767cb83a17c6b3eb564e11a3b2}{call\+One} (const input\+\_\+t x, const output\+\_\+t err)
 \item 
-virtual size\+\_\+t \hyperlink{class_l_o_t_hypothesis_aa6859da0a3b422c32b1be2ffa025631a}{hash} () const override
+virtual std\+::string \hyperlink{class_l_o_t_hypothesis_acda322aef217a0d358ae6cea19969904}{string} () const override
+\item 
+virtual std\+::string \hyperlink{class_l_o_t_hypothesis_a4037b5dea60aeb19d72c16e308886bc2}{parseable} () const
+\item 
+virtual size\+\_\+t \hyperlink{class_l_o_t_hypothesis_a7c33d51f8d81762b1eca7f86b596236a}{hash} () const override
 \begin{DoxyCompactList}\small\item\em Default hash function. \end{DoxyCompactList}\item 
-virtual bool \hyperlink{class_l_o_t_hypothesis_a198d0632ce824b9547810084abadfb2e}{operator==} (const H\+YP \&h) const override
+virtual bool \hyperlink{class_l_o_t_hypothesis_acf5a682dce5d3971474a22778479a99a}{operator==} (const H\+YP \&h) const override
 \item 
-virtual \hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{class_l_o_t_hypothesis_a9aade3ee6939a58e5d5b53505cfb2e7a}{dispatch\+\_\+custom} (\hyperlink{class_instruction}{Instruction} i, \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$pool, \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$vms, \hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$loader) override
+virtual H\+YP \hyperlink{class_l_o_t_hypothesis_af643fa8b19e3bd0fa4682ab3566e29fc}{copy\+\_\+and\+\_\+complete} () const
 \item 
-virtual H\+YP \hyperlink{class_l_o_t_hypothesis_af0274e15c0e19e8f42324b7099e2b4a1}{copy\+\_\+and\+\_\+complete} () const
+virtual int \hyperlink{class_l_o_t_hypothesis_a097cde606ec3f277fdeb92145599027f}{neighbors} () const override
 \item 
-virtual int \hyperlink{class_l_o_t_hypothesis_ac74e874f6b677dc1c013602907627be7}{neighbors} () const override
+virtual H\+YP \hyperlink{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}{make\+\_\+neighbor} (int k) const override
 \item 
-virtual H\+YP \hyperlink{class_l_o_t_hypothesis_ae7771176b8b2599f42c75318ee0e9164}{make\+\_\+neighbor} (int k) const override
-\item 
-virtual bool \hyperlink{class_l_o_t_hypothesis_a68dedaeae92b25b0450f2dc1bd95a35b}{is\+\_\+evaluable} () const override
+virtual bool \hyperlink{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}{is\+\_\+evaluable} () const override
 \end{DoxyCompactItemize}
 \subsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-static H\+YP \hyperlink{class_l_o_t_hypothesis_a684d3208f52e10c61418dc0707142a30}{from\+\_\+string} (\hyperlink{class_grammar}{Grammar} \&g, std\+::string s)
+static H\+YP \hyperlink{class_l_o_t_hypothesis_aa1e3f898618de841bfd8c9279a107211}{from\+\_\+string} (\hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t} \&g, std\+::string s)
 \end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_grammar}{Grammar} $\ast$ \hyperlink{class_l_o_t_hypothesis_aa7cf638b5d680794e33aa5eb4bd36b09}{grammar}
+\hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t} $\ast$ \hyperlink{class_l_o_t_hypothesis_affae32db28c39df676809ae47e14e7cf}{grammar}
 \item 
-T \hyperlink{class_l_o_t_hypothesis_aff7455a900ffb91790e5235119676a80}{value}
+\hyperlink{class_node}{Node} \hyperlink{class_l_o_t_hypothesis_ac759b3eab77ead1749b905a3dde74961}{value}
 \end{DoxyCompactItemize}
 \subsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-static const size\+\_\+t \hyperlink{class_l_o_t_hypothesis_ab262eb592887136a986f5b2649397eca}{M\+A\+X\+\_\+\+N\+O\+D\+ES} = 64
+static const size\+\_\+t \hyperlink{class_l_o_t_hypothesis_a0231650d938c098118a4c4bdb201fc61}{M\+A\+X\+\_\+\+N\+O\+D\+ES} = 64
 \end{DoxyCompactItemize}
 
 
-\subsection{Member Typedef Documentation}
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a3a7b2c5fb3e2b5d70fa80b485b0b98f5}\label{class_l_o_t_hypothesis_a3a7b2c5fb3e2b5d70fa80b485b0b98f5}} 
-\index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!t\+\_\+data@{t\+\_\+data}}
-\index{t\+\_\+data@{t\+\_\+data}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
-\subsubsection{\texorpdfstring{t\+\_\+data}{t\_data}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-typedef \hyperlink{class_bayesable}{Bayesable}$<$\+\_\+t\+\_\+datum,\+\_\+t\+\_\+data$>$\+::\hyperlink{class_l_o_t_hypothesis_a3a7b2c5fb3e2b5d70fa80b485b0b98f5}{t\+\_\+data} \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::\hyperlink{class_l_o_t_hypothesis_a3a7b2c5fb3e2b5d70fa80b485b0b98f5}{t\+\_\+data}}
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$\newline
+class L\+O\+T\+Hypothesis$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a26d0ecfa6a367f32276d36cd01c0cead}\label{class_l_o_t_hypothesis_a26d0ecfa6a367f32276d36cd01c0cead}} 
-\index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!t\+\_\+datum@{t\+\_\+datum}}
-\index{t\+\_\+datum@{t\+\_\+datum}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
-\subsubsection{\texorpdfstring{t\+\_\+datum}{t\_datum}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-typedef \hyperlink{class_bayesable}{Bayesable}$<$\+\_\+t\+\_\+datum,\+\_\+t\+\_\+data$>$\+::\hyperlink{class_l_o_t_hypothesis_a26d0ecfa6a367f32276d36cd01c0cead}{t\+\_\+datum} \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::\hyperlink{class_l_o_t_hypothesis_a26d0ecfa6a367f32276d36cd01c0cead}{t\+\_\+datum}}
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+05/05/20 
+\end{DoxyDate}
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_l_o_t_hypothesis_abd9c848100dfaaf2870f5dfa9ea91c65}\label{class_l_o_t_hypothesis_abd9c848100dfaaf2870f5dfa9ea91c65}} 
+\index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!data\+\_\+t@{data\+\_\+t}}
+\index{data\+\_\+t@{data\+\_\+t}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
+\subsubsection{\texorpdfstring{data\+\_\+t}{data\_t}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+typedef \hyperlink{class_bayesable}{Bayesable}$<$\+\_\+datum\+\_\+t,\+\_\+data\+\_\+t$>$\+::\hyperlink{class_l_o_t_hypothesis_abd9c848100dfaaf2870f5dfa9ea91c65}{data\+\_\+t} \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::\hyperlink{class_l_o_t_hypothesis_abd9c848100dfaaf2870f5dfa9ea91c65}{data\+\_\+t}}
+
+\mbox{\Hypertarget{class_l_o_t_hypothesis_ae36b1f113f45ee5ac82660028672739b}\label{class_l_o_t_hypothesis_ae36b1f113f45ee5ac82660028672739b}} 
+\index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!datum\+\_\+t@{datum\+\_\+t}}
+\index{datum\+\_\+t@{datum\+\_\+t}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
+\subsubsection{\texorpdfstring{datum\+\_\+t}{datum\_t}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+typedef \hyperlink{class_bayesable}{Bayesable}$<$\+\_\+datum\+\_\+t,\+\_\+data\+\_\+t$>$\+::\hyperlink{class_l_o_t_hypothesis_ae36b1f113f45ee5ac82660028672739b}{datum\+\_\+t} \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::\hyperlink{class_l_o_t_hypothesis_ae36b1f113f45ee5ac82660028672739b}{datum\+\_\+t}}
+
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}\label{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}} 
+\index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!Grammar\+\_\+t@{Grammar\+\_\+t}}
+\index{Grammar\+\_\+t@{Grammar\+\_\+t}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
+\subsubsection{\texorpdfstring{Grammar\+\_\+t}{Grammar\_t}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+using \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::\hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t} =  \+\_\+\+Grammar\+\_\+t}
 
 
 
 \subsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a47dcb988a9cb4bba00263851d697fc12}\label{class_l_o_t_hypothesis_a47dcb988a9cb4bba00263851d697fc12}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a2c1ff366f7a839d9acae415823ceb112}\label{class_l_o_t_hypothesis_a2c1ff366f7a839d9acae415823ceb112}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{L\+O\+T\+Hypothesis()}{LOTHypothesis()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis} (\begin{DoxyParamCaption}\item[{\hyperlink{class_grammar}{Grammar} $\ast$}]{g = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis} (\begin{DoxyParamCaption}\item[{\hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t} $\ast$}]{g = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_abfb19603c9bdda8b8b8c682b6cdc6e03}\label{class_l_o_t_hypothesis_abfb19603c9bdda8b8b8c682b6cdc6e03}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_aa14b68e8efcb570186fe289bc4a791d5}\label{class_l_o_t_hypothesis_aa14b68e8efcb570186fe289bc4a791d5}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{L\+O\+T\+Hypothesis()}{LOTHypothesis()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis} (\begin{DoxyParamCaption}\item[{\hyperlink{class_grammar}{Grammar} $\ast$}]{g,  }\item[{T \&\&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis} (\begin{DoxyParamCaption}\item[{\hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t} $\ast$}]{g,  }\item[{\hyperlink{class_node}{Node} \&\&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a3123d5e4e140ca24fdaa568bd2b17644}\label{class_l_o_t_hypothesis_a3123d5e4e140ca24fdaa568bd2b17644}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a877ff1340bdf69fa2d9ed290c70f1cfb}\label{class_l_o_t_hypothesis_a877ff1340bdf69fa2d9ed290c70f1cfb}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{L\+O\+T\+Hypothesis()}{LOTHypothesis()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis} (\begin{DoxyParamCaption}\item[{\hyperlink{class_grammar}{Grammar} $\ast$}]{g,  }\item[{T \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis} (\begin{DoxyParamCaption}\item[{\hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t} $\ast$}]{g,  }\item[{\hyperlink{class_node}{Node} \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a09216df69fea175ccb5ffc1a947b8287}\label{class_l_o_t_hypothesis_a09216df69fea175ccb5ffc1a947b8287}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a9361067f4f283bc21f77eee178965b39}\label{class_l_o_t_hypothesis_a9361067f4f283bc21f77eee178965b39}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{L\+O\+T\+Hypothesis()}{LOTHypothesis()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis} (\begin{DoxyParamCaption}\item[{\hyperlink{class_grammar}{Grammar} $\ast$}]{g,  }\item[{std\+::string}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis} (\begin{DoxyParamCaption}\item[{\hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t} $\ast$}]{g,  }\item[{std\+::string}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
 \subsection{Member Function Documentation}
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a592d67c976a67982251239b415e0a861}\label{class_l_o_t_hypothesis_a592d67c976a67982251239b415e0a861}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a9f528a8b204b87cc6fcf8d81c8c2b036}\label{class_l_o_t_hypothesis_a9f528a8b204b87cc6fcf8d81c8c2b036}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!call@{call}}
 \index{call@{call}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{call()}{call()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$t\+\_\+output$>$ \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::call (\begin{DoxyParamCaption}\item[{const t\+\_\+input}]{x,  }\item[{const t\+\_\+output}]{err,  }\item[{\hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$}]{loader,  }\item[{unsigned long}]{max\+\_\+steps = {\ttfamily 2048},  }\item[{unsigned long}]{max\+\_\+outputs = {\ttfamily 256},  }\item[{double}]{minlp = {\ttfamily -\/10.0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+template$<$typename L\+O\+A\+D\+E\+R\+H\+YP $>$ \\
+\hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$output\+\_\+t$>$ \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::call (\begin{DoxyParamCaption}\item[{const input\+\_\+t}]{x,  }\item[{const output\+\_\+t}]{err,  }\item[{L\+O\+A\+D\+E\+R\+H\+YP $\ast$}]{loader,  }\item[{unsigned long}]{max\+\_\+steps = {\ttfamily 2048},  }\item[{unsigned long}]{max\+\_\+outputs = {\ttfamily 256},  }\item[{double}]{minlp = {\ttfamily -\/10.0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a48858f5add54c1886d946e641b08062a}\label{class_l_o_t_hypothesis_a48858f5add54c1886d946e641b08062a}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a3e46160113b9602cff4c4765c768b57d}\label{class_l_o_t_hypothesis_a3e46160113b9602cff4c4765c768b57d}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!call@{call}}
 \index{call@{call}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{call()}{call()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$t\+\_\+output$>$ \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::call (\begin{DoxyParamCaption}\item[{const t\+\_\+input}]{x,  }\item[{const t\+\_\+output}]{err }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$output\+\_\+t$>$ \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::call (\begin{DoxyParamCaption}\item[{const input\+\_\+t}]{x,  }\item[{const output\+\_\+t}]{err }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_ad792b258bdb4b0828f11ac721f52e704}\label{class_l_o_t_hypothesis_ad792b258bdb4b0828f11ac721f52e704}} 
+
+
+Reimplemented in \hyperlink{class_my_hypothesis_a61391d3f1f6fbbe37663b22e2068ac90}{My\+Hypothesis}.
+
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a34051e59cc251c4d6bb3caddbe594414}\label{class_l_o_t_hypothesis_a34051e59cc251c4d6bb3caddbe594414}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!call\+One@{call\+One}}
 \index{call\+One@{call\+One}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
-\subsubsection{\texorpdfstring{call\+One()}{callOne()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual t\+\_\+output \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::call\+One (\begin{DoxyParamCaption}\item[{const t\+\_\+input}]{x,  }\item[{const t\+\_\+output}]{err,  }\item[{\hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$}]{loader = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+\subsubsection{\texorpdfstring{call\+One()}{callOne()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+template$<$typename L\+O\+A\+D\+E\+R\+H\+YP $>$ \\
+output\+\_\+t \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::call\+One (\begin{DoxyParamCaption}\item[{const input\+\_\+t}]{x,  }\item[{const output\+\_\+t}]{err,  }\item[{L\+O\+A\+D\+E\+R\+H\+YP $\ast$}]{loader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a80eea871bc115e4ef585f75f06857b39}\label{class_l_o_t_hypothesis_a80eea871bc115e4ef585f75f06857b39}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a834197767cb83a17c6b3eb564e11a3b2}\label{class_l_o_t_hypothesis_a834197767cb83a17c6b3eb564e11a3b2}} 
+\index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!call\+One@{call\+One}}
+\index{call\+One@{call\+One}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
+\subsubsection{\texorpdfstring{call\+One()}{callOne()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+output\+\_\+t \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::call\+One (\begin{DoxyParamCaption}\item[{const input\+\_\+t}]{x,  }\item[{const output\+\_\+t}]{err }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_l_o_t_hypothesis_af215c4833e81984364703b2e4cb78dc7}\label{class_l_o_t_hypothesis_af215c4833e81984364703b2e4cb78dc7}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!compute\+\_\+prior@{compute\+\_\+prior}}
 \index{compute\+\_\+prior@{compute\+\_\+prior}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{compute\+\_\+prior()}{compute\_prior()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual double \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::compute\+\_\+prior (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual double \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::compute\+\_\+prior (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -182,58 +220,43 @@ Compute the prior -- defaultly not defined.
 
 
 
-Implements \hyperlink{class_bayesable_a9aa752f0adff1b95f8957b91fc928649}{Bayesable$<$ Args... $>$}.
+Implements \hyperlink{class_bayesable_a1b057a17212ced123545133e2297c01b}{Bayesable$<$ Args... $>$}.
 
 
 
-Reimplemented in \hyperlink{class_my_hypothesis_ab092094c5fc31730de4f40609220bb18}{My\+Hypothesis}.
+Reimplemented in \hyperlink{class_my_hypothesis_ab092094c5fc31730de4f40609220bb18}{My\+Hypothesis}, and \hyperlink{class_my_hypothesis_a67477313b60b21158bbfaad35dc5d275}{My\+Hypothesis}.
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a835f1aafdd4bc4748c343edb80517956}\label{class_l_o_t_hypothesis_a835f1aafdd4bc4748c343edb80517956}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a0ff11e5e328fcfa819a8dd9b5d57bd65}\label{class_l_o_t_hypothesis_a0ff11e5e328fcfa819a8dd9b5d57bd65}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!compute\+\_\+single\+\_\+likelihood@{compute\+\_\+single\+\_\+likelihood}}
 \index{compute\+\_\+single\+\_\+likelihood@{compute\+\_\+single\+\_\+likelihood}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{compute\+\_\+single\+\_\+likelihood()}{compute\_single\_likelihood()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual double \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::compute\+\_\+single\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_l_o_t_hypothesis_a26d0ecfa6a367f32276d36cd01c0cead}{t\+\_\+datum} \&}]{datum }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual double \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::compute\+\_\+single\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \hyperlink{class_l_o_t_hypothesis_ae36b1f113f45ee5ac82660028672739b}{datum\+\_\+t} \&}]{datum }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-Reimplemented in \hyperlink{class_my_hypothesis_af60601a7db23e9ed8d1e3343af506733}{My\+Hypothesis}, and \hyperlink{class_my_hypothesis_a5e6bd5e0ebcb987aa4f0adf4295dba11}{My\+Hypothesis}.
+Reimplemented in \hyperlink{class_my_hypothesis_af2470b1e04711c06ee551deae15af4c1}{My\+Hypothesis}, \hyperlink{class_my_hypothesis_a480fc9e50d0faa0f5226f56187fd2eec}{My\+Hypothesis}, \hyperlink{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}{My\+Hypothesis}, and \hyperlink{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}{My\+Hypothesis}.
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_af0274e15c0e19e8f42324b7099e2b4a1}\label{class_l_o_t_hypothesis_af0274e15c0e19e8f42324b7099e2b4a1}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_af643fa8b19e3bd0fa4682ab3566e29fc}\label{class_l_o_t_hypothesis_af643fa8b19e3bd0fa4682ab3566e29fc}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!copy\+\_\+and\+\_\+complete@{copy\+\_\+and\+\_\+complete}}
 \index{copy\+\_\+and\+\_\+complete@{copy\+\_\+and\+\_\+complete}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{copy\+\_\+and\+\_\+complete()}{copy\_and\_complete()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual H\+YP \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::copy\+\_\+and\+\_\+complete (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual H\+YP \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::copy\+\_\+and\+\_\+complete (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a9aade3ee6939a58e5d5b53505cfb2e7a}\label{class_l_o_t_hypothesis_a9aade3ee6939a58e5d5b53505cfb2e7a}} 
-\index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!dispatch\+\_\+custom@{dispatch\+\_\+custom}}
-\index{dispatch\+\_\+custom@{dispatch\+\_\+custom}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
-\subsubsection{\texorpdfstring{dispatch\+\_\+custom()}{dispatch\_custom()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual \hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::dispatch\+\_\+custom (\begin{DoxyParamCaption}\item[{\hyperlink{class_instruction}{Instruction}}]{i,  }\item[{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$}]{pool,  }\item[{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$}]{vms,  }\item[{\hyperlink{class_dispatchable}{Dispatchable}$<$ t\+\_\+input, t\+\_\+output $>$ $\ast$}]{loader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
-
-
-
-Implements \hyperlink{class_dispatchable_a6d2bd844b0e55378d29ed85e718d0a77}{Dispatchable$<$ t\+\_\+input, t\+\_\+output $>$}.
-
-
-
-Reimplemented in \hyperlink{class_inner_hypothesis_a73c38e91c7c1bf021cbc8f9e5a758d13}{Inner\+Hypothesis}, and \hyperlink{class_my_hypothesis_a3de47a545e8824bb8c63181965c62a01}{My\+Hypothesis}.
-
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a684d3208f52e10c61418dc0707142a30}\label{class_l_o_t_hypothesis_a684d3208f52e10c61418dc0707142a30}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_aa1e3f898618de841bfd8c9279a107211}\label{class_l_o_t_hypothesis_aa1e3f898618de841bfd8c9279a107211}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!from\+\_\+string@{from\+\_\+string}}
 \index{from\+\_\+string@{from\+\_\+string}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{from\+\_\+string()}{from\_string()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-static H\+YP \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::from\+\_\+string (\begin{DoxyParamCaption}\item[{\hyperlink{class_grammar}{Grammar} \&}]{g,  }\item[{std\+::string}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+static H\+YP \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::from\+\_\+string (\begin{DoxyParamCaption}\item[{\hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t} \&}]{g,  }\item[{std\+::string}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_aa6859da0a3b422c32b1be2ffa025631a}\label{class_l_o_t_hypothesis_aa6859da0a3b422c32b1be2ffa025631a}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a7c33d51f8d81762b1eca7f86b596236a}\label{class_l_o_t_hypothesis_a7c33d51f8d81762b1eca7f86b596236a}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!hash@{hash}}
 \index{hash@{hash}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{hash()}{hash()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual size\+\_\+t \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::hash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual size\+\_\+t \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::hash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -241,153 +264,156 @@ Default hash function.
 
 
 
-Implements \hyperlink{class_bayesable_ab77a023d33951448e6edb2e1bc79c5ae}{Bayesable$<$ Args... $>$}.
+Implements \hyperlink{class_bayesable_a26f6d55e7526ebd897cbb27c757b611b}{Bayesable$<$ Args... $>$}.
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a68dedaeae92b25b0450f2dc1bd95a35b}\label{class_l_o_t_hypothesis_a68dedaeae92b25b0450f2dc1bd95a35b}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}\label{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!is\+\_\+evaluable@{is\+\_\+evaluable}}
 \index{is\+\_\+evaluable@{is\+\_\+evaluable}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{is\+\_\+evaluable()}{is\_evaluable()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual bool \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::is\+\_\+evaluable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual bool \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::is\+\_\+evaluable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-Implements \hyperlink{class_searchable_aae16f1cb01f140f4033f6f67dc9753b6}{Searchable$<$ H\+Y\+P, t\+\_\+input, t\+\_\+output $>$}.
+Implements \hyperlink{class_searchable_a23786e95730117c3cc4b90e010494a1e}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_ae7771176b8b2599f42c75318ee0e9164}\label{class_l_o_t_hypothesis_ae7771176b8b2599f42c75318ee0e9164}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}\label{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!make\+\_\+neighbor@{make\+\_\+neighbor}}
 \index{make\+\_\+neighbor@{make\+\_\+neighbor}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{make\+\_\+neighbor()}{make\_neighbor()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual H\+YP \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::make\+\_\+neighbor (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual H\+YP \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::make\+\_\+neighbor (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-Implements \hyperlink{class_searchable_a64bda92cc9314dae7aff31f4444a93e6}{Searchable$<$ H\+Y\+P, t\+\_\+input, t\+\_\+output $>$}.
+Implements \hyperlink{class_searchable_ad7fefacd3c9c2b66aa58c9d902f645cb}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_ac74e874f6b677dc1c013602907627be7}\label{class_l_o_t_hypothesis_ac74e874f6b677dc1c013602907627be7}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a097cde606ec3f277fdeb92145599027f}\label{class_l_o_t_hypothesis_a097cde606ec3f277fdeb92145599027f}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!neighbors@{neighbors}}
 \index{neighbors@{neighbors}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{neighbors()}{neighbors()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual int \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::neighbors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual int \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::neighbors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-Implements \hyperlink{class_searchable_a0450c35a21c5940a63560aa24b4ff0cc}{Searchable$<$ H\+Y\+P, t\+\_\+input, t\+\_\+output $>$}.
+Implements \hyperlink{class_searchable_aec30063fcc9bed5d005f8318efa8492d}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_ae64a27eeb271316fd76cf26a86fff7e6}\label{class_l_o_t_hypothesis_ae64a27eeb271316fd76cf26a86fff7e6}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a7275626861140284ee08512fd0641ce1}\label{class_l_o_t_hypothesis_a7275626861140284ee08512fd0641ce1}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!operator()@{operator()}}
 \index{operator()@{operator()}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{operator()()}{operator()()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-auto \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::operator() (\begin{DoxyParamCaption}\item[{const t\+\_\+input}]{x,  }\item[{const t\+\_\+output}]{err }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+auto \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::operator() (\begin{DoxyParamCaption}\item[{const input\+\_\+t}]{x,  }\item[{const output\+\_\+t}]{err }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a198d0632ce824b9547810084abadfb2e}\label{class_l_o_t_hypothesis_a198d0632ce824b9547810084abadfb2e}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_acf5a682dce5d3971474a22778479a99a}\label{class_l_o_t_hypothesis_acf5a682dce5d3971474a22778479a99a}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!operator==@{operator==}}
 \index{operator==@{operator==}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{operator==()}{operator==()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual bool \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::operator== (\begin{DoxyParamCaption}\item[{const H\+YP \&}]{h }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual bool \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::operator== (\begin{DoxyParamCaption}\item[{const H\+YP \&}]{h }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-Implements \hyperlink{class_m_c_m_cable_aa73001ec3bb0cf0c618281dfa998f2f1}{M\+C\+M\+Cable$<$ H\+Y\+P, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$}.
+Implements \hyperlink{class_m_c_m_cable_aa73001ec3bb0cf0c618281dfa998f2f1}{M\+C\+M\+Cable$<$ H\+Y\+P, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}.
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a1584633d01abe30a6f69d0664c1e137a}\label{class_l_o_t_hypothesis_a1584633d01abe30a6f69d0664c1e137a}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a4037b5dea60aeb19d72c16e308886bc2}\label{class_l_o_t_hypothesis_a4037b5dea60aeb19d72c16e308886bc2}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!parseable@{parseable}}
 \index{parseable@{parseable}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{parseable()}{parseable()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual std\+::string \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::parseable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual std\+::string \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::parseable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a5ae913b145b15308d5817c6e7b1da14d}\label{class_l_o_t_hypothesis_a5ae913b145b15308d5817c6e7b1da14d}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a9fb7caa245a82c53bcfbac846ab1b327}\label{class_l_o_t_hypothesis_a9fb7caa245a82c53bcfbac846ab1b327}} 
+\index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!program\+\_\+size@{program\+\_\+size}}
+\index{program\+\_\+size@{program\+\_\+size}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
+\subsubsection{\texorpdfstring{program\+\_\+size()}{program\_size()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual size\+\_\+t \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::program\+\_\+size (\begin{DoxyParamCaption}\item[{short}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a9a03abc8a6d96995c0f13524f8500747}\label{class_l_o_t_hypothesis_a9a03abc8a6d96995c0f13524f8500747}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!propose@{propose}}
 \index{propose@{propose}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{propose()}{propose()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual std\+::pair$<$H\+YP,double$>$ \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::propose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual std\+::pair$<$H\+YP,double$>$ \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::propose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 Default proposal is rational-\/rules style regeneration. \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
 
 
-Implements \hyperlink{class_m_c_m_cable_ab119a14256ab92c5c1e941f8492df830}{M\+C\+M\+Cable$<$ H\+Y\+P, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$}.
+Implements \hyperlink{class_m_c_m_cable_ab119a14256ab92c5c1e941f8492df830}{M\+C\+M\+Cable$<$ H\+Y\+P, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}.
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_aff3a378ab1137e2b46f225a028343a1c}\label{class_l_o_t_hypothesis_aff3a378ab1137e2b46f225a028343a1c}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a2b9a0eca1e2124f92bd34d8da929fe71}\label{class_l_o_t_hypothesis_a2b9a0eca1e2124f92bd34d8da929fe71}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!push\+\_\+program@{push\+\_\+program}}
 \index{push\+\_\+program@{push\+\_\+program}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{push\+\_\+program()}{push\_program()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual void \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::push\+\_\+program (\begin{DoxyParamCaption}\item[{Program \&}]{s,  }\item[{short}]{k = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual void \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::push\+\_\+program (\begin{DoxyParamCaption}\item[{Program \&}]{s,  }\item[{short}]{k = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
-
-
-Implements \hyperlink{class_dispatchable_a9339c2906f7c8dadbe1d0ca79dd9bb11}{Dispatchable$<$ t\+\_\+input, t\+\_\+output $>$}.
-
-\mbox{\Hypertarget{class_l_o_t_hypothesis_aec55db1efe43a1ce4bb4a2daacd0f1b7}\label{class_l_o_t_hypothesis_aec55db1efe43a1ce4bb4a2daacd0f1b7}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a0791b7ba0105870a2094877445570b61}\label{class_l_o_t_hypothesis_a0791b7ba0105870a2094877445570b61}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!restart@{restart}}
 \index{restart@{restart}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{restart()}{restart()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual H\+YP \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::restart (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual H\+YP \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::restart (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 This is used to restart chains, sampling from prior \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
 
 
-Implements \hyperlink{class_m_c_m_cable_a220d6c4ca73e20441c14fa5bd3e090d3}{M\+C\+M\+Cable$<$ H\+Y\+P, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$}.
+Implements \hyperlink{class_m_c_m_cable_a220d6c4ca73e20441c14fa5bd3e090d3}{M\+C\+M\+Cable$<$ H\+Y\+P, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}.
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a873355cca03609ac0ab405d29314e591}\label{class_l_o_t_hypothesis_a873355cca03609ac0ab405d29314e591}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_aac23de5143f24323a05ed32774387ff7}\label{class_l_o_t_hypothesis_aac23de5143f24323a05ed32774387ff7}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!set\+\_\+value@{set\+\_\+value}}
 \index{set\+\_\+value@{set\+\_\+value}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{set\+\_\+value()}{set\_value()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-void \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::set\+\_\+value (\begin{DoxyParamCaption}\item[{T \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+void \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::set\+\_\+value (\begin{DoxyParamCaption}\item[{\hyperlink{class_node}{Node} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_ac07e0957d2e586f2cc84821795d5c462}\label{class_l_o_t_hypothesis_ac07e0957d2e586f2cc84821795d5c462}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a51a0d09f0f15a185d2b9a7efce48fc98}\label{class_l_o_t_hypothesis_a51a0d09f0f15a185d2b9a7efce48fc98}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!set\+\_\+value@{set\+\_\+value}}
 \index{set\+\_\+value@{set\+\_\+value}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{set\+\_\+value()}{set\_value()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-void \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::set\+\_\+value (\begin{DoxyParamCaption}\item[{T \&\&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+void \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::set\+\_\+value (\begin{DoxyParamCaption}\item[{\hyperlink{class_node}{Node} \&\&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a5c91fd3b7ef4ebc585413d723cd17e7e}\label{class_l_o_t_hypothesis_a5c91fd3b7ef4ebc585413d723cd17e7e}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_acda322aef217a0d358ae6cea19969904}\label{class_l_o_t_hypothesis_acda322aef217a0d358ae6cea19969904}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!string@{string}}
 \index{string@{string}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{string()}{string()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-virtual std\+::string \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual std\+::string \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-Implements \hyperlink{class_bayesable_a2ec58e98bf37a90ac3d45a7713c6d5ea}{Bayesable$<$ Args... $>$}.
+Implements \hyperlink{class_bayesable_afcea9b439bcf321d5354710d8861cb54}{Bayesable$<$ Args... $>$}.
 
 
 
 \subsection{Member Data Documentation}
-\mbox{\Hypertarget{class_l_o_t_hypothesis_aa7cf638b5d680794e33aa5eb4bd36b09}\label{class_l_o_t_hypothesis_aa7cf638b5d680794e33aa5eb4bd36b09}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_affae32db28c39df676809ae47e14e7cf}\label{class_l_o_t_hypothesis_affae32db28c39df676809ae47e14e7cf}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!grammar@{grammar}}
 \index{grammar@{grammar}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{grammar}{grammar}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-\hyperlink{class_grammar}{Grammar}$\ast$ \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::grammar}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+\hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t}$\ast$ \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::grammar}
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_ab262eb592887136a986f5b2649397eca}\label{class_l_o_t_hypothesis_ab262eb592887136a986f5b2649397eca}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a0231650d938c098118a4c4bdb201fc61}\label{class_l_o_t_hypothesis_a0231650d938c098118a4c4bdb201fc61}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!M\+A\+X\+\_\+\+N\+O\+D\+ES@{M\+A\+X\+\_\+\+N\+O\+D\+ES}}
 \index{M\+A\+X\+\_\+\+N\+O\+D\+ES@{M\+A\+X\+\_\+\+N\+O\+D\+ES}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+N\+O\+D\+ES}{MAX\_NODES}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-const size\+\_\+t \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::M\+A\+X\+\_\+\+N\+O\+D\+ES = 64\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+const size\+\_\+t \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::M\+A\+X\+\_\+\+N\+O\+D\+ES = 64\hspace{0.3cm}{\ttfamily [static]}}
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_aff7455a900ffb91790e5235119676a80}\label{class_l_o_t_hypothesis_aff7455a900ffb91790e5235119676a80}} 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_ac759b3eab77ead1749b905a3dde74961}\label{class_l_o_t_hypothesis_ac759b3eab77ead1749b905a3dde74961}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!value@{value}}
 \index{value@{value}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{value}{value}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename T, typename t\+\_\+input, typename t\+\_\+output, typename \+\_\+t\+\_\+datum = default\+\_\+datum$<$t\+\_\+input, t\+\_\+output$>$, typename \+\_\+t\+\_\+data = std\+::vector$<$\+\_\+t\+\_\+datum$>$$>$ \\
-T \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$\+::value}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+\hyperlink{class_node}{Node} \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::value}
 
 
 

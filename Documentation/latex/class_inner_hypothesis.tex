@@ -2,7 +2,8 @@
 \label{class_inner_hypothesis}\index{Inner\+Hypothesis@{Inner\+Hypothesis}}
 
 
-Inheritance diagram for Inner\+Hypothesis\+:\nopagebreak
+Inheritance diagram for Inner\+Hypothesis\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -11,7 +12,8 @@ Inheritance diagram for Inner\+Hypothesis\+:\nopagebreak
 \end{figure}
 
 
-Collaboration diagram for Inner\+Hypothesis\+:\nopagebreak
+Collaboration diagram for Inner\+Hypothesis\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -21,38 +23,37 @@ Collaboration diagram for Inner\+Hypothesis\+:\nopagebreak
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
-using \hyperlink{class_inner_hypothesis_a2c15665b923d905f1f7441282780abc2}{Super} = \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ \hyperlink{class_inner_hypothesis}{Inner\+Hypothesis}, \hyperlink{class_node}{Node}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$
-\end{DoxyCompactItemize}
-\subsection*{Public Member Functions}
-\begin{DoxyCompactItemize}
-\item 
-virtual \hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{class_inner_hypothesis_a73c38e91c7c1bf021cbc8f9e5a758d13}{dispatch\+\_\+custom} (\hyperlink{class_instruction}{Instruction} i, \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$ $\ast$pool, \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$ $\ast$vms, \hyperlink{class_dispatchable}{Dispatchable}$<$ \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$ $\ast$loader) override
+using \hyperlink{class_inner_hypothesis_a1a69a8dd433b64b725be0b2436d6df0c}{Super} = \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ \hyperlink{class_inner_hypothesis}{Inner\+Hypothesis}, \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{class_my_grammar}{My\+Grammar} $>$
 \end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
 
 
+\subsection{Detailed Description}
+
+\begin{DoxyCode}
+    Declare a \hyperlink{class_l_o_t_hypothesis_affae32db28c39df676809ae47e14e7cf}{grammar}
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+\textcolor{keyword}{class }\hyperlink{class_my_grammar}{MyGrammar} : \textcolor{keyword}{public} \hyperlink{class_grammar}{Grammar}<MY\_TYPES> \{
+    \textcolor{keyword}{using} \hyperlink{class_inner_hypothesis_a1a69a8dd433b64b725be0b2436d6df0c}{Super} = \hyperlink{class_grammar}{Grammar<MY\_TYPES>};
+    \textcolor{keyword}{using} Super::Super;
+\};
+
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ Declare our hypothesis type $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
+
 \subsection{Member Typedef Documentation}
-\mbox{\Hypertarget{class_inner_hypothesis_a2c15665b923d905f1f7441282780abc2}\label{class_inner_hypothesis_a2c15665b923d905f1f7441282780abc2}} 
+\mbox{\Hypertarget{class_inner_hypothesis_a1a69a8dd433b64b725be0b2436d6df0c}\label{class_inner_hypothesis_a1a69a8dd433b64b725be0b2436d6df0c}} 
 \index{Inner\+Hypothesis@{Inner\+Hypothesis}!Super@{Super}}
 \index{Super@{Super}!Inner\+Hypothesis@{Inner\+Hypothesis}}
 \subsubsection{\texorpdfstring{Super}{Super}}
-{\footnotesize\ttfamily using \hyperlink{class_inner_hypothesis_a2c15665b923d905f1f7441282780abc2}{Inner\+Hypothesis\+::\+Super} =  \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$\hyperlink{class_inner_hypothesis}{Inner\+Hypothesis},\hyperlink{class_node}{Node},\hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S},\hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}$>$}
-
-
-
-\subsection{Member Function Documentation}
-\mbox{\Hypertarget{class_inner_hypothesis_a73c38e91c7c1bf021cbc8f9e5a758d13}\label{class_inner_hypothesis_a73c38e91c7c1bf021cbc8f9e5a758d13}} 
-\index{Inner\+Hypothesis@{Inner\+Hypothesis}!dispatch\+\_\+custom@{dispatch\+\_\+custom}}
-\index{dispatch\+\_\+custom@{dispatch\+\_\+custom}!Inner\+Hypothesis@{Inner\+Hypothesis}}
-\subsubsection{\texorpdfstring{dispatch\+\_\+custom()}{dispatch\_custom()}}
-{\footnotesize\ttfamily virtual \hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} Inner\+Hypothesis\+::dispatch\+\_\+custom (\begin{DoxyParamCaption}\item[{\hyperlink{class_instruction}{Instruction}}]{i,  }\item[{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$ $\ast$}]{pool,  }\item[{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}$<$ \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$ $\ast$}]{vms,  }\item[{\hyperlink{class_dispatchable}{Dispatchable}$<$ \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$ $\ast$}]{loader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
-
-
-
-Reimplemented from \hyperlink{class_l_o_t_hypothesis_a9aade3ee6939a58e5d5b53505cfb2e7a}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, Node, S, S $>$}.
+{\footnotesize\ttfamily using \hyperlink{class_inner_hypothesis_a1a69a8dd433b64b725be0b2436d6df0c}{Inner\+Hypothesis\+::\+Super} =  \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$\hyperlink{class_inner_hypothesis}{Inner\+Hypothesis},\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S},\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S},\hyperlink{class_my_grammar}{My\+Grammar}$>$}
 
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-Models/\+Formal\+Language\+Theory-\/\+Complex/\hyperlink{_formal_language_theory-_complex_2_main_8cpp}{Main.\+cpp}\end{DoxyCompactItemize}
+Models/\+Formal\+Language\+Theory-\/\+Complex/\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp}{Main.\+cpp}\end{DoxyCompactItemize}

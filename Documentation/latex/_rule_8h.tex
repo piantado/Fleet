@@ -1,5 +1,5 @@
-\hypertarget{_rule_8h}{}\section{src/\+Rule.h File Reference}
-\label{_rule_8h}\index{src/\+Rule.\+h@{src/\+Rule.\+h}}
+\hypertarget{_rule_8h}{}\section{src/\+Grammar/\+Rule.h File Reference}
+\label{_rule_8h}\index{src/\+Grammar/\+Rule.\+h@{src/\+Grammar/\+Rule.\+h}}
 
 
 A \hyperlink{class_rule}{Rule} stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we \char`\"{}emulate\char`\"{} a type system using t\+\_\+nonterminal to store an integer for the types. $\ast$.  
@@ -8,7 +8,10 @@ A \hyperlink{class_rule}{Rule} stores one possible expansion in the grammar, spe
 {\ttfamily \#include $<$functional$>$}\newline
 {\ttfamily \#include $<$string$>$}\newline
 {\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include \char`\"{}Instruction.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Nonterminal.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Miscellaneous.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Strings.\+h\char`\"{}}\newline
 Include dependency graph for Rule.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -30,6 +33,11 @@ This graph shows which files directly or indirectly include this file\+:
 \item 
 class \hyperlink{class_rule}{Rule}
 \end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \hyperlink{_rule_8h_a0872babe65702e1f4484c72844a60700}{operator$<$$<$} (std\+::ostream \&o, const \hyperlink{class_rule}{Rule} \&r)
+\end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
@@ -39,6 +47,15 @@ const \hyperlink{class_rule}{Rule} $\ast$ \hyperlink{_rule_8h_aa3fc95ef973d7c99a
 
 \subsection{Detailed Description}
 A \hyperlink{class_rule}{Rule} stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we \char`\"{}emulate\char`\"{} a type system using t\+\_\+nonterminal to store an integer for the types. $\ast$. 
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_rule_8h_a0872babe65702e1f4484c72844a60700}\label{_rule_8h_a0872babe65702e1f4484c72844a60700}} 
+\index{Rule.\+h@{Rule.\+h}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Rule.\+h@{Rule.\+h}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{o,  }\item[{const \hyperlink{class_rule}{Rule} \&}]{r }\end{DoxyParamCaption})}
 
 
 

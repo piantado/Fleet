@@ -1,16 +1,27 @@
 <map id="src/IO.h" name="src/IO.h">
-<area shape="rect" id="node2" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="301,177,399,203"/>
-<area shape="rect" id="node3" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="469,266,553,293"/>
-<area shape="rect" id="node10" href="$_miscellaneous_8h.html" title="src/Miscellaneous.h" alt="" coords="186,87,325,114"/>
-<area shape="rect" id="node11" href="$_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="55,177,226,203"/>
-<area shape="rect" id="node13" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="399,80,575,121"/>
-<area shape="rect" id="node15" href="$_grammar_8h.html" title="src/Grammar.h" alt="" coords="599,87,709,114"/>
-<area shape="rect" id="node4" href="$_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,348,209,389"/>
-<area shape="rect" id="node5" href="$_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="813,348,1017,389"/>
-<area shape="rect" id="node6" href="$_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="1042,348,1197,389"/>
-<area shape="rect" id="node7" href="$_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="408,355,615,382"/>
-<area shape="rect" id="node8" href="$_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="639,348,789,389"/>
-<area shape="rect" id="node9" href="$_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="234,348,383,389"/>
-<area shape="rect" id="node12" href="$_data_8h.html" title="Models/FormalLanguageTheory\l&#45;Complex/Data.h" alt="" coords="21,259,225,300"/>
-<area shape="rect" id="node14" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="423,169,599,211"/>
+<area shape="rect" id="node2" href="$_miscellaneous_8h.html" title="src/Miscellaneous.h" alt="" coords="839,80,978,107"/>
+<area shape="rect" id="node3" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="984,430,1068,457"/>
+<area shape="rect" id="node16" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="552,341,718,367"/>
+<area shape="rect" id="node17" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="315,155,491,196"/>
+<area shape="rect" id="node20" href="$_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="1008,251,1238,278"/>
+<area shape="rect" id="node24" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="1524,251,1679,278"/>
+<area shape="rect" id="node11" href="$apply_primitives_8h.html" title="src/VirtualMachine\l/applyPrimitives.h" alt="" coords="946,155,1076,196"/>
+<area shape="rect" id="node12" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we &quot;emulate&quot; a type system using t_nonterminal to store an integer for the types. *. " alt="" coords="730,162,870,189"/>
+<area shape="rect" id="node23" href="$_primitives_8h.html" title="If there are any references in the arguments, only the first can be a reference. " alt="" coords="1270,244,1400,285"/>
+<area shape="rect" id="node4" href="$_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="127,512,300,553"/>
+<area shape="rect" id="node5" href="$_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="858,512,1062,553"/>
+<area shape="rect" id="node6" href="$_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="630,512,834,553"/>
+<area shape="rect" id="node7" href="$_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="1511,512,1666,553"/>
+<area shape="rect" id="node8" href="$_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="1280,519,1486,546"/>
+<area shape="rect" id="node9" href="$_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="456,512,606,553"/>
+<area shape="rect" id="node10" href="$_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="1087,519,1255,546"/>
+<area shape="rect" id="node13" href="$_node_8h.html" title="src/Grammar/Node.h" alt="" coords="460,251,604,278"/>
+<area shape="rect" id="node14" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="424,430,553,457"/>
+<area shape="rect" id="node15" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="205,341,425,367"/>
+<area shape="rect" id="node18" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="6,341,181,367"/>
+<area shape="rect" id="node19" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="190,244,366,285"/>
+<area shape="rect" id="node21" href="$_data_8h.html" title="Models/FormalLanguageTheory\l&#45;Complex/Data.h" alt="" coords="1144,423,1348,464"/>
+<area shape="rect" id="node22" href="$_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="1098,333,1247,375"/>
+<area shape="rect" id="node25" href="$_m_c_m_c_chain_8h.html" title="src/Inference/MCMCChain.h" alt="" coords="1802,341,1991,367"/>
+<area shape="rect" id="node26" href="$_m_c_t_s_8h.html" title="Template of self type M, hypothesis type HYP. This requires us to inherit and override playout to do ..." alt="" coords="1626,341,1777,367"/>
 </map>

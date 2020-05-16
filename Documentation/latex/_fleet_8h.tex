@@ -1,28 +1,7 @@
 \hypertarget{_fleet_8h}{}\section{src/\+Fleet.h File Reference}
 \label{_fleet_8h}\index{src/\+Fleet.\+h@{src/\+Fleet.\+h}}
-{\ttfamily \#include \char`\"{}stdlib.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}stdio.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}math.\+h\char`\"{}}\newline
-{\ttfamily \#include $<$iostream$>$}\newline
-{\ttfamily \#include $<$getopt.\+h$>$}\newline
-{\ttfamily \#include $<$pthread.\+h$>$}\newline
-{\ttfamily \#include $<$unistd.\+h$>$}\newline
-{\ttfamily \#include $<$limits.\+h$>$}\newline
-{\ttfamily \#include $<$vector$>$}\newline
-{\ttfamily \#include $<$queue$>$}\newline
-{\ttfamily \#include $<$tuple$>$}\newline
-{\ttfamily \#include $<$map$>$}\newline
-{\ttfamily \#include $<$atomic$>$}\newline
-{\ttfamily \#include $<$assert.\+h$>$}\newline
-{\ttfamily \#include $<$string$>$}\newline
-{\ttfamily \#include $<$sstream$>$}\newline
-{\ttfamily \#include $<$array$>$}\newline
-{\ttfamily \#include $<$memory$>$}\newline
-{\ttfamily \#include $<$thread$>$}\newline
-{\ttfamily \#include $<$cstdio$>$}\newline
-{\ttfamily \#include $<$stdexcept$>$}\newline
-{\ttfamily \#include $<$random$>$}\newline
 {\ttfamily \#include $<$sys/resource.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Statistics/\+Fleet\+Statistics.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Timing.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Program.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Control.\+h\char`\"{}}\newline
@@ -32,18 +11,14 @@
 {\ttfamily \#include \char`\"{}Hash.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Miscellaneous.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Integerized\+Stack.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Hypotheses/\+Interfaces/\+Dispatchable.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Hypotheses/\+Interfaces/\+Bayesable.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Hypotheses/\+Interfaces/\+M\+C\+M\+Cable.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Hypotheses/\+Interfaces/\+Searchable.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Rule.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Virtual\+Machine/\+Virtual\+Machine\+Pool.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Virtual\+Machine/\+Virtual\+Machine\+State.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Node.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}I\+O.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Grammar.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Case\+Macros.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Discrete\+Distribution.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}I\+O.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Hypotheses/\+L\+O\+T\+Hypothesis.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Hypotheses/\+Lexicon.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Inference/\+M\+C\+M\+C\+Chain.\+h\char`\"{}}\newline
@@ -52,6 +27,17 @@
 {\ttfamily \#include \char`\"{}Inference/\+Chain\+Pool.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Top.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Primitives.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Virtual\+Machine/apply\+Primitives.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+Include dependency graph for Fleet.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_fleet_8h__incl}
+\end{center}
+\end{figure}
 This graph shows which files directly or indirectly include this file\+:
 \nopagebreak
 \begin{figure}[H]
@@ -60,17 +46,76 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=350pt]{_fleet_8h__dep__incl}
 \end{center}
 \end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_fleet_8h_acce2656a60361b4837224fb8ac2f876d}{Fleet\+\_\+initialize} ()
+\begin{DoxyCompactList}\small\item\em $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-const std\+::string \hyperlink{_fleet_8h_a6dc2dde25f2b066b658bb78010bf63cc}{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON} = \char`\"{}0.\+0.\+9\char`\"{}
+const std\+::string \hyperlink{_fleet_8h_a6dc2dde25f2b066b658bb78010bf63cc}{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON} = \char`\"{}0.\+0.\+94\char`\"{}
 \end{DoxyCompactItemize}
 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_fleet_8h_acce2656a60361b4837224fb8ac2f876d}\label{_fleet_8h_acce2656a60361b4837224fb8ac2f876d}} 
+\index{Fleet.\+h@{Fleet.\+h}!Fleet\+\_\+initialize@{Fleet\+\_\+initialize}}
+\index{Fleet\+\_\+initialize@{Fleet\+\_\+initialize}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{Fleet\+\_\+initialize()}{Fleet\_initialize()}}
+{\footnotesize\ttfamily void Fleet\+\_\+initialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
+
+
+\begin{DoxyCode}
+    We defaultly include all of the major requirements \textcolor{keywordflow}{for} \hyperlink{namespace_fleet}{Fleet}
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+\textcolor{preprocessor}{# 81 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+
+\textcolor{preprocessor}{# 83 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+
+
+\textcolor{preprocessor}{# 86 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+\textcolor{preprocessor}{# 87 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+\textcolor{preprocessor}{# 88 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+\textcolor{preprocessor}{# 89 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+\textcolor{preprocessor}{# 90 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+\textcolor{preprocessor}{# 91 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+
+
+\textcolor{preprocessor}{# 94 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+\textcolor{preprocessor}{# 95 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+
+
+
+
+
+
+\textcolor{preprocessor}{# 102 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+\textcolor{preprocessor}{# 103 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+
+\textcolor{preprocessor}{# 105 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+\textcolor{preprocessor}{# 106 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+\textcolor{preprocessor}{# 107 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+
+
+
+
+
+\textcolor{comment}{// Thie one really should be included last because it depends on Primitves}
+\textcolor{preprocessor}{# 114 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ Actual initialization $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
 
 \subsection{Variable Documentation}
 \mbox{\Hypertarget{_fleet_8h_a6dc2dde25f2b066b658bb78010bf63cc}\label{_fleet_8h_a6dc2dde25f2b066b658bb78010bf63cc}} 
 \index{Fleet.\+h@{Fleet.\+h}!F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON@{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON}}
 \index{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON@{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON}!Fleet.\+h@{Fleet.\+h}}
 \subsubsection{\texorpdfstring{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON}{FLEET\_VERSION}}
-{\footnotesize\ttfamily const std\+::string F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON = \char`\"{}0.\+0.\+9\char`\"{}}
+{\footnotesize\ttfamily const std\+::string F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON = \char`\"{}0.\+0.\+94\char`\"{}}
 

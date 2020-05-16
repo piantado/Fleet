@@ -91,7 +91,7 @@ Include dependency graph for GrammarHypothesis.h:</div>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_human_datum.html">HumanDatum&lt; t_learnerdatum, t_learnerdata &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar_hypothesis.html">GrammarHypothesis&lt; HYP, t_datum, t_data &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar_hypothesis.html">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -102,12 +102,12 @@ Functions</h2></td></tr>
 <tr class="memitem:aa9cc572967622742aa6eb6603f58dbd0"><td class="memTemplParams" colspan="2">template&lt;typename HYP &gt; </td></tr>
 <tr class="memitem:aa9cc572967622742aa6eb6603f58dbd0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_eigen_numerics_8h.html#a645222978e81acfb2523a9bce34aecc0">Matrix</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_grammar_hypothesis_8h.html#aa9cc572967622742aa6eb6603f58dbd0">counts</a> (std::vector&lt; HYP &gt; &amp;hypotheses)</td></tr>
 <tr class="separator:aa9cc572967622742aa6eb6603f58dbd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a48b68b9617c8ece4f550196dd275d9"><td class="memTemplParams" colspan="2">template&lt;typename HYP , typename t_data &gt; </td></tr>
-<tr class="memitem:a9a48b68b9617c8ece4f550196dd275d9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_eigen_numerics_8h.html#a645222978e81acfb2523a9bce34aecc0">Matrix</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_grammar_hypothesis_8h.html#a9a48b68b9617c8ece4f550196dd275d9">incremental_likelihoods</a> (std::vector&lt; HYP &gt; &amp;hypotheses, t_data &amp;human_data)</td></tr>
-<tr class="separator:a9a48b68b9617c8ece4f550196dd275d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63b3177c1d70c31bab2e3e55564e45c4"><td class="memTemplParams" colspan="2">template&lt;typename HYP , typename t_data &gt; </td></tr>
-<tr class="memitem:a63b3177c1d70c31bab2e3e55564e45c4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_eigen_numerics_8h.html#a645222978e81acfb2523a9bce34aecc0">Matrix</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_grammar_hypothesis_8h.html#a63b3177c1d70c31bab2e3e55564e45c4">model_predictions</a> (std::vector&lt; HYP &gt; &amp;hypotheses, t_data &amp;human_data)</td></tr>
-<tr class="separator:a63b3177c1d70c31bab2e3e55564e45c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c254795a97685d56a1b957611fae090"><td class="memTemplParams" colspan="2">template&lt;typename HYP , typename data_t &gt; </td></tr>
+<tr class="memitem:a4c254795a97685d56a1b957611fae090"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_eigen_numerics_8h.html#a645222978e81acfb2523a9bce34aecc0">Matrix</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_grammar_hypothesis_8h.html#a4c254795a97685d56a1b957611fae090">incremental_likelihoods</a> (std::vector&lt; HYP &gt; &amp;hypotheses, data_t &amp;human_data)</td></tr>
+<tr class="separator:a4c254795a97685d56a1b957611fae090"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a226a126736e15a8fa6d12e3fc8d06772"><td class="memTemplParams" colspan="2">template&lt;typename HYP , typename data_t &gt; </td></tr>
+<tr class="memitem:a226a126736e15a8fa6d12e3fc8d06772"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_eigen_numerics_8h.html#a645222978e81acfb2523a9bce34aecc0">Matrix</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_grammar_hypothesis_8h.html#a226a126736e15a8fa6d12e3fc8d06772">model_predictions</a> (std::vector&lt; HYP &gt; &amp;hypotheses, data_t &amp;human_data)</td></tr>
+<tr class="separator:a226a126736e15a8fa6d12e3fc8d06772"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ae5fe4a8381157a1e6b65f806a80e941e"></a>
@@ -150,13 +150,13 @@ template&lt;typename HYP &gt; </div>
 
 </div>
 </div>
-<a id="a9a48b68b9617c8ece4f550196dd275d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a48b68b9617c8ece4f550196dd275d9">&#9670;&nbsp;</a></span>incremental_likelihoods()</h2>
+<a id="a4c254795a97685d56a1b957611fae090"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c254795a97685d56a1b957611fae090">&#9670;&nbsp;</a></span>incremental_likelihoods()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP , typename t_data &gt; </div>
+template&lt;typename HYP , typename data_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="_eigen_numerics_8h.html#a645222978e81acfb2523a9bce34aecc0">Matrix</a> incremental_likelihoods </td>
@@ -167,7 +167,7 @@ template&lt;typename HYP , typename t_data &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">t_data &amp;&#160;</td>
+          <td class="paramtype">data_t &amp;&#160;</td>
           <td class="paramname"><em>human_data</em>&#160;</td>
         </tr>
         <tr>
@@ -180,13 +180,13 @@ template&lt;typename HYP , typename t_data &gt; </div>
 
 </div>
 </div>
-<a id="a63b3177c1d70c31bab2e3e55564e45c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63b3177c1d70c31bab2e3e55564e45c4">&#9670;&nbsp;</a></span>model_predictions()</h2>
+<a id="a226a126736e15a8fa6d12e3fc8d06772"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a226a126736e15a8fa6d12e3fc8d06772">&#9670;&nbsp;</a></span>model_predictions()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP , typename t_data &gt; </div>
+template&lt;typename HYP , typename data_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="_eigen_numerics_8h.html#a645222978e81acfb2523a9bce34aecc0">Matrix</a> model_predictions </td>
@@ -197,7 +197,7 @@ template&lt;typename HYP , typename t_data &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">t_data &amp;&#160;</td>
+          <td class="paramtype">data_t &amp;&#160;</td>
           <td class="paramname"><em>human_data</em>&#160;</td>
         </tr>
         <tr>

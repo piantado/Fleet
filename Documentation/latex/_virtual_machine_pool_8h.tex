@@ -5,9 +5,9 @@
 This manages a collection of Virtual\+Machines -- this is what handles the enumeration of flip by probability. Basically each machine state stores the state of some evaluator and is able to push things back on to the Q if it encounters a random flip This stores pointers because it is impossible to copy out of std collections, so we are constantly having to call \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State} constructors. Using pointers speeds us up by about 20\%.  
 
 
-{\ttfamily \#include \char`\"{}Fleet.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Discrete\+Distribution.\+h\char`\"{}}\newline
 {\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$queue$>$}\newline
 Include dependency graph for Virtual\+Machine\+Pool.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -27,7 +27,7 @@ This graph shows which files directly or indirectly include this file\+:
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool$<$ t\+\_\+x, t\+\_\+return $>$}
+class \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool$<$ V\+M\+State $>$}
 \end{DoxyCompactItemize}
 
 

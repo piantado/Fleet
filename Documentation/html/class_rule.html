@@ -64,6 +64,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_rule-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -83,9 +84,9 @@ Collaboration diagram for Rule:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1e65fa1bce404b1513038a9dd4ffcb9f"><td class="memTemplParams" colspan="2">template&lt;typename OPT &gt; </td></tr>
-<tr class="memitem:a1e65fa1bce404b1513038a9dd4ffcb9f"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_rule.html#a1e65fa1bce404b1513038a9dd4ffcb9f">Rule</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> rt, const OPT o, const std::string fmt, std::initializer_list&lt; <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> &gt; c, double _p, const int arg=0)</td></tr>
-<tr class="separator:a1e65fa1bce404b1513038a9dd4ffcb9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad25d1676e2ec236dfea8469f052c0985"><td class="memTemplParams" colspan="2">template&lt;typename OPT &gt; </td></tr>
+<tr class="memitem:ad25d1676e2ec236dfea8469f052c0985"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_rule.html#ad25d1676e2ec236dfea8469f052c0985">Rule</a> (const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> rt, const OPT o, const char *fmt, std::initializer_list&lt; <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> &gt; c, double _p, const int arg=0)</td></tr>
+<tr class="separator:ad25d1676e2ec236dfea8469f052c0985"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a706819fbede2c5a1b0b59f1d28cae30b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rule.html#a706819fbede2c5a1b0b59f1d28cae30b">operator&lt;</a> (const <a class="el" href="class_rule.html">Rule</a> &amp;r) const</td></tr>
 <tr class="separator:a706819fbede2c5a1b0b59f1d28cae30b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a183fafc8a6b43515436a1de8f63ec98d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rule.html#a183fafc8a6b43515436a1de8f63ec98d">operator==</a> (const <a class="el" href="class_rule.html">Rule</a> &amp;r) const</td></tr>
@@ -96,8 +97,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9d557e302f94bd85f5505733e8856f97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97db8e22bb8445b92779eb165bb29ae5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rule.html#a97db8e22bb8445b92779eb165bb29ae5">type</a> (size_t i) const</td></tr>
 <tr class="separator:a97db8e22bb8445b92779eb165bb29ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a75588d7821c1bcf087ec6ebf82bd0f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rule.html#a4a75588d7821c1bcf087ec6ebf82bd0f">string</a> ()</td></tr>
-<tr class="separator:a4a75588d7821c1bcf087ec6ebf82bd0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f16256eabd7bd8b94fbcf857bf1e45b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rule.html#a7f16256eabd7bd8b94fbcf857bf1e45b">string</a> () const</td></tr>
+<tr class="separator:a7f16256eabd7bd8b94fbcf857bf1e45b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -112,10 +113,15 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:acd7e4d41d59dec76f60ca16238ab391a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rule.html#acd7e4d41d59dec76f60ca16238ab391a">p</a></td></tr>
 <tr class="separator:acd7e4d41d59dec76f60ca16238ab391a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:ac78a2201dfba27f803111205396f0027"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rule.html#ac78a2201dfba27f803111205396f0027">MAX_CHILD_SIZE</a> = 8</td></tr>
+<tr class="separator:ac78a2201dfba27f803111205396f0027"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a2d5160625d3d15f60690c4323522a33e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rule.html#a2d5160625d3d15f60690c4323522a33e">child_types</a> [Fleet::MAX_CHILD_SIZE]</td></tr>
-<tr class="separator:a2d5160625d3d15f60690c4323522a33e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac29b59e23c3327fed7a1e99b06512057"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rule.html#ac29b59e23c3327fed7a1e99b06512057">child_types</a> [<a class="el" href="class_rule.html#ac78a2201dfba27f803111205396f0027">MAX_CHILD_SIZE</a>]</td></tr>
+<tr class="separator:ac29b59e23c3327fed7a1e99b06512057"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2d873c97e2de425f14a5a980dbcc104"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rule.html#af2d873c97e2de425f14a5a980dbcc104">my_hash</a></td></tr>
 <tr class="separator:af2d873c97e2de425f14a5a980dbcc104"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -123,8 +129,8 @@ Protected Attributes</h2></td></tr>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>piantado </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>08/02/20 </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1e65fa1bce404b1513038a9dd4ffcb9f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e65fa1bce404b1513038a9dd4ffcb9f">&#9670;&nbsp;</a></span>Rule()</h2>
+<a id="ad25d1676e2ec236dfea8469f052c0985"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad25d1676e2ec236dfea8469f052c0985">&#9670;&nbsp;</a></span>Rule()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -135,7 +141,7 @@ template&lt;typename OPT &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Rule::Rule </td>
+          <td class="memname">constexpr Rule::Rule </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td>
           <td class="paramname"><em>rt</em>, </td>
@@ -149,7 +155,7 @@ template&lt;typename OPT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>fmt</em>, </td>
         </tr>
         <tr>
@@ -303,8 +309,8 @@ template&lt;typename OPT &gt; </div>
 
 </div>
 </div>
-<a id="a4a75588d7821c1bcf087ec6ebf82bd0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a75588d7821c1bcf087ec6ebf82bd0f">&#9670;&nbsp;</a></span>string()</h2>
+<a id="a7f16256eabd7bd8b94fbcf857bf1e45b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f16256eabd7bd8b94fbcf857bf1e45b">&#9670;&nbsp;</a></span>string()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -316,7 +322,7 @@ template&lt;typename OPT &gt; </div>
           <td class="memname">std::string Rule::string </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -362,8 +368,8 @@ template&lt;typename OPT &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a2d5160625d3d15f60690c4323522a33e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2d5160625d3d15f60690c4323522a33e">&#9670;&nbsp;</a></span>child_types</h2>
+<a id="ac29b59e23c3327fed7a1e99b06512057"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac29b59e23c3327fed7a1e99b06512057">&#9670;&nbsp;</a></span>child_types</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -372,7 +378,7 @@ template&lt;typename OPT &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> Rule::child_types[Fleet::MAX_CHILD_SIZE]</td>
+          <td class="memname"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> Rule::child_types[<a class="el" href="class_rule.html#ac78a2201dfba27f803111205396f0027">MAX_CHILD_SIZE</a>]</td>
         </tr>
       </table>
   </td>
@@ -408,6 +414,28 @@ template&lt;typename OPT &gt; </div>
           <td class="memname"><a class="el" href="class_instruction.html">Instruction</a> Rule::instr</td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac78a2201dfba27f803111205396f0027"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac78a2201dfba27f803111205396f0027">&#9670;&nbsp;</a></span>MAX_CHILD_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const size_t Rule::MAX_CHILD_SIZE = 8</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -477,7 +505,7 @@ template&lt;typename OPT &gt; </div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/<a class="el" href="_rule_8h_source.html">Rule.h</a></li>
+<li>src/Grammar/<a class="el" href="_rule_8h_source.html">Rule.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -1,9 +1,14 @@
-<map id="src/Rule.h" name="src/Rule.h">
-<area shape="rect" id="node2" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="703,80,787,107"/>
-<area shape="rect" id="node3" href="$_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,155,209,196"/>
-<area shape="rect" id="node4" href="$_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,155,437,196"/>
-<area shape="rect" id="node5" href="$_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,155,617,196"/>
-<area shape="rect" id="node6" href="$_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="641,162,848,189"/>
-<area shape="rect" id="node7" href="$_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="872,155,1023,196"/>
-<area shape="rect" id="node8" href="$_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="1047,155,1197,196"/>
+<map id="src/Grammar/Rule.h" name="src/Grammar/Rule.h">
+<area shape="rect" id="node2" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="699,229,783,256"/>
+<area shape="rect" id="node10" href="$_node_8h.html" title="src/Grammar/Node.h" alt="" coords="778,80,922,107"/>
+<area shape="rect" id="node3" href="$_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="1238,304,1411,345"/>
+<area shape="rect" id="node4" href="$_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="639,304,843,345"/>
+<area shape="rect" id="node5" href="$_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="236,304,440,345"/>
+<area shape="rect" id="node6" href="$_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="1059,304,1214,345"/>
+<area shape="rect" id="node7" href="$_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="5,311,212,338"/>
+<area shape="rect" id="node8" href="$_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="464,304,615,345"/>
+<area shape="rect" id="node9" href="$_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="867,311,1035,338"/>
+<area shape="rect" id="node11" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="1112,229,1241,256"/>
+<area shape="rect" id="node12" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="483,155,703,181"/>
+<area shape="rect" id="node13" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="829,155,996,181"/>
 </map>

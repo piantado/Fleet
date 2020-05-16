@@ -98,6 +98,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a277918b68827f6ffd8150f450b0c12c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87c9938dcd77c169802a732c98204945"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a87c9938dcd77c169802a732c98204945">Node</a> (<a class="el" href="class_node.html">Node</a> &amp;&amp;n)</td></tr>
 <tr class="separator:a87c9938dcd77c169802a732c98204945"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5e3fa79300bf5f3f2f3ecae6e795a94"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#af5e3fa79300bf5f3f2f3ecae6e795a94">~Node</a> ()</td></tr>
+<tr class="separator:af5e3fa79300bf5f3f2f3ecae6e795a94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23adfa03c20f4141b1105c5b4b1bca3f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a23adfa03c20f4141b1105c5b4b1bca3f">child</a> (const size_t i)</td></tr>
 <tr class="separator:a23adfa03c20f4141b1105c5b4b1bca3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc2b20cdba470853f1c137e26546ed3c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#acc2b20cdba470853f1c137e26546ed3c">child</a> (const size_t i) const</td></tr>
@@ -122,6 +124,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac6d1a1d71a28168b34e9092568570738"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f25f44608c0b19fe02eaf19ade9ea68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a8f25f44608c0b19fe02eaf19ade9ea68">fix_child_info</a> ()</td></tr>
 <tr class="separator:a8f25f44608c0b19fe02eaf19ade9ea68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8f9492893b0e2b2d7b3d1819dacc92b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#ab8f9492893b0e2b2d7b3d1819dacc92b">check_child_info</a> () const</td></tr>
+<tr class="separator:ab8f9492893b0e2b2d7b3d1819dacc92b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4abe3acdc804489a01ef13a25b130fd8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a4abe3acdc804489a01ef13a25b130fd8">nt</a> () const</td></tr>
 <tr class="separator:a4abe3acdc804489a01ef13a25b130fd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b89084e2c7416379edb7c537edcc8f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a0b89084e2c7416379edb7c537edcc8f2">operator[]</a> (const size_t i)</td></tr>
@@ -175,7 +179,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac995508e96e112675fde53e7748e41bc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#ac995508e96e112675fde53e7748e41bc">linearize</a> (Program &amp;ops) const</td></tr>
 <tr class="separator:ac995508e96e112675fde53e7748e41bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90aeee00ccda27f36bea9cdd774eae8d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a90aeee00ccda27f36bea9cdd774eae8d">operator==</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
+<tr class="memdesc:a90aeee00ccda27f36bea9cdd774eae8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">convert tree to a linear sequence of operations. To do this, we first linearize the kids, leaving their values as the top on the stack then we compute our value, remove our kids' values to clean up the stack, and push on our return the only fanciness is for if: here we will use the following layout &lt;TOP of="" stack&gt;=""&gt; &lt;bool&gt; <a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7a8f69a9fe993189d72cf7b07e8517801d">op_IF(xsize)</a> X-branch JUMP(ysize) Y-branch  <a href="#a90aeee00ccda27f36bea9cdd774eae8d">More...</a><br /></td></tr>
 <tr class="separator:a90aeee00ccda27f36bea9cdd774eae8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ff12be4d2355edddee1fbe893f0c8a8"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a1ff12be4d2355edddee1fbe893f0c8a8">operator!=</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
+<tr class="separator:a1ff12be4d2355edddee1fbe893f0c8a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a212f2e1ba4ff71de6954b0b791d89979"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a212f2e1ba4ff71de6954b0b791d89979">hash</a> (size_t depth=0) const</td></tr>
 <tr class="separator:a212f2e1ba4ff71de6954b0b791d89979"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -301,6 +308,31 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="af5e3fa79300bf5f3f2f3ecae6e795a94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5e3fa79300bf5f3f2f3ecae6e795a94">&#9670;&nbsp;</a></span>~Node()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual Node::~Node </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a319b65eca94c9438201ebda99ab90a65"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a319b65eca94c9438201ebda99ab90a65">&#9670;&nbsp;</a></span>begin()</h2>
@@ -324,6 +356,32 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab8f9492893b0e2b2d7b3d1819dacc92b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8f9492893b0e2b2d7b3d1819dacc92b">&#9670;&nbsp;</a></span>check_child_info()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Node::check_child_info </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>assert that all of the child info is correct</p>
 
 </div>
 </div>
@@ -931,6 +989,32 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a1ff12be4d2355edddee1fbe893f0c8a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ff12be4d2355edddee1fbe893f0c8a8">&#9670;&nbsp;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Node::operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a8b05feb361beb04d465619751a2297b1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8b05feb361beb04d465619751a2297b1">&#9670;&nbsp;</a></span>operator<()</h2>
 
@@ -1032,6 +1116,14 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>convert tree to a linear sequence of operations. To do this, we first linearize the kids, leaving their values as the top on the stack then we compute our value, remove our kids' values to clean up the stack, and push on our return the only fanciness is for if: here we will use the following layout &lt;TOP of="" stack&gt;=""&gt; &lt;bool&gt; <a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7a8f69a9fe993189d72cf7b07e8517801d">op_IF(xsize)</a> X-branch JUMP(ysize) Y-branch </p>
+<p>NOTE: Inline here lets gcc inline a few recursions of this function, which ends up speeding us up a bit (otherwise recursive inlining only happens at -O3) This optimization is why we do set max-inline-insns-recursive in Fleet.mk </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ops</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 <p>Check equality between notes. Note this compares rule objects. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td></td></tr>
@@ -1123,7 +1215,7 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Create a string that can be parsed according to <a class="el" href="class_grammar.html#ab5bd3d35545bcab4dbd3ca1d136bd4ce">Grammar.expand_from_names</a> </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Create a string that can be parsed according to <a class="el" href="class_grammar.html#aef582b15696b97c3376cba935a76acef">Grammar.expand_from_names</a> </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -1612,7 +1704,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/<a class="el" href="_node_8h_source.html">Node.h</a></li>
+<li>src/Grammar/<a class="el" href="_node_8h_source.html">Node.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

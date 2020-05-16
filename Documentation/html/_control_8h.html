@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Fleet: src/Control.h File Reference</title>
+<title>Fleet: src/Inference/Control.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_b1574807514940316c988b1142d2b137.html">Inference</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -74,27 +74,32 @@ $(function() {
 
 <p>This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here)  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="_i_o_8h_source.html">IO.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_timing_8h_source.html">Timing.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_i_o_8h_source.html">IO.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Control.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="_control_8h__incl.png" border="0" usemap="#src_2_control_8h" alt=""/></div>
-<map name="src_2_control_8h" id="src_2_control_8h">
-<area shape="rect" id="node2" href="_i_o_8h.html" title="IO.h" alt="" coords="161,80,207,107"/>
+<div class="center"><img src="_control_8h__incl.png" border="0" usemap="#src_2_inference_2_control_8h" alt=""/></div>
+<map name="src_2_inference_2_control_8h" id="src_2_inference_2_control_8h">
+<area shape="rect" id="node2" href="_timing_8h.html" title="Timing.h" alt="" coords="41,80,113,107"/>
+<area shape="rect" id="node4" href="_i_o_8h.html" title="IO.h" alt="" coords="179,80,226,107"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><img src="_control_8h__dep__incl.png" border="0" usemap="#src_2_control_8hdep" alt=""/></div>
-<map name="src_2_control_8hdep" id="src_2_control_8hdep">
-<area shape="rect" id="node2" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="703,80,787,107"/>
-<area shape="rect" id="node3" href="_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,155,209,196"/>
-<area shape="rect" id="node4" href="_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,155,437,196"/>
-<area shape="rect" id="node5" href="_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,155,617,196"/>
-<area shape="rect" id="node6" href="_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="641,162,848,189"/>
-<area shape="rect" id="node7" href="_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="872,155,1023,196"/>
-<area shape="rect" id="node8" href="_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="1047,155,1197,196"/>
+<div class="center"><img src="_control_8h__dep__incl.png" border="0" usemap="#src_2_inference_2_control_8hdep" alt=""/></div>
+<map name="src_2_inference_2_control_8hdep" id="src_2_inference_2_control_8hdep">
+<area shape="rect" id="node2" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="633,155,717,181"/>
+<area shape="rect" id="node10" href="_m_c_m_c_chain_8h.html" title="src/Inference/MCMCChain.h" alt="" coords="712,80,901,107"/>
+<area shape="rect" id="node11" href="_m_c_t_s_8h.html" title="Template of self type M, hypothesis type HYP. This requires us to inherit and override playout to do ..." alt="" coords="486,80,637,107"/>
+<area shape="rect" id="node3" href="_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="588,229,761,271"/>
+<area shape="rect" id="node4" href="_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="786,229,990,271"/>
+<area shape="rect" id="node5" href="_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="185,229,389,271"/>
+<area shape="rect" id="node6" href="_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="5,229,160,271"/>
+<area shape="rect" id="node7" href="_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="1207,237,1414,263"/>
+<area shape="rect" id="node8" href="_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="413,229,563,271"/>
+<area shape="rect" id="node9" href="_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="1015,237,1183,263"/>
 </map>
 </div>
 </div>

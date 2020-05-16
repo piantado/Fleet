@@ -5,13 +5,13 @@
 \item 
 double \hyperlink{namespace_proposals_a73f20ef1547bc5beef3e6e3adad2139c}{can\+\_\+resample} (const \hyperlink{class_node}{Node} \&n)
 \item 
-std\+::pair$<$ \hyperlink{class_node}{Node}, double $>$ \hyperlink{namespace_proposals_a46b497d7c2d664181240aed4cc92ad73}{prior\+\_\+proposal} (\hyperlink{class_grammar}{Grammar} $\ast$grammar, const \hyperlink{class_node}{Node} \&from)
+{\footnotesize template$<$typename Grammar\+Type $>$ }\\std\+::pair$<$ \hyperlink{class_node}{Node}, double $>$ \hyperlink{namespace_proposals_add01a544339cc3713d02f663c331f33b}{prior\+\_\+proposal} (Grammar\+Type $\ast$grammar, const \hyperlink{class_node}{Node} \&from)
 \item 
-std\+::pair$<$ \hyperlink{class_node}{Node}, double $>$ \hyperlink{namespace_proposals_a186662fcd0316b831a4a08a8e64020b3}{regenerate} (\hyperlink{class_grammar}{Grammar} $\ast$grammar, const \hyperlink{class_node}{Node} \&from)
+{\footnotesize template$<$typename Grammar\+Type $>$ }\\std\+::pair$<$ \hyperlink{class_node}{Node}, double $>$ \hyperlink{namespace_proposals_aedcca10b4519a9aad7739878036019f3}{regenerate} (Grammar\+Type $\ast$grammar, const \hyperlink{class_node}{Node} \&from)
 \item 
-std\+::pair$<$ \hyperlink{class_node}{Node}, double $>$ \hyperlink{namespace_proposals_a7286635ba7407c6f47a6cde53b832741}{insert\+\_\+tree} (\hyperlink{class_grammar}{Grammar} $\ast$grammar, const \hyperlink{class_node}{Node} \&from)
+{\footnotesize template$<$typename Grammar\+Type $>$ }\\std\+::pair$<$ \hyperlink{class_node}{Node}, double $>$ \hyperlink{namespace_proposals_a8714ac1333d5aff2d248ef10a8eb5493}{insert\+\_\+tree} (Grammar\+Type $\ast$grammar, const \hyperlink{class_node}{Node} \&from)
 \item 
-std\+::pair$<$ \hyperlink{class_node}{Node}, double $>$ \hyperlink{namespace_proposals_a5359114c687c89b35ba672b9d4b3c7ad}{delete\+\_\+tree} (\hyperlink{class_grammar}{Grammar} $\ast$grammar, const \hyperlink{class_node}{Node} \&from)
+{\footnotesize template$<$typename Grammar\+Type $>$ }\\std\+::pair$<$ \hyperlink{class_node}{Node}, double $>$ \hyperlink{namespace_proposals_a785ec0b4f2f5df9b78bbb8c0c5f16118}{delete\+\_\+tree} (Grammar\+Type $\ast$grammar, const \hyperlink{class_node}{Node} \&from)
 \end{DoxyCompactItemize}
 
 
@@ -30,29 +30,33 @@ Helper function for whether we can resample from a node (just accesses n.\+can\+
 \begin{DoxyReturn}{Returns}
 -\/ a double (1.\+0 or 0.\+0) depending on whether n can be sampled
 \end{DoxyReturn}
-\mbox{\Hypertarget{namespace_proposals_a5359114c687c89b35ba672b9d4b3c7ad}\label{namespace_proposals_a5359114c687c89b35ba672b9d4b3c7ad}} 
+\mbox{\Hypertarget{namespace_proposals_a785ec0b4f2f5df9b78bbb8c0c5f16118}\label{namespace_proposals_a785ec0b4f2f5df9b78bbb8c0c5f16118}} 
 \index{Proposals@{Proposals}!delete\+\_\+tree@{delete\+\_\+tree}}
 \index{delete\+\_\+tree@{delete\+\_\+tree}!Proposals@{Proposals}}
 \subsubsection{\texorpdfstring{delete\+\_\+tree()}{delete\_tree()}}
-{\footnotesize\ttfamily std\+::pair$<$\hyperlink{class_node}{Node}, double$>$ Proposals\+::delete\+\_\+tree (\begin{DoxyParamCaption}\item[{\hyperlink{class_grammar}{Grammar} $\ast$}]{grammar,  }\item[{const \hyperlink{class_node}{Node} \&}]{from }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily template$<$typename Grammar\+Type $>$ \\
+std\+::pair$<$\hyperlink{class_node}{Node}, double$>$ Proposals\+::delete\+\_\+tree (\begin{DoxyParamCaption}\item[{Grammar\+Type $\ast$}]{grammar,  }\item[{const \hyperlink{class_node}{Node} \&}]{from }\end{DoxyParamCaption})}
 
-backward is we choose the {\itshape new} s, then generate everything else, and choose anything equal \mbox{\Hypertarget{namespace_proposals_a7286635ba7407c6f47a6cde53b832741}\label{namespace_proposals_a7286635ba7407c6f47a6cde53b832741}} 
+backward is we choose the {\itshape new} s, then generate everything else, and choose anything equal \mbox{\Hypertarget{namespace_proposals_a8714ac1333d5aff2d248ef10a8eb5493}\label{namespace_proposals_a8714ac1333d5aff2d248ef10a8eb5493}} 
 \index{Proposals@{Proposals}!insert\+\_\+tree@{insert\+\_\+tree}}
 \index{insert\+\_\+tree@{insert\+\_\+tree}!Proposals@{Proposals}}
 \subsubsection{\texorpdfstring{insert\+\_\+tree()}{insert\_tree()}}
-{\footnotesize\ttfamily std\+::pair$<$\hyperlink{class_node}{Node}, double$>$ Proposals\+::insert\+\_\+tree (\begin{DoxyParamCaption}\item[{\hyperlink{class_grammar}{Grammar} $\ast$}]{grammar,  }\item[{const \hyperlink{class_node}{Node} \&}]{from }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily template$<$typename Grammar\+Type $>$ \\
+std\+::pair$<$\hyperlink{class_node}{Node}, double$>$ Proposals\+::insert\+\_\+tree (\begin{DoxyParamCaption}\item[{Grammar\+Type $\ast$}]{grammar,  }\item[{const \hyperlink{class_node}{Node} \&}]{from }\end{DoxyParamCaption})}
 
-backward is we choose t exactly, then we pick anything below that is equal to s \mbox{\Hypertarget{namespace_proposals_a46b497d7c2d664181240aed4cc92ad73}\label{namespace_proposals_a46b497d7c2d664181240aed4cc92ad73}} 
+backward is we choose t exactly, then we pick anything below that is equal to s \mbox{\Hypertarget{namespace_proposals_add01a544339cc3713d02f663c331f33b}\label{namespace_proposals_add01a544339cc3713d02f663c331f33b}} 
 \index{Proposals@{Proposals}!prior\+\_\+proposal@{prior\+\_\+proposal}}
 \index{prior\+\_\+proposal@{prior\+\_\+proposal}!Proposals@{Proposals}}
 \subsubsection{\texorpdfstring{prior\+\_\+proposal()}{prior\_proposal()}}
-{\footnotesize\ttfamily std\+::pair$<$\hyperlink{class_node}{Node},double$>$ Proposals\+::prior\+\_\+proposal (\begin{DoxyParamCaption}\item[{\hyperlink{class_grammar}{Grammar} $\ast$}]{grammar,  }\item[{const \hyperlink{class_node}{Node} \&}]{from }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily template$<$typename Grammar\+Type $>$ \\
+std\+::pair$<$\hyperlink{class_node}{Node},double$>$ Proposals\+::prior\+\_\+proposal (\begin{DoxyParamCaption}\item[{Grammar\+Type $\ast$}]{grammar,  }\item[{const \hyperlink{class_node}{Node} \&}]{from }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{namespace_proposals_a186662fcd0316b831a4a08a8e64020b3}\label{namespace_proposals_a186662fcd0316b831a4a08a8e64020b3}} 
+\mbox{\Hypertarget{namespace_proposals_aedcca10b4519a9aad7739878036019f3}\label{namespace_proposals_aedcca10b4519a9aad7739878036019f3}} 
 \index{Proposals@{Proposals}!regenerate@{regenerate}}
 \index{regenerate@{regenerate}!Proposals@{Proposals}}
 \subsubsection{\texorpdfstring{regenerate()}{regenerate()}}
-{\footnotesize\ttfamily std\+::pair$<$\hyperlink{class_node}{Node},double$>$ Proposals\+::regenerate (\begin{DoxyParamCaption}\item[{\hyperlink{class_grammar}{Grammar} $\ast$}]{grammar,  }\item[{const \hyperlink{class_node}{Node} \&}]{from }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily template$<$typename Grammar\+Type $>$ \\
+std\+::pair$<$\hyperlink{class_node}{Node},double$>$ Proposals\+::regenerate (\begin{DoxyParamCaption}\item[{Grammar\+Type $\ast$}]{grammar,  }\item[{const \hyperlink{class_node}{Node} \&}]{from }\end{DoxyParamCaption})}
 
 Regenerate with a rational-\/rules (Goodman et al.) style regeneration proposal\+: pick a node uniformly and regenerate it from the grammar. 
 \begin{DoxyParams}{Parameters}

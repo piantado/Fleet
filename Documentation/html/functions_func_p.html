@@ -71,11 +71,11 @@ $(function() {
 : <a class="el" href="class_m_c_t_s_node.html#acd94e02e155886ab71a2922815cd8285">MCTSNode&lt; M, HYP &gt;</a>
 </li>
 <li>ParallelTempering()
-: <a class="el" href="class_parallel_tempering.html#a6318b222a7fbc7148ce82d0bbc5a3ecd">ParallelTempering&lt; HYP, callback_t &gt;</a>
+: <a class="el" href="class_parallel_tempering.html#a28bc2e02ad875e2b1cfcde9e428bf97e">ParallelTempering&lt; HYP, callback_t &gt;</a>
 </li>
 <li>parseable()
-: <a class="el" href="class_lexicon.html#a8eda74c4e7500b31a382c182ac60436a">Lexicon&lt; HYP, T, t_input, t_output, t_datum &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#a1584633d01abe30a6f69d0664c1e137a">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>
+: <a class="el" href="class_lexicon.html#a0ed99caee19dc82e57e80b290abd239a">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#a4037b5dea60aeb19d72c16e308886bc2">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_node.html#a70e879ceb71f47787137572d9bee8efa">Node</a>
 </li>
 <li>playout()
@@ -85,14 +85,11 @@ $(function() {
 : <a class="el" href="class_integerized_stack.html#a5edd593c74341341cc6f8e41e0f14bdf">IntegerizedStack</a>
 , <a class="el" href="class_stack.html#a2723aec5c7e2611b97fcffeb7709de33">Stack&lt; T &gt;</a>
 </li>
-<li>PrePrimitive()
-: <a class="el" href="struct_pre_primitive.html#a8a96c30ad34b1f19f0539eea4d0423f6">PrePrimitive</a>
-</li>
 <li>Primitive()
-: <a class="el" href="struct_primitive.html#a4303c3567a7bb2921d298f48b07b0add">Primitive&lt; T, args &gt;</a>
+: <a class="el" href="struct_primitive.html#a582a781e02c86b17df208d6fc0c39daf">Primitive&lt; T, args &gt;</a>
 </li>
 <li>print()
-: <a class="el" href="class_bayesable.html#a3f31fa34270083429fb23da21ad50432">Bayesable&lt; _t_datum, _t_data &gt;</a>
+: <a class="el" href="class_bayesable.html#a87d5d9481d6a72b017e44b175071fa5e">Bayesable&lt; _datum_t, _data_t &gt;</a>
 , <a class="el" href="class_discrete_distribution.html#a6ec6f590a3659c8bef32aaab77a8052e">DiscreteDistribution&lt; T &gt;</a>
 , <a class="el" href="class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#a9cbecacee3b118d645d3f9a42782382b">Fleet::Statistics::ReservoirSample&lt; T &gt;::Item</a>
 , <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#acae72aac2b6ad1ce89e725c001e4e833">Fleet::Statistics::StreamingStatistics</a>
@@ -104,24 +101,25 @@ $(function() {
 : <a class="el" href="class_m_c_t_s_node.html#a258317ddcd07a57a34a9a2eeec6f10b9">MCTSNode&lt; M, HYP &gt;</a>
 </li>
 <li>program_size()
-: <a class="el" href="class_node.html#a377548bcf1be99ac5181f9434c33c81e">Node</a>
+: <a class="el" href="class_lexicon.html#a005225141f8a245fe33d8f0a58fd397a">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#a9fb7caa245a82c53bcfbac846ab1b327">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_node.html#a377548bcf1be99ac5181f9434c33c81e">Node</a>
 </li>
 <li>propose()
-: <a class="el" href="class_grammar_hypothesis.html#a5b642e0ccd5c1cebdbd3f7dfdc81cfcf">GrammarHypothesis&lt; HYP, t_datum, t_data &gt;</a>
-, <a class="el" href="class_lexicon.html#a94910b8357fe18f3ae13df8bdd56ca4e">Lexicon&lt; HYP, T, t_input, t_output, t_datum &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#a5ae913b145b15308d5817c6e7b1da14d">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>
+: <a class="el" href="class_grammar_hypothesis.html#aab60215dfe06a059389db9c7f95e9ce7">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
+, <a class="el" href="class_lexicon.html#afa8ea51bbd16df5f46557fe10db84980">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#a9a03abc8a6d96995c0f13524f8500747">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_m_c_m_cable.html#ab119a14256ab92c5c1e941f8492df830">MCMCable&lt; HYP, Args &gt;</a>
 </li>
 <li>push()
 : <a class="el" href="class_integerized_stack.html#affd28eb928362de80e35cd4e1ecdf96b">IntegerizedStack</a>
 , <a class="el" href="class_stack.html#a6e8312460808f468b004d709d3308757">Stack&lt; T &gt;</a>
-, <a class="el" href="class_virtual_machine_pool.html#a6f49ab47e6d472b5a9f429e96364b4c6">VirtualMachinePool&lt; t_x, t_return &gt;</a>
-, <a class="el" href="class_virtual_machine_state.html#a38b4d61ff92f6f13ab184c5411332c2c">VirtualMachineState&lt; t_x, t_return &gt;</a>
+, <a class="el" href="class_virtual_machine_pool.html#a38ea4101bc00bd70d260737a0a459bfe">VirtualMachinePool&lt; VMState &gt;</a>
+, <a class="el" href="class_virtual_machine_state.html#a1f7aab5a5bb3b9cc4d79b50f6191ed36">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>push_program()
-: <a class="el" href="class_dispatchable.html#a9339c2906f7c8dadbe1d0ca79dd9bb11">Dispatchable&lt; t_input, t_output &gt;</a>
-, <a class="el" href="class_lexicon.html#a4473f60c7ebdded00ac5cc9b00a2f4f6">Lexicon&lt; HYP, T, t_input, t_output, t_datum &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#aff3a378ab1137e2b46f225a028343a1c">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>
+: <a class="el" href="class_lexicon.html#acd367c70ccc583f2a9fcbb1d007db45c">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#a2b9a0eca1e2124f92bd34d8da929fe71">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->

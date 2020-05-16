@@ -71,12 +71,12 @@ $(function() {
 : <a class="el" href="class_fleet_1_1_statistics_1_1_median_f_a_m_e.html#a5906801f64045cd1dc7555857325c455">Fleet::Statistics::MedianFAME&lt; T &gt;</a>
 </li>
 <li>make_neighbor()
-: <a class="el" href="class_lexicon.html#a3d4fb7e4545267221eb38acba4d52a6b">Lexicon&lt; HYP, T, t_input, t_output, t_datum &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#ae7771176b8b2599f42c75318ee0e9164">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>
-, <a class="el" href="class_searchable.html#a64bda92cc9314dae7aff31f4444a93e6">Searchable&lt; HYP, t_input, t_output &gt;</a>
+: <a class="el" href="class_lexicon.html#a88a02f88387f436c6ff4c060735291ea">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#a997c88cb84133efc599b9b14173aefe9">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_searchable.html#ad7fefacd3c9c2b66aa58c9d902f645cb">Searchable&lt; HYP, Args &gt;</a>
 </li>
 <li>makeNode()
-: <a class="el" href="class_grammar.html#a5d60795be5b288d74a87f2cc52008f71">Grammar</a>
+: <a class="el" href="class_grammar.html#abc6f2a046bdf8df0be45912b5d8fe410">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>map()
 : <a class="el" href="class_node.html#adefac3cb7b411321c5af15dad1484834">Node</a>
@@ -88,20 +88,23 @@ $(function() {
 : <a class="el" href="class_fleet_1_1_statistics_1_1_reservoir_sample.html#af2d03d8d0e93ddedc61a43d1827ae48d">Fleet::Statistics::ReservoirSample&lt; T &gt;</a>
 , <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#a39d330cb8b112aa23d5460011c161f54">Fleet::Statistics::StreamingStatistics</a>
 </li>
+<li>MAX_CHILD_SIZE
+: <a class="el" href="class_rule.html#ac78a2201dfba27f803111205396f0027">Rule</a>
+</li>
 <li>MAX_NODES
-: <a class="el" href="class_l_o_t_hypothesis.html#ab262eb592887136a986f5b2649397eca">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>
+: <a class="el" href="class_l_o_t_hypothesis.html#a0231650d938c098118a4c4bdb201fc61">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
 </li>
 <li>max_outputs
-: <a class="el" href="class_virtual_machine_pool.html#ad32df5f3c78137c35a4fcc22916c8598">VirtualMachinePool&lt; t_x, t_return &gt;</a>
-</li>
-<li>MAX_PRIMITIVES
-: <a class="el" href="struct_pre_primitive.html#aaa931d0f215c4a79ab4920c13a82a32b">PrePrimitive</a>
+: <a class="el" href="class_virtual_machine_pool.html#a042d1b151817c99638f8b35303eb508f">VirtualMachinePool&lt; VMState &gt;</a>
 </li>
 <li>MAX_RECURSE
-: <a class="el" href="class_virtual_machine_state.html#a61a1809d19f878d8de34198d0b7671b2">VirtualMachineState&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#a39865beb5e6573148615231897c677de">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
-<li>max_steps
-: <a class="el" href="class_virtual_machine_pool.html#ae87303ebbcbff239ff4f3217087420a9">VirtualMachinePool&lt; t_x, t_return &gt;</a>
+<li>MAX_RUN_PROGRAM
+: <a class="el" href="class_virtual_machine_state.html#a8ad0bb79907ef1babd0a7b3a9cc88d46">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
+</li>
+<li>max_state_run
+: <a class="el" href="class_virtual_machine_pool.html#ac64fb33b9ff42650839f8b10f2b11a4a">VirtualMachinePool&lt; VMState &gt;</a>
 </li>
 <li>maxval
 : <a class="el" href="class_m_c_m_c_chain.html#a3b8d31f47d75503321b432eeac0bb13b">MCMCChain&lt; HYP, callback_t &gt;</a>
@@ -110,10 +113,10 @@ $(function() {
 : <a class="el" href="class_m_c_m_cable.html#aac715433bffb674dd5809e7c1bc59ae5">MCMCable&lt; HYP, Args &gt;</a>
 </li>
 <li>MCMCChain()
-: <a class="el" href="class_m_c_m_c_chain.html#a60b036bec195eaa5a8081b2b8cc18eed">MCMCChain&lt; HYP, callback_t &gt;</a>
+: <a class="el" href="class_m_c_m_c_chain.html#a3942ff362dcc0bdfdad296f95048f14e">MCMCChain&lt; HYP, callback_t &gt;</a>
 </li>
 <li>MCTSNode()
-: <a class="el" href="class_m_c_t_s_node.html#acf0c6f2110d0acb7dd1a281d3138056d">MCTSNode&lt; M, HYP &gt;</a>
+: <a class="el" href="class_m_c_t_s_node.html#a94e679ddbb9f4eeaaa45b6214889f47c">MCTSNode&lt; M, HYP &gt;</a>
 </li>
 <li>mean()
 : <a class="el" href="class_fleet_1_1_statistics_1_1_finite_history.html#a7ece3121889428a4082fbe88fdacc106">Fleet::Statistics::FiniteHistory&lt; T &gt;</a>
@@ -126,26 +129,23 @@ $(function() {
 : <a class="el" href="class_fleet_1_1_statistics_1_1_median_f_a_m_e.html#a0be08191b9c7efbadc85e32cf650fe2c">Fleet::Statistics::MedianFAME&lt; T &gt;</a>
 </li>
 <li>mem
-: <a class="el" href="class_virtual_machine_state.html#a73a2f267d4140241389b1fcab4a981b0">VirtualMachineState&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#a8f36d4040b98a1e85fb7edf61e6085c9">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>memstack
-: <a class="el" href="class_virtual_machine_state.html#ac7c71aba54fb5fce40ee1854cb5204b6">VirtualMachineState&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#af7a7d7f942825d6f819a791dcb53617b">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>min()
 : <a class="el" href="class_fleet_1_1_statistics_1_1_reservoir_sample.html#ab2f186b828351e164e1ed6e60c8c9be8">Fleet::Statistics::ReservoirSample&lt; T &gt;</a>
 , <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#a780941dece7b39cc2feaf7ad95da1ae3">Fleet::Statistics::StreamingStatistics</a>
 </li>
 <li>min_lp
-: <a class="el" href="class_virtual_machine_pool.html#a3705ed3241bdd47aa2e585cfd67509d6">VirtualMachinePool&lt; t_x, t_return &gt;</a>
+: <a class="el" href="class_virtual_machine_pool.html#adef21b421dc051008ba0bd4ee59a3809">VirtualMachinePool&lt; VMState &gt;</a>
 </li>
 <li>mutex
 : <a class="el" href="class_fleet_1_1_statistics_1_1_finite_history.html#abae96d2bf212abbf0bcfb74ac41b7165">Fleet::Statistics::FiniteHistory&lt; T &gt;</a>
 </li>
 <li>my_hash
 : <a class="el" href="class_rule.html#af2d873c97e2de425f14a5a980dbcc104">Rule</a>
-</li>
-<li>MyHypothesis()
-: <a class="el" href="class_my_hypothesis.html#a63709659c875c246a506dcff907e1cdd">MyHypothesis</a>
 </li>
 </ul>
 </div><!-- contents -->

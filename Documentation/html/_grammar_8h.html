@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Fleet: src/Grammar.h File Reference</title>
+<title>Fleet: src/Grammar/Grammar.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,17 +61,19 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_e5a2d76c3976cd5606b337c2d908f10b.html">Grammar</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle">
 <div class="title">Grammar.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a <a class="el" href="struct_primitive.html">Primitive</a> <em>after</em> a <a class="el" href="struct_builtin_primitive.html">BuiltinPrimitive</a>, since if we do that messes up how we call in applyPrimitives.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;tuple&gt;</code><br />
 <code>#include &lt;deque&gt;</code><br />
 <code>#include &lt;exception&gt;</code><br />
@@ -79,31 +81,48 @@ $(function() {
 <code>#include &quot;<a class="el" href="_node_8h_source.html">Node.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_random_8h_source.html">Random.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_nonterminal_8h_source.html">Nonterminal.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_primitives_8h_source.html">Primitives.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_integerized_stack_8h_source.html">IntegerizedStack.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_virtual_machine_state_8h_source.html">VirtualMachineState.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_builtins_8h_source.html">Builtins.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Grammar.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="_grammar_8h__incl.png" border="0" usemap="#src_2_grammar_8h" alt=""/></div>
-<map name="src_2_grammar_8h" id="src_2_grammar_8h">
-<area shape="rect" id="node5" href="_i_o_8h.html" title="IO.h" alt="" coords="367,80,414,107"/>
-<area shape="rect" id="node10" href="_node_8h.html" title="Node.h" alt="" coords="467,80,531,107"/>
-<area shape="rect" id="node14" href="_random_8h.html" title="Random.h" alt="" coords="639,80,721,107"/>
-<area shape="rect" id="node19" href="_nonterminal_8h.html" title="Nonterminal.h" alt="" coords="746,80,849,107"/>
-<area shape="rect" id="node13" href="_hash_8h.html" title="Hash.h" alt="" coords="579,155,643,181"/>
-<area shape="rect" id="node16" href="_numerics_8h.html" title="Numerics.h" alt="" coords="774,155,863,181"/>
+<div class="center"><img src="_grammar_8h__incl.png" border="0" usemap="#src_2_grammar_2_grammar_8h" alt=""/></div>
+<map name="src_2_grammar_2_grammar_8h" id="src_2_grammar_2_grammar_8h">
+<area shape="rect" id="node5" href="_i_o_8h.html" title="IO.h" alt="" coords="191,304,238,331"/>
+<area shape="rect" id="node10" href="_node_8h.html" title="Node.h" alt="" coords="704,80,768,107"/>
+<area shape="rect" id="node21" href="_nonterminal_8h.html" title="Nonterminal.h" alt="" coords="407,229,510,256"/>
+<area shape="rect" id="node32" href="_random_8h.html" title="Random.h" alt="" coords="363,155,445,181"/>
+<area shape="rect" id="node33" href="_primitives_8h.html" title="If there are any references in the arguments, only the first can be a reference. " alt="" coords="880,155,971,181"/>
+<area shape="rect" id="node36" href="_integerized_stack_8h.html" title="IntegerizedStack.h" alt="" coords="1045,80,1176,107"/>
+<area shape="rect" id="node37" href="_virtual_machine_state_8h.html" title="Count references in lambda arguments (used to ensure we only passs one) " alt="" coords="1214,80,1365,107"/>
+<area shape="rect" id="node43" href="_builtins_8h.html" title="This is needed below so we can check if something is a Builtin without template args. " alt="" coords="1389,80,1465,107"/>
+<area shape="rect" id="node13" href="_hash_8h.html" title="Hash.h" alt="" coords="635,155,699,181"/>
+<area shape="rect" id="node14" href="_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we &quot;emulate&quot; a type system using t_nonterminal to store an integer for the types. *. " alt="" coords="774,155,834,181"/>
+<area shape="rect" id="node30" href="_program_8h.html" title="Program.h" alt="" coords="1105,155,1188,181"/>
+<area shape="rect" id="node17" href="_instruction_8h.html" title="This is an error type that is returned if we get a runtime error (e.g. string length, etc.) " alt="" coords="737,229,831,256"/>
+<area shape="rect" id="node22" href="_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="855,229,971,256"/>
+<area shape="rect" id="node25" href="_strings_8h.html" title="Strings.h" alt="" coords="637,229,712,256"/>
+<area shape="rect" id="node28" href="_numerics_8h.html" title="Numerics.h" alt="" coords="425,304,514,331"/>
+<area shape="rect" id="node31" href="_stack_8h.html" title="Stack.h" alt="" coords="1403,229,1469,256"/>
+<area shape="rect" id="node41" href="_fleet_statistics_8h.html" title="Statistics/FleetStatistics.h" alt="" coords="1391,155,1567,181"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><img src="_grammar_8h__dep__incl.png" border="0" usemap="#src_2_grammar_8hdep" alt=""/></div>
-<map name="src_2_grammar_8hdep" id="src_2_grammar_8hdep">
-<area shape="rect" id="node2" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="703,80,787,107"/>
-<area shape="rect" id="node3" href="_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,155,209,196"/>
-<area shape="rect" id="node4" href="_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,155,437,196"/>
-<area shape="rect" id="node5" href="_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,155,617,196"/>
-<area shape="rect" id="node6" href="_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="641,162,848,189"/>
-<area shape="rect" id="node7" href="_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="872,155,1023,196"/>
-<area shape="rect" id="node8" href="_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="1047,155,1197,196"/>
+<div class="center"><img src="_grammar_8h__dep__incl.png" border="0" usemap="#src_2_grammar_2_grammar_8hdep" alt=""/></div>
+<map name="src_2_grammar_2_grammar_8hdep" id="src_2_grammar_2_grammar_8hdep">
+<area shape="rect" id="node2" href="_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,155,209,196"/>
+<area shape="rect" id="node3" href="_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,155,437,196"/>
+<area shape="rect" id="node4" href="_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,155,617,196"/>
+<area shape="rect" id="node5" href="_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="641,162,848,189"/>
+<area shape="rect" id="node6" href="_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="872,155,1023,196"/>
+<area shape="rect" id="node7" href="_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="1047,162,1215,189"/>
+<area shape="rect" id="node8" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="1200,80,1329,107"/>
+<area shape="rect" id="node10" href="_fleet_8h.html" title="src/Fleet.h" alt="" coords="660,80,744,107"/>
+<area shape="rect" id="node9" href="_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="1239,155,1413,196"/>
 </map>
 </div>
 </div>
@@ -111,34 +130,16 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_depth_exception.html">DepthException</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_primitive.html">Primitive&lt; T, args &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html">Grammar</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html">Grammar&lt; GRAMMAR_TYPES &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:ab0da2f6f7c09b6360351bc67d1a32600"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_depth_exception.html">DepthException</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_grammar_8h.html#ab0da2f6f7c09b6360351bc67d1a32600">depth_exception</a></td></tr>
-<tr class="separator:ab0da2f6f7c09b6360351bc67d1a32600"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar_1_1_depth_exception.html">Grammar&lt; GRAMMAR_TYPES &gt;::DepthException</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="ab0da2f6f7c09b6360351bc67d1a32600"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0da2f6f7c09b6360351bc67d1a32600">&#9670;&nbsp;</a></span>depth_exception</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"> <a class="el" href="class_depth_exception.html">DepthException</a>  depth_exception</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a <a class="el" href="struct_primitive.html">Primitive</a> <em>after</em> a <a class="el" href="struct_builtin_primitive.html">BuiltinPrimitive</a>, since if we do that messes up how we call in applyPrimitives. </p>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

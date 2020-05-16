@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Fleet: Searchable&lt; HYP, t_input, t_output &gt; Class Template Reference</title>
+<title>Fleet: Searchable&lt; HYP, Args &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,50 +65,41 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="class_searchable-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Searchable&lt; HYP, t_input, t_output &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">Searchable&lt; HYP, Args &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="_searchable_8h_source.html">Searchable.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for Searchable&lt; HYP, t_input, t_output &gt;:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_searchable__inherit__graph.png" border="0" usemap="#_searchable_3_01_h_y_p_00_01t__input_00_01t__output_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="_searchable_3_01_h_y_p_00_01t__input_00_01t__output_01_4_inherit__map" id="_searchable_3_01_h_y_p_00_01t__input_00_01t__output_01_4_inherit__map">
-<area shape="rect" id="node2" href="class_lexicon.html" title="Lexicon\&lt; HYP, t_input,\l t_output \&gt;" alt="" coords="5,95,164,136"/>
-<area shape="rect" id="node3" href="class_l_o_t_hypothesis.html" title="LOTHypothesis\&lt; HYP,\l t_input, t_output \&gt;" alt="" coords="189,95,346,136"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0450c35a21c5940a63560aa24b4ff0cc"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#a0450c35a21c5940a63560aa24b4ff0cc">neighbors</a> () const =0</td></tr>
-<tr class="separator:a0450c35a21c5940a63560aa24b4ff0cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64bda92cc9314dae7aff31f4444a93e6"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#a64bda92cc9314dae7aff31f4444a93e6">make_neighbor</a> (int k) const =0</td></tr>
-<tr class="separator:a64bda92cc9314dae7aff31f4444a93e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae16f1cb01f140f4033f6f67dc9753b6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#aae16f1cb01f140f4033f6f67dc9753b6">is_evaluable</a> () const =0</td></tr>
-<tr class="separator:aae16f1cb01f140f4033f6f67dc9753b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec30063fcc9bed5d005f8318efa8492d"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#aec30063fcc9bed5d005f8318efa8492d">neighbors</a> () const =0</td></tr>
+<tr class="separator:aec30063fcc9bed5d005f8318efa8492d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7fefacd3c9c2b66aa58c9d902f645cb"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#ad7fefacd3c9c2b66aa58c9d902f645cb">make_neighbor</a> (int k) const =0</td></tr>
+<tr class="separator:ad7fefacd3c9c2b66aa58c9d902f645cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23786e95730117c3cc4b90e010494a1e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#a23786e95730117c3cc4b90e010494a1e">is_evaluable</a> () const =0</td></tr>
+<tr class="separator:a23786e95730117c3cc4b90e010494a1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename HYP, typename t_input, typename t_output&gt;<br />
-class Searchable&lt; HYP, t_input, t_output &gt;</h3>
+<div class="textblock"><h3>template&lt;typename HYP, typename... Args&gt;<br />
+class Searchable&lt; HYP, Args &gt;</h3>
 
 <dl class="section author"><dt>Author</dt><dd>steven piantadosi </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>03/02/20 </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aae16f1cb01f140f4033f6f67dc9753b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae16f1cb01f140f4033f6f67dc9753b6">&#9670;&nbsp;</a></span>is_evaluable()</h2>
+<a id="a23786e95730117c3cc4b90e010494a1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23786e95730117c3cc4b90e010494a1e">&#9670;&nbsp;</a></span>is_evaluable()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename t_input, typename t_output&gt; </div>
+template&lt;typename HYP, typename... Args&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool <a class="el" href="class_searchable.html">Searchable</a>&lt; HYP, t_input, t_output &gt;::is_evaluable </td>
+          <td class="memname">virtual bool <a class="el" href="class_searchable.html">Searchable</a>&lt; HYP, Args &gt;::is_evaluable </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -121,23 +112,23 @@ template&lt;typename HYP, typename t_input, typename t_output&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_lexicon.html#a4928f2db73eb7d675f347429a4167820">Lexicon&lt; HYP, T, t_input, t_output, t_datum &gt;</a>, <a class="el" href="class_lexicon.html#a4928f2db73eb7d675f347429a4167820">Lexicon&lt; MyHypothesis, InnerHypothesis, S, S &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a68dedaeae92b25b0450f2dc1bd95a35b">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a68dedaeae92b25b0450f2dc1bd95a35b">LOTHypothesis&lt; InnerHypothesis, Node, S, S &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a68dedaeae92b25b0450f2dc1bd95a35b">LOTHypothesis&lt; MyHypothesis, Node, Object, bool &gt;</a>, and <a class="el" href="class_l_o_t_hypothesis.html#a68dedaeae92b25b0450f2dc1bd95a35b">LOTHypothesis&lt; MyHypothesis, Node, float, float, float, std::multiset&lt; float &gt; &gt;</a>.</p>
+<p>Implemented in <a class="el" href="class_lexicon.html#ab9fcefbd8598a5401a39bd59e8043db9">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>, <a class="el" href="class_lexicon.html#ab9fcefbd8598a5401a39bd59e8043db9">Lexicon&lt; MyHypothesis, InnerHypothesis, S, S &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a9eeaaf321324d2418405f4d7252f6ca4">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a9eeaaf321324d2418405f4d7252f6ca4">LOTHypothesis&lt; MyHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a9eeaaf321324d2418405f4d7252f6ca4">LOTHypothesis&lt; MyHypothesis, utterance, word, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a9eeaaf321324d2418405f4d7252f6ca4">LOTHypothesis&lt; InnerHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a9eeaaf321324d2418405f4d7252f6ca4">LOTHypothesis&lt; MyHypothesis, float, float, MyGrammar, float, std::multiset&lt; float &gt; &gt;</a>, and <a class="el" href="class_l_o_t_hypothesis.html#a9eeaaf321324d2418405f4d7252f6ca4">LOTHypothesis&lt; MyHypothesis, Object, bool, MyGrammar &gt;</a>.</p>
 
 </div>
 </div>
-<a id="a64bda92cc9314dae7aff31f4444a93e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64bda92cc9314dae7aff31f4444a93e6">&#9670;&nbsp;</a></span>make_neighbor()</h2>
+<a id="ad7fefacd3c9c2b66aa58c9d902f645cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7fefacd3c9c2b66aa58c9d902f645cb">&#9670;&nbsp;</a></span>make_neighbor()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename t_input, typename t_output&gt; </div>
+template&lt;typename HYP, typename... Args&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual HYP <a class="el" href="class_searchable.html">Searchable</a>&lt; HYP, t_input, t_output &gt;::make_neighbor </td>
+          <td class="memname">virtual HYP <a class="el" href="class_searchable.html">Searchable</a>&lt; HYP, Args &gt;::make_neighbor </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>k</em></td><td>)</td>
@@ -151,23 +142,23 @@ template&lt;typename HYP, typename t_input, typename t_output&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_lexicon.html#a3d4fb7e4545267221eb38acba4d52a6b">Lexicon&lt; HYP, T, t_input, t_output, t_datum &gt;</a>, <a class="el" href="class_lexicon.html#a3d4fb7e4545267221eb38acba4d52a6b">Lexicon&lt; MyHypothesis, InnerHypothesis, S, S &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#ae7771176b8b2599f42c75318ee0e9164">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#ae7771176b8b2599f42c75318ee0e9164">LOTHypothesis&lt; InnerHypothesis, Node, S, S &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#ae7771176b8b2599f42c75318ee0e9164">LOTHypothesis&lt; MyHypothesis, Node, Object, bool &gt;</a>, and <a class="el" href="class_l_o_t_hypothesis.html#ae7771176b8b2599f42c75318ee0e9164">LOTHypothesis&lt; MyHypothesis, Node, float, float, float, std::multiset&lt; float &gt; &gt;</a>.</p>
+<p>Implemented in <a class="el" href="class_lexicon.html#a88a02f88387f436c6ff4c060735291ea">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>, <a class="el" href="class_lexicon.html#a88a02f88387f436c6ff4c060735291ea">Lexicon&lt; MyHypothesis, InnerHypothesis, S, S &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a997c88cb84133efc599b9b14173aefe9">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a997c88cb84133efc599b9b14173aefe9">LOTHypothesis&lt; MyHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a997c88cb84133efc599b9b14173aefe9">LOTHypothesis&lt; MyHypothesis, utterance, word, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a997c88cb84133efc599b9b14173aefe9">LOTHypothesis&lt; InnerHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a997c88cb84133efc599b9b14173aefe9">LOTHypothesis&lt; MyHypothesis, float, float, MyGrammar, float, std::multiset&lt; float &gt; &gt;</a>, and <a class="el" href="class_l_o_t_hypothesis.html#a997c88cb84133efc599b9b14173aefe9">LOTHypothesis&lt; MyHypothesis, Object, bool, MyGrammar &gt;</a>.</p>
 
 </div>
 </div>
-<a id="a0450c35a21c5940a63560aa24b4ff0cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0450c35a21c5940a63560aa24b4ff0cc">&#9670;&nbsp;</a></span>neighbors()</h2>
+<a id="aec30063fcc9bed5d005f8318efa8492d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec30063fcc9bed5d005f8318efa8492d">&#9670;&nbsp;</a></span>neighbors()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename t_input, typename t_output&gt; </div>
+template&lt;typename HYP, typename... Args&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int <a class="el" href="class_searchable.html">Searchable</a>&lt; HYP, t_input, t_output &gt;::neighbors </td>
+          <td class="memname">virtual int <a class="el" href="class_searchable.html">Searchable</a>&lt; HYP, Args &gt;::neighbors </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -180,7 +171,7 @@ template&lt;typename HYP, typename t_input, typename t_output&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_lexicon.html#abccf49d0f313b9f6e0c3ae286d13ac82">Lexicon&lt; HYP, T, t_input, t_output, t_datum &gt;</a>, <a class="el" href="class_lexicon.html#abccf49d0f313b9f6e0c3ae286d13ac82">Lexicon&lt; MyHypothesis, InnerHypothesis, S, S &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#ac74e874f6b677dc1c013602907627be7">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#ac74e874f6b677dc1c013602907627be7">LOTHypothesis&lt; InnerHypothesis, Node, S, S &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#ac74e874f6b677dc1c013602907627be7">LOTHypothesis&lt; MyHypothesis, Node, Object, bool &gt;</a>, and <a class="el" href="class_l_o_t_hypothesis.html#ac74e874f6b677dc1c013602907627be7">LOTHypothesis&lt; MyHypothesis, Node, float, float, float, std::multiset&lt; float &gt; &gt;</a>.</p>
+<p>Implemented in <a class="el" href="class_lexicon.html#a6419f323377d4c524363707eee0cae09">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>, <a class="el" href="class_lexicon.html#a6419f323377d4c524363707eee0cae09">Lexicon&lt; MyHypothesis, InnerHypothesis, S, S &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a097cde606ec3f277fdeb92145599027f">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a097cde606ec3f277fdeb92145599027f">LOTHypothesis&lt; MyHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a097cde606ec3f277fdeb92145599027f">LOTHypothesis&lt; MyHypothesis, utterance, word, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a097cde606ec3f277fdeb92145599027f">LOTHypothesis&lt; InnerHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a097cde606ec3f277fdeb92145599027f">LOTHypothesis&lt; MyHypothesis, float, float, MyGrammar, float, std::multiset&lt; float &gt; &gt;</a>, and <a class="el" href="class_l_o_t_hypothesis.html#a097cde606ec3f277fdeb92145599027f">LOTHypothesis&lt; MyHypothesis, Object, bool, MyGrammar &gt;</a>.</p>
 
 </div>
 </div>

@@ -2,11 +2,13 @@
 \label{_bayesable_8h}\index{src/\+Hypotheses/\+Interfaces/\+Bayesable.\+h@{src/\+Hypotheses/\+Interfaces/\+Bayesable.\+h}}
 
 
-The \hyperlink{class_bayesable}{Bayesable} class provides an interface for hypotheses that support Bayesian inference (e.\+g. computing priors, likelihoods, and posteriors) Note that this class stores prior, likelihood, posterior always at temperature 1.\+0, and you can get the values of the posterior at other temperatures via \hyperlink{class_bayesable_ac9ba96f829785f07919610941077b4c9}{Bayesable.\+at\+\_\+temperature(double t)}  
+The \hyperlink{class_bayesable}{Bayesable} class provides an interface for hypotheses that support Bayesian inference (e.\+g. computing priors, likelihoods, and posteriors) Note that this class stores prior, likelihood, posterior always at temperature 1.\+0, and you can get the values of the posterior at other temperatures via \hyperlink{class_bayesable_acf805473a9eea0df96d6267dca0e9c87}{Bayesable.\+at\+\_\+temperature(double t)}  
 
 
 {\ttfamily \#include \char`\"{}Datum.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}I\+O.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Statistics/\+Fleet\+Statistics.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Miscellaneous.\+h\char`\"{}}\newline
 Include dependency graph for Bayesable.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -26,25 +28,25 @@ This graph shows which files directly or indirectly include this file\+:
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{class_bayesable}{Bayesable$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$}
+class \hyperlink{class_bayesable}{Bayesable$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}
 \end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename \+\_\+t\+\_\+datum , typename \+\_\+t\+\_\+data $>$ }\\std\+::ostream \& \hyperlink{_bayesable_8h_a1643aae0101c2ff7f2ca1db77c1126fc}{operator$<$$<$} (std\+::ostream \&o, \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$ \&x)
+{\footnotesize template$<$typename \+\_\+datum\+\_\+t , typename \+\_\+data\+\_\+t $>$ }\\std\+::ostream \& \hyperlink{_bayesable_8h_a7a02befe19c4e1d087dec4d9dc57830a}{operator$<$$<$} (std\+::ostream \&o, \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$ \&x)
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-The \hyperlink{class_bayesable}{Bayesable} class provides an interface for hypotheses that support Bayesian inference (e.\+g. computing priors, likelihoods, and posteriors) Note that this class stores prior, likelihood, posterior always at temperature 1.\+0, and you can get the values of the posterior at other temperatures via \hyperlink{class_bayesable_ac9ba96f829785f07919610941077b4c9}{Bayesable.\+at\+\_\+temperature(double t)} 
+The \hyperlink{class_bayesable}{Bayesable} class provides an interface for hypotheses that support Bayesian inference (e.\+g. computing priors, likelihoods, and posteriors) Note that this class stores prior, likelihood, posterior always at temperature 1.\+0, and you can get the values of the posterior at other temperatures via \hyperlink{class_bayesable_acf805473a9eea0df96d6267dca0e9c87}{Bayesable.\+at\+\_\+temperature(double t)} 
 
 
 
 \subsection{Function Documentation}
-\mbox{\Hypertarget{_bayesable_8h_a1643aae0101c2ff7f2ca1db77c1126fc}\label{_bayesable_8h_a1643aae0101c2ff7f2ca1db77c1126fc}} 
+\mbox{\Hypertarget{_bayesable_8h_a7a02befe19c4e1d087dec4d9dc57830a}\label{_bayesable_8h_a7a02befe19c4e1d087dec4d9dc57830a}} 
 \index{Bayesable.\+h@{Bayesable.\+h}!operator$<$$<$@{operator$<$$<$}}
 \index{operator$<$$<$@{operator$<$$<$}!Bayesable.\+h@{Bayesable.\+h}}
 \subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
-{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+datum , typename \+\_\+t\+\_\+data $>$ \\
-std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{o,  }\item[{\hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$ \&}]{x }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t , typename \+\_\+data\+\_\+t $>$ \\
+std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{o,  }\item[{\hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$ \&}]{x }\end{DoxyParamCaption})}
 

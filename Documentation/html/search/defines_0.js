@@ -11,6 +11,5 @@ var searchData=
   ['case_5ffunc4',['CASE_FUNC4',['../_case_macros_8h.html#a26bf1b2d91061ee996dfc1f9bf238707',1,'CaseMacros.h']]],
   ['case_5ffunc4e',['CASE_FUNC4e',['../_case_macros_8h.html#ad17d842f2d32f3327335921fa78e50bc',1,'CaseMacros.h']]],
   ['cerr',['CERR',['../_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff',1,'IO.h']]],
-  ['cout',['COUT',['../_i_o_8h.html#a8c54b10b84183429bcbcbc82c92fcca9',1,'IO.h']]],
-  ['custom_5fops',['CUSTOM_OPS',['../_formal_language_theory-_complex_2_main_8cpp.html#a1287a8584548a58c8bff414efbac2ac4',1,'CUSTOM_OPS():&#160;Main.cpp'],['../_number_game_2_main_8cpp.html#a1287a8584548a58c8bff414efbac2ac4',1,'CUSTOM_OPS():&#160;Main.cpp'],['../_instruction_8h.html#a1287a8584548a58c8bff414efbac2ac4',1,'CUSTOM_OPS():&#160;Instruction.h']]]
+  ['cout',['COUT',['../_i_o_8h.html#a8c54b10b84183429bcbcbc82c92fcca9',1,'IO.h']]]
 ];

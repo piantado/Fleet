@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Fleet: LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt; Class Template Reference</title>
+<title>Fleet: LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -69,175 +69,204 @@ $(function() {
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="class_l_o_t_hypothesis-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt; Class Template Reference</div>  </div>
+<div class="title">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="_l_o_t_hypothesis_8h_source.html">LOTHypothesis.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;:</div>
+Inheritance diagram for LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="class_l_o_t_hypothesis__inherit__graph.png" border="0" usemap="#_l_o_t_hypothesis_3_01_h_y_p_00_01_t_00_01t__input_00_01t__output_00_01__t__datum_00_01__t__data_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="_l_o_t_hypothesis_3_01_h_y_p_00_01_t_00_01t__input_00_01t__output_00_01__t__datum_00_01__t__data_01_4_inherit__map" id="_l_o_t_hypothesis_3_01_h_y_p_00_01_t_00_01t__input_00_01t__output_00_01__t__datum_00_01__t__data_01_4_inherit__map">
-<area shape="rect" id="node2" href="class_dispatchable.html" title="Dispatchable\&lt; t_input,\l t_output \&gt;" alt="" coords="221,5,374,47"/>
-<area shape="rect" id="node3" href="class_m_c_m_cable.html" title="MCMCable\&lt; HYP, _t_datum,\l _t_data \&gt;" alt="" coords="200,71,395,112"/>
-<area shape="rect" id="node4" href="class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="5,78,152,105"/>
-<area shape="rect" id="node5" href="class_searchable.html" title="Searchable\&lt; HYP, t\l_input, t_output \&gt;" alt="" coords="228,136,367,177"/>
+<div class="center"><img src="class_l_o_t_hypothesis__inherit__graph.png" border="0" usemap="#_l_o_t_hypothesis_3_01_h_y_p_00_01input__t_00_01output__t_00_01___grammar__t_00_01__datum__t_00_01__data__t_00_01_virtual_machine_state__t_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="_l_o_t_hypothesis_3_01_h_y_p_00_01input__t_00_01output__t_00_01___grammar__t_00_01__datum__t_00_01__data__t_00_01_virtual_machine_state__t_01_4_inherit__map" id="_l_o_t_hypothesis_3_01_h_y_p_00_01input__t_00_01output__t_00_01___grammar__t_00_01__datum__t_00_01__data__t_00_01_virtual_machine_state__t_01_4_inherit__map">
+<area shape="rect" id="node3" href="class_m_c_m_cable.html" title="MCMCable\&lt; HYP, _datum\l_t, _data_t \&gt;" alt="" coords="200,57,379,98"/>
+<area shape="rect" id="node4" href="class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="5,64,152,91"/>
+<area shape="rect" id="node5" href="class_searchable.html" title="Searchable\&lt; HYP, input\l_t, output_t \&gt;" alt="" coords="208,122,371,163"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for LOTHypothesis&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;:</div>
+Collaboration diagram for LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="class_l_o_t_hypothesis__coll__graph.png" border="0" usemap="#_l_o_t_hypothesis_3_01_h_y_p_00_01_t_00_01t__input_00_01t__output_00_01__t__datum_00_01__t__data_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="_l_o_t_hypothesis_3_01_h_y_p_00_01_t_00_01t__input_00_01t__output_00_01__t__datum_00_01__t__data_01_4_coll__map" id="_l_o_t_hypothesis_3_01_h_y_p_00_01_t_00_01t__input_00_01t__output_00_01__t__datum_00_01__t__data_01_4_coll__map">
-<area shape="rect" id="node2" href="class_dispatchable.html" title="Dispatchable\&lt; t_input,\l t_output \&gt;" alt="" coords="222,5,375,47"/>
-<area shape="rect" id="node3" href="class_m_c_m_cable.html" title="MCMCable\&lt; HYP, _t_datum,\l _t_data \&gt;" alt="" coords="201,71,396,112"/>
-<area shape="rect" id="node4" href="class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="5,78,152,105"/>
-<area shape="rect" id="node5" href="class_searchable.html" title="Searchable\&lt; HYP, t\l_input, t_output \&gt;" alt="" coords="229,136,368,177"/>
-<area shape="rect" id="node6" href="class_grammar.html" title="Grammar" alt="" coords="261,202,337,229"/>
+<div class="center"><img src="class_l_o_t_hypothesis__coll__graph.png" border="0" usemap="#_l_o_t_hypothesis_3_01_h_y_p_00_01input__t_00_01output__t_00_01___grammar__t_00_01__datum__t_00_01__data__t_00_01_virtual_machine_state__t_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="_l_o_t_hypothesis_3_01_h_y_p_00_01input__t_00_01output__t_00_01___grammar__t_00_01__datum__t_00_01__data__t_00_01_virtual_machine_state__t_01_4_coll__map" id="_l_o_t_hypothesis_3_01_h_y_p_00_01input__t_00_01output__t_00_01___grammar__t_00_01__datum__t_00_01__data__t_00_01_virtual_machine_state__t_01_4_coll__map">
+<area shape="rect" id="node3" href="class_m_c_m_cable.html" title="MCMCable\&lt; HYP, _datum\l_t, _data_t \&gt;" alt="" coords="385,57,564,98"/>
+<area shape="rect" id="node4" href="class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="165,64,312,91"/>
+<area shape="rect" id="node5" href="class_searchable.html" title="Searchable\&lt; HYP, input\l_t, output_t \&gt;" alt="" coords="393,122,556,163"/>
+<area shape="rect" id="node6" href="class_node.html" title="Node" alt="" coords="448,227,501,253"/>
+<area shape="rect" id="node7" href="class_node_1_1_node_iterator.html" title="Node::NodeIterator" alt="" coords="754,271,887,297"/>
+<area shape="rect" id="node9" href="class_rule.html" title="Rule" alt="" coords="214,227,263,253"/>
+<area shape="rect" id="node10" href="class_instruction.html" title="Instruction" alt="" coords="5,227,88,253"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a3a7b2c5fb3e2b5d70fa80b485b0b98f5"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="class_bayesable.html">Bayesable</a>&lt; _t_datum, _t_data &gt;::<a class="el" href="class_l_o_t_hypothesis.html#a3a7b2c5fb3e2b5d70fa80b485b0b98f5">t_data</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a3a7b2c5fb3e2b5d70fa80b485b0b98f5">t_data</a></td></tr>
-<tr class="separator:a3a7b2c5fb3e2b5d70fa80b485b0b98f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26d0ecfa6a367f32276d36cd01c0cead"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="class_bayesable.html">Bayesable</a>&lt; _t_datum, _t_data &gt;::<a class="el" href="class_l_o_t_hypothesis.html#a26d0ecfa6a367f32276d36cd01c0cead">t_datum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a26d0ecfa6a367f32276d36cd01c0cead">t_datum</a></td></tr>
-<tr class="separator:a26d0ecfa6a367f32276d36cd01c0cead"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae36b1f113f45ee5ac82660028672739b"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="class_bayesable.html">Bayesable</a>&lt; _datum_t, _data_t &gt;::<a class="el" href="class_l_o_t_hypothesis.html#ae36b1f113f45ee5ac82660028672739b">datum_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#ae36b1f113f45ee5ac82660028672739b">datum_t</a></td></tr>
+<tr class="separator:ae36b1f113f45ee5ac82660028672739b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd9c848100dfaaf2870f5dfa9ea91c65"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="class_bayesable.html">Bayesable</a>&lt; _datum_t, _data_t &gt;::<a class="el" href="class_l_o_t_hypothesis.html#abd9c848100dfaaf2870f5dfa9ea91c65">data_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#abd9c848100dfaaf2870f5dfa9ea91c65">data_t</a></td></tr>
+<tr class="separator:abd9c848100dfaaf2870f5dfa9ea91c65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8006204013d471860e54c49d19edbace"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a8006204013d471860e54c49d19edbace">Grammar_t</a> = _Grammar_t</td></tr>
+<tr class="separator:a8006204013d471860e54c49d19edbace"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_class_bayesable"><td colspan="2" onclick="javascript:toggleInherit('pub_types_class_bayesable')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="class_bayesable.html">Bayesable&lt; Args... &gt;</a></td></tr>
-<tr class="memitem:a7c93a2eeab708378eb321745908718d4 inherit pub_types_class_bayesable"><td class="memItemLeft" align="right" valign="top">typedef Args...&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a7c93a2eeab708378eb321745908718d4">t_datum</a></td></tr>
-<tr class="separator:a7c93a2eeab708378eb321745908718d4 inherit pub_types_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70a593a67c7d43239ecc06bb4fd06a6b inherit pub_types_class_bayesable"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; Args... &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a70a593a67c7d43239ecc06bb4fd06a6b">t_data</a></td></tr>
-<tr class="separator:a70a593a67c7d43239ecc06bb4fd06a6b inherit pub_types_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f1a6c0cd7855550fa10b1a8f13a5867 inherit pub_types_class_bayesable"><td class="memItemLeft" align="right" valign="top">typedef Args...&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a9f1a6c0cd7855550fa10b1a8f13a5867">datum_t</a></td></tr>
+<tr class="separator:a9f1a6c0cd7855550fa10b1a8f13a5867 inherit pub_types_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2788c4d7718c0a824e1d28c4c98f921 inherit pub_types_class_bayesable"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; Args... &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#aa2788c4d7718c0a824e1d28c4c98f921">data_t</a></td></tr>
+<tr class="separator:aa2788c4d7718c0a824e1d28c4c98f921 inherit pub_types_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a47dcb988a9cb4bba00263851d697fc12"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a47dcb988a9cb4bba00263851d697fc12">LOTHypothesis</a> (<a class="el" href="class_grammar.html">Grammar</a> *g=nullptr)</td></tr>
-<tr class="separator:a47dcb988a9cb4bba00263851d697fc12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfb19603c9bdda8b8b8c682b6cdc6e03"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#abfb19603c9bdda8b8b8c682b6cdc6e03">LOTHypothesis</a> (<a class="el" href="class_grammar.html">Grammar</a> *g, T &amp;&amp;x)</td></tr>
-<tr class="separator:abfb19603c9bdda8b8b8c682b6cdc6e03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3123d5e4e140ca24fdaa568bd2b17644"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a3123d5e4e140ca24fdaa568bd2b17644">LOTHypothesis</a> (<a class="el" href="class_grammar.html">Grammar</a> *g, T &amp;x)</td></tr>
-<tr class="separator:a3123d5e4e140ca24fdaa568bd2b17644"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09216df69fea175ccb5ffc1a947b8287"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a09216df69fea175ccb5ffc1a947b8287">LOTHypothesis</a> (<a class="el" href="class_grammar.html">Grammar</a> *g, std::string s)</td></tr>
-<tr class="separator:a09216df69fea175ccb5ffc1a947b8287"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ae913b145b15308d5817c6e7b1da14d"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; HYP, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a5ae913b145b15308d5817c6e7b1da14d">propose</a> () const override</td></tr>
-<tr class="separator:a5ae913b145b15308d5817c6e7b1da14d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec55db1efe43a1ce4bb4a2daacd0f1b7"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#aec55db1efe43a1ce4bb4a2daacd0f1b7">restart</a> () const override</td></tr>
-<tr class="separator:aec55db1efe43a1ce4bb4a2daacd0f1b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a873355cca03609ac0ab405d29314e591"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a873355cca03609ac0ab405d29314e591">set_value</a> (T &amp;v)</td></tr>
-<tr class="separator:a873355cca03609ac0ab405d29314e591"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac07e0957d2e586f2cc84821795d5c462"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#ac07e0957d2e586f2cc84821795d5c462">set_value</a> (T &amp;&amp;v)</td></tr>
-<tr class="separator:ac07e0957d2e586f2cc84821795d5c462"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80eea871bc115e4ef585f75f06857b39"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a80eea871bc115e4ef585f75f06857b39">compute_prior</a> () override</td></tr>
-<tr class="memdesc:a80eea871bc115e4ef585f75f06857b39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the prior &ndash; defaultly not defined.  <a href="#a80eea871bc115e4ef585f75f06857b39">More...</a><br /></td></tr>
-<tr class="separator:a80eea871bc115e4ef585f75f06857b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a835f1aafdd4bc4748c343edb80517956"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a835f1aafdd4bc4748c343edb80517956">compute_single_likelihood</a> (const <a class="el" href="class_l_o_t_hypothesis.html#a26d0ecfa6a367f32276d36cd01c0cead">t_datum</a> &amp;datum) override</td></tr>
-<tr class="separator:a835f1aafdd4bc4748c343edb80517956"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff3a378ab1137e2b46f225a028343a1c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#aff3a378ab1137e2b46f225a028343a1c">push_program</a> (Program &amp;s, short k=0) override</td></tr>
-<tr class="separator:aff3a378ab1137e2b46f225a028343a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a592d67c976a67982251239b415e0a861"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; t_output &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a592d67c976a67982251239b415e0a861">call</a> (const t_input x, const t_output err, <a class="el" href="class_dispatchable.html">Dispatchable</a>&lt; t_input, t_output &gt; *loader, unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0)</td></tr>
-<tr class="separator:a592d67c976a67982251239b415e0a861"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48858f5add54c1886d946e641b08062a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; t_output &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a48858f5add54c1886d946e641b08062a">call</a> (const t_input x, const t_output err)</td></tr>
-<tr class="separator:a48858f5add54c1886d946e641b08062a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae64a27eeb271316fd76cf26a86fff7e6"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#ae64a27eeb271316fd76cf26a86fff7e6">operator()</a> (const t_input x, const t_output err)</td></tr>
-<tr class="separator:ae64a27eeb271316fd76cf26a86fff7e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad792b258bdb4b0828f11ac721f52e704"><td class="memItemLeft" align="right" valign="top">virtual t_output&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#ad792b258bdb4b0828f11ac721f52e704">callOne</a> (const t_input x, const t_output err, <a class="el" href="class_dispatchable.html">Dispatchable</a>&lt; t_input, t_output &gt; *loader=nullptr)</td></tr>
-<tr class="separator:ad792b258bdb4b0828f11ac721f52e704"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c91fd3b7ef4ebc585413d723cd17e7e"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a5c91fd3b7ef4ebc585413d723cd17e7e">string</a> () const override</td></tr>
-<tr class="separator:a5c91fd3b7ef4ebc585413d723cd17e7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1584633d01abe30a6f69d0664c1e137a"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a1584633d01abe30a6f69d0664c1e137a">parseable</a> () const</td></tr>
-<tr class="separator:a1584633d01abe30a6f69d0664c1e137a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6859da0a3b422c32b1be2ffa025631a"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#aa6859da0a3b422c32b1be2ffa025631a">hash</a> () const override</td></tr>
-<tr class="memdesc:aa6859da0a3b422c32b1be2ffa025631a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default hash function.  <a href="#aa6859da0a3b422c32b1be2ffa025631a">More...</a><br /></td></tr>
-<tr class="separator:aa6859da0a3b422c32b1be2ffa025631a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a198d0632ce824b9547810084abadfb2e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a198d0632ce824b9547810084abadfb2e">operator==</a> (const HYP &amp;h) const override</td></tr>
-<tr class="separator:a198d0632ce824b9547810084abadfb2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9aade3ee6939a58e5d5b53505cfb2e7a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_instruction_8h.html#a6202215407ab29590bb936ca2996cf64">vmstatus_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a9aade3ee6939a58e5d5b53505cfb2e7a">dispatch_custom</a> (<a class="el" href="class_instruction.html">Instruction</a> i, <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a>&lt; t_input, t_output &gt; *pool, <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; t_input, t_output &gt; *vms, <a class="el" href="class_dispatchable.html">Dispatchable</a>&lt; t_input, t_output &gt; *loader) override</td></tr>
-<tr class="separator:a9aade3ee6939a58e5d5b53505cfb2e7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0274e15c0e19e8f42324b7099e2b4a1"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#af0274e15c0e19e8f42324b7099e2b4a1">copy_and_complete</a> () const</td></tr>
-<tr class="separator:af0274e15c0e19e8f42324b7099e2b4a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac74e874f6b677dc1c013602907627be7"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#ac74e874f6b677dc1c013602907627be7">neighbors</a> () const override</td></tr>
-<tr class="separator:ac74e874f6b677dc1c013602907627be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7771176b8b2599f42c75318ee0e9164"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#ae7771176b8b2599f42c75318ee0e9164">make_neighbor</a> (int k) const override</td></tr>
-<tr class="separator:ae7771176b8b2599f42c75318ee0e9164"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68dedaeae92b25b0450f2dc1bd95a35b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a68dedaeae92b25b0450f2dc1bd95a35b">is_evaluable</a> () const override</td></tr>
-<tr class="separator:a68dedaeae92b25b0450f2dc1bd95a35b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_class_m_c_m_cable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_m_c_m_cable')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_m_c_m_cable.html">MCMCable&lt; HYP, _t_datum, _t_data &gt;</a></td></tr>
+<tr class="memitem:a2c1ff366f7a839d9acae415823ceb112"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a2c1ff366f7a839d9acae415823ceb112">LOTHypothesis</a> (<a class="el" href="class_l_o_t_hypothesis.html#a8006204013d471860e54c49d19edbace">Grammar_t</a> *g=nullptr)</td></tr>
+<tr class="separator:a2c1ff366f7a839d9acae415823ceb112"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa14b68e8efcb570186fe289bc4a791d5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#aa14b68e8efcb570186fe289bc4a791d5">LOTHypothesis</a> (<a class="el" href="class_l_o_t_hypothesis.html#a8006204013d471860e54c49d19edbace">Grammar_t</a> *g, <a class="el" href="class_node.html">Node</a> &amp;&amp;x)</td></tr>
+<tr class="separator:aa14b68e8efcb570186fe289bc4a791d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a877ff1340bdf69fa2d9ed290c70f1cfb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a877ff1340bdf69fa2d9ed290c70f1cfb">LOTHypothesis</a> (<a class="el" href="class_l_o_t_hypothesis.html#a8006204013d471860e54c49d19edbace">Grammar_t</a> *g, <a class="el" href="class_node.html">Node</a> &amp;x)</td></tr>
+<tr class="separator:a877ff1340bdf69fa2d9ed290c70f1cfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9361067f4f283bc21f77eee178965b39"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a9361067f4f283bc21f77eee178965b39">LOTHypothesis</a> (<a class="el" href="class_l_o_t_hypothesis.html#a8006204013d471860e54c49d19edbace">Grammar_t</a> *g, std::string s)</td></tr>
+<tr class="separator:a9361067f4f283bc21f77eee178965b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a03abc8a6d96995c0f13524f8500747"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; HYP, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a9a03abc8a6d96995c0f13524f8500747">propose</a> () const override</td></tr>
+<tr class="separator:a9a03abc8a6d96995c0f13524f8500747"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0791b7ba0105870a2094877445570b61"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a0791b7ba0105870a2094877445570b61">restart</a> () const override</td></tr>
+<tr class="separator:a0791b7ba0105870a2094877445570b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac23de5143f24323a05ed32774387ff7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#aac23de5143f24323a05ed32774387ff7">set_value</a> (<a class="el" href="class_node.html">Node</a> &amp;v)</td></tr>
+<tr class="separator:aac23de5143f24323a05ed32774387ff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51a0d09f0f15a185d2b9a7efce48fc98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a51a0d09f0f15a185d2b9a7efce48fc98">set_value</a> (<a class="el" href="class_node.html">Node</a> &amp;&amp;v)</td></tr>
+<tr class="separator:a51a0d09f0f15a185d2b9a7efce48fc98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af215c4833e81984364703b2e4cb78dc7"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#af215c4833e81984364703b2e4cb78dc7">compute_prior</a> () override</td></tr>
+<tr class="memdesc:af215c4833e81984364703b2e4cb78dc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the prior &ndash; defaultly not defined.  <a href="#af215c4833e81984364703b2e4cb78dc7">More...</a><br /></td></tr>
+<tr class="separator:af215c4833e81984364703b2e4cb78dc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ff11e5e328fcfa819a8dd9b5d57bd65"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a0ff11e5e328fcfa819a8dd9b5d57bd65">compute_single_likelihood</a> (const <a class="el" href="class_l_o_t_hypothesis.html#ae36b1f113f45ee5ac82660028672739b">datum_t</a> &amp;datum) override</td></tr>
+<tr class="separator:a0ff11e5e328fcfa819a8dd9b5d57bd65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fb7caa245a82c53bcfbac846ab1b327"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a9fb7caa245a82c53bcfbac846ab1b327">program_size</a> (short s) override</td></tr>
+<tr class="separator:a9fb7caa245a82c53bcfbac846ab1b327"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b9a0eca1e2124f92bd34d8da929fe71"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a2b9a0eca1e2124f92bd34d8da929fe71">push_program</a> (Program &amp;s, short k=0) override</td></tr>
+<tr class="separator:a2b9a0eca1e2124f92bd34d8da929fe71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f528a8b204b87cc6fcf8d81c8c2b036"><td class="memTemplParams" colspan="2">template&lt;typename LOADERHYP &gt; </td></tr>
+<tr class="memitem:a9f528a8b204b87cc6fcf8d81c8c2b036"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; output_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a9f528a8b204b87cc6fcf8d81c8c2b036">call</a> (const input_t x, const output_t err, LOADERHYP *loader, unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0)</td></tr>
+<tr class="separator:a9f528a8b204b87cc6fcf8d81c8c2b036"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e46160113b9602cff4c4765c768b57d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; output_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a3e46160113b9602cff4c4765c768b57d">call</a> (const input_t x, const output_t err)</td></tr>
+<tr class="separator:a3e46160113b9602cff4c4765c768b57d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7275626861140284ee08512fd0641ce1"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a7275626861140284ee08512fd0641ce1">operator()</a> (const input_t x, const output_t err)</td></tr>
+<tr class="separator:a7275626861140284ee08512fd0641ce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34051e59cc251c4d6bb3caddbe594414"><td class="memTemplParams" colspan="2">template&lt;typename LOADERHYP &gt; </td></tr>
+<tr class="memitem:a34051e59cc251c4d6bb3caddbe594414"><td class="memTemplItemLeft" align="right" valign="top">output_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a34051e59cc251c4d6bb3caddbe594414">callOne</a> (const input_t x, const output_t err, LOADERHYP *loader)</td></tr>
+<tr class="separator:a34051e59cc251c4d6bb3caddbe594414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a834197767cb83a17c6b3eb564e11a3b2"><td class="memItemLeft" align="right" valign="top">output_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a834197767cb83a17c6b3eb564e11a3b2">callOne</a> (const input_t x, const output_t err)</td></tr>
+<tr class="separator:a834197767cb83a17c6b3eb564e11a3b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acda322aef217a0d358ae6cea19969904"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#acda322aef217a0d358ae6cea19969904">string</a> () const override</td></tr>
+<tr class="separator:acda322aef217a0d358ae6cea19969904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4037b5dea60aeb19d72c16e308886bc2"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a4037b5dea60aeb19d72c16e308886bc2">parseable</a> () const</td></tr>
+<tr class="separator:a4037b5dea60aeb19d72c16e308886bc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c33d51f8d81762b1eca7f86b596236a"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a7c33d51f8d81762b1eca7f86b596236a">hash</a> () const override</td></tr>
+<tr class="memdesc:a7c33d51f8d81762b1eca7f86b596236a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default hash function.  <a href="#a7c33d51f8d81762b1eca7f86b596236a">More...</a><br /></td></tr>
+<tr class="separator:a7c33d51f8d81762b1eca7f86b596236a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf5a682dce5d3971474a22778479a99a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#acf5a682dce5d3971474a22778479a99a">operator==</a> (const HYP &amp;h) const override</td></tr>
+<tr class="separator:acf5a682dce5d3971474a22778479a99a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af643fa8b19e3bd0fa4682ab3566e29fc"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#af643fa8b19e3bd0fa4682ab3566e29fc">copy_and_complete</a> () const</td></tr>
+<tr class="separator:af643fa8b19e3bd0fa4682ab3566e29fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a097cde606ec3f277fdeb92145599027f"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a097cde606ec3f277fdeb92145599027f">neighbors</a> () const override</td></tr>
+<tr class="separator:a097cde606ec3f277fdeb92145599027f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a997c88cb84133efc599b9b14173aefe9"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a997c88cb84133efc599b9b14173aefe9">make_neighbor</a> (int k) const override</td></tr>
+<tr class="separator:a997c88cb84133efc599b9b14173aefe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9eeaaf321324d2418405f4d7252f6ca4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a9eeaaf321324d2418405f4d7252f6ca4">is_evaluable</a> () const override</td></tr>
+<tr class="separator:a9eeaaf321324d2418405f4d7252f6ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_m_c_m_cable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_m_c_m_cable')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_m_c_m_cable.html">MCMCable&lt; HYP, _datum_t, _data_t &gt;</a></td></tr>
 <tr class="memitem:aac715433bffb674dd5809e7c1bc59ae5 inherit pub_methods_class_m_c_m_cable"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_m_cable.html#aac715433bffb674dd5809e7c1bc59ae5">MCMCable</a> ()</td></tr>
 <tr class="separator:aac715433bffb674dd5809e7c1bc59ae5 inherit pub_methods_class_m_c_m_cable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_bayesable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_bayesable')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_bayesable.html">Bayesable&lt; Args... &gt;</a></td></tr>
-<tr class="memitem:ab011f9e26a5c6e742d1239e7569df9eb inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#ab011f9e26a5c6e742d1239e7569df9eb">Bayesable</a> ()</td></tr>
-<tr class="separator:ab011f9e26a5c6e742d1239e7569df9eb inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c7deaa8b0a270f806507a2a0768c54b inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a3c7deaa8b0a270f806507a2a0768c54b">clear_bayes</a> ()</td></tr>
-<tr class="separator:a3c7deaa8b0a270f806507a2a0768c54b inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e0237ec7a40a2c45c990f93a8dc8e00 inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a5e0237ec7a40a2c45c990f93a8dc8e00">compute_single_likelihood</a> (const <a class="el" href="class_bayesable.html#a7c93a2eeab708378eb321745908718d4">t_datum</a> &amp;datum)=0</td></tr>
-<tr class="memdesc:a5e0237ec7a40a2c45c990f93a8dc8e00 inherit pub_methods_class_bayesable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the likelihood of a single data point.  <a href="class_bayesable.html#a5e0237ec7a40a2c45c990f93a8dc8e00">More...</a><br /></td></tr>
-<tr class="separator:a5e0237ec7a40a2c45c990f93a8dc8e00 inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9547335ae15a5068b10d29aee5056ae inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#af9547335ae15a5068b10d29aee5056ae">compute_likelihood</a> (const <a class="el" href="class_bayesable.html#a70a593a67c7d43239ecc06bb4fd06a6b">t_data</a> &amp;data, const double breakout=-<a class="el" href="_numerics_8h.html#a1bb1e42ae1b40cad6e99da0aab8a5576">infinity</a>)</td></tr>
-<tr class="memdesc:af9547335ae15a5068b10d29aee5056ae inherit pub_methods_class_bayesable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the likelihood of a collection of data, by calling compute_single_likelihood on each. This stops if our likelihood falls below breakout.  <a href="class_bayesable.html#af9547335ae15a5068b10d29aee5056ae">More...</a><br /></td></tr>
-<tr class="separator:af9547335ae15a5068b10d29aee5056ae inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fb74010b3725f610f52746cc652f92a inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a6fb74010b3725f610f52746cc652f92a">compute_posterior</a> (const <a class="el" href="class_bayesable.html#a70a593a67c7d43239ecc06bb4fd06a6b">t_data</a> &amp;data, const double breakout=-<a class="el" href="_numerics_8h.html#a1bb1e42ae1b40cad6e99da0aab8a5576">infinity</a>)</td></tr>
-<tr class="separator:a6fb74010b3725f610f52746cc652f92a inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9ba96f829785f07919610941077b4c9 inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#ac9ba96f829785f07919610941077b4c9">at_temperature</a> (double t)</td></tr>
-<tr class="separator:ac9ba96f829785f07919610941077b4c9 inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae3f461c90ffd2a4b7b3e5418cbb1054 inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#aae3f461c90ffd2a4b7b3e5418cbb1054">operator&lt;</a> (const <a class="el" href="class_bayesable.html">Bayesable</a>&lt; <a class="el" href="class_bayesable.html#a7c93a2eeab708378eb321745908718d4">t_datum</a>, <a class="el" href="class_bayesable.html#a70a593a67c7d43239ecc06bb4fd06a6b">t_data</a> &gt; &amp;l) const</td></tr>
-<tr class="separator:aae3f461c90ffd2a4b7b3e5418cbb1054 inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f31fa34270083429fb23da21ad50432 inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a3f31fa34270083429fb23da21ad50432">print</a> (std::string prefix=&quot;&quot;)</td></tr>
-<tr class="separator:a3f31fa34270083429fb23da21ad50432 inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec41e7016c9c1eb6978e1360c23f20cd inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#aec41e7016c9c1eb6978e1360c23f20cd">Bayesable</a> ()</td></tr>
+<tr class="separator:aec41e7016c9c1eb6978e1360c23f20cd inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8ab4bb38c8782d2dcd57f3a43a3c605 inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#ac8ab4bb38c8782d2dcd57f3a43a3c605">clear_bayes</a> ()</td></tr>
+<tr class="separator:ac8ab4bb38c8782d2dcd57f3a43a3c605 inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87d195bfe5cdf6d293dae5fc01ae2e6c inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a87d195bfe5cdf6d293dae5fc01ae2e6c">compute_single_likelihood</a> (const <a class="el" href="class_bayesable.html#a9f1a6c0cd7855550fa10b1a8f13a5867">datum_t</a> &amp;datum)</td></tr>
+<tr class="memdesc:a87d195bfe5cdf6d293dae5fc01ae2e6c inherit pub_methods_class_bayesable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the likelihood of a single data point.  <a href="class_bayesable.html#a87d195bfe5cdf6d293dae5fc01ae2e6c">More...</a><br /></td></tr>
+<tr class="separator:a87d195bfe5cdf6d293dae5fc01ae2e6c inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a202493156cec15937bee304d807fdbdb inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a202493156cec15937bee304d807fdbdb">compute_likelihood</a> (const <a class="el" href="class_bayesable.html#aa2788c4d7718c0a824e1d28c4c98f921">data_t</a> &amp;data, const double breakout=-<a class="el" href="_numerics_8h.html#a1bb1e42ae1b40cad6e99da0aab8a5576">infinity</a>)</td></tr>
+<tr class="memdesc:a202493156cec15937bee304d807fdbdb inherit pub_methods_class_bayesable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the likelihood of a collection of data, by calling compute_single_likelihood on each. This stops if our likelihood falls below breakout.  <a href="class_bayesable.html#a202493156cec15937bee304d807fdbdb">More...</a><br /></td></tr>
+<tr class="separator:a202493156cec15937bee304d807fdbdb inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b0552923602bcab6c768581ab8c7df8 inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a0b0552923602bcab6c768581ab8c7df8">compute_posterior</a> (const <a class="el" href="class_bayesable.html#aa2788c4d7718c0a824e1d28c4c98f921">data_t</a> &amp;data, const double breakout=-<a class="el" href="_numerics_8h.html#a1bb1e42ae1b40cad6e99da0aab8a5576">infinity</a>)</td></tr>
+<tr class="separator:a0b0552923602bcab6c768581ab8c7df8 inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf805473a9eea0df96d6267dca0e9c87 inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#acf805473a9eea0df96d6267dca0e9c87">at_temperature</a> (double t)</td></tr>
+<tr class="separator:acf805473a9eea0df96d6267dca0e9c87 inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac356e7e5b11c266b8442064186dbe89d inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#ac356e7e5b11c266b8442064186dbe89d">operator&lt;</a> (const <a class="el" href="class_bayesable.html">Bayesable</a>&lt; <a class="el" href="class_bayesable.html#a9f1a6c0cd7855550fa10b1a8f13a5867">datum_t</a>, <a class="el" href="class_bayesable.html#aa2788c4d7718c0a824e1d28c4c98f921">data_t</a> &gt; &amp;l) const</td></tr>
+<tr class="separator:ac356e7e5b11c266b8442064186dbe89d inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87d5d9481d6a72b017e44b175071fa5e inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a87d5d9481d6a72b017e44b175071fa5e">print</a> (std::string prefix=&quot;&quot;)</td></tr>
+<tr class="separator:a87d5d9481d6a72b017e44b175071fa5e inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a684d3208f52e10c61418dc0707142a30"><td class="memItemLeft" align="right" valign="top">static HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a684d3208f52e10c61418dc0707142a30">from_string</a> (<a class="el" href="class_grammar.html">Grammar</a> &amp;g, std::string s)</td></tr>
-<tr class="separator:a684d3208f52e10c61418dc0707142a30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1e3f898618de841bfd8c9279a107211"><td class="memItemLeft" align="right" valign="top">static HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#aa1e3f898618de841bfd8c9279a107211">from_string</a> (<a class="el" href="class_l_o_t_hypothesis.html#a8006204013d471860e54c49d19edbace">Grammar_t</a> &amp;g, std::string s)</td></tr>
+<tr class="separator:aa1e3f898618de841bfd8c9279a107211"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aa7cf638b5d680794e33aa5eb4bd36b09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_grammar.html">Grammar</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#aa7cf638b5d680794e33aa5eb4bd36b09">grammar</a></td></tr>
-<tr class="separator:aa7cf638b5d680794e33aa5eb4bd36b09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff7455a900ffb91790e5235119676a80"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#aff7455a900ffb91790e5235119676a80">value</a></td></tr>
-<tr class="separator:aff7455a900ffb91790e5235119676a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affae32db28c39df676809ae47e14e7cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_l_o_t_hypothesis.html#a8006204013d471860e54c49d19edbace">Grammar_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#affae32db28c39df676809ae47e14e7cf">grammar</a></td></tr>
+<tr class="separator:affae32db28c39df676809ae47e14e7cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac759b3eab77ead1749b905a3dde74961"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#ac759b3eab77ead1749b905a3dde74961">value</a></td></tr>
+<tr class="separator:ac759b3eab77ead1749b905a3dde74961"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_class_bayesable"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_bayesable')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_bayesable.html">Bayesable&lt; Args... &gt;</a></td></tr>
-<tr class="memitem:ae09840f8bbd3fb92993970bc7b28dc79 inherit pub_attribs_class_bayesable"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#ae09840f8bbd3fb92993970bc7b28dc79">prior</a></td></tr>
-<tr class="separator:ae09840f8bbd3fb92993970bc7b28dc79 inherit pub_attribs_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad54a4585cd8861c8002fca6f75aa92c0 inherit pub_attribs_class_bayesable"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#ad54a4585cd8861c8002fca6f75aa92c0">likelihood</a></td></tr>
-<tr class="separator:ad54a4585cd8861c8002fca6f75aa92c0 inherit pub_attribs_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab27fd7227331366093ac8d47e0be1f8a inherit pub_attribs_class_bayesable"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#ab27fd7227331366093ac8d47e0be1f8a">posterior</a></td></tr>
-<tr class="separator:ab27fd7227331366093ac8d47e0be1f8a inherit pub_attribs_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39fc0e86fa7395d8fc1ec9c8bf5dc1b5 inherit pub_attribs_class_bayesable"><td class="memItemLeft" align="right" valign="top">uintmax_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a39fc0e86fa7395d8fc1ec9c8bf5dc1b5">born</a></td></tr>
-<tr class="separator:a39fc0e86fa7395d8fc1ec9c8bf5dc1b5 inherit pub_attribs_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a473790922c2dd73e227350d029d73003 inherit pub_attribs_class_bayesable"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a473790922c2dd73e227350d029d73003">prior</a></td></tr>
+<tr class="separator:a473790922c2dd73e227350d029d73003 inherit pub_attribs_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d1a9ed826013bf079cea1867b6d4183 inherit pub_attribs_class_bayesable"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a4d1a9ed826013bf079cea1867b6d4183">likelihood</a></td></tr>
+<tr class="separator:a4d1a9ed826013bf079cea1867b6d4183 inherit pub_attribs_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a268442b9aae5b763c17ca29c39231915 inherit pub_attribs_class_bayesable"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a268442b9aae5b763c17ca29c39231915">posterior</a></td></tr>
+<tr class="separator:a268442b9aae5b763c17ca29c39231915 inherit pub_attribs_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a898e03a20e1851c868b77ef4e844f0bf inherit pub_attribs_class_bayesable"><td class="memItemLeft" align="right" valign="top">uintmax_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a898e03a20e1851c868b77ef4e844f0bf">born</a></td></tr>
+<tr class="separator:a898e03a20e1851c868b77ef4e844f0bf inherit pub_attribs_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:ab262eb592887136a986f5b2649397eca"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#ab262eb592887136a986f5b2649397eca">MAX_NODES</a> = 64</td></tr>
-<tr class="separator:ab262eb592887136a986f5b2649397eca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0231650d938c098118a4c4bdb201fc61"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a0231650d938c098118a4c4bdb201fc61">MAX_NODES</a> = 64</td></tr>
+<tr class="separator:a0231650d938c098118a4c4bdb201fc61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a3a7b2c5fb3e2b5d70fa80b485b0b98f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a7b2c5fb3e2b5d70fa80b485b0b98f5">&#9670;&nbsp;</a></span>t_data</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt;<br />
+class LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</h3>
+
+<dl class="section author"><dt>Author</dt><dd>piantado </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>05/05/20 </dd></dl>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="abd9c848100dfaaf2870f5dfa9ea91c65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd9c848100dfaaf2870f5dfa9ea91c65">&#9670;&nbsp;</a></span>data_t</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="class_bayesable.html">Bayesable</a>&lt;_t_datum,_t_data&gt;::<a class="el" href="class_l_o_t_hypothesis.html#a3a7b2c5fb3e2b5d70fa80b485b0b98f5">t_data</a> <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::<a class="el" href="class_l_o_t_hypothesis.html#a3a7b2c5fb3e2b5d70fa80b485b0b98f5">t_data</a></td>
+          <td class="memname">typedef <a class="el" href="class_bayesable.html">Bayesable</a>&lt;_datum_t,_data_t&gt;::<a class="el" href="class_l_o_t_hypothesis.html#abd9c848100dfaaf2870f5dfa9ea91c65">data_t</a> <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::<a class="el" href="class_l_o_t_hypothesis.html#abd9c848100dfaaf2870f5dfa9ea91c65">data_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a26d0ecfa6a367f32276d36cd01c0cead"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26d0ecfa6a367f32276d36cd01c0cead">&#9670;&nbsp;</a></span>t_datum</h2>
+<a id="ae36b1f113f45ee5ac82660028672739b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae36b1f113f45ee5ac82660028672739b">&#9670;&nbsp;</a></span>datum_t</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="class_bayesable.html">Bayesable</a>&lt;_t_datum,_t_data&gt;::<a class="el" href="class_l_o_t_hypothesis.html#a26d0ecfa6a367f32276d36cd01c0cead">t_datum</a> <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::<a class="el" href="class_l_o_t_hypothesis.html#a26d0ecfa6a367f32276d36cd01c0cead">t_datum</a></td>
+          <td class="memname">typedef <a class="el" href="class_bayesable.html">Bayesable</a>&lt;_datum_t,_data_t&gt;::<a class="el" href="class_l_o_t_hypothesis.html#ae36b1f113f45ee5ac82660028672739b">datum_t</a> <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::<a class="el" href="class_l_o_t_hypothesis.html#ae36b1f113f45ee5ac82660028672739b">datum_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8006204013d471860e54c49d19edbace"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8006204013d471860e54c49d19edbace">&#9670;&nbsp;</a></span>Grammar_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::<a class="el" href="class_l_o_t_hypothesis.html#a8006204013d471860e54c49d19edbace">Grammar_t</a> =  _Grammar_t</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -245,21 +274,21 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a47dcb988a9cb4bba00263851d697fc12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47dcb988a9cb4bba00263851d697fc12">&#9670;&nbsp;</a></span>LOTHypothesis() <span class="overload">[1/4]</span></h2>
+<a id="a2c1ff366f7a839d9acae415823ceb112"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c1ff366f7a839d9acae415823ceb112">&#9670;&nbsp;</a></span>LOTHypothesis() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::<a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a> </td>
+          <td class="memname"><a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::<a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_grammar.html">Grammar</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="class_l_o_t_hypothesis.html#a8006204013d471860e54c49d19edbace">Grammar_t</a> *&#160;</td>
           <td class="paramname"><em>g</em> = <code>nullptr</code></td><td>)</td>
           <td></td>
         </tr>
@@ -273,27 +302,27 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 
 </div>
 </div>
-<a id="abfb19603c9bdda8b8b8c682b6cdc6e03"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfb19603c9bdda8b8b8c682b6cdc6e03">&#9670;&nbsp;</a></span>LOTHypothesis() <span class="overload">[2/4]</span></h2>
+<a id="aa14b68e8efcb570186fe289bc4a791d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa14b68e8efcb570186fe289bc4a791d5">&#9670;&nbsp;</a></span>LOTHypothesis() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::<a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a> </td>
+          <td class="memname"><a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::<a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_grammar.html">Grammar</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="class_l_o_t_hypothesis.html#a8006204013d471860e54c49d19edbace">Grammar_t</a> *&#160;</td>
           <td class="paramname"><em>g</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_node.html">Node</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>x</em>&#160;</td>
         </tr>
         <tr>
@@ -311,27 +340,27 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 
 </div>
 </div>
-<a id="a3123d5e4e140ca24fdaa568bd2b17644"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3123d5e4e140ca24fdaa568bd2b17644">&#9670;&nbsp;</a></span>LOTHypothesis() <span class="overload">[3/4]</span></h2>
+<a id="a877ff1340bdf69fa2d9ed290c70f1cfb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a877ff1340bdf69fa2d9ed290c70f1cfb">&#9670;&nbsp;</a></span>LOTHypothesis() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::<a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a> </td>
+          <td class="memname"><a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::<a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_grammar.html">Grammar</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="class_l_o_t_hypothesis.html#a8006204013d471860e54c49d19edbace">Grammar_t</a> *&#160;</td>
           <td class="paramname"><em>g</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>&#160;</td>
         </tr>
         <tr>
@@ -349,21 +378,21 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 
 </div>
 </div>
-<a id="a09216df69fea175ccb5ffc1a947b8287"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09216df69fea175ccb5ffc1a947b8287">&#9670;&nbsp;</a></span>LOTHypothesis() <span class="overload">[4/4]</span></h2>
+<a id="a9361067f4f283bc21f77eee178965b39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9361067f4f283bc21f77eee178965b39">&#9670;&nbsp;</a></span>LOTHypothesis() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::<a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a> </td>
+          <td class="memname"><a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::<a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_grammar.html">Grammar</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="class_l_o_t_hypothesis.html#a8006204013d471860e54c49d19edbace">Grammar_t</a> *&#160;</td>
           <td class="paramname"><em>g</em>, </td>
         </tr>
         <tr>
@@ -388,33 +417,35 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a592d67c976a67982251239b415e0a861"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a592d67c976a67982251239b415e0a861">&#9670;&nbsp;</a></span>call() <span class="overload">[1/2]</span></h2>
+<a id="a9f528a8b204b87cc6fcf8d81c8c2b036"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f528a8b204b87cc6fcf8d81c8c2b036">&#9670;&nbsp;</a></span>call() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename LOADERHYP &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt;t_output&gt; <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::call </td>
+          <td class="memname"><a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt;output_t&gt; <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::call </td>
           <td>(</td>
-          <td class="paramtype">const t_input&#160;</td>
+          <td class="paramtype">const input_t&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const t_output&#160;</td>
+          <td class="paramtype">const output_t&#160;</td>
           <td class="paramname"><em>err</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="class_dispatchable.html">Dispatchable</a>&lt; t_input, t_output &gt; *&#160;</td>
+          <td class="paramtype">LOADERHYP *&#160;</td>
           <td class="paramname"><em>loader</em>, </td>
         </tr>
         <tr>
@@ -443,34 +474,34 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a48858f5add54c1886d946e641b08062a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48858f5add54c1886d946e641b08062a">&#9670;&nbsp;</a></span>call() <span class="overload">[2/2]</span></h2>
+<a id="a3e46160113b9602cff4c4765c768b57d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e46160113b9602cff4c4765c768b57d">&#9670;&nbsp;</a></span>call() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt;t_output&gt; <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::call </td>
+          <td class="memname">virtual <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt;output_t&gt; <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::call </td>
           <td>(</td>
-          <td class="paramtype">const t_input&#160;</td>
+          <td class="paramtype">const input_t&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const t_output&#160;</td>
+          <td class="paramtype">const output_t&#160;</td>
           <td class="paramname"><em>err</em>&#160;</td>
         </tr>
         <tr>
@@ -486,36 +517,40 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 </table>
 </div><div class="memdoc">
 
+<p>Reimplemented in <a class="el" href="class_my_hypothesis.html#a61391d3f1f6fbbe37663b22e2068ac90">MyHypothesis</a>.</p>
+
 </div>
 </div>
-<a id="ad792b258bdb4b0828f11ac721f52e704"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad792b258bdb4b0828f11ac721f52e704">&#9670;&nbsp;</a></span>callOne()</h2>
+<a id="a34051e59cc251c4d6bb3caddbe594414"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34051e59cc251c4d6bb3caddbe594414">&#9670;&nbsp;</a></span>callOne() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename LOADERHYP &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual t_output <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::callOne </td>
+          <td class="memname">output_t <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::callOne </td>
           <td>(</td>
-          <td class="paramtype">const t_input&#160;</td>
+          <td class="paramtype">const input_t&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const t_output&#160;</td>
+          <td class="paramtype">const output_t&#160;</td>
           <td class="paramname"><em>err</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="class_dispatchable.html">Dispatchable</a>&lt; t_input, t_output &gt; *&#160;</td>
-          <td class="paramname"><em>loader</em> = <code>nullptr</code>&#160;</td>
+          <td class="paramtype">LOADERHYP *&#160;</td>
+          <td class="paramname"><em>loader</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -525,26 +560,64 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a80eea871bc115e4ef585f75f06857b39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a80eea871bc115e4ef585f75f06857b39">&#9670;&nbsp;</a></span>compute_prior()</h2>
+<a id="a834197767cb83a17c6b3eb564e11a3b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a834197767cb83a17c6b3eb564e11a3b2">&#9670;&nbsp;</a></span>callOne() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::compute_prior </td>
+          <td class="memname">output_t <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::callOne </td>
+          <td>(</td>
+          <td class="paramtype">const input_t&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const output_t&#160;</td>
+          <td class="paramname"><em>err</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af215c4833e81984364703b2e4cb78dc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af215c4833e81984364703b2e4cb78dc7">&#9670;&nbsp;</a></span>compute_prior()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual double <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::compute_prior </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -559,27 +632,27 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 
 <p>Compute the prior &ndash; defaultly not defined. </p>
 
-<p>Implements <a class="el" href="class_bayesable.html#a9aa752f0adff1b95f8957b91fc928649">Bayesable&lt; Args... &gt;</a>.</p>
+<p>Implements <a class="el" href="class_bayesable.html#a1b057a17212ced123545133e2297c01b">Bayesable&lt; Args... &gt;</a>.</p>
 
-<p>Reimplemented in <a class="el" href="class_my_hypothesis.html#ab092094c5fc31730de4f40609220bb18">MyHypothesis</a>.</p>
+<p>Reimplemented in <a class="el" href="class_my_hypothesis.html#ab092094c5fc31730de4f40609220bb18">MyHypothesis</a>, and <a class="el" href="class_my_hypothesis.html#a67477313b60b21158bbfaad35dc5d275">MyHypothesis</a>.</p>
 
 </div>
 </div>
-<a id="a835f1aafdd4bc4748c343edb80517956"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a835f1aafdd4bc4748c343edb80517956">&#9670;&nbsp;</a></span>compute_single_likelihood()</h2>
+<a id="a0ff11e5e328fcfa819a8dd9b5d57bd65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ff11e5e328fcfa819a8dd9b5d57bd65">&#9670;&nbsp;</a></span>compute_single_likelihood()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::compute_single_likelihood </td>
+          <td class="memname">virtual double <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::compute_single_likelihood </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_l_o_t_hypothesis.html#a26d0ecfa6a367f32276d36cd01c0cead">t_datum</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_l_o_t_hypothesis.html#ae36b1f113f45ee5ac82660028672739b">datum_t</a> &amp;&#160;</td>
           <td class="paramname"><em>datum</em></td><td>)</td>
           <td></td>
         </tr>
@@ -591,23 +664,23 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_my_hypothesis.html#af60601a7db23e9ed8d1e3343af506733">MyHypothesis</a>, and <a class="el" href="class_my_hypothesis.html#a5e6bd5e0ebcb987aa4f0adf4295dba11">MyHypothesis</a>.</p>
+<p>Reimplemented in <a class="el" href="class_my_hypothesis.html#af2470b1e04711c06ee551deae15af4c1">MyHypothesis</a>, <a class="el" href="class_my_hypothesis.html#a480fc9e50d0faa0f5226f56187fd2eec">MyHypothesis</a>, <a class="el" href="class_my_hypothesis.html#af23a45a03a28ea4f42438e70d47acacb">MyHypothesis</a>, and <a class="el" href="class_my_hypothesis.html#af23a45a03a28ea4f42438e70d47acacb">MyHypothesis</a>.</p>
 
 </div>
 </div>
-<a id="af0274e15c0e19e8f42324b7099e2b4a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0274e15c0e19e8f42324b7099e2b4a1">&#9670;&nbsp;</a></span>copy_and_complete()</h2>
+<a id="af643fa8b19e3bd0fa4682ab3566e29fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af643fa8b19e3bd0fa4682ab3566e29fc">&#9670;&nbsp;</a></span>copy_and_complete()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual HYP <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::copy_and_complete </td>
+          <td class="memname">virtual HYP <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::copy_and_complete </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -622,75 +695,21 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 
 </div>
 </div>
-<a id="a9aade3ee6939a58e5d5b53505cfb2e7a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9aade3ee6939a58e5d5b53505cfb2e7a">&#9670;&nbsp;</a></span>dispatch_custom()</h2>
+<a id="aa1e3f898618de841bfd8c9279a107211"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1e3f898618de841bfd8c9279a107211">&#9670;&nbsp;</a></span>from_string()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="_instruction_8h.html#a6202215407ab29590bb936ca2996cf64">vmstatus_t</a> <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::dispatch_custom </td>
+          <td class="memname">static HYP <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::from_string </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_instruction.html">Instruction</a>&#160;</td>
-          <td class="paramname"><em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a>&lt; t_input, t_output &gt; *&#160;</td>
-          <td class="paramname"><em>pool</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; t_input, t_output &gt; *&#160;</td>
-          <td class="paramname"><em>vms</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_dispatchable.html">Dispatchable</a>&lt; t_input, t_output &gt; *&#160;</td>
-          <td class="paramname"><em>loader</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implements <a class="el" href="class_dispatchable.html#a6d2bd844b0e55378d29ed85e718d0a77">Dispatchable&lt; t_input, t_output &gt;</a>.</p>
-
-<p>Reimplemented in <a class="el" href="class_inner_hypothesis.html#a73c38e91c7c1bf021cbc8f9e5a758d13">InnerHypothesis</a>, and <a class="el" href="class_my_hypothesis.html#a3de47a545e8824bb8c63181965c62a01">MyHypothesis</a>.</p>
-
-</div>
-</div>
-<a id="a684d3208f52e10c61418dc0707142a30"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a684d3208f52e10c61418dc0707142a30">&#9670;&nbsp;</a></span>from_string()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static HYP <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::from_string </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_grammar.html">Grammar</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_l_o_t_hypothesis.html#a8006204013d471860e54c49d19edbace">Grammar_t</a> &amp;&#160;</td>
           <td class="paramname"><em>g</em>, </td>
         </tr>
         <tr>
@@ -714,19 +733,19 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 
 </div>
 </div>
-<a id="aa6859da0a3b422c32b1be2ffa025631a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6859da0a3b422c32b1be2ffa025631a">&#9670;&nbsp;</a></span>hash()</h2>
+<a id="a7c33d51f8d81762b1eca7f86b596236a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c33d51f8d81762b1eca7f86b596236a">&#9670;&nbsp;</a></span>hash()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual size_t <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::hash </td>
+          <td class="memname">virtual size_t <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::hash </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -741,23 +760,23 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 
 <p>Default hash function. </p>
 
-<p>Implements <a class="el" href="class_bayesable.html#ab77a023d33951448e6edb2e1bc79c5ae">Bayesable&lt; Args... &gt;</a>.</p>
+<p>Implements <a class="el" href="class_bayesable.html#a26f6d55e7526ebd897cbb27c757b611b">Bayesable&lt; Args... &gt;</a>.</p>
 
 </div>
 </div>
-<a id="a68dedaeae92b25b0450f2dc1bd95a35b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68dedaeae92b25b0450f2dc1bd95a35b">&#9670;&nbsp;</a></span>is_evaluable()</h2>
+<a id="a9eeaaf321324d2418405f4d7252f6ca4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9eeaaf321324d2418405f4d7252f6ca4">&#9670;&nbsp;</a></span>is_evaluable()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::is_evaluable </td>
+          <td class="memname">virtual bool <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::is_evaluable </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -770,23 +789,23 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="class_searchable.html#aae16f1cb01f140f4033f6f67dc9753b6">Searchable&lt; HYP, t_input, t_output &gt;</a>.</p>
+<p>Implements <a class="el" href="class_searchable.html#a23786e95730117c3cc4b90e010494a1e">Searchable&lt; HYP, input_t, output_t &gt;</a>.</p>
 
 </div>
 </div>
-<a id="ae7771176b8b2599f42c75318ee0e9164"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae7771176b8b2599f42c75318ee0e9164">&#9670;&nbsp;</a></span>make_neighbor()</h2>
+<a id="a997c88cb84133efc599b9b14173aefe9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a997c88cb84133efc599b9b14173aefe9">&#9670;&nbsp;</a></span>make_neighbor()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual HYP <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::make_neighbor </td>
+          <td class="memname">virtual HYP <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::make_neighbor </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>k</em></td><td>)</td>
@@ -800,23 +819,23 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="class_searchable.html#a64bda92cc9314dae7aff31f4444a93e6">Searchable&lt; HYP, t_input, t_output &gt;</a>.</p>
+<p>Implements <a class="el" href="class_searchable.html#ad7fefacd3c9c2b66aa58c9d902f645cb">Searchable&lt; HYP, input_t, output_t &gt;</a>.</p>
 
 </div>
 </div>
-<a id="ac74e874f6b677dc1c013602907627be7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac74e874f6b677dc1c013602907627be7">&#9670;&nbsp;</a></span>neighbors()</h2>
+<a id="a097cde606ec3f277fdeb92145599027f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a097cde606ec3f277fdeb92145599027f">&#9670;&nbsp;</a></span>neighbors()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::neighbors </td>
+          <td class="memname">virtual int <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::neighbors </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -829,31 +848,31 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="class_searchable.html#a0450c35a21c5940a63560aa24b4ff0cc">Searchable&lt; HYP, t_input, t_output &gt;</a>.</p>
+<p>Implements <a class="el" href="class_searchable.html#aec30063fcc9bed5d005f8318efa8492d">Searchable&lt; HYP, input_t, output_t &gt;</a>.</p>
 
 </div>
 </div>
-<a id="ae64a27eeb271316fd76cf26a86fff7e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae64a27eeb271316fd76cf26a86fff7e6">&#9670;&nbsp;</a></span>operator()()</h2>
+<a id="a7275626861140284ee08512fd0641ce1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7275626861140284ee08512fd0641ce1">&#9670;&nbsp;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::operator() </td>
+          <td class="memname">auto <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::operator() </td>
           <td>(</td>
-          <td class="paramtype">const t_input&#160;</td>
+          <td class="paramtype">const input_t&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const t_output&#160;</td>
+          <td class="paramtype">const output_t&#160;</td>
           <td class="paramname"><em>err</em>&#160;</td>
         </tr>
         <tr>
@@ -871,19 +890,19 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 
 </div>
 </div>
-<a id="a198d0632ce824b9547810084abadfb2e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a198d0632ce824b9547810084abadfb2e">&#9670;&nbsp;</a></span>operator==()</h2>
+<a id="acf5a682dce5d3971474a22778479a99a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf5a682dce5d3971474a22778479a99a">&#9670;&nbsp;</a></span>operator==()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::operator== </td>
+          <td class="memname">virtual bool <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::operator== </td>
           <td>(</td>
           <td class="paramtype">const HYP &amp;&#160;</td>
           <td class="paramname"><em>h</em></td><td>)</td>
@@ -897,23 +916,23 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="class_m_c_m_cable.html#aa73001ec3bb0cf0c618281dfa998f2f1">MCMCable&lt; HYP, _t_datum, _t_data &gt;</a>.</p>
+<p>Implements <a class="el" href="class_m_c_m_cable.html#aa73001ec3bb0cf0c618281dfa998f2f1">MCMCable&lt; HYP, _datum_t, _data_t &gt;</a>.</p>
 
 </div>
 </div>
-<a id="a1584633d01abe30a6f69d0664c1e137a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1584633d01abe30a6f69d0664c1e137a">&#9670;&nbsp;</a></span>parseable()</h2>
+<a id="a4037b5dea60aeb19d72c16e308886bc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4037b5dea60aeb19d72c16e308886bc2">&#9670;&nbsp;</a></span>parseable()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::string <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::parseable </td>
+          <td class="memname">virtual std::string <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::parseable </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -928,19 +947,47 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 
 </div>
 </div>
-<a id="a5ae913b145b15308d5817c6e7b1da14d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ae913b145b15308d5817c6e7b1da14d">&#9670;&nbsp;</a></span>propose()</h2>
+<a id="a9fb7caa245a82c53bcfbac846ab1b327"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fb7caa245a82c53bcfbac846ab1b327">&#9670;&nbsp;</a></span>program_size()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::pair&lt;HYP,double&gt; <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::propose </td>
+          <td class="memname">virtual size_t <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::program_size </td>
+          <td>(</td>
+          <td class="paramtype">short&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9a03abc8a6d96995c0f13524f8500747"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a03abc8a6d96995c0f13524f8500747">&#9670;&nbsp;</a></span>propose()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::pair&lt;HYP,double&gt; <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::propose </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -954,23 +1001,23 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 </div><div class="memdoc">
 <p>Default proposal is rational-rules style regeneration. </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Implements <a class="el" href="class_m_c_m_cable.html#ab119a14256ab92c5c1e941f8492df830">MCMCable&lt; HYP, _t_datum, _t_data &gt;</a>.</p>
+<p>Implements <a class="el" href="class_m_c_m_cable.html#ab119a14256ab92c5c1e941f8492df830">MCMCable&lt; HYP, _datum_t, _data_t &gt;</a>.</p>
 
 </div>
 </div>
-<a id="aff3a378ab1137e2b46f225a028343a1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff3a378ab1137e2b46f225a028343a1c">&#9670;&nbsp;</a></span>push_program()</h2>
+<a id="a2b9a0eca1e2124f92bd34d8da929fe71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b9a0eca1e2124f92bd34d8da929fe71">&#9670;&nbsp;</a></span>push_program()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::push_program </td>
+          <td class="memname">virtual void <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::push_program </td>
           <td>(</td>
           <td class="paramtype">Program &amp;&#160;</td>
           <td class="paramname"><em>s</em>, </td>
@@ -994,23 +1041,21 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="class_dispatchable.html#a9339c2906f7c8dadbe1d0ca79dd9bb11">Dispatchable&lt; t_input, t_output &gt;</a>.</p>
-
 </div>
 </div>
-<a id="aec55db1efe43a1ce4bb4a2daacd0f1b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec55db1efe43a1ce4bb4a2daacd0f1b7">&#9670;&nbsp;</a></span>restart()</h2>
+<a id="a0791b7ba0105870a2094877445570b61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0791b7ba0105870a2094877445570b61">&#9670;&nbsp;</a></span>restart()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual HYP <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::restart </td>
+          <td class="memname">virtual HYP <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::restart </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1024,25 +1069,25 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 </div><div class="memdoc">
 <p>This is used to restart chains, sampling from prior </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Implements <a class="el" href="class_m_c_m_cable.html#a220d6c4ca73e20441c14fa5bd3e090d3">MCMCable&lt; HYP, _t_datum, _t_data &gt;</a>.</p>
+<p>Implements <a class="el" href="class_m_c_m_cable.html#a220d6c4ca73e20441c14fa5bd3e090d3">MCMCable&lt; HYP, _datum_t, _data_t &gt;</a>.</p>
 
 </div>
 </div>
-<a id="a873355cca03609ac0ab405d29314e591"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a873355cca03609ac0ab405d29314e591">&#9670;&nbsp;</a></span>set_value() <span class="overload">[1/2]</span></h2>
+<a id="aac23de5143f24323a05ed32774387ff7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac23de5143f24323a05ed32774387ff7">&#9670;&nbsp;</a></span>set_value() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::set_value </td>
+          <td class="memname">void <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::set_value </td>
           <td>(</td>
-          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1056,21 +1101,21 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 
 </div>
 </div>
-<a id="ac07e0957d2e586f2cc84821795d5c462"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac07e0957d2e586f2cc84821795d5c462">&#9670;&nbsp;</a></span>set_value() <span class="overload">[2/2]</span></h2>
+<a id="a51a0d09f0f15a185d2b9a7efce48fc98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51a0d09f0f15a185d2b9a7efce48fc98">&#9670;&nbsp;</a></span>set_value() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::set_value </td>
+          <td class="memname">void <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::set_value </td>
           <td>(</td>
-          <td class="paramtype">T &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_node.html">Node</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1084,19 +1129,19 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 
 </div>
 </div>
-<a id="a5c91fd3b7ef4ebc585413d723cd17e7e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c91fd3b7ef4ebc585413d723cd17e7e">&#9670;&nbsp;</a></span>string()</h2>
+<a id="acda322aef217a0d358ae6cea19969904"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acda322aef217a0d358ae6cea19969904">&#9670;&nbsp;</a></span>string()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::string <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::string </td>
+          <td class="memname">virtual std::string <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::string </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1109,40 +1154,40 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="class_bayesable.html#a2ec58e98bf37a90ac3d45a7713c6d5ea">Bayesable&lt; Args... &gt;</a>.</p>
+<p>Implements <a class="el" href="class_bayesable.html#afcea9b439bcf321d5354710d8861cb54">Bayesable&lt; Args... &gt;</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="aa7cf638b5d680794e33aa5eb4bd36b09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa7cf638b5d680794e33aa5eb4bd36b09">&#9670;&nbsp;</a></span>grammar</h2>
+<a id="affae32db28c39df676809ae47e14e7cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affae32db28c39df676809ae47e14e7cf">&#9670;&nbsp;</a></span>grammar</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_grammar.html">Grammar</a>* <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::grammar</td>
+          <td class="memname"><a class="el" href="class_l_o_t_hypothesis.html#a8006204013d471860e54c49d19edbace">Grammar_t</a>* <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::grammar</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="ab262eb592887136a986f5b2649397eca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab262eb592887136a986f5b2649397eca">&#9670;&nbsp;</a></span>MAX_NODES</h2>
+<a id="a0231650d938c098118a4c4bdb201fc61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0231650d938c098118a4c4bdb201fc61">&#9670;&nbsp;</a></span>MAX_NODES</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const size_t <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::MAX_NODES = 64</td>
+          <td class="memname">const size_t <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::MAX_NODES = 64</td>
         </tr>
       </table>
   </td>
@@ -1154,16 +1199,16 @@ template&lt;typename HYP, typename T, typename t_input, typename t_output, typen
 
 </div>
 </div>
-<a id="aff7455a900ffb91790e5235119676a80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff7455a900ffb91790e5235119676a80">&#9670;&nbsp;</a></span>value</h2>
+<a id="ac759b3eab77ead1749b905a3dde74961"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac759b3eab77ead1749b905a3dde74961">&#9670;&nbsp;</a></span>value</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename HYP, typename T, typename t_input, typename t_output, typename _t_datum = default_datum&lt;t_input, t_output&gt;, typename _t_data = std::vector&lt;_t_datum&gt;&gt; </div>
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">T <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, T, t_input, t_output, _t_datum, _t_data &gt;::value</td>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::value</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$struct_type_index_3_01_t_00_01std_1_1tuple_3_01_t_00_01_types_8_8_8_01_4_01_4.html" title="TypeIndex\&lt; T, std::\ltuple\&lt; T, Types... \&gt; \&gt;" alt="" coords="5,5,156,47"/>
+<area shape="rect" id="node1" href="$struct_pre_primitive.html" title="PrePrimitive" alt="" coords="5,5,99,32"/>
+<area shape="rect" id="node2" href="$struct_primitive.html" title="Primitive\&lt; T, args \&gt;" alt="" coords="147,5,285,32"/>
 </map>

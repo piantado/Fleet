@@ -7,5 +7,7 @@ var searchData=
   ['builtinprimitive_3c_20bool_2c_20double_20_3e',['BuiltinPrimitive&lt; bool, double &gt;',['../struct_builtin_primitive.html',1,'']]],
   ['builtinprimitive_3c_20t_20_3e',['BuiltinPrimitive&lt; t &gt;',['../struct_builtin_primitive.html',1,'']]],
   ['builtinprimitive_3c_20t_2c_20bool_2c_20t_2c_20t_20_3e',['BuiltinPrimitive&lt; t, bool, t, t &gt;',['../struct_builtin_primitive.html',1,'']]],
-  ['builtinprimitive_3c_20t_5fout_2c_20t_5fin_20_3e',['BuiltinPrimitive&lt; t_out, t_in &gt;',['../struct_builtin_primitive.html',1,'']]]
+  ['builtinprimitive_3c_20t_5fout_2c_20t_5fin_20_3e',['BuiltinPrimitive&lt; t_out, t_in &gt;',['../struct_builtin_primitive.html',1,'']]],
+  ['builtinprimitivebase',['BuiltinPrimitiveBase',['../struct_builtin_primitive_base.html',1,'']]],
+  ['builtinprimitiveroot',['BuiltinPrimitiveRoot',['../class_builtin_primitive_root.html',1,'']]]
 ];

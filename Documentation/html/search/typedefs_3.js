@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['matrix',['Matrix',['../_eigen_numerics_8h.html#a645222978e81acfb2523a9bce34aecc0',1,'EigenNumerics.h']]]
+  ['hypothesis_5ft',['Hypothesis_t',['../class_fleet_1_1_statistics_1_1_top_n.html#af115f2778a79fca8e1f499d351af1b8b',1,'Fleet::Statistics::TopN']]]
 ];

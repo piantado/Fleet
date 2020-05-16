@@ -1,5 +1,10 @@
-\hypertarget{_grammar_8h}{}\section{src/\+Grammar.h File Reference}
-\label{_grammar_8h}\index{src/\+Grammar.\+h@{src/\+Grammar.\+h}}
+\hypertarget{_grammar_8h}{}\section{src/\+Grammar/\+Grammar.h File Reference}
+\label{_grammar_8h}\index{src/\+Grammar/\+Grammar.\+h@{src/\+Grammar/\+Grammar.\+h}}
+
+
+This is a little magic used to check the ordering of P\+R\+I\+M\+I\+T\+I\+V\+ES to ensure that we never have a \hyperlink{struct_primitive}{Primitive} {\itshape after} a \hyperlink{struct_builtin_primitive}{Builtin\+Primitive}, since if we do that messes up how we call in apply\+Primitives.  
+
+
 {\ttfamily \#include $<$tuple$>$}\newline
 {\ttfamily \#include $<$deque$>$}\newline
 {\ttfamily \#include $<$exception$>$}\newline
@@ -7,6 +12,10 @@
 {\ttfamily \#include \char`\"{}Node.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Random.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Nonterminal.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Primitives.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Integerized\+Stack.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Virtual\+Machine\+State.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Builtins.\+h\char`\"{}}\newline
 Include dependency graph for Grammar.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -26,23 +35,14 @@ This graph shows which files directly or indirectly include this file\+:
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{class_depth_exception}{Depth\+Exception}
-\item 
 class \hyperlink{struct_primitive}{Primitive$<$ T, args $>$}
 \item 
-class \hyperlink{class_grammar}{Grammar}
-\end{DoxyCompactItemize}
-\subsection*{Variables}
-\begin{DoxyCompactItemize}
+class \hyperlink{class_grammar}{Grammar$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+E\+S $>$}
 \item 
-\hyperlink{class_depth_exception}{Depth\+Exception} \hyperlink{_grammar_8h_ab0da2f6f7c09b6360351bc67d1a32600}{depth\+\_\+exception}
+class \hyperlink{class_grammar_1_1_depth_exception}{Grammar$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+E\+S $>$\+::\+Depth\+Exception}
 \end{DoxyCompactItemize}
 
 
-\subsection{Variable Documentation}
-\mbox{\Hypertarget{_grammar_8h_ab0da2f6f7c09b6360351bc67d1a32600}\label{_grammar_8h_ab0da2f6f7c09b6360351bc67d1a32600}} 
-\index{Grammar.\+h@{Grammar.\+h}!depth\+\_\+exception@{depth\+\_\+exception}}
-\index{depth\+\_\+exception@{depth\+\_\+exception}!Grammar.\+h@{Grammar.\+h}}
-\subsubsection{\texorpdfstring{depth\+\_\+exception}{depth\_exception}}
-{\footnotesize\ttfamily  \hyperlink{class_depth_exception}{Depth\+Exception}  depth\+\_\+exception}
+\subsection{Detailed Description}
+This is a little magic used to check the ordering of P\+R\+I\+M\+I\+T\+I\+V\+ES to ensure that we never have a \hyperlink{struct_primitive}{Primitive} {\itshape after} a \hyperlink{struct_builtin_primitive}{Builtin\+Primitive}, since if we do that messes up how we call in apply\+Primitives. 
 

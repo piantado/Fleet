@@ -1,32 +1,23 @@
-\hypertarget{class_searchable}{}\section{Searchable$<$ H\+YP, t\+\_\+input, t\+\_\+output $>$ Class Template Reference}
-\label{class_searchable}\index{Searchable$<$ H\+Y\+P, t\+\_\+input, t\+\_\+output $>$@{Searchable$<$ H\+Y\+P, t\+\_\+input, t\+\_\+output $>$}}
+\hypertarget{class_searchable}{}\section{Searchable$<$ H\+YP, Args $>$ Class Template Reference}
+\label{class_searchable}\index{Searchable$<$ H\+Y\+P, Args $>$@{Searchable$<$ H\+Y\+P, Args $>$}}
 
 
 {\ttfamily \#include $<$Searchable.\+h$>$}
 
-
-
-Inheritance diagram for Searchable$<$ H\+YP, t\+\_\+input, t\+\_\+output $>$\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=336pt]{class_searchable__inherit__graph}
-\end{center}
-\end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-virtual int \hyperlink{class_searchable_a0450c35a21c5940a63560aa24b4ff0cc}{neighbors} () const =0
+virtual int \hyperlink{class_searchable_aec30063fcc9bed5d005f8318efa8492d}{neighbors} () const =0
 \item 
-virtual H\+YP \hyperlink{class_searchable_a64bda92cc9314dae7aff31f4444a93e6}{make\+\_\+neighbor} (int k) const =0
+virtual H\+YP \hyperlink{class_searchable_ad7fefacd3c9c2b66aa58c9d902f645cb}{make\+\_\+neighbor} (int k) const =0
 \item 
-virtual bool \hyperlink{class_searchable_aae16f1cb01f140f4033f6f67dc9753b6}{is\+\_\+evaluable} () const =0
+virtual bool \hyperlink{class_searchable_a23786e95730117c3cc4b90e010494a1e}{is\+\_\+evaluable} () const =0
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-\subsubsection*{template$<$typename H\+YP, typename t\+\_\+input, typename t\+\_\+output$>$\newline
-class Searchable$<$ H\+Y\+P, t\+\_\+input, t\+\_\+output $>$}
+\subsubsection*{template$<$typename H\+YP, typename... Args$>$\newline
+class Searchable$<$ H\+Y\+P, Args $>$}
 
 \begin{DoxyAuthor}{Author}
 steven piantadosi 
@@ -37,38 +28,38 @@ steven piantadosi
 
 
 \subsection{Member Function Documentation}
-\mbox{\Hypertarget{class_searchable_aae16f1cb01f140f4033f6f67dc9753b6}\label{class_searchable_aae16f1cb01f140f4033f6f67dc9753b6}} 
+\mbox{\Hypertarget{class_searchable_a23786e95730117c3cc4b90e010494a1e}\label{class_searchable_a23786e95730117c3cc4b90e010494a1e}} 
 \index{Searchable@{Searchable}!is\+\_\+evaluable@{is\+\_\+evaluable}}
 \index{is\+\_\+evaluable@{is\+\_\+evaluable}!Searchable@{Searchable}}
 \subsubsection{\texorpdfstring{is\+\_\+evaluable()}{is\_evaluable()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename t\+\_\+input, typename t\+\_\+output$>$ \\
-virtual bool \hyperlink{class_searchable}{Searchable}$<$ H\+YP, t\+\_\+input, t\+\_\+output $>$\+::is\+\_\+evaluable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename... Args$>$ \\
+virtual bool \hyperlink{class_searchable}{Searchable}$<$ H\+YP, Args $>$\+::is\+\_\+evaluable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 
 
-Implemented in \hyperlink{class_lexicon_a4928f2db73eb7d675f347429a4167820}{Lexicon$<$ H\+Y\+P, T, t\+\_\+input, t\+\_\+output, t\+\_\+datum $>$}, \hyperlink{class_lexicon_a4928f2db73eb7d675f347429a4167820}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_a68dedaeae92b25b0450f2dc1bd95a35b}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$}, \hyperlink{class_l_o_t_hypothesis_a68dedaeae92b25b0450f2dc1bd95a35b}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, Node, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_a68dedaeae92b25b0450f2dc1bd95a35b}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, Object, bool $>$}, and \hyperlink{class_l_o_t_hypothesis_a68dedaeae92b25b0450f2dc1bd95a35b}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, float, float, float, std\+::multiset$<$ float $>$ $>$}.
+Implemented in \hyperlink{class_lexicon_ab9fcefbd8598a5401a39bd59e8043db9}{Lexicon$<$ H\+Y\+P, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}, \hyperlink{class_lexicon_ab9fcefbd8598a5401a39bd59e8043db9}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}, \hyperlink{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, utterance, word, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, float, float, My\+Grammar, float, std\+::multiset$<$ float $>$ $>$}, and \hyperlink{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Object, bool, My\+Grammar $>$}.
 
-\mbox{\Hypertarget{class_searchable_a64bda92cc9314dae7aff31f4444a93e6}\label{class_searchable_a64bda92cc9314dae7aff31f4444a93e6}} 
+\mbox{\Hypertarget{class_searchable_ad7fefacd3c9c2b66aa58c9d902f645cb}\label{class_searchable_ad7fefacd3c9c2b66aa58c9d902f645cb}} 
 \index{Searchable@{Searchable}!make\+\_\+neighbor@{make\+\_\+neighbor}}
 \index{make\+\_\+neighbor@{make\+\_\+neighbor}!Searchable@{Searchable}}
 \subsubsection{\texorpdfstring{make\+\_\+neighbor()}{make\_neighbor()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename t\+\_\+input, typename t\+\_\+output$>$ \\
-virtual H\+YP \hyperlink{class_searchable}{Searchable}$<$ H\+YP, t\+\_\+input, t\+\_\+output $>$\+::make\+\_\+neighbor (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename... Args$>$ \\
+virtual H\+YP \hyperlink{class_searchable}{Searchable}$<$ H\+YP, Args $>$\+::make\+\_\+neighbor (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 
 
-Implemented in \hyperlink{class_lexicon_a3d4fb7e4545267221eb38acba4d52a6b}{Lexicon$<$ H\+Y\+P, T, t\+\_\+input, t\+\_\+output, t\+\_\+datum $>$}, \hyperlink{class_lexicon_a3d4fb7e4545267221eb38acba4d52a6b}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_ae7771176b8b2599f42c75318ee0e9164}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$}, \hyperlink{class_l_o_t_hypothesis_ae7771176b8b2599f42c75318ee0e9164}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, Node, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_ae7771176b8b2599f42c75318ee0e9164}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, Object, bool $>$}, and \hyperlink{class_l_o_t_hypothesis_ae7771176b8b2599f42c75318ee0e9164}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, float, float, float, std\+::multiset$<$ float $>$ $>$}.
+Implemented in \hyperlink{class_lexicon_a88a02f88387f436c6ff4c060735291ea}{Lexicon$<$ H\+Y\+P, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}, \hyperlink{class_lexicon_a88a02f88387f436c6ff4c060735291ea}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}, \hyperlink{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, utterance, word, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, float, float, My\+Grammar, float, std\+::multiset$<$ float $>$ $>$}, and \hyperlink{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Object, bool, My\+Grammar $>$}.
 
-\mbox{\Hypertarget{class_searchable_a0450c35a21c5940a63560aa24b4ff0cc}\label{class_searchable_a0450c35a21c5940a63560aa24b4ff0cc}} 
+\mbox{\Hypertarget{class_searchable_aec30063fcc9bed5d005f8318efa8492d}\label{class_searchable_aec30063fcc9bed5d005f8318efa8492d}} 
 \index{Searchable@{Searchable}!neighbors@{neighbors}}
 \index{neighbors@{neighbors}!Searchable@{Searchable}}
 \subsubsection{\texorpdfstring{neighbors()}{neighbors()}}
-{\footnotesize\ttfamily template$<$typename H\+YP, typename t\+\_\+input, typename t\+\_\+output$>$ \\
-virtual int \hyperlink{class_searchable}{Searchable}$<$ H\+YP, t\+\_\+input, t\+\_\+output $>$\+::neighbors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename... Args$>$ \\
+virtual int \hyperlink{class_searchable}{Searchable}$<$ H\+YP, Args $>$\+::neighbors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 
 
-Implemented in \hyperlink{class_lexicon_abccf49d0f313b9f6e0c3ae286d13ac82}{Lexicon$<$ H\+Y\+P, T, t\+\_\+input, t\+\_\+output, t\+\_\+datum $>$}, \hyperlink{class_lexicon_abccf49d0f313b9f6e0c3ae286d13ac82}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_ac74e874f6b677dc1c013602907627be7}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, T, t\+\_\+input, t\+\_\+output, \+\_\+t\+\_\+datum, \+\_\+t\+\_\+data $>$}, \hyperlink{class_l_o_t_hypothesis_ac74e874f6b677dc1c013602907627be7}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, Node, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_ac74e874f6b677dc1c013602907627be7}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, Object, bool $>$}, and \hyperlink{class_l_o_t_hypothesis_ac74e874f6b677dc1c013602907627be7}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Node, float, float, float, std\+::multiset$<$ float $>$ $>$}.
+Implemented in \hyperlink{class_lexicon_a6419f323377d4c524363707eee0cae09}{Lexicon$<$ H\+Y\+P, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}, \hyperlink{class_lexicon_a6419f323377d4c524363707eee0cae09}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_a097cde606ec3f277fdeb92145599027f}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}, \hyperlink{class_l_o_t_hypothesis_a097cde606ec3f277fdeb92145599027f}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a097cde606ec3f277fdeb92145599027f}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, utterance, word, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a097cde606ec3f277fdeb92145599027f}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a097cde606ec3f277fdeb92145599027f}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, float, float, My\+Grammar, float, std\+::multiset$<$ float $>$ $>$}, and \hyperlink{class_l_o_t_hypothesis_a097cde606ec3f277fdeb92145599027f}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Object, bool, My\+Grammar $>$}.
 
 
 
