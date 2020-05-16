@@ -22,7 +22,7 @@ size_t max_length = 256; // max string length, else throw an error (128+ needed 
 size_t max_setsize = 64; // throw error if we have more than this
 size_t nfactors = 2; // how may factors do we run on?
 
-static const double alpha = 0.99; // reliability of the data
+static constexpr float alpha = 0.01; // probability of insert/delete errors (must be a float for the string function below)
 
 const size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite so we won't see some stuff
 const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The more data, the slower...
@@ -121,8 +121,18 @@ std::tuple PRIMITIVES = {
 	
 	Primitive("(%s\u2216%s)", +[](StrSet s, StrSet x) -> StrSet {
 		StrSet output; 
+		
+		// this would usually be implemented like this, but it's overkill (and slower) because normally 
+		// we just have single elemnents
 		std::set_difference(s.begin(), s.end(), x.begin(), x.end(), std::inserter(output, output.begin()));
-		return output;		
+		
+//		for(auto& v : s) {
+//			if(not x.contains(v)) {
+//				output.insert(std::move(v));
+//			}
+//		}
+//		
+		return output;
 	}),	
 	
 	
@@ -204,6 +214,7 @@ public:
 
 #include "Lexicon.h"
 
+
 class MyHypothesis final : public Lexicon<MyHypothesis, InnerHypothesis, S, S> {
 public:	
 	
@@ -243,16 +254,14 @@ public:
 		
 		likelihood = 0.0;
 		
-		auto A = alphabet.size();
+		const float log_A = log(alphabet.size());
 
 		for(const auto& a : data) {
-			const S& astr = a.output;
 			double alp = -infinity; // the model's probability of this
 			for(const auto& m : M.values()) {
-				const S& mstr = m.first;
 				
 				// we can always take away all character and generate a anew
-				alp = logplusexp(alp, m.second + p_delete_append(mstr, astr, 1.0-alpha, 1.0-alpha, A));
+				alp = logplusexp(alp, m.second + p_delete_append<alpha,alpha>(m.first, a.output, log_A));
 				
 				// In an old version of this, we considered a noise model where you just add characters on the end
 				// with probability gamma. The trouble with that is that sometimes long new data has strings that
@@ -273,7 +282,6 @@ public:
 				break;				
 			}
 		}
-				
 		return likelihood; 
 	
 	 }
