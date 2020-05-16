@@ -541,15 +541,15 @@ public:
 		 */
 		
 		// compute the size of the program -- just number of nodes plus special stuff for IF
-		size_t n = 1; // I am one node
+		size_t n = 1; // I am one operation
 		if( rule->instr.is_a(BuiltinOp::op_IF) ) { n += 1; } // I have to add this many more instructions for an if
-		for(auto& c: children) {
+		for(const auto& c: children) {
 			n += c.program_size();
 		}
 		return n;
 	}
 		
-	inline virtual void linearize(Program &ops) const { 
+	inline virtual int linearize(Program &ops) const { 
 		/**
 		 * @brief convert tree to a linear sequence of operations. 
 		 * 		To do this, we first linearize the kids, leaving their values as the top on the stack
@@ -561,11 +561,10 @@ public:
 		 *		us up a bit (otherwise recursive inlining only happens at -O3)
 		 *		This optimization is why we do set max-inline-insns-recursive in Fleet.mk
 		 * @param ops
+		 * @return This returns the *size* of the program that was pushed onto ops. This is useful for saving us
+		 *         lots of calls to program_size, which ends up being an important optimization. 
 		 */
-		
-		//  
-
-		
+				
 		// NOTE: If you change the order here ever, you have to change how string() works so that 
 		//       string order matches evaluation order
 		// TODO: We should restructure this to use "map" so that the order is always the same as for printing
@@ -582,36 +581,32 @@ public:
 		if( rule->instr.is_a(BuiltinOp::op_IF) ) {
 			assert(rule->N == 3 && "BuiltinOp::op_IF require three arguments"); // must have 3 parts
 			
-			int xsize = children[1].program_size()+1; // must be +1 in order to skip over the JMP too
-			assert(xsize < (1<<12) && "If statement jump size too large to be encoded in Instruction arg. Your program is too large for Fleet."); // these sizes come from the arg bitfield 
 			
-			int ysize = children[2].program_size();
-			assert(ysize < (1<<12) && "If statement jump size too large to be encoded in Instruction arg. Your program is too large for Fleet.");
+			int ysize = children[2].linearize(ops);
 			
-			//ops.reserve(ops.size() + xsize + ysize + children[0].program_size() + 3);
-			
-			children[2].linearize(ops);
-			
-			// make the right instruction 
+			// encode the jump
 			ops.emplace_back(BuiltinOp::op_JMP, ysize);
 			
-			children[1].linearize(ops);
+			int xsize = children[1].linearize(ops)+1; // must be +1 in order to skip over the JMP too
 			
-			// encode jump
+			// encode the if
 			ops.emplace_back(BuiltinOp::op_IF, xsize);
 			
 			// evaluate the bool first so its on the stack when we get to if
-			children[0].linearize(ops);
+			int boolsize = children[0].linearize(ops);
 			
+			return ysize + xsize + boolsize+1; // +1 for if
 		}
 		else {
 			/* Here we push the children in increasing order. Then, when we pop rightmost first (as Primitive does), it 
 			 * assigns the correct index.  */
 			ops.emplace_back(rule->instr); 
 			
+			int mysize = 1;
 			for(int i=rule->N-1;i>=0;i--) { // here we linearize right to left so that when we call right to left, it matches string order			
-				children[i].linearize(ops);
+				mysize += children[i].linearize(ops);
 			}
+			return mysize; 
 		}
 	}
 		
