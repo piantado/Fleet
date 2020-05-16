@@ -119,9 +119,8 @@ public:
 	}
 
 	virtual void push_program(Program& s, short k=0) override {
-		assert(k==0); // this is only for lexica
-		//s.reserve(128); // seems to help to reserve some
-		//s.reserve(value.program_size()+1);
+		assert(k==0 && "*** the short argument in push_program should only be nonzero for lexica");
+		//s.reserve(s.size() + value.program_size()+1);
 		value.linearize(s);
 	}
 

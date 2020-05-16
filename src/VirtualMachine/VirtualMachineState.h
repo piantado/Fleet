@@ -35,7 +35,6 @@ struct has_operator_lessthan : has_operator_lessthan_impl<T, EqualTo>::type {};
 
 
 
-
 namespace FleetStatistics {}
 template<typename X> class VirtualMachinePool;
 extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
@@ -55,6 +54,15 @@ extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
  */ 
 template<typename _t_input, typename _t_output, typename... VM_TYPES>
 class VirtualMachineState {
+
+	template<typename T>
+	class VMSStack : public Stack<T> {		
+		// This is a kind of stack that just reserves some for VirtualMachineStates (if that's faster, which its not)
+	public:
+		VMSStack() {
+	//		this->reserve(8);
+		}
+	};
 	
 public:
 
@@ -67,7 +75,7 @@ public:
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
 	Program            opstack; 
-	Stack<input_t>     xstack; //xstackthis stores a stack of the x values (for recursive calls)
+	VMSStack<input_t>     xstack; //xstackthis stores a stack of the x values (for recursive calls)
 	output_t           err; // what error output do we return?
 	double             lp; // the probability of this context
 	
@@ -75,9 +83,9 @@ public:
 	unsigned long     run_program; // how many program ops have I done?
 	
 	// This is a little bit of fancy template metaprogramming that allows us to define a stack
-	// like std::tuple<Stack<bool>, Stack<std::string> > using a list of type names defined in VM_TYPES
+	// like std::tuple<VMSStack<bool>, VMSStack<std::string> > using a list of type names defined in VM_TYPES
 	template<typename... args>
-	struct t_stack { std::tuple<Stack<args>...> value; };
+	struct t_stack { std::tuple<VMSStack<args>...> value; };
 	t_stack<VM_TYPES...> _stack; // our stacks of different types
 	
 	typedef int index_t; // how we index into factorized lexica -- NOTE: probably should be castable from Instruction.arg 
@@ -87,7 +95,7 @@ public:
 
 	// when we recurse and memoize, this stores the arguments (index and input_t) for us to 
 	// rember after the program trace is done
-	Stack<std::pair<index_t, input_t>> memstack;
+	VMSStack<std::pair<index_t, input_t>> memstack;
 
 	vmstatus_t status; // are we still running? Did we get an error?
 	
@@ -127,20 +135,20 @@ public:
 	
 	// Functions to access the stack
 	template<typename T>
-	Stack<T>& stack()             { 
+	VMSStack<T>& stack()             { 
 		/**
 		 * @brief Returns a reference to the stack (of a given type)
 		 * @return 
 		 */
-		return std::get<Stack<T>>(_stack.value); 
+		return std::get<VMSStack<T>>(_stack.value); 
 	}
 	template<typename T>
-	const Stack<T>& stack() const { 
+	const VMSStack<T>& stack() const { 
 		/**
 		 * @brief Const reference to top of stack
 		 * @return 
 		 */		
-		return std::get<Stack<T>>(_stack.value); 
+		return std::get<VMSStack<T>>(_stack.value); 
 	}
 	
 	template<typename T>
@@ -572,7 +580,7 @@ public:
 						}
 						case BuiltinOp::op_JMP:
 						{
-							popn(opstack, i.arg);
+							opstack.popn(i.arg);
 							break;
 						}
 						case BuiltinOp::op_IF: 
@@ -582,7 +590,7 @@ public:
 								bool b = getpop<bool>(); // bool has already evaluted
 								
 								// now ops must skip the xbranch
-								if(!b) popn(opstack, i.arg);
+								if(!b) opstack.popn(i.arg);
 								else   {}; // do nothing, we pass through and then get to the jump we placed at the end of the x branch
 								
 								break;		

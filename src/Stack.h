@@ -15,7 +15,6 @@ class Stack : public std::vector<T> {
 public:
 
 	Stack() {
-//		this->reserve(8); /// chosen with a little experimentation for FormalLanguageTheory-Complex
 	}
 
 	void push(const T& val) {
