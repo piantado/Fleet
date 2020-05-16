@@ -63,10 +63,10 @@ inline double p_delete_append(const std::string& x, const std::string& y, const 
 	 */
 	
 	// all of these get precomputed at compile time 
-	constexpr float log_add_p   = log(add_p);
-	constexpr float log_del_p   = log(del_p);
-	constexpr float log_1madd_p = log(add_p);
-	constexpr float log_1mdel_p = log(del_p);	
+	static const float log_add_p   = log(add_p);
+	static const float log_del_p   = log(del_p);
+	static const float log_1madd_p = log(add_p);
+	static const float log_1mdel_p = log(del_p);	
 	
 	
 	// Well we can always delete the whole thing and add on the remainder

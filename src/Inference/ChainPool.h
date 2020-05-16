@@ -4,6 +4,14 @@
 
 //#define DEBUG_CHAINPOOL
 
+#include <vector>
+#include <boost/align/aligned_allocator.hpp>
+
+//template <typename T>
+//using aligned_vector = std::vector<T, boost::alignment::aligned_allocator<T, 16>>;
+
+
+
 /**
  * @class ChainPool
  * @author steven piantadosi
@@ -19,8 +27,9 @@ class ChainPool {
 	
 public:
 	std::vector<MCMCChain<HYP,callback_t>> pool;
-	std::mutex running_mutex; // modify index of who is running
 	
+	std::mutex running_mutex; // modify index of who is running
+		
 	// these parameters define the amount of a thread spends on each chain before changing to another
 	// NOTE: these interact with ParallelTempering swap/adapt values (because if these are too small, then
 	// we won't have time to update every chain before proposing more swaps)
@@ -64,14 +73,14 @@ public:
 		size_t idx = 0; // what pool item am I running on?
 		while( ctl.running() ) {
 		
-			do {
+			{
 				// find the next running we can update and do it
 				std::lock_guard lock(*running_mutex);
 				(*running)[idx] = false;	
 				idx = next_index(idx);
 				(*running)[idx] = true;
 
-			} while(0);		
+			}		
 
 //#ifdef DEBUG_CHAINPOOL
 //			COUT "# Running thread " <<std::this_thread::get_id() << " on "<< idx TAB (*pool)[idx].current.posterior TAB (*pool)[idx].current.string() ENDL;

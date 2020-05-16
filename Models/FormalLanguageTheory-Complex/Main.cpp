@@ -121,8 +121,18 @@ std::tuple PRIMITIVES = {
 	
 	Primitive("(%s\u2216%s)", +[](StrSet s, StrSet x) -> StrSet {
 		StrSet output; 
+		
+		// this would usually be implemented like this, but it's overkill (and slower) because normally 
+		// we just have single elemnents
 		std::set_difference(s.begin(), s.end(), x.begin(), x.end(), std::inserter(output, output.begin()));
-		return output;		
+		
+//		for(auto& v : s) {
+//			if(not x.contains(v)) {
+//				output.insert(std::move(v));
+//			}
+//		}
+//		
+		return output;
 	}),	
 	
 	
