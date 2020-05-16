@@ -247,13 +247,11 @@ public:
 		const float log_A = log(alphabet.size());
 
 		for(const auto& a : data) {
-			const S& astr = a.output;
 			double alp = -infinity; // the model's probability of this
 			for(const auto& m : M.values()) {
-				const S& mstr = m.first;
 				
 				// we can always take away all character and generate a anew
-				alp = logplusexp(alp, m.second + p_delete_append<alpha,alpha>(mstr, astr, log_A));
+				alp = logplusexp(alp, m.second + p_delete_append<alpha,alpha>(m.first, a.output, log_A));
 				
 				// In an old version of this, we considered a noise model where you just add characters on the end
 				// with probability gamma. The trouble with that is that sometimes long new data has strings that
@@ -274,7 +272,6 @@ public:
 				break;				
 			}
 		}
-				
 		return likelihood; 
 	
 	 }

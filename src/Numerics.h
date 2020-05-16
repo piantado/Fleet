@@ -46,8 +46,37 @@ const double pi  = M_PI;
 // Probability
 /////////////////////////////////////////////////////////////
 
-template<typename t>
-t logplusexp(const t a, const t b) {
+
+/**
+ * @brief This is the goddamn collest thing, this takes a function f(x) and at *compile time* finds a bound B so that f(x) < precision for all x < B.
+ *        This is useful in logsumexp where at compile time we don't bother adding if the addition will be too tiny. 
+ *        For instance: 
+ * 				constexpr auto f = +[](T x) -> const double {return log1p(exp(x));}; 	
+ * 				const T bound = get_fx_compiletime_bound<T>(1e-6, f);
+ * @param precision
+ * @param f
+ * @param lower
+ * @param upper
+ */
+template<typename T>
+constexpr T get_fx_compiletime_bound(const double precision, const double f(T), const T lower=-1e6, const T upper=1e6) {
+
+	// TODO: Should assert that the starting bounds are ok
+	
+	const T m = lower + (upper-lower)/2.0;
+	if (upper-lower < 1e-3) {
+		return m;
+	}
+	else if (f(m) < precision) { // bound on precision here 
+		return get_fx_compiletime_bound(precision, f, m, upper);
+	}
+	else {
+		return get_fx_compiletime_bound(precision, f, lower,m);
+	}
+}
+
+template<typename T>
+T logplusexp(const T a, const T b) {
 	// An approximate logplusexp -- the check on z<-25 makes it much faster since it saves many log,exp operations
 	// It is easy to derive a good polynomial approximation that is a bit faster (using sollya) on [-25,0] but that appears
 	// not to be worth it at this point. 
@@ -55,11 +84,15 @@ t logplusexp(const t a, const t b) {
 	if     (a == -infinity) return b;
 	else if(b == -infinity) return a;
 	
-	t mx = std::max(a,b);
-//	return mx + log(exp(a-mx)+exp(b-mx));
+	T mx = std::max(a,b);
 	
-	t z  = std::min(a,b)-mx;
-	if(z < -25.0) return mx;
+	// compute a bound here at compiletime such that log1p(exp(z)) doesn't affect the result much (up to 1e-6)
+	// for floats, this ends up being about -13.8
+	constexpr auto f = +[](T x) -> const double { return log1p(exp(x));}; 	
+	const T bound = get_fx_compiletime_bound<T>(1e-6, f);
+	
+	T z  = std::min(a,b)-mx;
+	if(z < bound) return mx; // save us from having to do anything
 
 	return mx + log1p(exp(z));
     //return mx + log(exp(a-mx)+exp(b-mx));
