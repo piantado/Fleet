@@ -46,7 +46,7 @@ public:
 	static const size_t GRAMMAR_MAX_DEPTH = 64;
 	
 	// an exception for recursing too deep so we can print a trace of what went wrong
-	class DepthException: public std::exception {} depth_exception;
+//	class DepthException: public std::exception {} depth_exception;
 
 	// We define a type for the VM. This would be more natural to have in LOTHypothesis, except that 
 	// it doesn't have nice access to GRAMMAR_TYPES. So, defaultly, we will define a VM type here 
@@ -400,19 +400,14 @@ public:
 		
 		
 		if(depth >= GRAMMAR_MAX_DEPTH) {
-			throw depth_exception; 
+			assert(0 && "*** Grammar exceeded max depth, are you sure the grammar probabilities are right?");
 		}
 		
 		Rule* r = sample_rule(nt);
 		Node n = makeNode(r);
 		
-		try{
-			for(size_t i=0;i<r->N;i++) {
-				n.set_child(i, generate(r->type(i), depth+1)); // recurse down
-			}
-		} catch(DepthException& e) {
-			CERR "*** Grammar has recursed beyond GRAMMAR_MAX_DEPTH (Are the probabilities right?). nt=" << nt << " d=" << depth TAB n.string() ENDL;
-			throw e;
+		for(size_t i=0;i<r->N;i++) {
+			n.set_child(i, generate(r->type(i), depth+1)); // recurse down
 		}
 		return n;
 	}	
