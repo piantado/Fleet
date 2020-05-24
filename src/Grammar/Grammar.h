@@ -368,7 +368,7 @@ public:
 		
 		std::function<double(const Rule& r)> f = [](const Rule& r){return r.p;};
 		assert(rules[nt].size() > 0 && "*** You are trying to sample from a nonterminal with no rules!");
-		return sample<Rule,std::vector<Rule>>(rules[nt], f).first; // ignore the probabiltiy 
+		return sample<Rule,std::vector<Rule>>(rules[nt], Z[nt], f).first; // ignore the probabiltiy 
 	}
 	
 	

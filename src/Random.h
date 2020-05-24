@@ -131,14 +131,19 @@ double sample_z(const T& s, std::function<double(const t&)>& f) {
 
 template<typename t, typename T> 
 std::pair<t*,double> sample(const T& s, std::function<double(const t&)>& f = [](const t& v){return 1.0;}) {
+	// An interface to sample that computes the normalizer for you 
+	return sample(s, sample_z(s,f), f);
+}
+
+
+template<typename t, typename T> 
+std::pair<t*,double> sample(const T& s, double z, std::function<double(const t&)>& f = [](const t& v){return 1.0;}) {
 	// this takes a collection T of elements t, and a function f
 	// which assigns them each a probability, and samples from them according
 	// to the probabilities in f. The probability that is returned is only the probability
 	// of selecting that *element* (index), not the probability of selecting anything equal to it
 	// (i.e. we defaultly don't double-count equal options). For that, use p_sample_eq below
-	
-	double z = sample_z(s,f);
-	
+	// here z is the normalizer, z = sum_x f(x) 
 	double r = z * uniform();
 	
 	for(auto& x : s) {
@@ -150,6 +155,8 @@ std::pair<t*,double> sample(const T& s, std::function<double(const t&)>& f = [](
 	
 	assert(0 && "*** Should not get here in sampling");	
 }
+
+
 
 template<typename t, typename T> 
 std::pair<t*,double> sample(const T& s, double(*f)(const t&)) {
