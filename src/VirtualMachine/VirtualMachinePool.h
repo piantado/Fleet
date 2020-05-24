@@ -38,7 +38,7 @@ public:
 	double worst_lp = infinity;
 	
 	std::priority_queue<VMState*, std::vector<VMState*>, VirtualMachinePool::compare_VMState_prt> Q; // Q of states sorted by probability
-	//std::priority_queue<VMState*, ReservedVector<VMState*,1024>, VirtualMachinePool::compare_VMState_prt> Q; // Q of states sorted by probability
+//	std::priority_queue<VMState*, ReservedVector<VMState*,1024>, VirtualMachinePool::compare_VMState_prt> Q; // Does not seem to speed things up 
 
 
 	VirtualMachinePool(unsigned long ms=2048, unsigned long mo=256, double mlp=-10) 

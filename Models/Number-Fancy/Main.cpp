@@ -290,7 +290,7 @@ class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 	virtual void playout() override {
 
 		MyHypothesis h0 = value; // need a copy to change resampling on 
-		for(auto& n : h0.value ){
+		for(auto& n : h0.get_value() ){
 			n.can_resample = false;
 		}
 		

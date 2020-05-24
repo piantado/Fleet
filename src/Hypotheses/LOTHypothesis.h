@@ -44,9 +44,12 @@ public:
 	static const size_t MAX_NODES = 64; // max number of nodes we allow; otherwise -inf prior
 	
 	Grammar_t* grammar;
-	
-	Node value;
 
+protected:
+
+	Node value;
+	
+public:
 	LOTHypothesis(Grammar_t* g=nullptr)     : MCMCable<HYP,datum_t,data_t>(), grammar(g), value(NullRule,0.0,true) {}
 	LOTHypothesis(Grammar_t* g, Node&& x)   : MCMCable<HYP,datum_t,data_t>(), grammar(g), value(x) {}
 	LOTHypothesis(Grammar_t* g, Node& x)    : MCMCable<HYP,datum_t,data_t>(), grammar(g), value(x) {}
@@ -92,6 +95,9 @@ public:
 			return HYP(this->grammar, this->grammar->template generate<output_t>());
 		}
 	}
+	
+		  Node& get_value()       {	return value; }
+	const Node& get_value() const {	return value; }
 	
 	void set_value(Node&  v) { value = v; }
 	void set_value(Node&& v) { value = v; }

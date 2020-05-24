@@ -131,7 +131,7 @@ public:
 		// check to make sure that if we have rn recursive factors, we never try to call F on higher 
 		
 		for(auto& a : factors) {
-			for(auto& n : a.value) {
+			for(const auto& n : a.get_value() ) {
 				if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE,BuiltinOp::op_SAFE_RECURSE,BuiltinOp::op_SAFE_MEM_RECURSE) ) {
 					int fi = (size_t)n.rule->instr.arg; // which factor is called?
 					if(fi >= (int)factors.size() or fi < 0)
@@ -165,7 +165,7 @@ public:
 		
 		for(size_t i=0;i<N;i++){
 			
-			for(const auto& n : factors[i].value) {
+			for(const auto& n : factors[i].get_value() ) {
 				if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,
 									  BuiltinOp::op_MEM_RECURSE,
 									  BuiltinOp::op_SAFE_RECURSE,
