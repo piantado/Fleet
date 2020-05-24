@@ -37,8 +37,8 @@ std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "5
 
 // Parameters for running a virtual machine
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-unsigned long MAX_STEPS_PER_FACTOR   = 2048; //4096;  
-unsigned long MAX_OUTPUTS_PER_FACTOR = 512; //512; - make it bigger than
+unsigned long MAX_STEPS_PER_FACTOR   = 4096; //4096;  
+unsigned long MAX_OUTPUTS_PER_FACTOR = 1024; //512; - make it bigger than
 unsigned long PRINT_STRINGS = 128; // print at most this many strings for each hypothesis
 double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -25 to catch some less frequent things that happen by chance
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -377,7 +377,7 @@ int main(int argc, char** argv){
 		
 	// we are building up data and TopNs to give t parallel tempering
 	std::vector<MyHypothesis::data_t> datas; // load all the data	
-	std::vector<Fleet::Statistics::TopN<MyHypothesis>> tops;
+	std::vector<TopN<MyHypothesis>> tops;
 	for(size_t i=0;i<data_amounts.size();i++){ 
 		MyHypothesis::data_t d;
 		
@@ -385,7 +385,7 @@ int main(int argc, char** argv){
 		load_data_file(d, data_path.c_str());
 		
 		datas.push_back(d);
-		tops.push_back(Fleet::Statistics::TopN<MyHypothesis>(ntop));
+		tops.push_back(TopN<MyHypothesis>(ntop));
 	}
 
 	
@@ -402,7 +402,7 @@ int main(int argc, char** argv){
 	// Actually run
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	Fleet::Statistics::TopN<MyHypothesis> all(ntop); 
+	TopN<MyHypothesis> all(ntop); 
 //	all.set_print_best(true);
 	
 	tic();	
@@ -428,8 +428,8 @@ int main(int argc, char** argv){
 		
 		if(long_output) {
 			max_length = 256;
-			MAX_STEPS_PER_FACTOR   = 2048; 
-			MAX_OUTPUTS_PER_FACTOR = 512; 
+			MAX_STEPS_PER_FACTOR   = 4096; 
+			MAX_OUTPUTS_PER_FACTOR = 1024; 
 			PRINT_STRINGS = 128;
 			MIN_LP = -25;
 		}	
@@ -447,11 +447,11 @@ int main(int argc, char** argv){
 	tic();
 	
 	
-//	// Vanilla MCMC, serial
+	// Vanilla MCMC, serial
 //	for(size_t i=0;i<datas.size();i++){
 //		tic();
 //		MCMCChain chain(h0, &datas[i], all);
-//		chain.run(Control(mcmc_steps/data.size(), runtime/datas.size()));
+//		chain.run(Control(mcmc_steps/datas[i].size(), runtime/datas.size()));
 //		tic();	
 //	}
 

@@ -273,7 +273,7 @@ public:
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Statistics/Top.h"
-Fleet::Statistics::TopN<MyHypothesis> all; // used by MCMC and MCTS locally
+TopN<MyHypothesis> all; // used by MCMC and MCTS locally
 
 std::vector<MyHypothesis::data_t> alldata;
 
@@ -376,7 +376,7 @@ int main(int argc, char** argv) {
 	
 	// Set up the data -- we'll do this so we can run a parallel
 	// chain across all of it at once
-	std::vector<Fleet::Statistics::TopN<MyHypothesis>>   alltops;
+	std::vector<TopN<MyHypothesis>>   alltops;
 	for(auto ndata : data_amounts) {
 		data_t mydata;
 		
@@ -387,7 +387,7 @@ int main(int argc, char** argv) {
 		}
 
 		alldata.push_back(mydata);
-		alltops.push_back(Fleet::Statistics::TopN<MyHypothesis>(ntop));
+		alltops.push_back(TopN<MyHypothesis>(ntop));
 	}
 	data_t biggestData = *alldata.rbegin();
 	

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 myhost=$(hostname -s)
-threads=2 
+threads=1
 top=1000
 
 # make a copy here so that when we sync/recompile
@@ -11,16 +11,16 @@ cp main $mymain
 cp Main.cpp run/Main.cpp.$myhost # for a record 
 
 if [ $myhost = "colala-hastings" ] ; then
-    factors=(3,6)
-    jobs=25
+    factors=(3 6)
+    jobs=40
     parameters=AllParameters.csv
 elif [ $myhost = "colala-metropolis" ] ; then
-    factors=(2,5)
-    jobs=25
+    factors=(2 5)
+    jobs=40
     parameters=AllParameters.csv
 elif [ $myhost = "simon" ] ; then
-    factors=(1,4)
-    jobs=35
+    factors=(1 4)
+    jobs=75
     parameters=AllParameters.csv
 fi
 # elif [ $myhost = "garfunkel" ] ; then

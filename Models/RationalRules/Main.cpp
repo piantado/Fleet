@@ -48,6 +48,7 @@ std::tuple PRIMITIVES = {
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define the grammar
+/// Thid requires the types of the thing we will add to the grammar (bool,Object)
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Grammar.h"
@@ -90,20 +91,21 @@ int main(int argc, char** argv){
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	auto app = Fleet::DefaultArguments("Rational rules");
 	CLI11_PARSE(app, argc, argv);
-	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
+	Fleet_initialize(); 
 	
 	//------------------
 	// Basic setup
 	//------------------
 	
-	// Define the grammar (default initialize using our primitives will add all those rules)	
+	// Define the grammar (default initialize using our primitives will add all those rules)
+	// in doing this, grammar deduces the types from the input and output types of each primitive
 	MyGrammar grammar(PRIMITIVES);
 	
 	// mydata stores the data for the inference model
 	MyHypothesis::data_t mydata;
 	
 	// top stores the top hypotheses we have found
-	Fleet::Statistics::TopN<MyHypothesis> top(ntop);
+	TopN<MyHypothesis> top(ntop);
 	
 	//------------------
 	// set up the data

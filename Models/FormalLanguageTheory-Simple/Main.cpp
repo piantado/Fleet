@@ -1,6 +1,8 @@
 
 #include <string>
 
+//#define DEBUG_MCMC
+
 using S = std::string; // just for convenience
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -134,7 +136,7 @@ int main(int argc, char** argv){
 	app.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
 	app.add_option("-d,--data",     datastr, "Comma separated list of input data strings");	
 	CLI11_PARSE(app, argc, argv);
-	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
+	Fleet_initialize();
 	
 	MyGrammar grammar(PRIMITIVES);
 
@@ -142,7 +144,7 @@ int main(int argc, char** argv){
 	MyHypothesis::data_t mydata;
 	
 	// top stores the top hypotheses we have found
-	Fleet::Statistics::TopN<MyHypothesis> top(ntop);
+	TopN<MyHypothesis> top(ntop);
 	
 	// here we create an alphabet op with an "arg" that stores the character (this is faster than alphabet.substring with i.arg as an index) 
 	// here, op_ALPHABET converts arg to a string (and pushes it)
@@ -208,6 +210,7 @@ int main(int argc, char** argv){
 	samp.run(Control(mcmc_steps, runtime, nthreads), 100, 300); //30000);		
 //	
 //	MCMCChain c(h0, &mydata, top);
+	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
 //	c.run(Control(mcmc_steps, runtime, nthreads));
 
 	tic();

@@ -100,7 +100,7 @@ int main(int argc, char** argv){
 
 
 	// Define something to hold the best hypotheses
-	Fleet::Statistics::TopN<MyHypothesis> top(ntop);
+	TopN<MyHypothesis> top(ntop);
 
 	// our data
 	MyHypothesis::data_t mydata = {2,8,16};	

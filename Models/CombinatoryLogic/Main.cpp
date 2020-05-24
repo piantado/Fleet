@@ -133,7 +133,7 @@ int main(int argc, char** argv){
 		h0.factors.push_back(ih.restart());
 	}
 	
-	Fleet::Statistics::TopN<MyHypothesis> top(ntop);
+	TopN<MyHypothesis> top(ntop);
 	
 	tic();
 	MCMCChain chain(h0, nullptr, top);

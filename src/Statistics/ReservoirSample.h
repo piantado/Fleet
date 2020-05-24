@@ -53,7 +53,7 @@ namespace Fleet {
 			
 		public:
 
-			Fleet::Statistics::TopN<Item> top;
+			TopN<Item> top;
 			unsigned long N; // how many have I seen? Any time I *try* to add something to this, N gets incremented
 			
 		protected:

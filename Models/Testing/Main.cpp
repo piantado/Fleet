@@ -236,7 +236,7 @@ int main(int argc, char** argv){
 	//------------------
 		
 	COUT "# MCMC..." ENDL;
-	Fleet::Statistics::TopN<MyHypothesis> top_mcmc(N);
+	TopN<MyHypothesis> top_mcmc(N);
 	h0 = h0.restart();
 	MCMCChain chain(h0, &mydata, top_mcmc);
 	chain.run(Control(mcmc_steps,runtime));
@@ -244,20 +244,20 @@ int main(int argc, char** argv){
 	assert(not top_mcmc.empty());
 	
 	// just check out copying
-	Fleet::Statistics::TopN<MyHypothesis> top_mcmc_copy = top_mcmc;
+	TopN<MyHypothesis> top_mcmc_copy = top_mcmc;
 	checkTop(&grammar, top_mcmc_copy);
 	assert(top_difference(top_mcmc, top_mcmc_copy)==0.0);
 	assert(not top_mcmc_copy.empty());
 	
 	// check moving
-	Fleet::Statistics::TopN<MyHypothesis> top_mcmc_mv = std::move(top_mcmc_copy);
+	TopN<MyHypothesis> top_mcmc_mv = std::move(top_mcmc_copy);
 	checkTop(&grammar, top_mcmc_mv);
 	assert(top_difference(top_mcmc, top_mcmc_mv)==0.0);
 	assert(not top_mcmc_mv.empty());
 	
 	
 	COUT "# Parallel Tempering..." ENDL;
-	Fleet::Statistics::TopN<MyHypothesis> top_tempering(N);
+	TopN<MyHypothesis> top_tempering(N);
 	h0 = h0.restart();
 	ParallelTempering samp(h0, &mydata, top_tempering, 8, 1000.0, false);
 	samp.run(Control(mcmc_steps, runtime, nthreads), 500, 1000);	// we run here with fast swaps, adaptation to fit more in 
@@ -270,7 +270,7 @@ int main(int argc, char** argv){
 	COUT "# top_difference(top_mcmc, top_tempering) = " << top_difference(top_mcmc, top_tempering) ENDL;
 
 //	COUT "# Enumerating...." ENDL;
-//	Fleet::Statistics::TopN<MyHypothesis> top_enumerate(N);
+//	TopN<MyHypothesis> top_enumerate(N);
 //	for(enumerationidx_t z=1;z<1000 and !CTRL_C;z++) {
 //		auto n = grammar.expand_from_integer(grammar->nt<bool>(), z);
 //		checkNode(&grammar, n);
@@ -290,7 +290,7 @@ int main(int argc, char** argv){
 //	checkTop(&grammar, top_enumerate);
 	
 	COUT "# PriorSampling...." ENDL;
-	Fleet::Statistics::TopN<MyHypothesis> top_generate(N);
+	TopN<MyHypothesis> top_generate(N);
 	for(enumerationidx_t z=0;z<1000 and !CTRL_C;z++) {
 		auto n = grammar.generate<bool>();
 		checkNode(&grammar, n);
