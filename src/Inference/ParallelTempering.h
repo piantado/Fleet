@@ -17,7 +17,7 @@ class ParallelTempering : public ChainPool<HYP,callback_t> {
 	
 public:
 	std::vector<double> temperatures;
-	Fleet::Statistics::FiniteHistory<bool>* swap_history;
+	FiniteHistory<bool>* swap_history;
 	
 	bool is_temperature; // set for whether we initialize according to a temperature ladder (true) or data
 	
@@ -33,7 +33,7 @@ public:
 		}
 		
 		is_temperature = true;
-		swap_history = new Fleet::Statistics::FiniteHistory<bool>[temperatures.size()];
+		swap_history = new FiniteHistory<bool>[temperatures.size()];
 	}
 	
 	
@@ -46,7 +46,7 @@ public:
 			this->pool[i].temperature = exp(i * log(maxT)/(n-1));
 		}
 		is_temperature = true;
-		swap_history = new Fleet::Statistics::FiniteHistory<bool>[n];
+		swap_history = new FiniteHistory<bool>[n];
 	}
 	
 	
@@ -58,7 +58,7 @@ public:
 			this->pool[i].temperature = 1.0;
 		}
 		is_temperature = false;
-		swap_history = new Fleet::Statistics::FiniteHistory<bool>[datas.size()];
+		swap_history = new FiniteHistory<bool>[datas.size()];
 	}
 	
 	

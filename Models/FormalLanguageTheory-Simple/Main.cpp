@@ -132,11 +132,10 @@ public:
 int main(int argc, char** argv){ 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	auto app = Fleet::DefaultArguments("A simple, one-factor formal language learner");
-	app.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
-	app.add_option("-d,--data",     datastr, "Comma separated list of input data strings");	
-	CLI11_PARSE(app, argc, argv);
-	Fleet_initialize();
+	Fleet fleet("A simple, one-factor formal language learner");
+	fleet.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
+	fleet.add_option("-d,--data",     datastr, "Comma separated list of input data strings");	
+	fleet.initialize(argc, argv);
 	
 	MyGrammar grammar(PRIMITIVES);
 
@@ -217,8 +216,4 @@ int main(int argc, char** argv){
 	
 	top.print();
 	
-	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
-	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
-	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
-	COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds() ENDL;
 }

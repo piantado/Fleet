@@ -33,7 +33,7 @@ public:
 	
 	std::atomic<double> temperature; // make atomic b/c ParallelTempering may try to change 
 	
-	Fleet::Statistics::FiniteHistory<bool> history;
+	FiniteHistory<bool> history;
 	
 	MCMCChain(HYP& h0, typename HYP::data_t* d, callback_t& cb ) : 
 			current(h0), data(d), maxval(-infinity), callback(&cb), 
@@ -162,6 +162,7 @@ public:
 			
 			std::lock_guard guard(current_mutex); // lock below otherwise others can modify
 
+			extern unsigned long thin;
 			if(thin > 0 and FleetStatistics::global_sample_count % thin == 0) {
 				current.print();
 			}

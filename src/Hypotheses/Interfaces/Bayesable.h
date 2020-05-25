@@ -172,7 +172,7 @@ public:
 		 * @param prefix
 		 */
 		
-		std::lock_guard guard(Fleet::output_lock);
+		std::lock_guard guard(output_lock);
 		// TODO: Include  this->born  once that is updated correctly
 		COUT prefix << this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->string()) ENDL;		
 	}

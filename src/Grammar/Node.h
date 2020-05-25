@@ -480,9 +480,9 @@ public:
 			if(not can_resample) s = "\u2022"+s; // just to help out in some cases, we'll add this to nodes that we can't resample
 			
 			for(size_t i=0;i<rule->N;i++) {
-				auto pos = s.find(ChildStr);
+				auto pos = s.find(Rule::ChildStr);
 				assert(pos != std::string::npos && "Node format must contain one ChildStr (typically='%s') for each argument"); // must contain the ChildStr for all children all children
-				s.replace(pos, ChildStr.length(), childStrings[i] );
+				s.replace(pos, Rule::ChildStr.length(), childStrings[i] );
 			}
 			return s;
 		}

@@ -10,20 +10,18 @@
 // by index at runtime to call vsm. 
 // This is from here:
 // https://stackoverflow.com/questions/21062864/optimal-way-to-access-stdtuple-element-in-runtime-by-index
-namespace Fleet::applyVMS { 
-	
-	template<int n, class T, typename V, typename P, typename L>
-	inline vmstatus_t applyToVMS_one(T& p, V* vms, P* pool, L* loader) {
-		return std::get<n>(p).VMScall(vms, pool, loader);
-	}
-
-	template<class T, typename V, typename P, typename L, size_t... Is>
-	inline vmstatus_t applyToVMS(T& p, int index, V* vms, P* pool, L* loader, std::index_sequence<Is...>) {
-		using FT = vmstatus_t(T&, V*, P*, L*);
-		thread_local static constexpr FT* arr[] = { &applyToVMS_one<Is,T,V,P,L>... }; //thread_local here seems to matter a lot
-		return arr[index](p, vms, pool, loader);
-	}
+template<int n, class T, typename V, typename P, typename L>
+inline vmstatus_t applyToVMS_one(T& p, V* vms, P* pool, L* loader) {
+	return std::get<n>(p).VMScall(vms, pool, loader);
 }
+
+template<class T, typename V, typename P, typename L, size_t... Is>
+inline vmstatus_t applyToVMS(T& p, int index, V* vms, P* pool, L* loader, std::index_sequence<Is...>) {
+	using FT = vmstatus_t(T&, V*, P*, L*);
+	thread_local static constexpr FT* arr[] = { &applyToVMS_one<Is,T,V,P,L>... }; //thread_local here seems to matter a lot
+	return arr[index](p, vms, pool, loader);
+}
+
 template<typename V, typename P, typename L>
 inline vmstatus_t applyPRIMITIVEStoVMS(int index, V* vms, P* pool, L* loader) {
 	
@@ -35,7 +33,7 @@ inline vmstatus_t applyPRIMITIVEStoVMS(int index, V* vms, P* pool, L* loader) {
 	assert(index >= 0);
 	
 	if constexpr ( (std::tuple_size<decltype(PRIMITIVES)>::value > 0) ) {
-		return Fleet::applyVMS::applyToVMS(PRIMITIVES, index, vms, pool, loader, std::make_index_sequence<(std::tuple_size<decltype(PRIMITIVES)>::value)>{});
+		return applyToVMS(PRIMITIVES, index, vms, pool, loader, std::make_index_sequence<(std::tuple_size<decltype(PRIMITIVES)>::value)>{});
 	}
 	else {
 		UNUSED(vms); UNUSED(pool); UNUSED(loader);

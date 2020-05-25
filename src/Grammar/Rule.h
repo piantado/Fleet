@@ -25,6 +25,7 @@ class Rule {
 
 
 public:
+	static const std::string ChildStr; // how do strings get substituted?
 	static const size_t MAX_CHILD_SIZE = 8; // rules can have at most this many children  -- for now (we can change if needed)
 
 	nonterminal_t         nt;
@@ -133,3 +134,4 @@ std::ostream& operator<<(std::ostream& o, const Rule& r) {
 // A single constant NullRule for gaps in trees. Always has type 0
 const Rule* NullRule = new Rule((nonterminal_t)0, BuiltinOp::op_NOP, "\u2b1c", {}, 0.0);
  
+const std::string Rule::ChildStr = "%s";

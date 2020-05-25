@@ -365,7 +365,7 @@ public:
 						}				
 						case BuiltinOp::op_P: {
 							if constexpr (contains_type<double,VM_TYPES...>()) { 
-								push( double(i.arg)/double(Fleet::Pdenom) );
+								push( double(i.arg)/double(Pdenom) );
 								break;
 							} 
 							else { assert(false && "*** Cannot use op_P if double is not in VM_TYPES"); }
