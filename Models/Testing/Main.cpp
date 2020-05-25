@@ -122,13 +122,13 @@ void checkNode(const Grammar_t* g, const Node& n) {
 
 template<typename Grammar_t, typename Hypothesis_t>
 void checkLOTHypothesis(const Grammar_t* g, const Hypothesis_t h){
-	checkNode(g, h.value);
+	checkNode(g, h.get_value());
 		
 	// Check that copies and things work right:
 	decltype(h) newH = h;
-	checkNode(g, newH.value);
+	checkNode(g, newH.get_value());
 	assert(newH == h);
-	assert(newH.value == h.value);
+	assert(newH.get_value() == h.get_value());
 	assert(newH.posterior == h.posterior);
 	assert(newH.prior == h.prior);
 	assert(newH.likelihood == h.likelihood);

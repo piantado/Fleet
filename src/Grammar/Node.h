@@ -93,7 +93,7 @@ public:
 		fix_child_info();
 	}
 	Node(Node&& n) :
-		parent(nullptr), children(n.children.size()), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
+		parent(nullptr), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
 		children = std::move(n.children);
 		fix_child_info();
 	}
@@ -151,22 +151,28 @@ public:
 	}
 	
 	void operator=(const Node& n) {
-		parent = n.parent; 
-		pi = n.pi;
+		// Here in the assignment operator we don't set the parent to n.parent, otherwise the parent pointers get broken
+		// (nor pi). This leaves them in their place in a tree (so e.g. we can set a node of a tree and it still works)
+		
 		rule = n.rule;
 		lp = n.lp;
 		can_resample = n.can_resample;
+		
+		if(parent != nullptr) 
+			assert(parent->type(pi) == nt());
+		
 		children = n.children;
 		fix_child_info();
 	}
 
 	void operator=(Node&& n) {
-		parent = n.parent; 
-		pi = n.pi;
 		rule = n.rule;
 		lp = n.lp;
 		can_resample = n.can_resample;
 
+		if(parent != nullptr) 
+			assert(parent->type(pi) == nt());
+		
 		children = std::move(n.children);
 		fix_child_info();
 	}
@@ -290,38 +296,6 @@ public:
 		children[i].parent = this;
 	}
 	
-	void set_to(Node& n) {
-		/**
-		 * @brief Set myself to n. This should be used so that parent pointers etc. can be updated. 
-		 * @param n
-		 */
-		
-		if(parent == nullptr) {
-			assert(n.nt() == nt());
-			*this = n;
-			parent = nullptr;
-		}
-		else {
-			assert(parent->type(pi) == n.nt());
-			parent->set_child(pi, n);
-		}
-	}
-	
-	void set_to(Node&& n) {
-		/**
-		 * @brief Set myself to n (move version)
-		 */
-		
-		if(parent == nullptr) {
-			assert(n.nt() == nt());
-			*this = n;
-			parent = nullptr;
-		}
-		else {
-			assert(parent->type(pi) == n.nt());
-			parent->set_child(pi, n);
-		}
-	}
 	
 	bool is_null() const { 
 		/**

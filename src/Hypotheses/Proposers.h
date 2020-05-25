@@ -52,7 +52,7 @@ namespace Proposals {
 		
 		double oldgp = grammar->log_probability(*s.first); // reverse probability generating 
 		
-		s.first->set_to(grammar->generate(s.first->nt())); 
+		*s.first = grammar->generate(s.first->nt()); 
 		
 		double fb = s.second + grammar->log_probability(*s.first) 
 				  - (log(can_resample(*s.first)) - log(ret.sum(can_resample)) + oldgp);
@@ -88,7 +88,7 @@ namespace Proposals {
 		Node t = grammar->generate(s.first->nt()); // make something new of the same type as s
 		auto q = sample<Node,Node>(t, can_resample_nt); // q points to something below in t of type s
 		
-		q.first->set_to(Node(*s.first)); 
+		*q.first = Node(*s.first); 
 	
 		// now if we replace something below t with s, there are multiples ones we could have done...
 		auto lpq = lp_sample_eq(*s.first, t, can_resample_nt); // 
@@ -100,7 +100,7 @@ namespace Proposals {
 //		CERR s.second TAB grammar->log_probability(t) TAB grammar->log_probability(old_s) TAB lpq ENDL;
 		
 	
-		s.first->set_to(t); // now since s pointed to something in ret, we're done  
+		s.first = t; // now since s pointed to something in ret, we're done  
 		
 		// forward is choosing s, generating everything *except* what replaced s, and then replacing
 		double forward = s.second +  // must get exactly this s
@@ -151,7 +151,7 @@ namespace Proposals {
 		// probability of generating everything in s except q
 		double tlp = grammar->log_probability(old_s) - grammar->log_probability(*q.first); 
 		
-		s.first->set_to(Node(*q.first)); // must set with a copy
+		s.first = Node(*q.first); // must set with a copy
 		
 		/// backward is we choose the *new* s, then generate everything else, and choose anything equal
 		double backward = lp_sample_one<Node,Node>(*s.first,ret,can_resample) + 
