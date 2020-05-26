@@ -154,8 +154,9 @@ public:
 		assert(N > 0); 
 		
 		// is calls[i][j] stores whether factor i calls factor j
-		bool calls[N][N]; 
-		
+		//bool calls[N][N]; 
+		std::vector<std::vector<bool> > calls(N, std::vector<bool>(N, 0)); 
+		 
 		// everyone calls themselves, zero the rest
 		for(size_t i=0;i<N;i++) {
 			for(size_t j=0;j<N;j++){

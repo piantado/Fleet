@@ -11,9 +11,13 @@
 /// We need to define some structs to hold the object features
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-enum    class  Shape  { Square, Triangle, Circle};
-enum    class  Color  { Red, Green, Blue};
-typedef struct { Color color; Shape shape; } Object;
+enum class Shape { Square, Triangle, Circle};
+enum class Color { Red, Green, Blue};
+
+struct Object { 
+	Color color; 
+	Shape shape; 
+};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// This is a global variable that provides a convenient way to wrap our primitives
