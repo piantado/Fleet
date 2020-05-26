@@ -53,7 +53,7 @@ public:
         
 		initialize();        
 		
-		if(not h0.value.is_null()) { CERR "# Warning, initializing MCTS root with a non-null node." ENDL; }
+		if(not h0.get_value().is_null()) { CERR "# Warning, initializing MCTS root with a non-null node." ENDL; }
     }
 	
 	// should not copy or move because then the parent pointers get all messed up 

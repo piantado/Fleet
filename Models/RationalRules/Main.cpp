@@ -89,9 +89,8 @@ public:
 int main(int argc, char** argv){ 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	auto app = Fleet::DefaultArguments("Rational rules");
-	CLI11_PARSE(app, argc, argv);
-	Fleet_initialize(); 
+	Fleet fleet("Rational rules");
+	fleet.initialize(argc, argv);
 	
 	//------------------
 	// Basic setup
@@ -136,10 +135,4 @@ int main(int argc, char** argv){
 
 	// Show the best we've found
 	top.print();
-		
-	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
-	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
-	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
-	COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds() ENDL;
-
 }

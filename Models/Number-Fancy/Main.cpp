@@ -364,9 +364,8 @@ MyHypothesis::datum_t sample_adjusted_datum(std::function<double(MyHypothesis::d
 int main(int argc, char** argv) { 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	auto app = Fleet::DefaultArguments("Fancy number inference model");
-	CLI11_PARSE(app, argc, argv);
-	Fleet_initialize();
+	Fleet fleet("Fancy number inference model");
+	fleet.initialize(argc, argv);
 
 	
 	MyGrammar grammar(PRIMITIVES);
@@ -421,9 +420,7 @@ int main(int argc, char** argv) {
 //	}
 //	tic();
 	
-	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
-	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
-	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
+	fleet.completed(); // print the search/mcmc stats here instead of when fleet is destroyed
 	
 	// and save what we found
 	for(auto& tn : alltops) {

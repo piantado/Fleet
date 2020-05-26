@@ -101,9 +101,9 @@ public:
 			
 			std::string s = n->rule->format;
 			for(size_t i=0;i<n->rule->N;i++) { // can't be size_t for counting down
-				auto pos = s.find(ChildStr);
+				auto pos = s.find(Rule::ChildStr);
 				assert(pos != std::string::npos); // must contain the ChildStr for all children all children
-				s.replace(pos, ChildStr.length(), childStrings[i]);
+				s.replace(pos, Rule::ChildStr.length(), childStrings[i]);
 			}
 			
 			return s;
@@ -254,7 +254,7 @@ using datum_t = MyHypothesis::datum_t;
 
 #include "ReservoirSample.h"
 
-std::map<std::string,Fleet::Statistics::ReservoirSample<MyHypothesis>> master_samples; // master set of samples
+std::map<std::string,ReservoirSample<MyHypothesis>> master_samples; // master set of samples
 std::mutex master_sample_lock;
 
 size_t innertime;
@@ -285,7 +285,7 @@ class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 
 
 		MyHypothesis h0 = value; // need a copy to change resampling on 
-		for(auto& n : h0.value ){
+		for(auto& n : h0.get_value() ){
 			n.can_resample = false;
 		}
 		
@@ -329,10 +329,10 @@ int main(int argc, char** argv){
 	std::string innertimestr = "1m";
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	auto app = Fleet::DefaultArguments("Symbolic regression");
-	app.add_option("-I,--inner-time", innertimestr, "Alphabet we will use"); 	// add my own args
-	CLI11_PARSE(app, argc, argv);
-	Fleet_initialize();
+	Fleet fleet("Symbolic regression");
+	fleet.add_option("-I,--inner-time", innertimestr, "Alphabet we will use"); 	// add my own args
+	fleet.initialize(argc, argv);
+
 
 	innertime = convert_time(innertimestr);
 
@@ -454,7 +454,7 @@ int main(int argc, char** argv){
 					 ( (h.posterior-sz) + (best_posterior-Z)) TAB 
 					 h.posterior TAB h.prior TAB h.likelihood TAB
 					 h.zeroAndCallOne(0.0, NaN) TAB h.zeroAndCallOne(1.0, NaN) TAB 
-					 get_polynomial_degree(h.value, h.constants) TAB 
+					 get_polynomial_degree(h.get_value(), h.constants) TAB 
 					 1*(best_posterior >= cutoff) TAB
 					 Q(h.string()) TAB Q(h.parseable()) ENDL;
 			}
@@ -463,11 +463,11 @@ int main(int argc, char** argv){
 	COUT "# **** REMINDER: These are not printed in order! ****" ENDL;
 	
 	
-	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
-//	COUT "# MCTS tree size:" TAB m.size() ENDL;	
-	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
-	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
-	COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds() ENDL;
-	COUT "# Max score: " TAB maxscore ENDL;
+//	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
+////	COUT "# MCTS tree size:" TAB m.size() ENDL;	
+//	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
+//	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
+//	COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds() ENDL;
+//	COUT "# Max score: " TAB maxscore ENDL;
 //	COUT "# MCTS steps per second:" TAB m.statistics.N/elapsed_seconds() ENDL;	
 }

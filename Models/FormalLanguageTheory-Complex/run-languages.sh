@@ -10,18 +10,17 @@ mymain=run/main.$myhost
 cp main $mymain
 cp Main.cpp run/Main.cpp.$myhost # for a record 
 
+parameters=AllParameters.csv
+    
 if [ $myhost = "colala-hastings" ] ; then
     factors=(3 6)
     jobs=40
-    parameters=AllParameters.csv
 elif [ $myhost = "colala-metropolis" ] ; then
     factors=(2 5)
     jobs=40
-    parameters=AllParameters.csv
 elif [ $myhost = "simon" ] ; then
     factors=(1 4)
     jobs=75
-    parameters=AllParameters.csv
 fi
 # elif [ $myhost = "garfunkel" ] ; then
 #     factors=(2,6)

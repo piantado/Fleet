@@ -287,7 +287,7 @@ public:
 	 }
 	 
 	 void print(std::string prefix="") override {
-		std::lock_guard guard(Fleet::output_lock); // better not call Super wtih this here
+		std::lock_guard guard(output_lock); // better not call Super wtih this here
 		extern MyHypothesis::data_t prdata;
 		extern std::string current_data;
 		auto o = this->call(S(""), S("<err>"));
@@ -318,15 +318,14 @@ int main(int argc, char** argv){
 	input_path = my_default_input; // set this so it's not fleet's normal input default
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	auto app = Fleet::DefaultArguments("Formal language learner");
-	app.add_option("-N,--nfactors",      nfactors, "How many factors do we run on?");
-	app.add_option("-L,--maxlength",     max_length, "Max allowed string length");
-	app.add_option("-A,--alphabet",  alphabet, "The alphabet of characters to use");
-	app.add_option("-P,--prdata",  prdata_path, "What data do we use to compute precion/recall?");
-	app.add_flag("-l,--long-output",  long_output, "Allow extra computation/recursion/strings when we output");
-	CLI11_PARSE(app, argc, argv);
-
-	Fleet_initialize();
+	Fleet fleet("Formal language learner");
+	fleet.add_option("-N,--nfactors",      nfactors, "How many factors do we run on?");
+	fleet.add_option("-L,--maxlength",     max_length, "Max allowed string length");
+	fleet.add_option("-A,--alphabet",  alphabet, "The alphabet of characters to use");
+	fleet.add_option("-P,--prdata",  prdata_path, "What data do we use to compute precion/recall?");
+	fleet.add_flag("-l,--long-output",  long_output, "Allow extra computation/recursion/strings when we output");
+	fleet.initialize(argc, argv); 
+	
 	COUT "# Using alphabet=" << alphabet ENDL;
 	
 	
@@ -349,9 +348,9 @@ int main(int argc, char** argv){
 	
 	MyGrammar grammar(PRIMITIVES);
 		
-	for(int a=1;a<=Fleet::Pdenom/2;a++) { // pack probability into arg, out of 20, since it never needs to be greater than 1/2	
-		std::string s = str(a/std::gcd(a,Fleet::Pdenom)) + "/" + str(Fleet::Pdenom/std::gcd(a,Fleet::Pdenom)); // std::to_string(double(a)/24.0).substr(1,4); // substr just truncates lesser digits
-		grammar.add<double>(BuiltinOp::op_P, s, (a==Fleet::Pdenom/2?5.0:1.0), a);
+	for(int a=1;a<=Pdenom/2;a++) { // pack probability into arg, out of 20, since it never needs to be greater than 1/2	
+		std::string s = str(a/std::gcd(a,Pdenom)) + "/" + str(Pdenom/std::gcd(a,Pdenom)); // std::to_string(double(a)/24.0).substr(1,4); // substr just truncates lesser digits
+		grammar.add<double>(BuiltinOp::op_P, s, (a==Pdenom/2?5.0:1.0), a);
 	}
 	
 	for(size_t a=0;a<nfactors;a++) {	
@@ -468,7 +467,4 @@ int main(int argc, char** argv){
 //		all.compute_posterior(datas[i]).print(data_amounts[i]);
 //	}
 //	
-	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
-	COUT "# Elapsed time:"        TAB elapsed_seconds() << " seconds " ENDL;
-	COUT "# Samples per second:"  TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
 }

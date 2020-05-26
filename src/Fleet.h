@@ -61,13 +61,6 @@
 const std::string FLEET_VERSION = "0.0.94";
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// We defaultly define a fleet object which stores all our info, prints our options
-// and our runtime on construction and destruction respectively
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We defaultly include all of the major requirements for Fleet
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "Statistics/FleetStatistics.h"
@@ -137,12 +130,14 @@ std::string   output_path  = "output";
 std::string   timestring   = "0s";
 
 
+
 class Fleet {
 public:
 	CLI::App app;
 	timept start_time;
+	bool done; // if this is true, we don't call completed on destruction
 	
-	Fleet(std::string brief) : app{brief} {
+	Fleet(std::string brief) : app{brief}, done(false) {
 
 		app.add_option("-R,--seed",    random_seed, "Seed the rng (0 is no seed)");
 		app.add_option("-s,--mcts",    mcts_steps, "Number of MCTS search steps to run");
@@ -237,12 +232,13 @@ public:
 		auto elapsed_seconds = time_since(start_time) / 1000.0;
 		
 		COUT "# Elapsed time:"        TAB elapsed_seconds << " seconds " ENDL;
+		if(FleetStatistics::global_sample_count > 0) {
+			COUT "# Samples per second:"  TAB FleetStatistics::global_sample_count/elapsed_seconds ENDL;
+			COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
+		}
 		COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds ENDL;
 
-		if(FleetStatistics::global_sample_count > 0) {
-			COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
-			COUT "# Samples per second:"  TAB FleetStatistics::global_sample_count/elapsed_seconds ENDL;
-		}
+		done = true;
 		
 		// HMM CANT DO THIS BC THERE MAY BE MORE THAN ONE TREE....
 		//COUT "# MCTS tree size:" TAB m.size() ENDL;	
