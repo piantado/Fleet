@@ -57,8 +57,10 @@
 #pragma once 
 
 #include <sys/resource.h> // just for setting priority defaulty 
+#include <unistd.h>
+#include <stdlib.h>
 
-const std::string FLEET_VERSION = "0.0.94";
+const std::string FLEET_VERSION = "0.0.95";
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We defaultly include all of the major requirements for Fleet
@@ -102,14 +104,6 @@ const std::string FLEET_VERSION = "0.0.94";
 /// Actual initialization
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <unistd.h>
-#include <stdlib.h>
-
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// A fleet class provides an interface to command line and prints a nice header
-/// and footer
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 unsigned long random_seed  = 0;
@@ -130,7 +124,15 @@ std::string   output_path  = "output";
 std::string   timestring   = "0s";
 
 
-
+/**
+ * @class Fleet
+ * @author piantado
+ * @date 25/05/20
+ * @file Fleet.h
+ * @brief A fleet object manages processing the command line, prints a useful summary of command lines, and then on its destruction (or
+ * 		  calling completed(), it prints out a summary of the total number of samples etc. run per second. This provides a shallow
+ *        wrapper to CLI::App, meaning you add options to it just like CLI::App
+ */
 class Fleet {
 public:
 	CLI::App app;
