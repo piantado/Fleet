@@ -155,7 +155,7 @@ public:
 		
 		// is calls[i][j] stores whether factor i calls factor j
 		//bool calls[N][N]; 
-		std::vector<std::vector<bool> > calls(N, std::vector<bool>(N, 0)); 
+		std::vector<std::vector<bool> > calls(N, std::vector<bool>(N, false)); 
 		 
 		// everyone calls themselves, zero the rest
 		for(size_t i=0;i<N;i++) {
