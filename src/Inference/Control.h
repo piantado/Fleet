@@ -11,8 +11,12 @@
 * NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here)
 */ 
 
+#include <signal.h>
+
 #include "Timing.h"
 #include "IO.h"
+
+extern volatile sig_atomic_t CTRL_C;
 
 struct Control {
 	// Parameters for running MCMC or MCTS

@@ -196,6 +196,7 @@ double top_difference(Top_t& x, Top_t& y) {
 }
 
 
+#include "Top.h"
 #include "MCMCChain.h"
 #include "ParallelTempering.h"
 
@@ -204,9 +205,8 @@ double top_difference(Top_t& x, Top_t& y) {
 int main(int argc, char** argv){ 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	auto app = Fleet::DefaultArguments("Testing");
-	CLI11_PARSE(app, argc, argv);
-	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
+	Fleet fleet("Testing");
+	fleet.initialize(argc, argv); // must happen afer args are processed since the alphabet is in the grammar
 	
 	//------------------
 	// Basic setup

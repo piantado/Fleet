@@ -96,22 +96,3 @@ void DEBUG(First && first, Rest && ...rest) {
 //template<typename a, typename... ARGS>
 //void PRINT()
 
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// A Handler for CTRL_C
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// NOTE: this must be registered in main with signal(SIGINT, fleet_interrupt_handler);
-#include <signal.h>
-volatile sig_atomic_t CTRL_C = false;
-void fleet_interrupt_handler(int signum) { 
-	if(signum == SIGINT) {
-		CTRL_C = true; 
-	}
-	else if(signum == SIGHUP) {
-		// do nothing -- defaultly Fleet mutes SIGHUP so that commands left in the terminal will continue
-		// this is so that if we get disconnected on a terminal run, the job is maintained
-	}	
-} 
-
-
-

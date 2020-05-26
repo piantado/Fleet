@@ -359,6 +359,7 @@ MyHypothesis::datum_t sample_adjusted_datum(std::function<double(MyHypothesis::d
 // Main
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#include "ParallelTempering.h"
 #include "Fleet.h"
 
 int main(int argc, char** argv) { 

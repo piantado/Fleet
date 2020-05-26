@@ -127,6 +127,8 @@ public:
 // This needs to be included last because it includes VirtualMachine/applyPrimitives.h
 // which really requires Primitives to be defined already
 
+#include "Top.h"
+#include "ParallelTempering.h"
 #include "Fleet.h" 
 
 int main(int argc, char** argv){ 

@@ -7,6 +7,10 @@
 #include <vector>
 #include <boost/align/aligned_allocator.hpp>
 
+#include "MCMCChain.h"
+#include "Timing.h"
+
+
 //template <typename T>
 //using aligned_vector = std::vector<T, boost::alignment::aligned_allocator<T, 16>>;
 

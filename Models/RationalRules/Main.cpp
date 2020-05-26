@@ -84,6 +84,8 @@ public:
 /// Main code
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#include "Top.h"
+#include "ParallelTempering.h"
 #include "Fleet.h" 
 
 int main(int argc, char** argv){ 

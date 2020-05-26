@@ -2,8 +2,11 @@
 
 //#define PARALLEL_TEMPERING_SHOW_DETAIL
 
+#include <signal.h>
 #include <functional>
 #include "ChainPool.h"
+
+extern volatile sig_atomic_t CTRL_C; 
 
 template<typename HYP, typename callback_t>
 class ParallelTempering : public ChainPool<HYP,callback_t> {

@@ -12,7 +12,7 @@
 #include "Hypotheses/Interfaces/Searchable.h"
 
 #include "VirtualMachine/VirtualMachineState.h"
-
+#include "VirtualMachine/VirtualMachinePool.h"
 /**
  * @class LOTHypothesis
  * @author piantado

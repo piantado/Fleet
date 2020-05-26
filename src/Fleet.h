@@ -59,52 +59,25 @@
 #include <sys/resource.h> // just for setting priority defaulty 
 #include <unistd.h>
 #include <stdlib.h>
+#include <signal.h>
 
 const std::string FLEET_VERSION = "0.0.95";
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We defaultly include all of the major requirements for Fleet
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#include "Statistics/FleetStatistics.h"
+//#include "Statistics/FleetStatistics.h"
 
 #include "Timing.h"
-#include "Program.h"
 #include "Control.h"
-#include "Numerics.h"
-#include "Random.h"
-#include "Strings.h"
-#include "Hash.h"
-#include "Miscellaneous.h"
-#include "IntegerizedStack.h"
-
-#include "Rule.h"
-#include "VirtualMachine/VirtualMachinePool.h"
-#include "VirtualMachine/VirtualMachineState.h"
-#include "Node.h"
-#include "Grammar.h"
-#include "CaseMacros.h"
-#include "DiscreteDistribution.h"
-
-#include "IO.h"
-#include "Hypotheses/LOTHypothesis.h"
-#include "Hypotheses/Lexicon.h"
-
-#include "Inference/MCMCChain.h"
-#include "Inference/MCTS.h"
-#include "Inference/ParallelTempering.h"
-#include "Inference/ChainPool.h"
-
-#include "Top.h"
-#include "Primitives.h"
 
 // Thie one really should be included last because it depends on Primitves
+// so we will include it here 
 #include "VirtualMachine/applyPrimitives.h"
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Actual initialization
+/// Fleet global variables
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
 
 unsigned long random_seed  = 0;
 unsigned long mcts_steps   = 0;
@@ -123,6 +96,17 @@ std::string   tree_path    = "tree.txt";
 std::string   output_path  = "output";
 std::string   timestring   = "0s";
 
+
+// This is global that checks whether CTRL_C has been pressed
+// NOTE: this must be registered in main with signal(SIGINT, Fleet::fleet_interrupt_handler);
+// which happens in 
+volatile sig_atomic_t CTRL_C = false;
+
+// apparently some OSes don't define this
+#ifndef HOST_NAME_MAX
+	const size_t HOST_NAME_MAX = 256;
+#endif
+char hostname[HOST_NAME_MAX]; 	
 
 /**
  * @class Fleet
@@ -159,11 +143,30 @@ public:
 //		app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");
 
 		start_time = now();
+		
 	}
 	
+	/**
+	 * @brief On destructor, we call completed unless we are already done
+	 */	
 	virtual ~Fleet() {
-		completed();
+		if(not done) completed();
 	}
+	
+	///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	/// A Handler for CTRL_C
+	///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+	static void fleet_interrupt_handler(int signum) { 
+		if(signum == SIGINT) {
+			CTRL_C = true; 
+		}
+		else if(signum == SIGHUP) {
+			// do nothing -- defaultly Fleet mutes SIGHUP so that commands left in the terminal will continue
+			// this is so that if we get disconnected on a terminal run, the job is maintained
+		}	
+	} 
 	
 	template<typename T> 
 	void add_option(std::string c, T& var, std::string description ) {
@@ -173,15 +176,14 @@ public:
 	void add_flag(std::string c, T& var, std::string description ) {
 		app.add_flag(c, var, description);
 	}
-	
-	
+		
 	int initialize(int argc, char** argv) {
 		CLI11_PARSE(app, argc, argv);
 		
 		// set our own handlers -- defaulty HUP won't stop
-		signal(SIGINT, fleet_interrupt_handler);
-		signal(SIGHUP, fleet_interrupt_handler);
-
+		signal(SIGINT, Fleet::fleet_interrupt_handler);
+		signal(SIGHUP, Fleet::fleet_interrupt_handler);
+		
 		// give us a defaultly kinda nice niceness
 		setpriority(PRIO_PROCESS, 0, 5);
 
@@ -192,11 +194,7 @@ public:
 
 		// Print standard fleet header
 		
-		// apparently some OSes don't define this
-		#ifndef HOST_NAME_MAX
-			size_t HOST_NAME_MAX = 256;
-		#endif
-		char hostname[HOST_NAME_MAX]; 	gethostname(hostname, HOST_NAME_MAX);
+		gethostname(hostname, HOST_NAME_MAX);
 
 		//	#ifndef LOGIN_NAME_MAX
 		//		size_t LOGIN_NAME_MAX = 256;
@@ -240,6 +238,7 @@ public:
 		}
 		COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds ENDL;
 
+		// setting this makes sure we won't call it again
 		done = true;
 		
 		// HMM CANT DO THIS BC THERE MAY BE MORE THAN ONE TREE....
