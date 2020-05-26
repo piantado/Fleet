@@ -196,11 +196,6 @@ public:
 		
 		gethostname(hostname, HOST_NAME_MAX);
 
-		//	#ifndef LOGIN_NAME_MAX
-		//		size_t LOGIN_NAME_MAX = 256;
-		//	#endif
-		//	char username[LOGIN_NAME_MAX];	getlogin_r(username, LOGIN_NAME_MAX);
-
 		// and build the command to get the md5 checksum of myself
 		char tmp[64]; sprintf(tmp, "md5sum /proc/%d/exe", getpid());
 		
