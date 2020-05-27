@@ -7,6 +7,7 @@
 #include <tuple>
 #include <assert.h>
 
+#include "Errors.h"
 #include "Instruction.h"
 #include "Miscellaneous.h"
 
@@ -235,7 +236,7 @@ struct Primitive : PrePrimitive {
 						auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
 						vms->push(this->call(std::move(a0), std::move(a1), std::move(a2), std::move(a3)));
 					}
-					else { assert(false && "*** VMScall not defined for >4 arguments -- you may add more cases in Primitives.h"); }
+					else { throw NotImplementedError("*** VMScall not defined for >4 arguments -- you may add more cases in Primitives.h"); }
 					
 				}
 				else { 
@@ -259,7 +260,7 @@ struct Primitive : PrePrimitive {
 						auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
 						this->call(vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>(), std::move(a1), std::move(a2), std::move(a3));
 					}
-					else { assert(false && "*** VMScall not defined for >4 arguments -- you may add more cases in Primitives.h"); }
+					else { throw NotImplementedError("*** VMScall not defined for >4 arguments -- you may add more cases in Primitives.h"); }
 
 				}
 			}

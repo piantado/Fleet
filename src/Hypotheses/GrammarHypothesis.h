@@ -2,6 +2,7 @@
 
 #include <Eigen/Core>
 
+#include "Errors.h"
 #include "Numerics.h"
 #include "EigenNumerics.h"
 
@@ -126,7 +127,7 @@ public:
 	}
 	
 	// We should not use compute_single_likelihood
-	virtual double compute_single_likelihood(const datum_t& datum) { assert(0); } 
+	virtual double compute_single_likelihood(const datum_t& datum) { throw NotImplementedError(); } 
 	
 	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) {
 		// This runs the entire model (computing its posterior) to get the likelihood

@@ -1,6 +1,7 @@
 #pragma once 
 
 
+#include "Errors.h"
 
 /**
  * @class BuiltinPrimitiveRoot
@@ -36,7 +37,7 @@ struct BuiltinPrimitive : public BuiltinPrimitiveBase {
 	}
 	
 	template<typename V, typename P, typename L>
-	vmstatus_t VMScall(V* vms, P* pool, L* loader) { assert(0); } // must be defined but not used 
+	vmstatus_t VMScall(V* vms, P* pool, L* loader) { throw YouShouldNotBeHereError("*** This must be defined but not used."); } 
 };
 
 namespace Builtin {

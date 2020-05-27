@@ -7,6 +7,7 @@
 #include <vector>
 #include <boost/align/aligned_allocator.hpp>
 
+#include "Errors.h"
 #include "MCMCChain.h"
 #include "Timing.h"
 
@@ -71,7 +72,7 @@ public:
 				}
 			}
 			// should not get here if we have fewer threads than chains
-			assert(0 && "*** We should only get here if running is out of sync (very bad) or you got here with more threads than chains, which should have been caught.");
+			throw YouShouldNotBeHereError("*** We should only get here if running is out of sync (very bad) or you got here with more threads than chains, which should have been caught.");
 		};						 
 								 
 		size_t idx = 0; // what pool item am I running on?
@@ -116,8 +117,9 @@ public:
 	virtual void run(Control ctl) {
 		
 		if(ctl.threads > pool.size()){
+			// let's not allow it for now -- make __run_helper much more complex
 			CERR "# Warning: more threads (" << ctl.threads << ") than chains ("<<pool.size()<<") is probably dumb.";
-			assert(0); // let's not allow it for now -- make __run_helper much more complex
+			throw YouShouldNotBeHereError();
 		}
 		
 		std::vector<std::thread> threads(ctl.threads); 

@@ -6,6 +6,7 @@
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <chrono>
+#include "Errors.h"
 
 typedef unsigned long time_ms;
 typedef std::chrono::high_resolution_clock::time_point timept;
@@ -95,7 +96,7 @@ time_t convert_time(std::string& s) {
 		case 'd': multiplier = 60*60*24*1000; break;
 		default: 
 			std::cout << "*** Unknown time specifier: " << s.at(s.length()-1) << " in " << s << ". Did you forget a unit?" << std::endl;
-			assert(0);
+			throw YouShouldNotBeHereError();
 	}
 	
 	double t = std::stod(s.substr(0,s.length()-1)); // all but the last character

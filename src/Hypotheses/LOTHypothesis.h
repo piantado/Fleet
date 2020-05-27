@@ -6,6 +6,7 @@
 #include "Program.h"
 #include "Node.h"
 #include "DiscreteDistribution.h"
+#include "Errors.h"
 
 #include "Hypotheses/Interfaces/Bayesable.h"
 #include "Hypotheses/Interfaces/MCMCable.h"
@@ -116,7 +117,7 @@ public:
 	
 	virtual double compute_single_likelihood(const datum_t& datum) override {
 		// compute the likelihood of a *single* data point. 
-		assert(0);// for base classes to implement, but don't set = 0 since then we can't create Hypothesis classes. 
+		throw NotImplementedError("*** You must define compute_single_likelihood");// for base classes to implement, but don't set = 0 since then we can't create Hypothesis classes. 
 	}
 
 	virtual size_t program_size(short s) override {

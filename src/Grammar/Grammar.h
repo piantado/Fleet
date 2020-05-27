@@ -5,6 +5,7 @@
 #include <exception>
 #include "IO.h"
 
+#include "Errors.h"
 #include "Node.h"
 #include "Random.h"
 #include "Nonterminal.h"
@@ -256,7 +257,7 @@ public:
 				return i;
 			}
 		}
-		assert(false && "*** Did not find rule in get_index_of.");
+		throw YouShouldNotBeHereError("*** Did not find rule in get_index_of.");
 	}
 	
 	virtual Rule* get_rule(const nonterminal_t nt, size_t k) const {
@@ -284,7 +285,7 @@ public:
 			if(r.instr.is_a(o) && r.instr.arg == a) 
 				return &r;
 		}
-		assert(0 && "*** Could not find rule");		
+		throw YouShouldNotBeHereError("*** Could not find rule");		
 	}
 	
 //	virtual Rule* get_rule(const nonterminal_t nt, size_t i) {
@@ -304,7 +305,7 @@ public:
 			if(is_prefix(s, r.format)){
 				if(ret != nullptr) {
 					CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
-					assert(0);
+					throw YouShouldNotBeHereError();
 				}
 				ret = const_cast<Rule*>(&r);
 			} 
@@ -313,7 +314,7 @@ public:
 		if(ret != nullptr) { return ret; }
 		else {			
 			CERR "*** No rule found to match " TAB s ENDL;
-			assert(0);
+			throw YouShouldNotBeHereError();
 		}
 	}
 	
@@ -340,7 +341,7 @@ public:
 		if(ret != nullptr) { return ret; }
 		else {			
 			CERR "*** No rule found to match " TAB s ENDL;
-			assert(0);
+			throw YouShouldNotBeHereError();
 		}
 	}
 	
@@ -400,7 +401,7 @@ public:
 		
 		
 		if(depth >= GRAMMAR_MAX_DEPTH) {
-			assert(0 && "*** Grammar exceeded max depth, are you sure the grammar probabilities are right?");
+			throw YouShouldNotBeHereError("*** Grammar exceeded max depth, are you sure the grammar probabilities are right?");
 		}
 		
 		Rule* r = sample_rule(nt);

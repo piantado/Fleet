@@ -37,7 +37,7 @@ inline vmstatus_t applyPRIMITIVEStoVMS(int index, V* vms, P* pool, L* loader) {
 	}
 	else {
 		UNUSED(vms); UNUSED(pool); UNUSED(loader);
-		assert(0 && "*** Cannot call applyPRIMITIVEStoVMS without PRIMITIVES defined");
+		throw YouShouldNotBeHereError("*** Cannot call applyPRIMITIVEStoVMS without PRIMITIVES defined");
 	}
 }
 

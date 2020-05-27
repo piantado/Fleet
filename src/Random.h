@@ -153,7 +153,7 @@ std::pair<t*,double> sample(const T& s, double z, std::function<double(const t&)
 			return std::make_pair(const_cast<t*>(&x), log(fx)-log(z));
 	}
 	
-	assert(0 && "*** Should not get here in sampling");	
+	throw YouShouldNotBeHereError("*** Should not get here in sampling");	
 }
 
 

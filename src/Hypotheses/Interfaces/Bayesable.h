@@ -1,5 +1,6 @@
 #pragma once 
 
+#include "Errors.h"
 #include "Datum.h"
 #include "IO.h"
 #include "Statistics/FleetStatistics.h"
@@ -86,7 +87,7 @@ public:
 		}
 		else {
 			// should never execute this because it must be defined
-			assert(0 && "*** If you use a non-iterable data_t, then you must define compute_likelihood on your own."); 
+			throw NotImplementedError("*** If you use a non-iterable data_t, then you must define compute_likelihood on your own."); 
 		}
 	}
 

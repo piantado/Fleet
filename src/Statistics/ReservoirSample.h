@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Errors.h"
 #include "Top.h"
 
 /**
@@ -43,7 +44,7 @@ public:
 		}
 		
 		void print() const {
-			assert(0); // not needed here but must be defined to use in TopN
+			throw NotImplementedError(); // not needed here but must be defined to use in TopN
 		}
 	};
 	

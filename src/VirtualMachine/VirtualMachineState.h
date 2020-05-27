@@ -5,6 +5,7 @@
 #include <utility>
 #include <tuple>
 
+#include "Errors.h"
 #include "Program.h"
 #include "Stack.h"
 #include "Statistics/FleetStatistics.h"
@@ -305,7 +306,7 @@ public:
 						status = applyPRIMITIVEStoVMS(i.as<PrimitiveOp>(), this, pool, loader);
 					}
 					else {
-						assert(0 && "*** Cannot call PrimitiveOp without defining VM_TYPES");
+						throw YouShouldNotBeHereError("*** Cannot call PrimitiveOp without defining VM_TYPES");
 					}
 				}
 				else {
@@ -334,7 +335,7 @@ public:
 								push(std::move(std::string(1,(char)i.arg)));
 								break;
 							}
-							else { assert(false && "*** Cannot use op_ALPHABET if std::string is not in VM_TYPES"); }
+							else { throw YouShouldNotBeHereError("*** Cannot use op_ALPHABET if std::string is not in VM_TYPES"); }
 						}
 						case BuiltinOp::op_ALPHABETchar: 
 						{
@@ -343,7 +344,7 @@ public:
 								push((char)i.arg);
 								break;
 							}
-							else { assert(false && "*** Cannot use op_ALPHABET if char is not in VM_TYPES"); }
+							else { throw YouShouldNotBeHereError("*** Cannot use op_ALPHABET if char is not in VM_TYPES"); }
 						}
 						case BuiltinOp::op_INT: 
 						{
@@ -352,7 +353,7 @@ public:
 								push((int)i.arg);
 								break;
 							}
-							else { assert(false && "*** Cannot use op_INT if int is not in VM_TYPES"); }
+							else { throw YouShouldNotBeHereError("*** Cannot use op_INT if int is not in VM_TYPES"); }
 						}	
 						case BuiltinOp::op_FLOAT: 
 						{
@@ -361,14 +362,14 @@ public:
 								push((float)i.arg);
 								break;
 							}
-							else { assert(false && "*** Cannot use op_FLOAT if float is not in VM_TYPES"); }
+							else { throw YouShouldNotBeHereError("*** Cannot use op_FLOAT if float is not in VM_TYPES"); }
 						}				
 						case BuiltinOp::op_P: {
 							if constexpr (contains_type<double,VM_TYPES...>()) { 
 								push( double(i.arg)/double(Pdenom) );
 								break;
 							} 
-							else { assert(false && "*** Cannot use op_P if double is not in VM_TYPES"); }
+							else { throw YouShouldNotBeHereError("*** Cannot use op_P if double is not in VM_TYPES"); }
 
 						}					
 						case BuiltinOp::op_MEM:
@@ -384,20 +385,20 @@ public:
 								
 								break;
 								
-							} else { assert(0 && "*** Cannot call op_MEM without defining operator< on input_t"); }
+							} else { throw YouShouldNotBeHereError("*** Cannot call op_MEM without defining operator< on input_t"); }
 						}
 						case BuiltinOp::op_TRUE: 
 						{
 							if constexpr (contains_type<bool,VM_TYPES...>()) { 
 								push<bool>(true);
-							} else { assert(0 && "*** Must have bool defined to use op_TRUE");}
+							} else { throw YouShouldNotBeHereError("*** Must have bool defined to use op_TRUE");}
 							break;
 						}
 						case BuiltinOp::op_FALSE: 
 						{
 							if constexpr (contains_type<bool,VM_TYPES...>()) { 
 								push<bool>(false);
-							} else { assert(0 && "*** Must have bool defined to use op_FALSE");}
+							} else { throw YouShouldNotBeHereError("*** Must have bool defined to use op_FALSE");}
 							break;
 						}
 						case BuiltinOp::op_SAFE_RECURSE: {
@@ -422,7 +423,7 @@ public:
 									push<output_t>(output_t{});
 									continue;
 								}
-							} else { assert(false && "*** Can only use SAFE_RECURSE on strings");}
+							} else { throw YouShouldNotBeHereError("*** Can only use SAFE_RECURSE on strings");}
 							
 							// want to fallthrough here
 							[[fallthrough]];
@@ -476,7 +477,7 @@ public:
 									push<output_t>(output_t{});
 									continue;
 								}
-							} else { assert(false && "*** Can only use SAFE_MEM_RECURSE on strings.");}
+							} else { throw YouShouldNotBeHereError("*** Can only use SAFE_MEM_RECURSE on strings.");}
 
 							// want to fallthrough here
 							[[fallthrough]];
@@ -511,7 +512,7 @@ public:
 								
 								break;						
 								
-							} else { assert(false && "*** Cannot MEM_RECURSE unless input_t has operator< defined"); }
+							} else { throw YouShouldNotBeHereError("*** Cannot MEM_RECURSE unless input_t has operator< defined"); }
 						}
 						
 						// Both flips come here so we don't duplicate code
@@ -576,7 +577,7 @@ public:
 
 								break;
 		
-							} else { assert(0 && "*** Cannot use op_FLIP without defining bool in VM_TYPES"); }
+							} else { throw YouShouldNotBeHereError("*** Cannot use op_FLIP without defining bool in VM_TYPES"); }
 						}
 						case BuiltinOp::op_JMP:
 						{
@@ -594,17 +595,17 @@ public:
 								else   {}; // do nothing, we pass through and then get to the jump we placed at the end of the x branch
 								
 								break;		
-							} else { assert(0 && "*** Cannot use op_IF without defining bool in VM_TYPES"); }			
+							} else { throw YouShouldNotBeHereError("*** Cannot use op_IF without defining bool in VM_TYPES"); }			
 						}
 						case BuiltinOp::op_I:
 						case BuiltinOp::op_S:
 						case BuiltinOp::op_K:
 						case BuiltinOp::op_SKAPPLY: {
-								assert(0 && "*** Should not call these -- instead use Fleet::Combinator::Reduce");
+								throw YouShouldNotBeHereError("*** Should not call these -- instead use Fleet::Combinator::Reduce");
 						}												
 						default: 
 						{
-							assert(0 && "Bad op name");
+							throw YouShouldNotBeHereError("Bad op name");
 						}
 					} // end switch
 				

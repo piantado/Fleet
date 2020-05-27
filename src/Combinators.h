@@ -1,5 +1,6 @@
 #pragma once 
 
+#include "Errors.h"
 #include "Grammar.h"
 #include "Node.h"
 
@@ -9,7 +10,7 @@ namespace Fleet {
 		struct CL {
 			
 			// must be defined (but not used)
-			bool operator<(const CL& other) const { assert(0); }
+			bool operator<(const CL& other) const { throw NotImplementedError(); }
 		
 		}; // just a dummy type here
 		
