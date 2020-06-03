@@ -35,6 +35,8 @@
  * @brief Template of type hypothesis and callback.
  */
 
+
+
 template<typename HYP, typename callback_t>
 class FullMCTSNode {	
 public:
@@ -50,16 +52,13 @@ public:
     unsigned long nvisits;  // how many times have I visited each node?
     bool open; // am I still an available node?
 	mutable std::mutex child_mutex; // for access in parallelTempering
-	this_t* parent; // who is my parent?
 	
-	
-	// TODO: MAKE THESE STATIC 
 	// these are static variables that makes them not have to be stored in each node
 	// this means that if we want to change them for multiple MCTS nodes, we need to subclass
-	double explore; 
-	data_t* data;
-	callback_t* callback; 
-    
+	static double explore; 
+	static data_t* data;
+	static callback_t* callback; 
+
 	/*	One idea here is that we want to pick the node whose *most recent* sample added the most probability mass
 	 * 
 	 * 
@@ -69,23 +68,29 @@ public:
 	double lse;
 	double last_lp;
     
-    FullMCTSNode(this_t* par, HYP& v, callback_t& cb) : explore(par->explore), data(par->data), parent(par), callback(&cb), max(-infinity), min(infinity), lse(-infinity), last_lp(0) {
+    FullMCTSNode(this_t* par, HYP& v) : nvisits(0), open(true), max(-infinity), min(infinity), lse(-infinity), last_lp(0) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
 		std::lock_guard guard(child_mutex);
+		
 		value = v;
 		
 		children.reserve(value.neighbors());
-        initialize();	
     }
     
     FullMCTSNode(double ex, HYP& h0, data_t* d, callback_t& cb) : 
-		explore(ex), data(d), parent(nullptr),  callback(&cb), max(-infinity), min(infinity), lse(-infinity), last_lp(0) {
+		nvisits(0), open(true), max(-infinity), min(infinity), lse(-infinity), last_lp(0) {
+		// This is the constructor that gets called from main, and it sets the static variables. All the other constructors
+		// should use the above one
+		
         std::lock_guard guard(child_mutex);
 		
-		value = h0; // might need to be after lock_guard?
-		children.reserve(value.neighbors());
+		explore = ex; 
+		data = d;
+		callback = &cb;
 		
-		initialize();        
+		value = h0; // might need to be after lock_guard?
+		
+		children.reserve(value.neighbors());
 		
 		if(not h0.get_value().is_null()) { CERR "# Warning, initializing MCTS root with a non-null node." ENDL; }
     }
@@ -109,17 +114,13 @@ public:
         return n;
     }
     
-    void initialize() {
-		nvisits=0;
-        open=true;
-    }
     
-	void print(std::ostream& o, const int depth, const bool sort) const { 
+	void print(const this_t* parent, std::ostream& o, const int depth, const bool sort) const { 
         std::string idnt = std::string(depth, '\t'); // how far should we indent?
         
 		std::string opn = (open?" ":"*");
 		
-		o << idnt TAB opn TAB score() TAB "visits=" << nvisits TAB value.string() ENDL;
+		o << idnt TAB opn TAB score(parent) TAB "visits=" << nvisits TAB value.string() ENDL;
 		
 		// optional sort
 		if(sort) {
@@ -129,37 +130,34 @@ public:
 			std::sort(c2.begin(), c2.end(), [](const auto a, const auto b) {return a->nvisits > b->nvisits;}); // sort by how many samples
 
 			for(const auto& c : c2) 
-				c->print(o, depth+1, sort);
+				c->print(this, o, depth+1, sort);
 		}
 		else {		
 			for(auto& c : children) 
-				c.print(o, depth+1, sort);
+				c.print(this, o, depth+1, sort);
 		}
     }
  
 	// wrappers for file io
     void print(const bool sort=true) const { 
-		print(std::cout, 0, sort);		
+		print(nullptr, std::cout, 0, sort);		
 	}
 	void printerr(const bool sort=true) const {
-		print(std::cerr, 0);
+		print(nullptr, std::cerr, 0);
 	}    
 	void print(const char* filename, const bool sort=true) const {
 		std::ofstream out(filename);
-		print(out, 0, sort);
+		print(nullptr, out, 0, sort);
 		out.close();		
 	}
 
 	
-	size_t open_children() const {
-		size_t n = 0;
+	size_t any_open() const {
 		for(auto const& c : children) {
-			n += c.open;
+			if(c.open) return true;
 		}
-		return n;
+		return false;
 	}
-
-
 
     void add_sample(const double v){ // found something with v
         
@@ -170,11 +168,6 @@ public:
 			min = std::min(min, v); 
 		lse = logplusexp(lse, v);
 		last_lp = v;
-		
-		// and add this sampel going up too
-		if(parent != nullptr) {
-			parent->add_sample(v);
-		}
     }
 		
    
@@ -187,7 +180,8 @@ public:
 		while(ctl.running()) {
 			if(DEBUG_MCTS) DEBUG("\tMCTS SEARCH LOOP");
 			
-			this->search_one();
+			double s = this->search_one(this);
+			add_sample(s);
 		}
 	}
 
@@ -212,7 +206,7 @@ public:
 	}
 
    
-	double score() const {
+	double score(const this_t* parent) const {
 		if(not open) { // do not pick
 			return -infinity;
 		}
@@ -233,8 +227,11 @@ public:
 		}	
 	}
    
-    void search_one() {
-		// This new version of search_one is a little fancy in that it creates the nodes as it goes down. 
+    double search_one(this_t* parent) {
+		// recurse down the tree, building and/or evaluating as needed. This has a nice format that saves space -- Nodes need
+		// not store parents since they can be passed recursively here. Because this returns the score, it can be propagated
+		// back up the tree. 
+		
 		//std::lock_guard guard(child_mutex); // need a guard here so the child isn't moved while we do this 
 		child_mutex.lock();
 			
@@ -256,6 +253,8 @@ public:
 			(*callback)(value);
 			
 			child_mutex.unlock();
+			
+			return posterior;
 		}
 		else if (children.size() < neigh) {
 			// if I haven't expanded all of my children, do that first 
@@ -263,34 +262,42 @@ public:
 			auto child = value.make_neighbor(children.size());
 			if(DEBUG_MCTS) DEBUG("\tAdding child ", this, "\t["+child.string()+"] ");
 			
-			children.emplace_back(this,child,*callback);
+			children.emplace_back(this,child);
 			
 			// and now follow this newly added child
 			child_mutex.unlock();
-			children.rbegin()->search_one();
 			
+			double s = children.rbegin()->search_one(parent);
+			add_sample(s);
+			return s;
 		}
-		else {
-//			std::lock_guard guard(child_mutex);
-			
-			// else I have all of my kids
-			//CERR children.size() TAB neigh ENDL;
+		else { // else I have all of my kids
 			assert(children.size() == neigh); // I should have this many neighbors, so I'll choose
 
 			// Figure out which to sample
-			auto c = arg_max<this_t,std::vector<this_t>>(children, [](const this_t& n) {return n.score(); });
+			auto c = arg_max<this_t,std::vector<this_t>>(children, [&](const this_t& n) {return n.score(parent); });
 			
 			// TODO: And if we track things right, we can remove children who are closed
 			// but to do this, we have to store that we had seen all of them. 
 			child_mutex.unlock();
 			
-			children[c.first].search_one();
+			double s = children[c.first].search_one(parent);
+			add_sample(s);
 			
 			// and I'm open if ANY of my children are
-			open = (open_children() > 0);
+			open = any_open();
+			return s;
 		}
-		
-		
     } // end search
 
 };
+
+// Must be defined for the linker to find them, apparently:
+template<typename HYP, typename callback_t>
+double FullMCTSNode<HYP,callback_t>::explore = 1.0;
+
+template<typename HYP, typename callback_t>
+typename HYP::data_t* FullMCTSNode<HYP,callback_t>::data = nullptr;
+
+template<typename HYP, typename callback_t>
+callback_t* FullMCTSNode<HYP,callback_t>::callback = nullptr;

@@ -225,8 +225,8 @@ int main(int argc, char** argv){
 	tic();
 	m.print("tree.py");
 	
-
-	tic();
 	top.print();
+
+	CERR "# MCTS size: " TAB m.size() ENDL;
 	
 }
