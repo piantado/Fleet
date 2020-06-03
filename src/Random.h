@@ -114,7 +114,7 @@ bool flip() {
 
 
 template<typename t, typename T> 
-double sample_z(const T& s, std::function<double(const t&)>& f) {
+double sample_z(const T& s, const std::function<double(const t&)>& f) {
 	/**
 	 * @brief If f specifies the probability (NOT log probability) of each element of s, compute the normalizing constant. 
 	 * @param s - a collection of objects
@@ -130,14 +130,14 @@ double sample_z(const T& s, std::function<double(const t&)>& f) {
 }
 
 template<typename t, typename T> 
-std::pair<t*,double> sample(const T& s, std::function<double(const t&)>& f = [](const t& v){return 1.0;}) {
+std::pair<t*,double> sample(const T& s, const std::function<double(const t&)>& f = [](const t& v){return 1.0;}) {
 	// An interface to sample that computes the normalizer for you 
 	return sample(s, sample_z(s,f), f);
 }
 
 
 template<typename t, typename T> 
-std::pair<t*,double> sample(const T& s, double z, std::function<double(const t&)>& f = [](const t& v){return 1.0;}) {
+std::pair<t*,double> sample(const T& s, double z, const std::function<double(const t&)>& f = [](const t& v){return 1.0;}) {
 	// this takes a collection T of elements t, and a function f
 	// which assigns them each a probability, and samples from them according
 	// to the probabilities in f. The probability that is returned is only the probability
@@ -148,6 +148,7 @@ std::pair<t*,double> sample(const T& s, double z, std::function<double(const t&)
 	
 	for(auto& x : s) {
 		double fx = f(x);
+		assert(fx > 0.0);
 		r -= fx;
 		if(r <= 0.0) 
 			return std::make_pair(const_cast<t*>(&x), log(fx)-log(z));
@@ -157,6 +158,21 @@ std::pair<t*,double> sample(const T& s, double z, std::function<double(const t&)
 }
 
 
+
+template<typename t, typename T> 
+std::pair<t*,double> max_of(const T& s, const std::function<double(const t&)>& f) {
+	// Same interface as sample but choosing the max
+	double mx = -infinity;
+	t* out = nullptr;
+	for(auto& x : s) {
+		double fx = f(x);
+		if(fx > mx) {
+			mx = fx;
+			out = const_cast<t*>(&x);
+		}
+	}
+	return std::make_pair(out, mx);
+}
 
 template<typename t, typename T> 
 std::pair<t*,double> sample(const T& s, double(*f)(const t&)) {

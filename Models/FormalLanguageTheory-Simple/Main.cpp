@@ -129,7 +129,10 @@ public:
 
 #include "Top.h"
 #include "ParallelTempering.h"
+#include "FullMCTS.h"
+
 #include "Fleet.h" 
+
 
 int main(int argc, char** argv){ 
 	
@@ -203,19 +206,27 @@ int main(int argc, char** argv){
 //
 //	return 0;
 	
-	MyHypothesis h0(&grammar);
-	h0 = h0.restart();
-	tic();
-//	
-	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
-	samp.run(Control(mcmc_steps, runtime, nthreads), 100, 300); //30000);		
+//	MyHypothesis h0(&grammar);
+//	h0 = h0.restart();
+//	tic();
+////	
+//	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
+//	samp.run(Control(mcmc_steps, runtime, nthreads), 100, 300); //30000);		
 //	
 //	MCMCChain c(h0, &mydata, top);
 	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
 //	c.run(Control(mcmc_steps, runtime, nthreads));
 
+
+	MyHypothesis h0(&grammar);
+	FullMCTSNode<MyHypothesis,TopN<MyHypothesis>> m(explore, h0, &mydata, top);
 	tic();
+	m.parallel_search(Control(mcts_steps, runtime, nthreads));
+	tic();
+	m.print("tree.txt");
 	
+
+	tic();
 	top.print();
 	
 }

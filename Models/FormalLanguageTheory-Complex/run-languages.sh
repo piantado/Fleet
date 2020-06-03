@@ -10,8 +10,9 @@ mymain=run/main.$myhost
 cp main $mymain
 cp Main.cpp run/Main.cpp.$myhost # for a record 
 
-parameters=AllParameters.csv
-    
+# parameters=AllParameters.csv
+parameters=AllParameters-SmallRun.csv
+  
 if [ $myhost = "colala-hastings" ] ; then
     factors=(3 6)
     jobs=40

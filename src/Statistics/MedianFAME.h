@@ -9,6 +9,8 @@
  * @brief A streaming median class implementing the FAME algorithm
  * 			Here, we initialize both the step size and M with the current sample
  * 			http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.108.7376&rep=rep1&type=pdf
+ * 
+ * 			TODO: Should be using FAME NO OS -- in paper it does a little better and is faster.  
  */
 template<typename T>
 class MedianFAME {

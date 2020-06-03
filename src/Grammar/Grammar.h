@@ -482,13 +482,15 @@ public:
 	
 	double log_probability(const Node& n) const {
 		/**
-		 * @brief Compute the log probability of a tree according to the grammar
+		 * @brief Compute the log probability of a tree according to the grammar. NOTE: here we ignore nodes that are Null
+		 * 		  meaning that we compute the partial probability
 		 * @param n
 		 * @return 
 		 */
 		
 		double lp = 0.0;		
 		for(auto& x : n) {
+			if(x.rule == NullRule) continue;
 			lp += log(x.rule->p) - log(rule_normalizer(x.rule->nt));
 		}
 	
