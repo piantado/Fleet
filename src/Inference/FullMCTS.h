@@ -40,21 +40,26 @@ class FullMCTSNode {
 public:
 
 	using this_t = FullMCTSNode<HYP,callback_t>;
-		
+	
+    	
 	std::vector<this_t> children;
+	
+	HYP value;
 
 	// NOTE: These used to be atomics?
     unsigned long nvisits;  // how many times have I visited each node?
     bool open; // am I still an available node?
-	const double explore; 
-	
 	mutable std::mutex child_mutex; // for access in parallelTempering
+	this_t* parent; // who is my parent?
 	
+	
+	// TODO: MAKE THESE STATIC 
+	// these are static variables that makes them not have to be stored in each node
+	// this means that if we want to change them for multiple MCTS nodes, we need to subclass
+	double explore; 
 	typename HYP::data_t* data;
-    this_t* parent; // who is my parent?
 	callback_t* callback; 
-    HYP value;
-
+    
 	/*	One idea here is that we want to pick the node whose *most recent* sample added the most probability mass
 	 * 
 	 * 
@@ -64,38 +69,39 @@ public:
 	double lse;
 	double last_lp;
     
-    FullMCTSNode(this_t* par, HYP& v, callback_t& cb) : explore(par->explore), data(par->data), parent(par), callback(&cb), value(v), max(-infinity), min(infinity), lse(-infinity), last_lp(0) {
+    FullMCTSNode(this_t* par, HYP& v, callback_t& cb) : explore(par->explore), data(par->data), parent(par), callback(&cb), max(-infinity), min(infinity), lse(-infinity), last_lp(0) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
+		std::lock_guard guard(child_mutex);
+		value = v;
 		
+		children.reserve(value.neighbors());
         initialize();	
     }
     
     FullMCTSNode(double ex, HYP& h0, typename HYP::data_t* d, callback_t& cb) : 
-		explore(ex), data(d), parent(nullptr),  callback(&cb), value(h0), max(-infinity), min(infinity), lse(-infinity), last_lp(0) {
-        
+		explore(ex), data(d), parent(nullptr),  callback(&cb), max(-infinity), min(infinity), lse(-infinity), last_lp(0) {
+        std::lock_guard guard(child_mutex);
+		
+		value = h0; // might need to be after lock_guard?
+		children.reserve(value.neighbors());
+		
 		initialize();        
 		
 		if(not h0.get_value().is_null()) { CERR "# Warning, initializing MCTS root with a non-null node." ENDL; }
     }
 	
 	// should not copy or move because then the parent pointers get all messed up 
-	FullMCTSNode(const this_t& m) = delete;
-	FullMCTSNode(this_t&& m) : explore(m.explore) {
-		std::lock_guard guard1(m.child_mutex); // get m's lock before moving
-		std::lock_guard guard3(  child_mutex); // and mine to be sure
-		
-		assert(m.children.size() ==0); // else parent pointers get messed up
-		nvisits = m.nvisits;
-		open = m.open;
-		max = m.max;
-//		statistics = std::move(statistics);
-		parent = m.parent;
-		value = std::move(m.value);
-		children = std::move(children);
-		callback = m.callback;
-		data = m.data;		
-	}
+	FullMCTSNode(const this_t& m) = delete; // because what happens to the child pointers?
 	
+	
+	FullMCTSNode(this_t&& m) {
+		// This must be defined for us to emplace_Back, but we don't actually want to move because that messes with 
+		// the multithreading. So we'll throw an exception. You can avoid moves by reserving children up above, 
+		// which should make it so that we never call this
+		
+		throw YouShouldNotBeHereError("*** This must be defined for children.emplace_back, but should never be called");
+	}
+		
     size_t size() const {
         int n = 1;
         for(const auto& c : children)
@@ -171,33 +177,6 @@ public:
 		}
     }
 		
-	void add_child_nodes() {
-
-		std::lock_guard guard(child_mutex);
-		
-		if(children.size() == 0) { // check again in case someone else has edited in the meantime
-			
-			size_t N = value.neighbors();
-//			std::cerr << N TAB value.string() ENDL;
-						
-			if(N==0) { // remove myself from the tree since these routes have been explored
-				open = false;
-			} 
-			else {
-				open = true;
-				for(size_t ei = 0; ei<N; ei++) {
-					size_t eitmp = ei; // since this is passed by refernece
-					
-					auto v = value.make_neighbor(eitmp);
-					
-					if(DEBUG_MCTS) DEBUG("\tAdding child ", this, "\t["+v.string()+"] ");
-					
-					//children.push_back(MCTSNode<HYP>(this,v));
-					children.emplace_back(this,v,*callback);
-				}
-			}
-		}
-	}
    
 	// search for some number of steps
 	void search(Control ctl) {
@@ -246,25 +225,6 @@ public:
 			return infinity; 
 		}
 		else {			
-			// borrowing some UCT-bound-like stuff here
-			// but really we should be thinking about the limiting distribution
-			// how often do we explore each branch as the number of samples 
-			// gets large?
-			//return n.max + explore * sqrt(log(nvisits)/n.nvisits);
-			
-			// this scales relative to probability
-			//return exp(last_lp-lse);
-			
-			// this keeps going on a branch until it stops yielding high probability (could be bad for not exploring)
-			// One nice feature of this is that it automatically penalizes for the prior (getting too deep)
-			//if(last_lp == -infinity) return min-lse;  // make it not actually inf
-			//else  			 		 return last_lp-lse;
-			
-			// with UCT-like bias
-			//return exp(last_lp-lse) + (parent == nullptr ? 0.0 : explore * sqrt(log(parent->nvisits)/nvisits));
-			
-			// scales to relative lp
-			//return (last_lp-lse) + (parent == nullptr ? 0.0 : explore * sqrt(log(parent->nvisits)/nvisits));
 			
 			// min/last thing with UCT -- this prevents the -infs from messing things up 
 			return  (last_lp == -infinity ? min-lse : last_lp-lse) + 
@@ -274,7 +234,10 @@ public:
 	}
    
     void search_one() {
-       
+		// This new version of search_one is a little fancy in that it creates the nodes as it goes down. 
+		//std::lock_guard guard(child_mutex); // need a guard here so the child isn't moved while we do this 
+		child_mutex.lock();
+			
 		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+value.string()+"] ", nvisits);
 		
 		// now if we get here, we must have at least one open child
@@ -282,37 +245,55 @@ public:
 		
 		++nvisits; // increment our visit count on our way down so other threads don't follow
 		
-		if(value.neighbors() == 0) {
+		auto neigh = value.neighbors(); 
+		
+		if(neigh == 0) {
+			open = false; // make sure nobody else takes this one
+			
 			// if its a terminal, compute the posterior
 			double posterior = value.compute_posterior(*data);
-			//CERR posterior TAB value.string() ENDL;
 			add_sample(posterior);
 			(*callback)(value);
+			
+			child_mutex.unlock();
+		}
+		else if (children.size() < neigh) {
+			// if I haven't expanded all of my children, do that first 
+			
+			{
+//				std::lock_guard guard(child_mutex);
+						
+				auto child = value.make_neighbor(children.size());
+				if(DEBUG_MCTS) DEBUG("\tAdding child ", this, "\t["+child.string()+"] ");
+				
+				children.emplace_back(this,child,*callback);
+			}
+			
+			// and now follow this newly added child
+			child_mutex.unlock();
+			children.rbegin()->search_one();
+			
 		}
 		else {
-			// else I have some neighbors, so I must have children. Add them if necessary
-			if(children.size() == 0) { // if I have no children
-				this->add_child_nodes(); // add child nodes if they don't exist
-			}
+//			std::lock_guard guard(child_mutex);
+			
+			// else I have all of my kids
+			//CERR children.size() TAB neigh ENDL;
+			assert(children.size() == neigh); // I should have this many neighbors, so I'll choose
 
-			auto c = max_of<this_t,std::vector<this_t>>(children, [](const this_t& n) {return n.score(); });
+			// Figure out which to sample
+			auto c = arg_max<this_t,std::vector<this_t>>(children, [](const this_t& n) {return n.score(); });
 			
-			if(c.first == nullptr) 
-				return;
+			// TODO: And if we track things right, we can remove children who are closed
+			// but to do this, we have to store that we had seen all of them. 
+			child_mutex.unlock();
 			
-			c.first->search_one();
+			children[c.first].search_one();
+			
+			// and I'm open if ANY of my children are
+			open = (open_children() > 0);
 		}
 		
-		
-		// and I'm open if ANY of my children are
-		open = (open_children() > 0);
-		
-		// and erase closed children 
-//		for(size_t i=children.size()-1;i>=0;i++) {
-//			if(not children[i].open) {
-//				children.erase(children.begin() + i);
-//			}
-//		}
 		
     } // end search
 

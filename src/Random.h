@@ -157,7 +157,22 @@ std::pair<t*,double> sample(const T& s, double z, const std::function<double(con
 	throw YouShouldNotBeHereError("*** Should not get here in sampling");	
 }
 
-
+template<typename t, typename T> 
+std::pair<size_t,double> arg_max(const T& s, const std::function<double(const t&)>& f) {
+	// Same interface as sample but choosing the max
+	double mx = -infinity;
+	size_t max_idx = 0;
+	size_t idx = 0;
+	for(auto& x : s) {
+		double fx = f(x);
+		if(fx > mx) {
+			mx = fx;
+			max_idx = idx;
+		}
+		idx++;
+	}
+	return std::make_pair(max_idx, mx);
+}
 
 template<typename t, typename T> 
 std::pair<t*,double> max_of(const T& s, const std::function<double(const t&)>& f) {
