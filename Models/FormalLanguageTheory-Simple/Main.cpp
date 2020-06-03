@@ -223,7 +223,7 @@ int main(int argc, char** argv){
 	tic();
 	m.parallel_search(Control(mcts_steps, runtime, nthreads));
 	tic();
-	m.print("tree.py");
+	m.print("tree.txt");
 	
 	top.print();
 

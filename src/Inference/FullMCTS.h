@@ -74,6 +74,9 @@ public:
 		
 		value = v;
 		
+//		std::atomic<bool> mut; 
+//		CERR sizeof(child_mutex)  TAB sizeof(children) TAB sizeof(value) TAB sizeof(max) TAB sizeof(open) TAB sizeof(mut) ENDL; 
+		
 		children.reserve(value.neighbors());
     }
     
@@ -220,9 +223,14 @@ public:
 		}
 		else {			
 			
+			if(parent == nullptr) return 0.0;
+			
 			// min/last thing with UCT -- this prevents the -infs from messing things up 
-			return  (last_lp == -infinity ? min-lse : last_lp-lse) + 
-			        (parent == nullptr ? 0.0 : explore * sqrt(log(parent->nvisits)/nvisits));
+//			return  ((last_lp == -infinity ? min : last_lp) - parent->lse) + 
+//			         explore * sqrt(log(parent->nvisits)/nvisits);
+//			
+			return  (lse - parent->lse) + 
+					explore * sqrt(log(parent->nvisits)/nvisits);
 			
 		}	
 	}
