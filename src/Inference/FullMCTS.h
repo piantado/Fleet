@@ -40,8 +40,8 @@ class FullMCTSNode {
 public:
 
 	using this_t = FullMCTSNode<HYP,callback_t>;
+	using data_t = typename HYP::data_t;
 	
-    	
 	std::vector<this_t> children;
 	
 	HYP value;
@@ -57,7 +57,7 @@ public:
 	// these are static variables that makes them not have to be stored in each node
 	// this means that if we want to change them for multiple MCTS nodes, we need to subclass
 	double explore; 
-	typename HYP::data_t* data;
+	data_t* data;
 	callback_t* callback; 
     
 	/*	One idea here is that we want to pick the node whose *most recent* sample added the most probability mass
@@ -78,7 +78,7 @@ public:
         initialize();	
     }
     
-    FullMCTSNode(double ex, HYP& h0, typename HYP::data_t* d, callback_t& cb) : 
+    FullMCTSNode(double ex, HYP& h0, data_t* d, callback_t& cb) : 
 		explore(ex), data(d), parent(nullptr),  callback(&cb), max(-infinity), min(infinity), lse(-infinity), last_lp(0) {
         std::lock_guard guard(child_mutex);
 		
@@ -260,14 +260,10 @@ public:
 		else if (children.size() < neigh) {
 			// if I haven't expanded all of my children, do that first 
 			
-			{
-//				std::lock_guard guard(child_mutex);
-						
-				auto child = value.make_neighbor(children.size());
-				if(DEBUG_MCTS) DEBUG("\tAdding child ", this, "\t["+child.string()+"] ");
-				
-				children.emplace_back(this,child,*callback);
-			}
+			auto child = value.make_neighbor(children.size());
+			if(DEBUG_MCTS) DEBUG("\tAdding child ", this, "\t["+child.string()+"] ");
+			
+			children.emplace_back(this,child,*callback);
 			
 			// and now follow this newly added child
 			child_mutex.unlock();
