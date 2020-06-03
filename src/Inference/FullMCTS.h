@@ -55,17 +55,23 @@ public:
 	callback_t* callback; 
     HYP value;
 
-//	StreamingStatistics statistics;
+	/*	One idea here is that we want to pick the node whose *most recent* sample added the most probability mass
+	 * 
+	 * 
+	 * */
 	double max;
+	double min;
+	double lse;
+	double last_lp;
     
-    FullMCTSNode(this_t* par, HYP& v, callback_t& cb) : explore(par->explore), data(par->data), parent(par), callback(&cb), value(v), max(-infinity) {
+    FullMCTSNode(this_t* par, HYP& v, callback_t& cb) : explore(par->explore), data(par->data), parent(par), callback(&cb), value(v), max(-infinity), min(infinity), lse(-infinity), last_lp(0) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
 		
         initialize();	
     }
     
     FullMCTSNode(double ex, HYP& h0, typename HYP::data_t* d, callback_t& cb) : 
-		explore(ex), data(d), parent(nullptr),  callback(&cb), value(h0), max(-infinity) {
+		explore(ex), data(d), parent(nullptr),  callback(&cb), value(h0), max(-infinity), min(infinity), lse(-infinity), last_lp(0) {
         
 		initialize();        
 		
@@ -107,9 +113,7 @@ public:
         
 		std::string opn = (open?" ":"*");
 		
-//		double s = score(); // must call before getting stats mutex, since this requests it too 
-		
-		o << idnt TAB opn TAB max TAB "visits=" << nvisits TAB value.string() ENDL;
+		o << idnt TAB opn TAB score() TAB "visits=" << nvisits TAB value.string() ENDL;
 		
 		// optional sort
 		if(sort) {
@@ -155,8 +159,11 @@ public:
         
 		// If we do the first of these, we sampling probabilities proportional to the probabilities
 		// otherwise we sample them uniformly
-//		statistics << v;
-		if(v > max) { max = v; }
+		max = std::max(max,v);	
+		if(v != -infinity) // keep track of the smallest non-inf value -- we use this instead of inf for sampling
+			min = std::min(min, v); 
+		lse = logplusexp(lse, v);
+		last_lp = v;
 		
 		// and add this sampel going up too
 		if(parent != nullptr) {
@@ -226,6 +233,46 @@ public:
 	}
 
    
+	double score() const {
+		if(not open) { // do not pick
+			return -infinity;
+		}
+		else if(value.neighbors() == 0) {
+			// terminals first
+			return infinity;
+		}
+		else if(nvisits == 0) { 
+			// take unexplored paths first
+			return infinity; 
+		}
+		else {			
+			// borrowing some UCT-bound-like stuff here
+			// but really we should be thinking about the limiting distribution
+			// how often do we explore each branch as the number of samples 
+			// gets large?
+			//return n.max + explore * sqrt(log(nvisits)/n.nvisits);
+			
+			// this scales relative to probability
+			//return exp(last_lp-lse);
+			
+			// this keeps going on a branch until it stops yielding high probability (could be bad for not exploring)
+			// One nice feature of this is that it automatically penalizes for the prior (getting too deep)
+			//if(last_lp == -infinity) return min-lse;  // make it not actually inf
+			//else  			 		 return last_lp-lse;
+			
+			// with UCT-like bias
+			//return exp(last_lp-lse) + (parent == nullptr ? 0.0 : explore * sqrt(log(parent->nvisits)/nvisits));
+			
+			// scales to relative lp
+			//return (last_lp-lse) + (parent == nullptr ? 0.0 : explore * sqrt(log(parent->nvisits)/nvisits));
+			
+			// min/last thing with UCT -- this prevents the -infs from messing things up 
+			return  (last_lp == -infinity ? min-lse : last_lp-lse) + 
+			        (parent == nullptr ? 0.0 : explore * sqrt(log(parent->nvisits)/nvisits));
+			
+		}	
+	}
+   
     void search_one() {
        
 		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+value.string()+"] ", nvisits);
@@ -247,32 +294,11 @@ public:
 			if(children.size() == 0) { // if I have no children
 				this->add_child_nodes(); // add child nodes if they don't exist
 			}
+
+			auto c = max_of<this_t,std::vector<this_t>>(children, [](const this_t& n) {return n.score(); });
 			
-			
-			const std::function<double(const this_t&)> score = [&](const this_t& n) -> double { 
-				if(not n.open) { // do not pick
-					return -infinity;
-				}
-				else if(n.value.neighbors() == 0) {
-					// terminals first
-					return infinity;
-				}
-				else if(n.nvisits == 0) { 
-					// take unexplored paths first
-					return infinity; 
-				}
-				else {			
-					// borrowing some UCT-bound-like stuff here
-					// but really we should be thinking about the limiting distribution
-					// how often do we explore each branch as the number of samples 
-					// gets large?
-					return n.max + explore * sqrt(log(nvisits)/n.nvisits);
-				}	
-			};
-			
-			auto c = max_of<this_t,std::vector<this_t>>(children, score);
-			
-			if(c.first == nullptr) return;
+			if(c.first == nullptr) 
+				return;
 			
 			c.first->search_one();
 		}
