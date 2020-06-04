@@ -262,8 +262,14 @@ public:
 	virtual void expand_to_neighbor(int k) {
 		assert(grammar != nullptr);
 		
-		grammar->expand_to_neighbor(value,k);
-		return h;
+		if(value.is_null()){
+			auto nt = grammar->template nt<output_t>();
+			auto r = grammar->get_rule(nt,(size_t)k);
+			value = grammar->makeNode(r);
+		}
+		else {			
+			grammar->expand_to_neighbor(value, k);
+		}
 	}
 	
 	

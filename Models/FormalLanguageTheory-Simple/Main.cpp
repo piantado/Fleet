@@ -219,11 +219,11 @@ int main(int argc, char** argv){
 
 
 	MyHypothesis h0(&grammar);
-	FullMCTSNode<MyHypothesis,TopN<MyHypothesis>> m(explore, h0, &mydata, top);
+	FullMCTSNode<MyHypothesis,TopN<MyHypothesis>> m(explore, &mydata, top);
 	tic();
-	m.parallel_search(Control(mcts_steps, runtime, nthreads));
+	m.parallel_search(Control(mcts_steps, runtime, nthreads), h0);
 	tic();
-	m.print("tree.txt");
+	m.print(h0, "tree.txt");
 	
 	top.print();
 
