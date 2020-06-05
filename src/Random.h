@@ -175,7 +175,7 @@ std::pair<size_t,double> arg_max(const T& s, const std::function<double(const t&
 }
 
 template<typename t, typename T> 
-std::pair<t*,double> max_of(const T& s, const std::function<double(const t&)>& f) {
+std::pair<t*,double> max_of(T& s, const std::function<double(t&)>& f) {
 	// Same interface as sample but choosing the max
 	double mx = -infinity;
 	t* out = nullptr;

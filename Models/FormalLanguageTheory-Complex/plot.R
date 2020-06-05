@@ -13,8 +13,8 @@ label <- setNames(as.list(as.character(rp$latex)), rp$language)  # label[[langua
 D <- NULL
 # for(language in c("Gomez2", "Gomez6", "Gomez12" )) {
 # for(language in c("HudsonKamNewport45", "HudsonKamNewport60", "HudsonKamNewport75", "HudsonKamNewport100" )) {
-for(language in c("An", "ABn", "AnBn", "AB", "ABAnBn", "AnB2n", "AnBm", "AnBmCn", "XXR", "AAA", "AAAA", "Count", "AnBnCn", "AnBnC2n", "Dyck", "XX", "XXX",  "XXI", "XY", "AnBmCmAn", "AnBmCnDm", "GoldenMean", "Even", "AnBnCnDn", "A2en", "ABnen", "AnCBn", "AnABn", "AnABAn", "ABnABAn", "Bach2", "Bach3", "AnBm", "AnBmCn", "AnBmCm", "AnBmCnpm", "AnBmCnm", "AnBk", "ABaaaAB", "aABb", "Elman", "Braine66", "PullumR", "ApBAp", "AsBAsp", "ApBApp", "CountA2", "CountAEven", "Fibo", "AnBnCnDnEn", "AnBmAnBmCCC", "WeW", "An2", "AnBmAnBm", "ChineseNumeral", "AnBmA2n", "Unequal", "Milne", "AnB2nC3n", "AnBnp1Cnp2", "AnUBn", "AnUAnBn", "ABnUBAn")) {
-# for(language in c("Reber", "Elman", "Saffran",  "ABA", "ABB", "NewportAslin", "MorganNewport", "MorganMeierNewport", "Man", "BerwickPilato", "ReederNewportAslin", "HudsonKamNewport60", "Gomez2", "Gomez6", "Gomez12" )) {
+# for(language in c("An", "AB", "ABn", "AAA", "AAAA", "AnBm", "GoldenMean", "Even", "ApBAp", "AsBAsp", "ApBApp", "ABaaaAB", "CountA2", "CountAEven", "PullumR", "aABb", "AnBn", "Dyck", "AnB2n", "AnCBn", "AnABn", "AnABAn", "ABnABAn", "AnBmCn", "AnBmA2n", "AnBnC2n", "ABAnBn", "AnBmCm", "AnBmCnpm", "AnBmCnm", "AnBk", "AnBmCmAn", "AnB2nC3n", "AnBnp1Cnp2", "AnUBn", "AnUAnBn", "ABnUBAn", "XX", "XXX", "XY", "XXR", "XXI", "XXRI", "Unequal", "Bach2", "Bach3", "WeW", "An2", "AnBmCnDm", "AnBmAnBm", "AnBmAnBmCCC", "AnBnCn", "AnBnCnDn", "AnBnCnDnEn", "A2en", "ABnen", "Count", "ChineseNumeral", "Fibo")) {
+for(language in c("NewportAslin", "MorganNewport", "MorganMeierNewport", "Braine66", "ABA", "ABB", "HudsonKamNewport60", "Gomez2", "Gomez6", "Saffran", "Milne", "Elman", "Man", "Gomez12", "ReederNewportAslin", "Reber", "BerwickPilato")) {
 # for(language in c("English")) {
     q <- NULL
     for(nf in c(1,2,3,4,5,6,7,8)) {
@@ -48,6 +48,7 @@ for(language in c("An", "ABn", "AnBn", "AB", "ABAnBn", "AnB2n", "AnBm", "AnBmCn"
 }
 
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+## Set the levels of D$language to match rp
 
 
 # Convert languages to TeX

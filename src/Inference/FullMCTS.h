@@ -1,5 +1,8 @@
 /* 
  * 
+ * NOTE: If we scored inf, then we don't want to use that next time...
+ * 
+ * 
  * Some ideas:
  * 	what if we preferentially follow leaves that have a *variable* likelihood distribution. Otherwise we might find something good 
  *  and then follow up on minor modifications of it? This would automatically be handled by doing some kind of UCT/percentile estimate
@@ -36,6 +39,35 @@
  */
 
 
+class SpinLock {
+	//https://stackoverflow.com/questions/26583433/c11-implementation-of-spinlock-using-atomic
+    std::atomic_flag locked = ATOMIC_FLAG_INIT;
+public:
+    void lock() {
+        while (locked.test_and_set(std::memory_order_acquire)) { ; }
+    }
+    void unlock() {
+        locked.clear(std::memory_order_release);
+    }
+};
+
+
+/**
+ * @class FullMCTSNode
+ * @author piantado
+ * @date 03/06/20
+ * @file FullMCTS.h
+ * @brief This monte care tree search always plays out a full tree. It is optimized to keep the tree as small as possible. 
+ * 		To do this, it doesn't even store the value (HYP) in the tree, it just constructs it as a search step goes down the tree. 
+ * 	    It also doesn't store parent pointers, it just passes them down the tree. We use SpinLock here because std::mutex is much
+ *      bigger. Finally, explore, data, and callback are all static variables, which means that you will need to subclass this
+ *      if you want to let those vary across nodes (or parallel runs). 
+ * 		This lets us cram everything into 56 bytes. 
+ * 
+ * 		NOTE we could optimize a few more things -- for instance, storing the open bool either in nvisits, or which_expansion
+ * 
+ * 		TODO: We also store terminals currently in the tree, but there's no need for that -- we should eliminate that. 
+ */
 
 template<typename HYP, typename callback_t>
 class FullMCTSNode {	
@@ -45,13 +77,13 @@ public:
 	using data_t = typename HYP::data_t;
 	
 	std::vector<this_t> children;
-	
-	// NOTE: These used to be atomics?
-    unsigned long nvisits;  // how many times have I visited each node?
+
+    unsigned int nvisits;  // how many times have I visited each node?
     bool open; // am I still an available node?
-	mutable std::mutex child_mutex; // for access in parallelTempering
 	
-	size_t which_expansion; 
+	SpinLock mylock; 
+	
+	int which_expansion; 
 	
 	// these are static variables that makes them not have to be stored in each node
 	// this means that if we want to change them for multiple MCTS nodes, we need to subclass
@@ -59,38 +91,33 @@ public:
 	static data_t* data;
 	static callback_t* callback; 
 
-	/*	One idea here is that we want to pick the node whose *most recent* sample added the most probability mass
-	 * 
-	 * 
-	 * */
-	double max;
-	double min;
-	double lse;
-	double last_lp;
+	float max;
+	float min;
+	float lse;
+	float last_lp;
     
-    FullMCTSNode(this_t* par,  size_t w) : nvisits(0), open(true), which_expansion(w), max(-infinity), min(infinity), lse(-infinity), last_lp(0) {
+    FullMCTSNode(HYP& start, this_t* par,  size_t w) : 
+		nvisits(0), open(true), which_expansion(w), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
-		std::lock_guard guard(child_mutex);
-		
-		children.reserve(64);
-
-
-		std::atomic<bool> mut; 
-		CERR sizeof(child_mutex)  TAB sizeof(children) TAB sizeof(max) TAB sizeof(open) TAB sizeof(mut) ENDL; 
+		mylock.lock();
+			
+		children.reserve(start.neighbors());
+		mylock.unlock();
     }
     
-    FullMCTSNode(double ex, data_t* d, callback_t& cb) : 
-		nvisits(0), which_expansion(0), open(true), max(-infinity), min(infinity), lse(-infinity), last_lp(0) {
+    FullMCTSNode(HYP& start, double ex, data_t* d, callback_t& cb) : 
+		nvisits(0), which_expansion(0), open(true), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
 		// This is the constructor that gets called from main, and it sets the static variables. All the other constructors
 		// should use the above one
 		
-        std::lock_guard guard(child_mutex); // stop the other nodes from going
+        mylock.lock();
 		
-		children.reserve(64);
-		
+		children.reserve(start.neighbors());
 		explore = ex; 
 		data = d;
 		callback = &cb;
+		
+		mylock.unlock();
     }
 	
 	// should not copy or move because then the parent pointers get all messed up 
@@ -106,28 +133,28 @@ public:
 	}
 		
     size_t size() const {
-        int n = 1;
+        int n = 1; // for me
         for(const auto& c : children)
             n += c.size();
         return n;
     }
     
     
-	void print(HYP from, const this_t* parent, std::ostream& o, const int depth, const bool sort) const { 
+	void print(HYP from, this_t* parent, std::ostream& o, const int depth, const bool sort) { 
 		// here from is not a reference since we want to copy when we recurse 
 		
         std::string idnt = std::string(depth, '\t'); // how far should we indent?
         
 		std::string opn = (open?" ":"*");
 		
-		o << idnt TAB opn TAB score(parent, from) TAB "visits=" << nvisits TAB which_expansion TAB from ENDL;
+		o << idnt TAB opn TAB score(parent, from) TAB last_lp TAB max TAB "visits=" << nvisits TAB which_expansion TAB from ENDL;
 		
 		// optional sort
 		if(sort) {
 			// we have to make a copy of our pointer array because otherwise its not const			
-			std::vector<std::pair<const FullMCTSNode*,int>> c2;
+			std::vector<std::pair<FullMCTSNode*,int>> c2;
 			int w = 0;
-			for(const auto& c : children) {
+			for(auto& c : children) {
 				c2.emplace_back(&c,w);
 				++w;
 			}
@@ -138,27 +165,27 @@ public:
 					  }
 					  ); // sort by how many samples
 
-			for(const auto& c : c2) {
+			for(auto& c : c2) {
 				HYP newfrom = from; newfrom.expand_to_neighbor(c.second);
-				c.first->print(newfrom, this, o, depth+1, sort);
+				c.first->print(newfrom, const_cast<this_t*>(this), o, depth+1, sort);
 			}
 		}
 		else {		
 			int w = 0;
 			for(auto& c : children) {
 				HYP newfrom = from; newfrom.expand_to_neighbor(w);
-				c.print(newfrom, this, o, depth+1, sort);
+				c.print(newfrom, const_cast<this_t*>(this), o, depth+1, sort);
 				++w;;
 			}
 		}
     }
  
 	// wrappers for file io
-    void print(HYP& start, const bool sort=true) const { 
+    void print(HYP& start, const bool sort=true) { 
 		print(start, nullptr, std::cout, 0, sort);		
 	}
 
-	void print(HYP& start, const char* filename, const bool sort=true) const {
+	void print(HYP& start, const char* filename, const bool sort=true) {
 		std::ofstream out(filename);
 		print(start, nullptr, out, 0, sort);
 		out.close();		
@@ -172,7 +199,7 @@ public:
 		return false;
 	}
 
-    void add_sample(const double v){ // found something with v
+    void add_sample(const float v) {
         max = std::max(max,v);	
 		if(v != -infinity) // keep track of the smallest non-inf value -- we use this instead of inf for sampling
 			min = std::min(min, v); 
@@ -191,8 +218,8 @@ public:
 		while(ctl.running()) {
 			if(DEBUG_MCTS) DEBUG("\tMCTS SEARCH LOOP");
 			
-			HYP start = h0;
-			double s = this->search_one(this, start); // start from a copy of h0
+			HYP current = h0; // each thread makes a real copy here 
+			double s = this->search_one(this, current); 
 			add_sample(s);
 		}
 	}
@@ -218,25 +245,54 @@ public:
 	}
 
    
-	double score(const this_t* parent, HYP& current) const {
+	double score(const this_t* parent, const HYP& current) {
+		mylock.lock();
+		
 		if(not open) { // do not pick
+			mylock.unlock();
 			return -infinity;
 		}
 		else if(current.neighbors() == 0) {
+			mylock.unlock();
 			// terminals first
 			return infinity;
 		}
 		else if(nvisits == 0) { 
+			mylock.unlock();
 			// take unexplored paths first
 			return infinity; 
 		}
 		else {			
 			
-			if(parent == nullptr) return 0.0;
+			if(parent == nullptr) {
+				mylock.unlock();
+				return 0.0;
+			}
 			
 			// min/last thing with UCT -- this prevents the -infs from messing things up 
-			return  ((last_lp == -infinity ? min : last_lp) - parent->lse) + 
-			         explore * sqrt(log(parent->nvisits)/nvisits);
+//			return  ((last_lp == -infinity ? min : last_lp) - parent->lse) + 
+//			         explore * sqrt(log(parent->nvisits)/nvisits);
+			
+//			CERR last_lp TAB parent->lse ENDL;
+			
+			double v = explore * sqrt(log(parent->nvisits)/(1+nvisits)); // exploration part
+			
+			if( parent->lse == -infinity ) {
+				// This special case is weird, we'll just go with the explore parameter
+			}
+			else {
+				// this is our measure of how well each branch does, subbing last_lp for infinity
+				// when its helpful
+				v += exp((last_lp == -infinity and min < infinity ? min : last_lp) - parent->lse);
+			}
+			
+			assert(!std::isnan(v));
+			assert(v != infinity);
+			mylock.unlock();
+			return v; 
+			
+//			return  exp((last_lp == -infinity ? min : last_lp) - parent->lse) + 
+//			         explore * sqrt(log(parent->nvisits)/nvisits);
 			
 //			return  (lse - parent->lse) + 
 //					explore * sqrt(log(parent->nvisits)/nvisits);
@@ -249,7 +305,7 @@ public:
 		// not store parents since they can be passed recursively here. Because this returns the score, it can be propagated
 		// back up the tree. 
 		
-		child_mutex.lock();
+		mylock.lock();
 			
 		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", nvisits);
 		
@@ -268,7 +324,7 @@ public:
 			add_sample(posterior);
 			(*callback)(current);
 			
-			child_mutex.unlock();
+			mylock.unlock();
 			
 			return posterior;
 		}
@@ -277,38 +333,52 @@ public:
 			
 			int w = (int)children.size(); // what index are we expanding?
 			
-			children.emplace_back(this, w);
-
 			//NOTE That the next line destroys w, so emplace_back must come before
 			current.expand_to_neighbor(w);
+			
 			if(DEBUG_MCTS) DEBUG("\tAdding child ", this, "\t["+current.string()+"] ");
+
+			children.emplace_back(current, this, w);
 			
 			// and now follow this newly added child
-			child_mutex.unlock();
+			mylock.unlock();
 
 			double s = children.rbegin()->search_one(parent, current);
-			add_sample(s);
+			
+			mylock.lock();
+				add_sample(s);
+			mylock.unlock();
+			
 			return s;
 		}
 		else { // else I have all of my kids
 			assert(children.size() == neigh); // I should have this many neighbors, so I'll choose
 
-			// Figure out which to sample
-			auto c = max_of<this_t,std::vector<this_t>>(children, [&](const this_t& n) {return n.score(parent, current); });
-			
-			// TODO: And if we track things right, we can remove children who are closed
-			// but to do this, we have to store that we had seen all of them. 
-			child_mutex.unlock();
+//			for(auto& c : children){
+//				CERR c.score(this,current) ENDL;
+//			}
+//			CERR "-----------" ENDL;
+
+			// look at kids, using myself as their parent
+			auto c = max_of<this_t,std::vector<this_t>>(children, [&](this_t& n) {return n.score(const_cast<this_t*>(this), current); });
+			assert(c.first != nullptr);
 			
 			// follow that expansion
 			current.expand_to_neighbor(c.first->which_expansion);
 			
-			// and recurse
-			double s = c.first->search_one(parent, current);
-			add_sample(s);
+			// TODO: And if we track things right, we can remove children who are closed
+			// but to do this, we have to store that we had seen all of them. 
+			mylock.unlock();
 			
-			// and I'm open if ANY of my children are
-			open = any_open();
+			// and recurse, after unlocking
+			double s = c.first->search_one(parent, current);
+			
+			mylock.lock();
+				add_sample(s);
+				// and I'm open if ANY of my children are
+				open = any_open();
+			mylock.unlock();
+			
 			return s;
 		}
     } // end search
