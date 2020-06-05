@@ -40,6 +40,8 @@
 
 
 class SpinLock {
+	// We need something much smaller than std::mutex
+	
 	//https://stackoverflow.com/questions/26583433/c11-implementation-of-spinlock-using-atomic
     std::atomic_flag locked = ATOMIC_FLAG_INIT;
 public:
