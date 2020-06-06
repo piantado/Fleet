@@ -157,6 +157,49 @@ std::pair<t*,double> sample(const T& s, double z, const std::function<double(con
 	throw YouShouldNotBeHereError("*** Should not get here in sampling");	
 }
 
+std::pair<int,double> sample_int(unsigned int max, const std::function<double(const int)>& f = [](const int v){return 1.0;}) {
+	// special form for where the ints (e.g. indices) Are what f takes)
+	double z = 0.0;
+	for(size_t i=0;i<max;i++){
+		z += f(i);
+	}
+	
+	double r = z * uniform();
+	
+	for(size_t i=0;i<max;i++){
+		double fx = f(i);
+		assert(fx > 0.0);
+		r -= fx;
+		if(r <= 0.0) 
+			return std::make_pair(i, log(fx)-log(z));
+	}
+	
+	throw YouShouldNotBeHereError("*** Should not get here in sampling");	
+}
+
+
+std::pair<int,double> sample_int_lp(unsigned int max, const std::function<double(const int)>& f = [](const int v){return 1.0;}) {
+	// special form for where the ints (e.g. indices) Are what f takes)
+	double z = -infinity;
+	for(size_t i=0;i<max;i++){
+		z = logplusexp(z, f(i));
+	}
+	
+	double r = z + log(uniform());
+	
+	double fz = -infinity; 
+	for(size_t i=0;i<max;i++){
+		double fx = f(i);
+		assert(fx <= 0.0);
+		fz = logplusexp(fz, fx);
+		if(r <= fz) 
+			return std::make_pair(i, fx-z);
+	}
+	
+	throw YouShouldNotBeHereError("*** Should not get here in sampling");	
+}
+
+
 template<typename t, typename T> 
 std::pair<size_t,double> arg_max(const T& s, const std::function<double(const t&)>& f) {
 	// Same interface as sample but choosing the max

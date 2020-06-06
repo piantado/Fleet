@@ -272,6 +272,18 @@ public:
 		}
 	}
 	
+	virtual double neighbor_prior(int k) {
+		// What is the prior for this neighbor?
+		if(value.is_null()){
+			auto nt = grammar->template nt<output_t>();
+			auto r = grammar->get_rule(nt,(size_t)k);
+			return log(r->p)-log(grammar->rule_normalizer(r->nt));
+		}
+		else {			
+			return grammar->neighbor_prior(value, k);
+		}
+	}
+	
 	
 	virtual bool is_evaluable() const override {
 		// This checks whether it should be allowed to call "call" on this hypothesis. 

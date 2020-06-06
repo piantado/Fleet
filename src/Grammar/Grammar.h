@@ -913,6 +913,31 @@ public:
 			}
 		}
 	}
+	
+	double neighbor_prior(const Node& node, int& which) const {
+		// here we find the neighbor indicated by which and expand it into the which'th neighbor
+		// to do this, we loop through until which is less than the number of neighbors,
+		// and then it must specify which expansion we want to take. This means that when we
+		// skip a nullptr, we have to subtract from it the number of neighbors (expansions)
+		// we could have taken. 
+		for(size_t i=0;i<node.rule->N;i++){
+			if(node.child(i).is_null()) {
+				int c = count_rules(node.rule->type(i));
+				if(which >= 0 and which < c) {
+					auto r = get_rule(node.rule->type(i), (size_t)which);
+					return log(r->p)-log(rule_normalizer(r->nt));
+				}
+				which -= c;
+			}
+			else { // otherwise we have to process that which
+				neighbor_prior(node.child(i), which);
+			}
+		}
+		
+		return 0.0; // if no neighbors
+	}
+
+	
 
 	void complete(Node& node) {
 		// go through and fill in the tree at random

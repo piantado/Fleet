@@ -4,6 +4,9 @@
  * 
  * 
  * Some ideas:
+ * 
+ * 	For a node, we stor ethe last *likelihood*. We then sample the next child with the current prior and the last likelihood. 
+ * 
  * 	what if we preferentially follow leaves that have a *variable* likelihood distribution. Otherwise we might find something good 
  *  and then follow up on minor modifications of it? This would automatically be handled by doing some kind of UCT/percentile estimate
  * 	
@@ -98,6 +101,9 @@ public:
 	float lse;
 	float last_lp;
     
+	FullMCTSNode() {
+	}
+	
     FullMCTSNode(HYP& start, this_t* par,  size_t w) : 
 		nvisits(0), open(true), which_expansion(w), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
@@ -129,10 +135,17 @@ public:
 	FullMCTSNode(this_t&& m) {
 		// This must be defined for us to emplace_Back, but we don't actually want to move because that messes with 
 		// the multithreading. So we'll throw an exception. You can avoid moves by reserving children up above, 
-		// which should make it so that we never call this
-		
+		// which should make it so that we never call this		
 		throw YouShouldNotBeHereError("*** This must be defined for children.emplace_back, but should never be called");
 	}
+		
+	void operator=(const FullMCTSNode& m) {
+		throw YouShouldNotBeHereError("*** This must be defined for but should never be called");
+	}
+	void operator=(FullMCTSNode&& m) {
+		throw YouShouldNotBeHereError("*** This must be defined for but should never be called");
+	}
+		
 		
     size_t size() const {
         int n = 1; // for me
@@ -149,7 +162,7 @@ public:
         
 		std::string opn = (open?" ":"*");
 		
-		o << idnt TAB opn TAB score(parent, from) TAB last_lp TAB max TAB "visits=" << nvisits TAB which_expansion TAB from ENDL;
+		o << idnt TAB opn TAB last_lp TAB max TAB "visits=" << nvisits TAB which_expansion TAB from ENDL;
 		
 		// optional sort
 		if(sort) {
@@ -247,60 +260,73 @@ public:
 	}
 
    
-	double score(const this_t* parent, const HYP& current) {
-		mylock.lock();
-		
-		if(not open) { // do not pick
-			mylock.unlock();
+//	double score(const this_t* parent, const HYP& current) {
+//		mylock.lock();
+//		
+//		if(not open) { // do not pick
+//			mylock.unlock();
+//			return -infinity;
+//		}
+//		else if(current.neighbors() == 0) {
+//			mylock.unlock();
+//			// terminals first
+//			return infinity;
+//		}
+//		else if(nvisits == 0) { 
+//			mylock.unlock();
+//			// take unexplored paths first
+//			return infinity; 
+//		}
+//		else {			
+//			
+//			if(parent == nullptr) {
+//				mylock.unlock();
+//				return 0.0;
+//			}
+//			
+//			// min/last thing with UCT -- this prevents the -infs from messing things up 
+////			return  ((last_lp == -infinity ? min : last_lp) - parent->lse) + 
+////			         explore * sqrt(log(parent->nvisits)/nvisits);
+//			
+////			CERR last_lp TAB parent->lse ENDL;
+//			
+//			double v = explore * sqrt(log(parent->nvisits)/(1+nvisits)); // exploration part
+//			
+//			if( parent->lse == -infinity ) {
+//				// This special case is weird, we'll just go with the explore parameter
+//			}
+//			else {
+//				// this is our measure of how well each branch does, subbing last_lp for infinity
+//				// when its helpful
+//				v += exp((last_lp == -infinity and min < infinity ? min : last_lp) - parent->lse);
+//			}
+//			
+//			assert(!std::isnan(v));
+//			assert(v != infinity);
+//			mylock.unlock();
+//			return v; 
+//			
+////			return  exp((last_lp == -infinity ? min : last_lp) - parent->lse) + 
+////			         explore * sqrt(log(parent->nvisits)/nvisits);
+//			
+////			return  (lse - parent->lse) + 
+////					explore * sqrt(log(parent->nvisits)/nvisits);
+//			
+//		}	
+//	}
+   
+    double get_ll() {
+		if(last_lp != -infinity) {
+			return last_lp;
+		}
+		else if(min != infinity) {
+			return min;
+		} 
+		else {
 			return -infinity;
 		}
-		else if(current.neighbors() == 0) {
-			mylock.unlock();
-			// terminals first
-			return infinity;
-		}
-		else if(nvisits == 0) { 
-			mylock.unlock();
-			// take unexplored paths first
-			return infinity; 
-		}
-		else {			
-			
-			if(parent == nullptr) {
-				mylock.unlock();
-				return 0.0;
-			}
-			
-			// min/last thing with UCT -- this prevents the -infs from messing things up 
-//			return  ((last_lp == -infinity ? min : last_lp) - parent->lse) + 
-//			         explore * sqrt(log(parent->nvisits)/nvisits);
-			
-//			CERR last_lp TAB parent->lse ENDL;
-			
-			double v = explore * sqrt(log(parent->nvisits)/(1+nvisits)); // exploration part
-			
-			if( parent->lse == -infinity ) {
-				// This special case is weird, we'll just go with the explore parameter
-			}
-			else {
-				// this is our measure of how well each branch does, subbing last_lp for infinity
-				// when its helpful
-				v += exp((last_lp == -infinity and min < infinity ? min : last_lp) - parent->lse);
-			}
-			
-			assert(!std::isnan(v));
-			assert(v != infinity);
-			mylock.unlock();
-			return v; 
-			
-//			return  exp((last_lp == -infinity ? min : last_lp) - parent->lse) + 
-//			         explore * sqrt(log(parent->nvisits)/nvisits);
-			
-//			return  (lse - parent->lse) + 
-//					explore * sqrt(log(parent->nvisits)/nvisits);
-			
-		}	
 	}
+   
    
     double search_one(this_t* parent, HYP& current) {
 		// recurse down the tree, building and/or evaluating as needed. This has a nice format that saves space -- Nodes need
@@ -319,66 +345,73 @@ public:
 		auto neigh = current.neighbors(); 
 		
 		if(neigh == 0) {
+			// if I am a terminal 
+			
 			open = false; // make sure nobody else takes this one
 			
 			// if its a terminal, compute the posterior
-			double posterior = current.compute_posterior(*data);
-			add_sample(posterior);
+			current.compute_posterior(*data);
+			add_sample(current.likelihood);
 			(*callback)(current);
 			
 			mylock.unlock();
 			
-			return posterior;
+			return current.likelihood;
 		}
-		else if (children.size() < neigh) {
-			// if I haven't expanded all of my children, do that first 
+		else {
 			
-			int w = (int)children.size(); // what index are we expanding?
+			// Fill up the child nodes
+			// TODO: This is inefficient because it copies current a bunch of times...
+			if(children.size() == 0) {
+				for(size_t k=0;k<neigh;k++) {
+					HYP kc = current; kc.expand_to_neighbor(k);
+					children.emplace_back(kc, this, k);
+				}
+			}
 			
-			//NOTE That the next line destroys w, so emplace_back must come before
-			current.expand_to_neighbor(w);
+			
+			
+			
+			
+			
+			
+			
+			
+			// Hmm what if on construction you inherit min from your parent?
+			
+			
+			
+			
+			
+			
+			
+			// sample from children, using last_ll as the probability for missing children
+			std::vector<double> children_lps(neigh);
+			for(size_t k=0;k<neigh;k++) {
+				if(children[k].open) {
+					children_lps[k] = current.neighbor_prior(k) + 
+									  (children[k].nvisits == 0 ? get_ll() : children[k].get_ll());
+									//(children[k].last_lp==-infinity ? last_lp : children[k].last_lp);
+				}
+				else {
+					children_lps[k] = -infinity;
+				}
+			}
+			
+			// this is an index into children
+			int idx = sample_int_lp(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
+			
+			current.expand_to_neighbor(idx); // idx here gives which expansion we follow
 			
 			if(DEBUG_MCTS) DEBUG("\tAdding child ", this, "\t["+current.string()+"] ");
 
-			children.emplace_back(current, this, w);
-			
 			// and now follow this newly added child
 			mylock.unlock();
 
-			double s = children.rbegin()->search_one(parent, current);
+			double s = children[idx].search_one(parent, current);
 			
 			mylock.lock();
 				add_sample(s);
-			mylock.unlock();
-			
-			return s;
-		}
-		else { // else I have all of my kids
-			assert(children.size() == neigh); // I should have this many neighbors, so I'll choose
-
-//			for(auto& c : children){
-//				CERR c.score(this,current) ENDL;
-//			}
-//			CERR "-----------" ENDL;
-
-			// look at kids, using myself as their parent
-			auto c = max_of<this_t,std::vector<this_t>>(children, [&](this_t& n) {return n.score(const_cast<this_t*>(this), current); });
-			assert(c.first != nullptr);
-			
-			// follow that expansion
-			current.expand_to_neighbor(c.first->which_expansion);
-			
-			// TODO: And if we track things right, we can remove children who are closed
-			// but to do this, we have to store that we had seen all of them. 
-			mylock.unlock();
-			
-			// and recurse, after unlocking
-			double s = c.first->search_one(parent, current);
-			
-			mylock.lock();
-				add_sample(s);
-				// and I'm open if ANY of my children are
-				open = any_open();
 			mylock.unlock();
 			
 			return s;
