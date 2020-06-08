@@ -163,7 +163,13 @@ int main(int argc, char** argv){
 	
 	// we will parse the data from a comma-separated list of "data" on the command line
 	for(auto di : split(datastr, ',')) {
-		mydata.push_back( MyHypothesis::datum_t({S(""), di}) );
+		// add check that data is in the alphabet
+		for(auto& c : di) {
+			assert(alphabet.find(c) != std::string::npos && "*** alphabet does not include all data characters");
+		}
+		
+		// and add to data:
+		mydata.push_back( MyHypothesis::datum_t({S(""), di}) );		
 	}
 	
 	//------------------
@@ -227,9 +233,12 @@ int main(int argc, char** argv){
 //	m.print(h0, "tree.txt");
 //	CERR "# MCTS size: " TAB m.size() ENDL;
 
-
+	// Do some A* search -- here we maintain a priority queue of partially open nodes, sorted by 
+	// their prior and a single sample of their likelihood (which we end up downweighting a lot) (see Astar.h)
+	// This heuristic is inadmissable, but ends up working pretty well. 
+	top.print_best = true;
 	MyHypothesis h0(&grammar);
-	Astar astar(h0,&mydata,top,100.0);
+	Astar astar(h0,&mydata,top,10.0);
 	astar.run(Control(mcts_steps, runtime, nthreads));
 	
 	top.print();

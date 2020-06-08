@@ -8,7 +8,6 @@
 #include "FleetStatistics.h"
 #include "ParallelInferenceInterface.h"
 
-
 //#define DEBUG_ASTAR 1
 
 /**
@@ -18,8 +17,9 @@
  * @file Astar.h
  * @brief This is an implementation of A* search that maintains a priority queue of partial states and attempts to find 
  * 			a program with the lowest posterior score. To do this, we choose a node to expand based on its prior plus
- * 		    a single sample of its likelihood, computed by filling in its children at random. This is a stochastic heuristic
- * 			but still oen guaranteed not to *over*-estimate the posterior score. 
+ * 		    a single sample of its likelihood, computed by filling in its children at random. This stochastic heuristic is actually
+ *  		inadmissable since it overestimtes the cost almost all of the time. As a result, it usually makes sense to run
+ *  		A* at a pretty high temperature, corresponding to a downweighting of the likelihood.
  */
 template<typename HYP, typename callback_t>
 class Astar :public ParallelInferenceInterface {
@@ -27,7 +27,7 @@ class Astar :public ParallelInferenceInterface {
 	std::mutex lock; 
 public:
 	static constexpr size_t INITIAL_SIZE = 10000000;
-	
+	static constexpr size_t N_REPS = 1; // how many times do we try randomly filling in to determine priority? 
 	static double temperature;	
 	static callback_t* callback; // must be static so it can be accessed in GraphNode
 	static HYP::data_t* data;
@@ -41,12 +41,17 @@ public:
 	 */		
 	struct GraphNode {
 		HYP value;
-		double priority; 
+		double prior;
+		double likelihood;
 		
-		GraphNode(HYP& h, double pri) : value(h), priority(pri) {}
+		GraphNode(HYP& h, double p, double ll) : value(h), prior(p), likelihood(ll) {}
+		
+		double priority() const {
+			return -(prior + likelihood/temperature);
+		}
 		
 		bool operator>(const GraphNode& n) const {
-			return priority > n.priority;
+			return priority() > n.priority();
 		}	
 	};
 	
@@ -58,25 +63,12 @@ public:
 		callback = &cb; // set these static members (static so GraphNode can use them without having so many copies)
 		data = d;
 		temperature = temp;
-		push(h0);
+		push(h0, h0.compute_prior(), -infinity);
 	}
 	
-	void push(HYP& h) {
-	
-		// here we add h, after computing its priority; note that we do this here and not in GraphNode so that 
-		// when we multithread, we don't hold the lock while we copy_and_complete and call this posterior
-		
-		// We compute a stochastic heuristic by filling in h
-		auto g = h.copy_and_complete();
-		g.compute_posterior(*data);
-		(*callback)(g);
-		
-		// important here, the priority is the prior on h and the likelihood from g
-		// (you don't want the prior on g because it might be much more)
-		double priority = -(h.compute_prior() + g.likelihood / temperature);
-		
+	void push(HYP& h, double prior, double ll) {
 		std::lock_guard guard(lock);
-		Q.emplace(h,priority);
+		Q.emplace(h,prior,ll);
 	}
 	
 	void run_thread(Control ctl) override {
@@ -94,7 +86,7 @@ public:
 			lock.unlock();
 			
 			#ifdef DEBUG_ASTAR
-				CERR std::this_thread::get_id() TAB "ASTAR popped " << qt.priority TAB t.string() ENDL;
+				CERR std::this_thread::get_id() TAB "ASTAR popped " << qt.priority() TAB t.string() ENDL;
 			#endif
 			
 			size_t neigh = t.neighbors();
@@ -109,7 +101,22 @@ public:
 					(*callback)(v);
 				}
 				else {
-					push(v);
+					
+					// here we add h, after computing its priority; note that we do this here and not in GraphNode so that 
+					// when we multithread, we don't hold the lock while we copy_and_complete and call this posterior
+					
+					// We compute a stochastic heuristic by filling in h some number of times and taking the min
+					// note since we are seeking the best *underestimate*, we can use qt's previous likelihood and 
+					// see if we ever beat that (because we know this is a filling in of the previous likelihood)
+					double likelihood = qt.likelihood;
+					for(size_t i=0;i<N_REPS;i++) {
+						auto g = v.copy_and_complete();
+						g.compute_posterior(*data);
+						(*callback)(g);
+						likelihood = std::max(likelihood, g.likelihood);
+					}
+							
+					push(v, v.compute_prior(), likelihood);
 				}
 			}
 		}
