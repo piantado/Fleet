@@ -231,6 +231,11 @@ public:
 			COUT "# Samples per second:"  TAB FleetStatistics::global_sample_count/elapsed_seconds ENDL;
 			COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 		}
+		if(FleetStatistics::astar_steps > 0) {
+			COUT "# Total A* steps:" TAB FleetStatistics::astar_steps ENDL;
+		}
+		
+		COUT "# Total posterior calls:" TAB FleetStatistics::posterior_calls ENDL;
 		COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds ENDL;
 
 		// setting this makes sure we won't call it again

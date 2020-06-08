@@ -230,7 +230,6 @@ int main(int argc, char** argv){
 
 	MyHypothesis h0(&grammar);
 	Astar astar(h0,&mydata,top);
-	
 	astar.run(Control(mcts_steps, runtime, nthreads));
 	
 	top.print();

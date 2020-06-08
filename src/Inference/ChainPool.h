@@ -5,7 +5,7 @@
 //#define DEBUG_CHAINPOOL
 
 #include <vector>
-#include <boost/align/aligned_allocator.hpp>
+//#include <boost/align/aligned_allocator.hpp>
 
 #include "Errors.h"
 #include "MCMCChain.h"
