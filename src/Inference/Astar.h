@@ -6,6 +6,8 @@
 #include <thread>
 
 #include "FleetStatistics.h"
+#include "ParallelInferenceInterface.h"
+
 
 //#define DEBUG_ASTAR 1
 
@@ -20,13 +22,13 @@
  * 			but still oen guaranteed not to *over*-estimate the posterior score. 
  */
 template<typename HYP, typename callback_t>
-class Astar {
+class Astar :public ParallelInferenceInterface {
+	
+	std::mutex lock; 
 public:
 	static constexpr size_t INITIAL_SIZE = 10000000;
 	
-	static constexpr double temperature = 50.0;
-	std::mutex lock; 
-	
+	static double temperature;	
 	static callback_t* callback; // must be static so it can be accessed in GraphNode
 	static HYP::data_t* data;
 	
@@ -52,9 +54,10 @@ public:
 	std::priority_queue<GraphNode, ReservedVector<GraphNode,INITIAL_SIZE>, std::greater<GraphNode>> Q;
 	
 	 
-	Astar(HYP& h0, HYP::data_t* d, callback_t& cb) {
+	Astar(HYP& h0, HYP::data_t* d, callback_t& cb, double temp) {
 		callback = &cb; // set these static members (static so GraphNode can use them without having so many copies)
 		data = d;
+		temperature = temp;
 		push(h0);
 	}
 	
@@ -76,7 +79,7 @@ public:
 		Q.emplace(h,priority);
 	}
 	
-	void __run_helper(Control ctl) {
+	void run_thread(Control ctl) override {
 
 		ctl.start();
 		while(ctl.running() and not Q.empty()) {
@@ -113,21 +116,6 @@ public:
 	}
 	
 	
-	virtual void run(Control ctl) {
-		
-		std::vector<std::thread> threads(ctl.threads); 
-
-		for(unsigned long t=0;t<ctl.threads;t++) {
-			Control ctl2 = ctl; ctl2.threads=1; // we'll make each thread just one
-			threads[t] = std::thread(&Astar<HYP,callback_t>::__run_helper, this, ctl2);
-		}
-		
-		// wait for all to complete
-		for(unsigned long t=0;t<ctl.threads;t++) {
-			threads[t].join();
-		}
-	}
-	
 	
 	
 };
@@ -137,3 +125,6 @@ callback_t* Astar<HYP,callback_t>::callback = nullptr;
 
 template<typename HYP, typename callback_t>
 HYP::data_t* Astar<HYP,callback_t>::data = nullptr;
+
+template<typename HYP, typename callback_t>
+double Astar<HYP,callback_t>::temperature = 100.0;
