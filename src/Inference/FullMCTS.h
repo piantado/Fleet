@@ -379,18 +379,20 @@ public:
 			
 			// Hmm what if on construction you inherit min from your parent?
 			
+			// Change to include UCT part of bound
+			// OR just do temperature?
 			
-			
-			
-			
+			// Change so not all kids are added...
+			double temp = 100.0;
 			
 			
 			// sample from children, using last_ll as the probability for missing children
 			std::vector<double> children_lps(neigh);
 			for(size_t k=0;k<neigh;k++) {
 				if(children[k].open) {
-					children_lps[k] = current.neighbor_prior(k) + 
-									  (children[k].nvisits == 0 ? get_ll() : children[k].get_ll());
+					children_lps[k] = (current.neighbor_prior(k) + 
+									  (children[k].nvisits == 0 ? last_lp : children[k].last_lp ) / temp);
+									//  (children[k].nvisits == 0 ? get_ll() : children[k].get_ll());
 									//(children[k].last_lp==-infinity ? last_lp : children[k].last_lp);
 				}
 				else {

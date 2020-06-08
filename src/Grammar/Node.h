@@ -154,26 +154,22 @@ public:
 		// Here in the assignment operator we don't set the parent to n.parent, otherwise the parent pointers get broken
 		// (nor pi). This leaves them in their place in a tree (so e.g. we can set a node of a tree and it still works)
 		
+		children = n.children;
 		rule = n.rule;
 		lp = n.lp;
 		can_resample = n.can_resample;
 		
-		if(parent != nullptr) 
-			assert(parent->type(pi) == nt());
-		
-		children = n.children;
 		fix_child_info();
 	}
 
 	void operator=(Node&& n) {
+		children = std::move(n.children);
 		rule = n.rule;
 		lp = n.lp;
 		can_resample = n.can_resample;
-
-		if(parent != nullptr) 
-			assert(parent->type(pi) == nt());
 		
-		children = std::move(n.children);
+		// NOTE we don't set parent here
+
 		fix_child_info();
 	}
 	
@@ -550,6 +546,8 @@ public:
 			assert(children[i].rule->nt == rule->type(i) && "Somehow the child has incorrect types -- this is bad news for you."); // make sure my kids types are what they should be
 		}
 		
+		
+		assert(rule != NullRule && "*** Cannot linearize if there is a null rule");
 		
 		// Main code
 		if( rule->instr.is_a(BuiltinOp::op_IF) ) {

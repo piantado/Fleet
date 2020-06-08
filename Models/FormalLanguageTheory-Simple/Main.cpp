@@ -130,6 +130,7 @@ public:
 #include "Top.h"
 #include "ParallelTempering.h"
 #include "FullMCTS.h"
+#include "Astar.h"
 
 #include "Fleet.h" 
 
@@ -218,15 +219,21 @@ int main(int argc, char** argv){
 //	c.run(Control(mcmc_steps, runtime, nthreads));
 
 
+//	MyHypothesis h0(&grammar);
+//	FullMCTSNode<MyHypothesis,TopN<MyHypothesis>> m(h0, explore, &mydata, top);
+//	tic();
+//	m.parallel_search(Control(mcts_steps, runtime, nthreads), h0);
+//	tic();
+//	m.print(h0, "tree.txt");
+//	CERR "# MCTS size: " TAB m.size() ENDL;
+
+
 	MyHypothesis h0(&grammar);
-	FullMCTSNode<MyHypothesis,TopN<MyHypothesis>> m(h0, explore, &mydata, top);
-	tic();
-	m.parallel_search(Control(mcts_steps, runtime, nthreads), h0);
-	tic();
-	m.print(h0, "tree.txt");
+	Astar astar(h0,&mydata,top);
+	
+	astar.run(Control(mcts_steps, runtime, nthreads));
 	
 	top.print();
 
-	CERR "# MCTS size: " TAB m.size() ENDL;
 	
 }

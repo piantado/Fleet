@@ -211,14 +211,21 @@ public:
 		// make a copy and fill in the missing nodes.
 		// NOTE: here we set all of the above nodes to NOT resample
 		// TODO: That part should go somewhere else eventually I think?
-		HYP h(grammar, Node(value));
-		h.prior=0.0;h.likelihood=0.0;h.posterior=0.0; // reset these just in case
 		
-		const std::function<void(Node&)> myf =  [](Node& n){n.can_resample=false;};
-		h.value.map(myf);
-		grammar->complete(h.value);
-
-		return h;
+		if(value.is_null()) {
+			auto nt = grammar->template nt<output_t>();
+			return HYP(grammar, grammar->generate(nt));
+		}
+		else {
+		
+			HYP h(grammar, Node(value));
+			h.prior=0.0;h.likelihood=0.0;h.posterior=0.0; // reset these just in case
+			
+			//const std::function<void(Node&)> myf =  [](Node& n){n.can_resample=false;};
+			//h.value.map(myf);
+			grammar->complete(h.value);
+			return h;
+		}
 	}
 
 	
