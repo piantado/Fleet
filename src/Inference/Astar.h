@@ -4,11 +4,14 @@
 #include "Control.h"
 #include <queue>
 #include <thread>
+#include <signal.h>
 
 #include "FleetStatistics.h"
 #include "ParallelInferenceInterface.h"
 
 //#define DEBUG_ASTAR 1
+
+extern volatile sig_atomic_t CTRL_C; 
 
 /**
  * @class Astar
@@ -17,7 +20,7 @@
  * @file Astar.h
  * @brief This is an implementation of A* search that maintains a priority queue of partial states and attempts to find 
  * 			a program with the lowest posterior score. To do this, we choose a node to expand based on its prior plus
- * 		    a single sample of its likelihood, computed by filling in its children at random. This stochastic heuristic is actually
+ * 		    N_REPS samples of its likelihood, computed by filling in its children at random. This stochastic heuristic is actually
  *  		inadmissable since it overestimtes the cost almost all of the time. As a result, it usually makes sense to run
  *  		A* at a pretty high temperature, corresponding to a downweighting of the likelihood.
  */
@@ -27,48 +30,27 @@ class Astar :public ParallelInferenceInterface {
 	std::mutex lock; 
 public:
 	static constexpr size_t INITIAL_SIZE = 10000000;
-	static constexpr size_t N_REPS = 1; // how many times do we try randomly filling in to determine priority? 
+	static constexpr size_t N_REPS = 10; // how many times do we try randomly filling in to determine priority? 
 	static double temperature;	
 	static callback_t* callback; // must be static so it can be accessed in GraphNode
 	static HYP::data_t* data;
 	
-	/**
-	 * @class GraphNode
-	 * @author piantado
-	 * @date 07/06/20
-	 * @file Astar.h
-	 * @brief A small class to store hypotheses and their priorities in our priority queue
-	 */		
-	struct GraphNode {
-		HYP value;
-		double prior;
-		double likelihood;
-		
-		GraphNode(HYP& h, double p, double ll) : value(h), prior(p), likelihood(ll) {}
-		
-		double priority() const {
-			return -(prior + likelihood/temperature);
-		}
-		
-		bool operator>(const GraphNode& n) const {
-			return priority() > n.priority();
-		}	
-	};
-	
 	// the smallest element appears on top of this vector
-	std::priority_queue<GraphNode, ReservedVector<GraphNode,INITIAL_SIZE>, std::greater<GraphNode>> Q;
-	
+	std::priority_queue<HYP, ReservedVector<HYP,INITIAL_SIZE>> Q;
 	 
 	Astar(HYP& h0, HYP::data_t* d, callback_t& cb, double temp) {
 		callback = &cb; // set these static members (static so GraphNode can use them without having so many copies)
 		data = d;
 		temperature = temp;
-		push(h0, h0.compute_prior(), -infinity);
+		
+		h0.posterior = -infinity; // NaN really messes stuff up
+		h0.likelihood = -infinity;
+		push(h0);
 	}
 	
-	void push(HYP& h, double prior, double ll) {
+	void push(HYP& h) {
 		std::lock_guard guard(lock);
-		Q.emplace(h,prior,ll);
+		Q.push(h);
 	}
 	
 	void run_thread(Control ctl) override {
@@ -81,12 +63,11 @@ public:
 				lock.unlock();
 				continue; // this is necesssary because we might have more threads than Q to start off
 			}
-			auto qt = Q.top(); Q.pop(); ++FleetStatistics::astar_steps;
-			auto t = qt.value; 
+			auto t = Q.top(); Q.pop(); ++FleetStatistics::astar_steps;
 			lock.unlock();
 			
 			#ifdef DEBUG_ASTAR
-				CERR std::this_thread::get_id() TAB "ASTAR popped " << qt.priority() TAB t.string() ENDL;
+				CERR std::this_thread::get_id() TAB "ASTAR popped " << t.posterior TAB t.string() ENDL;
 			#endif
 			
 			size_t neigh = t.neighbors();
@@ -106,17 +87,26 @@ public:
 					// when we multithread, we don't hold the lock while we copy_and_complete and call this posterior
 					
 					// We compute a stochastic heuristic by filling in h some number of times and taking the min
-					// note since we are seeking the best *underestimate*, we can use qt's previous likelihood and 
-					// see if we ever beat that (because we know this is a filling in of the previous likelihood)
-					double likelihood = qt.likelihood;
-					for(size_t i=0;i<N_REPS;i++) {
+					// we're going to start with the previous likelihood we found -- NOTE That this isn't an admissable
+					// heuristic, and may not even make sense, but seems to work well, meainly in preventing -inf
+					//CERR "VL:" TAB v.likelihood ENDL;
+					double likelihood = (std::isnan(v.likelihood) ? -infinity : v.likelihood);  // remember this likelihood is divided by temperature
+					for(size_t i=0;i<N_REPS and not CTRL_C;i++) {
 						auto g = v.copy_and_complete();
 						g.compute_posterior(*data);
 						(*callback)(g);
-						likelihood = std::max(likelihood, g.likelihood);
+						//CERR "\t\t" << v.string() TAB g.likelihood TAB g.string() ENDL;
+						likelihood = std::max(likelihood, g.likelihood / temperature); // temperature must go here
 					}
-							
-					push(v, v.compute_prior(), likelihood);
+					 
+					// now we save this prior and likelihood to v (even though v is a partial tree)
+					// so that it is sorted (defaultly by posterior) 
+					v.likelihood = likelihood; // save so we can use next time
+					v.posterior  = v.compute_prior() + v.likelihood;
+					// CERR "POST:" TAB v.string() TAB v.posterior TAB likelihood ENDL;
+					
+					
+					push(v);
 				}
 			}
 		}
@@ -134,4 +124,4 @@ template<typename HYP, typename callback_t>
 HYP::data_t* Astar<HYP,callback_t>::data = nullptr;
 
 template<typename HYP, typename callback_t>
-double Astar<HYP,callback_t>::temperature = 100.0;
+double Astar<HYP,callback_t>::temperature = 1.0;

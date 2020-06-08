@@ -238,7 +238,7 @@ int main(int argc, char** argv){
 	// This heuristic is inadmissable, but ends up working pretty well. 
 	top.print_best = true;
 	MyHypothesis h0(&grammar);
-	Astar astar(h0,&mydata,top,10.0);
+	Astar astar(h0,&mydata, top, 100.0);
 	astar.run(Control(mcts_steps, runtime, nthreads));
 	
 	top.print();
