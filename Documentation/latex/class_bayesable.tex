@@ -210,7 +210,7 @@ Implemented in \hyperlink{class_grammar_hypothesis_a55297e7d1dac48158efa012445b9
 {\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
 virtual bool \hyperlink{class_bayesable}{Bayesable}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::operator$<$ (\begin{DoxyParamCaption}\item[{const \hyperlink{class_bayesable}{Bayesable}$<$ \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}, \hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t} $>$ \&}]{l }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-Allow sorting of \hyperlink{class_bayesable}{Bayesable} hypotheses. We defaultly sort by posterior so that TopN works right. But we also need to be careful because std\+::set uses this to determine equality, so this also checks priors and then hashes. 
+Allow sorting of \hyperlink{class_bayesable}{Bayesable} hypotheses. We defaultly sort by posterior so that \hyperlink{class_top_n}{TopN} works right. But we also need to be careful because std\+::set uses this to determine equality, so this also checks priors and then hashes. 
 \begin{DoxyParams}{Parameters}
 {\em l} & \\
 \hline

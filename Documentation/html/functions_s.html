@@ -66,7 +66,7 @@ $(function() {
 <h3><a id="index_s"></a>- s -</h3><ul>
 <li>s
 : <a class="el" href="class_fleet_1_1_statistics_1_1_reservoir_sample.html#a7cf0266d882988e2a61b857d123c8b58">Fleet::Statistics::ReservoirSample&lt; T &gt;</a>
-, <a class="el" href="class_fleet_1_1_statistics_1_1_top_n.html#aa17d03f1154073197161f59657d4c80b">Fleet::Statistics::TopN&lt; T &gt;</a>
+, <a class="el" href="class_top_n.html#a1fea03a721d2485b03cc38834775c924">TopN&lt; T &gt;</a>
 </li>
 <li>SafeMemRecurse()
 : <a class="el" href="struct_builtin_1_1_safe_mem_recurse.html#a1ee433d426eadf08429665c1c6793697">Builtin::SafeMemRecurse&lt; t_out, t_in &gt;</a>
@@ -76,7 +76,8 @@ $(function() {
 </li>
 <li>sample()
 : <a class="el" href="class_fleet_1_1_statistics_1_1_reservoir_sample.html#a1b66a8f27512ebd6a48370621a43db87">Fleet::Statistics::ReservoirSample&lt; T &gt;</a>
-, <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#a65b06c5de083ac12d5b74facd5444973">Fleet::Statistics::StreamingStatistics</a>
+, <a class="el" href="class_reservoir_sample.html#adc52ee8c3b5cbb7fd364315614d35595">ReservoirSample&lt; T &gt;</a>
+, <a class="el" href="class_streaming_statistics.html#a8f3e61b4bddcb595aad3ffe8f4a29386">StreamingStatistics</a>
 </li>
 <li>sample_rule()
 : <a class="el" href="class_grammar.html#aba4d092714b8420d8c0a1be63e8566b6">Grammar&lt; GRAMMAR_TYPES &gt;</a>
@@ -88,25 +89,25 @@ $(function() {
 : <a class="el" href="class_m_c_t_s_node.html#a1a051c22b8821704a10bf33dbd426c4d">MCTSNode&lt; M, HYP &gt;</a>
 </li>
 <li>search()
-: <a class="el" href="class_m_c_t_s_node.html#a0cf85ac07dd2a3f21fea0737834b8cf1">MCTSNode&lt; M, HYP &gt;</a>
+: <a class="el" href="class_full_m_c_t_s_node.html#a99fd09625120aa0761f113bd44e5afff">FullMCTSNode&lt; HYP, callback_t &gt;</a>
+, <a class="el" href="class_m_c_t_s_node.html#a0cf85ac07dd2a3f21fea0737834b8cf1">MCTSNode&lt; M, HYP &gt;</a>
 </li>
 <li>search_one()
-: <a class="el" href="class_m_c_t_s_node.html#ad0766d2829bb1cb252dd6aac51ac0d95">MCTSNode&lt; M, HYP &gt;</a>
+: <a class="el" href="class_full_m_c_t_s_node.html#a822ebc234b6c508c7c4cc255f205f8f9">FullMCTSNode&lt; HYP, callback_t &gt;</a>
+, <a class="el" href="class_m_c_t_s_node.html#ad0766d2829bb1cb252dd6aac51ac0d95">MCTSNode&lt; M, HYP &gt;</a>
 </li>
 <li>set_child()
-: <a class="el" href="class_node.html#afff50c3712b8e30fffd479cad4eee023">Node</a>
+: <a class="el" href="class_node.html#a486882370d2c9592c6eabb52a3289253">Node</a>
 </li>
 <li>set_print_best()
-: <a class="el" href="class_fleet_1_1_statistics_1_1_top_n.html#a762c937fe5dcab09d87d2414201b6b1e">Fleet::Statistics::TopN&lt; T &gt;</a>
+: <a class="el" href="class_top_n.html#a378be54915dab8603b8408ee72310bb7">TopN&lt; T &gt;</a>
 </li>
 <li>set_reservoir_size()
 : <a class="el" href="class_fleet_1_1_statistics_1_1_reservoir_sample.html#adabe7f40c91657950a67df7d20ace543">Fleet::Statistics::ReservoirSample&lt; T &gt;</a>
+, <a class="el" href="class_reservoir_sample.html#ae67a44361cb145cc2f355290ff4babad">ReservoirSample&lt; T &gt;</a>
 </li>
 <li>set_size()
-: <a class="el" href="class_fleet_1_1_statistics_1_1_top_n.html#a3151da8c2aaab75195d6f702fbfba436">Fleet::Statistics::TopN&lt; T &gt;</a>
-</li>
-<li>set_to()
-: <a class="el" href="class_node.html#a1a6f6c8062e66046c302a80cc7e8d817">Node</a>
+: <a class="el" href="class_top_n.html#a37c7506de12038af705c55fc479dba7b">TopN&lt; T &gt;</a>
 </li>
 <li>set_value()
 : <a class="el" href="class_l_o_t_hypothesis.html#aac23de5143f24323a05ed32774387ff7">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
@@ -120,8 +121,10 @@ $(function() {
 <li>size()
 : <a class="el" href="class_discrete_distribution.html#ad74207d32c2ed6c5c26b3f991f4fedba">DiscreteDistribution&lt; T &gt;</a>
 , <a class="el" href="class_fleet_1_1_statistics_1_1_reservoir_sample.html#abdfad455c8b8da8cb2ab30d0f60053e0">Fleet::Statistics::ReservoirSample&lt; T &gt;</a>
-, <a class="el" href="class_fleet_1_1_statistics_1_1_top_n.html#a0ce96f95fbac59ba2a858b66b5a6690a">Fleet::Statistics::TopN&lt; T &gt;</a>
+, <a class="el" href="class_full_m_c_t_s_node.html#a57b4b69d2c9dd20ae5bfdee83aec783a">FullMCTSNode&lt; HYP, callback_t &gt;</a>
 , <a class="el" href="class_m_c_t_s_node.html#a7996e64e69b1fc705c4e21b4a6e41c39">MCTSNode&lt; M, HYP &gt;</a>
+, <a class="el" href="class_reservoir_sample.html#a53a41ec89cedfec21c7924aa98347659">ReservoirSample&lt; T &gt;</a>
+, <a class="el" href="class_top_n.html#ae32d3e10d1571af34f84f32f5ca78fff">TopN&lt; T &gt;</a>
 </li>
 <li>SKGrammar()
 : <a class="el" href="class_fleet_1_1_combinators_1_1_s_k_grammar.html#a92f0ff506d59ba4f0f5c200ec3da4c3b">Fleet::Combinators::SKGrammar</a>
@@ -133,7 +136,7 @@ $(function() {
 : <a class="el" href="class_stack.html#aefee698059467258bbd79045aca62a63">Stack&lt; T &gt;</a>
 </li>
 <li>stack()
-: <a class="el" href="class_virtual_machine_state.html#aa44adbacc52d720bff01098c34275d0e">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#a580428f53e64cde8aef3c0a6a79838ec">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>stacks_empty()
 : <a class="el" href="class_virtual_machine_state.html#a08cc1e3bf25e9bf58f798102e364856a">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
@@ -144,15 +147,16 @@ $(function() {
 </li>
 <li>start_time
 : <a class="el" href="struct_control.html#ad3c2691a66705880844f467cf5da8aab">Control</a>
+, <a class="el" href="class_fleet.html#a287f9cf06613b5ad1b511cc82216d42b">Fleet</a>
 </li>
 <li>statistics
-: <a class="el" href="class_m_c_t_s_node.html#a47cdbf0ef4f1e6ccbb6e911d4d384f39">MCTSNode&lt; M, HYP &gt;</a>
+: <a class="el" href="class_m_c_t_s_node.html#a68b6340a1b917cda22d8976c9fc4efbe">MCTSNode&lt; M, HYP &gt;</a>
 </li>
 <li>status
 : <a class="el" href="class_virtual_machine_state.html#a6e561a217081654b4187620953e86fff">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>step
-: <a class="el" href="class_fleet_1_1_statistics_1_1_median_f_a_m_e.html#a3451548541aad22bb7a1c35291faa357">Fleet::Statistics::MedianFAME&lt; T &gt;</a>
+: <a class="el" href="class_median_f_a_m_e.html#a99c7b975965259ed4079c08836583732">MedianFAME&lt; T &gt;</a>
 </li>
 <li>steps
 : <a class="el" href="struct_control.html#af4bd5a6c779079b5e921b4df40760266">Control</a>
@@ -164,10 +168,10 @@ $(function() {
 : <a class="el" href="class_m_c_m_c_chain.html#aeac1cd63d13c397ba01cca35b605b786">MCMCChain&lt; HYP, callback_t &gt;</a>
 </li>
 <li>streaming_median
-: <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#af01ce0d7840f68c8ea68f858ba6760ce">Fleet::Statistics::StreamingStatistics</a>
+: <a class="el" href="class_streaming_statistics.html#a3a16ed90414b6fefd56d519162406bbd">StreamingStatistics</a>
 </li>
 <li>StreamingStatistics()
-: <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#ad49b1027b011502f29c9df1d211cf40d">Fleet::Statistics::StreamingStatistics</a>
+: <a class="el" href="class_streaming_statistics.html#a2ee20794cfeed51064973dd896b8301d">StreamingStatistics</a>
 </li>
 <li>string()
 : <a class="el" href="class_bayesable.html#afcea9b439bcf321d5354710d8861cb54">Bayesable&lt; _datum_t, _data_t &gt;</a>
@@ -178,16 +182,16 @@ $(function() {
 , <a class="el" href="class_node.html#a0590ae269543416be9c4ebdf70bad73b">Node</a>
 , <a class="el" href="class_rule.html#a7f16256eabd7bd8b94fbcf857bf1e45b">Rule</a>
 </li>
-<li>sum
-: <a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html#ab635c93398bfd1cc8c0c65b012d87d83">Fleet::Statistics::StreamingStatistics</a>
-, <a class="el" href="class_node.html#a089e99addd93f91b2ef5a9d0c3e6bdeb">Node</a>
+<li>sum()
+: <a class="el" href="class_node.html#ac91282056a0df2835f1579bdd21c93e1">Node</a>
+, <a class="el" href="class_streaming_statistics.html#aaa50f5ed5a8c7491f63f9ae88394bc44">StreamingStatistics</a>
 </li>
 <li>Super
 : <a class="el" href="class_inner_hypothesis.html#a1a69a8dd433b64b725be0b2436d6df0c">InnerHypothesis</a>
 , <a class="el" href="class_my_hypothesis.html#af34a1c11e5b0aae4a52b54bfdd7a0617">MyHypothesis</a>
 </li>
 <li>swap_history
-: <a class="el" href="class_parallel_tempering.html#a86a7b77250a04b5df502f1c770cf51bf">ParallelTempering&lt; HYP, callback_t &gt;</a>
+: <a class="el" href="class_parallel_tempering.html#af9ae9446ae4d22c0a26755f3d3a1d86a">ParallelTempering&lt; HYP, callback_t &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->

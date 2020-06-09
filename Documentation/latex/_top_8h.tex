@@ -15,8 +15,7 @@ Check if a type has a posterior function or not.
 {\ttfamily \#include $<$unordered\+\_\+set$>$}\newline
 {\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
 {\ttfamily \#include $<$cassert$>$}\newline
-Include dependency graph for Top.\+h\+:
-\nopagebreak
+Include dependency graph for Top.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -38,23 +37,25 @@ class \hyperlink{struct_has_posterior}{Has\+Posterior$<$ T, typename $>$}
 \item 
 struct \hyperlink{struct_has_posterior_3_01_t_00_01decltype_07_07void_08_01_t_1_1posterior_00_010_08_4}{Has\+Posterior$<$ T, decltype((void) T\+::posterior, 0)$>$}
 \item 
-class \hyperlink{class_fleet_1_1_statistics_1_1_top_n}{Fleet\+::\+Statistics\+::\+Top\+N$<$ T $>$}
-\end{DoxyCompactItemize}
-\subsection*{Namespaces}
-\begin{DoxyCompactItemize}
-\item 
- \hyperlink{namespace_fleet}{Fleet}
-\item 
- \hyperlink{namespace_fleet_1_1_statistics}{Fleet\+::\+Statistics}
+class \hyperlink{class_top_n}{Top\+N$<$ T $>$}
 \end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename H\+YP $>$ }\\void \hyperlink{namespace_fleet_1_1_statistics_a5723aae50d2da58a711e2e88af291dc8}{Fleet\+::\+Statistics\+::operator$<$$<$} (std\+::set$<$ H\+YP $>$ \&s, TopN$<$ H\+YP $>$ \&t)
+{\footnotesize template$<$typename H\+YP $>$ }\\void \hyperlink{_top_8h_a6a30d87d866180b49aea546d0024dcca}{operator$<$$<$} (std\+::set$<$ H\+YP $>$ \&s, \hyperlink{class_top_n}{TopN}$<$ H\+YP $>$ \&t)
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 Check if a type has a posterior function or not. 
 
-A TopN is a n object you can \char`\"{}add\char`\"{} hypotheses to (via add or $<$$<$) and it stores the best N of them. This is widely used in \hyperlink{namespace_fleet}{Fleet} in order to find good approximations to the top hypotheses found in M\+C\+TS or M\+C\+MC.
+A \hyperlink{class_top_n}{TopN} is a n object you can \char`\"{}add\char`\"{} hypotheses to (via add or $<$$<$) and it stores the best N of them. This is widely used in \hyperlink{class_fleet}{Fleet} in order to find good approximations to the top hypotheses found in M\+C\+TS or M\+C\+MC.
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_top_8h_a6a30d87d866180b49aea546d0024dcca}\label{_top_8h_a6a30d87d866180b49aea546d0024dcca}} 
+\index{Top.\+h@{Top.\+h}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Top.\+h@{Top.\+h}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+void operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::set$<$ H\+YP $>$ \&}]{s,  }\item[{\hyperlink{class_top_n}{TopN}$<$ H\+YP $>$ \&}]{t }\end{DoxyParamCaption})}
+

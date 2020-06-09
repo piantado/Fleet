@@ -2,8 +2,7 @@
 \label{class_my_hypothesis}\index{My\+Hypothesis@{My\+Hypothesis}}
 
 
-Inheritance diagram for My\+Hypothesis\+:
-\nopagebreak
+Inheritance diagram for My\+Hypothesis\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -12,8 +11,7 @@ Inheritance diagram for My\+Hypothesis\+:
 \end{figure}
 
 
-Collaboration diagram for My\+Hypothesis\+:
-\nopagebreak
+Collaboration diagram for My\+Hypothesis\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -23,9 +21,9 @@ Collaboration diagram for My\+Hypothesis\+:
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
-using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{Super} = \hyperlink{class_lexicon}{Lexicon}$<$ \hyperlink{class_my_hypothesis}{My\+Hypothesis}, \hyperlink{class_inner_hypothesis}{Inner\+Hypothesis}, \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$
+using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{Super} = \hyperlink{class_lexicon}{Lexicon}$<$ \hyperlink{class_my_hypothesis}{My\+Hypothesis}, \hyperlink{class_inner_hypothesis}{Inner\+Hypothesis}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$
 \item 
-using \hyperlink{class_my_hypothesis_ae5fab2ea7ef7729968ac60a2ce267168}{Super} = \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ \hyperlink{class_my_hypothesis}{My\+Hypothesis}, \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{class_my_grammar}{My\+Grammar} $>$
+using \hyperlink{class_my_hypothesis_ae5fab2ea7ef7729968ac60a2ce267168}{Super} = \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ \hyperlink{class_my_hypothesis}{My\+Hypothesis}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{class_my_grammar}{My\+Grammar} $>$
 \item 
 using \hyperlink{class_my_hypothesis_a1c1cfa95f1a49b273f8a93b3246342e6}{Super} = \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ \hyperlink{class_my_hypothesis}{My\+Hypothesis}, utterance, word, \hyperlink{class_my_grammar}{My\+Grammar} $>$
 \item 
@@ -38,7 +36,7 @@ using \hyperlink{class_my_hypothesis_af34a1c11e5b0aae4a52b54bfdd7a0617}{Super} =
 \item 
 virtual double \hyperlink{class_my_hypothesis_ab092094c5fc31730de4f40609220bb18}{compute\+\_\+prior} () override
 \begin{DoxyCompactList}\small\item\em Compute the prior -- defaultly not defined. \end{DoxyCompactList}\item 
-virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$ \hyperlink{class_my_hypothesis_a61391d3f1f6fbbe37663b22e2068ac90}{call} (const \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} x, const \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} err) override
+virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$ \hyperlink{class_my_hypothesis_a61391d3f1f6fbbe37663b22e2068ac90}{call} (const \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} x, const \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} err) override
 \item 
 virtual double \hyperlink{class_my_hypothesis_af2470b1e04711c06ee551deae15af4c1}{compute\+\_\+single\+\_\+likelihood} (const \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} \&datum) override
 \begin{DoxyCompactList}\small\item\em Compute the likelihood of a single data point. \end{DoxyCompactList}\item 
@@ -126,6 +124,7 @@ double \hyperlink{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}{compute
 
 \begin{DoxyCode}
     Define the \hyperlink{class_l_o_t_hypothesis_affae32db28c39df676809ae47e14e7cf}{grammar}
+    Thid requires the types of the thing we will add to the \hyperlink{class_l_o_t_hypothesis_affae32db28c39df676809ae47e14e7cf}{grammar} (\textcolor{keywordtype}{bool},Object)
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
@@ -157,7 +156,7 @@ double \hyperlink{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}{compute
 \index{My\+Hypothesis@{My\+Hypothesis}!Super@{Super}}
 \index{Super@{Super}!My\+Hypothesis@{My\+Hypothesis}}
 \subsubsection{\texorpdfstring{Super}{Super}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
-{\footnotesize\ttfamily using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{My\+Hypothesis\+::\+Super} =  \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$\hyperlink{class_my_hypothesis}{My\+Hypothesis},\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S},\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S},\hyperlink{class_my_grammar}{My\+Grammar}$>$}
+{\footnotesize\ttfamily using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{My\+Hypothesis\+::\+Super} =  \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$\hyperlink{class_my_hypothesis}{My\+Hypothesis},\hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S},\hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S},\hyperlink{class_my_grammar}{My\+Grammar}$>$}
 
 \mbox{\Hypertarget{class_my_hypothesis_a1c1cfa95f1a49b273f8a93b3246342e6}\label{class_my_hypothesis_a1c1cfa95f1a49b273f8a93b3246342e6}} 
 \index{My\+Hypothesis@{My\+Hypothesis}!Super@{Super}}
@@ -169,7 +168,7 @@ double \hyperlink{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}{compute
 \index{My\+Hypothesis@{My\+Hypothesis}!Super@{Super}}
 \index{Super@{Super}!My\+Hypothesis@{My\+Hypothesis}}
 \subsubsection{\texorpdfstring{Super}{Super}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
-{\footnotesize\ttfamily using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{My\+Hypothesis\+::\+Super} =  \hyperlink{class_lexicon}{Lexicon}$<$\hyperlink{class_my_hypothesis}{My\+Hypothesis}, \hyperlink{class_inner_hypothesis}{Inner\+Hypothesis}, \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}$>$}
+{\footnotesize\ttfamily using \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{My\+Hypothesis\+::\+Super} =  \hyperlink{class_lexicon}{Lexicon}$<$\hyperlink{class_my_hypothesis}{My\+Hypothesis}, \hyperlink{class_inner_hypothesis}{Inner\+Hypothesis}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}, \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}$>$}
 
 
 
@@ -184,7 +183,7 @@ double \hyperlink{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}{compute
 \index{My\+Hypothesis@{My\+Hypothesis}!call@{call}}
 \index{call@{call}!My\+Hypothesis@{My\+Hypothesis}}
 \subsubsection{\texorpdfstring{call()}{call()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}$>$ My\+Hypothesis\+::call (\begin{DoxyParamCaption}\item[{const \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}}]{x,  }\item[{const \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}}]{err }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$\hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}$>$ My\+Hypothesis\+::call (\begin{DoxyParamCaption}\item[{const \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}}]{x,  }\item[{const \hyperlink{_formal_language_theory-_complex_2_main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}}]{err }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -382,4 +381,4 @@ Reimplemented from \hyperlink{class_bayesable_a87d5d9481d6a72b017e44b175071fa5e}
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-Models/\+Formal\+Language\+Theory-\/\+Complex/\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp}{Main.\+cpp}\end{DoxyCompactItemize}
+Models/\+Formal\+Language\+Theory-\/\+Complex/\hyperlink{_formal_language_theory-_complex_2_main_8cpp}{Main.\+cpp}\end{DoxyCompactItemize}

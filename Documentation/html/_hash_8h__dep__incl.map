@@ -1,15 +1,14 @@
 <map id="src/Hash.h" name="src/Hash.h">
-<area shape="rect" id="node2" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="491,229,575,256"/>
-<area shape="rect" id="node10" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="161,155,335,181"/>
-<area shape="rect" id="node11" href="$_node_8h.html" title="src/Grammar/Node.h" alt="" coords="411,80,555,107"/>
-<area shape="rect" id="node3" href="$_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="5,304,179,345"/>
-<area shape="rect" id="node4" href="$_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="203,304,407,345"/>
-<area shape="rect" id="node5" href="$_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="431,304,635,345"/>
-<area shape="rect" id="node6" href="$_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="660,304,815,345"/>
-<area shape="rect" id="node7" href="$_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="839,311,1046,338"/>
-<area shape="rect" id="node8" href="$_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1070,304,1221,345"/>
-<area shape="rect" id="node9" href="$_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="1245,311,1413,338"/>
-<area shape="rect" id="node12" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="286,229,415,256"/>
-<area shape="rect" id="node13" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="515,155,735,181"/>
-<area shape="rect" id="node14" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="759,155,926,181"/>
+<area shape="rect" id="node2" href="$_node_8h.html" title="src/Grammar/Node.h" alt="" coords="641,80,785,107"/>
+<area shape="rect" id="node13" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="41,155,215,181"/>
+<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="1313,237,1442,263"/>
+<area shape="rect" id="node5" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="739,155,906,181"/>
+<area shape="rect" id="node12" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="495,155,715,181"/>
+<area shape="rect" id="node4" href="$_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="181,319,355,360"/>
+<area shape="rect" id="node6" href="$_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="26,229,230,271"/>
+<area shape="rect" id="node7" href="$_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="306,229,510,271"/>
+<area shape="rect" id="node8" href="$_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="535,229,689,271"/>
+<area shape="rect" id="node9" href="$_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="714,237,921,263"/>
+<area shape="rect" id="node10" href="$_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="945,229,1095,271"/>
+<area shape="rect" id="node11" href="$_testing_2_main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="1120,237,1288,263"/>
 </map>

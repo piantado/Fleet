@@ -74,10 +74,22 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aec30063fcc9bed5d005f8318efa8492d"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#aec30063fcc9bed5d005f8318efa8492d">neighbors</a> () const =0</td></tr>
+<tr class="memdesc:aec30063fcc9bed5d005f8318efa8492d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count the number of neighbors that are possible. (This should be size_t but int is more convenient.)  <a href="#aec30063fcc9bed5d005f8318efa8492d">More...</a><br /></td></tr>
 <tr class="separator:aec30063fcc9bed5d005f8318efa8492d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7fefacd3c9c2b66aa58c9d902f645cb"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#ad7fefacd3c9c2b66aa58c9d902f645cb">make_neighbor</a> (int k) const =0</td></tr>
-<tr class="separator:ad7fefacd3c9c2b66aa58c9d902f645cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1786307b9f2dadc8c66c94adef220270"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#a1786307b9f2dadc8c66c94adef220270">expand_to_neighbor</a> (int k)=0</td></tr>
+<tr class="memdesc:a1786307b9f2dadc8c66c94adef220270"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify this hypothesis to become the k'th neighbor.  <a href="#a1786307b9f2dadc8c66c94adef220270">More...</a><br /></td></tr>
+<tr class="separator:a1786307b9f2dadc8c66c94adef220270"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd4cf198859084f7a656ef507e65a872"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#acd4cf198859084f7a656ef507e65a872">make_neighbor</a> (int k) const</td></tr>
+<tr class="memdesc:acd4cf198859084f7a656ef507e65a872"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a new hypothesis which is the k'th neighbor (just calls expand_to_neighbor)  <a href="#acd4cf198859084f7a656ef507e65a872">More...</a><br /></td></tr>
+<tr class="separator:acd4cf198859084f7a656ef507e65a872"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abebbaaf94b0502a35d0ba686af73bd08"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#abebbaaf94b0502a35d0ba686af73bd08">neighbor_prior</a> (int k)=0</td></tr>
+<tr class="memdesc:abebbaaf94b0502a35d0ba686af73bd08"><td class="mdescLeft">&#160;</td><td class="mdescRight">What is the prior of the k'th neighbor? This does not need to return the full prior, only relative (among ks)  <a href="#abebbaaf94b0502a35d0ba686af73bd08">More...</a><br /></td></tr>
+<tr class="separator:abebbaaf94b0502a35d0ba686af73bd08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ae6263b49a0f9da94f5dcc23af6618e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#a3ae6263b49a0f9da94f5dcc23af6618e">complete</a> ()=0</td></tr>
+<tr class="memdesc:a3ae6263b49a0f9da94f5dcc23af6618e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill in all the holes in this hypothesis, at random, modifying self.  <a href="#a3ae6263b49a0f9da94f5dcc23af6618e">More...</a><br /></td></tr>
+<tr class="separator:a3ae6263b49a0f9da94f5dcc23af6618e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23786e95730117c3cc4b90e010494a1e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#a23786e95730117c3cc4b90e010494a1e">is_evaluable</a> () const =0</td></tr>
+<tr class="memdesc:a23786e95730117c3cc4b90e010494a1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if we can evaluate this node (meaning compute a prior and posterior). NOTE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable.  <a href="#a23786e95730117c3cc4b90e010494a1e">More...</a><br /></td></tr>
 <tr class="separator:a23786e95730117c3cc4b90e010494a1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -87,6 +99,75 @@ class Searchable&lt; HYP, Args &gt;</h3>
 <dl class="section author"><dt>Author</dt><dd>steven piantadosi </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>03/02/20 </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3ae6263b49a0f9da94f5dcc23af6618e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ae6263b49a0f9da94f5dcc23af6618e">&#9670;&nbsp;</a></span>complete()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename HYP, typename... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="class_searchable.html">Searchable</a>&lt; HYP, Args &gt;::complete </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fill in all the holes in this hypothesis, at random, modifying self. </p>
+
+<p>Implemented in <a class="el" href="class_lexicon.html#a724ccdaffe9090488bfaa786873fa807">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>, <a class="el" href="class_lexicon.html#a724ccdaffe9090488bfaa786873fa807">Lexicon&lt; MyHypothesis, InnerHypothesis, S, S &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a7f913b702b434003f94a84c560d16bf9">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a7f913b702b434003f94a84c560d16bf9">LOTHypothesis&lt; MyHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a7f913b702b434003f94a84c560d16bf9">LOTHypothesis&lt; MyHypothesis, utterance, word, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a7f913b702b434003f94a84c560d16bf9">LOTHypothesis&lt; InnerHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a7f913b702b434003f94a84c560d16bf9">LOTHypothesis&lt; MyHypothesis, float, float, MyGrammar, float, std::multiset&lt; float &gt; &gt;</a>, and <a class="el" href="class_l_o_t_hypothesis.html#a7f913b702b434003f94a84c560d16bf9">LOTHypothesis&lt; MyHypothesis, Object, bool, MyGrammar &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a1786307b9f2dadc8c66c94adef220270"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1786307b9f2dadc8c66c94adef220270">&#9670;&nbsp;</a></span>expand_to_neighbor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename HYP, typename... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="class_searchable.html">Searchable</a>&lt; HYP, Args &gt;::expand_to_neighbor </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>k</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Modify this hypothesis to become the k'th neighbor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">k</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="class_lexicon.html#a2b17608f66415c6a7d55b6a8f344db21">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>, <a class="el" href="class_lexicon.html#a2b17608f66415c6a7d55b6a8f344db21">Lexicon&lt; MyHypothesis, InnerHypothesis, S, S &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#ab24d0b8faa360f6a0edc4eefb17d6de7">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#ab24d0b8faa360f6a0edc4eefb17d6de7">LOTHypothesis&lt; MyHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#ab24d0b8faa360f6a0edc4eefb17d6de7">LOTHypothesis&lt; MyHypothesis, utterance, word, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#ab24d0b8faa360f6a0edc4eefb17d6de7">LOTHypothesis&lt; InnerHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#ab24d0b8faa360f6a0edc4eefb17d6de7">LOTHypothesis&lt; MyHypothesis, float, float, MyGrammar, float, std::multiset&lt; float &gt; &gt;</a>, and <a class="el" href="class_l_o_t_hypothesis.html#ab24d0b8faa360f6a0edc4eefb17d6de7">LOTHypothesis&lt; MyHypothesis, Object, bool, MyGrammar &gt;</a>.</p>
+
+</div>
+</div>
 <a id="a23786e95730117c3cc4b90e010494a1e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a23786e95730117c3cc4b90e010494a1e">&#9670;&nbsp;</a></span>is_evaluable()</h2>
 
@@ -112,12 +193,14 @@ template&lt;typename HYP, typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Check if we can evaluate this node (meaning compute a prior and posterior). NOTE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable. </p>
+
 <p>Implemented in <a class="el" href="class_lexicon.html#ab9fcefbd8598a5401a39bd59e8043db9">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>, <a class="el" href="class_lexicon.html#ab9fcefbd8598a5401a39bd59e8043db9">Lexicon&lt; MyHypothesis, InnerHypothesis, S, S &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a9eeaaf321324d2418405f4d7252f6ca4">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a9eeaaf321324d2418405f4d7252f6ca4">LOTHypothesis&lt; MyHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a9eeaaf321324d2418405f4d7252f6ca4">LOTHypothesis&lt; MyHypothesis, utterance, word, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a9eeaaf321324d2418405f4d7252f6ca4">LOTHypothesis&lt; InnerHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a9eeaaf321324d2418405f4d7252f6ca4">LOTHypothesis&lt; MyHypothesis, float, float, MyGrammar, float, std::multiset&lt; float &gt; &gt;</a>, and <a class="el" href="class_l_o_t_hypothesis.html#a9eeaaf321324d2418405f4d7252f6ca4">LOTHypothesis&lt; MyHypothesis, Object, bool, MyGrammar &gt;</a>.</p>
 
 </div>
 </div>
-<a id="ad7fefacd3c9c2b66aa58c9d902f645cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7fefacd3c9c2b66aa58c9d902f645cb">&#9670;&nbsp;</a></span>make_neighbor()</h2>
+<a id="acd4cf198859084f7a656ef507e65a872"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd4cf198859084f7a656ef507e65a872">&#9670;&nbsp;</a></span>make_neighbor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -137,12 +220,57 @@ template&lt;typename HYP, typename... Args&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return a new hypothesis which is the k'th neighbor (just calls expand_to_neighbor) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">k</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="abebbaaf94b0502a35d0ba686af73bd08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abebbaaf94b0502a35d0ba686af73bd08">&#9670;&nbsp;</a></span>neighbor_prior()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename HYP, typename... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual double <a class="el" href="class_searchable.html">Searchable</a>&lt; HYP, Args &gt;::neighbor_prior </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>k</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_lexicon.html#a88a02f88387f436c6ff4c060735291ea">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>, <a class="el" href="class_lexicon.html#a88a02f88387f436c6ff4c060735291ea">Lexicon&lt; MyHypothesis, InnerHypothesis, S, S &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a997c88cb84133efc599b9b14173aefe9">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a997c88cb84133efc599b9b14173aefe9">LOTHypothesis&lt; MyHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a997c88cb84133efc599b9b14173aefe9">LOTHypothesis&lt; MyHypothesis, utterance, word, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a997c88cb84133efc599b9b14173aefe9">LOTHypothesis&lt; InnerHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a997c88cb84133efc599b9b14173aefe9">LOTHypothesis&lt; MyHypothesis, float, float, MyGrammar, float, std::multiset&lt; float &gt; &gt;</a>, and <a class="el" href="class_l_o_t_hypothesis.html#a997c88cb84133efc599b9b14173aefe9">LOTHypothesis&lt; MyHypothesis, Object, bool, MyGrammar &gt;</a>.</p>
+<p>What is the prior of the k'th neighbor? This does not need to return the full prior, only relative (among ks) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">k</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="class_lexicon.html#ad237c78e3435223f344d153da3baba9b">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>, <a class="el" href="class_lexicon.html#ad237c78e3435223f344d153da3baba9b">Lexicon&lt; MyHypothesis, InnerHypothesis, S, S &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a34fb9e13bc6855d6599c1c3e62d88933">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a34fb9e13bc6855d6599c1c3e62d88933">LOTHypothesis&lt; MyHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a34fb9e13bc6855d6599c1c3e62d88933">LOTHypothesis&lt; MyHypothesis, utterance, word, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a34fb9e13bc6855d6599c1c3e62d88933">LOTHypothesis&lt; InnerHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a34fb9e13bc6855d6599c1c3e62d88933">LOTHypothesis&lt; MyHypothesis, float, float, MyGrammar, float, std::multiset&lt; float &gt; &gt;</a>, and <a class="el" href="class_l_o_t_hypothesis.html#a34fb9e13bc6855d6599c1c3e62d88933">LOTHypothesis&lt; MyHypothesis, Object, bool, MyGrammar &gt;</a>.</p>
 
 </div>
 </div>
@@ -170,6 +298,8 @@ template&lt;typename HYP, typename... Args&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Count the number of neighbors that are possible. (This should be size_t but int is more convenient.) </p>
 
 <p>Implemented in <a class="el" href="class_lexicon.html#a6419f323377d4c524363707eee0cae09">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>, <a class="el" href="class_lexicon.html#a6419f323377d4c524363707eee0cae09">Lexicon&lt; MyHypothesis, InnerHypothesis, S, S &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a097cde606ec3f277fdeb92145599027f">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a097cde606ec3f277fdeb92145599027f">LOTHypothesis&lt; MyHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a097cde606ec3f277fdeb92145599027f">LOTHypothesis&lt; MyHypothesis, utterance, word, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a097cde606ec3f277fdeb92145599027f">LOTHypothesis&lt; InnerHypothesis, S, S, MyGrammar &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#a097cde606ec3f277fdeb92145599027f">LOTHypothesis&lt; MyHypothesis, float, float, MyGrammar, float, std::multiset&lt; float &gt; &gt;</a>, and <a class="el" href="class_l_o_t_hypothesis.html#a097cde606ec3f277fdeb92145599027f">LOTHypothesis&lt; MyHypothesis, Object, bool, MyGrammar &gt;</a>.</p>
 

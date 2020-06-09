@@ -1,6 +1,6 @@
 <map id="MCTSNode&lt; M, HYP &gt;" name="MCTSNode&lt; M, HYP &gt;">
-<area shape="rect" id="node2" href="$class_fleet_1_1_statistics_1_1_streaming_statistics.html" title="Fleet::Statistics::\lStreamingStatistics" alt="" coords="595,37,731,79"/>
-<area shape="rect" id="node3" href="$class_fleet_1_1_statistics_1_1_median_f_a_m_e.html" title="Fleet::Statistics::\lMedianFAME\&lt; double \&gt;" alt="" coords="263,5,425,47"/>
-<area shape="rect" id="node4" href="$class_fleet_1_1_statistics_1_1_reservoir_sample.html" title="Fleet::Statistics::\lReservoirSample\&lt; double \&gt;" alt="" coords="252,71,436,112"/>
-<area shape="rect" id="node5" href="$class_fleet_1_1_statistics_1_1_top_n.html" title="Fleet::Statistics::\lTopN\&lt; Fleet::Statistics\l::ReservoirSample::Item \&gt;" alt="" coords="5,63,181,119"/>
+<area shape="rect" id="node2" href="$class_streaming_statistics.html" title="StreamingStatistics" alt="" coords="103,199,239,225"/>
+<area shape="rect" id="node3" href="$class_median_f_a_m_e.html" title="MedianFAME\&lt; double \&gt;" alt="" coords="5,109,168,136"/>
+<area shape="rect" id="node4" href="$class_reservoir_sample.html" title="ReservoirSample\&lt; double \&gt;" alt="" coords="192,109,376,136"/>
+<area shape="rect" id="node5" href="$class_top_n.html" title="TopN\&lt; ReservoirSample\l::Item \&gt;" alt="" coords="201,5,367,47"/>
 </map>

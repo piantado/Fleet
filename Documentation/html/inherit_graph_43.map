@@ -1,6 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node2" href="$class_reserved_vector.html" title="ReservedVector\&lt; T, N \&gt;" alt="" coords="112,5,279,32"/>
-<area shape="rect" id="node3" href="$class_stack.html" title="Stack\&lt; T \&gt;" alt="" coords="151,56,239,83"/>
-<area shape="rect" id="node4" href="$class_stack.html" title="Stack\&lt; input_t \&gt;" alt="" coords="136,107,255,133"/>
-<area shape="rect" id="node5" href="$class_stack.html" title="Stack\&lt; std::pair\&lt; index\l_t, input_t \&gt; \&gt;" alt="" coords="116,158,275,199"/>
+<area shape="rect" id="node1" href="$struct_pre_primitive.html" title="PrePrimitive" alt="" coords="5,5,99,32"/>
+<area shape="rect" id="node2" href="$struct_primitive.html" title="Primitive\&lt; T, args \&gt;" alt="" coords="147,5,285,32"/>
 </map>

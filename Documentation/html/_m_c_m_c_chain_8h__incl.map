@@ -1,6 +1,7 @@
 <map id="src/Inference/MCMCChain.h" name="src/Inference/MCMCChain.h">
-<area shape="rect" id="node3" href="$_finite_history_8h.html" title="A FiniteHistory stores the previous N examples of something of type T. This is used e..." alt="" coords="55,156,161,183"/>
-<area shape="rect" id="node5" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="188,81,263,108"/>
-<area shape="rect" id="node6" href="$_timing_8h.html" title="Timing.h" alt="" coords="385,156,457,183"/>
-<area shape="rect" id="node8" href="$_i_o_8h.html" title="IO.h" alt="" coords="202,156,249,183"/>
+<area shape="rect" id="node3" href="$_finite_history_8h.html" title="A FiniteHistory stores the previous N examples of something of type T. This is used e..." alt="" coords="109,81,215,108"/>
+<area shape="rect" id="node5" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="258,81,333,108"/>
+<area shape="rect" id="node7" href="$_timing_8h.html" title="Timing.h" alt="" coords="459,156,531,183"/>
+<area shape="rect" id="node13" href="$_i_o_8h.html" title="IO.h" alt="" coords="201,156,248,183"/>
+<area shape="rect" id="node9" href="$_errors_8h.html" title="Errors.h" alt="" coords="551,231,619,257"/>
 </map>

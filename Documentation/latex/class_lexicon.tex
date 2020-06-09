@@ -6,8 +6,7 @@
 
 
 
-Inheritance diagram for Lexicon$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$\+:
-\nopagebreak
+Inheritance diagram for Lexicon$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -16,8 +15,7 @@ Inheritance diagram for Lexicon$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\
 \end{figure}
 
 
-Collaboration diagram for Lexicon$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$\+:
-\nopagebreak
+Collaboration diagram for Lexicon$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -47,8 +45,8 @@ virtual size\+\_\+t \hyperlink{class_lexicon_a005225141f8a245fe33d8f0a58fd397a}{
 \item 
 virtual void \hyperlink{class_lexicon_acd367c70ccc583f2a9fcbb1d007db45c}{push\+\_\+program} (Program \&s, short j) override
 \item 
-virtual H\+YP \hyperlink{class_lexicon_a9c1bf25acf10591531c3a9f49f2cfd57}{copy\+\_\+and\+\_\+complete} () const
-\item 
+virtual void \hyperlink{class_lexicon_a724ccdaffe9090488bfaa786873fa807}{complete} () override
+\begin{DoxyCompactList}\small\item\em Fill in all the holes in this hypothesis, at random, modifying self. \end{DoxyCompactList}\item 
 virtual double \hyperlink{class_lexicon_a2e099a68dd08d62897b40647f92eba1c}{compute\+\_\+prior} () override
 \begin{DoxyCompactList}\small\item\em Compute the prior -- defaultly not defined. \end{DoxyCompactList}\item 
 virtual std\+::pair$<$ H\+YP, double $>$ \hyperlink{class_lexicon_afa8ea51bbd16df5f46557fe10db84980}{propose} () const override
@@ -56,11 +54,13 @@ virtual std\+::pair$<$ H\+YP, double $>$ \hyperlink{class_lexicon_afa8ea51bbd16d
 virtual H\+YP \hyperlink{class_lexicon_ac8577ba9b4554ebf1852020c617bd7df}{restart} () const override
 \item 
 int \hyperlink{class_lexicon_a6419f323377d4c524363707eee0cae09}{neighbors} () const override
-\item 
-H\+YP \hyperlink{class_lexicon_a88a02f88387f436c6ff4c060735291ea}{make\+\_\+neighbor} (int k) const override
-\item 
+\begin{DoxyCompactList}\small\item\em Count the number of neighbors that are possible. (This should be size\+\_\+t but int is more convenient.) \end{DoxyCompactList}\item 
+void \hyperlink{class_lexicon_a2b17608f66415c6a7d55b6a8f344db21}{expand\+\_\+to\+\_\+neighbor} (int k) override
+\begin{DoxyCompactList}\small\item\em Modify this hypothesis to become the k\textquotesingle{}th neighbor. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_lexicon_ad237c78e3435223f344d153da3baba9b}{neighbor\+\_\+prior} (int k) override
+\begin{DoxyCompactList}\small\item\em What is the prior of the k\textquotesingle{}th neighbor? This does not need to return the full prior, only relative (among ks) \end{DoxyCompactList}\item 
 bool \hyperlink{class_lexicon_ab9fcefbd8598a5401a39bd59e8043db9}{is\+\_\+evaluable} () const override
-\item 
+\begin{DoxyCompactList}\small\item\em Check if we can evaluate this node (meaning compute a prior and posterior). N\+O\+TE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable. \end{DoxyCompactList}\item 
 virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ output\+\_\+t $>$ \hyperlink{class_lexicon_afc6b762f68c6033a501ce7ca04b01ece}{call} (const input\+\_\+t x, const output\+\_\+t err)
 \end{DoxyCompactItemize}
 \subsection*{Static Public Member Functions}
@@ -127,6 +127,21 @@ bool \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, out
 Check if the last factor call everything else transitively (e.\+g. are we \char`\"{}wasting\char`\"{} factors) We do this by making a graph of what factors call which others and then computing the transitive closure. \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\mbox{\Hypertarget{class_lexicon_a724ccdaffe9090488bfaa786873fa807}\label{class_lexicon_a724ccdaffe9090488bfaa786873fa807}} 
+\index{Lexicon@{Lexicon}!complete@{complete}}
+\index{complete@{complete}!Lexicon@{Lexicon}}
+\subsubsection{\texorpdfstring{complete()}{complete()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename I\+N\+N\+ER, typename input\+\_\+t, typename output\+\_\+t, typename datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual void \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::complete (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Fill in all the holes in this hypothesis, at random, modifying self. 
+
+
+
+Implements \hyperlink{class_searchable_a3ae6263b49a0f9da94f5dcc23af6618e}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
+
 \mbox{\Hypertarget{class_lexicon_a2e099a68dd08d62897b40647f92eba1c}\label{class_lexicon_a2e099a68dd08d62897b40647f92eba1c}} 
 \index{Lexicon@{Lexicon}!compute\+\_\+prior@{compute\+\_\+prior}}
 \index{compute\+\_\+prior@{compute\+\_\+prior}!Lexicon@{Lexicon}}
@@ -146,12 +161,25 @@ Implements \hyperlink{class_bayesable_a1b057a17212ced123545133e2297c01b}{Bayesab
 
 Reimplemented in \hyperlink{class_my_hypothesis_ab092094c5fc31730de4f40609220bb18}{My\+Hypothesis}, and \hyperlink{class_my_hypothesis_a67477313b60b21158bbfaad35dc5d275}{My\+Hypothesis}.
 
-\mbox{\Hypertarget{class_lexicon_a9c1bf25acf10591531c3a9f49f2cfd57}\label{class_lexicon_a9c1bf25acf10591531c3a9f49f2cfd57}} 
-\index{Lexicon@{Lexicon}!copy\+\_\+and\+\_\+complete@{copy\+\_\+and\+\_\+complete}}
-\index{copy\+\_\+and\+\_\+complete@{copy\+\_\+and\+\_\+complete}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{copy\+\_\+and\+\_\+complete()}{copy\_and\_complete()}}
+\mbox{\Hypertarget{class_lexicon_a2b17608f66415c6a7d55b6a8f344db21}\label{class_lexicon_a2b17608f66415c6a7d55b6a8f344db21}} 
+\index{Lexicon@{Lexicon}!expand\+\_\+to\+\_\+neighbor@{expand\+\_\+to\+\_\+neighbor}}
+\index{expand\+\_\+to\+\_\+neighbor@{expand\+\_\+to\+\_\+neighbor}!Lexicon@{Lexicon}}
+\subsubsection{\texorpdfstring{expand\+\_\+to\+\_\+neighbor()}{expand\_to\_neighbor()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename I\+N\+N\+ER, typename input\+\_\+t, typename output\+\_\+t, typename datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-virtual H\+YP \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::copy\+\_\+and\+\_\+complete (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+void \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::expand\+\_\+to\+\_\+neighbor (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Modify this hypothesis to become the k\textquotesingle{}th neighbor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_searchable_a1786307b9f2dadc8c66c94adef220270}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
 
 \mbox{\Hypertarget{class_lexicon_a9c9fd97a05a82e4f8b202850f8e8802c}\label{class_lexicon_a9c9fd97a05a82e4f8b202850f8e8802c}} 
 \index{Lexicon@{Lexicon}!from\+\_\+string@{from\+\_\+string}}
@@ -208,18 +236,31 @@ bool \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, out
 
 
 
+Check if we can evaluate this node (meaning compute a prior and posterior). N\+O\+TE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable. 
+
+
+
 Implements \hyperlink{class_searchable_a23786e95730117c3cc4b90e010494a1e}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
 
-\mbox{\Hypertarget{class_lexicon_a88a02f88387f436c6ff4c060735291ea}\label{class_lexicon_a88a02f88387f436c6ff4c060735291ea}} 
-\index{Lexicon@{Lexicon}!make\+\_\+neighbor@{make\+\_\+neighbor}}
-\index{make\+\_\+neighbor@{make\+\_\+neighbor}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{make\+\_\+neighbor()}{make\_neighbor()}}
+\mbox{\Hypertarget{class_lexicon_ad237c78e3435223f344d153da3baba9b}\label{class_lexicon_ad237c78e3435223f344d153da3baba9b}} 
+\index{Lexicon@{Lexicon}!neighbor\+\_\+prior@{neighbor\+\_\+prior}}
+\index{neighbor\+\_\+prior@{neighbor\+\_\+prior}!Lexicon@{Lexicon}}
+\subsubsection{\texorpdfstring{neighbor\+\_\+prior()}{neighbor\_prior()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename I\+N\+N\+ER, typename input\+\_\+t, typename output\+\_\+t, typename datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-H\+YP \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::make\+\_\+neighbor (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+virtual double \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::neighbor\+\_\+prior (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-Implements \hyperlink{class_searchable_ad7fefacd3c9c2b66aa58c9d902f645cb}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
+What is the prior of the k\textquotesingle{}th neighbor? This does not need to return the full prior, only relative (among ks) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_searchable_abebbaaf94b0502a35d0ba686af73bd08}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
 
 \mbox{\Hypertarget{class_lexicon_a6419f323377d4c524363707eee0cae09}\label{class_lexicon_a6419f323377d4c524363707eee0cae09}} 
 \index{Lexicon@{Lexicon}!neighbors@{neighbors}}
@@ -227,6 +268,10 @@ Implements \hyperlink{class_searchable_ad7fefacd3c9c2b66aa58c9d902f645cb}{Search
 \subsubsection{\texorpdfstring{neighbors()}{neighbors()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename I\+N\+N\+ER, typename input\+\_\+t, typename output\+\_\+t, typename datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
 int \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::neighbors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Count the number of neighbors that are possible. (This should be size\+\_\+t but int is more convenient.) 
 
 
 

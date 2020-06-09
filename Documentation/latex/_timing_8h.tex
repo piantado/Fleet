@@ -1,12 +1,13 @@
 \hypertarget{_timing_8h}{}\section{src/\+Timing.h File Reference}
 \label{_timing_8h}\index{src/\+Timing.\+h@{src/\+Timing.\+h}}
 {\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
 Include dependency graph for Timing.\+h\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=151pt]{_timing_8h__incl}
+\includegraphics[width=275pt]{_timing_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:
@@ -40,6 +41,7 @@ Give a timepoint for the current time.
     Time is a goddamn nightmare, we are going to define our own time type
     In Fleet, EVERYTHING is going to be stored as an \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordflow}{for} ms
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 
 
 
@@ -86,7 +88,7 @@ std::string datestring() \{
 
 \textcolor{comment}{/*}
 \end{DoxyCode}
- Time conversions for fleet $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ Converts our own time format to ms, which is what \hyperlink{namespace_fleet}{Fleet}\textquotesingle{}s time utilities use The time format we accept is \#+(.\#+)\mbox{[}smhd\mbox{]} where shmd specifies seconds, minutes, hours days 
+ Time conversions for fleet $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ Converts our own time format to ms, which is what \hyperlink{class_fleet}{Fleet}\textquotesingle{}s time utilities use The time format we accept is \#+(.\#+)\mbox{[}smhd\mbox{]} where shmd specifies seconds, minutes, hours days 
 \begin{DoxyParams}{Parameters}
 {\em s} & \\
 \hline

@@ -67,6 +67,7 @@ $(function() {
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_l_o_t_hypothesis-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt; Class Template Reference</div>  </div>
@@ -127,6 +128,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9a03abc8a6d96995c0f13524f8500747"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0791b7ba0105870a2094877445570b61"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a0791b7ba0105870a2094877445570b61">restart</a> () const override</td></tr>
 <tr class="separator:a0791b7ba0105870a2094877445570b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e3549444ffc1c34768a15f510ea0888"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a1e3549444ffc1c34768a15f510ea0888">get_value</a> ()</td></tr>
+<tr class="separator:a1e3549444ffc1c34768a15f510ea0888"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea6cd096e4ea5967e9932475ecae472a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#aea6cd096e4ea5967e9932475ecae472a">get_value</a> () const</td></tr>
+<tr class="separator:aea6cd096e4ea5967e9932475ecae472a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac23de5143f24323a05ed32774387ff7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#aac23de5143f24323a05ed32774387ff7">set_value</a> (<a class="el" href="class_node.html">Node</a> &amp;v)</td></tr>
 <tr class="separator:aac23de5143f24323a05ed32774387ff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51a0d09f0f15a185d2b9a7efce48fc98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a51a0d09f0f15a185d2b9a7efce48fc98">set_value</a> (<a class="el" href="class_node.html">Node</a> &amp;&amp;v)</td></tr>
@@ -161,13 +166,20 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7c33d51f8d81762b1eca7f86b596236a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf5a682dce5d3971474a22778479a99a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#acf5a682dce5d3971474a22778479a99a">operator==</a> (const HYP &amp;h) const override</td></tr>
 <tr class="separator:acf5a682dce5d3971474a22778479a99a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af643fa8b19e3bd0fa4682ab3566e29fc"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#af643fa8b19e3bd0fa4682ab3566e29fc">copy_and_complete</a> () const</td></tr>
-<tr class="separator:af643fa8b19e3bd0fa4682ab3566e29fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f913b702b434003f94a84c560d16bf9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a7f913b702b434003f94a84c560d16bf9">complete</a> () override</td></tr>
+<tr class="memdesc:a7f913b702b434003f94a84c560d16bf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill in all the holes in this hypothesis, at random, modifying self.  <a href="#a7f913b702b434003f94a84c560d16bf9">More...</a><br /></td></tr>
+<tr class="separator:a7f913b702b434003f94a84c560d16bf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a097cde606ec3f277fdeb92145599027f"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a097cde606ec3f277fdeb92145599027f">neighbors</a> () const override</td></tr>
+<tr class="memdesc:a097cde606ec3f277fdeb92145599027f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count the number of neighbors that are possible. (This should be size_t but int is more convenient.)  <a href="#a097cde606ec3f277fdeb92145599027f">More...</a><br /></td></tr>
 <tr class="separator:a097cde606ec3f277fdeb92145599027f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a997c88cb84133efc599b9b14173aefe9"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a997c88cb84133efc599b9b14173aefe9">make_neighbor</a> (int k) const override</td></tr>
-<tr class="separator:a997c88cb84133efc599b9b14173aefe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab24d0b8faa360f6a0edc4eefb17d6de7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#ab24d0b8faa360f6a0edc4eefb17d6de7">expand_to_neighbor</a> (int k) override</td></tr>
+<tr class="memdesc:ab24d0b8faa360f6a0edc4eefb17d6de7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify this hypothesis to become the k'th neighbor.  <a href="#ab24d0b8faa360f6a0edc4eefb17d6de7">More...</a><br /></td></tr>
+<tr class="separator:ab24d0b8faa360f6a0edc4eefb17d6de7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34fb9e13bc6855d6599c1c3e62d88933"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a34fb9e13bc6855d6599c1c3e62d88933">neighbor_prior</a> (int k) override</td></tr>
+<tr class="memdesc:a34fb9e13bc6855d6599c1c3e62d88933"><td class="mdescLeft">&#160;</td><td class="mdescRight">What is the prior of the k'th neighbor? This does not need to return the full prior, only relative (among ks)  <a href="#a34fb9e13bc6855d6599c1c3e62d88933">More...</a><br /></td></tr>
+<tr class="separator:a34fb9e13bc6855d6599c1c3e62d88933"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9eeaaf321324d2418405f4d7252f6ca4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a9eeaaf321324d2418405f4d7252f6ca4">is_evaluable</a> () const override</td></tr>
+<tr class="memdesc:a9eeaaf321324d2418405f4d7252f6ca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if we can evaluate this node (meaning compute a prior and posterior). NOTE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable.  <a href="#a9eeaaf321324d2418405f4d7252f6ca4">More...</a><br /></td></tr>
 <tr class="separator:a9eeaaf321324d2418405f4d7252f6ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_m_c_m_cable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_m_c_m_cable')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_m_c_m_cable.html">MCMCable&lt; HYP, _datum_t, _data_t &gt;</a></td></tr>
 <tr class="memitem:aac715433bffb674dd5809e7c1bc59ae5 inherit pub_methods_class_m_c_m_cable"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_m_cable.html#aac715433bffb674dd5809e7c1bc59ae5">MCMCable</a> ()</td></tr>
@@ -191,6 +203,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac356e7e5b11c266b8442064186dbe89d inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87d5d9481d6a72b017e44b175071fa5e inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a87d5d9481d6a72b017e44b175071fa5e">print</a> (std::string prefix=&quot;&quot;)</td></tr>
 <tr class="separator:a87d5d9481d6a72b017e44b175071fa5e inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_searchable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_searchable')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_searchable.html">Searchable&lt; HYP, input_t, output_t &gt;</a></td></tr>
+<tr class="memitem:acd4cf198859084f7a656ef507e65a872 inherit pub_methods_class_searchable"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#acd4cf198859084f7a656ef507e65a872">make_neighbor</a> (int k) const</td></tr>
+<tr class="memdesc:acd4cf198859084f7a656ef507e65a872 inherit pub_methods_class_searchable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a new hypothesis which is the k'th neighbor (just calls expand_to_neighbor)  <a href="class_searchable.html#acd4cf198859084f7a656ef507e65a872">More...</a><br /></td></tr>
+<tr class="separator:acd4cf198859084f7a656ef507e65a872 inherit pub_methods_class_searchable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -201,8 +217,6 @@ Static Public Member Functions</h2></td></tr>
 Public Attributes</h2></td></tr>
 <tr class="memitem:affae32db28c39df676809ae47e14e7cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_l_o_t_hypothesis.html#a8006204013d471860e54c49d19edbace">Grammar_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#affae32db28c39df676809ae47e14e7cf">grammar</a></td></tr>
 <tr class="separator:affae32db28c39df676809ae47e14e7cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac759b3eab77ead1749b905a3dde74961"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#ac759b3eab77ead1749b905a3dde74961">value</a></td></tr>
-<tr class="separator:ac759b3eab77ead1749b905a3dde74961"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_class_bayesable"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_bayesable')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_bayesable.html">Bayesable&lt; Args... &gt;</a></td></tr>
 <tr class="memitem:a473790922c2dd73e227350d029d73003 inherit pub_attribs_class_bayesable"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a473790922c2dd73e227350d029d73003">prior</a></td></tr>
 <tr class="separator:a473790922c2dd73e227350d029d73003 inherit pub_attribs_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -217,6 +231,11 @@ Public Attributes</h2></td></tr>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a0231650d938c098118a4c4bdb201fc61"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a0231650d938c098118a4c4bdb201fc61">MAX_NODES</a> = 64</td></tr>
 <tr class="separator:a0231650d938c098118a4c4bdb201fc61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:ac759b3eab77ead1749b905a3dde74961"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#ac759b3eab77ead1749b905a3dde74961">value</a></td></tr>
+<tr class="separator:ac759b3eab77ead1749b905a3dde74961"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt;<br />
@@ -605,6 +624,37 @@ template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar
 
 </div>
 </div>
+<a id="a7f913b702b434003f94a84c560d16bf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f913b702b434003f94a84c560d16bf9">&#9670;&nbsp;</a></span>complete()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::complete </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fill in all the holes in this hypothesis, at random, modifying self. </p>
+
+<p>Implements <a class="el" href="class_searchable.html#a3ae6263b49a0f9da94f5dcc23af6618e">Searchable&lt; HYP, input_t, output_t &gt;</a>.</p>
+
+</div>
+</div>
 <a id="af215c4833e81984364703b2e4cb78dc7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af215c4833e81984364703b2e4cb78dc7">&#9670;&nbsp;</a></span>compute_prior()</h2>
 
@@ -668,8 +718,8 @@ template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar
 
 </div>
 </div>
-<a id="af643fa8b19e3bd0fa4682ab3566e29fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af643fa8b19e3bd0fa4682ab3566e29fc">&#9670;&nbsp;</a></span>copy_and_complete()</h2>
+<a id="ab24d0b8faa360f6a0edc4eefb17d6de7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab24d0b8faa360f6a0edc4eefb17d6de7">&#9670;&nbsp;</a></span>expand_to_neighbor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -680,18 +730,29 @@ template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual HYP <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::copy_and_complete </td>
+          <td class="memname">virtual void <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::expand_to_neighbor </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>k</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Modify this hypothesis to become the k'th neighbor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">k</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="class_searchable.html#a1786307b9f2dadc8c66c94adef220270">Searchable&lt; HYP, input_t, output_t &gt;</a>.</p>
 
 </div>
 </div>
@@ -727,6 +788,60 @@ template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1e3549444ffc1c34768a15f510ea0888"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e3549444ffc1c34768a15f510ea0888">&#9670;&nbsp;</a></span>get_value() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a>&amp; <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::get_value </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aea6cd096e4ea5967e9932475ecae472a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea6cd096e4ea5967e9932475ecae472a">&#9670;&nbsp;</a></span>get_value() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="class_node.html">Node</a>&amp; <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::get_value </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -789,12 +904,14 @@ template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar
 </table>
 </div><div class="memdoc">
 
+<p>Check if we can evaluate this node (meaning compute a prior and posterior). NOTE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable. </p>
+
 <p>Implements <a class="el" href="class_searchable.html#a23786e95730117c3cc4b90e010494a1e">Searchable&lt; HYP, input_t, output_t &gt;</a>.</p>
 
 </div>
 </div>
-<a id="a997c88cb84133efc599b9b14173aefe9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a997c88cb84133efc599b9b14173aefe9">&#9670;&nbsp;</a></span>make_neighbor()</h2>
+<a id="a34fb9e13bc6855d6599c1c3e62d88933"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34fb9e13bc6855d6599c1c3e62d88933">&#9670;&nbsp;</a></span>neighbor_prior()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -805,11 +922,11 @@ template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual HYP <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::make_neighbor </td>
+          <td class="memname">virtual double <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::neighbor_prior </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>k</em></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -819,7 +936,15 @@ template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="class_searchable.html#ad7fefacd3c9c2b66aa58c9d902f645cb">Searchable&lt; HYP, input_t, output_t &gt;</a>.</p>
+<p>What is the prior of the k'th neighbor? This does not need to return the full prior, only relative (among ks) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">k</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="class_searchable.html#abebbaaf94b0502a35d0ba686af73bd08">Searchable&lt; HYP, input_t, output_t &gt;</a>.</p>
 
 </div>
 </div>
@@ -847,6 +972,8 @@ template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Count the number of neighbors that are possible. (This should be size_t but int is more convenient.) </p>
 
 <p>Implements <a class="el" href="class_searchable.html#aec30063fcc9bed5d005f8318efa8492d">Searchable&lt; HYP, input_t, output_t &gt;</a>.</p>
 
@@ -1206,11 +1333,19 @@ template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename HYP, typename input_t, typename output_t, typename _Grammar_t, typename _datum_t = defauldatum_t&lt;input_t, output_t&gt;, typename _data_t = std::vector&lt;_datum_t&gt;, typename VirtualMachineState_t = typename _Grammar_t::template VirtualMachineState_t&lt;input_t, output_t&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;::value</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>

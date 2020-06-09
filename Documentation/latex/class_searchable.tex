@@ -8,11 +8,17 @@
 \begin{DoxyCompactItemize}
 \item 
 virtual int \hyperlink{class_searchable_aec30063fcc9bed5d005f8318efa8492d}{neighbors} () const =0
-\item 
-virtual H\+YP \hyperlink{class_searchable_ad7fefacd3c9c2b66aa58c9d902f645cb}{make\+\_\+neighbor} (int k) const =0
-\item 
+\begin{DoxyCompactList}\small\item\em Count the number of neighbors that are possible. (This should be size\+\_\+t but int is more convenient.) \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_searchable_a1786307b9f2dadc8c66c94adef220270}{expand\+\_\+to\+\_\+neighbor} (int k)=0
+\begin{DoxyCompactList}\small\item\em Modify this hypothesis to become the k\textquotesingle{}th neighbor. \end{DoxyCompactList}\item 
+virtual H\+YP \hyperlink{class_searchable_acd4cf198859084f7a656ef507e65a872}{make\+\_\+neighbor} (int k) const
+\begin{DoxyCompactList}\small\item\em Return a new hypothesis which is the k\textquotesingle{}th neighbor (just calls expand\+\_\+to\+\_\+neighbor) \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_searchable_abebbaaf94b0502a35d0ba686af73bd08}{neighbor\+\_\+prior} (int k)=0
+\begin{DoxyCompactList}\small\item\em What is the prior of the k\textquotesingle{}th neighbor? This does not need to return the full prior, only relative (among ks) \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_searchable_a3ae6263b49a0f9da94f5dcc23af6618e}{complete} ()=0
+\begin{DoxyCompactList}\small\item\em Fill in all the holes in this hypothesis, at random, modifying self. \end{DoxyCompactList}\item 
 virtual bool \hyperlink{class_searchable_a23786e95730117c3cc4b90e010494a1e}{is\+\_\+evaluable} () const =0
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Check if we can evaluate this node (meaning compute a prior and posterior). N\+O\+TE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -28,6 +34,41 @@ steven piantadosi
 
 
 \subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_searchable_a3ae6263b49a0f9da94f5dcc23af6618e}\label{class_searchable_a3ae6263b49a0f9da94f5dcc23af6618e}} 
+\index{Searchable@{Searchable}!complete@{complete}}
+\index{complete@{complete}!Searchable@{Searchable}}
+\subsubsection{\texorpdfstring{complete()}{complete()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename... Args$>$ \\
+virtual void \hyperlink{class_searchable}{Searchable}$<$ H\+YP, Args $>$\+::complete (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Fill in all the holes in this hypothesis, at random, modifying self. 
+
+
+
+Implemented in \hyperlink{class_lexicon_a724ccdaffe9090488bfaa786873fa807}{Lexicon$<$ H\+Y\+P, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}, \hyperlink{class_lexicon_a724ccdaffe9090488bfaa786873fa807}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_a7f913b702b434003f94a84c560d16bf9}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}, \hyperlink{class_l_o_t_hypothesis_a7f913b702b434003f94a84c560d16bf9}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a7f913b702b434003f94a84c560d16bf9}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, utterance, word, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a7f913b702b434003f94a84c560d16bf9}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a7f913b702b434003f94a84c560d16bf9}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, float, float, My\+Grammar, float, std\+::multiset$<$ float $>$ $>$}, and \hyperlink{class_l_o_t_hypothesis_a7f913b702b434003f94a84c560d16bf9}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Object, bool, My\+Grammar $>$}.
+
+\mbox{\Hypertarget{class_searchable_a1786307b9f2dadc8c66c94adef220270}\label{class_searchable_a1786307b9f2dadc8c66c94adef220270}} 
+\index{Searchable@{Searchable}!expand\+\_\+to\+\_\+neighbor@{expand\+\_\+to\+\_\+neighbor}}
+\index{expand\+\_\+to\+\_\+neighbor@{expand\+\_\+to\+\_\+neighbor}!Searchable@{Searchable}}
+\subsubsection{\texorpdfstring{expand\+\_\+to\+\_\+neighbor()}{expand\_to\_neighbor()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename... Args$>$ \\
+virtual void \hyperlink{class_searchable}{Searchable}$<$ H\+YP, Args $>$\+::expand\+\_\+to\+\_\+neighbor (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Modify this hypothesis to become the k\textquotesingle{}th neighbor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{class_lexicon_a2b17608f66415c6a7d55b6a8f344db21}{Lexicon$<$ H\+Y\+P, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}, \hyperlink{class_lexicon_a2b17608f66415c6a7d55b6a8f344db21}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_ab24d0b8faa360f6a0edc4eefb17d6de7}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}, \hyperlink{class_l_o_t_hypothesis_ab24d0b8faa360f6a0edc4eefb17d6de7}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_ab24d0b8faa360f6a0edc4eefb17d6de7}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, utterance, word, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_ab24d0b8faa360f6a0edc4eefb17d6de7}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_ab24d0b8faa360f6a0edc4eefb17d6de7}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, float, float, My\+Grammar, float, std\+::multiset$<$ float $>$ $>$}, and \hyperlink{class_l_o_t_hypothesis_ab24d0b8faa360f6a0edc4eefb17d6de7}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Object, bool, My\+Grammar $>$}.
+
 \mbox{\Hypertarget{class_searchable_a23786e95730117c3cc4b90e010494a1e}\label{class_searchable_a23786e95730117c3cc4b90e010494a1e}} 
 \index{Searchable@{Searchable}!is\+\_\+evaluable@{is\+\_\+evaluable}}
 \index{is\+\_\+evaluable@{is\+\_\+evaluable}!Searchable@{Searchable}}
@@ -37,18 +78,50 @@ virtual bool \hyperlink{class_searchable}{Searchable}$<$ H\+YP, Args $>$\+::is\+
 
 
 
+Check if we can evaluate this node (meaning compute a prior and posterior). N\+O\+TE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable. 
+
+
+
 Implemented in \hyperlink{class_lexicon_ab9fcefbd8598a5401a39bd59e8043db9}{Lexicon$<$ H\+Y\+P, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}, \hyperlink{class_lexicon_ab9fcefbd8598a5401a39bd59e8043db9}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}, \hyperlink{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, utterance, word, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, float, float, My\+Grammar, float, std\+::multiset$<$ float $>$ $>$}, and \hyperlink{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Object, bool, My\+Grammar $>$}.
 
-\mbox{\Hypertarget{class_searchable_ad7fefacd3c9c2b66aa58c9d902f645cb}\label{class_searchable_ad7fefacd3c9c2b66aa58c9d902f645cb}} 
+\mbox{\Hypertarget{class_searchable_acd4cf198859084f7a656ef507e65a872}\label{class_searchable_acd4cf198859084f7a656ef507e65a872}} 
 \index{Searchable@{Searchable}!make\+\_\+neighbor@{make\+\_\+neighbor}}
 \index{make\+\_\+neighbor@{make\+\_\+neighbor}!Searchable@{Searchable}}
 \subsubsection{\texorpdfstring{make\+\_\+neighbor()}{make\_neighbor()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename... Args$>$ \\
-virtual H\+YP \hyperlink{class_searchable}{Searchable}$<$ H\+YP, Args $>$\+::make\+\_\+neighbor (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+virtual H\+YP \hyperlink{class_searchable}{Searchable}$<$ H\+YP, Args $>$\+::make\+\_\+neighbor (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
 
 
-Implemented in \hyperlink{class_lexicon_a88a02f88387f436c6ff4c060735291ea}{Lexicon$<$ H\+Y\+P, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}, \hyperlink{class_lexicon_a88a02f88387f436c6ff4c060735291ea}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}, \hyperlink{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, utterance, word, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, float, float, My\+Grammar, float, std\+::multiset$<$ float $>$ $>$}, and \hyperlink{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Object, bool, My\+Grammar $>$}.
+Return a new hypothesis which is the k\textquotesingle{}th neighbor (just calls expand\+\_\+to\+\_\+neighbor) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_searchable_abebbaaf94b0502a35d0ba686af73bd08}\label{class_searchable_abebbaaf94b0502a35d0ba686af73bd08}} 
+\index{Searchable@{Searchable}!neighbor\+\_\+prior@{neighbor\+\_\+prior}}
+\index{neighbor\+\_\+prior@{neighbor\+\_\+prior}!Searchable@{Searchable}}
+\subsubsection{\texorpdfstring{neighbor\+\_\+prior()}{neighbor\_prior()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename... Args$>$ \\
+virtual double \hyperlink{class_searchable}{Searchable}$<$ H\+YP, Args $>$\+::neighbor\+\_\+prior (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+What is the prior of the k\textquotesingle{}th neighbor? This does not need to return the full prior, only relative (among ks) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{class_lexicon_ad237c78e3435223f344d153da3baba9b}{Lexicon$<$ H\+Y\+P, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}, \hyperlink{class_lexicon_ad237c78e3435223f344d153da3baba9b}{Lexicon$<$ My\+Hypothesis, Inner\+Hypothesis, S, S $>$}, \hyperlink{class_l_o_t_hypothesis_a34fb9e13bc6855d6599c1c3e62d88933}{L\+O\+T\+Hypothesis$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}, \hyperlink{class_l_o_t_hypothesis_a34fb9e13bc6855d6599c1c3e62d88933}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a34fb9e13bc6855d6599c1c3e62d88933}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, utterance, word, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a34fb9e13bc6855d6599c1c3e62d88933}{L\+O\+T\+Hypothesis$<$ Inner\+Hypothesis, S, S, My\+Grammar $>$}, \hyperlink{class_l_o_t_hypothesis_a34fb9e13bc6855d6599c1c3e62d88933}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, float, float, My\+Grammar, float, std\+::multiset$<$ float $>$ $>$}, and \hyperlink{class_l_o_t_hypothesis_a34fb9e13bc6855d6599c1c3e62d88933}{L\+O\+T\+Hypothesis$<$ My\+Hypothesis, Object, bool, My\+Grammar $>$}.
 
 \mbox{\Hypertarget{class_searchable_aec30063fcc9bed5d005f8318efa8492d}\label{class_searchable_aec30063fcc9bed5d005f8318efa8492d}} 
 \index{Searchable@{Searchable}!neighbors@{neighbors}}
@@ -56,6 +129,10 @@ Implemented in \hyperlink{class_lexicon_a88a02f88387f436c6ff4c060735291ea}{Lexic
 \subsubsection{\texorpdfstring{neighbors()}{neighbors()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename... Args$>$ \\
 virtual int \hyperlink{class_searchable}{Searchable}$<$ H\+YP, Args $>$\+::neighbors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Count the number of neighbors that are possible. (This should be size\+\_\+t but int is more convenient.) 
 
 
 

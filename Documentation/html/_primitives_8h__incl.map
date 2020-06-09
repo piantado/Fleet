@@ -1,5 +1,6 @@
 <map id="src/VirtualMachine/Primitives.h" name="src/VirtualMachine/Primitives.h">
-<area shape="rect" id="node8" href="$_instruction_8h.html" title="This is an error type that is returned if we get a runtime error (e.g. string length, etc.) " alt="" coords="465,95,559,121"/>
-<area shape="rect" id="node11" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="714,95,830,121"/>
-<area shape="rect" id="node14" href="$_i_o_8h.html" title="IO.h" alt="" coords="826,169,873,196"/>
+<area shape="rect" id="node8" href="$_errors_8h.html" title="Errors.h" alt="" coords="386,95,454,121"/>
+<area shape="rect" id="node11" href="$_instruction_8h.html" title="This is an error type that is returned if we get a runtime error (e.g. string length, etc.) " alt="" coords="533,95,627,121"/>
+<area shape="rect" id="node14" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="746,95,862,121"/>
+<area shape="rect" id="node17" href="$_i_o_8h.html" title="IO.h" alt="" coords="901,169,947,196"/>
 </map>

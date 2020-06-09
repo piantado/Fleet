@@ -136,10 +136,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:afff50c3712b8e30fffd479cad4eee023"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a486882370d2c9592c6eabb52a3289253"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a486882370d2c9592c6eabb52a3289253">set_child</a> (size_t i, <a class="el" href="class_node.html">Node</a> &amp;&amp;n)</td></tr>
 <tr class="separator:a486882370d2c9592c6eabb52a3289253"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a6f6c8062e66046c302a80cc7e8d817"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a1a6f6c8062e66046c302a80cc7e8d817">set_to</a> (<a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
-<tr class="separator:a1a6f6c8062e66046c302a80cc7e8d817"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10c63ea2ec819dc5b195c4df33cde113"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a10c63ea2ec819dc5b195c4df33cde113">set_to</a> (<a class="el" href="class_node.html">Node</a> &amp;&amp;n)</td></tr>
-<tr class="separator:a10c63ea2ec819dc5b195c4df33cde113"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a895ef3b66f975fbaec1e5866a57afbed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a895ef3b66f975fbaec1e5866a57afbed">is_null</a> () const</td></tr>
 <tr class="separator:a895ef3b66f975fbaec1e5866a57afbed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac91282056a0df2835f1579bdd21c93e1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -176,8 +172,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a70e879ceb71f47787137572d9bee8efa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a377548bcf1be99ac5181f9434c33c81e"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a377548bcf1be99ac5181f9434c33c81e">program_size</a> () const</td></tr>
 <tr class="separator:a377548bcf1be99ac5181f9434c33c81e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac995508e96e112675fde53e7748e41bc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#ac995508e96e112675fde53e7748e41bc">linearize</a> (Program &amp;ops) const</td></tr>
-<tr class="separator:ac995508e96e112675fde53e7748e41bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54676f34db2c299693c9b55148589230"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a54676f34db2c299693c9b55148589230">linearize</a> (Program &amp;ops) const</td></tr>
+<tr class="separator:a54676f34db2c299693c9b55148589230"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90aeee00ccda27f36bea9cdd774eae8d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a90aeee00ccda27f36bea9cdd774eae8d">operator==</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
 <tr class="memdesc:a90aeee00ccda27f36bea9cdd774eae8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">convert tree to a linear sequence of operations. To do this, we first linearize the kids, leaving their values as the top on the stack then we compute our value, remove our kids' values to clean up the stack, and push on our return the only fanciness is for if: here we will use the following layout &lt;TOP of="" stack&gt;=""&gt; &lt;bool&gt; <a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7a8f69a9fe993189d72cf7b07e8517801d">op_IF(xsize)</a> X-branch JUMP(ysize) Y-branch  <a href="#a90aeee00ccda27f36bea9cdd774eae8d">More...</a><br /></td></tr>
 <tr class="separator:a90aeee00ccda27f36bea9cdd774eae8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -846,8 +842,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac995508e96e112675fde53e7748e41bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac995508e96e112675fde53e7748e41bc">&#9670;&nbsp;</a></span>linearize()</h2>
+<a id="a54676f34db2c299693c9b55148589230"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54676f34db2c299693c9b55148589230">&#9670;&nbsp;</a></span>linearize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -856,7 +852,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void Node::linearize </td>
+          <td class="memname">virtual int Node::linearize </td>
           <td>(</td>
           <td class="paramtype">Program &amp;&#160;</td>
           <td class="paramname"><em>ops</em></td><td>)</td>
@@ -876,6 +872,7 @@ Protected Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>This returns the <em>size</em> of the program that was pushed onto ops. This is useful for saving us lots of calls to program_size, which ends up being an important optimization.</dd></dl>
 
 </div>
 </div>
@@ -1353,65 +1350,6 @@ Protected Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a1a6f6c8062e66046c302a80cc7e8d817"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a6f6c8062e66046c302a80cc7e8d817">&#9670;&nbsp;</a></span>set_to() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Node::set_to </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
-          <td class="paramname"><em>n</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Set myself to n. This should be used so that parent pointers etc. can be updated. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">n</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a10c63ea2ec819dc5b195c4df33cde113"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10c63ea2ec819dc5b195c4df33cde113">&#9670;&nbsp;</a></span>set_to() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Node::set_to </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_node.html">Node</a> &amp;&amp;&#160;</td>
-          <td class="paramname"><em>n</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Set myself to n (move version)</p>
 
 </div>
 </div>

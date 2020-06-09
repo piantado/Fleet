@@ -1,5 +1,6 @@
 <map id="src/VirtualMachine/VirtualMachineState.h" name="src/VirtualMachine/VirtualMachineState.h">
-<area shape="rect" id="node6" href="$_program_8h.html" title="Program.h" alt="" coords="336,95,419,121"/>
-<area shape="rect" id="node7" href="$_stack_8h.html" title="Stack.h" alt="" coords="384,169,451,196"/>
-<area shape="rect" id="node9" href="$_fleet_statistics_8h.html" title="Statistics/FleetStatistics.h" alt="" coords="493,95,669,121"/>
+<area shape="rect" id="node6" href="$_errors_8h.html" title="Errors.h" alt="" coords="337,95,405,121"/>
+<area shape="rect" id="node10" href="$_program_8h.html" title="Program.h" alt="" coords="429,95,512,121"/>
+<area shape="rect" id="node11" href="$_stack_8h.html" title="Stack.h" alt="" coords="515,169,581,196"/>
+<area shape="rect" id="node13" href="$_fleet_statistics_8h.html" title="Statistics/FleetStatistics.h" alt="" coords="587,95,763,121"/>
 </map>

@@ -62,7 +62,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
@@ -75,20 +74,7 @@ $(function() {
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="_grammar_8h_source.html">Grammar.h</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for Grammar&lt; GRAMMAR_TYPES &gt;:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_grammar__coll__graph.png" border="0" usemap="#_grammar_3_01_g_r_a_m_m_a_r___t_y_p_e_s_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="_grammar_3_01_g_r_a_m_m_a_r___t_y_p_e_s_01_4_coll__map" id="_grammar_3_01_g_r_a_m_m_a_r___t_y_p_e_s_01_4_coll__map">
-<area shape="rect" id="node2" href="class_grammar_1_1_depth_exception.html" title="Grammar\&lt; GRAMMAR_TYPES\l \&gt;::DepthException" alt="" coords="11,81,221,123"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar_1_1_depth_exception.html">DepthException</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a30c2eaa4b378738686365fc6d8697f61"><td class="memTemplParams" colspan="2">template&lt;typename input_t , typename output_t &gt; </td></tr>
@@ -186,6 +172,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a486cec3b8e6c757eb348031ff8118a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0765273e6b0957410447ad5d74e424bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a0765273e6b0957410447ad5d74e424bf">expand_to_neighbor</a> (<a class="el" href="class_node.html">Node</a> &amp;node, int &amp;which)</td></tr>
 <tr class="separator:a0765273e6b0957410447ad5d74e424bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36e6e5072b99611de47c4be3ab78761c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a36e6e5072b99611de47c4be3ab78761c">neighbor_prior</a> (const <a class="el" href="class_node.html">Node</a> &amp;node, int &amp;which) const</td></tr>
+<tr class="separator:a36e6e5072b99611de47c4be3ab78761c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51a44e86d41c6e8a8ff7665208ac55da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a51a44e86d41c6e8a8ff7665208ac55da">complete</a> (<a class="el" href="class_node.html">Node</a> &amp;node)</td></tr>
 <tr class="separator:a51a44e86d41c6e8a8ff7665208ac55da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -197,8 +185,6 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a3a9a86328940c89b66088b2807c88b68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_grammar_1_1_depth_exception.html">Grammar::DepthException</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a3a9a86328940c89b66088b2807c88b68">depth_exception</a></td></tr>
-<tr class="separator:a3a9a86328940c89b66088b2807c88b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a89ced0753d72f52ccf2b04c0ccc82b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_rule.html">Rule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a8a89ced0753d72f52ccf2b04c0ccc82b">rules</a> [<a class="el" href="class_grammar.html#a45877d4d7a5ee98bf6753af593d6ca08">N_NTs</a>]</td></tr>
 <tr class="separator:a8a89ced0753d72f52ccf2b04c0ccc82b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63420ee4232c46523a46bd881cb3e2f5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a63420ee4232c46523a46bd881cb3e2f5">Z</a> [<a class="el" href="class_grammar.html#a45877d4d7a5ee98bf6753af593d6ca08">N_NTs</a>]</td></tr>
@@ -1114,7 +1100,7 @@ template&lt;typename... GRAMMAR_TYPES&gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns a <a class="el" href="class_node.html">Node</a> sampled from the grammar.</dd></dl>
-<p>NOTE: this may throw a <a class="el" href="class_grammar_1_1_depth_exception.html">DepthException</a> if the grammar recurses too far (usually that means the grammar is improper)</p>
+<p>NOTE: this may throw a DepthException if the grammar recurses too far (usually that means the grammar is improper)</p>
 
 </div>
 </div>
@@ -1546,7 +1532,7 @@ template&lt;typename... GRAMMAR_TYPES&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Compute the log probability of a tree according to the grammar </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Compute the log probability of a tree according to the grammar. NOTE: here we ignore nodes that are Null meaning that we compute the partial probability </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td></td></tr>
   </table>
@@ -1588,6 +1574,44 @@ template&lt;typename... GRAMMAR_TYPES&gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a36e6e5072b99611de47c4be3ab78761c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36e6e5072b99611de47c4be3ab78761c">&#9670;&nbsp;</a></span>neighbor_prior()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... GRAMMAR_TYPES&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::neighbor_prior </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
+          <td class="paramname"><em>node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>which</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1749,22 +1773,6 @@ template&lt;typename... GRAMMAR_TYPES&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a3a9a86328940c89b66088b2807c88b68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a9a86328940c89b66088b2807c88b68">&#9670;&nbsp;</a></span>depth_exception</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... GRAMMAR_TYPES&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"> <a class="el" href="class_grammar_1_1_depth_exception.html">Grammar::DepthException</a>  <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::depth_exception</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a4a0d1d38426ce7f1b68c001e9ddec064"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4a0d1d38426ce7f1b68c001e9ddec064">&#9670;&nbsp;</a></span>GRAMMAR_MAX_DEPTH</h2>
 

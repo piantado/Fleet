@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hypothesis_5ft',['Hypothesis_t',['../class_fleet_1_1_statistics_1_1_top_n.html#af115f2778a79fca8e1f499d351af1b8b',1,'Fleet::Statistics::TopN']]]
+  ['hypothesis_5ft',['Hypothesis_t',['../class_top_n.html#ae734a8791a54516fecbc8cac2c67d16a',1,'TopN']]]
 ];

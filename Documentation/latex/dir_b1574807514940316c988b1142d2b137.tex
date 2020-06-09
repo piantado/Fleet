@@ -11,15 +11,21 @@ Directory dependency graph for Inference\+:
 \subsection*{Files}
 \begin{DoxyCompactItemize}
 \item 
+file \hyperlink{_astar_8h}{Astar.\+h}
+\begin{DoxyCompactList}\small\item\em This is an implementation of kinda-\/\+A$\ast$ search that maintains a priority queue of partial states and attempts to find a program with the lowest posterior score. To do this, we choose a node to expand based on its prior plus N\+\_\+\+R\+E\+PS samples of its likelihood, computed by filling in its children at random. This stochastic heuristic is actually inadmissable since it usually overestimates the cost. As a result, it usually makes sense to run A$\ast$ at a pretty high temperature, corresponding to a downweighting of the likelihood, and making the heuristic more likely to be admissable. \end{DoxyCompactList}\item 
 file \hyperlink{_chain_pool_8h}{Chain\+Pool.\+h}
 \begin{DoxyCompactList}\small\item\em A \hyperlink{class_chain_pool}{Chain\+Pool} stores a bunch of M\+C\+M\+C\+Chains and allows you to run them serially or in parallel. N\+O\+TE\+: When you use a \hyperlink{class_chain_pool}{Chain\+Pool}, the results will not be reproducible with seed because timing determines when you switch chains. \end{DoxyCompactList}\item 
 file \hyperlink{_control_8h}{Control.\+h}
 \begin{DoxyCompactList}\small\item\em This bundles together information for running M\+C\+MC or M\+C\+TS, including number of steps, amount of time, etc. N\+O\+TE\+: In general this should N\+OT be passed by reference because we want start\+\_\+time to be the time we started the function it is passed to (start time is the time of construction, here) \end{DoxyCompactList}\item 
 file \hyperlink{_enumeration_8h}{Enumeration.\+h}
 \item 
+file \hyperlink{_full_m_c_t_s_8h}{Full\+M\+C\+T\+S.\+h}
+\begin{DoxyCompactList}\small\item\em This monte care tree search always plays out a full tree. It is optimized to keep the tree as small as possible. To do this, it doesn\textquotesingle{}t even store the value (H\+YP) in the tree, it just constructs it as a search step goes down the tree. It also doesn\textquotesingle{}t store parent pointers, it just passes them down the tree. We use \hyperlink{class_spin_lock}{Spin\+Lock} here because std\+::mutex is much bigger. Finally, explore, data, and callback are all static variables, which means that you will need to subclass this if you want to let those vary across nodes (or parallel runs). This lets us cram everything into 56 bytes. \end{DoxyCompactList}\item 
 file \hyperlink{_m_c_m_c_chain_8h}{M\+C\+M\+C\+Chain.\+h}
 \item 
 file \hyperlink{_m_c_t_s_8h}{M\+C\+T\+S.\+h}
-\begin{DoxyCompactList}\small\item\em Template of self type M, hypothesis type H\+YP. This requires us to inherit and override playout to do whatever we want. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Template of type hypothesis and callback. \end{DoxyCompactList}\item 
+file \hyperlink{_parallel_inference_interface_8h}{Parallel\+Inference\+Interface.\+h}
+\item 
 file \hyperlink{_parallel_tempering_8h}{Parallel\+Tempering.\+h}
 \end{DoxyCompactItemize}

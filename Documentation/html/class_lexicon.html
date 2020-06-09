@@ -116,8 +116,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a005225141f8a245fe33d8f0a58fd397a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd367c70ccc583f2a9fcbb1d007db45c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexicon.html#acd367c70ccc583f2a9fcbb1d007db45c">push_program</a> (Program &amp;s, short j) override</td></tr>
 <tr class="separator:acd367c70ccc583f2a9fcbb1d007db45c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c1bf25acf10591531c3a9f49f2cfd57"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexicon.html#a9c1bf25acf10591531c3a9f49f2cfd57">copy_and_complete</a> () const</td></tr>
-<tr class="separator:a9c1bf25acf10591531c3a9f49f2cfd57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a724ccdaffe9090488bfaa786873fa807"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexicon.html#a724ccdaffe9090488bfaa786873fa807">complete</a> () override</td></tr>
+<tr class="memdesc:a724ccdaffe9090488bfaa786873fa807"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill in all the holes in this hypothesis, at random, modifying self.  <a href="#a724ccdaffe9090488bfaa786873fa807">More...</a><br /></td></tr>
+<tr class="separator:a724ccdaffe9090488bfaa786873fa807"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e099a68dd08d62897b40647f92eba1c"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexicon.html#a2e099a68dd08d62897b40647f92eba1c">compute_prior</a> () override</td></tr>
 <tr class="memdesc:a2e099a68dd08d62897b40647f92eba1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the prior &ndash; defaultly not defined.  <a href="#a2e099a68dd08d62897b40647f92eba1c">More...</a><br /></td></tr>
 <tr class="separator:a2e099a68dd08d62897b40647f92eba1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,10 +127,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac8577ba9b4554ebf1852020c617bd7df"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexicon.html#ac8577ba9b4554ebf1852020c617bd7df">restart</a> () const override</td></tr>
 <tr class="separator:ac8577ba9b4554ebf1852020c617bd7df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6419f323377d4c524363707eee0cae09"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexicon.html#a6419f323377d4c524363707eee0cae09">neighbors</a> () const override</td></tr>
+<tr class="memdesc:a6419f323377d4c524363707eee0cae09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count the number of neighbors that are possible. (This should be size_t but int is more convenient.)  <a href="#a6419f323377d4c524363707eee0cae09">More...</a><br /></td></tr>
 <tr class="separator:a6419f323377d4c524363707eee0cae09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88a02f88387f436c6ff4c060735291ea"><td class="memItemLeft" align="right" valign="top">HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexicon.html#a88a02f88387f436c6ff4c060735291ea">make_neighbor</a> (int k) const override</td></tr>
-<tr class="separator:a88a02f88387f436c6ff4c060735291ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b17608f66415c6a7d55b6a8f344db21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexicon.html#a2b17608f66415c6a7d55b6a8f344db21">expand_to_neighbor</a> (int k) override</td></tr>
+<tr class="memdesc:a2b17608f66415c6a7d55b6a8f344db21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify this hypothesis to become the k'th neighbor.  <a href="#a2b17608f66415c6a7d55b6a8f344db21">More...</a><br /></td></tr>
+<tr class="separator:a2b17608f66415c6a7d55b6a8f344db21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad237c78e3435223f344d153da3baba9b"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexicon.html#ad237c78e3435223f344d153da3baba9b">neighbor_prior</a> (int k) override</td></tr>
+<tr class="memdesc:ad237c78e3435223f344d153da3baba9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">What is the prior of the k'th neighbor? This does not need to return the full prior, only relative (among ks)  <a href="#ad237c78e3435223f344d153da3baba9b">More...</a><br /></td></tr>
+<tr class="separator:ad237c78e3435223f344d153da3baba9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9fcefbd8598a5401a39bd59e8043db9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexicon.html#ab9fcefbd8598a5401a39bd59e8043db9">is_evaluable</a> () const override</td></tr>
+<tr class="memdesc:ab9fcefbd8598a5401a39bd59e8043db9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if we can evaluate this node (meaning compute a prior and posterior). NOTE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable.  <a href="#ab9fcefbd8598a5401a39bd59e8043db9">More...</a><br /></td></tr>
 <tr class="separator:ab9fcefbd8598a5401a39bd59e8043db9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc6b762f68c6033a501ce7ca04b01ece"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; output_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexicon.html#afc6b762f68c6033a501ce7ca04b01ece">call</a> (const input_t x, const output_t err)</td></tr>
 <tr class="separator:afc6b762f68c6033a501ce7ca04b01ece"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,6 +162,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac356e7e5b11c266b8442064186dbe89d inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87d5d9481d6a72b017e44b175071fa5e inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a87d5d9481d6a72b017e44b175071fa5e">print</a> (std::string prefix=&quot;&quot;)</td></tr>
 <tr class="separator:a87d5d9481d6a72b017e44b175071fa5e inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_searchable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_searchable')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_searchable.html">Searchable&lt; HYP, input_t, output_t &gt;</a></td></tr>
+<tr class="memitem:acd4cf198859084f7a656ef507e65a872 inherit pub_methods_class_searchable"><td class="memItemLeft" align="right" valign="top">virtual HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#acd4cf198859084f7a656ef507e65a872">make_neighbor</a> (int k) const</td></tr>
+<tr class="memdesc:acd4cf198859084f7a656ef507e65a872 inherit pub_methods_class_searchable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a new hypothesis which is the k'th neighbor (just calls expand_to_neighbor)  <a href="class_searchable.html#acd4cf198859084f7a656ef507e65a872">More...</a><br /></td></tr>
+<tr class="separator:acd4cf198859084f7a656ef507e65a872 inherit pub_methods_class_searchable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -315,6 +326,37 @@ template&lt;typename HYP, typename INNER, typename input_t, typename output_t, t
 
 </div>
 </div>
+<a id="a724ccdaffe9090488bfaa786873fa807"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a724ccdaffe9090488bfaa786873fa807">&#9670;&nbsp;</a></span>complete()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename HYP, typename INNER, typename input_t, typename output_t, typename datum_t = defauldatum_t&lt;input_t, output_t&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="class_lexicon.html">Lexicon</a>&lt; HYP, INNER, input_t, output_t, <a class="el" href="class_bayesable.html#a9f1a6c0cd7855550fa10b1a8f13a5867">datum_t</a> &gt;::complete </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fill in all the holes in this hypothesis, at random, modifying self. </p>
+
+<p>Implements <a class="el" href="class_searchable.html#a3ae6263b49a0f9da94f5dcc23af6618e">Searchable&lt; HYP, input_t, output_t &gt;</a>.</p>
+
+</div>
+</div>
 <a id="a2e099a68dd08d62897b40647f92eba1c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2e099a68dd08d62897b40647f92eba1c">&#9670;&nbsp;</a></span>compute_prior()</h2>
 
@@ -348,8 +390,8 @@ template&lt;typename HYP, typename INNER, typename input_t, typename output_t, t
 
 </div>
 </div>
-<a id="a9c1bf25acf10591531c3a9f49f2cfd57"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c1bf25acf10591531c3a9f49f2cfd57">&#9670;&nbsp;</a></span>copy_and_complete()</h2>
+<a id="a2b17608f66415c6a7d55b6a8f344db21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b17608f66415c6a7d55b6a8f344db21">&#9670;&nbsp;</a></span>expand_to_neighbor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -360,18 +402,29 @@ template&lt;typename HYP, typename INNER, typename input_t, typename output_t, t
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual HYP <a class="el" href="class_lexicon.html">Lexicon</a>&lt; HYP, INNER, input_t, output_t, <a class="el" href="class_bayesable.html#a9f1a6c0cd7855550fa10b1a8f13a5867">datum_t</a> &gt;::copy_and_complete </td>
+          <td class="memname">void <a class="el" href="class_lexicon.html">Lexicon</a>&lt; HYP, INNER, input_t, output_t, <a class="el" href="class_bayesable.html#a9f1a6c0cd7855550fa10b1a8f13a5867">datum_t</a> &gt;::expand_to_neighbor </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>k</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Modify this hypothesis to become the k'th neighbor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">k</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="class_searchable.html#a1786307b9f2dadc8c66c94adef220270">Searchable&lt; HYP, input_t, output_t &gt;</a>.</p>
 
 </div>
 </div>
@@ -508,12 +561,14 @@ template&lt;typename HYP, typename INNER, typename input_t, typename output_t, t
 </table>
 </div><div class="memdoc">
 
+<p>Check if we can evaluate this node (meaning compute a prior and posterior). NOTE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable. </p>
+
 <p>Implements <a class="el" href="class_searchable.html#a23786e95730117c3cc4b90e010494a1e">Searchable&lt; HYP, input_t, output_t &gt;</a>.</p>
 
 </div>
 </div>
-<a id="a88a02f88387f436c6ff4c060735291ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a88a02f88387f436c6ff4c060735291ea">&#9670;&nbsp;</a></span>make_neighbor()</h2>
+<a id="ad237c78e3435223f344d153da3baba9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad237c78e3435223f344d153da3baba9b">&#9670;&nbsp;</a></span>neighbor_prior()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -524,11 +579,11 @@ template&lt;typename HYP, typename INNER, typename input_t, typename output_t, t
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">HYP <a class="el" href="class_lexicon.html">Lexicon</a>&lt; HYP, INNER, input_t, output_t, <a class="el" href="class_bayesable.html#a9f1a6c0cd7855550fa10b1a8f13a5867">datum_t</a> &gt;::make_neighbor </td>
+          <td class="memname">virtual double <a class="el" href="class_lexicon.html">Lexicon</a>&lt; HYP, INNER, input_t, output_t, <a class="el" href="class_bayesable.html#a9f1a6c0cd7855550fa10b1a8f13a5867">datum_t</a> &gt;::neighbor_prior </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>k</em></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -538,7 +593,15 @@ template&lt;typename HYP, typename INNER, typename input_t, typename output_t, t
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="class_searchable.html#ad7fefacd3c9c2b66aa58c9d902f645cb">Searchable&lt; HYP, input_t, output_t &gt;</a>.</p>
+<p>What is the prior of the k'th neighbor? This does not need to return the full prior, only relative (among ks) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">k</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="class_searchable.html#abebbaaf94b0502a35d0ba686af73bd08">Searchable&lt; HYP, input_t, output_t &gt;</a>.</p>
 
 </div>
 </div>
@@ -566,6 +629,8 @@ template&lt;typename HYP, typename INNER, typename input_t, typename output_t, t
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Count the number of neighbors that are possible. (This should be size_t but int is more convenient.) </p>
 
 <p>Implements <a class="el" href="class_searchable.html#aec30063fcc9bed5d005f8318efa8492d">Searchable&lt; HYP, input_t, output_t &gt;</a>.</p>
 

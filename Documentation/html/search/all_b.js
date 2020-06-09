@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['last_5flp',['last_lp',['../class_full_m_c_t_s_node.html#afe3db87ad724df0a91564d9f9bb757cd',1,'FullMCTSNode']]],
   ['lazynormalforms',['LazyNormalForms',['../class_fleet_1_1_combinators_1_1_lazy_normal_forms.html',1,'Fleet::Combinators::LazyNormalForms'],['../class_fleet_1_1_combinators_1_1_lazy_normal_forms.html#ab927e6ae4c5e0669c56e91ccc315e12f',1,'Fleet::Combinators::LazyNormalForms::LazyNormalForms()']]],
   ['left_5fdescend',['left_descend',['../class_node.html#ac6d1a1d71a28168b34e9092568570738',1,'Node']]],
   ['lempel_5fziv_5ffull_5fexpand',['lempel_ziv_full_expand',['../class_grammar.html#adea898b27f2cf76417e4b686c1045e54',1,'Grammar::lempel_ziv_full_expand(nonterminal_t nt, enumerationidx_t z, Node *root=nullptr) const'],['../class_grammar.html#a37ccd1307ac9cb13a9653ba6c2134498',1,'Grammar::lempel_ziv_full_expand(nonterminal_t nt, IntegerizedStack &amp;is, Node *root=nullptr) const']]],
@@ -8,11 +9,11 @@ var searchData=
   ['lexicon_2eh',['Lexicon.h',['../_lexicon_8h.html',1,'']]],
   ['lexicon_3c_20myhypothesis_2c_20innerhypothesis_2c_20s_2c_20s_20_3e',['Lexicon&lt; MyHypothesis, InnerHypothesis, S, S &gt;',['../class_lexicon.html',1,'']]],
   ['likelihood',['likelihood',['../class_bayesable.html#a4d1a9ed826013bf079cea1867b6d4183',1,'Bayesable']]],
-  ['linearize',['linearize',['../class_node.html#ac995508e96e112675fde53e7748e41bc',1,'Node']]],
+  ['linearize',['linearize',['../class_node.html#a54676f34db2c299693c9b55148589230',1,'Node']]],
   ['list',['list',['../class_fleet_1_1_combinators_1_1_lazy_normal_forms.html#a81bc4f4f4739c583fd3aaaaf38c7742d',1,'Fleet::Combinators::LazyNormalForms']]],
   ['ll',['LL',['../class_grammar_hypothesis.html#a39667d9ed2d286c993e28c68e26ddf23',1,'GrammarHypothesis']]],
   ['load_5fdata_5ffile',['load_data_file',['../_data_8h.html#a03738fb766b9c06aa69c1ebccac3ba4b',1,'Data.h']]],
-  ['lock',['lock',['../class_fleet_1_1_statistics_1_1_streaming_statistics.html#a5651ed8dd36b6586ac64aeb8870d3760',1,'Fleet::Statistics::StreamingStatistics']]],
+  ['lock',['lock',['../class_streaming_statistics.html#a4be98d1901cf9054a0a97587763b3c6f',1,'StreamingStatistics::lock()'],['../class_spin_lock.html#a2db046cb75c8febd532923ce36c4c3ad',1,'SpinLock::lock()']]],
   ['log05',['LOG05',['../_numerics_8h.html#a63a7b698258aa319aacc36776054c7b5',1,'Numerics.h']]],
   ['log_5fprobability',['log_probability',['../class_grammar.html#a4b19c0b8d0b4d792181ae47bd2f68268',1,'Grammar']]],
   ['lognormalize',['lognormalize',['../_eigen_numerics_8h.html#a3444ba786055e8a0782bdd5043fdfd0d',1,'EigenNumerics.h']]],
@@ -20,7 +21,7 @@ var searchData=
   ['logodds_5fforwardalpha',['logodds_forwardalpha',['../class_grammar_hypothesis.html#a06e85e0c1a7726714f7f06a4fc0a0618',1,'GrammarHypothesis']]],
   ['logplusexp',['logplusexp',['../_numerics_8h.html#a558a1133b9942f8debd559bb9317bca3',1,'Numerics.h']]],
   ['logsumexp',['logsumexp',['../_eigen_numerics_8h.html#ad7c0c9173f6c20030a3615680b46ef5f',1,'logsumexp(const Vector &amp;v):&#160;EigenNumerics.h'],['../_numerics_8h.html#abb96a05282957c6c5c3d226b357ed134',1,'logsumexp(const t &amp;v):&#160;Numerics.h']]],
-  ['long_5foutput',['long_output',['../_models_2_formal_language_theory-_complex_2main_8cpp.html#a41b29b6499f37ab86060debf9c58d19f',1,'Main.cpp']]],
+  ['long_5foutput',['long_output',['../_formal_language_theory-_complex_2_main_8cpp.html#a41b29b6499f37ab86060debf9c58d19f',1,'Main.cpp']]],
   ['lothypothesis',['LOTHypothesis',['../class_l_o_t_hypothesis.html',1,'LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;'],['../class_l_o_t_hypothesis.html#a2c1ff366f7a839d9acae415823ceb112',1,'LOTHypothesis::LOTHypothesis(Grammar_t *g=nullptr)'],['../class_l_o_t_hypothesis.html#aa14b68e8efcb570186fe289bc4a791d5',1,'LOTHypothesis::LOTHypothesis(Grammar_t *g, Node &amp;&amp;x)'],['../class_l_o_t_hypothesis.html#a877ff1340bdf69fa2d9ed290c70f1cfb',1,'LOTHypothesis::LOTHypothesis(Grammar_t *g, Node &amp;x)'],['../class_l_o_t_hypothesis.html#a9361067f4f283bc21f77eee178965b39',1,'LOTHypothesis::LOTHypothesis(Grammar_t *g, std::string s)']]],
   ['lothypothesis_2eh',['LOTHypothesis.h',['../_l_o_t_hypothesis_8h.html',1,'']]],
   ['lothypothesis_3c_20innerhypothesis_2c_20s_2c_20s_2c_20mygrammar_20_3e',['LOTHypothesis&lt; InnerHypothesis, S, S, MyGrammar &gt;',['../class_l_o_t_hypothesis.html',1,'']]],
@@ -31,7 +32,7 @@ var searchData=
   ['lp',['lp',['../class_node.html#a298eaa3743b774a3f9ef396e1dc42a08',1,'Node::lp()'],['../class_virtual_machine_state.html#a5937b2c3afdfe35b9bba71dbdd83d5bd',1,'VirtualMachineState::lp()'],['../class_discrete_distribution.html#a185ef689b1e133b962fff5bcf1443ba1',1,'DiscreteDistribution::lp()']]],
   ['lp_5fsample_5feq',['lp_sample_eq',['../_random_8h.html#a898a8e7dc41231c2fbb5c5704f48cf4b',1,'lp_sample_eq(const t &amp;x, const T &amp;s, std::function&lt; double(const t &amp;)&gt; &amp;f=[](const t &amp;v){return 1.0;}):&#160;Random.h'],['../_random_8h.html#aadcd7972613ccc5e1bd33ab70990d4a3',1,'lp_sample_eq(const t &amp;x, const T &amp;s, double(*f)(const t &amp;)):&#160;Random.h']]],
   ['lp_5fsample_5fone',['lp_sample_one',['../_random_8h.html#a35fe7ab92187a603f35e9aafba147f81',1,'lp_sample_one(const t &amp;x, const T &amp;s, std::function&lt; double(const t &amp;)&gt; &amp;f=[](const t &amp;v){return 1.0;}):&#160;Random.h'],['../_random_8h.html#ac0e864d8c9c5fa20dafbefc9e1f92a3c',1,'lp_sample_one(const t &amp;x, const T &amp;s, double(*f)(const t &amp;)):&#160;Random.h']]],
-  ['lse',['lse',['../class_fleet_1_1_statistics_1_1_streaming_statistics.html#a4ffa58fb5fd8ce43f06bb8bf56115bd5',1,'Fleet::Statistics::StreamingStatistics']]],
+  ['lse',['lse',['../class_full_m_c_t_s_node.html#a3b1ed2832765499980b827263d39cf79',1,'FullMCTSNode::lse()'],['../class_streaming_statistics.html#a3a97b9810d5f7e52197689166c908da9',1,'StreamingStatistics::lse()']]],
   ['lv',['lv',['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#a0037b193d6712481b90416b51f2eb9d5',1,'Fleet::Statistics::ReservoirSample::Item']]],
   ['lw',['lw',['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#af6e0c0e3569786a8896fcd7ab758a587',1,'Fleet::Statistics::ReservoirSample::Item']]]
 ];

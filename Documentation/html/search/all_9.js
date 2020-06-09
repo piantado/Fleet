@@ -7,11 +7,13 @@ var searchData=
   ['increment_5ftree',['increment_tree',['../_enumeration_8h.html#aa4a862fb4d9200358c729bc199098757',1,'Enumeration.h']]],
   ['incremental_5flikelihoods',['incremental_likelihoods',['../_grammar_hypothesis_8h.html#a4c254795a97685d56a1b957611fae090',1,'GrammarHypothesis.h']]],
   ['index_5ft',['index_t',['../class_virtual_machine_state.html#a95ba2f54f65b778c8a012ea3e7a0ee50',1,'VirtualMachineState']]],
+  ['infereceinterface',['InfereceInterface',['../class_inferece_interface.html',1,'']]],
   ['infinity',['infinity',['../_numerics_8h.html#a1bb1e42ae1b40cad6e99da0aab8a5576',1,'Numerics.h']]],
+  ['initial_5fsize',['INITIAL_SIZE',['../class_astar.html#af674f24278326383c5972fc30f0b21d9',1,'Astar']]],
   ['initialize',['initialize',['../class_m_c_t_s_node.html#aadbe8d42f6761eb3e4f28fb9157a873d',1,'MCTSNode']]],
   ['innerhypothesis',['InnerHypothesis',['../class_inner_hypothesis.html',1,'']]],
   ['input',['input',['../classdefauldatum__t.html#a282269cf029cd4068c94db8c8edee01e',1,'defauldatum_t']]],
-  ['input_5fpath',['input_path',['../_i_o_8h.html#aa14dbbb4b5614a1e7a5b4281baa64b89',1,'IO.h']]],
+  ['input_5fpath',['input_path',['../_fleet_8h.html#aa14dbbb4b5614a1e7a5b4281baa64b89',1,'Fleet.h']]],
   ['input_5ft',['input_t',['../class_virtual_machine_state.html#a04c5592dddd5b9ffdae5a509d73127dd',1,'VirtualMachineState']]],
   ['insert_5ftree',['insert_tree',['../namespace_proposals.html#a8714ac1333d5aff2d248ef10a8eb5493',1,'Proposals']]],
   ['instr',['instr',['../class_rule.html#a367e578f5e1427ef04d1d77477565c67',1,'Rule']]],
@@ -32,5 +34,5 @@ var searchData=
   ['is_5froot',['is_root',['../class_node.html#ad12a96da2fe796616aa22e20429f41d5',1,'Node']]],
   ['is_5ftemperature',['is_temperature',['../class_parallel_tempering.html#ae9f0a2af938df838cc4010983860394e',1,'ParallelTempering']]],
   ['is_5fterminal',['is_terminal',['../class_node.html#ac3c263a4e0c734c34aaf62f80f84cd9a',1,'Node::is_terminal()'],['../class_rule.html#a9d557e302f94bd85f5505733e8856f97',1,'Rule::is_terminal()']]],
-  ['item',['Item',['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html',1,'Fleet::Statistics::ReservoirSample&lt; T &gt;::Item'],['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#a355a3b655f4aa8e9cd151cb46054ee0e',1,'Fleet::Statistics::ReservoirSample::Item::Item(T x_, double r_)'],['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#acad6abfadffe65005f14a4c9616aabde',1,'Fleet::Statistics::ReservoirSample::Item::Item(T x_, double r_, double lw_=0.0)']]]
+  ['item',['Item',['../class_reservoir_sample_1_1_item.html',1,'ReservoirSample&lt; T &gt;::Item'],['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html',1,'Fleet::Statistics::ReservoirSample&lt; T &gt;::Item'],['../class_reservoir_sample_1_1_item.html#a01a115a4bc68485d3349d61b85388998',1,'ReservoirSample::Item::Item()'],['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#acad6abfadffe65005f14a4c9616aabde',1,'Fleet::Statistics::ReservoirSample::Item::Item()']]]
 ];

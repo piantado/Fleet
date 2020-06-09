@@ -1,10 +1,11 @@
 <map id="src/Hypotheses/Lexicon.h" name="src/Hypotheses/Lexicon.h">
-<area shape="rect" id="node3" href="$_hash_8h.html" title="Hash.h" alt="" coords="93,87,157,114"/>
-<area shape="rect" id="node5" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="211,169,365,211"/>
-<area shape="rect" id="node18" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="232,80,387,121"/>
-<area shape="rect" id="node19" href="$_searchable_8h.html" title="A class is searchable if permits us to enumerate and make its neighbors. This class is used by MCTS a..." alt="" coords="411,80,565,121"/>
-<area shape="rect" id="node6" href="$_datum_8h.html" title="A datum is the default data point for likelihoods, consisting of an input and output type..." alt="" coords="41,259,113,285"/>
-<area shape="rect" id="node7" href="$_i_o_8h.html" title="IO.h" alt="" coords="327,333,374,360"/>
-<area shape="rect" id="node12" href="$_fleet_statistics_8h.html" title="Statistics/FleetStatistics.h" alt="" coords="137,259,313,285"/>
-<area shape="rect" id="node14" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="389,259,505,285"/>
+<area shape="rect" id="node3" href="$_hash_8h.html" title="Hash.h" alt="" coords="183,87,247,114"/>
+<area shape="rect" id="node5" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="301,169,455,211"/>
+<area shape="rect" id="node20" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="322,80,477,121"/>
+<area shape="rect" id="node21" href="$_searchable_8h.html" title="A class is searchable if permits us to enumerate and make its neighbors. This class is used by MCTS a..." alt="" coords="501,80,655,121"/>
+<area shape="rect" id="node6" href="$_errors_8h.html" title="Errors.h" alt="" coords="101,259,169,285"/>
+<area shape="rect" id="node10" href="$_datum_8h.html" title="A datum is the default data point for likelihoods, consisting of an input and output type..." alt="" coords="194,259,266,285"/>
+<area shape="rect" id="node11" href="$_i_o_8h.html" title="IO.h" alt="" coords="484,333,531,360"/>
+<area shape="rect" id="node15" href="$_fleet_statistics_8h.html" title="Statistics/FleetStatistics.h" alt="" coords="290,259,466,285"/>
+<area shape="rect" id="node17" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="541,259,657,285"/>
 </map>

@@ -19,5 +19,5 @@ var searchData=
   ['is_5fprefix',['is_prefix',['../_miscellaneous_8h.html#ac63ed4e974b8dc3b49eae65049ad7804',1,'Miscellaneous.h']]],
   ['is_5froot',['is_root',['../class_node.html#ad12a96da2fe796616aa22e20429f41d5',1,'Node']]],
   ['is_5fterminal',['is_terminal',['../class_node.html#ac3c263a4e0c734c34aaf62f80f84cd9a',1,'Node::is_terminal()'],['../class_rule.html#a9d557e302f94bd85f5505733e8856f97',1,'Rule::is_terminal()']]],
-  ['item',['Item',['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#a355a3b655f4aa8e9cd151cb46054ee0e',1,'Fleet::Statistics::ReservoirSample::Item::Item(T x_, double r_)'],['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#acad6abfadffe65005f14a4c9616aabde',1,'Fleet::Statistics::ReservoirSample::Item::Item(T x_, double r_, double lw_=0.0)']]]
+  ['item',['Item',['../class_reservoir_sample_1_1_item.html#a01a115a4bc68485d3349d61b85388998',1,'ReservoirSample::Item::Item()'],['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#acad6abfadffe65005f14a4c9616aabde',1,'Fleet::Statistics::ReservoirSample::Item::Item()']]]
 ];

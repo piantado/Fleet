@@ -6,8 +6,7 @@
 
 
 
-Inheritance diagram for L\+O\+T\+Hypothesis$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+:
-\nopagebreak
+Inheritance diagram for L\+O\+T\+Hypothesis$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -16,8 +15,7 @@ Inheritance diagram for L\+O\+T\+Hypothesis$<$ H\+YP, input\+\_\+t, output\+\_\+
 \end{figure}
 
 
-Collaboration diagram for L\+O\+T\+Hypothesis$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+:
-\nopagebreak
+Collaboration diagram for L\+O\+T\+Hypothesis$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -47,6 +45,10 @@ using \hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Gramm
 virtual std\+::pair$<$ H\+YP, double $>$ \hyperlink{class_l_o_t_hypothesis_a9a03abc8a6d96995c0f13524f8500747}{propose} () const override
 \item 
 virtual H\+YP \hyperlink{class_l_o_t_hypothesis_a0791b7ba0105870a2094877445570b61}{restart} () const override
+\item 
+\hyperlink{class_node}{Node} \& \hyperlink{class_l_o_t_hypothesis_a1e3549444ffc1c34768a15f510ea0888}{get\+\_\+value} ()
+\item 
+const \hyperlink{class_node}{Node} \& \hyperlink{class_l_o_t_hypothesis_aea6cd096e4ea5967e9932475ecae472a}{get\+\_\+value} () const
 \item 
 void \hyperlink{class_l_o_t_hypothesis_aac23de5143f24323a05ed32774387ff7}{set\+\_\+value} (\hyperlink{class_node}{Node} \&v)
 \item 
@@ -78,14 +80,16 @@ virtual size\+\_\+t \hyperlink{class_l_o_t_hypothesis_a7c33d51f8d81762b1eca7f86b
 \begin{DoxyCompactList}\small\item\em Default hash function. \end{DoxyCompactList}\item 
 virtual bool \hyperlink{class_l_o_t_hypothesis_acf5a682dce5d3971474a22778479a99a}{operator==} (const H\+YP \&h) const override
 \item 
-virtual H\+YP \hyperlink{class_l_o_t_hypothesis_af643fa8b19e3bd0fa4682ab3566e29fc}{copy\+\_\+and\+\_\+complete} () const
-\item 
+virtual void \hyperlink{class_l_o_t_hypothesis_a7f913b702b434003f94a84c560d16bf9}{complete} () override
+\begin{DoxyCompactList}\small\item\em Fill in all the holes in this hypothesis, at random, modifying self. \end{DoxyCompactList}\item 
 virtual int \hyperlink{class_l_o_t_hypothesis_a097cde606ec3f277fdeb92145599027f}{neighbors} () const override
-\item 
-virtual H\+YP \hyperlink{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}{make\+\_\+neighbor} (int k) const override
-\item 
+\begin{DoxyCompactList}\small\item\em Count the number of neighbors that are possible. (This should be size\+\_\+t but int is more convenient.) \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_l_o_t_hypothesis_ab24d0b8faa360f6a0edc4eefb17d6de7}{expand\+\_\+to\+\_\+neighbor} (int k) override
+\begin{DoxyCompactList}\small\item\em Modify this hypothesis to become the k\textquotesingle{}th neighbor. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_l_o_t_hypothesis_a34fb9e13bc6855d6599c1c3e62d88933}{neighbor\+\_\+prior} (int k) override
+\begin{DoxyCompactList}\small\item\em What is the prior of the k\textquotesingle{}th neighbor? This does not need to return the full prior, only relative (among ks) \end{DoxyCompactList}\item 
 virtual bool \hyperlink{class_l_o_t_hypothesis_a9eeaaf321324d2418405f4d7252f6ca4}{is\+\_\+evaluable} () const override
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Check if we can evaluate this node (meaning compute a prior and posterior). N\+O\+TE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -95,13 +99,16 @@ static H\+YP \hyperlink{class_l_o_t_hypothesis_aa1e3f898618de841bfd8c9279a107211
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t} $\ast$ \hyperlink{class_l_o_t_hypothesis_affae32db28c39df676809ae47e14e7cf}{grammar}
-\item 
-\hyperlink{class_node}{Node} \hyperlink{class_l_o_t_hypothesis_ac759b3eab77ead1749b905a3dde74961}{value}
 \end{DoxyCompactItemize}
 \subsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 static const size\+\_\+t \hyperlink{class_l_o_t_hypothesis_a0231650d938c098118a4c4bdb201fc61}{M\+A\+X\+\_\+\+N\+O\+D\+ES} = 64
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_node}{Node} \hyperlink{class_l_o_t_hypothesis_ac759b3eab77ead1749b905a3dde74961}{value}
 \end{DoxyCompactItemize}
 
 
@@ -207,6 +214,21 @@ output\+\_\+t \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, 
 {\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
 output\+\_\+t \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::call\+One (\begin{DoxyParamCaption}\item[{const input\+\_\+t}]{x,  }\item[{const output\+\_\+t}]{err }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a7f913b702b434003f94a84c560d16bf9}\label{class_l_o_t_hypothesis_a7f913b702b434003f94a84c560d16bf9}} 
+\index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!complete@{complete}}
+\index{complete@{complete}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
+\subsubsection{\texorpdfstring{complete()}{complete()}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual void \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::complete (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Fill in all the holes in this hypothesis, at random, modifying self. 
+
+
+
+Implements \hyperlink{class_searchable_a3ae6263b49a0f9da94f5dcc23af6618e}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
+
 \mbox{\Hypertarget{class_l_o_t_hypothesis_af215c4833e81984364703b2e4cb78dc7}\label{class_l_o_t_hypothesis_af215c4833e81984364703b2e4cb78dc7}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!compute\+\_\+prior@{compute\+\_\+prior}}
 \index{compute\+\_\+prior@{compute\+\_\+prior}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
@@ -237,12 +259,25 @@ virtual double \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP,
 
 Reimplemented in \hyperlink{class_my_hypothesis_af2470b1e04711c06ee551deae15af4c1}{My\+Hypothesis}, \hyperlink{class_my_hypothesis_a480fc9e50d0faa0f5226f56187fd2eec}{My\+Hypothesis}, \hyperlink{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}{My\+Hypothesis}, and \hyperlink{class_my_hypothesis_af23a45a03a28ea4f42438e70d47acacb}{My\+Hypothesis}.
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_af643fa8b19e3bd0fa4682ab3566e29fc}\label{class_l_o_t_hypothesis_af643fa8b19e3bd0fa4682ab3566e29fc}} 
-\index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!copy\+\_\+and\+\_\+complete@{copy\+\_\+and\+\_\+complete}}
-\index{copy\+\_\+and\+\_\+complete@{copy\+\_\+and\+\_\+complete}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
-\subsubsection{\texorpdfstring{copy\+\_\+and\+\_\+complete()}{copy\_and\_complete()}}
+\mbox{\Hypertarget{class_l_o_t_hypothesis_ab24d0b8faa360f6a0edc4eefb17d6de7}\label{class_l_o_t_hypothesis_ab24d0b8faa360f6a0edc4eefb17d6de7}} 
+\index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!expand\+\_\+to\+\_\+neighbor@{expand\+\_\+to\+\_\+neighbor}}
+\index{expand\+\_\+to\+\_\+neighbor@{expand\+\_\+to\+\_\+neighbor}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
+\subsubsection{\texorpdfstring{expand\+\_\+to\+\_\+neighbor()}{expand\_to\_neighbor()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-virtual H\+YP \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::copy\+\_\+and\+\_\+complete (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+virtual void \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::expand\+\_\+to\+\_\+neighbor (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Modify this hypothesis to become the k\textquotesingle{}th neighbor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_searchable_a1786307b9f2dadc8c66c94adef220270}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
 
 \mbox{\Hypertarget{class_l_o_t_hypothesis_aa1e3f898618de841bfd8c9279a107211}\label{class_l_o_t_hypothesis_aa1e3f898618de841bfd8c9279a107211}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!from\+\_\+string@{from\+\_\+string}}
@@ -250,6 +285,20 @@ virtual H\+YP \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, 
 \subsubsection{\texorpdfstring{from\+\_\+string()}{from\_string()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
 static H\+YP \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::from\+\_\+string (\begin{DoxyParamCaption}\item[{\hyperlink{class_l_o_t_hypothesis_a8006204013d471860e54c49d19edbace}{Grammar\+\_\+t} \&}]{g,  }\item[{std\+::string}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a1e3549444ffc1c34768a15f510ea0888}\label{class_l_o_t_hypothesis_a1e3549444ffc1c34768a15f510ea0888}} 
+\index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!get\+\_\+value@{get\+\_\+value}}
+\index{get\+\_\+value@{get\+\_\+value}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
+\subsubsection{\texorpdfstring{get\+\_\+value()}{get\_value()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+\hyperlink{class_node}{Node}\& \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::get\+\_\+value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_l_o_t_hypothesis_aea6cd096e4ea5967e9932475ecae472a}\label{class_l_o_t_hypothesis_aea6cd096e4ea5967e9932475ecae472a}} 
+\index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!get\+\_\+value@{get\+\_\+value}}
+\index{get\+\_\+value@{get\+\_\+value}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
+\subsubsection{\texorpdfstring{get\+\_\+value()}{get\_value()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+const \hyperlink{class_node}{Node}\& \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::get\+\_\+value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_l_o_t_hypothesis_a7c33d51f8d81762b1eca7f86b596236a}\label{class_l_o_t_hypothesis_a7c33d51f8d81762b1eca7f86b596236a}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!hash@{hash}}
@@ -275,18 +324,31 @@ virtual bool \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, i
 
 
 
+Check if we can evaluate this node (meaning compute a prior and posterior). N\+O\+TE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable. 
+
+
+
 Implements \hyperlink{class_searchable_a23786e95730117c3cc4b90e010494a1e}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
 
-\mbox{\Hypertarget{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}\label{class_l_o_t_hypothesis_a997c88cb84133efc599b9b14173aefe9}} 
-\index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!make\+\_\+neighbor@{make\+\_\+neighbor}}
-\index{make\+\_\+neighbor@{make\+\_\+neighbor}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
-\subsubsection{\texorpdfstring{make\+\_\+neighbor()}{make\_neighbor()}}
+\mbox{\Hypertarget{class_l_o_t_hypothesis_a34fb9e13bc6855d6599c1c3e62d88933}\label{class_l_o_t_hypothesis_a34fb9e13bc6855d6599c1c3e62d88933}} 
+\index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!neighbor\+\_\+prior@{neighbor\+\_\+prior}}
+\index{neighbor\+\_\+prior@{neighbor\+\_\+prior}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
+\subsubsection{\texorpdfstring{neighbor\+\_\+prior()}{neighbor\_prior()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-virtual H\+YP \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::make\+\_\+neighbor (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+virtual double \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::neighbor\+\_\+prior (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-Implements \hyperlink{class_searchable_ad7fefacd3c9c2b66aa58c9d902f645cb}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
+What is the prior of the k\textquotesingle{}th neighbor? This does not need to return the full prior, only relative (among ks) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_searchable_abebbaaf94b0502a35d0ba686af73bd08}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
 
 \mbox{\Hypertarget{class_l_o_t_hypothesis_a097cde606ec3f277fdeb92145599027f}\label{class_l_o_t_hypothesis_a097cde606ec3f277fdeb92145599027f}} 
 \index{L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}!neighbors@{neighbors}}
@@ -294,6 +356,10 @@ Implements \hyperlink{class_searchable_ad7fefacd3c9c2b66aa58c9d902f645cb}{Search
 \subsubsection{\texorpdfstring{neighbors()}{neighbors()}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
 virtual int \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::neighbors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Count the number of neighbors that are possible. (This should be size\+\_\+t but int is more convenient.) 
 
 
 
@@ -413,7 +479,7 @@ const size\+\_\+t \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+
 \index{value@{value}!L\+O\+T\+Hypothesis@{L\+O\+T\+Hypothesis}}
 \subsubsection{\texorpdfstring{value}{value}}
 {\footnotesize\ttfamily template$<$typename H\+YP, typename input\+\_\+t, typename output\+\_\+t, typename \+\_\+\+Grammar\+\_\+t, typename \+\_\+datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+data\+\_\+t = std\+::vector$<$\+\_\+datum\+\_\+t$>$, typename Virtual\+Machine\+State\+\_\+t = typename \+\_\+\+Grammar\+\_\+t\+::template Virtual\+Machine\+State\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-\hyperlink{class_node}{Node} \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::value}
+\hyperlink{class_node}{Node} \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}$<$ H\+YP, input\+\_\+t, output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::value\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 

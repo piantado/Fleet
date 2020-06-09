@@ -8,8 +8,7 @@ This is an error type that is returned if we get a runtime error (e.\+g. string 
 {\ttfamily \#include $<$assert.\+h$>$}\newline
 {\ttfamily \#include $<$iostream$>$}\newline
 {\ttfamily \#include $<$variant$>$}\newline
-Include dependency graph for Instruction.\+h\+:
-\nopagebreak
+Include dependency graph for Instruction.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -30,11 +29,6 @@ This graph shows which files directly or indirectly include this file\+:
 class \hyperlink{class_v_m_s_runtime_error__t}{V\+M\+S\+Runtime\+Error\+\_\+t}
 \item 
 class \hyperlink{class_instruction}{Instruction}
-\end{DoxyCompactItemize}
-\subsection*{Namespaces}
-\begin{DoxyCompactItemize}
-\item 
- \hyperlink{namespace_fleet}{Fleet}
 \end{DoxyCompactItemize}
 \subsection*{Typedefs}
 \begin{DoxyCompactItemize}
@@ -104,7 +98,7 @@ std\+::ostream \& \hyperlink{_instruction_8h_aa8616c19ad0730c798f233cc34778b7c}{
 \subsection{Detailed Description}
 This is an error type that is returned if we get a runtime error (e.\+g. string length, etc.) 
 
-This is how we store an instruction in the program. It can take one of three types\+: Builtin\+Op -- these are operations that are defined as part of \hyperlink{namespace_fleet}{Fleet}\textquotesingle{}s core library, and are implemented automatically in \hyperlink{class_virtual_machine_state_a815d2e072590b97e314aa947130efb70}{Virtual\+Machine\+State\+::run} Primitive\+Op -- these are defined {\itshape automatically} through the global variable P\+R\+I\+M\+I\+T\+I\+V\+ES (see Models/\+Rational\+Rules). When you construct a grammar with these, it automatically figures out all the types and automatically gives each a sequential numbering, which it takes some template magic to access at runtime Dispatch\+Op -- if we store this kind, our primitive gets called with teh V\+MS stuff (vms, pool, loader) rather than the stuff on the stack. This permits us to access these pieces in fancier primitives.
+This is how we store an instruction in the program. It can take one of three types\+: Builtin\+Op -- these are operations that are defined as part of \hyperlink{class_fleet}{Fleet}\textquotesingle{}s core library, and are implemented automatically in \hyperlink{class_virtual_machine_state_a815d2e072590b97e314aa947130efb70}{Virtual\+Machine\+State\+::run} Primitive\+Op -- these are defined {\itshape automatically} through the global variable P\+R\+I\+M\+I\+T\+I\+V\+ES (see Models/\+Rational\+Rules). When you construct a grammar with these, it automatically figures out all the types and automatically gives each a sequential numbering, which it takes some template magic to access at runtime Dispatch\+Op -- if we store this kind, our primitive gets called with teh V\+MS stuff (vms, pool, loader) rather than the stuff on the stack. This permits us to access these pieces in fancier primitives.
 
 For any op type, an \hyperlink{class_instruction}{Instruction} always takes an \char`\"{}arg\char`\"{} type that essentially allow us to define classes of instructions for instance, jump takes an arg, factorized recursion uses arg for index, in Formal\+Language\+Theory we use arg to store which alphabet terminal, etc. 
 

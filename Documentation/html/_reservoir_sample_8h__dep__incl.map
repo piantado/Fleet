@@ -1,12 +1,7 @@
 <map id="src/Statistics/ReservoirSample.h" name="src/Statistics/ReservoirSample.h">
-<area shape="rect" id="node2" href="$_streaming_statistics_8h.html" title="A class to store a bunch of statistics about incoming data points, including min, max..." alt="" coords="316,95,479,136"/>
-<area shape="rect" id="node3" href="$_m_c_t_s_8h.html" title="Template of self type M, hypothesis type HYP. This requires us to inherit and override playout to do ..." alt="" coords="322,184,473,211"/>
-<area shape="rect" id="node4" href="$_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="5,333,160,375"/>
-<area shape="rect" id="node5" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="555,259,639,285"/>
-<area shape="rect" id="node6" href="$_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="184,333,357,375"/>
-<area shape="rect" id="node7" href="$_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="382,333,586,375"/>
-<area shape="rect" id="node8" href="$_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="610,333,814,375"/>
-<area shape="rect" id="node9" href="$_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="838,341,1045,367"/>
-<area shape="rect" id="node10" href="$_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1069,333,1219,375"/>
-<area shape="rect" id="node11" href="$_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="1244,341,1412,367"/>
+<area shape="rect" id="node2" href="$_streaming_statistics_8h.html" title="A class to store a bunch of statistics about incoming data points, including min, max..." alt="" coords="127,95,290,136"/>
+<area shape="rect" id="node3" href="$_full_m_c_t_s_8h.html" title="This monte care tree search always plays out a full tree. It is optimized to keep the tree as small a..." alt="" coords="31,184,203,211"/>
+<area shape="rect" id="node5" href="$_m_c_t_s_8h.html" title="Template of type hypothesis and callback. " alt="" coords="231,184,381,211"/>
+<area shape="rect" id="node4" href="$_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="5,259,209,300"/>
+<area shape="rect" id="node6" href="$_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="234,259,389,300"/>
 </map>

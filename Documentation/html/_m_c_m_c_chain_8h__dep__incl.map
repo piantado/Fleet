@@ -1,10 +1,10 @@
 <map id="src/Inference/MCMCChain.h" name="src/Inference/MCMCChain.h">
-<area shape="rect" id="node2" href="$_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="5,156,160,197"/>
-<area shape="rect" id="node3" href="$_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="185,163,391,190"/>
-<area shape="rect" id="node4" href="$_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="416,163,584,190"/>
-<area shape="rect" id="node5" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="514,81,598,108"/>
-<area shape="rect" id="node6" href="$_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="1240,156,1413,197"/>
-<area shape="rect" id="node7" href="$_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="609,156,813,197"/>
-<area shape="rect" id="node8" href="$_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="837,156,1041,197"/>
-<area shape="rect" id="node9" href="$_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1065,156,1215,197"/>
+<area shape="rect" id="node2" href="$_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="5,230,160,272"/>
+<area shape="rect" id="node3" href="$_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="503,81,710,108"/>
+<area shape="rect" id="node4" href="$_testing_2_main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="184,238,352,264"/>
+<area shape="rect" id="node5" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel..." alt="" coords="305,81,479,108"/>
+<area shape="rect" id="node6" href="$_parallel_tempering_8h.html" title="src/Inference/ParallelTempering.h" alt="" coords="338,156,555,182"/>
+<area shape="rect" id="node7" href="$_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="377,230,581,272"/>
+<area shape="rect" id="node8" href="$_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="605,230,809,272"/>
+<area shape="rect" id="node9" href="$_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="833,230,983,272"/>
 </map>

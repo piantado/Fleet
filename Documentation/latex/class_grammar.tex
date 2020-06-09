@@ -4,21 +4,6 @@
 
 {\ttfamily \#include $<$Grammar.\+h$>$}
 
-
-
-Collaboration diagram for Grammar$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+:
-\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=246pt]{class_grammar__coll__graph}
-\end{center}
-\end{figure}
-\subsection*{Classes}
-\begin{DoxyCompactItemize}
-\item 
-class \hyperlink{class_grammar_1_1_depth_exception}{Depth\+Exception}
-\end{DoxyCompactItemize}
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
@@ -109,6 +94,8 @@ size\+\_\+t \hyperlink{class_grammar_a486cec3b8e6c757eb348031ff8118a99}{neighbor
 \item 
 void \hyperlink{class_grammar_a0765273e6b0957410447ad5d74e424bf}{expand\+\_\+to\+\_\+neighbor} (\hyperlink{class_node}{Node} \&node, int \&which)
 \item 
+double \hyperlink{class_grammar_a36e6e5072b99611de47c4be3ab78761c}{neighbor\+\_\+prior} (const \hyperlink{class_node}{Node} \&node, int \&which) const
+\item 
 void \hyperlink{class_grammar_a51a44e86d41c6e8a8ff7665208ac55da}{complete} (\hyperlink{class_node}{Node} \&node)
 \end{DoxyCompactItemize}
 \subsection*{Static Public Member Functions}
@@ -118,8 +105,6 @@ void \hyperlink{class_grammar_a51a44e86d41c6e8a8ff7665208ac55da}{complete} (\hyp
 \end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
-\item 
-\hyperlink{class_grammar_1_1_depth_exception}{Grammar\+::\+Depth\+Exception} \hyperlink{class_grammar_a3a9a86328940c89b66088b2807c88b68}{depth\+\_\+exception}
 \item 
 std\+::vector$<$ \hyperlink{class_rule}{Rule} $>$ \hyperlink{class_grammar_a8a89ced0753d72f52ccf2b04c0ccc82b}{rules} \mbox{[}\hyperlink{class_grammar_a45877d4d7a5ee98bf6753af593d6ca08}{N\+\_\+\+N\+Ts}\mbox{]}
 \item 
@@ -407,7 +392,7 @@ Sample an entire tree from this grammar (keeping track of depth in case we recur
 \begin{DoxyReturn}{Returns}
 Returns a \hyperlink{class_node}{Node} sampled from the grammar.
 \end{DoxyReturn}
-N\+O\+TE\+: this may throw a \hyperlink{class_grammar_1_1_depth_exception}{Depth\+Exception} if the grammar recurses too far (usually that means the grammar is improper)\mbox{\Hypertarget{class_grammar_a01bf556e22bfdd5ec87868869fd9330f}\label{class_grammar_a01bf556e22bfdd5ec87868869fd9330f}} 
+N\+O\+TE\+: this may throw a Depth\+Exception if the grammar recurses too far (usually that means the grammar is improper)\mbox{\Hypertarget{class_grammar_a01bf556e22bfdd5ec87868869fd9330f}\label{class_grammar_a01bf556e22bfdd5ec87868869fd9330f}} 
 \index{Grammar@{Grammar}!generate@{generate}}
 \index{generate@{generate}!Grammar@{Grammar}}
 \subsubsection{\texorpdfstring{generate()}{generate()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
@@ -548,7 +533,7 @@ static constexpr bool \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\
 {\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
 double \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::log\+\_\+probability (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
-Compute the log probability of a tree according to the grammar 
+Compute the log probability of a tree according to the grammar. N\+O\+TE\+: here we ignore nodes that are Null meaning that we compute the partial probability 
 \begin{DoxyParams}{Parameters}
 {\em n} & \\
 \hline
@@ -571,6 +556,13 @@ Helper function to create a node according to this grammar. This is how nodes ge
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\mbox{\Hypertarget{class_grammar_a36e6e5072b99611de47c4be3ab78761c}\label{class_grammar_a36e6e5072b99611de47c4be3ab78761c}} 
+\index{Grammar@{Grammar}!neighbor\+\_\+prior@{neighbor\+\_\+prior}}
+\index{neighbor\+\_\+prior@{neighbor\+\_\+prior}!Grammar@{Grammar}}
+\subsubsection{\texorpdfstring{neighbor\+\_\+prior()}{neighbor\_prior()}}
+{\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+double \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::neighbor\+\_\+prior (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{node,  }\item[{int \&}]{which }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
 \mbox{\Hypertarget{class_grammar_a486cec3b8e6c757eb348031ff8118a99}\label{class_grammar_a486cec3b8e6c757eb348031ff8118a99}} 
 \index{Grammar@{Grammar}!neighbors@{neighbors}}
 \index{neighbors@{neighbors}!Grammar@{Grammar}}
@@ -626,13 +618,6 @@ void \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+E
 Show the grammar by printing each rule
 
 \subsection{Member Data Documentation}
-\mbox{\Hypertarget{class_grammar_a3a9a86328940c89b66088b2807c88b68}\label{class_grammar_a3a9a86328940c89b66088b2807c88b68}} 
-\index{Grammar@{Grammar}!depth\+\_\+exception@{depth\+\_\+exception}}
-\index{depth\+\_\+exception@{depth\+\_\+exception}!Grammar@{Grammar}}
-\subsubsection{\texorpdfstring{depth\+\_\+exception}{depth\_exception}}
-{\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
- \hyperlink{class_grammar_1_1_depth_exception}{Grammar\+::\+Depth\+Exception}  \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::depth\+\_\+exception}
-
 \mbox{\Hypertarget{class_grammar_a4a0d1d38426ce7f1b68c001e9ddec064}\label{class_grammar_a4a0d1d38426ce7f1b68c001e9ddec064}} 
 \index{Grammar@{Grammar}!G\+R\+A\+M\+M\+A\+R\+\_\+\+M\+A\+X\+\_\+\+D\+E\+P\+TH@{G\+R\+A\+M\+M\+A\+R\+\_\+\+M\+A\+X\+\_\+\+D\+E\+P\+TH}}
 \index{G\+R\+A\+M\+M\+A\+R\+\_\+\+M\+A\+X\+\_\+\+D\+E\+P\+TH@{G\+R\+A\+M\+M\+A\+R\+\_\+\+M\+A\+X\+\_\+\+D\+E\+P\+TH}!Grammar@{Grammar}}

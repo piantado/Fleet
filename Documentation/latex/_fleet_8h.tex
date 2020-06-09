@@ -1,35 +1,17 @@
 \hypertarget{_fleet_8h}{}\section{src/\+Fleet.h File Reference}
 \label{_fleet_8h}\index{src/\+Fleet.\+h@{src/\+Fleet.\+h}}
+
+
+A fleet object manages processing the command line, prints a useful summary of command lines, and then on its destruction (or calling completed(), it prints out a summary of the total number of samples etc. run per second. This provides a shallow wrapper to C\+L\+I\+::\+App, meaning you add options to it just like C\+L\+I\+::\+App.  
+
+
 {\ttfamily \#include $<$sys/resource.\+h$>$}\newline
-{\ttfamily \#include \char`\"{}Statistics/\+Fleet\+Statistics.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Timing.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Program.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Control.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Numerics.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Random.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Strings.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Hash.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Miscellaneous.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Integerized\+Stack.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Rule.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Virtual\+Machine/\+Virtual\+Machine\+Pool.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Virtual\+Machine/\+Virtual\+Machine\+State.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Node.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Grammar.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Case\+Macros.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Discrete\+Distribution.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}I\+O.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Hypotheses/\+L\+O\+T\+Hypothesis.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Hypotheses/\+Lexicon.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Inference/\+M\+C\+M\+C\+Chain.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Inference/\+M\+C\+T\+S.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Inference/\+Parallel\+Tempering.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Inference/\+Chain\+Pool.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Top.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Primitives.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Virtual\+Machine/apply\+Primitives.\+h\char`\"{}}\newline
 {\ttfamily \#include $<$unistd.\+h$>$}\newline
 {\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Timing.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Control.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Virtual\+Machine/apply\+Primitives.\+h\char`\"{}}\newline
 Include dependency graph for Fleet.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -46,76 +28,194 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=350pt]{_fleet_8h__dep__incl}
 \end{center}
 \end{figure}
-\subsection*{Functions}
+\subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-void \hyperlink{_fleet_8h_acce2656a60361b4837224fb8ac2f876d}{Fleet\+\_\+initialize} ()
-\begin{DoxyCompactList}\small\item\em $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ \end{DoxyCompactList}\end{DoxyCompactItemize}
+class \hyperlink{class_fleet}{Fleet}
+\end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-const std\+::string \hyperlink{_fleet_8h_a6dc2dde25f2b066b658bb78010bf63cc}{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON} = \char`\"{}0.\+0.\+94\char`\"{}
+const std\+::string \hyperlink{_fleet_8h_a6dc2dde25f2b066b658bb78010bf63cc}{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON} = \char`\"{}0.\+0.\+95\char`\"{}
+\item 
+unsigned long \hyperlink{_fleet_8h_a12c1770dd59218653e93654929217160}{random\+\_\+seed} = 0
+\item 
+unsigned long \hyperlink{_fleet_8h_ad833ee178f01ff5581557af0202e8fe8}{mcts\+\_\+steps} = 0
+\item 
+unsigned long \hyperlink{_fleet_8h_a7ce35df3004d645fbdd9af351534a8e2}{mcmc\+\_\+steps} = 0
+\item 
+unsigned long \hyperlink{_fleet_8h_a7ebce42e92f5a5f423bd53058bc55055}{thin} = 0
+\item 
+unsigned long \hyperlink{_fleet_8h_affafd1fd79c4b9326a59ab232ed717b5}{ntop} = 100
+\item 
+unsigned long \hyperlink{_fleet_8h_a00dbecb78c8e24ca54abc2fa11ca686d}{mcmc\+\_\+restart} = 0
+\item 
+unsigned long \hyperlink{_fleet_8h_a327e442f01b74eff38e6d52f113c8614}{checkpoint} = 0
+\item 
+double \hyperlink{_fleet_8h_a561c6966fb4883979872cb97465409b8}{explore} = 1.\+0
+\item 
+size\+\_\+t \hyperlink{_fleet_8h_a66a588988a3bc62a9ba92966365696f2}{nthreads} = 1
+\item 
+unsigned long \hyperlink{_fleet_8h_ad0c33678732e81d04a53bcf7b5ca690d}{runtime} = 0
+\item 
+unsigned long \hyperlink{_fleet_8h_a92f429398e8ed8dfb94d1648d8f13610}{nchains} = 1
+\item 
+bool \hyperlink{_fleet_8h_ae4426f467d61ae456b95844d4d9c2dcd}{quiet} = false
+\item 
+std\+::string \hyperlink{_fleet_8h_aa14dbbb4b5614a1e7a5b4281baa64b89}{input\+\_\+path} = \char`\"{}input.\+txt\char`\"{}
+\item 
+std\+::string \hyperlink{_fleet_8h_ac5f6d990a0bcb9e8a0734beaf02ac77a}{tree\+\_\+path} = \char`\"{}tree.\+txt\char`\"{}
+\item 
+std\+::string \hyperlink{_fleet_8h_ad050f6983575482fc1cde1793c1eff44}{output\+\_\+path} = \char`\"{}output\char`\"{}
+\item 
+std\+::string \hyperlink{_fleet_8h_ab6ef3c9af61a275db097767959de6125}{timestring} = \char`\"{}0s\char`\"{}
+\item 
+volatile sig\+\_\+atomic\+\_\+t \hyperlink{_fleet_8h_a6f7c4963bb8a36031664821219e3159e}{C\+T\+R\+L\+\_\+C} = false
+\item 
+const size\+\_\+t \hyperlink{_fleet_8h_ab41e0811aa8c9cd7be40cca14dab6d90}{H\+O\+S\+T\+\_\+\+N\+A\+M\+E\+\_\+\+M\+AX} = 256
+\item 
+char \hyperlink{_fleet_8h_aada24ab0f5bbba555afe1420c16ac2f7}{hostname} \mbox{[}\hyperlink{_fleet_8h_ab41e0811aa8c9cd7be40cca14dab6d90}{H\+O\+S\+T\+\_\+\+N\+A\+M\+E\+\_\+\+M\+AX}\mbox{]}
 \end{DoxyCompactItemize}
 
 
-\subsection{Function Documentation}
-\mbox{\Hypertarget{_fleet_8h_acce2656a60361b4837224fb8ac2f876d}\label{_fleet_8h_acce2656a60361b4837224fb8ac2f876d}} 
-\index{Fleet.\+h@{Fleet.\+h}!Fleet\+\_\+initialize@{Fleet\+\_\+initialize}}
-\index{Fleet\+\_\+initialize@{Fleet\+\_\+initialize}!Fleet.\+h@{Fleet.\+h}}
-\subsubsection{\texorpdfstring{Fleet\+\_\+initialize()}{Fleet\_initialize()}}
-{\footnotesize\ttfamily void Fleet\+\_\+initialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+\subsection{Detailed Description}
+A fleet object manages processing the command line, prints a useful summary of command lines, and then on its destruction (or calling completed(), it prints out a summary of the total number of samples etc. run per second. This provides a shallow wrapper to C\+L\+I\+::\+App, meaning you add options to it just like C\+L\+I\+::\+App. 
 
 
 
-$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{_fleet_8h_a327e442f01b74eff38e6d52f113c8614}\label{_fleet_8h_a327e442f01b74eff38e6d52f113c8614}} 
+\index{Fleet.\+h@{Fleet.\+h}!checkpoint@{checkpoint}}
+\index{checkpoint@{checkpoint}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{checkpoint}{checkpoint}}
+{\footnotesize\ttfamily unsigned long checkpoint = 0}
+
+\mbox{\Hypertarget{_fleet_8h_a6f7c4963bb8a36031664821219e3159e}\label{_fleet_8h_a6f7c4963bb8a36031664821219e3159e}} 
+\index{Fleet.\+h@{Fleet.\+h}!C\+T\+R\+L\+\_\+C@{C\+T\+R\+L\+\_\+C}}
+\index{C\+T\+R\+L\+\_\+C@{C\+T\+R\+L\+\_\+C}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{C\+T\+R\+L\+\_\+C}{CTRL\_C}}
+{\footnotesize\ttfamily volatile sig\+\_\+atomic\+\_\+t C\+T\+R\+L\+\_\+C = false}
+
+\mbox{\Hypertarget{_fleet_8h_a561c6966fb4883979872cb97465409b8}\label{_fleet_8h_a561c6966fb4883979872cb97465409b8}} 
+\index{Fleet.\+h@{Fleet.\+h}!explore@{explore}}
+\index{explore@{explore}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{explore}{explore}}
+{\footnotesize\ttfamily double explore = 1.\+0}
+
+\mbox{\Hypertarget{_fleet_8h_a6dc2dde25f2b066b658bb78010bf63cc}\label{_fleet_8h_a6dc2dde25f2b066b658bb78010bf63cc}} 
+\index{Fleet.\+h@{Fleet.\+h}!F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON@{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON}}
+\index{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON@{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON}{FLEET\_VERSION}}
+{\footnotesize\ttfamily const std\+::string F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON = \char`\"{}0.\+0.\+95\char`\"{}}
+
+\mbox{\Hypertarget{_fleet_8h_ab41e0811aa8c9cd7be40cca14dab6d90}\label{_fleet_8h_ab41e0811aa8c9cd7be40cca14dab6d90}} 
+\index{Fleet.\+h@{Fleet.\+h}!H\+O\+S\+T\+\_\+\+N\+A\+M\+E\+\_\+\+M\+AX@{H\+O\+S\+T\+\_\+\+N\+A\+M\+E\+\_\+\+M\+AX}}
+\index{H\+O\+S\+T\+\_\+\+N\+A\+M\+E\+\_\+\+M\+AX@{H\+O\+S\+T\+\_\+\+N\+A\+M\+E\+\_\+\+M\+AX}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{H\+O\+S\+T\+\_\+\+N\+A\+M\+E\+\_\+\+M\+AX}{HOST\_NAME\_MAX}}
+{\footnotesize\ttfamily const size\+\_\+t H\+O\+S\+T\+\_\+\+N\+A\+M\+E\+\_\+\+M\+AX = 256}
+
+\mbox{\Hypertarget{_fleet_8h_aada24ab0f5bbba555afe1420c16ac2f7}\label{_fleet_8h_aada24ab0f5bbba555afe1420c16ac2f7}} 
+\index{Fleet.\+h@{Fleet.\+h}!hostname@{hostname}}
+\index{hostname@{hostname}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{hostname}{hostname}}
+{\footnotesize\ttfamily char hostname\mbox{[}\hyperlink{_fleet_8h_ab41e0811aa8c9cd7be40cca14dab6d90}{H\+O\+S\+T\+\_\+\+N\+A\+M\+E\+\_\+\+M\+AX}\mbox{]}}
+
+\mbox{\Hypertarget{_fleet_8h_aa14dbbb4b5614a1e7a5b4281baa64b89}\label{_fleet_8h_aa14dbbb4b5614a1e7a5b4281baa64b89}} 
+\index{Fleet.\+h@{Fleet.\+h}!input\+\_\+path@{input\+\_\+path}}
+\index{input\+\_\+path@{input\+\_\+path}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{input\+\_\+path}{input\_path}}
+{\footnotesize\ttfamily std\+::string input\+\_\+path = \char`\"{}input.\+txt\char`\"{}}
+
+\mbox{\Hypertarget{_fleet_8h_a00dbecb78c8e24ca54abc2fa11ca686d}\label{_fleet_8h_a00dbecb78c8e24ca54abc2fa11ca686d}} 
+\index{Fleet.\+h@{Fleet.\+h}!mcmc\+\_\+restart@{mcmc\+\_\+restart}}
+\index{mcmc\+\_\+restart@{mcmc\+\_\+restart}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{mcmc\+\_\+restart}{mcmc\_restart}}
+{\footnotesize\ttfamily unsigned long mcmc\+\_\+restart = 0}
+
+\mbox{\Hypertarget{_fleet_8h_a7ce35df3004d645fbdd9af351534a8e2}\label{_fleet_8h_a7ce35df3004d645fbdd9af351534a8e2}} 
+\index{Fleet.\+h@{Fleet.\+h}!mcmc\+\_\+steps@{mcmc\+\_\+steps}}
+\index{mcmc\+\_\+steps@{mcmc\+\_\+steps}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{mcmc\+\_\+steps}{mcmc\_steps}}
+{\footnotesize\ttfamily unsigned long mcmc\+\_\+steps = 0}
+
+\mbox{\Hypertarget{_fleet_8h_ad833ee178f01ff5581557af0202e8fe8}\label{_fleet_8h_ad833ee178f01ff5581557af0202e8fe8}} 
+\index{Fleet.\+h@{Fleet.\+h}!mcts\+\_\+steps@{mcts\+\_\+steps}}
+\index{mcts\+\_\+steps@{mcts\+\_\+steps}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{mcts\+\_\+steps}{mcts\_steps}}
+{\footnotesize\ttfamily unsigned long mcts\+\_\+steps = 0}
+
+\mbox{\Hypertarget{_fleet_8h_a92f429398e8ed8dfb94d1648d8f13610}\label{_fleet_8h_a92f429398e8ed8dfb94d1648d8f13610}} 
+\index{Fleet.\+h@{Fleet.\+h}!nchains@{nchains}}
+\index{nchains@{nchains}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{nchains}{nchains}}
+{\footnotesize\ttfamily unsigned long nchains = 1}
+
+\mbox{\Hypertarget{_fleet_8h_a66a588988a3bc62a9ba92966365696f2}\label{_fleet_8h_a66a588988a3bc62a9ba92966365696f2}} 
+\index{Fleet.\+h@{Fleet.\+h}!nthreads@{nthreads}}
+\index{nthreads@{nthreads}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{nthreads}{nthreads}}
+{\footnotesize\ttfamily size\+\_\+t nthreads = 1}
+
+\mbox{\Hypertarget{_fleet_8h_affafd1fd79c4b9326a59ab232ed717b5}\label{_fleet_8h_affafd1fd79c4b9326a59ab232ed717b5}} 
+\index{Fleet.\+h@{Fleet.\+h}!ntop@{ntop}}
+\index{ntop@{ntop}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{ntop}{ntop}}
+{\footnotesize\ttfamily unsigned long ntop = 100}
+
+\mbox{\Hypertarget{_fleet_8h_ad050f6983575482fc1cde1793c1eff44}\label{_fleet_8h_ad050f6983575482fc1cde1793c1eff44}} 
+\index{Fleet.\+h@{Fleet.\+h}!output\+\_\+path@{output\+\_\+path}}
+\index{output\+\_\+path@{output\+\_\+path}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{output\+\_\+path}{output\_path}}
+{\footnotesize\ttfamily std\+::string output\+\_\+path = \char`\"{}output\char`\"{}}
+
+\mbox{\Hypertarget{_fleet_8h_ae4426f467d61ae456b95844d4d9c2dcd}\label{_fleet_8h_ae4426f467d61ae456b95844d4d9c2dcd}} 
+\index{Fleet.\+h@{Fleet.\+h}!quiet@{quiet}}
+\index{quiet@{quiet}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{quiet}{quiet}}
+{\footnotesize\ttfamily bool quiet = false}
+
+\mbox{\Hypertarget{_fleet_8h_a12c1770dd59218653e93654929217160}\label{_fleet_8h_a12c1770dd59218653e93654929217160}} 
+\index{Fleet.\+h@{Fleet.\+h}!random\+\_\+seed@{random\+\_\+seed}}
+\index{random\+\_\+seed@{random\+\_\+seed}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{random\+\_\+seed}{random\_seed}}
+{\footnotesize\ttfamily unsigned long random\+\_\+seed = 0}
 
 
 \begin{DoxyCode}
     We defaultly include all of the major requirements \textcolor{keywordflow}{for} \hyperlink{namespace_fleet}{Fleet}
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-\textcolor{preprocessor}{# 81 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+\textcolor{comment}{//#include "Statistics/FleetStatistics.h"}
 
-\textcolor{preprocessor}{# 83 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
-
-
-\textcolor{preprocessor}{# 86 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
-\textcolor{preprocessor}{# 87 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
-\textcolor{preprocessor}{# 88 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
-\textcolor{preprocessor}{# 89 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
-\textcolor{preprocessor}{# 90 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
-\textcolor{preprocessor}{# 91 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
-
-
-\textcolor{preprocessor}{# 94 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
-\textcolor{preprocessor}{# 95 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
-
-
-
-
-
-
-\textcolor{preprocessor}{# 102 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
-\textcolor{preprocessor}{# 103 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
-
-\textcolor{preprocessor}{# 105 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
-\textcolor{preprocessor}{# 106 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
-\textcolor{preprocessor}{# 107 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
-
-
-
+\textcolor{preprocessor}{# 71 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
 
 
 \textcolor{comment}{// Thie one really should be included last because it depends on Primitves}
-\textcolor{preprocessor}{# 114 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
+\textcolor{comment}{// so we will include it here }
+\textcolor{preprocessor}{# 76 "/home/piantado/Desktop/Science/Libraries/Fleet/src/Fleet.h" 2}
 
 \textcolor{comment}{/*}
 \end{DoxyCode}
- Actual initialization $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
+ \hyperlink{class_fleet}{Fleet} global variables $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ \mbox{\Hypertarget{_fleet_8h_ad0c33678732e81d04a53bcf7b5ca690d}\label{_fleet_8h_ad0c33678732e81d04a53bcf7b5ca690d}} 
+\index{Fleet.\+h@{Fleet.\+h}!runtime@{runtime}}
+\index{runtime@{runtime}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{runtime}{runtime}}
+{\footnotesize\ttfamily unsigned long runtime = 0}
 
-\subsection{Variable Documentation}
-\mbox{\Hypertarget{_fleet_8h_a6dc2dde25f2b066b658bb78010bf63cc}\label{_fleet_8h_a6dc2dde25f2b066b658bb78010bf63cc}} 
-\index{Fleet.\+h@{Fleet.\+h}!F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON@{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON}}
-\index{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON@{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON}!Fleet.\+h@{Fleet.\+h}}
-\subsubsection{\texorpdfstring{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON}{FLEET\_VERSION}}
-{\footnotesize\ttfamily const std\+::string F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON = \char`\"{}0.\+0.\+94\char`\"{}}
+\mbox{\Hypertarget{_fleet_8h_a7ebce42e92f5a5f423bd53058bc55055}\label{_fleet_8h_a7ebce42e92f5a5f423bd53058bc55055}} 
+\index{Fleet.\+h@{Fleet.\+h}!thin@{thin}}
+\index{thin@{thin}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{thin}{thin}}
+{\footnotesize\ttfamily unsigned long thin = 0}
+
+\mbox{\Hypertarget{_fleet_8h_ab6ef3c9af61a275db097767959de6125}\label{_fleet_8h_ab6ef3c9af61a275db097767959de6125}} 
+\index{Fleet.\+h@{Fleet.\+h}!timestring@{timestring}}
+\index{timestring@{timestring}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{timestring}{timestring}}
+{\footnotesize\ttfamily std\+::string timestring = \char`\"{}0s\char`\"{}}
+
+\mbox{\Hypertarget{_fleet_8h_ac5f6d990a0bcb9e8a0734beaf02ac77a}\label{_fleet_8h_ac5f6d990a0bcb9e8a0734beaf02ac77a}} 
+\index{Fleet.\+h@{Fleet.\+h}!tree\+\_\+path@{tree\+\_\+path}}
+\index{tree\+\_\+path@{tree\+\_\+path}!Fleet.\+h@{Fleet.\+h}}
+\subsubsection{\texorpdfstring{tree\+\_\+path}{tree\_path}}
+{\footnotesize\ttfamily std\+::string tree\+\_\+path = \char`\"{}tree.\+txt\char`\"{}}
 

@@ -2,13 +2,14 @@
 \label{_random_8h}\index{src/\+Random.\+h@{src/\+Random.\+h}}
 {\ttfamily \#include $<$random$>$}\newline
 {\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Numerics.\+h\char`\"{}}\newline
 Include dependency graph for Random.\+h\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=289pt]{_random_8h__incl}
+\includegraphics[width=350pt]{_random_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:
@@ -44,9 +45,19 @@ double \hyperlink{_random_8h_acda22e21568254b5b1bf27bfc46c0533}{random\+\_\+cauc
 \item 
 bool \hyperlink{_random_8h_ae295082303ce2024a3de1c53dc99568e}{flip} ()
 \item 
-{\footnotesize template$<$typename t , typename T $>$ }\\double \hyperlink{_random_8h_a7ae35425f35d9811eb6bb6c33a7b8154}{sample\+\_\+z} (const T \&s, std\+::function$<$ double(const t \&)$>$ \&f)
+{\footnotesize template$<$typename t , typename T $>$ }\\double \hyperlink{_random_8h_aef3477ef8b81a8b82b2c7702b25bc20f}{sample\+\_\+z} (const T \&s, const std\+::function$<$ double(const t \&)$>$ \&f)
 \item 
-{\footnotesize template$<$typename t , typename T $>$ }\\std\+::pair$<$ t $\ast$, double $>$ \hyperlink{_random_8h_aeff9c1a005ab63ebd334bcf0ea80a036}{sample} (const T \&s, std\+::function$<$ double(const t \&)$>$ \&f=\mbox{[}$\,$\mbox{]}(const t \&v)\{return 1.\+0;\})
+{\footnotesize template$<$typename t , typename T $>$ }\\std\+::pair$<$ t $\ast$, double $>$ \hyperlink{_random_8h_ac2ea1cac6b4c8cad207512d19abe42d7}{sample} (const T \&s, const std\+::function$<$ double(const t \&)$>$ \&f=\mbox{[}$\,$\mbox{]}(const t \&v)\{return 1.\+0;\})
+\item 
+{\footnotesize template$<$typename t , typename T $>$ }\\std\+::pair$<$ t $\ast$, double $>$ \hyperlink{_random_8h_a3585a6278806f57b964ccd1060f3b8ee}{sample} (const T \&s, double z, const std\+::function$<$ double(const t \&)$>$ \&f=\mbox{[}$\,$\mbox{]}(const t \&v)\{return 1.\+0;\})
+\item 
+std\+::pair$<$ int, double $>$ \hyperlink{_random_8h_af6134985da5821918dcc1d7e889a02a8}{sample\+\_\+int} (unsigned int max, const std\+::function$<$ double(const int)$>$ \&f=\mbox{[}$\,$\mbox{]}(const int v)\{return 1.\+0;\})
+\item 
+std\+::pair$<$ int, double $>$ \hyperlink{_random_8h_a12aaaf433c4da9591b9ba6e91f2b9af1}{sample\+\_\+int\+\_\+lp} (unsigned int max, const std\+::function$<$ double(const int)$>$ \&f=\mbox{[}$\,$\mbox{]}(const int v)\{return 1.\+0;\})
+\item 
+{\footnotesize template$<$typename t , typename T $>$ }\\std\+::pair$<$ size\+\_\+t, double $>$ \hyperlink{_random_8h_a27816dc404bd1077a5a709f084d6560a}{arg\+\_\+max} (const T \&s, const std\+::function$<$ double(const t \&)$>$ \&f)
+\item 
+{\footnotesize template$<$typename t , typename T $>$ }\\std\+::pair$<$ t $\ast$, double $>$ \hyperlink{_random_8h_ab8df9e92a32a04d16bec82a9eab46d48}{max\+\_\+of} (T \&s, const std\+::function$<$ double(t \&)$>$ \&f)
 \item 
 {\footnotesize template$<$typename t , typename T $>$ }\\std\+::pair$<$ t $\ast$, double $>$ \hyperlink{_random_8h_a66c44d236d9db0144761e0d24bc83e48}{sample} (const T \&s, double($\ast$f)(const t \&))
 \item 
@@ -66,6 +77,13 @@ thread\+\_\+local std\+::random\+\_\+device \hyperlink{_random_8h_a6db4fd8287911
 
 
 \subsection{Function Documentation}
+\mbox{\Hypertarget{_random_8h_a27816dc404bd1077a5a709f084d6560a}\label{_random_8h_a27816dc404bd1077a5a709f084d6560a}} 
+\index{Random.\+h@{Random.\+h}!arg\+\_\+max@{arg\+\_\+max}}
+\index{arg\+\_\+max@{arg\+\_\+max}!Random.\+h@{Random.\+h}}
+\subsubsection{\texorpdfstring{arg\+\_\+max()}{arg\_max()}}
+{\footnotesize\ttfamily template$<$typename t , typename T $>$ \\
+std\+::pair$<$size\+\_\+t,double$>$ arg\+\_\+max (\begin{DoxyParamCaption}\item[{const T \&}]{s,  }\item[{const std\+::function$<$ double(const t \&)$>$ \&}]{f }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{_random_8h_ae0f9ec68098135667c5e895e1130dd4d}\label{_random_8h_ae0f9ec68098135667c5e895e1130dd4d}} 
 \index{Random.\+h@{Random.\+h}!cauchy\+\_\+lpdf@{cauchy\+\_\+lpdf}}
 \index{cauchy\+\_\+lpdf@{cauchy\+\_\+lpdf}!Random.\+h@{Random.\+h}}
@@ -120,6 +138,13 @@ double lp\+\_\+sample\+\_\+one (\begin{DoxyParamCaption}\item[{const t \&}]{x,  
 \subsubsection{\texorpdfstring{lp\+\_\+sample\+\_\+one()}{lp\_sample\_one()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily template$<$typename t , typename T $>$ \\
 double lp\+\_\+sample\+\_\+one (\begin{DoxyParamCaption}\item[{const t \&}]{x,  }\item[{const T \&}]{s,  }\item[{double($\ast$)(const t \&)}]{f }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_random_8h_ab8df9e92a32a04d16bec82a9eab46d48}\label{_random_8h_ab8df9e92a32a04d16bec82a9eab46d48}} 
+\index{Random.\+h@{Random.\+h}!max\+\_\+of@{max\+\_\+of}}
+\index{max\+\_\+of@{max\+\_\+of}!Random.\+h@{Random.\+h}}
+\subsubsection{\texorpdfstring{max\+\_\+of()}{max\_of()}}
+{\footnotesize\ttfamily template$<$typename t , typename T $>$ \\
+std\+::pair$<$t$\ast$,double$>$ max\+\_\+of (\begin{DoxyParamCaption}\item[{T \&}]{s,  }\item[{const std\+::function$<$ double(t \&)$>$ \&}]{f }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_random_8h_a80379e9c4dd11a0b2260f1a4ee934d44}\label{_random_8h_a80379e9c4dd11a0b2260f1a4ee934d44}} 
 \index{Random.\+h@{Random.\+h}!myrandom@{myrandom}}
@@ -209,26 +234,45 @@ Generate a random vector from a multinomial, with constant alpha
 \subsubsection{\texorpdfstring{rng()}{rng()}}
 {\footnotesize\ttfamily thread\+\_\+local std\+::mt19937 rng (\begin{DoxyParamCaption}\item[{\hyperlink{_random_8h_a6db4fd82879117aa228023d043853759}{rd}()}]{ }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{_random_8h_aeff9c1a005ab63ebd334bcf0ea80a036}\label{_random_8h_aeff9c1a005ab63ebd334bcf0ea80a036}} 
+\mbox{\Hypertarget{_random_8h_ac2ea1cac6b4c8cad207512d19abe42d7}\label{_random_8h_ac2ea1cac6b4c8cad207512d19abe42d7}} 
 \index{Random.\+h@{Random.\+h}!sample@{sample}}
 \index{sample@{sample}!Random.\+h@{Random.\+h}}
-\subsubsection{\texorpdfstring{sample()}{sample()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+\subsubsection{\texorpdfstring{sample()}{sample()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
 {\footnotesize\ttfamily template$<$typename t , typename T $>$ \\
-std\+::pair$<$t$\ast$,double$>$ sample (\begin{DoxyParamCaption}\item[{const T \&}]{s,  }\item[{std\+::function$<$ double(const t \&)$>$ \&}]{f = {\ttfamily \mbox{[}\mbox{]}(const~t\&~v)\{return~1.0;\}} }\end{DoxyParamCaption})}
+std\+::pair$<$t$\ast$,double$>$ sample (\begin{DoxyParamCaption}\item[{const T \&}]{s,  }\item[{const std\+::function$<$ double(const t \&)$>$ \&}]{f = {\ttfamily \mbox{[}\mbox{]}(const~t\&~v)\{return~1.0;\}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_random_8h_a3585a6278806f57b964ccd1060f3b8ee}\label{_random_8h_a3585a6278806f57b964ccd1060f3b8ee}} 
+\index{Random.\+h@{Random.\+h}!sample@{sample}}
+\index{sample@{sample}!Random.\+h@{Random.\+h}}
+\subsubsection{\texorpdfstring{sample()}{sample()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$typename t , typename T $>$ \\
+std\+::pair$<$t$\ast$,double$>$ sample (\begin{DoxyParamCaption}\item[{const T \&}]{s,  }\item[{double}]{z,  }\item[{const std\+::function$<$ double(const t \&)$>$ \&}]{f = {\ttfamily \mbox{[}\mbox{]}(const~t\&~v)\{return~1.0;\}} }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_random_8h_a66c44d236d9db0144761e0d24bc83e48}\label{_random_8h_a66c44d236d9db0144761e0d24bc83e48}} 
 \index{Random.\+h@{Random.\+h}!sample@{sample}}
 \index{sample@{sample}!Random.\+h@{Random.\+h}}
-\subsubsection{\texorpdfstring{sample()}{sample()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+\subsubsection{\texorpdfstring{sample()}{sample()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
 {\footnotesize\ttfamily template$<$typename t , typename T $>$ \\
 std\+::pair$<$t$\ast$,double$>$ sample (\begin{DoxyParamCaption}\item[{const T \&}]{s,  }\item[{double($\ast$)(const t \&)}]{f }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{_random_8h_a7ae35425f35d9811eb6bb6c33a7b8154}\label{_random_8h_a7ae35425f35d9811eb6bb6c33a7b8154}} 
+\mbox{\Hypertarget{_random_8h_af6134985da5821918dcc1d7e889a02a8}\label{_random_8h_af6134985da5821918dcc1d7e889a02a8}} 
+\index{Random.\+h@{Random.\+h}!sample\+\_\+int@{sample\+\_\+int}}
+\index{sample\+\_\+int@{sample\+\_\+int}!Random.\+h@{Random.\+h}}
+\subsubsection{\texorpdfstring{sample\+\_\+int()}{sample\_int()}}
+{\footnotesize\ttfamily std\+::pair$<$int,double$>$ sample\+\_\+int (\begin{DoxyParamCaption}\item[{unsigned int}]{max,  }\item[{const std\+::function$<$ double(const int)$>$ \&}]{f = {\ttfamily \mbox{[}\mbox{]}(const~int~v)\{return~1.0;\}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_random_8h_a12aaaf433c4da9591b9ba6e91f2b9af1}\label{_random_8h_a12aaaf433c4da9591b9ba6e91f2b9af1}} 
+\index{Random.\+h@{Random.\+h}!sample\+\_\+int\+\_\+lp@{sample\+\_\+int\+\_\+lp}}
+\index{sample\+\_\+int\+\_\+lp@{sample\+\_\+int\+\_\+lp}!Random.\+h@{Random.\+h}}
+\subsubsection{\texorpdfstring{sample\+\_\+int\+\_\+lp()}{sample\_int\_lp()}}
+{\footnotesize\ttfamily std\+::pair$<$int,double$>$ sample\+\_\+int\+\_\+lp (\begin{DoxyParamCaption}\item[{unsigned int}]{max,  }\item[{const std\+::function$<$ double(const int)$>$ \&}]{f = {\ttfamily \mbox{[}\mbox{]}(const~int~v)\{return~1.0;\}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_random_8h_aef3477ef8b81a8b82b2c7702b25bc20f}\label{_random_8h_aef3477ef8b81a8b82b2c7702b25bc20f}} 
 \index{Random.\+h@{Random.\+h}!sample\+\_\+z@{sample\+\_\+z}}
 \index{sample\+\_\+z@{sample\+\_\+z}!Random.\+h@{Random.\+h}}
 \subsubsection{\texorpdfstring{sample\+\_\+z()}{sample\_z()}}
 {\footnotesize\ttfamily template$<$typename t , typename T $>$ \\
-double sample\+\_\+z (\begin{DoxyParamCaption}\item[{const T \&}]{s,  }\item[{std\+::function$<$ double(const t \&)$>$ \&}]{f }\end{DoxyParamCaption})}
+double sample\+\_\+z (\begin{DoxyParamCaption}\item[{const T \&}]{s,  }\item[{const std\+::function$<$ double(const t \&)$>$ \&}]{f }\end{DoxyParamCaption})}
 
 If f specifies the probability (N\+OT log probability) of each element of s, compute the normalizing constant. 
 \begin{DoxyParams}{Parameters}

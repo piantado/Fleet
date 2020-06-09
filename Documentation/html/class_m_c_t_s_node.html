@@ -76,10 +76,10 @@ Collaboration diagram for MCTSNode&lt; M, HYP &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_m_c_t_s_node__coll__graph.png" border="0" usemap="#_m_c_t_s_node_3_01_m_00_01_h_y_p_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="_m_c_t_s_node_3_01_m_00_01_h_y_p_01_4_coll__map" id="_m_c_t_s_node_3_01_m_00_01_h_y_p_01_4_coll__map">
-<area shape="rect" id="node2" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html" title="Fleet::Statistics::\lStreamingStatistics" alt="" coords="595,37,731,79"/>
-<area shape="rect" id="node3" href="class_fleet_1_1_statistics_1_1_median_f_a_m_e.html" title="Fleet::Statistics::\lMedianFAME\&lt; double \&gt;" alt="" coords="263,5,425,47"/>
-<area shape="rect" id="node4" href="class_fleet_1_1_statistics_1_1_reservoir_sample.html" title="Fleet::Statistics::\lReservoirSample\&lt; double \&gt;" alt="" coords="252,71,436,112"/>
-<area shape="rect" id="node5" href="class_fleet_1_1_statistics_1_1_top_n.html" title="Fleet::Statistics::\lTopN\&lt; Fleet::Statistics\l::ReservoirSample::Item \&gt;" alt="" coords="5,63,181,119"/>
+<area shape="rect" id="node2" href="class_streaming_statistics.html" title="StreamingStatistics" alt="" coords="103,199,239,225"/>
+<area shape="rect" id="node3" href="class_median_f_a_m_e.html" title="MedianFAME\&lt; double \&gt;" alt="" coords="5,109,168,136"/>
+<area shape="rect" id="node4" href="class_reservoir_sample.html" title="ReservoirSample\&lt; double \&gt;" alt="" coords="192,109,376,136"/>
+<area shape="rect" id="node5" href="class_top_n.html" title="TopN\&lt; ReservoirSample\l::Item \&gt;" alt="" coords="201,5,367,47"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -139,8 +139,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ad1a742de2cdd0e208079bc35f943cacc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66790ec812754c13bab5f6f14966bacf"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a66790ec812754c13bab5f6f14966bacf">child_mutex</a></td></tr>
 <tr class="separator:a66790ec812754c13bab5f6f14966bacf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47cdbf0ef4f1e6ccbb6e911d4d384f39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html">Fleet::Statistics::StreamingStatistics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a47cdbf0ef4f1e6ccbb6e911d4d384f39">statistics</a></td></tr>
-<tr class="separator:a47cdbf0ef4f1e6ccbb6e911d4d384f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68b6340a1b917cda22d8976c9fc4efbe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_streaming_statistics.html">StreamingStatistics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a68b6340a1b917cda22d8976c9fc4efbe">statistics</a></td></tr>
+<tr class="separator:a68b6340a1b917cda22d8976c9fc4efbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a736868beae8f1925081e2ec471742b8c"><td class="memItemLeft" align="right" valign="top">HYP::data_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#a736868beae8f1925081e2ec471742b8c">data</a></td></tr>
 <tr class="separator:a736868beae8f1925081e2ec471742b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab451a032b940daa976b7a5773d3246ca"><td class="memItemLeft" align="right" valign="top">M *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_t_s_node.html#ab451a032b940daa976b7a5773d3246ca">parent</a></td></tr>
@@ -899,8 +899,8 @@ template&lt;typename M, typename HYP&gt; </div>
 
 </div>
 </div>
-<a id="a47cdbf0ef4f1e6ccbb6e911d4d384f39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47cdbf0ef4f1e6ccbb6e911d4d384f39">&#9670;&nbsp;</a></span>statistics</h2>
+<a id="a68b6340a1b917cda22d8976c9fc4efbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68b6340a1b917cda22d8976c9fc4efbe">&#9670;&nbsp;</a></span>statistics</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -908,7 +908,7 @@ template&lt;typename M, typename HYP&gt; </div>
 template&lt;typename M, typename HYP&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_fleet_1_1_statistics_1_1_streaming_statistics.html">Fleet::Statistics::StreamingStatistics</a> <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::statistics</td>
+          <td class="memname"><a class="el" href="class_streaming_statistics.html">StreamingStatistics</a> <a class="el" href="class_m_c_t_s_node.html">MCTSNode</a>&lt; M, HYP &gt;::statistics</td>
         </tr>
       </table>
 </div><div class="memdoc">

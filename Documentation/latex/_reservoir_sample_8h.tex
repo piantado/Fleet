@@ -5,6 +5,7 @@
 A reservoir sampling algorithm. N\+O\+TE\+: This was simplified from an old version that permitted unequal weights among elements. We may go back to that eventually -\/ \href{https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_}{\tt https\+://en.\+wikipedia.\+org/wiki/\+Reservoir\+\_\+sampling\#\+Weighted\+\_\+random\+\_\+sampling\+\_\+}.  
 
 
+{\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Top.\+h\char`\"{}}\newline
 Include dependency graph for Reservoir\+Sample.\+h\+:
 \nopagebreak
@@ -25,16 +26,9 @@ This graph shows which files directly or indirectly include this file\+:
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample$<$ T $>$}
+class \hyperlink{class_reservoir_sample}{Reservoir\+Sample$<$ T $>$}
 \item 
-class \hyperlink{class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item}{Fleet\+::\+Statistics\+::\+Reservoir\+Sample$<$ T $>$\+::\+Item}
-\end{DoxyCompactItemize}
-\subsection*{Namespaces}
-\begin{DoxyCompactItemize}
-\item 
- \hyperlink{namespace_fleet}{Fleet}
-\item 
- \hyperlink{namespace_fleet_1_1_statistics}{Fleet\+::\+Statistics}
+class \hyperlink{class_reservoir_sample_1_1_item}{Reservoir\+Sample$<$ T $>$\+::\+Item}
 \end{DoxyCompactItemize}
 
 
@@ -45,4 +39,4 @@ A special weighted reservoir sampling class that allows for logarithmic weights 
 
 An item in a reservoir sample, grouping together an element x and its log weights, value, etc.
 
-N\+O\+TE\+: Because we use TopN internally, we can access the Item values with Reservoir\+Sample.\+top.\+values() and we can get the stuff that\textquotesingle{}s stored with Reservoir\+Sample.\+values()
+N\+O\+TE\+: Because we use \hyperlink{class_top_n}{TopN} internally, we can access the Item values with Reservoir\+Sample.\+top.\+values() and we can get the stuff that\textquotesingle{}s stored with \hyperlink{class_reservoir_sample_a0f0abf510882715b487f2254b6af25b1}{Reservoir\+Sample.\+values()}

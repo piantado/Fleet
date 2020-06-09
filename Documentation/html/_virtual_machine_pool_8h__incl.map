@@ -1,7 +1,7 @@
 <map id="src/VirtualMachine/VirtualMachinePool.h" name="src/VirtualMachine/VirtualMachinePool.h">
-<area shape="rect" id="node2" href="$_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="323,95,471,121"/>
-<area shape="rect" id="node9" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="193,169,309,196"/>
-<area shape="rect" id="node11" href="$_i_o_8h.html" title="IO.h" alt="" coords="302,244,349,271"/>
-<area shape="rect" id="node17" href="$_numerics_8h.html" title="Numerics.h" alt="" coords="533,244,622,271"/>
-<area shape="rect" id="node19" href="$_strings_8h.html" title="Strings.h" alt="" coords="701,169,776,196"/>
+<area shape="rect" id="node2" href="$_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="302,95,450,121"/>
+<area shape="rect" id="node9" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="171,169,287,196"/>
+<area shape="rect" id="node11" href="$_i_o_8h.html" title="IO.h" alt="" coords="230,244,277,271"/>
+<area shape="rect" id="node15" href="$_numerics_8h.html" title="Numerics.h" alt="" coords="573,244,662,271"/>
+<area shape="rect" id="node17" href="$_strings_8h.html" title="Strings.h" alt="" coords="680,169,755,196"/>
 </map>

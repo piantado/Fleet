@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['parallelinferenceinterface_2eh',['ParallelInferenceInterface.h',['../_parallel_inference_interface_8h.html',1,'']]],
   ['paralleltempering_2eh',['ParallelTempering.h',['../_parallel_tempering_8h.html',1,'']]],
   ['primitives_2eh',['Primitives.h',['../_primitives_8h.html',1,'']]],
   ['program_2eh',['Program.h',['../_program_8h.html',1,'']]],

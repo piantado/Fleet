@@ -1,10 +1,9 @@
 <map id="src/Hypotheses/LOTHypothesis.h" name="src/Hypotheses/LOTHypothesis.h">
-<area shape="rect" id="node2" href="$_models_2_combinatory_logic_2main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="5,155,179,196"/>
-<area shape="rect" id="node3" href="$_models_2_formal_language_theory-_complex_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="203,155,407,196"/>
-<area shape="rect" id="node4" href="$_models_2_formal_language_theory-_simple_2main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="431,155,635,196"/>
-<area shape="rect" id="node5" href="$_models_2_number-_fancy_2main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="660,155,815,196"/>
-<area shape="rect" id="node6" href="$_models_2_number_game_2main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="839,162,1046,189"/>
-<area shape="rect" id="node7" href="$_models_2_rational_rules_2main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1070,155,1221,196"/>
-<area shape="rect" id="node8" href="$_models_2_testing_2main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="1245,162,1413,189"/>
-<area shape="rect" id="node9" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="654,80,738,107"/>
+<area shape="rect" id="node2" href="$_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="5,80,179,121"/>
+<area shape="rect" id="node3" href="$_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="203,80,407,121"/>
+<area shape="rect" id="node4" href="$_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="431,80,635,121"/>
+<area shape="rect" id="node5" href="$_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="660,80,815,121"/>
+<area shape="rect" id="node6" href="$_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="839,87,1046,114"/>
+<area shape="rect" id="node7" href="$_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1070,80,1221,121"/>
+<area shape="rect" id="node8" href="$_testing_2_main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="1245,87,1413,114"/>
 </map>
