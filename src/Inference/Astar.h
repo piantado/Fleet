@@ -84,12 +84,12 @@ public:
 	void run_thread(Control ctl) override {
 
 		ctl.start();
-		while(ctl.running() and not Q.empty()) {
+		while(ctl.running()) {
 			
 			lock.lock();
 			if(Q.empty()) {
 				lock.unlock();
-				continue; // this is necesssary because we might have more threads than Q to start off
+				continue; // this is necesssary because we might have more threads than Q to start off. 
 			}
 			auto t = Q.top(); Q.pop(); ++FleetStatistics::astar_steps;
 			lock.unlock();
@@ -134,6 +134,10 @@ public:
 					push(std::move(v));
 				}
 			}
+			
+			// this condition can't go at the top because of multithreading -- we need each thread to loop in the top when it's
+			// waiting at first for the Q to fill up
+			if(Q.empty()) break; 
 		}
 	}
 	

@@ -303,7 +303,7 @@ class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 			add_sample(h.posterior);
 		};
 		
-		auto h = h0.copy_and_complete(); // fill in any structural gaps
+		auto h = h0; h.complete(); // fill in any structural gaps
 		
 		MCMCChain chain(h, data, cb);
 		chain.run(Control(0, 1000, 1)); // run mcmc with restarts; we sure shouldn't run more than runtime
@@ -359,8 +359,10 @@ MyHypothesis::datum_t sample_adjusted_datum(std::function<double(MyHypothesis::d
 // Main
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#include "Astar.h"
 #include "ParallelTempering.h"
 #include "Fleet.h"
+
 
 int main(int argc, char** argv) { 
 	
@@ -404,12 +406,12 @@ int main(int argc, char** argv) {
 	
 	
 	// Run parallel tempering
-	MyHypothesis h0(&grammar);
-	h0 = h0.restart();
-	ParallelTempering samp(h0, alldata, alltops);
-	tic();
-	samp.run(Control(mcmc_steps, runtime, nthreads), 200, 5000); 
-	tic();
+//	MyHypothesis h0(&grammar);
+//	h0 = h0.restart();
+//	ParallelTempering samp(h0, alldata, alltops);
+//	tic();
+//	samp.run(Control(mcmc_steps, runtime, nthreads), 200, 5000); 
+//	tic();
 
 	// just simple mcmc on one
 //	tic();
@@ -420,6 +422,13 @@ int main(int argc, char** argv) {
 //		samp.run(Control(mcmc_steps, runtime, nthreads)); 
 //	}
 //	tic();
+
+	// check out A*	
+	TopN<MyHypothesis> top(ntop);
+	top.print_best = true;
+	MyHypothesis h0(&grammar);
+	Astar astar(h0,&alldata[alldata.size()-1], top, 1500.0);
+	astar.run(Control(mcts_steps, runtime, nthreads));
 	
 	fleet.completed(); // print the search/mcmc stats here instead of when fleet is destroyed
 	
@@ -436,40 +445,40 @@ int main(int argc, char** argv) {
 	// print out at the end
 	all.compute_posterior(biggestData).print("normal\t");
 	
-	COUT "# Computing posterior for extra data <= 4" ENDL;
-	{
-		std::function<double(datum_t&)> f = [](datum_t d) {
-			return (d.output <= (word)4 ? 1.0 : 0.25);			
-		};
-		
-		// make some data
-		data_t newdata;
-		for(size_t i=0;i<biggestData.size();i++) {
-			auto di = sample_adjusted_datum(f);
-			//cnt[di.output]++;
-			newdata.push_back(di);
-		}
-		
-		all.compute_posterior(newdata).print("lt4\t");
-	}	
-	
-	COUT "# Computing posterior for extra data > 4" ENDL;
-	{
-		std::function<double(datum_t&)> f = [](datum_t d) {
-			return (d.output > (word)4 ? 1.0 : 0.25);			
-		};
-		
-		// make some data
-		data_t newdata;
-		for(size_t i=0;i<biggestData.size();i++) {
-			auto di = sample_adjusted_datum(f);
-			//cnt[di.output]++;
-			newdata.push_back(di);
-		}
-		
-		all.compute_posterior(newdata).print("gt4\t");
-	}	
-	
+//	COUT "# Computing posterior for extra data <= 4" ENDL;
+//	{
+//		std::function<double(datum_t&)> f = [](datum_t d) {
+//			return (d.output <= (word)4 ? 1.0 : 0.25);			
+//		};
+//		
+//		// make some data
+//		data_t newdata;
+//		for(size_t i=0;i<biggestData.size();i++) {
+//			auto di = sample_adjusted_datum(f);
+//			//cnt[di.output]++;
+//			newdata.push_back(di);
+//		}
+//		
+//		all.compute_posterior(newdata).print("lt4\t");
+//	}	
+//	
+//	COUT "# Computing posterior for extra data > 4" ENDL;
+//	{
+//		std::function<double(datum_t&)> f = [](datum_t d) {
+//			return (d.output > (word)4 ? 1.0 : 0.25);			
+//		};
+//		
+//		// make some data
+//		data_t newdata;
+//		for(size_t i=0;i<biggestData.size();i++) {
+//			auto di = sample_adjusted_datum(f);
+//			//cnt[di.output]++;
+//			newdata.push_back(di);
+//		}
+//		
+//		all.compute_posterior(newdata).print("gt4\t");
+//	}	
+//	
 	
 	
 

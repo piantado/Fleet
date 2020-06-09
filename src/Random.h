@@ -2,7 +2,7 @@
 
 #include <random>
 #include <functional>
-
+#include "Errors.h"
 #include "Numerics.h"
 
 // it's important to make these thread-local or else they block each other in parallel cores

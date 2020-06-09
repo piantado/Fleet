@@ -89,7 +89,7 @@ public:
 		// this ordinarily would be a resample from the grammar, but sometimes we have can_resample=false
 		// and in that case we want to leave the non-propose nodes alone. 
 
-		if(!value.is_null()) { // if we are null
+		if(not value.is_null()) { // if we are null
 			return HYP(this->grammar, this->grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
 		}
 		else {
@@ -197,7 +197,6 @@ public:
 	static HYP from_string(Grammar_t& g, std::string s) {
 		return HYP(g, g.expand_from_names(s));
 	}
-	
 	
 	virtual size_t hash() const override {
 		return value.hash();
