@@ -1,7 +1,7 @@
 #pragma once 
 
 
-typedef size_t nonterminal_t;
+typedef unsigned short nonterminal_t; // we hopefully don't have that many nonterminal types
 
 /// Helpers to Find the numerical index (as a nonterminal_t) in a tuple of a given type
 

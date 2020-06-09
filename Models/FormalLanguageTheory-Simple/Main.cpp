@@ -131,6 +131,7 @@ public:
 #include "ParallelTempering.h"
 #include "FullMCTS.h"
 #include "Astar.h"
+#include "Enumeration.h"
 
 #include "Fleet.h" 
 
@@ -236,10 +237,19 @@ int main(int argc, char** argv){
 	// Do some A* search -- here we maintain a priority queue of partially open nodes, sorted by 
 	// their prior and a single sample of their likelihood (which we end up downweighting a lot) (see Astar.h)
 	// This heuristic is inadmissable, but ends up working pretty well. 
-	top.print_best = true;
-	MyHypothesis h0(&grammar);
-	Astar astar(h0,&mydata, top, 10.0);
-	astar.run(Control(mcts_steps, runtime, nthreads));
+//	top.print_best = true;
+//	MyHypothesis h0(&grammar);
+//	Astar astar(h0,&mydata, top, 10.0);
+//	astar.run(Control(mcts_steps, runtime, nthreads));
+
+	// Do some enumeration
+	for(enumerationidx_t z=0;z<1000000 and !CTRL_C;z++) {
+		auto n = expand_from_integer(&grammar, grammar.nt<S>(), z); 
+		MyHypothesis h(&grammar,n);
+		h.compute_posterior(mydata);
+		top << h;
+//		CERR h.posterior TAB h ENDL;
+	}
 	
 	top.print();
 

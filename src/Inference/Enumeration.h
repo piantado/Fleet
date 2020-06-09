@@ -5,13 +5,15 @@
 typedef size_t enumerationidx_t; // this is the type we use to store enuemration indices
 
 
+/**
+ * @class IntegerizedStack
+ * @author piantado
+ * @date 09/06/20
+ * @file Enumeration.h
+ * @brief An IntegerizedStack is just a wrapper around unsigned longs that allow them to behave like a of integers stack, supporting push and pop (maybe with mod) via a standard pairing function
+ */ 
 class IntegerizedStack {
-	// An IntegerizedStack is just a wrapper around unsigned longs that allow
-	// them to behave like a stack, supporting push and pop (maybe with mod)
-	// via a standard pairing function
-	// (The name is because its not the same as an integer stack)
-	
-	typedef unsigned long value_t;
+	typedef unsigned long long value_t;
 
 protected:
 	value_t value;
@@ -22,6 +24,7 @@ public:
 	}
 	
 	// A bunch of static operations
+	
 	//std::pair<enumerationidx_t, enumerationidx_t> cantor_decode(const enumerationidx_t z) {
 	//	enumerationidx_t w = (enumerationidx_t)std::floor((std::sqrt(8*z+1)-1.0)/2);
 	//	enumerationidx_t t = w*(w+1)/2;
