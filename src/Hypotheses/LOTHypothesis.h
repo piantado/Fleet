@@ -250,7 +250,7 @@ public:
 	virtual HYP make_neighbor(int k) const override {
 		assert(grammar != nullptr);
 		
-		HYP h(grammar); // new hypothesis
+		HYP h(grammar); // new hypothesis -- NOTE This does NOT copy prior, likelihood
 		auto nt = grammar->template nt<output_t>();
 		if(value.is_null()) {
 			assert(k >= 0);

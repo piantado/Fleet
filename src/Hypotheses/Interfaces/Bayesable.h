@@ -167,37 +167,6 @@ public:
 		}
 	}
 	
-	virtual bool operator>(const Bayesable<datum_t,data_t>& l) const {
-		/**
-		 * @brief Allow sorting of Bayesable hypotheses. We defaultly sort by posterior so that TopN works right. 
-		 * 		  But we also need to be careful because std::set uses this to determine equality, so this
-		 *        also checks priors and then hashes. 
-		 * @param l
-		 * @return 
-		 */		
-		
-		if(posterior > l.posterior) {
-			return true;
-		}
-		else if(l.posterior > posterior) {
-			return false;
-		}
-		else if(prior > l.prior) {
-			return true;
-		}
-		else if(l.prior > prior) {
-			return false;
-		}
-		else {
-			// we could be equal, but we only want to say that if we are. 
-			// otherwise this is decided by the hash function 
-			// so we must ensure that the hash function is only equal for equal values
-			return this->hash() > l.hash();
-		}
-	}
-	
-	
-	
 	virtual std::string string() const = 0; // my subclasses must implement string
 	
 	virtual void print(std::string prefix="") {
