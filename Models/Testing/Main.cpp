@@ -199,6 +199,7 @@ double top_difference(Top_t& x, Top_t& y) {
 #include "Top.h"
 #include "MCMCChain.h"
 #include "ParallelTempering.h"
+#include "Enumeration.h"
 
 #include "Fleet.h" 
 
@@ -235,6 +236,7 @@ int main(int argc, char** argv){
 	// Actually run
 	//------------------
 		
+<<<<<<< HEAD
 	COUT "# MCMC..." ENDL;
 	TopN<MyHypothesis> top_mcmc(N);
 	h0 = h0.restart();
@@ -276,18 +278,27 @@ int main(int argc, char** argv){
 //		checkNode(&grammar, n);
 //		CERR n ENDL;
 //	
-//		MyHypothesis h(&grammar);
-//		h.set_value(n);
-//		h.compute_posterior(mydata);
-//		
-//		top_enumerate << h;
-//		
-//		// check our enumeration order
-//		auto o  = grammar.compute_enumeration_order(n);
-//		assert(o == z); // check our enumeration order
-//	}
-//	assert(not top_enumerate.empty());
-//	checkTop(&grammar, top_enumerate);
+//	COUT "# top_difference(top_mcmc, top_tempering) = " << top_difference(top_mcmc, top_tempering) ENDL;
+
+	COUT "# Enumerating...." ENDL;
+	Fleet::Statistics::TopN<MyHypothesis> top_enumerate(N);
+	for(enumerationidx_t z=1;z<1000 and !CTRL_C;z++) {
+		auto n = expand_from_integer(&grammar, grammar.nt<bool>(), z);
+		checkNode(&grammar, n);
+		CERR n ENDL;
+	
+		MyHypothesis h(&grammar);
+		h.set_value(n);
+		h.compute_posterior(mydata);
+		
+		top_enumerate << h;
+		
+		// check our enumeration order
+		auto o  = compute_enumeration_order(&grammar, n);
+		assert(o == z); // check our enumeration order
+	}
+	assert(not top_enumerate.empty());
+	checkTop(&grammar, top_enumerate);
 	
 	COUT "# PriorSampling...." ENDL;
 	TopN<MyHypothesis> top_generate(N);
@@ -304,7 +315,7 @@ int main(int argc, char** argv){
 	checkTop(&grammar, top_generate);
 	assert(not top_generate.empty());
 	
-	COUT "# top_difference(top_mcmc, top_generate) = " << top_difference(top_mcmc, top_generate) ENDL;
+//	COUT "# top_difference(top_mcmc, top_generate) = " << top_difference(top_mcmc, top_generate) ENDL;
 	
 	/*
 	
