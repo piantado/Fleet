@@ -160,6 +160,34 @@ public:
 		return n;
 	}
 
+	/**
+	 * @brief For a given nt, returns the number of finite trees that nt can expand to if its finite; 0 if its infinite.	 * 		
+	 * @param nt - the type of this nonterminal
+	 */
+//	void finite_size(nonterminal_t nt) const {
+//		assert(nt >=0 and nt <= N_NTs);
+//		
+//		// need to create a 2d table of what each thing can expand to
+//		std::vector<std::vector<int> > e(N_NTs, std::vector<int>(N_NTs, 0)); 
+//		
+//		for(auto& r : rules[nt]) {
+//			for(auto& t : r.child_types)
+//				++e[nt][t]; // how many ways can I get to this one?
+//		}
+//		
+//		bool updated = false;
+//		
+//		do {
+//			for(size_t nt=0;nt<N_NTs;nt++) {
+//				for(auto& r : rules[nt]){
+//					for(auto& t : r.child_types) {
+//						
+//					}
+//				}
+//			}
+//			
+//		} while(updated);
+//	}
 
 	void show(std::string prefix="# ") {
 		/**
