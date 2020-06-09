@@ -1,0 +1,92 @@
+\hypertarget{class_my_grammar}{}\section{My\+Grammar Class Reference}
+\label{class_my_grammar}\index{My\+Grammar@{My\+Grammar}}
+
+
+\subparagraph*{} 
+
+
+
+
+Inheritance diagram for My\+Grammar\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{class_my_grammar__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for My\+Grammar\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{class_my_grammar__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subparagraph*{}
+
+\subparagraph*{}
+
+
+\begin{DoxyCode}
+    We need to define some structs to hold the \textcolor{keywordtype}{object} features
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+\textcolor{keyword}{enum    class}  Shape  \{ Square, Triangle, Circle\};
+\textcolor{keyword}{enum    class}  Color  \{ Red, Green, Blue\};
+\textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{ Color color; Shape shape; \} Object;
+
+
+
+
+std::map<std::string, double> probs = \{
+                                        \{\textcolor{stringliteral}{"and"}, 1.82\}, \{\textcolor{stringliteral}{"or"}, 0.11\}, \{\textcolor{stringliteral}{"not"}, 1.07\},
+                                        \{\textcolor{stringliteral}{"red"}, 2.4\},  \{\textcolor{stringliteral}{"green"}, 0.2\}, \{\textcolor{stringliteral}{"blue"}, 1.4\},
+                                        \{\textcolor{stringliteral}{"square"}, 5.1\}, \{\textcolor{stringliteral}{"triangle"}, 4.5\}, \{\textcolor{stringliteral}{"circle"}, 2.49\}
+                                       \};
+
+\textcolor{keywordtype}{double} zprob() \{
+    \textcolor{keywordtype}{double} z = 0.0;
+    \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& i : probs) \{
+        z += i.second;
+    \}
+    \textcolor{keywordflow}{return} z;
+\}
+
+std::tuple PRIMITIVES = \{
+    \textcolor{comment}{// We've set some arbitrary weights here -- be sure you change them below}
+    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"and(%s,%s)"},    +[](\textcolor{keywordtype}{bool} a, \textcolor{keywordtype}{bool} b) -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} (a and b); \}, probs[\textcolor{stringliteral}{"and"}]), 
+    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"or(%s,%s)"},     +[](\textcolor{keywordtype}{bool} a, \textcolor{keywordtype}{bool} b) -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} (a or b); \},  probs[\textcolor{stringliteral}{"or"}]),
+    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"not(%s)"},       +[](\textcolor{keywordtype}{bool} a)         -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} (not a); \},   probs[\textcolor{stringliteral}{"not"}]),
+
+    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"red(%s)"},       +[](Object x)       -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} x.color == Color::Red; \}, 
+      probs[\textcolor{stringliteral}{"red"}]),
+    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"green(%s)"},     +[](Object x)       -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} x.color == Color::Green; \}, 
+      probs[\textcolor{stringliteral}{"green"}]),
+    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"blue(%s)"},      +[](Object x)       -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} x.color == Color::Blue; \}, 
+      probs[\textcolor{stringliteral}{"blue"}]),
+
+    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"square(%s)"},    +[](Object x)       -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} x.shape == Shape::Square; \}, 
+      probs[\textcolor{stringliteral}{"square"}]),
+    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"triangle(%s)"},  +[](Object x)       -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} x.shape == Shape::Triangle; \},
+       probs[\textcolor{stringliteral}{"triangle"}]),
+    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"circle(%s)"},    +[](Object x)       -> \textcolor{keywordtype}{bool} \{ \textcolor{keywordflow}{return} x.shape == Shape::Circle; \}, 
+      probs[\textcolor{stringliteral}{"circle"}]),
+
+
+    \textcolor{comment}{// but we also have to add a rule for the BuiltinOp that access x, our argument}
+    \hyperlink{struct_builtin_1_1_x}{Builtin::X<Object>}(\textcolor{stringliteral}{"x"}, 41.11) 
+\};
+
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ Define the grammar $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Models/\+Testing/\hyperlink{_testing_2_main_8cpp}{Main.\+cpp}\end{DoxyCompactItemize}

@@ -1,0 +1,54 @@
+\hypertarget{_astar_8h}{}\section{src/\+Inference/\+Astar.h File Reference}
+\label{_astar_8h}\index{src/\+Inference/\+Astar.\+h@{src/\+Inference/\+Astar.\+h}}
+
+
+This is an implementation of kinda-\/\+A$\ast$ search that maintains a priority queue of partial states and attempts to find a program with the lowest posterior score. To do this, we choose a node to expand based on its prior plus N\+\_\+\+R\+E\+PS samples of its likelihood, computed by filling in its children at random. This stochastic heuristic is actually inadmissable since it usually overestimates the cost. As a result, it usually makes sense to run A$\ast$ at a pretty high temperature, corresponding to a downweighting of the likelihood, and making the heuristic more likely to be admissable.  
+
+
+{\ttfamily \#include \char`\"{}I\+O.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Control.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$queue$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Fleet\+Statistics.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Parallel\+Inference\+Interface.\+h\char`\"{}}\newline
+Include dependency graph for Astar.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_astar_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_astar_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_astar}{Astar$<$ H\+Y\+P, callback\+\_\+t $>$}
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+volatile sig\+\_\+atomic\+\_\+t \hyperlink{_astar_8h_a6f7c4963bb8a36031664821219e3159e}{C\+T\+R\+L\+\_\+C}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is an implementation of kinda-\/\+A$\ast$ search that maintains a priority queue of partial states and attempts to find a program with the lowest posterior score. To do this, we choose a node to expand based on its prior plus N\+\_\+\+R\+E\+PS samples of its likelihood, computed by filling in its children at random. This stochastic heuristic is actually inadmissable since it usually overestimates the cost. As a result, it usually makes sense to run A$\ast$ at a pretty high temperature, corresponding to a downweighting of the likelihood, and making the heuristic more likely to be admissable. 
+
+One general challenge is how to handle -\/inf likelihoods, and here we\textquotesingle{}ve done that by, if you end up with -\/inf, taking your parent\textquotesingle{}s temperature and multiplying by P\+A\+R\+E\+N\+T\+\_\+\+P\+E\+N\+A\+L\+TY. 
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{_astar_8h_a6f7c4963bb8a36031664821219e3159e}\label{_astar_8h_a6f7c4963bb8a36031664821219e3159e}} 
+\index{Astar.\+h@{Astar.\+h}!C\+T\+R\+L\+\_\+C@{C\+T\+R\+L\+\_\+C}}
+\index{C\+T\+R\+L\+\_\+C@{C\+T\+R\+L\+\_\+C}!Astar.\+h@{Astar.\+h}}
+\subsubsection{\texorpdfstring{C\+T\+R\+L\+\_\+C}{CTRL\_C}}
+{\footnotesize\ttfamily volatile sig\+\_\+atomic\+\_\+t C\+T\+R\+L\+\_\+C}
+

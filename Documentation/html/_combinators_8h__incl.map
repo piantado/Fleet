@@ -1,0 +1,21 @@
+<map id="src/Combinators.h" name="src/Combinators.h">
+<area shape="rect" id="node2" href="$_errors_8h.html" title="Errors.h" alt="" coords="1099,229,1167,256"/>
+<area shape="rect" id="node6" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="803,80,890,107"/>
+<area shape="rect" id="node13" href="$_node_8h.html" title="Node.h" alt="" coords="335,155,399,181"/>
+<area shape="rect" id="node9" href="$_i_o_8h.html" title="IO.h" alt="" coords="94,379,141,405"/>
+<area shape="rect" id="node23" href="$_nonterminal_8h.html" title="Nonterminal.h" alt="" coords="290,304,393,331"/>
+<area shape="rect" id="node33" href="$_random_8h.html" title="Random.h" alt="" coords="423,155,505,181"/>
+<area shape="rect" id="node34" href="$_primitives_8h.html" title="If there are any references in the arguments, only the first can be a reference. " alt="" coords="747,155,837,181"/>
+<area shape="rect" id="node37" href="$_integerized_stack_8h.html" title="IntegerizedStack.h" alt="" coords="1013,155,1144,181"/>
+<area shape="rect" id="node38" href="$_virtual_machine_state_8h.html" title="Count references in lambda arguments (used to ensure we only passs one) " alt="" coords="1270,155,1421,181"/>
+<area shape="rect" id="node44" href="$_builtins_8h.html" title="This is needed below so we can check if something is a Builtin without template args. " alt="" coords="862,155,938,181"/>
+<area shape="rect" id="node16" href="$_hash_8h.html" title="Hash.h" alt="" coords="80,229,144,256"/>
+<area shape="rect" id="node17" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we &quot;emulate&quot; a type system using t_nonterminal to store an integer for the types. *. " alt="" coords="553,229,613,256"/>
+<area shape="rect" id="node31" href="$_program_8h.html" title="Program.h" alt="" coords="688,229,771,256"/>
+<area shape="rect" id="node19" href="$_instruction_8h.html" title="This is an error type that is returned if we get a runtime error (e.g. string length, etc.) " alt="" coords="850,304,945,331"/>
+<area shape="rect" id="node24" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="567,304,683,331"/>
+<area shape="rect" id="node26" href="$_strings_8h.html" title="Strings.h" alt="" coords="417,304,492,331"/>
+<area shape="rect" id="node29" href="$_numerics_8h.html" title="Numerics.h" alt="" coords="489,379,578,405"/>
+<area shape="rect" id="node32" href="$_stack_8h.html" title="Stack.h" alt="" coords="759,304,825,331"/>
+<area shape="rect" id="node42" href="$_fleet_statistics_8h.html" title="Statistics/FleetStatistics.h" alt="" coords="1317,229,1493,256"/>
+</map>

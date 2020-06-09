@@ -1,0 +1,78 @@
+\hypertarget{_combinators_8h}{}\section{src/\+Combinators.h File Reference}
+\label{_combinators_8h}\index{src/\+Combinators.\+h@{src/\+Combinators.\+h}}
+
+
+A grammar for SK combinatory logic. N\+O\+TE\+: Custom\+Ops must be defined here.  
+
+
+{\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Grammar.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Node.\+h\char`\"{}}\newline
+Include dependency graph for Combinators.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_combinators_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{_combinators_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_fleet_1_1_combinators_1_1_c_l}{Fleet\+::\+Combinators\+::\+CL}
+\item 
+class \hyperlink{class_fleet_1_1_combinators_1_1_s_k_grammar}{Fleet\+::\+Combinators\+::\+S\+K\+Grammar}
+\item 
+class \hyperlink{class_fleet_1_1_combinators_1_1_reduction_exception}{Fleet\+::\+Combinators\+::\+Reduction\+Exception}
+\item 
+class \hyperlink{class_fleet_1_1_combinators_1_1_lazy_normal_forms}{Fleet\+::\+Combinators\+::\+Lazy\+Normal\+Forms}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespace_fleet}{Fleet}
+\item 
+ \hyperlink{namespace_fleet_1_1_combinators}{Fleet\+::\+Combinators}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$Builtin\+Op $>$ }\\bool \hyperlink{namespace_fleet_1_1_combinators_a3d456e1f1eeb0569b962e4ddb521c64a}{Fleet\+::\+Combinators\+::can\+\_\+reduce} (const \hyperlink{class_node}{Node} \&n)
+\item 
+{\footnotesize template$<$$>$ }\\bool \hyperlink{namespace_fleet_1_1_combinators_a8bef003899607e07e72709b799187195}{Fleet\+::\+Combinators\+::can\+\_\+reduce$<$ Builtin\+Op\+::op\+\_\+\+I $>$} (const \hyperlink{class_node}{Node} \&n)
+\item 
+{\footnotesize template$<$$>$ }\\bool \hyperlink{namespace_fleet_1_1_combinators_a0dd08c4539c98c52ea031ecf364bcb60}{Fleet\+::\+Combinators\+::can\+\_\+reduce$<$ Builtin\+Op\+::op\+\_\+\+K $>$} (const \hyperlink{class_node}{Node} \&n)
+\item 
+{\footnotesize template$<$$>$ }\\bool \hyperlink{namespace_fleet_1_1_combinators_a12bfc0d27b7b9672fc3a99a74be58523}{Fleet\+::\+Combinators\+::can\+\_\+reduce$<$ Builtin\+Op\+::op\+\_\+\+S $>$} (const \hyperlink{class_node}{Node} \&n)
+\item 
+bool \hyperlink{namespace_fleet_1_1_combinators_ae0176e1feedc8f2db63a7fedd927cdd9}{Fleet\+::\+Combinators\+::is\+\_\+normal\+\_\+form} (const \hyperlink{class_node}{Node} \&n)
+\begin{DoxyCompactList}\small\item\em check if a tree n is in SK normal form, meaning that no subnodes can be reduced \end{DoxyCompactList}\item 
+void \hyperlink{namespace_fleet_1_1_combinators_a39ef824add4fb94b4b2d0b967d14641a}{Fleet\+::\+Combinators\+::reduce} (\hyperlink{class_node}{Node} \&n, size\+\_\+t \&remaining\+\_\+calls)
+\begin{DoxyCompactList}\small\item\em Reduce a combinator. \end{DoxyCompactList}\item 
+void \hyperlink{namespace_fleet_1_1_combinators_ac1c41f1db65aa51fdeac1a4016b8212c}{Fleet\+::\+Combinators\+::reduce} (\hyperlink{class_node}{Node} \&n)
+\begin{DoxyCompactList}\small\item\em Reduce (automtically set remaining\+\_\+calls=256 default) \end{DoxyCompactList}\item 
+\hyperlink{class_node}{Node} \hyperlink{namespace_fleet_1_1_combinators_a8c5491d5248a57dfe08a4f730ab53fbd}{Fleet\+::\+Combinators\+::apply\+\_\+and\+\_\+reduce} (\hyperlink{class_node}{Node} f, \hyperlink{class_node}{Node} x)
+\begin{DoxyCompactList}\small\item\em Apply a function f to a node x and reduce. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_fleet_1_1_combinators_1_1_s_k_grammar}{Fleet\+::\+Combinators\+::\+S\+K\+Grammar} \hyperlink{namespace_fleet_1_1_combinators_a5293b7a2dcdbfb430b45fcf401e3bab0}{Fleet\+::\+Combinators\+::skgrammar}
+\item 
+\hyperlink{class_fleet_1_1_combinators_1_1_reduction_exception}{Fleet\+::\+Combinators\+::\+Reduction\+Exception} \hyperlink{namespace_fleet_1_1_combinators_a837dab8d754d0f5062bf633738832079}{Fleet\+::\+Combinators\+::reduction\+\_\+exception}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A grammar for SK combinatory logic. N\+O\+TE\+: Custom\+Ops must be defined here. 
+
+Use a nice data structure to enumerate the combinators in normal form lazily so that we can do this -- it will store the max enumerated so far, and allow access.
+
+A class that gets thrown when we\textquotesingle{}ve reduced too much.

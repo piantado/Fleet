@@ -1,0 +1,164 @@
+\hypertarget{class_astar}{}\section{Astar$<$ H\+YP, callback\+\_\+t $>$ Class Template Reference}
+\label{class_astar}\index{Astar$<$ H\+Y\+P, callback\+\_\+t $>$@{Astar$<$ H\+Y\+P, callback\+\_\+t $>$}}
+
+
+{\ttfamily \#include $<$Astar.\+h$>$}
+
+
+
+Inheritance diagram for Astar$<$ H\+YP, callback\+\_\+t $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{class_astar__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Astar$<$ H\+YP, callback\+\_\+t $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{class_astar__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_astar_acd10ee027c3fc2c2fe14fedc10e350f1}{Astar} (H\+YP \&h0, H\+Y\+P\+::data\+\_\+t $\ast$d, callback\+\_\+t \&cb, double temp)
+\item 
+void \hyperlink{class_astar_adc632480077c990ab12f88a85709b76f}{push} (H\+YP \&h)
+\item 
+void \hyperlink{class_astar_a689ddbddae5f21f26053d2d376c34095}{push} (H\+YP \&\&h)
+\item 
+void \hyperlink{class_astar_a962d234b6b109597c03516d61ff2cffc}{run\+\_\+thread} (\hyperlink{struct_control}{Control} ctl) override
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::priority\+\_\+queue$<$ H\+YP, \hyperlink{class_reserved_vector}{Reserved\+Vector}$<$ H\+YP, \hyperlink{class_astar_af674f24278326383c5972fc30f0b21d9}{I\+N\+I\+T\+I\+A\+L\+\_\+\+S\+I\+ZE} $>$ $>$ \hyperlink{class_astar_af96593236e2f3ea3d15b37d513308391}{Q}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr size\+\_\+t \hyperlink{class_astar_af674f24278326383c5972fc30f0b21d9}{I\+N\+I\+T\+I\+A\+L\+\_\+\+S\+I\+ZE} = 10000000
+\item 
+static constexpr size\+\_\+t \hyperlink{class_astar_a4086ae1c376d4d1b8d456f46f09cfa8a}{N\+\_\+\+R\+E\+PS} = 1
+\item 
+static constexpr double \hyperlink{class_astar_a111836518f01d8d4495d00e3b2a17531}{P\+A\+R\+E\+N\+T\+\_\+\+P\+E\+N\+A\+L\+TY} = 1.\+1
+\item 
+static double \hyperlink{class_astar_a9c708491f187aca582d7a3499a442bba}{temperature} = 100.\+0
+\item 
+static callback\+\_\+t $\ast$ \hyperlink{class_astar_a73b7b4ac7d9bdea8b8ce19c94c901705}{callback} = nullptr
+\item 
+static H\+Y\+P\+::data\+\_\+t $\ast$ \hyperlink{class_astar_a6b4ed5bb7ce08dcdceea3697d4f8eb2b}{data} = nullptr
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename H\+YP, typename callback\+\_\+t$>$\newline
+class Astar$<$ H\+Y\+P, callback\+\_\+t $>$}
+
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+07/06/20 
+\end{DoxyDate}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_astar_acd10ee027c3fc2c2fe14fedc10e350f1}\label{class_astar_acd10ee027c3fc2c2fe14fedc10e350f1}} 
+\index{Astar@{Astar}!Astar@{Astar}}
+\index{Astar@{Astar}!Astar@{Astar}}
+\subsubsection{\texorpdfstring{Astar()}{Astar()}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
+\hyperlink{class_astar}{Astar}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_astar}{Astar} (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{callback\+\_\+t \&}]{cb,  }\item[{double}]{temp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_astar_adc632480077c990ab12f88a85709b76f}\label{class_astar_adc632480077c990ab12f88a85709b76f}} 
+\index{Astar@{Astar}!push@{push}}
+\index{push@{push}!Astar@{Astar}}
+\subsubsection{\texorpdfstring{push()}{push()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
+void \hyperlink{class_astar}{Astar}$<$ H\+YP, callback\+\_\+t $>$\+::push (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_astar_a689ddbddae5f21f26053d2d376c34095}\label{class_astar_a689ddbddae5f21f26053d2d376c34095}} 
+\index{Astar@{Astar}!push@{push}}
+\index{push@{push}!Astar@{Astar}}
+\subsubsection{\texorpdfstring{push()}{push()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
+void \hyperlink{class_astar}{Astar}$<$ H\+YP, callback\+\_\+t $>$\+::push (\begin{DoxyParamCaption}\item[{H\+YP \&\&}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_astar_a962d234b6b109597c03516d61ff2cffc}\label{class_astar_a962d234b6b109597c03516d61ff2cffc}} 
+\index{Astar@{Astar}!run\+\_\+thread@{run\+\_\+thread}}
+\index{run\+\_\+thread@{run\+\_\+thread}!Astar@{Astar}}
+\subsubsection{\texorpdfstring{run\+\_\+thread()}{run\_thread()}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
+void \hyperlink{class_astar}{Astar}$<$ H\+YP, callback\+\_\+t $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\hyperlink{struct_control}{Control}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{class_parallel_inference_interface_ae3f9f1a2128878183869d0cc6c7434f6}{Parallel\+Inference\+Interface}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_astar_a73b7b4ac7d9bdea8b8ce19c94c901705}\label{class_astar_a73b7b4ac7d9bdea8b8ce19c94c901705}} 
+\index{Astar@{Astar}!callback@{callback}}
+\index{callback@{callback}!Astar@{Astar}}
+\subsubsection{\texorpdfstring{callback}{callback}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
+callback\+\_\+t $\ast$ \hyperlink{class_astar}{Astar}$<$ H\+YP, callback\+\_\+t $>$\+::callback = nullptr\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_astar_a6b4ed5bb7ce08dcdceea3697d4f8eb2b}\label{class_astar_a6b4ed5bb7ce08dcdceea3697d4f8eb2b}} 
+\index{Astar@{Astar}!data@{data}}
+\index{data@{data}!Astar@{Astar}}
+\subsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
+H\+Y\+P\+::data\+\_\+t $\ast$ \hyperlink{class_astar}{Astar}$<$ H\+YP, callback\+\_\+t $>$\+::data = nullptr\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_astar_af674f24278326383c5972fc30f0b21d9}\label{class_astar_af674f24278326383c5972fc30f0b21d9}} 
+\index{Astar@{Astar}!I\+N\+I\+T\+I\+A\+L\+\_\+\+S\+I\+ZE@{I\+N\+I\+T\+I\+A\+L\+\_\+\+S\+I\+ZE}}
+\index{I\+N\+I\+T\+I\+A\+L\+\_\+\+S\+I\+ZE@{I\+N\+I\+T\+I\+A\+L\+\_\+\+S\+I\+ZE}!Astar@{Astar}}
+\subsubsection{\texorpdfstring{I\+N\+I\+T\+I\+A\+L\+\_\+\+S\+I\+ZE}{INITIAL\_SIZE}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
+constexpr size\+\_\+t \hyperlink{class_astar}{Astar}$<$ H\+YP, callback\+\_\+t $>$\+::I\+N\+I\+T\+I\+A\+L\+\_\+\+S\+I\+ZE = 10000000\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_astar_a4086ae1c376d4d1b8d456f46f09cfa8a}\label{class_astar_a4086ae1c376d4d1b8d456f46f09cfa8a}} 
+\index{Astar@{Astar}!N\+\_\+\+R\+E\+PS@{N\+\_\+\+R\+E\+PS}}
+\index{N\+\_\+\+R\+E\+PS@{N\+\_\+\+R\+E\+PS}!Astar@{Astar}}
+\subsubsection{\texorpdfstring{N\+\_\+\+R\+E\+PS}{N\_REPS}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
+constexpr size\+\_\+t \hyperlink{class_astar}{Astar}$<$ H\+YP, callback\+\_\+t $>$\+::N\+\_\+\+R\+E\+PS = 1\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_astar_a111836518f01d8d4495d00e3b2a17531}\label{class_astar_a111836518f01d8d4495d00e3b2a17531}} 
+\index{Astar@{Astar}!P\+A\+R\+E\+N\+T\+\_\+\+P\+E\+N\+A\+L\+TY@{P\+A\+R\+E\+N\+T\+\_\+\+P\+E\+N\+A\+L\+TY}}
+\index{P\+A\+R\+E\+N\+T\+\_\+\+P\+E\+N\+A\+L\+TY@{P\+A\+R\+E\+N\+T\+\_\+\+P\+E\+N\+A\+L\+TY}!Astar@{Astar}}
+\subsubsection{\texorpdfstring{P\+A\+R\+E\+N\+T\+\_\+\+P\+E\+N\+A\+L\+TY}{PARENT\_PENALTY}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
+constexpr double \hyperlink{class_astar}{Astar}$<$ H\+YP, callback\+\_\+t $>$\+::P\+A\+R\+E\+N\+T\+\_\+\+P\+E\+N\+A\+L\+TY = 1.\+1\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_astar_af96593236e2f3ea3d15b37d513308391}\label{class_astar_af96593236e2f3ea3d15b37d513308391}} 
+\index{Astar@{Astar}!Q@{Q}}
+\index{Q@{Q}!Astar@{Astar}}
+\subsubsection{\texorpdfstring{Q}{Q}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
+std\+::priority\+\_\+queue$<$H\+YP, \hyperlink{class_reserved_vector}{Reserved\+Vector}$<$H\+YP,\hyperlink{class_astar_af674f24278326383c5972fc30f0b21d9}{I\+N\+I\+T\+I\+A\+L\+\_\+\+S\+I\+ZE}$>$ $>$ \hyperlink{class_astar}{Astar}$<$ H\+YP, callback\+\_\+t $>$\+::Q}
+
+\mbox{\Hypertarget{class_astar_a9c708491f187aca582d7a3499a442bba}\label{class_astar_a9c708491f187aca582d7a3499a442bba}} 
+\index{Astar@{Astar}!temperature@{temperature}}
+\index{temperature@{temperature}!Astar@{Astar}}
+\subsubsection{\texorpdfstring{temperature}{temperature}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
+double \hyperlink{class_astar}{Astar}$<$ H\+YP, callback\+\_\+t $>$\+::temperature = 100.\+0\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Inference/\hyperlink{_astar_8h}{Astar.\+h}\end{DoxyCompactItemize}

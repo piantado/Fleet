@@ -1,0 +1,272 @@
+\hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp}{}\section{Models/\+Formal\+Language\+Theory-\/\+Complex/\+Main.cpp File Reference}
+\label{_models_2_formal_language_theory-_complex_2main_8cpp}\index{Models/\+Formal\+Language\+Theory-\/\+Complex/\+Main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/\+Main.\+cpp}}
+{\ttfamily \#include $<$set$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$numeric$>$}\newline
+{\ttfamily \#include \char`\"{}Data.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Primitives.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Builtins.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Virtual\+Machine/\+Virtual\+Machine\+State.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Virtual\+Machine/\+Virtual\+Machine\+Pool.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Grammar.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}L\+O\+T\+Hypothesis.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Lexicon.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Fleet.\+h\char`\"{}}\newline
+Include dependency graph for Main.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_models_2_formal_language_theory-_complex_2main_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_inner_hypothesis}{Inner\+Hypothesis}
+\item 
+class \hyperlink{class_my_hypothesis}{My\+Hypothesis}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a9982c6df11148a7d221b1839f38633a5}{M\+Y\+\_\+\+T\+Y\+P\+ES}~\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S},bool,double,\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a809d982ed20fa378f251596c3b5ad6b7}{Str\+Set}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} = std\+::string
+\item 
+using \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a809d982ed20fa378f251596c3b5ad6b7}{Str\+Set} = std\+::set$<$ \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const std\+::string \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_aff5a98e66ee22e2c2547530190ecfd3d}{my\+\_\+default\+\_\+input} = \char`\"{}data/English\char`\"{}
+\item 
+\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_ad762aabf5f551e4c7632fb389b3e2209}{alphabet} =\char`\"{}nvadtp\char`\"{}
+\item 
+size\+\_\+t \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_aa94da4036d516add23ae35c670300c32}{max\+\_\+length} = 256
+\item 
+size\+\_\+t \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_aafa4cc7b8a249ecb81ad63ca7a2a6150}{max\+\_\+setsize} = 64
+\item 
+size\+\_\+t \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_abbce8dbfea6f30b87265ddd94cb933f7}{nfactors} = 2
+\item 
+const size\+\_\+t \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a948185958f7efc05b85ac4084d82e3b9}{P\+R\+E\+C\+\_\+\+R\+E\+C\+\_\+N} = 25
+\item 
+const size\+\_\+t \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a40344102d720622016c257aa59a33b6d}{M\+A\+X\+\_\+\+L\+I\+N\+ES} = 1000000
+\item 
+const size\+\_\+t \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a5923038d8dfed7c8eaac4111396b490f}{M\+A\+X\+\_\+\+P\+R\+\_\+\+L\+I\+N\+ES} = 1000000
+\item 
+const size\+\_\+t \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_ada34ee41f51e229e0d5e00b99aed5991}{R\+E\+S\+T\+A\+RT} = 0
+\item 
+const size\+\_\+t \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a6aa2c568bc3a4f1e1f586980b31b6699}{N\+T\+E\+M\+PS} = 20
+\item 
+unsigned long \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a30d8f792c547d6073063d862794d030a}{S\+W\+A\+P\+\_\+\+E\+V\+E\+RY} = 500
+\item 
+std\+::vector$<$ \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} $>$ \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_acb338cf650cba49a5be5dabfffad0dbd}{data\+\_\+amounts} =\{\char`\"{}1\char`\"{}, \char`\"{}2\char`\"{}, \char`\"{}5\char`\"{}, \char`\"{}10\char`\"{}, \char`\"{}50\char`\"{}, \char`\"{}100\char`\"{}, \char`\"{}500\char`\"{}, \char`\"{}1000\char`\"{}, \char`\"{}5000\char`\"{}, \char`\"{}10000\char`\"{}, \char`\"{}50000\char`\"{}, \char`\"{}100000\char`\"{}\}
+\item 
+unsigned long \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a33cfa353d2570ba1bc9b45b924e890ff}{M\+A\+X\+\_\+\+S\+T\+E\+P\+S\+\_\+\+P\+E\+R\+\_\+\+F\+A\+C\+T\+OR} = 2048
+\begin{DoxyCompactList}\small\item\em N\+O\+TE\+: IF Y\+OU C\+H\+A\+N\+GE, C\+H\+A\+N\+GE B\+E\+L\+OW T\+OO $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a78ab994cd90dbad4d470e8b4082ef882}{M\+A\+X\+\_\+\+O\+U\+T\+P\+U\+T\+S\+\_\+\+P\+E\+R\+\_\+\+F\+A\+C\+T\+OR} = 512
+\item 
+unsigned long \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_ad098fee1c76be478fe0683197334c489}{P\+R\+I\+N\+T\+\_\+\+S\+T\+R\+I\+N\+GS} = 128
+\item 
+double \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_aeefd72efb701ee22e6d0c6755d8596b2}{M\+I\+N\+\_\+\+LP} = -\/25.\+0
+\item 
+std\+::tuple \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a04e6d8e4b74d3f4fc965e5e5449158a3}{P\+R\+I\+M\+I\+T\+I\+V\+ES}
+\begin{DoxyCompactList}\small\item\em N\+O\+TE\+: IF Y\+OU C\+H\+A\+N\+GE, C\+H\+A\+N\+GE B\+E\+L\+OW T\+OO $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_aad659d32cecc0fd81857e5dbb67e0b1c}{prdata\+\_\+path} = \char`\"{}\char`\"{}
+\item 
+\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{My\+Hypothesis\+::data\+\_\+t} \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_af877d2e50caacf995a851274343f46c5}{prdata}
+\item 
+\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a7738aad53d0b772202992e9bad69c250}{current\+\_\+data} = \char`\"{}\char`\"{}
+\item 
+bool \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a41b29b6499f37ab86060debf9c58d19f}{long\+\_\+output} = false
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_a9982c6df11148a7d221b1839f38633a5}\label{_models_2_formal_language_theory-_complex_2main_8cpp_a9982c6df11148a7d221b1839f38633a5}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!M\+Y\+\_\+\+T\+Y\+P\+ES@{M\+Y\+\_\+\+T\+Y\+P\+ES}}
+\index{M\+Y\+\_\+\+T\+Y\+P\+ES@{M\+Y\+\_\+\+T\+Y\+P\+ES}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{M\+Y\+\_\+\+T\+Y\+P\+ES}{MY\_TYPES}}
+{\footnotesize\ttfamily \#define M\+Y\+\_\+\+T\+Y\+P\+ES~\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S},bool,double,\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a809d982ed20fa378f251596c3b5ad6b7}{Str\+Set}}
+
+
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}\label{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!S@{S}}
+\index{S@{S}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{S}{S}}
+{\footnotesize\ttfamily using \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} =  std\+::string}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_a809d982ed20fa378f251596c3b5ad6b7}\label{_models_2_formal_language_theory-_complex_2main_8cpp_a809d982ed20fa378f251596c3b5ad6b7}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!Str\+Set@{Str\+Set}}
+\index{Str\+Set@{Str\+Set}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{Str\+Set}{StrSet}}
+{\footnotesize\ttfamily using \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a809d982ed20fa378f251596c3b5ad6b7}{Str\+Set} =  std\+::set$<$\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}$>$}
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{_models_2_formal_language_theory-_complex_2main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!main@{main}}
+\index{main@{main}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_ad762aabf5f551e4c7632fb389b3e2209}\label{_models_2_formal_language_theory-_complex_2main_8cpp_ad762aabf5f551e4c7632fb389b3e2209}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!alphabet@{alphabet}}
+\index{alphabet@{alphabet}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{alphabet}{alphabet}}
+{\footnotesize\ttfamily \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} alphabet =\char`\"{}nvadtp\char`\"{}}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_a7738aad53d0b772202992e9bad69c250}\label{_models_2_formal_language_theory-_complex_2main_8cpp_a7738aad53d0b772202992e9bad69c250}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!current\+\_\+data@{current\+\_\+data}}
+\index{current\+\_\+data@{current\+\_\+data}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{current\+\_\+data}{current\_data}}
+{\footnotesize\ttfamily \hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S} current\+\_\+data = \char`\"{}\char`\"{}}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_acb338cf650cba49a5be5dabfffad0dbd}\label{_models_2_formal_language_theory-_complex_2main_8cpp_acb338cf650cba49a5be5dabfffad0dbd}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!data\+\_\+amounts@{data\+\_\+amounts}}
+\index{data\+\_\+amounts@{data\+\_\+amounts}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{data\+\_\+amounts}{data\_amounts}}
+{\footnotesize\ttfamily std\+::vector$<$\hyperlink{_models_2_formal_language_theory-_complex_2main_8cpp_a51c40915539205f0b5add30b0d68a4cb}{S}$>$ data\+\_\+amounts =\{\char`\"{}1\char`\"{}, \char`\"{}2\char`\"{}, \char`\"{}5\char`\"{}, \char`\"{}10\char`\"{}, \char`\"{}50\char`\"{}, \char`\"{}100\char`\"{}, \char`\"{}500\char`\"{}, \char`\"{}1000\char`\"{}, \char`\"{}5000\char`\"{}, \char`\"{}10000\char`\"{}, \char`\"{}50000\char`\"{}, \char`\"{}100000\char`\"{}\}}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_a41b29b6499f37ab86060debf9c58d19f}\label{_models_2_formal_language_theory-_complex_2main_8cpp_a41b29b6499f37ab86060debf9c58d19f}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!long\+\_\+output@{long\+\_\+output}}
+\index{long\+\_\+output@{long\+\_\+output}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{long\+\_\+output}{long\_output}}
+{\footnotesize\ttfamily bool long\+\_\+output = false}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_aa94da4036d516add23ae35c670300c32}\label{_models_2_formal_language_theory-_complex_2main_8cpp_aa94da4036d516add23ae35c670300c32}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!max\+\_\+length@{max\+\_\+length}}
+\index{max\+\_\+length@{max\+\_\+length}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{max\+\_\+length}{max\_length}}
+{\footnotesize\ttfamily size\+\_\+t max\+\_\+length = 256}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_a40344102d720622016c257aa59a33b6d}\label{_models_2_formal_language_theory-_complex_2main_8cpp_a40344102d720622016c257aa59a33b6d}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!M\+A\+X\+\_\+\+L\+I\+N\+ES@{M\+A\+X\+\_\+\+L\+I\+N\+ES}}
+\index{M\+A\+X\+\_\+\+L\+I\+N\+ES@{M\+A\+X\+\_\+\+L\+I\+N\+ES}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+L\+I\+N\+ES}{MAX\_LINES}}
+{\footnotesize\ttfamily const size\+\_\+t M\+A\+X\+\_\+\+L\+I\+N\+ES = 1000000}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_a78ab994cd90dbad4d470e8b4082ef882}\label{_models_2_formal_language_theory-_complex_2main_8cpp_a78ab994cd90dbad4d470e8b4082ef882}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!M\+A\+X\+\_\+\+O\+U\+T\+P\+U\+T\+S\+\_\+\+P\+E\+R\+\_\+\+F\+A\+C\+T\+OR@{M\+A\+X\+\_\+\+O\+U\+T\+P\+U\+T\+S\+\_\+\+P\+E\+R\+\_\+\+F\+A\+C\+T\+OR}}
+\index{M\+A\+X\+\_\+\+O\+U\+T\+P\+U\+T\+S\+\_\+\+P\+E\+R\+\_\+\+F\+A\+C\+T\+OR@{M\+A\+X\+\_\+\+O\+U\+T\+P\+U\+T\+S\+\_\+\+P\+E\+R\+\_\+\+F\+A\+C\+T\+OR}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+O\+U\+T\+P\+U\+T\+S\+\_\+\+P\+E\+R\+\_\+\+F\+A\+C\+T\+OR}{MAX\_OUTPUTS\_PER\_FACTOR}}
+{\footnotesize\ttfamily unsigned long M\+A\+X\+\_\+\+O\+U\+T\+P\+U\+T\+S\+\_\+\+P\+E\+R\+\_\+\+F\+A\+C\+T\+OR = 512}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_a5923038d8dfed7c8eaac4111396b490f}\label{_models_2_formal_language_theory-_complex_2main_8cpp_a5923038d8dfed7c8eaac4111396b490f}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!M\+A\+X\+\_\+\+P\+R\+\_\+\+L\+I\+N\+ES@{M\+A\+X\+\_\+\+P\+R\+\_\+\+L\+I\+N\+ES}}
+\index{M\+A\+X\+\_\+\+P\+R\+\_\+\+L\+I\+N\+ES@{M\+A\+X\+\_\+\+P\+R\+\_\+\+L\+I\+N\+ES}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+P\+R\+\_\+\+L\+I\+N\+ES}{MAX\_PR\_LINES}}
+{\footnotesize\ttfamily const size\+\_\+t M\+A\+X\+\_\+\+P\+R\+\_\+\+L\+I\+N\+ES = 1000000}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_aafa4cc7b8a249ecb81ad63ca7a2a6150}\label{_models_2_formal_language_theory-_complex_2main_8cpp_aafa4cc7b8a249ecb81ad63ca7a2a6150}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!max\+\_\+setsize@{max\+\_\+setsize}}
+\index{max\+\_\+setsize@{max\+\_\+setsize}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{max\+\_\+setsize}{max\_setsize}}
+{\footnotesize\ttfamily size\+\_\+t max\+\_\+setsize = 64}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_a33cfa353d2570ba1bc9b45b924e890ff}\label{_models_2_formal_language_theory-_complex_2main_8cpp_a33cfa353d2570ba1bc9b45b924e890ff}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!M\+A\+X\+\_\+\+S\+T\+E\+P\+S\+\_\+\+P\+E\+R\+\_\+\+F\+A\+C\+T\+OR@{M\+A\+X\+\_\+\+S\+T\+E\+P\+S\+\_\+\+P\+E\+R\+\_\+\+F\+A\+C\+T\+OR}}
+\index{M\+A\+X\+\_\+\+S\+T\+E\+P\+S\+\_\+\+P\+E\+R\+\_\+\+F\+A\+C\+T\+OR@{M\+A\+X\+\_\+\+S\+T\+E\+P\+S\+\_\+\+P\+E\+R\+\_\+\+F\+A\+C\+T\+OR}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+S\+T\+E\+P\+S\+\_\+\+P\+E\+R\+\_\+\+F\+A\+C\+T\+OR}{MAX\_STEPS\_PER\_FACTOR}}
+{\footnotesize\ttfamily unsigned long M\+A\+X\+\_\+\+S\+T\+E\+P\+S\+\_\+\+P\+E\+R\+\_\+\+F\+A\+C\+T\+OR = 2048}
+
+
+
+N\+O\+TE\+: IF Y\+OU C\+H\+A\+N\+GE, C\+H\+A\+N\+GE B\+E\+L\+OW T\+OO $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$. 
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_aeefd72efb701ee22e6d0c6755d8596b2}\label{_models_2_formal_language_theory-_complex_2main_8cpp_aeefd72efb701ee22e6d0c6755d8596b2}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!M\+I\+N\+\_\+\+LP@{M\+I\+N\+\_\+\+LP}}
+\index{M\+I\+N\+\_\+\+LP@{M\+I\+N\+\_\+\+LP}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{M\+I\+N\+\_\+\+LP}{MIN\_LP}}
+{\footnotesize\ttfamily double M\+I\+N\+\_\+\+LP = -\/25.\+0}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_aff5a98e66ee22e2c2547530190ecfd3d}\label{_models_2_formal_language_theory-_complex_2main_8cpp_aff5a98e66ee22e2c2547530190ecfd3d}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!my\+\_\+default\+\_\+input@{my\+\_\+default\+\_\+input}}
+\index{my\+\_\+default\+\_\+input@{my\+\_\+default\+\_\+input}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{my\+\_\+default\+\_\+input}{my\_default\_input}}
+{\footnotesize\ttfamily const std\+::string my\+\_\+default\+\_\+input = \char`\"{}data/English\char`\"{}}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_abbce8dbfea6f30b87265ddd94cb933f7}\label{_models_2_formal_language_theory-_complex_2main_8cpp_abbce8dbfea6f30b87265ddd94cb933f7}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!nfactors@{nfactors}}
+\index{nfactors@{nfactors}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{nfactors}{nfactors}}
+{\footnotesize\ttfamily size\+\_\+t nfactors = 2}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_a6aa2c568bc3a4f1e1f586980b31b6699}\label{_models_2_formal_language_theory-_complex_2main_8cpp_a6aa2c568bc3a4f1e1f586980b31b6699}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!N\+T\+E\+M\+PS@{N\+T\+E\+M\+PS}}
+\index{N\+T\+E\+M\+PS@{N\+T\+E\+M\+PS}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{N\+T\+E\+M\+PS}{NTEMPS}}
+{\footnotesize\ttfamily const size\+\_\+t N\+T\+E\+M\+PS = 20}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_af877d2e50caacf995a851274343f46c5}\label{_models_2_formal_language_theory-_complex_2main_8cpp_af877d2e50caacf995a851274343f46c5}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!prdata@{prdata}}
+\index{prdata@{prdata}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{prdata}{prdata}}
+{\footnotesize\ttfamily \hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{My\+Hypothesis\+::data\+\_\+t} prdata}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_aad659d32cecc0fd81857e5dbb67e0b1c}\label{_models_2_formal_language_theory-_complex_2main_8cpp_aad659d32cecc0fd81857e5dbb67e0b1c}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!prdata\+\_\+path@{prdata\+\_\+path}}
+\index{prdata\+\_\+path@{prdata\+\_\+path}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{prdata\+\_\+path}{prdata\_path}}
+{\footnotesize\ttfamily std\+::string prdata\+\_\+path = \char`\"{}\char`\"{}}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_a948185958f7efc05b85ac4084d82e3b9}\label{_models_2_formal_language_theory-_complex_2main_8cpp_a948185958f7efc05b85ac4084d82e3b9}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!P\+R\+E\+C\+\_\+\+R\+E\+C\+\_\+N@{P\+R\+E\+C\+\_\+\+R\+E\+C\+\_\+N}}
+\index{P\+R\+E\+C\+\_\+\+R\+E\+C\+\_\+N@{P\+R\+E\+C\+\_\+\+R\+E\+C\+\_\+N}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{P\+R\+E\+C\+\_\+\+R\+E\+C\+\_\+N}{PREC\_REC\_N}}
+{\footnotesize\ttfamily const size\+\_\+t P\+R\+E\+C\+\_\+\+R\+E\+C\+\_\+N = 25}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_a04e6d8e4b74d3f4fc965e5e5449158a3}\label{_models_2_formal_language_theory-_complex_2main_8cpp_a04e6d8e4b74d3f4fc965e5e5449158a3}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!P\+R\+I\+M\+I\+T\+I\+V\+ES@{P\+R\+I\+M\+I\+T\+I\+V\+ES}}
+\index{P\+R\+I\+M\+I\+T\+I\+V\+ES@{P\+R\+I\+M\+I\+T\+I\+V\+ES}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{P\+R\+I\+M\+I\+T\+I\+V\+ES}{PRIMITIVES}}
+{\footnotesize\ttfamily std\+::tuple P\+R\+I\+M\+I\+T\+I\+V\+ES}
+
+
+
+N\+O\+TE\+: IF Y\+OU C\+H\+A\+N\+GE, C\+H\+A\+N\+GE B\+E\+L\+OW T\+OO $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$. 
+
+
+\begin{DoxyCode}
+    We declare these because we use a custom primitive below, which needs them in the 
+    same order as the grammar
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+\textcolor{preprocessor}{#define MY\_TYPES}
+
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ This is a global variable that provides a convenient way to wrap our primitives where we can pair up a function with a name, and pass that as a constructor to the grammar. We need a tuple here because \hyperlink{struct_primitive}{Primitive} has a bunch of template types to handle thee function it has, so each is actually a different type. $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ \mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_ad098fee1c76be478fe0683197334c489}\label{_models_2_formal_language_theory-_complex_2main_8cpp_ad098fee1c76be478fe0683197334c489}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!P\+R\+I\+N\+T\+\_\+\+S\+T\+R\+I\+N\+GS@{P\+R\+I\+N\+T\+\_\+\+S\+T\+R\+I\+N\+GS}}
+\index{P\+R\+I\+N\+T\+\_\+\+S\+T\+R\+I\+N\+GS@{P\+R\+I\+N\+T\+\_\+\+S\+T\+R\+I\+N\+GS}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{P\+R\+I\+N\+T\+\_\+\+S\+T\+R\+I\+N\+GS}{PRINT\_STRINGS}}
+{\footnotesize\ttfamily unsigned long P\+R\+I\+N\+T\+\_\+\+S\+T\+R\+I\+N\+GS = 128}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_ada34ee41f51e229e0d5e00b99aed5991}\label{_models_2_formal_language_theory-_complex_2main_8cpp_ada34ee41f51e229e0d5e00b99aed5991}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!R\+E\+S\+T\+A\+RT@{R\+E\+S\+T\+A\+RT}}
+\index{R\+E\+S\+T\+A\+RT@{R\+E\+S\+T\+A\+RT}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{R\+E\+S\+T\+A\+RT}{RESTART}}
+{\footnotesize\ttfamily const size\+\_\+t R\+E\+S\+T\+A\+RT = 0}
+
+\mbox{\Hypertarget{_models_2_formal_language_theory-_complex_2main_8cpp_a30d8f792c547d6073063d862794d030a}\label{_models_2_formal_language_theory-_complex_2main_8cpp_a30d8f792c547d6073063d862794d030a}} 
+\index{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}!S\+W\+A\+P\+\_\+\+E\+V\+E\+RY@{S\+W\+A\+P\+\_\+\+E\+V\+E\+RY}}
+\index{S\+W\+A\+P\+\_\+\+E\+V\+E\+RY@{S\+W\+A\+P\+\_\+\+E\+V\+E\+RY}!Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp@{Models/\+Formal\+Language\+Theory-\/\+Complex/main.\+cpp}}
+\subsubsection{\texorpdfstring{S\+W\+A\+P\+\_\+\+E\+V\+E\+RY}{SWAP\_EVERY}}
+{\footnotesize\ttfamily unsigned long S\+W\+A\+P\+\_\+\+E\+V\+E\+RY = 500}
+

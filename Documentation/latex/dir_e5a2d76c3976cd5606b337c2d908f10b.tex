@@ -1,0 +1,20 @@
+\hypertarget{dir_e5a2d76c3976cd5606b337c2d908f10b}{}\section{src/\+Grammar Directory Reference}
+\label{dir_e5a2d76c3976cd5606b337c2d908f10b}\index{src/\+Grammar Directory Reference@{src/\+Grammar Directory Reference}}
+Directory dependency graph for Grammar\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=170pt]{dir_e5a2d76c3976cd5606b337c2d908f10b_dep}
+\end{center}
+\end{figure}
+\subsection*{Files}
+\begin{DoxyCompactItemize}
+\item 
+file \hyperlink{_grammar_8h}{Grammar.\+h}
+\begin{DoxyCompactList}\small\item\em This is a little magic used to check the ordering of P\+R\+I\+M\+I\+T\+I\+V\+ES to ensure that we never have a \hyperlink{struct_primitive}{Primitive} {\itshape after} a \hyperlink{struct_builtin_primitive}{Builtin\+Primitive}, since if we do that messes up how we call in apply\+Primitives. \end{DoxyCompactList}\item 
+file \hyperlink{_node_8h}{Node.\+h}
+\item 
+file \hyperlink{_nonterminal_8h}{Nonterminal.\+h}
+\item 
+file \hyperlink{_rule_8h}{Rule.\+h}
+\begin{DoxyCompactList}\small\item\em A \hyperlink{class_rule}{Rule} stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we \char`\"{}emulate\char`\"{} a type system using t\+\_\+nonterminal to store an integer for the types. $\ast$. \end{DoxyCompactList}\end{DoxyCompactItemize}

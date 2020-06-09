@@ -1,0 +1,392 @@
+\hypertarget{class_top_n}{}\section{TopN$<$ T $>$ Class Template Reference}
+\label{class_top_n}\index{Top\+N$<$ T $>$@{Top\+N$<$ T $>$}}
+
+
+{\ttfamily \#include $<$Top.\+h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_top_n_ae734a8791a54516fecbc8cac2c67d16a}{Hypothesis\+\_\+t} = T
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_top_n_a0ad4e5b78ff09e519ef1c5f361d4c6c0}{TopN} (size\+\_\+t n=std\+::numeric\+\_\+limits$<$ size\+\_\+t $>$\+::max())
+\item 
+\hyperlink{class_top_n_a8bd54bb09006a68c350a173eddc55549}{TopN} (const \hyperlink{class_top_n}{TopN}$<$ T $>$ \&x)
+\item 
+\hyperlink{class_top_n_ab7bccf0028a9a4972cd8d5ae4a555553}{TopN} (\hyperlink{class_top_n}{TopN}$<$ T $>$ \&\&x)
+\item 
+void \hyperlink{class_top_n_ac6afd8e83833aedc8690c3a0622d5535}{operator=} (const \hyperlink{class_top_n}{TopN}$<$ T $>$ \&x)
+\item 
+void \hyperlink{class_top_n_ae8dfc906735d0aa9774d9e6c17cc9d1c}{operator=} (\hyperlink{class_top_n}{TopN}$<$ T $>$ \&\&x)
+\item 
+void \hyperlink{class_top_n_a37c7506de12038af705c55fc479dba7b}{set\+\_\+size} (size\+\_\+t n)
+\item 
+void \hyperlink{class_top_n_a378be54915dab8603b8408ee72310bb7}{set\+\_\+print\+\_\+best} (bool b)
+\item 
+size\+\_\+t \hyperlink{class_top_n_ae32d3e10d1571af34f84f32f5ca78fff}{size} () const
+\item 
+bool \hyperlink{class_top_n_adb29d7b6490afe04adb88caac2f7fba0}{empty} () const
+\item 
+const std\+::multiset$<$ T $>$ \& \hyperlink{class_top_n_a50b05f8d4580c4652e8c1f6770943adc}{values} () const
+\item 
+bool \hyperlink{class_top_n_a2e948bc78d03a92abd1623ae8f8bd3d4}{contains} (const T \&x) const
+\begin{DoxyCompactList}\small\item\em Does this contain x? \end{DoxyCompactList}\item 
+void \hyperlink{class_top_n_a4fdddece51570832503747bf85d5ec19}{add} (const T \&x, size\+\_\+t \hyperlink{class_top_n_a8bfb8d5daa31a4fd95196cb41f0ac1ce}{count}=1)
+\item 
+void \hyperlink{class_top_n_a719a9b488e33a8266a25c594a8eb579d}{operator$<$$<$} (const T \&x)
+\item 
+void \hyperlink{class_top_n_a09be6a8873eef07ea3993e9fe7b6c71d}{add} (const \hyperlink{class_top_n}{TopN}$<$ T $>$ \&x)
+\item 
+void \hyperlink{class_top_n_a4a4459831455f21c152f99993aa0a274}{operator$<$$<$} (const \hyperlink{class_top_n}{TopN}$<$ T $>$ \&x)
+\item 
+void \hyperlink{class_top_n_a1bc031e453f4d32cbc4cf6df04da51bc}{operator()} (T \&x)
+\item 
+size\+\_\+t \hyperlink{class_top_n_a7eafee63f9094086c3193ff005cd9f0f}{operator\mbox{[}$\,$\mbox{]}} (const T \&x)
+\item 
+const T \& \hyperlink{class_top_n_a071e232087705b131627bd8a805d217c}{best} () const
+\item 
+const T \& \hyperlink{class_top_n_a29d25f1254f2c2e31612004593afa498}{worst} () const
+\item 
+double \hyperlink{class_top_n_a94191264b36318ce50e32c36018ef104}{Z} ()
+\item 
+void \hyperlink{class_top_n_a5064ec2e4e9f1defdc3cb62d9b7ddd00}{print} (std\+::string prefix=\char`\"{}\char`\"{})
+\item 
+void \hyperlink{class_top_n_a1867a08e8be4ffca2f3b6ea8161caa96}{clear} ()
+\item 
+unsigned long \hyperlink{class_top_n_a8bfb8d5daa31a4fd95196cb41f0ac1ce}{count} (const T x)
+\item 
+{\footnotesize template$<$typename data\+\_\+t $>$ }\\\hyperlink{class_top_n}{TopN} \hyperlink{class_top_n_a890f0653ac1c56e1af99a0f93dd3224a}{compute\+\_\+posterior} (data\+\_\+t \&data)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::map$<$ T, unsigned long $>$ \hyperlink{class_top_n_a0b10798cc83ac3b20bfe0dd5f1d45e86}{cnt}
+\item 
+std\+::multiset$<$ T $>$ \hyperlink{class_top_n_a1fea03a721d2485b03cc38834775c924}{s}
+\item 
+bool \hyperlink{class_top_n_a90472852f225e5b851446e4b7ced4856}{print\+\_\+best}
+\item 
+std\+::atomic$<$ size\+\_\+t $>$ \hyperlink{class_top_n_a1a4f701ca7296acfadcb6d0511247fcf}{N}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class Top\+N$<$ T $>$}
+
+\begin{DoxyAuthor}{Author}
+steven piantadosi 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+03/02/20 
+\end{DoxyDate}
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_top_n_ae734a8791a54516fecbc8cac2c67d16a}\label{class_top_n_ae734a8791a54516fecbc8cac2c67d16a}} 
+\index{TopN@{TopN}!Hypothesis\+\_\+t@{Hypothesis\+\_\+t}}
+\index{Hypothesis\+\_\+t@{Hypothesis\+\_\+t}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{Hypothesis\+\_\+t}{Hypothesis\_t}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+using \hyperlink{class_top_n}{TopN}$<$ T $>$\+::\hyperlink{class_top_n_ae734a8791a54516fecbc8cac2c67d16a}{Hypothesis\+\_\+t} =  T}
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_top_n_a0ad4e5b78ff09e519ef1c5f361d4c6c0}\label{class_top_n_a0ad4e5b78ff09e519ef1c5f361d4c6c0}} 
+\index{TopN@{TopN}!TopN@{TopN}}
+\index{TopN@{TopN}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{Top\+N()}{TopN()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+\hyperlink{class_top_n}{TopN}$<$ T $>$\+::\hyperlink{class_top_n}{TopN} (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n = {\ttfamily std\+:\+:numeric\+\_\+limits$<$size\+\_\+t$>$\+:\+:max()} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_top_n_a8bd54bb09006a68c350a173eddc55549}\label{class_top_n_a8bd54bb09006a68c350a173eddc55549}} 
+\index{TopN@{TopN}!TopN@{TopN}}
+\index{TopN@{TopN}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{Top\+N()}{TopN()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+\hyperlink{class_top_n}{TopN}$<$ T $>$\+::\hyperlink{class_top_n}{TopN} (\begin{DoxyParamCaption}\item[{const \hyperlink{class_top_n}{TopN}$<$ T $>$ \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_top_n_ab7bccf0028a9a4972cd8d5ae4a555553}\label{class_top_n_ab7bccf0028a9a4972cd8d5ae4a555553}} 
+\index{TopN@{TopN}!TopN@{TopN}}
+\index{TopN@{TopN}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{Top\+N()}{TopN()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+\hyperlink{class_top_n}{TopN}$<$ T $>$\+::\hyperlink{class_top_n}{TopN} (\begin{DoxyParamCaption}\item[{\hyperlink{class_top_n}{TopN}$<$ T $>$ \&\&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_top_n_a4fdddece51570832503747bf85d5ec19}\label{class_top_n_a4fdddece51570832503747bf85d5ec19}} 
+\index{TopN@{TopN}!add@{add}}
+\index{add@{add}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+void \hyperlink{class_top_n}{TopN}$<$ T $>$\+::add (\begin{DoxyParamCaption}\item[{const T \&}]{x,  }\item[{size\+\_\+t}]{count = {\ttfamily 1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Add x. If count is set, that will add that many counts. N\+O\+TE that we do not add objects x such that x.\+posterior == -\/infinity or NaN 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em count} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_top_n_a09be6a8873eef07ea3993e9fe7b6c71d}\label{class_top_n_a09be6a8873eef07ea3993e9fe7b6c71d}} 
+\index{TopN@{TopN}!add@{add}}
+\index{add@{add}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+void \hyperlink{class_top_n}{TopN}$<$ T $>$\+::add (\begin{DoxyParamCaption}\item[{const \hyperlink{class_top_n}{TopN}$<$ T $>$ \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Add everything in x to this one. 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_top_n_a071e232087705b131627bd8a805d217c}\label{class_top_n_a071e232087705b131627bd8a805d217c}} 
+\index{TopN@{TopN}!best@{best}}
+\index{best@{best}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{best()}{best()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+const T\& \hyperlink{class_top_n}{TopN}$<$ T $>$\+::best (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns a reference to the best element currently stored \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_top_n_a1867a08e8be4ffca2f3b6ea8161caa96}\label{class_top_n_a1867a08e8be4ffca2f3b6ea8161caa96}} 
+\index{TopN@{TopN}!clear@{clear}}
+\index{clear@{clear}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+void \hyperlink{class_top_n}{TopN}$<$ T $>$\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Remove everything\mbox{\Hypertarget{class_top_n_a890f0653ac1c56e1af99a0f93dd3224a}\label{class_top_n_a890f0653ac1c56e1af99a0f93dd3224a}} 
+\index{TopN@{TopN}!compute\+\_\+posterior@{compute\+\_\+posterior}}
+\index{compute\+\_\+posterior@{compute\+\_\+posterior}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{compute\+\_\+posterior()}{compute\_posterior()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+template$<$typename data\+\_\+t $>$ \\
+\hyperlink{class_top_n}{TopN} \hyperlink{class_top_n}{TopN}$<$ T $>$\+::compute\+\_\+posterior (\begin{DoxyParamCaption}\item[{data\+\_\+t \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns a N\+EW \hyperlink{class_top_n}{TopN} where each current hypothesis is evaluated on the data. N\+O\+TE\+: If a hypothesis has a new posterior of -\/inf or NaN, it won\textquotesingle{}t be added. 
+\begin{DoxyParams}{Parameters}
+{\em data} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_top_n_a2e948bc78d03a92abd1623ae8f8bd3d4}\label{class_top_n_a2e948bc78d03a92abd1623ae8f8bd3d4}} 
+\index{TopN@{TopN}!contains@{contains}}
+\index{contains@{contains}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+bool \hyperlink{class_top_n}{TopN}$<$ T $>$\+::contains (\begin{DoxyParamCaption}\item[{const T \&}]{x }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Does this contain x? 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_top_n_a8bfb8d5daa31a4fd95196cb41f0ac1ce}\label{class_top_n_a8bfb8d5daa31a4fd95196cb41f0ac1ce}} 
+\index{TopN@{TopN}!count@{count}}
+\index{count@{count}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{count()}{count()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+unsigned long \hyperlink{class_top_n}{TopN}$<$ T $>$\+::count (\begin{DoxyParamCaption}\item[{const T}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+How many times have we seen x? 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_top_n_adb29d7b6490afe04adb88caac2f7fba0}\label{class_top_n_adb29d7b6490afe04adb88caac2f7fba0}} 
+\index{TopN@{TopN}!empty@{empty}}
+\index{empty@{empty}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{empty()}{empty()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+bool \hyperlink{class_top_n}{TopN}$<$ T $>$\+::empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Is it empty? \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_top_n_a1bc031e453f4d32cbc4cf6df04da51bc}\label{class_top_n_a1bc031e453f4d32cbc4cf6df04da51bc}} 
+\index{TopN@{TopN}!operator()@{operator()}}
+\index{operator()@{operator()}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+void \hyperlink{class_top_n}{TopN}$<$ T $>$\+::operator() (\begin{DoxyParamCaption}\item[{T \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_top_n_a719a9b488e33a8266a25c594a8eb579d}\label{class_top_n_a719a9b488e33a8266a25c594a8eb579d}} 
+\index{TopN@{TopN}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+void \hyperlink{class_top_n}{TopN}$<$ T $>$\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{const T \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Friendlier syntax for adding. 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_top_n_a4a4459831455f21c152f99993aa0a274}\label{class_top_n_a4a4459831455f21c152f99993aa0a274}} 
+\index{TopN@{TopN}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+void \hyperlink{class_top_n}{TopN}$<$ T $>$\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{const \hyperlink{class_top_n}{TopN}$<$ T $>$ \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_top_n_ac6afd8e83833aedc8690c3a0622d5535}\label{class_top_n_ac6afd8e83833aedc8690c3a0622d5535}} 
+\index{TopN@{TopN}!operator=@{operator=}}
+\index{operator=@{operator=}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+void \hyperlink{class_top_n}{TopN}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_top_n}{TopN}$<$ T $>$ \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_top_n_ae8dfc906735d0aa9774d9e6c17cc9d1c}\label{class_top_n_ae8dfc906735d0aa9774d9e6c17cc9d1c}} 
+\index{TopN@{TopN}!operator=@{operator=}}
+\index{operator=@{operator=}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+void \hyperlink{class_top_n}{TopN}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{\hyperlink{class_top_n}{TopN}$<$ T $>$ \&\&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_top_n_a7eafee63f9094086c3193ff005cd9f0f}\label{class_top_n_a7eafee63f9094086c3193ff005cd9f0f}} 
+\index{TopN@{TopN}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{operator[]()}{operator[]()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+size\+\_\+t \hyperlink{class_top_n}{TopN}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{const T \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Access the counts for a given element x 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_top_n_a5064ec2e4e9f1defdc3cb62d9b7ddd00}\label{class_top_n_a5064ec2e4e9f1defdc3cb62d9b7ddd00}} 
+\index{TopN@{TopN}!print@{print}}
+\index{print@{print}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+void \hyperlink{class_top_n}{TopN}$<$ T $>$\+::print (\begin{DoxyParamCaption}\item[{std\+::string}]{prefix = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sort and print from worst to best 
+\begin{DoxyParams}{Parameters}
+{\em prefix} & -\/ an optional prefix to print before each line\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_top_n_a378be54915dab8603b8408ee72310bb7}\label{class_top_n_a378be54915dab8603b8408ee72310bb7}} 
+\index{TopN@{TopN}!set\+\_\+print\+\_\+best@{set\+\_\+print\+\_\+best}}
+\index{set\+\_\+print\+\_\+best@{set\+\_\+print\+\_\+best}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{set\+\_\+print\+\_\+best()}{set\_print\_best()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+void \hyperlink{class_top_n}{TopN}$<$ T $>$\+::set\+\_\+print\+\_\+best (\begin{DoxyParamCaption}\item[{bool}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+As I add things, should I print the best I\textquotesingle{}ve seen so far? 
+\begin{DoxyParams}{Parameters}
+{\em b} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_top_n_a37c7506de12038af705c55fc479dba7b}\label{class_top_n_a37c7506de12038af705c55fc479dba7b}} 
+\index{TopN@{TopN}!set\+\_\+size@{set\+\_\+size}}
+\index{set\+\_\+size@{set\+\_\+size}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{set\+\_\+size()}{set\_size()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+void \hyperlink{class_top_n}{TopN}$<$ T $>$\+::set\+\_\+size (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set the size of n that I cna have. N\+O\+TE\+: this does not resize the existing data. 
+\begin{DoxyParams}{Parameters}
+{\em n} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_top_n_ae32d3e10d1571af34f84f32f5ca78fff}\label{class_top_n_ae32d3e10d1571af34f84f32f5ca78fff}} 
+\index{TopN@{TopN}!size@{size}}
+\index{size@{size}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+size\+\_\+t \hyperlink{class_top_n}{TopN}$<$ T $>$\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+How many are currently in the set? (N\+OT the total number allowed) \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_top_n_a50b05f8d4580c4652e8c1f6770943adc}\label{class_top_n_a50b05f8d4580c4652e8c1f6770943adc}} 
+\index{TopN@{TopN}!values@{values}}
+\index{values@{values}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{values()}{values()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+const std\+::multiset$<$T$>$\& \hyperlink{class_top_n}{TopN}$<$ T $>$\+::values (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Return a multiset of all the values in \hyperlink{class_top_n}{TopN} \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_top_n_a29d25f1254f2c2e31612004593afa498}\label{class_top_n_a29d25f1254f2c2e31612004593afa498}} 
+\index{TopN@{TopN}!worst@{worst}}
+\index{worst@{worst}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{worst()}{worst()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+const T\& \hyperlink{class_top_n}{TopN}$<$ T $>$\+::worst (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns a reference to the worst element currently stored \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_top_n_a94191264b36318ce50e32c36018ef104}\label{class_top_n_a94191264b36318ce50e32c36018ef104}} 
+\index{TopN@{TopN}!Z@{Z}}
+\index{Z@{Z}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{Z()}{Z()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+double \hyperlink{class_top_n}{TopN}$<$ T $>$\+::Z (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Compute the logsumexp of all of the elements stored. \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_top_n_a0b10798cc83ac3b20bfe0dd5f1d45e86}\label{class_top_n_a0b10798cc83ac3b20bfe0dd5f1d45e86}} 
+\index{TopN@{TopN}!cnt@{cnt}}
+\index{cnt@{cnt}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{cnt}{cnt}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+std\+::map$<$T,unsigned long$>$ \hyperlink{class_top_n}{TopN}$<$ T $>$\+::cnt}
+
+\mbox{\Hypertarget{class_top_n_a1a4f701ca7296acfadcb6d0511247fcf}\label{class_top_n_a1a4f701ca7296acfadcb6d0511247fcf}} 
+\index{TopN@{TopN}!N@{N}}
+\index{N@{N}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{N}{N}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+std\+::atomic$<$size\+\_\+t$>$ \hyperlink{class_top_n}{TopN}$<$ T $>$\+::N}
+
+\mbox{\Hypertarget{class_top_n_a90472852f225e5b851446e4b7ced4856}\label{class_top_n_a90472852f225e5b851446e4b7ced4856}} 
+\index{TopN@{TopN}!print\+\_\+best@{print\+\_\+best}}
+\index{print\+\_\+best@{print\+\_\+best}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{print\+\_\+best}{print\_best}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+bool \hyperlink{class_top_n}{TopN}$<$ T $>$\+::print\+\_\+best}
+
+\mbox{\Hypertarget{class_top_n_a1fea03a721d2485b03cc38834775c924}\label{class_top_n_a1fea03a721d2485b03cc38834775c924}} 
+\index{TopN@{TopN}!s@{s}}
+\index{s@{s}!TopN@{TopN}}
+\subsubsection{\texorpdfstring{s}{s}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+std\+::multiset$<$T$>$ \hyperlink{class_top_n}{TopN}$<$ T $>$\+::s}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Statistics/\hyperlink{_top_8h}{Top.\+h}\end{DoxyCompactItemize}

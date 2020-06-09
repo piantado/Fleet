@@ -1,0 +1,56 @@
+\hypertarget{class_parallel_inference_interface}{}\section{Parallel\+Inference\+Interface Class Reference}
+\label{class_parallel_inference_interface}\index{Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}}
+
+
+{\ttfamily \#include $<$Parallel\+Inference\+Interface.\+h$>$}
+
+
+
+Inheritance diagram for Parallel\+Inference\+Interface\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{class_parallel_inference_interface__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{class_parallel_inference_interface_ae3f9f1a2128878183869d0cc6c7434f6}{run\+\_\+thread} (\hyperlink{struct_control}{Control} ctl)=0
+\item 
+virtual void \hyperlink{class_parallel_inference_interface_ad33281e8f8fdbfe21afb786ad172b621}{run} (\hyperlink{struct_control}{Control} ctl)
+\begin{DoxyCompactList}\small\item\em Run is the main control interface. Copies of ctl get made and passed to each thread in run\+\_\+thread. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_parallel_inference_interface_ad33281e8f8fdbfe21afb786ad172b621}\label{class_parallel_inference_interface_ad33281e8f8fdbfe21afb786ad172b621}} 
+\index{Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}!run@{run}}
+\index{run@{run}!Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}}
+\subsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily virtual void Parallel\+Inference\+Interface\+::run (\begin{DoxyParamCaption}\item[{\hyperlink{struct_control}{Control}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Run is the main control interface. Copies of ctl get made and passed to each thread in run\+\_\+thread. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ctl} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_parallel_inference_interface_ae3f9f1a2128878183869d0cc6c7434f6}\label{class_parallel_inference_interface_ae3f9f1a2128878183869d0cc6c7434f6}} 
+\index{Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}!run\+\_\+thread@{run\+\_\+thread}}
+\index{run\+\_\+thread@{run\+\_\+thread}!Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}}
+\subsubsection{\texorpdfstring{run\+\_\+thread()}{run\_thread()}}
+{\footnotesize\ttfamily virtual void Parallel\+Inference\+Interface\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\hyperlink{struct_control}{Control}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \hyperlink{class_astar_a962d234b6b109597c03516d61ff2cffc}{Astar$<$ H\+Y\+P, callback\+\_\+t $>$}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Inference/\hyperlink{_parallel_inference_interface_8h}{Parallel\+Inference\+Interface.\+h}\end{DoxyCompactItemize}

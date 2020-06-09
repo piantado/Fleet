@@ -1,0 +1,54 @@
+\hypertarget{apply_primitives_8h}{}\section{src/\+Virtual\+Machine/apply\+Primitives.h File Reference}
+\label{apply_primitives_8h}\index{src/\+Virtual\+Machine/apply\+Primitives.\+h@{src/\+Virtual\+Machine/apply\+Primitives.\+h}}
+{\ttfamily \#include $<$tuple$>$}\newline
+{\ttfamily \#include \char`\"{}Instruction.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Miscellaneous.\+h\char`\"{}}\newline
+Include dependency graph for apply\+Primitives.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{apply_primitives_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{apply_primitives_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$int n, class T , typename V , typename P , typename L $>$ }\\\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{apply_primitives_8h_a67b4303eeb2865d4e1453a7538f8c1ea}{apply\+To\+V\+M\+S\+\_\+one} (T \&p, V $\ast$vms, P $\ast$pool, L $\ast$loader)
+\item 
+{\footnotesize template$<$class T , typename V , typename P , typename L , size\+\_\+t... Is$>$ }\\\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{apply_primitives_8h_a83f4b6506f91aa21d784b2000f0bed55}{apply\+To\+V\+MS} (T \&p, int index, V $\ast$vms, P $\ast$pool, L $\ast$loader, std\+::index\+\_\+sequence$<$ Is... $>$)
+\item 
+{\footnotesize template$<$typename V , typename P , typename L $>$ }\\\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{apply_primitives_8h_a52218c351addd560bb5d58549708ccf8}{apply\+P\+R\+I\+M\+I\+T\+I\+V\+E\+Sto\+V\+MS} (int index, V $\ast$vms, P $\ast$pool, L $\ast$loader)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{apply_primitives_8h_a52218c351addd560bb5d58549708ccf8}\label{apply_primitives_8h_a52218c351addd560bb5d58549708ccf8}} 
+\index{apply\+Primitives.\+h@{apply\+Primitives.\+h}!apply\+P\+R\+I\+M\+I\+T\+I\+V\+E\+Sto\+V\+MS@{apply\+P\+R\+I\+M\+I\+T\+I\+V\+E\+Sto\+V\+MS}}
+\index{apply\+P\+R\+I\+M\+I\+T\+I\+V\+E\+Sto\+V\+MS@{apply\+P\+R\+I\+M\+I\+T\+I\+V\+E\+Sto\+V\+MS}!apply\+Primitives.\+h@{apply\+Primitives.\+h}}
+\subsubsection{\texorpdfstring{apply\+P\+R\+I\+M\+I\+T\+I\+V\+E\+Sto\+V\+M\+S()}{applyPRIMITIVEStoVMS()}}
+{\footnotesize\ttfamily template$<$typename V , typename P , typename L $>$ \\
+\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} apply\+P\+R\+I\+M\+I\+T\+I\+V\+E\+Sto\+V\+MS (\begin{DoxyParamCaption}\item[{int}]{index,  }\item[{V $\ast$}]{vms,  }\item[{P $\ast$}]{pool,  }\item[{L $\ast$}]{loader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{apply_primitives_8h_a83f4b6506f91aa21d784b2000f0bed55}\label{apply_primitives_8h_a83f4b6506f91aa21d784b2000f0bed55}} 
+\index{apply\+Primitives.\+h@{apply\+Primitives.\+h}!apply\+To\+V\+MS@{apply\+To\+V\+MS}}
+\index{apply\+To\+V\+MS@{apply\+To\+V\+MS}!apply\+Primitives.\+h@{apply\+Primitives.\+h}}
+\subsubsection{\texorpdfstring{apply\+To\+V\+M\+S()}{applyToVMS()}}
+{\footnotesize\ttfamily template$<$class T , typename V , typename P , typename L , size\+\_\+t... Is$>$ \\
+\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} apply\+To\+V\+MS (\begin{DoxyParamCaption}\item[{T \&}]{p,  }\item[{int}]{index,  }\item[{V $\ast$}]{vms,  }\item[{P $\ast$}]{pool,  }\item[{L $\ast$}]{loader,  }\item[{std\+::index\+\_\+sequence$<$ Is... $>$}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{apply_primitives_8h_a67b4303eeb2865d4e1453a7538f8c1ea}\label{apply_primitives_8h_a67b4303eeb2865d4e1453a7538f8c1ea}} 
+\index{apply\+Primitives.\+h@{apply\+Primitives.\+h}!apply\+To\+V\+M\+S\+\_\+one@{apply\+To\+V\+M\+S\+\_\+one}}
+\index{apply\+To\+V\+M\+S\+\_\+one@{apply\+To\+V\+M\+S\+\_\+one}!apply\+Primitives.\+h@{apply\+Primitives.\+h}}
+\subsubsection{\texorpdfstring{apply\+To\+V\+M\+S\+\_\+one()}{applyToVMS\_one()}}
+{\footnotesize\ttfamily template$<$int n, class T , typename V , typename P , typename L $>$ \\
+\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} apply\+To\+V\+M\+S\+\_\+one (\begin{DoxyParamCaption}\item[{T \&}]{p,  }\item[{V $\ast$}]{vms,  }\item[{P $\ast$}]{pool,  }\item[{L $\ast$}]{loader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+

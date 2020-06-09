@@ -1,0 +1,60 @@
+\hypertarget{_full_m_c_t_s_8h}{}\section{src/\+Inference/\+Full\+M\+C\+TS.h File Reference}
+\label{_full_m_c_t_s_8h}\index{src/\+Inference/\+Full\+M\+C\+T\+S.\+h@{src/\+Inference/\+Full\+M\+C\+T\+S.\+h}}
+
+
+This monte care tree search always plays out a full tree. It is optimized to keep the tree as small as possible. To do this, it doesn\textquotesingle{}t even store the value (H\+YP) in the tree, it just constructs it as a search step goes down the tree. It also doesn\textquotesingle{}t store parent pointers, it just passes them down the tree. We use \hyperlink{class_spin_lock}{Spin\+Lock} here because std\+::mutex is much bigger. Finally, explore, data, and callback are all static variables, which means that you will need to subclass this if you want to let those vary across nodes (or parallel runs). This lets us cram everything into 56 bytes.  
+
+
+{\ttfamily \#include $<$atomic$>$}\newline
+{\ttfamily \#include $<$mutex$>$}\newline
+{\ttfamily \#include $<$set$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include \char`\"{}Streaming\+Statistics.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Control.\+h\char`\"{}}\newline
+Include dependency graph for Full\+M\+C\+T\+S.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_full_m_c_t_s_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{_full_m_c_t_s_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_spin_lock}{Spin\+Lock}
+\item 
+class \hyperlink{class_full_m_c_t_s_node}{Full\+M\+C\+T\+S\+Node$<$ H\+Y\+P, callback\+\_\+t $>$}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_full_m_c_t_s_8h_a857233142bc725dbd1873d8e31add283}{D\+E\+B\+U\+G\+\_\+\+M\+C\+TS}~0
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This monte care tree search always plays out a full tree. It is optimized to keep the tree as small as possible. To do this, it doesn\textquotesingle{}t even store the value (H\+YP) in the tree, it just constructs it as a search step goes down the tree. It also doesn\textquotesingle{}t store parent pointers, it just passes them down the tree. We use \hyperlink{class_spin_lock}{Spin\+Lock} here because std\+::mutex is much bigger. Finally, explore, data, and callback are all static variables, which means that you will need to subclass this if you want to let those vary across nodes (or parallel runs). This lets us cram everything into 56 bytes. 
+
+N\+O\+TE we could optimize a few more things -- for instance, storing the open bool either in nvisits, or which\+\_\+expansion
+
+T\+O\+DO\+: We also store terminals currently in the tree, but there\textquotesingle{}s no need for that -- we should eliminate that. 
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_full_m_c_t_s_8h_a857233142bc725dbd1873d8e31add283}\label{_full_m_c_t_s_8h_a857233142bc725dbd1873d8e31add283}} 
+\index{Full\+M\+C\+T\+S.\+h@{Full\+M\+C\+T\+S.\+h}!D\+E\+B\+U\+G\+\_\+\+M\+C\+TS@{D\+E\+B\+U\+G\+\_\+\+M\+C\+TS}}
+\index{D\+E\+B\+U\+G\+\_\+\+M\+C\+TS@{D\+E\+B\+U\+G\+\_\+\+M\+C\+TS}!Full\+M\+C\+T\+S.\+h@{Full\+M\+C\+T\+S.\+h}}
+\subsubsection{\texorpdfstring{D\+E\+B\+U\+G\+\_\+\+M\+C\+TS}{DEBUG\_MCTS}}
+{\footnotesize\ttfamily \#define D\+E\+B\+U\+G\+\_\+\+M\+C\+TS~0}
+

@@ -1,0 +1,126 @@
+\hypertarget{_models_2_testing_2main_8cpp}{}\section{Models/\+Testing/\+Main.cpp File Reference}
+\label{_models_2_testing_2main_8cpp}\index{Models/\+Testing/\+Main.\+cpp@{Models/\+Testing/\+Main.\+cpp}}
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include \char`\"{}Primitives.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Builtins.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Grammar.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}L\+O\+T\+Hypothesis.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}M\+C\+M\+C\+Chain.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Parallel\+Tempering.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Fleet.\+h\char`\"{}}\newline
+Include dependency graph for Main.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_models_2_testing_2main_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_my_grammar}{My\+Grammar}
+\begin{DoxyCompactList}\small\item\em \subparagraph*{}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\void \hyperlink{_models_2_testing_2main_8cpp_a7a9084ce85fe061f57177dda36cab946}{check\+Node} (const Grammar\+\_\+t $\ast$g, const \hyperlink{class_node}{Node} \&n)
+\item 
+{\footnotesize template$<$typename Grammar\+\_\+t , typename Hypothesis\+\_\+t $>$ }\\void \hyperlink{_models_2_testing_2main_8cpp_a91880ba654e242c7827411ed445b4143}{check\+L\+O\+T\+Hypothesis} (const Grammar\+\_\+t $\ast$g, const Hypothesis\+\_\+t h)
+\item 
+{\footnotesize template$<$typename Grammar\+\_\+t , typename Top\+\_\+t $>$ }\\void \hyperlink{_models_2_testing_2main_8cpp_ae2457ceacf120786adc008fdac98e38b}{check\+Top} (const Grammar\+\_\+t $\ast$g, const Top\+\_\+t \&top)
+\begin{DoxyCompactList}\small\item\em Check the stuff stored in a TopN. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Top\+\_\+t $>$ }\\double \hyperlink{_models_2_testing_2main_8cpp_a0ecdc098bd5913d0cf71ac80365a7806}{top\+\_\+difference} (Top\+\_\+t \&x, Top\+\_\+t \&y)
+\begin{DoxyCompactList}\small\item\em Given two top distributions, how different are they? For now, this is the (non-\/log) probability mass of (stuff in X but not Y plus stuff in Y but not X)/2. \end{DoxyCompactList}\item 
+int \hyperlink{_models_2_testing_2main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_models_2_testing_2main_8cpp_a91880ba654e242c7827411ed445b4143}\label{_models_2_testing_2main_8cpp_a91880ba654e242c7827411ed445b4143}} 
+\index{Models/\+Testing/main.\+cpp@{Models/\+Testing/main.\+cpp}!check\+L\+O\+T\+Hypothesis@{check\+L\+O\+T\+Hypothesis}}
+\index{check\+L\+O\+T\+Hypothesis@{check\+L\+O\+T\+Hypothesis}!Models/\+Testing/main.\+cpp@{Models/\+Testing/main.\+cpp}}
+\subsubsection{\texorpdfstring{check\+L\+O\+T\+Hypothesis()}{checkLOTHypothesis()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t , typename Hypothesis\+\_\+t $>$ \\
+void check\+L\+O\+T\+Hypothesis (\begin{DoxyParamCaption}\item[{const Grammar\+\_\+t $\ast$}]{g,  }\item[{const Hypothesis\+\_\+t}]{h }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_models_2_testing_2main_8cpp_a7a9084ce85fe061f57177dda36cab946}\label{_models_2_testing_2main_8cpp_a7a9084ce85fe061f57177dda36cab946}} 
+\index{Models/\+Testing/main.\+cpp@{Models/\+Testing/main.\+cpp}!check\+Node@{check\+Node}}
+\index{check\+Node@{check\+Node}!Models/\+Testing/main.\+cpp@{Models/\+Testing/main.\+cpp}}
+\subsubsection{\texorpdfstring{check\+Node()}{checkNode()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+void check\+Node (\begin{DoxyParamCaption}\item[{const Grammar\+\_\+t $\ast$}]{g,  }\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}
+    Define a \textcolor{keyword}{class }for handling my specific hypotheses and data. Everything is defaultly 
+    a PCFG prior and regeneration proposals, but I have to define a likelihood
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+\textcolor{keyword}{class }\hyperlink{class_my_hypothesis}{MyHypothesis} final : \textcolor{keyword}{public} \hyperlink{class_l_o_t_hypothesis}{LOTHypothesis}<MyHypothesis,Object,bool,MyGrammar
+      > \{
+\textcolor{keyword}{public}:
+    \textcolor{keyword}{using} \hyperlink{class_my_hypothesis_a266742f266abc638ddc1d1870d735313}{Super} = \hyperlink{class_l_o_t_hypothesis}{LOTHypothesis<MyHypothesis,Object,bool,MyGrammar>}
+      ;
+    \textcolor{keyword}{using} Super::Super; \textcolor{comment}{// inherit the constructors}
+
+    \textcolor{comment}{// Now, if we defaultly assume that our data is a std::vector of t\_data, then we }
+    \textcolor{comment}{// can just define the likelihood of a single data point, which is here the true}
+    \textcolor{comment}{// value with probability x.reliability, and otherwise a coin flip. }
+    \textcolor{keywordtype}{double} \hyperlink{class_my_hypothesis_af2470b1e04711c06ee551deae15af4c1}{compute\_single\_likelihood}(\textcolor{keyword}{const} \hyperlink{class_l_o_t_hypothesis_ae36b1f113f45ee5ac82660028672739b}{datum\_t}& x)\textcolor{keyword}{ override }\{
+        \textcolor{keywordtype}{bool} out = \hyperlink{class_l_o_t_hypothesis_a34051e59cc251c4d6bb3caddbe594414}{callOne}(x.input, \textcolor{keyword}{false});
+        \textcolor{keywordflow}{return} out == x.output ? log(x.reliability + (1.0-x.reliability)/2.0) : log((1.0-x.reliability)/2.0
+      );
+    \}
+\};
+
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ Main code $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ \mbox{\Hypertarget{_models_2_testing_2main_8cpp_ae2457ceacf120786adc008fdac98e38b}\label{_models_2_testing_2main_8cpp_ae2457ceacf120786adc008fdac98e38b}} 
+\index{Models/\+Testing/main.\+cpp@{Models/\+Testing/main.\+cpp}!check\+Top@{check\+Top}}
+\index{check\+Top@{check\+Top}!Models/\+Testing/main.\+cpp@{Models/\+Testing/main.\+cpp}}
+\subsubsection{\texorpdfstring{check\+Top()}{checkTop()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t , typename Top\+\_\+t $>$ \\
+void check\+Top (\begin{DoxyParamCaption}\item[{const Grammar\+\_\+t $\ast$}]{g,  }\item[{const Top\+\_\+t \&}]{top }\end{DoxyParamCaption})}
+
+
+
+Check the stuff stored in a TopN. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & -\/ the grammar \\
+\hline
+{\em top} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_models_2_testing_2main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{_models_2_testing_2main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+\index{Models/\+Testing/main.\+cpp@{Models/\+Testing/main.\+cpp}!main@{main}}
+\index{main@{main}!Models/\+Testing/main.\+cpp@{Models/\+Testing/main.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_models_2_testing_2main_8cpp_a0ecdc098bd5913d0cf71ac80365a7806}\label{_models_2_testing_2main_8cpp_a0ecdc098bd5913d0cf71ac80365a7806}} 
+\index{Models/\+Testing/main.\+cpp@{Models/\+Testing/main.\+cpp}!top\+\_\+difference@{top\+\_\+difference}}
+\index{top\+\_\+difference@{top\+\_\+difference}!Models/\+Testing/main.\+cpp@{Models/\+Testing/main.\+cpp}}
+\subsubsection{\texorpdfstring{top\+\_\+difference()}{top\_difference()}}
+{\footnotesize\ttfamily template$<$typename Top\+\_\+t $>$ \\
+double top\+\_\+difference (\begin{DoxyParamCaption}\item[{Top\+\_\+t \&}]{x,  }\item[{Top\+\_\+t \&}]{y }\end{DoxyParamCaption})}
+
+
+
+Given two top distributions, how different are they? For now, this is the (non-\/log) probability mass of (stuff in X but not Y plus stuff in Y but not X)/2. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}

@@ -1,0 +1,189 @@
+\hypertarget{class_finite_history}{}\section{Finite\+History$<$ T $>$ Class Template Reference}
+\label{class_finite_history}\index{Finite\+History$<$ T $>$@{Finite\+History$<$ T $>$}}
+
+
+{\ttfamily \#include $<$Finite\+History.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_finite_history_a9300fde1231d7307a97349caa4745b1a}{Finite\+History} (size\+\_\+t n)
+\item 
+\hyperlink{class_finite_history_a845a1fd7ec4b850c2ee6ec2003c6bd3e}{Finite\+History} ()
+\item 
+\hyperlink{class_finite_history_a601fa98e570953c9d0e9a562a24b92c1}{Finite\+History} (const \hyperlink{class_finite_history}{Finite\+History} \&fh)
+\item 
+\hyperlink{class_finite_history_ade3eff280584fefaf796c70912781825}{Finite\+History} (\hyperlink{class_finite_history}{Finite\+History} \&\&fh)
+\item 
+void \hyperlink{class_finite_history_afdc27d66ff1c1c386185f29eff5c474c}{operator=} (const \hyperlink{class_finite_history}{Finite\+History} \&fh)
+\item 
+void \hyperlink{class_finite_history_a1c3695b639cd2ec5cda375c4450b3cc8}{operator=} (\hyperlink{class_finite_history}{Finite\+History} \&\&fh)
+\item 
+void \hyperlink{class_finite_history_ae7e85a666c78b8d21276758ac1c2f22f}{add} (T x)
+\begin{DoxyCompactList}\small\item\em Add x to this history. \end{DoxyCompactList}\item 
+void \hyperlink{class_finite_history_aec85dc2f48062985164e4033223d9312}{operator$<$$<$} (T x)
+\begin{DoxyCompactList}\small\item\em Convenient adding. \end{DoxyCompactList}\item 
+double \hyperlink{class_finite_history_a1184d6b1d30c2d4d86846a643dbee18a}{mean} ()
+\begin{DoxyCompactList}\small\item\em Compute the average. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ T $>$ \hyperlink{class_finite_history_ae11bec06f0aca5c036d3e44dfe998cbe}{history}
+\item 
+std\+::atomic$<$ size\+\_\+t $>$ \hyperlink{class_finite_history_aa744ad1f9f0ef54fbd575eef672adc08}{history\+\_\+size}
+\item 
+std\+::atomic$<$ size\+\_\+t $>$ \hyperlink{class_finite_history_a1730270169bb022306e9a40e871aec35}{history\+\_\+index}
+\item 
+std\+::atomic$<$ unsigned long $>$ \hyperlink{class_finite_history_a5967a95efc3ef8aa4391942da511eab7}{N}
+\item 
+std\+::mutex \hyperlink{class_finite_history_a677c5c1c7115d5c8c8381aa4332025c6}{mutex}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Finite\+History$<$ T $>$}
+
+\begin{DoxyAuthor}{Author}
+steven piantadosi 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+03/02/20 
+\end{DoxyDate}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_finite_history_a9300fde1231d7307a97349caa4745b1a}\label{class_finite_history_a9300fde1231d7307a97349caa4745b1a}} 
+\index{Finite\+History@{Finite\+History}!Finite\+History@{Finite\+History}}
+\index{Finite\+History@{Finite\+History}!Finite\+History@{Finite\+History}}
+\subsubsection{\texorpdfstring{Finite\+History()}{FiniteHistory()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_finite_history}{Finite\+History}$<$ T $>$\+::\hyperlink{class_finite_history}{Finite\+History} (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_finite_history_a845a1fd7ec4b850c2ee6ec2003c6bd3e}\label{class_finite_history_a845a1fd7ec4b850c2ee6ec2003c6bd3e}} 
+\index{Finite\+History@{Finite\+History}!Finite\+History@{Finite\+History}}
+\index{Finite\+History@{Finite\+History}!Finite\+History@{Finite\+History}}
+\subsubsection{\texorpdfstring{Finite\+History()}{FiniteHistory()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_finite_history}{Finite\+History}$<$ T $>$\+::\hyperlink{class_finite_history}{Finite\+History} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_finite_history_a601fa98e570953c9d0e9a562a24b92c1}\label{class_finite_history_a601fa98e570953c9d0e9a562a24b92c1}} 
+\index{Finite\+History@{Finite\+History}!Finite\+History@{Finite\+History}}
+\index{Finite\+History@{Finite\+History}!Finite\+History@{Finite\+History}}
+\subsubsection{\texorpdfstring{Finite\+History()}{FiniteHistory()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_finite_history}{Finite\+History}$<$ T $>$\+::\hyperlink{class_finite_history}{Finite\+History} (\begin{DoxyParamCaption}\item[{const \hyperlink{class_finite_history}{Finite\+History}$<$ T $>$ \&}]{fh }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_finite_history_ade3eff280584fefaf796c70912781825}\label{class_finite_history_ade3eff280584fefaf796c70912781825}} 
+\index{Finite\+History@{Finite\+History}!Finite\+History@{Finite\+History}}
+\index{Finite\+History@{Finite\+History}!Finite\+History@{Finite\+History}}
+\subsubsection{\texorpdfstring{Finite\+History()}{FiniteHistory()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_finite_history}{Finite\+History}$<$ T $>$\+::\hyperlink{class_finite_history}{Finite\+History} (\begin{DoxyParamCaption}\item[{\hyperlink{class_finite_history}{Finite\+History}$<$ T $>$ \&\&}]{fh }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_finite_history_ae7e85a666c78b8d21276758ac1c2f22f}\label{class_finite_history_ae7e85a666c78b8d21276758ac1c2f22f}} 
+\index{Finite\+History@{Finite\+History}!add@{add}}
+\index{add@{add}!Finite\+History@{Finite\+History}}
+\subsubsection{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+void \hyperlink{class_finite_history}{Finite\+History}$<$ T $>$\+::add (\begin{DoxyParamCaption}\item[{T}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Add x to this history. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_finite_history_a1184d6b1d30c2d4d86846a643dbee18a}\label{class_finite_history_a1184d6b1d30c2d4d86846a643dbee18a}} 
+\index{Finite\+History@{Finite\+History}!mean@{mean}}
+\index{mean@{mean}!Finite\+History@{Finite\+History}}
+\subsubsection{\texorpdfstring{mean()}{mean()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+double \hyperlink{class_finite_history}{Finite\+History}$<$ T $>$\+::mean (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Compute the average. 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_finite_history_aec85dc2f48062985164e4033223d9312}\label{class_finite_history_aec85dc2f48062985164e4033223d9312}} 
+\index{Finite\+History@{Finite\+History}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Finite\+History@{Finite\+History}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+void \hyperlink{class_finite_history}{Finite\+History}$<$ T $>$\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{T}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Convenient adding. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_finite_history_afdc27d66ff1c1c386185f29eff5c474c}\label{class_finite_history_afdc27d66ff1c1c386185f29eff5c474c}} 
+\index{Finite\+History@{Finite\+History}!operator=@{operator=}}
+\index{operator=@{operator=}!Finite\+History@{Finite\+History}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+void \hyperlink{class_finite_history}{Finite\+History}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_finite_history}{Finite\+History}$<$ T $>$ \&}]{fh }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_finite_history_a1c3695b639cd2ec5cda375c4450b3cc8}\label{class_finite_history_a1c3695b639cd2ec5cda375c4450b3cc8}} 
+\index{Finite\+History@{Finite\+History}!operator=@{operator=}}
+\index{operator=@{operator=}!Finite\+History@{Finite\+History}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+void \hyperlink{class_finite_history}{Finite\+History}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{\hyperlink{class_finite_history}{Finite\+History}$<$ T $>$ \&\&}]{fh }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_finite_history_ae11bec06f0aca5c036d3e44dfe998cbe}\label{class_finite_history_ae11bec06f0aca5c036d3e44dfe998cbe}} 
+\index{Finite\+History@{Finite\+History}!history@{history}}
+\index{history@{history}!Finite\+History@{Finite\+History}}
+\subsubsection{\texorpdfstring{history}{history}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+std\+::vector$<$T$>$ \hyperlink{class_finite_history}{Finite\+History}$<$ T $>$\+::history}
+
+\mbox{\Hypertarget{class_finite_history_a1730270169bb022306e9a40e871aec35}\label{class_finite_history_a1730270169bb022306e9a40e871aec35}} 
+\index{Finite\+History@{Finite\+History}!history\+\_\+index@{history\+\_\+index}}
+\index{history\+\_\+index@{history\+\_\+index}!Finite\+History@{Finite\+History}}
+\subsubsection{\texorpdfstring{history\+\_\+index}{history\_index}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+std\+::atomic$<$size\+\_\+t$>$ \hyperlink{class_finite_history}{Finite\+History}$<$ T $>$\+::history\+\_\+index}
+
+\mbox{\Hypertarget{class_finite_history_aa744ad1f9f0ef54fbd575eef672adc08}\label{class_finite_history_aa744ad1f9f0ef54fbd575eef672adc08}} 
+\index{Finite\+History@{Finite\+History}!history\+\_\+size@{history\+\_\+size}}
+\index{history\+\_\+size@{history\+\_\+size}!Finite\+History@{Finite\+History}}
+\subsubsection{\texorpdfstring{history\+\_\+size}{history\_size}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+std\+::atomic$<$size\+\_\+t$>$ \hyperlink{class_finite_history}{Finite\+History}$<$ T $>$\+::history\+\_\+size}
+
+\mbox{\Hypertarget{class_finite_history_a677c5c1c7115d5c8c8381aa4332025c6}\label{class_finite_history_a677c5c1c7115d5c8c8381aa4332025c6}} 
+\index{Finite\+History@{Finite\+History}!mutex@{mutex}}
+\index{mutex@{mutex}!Finite\+History@{Finite\+History}}
+\subsubsection{\texorpdfstring{mutex}{mutex}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+std\+::mutex \hyperlink{class_finite_history}{Finite\+History}$<$ T $>$\+::mutex\hspace{0.3cm}{\ttfamily [mutable]}}
+
+\mbox{\Hypertarget{class_finite_history_a5967a95efc3ef8aa4391942da511eab7}\label{class_finite_history_a5967a95efc3ef8aa4391942da511eab7}} 
+\index{Finite\+History@{Finite\+History}!N@{N}}
+\index{N@{N}!Finite\+History@{Finite\+History}}
+\subsubsection{\texorpdfstring{N}{N}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+std\+::atomic$<$unsigned long$>$ \hyperlink{class_finite_history}{Finite\+History}$<$ T $>$\+::N}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Statistics/\hyperlink{_finite_history_8h}{Finite\+History.\+h}\end{DoxyCompactItemize}
