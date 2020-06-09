@@ -9,7 +9,7 @@
 #include "FleetStatistics.h"
 #include "ParallelInferenceInterface.h"
 
-#define DEBUG_ASTAR 1
+//#define DEBUG_ASTAR 1
 
 extern volatile sig_atomic_t CTRL_C; 
 
@@ -40,12 +40,12 @@ public:
 	static constexpr double PARENT_PENALTY = 1.1;
 	static double temperature;	
 	static callback_t* callback; // must be static so it can be accessed in GraphNode
-	static HYP::data_t* data;
+	static typename HYP::data_t* data;
 	
 	// the smallest element appears on top of this vector
 	std::priority_queue<HYP, ReservedVector<HYP,INITIAL_SIZE>> Q;
 	 
-	Astar(HYP& h0, HYP::data_t* d, callback_t& cb, double temp) {
+	Astar(HYP& h0, typename HYP::data_t* d, callback_t& cb, double temp) {
 		
 		// set these static members (static so GraphNode can use them without having so many copies)
 		callback = &cb; 
@@ -150,7 +150,7 @@ template<typename HYP, typename callback_t>
 callback_t* Astar<HYP,callback_t>::callback = nullptr;
 
 template<typename HYP, typename callback_t>
-HYP::data_t* Astar<HYP,callback_t>::data = nullptr;
+typename HYP::data_t* Astar<HYP,callback_t>::data = nullptr;
 
 template<typename HYP, typename callback_t>
 double Astar<HYP,callback_t>::temperature = 100.0;

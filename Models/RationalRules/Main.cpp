@@ -116,9 +116,9 @@ int main(int argc, char** argv){
 	// set up the data
 	//------------------
 	
-	mydata.push_back(   (MyHypothesis::datum_t){ (Object){Color::Red, Shape::Triangle}, true,  0.75 }  );
-	mydata.push_back(   (MyHypothesis::datum_t){ (Object){Color::Red, Shape::Square},   false, 0.75 }  );
-	mydata.push_back(   (MyHypothesis::datum_t){ (Object){Color::Red, Shape::Square},   false, 0.75 }  );
+	mydata.push_back(MyHypothesis::datum_t{.input=Object{.color=Color::Red, .shape=Shape::Triangle}, .output=true,  .reliability=0.75});
+	mydata.push_back(MyHypothesis::datum_t{.input=Object{.color=Color::Red, .shape=Shape::Square},   .output=false, .reliability=0.75});
+	mydata.push_back(MyHypothesis::datum_t{.input=Object{.color=Color::Red, .shape=Shape::Square},   .output=false, .reliability=0.75});
 	
 	//------------------
 	// Actually run

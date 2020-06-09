@@ -100,7 +100,7 @@ namespace Proposals {
 //		CERR s.second TAB grammar->log_probability(t) TAB grammar->log_probability(old_s) TAB lpq ENDL;
 		
 	
-		s.first = t; // now since s pointed to something in ret, we're done  
+		*s.first = t; // now since s pointed to something in ret, we're done  
 		
 		// forward is choosing s, generating everything *except* what replaced s, and then replacing
 		double forward = s.second +  // must get exactly this s
@@ -151,7 +151,7 @@ namespace Proposals {
 		// probability of generating everything in s except q
 		double tlp = grammar->log_probability(old_s) - grammar->log_probability(*q.first); 
 		
-		s.first = Node(*q.first); // must set with a copy
+		*s.first = Node(*q.first); // must set with a copy
 		
 		/// backward is we choose the *new* s, then generate everything else, and choose anything equal
 		double backward = lp_sample_one<Node,Node>(*s.first,ret,can_resample) + 
