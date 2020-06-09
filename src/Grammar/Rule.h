@@ -132,6 +132,7 @@ std::ostream& operator<<(std::ostream& o, const Rule& r) {
 }
 
 // A single constant NullRule for gaps in trees. Always has type 0
-const Rule* NullRule = new Rule((nonterminal_t)0, BuiltinOp::op_NOP, "\u2b1c", {}, 0.0);
- 
+// old format was \u2b1c 
+const Rule* NullRule = new Rule((nonterminal_t)0, BuiltinOp::op_NOP, "\u25A0", {}, 0.0);
+
 const std::string Rule::ChildStr = "%s";

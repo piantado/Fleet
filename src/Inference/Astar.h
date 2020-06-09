@@ -9,7 +9,7 @@
 #include "FleetStatistics.h"
 #include "ParallelInferenceInterface.h"
 
-//#define DEBUG_ASTAR 1
+#define DEBUG_ASTAR 1
 
 extern volatile sig_atomic_t CTRL_C; 
 
