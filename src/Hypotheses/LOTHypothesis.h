@@ -207,24 +207,13 @@ public:
 		return this->value == h.value;
 	}
 	
-	virtual HYP copy_and_complete() const {
-		// make a copy and fill in the missing nodes.
-		// NOTE: here we set all of the above nodes to NOT resample
-		// TODO: That part should go somewhere else eventually I think?
-		
+	virtual void complete() override {
 		if(value.is_null()) {
 			auto nt = grammar->template nt<output_t>();
-			return HYP(grammar, grammar->generate(nt));
+			value = grammar->generate(nt);
 		}
 		else {
-		
-			HYP h(grammar, Node(value));
-			h.prior=0.0;h.likelihood=0.0;h.posterior=0.0; // reset these just in case
-			
-			//const std::function<void(Node&)> myf =  [](Node& n){n.can_resample=false;};
-			//h.value.map(myf);
-			grammar->complete(h.value);
-			return h;
+			grammar->complete(value);
 		}
 	}
 
@@ -247,26 +236,26 @@ public:
 		}
 	}
 
-	virtual HYP make_neighbor(int k) const override {
-		assert(grammar != nullptr);
-		
-		HYP h(grammar); // new hypothesis -- NOTE This does NOT copy prior, likelihood
-		auto nt = grammar->template nt<output_t>();
-		if(value.is_null()) {
-			assert(k >= 0);
-			assert(k < (int)grammar->count_rules(nt));
-			auto r = grammar->get_rule(nt,(size_t)k);
-			h.value = grammar->makeNode(r);
-		}
-		else {
-			Node t = value;
-			grammar->expand_to_neighbor(t,k);
-			h.value = t;
-		}
-		return h;
-	}
-	
-	virtual void expand_to_neighbor(int k) {
+//	virtual HYP make_neighbor(int k) const override {
+//		assert(grammar != nullptr);
+//		
+//		HYP h(grammar); // new hypothesis -- NOTE This does NOT copy prior, likelihood
+//		auto nt = grammar->template nt<output_t>();
+//		if(value.is_null()) {
+//			assert(k >= 0);
+//			assert(k < (int)grammar->count_rules(nt));
+//			auto r = grammar->get_rule(nt,(size_t)k);
+//			h.value = grammar->makeNode(r);
+//		}
+//		else {
+//			Node t = value;
+//			grammar->expand_to_neighbor(t,k);
+//			h.value = t;
+//		}
+//		return h;
+//	}
+//	
+	virtual void expand_to_neighbor(int k) override {
 		assert(grammar != nullptr);
 		
 		if(value.is_null()){
@@ -279,7 +268,7 @@ public:
 		}
 	}
 	
-	virtual double neighbor_prior(int k) {
+	virtual double neighbor_prior(int k) override {
 		// What is the prior for this neighbor?
 		if(value.is_null()){
 			auto nt = grammar->template nt<output_t>();

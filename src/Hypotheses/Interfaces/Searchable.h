@@ -12,13 +12,47 @@
 template<typename HYP, typename... Args>
 class Searchable {
 public:
-	virtual int  neighbors() const = 0; // how many neighbors do I have?
-	virtual HYP  make_neighbor(int k) const = 0; // not const since its modified
-	virtual bool is_evaluable() const = 0; // can I call this hypothesis? Note it might still have neighbors (a in factorized lexica)
-	// NOTE: here there is both neighbors() and can_evaluate becaucse it's possible that I can evaluate something
-	// that has neghbors but also can be evaluated
+
+	/**
+	 * @brief Count the number of neighbors that are possible. 
+	 * 			(This should be size_t but int is more convenient.)
+	 */
+	[[nodiscard]]  virtual int  neighbors() const          = 0; // how many neighbors do I have?
 	
-	// TODO: Should copy_and_complete be in here? Would allow us to take a partial and score it; but that's actually handled in playouts
-	//       and maybe doesn't seem like it should necessarily be pat of searchable
-	//       Maybe actually the evaluation function should be in here -- evaluate_state?
+	/**
+	 * @brief Modify this hypothesis to become the k'th neighbor
+	 * @param k
+	 */	
+	virtual void expand_to_neighbor(int k)  = 0; // modifies this hypothesis rather than making a new one
+	
+
+	/**
+	 * @brief Return a new hypothesis which is the k'th neighbor (just calls expand_to_neighbor)
+	 * @param k
+	 * @return 
+	 */	
+	[[nodiscard]]  virtual HYP  make_neighbor(int k) const {
+		HYP out =  *static_cast<HYP*>(const_cast<Searchable<HYP,Args...>*>(this));
+		out.expand_to_neighbor(k);
+		return out; 
+	}
+	
+	/**
+	 * @brief What is the prior of the k'th neighbor? This does not need to return the full prior, only relative (among ks)
+	 * @param k
+	 */	
+	virtual double neighbor_prior(int k)    = 0; // what is the prior of this neighbor?
+
+	 
+	/**
+	 * @brief Fill in all the holes in this hypothesis, at random, modifying self. 
+	 */	
+	virtual void complete() = 0; 						
+	
+	/**
+	 * @brief Check if we can evaluate this node (meaning compute a prior and posterior). NOTE that this is not the
+	 * 		  same as whether it has zero neighbors, since lexica might have neighbors but be evalable. 
+	 */	
+	[[nodiscard]]  virtual bool is_evaluable() const       = 0; 
+	
 };

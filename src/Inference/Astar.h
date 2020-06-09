@@ -55,7 +55,9 @@ public:
 		// We're going to make sure we don't start on -inf because this value will
 		// get inherited by my kisd for when they use -inf
 		for(size_t i=0;i<1000;i++) {
-			auto g = h0.copy_and_complete();
+			auto g = h0;
+			g.complete();
+			
 			g.compute_posterior(*data);
 			(*callback)(g);
 			if(g.likelihood > -infinity) {
@@ -114,7 +116,7 @@ public:
 					// heuristic, and may not even make sense, but seems to work well, meainly in preventing -inf
 					double likelihood = t.likelihood * PARENT_PENALTY;  // remember this likelihood is divided by temperature
 					for(size_t i=0;i<N_REPS and not CTRL_C;i++) {
-						auto g = v.copy_and_complete();
+						auto g = v; g.complete();
 						g.compute_posterior(*data);
 						(*callback)(g);
 						if(not std::isnan(g.likelihood)) {

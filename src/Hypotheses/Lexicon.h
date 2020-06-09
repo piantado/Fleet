@@ -227,18 +227,12 @@ public:
 	 * Implementation of MCMCable interace 
 	 ********************************************************/
 	
-	virtual HYP copy_and_complete() const {
-		
-		HYP l;
-		
+	virtual void complete() override {
 		for(auto& v: factors){
-			l.factors.push_back(v.copy_and_complete());
+			v.complete();
 		}
-		
-		return l;
 	}
-	
-	
+		
 	virtual double compute_prior() override {
 		// this uses a proper prior which flips a coin to determine the number of factors
 		
@@ -314,29 +308,51 @@ public:
 		}
 	 }
 	
-	 HYP make_neighbor(int k) const override {
-		 
-		HYP x;
-		x.factors.resize(factors.size());
-		for(size_t i=0;i<factors.size();i++) {
-			x.factors[i] = factors[i];
-		}
-		 
+//	 HYP make_neighbor(int k) const override {
+//		 
+//		HYP x;
+//		x.factors.resize(factors.size());
+//		for(size_t i=0;i<factors.size();i++) {
+//			x.factors[i] = factors[i];
+//		}
+//		 
+//		 // try adding a factor
+//		 if(is_evaluable()){ 
+//			INNER tmp; // as above, assumes that this constructs will null
+//			assert(k < tmp.neighbors());			
+//			x.factors.push_back( tmp.make_neighbor(k) );	 
+//		}
+//		else {
+//			// expand the last one
+//			size_t s = x.factors.size();
+//			assert(k < x.factors[s-1].neighbors());
+//			x.factors[s-1] = x.factors[s-1].make_neighbor(k);
+//		}
+//		return x;
+//	 }
+	 
+	 void expand_to_neighbor(int k) override {
 		 // try adding a factor
 		 if(is_evaluable()){ 
 			INNER tmp; // as above, assumes that this constructs will null
 			assert(k < tmp.neighbors());			
-			x.factors.push_back( tmp.make_neighbor(k) );	 
+			factors.push_back( tmp.make_neighbor(k) );	 
 		}
 		else {
-			// expand the last one
-			size_t s = x.factors.size();
-			assert(k < x.factors[s-1].neighbors());
-			x.factors[s-1] = x.factors[s-1].make_neighbor(k);
+			// expand the last factor
+			size_t s = factors.size();
+			assert(k < factors[s-1].neighbors());
+			factors[s-1].expand_to_neighbor(k);
 		}
-		return x;
 	 }
 	
+	
+	 virtual double neighbor_prior(int k) override {
+		size_t s = factors.size();
+		assert(k < factors[s-1].neighbors());
+		return factors[s-1].neighbor_prior(k);
+	 }
+	 
 	 ///////////////////////////////////
 	 // Old code lets you add factors any time:
 //	 int neighbors() const {
