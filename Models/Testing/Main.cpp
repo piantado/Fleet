@@ -1,89 +1,12 @@
 #include <string>
 #include <map>
 
-///########################################################################################
-// A simple example of a version of the RationalRules model. 
-// This is primarily used as an example and for debugging MCMC
-// My laptop gets around 200-300k samples per second on 4 threads
-///########################################################################################
+// TODO: Include Dyck grammar to count enumeration etc. 
 
 
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// We need to define some structs to hold the object features
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-enum    class  Shape  { Square, Triangle, Circle};
-enum    class  Color  { Red, Green, Blue};
-typedef struct { Color color; Shape shape; } Object;
-
-#include "Primitives.h"
-#include "Builtins.h"
-
-std::map<std::string, double> probs = {
-										{"and", 1.82}, {"or", 0.11}, {"not", 1.07},
-										{"red", 2.4},  {"green", 0.2}, {"blue", 1.4},
-										{"square", 5.1}, {"triangle", 4.5}, {"circle", 2.49}
-									   };
-									   
-double zprob() {
-	double z = 0.0;
-	for(auto& i : probs) {
-		z += i.second;
-	}
-	return z;
-}
-
-std::tuple PRIMITIVES = {
-	// We've set some arbitrary weights here -- be sure you change them below
-	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, probs["and"]), 
-	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); },  probs["or"]),
-	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); },   probs["not"]),
-	
-	Primitive("red(%s)",       +[](Object x)       -> bool { return x.color == Color::Red; }, probs["red"]),
-	Primitive("green(%s)",     +[](Object x)       -> bool { return x.color == Color::Green; }, probs["green"]),
-	Primitive("blue(%s)",      +[](Object x)       -> bool { return x.color == Color::Blue; }, probs["blue"]),
-
-	Primitive("square(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Square; }, probs["square"]),
-	Primitive("triangle(%s)",  +[](Object x)       -> bool { return x.shape == Shape::Triangle; }, probs["triangle"]),
-	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Circle; }, probs["circle"]),
-	
-		
-	// but we also have to add a rule for the BuiltinOp that access x, our argument
-	Builtin::X<Object>("x", 41.11) /// different type so shouldn't matter
-};
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Define the grammar
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#include "Grammar.h"
-
-class MyGrammar : public Grammar<bool,Object> {
-	using Super =  Grammar<bool,Object>;
-	using Super::Super;
-};
-
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Define a class for handling my specific hypotheses and data. Everything is defaultly 
-/// a PCFG prior and regeneration proposals, but I have to define a likelihood
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#include "LOTHypothesis.h"
-
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,Object,bool,MyGrammar> {
-public:
-	using Super = LOTHypothesis<MyHypothesis,Object,bool,MyGrammar>;
-	using Super::Super; // inherit the constructors
-	
-	// Now, if we defaultly assume that our data is a std::vector of t_data, then we 
-	// can just define the likelihood of a single data point, which is here the true
-	// value with probability x.reliability, and otherwise a coin flip. 
-	double compute_single_likelihood(const datum_t& x) override {
-		bool out = callOne(x.input, false);
-		return out == x.output ? log(x.reliability + (1.0-x.reliability)/2.0) : log((1.0-x.reliability)/2.0);
-	}
-};
+#define DO_NOT_INCLUDE_MAIN 1 
+#include "../Models/FormalLanguageTheory-Simple/Main.cpp"
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Main code
@@ -93,7 +16,7 @@ template<typename Grammar_t>
 void checkNode(const Grammar_t* g, const Node& n) {
 	
 	// first check the iterator hits all the nodes:
-	// NOTE: this works because count does not use the iterator
+	// NOTE: this works because count does not use the iterator, it uses recursion
 	size_t cnt = 0;
 	for(auto& ni : n) {
 		UNUSED(ni);
@@ -109,14 +32,14 @@ void checkNode(const Grammar_t* g, const Node& n) {
 	// check the log probability that I get out. 
 	// by counting how things are mapped to strings
 	// NOTE: This is specific to this grammar
-	std::string s = n.string();
-	double mylp = 0.0;
-	double lz = log(zprob()); // TODO: This should only be computed once...
-	for(auto& i : probs) { 
-		mylp += count(s, i.first) * (log(i.second) - lz); // TODO: 
-	}
+//	std::string s = n.string();
+//	double mylp = 0.0;
+//	double lz = log(zprob()); // TODO: This should only be computed once...
+//	for(auto& i : probs) { 
+//		mylp += count(s, i.first) * (log(i.second) - lz); // TODO: 
+//	}
 	//CERR mylp TAB g->log_probability(n) TAB n ENDL;
-	assert(abs(mylp-g->log_probability(n)) < 0.00001);
+//	assert(abs(mylp-g->log_probability(n)) < 0.00001);
 }
 
 
@@ -134,6 +57,12 @@ void checkLOTHypothesis(const Grammar_t* g, const Hypothesis_t h){
 	assert(newH.likelihood == h.likelihood);
 	assert(newH.posterior == newH.prior + newH.likelihood);
 	assert(newH.hash() == h.hash());	
+	
+	// check that if we convert to names and back, we get an equal node
+	Node q = g->expand_from_names(h.get_value().parseable());
+	assert(q == h.get_value());
+	assert(&q != &h.get_value());
+	
 }
 
 /**
@@ -148,7 +77,8 @@ void checkTop(const Grammar_t* g, const Top_t& top) {
 	// check each hypothesis -- make sure it copies correctly
 	for(auto& h : top.values()) {
 		checkLOTHypothesis(g, h);
-		assert(h.posterior > -infinity);
+//		assert(h.posterior > -infinity); // not necessarily required anymore
+		assert(h.posterior < infinity);
 		assert(not std::isnan(h.posterior));
 	}	
 	
@@ -199,7 +129,7 @@ double top_difference(Top_t& x, Top_t& y) {
 #include "Top.h"
 #include "MCMCChain.h"
 #include "ParallelTempering.h"
-#include "Enumeration.h"
+#include "EnumerationInference.h"
 
 #include "Fleet.h" 
 
@@ -207,7 +137,9 @@ int main(int argc, char** argv){
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	Fleet fleet("Testing");
-	fleet.initialize(argc, argv); // must happen afer args are processed since the alphabet is in the grammar
+	fleet.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
+	fleet.add_option("-d,--data",     datastr, "Comma separated list of input data strings");	
+	fleet.initialize(argc, argv);
 	
 	//------------------
 	// Basic setup
@@ -215,6 +147,13 @@ int main(int argc, char** argv){
 	
 	// Define the grammar (default initialize using our primitives will add all those rules)	
 	MyGrammar grammar(PRIMITIVES);
+	
+	// here we create an alphabet op with an "arg" that stores the character (this is faster than alphabet.substring with i.arg as an index) 
+	// here, op_ALPHABET converts arg to a string (and pushes it)
+	for(size_t i=0;i<alphabet.length();i++) {
+		grammar.add<S>     (BuiltinOp::op_ALPHABET, Q(alphabet.substr(i,1)), 5.0/alphabet.length(), (int)alphabet.at(i)); 
+	}
+	
 	
 	// mydata stores the data for the inference model
 	MyHypothesis::data_t mydata;
@@ -225,10 +164,17 @@ int main(int argc, char** argv){
 	//------------------
 	// set up the data
 	//------------------
-	
-	mydata.push_back(   (MyHypothesis::datum_t){ (Object){Color::Red, Shape::Triangle}, true,  0.75 }  );
-	mydata.push_back(   (MyHypothesis::datum_t){ (Object){Color::Red, Shape::Square},   false, 0.75 }  );
-	mydata.push_back(   (MyHypothesis::datum_t){ (Object){Color::Red, Shape::Square},   false, 0.75 }  );
+
+	// we will parse the data from a comma-separated list of "data" on the command line
+	for(auto di : split(datastr, ',')) {
+		// add check that data is in the alphabet
+		for(auto& c : di) {
+			assert(alphabet.find(c) != std::string::npos && "*** alphabet does not include all data characters");
+		}
+		
+		// and add to data:
+		mydata.push_back( MyHypothesis::datum_t({S(""), di}) );		
+	}
 	
 	const size_t N = 100000; // check equality on the top this many
 	
@@ -236,9 +182,8 @@ int main(int argc, char** argv){
 	// Actually run
 	//------------------
 		
-<<<<<<< HEAD
 	COUT "# MCMC..." ENDL;
-	TopN<MyHypothesis> top_mcmc(N);
+	TopN<MyHypothesis> top_mcmc(N);  //	top_mcmc.print_best = true;
 	h0 = h0.restart();
 	MCMCChain chain(h0, &mydata, top_mcmc);
 	chain.run(Control(mcmc_steps,runtime));
@@ -271,39 +216,17 @@ int main(int argc, char** argv){
 	
 	COUT "# top_difference(top_mcmc, top_tempering) = " << top_difference(top_mcmc, top_tempering) ENDL;
 
-//	COUT "# Enumerating...." ENDL;
-//	TopN<MyHypothesis> top_enumerate(N);
-//	for(enumerationidx_t z=1;z<1000 and !CTRL_C;z++) {
-//		auto n = grammar.expand_from_integer(grammar->nt<bool>(), z);
-//		checkNode(&grammar, n);
-//		CERR n ENDL;
-//	
-//	COUT "# top_difference(top_mcmc, top_tempering) = " << top_difference(top_mcmc, top_tempering) ENDL;
-
-	COUT "# Enumerating...." ENDL;
-	Fleet::Statistics::TopN<MyHypothesis> top_enumerate(N);
-	for(enumerationidx_t z=1;z<1000 and !CTRL_C;z++) {
-		auto n = expand_from_integer(&grammar, grammar.nt<bool>(), z);
-		checkNode(&grammar, n);
-		CERR n ENDL;
-	
-		MyHypothesis h(&grammar);
-		h.set_value(n);
-		h.compute_posterior(mydata);
-		
-		top_enumerate << h;
-		
-		// check our enumeration order
-		auto o  = compute_enumeration_order(&grammar, n);
-		assert(o == z); // check our enumeration order
-	}
+	COUT "# Enumerate sampler ...." ENDL;
+	TopN<MyHypothesis> top_enumerate(N);
+	EnumerationInference<MyHypothesis,MyGrammar,decltype(top_enumerate)> e(&grammar, grammar.nt<S>(), &mydata, top_enumerate);
+	e.run(Control(mcts_steps, runtime, nthreads));
 	assert(not top_enumerate.empty());
 	checkTop(&grammar, top_enumerate);
 	
-	COUT "# PriorSampling...." ENDL;
+	COUT "# Enumerate...." ENDL;
 	TopN<MyHypothesis> top_generate(N);
 	for(enumerationidx_t z=0;z<1000 and !CTRL_C;z++) {
-		auto n = grammar.generate<bool>();
+		auto n = grammar.generate<S>();
 		checkNode(&grammar, n);
 		
 		MyHypothesis h(&grammar);
@@ -315,21 +238,35 @@ int main(int argc, char** argv){
 	checkTop(&grammar, top_generate);
 	assert(not top_generate.empty());
 	
-//	COUT "# top_difference(top_mcmc, top_generate) = " << top_difference(top_mcmc, top_generate) ENDL;
+	COUT "# top_difference(top_mcmc, top_generate) = " << top_difference(top_mcmc, top_generate) ENDL;
+	
+	// Let's check that when we enumerate, we don't get repeats
+	const size_t N_checkdup = 100000;
+	std::set<MyHypothesis> s;
+	for(enumerationidx_t z=0;z<N_checkdup and !CTRL_C;z++) {
+		auto n = grammar.generate<S>();
+		checkNode(&grammar, n);
+		
+		CERR n.string() ENDL;
+		
+		MyHypothesis h(&grammar);
+		h.set_value(n);
+		
+		// we should not have duplicates
+		assert(not s.contains(h));
+		s.insert(h);
+	}
+	
 	
 	/*
 	
 	 * What we want to check:
 	 * 	- each tree matches its probability
-	 *  - each node enumeration counts correctly
 	 *  - check multicore performance 
-	 *  - Check evaluation? Or maybe that's captured by ensuring the posterior is right?
-	 *  - check on numerics -- logsumexp
-	 *  - check iterator for Nodes -- let's push everything into a pointer structure and be sure we get them all 
 	 *  - Check that parseable is parseable..
 	*/
 	
-//	paste(as.character(-exp(rnorm(10))), collapse=",")
+	COUT "# Checking logsumexp..." ENDL; // paste(as.character(-exp(rnorm(10))), collapse=",")
 	std::vector<double> lps = {-3.06772779477656,-0.977654036813297,-3.01475169747216,-0.578898745873913,-0.444846222063099,-6.65476914326284,-2.06142236468469,-3.9048004594152,-0.29627744117047,-2.79668565176668};
 	assert(abs(logsumexp(lps)-0.965657562406778) < 0.000001);
 
