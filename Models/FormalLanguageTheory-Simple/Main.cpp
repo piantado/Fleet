@@ -245,7 +245,7 @@ int main(int argc, char** argv){
 //	Astar astar(h0,&mydata, top, 10.0);
 //	astar.run(Control(mcts_steps, runtime, nthreads));
 
-	// do inference via enumeration
+	// do inference via enumeration -- this doesn't usually work well
 	top.print_best = true;
 	EnumerationInference<MyHypothesis,MyGrammar,decltype(top)> e(&grammar, grammar.nt<S>(), &mydata, top);
 	e.run(Control(mcts_steps, runtime, nthreads));

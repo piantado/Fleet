@@ -1,4 +1,8 @@
-include ../../Fleet.mk
+
+# Define where Fleet lives (directory containing src)
+FLEET_ROOT=../../
+
+include $(FLEET_ROOT)/Fleet.mk
 
 all:
 	g++ Main.cpp -o main -lm -O3 $(FLEET_FLAGS) $(FLEET_INCLUDE) -I  /usr/include/eigen3/

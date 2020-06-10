@@ -3,8 +3,6 @@
 
 // TODO: Include Dyck grammar to count enumeration etc. 
 
-
-
 #define DO_NOT_INCLUDE_MAIN 1 
 #include "../Models/FormalLanguageTheory-Simple/Main.cpp"
 
@@ -28,7 +26,12 @@ void checkNode(const Grammar_t* g, const Node& n) {
 	for(auto& ni: n) {
 		ni.check_child_info();
 	}
-
+	
+	// check that if we convert to names and back, we get an equal node
+	Node q = g->expand_from_names(n.parseable());
+	assert(q == n);
+	assert(&q != &n);
+	
 	// check the log probability that I get out. 
 	// by counting how things are mapped to strings
 	// NOTE: This is specific to this grammar
@@ -57,12 +60,6 @@ void checkLOTHypothesis(const Grammar_t* g, const Hypothesis_t h){
 	assert(newH.likelihood == h.likelihood);
 	assert(newH.posterior == newH.prior + newH.likelihood);
 	assert(newH.hash() == h.hash());	
-	
-	// check that if we convert to names and back, we get an equal node
-	Node q = g->expand_from_names(h.get_value().parseable());
-	assert(q == h.get_value());
-	assert(&q != &h.get_value());
-	
 }
 
 /**
@@ -216,14 +213,14 @@ int main(int argc, char** argv){
 	
 	COUT "# top_difference(top_mcmc, top_tempering) = " << top_difference(top_mcmc, top_tempering) ENDL;
 
-	COUT "# Enumerate sampler ...." ENDL;
+	COUT "# Enumeration..." ENDL;
 	TopN<MyHypothesis> top_enumerate(N);
 	EnumerationInference<MyHypothesis,MyGrammar,decltype(top_enumerate)> e(&grammar, grammar.nt<S>(), &mydata, top_enumerate);
 	e.run(Control(mcts_steps, runtime, nthreads));
 	assert(not top_enumerate.empty());
 	checkTop(&grammar, top_enumerate);
 	
-	COUT "# Enumerate...." ENDL;
+	COUT "# Prior sampling..." ENDL;
 	TopN<MyHypothesis> top_generate(N);
 	for(enumerationidx_t z=0;z<1000 and !CTRL_C;z++) {
 		auto n = grammar.generate<S>();
@@ -251,6 +248,9 @@ int main(int argc, char** argv){
 		
 		MyHypothesis h(&grammar);
 		h.set_value(n);
+		
+		// this should give me back the right enumeration order
+		//assert(z == compute_enumeration_order(&grammar,n));
 		
 		// we should not have duplicates
 		assert(not s.contains(h));
