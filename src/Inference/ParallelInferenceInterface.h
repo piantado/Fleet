@@ -1,5 +1,6 @@
 #pragma once 
 
+#include <atomic>
 #include <thread>
 #include "Control.h"
 
@@ -16,6 +17,23 @@ public:
 	// Subclasses must implement run_thread, which is what each individual thread 
 	// gets called on (and each thread manages its own locks etc)
 	virtual void run_thread(Control ctl) = 0; 
+	
+	// index here is used to index into larger parallel collections or enumerate. Each thread
+	// is expected to get its next item to work on through index, though how will vary
+	std::atomic<unsigned long> index; 
+	
+	
+	ParallelInferenceInterface() : index(0) {
+		
+	}
+	
+	/**
+	 * @brief Return the next index to operate on in a thread-safe way.
+	 * @return 
+	 */	
+	unsigned long next_index() {
+		return index++;
+	}
 	
 	/**
 	 * @brief Run is the main control interface. Copies of ctl get made and passed to each thread in run_thread. 

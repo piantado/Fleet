@@ -224,10 +224,18 @@ int main(int argc, char** argv){
 //	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
 //	samp.run(Control(mcmc_steps, runtime, nthreads), 100, 300); //30000);		
 //	
+
+
+//	MyHypothesis h0(&grammar);	h0 = h0.restart();
 //	MCMCChain c(h0, &mydata, top);
-	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
+//	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
 //	c.run(Control(mcmc_steps, runtime, nthreads));
 
+	// run multiple chains
+	MyHypothesis h0(&grammar);	h0 = h0.restart();
+	ChainPool c(h0, &mydata, top, nchains);
+	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
+	c.run(Control(mcmc_steps, runtime, nthreads));
 
 //	MyHypothesis h0(&grammar);
 //	FullMCTSNode<MyHypothesis,TopN<MyHypothesis>> m(h0, explore, &mydata, top);
@@ -246,9 +254,9 @@ int main(int argc, char** argv){
 //	astar.run(Control(mcts_steps, runtime, nthreads));
 
 	// do inference via enumeration -- this doesn't usually work well
-	top.print_best = true;
-	EnumerationInference<MyHypothesis,MyGrammar,decltype(top)> e(&grammar, grammar.nt<S>(), &mydata, top);
-	e.run(Control(mcts_steps, runtime, nthreads));
+//	top.print_best = true;
+//	EnumerationInference<MyHypothesis,MyGrammar,decltype(top)> e(&grammar, grammar.nt<S>(), &mydata, top);
+//	e.run(Control(mcts_steps, runtime, nthreads));
 	
 	top.print();
 
