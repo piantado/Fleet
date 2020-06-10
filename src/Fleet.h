@@ -234,6 +234,10 @@ public:
 		if(FleetStatistics::astar_steps > 0) {
 			COUT "# Total A* steps:" TAB FleetStatistics::astar_steps ENDL;
 		}
+		if(FleetStatistics::enumeration_steps > 0) {
+			COUT "# Total enumeration steps:" TAB FleetStatistics::enumeration_steps ENDL;
+		}		
+		
 		
 		COUT "# Total posterior calls:" TAB FleetStatistics::posterior_calls ENDL;
 		COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds ENDL;

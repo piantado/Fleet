@@ -580,24 +580,8 @@ public:
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-	// NOTE: THE BELOW IS WRONG BC IT DOESNT COUNT NEIGHBORS FOR LATER CHILDREN
-
-
-
-
-
 	size_t neighbors(const Node& node) const {
-		// How many neighbors do I have? We have to find every gap (nullptr child) and count the ways to expand each
+		// How many neighbors do I have? This is the number of neighbors the first gap has
 		for(size_t i=0;i<node.rule->N;i++){
 			if(node.child(i).is_null()) {
 				return count_rules(node.rule->type(i)); // NOTE: must use rule->child_types since child[i]->rule->nt is always 0 for NullRules
@@ -653,8 +637,6 @@ public:
 		
 		return 0.0; // if no neighbors
 	}
-
-	
 
 	void complete(Node& node) {
 		// go through and fill in the tree at random

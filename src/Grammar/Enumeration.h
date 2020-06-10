@@ -1,140 +1,11 @@
 #pragma once
 
+
+#include "FleetStatistics.h"
+#include "IntegerizedStack.h"
+
 /* Functions for enumerating trees */
 
-typedef size_t enumerationidx_t; // this is the type we use to store enuemration indices
-
-
-/**
- * @class IntegerizedStack
- * @author piantado
- * @date 09/06/20
- * @file Enumeration.h
- * @brief An IntegerizedStack is just a wrapper around unsigned longs that allow them to behave like a of integers stack, supporting push and pop (maybe with mod) via a standard pairing function
- */ 
-class IntegerizedStack {
-	typedef unsigned long long value_t;
-
-protected:
-	value_t value;
-	
-public:
-	IntegerizedStack(value_t v=0) : value(v) {
-		
-	}
-	
-	// A bunch of static operations
-	
-	//std::pair<enumerationidx_t, enumerationidx_t> cantor_decode(const enumerationidx_t z) {
-	//	enumerationidx_t w = (enumerationidx_t)std::floor((std::sqrt(8*z+1)-1.0)/2);
-	//	enumerationidx_t t = w*(w+1)/2;
-	//	return std::make_pair(z-t, w-(z-t));
-	//}
-
-	static std::pair<enumerationidx_t, enumerationidx_t> rosenberg_strong_decode(const enumerationidx_t z) {
-		// https:arxiv.org/pdf/1706.04129.pdf
-		enumerationidx_t m = (enumerationidx_t)std::floor(std::sqrt(z));
-		if(z-m*m < m) {
-			return std::make_pair(z-m*m,m);
-		}
-		else {
-			return std::make_pair(m, m*(m+2)-z);
-		}
-	}
-
-	static enumerationidx_t rosenberg_strong_encode(const enumerationidx_t x, const enumerationidx_t y){
-		auto m = std::max(x,y);
-		return m*(m+1)+x-y;
-	}
-
-	static std::pair<enumerationidx_t,enumerationidx_t> mod_decode(const enumerationidx_t z, const enumerationidx_t k) {
-		
-		if(z == 0) 
-			return std::make_pair(0,0); // I think?
-		
-		auto x = z%k;
-		return std::make_pair(x, (z-x)/k);
-	}
-
-	static enumerationidx_t mod_encode(const enumerationidx_t x, const enumerationidx_t y, const enumerationidx_t k) {
-		assert(x < k);
-		return x + y*k;
-	}
-
-	// Stack-like operations on z
-	static enumerationidx_t rosenberg_strong_pop(enumerationidx_t &z) {
-		// https:arxiv.org/pdf/1706.04129.pdf
-		enumerationidx_t m = (enumerationidx_t)std::floor(std::sqrt(z));
-		if(z-m*m < m) {
-			auto ret = z-m*m;
-			z = m;
-			return ret;
-		}
-		else {
-			auto ret = m;
-			z = m*(m+2)-z;
-			return ret;
-		}
-	}
-	static enumerationidx_t mod_pop(enumerationidx_t& z, const enumerationidx_t k) {			
-		auto x = z%k;
-		z = (z-x)/k;
-		return x;
-	}
-	
-	
-	value_t pop() {
-		auto u = rosenberg_strong_decode(value);
-		value = u.second;
-		return u.first;
-	}
-
-	value_t pop(value_t modulus) { // for mod decoding
-		auto u = mod_decode(value, modulus);
-		value = u.second;
-		return u.first;
-	}
-	
-	void push(value_t x) {
-		auto before = value;
-		value = rosenberg_strong_encode(x, value);
-		assert(before <= value && "*** Overflow in encoding IntegerizedStack::push");
-	}
-
-	void push(value_t x, value_t modulus) {
-		auto before = value;
-		value = mod_encode(x, value, modulus);
-		assert(before <= value && "*** Overflow in encoding IntegerizedStack::push");
-	}
-	
-	value_t get_value() const {
-		return value; 
-	}
-	
-	bool empty() const {
-		// not necessarily empty, just will forever return 0
-		return value == 0;
-	}
-	
-	void operator=(value_t z) {
-		// just set my value
-		value = z;
-	}
-	void operator-=(value_t x) {
-		// subtract off my value
-		value -= x;
-	}
-	void operator+=(value_t x) {
-		// add to value
-		value += x;
-	}
-};
-std::ostream& operator<<(std::ostream& o, const IntegerizedStack& n) {
-	o << n.get_value();
-	return o;
-}	
-
-	
 template<typename Grammar_t>
 Node expand_from_integer(Grammar_t* g, nonterminal_t nt, IntegerizedStack& is) {
 	// this is a handy function to enumerate trees produced by the grammar. 
@@ -150,6 +21,7 @@ Node expand_from_integer(Grammar_t* g, nonterminal_t nt, IntegerizedStack& is) {
 	
 	// NOTE: for now this doesn't work when nt only has finitely many expansions/trees
 	// below it. Otherwise we'll get an assertion error eventually.
+	++FleetStatistics::enumeration_steps;
 	
 	enumerationidx_t numterm = g->count_terminals(nt);
 	if(is.get_value() < numterm) {
