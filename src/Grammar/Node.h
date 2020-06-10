@@ -174,8 +174,28 @@ public:
 	}
 	
 	bool operator<(const Node& n) const {
-		// for sorting/storing in sets -- for now just inherit the rule sort
-		return *rule < *n.rule;
+		// We will sort based on the rules, except we recurse when they are unequal. 
+		// This therefore sorts by the uppermost-leftmost rule that doesn't match. We are less than 
+		// if we have fewer children
+		if(*rule < *n.rule) {
+			return true;
+		}
+		else {
+			
+			if(children.size() != n.children.size()) {
+				return children.size() < n.children.size();
+			}
+
+			for(size_t i=0;i<n.children.size();i++) {
+				if(child(i) < n.child(i)) 
+					return true;
+				else if (n.child(i) < child(i)) {
+					return false;
+				}
+			}
+			
+			return false;
+		}
 	}
 	
 	NodeIterator begin() const { return Node::NodeIterator(this); }

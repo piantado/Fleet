@@ -322,14 +322,15 @@ public:
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const std::string s) const {
 		/**
-		 * @brief Return a rule based on s, which must uniquely be a prefix of the rule's format of a given nonterminal type
+		 * @brief Return a rule based on s, which must uniquely be a prefix of the rule's format of a given nonterminal type. 
+		 * 			If s is the empty string, however, it must match exactly. 
 		 * @param s
 		 * @return 
 		 */
 		
 		Rule* ret = nullptr;
 		for(auto& r: rules[nt]) {
-			if(is_prefix(s, r.format)){
+			if( (s != "" and is_prefix(s, r.format)) or (s=="" and s==r.format)) {
 				if(ret != nullptr) {
 					CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
 					throw YouShouldNotBeHereError();
@@ -347,7 +348,8 @@ public:
 	
 	virtual Rule* get_rule(const std::string s) const {
 		/**
-		 * @brief Return a rule based on s, which must uniquely be a prefix of the rule's format
+		 * @brief Return a rule based on s, which must uniquely be a prefix of the rule's format.
+		 * 			If s is the empty string, however, it must match exactly. 
 		 * @param s
 		 * @return 
 		 */
@@ -355,7 +357,7 @@ public:
 		Rule* ret = nullptr;
 		for(size_t nt=0;nt<N_NTs;nt++) {
 			for(auto& r: rules[nt]) {
-				if(is_prefix(s, r.format)){
+				if( (s != "" and is_prefix(s, r.format)) or (s=="" and s==r.format)) {
 					if(ret != nullptr) {
 						CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
 						assert(0);

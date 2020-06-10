@@ -27,16 +27,18 @@ Node expand_from_integer(Grammar_t* g, nonterminal_t nt, IntegerizedStack& is) {
 		return g->makeNode(g->get_rule(nt, is.get_value()));	// whatever terminal we wanted
 	}
 	else {
+		// Otherwise it is encoding numterm+which_terminal
+		is -= numterm; 
 		
-		is -= numterm; // remove terminals from is
-		auto ri =  is.pop(g->count_nonterminals(nt));	
-//		COUT nt TAB g->count_nonterminals(nt) TAB ri TAB numterm ENDL;
+		auto ri = is.pop(g->count_nonterminals(nt)); // this already includes the shift from all the nonterminals
+		
 		Rule* r = g->get_rule(nt, ri+numterm); // shift index from terminals (because they are first!)
 		Node out = g->makeNode(r);
 		for(size_t i=0;i<r->N;i++) {
-			// note that this recurses on the z format -- so it makes a new IntegerizedStack for each child
+			// note that this recurses on the enumerationidx_t format -- so it makes a new IntegerizedStack for each child
 			out.set_child(i, expand_from_integer(g, r->type(i), i==r->N-1 ? is.get_value() : is.pop()) ) ; 
 		}
+		
 		return out;					
 	}
 

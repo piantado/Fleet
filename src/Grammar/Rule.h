@@ -68,8 +68,10 @@ public:
 		// this helps in enumeration
 		if( (N==0) != (r.N==0) ) 
 			return (r.N==0) < (N==0);
-		else		 
+		else if(p != r.p) 
 			return p > r.p; // weird, but helpful, that we sort in decreasing order of probability
+		else  // if probabilities and children are equal, set a fixed order based on hash
+			return my_hash < r.my_hash;
 	}
 	bool operator==(const Rule& r) const {
 		/**

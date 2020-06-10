@@ -49,7 +49,12 @@ void checkNode(const Grammar_t* g, const Node& n) {
 template<typename Grammar_t, typename Hypothesis_t>
 void checkLOTHypothesis(const Grammar_t* g, const Hypothesis_t h){
 	checkNode(g, h.get_value());
-		
+	
+	// we should only be calling this after we've computed a posterior, so these should be set
+	assert(not std::isnan(h.prior));		
+	assert(not std::isnan(h.likelihood));		
+	assert(not std::isnan(h.posterior));		
+
 	// Check that copies and things work right:
 	decltype(h) newH = h;
 	checkNode(g, newH.get_value());
@@ -57,7 +62,7 @@ void checkLOTHypothesis(const Grammar_t* g, const Hypothesis_t h){
 	assert(newH.get_value() == h.get_value());
 	assert(newH.posterior == h.posterior);
 	assert(newH.prior == h.prior);
-	assert(newH.likelihood == h.likelihood);
+	assert(newH.likelihood == h.likelihood); // NOTE: We somtimes might fail on these, but that's usually from NaNs, which don't evaluate to equal to each other. 
 	assert(newH.posterior == newH.prior + newH.likelihood);
 	assert(newH.hash() == h.hash());	
 }
@@ -167,8 +172,7 @@ int main(int argc, char** argv){
 		// add check that data is in the alphabet
 		for(auto& c : di) {
 			assert(alphabet.find(c) != std::string::npos && "*** alphabet does not include all data characters");
-		}
-		
+		}		
 		// and add to data:
 		mydata.push_back( MyHypothesis::datum_t({S(""), di}) );		
 	}
@@ -178,14 +182,15 @@ int main(int argc, char** argv){
 	//------------------
 	// Actually run
 	//------------------
-		
-	COUT "# MCMC..." ENDL;
+	
+	COUT "# MCMC...";
 	TopN<MyHypothesis> top_mcmc(N);  //	top_mcmc.print_best = true;
 	h0 = h0.restart();
 	MCMCChain chain(h0, &mydata, top_mcmc);
 	chain.run(Control(mcmc_steps,runtime));
 	checkTop(&grammar, top_mcmc);
 	assert(not top_mcmc.empty());
+	COUT "GOOD" ENDL;
 	
 	// just check out copying
 	TopN<MyHypothesis> top_mcmc_copy = top_mcmc;
@@ -200,7 +205,7 @@ int main(int argc, char** argv){
 	assert(not top_mcmc_mv.empty());
 	
 	
-	COUT "# Parallel Tempering..." ENDL;
+	COUT "# Parallel Tempering...";
 	TopN<MyHypothesis> top_tempering(N);
 	h0 = h0.restart();
 	ParallelTempering samp(h0, &mydata, top_tempering, 8, 1000.0, false);
@@ -210,17 +215,19 @@ int main(int argc, char** argv){
 	// be samples (and in fact should be biased towards high-prior hypotheses)	
 	checkTop(&grammar, top_tempering);
 	assert(not top_tempering.empty());
+	COUT "GOOD" ENDL;
 	
 	COUT "# top_difference(top_mcmc, top_tempering) = " << top_difference(top_mcmc, top_tempering) ENDL;
 
-	COUT "# Enumeration..." ENDL;
+	COUT "# Enumeration...";
 	TopN<MyHypothesis> top_enumerate(N);
 	EnumerationInference<MyHypothesis,MyGrammar,decltype(top_enumerate)> e(&grammar, grammar.nt<S>(), &mydata, top_enumerate);
 	e.run(Control(mcts_steps, runtime, nthreads));
 	assert(not top_enumerate.empty());
 	checkTop(&grammar, top_enumerate);
+	COUT "GOOD" ENDL;
 	
-	COUT "# Prior sampling..." ENDL;
+	COUT "# Prior sampling...";
 	TopN<MyHypothesis> top_generate(N);
 	for(enumerationidx_t z=0;z<1000 and !CTRL_C;z++) {
 		auto n = grammar.generate<S>();
@@ -234,40 +241,66 @@ int main(int argc, char** argv){
 	}
 	checkTop(&grammar, top_generate);
 	assert(not top_generate.empty());
+	COUT "GOOD" ENDL;
+	
 	
 	COUT "# top_difference(top_mcmc, top_generate) = " << top_difference(top_mcmc, top_generate) ENDL;
-	
+
 	// Let's check that when we enumerate, we don't get repeats
-	const size_t N_checkdup = 100000;
-	std::set<MyHypothesis> s;
+	COUT "# Checking enumeration is unique...";
+	const size_t N_checkdup = 10000000;
+	std::set<Node> s;
 	for(enumerationidx_t z=0;z<N_checkdup and !CTRL_C;z++) {
-		auto n = grammar.generate<S>();
+		auto n = expand_from_integer(&grammar, grammar.nt<S>(), z);
 		checkNode(&grammar, n);
 		
-		CERR n.string() ENDL;
-		
-		MyHypothesis h(&grammar);
-		h.set_value(n);
-		
 		// this should give me back the right enumeration order
-		//assert(z == compute_enumeration_order(&grammar,n));
+		assert(z == compute_enumeration_order(&grammar,n));
 		
 		// we should not have duplicates
-		assert(not s.contains(h));
-		s.insert(h);
+		auto x = *s.begin();
+		assert(not s.contains(n));
+		s.insert(n);
 	}
+	COUT "GOOD" ENDL;
+	
+
+	// And let's do one final check of enumeration using a grammar where we know the number of strings
+	// that can be generated -- a Dyck grammar. Note that in order for this to count correctly, the grammar
+	// cannot allow mutliple derivations of the same string -- if it did, it would count each of these derivations
+	// separately. For instance, we can't have S->SS, S->[], S->[S] because that grammar allows multiple
+	// derivations of [][][] (either right first or left first). So we use this format for Dyck. 
+	COUT "# Checking counts on enumeration...";
+	std::vector<int> dyckShouldBe = {1, 1, 2, 5, 14, 42}; // we actually don't get very far with this
+	size_t checkDyckTill = dyckShouldBe.size();
+	std::vector<int> count(checkDyckTill,0);
+	std::tuple DYCK_PRIMITIVES = {
+		Primitive("(%s)%s",  +[](S x, S y) -> S { throw YouShouldNotBeHereError();	}),
+		Primitive("",        +[]()         -> S { throw YouShouldNotBeHereError();	}),
+	};
+	MyGrammar dyck_grammar(DYCK_PRIMITIVES);
+	for(enumerationidx_t z=0;z<500000 and !CTRL_C;z++) {
+		auto n = expand_from_integer(&dyck_grammar, dyck_grammar.nt<S>(), z);
+		checkNode(&dyck_grammar, n);
+		
+		auto l = n.string().length()/2;
+		if(l < checkDyckTill)
+			count[l]++; // count the number of *pairs*
+	}
+	assert(std::equal(dyckShouldBe.begin(), dyckShouldBe.end(), count.begin()));
+	COUT "GOOD" ENDL;
 	
 	
-	/*
 	
+	/*	
 	 * What we want to check:
 	 * 	- each tree matches its probability
 	 *  - check multicore performance 
-	 *  - Check that parseable is parseable..
 	*/
 	
 	COUT "# Checking logsumexp..." ENDL; // paste(as.character(-exp(rnorm(10))), collapse=",")
 	std::vector<double> lps = {-3.06772779477656,-0.977654036813297,-3.01475169747216,-0.578898745873913,-0.444846222063099,-6.65476914326284,-2.06142236468469,-3.9048004594152,-0.29627744117047,-2.79668565176668};
 	assert(abs(logsumexp(lps)-0.965657562406778) < 0.000001);
+	COUT "GOOD" ENDL;
 
 }
