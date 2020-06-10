@@ -246,7 +246,7 @@ int main(int argc, char** argv){
 
 	// Let's check that when we enumerate, we don't get repeats
 	COUT "# Checking enumeration is unique...";
-	const size_t N_checkdup = 10000000;
+	const size_t N_checkdup = 1000000;
 	std::set<Node> s;
 	for(enumerationidx_t z=0;z<N_checkdup and !CTRL_C;z++) {
 		auto n = expand_from_integer(&grammar, grammar.nt<S>(), z);
@@ -296,7 +296,7 @@ int main(int argc, char** argv){
 	 *  - check multicore performance 
 	*/
 	
-	COUT "# Checking logsumexp..." ENDL; // paste(as.character(-exp(rnorm(10))), collapse=",")
+	COUT "# Checking logsumexp..."; // paste(as.character(-exp(rnorm(10))), collapse=",")
 	std::vector<double> lps = {-3.06772779477656,-0.977654036813297,-3.01475169747216,-0.578898745873913,-0.444846222063099,-6.65476914326284,-2.06142236468469,-3.9048004594152,-0.29627744117047,-2.79668565176668};
 	assert(abs(logsumexp(lps)-0.965657562406778) < 0.000001);
 	COUT "GOOD" ENDL;
