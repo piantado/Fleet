@@ -1,8 +1,6 @@
 #include <string>
 #include <map>
 
-// TODO: Include Dyck grammar to count enumeration etc. 
-
 #define DO_NOT_INCLUDE_MAIN 1 
 #include "../Models/FormalLanguageTheory-Simple/Main.cpp"
 
