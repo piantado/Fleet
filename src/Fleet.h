@@ -33,8 +33,8 @@
  * 
  * \section install_sec Installation
  * 
- * Fleet is based on header-files, and requires no additional dependencies (command line arguments are processed in CL11.hpp,
- * which is included in src/dependencies/). 
+ * Fleet is based on header-files, and requires no additional dependencies. Command line arguments are processed in CL11.hpp,
+ * which is included in src/dependencies/. 
  * 
  * The easiest way to begin using Fleet is to modify one of the examples. For simple rational-rules style inference, try
  * Models/RationalRules; for an example using stochastic operations, try Models/FormalLanguageTheory-Simple. 
@@ -43,7 +43,7 @@
  *
  * \section install_sec Inference
  * 
- * Fleet provides a number of simple inference routines to use. 
+ * Fleet provides a number of simple inference routines to use. These are all displayed in Models/FormalLanguageTheory-Simple. 
  * 
  * \subsection step1 Markov-Chain Monte-Carlo
  * \subsection step2 Search (Monte-Carlo Tree Search)
@@ -61,7 +61,7 @@
 #include <stdlib.h>
 #include <signal.h>
 
-const std::string FLEET_VERSION = "0.0.95";
+const std::string FLEET_VERSION = "0.0.96";
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We defaultly include all of the major requirements for Fleet
