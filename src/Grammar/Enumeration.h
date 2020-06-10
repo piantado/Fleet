@@ -21,7 +21,6 @@ Node expand_from_integer(Grammar_t* g, nonterminal_t nt, IntegerizedStack& is) {
 	
 	// NOTE: for now this doesn't work when nt only has finitely many expansions/trees
 	// below it. Otherwise we'll get an assertion error eventually.
-	++FleetStatistics::enumeration_steps;
 	
 	enumerationidx_t numterm = g->count_terminals(nt);
 	if(is.get_value() < numterm) {
@@ -45,6 +44,8 @@ Node expand_from_integer(Grammar_t* g, nonterminal_t nt, IntegerizedStack& is) {
 
 template<typename Grammar_t>
 Node expand_from_integer(Grammar_t* g, nonterminal_t nt, enumerationidx_t z) {
+	++FleetStatistics::enumeration_steps;
+	
 	IntegerizedStack is(z);
 	return expand_from_integer(g, nt, is);
 }
