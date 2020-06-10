@@ -256,8 +256,10 @@ int main(int argc, char** argv){
 		assert(z == compute_enumeration_order(&grammar,n));
 		
 		// we should not have duplicates
-		auto x = *s.begin();
-		assert(not s.contains(n));
+		if(not s.empty()) {
+			auto x = *s.begin();
+			assert(not s.contains(n));
+		}
 		s.insert(n);
 	}
 	COUT "GOOD" ENDL;

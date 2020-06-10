@@ -88,8 +88,7 @@ public:
 	
 	/* We must define our own copy and move since parent can't just be simply copied */	
 	Node(const Node& n) :
-		parent(nullptr), children(n.children.size()), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
-		children = n.children;
+		parent(nullptr), children(n.children), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
 		fix_child_info();
 	}
 	Node(Node&& n) :
