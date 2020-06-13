@@ -1,5 +1,7 @@
-ab	5
-abababab	2
-abab	1
+ab	4
+abababababababababab	1
+abababab	1
 ababababab	1
+abababababab	1
+ababababababababababab	1
 ababab	1

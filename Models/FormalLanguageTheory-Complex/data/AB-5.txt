@@ -1,5 +1,5 @@
 aa	1
-a	1
-baaaa	1
-baa	1
-bbbbaabbaabbabab	1
+baaabba	1
+babbb	1
+ba	1
+bb	1

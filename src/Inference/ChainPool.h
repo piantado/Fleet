@@ -30,7 +30,7 @@ public:
 	// NOTE: these interact with ParallelTempering swap/adapt values (because if these are too small, then
 	// we won't have time to update every chain before proposing more swaps)
 	static const unsigned long steps_before_change = 0;
-	static const time_ms time_before_change = 250; 
+	static const time_ms time_before_change = 200; 
 	
 	ChainPool() {}
 	

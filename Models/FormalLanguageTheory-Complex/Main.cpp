@@ -20,7 +20,7 @@ const std::string my_default_input = "data/English";
 S alphabet="nvadtp";
 size_t max_length = 256; // max string length, else throw an error (128+ needed for count)
 size_t max_setsize = 64; // throw error if we have more than this
-size_t nfactors = 2; // how may factors do we run on?
+size_t nfactors = 2; // how may factors do we run on? (defaultly)
 
 static constexpr float alpha = 0.01; // probability of insert/delete errors (must be a float for the string function below)
 
@@ -30,16 +30,16 @@ const size_t MAX_PR_LINES = 1000000;
 
 const size_t RESTART = 0;
 const size_t NTEMPS = 20;
-unsigned long SWAP_EVERY = 500; // ms
+unsigned long SWAP_EVERY = 1500; // ms
 
-std::vector<S> data_amounts={"1", "2", "5", "10", "50", "100", "500", "1000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
-//std::vector<S> data_amounts={"1000"}; // how many data points do we run on?
+std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000"}; // how many data points do we run on?
+//std::vector<S> data_amounts={"1","1000"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 unsigned long MAX_STEPS_PER_FACTOR   = 4096; //4096;  
 unsigned long MAX_OUTPUTS_PER_FACTOR = 1024; //512; - make it bigger than
-unsigned long PRINT_STRINGS = 128; // print at most this many strings for each hypothesis
+unsigned long PRINT_STRINGS = 256; // print at most this many strings for each hypothesis
 double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -25 to catch some less frequent things that happen by chance
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -98,7 +98,7 @@ std::tuple PRIMITIVES = {
 					out.append(x.substr(pos));
 					return out;
 				}				
-			}),
+			}, 0.2), // make insert dispreffered relative to pair
 	
 	
 	// add an alphabet symbol (\Sigma)
@@ -357,8 +357,9 @@ int main(int argc, char** argv){
 	
 	for(size_t a=0;a<nfactors;a++) {	
 		auto s = std::to_string(a);
-		grammar.add<S,S>(BuiltinOp::op_SAFE_RECURSE, S("F")+s+"(%s)", 1.0/nfactors, a);
-		grammar.add<S,S>(BuiltinOp::op_SAFE_MEM_RECURSE, S("memF")+s+"(%s)", 0.5/nfactors, a); // disprefer mem when we don't need it
+		// NOTE: As of June 11, I took out the SAFE part of these
+		grammar.add<S,S>(BuiltinOp::op_RECURSE, S("F")+s+"(%s)", 1.0/nfactors, a);
+		grammar.add<S,S>(BuiltinOp::op_MEM_RECURSE, S("memF")+s+"(%s)", 0.2/nfactors, a); // disprefer mem when we don't need it
 	}
 
 	// push for each
@@ -389,16 +390,6 @@ int main(int argc, char** argv){
 		tops.push_back(TopN<MyHypothesis>(ntop));
 	}
 
-	
-//	auto h = MyHypothesis::from_string(grammar, "0:insert(%s,%s);0:'b';0:x|0:if(%s,%s,%s);1:flip(%s);2:1/3;0:F0(%s);0:'a';0:insert(%s,%s);0:pair(%s,%s);0:Ø;0:insert(%s,%s);0:'a';0:F1(%s);0:'d';0:'a'|0:if(%s,%s,%s);1:flip(%s);2:if(%s,%s,%s);1:empty(%s);0:x;2:7/24;2:1/3;0:if(%s,%s,%s);1:not(%s);1:flip(%s);2:1/24;0:insert(%s,%s);0:'b';0:pair(%s,%s);0:F1(%s);0:'b';0:'a';0:pair(%s,%s);0:'a';0:'a';0:insert(%s,%s);0:memF0(%s);0:F2(%s);0:'c';0:'b'");
-//	CERR std::setprecision(24) << h.compute_posterior(datas[0]) ENDL;
-//	
-//	h = MyHypothesis::from_string(grammar, "0:insert(%s,%s);0:if(%s,%s,%s);1:flip(%s);2:1/3;0:insert(%s,%s);0:'b';0:F1(%s);0:'d';0:insert(%s,%s);0:'b';0:F0(%s);0:'c';0:'b'|0:pair(%s,%s);0:'a';0:if(%s,%s,%s);1:not(%s);1:flip(%s);2:1/3;0:insert(%s,%s);0:F1(%s);0:'c';0:'a';0:'a'|0:insert(%s,%s);0:'c';0:insert(%s,%s);0:'c';0:pair(%s,%s);0:F0(%s);0:'d';0:'c'");
-//	CERR std::setprecision(24) << h.compute_posterior(datas[0]) ENDL;	
-//	
-//	return 0;
-//	
-		
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Actually run
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -409,12 +400,13 @@ int main(int argc, char** argv){
 	tic();	
 	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
 		
-		// the max temperature here is going to be the amount of data!
+		// the max temperature here is going to be the amount of data
 		// that's because if we make it much bigger, we waste lower chains; if we make it much smaller, 
 		// we don't get good mixing in the lowest chains. 
 		// No theory here, this just seems to be about what works well. 
 		ParallelTempering samp(h0, &datas[di], all, NTEMPS, std::max(1, stoi(data_amounts[di]))); 
-		samp.run(Control(mcmc_steps/datas.size(), runtime/datas.size(), nthreads, RESTART), SWAP_EVERY, 60*1000);	
+//		for(auto& x: datas[di]) { CERR di TAB x.output TAB x.reliability ENDL;	}
+		samp.run(Control(mcmc_steps/datas.size(), runtime/datas.size(), nthreads, RESTART), SWAP_EVERY, 5*60*1000);	
 
 		// set up to print using a larger set if we were given this option
 		if(long_output){
@@ -463,10 +455,6 @@ int main(int argc, char** argv){
 //		assert(chains.pool.size() == 1);
 //		chains.run(Control(mcmc_steps/datas.size(), runtime/datas.size()));
 //		tic();	
-//	}
-//	
-//	for(size_t i=0;i<data_amounts.size();i++) {
-//		all.compute_posterior(datas[i]).print(data_amounts[i]);
 //	}
 //	
 }

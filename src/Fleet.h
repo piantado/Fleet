@@ -1,6 +1,3 @@
-/* Globally shared variables and declarations */
-
-
 /*! \mainpage Fleet - Fast inference in the Language of Thought
  *
  * \section intro_sec Introduction
@@ -18,8 +15,12 @@
  * but very slow. Fleet avoids this by implementing a lightweight stack-based virtual machine in which programs can be 
  * directly evaluated. This is especially advantageous when evaluating stochastic hypotheses (e.g. those using flip() or 
  * sample()) in which multiple execution paths must be evaluated. Fleet stores these multiple execution traces of a single
- * program in a priority queue (sorted by probability) and allows you to rapidly explore the space of execution traces.
- *
+ * program in a priority queue (sorted by probability) and allows you to rapidly explore the space of execution traces. 
+ * 
+ * Fleet is structured to automatically create this virtual machine and a grammar for programs from just the type
+ * specification on primitives. The bulk of a Fleet program is therefore in specifying the primitives that are used
+ * and a likelihood model that scores any potential program against the data. 
+ * 
  * To accomplish this, Fleet makes heavy use of C++ template metaprogramming. It requires strongly-typed functions
  * and requires you to specify the macro FLEET_GRAMMAR_TYPES in order to tell its virtual machine what kinds of variables
  * must be stored. In addition, Fleet uses a std::tuple named PRIMITIVES in order to help define the grammar. This tuple consists of
@@ -41,6 +42,13 @@
  * 
  * Fleet is developed using GCC.
  *
+ * \section install_sec Tutorial 
+ * 
+ * \code{.py}
+ * code goes here
+ * \endcode
+ * 
+ * 
  * \section install_sec Inference
  * 
  * Fleet provides a number of simple inference routines to use. These are all displayed in Models/FormalLanguageTheory-Simple. 
@@ -53,6 +61,8 @@
  * \section install_sec Typical approach
  * 	- Sample things, store in TopN, then evaluate...
  */
+
+/* Globally shared variables and declarations */
 
 #pragma once 
 

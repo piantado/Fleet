@@ -1,8 +1,7 @@
 #!/bin/bash
 
 myhost=$(hostname -s)
-threads=1
-top=1000
+top=500
 
 # make a copy here so that when we sync/recompile
 # we won't change this
@@ -10,30 +9,28 @@ mymain=run/main.$myhost
 cp main $mymain
 cp Main.cpp run/Main.cpp.$myhost # for a record 
 
-# parameters=AllParameters.csv
-parameters=AllParameters-SmallRun.csv
-  
+parameters=AllParameters.csv
+#parameters=AllParameters-SmallRun.csv
+
 if [ $myhost = "colala-hastings" ] ; then
-    factors=(3 6)
-    jobs=40
+    factors=(1)
+    jobs=24
 elif [ $myhost = "colala-metropolis" ] ; then
-    factors=(2 5)
-    jobs=40
+    factors=(2)
+    jobs=24
 elif [ $myhost = "simon" ] ; then
-    factors=(1 4)
+    factors=(3)
+    jobs=75
+elif [ $myhost = "garfunkel" ] ; then
+    factors=(4)
     jobs=75
 fi
-# elif [ $myhost = "garfunkel" ] ; then
-#     factors=(2,6)
-#     jobs=70
-#     parameters=AllParameters.csv
-# fi
 
 rm -f run/parameters.$myhost
 for f in "${factors[@]}" 
 do
-# The parameters file does not have a number of factors
-# so we are going to ADD a column for each of myfactors
+    # The parameters file does not have a number of factors
+    # so we are going to ADD a column for each of myfactors
     cat $parameters | sed "s/$/,$f/" >> run/parameters.$myhost  
 done
 
