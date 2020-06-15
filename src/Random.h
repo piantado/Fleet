@@ -148,6 +148,7 @@ std::pair<t*,double> sample(const T& s, double z, const std::function<double(con
 	
 	for(auto& x : s) {
 		double fx = f(x);
+		if(std::isnan(fx)) continue; // treat as zero prob
 		assert(fx > 0.0);
 		r -= fx;
 		if(r <= 0.0) 
@@ -168,6 +169,7 @@ std::pair<int,double> sample_int(unsigned int max, const std::function<double(co
 	
 	for(size_t i=0;i<max;i++){
 		double fx = f(i);
+		if(std::isnan(fx)) continue; // treat as zero prob
 		assert(fx > 0.0);
 		r -= fx;
 		if(r <= 0.0) 
@@ -182,7 +184,9 @@ std::pair<int,double> sample_int_lp(unsigned int max, const std::function<double
 	// special form for where the ints (e.g. indices) Are what f takes)
 	double z = -infinity;
 	for(size_t i=0;i<max;i++){
-		z = logplusexp(z, f(i));
+		double fx = f(i);
+		if(std::isnan(fx)) continue; // treat as zero prob
+		z = logplusexp(z, fx);
 	}
 	
 	double r = z + log(uniform());
@@ -190,6 +194,7 @@ std::pair<int,double> sample_int_lp(unsigned int max, const std::function<double
 	double fz = -infinity; 
 	for(size_t i=0;i<max;i++){
 		double fx = f(i);
+		if(std::isnan(fx)) continue; // treat as zero prob
 		assert(fx <= 0.0);
 		fz = logplusexp(fz, fx);
 		if(r <= fz) 

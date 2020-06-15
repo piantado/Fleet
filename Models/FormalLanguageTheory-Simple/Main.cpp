@@ -232,18 +232,16 @@ int main(int argc, char** argv){
 //	c.run(Control(mcmc_steps, runtime, nthreads));
 
 	// run multiple chains
-	MyHypothesis h0(&grammar);	h0 = h0.restart();
-	ChainPool c(h0, &mydata, top, nchains);
-	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-	c.run(Control(mcmc_steps, runtime, nthreads));
+//	MyHypothesis h0(&grammar);	h0 = h0.restart();
+//	ChainPool c(h0, &mydata, top, nchains);
+//	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
+//	c.run(Control(mcmc_steps, runtime, nthreads));
 
-//	MyHypothesis h0(&grammar);
-//	FullMCTSNode<MyHypothesis,TopN<MyHypothesis>> m(h0, explore, &mydata, top);
-//	tic();
-//	m.parallel_search(Control(mcts_steps, runtime, nthreads), h0);
-//	tic();
-//	m.print(h0, "tree.txt");
-//	CERR "# MCTS size: " TAB m.size() ENDL;
+	MyHypothesis h0(&grammar);
+	FullMCTSNode<MyHypothesis,TopN<MyHypothesis>> m(h0, explore, &mydata, top);
+	m.run(Control(mcts_steps, runtime, nthreads), h0);
+	m.print(h0, "tree.txt");
+	CERR "# MCTS size: " TAB m.size() ENDL;
 
 	// Do some A* search -- here we maintain a priority queue of partially open nodes, sorted by 
 	// their prior and a single sample of their likelihood (which we end up downweighting a lot) (see Astar.h)

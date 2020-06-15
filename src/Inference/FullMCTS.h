@@ -17,6 +17,12 @@
  * 
  * TODO: Should be using FAME NO OS as in the paper
  * 
+ * 
+ * 	Another idea: what if we sample from the bottom of the tree according to probability? To do that we sample and then sum up the lses (excluding closed nodes)
+ * 		and then recurse down until we find what we need
+ * 
+ * 		-- Strange if we just do the A* version, then we'll have a priority queue and that's a lot liek sampling from the leaves? 
+ * 
  * */
 #pragma once 
 
@@ -31,6 +37,7 @@
 #include <functional>
 
 #include "StreamingStatistics.h"
+#include "ParallelInferenceInterface.h"
 #include "Control.h"
 
 /**
@@ -75,7 +82,7 @@ public:
  */
 
 template<typename HYP, typename callback_t>
-class FullMCTSNode {	
+class FullMCTSNode : public ParallelInferenceInterface<HYP> {	
 public:
 
 	using this_t = FullMCTSNode<HYP,callback_t>;
@@ -95,7 +102,9 @@ public:
 	static double explore; 
 	static data_t* data;
 	static callback_t* callback; 
+	static constexpr double temp = 100;
 
+	this_t* parent;
 	float max;
 	float min;
 	float lse;
@@ -105,7 +114,7 @@ public:
 	}
 	
     FullMCTSNode(HYP& start, this_t* par,  size_t w) : 
-		nvisits(0), open(true), which_expansion(w), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
+		nvisits(0), open(true), which_expansion(w), parent(par), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
 		mylock.lock();
 			
@@ -114,7 +123,7 @@ public:
     }
     
     FullMCTSNode(HYP& start, double ex, data_t* d, callback_t& cb) : 
-		nvisits(0), which_expansion(0), open(true), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
+		nvisits(0), which_expansion(0), open(true), parent(nullptr), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
 		// This is the constructor that gets called from main, and it sets the static variables. All the other constructors
 		// should use the above one
 		
@@ -206,129 +215,45 @@ public:
 		out.close();		
 	}
 
-	
-	size_t any_open() const {
-		for(auto const& c : children) {
-			if(c.open) return true;
-		}
-		return false;
-	}
-
     void add_sample(const float v) {
         max = std::max(max,v);	
 		if(v != -infinity) // keep track of the smallest non-inf value -- we use this instead of inf for sampling
 			min = std::min(min, v); 
 		lse = logplusexp(lse, v);
 		last_lp = v;
-    }
 		
-   
-	// search for some number of steps
-	void search(Control ctl, HYP& h0) {
-		// NOTE: This is important for multithreading that each top-level search call here makes a *copy*
-		// ctl controls the mcts path through nodes
-		assert(ctl.threads == 1);
+		// and propagate up the tree
+		if(parent != nullptr) {
+			parent->add_sample(v);
+		}
+		
+    }
+	
+	virtual void run_thread(Control ctl, HYP h0) override {
+		
 		ctl.start();
 		
 		while(ctl.running()) {
 			if(DEBUG_MCTS) DEBUG("\tMCTS SEARCH LOOP");
 			
 			HYP current = h0; // each thread makes a real copy here 
-			double s = this->search_one(this, current); 
+			double s = this->search_one(current); 
+			
 			add_sample(s);
-		}
+		}		
 	}
-
 	
-	void parallel_search(Control ctl, HYP& h0) { 
-		
-		auto __helper = [&](FullMCTSNode<HYP,callback_t>* h, Control ctl) {
-			h->search(ctl, h0);
-		};
-		
-		std::vector<std::thread> threads(ctl.threads); 
-		
-		// start everyone running 
-		for(unsigned long i=0;i<ctl.threads;i++) {
-			Control ctl2 = ctl; ctl2.threads=1;
-			threads[i] = std::thread(__helper, this, ctl2);
-		}
-		
-		for(unsigned long i=0;i<ctl.threads;i++) {
-			threads[i].join();
-		}	
-	}
-
-   
-//	double score(const this_t* parent, const HYP& current) {
-//		mylock.lock();
+	/**
+	 * @brief How do we defaultly play out MCTS? Defaultly this will keep building the tree as we go down. 
+	 * 			But we might normally want to 
+	 * @param current
+	 */	
+//	virtual void playout(HYP& current) {
 //		
-//		if(not open) { // do not pick
-//			mylock.unlock();
-//			return -infinity;
-//		}
-//		else if(current.neighbors() == 0) {
-//			mylock.unlock();
-//			// terminals first
-//			return infinity;
-//		}
-//		else if(nvisits == 0) { 
-//			mylock.unlock();
-//			// take unexplored paths first
-//			return infinity; 
-//		}
-//		else {			
-//			
-//			if(parent == nullptr) {
-//				mylock.unlock();
-//				return 0.0;
-//			}
-//			
-//			// min/last thing with UCT -- this prevents the -infs from messing things up 
-////			return  ((last_lp == -infinity ? min : last_lp) - parent->lse) + 
-////			         explore * sqrt(log(parent->nvisits)/nvisits);
-//			
-////			CERR last_lp TAB parent->lse ENDL;
-//			
-//			double v = explore * sqrt(log(parent->nvisits)/(1+nvisits)); // exploration part
-//			
-//			if( parent->lse == -infinity ) {
-//				// This special case is weird, we'll just go with the explore parameter
-//			}
-//			else {
-//				// this is our measure of how well each branch does, subbing last_lp for infinity
-//				// when its helpful
-//				v += exp((last_lp == -infinity and min < infinity ? min : last_lp) - parent->lse);
-//			}
-//			
-//			assert(!std::isnan(v));
-//			assert(v != infinity);
-//			mylock.unlock();
-//			return v; 
-//			
-////			return  exp((last_lp == -infinity ? min : last_lp) - parent->lse) + 
-////			         explore * sqrt(log(parent->nvisits)/nvisits);
-//			
-////			return  (lse - parent->lse) + 
-////					explore * sqrt(log(parent->nvisits)/nvisits);
-//			
-//		}	
 //	}
-   
-    double get_ll() {
-		if(last_lp != -infinity) {
-			return last_lp;
-		}
-		else if(min != infinity) {
-			return min;
-		} 
-		else {
-			return -infinity;
-		}
-	}
-   
-   
-    double search_one(this_t* parent, HYP& current) {
+//   
+
+    double search_one(HYP& current) {
 		// recurse down the tree, building and/or evaluating as needed. This has a nice format that saves space -- Nodes need
 		// not store parents since they can be passed recursively here. Because this returns the score, it can be propagated
 		// back up the tree. 
@@ -342,7 +267,7 @@ public:
 		
 		++nvisits; // increment our visit count on our way down so other threads don't follow
 		
-		auto neigh = current.neighbors(); 
+		int neigh = current.neighbors(); 
 		
 		if(neigh == 0) {
 			// if I am a terminal 
@@ -361,39 +286,34 @@ public:
 		else {
 			
 			// Fill up the child nodes
-			// TODO: This is inefficient because it copies current a bunch of times...
+			// TODO: This is a bit inefficient because it copies current a bunch of times...
 			if(children.size() == 0) {
-				for(size_t k=0;k<neigh;k++) {
+				for(int k=0;k<neigh;k++) {
 					HYP kc = current; kc.expand_to_neighbor(k);
 					children.emplace_back(kc, this, k);
 				}
 			}
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			// Hmm what if on construction you inherit min from your parent?
-			
-			// Change to include UCT part of bound
-			// OR just do temperature?
-			
-			// Change so not all kids are added...
-			double temp = 100.0;
-			
-			
 			// sample from children, using last_ll as the probability for missing children
 			std::vector<double> children_lps(neigh);
-			for(size_t k=0;k<neigh;k++) {
+			for(int k=0;k<neigh;k++) {
 				if(children[k].open) {
-					children_lps[k] = (current.neighbor_prior(k) + 
-									  (children[k].nvisits == 0 ? last_lp : children[k].last_lp ) / temp);
+
+					children_lps[k] = current.neighbor_prior(k) + 
+									  (children[k].nvisits == 0 ? lse-1.0 : children[k].lse-log(children[k].nvisits)) / temp;
+					
+//					children_lps[k] = current.neighbor_prior(k) + 
+//									  (children[k].nvisits == 0 ? lse-log(nvisits) - 1.0 : children[k].lse-log(children[k].nvisits));
+									  
+//					children_lps[k] = (current.neighbor_prior(k) + 
+//									  (children[k].nvisits == 0 ? max : children[k].max ) / temp);
+
+//					children_lps[k] = (current.neighbor_prior(k) + 
+//									  (children[k].nvisits == 0 ? last_lp : children[k].last_lp ) / temp);
 									//  (children[k].nvisits == 0 ? get_ll() : children[k].get_ll());
 									//(children[k].last_lp==-infinity ? last_lp : children[k].last_lp);
+									
+				//	CERR current TAB children_lps[k] ENDL;
 				}
 				else {
 					children_lps[k] = -infinity;
@@ -410,7 +330,7 @@ public:
 			// and now follow this newly added child
 			mylock.unlock();
 
-			double s = children[idx].search_one(parent, current);
+			double s = children[idx].search_one(current);
 			
 			mylock.lock();
 				add_sample(s);

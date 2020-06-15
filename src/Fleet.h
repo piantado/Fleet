@@ -40,7 +40,7 @@
  * The easiest way to begin using Fleet is to modify one of the examples. For simple rational-rules style inference, try
  * Models/RationalRules; for an example using stochastic operations, try Models/FormalLanguageTheory-Simple. 
  * 
- * Fleet is developed using GCC.
+ * Fleet is developed using GCC 9 (version >8 required).
  *
  * \section install_sec Tutorial 
  * 

@@ -17,7 +17,7 @@
  * 		  and requires a hypothesis, grammar, start type, and callback.
  */
 template<typename HYP, typename Grammar_t, typename callback_t>
-class EnumerationInference : public ParallelInferenceInterface {
+class EnumerationInference : public ParallelInferenceInterface<> {
 
 public:
 	

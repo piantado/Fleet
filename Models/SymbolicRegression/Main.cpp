@@ -188,11 +188,10 @@ public:
 		return ret;
 	}
 	
-	virtual MyHypothesis copy_and_complete() const override {
-		auto ret = Super::copy_and_complete();
-		ret.constants.resize(ret.count_constants());
-		ret.randomize_constants();
-		return ret;
+	virtual void complete() override {
+		Super::complete();
+		constants.resize(count_constants());
+		randomize_constants();
 	}
 	
 	virtual MyHypothesis make_neighbor(int k) const override {
@@ -308,7 +307,8 @@ class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
 		
 		
 		
-		auto h = h0.copy_and_complete(); // fill in any structural gaps
+		auto h = h0;
+		h.complete(); // fill in any structural gaps
 		
 		MCMCChain chain(h, data, cb);
 		chain.run(Control(0, innertime, 1, 10000)); // run mcmc with restarts; we sure shouldn't run more than runtime

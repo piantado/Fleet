@@ -21,7 +21,7 @@
  *        switch chains. 
  */
 template<typename HYP, typename callback_t>
-class ChainPool : public ParallelInferenceInterface { 
+class ChainPool : public ParallelInferenceInterface<> { 
 	
 public:
 	std::vector<MCMCChain<HYP,callback_t>> pool;
@@ -45,7 +45,7 @@ public:
 	 * @brief This run helper is called internally by multiple different threads, and runs a given pool.
 	 * @param ctl
 	 */
-	void run_thread(Control ctl) override {
+	void run_thread(Control ctl) {
 		
 		while( ctl.running() ) {
 			int index = next_index() % pool.size();

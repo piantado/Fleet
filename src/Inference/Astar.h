@@ -28,10 +28,12 @@ extern volatile sig_atomic_t CTRL_C;
  * 			One general challenge is how to handle -inf likelihoods, and here we've done that by, if you end up with -inf, taking
  * 		    your parent's temperature and multiplying by PARENT_PENALTY. 
  * 
+ * 			TODO: Is it worth making this stochastic, so we sample the the expansion with the probabilities and some temperature?
+ * 
  * 
  */
 template<typename HYP, typename callback_t>
-class Astar :public ParallelInferenceInterface {
+class Astar :public ParallelInferenceInterface<> {
 	
 	std::mutex lock; 
 public:
