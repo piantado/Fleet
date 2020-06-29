@@ -17,7 +17,7 @@ public:
 	 * @brief Count the number of neighbors that are possible. 
 	 * 			(This should be size_t but int is more convenient.)
 	 */
-	[[nodiscard]]  virtual int  neighbors() const          = 0; // how many neighbors do I have?
+	[[nodiscard]]  virtual int  neighbors() const = 0; // how many neighbors do I have?
 	
 	/**
 	 * @brief Modify this hypothesis to become the k'th neighbor

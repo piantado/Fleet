@@ -1,8 +1,5 @@
 /* 
- * 
- * NOTE: If we scored inf, then we don't want to use that next time...
- * 
- * 
+
  * Some ideas:
  * 
  * 	For a node, we stor ethe last *likelihood*. We then sample the next child with the current prior and the last likelihood. 
@@ -90,8 +87,7 @@ public:
 	
 	std::vector<this_t> children;
 
-    unsigned int nvisits;  // how many times have I visited each node?
-    bool open; // am I still an available node?
+   bool open; // am I still an available node?
 	
 	SpinLock mylock; 
 	
@@ -102,8 +98,8 @@ public:
 	static double explore; 
 	static data_t* data;
 	static callback_t* callback; 
-	static constexpr double temp = 100;
 
+	unsigned int nvisits;  // how many times have I visited each node?
 	this_t* parent;
 	float max;
 	float min;
@@ -114,7 +110,7 @@ public:
 	}
 	
     FullMCTSNode(HYP& start, this_t* par,  size_t w) : 
-		nvisits(0), open(true), which_expansion(w), parent(par), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
+		open(true), which_expansion(w), nvisits(0), parent(par), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
 		mylock.lock();
 			
@@ -123,7 +119,7 @@ public:
     }
     
     FullMCTSNode(HYP& start, double ex, data_t* d, callback_t& cb) : 
-		nvisits(0), which_expansion(0), open(true), parent(nullptr), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
+		open(true), which_expansion(0), nvisits(0), parent(nullptr), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
 		// This is the constructor that gets called from main, and it sets the static variables. All the other constructors
 		// should use the above one
 		
@@ -237,107 +233,85 @@ public:
 			if(DEBUG_MCTS) DEBUG("\tMCTS SEARCH LOOP");
 			
 			HYP current = h0; // each thread makes a real copy here 
-			double s = this->search_one(current); 
-			
-			add_sample(s);
+			this->search_one(current); 
 		}		
 	}
 	
-	/**
-	 * @brief How do we defaultly play out MCTS? Defaultly this will keep building the tree as we go down. 
-	 * 			But we might normally want to 
-	 * @param current
-	 */	
-//	virtual void playout(HYP& current) {
-//		
-//	}
-//   
 
-    double search_one(HYP& current) {
+	/// Now we define some actions that happen when we make it to different kinds of nodes. These can be 
+	/// overwritten by subclasses of MCTS	
+	
+	// What we do on a terminal node
+	virtual void process_terminal(HYP& current) {
+		open = false; // make sure nobody else takes this one
+			
+		// if its a terminal, compute the posterior
+		current.compute_posterior(*data);
+		add_sample(current.likelihood);
+		(*callback)(current);
+	}
+
+	virtual void process_incomplete(HYP& current) {
+		int neigh = current.neighbors(); 
+		
+		mylock.lock();
+		
+		// Fill up the child nodes
+		// TODO: This is a bit inefficient because it copies current a bunch of times...
+		// this is intentionally a while loop in case another thread has snuck in and added
+		while(children.size() < (size_t)neigh) {
+			int k = children.size(); // which to expand
+			HYP kc = current; kc.expand_to_neighbor(k);
+			children.emplace_back(kc, this, k);
+		}
+		
+		mylock.unlock();
+		
+		// then treat this just like an internal node
+		process_internal(current); 
+	}
+
+		
+	virtual void process_internal(HYP& current) {
+		int neigh = current.neighbors(); 
+		// sample from children, using last_ll as the probability for missing children
+		std::vector<double> children_lps(neigh, -infinity);
+		for(int k=0;k<neigh;k++) {
+			if(children[k].open){
+				/// how much probability mass PER sample came from each child, dividing by explore for the temperature.
+				/// If no exploraiton steps, we just pretend lse-1.0 was the probability mass 
+				children_lps[k] = current.neighbor_prior(k) + 
+								  (children[k].nvisits == 0 ? lse-1.0 : children[k].lse-log(children[k].nvisits)) / explore;
+			}
+		}
+		
+		// choose an index into children
+		int idx = sample_int_lp(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
+		
+		// expand 
+		current.expand_to_neighbor(idx); // idx here gives which expansion we follow
+		
+		// and recurse down
+		children[idx].search_one(current);
+	}
+
+
+    void search_one(HYP& current) {
 		// recurse down the tree, building and/or evaluating as needed. This has a nice format that saves space -- Nodes need
 		// not store parents since they can be passed recursively here. Because this returns the score, it can be propagated
 		// back up the tree. 
 		
-		mylock.lock();
-			
 		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", nvisits);
-		
-		// now if we get here, we must have at least one open child
-		// so we can pick the best and recurse 
 		
 		++nvisits; // increment our visit count on our way down so other threads don't follow
 		
 		int neigh = current.neighbors(); 
 		
-		if(neigh == 0) {
-			// if I am a terminal 
-			
-			open = false; // make sure nobody else takes this one
-			
-			// if its a terminal, compute the posterior
-			current.compute_posterior(*data);
-			add_sample(current.likelihood);
-			(*callback)(current);
-			
-			mylock.unlock();
-			
-			return current.likelihood;
-		}
-		else {
-			
-			// Fill up the child nodes
-			// TODO: This is a bit inefficient because it copies current a bunch of times...
-			if(children.size() == 0) {
-				for(int k=0;k<neigh;k++) {
-					HYP kc = current; kc.expand_to_neighbor(k);
-					children.emplace_back(kc, this, k);
-				}
-			}
-			
-			// sample from children, using last_ll as the probability for missing children
-			std::vector<double> children_lps(neigh);
-			for(int k=0;k<neigh;k++) {
-				if(children[k].open) {
-
-					children_lps[k] = current.neighbor_prior(k) + 
-									  (children[k].nvisits == 0 ? lse-1.0 : children[k].lse-log(children[k].nvisits)) / temp;
-					
-//					children_lps[k] = current.neighbor_prior(k) + 
-//									  (children[k].nvisits == 0 ? lse-log(nvisits) - 1.0 : children[k].lse-log(children[k].nvisits));
-									  
-//					children_lps[k] = (current.neighbor_prior(k) + 
-//									  (children[k].nvisits == 0 ? max : children[k].max ) / temp);
-
-//					children_lps[k] = (current.neighbor_prior(k) + 
-//									  (children[k].nvisits == 0 ? last_lp : children[k].last_lp ) / temp);
-									//  (children[k].nvisits == 0 ? get_ll() : children[k].get_ll());
-									//(children[k].last_lp==-infinity ? last_lp : children[k].last_lp);
-									
-				//	CERR current TAB children_lps[k] ENDL;
-				}
-				else {
-					children_lps[k] = -infinity;
-				}
-			}
-			
-			// this is an index into children
-			int idx = sample_int_lp(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
-			
-			current.expand_to_neighbor(idx); // idx here gives which expansion we follow
-			
-			if(DEBUG_MCTS) DEBUG("\tAdding child ", this, "\t["+current.string()+"] ");
-
-			// and now follow this newly added child
-			mylock.unlock();
-
-			double s = children[idx].search_one(current);
-			
-			mylock.lock();
-				add_sample(s);
-			mylock.unlock();
-			
-			return s;
-		}
+		// dispatch our sub functions depending on what kind of thing we are
+		if(neigh == 0) 					            { process_terminal(current);  }
+		else if (children.size() != (size_t)neigh)  { process_incomplete(current); }
+		else 							            { process_internal(current);  } // otherwise a normal internal node
+		
     } // end search
 
 };
@@ -351,3 +325,32 @@ typename HYP::data_t* FullMCTSNode<HYP,callback_t>::data = nullptr;
 
 template<typename HYP, typename callback_t>
 callback_t* FullMCTSNode<HYP,callback_t>::callback = nullptr;
+
+
+
+// A class that calls some number of playouts instead of building the full tree
+//template<typename HYP, typename callback_t>
+//class PartialMCTS : public FullMCTSNode<HYP,callback_t> {	
+//	using Super = FullMCTSNode<HYP,callback_t>;
+//	using Super::Super; // get constructors
+//	
+//	// Here we choose the max according a UCT-like bound
+//	virtual void process_internal(HYP& current) {
+//		int neigh = current.neighbors(); 
+//		// sample from children, using last_ll as the probability for missing children
+//		std::vector<double> children_lps(neigh, -infinity);		
+//		for(int k=0;k<neigh;k++) {
+//			if(children[k].open){
+//				children_lps[k] = current.neighbor_prior(k) + 
+//								  (children[k].nvisits == 0 ? 0.0 : children[k].max + explore*sqrt(log(nvisits)/children[k].nvisits));
+//			}
+//		}
+//		
+//		// pick the best
+//		int idx = arg_max(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
+//		current.expand_to_neighbor(idx); // idx here gives which expansion we follow
+//		children[idx].search_one(current);
+//	}
+//	
+//	// Here we 
+//};

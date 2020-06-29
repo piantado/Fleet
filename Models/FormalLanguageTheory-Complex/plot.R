@@ -13,15 +13,15 @@ label <- setNames(as.list(as.character(rp$latex)), rp$language)  # label[[langua
 D <- NULL
 # for(language in c("Gomez2", "Gomez6", "Gomez12" )) {
 # for(language in c("HudsonKamNewport45", "HudsonKamNewport60", "HudsonKamNewport75", "HudsonKamNewport100" )) {
-for(language in c("An", "AB", "ABn", "AAA", "AAAA", "AnBm", "GoldenMean", "Even", "ApBAp", "AsBAsp", "ApBApp", "ABaaaAB", "CountA2", "CountAEven", "PullumR", "aABb", "AnBn", "Dyck", "AnB2n", "AnCBn", "AnABn", "AnABAn", "ABnABAn", "AnBmCn", "AnBmA2n", "AnBnC2n", "ABAnBn", "AnBmCm", "AnBmCnpm", "AnBmCnm", "AnBk", "AnBmCmAn", "AnB2nC3n", "AnBnp1Cnp2", "AnUBn", "AnUAnBn", "ABnUBAn", "XX", "XXX", "XY", "XXR", "XXI", "XXRI", "Unequal", "Bach2", "Bach3", "WeW", "An2", "AnBmCnDm", "AnBmAnBm", "AnBmAnBmCCC", "AnBnCn", "AnBnCnDn", "AnBnCnDnEn", "A2en", "ABnen", "Count", "ChineseNumeral", "Fibo")) {
-# for(language in c("NewportAslin", "MorganNewport", "MorganMeierNewport", "Braine66", "ABA", "ABB", "HudsonKamNewport60", "Gomez2", "Gomez6",  "Gomez12", "Saffran", "Milne", "Elman", "Man", "ReederNewportAslin", "Reber", "BerwickPilato")) {
+# for(language in c("An", "AB", "ABn", "AAA", "AAAA", "AnBm", "GoldenMean", "Even", "ApBAp", "AsBAsp", "ApBApp", "ABaaaAB", "CountA2", "CountAEven", "PullumR", "aABb", "AnBn", "Dyck", "AnB2n", "AnCBn", "AnABn", "AnABAn", "ABnABAn", "AnBmCn", "AnBmA2n", "AnBnC2n", "ABAnBn", "AnBmCm", "AnBmCnpm", "AnBmCnm", "AnBk", "AnBmCmAn", "AnB2nC3n", "AnBnp1Cnp2", "AnUBn", "AnUAnBn", "ABnUBAn", "XX", "XXX", "XY", "XXR", "XXI", "XXRI", "Unequal", "Bach2", "Bach3", "WeW", "An2", "AnBmCnDm", "AnBmAnBm", "AnBmAnBmCCC", "AnBnCn", "AnBnCnDn", "AnBnCnDnEn", "A2en", "ABnen", "Count", "ChineseNumeral", "Fibo")) {
+for(language in c("NewportAslin", "MorganNewport", "MorganMeierNewport", "Braine66", "ABA", "ABB", "HudsonKamNewport60", "Gomez2", "Gomez6",  "Gomez12", "Saffran", "Milne", "Elman", "Man", "ReederNewportAslin", "Reber", "BerwickPilato")) {
 # for(language in c("English")) {
     q <- NULL
     for(nf in c(1,2,3,4,5,6,7,8)) {
 #       for(nf in c(1)) {
 
             f <- paste("./out/", language, "-", nf, ".out", sep="")
-#               f <- paste("/home/piantado/Desktop/Science/out/", language, "-", nf, ".out", sep="")
+#             f <- paste("./out-English/", language, "-", nf, ".out", sep="")
              
             r <- try(read.table(f, quote="\""))
             if(class(r)=='try-error') {

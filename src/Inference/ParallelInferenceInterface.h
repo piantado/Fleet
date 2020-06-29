@@ -31,7 +31,7 @@ public:
 	}
 	
 	/**
-	 * @brief Return the next index to operate on in a thread-safe way.
+	 * @brief Return the next index to operate on (in a thread-safe way).
 	 * @return 
 	 */	
 	unsigned long next_index() {

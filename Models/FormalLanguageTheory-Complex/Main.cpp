@@ -18,7 +18,7 @@ using StrSet = std::set<S>;
 
 const std::string my_default_input = "data/English"; 
 S alphabet="nvadtp";
-size_t max_length = 256; // max string length, else throw an error (128+ needed for count)
+size_t max_length = 256; // max string length, else throw an error (more than 256 needed for count, a^2^n, a^n^2, etc
 size_t max_setsize = 64; // throw error if we have more than this
 size_t nfactors = 2; // how may factors do we run on? (defaultly)
 

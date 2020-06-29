@@ -239,6 +239,7 @@ int main(int argc, char** argv){
 
 	MyHypothesis h0(&grammar);
 	FullMCTSNode<MyHypothesis,TopN<MyHypothesis>> m(h0, explore, &mydata, top);
+	top.print_best = true;
 	m.run(Control(mcts_steps, runtime, nthreads), h0);
 	m.print(h0, "tree.txt");
 	CERR "# MCTS size: " TAB m.size() ENDL;
