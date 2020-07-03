@@ -73,17 +73,7 @@ public:
 		Tree<Node>::set_child(i,std::move(n));
 	}
 
-	void fill() {
-		/**
-		 * @brief Fill in all of my immediate children with Null nodes (via NullRule)
-		 */
-		
-		// ensure that all of my children are empty nodes
-		for(size_t i=0;i<rule->N;i++) {
-			set_child(i, Node());
-		}
-	}
-	
+
 	void operator=(const Node& n) {
 		// Here in the assignment operator we don't set the parent to n.parent, otherwise the parent pointers get broken
 		// (nor pi). This leaves them in their place in a tree (so e.g. we can set a node of a tree and it still works)
@@ -169,16 +159,8 @@ public:
 
 	template<typename T>
 	T sum(T(*f)(const Node&) ) const {
-		/**
-		 * @brief Apply f to me and everything below me, adding up the result. 
-		 * @param f
-		 * @return 
-		 */
-		T s = f(*this);
-		for(auto& c: children) {
-			s += c.sum<T>(f);
-		}
-		return s;
+		std::function ff = f;
+		return sum(ff);
 	}
 
 	void map( const std::function<void(Node&)>& f) {
@@ -192,38 +174,6 @@ public:
 			c.map(f); 
 		}
 	}
-	
-	void map_const( const std::function<void(const Node&)>& f) const { // mapping that is constant
-		f(*this);
-		for(const auto& c: children) {
-			c.map_const(f); 
-		}
-	}
-	
-	void rmap_const( const std::function<void(const Node&)>& f) const { // mapping that is constant
-		for(int i=children.size()-1;i>=0;i--) {
-			children[i].rmap_const(f); 
-		}		
-		f(*this);
-	}
-	
-	virtual size_t count() const override { // why are you so stupid, c++?
-		return Tree<Node>::count();
-	}
-	virtual size_t count(const Node& n) const {
-		/**
-		 * @brief How many nodes below me are equal to n?
-		 * @param n
-		 * @return 
-		 */
-		
-		size_t cnt = 0;
-		for(auto& x : *this) {
-			if(x == n) cnt++;
-		}
-		return cnt;
-	}
-	
 	
 	virtual bool is_complete() const {
 		/**

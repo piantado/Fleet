@@ -141,6 +141,19 @@ public:
 		return children.at(i);
 	}
 	
+	template<typename... Args>
+	void fill(size_t n, Args... args) {
+		/**
+		 * @brief Fill in all of my immediate children with Null nodes (via NullRule)
+		 */
+		
+		// ensure that all of my children are empty nodes
+		for(size_t i=0;i<n;i++) {
+			set_child(i, this_t(args...));
+		}
+	}
+	
+	
 	size_t nchildren() const {
 		/**
 		 * @brief How many children do I have?
@@ -261,6 +274,20 @@ public:
 			n += c.count();			
 		}
 		return n;
+	}
+	
+	virtual size_t count(const this_t& n) const {
+		/**
+		 * @brief How many nodes below me are equal to n?
+		 * @param n
+		 * @return 
+		 */
+		
+		size_t cnt = (n == *static_cast<const this_t*>(this));
+		for(auto& c : children) {
+			cnt += c.count(n);
+		}
+		return cnt;
 	}
 	
 	virtual bool is_terminal() const {
