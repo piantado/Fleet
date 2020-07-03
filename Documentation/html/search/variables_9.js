@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['idx',['idx',['../class_fleet_1_1_combinators_1_1_lazy_normal_forms.html#aac1fda9a6b718165e3ea8f4e8a953f48',1,'Fleet::Combinators::LazyNormalForms']]],
+  ['idx',['idx',['../class_combinators_1_1_lazy_normal_forms.html#aad988f6c06e3e1cf4e516ecfc1198c7f',1,'Combinators::LazyNormalForms']]],
+  ['index',['index',['../class_parallel_inference_interface.html#a7ae040da2f19cfb41851760759fc9b33',1,'ParallelInferenceInterface']]],
   ['infinity',['infinity',['../_numerics_8h.html#a1bb1e42ae1b40cad6e99da0aab8a5576',1,'Numerics.h']]],
   ['initial_5fsize',['INITIAL_SIZE',['../class_astar.html#af674f24278326383c5972fc30f0b21d9',1,'Astar']]],
   ['input',['input',['../classdefauldatum__t.html#a282269cf029cd4068c94db8c8edee01e',1,'defauldatum_t']]],

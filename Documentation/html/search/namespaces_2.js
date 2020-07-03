@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['proposals',['Proposals',['../namespace_proposals.html',1,'']]]
+  ['fleet',['Fleet',['../namespace_fleet.html',1,'']]],
+  ['fleetstatistics',['FleetStatistics',['../namespace_fleet_statistics.html',1,'']]],
+  ['statistics',['Statistics',['../namespace_fleet_1_1_statistics.html',1,'Fleet']]]
 ];

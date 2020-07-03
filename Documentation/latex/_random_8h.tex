@@ -4,8 +4,7 @@
 {\ttfamily \#include $<$functional$>$}\newline
 {\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Numerics.\+h\char`\"{}}\newline
-Include dependency graph for Random.\+h\+:
-\nopagebreak
+Include dependency graph for Random.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -57,6 +56,8 @@ std\+::pair$<$ int, double $>$ \hyperlink{_random_8h_a12aaaf433c4da9591b9ba6e91f
 \item 
 {\footnotesize template$<$typename t , typename T $>$ }\\std\+::pair$<$ size\+\_\+t, double $>$ \hyperlink{_random_8h_a27816dc404bd1077a5a709f084d6560a}{arg\+\_\+max} (const T \&s, const std\+::function$<$ double(const t \&)$>$ \&f)
 \item 
+std\+::pair$<$ size\+\_\+t, double $>$ \hyperlink{_random_8h_a941e30b37e9bde597807813883a03959}{arg\+\_\+max\+\_\+int} (unsigned int max, const std\+::function$<$ double(const int)$>$ \&f)
+\item 
 {\footnotesize template$<$typename t , typename T $>$ }\\std\+::pair$<$ t $\ast$, double $>$ \hyperlink{_random_8h_ab8df9e92a32a04d16bec82a9eab46d48}{max\+\_\+of} (T \&s, const std\+::function$<$ double(t \&)$>$ \&f)
 \item 
 {\footnotesize template$<$typename t , typename T $>$ }\\std\+::pair$<$ t $\ast$, double $>$ \hyperlink{_random_8h_a66c44d236d9db0144761e0d24bc83e48}{sample} (const T \&s, double($\ast$f)(const t \&))
@@ -83,6 +84,12 @@ thread\+\_\+local std\+::random\+\_\+device \hyperlink{_random_8h_a6db4fd8287911
 \subsubsection{\texorpdfstring{arg\+\_\+max()}{arg\_max()}}
 {\footnotesize\ttfamily template$<$typename t , typename T $>$ \\
 std\+::pair$<$size\+\_\+t,double$>$ arg\+\_\+max (\begin{DoxyParamCaption}\item[{const T \&}]{s,  }\item[{const std\+::function$<$ double(const t \&)$>$ \&}]{f }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_random_8h_a941e30b37e9bde597807813883a03959}\label{_random_8h_a941e30b37e9bde597807813883a03959}} 
+\index{Random.\+h@{Random.\+h}!arg\+\_\+max\+\_\+int@{arg\+\_\+max\+\_\+int}}
+\index{arg\+\_\+max\+\_\+int@{arg\+\_\+max\+\_\+int}!Random.\+h@{Random.\+h}}
+\subsubsection{\texorpdfstring{arg\+\_\+max\+\_\+int()}{arg\_max\_int()}}
+{\footnotesize\ttfamily std\+::pair$<$size\+\_\+t,double$>$ arg\+\_\+max\+\_\+int (\begin{DoxyParamCaption}\item[{unsigned int}]{max,  }\item[{const std\+::function$<$ double(const int)$>$ \&}]{f }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_random_8h_ae0f9ec68098135667c5e895e1130dd4d}\label{_random_8h_ae0f9ec68098135667c5e895e1130dd4d}} 
 \index{Random.\+h@{Random.\+h}!cauchy\+\_\+lpdf@{cauchy\+\_\+lpdf}}

@@ -77,33 +77,37 @@ $(function() {
 
 <p>A grammar for SK combinatory logic. NOTE: CustomOps must be defined here.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="_errors_8h_source.html">Errors.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;signal.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="_errors_8h_source.html">Errors.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_grammar_8h_source.html">Grammar.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_node_8h_source.html">Node.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_enumeration_8h_source.html">Enumeration.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Combinators.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_combinators_8h__incl.png" border="0" usemap="#src_2_combinators_8h" alt=""/></div>
 <map name="src_2_combinators_8h" id="src_2_combinators_8h">
-<area shape="rect" id="node2" href="_errors_8h.html" title="Errors.h" alt="" coords="1099,229,1167,256"/>
-<area shape="rect" id="node6" href="_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="803,80,890,107"/>
-<area shape="rect" id="node13" href="_node_8h.html" title="Node.h" alt="" coords="335,155,399,181"/>
-<area shape="rect" id="node9" href="_i_o_8h.html" title="IO.h" alt="" coords="94,379,141,405"/>
-<area shape="rect" id="node23" href="_nonterminal_8h.html" title="Nonterminal.h" alt="" coords="290,304,393,331"/>
-<area shape="rect" id="node33" href="_random_8h.html" title="Random.h" alt="" coords="423,155,505,181"/>
-<area shape="rect" id="node34" href="_primitives_8h.html" title="If there are any references in the arguments, only the first can be a reference. " alt="" coords="747,155,837,181"/>
-<area shape="rect" id="node37" href="_integerized_stack_8h.html" title="IntegerizedStack.h" alt="" coords="1013,155,1144,181"/>
-<area shape="rect" id="node38" href="_virtual_machine_state_8h.html" title="Count references in lambda arguments (used to ensure we only passs one) " alt="" coords="1270,155,1421,181"/>
-<area shape="rect" id="node44" href="_builtins_8h.html" title="This is needed below so we can check if something is a Builtin without template args. " alt="" coords="862,155,938,181"/>
-<area shape="rect" id="node16" href="_hash_8h.html" title="Hash.h" alt="" coords="80,229,144,256"/>
-<area shape="rect" id="node17" href="_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we &quot;emulate&quot; a type system using t_nonterminal to store an integer for the types. *. " alt="" coords="553,229,613,256"/>
-<area shape="rect" id="node31" href="_program_8h.html" title="Program.h" alt="" coords="688,229,771,256"/>
-<area shape="rect" id="node19" href="_instruction_8h.html" title="This is an error type that is returned if we get a runtime error (e.g. string length, etc.) " alt="" coords="850,304,945,331"/>
-<area shape="rect" id="node24" href="_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="567,304,683,331"/>
-<area shape="rect" id="node26" href="_strings_8h.html" title="Strings.h" alt="" coords="417,304,492,331"/>
-<area shape="rect" id="node29" href="_numerics_8h.html" title="Numerics.h" alt="" coords="489,379,578,405"/>
-<area shape="rect" id="node32" href="_stack_8h.html" title="Stack.h" alt="" coords="759,304,825,331"/>
-<area shape="rect" id="node42" href="_fleet_statistics_8h.html" title="Statistics/FleetStatistics.h" alt="" coords="1317,229,1493,256"/>
+<area shape="rect" id="node3" href="_errors_8h.html" title="Errors.h" alt="" coords="433,304,501,331"/>
+<area shape="rect" id="node7" href="_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="631,80,718,107"/>
+<area shape="rect" id="node14" href="_node_8h.html" title="Node.h" alt="" coords="1305,155,1369,181"/>
+<area shape="rect" id="node46" href="_enumeration_8h.html" title="An IntegerizedStack is just a wrapper around unsigned longs that allow them to behave like a of integ..." alt="" coords="912,80,1019,107"/>
+<area shape="rect" id="node10" href="_i_o_8h.html" title="IO.h" alt="" coords="1898,379,1945,405"/>
+<area shape="rect" id="node24" href="_nonterminal_8h.html" title="Nonterminal.h" alt="" coords="1799,304,1902,331"/>
+<area shape="rect" id="node35" href="_random_8h.html" title="Random.h" alt="" coords="605,229,688,256"/>
+<area shape="rect" id="node36" href="_primitives_8h.html" title="If there are any references in the arguments, only the first can be a reference. " alt="" coords="763,229,853,256"/>
+<area shape="rect" id="node39" href="_virtual_machine_state_8h.html" title="Count references in lambda arguments (used to ensure we only passs one) " alt="" coords="405,155,555,181"/>
+<area shape="rect" id="node45" href="_builtins_8h.html" title="This is needed below so we can check if something is a Builtin without template args. " alt="" coords="147,155,223,181"/>
+<area shape="rect" id="node17" href="_hash_8h.html" title="Hash.h" alt="" coords="1355,229,1419,256"/>
+<area shape="rect" id="node18" href="_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we &quot;emulate&quot; a type system using t_nonterminal to store an integer for the types. *. " alt="" coords="1494,229,1554,256"/>
+<area shape="rect" id="node32" href="_program_8h.html" title="Program.h" alt="" coords="1248,229,1331,256"/>
+<area shape="rect" id="node34" href="_base_node_8h.html" title="This is a general tree class, which we are adding because there are currently at least 3 different tr..." alt="" coords="1078,229,1173,256"/>
+<area shape="rect" id="node20" href="_instruction_8h.html" title="This is an error type that is returned if we get a runtime error (e.g. string length, etc.) " alt="" coords="1581,304,1675,331"/>
+<area shape="rect" id="node25" href="_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="1441,304,1557,331"/>
+<area shape="rect" id="node27" href="_strings_8h.html" title="Strings.h" alt="" coords="1700,304,1775,331"/>
+<area shape="rect" id="node30" href="_numerics_8h.html" title="Numerics.h" alt="" coords="1425,379,1514,405"/>
+<area shape="rect" id="node33" href="_stack_8h.html" title="Stack.h" alt="" coords="1144,304,1211,331"/>
+<area shape="rect" id="node43" href="_fleet_statistics_8h.html" title="Statistics/FleetStatistics.h" alt="" coords="877,229,1053,256"/>
+<area shape="rect" id="node47" href="_integerized_stack_8h.html" title="IntegerizedStack.h" alt="" coords="1977,155,2108,181"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -111,7 +115,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_combinators_8h__dep__incl.png" border="0" usemap="#src_2_combinators_8hdep" alt=""/></div>
 <map name="src_2_combinators_8hdep" id="src_2_combinators_8hdep">
-<area shape="rect" id="node2" href="_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="5,80,179,121"/>
+<area shape="rect" id="node2" href="_models_2_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="5,80,179,121"/>
 </map>
 </div>
 </div>
@@ -119,61 +123,76 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_fleet_1_1_combinators_1_1_c_l.html">Fleet::Combinators::CL</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_combinators_1_1_c_l.html">Combinators::CL</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fleet_1_1_combinators_1_1_s_k_grammar.html">Fleet::Combinators::SKGrammar</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_combinators_1_1_s_k_grammar.html">Combinators::SKGrammar</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fleet_1_1_combinators_1_1_reduction_exception.html">Fleet::Combinators::ReductionException</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_combinators_1_1_reduction_exception.html">Combinators::ReductionException</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_fleet_1_1_combinators_1_1_lazy_normal_forms.html">Fleet::Combinators::LazyNormalForms</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_combinators_1_1_lazy_normal_forms.html">Combinators::LazyNormalForms</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespace_fleet"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_fleet.html">Fleet</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespace_fleet_1_1_combinators"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_fleet_1_1_combinators.html">Fleet::Combinators</a></td></tr>
+<tr class="memitem:namespace_combinators"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_combinators.html">Combinators</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a3d456e1f1eeb0569b962e4ddb521c64a"><td class="memTemplParams" colspan="2">template&lt;BuiltinOp &gt; </td></tr>
-<tr class="memitem:a3d456e1f1eeb0569b962e4ddb521c64a"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_fleet_1_1_combinators.html#a3d456e1f1eeb0569b962e4ddb521c64a">Fleet::Combinators::can_reduce</a> (const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
-<tr class="separator:a3d456e1f1eeb0569b962e4ddb521c64a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bef003899607e07e72709b799187195"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
-<tr class="memitem:a8bef003899607e07e72709b799187195"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_fleet_1_1_combinators.html#a8bef003899607e07e72709b799187195">Fleet::Combinators::can_reduce&lt; BuiltinOp::op_I &gt;</a> (const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
-<tr class="separator:a8bef003899607e07e72709b799187195"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0dd08c4539c98c52ea031ecf364bcb60"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
-<tr class="memitem:a0dd08c4539c98c52ea031ecf364bcb60"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_fleet_1_1_combinators.html#a0dd08c4539c98c52ea031ecf364bcb60">Fleet::Combinators::can_reduce&lt; BuiltinOp::op_K &gt;</a> (const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
-<tr class="separator:a0dd08c4539c98c52ea031ecf364bcb60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12bfc0d27b7b9672fc3a99a74be58523"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
-<tr class="memitem:a12bfc0d27b7b9672fc3a99a74be58523"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_fleet_1_1_combinators.html#a12bfc0d27b7b9672fc3a99a74be58523">Fleet::Combinators::can_reduce&lt; BuiltinOp::op_S &gt;</a> (const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
-<tr class="separator:a12bfc0d27b7b9672fc3a99a74be58523"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0176e1feedc8f2db63a7fedd927cdd9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_fleet_1_1_combinators.html#ae0176e1feedc8f2db63a7fedd927cdd9">Fleet::Combinators::is_normal_form</a> (const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
-<tr class="memdesc:ae0176e1feedc8f2db63a7fedd927cdd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">check if a tree n is in SK normal form, meaning that no subnodes can be reduced  <a href="namespace_fleet_1_1_combinators.html#ae0176e1feedc8f2db63a7fedd927cdd9">More...</a><br /></td></tr>
-<tr class="separator:ae0176e1feedc8f2db63a7fedd927cdd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39ef824add4fb94b4b2d0b967d14641a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_fleet_1_1_combinators.html#a39ef824add4fb94b4b2d0b967d14641a">Fleet::Combinators::reduce</a> (<a class="el" href="class_node.html">Node</a> &amp;n, size_t &amp;remaining_calls)</td></tr>
-<tr class="memdesc:a39ef824add4fb94b4b2d0b967d14641a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reduce a combinator.  <a href="namespace_fleet_1_1_combinators.html#a39ef824add4fb94b4b2d0b967d14641a">More...</a><br /></td></tr>
-<tr class="separator:a39ef824add4fb94b4b2d0b967d14641a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1c41f1db65aa51fdeac1a4016b8212c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_fleet_1_1_combinators.html#ac1c41f1db65aa51fdeac1a4016b8212c">Fleet::Combinators::reduce</a> (<a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
-<tr class="memdesc:ac1c41f1db65aa51fdeac1a4016b8212c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reduce (automtically set remaining_calls=256 default)  <a href="namespace_fleet_1_1_combinators.html#ac1c41f1db65aa51fdeac1a4016b8212c">More...</a><br /></td></tr>
-<tr class="separator:ac1c41f1db65aa51fdeac1a4016b8212c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c5491d5248a57dfe08a4f730ab53fbd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_fleet_1_1_combinators.html#a8c5491d5248a57dfe08a4f730ab53fbd">Fleet::Combinators::apply_and_reduce</a> (<a class="el" href="class_node.html">Node</a> f, <a class="el" href="class_node.html">Node</a> x)</td></tr>
-<tr class="memdesc:a8c5491d5248a57dfe08a4f730ab53fbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply a function f to a node x and reduce.  <a href="namespace_fleet_1_1_combinators.html#a8c5491d5248a57dfe08a4f730ab53fbd">More...</a><br /></td></tr>
-<tr class="separator:a8c5491d5248a57dfe08a4f730ab53fbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3c93f1edab6764d54dda56aafac9cd3"><td class="memTemplParams" colspan="2">template&lt;BuiltinOp &gt; </td></tr>
+<tr class="memitem:aa3c93f1edab6764d54dda56aafac9cd3"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_combinators.html#aa3c93f1edab6764d54dda56aafac9cd3">Combinators::can_reduce</a> (const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
+<tr class="separator:aa3c93f1edab6764d54dda56aafac9cd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad95b1d79317c4d84eb4f96bac4176fc5"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:ad95b1d79317c4d84eb4f96bac4176fc5"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_combinators.html#ad95b1d79317c4d84eb4f96bac4176fc5">Combinators::can_reduce&lt; BuiltinOp::op_I &gt;</a> (const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
+<tr class="separator:ad95b1d79317c4d84eb4f96bac4176fc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf147e40e9f56872bedc87bd63705672"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:acf147e40e9f56872bedc87bd63705672"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_combinators.html#acf147e40e9f56872bedc87bd63705672">Combinators::can_reduce&lt; BuiltinOp::op_K &gt;</a> (const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
+<tr class="separator:acf147e40e9f56872bedc87bd63705672"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20138fc667812b7b36885b52387f85e0"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:a20138fc667812b7b36885b52387f85e0"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_combinators.html#a20138fc667812b7b36885b52387f85e0">Combinators::can_reduce&lt; BuiltinOp::op_S &gt;</a> (const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
+<tr class="separator:a20138fc667812b7b36885b52387f85e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29877c1bfde5b9807fd7a7538efe9e0c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_combinators.html#a29877c1bfde5b9807fd7a7538efe9e0c">Combinators::is_normal_form</a> (const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
+<tr class="memdesc:a29877c1bfde5b9807fd7a7538efe9e0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">check if a tree n is in SK normal form, meaning that no subnodes can be reduced  <a href="namespace_combinators.html#a29877c1bfde5b9807fd7a7538efe9e0c">More...</a><br /></td></tr>
+<tr class="separator:a29877c1bfde5b9807fd7a7538efe9e0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6abc966e0ab0f2aa8170712f32541458"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_combinators.html#a6abc966e0ab0f2aa8170712f32541458">Combinators::reduce</a> (<a class="el" href="class_node.html">Node</a> &amp;n, size_t &amp;remaining_calls)</td></tr>
+<tr class="memdesc:a6abc966e0ab0f2aa8170712f32541458"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reduce a combinator.  <a href="namespace_combinators.html#a6abc966e0ab0f2aa8170712f32541458">More...</a><br /></td></tr>
+<tr class="separator:a6abc966e0ab0f2aa8170712f32541458"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10b79cf8cc79cd5505e8d3c70470aab7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_combinators.html#a10b79cf8cc79cd5505e8d3c70470aab7">Combinators::reduce</a> (<a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
+<tr class="memdesc:a10b79cf8cc79cd5505e8d3c70470aab7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reduce (automtically set remaining_calls=256 default)  <a href="namespace_combinators.html#a10b79cf8cc79cd5505e8d3c70470aab7">More...</a><br /></td></tr>
+<tr class="separator:a10b79cf8cc79cd5505e8d3c70470aab7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30e2a8ed9eb766eb35ce3feb10cbd59a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_combinators.html#a30e2a8ed9eb766eb35ce3feb10cbd59a">Combinators::apply_and_reduce</a> (<a class="el" href="class_node.html">Node</a> f, <a class="el" href="class_node.html">Node</a> x)</td></tr>
+<tr class="memdesc:a30e2a8ed9eb766eb35ce3feb10cbd59a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply a function f to a node x and reduce.  <a href="namespace_combinators.html#a30e2a8ed9eb766eb35ce3feb10cbd59a">More...</a><br /></td></tr>
+<tr class="separator:a30e2a8ed9eb766eb35ce3feb10cbd59a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a5293b7a2dcdbfb430b45fcf401e3bab0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_fleet_1_1_combinators_1_1_s_k_grammar.html">Fleet::Combinators::SKGrammar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_fleet_1_1_combinators.html#a5293b7a2dcdbfb430b45fcf401e3bab0">Fleet::Combinators::skgrammar</a></td></tr>
-<tr class="separator:a5293b7a2dcdbfb430b45fcf401e3bab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a837dab8d754d0f5062bf633738832079"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_fleet_1_1_combinators_1_1_reduction_exception.html">Fleet::Combinators::ReductionException</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_fleet_1_1_combinators.html#a837dab8d754d0f5062bf633738832079">Fleet::Combinators::reduction_exception</a></td></tr>
-<tr class="separator:a837dab8d754d0f5062bf633738832079"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f7c4963bb8a36031664821219e3159e"><td class="memItemLeft" align="right" valign="top">volatile sig_atomic_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_combinators_8h.html#a6f7c4963bb8a36031664821219e3159e">CTRL_C</a></td></tr>
+<tr class="separator:a6f7c4963bb8a36031664821219e3159e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24aeacfa083d06000a89cb59d14eeccb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_combinators_1_1_s_k_grammar.html">Combinators::SKGrammar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_combinators.html#a24aeacfa083d06000a89cb59d14eeccb">Combinators::skgrammar</a></td></tr>
+<tr class="separator:a24aeacfa083d06000a89cb59d14eeccb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47aa4c813bc5305c8b818c9be952235c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_combinators_1_1_reduction_exception.html">Combinators::ReductionException</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_combinators.html#a47aa4c813bc5305c8b818c9be952235c">Combinators::reduction_exception</a></td></tr>
+<tr class="separator:a47aa4c813bc5305c8b818c9be952235c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. </p>
 <p>Use a nice data structure to enumerate the combinators in normal form lazily so that we can do this &ndash; it will store the max enumerated so far, and allow access.</p>
 <p>A class that gets thrown when we've reduced too much.</p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Variable Documentation</h2>
+<a id="a6f7c4963bb8a36031664821219e3159e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f7c4963bb8a36031664821219e3159e">&#9670;&nbsp;</a></span>CTRL_C</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile sig_atomic_t CTRL_C</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

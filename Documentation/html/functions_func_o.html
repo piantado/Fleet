@@ -64,25 +64,22 @@ $(function() {
 &#160;
 
 <h3><a id="index_o"></a>- o -</h3><ul>
-<li>open_children()
-: <a class="el" href="class_m_c_t_s_node.html#a40ca22fadfb24bed0ccbd15d3958c674">MCTSNode&lt; M, HYP &gt;</a>
-</li>
 <li>operator!=()
-: <a class="el" href="class_node_1_1_node_iterator.html#af76058ef35f25f3bcf681a4841554f58">Node::NodeIterator</a>
-, <a class="el" href="class_node.html#a1ff12be4d2355edddee1fbe893f0c8a8">Node</a>
+: <a class="el" href="class_base_node_1_1_node_iterator.html#a10e2c9cd9a879e6a5779981badfa335b">BaseNode&lt; this_t &gt;::NodeIterator</a>
+, <a class="el" href="class_base_node.html#a2f0418334eb790283f8074c9a27fed6e">BaseNode&lt; this_t &gt;</a>
 </li>
 <li>operator()()
 : <a class="el" href="class_l_o_t_hypothesis.html#a7275626861140284ee08512fd0641ce1">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_top_n.html#a1bc031e453f4d32cbc4cf6df04da51bc">TopN&lt; T &gt;</a>
 </li>
 <li>operator*()
-: <a class="el" href="class_node_1_1_node_iterator.html#a2b87cc748e7f197939e8d8b5a0e526ca">Node::NodeIterator</a>
+: <a class="el" href="class_base_node_1_1_node_iterator.html#ae8543e096a3169c59238cb4a2d872d88">BaseNode&lt; this_t &gt;::NodeIterator</a>
 </li>
 <li>operator+()
-: <a class="el" href="class_node_1_1_node_iterator.html#a5ed6466d0f2200d90507769d4a790a9f">Node::NodeIterator</a>
+: <a class="el" href="class_base_node_1_1_node_iterator.html#a347656df237dcc3de8ad40896b260cf8">BaseNode&lt; this_t &gt;::NodeIterator</a>
 </li>
 <li>operator++()
-: <a class="el" href="class_node_1_1_node_iterator.html#a13144818341346563030e7c0adab769c">Node::NodeIterator</a>
+: <a class="el" href="class_base_node_1_1_node_iterator.html#a5fd7a29fd07fdc3e60302bdc8a6cb61f">BaseNode&lt; this_t &gt;::NodeIterator</a>
 </li>
 <li>operator+=()
 : <a class="el" href="class_integerized_stack.html#a70df05b936e94c717584290d0c457cca">IntegerizedStack</a>
@@ -91,11 +88,11 @@ $(function() {
 : <a class="el" href="class_integerized_stack.html#ac2ec311399b327573a2c0f19d2a902a4">IntegerizedStack</a>
 </li>
 <li>operator-&gt;()
-: <a class="el" href="class_node_1_1_node_iterator.html#ab325945a6eccc93043b9fd35705529d9">Node::NodeIterator</a>
+: <a class="el" href="class_base_node_1_1_node_iterator.html#a6d9525f787b4339909c6236b93905ec2">BaseNode&lt; this_t &gt;::NodeIterator</a>
 </li>
 <li>operator&lt;()
 : <a class="el" href="class_bayesable.html#ac356e7e5b11c266b8442064186dbe89d">Bayesable&lt; _datum_t, _data_t &gt;</a>
-, <a class="el" href="struct_fleet_1_1_combinators_1_1_c_l.html#af9af3d9be95e109d9f657b5e1bbfd3c4">Fleet::Combinators::CL</a>
+, <a class="el" href="struct_combinators_1_1_c_l.html#a81f3673cc2acbaaa9194c84352905bce">Combinators::CL</a>
 , <a class="el" href="class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#a06bf92e43a3bfe61e75a8bf0d6fa2c67">Fleet::Statistics::ReservoirSample&lt; T &gt;::Item</a>
 , <a class="el" href="class_node.html#a8b05feb361beb04d465619751a2297b1">Node</a>
 , <a class="el" href="class_reservoir_sample_1_1_item.html#a6021bbb1eaadfab8990b05557e2758fa">ReservoirSample&lt; T &gt;::Item</a>
@@ -106,7 +103,6 @@ $(function() {
 : <a class="el" href="class_discrete_distribution.html#a5c93983e2375a2353b10b82ebb11f751">DiscreteDistribution&lt; T &gt;</a>
 , <a class="el" href="class_finite_history.html#aec85dc2f48062985164e4033223d9312">FiniteHistory&lt; T &gt;</a>
 , <a class="el" href="class_fleet_1_1_statistics_1_1_reservoir_sample.html#ad6e4d50ef1acefce7f5d66013720c1ef">Fleet::Statistics::ReservoirSample&lt; T &gt;</a>
-, <a class="el" href="class_m_c_t_s_node.html#ad72e84b8b8c6e814dfae4a697ddb6acd">MCTSNode&lt; M, HYP &gt;</a>
 , <a class="el" href="class_median_f_a_m_e.html#a95e83a1782a9fd3b79610a2c58a58dfe">MedianFAME&lt; T &gt;</a>
 , <a class="el" href="class_reservoir_sample.html#a06e60e404cf49a9261f51d6b07bbf017">ReservoirSample&lt; T &gt;</a>
 , <a class="el" href="class_streaming_statistics.html#a46287a138460b2041a6852ae1eab771b">StreamingStatistics</a>
@@ -114,28 +110,29 @@ $(function() {
 </li>
 <li>operator=()
 : <a class="el" href="class_finite_history.html#afdc27d66ff1c1c386185f29eff5c474c">FiniteHistory&lt; T &gt;</a>
-, <a class="el" href="class_full_m_c_t_s_node.html#a43c0d237d68bd504fb000524a42fad89">FullMCTSNode&lt; HYP, callback_t &gt;</a>
+, <a class="el" href="class_full_m_c_t_s_node.html#aac59f75931712d329f0b2142d786d03a">FullMCTSNode&lt; this_t, HYP, callback_t &gt;</a>
 , <a class="el" href="class_integerized_stack.html#a829e18dc8bae3eb371e9822271102a2d">IntegerizedStack</a>
 , <a class="el" href="class_node.html#abcd5c8ca2ea54716a72f7e27f9a9c937">Node</a>
 , <a class="el" href="class_streaming_statistics.html#a5de96edb2c4ec6731727abccba62ee05">StreamingStatistics</a>
-, <a class="el" href="class_top_n.html#ac6afd8e83833aedc8690c3a0622d5535">TopN&lt; T &gt;</a>
+, <a class="el" href="class_top_n.html#ae8dfc906735d0aa9774d9e6c17cc9d1c">TopN&lt; T &gt;</a>
 </li>
 <li>operator==()
-: <a class="el" href="classdefauldatum__t.html#a96eb1be1316177eb30d9bbc4a5405a9c">defauldatum_t&lt; input_t, output_t &gt;</a>
+: <a class="el" href="class_base_node_1_1_node_iterator.html#af3e1ab104af103b5536e4b9237fba588">BaseNode&lt; this_t &gt;::NodeIterator</a>
+, <a class="el" href="class_base_node.html#a33bb5c59122f6b2778d39a0eaa0151d7">BaseNode&lt; this_t &gt;</a>
+, <a class="el" href="classdefauldatum__t.html#a96eb1be1316177eb30d9bbc4a5405a9c">defauldatum_t&lt; input_t, output_t &gt;</a>
 , <a class="el" href="class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#ab3adc1f593aec74d7d140f8c3553546e">Fleet::Statistics::ReservoirSample&lt; T &gt;::Item</a>
 , <a class="el" href="class_grammar_hypothesis.html#a7a7e6c0c5a15fc32904f5113fd4e0371">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
 , <a class="el" href="class_instruction.html#a75e0ecee9ec917bcc47488a1fbeb6a24">Instruction</a>
 , <a class="el" href="class_lexicon.html#abd4b0dead3757288e80f37773820f513">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#acf5a682dce5d3971474a22778479a99a">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_m_c_m_cable.html#aa73001ec3bb0cf0c618281dfa998f2f1">MCMCable&lt; HYP, Args &gt;</a>
-, <a class="el" href="class_node_1_1_node_iterator.html#a5c01bff31ec6a91410c08ab70110cb1f">Node::NodeIterator</a>
-, <a class="el" href="class_node.html#a90aeee00ccda27f36bea9cdd774eae8d">Node</a>
+, <a class="el" href="class_node.html#a8f42de356c047dd52472d24ace4d42c5">Node</a>
 , <a class="el" href="class_reservoir_sample_1_1_item.html#a3acc4a4c4aca6d80629d35f9a37220ff">ReservoirSample&lt; T &gt;::Item</a>
 , <a class="el" href="class_rule.html#a183fafc8a6b43515436a1de8f63ec98d">Rule</a>
 </li>
 <li>operator[]()
-: <a class="el" href="class_discrete_distribution.html#a374bcf1a5b302e6ac618afe9d78e265f">DiscreteDistribution&lt; T &gt;</a>
-, <a class="el" href="class_node.html#a8bdfdaa5eb291ae5fb417f45fb8a3633">Node</a>
+: <a class="el" href="class_base_node.html#ad09bee05b19581e8827bdd03a31791a7">BaseNode&lt; this_t &gt;</a>
+, <a class="el" href="class_discrete_distribution.html#a374bcf1a5b302e6ac618afe9d78e265f">DiscreteDistribution&lt; T &gt;</a>
 , <a class="el" href="class_top_n.html#a7eafee63f9094086c3193ff005cd9f0f">TopN&lt; T &gt;</a>
 </li>
 </ul>

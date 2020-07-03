@@ -1,3 +1,6 @@
-<map id="FullMCTSNode&lt; HYP, callback_t &gt;" name="FullMCTSNode&lt; HYP, callback_t &gt;">
-<area shape="rect" id="node2" href="$class_spin_lock.html" title="SpinLock" alt="" coords="45,5,121,32"/>
+<map id="FullMCTSNode&lt; this_t, HYP, callback_t &gt;" name="FullMCTSNode&lt; this_t, HYP, callback_t &gt;">
+<area shape="rect" id="node2" href="$class_parallel_inference_interface.html" title="ParallelInferenceInterface\l\&lt; HYP \&gt;" alt="" coords="5,215,176,256"/>
+<area shape="rect" id="node3" href="$class_base_node.html" title="BaseNode\&lt; this_t \&gt;" alt="" coords="200,222,339,249"/>
+<area shape="rect" id="node5" href="$class_base_node_1_1_node_iterator.html" title="BaseNode\&lt; this_t \&gt;\l::NodeIterator" alt="" coords="273,111,412,152"/>
+<area shape="rect" id="node8" href="$class_spin_lock.html" title="SpinLock" alt="" coords="469,222,545,249"/>
 </map>

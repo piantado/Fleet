@@ -1,12 +1,13 @@
 <map id="src/VirtualMachine/VirtualMachineState.h" name="src/VirtualMachine/VirtualMachineState.h">
-<area shape="rect" id="node2" href="$_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,169,209,211"/>
-<area shape="rect" id="node3" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="597,95,764,121"/>
-<area shape="rect" id="node11" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="788,95,1008,121"/>
-<area shape="rect" id="node4" href="$_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="387,169,591,211"/>
-<area shape="rect" id="node5" href="$_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="615,169,770,211"/>
-<area shape="rect" id="node6" href="$_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="795,177,1001,203"/>
-<area shape="rect" id="node7" href="$_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1025,169,1176,211"/>
-<area shape="rect" id="node8" href="$_testing_2_main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="1201,177,1369,203"/>
-<area shape="rect" id="node9" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="233,177,363,203"/>
-<area shape="rect" id="node10" href="$_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="765,259,938,300"/>
+<area shape="rect" id="node2" href="$_models_2_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,169,209,211"/>
+<area shape="rect" id="node3" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="571,95,737,121"/>
+<area shape="rect" id="node12" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="761,95,981,121"/>
+<area shape="rect" id="node4" href="$_models_2_first_order_logic_2_main_8cpp.html" title="Models/FirstOrderLogic\l/Main.cpp" alt="" coords="793,169,950,211"/>
+<area shape="rect" id="node5" href="$_models_2_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="1153,169,1357,211"/>
+<area shape="rect" id="node7" href="$_models_2_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="974,169,1129,211"/>
+<area shape="rect" id="node8" href="$_models_2_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="387,177,593,203"/>
+<area shape="rect" id="node9" href="$_models_2_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="617,169,768,211"/>
+<area shape="rect" id="node10" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="233,177,363,203"/>
+<area shape="rect" id="node6" href="$_testing_2_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="1162,266,1285,293"/>
+<area shape="rect" id="node11" href="$_models_2_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="1309,259,1482,300"/>
 </map>

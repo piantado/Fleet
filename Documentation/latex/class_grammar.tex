@@ -14,7 +14,7 @@ typedef std\+::tuple$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+E\+S... $>$ \hyperli
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$class T $>$ }\\constexpr \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt} ()
+{\footnotesize template$<$class T $>$ }\\constexpr \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt} ()
 \item 
 \hyperlink{class_grammar_a2fa1d41e021616790a5ec8f4b3de9b08}{Grammar} ()
 \item 
@@ -26,16 +26,16 @@ typedef std\+::tuple$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+E\+S... $>$ \hyperli
 \item 
 size\+\_\+t \hyperlink{class_grammar_a4aa05c747026932672a24fa1f7134115}{count\+\_\+nonterminals} () const
 \item 
-size\+\_\+t \hyperlink{class_grammar_a90a765c97b89f2f4cf12b6b4c2a3d019}{count\+\_\+rules} (const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}) const
+size\+\_\+t \hyperlink{class_grammar_a90a765c97b89f2f4cf12b6b4c2a3d019}{count\+\_\+rules} (const \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}) const
 \item 
 size\+\_\+t \hyperlink{class_grammar_a576605ca6ee9693b762a40c477aa4889}{count\+\_\+rules} () const
 \item 
-size\+\_\+t \hyperlink{class_grammar_a5121201035b5d5cd0a1d4251b1f73056}{count\+\_\+terminals} (\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}) const
+size\+\_\+t \hyperlink{class_grammar_a5121201035b5d5cd0a1d4251b1f73056}{count\+\_\+terminals} (\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}) const
 \item 
-size\+\_\+t \hyperlink{class_grammar_a335c2679b0db2290a1a0da8910f0bcdd}{count\+\_\+nonterminals} (\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}) const
+size\+\_\+t \hyperlink{class_grammar_a335c2679b0db2290a1a0da8910f0bcdd}{count\+\_\+nonterminals} (\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}) const
 \item 
 void \hyperlink{class_grammar_a8d661258f08b7cc4d154d59bfbbc1f68}{show} (std\+::string prefix=\char`\"{}\# \char`\"{})
-\item 
+\begin{DoxyCompactList}\small\item\em For a given nt, returns the number of finite trees that nt can expand to if its finite; 0 if its infinite. $\ast$. \end{DoxyCompactList}\item 
 virtual void \hyperlink{class_grammar_a0be4926e40ea476152a5a87a1c83f167}{add} (\hyperlink{class_rule}{Rule} \&\&r)
 \item 
 {\footnotesize template$<$typename... args, size\+\_\+t... Is$>$ }\\void \hyperlink{class_grammar_a3c4f41d4b1ff3c9973cb13ccea2c57fb}{add} (std\+::tuple$<$ args... $>$ t, std\+::index\+\_\+sequence$<$ Is... $>$)
@@ -48,21 +48,21 @@ virtual void \hyperlink{class_grammar_a0be4926e40ea476152a5a87a1c83f167}{add} (\
 \item 
 size\+\_\+t \hyperlink{class_grammar_a16885c3de4a6e3fd31ddab136cd9fea8}{get\+\_\+index\+\_\+of} (const \hyperlink{class_rule}{Rule} $\ast$r) const
 \item 
-virtual \hyperlink{class_rule}{Rule} $\ast$ \hyperlink{class_grammar_a9ed04fb2a2a8e2f0e4f11b711647a02c}{get\+\_\+rule} (const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}, size\+\_\+t k) const
+virtual \hyperlink{class_rule}{Rule} $\ast$ \hyperlink{class_grammar_a9ed04fb2a2a8e2f0e4f11b711647a02c}{get\+\_\+rule} (const \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}, size\+\_\+t k) const
 \item 
-virtual \hyperlink{class_rule}{Rule} $\ast$ \hyperlink{class_grammar_a57835af24b91d1c193f2906b43282350}{get\+\_\+rule} (const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}, const \hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}{Builtin\+Op} o, const int a=0)
+virtual \hyperlink{class_rule}{Rule} $\ast$ \hyperlink{class_grammar_a57835af24b91d1c193f2906b43282350}{get\+\_\+rule} (const \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}, const \hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}{Builtin\+Op} o, const int a=0)
 \item 
-virtual \hyperlink{class_rule}{Rule} $\ast$ \hyperlink{class_grammar_a3d13aad0e640f20e9eb7d0d148915576}{get\+\_\+rule} (const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}, const std\+::string s) const
+virtual \hyperlink{class_rule}{Rule} $\ast$ \hyperlink{class_grammar_a3d13aad0e640f20e9eb7d0d148915576}{get\+\_\+rule} (const \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}, const std\+::string s) const
 \item 
 virtual \hyperlink{class_rule}{Rule} $\ast$ \hyperlink{class_grammar_a1a48e2e6b4757c3398c60a20d759d307}{get\+\_\+rule} (const std\+::string s) const
 \item 
-double \hyperlink{class_grammar_a240019987945a694e26bebcebcf463fc}{rule\+\_\+normalizer} (const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}) const
+double \hyperlink{class_grammar_a240019987945a694e26bebcebcf463fc}{rule\+\_\+normalizer} (const \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}) const
 \item 
-virtual \hyperlink{class_rule}{Rule} $\ast$ \hyperlink{class_grammar_aba4d092714b8420d8c0a1be63e8566b6}{sample\+\_\+rule} (const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}) const
+virtual \hyperlink{class_rule}{Rule} $\ast$ \hyperlink{class_grammar_aba4d092714b8420d8c0a1be63e8566b6}{sample\+\_\+rule} (const \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}) const
 \item 
 \hyperlink{class_node}{Node} \hyperlink{class_grammar_abc6f2a046bdf8df0be45912b5d8fe410}{make\+Node} (const \hyperlink{class_rule}{Rule} $\ast$r) const
 \item 
-\hyperlink{class_node}{Node} \hyperlink{class_grammar_af5dee7ec88bdd66edd023b3c935d2765}{generate} (const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}, unsigned long depth=0) const
+\hyperlink{class_node}{Node} \hyperlink{class_grammar_af5dee7ec88bdd66edd023b3c935d2765}{generate} (const \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}, unsigned long depth=0) const
 \item 
 {\footnotesize template$<$class t $>$ }\\\hyperlink{class_node}{Node} \hyperlink{class_grammar_a01bf556e22bfdd5ec87868869fd9330f}{generate} (unsigned long depth=0)
 \item 
@@ -77,18 +77,6 @@ double \hyperlink{class_grammar_a4b19c0b8d0b4d792181ae47bd2f68268}{log\+\_\+prob
 \hyperlink{class_node}{Node} \hyperlink{class_grammar_a53a651b1fb2cad39efc4717b635b922e}{expand\+\_\+from\+\_\+names} (std\+::string s) const
 \item 
 \hyperlink{class_node}{Node} \hyperlink{class_grammar_af4f8e4c2b0ad93970e579ea56c2fde60}{expand\+\_\+from\+\_\+names} (const char $\ast$c) const
-\item 
-\hyperlink{class_node}{Node} \hyperlink{class_grammar_ab20256e7e9e4c6077043465b3d440be9}{expand\+\_\+from\+\_\+integer} (\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}, \hyperlink{class_integerized_stack}{Integerized\+Stack} \&is) const
-\item 
-\hyperlink{class_node}{Node} \hyperlink{class_grammar_a795d45fbbafb5c5dc17e5898a2016ce2}{expand\+\_\+from\+\_\+integer} (\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}, \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} z) const
-\item 
-\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \hyperlink{class_grammar_a37b475b665c37057084d9244abcf25f9}{compute\+\_\+enumeration\+\_\+order} (const \hyperlink{class_node}{Node} \&n)
-\item 
-\hyperlink{class_node}{Node} \hyperlink{class_grammar_adea898b27f2cf76417e4b686c1045e54}{lempel\+\_\+ziv\+\_\+full\+\_\+expand} (\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}, \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} z, \hyperlink{class_node}{Node} $\ast$root=nullptr) const
-\item 
-\hyperlink{class_node}{Node} \hyperlink{class_grammar_a37ccd1307ac9cb13a9653ba6c2134498}{lempel\+\_\+ziv\+\_\+full\+\_\+expand} (\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_grammar_a047b55bfbd87c52e9d969af62c2932ab}{nt}, \hyperlink{class_integerized_stack}{Integerized\+Stack} \&is, \hyperlink{class_node}{Node} $\ast$root=nullptr) const
-\item 
-virtual \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \hyperlink{class_grammar_ad1e2c22753f18d1dcdd9d81576045e9f}{count\+\_\+connected\+\_\+partial\+\_\+subtrees} (const \hyperlink{class_node}{Node} \&n) const
 \item 
 size\+\_\+t \hyperlink{class_grammar_a486cec3b8e6c757eb348031ff8118a99}{neighbors} (const \hyperlink{class_node}{Node} \&node) const
 \item 
@@ -221,13 +209,6 @@ void \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+E
 {\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
 void \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::complete (\begin{DoxyParamCaption}\item[{\hyperlink{class_node}{Node} \&}]{node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_grammar_a37b475b665c37057084d9244abcf25f9}\label{class_grammar_a37b475b665c37057084d9244abcf25f9}} 
-\index{Grammar@{Grammar}!compute\+\_\+enumeration\+\_\+order@{compute\+\_\+enumeration\+\_\+order}}
-\index{compute\+\_\+enumeration\+\_\+order@{compute\+\_\+enumeration\+\_\+order}!Grammar@{Grammar}}
-\subsubsection{\texorpdfstring{compute\+\_\+enumeration\+\_\+order()}{compute\_enumeration\_order()}}
-{\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::compute\+\_\+enumeration\+\_\+order (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
 \mbox{\Hypertarget{class_grammar_a28b35de7e71ac8f451cd3a65818fc1db}\label{class_grammar_a28b35de7e71ac8f451cd3a65818fc1db}} 
 \index{Grammar@{Grammar}!copy\+\_\+resample@{copy\+\_\+resample}}
 \index{copy\+\_\+resample@{copy\+\_\+resample}!Grammar@{Grammar}}
@@ -245,13 +226,6 @@ Make a copy of node where all nodes satisfying f are regenerated from the gramma
 \begin{DoxyReturn}{Returns}
 N\+O\+TE\+: this does N\+OT allow f to apply to nullptr children (so cannot be used to fill in)
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_grammar_ad1e2c22753f18d1dcdd9d81576045e9f}\label{class_grammar_ad1e2c22753f18d1dcdd9d81576045e9f}} 
-\index{Grammar@{Grammar}!count\+\_\+connected\+\_\+partial\+\_\+subtrees@{count\+\_\+connected\+\_\+partial\+\_\+subtrees}}
-\index{count\+\_\+connected\+\_\+partial\+\_\+subtrees@{count\+\_\+connected\+\_\+partial\+\_\+subtrees}!Grammar@{Grammar}}
-\subsubsection{\texorpdfstring{count\+\_\+connected\+\_\+partial\+\_\+subtrees()}{count\_connected\_partial\_subtrees()}}
-{\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-virtual \hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::count\+\_\+connected\+\_\+partial\+\_\+subtrees (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
-
 \mbox{\Hypertarget{class_grammar_a4aa05c747026932672a24fa1f7134115}\label{class_grammar_a4aa05c747026932672a24fa1f7134115}} 
 \index{Grammar@{Grammar}!count\+\_\+nonterminals@{count\+\_\+nonterminals}}
 \index{count\+\_\+nonterminals@{count\+\_\+nonterminals}!Grammar@{Grammar}}
@@ -267,7 +241,7 @@ How many nonterminals are there in the grammar. \begin{DoxyReturn}{Returns}
 \index{count\+\_\+nonterminals@{count\+\_\+nonterminals}!Grammar@{Grammar}}
 \subsubsection{\texorpdfstring{count\+\_\+nonterminals()}{count\_nonterminals()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-size\+\_\+t \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::count\+\_\+nonterminals (\begin{DoxyParamCaption}\item[{\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t}}]{nt }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+size\+\_\+t \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::count\+\_\+nonterminals (\begin{DoxyParamCaption}\item[{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}]{nt }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 Count th enumber of non-\/terminal rules of return type nt 
 \begin{DoxyParams}{Parameters}
@@ -282,7 +256,7 @@ Count th enumber of non-\/terminal rules of return type nt
 \index{count\+\_\+rules@{count\+\_\+rules}!Grammar@{Grammar}}
 \subsubsection{\texorpdfstring{count\+\_\+rules()}{count\_rules()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-size\+\_\+t \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::count\+\_\+rules (\begin{DoxyParamCaption}\item[{const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t}}]{nt }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+size\+\_\+t \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::count\+\_\+rules (\begin{DoxyParamCaption}\item[{const \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}]{nt }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 Returns the number of rules of return type nt 
 \begin{DoxyParams}{Parameters}
@@ -307,7 +281,7 @@ Total number of rules \begin{DoxyReturn}{Returns}
 \index{count\+\_\+terminals@{count\+\_\+terminals}!Grammar@{Grammar}}
 \subsubsection{\texorpdfstring{count\+\_\+terminals()}{count\_terminals()}}
 {\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-size\+\_\+t \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::count\+\_\+terminals (\begin{DoxyParamCaption}\item[{\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t}}]{nt }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+size\+\_\+t \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::count\+\_\+terminals (\begin{DoxyParamCaption}\item[{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}]{nt }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 Count the number of terminal rules of return type nt 
 \begin{DoxyParams}{Parameters}
@@ -317,20 +291,6 @@ Count the number of terminal rules of return type nt
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_grammar_ab20256e7e9e4c6077043465b3d440be9}\label{class_grammar_ab20256e7e9e4c6077043465b3d440be9}} 
-\index{Grammar@{Grammar}!expand\+\_\+from\+\_\+integer@{expand\+\_\+from\+\_\+integer}}
-\index{expand\+\_\+from\+\_\+integer@{expand\+\_\+from\+\_\+integer}!Grammar@{Grammar}}
-\subsubsection{\texorpdfstring{expand\+\_\+from\+\_\+integer()}{expand\_from\_integer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-\hyperlink{class_node}{Node} \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::expand\+\_\+from\+\_\+integer (\begin{DoxyParamCaption}\item[{\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t}}]{nt,  }\item[{\hyperlink{class_integerized_stack}{Integerized\+Stack} \&}]{is }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
-
-\mbox{\Hypertarget{class_grammar_a795d45fbbafb5c5dc17e5898a2016ce2}\label{class_grammar_a795d45fbbafb5c5dc17e5898a2016ce2}} 
-\index{Grammar@{Grammar}!expand\+\_\+from\+\_\+integer@{expand\+\_\+from\+\_\+integer}}
-\index{expand\+\_\+from\+\_\+integer@{expand\+\_\+from\+\_\+integer}!Grammar@{Grammar}}
-\subsubsection{\texorpdfstring{expand\+\_\+from\+\_\+integer()}{expand\_from\_integer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-\hyperlink{class_node}{Node} \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::expand\+\_\+from\+\_\+integer (\begin{DoxyParamCaption}\item[{\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t}}]{nt,  }\item[{\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{z }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
-
 \mbox{\Hypertarget{class_grammar_aef582b15696b97c3376cba935a76acef}\label{class_grammar_aef582b15696b97c3376cba935a76acef}} 
 \index{Grammar@{Grammar}!expand\+\_\+from\+\_\+names@{expand\+\_\+from\+\_\+names}}
 \index{expand\+\_\+from\+\_\+names@{expand\+\_\+from\+\_\+names}!Grammar@{Grammar}}
@@ -380,7 +340,7 @@ void \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+E
 \index{generate@{generate}!Grammar@{Grammar}}
 \subsubsection{\texorpdfstring{generate()}{generate()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-\hyperlink{class_node}{Node} \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::generate (\begin{DoxyParamCaption}\item[{const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t}}]{nt,  }\item[{unsigned long}]{depth = {\ttfamily 0} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+\hyperlink{class_node}{Node} \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::generate (\begin{DoxyParamCaption}\item[{const \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}]{nt,  }\item[{unsigned long}]{depth = {\ttfamily 0} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 Sample an entire tree from this grammar (keeping track of depth in case we recurse too far) of return type nt. This samples a rule, makes them with make\+Node, and then recurses. 
 \begin{DoxyParams}{Parameters}
@@ -443,7 +403,7 @@ Find the index in rules of where r is.
 \index{get\+\_\+rule@{get\+\_\+rule}!Grammar@{Grammar}}
 \subsubsection{\texorpdfstring{get\+\_\+rule()}{get\_rule()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
 {\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-virtual \hyperlink{class_rule}{Rule}$\ast$ \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::get\+\_\+rule (\begin{DoxyParamCaption}\item[{const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t}}]{nt,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+virtual \hyperlink{class_rule}{Rule}$\ast$ \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::get\+\_\+rule (\begin{DoxyParamCaption}\item[{const \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}]{nt,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
 Get the k\textquotesingle{}th rule of type nt 
 \begin{DoxyParams}{Parameters}
@@ -460,7 +420,7 @@ Get the k\textquotesingle{}th rule of type nt
 \index{get\+\_\+rule@{get\+\_\+rule}!Grammar@{Grammar}}
 \subsubsection{\texorpdfstring{get\+\_\+rule()}{get\_rule()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
 {\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-virtual \hyperlink{class_rule}{Rule}$\ast$ \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::get\+\_\+rule (\begin{DoxyParamCaption}\item[{const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t}}]{nt,  }\item[{const \hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}{Builtin\+Op}}]{o,  }\item[{const int}]{a = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+virtual \hyperlink{class_rule}{Rule}$\ast$ \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::get\+\_\+rule (\begin{DoxyParamCaption}\item[{const \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}]{nt,  }\item[{const \hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}{Builtin\+Op}}]{o,  }\item[{const int}]{a = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
 Get rule of type nt with a given Builtin\+Op and argument a 
 \begin{DoxyParams}{Parameters}
@@ -479,9 +439,9 @@ Get rule of type nt with a given Builtin\+Op and argument a
 \index{get\+\_\+rule@{get\+\_\+rule}!Grammar@{Grammar}}
 \subsubsection{\texorpdfstring{get\+\_\+rule()}{get\_rule()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
 {\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-virtual \hyperlink{class_rule}{Rule}$\ast$ \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::get\+\_\+rule (\begin{DoxyParamCaption}\item[{const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t}}]{nt,  }\item[{const std\+::string}]{s }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+virtual \hyperlink{class_rule}{Rule}$\ast$ \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::get\+\_\+rule (\begin{DoxyParamCaption}\item[{const \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}]{nt,  }\item[{const std\+::string}]{s }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-Return a rule based on s, which must uniquely be a prefix of the rule\textquotesingle{}s format of a given nonterminal type 
+Return a rule based on s, which must uniquely be a prefix of the rule\textquotesingle{}s format of a given nonterminal type. If s is the empty string, however, it must match exactly. 
 \begin{DoxyParams}{Parameters}
 {\em s} & \\
 \hline
@@ -496,7 +456,7 @@ Return a rule based on s, which must uniquely be a prefix of the rule\textquotes
 {\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
 virtual \hyperlink{class_rule}{Rule}$\ast$ \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::get\+\_\+rule (\begin{DoxyParamCaption}\item[{const std\+::string}]{s }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-Return a rule based on s, which must uniquely be a prefix of the rule\textquotesingle{}s format 
+Return a rule based on s, which must uniquely be a prefix of the rule\textquotesingle{}s format. If s is the empty string, however, it must match exactly. 
 \begin{DoxyParams}{Parameters}
 {\em s} & \\
 \hline
@@ -511,20 +471,6 @@ Return a rule based on s, which must uniquely be a prefix of the rule\textquotes
 {\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
 template$<$typename X $>$ \\
 static constexpr bool \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::is\+\_\+in\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
-
-\mbox{\Hypertarget{class_grammar_adea898b27f2cf76417e4b686c1045e54}\label{class_grammar_adea898b27f2cf76417e4b686c1045e54}} 
-\index{Grammar@{Grammar}!lempel\+\_\+ziv\+\_\+full\+\_\+expand@{lempel\+\_\+ziv\+\_\+full\+\_\+expand}}
-\index{lempel\+\_\+ziv\+\_\+full\+\_\+expand@{lempel\+\_\+ziv\+\_\+full\+\_\+expand}!Grammar@{Grammar}}
-\subsubsection{\texorpdfstring{lempel\+\_\+ziv\+\_\+full\+\_\+expand()}{lempel\_ziv\_full\_expand()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-\hyperlink{class_node}{Node} \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::lempel\+\_\+ziv\+\_\+full\+\_\+expand (\begin{DoxyParamCaption}\item[{\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t}}]{nt,  }\item[{\hyperlink{_numerics_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{z,  }\item[{\hyperlink{class_node}{Node} $\ast$}]{root = {\ttfamily nullptr} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
-
-\mbox{\Hypertarget{class_grammar_a37ccd1307ac9cb13a9653ba6c2134498}\label{class_grammar_a37ccd1307ac9cb13a9653ba6c2134498}} 
-\index{Grammar@{Grammar}!lempel\+\_\+ziv\+\_\+full\+\_\+expand@{lempel\+\_\+ziv\+\_\+full\+\_\+expand}}
-\index{lempel\+\_\+ziv\+\_\+full\+\_\+expand@{lempel\+\_\+ziv\+\_\+full\+\_\+expand}!Grammar@{Grammar}}
-\subsubsection{\texorpdfstring{lempel\+\_\+ziv\+\_\+full\+\_\+expand()}{lempel\_ziv\_full\_expand()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-\hyperlink{class_node}{Node} \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::lempel\+\_\+ziv\+\_\+full\+\_\+expand (\begin{DoxyParamCaption}\item[{\hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t}}]{nt,  }\item[{\hyperlink{class_integerized_stack}{Integerized\+Stack} \&}]{is,  }\item[{\hyperlink{class_node}{Node} $\ast$}]{root = {\ttfamily nullptr} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_grammar_a4b19c0b8d0b4d792181ae47bd2f68268}\label{class_grammar_a4b19c0b8d0b4d792181ae47bd2f68268}} 
 \index{Grammar@{Grammar}!log\+\_\+probability@{log\+\_\+probability}}
@@ -576,14 +522,14 @@ size\+\_\+t \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+
 \subsubsection{\texorpdfstring{nt()}{nt()}}
 {\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
 template$<$class T $>$ \\
-constexpr \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t} \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::nt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+constexpr \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t} \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::nt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 template function giving the index of its template argument (index in G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES). N\+O\+TE\+: The names here are decayed (meaning that references and base types are the same.\mbox{\Hypertarget{class_grammar_a240019987945a694e26bebcebcf463fc}\label{class_grammar_a240019987945a694e26bebcebcf463fc}} 
 \index{Grammar@{Grammar}!rule\+\_\+normalizer@{rule\+\_\+normalizer}}
 \index{rule\+\_\+normalizer@{rule\+\_\+normalizer}!Grammar@{Grammar}}
 \subsubsection{\texorpdfstring{rule\+\_\+normalizer()}{rule\_normalizer()}}
 {\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-double \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::rule\+\_\+normalizer (\begin{DoxyParamCaption}\item[{const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t}}]{nt }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+double \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::rule\+\_\+normalizer (\begin{DoxyParamCaption}\item[{const \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}]{nt }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 Return the normalizing constant (N\+OT log) for all rules of type nt 
 \begin{DoxyParams}{Parameters}
@@ -598,7 +544,7 @@ Return the normalizing constant (N\+OT log) for all rules of type nt
 \index{sample\+\_\+rule@{sample\+\_\+rule}!Grammar@{Grammar}}
 \subsubsection{\texorpdfstring{sample\+\_\+rule()}{sample\_rule()}}
 {\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-virtual \hyperlink{class_rule}{Rule}$\ast$ \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::sample\+\_\+rule (\begin{DoxyParamCaption}\item[{const \hyperlink{_nonterminal_8h_a5c1f658dc7560600a16d22408bd716ca}{nonterminal\+\_\+t}}]{nt }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+virtual \hyperlink{class_rule}{Rule}$\ast$ \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::sample\+\_\+rule (\begin{DoxyParamCaption}\item[{const \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}]{nt }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
 Randomly sample a rule of type nt. 
 \begin{DoxyParams}{Parameters}
@@ -615,6 +561,15 @@ Randomly sample a rule of type nt.
 {\footnotesize\ttfamily template$<$typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
 void \hyperlink{class_grammar}{Grammar}$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::show (\begin{DoxyParamCaption}\item[{std\+::string}]{prefix = {\ttfamily \char`\"{}\#~\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
+
+
+For a given nt, returns the number of finite trees that nt can expand to if its finite; 0 if its infinite. $\ast$. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nt} & -\/ the type of this nonterminal \\
+\hline
+\end{DoxyParams}
 Show the grammar by printing each rule
 
 \subsection{Member Data Documentation}

@@ -1,8 +1,8 @@
 <map id="src/Inference/Astar.h" name="src/Inference/Astar.h">
-<area shape="rect" id="node2" href="$_i_o_8h.html" title="IO.h" alt="" coords="262,229,309,256"/>
-<area shape="rect" id="node6" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="328,155,403,181"/>
-<area shape="rect" id="node15" href="$_fleet_statistics_8h.html" title="FleetStatistics.h" alt="" coords="560,80,677,107"/>
-<area shape="rect" id="node17" href="$_parallel_inference_interface_8h.html" title="ParallelInferenceInterface.h" alt="" coords="72,80,253,107"/>
-<area shape="rect" id="node8" href="$_timing_8h.html" title="Timing.h" alt="" coords="333,229,405,256"/>
-<area shape="rect" id="node10" href="$_errors_8h.html" title="Errors.h" alt="" coords="358,304,426,331"/>
+<area shape="rect" id="node2" href="$_i_o_8h.html" title="IO.h" alt="" coords="149,229,195,256"/>
+<area shape="rect" id="node6" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="279,155,353,181"/>
+<area shape="rect" id="node15" href="$_fleet_statistics_8h.html" title="FleetStatistics.h" alt="" coords="353,80,471,107"/>
+<area shape="rect" id="node17" href="$_parallel_inference_interface_8h.html" title="ParallelInferenceInterface.h" alt="" coords="97,80,279,107"/>
+<area shape="rect" id="node8" href="$_timing_8h.html" title="Timing.h" alt="" coords="352,229,424,256"/>
+<area shape="rect" id="node10" href="$_errors_8h.html" title="Errors.h" alt="" coords="443,304,511,331"/>
 </map>

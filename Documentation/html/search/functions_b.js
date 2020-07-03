@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['lazynormalforms',['LazyNormalForms',['../class_fleet_1_1_combinators_1_1_lazy_normal_forms.html#ab927e6ae4c5e0669c56e91ccc315e12f',1,'Fleet::Combinators::LazyNormalForms']]],
-  ['left_5fdescend',['left_descend',['../class_node.html#ac6d1a1d71a28168b34e9092568570738',1,'Node']]],
-  ['lempel_5fziv_5ffull_5fexpand',['lempel_ziv_full_expand',['../class_grammar.html#adea898b27f2cf76417e4b686c1045e54',1,'Grammar::lempel_ziv_full_expand(nonterminal_t nt, enumerationidx_t z, Node *root=nullptr) const'],['../class_grammar.html#a37ccd1307ac9cb13a9653ba6c2134498',1,'Grammar::lempel_ziv_full_expand(nonterminal_t nt, IntegerizedStack &amp;is, Node *root=nullptr) const']]],
+  ['lazynormalforms',['LazyNormalForms',['../class_combinators_1_1_lazy_normal_forms.html#ab3e10fd3a3d3611aaffbd11e6e6dd6f0',1,'Combinators::LazyNormalForms']]],
+  ['left_5fdescend',['left_descend',['../class_base_node.html#ad319f28caf14e730bc62560f1bd682b6',1,'BaseNode']]],
   ['levenshtein_5fdistance',['levenshtein_distance',['../_strings_8h.html#a51fc480ff96576142fbe0c1a5fc9114b',1,'Strings.h']]],
   ['lexicon',['Lexicon',['../class_lexicon.html#a06bafc4711d145a026fe03e9e1168ae8',1,'Lexicon::Lexicon(size_t n)'],['../class_lexicon.html#ab027c90715b8616af424c6682cdfef0f',1,'Lexicon::Lexicon()']]],
   ['linearize',['linearize',['../class_node.html#a54676f34db2c299693c9b55148589230',1,'Node']]],

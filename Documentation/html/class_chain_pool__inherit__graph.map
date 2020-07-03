@@ -1,3 +1,5 @@
 <map id="ChainPool&lt; HYP, callback_t &gt;" name="ChainPool&lt; HYP, callback_t &gt;">
-<area shape="rect" id="node2" href="$class_parallel_tempering.html" title="ParallelTempering\&lt;\l HYP, callback_t \&gt;" alt="" coords="39,80,173,121"/>
+<area shape="rect" id="node3" href="$class_data_tempering.html" title="DataTempering\&lt; HYP,\l callback_t \&gt;" alt="" coords="5,155,160,196"/>
+<area shape="rect" id="node4" href="$class_parallel_tempering.html" title="ParallelTempering\&lt;\l HYP, callback_t \&gt;" alt="" coords="185,155,319,196"/>
+<area shape="rect" id="node2" href="$class_parallel_inference_interface.html" title="ParallelInferenceInterface\&lt;\&gt;" alt="" coords="73,5,260,32"/>
 </map>

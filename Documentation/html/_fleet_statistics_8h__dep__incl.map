@@ -1,17 +1,20 @@
 <map id="src/Statistics/FleetStatistics.h" name="src/Statistics/FleetStatistics.h">
-<area shape="rect" id="node2" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="249,80,425,121"/>
-<area shape="rect" id="node13" href="$_astar_8h.html" title="This is an implementation of kinda&#45;A* search that maintains a priority queue of partial states and at..." alt="" coords="935,259,1079,285"/>
-<area shape="rect" id="node14" href="$_virtual_machine_state_8h.html" title="Count references in lambda arguments (used to ensure we only passs one) " alt="" coords="443,169,597,211"/>
-<area shape="rect" id="node3" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="192,169,368,211"/>
-<area shape="rect" id="node4" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="51,259,226,285"/>
-<area shape="rect" id="node7" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="362,259,582,285"/>
-<area shape="rect" id="node5" href="$_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="181,423,355,464"/>
-<area shape="rect" id="node6" href="$_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="26,333,230,375"/>
-<area shape="rect" id="node8" href="$_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="905,333,1109,375"/>
-<area shape="rect" id="node9" href="$_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="1133,333,1288,375"/>
-<area shape="rect" id="node10" href="$_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="674,341,881,367"/>
-<area shape="rect" id="node11" href="$_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="306,333,457,375"/>
-<area shape="rect" id="node12" href="$_testing_2_main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="481,341,649,367"/>
-<area shape="rect" id="node15" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="615,259,782,285"/>
-<area shape="rect" id="node16" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="1313,341,1442,367"/>
+<area shape="rect" id="node2" href="$_enumeration_8h.html" title="An IntegerizedStack is just a wrapper around unsigned longs that allow them to behave like a of integ..." alt="" coords="172,177,359,203"/>
+<area shape="rect" id="node8" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="856,80,1032,121"/>
+<area shape="rect" id="node17" href="$_astar_8h.html" title="This is an implementation of kinda&#45;A* search that maintains a priority queue of partial states and at..." alt="" coords="412,266,556,293"/>
+<area shape="rect" id="node18" href="$_virtual_machine_state_8h.html" title="Count references in lambda arguments (used to ensure we only passs one) " alt="" coords="637,169,792,211"/>
+<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="26,355,155,382"/>
+<area shape="rect" id="node5" href="$_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar. It supports multithreading and requires a hypothesis, grammar, start type, and callback. " alt="" coords="178,259,353,300"/>
+<area shape="rect" id="node4" href="$_models_2_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="1103,437,1276,479"/>
+<area shape="rect" id="node6" href="$_models_2_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="179,348,383,389"/>
+<area shape="rect" id="node7" href="$_testing_2_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="73,445,196,471"/>
+<area shape="rect" id="node9" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="919,169,1095,211"/>
+<area shape="rect" id="node10" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="1199,266,1374,293"/>
+<area shape="rect" id="node12" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="771,266,991,293"/>
+<area shape="rect" id="node11" href="$_models_2_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="1227,348,1431,389"/>
+<area shape="rect" id="node13" href="$_models_2_first_order_logic_2_main_8cpp.html" title="Models/FirstOrderLogic\l/Main.cpp" alt="" coords="763,348,920,389"/>
+<area shape="rect" id="node14" href="$_models_2_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="408,348,563,389"/>
+<area shape="rect" id="node15" href="$_models_2_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="945,355,1151,382"/>
+<area shape="rect" id="node16" href="$_models_2_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="587,348,738,389"/>
+<area shape="rect" id="node19" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="581,266,747,293"/>
 </map>

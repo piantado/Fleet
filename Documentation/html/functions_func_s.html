@@ -78,19 +78,12 @@ $(function() {
 <li>sample_rule()
 : <a class="el" href="class_grammar.html#aba4d092714b8420d8c0a1be63e8566b6">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
-<li>score()
-: <a class="el" href="class_m_c_t_s_node.html#a1a051c22b8821704a10bf33dbd426c4d">MCTSNode&lt; M, HYP &gt;</a>
-</li>
-<li>search()
-: <a class="el" href="class_full_m_c_t_s_node.html#a99fd09625120aa0761f113bd44e5afff">FullMCTSNode&lt; HYP, callback_t &gt;</a>
-, <a class="el" href="class_m_c_t_s_node.html#a0cf85ac07dd2a3f21fea0737834b8cf1">MCTSNode&lt; M, HYP &gt;</a>
-</li>
 <li>search_one()
-: <a class="el" href="class_full_m_c_t_s_node.html#a822ebc234b6c508c7c4cc255f205f8f9">FullMCTSNode&lt; HYP, callback_t &gt;</a>
-, <a class="el" href="class_m_c_t_s_node.html#ad0766d2829bb1cb252dd6aac51ac0d95">MCTSNode&lt; M, HYP &gt;</a>
+: <a class="el" href="class_full_m_c_t_s_node.html#a6996a784f6674edc7ac24fbc2b94d87a">FullMCTSNode&lt; this_t, HYP, callback_t &gt;</a>
 </li>
 <li>set_child()
-: <a class="el" href="class_node.html#afff50c3712b8e30fffd479cad4eee023">Node</a>
+: <a class="el" href="class_base_node.html#a575b94703d0c67ba8c04b6a725b48b56">BaseNode&lt; this_t &gt;</a>
+, <a class="el" href="class_node.html#afff50c3712b8e30fffd479cad4eee023">Node</a>
 </li>
 <li>set_print_best()
 : <a class="el" href="class_top_n.html#a378be54915dab8603b8408ee72310bb7">TopN&lt; T &gt;</a>
@@ -109,18 +102,17 @@ $(function() {
 : <a class="el" href="class_grammar.html#a8d661258f08b7cc4d154d59bfbbc1f68">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>show_statistics()
-: <a class="el" href="class_parallel_tempering.html#a9e1960158b12a4dadfab54eb4fb895d3">ParallelTempering&lt; HYP, callback_t &gt;</a>
+: <a class="el" href="class_data_tempering.html#a01d9f1eb405ed44f8151bd79afd2d0cc">DataTempering&lt; HYP, callback_t &gt;</a>
+, <a class="el" href="class_parallel_tempering.html#a9e1960158b12a4dadfab54eb4fb895d3">ParallelTempering&lt; HYP, callback_t &gt;</a>
 </li>
 <li>size()
 : <a class="el" href="class_discrete_distribution.html#ad74207d32c2ed6c5c26b3f991f4fedba">DiscreteDistribution&lt; T &gt;</a>
 , <a class="el" href="class_fleet_1_1_statistics_1_1_reservoir_sample.html#abdfad455c8b8da8cb2ab30d0f60053e0">Fleet::Statistics::ReservoirSample&lt; T &gt;</a>
-, <a class="el" href="class_full_m_c_t_s_node.html#a57b4b69d2c9dd20ae5bfdee83aec783a">FullMCTSNode&lt; HYP, callback_t &gt;</a>
-, <a class="el" href="class_m_c_t_s_node.html#a7996e64e69b1fc705c4e21b4a6e41c39">MCTSNode&lt; M, HYP &gt;</a>
 , <a class="el" href="class_reservoir_sample.html#a53a41ec89cedfec21c7924aa98347659">ReservoirSample&lt; T &gt;</a>
 , <a class="el" href="class_top_n.html#ae32d3e10d1571af34f84f32f5ca78fff">TopN&lt; T &gt;</a>
 </li>
 <li>SKGrammar()
-: <a class="el" href="class_fleet_1_1_combinators_1_1_s_k_grammar.html#a92f0ff506d59ba4f0f5c200ec3da4c3b">Fleet::Combinators::SKGrammar</a>
+: <a class="el" href="class_combinators_1_1_s_k_grammar.html#a6bdc75326a1d81758bb23036de2819f0">Combinators::SKGrammar</a>
 </li>
 <li>sorted()
 : <a class="el" href="class_discrete_distribution.html#a94488cfd094f6cde47f15a1f4c7cdbb9">DiscreteDistribution&lt; T &gt;</a>
@@ -129,7 +121,7 @@ $(function() {
 : <a class="el" href="class_stack.html#aefee698059467258bbd79045aca62a63">Stack&lt; T &gt;</a>
 </li>
 <li>stack()
-: <a class="el" href="class_virtual_machine_state.html#adc77f615f164e83ee4a25f06b3a5b64d">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#a580428f53e64cde8aef3c0a6a79838ec">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>stacks_empty()
 : <a class="el" href="class_virtual_machine_state.html#a08cc1e3bf25e9bf58f798102e364856a">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
@@ -138,19 +130,20 @@ $(function() {
 : <a class="el" href="struct_control.html#a933994a3524f2f6d7ef0a17086e7cf66">Control</a>
 </li>
 <li>StreamingStatistics()
-: <a class="el" href="class_streaming_statistics.html#a2ee20794cfeed51064973dd896b8301d">StreamingStatistics</a>
+: <a class="el" href="class_streaming_statistics.html#a92bd26dffa8b7569afc01c4a6ebe4e87">StreamingStatistics</a>
 </li>
 <li>string()
-: <a class="el" href="class_bayesable.html#afcea9b439bcf321d5354710d8861cb54">Bayesable&lt; _datum_t, _data_t &gt;</a>
+: <a class="el" href="class_base_node.html#ac26bf9f89abeaca8d43b73f2d8d1d9cf">BaseNode&lt; this_t &gt;</a>
+, <a class="el" href="class_bayesable.html#afcea9b439bcf321d5354710d8861cb54">Bayesable&lt; _datum_t, _data_t &gt;</a>
 , <a class="el" href="class_discrete_distribution.html#a87d866919f4698e488aee9ce4bc42ed5">DiscreteDistribution&lt; T &gt;</a>
 , <a class="el" href="class_grammar_hypothesis.html#a55ee98de75a30cea35fdaf62ccf14a90">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
 , <a class="el" href="class_lexicon.html#a5c584d2885a21542082332a26eb0961b">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#acda322aef217a0d358ae6cea19969904">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
-, <a class="el" href="class_node.html#a0590ae269543416be9c4ebdf70bad73b">Node</a>
+, <a class="el" href="class_node.html#a2c58ff9b0904718f568ac71f499cd17f">Node</a>
 , <a class="el" href="class_rule.html#a7f16256eabd7bd8b94fbcf857bf1e45b">Rule</a>
 </li>
 <li>sum()
-: <a class="el" href="class_node.html#a089e99addd93f91b2ef5a9d0c3e6bdeb">Node</a>
+: <a class="el" href="class_node.html#ac91282056a0df2835f1579bdd21c93e1">Node</a>
 </li>
 </ul>
 </div><!-- contents -->

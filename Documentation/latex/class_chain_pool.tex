@@ -6,11 +6,22 @@
 
 
 
-Inheritance diagram for Chain\+Pool$<$ H\+YP, callback\+\_\+t $>$\+:\nopagebreak
+Inheritance diagram for Chain\+Pool$<$ H\+YP, callback\+\_\+t $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=231pt]{class_chain_pool__inherit__graph}
+\includegraphics[width=316pt]{class_chain_pool__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Chain\+Pool$<$ H\+YP, callback\+\_\+t $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=231pt]{class_chain_pool__coll__graph}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
@@ -20,26 +31,19 @@ Inheritance diagram for Chain\+Pool$<$ H\+YP, callback\+\_\+t $>$\+:\nopagebreak
 \item 
 \hyperlink{class_chain_pool_a7794efde5588ecbf3603170d6226cd6f}{Chain\+Pool} (H\+YP \&h0, typename H\+Y\+P\+::data\+\_\+t $\ast$d, callback\+\_\+t \&cb, size\+\_\+t n, bool allcallback=true)
 \item 
-virtual void \hyperlink{class_chain_pool_af5f0e391f9794ff89f29296c8b41bf8e}{run} (\hyperlink{struct_control}{Control} ctl)
-\end{DoxyCompactItemize}
-\subsection*{Static Public Member Functions}
-\begin{DoxyCompactItemize}
-\item 
-static void \hyperlink{class_chain_pool_a7df513bcd7b99c2fa99a9cfdd238817b}{\+\_\+\+\_\+run\+\_\+helper} (std\+::vector$<$ \hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\+t $>$$>$ $\ast$\hyperlink{class_chain_pool_af89400f6e9a2312fe2ee7873745a6e91}{pool}, std\+::vector$<$ bool $>$ $\ast$running, std\+::mutex $\ast$\hyperlink{class_chain_pool_a6efe006156a22132b452d50dab9f76c0}{running\+\_\+mutex}, \hyperlink{struct_control}{Control} ctl)
-\end{DoxyCompactItemize}
+void \hyperlink{class_chain_pool_a6bbed8ddd9a46f5821bfcb1d10f9ac9b}{run\+\_\+thread} (\hyperlink{struct_control}{Control} ctl)
+\begin{DoxyCompactList}\small\item\em This run helper is called internally by multiple different threads, and runs a given pool. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 std\+::vector$<$ \hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\+t $>$ $>$ \hyperlink{class_chain_pool_af89400f6e9a2312fe2ee7873745a6e91}{pool}
-\item 
-std\+::mutex \hyperlink{class_chain_pool_a6efe006156a22132b452d50dab9f76c0}{running\+\_\+mutex}
 \end{DoxyCompactItemize}
 \subsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 static const unsigned long \hyperlink{class_chain_pool_a143f3e4f9b60c03c67ffbc2db3e57d53}{steps\+\_\+before\+\_\+change} = 0
 \item 
-static const time\+\_\+ms \hyperlink{class_chain_pool_a1ff48aa1e09a9a31871dec05d3c0e9d3}{time\+\_\+before\+\_\+change} = 250
+static const time\+\_\+ms \hyperlink{class_chain_pool_a1ff48aa1e09a9a31871dec05d3c0e9d3}{time\+\_\+before\+\_\+change} = 200
 \end{DoxyCompactItemize}
 
 
@@ -73,29 +77,22 @@ steven piantadosi
 
 
 \subsection{Member Function Documentation}
-\mbox{\Hypertarget{class_chain_pool_a7df513bcd7b99c2fa99a9cfdd238817b}\label{class_chain_pool_a7df513bcd7b99c2fa99a9cfdd238817b}} 
-\index{Chain\+Pool@{Chain\+Pool}!\+\_\+\+\_\+run\+\_\+helper@{\+\_\+\+\_\+run\+\_\+helper}}
-\index{\+\_\+\+\_\+run\+\_\+helper@{\+\_\+\+\_\+run\+\_\+helper}!Chain\+Pool@{Chain\+Pool}}
-\subsubsection{\texorpdfstring{\+\_\+\+\_\+run\+\_\+helper()}{\_\_run\_helper()}}
+\mbox{\Hypertarget{class_chain_pool_a6bbed8ddd9a46f5821bfcb1d10f9ac9b}\label{class_chain_pool_a6bbed8ddd9a46f5821bfcb1d10f9ac9b}} 
+\index{Chain\+Pool@{Chain\+Pool}!run\+\_\+thread@{run\+\_\+thread}}
+\index{run\+\_\+thread@{run\+\_\+thread}!Chain\+Pool@{Chain\+Pool}}
+\subsubsection{\texorpdfstring{run\+\_\+thread()}{run\_thread()}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-static void \hyperlink{class_chain_pool}{Chain\+Pool}$<$ H\+YP, callback\+\_\+t $>$\+::\+\_\+\+\_\+run\+\_\+helper (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\+t $>$$>$ $\ast$}]{pool,  }\item[{std\+::vector$<$ bool $>$ $\ast$}]{running,  }\item[{std\+::mutex $\ast$}]{running\+\_\+mutex,  }\item[{\hyperlink{struct_control}{Control}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+void \hyperlink{class_chain_pool}{Chain\+Pool}$<$ H\+YP, callback\+\_\+t $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\hyperlink{struct_control}{Control}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
 
 This run helper is called internally by multiple different threads, and runs a given pool. 
+
+
 \begin{DoxyParams}{Parameters}
 {\em ctl} & \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{class_chain_pool_af5f0e391f9794ff89f29296c8b41bf8e}\label{class_chain_pool_af5f0e391f9794ff89f29296c8b41bf8e}} 
-\index{Chain\+Pool@{Chain\+Pool}!run@{run}}
-\index{run@{run}!Chain\+Pool@{Chain\+Pool}}
-\subsubsection{\texorpdfstring{run()}{run()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-virtual void \hyperlink{class_chain_pool}{Chain\+Pool}$<$ H\+YP, callback\+\_\+t $>$\+::run (\begin{DoxyParamCaption}\item[{\hyperlink{struct_control}{Control}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
-
-
-
-Reimplemented in \hyperlink{class_parallel_tempering_a6824837893cf52eb1cac362e78e483b9}{Parallel\+Tempering$<$ H\+Y\+P, callback\+\_\+t $>$}.
-
 
 
 \subsection{Member Data Documentation}
@@ -105,13 +102,6 @@ Reimplemented in \hyperlink{class_parallel_tempering_a6824837893cf52eb1cac362e78
 \subsubsection{\texorpdfstring{pool}{pool}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
 std\+::vector$<$\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$H\+YP,callback\+\_\+t$>$ $>$ \hyperlink{class_chain_pool}{Chain\+Pool}$<$ H\+YP, callback\+\_\+t $>$\+::pool}
-
-\mbox{\Hypertarget{class_chain_pool_a6efe006156a22132b452d50dab9f76c0}\label{class_chain_pool_a6efe006156a22132b452d50dab9f76c0}} 
-\index{Chain\+Pool@{Chain\+Pool}!running\+\_\+mutex@{running\+\_\+mutex}}
-\index{running\+\_\+mutex@{running\+\_\+mutex}!Chain\+Pool@{Chain\+Pool}}
-\subsubsection{\texorpdfstring{running\+\_\+mutex}{running\_mutex}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-std\+::mutex \hyperlink{class_chain_pool}{Chain\+Pool}$<$ H\+YP, callback\+\_\+t $>$\+::running\+\_\+mutex}
 
 \mbox{\Hypertarget{class_chain_pool_a143f3e4f9b60c03c67ffbc2db3e57d53}\label{class_chain_pool_a143f3e4f9b60c03c67ffbc2db3e57d53}} 
 \index{Chain\+Pool@{Chain\+Pool}!steps\+\_\+before\+\_\+change@{steps\+\_\+before\+\_\+change}}
@@ -125,7 +115,7 @@ const unsigned long \hyperlink{class_chain_pool}{Chain\+Pool}$<$ H\+YP, callback
 \index{time\+\_\+before\+\_\+change@{time\+\_\+before\+\_\+change}!Chain\+Pool@{Chain\+Pool}}
 \subsubsection{\texorpdfstring{time\+\_\+before\+\_\+change}{time\_before\_change}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-const time\+\_\+ms \hyperlink{class_chain_pool}{Chain\+Pool}$<$ H\+YP, callback\+\_\+t $>$\+::time\+\_\+before\+\_\+change = 250\hspace{0.3cm}{\ttfamily [static]}}
+const time\+\_\+ms \hyperlink{class_chain_pool}{Chain\+Pool}$<$ H\+YP, callback\+\_\+t $>$\+::time\+\_\+before\+\_\+change = 200\hspace{0.3cm}{\ttfamily [static]}}
 
 
 

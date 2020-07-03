@@ -27,11 +27,35 @@ void \hyperlink{class_integerized_stack_ac2ec311399b327573a2c0f19d2a902a4}{opera
 \item 
 void \hyperlink{class_integerized_stack_a70df05b936e94c717584290d0c457cca}{operator+=} (value\+\_\+t x)
 \end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::pair$<$ \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}, \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} $>$ \hyperlink{class_integerized_stack_a63e9924cf38b166a112156669a141303}{rosenberg\+\_\+strong\+\_\+decode} (const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} z)
+\item 
+static \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \hyperlink{class_integerized_stack_a0e6ea0eed67030152c5808b9789dd625}{rosenberg\+\_\+strong\+\_\+encode} (const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} x, const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} y)
+\item 
+static std\+::pair$<$ \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}, \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} $>$ \hyperlink{class_integerized_stack_ab7c9b3bf6eb870bd7d74c624b3779cec}{mod\+\_\+decode} (const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} z, const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} k)
+\item 
+static \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \hyperlink{class_integerized_stack_add34247b848e6601cbd55cccde98232a}{mod\+\_\+encode} (const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} x, const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} y, const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} k)
+\item 
+static \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \hyperlink{class_integerized_stack_afd7b3e942bcde5b794ec06cbbb6593c7}{rosenberg\+\_\+strong\+\_\+pop} (\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \&z)
+\item 
+static \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \hyperlink{class_integerized_stack_a07669571cd083803edb5a863c3c5419e}{mod\+\_\+pop} (\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \&z, const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} k)
+\end{DoxyCompactItemize}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
 value\+\_\+t \hyperlink{class_integerized_stack_afcfb2d32d51c88b556f3bb7ff2544be5}{value}
 \end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+09/06/20 
+\end{DoxyDate}
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -55,6 +79,24 @@ value\+\_\+t \hyperlink{class_integerized_stack_afcfb2d32d51c88b556f3bb7ff2544be
 \index{get\+\_\+value@{get\+\_\+value}!Integerized\+Stack@{Integerized\+Stack}}
 \subsubsection{\texorpdfstring{get\+\_\+value()}{get\_value()}}
 {\footnotesize\ttfamily value\+\_\+t Integerized\+Stack\+::get\+\_\+value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_integerized_stack_ab7c9b3bf6eb870bd7d74c624b3779cec}\label{class_integerized_stack_ab7c9b3bf6eb870bd7d74c624b3779cec}} 
+\index{Integerized\+Stack@{Integerized\+Stack}!mod\+\_\+decode@{mod\+\_\+decode}}
+\index{mod\+\_\+decode@{mod\+\_\+decode}!Integerized\+Stack@{Integerized\+Stack}}
+\subsubsection{\texorpdfstring{mod\+\_\+decode()}{mod\_decode()}}
+{\footnotesize\ttfamily static std\+::pair$<$\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t},\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}$>$ Integerized\+Stack\+::mod\+\_\+decode (\begin{DoxyParamCaption}\item[{const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{z,  }\item[{const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_integerized_stack_add34247b848e6601cbd55cccde98232a}\label{class_integerized_stack_add34247b848e6601cbd55cccde98232a}} 
+\index{Integerized\+Stack@{Integerized\+Stack}!mod\+\_\+encode@{mod\+\_\+encode}}
+\index{mod\+\_\+encode@{mod\+\_\+encode}!Integerized\+Stack@{Integerized\+Stack}}
+\subsubsection{\texorpdfstring{mod\+\_\+encode()}{mod\_encode()}}
+{\footnotesize\ttfamily static \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} Integerized\+Stack\+::mod\+\_\+encode (\begin{DoxyParamCaption}\item[{const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{x,  }\item[{const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{y,  }\item[{const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_integerized_stack_a07669571cd083803edb5a863c3c5419e}\label{class_integerized_stack_a07669571cd083803edb5a863c3c5419e}} 
+\index{Integerized\+Stack@{Integerized\+Stack}!mod\+\_\+pop@{mod\+\_\+pop}}
+\index{mod\+\_\+pop@{mod\+\_\+pop}!Integerized\+Stack@{Integerized\+Stack}}
+\subsubsection{\texorpdfstring{mod\+\_\+pop()}{mod\_pop()}}
+{\footnotesize\ttfamily static \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} Integerized\+Stack\+::mod\+\_\+pop (\begin{DoxyParamCaption}\item[{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \&}]{z,  }\item[{const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
 \mbox{\Hypertarget{class_integerized_stack_a70df05b936e94c717584290d0c457cca}\label{class_integerized_stack_a70df05b936e94c717584290d0c457cca}} 
 \index{Integerized\+Stack@{Integerized\+Stack}!operator+=@{operator+=}}
@@ -98,6 +140,24 @@ value\+\_\+t \hyperlink{class_integerized_stack_afcfb2d32d51c88b556f3bb7ff2544be
 \subsubsection{\texorpdfstring{push()}{push()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily void Integerized\+Stack\+::push (\begin{DoxyParamCaption}\item[{value\+\_\+t}]{x,  }\item[{value\+\_\+t}]{modulus }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
+\mbox{\Hypertarget{class_integerized_stack_a63e9924cf38b166a112156669a141303}\label{class_integerized_stack_a63e9924cf38b166a112156669a141303}} 
+\index{Integerized\+Stack@{Integerized\+Stack}!rosenberg\+\_\+strong\+\_\+decode@{rosenberg\+\_\+strong\+\_\+decode}}
+\index{rosenberg\+\_\+strong\+\_\+decode@{rosenberg\+\_\+strong\+\_\+decode}!Integerized\+Stack@{Integerized\+Stack}}
+\subsubsection{\texorpdfstring{rosenberg\+\_\+strong\+\_\+decode()}{rosenberg\_strong\_decode()}}
+{\footnotesize\ttfamily static std\+::pair$<$\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}, \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}$>$ Integerized\+Stack\+::rosenberg\+\_\+strong\+\_\+decode (\begin{DoxyParamCaption}\item[{const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_integerized_stack_a0e6ea0eed67030152c5808b9789dd625}\label{class_integerized_stack_a0e6ea0eed67030152c5808b9789dd625}} 
+\index{Integerized\+Stack@{Integerized\+Stack}!rosenberg\+\_\+strong\+\_\+encode@{rosenberg\+\_\+strong\+\_\+encode}}
+\index{rosenberg\+\_\+strong\+\_\+encode@{rosenberg\+\_\+strong\+\_\+encode}!Integerized\+Stack@{Integerized\+Stack}}
+\subsubsection{\texorpdfstring{rosenberg\+\_\+strong\+\_\+encode()}{rosenberg\_strong\_encode()}}
+{\footnotesize\ttfamily static \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} Integerized\+Stack\+::rosenberg\+\_\+strong\+\_\+encode (\begin{DoxyParamCaption}\item[{const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{x,  }\item[{const \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_integerized_stack_afd7b3e942bcde5b794ec06cbbb6593c7}\label{class_integerized_stack_afd7b3e942bcde5b794ec06cbbb6593c7}} 
+\index{Integerized\+Stack@{Integerized\+Stack}!rosenberg\+\_\+strong\+\_\+pop@{rosenberg\+\_\+strong\+\_\+pop}}
+\index{rosenberg\+\_\+strong\+\_\+pop@{rosenberg\+\_\+strong\+\_\+pop}!Integerized\+Stack@{Integerized\+Stack}}
+\subsubsection{\texorpdfstring{rosenberg\+\_\+strong\+\_\+pop()}{rosenberg\_strong\_pop()}}
+{\footnotesize\ttfamily static \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} Integerized\+Stack\+::rosenberg\+\_\+strong\+\_\+pop (\begin{DoxyParamCaption}\item[{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \&}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
 
 
 \subsection{Member Data Documentation}
@@ -111,4 +171,4 @@ value\+\_\+t \hyperlink{class_integerized_stack_afcfb2d32d51c88b556f3bb7ff2544be
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/\hyperlink{_integerized_stack_8h}{Integerized\+Stack.\+h}\end{DoxyCompactItemize}
+src/\+Grammar/\hyperlink{_integerized_stack_8h}{Integerized\+Stack.\+h}\end{DoxyCompactItemize}

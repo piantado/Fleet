@@ -1,10 +1,5 @@
 \hypertarget{_m_c_t_s_8h}{}\section{src/\+Inference/\+M\+C\+TS.h File Reference}
 \label{_m_c_t_s_8h}\index{src/\+Inference/\+M\+C\+T\+S.\+h@{src/\+Inference/\+M\+C\+T\+S.\+h}}
-
-
-Template of type hypothesis and callback.  
-
-
 {\ttfamily \#include $<$atomic$>$}\newline
 {\ttfamily \#include $<$mutex$>$}\newline
 {\ttfamily \#include $<$set$>$}\newline
@@ -13,7 +8,11 @@ Template of type hypothesis and callback.
 {\ttfamily \#include $<$fstream$>$}\newline
 {\ttfamily \#include $<$functional$>$}\newline
 {\ttfamily \#include \char`\"{}Streaming\+Statistics.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Parallel\+Inference\+Interface.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Control.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Spin\+Lock.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Random.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Base\+Node.\+h\char`\"{}}\newline
 Include dependency graph for M\+C\+T\+S.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -27,25 +26,27 @@ This graph shows which files directly or indirectly include this file\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=196pt]{_m_c_t_s_8h__dep__incl}
+\includegraphics[width=350pt]{_m_c_t_s_8h__dep__incl}
 \end{center}
 \end{figure}
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{class_m_c_t_s_node}{M\+C\+T\+S\+Node$<$ M, H\+Y\+P $>$}
+class \hyperlink{class_full_m_c_t_s_node}{Full\+M\+C\+T\+S\+Node$<$ this\+\_\+t, H\+Y\+P, callback\+\_\+t $>$}
+\item 
+class \hyperlink{class_partial_m_c_t_s_node}{Partial\+M\+C\+T\+S\+Node$<$ this\+\_\+t, H\+Y\+P, callback\+\_\+t $>$}
 \end{DoxyCompactItemize}
 \subsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
 \#define \hyperlink{_m_c_t_s_8h_a857233142bc725dbd1873d8e31add283}{D\+E\+B\+U\+G\+\_\+\+M\+C\+TS}~0
 \end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{_m_c_t_s_8h_a561c6966fb4883979872cb97465409b8}{explore}
+\end{DoxyCompactItemize}
 
-
-\subsection{Detailed Description}
-Template of type hypothesis and callback. 
-
-Template of self type M, hypothesis type H\+YP. This requires us to inherit and override playout to do whatever we want.
 
 \subsection{Macro Definition Documentation}
 \mbox{\Hypertarget{_m_c_t_s_8h_a857233142bc725dbd1873d8e31add283}\label{_m_c_t_s_8h_a857233142bc725dbd1873d8e31add283}} 
@@ -53,4 +54,13 @@ Template of self type M, hypothesis type H\+YP. This requires us to inherit and 
 \index{D\+E\+B\+U\+G\+\_\+\+M\+C\+TS@{D\+E\+B\+U\+G\+\_\+\+M\+C\+TS}!M\+C\+T\+S.\+h@{M\+C\+T\+S.\+h}}
 \subsubsection{\texorpdfstring{D\+E\+B\+U\+G\+\_\+\+M\+C\+TS}{DEBUG\_MCTS}}
 {\footnotesize\ttfamily \#define D\+E\+B\+U\+G\+\_\+\+M\+C\+TS~0}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{_m_c_t_s_8h_a561c6966fb4883979872cb97465409b8}\label{_m_c_t_s_8h_a561c6966fb4883979872cb97465409b8}} 
+\index{M\+C\+T\+S.\+h@{M\+C\+T\+S.\+h}!explore@{explore}}
+\index{explore@{explore}!M\+C\+T\+S.\+h@{M\+C\+T\+S.\+h}}
+\subsubsection{\texorpdfstring{explore}{explore}}
+{\footnotesize\ttfamily double explore}
 

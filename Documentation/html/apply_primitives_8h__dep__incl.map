@@ -1,10 +1,11 @@
 <map id="src/VirtualMachine/applyPrimitives.h" name="src/VirtualMachine/applyPrimitives.h">
-<area shape="rect" id="node2" href="$_fleet_8h.html" title="A fleet object manages processing the command line, prints a useful summary of command lines..." alt="" coords="695,95,779,121"/>
-<area shape="rect" id="node3" href="$_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="5,169,179,211"/>
-<area shape="rect" id="node4" href="$_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="203,169,407,211"/>
-<area shape="rect" id="node5" href="$_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="431,169,635,211"/>
-<area shape="rect" id="node6" href="$_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="660,169,815,211"/>
-<area shape="rect" id="node7" href="$_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="839,177,1046,203"/>
-<area shape="rect" id="node8" href="$_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1070,169,1221,211"/>
-<area shape="rect" id="node9" href="$_testing_2_main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="1245,177,1413,203"/>
+<area shape="rect" id="node2" href="$_fleet_8h.html" title="A fleet object manages processing the command line, prints a useful summary of command lines..." alt="" coords="742,95,826,121"/>
+<area shape="rect" id="node3" href="$_models_2_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="5,169,179,211"/>
+<area shape="rect" id="node4" href="$_models_2_first_order_logic_2_main_8cpp.html" title="Models/FirstOrderLogic\l/Main.cpp" alt="" coords="203,169,360,211"/>
+<area shape="rect" id="node5" href="$_models_2_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="385,169,589,211"/>
+<area shape="rect" id="node6" href="$_models_2_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="613,169,817,211"/>
+<area shape="rect" id="node7" href="$_testing_2_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="723,259,845,285"/>
+<area shape="rect" id="node8" href="$_models_2_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="892,169,1047,211"/>
+<area shape="rect" id="node9" href="$_models_2_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="1071,177,1278,203"/>
+<area shape="rect" id="node10" href="$_models_2_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1302,169,1453,211"/>
 </map>

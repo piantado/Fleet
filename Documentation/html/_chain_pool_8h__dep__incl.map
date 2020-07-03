@@ -1,8 +1,9 @@
 <map id="src/Inference/ChainPool.h" name="src/Inference/ChainPool.h">
-<area shape="rect" id="node2" href="$_parallel_tempering_8h.html" title="src/Inference/ParallelTempering.h" alt="" coords="431,80,648,107"/>
-<area shape="rect" id="node3" href="$_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,155,209,196"/>
-<area shape="rect" id="node4" href="$_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,155,437,196"/>
-<area shape="rect" id="node5" href="$_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,155,617,196"/>
-<area shape="rect" id="node6" href="$_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="641,155,792,196"/>
-<area shape="rect" id="node7" href="$_testing_2_main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="817,162,985,189"/>
+<area shape="rect" id="node2" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="478,80,695,107"/>
+<area shape="rect" id="node3" href="$_models_2_first_order_logic_2_main_8cpp.html" title="Models/FirstOrderLogic\l/Main.cpp" alt="" coords="5,155,163,196"/>
+<area shape="rect" id="node4" href="$_models_2_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="187,155,391,196"/>
+<area shape="rect" id="node5" href="$_models_2_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="415,155,619,196"/>
+<area shape="rect" id="node6" href="$_testing_2_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="525,244,648,271"/>
+<area shape="rect" id="node7" href="$_models_2_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="695,155,849,196"/>
+<area shape="rect" id="node8" href="$_models_2_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="874,155,1025,196"/>
 </map>

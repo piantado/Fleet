@@ -1,11 +1,15 @@
 var searchData=
 [
+  ['basenode',['BaseNode',['../class_base_node.html',1,'BaseNode&lt; this_t &gt;'],['../class_base_node.html#ae6af9c22d332e9c3158d9467f77b59f7',1,'BaseNode::BaseNode(size_t n=0, this_t *p=nullptr, size_t i=0)'],['../class_base_node.html#a4bad5d46ee19af54c1385771bb6c8380',1,'BaseNode::BaseNode(const this_t &amp;n)'],['../class_base_node.html#ab42ef3f5a20566523577925ab0c2a911',1,'BaseNode::BaseNode(this_t &amp;&amp;n)']]],
+  ['basenode_2eh',['BaseNode.h',['../_base_node_8h.html',1,'']]],
+  ['basenode_3c_20mymcts_20_3e',['BaseNode&lt; MyMCTS &gt;',['../class_base_node.html',1,'']]],
+  ['basenode_3c_20node_20_3e',['BaseNode&lt; Node &gt;',['../class_base_node.html',1,'BaseNode&lt; Node &gt;'],['../class_node.html#ae875dded1044564c83cdc7147d86dfbf',1,'Node::BaseNode&lt; Node &gt;()']]],
+  ['basenode_3c_20this_5ft_20_3e',['BaseNode&lt; this_t &gt;',['../class_full_m_c_t_s_node.html#adf841553d0233d2421a8187d9226b7be',1,'FullMCTSNode']]],
   ['bayesable',['Bayesable',['../class_bayesable.html',1,'Bayesable&lt; _datum_t, _data_t &gt;'],['../class_bayesable.html#aec41e7016c9c1eb6978e1360c23f20cd',1,'Bayesable::Bayesable()']]],
   ['bayesable_2eh',['Bayesable.h',['../_bayesable_8h.html',1,'']]],
   ['bayesable_3c_20args_2e_2e_2e_20_3e',['Bayesable&lt; Args... &gt;',['../class_bayesable.html',1,'']]],
-  ['begin',['begin',['../class_node.html#a319b65eca94c9438201ebda99ab90a65',1,'Node::begin()'],['../class_fleet_1_1_statistics_1_1_reservoir_sample.html#af441a020b7a7244e9ca56c8d293fb59a',1,'Fleet::Statistics::ReservoirSample::begin()']]],
+  ['begin',['begin',['../class_base_node.html#ac735dd6fe296af4b8d2951cc6d9052c8',1,'BaseNode::begin()'],['../class_fleet_1_1_statistics_1_1_reservoir_sample.html#af441a020b7a7244e9ca56c8d293fb59a',1,'Fleet::Statistics::ReservoirSample::begin()']]],
   ['best',['best',['../class_discrete_distribution.html#adee72a8e4c93aa03d841c0c73d6b5498',1,'DiscreteDistribution::best()'],['../class_top_n.html#a071e232087705b131627bd8a805d217c',1,'TopN::best()']]],
-  ['best_5fchild_5findex',['best_child_index',['../class_m_c_t_s_node.html#a64290d7134b6841a49e84a244512bd19',1,'MCTSNode']]],
   ['best_5fposterior',['best_posterior',['../class_fleet_1_1_statistics_1_1_reservoir_sample.html#aa802a85955db2941b99851f3b98e5252',1,'Fleet::Statistics::ReservoirSample']]],
   ['born',['born',['../class_bayesable.html#a898e03a20e1851c868b77ef4e844f0bf',1,'Bayesable']]],
   ['break_5fctrlc',['break_CTRLC',['../struct_control.html#a3a1856c582efd2a6a1b8f40351038d0c',1,'Control']]],

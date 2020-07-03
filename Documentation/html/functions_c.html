@@ -75,8 +75,10 @@ $(function() {
 </li>
 <li>callback
 : <a class="el" href="class_astar.html#a73b7b4ac7d9bdea8b8ce19c94c901705">Astar&lt; HYP, callback_t &gt;</a>
-, <a class="el" href="class_full_m_c_t_s_node.html#a7e8ecdad10651454729d7eeac57fb045">FullMCTSNode&lt; HYP, callback_t &gt;</a>
+, <a class="el" href="class_enumeration_inference.html#a792b247c4874b9f879ac204749bea1c3">EnumerationInference&lt; HYP, Grammar_t, callback_t &gt;</a>
+, <a class="el" href="class_full_m_c_t_s_node.html#a9bba77400c22c878cb3f015f8ad97613">FullMCTSNode&lt; this_t, HYP, callback_t &gt;</a>
 , <a class="el" href="class_m_c_m_c_chain.html#aa7a4a0d46ae2d9818c2f076f839badd7">MCMCChain&lt; HYP, callback_t &gt;</a>
+, <a class="el" href="class_prior_inference.html#a0b71e0bf3b2c27fa97be006a3c3738a0">PriorInference&lt; HYP, callback_t &gt;</a>
 </li>
 <li>callOne()
 : <a class="el" href="class_l_o_t_hypothesis.html#a34051e59cc251c4d6bb3caddbe594414">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
@@ -88,24 +90,19 @@ $(function() {
 : <a class="el" href="class_chain_pool.html#ae8795a9a7c0fff45c82334fa821c8c3c">ChainPool&lt; HYP, callback_t &gt;</a>
 </li>
 <li>check_child_info()
-: <a class="el" href="class_node.html#ab8f9492893b0e2b2d7b3d1819dacc92b">Node</a>
+: <a class="el" href="class_base_node.html#a83b33d8a8902819b4175b66fb6e4b08e">BaseNode&lt; this_t &gt;</a>
 </li>
 <li>check_reachable()
 : <a class="el" href="class_lexicon.html#a1e58bf42fb2388eff629bc899d8ef5ed">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>
 </li>
 <li>child()
-: <a class="el" href="class_node.html#a23adfa03c20f4141b1105c5b4b1bca3f">Node</a>
-</li>
-<li>child_mutex
-: <a class="el" href="class_m_c_t_s_node.html#a66790ec812754c13bab5f6f14966bacf">MCTSNode&lt; M, HYP &gt;</a>
+: <a class="el" href="class_base_node.html#ac2ed3b362a2563e86063a157daa1c288">BaseNode&lt; this_t &gt;</a>
 </li>
 <li>child_types
-: <a class="el" href="class_rule.html#ac29b59e23c3327fed7a1e99b06512057">Rule</a>
+: <a class="el" href="class_rule.html#afdd38b9432cea46b5cea54b1bb841c07">Rule</a>
 </li>
 <li>children
-: <a class="el" href="class_full_m_c_t_s_node.html#ac9bdca86a2e0f0030952e00f5ba0b1b2">FullMCTSNode&lt; HYP, callback_t &gt;</a>
-, <a class="el" href="class_m_c_t_s_node.html#a243b348036c57a54af3a48a708851b80">MCTSNode&lt; M, HYP &gt;</a>
-, <a class="el" href="class_node.html#af7ddc81358470c3bf7a7819c8b77f53d">Node</a>
+: <a class="el" href="class_base_node.html#af2f245862083d173c950fca048c03546">BaseNode&lt; this_t &gt;</a>
 </li>
 <li>ChildStr
 : <a class="el" href="class_rule.html#a3ffb425ebd6c508ca47234e3800f769c">Rule</a>
@@ -133,9 +130,6 @@ $(function() {
 , <a class="el" href="class_lexicon.html#a724ccdaffe9090488bfaa786873fa807">Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#a7f913b702b434003f94a84c560d16bf9">LOTHypothesis&lt; HYP, input_t, output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_searchable.html#a3ae6263b49a0f9da94f5dcc23af6618e">Searchable&lt; HYP, Args &gt;</a>
-</li>
-<li>compute_enumeration_order()
-: <a class="el" href="class_grammar.html#a37b475b665c37057084d9244abcf25f9">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>compute_likelihood()
 : <a class="el" href="class_bayesable.html#a202493156cec15937bee304d807fdbdb">Bayesable&lt; _datum_t, _data_t &gt;</a>
@@ -172,26 +166,23 @@ $(function() {
 : <a class="el" href="class_grammar.html#a28b35de7e71ac8f451cd3a65818fc1db">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>count()
-: <a class="el" href="class_discrete_distribution.html#afd3fd83dc776f5616e826de18093328b">DiscreteDistribution&lt; T &gt;</a>
-, <a class="el" href="class_node.html#abd387b27e1deb45b789ad7b7abd8c6e6">Node</a>
+: <a class="el" href="class_base_node.html#aaaf113bd98ee404e71582ac1cf014ac0">BaseNode&lt; this_t &gt;</a>
+, <a class="el" href="class_discrete_distribution.html#afd3fd83dc776f5616e826de18093328b">DiscreteDistribution&lt; T &gt;</a>
 , <a class="el" href="class_top_n.html#a8bfb8d5daa31a4fd95196cb41f0ac1ce">TopN&lt; T &gt;</a>
 </li>
-<li>count_connected_partial_subtrees()
-: <a class="el" href="class_grammar.html#ad1e2c22753f18d1dcdd9d81576045e9f">Grammar&lt; GRAMMAR_TYPES &gt;</a>
-</li>
 <li>count_nonterminals()
-: <a class="el" href="class_grammar.html#a335c2679b0db2290a1a0da8910f0bcdd">Grammar&lt; GRAMMAR_TYPES &gt;</a>
+: <a class="el" href="class_grammar.html#a4aa05c747026932672a24fa1f7134115">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>count_rules()
 : <a class="el" href="class_grammar.html#a90a765c97b89f2f4cf12b6b4c2a3d019">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>count_terminals()
-: <a class="el" href="class_grammar.html#a5121201035b5d5cd0a1d4251b1f73056">Grammar&lt; GRAMMAR_TYPES &gt;</a>
-, <a class="el" href="class_node.html#a70c820eaeaa852e3c0a46cf006026c1b">Node</a>
+: <a class="el" href="class_base_node.html#adb6326eefe4ddc311651b4a4a5cb119e">BaseNode&lt; this_t &gt;</a>
+, <a class="el" href="class_grammar.html#a5121201035b5d5cd0a1d4251b1f73056">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>current
-: <a class="el" href="class_m_c_m_c_chain.html#ab0c3b31e96d1f703bb8cf55c0575b4bd">MCMCChain&lt; HYP, callback_t &gt;</a>
-, <a class="el" href="class_node_1_1_node_iterator.html#aef4bbf58890919058172facd8b91238a">Node::NodeIterator</a>
+: <a class="el" href="class_base_node_1_1_node_iterator.html#a64b6d98532282b0d5c4b00454f2dd9cb">BaseNode&lt; this_t &gt;::NodeIterator</a>
+, <a class="el" href="class_m_c_m_c_chain.html#ab0c3b31e96d1f703bb8cf55c0575b4bd">MCMCChain&lt; HYP, callback_t &gt;</a>
 </li>
 <li>current_mutex
 : <a class="el" href="class_m_c_m_c_chain.html#a42c355121fce0476426a49d5498c38a1">MCMCChain&lt; HYP, callback_t &gt;</a>

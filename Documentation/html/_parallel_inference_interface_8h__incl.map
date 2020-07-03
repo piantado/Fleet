@@ -1,6 +1,6 @@
 <map id="src/Inference/ParallelInferenceInterface.h" name="src/Inference/ParallelInferenceInterface.h">
-<area shape="rect" id="node3" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="138,95,213,121"/>
-<area shape="rect" id="node5" href="$_timing_8h.html" title="Timing.h" alt="" coords="374,169,446,196"/>
-<area shape="rect" id="node11" href="$_i_o_8h.html" title="IO.h" alt="" coords="116,169,163,196"/>
-<area shape="rect" id="node7" href="$_errors_8h.html" title="Errors.h" alt="" coords="465,244,533,271"/>
+<area shape="rect" id="node4" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="179,95,254,121"/>
+<area shape="rect" id="node6" href="$_timing_8h.html" title="Timing.h" alt="" coords="407,169,479,196"/>
+<area shape="rect" id="node12" href="$_i_o_8h.html" title="IO.h" alt="" coords="149,169,196,196"/>
+<area shape="rect" id="node8" href="$_errors_8h.html" title="Errors.h" alt="" coords="499,244,567,271"/>
 </map>

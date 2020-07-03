@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Fleet: src/Inference/Enumeration.h File Reference</title>
+<title>Fleet: src/Grammar/Enumeration.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_b1574807514940316c988b1142d2b137.html">Inference</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_e5a2d76c3976cd5606b337c2d908f10b.html">Grammar</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -72,31 +72,140 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>An <a class="el" href="class_integerized_stack.html">IntegerizedStack</a> is just a wrapper around unsigned longs that allow them to behave like a of integers stack, supporting push and pop (maybe with mod) via a standard pairing function.  
+<a href="#details">More...</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="_fleet_statistics_8h_source.html">FleetStatistics.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_integerized_stack_8h_source.html">IntegerizedStack.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for Enumeration.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="_enumeration_8h__incl.png" border="0" usemap="#src_2_grammar_2_enumeration_8h" alt=""/></div>
+<map name="src_2_grammar_2_enumeration_8h" id="src_2_grammar_2_enumeration_8h">
+<area shape="rect" id="node2" href="_fleet_statistics_8h.html" title="FleetStatistics.h" alt="" coords="5,80,123,107"/>
+<area shape="rect" id="node4" href="_integerized_stack_8h.html" title="IntegerizedStack.h" alt="" coords="147,80,277,107"/>
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><img src="_enumeration_8h__dep__incl.png" border="0" usemap="#src_2_grammar_2_enumeration_8hdep" alt=""/></div>
+<map name="src_2_grammar_2_enumeration_8hdep" id="src_2_grammar_2_enumeration_8hdep">
+<area shape="rect" id="node2" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="46,87,175,114"/>
+<area shape="rect" id="node4" href="_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar. It supports multithreading and requires a hypothesis, grammar, start type, and callback. " alt="" coords="218,80,393,121"/>
+<area shape="rect" id="node3" href="_models_2_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="5,169,179,211"/>
+<area shape="rect" id="node5" href="_models_2_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="203,169,407,211"/>
+<area shape="rect" id="node6" href="_testing_2_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="313,259,436,285"/>
+</map>
+</div>
+</div>
 <p><a href="_enumeration_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa4a862fb4d9200358c729bc199098757"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_enumeration_8h.html#aa4a862fb4d9200358c729bc199098757">increment_tree</a> (<a class="el" href="class_node.html">Node</a> *t, const <a class="el" href="class_grammar.html">Grammar</a> &amp;g)</td></tr>
-<tr class="separator:aa4a862fb4d9200358c729bc199098757"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9164f3ed48e5b6b432367a0c3992603b"><td class="memTemplParams" colspan="2">template&lt;typename Grammar_t &gt; </td></tr>
+<tr class="memitem:a9164f3ed48e5b6b432367a0c3992603b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_enumeration_8h.html#a9164f3ed48e5b6b432367a0c3992603b">expand_from_integer</a> (Grammar_t *g, <a class="el" href="_nonterminal_8h.html#a1c5bfe9b903f69c83bbde5da7035fef3">nonterminal_t</a> nt, <a class="el" href="class_integerized_stack.html">IntegerizedStack</a> &amp;is)</td></tr>
+<tr class="separator:a9164f3ed48e5b6b432367a0c3992603b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac730d5c12ae2f60e485fa3ca845e1714"><td class="memTemplParams" colspan="2">template&lt;typename Grammar_t &gt; </td></tr>
+<tr class="memitem:ac730d5c12ae2f60e485fa3ca845e1714"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_enumeration_8h.html#ac730d5c12ae2f60e485fa3ca845e1714">expand_from_integer</a> (Grammar_t *g, <a class="el" href="_nonterminal_8h.html#a1c5bfe9b903f69c83bbde5da7035fef3">nonterminal_t</a> nt, <a class="el" href="_integerized_stack_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a> z)</td></tr>
+<tr class="separator:ac730d5c12ae2f60e485fa3ca845e1714"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78634a08df3123790fa0a334ee0ef97d"><td class="memTemplParams" colspan="2">template&lt;typename Grammar_t &gt; </td></tr>
+<tr class="memitem:a78634a08df3123790fa0a334ee0ef97d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_integerized_stack_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_enumeration_8h.html#a78634a08df3123790fa0a334ee0ef97d">compute_enumeration_order</a> (Grammar_t *g, const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
+<tr class="separator:a78634a08df3123790fa0a334ee0ef97d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="aa4a862fb4d9200358c729bc199098757"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4a862fb4d9200358c729bc199098757">&#9670;&nbsp;</a></span>increment_tree()</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>An <a class="el" href="class_integerized_stack.html">IntegerizedStack</a> is just a wrapper around unsigned longs that allow them to behave like a of integers stack, supporting push and pop (maybe with mod) via a standard pairing function. </p>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="a78634a08df3123790fa0a334ee0ef97d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78634a08df3123790fa0a334ee0ef97d">&#9670;&nbsp;</a></span>compute_enumeration_order()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename Grammar_t &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a> increment_tree </td>
+          <td class="memname"><a class="el" href="_integerized_stack_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a> compute_enumeration_order </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_node.html">Node</a> *&#160;</td>
-          <td class="paramname"><em>t</em>, </td>
+          <td class="paramtype">Grammar_t *&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="class_grammar.html">Grammar</a> &amp;&#160;</td>
-          <td class="paramname"><em>g</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9164f3ed48e5b6b432367a0c3992603b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9164f3ed48e5b6b432367a0c3992603b">&#9670;&nbsp;</a></span>expand_from_integer() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Grammar_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> expand_from_integer </td>
+          <td>(</td>
+          <td class="paramtype">Grammar_t *&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_nonterminal_8h.html#a1c5bfe9b903f69c83bbde5da7035fef3">nonterminal_t</a>&#160;</td>
+          <td class="paramname"><em>nt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_integerized_stack.html">IntegerizedStack</a> &amp;&#160;</td>
+          <td class="paramname"><em>is</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac730d5c12ae2f60e485fa3ca845e1714"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac730d5c12ae2f60e485fa3ca845e1714">&#9670;&nbsp;</a></span>expand_from_integer() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Grammar_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> expand_from_integer </td>
+          <td>(</td>
+          <td class="paramtype">Grammar_t *&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_nonterminal_8h.html#a1c5bfe9b903f69c83bbde5da7035fef3">nonterminal_t</a>&#160;</td>
+          <td class="paramname"><em>nt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_integerized_stack_8h.html#a9fe2bbca873b046b2bd276fc6856bb88">enumerationidx_t</a>&#160;</td>
+          <td class="paramname"><em>z</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

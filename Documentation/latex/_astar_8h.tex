@@ -43,7 +43,9 @@ volatile sig\+\_\+atomic\+\_\+t \hyperlink{_astar_8h_a6f7c4963bb8a36031664821219
 \subsection{Detailed Description}
 This is an implementation of kinda-\/\+A$\ast$ search that maintains a priority queue of partial states and attempts to find a program with the lowest posterior score. To do this, we choose a node to expand based on its prior plus N\+\_\+\+R\+E\+PS samples of its likelihood, computed by filling in its children at random. This stochastic heuristic is actually inadmissable since it usually overestimates the cost. As a result, it usually makes sense to run A$\ast$ at a pretty high temperature, corresponding to a downweighting of the likelihood, and making the heuristic more likely to be admissable. 
 
-One general challenge is how to handle -\/inf likelihoods, and here we\textquotesingle{}ve done that by, if you end up with -\/inf, taking your parent\textquotesingle{}s temperature and multiplying by P\+A\+R\+E\+N\+T\+\_\+\+P\+E\+N\+A\+L\+TY. 
+One general challenge is how to handle -\/inf likelihoods, and here we\textquotesingle{}ve done that by, if you end up with -\/inf, taking your parent\textquotesingle{}s temperature and multiplying by P\+A\+R\+E\+N\+T\+\_\+\+P\+E\+N\+A\+L\+TY.
+
+T\+O\+DO\+: Is it worth making this stochastic, so we sample the the expansion with the probabilities and some temperature? 
 
 \subsection{Variable Documentation}
 \mbox{\Hypertarget{_astar_8h_a6f7c4963bb8a36031664821219e3159e}\label{_astar_8h_a6f7c4963bb8a36031664821219e3159e}} 

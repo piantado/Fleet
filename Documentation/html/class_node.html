@@ -62,11 +62,10 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="class_node-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Node Class Reference</div>  </div>
@@ -75,21 +74,25 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="_node_8h_source.html">Node.h</a>&gt;</code></p>
 <div class="dynheader">
+Inheritance diagram for Node:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_node__inherit__graph.png" border="0" usemap="#_node_inherit__map" alt="Inheritance graph"/></div>
+<map name="_node_inherit__map" id="_node_inherit__map">
+<area shape="rect" id="node2" href="class_base_node.html" title="BaseNode\&lt; Node \&gt;" alt="" coords="5,5,144,32"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
 Collaboration diagram for Node:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_node__coll__graph.png" border="0" usemap="#_node_coll__map" alt="Collaboration graph"/></div>
 <map name="_node_coll__map" id="_node_coll__map">
-<area shape="rect" id="node2" href="class_node_1_1_node_iterator.html" title="Node::NodeIterator" alt="" coords="63,317,196,344"/>
-<area shape="rect" id="node4" href="class_rule.html" title="Rule" alt="" coords="181,95,230,121"/>
-<area shape="rect" id="node5" href="class_instruction.html" title="Instruction" alt="" coords="164,5,247,32"/>
+<area shape="rect" id="node2" href="class_base_node.html" title="BaseNode\&lt; Node \&gt;" alt="" coords="141,317,280,344"/>
+<area shape="rect" id="node3" href="class_base_node_1_1_node_iterator.html" title="BaseNode\&lt; this_t \&gt;\l::NodeIterator" alt="" coords="11,213,149,255"/>
+<area shape="rect" id="node5" href="class_rule.html" title="Rule" alt="" coords="217,109,266,136"/>
+<area shape="rect" id="node6" href="class_instruction.html" title="Instruction" alt="" coords="200,5,283,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node_1_1_node_iterator.html">NodeIterator</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae33050869651f64551da2d13ad2a9dbc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#ae33050869651f64551da2d13ad2a9dbc">Node</a> (const <a class="el" href="class_rule.html">Rule</a> *r=nullptr, double _lp=0.0, bool cr=true)</td></tr>
@@ -100,42 +103,20 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a87c9938dcd77c169802a732c98204945"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5e3fa79300bf5f3f2f3ecae6e795a94"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#af5e3fa79300bf5f3f2f3ecae6e795a94">~Node</a> ()</td></tr>
 <tr class="separator:af5e3fa79300bf5f3f2f3ecae6e795a94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23adfa03c20f4141b1105c5b4b1bca3f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a23adfa03c20f4141b1105c5b4b1bca3f">child</a> (const size_t i)</td></tr>
-<tr class="separator:a23adfa03c20f4141b1105c5b4b1bca3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc2b20cdba470853f1c137e26546ed3c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#acc2b20cdba470853f1c137e26546ed3c">child</a> (const size_t i) const</td></tr>
-<tr class="separator:acc2b20cdba470853f1c137e26546ed3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa727c354e38f60fb1560d72ae1aaa9af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#aa727c354e38f60fb1560d72ae1aaa9af">type</a> (const size_t i) const</td></tr>
+<tr class="memitem:aa727c354e38f60fb1560d72ae1aaa9af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_nonterminal_8h.html#a1c5bfe9b903f69c83bbde5da7035fef3">nonterminal_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#aa727c354e38f60fb1560d72ae1aaa9af">type</a> (const size_t i) const</td></tr>
 <tr class="separator:aa727c354e38f60fb1560d72ae1aaa9af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d42219573573f6a91cdfe68fe415505"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a5d42219573573f6a91cdfe68fe415505">nchildren</a> () const</td></tr>
-<tr class="separator:a5d42219573573f6a91cdfe68fe415505"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c03973664fcfdfb191feb67f565168b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a1c03973664fcfdfb191feb67f565168b">fill</a> ()</td></tr>
-<tr class="separator:a1c03973664fcfdfb191feb67f565168b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afff50c3712b8e30fffd479cad4eee023"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#afff50c3712b8e30fffd479cad4eee023">set_child</a> (size_t i, <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
+<tr class="separator:afff50c3712b8e30fffd479cad4eee023"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a486882370d2c9592c6eabb52a3289253"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a486882370d2c9592c6eabb52a3289253">set_child</a> (size_t i, <a class="el" href="class_node.html">Node</a> &amp;&amp;n)</td></tr>
+<tr class="separator:a486882370d2c9592c6eabb52a3289253"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addbfe90949f473c91203389f48095cf0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#addbfe90949f473c91203389f48095cf0">operator=</a> (const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
 <tr class="separator:addbfe90949f473c91203389f48095cf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcd5c8ca2ea54716a72f7e27f9a9c937"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#abcd5c8ca2ea54716a72f7e27f9a9c937">operator=</a> (<a class="el" href="class_node.html">Node</a> &amp;&amp;n)</td></tr>
 <tr class="separator:abcd5c8ca2ea54716a72f7e27f9a9c937"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b05feb361beb04d465619751a2297b1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a8b05feb361beb04d465619751a2297b1">operator&lt;</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
 <tr class="separator:a8b05feb361beb04d465619751a2297b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a319b65eca94c9438201ebda99ab90a65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node_1_1_node_iterator.html">NodeIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a319b65eca94c9438201ebda99ab90a65">begin</a> () const</td></tr>
-<tr class="separator:a319b65eca94c9438201ebda99ab90a65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea7c6e778d4720fb8071af71c57b1628"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node_1_1_node_iterator.html">NodeIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#aea7c6e778d4720fb8071af71c57b1628">end</a> () const</td></tr>
-<tr class="separator:aea7c6e778d4720fb8071af71c57b1628"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6d1a1d71a28168b34e9092568570738"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#ac6d1a1d71a28168b34e9092568570738">left_descend</a> () const</td></tr>
-<tr class="separator:ac6d1a1d71a28168b34e9092568570738"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f25f44608c0b19fe02eaf19ade9ea68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a8f25f44608c0b19fe02eaf19ade9ea68">fix_child_info</a> ()</td></tr>
-<tr class="separator:a8f25f44608c0b19fe02eaf19ade9ea68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8f9492893b0e2b2d7b3d1819dacc92b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#ab8f9492893b0e2b2d7b3d1819dacc92b">check_child_info</a> () const</td></tr>
-<tr class="separator:ab8f9492893b0e2b2d7b3d1819dacc92b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4abe3acdc804489a01ef13a25b130fd8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a4abe3acdc804489a01ef13a25b130fd8">nt</a> () const</td></tr>
+<tr class="memitem:a4abe3acdc804489a01ef13a25b130fd8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_nonterminal_8h.html#a1c5bfe9b903f69c83bbde5da7035fef3">nonterminal_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a4abe3acdc804489a01ef13a25b130fd8">nt</a> () const</td></tr>
 <tr class="separator:a4abe3acdc804489a01ef13a25b130fd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b89084e2c7416379edb7c537edcc8f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a0b89084e2c7416379edb7c537edcc8f2">operator[]</a> (const size_t i)</td></tr>
-<tr class="separator:a0b89084e2c7416379edb7c537edcc8f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bdfdaa5eb291ae5fb417f45fb8a3633"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a8bdfdaa5eb291ae5fb417f45fb8a3633">operator[]</a> (const size_t i) const</td></tr>
-<tr class="separator:a8bdfdaa5eb291ae5fb417f45fb8a3633"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afff50c3712b8e30fffd479cad4eee023"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#afff50c3712b8e30fffd479cad4eee023">set_child</a> (size_t i, <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
-<tr class="separator:afff50c3712b8e30fffd479cad4eee023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a486882370d2c9592c6eabb52a3289253"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a486882370d2c9592c6eabb52a3289253">set_child</a> (size_t i, <a class="el" href="class_node.html">Node</a> &amp;&amp;n)</td></tr>
-<tr class="separator:a486882370d2c9592c6eabb52a3289253"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a895ef3b66f975fbaec1e5866a57afbed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a895ef3b66f975fbaec1e5866a57afbed">is_null</a> () const</td></tr>
 <tr class="separator:a895ef3b66f975fbaec1e5866a57afbed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac91282056a0df2835f1579bdd21c93e1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -146,54 +127,95 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a089e99addd93f91b2ef5a9d0c3e6bdeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adefac3cb7b411321c5af15dad1484834"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#adefac3cb7b411321c5af15dad1484834">map</a> (const std::function&lt; void(<a class="el" href="class_node.html">Node</a> &amp;)&gt; &amp;f)</td></tr>
 <tr class="separator:adefac3cb7b411321c5af15dad1484834"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4337bb93da78e142c6171fd81acab93c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a4337bb93da78e142c6171fd81acab93c">map_const</a> (const std::function&lt; void(const <a class="el" href="class_node.html">Node</a> &amp;)&gt; &amp;f) const</td></tr>
-<tr class="separator:a4337bb93da78e142c6171fd81acab93c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59da25cea338385d73b898b86492f97e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a59da25cea338385d73b898b86492f97e">rmap_const</a> (const std::function&lt; void(const <a class="el" href="class_node.html">Node</a> &amp;)&gt; &amp;f) const</td></tr>
-<tr class="separator:a59da25cea338385d73b898b86492f97e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd387b27e1deb45b789ad7b7abd8c6e6"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#abd387b27e1deb45b789ad7b7abd8c6e6">count</a> () const</td></tr>
-<tr class="separator:abd387b27e1deb45b789ad7b7abd8c6e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cc58478d98361566830a8d3db745718"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a0cc58478d98361566830a8d3db745718">count</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
-<tr class="separator:a0cc58478d98361566830a8d3db745718"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad12a96da2fe796616aa22e20429f41d5"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#ad12a96da2fe796616aa22e20429f41d5">is_root</a> () const</td></tr>
-<tr class="separator:ad12a96da2fe796616aa22e20429f41d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3c263a4e0c734c34aaf62f80f84cd9a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#ac3c263a4e0c734c34aaf62f80f84cd9a">is_terminal</a> () const</td></tr>
-<tr class="separator:ac3c263a4e0c734c34aaf62f80f84cd9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70c820eaeaa852e3c0a46cf006026c1b"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a70c820eaeaa852e3c0a46cf006026c1b">count_terminals</a> () const</td></tr>
-<tr class="separator:a70c820eaeaa852e3c0a46cf006026c1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2e36754ba8b1b1d452deeb2bdbd346f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#ac2e36754ba8b1b1d452deeb2bdbd346f">is_complete</a> () const</td></tr>
 <tr class="separator:ac2e36754ba8b1b1d452deeb2bdbd346f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93fc84b584f080593978d3a39631d3e5"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a93fc84b584f080593978d3a39631d3e5">get_nth</a> (int n, std::function&lt; int(const <a class="el" href="class_node.html">Node</a> &amp;)&gt; &amp;f)</td></tr>
-<tr class="separator:a93fc84b584f080593978d3a39631d3e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a224c0ee6dae35ddce70f8fd3b91e0b1c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a224c0ee6dae35ddce70f8fd3b91e0b1c">get_nth</a> (int n)</td></tr>
-<tr class="separator:a224c0ee6dae35ddce70f8fd3b91e0b1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0590ae269543416be9c4ebdf70bad73b"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a0590ae269543416be9c4ebdf70bad73b">string</a> () const</td></tr>
-<tr class="separator:a0590ae269543416be9c4ebdf70bad73b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c58ff9b0904718f568ac71f499cd17f"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a2c58ff9b0904718f568ac71f499cd17f">string</a> () const override</td></tr>
+<tr class="separator:a2c58ff9b0904718f568ac71f499cd17f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70e879ceb71f47787137572d9bee8efa"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a70e879ceb71f47787137572d9bee8efa">parseable</a> () const</td></tr>
 <tr class="separator:a70e879ceb71f47787137572d9bee8efa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a377548bcf1be99ac5181f9434c33c81e"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a377548bcf1be99ac5181f9434c33c81e">program_size</a> () const</td></tr>
 <tr class="separator:a377548bcf1be99ac5181f9434c33c81e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54676f34db2c299693c9b55148589230"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a54676f34db2c299693c9b55148589230">linearize</a> (Program &amp;ops) const</td></tr>
 <tr class="separator:a54676f34db2c299693c9b55148589230"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90aeee00ccda27f36bea9cdd774eae8d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a90aeee00ccda27f36bea9cdd774eae8d">operator==</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
-<tr class="memdesc:a90aeee00ccda27f36bea9cdd774eae8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">convert tree to a linear sequence of operations. To do this, we first linearize the kids, leaving their values as the top on the stack then we compute our value, remove our kids' values to clean up the stack, and push on our return the only fanciness is for if: here we will use the following layout &lt;TOP of="" stack&gt;=""&gt; &lt;bool&gt; <a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7a8f69a9fe993189d72cf7b07e8517801d">op_IF(xsize)</a> X-branch JUMP(ysize) Y-branch  <a href="#a90aeee00ccda27f36bea9cdd774eae8d">More...</a><br /></td></tr>
-<tr class="separator:a90aeee00ccda27f36bea9cdd774eae8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ff12be4d2355edddee1fbe893f0c8a8"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a1ff12be4d2355edddee1fbe893f0c8a8">operator!=</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
-<tr class="separator:a1ff12be4d2355edddee1fbe893f0c8a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f42de356c047dd52472d24ace4d42c5"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a8f42de356c047dd52472d24ace4d42c5">operator==</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const override</td></tr>
+<tr class="separator:a8f42de356c047dd52472d24ace4d42c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a212f2e1ba4ff71de6954b0b791d89979"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a212f2e1ba4ff71de6954b0b791d89979">hash</a> (size_t depth=0) const</td></tr>
 <tr class="separator:a212f2e1ba4ff71de6954b0b791d89979"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_base_node"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_base_node')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_base_node.html">BaseNode&lt; Node &gt;</a></td></tr>
+<tr class="memitem:ae6af9c22d332e9c3158d9467f77b59f7 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#ae6af9c22d332e9c3158d9467f77b59f7">BaseNode</a> (size_t n=0, <a class="el" href="class_node.html">Node</a> *p=nullptr, size_t i=0)</td></tr>
+<tr class="separator:ae6af9c22d332e9c3158d9467f77b59f7 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bad5d46ee19af54c1385771bb6c8380 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a4bad5d46ee19af54c1385771bb6c8380">BaseNode</a> (const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
+<tr class="separator:a4bad5d46ee19af54c1385771bb6c8380 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab42ef3f5a20566523577925ab0c2a911 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#ab42ef3f5a20566523577925ab0c2a911">BaseNode</a> (<a class="el" href="class_node.html">Node</a> &amp;&amp;n)</td></tr>
+<tr class="separator:ab42ef3f5a20566523577925ab0c2a911 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a33248b0eb051d7672691a73a38ff12 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a2a33248b0eb051d7672691a73a38ff12">~BaseNode</a> ()</td></tr>
+<tr class="separator:a2a33248b0eb051d7672691a73a38ff12 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac735dd6fe296af4b8d2951cc6d9052c8 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">NodeIterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#ac735dd6fe296af4b8d2951cc6d9052c8">begin</a> () const</td></tr>
+<tr class="separator:ac735dd6fe296af4b8d2951cc6d9052c8 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a990f4bbfab3e8c78421e51f32cb5db48 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">NodeIterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a990f4bbfab3e8c78421e51f32cb5db48">end</a> () const</td></tr>
+<tr class="separator:a990f4bbfab3e8c78421e51f32cb5db48 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f0418334eb790283f8074c9a27fed6e inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a2f0418334eb790283f8074c9a27fed6e">operator!=</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
+<tr class="separator:a2f0418334eb790283f8074c9a27fed6e inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb32a7d0574ed17ddeb61e7262d090ad inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#abb32a7d0574ed17ddeb61e7262d090ad">reserve_children</a> (const size_t n)</td></tr>
+<tr class="separator:abb32a7d0574ed17ddeb61e7262d090ad inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7177763ffa8b3e658124c586dde30be9 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">decltype(<a class="el" href="class_base_node.html#af2f245862083d173c950fca048c03546">children</a>) &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a7177763ffa8b3e658124c586dde30be9">get_children</a> ()</td></tr>
+<tr class="separator:a7177763ffa8b3e658124c586dde30be9 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec98c1640e03a27d1663f876bc49ef69 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">decltype(<a class="el" href="class_base_node.html#af2f245862083d173c950fca048c03546">children</a>) const &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#aec98c1640e03a27d1663f876bc49ef69">get_children</a> () const</td></tr>
+<tr class="separator:aec98c1640e03a27d1663f876bc49ef69 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2ed3b362a2563e86063a157daa1c288 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#ac2ed3b362a2563e86063a157daa1c288">child</a> (const size_t i)</td></tr>
+<tr class="separator:ac2ed3b362a2563e86063a157daa1c288 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e244ddbbc0edea5f648e2a900e9dd99 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a2e244ddbbc0edea5f648e2a900e9dd99">child</a> (const size_t i) const</td></tr>
+<tr class="separator:a2e244ddbbc0edea5f648e2a900e9dd99 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7e88efda898c45f84ab0d79d4bb85c2 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#aa7e88efda898c45f84ab0d79d4bb85c2">fill</a> (size_t n, Args... args)</td></tr>
+<tr class="separator:aa7e88efda898c45f84ab0d79d4bb85c2 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abae4d16401a958dc41d2852dedcf0721 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#abae4d16401a958dc41d2852dedcf0721">nchildren</a> () const</td></tr>
+<tr class="separator:abae4d16401a958dc41d2852dedcf0721 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad319f28caf14e730bc62560f1bd682b6 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#ad319f28caf14e730bc62560f1bd682b6">left_descend</a> () const</td></tr>
+<tr class="separator:ad319f28caf14e730bc62560f1bd682b6 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0ef64be7c40f1e9f9170d8d51f8d3bf inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#ad0ef64be7c40f1e9f9170d8d51f8d3bf">fix_child_info</a> ()</td></tr>
+<tr class="separator:ad0ef64be7c40f1e9f9170d8d51f8d3bf inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83b33d8a8902819b4175b66fb6e4b08e inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a83b33d8a8902819b4175b66fb6e4b08e">check_child_info</a> () const</td></tr>
+<tr class="separator:a83b33d8a8902819b4175b66fb6e4b08e inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6aec587267d880a8f87312d90e74af56 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a6aec587267d880a8f87312d90e74af56">operator[]</a> (const size_t i)</td></tr>
+<tr class="separator:a6aec587267d880a8f87312d90e74af56 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad09bee05b19581e8827bdd03a31791a7 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#ad09bee05b19581e8827bdd03a31791a7">operator[]</a> (const size_t i) const</td></tr>
+<tr class="separator:ad09bee05b19581e8827bdd03a31791a7 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a575b94703d0c67ba8c04b6a725b48b56 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a575b94703d0c67ba8c04b6a725b48b56">set_child</a> (size_t i, <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
+<tr class="separator:a575b94703d0c67ba8c04b6a725b48b56 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c2892c91eb31bc0d72bfb0c57ec8dea inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a7c2892c91eb31bc0d72bfb0c57ec8dea">set_child</a> (size_t i, <a class="el" href="class_node.html">Node</a> &amp;&amp;n)</td></tr>
+<tr class="separator:a7c2892c91eb31bc0d72bfb0c57ec8dea inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afce604388d562d347fcb31aeb2a8ef03 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#afce604388d562d347fcb31aeb2a8ef03">is_root</a> () const</td></tr>
+<tr class="separator:afce604388d562d347fcb31aeb2a8ef03 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab953456c09fa01bbf8a29c07f4d2b5ad inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#ab953456c09fa01bbf8a29c07f4d2b5ad">root</a> ()</td></tr>
+<tr class="separator:ab953456c09fa01bbf8a29c07f4d2b5ad inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca973bac6b9889c97612f0cedf9a43f8 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#aca973bac6b9889c97612f0cedf9a43f8">get_via</a> (std::function&lt; bool(<a class="el" href="class_node.html">Node</a> *)&gt; &amp;f)</td></tr>
+<tr class="separator:aca973bac6b9889c97612f0cedf9a43f8 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4007d1c72991b8599a6ff5a21c054ba5 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a4007d1c72991b8599a6ff5a21c054ba5">count</a> () const</td></tr>
+<tr class="separator:a4007d1c72991b8599a6ff5a21c054ba5 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaf113bd98ee404e71582ac1cf014ac0 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#aaaf113bd98ee404e71582ac1cf014ac0">count</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
+<tr class="separator:aaaf113bd98ee404e71582ac1cf014ac0 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af37331cbec1b32c874138d2ae9b89745 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#af37331cbec1b32c874138d2ae9b89745">is_terminal</a> () const</td></tr>
+<tr class="separator:af37331cbec1b32c874138d2ae9b89745 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb6326eefe4ddc311651b4a4a5cb119e inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#adb6326eefe4ddc311651b4a4a5cb119e">count_terminals</a> () const</td></tr>
+<tr class="separator:adb6326eefe4ddc311651b4a4a5cb119e inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e4560f882d4cdb713aea5178a4e2d86 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a1e4560f882d4cdb713aea5178a4e2d86">get_nth</a> (int n, std::function&lt; int(const <a class="el" href="class_node.html">Node</a> &amp;)&gt; &amp;f)</td></tr>
+<tr class="separator:a1e4560f882d4cdb713aea5178a4e2d86 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9381814fdc86029905dc283da5d3d931 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a9381814fdc86029905dc283da5d3d931">get_nth</a> (int n)</td></tr>
+<tr class="separator:a9381814fdc86029905dc283da5d3d931 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ad8184598cdea70e4bbdfd76f2b0f9e85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#ad8184598cdea70e4bbdfd76f2b0f9e85">parent</a></td></tr>
-<tr class="separator:ad8184598cdea70e4bbdfd76f2b0f9e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8e140a5af4e5c312141f2b7af255520"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#ad8e140a5af4e5c312141f2b7af255520">pi</a></td></tr>
-<tr class="separator:ad8e140a5af4e5c312141f2b7af255520"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02f5c9463cceb270ad5730760f19c722"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_rule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a02f5c9463cceb270ad5730760f19c722">rule</a></td></tr>
 <tr class="separator:a02f5c9463cceb270ad5730760f19c722"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a298eaa3743b774a3f9ef396e1dc42a08"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a298eaa3743b774a3f9ef396e1dc42a08">lp</a></td></tr>
 <tr class="separator:a298eaa3743b774a3f9ef396e1dc42a08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98c14a51b240fbc7e438f40a12276257"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a98c14a51b240fbc7e438f40a12276257">can_resample</a></td></tr>
 <tr class="separator:a98c14a51b240fbc7e438f40a12276257"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_class_base_node"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_base_node')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_base_node.html">BaseNode&lt; Node &gt;</a></td></tr>
+<tr class="memitem:aa1ad671f67931a82120d5852520417b7 inherit pub_attribs_class_base_node"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#aa1ad671f67931a82120d5852520417b7">parent</a></td></tr>
+<tr class="separator:aa1ad671f67931a82120d5852520417b7 inherit pub_attribs_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e2caf1ce4e3f0436c277b7331dbd554 inherit pub_attribs_class_base_node"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a6e2caf1ce4e3f0436c277b7331dbd554">pi</a></td></tr>
+<tr class="separator:a6e2caf1ce4e3f0436c277b7331dbd554 inherit pub_attribs_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -201,13 +223,20 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:abd26102ffbe2a3e00c34bed5508b3234"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab58932e82964fb75ba806870c4069dc2"><td class="memItemLeft" align="right" valign="top">static const char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#ab58932e82964fb75ba806870c4069dc2">RuleDelimiter</a> = ';'</td></tr>
 <tr class="separator:ab58932e82964fb75ba806870c4069dc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a336943f2e37a2b6fcbe8b47634719dec"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_node_1_1_node_iterator.html">NodeIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a336943f2e37a2b6fcbe8b47634719dec">EndNodeIterator</a> = <a class="el" href="class_node_1_1_node_iterator.html">NodeIterator</a>(nullptr)</td></tr>
-<tr class="separator:a336943f2e37a2b6fcbe8b47634719dec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_attribs_class_base_node"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_base_node')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_base_node.html">BaseNode&lt; Node &gt;</a></td></tr>
+<tr class="memitem:ac8a2fe45180446f4db2d4742c34b5b80 inherit pub_static_attribs_class_base_node"><td class="memItemLeft" align="right" valign="top">static NodeIterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#ac8a2fe45180446f4db2d4742c34b5b80">EndNodeIterator</a></td></tr>
+<tr class="separator:ac8a2fe45180446f4db2d4742c34b5b80 inherit pub_static_attribs_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:af7ddc81358470c3bf7a7819c8b77f53d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_node.html">Node</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#af7ddc81358470c3bf7a7819c8b77f53d">children</a></td></tr>
-<tr class="separator:af7ddc81358470c3bf7a7819c8b77f53d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ae875dded1044564c83cdc7147d86dfbf"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#ae875dded1044564c83cdc7147d86dfbf">BaseNode&lt; Node &gt;</a></td></tr>
+<tr class="separator:ae875dded1044564c83cdc7147d86dfbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_class_base_node"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_base_node')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_base_node.html">BaseNode&lt; Node &gt;</a></td></tr>
+<tr class="memitem:af2f245862083d173c950fca048c03546 inherit pro_attribs_class_base_node"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_node.html">Node</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#af2f245862083d173c950fca048c03546">children</a></td></tr>
+<tr class="separator:af2f245862083d173c950fca048c03546 inherit pro_attribs_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae33050869651f64551da2d13ad2a9dbc"></a>
@@ -330,355 +359,6 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a319b65eca94c9438201ebda99ab90a65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a319b65eca94c9438201ebda99ab90a65">&#9670;&nbsp;</a></span>begin()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_node_1_1_node_iterator.html">NodeIterator</a> Node::begin </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ab8f9492893b0e2b2d7b3d1819dacc92b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8f9492893b0e2b2d7b3d1819dacc92b">&#9670;&nbsp;</a></span>check_child_info()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Node::check_child_info </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>assert that all of the child info is correct</p>
-
-</div>
-</div>
-<a id="a23adfa03c20f4141b1105c5b4b1bca3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23adfa03c20f4141b1105c5b4b1bca3f">&#9670;&nbsp;</a></span>child() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a>&amp; Node::child </td>
-          <td>(</td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Get a reference to my i'th child </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="acc2b20cdba470853f1c137e26546ed3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc2b20cdba470853f1c137e26546ed3c">&#9670;&nbsp;</a></span>child() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="class_node.html">Node</a>&amp; Node::child </td>
-          <td>(</td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Constant reference to the i'th child </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="abd387b27e1deb45b789ad7b7abd8c6e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd387b27e1deb45b789ad7b7abd8c6e6">&#9670;&nbsp;</a></span>count() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual size_t Node::count </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>How many nodes are below me? </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="a0cc58478d98361566830a8d3db745718"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0cc58478d98361566830a8d3db745718">&#9670;&nbsp;</a></span>count() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual size_t Node::count </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
-          <td class="paramname"><em>n</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>How many nodes below me are equal to n? </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">n</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="a70c820eaeaa852e3c0a46cf006026c1b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70c820eaeaa852e3c0a46cf006026c1b">&#9670;&nbsp;</a></span>count_terminals()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual size_t Node::count_terminals </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>How many terminals are below me? </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="aea7c6e778d4720fb8071af71c57b1628"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea7c6e778d4720fb8071af71c57b1628">&#9670;&nbsp;</a></span>end()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_node_1_1_node_iterator.html">NodeIterator</a> Node::end </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a1c03973664fcfdfb191feb67f565168b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c03973664fcfdfb191feb67f565168b">&#9670;&nbsp;</a></span>fill()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Node::fill </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Fill in all of my immediate children with Null nodes (via NullRule)</p>
-
-</div>
-</div>
-<a id="a8f25f44608c0b19fe02eaf19ade9ea68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f25f44608c0b19fe02eaf19ade9ea68">&#9670;&nbsp;</a></span>fix_child_info()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Node::fix_child_info </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Fix my immediate children's pointers to ensure that children's parent pointers and indices are correct.</p>
-
-</div>
-</div>
-<a id="a93fc84b584f080593978d3a39631d3e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a93fc84b584f080593978d3a39631d3e5">&#9670;&nbsp;</a></span>get_nth() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="class_node.html">Node</a>* Node::get_nth </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::function&lt; int(const <a class="el" href="class_node.html">Node</a> &amp;)&gt; &amp;&#160;</td>
-          <td class="paramname"><em>f</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Return a pointer to the n'th child satisfying f (f's output is cast to bool) </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">n</td><td></td></tr>
-    <tr><td class="paramname">f</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="a224c0ee6dae35ddce70f8fd3b91e0b1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a224c0ee6dae35ddce70f8fd3b91e0b1c">&#9670;&nbsp;</a></span>get_nth() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="class_node.html">Node</a>* Node::get_nth </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>n</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a212f2e1ba4ff71de6954b0b791d89979"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a212f2e1ba4ff71de6954b0b791d89979">&#9670;&nbsp;</a></span>hash()</h2>
 
@@ -764,84 +444,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad12a96da2fe796616aa22e20429f41d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad12a96da2fe796616aa22e20429f41d5">&#9670;&nbsp;</a></span>is_root()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool Node::is_root </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Am I a root node? I am if my parent is nullptr. </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="ac3c263a4e0c734c34aaf62f80f84cd9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3c263a4e0c734c34aaf62f80f84cd9a">&#9670;&nbsp;</a></span>is_terminal()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool Node::is_terminal </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Am I a terminal? I am if I have no children. </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="ac6d1a1d71a28168b34e9092568570738"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6d1a1d71a28168b34e9092568570738">&#9670;&nbsp;</a></span>left_descend()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a>* Node::left_descend </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Go down a tree and find the leftmost child </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
 <a id="a54676f34db2c299693c9b55148589230"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a54676f34db2c299693c9b55148589230">&#9670;&nbsp;</a></span>linearize()</h2>
 
@@ -908,58 +510,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a4337bb93da78e142c6171fd81acab93c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4337bb93da78e142c6171fd81acab93c">&#9670;&nbsp;</a></span>map_const()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Node::map_const </td>
-          <td>(</td>
-          <td class="paramtype">const std::function&lt; void(const <a class="el" href="class_node.html">Node</a> &amp;)&gt; &amp;&#160;</td>
-          <td class="paramname"><em>f</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a5d42219573573f6a91cdfe68fe415505"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d42219573573f6a91cdfe68fe415505">&#9670;&nbsp;</a></span>nchildren()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t Node::nchildren </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>How many children do I have? </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
 <a id="a4abe3acdc804489a01ef13a25b130fd8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4abe3acdc804489a01ef13a25b130fd8">&#9670;&nbsp;</a></span>nt()</h2>
 
@@ -970,7 +520,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> Node::nt </td>
+          <td class="memname"><a class="el" href="_nonterminal_8h.html#a1c5bfe9b903f69c83bbde5da7035fef3">nonterminal_t</a> Node::nt </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -983,32 +533,6 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>What nonterminal type do I return? </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="a1ff12be4d2355edddee1fbe893f0c8a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ff12be4d2355edddee1fbe893f0c8a8">&#9670;&nbsp;</a></span>operator!=()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool Node::operator!= </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
-          <td class="paramname"><em>n</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
 
 </div>
 </div>
@@ -1090,8 +614,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a90aeee00ccda27f36bea9cdd774eae8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90aeee00ccda27f36bea9cdd774eae8d">&#9670;&nbsp;</a></span>operator==()</h2>
+<a id="a8f42de356c047dd52472d24ace4d42c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f42de356c047dd52472d24ace4d42c5">&#9670;&nbsp;</a></span>operator==()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1109,18 +633,10 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>convert tree to a linear sequence of operations. To do this, we first linearize the kids, leaving their values as the top on the stack then we compute our value, remove our kids' values to clean up the stack, and push on our return the only fanciness is for if: here we will use the following layout &lt;TOP of="" stack&gt;=""&gt; &lt;bool&gt; <a class="el" href="_instruction_8h.html#af2fb7c87c5854c5733d7bb0506b06de7a8f69a9fe993189d72cf7b07e8517801d">op_IF(xsize)</a> X-branch JUMP(ysize) Y-branch </p>
-<p>NOTE: Inline here lets gcc inline a few recursions of this function, which ends up speeding us up a bit (otherwise recursive inlining only happens at -O3) This optimization is why we do set max-inline-insns-recursive in Fleet.mk </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">ops</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
 <p>Check equality between notes. Note this compares rule objects. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td></td></tr>
@@ -1129,64 +645,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-</div>
-</div>
-<a id="a0b89084e2c7416379edb7c537edcc8f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b89084e2c7416379edb7c537edcc8f2">&#9670;&nbsp;</a></span>operator[]() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a>&amp; Node::operator[] </td>
-          <td>(</td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Index my i'th child </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="a8bdfdaa5eb291ae5fb417f45fb8a3633"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bdfdaa5eb291ae5fb417f45fb8a3633">&#9670;&nbsp;</a></span>operator[]() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="class_node.html">Node</a>&amp; Node::operator[] </td>
-          <td>(</td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
+<p>Reimplemented from <a class="el" href="class_base_node.html#a33bb5c59122f6b2778d39a0eaa0151d7">BaseNode&lt; Node &gt;</a>.</p>
 
 </div>
 </div>
@@ -1239,32 +698,6 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>How big of a program does this correspond to? This is mostly the number of nodes, except that short-circuit evaluation of IF makes things a little more complex. </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="a59da25cea338385d73b898b86492f97e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59da25cea338385d73b898b86492f97e">&#9670;&nbsp;</a></span>rmap_const()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Node::rmap_const </td>
-          <td>(</td>
-          <td class="paramtype">const std::function&lt; void(const <a class="el" href="class_node.html">Node</a> &amp;)&gt; &amp;&#160;</td>
-          <td class="paramname"><em>f</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
 
 </div>
 </div>
@@ -1344,17 +777,18 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Child setter for move </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Set my child to n. NOTE: This one needs to be used, rather than accessing children directly, because we have to set parent pointers and indices. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i</td><td></td></tr>
+    <tr><td class="paramname">n</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a0590ae269543416be9c4ebdf70bad73b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0590ae269543416be9c4ebdf70bad73b">&#9670;&nbsp;</a></span>string()</h2>
+<a id="a2c58ff9b0904718f568ac71f499cd17f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c58ff9b0904718f568ac71f499cd17f">&#9670;&nbsp;</a></span>string()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1371,11 +805,13 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>Convert a tree to a string, using each node's format. </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_base_node.html#ac26bf9f89abeaca8d43b73f2d8d1d9cf">BaseNode&lt; Node &gt;</a>.</p>
 
 </div>
 </div>
@@ -1439,13 +875,6 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Apply f to me and everything below me, adding up the result. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">f</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -1459,7 +888,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_nonterminal_8h.html#a5c1f658dc7560600a16d22408bd716ca">nonterminal_t</a> Node::type </td>
+          <td class="memname"><a class="el" href="_nonterminal_8h.html#a1c5bfe9b903f69c83bbde5da7035fef3">nonterminal_t</a> Node::type </td>
           <td>(</td>
           <td class="paramtype">const size_t&#160;</td>
           <td class="paramname"><em>i</em></td><td>)</td>
@@ -1482,6 +911,29 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="ae875dded1044564c83cdc7147d86dfbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae875dded1044564c83cdc7147d86dfbf">&#9670;&nbsp;</a></span>BaseNode< Node ></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="class_base_node.html">BaseNode</a>&lt; <a class="el" href="class_node.html">Node</a> &gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a98c14a51b240fbc7e438f40a12276257"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a98c14a51b240fbc7e438f40a12276257">&#9670;&nbsp;</a></span>can_resample</h2>
@@ -1493,50 +945,6 @@ template&lt;typename T &gt; </div>
           <td class="memname">bool Node::can_resample</td>
         </tr>
       </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="af7ddc81358470c3bf7a7819c8b77f53d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7ddc81358470c3bf7a7819c8b77f53d">&#9670;&nbsp;</a></span>children</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="class_node.html">Node</a>&gt; Node::children</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a336943f2e37a2b6fcbe8b47634719dec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a336943f2e37a2b6fcbe8b47634719dec">&#9670;&nbsp;</a></span>EndNodeIterator</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_node_1_1_node_iterator.html">Node::NodeIterator</a> Node::EndNodeIterator = <a class="el" href="class_node_1_1_node_iterator.html">NodeIterator</a>(nullptr)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -1573,34 +981,6 @@ template&lt;typename T &gt; </div>
 <span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ad8184598cdea70e4bbdfd76f2b0f9e85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8184598cdea70e4bbdfd76f2b0f9e85">&#9670;&nbsp;</a></span>parent</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a>* Node::parent</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ad8e140a5af4e5c312141f2b7af255520"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8e140a5af4e5c312141f2b7af255520">&#9670;&nbsp;</a></span>pi</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t Node::pi</td>
-        </tr>
-      </table>
 </div><div class="memdoc">
 
 </div>

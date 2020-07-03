@@ -83,7 +83,6 @@ $(function() {
 <code>#include &quot;<a class="el" href="_random_8h_source.html">Random.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_nonterminal_8h_source.html">Nonterminal.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_primitives_8h_source.html">Primitives.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_integerized_stack_8h_source.html">IntegerizedStack.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_virtual_machine_state_8h_source.html">VirtualMachineState.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_builtins_8h_source.html">Builtins.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -91,24 +90,24 @@ Include dependency graph for Grammar.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_grammar_8h__incl.png" border="0" usemap="#src_2_grammar_2_grammar_8h" alt=""/></div>
 <map name="src_2_grammar_2_grammar_8h" id="src_2_grammar_2_grammar_8h">
-<area shape="rect" id="node5" href="_i_o_8h.html" title="IO.h" alt="" coords="133,304,180,331"/>
-<area shape="rect" id="node9" href="_errors_8h.html" title="Errors.h" alt="" coords="1080,155,1148,181"/>
-<area shape="rect" id="node12" href="_node_8h.html" title="Node.h" alt="" coords="426,80,490,107"/>
-<area shape="rect" id="node22" href="_nonterminal_8h.html" title="Nonterminal.h" alt="" coords="5,229,108,256"/>
-<area shape="rect" id="node32" href="_random_8h.html" title="Random.h" alt="" coords="1295,80,1378,107"/>
-<area shape="rect" id="node33" href="_primitives_8h.html" title="If there are any references in the arguments, only the first can be a reference. " alt="" coords="749,80,839,107"/>
-<area shape="rect" id="node36" href="_integerized_stack_8h.html" title="IntegerizedStack.h" alt="" coords="1141,80,1271,107"/>
-<area shape="rect" id="node37" href="_virtual_machine_state_8h.html" title="Count references in lambda arguments (used to ensure we only passs one) " alt="" coords="1403,80,1553,107"/>
-<area shape="rect" id="node43" href="_builtins_8h.html" title="This is needed below so we can check if something is a Builtin without template args. " alt="" coords="989,80,1065,107"/>
-<area shape="rect" id="node15" href="_hash_8h.html" title="Hash.h" alt="" coords="461,155,525,181"/>
-<area shape="rect" id="node16" href="_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we &quot;emulate&quot; a type system using t_nonterminal to store an integer for the types. *. " alt="" coords="325,155,385,181"/>
-<area shape="rect" id="node30" href="_program_8h.html" title="Program.h" alt="" coords="1173,155,1255,181"/>
-<area shape="rect" id="node18" href="_instruction_8h.html" title="This is an error type that is returned if we get a runtime error (e.g. string length, etc.) " alt="" coords="517,229,612,256"/>
-<area shape="rect" id="node23" href="_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="227,229,343,256"/>
-<area shape="rect" id="node25" href="_strings_8h.html" title="Strings.h" alt="" coords="367,229,442,256"/>
-<area shape="rect" id="node28" href="_numerics_8h.html" title="Numerics.h" alt="" coords="688,304,777,331"/>
-<area shape="rect" id="node31" href="_stack_8h.html" title="Stack.h" alt="" coords="1194,229,1261,256"/>
-<area shape="rect" id="node41" href="_fleet_statistics_8h.html" title="Statistics/FleetStatistics.h" alt="" coords="1687,155,1863,181"/>
+<area shape="rect" id="node5" href="_i_o_8h.html" title="IO.h" alt="" coords="1449,304,1496,331"/>
+<area shape="rect" id="node9" href="_errors_8h.html" title="Errors.h" alt="" coords="117,229,185,256"/>
+<area shape="rect" id="node12" href="_node_8h.html" title="Node.h" alt="" coords="807,80,871,107"/>
+<area shape="rect" id="node22" href="_nonterminal_8h.html" title="Nonterminal.h" alt="" coords="1569,229,1672,256"/>
+<area shape="rect" id="node33" href="_random_8h.html" title="Random.h" alt="" coords="286,155,369,181"/>
+<area shape="rect" id="node34" href="_primitives_8h.html" title="If there are any references in the arguments, only the first can be a reference. " alt="" coords="513,155,603,181"/>
+<area shape="rect" id="node37" href="_virtual_machine_state_8h.html" title="Count references in lambda arguments (used to ensure we only passs one) " alt="" coords="1077,80,1228,107"/>
+<area shape="rect" id="node43" href="_builtins_8h.html" title="This is needed below so we can check if something is a Builtin without template args. " alt="" coords="84,80,160,107"/>
+<area shape="rect" id="node15" href="_hash_8h.html" title="Hash.h" alt="" coords="894,155,958,181"/>
+<area shape="rect" id="node16" href="_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we &quot;emulate&quot; a type system using t_nonterminal to store an integer for the types. *. " alt="" coords="809,155,869,181"/>
+<area shape="rect" id="node30" href="_program_8h.html" title="Program.h" alt="" coords="1033,155,1115,181"/>
+<area shape="rect" id="node32" href="_base_node_8h.html" title="This is a general tree class, which we are adding because there are currently at least 3 different tr..." alt="" coords="393,155,488,181"/>
+<area shape="rect" id="node18" href="_instruction_8h.html" title="This is an error type that is returned if we get a runtime error (e.g. string length, etc.) " alt="" coords="741,229,836,256"/>
+<area shape="rect" id="node23" href="_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="1011,229,1127,256"/>
+<area shape="rect" id="node25" href="_strings_8h.html" title="Strings.h" alt="" coords="861,229,935,256"/>
+<area shape="rect" id="node28" href="_numerics_8h.html" title="Numerics.h" alt="" coords="575,304,664,331"/>
+<area shape="rect" id="node31" href="_stack_8h.html" title="Stack.h" alt="" coords="1306,229,1373,256"/>
+<area shape="rect" id="node41" href="_fleet_statistics_8h.html" title="Statistics/FleetStatistics.h" alt="" coords="1446,155,1622,181"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -116,14 +115,15 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_grammar_8h__dep__incl.png" border="0" usemap="#src_2_grammar_2_grammar_8hdep" alt=""/></div>
 <map name="src_2_grammar_2_grammar_8hdep" id="src_2_grammar_2_grammar_8hdep">
-<area shape="rect" id="node2" href="_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,80,209,121"/>
-<area shape="rect" id="node3" href="_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="233,80,437,121"/>
-<area shape="rect" id="node4" href="_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="462,80,617,121"/>
-<area shape="rect" id="node5" href="_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="641,87,848,114"/>
-<area shape="rect" id="node6" href="_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="872,80,1023,121"/>
-<area shape="rect" id="node7" href="_testing_2_main_8cpp.html" title="Models/Testing/Main.cpp" alt="" coords="1047,87,1215,114"/>
-<area shape="rect" id="node8" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="1240,87,1369,114"/>
-<area shape="rect" id="node9" href="_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="1218,169,1391,211"/>
+<area shape="rect" id="node2" href="_models_2_first_order_logic_2_main_8cpp.html" title="Models/FirstOrderLogic\l/Main.cpp" alt="" coords="5,80,163,121"/>
+<area shape="rect" id="node3" href="_models_2_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="187,80,391,121"/>
+<area shape="rect" id="node4" href="_models_2_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="415,80,619,121"/>
+<area shape="rect" id="node6" href="_models_2_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="644,80,799,121"/>
+<area shape="rect" id="node7" href="_models_2_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="823,87,1030,114"/>
+<area shape="rect" id="node8" href="_models_2_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1054,80,1205,121"/>
+<area shape="rect" id="node9" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="1229,87,1358,114"/>
+<area shape="rect" id="node5" href="_testing_2_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="456,177,579,203"/>
+<area shape="rect" id="node10" href="_models_2_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="1207,169,1380,211"/>
 </map>
 </div>
 </div>
