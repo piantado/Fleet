@@ -5,13 +5,19 @@
 
 #include "Errors.h"
 
-// This is a general tree class, which we are adding because there are currently at least 3 different tree classes used
-// in different parts of fleet (Nodes, MCTS, data for BindingTheory, etc.). This is an attempt to make a big superclass
-// that puts all of this functionality in one place. It attempts to keep the node size small so that we can use
-// this efficiently in MCTS in particular 
 
+/**
+ * @class BaseNode
+ * @author piantado
+ * @date 03/07/20
+ * @file BaseNode.h
+ * @brief This is a general tree class, which we are adding because there are currently at least 3 different 
+ * 		  tree classes used in different parts of fleet (Nodes, MCTS, data for BindingTheory, etc.). This is 
+ * 		  an attempt to make a big superclass that puts all of this functionality in one place. It attempts 
+ * 		  to keep the node size small so that we can use this efficiently in MCTS in particular. 
+ */
 template<typename this_t>
-class Tree { 
+class BaseNode { 
 
 protected:
 	std::vector<this_t> children; // TODO make this protected so we don't set children -- must use set_child
@@ -20,18 +26,16 @@ public:
 	this_t* parent; 
 	size_t pi; // what index am I in the parent?
 
-	// TODO: ADD CONSTRUCTORS
-
-	Tree(size_t n=0, this_t* p=nullptr, size_t i=0) : children(n), parent(p), pi(i) {
+	BaseNode(size_t n=0, this_t* p=nullptr, size_t i=0) : children(n), parent(p), pi(i) {
 		
 	}
-	Tree(const this_t& n) {
+	BaseNode(const this_t& n) {
 		children = n.children;
 		parent = n.parent;
 		pi = n.pi;  
 		fix_child_info();
 	}
-	Tree(this_t&& n) {
+	BaseNode(this_t&& n) {
 		parent = n.parent;
 		pi = n.pi;  
 		children = std::move(n.children);
@@ -39,17 +43,25 @@ public:
 	}
 	
 	
-	virtual ~Tree() {}
+	virtual ~BaseNode() {}
 
 	// Functions to be defined by subclasses
 	virtual std::string string() const {
-		throw YouShouldNotBeHereError("*** Tree subclass has no defined string()"); 
+		throw YouShouldNotBeHereError("*** BaseNode subclass has no defined string()"); 
 	}
 	virtual bool operator==(const this_t& n) const {
-		throw YouShouldNotBeHereError("*** Tree subclass has no defined operator==");
+		throw YouShouldNotBeHereError("*** BaseNode subclass has no defined operator==");
 	}
 
 	////////////////////////////////////////////////////////////////////////////
+	/**
+	 * @class NodeIterator
+	 * @author piantado
+	 * @date 03/07/20
+	 * @file BaseNode.h
+	 * @brief Define an interator for nodes. This iterates in prefix order, which is the standard in the library
+	 * 		  because it's used for linearization
+	 */	
 	class NodeIterator : public std::iterator<std::forward_iterator_tag, this_t> {
 		// Define an iterator class to make managing trees easier. 
 		// This iterates in postfix order, which is standard in the library
@@ -101,10 +113,10 @@ public:
 			bool operator!=(const NodeIterator& rhs) { return current != rhs.current; }
 	};	
 	static NodeIterator EndNodeIterator; // defined below
+	////////////////////////////////////////////////////////////////////////////
 	
-	NodeIterator begin() const { return Tree<this_t>::NodeIterator(static_cast<const this_t*>(this)); }
-	NodeIterator end()   const { return Tree<this_t>::EndNodeIterator; }
-
+	NodeIterator begin() const { return BaseNode<this_t>::NodeIterator(static_cast<const this_t*>(this)); }
+	NodeIterator end()   const { return BaseNode<this_t>::EndNodeIterator; }
 
 	virtual bool operator!=(const this_t& n) const{
 		return not (*this == n);
@@ -200,11 +212,7 @@ public:
 			
 			// check that the kids point to the right things
 			assert(c.pi == i);
-			assert(c.parent == this);
-			
-			// and that they are of the right type
-			assert(c.rule->nt == this->rule->type(i));
-
+			assert(c.parent == this);			
 			i++;
 		}
 	}
@@ -359,12 +367,12 @@ public:
 
 
 template<typename this_t>
-Tree<this_t>::NodeIterator Tree<this_t>::EndNodeIterator = NodeIterator(nullptr);
+BaseNode<this_t>::NodeIterator BaseNode<this_t>::EndNodeIterator = NodeIterator(nullptr);
 
 
 
 template<typename this_t>
-std::ostream& operator<<(std::ostream& o, const Tree<this_t>& t) {
+std::ostream& operator<<(std::ostream& o, const BaseNode<this_t>& t) {
 	o << t.string();
 	return o;
 }

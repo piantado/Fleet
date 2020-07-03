@@ -6,10 +6,10 @@
 #include "Hash.h"
 #include "Rule.h"
 #include "Program.h"
-#include "Tree.h"
+#include "BaseNode.h"
 
-class Node : public Tree<Node> {
-	friend class Tree<Node>;
+class Node : public BaseNode<Node> {
+	friend class BaseNode<Node>;
 	
 public:
 
@@ -23,18 +23,18 @@ public:
 	bool         can_resample;	
 	
 	Node(const Rule* r=nullptr, double _lp=0.0, bool cr=true) : 
-		Tree<Node>(r==nullptr?0:r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
+		BaseNode<Node>(r==nullptr?0:r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
 		// NOTE: We don't allow parent to be set here bcause that maeks pi hard to set. We shuold only be placed
 		// in trees with set_child
 	}
 	
 	/* We must define our own copy and move since parent can't just be simply copied */	
 	Node(const Node& n) :
-		Tree(n), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
+		BaseNode(n), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
 		fix_child_info();
 	}
 	Node(Node&& n) :
-		Tree(n), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
+		BaseNode(n), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
 		children = std::move(n.children);
 		fix_child_info();
 	}
@@ -60,7 +60,7 @@ public:
 		 */
 		assert(i < rule->N);
 		assert(n.nt() == rule->type(i));
-		Tree<Node>::set_child(i,n);
+		BaseNode<Node>::set_child(i,n);
 	}
 	void set_child(size_t i, Node&& n) {
 		/**
@@ -70,7 +70,7 @@ public:
 		 */
 		assert(i < rule->N);
 		assert(n.nt() == rule->type(i));
-		Tree<Node>::set_child(i,std::move(n));
+		BaseNode<Node>::set_child(i,std::move(n));
 	}
 
 
@@ -121,8 +121,6 @@ public:
 			return false;
 		}
 	}
-	
-
 	
 	nonterminal_t nt() const {
 		/**

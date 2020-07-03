@@ -39,7 +39,7 @@
 #include "SpinLock.h"
 #include "Random.h"
 
-#include "Tree.h"
+#include "BaseNode.h"
 
 extern double explore; 
 
@@ -61,8 +61,8 @@ extern double explore;
  */
 
 template<typename this_t, typename HYP, typename callback_t>
-class FullMCTSNode : public ParallelInferenceInterface<HYP>, public Tree<this_t> {
-	friend class Tree<this_t>;
+class FullMCTSNode : public ParallelInferenceInterface<HYP>, public BaseNode<this_t> {
+	friend class BaseNode<this_t>;
 		
 public:
 
@@ -90,7 +90,7 @@ public:
 	}
 	
     FullMCTSNode(HYP& start, this_t* par,  size_t w) : 
-		Tree<this_t>(0,par,0),
+		BaseNode<this_t>(0,par,0),
 		open(true), which_expansion(w), nvisits(0), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
 		mylock.lock();
@@ -100,7 +100,7 @@ public:
     }
     
     FullMCTSNode(HYP& start, double ex, data_t* d, callback_t& cb) : 
-		Tree<this_t>(),
+		BaseNode<this_t>(),
 		open(true), which_expansion(0), nvisits(0), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
 		// This is the constructor that gets called from main, and it sets the static variables. All the other constructors
 		// should use the above one

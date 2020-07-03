@@ -15,7 +15,7 @@ const std::map<std::string,size_t> symbol2idx = {{"true",0}, {"false",1}, {"and"
 #include "Combinators.h"
 #include "LOTHypothesis.h"
 
-using CL=Fleet::Combinators::CL;
+using CL=Combinators::CL;
 
 /**
  * @class InnerHypothesis
@@ -24,16 +24,16 @@ using CL=Fleet::Combinators::CL;
  * @file Main.cpp
  * @brief This just stores nodes from SKGrammar, and doesn't permit calling input/output
  */
-class InnerHypothesis final : public LOTHypothesis<InnerHypothesis,CL,CL,Fleet::Combinators::SKGrammar> {
+class InnerHypothesis final : public LOTHypothesis<InnerHypothesis,CL,CL,Combinators::SKGrammar> {
 public:
-	using Super = LOTHypothesis<InnerHypothesis,CL,CL,Fleet::Combinators::SKGrammar>;
+	using Super = LOTHypothesis<InnerHypothesis,CL,CL,Combinators::SKGrammar>;
 	using Super::Super; // inherit constructors
 };
 
 
 #include "Lexicon.h"
 
-Rule* applyRule = Fleet::Combinators::skgrammar.get_rule("(%s %s)"); 
+Rule* applyRule = Combinators::skgrammar.get_rule("(%s %s)"); 
 
 /**
  * @class MyHypothesis
@@ -50,7 +50,7 @@ public:
 	
 	const Node& C(std::string x) const {
 		// map a symbol string x to its combinator
-		return factors[symbol2idx.at(x)].value;
+		return factors[symbol2idx.at(x)].get_value();
 	}
 
 	static Node apply(Node f, Node x) {
@@ -59,7 +59,7 @@ public:
 		n.set_child(0, f);
 		n.set_child(1, x);
 			
-		Fleet::Combinators::reduce(n);
+		Combinators::reduce(n);
 			
 		return n;
 	}
@@ -107,18 +107,16 @@ std::tuple PRIMITIVES; // must be defined
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "Top.h"
+#include "MCMCChain.h"
 
 #include "Fleet.h" 
 
 int main(int argc, char** argv){ 
 	
-	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	auto app = Fleet::DefaultArguments("Combinatory logic");
-	CLI11_PARSE(app, argc, argv);
+	Fleet fleet("Combinatory logic");
+	fleet.initialize(argc, argv);
 	
-	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
-	
-//	Fleet::Combinators::LazyNormalForms lnf;
+//	Combinators::LazyNormalForms lnf;
 //	for(size_t i=0;!CTRL_C;i++) {
 //		Node n = lnf.at(i);
 //		auto s = n.string();
@@ -129,7 +127,7 @@ int main(int argc, char** argv){
 
 	MyHypothesis h0;
 	for(auto x : symbol2idx) {
-		InnerHypothesis ih(&Fleet::Combinators::skgrammar);
+		InnerHypothesis ih(&Combinators::skgrammar);
 		h0.factors.push_back(ih.restart());
 	}
 	
