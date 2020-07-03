@@ -139,9 +139,9 @@ public:
 #include "Fleet.h" 
 
 // Must define this to use the CRTP
-class MyMCTS : public PartialMCTSNode<MyMCTS, MyHypothesis, TopN<MyHypothesis>> {
+class MyMCTS : public FullMCTSNode<MyMCTS, MyHypothesis, TopN<MyHypothesis>> {
 public:
-	using Super = PartialMCTSNode<MyMCTS, MyHypothesis, TopN<MyHypothesis>>;
+	using Super = FullMCTSNode<MyMCTS, MyHypothesis, TopN<MyHypothesis>>;
 	using Super::Super;
 
 	// we must declare this to use these in a vector, but we can't call it since we can't move the locks
@@ -260,7 +260,7 @@ int main(int argc, char** argv){
 	top.print_best = true;
 	m.run(Control(mcts_steps, runtime, nthreads), h0);
 	m.print(h0, "tree.txt");
-	CERR "# MCTS size: " TAB m.size() ENDL;
+	CERR "# MCTS size: " TAB m.count() ENDL;
 
 	// Do some A* search -- here we maintain a priority queue of partially open nodes, sorted by 
 	// their prior and a single sample of their likelihood (which we end up downweighting a lot) (see Astar.h)

@@ -39,6 +39,8 @@
 #include "SpinLock.h"
 #include "Random.h"
 
+#include "Tree.h"
+
 extern double explore; 
 
 /**
@@ -59,12 +61,12 @@ extern double explore;
  */
 
 template<typename this_t, typename HYP, typename callback_t>
-class FullMCTSNode : public ParallelInferenceInterface<HYP> {	
+class FullMCTSNode : public ParallelInferenceInterface<HYP>, public Tree<this_t> {
+	friend class Tree<this_t>;
+		
 public:
 
 	using data_t = typename HYP::data_t;
-	
-	std::vector<this_t> children;
 
 	bool open; // am I still an available node?
 		
@@ -79,7 +81,6 @@ public:
 	static callback_t* callback; 
 
 	unsigned int nvisits;  // how many times have I visited each node?
-	this_t* parent;
 	float max;
 	float min;
 	float lse;
@@ -89,22 +90,24 @@ public:
 	}
 	
     FullMCTSNode(HYP& start, this_t* par,  size_t w) : 
-		open(true), which_expansion(w), nvisits(0), parent(par), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
+		Tree<this_t>(0,par,0),
+		open(true), which_expansion(w), nvisits(0), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
 		mylock.lock();
 			
-		children.reserve(start.neighbors());
+		this->reserve_children(start.neighbors());
 		mylock.unlock();
     }
     
     FullMCTSNode(HYP& start, double ex, data_t* d, callback_t& cb) : 
-		open(true), which_expansion(0), nvisits(0), parent(nullptr), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
+		Tree<this_t>(),
+		open(true), which_expansion(0), nvisits(0), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
 		// This is the constructor that gets called from main, and it sets the static variables. All the other constructors
 		// should use the above one
 		
         mylock.lock();
 		
-		children.reserve(start.neighbors());
+		this->reserve_children(start.neighbors());
 		explore = ex; 
 		data = d;
 		callback = &cb;
@@ -130,14 +133,6 @@ public:
 	void operator=(FullMCTSNode&& m) {
 		throw YouShouldNotBeHereError("*** This must be defined for but should never be called");
 	}
-		
-		
-    size_t size() const {
-        int n = 1; // for me
-        for(const auto& c : children)
-            n += c.size();
-        return n;
-    }
     
 	void print(HYP from, std::ostream& o, const int depth, const bool sort) { 
 		// here from is not a reference since we want to copy when we recurse 
@@ -153,7 +148,7 @@ public:
 			// we have to make a copy of our pointer array because otherwise its not const			
 			std::vector<std::pair<this_t*,int>> c2;
 			int w = 0;
-			for(auto& c : children) {
+			for(auto& c : this->get_children()) {
 				c2.emplace_back(&c,w);
 				++w;
 			}
@@ -171,7 +166,7 @@ public:
 		}
 		else {		
 			int w = 0;
-			for(auto& c : children) {
+			for(auto& c : this->get_children()) {
 				HYP newfrom = from; newfrom.expand_to_neighbor(w);
 				c.print(newfrom, o, depth+1, sort);
 				++w;;
@@ -198,8 +193,8 @@ public:
 		last_lp = v;
 		
 		// and propagate up the tree
-		if(parent != nullptr) {
-			parent->add_sample(v);
+		if(not this->is_root()) {
+			this->parent->add_sample(v);
 		}
 		
     }
@@ -209,7 +204,7 @@ public:
 	 * @return 
 	 */	
 	bool all_children_visited() const {
-		for(auto& c: children) {
+		for(auto& c: this->get_children() ) {
 			if(c.nvisits == 0) return false;
 		}
 		return true;
@@ -253,10 +248,10 @@ public:
 		mylock.lock();
 		// TODO: This is a bit inefficient because it copies current a bunch of times...
 		// this is intentionally a while loop in case another thread has snuck in and added
-		while(children.size() < (size_t)neigh) {
-			int k = children.size(); // which to expand
+		while(this->nchildren() < (size_t)neigh) {
+			int k = this->nchildren(); // which to expand
 			HYP kc = current; kc.expand_to_neighbor(k);
-			children.emplace_back(kc, reinterpret_cast<this_t*>(this), k);
+			this->get_children().emplace_back(kc, reinterpret_cast<this_t*>(this), k);
 		}		
 		mylock.unlock();		
 	}
@@ -270,11 +265,11 @@ public:
 		int neigh = current.neighbors(); 
 		std::vector<double> children_lps(neigh, -infinity);
 		for(int k=0;k<neigh;k++) {
-			if(children[k].open){
+			if(this->child(k).open){
 				/// how much probability mass PER sample came from each child, dividing by explore for the temperature.
 				/// If no exploraiton steps, we just pretend lse-1.0 was the probability mass 
 				children_lps[k] = current.neighbor_prior(k) + 
-								  (children[k].nvisits == 0 ? lse-1.0 : children[k].lse-log(children[k].nvisits)) / explore;
+								  (this->child(k).nvisits == 0 ? lse-1.0 : this->child(k).lse-log(this->child(k).nvisits)) / explore;
 			}
 		}
 		
@@ -285,7 +280,7 @@ public:
 		current.expand_to_neighbor(idx); // idx here gives which expansion we follow
 		
 		// and recurse down
-		children[idx].search_one(current);
+		this->child(idx).search_one(current);
 	}
 
 
@@ -308,7 +303,7 @@ public:
 		}
 		
 		// if I don't have all of my children, add them
-		if(children.size() != (size_t) neigh) {
+		if(this->nchildren() != (size_t) neigh) {
 			process_add_children(current);
 		}
 		
@@ -336,6 +331,7 @@ callback_t* FullMCTSNode<this_t, HYP,callback_t>::callback = nullptr;
 // A class that calls some number of playouts instead of building the full tree
 template<typename this_t, typename HYP, typename callback_t>
 class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {	
+	friend class FullMCTSNode<this_t,HYP,callback_t>;
 	using Super = FullMCTSNode<this_t,HYP,callback_t>;
 	using Super::Super; // get constructors
 

@@ -6,118 +6,41 @@
 #include "Hash.h"
 #include "Rule.h"
 #include "Program.h"
+#include "Tree.h"
 
-class Node {
-	
+class Node : public Tree<Node> {
+	friend class Tree<Node>;
 	
 public:
-	Node* parent; 
-	size_t pi; // what index am I in the parent?
 
 	// These are used in parseable to delimit nodes nonterminals and multiple nodes in a tree
 	const static char NTDelimiter = ':'; // delimit nt:format 
 	const static char RuleDelimiter = ';'; // delimit a sequence of nt:format;nt:format; etc
 
-
-protected:
-	std::vector<Node> children; // TODO make this protected so we don't set children -- must use set_child
-	
 public:
 	const Rule*  rule; // which rule did I use?
 	double       lp; 
 	bool         can_resample;	
 	
-	class NodeIterator : public std::iterator<std::forward_iterator_tag, Node> {
-		// Define an iterator class to make managing trees easier. 
-		// This iterates in postfix order, which is standard in the library
-		// because it is the order of linearization
-		protected:
-			Node*  current;
-			
-			// we need to store the start because when we start at a subtree, we want to iteratre through its subnodes
-			// and so we need to know when to stop
-			const Node* start; 
-		
-	public:
-		
-			NodeIterator(const Node* n) : current(n->left_descend()), start(n) { }
-			Node& operator*() const  { 
-				return *current; 
-			}
-			Node* operator->() const { 
-				return  current; 
-			}
-			 
-			NodeIterator& operator++(int blah) { this->operator++(); return *this; }
-			NodeIterator& operator++() {
-				assert(not (*this == EndNodeIterator) && "Can't iterate past the end!");
-				if(current == nullptr or current == start or current->is_root()) {
-					current = nullptr; 
-					return EndNodeIterator; 
-				}
-				
-				if(current->pi+1 < current->parent->children.size()) {
-					current = current->parent->children[current->pi+1].left_descend();
-				}
-				else { 
-					// now we call the parent (if we're out of children)
-					current = current->parent; 
-				}
-				return *this;
-			}
-				
-			NodeIterator& operator+(size_t n) {
-				for(size_t i=0;i<n;i++) {
-					this->operator++();
-					
-				}
-				return *this;
-			}
-
-			bool operator==(const NodeIterator& rhs) { return current == rhs.current; }
-			bool operator!=(const NodeIterator& rhs) { return current != rhs.current; }
-	};	
-	static NodeIterator EndNodeIterator;
-	
-	
 	Node(const Rule* r=nullptr, double _lp=0.0, bool cr=true) : 
-		parent(nullptr), pi(0), children(r==nullptr ? 0 : r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
+		Tree<Node>(r==nullptr?0:r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
 		// NOTE: We don't allow parent to be set here bcause that maeks pi hard to set. We shuold only be placed
 		// in trees with set_child
 	}
 	
 	/* We must define our own copy and move since parent can't just be simply copied */	
 	Node(const Node& n) :
-		parent(nullptr), children(n.children), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
+		Tree(n), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
 		fix_child_info();
 	}
 	Node(Node&& n) :
-		parent(nullptr), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
+		Tree(n), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
 		children = std::move(n.children);
 		fix_child_info();
 	}
 	
 	virtual ~Node() {}
 	
-	Node& child(const size_t i) {
-		/**
-		 * @brief Get a reference to my i'th child
-		 * @param i
-		 * @return 
-		 */
-		
-		return children.at(i);
-	}
-	
-	const Node& child(const size_t i) const {
-		/**
-		 * @brief Constant reference to the i'th child
-		 * @param i
-		 * @return 
-		 */
-		
-		return children.at(i);
-	}
 	
 	nonterminal_t type(const size_t i) const {
 		/**
@@ -129,15 +52,27 @@ public:
 		return rule->type(i);
 	}
 	
-	size_t nchildren() const {
+	void set_child(size_t i, Node& n) {
 		/**
-		 * @brief How many children do I have?
-		 * @return 
+		 * @brief Set my child to n. NOTE: This one needs to be used, rather than accessing children directly, because we have to set parent pointers and indices. 
+		 * @param i
+		 * @param n
 		 */
-		
-		return children.size();
+		assert(i < rule->N);
+		assert(n.nt() == rule->type(i));
+		Tree<Node>::set_child(i,n);
 	}
-	
+	void set_child(size_t i, Node&& n) {
+		/**
+		 * @brief Set my child to n. NOTE: This one needs to be used, rather than accessing children directly, because we have to set parent pointers and indices. 
+		 * @param i
+		 * @param n
+		 */
+		assert(i < rule->N);
+		assert(n.nt() == rule->type(i));
+		Tree<Node>::set_child(i,std::move(n));
+	}
+
 	void fill() {
 		/**
 		 * @brief Fill in all of my immediate children with Null nodes (via NullRule)
@@ -197,58 +132,7 @@ public:
 		}
 	}
 	
-	NodeIterator begin() const { return Node::NodeIterator(this); }
-	NodeIterator end()   const { return Node::EndNodeIterator; }
-	
-	Node* left_descend() const {
-		/**
-		 * @brief Go down a tree and find the leftmost child
-		 * @return 
-		 */
-		
-		Node* k = (Node*) this;
-		while(k != nullptr && k->children.size() > 0) 
-			k = &(k->children[0]);
-		return k;
-	}
-	
-	void fix_child_info() {
-		/**
-		 * @brief Fix my immediate children's pointers to ensure that children's parent pointers and indices are correct. 
-		 */
-		
-		// go through children and assign their parents to me
-		// and fix their pi's
-		size_t i = 0;
-		for(auto& c : children) {
-			c.pi = i;
-			c.parent = this;
-			i++;
-		}
-	}
-	
-	
-	void check_child_info() const {
-		/**
-		 * @brief assert that all of the child info is correct
-		 */
-		
-		size_t i = 0;
-		for(auto& c : children) {
-			
-			// check that the kids point to the right things
-			assert(c.pi == i);
-			assert(c.parent == this);
-			
-			// and that they are of the right type
-			assert(c.rule->nt == this->rule->type(i));
 
-			i++;
-		}
-		
-
-	}
-	
 	
 	nonterminal_t nt() const {
 		/**
@@ -258,59 +142,6 @@ public:
 		
 		return rule->nt;
 	}
-	
-	Node& operator[](const size_t i) {
-		/**
-		 * @brief Index my i'th child
-		 * @param i
-		 * @return 
-		 */
-		
-		return children.at(i); // at does bounds checking
-	}
-	
-	const Node& operator[](const size_t i) const {
-		return children.at(i); 
-	}
-	
-	void set_child(size_t i, Node& n) {
-		/**
-		 * @brief Set my child to n. NOTE: This one needs to be used, rather than accessing children directly, because we have to set parent pointers and indices. 
-		 * @param i
-		 * @param n
-		 */
-		
-		// NOTE: if you add anything fancy to this, be sure to update the copy and move constructors
-		
-		assert(i < rule->N);
-		assert(n.nt() == rule->type(i));
-		
-		while(children.size() <= i) // make it big enough for i  
-			children.push_back(Node());
-
-		children[i] = n;
-		children[i].pi = i;
-		children[i].parent = this;
-	}
-	void set_child(size_t i, Node&& n) {
-		/**
-		 * @brief Child setter for move
-		 * @param i
-		 */
-		
-		// NOTE: if you add anything fancy to this, be sure to update the copy and move constructors
-		
-		assert(i < rule->N);
-		assert(n.nt() == rule->type(i));
-		
-		while(children.size() <= i) // make it big enough for i  
-			children.push_back(Node());
-
-		children[i] = n;
-		children[i].pi = i;
-		children[i].parent = this;
-	}
-	
 	
 	bool is_null() const { 
 		/**
@@ -350,7 +181,6 @@ public:
 		return s;
 	}
 
-
 	void map( const std::function<void(Node&)>& f) {
 		/**
 		 * @brief Apply f to me and everything below.  
@@ -377,16 +207,9 @@ public:
 		f(*this);
 	}
 	
-	virtual size_t count() const {
-		/**
-		 * @brief How many nodes are below me?
-		 * @return 
-		 */
-		
-		std::function<size_t(const Node& n)> one = [](const Node& n){return (size_t)1;};
-		return sum<size_t>( one );
+	virtual size_t count() const override { // why are you so stupid, c++?
+		return Tree<Node>::count();
 	}
-	
 	virtual size_t count(const Node& n) const {
 		/**
 		 * @brief How many nodes below me are equal to n?
@@ -401,36 +224,6 @@ public:
 		return cnt;
 	}
 	
-	virtual bool is_root() const {
-		/**
-		 * @brief Am I a root node? I am if my parent is nullptr. 
-		 * @return 
-		 */
-		
-		return parent == nullptr;
-	}
-	
-	virtual bool is_terminal() const {
-		/**
-		 * @brief Am I a terminal? I am if I have no children. 
-		 * @return 
-		 */
-		
-		return children.size() == 0;
-	}
-	
-	virtual size_t count_terminals() const {
-		/**
-		 * @brief How many terminals are below me?
-		 * @return 
-		 */
-		
-		size_t cnt = 0;
-		for(const auto& n : *this) {
-			if(n.is_terminal()) ++cnt;
-		}
-		return cnt;
-	}
 	
 	virtual bool is_complete() const {
 		/**
@@ -448,29 +241,8 @@ public:
 		return children.size() == rule->N; // must have all my kids
 	}
 		
-	virtual Node* get_nth(int n, std::function<int(const Node&)>& f) {
-		/**
-		 * @brief Return a pointer to the n'th child satisfying f (f's output is cast to bool)
-		 * @param n
-		 * @param f
-		 * @return 
-		 */
-		
-		for(auto& x : *this) {
-			if(f(x)) {
-				if(n == 0) return &x;
-				else       --n;
-			}
-		}	
 	
-		return nullptr; // not here, losers
-	}
-	virtual Node* get_nth(int n) { // default true on every node
-		std::function<int(const Node&)> f = [](const Node& n) { return 1;};
-		return get_nth(n, f); 
-	}
-
-	virtual std::string string() const { 
+	virtual std::string string() const override { 
 		/**
 		 * @brief Convert a tree to a string, using each node's format.  
 		 * @return 
@@ -601,66 +373,8 @@ public:
 		}
 	}
 		
-//	inline virtual void linearize(Program &ops) const { 
-//		/**
-//		 * @brief convert tree to a linear sequence of operations. 
-//		 * 		To do this, we first linearize the kids, leaving their values as the top on the stack
-//		 *		then we compute our value, remove our kids' values to clean up the stack, and push on our return
-//		 *		the only fanciness is for if: here we will use the following layout 
-//		 *		<TOP OF STACK> <bool> op_IF(xsize) X-branch JUMP(ysize) Y-branch
-//		 *		
-//		 *		NOTE: Inline here lets gcc inline a few recursions of this function, which ends up speeding
-//		 *		us up a bit (otherwise recursive inlining only happens at -O3)
-//		 *		This optimization is why we do set max-inline-insns-recursive in Fleet.mk
-//		 * @param ops
-//		 */
-//		
-//		// NOTE: If you change the order here ever, you have to change how string() works so that 
-//		//       string order matches evaluation order
-//		// TODO: We should restructure this to use "map" so that the order is always the same as for printing
-//		
-//		// and just a little checking here
-//		for(size_t i=0;i<rule->N;i++) {
-//			assert(not children[i].is_null() && "Cannot linearize a Node with null children");
-//			assert(children[i].rule->nt == rule->type(i) && "Somehow the child has incorrect types -- this is bad news for you."); // make sure my kids types are what they should be
-//		}
-//		
-//		size_t ops_start_size = ops.size();
-//		
-//		// Main code
-//		if( rule->instr.is_a(BuiltinOp::op_IF) ) {
-//			assert(rule->N == 3 && "BuiltinOp::op_IF require three arguments"); // must have 3 parts
-//						
-//			children[2].linearize(ops);
-//			size_t ysize = ops.size() - ops_start_size; assert(ysize == children[2].program_size());
-//			assert(ysize < std::numeric_limits<decltype(Instruction::arg)>::max() && "If statement jump size too large to be encoded in Instruction arg. Your program is too large for Fleet.");
-//			
-//			ops.emplace_back(BuiltinOp::op_JMP, ysize);
-//			
-//			children[1].linearize(ops);
-//			// note here for xsize we jump over the JMP, which is why its program_size + 1
-//			size_t xsize = ops.size() - (ops_start_size+ysize); assert(xsize == children[1].program_size()+1);
-//			assert(xsize < std::numeric_limits<decltype(Instruction::arg)>::max() && "If statement jump size too large to be encoded in Instruction arg. Your program is too large for Fleet."); // these sizes come from the arg bitfield 
-//			
-//			// encode jump
-//			ops.emplace_back(BuiltinOp::op_IF, xsize);
-//			
-//			// evaluate the bool first so its on the stack when we get to if
-//			children[0].linearize(ops);
-//			
-//		}
-//		else {
-//			/* Here we push the children in increasing order. Then, when we pop rightmost first (as Primitive does), it 
-//			 * assigns the correct index.  */
-//			ops.emplace_back(rule->instr); 
-//			
-//			for(int i=rule->N-1;i>=0;i--) { // here we linearize right to left so that when we call right to left, it matches string order			
-//				children[i].linearize(ops);
-//			}
-//		}
-//	}
 	
-	virtual bool operator==(const Node& n) const{
+	virtual bool operator==(const Node& n) const override {
 		/**
 		 * @brief Check equality between notes. Note this compares rule objects. 
 		 * @param n
@@ -679,11 +393,6 @@ public:
 		return true;
 	}
 	
-	virtual bool operator!=(const Node& n) const{
-		return not (*this == n);
-	}
-
-
 	virtual size_t hash(size_t depth=0) const {
 		/**
 		 * @brief Hash a tree by hashing the rule and everything below. 
@@ -701,12 +410,3 @@ public:
 	
 	
 };
-
-
-Node::NodeIterator Node::EndNodeIterator = NodeIterator(nullptr);
-
-
-std::ostream& operator<<(std::ostream& o, const Node& n) {
-	o << n.string();
-	return o;
-}
