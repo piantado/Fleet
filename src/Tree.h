@@ -263,6 +263,28 @@ public:
 		return parent == nullptr;
 	}
 	
+	this_t* root() {
+		this_t* x = static_cast<this_t*>(this);
+		while(x->parent != nullptr) {
+			x = x->parent;
+		}
+		return x;
+	}
+	
+	this_t* get_via(std::function<bool(this_t*)>& f ) {
+		if(f(this)) {
+			return this;
+		}
+		else {
+			for(auto& c : children) {
+				auto x = c.get_via(f);
+				if(x != nullptr) 
+					return x;
+			}
+		}
+		return nullptr; 
+	}
+	
 	virtual size_t count() const {
 		/**
 		 * @brief How many nodes total are below me?
