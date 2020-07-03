@@ -106,15 +106,14 @@ int main(int argc, char** argv){
 	// in doing this, grammar deduces the types from the input and output types of each primitive
 	MyGrammar grammar(PRIMITIVES);
 	
-	// mydata stores the data for the inference model
-	MyHypothesis::data_t mydata;
-	
 	// top stores the top hypotheses we have found
 	TopN<MyHypothesis> top(ntop);
 	
 	//------------------
 	// set up the data
 	//------------------
+	// mydata stores the data for the inference model
+	MyHypothesis::data_t mydata;
 	
 	mydata.push_back(MyHypothesis::datum_t{.input=Object{.color=Color::Red, .shape=Shape::Triangle}, .output=true,  .reliability=0.75});
 	mydata.push_back(MyHypothesis::datum_t{.input=Object{.color=Color::Red, .shape=Shape::Square},   .output=false, .reliability=0.75});

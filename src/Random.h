@@ -222,6 +222,21 @@ std::pair<size_t,double> arg_max(const T& s, const std::function<double(const t&
 	return std::make_pair(max_idx, mx);
 }
 
+
+std::pair<size_t,double> arg_max_int(unsigned int max, const std::function<double(const int)>& f) {
+	double mx = -infinity; 
+	size_t max_idx=0;
+	for(size_t i=0;i<max;i++){
+		double fx = f(i);
+		if(std::isnan(fx)) continue; // treat as zero prob
+		if(fx > mx) {
+			max_idx = i;
+			mx = fx;
+		}
+	}
+	return std::make_pair(max_idx, mx);
+}
+
 template<typename t, typename T> 
 std::pair<t*,double> max_of(T& s, const std::function<double(t&)>& f) {
 	// Same interface as sample but choosing the max

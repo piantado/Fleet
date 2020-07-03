@@ -1,4 +1,26 @@
+/* 
 
+ * Some ideas:
+ * 
+ * 	For a node, we stor ethe last *likelihood*. We then sample the next child with the current prior and the last likelihood. 
+ * 
+ * 	what if we preferentially follow leaves that have a *variable* likelihood distribution. Otherwise we might find something good 
+ *  and then follow up on minor modifications of it? This would automatically be handled by doing some kind of UCT/percentile estimate
+ * 	
+ *	Maybe if we estimate quantiles rather than means or maxes, this will take care of this? If you tak ethe 90th or 99th quantile, 
+ *  then you'll naturally start with 
+ * 
+ *  We should be counting gaps against hypotheses in the selection -- the gaps really make us bound the prior, since each gap must be filled. 
+ * 
+ * TODO: Should be using FAME NO OS as in the paper
+ * 
+ * 
+ * 	Another idea: what if we sample from the bottom of the tree according to probability? To do that we sample and then sum up the lses (excluding closed nodes)
+ * 		and then recurse down until we find what we need
+ * 
+ * 		-- Strange if we just do the A* version, then we'll have a priority queue and that's a lot liek sampling from the leaves? 
+ * 
+ * */
 #pragma once 
 
 #define DEBUG_MCTS 0
@@ -12,298 +34,391 @@
 #include <functional>
 
 #include "StreamingStatistics.h"
+#include "ParallelInferenceInterface.h"
 #include "Control.h"
+#include "SpinLock.h"
+#include "Random.h"
+
+extern double explore; 
 
 /**
- * @class MCTSNode
+ * @class FullMCTSNode
  * @author piantado
- * @date 01/03/20
- * @file MCTS.h
- * @brief Template of self type M, hypothesis type HYP. 
- * 		  This requires us to inherit and override playout to do whatever we want
+ * @date 03/06/20
+ * @file FullMCTS.h
+ * @brief This monte care tree search always plays out a full tree. It is mostly optimized to keep the tree as small as possible. 
+ * 		To do this, it doesn't even store the value (HYP) in the tree, it just constructs it as a search step goes down the tree. 
+ * 	    It also doesn't store parent pointers, it just passes them down the tree. We use SpinLock here because std::mutex is much
+ *      bigger. Finally, explore, data, and callback are all static variables, which means that you will need to subclass this
+ *      if you want to let those vary across nodes (or parallel runs). 
+ * 		This lets us cram everything into 56 bytes. 
+ * 
+ * 		NOTE we could optimize a few more things -- for instance, storing the open bool either in nvisits, or which_expansion
+ * 
+ * 		TODO: We also store terminals currently in the tree, but there's no need for that -- we should eliminate that. 
  */
 
-template<typename M, typename HYP>
-class MCTSNode {	
+template<typename this_t, typename HYP, typename callback_t>
+class FullMCTSNode : public ParallelInferenceInterface<HYP> {	
 public:
 
-	std::vector<M> children;
+	using data_t = typename HYP::data_t;
+	
+	std::vector<this_t> children;
 
-	// NOTE: These used to be atomics?
-    unsigned long nvisits;  // how many times have I visited each node?
-    bool open; // am I still an available node?
-	const double explore; 
-	
-	mutable std::mutex child_mutex; // for access in parallelTempering
-	
-	StreamingStatistics statistics;
-	
-	typename HYP::data_t* data;
-    M* parent; // who is my parent?
-    HYP value;
-    
-    MCTSNode(M* par, HYP& v) : explore(par->explore), data(par->data), parent(par), value(v) {
-		// here we don't expand the children because this is the constructor called when enlarging the tree
+	bool open; // am I still an available node?
 		
-        initialize();	
+	SpinLock mylock; 
+	
+	int which_expansion; 
+	
+	// these are static variables that makes them not have to be stored in each node
+	// this means that if we want to change them for multiple MCTS nodes, we need to subclass
+	static double explore; 
+	static data_t* data;
+	static callback_t* callback; 
+
+	unsigned int nvisits;  // how many times have I visited each node?
+	this_t* parent;
+	float max;
+	float min;
+	float lse;
+	float last_lp;
+    
+	FullMCTSNode() {
+	}
+	
+    FullMCTSNode(HYP& start, this_t* par,  size_t w) : 
+		open(true), which_expansion(w), nvisits(0), parent(par), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
+		// here we don't expand the children because this is the constructor called when enlarging the tree
+		mylock.lock();
+			
+		children.reserve(start.neighbors());
+		mylock.unlock();
     }
     
-    MCTSNode(double ex, HYP& h0, typename HYP::data_t* d ) : 
-		explore(ex), data(d), parent(nullptr), value(h0) {
-        
-		initialize();        
+    FullMCTSNode(HYP& start, double ex, data_t* d, callback_t& cb) : 
+		open(true), which_expansion(0), nvisits(0), parent(nullptr), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
+		// This is the constructor that gets called from main, and it sets the static variables. All the other constructors
+		// should use the above one
 		
-		if(not h0.get_value().is_null()) { CERR "# Warning, initializing MCTS root with a non-null node." ENDL; }
+        mylock.lock();
+		
+		children.reserve(start.neighbors());
+		explore = ex; 
+		data = d;
+		callback = &cb;
+		
+		mylock.unlock();
     }
 	
 	// should not copy or move because then the parent pointers get all messed up 
-	MCTSNode(const MCTSNode& m) = delete;
-	MCTSNode(MCTSNode&& m) : explore(m.explore) {
-		std::lock_guard guard1(m.child_mutex); // get m's lock before moving
-		std::lock_guard guard3(  child_mutex); // and mine to be sure
-		
-		assert(m.children.size() ==0); // else parent pointers get messed up
-		nvisits = m.nvisits;
-		open = m.open;
-		statistics = std::move(statistics);
-		parent = m.parent;
-		value = std::move(m.value);
-		children = std::move(children);
-		data = m.data;		
+	FullMCTSNode(const this_t& m) { // because what happens to the child pointers?
+		throw YouShouldNotBeHereError("*** should not be copying or moving MCTS nodes");
 	}
 	
-	/**
-	 * @brief This must get overwritten when we want to use a MCTS node
-	 * @param m
-	 */	
-	virtual void playout() = 0;
-	
-	
+	FullMCTSNode(this_t&& m) {
+		// This must be defined for us to emplace_Back, but we don't actually want to move because that messes with 
+		// the multithreading. So we'll throw an exception. You can avoid moves by reserving children up above, 
+		// which should make it so that we never call this		
+		throw YouShouldNotBeHereError("*** This must be defined for children.emplace_back, but should never be called");
+	}
+		
+	void operator=(const FullMCTSNode& m) {
+		throw YouShouldNotBeHereError("*** This must be defined for but should never be called");
+	}
+	void operator=(FullMCTSNode&& m) {
+		throw YouShouldNotBeHereError("*** This must be defined for but should never be called");
+	}
+		
+		
     size_t size() const {
-        int n = 1;
+        int n = 1; // for me
         for(const auto& c : children)
             n += c.size();
         return n;
     }
     
-    void initialize() {
-		nvisits=0;
-        open=true;
-    }
-    
-	void print(std::ostream& o, const int depth, const bool sort) const { 
+	void print(HYP from, std::ostream& o, const int depth, const bool sort) { 
+		// here from is not a reference since we want to copy when we recurse 
+		
         std::string idnt = std::string(depth, '\t'); // how far should we indent?
         
 		std::string opn = (open?" ":"*");
 		
-		double s = score(); // must call before getting stats mutex, since this requests it too 
+		o << idnt TAB opn TAB last_lp TAB max TAB "visits=" << nvisits TAB which_expansion TAB from ENDL;
 		
-		{
-			o << idnt TAB opn TAB s TAB statistics.median() TAB statistics.max TAB "visits=" << nvisits TAB value.string() ENDL;
-		}
 		// optional sort
 		if(sort) {
 			// we have to make a copy of our pointer array because otherwise its not const			
-			std::vector<const MCTSNode*> c2;
-			for(const auto& c : children) c2.push_back(&c);
-			std::sort(c2.begin(), c2.end(), [](const auto a, const auto b) {return a->statistics.N > b->statistics.N;}); // sort by how many samples
+			std::vector<std::pair<this_t*,int>> c2;
+			int w = 0;
+			for(auto& c : children) {
+				c2.emplace_back(&c,w);
+				++w;
+			}
+			std::sort(c2.begin(), 
+					  c2.end(), 
+					  [](const auto a, const auto b) {
+							return a.first->nvisits > b.first->nvisits;
+					  }
+					  ); // sort by how many samples
 
-			for(const auto& c : c2) 
-				c->print(o, depth+1, sort);
+			for(auto& c : c2) {
+				HYP newfrom = from; newfrom.expand_to_neighbor(c.second);
+				c.first->print(newfrom, o, depth+1, sort);
+			}
 		}
 		else {		
-			for(auto& c : children) 
-				c.print(o, depth+1, sort);
+			int w = 0;
+			for(auto& c : children) {
+				HYP newfrom = from; newfrom.expand_to_neighbor(w);
+				c.print(newfrom, o, depth+1, sort);
+				++w;;
+			}
 		}
     }
  
 	// wrappers for file io
-    void print(const bool sort=true) const { 
-		print(std::cout, 0, sort);		
+    void print(HYP& start, const bool sort=true) { 
+		print(start, std::cout, 0, sort);		
 	}
-	void printerr(const bool sort=true) const {
-		print(std::cerr, 0);
-	}    
-	void print(const char* filename, const bool sort=true) const {
+
+	void print(HYP& start, const char* filename, const bool sort=true) {
 		std::ofstream out(filename);
-		print(out, 0, sort);
+		print(start, out, 0, sort);
 		out.close();		
 	}
 
-	double score() const {
-		// Compute the score of this node, which is used in sampling down the tree
-		// NOTE: this can't be const because the StreamingStatistics need a mutex
+    void add_sample(const float v) {
+        max = std::max(max,v);	
+		if(v != -infinity) // keep track of the smallest non-inf value -- we use this instead of inf for sampling
+			min = std::min(min, v); 
+		lse = logplusexp(lse, v);
+		last_lp = v;
 		
-		// I will add probability "explore" pseudocounts to my parent's distribution in order to form a prior 
-		// please change this parameter name later. 
-		if(this->parent != nullptr and uniform() <= explore / (explore + statistics.N)) {
-			return parent->score(); 
-		} 
-		else {
-			return statistics.sample();			
-		}		
+		// and propagate up the tree
+		if(parent != nullptr) {
+			parent->add_sample(v);
+		}
+		
+    }
+	
+	/**
+	 * @brief Have all my children been visited?
+	 * @return 
+	 */	
+	bool all_children_visited() const {
+		for(auto& c: children) {
+			if(c.nvisits == 0) return false;
+		}
+		return true;
 	}
 	
-	// Some older scoring systems:		
-//		else if(scoring_type == ScoringType::UCBMAX) {
-//			// score based on a UCB-inspired score, using the max found so far below this
-//			if(statistics.N == 0 || parent == nullptr) return infinity; // preference for unexplored nodes at this level, thus otherwise my parent stats must be >0
-//			return statistics.max + explore * sqrt(log(parent->statistics.N+1) / log(1+statistics.N));
-//			
-//		}
-//		else if(scoring_type == ScoringType::MEDIAN) {
-//			if(statistics.N == 0 || parent == nullptr) return infinity; // preference for unexplored nodes at this level, thus otherwise my parent stats must be >0
-//			return statistics.p_exceeds_median(parent->statistics) + explore * sqrt(log(parent->statistics.N+1) / log(1+statistics.N));
-//		}
-//		else {
-//			assert(false && "Invalide ScoringType specified in MCTS::score");
-//		}
-//	}
-
-	size_t open_children() const {
-		size_t n = 0;
-		for(auto const& c : children) {
-			n += c.open;
-		}
-		return n;
-	}
-
-
-	size_t best_child_index() const {
-		// returns a pointer to the best child according to the scoring function
-		// NOTE: This might return a nullptr in highly parallel situations
-		std::lock_guard guard(child_mutex);
+	virtual void run_thread(Control ctl, HYP h0) override {
 		
-		size_t best_index = 0;
-		double best_score = -infinity;
-		size_t idx = 0;
-		for(auto& c : children) {
-			if(c.open) {
-				//if(c->statistics.N==0) return c; // just take any unopened
-				double s = c.score();
-				if(s >= best_score) {
-					best_score = s;
-					best_index = idx;
-				}
-			}
-			idx++;
-		}
-		return best_index;
-	}
-
-
-    void add_sample(const double v, const size_t num=1){ // found something with v
-        
-		nvisits += num; // we want to update this even if inf/nan since we did try searching here
-		
-//		std::lock_guard guard(stats_mutex);
-		
-		// If we do the first of these, we sampling probabilities proportional to the probabilities
-		// otherwise we sample them uniformly
-//		statistics.add(v,v); // it has itself as a log probability!
-		statistics << v;
-		
-		// and add this sampel going up too
-		if(parent != nullptr) {
-			parent->add_sample(v, num);
-		}
-    }
-	void operator<<(double v) { add_sample(v,1); }
-		
-	void add_child_nodes() {
-
-		std::lock_guard guard(child_mutex);
-		
-		if(children.size() == 0) { // check again in case someone else has edited in the meantime
-			
-			size_t N = value.neighbors();
-//			std::cerr << N TAB value.string() ENDL;
-						
-			if(N==0) { // remove myself from the tree since these routes have been explored
-				open = false;
-			} 
-			else {
-				open = true;
-				for(size_t ei = 0; ei<N; ei++) {
-					size_t eitmp = ei; // since this is passed by refernece
-					
-					auto v = value.make_neighbor(eitmp);
-					
-					if(DEBUG_MCTS) DEBUG("\tAdding child ", this, "\t["+v.string()+"] ");
-					
-					//children.push_back(MCTSNode<HYP>(this,v));
-					children.emplace_back(static_cast<M*>(this),v);
-				}
-			}
-		}
-	}
-   
-	// search for some number of steps
-	void search(Control ctl) {
-		// ctl controls the mcts path through nodes
-		assert(ctl.threads == 1);
 		ctl.start();
 		
 		while(ctl.running()) {
 			if(DEBUG_MCTS) DEBUG("\tMCTS SEARCH LOOP");
 			
-			this->search_one();
-		}
+			HYP current = h0; // each thread makes a real copy here 
+			this->search_one(current); 
+		}		
 	}
+	
 
 	
-	void parallel_search(Control ctl) { 
-		
-		auto __helper = [](MCTSNode<M,HYP>* h, Control ctl) {
-			h->search(ctl);
-		};
-		
-		std::vector<std::thread> threads(ctl.threads); 
-		
-		// start everyone running 
-		for(unsigned long i=0;i<ctl.threads;i++) {
-			Control ctl2 = ctl; ctl2.threads=1;
-			threads[i] = std::thread(__helper, this, ctl2);
-		}
-		
-		for(unsigned long i=0;i<ctl.threads;i++) {
-			threads[i].join();
-		}	
+	/**
+	 * @brief If we can evaluate this current node (usually: compute a posterior and add_sample)
+	 * @param current
+	 */
+	virtual void process_evaluable(HYP& current) {
+		open = false; // make sure nobody else takes this one
+			
+		// if its a terminal, compute the posterior
+		current.compute_posterior(*data);
+		add_sample(current.likelihood);
+		(*callback)(current);
 	}
 
-   
-    void search_one() {
-        // sample a path down the tree and when we get to the end
-        // use random playouts to see how well we do
-       
-		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+value.string()+"] ", nvisits);
+	/**
+	 * @brief This gets called before descending the tree if we don't have all of our children. 
+	 * 		  NOTE: This could add all the children (default) or be overwritten to add one, or none
+	 * @param current
+	 */
+	virtual void process_add_children(HYP& current) {
+		int neigh = current.neighbors(); 
 		
-		if(nvisits == 0) { // I am a leaf of the search who has not been expanded yet
-			playout(); // update my internal counts
-			open = value.neighbors() > 0; // only open if the value is partial
-			return;
+		mylock.lock();
+		// TODO: This is a bit inefficient because it copies current a bunch of times...
+		// this is intentionally a while loop in case another thread has snuck in and added
+		while(children.size() < (size_t)neigh) {
+			int k = children.size(); // which to expand
+			HYP kc = current; kc.expand_to_neighbor(k);
+			children.emplace_back(kc, reinterpret_cast<this_t*>(this), k);
+		}		
+		mylock.unlock();		
+	}
+
+		
+	/**
+	 * @brief This goes down the tree, sampling children. Defaultly here it's total probability mass per child
+	 * @param current
+	 */
+	virtual void descend(HYP& current) {
+		int neigh = current.neighbors(); 
+		std::vector<double> children_lps(neigh, -infinity);
+		for(int k=0;k<neigh;k++) {
+			if(children[k].open){
+				/// how much probability mass PER sample came from each child, dividing by explore for the temperature.
+				/// If no exploraiton steps, we just pretend lse-1.0 was the probability mass 
+				children_lps[k] = current.neighbor_prior(k) + 
+								  (children[k].nvisits == 0 ? lse-1.0 : children[k].lse-log(children[k].nvisits)) / explore;
+			}
 		}
 		
+		// choose an index into children
+		int idx = sample_int_lp(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
 		
-		if(children.size() == 0) { // if I have no children
-			this->add_child_nodes(); // add child nodes if they don't exist
+		// expand 
+		current.expand_to_neighbor(idx); // idx here gives which expansion we follow
+		
+		// and recurse down
+		children[idx].search_one(current);
+	}
+
+
+	/**
+	 * @brief recurse down the tree, building and/or evaluating as needed.
+	 * @param current
+	 */
+    void search_one(HYP& current) {
+		//  
+		
+		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", nvisits);
+		
+		++nvisits; // increment our visit count on our way down so other threads don't follow
+		
+		int neigh = current.neighbors(); 
+		
+		// if we can evaluate this 
+		if(current.is_evaluable()) {
+			process_evaluable(current);
 		}
 		
-		// even after we try to add, we might not have any. If so, return
-		if(open_children() == 0) {
-			open = false;
-			return;
+		// if I don't have all of my children, add them
+		if(children.size() != (size_t) neigh) {
+			process_add_children(current);
 		}
-		else {
-			// now if we get here, we must have at least one open child
-			// so we can pick the best and recurse 
-			
-			nvisits++; // increment our visit count on our way down so other threads don't follow
-			
-			// choose the best and recurse
-			size_t bi = best_child_index();
-			children[bi].search_one();
+		
+		// otherwise keep going down the tree
+		if(neigh > 0) {
+			descend(current);
 		}
+		
     } // end search
 
+};
+
+// Must be defined for the linker to find them, apparently:
+template<typename this_t, typename HYP, typename callback_t>
+double FullMCTSNode<this_t, HYP, callback_t>::explore = 1.0;
+
+template<typename this_t, typename HYP, typename callback_t>
+typename HYP::data_t* FullMCTSNode<this_t, HYP,callback_t>::data = nullptr;
+
+template<typename this_t, typename HYP, typename callback_t>
+callback_t* FullMCTSNode<this_t, HYP,callback_t>::callback = nullptr;
+
+
+
+// A class that calls some number of playouts instead of building the full tree
+template<typename this_t, typename HYP, typename callback_t>
+class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {	
+	using Super = FullMCTSNode<this_t,HYP,callback_t>;
+	using Super::Super; // get constructors
+
+	using data_t = typename HYP::data_t;
+	
+	/**
+	 * @brief Choose the max according to a UCT-like bound
+	 * @param current
+	 */
+	virtual void descend(HYP& current) override {
+		
+		// check if all my children have been visited
+		
+		int neigh = current.neighbors(); 
+		
+		// if everyone has been visited, we'll descend with a UCT-like rule
+		if(this->all_children_visited()) {
+			std::vector<double> children_lps(neigh, -infinity);		
+			for(int k=0;k<neigh;k++) {
+				if(this->children[k].open){
+					children_lps[k] = current.neighbor_prior(k) + 
+									  (this->children[k].nvisits == 0 ? 0.0 : this->children[k].max + explore*sqrt(log(1+this->nvisits)/(1+this->children[k].nvisits)));
+				}
+			}			
+			
+			int idx = arg_max_int(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
+			current.expand_to_neighbor(idx); // idx here gives which expansion we follow
+			this->children[idx].search_one(current);
+		}
+		else {
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			// TODO: We migh have to handle here when the child has prior -inf?
+			
+			// TODO: must do curiously recurring in order to get type
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			// otherwise choose the highest prior one that is unvisited and run playout (which users must define)
+			int idx = arg_max_int(neigh, [&](const int k) -> double { return (this->children[k].nvisits == 0 ? current.neighbor_prior(k) : -infinity); } ).first;
+			
+			
+			
+			CERR idx ENDL;
+			
+			
+			
+			
+			current.expand_to_neighbor(idx); // idx here gives which expansion we follow
+			
+			// NOTE: here we do not search_one -- we just stop at this node -- adding one expansion to children
+			// we have to call children[idx] here because otherwise it won't get the sample
+			this->children[idx].playout(current);
+		}
+		
+	}
+
+	/**
+	 * @brief This gets called on a child that is unvisited. Typically it would consist of filling in h some number of times and
+	 * 		  saving the stats
+	 * @param h
+	 */
+	virtual void playout(HYP& h) {
+		for(size_t i=0;i<100;i++) {
+			HYP v = h; v.complete();
+			v.compute_posterior(*this->data);
+			this->add_sample(v.likelihood);
+			(*this->callback)(v);
+		}		
+	}
+	
+	
 };
