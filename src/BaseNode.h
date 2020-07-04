@@ -4,7 +4,7 @@
 #include<string>
 
 #include "Errors.h"
-
+#include "IO.h"
 
 /**
  * @class BaseNode
@@ -20,7 +20,7 @@ template<typename this_t>
 class BaseNode { 
 
 protected:
-	std::vector<this_t> children; // TODO make this protected so we don't set children -- must use set_child
+	std::vector<this_t> children;
 	
 public:
 	this_t* parent; 
@@ -42,12 +42,27 @@ public:
 		fix_child_info();
 	}
 	
-	
+	void operator=(const this_t& t) {
+		parent = t.parent;
+		pi = t.pi;
+		children = t.children;
+		fix_child_info();
+	}
+	void operator=(const this_t&& t) {
+		parent = t.parent;
+		pi = t.pi;
+		children = std::move(t.children);
+		fix_child_info();
+	}
+
 	virtual ~BaseNode() {}
 
 	// Functions to be defined by subclasses
 	virtual std::string string() const {
 		throw YouShouldNotBeHereError("*** BaseNode subclass has no defined string()"); 
+	}
+	virtual std::string my_string() const { /// just print myself, not all my kids (single row per node display)
+		throw YouShouldNotBeHereError("*** BaseNode subclass has no defined my_string()"); 
 	}
 	virtual bool operator==(const this_t& n) const {
 		throw YouShouldNotBeHereError("*** BaseNode subclass has no defined operator==");
@@ -91,21 +106,18 @@ public:
 					return EndNodeIterator; 
 				}
 				
+				// go through the children if we can
 				if(current->pi+1 < current->parent->children.size()) {
 					current = current->parent->children[current->pi+1].left_descend();
 				}
-				else { 
-					// now we call the parent (if we're out of children)
+				else { 	// now we call the parent (if we're out of children)
 					current = current->parent; 
 				}
 				return *this;
 			}
 				
 			NodeIterator& operator+(size_t n) {
-				for(size_t i=0;i<n;i++) {
-					this->operator++();
-					
-				}
+				for(size_t i=0;i<n;i++) this->operator++();					
 				return *this;
 			}
 
@@ -181,9 +193,10 @@ public:
 		 * @return 
 		 */
 		
-		this_t* k = (this_t*) this;
-		while(k != nullptr && k->children.size() > 0) 
-			k = &(k->children[0]);
+		this_t* k = const_cast<this_t*>(static_cast<const this_t*>(this));
+		while(k != nullptr && k->nchildren() > 0) {
+			k = &(k->child(0));
+		}
 		return k;
 	}
 	
@@ -262,6 +275,13 @@ public:
 		children[i].parent = static_cast<this_t*>(this);
 	}
 	
+	void push_back(this_t& n) {
+		set_child(children.size(), n);
+	}
+	void push_back(this_t&& n) {
+		set_child(children.size(), n);
+	}
+	
 	virtual bool is_root() const {
 		/**
 		 * @brief Am I a root node? I am if my parent is nullptr. 
@@ -279,16 +299,9 @@ public:
 		return x;
 	}
 	
-	this_t* get_via(std::function<bool(this_t*)>& f ) {
-		if(f(this)) {
-			return this;
-		}
-		else {
-			for(auto& c : children) {
-				auto x = c.get_via(f);
-				if(x != nullptr) 
-					return x;
-			}
+	this_t* get_via(std::function<bool(this_t&)>& f ) {
+		for(auto& n : *this) {
+			if(f(n)) return &n;
 		}
 		return nullptr; 
 	}
@@ -363,6 +376,17 @@ public:
 		std::function<int(const this_t&)> f = [](const this_t& n) { return 1;};
 		return get_nth(n, f); 
 	}
+	
+	void print(size_t t=0) const {
+		
+		std::string tabs(t,'\t');		
+		
+		COUT tabs << this->my_string() ENDL;
+		for(auto& c : children) {
+			c.print(t+1);
+		}		
+	}
+	
 };
 
 
