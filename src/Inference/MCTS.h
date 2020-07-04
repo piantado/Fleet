@@ -336,6 +336,7 @@ class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {
 	using Super::Super; // get constructors
 
 	using data_t = typename HYP::data_t;
+	static constexpr size_t nplayouts = 100; // when we playout, how many do we do?
 	
 	/**
 	 * @brief Choose the max according to a UCT-like bound
@@ -363,40 +364,13 @@ class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {
 		}
 		else {
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			// TODO: We migh have to handle here when the child has prior -inf?
-			
-			// TODO: must do curiously recurring in order to get type
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			// otherwise choose the highest prior one that is unvisited and run playout (which users must define)
 			int idx = arg_max_int(neigh, [&](const int k) -> double { return (this->children[k].nvisits == 0 ? current.neighbor_prior(k) : -infinity); } ).first;
-			
-			
-			
-			CERR idx ENDL;
-			
-			
-			
-			
 			current.expand_to_neighbor(idx); // idx here gives which expansion we follow
 			
 			// NOTE: here we do not search_one -- we just stop at this node -- adding one expansion to children
 			// we have to call children[idx] here because otherwise it won't get the sample
+			this->children[idx].nvisits++; // since it's not counted in add_sample and we don't search_one on it
 			this->children[idx].playout(current);
 		}
 		
@@ -408,7 +382,7 @@ class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {
 	 * @param h
 	 */
 	virtual void playout(HYP& h) {
-		for(size_t i=0;i<100;i++) {
+		for(size_t i=0;i<nplayouts;i++) {
 			HYP v = h; v.complete();
 			v.compute_posterior(*this->data);
 			this->add_sample(v.likelihood);

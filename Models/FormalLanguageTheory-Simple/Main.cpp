@@ -139,9 +139,9 @@ public:
 #include "Fleet.h" 
 
 // Must define this to use the CRTP
-class MyMCTS : public FullMCTSNode<MyMCTS, MyHypothesis, TopN<MyHypothesis>> {
+class MyMCTS : public PartialMCTSNode<MyMCTS, MyHypothesis, TopN<MyHypothesis>> {
 public:
-	using Super = FullMCTSNode<MyMCTS, MyHypothesis, TopN<MyHypothesis>>;
+	using Super = PartialMCTSNode<MyMCTS, MyHypothesis, TopN<MyHypothesis>>;
 	using Super::Super;
 
 	// we must declare this to use these in a vector, but we can't call it since we can't move the locks
