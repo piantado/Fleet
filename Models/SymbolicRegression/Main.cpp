@@ -28,7 +28,6 @@ class MyGrammar : public Grammar<D> {
 // check fi a rule is constant
 bool isConstant(const Rule* r) { return r->format == "C"; }
 
-
 class MyHypothesis final : public LOTHypothesis<MyHypothesis,D,D,MyGrammar> {
 	/* This class handles enumeration of the structure but critically does MCMC over the constants */
 	
@@ -79,7 +78,6 @@ public:
 	
 	virtual std::string __my_string_recurse(const Node* n, size_t& idx) const {
 		// we need this to print strings -- its in a similar format to evaluation
-		
 		if(isConstant(n->rule)) {
 			return "("+str(constants[idx++])+")";
 		}
@@ -116,10 +114,12 @@ public:
 		// I think we could do this by iterating through the kids in the right way..
 		// NOTE: This only works here becaus e
 		
-		if(!value.is_complete()) return structure_string(); // don't fill in constants if we aren't complete
+		// we can get here where our constants have not been defined it seems...
+		if(constants.size() < count_constants() or not this->is_evaluable()) 
+			return structure_string(); // don't fill in constants if we aren't complete
 		
 		size_t idx = 0;
-		return  std::string("\u03BBx.") +  __my_string_recurse(&value,idx);
+		return  std::string("\u03BBx.") +  __my_string_recurse(&value, idx);
 	}
 	
 	virtual std::string structure_string() const {
@@ -190,13 +190,11 @@ public:
 	
 	virtual void complete() override {
 		Super::complete();
-		constants.resize(count_constants());
 		randomize_constants();
 	}
 	
 	virtual MyHypothesis make_neighbor(int k) const override {
 		auto ret = Super::make_neighbor(k);
-		ret.constants.resize(ret.count_constants());
 		ret.randomize_constants();
 		return ret;
 	}
@@ -267,54 +265,51 @@ data_t mydata;
 #include "MCTS.h"
 #include "MCMCChain.h"
 
-class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
-	using MCTSNode::MCTSNode;
+/**
+ * @class MyCallback
+ * @author piantado
+ * @date 03/07/20
+ * @file Main.cpp
+ * @brief A callback here for processing samples, putting them into the right places
+ */
+void myCallback(MyHypothesis& h) {
+		if(h.posterior == -infinity) return; // ignore these
 
-	virtual void playout() override {
-		//if(DEBUG_MCTS) DEBUG( "\tPLAYOUT ", value.string());
+		auto ss = h.structure_string();
+		std::lock_guard guard(master_sample_lock);
+		if(!master_samples.count(ss)) { // create this if it doesn't exist
+			master_samples.emplace(ss,nsamples);
+		}
+		
+		// and add it
+		master_samples[ss] << h;
+}
 
 
-	/// Can't just do this because it might be a constant...
-//		if(value.value.is_complete()) {
-//			MyHypothesis h0 = value;
-//			h0.compute_posterior(*data);
-//			add_sample(h0.posterior);
-//			return; 
-//		}
+class MyMCTS : public PartialMCTSNode<MyMCTS, MyHypothesis, decltype(myCallback) > {
+	using Super = PartialMCTSNode<MyMCTS, MyHypothesis, decltype(myCallback)>;
+	using Super::Super;
 
+public:
+	MyMCTS(MyMCTS&&) { assert(false); } // must be defined but not used
 
-		MyHypothesis h0 = value; // need a copy to change resampling on 
+	virtual void playout(MyHypothesis& current) override {
+
+		MyHypothesis h0 = current; // need a copy to change resampling on 
 		for(auto& n : h0.get_value() ){
 			n.can_resample = false;
 		}
+		h0.complete(); // fill in any structural gaps
 		
 		// make a wrapper to add samples
-		std::function<void(MyHypothesis& h)> cb = [&](MyHypothesis& h) { 
-			if(h.posterior == -infinity) return;
-	
-			auto ss = h.structure_string();
-			std::lock_guard guard(master_sample_lock);
-			if(!master_samples.count(ss)) { // create this if it doesn't exist
-				master_samples.emplace(ss,nsamples);
-			}
-			
-			// and add it
-			master_samples[ss] << h;
-			
+		std::function cb = [&](MyHypothesis& h) { 
+			myCallback(h);
 			// and update MCTS -- here every sample
 			add_sample(h.posterior);
-		};
+		};		
 		
-		
-		
-		auto h = h0;
-		h.complete(); // fill in any structural gaps
-		
-		MCMCChain chain(h, data, cb);
+		MCMCChain chain(h0, data, cb);
 		chain.run(Control(0, innertime, 1, 10000)); // run mcmc with restarts; we sure shouldn't run more than runtime
-		
-//		COUT "---------------------------------------------------------------" ENDL;
-//		root->print();
 	}
 	
 };
@@ -332,8 +327,7 @@ int main(int argc, char** argv){
 	Fleet fleet("Symbolic regression");
 	fleet.add_option("-I,--inner-time", innertimestr, "Alphabet we will use"); 	// add my own args
 	fleet.initialize(argc, argv);
-
-
+	
 	innertime = convert_time(innertimestr);
 
 	//------------------
@@ -352,36 +346,18 @@ int main(int argc, char** argv){
 	// Run
 	//------------------
  
-	std::function<void(MyHypothesis& h)> cb = [&](MyHypothesis& h) { 
-		if(h.posterior == -infinity) return;
-
-		auto ss = h.structure_string();
-		std::lock_guard guard(master_sample_lock);
-		if(!master_samples.count(ss)) { // create this if it doesn't exist
-			master_samples.emplace(ss,nsamples);
-		}
-		
-		// and add it
-		master_samples[ss] << h;
-	};
- 
 	MyHypothesis h0(&grammar);
-	MyMCTS m(explore, h0, &mydata);
+	MyMCTS m(h0, explore, &mydata, myCallback);
 	root = &m;
 	tic();
-	m.parallel_search(Control(mcts_steps, runtime, nthreads));
+	m.run(Control(mcts_steps, runtime, nthreads), h0);
 	tic();
 	
-	m.print(tree_path.c_str());
-
-//	std::function cb = callback;
-//	ChainPool samp(h0, &mydata, cb, nchains, true);
-//	tic();
-//	samp.run(mcmc_steps, runtime);
-//	tic();
+	//m.print(tree_path.c_str());
+	m.print(h0);
 
 	// set up a paralle tempering object
-//	ParallelTempering<MyHypothesis> samp(h0, &mydata, callback, 8, 1000.0, false);
+//	ParallelTempering<MyHypothesis> samp(h0, &mydata, myCallback, 8, 1000.0, false);
 //	tic();
 //	samp.run(mcmc_steps, runtime, .25, 3.00); 
 //	tic();
@@ -463,11 +439,5 @@ int main(int argc, char** argv){
 	COUT "# **** REMINDER: These are not printed in order! ****" ENDL;
 	
 	
-//	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
-////	COUT "# MCTS tree size:" TAB m.size() ENDL;	
-//	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
-//	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
-//	COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds() ENDL;
-//	COUT "# Max score: " TAB maxscore ENDL;
-//	COUT "# MCTS steps per second:" TAB m.statistics.N/elapsed_seconds() ENDL;	
+//	COUT "# MCTS tree size:" TAB m.size() ENDL;	
 }

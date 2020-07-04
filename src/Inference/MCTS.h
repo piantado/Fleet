@@ -328,7 +328,13 @@ callback_t* FullMCTSNode<this_t, HYP,callback_t>::callback = nullptr;
 
 
 
-// A class that calls some number of playouts instead of building the full tree
+/**
+ * @class PartialMCTSNode
+ * @author piantado
+ * @date 03/07/20
+ * @file MCTS.h
+ * @brief This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree
+ */
 template<typename this_t, typename HYP, typename callback_t>
 class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {	
 	friend class FullMCTSNode<this_t,HYP,callback_t>;
