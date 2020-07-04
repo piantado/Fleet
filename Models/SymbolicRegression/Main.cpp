@@ -17,6 +17,9 @@ class MyGrammar : public Grammar<D> {
 	using Super::Super;
 };
 
+// check if a rule is constant
+bool isConstant(const Rule* r) { return r->format == "C"; }
+
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define hypothesis
@@ -24,12 +27,8 @@ class MyGrammar : public Grammar<D> {
 
 #include "LOTHypothesis.h"
 
-
-// check fi a rule is constant
-bool isConstant(const Rule* r) { return r->format == "C"; }
-
 class MyHypothesis final : public LOTHypothesis<MyHypothesis,D,D,MyGrammar> {
-	/* This class handles enumeration of the structure but critically does MCMC over the constants */
+	/* This class handles enumeration of the structure and critically does MCMC over the constants */
 	
 public:
 	std::vector<D> constants;
@@ -37,9 +36,17 @@ public:
 	
 	using Super = LOTHypothesis<MyHypothesis,D,D,MyGrammar>;
 	using Super::Super;
-	
+
+	virtual D callOne(const D x, const D err) {
+		// my own wrapper that zeros the constant_i counter
+		constant_idx = 0;
+		auto out = Super::callOne<MyHypothesis>(x,err,this);
+		assert(constant_idx == constants.size()); // just check we used all constants
+		return out;
+	}
+
 	double compute_single_likelihood(const datum_t& datum) override {
-		double fx = this->zeroAndCallOne(datum.input, NaN);
+		double fx = this->callOne(datum.input, NaN);
 		if(std::isnan(fx)) return -infinity;
             
 		return normal_lpdf( (fx-datum.output)/datum.reliability );		
@@ -65,16 +72,6 @@ public:
 		this->prior = Super::compute_prior() + compute_constants_prior();
 		return this->prior;
 	}
-	
-
-	virtual D zeroAndCallOne(const D x, const D err) {
-		// my own wrapper that zeros the constant_i counter
-		constant_idx = 0;
-		auto out = callOne<MyHypothesis>(x,err,this);
-		assert(constant_idx == constants.size()); // just check
-		return out;
-	}
-	
 	
 	virtual std::string __my_string_recurse(const Node* n, size_t& idx) const {
 		// we need this to print strings -- its in a similar format to evaluation
@@ -109,11 +106,6 @@ public:
 	}
 	
 	virtual std::string string() const override { 
-		// Here we need to simulate the stack used in evaluation in order to get the 
-		// order of the constants and operators right 
-		// I think we could do this by iterating through the kids in the right way..
-		// NOTE: This only works here becaus e
-		
 		// we can get here where our constants have not been defined it seems...
 		if(not this->is_evaluable()) 
 			return structure_string(); // don't fill in constants if we aren't complete
@@ -204,11 +196,6 @@ public:
 		Super::expand_to_neighbor(k);
 		randomize_constants();		
 	}
-	
-//	void print() {
-//		Super::print("\t"+Q(this->structure_string()));
-//	}
-	
 };
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -252,17 +239,16 @@ std::tuple PRIMITIVES = {
 // Define these types -- they are needed below
 using data_t  = MyHypothesis::data_t;
 using datum_t = MyHypothesis::datum_t;
+
 #include "Data.h"
 #include "Polynomial.h"
-
 #include "ReservoirSample.h"
 
-std::map<std::string,ReservoirSample<MyHypothesis>> overall_samples; // overall set of samples
+// keep a big set of samples form structures to the best found for each structure
+std::map<std::string,ReservoirSample<MyHypothesis>> overall_samples; 
 std::mutex overall_sample_lock;
 
 size_t innertime;
-class MyMCTS;
-MyMCTS* root;
 data_t mydata;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -356,7 +342,6 @@ int main(int argc, char** argv){
  
 	MyHypothesis h0(&grammar);
 	MyMCTS m(h0, explore, &mydata, myCallback);
-	root = &m;
 	tic();
 	m.run(Control(mcts_steps, runtime, nthreads), h0);
 	tic();
@@ -381,50 +366,34 @@ int main(int argc, char** argv){
 	// Postprocessing to show
 	//------------------
 
+	// useful for extracting the max
+	std::function posterior = [](const MyHypothesis& h) -> double {return h.posterior;};
+
 	// and print out structures that have their top N
-	double cutoff = -infinity;
 	std::vector<double> structureScores;
-	for(auto& m: overall_samples)  {
-		
-		double best_posterior = -infinity;
-		for(auto& x: m.second.values()) {
-			if(x.posterior > best_posterior)
-				best_posterior = x.posterior;
-		}
-		
-		structureScores.push_back(best_posterior);
+	for(auto& m: overall_samples) {
+		structureScores.push_back( max_of(m.second.values(), posterior).second );
 	}
+	if(structureScores.size() == 0)	return 1; // I hope we found something
+
 	
-	double maxscore = -infinity;
-	if(structureScores.size() > 0) { 	// figure out the n'th best (NOTE: there are smarter ways to do this)
-		std::sort(structureScores.begin(), structureScores.end()); // sort low to high
-		maxscore = structureScores[structureScores.size()-1];
-		if(structureScores.size() > nstructs) cutoff = structureScores[structureScores.size()-nstructs-1];
-		else                                  cutoff = structureScores[0];
-	}
+	// sorts low to high to find the nstructs best's score
+	std::sort(structureScores.begin(), structureScores.end());
+	double cutoff = -infinity;
+	if(structureScores.size() > nstructs) cutoff = structureScores[structureScores.size()-nstructs];
+	else								  cutoff = structureScores[0];
+	COUT "# Cutting off at " << cutoff ENDL;
 	
 	// figure out the structure normalizer
-	double Z = -infinity;
-	for(auto s : structureScores) {
-		if(s >= cutoff) 
-			Z = logplusexp(Z, s); // accumulate all of this -- TODO: Should we only be adding up ones over the cutoff?
-	}
-	COUT "# Cutting off at " << cutoff ENDL;
+	double Z = logsumexp(structureScores);
 	
 	// And display!
 	COUT "structure\tstructure.max\testimated.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\tmade.cutoff\th\tparseable.h" ENDL;
 	for(auto& m : overall_samples) {
 		
+		double best_posterior = max_of(m.second.values(), posterior).second;
 		
-		double best_posterior = -infinity;
-		for(auto& x: m.second.values()) {
-			if(x.posterior > best_posterior)
-				best_posterior = x.posterior;
-		}
-		
-		// Look at structures that are above the cutoff or linear
-		// NOTE: This might miss a measure zero chance when the constants make you exactly linear
-		if(best_posterior >= cutoff){ 
+		if(best_posterior >= cutoff) { 
 
 			// find the normalizer for this structure
 			double sz = -infinity;
@@ -436,7 +405,8 @@ int main(int argc, char** argv){
 				     best_posterior TAB 
 					 ( (h.posterior-sz) + (best_posterior-Z)) TAB 
 					 h.posterior TAB h.prior TAB h.likelihood TAB
-					 h.zeroAndCallOne(0.0, NaN) TAB h.zeroAndCallOne(1.0, NaN) TAB 
+					 h.callOne(0.0, NaN) TAB 
+					 h.callOne(1.0, NaN) TAB 
 					 get_polynomial_degree(h.get_value(), h.constants) TAB 
 					 1*(best_posterior >= cutoff) TAB
 					 Q(h.string()) TAB 
@@ -448,5 +418,5 @@ int main(int argc, char** argv){
 	COUT "# **** REMINDER: These are not printed in order! ****" ENDL;
 	
 	
-//	COUT "# MCTS tree size:" TAB m.size() ENDL;	
+	COUT "# MCTS tree size:" TAB m.count() ENDL;	
 }
