@@ -149,7 +149,7 @@ std::pair<t*,double> sample(const T& s, double z, const std::function<double(con
 	for(auto& x : s) {
 		double fx = f(x);
 		if(std::isnan(fx)) continue; // treat as zero prob
-		assert(fx > 0.0);
+		assert(fx >= 0.0);
 		r -= fx;
 		if(r <= 0.0) 
 			return std::make_pair(const_cast<t*>(&x), log(fx)-log(z));
@@ -170,7 +170,7 @@ std::pair<int,double> sample_int(unsigned int max, const std::function<double(co
 	for(size_t i=0;i<max;i++){
 		double fx = f(i);
 		if(std::isnan(fx)) continue; // treat as zero prob
-		assert(fx > 0.0);
+		assert(fx >= 0.0);
 		r -= fx;
 		if(r <= 0.0) 
 			return std::make_pair(i, log(fx)-log(z));

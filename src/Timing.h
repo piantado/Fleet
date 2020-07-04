@@ -90,6 +90,7 @@ time_t convert_time(std::string& s) {
 	// else we must specify a unit	
 	double multiplier; // for default multiplier of 1 is seconds
 	switch(s.at(s.length()-1)) {
+		case 'q': multiplier = 1; break; // q=ms
 		case 's': multiplier = 1000; break; 
 		case 'm': multiplier = 60*1000; break;
 		case 'h': multiplier = 60*60*1000; break;

@@ -115,8 +115,10 @@ public:
 		// NOTE: This only works here becaus e
 		
 		// we can get here where our constants have not been defined it seems...
-		if(constants.size() < count_constants() or not this->is_evaluable()) 
+		if(not this->is_evaluable()) 
 			return structure_string(); // don't fill in constants if we aren't complete
+		
+		assert(constants.size() == count_constants()); // or something is broken
 		
 		size_t idx = 0;
 		return  std::string("\u03BBx.") +  __my_string_recurse(&value, idx);
@@ -198,10 +200,14 @@ public:
 		ret.randomize_constants();
 		return ret;
 	}
-	
-	void print() {
-		Super::print("\t"+Q(this->structure_string()));
+	virtual void expand_to_neighbor(int k) override {
+		Super::expand_to_neighbor(k);
+		randomize_constants();		
 	}
+	
+//	void print() {
+//		Super::print("\t"+Q(this->structure_string()));
+//	}
 	
 };
 
@@ -276,6 +282,7 @@ void myCallback(MyHypothesis& h) {
 		if(h.posterior == -infinity) return; // ignore these
 
 		auto ss = h.structure_string();
+		
 		std::lock_guard guard(overall_sample_lock);
 		if(!overall_samples.count(ss)) { // create this if it doesn't exist
 			overall_samples.emplace(ss,nsamples);
@@ -294,7 +301,8 @@ public:
 	MyMCTS(MyMCTS&&) { assert(false); } // must be defined but not used
 
 	virtual void playout(MyHypothesis& current) override {
-
+		// define our own playout here to call our callback and add sample to the MCTS
+		
 		MyHypothesis h0 = current; // need a copy to change resampling on 
 		for(auto& n : h0.get_value() ){
 			n.can_resample = false;
@@ -353,8 +361,7 @@ int main(int argc, char** argv){
 	m.run(Control(mcts_steps, runtime, nthreads), h0);
 	tic();
 	
-	//m.print(tree_path.c_str());
-	m.print(h0);
+	m.print(h0, tree_path.c_str());
 
 	// set up a paralle tempering object
 //	ParallelTempering<MyHypothesis> samp(h0, &mydata, myCallback, 8, 1000.0, false);
@@ -432,7 +439,9 @@ int main(int argc, char** argv){
 					 h.zeroAndCallOne(0.0, NaN) TAB h.zeroAndCallOne(1.0, NaN) TAB 
 					 get_polynomial_degree(h.get_value(), h.constants) TAB 
 					 1*(best_posterior >= cutoff) TAB
-					 Q(h.string()) TAB Q(h.parseable()) ENDL;
+					 Q(h.string()) TAB 
+					 Q(h.parseable()) 
+					 ENDL;
 			}
 		}
 	}
