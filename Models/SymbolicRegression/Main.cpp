@@ -251,8 +251,8 @@ using datum_t = MyHypothesis::datum_t;
 
 #include "ReservoirSample.h"
 
-std::map<std::string,ReservoirSample<MyHypothesis>> master_samples; // master set of samples
-std::mutex master_sample_lock;
+std::map<std::string,ReservoirSample<MyHypothesis>> overall_samples; // overall set of samples
+std::mutex overall_sample_lock;
 
 size_t innertime;
 class MyMCTS;
@@ -276,13 +276,13 @@ void myCallback(MyHypothesis& h) {
 		if(h.posterior == -infinity) return; // ignore these
 
 		auto ss = h.structure_string();
-		std::lock_guard guard(master_sample_lock);
-		if(!master_samples.count(ss)) { // create this if it doesn't exist
-			master_samples.emplace(ss,nsamples);
+		std::lock_guard guard(overall_sample_lock);
+		if(!overall_samples.count(ss)) { // create this if it doesn't exist
+			overall_samples.emplace(ss,nsamples);
 		}
 		
 		// and add it
-		master_samples[ss] << h;
+		overall_samples[ss] << h;
 }
 
 
@@ -377,7 +377,7 @@ int main(int argc, char** argv){
 	// and print out structures that have their top N
 	double cutoff = -infinity;
 	std::vector<double> structureScores;
-	for(auto& m: master_samples)  {
+	for(auto& m: overall_samples)  {
 		
 		double best_posterior = -infinity;
 		for(auto& x: m.second.values()) {
@@ -406,7 +406,7 @@ int main(int argc, char** argv){
 	
 	// And display!
 	COUT "structure\tstructure.max\testimated.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\tmade.cutoff\th\tparseable.h" ENDL;
-	for(auto& m : master_samples) {
+	for(auto& m : overall_samples) {
 		
 		
 		double best_posterior = -infinity;
