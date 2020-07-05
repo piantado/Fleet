@@ -6,7 +6,7 @@ include $(FLEET_ROOT)/Fleet.mk
 
 
 all:
-	g++ -o main Main.cpp -O2 $(FLEET_FLAGS) $(FLEET_INCLUDE) $(FLEET_LIBS)
+	g++-9 -o main Main.cpp -O2 $(FLEET_FLAGS) $(FLEET_INCLUDE) $(FLEET_LIBS)
 
 debug:
 	g++ -Wall -fdiagnostics-color=auto -o main Main.cpp -g -pg $(FLEET_FLAGS) $(FLEET_INCLUDE) $(FLEET_LIBS)

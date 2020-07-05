@@ -265,7 +265,7 @@ data_t mydata;
  * @brief A callback here for processing samples, putting them into the right places
  */
 void myCallback(MyHypothesis& h) {
-		if(h.posterior == -infinity) return; // ignore these
+		if(h.posterior == -infinity or std::isnan(h.posterior)) return; // ignore these
 
 		auto ss = h.structure_string();
 		

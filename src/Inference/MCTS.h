@@ -186,6 +186,9 @@ public:
 	}
 
     void add_sample(const float v) {
+		
+		if(std::isnan(v)) return;
+		
         max = std::max(max,v);	
 		if(v != -infinity) // keep track of the smallest non-inf value -- we use this instead of inf for sampling
 			min = std::min(min, v); 
