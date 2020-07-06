@@ -27,25 +27,15 @@ public:
 	 * @file ReservoirSample.h
 	 * @brief An item in a reservoir sample, grouping together an element x and its log weights, value, etc. 
 	 */
-	class Item {
-	public:
+	struct Item {
 		T x;
 		const double r; 
 		
 		Item(T x_, double r_) : x(x_), r(r_) {}
 		
-		bool operator<(const Item& b) const {
-			return r < b.r;
-		}
-		
-		bool operator==(const Item& b) const {
-			// equality here checks r and lw (which determine lv)
-			return x==b.x && r==b.r;
-		}
-		
-		void print() const {
-			throw NotImplementedError(); // not needed here but must be defined to use in TopN
-		}
+		bool operator<(const Item& b) const { return r < b.r; }
+		bool operator==(const Item& b) const { return x==b.x && r==b.r; } // equality here checks r and lw (which determine lv)
+		void print() const { throw NotImplementedError(); } // not needed here but must be defined to use in TopN
 	};
 	
 public:
@@ -57,13 +47,8 @@ protected:
 	//mutable std::mutex lock;		
 
 public:
+	ReservoirSample(size_t n=100) :  top(n), N(0) {	}	
 
-	ReservoirSample(size_t n) : N(0){
-		top.set_size(n);
-	}	
-	ReservoirSample() : N(0) {
-	}
-	
 	void set_reservoir_size(const size_t s) const {
 		/**
 		 * @brief How big should the reservoir size be?
@@ -108,10 +93,8 @@ public:
 		 */
 		if(N == 0) return NaN;
 
-		auto it = top.s.begin();
-		
+		auto it = top.s.begin();		
 		std::advance(it, myrandom(top.size()));
-		
 		return it->x;
 	}
 	

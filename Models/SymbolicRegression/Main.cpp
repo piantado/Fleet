@@ -6,6 +6,9 @@ const double sdscale = 1.0; // can change if we want
 const size_t nsamples = 250; // how many per structure?
 const size_t nstructs = 50; // print out all the samples from the top this many structures
 
+const size_t trim_at = 2000; // when we get this big in overall_sample structures
+const size_t trim_to = 500;  // trim to this size
+
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define grammar
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -251,6 +254,44 @@ std::mutex overall_sample_lock;
 size_t innertime;
 data_t mydata;
 
+// useful for extracting the max
+std::function posterior = [](const MyHypothesis& h) {return h.posterior; };
+
+
+/**
+ * @brief This trims overall_samples to the top N different structures with the best scores.
+ * 			NOTE: This is a bit inefficient because we really could avoid adding structures until they have
+ * 		 		a high enough score (as we do in Top) but then if we did find a good sample, we'd
+ * 			    have missed everything before...
+ */
+void trim_overall_samples(size_t N) {
+	
+	std::lock_guard guard(overall_sample_lock);
+	
+	if(overall_samples.size() < N) return;
+	
+	std::vector<double> structureScores;
+	for(auto& m: overall_samples) {
+		structureScores.push_back( max_of(m.second.values(), posterior).second );
+	}
+
+	// sorts low to high to find the nstructs best's score
+	std::sort(structureScores.begin(), structureScores.end(), std::greater<double>());	
+	double cutoff = structureScores[N];
+	
+	// now go through and trim
+	auto it = overall_samples.begin();
+	while(it != overall_samples.end()) {
+		double b = max_of((*it).second.values(), posterior).second;
+		if(b < cutoff) { // if we erase
+			it = overall_samples.erase(it);// wow erase returns a new iterator which is valid
+		}
+		else {
+			++it;
+		}
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -272,6 +313,10 @@ void myCallback(MyHypothesis& h) {
 		std::lock_guard guard(overall_sample_lock);
 		if(!overall_samples.count(ss)) { // create this if it doesn't exist
 			overall_samples.emplace(ss,nsamples);
+		}
+		
+		if(overall_samples.size() >= trim_at) {
+			trim_overall_samples(trim_to);
 		}
 		
 		// and add it
@@ -302,8 +347,11 @@ public:
 			add_sample(h.posterior);
 		};		
 		
+		// NOTE That we might run this when there are no constants. 
+		// This is hard to avoid if we want to allow restarts, since those occur within MCMCChain
 		MCMCChain chain(h0, data, cb);
 		chain.run(Control(0, innertime, 1, 10000)); // run mcmc with restarts; we sure shouldn't run more than runtime
+			
 	}
 	
 };
@@ -324,16 +372,10 @@ int main(int argc, char** argv){
 	
 	innertime = convert_time(innertimestr);
 
-	//------------------
 	// Set up the grammar
-	//------------------
-	
 	MyGrammar grammar(PRIMITIVES);
 	
-	//------------------
 	// set up the data
-	//------------------
-
 	mydata = load_data_file(input_path.c_str()); 
  
  	//------------------
@@ -363,56 +405,40 @@ int main(int argc, char** argv){
 
 	
 	//------------------
-	// Postprocessing to show
+	// Postprocessing
 	//------------------
 
-	// useful for extracting the max
-	std::function posterior = [](const MyHypothesis& h) -> double {return h.posterior;};
+	trim_overall_samples(nstructs);
 
-	// and print out structures that have their top N
-	std::vector<double> structureScores;
-	for(auto& m: overall_samples) {
-		structureScores.push_back( max_of(m.second.values(), posterior).second );
-	}
-	if(structureScores.size() == 0)	return 1; // I hope we found something
-
-	
-	// sorts low to high to find the nstructs best's score
-	std::sort(structureScores.begin(), structureScores.end());
-	double cutoff = -infinity;
-	if(structureScores.size() > nstructs) cutoff = structureScores[structureScores.size()-nstructs];
-	else								  cutoff = structureScores[0];
-	COUT "# Cutting off at " << cutoff ENDL;
-	
 	// figure out the structure normalizer
-	double Z = logsumexp(structureScores);
+	double Z = -infinity;
+	for(auto& m: overall_samples) {
+		Z = logplusexp(Z, max_of(m.second.values(), posterior).second);
+	}
 	
 	// And display!
-	COUT "structure\tstructure.max\testimated.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\tmade.cutoff\th\tparseable.h" ENDL;
+	COUT "structure\tstructure.max\testimated.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\th\tparseable.h" ENDL;
 	for(auto& m : overall_samples) {
 		
 		double best_posterior = max_of(m.second.values(), posterior).second;
 		
-		if(best_posterior >= cutoff) { 
-
-			// find the normalizer for this structure
-			double sz = -infinity;
-			for(auto& h : m.second.values()) 
-				sz = logplusexp(sz, h.posterior);
-			
-			for(auto h : m.second.values()) {
-				COUT QQ(h.structure_string()) TAB 
-				     best_posterior TAB 
-					 ( (h.posterior-sz) + (best_posterior-Z)) TAB 
-					 h.posterior TAB h.prior TAB h.likelihood TAB
-					 h.callOne(0.0, NaN) TAB 
-					 h.callOne(1.0, NaN) TAB 
-					 get_polynomial_degree(h.get_value(), h.constants) TAB 
-					 1*(best_posterior >= cutoff) TAB
-					 Q(h.string()) TAB 
-					 Q(h.parseable()) 
-					 ENDL;
-			}
+		// find the normalizer for this structure
+		double sz = -infinity;
+		for(auto& h : m.second.values()) {
+			sz = logplusexp(sz, h.posterior);
+		}
+		
+		for(auto h : m.second.values()) {
+			COUT QQ(h.structure_string()) TAB 
+				 best_posterior TAB 
+				 ( (h.posterior-sz) + (best_posterior-Z)) TAB 
+				 h.posterior TAB h.prior TAB h.likelihood TAB
+				 h.callOne(0.0, NaN) TAB 
+				 h.callOne(1.0, NaN) TAB 
+				 get_polynomial_degree(h.get_value(), h.constants) TAB 
+				 Q(h.string()) TAB 
+				 Q(h.parseable()) 
+				 ENDL;
 		}
 	}
 	COUT "# **** REMINDER: These are not printed in order! ****" ENDL;
