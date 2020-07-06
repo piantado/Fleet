@@ -1,15 +1,15 @@
 <map id="src/Inference/MCTS.h" name="src/Inference/MCTS.h">
-<area shape="rect" id="node9" href="$_streaming_statistics_8h.html" title="A class to store a bunch of statistics about incoming data points, including min, max..." alt="" coords="467,80,613,107"/>
-<area shape="rect" id="node26" href="$_parallel_inference_interface_8h.html" title="ParallelInferenceInterface.h" alt="" coords="53,80,235,107"/>
-<area shape="rect" id="node28" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="211,155,285,181"/>
-<area shape="rect" id="node34" href="$_spin_lock_8h.html" title="SpinLock.h" alt="" coords="1366,80,1453,107"/>
-<area shape="rect" id="node35" href="$_random_8h.html" title="Random.h" alt="" coords="868,80,951,107"/>
-<area shape="rect" id="node39" href="$_base_node_8h.html" title="This is a general tree class, which we are adding because there are currently at least 3 different tr..." alt="" coords="727,229,822,256"/>
-<area shape="rect" id="node10" href="$_median_f_a_m_e_8h.html" title="A streaming median class implementing the FAME algorithm Here, we initialize both the step size and M..." alt="" coords="411,155,523,181"/>
-<area shape="rect" id="node11" href="$_reservoir_sample_8h.html" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="547,155,680,181"/>
-<area shape="rect" id="node12" href="$_errors_8h.html" title="Errors.h" alt="" coords="603,304,671,331"/>
-<area shape="rect" id="node16" href="$_top_8h.html" title="Check if a type has a posterior function or not. " alt="" coords="1202,229,1257,256"/>
-<area shape="rect" id="node30" href="$_timing_8h.html" title="Timing.h" alt="" coords="416,229,488,256"/>
-<area shape="rect" id="node32" href="$_i_o_8h.html" title="IO.h" alt="" coords="219,229,266,256"/>
-<area shape="rect" id="node37" href="$_numerics_8h.html" title="Numerics.h" alt="" coords="961,155,1050,181"/>
+<area shape="rect" id="node9" href="$_streaming_statistics_8h.html" title="A class to store a bunch of statistics about incoming data points, including min, max..." alt="" coords="636,80,783,107"/>
+<area shape="rect" id="node26" href="$_parallel_inference_interface_8h.html" title="ParallelInferenceInterface.h" alt="" coords="61,80,243,107"/>
+<area shape="rect" id="node28" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="219,155,293,181"/>
+<area shape="rect" id="node34" href="$_spin_lock_8h.html" title="SpinLock.h" alt="" coords="1509,80,1595,107"/>
+<area shape="rect" id="node35" href="$_random_8h.html" title="Random.h" alt="" coords="949,80,1032,107"/>
+<area shape="rect" id="node39" href="$_base_node_8h.html" title="This is a general tree class, which we are adding because there are currently at least 3 different tr..." alt="" coords="461,155,555,181"/>
+<area shape="rect" id="node10" href="$_median_f_a_m_e_8h.html" title="A streaming median class implementing the FAME algorithm Here, we initialize both the step size and M..." alt="" coords="580,155,692,181"/>
+<area shape="rect" id="node11" href="$_reservoir_sample_8h.html" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="716,155,849,181"/>
+<area shape="rect" id="node12" href="$_errors_8h.html" title="Errors.h" alt="" coords="627,304,695,331"/>
+<area shape="rect" id="node16" href="$_top_8h.html" title="Check if a type has a posterior function or not. " alt="" coords="946,229,1001,256"/>
+<area shape="rect" id="node30" href="$_timing_8h.html" title="Timing.h" alt="" coords="419,229,491,256"/>
+<area shape="rect" id="node32" href="$_i_o_8h.html" title="IO.h" alt="" coords="245,229,291,256"/>
+<area shape="rect" id="node37" href="$_numerics_8h.html" title="Numerics.h" alt="" coords="1098,155,1187,181"/>
 </map>

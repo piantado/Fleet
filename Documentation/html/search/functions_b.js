@@ -5,7 +5,6 @@ var searchData=
   ['levenshtein_5fdistance',['levenshtein_distance',['../_strings_8h.html#a51fc480ff96576142fbe0c1a5fc9114b',1,'Strings.h']]],
   ['lexicon',['Lexicon',['../class_lexicon.html#a06bafc4711d145a026fe03e9e1168ae8',1,'Lexicon::Lexicon(size_t n)'],['../class_lexicon.html#ab027c90715b8616af424c6682cdfef0f',1,'Lexicon::Lexicon()']]],
   ['linearize',['linearize',['../class_node.html#a54676f34db2c299693c9b55148589230',1,'Node']]],
-  ['load_5fdata_5ffile',['load_data_file',['../_data_8h.html#a03738fb766b9c06aa69c1ebccac3ba4b',1,'Data.h']]],
   ['lock',['lock',['../class_spin_lock.html#a2db046cb75c8febd532923ce36c4c3ad',1,'SpinLock']]],
   ['log_5fprobability',['log_probability',['../class_grammar.html#a4b19c0b8d0b4d792181ae47bd2f68268',1,'Grammar']]],
   ['lognormalize',['lognormalize',['../_eigen_numerics_8h.html#a3444ba786055e8a0782bdd5043fdfd0d',1,'EigenNumerics.h']]],

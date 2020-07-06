@@ -1,0 +1,7 @@
+<map id="src/Inference/PriorInference.h" name="src/Inference/PriorInference.h">
+<area shape="rect" id="node2" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="297,155,371,181"/>
+<area shape="rect" id="node15" href="$_parallel_inference_interface_8h.html" title="ParallelInferenceInterface.h" alt="" coords="371,80,553,107"/>
+<area shape="rect" id="node4" href="$_timing_8h.html" title="Timing.h" alt="" coords="222,229,294,256"/>
+<area shape="rect" id="node10" href="$_i_o_8h.html" title="IO.h" alt="" coords="340,229,387,256"/>
+<area shape="rect" id="node6" href="$_errors_8h.html" title="Errors.h" alt="" coords="113,304,181,331"/>
+</map>

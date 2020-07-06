@@ -1,13 +1,5 @@
 <map id="src/Random.h" name="src/Random.h">
-<area shape="rect" id="node2" href="$_models_2_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="5,155,160,196"/>
-<area shape="rect" id="node3" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="546,80,713,107"/>
-<area shape="rect" id="node12" href="$_m_c_t_s_8h.html" title="src/Inference/MCTS.h" alt="" coords="166,80,317,107"/>
-<area shape="rect" id="node4" href="$_models_2_first_order_logic_2_main_8cpp.html" title="Models/FirstOrderLogic\l/Main.cpp" alt="" coords="1200,155,1357,196"/>
-<area shape="rect" id="node5" href="$_models_2_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="413,155,617,196"/>
-<area shape="rect" id="node6" href="$_models_2_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="185,155,389,196"/>
-<area shape="rect" id="node8" href="$_models_2_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="641,162,847,189"/>
-<area shape="rect" id="node9" href="$_models_2_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="871,155,1022,196"/>
-<area shape="rect" id="node10" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="1046,162,1175,189"/>
-<area shape="rect" id="node7" href="$_testing_2_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="225,251,348,278"/>
-<area shape="rect" id="node11" href="$_models_2_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="1024,244,1197,285"/>
+<area shape="rect" id="node2" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="5,80,172,107"/>
+<area shape="rect" id="node4" href="$_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree..." alt="" coords="196,80,347,107"/>
+<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="24,155,153,181"/>
 </map>

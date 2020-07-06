@@ -1,0 +1,76 @@
+\hypertarget{_models_2_number_game_2_main_8cpp}{}\section{Models/\+Number\+Game/\+Main.cpp File Reference}
+\label{_models_2_number_game_2_main_8cpp}\index{Models/\+Number\+Game/\+Main.\+cpp@{Models/\+Number\+Game/\+Main.\+cpp}}
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include \char`\"{}Primitives.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Builtins.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Grammar.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$set$>$}\newline
+{\ttfamily \#include \char`\"{}L\+O\+T\+Hypothesis.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Fleet.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Top.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}M\+C\+M\+C\+Chain.\+h\char`\"{}}\newline
+Include dependency graph for Main.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_models_2_number_game_2_main_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_my_hypothesis}{My\+Hypothesis}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{_models_2_number_game_2_main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+std\+::tuple \hyperlink{_models_2_number_game_2_main_8cpp_a04e6d8e4b74d3f4fc965e5e5449158a3}{P\+R\+I\+M\+I\+T\+I\+V\+ES}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_models_2_number_game_2_main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{_models_2_number_game_2_main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+\index{Models/\+Number\+Game/\+Main.\+cpp@{Models/\+Number\+Game/\+Main.\+cpp}!main@{main}}
+\index{main@{main}!Models/\+Number\+Game/\+Main.\+cpp@{Models/\+Number\+Game/\+Main.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{_models_2_number_game_2_main_8cpp_a04e6d8e4b74d3f4fc965e5e5449158a3}\label{_models_2_number_game_2_main_8cpp_a04e6d8e4b74d3f4fc965e5e5449158a3}} 
+\index{Models/\+Number\+Game/\+Main.\+cpp@{Models/\+Number\+Game/\+Main.\+cpp}!P\+R\+I\+M\+I\+T\+I\+V\+ES@{P\+R\+I\+M\+I\+T\+I\+V\+ES}}
+\index{P\+R\+I\+M\+I\+T\+I\+V\+ES@{P\+R\+I\+M\+I\+T\+I\+V\+ES}!Models/\+Number\+Game/\+Main.\+cpp@{Models/\+Number\+Game/\+Main.\+cpp}}
+\subsubsection{\texorpdfstring{P\+R\+I\+M\+I\+T\+I\+V\+ES}{PRIMITIVES}}
+{\footnotesize\ttfamily std\+::tuple P\+R\+I\+M\+I\+T\+I\+V\+ES}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \{
+    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"(%s+%s)"},    +[](\textcolor{keywordtype}{float} a, \textcolor{keywordtype}{float} b) -> \textcolor{keywordtype}{float} \{ \textcolor{keywordflow}{return} a+b; \}),
+    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"(%s-%s)"},    +[](\textcolor{keywordtype}{float} a, \textcolor{keywordtype}{float} b) -> \textcolor{keywordtype}{float} \{ \textcolor{keywordflow}{return} a-b; \}),
+    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"(%s*%s)"},    +[](\textcolor{keywordtype}{float} a, \textcolor{keywordtype}{float} b) -> \textcolor{keywordtype}{float} \{ \textcolor{keywordflow}{return} a*b; \}),
+    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"(%s/%s)"},    +[](\textcolor{keywordtype}{float} a, \textcolor{keywordtype}{float} b) -> \textcolor{keywordtype}{float} \{ \textcolor{keywordflow}{return} (b==0 ? 0 : a/b); \}),
+    \hyperlink{struct_primitive}{Primitive}(\textcolor{stringliteral}{"(%s^%s)"},    +[](\textcolor{keywordtype}{float} a, \textcolor{keywordtype}{float} b) -> \textcolor{keywordtype}{float} \{ \textcolor{keywordflow}{return} pow(a,b); \}),
+    
+    \hyperlink{struct_builtin_1_1_x}{Builtin::X<float>}(\textcolor{stringliteral}{"x"})
+\}
+\end{DoxyCode}
+
+\begin{DoxyCode}
+    These define all of the types that are used in the grammar.
+    This macro must be defined before we \textcolor{keyword}{import} \hyperlink{namespace_fleet}{Fleet}.
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+\textcolor{keyword}{const} \textcolor{keywordtype}{double} reliability = 0.99;
+\textcolor{keyword}{const} \textcolor{keywordtype}{int} N = 100; \textcolor{comment}{// what number do we go up to?}
+
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ Define magic primitives $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 

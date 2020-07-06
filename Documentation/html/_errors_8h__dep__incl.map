@@ -1,36 +1,29 @@
 <map id="src/Errors.h" name="src/Errors.h">
-<area shape="rect" id="node2" href="$_base_node_8h.html" title="This is a general tree class, which we are adding because there are currently at least 3 different tr..." alt="" coords="1120,266,1236,293"/>
-<area shape="rect" id="node4" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="243,534,372,561"/>
-<area shape="rect" id="node6" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="846,445,1012,471"/>
-<area shape="rect" id="node14" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="347,445,567,471"/>
-<area shape="rect" id="node16" href="$_timing_8h.html" title="src/Timing.h" alt="" coords="1472,87,1567,114"/>
-<area shape="rect" id="node21" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel..." alt="" coords="1577,355,1750,382"/>
-<area shape="rect" id="node22" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="1451,445,1668,471"/>
-<area shape="rect" id="node26" href="$_grammar_hypothesis_8h.html" title="src/Hypotheses/GrammarHypothesis.h" alt="" coords="2167,87,2416,114"/>
-<area shape="rect" id="node27" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="190,259,366,300"/>
-<area shape="rect" id="node30" href="$_random_8h.html" title="src/Random.h" alt="" coords="2134,266,2238,293"/>
-<area shape="rect" id="node31" href="$_reservoir_sample_8h.html" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="1843,80,2002,121"/>
-<area shape="rect" id="node33" href="$_builtins_8h.html" title="This is needed below so we can check if something is a Builtin without template args. " alt="" coords="864,348,994,389"/>
-<area shape="rect" id="node34" href="$_primitives_8h.html" title="If there are any references in the arguments, only the first can be a reference. " alt="" coords="1077,348,1208,389"/>
-<area shape="rect" id="node35" href="$_virtual_machine_state_8h.html" title="Count references in lambda arguments (used to ensure we only passs one) " alt="" coords="466,348,621,389"/>
-<area shape="rect" id="node3" href="$_node_8h.html" title="src/Grammar/Node.h" alt="" coords="645,355,789,382"/>
-<area shape="rect" id="node15" href="$_m_c_t_s_8h.html" title="src/Inference/MCTS.h" alt="" coords="1994,355,2144,382"/>
-<area shape="rect" id="node5" href="$_models_2_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="342,616,516,657"/>
-<area shape="rect" id="node7" href="$_models_2_first_order_logic_2_main_8cpp.html" title="Models/FirstOrderLogic\l/Main.cpp" alt="" coords="926,527,1084,568"/>
-<area shape="rect" id="node8" href="$_models_2_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="467,527,671,568"/>
-<area shape="rect" id="node9" href="$_models_2_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="1386,527,1590,568"/>
-<area shape="rect" id="node11" href="$_models_2_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="1698,527,1853,568"/>
-<area shape="rect" id="node12" href="$_models_2_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="695,534,902,561"/>
-<area shape="rect" id="node13" href="$_models_2_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1108,527,1259,568"/>
-<area shape="rect" id="node10" href="$_testing_2_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="1566,623,1689,650"/>
-<area shape="rect" id="node17" href="$_fleet_8h.html" title="A fleet object manages processing the command line, prints a useful summary of command lines..." alt="" coords="1240,445,1324,471"/>
-<area shape="rect" id="node18" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="1752,177,1906,203"/>
-<area shape="rect" id="node19" href="$_astar_8h.html" title="This is an implementation of kinda&#45;A* search that maintains a priority queue of partial states and at..." alt="" coords="2089,445,2233,471"/>
-<area shape="rect" id="node20" href="$_parallel_inference_interface_8h.html" title="src/Inference/ParallelInference\lInterface.h" alt="" coords="1862,259,2060,300"/>
-<area shape="rect" id="node23" href="$_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar. It supports multithreading and requires a hypothesis, grammar, start type, and callback. " alt="" coords="2348,437,2523,479"/>
-<area shape="rect" id="node24" href="$_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline..." alt="" coords="1774,355,1969,382"/>
-<area shape="rect" id="node25" href="$_m_c_m_c_chain_8h.html" title="src/Inference/MCMCChain.h" alt="" coords="1413,266,1602,293"/>
-<area shape="rect" id="node28" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="165,348,341,389"/>
-<area shape="rect" id="node29" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="46,445,220,471"/>
-<area shape="rect" id="node32" href="$_streaming_statistics_8h.html" title="A class to store a bunch of statistics about incoming data points, including min, max..." alt="" coords="1930,169,2093,211"/>
+<area shape="rect" id="node2" href="$_base_node_8h.html" title="This is a general tree class, which we are adding because there are currently at least 3 different tr..." alt="" coords="427,87,543,114"/>
+<area shape="rect" id="node4" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="190,355,319,382"/>
+<area shape="rect" id="node5" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="171,266,338,293"/>
+<area shape="rect" id="node6" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="1503,266,1723,293"/>
+<area shape="rect" id="node8" href="$_timing_8h.html" title="src/Timing.h" alt="" coords="1075,87,1170,114"/>
+<area shape="rect" id="node14" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel..." alt="" coords="1384,355,1557,382"/>
+<area shape="rect" id="node15" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="1384,437,1602,464"/>
+<area shape="rect" id="node19" href="$_grammar_hypothesis_8h.html" title="src/Hypotheses/GrammarHypothesis.h" alt="" coords="750,87,999,114"/>
+<area shape="rect" id="node20" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="1588,80,1764,121"/>
+<area shape="rect" id="node23" href="$_random_8h.html" title="src/Random.h" alt="" coords="284,177,388,203"/>
+<area shape="rect" id="node24" href="$_reservoir_sample_8h.html" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="567,80,726,121"/>
+<area shape="rect" id="node26" href="$_builtins_8h.html" title="This is needed below so we can check if something is a Builtin without template args. " alt="" coords="28,169,158,211"/>
+<area shape="rect" id="node27" href="$_primitives_8h.html" title="If there are any references in the arguments, only the first can be a reference. " alt="" coords="130,80,261,121"/>
+<area shape="rect" id="node28" href="$_virtual_machine_state_8h.html" title="Count references in lambda arguments (used to ensure we only passs one) " alt="" coords="817,169,972,211"/>
+<area shape="rect" id="node3" href="$_node_8h.html" title="src/Grammar/Node.h" alt="" coords="412,177,556,203"/>
+<area shape="rect" id="node7" href="$_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree..." alt="" coords="520,355,671,382"/>
+<area shape="rect" id="node9" href="$_fleet_8h.html" title="A fleet object manages processing the command line, prints a useful summary of command lines..." alt="" coords="682,266,766,293"/>
+<area shape="rect" id="node11" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="1046,177,1201,203"/>
+<area shape="rect" id="node10" href="$_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="1253,512,1376,539"/>
+<area shape="rect" id="node12" href="$_astar_8h.html" title="This is an implementation of kinda&#45;A* search that maintains a priority queue of partial states and at..." alt="" coords="965,355,1109,382"/>
+<area shape="rect" id="node13" href="$_parallel_inference_interface_8h.html" title="src/Inference/ParallelInference\lInterface.h" alt="" coords="942,259,1140,300"/>
+<area shape="rect" id="node16" href="$_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar. It supports multithreading and requires a hypothesis, grammar, start type, and callback. " alt="" coords="1134,348,1308,389"/>
+<area shape="rect" id="node17" href="$_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline..." alt="" coords="746,355,941,382"/>
+<area shape="rect" id="node18" href="$_m_c_m_c_chain_8h.html" title="src/Inference/MCMCChain.h" alt="" coords="1214,266,1404,293"/>
+<area shape="rect" id="node21" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="1621,169,1797,211"/>
+<area shape="rect" id="node22" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="1747,266,1922,293"/>
+<area shape="rect" id="node25" href="$_streaming_statistics_8h.html" title="A class to store a bunch of statistics about incoming data points, including min, max..." alt="" coords="630,169,793,211"/>
 </map>

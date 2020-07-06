@@ -10,7 +10,6 @@ var searchData=
   ['infereceinterface',['InfereceInterface',['../class_inferece_interface.html',1,'']]],
   ['infinity',['infinity',['../_numerics_8h.html#a1bb1e42ae1b40cad6e99da0aab8a5576',1,'Numerics.h']]],
   ['initial_5fsize',['INITIAL_SIZE',['../class_astar.html#af674f24278326383c5972fc30f0b21d9',1,'Astar']]],
-  ['innerhypothesis',['InnerHypothesis',['../class_inner_hypothesis.html',1,'']]],
   ['input',['input',['../classdefauldatum__t.html#a282269cf029cd4068c94db8c8edee01e',1,'defauldatum_t']]],
   ['input_5fpath',['input_path',['../_fleet_8h.html#aa14dbbb4b5614a1e7a5b4281baa64b89',1,'Fleet.h']]],
   ['input_5ft',['input_t',['../class_virtual_machine_state.html#a04c5592dddd5b9ffdae5a509d73127dd',1,'VirtualMachineState']]],
@@ -21,7 +20,6 @@ var searchData=
   ['integerizedstack',['IntegerizedStack',['../class_integerized_stack.html',1,'IntegerizedStack'],['../class_integerized_stack.html#a46b24ace7ea983bfabaa437932111440',1,'IntegerizedStack::IntegerizedStack()']]],
   ['integerizedstack_2eh',['IntegerizedStack.h',['../_integerized_stack_8h.html',1,'']]],
   ['io_2eh',['IO.h',['../_i_o_8h.html',1,'']]],
-  ['iotaexception',['IotaException',['../class_iota_exception.html',1,'']]],
   ['is',['is',['../class_instruction.html#ade73e12471250fd191362d462e2f4970',1,'Instruction']]],
   ['is_5fa',['is_a',['../class_instruction.html#a924203cd9a0516d64556ecbf6a79df8a',1,'Instruction::is_a(const T x) const'],['../class_instruction.html#ae670ee58f9acdfd60b7213f77dfca794',1,'Instruction::is_a(T x, Ts... args) const']]],
   ['is_5fcomplete',['is_complete',['../class_node.html#ac2e36754ba8b1b1d452deeb2bdbd346f',1,'Node']]],
@@ -34,5 +32,5 @@ var searchData=
   ['is_5froot',['is_root',['../class_base_node.html#afce604388d562d347fcb31aeb2a8ef03',1,'BaseNode']]],
   ['is_5ftemperature',['is_temperature',['../class_parallel_tempering.html#ae9f0a2af938df838cc4010983860394e',1,'ParallelTempering']]],
   ['is_5fterminal',['is_terminal',['../class_base_node.html#af37331cbec1b32c874138d2ae9b89745',1,'BaseNode::is_terminal()'],['../class_rule.html#a9d557e302f94bd85f5505733e8856f97',1,'Rule::is_terminal()']]],
-  ['item',['Item',['../class_reservoir_sample_1_1_item.html',1,'ReservoirSample&lt; T &gt;::Item'],['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html',1,'Fleet::Statistics::ReservoirSample&lt; T &gt;::Item'],['../class_reservoir_sample_1_1_item.html#a01a115a4bc68485d3349d61b85388998',1,'ReservoirSample::Item::Item()'],['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#acad6abfadffe65005f14a4c9616aabde',1,'Fleet::Statistics::ReservoirSample::Item::Item()']]]
+  ['item',['Item',['../struct_reservoir_sample_1_1_item.html',1,'ReservoirSample&lt; T &gt;::Item'],['../struct_reservoir_sample_1_1_item.html#a01a115a4bc68485d3349d61b85388998',1,'ReservoirSample::Item::Item()']]]
 ];

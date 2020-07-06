@@ -90,11 +90,8 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_reservoir_sample_8h__dep__incl.png" border="0" usemap="#src_2_statistics_2_reservoir_sample_8hdep" alt=""/></div>
 <map name="src_2_statistics_2_reservoir_sample_8hdep" id="src_2_statistics_2_reservoir_sample_8hdep">
-<area shape="rect" id="node2" href="_streaming_statistics_8h.html" title="A class to store a bunch of statistics about incoming data points, including min, max..." alt="" coords="127,95,290,136"/>
-<area shape="rect" id="node3" href="_m_c_t_s_8h.html" title="src/Inference/MCTS.h" alt="" coords="133,184,284,211"/>
-<area shape="rect" id="node4" href="_models_2_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="5,259,209,300"/>
-<area shape="rect" id="node6" href="_models_2_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="234,259,389,300"/>
-<area shape="rect" id="node5" href="_testing_2_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="46,348,169,375"/>
+<area shape="rect" id="node2" href="_streaming_statistics_8h.html" title="A class to store a bunch of statistics about incoming data points, including min, max..." alt="" coords="5,95,168,136"/>
+<area shape="rect" id="node3" href="_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree..." alt="" coords="11,184,162,211"/>
 </map>
 </div>
 </div>
@@ -104,12 +101,11 @@ This graph shows which files directly or indirectly include this file:</div>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_reservoir_sample.html">ReservoirSample&lt; T &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_reservoir_sample_1_1_item.html">ReservoirSample&lt; T &gt;::Item</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_reservoir_sample_1_1_item.html">ReservoirSample&lt; T &gt;::Item</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal weights among elements. We may go back to that eventually - <a href="https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_">https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_</a>. </p>
-<p>A special weighted reservoir sampling class that allows for logarithmic weights to do this, we use a transformation following <a href="https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_using_Reservoir">https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_using_Reservoir</a> basically, we want to give a weight that is r^1/w, or log(r)/w, or log(log(r))-log(w). But the problem is that log(r) is negative so log(log(r)) is not defined. Instead, we'll use the function f(x)=-log(-log(x)), which is monotonic. So then, -log(-log(r^1/w)) = -log(-log(r)/w) = -log(-log(r)*1/w) = -[log(-log(r)) - log(w)] = -log(-log(r)) + log(w)</p>
 <p>An item in a reservoir sample, grouping together an element x and its log weights, value, etc.</p>
 <p>NOTE: Because we use <a class="el" href="class_top_n.html">TopN</a> internally, we can access the Item values with ReservoirSample.top.values() and we can get the stuff that's stored with <a class="el" href="class_reservoir_sample.html#a0f0abf510882715b487f2254b6af25b1" title="Get a multiset of values (ignoring the reservoir weights) ">ReservoirSample.values()</a></p>
 </div></div><!-- contents -->

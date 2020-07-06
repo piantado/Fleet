@@ -92,7 +92,7 @@ Collaboration diagram for FullMCTSNode&lt; this_t, HYP, callback_t &gt;:</div>
 <area shape="rect" id="node2" href="class_parallel_inference_interface.html" title="ParallelInferenceInterface\l\&lt; HYP \&gt;" alt="" coords="5,215,176,256"/>
 <area shape="rect" id="node3" href="class_base_node.html" title="BaseNode\&lt; this_t \&gt;" alt="" coords="200,222,339,249"/>
 <area shape="rect" id="node5" href="class_base_node_1_1_node_iterator.html" title="BaseNode\&lt; this_t \&gt;\l::NodeIterator" alt="" coords="273,111,412,152"/>
-<area shape="rect" id="node8" href="class_spin_lock.html" title="SpinLock" alt="" coords="469,222,545,249"/>
+<area shape="rect" id="node7" href="class_spin_lock.html" title="SpinLock" alt="" coords="363,222,439,249"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -160,10 +160,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4bad5d46ee19af54c1385771bb6c8380 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab42ef3f5a20566523577925ab0c2a911 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#ab42ef3f5a20566523577925ab0c2a911">BaseNode</a> (this_t &amp;&amp;n)</td></tr>
 <tr class="separator:ab42ef3f5a20566523577925ab0c2a911 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a82f7670d09cdd2a7f12e00513b1d8f inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a1a82f7670d09cdd2a7f12e00513b1d8f">operator=</a> (const this_t &amp;t)</td></tr>
+<tr class="separator:a1a82f7670d09cdd2a7f12e00513b1d8f inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc129f52a6d44237b7e8c62c65f8332c inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#adc129f52a6d44237b7e8c62c65f8332c">operator=</a> (const this_t &amp;&amp;t)</td></tr>
+<tr class="separator:adc129f52a6d44237b7e8c62c65f8332c inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a33248b0eb051d7672691a73a38ff12 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a2a33248b0eb051d7672691a73a38ff12">~BaseNode</a> ()</td></tr>
 <tr class="separator:a2a33248b0eb051d7672691a73a38ff12 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac26bf9f89abeaca8d43b73f2d8d1d9cf inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#ac26bf9f89abeaca8d43b73f2d8d1d9cf">string</a> () const</td></tr>
 <tr class="separator:ac26bf9f89abeaca8d43b73f2d8d1d9cf inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a263b93d5aaf1ce5eb7f103bf3b988db3 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a263b93d5aaf1ce5eb7f103bf3b988db3">my_string</a> () const</td></tr>
+<tr class="separator:a263b93d5aaf1ce5eb7f103bf3b988db3 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33bb5c59122f6b2778d39a0eaa0151d7 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a33bb5c59122f6b2778d39a0eaa0151d7">operator==</a> (const this_t &amp;n) const</td></tr>
 <tr class="separator:a33bb5c59122f6b2778d39a0eaa0151d7 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac735dd6fe296af4b8d2951cc6d9052c8 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_base_node_1_1_node_iterator.html">NodeIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#ac735dd6fe296af4b8d2951cc6d9052c8">begin</a> () const</td></tr>
@@ -201,12 +207,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a575b94703d0c67ba8c04b6a725b48b56 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c2892c91eb31bc0d72bfb0c57ec8dea inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a7c2892c91eb31bc0d72bfb0c57ec8dea">set_child</a> (size_t i, this_t &amp;&amp;n)</td></tr>
 <tr class="separator:a7c2892c91eb31bc0d72bfb0c57ec8dea inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5a808e3ec22f8061022f9ec286d4a03 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#ab5a808e3ec22f8061022f9ec286d4a03">push_back</a> (this_t &amp;n)</td></tr>
+<tr class="separator:ab5a808e3ec22f8061022f9ec286d4a03 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6971173d807967deda4501eb70676533 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a6971173d807967deda4501eb70676533">push_back</a> (this_t &amp;&amp;n)</td></tr>
+<tr class="separator:a6971173d807967deda4501eb70676533 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afce604388d562d347fcb31aeb2a8ef03 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#afce604388d562d347fcb31aeb2a8ef03">is_root</a> () const</td></tr>
 <tr class="separator:afce604388d562d347fcb31aeb2a8ef03 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab953456c09fa01bbf8a29c07f4d2b5ad inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">this_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#ab953456c09fa01bbf8a29c07f4d2b5ad">root</a> ()</td></tr>
 <tr class="separator:ab953456c09fa01bbf8a29c07f4d2b5ad inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca973bac6b9889c97612f0cedf9a43f8 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">this_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#aca973bac6b9889c97612f0cedf9a43f8">get_via</a> (std::function&lt; bool(this_t *)&gt; &amp;f)</td></tr>
-<tr class="separator:aca973bac6b9889c97612f0cedf9a43f8 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add31235ad96e659230cbca6c9e357523 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">this_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#add31235ad96e659230cbca6c9e357523">get_via</a> (std::function&lt; bool(this_t &amp;)&gt; &amp;f)</td></tr>
+<tr class="separator:add31235ad96e659230cbca6c9e357523 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4007d1c72991b8599a6ff5a21c054ba5 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a4007d1c72991b8599a6ff5a21c054ba5">count</a> () const</td></tr>
 <tr class="separator:a4007d1c72991b8599a6ff5a21c054ba5 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaaf113bd98ee404e71582ac1cf014ac0 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#aaaf113bd98ee404e71582ac1cf014ac0">count</a> (const this_t &amp;n) const</td></tr>
@@ -219,6 +229,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1e4560f882d4cdb713aea5178a4e2d86 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9381814fdc86029905dc283da5d3d931 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">virtual this_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a9381814fdc86029905dc283da5d3d931">get_nth</a> (int n)</td></tr>
 <tr class="separator:a9381814fdc86029905dc283da5d3d931 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbfcc951fe5858d0c85a5b3dc8843f05 inherit pub_methods_class_base_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#acbfcc951fe5858d0c85a5b3dc8843f05">print</a> (size_t t=0) const</td></tr>
+<tr class="separator:acbfcc951fe5858d0c85a5b3dc8843f05 inherit pub_methods_class_base_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -283,7 +295,7 @@ class FullMCTSNode&lt; this_t, HYP, callback_t &gt;</h3>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">using <a class="el" href="class_full_m_c_t_s_node.html">FullMCTSNode</a>&lt; this_t, HYP, callback_t &gt;::<a class="el" href="class_full_m_c_t_s_node.html#aeb23fb7cb05ca5e9af33a43054f79574">data_t</a> =  typename HYP::data_t</td>
@@ -300,7 +312,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -327,7 +339,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -371,7 +383,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -421,7 +433,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -449,7 +461,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -478,7 +490,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -506,7 +518,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -536,7 +548,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -573,7 +585,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -601,7 +613,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -629,7 +641,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -679,7 +691,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -717,7 +729,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -761,7 +773,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -797,7 +809,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -833,7 +845,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -871,7 +883,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -908,7 +920,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -933,7 +945,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -957,7 +969,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -981,7 +993,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1005,7 +1017,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">float <a class="el" href="class_full_m_c_t_s_node.html">FullMCTSNode</a>&lt; this_t, HYP, callback_t &gt;::last_lp</td>
@@ -1021,7 +1033,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">float <a class="el" href="class_full_m_c_t_s_node.html">FullMCTSNode</a>&lt; this_t, HYP, callback_t &gt;::lse</td>
@@ -1037,7 +1049,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">float <a class="el" href="class_full_m_c_t_s_node.html">FullMCTSNode</a>&lt; this_t, HYP, callback_t &gt;::max</td>
@@ -1053,7 +1065,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">float <a class="el" href="class_full_m_c_t_s_node.html">FullMCTSNode</a>&lt; this_t, HYP, callback_t &gt;::min</td>
@@ -1069,7 +1081,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_spin_lock.html">SpinLock</a> <a class="el" href="class_full_m_c_t_s_node.html">FullMCTSNode</a>&lt; this_t, HYP, callback_t &gt;::mylock</td>
@@ -1085,7 +1097,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">unsigned int <a class="el" href="class_full_m_c_t_s_node.html">FullMCTSNode</a>&lt; this_t, HYP, callback_t &gt;::nvisits</td>
@@ -1101,7 +1113,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">bool <a class="el" href="class_full_m_c_t_s_node.html">FullMCTSNode</a>&lt; this_t, HYP, callback_t &gt;::open</td>
@@ -1117,7 +1129,7 @@ template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename this_t, typename HYP, typename callback_t&gt; </div>
+template&lt;typename this_t , typename HYP , typename callback_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">int <a class="el" href="class_full_m_c_t_s_node.html">FullMCTSNode</a>&lt; this_t, HYP, callback_t &gt;::which_expansion</td>

@@ -3,7 +3,7 @@ var searchData=
   ['eigennumerics_2eh',['EigenNumerics.h',['../_eigen_numerics_8h.html',1,'']]],
   ['eigenslice',['eigenslice',['../_eigen_numerics_8h.html#a5c19fc7b6441ef5882de44b7f1fe67f3',1,'EigenNumerics.h']]],
   ['empty',['empty',['../class_integerized_stack.html#a549d4ed66e89d2e3d7e726d5c8e28fa2',1,'IntegerizedStack::empty()'],['../class_top_n.html#adb29d7b6490afe04adb88caac2f7fba0',1,'TopN::empty()'],['../class_virtual_machine_state.html#afd9734eba9ba7bb9bbf4926743c90a3a',1,'VirtualMachineState::empty()']]],
-  ['end',['end',['../class_base_node.html#a990f4bbfab3e8c78421e51f32cb5db48',1,'BaseNode::end()'],['../class_fleet_1_1_statistics_1_1_reservoir_sample.html#a4e3cf1195fcb255f2b0281d9307bfd16',1,'Fleet::Statistics::ReservoirSample::end()']]],
+  ['end',['end',['../class_base_node.html#a990f4bbfab3e8c78421e51f32cb5db48',1,'BaseNode']]],
   ['endl',['ENDL',['../_i_o_8h.html#a90dc3f3ee970394e0080300526390a84',1,'IO.h']]],
   ['endnodeiterator',['EndNodeIterator',['../class_base_node.html#ac8a2fe45180446f4db2d4742c34b5b80',1,'BaseNode']]],
   ['enumeration_2eh',['Enumeration.h',['../_enumeration_8h.html',1,'']]],

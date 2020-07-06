@@ -1,13 +1,5 @@
 <map id="src/Grammar/Node.h" name="src/Grammar/Node.h">
-<area shape="rect" id="node2" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="5,162,135,189"/>
-<area shape="rect" id="node4" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="571,80,737,107"/>
-<area shape="rect" id="node12" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="761,80,981,107"/>
-<area shape="rect" id="node3" href="$_models_2_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="1235,244,1409,285"/>
-<area shape="rect" id="node5" href="$_models_2_first_order_logic_2_main_8cpp.html" title="Models/FirstOrderLogic\l/Main.cpp" alt="" coords="793,155,950,196"/>
-<area shape="rect" id="node6" href="$_models_2_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="564,155,768,196"/>
-<area shape="rect" id="node7" href="$_models_2_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="975,155,1179,196"/>
-<area shape="rect" id="node9" href="$_models_2_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="1203,155,1358,196"/>
-<area shape="rect" id="node10" href="$_models_2_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="159,162,365,189"/>
-<area shape="rect" id="node11" href="$_models_2_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="389,155,540,196"/>
-<area shape="rect" id="node8" href="$_testing_2_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="1015,251,1138,278"/>
+<area shape="rect" id="node2" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="5,155,135,181"/>
+<area shape="rect" id="node3" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="48,80,215,107"/>
+<area shape="rect" id="node4" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="239,80,459,107"/>
 </map>

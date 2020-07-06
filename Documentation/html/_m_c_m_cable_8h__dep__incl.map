@@ -1,12 +1,4 @@
 <map id="src/Hypotheses/Interfaces/MCMCable.h" name="src/Hypotheses/Interfaces/MCMCable.h">
-<area shape="rect" id="node2" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="233,95,408,121"/>
-<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="529,95,749,121"/>
-<area shape="rect" id="node3" href="$_models_2_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="234,169,407,211"/>
-<area shape="rect" id="node4" href="$_models_2_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="5,169,209,211"/>
-<area shape="rect" id="node6" href="$_models_2_first_order_logic_2_main_8cpp.html" title="Models/FirstOrderLogic\l/Main.cpp" alt="" coords="1246,169,1403,211"/>
-<area shape="rect" id="node7" href="$_models_2_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="432,169,636,211"/>
-<area shape="rect" id="node9" href="$_models_2_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="661,169,815,211"/>
-<area shape="rect" id="node10" href="$_models_2_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="840,177,1047,203"/>
-<area shape="rect" id="node11" href="$_models_2_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="1071,169,1221,211"/>
-<area shape="rect" id="node8" href="$_testing_2_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="473,259,595,285"/>
+<area shape="rect" id="node2" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="5,95,180,121"/>
+<area shape="rect" id="node3" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="204,95,424,121"/>
 </map>

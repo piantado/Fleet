@@ -1,0 +1,20 @@
+<map id="Testing/Main.cpp" name="Testing/Main.cpp">
+<area shape="rect" id="node5" href="$_top_8h.html" title="Check if a type has a posterior function or not. " alt="" coords="1955,169,2010,196"/>
+<area shape="rect" id="node16" href="$_m_c_m_c_chain_8h.html" title="MCMCChain.h" alt="" coords="1519,244,1628,271"/>
+<area shape="rect" id="node30" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="1439,87,1577,114"/>
+<area shape="rect" id="node35" href="$_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar. It supports multithreading and requires a hypothesis, grammar, start type, and callback. " alt="" coords="668,169,828,196"/>
+<area shape="rect" id="node39" href="$_fleet_8h.html" title="A fleet object manages processing the command line, prints a useful summary of command lines..." alt="" coords="991,169,1054,196"/>
+<area shape="rect" id="node18" href="$_finite_history_8h.html" title="A FiniteHistory stores the previous N examples of something of type T. This is used e..." alt="" coords="1380,319,1487,345"/>
+<area shape="rect" id="node20" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="863,319,937,345"/>
+<area shape="rect" id="node22" href="$_timing_8h.html" title="Timing.h" alt="" coords="1279,393,1351,420"/>
+<area shape="rect" id="node27" href="$_i_o_8h.html" title="IO.h" alt="" coords="803,393,850,420"/>
+<area shape="rect" id="node24" href="$_errors_8h.html" title="Errors.h" alt="" coords="1385,468,1453,495"/>
+<area shape="rect" id="node31" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel..." alt="" coords="1271,169,1364,196"/>
+<area shape="rect" id="node33" href="$_parallel_inference_interface_8h.html" title="ParallelInferenceInterface.h" alt="" coords="593,244,775,271"/>
+<area shape="rect" id="node36" href="$_enumeration_8h.html" title="An IntegerizedStack is just a wrapper around unsigned longs that allow them to behave like a of integ..." alt="" coords="93,244,200,271"/>
+<area shape="rect" id="node37" href="$_fleet_statistics_8h.html" title="FleetStatistics.h" alt="" coords="385,319,503,345"/>
+<area shape="rect" id="node38" href="$_integerized_stack_8h.html" title="IntegerizedStack.h" alt="" coords="93,319,224,345"/>
+<area shape="rect" id="node42" href="$apply_primitives_8h.html" title="VirtualMachine/applyPrimitives.h" alt="" coords="225,244,437,271"/>
+<area shape="rect" id="node44" href="$_instruction_8h.html" title="This is an error type that is returned if we get a runtime error (e.g. string length, etc.) " alt="" coords="266,319,361,345"/>
+<area shape="rect" id="node48" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="722,319,838,345"/>
+</map>

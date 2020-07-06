@@ -90,17 +90,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_random_8h__dep__incl.png" border="0" usemap="#src_2_random_8hdep" alt=""/></div>
 <map name="src_2_random_8hdep" id="src_2_random_8hdep">
-<area shape="rect" id="node2" href="_models_2_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="5,155,160,196"/>
-<area shape="rect" id="node3" href="_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="546,80,713,107"/>
-<area shape="rect" id="node12" href="_m_c_t_s_8h.html" title="src/Inference/MCTS.h" alt="" coords="166,80,317,107"/>
-<area shape="rect" id="node4" href="_models_2_first_order_logic_2_main_8cpp.html" title="Models/FirstOrderLogic\l/Main.cpp" alt="" coords="1200,155,1357,196"/>
-<area shape="rect" id="node5" href="_models_2_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="413,155,617,196"/>
-<area shape="rect" id="node6" href="_models_2_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="185,155,389,196"/>
-<area shape="rect" id="node8" href="_models_2_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="641,162,847,189"/>
-<area shape="rect" id="node9" href="_models_2_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="871,155,1022,196"/>
-<area shape="rect" id="node10" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="1046,162,1175,189"/>
-<area shape="rect" id="node7" href="_testing_2_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="225,251,348,278"/>
-<area shape="rect" id="node11" href="_models_2_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="1024,244,1197,285"/>
+<area shape="rect" id="node2" href="_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="5,80,172,107"/>
+<area shape="rect" id="node4" href="_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree..." alt="" coords="196,80,347,107"/>
+<area shape="rect" id="node3" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="24,155,153,181"/>
 </map>
 </div>
 </div>
@@ -151,9 +143,9 @@ Functions</h2></td></tr>
 <tr class="separator:a27816dc404bd1077a5a709f084d6560a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a941e30b37e9bde597807813883a03959"><td class="memItemLeft" align="right" valign="top">std::pair&lt; size_t, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_random_8h.html#a941e30b37e9bde597807813883a03959">arg_max_int</a> (unsigned int max, const std::function&lt; double(const int)&gt; &amp;f)</td></tr>
 <tr class="separator:a941e30b37e9bde597807813883a03959"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8df9e92a32a04d16bec82a9eab46d48"><td class="memTemplParams" colspan="2">template&lt;typename t , typename T &gt; </td></tr>
-<tr class="memitem:ab8df9e92a32a04d16bec82a9eab46d48"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; t *, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_random_8h.html#ab8df9e92a32a04d16bec82a9eab46d48">max_of</a> (T &amp;s, const std::function&lt; double(t &amp;)&gt; &amp;f)</td></tr>
-<tr class="separator:ab8df9e92a32a04d16bec82a9eab46d48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c5f6ff4dea84588e75e7000cd308d53"><td class="memTemplParams" colspan="2">template&lt;typename t , typename T &gt; </td></tr>
+<tr class="memitem:a2c5f6ff4dea84588e75e7000cd308d53"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; t *, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_random_8h.html#a2c5f6ff4dea84588e75e7000cd308d53">max_of</a> (const T &amp;s, const std::function&lt; double(const t &amp;)&gt; &amp;f)</td></tr>
+<tr class="separator:a2c5f6ff4dea84588e75e7000cd308d53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66c44d236d9db0144761e0d24bc83e48"><td class="memTemplParams" colspan="2">template&lt;typename t , typename T &gt; </td></tr>
 <tr class="memitem:a66c44d236d9db0144761e0d24bc83e48"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; t *, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_random_8h.html#a66c44d236d9db0144761e0d24bc83e48">sample</a> (const T &amp;s, double(*f)(const t &amp;))</td></tr>
 <tr class="separator:a66c44d236d9db0144761e0d24bc83e48"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -439,8 +431,8 @@ template&lt;typename t , typename T &gt; </div>
 
 </div>
 </div>
-<a id="ab8df9e92a32a04d16bec82a9eab46d48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8df9e92a32a04d16bec82a9eab46d48">&#9670;&nbsp;</a></span>max_of()</h2>
+<a id="a2c5f6ff4dea84588e75e7000cd308d53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c5f6ff4dea84588e75e7000cd308d53">&#9670;&nbsp;</a></span>max_of()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -450,13 +442,13 @@ template&lt;typename t , typename T &gt; </div>
         <tr>
           <td class="memname">std::pair&lt;t*,double&gt; max_of </td>
           <td>(</td>
-          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramtype">const T &amp;&#160;</td>
           <td class="paramname"><em>s</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::function&lt; double(t &amp;)&gt; &amp;&#160;</td>
+          <td class="paramtype">const std::function&lt; double(const t &amp;)&gt; &amp;&#160;</td>
           <td class="paramname"><em>f</em>&#160;</td>
         </tr>
         <tr>

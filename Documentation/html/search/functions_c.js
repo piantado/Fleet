@@ -1,11 +1,9 @@
 var searchData=
 [
-  ['main',['main',['../_models_2_formal_language_theory-_complex_2_main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;Main.cpp'],['../_models_2_formal_language_theory-_simple_2_main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;Main.cpp'],['../_models_2_number_game_2_main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;Main.cpp']]],
   ['make_5fneighbor',['make_neighbor',['../class_searchable.html#acd4cf198859084f7a656ef507e65a872',1,'Searchable']]],
   ['makenode',['makeNode',['../class_grammar.html#abc6f2a046bdf8df0be45912b5d8fe410',1,'Grammar']]],
   ['map',['map',['../class_node.html#adefac3cb7b411321c5af15dad1484834',1,'Node']]],
-  ['max',['max',['../class_fleet_1_1_statistics_1_1_reservoir_sample.html#af2d03d8d0e93ddedc61a43d1827ae48d',1,'Fleet::Statistics::ReservoirSample']]],
-  ['max_5fof',['max_of',['../_random_8h.html#ab8df9e92a32a04d16bec82a9eab46d48',1,'Random.h']]],
+  ['max_5fof',['max_of',['../_random_8h.html#a2c5f6ff4dea84588e75e7000cd308d53',1,'Random.h']]],
   ['mcmc_5facceptance_5fcount',['mcmc_acceptance_count',['../namespace_fleet_statistics.html#ad26d3ef814229c9d5a652a44449bca21',1,'FleetStatistics']]],
   ['mcmc_5fproposal_5fcalls',['mcmc_proposal_calls',['../namespace_fleet_statistics.html#a1f9e34ed6f510be04fe18bc41d07be49',1,'FleetStatistics']]],
   ['mcmcable',['MCMCable',['../class_m_c_m_cable.html#aac715433bffb674dd5809e7c1bc59ae5',1,'MCMCable']]],
@@ -13,11 +11,10 @@ var searchData=
   ['mean',['mean',['../class_finite_history.html#a1184d6b1d30c2d4d86846a643dbee18a',1,'FiniteHistory']]],
   ['median',['median',['../class_median_f_a_m_e.html#a3649461af2073421813b132f9f6e740b',1,'MedianFAME::median()'],['../class_streaming_statistics.html#aca180830d3a1583462a3b0f2af758d46',1,'StreamingStatistics::median()']]],
   ['medianfame',['MedianFAME',['../class_median_f_a_m_e.html#a5f7fa4a3764af4fbf6586479b3c2af46',1,'MedianFAME']]],
-  ['min',['min',['../class_fleet_1_1_statistics_1_1_reservoir_sample.html#ab2f186b828351e164e1ed6e60c8c9be8',1,'Fleet::Statistics::ReservoirSample']]],
   ['mod_5fdecode',['mod_decode',['../class_integerized_stack.html#ab7c9b3bf6eb870bd7d74c624b3779cec',1,'IntegerizedStack']]],
   ['mod_5fencode',['mod_encode',['../class_integerized_stack.html#add34247b848e6601cbd55cccde98232a',1,'IntegerizedStack']]],
   ['mod_5fpop',['mod_pop',['../class_integerized_stack.html#a07669571cd083803edb5a863c3c5419e',1,'IntegerizedStack']]],
   ['model_5fpredictions',['model_predictions',['../_grammar_hypothesis_8h.html#a226a126736e15a8fa6d12e3fc8d06772',1,'GrammarHypothesis.h']]],
-  ['mymcts',['MyMCTS',['../class_my_m_c_t_s.html#af5262e91955f1ee0a2f19378a4516638',1,'MyMCTS']]],
+  ['my_5fstring',['my_string',['../class_base_node.html#a263b93d5aaf1ce5eb7f103bf3b988db3',1,'BaseNode']]],
   ['myrandom',['myrandom',['../_random_8h.html#a80379e9c4dd11a0b2260f1a4ee934d44',1,'myrandom(T max):&#160;Random.h'],['../_random_8h.html#a811471b3219aac1528d51ce9dc002460',1,'myrandom(T min, T max):&#160;Random.h']]]
 ];

@@ -16,7 +16,6 @@ var searchData=
   ['top',['top',['../class_reservoir_sample.html#a94a92f438328cbca4aa5f0ba92867142',1,'ReservoirSample::top()'],['../class_stack.html#ad461f6de40c8672dbf743068f4515061',1,'Stack::top()']]],
   ['top_2eh',['Top.h',['../_top_8h.html',1,'']]],
   ['topn',['TopN',['../class_top_n.html',1,'TopN&lt; T &gt;'],['../class_top_n.html#a0ad4e5b78ff09e519ef1c5f361d4c6c0',1,'TopN::TopN(size_t n=std::numeric_limits&lt; size_t &gt;::max())'],['../class_top_n.html#a8bd54bb09006a68c350a173eddc55549',1,'TopN::TopN(const TopN&lt; T &gt; &amp;x)'],['../class_top_n.html#ab7bccf0028a9a4972cd8d5ae4a555553',1,'TopN::TopN(TopN&lt; T &gt; &amp;&amp;x)']]],
-  ['topn_3c_20myhypothesis_20_3e',['TopN&lt; MyHypothesis &gt;',['../class_top_n.html',1,'']]],
   ['topn_3c_20reservoirsample_3a_3aitem_20_3e',['TopN&lt; ReservoirSample::Item &gt;',['../class_top_n.html',1,'']]],
   ['topref',['topref',['../class_stack.html#a318da5613921ddf481a21c62ce006c3c',1,'Stack']]],
   ['tree_5fpath',['tree_path',['../_fleet_8h.html#ac5f6d990a0bcb9e8a0734beaf02ac77a',1,'Fleet.h']]],

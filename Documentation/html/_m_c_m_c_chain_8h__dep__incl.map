@@ -1,12 +1,5 @@
 <map id="src/Inference/MCMCChain.h" name="src/Inference/MCMCChain.h">
-<area shape="rect" id="node2" href="$_models_2_combinatory_logic_2_main_8cpp.html" title="Models/CombinatoryLogic\l/Main.cpp" alt="" coords="15,82,188,124"/>
-<area shape="rect" id="node3" href="$_models_2_number-_fancy_2_main_8cpp.html" title="Models/Number&#45;Fancy\l/Main.cpp" alt="" coords="5,246,160,288"/>
-<area shape="rect" id="node4" href="$_models_2_number_game_2_main_8cpp.html" title="Models/NumberGame/Main.cpp" alt="" coords="263,90,470,116"/>
-<area shape="rect" id="node5" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel..." alt="" coords="495,90,668,116"/>
-<area shape="rect" id="node10" href="$_testing_2_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="775,336,897,362"/>
-<area shape="rect" id="node6" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="473,172,690,198"/>
-<area shape="rect" id="node7" href="$_models_2_first_order_logic_2_main_8cpp.html" title="Models/FirstOrderLogic\l/Main.cpp" alt="" coords="184,246,341,288"/>
-<area shape="rect" id="node8" href="$_models_2_formal_language_theory-_complex_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Complex/Main.cpp" alt="" coords="366,246,570,288"/>
-<area shape="rect" id="node9" href="$_models_2_formal_language_theory-_simple_2_main_8cpp.html" title="Models/FormalLanguageTheory\l&#45;Simple/Main.cpp" alt="" coords="594,246,798,288"/>
-<area shape="rect" id="node11" href="$_models_2_rational_rules_2_main_8cpp.html" title="Models/RationalRules\l/Main.cpp" alt="" coords="874,246,1025,288"/>
+<area shape="rect" id="node2" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel..." alt="" coords="39,81,213,108"/>
+<area shape="rect" id="node4" href="$_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="126,230,249,257"/>
+<area shape="rect" id="node3" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="5,156,223,182"/>
 </map>

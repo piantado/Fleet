@@ -1,7 +1,6 @@
 var searchData=
 [
   ['basenode',['BaseNode',['../class_base_node.html',1,'']]],
-  ['basenode_3c_20mymcts_20_3e',['BaseNode&lt; MyMCTS &gt;',['../class_base_node.html',1,'']]],
   ['basenode_3c_20node_20_3e',['BaseNode&lt; Node &gt;',['../class_base_node.html',1,'']]],
   ['bayesable',['Bayesable',['../class_bayesable.html',1,'']]],
   ['bayesable_3c_20args_2e_2e_2e_20_3e',['Bayesable&lt; Args... &gt;',['../class_bayesable.html',1,'']]],

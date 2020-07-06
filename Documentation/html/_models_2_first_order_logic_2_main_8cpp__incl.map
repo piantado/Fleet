@@ -1,0 +1,28 @@
+<map id="Models/FirstOrderLogic/Main.cpp" name="Models/FirstOrderLogic/Main.cpp">
+<area shape="rect" id="node4" href="$_primitives_8h.html" title="If there are any references in the arguments, only the first can be a reference. " alt="" coords="663,177,753,203"/>
+<area shape="rect" id="node16" href="$_builtins_8h.html" title="This is needed below so we can check if something is a Builtin without template args. " alt="" coords="43,177,119,203"/>
+<area shape="rect" id="node17" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="463,95,550,121"/>
+<area shape="rect" id="node25" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="1487,95,1611,121"/>
+<area shape="rect" id="node34" href="$_top_8h.html" title="Check if a type has a posterior function or not. " alt="" coords="3355,95,3410,121"/>
+<area shape="rect" id="node42" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="829,95,966,121"/>
+<area shape="rect" id="node46" href="$_fleet_8h.html" title="A fleet object manages processing the command line, prints a useful summary of command lines..." alt="" coords="2581,95,2643,121"/>
+<area shape="rect" id="node10" href="$_errors_8h.html" title="Errors.h" alt="" coords="679,348,747,375"/>
+<area shape="rect" id="node13" href="$_instruction_8h.html" title="This is an error type that is returned if we get a runtime error (e.g. string length, etc.) " alt="" coords="1433,266,1527,293"/>
+<area shape="rect" id="node14" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="1755,348,1871,375"/>
+<area shape="rect" id="node15" href="$_i_o_8h.html" title="IO.h" alt="" coords="1790,423,1837,449"/>
+<area shape="rect" id="node19" href="$_node_8h.html" title="Node.h" alt="" coords="929,177,993,203"/>
+<area shape="rect" id="node21" href="$_random_8h.html" title="Random.h" alt="" coords="505,177,588,203"/>
+<area shape="rect" id="node22" href="$_nonterminal_8h.html" title="Nonterminal.h" alt="" coords="277,177,379,203"/>
+<area shape="rect" id="node23" href="$_virtual_machine_state_8h.html" title="Count references in lambda arguments (used to ensure we only passs one) " alt="" coords="1303,177,1454,203"/>
+<area shape="rect" id="node20" href="$_program_8h.html" title="Program.h" alt="" coords="1224,266,1307,293"/>
+<area shape="rect" id="node27" href="$_proposers_8h.html" title="Proposers.h" alt="" coords="1135,177,1227,203"/>
+<area shape="rect" id="node28" href="$_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="1827,266,1975,293"/>
+<area shape="rect" id="node29" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="1648,259,1803,300"/>
+<area shape="rect" id="node30" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="1529,169,1684,211"/>
+<area shape="rect" id="node31" href="$_searchable_8h.html" title="A class is searchable if permits us to enumerate and make its neighbors. This class is used by MCTS a..." alt="" coords="1951,169,2105,211"/>
+<area shape="rect" id="node32" href="$_virtual_machine_pool_8h.html" title="This manages a collection of VirtualMachines – this is what handles the enumeration of flip by proba..." alt="" coords="2514,169,2713,211"/>
+<area shape="rect" id="node44" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel..." alt="" coords="1017,177,1111,203"/>
+<area shape="rect" id="node45" href="$_timing_8h.html" title="Timing.h" alt="" coords="1552,266,1624,293"/>
+<area shape="rect" id="node49" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="2416,177,2491,203"/>
+<area shape="rect" id="node50" href="$apply_primitives_8h.html" title="VirtualMachine/applyPrimitives.h" alt="" coords="2130,177,2342,203"/>
+</map>

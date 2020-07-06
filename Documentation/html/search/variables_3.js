@@ -13,7 +13,6 @@ var searchData=
   ['cntyes',['cntyes',['../struct_human_datum.html#a3569e7634ea9badbe48105cb3a4e5800',1,'HumanDatum']]],
   ['ctrl_5fc',['CTRL_C',['../_combinators_8h.html#a6f7c4963bb8a36031664821219e3159e',1,'CTRL_C():&#160;Fleet.h'],['../_fleet_8h.html#a6f7c4963bb8a36031664821219e3159e',1,'CTRL_C():&#160;Fleet.h'],['../_astar_8h.html#a6f7c4963bb8a36031664821219e3159e',1,'CTRL_C():&#160;Fleet.h'],['../_control_8h.html#a6f7c4963bb8a36031664821219e3159e',1,'CTRL_C():&#160;Fleet.h'],['../_parallel_tempering_8h.html#a6f7c4963bb8a36031664821219e3159e',1,'CTRL_C():&#160;Fleet.h']]],
   ['current',['current',['../class_base_node_1_1_node_iterator.html#a64b6d98532282b0d5c4b00454f2dd9cb',1,'BaseNode::NodeIterator::current()'],['../class_m_c_m_c_chain.html#ab0c3b31e96d1f703bb8cf55c0575b4bd',1,'MCMCChain::current()']]],
-  ['current_5fdata',['current_data',['../_models_2_formal_language_theory-_complex_2_main_8cpp.html#a7738aad53d0b772202992e9bad69c250',1,'Main.cpp']]],
   ['current_5fmutex',['current_mutex',['../class_m_c_m_c_chain.html#a42c355121fce0476426a49d5498c38a1',1,'MCMCChain']]],
   ['current_5fsteps',['current_steps',['../class_virtual_machine_pool.html#a63db532386cd929a09525f7ab569ff81',1,'VirtualMachinePool']]]
 ];

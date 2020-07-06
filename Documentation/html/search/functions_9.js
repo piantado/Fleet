@@ -17,5 +17,5 @@ var searchData=
   ['is_5fprefix',['is_prefix',['../_miscellaneous_8h.html#ac63ed4e974b8dc3b49eae65049ad7804',1,'Miscellaneous.h']]],
   ['is_5froot',['is_root',['../class_base_node.html#afce604388d562d347fcb31aeb2a8ef03',1,'BaseNode']]],
   ['is_5fterminal',['is_terminal',['../class_base_node.html#af37331cbec1b32c874138d2ae9b89745',1,'BaseNode::is_terminal()'],['../class_rule.html#a9d557e302f94bd85f5505733e8856f97',1,'Rule::is_terminal()']]],
-  ['item',['Item',['../class_reservoir_sample_1_1_item.html#a01a115a4bc68485d3349d61b85388998',1,'ReservoirSample::Item::Item()'],['../class_fleet_1_1_statistics_1_1_reservoir_sample_1_1_item.html#acad6abfadffe65005f14a4c9616aabde',1,'Fleet::Statistics::ReservoirSample::Item::Item()']]]
+  ['item',['Item',['../struct_reservoir_sample_1_1_item.html#a01a115a4bc68485d3349d61b85388998',1,'ReservoirSample::Item']]]
 ];

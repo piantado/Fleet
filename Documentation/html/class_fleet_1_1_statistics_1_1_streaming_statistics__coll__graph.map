@@ -1,5 +1,0 @@
-<map id="Fleet::Statistics::StreamingStatistics" name="Fleet::Statistics::StreamingStatistics">
-<area shape="rect" id="node2" href="$class_fleet_1_1_statistics_1_1_median_f_a_m_e.html" title="Fleet::Statistics::\lMedianFAME\&lt; double \&gt;" alt="" coords="263,5,425,47"/>
-<area shape="rect" id="node3" href="$class_fleet_1_1_statistics_1_1_reservoir_sample.html" title="Fleet::Statistics::\lReservoirSample\&lt; double \&gt;" alt="" coords="252,71,436,112"/>
-<area shape="rect" id="node4" href="$class_fleet_1_1_statistics_1_1_top_n.html" title="Fleet::Statistics::\lTopN\&lt; Fleet::Statistics\l::ReservoirSample::Item \&gt;" alt="" coords="5,63,181,119"/>
-</map>

@@ -1,0 +1,54 @@
+\hypertarget{_base_node_8h}{}\section{src/\+Base\+Node.h File Reference}
+\label{_base_node_8h}\index{src/\+Base\+Node.\+h@{src/\+Base\+Node.\+h}}
+
+
+This is a general tree class, which we are adding because there are currently at least 3 different tree classes used in different parts of fleet (Nodes, M\+C\+TS, data for Binding\+Theory, etc.). This is an attempt to make a big superclass that puts all of this functionality in one place. It attempts to keep the node size small so that we can use this efficiently in M\+C\+TS in particular.  
+
+
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}I\+O.\+h\char`\"{}}\newline
+Include dependency graph for Base\+Node.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_base_node_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_base_node_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_base_node}{Base\+Node$<$ this\+\_\+t $>$}
+\item 
+class \hyperlink{class_base_node_1_1_node_iterator}{Base\+Node$<$ this\+\_\+t $>$\+::\+Node\+Iterator}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename this\+\_\+t $>$ }\\std\+::ostream \& \hyperlink{_base_node_8h_a63edd86677bc2c840a2276763bd650d5}{operator$<$$<$} (std\+::ostream \&o, const \hyperlink{class_base_node}{Base\+Node}$<$ this\+\_\+t $>$ \&t)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is a general tree class, which we are adding because there are currently at least 3 different tree classes used in different parts of fleet (Nodes, M\+C\+TS, data for Binding\+Theory, etc.). This is an attempt to make a big superclass that puts all of this functionality in one place. It attempts to keep the node size small so that we can use this efficiently in M\+C\+TS in particular. 
+
+Define an interator for nodes. This iterates in prefix order, which is the standard in the library because it\textquotesingle{}s used for linearization.
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_base_node_8h_a63edd86677bc2c840a2276763bd650d5}\label{_base_node_8h_a63edd86677bc2c840a2276763bd650d5}} 
+\index{Base\+Node.\+h@{Base\+Node.\+h}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Base\+Node.\+h@{Base\+Node.\+h}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t $>$ \\
+std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{o,  }\item[{const \hyperlink{class_base_node}{Base\+Node}$<$ this\+\_\+t $>$ \&}]{t }\end{DoxyParamCaption})}
+

@@ -2,7 +2,7 @@ var searchData=
 [
   ['eigenslice',['eigenslice',['../_eigen_numerics_8h.html#a5c19fc7b6441ef5882de44b7f1fe67f3',1,'EigenNumerics.h']]],
   ['empty',['empty',['../class_integerized_stack.html#a549d4ed66e89d2e3d7e726d5c8e28fa2',1,'IntegerizedStack::empty()'],['../class_top_n.html#adb29d7b6490afe04adb88caac2f7fba0',1,'TopN::empty()'],['../class_virtual_machine_state.html#afd9734eba9ba7bb9bbf4926743c90a3a',1,'VirtualMachineState::empty()']]],
-  ['end',['end',['../class_base_node.html#a990f4bbfab3e8c78421e51f32cb5db48',1,'BaseNode::end()'],['../class_fleet_1_1_statistics_1_1_reservoir_sample.html#a4e3cf1195fcb255f2b0281d9307bfd16',1,'Fleet::Statistics::ReservoirSample::end()']]],
+  ['end',['end',['../class_base_node.html#a990f4bbfab3e8c78421e51f32cb5db48',1,'BaseNode']]],
   ['enumeration_5fsteps',['enumeration_steps',['../namespace_fleet_statistics.html#abc4e1ca48b955eaf7fb6c16d07757023',1,'FleetStatistics']]],
   ['enumerationinference',['EnumerationInference',['../class_enumeration_inference.html#acce2365fb3b45ab53414d5dd93c18f11',1,'EnumerationInference']]],
   ['expand_5ffrom_5finteger',['expand_from_integer',['../_enumeration_8h.html#a9164f3ed48e5b6b432367a0c3992603b',1,'expand_from_integer(Grammar_t *g, nonterminal_t nt, IntegerizedStack &amp;is):&#160;Enumeration.h'],['../_enumeration_8h.html#ac730d5c12ae2f60e485fa3ca845e1714',1,'expand_from_integer(Grammar_t *g, nonterminal_t nt, enumerationidx_t z):&#160;Enumeration.h']]],

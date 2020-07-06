@@ -1,0 +1,62 @@
+\hypertarget{class_object_to_bool}{}\section{Object\+To\+Bool Class Reference}
+\label{class_object_to_bool}\index{Object\+To\+Bool@{Object\+To\+Bool}}
+
+
+\subparagraph*{} 
+
+
+
+
+\subsection{Detailed Description}
+\subparagraph*{}
+
+\subparagraph*{}
+
+
+\begin{DoxyCode}
+    We need to define some structs to hold the \textcolor{keywordtype}{object} features
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+\textcolor{keyword}{enum class} Shape \{ Square, Triangle, Circle\};
+\textcolor{keyword}{enum class} Color \{ Red, Green, Blue\};
+
+\textcolor{keyword}{struct }Object \{ 
+    Color color; 
+    Shape shape; 
+
+    \textcolor{comment}{// Must define operator< in order to be stored in a set}
+    \textcolor{keywordtype}{bool} operator<(\textcolor{keyword}{const} Object& o)\textcolor{keyword}{ const }\{
+        \textcolor{keywordflow}{if}( color != o.color) \textcolor{keywordflow}{return} color < o.color;
+        \textcolor{keywordflow}{else}                  \textcolor{keywordflow}{return} shape < o.shape;
+    \}
+
+    \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} Object o)\textcolor{keyword}{ const }\{
+        \textcolor{keywordflow}{return} (shape==o.shape) and (color==o.color);
+    \}
+\};
+
+
+\textcolor{comment}{// Define a set of objects}
+\textcolor{keyword}{typedef} std::set<Object> ObjectSet;
+
+\textcolor{keyword}{struct }\hyperlink{class_object_to_bool}{ObjectToBool} : \textcolor{keyword}{public} std::function<bool(Object)> \{
+    \textcolor{keyword}{using} F = std::function<bool(Object)>;
+    \textcolor{keyword}{using} F::F;
+    \hyperlink{class_object_to_bool}{ObjectToBool}( \textcolor{keywordtype}{bool}* f(Object) ) \{
+        *\textcolor{keyword}{this} = f;
+    \}
+\};
+
+\textcolor{comment}{// The arguments to a hypothesis will be a pair of a set and an object (as in Piantadosi, Tenenbaum,
+       Goodman 2016)}
+\textcolor{keyword}{typedef} std::tuple<Object,ObjectSet> ArgType; \textcolor{comment}{// this is the type of arguments we give to our function}
+
+\textcolor{comment}{/*}
+\end{DoxyCode}
+ Declare primitives $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Models/\+First\+Order\+Logic/\hyperlink{_models_2_first_order_logic_2_main_8cpp}{Main.\+cpp}\end{DoxyCompactItemize}
