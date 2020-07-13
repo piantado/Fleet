@@ -45,7 +45,7 @@ public:
 	 * @brief This run helper is called internally by multiple different threads, and runs a given pool.
 	 * @param ctl
 	 */
-	void run_thread(Control ctl) {
+	void run_thread(Control ctl) override {
 		
 		while( ctl.running() ) {
 			int index = next_index() % pool.size();

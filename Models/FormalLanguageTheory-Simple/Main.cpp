@@ -190,25 +190,6 @@ int main(int argc, char** argv){
 	//------------------
 
 			
-//	auto v = grammar.expand_from_names("F:NULL");
-//	
-//	auto nt = v.nt();
-//	std::function isnt = [nt](const Node& n){ return (int)(n.nt() == nt and not n.is_null() );};
-//	
-//	CERR v.string() ENDL;
-//	CERR v.get_nth(0, isnt)->string() ENDL;
-
-//	IntegerizedStack is;
-//	is.push(12);
-//	is.push(33);
-//	is.push(400);
-//	CERR is.get_value() ENDL;
-//	CERR is.pop() ENDL;
-//	CERR is.pop() ENDL;
-//	CERR is.pop() ENDL;
-//	CERR is.pop() ENDL;
-//	
-	
 //	Fleet::Statistics::TopN<MyHypothesis> tn(10);
 //	for(enumerationidx_t z=0;z<10000000 and !CTRL_C;z++) {
 //		auto n = grammar.expand_from_integer(0, z);

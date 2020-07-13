@@ -32,15 +32,16 @@ const size_t RESTART = 0;
 const size_t NTEMPS = 20;
 unsigned long SWAP_EVERY = 1500; // ms
 
-std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000"}; // how many data points do we run on?
+std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000"}; // how many data points do we run on?
 //std::vector<S> data_amounts={"1","1000"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
+
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-unsigned long MAX_STEPS_PER_FACTOR   = 4096; //4096;  
-unsigned long MAX_OUTPUTS_PER_FACTOR = 1024; //512; - make it bigger than
-unsigned long PRINT_STRINGS = 256; // print at most this many strings for each hypothesis
-double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -25 to catch some less frequent things that happen by chance
+	unsigned long MAX_STEPS_PER_FACTOR   = 4096; //4096;  
+	unsigned long MAX_OUTPUTS_PER_FACTOR = 1024; //512; - make it bigger than
+	unsigned long PRINT_STRINGS = 256; // print at most this many strings for each hypothesis
+	double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -25 to catch some less frequent things that happen by chance
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -360,6 +361,9 @@ int main(int argc, char** argv){
 		// NOTE: As of June 11, I took out the SAFE part of these
 		grammar.add<S,S>(BuiltinOp::op_RECURSE, S("F")+s+"(%s)", 1.0/nfactors, a);
 		grammar.add<S,S>(BuiltinOp::op_MEM_RECURSE, S("memF")+s+"(%s)", 0.2/nfactors, a); // disprefer mem when we don't need it
+		
+		grammar.add<S,S>(BuiltinOp::op_SAFE_RECURSE, S("F")+s+"(%s)", 1.0/nfactors, a);
+		grammar.add<S,S>(BuiltinOp::op_SAFE_MEM_RECURSE, S("memF")+s+"(%s)", 0.2/nfactors, a); // disprefer mem when we don't need it
 	}
 
 	// push for each

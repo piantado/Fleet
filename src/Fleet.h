@@ -71,7 +71,7 @@
 #include <stdlib.h>
 #include <signal.h>
 
-const std::string FLEET_VERSION = "0.0.96";
+const std::string FLEET_VERSION = "0.0.97";
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We defaultly include all of the major requirements for Fleet
