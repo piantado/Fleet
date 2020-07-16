@@ -142,7 +142,9 @@ std::tuple PRIMITIVES = {
 	// Define our custom op here. To do this, we simply define a primitive whose first argument is vmstatus_t&. This servers as our return value
 	// since the return value of this lambda is needed by grammar to decide the nonterminal. If so, we must also take vms, pool, and loader.
 	Primitive("sample(%s)", +[](StrSet s) -> S { return S{}; }, 
-						    +[](VirtualMachineState<S,S,MY_TYPES>* vms, VirtualMachinePool<VirtualMachineState<S,S,MY_TYPES>>* pool, ProgramLoader* loader) -> vmstatus_t  {
+						    +[](VirtualMachineState<S,S,MY_TYPES>* vms, 
+								VirtualMachinePool<VirtualMachineState<S,S,MY_TYPES>>* pool, 
+								ProgramLoader* loader) -> vmstatus_t  {
 		
 		// This function is a bit more complex than it otherwise would be because this was taking 40% of time initially. 
 		// The reason was that it was copying the entire vms stack for single elements (which are the most common sets) 

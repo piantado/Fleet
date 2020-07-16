@@ -391,7 +391,7 @@ public:
 
 
 template<typename this_t>
-BaseNode<this_t>::NodeIterator BaseNode<this_t>::EndNodeIterator = NodeIterator(nullptr);
+typename BaseNode<this_t>::NodeIterator BaseNode<this_t>::EndNodeIterator = NodeIterator(nullptr);
 
 
 
