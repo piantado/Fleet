@@ -162,10 +162,10 @@ public:
 			
 			std::lock_guard guard(current_mutex); // lock below otherwise others can modify
 
-			extern unsigned long thin;
-			if(thin > 0 and FleetStatistics::global_sample_count % thin == 0) {
-				current.print();
-			}
+//			extern unsigned long thin;
+//			if(thin > 0 and FleetStatistics::global_sample_count % thin == 0) {
+//				current.print();
+//			}
 
 			// propose, but restart if we're -infinity
 			auto [proposal, fb] = current.posterior > -infinity ? current.propose() : std::make_tuple(current.restart(), 0.0);			
@@ -210,7 +210,9 @@ public:
 			}
 				
 			// and call on the sample if we meet all our criteria
-			if(callback != nullptr and samples >= ctl.burn) {
+			extern unsigned long thin;
+			if(callback != nullptr and samples >= ctl.burn and
+				(thin == 0 or FleetStatistics::global_sample_count % thin == 0)) {
 				(*callback)(current);
 			}
 				

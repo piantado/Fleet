@@ -207,13 +207,11 @@ int main(int argc, char** argv){
 //
 //	return 0;
 	
-//	MyHypothesis h0(&grammar);
-//	h0 = h0.restart();
-//	tic();
-////	
-//	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
-//	samp.run(Control(mcmc_steps, runtime, nthreads), 100, 300); //30000);		
-//	
+	MyHypothesis h0(&grammar);
+	h0 = h0.restart();
+	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
+	samp.run(Control(mcmc_steps, runtime, nthreads), 100, 300); //30000);		
+	
 
 
 //	MyHypothesis h0(&grammar);	h0 = h0.restart();
@@ -236,12 +234,12 @@ int main(int argc, char** argv){
 //	CERR "# MCTS size: " TAB m.size() ENDL;
 	
 	// A PartialMCTSNode is one where you stop one step after reaching an unexpanded kid in the tree
-	MyHypothesis h0(&grammar);
-	MyMCTS m(h0, explore, &mydata, top);
-	top.print_best = true;
-	m.run(Control(mcts_steps, runtime, nthreads), h0);
-	m.print(h0, "tree.txt");
-	CERR "# MCTS size: " TAB m.count() ENDL;
+//	MyHypothesis h0(&grammar);
+//	MyMCTS m(h0, explore, &mydata, top);
+//	top.print_best = true;
+//	m.run(Control(mcts_steps, runtime, nthreads), h0);
+//	m.print(h0, "tree.txt");
+//	CERR "# MCTS size: " TAB m.count() ENDL;
 
 	// Do some A* search -- here we maintain a priority queue of partially open nodes, sorted by 
 	// their prior and a single sample of their likelihood (which we end up downweighting a lot) (see Astar.h)
