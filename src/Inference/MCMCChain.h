@@ -204,6 +204,8 @@ public:
   
 				history << true;
 				++acceptances;
+				
+				[[unlikely]];
 			}
 			else {
 				history << false;

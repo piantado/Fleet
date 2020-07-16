@@ -124,10 +124,11 @@ struct Primitive : PrePrimitive {
 	T(*call)(args...); 
 	
 	// should be this, but we can't do that apparently. 
-	// so instead, we use std::any (which I think gets all compiled away)
+	// so instead, we use std::any (which maybe gets all compiled away?)
 //	template<typename V, typename P, typename L>
 //	vmstatus_t(*dispatch)(V*, P*, L*);
-	std::any dispatch; 
+//	std::any dispatch; 
+	void* dispatch; // this works in addition to std::any but may save us a pointer reference? Might be a tiny bit faster?
 	
 	PrimitiveOp op;
 	double p;
@@ -187,8 +188,10 @@ struct Primitive : PrePrimitive {
 
 		if (is_dispatch) { 
 			// and we call with vms, pool, loader, and note that we DO NOT push the result since its a vmstatus_t
-			auto f = std::any_cast<vmstatus_t(*)(V*, P*, L*)>(this->dispatch);
+			//auto f = std::any_cast<vmstatus_t(*)(V*, P*, L*)>(this->dispatch);
+			auto f = (vmstatus_t(*)(V*, P*, L*))(this->dispatch); // cast
 			return f(vms, pool, loader);	
+			[[unlikely]];
 				
 		}
 		else {
