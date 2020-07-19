@@ -144,19 +144,6 @@ public:
 		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err);	
 		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
 
-		// making this pool thread_local gives us a big speed boost in multithreaded FormalLanguageTheory
-		// NOTE this is a little odd because it also makes it static, 
-		// so we have to be sure that LOTHypotheses runs are not being interrupted and reusmed or anything
-		// if so, we can't use thread_local
-		// See: https://stackoverflow.com/questions/22794382/are-c11-thread-local-variables-automatically-static
-//		thread_local VirtualMachinePool<VirtualMachineState_t> pool(max_steps, max_outputs, minlp); 		
-//		pool.push(vms);		
-//		auto ret = pool.run(loader);		
-//		pool.clear(); // we MUST call this if thread_local since its now static
-//		return ret; 
-//		
-		// The non-thread_local alternative is:
-		// (NOTE we don't have to clean up pool)
 		VirtualMachinePool<VirtualMachineState_t> pool(max_steps, max_outputs, minlp); 		
 		pool.push(vms);		
 		return pool.run(loader);				
@@ -288,13 +275,3 @@ public:
 	 
 };
 
-//
-//template<typename HYP, 
-//		 typename input_t, 
-//		 typename output_t, 
-//		 typename _Grammar_t,
-//		 typename _datum_t=defauldatum_t<input_t, output_t>, 
-//		 typename _data_t=std::vector<_datum_t>,
-//		 typename VirtualMachineState_t=typename _Grammar_t::template VirtualMachineState_t<input_t, output_t> // used for deducing VM_TYPES in VirtualMachineState
-//		 >
-//static VirtualMachinePool<VirtualMachineState_t> LOTHypothesis<HYP,input_t, output_t, _Grammar_t,_datum_t,_data_t, VirtualMachineState_t>::pool();

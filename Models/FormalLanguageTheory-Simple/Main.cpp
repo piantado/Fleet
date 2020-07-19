@@ -178,6 +178,7 @@ int main(int argc, char** argv){
 	for(auto di : split(datastr, ',')) {
 		// add check that data is in the alphabet
 		for(auto& c : di) {
+			
 			assert(alphabet.find(c) != std::string::npos && "*** alphabet does not include all data characters");
 		}
 		
@@ -208,6 +209,7 @@ int main(int argc, char** argv){
 //	return 0;
 	
 	MyHypothesis h0(&grammar);
+	top.print_best = true;
 	h0 = h0.restart();
 	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
 	samp.run(Control(mcmc_steps, runtime, nthreads), 100, 300); //30000);		
