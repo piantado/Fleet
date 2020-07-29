@@ -92,6 +92,7 @@ const std::string FLEET_VERSION = "0.0.97";
 unsigned long random_seed  = 0;
 unsigned long mcts_steps   = 0;
 unsigned long mcmc_steps   = 0; 
+unsigned long inner_mcmc_steps   = 0; 
 unsigned long thin         = 0;
 unsigned long ntop         = 100;
 unsigned long mcmc_restart = 0;
@@ -99,12 +100,14 @@ unsigned long checkpoint   = 0;
 double        explore      = 1.0; // we want to exploit the string prefixes we find
 size_t        nthreads     = 1;
 unsigned long runtime      = 0;
+unsigned long inner_runtime      = 0;
 unsigned long nchains      = 1;
 bool          quiet      = false; // this is used to indicate that we want to not print much out (typically only posteriors and counts)
 std::string   input_path   = "input.txt";
 std::string   tree_path    = "tree.txt";
 std::string   output_path  = "output";
 std::string   timestring   = "0s";
+std::string   inner_timestring = "0s";
 
 
 // This is global that checks whether CTRL_C has been pressed
@@ -138,6 +141,7 @@ public:
 		app.add_option("-R,--seed",    random_seed, "Seed the rng (0 is no seed)");
 		app.add_option("-s,--mcts",    mcts_steps, "Number of MCTS search steps to run");
 		app.add_option("-m,--mcmc",     mcmc_steps, "Number of mcmc steps to run");
+		app.add_option("-M,--inner-mcmc", inner_mcmc_steps, "Number of mcmc steps to run (inner argument)");
 		app.add_option("-t,--thin",     thin, "Thinning on the number printed");
 		app.add_option("-o,--output",   output_path, "Where we write output");
 		app.add_option("-O,--top",      ntop, "The number to store");
@@ -146,6 +150,7 @@ public:
 		app.add_option("-r,--restart",  mcmc_restart, "If we don't improve after this many, restart");
 		app.add_option("-i,--input",    input_path, "Read standard input from here");
 		app.add_option("-T,--time",     timestring, "Stop (via CTRL-C) after this much time (takes smhd as seconds/minutes/hour/day units)");
+		app.add_option("-P,--inner-time",  inner_timestring, "Inner time");
 		app.add_option("-E,--tree",     tree_path, "Write the tree here");
 		app.add_option("-c,--chains",   nchains, "How many chains to run");
 		
@@ -211,6 +216,7 @@ public:
 		
 		// convert everything to ms
 		runtime = convert_time(timestring);	
+		inner_runtime = convert_time(inner_timestring);
 		
 		COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
 		COUT "# Running Fleet on " << hostname << " with PID=" << getpid() << " by user " << getenv("USER") << " at " <<  datestring() ENDL;

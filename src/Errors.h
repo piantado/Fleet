@@ -18,7 +18,7 @@ public:
 class YouShouldNotBeHereError : public std::logic_error {
 public:
 
-	YouShouldNotBeHereError() : std::logic_error("*** It was a mistake to call this.") { }
+	YouShouldNotBeHereError() : std::logic_error("*** You got a YouShouldNotBeHereError.") { }
 	
 	YouShouldNotBeHereError(std::string s) : std::logic_error(s) { }
 	

@@ -1,10 +1,13 @@
 #pragma once 
 
+#include <signal.h>
 #include <Eigen/Core>
 
 #include "Errors.h"
 #include "Numerics.h"
 #include "EigenNumerics.h"
+
+extern volatile sig_atomic_t CTRL_C;
 
 template<typename t_learnerdatum, typename t_learnerdata=std::vector<t_learnerdatum>>
 struct HumanDatum { 
@@ -27,7 +30,7 @@ Vector counts(HYP& h) {
 	// returns a 1xnRules matrix of how often each rule occurs
 	// TODO: This will not work right for Lexicons, where value is not there
 	
-	auto c = h.grammar->get_counts(h.value);
+	auto c = h.grammar->get_counts(h.get_value());
 
 	Vector out = Vector::Zero(c.size());
 	for(size_t i=0;i<c.size();i++){
@@ -87,14 +90,18 @@ Matrix model_predictions(std::vector<HYP>& hypotheses, data_t& human_data) {
 	return out;	
 }
 
+#include "Interfaces/MCMCable.h"
 
-template<typename HYP, typename datum_t, typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
-class GrammarHypothesis : public MCMCable<GrammarHypothesis<HYP, datum_t, data_t>, datum_t, data_t>  {
+
+template<typename Grammar_t, typename datum_t, typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
+class GrammarHypothesis : public MCMCable<GrammarHypothesis<Grammar_t, datum_t, data_t>, datum_t, data_t>  {
 	/* This class stores a hypothesis of grammar probabilities. The data_t here is defined to be the above tuple and datum is ignored */
 public:
+
+	typedef GrammarHypothesis<Grammar_t,datum_t,data_t> self_t;
 			
 	Vector x; 
-	Grammar* grammar;
+	Grammar_t* grammar;
 	Matrix* C;
 	Matrix* LL;
 	Matrix* P;
@@ -102,9 +109,10 @@ public:
 	float logodds_baseline; // when we choose at random, whats the probability of true-vs-false?
 	float logodds_forwardalpha; 
 	
-	GrammarHypothesis(){};
+	GrammarHypothesis() {
+	}
 	
-	GrammarHypothesis(Grammar* g, Matrix* c, Matrix* ll, Matrix* p) : grammar(g), C(c), LL(ll), P(p) {
+	GrammarHypothesis(Grammar_t* g, Matrix* c, Matrix* ll, Matrix* p) : grammar(g), C(c), LL(ll), P(p) {
 		x = Vector::Ones(grammar->count_rules());
 	}	
 	
@@ -118,11 +126,11 @@ public:
 		this->prior = 0.0;
 		
 		for(auto i=0;i<x.size();i++) {
-			this->prior += normal_lpdf(x(i), 0.0, 1.0);
+			this->prior += normal_lpdf(x(i), 0.0, 3.0);
 		}
 		
-		this->prior += normal_lpdf(logodds_baseline, 0.0, 1.0);
-		this->prior += normal_lpdf(logodds_forwardalpha, 0.0, 1.0);
+		this->prior += normal_lpdf(logodds_baseline,     0.0, 3.0);
+		this->prior += normal_lpdf(logodds_forwardalpha, 0.0, 3.0);
 		return this->prior;
 	}
 	
@@ -158,8 +166,8 @@ public:
 		return this->likelihood;		
 	}
 	
-	[[nodiscard]] virtual GrammarHypothesis restart() const {
-		GrammarHypothesis out(grammar, C, LL, P);
+	[[nodiscard]] virtual self_t restart() const {
+		self_t out(grammar, C, LL, P);
 		out.logodds_baseline = normal(rng);		
 		out.logodds_forwardalpha = normal(rng);		
 		
@@ -170,8 +178,8 @@ public:
 	}
 	
 	
-	[[nodiscard]] virtual std::pair<GrammarHypothesis,double> propose() const {
-		GrammarHypothesis out = *this;
+	[[nodiscard]] virtual std::pair<self_t,double> propose() const {
+		self_t out = *this;
 		
 		if(flip()){
 			out.logodds_baseline     = logodds_baseline     + 0.1*normal(rng);
@@ -190,7 +198,6 @@ public:
 		// and return a prior for each hypothesis under my own X
 		// (IF this was just  aPCFG, which its not, we'd use something like lognormalize(C*proposal.getX()))
 
-			
 		Vector out(C.rows()); // one for each hypothesis
 		
 		// get the marginal probability of the counts via  dirichlet-multinomial
@@ -202,7 +209,7 @@ public:
 			for(size_t nt=0;nt<grammar->count_nonterminals();nt++) { // each nonterminal in the grammar is a DM
 				size_t nrules = grammar->count_rules( (nonterminal_t) nt);
 				if(nrules==1) continue;
-				Vector a = eigenslice(etothex,offset,nrules); // TODO: seqN doesn't seem tow ork with this c++ version
+				Vector a = eigenslice(etothex,offset,nrules); // TODO: seqN doesn't seem to work with this c++ version
 				Vector c = eigenslice(C.row(i),offset,nrules);
 				double n = a.sum();
 				if(n==0) continue; // skip zero count else lgamma is crazy
@@ -223,7 +230,7 @@ public:
 	}
 	
 	
-	virtual bool operator==(const GrammarHypothesis<HYP,datum_t,data_t>& h) const {
+	virtual bool operator==(const self_t& h) const {
 		return C == h.C and LL == h.LL and P == h.P and 
 				(getX()-h.getX()).array().abs().sum() == 0.0 and
 				logodds_baseline == h.logodds_baseline and

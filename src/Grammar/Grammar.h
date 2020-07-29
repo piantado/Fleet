@@ -430,6 +430,7 @@ public:
 		
 		
 		if(depth >= GRAMMAR_MAX_DEPTH) {
+			CERR "*** Grammar exceeded max depth, are you sure the grammar probabilities are right?" ENDL;
 			throw YouShouldNotBeHereError("*** Grammar exceeded max depth, are you sure the grammar probabilities are right?");
 		}
 		

@@ -164,7 +164,7 @@ struct Primitive : PrePrimitive {
 	
 	template<typename V, typename P, typename L>
 	constexpr Primitive(const char* fmt, T(*_call)(args...), vmstatus_t _dispatch(V*, P*, L*), double _p=1.0 ) :
-		format(fmt), call(_call), dispatch(_dispatch), op(op_counter++), p(_p), is_dispatch(true) {
+		format(fmt), call(_call), dispatch((void*)_dispatch), op(op_counter++), p(_p), is_dispatch(true) {
 			
 		if constexpr (sizeof...(args)> 0) 
 			static_assert(CountReferences<args...>::value == 0, "*** Cannot contain any references in VMS primitives");

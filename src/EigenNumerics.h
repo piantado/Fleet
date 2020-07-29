@@ -37,13 +37,3 @@ Vector eigenslice(const Vector& v, const size_t offset, const size_t len) {
 	}
 	return out;
 }
-
-//Vector lgammaSum(const Vector& v) {
-//	return v.array().lgamma().
-//}
-
-
-//Vector expnormalize(const Vector& v) {
-//	// exp(v - logsumexp(v)) 
-//	
-//}

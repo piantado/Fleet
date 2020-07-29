@@ -52,7 +52,7 @@ const double alpha = 0.9; // fixed for the learning part of the model
 #include "Builtins.h"
 
 std::tuple PRIMITIVES = {
-	Primitive("and(%s,%s)",     +[](bool a, bool b) -> bool { return (a and b); }, 2.0), // optional specification of prior weight (default=1.0)
+	Primitive("and(%s,%s)",     +[](bool a, bool b) -> bool { return (a and b); }), // optional specification of prior weight (default=1.0)
 	Primitive("or(%s,%s)",      +[](bool a, bool b) -> bool { return (a or b); }),
 	Primitive("iff(%s,%s)",     +[](bool a, bool b) -> bool { return (a == b); }),
 	Primitive("xor(%s,%s)",     +[](bool a, bool b) -> bool { return (a xor b); }),
@@ -83,7 +83,7 @@ std::tuple PRIMITIVES = {
 class MyGrammar : public Grammar<bool,Object> {
 	using Super=Grammar<bool,Object>;
 	using Super::Super;
-}
+};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
@@ -91,13 +91,14 @@ class MyGrammar : public Grammar<bool,Object> {
 // Grammar hypothesis is not automatically included because it depends on Eigen
 #include "GrammarHypothesis.h" 
 #include "EigenNumerics.h"
+#include "LOTHypothesis.h"
 
 typedef HumanDatum<LearnerDatum> MyHumanDatum;
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,Node,Object,bool,LearnerDatum> {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,Object,bool,MyGrammar,LearnerDatum> {
 public:
 	// This is going to assume that all variables other than x are universally quantified over. 
-	using Super = LOTHypothesis<MyHypothesis,Node,Object,bool,LearnerDatum>;
+	using Super = LOTHypothesis<MyHypothesis,Object,bool,MyGrammar,LearnerDatum>;
 	using Super::Super;
 	
 	double compute_single_likelihood(const datum_t& di) {
@@ -150,44 +151,40 @@ Matrix my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, 
 }
 
 
-MyHypothesis::t_data mydata;
-Fleet::Statistics::TopN<MyHypothesis> top;
-Grammar grammar(PRIMITIVES);
-	
-// define some functions to print out a hypothesis
-void print(MyHypothesis& h) {
-	COUT top.count(h) TAB  h.posterior TAB h.prior TAB h.likelihood TAB QQ(h.string()) ENDL;
-}
 
-void gcallback(GrammarHypothesis<MyHypothesis,MyHumanDatum>& h) {
+
 	
-		COUT h.posterior TAB "baseline" TAB h.get_baseline() ENDL;
-		COUT h.posterior TAB "forwardalpha" TAB h.get_forwardalpha() ENDL;
+
+size_t grammar_callback_count = 0;
+void gcallback(GrammarHypothesis<MyGrammar,MyHumanDatum>& h) {
+	if(++grammar_callback_count % 100 == 0) {
+		COUT grammar_callback_count TAB h.posterior TAB "baseline" TAB h.get_baseline() ENDL;
+		COUT grammar_callback_count TAB  h.posterior TAB "forwardalpha" TAB h.get_forwardalpha() ENDL;
 		size_t xi=0;
 		for(size_t nt=0;nt<h.grammar->count_nonterminals();nt++) {
 			for(size_t i=0;i<h.grammar->count_rules( (nonterminal_t) nt);i++) {
 				std::string rs = h.grammar->get_rule((nonterminal_t)nt,i)->format;
 		 		rs = std::regex_replace(rs, std::regex("\\%s"), "X");
-				COUT h.posterior TAB QQ(rs) TAB h.getX()(xi) ENDL;
+				COUT grammar_callback_count TAB  h.posterior TAB QQ(rs) TAB h.getX()(xi) ENDL;
 				xi++;
 			}
 		}
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-
+#include "Top.h"
 #include "Fleet.h"
+#include "MCMCChain.h"
 
 int main(int argc, char** argv){ 
 	using S = std::string;
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	auto app = Fleet::DefaultArguments("Simple grammar inference example");
-	CLI11_PARSE(app, argc, argv);
+	Fleet fleet("A simple, one-factor formal language learner");
+	fleet.initialize(argc, argv);
 	
-	top.set_size(ntop); 
-
-	Fleet_initialize(); // must happen afer args are processed since the alphabet is in the grammar
+	MyGrammar grammar(PRIMITIVES);
 	
 	//------------------
 	// set up the data
@@ -263,33 +260,39 @@ int main(int argc, char** argv){
 		COUT "# Running " TAB v.first ENDL;
 		
 		for(size_t i=0;i<v.second.size();i++) {
+			
+			TopN<MyHypothesis> top(ntop);
+			
 			auto di = v.second[i];
 			MyHypothesis h0(&grammar);
 			h0 = h0.restart();
 			auto givendata = slice(v.second, 0, (di.setNumber-1)-1);
 			MCMCChain chain(h0, &givendata, top);
-			chain.run(Control(100)); // run it super fast
+			chain.run(Control(inner_mcmc_steps, inner_runtime)); // run it super fast
 		
 			for(auto h : top.values()) {
 				h.clear_bayes(); // zero and insert
 				all.insert(h);
 			}
 			
-			top.clear();
+			if(CTRL_C) break;
 		}
+		if(CTRL_C) break;
 	}
+	
+	// reset control-C
+	CTRL_C = 0; 
 
-	COUT "# Done running MCMC" ENDL;
+	COUT "# Done running MCMC to find hypotheses" ENDL;
 	
 	// Show the best we've found
-	for(auto h : all) { 
-		COUT "# Hypothesis ";
-		print(h);
+	for(auto& h : all) { 
+		COUT "# Hypothesis " TAB h.string() ENDL;
 	}
 	
 	// Now let's look a bit
 	std::vector<MyHypothesis> hypotheses;
-	for(auto h : all) hypotheses.push_back(h);
+	for(auto& h : all) hypotheses.push_back(h);
 	COUT "# Found " TAB hypotheses.size() TAB "hypotheses" ENDL;
 	
 	Matrix C  = counts(hypotheses);
@@ -301,8 +304,7 @@ int main(int argc, char** argv){
 	auto P = model_predictions(hypotheses, human_data);
 	COUT "# Done computing model predictions" ENDL;
 
-		
-	GrammarHypothesis<MyHypothesis,MyHumanDatum> gh0(&grammar, &C, &LL, &P);
+	GrammarHypothesis<MyGrammar,MyHumanDatum> gh0(&grammar, &C, &LL, &P);
 	gh0 = gh0.restart();
 	
 	tic();
