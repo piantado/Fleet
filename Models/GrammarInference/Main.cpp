@@ -60,17 +60,17 @@ std::tuple PRIMITIVES = {
 	Primitive("not(%s)",        +[](bool a)         -> bool { return (not a); }),
 	// that + is really insane, but is needed to convert a lambda to a function pointer
 
-	Primitive("yellow(%s)",    +[](Object x)       -> bool { return x.color == Color::yellow; }),
-	Primitive("green(%s)",     +[](Object x)       -> bool { return x.color == Color::green; }),
-	Primitive("blue(%s)",      +[](Object x)       -> bool { return x.color == Color::blue; }),
+	Primitive("yellow(%s)",    +[](Object x)       -> bool { return x.color == Color::yellow; }, 2),
+	Primitive("green(%s)",     +[](Object x)       -> bool { return x.color == Color::green; }, 2),
+	Primitive("blue(%s)",      +[](Object x)       -> bool { return x.color == Color::blue; }, 2),
 
-	Primitive("rectangle(%s)", +[](Object x)       -> bool { return x.shape == Shape::rectangle; }),
-	Primitive("triangle(%s)",  +[](Object x)       -> bool { return x.shape == Shape::triangle; }),
-	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::circle; }),
+	Primitive("rectangle(%s)", +[](Object x)       -> bool { return x.shape == Shape::rectangle; }, 2),
+	Primitive("triangle(%s)",  +[](Object x)       -> bool { return x.shape == Shape::triangle; }, 2),
+	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::circle; }, 2),
 	
-	Primitive("size1(%s)",     +[](Object x)       -> bool { return x.size == Size::size1; }),
-	Primitive("size2(%s)",     +[](Object x)       -> bool { return x.size == Size::size2; }),
-	Primitive("size3(%s)",     +[](Object x)       -> bool { return x.size == Size::size3; }),
+	Primitive("size1(%s)",     +[](Object x)       -> bool { return x.size == Size::size1; }, 2),
+	Primitive("size2(%s)",     +[](Object x)       -> bool { return x.size == Size::size2; }, 2),
+	Primitive("size3(%s)",     +[](Object x)       -> bool { return x.size == Size::size3; }, 2),
 		
 	// but we also have to add a rule for the BuiltinOp that access x, our argument
 	Builtin::X<Object>("x", 10.0)

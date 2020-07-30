@@ -1,5 +1,13 @@
 #pragma once 
 
+/* 
+ * Ok we are going to define a vector hypothesis as one that stores a vector with simple proposals
+ * Then we will have one vector hypothesis for X and another for the parameters we use
+ * 
+ * 
+ */
+ 
+ 
 #include <signal.h>
 #include <Eigen/Core>
 
@@ -19,7 +27,7 @@ struct HumanDatum {
 	size_t cntyes; // yes and no responses
 	size_t cntno;
 	t_learnerdata  given_data;   // what data they saw
-	t_learnerdatum predicdata_t; // what they responded to
+	t_learnerdatum predictdata; // what they responded to
 };
 
 
@@ -84,7 +92,7 @@ Matrix model_predictions(std::vector<HYP>& hypotheses, data_t& human_data) {
 	Matrix out = Matrix::Zero(hypotheses.size(), human_data.size());
 	for(size_t h=0;h<hypotheses.size();h++) {
 	for(size_t di=0;di<human_data.size();di++) {
-		out(h,di) =  1.0*hypotheses[h].callOne(human_data[di].predicdata_t.x, 0);
+		out(h,di) =  1.0*hypotheses[h].callOne(human_data[di].predictdata.x, 0);
 	}
 	}
 	return out;	
@@ -96,6 +104,8 @@ Matrix model_predictions(std::vector<HYP>& hypotheses, data_t& human_data) {
 template<typename Grammar_t, typename datum_t, typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
 class GrammarHypothesis : public MCMCable<GrammarHypothesis<Grammar_t, datum_t, data_t>, datum_t, data_t>  {
 	/* This class stores a hypothesis of grammar probabilities. The data_t here is defined to be the above tuple and datum is ignored */
+	// TODO: Change to use a generic vector of parameters that we can convert to whatever we want -- temperature, memory decay, etc. 
+
 public:
 
 	typedef GrammarHypothesis<Grammar_t,datum_t,data_t> self_t;
@@ -122,7 +132,6 @@ public:
 	float get_forwardalpha()const { return exp(-logodds_forwardalpha) / (1+exp(-logodds_forwardalpha)); }
 	
 	double compute_prior() {
-		// we're going to put a cauchy prior on the transformed space
 		this->prior = 0.0;
 		
 		for(auto i=0;i<x.size();i++) {
@@ -135,7 +144,9 @@ public:
 	}
 	
 	// We should not use compute_single_likelihood
-	virtual double compute_single_likelihood(const datum_t& datum) { throw NotImplementedError(); } 
+	virtual double compute_single_likelihood(const datum_t& datum) { 
+		throw YouShouldNotBeHereError("*** This is not the right likelihood to call for GrammarHypothesis"); 
+	} 
 	
 	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) {
 		// This runs the entire model (computing its posterior) to get the likelihood
@@ -186,10 +197,12 @@ public:
 			out.logodds_forwardalpha = logodds_forwardalpha + 0.1*normal(rng);
 		}		
 		else {
-			auto i = myrandom(x.size()); // add noise to one coefficient
+			// propose to one coefficient
+			auto i = myrandom(x.size()); 
 			out.getX()(i) = x(i) + 0.10*normal(rng);
 		}
 		
+		// everything is symmetrical so fb=0
 		return std::make_pair(out, 0.0);	
 	}
 	
@@ -208,17 +221,17 @@ public:
 			size_t offset = 0; // 
 			for(size_t nt=0;nt<grammar->count_nonterminals();nt++) { // each nonterminal in the grammar is a DM
 				size_t nrules = grammar->count_rules( (nonterminal_t) nt);
-				if(nrules==1) continue;
-				Vector a = eigenslice(etothex,offset,nrules); // TODO: seqN doesn't seem to work with this c++ version
-				Vector c = eigenslice(C.row(i),offset,nrules);
-				double n = a.sum();
-				if(n==0) continue; // skip zero count else lgamma is crazy
-				double a0 = c.sum();
-				assert(a0 != 0.0);
-				lp += std::lgamma(n+1) + std::lgamma(a0) - std::lgamma(n+a0) 
-				     + (c.array() + a.array()).array().lgamma().sum() 
-					 - (c.array()+1).array().lgamma().sum() 
-					 - a.array().lgamma().sum();
+				if(nrules > 1) { // don't need to do anything if only one rule (but must incremnet offset)
+					Vector a = eigenslice(etothex,offset,nrules); // TODO: seqN doesn't seem to work with this c++ version
+					Vector c = eigenslice(C.row(i),offset,nrules);
+					double n = a.sum(); assert(n > 0.0); 
+					double a0 = c.sum();
+					assert(a0 != 0.0);
+					lp += std::lgamma(n+1) + std::lgamma(a0) - std::lgamma(n+a0) 
+						 + (c.array() + a.array()).array().lgamma().sum() 
+						 - (c.array()+1).array().lgamma().sum() 
+						 - a.array().lgamma().sum();
+				}
 				offset += nrules;
 			}
 		
