@@ -32,17 +32,15 @@ public:
 	uintmax_t born; // what count were you born at?
 
 	Bayesable() : prior(NaN), likelihood(NaN), posterior(NaN), born(++FleetStatistics::hypothesis_births) {	}
-		
-	virtual void clear_bayes() {
-		/**
-		 * @brief Zero by prior, likelihood, posterior
-		 */
-		
-		// necessary for inserting into big collections not by prior
-		prior = 0.0;
-		likelihood = 0.0;
-		posterior = 0.0;
-	}
+	
+	// Stuff for subclasses to implement: 
+	
+	/**
+	 * @brief Default hash function
+	 */	
+	virtual size_t hash() const=0;
+	
+	virtual std::string string() const = 0; // my subclasses must implement string
 	
 	/**
 	 * @brief Compute the prior -- defaultly not defined
@@ -55,6 +53,19 @@ public:
 	 */	
 	virtual double compute_single_likelihood(const datum_t& datum)  {
 		throw NotImplementedError();
+	}
+	
+
+	
+	virtual void clear_bayes() {
+		/**
+		 * @brief Zero by prior, likelihood, posterior
+		 */
+		
+		// necessary for inserting into big collections not by prior
+		prior = 0.0;
+		likelihood = 0.0;
+		posterior = 0.0;
 	}
 	
 	/**
@@ -132,12 +143,7 @@ public:
 		// temperature here applies to the likelihood only
 		return prior + likelihood/t;
 	}
-	
-	/**
-	 * @brief Default hash function
-	 */	
-	virtual size_t hash() const=0;
-	
+		
 	virtual bool operator<(const Bayesable<datum_t,data_t>& l) const {
 		/**
 		 * @brief Allow sorting of Bayesable hypotheses. We defaultly sort by posterior so that TopN works right. 
@@ -166,8 +172,6 @@ public:
 			return this->hash() < l.hash();
 		}
 	}
-	
-	virtual std::string string() const = 0; // my subclasses must implement string
 	
 	virtual void print(std::string prefix="") {
 		/**

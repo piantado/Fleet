@@ -1,5 +1,18 @@
 #pragma once 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* 
  * Ok we are going to define a vector hypothesis as one that stores a vector with simple proposals
  * Then we will have one vector hypothesis for X and another for the parameters we use
@@ -100,6 +113,90 @@ Matrix model_predictions(std::vector<HYP>& hypotheses, data_t& human_data) {
 
 #include "Interfaces/MCMCable.h"
 
+class VectorHypothesis : public MCMCable<VectorHypothesis, void*> {
+	// This represents a vector of reals, defaultly here just unit normals. 
+	// This gets used in GrammarHypothesis to store both the grammar values and
+	// parameters for the model. 
+public:
+
+	typedef VectorHypothesis self_t; 
+	
+	double MEAN = 0.0;
+	double SD   = 1.0;
+	double PROPOSAL_SCALE = 0.1; 
+	
+	Vector x;
+	
+	VectorHypothesis() {
+	}
+
+	VectorHypothesis(int n) {
+		set_size(n);
+	}
+	
+	
+	void set_size(size_t n) {
+		x = Vector::Zero(n);
+	}
+	
+	virtual double compute_prior() {
+		// Defaultly a unit normal 
+		this->prior = 0.0;
+		
+		for(auto i=0;i<x.size();i++) {
+			this->prior += normal_lpdf(x(i), MEAN, SD);
+		}
+		
+		return this->prior;
+	}
+	
+	
+	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) {
+		throw YouShouldNotBeHereError("*** Should not call likelihood here");
+	}
+	
+	virtual std::pair<self_t,double> propose() const {
+		self_t out = *this;
+		
+		// propose to one coefficient w/ SD of 0.1
+		auto i = myrandom(x.size()); 
+		out.x(i) = x(i) + PROPOSAL_SCALE*normal(rng);
+		
+		// everything is symmetrical so fb=0
+		return std::make_pair(out, 0.0);	
+	}
+	virtual self_t restart() const {
+		self_t out = *this;
+		for(auto i=0;i<x.size();i++) {
+			out.x(i) = MEAN + SD*normal(rng);
+		}
+		return out;
+	}
+	
+	virtual size_t hash() const {
+		if(x.size() == 0) return 0; // hmm what to do here?
+		
+		size_t output = std::hash<double>{}(x(0)); 
+		for(size_t i=1;i<x.size();i++) {
+			hash_combine(output, std::hash<double>{}(x(i)));
+		}
+		return output;
+	}
+	
+	virtual bool operator==(const self_t& h) const {
+		return x == h.x;
+	}
+	
+	virtual std::string string() const {
+		std::string out = "<";
+		for(auto i=0;i<x.size();i++) {
+			out += str(x(i));
+		}
+		out += ">";
+		return out; 
+	}
+};
+
 
 template<typename Grammar_t, typename datum_t, typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
 class GrammarHypothesis : public MCMCable<GrammarHypothesis<Grammar_t, datum_t, data_t>, datum_t, data_t>  {
@@ -109,7 +206,9 @@ class GrammarHypothesis : public MCMCable<GrammarHypothesis<Grammar_t, datum_t, 
 public:
 
 	typedef GrammarHypothesis<Grammar_t,datum_t,data_t> self_t;
-			
+	
+	VectorHypothesis x; 
+	
 	Vector x; 
 	Grammar_t* grammar;
 	Matrix* C;
