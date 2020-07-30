@@ -1,32 +1,10 @@
 #pragma once 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 
- * Ok we are going to define a vector hypothesis as one that stores a vector with simple proposals
- * Then we will have one vector hypothesis for X and another for the parameters we use
- * 
- * 
- */
- 
  
 #include <signal.h>
-#include <Eigen/Core>
 
+#include "EigenLib.h"
 #include "Errors.h"
 #include "Numerics.h"
-#include "EigenNumerics.h"
 
 extern volatile sig_atomic_t CTRL_C;
 
@@ -54,7 +32,7 @@ Vector counts(HYP& h) {
 	auto c = h.grammar->get_counts(h.get_value());
 
 	Vector out = Vector::Zero(c.size());
-	for(size_t i=0;i<c.size();i++){
+	for(lsize_t i=0;i<c.size();i++){
 		out(i) = c[i];
 	}
 	
@@ -111,92 +89,7 @@ Matrix model_predictions(std::vector<HYP>& hypotheses, data_t& human_data) {
 	return out;	
 }
 
-#include "Interfaces/MCMCable.h"
-
-class VectorHypothesis : public MCMCable<VectorHypothesis, void*> {
-	// This represents a vector of reals, defaultly here just unit normals. 
-	// This gets used in GrammarHypothesis to store both the grammar values and
-	// parameters for the model. 
-public:
-
-	typedef VectorHypothesis self_t; 
-	
-	double MEAN = 0.0;
-	double SD   = 1.0;
-	double PROPOSAL_SCALE = 0.1; 
-	
-	Vector x;
-	
-	VectorHypothesis() {
-	}
-
-	VectorHypothesis(int n) {
-		set_size(n);
-	}
-	
-	
-	void set_size(size_t n) {
-		x = Vector::Zero(n);
-	}
-	
-	virtual double compute_prior() {
-		// Defaultly a unit normal 
-		this->prior = 0.0;
-		
-		for(auto i=0;i<x.size();i++) {
-			this->prior += normal_lpdf(x(i), MEAN, SD);
-		}
-		
-		return this->prior;
-	}
-	
-	
-	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) {
-		throw YouShouldNotBeHereError("*** Should not call likelihood here");
-	}
-	
-	virtual std::pair<self_t,double> propose() const {
-		self_t out = *this;
-		
-		// propose to one coefficient w/ SD of 0.1
-		auto i = myrandom(x.size()); 
-		out.x(i) = x(i) + PROPOSAL_SCALE*normal(rng);
-		
-		// everything is symmetrical so fb=0
-		return std::make_pair(out, 0.0);	
-	}
-	virtual self_t restart() const {
-		self_t out = *this;
-		for(auto i=0;i<x.size();i++) {
-			out.x(i) = MEAN + SD*normal(rng);
-		}
-		return out;
-	}
-	
-	virtual size_t hash() const {
-		if(x.size() == 0) return 0; // hmm what to do here?
-		
-		size_t output = std::hash<double>{}(x(0)); 
-		for(size_t i=1;i<x.size();i++) {
-			hash_combine(output, std::hash<double>{}(x(i)));
-		}
-		return output;
-	}
-	
-	virtual bool operator==(const self_t& h) const {
-		return x == h.x;
-	}
-	
-	virtual std::string string() const {
-		std::string out = "<";
-		for(auto i=0;i<x.size();i++) {
-			out += str(x(i));
-		}
-		out += ">";
-		return out; 
-	}
-};
-
+#include "VectorHypothesis.h"
 
 template<typename Grammar_t, typename datum_t, typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
 class GrammarHypothesis : public MCMCable<GrammarHypothesis<Grammar_t, datum_t, data_t>, datum_t, data_t>  {
@@ -207,47 +100,31 @@ public:
 
 	typedef GrammarHypothesis<Grammar_t,datum_t,data_t> self_t;
 	
-	VectorHypothesis x; 
+	VectorHypothesis logA; // a simple normal vector for the log of a 
+	VectorHypothesis params; // logodds baseline and forwardalpha
 	
-	Vector x; 
 	Grammar_t* grammar;
 	Matrix* C;
 	Matrix* LL;
 	Matrix* P;
 	
-	float logodds_baseline; // when we choose at random, whats the probability of true-vs-false?
-	float logodds_forwardalpha; 
-	
 	GrammarHypothesis() {
 	}
 	
 	GrammarHypothesis(Grammar_t* g, Matrix* c, Matrix* ll, Matrix* p) : grammar(g), C(c), LL(ll), P(p) {
-		x = Vector::Ones(grammar->count_rules());
+		logA.set_size(grammar->count_rules());
+		params.set_size(2); 
 	}	
 	
-	Vector& getX()                { return x; }
-	const Vector& getX() const    { return x; }
-	float get_baseline() const    { return exp(-logodds_baseline) / (1+exp(-logodds_baseline)); }
-	float get_forwardalpha()const { return exp(-logodds_forwardalpha) / (1+exp(-logodds_forwardalpha)); }
+	// these unpack our parameters
+	float get_baseline() const    { return 1.0/(1.0+exp(-params(0))); }
+	float get_forwardalpha()const { return 1.0/(1.0+exp(-params(1))); }
 	
-	double compute_prior() {
-		this->prior = 0.0;
-		
-		for(auto i=0;i<x.size();i++) {
-			this->prior += normal_lpdf(x(i), 0.0, 3.0);
-		}
-		
-		this->prior += normal_lpdf(logodds_baseline,     0.0, 3.0);
-		this->prior += normal_lpdf(logodds_forwardalpha, 0.0, 3.0);
-		return this->prior;
+	double compute_prior() override {
+		return this->prior = logA.compute_prior() + params.compute_prior();
 	}
 	
-	// We should not use compute_single_likelihood
-	virtual double compute_single_likelihood(const datum_t& datum) { 
-		throw YouShouldNotBeHereError("*** This is not the right likelihood to call for GrammarHypothesis"); 
-	} 
-	
-	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) {
+	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		// This runs the entire model (computing its posterior) to get the likelihood
 		// of the human data
 		
@@ -262,8 +139,8 @@ public:
 		Vector hpredictive = (hposterior.array() * (*P).array()).colwise().sum(); // elementwise product and then column sum
 		
 		// and now get the human likelihood, using a binomial likelihood (binomial term not needed)
-		float forwardalpha = get_forwardalpha();
-		float baseline     = get_baseline();
+		auto forwardalpha = get_forwardalpha();
+		auto baseline     = get_baseline();
 		this->likelihood = 0.0; // of the human data
 		for(size_t i=0;i<data.size();i++) {
 			double p = forwardalpha*hpredictive(i) + (1.0-forwardalpha)*baseline;
@@ -276,33 +153,27 @@ public:
 		return this->likelihood;		
 	}
 	
-	[[nodiscard]] virtual self_t restart() const {
+	[[nodiscard]] virtual self_t restart() const override {
 		self_t out(grammar, C, LL, P);
-		out.logodds_baseline = normal(rng);		
-		out.logodds_forwardalpha = normal(rng);		
-		
-		for(auto i=0;i<x.size();i++) {
-			out.x(i) = normal(rng);
-		}
+		out.logA = logA.restart();
+		out.params = params.restart();		
 		return out;
 	}
 	
 	
-	[[nodiscard]] virtual std::pair<self_t,double> propose() const {
+	[[nodiscard]] virtual std::pair<self_t,double> propose() const override {
 		self_t out = *this;
 		
 		if(flip()){
-			out.logodds_baseline     = logodds_baseline     + 0.1*normal(rng);
-			out.logodds_forwardalpha = logodds_forwardalpha + 0.1*normal(rng);
+			auto [ h, fb ] = params.propose();
+			out.params = h;
+			return std::make_pair(out, fb);
 		}		
 		else {
-			// propose to one coefficient
-			auto i = myrandom(x.size()); 
-			out.getX()(i) = x(i) + 0.10*normal(rng);
+			auto [ h, fb ] = logA.propose();
+			out.params = h;
+			return std::make_pair(out, fb);
 		}
-		
-		// everything is symmetrical so fb=0
-		return std::make_pair(out, 0.0);	
 	}
 	
 	Vector hypothesis_prior(Matrix& C) {
@@ -313,7 +184,7 @@ public:
 		Vector out(C.rows()); // one for each hypothesis
 		
 		// get the marginal probability of the counts via  dirichlet-multinomial
-		Vector etothex = x.array().exp(); // translate [-inf,inf] into [0,inf]
+		Vector allA = logA.value.array().exp(); // translate [-inf,inf] into [0,inf]
 		for(auto i=0;i<C.rows();i++) {
 			
 			double lp = 0.0;
@@ -321,7 +192,7 @@ public:
 			for(size_t nt=0;nt<grammar->count_nonterminals();nt++) { // each nonterminal in the grammar is a DM
 				size_t nrules = grammar->count_rules( (nonterminal_t) nt);
 				if(nrules > 1) { // don't need to do anything if only one rule (but must incremnet offset)
-					Vector a = eigenslice(etothex,offset,nrules); // TODO: seqN doesn't seem to work with this c++ version
+					Vector a = eigenslice(allA,offset,nrules); // TODO: seqN doesn't seem to work with this c++ version
 					Vector c = eigenslice(C.row(i),offset,nrules);
 					double n = a.sum(); assert(n > 0.0); 
 					double a0 = c.sum();
@@ -342,18 +213,21 @@ public:
 	}
 	
 	
-	virtual bool operator==(const self_t& h) const {
-		return C == h.C and LL == h.LL and P == h.P and 
-				(getX()-h.getX()).array().abs().sum() == 0.0 and
-				logodds_baseline == h.logodds_baseline and
-				logodds_forwardalpha == logodds_forwardalpha;
+	virtual bool operator==(const self_t& h) const override {
+		return (C == h.C and LL == h.LL and P == h.P) and 
+				(logA == h.logA) and (params == h.params);
 	}
 	
 	
-	virtual std::string string() const {
+	virtual std::string string() const override {
 		// For now we just provide partial information
-		return "GrammarHypothesis["+str(this->posterior) + "\t" + str(this->get_baseline()) + "\t" + str(this->get_forwardalpha())+"]";
+		return "GrammarHypothesis["+str(this->posterior) + params.string() + ", " + logA.string() + "]";
 	}
-	virtual size_t hash() const        { return 1.0; }
+	
+	virtual size_t hash() const override { 
+		size_t output = logA.hash();
+		hash_combine(output, params.hash());
+		return output;
+	}
 	
 };

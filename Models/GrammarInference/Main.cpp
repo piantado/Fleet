@@ -5,9 +5,8 @@
 #include <vector>
 #include <tuple>
 #include <functional>
-#include <Eigen/Dense>
 #include <cmath>
-#include <unsupported/Eigen/SpecialFunctions>
+#include "EigenLib.h"
 
 enum class Shape { rectangle, triangle, circle};
 enum class Color { yellow, green, blue};
@@ -101,7 +100,7 @@ public:
 	using Super = LOTHypothesis<MyHypothesis,Object,bool,MyGrammar,LearnerDatum>;
 	using Super::Super;
 	
-	double compute_single_likelihood(const datum_t& di) {
+	double compute_single_likelihood(const datum_t& di) override {
 		bool out = callOne(di.x, false);
 		return (out == di.correctAnswer ? log(di.alpha + (1.0-di.alpha)/2.0) : log((1.0-di.alpha)/2.0));
 	}
@@ -153,8 +152,6 @@ Matrix my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, 
 
 
 
-	
-
 size_t grammar_callback_count = 0;
 void gcallback(GrammarHypothesis<MyGrammar,MyHumanDatum>& h) {
 	if(++grammar_callback_count % 100 == 0) {
@@ -165,7 +162,7 @@ void gcallback(GrammarHypothesis<MyGrammar,MyHumanDatum>& h) {
 			for(size_t i=0;i<h.grammar->count_rules( (nonterminal_t) nt);i++) {
 				std::string rs = h.grammar->get_rule((nonterminal_t)nt,i)->format;
 		 		rs = std::regex_replace(rs, std::regex("\\%s"), "X");
-				COUT grammar_callback_count TAB  h.posterior TAB QQ(rs) TAB h.getX()(xi) ENDL;
+				COUT grammar_callback_count TAB  h.posterior TAB QQ(rs) TAB h.logA(xi) ENDL;
 				xi++;
 			}
 		}
@@ -180,8 +177,7 @@ void gcallback(GrammarHypothesis<MyGrammar,MyHumanDatum>& h) {
 int main(int argc, char** argv){ 
 	using S = std::string;
 	
-	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	Fleet fleet("A simple, one-factor formal language learner");
+	Fleet fleet("An example of grammar inference for boolean concepts");
 	fleet.initialize(argc, argv);
 	
 	MyGrammar grammar(PRIMITIVES);
