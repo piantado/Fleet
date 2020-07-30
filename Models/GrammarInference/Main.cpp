@@ -87,9 +87,7 @@ class MyGrammar : public Grammar<bool,Object> {
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
 
-// Grammar hypothesis is not automatically included because it depends on Eigen
 #include "GrammarHypothesis.h" 
-#include "EigenNumerics.h"
 #include "LOTHypothesis.h"
 
 typedef HumanDatum<LearnerDatum> MyHumanDatum;

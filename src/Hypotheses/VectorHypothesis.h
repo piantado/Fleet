@@ -71,14 +71,14 @@ public:
 		if(value.size() == 0) return 0; // hmm what to do here?
 		
 		size_t output = std::hash<double>{}(value(0)); 
-		for(size_t i=1;i<value.size();i++) {
+		for(auto i=1;i<value.size();i++) {
 			hash_combine(output, std::hash<double>{}(value(i)));
 		}
 		return output;
 	}
 	
 	virtual bool operator==(const self_t& h) const override {
-		return value == h.value;
+		return value.size() == h.value.size() and value == h.value;
 	}
 	
 	virtual std::string string() const override {

@@ -32,7 +32,7 @@ Vector counts(HYP& h) {
 	auto c = h.grammar->get_counts(h.get_value());
 
 	Vector out = Vector::Zero(c.size());
-	for(lsize_t i=0;i<c.size();i++){
+	for(size_t i=0;i<c.size();i++){
 		out(i) = c[i];
 	}
 	
