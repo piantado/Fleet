@@ -50,26 +50,30 @@ const double alpha = 0.9; // fixed for the learning part of the model
 #include "Primitives.h"
 #include "Builtins.h"
 
+const double FEATURE_WEIGHT = 3.0; // in our prior, what's the weight on features?
+
 std::tuple PRIMITIVES = {
 	Primitive("and(%s,%s)",     +[](bool a, bool b) -> bool { return (a and b); }), // optional specification of prior weight (default=1.0)
 	Primitive("or(%s,%s)",      +[](bool a, bool b) -> bool { return (a or b); }),
-	Primitive("iff(%s,%s)",     +[](bool a, bool b) -> bool { return (a == b); }),
-	Primitive("xor(%s,%s)",     +[](bool a, bool b) -> bool { return (a xor b); }),
-	Primitive("implies(%s,%s)", +[](bool a, bool b) -> bool { return ((not a) or (a and b)); }),
 	Primitive("not(%s)",        +[](bool a)         -> bool { return (not a); }),
+	Primitive("iff(%s,%s)",     +[](bool a, bool b) -> bool { return (a == b); }),
+	Primitive("implies(%s,%s)", +[](bool a, bool b) -> bool { return ((not a) or (a and b)); }),
+	Primitive("xor(%s,%s)",     +[](bool a, bool b) -> bool { return (a xor b); }),
+	Primitive("nand(%s,%s)",    +[](bool a, bool b) -> bool { return not (a and b); }),
+	Primitive("nor(%s,%s)",     +[](bool a, bool b) -> bool { return not (a or b); }),
 	// that + is really insane, but is needed to convert a lambda to a function pointer
 
-	Primitive("yellow(%s)",    +[](Object x)       -> bool { return x.color == Color::yellow; }, 2),
-	Primitive("green(%s)",     +[](Object x)       -> bool { return x.color == Color::green; }, 2),
-	Primitive("blue(%s)",      +[](Object x)       -> bool { return x.color == Color::blue; }, 2),
+	Primitive("yellow(%s)",    +[](Object x)       -> bool { return x.color == Color::yellow; }, FEATURE_WEIGHT),
+	Primitive("green(%s)",     +[](Object x)       -> bool { return x.color == Color::green; }, FEATURE_WEIGHT),
+	Primitive("blue(%s)",      +[](Object x)       -> bool { return x.color == Color::blue; }, FEATURE_WEIGHT),
 
-	Primitive("rectangle(%s)", +[](Object x)       -> bool { return x.shape == Shape::rectangle; }, 2),
-	Primitive("triangle(%s)",  +[](Object x)       -> bool { return x.shape == Shape::triangle; }, 2),
-	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::circle; }, 2),
+	Primitive("rectangle(%s)", +[](Object x)       -> bool { return x.shape == Shape::rectangle; }, FEATURE_WEIGHT),
+	Primitive("triangle(%s)",  +[](Object x)       -> bool { return x.shape == Shape::triangle; }, FEATURE_WEIGHT),
+	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::circle; }, FEATURE_WEIGHT),
 	
-	Primitive("size1(%s)",     +[](Object x)       -> bool { return x.size == Size::size1; }, 2),
-	Primitive("size2(%s)",     +[](Object x)       -> bool { return x.size == Size::size2; }, 2),
-	Primitive("size3(%s)",     +[](Object x)       -> bool { return x.size == Size::size3; }, 2),
+	Primitive("size1(%s)",     +[](Object x)       -> bool { return x.size == Size::size1; }, FEATURE_WEIGHT),
+	Primitive("size2(%s)",     +[](Object x)       -> bool { return x.size == Size::size2; }, FEATURE_WEIGHT),
+	Primitive("size3(%s)",     +[](Object x)       -> bool { return x.size == Size::size3; }, FEATURE_WEIGHT),
 		
 	// but we also have to add a rule for the BuiltinOp that access x, our argument
 	Builtin::X<Object>("x", 10.0)

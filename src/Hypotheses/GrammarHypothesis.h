@@ -171,7 +171,7 @@ public:
 		}		
 		else {
 			auto [ h, fb ] = logA.propose();
-			out.params = h;
+			out.logA = h;
 			return std::make_pair(out, fb);
 		}
 	}
