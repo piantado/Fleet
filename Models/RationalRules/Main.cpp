@@ -8,16 +8,14 @@
 
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// We need to define some structs to hold the object features
+/// We need to define some structs to hold the MyObject features
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 enum class Shape { Square, Triangle, Circle};
 enum class Color { Red, Green, Blue};
 
-struct Object { 
-	Color color; 
-	Shape shape; 
-};
+#include "Object.h"
+typedef Object<Color,Shape> MyObject;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// This is a global variable that provides a convenient way to wrap our primitives
@@ -37,28 +35,28 @@ std::tuple PRIMITIVES = {
 	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }),
 	// that + is really insane, but is needed to convert a lambda to a function pointer
 
-	Primitive("red(%s)",       +[](Object x)       -> bool { return x.color == Color::Red; }),
-	Primitive("green(%s)",     +[](Object x)       -> bool { return x.color == Color::Green; }),
-	Primitive("blue(%s)",      +[](Object x)       -> bool { return x.color == Color::Blue; }),
+	Primitive("red(%s)",       +[](MyObject x)       -> bool { return x.is(Color::Red); }),
+	Primitive("green(%s)",     +[](MyObject x)       -> bool { return x.is(Color::Green); }),
+	Primitive("blue(%s)",      +[](MyObject x)       -> bool { return x.is(Color::Blue); }),
 
-	Primitive("square(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Square; }),
-	Primitive("triangle(%s)",  +[](Object x)       -> bool { return x.shape == Shape::Triangle; }),
-	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::Circle; }),
+	Primitive("square(%s)",    +[](MyObject x)       -> bool { return x.is(Shape::Square); }),
+	Primitive("triangle(%s)",  +[](MyObject x)       -> bool { return x.is(Shape::Triangle); }),
+	Primitive("circle(%s)",    +[](MyObject x)       -> bool { return x.is(Shape::Circle); }),
 	
 		
 	// but we also have to add a rule for the BuiltinOp that access x, our argument
-	Builtin::X<Object>("x", 10.0)
+	Builtin::X<MyObject>("x", 10.0)
 };
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define the grammar
-/// Thid requires the types of the thing we will add to the grammar (bool,Object)
+/// Thid requires the types of the thing we will add to the grammar (bool,MyObject)
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Grammar.h"
 
-class MyGrammar : public Grammar<bool,Object> {
-	using Super =  Grammar<bool,Object>;
+class MyGrammar : public Grammar<bool,MyObject> {
+	using Super =  Grammar<bool,MyObject>;
 	using Super::Super;
 };
 
@@ -70,9 +68,9 @@ class MyGrammar : public Grammar<bool,Object> {
 
 #include "LOTHypothesis.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,Object,bool,MyGrammar> {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,Object,bool,MyGrammar>;
+	using Super = LOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar>;
 	using Super::Super; // inherit the constructors
 	
 	// Now, if we defaultly assume that our data is a std::vector of t_data, then we 
@@ -115,9 +113,9 @@ int main(int argc, char** argv){
 	// mydata stores the data for the inference model
 	MyHypothesis::data_t mydata;
 	
-	mydata.push_back(MyHypothesis::datum_t{.input=Object{.color=Color::Red, .shape=Shape::Triangle}, .output=true,  .reliability=0.75});
-	mydata.push_back(MyHypothesis::datum_t{.input=Object{.color=Color::Red, .shape=Shape::Square},   .output=false, .reliability=0.75});
-	mydata.push_back(MyHypothesis::datum_t{.input=Object{.color=Color::Red, .shape=Shape::Square},   .output=false, .reliability=0.75});
+	mydata.push_back(MyHypothesis::datum_t{.input=MyObject{.color=Color::Red, .shape=Shape::Triangle}, .output=true,  .reliability=0.75});
+	mydata.push_back(MyHypothesis::datum_t{.input=MyObject{.color=Color::Red, .shape=Shape::Square},   .output=false, .reliability=0.75});
+	mydata.push_back(MyHypothesis::datum_t{.input=MyObject{.color=Color::Red, .shape=Shape::Square},   .output=false, .reliability=0.75});
 	
 	//------------------
 	// Actually run

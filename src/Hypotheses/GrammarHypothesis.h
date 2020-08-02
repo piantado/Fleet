@@ -174,8 +174,8 @@ public:
 		
 		Vector hprior = hypothesis_prior(*C); 
 		
-//		COUT hprior ENDL;
-//		COUT *LL ENDL;
+		COUT "hprior" TAB hprior.rows() TAB hprior.cols() ENDL;
+		COUT "LL" TAB LL->rows() TAB LL->cols() ENDL;
 //		
 		Matrix hposterior = (*LL).colwise() + hprior; // the model's posterior
 
