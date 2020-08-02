@@ -98,6 +98,48 @@ public:
 };
 
 
+//Matrix my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, std::vector<MyHumanDatum>& human_data) {
+//	// special case of incremental likelihood since we are accumulating data (by sets)
+//	// So we have written a special case here
+//	
+//	// likelihood out will now be a mapping from hypothesis, data_element to prior likelihoods of individual elements
+//	std::map<std::pair<int, int>, std::vector<double>> out; 
+//	
+//	for(size_t h=0;h<hypotheses.size() and !CTRL_C;h++) {
+//		for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
+//			if(human_data[di].given_data.size() == 0) {
+//				// should catch di=0
+//				out[std::make_pair(h,di)] = std::vector(1,0.0); // start iwth zero
+//			}
+//			else {
+//				assert(di>0);
+//				size_t prevsetno = human_data[di-1].given_data.empty() ? 0 : human_data[di-1].given_data.back().setNumber; // what was the previous set number?
+//			
+//				if(human_data[di].given_data.back().setNumber == prevsetno) {
+//					// same likelihood since we presented a set at a time
+//					// NOTE: We don't need to check concept/list since rows are sorted, so if the condition is met, we will be the same concept/list
+//					out(h,di) = out(h,di-1);
+//				}
+//				else if(human_data[di].given_data.back().setNumber == prevsetno+1) {
+//					// add up all of the new set (which hasn't been included)
+//					out(h,di) = out(h,di-1); 				
+//					for(auto& d : human_data[di].given_data) {
+//						if(d.setNumber == prevsetno+1) {
+//							out(h,di) += hypotheses[h].compute_single_likelihood(d);
+//						}
+//					}
+//				}
+//				else { // recompute the whole damn thing
+//					out(h,di) =  hypotheses[h].compute_likelihood(human_data[di].given_data);			
+//				}
+//			}
+//			
+//		}	
+//	}
+//	
+//	return out;
+//}
+
 Matrix my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, std::vector<MyHumanDatum>& human_data) {
 	// special case of incremental likelihood since we are accumulating data (by sets)
 	// So we have written a special case here
@@ -109,7 +151,6 @@ Matrix my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, 
 			if(human_data[di].given_data.size() == 0) {
 				// should catch di=0
 				out(h,di) = 0.0;
-				continue;
 			}
 			else {
 				assert(di>0);
