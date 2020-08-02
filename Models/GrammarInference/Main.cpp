@@ -8,32 +8,21 @@
 #include <cmath>
 #include "EigenLib.h"
 
+#include "Object.h"
+
 enum class Shape { rectangle, triangle, circle};
 enum class Color { yellow, green, blue};
 enum class Size  { size1, size2, size3};
 
-typedef struct Object {
-	Color color;
-	Shape shape;
-	Size  size;
-	
-	bool operator<(const Object& o) const { 
-		if(color != o.color) return color < o.color;
-		if(shape != o.shape) return shape < o.shape;
-		if(size  != o.size)  return size  < o.size;
-		return false;
-	}
-	bool operator==(const Object& o) const { 
-		return color==o.color and shape==o.shape and size==o.size;
-	}
-} Object;
+// Define a kind of object with these features
+typedef Object<Shape,Color,Size>  MyObject;
 
 typedef struct LearnerDatum {
 	// What the learner takes as input
-	Object x;
+	MyObject x;
 	bool correctAnswer;
 	double alpha;
-	std::set<Object>* set;// a pointer makes it easy to modify as we read in the file
+	std::set<MyObject>* set;// a pointer makes it easy to modify as we read in the file
 	size_t setNumber;
 	size_t responseInSet;
 	
@@ -50,7 +39,7 @@ const double alpha = 0.9; // fixed for the learning part of the model
 #include "Primitives.h"
 #include "Builtins.h"
 
-const double FEATURE_WEIGHT = 3.0; // in our prior, what's the weight on features?
+const double FEATURE_WEIGHT = 5.0; // in our prior, what's the weight on features?
 
 std::tuple PRIMITIVES = {
 	Primitive("and(%s,%s)",     +[](bool a, bool b) -> bool { return (a and b); }), // optional specification of prior weight (default=1.0)
@@ -63,28 +52,28 @@ std::tuple PRIMITIVES = {
 	Primitive("nor(%s,%s)",     +[](bool a, bool b) -> bool { return not (a or b); }),
 	// that + is really insane, but is needed to convert a lambda to a function pointer
 
-	Primitive("yellow(%s)",    +[](Object x)       -> bool { return x.color == Color::yellow; }, FEATURE_WEIGHT),
-	Primitive("green(%s)",     +[](Object x)       -> bool { return x.color == Color::green; }, FEATURE_WEIGHT),
-	Primitive("blue(%s)",      +[](Object x)       -> bool { return x.color == Color::blue; }, FEATURE_WEIGHT),
+	Primitive("yellow(%s)",    +[](MyObject x)       -> bool { return x.is(Color::yellow); }, FEATURE_WEIGHT),
+	Primitive("green(%s)",     +[](MyObject x)       -> bool { return x.is(Color::green); }, FEATURE_WEIGHT),
+	Primitive("blue(%s)",      +[](MyObject x)       -> bool { return x.is(Color::blue); }, FEATURE_WEIGHT),
 
-	Primitive("rectangle(%s)", +[](Object x)       -> bool { return x.shape == Shape::rectangle; }, FEATURE_WEIGHT),
-	Primitive("triangle(%s)",  +[](Object x)       -> bool { return x.shape == Shape::triangle; }, FEATURE_WEIGHT),
-	Primitive("circle(%s)",    +[](Object x)       -> bool { return x.shape == Shape::circle; }, FEATURE_WEIGHT),
+	Primitive("rectangle(%s)", +[](MyObject x)       -> bool { return x.is(Shape::rectangle); }, FEATURE_WEIGHT),
+	Primitive("triangle(%s)",  +[](MyObject x)       -> bool { return x.is(Shape::triangle); }, FEATURE_WEIGHT),
+	Primitive("circle(%s)",    +[](MyObject x)       -> bool { return x.is(Shape::circle); }, FEATURE_WEIGHT),
 	
-	Primitive("size1(%s)",     +[](Object x)       -> bool { return x.size == Size::size1; }, FEATURE_WEIGHT),
-	Primitive("size2(%s)",     +[](Object x)       -> bool { return x.size == Size::size2; }, FEATURE_WEIGHT),
-	Primitive("size3(%s)",     +[](Object x)       -> bool { return x.size == Size::size3; }, FEATURE_WEIGHT),
+	Primitive("size1(%s)",     +[](MyObject x)       -> bool { return x.is(Size::size1); }, FEATURE_WEIGHT),
+	Primitive("size2(%s)",     +[](MyObject x)       -> bool { return x.is(Size::size2); }, FEATURE_WEIGHT),
+	Primitive("size3(%s)",     +[](MyObject x)       -> bool { return x.is(Size::size3); }, FEATURE_WEIGHT),
 		
 	// but we also have to add a rule for the BuiltinOp that access x, our argument
-	Builtin::X<Object>("x", 10.0)
+	Builtin::X<MyObject>("x", 10.0)
 };
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Grammar.h"
 
-class MyGrammar : public Grammar<bool,Object> {
-	using Super=Grammar<bool,Object>;
+class MyGrammar : public Grammar<bool,MyObject> {
+	using Super=Grammar<bool,MyObject>;
 	using Super::Super;
 };
 
@@ -96,10 +85,10 @@ class MyGrammar : public Grammar<bool,Object> {
 
 typedef HumanDatum<LearnerDatum> MyHumanDatum;
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,Object,bool,MyGrammar,LearnerDatum> {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar,LearnerDatum> {
 public:
 	// This is going to assume that all variables other than x are universally quantified over. 
-	using Super = LOTHypothesis<MyHypothesis,Object,bool,MyGrammar,LearnerDatum>;
+	using Super = LOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar,LearnerDatum>;
 	using Super::Super;
 	
 	double compute_single_likelihood(const datum_t& di) override {
@@ -194,7 +183,7 @@ int main(int argc, char** argv){
 	std::ifstream infile("preprocessing/data.txt");
 	
 	S line;
-	auto theset = new std::set<Object>(); 
+	auto theset = new std::set<MyObject>(); 
 	int setidx = -1;
 	while(std::getline(infile, line)) {
 		auto parts = split(line, ' ');
@@ -206,7 +195,7 @@ int main(int argc, char** argv){
 		// keep track of what set we're adding to
 		if(setidx != -1) {
 			if(setidx != (int)setNumber) {
-				theset = new std::set<Object>(); // make a new set
+				theset = new std::set<MyObject>(); // make a new set
 			}
 		}
 		else {
@@ -235,7 +224,7 @@ int main(int argc, char** argv){
 		size_t cntno  = stoi(parts[9]);
 
 		// figure out our class
-		Object o{color, shape, size};
+		MyObject o{shape, color, size};
 
 		// add this to the set
 		theset->insert(o);

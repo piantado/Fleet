@@ -8,6 +8,14 @@
 
 extern volatile sig_atomic_t CTRL_C;
 
+/**
+ * @class HumanDatum
+ * @author piantado
+ * @date 02/08/20
+ * @file GrammarHypothesis.h
+ * @brief 
+ */
+
 template<typename t_learnerdatum, typename t_learnerdata=std::vector<t_learnerdatum>>
 struct HumanDatum { 
 	// a data structure to store our loaded human data. This stores responses for a prediction
@@ -24,6 +32,12 @@ struct HumanDatum {
 
 /* Helper functions for computing counts, C, LL, P */
 
+/**
+ * @brief 
+ * @param h
+ * @return 
+ */
+
 template<typename HYP>
 Vector counts(HYP& h) {
 	// returns a 1xnRules matrix of how often each rule occurs
@@ -39,7 +53,11 @@ Vector counts(HYP& h) {
 	return out;
 }
 
-
+/**
+ * @brief 
+ * @param hypotheses
+ * @return 
+ */
 template<typename HYP>
 Matrix counts(std::vector<HYP>& hypotheses) {
 	/* Returns a matrix of hypotheses (rows) by counts of each grammar rule.
@@ -58,12 +76,17 @@ Matrix counts(std::vector<HYP>& hypotheses) {
 	return out;
 }
 
-
+/**
+ * @brief 
+ * @param hypotheses
+ * @param human_data
+ * @return 
+ */
 template<typename HYP, typename data_t>
 Matrix incremental_likelihoods(std::vector<HYP>& hypotheses, data_t& human_data) {
 	// Each row here is a hypothesis, and each column is the likelihood for a sequence of data sets
 	// Here we check if the previous data point is a subset of the current, and if so, 
-	// then we just do the additiona likelihood o fthe set difference 
+	// then we just do the additional likelihood of the set difference 
 	// this way, we can pass incremental data without it being too crazy slow
 	
 	Matrix out = Matrix::Zero(hypotheses.size(), human_data.size()); 
@@ -76,6 +99,13 @@ Matrix incremental_likelihoods(std::vector<HYP>& hypotheses, data_t& human_data)
 	
 	return out;
 }
+
+/**
+ * @brief 
+ * @param hypotheses
+ * @param human_data
+ * @return 
+ */
 
 template<typename HYP, typename data_t>
 Matrix model_predictions(std::vector<HYP>& hypotheses, data_t& human_data) {
@@ -90,6 +120,14 @@ Matrix model_predictions(std::vector<HYP>& hypotheses, data_t& human_data) {
 }
 
 #include "VectorHypothesis.h"
+
+/**
+ * @class GrammarHypothesis
+ * @author piantado
+ * @date 02/08/20
+ * @file GrammarHypothesis.h
+ * @brief 
+ */
 
 template<typename Grammar_t, typename datum_t, typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
 class GrammarHypothesis : public MCMCable<GrammarHypothesis<Grammar_t, datum_t, data_t>, datum_t, data_t>  {
@@ -116,19 +154,29 @@ public:
 		params.set_size(2); 
 	}	
 	
-	// these unpack our parameters
-	float get_baseline() const    { return 1.0/(1.0+exp(-params(0))); }
-	float get_forwardalpha()const { return 1.0/(1.0+exp(-params(1))); }
+	// these unpack our parameters -- NOTE here we multiply by 3 to make it a Normal(0,3) distirbution
+	float get_baseline() const    { return 1.0/(1.0+exp(-3.0*params(0))); }
+	float get_forwardalpha()const { return 1.0/(1.0+exp(-3.0*params(1))); }
 	
 	double compute_prior() override {
 		return this->prior = logA.compute_prior() + params.compute_prior();
 	}
 	
+	/**
+	 * @brief 
+	 * @param data
+	 * @param breakout
+	 * @return 
+	 */		
 	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		// This runs the entire model (computing its posterior) to get the likelihood
 		// of the human data
 		
 		Vector hprior = hypothesis_prior(*C); 
+		
+//		COUT hprior ENDL;
+//		COUT *LL ENDL;
+//		
 		Matrix hposterior = (*LL).colwise() + hprior; // the model's posterior
 
 		// now normalize it and convert to probabilities
@@ -176,10 +224,15 @@ public:
 		}
 	}
 	
+	/**
+	 * @brief 
+	 * @param C
+	 * @return 
+	 */	
 	Vector hypothesis_prior(Matrix& C) {
-		// take a matrix of counts (each row is a hypothesis, is column is a primitive)
+		// take a matrix of counts (each row is a hypothesis)
 		// and return a prior for each hypothesis under my own X
-		// (IF this was just  aPCFG, which its not, we'd use something like lognormalize(C*proposal.getX()))
+		// (If this was just a PCFG, which its not, we'd use something like lognormalize(C*proposal.getX()))
 
 		Vector out(C.rows()); // one for each hypothesis
 		
@@ -206,8 +259,7 @@ public:
 			}
 		
 			out(i) = lp;
-		}
-		
+		}		
 		
 		return out;		
 	}
