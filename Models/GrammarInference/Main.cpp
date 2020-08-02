@@ -146,14 +146,16 @@ Matrix my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, 
 size_t grammar_callback_count = 0;
 void gcallback(GrammarHypothesis<MyGrammar,MyHumanDatum>& h) {
 	if(++grammar_callback_count % 100 == 0) {
-		COUT grammar_callback_count TAB h.posterior TAB "baseline" TAB h.get_baseline() ENDL;
-		COUT grammar_callback_count TAB  h.posterior TAB "forwardalpha" TAB h.get_forwardalpha() ENDL;
+		COUT grammar_callback_count TAB "posterior" TAB h.posterior ENDL;
+		COUT grammar_callback_count TAB "baseline" TAB h.get_baseline() ENDL;
+		COUT grammar_callback_count TAB "forwardalpha" TAB h.get_forwardalpha() ENDL;
+		COUT grammar_callback_count TAB  "llt" TAB h.get_llt() ENDL;
 		size_t xi=0;
 		for(size_t nt=0;nt<h.grammar->count_nonterminals();nt++) {
 			for(size_t i=0;i<h.grammar->count_rules( (nonterminal_t) nt);i++) {
-				std::string rs = h.grammar->get_rule((nonterminal_t)nt,i)->format;
+				std::string rs = h.grammar->get_rule((nonterminal_t) nt,i)->format;
 		 		rs = std::regex_replace(rs, std::regex("\\%s"), "X");
-				COUT grammar_callback_count TAB  h.posterior TAB QQ(rs) TAB h.logA(xi) ENDL;
+				COUT grammar_callback_count TAB QQ(rs) TAB h.logA(xi) ENDL;
 				xi++;
 			}
 		}
@@ -166,6 +168,9 @@ void gcallback(GrammarHypothesis<MyGrammar,MyHumanDatum>& h) {
 #include "MCMCChain.h"
 
 int main(int argc, char** argv){ 
+	//Eigen::initParallel(); // needed to use parallel eigen
+	//Eigen::setNbThreads(10);
+	
 	using S = std::string;
 	
 	Fleet fleet("An example of grammar inference for boolean concepts");

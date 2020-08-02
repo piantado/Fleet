@@ -85,9 +85,8 @@ Matrix counts(std::vector<HYP>& hypotheses) {
 template<typename HYP, typename data_t>
 Matrix incremental_likelihoods(std::vector<HYP>& hypotheses, data_t& human_data) {
 	// Each row here is a hypothesis, and each column is the likelihood for a sequence of data sets
-	// Here we check if the previous data point is a subset of the current, and if so, 
-	// then we just do the additional likelihood of the set difference 
-	// this way, we can pass incremental data without it being too crazy slow
+	// TODO: In general this can be sped up by checking if we've already computed part of the likelihood
+	//       earlier -- thats' what GemmarInfernce/Main.cpp::my_compute_incremental_likelihood does
 	
 	Matrix out = Matrix::Zero(hypotheses.size(), human_data.size()); 
 	
@@ -128,7 +127,6 @@ Matrix model_predictions(std::vector<HYP>& hypotheses, data_t& human_data) {
  * @file GrammarHypothesis.h
  * @brief 
  */
-
 template<typename Grammar_t, typename datum_t, typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
 class GrammarHypothesis : public MCMCable<GrammarHypothesis<Grammar_t, datum_t, data_t>, datum_t, data_t>  {
 	/* This class stores a hypothesis of grammar probabilities. The data_t here is defined to be the above tuple and datum is ignored */
@@ -151,12 +149,13 @@ public:
 	
 	GrammarHypothesis(Grammar_t* g, Matrix* c, Matrix* ll, Matrix* p) : grammar(g), C(c), LL(ll), P(p) {
 		logA.set_size(grammar->count_rules());
-		params.set_size(2); 
+		params.set_size(3); 
 	}	
 	
 	// these unpack our parameters -- NOTE here we multiply by 3 to make it a Normal(0,3) distirbution
 	float get_baseline() const    { return 1.0/(1.0+exp(-3.0*params(0))); }
 	float get_forwardalpha()const { return 1.0/(1.0+exp(-3.0*params(1))); }
+	float get_llt() const         { return exp(params(2)); } // likelihood temperature here has no memory decay
 	
 	double compute_prior() override {
 		return this->prior = logA.compute_prior() + params.compute_prior();
@@ -174,10 +173,7 @@ public:
 		
 		Vector hprior = hypothesis_prior(*C); 
 		
-		COUT "hprior" TAB hprior.rows() TAB hprior.cols() ENDL;
-		COUT "LL" TAB LL->rows() TAB LL->cols() ENDL;
-//		
-		Matrix hposterior = (*LL).colwise() + hprior; // the model's posterior
+		Matrix hposterior = (*LL / get_llt()).colwise() + hprior; // the model's posterior
 
 		// now normalize it and convert to probabilities
 		for(int i=0;i<hposterior.cols();i++) { 	// normalize (must be a faster way) for each amount of given data (column)

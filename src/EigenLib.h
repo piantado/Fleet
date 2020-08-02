@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Numerics.h"
+
 // turn off warnings for the rest of this
 #pragma GCC system_header
 
@@ -12,22 +14,18 @@
 using Vector = Eigen::VectorXf; // set these and precision
 using Matrix = Eigen::MatrixXf; 
 
-double logsumexp(const Vector& v) {
-	
-//	double mx = -infinity;
-//	for(int i=0;i<v.size();i++) {
-//		if(v(i) > mx) mx = v(i);
-//	}
+// Woah this is WAAAY slower
+//double logsumexp(const Vector& v) {
 //	
-//	double sm = 0.0;
+//	double lse = -infinity;
 //	for(int i=0;i<v.size();i++) {
-//		sm += exp(v(i)-mx);
+//		lse = logplusexp((double)v(i), lse);
 //	}
-//	return log(sm)+mx;
+//	return lse;
+//}
 
+double logsumexp(const Vector& v) {
 	double mx = v.maxCoeff();
-//	auto   o = Vector::Ones(v.size());
-	
 	return log((v.array()-mx).array().exp().sum()) + mx;
 }
 
