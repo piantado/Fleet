@@ -98,80 +98,46 @@ public:
 };
 
 
-//Matrix my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, std::vector<MyHumanDatum>& human_data) {
-//	// special case of incremental likelihood since we are accumulating data (by sets)
-//	// So we have written a special case here
-//	
-//	// likelihood out will now be a mapping from hypothesis, data_element to prior likelihoods of individual elements
-//	std::map<std::pair<int, int>, std::vector<double>> out; 
-//	
-//	for(size_t h=0;h<hypotheses.size() and !CTRL_C;h++) {
-//		for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
-//			if(human_data[di].given_data.size() == 0) {
-//				// should catch di=0
-//				out[std::make_pair(h,di)] = std::vector(1,0.0); // start iwth zero
-//			}
-//			else {
-//				assert(di>0);
-//				size_t prevsetno = human_data[di-1].given_data.empty() ? 0 : human_data[di-1].given_data.back().setNumber; // what was the previous set number?
-//			
-//				if(human_data[di].given_data.back().setNumber == prevsetno) {
-//					// same likelihood since we presented a set at a time
-//					// NOTE: We don't need to check concept/list since rows are sorted, so if the condition is met, we will be the same concept/list
-//					out(h,di) = out(h,di-1);
-//				}
-//				else if(human_data[di].given_data.back().setNumber == prevsetno+1) {
-//					// add up all of the new set (which hasn't been included)
-//					out(h,di) = out(h,di-1); 				
-//					for(auto& d : human_data[di].given_data) {
-//						if(d.setNumber == prevsetno+1) {
-//							out(h,di) += hypotheses[h].compute_single_likelihood(d);
-//						}
-//					}
-//				}
-//				else { // recompute the whole damn thing
-//					out(h,di) =  hypotheses[h].compute_likelihood(human_data[di].given_data);			
-//				}
-//			}
-//			
-//		}	
-//	}
-//	
-//	return out;
-//}
-
-Matrix my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, std::vector<MyHumanDatum>& human_data) {
+LL_t my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, std::vector<MyHumanDatum>& human_data) {
 	// special case of incremental likelihood since we are accumulating data (by sets)
 	// So we have written a special case here
 	
-	Matrix out = Matrix::Zero(hypotheses.size(), human_data.size()); 
+	// likelihood out will now be a mapping from hypothesis, data_element to prior likelihoods of individual elements
+	std::map<std::pair<int, int>, std::vector<double>> out; 
 	
 	for(size_t h=0;h<hypotheses.size() and !CTRL_C;h++) {
 		for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
+			auto idx = std::make_pair(h, di);
 			if(human_data[di].given_data.size() == 0) {
 				// should catch di=0
-				out(h,di) = 0.0;
+				out[idx] = std::vector(1,0.0); // start with zero
 			}
 			else {
+				// or we can copy previous data
 				assert(di>0);
 				size_t prevsetno = human_data[di-1].given_data.empty() ? 0 : human_data[di-1].given_data.back().setNumber; // what was the previous set number?
-			
+				
 				if(human_data[di].given_data.back().setNumber == prevsetno) {
 					// same likelihood since we presented a set at a time
 					// NOTE: We don't need to check concept/list since rows are sorted, so if the condition is met, we will be the same concept/list
-					out(h,di) = out(h,di-1);
+					out[idx] = out[std::make_pair(h,di-1)]; 
 				}
 				else if(human_data[di].given_data.back().setNumber == prevsetno+1) {
+					// we just have to add the new element, and copy the rest 
+					
 					// add up all of the new set (which hasn't been included)
-					out(h,di) = out(h,di-1); 				
+					out[idx] = out[std::make_pair(h,di-1)]; 			
+					double next_set_ll = 0.0; // we add up the ll for the next set, so we just have one number
 					for(auto& d : human_data[di].given_data) {
-						if(d.setNumber == prevsetno+1) {
-							out(h,di) += hypotheses[h].compute_single_likelihood(d);
+						if(d.setNumber == prevsetno+1) { // since we know the other stuff has already been included 
+							next_set_ll += hypotheses[h].compute_single_likelihood(d);
 						}
 					}
+					out[idx].push_back(next_set_ll);
 				}
 				else { // recompute the whole damn thing
-					out(h,di) =  hypotheses[h].compute_likelihood(human_data[di].given_data);			
+					
+					assert(0); // should not get here
 				}
 			}
 			
@@ -183,14 +149,13 @@ Matrix my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, 
 
 
 
-
 size_t grammar_callback_count = 0;
 void gcallback(GrammarHypothesis<MyGrammar,MyHumanDatum>& h) {
 	if(++grammar_callback_count % 100 == 0) {
 		COUT grammar_callback_count TAB "posterior" TAB h.posterior ENDL;
 		COUT grammar_callback_count TAB "baseline" TAB h.get_baseline() ENDL;
 		COUT grammar_callback_count TAB "forwardalpha" TAB h.get_forwardalpha() ENDL;
-		COUT grammar_callback_count TAB  "llt" TAB h.get_llt() ENDL;
+		COUT grammar_callback_count TAB  "llt" TAB h.get_decay() ENDL;
 		size_t xi=0;
 		for(size_t nt=0;nt<h.grammar->count_nonterminals();nt++) {
 			for(size_t i=0;i<h.grammar->count_rules( (nonterminal_t) nt);i++) {
@@ -331,7 +296,7 @@ int main(int argc, char** argv){
 	Matrix C  = counts(hypotheses);
 	COUT "# Done computing prior counts" ENDL;
 	
-	Matrix LL = my_compute_incremental_likelihood(hypotheses, human_data); // using MY version
+	LL_t LL = my_compute_incremental_likelihood(hypotheses, human_data); // using MY version
 	COUT "# Done computing incremental likelihoods " ENDL;
 		
 	auto P = model_predictions(hypotheses, human_data);

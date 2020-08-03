@@ -8,6 +8,10 @@
 
 extern volatile sig_atomic_t CTRL_C;
 
+// This is how we will store the likelihood, indexed by hypothesis, data point, and then 
+// giving back a list of prior likelihoods (ordered earliest first) for use with memory decay
+typedef std::map<std::pair<int, int>, std::vector<double>> LL_t; // likelihood type
+
 /**
  * @class HumanDatum
  * @author piantado
@@ -141,13 +145,16 @@ public:
 	
 	Grammar_t* grammar;
 	Matrix* C;
-	Matrix* LL;
+	LL_t* LL; // type for the likelihood
 	Matrix* P;
 	
-	GrammarHypothesis() {
+	Matrix likelihoodHere;
+	void* which_data_for_likelihood; // store the data we used for likelihoodHere so we recompute if it changed
+	
+	GrammarHypothesis() : which_data_for_likelihood(nullptr) {
 	}
 	
-	GrammarHypothesis(Grammar_t* g, Matrix* c, Matrix* ll, Matrix* p) : grammar(g), C(c), LL(ll), P(p) {
+	GrammarHypothesis(Grammar_t* g, Matrix* c, LL_t* ll, Matrix* p) : grammar(g), C(c), LL(ll), P(p), which_data_for_likelihood(nullptr) {
 		logA.set_size(grammar->count_rules());
 		params.set_size(3); 
 	}	
@@ -155,7 +162,26 @@ public:
 	// these unpack our parameters -- NOTE here we multiply by 3 to make it a Normal(0,3) distirbution
 	float get_baseline() const    { return 1.0/(1.0+exp(-3.0*params(0))); }
 	float get_forwardalpha()const { return 1.0/(1.0+exp(-3.0*params(1))); }
-	float get_llt() const         { return exp(params(2)); } // likelihood temperature here has no memory decay
+	float get_decay() const         { return exp(params(2)/10.0); } // likelihood temperature here has no memory decay
+	
+	void recompute_likelihoodHere() {
+		double decay = get_decay();
+		for(int h=0;h<C->rows();h++) {
+			for(size_t di=0;di<likelihoodHere.cols();di++) {
+				
+				// sum up with the memory decay
+				auto idx = std::make_pair(h,di);
+				size_t N = (*LL)[idx].size();
+				likelihoodHere(h,di) = 0.0;
+				double mydecay = decay;
+				for(int i=N-1;i>=0 and mydecay > 0.001;i--) {
+					likelihoodHere(h,di) += (*LL)[idx][i] * mydecay;
+					mydecay *= decay;					
+				}
+				
+			}
+		}
+	}
 	
 	double compute_prior() override {
 		return this->prior = logA.compute_prior() + params.compute_prior();
@@ -167,13 +193,23 @@ public:
 	 * @param breakout
 	 * @return 
 	 */		
-	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
+	virtual double compute_likelihood(const data_t& human_data, const double breakout=-infinity) override {
 		// This runs the entire model (computing its posterior) to get the likelihood
 		// of the human data
 		
 		Vector hprior = hypothesis_prior(*C); 
 		
-		Matrix hposterior = (*LL / get_llt()).colwise() + hprior; // the model's posterior
+		// recompute our likelihood if its the wrong size or not using this data
+		if(&human_data != which_data_for_likelihood or 
+		   likelihoodHere.rows() != hprior.size() or 
+		   likelihoodHere.cols() != human_data.size()) {
+			which_data_for_likelihood = (void*) &human_data;
+			likelihoodHere = Matrix::Zero(hprior.size(), human_data.size());
+			recompute_likelihoodHere(); // needs the size set above
+		}
+		
+		
+		Matrix hposterior = likelihoodHere.colwise() + hprior; // the model's posterior
 
 		// now normalize it and convert to probabilities
 		for(int i=0;i<hposterior.cols();i++) { 	// normalize (must be a faster way) for each amount of given data (column)
@@ -186,13 +222,10 @@ public:
 		auto forwardalpha = get_forwardalpha();
 		auto baseline     = get_baseline();
 		this->likelihood = 0.0; // of the human data
-		for(size_t i=0;i<data.size();i++) {
+		for(size_t i=0;i<human_data.size();i++) {
 			double p = forwardalpha*hpredictive(i) + (1.0-forwardalpha)*baseline;
-			this->likelihood += log(p)*data[i].cntyes + log(1.0-p)*data[i].cntno;
+			this->likelihood += log(p)*human_data[i].cntyes + log(1.0-p)*human_data[i].cntno;
 		}
-//		Vector o = Vector::Ones(predictive.size());
-//		Vector p = forwardalpha*predictive(i) + o*(1.0-forwardalpha)*baseline; // vector of probabilities
-//		double proposalLL = p.array.log()*yes_responses + (o-p).array.log()*no_responses;
 		
 		return this->likelihood;		
 	}
@@ -208,9 +241,10 @@ public:
 	[[nodiscard]] virtual std::pair<self_t,double> propose() const override {
 		self_t out = *this;
 		
-		if(flip()){
+		if(flip(0.1)){
 			auto [ h, fb ] = params.propose();
 			out.params = h;
+			out.recompute_likelihoodHere();
 			return std::make_pair(out, fb);
 		}		
 		else {

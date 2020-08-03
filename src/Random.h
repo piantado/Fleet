@@ -103,13 +103,13 @@ T myrandom(T min, T max) {
 }
 
 
-bool flip() {
+bool flip(float p = 0.5) {
 	/**
 	 * @brief Random bool
 	 * @return 
 	 */
 	
-	return uniform() < 0.5;
+	return uniform() < p;
 }
 
 
