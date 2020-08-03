@@ -103,14 +103,18 @@ LL_t my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, st
 	// So we have written a special case here
 	
 	// likelihood out will now be a mapping from hypothesis, data_element to prior likelihoods of individual elements
-	std::map<std::pair<int, int>, std::vector<double>> out; 
+	LL_t out; 
 	
 	for(size_t h=0;h<hypotheses.size() and !CTRL_C;h++) {
 		for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
+			
 			auto idx = std::make_pair(h, di);
+			
+			std::vector<double> outval; // needed to keep parallel stuff simple
+			
 			if(human_data[di].given_data.size() == 0) {
 				// should catch di=0
-				out[idx] = std::vector(1,0.0); // start with zero
+				outval = std::vector(1,0.0); // start with zero
 			}
 			else {
 				// or we can copy previous data
@@ -120,26 +124,29 @@ LL_t my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, st
 				if(human_data[di].given_data.back().setNumber == prevsetno) {
 					// same likelihood since we presented a set at a time
 					// NOTE: We don't need to check concept/list since rows are sorted, so if the condition is met, we will be the same concept/list
-					out[idx] = out[std::make_pair(h,di-1)]; 
+					outval = out[std::make_pair(h,di-1)]; 
 				}
 				else if(human_data[di].given_data.back().setNumber == prevsetno+1) {
 					// we just have to add the new element, and copy the rest 
 					
 					// add up all of the new set (which hasn't been included)
-					out[idx] = out[std::make_pair(h,di-1)]; 			
+					outval = out[std::make_pair(h,di-1)]; 			
 					double next_set_ll = 0.0; // we add up the ll for the next set, so we just have one number
 					for(auto& d : human_data[di].given_data) {
 						if(d.setNumber == prevsetno+1) { // since we know the other stuff has already been included 
 							next_set_ll += hypotheses[h].compute_single_likelihood(d);
 						}
 					}
-					out[idx].push_back(next_set_ll);
+					outval.push_back(next_set_ll);
 				}
-				else { // recompute the whole damn thing
-					
+				else { 
 					assert(0); // should not get here
 				}
 			}
+			
+			
+			#pragma omp critical
+			out[idx] = outval;		
 			
 		}	
 	}
@@ -253,29 +260,38 @@ int main(int argc, char** argv){
 	
 	std::set<MyHypothesis> all;
 	
-	for(const auto& v : learner_data) {
+	// get the keys out so we can do MCMC in parallel:
+	std::vector<S> learner_data_keys;
+	for(auto& v : learner_data) {
+		learner_data_keys.push_back(v.first);
+	}
+	
+	
+	#pragma omp parallel for
+	for(size_t vi=0; vi<learner_data.size();vi++) {
+		if(!CTRL_C) {  // needed for openmp
+			auto& v = learner_data[learner_data_keys[vi]];
 		
-		COUT "# Running " TAB v.first ENDL;
-		
-		for(size_t i=0;i<v.second.size();i++) {
+			COUT "# Running " TAB learner_data_keys[vi] ENDL;
 			
-			TopN<MyHypothesis> top(ntop);
+			for(size_t i=0;i<v.size() and !CTRL_C;i++) {
+				
+				TopN<MyHypothesis> top(ntop);
+				
+				auto di = v[i];
+				MyHypothesis h0(&grammar);
+				h0 = h0.restart();
+				auto givendata = slice(v, 0, (di.setNumber-1)-1);
+				MCMCChain chain(h0, &givendata, top);
+				chain.run(Control(inner_mcmc_steps, inner_runtime)); // run it super fast
 			
-			auto di = v.second[i];
-			MyHypothesis h0(&grammar);
-			h0 = h0.restart();
-			auto givendata = slice(v.second, 0, (di.setNumber-1)-1);
-			MCMCChain chain(h0, &givendata, top);
-			chain.run(Control(inner_mcmc_steps, inner_runtime)); // run it super fast
-		
-			for(auto h : top.values()) {
-				h.clear_bayes(); // zero and insert
-				all.insert(h);
+				#pragma omp critical
+				for(auto h : top.values()) {
+					h.clear_bayes(); // zero and insert
+					all.insert(h);
+				}
 			}
-			
-			if(CTRL_C) break;
 		}
-		if(CTRL_C) break;
 	}
 	
 	// reset control-C

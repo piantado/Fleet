@@ -36,26 +36,7 @@ struct HumanDatum {
 
 /* Helper functions for computing counts, C, LL, P */
 
-/**
- * @brief 
- * @param h
- * @return 
- */
 
-template<typename HYP>
-Vector counts(HYP& h) {
-	// returns a 1xnRules matrix of how often each rule occurs
-	// TODO: This will not work right for Lexicons, where value is not there
-	
-	auto c = h.grammar->get_counts(h.get_value());
-
-	Vector out = Vector::Zero(c.size());
-	for(size_t i=0;i<c.size();i++){
-		out(i) = c[i];
-	}
-	
-	return out;
-}
 
 /**
  * @brief 
@@ -73,8 +54,15 @@ Matrix counts(std::vector<HYP>& hypotheses) {
 
 	Matrix out = Matrix::Zero(hypotheses.size(), nRules); 
 
+	#pragma omp parallel for
 	for(size_t i=0;i<hypotheses.size();i++) {
-		out.row(i) = counts(hypotheses[i]);
+		auto c = hypotheses[i].grammar->get_counts(hypotheses[i].get_value());
+		Vector cv = Vector::Zero(c.size());
+		for(size_t i=0;i<c.size();i++){
+			cv(i) = c[i];
+		}
+		
+		out.row(i) = cv;
 		assert(hypotheses[i].grammar == hypotheses[0].grammar); // just a check that the grammars are identical
 	}
 	return out;
@@ -93,11 +81,13 @@ Matrix incremental_likelihoods(std::vector<HYP>& hypotheses, data_t& human_data)
 	//       earlier -- thats' what GemmarInfernce/Main.cpp::my_compute_incremental_likelihood does
 	
 	Matrix out = Matrix::Zero(hypotheses.size(), human_data.size()); 
-	
-	for(size_t h=0;h<hypotheses.size() and !CTRL_C;h++) {
-		for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
-			out(h,di) =  hypotheses[h].compute_likelihood(human_data[di].given_data);			
-		}	
+	#pragma omp parallel for
+	for(size_t h=0;h<hypotheses.size();h++) {
+		if(!CTRL_C) {
+			for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
+				out(h,di) =  hypotheses[h].compute_likelihood(human_data[di].given_data);			
+			}	
+		}
 	}
 	
 	return out;
@@ -114,6 +104,7 @@ template<typename HYP, typename data_t>
 Matrix model_predictions(std::vector<HYP>& hypotheses, data_t& human_data) {
 	
 	Matrix out = Matrix::Zero(hypotheses.size(), human_data.size());
+	#pragma omp parallel for
 	for(size_t h=0;h<hypotheses.size();h++) {
 	for(size_t di=0;di<human_data.size();di++) {
 		out(h,di) =  1.0*hypotheses[h].callOne(human_data[di].predictdata.x, 0);
@@ -162,21 +153,21 @@ public:
 	// these unpack our parameters -- NOTE here we multiply by 3 to make it a Normal(0,3) distirbution
 	float get_baseline() const    { return 1.0/(1.0+exp(-3.0*params(0))); }
 	float get_forwardalpha()const { return 1.0/(1.0+exp(-3.0*params(1))); }
-	float get_decay() const         { return exp(params(2)/10.0); } // likelihood temperature here has no memory decay
+	float get_decay() const         { return exp(params(2)/2.0); } // likelihood temperature here has no memory decay
 	
 	void recompute_likelihoodHere() {
 		double decay = get_decay();
+		
+		#pragma omp parallel for
 		for(int h=0;h<C->rows();h++) {
-			for(size_t di=0;di<likelihoodHere.cols();di++) {
+			for(int di=0;di<likelihoodHere.cols();di++) {
 				
 				// sum up with the memory decay
 				auto idx = std::make_pair(h,di);
 				size_t N = (*LL)[idx].size();
 				likelihoodHere(h,di) = 0.0;
-				double mydecay = decay;
-				for(int i=N-1;i>=0 and mydecay > 0.001;i--) {
-					likelihoodHere(h,di) += (*LL)[idx][i] * mydecay;
-					mydecay *= decay;					
+				for(int i=N-1;i>=0;i--) {
+					likelihoodHere(h,di) += (*LL)[idx][i] * pow(N-i, -decay);
 				}
 				
 			}
@@ -201,8 +192,9 @@ public:
 		
 		// recompute our likelihood if its the wrong size or not using this data
 		if(&human_data != which_data_for_likelihood or 
-		   likelihoodHere.rows() != hprior.size() or 
-		   likelihoodHere.cols() != human_data.size()) {
+		   likelihoodHere.rows() != (int)hprior.size() or 
+		   likelihoodHere.rows() != (int)hprior.size() or 
+		   likelihoodHere.cols() != (int)human_data.size()) {
 			which_data_for_likelihood = (void*) &human_data;
 			likelihoodHere = Matrix::Zero(hprior.size(), human_data.size());
 			recompute_likelihoodHere(); // needs the size set above
@@ -212,6 +204,7 @@ public:
 		Matrix hposterior = likelihoodHere.colwise() + hprior; // the model's posterior
 
 		// now normalize it and convert to probabilities
+		#pragma omp parallel for
 		for(int i=0;i<hposterior.cols();i++) { 	// normalize (must be a faster way) for each amount of given data (column)
 			hposterior.col(i) = lognormalize(hposterior.col(i)).array().exp();
 		}
@@ -268,6 +261,8 @@ public:
 		
 		// get the marginal probability of the counts via  dirichlet-multinomial
 		Vector allA = logA.value.array().exp(); // translate [-inf,inf] into [0,inf]
+		
+		#pragma omp parallel for
 		for(auto i=0;i<C.rows();i++) {
 			
 			double lp = 0.0;
