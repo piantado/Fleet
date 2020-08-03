@@ -13,7 +13,7 @@
 template<typename input_t, typename output_t>
 class defauldatum_t { // a single data point
 public:
-	input_t input;
+	input_t  input;
 	output_t output;
 	double   reliability; // the noise probability (typically required)
 	

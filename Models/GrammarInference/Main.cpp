@@ -1,4 +1,7 @@
 
+
+// TODO: Might be easier to have responses be to the entire list of objects?
+
 #include <assert.h>
 #include <set>
 #include <regex>
@@ -6,6 +9,7 @@
 #include <tuple>
 #include <functional>
 #include <cmath>
+
 #include "EigenLib.h"
 
 #include "Object.h"
@@ -17,19 +21,23 @@ enum class Size  { size1, size2, size3};
 // Define a kind of object with these features
 typedef Object<Shape,Color,Size>  MyObject;
 
-typedef struct LearnerDatum {
-	// What the learner takes as input
-	MyObject x;
-	bool correctAnswer;
-	double alpha;
-	std::set<MyObject>* set;// a pointer makes it easy to modify as we read in the file
-	size_t setNumber;
-	size_t responseInSet;
-	
-	bool operator==(const LearnerDatum& o) const { 
-		return (*set) == (*o.set) and x == o.x;
-	}
-} LearnerDatum; 
+// An input here is a pair of a set and an object
+typedef std::pair<std::set<MyObject>, MyObject> MyInput;
+
+//typedef struct LearnerDatum {
+//	// What the learner takes as input
+//	MyObject x;
+//	bool correctAnswer;
+//	double alpha;
+//	std::set<MyObject>* set;// a pointer makes it easy to modify as we read in the file
+//	size_t setNumber;
+//	size_t responseInSet;
+//	
+//	bool operator==(const LearnerDatum& o) const { 
+//		return (*set) == (*o.set) and x == o.x;
+//	}
+//} LearnerDatum; 
+
 
 const double alpha = 0.9; // fixed for the learning part of the model
 
@@ -63,6 +71,8 @@ std::tuple PRIMITIVES = {
 	Primitive("size1(%s)",     +[](MyObject x)       -> bool { return x.is(Size::size1); }, FEATURE_WEIGHT),
 	Primitive("size2(%s)",     +[](MyObject x)       -> bool { return x.is(Size::size2); }, FEATURE_WEIGHT),
 	Primitive("size3(%s)",     +[](MyObject x)       -> bool { return x.is(Size::size3); }, FEATURE_WEIGHT),
+	
+	Primitive("%.arg",         +[](MyInput x)        -> MyObject { return x.second; }),
 		
 	// but we also have to add a rule for the BuiltinOp that access x, our argument
 	Builtin::X<MyObject>("x", 10.0)
@@ -83,20 +93,21 @@ class MyGrammar : public Grammar<bool,MyObject> {
 #include "GrammarHypothesis.h" 
 #include "LOTHypothesis.h"
 
-typedef HumanDatum<LearnerDatum> MyHumanDatum;
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar,LearnerDatum> {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar> {
 public:
 	// This is going to assume that all variables other than x are universally quantified over. 
-	using Super = LOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar,LearnerDatum>;
+	using Super = LOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar>;
 	using Super::Super;
 	
 	double compute_single_likelihood(const datum_t& di) override {
-		bool out = callOne(di.x, false);
-		return (out == di.correctAnswer ? log(di.alpha + (1.0-di.alpha)/2.0) : log((1.0-di.alpha)/2.0));
+		// TODO: For now we are just ignoring the set, althoug that should change!
+		bool out = callOne(di.input, false);
+		return (out == di.output ? log(di.reliability + (1.0-di.reliability)/2.0) : log((1.0-di.reliability)/2.0));
 	}
 };
 
+typedef HumanDatum<MyHypothesis> MyHumanDatum;
 
 LL_t my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, std::vector<MyHumanDatum>& human_data) {
 	// special case of incremental likelihood since we are accumulating data (by sets)
@@ -106,33 +117,38 @@ LL_t my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, st
 	LL_t out; 
 	
 	for(size_t h=0;h<hypotheses.size() and !CTRL_C;h++) {
+		
+		// This will assume that as things are sorted in human_data, they will tend to use
+		// the same human_data.data pointer (e.g. they are sorted this way) so that
+		// we can re-use prior likelihood items for them
+		std::vector<double> data_lls(1, 0.0);
 		for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
 			
 			auto idx = std::make_pair(h, di);
 			
+			// if we can reuse the previous data
+			if(di > 0 and human_data[di].data == human_data[di-1].data) {
+				data_lls.
+			}
+			
 			std::vector<double> outval; // needed to keep parallel stuff simple
 			
-			if(human_data[di].given_data.size() == 0) {
-				// should catch di=0
-				outval = std::vector(1,0.0); // start with zero
-			}
-			else {
 				// or we can copy previous data
 				assert(di>0);
-				size_t prevsetno = human_data[di-1].given_data.empty() ? 0 : human_data[di-1].given_data.back().setNumber; // what was the previous set number?
+				size_t prevsetno = human_data[di-1].data.empty() ? 0 : human_data[di-1].data.back().setNumber; // what was the previous set number?
 				
-				if(human_data[di].given_data.back().setNumber == prevsetno) {
+				if(human_data[di].data.back().setNumber == prevsetno) {
 					// same likelihood since we presented a set at a time
 					// NOTE: We don't need to check concept/list since rows are sorted, so if the condition is met, we will be the same concept/list
 					outval = out[std::make_pair(h,di-1)]; 
 				}
-				else if(human_data[di].given_data.back().setNumber == prevsetno+1) {
+				else if(human_data[di].data.back().setNumber == prevsetno+1) {
 					// we just have to add the new element, and copy the rest 
 					
 					// add up all of the new set (which hasn't been included)
 					outval = out[std::make_pair(h,di-1)]; 			
 					double next_set_ll = 0.0; // we add up the ll for the next set, so we just have one number
-					for(auto& d : human_data[di].given_data) {
+					for(auto& d : human_data[di].data) {
 						if(d.setNumber == prevsetno+1) { // since we know the other stuff has already been included 
 							next_set_ll += hypotheses[h].compute_single_likelihood(d);
 						}
@@ -195,7 +211,7 @@ int main(int argc, char** argv){
 	// set up the data
 	//------------------
 	
-	std::map<std::string, std::vector<LearnerDatum>> learner_data;
+	std::map<std::string, MyHypothesis::data_t> learner_data;
 	std::vector<MyHumanDatum> human_data;	// map conceptlist, setnumber, responsnumber to cntyes,cntno
 	
 	std::ifstream infile("preprocessing/data.txt");
@@ -247,13 +263,31 @@ int main(int argc, char** argv){
 		// add this to the set
 		theset->insert(o);
 		
-		LearnerDatum ld{o, correctAnswer, alpha, theset, setNumber, responseInSet};
 		
-		MyHumanDatum hd{cntyes, cntno, learner_data[conceptlist], ld}; // we copy learnerdata[cl] before we've loaded the next one (so it might be empty)
-		human_data.push_back(hd);
+		//
+		//
+		//
+		//
+		//
+		//
+		//
+		//
+		//
+		//
+		//
+		//
+		// TODO: THE SET IS NOT COMPUTED RIGHT HERE SINCE IT SHOULD BE EVERYTHING, NOT JUST PRECEEDING
 		
-		// add the next learning data
-		learner_data[conceptlist].push_back(ld);
+		
+		
+		MyHypothesis::data_t di{std::make_pair(theset, o), correctAnswer, alpha};
+		
+		size_t ndata = learner_data[conceptlist].size(); // how many we condition on (before di is added)
+		learner_data[conceptlist].push_back(di);
+		
+		human_data.emplace_back(&learner_data[conceptlist], &(*learner_data.rbegin()), ndata, cntyes, cntyes+cntno);
+		
+		
 	}
 	
 	COUT "# Loaded data" ENDL;

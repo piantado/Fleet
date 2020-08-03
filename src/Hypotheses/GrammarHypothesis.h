@@ -20,22 +20,29 @@ typedef std::map<std::pair<int, int>, std::vector<double>> LL_t; // likelihood t
  * @brief 
  */
 
-template<typename t_learnerdatum, typename t_learnerdata=std::vector<t_learnerdatum>>
-struct HumanDatum { 
-	// a data structure to store our loaded human data. This stores responses for a prediction
-	// conditioned on given data, with yes/no responses
-	// We have T as our own inherited type so we can write comparisons, is_data_prefix etc for subtypes
-	// NOTE: we may want to abstract out a response type as well
-	
-	size_t cntyes; // yes and no responses
-	size_t cntno;
-	t_learnerdata  given_data;   // what data they saw
-	t_learnerdatum predictdata; // what they responded to
+//template<typename t_learnerdatum, typename t_learnerdata=std::vector<t_learnerdatum>>
+//struct HumanDatum { 
+//	// a data structure to store our loaded human data. This stores responses for a prediction
+//	// conditioned on given data, with yes/no responses
+//	// We have T as our own inherited type so we can write comparisons, is_data_prefix etc for subtypes
+//	// NOTE: we may want to abstract out a response type as well
+//	
+//	size_t cntyes; // yes and no responses
+//	size_t cntno;
+//	t_learnerdata  given_data;   // what data they saw
+//	t_learnerdatum predictdata; // what they responded to
+//};
+
+
+
+template<typename HYP>
+struct HumanDatum {
+	HYP::data_t*  data; 
+	HYP::datum_t* predict_data;	// what we compute on now
+	size_t        ndata; // we condition on the first ndata points in data (so we can point to a single stored data)
+	size_t        count_correct;
+	size_t        total_count; 
 };
-
-
-/* Helper functions for computing counts, C, LL, P */
-
 
 
 /**
