@@ -108,7 +108,8 @@ LL_t compute_incremental_likelihood(std::vector<HYP>& hypotheses, std::vector<Hu
 				LLvec_t data_lls;
 				
 				// check if these pointers are equal so we can reuse the previous data			
-				if(human_data[di].data != human_data[di-1].data and 
+				if(di > 0 and 
+				   human_data[di].data == human_data[di-1].data and 
 				   human_data[di].ndata > human_data[di-1].ndata) { 
 					   
 					// just copy over
@@ -125,7 +126,7 @@ LL_t compute_incremental_likelihood(std::vector<HYP>& hypotheses, std::vector<Hu
 						data_lls.push_back(  hypotheses[h].compute_single_likelihood( (*human_data[di].data)[i] ));
 					}				
 				}
-				
+		
 				#pragma omp critical
 				out[idx] = data_lls;	
 			}
@@ -246,7 +247,7 @@ public:
 		}		
 		
 		Matrix hposterior = decayedLikelihood.colwise() + hprior; // the model's posterior
-
+		
 		// now normalize it and convert to probabilities
 		#pragma omp parallel for
 		for(int i=0;i<hposterior.cols();i++) { 

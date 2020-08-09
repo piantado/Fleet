@@ -250,7 +250,8 @@ int main(int argc, char** argv){
 			if(learner_data != nullptr) 
 				mcmc_data.push_back(learner_data);
 			
-			learner_data = new MyHypothesis::data_t();		
+			// need to reserve enough here so that we don't have to move -- or else the pointers break
+			learner_data = new MyHypothesis::data_t(512);		
 			ndata = 0;
 		}
 		
@@ -272,10 +273,10 @@ int main(int argc, char** argv){
 		}
 		
 		ndata += objs->size();
-
+		prev_conceptlist = conceptlist;
 	}
-	if(learner_data != nullptr) 
-		mcmc_data.push_back(learner_data); // and add that last dataset
+	//if(learner_data != nullptr) 
+	//	mcmc_data.push_back(learner_data); // and add that last dataset
 	
 	COUT "# Loaded data" ENDL;
 	
@@ -283,7 +284,8 @@ int main(int argc, char** argv){
 	std::set<MyHypothesis> all;	
 	
 	#pragma omp parallel for
-	for(size_t vi=0; vi<mcmc_data.size();vi++) {
+	for(size_t vi=0; vi<5;vi++) {
+	//	for(size_t vi=0; vi<mcmc_data.size();vi++) {
 		if(!CTRL_C) {  // needed for openmp
 		
 			#pragma omp critical
