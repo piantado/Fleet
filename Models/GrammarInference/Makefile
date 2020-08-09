@@ -11,4 +11,4 @@ debug:
 	g++ Main.cpp -o main -lm -g -fopenmp $(FLEET_FLAGS) $(FLEET_INCLUDE) -I  /usr/include/eigen3/
 	
 profiled:
-	g++ -o main Main.cpp -lm -O3 -pg -p -ffast-math -fopenmp $(FLEET_FLAGS) $(FLEET_INCLUDE) -I  /usr/include/eigen3/
+	g++ -o main Main.cpp -lm -O3 -pg -p -g -fopenmp $(FLEET_FLAGS) $(FLEET_INCLUDE) -I  /usr/include/eigen3/

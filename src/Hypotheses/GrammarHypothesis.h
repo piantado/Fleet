@@ -1,5 +1,8 @@
 #pragma once 
  
+// TODO: Define these as 2D vectors -- define own class to manage
+ 
+ 
 #include <signal.h>
 
 #include "EigenLib.h"
@@ -18,6 +21,29 @@ typedef std::map<std::pair<int, int>, LLvec_t> LL_t; // likelihood type
 template<typename HYP>
 using Predict_t = std::vector<std::vector<DiscreteDistribution<typename HYP::output_t>>>; 
 
+template<typename T>
+class Vector2D {
+	int xsize = 0;
+	int ysize = 0;
+	std::vector<T> value; 
+	
+	Vector2D() {
+	}
+	
+	void set_size(int x, int y) {
+		xsize = x;
+		ysize = y;
+	}
+	
+	void reserve(int x, int y) {
+		set_size(x,y);
+		value.reserve(x*y);
+	}
+	
+	T& at(int x, int y) {
+		return value[x*ysize + y];
+	}
+};
 
 /**
  * @class HumanDatum
@@ -199,10 +225,22 @@ public:
 	
 	// these unpack our parameters -- NOTE here we multiply by 3 to make it a Normal(0,3) distirbution
 	float get_forwardalpha() const { return 1.0/(1.0+exp(-3.0*params(0))); }
-	float get_decay() const         { return exp(params(1)/2.0); } // likelihood temperature here has no memory decay
+	float get_decay() const        { return exp(params(1)/2.0); } // likelihood temperature here has no memory decay
 	
 	void recompute_decayedLikelihood() {
 		double decay = get_decay();
+		
+		// precompute powers because its slow. 
+		std::vector<double> powers(decayedLikelihood.cols(), 0);
+		for(int i=0;i<decayedLikelihood.cols();i++) {
+			powers[i] = pow(i,-decay);
+		}
+		
+		
+		
+		// TODO: We can probably make the below a vector operation?
+		
+		
 		
 		#pragma omp parallel for
 		for(int h=0;h<C->rows();h++) {
@@ -212,8 +250,8 @@ public:
 				auto idx = std::make_pair(h,di);
 				size_t N = (*LL)[idx].size();
 				decayedLikelihood(h,di) = 0.0;
-				for(int i=N-1;i>=0;i--) {
-					decayedLikelihood(h,di) += (*LL)[idx][i] * pow(N-i, -decay);
+				for(size_t i=0;i<N;i++) {
+					decayedLikelihood(h,di) += (*LL)[idx][i] * powers[N-i];
 				}
 				
 			}

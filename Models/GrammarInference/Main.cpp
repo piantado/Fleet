@@ -226,7 +226,6 @@ int main(int argc, char** argv){
 	// data format for the model. 
 	std::ifstream infile("preprocessing/data.txt");
 	
-	S prev_conceptlist = ""; // what was the previous concept/list we saw? 
 	MyHypothesis::data_t* learner_data = nullptr; // pointer to a vector of learner data
 	
 	// what data do I run mcmc on? not just human_data since that will have many reps
@@ -236,6 +235,8 @@ int main(int argc, char** argv){
 	std::vector<MyHypothesis::data_t*> mcmc_data; 
 	
 	size_t ndata = 0;
+	S prev_conceptlist = ""; // what was the previous concept/list we saw? 
+	size_t LEANER_RESERVE_SIZE = 512; // reserve this much so our pointers don't break;
 	
 	while(! infile.eof() ) {
 		if(CTRL_C) break;
@@ -251,7 +252,8 @@ int main(int argc, char** argv){
 				mcmc_data.push_back(learner_data);
 			
 			// need to reserve enough here so that we don't have to move -- or else the pointers break
-			learner_data = new MyHypothesis::data_t(512);		
+			learner_data = new MyHypothesis::data_t();
+			learner_data->reserve(LEANER_RESERVE_SIZE);		
 			ndata = 0;
 		}
 		
@@ -259,6 +261,7 @@ int main(int argc, char** argv){
 		for(size_t i=0;i<objs->size();i++) {
 			MyInput inp{*objs, (*objs)[i]};
 			learner_data->emplace_back(inp, (*corrects)[i], alpha);
+			assert(learner_data->size() < LEANER_RESERVE_SIZE);
 		}
 				
 		// now unpack this data into conceptdata, which requires mapping it to 
@@ -274,9 +277,19 @@ int main(int argc, char** argv){
 		
 		ndata += objs->size();
 		prev_conceptlist = conceptlist;
+		
+		
+		
+		//
+		//
+		//
+		//
+		//		
+		if(human_data.size() > 5000) break;
+	
 	}
-	//if(learner_data != nullptr) 
-	//	mcmc_data.push_back(learner_data); // and add that last dataset
+	if(learner_data != nullptr) 
+		mcmc_data.push_back(learner_data); // and add that last dataset
 	
 	COUT "# Loaded data" ENDL;
 	
@@ -284,8 +297,7 @@ int main(int argc, char** argv){
 	std::set<MyHypothesis> all;	
 	
 	#pragma omp parallel for
-	for(size_t vi=0; vi<5;vi++) {
-	//	for(size_t vi=0; vi<mcmc_data.size();vi++) {
+	for(size_t vi=0; vi<mcmc_data.size();vi++) {
 		if(!CTRL_C) {  // needed for openmp
 		
 			#pragma omp critical
