@@ -5,6 +5,7 @@
 #include "EigenLib.h"
 #include "Errors.h"
 #include "Numerics.h"
+#include "DiscreteDistribution.h"
 
 extern volatile sig_atomic_t CTRL_C;
 
@@ -15,7 +16,7 @@ typedef std::map<std::pair<int, int>, LLvec_t> LL_t; // likelihood type
 
 // We store the prediction type as a vector of data_item, hypothesis, map of output to probabilities
 template<typename HYP>
-using Predict_t = std::vector<std::vector<std::map<typename HYP::output_t,double>>>; 
+using Predict_t = std::vector<std::vector<DiscreteDistribution<typename HYP::output_t>>>; 
 
 
 /**
@@ -149,10 +150,10 @@ Predict_t<HYP> model_predictions(std::vector<HYP>& hypotheses, data_t& human_dat
 	#pragma omp parallel for
 	for(size_t di=0;di<human_data.size();di++) {	
 		
-		std::vector<std::map<typename HYP::output_t,double>> v;
+		std::vector<DiscreteDistribution<typename HYP::output_t>> v;
 		
 		for(size_t h=0;h<hypotheses.size();h++) {			
-			v.push_back(hypotheses[h](human_data[di].predict));
+			v.push_back(hypotheses[h](human_data[di].predict->input));
 		}
 		
 		#pragma omp critical
@@ -177,7 +178,7 @@ public:
 	typedef GrammarHypothesis<HYP,datum_t,data_t> self_t;
 	
 	VectorHypothesis logA; // a simple normal vector for the log of a 
-	VectorHypothesis params; // logodds baseline and forwardalpha
+	VectorHypothesis params; // logodds forwardalpha and decay
 	
 	HYP::Grammar_t* grammar;
 	Matrix* C;
@@ -192,13 +193,12 @@ public:
 	
 	GrammarHypothesis(HYP::Grammar_t* g, Matrix* c, LL_t* ll, Predict_t<HYP>* p) : grammar(g), C(c), LL(ll), predictions(p), which_data_for_likelihood(nullptr) {
 		logA.set_size(grammar->count_rules());
-		params.set_size(3); 
+		params.set_size(2); 
 	}	
 	
 	// these unpack our parameters -- NOTE here we multiply by 3 to make it a Normal(0,3) distirbution
-	float get_baseline() const    { return 1.0/(1.0+exp(-3.0*params(0))); }
-	float get_forwardalpha()const { return 1.0/(1.0+exp(-3.0*params(1))); }
-	float get_decay() const         { return exp(params(2)/2.0); } // likelihood temperature here has no memory decay
+	float get_forwardalpha() const { return 1.0/(1.0+exp(-3.0*params(0))); }
+	float get_decay() const         { return exp(params(1)/2.0); } // likelihood temperature here has no memory decay
 	
 	void recompute_decayedLikelihood() {
 		double decay = get_decay();
@@ -255,7 +255,6 @@ public:
 		
 		// and now get the human likelihood, using a binomial likelihood (binomial term not needed)
 		auto forwardalpha = get_forwardalpha();
-		auto baseline     = get_baseline();
 		
 		this->likelihood  = 0.0; // of the human data
 		
@@ -263,32 +262,23 @@ public:
 		for(size_t i=0;i<human_data.size();i++) {
 			
 			// build up a predictive posterior
-			std::map<typename HYP::output_t, double> model_predictions;
+			DiscreteDistribution<typename HYP::output_t> model_predictions;
 			
-			for(size_t h=0;h<hposterior.rows();h++) {
+			for(int h=0;h<hposterior.rows();h++) {
 				
 				// don't count these in the posterior since they're so small.
 				if(hposterior(h,i) < -10) 
 					continue;  
 				
-				for(auto& mp : predictions[i][h]) {
-					if(mp.predictions.contains(mp.first)) {
-						model_predictions[mp.first] = logplusexp(model_predictions[mp.first], hposterior(h,i) + mp.second);
-					}
-					else {
-						model_predictions[mp.first] = hposterior(h,i) + mp.second;
-					}
+				for(auto& mp : (*predictions)[i][h].values() ) {
+					model_predictions.addmass(mp.first, hposterior(h,i) + mp.second);
 				}
 			}
 			
 			double ll = 0.0; // the likelihood here
-			auto& di = human_data[di];
+			auto& di = human_data[i];
 			for(auto& r : di.responses) {
-				double mlp = (1.0-forwardalpha) * di.chance;
-				if(model_predictions.contains(r.first)) {
-					mlp += exp(model_predictions[r.first]);
-				}
-				ll += log(mlp)*r.second; // log probability times the number of times they answered this
+				ll += log( (1.0-forwardalpha)*di.chance + forwardalpha*exp(model_predictions[r.first])) * r.second; // log probability times the number of times they answered this
 			}
 			
 			#pragma omp critical
@@ -312,7 +302,7 @@ public:
 		if(flip(0.1)){
 			auto [ h, fb ] = params.propose();
 			out.params = h;
-			out.recompute_likelihoodHere();
+			out.recompute_decayedLikelihood();
 			return std::make_pair(out, fb);
 		}		
 		else {

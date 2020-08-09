@@ -151,7 +151,7 @@ public:
 	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t err) {
 		return call(x, err, this); // defaultly I myself am the recursion handler and dispatch
 	}
-	auto operator()(const input_t x, const output_t err){ // just fancy syntax for call
+	auto operator()(const input_t x, const output_t err=output_t{}){ // just fancy syntax for call
 		return call(x,err);
 	}
 
@@ -165,7 +165,7 @@ public:
 		return vms.run(loader); // default to using "this" as the loader		
 	}
 	
-	output_t callOne(const input_t x, const output_t err) {
+	output_t callOne(const input_t x, const output_t err=output_t{}) {
 		// we can use this if we are guaranteed that we don't have a stochastic hypothesis
 		// the savings is that we don't have to create a VirtualMachinePool		
 		VirtualMachineState_t vms(x, err);		

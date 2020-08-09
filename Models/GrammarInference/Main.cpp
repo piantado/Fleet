@@ -28,7 +28,9 @@ enum class Size  { size1, size2, size3};
 // Define a kind of object with these features
 // this is just a Fleet::Object, but with string constructors for simplicity
 struct MyObject : public Object<Shape,Color,Size>  {
-
+	
+	MyObject() {}
+	
 	MyObject(S _shape, S _color, S _size) {
 		// NOT: we could use magic_enum, but haven't here to avoid a dependency
 		if     (_shape == "triangle")   this->set(Shape::triangle);
@@ -83,18 +85,18 @@ std::tuple PRIMITIVES = {
 	Primitive("size2(%s)",     +[](MyObject x)       -> bool { return x.is(Size::size2); }, FEATURE_WEIGHT),
 	Primitive("size3(%s)",     +[](MyObject x)       -> bool { return x.is(Size::size3); }, FEATURE_WEIGHT),
 	
-	Primitive("%.arg",         +[](MyInput x)        -> MyObject { return x.second; }),
+	Primitive("%s.arg",         +[](MyInput x)       -> MyObject { return x.second; }),
 		
 	// but we also have to add a rule for the BuiltinOp that access x, our argument
-	Builtin::X<MyObject>("x", 10.0)
+	Builtin::X<MyInput>("x", 10.0)
 };
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Grammar.h"
 
-class MyGrammar : public Grammar<bool,MyObject> {
-	using Super=Grammar<bool,MyObject>;
+class MyGrammar : public Grammar<bool,MyObject,MyInput> {
+	using Super=Grammar<bool,MyObject,MyInput>;
 	using Super::Super;
 };
 
@@ -124,7 +126,6 @@ size_t grammar_callback_count = 0;
 void gcallback(GrammarHypothesis<MyHypothesis>& h) {
 	if(++grammar_callback_count % 100 == 0) {
 		COUT grammar_callback_count TAB "posterior" TAB h.posterior ENDL;
-		COUT grammar_callback_count TAB "baseline" TAB h.get_baseline() ENDL;
 		COUT grammar_callback_count TAB "forwardalpha" TAB h.get_forwardalpha() ENDL;
 		COUT grammar_callback_count TAB  "llt" TAB h.get_decay() ENDL;
 		size_t xi=0;
@@ -265,7 +266,7 @@ int main(int argc, char** argv){
 			// make a map of the responses
 			std::map<bool,size_t> m; m[true] = (*yeses)[i]; m[false] = (*nos)[i];
 			
-			HumanDatum<MyHypothesis> hd{learner_data, ndata, &(learner_data[ndata+i]), std::move(m), 0.5};
+			HumanDatum<MyHypothesis> hd{learner_data, ndata, &((*learner_data)[ndata+i]), std::move(m), 0.5};
 		
 			human_data.push_back(std::move(hd));
 		}
