@@ -10,40 +10,42 @@ extern volatile sig_atomic_t CTRL_C;
 
 // This is how we will store the likelihood, indexed by hypothesis, data point, and then 
 // giving back a list of prior likelihoods (ordered earliest first) for use with memory decay
-typedef std::map<std::pair<int, int>, std::vector<double>> LL_t; // likelihood type
+typedef std::vector<double> LLvec_t; // how we store the data for each hypothesis
+typedef std::map<std::pair<int, int>, LLvec_t> LL_t; // likelihood type
+
+// We store the prediction type as a vector of data_item, hypothesis, map of output to probabilities
+template<typename HYP>
+using Predict_t = std::vector<std::vector<std::map<typename HYP::output_t,double>>>; 
+
 
 /**
  * @class HumanDatum
  * @author piantado
- * @date 02/08/20
+ * @date 03/08/20
  * @file GrammarHypothesis.h
- * @brief 
+ * @brief This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on, and then correct/total counts
  */
-
-//template<typename t_learnerdatum, typename t_learnerdata=std::vector<t_learnerdatum>>
-//struct HumanDatum { 
-//	// a data structure to store our loaded human data. This stores responses for a prediction
-//	// conditioned on given data, with yes/no responses
-//	// We have T as our own inherited type so we can write comparisons, is_data_prefix etc for subtypes
-//	// NOTE: we may want to abstract out a response type as well
-//	
-//	size_t cntyes; // yes and no responses
-//	size_t cntno;
-//	t_learnerdata  given_data;   // what data they saw
-//	t_learnerdatum predictdata; // what they responded to
-//};
-
-
-
 template<typename HYP>
 struct HumanDatum {
 	HYP::data_t*  data; 
-	HYP::datum_t* predict_data;	// what we compute on now
 	size_t        ndata; // we condition on the first ndata points in data (so we can point to a single stored data)
-	size_t        count_correct;
-	size_t        total_count; 
+	HYP::datum_t* predict;	// what we compute on now
+	std::map<typename HYP::output_t,size_t> responses; // how many of each type of response do you see?
+	double        chance; // how many responses are alltogether possible? Needed for chance responding. 
 };
 
+
+/**
+ * @brief Runs MCMC on hypotheses, resampling when the data stops being incremental and returns a unioned
+ * 			vector of all the tops
+ * @param hypotheses
+ * @return 
+ */
+template<typename HYP>
+std::vector<HYP> get_hypotheses_from_mcmc() {
+	
+	
+}
 
 /**
  * @brief 
@@ -75,25 +77,57 @@ Matrix counts(std::vector<HYP>& hypotheses) {
 	return out;
 }
 
+
 /**
  * @brief 
  * @param hypotheses
  * @param human_data
  * @return 
  */
-template<typename HYP, typename data_t>
-Matrix incremental_likelihoods(std::vector<HYP>& hypotheses, data_t& human_data) {
-	// Each row here is a hypothesis, and each column is the likelihood for a sequence of data sets
-	// TODO: In general this can be sped up by checking if we've already computed part of the likelihood
-	//       earlier -- thats' what GemmarInfernce/Main.cpp::my_compute_incremental_likelihood does
+template<typename HYP>
+LL_t compute_incremental_likelihood(std::vector<HYP>& hypotheses, std::vector<HumanDatum<HYP>>& human_data) {
+	// special case of incremental likelihood since we are accumulating data (by sets)
+	// So we have written a special case here
 	
-	Matrix out = Matrix::Zero(hypotheses.size(), human_data.size()); 
+	// likelihood out will now be a mapping from hypothesis, data_element to prior likelihoods of individual elements
+	LL_t out; 
+	
 	#pragma omp parallel for
 	for(size_t h=0;h<hypotheses.size();h++) {
+		
 		if(!CTRL_C) {
+			
+			// This will assume that as things are sorted in human_data, they will tend to use
+			// the same human_data.data pointer (e.g. they are sorted this way) so that
+			// we can re-use prior likelihood items for them
+			
 			for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
-				out(h,di) =  hypotheses[h].compute_likelihood(human_data[di].given_data);			
-			}	
+				
+				auto idx = std::make_pair(h, di);
+				LLvec_t data_lls;
+				
+				// check if these pointers are equal so we can reuse the previous data			
+				if(human_data[di].data != human_data[di-1].data and 
+				   human_data[di].ndata > human_data[di-1].ndata) { 
+					   
+					// just copy over
+					data_lls = out[std::make_pair(h, di-1)];
+					
+					// and fill in the rest
+					for(size_t i=human_data[di-1].ndata;i<human_data[di].ndata;i++) {
+						data_lls.push_back(  hypotheses[h].compute_single_likelihood( (*human_data[di].data)[i] ));
+					}
+				}
+				else {
+					// compute anew; if ndata=0 then we should just include a 0.0
+					for(size_t i=0;i<human_data[di].ndata;i++) {
+						data_lls.push_back(  hypotheses[h].compute_single_likelihood( (*human_data[di].data)[i] ));
+					}				
+				}
+				
+				#pragma omp critical
+				out[idx] = data_lls;	
+			}
 		}
 	}
 	
@@ -108,14 +142,21 @@ Matrix incremental_likelihoods(std::vector<HYP>& hypotheses, data_t& human_data)
  */
 
 template<typename HYP, typename data_t>
-Matrix model_predictions(std::vector<HYP>& hypotheses, data_t& human_data) {
+Predict_t<HYP> model_predictions(std::vector<HYP>& hypotheses, data_t& human_data) {
+
+	Predict_t<HYP> out; 
 	
-	Matrix out = Matrix::Zero(hypotheses.size(), human_data.size());
 	#pragma omp parallel for
-	for(size_t h=0;h<hypotheses.size();h++) {
-	for(size_t di=0;di<human_data.size();di++) {
-		out(h,di) =  1.0*hypotheses[h].callOne(human_data[di].predictdata.x, 0);
-	}
+	for(size_t di=0;di<human_data.size();di++) {	
+		
+		std::vector<std::map<typename HYP::output_t,double>> v;
+		
+		for(size_t h=0;h<hypotheses.size();h++) {			
+			v.push_back(hypotheses[h](human_data[di].predict));
+		}
+		
+		#pragma omp critical
+		out.push_back(v);
 	}
 	return out;	
 }
@@ -129,30 +170,27 @@ Matrix model_predictions(std::vector<HYP>& hypotheses, data_t& human_data) {
  * @file GrammarHypothesis.h
  * @brief 
  */
-template<typename Grammar_t, typename datum_t, typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
-class GrammarHypothesis : public MCMCable<GrammarHypothesis<Grammar_t, datum_t, data_t>, datum_t, data_t>  {
-	/* This class stores a hypothesis of grammar probabilities. The data_t here is defined to be the above tuple and datum is ignored */
-	// TODO: Change to use a generic vector of parameters that we can convert to whatever we want -- temperature, memory decay, etc. 
-
+template<typename HYP, typename datum_t=HumanDatum<HYP>, typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
+class GrammarHypothesis : public MCMCable<GrammarHypothesis<HYP, datum_t, data_t>, datum_t, data_t>  {
 public:
 
-	typedef GrammarHypothesis<Grammar_t,datum_t,data_t> self_t;
+	typedef GrammarHypothesis<HYP,datum_t,data_t> self_t;
 	
 	VectorHypothesis logA; // a simple normal vector for the log of a 
 	VectorHypothesis params; // logodds baseline and forwardalpha
 	
-	Grammar_t* grammar;
+	HYP::Grammar_t* grammar;
 	Matrix* C;
 	LL_t* LL; // type for the likelihood
-	Matrix* P;
+	Predict_t<HYP>* predictions;
 	
-	Matrix likelihoodHere;
-	void* which_data_for_likelihood; // store the data we used for likelihoodHere so we recompute if it changed
+	Matrix decayedLikelihood;
+	void* which_data_for_likelihood; // store the data we used for decayedLikelihood so we recompute if it changed
 	
 	GrammarHypothesis() : which_data_for_likelihood(nullptr) {
 	}
 	
-	GrammarHypothesis(Grammar_t* g, Matrix* c, LL_t* ll, Matrix* p) : grammar(g), C(c), LL(ll), P(p), which_data_for_likelihood(nullptr) {
+	GrammarHypothesis(HYP::Grammar_t* g, Matrix* c, LL_t* ll, Predict_t<HYP>* p) : grammar(g), C(c), LL(ll), predictions(p), which_data_for_likelihood(nullptr) {
 		logA.set_size(grammar->count_rules());
 		params.set_size(3); 
 	}	
@@ -162,19 +200,19 @@ public:
 	float get_forwardalpha()const { return 1.0/(1.0+exp(-3.0*params(1))); }
 	float get_decay() const         { return exp(params(2)/2.0); } // likelihood temperature here has no memory decay
 	
-	void recompute_likelihoodHere() {
+	void recompute_decayedLikelihood() {
 		double decay = get_decay();
 		
 		#pragma omp parallel for
 		for(int h=0;h<C->rows();h++) {
-			for(int di=0;di<likelihoodHere.cols();di++) {
+			for(int di=0;di<decayedLikelihood.cols();di++) {
 				
 				// sum up with the memory decay
 				auto idx = std::make_pair(h,di);
 				size_t N = (*LL)[idx].size();
-				likelihoodHere(h,di) = 0.0;
+				decayedLikelihood(h,di) = 0.0;
 				for(int i=N-1;i>=0;i--) {
-					likelihoodHere(h,di) += (*LL)[idx][i] * pow(N-i, -decay);
+					decayedLikelihood(h,di) += (*LL)[idx][i] * pow(N-i, -decay);
 				}
 				
 			}
@@ -199,39 +237,69 @@ public:
 		
 		// recompute our likelihood if its the wrong size or not using this data
 		if(&human_data != which_data_for_likelihood or 
-		   likelihoodHere.rows() != (int)hprior.size() or 
-		   likelihoodHere.rows() != (int)hprior.size() or 
-		   likelihoodHere.cols() != (int)human_data.size()) {
+		   decayedLikelihood.rows() != (int)hprior.size() or 
+		   decayedLikelihood.rows() != (int)hprior.size() or 
+		   decayedLikelihood.cols() != (int)human_data.size()) {
 			which_data_for_likelihood = (void*) &human_data;
-			likelihoodHere = Matrix::Zero(hprior.size(), human_data.size());
-			recompute_likelihoodHere(); // needs the size set above
-		}
+			decayedLikelihood = Matrix::Zero(hprior.size(), human_data.size());
+			recompute_decayedLikelihood(); // needs the size set above
+		}		
 		
-		
-		Matrix hposterior = likelihoodHere.colwise() + hprior; // the model's posterior
+		Matrix hposterior = decayedLikelihood.colwise() + hprior; // the model's posterior
 
 		// now normalize it and convert to probabilities
 		#pragma omp parallel for
-		for(int i=0;i<hposterior.cols();i++) { 	// normalize (must be a faster way) for each amount of given data (column)
-			hposterior.col(i) = lognormalize(hposterior.col(i)).array().exp();
+		for(int i=0;i<hposterior.cols();i++) { 
+			hposterior.col(i) = lognormalize(hposterior.col(i)).array();
 		}
-			
-		Vector hpredictive = (hposterior.array() * (*P).array()).colwise().sum(); // elementwise product and then column sum
 		
 		// and now get the human likelihood, using a binomial likelihood (binomial term not needed)
 		auto forwardalpha = get_forwardalpha();
 		auto baseline     = get_baseline();
-		this->likelihood = 0.0; // of the human data
+		
+		this->likelihood  = 0.0; // of the human data
+		
+		#pragma omp parallel for
 		for(size_t i=0;i<human_data.size();i++) {
-			double p = forwardalpha*hpredictive(i) + (1.0-forwardalpha)*baseline;
-			this->likelihood += log(p)*human_data[i].cntyes + log(1.0-p)*human_data[i].cntno;
+			
+			// build up a predictive posterior
+			std::map<typename HYP::output_t, double> model_predictions;
+			
+			for(size_t h=0;h<hposterior.rows();h++) {
+				
+				// don't count these in the posterior since they're so small.
+				if(hposterior(h,i) < -10) 
+					continue;  
+				
+				for(auto& mp : predictions[i][h]) {
+					if(mp.predictions.contains(mp.first)) {
+						model_predictions[mp.first] = logplusexp(model_predictions[mp.first], hposterior(h,i) + mp.second);
+					}
+					else {
+						model_predictions[mp.first] = hposterior(h,i) + mp.second;
+					}
+				}
+			}
+			
+			double ll = 0.0; // the likelihood here
+			auto& di = human_data[di];
+			for(auto& r : di.responses) {
+				double mlp = (1.0-forwardalpha) * di.chance;
+				if(model_predictions.contains(r.first)) {
+					mlp += exp(model_predictions[r.first]);
+				}
+				ll += log(mlp)*r.second; // log probability times the number of times they answered this
+			}
+			
+			#pragma omp critical
+			this->likelihood += ll;
 		}
 		
 		return this->likelihood;		
 	}
 	
 	[[nodiscard]] virtual self_t restart() const override {
-		self_t out(grammar, C, LL, P);
+		self_t out(grammar, C, LL, predictions);
 		out.logA = logA.restart();
 		out.params = params.restart();		
 		return out;
@@ -296,9 +364,8 @@ public:
 		return out;		
 	}
 	
-	
 	virtual bool operator==(const self_t& h) const override {
-		return (C == h.C and LL == h.LL and P == h.P) and 
+		return (C == h.C and LL == h.LL and predictions == h.predictions) and 
 				(logA == h.logA) and (params == h.params);
 	}
 	

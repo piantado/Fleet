@@ -4,9 +4,12 @@
 
 #include <assert.h>
 #include <set>
+#include <string>
+#include <tuple>
 #include <regex>
 #include <vector>
 #include <tuple>
+#include <utility>
 #include <functional>
 #include <cmath>
 
@@ -14,33 +17,41 @@
 
 #include "Object.h"
 
+using S=std::string;
+
+const double alpha = 0.9; // fixed for the learning part of the model
+
 enum class Shape { rectangle, triangle, circle};
 enum class Color { yellow, green, blue};
 enum class Size  { size1, size2, size3};
 
 // Define a kind of object with these features
-typedef Object<Shape,Color,Size>  MyObject;
+// this is just a Fleet::Object, but with string constructors for simplicity
+struct MyObject : public Object<Shape,Color,Size>  {
 
-// An input here is a pair of a set and an object
-typedef std::pair<std::set<MyObject>, MyObject> MyInput;
+	MyObject(S _shape, S _color, S _size) {
+		// NOT: we could use magic_enum, but haven't here to avoid a dependency
+		if     (_shape == "triangle")   this->set(Shape::triangle);
+		else if(_shape == "rectangle")  this->set(Shape::rectangle);
+		else if(_shape == "circle")     this->set(Shape::circle);
+		else assert(0);
+		
+		if     (_color == "blue")     this->set(Color::blue);
+		else if(_color == "yellow")   this->set(Color::yellow);
+		else if(_color == "green")    this->set(Color::green);
+		else assert(0);
+		
+		if     (_size == "1")        this->set(Size::size1);
+		else if(_size == "2")        this->set(Size::size2);
+		else if(_size == "3")        this->set(Size::size3);
+		else assert(0);
+	}
+	
+};
 
-//typedef struct LearnerDatum {
-//	// What the learner takes as input
-//	MyObject x;
-//	bool correctAnswer;
-//	double alpha;
-//	std::set<MyObject>* set;// a pointer makes it easy to modify as we read in the file
-//	size_t setNumber;
-//	size_t responseInSet;
-//	
-//	bool operator==(const LearnerDatum& o) const { 
-//		return (*set) == (*o.set) and x == o.x;
-//	}
-//} LearnerDatum; 
-
-
-const double alpha = 0.9; // fixed for the learning part of the model
-
+// An input here is a set of objects and responses
+typedef std::pair<std::vector<MyObject>, MyObject> MyInput;
+typedef bool                                       MyOutput;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -94,86 +105,23 @@ class MyGrammar : public Grammar<bool,MyObject> {
 #include "LOTHypothesis.h"
 
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar> {
+/// The type here is a little complex -- a LOTHypothesis here is type MyObject->bool even though
+//  but the datum format we use is these sets, MyInput, MyOutput
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,MyInput,MyOutput,MyGrammar> {
 public:
 	// This is going to assume that all variables other than x are universally quantified over. 
-	using Super = LOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar>;
+	using Super = LOTHypothesis<MyHypothesis,MyInput,MyOutput,MyGrammar>;
 	using Super::Super;
+	using output_t = MyOutput; // needed since inheritance doesn't get these?
 	
 	double compute_single_likelihood(const datum_t& di) override {
-		// TODO: For now we are just ignoring the set, althoug that should change!
-		bool out = callOne(di.input, false);
-		return (out == di.output ? log(di.reliability + (1.0-di.reliability)/2.0) : log((1.0-di.reliability)/2.0));
+		bool o = callOne(di.input, false);
+		return log( (1.0-di.reliability)/2.0 + (o == di.output)*di.reliability);
 	}
 };
 
-typedef HumanDatum<MyHypothesis> MyHumanDatum;
-
-LL_t my_compute_incremental_likelihood(std::vector<MyHypothesis>& hypotheses, std::vector<MyHumanDatum>& human_data) {
-	// special case of incremental likelihood since we are accumulating data (by sets)
-	// So we have written a special case here
-	
-	// likelihood out will now be a mapping from hypothesis, data_element to prior likelihoods of individual elements
-	LL_t out; 
-	
-	for(size_t h=0;h<hypotheses.size() and !CTRL_C;h++) {
-		
-		// This will assume that as things are sorted in human_data, they will tend to use
-		// the same human_data.data pointer (e.g. they are sorted this way) so that
-		// we can re-use prior likelihood items for them
-		std::vector<double> data_lls(1, 0.0);
-		for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
-			
-			auto idx = std::make_pair(h, di);
-			
-			// if we can reuse the previous data
-			if(di > 0 and human_data[di].data == human_data[di-1].data) {
-				data_lls.
-			}
-			
-			std::vector<double> outval; // needed to keep parallel stuff simple
-			
-				// or we can copy previous data
-				assert(di>0);
-				size_t prevsetno = human_data[di-1].data.empty() ? 0 : human_data[di-1].data.back().setNumber; // what was the previous set number?
-				
-				if(human_data[di].data.back().setNumber == prevsetno) {
-					// same likelihood since we presented a set at a time
-					// NOTE: We don't need to check concept/list since rows are sorted, so if the condition is met, we will be the same concept/list
-					outval = out[std::make_pair(h,di-1)]; 
-				}
-				else if(human_data[di].data.back().setNumber == prevsetno+1) {
-					// we just have to add the new element, and copy the rest 
-					
-					// add up all of the new set (which hasn't been included)
-					outval = out[std::make_pair(h,di-1)]; 			
-					double next_set_ll = 0.0; // we add up the ll for the next set, so we just have one number
-					for(auto& d : human_data[di].data) {
-						if(d.setNumber == prevsetno+1) { // since we know the other stuff has already been included 
-							next_set_ll += hypotheses[h].compute_single_likelihood(d);
-						}
-					}
-					outval.push_back(next_set_ll);
-				}
-				else { 
-					assert(0); // should not get here
-				}
-			}
-			
-			
-			#pragma omp critical
-			out[idx] = outval;		
-			
-		}	
-	}
-	
-	return out;
-}
-
-
-
 size_t grammar_callback_count = 0;
-void gcallback(GrammarHypothesis<MyGrammar,MyHumanDatum>& h) {
+void gcallback(GrammarHypothesis<MyHypothesis>& h) {
 	if(++grammar_callback_count % 100 == 0) {
 		COUT grammar_callback_count TAB "posterior" TAB h.posterior ENDL;
 		COUT grammar_callback_count TAB "baseline" TAB h.get_baseline() ENDL;
@@ -194,7 +142,67 @@ void gcallback(GrammarHypothesis<MyGrammar,MyHumanDatum>& h) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 #include "Top.h"
 #include "Fleet.h"
+#include "Miscellaneous.h"
 #include "MCMCChain.h"
+
+/**
+ * @brief This functions reads our data file format and returns a vector with the human data by each set item. 
+ * 			auto [objs, corrects, yeses, nos] = get_next_human_data(f)
+ * @param f
+ */
+std::tuple<std::vector<MyObject>*,
+		   std::vector<bool>*,
+		   std::vector<size_t>*,
+		   std::vector<size_t>*,
+		   std::string> get_next_human_data(std::ifstream& fs) {
+		
+	auto objs     = new std::vector<MyObject>();
+	auto corrects = new std::vector<bool>();
+	auto yeses    = new std::vector<size_t>();
+	auto nos      = new std::vector<size_t>();
+	S    conceptlist;
+	
+	S line;
+	int prev_setNumber = -1;
+	while(true) { 
+		
+		auto pos = fs.tellg(); // remember where we were since when we get the next set, we seek back
+		
+		// get the line
+		auto& b = std::getline(fs, line);
+
+		if(not b) { // if end of file, return
+			return std::make_tuple(objs,corrects,yeses,nos,conceptlist);
+		}
+		else {
+			// else break up the line an dprocess
+			auto parts          = split(line, ' ');
+			conceptlist    = S(parts[0]) + S(parts[1]);
+			int  setNumber      = std::stoi(parts[2]);
+			bool correctAnswer  = (parts[4] == "True");
+			MyObject o{parts[5], parts[6], parts[7]};
+			size_t cntyes = std::stoi(parts[8]);
+			size_t cntno  = std::stoi(parts[9]);
+			
+			// if we are on a new set, then we seek back and return
+			if(prev_setNumber != -1 and setNumber != prev_setNumber) {
+				fs.seekg(pos ,std::ios_base::beg); // so next time this gets called, it starts at the right set
+				return std::make_tuple(objs,corrects,yeses,nos,conceptlist);
+			}
+			else {
+				// else we are still building this set
+				objs->push_back(o);
+				corrects->push_back(correctAnswer);
+				yeses->push_back(cntyes);
+				nos->push_back(cntno);						
+			}
+			
+			prev_setNumber = setNumber;
+		}
+		
+	}
+			   
+}
 
 int main(int argc, char** argv){ 
 	//Eigen::initParallel(); // needed to use parallel eigen
@@ -211,111 +219,84 @@ int main(int argc, char** argv){
 	// set up the data
 	//------------------
 	
-	std::map<std::string, MyHypothesis::data_t> learner_data;
-	std::vector<MyHumanDatum> human_data;	// map conceptlist, setnumber, responsnumber to cntyes,cntno
+	std::vector<HumanDatum<MyHypothesis>> human_data;
 	
+	// We need to read the data and collapse same setNumbers and concepts to the same "set", since this is the new
+	// data format for the model. 
 	std::ifstream infile("preprocessing/data.txt");
 	
-	S line;
-	auto theset = new std::set<MyObject>(); 
-	int setidx = -1;
-	while(std::getline(infile, line)) {
-		auto parts = split(line, ' ');
-		S conceptlist         = parts[0] + "__" + parts[1]; // concept/list pair
-		size_t setNumber      = stoi(parts[2]);
-		size_t responseInSet  = stoi(parts[3]);
-		bool   correctAnswer  = (parts[4] == "True");
+	S prev_conceptlist = ""; // what was the previous concept/list we saw? 
+	MyHypothesis::data_t* learner_data = nullptr; // pointer to a vector of learner data
+	
+	// what data do I run mcmc on? not just human_data since that will have many reps
+	// NOTE here we store only the pointers to sequences of data, and the loop below loops
+	// over items. This lets us preserve good hypotheses across amounts of data
+	// but may not be as great at using parallel cores. 
+	std::vector<MyHypothesis::data_t*> mcmc_data; 
+	
+	size_t ndata = 0;
+	
+	while(! infile.eof() ) {
+		if(CTRL_C) break;
 		
-		// keep track of what set we're adding to
-		if(setidx != -1) {
-			if(setidx != (int)setNumber) {
-				theset = new std::set<MyObject>(); // make a new set
-			}
+		// use the helper above to read the next chunk of human data 
+		// (and put the file pointer back to the start of the next chunk)
+		auto [objs, corrects, yeses, nos, conceptlist] = get_next_human_data(infile);
+		// could assert that the sizes of these are all the same
+		
+		// if we are on a new conceptlist, then make a new learner data (on stack)
+		if(conceptlist != prev_conceptlist) {
+			if(learner_data != nullptr) 
+				mcmc_data.push_back(learner_data);
+			
+			learner_data = new MyHypothesis::data_t();		
+			ndata = 0;
 		}
-		else {
-			setidx = setNumber;
+		
+		// now put the relevant stuff onto learner_data
+		for(size_t i=0;i<objs->size();i++) {
+			MyInput inp{*objs, (*objs)[i]};
+			learner_data->emplace_back(inp, (*corrects)[i], alpha);
+		}
+				
+		// now unpack this data into conceptdata, which requires mapping it to 
+		// HumanDatum format
+		for(size_t i=0;i<objs->size();i++) {
+			// make a map of the responses
+			std::map<bool,size_t> m; m[true] = (*yeses)[i]; m[false] = (*nos)[i];
+			
+			HumanDatum<MyHypothesis> hd{learner_data, ndata, &(learner_data[ndata+i]), std::move(m), 0.5};
+		
+			human_data.push_back(std::move(hd));
 		}
 		
-		Shape  shape; // = magic_enum::enum_cast<Color>(parts[5]);
-		if     (parts[5] == "triangle")  shape = Shape::triangle;
-		else if(parts[5] == "rectangle") shape = Shape::rectangle;
-		else if(parts[5] == "circle")    shape = Shape::circle;
-		else assert(0);
-		
-		Color  color;
-		if     (parts[6] == "blue")     color = Color::blue;
-		else if(parts[6] == "yellow")   color = Color::yellow;
-		else if(parts[6] == "green")    color = Color::green;
-		else assert(0);
-		
-		Size  size;
-		if     (parts[7] == "1")   size = Size::size1;
-		else if(parts[7] == "2")   size = Size::size2;
-		else if(parts[7] == "3")   size = Size::size3;
-		else assert(0);
+		ndata += objs->size();
 
-		size_t cntyes = stoi(parts[8]);
-		size_t cntno  = stoi(parts[9]);
-
-		// figure out our class
-		MyObject o{shape, color, size};
-
-		// add this to the set
-		theset->insert(o);
-		
-		
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		// TODO: THE SET IS NOT COMPUTED RIGHT HERE SINCE IT SHOULD BE EVERYTHING, NOT JUST PRECEEDING
-		
-		
-		
-		MyHypothesis::data_t di{std::make_pair(theset, o), correctAnswer, alpha};
-		
-		size_t ndata = learner_data[conceptlist].size(); // how many we condition on (before di is added)
-		learner_data[conceptlist].push_back(di);
-		
-		human_data.emplace_back(&learner_data[conceptlist], &(*learner_data.rbegin()), ndata, cntyes, cntyes+cntno);
-		
-		
 	}
+	if(learner_data != nullptr) 
+		mcmc_data.push_back(learner_data); // and add that last dataset
 	
 	COUT "# Loaded data" ENDL;
 	
-	std::set<MyHypothesis> all;
 	
-	// get the keys out so we can do MCMC in parallel:
-	std::vector<S> learner_data_keys;
-	for(auto& v : learner_data) {
-		learner_data_keys.push_back(v.first);
-	}
-	
+	std::set<MyHypothesis> all;	
 	
 	#pragma omp parallel for
-	for(size_t vi=0; vi<learner_data.size();vi++) {
+	for(size_t vi=0; vi<mcmc_data.size();vi++) {
 		if(!CTRL_C) {  // needed for openmp
-			auto& v = learner_data[learner_data_keys[vi]];
 		
-			COUT "# Running " TAB learner_data_keys[vi] ENDL;
+			#pragma omp critical
+			{
+			COUT "# Running " TAB vi TAB " of " TAB mcmc_data.size() ENDL;
+			}
 			
-			for(size_t i=0;i<v.size() and !CTRL_C;i++) {
+			for(size_t i=0;i<mcmc_data[vi]->size() and !CTRL_C;i++) {
 				
 				TopN<MyHypothesis> top(ntop);
 				
-				auto di = v[i];
 				MyHypothesis h0(&grammar);
 				h0 = h0.restart();
-				auto givendata = slice(v, 0, (di.setNumber-1)-1);
+				auto givendata = slice(*(mcmc_data[vi]), 0, i);
 				MCMCChain chain(h0, &givendata, top);
 				chain.run(Control(inner_mcmc_steps, inner_runtime)); // run it super fast
 			
@@ -346,13 +327,13 @@ int main(int argc, char** argv){
 	Matrix C  = counts(hypotheses);
 	COUT "# Done computing prior counts" ENDL;
 	
-	LL_t LL = my_compute_incremental_likelihood(hypotheses, human_data); // using MY version
+	LL_t LL = compute_incremental_likelihood(hypotheses, human_data); // using MY version
 	COUT "# Done computing incremental likelihoods " ENDL;
 		
 	auto P = model_predictions(hypotheses, human_data);
 	COUT "# Done computing model predictions" ENDL;
 
-	GrammarHypothesis<MyGrammar,MyHumanDatum> gh0(&grammar, &C, &LL, &P);
+	GrammarHypothesis<MyHypothesis> gh0(&grammar, &C, &LL, &P);
 	gh0 = gh0.restart();
 	
 	tic();

@@ -29,6 +29,11 @@ struct Object {
 		return std::get<t>(feature);
 	}
 
+	template<typename t>
+	void set(t val) {
+		std::get<t>(feature) = val;
+	}
+
 	/**
 	 * @brief Check if this feature dimension is a given value
 	 * @param v

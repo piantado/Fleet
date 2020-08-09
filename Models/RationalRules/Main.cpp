@@ -78,7 +78,7 @@ public:
 	// value with probability x.reliability, and otherwise a coin flip. 
 	double compute_single_likelihood(const datum_t& x) override {
 		bool out = callOne(x.input, false);
-		return out == x.output ? log(x.reliability + (1.0-x.reliability)/2.0) : log((1.0-x.reliability)/2.0);
+		return log((1.0-x.reliability)/2.0) + (out == x.output)*x.reliability);
 	}
 };
 
