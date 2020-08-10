@@ -217,6 +217,10 @@ public:
 				(thin == 0 or FleetStatistics::global_sample_count % thin == 0)) {
 				(*callback)(current);
 			}
+			
+//			if( FleetStatistics::global_sample_count>0 and FleetStatistics::global_sample_count % 100 == 0 ) {
+//				CERR "# Acceptance rate: " TAB double(acceptances)/double(proposals) ENDL;
+//			}
 				
 			++samples;
 			++FleetStatistics::global_sample_count;

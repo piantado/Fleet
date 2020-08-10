@@ -127,7 +127,8 @@ void gcallback(GrammarHypothesis<MyHypothesis>& h) {
 	if(++grammar_callback_count % 100 == 0) {
 		COUT grammar_callback_count TAB "posterior" TAB h.posterior ENDL;
 		COUT grammar_callback_count TAB "forwardalpha" TAB h.get_forwardalpha() ENDL;
-		COUT grammar_callback_count TAB  "llt" TAB h.get_decay() ENDL;
+		COUT grammar_callback_count TAB "decay" TAB h.get_decay() ENDL;
+		COUT grammar_callback_count TAB "likelihood.temperature" TAB h.get_llt() ENDL;
 		size_t xi=0;
 		for(size_t nt=0;nt<h.grammar->count_nonterminals();nt++) {
 			for(size_t i=0;i<h.grammar->count_rules( (nonterminal_t) nt);i++) {
@@ -285,7 +286,7 @@ int main(int argc, char** argv){
 		//
 		//
 		//		
-		if(human_data.size() > 1000) break;
+		if(human_data.size() > 500) break;
 	
 	}
 	if(learner_data != nullptr) 

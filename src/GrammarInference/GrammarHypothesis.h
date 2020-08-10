@@ -18,6 +18,10 @@ extern volatile sig_atomic_t CTRL_C;
 
 #include "VectorHypothesis.h"
 
+// If we do this, then we compute the grammar hypothesis's predictive values in log space. This is more
+// accurate but quite a bit slower, so it's off by default. 
+//#define GRAMMAR_HYPOTHESIS_USE_LOG_PREDICTIVE 1
+
 /**
  * @class GrammarHypothesis
  * @author piantado
@@ -34,7 +38,8 @@ public:
 	VectorHypothesis logA; // a simple normal vector for the log of a 
 	VectorHypothesis params; // logodds forwardalpha and decay
 	
-	const static int MAX_DATA_SIZE = 256; // most data we ever see? -- Needed for quickly computing decay factors
+	const static int NPARAMS = 3; // how many parameters do we have?
+	const static int MAX_DATA_SIZE = 100; // most data we ever see? -- Needed for quickly computing decay factors
 	
 	HYP::Grammar_t* grammar;
 	Matrix* C;
@@ -49,22 +54,24 @@ public:
 	
 	GrammarHypothesis(HYP::Grammar_t* g, Matrix* c, LL_t* ll, Predict_t<HYP>* p) : grammar(g), C(c), LL(ll), predictions(p), which_data_for_likelihood(nullptr) {
 		logA.set_size(grammar->count_rules());
-		params.set_size(2); 
+		params.set_size(NPARAMS); 
 	}	
 	
 	// these unpack our parameters -- NOTE here we multiply by 3 to make it a Normal(0,3) distirbution
 	float get_forwardalpha() const { return 1.0/(1.0+exp(-3.0*params(0))); }
-	float get_decay() const        { return exp(params(1)/2.0); } // likelihood temperature here has no memory decay
+	float get_llt() const          { return exp(params(1)/4.0); } // likelihood temperature here has no memory decay
+	float get_decay() const        { return exp(params(2)/2.0); } // memory decay
 	
 	void recompute_decayedLikelihood() {
 		double decay = get_decay();
+		double llt = get_llt();
 		
 		// precompute powers because its slow. 
 		// we store these in reverse order from some max data size
 		// so that we can just take the tail for what we need
 		Vector powers = Vector::Zero(MAX_DATA_SIZE);
 		for(int i=0;i<MAX_DATA_SIZE;i++) {
-			powers[i] = pow(MAX_DATA_SIZE-i,-decay);
+			powers[i] = powf(MAX_DATA_SIZE-i,-decay);
 		}
 		
 		#pragma omp parallel for
@@ -73,7 +80,7 @@ public:
 			for(int di=0;di<decayedLikelihood.cols();di++) {
 				int l = LL->at(h,di).size(); // how long was that vector?
 				assert(l < MAX_DATA_SIZE);
-				decayedLikelihood(h,di) = LL->at(h,di).dot(powers(Eigen::lastN(l)));				
+				decayedLikelihood(h,di) = LL->at(h,di).dot(powers(Eigen::lastN(l))) / llt;				
 			}
 		}
 	}
@@ -83,15 +90,12 @@ public:
 	}
 	
 	/**
-	 * @brief 
+	 * @brief This computes the likelihood of the *human data*.
 	 * @param data
 	 * @param breakout
 	 * @return 
 	 */		
 	virtual double compute_likelihood(const data_t& human_data, const double breakout=-infinity) override {
-		// This runs the entire model (computing its posterior) to get the likelihood
-		// of the human data
-		
 		Vector hprior = hypothesis_prior(*C); 
 		
 		// recompute our likelihood if its the wrong size or not using this data
@@ -121,23 +125,43 @@ public:
 		for(size_t i=0;i<human_data.size();i++) {
 			
 			// build up a predictive posterior
-			DiscreteDistribution<typename HYP::output_t> model_predictions;
-			
-			for(int h=0;h<hposterior.rows();h++) {
-				
-				// don't count these in the posterior since they're so small.
-				if(hposterior(h,i) < -10) 
-					continue;  
-				
-				for(const auto& mp : predictions->at(h,i).values() ) {
-					model_predictions.addmass(mp.first, hposterior(h,i) + mp.second);
+			// This is the log version -- if you use this -- you must change the log version down below too. 
+			#ifdef GRAMMAR_HYPOTHESIS_USE_LOG_PREDICTIVE
+				DiscreteDistribution<typename HYP::output_t> model_predictions;
+				for(int h=0;h<hposterior.rows();h++) {
+					
+					// don't count these in the posterior since they're so small.
+					if(hposterior(h,i) < -10) 
+						continue;  
+					
+					for(const auto& mp : predictions->at(h,i).values() ) {
+						model_predictions.addmass(mp.first, hposterior(h,i) + mp.second);
+					}
 				}
-			}
+			#else
+				// build the non-log version (which should be much faster)
+				std::map<typename HYP::output_t, double> model_predictions;
+				for(int h=0;h<hposterior.rows();h++) {
+					for(const auto& mp : predictions->at(h,i).values() ) {
+						float p = expf(hposterior(h,i) + mp.second);
+						if(model_predictions.find(mp.first) == model_predictions.end()){
+							model_predictions[mp.first] = p;
+						}
+						else {
+							model_predictions[mp.first] += p;
+						}
+					}
+				}
+			#endif
 			
 			double ll = 0.0; // the likelihood here
 			auto& di = human_data[i];
-			for(auto& r : di.responses) {
-				ll += log( (1.0-forwardalpha)*di.chance + forwardalpha*exp(model_predictions[r.first])) * r.second; // log probability times the number of times they answered this
+			for(const auto& r : di.responses) {
+				#ifdef GRAMMAR_HYPOTHESIS_USE_LOG_PREDICTIVE
+					ll += log( (1.0-forwardalpha)*di.chance + forwardalpha*exp(model_predictions[r.first])) * r.second; // log probability times the number of times they answered this
+				#else
+					ll += log( (1.0-forwardalpha)*di.chance + forwardalpha*model_predictions[r.first]) * r.second; // log probability times the number of times they answered this
+				#endif
 			}
 			
 			#pragma omp critical

@@ -3,6 +3,16 @@
 #include "EigenLib.h"
 #include "Interfaces/MCMCable.h"
 
+/**
+ * @class VectorHypothesis
+ * @author Steven Piantadosi
+ * @date 09/08/20
+ * @file VectorHypothesis.h
+ * @brief This has all of the MCMCable interfaces but jsut represents n unit Gaussians. This
+ * 		  is primarily used in GrammarInference to represent parameters, but it could be used
+ *  	  in any other too
+ */
+
 class VectorHypothesis : public MCMCable<VectorHypothesis, void*> {
 	// This represents a vector of reals, defaultly here just unit normals. 
 	// This gets used in GrammarHypothesis to store both the grammar values and
@@ -13,7 +23,7 @@ public:
 	
 	double MEAN = 0.0;
 	double SD   = 1.0;
-	double PROPOSAL_SCALE = 0.1; 
+	double PROPOSAL_SCALE = 0.25; 
 	
 	Vector value;
 	
