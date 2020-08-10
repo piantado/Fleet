@@ -6,10 +6,8 @@
 
 extern volatile sig_atomic_t CTRL_C;
 
-// This is how we will store the likelihood, indexed by hypothesis, data point, and then 
-// giving back a list of prior likelihoods (ordered earliest first) for use with memory decay
-typedef std::vector<double> LLvec_t; // how we store the data for each hypothesis
-typedef std::map<std::pair<int, int>, LLvec_t> LL_t; // likelihood type
+// index by hypothesis, data point, an Eigen Vector of all individual data point likelihoods
+typedef Vector2D<Vector> LL_t; // likelihood type
 
 // We store the prediction type as a vector of data_item, hypothesis, map of output to probabilities
 template<typename HYP>
@@ -71,7 +69,7 @@ LL_t compute_incremental_likelihood(std::vector<HYP>& hypotheses, std::vector<Hu
 	// So we have written a special case here
 	
 	// likelihood out will now be a mapping from hypothesis, data_element to prior likelihoods of individual elements
-	LL_t out; 
+	LL_t out(hypotheses.size(), human_data.size()); 
 	
 	#pragma omp parallel for
 	for(size_t h=0;h<hypotheses.size();h++) {
@@ -84,31 +82,31 @@ LL_t compute_incremental_likelihood(std::vector<HYP>& hypotheses, std::vector<Hu
 			
 			for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
 				
-				auto idx = std::make_pair(h, di);
-				LLvec_t data_lls;
+				Vector data_lls = Vector::Zero(human_data[di].ndata); // one for each of the data points
 				
 				// check if these pointers are equal so we can reuse the previous data			
 				if(di > 0 and 
 				   human_data[di].data == human_data[di-1].data and 
 				   human_data[di].ndata > human_data[di-1].ndata) { 
 					   
-					// just copy over
-					data_lls = out[std::make_pair(h, di-1)];
-					
+					// just copy over the beginning
+					for(size_t i=0;i<human_data[di-1].ndata;i++){
+						data_lls(i) = out.at(h,di-1)(i);
+					}
 					// and fill in the rest
 					for(size_t i=human_data[di-1].ndata;i<human_data[di].ndata;i++) {
-						data_lls.push_back(  hypotheses[h].compute_single_likelihood( (*human_data[di].data)[i] ));
+						data_lls(i) = hypotheses[h].compute_single_likelihood((*human_data[di].data)[i]);
 					}
 				}
 				else {
 					// compute anew; if ndata=0 then we should just include a 0.0
 					for(size_t i=0;i<human_data[di].ndata;i++) {
-						data_lls.push_back(  hypotheses[h].compute_single_likelihood( (*human_data[di].data)[i] ));
+						data_lls(i) = hypotheses[h].compute_single_likelihood((*human_data[di].data)[i]);
 					}				
 				}
 		
-				#pragma omp critical
-				out[idx] = data_lls;	
+				// set as an Eigen vector in out
+				out.at(h,di) = data_lls;
 			}
 		}
 	}

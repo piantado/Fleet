@@ -34,6 +34,8 @@ public:
 	VectorHypothesis logA; // a simple normal vector for the log of a 
 	VectorHypothesis params; // logodds forwardalpha and decay
 	
+	const static int MAX_DATA_SIZE = 256; // most data we ever see? -- Needed for quickly computing decay factors
+	
 	HYP::Grammar_t* grammar;
 	Matrix* C;
 	LL_t* LL; // type for the likelihood
@@ -58,23 +60,20 @@ public:
 		double decay = get_decay();
 		
 		// precompute powers because its slow. 
-		std::vector<double> powers(decayedLikelihood.cols(), 0);
-		for(int i=0;i<decayedLikelihood.cols();i++) {
-			powers[i] = pow(i,-decay);
+		// we store these in reverse order from some max data size
+		// so that we can just take the tail for what we need
+		Vector powers = Vector::Zero(MAX_DATA_SIZE);
+		for(int i=0;i<MAX_DATA_SIZE;i++) {
+			powers[i] = pow(MAX_DATA_SIZE-i,-decay);
 		}
 		
 		#pragma omp parallel for
+		// sum up with the memory decay
 		for(int h=0;h<C->rows();h++) {
 			for(int di=0;di<decayedLikelihood.cols();di++) {
-				
-				// sum up with the memory decay
-				auto idx = std::make_pair(h,di);
-				size_t N = (*LL)[idx].size();
-				decayedLikelihood(h,di) = 0.0;
-				for(size_t i=0;i<N;i++) {
-					decayedLikelihood(h,di) += (*LL)[idx][i] * powers[N-i];
-				}
-				
+				int l = LL->at(h,di).size(); // how long was that vector?
+				assert(l < MAX_DATA_SIZE);
+				decayedLikelihood(h,di) = LL->at(h,di).dot(powers(Eigen::lastN(l)));				
 			}
 		}
 	}

@@ -17,20 +17,26 @@ struct Vector2D {
 	Vector2D() { }
 	
 	Vector2D(int x, int y) { 
-		set_size(x,y);
+		resize(x,y);
 	}
 	
-	void set_size(int x, int y) {
-		xsize = x;
-		ysize = y;
+	void resize(int x, int y) {
+		xsize = x; ysize=y;
+		value.resize(x*y);
 	}
 	
 	void reserve(int x, int y) {
-		set_size(x,y);
+		xsize = x; ysize=y;
 		value.reserve(x*y);
 	}
 	
 	T& at(int x, int y) {
 		return value.at(x*ysize + y);
+	}
+	
+	template<typename X>
+	void operator[](X x) {
+		CERR "**** Cannot use [] with Vector2d, use .at()" ENDL;
+		throw YouShouldNotBeHereError();
 	}
 };
