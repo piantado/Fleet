@@ -285,7 +285,7 @@ int main(int argc, char** argv){
 		//
 		//
 		//		
-		if(human_data.size() > 5000) break;
+		if(human_data.size() > 1000) break;
 	
 	}
 	if(learner_data != nullptr) 
@@ -293,50 +293,15 @@ int main(int argc, char** argv){
 	
 	COUT "# Loaded data" ENDL;
 	
-	
-	std::set<MyHypothesis> all;	
-	
-	#pragma omp parallel for
-	for(size_t vi=0; vi<mcmc_data.size();vi++) {
-		if(!CTRL_C) {  // needed for openmp
-		
-			#pragma omp critical
-			{
-			COUT "# Running " TAB vi TAB " of " TAB mcmc_data.size() ENDL;
-			}
-			
-			for(size_t i=0;i<mcmc_data[vi]->size() and !CTRL_C;i++) {
-				
-				TopN<MyHypothesis> top(ntop);
-				
-				MyHypothesis h0(&grammar);
-				h0 = h0.restart();
-				auto givendata = slice(*(mcmc_data[vi]), 0, i);
-				MCMCChain chain(h0, &givendata, top);
-				chain.run(Control(inner_mcmc_steps, inner_runtime)); // run it super fast
-			
-				#pragma omp critical
-				for(auto h : top.values()) {
-					h.clear_bayes(); // zero and insert
-					all.insert(h);
-				}
-			}
-		}
-	}
-	
-	// reset control-C
-	CTRL_C = 0; 
+	MyHypothesis h0(&grammar); h0 = h0.restart();
 
-	COUT "# Done running MCMC to find hypotheses" ENDL;
+	auto hypotheses = get_hypotheses_from_mcmc(h0, mcmc_data, Control(inner_mcmc_steps, inner_runtime), ntop);
+	CTRL_C = 0; // reset control-C
 	
 	// Show the best we've found
-	for(auto& h : all) { 
+	for(auto& h : hypotheses) { 
 		COUT "# Hypothesis " TAB h.string() ENDL;
 	}
-	
-	// Now let's look a bit
-	std::vector<MyHypothesis> hypotheses;
-	for(auto& h : all) hypotheses.push_back(h);
 	COUT "# Found " TAB hypotheses.size() TAB "hypotheses" ENDL;
 	
 	Matrix C  = counts(hypotheses);

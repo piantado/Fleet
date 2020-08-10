@@ -12,7 +12,7 @@
 
 #include "Vector2D.h"
 #include "HumanDatum.h"
-#include "Utility.h"
+#include "GrammarInferenceUtility.h"
 
 extern volatile sig_atomic_t CTRL_C;
 
