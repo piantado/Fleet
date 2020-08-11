@@ -71,7 +71,6 @@ std::tuple PRIMITIVES = {
 	Primitive("xor(%s,%s)",     +[](bool a, bool b) -> bool { return (a xor b); }),
 	Primitive("nand(%s,%s)",    +[](bool a, bool b) -> bool { return not (a and b); }),
 	Primitive("nor(%s,%s)",     +[](bool a, bool b) -> bool { return not (a or b); }),
-	// that + is really insane, but is needed to convert a lambda to a function pointer
 
 	Primitive("yellow(%s)",    +[](MyObject x)       -> bool { return x.is(Color::yellow); }, FEATURE_WEIGHT),
 	Primitive("green(%s)",     +[](MyObject x)       -> bool { return x.is(Color::green); }, FEATURE_WEIGHT),
