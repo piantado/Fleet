@@ -21,12 +21,12 @@
  * @file LOTHypothesis.h
  * @brief A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously recurring tempalte
  *        pattern), an input type, and output type, a grammar type, and types for the individual data elements and vector
- *        of data. Usually you will subclass this (or a Lexicon) as hypotheses in a LOT model. 
+ *        of data. Usually you will subclass this (or a Lexicon) as this_totheses in a LOT model. 
  * 		  
  * 		  The kind of virtual machinse that are called here are defined inside Grammar (even though LOTHypothesis would be a 
  *        more natural palce) because we need access to the Grammar's parameter pack over types. 
  */
-template<typename HYP, 
+template<typename this_t, 
 		 typename input_t, 
 		 typename output_t, 
 		 typename _Grammar_t,
@@ -35,8 +35,8 @@ template<typename HYP,
 		 typename VirtualMachineState_t=typename _Grammar_t::template VirtualMachineState_t<input_t, output_t> // used for deducing VM_TYPES in VirtualMachineState
 		 >
 class LOTHypothesis : public ProgramLoader,
-				      public MCMCable<HYP,_datum_t,_data_t>, // remember, this defines data_t, datum_t
-					  public Searchable<HYP,input_t,output_t>	{
+				      public MCMCable<this_t,_datum_t,_data_t>, // remember, this defines data_t, datum_t
+					  public Searchable<this_t,input_t,output_t>	{
 public:     
 	typedef typename Bayesable<_datum_t,_data_t>::datum_t datum_t;
 	typedef typename Bayesable<_datum_t,_data_t>::data_t   data_t;
@@ -51,17 +51,17 @@ protected:
 	Node value;
 	
 public:
-	LOTHypothesis(Grammar_t* g=nullptr)     : MCMCable<HYP,datum_t,data_t>(), grammar(g), value(NullRule,0.0,true) {}
-	LOTHypothesis(Grammar_t* g, Node&& x)   : MCMCable<HYP,datum_t,data_t>(), grammar(g), value(x) {}
-	LOTHypothesis(Grammar_t* g, Node& x)    : MCMCable<HYP,datum_t,data_t>(), grammar(g), value(x) {}
+	LOTHypothesis(Grammar_t* g=nullptr)     : MCMCable<this_t,datum_t,data_t>(), grammar(g), value(NullRule,0.0,true) {}
+	LOTHypothesis(Grammar_t* g, Node&& x)   : MCMCable<this_t,datum_t,data_t>(), grammar(g), value(x) {}
+	LOTHypothesis(Grammar_t* g, Node& x)    : MCMCable<this_t,datum_t,data_t>(), grammar(g), value(x) {}
 
 	// parse this from a string
-	LOTHypothesis(Grammar_t* g, std::string s) : MCMCable<HYP,datum_t,data_t>(), grammar(g)  {
+	LOTHypothesis(Grammar_t* g, std::string s) : MCMCable<this_t,datum_t,data_t>(), grammar(g)  {
 		value = grammar->expand_from_names(s);
 	}
 	
 	
-	[[nodiscard]] virtual std::pair<HYP,double> propose() const override {
+	[[nodiscard]] virtual std::pair<this_t,double> propose() const override {
 		/**
 		 * @brief Default proposal is rational-rules style regeneration. 
 		 * @return 
@@ -72,12 +72,12 @@ public:
 		// simplest way of doing proposals
 		auto x = Proposals::regenerate(grammar, value);	
 		
-		// return a pair of hypothesis and forward-backward probabilities
-		return std::make_pair(HYP(this->grammar, std::move(x.first)), x.second); // return HYP and fb
+		// return a pair of Hypothesis and forward-backward probabilities
+		return std::make_pair(this_t(this->grammar, std::move(x.first)), x.second); // return this_t and fb
 	}	
 
 	
-	[[nodiscard]] virtual HYP restart() const override {
+	[[nodiscard]] virtual this_t restart() const override {
 		/**
 		 * @brief This is used to restart chains, sampling from prior
 		 * @return 
@@ -90,10 +90,10 @@ public:
 		// and in that case we want to leave the non-propose nodes alone. 
 
 		if(not value.is_null()) { // if we are null
-			return HYP(this->grammar, this->grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
+			return this_t(this->grammar, this->grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
 		}
 		else {
-			return HYP(this->grammar, this->grammar->template generate<output_t>());
+			return this_t(this->grammar, this->grammar->template generate<output_t>());
 		}
 	}
 	
@@ -107,7 +107,7 @@ public:
 		assert(grammar != nullptr && "Grammar was not initialized before trying to call compute_prior");
 		
 		/* This ends up being a really important check -- otherwise we spend tons of time on really long
-		 * hypotheses */
+		 * this_totheses */
 		if(this->value.count() > MAX_NODES) {
 			return this->prior = -infinity;
 		}
@@ -133,12 +133,12 @@ public:
 
 
 	// we defaultly map outputs to log probabilities
-	// the HYP must be a ProgramLoader, but other than that we don't care. NOte that this type gets passed all the way down to VirtualMachine
-	// and potentially back to primitives, allowing us to access the current hypothesis if we want
-	// LOADERHYP is the kind of hypothesis we use to load, and it is not the same as HYP
+	// the this_t must be a ProgramLoader, but other than that we don't care. NOte that this type gets passed all the way down to VirtualMachine
+	// and potentially back to primitives, allowing us to access the current Hypothesis if we want
+	// LOADERthis_t is the kind of Hypothesis we use to load, and it is not the same as this_t
 	// because in a Lexicon, we want to use its InnerHypothesis
-	template<typename LOADERHYP> 
-	DiscreteDistribution<output_t> call(const input_t x, const output_t err, LOADERHYP* loader, 
+	template<typename LOADERthis_t> 
+	DiscreteDistribution<output_t> call(const input_t x, const output_t err, LOADERthis_t* loader, 
 				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
 		
 		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err);	
@@ -155,9 +155,9 @@ public:
 		return call(x,err);
 	}
 
-	template<typename LOADERHYP>
-	output_t callOne(const input_t x, const output_t err, LOADERHYP* loader) {
-		// we can use this if we are guaranteed that we don't have a stochastic hypothesis
+	template<typename LOADERthis_t>
+	output_t callOne(const input_t x, const output_t err, LOADERthis_t* loader) {
+		// we can use this if we are guaranteed that we don't have a stochastic Hypothesis
 		// the savings is that we don't have to create a VirtualMachinePool		
 		VirtualMachineState_t vms(x, err);		
 
@@ -166,7 +166,7 @@ public:
 	}
 	
 	output_t callOne(const input_t x, const output_t err=output_t{}) {
-		// we can use this if we are guaranteed that we don't have a stochastic hypothesis
+		// we can use this if we are guaranteed that we don't have a stochastic Hypothesis
 		// the savings is that we don't have to create a VirtualMachinePool		
 		VirtualMachineState_t vms(x, err);		
 
@@ -181,15 +181,15 @@ public:
 	virtual std::string parseable() const { 
 		return value.parseable(); 
 	}
-	static HYP from_string(Grammar_t* g, std::string s) {
-		return HYP(g, g->expand_from_names(s));
+	static this_t from_string(Grammar_t* g, std::string s) {
+		return this_t(g, g->expand_from_names(s));
 	}
 	
 	virtual size_t hash() const override {
 		return value.hash();
 	}
 	
-	virtual bool operator==(const HYP& h) const override {
+	virtual bool operator==(const this_t& h) const override {
 		return this->value == h.value;
 	}
 	
@@ -218,29 +218,9 @@ public:
 			return grammar->neighbors(value);
 //			 to rein in the mcts branching factor, we'll count neighbors as just the first unfilled gap
 //			 we should not need to change make_neighbor since it fills in the first, first
-//			return value.first_neighbors(*grammar);
 		}
 	}
 
-//	virtual HYP make_neighbor(int k) const override {
-//		assert(grammar != nullptr);
-//		
-//		HYP h(grammar); // new hypothesis -- NOTE This does NOT copy prior, likelihood
-//		auto nt = grammar->template nt<output_t>();
-//		if(value.is_null()) {
-//			assert(k >= 0);
-//			assert(k < (int)grammar->count_rules(nt));
-//			auto r = grammar->get_rule(nt,(size_t)k);
-//			h.value = grammar->makeNode(r);
-//		}
-//		else {
-//			Node t = value;
-//			grammar->expand_to_neighbor(t,k);
-//			h.value = t;
-//		}
-//		return h;
-//	}
-//	
 	virtual void expand_to_neighbor(int k) override {
 		assert(grammar != nullptr);
 		
@@ -268,7 +248,7 @@ public:
 	
 	
 	virtual bool is_evaluable() const override {
-		// This checks whether it should be allowed to call "call" on this hypothesis. 
+		// This checks whether it should be allowed to call "call" on this Hypothesis. 
 		// Usually this means that that the value is complete, meaning no partial subtrees
 		return value.is_complete();
 	}

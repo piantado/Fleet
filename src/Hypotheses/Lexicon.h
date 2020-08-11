@@ -18,22 +18,22 @@
  * 		  Each of these components is called a "factor." 
  */
 
-template<typename HYP, 
+template<typename this_t, 
 		 typename INNER, 
 		 typename input_t,
 		 typename output_t, 
 		 typename datum_t=defauldatum_t<input_t, output_t>>
-class Lexicon : public MCMCable<HYP,datum_t>,
+class Lexicon : public MCMCable<this_t,datum_t>,
 				public ProgramLoader,
-				public Searchable<HYP,input_t,output_t>
+				public Searchable<this_t,input_t,output_t>
 {
 		// Store a lexicon of type INNER elements
 	const static char FactorDelimiter = '|';
 public:
 	std::vector<INNER> factors;
 	
-	Lexicon(size_t n)  : MCMCable<HYP,datum_t>()  { factors.resize(n); }
-	Lexicon()          : MCMCable<HYP,datum_t>()  { }
+	Lexicon(size_t n)  : MCMCable<this_t,datum_t>()  { factors.resize(n); }
+	Lexicon()          : MCMCable<this_t,datum_t>()  { }
 		
 	virtual std::string string() const override {
 		/**
@@ -70,7 +70,7 @@ public:
 	}
 	
 	template<typename GrammarType>
-	static HYP from_string(GrammarType& g, std::string s) {
+	static this_t from_string(GrammarType& g, std::string s) {
 		/**
 		 * @brief Convert a string to a lexicon of this type
 		 * @param g
@@ -78,7 +78,7 @@ public:
 		 * @return 
 		 */
 
-		HYP h;
+		this_t h;
 		for(auto f : split(s, Lexicon::FactorDelimiter)) {
 			INNER ih(&g, g.expand_from_names(f));
 			h.factors.push_back(ih);
@@ -103,7 +103,7 @@ public:
 		return out;
 	}
 	
-	virtual bool operator==(const HYP& l) const override {
+	virtual bool operator==(const this_t& l) const override {
 		/**
 		 * @brief Equality checks equality on each part
 		 * @param l
@@ -245,7 +245,7 @@ public:
 		return this->prior;
 	}
 	
-	[[nodiscard]] virtual std::pair<HYP,double> propose() const override {
+	[[nodiscard]] virtual std::pair<this_t,double> propose() const override {
 		/**
 		 * @brief This proposal guarantees that there will be at least one factor that is proposed to. 
 		 * 		  To do this, we draw random numbers on 2**factors.size()-1 and then use the bits of that
@@ -258,7 +258,7 @@ public:
 		
 		// now copy over
 		// TODO: Check that detailed balance is ok?
-		HYP x; double fb = 0.0;
+		this_t x; double fb = 0.0;
 		x.factors.reserve(factors.size());
 		for(size_t k=0;k<factors.size();k++) {
 			if(u & 0x1) {
@@ -277,8 +277,8 @@ public:
 	}
 	
 	
-	[[nodiscard]] virtual HYP restart() const override {
-		HYP x;
+	[[nodiscard]] virtual this_t restart() const override {
+		this_t x;
 		x.factors.resize(factors.size());
 		for(size_t i=0;i<factors.size();i++){
 			x.factors[i] = factors[i].restart();
@@ -307,30 +307,7 @@ public:
 			return factors[s-1].neighbors();
 		}
 	 }
-	
-//	 HYP make_neighbor(int k) const override {
-//		 
-//		HYP x;
-//		x.factors.resize(factors.size());
-//		for(size_t i=0;i<factors.size();i++) {
-//			x.factors[i] = factors[i];
-//		}
-//		 
-//		 // try adding a factor
-//		 if(is_evaluable()){ 
-//			INNER tmp; // as above, assumes that this constructs will null
-//			assert(k < tmp.neighbors());			
-//			x.factors.push_back( tmp.make_neighbor(k) );	 
-//		}
-//		else {
-//			// expand the last one
-//			size_t s = x.factors.size();
-//			assert(k < x.factors[s-1].neighbors());
-//			x.factors[s-1] = x.factors[s-1].make_neighbor(k);
-//		}
-//		return x;
-//	 }
-	 
+		 
 	 void expand_to_neighbor(int k) override {
 		 // try adding a factor
 		 if(is_evaluable()){ 
@@ -352,57 +329,6 @@ public:
 		assert(k < factors[s-1].neighbors());
 		return factors[s-1].neighbor_prior(k);
 	 }
-	 
-	 ///////////////////////////////////
-	 // Old code lets you add factors any time:
-//	 int neighbors() const {
-//		 
-//		size_t n = 0;
-//		
-//		// if we can add a factor
-//		if(factors.size() < MAX_FACTORS) {
-//			T tmp(grammar, nullptr); // not a great way to do this -- this assumes this constructor will initialize to null (As it will for LOThypothesis)
-//			n += tmp.neighbors(); // this is because we can always add a factor; 
-//		}
-//		
-//		// otherwise count the neighbors of the remaining ones
-//		for(auto a: factors){
-//			n += a->neighbors();
-//		}
-//		return n;
-//	 }
-	 
-//	 HYP* make_neighbor(int k) const {
-//		 
-//		 auto x = copy();
-//		 
-//		 // try adding a factor
-//		 if(factors.size() < MAX_FACTORS){ 
-//			T tmp(grammar, nullptr); // as above, assumes that this constructs will null
-//		 	if(k < tmp.neighbors()) {
-//				x->factors.push_back( tmp.make_neighbor(k) );	 
-//				return x;
-//			}
-//			k -= tmp.neighbors();
-//		}
-//
-//		 // Now try each neighbor
-//		 for(size_t i=0;i<x->factors.size();i++){
-//			 int fin = x->factors[i]->neighbors();
-//			 if(k < fin) { // its one of these neighbors
-//				 auto t = x->factors[i];
-//				 x->factors[i] = t->make_neighbor(k);
-//				 delete t;				
-//				 return x;
-//			 }
-//			 k -= fin;
-//		}
-//		
-//		//CERR "@@@@@@" << x->neighbors() TAB k0 TAB k ENDL;
-//		 
-//		assert(false); // Should not get here - should have found a neighbor first
-//	 }
-	 
 	 
 	 bool is_evaluable() const override {
 		for(auto& a: factors) {
