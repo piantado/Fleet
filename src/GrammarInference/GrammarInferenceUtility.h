@@ -13,7 +13,6 @@ typedef Vector2D<std::pair<Vector,Vector>> LL_t; // likelihood type
 template<typename HYP>
 using Predict_t = Vector2D<DiscreteDistribution<typename HYP::output_t>>; 
 
-
 #include "Top.h"
 #include "Miscellaneous.h"
 #include "MCMCChain.h"
