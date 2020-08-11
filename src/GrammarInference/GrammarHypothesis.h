@@ -22,6 +22,40 @@ extern volatile sig_atomic_t CTRL_C;
 // accurate but quite a bit slower, so it's off by default. 
 //#define GRAMMAR_HYPOTHESIS_USE_LOG_PREDICTIVE 1
 
+#include <array>
+
+/**
+ * @class CachedFunction
+ * @author Steven Piantadosi
+ * @date 11/08/20
+ * @file GrammarHypothesis.h
+ * @brief This remembers a function and  
+ * 		   So we use this like CachedValue cv([](X* x) { .... });
+ * 				and then cv(x) remembers the argument x until it changes
+ */
+ 
+// TODO: OR SHOULD WE STORE REFS AND THEN COMPARE WITH ==?
+//template<typename T, typename... Fargs>
+//class CachedFunction {
+//	T value;
+//	T *f(Fargs...);
+//	
+//	// we store a tuple of void* pointers to the arguments
+//	// so that when we call we can check if this pointer is 
+//	// still the same and remember the old value
+//	// Notably, when we get copied, this gets copied too
+//	// so copies don't recompute the value 
+//	std::array<void*, sizeof...(Fargs)> which; 
+//	
+//	CachedFunction(T* _f(Fargs)) : f(_f) {
+//		
+//	}
+//	
+//	T operator()(Fargs... args) {
+//		std::array<void*, sizeof...(Fargs)> thiscall = {(void*)&args, ... };
+//	}
+//};
+
 /**
  * @class GrammarHypothesis
  * @author piantado
@@ -36,10 +70,9 @@ public:
 	typedef GrammarHypothesis<HYP,datum_t,data_t> self_t;
 	
 	VectorHypothesis logA; // a simple normal vector for the log of a 
-	VectorHypothesis params; // alpha, likelihood temperature, decay
 	
+	VectorHypothesis params; // alpha, likelihood temperature, decay
 	constexpr static int NPARAMS = 3; // how many parameters do we have?
-	const static int MAX_DATA_SIZE = 100; // most data we ever see? -- Needed for quickly computing decay factors
 	
 	HYP::Grammar_t* grammar;
 	Matrix* C;
@@ -62,26 +95,41 @@ public:
 	}	
 	
 	void recompute_alpha() { alpha = 1.0/(1.0+expf(-3.0*params(0))); }
-	void recompute_llt()   { llt = expf(params(1)/4.0);	}
-	void recompute_decay() { decay = expf(params(2)/2.0); }
-	void recompute_decayedLikelihood() {
+	void recompute_llt()   { llt = expf(params(1)/4.0);	} // centered around 1
+	void recompute_decay() { decay = expf(params(2)-2); } // peaked near zero
+	void recompute_decayedLikelihood(const data_t& human_data) {
+		
 		// precompute powers because its slow. 
 		// we store these in reverse order from some max data size
 		// so that we can just take the tail for what we need
-		Vector powers = Vector::Zero(MAX_DATA_SIZE);
-		for(int i=0;i<MAX_DATA_SIZE;i++) {
-			powers[i] = powf(MAX_DATA_SIZE-i,-decay);
+		
+		// find the max power we'll ever need
+		int MX = -1;
+		for(auto& di : human_data) {
+			MX = std::max(MX, di.decay_position);
 		}
+		
+		// just compute this once -- should be faster to use vector intrinsics? 
+		Vector powers = Vector::Zero(MX);
+		for(int i=0;i<MX;i++) {
+			powers[i] = powf(i,-decay);
+		}
+
+		// start with zero
+		decayedLikelihood = Matrix::Zero(C->rows(), human_data.size());
 		
 		#pragma omp parallel for
 		// sum up with the memory decay
 		for(int h=0;h<C->rows();h++) {
 			for(int di=0;di<decayedLikelihood.cols();di++) {
-				int l = LL->at(h,di).size(); // how long was that vector?
-				assert(l < MAX_DATA_SIZE);
-				decayedLikelihood(h,di) = LL->at(h,di).dot(powers(Eigen::lastN(l))) / llt;				
+				const Vector& v = LL->at(h,di).first;
+				const Vector  d = powers(LL->at(h,di).second.array());
+				decayedLikelihood(h,di) = v.dot(d) / llt;							
 			}
 		}
+		
+		// and remember who we computed for:
+		which_data_for_likelihood = (void*)&human_data;
 	}
 	
 	double compute_prior() override {
@@ -102,9 +150,7 @@ public:
 		   decayedLikelihood.rows() != (int)hprior.size() or 
 		   decayedLikelihood.rows() != (int)hprior.size() or 
 		   decayedLikelihood.cols() != (int)human_data.size()) {
-			which_data_for_likelihood = (void*) &human_data;
-			decayedLikelihood = Matrix::Zero(hprior.size(), human_data.size());
-			recompute_decayedLikelihood(); // needs the size set above
+			recompute_decayedLikelihood(human_data); // needs the size set above
 		}		
 		
 		Matrix hposterior = decayedLikelihood.colwise() + hprior; // the model's posterior
@@ -191,9 +237,9 @@ public:
 			if(p(0) != params(0)) out.recompute_alpha();
 			if(p(1) != params(1)) out.recompute_llt();
 			if(p(2) != params(2)) out.recompute_decay();
-			if(p(1) != params(1) or p(2) != params(2))	// note: must come after its computed
-				out.recompute_decayedLikelihood();					
-			
+			if(p(1) != params(1) or p(2) != params(2))	{// note: must come after its computed
+				out.which_data_for_likelihood = nullptr; // must recompute this when we get to likelihood
+			}			
 			return std::make_pair(out, fb);
 		}		
 		else {

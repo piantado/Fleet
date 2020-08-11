@@ -17,7 +17,5 @@ struct HumanDatum {
 	std::map<typename HYP::output_t,size_t> responses; // how many of each type of response do you see?
 	double        chance; // how many responses are alltogether possible? Needed for chance responding. 
 	
-	// this is used for computing memory decay, with recency and primacy variables
-	//int           recency_position; 
-	//int           primacy_position; 
+	int           decay_position; // for memory decay that's decay_position**(-decay)
 };

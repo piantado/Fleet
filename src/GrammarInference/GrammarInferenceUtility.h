@@ -7,7 +7,7 @@
 extern volatile sig_atomic_t CTRL_C;
 
 // index by hypothesis, data point, an Eigen Vector of all individual data point likelihoods
-typedef Vector2D<Vector> LL_t; // likelihood type
+typedef Vector2D<std::pair<Vector,Vector>> LL_t; // likelihood type
 
 // We store the prediction type as a vector of data_item, hypothesis, map of output to probabilities
 template<typename HYP>
@@ -122,7 +122,8 @@ LL_t compute_incremental_likelihood(std::vector<HYP>& hypotheses, std::vector<Hu
 			
 			for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
 				
-				Vector data_lls = Vector::Zero(human_data[di].ndata); // one for each of the data points
+				Vector data_lls  = Vector::Zero(human_data[di].ndata); // one for each of the data points
+				Vector decay_pos = Vector::Zero(human_data[di].ndata); // one for each of the data points
 				
 				// check if these pointers are equal so we can reuse the previous data			
 				if(di > 0 and 
@@ -131,22 +132,25 @@ LL_t compute_incremental_likelihood(std::vector<HYP>& hypotheses, std::vector<Hu
 					   
 					// just copy over the beginning
 					for(size_t i=0;i<human_data[di-1].ndata;i++){
-						data_lls(i) = out.at(h,di-1)(i);
+						data_lls(i)  = out.at(h,di-1).first(i);
+						decay_pos(i) = out.at(h,di-1).second(i);
 					}
 					// and fill in the rest
 					for(size_t i=human_data[di-1].ndata;i<human_data[di].ndata;i++) {
-						data_lls(i) = hypotheses[h].compute_single_likelihood((*human_data[di].data)[i]);
+						data_lls(i)  = hypotheses[h].compute_single_likelihood((*human_data[di].data)[i]);
+						decay_pos(i) = human_data[di].decay_position;
 					}
 				}
 				else {
 					// compute anew; if ndata=0 then we should just include a 0.0
 					for(size_t i=0;i<human_data[di].ndata;i++) {
 						data_lls(i) = hypotheses[h].compute_single_likelihood((*human_data[di].data)[i]);
+						decay_pos(i) = human_data[di].decay_position;
 					}				
 				}
 		
 				// set as an Eigen vector in out
-				out.at(h,di) = data_lls;
+				out.at(h,di) = std::make_pair(data_lls,decay_pos);
 			}
 		}
 	}
