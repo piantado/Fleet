@@ -36,36 +36,35 @@ public:
 	typedef GrammarHypothesis<HYP,datum_t,data_t> self_t;
 	
 	VectorHypothesis logA; // a simple normal vector for the log of a 
-	VectorHypothesis params; // logodds forwardalpha and decay
+	VectorHypothesis params; // alpha, likelihood temperature, decay
 	
-	const static int NPARAMS = 3; // how many parameters do we have?
+	constexpr static int NPARAMS = 3; // how many parameters do we have?
 	const static int MAX_DATA_SIZE = 100; // most data we ever see? -- Needed for quickly computing decay factors
 	
 	HYP::Grammar_t* grammar;
 	Matrix* C;
 	LL_t* LL; // type for the likelihood
 	Predict_t<HYP>* predictions;
-	
+
+	// These variables store some parameters and get recomputed
+	// in proposal when necessary 
 	Matrix decayedLikelihood;
-	void* which_data_for_likelihood; // store the data we used for decayedLikelihood so we recompute if it changed
+	double alpha, llt, decay; // the parameters 
 	
-	GrammarHypothesis() : which_data_for_likelihood(nullptr) {
-	}
+	void* which_data_for_likelihood;
 	
-	GrammarHypothesis(HYP::Grammar_t* g, Matrix* c, LL_t* ll, Predict_t<HYP>* p) : grammar(g), C(c), LL(ll), predictions(p), which_data_for_likelihood(nullptr) {
+	GrammarHypothesis() : which_data_for_likelihood(nullptr) {	}
+	
+	GrammarHypothesis(HYP::Grammar_t* g, Matrix* c, LL_t* ll, Predict_t<HYP>* p) : 
+		grammar(g), C(c), LL(ll), predictions(p), which_data_for_likelihood(nullptr) {
 		logA.set_size(grammar->count_rules());
 		params.set_size(NPARAMS); 
 	}	
 	
-	// these unpack our parameters -- NOTE here we multiply by 3 to make it a Normal(0,3) distirbution
-	float get_forwardalpha() const { return 1.0/(1.0+exp(-3.0*params(0))); }
-	float get_llt() const          { return exp(params(1)/4.0); } // likelihood temperature here has no memory decay
-	float get_decay() const        { return exp(params(2)/2.0); } // memory decay
-	
+	void recompute_alpha() { alpha = 1.0/(1.0+expf(-3.0*params(0))); }
+	void recompute_llt()   { llt = expf(params(1)/4.0);	}
+	void recompute_decay() { decay = expf(params(2)/2.0); }
 	void recompute_decayedLikelihood() {
-		double decay = get_decay();
-		double llt = get_llt();
-		
 		// precompute powers because its slow. 
 		// we store these in reverse order from some max data size
 		// so that we can just take the tail for what we need
@@ -116,9 +115,6 @@ public:
 			hposterior.col(i) = lognormalize(hposterior.col(i)).array();
 		}
 		
-		// and now get the human likelihood, using a binomial likelihood (binomial term not needed)
-		auto forwardalpha = get_forwardalpha();
-		
 		this->likelihood  = 0.0; // of the human data
 		
 		#pragma omp parallel for
@@ -158,9 +154,9 @@ public:
 			auto& di = human_data[i];
 			for(const auto& r : di.responses) {
 				#ifdef GRAMMAR_HYPOTHESIS_USE_LOG_PREDICTIVE
-					ll += log( (1.0-forwardalpha)*di.chance + forwardalpha*exp(model_predictions[r.first])) * r.second; // log probability times the number of times they answered this
+					ll += log( (1.0-alpha)*di.chance + alpha*exp(model_predictions[r.first])) * r.second; // log probability times the number of times they answered this
 				#else
-					ll += log( (1.0-forwardalpha)*di.chance + forwardalpha*model_predictions[r.first]) * r.second; // log probability times the number of times they answered this
+					ll += log( (1.0-alpha)*di.chance + alpha*model_predictions[r.first]) * r.second; // log probability times the number of times they answered this
 				#endif
 			}
 			
@@ -174,7 +170,12 @@ public:
 	[[nodiscard]] virtual self_t restart() const override {
 		self_t out(grammar, C, LL, predictions);
 		out.logA = logA.restart();
-		out.params = params.restart();		
+		out.params = params.restart();	
+
+		out.recompute_alpha();
+		out.recompute_llt();
+		out.recompute_decay();
+		
 		return out;
 	}
 	
@@ -183,9 +184,16 @@ public:
 		self_t out = *this;
 		
 		if(flip(0.1)){
-			auto [ h, fb ] = params.propose();
-			out.params = h;
-			out.recompute_decayedLikelihood();
+			auto [ p, fb ] = params.propose();
+			out.params = p;
+			
+			// figure out what we need to recompute
+			if(p(0) != params(0)) out.recompute_alpha();
+			if(p(1) != params(1)) out.recompute_llt();
+			if(p(2) != params(2)) out.recompute_decay();
+			if(p(1) != params(1) or p(2) != params(2))	// note: must come after its computed
+				out.recompute_decayedLikelihood();					
+			
 			return std::make_pair(out, fb);
 		}		
 		else {

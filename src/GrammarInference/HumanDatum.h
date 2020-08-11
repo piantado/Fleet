@@ -16,4 +16,9 @@ struct HumanDatum {
 	HYP::datum_t* predict;	// what we compute on now
 	std::map<typename HYP::output_t,size_t> responses; // how many of each type of response do you see?
 	double        chance; // how many responses are alltogether possible? Needed for chance responding. 
+	
+	// this is used for computing memory decay. For efficiency this works in reverse order, so
+	// the first data point should get decay_position=0 and the most recent should have e.g. 
+	// decay_position=ndata. If set to zero, we don't decay. 
+	//int           decay_position; 
 };

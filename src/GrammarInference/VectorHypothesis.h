@@ -59,6 +59,7 @@ public:
 		throw YouShouldNotBeHereError("*** Should not call likelihood here");
 	}
 	
+	
 	virtual std::pair<self_t,double> propose() const override {
 		self_t out = *this;
 		
