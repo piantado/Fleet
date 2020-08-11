@@ -181,8 +181,8 @@ public:
 	virtual std::string parseable() const { 
 		return value.parseable(); 
 	}
-	static HYP from_string(Grammar_t& g, std::string s) {
-		return HYP(g, g.expand_from_names(s));
+	static HYP from_string(Grammar_t* g, std::string s) {
+		return HYP(g, g->expand_from_names(s));
 	}
 	
 	virtual size_t hash() const override {

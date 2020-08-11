@@ -106,7 +106,6 @@ class MyGrammar : public Grammar<bool,MyObject,MyInput> {
 #include "GrammarHypothesis.h" 
 #include "LOTHypothesis.h"
 
-
 /// The type here is a little complex -- a LOTHypothesis here is type MyObject->bool even though
 //  but the datum format we use is these sets, MyInput, MyOutput
 class MyHypothesis final : public LOTHypothesis<MyHypothesis,MyInput,MyOutput,MyGrammar> {
@@ -146,73 +145,15 @@ void gcallback(GrammarHypothesis<MyHypothesis>& h) {
 #include "Fleet.h"
 #include "Miscellaneous.h"
 #include "MCMCChain.h"
+#include "Data.h"
 
-/**
- * @brief This functions reads our data file format and returns a vector with the human data by each set item. 
- * 			auto [objs, corrects, yeses, nos] = get_next_human_data(f)
- * @param f
- */
-std::tuple<std::vector<MyObject>*,
-		   std::vector<bool>*,
-		   std::vector<size_t>*,
-		   std::vector<size_t>*,
-		   std::string> get_next_human_data(std::ifstream& fs) {
-		
-	auto objs     = new std::vector<MyObject>();
-	auto corrects = new std::vector<bool>();
-	auto yeses    = new std::vector<size_t>();
-	auto nos      = new std::vector<size_t>();
-	S    conceptlist;
-	
-	S line;
-	int prev_setNumber = -1;
-	while(true) { 
-		
-		auto pos = fs.tellg(); // remember where we were since when we get the next set, we seek back
-		
-		// get the line
-		auto& b = std::getline(fs, line);
+S hypothesis_path = "hypotheses.txt";
+S runtype         = "both"; // can be both, hypotheses (just find hypotheses), or grammar (just do mcmc, loading from hypothesis_path)
 
-		if(not b) { // if end of file, return
-			return std::make_tuple(objs,corrects,yeses,nos,conceptlist);
-		}
-		else {
-			// else break up the line an dprocess
-			auto parts          = split(line, ' ');
-			conceptlist    = S(parts[0]) + S(parts[1]);
-			int  setNumber      = std::stoi(parts[2]);
-			bool correctAnswer  = (parts[4] == "True");
-			MyObject o{parts[5], parts[6], parts[7]};
-			size_t cntyes = std::stoi(parts[8]);
-			size_t cntno  = std::stoi(parts[9]);
-			
-			// if we are on a new set, then we seek back and return
-			if(prev_setNumber != -1 and setNumber != prev_setNumber) {
-				fs.seekg(pos ,std::ios_base::beg); // so next time this gets called, it starts at the right set
-				return std::make_tuple(objs,corrects,yeses,nos,conceptlist);
-			}
-			else {
-				// else we are still building this set
-				objs->push_back(o);
-				corrects->push_back(correctAnswer);
-				yeses->push_back(cntyes);
-				nos->push_back(cntno);						
-			}
-			
-			prev_setNumber = setNumber;
-		}
-		
-	}
-			   
-}
-
-int main(int argc, char** argv){ 
-	//Eigen::initParallel(); // needed to use parallel eigen
-	//Eigen::setNbThreads(10);
-	
-	using S = std::string;
-	
+int main(int argc, char** argv){ 	
 	Fleet fleet("An example of grammar inference for boolean concepts");
+	fleet.add_option("--hypothesis-path",  hypothesis_path, "Where to load or save hypotheses.");
+	fleet.add_option("--runtype",  runtype, "hypotheses = do we just do mcmc on hypotheses; grammar = mcmc on the grammar, loading the hypotheses; both = do both");
 	fleet.initialize(argc, argv);
 	
 	MyGrammar grammar(PRIMITIVES);
@@ -295,34 +236,39 @@ int main(int argc, char** argv){
 	COUT "# Loaded data" ENDL;
 	
 	MyHypothesis h0(&grammar); h0 = h0.restart();
-
-	auto hypotheses = get_hypotheses_from_mcmc(h0, mcmc_data, Control(inner_mcmc_steps, inner_runtime), ntop);
-	CTRL_C = 0; // reset control-C
 	
-	// Show the best we've found
-	for(auto& h : hypotheses) { 
-		COUT "# Hypothesis " TAB h.string() ENDL;
+	std::vector<MyHypothesis> hypotheses; 
+	if(runtype == "hypotheses" or runtype == "both") {
+		
+		hypotheses = get_hypotheses_from_mcmc(h0, mcmc_data, Control(inner_mcmc_steps, inner_runtime), ntop);
+		CTRL_C = 0; // reset control-C
+		
+		save(hypothesis_path, hypotheses);
+	}
+	else {
+		// only load if we haven't run 
+		hypotheses = load<MyHypothesis>(hypothesis_path, &grammar);
 	}
 	COUT "# Found " TAB hypotheses.size() TAB "hypotheses" ENDL;
 	
-	Matrix C  = counts(hypotheses);
-	COUT "# Done computing prior counts" ENDL;
-	
-	LL_t LL = compute_incremental_likelihood(hypotheses, human_data); // using MY version
-	COUT "# Done computing incremental likelihoods " ENDL;
+	if(runtype == "grammar" or runtype == "both") { 
 		
-	auto P = model_predictions(hypotheses, human_data);
-	COUT "# Done computing model predictions" ENDL;
+		Matrix C  = counts(hypotheses);
+		COUT "# Done computing prior counts" ENDL;
+		
+		LL_t LL = compute_incremental_likelihood(hypotheses, human_data); // using MY version
+		COUT "# Done computing incremental likelihoods " ENDL;
+			
+		auto P = model_predictions(hypotheses, human_data);
+		COUT "# Done computing model predictions" ENDL;
 
-	GrammarHypothesis<MyHypothesis> gh0(&grammar, &C, &LL, &P);
-	gh0 = gh0.restart();
+		GrammarHypothesis<MyHypothesis> gh0(&grammar, &C, &LL, &P);
+		gh0 = gh0.restart();
+		
+		tic();
+		auto thechain = MCMCChain(gh0, &human_data, &gcallback);
+		thechain.run(Control(mcmc_steps, runtime));
+		tic();
+	}
 	
-	tic();
-	auto thechain = MCMCChain(gh0, &human_data, &gcallback);
-	thechain.run(Control(mcmc_steps, runtime));
-	tic();
-	
-	COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
-	COUT "# Elapsed time:" TAB elapsed_seconds() << " seconds " ENDL;
-	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
 }

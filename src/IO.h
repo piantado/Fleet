@@ -2,7 +2,10 @@
 
 #include <thread>
 #include <mutex>
+#include <iostream>
+#include <fstream>
 #include "dependencies/CL11.hpp"
+#include "Strings.h"
 
 //#include "fmt/format.h"
 
@@ -41,6 +44,46 @@ void DEBUG(First && first, Rest && ...rest) {
 	__PRINT(first,std::forward<Rest>(rest)...);
 	std::cout << std::endl;
 }
+
+/**
+ * @brief Simple saving of a vector of hypotheses
+ * @param filename
+ * @param hypotheses
+ */
+template<typename HYP>
+void save(std::string filename, std::vector<HYP>& hypotheses) {
+	
+	std::ofstream out(filename);
+	
+	for(auto& v: hypotheses) {
+		out << Q(v.string()) TAB v.parseable() ENDL;
+	}
+	
+	out.close();	
+}
+
+/**
+ * @brief Simple loading for a vector of hypotheses
+ * @param filename
+ * @param g
+ * @return 
+ */
+template<typename HYP>
+std::vector<HYP> load(std::string filename, typename HYP::Grammar_t* g) {
+	
+	std::vector<HYP> out;
+	
+	std::ifstream fs(filename);
+	
+	S line;
+	while(std::getline(fs, line)) {
+		auto parts = split(line, '\t');
+		out.push_back(HYP::from_string(g,parts[1]));
+	}
+	return out;
+}
+
+
 
 // ADD DEBUG(...) that is only there if we have a defined debug symbol....
 // DEBUG(DEBUG_MCMC, ....)
