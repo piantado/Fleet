@@ -9,7 +9,7 @@
  * @brief A class is searchable if permits us to enumerate and make its neighbors.
  * This class is used by MCTS and allows us to incrementally search a hypothesis.
  */
-template<typename HYP, typename... Args>
+template<typename this_t, typename... Args>
 class Searchable {
 public:
 
@@ -31,8 +31,8 @@ public:
 	 * @param k
 	 * @return 
 	 */	
-	[[nodiscard]]  virtual HYP  make_neighbor(int k) const {
-		HYP out =  *static_cast<HYP*>(const_cast<Searchable<HYP,Args...>*>(this));
+	[[nodiscard]]  virtual this_t  make_neighbor(int k) const {
+		this_t out =  *static_cast<this_t*>(const_cast<Searchable<this_t,Args...>*>(this));
 		out.expand_to_neighbor(k);
 		return out; 
 	}

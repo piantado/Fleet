@@ -220,8 +220,7 @@ int main(int argc, char** argv){
 	// Actually run
 	//------------------
 		
-	MyHypothesis h0(&grammar);
-	h0 = h0.restart();
+	auto h0 = MyHypothesis::make(&grammar);
 	ParallelTempering samp(h0, &mydata, top, 16, 10.0); 
 	tic();
 	samp.run(Control(mcmc_steps,runtime,nthreads), 100, 1000); 		

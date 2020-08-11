@@ -106,8 +106,7 @@ int main(int argc, char** argv){
 	MyHypothesis::data_t mydata = {2,8,16};	
 
 	// create a hypothesis
-	MyHypothesis h0(&grammar);
-	h0 = h0.restart();
+	auto h0 = MyHypothesis::make(&grammar);
 	
 	// and sample with just one chain
 	MCMCChain samp(h0, &mydata, top);

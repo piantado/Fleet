@@ -78,7 +78,7 @@ public:
 	// value with probability x.reliability, and otherwise a coin flip. 
 	double compute_single_likelihood(const datum_t& x) override {
 		bool out = callOne(x.input, false);
-		return log((1.0-x.reliability)/2.0) + (out == x.output)*x.reliability);
+		return log((1.0-x.reliability)/2.0 + (out == x.output)*x.reliability);
 	}
 };
 
@@ -121,16 +121,14 @@ int main(int argc, char** argv){
 	// Actually run
 	//------------------
 	
-//	MyHypothesis h0(&grammar);
-//	h0 = h0.restart();
+//	auto h0 = MyHypothesis::make(&grammar);
 //	MCMCChain chain(h0, &mydata, top);
 //	tic();
 //	chain.run(Control(mcmc_steps,runtime));
 //	tic();
 //	
 	
-	MyHypothesis h0(&grammar);
-	h0 = h0.restart();
+	auto h0 = MyHypothesis::make(&grammar);
 	ParallelTempering samp(h0, &mydata, top, 16, 10.0); 
 	tic();
 	samp.run(Control(mcmc_steps,runtime,nthreads), 100, 1000); 		

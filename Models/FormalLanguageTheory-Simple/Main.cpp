@@ -208,21 +208,20 @@ int main(int argc, char** argv){
 //
 //	return 0;
 	
-	MyHypothesis h0(&grammar);
-	top.print_best = true;
-	h0 = h0.restart();
-	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
-	samp.run(Control(mcmc_steps, runtime, nthreads), 100, 300); //30000);		
+//	top.print_best = true;
+//	auto h0 = MyHypothesis::make(&grammar);
+//	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
+//	samp.run(Control(mcmc_steps, runtime, nthreads), 100, 300); //30000);		
 	
 
-
-//	MyHypothesis h0(&grammar);	h0 = h0.restart();
-//	MCMCChain c(h0, &mydata, top);
-//	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-//	c.run(Control(mcmc_steps, runtime, nthreads));
+	top.print_best = true;
+	auto h0 = MyHypothesis::make(&grammar);
+	MCMCChain c(h0, &mydata, top);
+	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
+	c.run(Control(mcmc_steps, runtime, nthreads));
 
 	// run multiple chains
-//	MyHypothesis h0(&grammar);	h0 = h0.restart();
+//	auto h0 = MyHypothesis::make(&grammar);
 //	ChainPool c(h0, &mydata, top, nchains);
 //	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
 //	c.run(Control(mcmc_steps, runtime, nthreads));

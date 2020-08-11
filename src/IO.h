@@ -4,6 +4,7 @@
 #include <mutex>
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "dependencies/CL11.hpp"
 #include "Strings.h"
 
@@ -75,7 +76,7 @@ std::vector<HYP> load(std::string filename, typename HYP::Grammar_t* g) {
 	
 	std::ifstream fs(filename);
 	
-	S line;
+	std::string line;
 	while(std::getline(fs, line)) {
 		auto parts = split(line, '\t');
 		out.push_back(HYP::from_string(g,parts[1]));

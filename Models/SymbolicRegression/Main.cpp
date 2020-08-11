@@ -391,13 +391,13 @@ int main(int argc, char** argv){
 	m.print(h0, tree_path.c_str());
 
 	// set up a paralle tempering object
+//	auto h0 = MyHypothesis::make(&grammar);
 //	ParallelTempering<MyHypothesis> samp(h0, &mydata, myCallback, 8, 1000.0, false);
 //	tic();
 //	samp.run(mcmc_steps, runtime, .25, 3.00); 
 //	tic();
 
-//	MyHypothesis h0(&grammar);
-//	h0 = h0.restart();
+//	auto h0 = MyHypothesis::make(&grammar);
 //	MCMCChain samp(h0, &mydata, cb);
 //	tic();
 //	samp.run(Control(mcts_steps, runtime)); //30000);		

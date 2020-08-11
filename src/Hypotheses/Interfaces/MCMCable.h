@@ -9,17 +9,23 @@
  * @file MCMCable.h
  * @brief A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC does for speed).
  */
-template<typename HYP, typename... Args>
+template<typename this_t, typename... Args>
 class MCMCable : public Bayesable<Args...> {
 public:
 	MCMCable() { }
 
 	// these are declared nodiscard (and must be in subclasses too) to help remind that they do NOT modify the hypothesis,
 	// instead they return a new one
-	[[nodiscard]] virtual std::pair<HYP,double> propose() const = 0; // return a proposal and its forward-backward probs
-	[[nodiscard]] virtual HYP                   restart() const = 0; // restart a new chain -- typically by sampling from the prior 
-	virtual bool operator==(const HYP& h)   const = 0; // speeds up a check in MCMC
+	[[nodiscard]] virtual std::pair<this_t,double> propose() const = 0; // return a proposal and its forward-backward probs
+	[[nodiscard]] virtual this_t                   restart() const = 0; // restart a new chain -- typically by sampling from the prior 
+	virtual bool operator==(const this_t& h)   const = 0; // speeds up a check in MCMC
 	
+	// making is just calling the constructor and restarting
+	template<typename... A>
+	[[nodiscard]] static this_t make(A... a) {
+		auto h = this_t(a...);
+		return h.restart();
+	}
 };
 
 

@@ -234,11 +234,11 @@ int main(int argc, char** argv){
 	
 	COUT "# Loaded data" ENDL;
 	
-	MyHypothesis h0(&grammar); h0 = h0.restart();
+	
 	
 	std::vector<MyHypothesis> hypotheses; 
 	if(runtype == "hypotheses" or runtype == "both") {
-		
+		auto h0 = MyHypothesis::make(&grammar); 
 		hypotheses = get_hypotheses_from_mcmc(h0, mcmc_data, Control(inner_mcmc_steps, inner_runtime), ntop);
 		CTRL_C = 0; // reset control-C
 		
@@ -261,11 +261,10 @@ int main(int argc, char** argv){
 		auto P = model_predictions(hypotheses, human_data);
 		COUT "# Done computing model predictions" ENDL;
 
-		GrammarHypothesis<MyHypothesis> gh0(&grammar, &C, &LL, &P);
-		gh0 = gh0.restart();
+		auto h0 = GrammarHypothesis<MyHypothesis>::make(&grammar, &C, &LL, &P);
 		
 		tic();
-		auto thechain = MCMCChain(gh0, &human_data, &gcallback);
+		auto thechain = MCMCChain(h0, &human_data, &gcallback);
 		thechain.run(Control(mcmc_steps, runtime));
 		tic();
 	}
