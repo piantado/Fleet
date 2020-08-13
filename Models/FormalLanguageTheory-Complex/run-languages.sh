@@ -21,10 +21,10 @@ parameters=AllParameters.csv
 # el
 if [ $myhost = "simon" ] ; then
     factors=(1 3 5)
-    jobs=120
+    jobs=140
 elif [ $myhost = "garfunkel" ] ; then
     factors=(2 4 6)
-    jobs=120
+    jobs=140
 fi
 
 rm -f run/parameters.$myhost

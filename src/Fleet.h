@@ -138,23 +138,23 @@ public:
 	
 	Fleet(std::string brief) : app{brief}, done(false) {
 
-		app.add_option("-R,--seed",    random_seed, "Seed the rng (0 is no seed)");
-		app.add_option("-s,--mcts",    mcts_steps, "Number of MCTS search steps to run");
-		app.add_option("-m,--mcmc",     mcmc_steps, "Number of mcmc steps to run");
-		app.add_option("-M,--inner-mcmc", inner_mcmc_steps, "Number of mcmc steps to run (inner argument)");
-		app.add_option("-t,--thin",     thin, "Thinning on the number printed");
-		app.add_option("-o,--output",   output_path, "Where we write output");
-		app.add_option("-O,--top",      ntop, "The number to store");
+		app.add_option("--seed",        random_seed, "Seed the rng (0 is no seed)");
+		app.add_option("--mcts",        mcts_steps, "Number of MCTS search steps to run");
+		app.add_option("--mcmc",        mcmc_steps, "Number of mcmc steps to run");
+		app.add_option("--inner-mcmc",  inner_mcmc_steps, "Number of mcmc steps to run (inner argument)");
+		app.add_option("--thin",        thin, "Thinning on the number printed");
+		app.add_option("--output",      output_path, "Where we write output");
+		app.add_option("--top",         ntop, "The number to store");
 		app.add_option("-n,--threads",  nthreads, "Number of threads for parallel search");
-		app.add_option("-e,--explore",  explore, "Exploration parameter for MCTS");
-		app.add_option("-r,--restart",  mcmc_restart, "If we don't improve after this many, restart");
-		app.add_option("-i,--input",    input_path, "Read standard input from here");
+		app.add_option("--explore",     explore, "Exploration parameter for MCTS");
+		app.add_option("--restart",     mcmc_restart, "If we don't improve after this many, restart");
+		app.add_option("--input",       input_path, "Read standard input from here");
 		app.add_option("-T,--time",     timestring, "Stop (via CTRL-C) after this much time (takes smhd as seconds/minutes/hour/day units)");
-		app.add_option("-P,--inner-time",  inner_timestring, "Inner time");
-		app.add_option("-E,--tree",     tree_path, "Write the tree here");
+		app.add_option("--inner-time",  inner_timestring, "Inner time");
+		app.add_option("--tree",        tree_path, "Write the tree here");
 		app.add_option("-c,--chains",   nchains, "How many chains to run");
 		
-		app.add_flag(  "-q,--quiet",  quiet, "Don't print very much and do so on one line");
+		app.add_flag(  "-q,--quiet",    quiet, "Don't print very much and do so on one line");
 //		app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");
 
 		start_time = now();

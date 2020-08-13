@@ -29,7 +29,8 @@ const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The m
 const size_t MAX_PR_LINES = 1000000; 
 
 const size_t RESTART = 0;
-const size_t NTEMPS = 20;
+const size_t NTEMPS = 10;
+const size_t MAX_TEMP = 10.0; // std::max(1, stoi(data_amounts[di]));
 unsigned long SWAP_EVERY = 1500; // ms
 
 std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000"}; // how many data points do we run on?
@@ -38,9 +39,9 @@ std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500
 // Parameters for running a virtual machine
 
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	unsigned long MAX_STEPS_PER_FACTOR   = 4096; //4096;  
-	unsigned long MAX_OUTPUTS_PER_FACTOR = 1024; //512; - make it bigger than
-	unsigned long PRINT_STRINGS = 256; // print at most this many strings for each hypothesis
+	unsigned long MAX_STEPS_PER_FACTOR   = 5000; //4096;  
+	unsigned long MAX_OUTPUTS_PER_FACTOR = 1500; //512; - make it bigger than
+	unsigned long PRINT_STRINGS = 350; // print at most this many strings for each hypothesis
 	double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -25 to catch some less frequent things that happen by chance
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -362,10 +363,10 @@ int main(int argc, char** argv){
 		auto s = std::to_string(a);
 		// NOTE: As of June 11, I took out the SAFE part of these
 		grammar.add<S,S>(BuiltinOp::op_RECURSE, S("F")+s+"(%s)", 1.0/nfactors, a);
-		grammar.add<S,S>(BuiltinOp::op_MEM_RECURSE, S("memF")+s+"(%s)", 0.2/nfactors, a); // disprefer mem when we don't need it
+		grammar.add<S,S>(BuiltinOp::op_MEM_RECURSE, S("Fm")+s+"(%s)", 0.2/nfactors, a); // disprefer mem when we don't need it
 		
-		grammar.add<S,S>(BuiltinOp::op_SAFE_RECURSE, S("F")+s+"(%s)", 1.0/nfactors, a);
-		grammar.add<S,S>(BuiltinOp::op_SAFE_MEM_RECURSE, S("memF")+s+"(%s)", 0.2/nfactors, a); // disprefer mem when we don't need it
+		grammar.add<S,S>(BuiltinOp::op_SAFE_RECURSE, S("Fs")+s+"(%s)", 1.0/nfactors, a);
+		grammar.add<S,S>(BuiltinOp::op_SAFE_MEM_RECURSE, S("Fms")+s+"(%s)", 0.2/nfactors, a); // disprefer mem when we don't need it
 	}
 
 	// push for each
@@ -410,7 +411,7 @@ int main(int argc, char** argv){
 		// that's because if we make it much bigger, we waste lower chains; if we make it much smaller, 
 		// we don't get good mixing in the lowest chains. 
 		// No theory here, this just seems to be about what works well. 
-		ParallelTempering samp(h0, &datas[di], all, NTEMPS, std::max(1, stoi(data_amounts[di]))); 
+		ParallelTempering samp(h0, &datas[di], all, NTEMPS, MAX_TEMP); 
 //		for(auto& x: datas[di]) { CERR di TAB x.output TAB x.reliability ENDL;	}
 		samp.run(Control(mcmc_steps/datas.size(), runtime/datas.size(), nthreads, RESTART), SWAP_EVERY, 5*60*1000);	
 
