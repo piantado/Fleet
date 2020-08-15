@@ -74,34 +74,152 @@ public:
 	VectorHypothesis params; // alpha, likelihood temperature, decay
 	constexpr static int NPARAMS = 3; // how many parameters do we have?
 	
-	HYP::Grammar_t* grammar;
-	Matrix* C;
-	LL_t* LL; // type for the likelihood
-	Predict_t<HYP>* predictions;
+	typename HYP::Grammar_t* grammar;
+	
+	// All of these are shared_ptr so that we can copy hypotheses quickly
+	// without recomputing them. NOTE that this assumes that the data does not change
+	// between hypotheses of this class. 
+	
+	// TODO: ADD ASSERT THAT THE DAT ADOESNT CHANGE
+	
+	std::shared_ptr<Matrix>         C;
+	std::shared_ptr<LL_t>           LL; // type for the likelihood
+	std::shared_ptr<Predict_t<HYP>> P;
 
 	// These variables store some parameters and get recomputed
 	// in proposal when necessary 
-	Matrix decayedLikelihood;
+	std::shared_ptr<Matrix> decayedLikelihood;
+	
+	std::vector<HumanDatum<HYP>>* which_data; // stored so we can remember what we computed for. 
+	
 	double alpha, llt, decay; // the parameters 
+		
+	GrammarHypothesis() {	}
 	
-	void* which_data_for_likelihood;
+	GrammarHypothesis(std::vector<HYP>& hypotheses, std::vector<HumanDatum<HYP>>& human_data) {
+		set_hypotheses_and_data(hypotheses, human_data);
+	}	
 	
-	GrammarHypothesis() : which_data_for_likelihood(nullptr) {	}
-	
-	GrammarHypothesis(HYP::Grammar_t* g, Matrix* c, LL_t* ll, Predict_t<HYP>* p) : 
-		grammar(g), C(c), LL(ll), predictions(p), which_data_for_likelihood(nullptr) {
+	void set_hypotheses_and_data(std::vector<HYP>& hypotheses, std::vector<HumanDatum<HYP>>& human_data) {
+		
+		// set first because it's required below
+		which_data = &human_data;
+		
+		// read the hypothesis from the first grammar, and check its the same for everyone	
+		grammar = hypotheses.at(0).grammar;		
+		for(auto& h: hypotheses) {
+			assert(h.grammar == grammar && "*** It's bad news for GrammarHypothesis if your hypotheses don't all have the same grammar.");
+		}
+		
 		logA.set_size(grammar->count_rules());
 		params.set_size(NPARAMS); 
-	}	
+		
+		// when we are initialized this way, we compute C, LL, P, and the decayed ll. 
+		recompute_C(hypotheses);
+		COUT "# Done computing prior counts" ENDL;
+		recompute_LL(hypotheses, human_data);
+		COUT "# Done computing incremental likelihoods " ENDL;
+		recompute_P(hypotheses, human_data);
+		COUT "# Done computing model predictions" ENDL;
+		recompute_decayedLikelihood(human_data);
+	}
 	
 	void recompute_alpha() { alpha = 1.0/(1.0+expf(-3.0*params(0))); }
 	void recompute_llt()   { llt = expf(params(1)/4.0);	} // centered around 1
 	void recompute_decay() { decay = expf(params(2)-2); } // peaked near zero
-	void recompute_decayedLikelihood(const data_t& human_data) {
+	
+	
+	/**
+	 * @brief Computes our matrix C[h,r] of hypotheses (rows) by counts of each grammar rule.
+	 *			(requires that each hypothesis use the same grammar)
+	 * @param hypotheses
+	 */
+	void recompute_C(std::vector<HYP>& hypotheses) {
+		   
+		assert(hypotheses.size() > 0);
+
+		size_t nRules = hypotheses[0].grammar->count_rules();
+
+		C = std::make_shared<Matrix>(new Matrix(hypotheses.size(), nRules)); 
+
+		#pragma omp parallel for
+		for(size_t i=0;i<hypotheses.size();i++) {
+			auto c = hypotheses[i].grammar->get_counts(hypotheses[i].get_value());
+			Vector cv = Vector::Zero(c.size());
+			for(size_t i=0;i<c.size();i++){
+				cv(i) = c[i];
+			}
+			
+			C->row(i) = cv;
+			assert(hypotheses[i].grammar == hypotheses[0].grammar); // just a check that the grammars are identical
+		}
+	}
 		
-		// precompute powers because its slow. 
-		// we store these in reverse order from some max data size
-		// so that we can just take the tail for what we need
+	/**
+	 * @brief Recompute LL[h,di] a hypothesis from each hypothesis and data point to a *vector* of prior responses.
+	 * 		  (We need the vector instead of just the sum to implement memory decay
+	 * @param hypotheses
+	 * @param human_data
+	 * @return 
+	 */
+	void recompute_LL(std::vector<HYP>& hypotheses, std::vector<HumanDatum<HYP>>& human_data) {
+		assert(which_data == &human_data);
+		
+		LL = std::make_shared<LL_t>(new LL_t(hypotheses.size(), human_data.size())); 
+		
+		#pragma omp parallel for
+		for(size_t h=0;h<hypotheses.size();h++) {
+			
+			if(!CTRL_C) {
+				
+				// This will assume that as things are sorted in human_data, they will tend to use
+				// the same human_data.data pointer (e.g. they are sorted this way) so that
+				// we can re-use prior likelihood items for them
+				
+				for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
+					
+					Vector data_lls  = Vector::Zero(human_data[di].ndata); // one for each of the data points
+					Vector decay_pos = Vector::Zero(human_data[di].ndata); // one for each of the data points
+					
+					// check if these pointers are equal so we can reuse the previous data			
+					if(di > 0 and 
+					   human_data[di].data == human_data[di-1].data and 
+					   human_data[di].ndata > human_data[di-1].ndata) { 
+						   
+						// just copy over the beginning
+						for(size_t i=0;i<human_data[di-1].ndata;i++){
+							data_lls(i)  = LL->at(h,di-1).first(i);
+							decay_pos(i) = LL->at(h,di-1).second(i);
+						}
+						// and fill in the rest
+						for(size_t i=human_data[di-1].ndata;i<human_data[di].ndata;i++) {
+							data_lls(i)  = hypotheses[h].compute_single_likelihood((*human_data[di].data)[i]);
+							decay_pos(i) = human_data[di].decay_position;
+						}
+					}
+					else {
+						// compute anew; if ndata=0 then we should just include a 0.0
+						for(size_t i=0;i<human_data[di].ndata;i++) {
+							data_lls(i) = hypotheses[h].compute_single_likelihood((*human_data[di].data)[i]);
+							decay_pos(i) = human_data[di].decay_position;
+						}				
+					}
+			
+					// set as an Eigen vector in out
+					LL->at(h,di) = std::make_pair(data_lls,decay_pos);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * @brief Recomputes the decayed likelihood (e.g. at the given decay level, the total ll for each data point
+	 * @param hypotheses
+	 * @param human_data
+	 * @return 
+	 */
+	void recompute_decayedLikelihood(const data_t& human_data) {
+		assert(which_data == &human_data);
 		
 		// find the max power we'll ever need
 		int MX = -1;
@@ -110,27 +228,46 @@ public:
 		}
 		
 		// just compute this once -- should be faster to use vector intrinsics? 
+		// we store these in reverse order from some max data size
+		// so that we can just take the tail for what we need
 		Vector powers = Vector::Zero(MX);
 		for(int i=0;i<MX;i++) {
 			powers[i] = powf(i,-decay);
 		}
 
 		// start with zero
-		decayedLikelihood = Matrix::Zero(C->rows(), human_data.size());
+		decayedLikelihood = std::make_shared<Matrix>(new Matrix(C->rows(), human_data.size()));
 		
 		#pragma omp parallel for
 		// sum up with the memory decay
 		for(int h=0;h<C->rows();h++) {
-			for(int di=0;di<decayedLikelihood.cols();di++) {
+			for(int di=0;di<decayedLikelihood->cols();di++) {
 				const Vector& v = LL->at(h,di).first;
 				const Vector  d = powers(LL->at(h,di).second.array());
-				decayedLikelihood(h,di) = v.dot(d) / llt;							
+				decayedLikelihood->operator()(h,di) = v.dot(d) / llt;							
 			}
 		}
-		
-		// and remember who we computed for:
-		which_data_for_likelihood = (void*)&human_data;
 	}
+	
+	/**
+	 * @brief 
+	 * @param hypotheses
+	 * @param human_data
+	 * @return 
+	 */
+	void recompute_P(std::vector<HYP>& hypotheses, data_t& human_data) {
+		assert(which_data == &human_data);
+		
+		P = std::make_shared<Predict_t<HYP>>(new Predict_t<HYP>(hypotheses.size(), human_data.size())); 
+		
+		#pragma omp parallel for
+		for(size_t di=0;di<human_data.size();di++) {	
+			for(size_t h=0;h<hypotheses.size();h++) {			
+				P->at(h,di) = hypotheses[h](human_data[di].predict->input);
+			}
+		}
+	}
+
 	
 	double compute_prior() override {
 		return this->prior = logA.compute_prior() + params.compute_prior();
@@ -146,14 +283,14 @@ public:
 		Vector hprior = hypothesis_prior(*C); 
 		
 		// recompute our likelihood if its the wrong size or not using this data
-		if(&human_data != which_data_for_likelihood or 
-		   decayedLikelihood.rows() != (int)hprior.size() or 
-		   decayedLikelihood.rows() != (int)hprior.size() or 
-		   decayedLikelihood.cols() != (int)human_data.size()) {
-			recompute_decayedLikelihood(human_data); // needs the size set above
+		if(&human_data != which_data) { 
+			CERR "*** You are computing likelihood on a dataset that the GrammarHypothesis was not constructed with." ENDL
+			CERR "		You must call set_hypotheses_and_data before calling this likelihood, but note that when you" ENDL
+			CERR "      do that, it will need to recompute everything (which might take a while)." ENDL;
+			assert(false);
 		}		
 		
-		Matrix hposterior = decayedLikelihood.colwise() + hprior; // the model's posterior
+		Matrix hposterior = decayedLikelihood->colwise() + hprior; // the model's posterior
 		
 		// now normalize it and convert to probabilities
 		#pragma omp parallel for
@@ -176,7 +313,7 @@ public:
 					if(hposterior(h,i) < -10) 
 						continue;  
 					
-					for(const auto& mp : predictions->at(h,i).values() ) {
+					for(const auto& mp : P->at(h,i).values() ) {
 						model_predictions.addmass(mp.first, hposterior(h,i) + mp.second);
 					}
 				}
@@ -184,7 +321,7 @@ public:
 				// build the non-log version (which should be much faster)
 				std::map<typename HYP::output_t, double> model_predictions;
 				for(int h=0;h<hposterior.rows();h++) {
-					for(const auto& mp : predictions->at(h,i).values() ) {
+					for(const auto& mp : P->at(h,i).values() ) {
 						float p = expf(hposterior(h,i) + mp.second);
 						if(model_predictions.find(mp.first) == model_predictions.end()){
 							model_predictions[mp.first] = p;
@@ -214,7 +351,7 @@ public:
 	}
 	
 	[[nodiscard]] virtual self_t restart() const override {
-		self_t out(grammar, C, LL, predictions);
+		self_t out(*this); // copy
 		out.logA = logA.restart();
 		out.params = params.restart();	
 
@@ -222,9 +359,10 @@ public:
 		out.recompute_llt();
 		out.recompute_decay();
 		
+		out.recompute_decayedLikelihood(*out.which_data);
+		
 		return out;
 	}
-	
 	
 	[[nodiscard]] virtual std::pair<self_t,double> propose() const override {
 		self_t out = *this;
@@ -235,10 +373,11 @@ public:
 			
 			// figure out what we need to recompute
 			if(p(0) != params(0)) out.recompute_alpha();
+			
 			if(p(1) != params(1)) out.recompute_llt();
 			if(p(2) != params(2)) out.recompute_decay();
 			if(p(1) != params(1) or p(2) != params(2))	{// note: must come after its computed
-				out.which_data_for_likelihood = nullptr; // must recompute this when we get to likelihood
+				out.recompute_decayedLikelihood(*out.which_data); // must recompute this when we get to likelihood
 			}			
 			return std::make_pair(out, fb);
 		}		
@@ -292,7 +431,7 @@ public:
 	}
 	
 	virtual bool operator==(const self_t& h) const override {
-		return (C == h.C and LL == h.LL and predictions == h.predictions) and 
+		return (C == h.C and LL == h.LL and P == h.P) and 
 				(logA == h.logA) and (params == h.params);
 	}
 	

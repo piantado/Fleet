@@ -230,7 +230,7 @@ int main(int argc, char** argv){
 		//
 		//
 		//		
-		//if(human_data.size() > 500) break;
+		if(human_data.size() > 500) break;
 	
 	}
 	if(learner_data != nullptr) 
@@ -255,16 +255,7 @@ int main(int argc, char** argv){
 	
 	if(runtype == "grammar" or runtype == "both") { 
 		
-		Matrix C  = counts(hypotheses);
-		COUT "# Done computing prior counts" ENDL;
-		
-		LL_t LL = compute_incremental_likelihood(hypotheses, human_data); // using MY version
-		COUT "# Done computing incremental likelihoods " ENDL;
-			
-		auto P = model_predictions(hypotheses, human_data);
-		COUT "# Done computing model predictions" ENDL;
-
-		auto h0 = GrammarHypothesis<MyHypothesis>::make(&grammar, &C, &LL, &P);
+		auto h0 = GrammarHypothesis<MyHypothesis>::make(hypotheses, human_data);
 		
 		tic();
 		auto thechain = MCMCChain(h0, &human_data, &gcallback);
