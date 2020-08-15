@@ -230,7 +230,7 @@ int main(int argc, char** argv){
 		//
 		//
 		//		
-		if(human_data.size() > 500) break;
+		//if(human_data.size() > 500) break;
 	
 	}
 	if(learner_data != nullptr) 
@@ -250,13 +250,13 @@ int main(int argc, char** argv){
 		// only load if we haven't run 
 		hypotheses = load<MyHypothesis>(hypothesis_path, &grammar);
 	}
-	COUT "# Found " TAB hypotheses.size() TAB "hypotheses" ENDL;
-	assert(hypotheses.size() > 0);
+	COUT "# Hypothesis size: " TAB hypotheses.size() ENDL;
+	assert(hypotheses.size() > 0 && "*** Somehow we don't have any hypotheses!");
 	
 	if(runtype == "grammar" or runtype == "both") { 
 		
-		auto h0 = GrammarHypothesis<MyHypothesis>::make(hypotheses, human_data);
-		
+		auto h0 = GrammarHypothesis<MyHypothesis>::make(hypotheses, &human_data);
+	
 		tic();
 		auto thechain = MCMCChain(h0, &human_data, &gcallback);
 		thechain.run(Control(mcmc_steps, runtime));

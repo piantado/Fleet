@@ -234,6 +234,12 @@ public:
 		COUT "# \t --seed=" << random_seed ENDL;
 		COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;	
 		
+		
+		// give warning for infinite runs:
+		if(mcmc_steps == 0 and mcts_steps == 0 and runtime==0) {
+			CERR "# Warning: you haven not specified --time or --mcmc so this will run forever." ENDL;
+		}
+		
 		return 0;
 	}
 	

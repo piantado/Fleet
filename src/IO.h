@@ -80,6 +80,7 @@ std::vector<HYP> load(std::string filename, typename HYP::Grammar_t* g) {
 	while(std::getline(fs, line)) {
 		auto parts = split(line, '\t');
 		out.push_back(HYP::from_string(g,parts[1]));
+//		CERR line ENDL;
 	}
 	return out;
 }

@@ -1,7 +1,5 @@
 #pragma once 
  
-// TODO: Define these as 2D vectors -- define own class to manage
- 
  
 #include <signal.h>
 
@@ -29,7 +27,13 @@ extern volatile sig_atomic_t CTRL_C;
  * @author piantado
  * @date 02/08/20
  * @file GrammarHypothesis.h
- * @brief 
+ * @brief This class does grammar inference with some collection of HumanData and fixed set of hypotheses. 
+ * 
+ * 			NOTE: This is set up in way that it recomputes variables only when necessary, allowing it to make copies (mostly of pointers)
+ * 				  to components needed for the likelihood. This means, proposals maintain pointers to old values of Eigen matrices
+ * 				  and these are tracked using shared_ptr 
+ * 			NOTE: Without likelihood decay, this would be much faster. It should work fine if likelihood decay is just set once. 
+ * 
  */
 template<typename HYP, typename datum_t=HumanDatum<HYP>, typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
 class GrammarHypothesis : public MCMCable<GrammarHypothesis<HYP, datum_t, data_t>, datum_t, data_t>  {
@@ -54,26 +58,33 @@ public:
 	
 	std::shared_ptr<Matrix>         C;
 	std::shared_ptr<LL_t>           LL; // type for the likelihood
-	std::shared_ptr<Predict_t<HYP>> P;
+	std::shared_ptr<Predict_t> P;
 
 	// These variables store some parameters and get recomputed
 	// in proposal when necessary 
 	std::shared_ptr<Matrix> decayedLikelihood;
 	
-	data_t* which_data; // stored so we can remember what we computed for. 
+	const data_t* which_data; // stored so we can remember what we computed for. 
 	
 	double alpha, llt, decay; // the parameters 
 		
 	GrammarHypothesis() {	}
 	
-	GrammarHypothesis(std::vector<HYP>& hypotheses, std::vector<HumanDatum<HYP>>& human_data) {
-		set_hypotheses_and_data(hypotheses, human_data);
+	GrammarHypothesis(std::vector<HYP>& hypotheses, const data_t* human_data) {
+		// This has to take human_data as a pointer because of how MCMCable::make works -- can't forward a reference
+		// but the rest of this class likes the references, so we convert here
+		set_hypotheses_and_data(hypotheses, *human_data);
 	}	
 	
-	void set_hypotheses_and_data(std::vector<HYP>& hypotheses, std::vector<HumanDatum<HYP>>& human_data) {
+	/**
+	 * @brief This is the primary function for setting hypothese and data on construction. 
+	 * @param hypotheses
+	 * @param human_data
+	 */	
+	void set_hypotheses_and_data(std::vector<HYP>& hypotheses, const data_t& human_data) {
 		
 		// set first because it's required below
-		which_data = &human_data;
+		which_data = std::addressof(human_data);
 		
 		// read the hypothesis from the first grammar, and check its the same for everyone	
 		grammar = hypotheses.at(0).grammar;		
@@ -132,8 +143,8 @@ public:
 	 * @param human_data
 	 * @return 
 	 */
-	void recompute_LL(std::vector<HYP>& hypotheses, std::vector<HumanDatum<HYP>>& human_data) {
-		assert(which_data == &human_data);
+	void recompute_LL(std::vector<HYP>& hypotheses, const data_t& human_data) {
+		assert(which_data == std::addressof(human_data));
 		
 		LL.reset(new LL_t(hypotheses.size(), human_data.size())); 
 		
@@ -189,7 +200,7 @@ public:
 	 * @return 
 	 */
 	void recompute_decayedLikelihood(const data_t& human_data) {
-		assert(which_data == &human_data);
+		assert(which_data == std::addressof(human_data));
 		
 		// find the max power we'll ever need
 		int MX = -1;
@@ -225,10 +236,10 @@ public:
 	 * @param human_data
 	 * @return 
 	 */
-	void recompute_P(std::vector<HYP>& hypotheses, data_t& human_data) {
-		assert(which_data == &human_data);
+	void recompute_P(std::vector<HYP>& hypotheses, const data_t& human_data) {
+		assert(which_data == std::addressof(human_data));
 		
-		P.reset(new Predict_t<HYP>(hypotheses.size(), human_data.size())); 
+		P.reset(new Predict_t(hypotheses.size(), human_data.size())); 
 		
 		#pragma omp parallel for
 		for(size_t di=0;di<human_data.size();di++) {	
@@ -253,7 +264,7 @@ public:
 		Vector hprior = hypothesis_prior(*C); 
 		
 		// recompute our likelihood if its the wrong size or not using this data
-		if(&human_data != which_data) { 
+		if(which_data != std::addressof(human_data)) { 
 			CERR "*** You are computing likelihood on a dataset that the GrammarHypothesis was not constructed with." ENDL
 			CERR "		You must call set_hypotheses_and_data before calling this likelihood, but note that when you" ENDL
 			CERR "      do that, it will need to recompute everything (which might take a while)." ENDL;
