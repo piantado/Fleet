@@ -84,7 +84,7 @@ public:
 	using Super::Super; // inherit the constructors
 	
 	double compute_single_likelihood(const datum_t& x) override {	
-		const auto out = call(x.input, "<err>", this, 256, 256); //256, 256);
+		const auto out = call(x.input, "<err>", this, 256, 256); 
 		
 		const auto log_A = log(alphabet.size());
 		
@@ -157,12 +157,6 @@ int main(int argc, char** argv){
 	fleet.initialize(argc, argv);
 	
 	MyGrammar grammar(PRIMITIVES);
-
-	// mydata stores the data for the inference model
-	MyHypothesis::data_t mydata;
-	
-	// top stores the top hypotheses we have found
-	TopN<MyHypothesis> top(ntop);
 	
 	// here we create an alphabet op with an "arg" that stores the character (this is faster than alphabet.substring with i.arg as an index) 
 	// here, op_ALPHABET converts arg to a string (and pushes it)
@@ -170,15 +164,20 @@ int main(int argc, char** argv){
 		grammar.add<S>     (BuiltinOp::op_ALPHABET, Q(alphabet.substr(i,1)), 5.0/alphabet.length(), (int)alphabet.at(i)); 
 	}
 	
+	// top stores the top hypotheses we have found
+	TopN<MyHypothesis> top(ntop);
+	
 	//------------------
 	// set up the data
 	//------------------
 	
+	// mydata stores the data for the inference model
+	MyHypothesis::data_t mydata;
+		
 	// we will parse the data from a comma-separated list of "data" on the command line
 	for(auto di : split(datastr, ',')) {
 		// add check that data is in the alphabet
-		for(auto& c : di) {
-			
+		for(auto& c : di) {			
 			assert(alphabet.find(c) != std::string::npos && "*** alphabet does not include all data characters");
 		}
 		
@@ -208,17 +207,17 @@ int main(int argc, char** argv){
 //
 //	return 0;
 	
-//	top.print_best = true;
-//	auto h0 = MyHypothesis::make(&grammar);
-//	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
-//	samp.run(Control(mcmc_steps, runtime, nthreads), 100, 300); //30000);		
-	
-
 	top.print_best = true;
 	auto h0 = MyHypothesis::make(&grammar);
-	MCMCChain c(h0, &mydata, top);
-	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-	c.run(Control(mcmc_steps, runtime, nthreads));
+	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
+	samp.run(Control(mcmc_steps, runtime, nthreads), 100, 30000);		
+	
+
+//	top.print_best = true; // print out each best hypothesis you find
+//	auto h0 = MyHypothesis::make(&grammar);
+//	MCMCChain c(h0, &mydata, top);
+//	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
+//	c.run(Control(mcmc_steps, runtime, nthreads));
 
 	// run multiple chains
 //	auto h0 = MyHypothesis::make(&grammar);

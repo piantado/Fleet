@@ -15,6 +15,7 @@ enum class Shape { Square, Triangle, Circle};
 enum class Color { Red, Green, Blue};
 
 #include "Object.h"
+
 typedef Object<Color,Shape> MyObject;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,7 +57,7 @@ std::tuple PRIMITIVES = {
 #include "Grammar.h"
 
 class MyGrammar : public Grammar<bool,MyObject> {
-	using Super =  Grammar<bool,MyObject>;
+	using Super = Grammar<bool,MyObject>;
 	using Super::Super;
 };
 
@@ -121,18 +122,18 @@ int main(int argc, char** argv){
 	// Actually run
 	//------------------
 	
-//	auto h0 = MyHypothesis::make(&grammar);
-//	MCMCChain chain(h0, &mydata, top);
-//	tic();
-//	chain.run(Control(mcmc_steps,runtime));
-//	tic();
+	auto h0 = MyHypothesis::make(&grammar);
+	MCMCChain chain(h0, &mydata, top);
+	tic();
+	chain.run(Control(mcmc_steps,runtime));
+	tic();
 //	
 	
-	auto h0 = MyHypothesis::make(&grammar);
-	ParallelTempering samp(h0, &mydata, top, 16, 10.0); 
-	tic();
-	samp.run(Control(mcmc_steps,runtime,nthreads), 100, 1000); 		
-	tic();
+//	auto h0 = MyHypothesis::make(&grammar);
+//	ParallelTempering samp(h0, &mydata, top, 16, 10.0); 
+//	tic();
+//	samp.run(Control(mcmc_steps,runtime,nthreads), 100, 1000); 		
+//	tic();
 
 	// Show the best we've found
 	top.print();
