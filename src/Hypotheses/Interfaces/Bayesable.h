@@ -40,7 +40,7 @@ public:
 	 */	
 	virtual size_t hash() const=0;
 	
-	virtual std::string string() const = 0; // my subclasses must implement string
+	virtual std::string string(std::string prefix="") const = 0; // my subclasses must implement string
 	
 	/**
 	 * @brief Compute the prior -- defaultly not defined

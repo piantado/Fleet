@@ -35,13 +35,13 @@ public:
 	Lexicon(size_t n)  : MCMCable<this_t,datum_t>()  { factors.resize(n); }
 	Lexicon()          : MCMCable<this_t,datum_t>()  { }
 		
-	virtual std::string string() const override {
+	virtual std::string string(std::string prefix="") const override {
 		/**
 		 * @brief AConvert a lexicon to a string -- defaultly includes all arguments. 
 		 * @return 
 		 */
 		
-		std::string s = "[";
+		std::string s = prefix + "[";
 		for(size_t i =0;i<factors.size();i++){
 			s.append(std::string("F"));
 			s.append(std::to_string(i));

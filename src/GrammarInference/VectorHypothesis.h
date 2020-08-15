@@ -92,8 +92,8 @@ public:
 		return value.size() == h.value.size() and value == h.value;
 	}
 	
-	virtual std::string string() const override {
-		std::string out = "<";
+	virtual std::string string(std::string prefix="") const override {
+		std::string out = prefix+"<";
 		for(auto i=0;i<value.size();i++) {
 			out += str(value(i));
 		}

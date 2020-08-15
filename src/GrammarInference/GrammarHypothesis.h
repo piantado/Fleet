@@ -10,7 +10,9 @@
 
 #include "Vector2D.h"
 #include "HumanDatum.h"
-#include "GrammarInferenceUtility.h"
+#include "Control.h"
+#include "Top.h"
+#include "MCMCChain.h"
 
 extern volatile sig_atomic_t CTRL_C;
 
@@ -20,7 +22,57 @@ extern volatile sig_atomic_t CTRL_C;
 // accurate but quite a bit slower, so it's off by default. 
 //#define GRAMMAR_HYPOTHESIS_USE_LOG_PREDICTIVE 1
 
-#include <array>
+
+/**
+ * @brief Runs MCMC on hypotheses, resampling when the data stops being incremental and returns a unioned
+ * 			vector of all the tops
+ * @param hypotheses
+ * @return 
+ */
+template<typename HYP>
+std::vector<HYP> get_hypotheses_from_mcmc(HYP& h0, std::vector<typename HYP::data_t*>& mcmc_data, Control c, size_t ntop) {
+	
+	std::set<HYP> all;	
+	
+	#pragma omp parallel for
+	for(size_t vi=0; vi<mcmc_data.size();vi++) {
+		if(!CTRL_C) {  // needed for openmp
+		
+			#pragma omp critical
+			{
+			COUT "# Running " TAB vi TAB " of " TAB mcmc_data.size() ENDL;
+			}
+			
+			for(size_t i=0;i<mcmc_data[vi]->size() and !CTRL_C;i++) {
+				
+				TopN<HYP> top(ntop);
+				
+				HYP myh0 = h0.restart();
+				
+				auto givendata = slice(*(mcmc_data[vi]), 0, i);
+				
+				MCMCChain chain(myh0, &givendata, top);
+				chain.run(Control(c)); // must run on a copy 
+			
+				#pragma omp critical
+				for(auto h : top.values()) {
+					h.clear_bayes(); // zero and insert
+					all.insert(h);
+				}
+			}
+		}
+	}
+	
+	std::vector<HYP> out;
+	for(auto& h : all) {
+		out.push_back(h);
+	}
+	return out;
+}
+
+
+
+
 
 /**
  * @class GrammarHypothesis
@@ -132,7 +184,7 @@ public:
 			}
 			
 			C->row(i) = cv;
-			assert(hypotheses[i].grammar == hypotheses[0].grammar); // just a check that the grammars are identical
+			assert(hypotheses[i].grammar == grammar); // just a check that the grammars are identical
 		}
 	}
 		
@@ -345,6 +397,13 @@ public:
 		return out;
 	}
 	
+	 /**
+	 * @brief Propose to the hypothesis. The sometimes does grammar parameters and sometimes other parameters, 
+	 * 		  which are all stored as VectorHypotheses. It is sure to call the recompute functions when necessary
+	 * @param data
+	 * @param breakout
+	 * @return 
+	 */		
 	[[nodiscard]] virtual std::pair<self_t,double> propose() const override {
 		self_t out = *this;
 		
@@ -416,10 +475,41 @@ public:
 				(logA == h.logA) and (params == h.params);
 	}
 	
-	
-	virtual std::string string() const override {
+	/**
+	 * @brief This returns a string for this hypothesis. Defaulty, now, just in tidy format
+	 * 		  with all the parameters, one on each row
+	 * @return 
+	 */	
+	virtual std::string string(std::string prefix="") const override {
 		// For now we just provide partial information
-		return "GrammarHypothesis["+str(this->posterior) + params.string() + ", " + logA.string() + "]";
+		//return "GrammarHypothesis["+str(this->posterior) + params.string() + ", " + logA.string() + "]";
+		std::string out = ""; 
+		
+		out += prefix + "posterior.score" +"\t"+ str(this->posterior) + "\n";
+		out += prefix + "forwardalpha" +"\t"+ str(alpha) + "\n";
+		out += prefix + "llt" +"\t"+ str(llt) + "\n";
+		out += prefix + "decay" +"\t"+ str(decay) + "\n";
+		
+		// now add the grammar operations
+		size_t xi=0;
+		for(size_t nt=0;nt<grammar->count_nonterminals();nt++) {
+			for(size_t i=0;i<grammar->count_rules( (nonterminal_t) nt);i++) {
+				std::string rs = grammar->get_rule((nonterminal_t) nt,i)->format;
+		 		rs = std::regex_replace(rs, std::regex("\\%s"), "X");
+				out += prefix + QQ(rs) +"\t" + str(exp(logA(xi))) + "\n"; // unlogged here
+				xi++;
+			}
+		}	
+		
+		return out;	
+	}
+	
+	/**
+	 * @brief Need to override print since it will print in a different format
+	 * @return 
+	 */	
+	virtual void print(std::string prefix="") override {
+		COUT string() ENDL;
 	}
 	
 	virtual size_t hash() const override { 

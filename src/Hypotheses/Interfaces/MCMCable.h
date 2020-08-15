@@ -20,7 +20,11 @@ public:
 	[[nodiscard]] virtual this_t                   restart() const = 0; // restart a new chain -- typically by sampling from the prior 
 	virtual bool operator==(const this_t& h)   const = 0; // speeds up a check in MCMC
 	
-	// making is just calling the constructor and restarting
+	/**
+	 * @brief Static function for making a hypothesis. Be careful using this with references because they may not foward right (for reasons
+	 * 			that are unclear to me)
+	 * @return 
+	 */
 	template<typename... A>
 	[[nodiscard]] static this_t make(A... a) {
 		auto h = this_t(a...);

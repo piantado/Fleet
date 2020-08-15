@@ -126,19 +126,7 @@ public:
 size_t grammar_callback_count = 0;
 void gcallback(GrammarHypothesis<MyHypothesis>& h) {
 	if(++grammar_callback_count % 100 == 0) {
-		COUT grammar_callback_count TAB "posterior" TAB h.posterior ENDL;
-		COUT grammar_callback_count TAB "forwardalpha" TAB h.alpha ENDL;
-		COUT grammar_callback_count TAB "likelihood.temperature" TAB h.llt ENDL;
-		COUT grammar_callback_count TAB "decay" TAB h.decay ENDL;
-		size_t xi=0;
-		for(size_t nt=0;nt<h.grammar->count_nonterminals();nt++) {
-			for(size_t i=0;i<h.grammar->count_rules( (nonterminal_t) nt);i++) {
-				std::string rs = h.grammar->get_rule((nonterminal_t) nt,i)->format;
-		 		rs = std::regex_replace(rs, std::regex("\\%s"), "X");
-				COUT grammar_callback_count TAB QQ(rs) TAB h.logA(xi) ENDL;
-				xi++;
-			}
-		}
+		COUT h.string(str(grammar_callback_count)+"\t");
 	}
 }
 
@@ -223,7 +211,6 @@ int main(int argc, char** argv){
 		ndata += objs->size();
 		decay_position++;
 		prev_conceptlist = conceptlist;
-				
 		
 		//
 		//

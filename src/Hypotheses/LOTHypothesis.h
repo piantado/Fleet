@@ -175,8 +175,8 @@ public:
 	}
 	
 
-	virtual std::string string() const override {
-		return std::string("\u03BBx.") + value.string();
+	virtual std::string string(std::string prefix="") const override {
+		return prefix + std::string("\u03BBx.") + value.string();
 	}
 	virtual std::string parseable() const { 
 		return value.parseable(); 
