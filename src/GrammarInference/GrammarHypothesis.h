@@ -25,38 +25,6 @@ extern volatile sig_atomic_t CTRL_C;
 #include <array>
 
 /**
- * @class CachedFunction
- * @author Steven Piantadosi
- * @date 11/08/20
- * @file GrammarHypothesis.h
- * @brief This remembers a function and  
- * 		   So we use this like CachedValue cv([](X* x) { .... });
- * 				and then cv(x) remembers the argument x until it changes
- */
- 
-// TODO: OR SHOULD WE STORE REFS AND THEN COMPARE WITH ==?
-//template<typename T, typename... Fargs>
-//class CachedFunction {
-//	T value;
-//	T *f(Fargs...);
-//	
-//	// we store a tuple of void* pointers to the arguments
-//	// so that when we call we can check if this pointer is 
-//	// still the same and remember the old value
-//	// Notably, when we get copied, this gets copied too
-//	// so copies don't recompute the value 
-//	std::array<void*, sizeof...(Fargs)> which; 
-//	
-//	CachedFunction(T* _f(Fargs)) : f(_f) {
-//		
-//	}
-//	
-//	T operator()(Fargs... args) {
-//		std::array<void*, sizeof...(Fargs)> thiscall = {(void*)&args, ... };
-//	}
-//};
-
-/**
  * @class GrammarHypothesis
  * @author piantado
  * @date 02/08/20
@@ -66,11 +34,15 @@ extern volatile sig_atomic_t CTRL_C;
 template<typename HYP, typename datum_t=HumanDatum<HYP>, typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
 class GrammarHypothesis : public MCMCable<GrammarHypothesis<HYP, datum_t, data_t>, datum_t, data_t>  {
 public:
-
 	typedef GrammarHypothesis<HYP,datum_t,data_t> self_t;
-	
-	VectorHypothesis logA; // a simple normal vector for the log of a 
-	
+
+	// index by hypothesis, data point, an Eigen Vector of all individual data point likelihoods
+	typedef Vector2D<std::pair<Vector,Vector>> LL_t; // likelihood type
+
+	// We store the prediction type as a vector of data_item, hypothesis, map of output to probabilities
+	typedef Vector2D<DiscreteDistribution<typename HYP::output_t>> Predict_t; 
+		
+	VectorHypothesis logA; // a simple normal vector for the log of a
 	VectorHypothesis params; // alpha, likelihood temperature, decay
 	constexpr static int NPARAMS = 3; // how many parameters do we have?
 	
@@ -80,8 +52,6 @@ public:
 	// without recomputing them. NOTE that this assumes that the data does not change
 	// between hypotheses of this class. 
 	
-	// TODO: ADD ASSERT THAT THE DAT ADOESNT CHANGE
-	
 	std::shared_ptr<Matrix>         C;
 	std::shared_ptr<LL_t>           LL; // type for the likelihood
 	std::shared_ptr<Predict_t<HYP>> P;
@@ -90,7 +60,7 @@ public:
 	// in proposal when necessary 
 	std::shared_ptr<Matrix> decayedLikelihood;
 	
-	std::vector<HumanDatum<HYP>>* which_data; // stored so we can remember what we computed for. 
+	data_t* which_data; // stored so we can remember what we computed for. 
 	
 	double alpha, llt, decay; // the parameters 
 		
@@ -140,7 +110,7 @@ public:
 
 		size_t nRules = hypotheses[0].grammar->count_rules();
 
-		C = std::make_shared<Matrix>(new Matrix(hypotheses.size(), nRules)); 
+		C.reset(new Matrix(hypotheses.size(), nRules)); 
 
 		#pragma omp parallel for
 		for(size_t i=0;i<hypotheses.size();i++) {
@@ -165,7 +135,7 @@ public:
 	void recompute_LL(std::vector<HYP>& hypotheses, std::vector<HumanDatum<HYP>>& human_data) {
 		assert(which_data == &human_data);
 		
-		LL = std::make_shared<LL_t>(new LL_t(hypotheses.size(), human_data.size())); 
+		LL.reset(new LL_t(hypotheses.size(), human_data.size())); 
 		
 		#pragma omp parallel for
 		for(size_t h=0;h<hypotheses.size();h++) {
@@ -236,7 +206,7 @@ public:
 		}
 
 		// start with zero
-		decayedLikelihood = std::make_shared<Matrix>(new Matrix(C->rows(), human_data.size()));
+		decayedLikelihood.reset(new Matrix(C->rows(), human_data.size()));
 		
 		#pragma omp parallel for
 		// sum up with the memory decay
@@ -258,7 +228,7 @@ public:
 	void recompute_P(std::vector<HYP>& hypotheses, data_t& human_data) {
 		assert(which_data == &human_data);
 		
-		P = std::make_shared<Predict_t<HYP>>(new Predict_t<HYP>(hypotheses.size(), human_data.size())); 
+		P.reset(new Predict_t<HYP>(hypotheses.size(), human_data.size())); 
 		
 		#pragma omp parallel for
 		for(size_t di=0;di<human_data.size();di++) {	

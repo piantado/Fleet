@@ -6,12 +6,7 @@
 
 extern volatile sig_atomic_t CTRL_C;
 
-// index by hypothesis, data point, an Eigen Vector of all individual data point likelihoods
-typedef Vector2D<std::pair<Vector,Vector>> LL_t; // likelihood type
 
-// We store the prediction type as a vector of data_item, hypothesis, map of output to probabilities
-template<typename HYP>
-using Predict_t = Vector2D<DiscreteDistribution<typename HYP::output_t>>; 
 
 #include "Top.h"
 #include "Miscellaneous.h"
