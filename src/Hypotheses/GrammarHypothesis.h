@@ -1,5 +1,7 @@
 #pragma once 
  
+ // Tune up eigen wrt thread safety
+ 
  
 #include <signal.h>
 
@@ -94,8 +96,10 @@ public:
 	// index by hypothesis, data point, an Eigen Vector of all individual data point likelihoods
 	typedef Vector2D<std::pair<Vector,Vector>> LL_t; // likelihood type
 
-	// We store the prediction type as a vector of data_item, hypothesis, map of output to probabilities
-	typedef Vector2D<DiscreteDistribution<typename HYP::output_t>> Predict_t; 
+	// a prediction is a list of pairs of outputs and NON-log probabilities
+	// we used to stored this as a map--a DiscreteDistribution--but that was slow to 
+	// iterate so now we might make a map in constructing, but we stores as a vector of pairs
+	typedef Vector2D<std::vector<std::pair<typename HYP::output_t,double>>> Predict_t; 
 		
 	VectorHypothesis logA; // a simple normal vector for the log of a
 	VectorHypothesis params; // alpha, likelihood temperature, decay
@@ -153,6 +157,8 @@ public:
 		COUT "# Done computing incremental likelihoods " ENDL;
 		recompute_P(hypotheses, human_data);
 		COUT "# Done computing model predictions" ENDL;
+		// this gets constructed here so it doesn't need to be reallocated each time we call recompute_decayedLikelihood
+		decayedLikelihood.reset(new Matrix(C->rows(), human_data.size()));
 		recompute_decayedLikelihood(human_data);
 	}
 	
@@ -267,9 +273,12 @@ public:
 			powers[i] = powf(i,-decay);
 		}
 
-		// start with zero
-		decayedLikelihood.reset(new Matrix(C->rows(), human_data.size()));
-		
+		// fix it if its the wrong size
+		if(decayedLikelihood->rows() != C->rows() or
+		   decayedLikelihood->cols() != (int)human_data.size()) {
+			decayedLikelihood.reset(new Matrix(C->rows(), human_data.size()));
+	    } // else we don't need to do anything since it' all overwritten below
+		   
 		#pragma omp parallel for
 		// sum up with the memory decay
 		for(int h=0;h<C->rows();h++) {
@@ -295,7 +304,18 @@ public:
 		#pragma omp parallel for
 		for(size_t di=0;di<human_data.size();di++) {	
 			for(size_t h=0;h<hypotheses.size();h++) {			
-				P->at(h,di) = hypotheses[h](human_data[di].predict->input);
+				
+				// we get back a distcrete distribution, but we'd like to store it as a vector
+				// so its faster to iterature
+				auto ret = hypotheses[h](human_data[di].predict->input);
+				
+				std::vector<std::pair<typename HYP::output_t,double>> v(ret.size());
+				
+				for(auto& x : ret.values()) {
+					v.push_back(std::make_pair(x.first, exp(x.second)));
+				}
+				
+				P->at(h,di) = v;
 			}
 		}
 	}
@@ -327,7 +347,8 @@ public:
 		// now normalize it and convert to probabilities
 		#pragma omp parallel for
 		for(int i=0;i<hposterior.cols();i++) { 
-			hposterior.col(i) = lognormalize(hposterior.col(i)).array();
+			// here we normalize and convert it to *probability* space
+			hposterior.col(i) = lognormalize(hposterior.col(i)).array().exp();
 		}
 		
 		this->likelihood  = 0.0; // of the human data
@@ -335,44 +356,26 @@ public:
 		#pragma omp parallel for
 		for(size_t i=0;i<human_data.size();i++) {
 			
-			// build up a predictive posterior
-			// This is the log version -- if you use this -- you must change the log version down below too. 
-			#ifdef GRAMMAR_HYPOTHESIS_USE_LOG_PREDICTIVE
-				DiscreteDistribution<typename HYP::output_t> model_predictions;
-				for(int h=0;h<hposterior.rows();h++) {
+			// the non-log version. Here we avoid computing ang logs, logsumexp, or even exp in this loop
+			// because its very slow
+			std::map<typename HYP::output_t, double> model_predictions;
+			for(int h=0;h<hposterior.rows();h++) {
+				
+				if(hposterior(h,i) < 1e-6)  continue;  // skip very low probability for speed
 					
-					// don't count these in the posterior since they're so small.
-					if(hposterior(h,i) < -10) 
-						continue;  
+				for(const auto& mp : P->at(h,i)) {						
+					float p = hposterior(h,i) * mp.second;
 					
-					for(const auto& mp : P->at(h,i).values() ) {
-						model_predictions.addmass(mp.first, hposterior(h,i) + mp.second);
-					}
+					// map 0 for nonexisting doubles
+					model_predictions[mp.first] += p;
+					
 				}
-			#else
-				// build the non-log version (which should be much faster)
-				std::map<typename HYP::output_t, double> model_predictions;
-				for(int h=0;h<hposterior.rows();h++) {
-					for(const auto& mp : P->at(h,i).values() ) {
-						float p = expf(hposterior(h,i) + mp.second);
-						if(model_predictions.find(mp.first) == model_predictions.end()){
-							model_predictions[mp.first] = p;
-						}
-						else {
-							model_predictions[mp.first] += p;
-						}
-					}
-				}
-			#endif
+			}
 			
 			double ll = 0.0; // the likelihood here
 			auto& di = human_data[i];
 			for(const auto& r : di.responses) {
-				#ifdef GRAMMAR_HYPOTHESIS_USE_LOG_PREDICTIVE
-					ll += log( (1.0-alpha)*di.chance + alpha*exp(model_predictions[r.first])) * r.second; // log probability times the number of times they answered this
-				#else
-					ll += log( (1.0-alpha)*di.chance + alpha*model_predictions[r.first]) * r.second; // log probability times the number of times they answered this
-				#endif
+				ll += log( (1.0-alpha)*di.chance + alpha*model_predictions[r.first]) * r.second; // log probability times the number of times they answered this
 			}
 			
 			#pragma omp critical
