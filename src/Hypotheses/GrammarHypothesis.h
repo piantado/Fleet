@@ -22,7 +22,6 @@ extern volatile sig_atomic_t CTRL_C;
 // accurate but quite a bit slower, so it's off by default. 
 //#define GRAMMAR_HYPOTHESIS_USE_LOG_PREDICTIVE 1
 
-
 /**
  * @brief Runs MCMC on hypotheses, resampling when the data stops being incremental and returns a unioned
  * 			vector of all the tops
