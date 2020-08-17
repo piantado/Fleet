@@ -272,7 +272,7 @@ public:
 /// Declare global set of data
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "Statistics/Top.h"
+#include "Top.h"
 TopN<MyHypothesis> all; // used by MCMC and MCTS locally
 
 std::vector<MyHypothesis::data_t> alldata;
@@ -370,7 +370,6 @@ int main(int argc, char** argv) {
 	Fleet fleet("Fancy number inference model");
 	fleet.initialize(argc, argv);
 
-	
 	MyGrammar grammar(PRIMITIVES);
 	
 	typedef MyHypothesis::data_t  data_t;
@@ -422,11 +421,11 @@ int main(int argc, char** argv) {
 //	tic();
 
 	// check out A*	
-	TopN<MyHypothesis> top(ntop);
+	TopN<MyHypothesis> top();
 	top.print_best = true;
 	MyHypothesis h0(&grammar);
 	Astar astar(h0,&alldata[alldata.size()-1], top, 100.0);
-	astar.run(Control(mcts_steps, runtime, nthreads));
+	astar.run(Control());
 	top.print();
 	
 	fleet.completed(); // print the search/mcmc stats here instead of when fleet is destroyed

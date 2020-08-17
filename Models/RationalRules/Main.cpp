@@ -106,7 +106,7 @@ int main(int argc, char** argv){
 	MyGrammar grammar(PRIMITIVES);
 	
 	// top stores the top hypotheses we have found
-	TopN<MyHypothesis> top(ntop);
+	TopN<MyHypothesis> top;
 	
 	//------------------
 	// set up the data
@@ -125,7 +125,7 @@ int main(int argc, char** argv){
 	auto h0 = MyHypothesis::make(&grammar);
 	MCMCChain chain(h0, &mydata, top);
 	tic();
-	chain.run(Control(mcmc_steps,runtime));
+	chain.run(Control());
 	tic();
 //	
 	

@@ -120,7 +120,7 @@ public:
 		 * 		  NOTE: ctl cannot be passed by reference. 
 		 * @param ctl
 		 */
-		assert(ctl.threads == 1); // this is not how we run parallel 
+		assert(ctl.nthreads == 1 && "*** You seem to have called MCMCChain with nthreads>1. This is not how you paralle. Check out ChainPool"); 
 		
 		#ifdef DEBUG_MCMC
 		DEBUG("# Starting MCMC Chain on\t", current.posterior, current.prior, current.likelihood, current.string());
@@ -212,10 +212,13 @@ public:
 			}
 				
 			// and call on the sample if we meet all our criteria
-			extern unsigned long thin;
 			if(callback != nullptr and samples >= ctl.burn and
-				(thin == 0 or FleetStatistics::global_sample_count % thin == 0)) {
+				(ctl.thin == 0 or FleetStatistics::global_sample_count % ctl.thin == 0)) {
 				(*callback)(current);
+			}
+			
+			if(ctl.print > 0 and FleetStatistics::global_sample_count % ctl.print == 0) {
+				current.print();
 			}
 			
 //			if( FleetStatistics::global_sample_count>0 and FleetStatistics::global_sample_count % 100 == 0 ) {

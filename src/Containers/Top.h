@@ -13,6 +13,7 @@
 #include <unordered_map>
 #include <cassert>
 
+#include "FleetArgs.h"
 
 
 /**
@@ -39,6 +40,7 @@ struct HasPosterior <T, decltype((void) T::posterior, 0)> : std::true_type { };
  * @file Top.h
  * @brief A TopN is a n object you can "add" hypotheses to (via add or <<) and it stores the best N of them.
  * 			This is widely used in Fleet in order to find good approximations to the top hypotheses found in MCTS or MCMC.
+ * 			The default constructor here reads from FleetArgs::ntop as the default value
  * */
 template<class T>
 class TopN {	
@@ -54,7 +56,7 @@ public:
 public:
 	std::atomic<size_t> N;
 	
-	TopN(size_t n=std::numeric_limits<size_t>::max()) :  print_best(false), N(n) {}
+	TopN(size_t n=FleetArgs::ntop) : print_best(false), N(n) {}
 	
 	TopN(const TopN<T>& x) {
 		clear();

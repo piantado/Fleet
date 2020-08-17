@@ -44,15 +44,15 @@ public:
 	 */	
 	void run(Control ctl, Args... args) {
 		
-		std::vector<std::thread> threads(ctl.threads); 
+		std::vector<std::thread> threads(ctl.nthreads); 
 
-		for(unsigned long t=0;t<ctl.threads;t++) {
-			Control ctl2 = ctl; ctl2.threads=1; // we'll make each thread just one
+		for(unsigned long t=0;t<ctl.nthreads;t++) {
+			Control ctl2 = ctl; ctl2.nthreads=1; // we'll make each thread just one
 			threads[t] = std::thread(&ParallelInferenceInterface<Args...>::run_thread, this, ctl2, args...);
 		}
 		
 		// wait for all to complete
-		for(unsigned long t=0;t<ctl.threads;t++) {
+		for(unsigned long t=0;t<ctl.nthreads;t++) {
 			threads[t].join();
 		}
 	}

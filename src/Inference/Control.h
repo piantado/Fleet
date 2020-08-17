@@ -13,6 +13,7 @@
 
 #include <signal.h>
 
+#include "FleetArgs.h"
 #include "Timing.h"
 #include "IO.h"
 
@@ -22,19 +23,28 @@ struct Control {
 	// Parameters for running MCMC or MCTS
 	// 
 	unsigned long steps;
-	time_ms time;
-	size_t threads;
+	time_ms runtime;
+	size_t nthreads;
 	unsigned long burn;
-	unsigned long thin; 
 	unsigned long restart;
+	unsigned long thin;
+	unsigned long print; 
 	
 	timept start_time;
 	unsigned long done_steps; // how many have we done?
 
 	bool break_CTRLC; // should we break on ctrl_c?
 
-	Control(unsigned long s=0, time_ms t=0, size_t thr=1, unsigned long r=0) : steps(s), time(t), threads(thr), burn(0), 
-					thin(0), restart(r), done_steps(0), break_CTRLC(true) {
+	Control(unsigned long st=FleetArgs::steps, 
+			unsigned long t=FleetArgs::runtime,
+			size_t thr=FleetArgs::nthreads, 
+			unsigned long bu=FleetArgs::burn, 
+			unsigned long re=FleetArgs::restart, 
+			unsigned long th=FleetArgs::thin, 
+			unsigned long pr=FleetArgs::print) : 
+					steps(st), runtime(t), nthreads(thr), burn(bu), restart(re), thin(th), print(pr), break_CTRLC(true) {
+		// We defaultly read arguments from FleetArgs
+		
 		start(); // just defaultly because it's easier
 	}
 	
@@ -46,6 +56,10 @@ struct Control {
 		done_steps = 0;
 		start_time = now();
 	}
+	
+	// Add some functions here to chcek these
+//	bool burn() {  return done_steps < burn; }
+//	bool print() { 
 	
 	bool running() {
 		/**
@@ -69,9 +83,9 @@ struct Control {
 			return false;
 		}
 		
-		if(time > 0 and time_since(start_time) > time) {
+		if(runtime > 0 and time_since(start_time) > runtime) {
 			#ifdef DEBUG_CONTROL
-				std::cerr << "Control break on time\t"<< time << std::endl;
+				std::cerr << "Control break on runtime\t"<< runtime << std::endl;
 			#endif	
 			return false;
 		}

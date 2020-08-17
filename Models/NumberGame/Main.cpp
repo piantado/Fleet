@@ -204,7 +204,7 @@ int main(int argc, char** argv){
 
 
 	// Define something to hold the best hypotheses
-	TopN<MyHypothesis> top(ntop);
+	TopN<MyHypothesis> top;
 
 	// our data
 	//MyHypothesis::data_t mydata = {25, 36, 49, 25, 36, 49, 25, 36, 49, 25, 36, 49};	// squares in a range
@@ -217,7 +217,7 @@ int main(int argc, char** argv){
 	// and sample with just one chain
 	MCMCChain samp(h0, &mydata, top);
 	tic();
-	samp.run(Control(mcmc_steps, runtime)); //30000);		
+	samp.run(Control()); //30000);		
 	tic();
 
 	// print the results

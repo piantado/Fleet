@@ -89,26 +89,9 @@ const std::string FLEET_VERSION = "0.0.97";
 /// Fleet global variables
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-unsigned long random_seed  = 0;
-unsigned long mcts_steps   = 0;
-unsigned long mcmc_steps   = 0; 
-unsigned long inner_mcmc_steps   = 0; 
-unsigned long thin         = 0;
-unsigned long ntop         = 100;
-unsigned long mcmc_restart = 0;
-unsigned long checkpoint   = 0; 
-double        explore      = 1.0; // we want to exploit the string prefixes we find
-size_t        nthreads     = 1;
-unsigned long runtime      = 0;
-unsigned long inner_runtime      = 0;
-unsigned long nchains      = 1;
-bool          quiet      = false; // this is used to indicate that we want to not print much out (typically only posteriors and counts)
-std::string   input_path   = "input.txt";
-std::string   tree_path    = "tree.txt";
-std::string   output_path  = "output";
-std::string   timestring   = "0s";
-std::string   inner_timestring = "0s";
+#include "FleetArgs.h"
 
+unsigned long random_seed  = 0;
 
 // This is global that checks whether CTRL_C has been pressed
 // NOTE: this must be registered in main with signal(SIGINT, Fleet::fleet_interrupt_handler);
@@ -139,22 +122,24 @@ public:
 	Fleet(std::string brief) : app{brief}, done(false) {
 
 		app.add_option("--seed",        random_seed, "Seed the rng (0 is no seed)");
-		app.add_option("--mcts",        mcts_steps, "Number of MCTS search steps to run");
-		app.add_option("--mcmc",        mcmc_steps, "Number of mcmc steps to run");
-		app.add_option("--inner-mcmc",  inner_mcmc_steps, "Number of mcmc steps to run (inner argument)");
-		app.add_option("--thin",        thin, "Thinning on the number printed");
-		app.add_option("--output",      output_path, "Where we write output");
-		app.add_option("--top",         ntop, "The number to store");
-		app.add_option("-n,--threads",  nthreads, "Number of threads for parallel search");
-		app.add_option("--explore",     explore, "Exploration parameter for MCTS");
-		app.add_option("--restart",     mcmc_restart, "If we don't improve after this many, restart");
-		app.add_option("--input",       input_path, "Read standard input from here");
-		app.add_option("-T,--time",     timestring, "Stop (via CTRL-C) after this much time (takes smhd as seconds/minutes/hour/day units)");
-		app.add_option("--inner-time",  inner_timestring, "Inner time");
-		app.add_option("--tree",        tree_path, "Write the tree here");
-		app.add_option("-c,--chains",   nchains, "How many chains to run");
+		app.add_option("--steps",       FleetArgs::steps, "Number of MCMC or MCTS search steps to run");
+		app.add_option("--inner-steps", FleetArgs::inner_steps, "Steps to run inner loop of a search");
+		app.add_option("--burn",        FleetArgs::burn, "Burn this many steps");
+		app.add_option("--thin",        FleetArgs::thin, "Thinning on callbacks");
+		app.add_option("--print",       FleetArgs::print, "Print out every this many");
+		app.add_option("--top",         FleetArgs::ntop, "The number to store");
+		app.add_option("-n,--threads",  FleetArgs::nthreads, "Number of threads for parallel search");
+		app.add_option("--explore",     FleetArgs::explore, "Exploration parameter for MCTS");
+		app.add_option("--restart",     FleetArgs::restart, "If we don't improve after this many, restart a chain");
+		app.add_option("-c,--chains",   FleetArgs::nchains, "How many chains to run");
 		
-		app.add_flag(  "-q,--quiet",    quiet, "Don't print very much and do so on one line");
+		app.add_option("--output",      FleetArgs::output_path, "Where we write output");
+		app.add_option("--input",       FleetArgs::input_path, "Read standard input from here");
+		app.add_option("-T,--time",     FleetArgs::timestring, "Stop (via CTRL-C) after this much time (takes smhd as seconds/minutes/hour/day units)");
+		app.add_option("--inner-time",  FleetArgs::inner_timestring, "Inner time");
+		app.add_option("--tree",        FleetArgs::tree_path, "Write the tree here");
+		
+//		app.add_flag(  "-q,--quiet",    quiet, "Don't print very much and do so on one line");
 //		app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");
 
 		start_time = now();
@@ -215,8 +200,8 @@ public:
 		char tmp[64]; sprintf(tmp, "md5sum /proc/%d/exe", getpid());
 		
 		// convert everything to ms
-		runtime = convert_time(timestring);	
-		inner_runtime = convert_time(inner_timestring);
+		FleetArgs::runtime = convert_time(FleetArgs::timestring);	
+		FleetArgs::inner_runtime = convert_time(FleetArgs::inner_timestring);
 		
 		COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
 		COUT "# Running Fleet on " << hostname << " with PID=" << getpid() << " by user " << getenv("USER") << " at " <<  datestring() ENDL;
@@ -224,19 +209,21 @@ public:
 		COUT "# Fleet version: " << FLEET_VERSION ENDL;
 		COUT "# Executable checksum: " << system_exec(tmp);
 		COUT "# Run options: " ENDL;
-		COUT "# \t --input=" << input_path ENDL;
-		COUT "# \t --threads=" << nthreads ENDL;
-		COUT "# \t --chains=" << nchains ENDL;
-		COUT "# \t --mcmc=" << mcmc_steps ENDL;
-		COUT "# \t --mcts=" << mcts_steps ENDL;
-		COUT "# \t --time=" << timestring << " (" << runtime << " ms)" ENDL;
-		COUT "# \t --restart=" << mcmc_restart ENDL;
+		COUT "# \t --input=" << FleetArgs::input_path ENDL;
+		COUT "# \t --threads=" << FleetArgs::nthreads ENDL;
+		COUT "# \t --chains=" << FleetArgs::nchains ENDL;
+		COUT "# \t --steps=" << FleetArgs::steps ENDL;
+		COUT "# \t --inner_steps=" << FleetArgs::inner_steps ENDL;
+		COUT "# \t --thin=" << FleetArgs::thin ENDL;
+		COUT "# \t --print=" << FleetArgs::print ENDL;
+		COUT "# \t --time=" << FleetArgs::timestring << " (" << FleetArgs::runtime << " ms)" ENDL;
+		COUT "# \t --restart=" << FleetArgs::restart ENDL;
 		COUT "# \t --seed=" << random_seed ENDL;
 		COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;	
 		
 		
 		// give warning for infinite runs:
-		if(mcmc_steps == 0 and mcts_steps == 0 and runtime==0) {
+		if(FleetArgs::steps == 0 and FleetArgs::runtime==0) {
 			CERR "# Warning: you haven not specified --time or --mcmc so this will run forever or until CTRL-C." ENDL;
 		}
 		
