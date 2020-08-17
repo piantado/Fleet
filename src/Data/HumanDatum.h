@@ -13,9 +13,8 @@ template<typename HYP>
 struct HumanDatum {
 	typename HYP::data_t*                   data; 
 	size_t                                  ndata; // we condition on the first ndata points in data (so we can point to a single stored data)
-	typename HYP::datum_t*                  predict;	// what we compute on now
+	typename HYP::input_t*                  predict;	// what we compute on now
 	std::map<typename HYP::output_t,size_t> responses; // how many of each type of response do you see?
 	double                                  chance; // how many responses are alltogether possible? Needed for chance responding. 
-	
 	int                                     decay_position; // for memory decay that's decay_position**(-decay)
 };

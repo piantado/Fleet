@@ -10,6 +10,7 @@
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <unsupported/Eigen/SpecialFunctions>
+#include "IO.h"
 
 using Vector = Eigen::VectorXf; // set these and precision
 using Matrix = Eigen::MatrixXf; 
@@ -26,6 +27,7 @@ using Matrix = Eigen::MatrixXf;
 
 double logsumexp(const Vector& v) {
 	double mx = v.maxCoeff();
+	//CERR v.transpose() TAB mx << "\n\n\n" ENDL;
 	return log((v.array()-mx).array().exp().sum()) + mx;
 }
 

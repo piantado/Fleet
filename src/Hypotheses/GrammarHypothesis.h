@@ -44,12 +44,13 @@ std::vector<HYP> get_hypotheses_from_mcmc(HYP& h0, std::vector<typename HYP::dat
 			COUT "# Running " TAB vi TAB " of " TAB mcmc_data.size() ENDL;
 			}
 			
-			for(size_t i=0;i<mcmc_data[vi]->size() and !CTRL_C;i++) {
+			for(size_t i=1;i<=mcmc_data[vi]->size() and !CTRL_C;i++) {
 				
 				TopN<HYP> top(ntop);
 				
 				HYP myh0 = h0.restart();
 				
+				// slices [0,i]
 				auto givendata = slice(*(mcmc_data[vi]), 0, i);
 				
 				MCMCChain chain(myh0, &givendata, top);
@@ -111,8 +112,8 @@ public:
 	// without recomputing them. NOTE that this assumes that the data does not change
 	// between hypotheses of this class. 
 	
-	std::shared_ptr<Matrix>         C;
-	std::shared_ptr<LL_t>           LL; // type for the likelihood
+	std::shared_ptr<Matrix>    C;
+	std::shared_ptr<LL_t>      LL; // type for the likelihood
 	std::shared_ptr<Predict_t> P;
 
 	// These variables store some parameters and get recomputed
@@ -188,8 +189,10 @@ public:
 				cv(i) = c[i];
 			}
 			
-			C->row(i) = cv;
 			assert(hypotheses[i].grammar == grammar); // just a check that the grammars are identical
+			
+			#pragma omp critical
+			C->row(i) = cv;
 		}
 	}
 		
@@ -242,8 +245,9 @@ public:
 							decay_pos(i) = human_data[di].decay_position;
 						}				
 					}
-			
+					
 					// set as an Eigen vector in out
+					#pragma omp critical
 					LL->at(h,di) = std::make_pair(data_lls,decay_pos);
 				}
 			}
@@ -262,30 +266,31 @@ public:
 		// find the max power we'll ever need
 		int MX = -1;
 		for(auto& di : human_data) {
-			MX = std::max(MX, di.decay_position);
+			MX = std::max(MX, di.decay_position+1); // need +1 since 0 decay needs one value
 		}
 		
 		// just compute this once -- should be faster to use vector intrinsics? 
 		// we store these in reverse order from some max data size
 		// so that we can just take the tail for what we need
-		Vector powers = Vector::Zero(MX);
-		for(int i=0;i<MX;i++) {
-			powers[i] = powf(i,-decay);
+		Vector powers = Vector::Ones(MX);
+		for(int i=1;i<MX;i++) { // intentionally leaving powers(0) = 1 here
+			powers(i) = powf(i,-decay);
 		}
-
+		
 		// fix it if its the wrong size
 		if(decayedLikelihood->rows() != C->rows() or
 		   decayedLikelihood->cols() != (int)human_data.size()) {
 			decayedLikelihood.reset(new Matrix(C->rows(), human_data.size()));
 	    } // else we don't need to do anything since it' all overwritten below
 		   
-		#pragma omp parallel for
 		// sum up with the memory decay
+		//#pragma omp parallel for
 		for(int h=0;h<C->rows();h++) {
 			for(int di=0;di<decayedLikelihood->cols();di++) {
 				const Vector& v = LL->at(h,di).first;
 				const Vector  d = powers(LL->at(h,di).second.array());
 				decayedLikelihood->operator()(h,di) = v.dot(d) / llt;							
+				//CERR decayedLikelihood->operator()(h,di) ENDL;
 			}
 		}
 	}
@@ -307,7 +312,7 @@ public:
 				
 				// we get back a distcrete distribution, but we'd like to store it as a vector
 				// so its faster to iterature
-				auto ret = hypotheses[h](human_data[di].predict->input);
+				auto ret = hypotheses[h](*human_data[di].predict);
 				
 				std::vector<std::pair<typename HYP::output_t,double>> v(ret.size());
 				
@@ -351,8 +356,11 @@ public:
 			hposterior.col(i) = lognormalize(hposterior.col(i)).array().exp();
 		}
 		
-		this->likelihood  = 0.0; // of the human data
+		// HMM Maybe the loop orders should be switched? 
+		// We can then filter out hypotheses? Or if we do it above we always compute exp which 
+		// is non-ideal
 		
+		this->likelihood  = 0.0; // of the human data
 		#pragma omp parallel for
 		for(size_t i=0;i<human_data.size();i++) {
 			
@@ -360,15 +368,12 @@ public:
 			// because its very slow
 			std::map<typename HYP::output_t, double> model_predictions;
 			for(int h=0;h<hposterior.rows();h++) {
-				
 				if(hposterior(h,i) < 1e-6)  continue;  // skip very low probability for speed
 					
 				for(const auto& mp : P->at(h,i)) {						
 					float p = hposterior(h,i) * mp.second;
-					
 					// map 0 for nonexisting doubles
 					model_predictions[mp.first] += p;
-					
 				}
 			}
 			
@@ -453,15 +458,17 @@ public:
 			for(size_t nt=0;nt<grammar->count_nonterminals();nt++) { // each nonterminal in the grammar is a DM
 				size_t nrules = grammar->count_rules( (nonterminal_t) nt);
 				if(nrules > 1) { // don't need to do anything if only one rule (but must incremnet offset)
-					Vector a = eigenslice(allA,offset,nrules); // TODO: seqN doesn't seem to work with this c++ version
+					Vector a = eigenslice(allA,offset,nrules); // TODO: seqN doesn't seem to work with this eigen version
 					Vector c = eigenslice(C.row(i),offset,nrules);
 					double n = a.sum(); assert(n > 0.0); 
-					double a0 = c.sum();
-					assert(a0 != 0.0);
-					lp += std::lgamma(n+1) + std::lgamma(a0) - std::lgamma(n+a0) 
-						 + (c.array() + a.array()).array().lgamma().sum() 
-						 - (c.array()+1).array().lgamma().sum() 
-						 - a.array().lgamma().sum();
+					double c0 = c.sum();
+					if(c0 != 0.0) { // TODO: Check this...  
+						// NOTE: std::lgamma here is not thread safe, but by my read it should be when the argument is positive
+						lp += std::lgamma(n+1) + std::lgamma(c0) - std::lgamma(n+c0) 
+							 + (c.array() + a.array()).array().lgamma().sum() 
+							 - (c.array()+1).array().lgamma().sum() 
+							 - a.array().lgamma().sum();
+					}
 				}
 				offset += nrules;
 			}
@@ -488,6 +495,8 @@ public:
 		std::string out = ""; 
 		
 		out += prefix + "posterior.score" +"\t"+ str(this->posterior) + "\n";
+		out += prefix + "prior" +"\t"+ str(this->prior) + "\n";
+		out += prefix + "likelihood" +"\t"+ str(this->likelihood) + "\n";
 		out += prefix + "forwardalpha" +"\t"+ str(alpha) + "\n";
 		out += prefix + "llt" +"\t"+ str(llt) + "\n";
 		out += prefix + "decay" +"\t"+ str(decay) + "\n";

@@ -197,13 +197,22 @@ int main(int argc, char** argv){
 			assert(learner_data->size() < LEANER_RESERVE_SIZE);
 		}
 				
-		// now unpack this data into conceptdata, which requires mapping it to 
-		// HumanDatum format
+
+
+
+
+
+		// TODO: CHECK IF THI SIS RIGHT WE SHOULD HAVE AN EMPTY THIGN THERE TO START
+
+
+		
+				
+		// now unpack this data into human_data for each point in the concept
 		for(size_t i=0;i<objs->size();i++) {
 			// make a map of the responses
 			std::map<bool,size_t> m; m[true] = (*yeses)[i]; m[false] = (*nos)[i];
 			
-			HumanDatum<MyHypothesis> hd{learner_data, ndata, &((*learner_data)[ndata+i]), std::move(m), 0.5, decay_position};
+			HumanDatum<MyHypothesis> hd{learner_data, ndata, &((*learner_data)[ndata+i].input), std::move(m), 0.5, decay_position};
 		
 			human_data.push_back(std::move(hd));
 		}
@@ -225,13 +234,13 @@ int main(int argc, char** argv){
 		//
 		//
 		//		
-		//if(human_data.size() > 500) break;
+		//if(human_data.size() > 100) break;
 	
 	}
 	if(learner_data != nullptr) 
 		mcmc_data.push_back(learner_data); // and add that last dataset
 	
-	COUT "# Loaded data" ENDL;
+	COUT "# Loaded " << human_data.size() " human data points and " << mcmc_data.size() << " mcmc data points" ENDL;
 	
 	std::vector<MyHypothesis> hypotheses; 
 	if(runtype == "hypotheses" or runtype == "both") {

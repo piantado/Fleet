@@ -27,20 +27,22 @@
  *        more natural palce) because we need access to the Grammar's parameter pack over types. 
  */
 template<typename this_t, 
-		 typename input_t, 
-		 typename output_t, 
+		 typename _input_t, 
+		 typename _output_t, 
 		 typename _Grammar_t,
-		 typename _datum_t=defauldatum_t<input_t, output_t>, 
+		 typename _datum_t=defauldatum_t<_input_t, _output_t>, 
 		 typename _data_t=std::vector<_datum_t>,
-		 typename VirtualMachineState_t=typename _Grammar_t::template VirtualMachineState_t<input_t, output_t> // used for deducing VM_TYPES in VirtualMachineState
+		 typename VirtualMachineState_t=typename _Grammar_t::template VirtualMachineState_t<_input_t, _output_t> // used for deducing VM_TYPES in VirtualMachineState
 		 >
 class LOTHypothesis : public ProgramLoader,
 				      public MCMCable<this_t,_datum_t,_data_t>, // remember, this defines data_t, datum_t
-					  public Searchable<this_t,input_t,output_t>	{
+					  public Searchable<this_t,_input_t,_output_t>	{
 public:     
 	typedef typename Bayesable<_datum_t,_data_t>::datum_t datum_t;
 	typedef typename Bayesable<_datum_t,_data_t>::data_t   data_t;
 	using Grammar_t = _Grammar_t;
+	using input_t   = _input_t;
+	using output_t  = _output_t;
 	
 	static const size_t MAX_NODES = 64; // max number of nodes we allow; otherwise -inf prior
 	
