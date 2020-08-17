@@ -494,12 +494,13 @@ public:
 		//return "GrammarHypothesis["+str(this->posterior) + params.string() + ", " + logA.string() + "]";
 		std::string out = ""; 
 		
-		out += prefix + "posterior.score" +"\t"+ str(this->posterior) + "\n";
-		out += prefix + "prior" +"\t"+ str(this->prior) + "\n";
-		out += prefix + "likelihood" +"\t"+ str(this->likelihood) + "\n";
-		out += prefix + "forwardalpha" +"\t"+ str(alpha) + "\n";
-		out += prefix + "llt" +"\t"+ str(llt) + "\n";
-		out += prefix + "decay" +"\t"+ str(decay) + "\n";
+		// the -1 here is just to contrast with the nt printed below
+		out += prefix + "-1\tposterior.score" +"\t"+ str(this->posterior) + "\n";
+		out += prefix + "-1\tparameter.prior" +"\t"+ str(this->prior) + "\n";
+		out += prefix + "-1\thuman.likelihood" +"\t"+ str(this->likelihood) + "\n";
+		out += prefix + "-1\tforwardalpha" +"\t"+ str(alpha) + "\n";
+		out += prefix + "-1\tllt" +"\t"+ str(llt) + "\n";
+		out += prefix + "-1\tdecay" +"\t"+ str(decay) + "\n";
 		
 		// now add the grammar operations
 		size_t xi=0;
@@ -507,7 +508,7 @@ public:
 			for(size_t i=0;i<grammar->count_rules( (nonterminal_t) nt);i++) {
 				std::string rs = grammar->get_rule((nonterminal_t) nt,i)->format;
 		 		rs = std::regex_replace(rs, std::regex("\\%s"), "X");
-				out += prefix + QQ(rs) +"\t" + str(exp(logA(xi))) + "\n"; // unlogged here
+				out += prefix + str(nt) + "\t" + QQ(rs) +"\t" + str(exp(logA(xi))) + "\n"; // unlogged here
 				xi++;
 			}
 		}	

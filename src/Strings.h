@@ -166,7 +166,7 @@ unsigned int levenshtein_distance(const std::string& s1, const std::string& s2) 
 
 size_t count(const std::string& str, const std::string& sub) {
 	/**
-	 * @brief How many times does sub occur in str?
+	 * @brief How many times does sub occur in str? Does not count overlapping substrings
 	 * @param str
 	 * @param sub
 	 * @return 

@@ -1,6 +1,7 @@
 
 
-// TODO: Might be easier to have responses be to the entire list of objects?
+// TODO: Change to use FlipP
+
 
 #include <assert.h>
 #include <set>
@@ -42,26 +43,72 @@ std::tuple PRIMITIVES = {
 	// This version takes a reference for the first argument and that is assumed (by Fleet) to be the
 	// return value. It is never popped off the stack and should just be modified. 
 	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void        { 
-			if(a.length() + b.length() > MAX_LENGTH) 
-				throw VMSRuntimeError;
+			if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError;
 			a.append(b); // modify on stack
 	}), 
 	
 	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),
 	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
+
+	Primitive("repeat(%s,%s)",    +[](S x, int y) -> S       { 
+		S out = "";
+		if(x.length()*y > MAX_LENGTH) throw VMSRuntimeError;
+		for(int i=0;i<y;i++) 
+			out += x;
+		return out;			
+	}),
+
+	// swap O and B
+	Primitive("invert(%s)",    +[](S x) -> S       { 
+		S out(' ', x.size());
+		for(auto& c : x) {
+			if      (c == 'B') x.append("O");
+			else if (c == 'O') x.append("B");
+			else throw VMSRuntimeError;
+		}
+		return out;
+	}),
+
+	Primitive("1",    +[]() -> int { return 1; }),
+	Primitive("2",    +[]() -> int { return 2; }),
+	Primitive("3",    +[]() -> int { return 3; }),
+	Primitive("4",    +[]() -> int { return 4; }),
+	Primitive("5",    +[]() -> int { return 5; }),
+	Primitive("6",    +[]() -> int { return 6; }),
+	Primitive("7",    +[]() -> int { return 7; }),
+	Primitive("8",    +[]() -> int { return 8; }),
+	Primitive("9",    +[]() -> int { return 9; }),
+	
+	// for FlipP
+	Primitive("0.1",    +[]() -> double { return 0.1; }),
+	Primitive("0.2",    +[]() -> double { return 0.2; }),
+	Primitive("0.3",    +[]() -> double { return 0.3; }),
+	Primitive("0.4",    +[]() -> double { return 0.4; }),
+	Primitive("0.5",    +[]() -> double { return 0.5; }),
+	Primitive("0.6",    +[]() -> double { return 0.6; }),
+	Primitive("0.7",    +[]() -> double { return 0.7; }),
+	Primitive("0.8",    +[]() -> double { return 0.8; }),
+	Primitive("0.9",    +[]() -> double { return 0.9; }),
+
+	Primitive("length(%s)",   +[](S x) -> int { return x.length(); }),
+
+	Primitive("cnt(%s,%s)",   +[](S x, S y) -> int { 
+		return count(x,y);
+	}),
+
 	
 	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }), // optional specification of prior weight (default=1.0)
 	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }),
 	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }),
 	
-	Primitive("B",       +[]()         -> S { return S("B"); }, TERMINAL_P),
-	Primitive("O",       +[]()         -> S { return S("O"); }, TERMINAL_P),
+	Primitive("'B'",       +[]()         -> S { return S("B"); }, TERMINAL_P),
+	Primitive("'O'",       +[]()         -> S { return S("O"); }, TERMINAL_P),
 	
 	// And add built-ins - NOTE these must come last
 	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
 	Builtin::X<S>("x"),
-	Builtin::Flip("flip()", 10.0),
-	Builtin::SafeRecurse<S,S>("F(%s)")	
+	Builtin::FlipP("flip(%s)", 5.0),
+	Builtin::Recurse<S,S>("F(%s)")	
 };
 
 
@@ -71,8 +118,8 @@ std::tuple PRIMITIVES = {
 
 // declare a grammar with our primitives
 // Note that this ordering of primitives defines the order in Grammar
-class MyGrammar : public Grammar<S,bool> {
-	using Super = Grammar<S,bool>;
+class MyGrammar : public Grammar<S,bool,int,double> {
+	using Super = Grammar<S,bool,int,double>;
 	using Super::Super;
 };
 
