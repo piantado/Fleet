@@ -1,0 +1,127 @@
+\hypertarget{struct_vector2_d}{}\doxysection{Vector2D$<$ T $>$ Class Template Reference}
+\label{struct_vector2_d}\index{Vector2D$<$ T $>$@{Vector2D$<$ T $>$}}
+
+
+Just a little wrapper to allow vectors to be handled as 2D arrays, which simplifie some stuff in \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis}}.  
+
+
+
+
+{\ttfamily \#include $<$Vector2\+D.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_vector2_d_a96580267fed7cd6686cbbf8e11048023}{Vector2D}} ()
+\item 
+\mbox{\hyperlink{struct_vector2_d_a9addb650ad17e59bfc240018508157db}{Vector2D}} (int x, int y)
+\item 
+void \mbox{\hyperlink{struct_vector2_d_a686acefeb363d68e106fb4a951069a85}{resize}} (int x, int y)
+\item 
+void \mbox{\hyperlink{struct_vector2_d_af891f05ae5cdfbe8d5c8f436ae04dc98}{reserve}} (int x, int y)
+\item 
+T \& \mbox{\hyperlink{struct_vector2_d_a3394ac993a4bb0ee570fc4ed2f6357e3}{at}} (int x, int y)
+\item 
+{\footnotesize template$<$typename X $>$ }\\void \mbox{\hyperlink{struct_vector2_d_a73716695119afd405ffea6afd42391c0}{operator\mbox{[}$\,$\mbox{]}}} (X x)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{struct_vector2_d_a2183b46128acb0a2abc12242a2d08d3c}{xsize}} = 0
+\item 
+int \mbox{\hyperlink{struct_vector2_d_a76a4280e708834f08e6f294f9171c6f3}{ysize}} = 0
+\item 
+std\+::vector$<$ T $>$ \mbox{\hyperlink{struct_vector2_d_a6c97eca85f7330f9773a248bbd268b7d}{value}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Vector2\+D$<$ T $>$}
+
+Just a little wrapper to allow vectors to be handled as 2D arrays, which simplifie some stuff in \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis}}. 
+
+\begin{DoxyAuthor}{Author}
+Steven Piantadosi 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+09/08/20 
+\end{DoxyDate}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{struct_vector2_d_a96580267fed7cd6686cbbf8e11048023}\label{struct_vector2_d_a96580267fed7cd6686cbbf8e11048023}} 
+\index{Vector2D$<$ T $>$@{Vector2D$<$ T $>$}!Vector2D@{Vector2D}}
+\index{Vector2D@{Vector2D}!Vector2D$<$ T $>$@{Vector2D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Vector2D()}{Vector2D()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{struct_vector2_d}{Vector2D}}$<$ T $>$\+::\mbox{\hyperlink{struct_vector2_d}{Vector2D}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{struct_vector2_d_a9addb650ad17e59bfc240018508157db}\label{struct_vector2_d_a9addb650ad17e59bfc240018508157db}} 
+\index{Vector2D$<$ T $>$@{Vector2D$<$ T $>$}!Vector2D@{Vector2D}}
+\index{Vector2D@{Vector2D}!Vector2D$<$ T $>$@{Vector2D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Vector2D()}{Vector2D()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{struct_vector2_d}{Vector2D}}$<$ T $>$\+::\mbox{\hyperlink{struct_vector2_d}{Vector2D}} (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_vector2_d_a3394ac993a4bb0ee570fc4ed2f6357e3}\label{struct_vector2_d_a3394ac993a4bb0ee570fc4ed2f6357e3}} 
+\index{Vector2D$<$ T $>$@{Vector2D$<$ T $>$}!at@{at}}
+\index{at@{at}!Vector2D$<$ T $>$@{Vector2D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{at()}{at()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T\& \mbox{\hyperlink{struct_vector2_d}{Vector2D}}$<$ T $>$\+::at (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{struct_vector2_d_a73716695119afd405ffea6afd42391c0}\label{struct_vector2_d_a73716695119afd405ffea6afd42391c0}} 
+\index{Vector2D$<$ T $>$@{Vector2D$<$ T $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!Vector2D$<$ T $>$@{Vector2D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename X $>$ \\
+void \mbox{\hyperlink{struct_vector2_d}{Vector2D}}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{X}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{struct_vector2_d_af891f05ae5cdfbe8d5c8f436ae04dc98}\label{struct_vector2_d_af891f05ae5cdfbe8d5c8f436ae04dc98}} 
+\index{Vector2D$<$ T $>$@{Vector2D$<$ T $>$}!reserve@{reserve}}
+\index{reserve@{reserve}!Vector2D$<$ T $>$@{Vector2D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{reserve()}{reserve()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{struct_vector2_d}{Vector2D}}$<$ T $>$\+::reserve (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{struct_vector2_d_a686acefeb363d68e106fb4a951069a85}\label{struct_vector2_d_a686acefeb363d68e106fb4a951069a85}} 
+\index{Vector2D$<$ T $>$@{Vector2D$<$ T $>$}!resize@{resize}}
+\index{resize@{resize}!Vector2D$<$ T $>$@{Vector2D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{resize()}{resize()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{struct_vector2_d}{Vector2D}}$<$ T $>$\+::resize (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_vector2_d_a6c97eca85f7330f9773a248bbd268b7d}\label{struct_vector2_d_a6c97eca85f7330f9773a248bbd268b7d}} 
+\index{Vector2D$<$ T $>$@{Vector2D$<$ T $>$}!value@{value}}
+\index{value@{value}!Vector2D$<$ T $>$@{Vector2D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{value}{value}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$T$>$ \mbox{\hyperlink{struct_vector2_d}{Vector2D}}$<$ T $>$\+::value}
+
+\mbox{\Hypertarget{struct_vector2_d_a2183b46128acb0a2abc12242a2d08d3c}\label{struct_vector2_d_a2183b46128acb0a2abc12242a2d08d3c}} 
+\index{Vector2D$<$ T $>$@{Vector2D$<$ T $>$}!xsize@{xsize}}
+\index{xsize@{xsize}!Vector2D$<$ T $>$@{Vector2D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{xsize}{xsize}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{struct_vector2_d}{Vector2D}}$<$ T $>$\+::xsize = 0}
+
+\mbox{\Hypertarget{struct_vector2_d_a76a4280e708834f08e6f294f9171c6f3}\label{struct_vector2_d_a76a4280e708834f08e6f294f9171c6f3}} 
+\index{Vector2D$<$ T $>$@{Vector2D$<$ T $>$}!ysize@{ysize}}
+\index{ysize@{ysize}!Vector2D$<$ T $>$@{Vector2D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{ysize}{ysize}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{struct_vector2_d}{Vector2D}}$<$ T $>$\+::ysize = 0}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Containers/\mbox{\hyperlink{_vector2_d_8h}{Vector2\+D.\+h}}\end{DoxyCompactItemize}
