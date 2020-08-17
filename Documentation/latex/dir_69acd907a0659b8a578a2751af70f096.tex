@@ -1,5 +1,5 @@
-\hypertarget{dir_69acd907a0659b8a578a2751af70f096}{}\section{src/\+Virtual\+Machine Directory Reference}
-\label{dir_69acd907a0659b8a578a2751af70f096}\index{src/\+Virtual\+Machine Directory Reference@{src/\+Virtual\+Machine Directory Reference}}
+\hypertarget{dir_69acd907a0659b8a578a2751af70f096}{}\doxysection{src/\+Virtual\+Machine Directory Reference}
+\label{dir_69acd907a0659b8a578a2751af70f096}\index{src/VirtualMachine Directory Reference@{src/VirtualMachine Directory Reference}}
 Directory dependency graph for Virtual\+Machine\+:
 \nopagebreak
 \begin{figure}[H]
@@ -8,22 +8,22 @@ Directory dependency graph for Virtual\+Machine\+:
 \includegraphics[width=194pt]{dir_69acd907a0659b8a578a2751af70f096_dep}
 \end{center}
 \end{figure}
-\subsection*{Files}
+\doxysubsection*{Files}
 \begin{DoxyCompactItemize}
 \item 
-file \hyperlink{apply_primitives_8h}{apply\+Primitives.\+h}
+file \mbox{\hyperlink{apply_primitives_8h}{apply\+Primitives.\+h}}
 \item 
-file \hyperlink{_builtins_8h}{Builtins.\+h}
-\begin{DoxyCompactList}\small\item\em This is needed below so we can check if something is a \hyperlink{namespace_builtin}{Builtin} without template args. \end{DoxyCompactList}\item 
-file \hyperlink{_case_macros_8h}{Case\+Macros.\+h}
+file \mbox{\hyperlink{_builtins_8h}{Builtins.\+h}}
+\begin{DoxyCompactList}\small\item\em This is needed below so we can check if something is a \mbox{\hyperlink{namespace_builtin}{Builtin}} without template args. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{_case_macros_8h}{Case\+Macros.\+h}}
 \item 
-file \hyperlink{_instruction_8h}{Instruction.\+h}
+file \mbox{\hyperlink{_instruction_8h}{Instruction.\+h}}
 \begin{DoxyCompactList}\small\item\em This is an error type that is returned if we get a runtime error (e.\+g. string length, etc.) \end{DoxyCompactList}\item 
-file \hyperlink{_primitives_8h}{Primitives.\+h}
+file \mbox{\hyperlink{_primitives_8h}{Primitives.\+h}}
 \begin{DoxyCompactList}\small\item\em If there are any references in the arguments, only the first can be a reference. \end{DoxyCompactList}\item 
-file \hyperlink{_program_8h}{Program.\+h}
+file \mbox{\hyperlink{_program_8h}{Program.\+h}}
 \item 
-file \hyperlink{_virtual_machine_pool_8h}{Virtual\+Machine\+Pool.\+h}
-\begin{DoxyCompactList}\small\item\em This manages a collection of Virtual\+Machines -- this is what handles the enumeration of flip by probability. Basically each machine state stores the state of some evaluator and is able to push things back on to the Q if it encounters a random flip This stores pointers because it is impossible to copy out of std collections, so we are constantly having to call \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State} constructors. Using pointers speeds us up by about 20\%. \end{DoxyCompactList}\item 
-file \hyperlink{_virtual_machine_state_8h}{Virtual\+Machine\+State.\+h}
+file \mbox{\hyperlink{_virtual_machine_pool_8h}{Virtual\+Machine\+Pool.\+h}}
+\begin{DoxyCompactList}\small\item\em This manages a collection of Virtual\+Machines -- this is what handles the enumeration of flip by probability. Basically each machine state stores the state of some evaluator and is able to push things back on to the Q if it encounters a random flip This stores pointers because it is impossible to copy out of std collections, so we are constantly having to call \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} constructors. Using pointers speeds us up by about 20\%. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{_virtual_machine_state_8h}{Virtual\+Machine\+State.\+h}}
 \begin{DoxyCompactList}\small\item\em Count references in lambda arguments (used to ensure we only passs one) \end{DoxyCompactList}\end{DoxyCompactItemize}

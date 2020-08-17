@@ -1,5 +1,7 @@
-<map id="Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;" name="Lexicon&lt; HYP, INNER, input_t, output_t, datum_t &gt;">
-<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title="MCMCable\&lt; HYP, datum_t \&gt;" alt="" coords="5,87,200,114"/>
-<area shape="rect" id="node3" href="$class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="29,5,176,32"/>
-<area shape="rect" id="node5" href="$class_searchable.html" title="Searchable\&lt; HYP, input\l_t, output_t \&gt;" alt="" coords="360,80,523,121"/>
+<map id="Lexicon&lt; this_t, INNER, input_t, output_t, datum_t &gt;" name="Lexicon&lt; this_t, INNER, input_t, output_t, datum_t &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="457,64,644,105"/>
+<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="199,5,409,47"/>
+<area shape="rect" id="node3" href="$class_bayesable.html" title=" " alt="" coords="5,13,151,39"/>
+<area shape="rect" id="node4" title=" " alt="" coords="249,71,359,98"/>
+<area shape="rect" id="node5" href="$class_searchable.html" title=" " alt="" coords="237,123,371,164"/>
 </map>

@@ -1,65 +1,41 @@
-\hypertarget{struct_primitive}{}\section{Primitive$<$ T, args $>$ Class Template Reference}
-\label{struct_primitive}\index{Primitive$<$ T, args $>$@{Primitive$<$ T, args $>$}}
+\hypertarget{struct_primitive}{}\doxysection{Primitive Class Reference}
+\label{struct_primitive}\index{Primitive@{Primitive}}
 
 
 {\ttfamily \#include $<$Grammar.\+h$>$}
 
-
-
-Inheritance diagram for Primitive$<$ T, args $>$\+:
-\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=184pt]{struct_primitive__inherit__graph}
-\end{center}
-\end{figure}
-
-
-Collaboration diagram for Primitive$<$ T, args $>$\+:
-\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=184pt]{struct_primitive__coll__graph}
-\end{center}
-\end{figure}
-\subsection*{Public Types}
+\doxysubsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
-typedef std\+::decay$<$ typename \hyperlink{struct_head_if_reference_else_t}{Head\+If\+Reference\+ElseT}$<$ T, args... $>$\+::type $>$\+::type \hyperlink{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}{Grammar\+Return\+Type}
+typedef std\+::decay$<$ typename \mbox{\hyperlink{struct_head_if_reference_else_t}{Head\+If\+Reference\+ElseT}}$<$ T, args... $>$\+::type $>$\+::type \mbox{\hyperlink{struct_primitive_a1d62b6a608570b938facf99e4cbfccaf}{Grammar\+Return\+Type}}
 \end{DoxyCompactItemize}
-\subsection*{Public Member Functions}
+\doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-constexpr \hyperlink{struct_primitive_a582a781e02c86b17df208d6fc0c39daf}{Primitive} (const char $\ast$fmt, T($\ast$\+\_\+call)(args...), double \+\_\+p=1.\+0)
+constexpr \mbox{\hyperlink{struct_primitive_a4d2b293152f9fe1202f8713977263c68}{Primitive}} (const char $\ast$fmt, T($\ast$\+\_\+call)(args...), double \+\_\+p=1.\+0)
 \item 
-{\footnotesize template$<$typename V , typename P , typename L $>$ }\\constexpr \hyperlink{struct_primitive_a8a9ad9e0b9c7bc94bbb4290cb298288c}{Primitive} (const char $\ast$fmt, T($\ast$\+\_\+call)(args...), \hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \+\_\+dispatch(V $\ast$, P $\ast$, L $\ast$), double \+\_\+p=1.\+0)
+{\footnotesize template$<$typename V , typename P , typename L $>$ }\\constexpr \mbox{\hyperlink{struct_primitive_aaa89d04ae7625f36b54f7dc169f16134}{Primitive}} (const char $\ast$fmt, T($\ast$\+\_\+call)(args...), \mbox{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t}} \+\_\+dispatch(V $\ast$, P $\ast$, L $\ast$), double \+\_\+p=1.\+0)
 \item 
-{\footnotesize template$<$typename V , typename P , typename L $>$ }\\\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{struct_primitive_a10cedec90ed4a3ff01be2bd3b9c36528}{V\+M\+Scall} (V $\ast$vms, P $\ast$pool, L $\ast$loader)
-\begin{DoxyCompactList}\small\item\em This gets called by a \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State} to evaluate the primitive on some arguments. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Public Attributes}
+{\footnotesize template$<$typename V , typename P , typename L $>$ }\\\mbox{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t}} \mbox{\hyperlink{struct_primitive_a49bd8209d88633390f8ff0deb959229c}{V\+M\+Scall}} (V $\ast$vms, P $\ast$pool, L $\ast$loader)
+\begin{DoxyCompactList}\small\item\em This gets called by a \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} to evaluate the primitive on some arguments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-std\+::string \hyperlink{struct_primitive_afa8c2d4087b36ae9580fed3dc00e47b6}{format}
+std\+::string \mbox{\hyperlink{struct_primitive_a4de5bffc644af99bcab0428e3b242b5f}{format}}
 \item 
-T($\ast$ \hyperlink{struct_primitive_a4a183f50daf033866abc34fa2da9e703}{call} )(args...)
+T($\ast$ \mbox{\hyperlink{struct_primitive_a8bf9484d49731d0d0165f52d38e29a89}{call}} )(args...)
 \item 
-std\+::any \hyperlink{struct_primitive_a8fe52297e3da666ec08e2328a3fe92e9}{dispatch}
+void $\ast$ \mbox{\hyperlink{struct_primitive_acd4ee5aa8275bd56896de05a82b7b1d3}{dispatch}}
 \item 
-\hyperlink{_instruction_8h_a227278394efd1e2313c727102db09ea9}{Primitive\+Op} \hyperlink{struct_primitive_a45ef953a37468a97b5a4b5531e5f21ce}{op}
+\mbox{\hyperlink{_instruction_8h_a227278394efd1e2313c727102db09ea9}{Primitive\+Op}} \mbox{\hyperlink{struct_primitive_aa4b46e68fad8b5c702c2fda9426a2245}{op}}
 \item 
-double \hyperlink{struct_primitive_a43fac47ebf8ec63a70443d80dcd04687}{p}
+double \mbox{\hyperlink{struct_primitive_ae3fc194f42db152c9d6de05af40fac16}{p}}
 \item 
-bool \hyperlink{struct_primitive_a599bf4b9b5115d99c203b51dc028ba4e}{is\+\_\+dispatch}
+bool \mbox{\hyperlink{struct_primitive_a8756d4544ba2dcbebaa635fe279b863e}{is\+\_\+dispatch}}
 \end{DoxyCompactItemize}
-\subsection*{Additional Inherited Members}
 
 
-\subsection{Detailed Description}
-\subsubsection*{template$<$typename T, typename... args$>$\newline
-class Primitive$<$ T, args $>$}
-
+\doxysubsection{Detailed Description}
 \begin{DoxyAuthor}{Author}
 piantado 
 \end{DoxyAuthor}
@@ -68,46 +44,42 @@ piantado
 \end{DoxyDate}
 
 
-\subsection{Member Typedef Documentation}
-\mbox{\Hypertarget{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}\label{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}} 
-\index{Primitive@{Primitive}!Grammar\+Return\+Type@{Grammar\+Return\+Type}}
-\index{Grammar\+Return\+Type@{Grammar\+Return\+Type}!Primitive@{Primitive}}
-\subsubsection{\texorpdfstring{Grammar\+Return\+Type}{GrammarReturnType}}
-{\footnotesize\ttfamily template$<$typename T, typename... args$>$ \\
-typedef std\+::decay$<$typename \hyperlink{struct_head_if_reference_else_t}{Head\+If\+Reference\+ElseT}$<$T,args...$>$\+::type$>$\+::type \hyperlink{struct_primitive}{Primitive}$<$ T, args $>$\+::\hyperlink{struct_primitive_a1f2d2db3fb7869d03d65112e30d22101}{Grammar\+Return\+Type}}
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{struct_primitive_a1d62b6a608570b938facf99e4cbfccaf}\label{struct_primitive_a1d62b6a608570b938facf99e4cbfccaf}} 
+\index{Primitive@{Primitive}!GrammarReturnType@{GrammarReturnType}}
+\index{GrammarReturnType@{GrammarReturnType}!Primitive@{Primitive}}
+\doxysubsubsection{\texorpdfstring{GrammarReturnType}{GrammarReturnType}}
+{\footnotesize\ttfamily typedef std\+::decay$<$typename \mbox{\hyperlink{struct_head_if_reference_else_t}{Head\+If\+Reference\+ElseT}}$<$T,args...$>$\+::type$>$\+::type \mbox{\hyperlink{struct_primitive_a1d62b6a608570b938facf99e4cbfccaf}{Primitive\+::\+Grammar\+Return\+Type}}}
 
 
 
-\subsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{struct_primitive_a582a781e02c86b17df208d6fc0c39daf}\label{struct_primitive_a582a781e02c86b17df208d6fc0c39daf}} 
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{struct_primitive_a4d2b293152f9fe1202f8713977263c68}\label{struct_primitive_a4d2b293152f9fe1202f8713977263c68}} 
 \index{Primitive@{Primitive}!Primitive@{Primitive}}
 \index{Primitive@{Primitive}!Primitive@{Primitive}}
-\subsubsection{\texorpdfstring{Primitive()}{Primitive()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$typename T, typename... args$>$ \\
-constexpr \hyperlink{struct_primitive}{Primitive}$<$ T, args $>$\+::\hyperlink{struct_primitive}{Primitive} (\begin{DoxyParamCaption}\item[{const char $\ast$}]{fmt,  }\item[{T($\ast$)(args...)}]{\+\_\+call,  }\item[{double}]{\+\_\+p = {\ttfamily 1.0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\doxysubsubsection{\texorpdfstring{Primitive()}{Primitive()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily constexpr Primitive\+::\+Primitive (\begin{DoxyParamCaption}\item[{const char $\ast$}]{fmt,  }\item[{T($\ast$)(args...)}]{\+\_\+call,  }\item[{double}]{\+\_\+p = {\ttfamily 1.0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
 
-\mbox{\Hypertarget{struct_primitive_a8a9ad9e0b9c7bc94bbb4290cb298288c}\label{struct_primitive_a8a9ad9e0b9c7bc94bbb4290cb298288c}} 
+\mbox{\Hypertarget{struct_primitive_aaa89d04ae7625f36b54f7dc169f16134}\label{struct_primitive_aaa89d04ae7625f36b54f7dc169f16134}} 
 \index{Primitive@{Primitive}!Primitive@{Primitive}}
 \index{Primitive@{Primitive}!Primitive@{Primitive}}
-\subsubsection{\texorpdfstring{Primitive()}{Primitive()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$typename T, typename... args$>$ \\
-template$<$typename V , typename P , typename L $>$ \\
-constexpr \hyperlink{struct_primitive}{Primitive}$<$ T, args $>$\+::\hyperlink{struct_primitive}{Primitive} (\begin{DoxyParamCaption}\item[{const char $\ast$}]{fmt,  }\item[{T($\ast$)(args...)}]{\+\_\+call,  }\item[{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} }]{\+\_\+dispatchV $\ast$, P $\ast$, L $\ast$,  }\item[{double}]{\+\_\+p = {\ttfamily 1.0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\doxysubsubsection{\texorpdfstring{Primitive()}{Primitive()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename V , typename P , typename L $>$ \\
+constexpr Primitive\+::\+Primitive (\begin{DoxyParamCaption}\item[{const char $\ast$}]{fmt,  }\item[{T($\ast$)(args...)}]{\+\_\+call,  }\item[{\mbox{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t}} }]{\+\_\+dispatchV $\ast$, P $\ast$, L $\ast$,  }\item[{double}]{\+\_\+p = {\ttfamily 1.0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
 
 
 
-\subsection{Member Function Documentation}
-\mbox{\Hypertarget{struct_primitive_a10cedec90ed4a3ff01be2bd3b9c36528}\label{struct_primitive_a10cedec90ed4a3ff01be2bd3b9c36528}} 
-\index{Primitive@{Primitive}!V\+M\+Scall@{V\+M\+Scall}}
-\index{V\+M\+Scall@{V\+M\+Scall}!Primitive@{Primitive}}
-\subsubsection{\texorpdfstring{V\+M\+Scall()}{VMScall()}}
-{\footnotesize\ttfamily template$<$typename T, typename... args$>$ \\
-template$<$typename V , typename P , typename L $>$ \\
-\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t} \hyperlink{struct_primitive}{Primitive}$<$ T, args $>$\+::V\+M\+Scall (\begin{DoxyParamCaption}\item[{V $\ast$}]{vms,  }\item[{P $\ast$}]{pool,  }\item[{L $\ast$}]{loader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_primitive_a49bd8209d88633390f8ff0deb959229c}\label{struct_primitive_a49bd8209d88633390f8ff0deb959229c}} 
+\index{Primitive@{Primitive}!VMScall@{VMScall}}
+\index{VMScall@{VMScall}!Primitive@{Primitive}}
+\doxysubsubsection{\texorpdfstring{VMScall()}{VMScall()}}
+{\footnotesize\ttfamily template$<$typename V , typename P , typename L $>$ \\
+\mbox{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t}} Primitive\+::\+V\+M\+Scall (\begin{DoxyParamCaption}\item[{V $\ast$}]{vms,  }\item[{P $\ast$}]{pool,  }\item[{L $\ast$}]{loader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-This gets called by a \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State} to evaluate the primitive on some arguments. 
+This gets called by a \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} to evaluate the primitive on some arguments. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -123,52 +95,46 @@ This gets called by a \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+
 \end{DoxyReturn}
 
 
-\subsection{Member Data Documentation}
-\mbox{\Hypertarget{struct_primitive_a4a183f50daf033866abc34fa2da9e703}\label{struct_primitive_a4a183f50daf033866abc34fa2da9e703}} 
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_primitive_a8bf9484d49731d0d0165f52d38e29a89}\label{struct_primitive_a8bf9484d49731d0d0165f52d38e29a89}} 
 \index{Primitive@{Primitive}!call@{call}}
 \index{call@{call}!Primitive@{Primitive}}
-\subsubsection{\texorpdfstring{call}{call}}
-{\footnotesize\ttfamily template$<$typename T, typename... args$>$ \\
-T($\ast$ \hyperlink{struct_primitive}{Primitive}$<$ T, args $>$\+::call) (args...)}
+\doxysubsubsection{\texorpdfstring{call}{call}}
+{\footnotesize\ttfamily T($\ast$ Primitive\+::call) (args...)}
 
-\mbox{\Hypertarget{struct_primitive_a8fe52297e3da666ec08e2328a3fe92e9}\label{struct_primitive_a8fe52297e3da666ec08e2328a3fe92e9}} 
+\mbox{\Hypertarget{struct_primitive_acd4ee5aa8275bd56896de05a82b7b1d3}\label{struct_primitive_acd4ee5aa8275bd56896de05a82b7b1d3}} 
 \index{Primitive@{Primitive}!dispatch@{dispatch}}
 \index{dispatch@{dispatch}!Primitive@{Primitive}}
-\subsubsection{\texorpdfstring{dispatch}{dispatch}}
-{\footnotesize\ttfamily template$<$typename T, typename... args$>$ \\
-std\+::any \hyperlink{struct_primitive}{Primitive}$<$ T, args $>$\+::dispatch}
+\doxysubsubsection{\texorpdfstring{dispatch}{dispatch}}
+{\footnotesize\ttfamily void$\ast$ Primitive\+::dispatch}
 
-\mbox{\Hypertarget{struct_primitive_afa8c2d4087b36ae9580fed3dc00e47b6}\label{struct_primitive_afa8c2d4087b36ae9580fed3dc00e47b6}} 
+\mbox{\Hypertarget{struct_primitive_a4de5bffc644af99bcab0428e3b242b5f}\label{struct_primitive_a4de5bffc644af99bcab0428e3b242b5f}} 
 \index{Primitive@{Primitive}!format@{format}}
 \index{format@{format}!Primitive@{Primitive}}
-\subsubsection{\texorpdfstring{format}{format}}
-{\footnotesize\ttfamily template$<$typename T, typename... args$>$ \\
-std\+::string \hyperlink{struct_primitive}{Primitive}$<$ T, args $>$\+::format}
+\doxysubsubsection{\texorpdfstring{format}{format}}
+{\footnotesize\ttfamily std\+::string Primitive\+::format}
 
-\mbox{\Hypertarget{struct_primitive_a599bf4b9b5115d99c203b51dc028ba4e}\label{struct_primitive_a599bf4b9b5115d99c203b51dc028ba4e}} 
-\index{Primitive@{Primitive}!is\+\_\+dispatch@{is\+\_\+dispatch}}
-\index{is\+\_\+dispatch@{is\+\_\+dispatch}!Primitive@{Primitive}}
-\subsubsection{\texorpdfstring{is\+\_\+dispatch}{is\_dispatch}}
-{\footnotesize\ttfamily template$<$typename T, typename... args$>$ \\
-bool \hyperlink{struct_primitive}{Primitive}$<$ T, args $>$\+::is\+\_\+dispatch}
+\mbox{\Hypertarget{struct_primitive_a8756d4544ba2dcbebaa635fe279b863e}\label{struct_primitive_a8756d4544ba2dcbebaa635fe279b863e}} 
+\index{Primitive@{Primitive}!is\_dispatch@{is\_dispatch}}
+\index{is\_dispatch@{is\_dispatch}!Primitive@{Primitive}}
+\doxysubsubsection{\texorpdfstring{is\_dispatch}{is\_dispatch}}
+{\footnotesize\ttfamily bool Primitive\+::is\+\_\+dispatch}
 
-\mbox{\Hypertarget{struct_primitive_a45ef953a37468a97b5a4b5531e5f21ce}\label{struct_primitive_a45ef953a37468a97b5a4b5531e5f21ce}} 
+\mbox{\Hypertarget{struct_primitive_aa4b46e68fad8b5c702c2fda9426a2245}\label{struct_primitive_aa4b46e68fad8b5c702c2fda9426a2245}} 
 \index{Primitive@{Primitive}!op@{op}}
 \index{op@{op}!Primitive@{Primitive}}
-\subsubsection{\texorpdfstring{op}{op}}
-{\footnotesize\ttfamily template$<$typename T, typename... args$>$ \\
-\hyperlink{_instruction_8h_a227278394efd1e2313c727102db09ea9}{Primitive\+Op} \hyperlink{struct_primitive}{Primitive}$<$ T, args $>$\+::op}
+\doxysubsubsection{\texorpdfstring{op}{op}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_instruction_8h_a227278394efd1e2313c727102db09ea9}{Primitive\+Op}} Primitive\+::op}
 
-\mbox{\Hypertarget{struct_primitive_a43fac47ebf8ec63a70443d80dcd04687}\label{struct_primitive_a43fac47ebf8ec63a70443d80dcd04687}} 
+\mbox{\Hypertarget{struct_primitive_ae3fc194f42db152c9d6de05af40fac16}\label{struct_primitive_ae3fc194f42db152c9d6de05af40fac16}} 
 \index{Primitive@{Primitive}!p@{p}}
 \index{p@{p}!Primitive@{Primitive}}
-\subsubsection{\texorpdfstring{p}{p}}
-{\footnotesize\ttfamily template$<$typename T, typename... args$>$ \\
-double \hyperlink{struct_primitive}{Primitive}$<$ T, args $>$\+::p}
+\doxysubsubsection{\texorpdfstring{p}{p}}
+{\footnotesize\ttfamily double Primitive\+::p}
 
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-src/\+Grammar/\hyperlink{_grammar_8h}{Grammar.\+h}\item 
-src/\+Virtual\+Machine/\hyperlink{_primitives_8h}{Primitives.\+h}\end{DoxyCompactItemize}
+src/\+Grammar/\mbox{\hyperlink{_grammar_8h}{Grammar.\+h}}\item 
+src/\+Virtual\+Machine/\mbox{\hyperlink{_primitives_8h}{Primitives.\+h}}\end{DoxyCompactItemize}

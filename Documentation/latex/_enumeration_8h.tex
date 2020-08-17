@@ -1,13 +1,14 @@
-\hypertarget{_enumeration_8h}{}\section{src/\+Grammar/\+Enumeration.h File Reference}
-\label{_enumeration_8h}\index{src/\+Grammar/\+Enumeration.\+h@{src/\+Grammar/\+Enumeration.\+h}}
+\hypertarget{_enumeration_8h}{}\doxysection{src/\+Grammar/\+Enumeration.h File Reference}
+\label{_enumeration_8h}\index{src/Grammar/Enumeration.h@{src/Grammar/Enumeration.h}}
 
 
-An \hyperlink{class_integerized_stack}{Integerized\+Stack} is just a wrapper around unsigned longs that allow them to behave like a of integers stack, supporting push and pop (maybe with mod) via a standard pairing function.  
+An \mbox{\hyperlink{class_integerized_stack}{Integerized\+Stack}} is just a wrapper around unsigned longs that allow them to behave like a of integers stack, supporting push and pop (maybe with mod) via a standard pairing function.  
 
 
 {\ttfamily \#include \char`\"{}Fleet\+Statistics.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Integerized\+Stack.\+h\char`\"{}}\newline
-Include dependency graph for Enumeration.\+h\+:\nopagebreak
+Include dependency graph for Enumeration.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -22,41 +23,41 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=326pt]{_enumeration_8h__dep__incl}
 \end{center}
 \end{figure}
-\subsection*{Functions}
+\doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\hyperlink{class_node}{Node} \hyperlink{_enumeration_8h_a9164f3ed48e5b6b432367a0c3992603b}{expand\+\_\+from\+\_\+integer} (Grammar\+\_\+t $\ast$g, \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t} nt, \hyperlink{class_integerized_stack}{Integerized\+Stack} \&is)
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{_enumeration_8h_a9164f3ed48e5b6b432367a0c3992603b}{expand\+\_\+from\+\_\+integer}} (Grammar\+\_\+t $\ast$g, \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} nt, \mbox{\hyperlink{class_integerized_stack}{Integerized\+Stack}} \&is)
 \item 
-{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\hyperlink{class_node}{Node} \hyperlink{_enumeration_8h_ac730d5c12ae2f60e485fa3ca845e1714}{expand\+\_\+from\+\_\+integer} (Grammar\+\_\+t $\ast$g, \hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t} nt, \hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} z)
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{_enumeration_8h_ac730d5c12ae2f60e485fa3ca845e1714}{expand\+\_\+from\+\_\+integer}} (Grammar\+\_\+t $\ast$g, \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} nt, \mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} z)
 \item 
-{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} \hyperlink{_enumeration_8h_a78634a08df3123790fa0a334ee0ef97d}{compute\+\_\+enumeration\+\_\+order} (Grammar\+\_\+t $\ast$g, const \hyperlink{class_node}{Node} \&n)
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} \mbox{\hyperlink{_enumeration_8h_a78634a08df3123790fa0a334ee0ef97d}{compute\+\_\+enumeration\+\_\+order}} (Grammar\+\_\+t $\ast$g, const \mbox{\hyperlink{class_node}{Node}} \&n)
 \end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
-An \hyperlink{class_integerized_stack}{Integerized\+Stack} is just a wrapper around unsigned longs that allow them to behave like a of integers stack, supporting push and pop (maybe with mod) via a standard pairing function. 
+\doxysubsection{Detailed Description}
+An \mbox{\hyperlink{class_integerized_stack}{Integerized\+Stack}} is just a wrapper around unsigned longs that allow them to behave like a of integers stack, supporting push and pop (maybe with mod) via a standard pairing function. 
 
 
 
-\subsection{Function Documentation}
+\doxysubsection{Function Documentation}
 \mbox{\Hypertarget{_enumeration_8h_a78634a08df3123790fa0a334ee0ef97d}\label{_enumeration_8h_a78634a08df3123790fa0a334ee0ef97d}} 
-\index{Enumeration.\+h@{Enumeration.\+h}!compute\+\_\+enumeration\+\_\+order@{compute\+\_\+enumeration\+\_\+order}}
-\index{compute\+\_\+enumeration\+\_\+order@{compute\+\_\+enumeration\+\_\+order}!Enumeration.\+h@{Enumeration.\+h}}
-\subsubsection{\texorpdfstring{compute\+\_\+enumeration\+\_\+order()}{compute\_enumeration\_order()}}
+\index{Enumeration.h@{Enumeration.h}!compute\_enumeration\_order@{compute\_enumeration\_order}}
+\index{compute\_enumeration\_order@{compute\_enumeration\_order}!Enumeration.h@{Enumeration.h}}
+\doxysubsubsection{\texorpdfstring{compute\_enumeration\_order()}{compute\_enumeration\_order()}}
 {\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
-\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t} compute\+\_\+enumeration\+\_\+order (\begin{DoxyParamCaption}\item[{Grammar\+\_\+t $\ast$}]{g,  }\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{_enumeration_8h_a9164f3ed48e5b6b432367a0c3992603b}\label{_enumeration_8h_a9164f3ed48e5b6b432367a0c3992603b}} 
-\index{Enumeration.\+h@{Enumeration.\+h}!expand\+\_\+from\+\_\+integer@{expand\+\_\+from\+\_\+integer}}
-\index{expand\+\_\+from\+\_\+integer@{expand\+\_\+from\+\_\+integer}!Enumeration.\+h@{Enumeration.\+h}}
-\subsubsection{\texorpdfstring{expand\+\_\+from\+\_\+integer()}{expand\_from\_integer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
-\hyperlink{class_node}{Node} expand\+\_\+from\+\_\+integer (\begin{DoxyParamCaption}\item[{Grammar\+\_\+t $\ast$}]{g,  }\item[{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}]{nt,  }\item[{\hyperlink{class_integerized_stack}{Integerized\+Stack} \&}]{is }\end{DoxyParamCaption})}
+\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} compute\+\_\+enumeration\+\_\+order (\begin{DoxyParamCaption}\item[{Grammar\+\_\+t $\ast$}]{g,  }\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{n }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_enumeration_8h_ac730d5c12ae2f60e485fa3ca845e1714}\label{_enumeration_8h_ac730d5c12ae2f60e485fa3ca845e1714}} 
-\index{Enumeration.\+h@{Enumeration.\+h}!expand\+\_\+from\+\_\+integer@{expand\+\_\+from\+\_\+integer}}
-\index{expand\+\_\+from\+\_\+integer@{expand\+\_\+from\+\_\+integer}!Enumeration.\+h@{Enumeration.\+h}}
-\subsubsection{\texorpdfstring{expand\+\_\+from\+\_\+integer()}{expand\_from\_integer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+\index{Enumeration.h@{Enumeration.h}!expand\_from\_integer@{expand\_from\_integer}}
+\index{expand\_from\_integer@{expand\_from\_integer}!Enumeration.h@{Enumeration.h}}
+\doxysubsubsection{\texorpdfstring{expand\_from\_integer()}{expand\_from\_integer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
-\hyperlink{class_node}{Node} expand\+\_\+from\+\_\+integer (\begin{DoxyParamCaption}\item[{Grammar\+\_\+t $\ast$}]{g,  }\item[{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}]{nt,  }\item[{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}]{z }\end{DoxyParamCaption})}
+\mbox{\hyperlink{class_node}{Node}} expand\+\_\+from\+\_\+integer (\begin{DoxyParamCaption}\item[{Grammar\+\_\+t $\ast$}]{g,  }\item[{\mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}}]{nt,  }\item[{\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}}]{z }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_enumeration_8h_a9164f3ed48e5b6b432367a0c3992603b}\label{_enumeration_8h_a9164f3ed48e5b6b432367a0c3992603b}} 
+\index{Enumeration.h@{Enumeration.h}!expand\_from\_integer@{expand\_from\_integer}}
+\index{expand\_from\_integer@{expand\_from\_integer}!Enumeration.h@{Enumeration.h}}
+\doxysubsubsection{\texorpdfstring{expand\_from\_integer()}{expand\_from\_integer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+\mbox{\hyperlink{class_node}{Node}} expand\+\_\+from\+\_\+integer (\begin{DoxyParamCaption}\item[{Grammar\+\_\+t $\ast$}]{g,  }\item[{\mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}}]{nt,  }\item[{\mbox{\hyperlink{class_integerized_stack}{Integerized\+Stack}} \&}]{is }\end{DoxyParamCaption})}
 

@@ -1,6 +1,24 @@
 <map id="src/Inference/ParallelInferenceInterface.h" name="src/Inference/ParallelInferenceInterface.h">
-<area shape="rect" id="node4" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) " alt="" coords="179,95,254,121"/>
-<area shape="rect" id="node6" href="$_timing_8h.html" title="Timing.h" alt="" coords="407,169,479,196"/>
-<area shape="rect" id="node12" href="$_i_o_8h.html" title="IO.h" alt="" coords="149,169,196,196"/>
-<area shape="rect" id="node8" href="$_errors_8h.html" title="Errors.h" alt="" coords="499,244,567,271"/>
+<area shape="rect" id="node1" title=" " alt="" coords="91,5,290,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="92,95,153,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,244,64,271"/>
+<area shape="rect" id="node4" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps,..." alt="" coords="265,95,340,121"/>
+<area shape="rect" id="node5" title=" " alt="" coords="307,169,373,196"/>
+<area shape="rect" id="node6" href="$_timing_8h.html" title=" " alt="" coords="643,169,715,196"/>
+<area shape="rect" id="node12" href="$_i_o_8h.html" title=" " alt="" coords="235,169,282,196"/>
+<area shape="rect" id="node7" title=" " alt="" coords="648,244,709,271"/>
+<area shape="rect" id="node8" href="$_errors_8h.html" title=" " alt="" coords="734,244,802,271"/>
+<area shape="rect" id="node9" title=" " alt="" coords="814,319,893,345"/>
+<area shape="rect" id="node10" title=" " alt="" coords="711,319,790,345"/>
+<area shape="rect" id="node11" title=" " alt="" coords="599,319,654,345"/>
+<area shape="rect" id="node13" title=" " alt="" coords="88,244,147,271"/>
+<area shape="rect" id="node14" title=" " alt="" coords="229,393,301,420"/>
+<area shape="rect" id="node15" title=" " alt="" coords="320,244,387,271"/>
+<area shape="rect" id="node16" title=" " alt="" coords="411,244,573,271"/>
+<area shape="rect" id="node17" href="$_strings_8h.html" title=" " alt="" coords="221,244,296,271"/>
+<area shape="rect" id="node18" title=" " alt="" coords="222,319,285,345"/>
+<area shape="rect" id="node19" title=" " alt="" coords="309,319,374,345"/>
+<area shape="rect" id="node20" href="$_numerics_8h.html" title=" " alt="" coords="398,319,487,345"/>
+<area shape="rect" id="node21" title=" " alt="" coords="455,393,521,420"/>
+<area shape="rect" id="node22" title=" " alt="" coords="361,393,431,420"/>
 </map>

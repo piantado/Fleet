@@ -1,8 +1,9 @@
 <map id="src/Stack.h" name="src/Stack.h">
-<area shape="rect" id="node2" href="$_program_8h.html" title="src/VirtualMachine\l/Program.h" alt="" coords="78,80,209,121"/>
-<area shape="rect" id="node7" href="$_virtual_machine_state_8h.html" title="Count references in lambda arguments (used to ensure we only passs one) " alt="" coords="118,169,273,211"/>
-<area shape="rect" id="node3" href="$_node_8h.html" title="src/Grammar/Node.h" alt="" coords="297,177,441,203"/>
+<area shape="rect" id="node1" title=" " alt="" coords="149,5,239,32"/>
+<area shape="rect" id="node2" href="$_program_8h.html" title=" " alt="" coords="78,80,209,121"/>
+<area shape="rect" id="node7" href="$_virtual_machine_state_8h.html" title="Count references in lambda arguments (used to ensure we only passs one)" alt="" coords="118,169,273,211"/>
+<area shape="rect" id="node3" href="$_node_8h.html" title=" " alt="" coords="297,177,441,203"/>
 <area shape="rect" id="node6" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="5,259,225,285"/>
-<area shape="rect" id="node4" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="328,333,457,360"/>
+<area shape="rect" id="node4" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="328,333,457,360"/>
 <area shape="rect" id="node5" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="249,259,416,285"/>
 </map>

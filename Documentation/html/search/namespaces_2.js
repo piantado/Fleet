@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fleetstatistics',['FleetStatistics',['../namespace_fleet_statistics.html',1,'']]]
+  ['fleetstatistics_732',['FleetStatistics',['../namespace_fleet_statistics.html',1,'']]]
 ];

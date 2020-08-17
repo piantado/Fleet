@@ -1,8 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_parallel_inference_interface.html" title="ParallelInferenceInterface\&lt;\&gt;" alt="" coords="5,56,192,83"/>
-<area shape="rect" id="node2" href="$class_astar.html" title="Astar\&lt; HYP, callback_t \&gt;" alt="" coords="261,5,433,32"/>
-<area shape="rect" id="node3" href="$class_chain_pool.html" title="ChainPool\&lt; HYP, callback_t \&gt;" alt="" coords="247,56,448,83"/>
-<area shape="rect" id="node6" href="$class_enumeration_inference.html" title="EnumerationInference\l\&lt; HYP, Grammar_t, callback_t \&gt;" alt="" coords="240,107,455,149"/>
-<area shape="rect" id="node4" href="$class_data_tempering.html" title="DataTempering\&lt; HYP,\l callback_t \&gt;" alt="" coords="503,15,657,57"/>
-<area shape="rect" id="node5" href="$class_parallel_tempering.html" title="ParallelTempering\&lt;\l HYP, callback_t \&gt;" alt="" coords="513,81,647,122"/>
+<area shape="rect" id="node1" href="$class_base_node.html" title=" " alt="" coords="21,5,160,32"/>
+<area shape="rect" id="node2" href="$class_full_m_c_t_s_node.html" title=" " alt="" coords="224,27,371,69"/>
+<area shape="rect" id="node3" href="$class_partial_m_c_t_s_node.html" title=" " alt="" coords="419,27,580,69"/>
+<area shape="rect" id="node4" href="$class_parallel_inference_interface.html" title=" " alt="" coords="5,57,176,98"/>
 </map>

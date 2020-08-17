@@ -1,5 +1,5 @@
-\hypertarget{class_reserved_vector}{}\section{Reserved\+Vector$<$ T, N $>$ Class Template Reference}
-\label{class_reserved_vector}\index{Reserved\+Vector$<$ T, N $>$@{Reserved\+Vector$<$ T, N $>$}}
+\hypertarget{class_reserved_vector}{}\doxysection{Reserved\+Vector$<$ T, N $>$ Class Template Reference}
+\label{class_reserved_vector}\index{ReservedVector$<$ T, N $>$@{ReservedVector$<$ T, N $>$}}
 
 
 {\ttfamily \#include $<$Miscellaneous.\+h$>$}
@@ -11,7 +11,7 @@ Inheritance diagram for Reserved\+Vector$<$ T, N $>$\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=205pt]{class_reserved_vector__inherit__graph}
+\includegraphics[width=203pt]{class_reserved_vector__inherit__graph}
 \end{center}
 \end{figure}
 
@@ -21,55 +21,57 @@ Collaboration diagram for Reserved\+Vector$<$ T, N $>$\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=205pt]{class_reserved_vector__coll__graph}
+\includegraphics[width=203pt]{class_reserved_vector__coll__graph}
 \end{center}
 \end{figure}
-\subsection*{Public Member Functions}
+\doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_reserved_vector_aa58994583a0d230b8ebc7ae4d9454465}{Reserved\+Vector} ()
+\mbox{\hyperlink{class_reserved_vector_aa58994583a0d230b8ebc7ae4d9454465}{Reserved\+Vector}} ()
 \end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
+\doxysubsection{Detailed Description}
 \subsubsection*{template$<$typename T, size\+\_\+t N$>$\newline
 class Reserved\+Vector$<$ T, N $>$}
 
 
-\begin{DoxyCode}
-    Template magic to check \textcolor{keywordflow}{if} a \textcolor{keyword}{class }is iterable
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-\textcolor{comment}{//https://stackoverflow.com/questions/13830158/check-if-a-variable-is-iterable}
-\textcolor{keyword}{template} <\textcolor{keyword}{typename} T, \textcolor{keyword}{typename} = \textcolor{keywordtype}{void}>
-\textcolor{keyword}{struct }is\_iterable : std::false\_type \{\};
-
-\textcolor{comment}{// this gets used only when we can call std::begin() and std::end() on that type}
-\textcolor{keyword}{template} <\textcolor{keyword}{typename} T>
-\textcolor{keyword}{struct }is\_iterable<T, std::void\_t<decltype(std::begin(std::declval<T>())),
-                                  decltype(std::end(std::declval<T>()))
-                                 >
-                  > : std::true\_type \{\};
-
-\textcolor{comment}{// Here is a helper:}
-\textcolor{keyword}{template} <\textcolor{keyword}{typename} T>
-constexpr \textcolor{keywordtype}{bool} is\_iterable\_v = is\_iterable<T>::value;
-
-
-\textcolor{comment}{/*}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    Template magic to check \textcolor{keywordflow}{if} a \textcolor{keyword}{class }is iterable}
+\DoxyCodeLine{   \string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~ */}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{//https://stackoverflow.com/questions/13830158/check-\/if-\/a-\/variable-\/is-\/iterable}}
+\DoxyCodeLine{\textcolor{keyword}{template} <\textcolor{keyword}{typename} T, \textcolor{keyword}{typename} = \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{\textcolor{keyword}{struct }is\_iterable : std::false\_type \{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{// this gets used only when we can call std::begin() and std::end() on that type}}
+\DoxyCodeLine{\textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{\textcolor{keyword}{struct }is\_iterable<T, std::void\_t<decltype(std::begin(std::declval<T>())),}
+\DoxyCodeLine{                                  decltype(std::end(std::declval<T>()))}
+\DoxyCodeLine{                                 >}
+\DoxyCodeLine{                  > : std::true\_type \{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{// Here is a helper:}}
+\DoxyCodeLine{\textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{constexpr \textcolor{keywordtype}{bool} is\_iterable\_v = is\_iterable<T>::value;}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/*}}
 \end{DoxyCode}
- A reserved size vector type $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
+ \begin{DoxyVerb}A reserved size vector type
+\end{DoxyVerb}
+ $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
 
-\subsection{Constructor \& Destructor Documentation}
+\doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{class_reserved_vector_aa58994583a0d230b8ebc7ae4d9454465}\label{class_reserved_vector_aa58994583a0d230b8ebc7ae4d9454465}} 
-\index{Reserved\+Vector@{Reserved\+Vector}!Reserved\+Vector@{Reserved\+Vector}}
-\index{Reserved\+Vector@{Reserved\+Vector}!Reserved\+Vector@{Reserved\+Vector}}
-\subsubsection{\texorpdfstring{Reserved\+Vector()}{ReservedVector()}}
+\index{ReservedVector$<$ T, N $>$@{ReservedVector$<$ T, N $>$}!ReservedVector@{ReservedVector}}
+\index{ReservedVector@{ReservedVector}!ReservedVector$<$ T, N $>$@{ReservedVector$<$ T, N $>$}}
+\doxysubsubsection{\texorpdfstring{ReservedVector()}{ReservedVector()}}
 {\footnotesize\ttfamily template$<$typename T , size\+\_\+t N$>$ \\
-\hyperlink{class_reserved_vector}{Reserved\+Vector}$<$ T, N $>$\+::\hyperlink{class_reserved_vector}{Reserved\+Vector} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\mbox{\hyperlink{class_reserved_vector}{Reserved\+Vector}}$<$ T, N $>$\+::\mbox{\hyperlink{class_reserved_vector}{Reserved\+Vector}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/\hyperlink{_miscellaneous_8h}{Miscellaneous.\+h}\end{DoxyCompactItemize}
+src/\mbox{\hyperlink{_miscellaneous_8h}{Miscellaneous.\+h}}\end{DoxyCompactItemize}

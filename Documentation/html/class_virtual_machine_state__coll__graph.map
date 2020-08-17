@@ -1,5 +1,10 @@
 <map id="VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;" name="VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;">
-<area shape="rect" id="node3" href="$class_stack.html" title="Stack\&lt; input_t \&gt;" alt="" coords="221,27,340,54"/>
-<area shape="rect" id="node6" href="$class_stack.html" title="Stack\&lt; std::pair\&lt; index\l_t, input_t \&gt; \&gt;" alt="" coords="201,115,360,156"/>
-<area shape="rect" id="node8" href="$struct_virtual_machine_state_1_1t__stack.html" title="VirtualMachineState\l\&lt; _t_input, _t_output,\l VM_TYPES \&gt;::t_stack\&lt;\l VM_TYPES... \&gt;" alt="" coords="429,195,597,265"/>
+<area shape="rect" id="node1" title=" " alt="" coords="729,107,876,163"/>
+<area shape="rect" id="node2" title=" " alt="" coords="423,5,603,76"/>
+<area shape="rect" id="node3" href="$class_stack.html" title=" " alt="" coords="221,27,340,54"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,27,152,54"/>
+<area shape="rect" id="node5" title=" " alt="" coords="409,100,616,171"/>
+<area shape="rect" id="node6" href="$class_stack.html" title=" " alt="" coords="201,115,360,156"/>
+<area shape="rect" id="node7" title=" " alt="" coords="5,115,152,156"/>
+<area shape="rect" id="node8" href="$struct_virtual_machine_state_1_1t__stack.html" title=" " alt="" coords="429,195,597,265"/>
 </map>

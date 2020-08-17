@@ -1,48 +1,48 @@
-\hypertarget{class_virtual_machine_pool}{}\section{Virtual\+Machine\+Pool$<$ V\+M\+State $>$ Class Template Reference}
-\label{class_virtual_machine_pool}\index{Virtual\+Machine\+Pool$<$ V\+M\+State $>$@{Virtual\+Machine\+Pool$<$ V\+M\+State $>$}}
+\hypertarget{class_virtual_machine_pool}{}\doxysection{Virtual\+Machine\+Pool$<$ V\+M\+State $>$ Class Template Reference}
+\label{class_virtual_machine_pool}\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
 
 
 {\ttfamily \#include $<$Virtual\+Machine\+Pool.\+h$>$}
 
-\subsection*{Public Member Functions}
+\doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_virtual_machine_pool_a2187554e3a4fd48ebe7ea6712e161e01}{Virtual\+Machine\+Pool} (unsigned long ms=2048, unsigned long mo=256, double mlp=-\/10)
+\mbox{\hyperlink{class_virtual_machine_pool_a2187554e3a4fd48ebe7ea6712e161e01}{Virtual\+Machine\+Pool}} (unsigned long ms=2048, unsigned long mo=256, double mlp=-\/10)
 \item 
-\hyperlink{class_virtual_machine_pool_a84ea4b824ccc758de7de7c81d839c694}{Virtual\+Machine\+Pool} (V\+M\+State $\ast$vms, unsigned long ms, unsigned long mo, double mlp)
+\mbox{\hyperlink{class_virtual_machine_pool_a84ea4b824ccc758de7de7c81d839c694}{Virtual\+Machine\+Pool}} (V\+M\+State $\ast$vms, unsigned long ms, unsigned long mo, double mlp)
 \item 
-virtual \hyperlink{class_virtual_machine_pool_a3e3709bc5ddf3535497c2d69d04d56c3}{$\sim$\+Virtual\+Machine\+Pool} ()
+virtual \mbox{\hyperlink{class_virtual_machine_pool_a3e3709bc5ddf3535497c2d69d04d56c3}{$\sim$\+Virtual\+Machine\+Pool}} ()
 \item 
-virtual void \hyperlink{class_virtual_machine_pool_a9725415d6cff1c51d78545e7c905af8c}{clear} ()
+virtual void \mbox{\hyperlink{class_virtual_machine_pool_a9725415d6cff1c51d78545e7c905af8c}{clear}} ()
 \item 
-bool \hyperlink{class_virtual_machine_pool_a752c495b7c6f3ace8a3325eab6529ad1}{would\+Iadd} (double lp)
+bool \mbox{\hyperlink{class_virtual_machine_pool_a752c495b7c6f3ace8a3325eab6529ad1}{would\+Iadd}} (double lp)
 \item 
-void \hyperlink{class_virtual_machine_pool_a38ea4101bc00bd70d260737a0a459bfe}{push} (V\+M\+State $\ast$o)
+void \mbox{\hyperlink{class_virtual_machine_pool_a38ea4101bc00bd70d260737a0a459bfe}{push}} (V\+M\+State $\ast$o)
 \item 
-{\footnotesize template$<$typename T $>$ }\\bool \hyperlink{class_virtual_machine_pool_a12fc289f4e95e856416aa5ea55389f30}{copy\+\_\+increment\+\_\+push} (const V\+M\+State $\ast$x, T v, double lpinc)
+{\footnotesize template$<$typename T $>$ }\\bool \mbox{\hyperlink{class_virtual_machine_pool_a12fc289f4e95e856416aa5ea55389f30}{copy\+\_\+increment\+\_\+push}} (const V\+M\+State $\ast$x, T v, double lpinc)
 \item 
-{\footnotesize template$<$typename T $>$ }\\bool \hyperlink{class_virtual_machine_pool_a9abc6f6dd10e40b4424dd457eab63180}{increment\+\_\+push} (V\+M\+State $\ast$s, T v, double lpinc)
+{\footnotesize template$<$typename T $>$ }\\bool \mbox{\hyperlink{class_virtual_machine_pool_a9abc6f6dd10e40b4424dd457eab63180}{increment\+\_\+push}} (V\+M\+State $\ast$s, T v, double lpinc)
 \item 
-\hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ typename V\+M\+State\+::output\+\_\+t $>$ \hyperlink{class_virtual_machine_pool_a60720f1bfee6cd0c6e6e5153f4f5a58f}{run} (Program\+Loader $\ast$loader)
+\mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}}$<$ typename V\+M\+State\+::output\+\_\+t $>$ \mbox{\hyperlink{class_virtual_machine_pool_a60720f1bfee6cd0c6e6e5153f4f5a58f}{run}} (Program\+Loader $\ast$loader)
 \end{DoxyCompactItemize}
-\subsection*{Public Attributes}
+\doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-unsigned long \hyperlink{class_virtual_machine_pool_ac64fb33b9ff42650839f8b10f2b11a4a}{max\+\_\+state\+\_\+run}
+unsigned long \mbox{\hyperlink{class_virtual_machine_pool_ac64fb33b9ff42650839f8b10f2b11a4a}{max\+\_\+state\+\_\+run}}
 \item 
-unsigned long \hyperlink{class_virtual_machine_pool_a042d1b151817c99638f8b35303eb508f}{max\+\_\+outputs}
+unsigned long \mbox{\hyperlink{class_virtual_machine_pool_a042d1b151817c99638f8b35303eb508f}{max\+\_\+outputs}}
 \item 
-unsigned long \hyperlink{class_virtual_machine_pool_a63db532386cd929a09525f7ab569ff81}{current\+\_\+steps}
+unsigned long \mbox{\hyperlink{class_virtual_machine_pool_a63db532386cd929a09525f7ab569ff81}{current\+\_\+steps}}
 \item 
-double \hyperlink{class_virtual_machine_pool_adef21b421dc051008ba0bd4ee59a3809}{min\+\_\+lp}
+double \mbox{\hyperlink{class_virtual_machine_pool_adef21b421dc051008ba0bd4ee59a3809}{min\+\_\+lp}}
 \item 
-double \hyperlink{class_virtual_machine_pool_ac5ffa14dc0e298c9fae3cddfa04779bb}{worst\+\_\+lp} = \hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity}
+double \mbox{\hyperlink{class_virtual_machine_pool_ac5ffa14dc0e298c9fae3cddfa04779bb}{worst\+\_\+lp}} = \mbox{\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity}}
 \item 
-std\+::priority\+\_\+queue$<$ V\+M\+State $\ast$, std\+::vector$<$ V\+M\+State $\ast$ $>$, Virtual\+Machine\+Pool\+::compare\+\_\+\+V\+M\+State\+\_\+prt $>$ \hyperlink{class_virtual_machine_pool_a6bb6ec72e4b6fb87bb3b7ea6eb0e4d6e}{Q}
+std\+::priority\+\_\+queue$<$ V\+M\+State $\ast$, std\+::vector$<$ V\+M\+State $\ast$ $>$, Virtual\+Machine\+Pool\+::compare\+\_\+\+V\+M\+State\+\_\+prt $>$ \mbox{\hyperlink{class_virtual_machine_pool_a6bb6ec72e4b6fb87bb3b7ea6eb0e4d6e}{Q}}
 \end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
+\doxysubsection{Detailed Description}
 \subsubsection*{template$<$typename V\+M\+State$>$\newline
 class Virtual\+Machine\+Pool$<$ V\+M\+State $>$}
 
@@ -54,47 +54,47 @@ piantado
 \end{DoxyDate}
 
 
-\subsection{Constructor \& Destructor Documentation}
+\doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{class_virtual_machine_pool_a2187554e3a4fd48ebe7ea6712e161e01}\label{class_virtual_machine_pool_a2187554e3a4fd48ebe7ea6712e161e01}} 
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\subsubsection{\texorpdfstring{Virtual\+Machine\+Pool()}{VirtualMachinePool()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$typename V\+M\+State$>$ \\
-\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ V\+M\+State $>$\+::\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool} (\begin{DoxyParamCaption}\item[{unsigned long}]{ms = {\ttfamily 2048},  }\item[{unsigned long}]{mo = {\ttfamily 256},  }\item[{double}]{mlp = {\ttfamily -\/10} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}!VirtualMachinePool@{VirtualMachinePool}}
+\index{VirtualMachinePool@{VirtualMachinePool}!VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
+\doxysubsubsection{\texorpdfstring{VirtualMachinePool()}{VirtualMachinePool()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename V\+M\+State $>$ \\
+\mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ V\+M\+State $>$\+::\mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}} (\begin{DoxyParamCaption}\item[{unsigned long}]{ms = {\ttfamily 2048},  }\item[{unsigned long}]{mo = {\ttfamily 256},  }\item[{double}]{mlp = {\ttfamily -\/10} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_virtual_machine_pool_a84ea4b824ccc758de7de7c81d839c694}\label{class_virtual_machine_pool_a84ea4b824ccc758de7de7c81d839c694}} 
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\subsubsection{\texorpdfstring{Virtual\+Machine\+Pool()}{VirtualMachinePool()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$typename V\+M\+State$>$ \\
-\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ V\+M\+State $>$\+::\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool} (\begin{DoxyParamCaption}\item[{V\+M\+State $\ast$}]{vms,  }\item[{unsigned long}]{ms,  }\item[{unsigned long}]{mo,  }\item[{double}]{mlp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}!VirtualMachinePool@{VirtualMachinePool}}
+\index{VirtualMachinePool@{VirtualMachinePool}!VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
+\doxysubsubsection{\texorpdfstring{VirtualMachinePool()}{VirtualMachinePool()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename V\+M\+State $>$ \\
+\mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ V\+M\+State $>$\+::\mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}} (\begin{DoxyParamCaption}\item[{V\+M\+State $\ast$}]{vms,  }\item[{unsigned long}]{ms,  }\item[{unsigned long}]{mo,  }\item[{double}]{mlp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_virtual_machine_pool_a3e3709bc5ddf3535497c2d69d04d56c3}\label{class_virtual_machine_pool_a3e3709bc5ddf3535497c2d69d04d56c3}} 
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!````~Virtual\+Machine\+Pool@{$\sim$\+Virtual\+Machine\+Pool}}
-\index{````~Virtual\+Machine\+Pool@{$\sim$\+Virtual\+Machine\+Pool}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\subsubsection{\texorpdfstring{$\sim$\+Virtual\+Machine\+Pool()}{~VirtualMachinePool()}}
-{\footnotesize\ttfamily template$<$typename V\+M\+State$>$ \\
-virtual \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ V\+M\+State $>$\+::$\sim$\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}!````~VirtualMachinePool@{$\sim$VirtualMachinePool}}
+\index{````~VirtualMachinePool@{$\sim$VirtualMachinePool}!VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
+\doxysubsubsection{\texorpdfstring{$\sim$VirtualMachinePool()}{~VirtualMachinePool()}}
+{\footnotesize\ttfamily template$<$typename V\+M\+State $>$ \\
+virtual \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ V\+M\+State $>$\+::$\sim$\mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
 
 
-\subsection{Member Function Documentation}
+\doxysubsection{Member Function Documentation}
 \mbox{\Hypertarget{class_virtual_machine_pool_a9725415d6cff1c51d78545e7c905af8c}\label{class_virtual_machine_pool_a9725415d6cff1c51d78545e7c905af8c}} 
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!clear@{clear}}
-\index{clear@{clear}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\subsubsection{\texorpdfstring{clear()}{clear()}}
-{\footnotesize\ttfamily template$<$typename V\+M\+State$>$ \\
-virtual void \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ V\+M\+State $>$\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}!clear@{clear}}
+\index{clear@{clear}!VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily template$<$typename V\+M\+State $>$ \\
+virtual void \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ V\+M\+State $>$\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
 \mbox{\Hypertarget{class_virtual_machine_pool_a12fc289f4e95e856416aa5ea55389f30}\label{class_virtual_machine_pool_a12fc289f4e95e856416aa5ea55389f30}} 
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!copy\+\_\+increment\+\_\+push@{copy\+\_\+increment\+\_\+push}}
-\index{copy\+\_\+increment\+\_\+push@{copy\+\_\+increment\+\_\+push}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\subsubsection{\texorpdfstring{copy\+\_\+increment\+\_\+push()}{copy\_increment\_push()}}
-{\footnotesize\ttfamily template$<$typename V\+M\+State$>$ \\
+\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}!copy\_increment\_push@{copy\_increment\_push}}
+\index{copy\_increment\_push@{copy\_increment\_push}!VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
+\doxysubsubsection{\texorpdfstring{copy\_increment\_push()}{copy\_increment\_push()}}
+{\footnotesize\ttfamily template$<$typename V\+M\+State $>$ \\
 template$<$typename T $>$ \\
-bool \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ V\+M\+State $>$\+::copy\+\_\+increment\+\_\+push (\begin{DoxyParamCaption}\item[{const V\+M\+State $\ast$}]{x,  }\item[{T}]{v,  }\item[{double}]{lpinc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+bool \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ V\+M\+State $>$\+::copy\+\_\+increment\+\_\+push (\begin{DoxyParamCaption}\item[{const V\+M\+State $\ast$}]{x,  }\item[{T}]{v,  }\item[{double}]{lpinc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-This is an important opimization where we will make a copy of x, push v into it\textquotesingle{}s stack, and increment its lp by lpinc only if it will be added to the queue, which we check in the pool here. This saves us from having to use the \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State} constructor (e.\+g. making a copy, which is expensive if we are copying all the stacks) if the copy won\textquotesingle{}t actually be added to the queue. 
+This is an important opimization where we will make a copy of x, push v into it\textquotesingle{}s stack, and increment its lp by lpinc only if it will be added to the queue, which we check in the pool here. This saves us from having to use the \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} constructor (e.\+g. making a copy, which is expensive if we are copying all the stacks) if the copy won\textquotesingle{}t actually be added to the queue. 
 \begin{DoxyParams}{Parameters}
 {\em x} & \\
 \hline
@@ -107,12 +107,12 @@ This is an important opimization where we will make a copy of x, push v into it\
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_virtual_machine_pool_a9abc6f6dd10e40b4424dd457eab63180}\label{class_virtual_machine_pool_a9abc6f6dd10e40b4424dd457eab63180}} 
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!increment\+\_\+push@{increment\+\_\+push}}
-\index{increment\+\_\+push@{increment\+\_\+push}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\subsubsection{\texorpdfstring{increment\+\_\+push()}{increment\_push()}}
-{\footnotesize\ttfamily template$<$typename V\+M\+State$>$ \\
+\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}!increment\_push@{increment\_push}}
+\index{increment\_push@{increment\_push}!VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
+\doxysubsubsection{\texorpdfstring{increment\_push()}{increment\_push()}}
+{\footnotesize\ttfamily template$<$typename V\+M\+State $>$ \\
 template$<$typename T $>$ \\
-bool \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ V\+M\+State $>$\+::increment\+\_\+push (\begin{DoxyParamCaption}\item[{V\+M\+State $\ast$}]{s,  }\item[{T}]{v,  }\item[{double}]{lpinc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+bool \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ V\+M\+State $>$\+::increment\+\_\+push (\begin{DoxyParamCaption}\item[{V\+M\+State $\ast$}]{s,  }\item[{T}]{v,  }\item[{double}]{lpinc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Same as copy\+\_\+increment\+\_\+push, but does not make a copy -- just add 
 \begin{DoxyParams}{Parameters}
@@ -127,11 +127,11 @@ Same as copy\+\_\+increment\+\_\+push, but does not make a copy -- just add
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_virtual_machine_pool_a38ea4101bc00bd70d260737a0a459bfe}\label{class_virtual_machine_pool_a38ea4101bc00bd70d260737a0a459bfe}} 
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!push@{push}}
-\index{push@{push}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\subsubsection{\texorpdfstring{push()}{push()}}
-{\footnotesize\ttfamily template$<$typename V\+M\+State$>$ \\
-void \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ V\+M\+State $>$\+::push (\begin{DoxyParamCaption}\item[{V\+M\+State $\ast$}]{o }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}!push@{push}}
+\index{push@{push}!VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
+\doxysubsubsection{\texorpdfstring{push()}{push()}}
+{\footnotesize\ttfamily template$<$typename V\+M\+State $>$ \\
+void \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ V\+M\+State $>$\+::push (\begin{DoxyParamCaption}\item[{V\+M\+State $\ast$}]{o }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Add the V\+M\+State o to this pool (but again checking if I\textquotesingle{}d add) 
 \begin{DoxyParams}{Parameters}
@@ -139,11 +139,11 @@ Add the V\+M\+State o to this pool (but again checking if I\textquotesingle{}d a
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{class_virtual_machine_pool_a60720f1bfee6cd0c6e6e5153f4f5a58f}\label{class_virtual_machine_pool_a60720f1bfee6cd0c6e6e5153f4f5a58f}} 
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!run@{run}}
-\index{run@{run}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\subsubsection{\texorpdfstring{run()}{run()}}
-{\footnotesize\ttfamily template$<$typename V\+M\+State$>$ \\
-\hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$typename V\+M\+State\+::output\+\_\+t$>$ \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ V\+M\+State $>$\+::run (\begin{DoxyParamCaption}\item[{Program\+Loader $\ast$}]{loader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}!run@{run}}
+\index{run@{run}!VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily template$<$typename V\+M\+State $>$ \\
+\mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}}$<$typename V\+M\+State\+::output\+\_\+t$>$ \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ V\+M\+State $>$\+::run (\begin{DoxyParamCaption}\item[{Program\+Loader $\ast$}]{loader }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 This runs and adds up the probability mass for everything, returning a dictionary outcomes-\/$>$log\+\_\+probabilities. This is the main running loop, which pops frmo the top of our queue, runs, and continues until we\textquotesingle{}ve done enough or all. Note that objects lower than min\+\_\+lp are not ever pushed onto the queue. 
 \begin{DoxyParams}{Parameters}
@@ -156,11 +156,11 @@ This runs and adds up the probability mass for everything, returning a dictionar
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_virtual_machine_pool_a752c495b7c6f3ace8a3325eab6529ad1}\label{class_virtual_machine_pool_a752c495b7c6f3ace8a3325eab6529ad1}} 
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!would\+Iadd@{would\+Iadd}}
-\index{would\+Iadd@{would\+Iadd}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\subsubsection{\texorpdfstring{would\+Iadd()}{wouldIadd()}}
-{\footnotesize\ttfamily template$<$typename V\+M\+State$>$ \\
-bool \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ V\+M\+State $>$\+::would\+Iadd (\begin{DoxyParamCaption}\item[{double}]{lp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}!wouldIadd@{wouldIadd}}
+\index{wouldIadd@{wouldIadd}!VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
+\doxysubsubsection{\texorpdfstring{wouldIadd()}{wouldIadd()}}
+{\footnotesize\ttfamily template$<$typename V\+M\+State $>$ \\
+bool \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ V\+M\+State $>$\+::would\+Iadd (\begin{DoxyParamCaption}\item[{double}]{lp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Returns true if I would add something with this lp, given my max\+\_\+state\+\_\+run and the stack. This lets us speed up by checking if we would add before copying/constructing a V\+MS 
 \begin{DoxyParams}{Parameters}
@@ -172,51 +172,51 @@ Returns true if I would add something with this lp, given my max\+\_\+state\+\_\
 \end{DoxyReturn}
 
 
-\subsection{Member Data Documentation}
+\doxysubsection{Member Data Documentation}
 \mbox{\Hypertarget{class_virtual_machine_pool_a63db532386cd929a09525f7ab569ff81}\label{class_virtual_machine_pool_a63db532386cd929a09525f7ab569ff81}} 
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!current\+\_\+steps@{current\+\_\+steps}}
-\index{current\+\_\+steps@{current\+\_\+steps}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\subsubsection{\texorpdfstring{current\+\_\+steps}{current\_steps}}
-{\footnotesize\ttfamily template$<$typename V\+M\+State$>$ \\
-unsigned long \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ V\+M\+State $>$\+::current\+\_\+steps}
+\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}!current\_steps@{current\_steps}}
+\index{current\_steps@{current\_steps}!VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
+\doxysubsubsection{\texorpdfstring{current\_steps}{current\_steps}}
+{\footnotesize\ttfamily template$<$typename V\+M\+State $>$ \\
+unsigned long \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ V\+M\+State $>$\+::current\+\_\+steps}
 
 \mbox{\Hypertarget{class_virtual_machine_pool_a042d1b151817c99638f8b35303eb508f}\label{class_virtual_machine_pool_a042d1b151817c99638f8b35303eb508f}} 
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!max\+\_\+outputs@{max\+\_\+outputs}}
-\index{max\+\_\+outputs@{max\+\_\+outputs}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\subsubsection{\texorpdfstring{max\+\_\+outputs}{max\_outputs}}
-{\footnotesize\ttfamily template$<$typename V\+M\+State$>$ \\
-unsigned long \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ V\+M\+State $>$\+::max\+\_\+outputs}
+\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}!max\_outputs@{max\_outputs}}
+\index{max\_outputs@{max\_outputs}!VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
+\doxysubsubsection{\texorpdfstring{max\_outputs}{max\_outputs}}
+{\footnotesize\ttfamily template$<$typename V\+M\+State $>$ \\
+unsigned long \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ V\+M\+State $>$\+::max\+\_\+outputs}
 
 \mbox{\Hypertarget{class_virtual_machine_pool_ac64fb33b9ff42650839f8b10f2b11a4a}\label{class_virtual_machine_pool_ac64fb33b9ff42650839f8b10f2b11a4a}} 
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!max\+\_\+state\+\_\+run@{max\+\_\+state\+\_\+run}}
-\index{max\+\_\+state\+\_\+run@{max\+\_\+state\+\_\+run}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\subsubsection{\texorpdfstring{max\+\_\+state\+\_\+run}{max\_state\_run}}
-{\footnotesize\ttfamily template$<$typename V\+M\+State$>$ \\
-unsigned long \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ V\+M\+State $>$\+::max\+\_\+state\+\_\+run}
+\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}!max\_state\_run@{max\_state\_run}}
+\index{max\_state\_run@{max\_state\_run}!VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
+\doxysubsubsection{\texorpdfstring{max\_state\_run}{max\_state\_run}}
+{\footnotesize\ttfamily template$<$typename V\+M\+State $>$ \\
+unsigned long \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ V\+M\+State $>$\+::max\+\_\+state\+\_\+run}
 
 \mbox{\Hypertarget{class_virtual_machine_pool_adef21b421dc051008ba0bd4ee59a3809}\label{class_virtual_machine_pool_adef21b421dc051008ba0bd4ee59a3809}} 
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!min\+\_\+lp@{min\+\_\+lp}}
-\index{min\+\_\+lp@{min\+\_\+lp}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\subsubsection{\texorpdfstring{min\+\_\+lp}{min\_lp}}
-{\footnotesize\ttfamily template$<$typename V\+M\+State$>$ \\
-double \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ V\+M\+State $>$\+::min\+\_\+lp}
+\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}!min\_lp@{min\_lp}}
+\index{min\_lp@{min\_lp}!VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
+\doxysubsubsection{\texorpdfstring{min\_lp}{min\_lp}}
+{\footnotesize\ttfamily template$<$typename V\+M\+State $>$ \\
+double \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ V\+M\+State $>$\+::min\+\_\+lp}
 
 \mbox{\Hypertarget{class_virtual_machine_pool_a6bb6ec72e4b6fb87bb3b7ea6eb0e4d6e}\label{class_virtual_machine_pool_a6bb6ec72e4b6fb87bb3b7ea6eb0e4d6e}} 
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!Q@{Q}}
-\index{Q@{Q}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\subsubsection{\texorpdfstring{Q}{Q}}
-{\footnotesize\ttfamily template$<$typename V\+M\+State$>$ \\
-std\+::priority\+\_\+queue$<$V\+M\+State$\ast$, std\+::vector$<$V\+M\+State$\ast$$>$, Virtual\+Machine\+Pool\+::compare\+\_\+\+V\+M\+State\+\_\+prt$>$ \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ V\+M\+State $>$\+::Q}
+\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}!Q@{Q}}
+\index{Q@{Q}!VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
+\doxysubsubsection{\texorpdfstring{Q}{Q}}
+{\footnotesize\ttfamily template$<$typename V\+M\+State $>$ \\
+std\+::priority\+\_\+queue$<$V\+M\+State$\ast$, std\+::vector$<$V\+M\+State$\ast$$>$, Virtual\+Machine\+Pool\+::compare\+\_\+\+V\+M\+State\+\_\+prt$>$ \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ V\+M\+State $>$\+::Q}
 
 \mbox{\Hypertarget{class_virtual_machine_pool_ac5ffa14dc0e298c9fae3cddfa04779bb}\label{class_virtual_machine_pool_ac5ffa14dc0e298c9fae3cddfa04779bb}} 
-\index{Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}!worst\+\_\+lp@{worst\+\_\+lp}}
-\index{worst\+\_\+lp@{worst\+\_\+lp}!Virtual\+Machine\+Pool@{Virtual\+Machine\+Pool}}
-\subsubsection{\texorpdfstring{worst\+\_\+lp}{worst\_lp}}
-{\footnotesize\ttfamily template$<$typename V\+M\+State$>$ \\
-double \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}$<$ V\+M\+State $>$\+::worst\+\_\+lp = \hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity}}
+\index{VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}!worst\_lp@{worst\_lp}}
+\index{worst\_lp@{worst\_lp}!VirtualMachinePool$<$ VMState $>$@{VirtualMachinePool$<$ VMState $>$}}
+\doxysubsubsection{\texorpdfstring{worst\_lp}{worst\_lp}}
+{\footnotesize\ttfamily template$<$typename V\+M\+State $>$ \\
+double \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ V\+M\+State $>$\+::worst\+\_\+lp = \mbox{\hyperlink{_numerics_8h_a1bb1e42ae1b40cad6e99da0aab8a5576}{infinity}}}
 
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/\+Virtual\+Machine/\hyperlink{_virtual_machine_pool_8h}{Virtual\+Machine\+Pool.\+h}\end{DoxyCompactItemize}
+src/\+Virtual\+Machine/\mbox{\hyperlink{_virtual_machine_pool_8h}{Virtual\+Machine\+Pool.\+h}}\end{DoxyCompactItemize}

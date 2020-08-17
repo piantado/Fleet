@@ -1,7 +1,8 @@
 <map id="src/Grammar/Nonterminal.h" name="src/Grammar/Nonterminal.h">
-<area shape="rect" id="node2" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we &quot;emulate&quot; a type system using t_nonterminal to store an integer for the types. *. " alt="" coords="147,80,287,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="179,5,361,32"/>
+<area shape="rect" id="node2" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="147,80,287,107"/>
 <area shape="rect" id="node5" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="269,229,436,256"/>
-<area shape="rect" id="node3" href="$_node_8h.html" title="src/Grammar/Node.h" alt="" coords="117,155,261,181"/>
-<area shape="rect" id="node4" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="105,304,235,331"/>
+<area shape="rect" id="node3" href="$_node_8h.html" title=" " alt="" coords="117,155,261,181"/>
+<area shape="rect" id="node4" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="105,304,235,331"/>
 <area shape="rect" id="node6" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="25,229,245,256"/>
 </map>

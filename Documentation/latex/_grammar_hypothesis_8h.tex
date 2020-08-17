@@ -1,9 +1,21 @@
-\hypertarget{_grammar_hypothesis_8h}{}\section{src/\+Hypotheses/\+Grammar\+Hypothesis.h File Reference}
-\label{_grammar_hypothesis_8h}\index{src/\+Hypotheses/\+Grammar\+Hypothesis.\+h@{src/\+Hypotheses/\+Grammar\+Hypothesis.\+h}}
-{\ttfamily \#include $<$Eigen/\+Core$>$}\newline
+\hypertarget{_grammar_hypothesis_8h}{}\doxysection{src/\+Hypotheses/\+Grammar\+Hypothesis.h File Reference}
+\label{_grammar_hypothesis_8h}\index{src/Hypotheses/GrammarHypothesis.h@{src/Hypotheses/GrammarHypothesis.h}}
+
+
+This stores the human data, as a list of data to condition on data\mbox{[}0\+:ndata\mbox{]}, the data you predict on, and then correct/total counts.  
+
+
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Eigen\+Lib.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Numerics.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Eigen\+Numerics.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Discrete\+Distribution.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Vector2\+D.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Human\+Datum.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Control.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Top.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}M\+C\+M\+C\+Chain.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Vector\+Hypothesis.\+h\char`\"{}}\newline
 Include dependency graph for Grammar\+Hypothesis.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -12,52 +24,61 @@ Include dependency graph for Grammar\+Hypothesis.\+h\+:
 \includegraphics[width=350pt]{_grammar_hypothesis_8h__incl}
 \end{center}
 \end{figure}
-\subsection*{Classes}
+\doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \hyperlink{struct_human_datum}{Human\+Datum$<$ t\+\_\+learnerdatum, t\+\_\+learnerdata $>$}
-\item 
-class \hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis$<$ H\+Y\+P, datum\+\_\+t, data\+\_\+t $>$}
+class \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis$<$ H\+Y\+P, datum\+\_\+t, data\+\_\+t $>$}}
 \end{DoxyCompactItemize}
-\subsection*{Functions}
+\doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename H\+YP $>$ }\\\hyperlink{_eigen_numerics_8h_aca2956bc379bce2ed88ab3c0e1b61d1d}{Vector} \hyperlink{_grammar_hypothesis_8h_ae5fe4a8381157a1e6b65f806a80e941e}{counts} (H\+YP \&h)
+{\footnotesize template$<$typename H\+YP $>$ }\\std\+::vector$<$ H\+YP $>$ \mbox{\hyperlink{_grammar_hypothesis_8h_a6dfa47a2ba549c19bc735670ce2e93ca}{get\+\_\+hypotheses\+\_\+from\+\_\+mcmc}} (H\+YP \&h0, std\+::vector$<$ typename H\+Y\+P\+::data\+\_\+t $\ast$ $>$ \&mcmc\+\_\+data, \mbox{\hyperlink{struct_control}{Control}} c, size\+\_\+t \mbox{\hyperlink{_fleet_8h_affafd1fd79c4b9326a59ab232ed717b5}{ntop}})
+\begin{DoxyCompactList}\small\item\em Runs M\+C\+MC on hypotheses, resampling when the data stops being incremental and returns a unioned vector of all the tops. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename H\+YP $>$ }\\\hyperlink{_eigen_numerics_8h_a645222978e81acfb2523a9bce34aecc0}{Matrix} \hyperlink{_grammar_hypothesis_8h_aa9cc572967622742aa6eb6603f58dbd0}{counts} (std\+::vector$<$ H\+YP $>$ \&hypotheses)
-\item 
-{\footnotesize template$<$typename H\+YP , typename data\+\_\+t $>$ }\\\hyperlink{_eigen_numerics_8h_a645222978e81acfb2523a9bce34aecc0}{Matrix} \hyperlink{_grammar_hypothesis_8h_a4c254795a97685d56a1b957611fae090}{incremental\+\_\+likelihoods} (std\+::vector$<$ H\+YP $>$ \&hypotheses, data\+\_\+t \&human\+\_\+data)
-\item 
-{\footnotesize template$<$typename H\+YP , typename data\+\_\+t $>$ }\\\hyperlink{_eigen_numerics_8h_a645222978e81acfb2523a9bce34aecc0}{Matrix} \hyperlink{_grammar_hypothesis_8h_a226a126736e15a8fa6d12e3fc8d06772}{model\+\_\+predictions} (std\+::vector$<$ H\+YP $>$ \&hypotheses, data\+\_\+t \&human\+\_\+data)
+volatile sig\+\_\+atomic\+\_\+t \mbox{\hyperlink{_grammar_hypothesis_8h_a6f7c4963bb8a36031664821219e3159e}{C\+T\+R\+L\+\_\+C}}
 \end{DoxyCompactItemize}
 
 
-\subsection{Function Documentation}
-\mbox{\Hypertarget{_grammar_hypothesis_8h_ae5fe4a8381157a1e6b65f806a80e941e}\label{_grammar_hypothesis_8h_ae5fe4a8381157a1e6b65f806a80e941e}} 
-\index{Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}!counts@{counts}}
-\index{counts@{counts}!Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}}
-\subsubsection{\texorpdfstring{counts()}{counts()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+\doxysubsection{Detailed Description}
+This stores the human data, as a list of data to condition on data\mbox{[}0\+:ndata\mbox{]}, the data you predict on, and then correct/total counts. 
+
+This class does grammar inference with some collection of Human\+Data and fixed set of hypotheses.
+
+\begin{DoxyVerb}        NOTE: This is set up in way that it recomputes variables only when necessary, allowing it to make copies (mostly of pointers)
+              to components needed for the likelihood. This means, proposals maintain pointers to old values of Eigen matrices
+              and these are tracked using shared_ptr 
+        NOTE: Without likelihood decay, this would be much faster. It should work fine if likelihood decay is just set once. 
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_grammar_hypothesis_8h_a6dfa47a2ba549c19bc735670ce2e93ca}\label{_grammar_hypothesis_8h_a6dfa47a2ba549c19bc735670ce2e93ca}} 
+\index{GrammarHypothesis.h@{GrammarHypothesis.h}!get\_hypotheses\_from\_mcmc@{get\_hypotheses\_from\_mcmc}}
+\index{get\_hypotheses\_from\_mcmc@{get\_hypotheses\_from\_mcmc}!GrammarHypothesis.h@{GrammarHypothesis.h}}
+\doxysubsubsection{\texorpdfstring{get\_hypotheses\_from\_mcmc()}{get\_hypotheses\_from\_mcmc()}}
 {\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-\hyperlink{_eigen_numerics_8h_aca2956bc379bce2ed88ab3c0e1b61d1d}{Vector} counts (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h }\end{DoxyParamCaption})}
+std\+::vector$<$H\+YP$>$ get\+\_\+hypotheses\+\_\+from\+\_\+mcmc (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{std\+::vector$<$ typename H\+Y\+P\+::data\+\_\+t $\ast$ $>$ \&}]{mcmc\+\_\+data,  }\item[{\mbox{\hyperlink{struct_control}{Control}}}]{c,  }\item[{size\+\_\+t}]{ntop }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{_grammar_hypothesis_8h_aa9cc572967622742aa6eb6603f58dbd0}\label{_grammar_hypothesis_8h_aa9cc572967622742aa6eb6603f58dbd0}} 
-\index{Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}!counts@{counts}}
-\index{counts@{counts}!Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}}
-\subsubsection{\texorpdfstring{counts()}{counts()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-\hyperlink{_eigen_numerics_8h_a645222978e81acfb2523a9bce34aecc0}{Matrix} counts (\begin{DoxyParamCaption}\item[{std\+::vector$<$ H\+YP $>$ \&}]{hypotheses }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{_grammar_hypothesis_8h_a4c254795a97685d56a1b957611fae090}\label{_grammar_hypothesis_8h_a4c254795a97685d56a1b957611fae090}} 
-\index{Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}!incremental\+\_\+likelihoods@{incremental\+\_\+likelihoods}}
-\index{incremental\+\_\+likelihoods@{incremental\+\_\+likelihoods}!Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}}
-\subsubsection{\texorpdfstring{incremental\+\_\+likelihoods()}{incremental\_likelihoods()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename data\+\_\+t $>$ \\
-\hyperlink{_eigen_numerics_8h_a645222978e81acfb2523a9bce34aecc0}{Matrix} incremental\+\_\+likelihoods (\begin{DoxyParamCaption}\item[{std\+::vector$<$ H\+YP $>$ \&}]{hypotheses,  }\item[{data\+\_\+t \&}]{human\+\_\+data }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{_grammar_hypothesis_8h_a226a126736e15a8fa6d12e3fc8d06772}\label{_grammar_hypothesis_8h_a226a126736e15a8fa6d12e3fc8d06772}} 
-\index{Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}!model\+\_\+predictions@{model\+\_\+predictions}}
-\index{model\+\_\+predictions@{model\+\_\+predictions}!Grammar\+Hypothesis.\+h@{Grammar\+Hypothesis.\+h}}
-\subsubsection{\texorpdfstring{model\+\_\+predictions()}{model\_predictions()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename data\+\_\+t $>$ \\
-\hyperlink{_eigen_numerics_8h_a645222978e81acfb2523a9bce34aecc0}{Matrix} model\+\_\+predictions (\begin{DoxyParamCaption}\item[{std\+::vector$<$ H\+YP $>$ \&}]{hypotheses,  }\item[{data\+\_\+t \&}]{human\+\_\+data }\end{DoxyParamCaption})}
+Runs M\+C\+MC on hypotheses, resampling when the data stops being incremental and returns a unioned vector of all the tops. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em hypotheses} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{_grammar_hypothesis_8h_a6f7c4963bb8a36031664821219e3159e}\label{_grammar_hypothesis_8h_a6f7c4963bb8a36031664821219e3159e}} 
+\index{GrammarHypothesis.h@{GrammarHypothesis.h}!CTRL\_C@{CTRL\_C}}
+\index{CTRL\_C@{CTRL\_C}!GrammarHypothesis.h@{GrammarHypothesis.h}}
+\doxysubsubsection{\texorpdfstring{CTRL\_C}{CTRL\_C}}
+{\footnotesize\ttfamily volatile sig\+\_\+atomic\+\_\+t C\+T\+R\+L\+\_\+C}
 

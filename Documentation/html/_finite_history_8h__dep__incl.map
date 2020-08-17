@@ -1,6 +1,8 @@
 <map id="src/Statistics/FiniteHistory.h" name="src/Statistics/FiniteHistory.h">
-<area shape="rect" id="node2" href="$_m_c_m_c_chain_8h.html" title="src/Inference/MCMCChain.h" alt="" coords="93,80,282,107"/>
-<area shape="rect" id="node3" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel..." alt="" coords="39,155,213,181"/>
-<area shape="rect" id="node5" href="$_main_8cpp.html" title="Testing/Main.cpp" alt="" coords="126,304,249,331"/>
-<area shape="rect" id="node4" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="5,229,223,256"/>
+<area shape="rect" id="node1" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="273,5,459,32"/>
+<area shape="rect" id="node2" href="$_m_c_m_c_chain_8h.html" title=" " alt="" coords="271,80,461,107"/>
+<area shape="rect" id="node3" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,155,255,181"/>
+<area shape="rect" id="node4" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="279,155,453,181"/>
+<area shape="rect" id="node6" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="367,304,488,331"/>
+<area shape="rect" id="node5" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="247,229,463,256"/>
 </map>

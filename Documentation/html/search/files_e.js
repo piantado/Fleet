@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['searchable_2eh',['Searchable.h',['../_searchable_8h.html',1,'']]],
-  ['spinlock_2eh',['SpinLock.h',['../_spin_lock_8h.html',1,'']]],
-  ['stack_2eh',['Stack.h',['../_stack_8h.html',1,'']]],
-  ['streamingstatistics_2eh',['StreamingStatistics.h',['../_streaming_statistics_8h.html',1,'']]],
-  ['strings_2eh',['Strings.h',['../_strings_8h.html',1,'']]]
+  ['random_2eh_777',['Random.h',['../_random_8h.html',1,'']]],
+  ['reservoirsample_2eh_778',['ReservoirSample.h',['../_reservoir_sample_8h.html',1,'']]],
+  ['rule_2eh_779',['Rule.h',['../_rule_8h.html',1,'']]]
 ];

@@ -1,6 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_base_node.html" title="BaseNode\&lt; this_t \&gt;" alt="" coords="21,5,160,32"/>
-<area shape="rect" id="node2" href="$class_full_m_c_t_s_node.html" title="FullMCTSNode\&lt; this\l_t, HYP, callback_t \&gt;" alt="" coords="224,27,372,69"/>
-<area shape="rect" id="node3" href="$class_partial_m_c_t_s_node.html" title="PartialMCTSNode\&lt; this\l_t, HYP, callback_t \&gt;" alt="" coords="420,27,581,69"/>
-<area shape="rect" id="node4" href="$class_parallel_inference_interface.html" title="ParallelInferenceInterface\l\&lt; HYP \&gt;" alt="" coords="5,57,176,98"/>
+<area shape="rect" id="node1" href="$class_parallel_inference_interface.html" title=" " alt="" coords="5,5,176,47"/>
+<area shape="rect" id="node2" href="$class_prior_inference.html" title=" " alt="" coords="224,5,369,47"/>
 </map>

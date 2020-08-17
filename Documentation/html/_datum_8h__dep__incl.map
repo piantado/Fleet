@@ -1,6 +1,9 @@
-<map id="src/Hypotheses/Datum.h" name="src/Hypotheses/Datum.h">
-<area shape="rect" id="node2" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e..." alt="" coords="123,80,299,121"/>
-<area shape="rect" id="node3" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="123,169,299,211"/>
-<area shape="rect" id="node4" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="5,259,180,285"/>
-<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="219,259,439,285"/>
+<map id="src/Data/Datum.h" name="src/Data/Datum.h">
+<area shape="rect" id="node1" title="A datum is the default data point for likelihoods, consisting of an input and output type...." alt="" coords="257,5,384,32"/>
+<area shape="rect" id="node2" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e...." alt="" coords="233,80,409,121"/>
+<area shape="rect" id="node3" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="233,169,409,211"/>
+<area shape="rect" id="node6" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="5,259,180,285"/>
+<area shape="rect" id="node7" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="461,259,681,285"/>
+<area shape="rect" id="node4" href="$_vector_hypothesis_8h.html" title="This has all of the MCMCable interfaces but jsut represents n unit Gaussians. This is primarily used ..." alt="" coords="204,259,437,285"/>
+<area shape="rect" id="node5" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="196,333,445,360"/>
 </map>

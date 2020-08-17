@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['proposals',['Proposals',['../namespace_proposals.html',1,'']]]
+  ['proposals_733',['Proposals',['../namespace_proposals.html',1,'']]]
 ];

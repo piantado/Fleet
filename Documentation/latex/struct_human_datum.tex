@@ -1,53 +1,83 @@
-\hypertarget{struct_human_datum}{}\section{Human\+Datum$<$ t\+\_\+learnerdatum, t\+\_\+learnerdata $>$ Struct Template Reference}
-\label{struct_human_datum}\index{Human\+Datum$<$ t\+\_\+learnerdatum, t\+\_\+learnerdata $>$@{Human\+Datum$<$ t\+\_\+learnerdatum, t\+\_\+learnerdata $>$}}
+\hypertarget{struct_human_datum}{}\doxysection{Human\+Datum$<$ H\+YP $>$ Class Template Reference}
+\label{struct_human_datum}\index{HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}}
 
 
-{\ttfamily \#include $<$Grammar\+Hypothesis.\+h$>$}
+{\ttfamily \#include $<$Human\+Datum.\+h$>$}
 
-\subsection*{Public Attributes}
+\doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-size\+\_\+t \hyperlink{struct_human_datum_a3569e7634ea9badbe48105cb3a4e5800}{cntyes}
+H\+Y\+P\+::data\+\_\+t $\ast$ \mbox{\hyperlink{struct_human_datum_ae7e84e42eadf74123b0770a378e98c20}{data}}
 \item 
-size\+\_\+t \hyperlink{struct_human_datum_a713ec5993bc2a348a73f292865a6ddcf}{cntno}
+size\+\_\+t \mbox{\hyperlink{struct_human_datum_ac3f0740f0039b4a94f6c4cbee4b6a94a}{ndata}}
 \item 
-t\+\_\+learnerdata \hyperlink{struct_human_datum_aab13b229dfedb8c2466f47a58e710431}{given\+\_\+data}
+H\+Y\+P\+::input\+\_\+t $\ast$ \mbox{\hyperlink{struct_human_datum_a0a5e235df708ae7af0ddb324fbd05f14}{predict}}
 \item 
-t\+\_\+learnerdatum \hyperlink{struct_human_datum_a1c46fa659d01c8108fc694b4332836ff}{predicdata\+\_\+t}
+std\+::map$<$ typename H\+Y\+P\+::output\+\_\+t, size\+\_\+t $>$ \mbox{\hyperlink{struct_human_datum_a341153158ffb62d4732e7b756bff5eed}{responses}}
+\item 
+double \mbox{\hyperlink{struct_human_datum_ae566c76c85e90bfc5093b021006aee55}{chance}}
+\item 
+int \mbox{\hyperlink{struct_human_datum_a24b9b34afc3a0334fc9b994455c6d71f}{decay\+\_\+position}}
 \end{DoxyCompactItemize}
 
 
-\subsection{Member Data Documentation}
-\mbox{\Hypertarget{struct_human_datum_a713ec5993bc2a348a73f292865a6ddcf}\label{struct_human_datum_a713ec5993bc2a348a73f292865a6ddcf}} 
-\index{Human\+Datum@{Human\+Datum}!cntno@{cntno}}
-\index{cntno@{cntno}!Human\+Datum@{Human\+Datum}}
-\subsubsection{\texorpdfstring{cntno}{cntno}}
-{\footnotesize\ttfamily template$<$typename t\+\_\+learnerdatum , typename t\+\_\+learnerdata  = std\+::vector$<$t\+\_\+learnerdatum$>$$>$ \\
-size\+\_\+t \hyperlink{struct_human_datum}{Human\+Datum}$<$ t\+\_\+learnerdatum, t\+\_\+learnerdata $>$\+::cntno}
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename H\+YP$>$\newline
+class Human\+Datum$<$ H\+Y\+P $>$}
 
-\mbox{\Hypertarget{struct_human_datum_a3569e7634ea9badbe48105cb3a4e5800}\label{struct_human_datum_a3569e7634ea9badbe48105cb3a4e5800}} 
-\index{Human\+Datum@{Human\+Datum}!cntyes@{cntyes}}
-\index{cntyes@{cntyes}!Human\+Datum@{Human\+Datum}}
-\subsubsection{\texorpdfstring{cntyes}{cntyes}}
-{\footnotesize\ttfamily template$<$typename t\+\_\+learnerdatum , typename t\+\_\+learnerdata  = std\+::vector$<$t\+\_\+learnerdatum$>$$>$ \\
-size\+\_\+t \hyperlink{struct_human_datum}{Human\+Datum}$<$ t\+\_\+learnerdatum, t\+\_\+learnerdata $>$\+::cntyes}
-
-\mbox{\Hypertarget{struct_human_datum_aab13b229dfedb8c2466f47a58e710431}\label{struct_human_datum_aab13b229dfedb8c2466f47a58e710431}} 
-\index{Human\+Datum@{Human\+Datum}!given\+\_\+data@{given\+\_\+data}}
-\index{given\+\_\+data@{given\+\_\+data}!Human\+Datum@{Human\+Datum}}
-\subsubsection{\texorpdfstring{given\+\_\+data}{given\_data}}
-{\footnotesize\ttfamily template$<$typename t\+\_\+learnerdatum , typename t\+\_\+learnerdata  = std\+::vector$<$t\+\_\+learnerdatum$>$$>$ \\
-t\+\_\+learnerdata \hyperlink{struct_human_datum}{Human\+Datum}$<$ t\+\_\+learnerdatum, t\+\_\+learnerdata $>$\+::given\+\_\+data}
-
-\mbox{\Hypertarget{struct_human_datum_a1c46fa659d01c8108fc694b4332836ff}\label{struct_human_datum_a1c46fa659d01c8108fc694b4332836ff}} 
-\index{Human\+Datum@{Human\+Datum}!predicdata\+\_\+t@{predicdata\+\_\+t}}
-\index{predicdata\+\_\+t@{predicdata\+\_\+t}!Human\+Datum@{Human\+Datum}}
-\subsubsection{\texorpdfstring{predicdata\+\_\+t}{predicdata\_t}}
-{\footnotesize\ttfamily template$<$typename t\+\_\+learnerdatum , typename t\+\_\+learnerdata  = std\+::vector$<$t\+\_\+learnerdatum$>$$>$ \\
-t\+\_\+learnerdatum \hyperlink{struct_human_datum}{Human\+Datum}$<$ t\+\_\+learnerdatum, t\+\_\+learnerdata $>$\+::predicdata\+\_\+t}
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+03/08/20 
+\end{DoxyDate}
 
 
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_human_datum_ae566c76c85e90bfc5093b021006aee55}\label{struct_human_datum_ae566c76c85e90bfc5093b021006aee55}} 
+\index{HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}!chance@{chance}}
+\index{chance@{chance}!HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{chance}{chance}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+double \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP $>$\+::chance}
 
-The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\mbox{\Hypertarget{struct_human_datum_ae7e84e42eadf74123b0770a378e98c20}\label{struct_human_datum_ae7e84e42eadf74123b0770a378e98c20}} 
+\index{HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}!data@{data}}
+\index{data@{data}!HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+H\+Y\+P\+::data\+\_\+t$\ast$ \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP $>$\+::data}
+
+\mbox{\Hypertarget{struct_human_datum_a24b9b34afc3a0334fc9b994455c6d71f}\label{struct_human_datum_a24b9b34afc3a0334fc9b994455c6d71f}} 
+\index{HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}!decay\_position@{decay\_position}}
+\index{decay\_position@{decay\_position}!HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{decay\_position}{decay\_position}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+int \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP $>$\+::decay\+\_\+position}
+
+\mbox{\Hypertarget{struct_human_datum_ac3f0740f0039b4a94f6c4cbee4b6a94a}\label{struct_human_datum_ac3f0740f0039b4a94f6c4cbee4b6a94a}} 
+\index{HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}!ndata@{ndata}}
+\index{ndata@{ndata}!HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{ndata}{ndata}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+size\+\_\+t \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP $>$\+::ndata}
+
+\mbox{\Hypertarget{struct_human_datum_a0a5e235df708ae7af0ddb324fbd05f14}\label{struct_human_datum_a0a5e235df708ae7af0ddb324fbd05f14}} 
+\index{HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}!predict@{predict}}
+\index{predict@{predict}!HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{predict}{predict}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+H\+Y\+P\+::input\+\_\+t$\ast$ \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP $>$\+::predict}
+
+\mbox{\Hypertarget{struct_human_datum_a341153158ffb62d4732e7b756bff5eed}\label{struct_human_datum_a341153158ffb62d4732e7b756bff5eed}} 
+\index{HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}!responses@{responses}}
+\index{responses@{responses}!HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{responses}{responses}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+std\+::map$<$typename H\+Y\+P\+::output\+\_\+t,size\+\_\+t$>$ \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP $>$\+::responses}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/\+Hypotheses/\hyperlink{_grammar_hypothesis_8h}{Grammar\+Hypothesis.\+h}\end{DoxyCompactItemize}
+src/\+Data/\mbox{\hyperlink{_human_datum_8h}{Human\+Datum.\+h}}\end{DoxyCompactItemize}

@@ -1,5 +1,6 @@
 <map id="src/VirtualMachine/VirtualMachineState.h" name="src/VirtualMachine/VirtualMachineState.h">
+<area shape="rect" id="node1" title="Count references in lambda arguments (used to ensure we only passs one)" alt="" coords="119,5,274,47"/>
 <area shape="rect" id="node2" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="5,95,172,121"/>
 <area shape="rect" id="node4" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="196,95,416,121"/>
-<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="24,169,153,196"/>
+<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="24,169,153,196"/>
 </map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['matrix',['Matrix',['../_eigen_numerics_8h.html#a645222978e81acfb2523a9bce34aecc0',1,'EigenNumerics.h']]]
+  ['ll_5ft_1262',['LL_t',['../class_grammar_hypothesis.html#a27075c887aa5fd19f1d96f9391f6291e',1,'GrammarHypothesis']]]
 ];

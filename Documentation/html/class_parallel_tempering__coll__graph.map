@@ -1,5 +1,6 @@
 <map id="ParallelTempering&lt; HYP, callback_t &gt;" name="ParallelTempering&lt; HYP, callback_t &gt;">
-<area shape="rect" id="node2" href="$class_chain_pool.html" title="ChainPool\&lt; HYP, callback_t \&gt;" alt="" coords="5,81,207,108"/>
-<area shape="rect" id="node3" href="$class_parallel_inference_interface.html" title="ParallelInferenceInterface\&lt;\&gt;" alt="" coords="13,5,199,32"/>
-<area shape="rect" id="node4" href="$class_finite_history.html" title="FiniteHistory\&lt; bool \&gt;" alt="" coords="231,81,375,108"/>
+<area shape="rect" id="node1" title=" " alt="" coords="135,171,269,212"/>
+<area shape="rect" id="node2" href="$class_chain_pool.html" title=" " alt="" coords="5,81,204,108"/>
+<area shape="rect" id="node3" href="$class_parallel_inference_interface.html" title=" " alt="" coords="11,5,198,32"/>
+<area shape="rect" id="node4" href="$class_finite_history.html" title=" " alt="" coords="229,81,373,108"/>
 </map>

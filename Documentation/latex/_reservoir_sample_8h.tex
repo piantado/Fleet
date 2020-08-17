@@ -1,8 +1,8 @@
-\hypertarget{_reservoir_sample_8h}{}\section{src/\+Statistics/\+Reservoir\+Sample.h File Reference}
-\label{_reservoir_sample_8h}\index{src/\+Statistics/\+Reservoir\+Sample.\+h@{src/\+Statistics/\+Reservoir\+Sample.\+h}}
+\hypertarget{_reservoir_sample_8h}{}\doxysection{src/\+Statistics/\+Reservoir\+Sample.h File Reference}
+\label{_reservoir_sample_8h}\index{src/Statistics/ReservoirSample.h@{src/Statistics/ReservoirSample.h}}
 
 
-A reservoir sampling algorithm. N\+O\+TE\+: This was simplified from an old version that permitted unequal weights among elements. We may go back to that eventually -\/ \href{https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_}{\tt https\+://en.\+wikipedia.\+org/wiki/\+Reservoir\+\_\+sampling\#\+Weighted\+\_\+random\+\_\+sampling\+\_\+}.  
+A reservoir sampling algorithm. N\+O\+TE\+: This was simplified from an old version that permitted unequal weights among elements. We may go back to that eventually -\/ \href{https://en.wikipedia.org/wiki/Reservoir_sampling\#Weighted_random_sampling_}{\texttt{ https\+://en.\+wikipedia.\+org/wiki/\+Reservoir\+\_\+sampling\#\+Weighted\+\_\+random\+\_\+sampling\+\_\+}}.  
 
 
 {\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
@@ -23,18 +23,18 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=202pt]{_reservoir_sample_8h__dep__incl}
 \end{center}
 \end{figure}
-\subsection*{Classes}
+\doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{class_reservoir_sample}{Reservoir\+Sample$<$ T $>$}
+class \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample$<$ T $>$}}
 \item 
-class \hyperlink{struct_reservoir_sample_1_1_item}{Reservoir\+Sample$<$ T $>$\+::\+Item}
+class \mbox{\hyperlink{struct_reservoir_sample_1_1_item}{Reservoir\+Sample$<$ T $>$\+::\+Item}}
 \end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
-A reservoir sampling algorithm. N\+O\+TE\+: This was simplified from an old version that permitted unequal weights among elements. We may go back to that eventually -\/ \href{https://en.wikipedia.org/wiki/Reservoir_sampling#Weighted_random_sampling_}{\tt https\+://en.\+wikipedia.\+org/wiki/\+Reservoir\+\_\+sampling\#\+Weighted\+\_\+random\+\_\+sampling\+\_\+}. 
+\doxysubsection{Detailed Description}
+A reservoir sampling algorithm. N\+O\+TE\+: This was simplified from an old version that permitted unequal weights among elements. We may go back to that eventually -\/ \href{https://en.wikipedia.org/wiki/Reservoir_sampling\#Weighted_random_sampling_}{\texttt{ https\+://en.\+wikipedia.\+org/wiki/\+Reservoir\+\_\+sampling\#\+Weighted\+\_\+random\+\_\+sampling\+\_\+}}. 
 
 An item in a reservoir sample, grouping together an element x and its log weights, value, etc.
 
-N\+O\+TE\+: Because we use \hyperlink{class_top_n}{TopN} internally, we can access the Item values with Reservoir\+Sample.\+top.\+values() and we can get the stuff that\textquotesingle{}s stored with \hyperlink{class_reservoir_sample_a0f0abf510882715b487f2254b6af25b1}{Reservoir\+Sample.\+values()}
+N\+O\+TE\+: Because we use \mbox{\hyperlink{class_top_n}{TopN}} internally, we can access the Item values with Reservoir\+Sample.\+top.\+values() and we can get the stuff that\textquotesingle{}s stored with \mbox{\hyperlink{class_reservoir_sample_a0f0abf510882715b487f2254b6af25b1}{Reservoir\+Sample.\+values()}}

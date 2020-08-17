@@ -1,15 +1,16 @@
 <map id="BuiltinPrimitiveBase" name="BuiltinPrimitiveBase">
-<area shape="rect" id="node2" href="$struct_builtin_primitive.html" title="BuiltinPrimitive\&lt; t,\l args \&gt;" alt="" coords="206,5,335,47"/>
-<area shape="rect" id="node3" href="$struct_builtin_primitive.html" title="BuiltinPrimitive\&lt; bool \&gt;" alt="" coords="192,71,349,98"/>
-<area shape="rect" id="node5" href="$struct_builtin_primitive.html" title="BuiltinPrimitive\&lt; bool,\l double \&gt;" alt="" coords="196,123,345,164"/>
-<area shape="rect" id="node7" href="$struct_builtin_primitive.html" title="BuiltinPrimitive\&lt; t \&gt;" alt="" coords="202,189,339,215"/>
-<area shape="rect" id="node9" href="$struct_builtin_primitive.html" title="BuiltinPrimitive\&lt; t,\l bool, t, t \&gt;" alt="" coords="206,240,335,281"/>
-<area shape="rect" id="node11" href="$struct_builtin_primitive.html" title="BuiltinPrimitive\&lt; t\l_out, t_in \&gt;" alt="" coords="208,331,333,372"/>
-<area shape="rect" id="node4" href="$struct_builtin_1_1_flip.html" title="Builtin::Flip" alt="" coords="439,71,526,98"/>
-<area shape="rect" id="node6" href="$struct_builtin_1_1_flip_p.html" title="Builtin::FlipP" alt="" coords="435,130,531,157"/>
-<area shape="rect" id="node8" href="$struct_builtin_1_1_x.html" title="Builtin::X\&lt; t \&gt;" alt="" coords="431,189,534,215"/>
-<area shape="rect" id="node10" href="$struct_builtin_1_1_if.html" title="Builtin::If\&lt; t \&gt;" alt="" coords="431,243,534,270"/>
-<area shape="rect" id="node12" href="$struct_builtin_1_1_recurse.html" title="Builtin::Recurse\&lt; t\l_out, t_in \&gt;" alt="" coords="417,295,548,336"/>
-<area shape="rect" id="node13" href="$struct_builtin_1_1_safe_mem_recurse.html" title="Builtin::SafeMemRecurse\l\&lt; t_out, t_in \&gt;" alt="" coords="397,360,568,401"/>
-<area shape="rect" id="node14" href="$struct_builtin_1_1_safe_recurse.html" title="Builtin::SafeRecurse\l\&lt; t_out, t_in \&gt;" alt="" coords="411,425,554,467"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,159,144,186"/>
+<area shape="rect" id="node2" href="$struct_builtin_primitive.html" title=" " alt="" coords="206,5,335,47"/>
+<area shape="rect" id="node3" href="$struct_builtin_primitive.html" title=" " alt="" coords="192,71,349,98"/>
+<area shape="rect" id="node5" href="$struct_builtin_primitive.html" title=" " alt="" coords="196,123,345,164"/>
+<area shape="rect" id="node7" href="$struct_builtin_primitive.html" title=" " alt="" coords="202,189,339,215"/>
+<area shape="rect" id="node9" href="$struct_builtin_primitive.html" title=" " alt="" coords="206,240,335,281"/>
+<area shape="rect" id="node11" href="$struct_builtin_primitive.html" title=" " alt="" coords="208,331,333,372"/>
+<area shape="rect" id="node4" href="$struct_builtin_1_1_flip.html" title=" " alt="" coords="439,71,526,98"/>
+<area shape="rect" id="node6" href="$struct_builtin_1_1_flip_p.html" title=" " alt="" coords="435,130,531,157"/>
+<area shape="rect" id="node8" href="$struct_builtin_1_1_x.html" title=" " alt="" coords="431,189,534,215"/>
+<area shape="rect" id="node10" href="$struct_builtin_1_1_if.html" title=" " alt="" coords="431,243,534,270"/>
+<area shape="rect" id="node12" href="$struct_builtin_1_1_recurse.html" title=" " alt="" coords="417,295,548,336"/>
+<area shape="rect" id="node13" href="$struct_builtin_1_1_safe_mem_recurse.html" title=" " alt="" coords="397,360,568,401"/>
+<area shape="rect" id="node14" href="$struct_builtin_1_1_safe_recurse.html" title=" " alt="" coords="411,425,554,467"/>
 </map>

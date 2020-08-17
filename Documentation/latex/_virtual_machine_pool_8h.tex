@@ -1,8 +1,8 @@
-\hypertarget{_virtual_machine_pool_8h}{}\section{src/\+Virtual\+Machine/\+Virtual\+Machine\+Pool.h File Reference}
-\label{_virtual_machine_pool_8h}\index{src/\+Virtual\+Machine/\+Virtual\+Machine\+Pool.\+h@{src/\+Virtual\+Machine/\+Virtual\+Machine\+Pool.\+h}}
+\hypertarget{_virtual_machine_pool_8h}{}\doxysection{src/\+Virtual\+Machine/\+Virtual\+Machine\+Pool.h File Reference}
+\label{_virtual_machine_pool_8h}\index{src/VirtualMachine/VirtualMachinePool.h@{src/VirtualMachine/VirtualMachinePool.h}}
 
 
-This manages a collection of Virtual\+Machines -- this is what handles the enumeration of flip by probability. Basically each machine state stores the state of some evaluator and is able to push things back on to the Q if it encounters a random flip This stores pointers because it is impossible to copy out of std collections, so we are constantly having to call \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State} constructors. Using pointers speeds us up by about 20\%.  
+This manages a collection of Virtual\+Machines -- this is what handles the enumeration of flip by probability. Basically each machine state stores the state of some evaluator and is able to push things back on to the Q if it encounters a random flip This stores pointers because it is impossible to copy out of std collections, so we are constantly having to call \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} constructors. Using pointers speeds us up by about 20\%.  
 
 
 {\ttfamily \#include \char`\"{}Discrete\+Distribution.\+h\char`\"{}}\newline
@@ -24,13 +24,13 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=245pt]{_virtual_machine_pool_8h__dep__incl}
 \end{center}
 \end{figure}
-\subsection*{Classes}
+\doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool$<$ V\+M\+State $>$}
+class \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool$<$ V\+M\+State $>$}}
 \end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
-This manages a collection of Virtual\+Machines -- this is what handles the enumeration of flip by probability. Basically each machine state stores the state of some evaluator and is able to push things back on to the Q if it encounters a random flip This stores pointers because it is impossible to copy out of std collections, so we are constantly having to call \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State} constructors. Using pointers speeds us up by about 20\%. 
+\doxysubsection{Detailed Description}
+This manages a collection of Virtual\+Machines -- this is what handles the enumeration of flip by probability. Basically each machine state stores the state of some evaluator and is able to push things back on to the Q if it encounters a random flip This stores pointers because it is impossible to copy out of std collections, so we are constantly having to call \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} constructors. Using pointers speeds us up by about 20\%. 
 

@@ -1,8 +1,0 @@
-<map id="MyMCTS" name="MyMCTS">
-<area shape="rect" id="node4" href="$class_base_node.html" title="BaseNode\&lt; MyMCTS \&gt;" alt="" coords="495,45,657,72"/>
-<area shape="rect" id="node2" href="$class_full_m_c_t_s_node.html" title="FullMCTSNode\&lt; MyMCTS,\l MyHypothesis, TopN\&lt;\l MyHypothesis \&gt; \&gt;" alt="" coords="763,89,947,145"/>
-<area shape="rect" id="node3" href="$class_parallel_inference_interface.html" title="ParallelInferenceInterface\l\&lt; MyHypothesis \&gt;" alt="" coords="491,97,661,138"/>
-<area shape="rect" id="node5" href="$class_base_node_1_1_node_iterator.html" title="BaseNode\&lt; this_t \&gt;\l::NodeIterator" alt="" coords="204,67,343,109"/>
-<area shape="rect" id="node7" href="$class_top_n.html" title="TopN\&lt; MyHypothesis \&gt;" alt="" coords="495,163,657,189"/>
-<area shape="rect" id="node8" href="$class_spin_lock.html" title="SpinLock" alt="" coords="538,213,614,240"/>
-</map>

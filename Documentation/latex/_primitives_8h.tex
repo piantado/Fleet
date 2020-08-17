@@ -1,5 +1,5 @@
-\hypertarget{_primitives_8h}{}\section{src/\+Virtual\+Machine/\+Primitives.h File Reference}
-\label{_primitives_8h}\index{src/\+Virtual\+Machine/\+Primitives.\+h@{src/\+Virtual\+Machine/\+Primitives.\+h}}
+\hypertarget{_primitives_8h}{}\doxysection{src/\+Virtual\+Machine/\+Primitives.h File Reference}
+\label{_primitives_8h}\index{src/VirtualMachine/Primitives.h@{src/VirtualMachine/Primitives.h}}
 
 
 If there are any references in the arguments, only the first can be a reference.  
@@ -30,38 +30,38 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=205pt]{_primitives_8h__dep__incl}
 \end{center}
 \end{figure}
-\subsection*{Classes}
+\doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{struct_count_references}{Count\+References$<$ T, Types $>$}
+class \mbox{\hyperlink{struct_count_references}{Count\+References$<$ T, Types $>$}}
 \item 
-struct \hyperlink{struct_count_references_3_01_t_01_4}{Count\+References$<$ T $>$}
+struct \mbox{\hyperlink{struct_count_references_3_01_t_01_4}{Count\+References$<$ T $>$}}
 \item 
-class \hyperlink{struct_check_reference_is_first}{Check\+Reference\+Is\+First$<$ T, Types $>$}
+class \mbox{\hyperlink{struct_check_reference_is_first}{Check\+Reference\+Is\+First$<$ T, Types $>$}}
 \item 
-struct \hyperlink{struct_check_reference_is_first_3_01_t_01_4}{Check\+Reference\+Is\+First$<$ T $>$}
+struct \mbox{\hyperlink{struct_check_reference_is_first_3_01_t_01_4}{Check\+Reference\+Is\+First$<$ T $>$}}
 \item 
-class \hyperlink{struct_type_head}{Type\+Head$<$ Args $>$}
+class \mbox{\hyperlink{struct_type_head}{Type\+Head$<$ Args $>$}}
 \item 
-class \hyperlink{struct_head_if_reference_else_t}{Head\+If\+Reference\+Else\+T$<$ T, args $>$}
+class \mbox{\hyperlink{struct_head_if_reference_else_t}{Head\+If\+Reference\+Else\+T$<$ T, args $>$}}
 \item 
-struct \hyperlink{struct_head_if_reference_else_t_3_01_t_01_4}{Head\+If\+Reference\+Else\+T$<$ T $>$}
+struct \mbox{\hyperlink{struct_head_if_reference_else_t_3_01_t_01_4}{Head\+If\+Reference\+Else\+T$<$ T $>$}}
 \item 
-class \hyperlink{struct_pre_primitive}{Pre\+Primitive}
+class \mbox{\hyperlink{struct_pre_primitive}{Pre\+Primitive}}
 \item 
-class \hyperlink{struct_primitive}{Primitive$<$ T, args $>$}
+class \mbox{\hyperlink{struct_primitive}{Primitive}}
 \end{DoxyCompactItemize}
-\subsection*{Functions}
+\doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename X , typename... Ts$>$ }\\constexpr bool \hyperlink{_primitives_8h_a88e3d8e9f8a97406cabe4044308e649b}{contains\+\_\+type} ()
+{\footnotesize template$<$typename X , typename... Ts$>$ }\\constexpr bool \mbox{\hyperlink{_primitives_8h_a88e3d8e9f8a97406cabe4044308e649b}{contains\+\_\+type}} ()
 \begin{DoxyCompactList}\small\item\em Check if a type is contained in parameter pack. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
+\doxysubsection{Detailed Description}
 If there are any references in the arguments, only the first can be a reference. 
 
-A primitive associates a string name (format) with a function, and allows grammars to extract all the relevant function pieces via constexpr, and also defines a V\+MS function that can be called in dispatch op here is generated uniquely for each \hyperlink{struct_primitive}{Primitive}, which is how \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis} knows which to call. SO\+: grammars use this op (statically updated) in nodes, and then when they are linearized the op is processed in a switch statement to evaluate This is a funny intermediate type that essentially helps us associate functions, formats, and nonterminal types all together.
+A primitive associates a string name (format) with a function, and allows grammars to extract all the relevant function pieces via constexpr, and also defines a V\+MS function that can be called in dispatch op here is generated uniquely for each \mbox{\hyperlink{struct_primitive}{Primitive}}, which is how \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}} knows which to call. SO\+: grammars use this op (statically updated) in nodes, and then when they are linearized the op is processed in a switch statement to evaluate This is a funny intermediate type that essentially helps us associate functions, formats, and nonterminal types all together.
 
 A preprimitive is a class that primitives inherit. We use a static op\+\_\+counter so that at compile time thsi can be used to compute an op number for each separate primitive.
 
@@ -69,13 +69,13 @@ Gives head(args)\+::value if head(args)\+::value is a reference, otherwise T...
 
 The first type in Args.
 
-\subsection{Function Documentation}
+\doxysubsection{Function Documentation}
 \mbox{\Hypertarget{_primitives_8h_a88e3d8e9f8a97406cabe4044308e649b}\label{_primitives_8h_a88e3d8e9f8a97406cabe4044308e649b}} 
-\index{Primitives.\+h@{Primitives.\+h}!contains\+\_\+type@{contains\+\_\+type}}
-\index{contains\+\_\+type@{contains\+\_\+type}!Primitives.\+h@{Primitives.\+h}}
-\subsubsection{\texorpdfstring{contains\+\_\+type()}{contains\_type()}}
+\index{Primitives.h@{Primitives.h}!contains\_type@{contains\_type}}
+\index{contains\_type@{contains\_type}!Primitives.h@{Primitives.h}}
+\doxysubsubsection{\texorpdfstring{contains\_type()}{contains\_type()}}
 {\footnotesize\ttfamily template$<$typename X , typename... Ts$>$ \\
-constexpr bool contains\+\_\+type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+constexpr bool contains\+\_\+type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}}
 
 
 

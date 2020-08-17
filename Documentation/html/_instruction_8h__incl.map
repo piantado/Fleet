@@ -1,2 +1,6 @@
 <map id="src/VirtualMachine/Instruction.h" name="src/VirtualMachine/Instruction.h">
+<area shape="rect" id="node1" title="This is an error type that is returned if we get a runtime error (e.g. string length,..." alt="" coords="69,5,200,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,95,75,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="99,95,171,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="195,95,256,121"/>
 </map>

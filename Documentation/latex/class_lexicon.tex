@@ -1,12 +1,12 @@
-\hypertarget{class_lexicon}{}\section{Lexicon$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$ Class Template Reference}
-\label{class_lexicon}\index{Lexicon$<$ H\+Y\+P, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$@{Lexicon$<$ H\+Y\+P, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}}
+\hypertarget{class_lexicon}{}\doxysection{Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$ Class Template Reference}
+\label{class_lexicon}\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
 
 
 {\ttfamily \#include $<$Lexicon.\+h$>$}
 
 
 
-Inheritance diagram for Lexicon$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$\+:
+Inheritance diagram for Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
@@ -16,7 +16,7 @@ Inheritance diagram for Lexicon$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\
 \end{figure}
 
 
-Collaboration diagram for Lexicon$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$\+:
+Collaboration diagram for Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
@@ -24,63 +24,63 @@ Collaboration diagram for Lexicon$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\
 \includegraphics[width=350pt]{class_lexicon__coll__graph}
 \end{center}
 \end{figure}
-\subsection*{Public Member Functions}
+\doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_lexicon_a06bafc4711d145a026fe03e9e1168ae8}{Lexicon} (size\+\_\+t n)
+\mbox{\hyperlink{class_lexicon_ad5e2614a7faff7b31355d70384d79d3c}{Lexicon}} (size\+\_\+t n)
 \item 
-\hyperlink{class_lexicon_ab027c90715b8616af424c6682cdfef0f}{Lexicon} ()
+\mbox{\hyperlink{class_lexicon_ad451007a5401c03f21106a02b333f20c}{Lexicon}} ()
 \item 
-virtual std\+::string \hyperlink{class_lexicon_a5c584d2885a21542082332a26eb0961b}{string} () const override
+virtual std\+::string \mbox{\hyperlink{class_lexicon_a7e95d76d9c76fca324ebaf61d8115e56}{string}} (std\+::string prefix=\char`\"{}\char`\"{}) const override
 \item 
-virtual std\+::string \hyperlink{class_lexicon_a0ed99caee19dc82e57e80b290abd239a}{parseable} () const
+virtual std\+::string \mbox{\hyperlink{class_lexicon_ac264df390ce71a1c8e6430d5ecfa4d05}{parseable}} () const
 \item 
-virtual size\+\_\+t \hyperlink{class_lexicon_afbefa510e623ee4a407a1e1e04f42fb2}{hash} () const override
-\begin{DoxyCompactList}\small\item\em Default hash function. \end{DoxyCompactList}\item 
-virtual bool \hyperlink{class_lexicon_abd4b0dead3757288e80f37773820f513}{operator==} (const H\+YP \&l) const override
+virtual size\+\_\+t \mbox{\hyperlink{class_lexicon_ab943626fbbf617c6df844dccdebcd6b4}{hash}} () const override
 \item 
-bool \hyperlink{class_lexicon_a7b8ca67607285cc14608bd7148953d91}{has\+\_\+valid\+\_\+indices} () const
+virtual bool \mbox{\hyperlink{class_lexicon_accf03b87887ee114b1fa965725134729}{operator==}} (const this\+\_\+t \&l) const override
 \item 
-bool \hyperlink{class_lexicon_a1e58bf42fb2388eff629bc899d8ef5ed}{check\+\_\+reachable} () const
+bool \mbox{\hyperlink{class_lexicon_a6a25d5e2c4e9d028e48eb44afe2e45fd}{has\+\_\+valid\+\_\+indices}} () const
 \item 
-virtual size\+\_\+t \hyperlink{class_lexicon_a005225141f8a245fe33d8f0a58fd397a}{program\+\_\+size} (short s) override
+bool \mbox{\hyperlink{class_lexicon_a24a36031568a6a6c856b9a85611288b6}{check\+\_\+reachable}} () const
 \item 
-virtual void \hyperlink{class_lexicon_acd367c70ccc583f2a9fcbb1d007db45c}{push\+\_\+program} (Program \&s, short j) override
+virtual size\+\_\+t \mbox{\hyperlink{class_lexicon_a78f8b386c22e9362341b8c79fabef256}{program\+\_\+size}} (short s) override
 \item 
-virtual void \hyperlink{class_lexicon_a724ccdaffe9090488bfaa786873fa807}{complete} () override
+virtual void \mbox{\hyperlink{class_lexicon_a86da48452192cb5bb996af19dc5cf21b}{push\+\_\+program}} (Program \&s, short j) override
+\item 
+virtual void \mbox{\hyperlink{class_lexicon_a599a46da3a74e5b15fc12cb4ebbe83ec}{complete}} () override
 \begin{DoxyCompactList}\small\item\em Fill in all the holes in this hypothesis, at random, modifying self. \end{DoxyCompactList}\item 
-virtual double \hyperlink{class_lexicon_a2e099a68dd08d62897b40647f92eba1c}{compute\+\_\+prior} () override
+virtual double \mbox{\hyperlink{class_lexicon_abc7cc24905aac55241bdef419b8f626d}{compute\+\_\+prior}} () override
 \begin{DoxyCompactList}\small\item\em Compute the prior -- defaultly not defined. \end{DoxyCompactList}\item 
-virtual std\+::pair$<$ H\+YP, double $>$ \hyperlink{class_lexicon_afa8ea51bbd16df5f46557fe10db84980}{propose} () const override
+virtual std\+::pair$<$ this\+\_\+t, double $>$ \mbox{\hyperlink{class_lexicon_a3604dc0030c0c419f21275f2bb49be43}{propose}} () const override
 \item 
-virtual H\+YP \hyperlink{class_lexicon_ac8577ba9b4554ebf1852020c617bd7df}{restart} () const override
+virtual this\+\_\+t \mbox{\hyperlink{class_lexicon_acca0cb83186695104c59a5fdc125e718}{restart}} () const override
 \item 
-int \hyperlink{class_lexicon_a6419f323377d4c524363707eee0cae09}{neighbors} () const override
-\begin{DoxyCompactList}\small\item\em Count the number of neighbors that are possible. (This should be size\+\_\+t but int is more convenient.) \end{DoxyCompactList}\item 
-void \hyperlink{class_lexicon_a2b17608f66415c6a7d55b6a8f344db21}{expand\+\_\+to\+\_\+neighbor} (int k) override
+int \mbox{\hyperlink{class_lexicon_af20c52c7405032406acfa5759be272c5}{neighbors}} () const override
+\item 
+void \mbox{\hyperlink{class_lexicon_ab2947079ce9015d2f3aa4f09b8d61f61}{expand\+\_\+to\+\_\+neighbor}} (int k) override
 \begin{DoxyCompactList}\small\item\em Modify this hypothesis to become the k\textquotesingle{}th neighbor. \end{DoxyCompactList}\item 
-virtual double \hyperlink{class_lexicon_ad237c78e3435223f344d153da3baba9b}{neighbor\+\_\+prior} (int k) override
+virtual double \mbox{\hyperlink{class_lexicon_af6bcbc5e3624b24b2db5a16785d1729a}{neighbor\+\_\+prior}} (int k) override
 \begin{DoxyCompactList}\small\item\em What is the prior of the k\textquotesingle{}th neighbor? This does not need to return the full prior, only relative (among ks) \end{DoxyCompactList}\item 
-bool \hyperlink{class_lexicon_ab9fcefbd8598a5401a39bd59e8043db9}{is\+\_\+evaluable} () const override
-\begin{DoxyCompactList}\small\item\em Check if we can evaluate this node (meaning compute a prior and posterior). N\+O\+TE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable. \end{DoxyCompactList}\item 
-virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ output\+\_\+t $>$ \hyperlink{class_lexicon_afc6b762f68c6033a501ce7ca04b01ece}{call} (const input\+\_\+t x, const output\+\_\+t err)
+bool \mbox{\hyperlink{class_lexicon_a55e1529c98707fd2a3d84c73c5eb4685}{is\+\_\+evaluable}} () const override
+\item 
+virtual \mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}}$<$ output\+\_\+t $>$ \mbox{\hyperlink{class_lexicon_a18d67ffb01608b9fbc30e51bab900067}{call}} (const input\+\_\+t x, const output\+\_\+t err)
 \end{DoxyCompactItemize}
-\subsection*{Static Public Member Functions}
+\doxysubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename Grammar\+Type $>$ }\\static H\+YP \hyperlink{class_lexicon_a9c9fd97a05a82e4f8b202850f8e8802c}{from\+\_\+string} (Grammar\+Type \&g, std\+::string s)
+{\footnotesize template$<$typename Grammar\+Type $>$ }\\static this\+\_\+t \mbox{\hyperlink{class_lexicon_a9f6fcce2c71e0b45bbe234d63c94cf91}{from\+\_\+string}} (Grammar\+Type \&g, std\+::string s)
 \end{DoxyCompactItemize}
-\subsection*{Public Attributes}
+\doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-std\+::vector$<$ I\+N\+N\+ER $>$ \hyperlink{class_lexicon_ac70865eb23b1e23f53f21e1760adac00}{factors}
+std\+::vector$<$ I\+N\+N\+ER $>$ \mbox{\hyperlink{class_lexicon_a7c1a797f90ac71f7dec9b6d43cd666b6}{factors}}
 \end{DoxyCompactItemize}
-\subsection*{Additional Inherited Members}
+\doxysubsection*{Additional Inherited Members}
 
 
-\subsection{Detailed Description}
-\subsubsection*{template$<$typename H\+YP, typename I\+N\+N\+ER, typename input\+\_\+t, typename output\+\_\+t, typename datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$\newline
-class Lexicon$<$ H\+Y\+P, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename this\+\_\+t, typename I\+N\+N\+ER, typename input\+\_\+t, typename output\+\_\+t, typename datum\+\_\+t = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$\newline
+class Lexicon$<$ this\+\_\+t, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}
 
 \begin{DoxyAuthor}{Author}
 piantado 
@@ -90,47 +90,47 @@ piantado
 \end{DoxyDate}
 
 
-\subsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{class_lexicon_a06bafc4711d145a026fe03e9e1168ae8}\label{class_lexicon_a06bafc4711d145a026fe03e9e1168ae8}} 
-\index{Lexicon@{Lexicon}!Lexicon@{Lexicon}}
-\index{Lexicon@{Lexicon}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{Lexicon()}{Lexicon()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-\hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::\hyperlink{class_lexicon}{Lexicon} (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_lexicon_ad5e2614a7faff7b31355d70384d79d3c}\label{class_lexicon_ad5e2614a7faff7b31355d70384d79d3c}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!Lexicon@{Lexicon}}
+\index{Lexicon@{Lexicon}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{Lexicon()}{Lexicon()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+\mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::\mbox{\hyperlink{class_lexicon}{Lexicon}} (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_lexicon_ab027c90715b8616af424c6682cdfef0f}\label{class_lexicon_ab027c90715b8616af424c6682cdfef0f}} 
-\index{Lexicon@{Lexicon}!Lexicon@{Lexicon}}
-\index{Lexicon@{Lexicon}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{Lexicon()}{Lexicon()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-\hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::\hyperlink{class_lexicon}{Lexicon} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\mbox{\Hypertarget{class_lexicon_ad451007a5401c03f21106a02b333f20c}\label{class_lexicon_ad451007a5401c03f21106a02b333f20c}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!Lexicon@{Lexicon}}
+\index{Lexicon@{Lexicon}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{Lexicon()}{Lexicon()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+\mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::\mbox{\hyperlink{class_lexicon}{Lexicon}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-\subsection{Member Function Documentation}
-\mbox{\Hypertarget{class_lexicon_afc6b762f68c6033a501ce7ca04b01ece}\label{class_lexicon_afc6b762f68c6033a501ce7ca04b01ece}} 
-\index{Lexicon@{Lexicon}!call@{call}}
-\index{call@{call}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{call()}{call()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-virtual \hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$output\+\_\+t$>$ \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::call (\begin{DoxyParamCaption}\item[{const input\+\_\+t}]{x,  }\item[{const output\+\_\+t}]{err }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_lexicon_a18d67ffb01608b9fbc30e51bab900067}\label{class_lexicon_a18d67ffb01608b9fbc30e51bab900067}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!call@{call}}
+\index{call@{call}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{call()}{call()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual \mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}}$<$output\+\_\+t$>$ \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::call (\begin{DoxyParamCaption}\item[{const input\+\_\+t}]{x,  }\item[{const output\+\_\+t}]{err }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-\mbox{\Hypertarget{class_lexicon_a1e58bf42fb2388eff629bc899d8ef5ed}\label{class_lexicon_a1e58bf42fb2388eff629bc899d8ef5ed}} 
-\index{Lexicon@{Lexicon}!check\+\_\+reachable@{check\+\_\+reachable}}
-\index{check\+\_\+reachable@{check\+\_\+reachable}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{check\+\_\+reachable()}{check\_reachable()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-bool \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::check\+\_\+reachable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+\mbox{\Hypertarget{class_lexicon_a24a36031568a6a6c856b9a85611288b6}\label{class_lexicon_a24a36031568a6a6c856b9a85611288b6}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!check\_reachable@{check\_reachable}}
+\index{check\_reachable@{check\_reachable}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{check\_reachable()}{check\_reachable()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+bool \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::check\+\_\+reachable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 Check if the last factor call everything else transitively (e.\+g. are we \char`\"{}wasting\char`\"{} factors) We do this by making a graph of what factors call which others and then computing the transitive closure. \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_lexicon_a724ccdaffe9090488bfaa786873fa807}\label{class_lexicon_a724ccdaffe9090488bfaa786873fa807}} 
-\index{Lexicon@{Lexicon}!complete@{complete}}
-\index{complete@{complete}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{complete()}{complete()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-virtual void \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::complete (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{class_lexicon_a599a46da3a74e5b15fc12cb4ebbe83ec}\label{class_lexicon_a599a46da3a74e5b15fc12cb4ebbe83ec}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!complete@{complete}}
+\index{complete@{complete}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{complete()}{complete()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual void \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::complete (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -138,14 +138,14 @@ Fill in all the holes in this hypothesis, at random, modifying self.
 
 
 
-Implements \hyperlink{class_searchable_a3ae6263b49a0f9da94f5dcc23af6618e}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
+Implements \mbox{\hyperlink{class_searchable_a29ab2eb0471e2e9d96d39f0349f21571}{Searchable$<$ this\+\_\+t, input\+\_\+t, output\+\_\+t $>$}}.
 
-\mbox{\Hypertarget{class_lexicon_a2e099a68dd08d62897b40647f92eba1c}\label{class_lexicon_a2e099a68dd08d62897b40647f92eba1c}} 
-\index{Lexicon@{Lexicon}!compute\+\_\+prior@{compute\+\_\+prior}}
-\index{compute\+\_\+prior@{compute\+\_\+prior}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{compute\+\_\+prior()}{compute\_prior()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-virtual double \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::compute\+\_\+prior (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{class_lexicon_abc7cc24905aac55241bdef419b8f626d}\label{class_lexicon_abc7cc24905aac55241bdef419b8f626d}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!compute\_prior@{compute\_prior}}
+\index{compute\_prior@{compute\_prior}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{compute\_prior()}{compute\_prior()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual double \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::compute\+\_\+prior (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -153,14 +153,14 @@ Compute the prior -- defaultly not defined.
 
 
 
-Implements \hyperlink{class_bayesable_a1b057a17212ced123545133e2297c01b}{Bayesable$<$ Args... $>$}.
+Implements \mbox{\hyperlink{class_bayesable_a1b057a17212ced123545133e2297c01b}{Bayesable$<$ Args... $>$}}.
 
-\mbox{\Hypertarget{class_lexicon_a2b17608f66415c6a7d55b6a8f344db21}\label{class_lexicon_a2b17608f66415c6a7d55b6a8f344db21}} 
-\index{Lexicon@{Lexicon}!expand\+\_\+to\+\_\+neighbor@{expand\+\_\+to\+\_\+neighbor}}
-\index{expand\+\_\+to\+\_\+neighbor@{expand\+\_\+to\+\_\+neighbor}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{expand\+\_\+to\+\_\+neighbor()}{expand\_to\_neighbor()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-void \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::expand\+\_\+to\+\_\+neighbor (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{class_lexicon_ab2947079ce9015d2f3aa4f09b8d61f61}\label{class_lexicon_ab2947079ce9015d2f3aa4f09b8d61f61}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!expand\_to\_neighbor@{expand\_to\_neighbor}}
+\index{expand\_to\_neighbor@{expand\_to\_neighbor}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{expand\_to\_neighbor()}{expand\_to\_neighbor()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+void \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::expand\+\_\+to\+\_\+neighbor (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -173,15 +173,15 @@ Modify this hypothesis to become the k\textquotesingle{}th neighbor.
 \end{DoxyParams}
 
 
-Implements \hyperlink{class_searchable_a1786307b9f2dadc8c66c94adef220270}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
+Implements \mbox{\hyperlink{class_searchable_a9088dba3920f4c66ce671aa16a7d29a4}{Searchable$<$ this\+\_\+t, input\+\_\+t, output\+\_\+t $>$}}.
 
-\mbox{\Hypertarget{class_lexicon_a9c9fd97a05a82e4f8b202850f8e8802c}\label{class_lexicon_a9c9fd97a05a82e4f8b202850f8e8802c}} 
-\index{Lexicon@{Lexicon}!from\+\_\+string@{from\+\_\+string}}
-\index{from\+\_\+string@{from\+\_\+string}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{from\+\_\+string()}{from\_string()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+\mbox{\Hypertarget{class_lexicon_a9f6fcce2c71e0b45bbe234d63c94cf91}\label{class_lexicon_a9f6fcce2c71e0b45bbe234d63c94cf91}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!from\_string@{from\_string}}
+\index{from\_string@{from\_string}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{from\_string()}{from\_string()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
 template$<$typename Grammar\+Type $>$ \\
-static H\+YP \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::from\+\_\+string (\begin{DoxyParamCaption}\item[{Grammar\+Type \&}]{g,  }\item[{std\+::string}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+static this\+\_\+t \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::from\+\_\+string (\begin{DoxyParamCaption}\item[{Grammar\+Type \&}]{g,  }\item[{std\+::string}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
 Convert a string to a lexicon of this type 
 \begin{DoxyParams}{Parameters}
@@ -193,55 +193,39 @@ Convert a string to a lexicon of this type
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_lexicon_a7b8ca67607285cc14608bd7148953d91}\label{class_lexicon_a7b8ca67607285cc14608bd7148953d91}} 
-\index{Lexicon@{Lexicon}!has\+\_\+valid\+\_\+indices@{has\+\_\+valid\+\_\+indices}}
-\index{has\+\_\+valid\+\_\+indices@{has\+\_\+valid\+\_\+indices}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{has\+\_\+valid\+\_\+indices()}{has\_valid\_indices()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-bool \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::has\+\_\+valid\+\_\+indices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+\mbox{\Hypertarget{class_lexicon_a6a25d5e2c4e9d028e48eb44afe2e45fd}\label{class_lexicon_a6a25d5e2c4e9d028e48eb44afe2e45fd}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!has\_valid\_indices@{has\_valid\_indices}}
+\index{has\_valid\_indices@{has\_valid\_indices}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{has\_valid\_indices()}{has\_valid\_indices()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+bool \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::has\+\_\+valid\+\_\+indices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 A lexicon has valid indices if calls to op\+\_\+\+R\+E\+C\+U\+R\+SE, op\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE, op\+\_\+\+S\+A\+F\+E\+\_\+\+R\+E\+C\+U\+R\+SE, and op\+\_\+\+S\+A\+F\+E\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE all have arguments that are less than the size. (So this places no restrictions on the calling earlier factors) \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_lexicon_afbefa510e623ee4a407a1e1e04f42fb2}\label{class_lexicon_afbefa510e623ee4a407a1e1e04f42fb2}} 
-\index{Lexicon@{Lexicon}!hash@{hash}}
-\index{hash@{hash}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{hash()}{hash()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-virtual size\+\_\+t \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::hash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{class_lexicon_ab943626fbbf617c6df844dccdebcd6b4}\label{class_lexicon_ab943626fbbf617c6df844dccdebcd6b4}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!hash@{hash}}
+\index{hash@{hash}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{hash()}{hash()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual size\+\_\+t \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::hash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
-
-
-Default hash function. 
-
-Hash a \hyperlink{class_lexicon}{Lexicon} by hashing each part \begin{DoxyReturn}{Returns}
+Hash a \mbox{\hyperlink{class_lexicon}{Lexicon}} by hashing each part \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\mbox{\Hypertarget{class_lexicon_a55e1529c98707fd2a3d84c73c5eb4685}\label{class_lexicon_a55e1529c98707fd2a3d84c73c5eb4685}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!is\_evaluable@{is\_evaluable}}
+\index{is\_evaluable@{is\_evaluable}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{is\_evaluable()}{is\_evaluable()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+bool \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::is\+\_\+evaluable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
 
-
-Implements \hyperlink{class_bayesable_a26f6d55e7526ebd897cbb27c757b611b}{Bayesable$<$ Args... $>$}.
-
-\mbox{\Hypertarget{class_lexicon_ab9fcefbd8598a5401a39bd59e8043db9}\label{class_lexicon_ab9fcefbd8598a5401a39bd59e8043db9}} 
-\index{Lexicon@{Lexicon}!is\+\_\+evaluable@{is\+\_\+evaluable}}
-\index{is\+\_\+evaluable@{is\+\_\+evaluable}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{is\+\_\+evaluable()}{is\_evaluable()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-bool \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::is\+\_\+evaluable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
-
-
-
-Check if we can evaluate this node (meaning compute a prior and posterior). N\+O\+TE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable. 
-
-
-
-Implements \hyperlink{class_searchable_a23786e95730117c3cc4b90e010494a1e}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
-
-\mbox{\Hypertarget{class_lexicon_ad237c78e3435223f344d153da3baba9b}\label{class_lexicon_ad237c78e3435223f344d153da3baba9b}} 
-\index{Lexicon@{Lexicon}!neighbor\+\_\+prior@{neighbor\+\_\+prior}}
-\index{neighbor\+\_\+prior@{neighbor\+\_\+prior}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{neighbor\+\_\+prior()}{neighbor\_prior()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-virtual double \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::neighbor\+\_\+prior (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{class_lexicon_af6bcbc5e3624b24b2db5a16785d1729a}\label{class_lexicon_af6bcbc5e3624b24b2db5a16785d1729a}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!neighbor\_prior@{neighbor\_prior}}
+\index{neighbor\_prior@{neighbor\_prior}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{neighbor\_prior()}{neighbor\_prior()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual double \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::neighbor\+\_\+prior (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -254,29 +238,21 @@ What is the prior of the k\textquotesingle{}th neighbor? This does not need to r
 \end{DoxyParams}
 
 
-Implements \hyperlink{class_searchable_abebbaaf94b0502a35d0ba686af73bd08}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
+Implements \mbox{\hyperlink{class_searchable_aa6f72073717a4df0d22c73705555b13a}{Searchable$<$ this\+\_\+t, input\+\_\+t, output\+\_\+t $>$}}.
 
-\mbox{\Hypertarget{class_lexicon_a6419f323377d4c524363707eee0cae09}\label{class_lexicon_a6419f323377d4c524363707eee0cae09}} 
-\index{Lexicon@{Lexicon}!neighbors@{neighbors}}
-\index{neighbors@{neighbors}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{neighbors()}{neighbors()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-int \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::neighbors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{class_lexicon_af20c52c7405032406acfa5759be272c5}\label{class_lexicon_af20c52c7405032406acfa5759be272c5}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!neighbors@{neighbors}}
+\index{neighbors@{neighbors}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{neighbors()}{neighbors()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+int \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::neighbors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
 
-
-
-Count the number of neighbors that are possible. (This should be size\+\_\+t but int is more convenient.) 
-
-
-
-Implements \hyperlink{class_searchable_aec30063fcc9bed5d005f8318efa8492d}{Searchable$<$ H\+Y\+P, input\+\_\+t, output\+\_\+t $>$}.
-
-\mbox{\Hypertarget{class_lexicon_abd4b0dead3757288e80f37773820f513}\label{class_lexicon_abd4b0dead3757288e80f37773820f513}} 
-\index{Lexicon@{Lexicon}!operator==@{operator==}}
-\index{operator==@{operator==}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{operator==()}{operator==()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-virtual bool \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::operator== (\begin{DoxyParamCaption}\item[{const H\+YP \&}]{l }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{class_lexicon_accf03b87887ee114b1fa965725134729}\label{class_lexicon_accf03b87887ee114b1fa965725134729}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!operator==@{operator==}}
+\index{operator==@{operator==}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual bool \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::operator== (\begin{DoxyParamCaption}\item[{const this\+\_\+t \&}]{l }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 Equality checks equality on each part 
 \begin{DoxyParams}{Parameters}
@@ -288,45 +264,41 @@ Equality checks equality on each part
 \end{DoxyReturn}
 
 
-Implements \hyperlink{class_m_c_m_cable_aa73001ec3bb0cf0c618281dfa998f2f1}{M\+C\+M\+Cable$<$ H\+Y\+P, datum\+\_\+t $>$}.
+Implements \mbox{\hyperlink{class_m_c_m_cable_a7b35c04d3d1326b930cfc69dfe0bd207}{M\+C\+M\+Cable$<$ this\+\_\+t, defauldatum\+\_\+t$<$ input\+\_\+t, output\+\_\+t $>$ $>$}}.
 
-\mbox{\Hypertarget{class_lexicon_a0ed99caee19dc82e57e80b290abd239a}\label{class_lexicon_a0ed99caee19dc82e57e80b290abd239a}} 
-\index{Lexicon@{Lexicon}!parseable@{parseable}}
-\index{parseable@{parseable}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{parseable()}{parseable()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-virtual std\+::string \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::parseable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{class_lexicon_ac264df390ce71a1c8e6430d5ecfa4d05}\label{class_lexicon_ac264df390ce71a1c8e6430d5ecfa4d05}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!parseable@{parseable}}
+\index{parseable@{parseable}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{parseable()}{parseable()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual std\+::string \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::parseable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
 Convert to a parseable format (using a delimiter for each factor) \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_lexicon_a005225141f8a245fe33d8f0a58fd397a}\label{class_lexicon_a005225141f8a245fe33d8f0a58fd397a}} 
-\index{Lexicon@{Lexicon}!program\+\_\+size@{program\+\_\+size}}
-\index{program\+\_\+size@{program\+\_\+size}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{program\+\_\+size()}{program\_size()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-virtual size\+\_\+t \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::program\+\_\+size (\begin{DoxyParamCaption}\item[{short}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{class_lexicon_a78f8b386c22e9362341b8c79fabef256}\label{class_lexicon_a78f8b386c22e9362341b8c79fabef256}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!program\_size@{program\_size}}
+\index{program\_size@{program\_size}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{program\_size()}{program\_size()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual size\+\_\+t \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::program\+\_\+size (\begin{DoxyParamCaption}\item[{short}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
-\mbox{\Hypertarget{class_lexicon_afa8ea51bbd16df5f46557fe10db84980}\label{class_lexicon_afa8ea51bbd16df5f46557fe10db84980}} 
-\index{Lexicon@{Lexicon}!propose@{propose}}
-\index{propose@{propose}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{propose()}{propose()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-virtual std\+::pair$<$H\+YP,double$>$ \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::propose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{class_lexicon_a3604dc0030c0c419f21275f2bb49be43}\label{class_lexicon_a3604dc0030c0c419f21275f2bb49be43}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!propose@{propose}}
+\index{propose@{propose}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{propose()}{propose()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual std\+::pair$<$this\+\_\+t,double$>$ \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::propose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 This proposal guarantees that there will be at least one factor that is proposed to. To do this, we draw random numbers on 2$\ast$$\ast$factors.size()-\/1 and then use the bits of that integer to determine which factors to propose to. \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-
-
-Implements \hyperlink{class_m_c_m_cable_ab119a14256ab92c5c1e941f8492df830}{M\+C\+M\+Cable$<$ H\+Y\+P, datum\+\_\+t $>$}.
-
-\mbox{\Hypertarget{class_lexicon_acd367c70ccc583f2a9fcbb1d007db45c}\label{class_lexicon_acd367c70ccc583f2a9fcbb1d007db45c}} 
-\index{Lexicon@{Lexicon}!push\+\_\+program@{push\+\_\+program}}
-\index{push\+\_\+program@{push\+\_\+program}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{push\+\_\+program()}{push\_program()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-virtual void \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::push\+\_\+program (\begin{DoxyParamCaption}\item[{Program \&}]{s,  }\item[{short}]{j }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{class_lexicon_a86da48452192cb5bb996af19dc5cf21b}\label{class_lexicon_a86da48452192cb5bb996af19dc5cf21b}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!push\_program@{push\_program}}
+\index{push\_program@{push\_program}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{push\_program()}{push\_program()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual void \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::push\+\_\+program (\begin{DoxyParamCaption}\item[{Program \&}]{s,  }\item[{short}]{j }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 Put factor j onto program s 
 \begin{DoxyParams}{Parameters}
@@ -335,43 +307,39 @@ Put factor j onto program s
 {\em j} & \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{class_lexicon_ac8577ba9b4554ebf1852020c617bd7df}\label{class_lexicon_ac8577ba9b4554ebf1852020c617bd7df}} 
-\index{Lexicon@{Lexicon}!restart@{restart}}
-\index{restart@{restart}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{restart()}{restart()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-virtual H\+YP \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::restart (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{class_lexicon_acca0cb83186695104c59a5fdc125e718}\label{class_lexicon_acca0cb83186695104c59a5fdc125e718}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!restart@{restart}}
+\index{restart@{restart}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{restart()}{restart()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual this\+\_\+t \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::restart (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
-
-
-Implements \hyperlink{class_m_c_m_cable_a220d6c4ca73e20441c14fa5bd3e090d3}{M\+C\+M\+Cable$<$ H\+Y\+P, datum\+\_\+t $>$}.
-
-\mbox{\Hypertarget{class_lexicon_a5c584d2885a21542082332a26eb0961b}\label{class_lexicon_a5c584d2885a21542082332a26eb0961b}} 
-\index{Lexicon@{Lexicon}!string@{string}}
-\index{string@{string}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{string()}{string()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-virtual std\+::string \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{class_lexicon_a7e95d76d9c76fca324ebaf61d8115e56}\label{class_lexicon_a7e95d76d9c76fca324ebaf61d8115e56}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!string@{string}}
+\index{string@{string}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{string()}{string()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+virtual std\+::string \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::string (\begin{DoxyParamCaption}\item[{std\+::string}]{prefix = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 A\+Convert a lexicon to a string -- defaultly includes all arguments. \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
 
 
-Implements \hyperlink{class_bayesable_afcea9b439bcf321d5354710d8861cb54}{Bayesable$<$ Args... $>$}.
+Implements \mbox{\hyperlink{class_bayesable_ab6944b4bfe5620c96048287a51d019c1}{Bayesable$<$ Args... $>$}}.
 
 
 
-\subsection{Member Data Documentation}
-\mbox{\Hypertarget{class_lexicon_ac70865eb23b1e23f53f21e1760adac00}\label{class_lexicon_ac70865eb23b1e23f53f21e1760adac00}} 
-\index{Lexicon@{Lexicon}!factors@{factors}}
-\index{factors@{factors}!Lexicon@{Lexicon}}
-\subsubsection{\texorpdfstring{factors}{factors}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
-std\+::vector$<$I\+N\+N\+ER$>$ \hyperlink{class_lexicon}{Lexicon}$<$ H\+YP, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t} $>$\+::factors}
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_lexicon_a7c1a797f90ac71f7dec9b6d43cd666b6}\label{class_lexicon_a7c1a797f90ac71f7dec9b6d43cd666b6}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}!factors@{factors}}
+\index{factors@{factors}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t $>$}}
+\doxysubsubsection{\texorpdfstring{factors}{factors}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defauldatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$$>$ \\
+std\+::vector$<$I\+N\+N\+ER$>$ \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}} $>$\+::factors}
 
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/\+Hypotheses/\hyperlink{_lexicon_8h}{Lexicon.\+h}\end{DoxyCompactItemize}
+src/\+Hypotheses/\mbox{\hyperlink{_lexicon_8h}{Lexicon.\+h}}\end{DoxyCompactItemize}
