@@ -131,11 +131,11 @@ int main(int argc, char** argv){
 		h0.factors.push_back(ih.restart());
 	}
 	
-	TopN<MyHypothesis> top(ntop);
+	TopN<MyHypothesis> top;
 	
 	tic();
 	MCMCChain chain(h0, nullptr, top);
-	chain.run(Control(mcmc_steps, runtime));
+	chain.run(Control());
 	tic();	
 	
 	top.print();

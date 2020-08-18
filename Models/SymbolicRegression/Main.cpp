@@ -108,7 +108,7 @@ public:
 		}
 	}
 	
-	virtual std::string string() const override { 
+	virtual std::string string(std::string prefix="") const override { 
 		// we can get here where our constants have not been defined it seems...
 		if(not this->is_evaluable()) 
 			return structure_string(); // don't fill in constants if we aren't complete
@@ -116,7 +116,7 @@ public:
 		assert(constants.size() == count_constants()); // or something is broken
 		
 		size_t idx = 0;
-		return  std::string("\u03BBx.") +  __my_string_recurse(&value, idx);
+		return  prefix+std::string("\u03BBx.") +  __my_string_recurse(&value, idx);
 	}
 	
 	virtual std::string structure_string() const {
@@ -376,19 +376,19 @@ int main(int argc, char** argv){
 	MyGrammar grammar(PRIMITIVES);
 	
 	// set up the data
-	mydata = load_data_file(input_path.c_str()); 
+	mydata = load_data_file(FleetArgs::input_path.c_str()); 
  
  	//------------------
 	// Run
 	//------------------
  
 	MyHypothesis h0(&grammar);
-	MyMCTS m(h0, explore, &mydata, myCallback);
+	MyMCTS m(h0, FleetArgs::explore, &mydata, myCallback);
 	tic();
-	m.run(Control(mcts_steps, runtime, nthreads), h0);
+	m.run(Control(), h0);
 	tic();
 	
-	m.print(h0, tree_path.c_str());
+	m.print(h0, FleetArgs::tree_path.c_str());
 
 	// set up a paralle tempering object
 //	auto h0 = MyHypothesis::make(&grammar);

@@ -321,7 +321,7 @@ bool long_output = false; // if true, we allow extra strings, recursions etc. on
 
 int main(int argc, char** argv){ 
 	
-	input_path = my_default_input; // set this so it's not fleet's normal input default
+	FleetArgs::input_path = my_default_input; // set this so it's not fleet's normal input default
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	Fleet fleet("Formal language learner");
@@ -336,7 +336,7 @@ int main(int argc, char** argv){
 	
 	
 	// Input here is going to specify the PRdata path, minus the txt
-	if(prdata_path == "") {	prdata_path = input_path+".txt"; }
+	if(prdata_path == "") {	prdata_path = FleetArgs::input_path+".txt"; }
 	
 	load_data_file(prdata, prdata_path.c_str()); // put all the data in prdata
 	for(auto d : prdata) {	// Add a check for any data not in the alphabet
@@ -390,18 +390,18 @@ int main(int argc, char** argv){
 	for(size_t i=0;i<data_amounts.size();i++){ 
 		MyHypothesis::data_t d;
 		
-		S data_path = input_path + "-" + data_amounts[i] + ".txt";	
+		S data_path = FleetArgs::input_path + "-" + data_amounts[i] + ".txt";	
 		load_data_file(d, data_path.c_str());
 		
 		datas.push_back(d);
-		tops.push_back(TopN<MyHypothesis>(ntop));
+		tops.push_back(TopN<MyHypothesis>());
 	}
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Actually run
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	TopN<MyHypothesis> all(ntop); 
+	TopN<MyHypothesis> all(std::numeric_limits<size_t>::max()); 
 //	all.set_print_best(true);
 	
 	tic();	
@@ -413,7 +413,7 @@ int main(int argc, char** argv){
 		// No theory here, this just seems to be about what works well. 
 		ParallelTempering samp(h0, &datas[di], all, NTEMPS, MAX_TEMP); 
 //		for(auto& x: datas[di]) { CERR di TAB x.output TAB x.reliability ENDL;	}
-		samp.run(Control(mcmc_steps/datas.size(), runtime/datas.size(), nthreads, RESTART), SWAP_EVERY, 5*60*1000);	
+		samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, RESTART), SWAP_EVERY, 5*60*1000);	
 
 		// set up to print using a larger set if we were given this option
 		if(long_output){

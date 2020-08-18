@@ -185,7 +185,7 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> top_mcmc(N);  //	top_mcmc.print_best = true;
 	h0 = h0.restart();
 	MCMCChain chain(h0, &mydata, top_mcmc);
-	chain.run(Control(mcmc_steps,runtime));
+	chain.run(Control());
 	checkTop(&grammar, top_mcmc);
 	assert(not top_mcmc.empty());
 	COUT "GOOD" ENDL;
@@ -207,7 +207,7 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> top_tempering(N);
 	h0 = h0.restart();
 	ParallelTempering samp(h0, &mydata, top_tempering, 8, 1000.0, false);
-	samp.run(Control(mcmc_steps, runtime, nthreads), 500, 1000);	// we run here with fast swaps, adaptation to fit more in 
+	samp.run(Control(), 500, 1000);	// we run here with fast swaps, adaptation to fit more in 
  	// NOTE: Running ParallelTempering with allcallback (default) will try to put
 	// *everything* into top, which means that the counts you get will no longer 
 	// be samples (and in fact should be biased towards high-prior hypotheses)	
@@ -220,7 +220,7 @@ int main(int argc, char** argv){
 	COUT "# Enumeration...";
 	TopN<MyHypothesis> top_enumerate(N);
 	EnumerationInference<MyHypothesis,MyGrammar,decltype(top_enumerate)> e(&grammar, grammar.nt<S>(), &mydata, top_enumerate);
-	e.run(Control(mcts_steps, runtime, nthreads));
+	e.run(Control());
 	assert(not top_enumerate.empty());
 	checkTop(&grammar, top_enumerate);
 	COUT "GOOD" ENDL;

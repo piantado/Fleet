@@ -23,8 +23,7 @@ public:
 	
 	// index here is used to index into larger parallel collections or enumerate. Each thread
 	// is expected to get its next item to work on through index, though how will vary
-	std::atomic<unsigned long> index; 
-	
+	std::atomic<size_t> index; 
 	
 	ParallelInferenceInterface() : index(0) {
 		

@@ -38,10 +38,11 @@
 #include "Control.h"
 #include "SpinLock.h"
 #include "Random.h"
+#include "FleetArgs.h"
 
 #include "BaseNode.h"
 
-extern double explore; 
+
 
 /**
  * @class FullMCTSNode
@@ -272,7 +273,7 @@ public:
 				/// how much probability mass PER sample came from each child, dividing by explore for the temperature.
 				/// If no exploraiton steps, we just pretend lse-1.0 was the probability mass 
 				children_lps[k] = current.neighbor_prior(k) + 
-								  (this->child(k).nvisits == 0 ? lse-1.0 : this->child(k).lse-log(this->child(k).nvisits)) / explore;
+								  (this->child(k).nvisits == 0 ? lse-1.0 : this->child(k).lse-log(this->child(k).nvisits)) / this->explore;
 			}
 		}
 		
@@ -363,7 +364,7 @@ class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {
 			for(int k=0;k<neigh;k++) {
 				if(this->children[k].open){
 					children_lps[k] = current.neighbor_prior(k) + 
-									  (this->children[k].nvisits == 0 ? 0.0 : this->children[k].max + explore*sqrt(log(1+this->nvisits)/(1+this->children[k].nvisits)));
+									  (this->children[k].nvisits == 0 ? 0.0 : this->children[k].max + this->explore*sqrt(log(1+this->nvisits)/(1+this->children[k].nvisits)));
 				}
 			}			
 			

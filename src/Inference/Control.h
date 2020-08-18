@@ -2,15 +2,6 @@
 
 //#define DEBUG_CONTROL
 
-/**
-* @class Control
-* @author steven piantadosi
-* @date 03/02/20
-* @file Control.h
-* @brief This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc.
-* NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here)
-*/ 
-
 #include <signal.h>
 
 #include "FleetArgs.h"
@@ -19,9 +10,17 @@
 
 extern volatile sig_atomic_t CTRL_C;
 
+/**
+ * @class Control
+ * @author Steven Piantadosi
+ * @date 17/08/20
+ * @file Control.h
+ * @brief This class has all the information for running MCMC or MCTS in a little package. It defaultly constructs (via Control()) to read these from FleetArgs, which 
+ * 		  are a bunch of variables set by Fleet::initialize from the command line. This makes it especially convenient to call with command line arguments, but others
+ *        can be specified as well. 
+ */
+
 struct Control {
-	// Parameters for running MCMC or MCTS
-	// 
 	unsigned long steps;
 	time_ms runtime;
 	size_t nthreads;

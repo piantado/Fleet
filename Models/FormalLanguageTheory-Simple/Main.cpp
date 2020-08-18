@@ -165,7 +165,7 @@ int main(int argc, char** argv){
 	}
 	
 	// top stores the top hypotheses we have found
-	TopN<MyHypothesis> top(ntop);
+	TopN<MyHypothesis> top;
 	
 	//------------------
 	// set up the data
@@ -209,27 +209,27 @@ int main(int argc, char** argv){
 	
 	top.print_best = true;
 	auto h0 = MyHypothesis::make(&grammar);
-	ParallelTempering samp(h0, &mydata, top, nchains, 1000.0);
-	samp.run(Control(mcmc_steps, runtime, nthreads), 100, 30000);		
+	ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 1000.0);
+	samp.run(Control(), 100, 30000);		
 	
 
 //	top.print_best = true; // print out each best hypothesis you find
 //	auto h0 = MyHypothesis::make(&grammar);
 //	MCMCChain c(h0, &mydata, top);
 //	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-//	c.run(Control(mcmc_steps, runtime, nthreads));
+//	c.run(Control());
 
 	// run multiple chains
 //	auto h0 = MyHypothesis::make(&grammar);
 //	ChainPool c(h0, &mydata, top, nchains);
 //	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-//	c.run(Control(mcmc_steps, runtime, nthreads));
+//	c.run(Control());
 
 	// A FullMCTSNode run is one where each time you descend the tree, you go until you make it to a terminal
 //	MyHypothesis h0(&grammar);
 //	FullMCTSNode<MyHypothesis,TopN<MyHypothesis>> m(h0, explore, &mydata, top);
 //	top.print_best = true;
-//	m.run(Control(mcts_steps, runtime, nthreads), h0);
+//	m.run(Control(), h0);
 //	m.print(h0, "tree.txt");
 //	CERR "# MCTS size: " TAB m.size() ENDL;
 	
@@ -237,7 +237,7 @@ int main(int argc, char** argv){
 //	MyHypothesis h0(&grammar);
 //	MyMCTS m(h0, explore, &mydata, top);
 //	top.print_best = true;
-//	m.run(Control(mcts_steps, runtime, nthreads), h0);
+//	m.run(Control(), h0);
 //	m.print(h0, "tree.txt");
 //	CERR "# MCTS size: " TAB m.count() ENDL;
 
@@ -247,7 +247,7 @@ int main(int argc, char** argv){
 //	top.print_best = true;
 //	MyHypothesis h0(&grammar);
 //	Astar astar(h0,&mydata, top, 10.0);
-//	astar.run(Control(mcts_steps, runtime, nthreads));
+//	astar.run(Control());
 
 	// do inference via enumeration -- this doesn't usually work well
 //	top.print_best = true;
