@@ -284,29 +284,25 @@ std::vector<MyHypothesis::data_t> alldata;
 #include "Inference/MCTS.h"
 #include "Inference/MCMCChain.h"
 
-class MyMCTS : public MCTSNode<MyMCTS, MyHypothesis> {
-	using MCTSNode::MCTSNode;
+class MyMCTS final : public PartialMCTSNode<MyMCTS, MyHypothesis, decltype(all)> {
+	using PartialMCTSNode::PartialMCTSNode;
 
-	virtual void playout() override {
+	virtual void playout(MyHypothesis& h) override {
 
-		MyHypothesis h0 = value; // need a copy to change resampling on 
+		MyHypothesis h0 = h; // need a copy to change resampling on 
 		for(auto& n : h0.get_value() ){
 			n.can_resample = false;
 		}
 		
 		// make a wrapper to add samples
-		std::function<void(MyHypothesis& h)> cb = [&](MyHypothesis& h) { 
-			if(h.posterior == -infinity) return;
-
-			all << h;
-			
-			add_sample(h.posterior);
+		std::function<void(MyHypothesis& h)> cb = [&](MyHypothesis& v) { 
+			this->add_sample(v.likelihood);
+			(*this->callback)(v);
 		};
 		
-		auto h = h0; h.complete(); // fill in any structural gaps
-		
-		MCMCChain chain(h, data, cb);
-		chain.run(Control(0, 1000, 1)); // run mcmc with restarts; we sure shouldn't run more than runtime
+		h0.complete(); // fill in any structural gaps
+		MCMCChain chain(h0, data, cb);
+		chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1)); // run mcmc with restarts; we sure shouldn't run more than runtime
 	}
 	
 };
@@ -388,10 +384,14 @@ int main(int argc, char** argv) {
 		}
 
 		alldata.push_back(mydata);
-		alltops.push_back(TopN<MyHypothesis>(ntop));
+		alltops.push_back(TopN<MyHypothesis>());
 	}
 	data_t biggestData = *alldata.rbegin();
 	
+	
+//	TopN<MyHypothesis> top;
+//	// This will print out the best ones we see:
+//	top.print_best = true;
 
 	// MCTS  - here just on the last data
 //	MyHypothesis h0(&grammar);
@@ -412,21 +412,19 @@ int main(int argc, char** argv) {
 //	tic();
 
 	// just simple mcmc on one
-//	tic();
-//	for(size_t di=0;di<alldata.size();di++){
-//		auto h0 = MyHypothesis::make(&grammar);
-//		MCMCChain samp(h0, &alldata[0], alltops[0]);
-//		samp.run(Control(mcmc_steps, runtime, nthreads)); 
-//	}
-//	tic();
+	for(size_t di=0;di<alldata.size();di++){
+		auto h0 = MyHypothesis::make(&grammar);
+		MCMCChain samp(h0, &alldata[di], alltops[di]);
+		samp.run(Control()); 
+	}
 
+	///////////////
 	// check out A*	
-	TopN<MyHypothesis> top();
-	top.print_best = true;
-	MyHypothesis h0(&grammar);
-	Astar astar(h0,&alldata[alldata.size()-1], top, 100.0);
-	astar.run(Control());
-	top.print();
+//
+//	MyHypothesis h0(&grammar);
+//	Astar astar(h0,&alldata[alldata.size()-1], top, 100.0);
+//	astar.run(Control());
+//	top.print();
 	
 	fleet.completed(); // print the search/mcmc stats here instead of when fleet is destroyed
 	

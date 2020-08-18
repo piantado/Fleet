@@ -90,16 +90,19 @@ public:
 		
 	public:
 		
-			NodeIterator(const this_t* n) : current(n->left_descend()), start(n) { }
+			NodeIterator(const this_t* n) : current( n!= nullptr ? n->left_descend() : nullptr), start(n) { }
 			this_t& operator*() const  { 
+				assert(current != nullptr);
 				return *current; 
 			}
 			this_t* operator->() const { 
+				assert(current != nullptr);
 				return  current; 
 			}
 			 
 			NodeIterator& operator++(int blah) { this->operator++(); return *this; }
 			NodeIterator& operator++() {
+				assert(current != nullptr);
 				assert(not (*this == EndNodeIterator) && "Can't iterate past the end!");
 				if(current == nullptr or current == start or current->is_root()) {
 					current = nullptr; 
@@ -194,7 +197,7 @@ public:
 		 */
 		
 		this_t* k = const_cast<this_t*>(static_cast<const this_t*>(this));
-		while(k != nullptr && k->nchildren() > 0) {
+		while(k != nullptr and k->nchildren() > 0) {
 			k = &(k->child(0));
 		}
 		return k;
