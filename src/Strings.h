@@ -1,5 +1,6 @@
 #pragma once
 
+#include <queue>
 #include <math.h>
 #include <string.h>
 #include "Numerics.h"
@@ -25,32 +26,7 @@ std::string str(T x){
  * @param alpha_n - size of alphabet
  * @return The probability of converting x to y by deleting characters with probability del_p and then adding with probability add_p
  */
- 
-//inline double p_delete_append(const std::string& x, const std::string& y, const double del_p, const double add_p, const double alpha_n) {
-//	
-//	// Well we can always delete the whole thing and add on the remainder
-//	double lp = log(del_p)*x.length()         + log(1.0-del_p) + 
-//				log(add_p/alpha_n)*y.length() + log(1.0-add_p);
-//	
-//	// now as log as they are equal, we can take only down that far if we want
-//	// here we index over mi, the length of the string that so far is equal
-//	for(size_t mi=1;mi<=std::min(x.length(),y.length());mi++){
-//		if(x[mi-1] == y[mi-1]) {
-//			lp = logplusexp(lp, log(del_p)*(x.length()-mi)         + log(1.0-del_p) + 
-//							    log(add_p/alpha_n)*(y.length()-mi) + log(1.0-add_p));
-//		}
-//		else {
-//			break;
-//		}
-//	}
-//	
-////	CERR lp TAB x TAB y ENDL;
-//	
-//	return lp;
-//}
-
-
-template<const float& add_p, const float& del_p>
+ template<const float& add_p, const float& del_p>
 inline double p_delete_append(const std::string& x, const std::string& y, const float log_alphabet) {
 	/**
 	 * @brief This function computes the probability that x would be converted into y, when we insert with probability add_p and delete with probabiltiy del_p
@@ -130,11 +106,9 @@ std::deque<std::string> split(const std::string& s, const char delimiter){
 
 std::pair<std::string, std::string> divide(const std::string& s, const char delimiter) {
 	// divide this string into two pieces at the first occurance of delimiter
-	
 	auto k = s.find(delimiter);
 	assert(k != std::string::npos && "*** Cannot divide a string without delimiter");
 	return std::make_pair(s.substr(0,k), s.substr(k+1));
-	
 }
 
 
@@ -183,6 +157,10 @@ size_t count(const std::string& str, const std::string& sub) {
         ++count;
     }
     return count;
+}
+
+std::string reverse(std::string x) {
+	return std::string(x.rbegin(),x.rend()); 
 }
 
 

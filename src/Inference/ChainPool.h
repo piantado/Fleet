@@ -61,7 +61,7 @@ public:
 			
 			// now run that chain -- TODO: Can update this to be more precise by running 
 			// a set number of samples computed from steps and old_samples
-			chain.run(Control(steps_before_change, time_before_change));
+			chain.run(Control(steps_before_change, time_before_change, 1));
 			
 			// now update ctl's number of steps (since it might have been anything
 			ctl.done_steps += chain.samples - old_samples; // add up how many we've done

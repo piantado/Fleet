@@ -14,38 +14,17 @@ const int m = 1; // min -- 1 or 0, who can ever remember?
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <set>
+#include "Strings.h"
 
-/**
- * @class ST
- * @author Steven Piantadosi
- * @date 16/08/20
- * @file Main.cpp
- * @brief We define a version of std::set that caps out at 100 (although you're not really supposed to inherit from std containers)
- */
-class ST : public std::set<int>{
-public:
-	ST() {}
-	
-	ST(std::initializer_list<int> l) : std::set<int>(l) {
-	}
-
-	void insert(int x) {
-		if(x <= N and x >= m){
-			std::set<int>::insert(x);
-		}
-		else {
-			// nothing
-		}
-	}
-};
+#include "NumberSet.h"
 
 // first we're going to declare some sets that are relevant
-const ST numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100};
-const ST primes  = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
-const ST evens   = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100};
-const ST odds    = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53, 55, 57, 59, 61, 63, 65, 67, 69, 71, 73, 75, 77, 79, 81, 83, 85, 87, 89, 91, 93, 95, 97, 99};
-const ST squares = {1, 4, 9, 16, 25, 36, 49, 64, 81, 100};
-const ST decades = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+const NumberSet numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100};
+const NumberSet primes  = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
+const NumberSet evens   = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100};
+const NumberSet odds    = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53, 55, 57, 59, 61, 63, 65, 67, 69, 71, 73, 75, 77, 79, 81, 83, 85, 87, 89, 91, 93, 95, 97, 99};
+const NumberSet squares = {1, 4, 9, 16, 25, 36, 49, 64, 81, 100};
+const NumberSet decades = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 
 
 #include "Primitives.h"
@@ -53,18 +32,16 @@ const ST decades = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 
 
 std::tuple PRIMITIVES = {
-	
-	
-	Primitive("numbers",    +[]() -> ST { return numbers; }),
-	Primitive("primes",     +[]() -> ST { return primes; }),
-	Primitive("evens",      +[]() -> ST { return evens; }),
-	Primitive("odds",       +[]() -> ST { return odds; }),
-	Primitive("squares",    +[]() -> ST { return squares; }),
-	Primitive("decades",    +[]() -> ST { return decades; }),
+	Primitive("numbers",    +[]() -> NumberSet { return numbers; }),
+	Primitive("primes",     +[]() -> NumberSet { return primes; }),
+	Primitive("evens",      +[]() -> NumberSet { return evens; }),
+	Primitive("odds",       +[]() -> NumberSet { return odds; }),
+	Primitive("squares",    +[]() -> NumberSet { return squares; }),
+	Primitive("decades",    +[]() -> NumberSet { return decades; }),
 	
 	// we give range a very low prior here or else it sure dominates
-	Primitive("range(%s,%s)",  +[](int x, int y) -> ST { 
-		ST out;
+	Primitive("range(%s,%s)",  +[](int x, int y) -> NumberSet { 
+		NumberSet out;
 		for(int i=std::max(x,m);i<=std::min(y,N);i++) { // we need min/max bounds here or we spend all our time adding garbage
 			out.insert(i);
 		}
@@ -73,14 +50,14 @@ std::tuple PRIMITIVES = {
 	
 	// ADD UNION, INTERSECTION, MIN, MAX
 	
-	Primitive("union(%s,%s)",    +[](ST& a, ST b) -> void { 
+	Primitive("union(%s,%s)",    +[](NumberSet& a, NumberSet b) -> void { 
 		for(auto& x : b) {
 			a.insert(x);
 		}
 	}),
 	
-	Primitive("intersection(%s,%s)",    +[](ST a, ST b) -> ST { 
-		ST out;
+	Primitive("intersection(%s,%s)",    +[](NumberSet a, NumberSet b) -> NumberSet { 
+		NumberSet out;
 		for(auto& x : a) {
 			if(b.find(x) != b.end())
 				out.insert(x);
@@ -89,8 +66,8 @@ std::tuple PRIMITIVES = {
 	}),
 
 
-	Primitive("complement(%s)",    +[](ST a) -> ST { 
-		ST out;
+	Primitive("complement(%s)",    +[](NumberSet a) -> NumberSet { 
+		NumberSet out;
 		for(size_t i=m;i<N;i++) {
 			if(a.find(i) == a.end())
 				out.insert(i);
@@ -99,31 +76,31 @@ std::tuple PRIMITIVES = {
 	}),
 
 	
-	Primitive("(%s+%s)",    +[](ST s, int n) -> ST { 
-		ST out;
+	Primitive("(%s+%s)",    +[](NumberSet s, int n) -> NumberSet { 
+		NumberSet out;
 		for(auto& x : s) {
 			out.insert(x + n);
 		}
 		return out;
 	}),
 	
-	Primitive("(%s*%s)",    +[](ST s, int n) -> ST { 
-		ST out;
+	Primitive("(%s*%s)",    +[](NumberSet s, int n) -> NumberSet { 
+		NumberSet out;
 		for(auto& x : s) {
 			out.insert(x * n);
 		}
 		return out;
 	}),
 	
-	Primitive("(%s^%s)",    +[](ST s, int n) -> ST { 
-		ST out;
+	Primitive("(%s^%s)",    +[](NumberSet s, int n) -> NumberSet { 
+		NumberSet out;
 		for(auto& x : s) {
 			out.insert(std::pow(x,n));
 		}
 		return out;
 	}),	
-	Primitive("(%s^%s)",    +[](int n, ST s) -> ST { 
-		ST out;
+	Primitive("(%s^%s)",    +[](int n, NumberSet s) -> NumberSet { 
+		NumberSet out;
 		for(auto& x : s) {
 			out.insert(std::pow(n,x));
 		}
@@ -146,8 +123,8 @@ std::tuple PRIMITIVES = {
 
 #include "Grammar.h"
 
-class MyGrammar : public Grammar<ST,int> {
-	using Super=Grammar<ST,int>;
+class MyGrammar : public Grammar<NumberSet,int> {
+	using Super=Grammar<NumberSet,int>;
 	using Super::Super;
 };
 
@@ -160,33 +137,49 @@ class MyGrammar : public Grammar<ST,int> {
 #include<set>
 #include "LOTHypothesis.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,int,ST,MyGrammar,int,std::multiset<int> > {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,int,NumberSet,MyGrammar,int,std::multiset<int> > {
 public:
-	using Super = LOTHypothesis<MyHypothesis,int,ST,MyGrammar,int,std::multiset<int> >;
+	using Super = LOTHypothesis<MyHypothesis,int,NumberSet,MyGrammar,int,std::multiset<int> >;
 	using Super::Super; // inherit the constructors
 	
-	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
-		// TODO: This uses 0 for NAN -- probably not the best...
-		
-		ST out = callOne(1); // just give x=1
-		double sz = out.size(); // size principle likelihood
-		
-		// now go through and compute the likelihood
-		likelihood = 0.0;
-		for(auto& d : data) {
-			bool b = (out.find(d)!=out.end()); // does it contain?
-			likelihood += log(  (b ? reliability / sz : 0.0) + (1.0-reliability)/N);
-		}
-		
-		return likelihood;
+	// NOTE: This likelihood function calls callOne for each data point, but really
+	// we only need to call it once. We could write a whole compute_likelihood function
+	// like below for speed, but grammar inference needs compute_single_likelihood. Another
+	// option would be to cache these callOne calls. 
+	virtual double compute_single_likelihood(const datum_t& datum) override {
+		NumberSet out = callOne(1); // just give x=1
+		double sz = out.size();
+		return log(  (out.find(datum)!=out.end() ? 
+					  reliability / sz : 
+					  0.0) 
+					  + (1.0-reliability)/N);
 	}
+	
+	// Here, we override compute_likelihood instead of compute_single_likelihood since it's
+	// more efficient to evaluate the likelihood on an entire dataset
+//	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
+//		// TODO: This uses 0 for NAN -- probably not the best...
+//		
+//		NumberSet out = callOne(1); // just give x=1
+//		double sz = out.size(); // size principle likelihood
+//		
+//		// now go through and compute the likelihood
+//		likelihood = 0.0;
+//		for(auto& d : data) {
+//			bool b = (out.find(d)!=out.end()); // does it contain?
+//			likelihood += log(  (b ? reliability / sz : 0.0) + (1.0-reliability)/N);
+//		}
+//		
+//		return likelihood;
+//	}
 	
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-
-
+//
 ////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifndef NUMBER_GAME_DO_NOT_INCLUDE_MAIN
 
 #include "Fleet.h"
 #include "Top.h"
@@ -228,3 +221,5 @@ int main(int argc, char** argv){
 	COUT "# Samples per second:" TAB FleetStatistics::global_sample_count/elapsed_seconds() ENDL;
 	COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds() ENDL;
 }
+
+#endif
