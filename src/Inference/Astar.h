@@ -37,7 +37,10 @@ class Astar :public ParallelInferenceInterface<> {
 	
 	std::mutex lock; 
 public:
-	static constexpr size_t INITIAL_SIZE = 10000000;
+	
+	// when we get this big, we remove half. Also this is the size we initialize to
+	static constexpr size_t INITIAL_SIZE = 1000000; 
+	
 	static constexpr size_t N_REPS = 1; // how many times do we try randomly filling in to determine priority? 
 	static constexpr double PARENT_PENALTY = 1.1;
 	static double temperature;	
@@ -73,14 +76,34 @@ public:
 		assert(not Q.empty() && "*** You should have pushed a non -inf value into Q above -- are you sure its possible?");
 	}
 	
+	void resize() {
+		decltype(Q) nQ; // new Q
+		for(size_t i=0;i<INITIAL_SIZE/2;i++) {
+			nQ.push(Q.top());
+			Q.pop();
+		}
+		Q = nQ;
+	}
+	
 	void push(HYP& h) {
 		std::lock_guard guard(lock);
 		Q.push(h);
+		
+		// resize if we need to -- while we have lock for sure
+		if(Q.size() > INITIAL_SIZE/2) {
+			resize();
+		}
+		
 	}
 	
 	void push(HYP&& h) {
 		std::lock_guard guard(lock);
 		Q.push(std::move(h));
+		
+		// resize if we need to -- while we have lock for sure
+		if(Q.size() > INITIAL_SIZE/2) {
+			resize();
+		}
 	}
 	
 	void run_thread(Control ctl) override {
@@ -101,8 +124,8 @@ public:
 			#endif
 			
 			size_t neigh = t.neighbors();
-			assert(neigh>0); // we should not have put on things with no neighbors
-			for(size_t k=0;k<neigh;k++) {
+			assert(neigh>0 && "*** Your starting state has zero neighbors -- did you remember to give it a LOTHypothesis with an empty value?"); // we should not have put on things with no neighbors
+			for(size_t k=0;k<neigh and ctl.running();k++) {
 				auto v = t.make_neighbor(k);
 				
 				// if v is a terminal, we callback
