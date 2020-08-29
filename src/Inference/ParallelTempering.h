@@ -48,10 +48,16 @@ public:
 	
 	ParallelTempering(HYP& h0, typename HYP::data_t* d, callback_t& cb, unsigned long n, double maxT, bool allcallback=true) : 
 		ChainPool<HYP,callback_t>(h0, d, cb, n, allcallback),terminate(false) {
+		assert(n != 0);
 		
 		// allcallback is true means that all chains call the callback, otherwise only t=0
-		for(size_t i=0;i<n;i++) {
-			this->pool[i].temperature = exp(i * log(maxT)/(n-1));
+		if(n == 1) {
+			this->pool[0].temperature = 1.0;
+		}
+		else {
+			for(size_t i=0;i<n;i++) {
+				this->pool[i].temperature = exp(i * log(maxT)/(n-1));
+			}
 		}
 		
 		swap_history = new FiniteHistory<bool>[n];

@@ -9,6 +9,7 @@
 #include <cmath>
 #include <Eigen/Core>
 #include <Eigen/Dense>
+#include <Eigen/Eigenvalues> 
 #include <unsupported/Eigen/SpecialFunctions>
 #include "IO.h"
 
@@ -42,3 +43,9 @@ Vector eigenslice(const Vector& v, const size_t offset, const size_t len) {
 	}
 	return out;
 }
+
+
+// And we define a macro so that other code in fleet can optionally include Eigen-compatible 
+// operations.
+// NOTE that this requires us to include EigenLib before we import anything else (e.g. grammar)
+#define AM_I_USING_EIGEN 1

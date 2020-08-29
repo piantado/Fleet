@@ -111,6 +111,10 @@ public:
 		return child_types[i];
 	}
 	
+	auto& get_child_types() const {
+		return child_types;
+	}
+	
 	std::string string() const {
 		std::string out = "<" + str(nt) + " -> " + format + " : ";
 		for(size_t i =0;i<N;i++) {

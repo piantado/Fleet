@@ -77,6 +77,7 @@ public:
 	}
 	
 	void resize() {
+		CERR "resizing" ENDL;
 		decltype(Q) nQ; // new Q
 		for(size_t i=0;i<INITIAL_SIZE/2;i++) {
 			nQ.push(Q.top());

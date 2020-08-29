@@ -43,7 +43,7 @@ public:
 
 	// how many nonterminal types do we have?
 	static constexpr size_t N_NTs = std::tuple_size<std::tuple<GRAMMAR_TYPES...>>::value;
-	static const size_t GRAMMAR_MAX_DEPTH = 64;
+	size_t GRAMMAR_MAX_DEPTH = 64;
 	
 	// an exception for recursing too deep so we can print a trace of what went wrong
 //	class DepthException: public std::exception {} depth_exception;
@@ -61,7 +61,7 @@ public:
 	typedef std::tuple<GRAMMAR_TYPES...> GrammarTypesAsTuple;
 
 	std::vector<Rule> rules[N_NTs];
-	double	  	      Z[N_NTs]; // keep the normalizer handy for each nonterminal
+	double	  	      Z[N_NTs]; // keep the normalizer handy for each nonterminal (not log space)
 	
 public:
 
@@ -431,6 +431,8 @@ public:
 		
 		if(depth >= GRAMMAR_MAX_DEPTH) {
 			CERR "*** Grammar exceeded max depth, are you sure the grammar probabilities are right?" ENDL;
+			CERR "*** You might be able to figure out what's wrong with gdb and then looking at the backtrace of" ENDL;
+			CERR "*** which nonterminals are called." ENDL;
 			throw YouShouldNotBeHereError("*** Grammar exceeded max depth, are you sure the grammar probabilities are right?");
 		}
 		
@@ -509,6 +511,26 @@ public:
 		
 		return out;
 	}
+	
+	// If eigen is defined we can get the transition matrix	
+	#ifdef AM_I_USING_EIGEN
+	Matrix get_nonterminal_transition_matrix() {
+		size_t NT = count_nonterminals();
+		Matrix m = Matrix::Zero(NT,NT);
+		for(size_t nt=0;nt<NT;nt++) {
+			double z = rule_normalizer(nt);
+			for(auto& r : rules[nt]) {
+				double p = r.p / z;
+				for(auto& to : r.get_child_types()) {
+					m(to,nt) += p;
+				}
+			}
+		}
+			
+		return m;
+	}
+	#endif
+	
 	
 	double log_probability(const Node& n) const {
 		/**
@@ -654,3 +676,4 @@ public:
 	}
 	
 };
+

@@ -168,7 +168,7 @@ public:
 //			}
 
 			// propose, but restart if we're -infinity
-			auto [proposal, fb] = current.posterior > -infinity ? current.propose() : std::make_tuple(current.restart(), 0.0);			
+			auto [proposal, fb] = (current.posterior > -infinity ? current.propose() : std::make_pair(current.restart(), 0.0));			
 			
 			++proposals;
 			

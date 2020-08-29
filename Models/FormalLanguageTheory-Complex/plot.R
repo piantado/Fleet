@@ -20,7 +20,9 @@ for(language in c( "Saffran", "ABA", "ABB", "Milne", "Elman", "MorganNewport", "
     for(nf in c(1,2,3,4,5,6,7,8)) {
 #       for(nf in c(1)) {
 
-            f <- paste("./out-2020PNASSubmission/out/", language, "-", nf, ".out", sep="")
+            f <- paste("./out/", language, "-", nf, ".out", sep="")
+
+#             f <- paste("./out-2020PNASSubmission/out/", language, "-", nf, ".out", sep="")
 #             f <- paste("./out-English/", language, "-", nf, ".out", sep="")
              
             r <- try(read.table(f, quote="\""))
@@ -109,7 +111,7 @@ plt <- ggplot(D, aes(x=ndata, y=value, group=Measure, color=Measure)) +
       theme(legend.position = c(0.95, 0.25))
 plt
 ggsave("ArtificialLanguages.pdf", plt, height=4, width=14)
-
+# 
 
 # ggsave("SimpleLanguages.pdf", plt)
 # 
