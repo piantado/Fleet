@@ -133,6 +133,9 @@ public:
 		app.add_option("--restart",     FleetArgs::restart, "If we don't improve after this many, restart a chain");
 		app.add_option("-c,--chains",   FleetArgs::nchains, "How many chains to run");
 		
+		app.add_option("--header",      FleetArgs::print_header, "Set to 0 to not print header");
+
+		
 		app.add_option("--output",      FleetArgs::output_path, "Where we write output");
 		app.add_option("--input",       FleetArgs::input_path, "Read standard input from here");
 		app.add_option("-T,--time",     FleetArgs::timestring, "Stop (via CTRL-C) after this much time (takes smhd as seconds/minutes/hour/day units)");
@@ -191,36 +194,37 @@ public:
 		if(random_seed != 0) {
 			rng.seed(random_seed);
 		}
-
-		// Print standard fleet header
-		
-		gethostname(hostname, HOST_NAME_MAX);
-
-		// and build the command to get the md5 checksum of myself
-		char tmp[64]; sprintf(tmp, "md5sum /proc/%d/exe", getpid());
 		
 		// convert everything to ms
 		FleetArgs::runtime = convert_time(FleetArgs::timestring);	
 		FleetArgs::inner_runtime = convert_time(FleetArgs::inner_timestring);
+
+		if(FleetArgs::print_header) {
+			// Print standard fleet header
+			gethostname(hostname, HOST_NAME_MAX);
+
+			// and build the command to get the md5 checksum of myself
+			char tmp[64]; sprintf(tmp, "md5sum /proc/%d/exe", getpid());
 		
-		COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
-		COUT "# Running Fleet on " << hostname << " with PID=" << getpid() << " by user " << getenv("USER") << " at " <<  datestring() ENDL;
-		COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
-		COUT "# Fleet version: " << FLEET_VERSION ENDL;
-		COUT "# Executable checksum: " << system_exec(tmp);
-		COUT "# Run options: " ENDL;
-		COUT "# \t --input=" << FleetArgs::input_path ENDL;
-		COUT "# \t --threads=" << FleetArgs::nthreads ENDL;
-		COUT "# \t --chains=" << FleetArgs::nchains ENDL;
-		COUT "# \t --steps=" << FleetArgs::steps ENDL;
-		COUT "# \t --inner_steps=" << FleetArgs::inner_steps ENDL;
-		COUT "# \t --thin=" << FleetArgs::thin ENDL;
-		COUT "# \t --print=" << FleetArgs::print ENDL;
-		COUT "# \t --time=" << FleetArgs::timestring << " (" << FleetArgs::runtime << " ms)" ENDL;
-		COUT "# \t --restart=" << FleetArgs::restart ENDL;
-		COUT "# \t --seed=" << random_seed ENDL;
-		COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;	
-		
+			COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
+			COUT "# Running Fleet on " << hostname << " with PID=" << getpid() << " by user " << getenv("USER") << " at " <<  datestring() ENDL;
+			COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
+			COUT "# Fleet version: " << FLEET_VERSION ENDL;
+			COUT "# Executable checksum: " << system_exec(tmp);
+			COUT "# Run options: " ENDL;
+			COUT "# \t --input=" << FleetArgs::input_path ENDL;
+			COUT "# \t --threads=" << FleetArgs::nthreads ENDL;
+			COUT "# \t --chains=" << FleetArgs::nchains ENDL;
+			COUT "# \t --steps=" << FleetArgs::steps ENDL;
+			COUT "# \t --inner_steps=" << FleetArgs::inner_steps ENDL;
+			COUT "# \t --thin=" << FleetArgs::thin ENDL;
+			COUT "# \t --print=" << FleetArgs::print ENDL;
+			COUT "# \t --time=" << FleetArgs::timestring << " (" << FleetArgs::runtime << " ms)" ENDL;
+			COUT "# \t --restart=" << FleetArgs::restart ENDL;
+			COUT "# \t --seed=" << random_seed ENDL;
+			COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;	
+			
+		}
 		
 		// give warning for infinite runs:
 		if(FleetArgs::steps == 0 and FleetArgs::runtime==0) {
@@ -233,24 +237,26 @@ public:
 	
 	void completed() {
 		
-		auto elapsed_seconds = time_since(start_time) / 1000.0;
-		
-		COUT "# Elapsed time:"        TAB elapsed_seconds << " seconds " ENDL;
-		if(FleetStatistics::global_sample_count > 0) {
-			COUT "# Samples per second:"  TAB FleetStatistics::global_sample_count/elapsed_seconds ENDL;
-			COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
+		if(FleetArgs::print_header) {
+			auto elapsed_seconds = time_since(start_time) / 1000.0;
+			
+			COUT "# Elapsed time:"        TAB elapsed_seconds << " seconds " ENDL;
+			if(FleetStatistics::global_sample_count > 0) {
+				COUT "# Samples per second:"  TAB FleetStatistics::global_sample_count/elapsed_seconds ENDL;
+				COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
+			}
+			if(FleetStatistics::astar_steps > 0) {
+				COUT "# Total A* steps:" TAB FleetStatistics::astar_steps ENDL;
+			}
+			if(FleetStatistics::enumeration_steps > 0) {
+				COUT "# Total enumeration steps:" TAB FleetStatistics::enumeration_steps ENDL;
+			}		
+			
+			
+			COUT "# Total posterior calls:" TAB FleetStatistics::posterior_calls ENDL;
+			COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds ENDL;
 		}
-		if(FleetStatistics::astar_steps > 0) {
-			COUT "# Total A* steps:" TAB FleetStatistics::astar_steps ENDL;
-		}
-		if(FleetStatistics::enumeration_steps > 0) {
-			COUT "# Total enumeration steps:" TAB FleetStatistics::enumeration_steps ENDL;
-		}		
 		
-		
-		COUT "# Total posterior calls:" TAB FleetStatistics::posterior_calls ENDL;
-		COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds ENDL;
-
 		// setting this makes sure we won't call it again
 		done = true;
 		

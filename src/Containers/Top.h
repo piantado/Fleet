@@ -56,16 +56,16 @@ public:
 public:
 	std::atomic<size_t> N;
 	
-	TopN(size_t n=FleetArgs::ntop) : print_best(false), N(n) {}
+	TopN(size_t n=FleetArgs::ntop) : N(n) { set_print_best(false); }
 	
 	TopN(const TopN<T>& x) {
 		clear();
-		print_best = x.print_best; // must be set before we add!
+		set_print_best(x.print_best); // must be set before we add!
 		set_size(x.N);
 		add(x);
 	}
 	TopN(TopN<T>&& x) {
-		print_best = x.print_best;
+		set_print_best(x.print_best);
 		cnt = x.cnt;
 		set_size(x.N);
 		s = x.s;
@@ -73,12 +73,12 @@ public:
 	
 	void operator=(const TopN<T>& x) {
 		clear();
-		print_best = x.print_best;				
+		set_print_best(x.print_best);				
 		set_size(x.N);
 		add(x);
 	}
 	void operator=(TopN<T>&& x) {
-		print_best = x.print_best;
+		set_print_best(x.print_best);
 		set_size(x.N);
 		cnt = x.cnt;
 		s =  x.s;
@@ -97,7 +97,7 @@ public:
 		 * @brief As I add things, should I print the best I've seen so far? 
 		 * @param b
 		 */
-		
+		if(N == 0) { CERR "*** Warning since N=0, TopN will not print the best even thouhg you set_print_best(true)!" ENDL; }
 		print_best = b;
 	}
 
@@ -221,6 +221,15 @@ public:
 		 */
 		
 		return cnt[x];
+	}
+	
+	/**
+	 * @brief Pops off the top -- you usually won't want to do this and it's not efficient
+	 */	
+	void pop() {
+		auto& x = best();
+		cnt.erase(x);
+		s.erase(  std::next(s.rbegin()).base() ); // convert reverse iterator to forward to delete https://stackoverflow.com/questions/1830158/how-to-call-erase-with-a-reverse-iterator
 	}
 	
 	const T& best() const { 

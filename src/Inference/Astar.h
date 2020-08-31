@@ -38,19 +38,18 @@ class Astar :public ParallelInferenceInterface<> {
 	std::mutex lock; 
 public:
 	
-	// when we get this big, we remove half. Also this is the size we initialize to
-	static constexpr size_t INITIAL_SIZE = 1000000; 
+	static constexpr size_t N = 1000000;  // how big is this?
 	
-	static constexpr size_t N_REPS = 1; // how many times do we try randomly filling in to determine priority? 
+	static constexpr size_t N_REPS = 10; // how many times do we try randomly filling in to determine priority? 
 	static constexpr double PARENT_PENALTY = 1.1;
 	static double temperature;	
 	static callback_t* callback; // must be static so it can be accessed in GraphNode
 	static typename HYP::data_t* data;
 	
 	// the smallest element appears on top of this vector
-	std::priority_queue<HYP, ReservedVector<HYP,INITIAL_SIZE>> Q;
+	TopN<HYP> Q;
 	 
-	Astar(HYP& h0, typename HYP::data_t* d, callback_t& cb, double temp) {
+	Astar(HYP& h0, typename HYP::data_t* d, callback_t& cb, double temp)  : Q(N) {
 		
 		// set these static members (static so GraphNode can use them without having so many copies)
 		callback = &cb; 
@@ -59,7 +58,7 @@ public:
 		
 		// We're going to make sure we don't start on -inf because this value will
 		// get inherited by my kisd for when they use -inf
-		for(size_t i=0;i<1000;i++) {
+		for(size_t i=0;i<1000 and !CTRL_C;i++) {
 			auto g = h0;
 			g.complete();
 			
@@ -68,7 +67,7 @@ public:
 			if(g.likelihood > -infinity) {
 				h0.prior = 0.0;
 				h0.likelihood = g.likelihood / temperature;				
-				push(h0);
+				add(h0);
 				break;
 			}
 		}
@@ -76,40 +75,13 @@ public:
 		assert(not Q.empty() && "*** You should have pushed a non -inf value into Q above -- are you sure its possible?");
 	}
 	
-	void resize() {
-		CERR "resizing" ENDL;
-		decltype(Q) nQ; // new Q
-		for(size_t i=0;i<INITIAL_SIZE/2;i++) {
-			nQ.push(Q.top());
-			Q.pop();
-		}
-		Q = nQ;
-	}
-	
-	void push(HYP& h) {
-		std::lock_guard guard(lock);
-		Q.push(h);
-		
-		// resize if we need to -- while we have lock for sure
-		if(Q.size() > INITIAL_SIZE/2) {
-			resize();
-		}
-		
-	}
-	
-	void push(HYP&& h) {
-		std::lock_guard guard(lock);
-		Q.push(std::move(h));
-		
-		// resize if we need to -- while we have lock for sure
-		if(Q.size() > INITIAL_SIZE/2) {
-			resize();
-		}
-	}
+	void add(HYP& h)  { Q.add(h); }	
+	void add(HYP&& h) { Q.add(std::move(h)); }
 	
 	void run_thread(Control ctl) override {
 
 		ctl.start();
+		unsigned long samples = 0;
 		while(ctl.running()) {
 			
 			lock.lock();
@@ -117,7 +89,7 @@ public:
 				lock.unlock();
 				continue; // this is necesssary because we might have more threads than Q to start off. 
 			}
-			auto t = Q.top(); Q.pop(); ++FleetStatistics::astar_steps;
+			auto t = Q.best(); Q.pop(); ++FleetStatistics::astar_steps;
 			lock.unlock();
 			
 			#ifdef DEBUG_ASTAR
@@ -132,10 +104,20 @@ public:
 				// if v is a terminal, we callback
 				// otherwise we 
 				if(v.is_evaluable()) {
+					
 					v.compute_posterior(*data); 
-					(*callback)(v);
+					
+					if(callback != nullptr and samples >= ctl.burn and
+						(ctl.thin == 0 or FleetStatistics::global_sample_count % ctl.thin == 0)) {
+						(*callback)(v);
+					}
+					
+					if(ctl.print > 0 and FleetStatistics::global_sample_count % ctl.print == 0) {
+						v.print();
+					}
 				}
 				else {
+					//CERR v.string() ENDL;
 					
 					// We compute a stochastic heuristic by filling in h some number of times and taking the min
 					// we're going to start with the previous likelihood we found -- NOTE That this isn't an admissable
@@ -144,7 +126,19 @@ public:
 					for(size_t i=0;i<N_REPS and not CTRL_C;i++) {
 						auto g = v; g.complete();
 						g.compute_posterior(*data);
-						(*callback)(g);
+						
+						//CERR "\t" << g.string() ENDL;
+				
+						if(callback != nullptr and samples >= ctl.burn and
+							(ctl.thin == 0 or FleetStatistics::global_sample_count % ctl.thin == 0)) {
+							(*callback)(g);
+						}
+						
+						if(ctl.print > 0 and FleetStatistics::global_sample_count % ctl.print == 0) {
+							g.print();
+						}
+						
+						// this assigns a likelihood as the max of the samples
 						if(not std::isnan(g.likelihood)) {
 							likelihood = std::max(likelihood, g.likelihood / temperature); // temperature must go here
 						}
@@ -156,8 +150,7 @@ public:
 					v.posterior  = v.compute_prior() + v.likelihood;
 					//CERR "POST:" TAB v.string() TAB v.posterior TAB likelihood ENDL;
 					
-					
-					push(std::move(v));
+					add(std::move(v));
 				}
 			}
 			
