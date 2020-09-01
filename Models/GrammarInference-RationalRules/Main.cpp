@@ -202,7 +202,7 @@ int main(int argc, char** argv){
 
 
 
-		// TODO: CHECK IF THI SIS RIGHT WE SHOULD HAVE AN EMPTY THIGN THERE TO START
+		// TODO: CHECK IF THIS IS RIGHT WE SHOULD HAVE AN EMPTY element to start
 
 
 		

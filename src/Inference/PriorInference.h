@@ -18,12 +18,12 @@ class PriorInference : public ParallelInferenceInterface {
 
 public:
 	
-	Grammar_t* grammar;
+	typename HYP::Grammar_t* grammar;
 	nonterminal_t start; 
 	typename HYP::data_t* data;
 	callback_t* callback; // must be static so it can be accessed in GraphNode
 	
-	PriorInference(Grammar_t* g, nonterminal_t st, typename HYP::data_t* d, callback_t& cb) : 
+	PriorInference(typename HYP::Grammar_t* g, nonterminal_t st, typename HYP::data_t* d, callback_t& cb) : 
 		grammar(g), start(st), data(d), callback(&cb) {
 	}
 	
