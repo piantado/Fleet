@@ -55,8 +55,6 @@ public:
 		throw NotImplementedError();
 	}
 	
-
-	
 	virtual void clear_bayes() {
 		/**
 		 * @brief Zero by prior, likelihood, posterior

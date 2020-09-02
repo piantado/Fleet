@@ -11,9 +11,8 @@
 #include "Hypotheses/Interfaces/Bayesable.h"
 #include "Hypotheses/Interfaces/MCMCable.h"
 #include "Hypotheses/Interfaces/Searchable.h"
+#include "Hypotheses/Interfaces/Callable.h"
 
-#include "VirtualMachine/VirtualMachineState.h"
-#include "VirtualMachine/VirtualMachinePool.h"
 /**
  * @class LOTHypothesis
  * @author piantado
@@ -31,12 +30,13 @@ template<typename this_t,
 		 typename _output_t, 
 		 typename _Grammar_t,
 		 typename _datum_t=defauldatum_t<_input_t, _output_t>, 
-		 typename _data_t=std::vector<_datum_t>,
-		 typename VirtualMachineState_t=typename _Grammar_t::template VirtualMachineState_t<_input_t, _output_t> // used for deducing VM_TYPES in VirtualMachineState
+		 typename _data_t=std::vector<_datum_t>
 		 >
 class LOTHypothesis : public ProgramLoader,
 				      public MCMCable<this_t,_datum_t,_data_t>, // remember, this defines data_t, datum_t
-					  public Searchable<this_t,_input_t,_output_t>	{
+					  public Searchable<this_t,_input_t,_output_t>,
+					  public Callable<_input_t, _output_t, this_t, typename _Grammar_t::template VirtualMachineState_t<_input_t, _output_t>>
+{
 public:     
 	typedef typename Bayesable<_datum_t,_data_t>::datum_t datum_t;
 	typedef typename Bayesable<_datum_t,_data_t>::data_t   data_t;
@@ -61,7 +61,6 @@ public:
 	LOTHypothesis(Grammar_t* g, std::string s) : MCMCable<this_t,datum_t,data_t>(), grammar(g)  {
 		value = grammar->expand_from_names(s);
 	}
-	
 	
 	[[nodiscard]] virtual std::pair<this_t,double> propose() const override {
 		/**
@@ -133,50 +132,6 @@ public:
 		value.linearize(s);
 	}
 
-
-	// we defaultly map outputs to log probabilities
-	// the this_t must be a ProgramLoader, but other than that we don't care. NOte that this type gets passed all the way down to VirtualMachine
-	// and potentially back to primitives, allowing us to access the current Hypothesis if we want
-	// LOADERthis_t is the kind of Hypothesis we use to load, and it is not the same as this_t
-	// because in a Lexicon, we want to use its InnerHypothesis
-	template<typename LOADERthis_t> 
-	DiscreteDistribution<output_t> call(const input_t x, const output_t err, LOADERthis_t* loader, 
-				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
-		
-		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err);	
-		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
-
-		VirtualMachinePool<VirtualMachineState_t> pool(max_steps, max_outputs, minlp); 		
-		pool.push(vms);		
-		return pool.run(loader);				
-	}
-	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t err) {
-		return call(x, err, this); // defaultly I myself am the recursion handler and dispatch
-	}
-	auto operator()(const input_t x, const output_t err=output_t{}){ // just fancy syntax for call
-		return call(x,err);
-	}
-
-	template<typename LOADERthis_t>
-	output_t callOne(const input_t x, const output_t err, LOADERthis_t* loader) {
-		// we can use this if we are guaranteed that we don't have a stochastic Hypothesis
-		// the savings is that we don't have to create a VirtualMachinePool		
-		VirtualMachineState_t vms(x, err);		
-
-		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
-		return vms.run(loader); // default to using "this" as the loader		
-	}
-	
-	output_t callOne(const input_t x, const output_t err=output_t{}) {
-		// we can use this if we are guaranteed that we don't have a stochastic Hypothesis
-		// the savings is that we don't have to create a VirtualMachinePool		
-		VirtualMachineState_t vms(x, err);		
-
-		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
-		return vms.run(this); // default to using "this" as the loader		
-	}
-	
-
 	virtual std::string string(std::string prefix="") const override {
 		return prefix + std::string("\u03BBx.") + value.string();
 	}
@@ -246,6 +201,11 @@ public:
 		else {			
 			return grammar->neighbor_prior(value, k);
 		}
+	}
+	
+	
+	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t err) override {
+		return this->call(x, err, this); // defaulty I myself handle recursion/loading
 	}
 	
 	
