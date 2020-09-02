@@ -1,10 +1,10 @@
 <map id="src/Inference/ParallelInferenceInterface.h" name="src/Inference/ParallelInferenceInterface.h">
-<area shape="rect" id="node1" title=" " alt="" coords="284,5,483,47"/>
-<area shape="rect" id="node2" href="$_astar_8h.html" title="This is an implementation of kinda&#45;A* search that maintains a priority queue of partial states and at..." alt="" coords="5,95,148,121"/>
-<area shape="rect" id="node3" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="173,95,346,121"/>
-<area shape="rect" id="node6" href="$_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="344,169,519,211"/>
-<area shape="rect" id="node7" href="$_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree." alt="" coords="421,95,572,121"/>
-<area shape="rect" id="node8" href="$_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="597,95,791,121"/>
-<area shape="rect" id="node4" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="103,177,319,203"/>
-<area shape="rect" id="node5" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="260,259,381,285"/>
+<area shape="rect" id="node1" title=" " alt="" coords="329,5,528,47"/>
+<area shape="rect" id="node2" href="$_beam_search_8h.html" title="This is an implementation of beam search that maintains a priority queue of partial states and attemp..." alt="" coords="5,95,193,121"/>
+<area shape="rect" id="node3" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="218,95,391,121"/>
+<area shape="rect" id="node6" href="$_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="389,169,564,211"/>
+<area shape="rect" id="node7" href="$_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree." alt="" coords="467,95,617,121"/>
+<area shape="rect" id="node8" href="$_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="642,95,837,121"/>
+<area shape="rect" id="node4" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="149,177,365,203"/>
+<area shape="rect" id="node5" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="283,259,449,285"/>
 </map>

@@ -69,6 +69,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -79,6 +80,7 @@ $(function() {
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;Eigen/Core&gt;</code><br />
 <code>#include &lt;Eigen/Dense&gt;</code><br />
+<code>#include &lt;Eigen/Eigenvalues&gt;</code><br />
 <code>#include &lt;unsupported/Eigen/SpecialFunctions&gt;</code><br />
 <code>#include &quot;<a class="el" href="_i_o_8h_source.html">IO.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -86,24 +88,26 @@ Include dependency graph for EigenLib.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_eigen_lib_8h__incl.png" border="0" usemap="#src_2_eigen_lib_8h" alt=""/></div>
 <map name="src_2_eigen_lib_8h" id="src_2_eigen_lib_8h">
-<area shape="rect" title=" " alt="" coords="157,5,262,32"/>
-<area shape="rect" href="_numerics_8h.html" title=" " alt="" coords="546,244,636,271"/>
-<area shape="rect" title=" " alt="" coords="26,87,84,114"/>
-<area shape="rect" title=" " alt="" coords="109,87,196,114"/>
-<area shape="rect" title=" " alt="" coords="220,87,317,114"/>
-<area shape="rect" title=" " alt="" coords="341,80,518,121"/>
-<area shape="rect" href="_i_o_8h.html" title=" " alt="" coords="542,87,589,114"/>
-<area shape="rect" title=" " alt="" coords="605,319,670,345"/>
-<area shape="rect" title=" " alt="" coords="754,319,826,345"/>
-<area shape="rect" title=" " alt="" coords="511,319,580,345"/>
-<area shape="rect" title=" " alt="" coords="215,169,274,196"/>
-<area shape="rect" title=" " alt="" coords="298,169,356,196"/>
-<area shape="rect" title=" " alt="" coords="380,169,447,196"/>
-<area shape="rect" title=" " alt="" coords="472,169,526,196"/>
-<area shape="rect" title=" " alt="" coords="551,169,714,196"/>
-<area shape="rect" href="_strings_8h.html" title=" " alt="" coords="738,169,812,196"/>
-<area shape="rect" title=" " alt="" coords="749,244,812,271"/>
-<area shape="rect" title=" " alt="" coords="660,244,725,271"/>
+<area shape="rect" title=" " alt="" coords="219,5,324,32"/>
+<area shape="rect" href="_numerics_8h.html" title=" " alt="" coords="663,244,752,271"/>
+<area shape="rect" title=" " alt="" coords="29,87,88,114"/>
+<area shape="rect" title=" " alt="" coords="112,87,199,114"/>
+<area shape="rect" title=" " alt="" coords="223,87,320,114"/>
+<area shape="rect" title=" " alt="" coords="345,87,476,114"/>
+<area shape="rect" title=" " alt="" coords="500,80,678,121"/>
+<area shape="rect" href="_i_o_8h.html" title=" " alt="" coords="702,87,748,114"/>
+<area shape="rect" title=" " alt="" coords="722,319,787,345"/>
+<area shape="rect" title=" " alt="" coords="912,319,984,345"/>
+<area shape="rect" title=" " alt="" coords="628,319,697,345"/>
+<area shape="rect" title=" " alt="" coords="374,169,433,196"/>
+<area shape="rect" title=" " alt="" coords="457,169,516,196"/>
+<area shape="rect" title=" " alt="" coords="540,169,606,196"/>
+<area shape="rect" title=" " alt="" coords="631,169,686,196"/>
+<area shape="rect" title=" " alt="" coords="710,169,873,196"/>
+<area shape="rect" href="_strings_8h.html" title=" " alt="" coords="897,169,972,196"/>
+<area shape="rect" title=" " alt="" coords="952,244,1010,271"/>
+<area shape="rect" title=" " alt="" coords="776,244,839,271"/>
+<area shape="rect" title=" " alt="" coords="863,244,928,271"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -119,6 +123,11 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="_eigen_lib_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ae2ba91cb9b5519a7a2577ad25e5ecdaa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_eigen_lib_8h.html#ae2ba91cb9b5519a7a2577ad25e5ecdaa">AM_I_USING_EIGEN</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:ae2ba91cb9b5519a7a2577ad25e5ecdaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:aca2956bc379bce2ed88ab3c0e1b61d1d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_eigen_lib_8h.html#aca2956bc379bce2ed88ab3c0e1b61d1d">Vector</a> = Eigen::VectorXf</td></tr>
@@ -135,6 +144,21 @@ Functions</h2></td></tr>
 <tr class="memitem:a5c19fc7b6441ef5882de44b7f1fe67f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_eigen_lib_8h.html#aca2956bc379bce2ed88ab3c0e1b61d1d">Vector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_eigen_lib_8h.html#a5c19fc7b6441ef5882de44b7f1fe67f3">eigenslice</a> (const <a class="el" href="_eigen_lib_8h.html#aca2956bc379bce2ed88ab3c0e1b61d1d">Vector</a> &amp;v, const size_t offset, const size_t len)</td></tr>
 <tr class="separator:a5c19fc7b6441ef5882de44b7f1fe67f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ae2ba91cb9b5519a7a2577ad25e5ecdaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2ba91cb9b5519a7a2577ad25e5ecdaa">&#9670;&nbsp;</a></span>AM_I_USING_EIGEN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AM_I_USING_EIGEN&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a645222978e81acfb2523a9bce34aecc0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a645222978e81acfb2523a9bce34aecc0">&#9670;&nbsp;</a></span>Matrix</h2>

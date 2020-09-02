@@ -37,7 +37,7 @@ public:
 		while(ctl.running()) {
 			enumerationidx_t nxt = (enumerationidx_t) next_index();
 			auto n = expand_from_integer(grammar, start, nxt);
-			HYP h(grammar, n);
+			auto h = MyHypothesis::make(grammar, n);
 			h.compute_posterior(*data);
 			(*callback)(h);
 		}

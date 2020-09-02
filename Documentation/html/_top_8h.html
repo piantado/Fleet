@@ -88,12 +88,13 @@ $(function() {
 <code>#include &lt;unordered_set&gt;</code><br />
 <code>#include &lt;unordered_map&gt;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
+<code>#include &quot;<a class="el" href="_fleet_args_8h_source.html">FleetArgs.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Top.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_top_8h__incl.png" border="0" usemap="#src_2_containers_2_top_8h" alt=""/></div>
 <map name="src_2_containers_2_top_8h" id="src_2_containers_2_top_8h">
-<area shape="rect" title="Check if a type has a posterior function or not." alt="" coords="353,5,495,32"/>
+<area shape="rect" title="Check if a type has a posterior function or not." alt="" coords="390,5,533,32"/>
 <area shape="rect" title=" " alt="" coords="5,80,69,107"/>
 <area shape="rect" title=" " alt="" coords="93,80,155,107"/>
 <area shape="rect" title=" " alt="" coords="179,80,237,107"/>
@@ -104,6 +105,8 @@ Include dependency graph for Top.h:</div>
 <area shape="rect" title=" " alt="" coords="577,80,681,107"/>
 <area shape="rect" title=" " alt="" coords="706,80,817,107"/>
 <area shape="rect" title=" " alt="" coords="841,80,906,107"/>
+<area shape="rect" href="_fleet_args_8h.html" title=" " alt="" coords="930,80,1019,107"/>
+<area shape="rect" title=" " alt="" coords="947,155,1002,181"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -114,7 +117,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <area shape="rect" title="Check if a type has a posterior function or not." alt="" coords="287,5,429,32"/>
 <area shape="rect" href="_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,87,255,114"/>
 <area shape="rect" href="_reservoir_sample_8h.html" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="279,80,437,121"/>
-<area shape="rect" href="_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="461,87,583,114"/>
+<area shape="rect" href="_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="462,87,627,114"/>
 <area shape="rect" href="_streaming_statistics_8h.html" title="A class to store a bunch of statistics about incoming data points, including min, max,..." alt="" coords="277,169,439,211"/>
 <area shape="rect" href="_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree." alt="" coords="283,259,433,285"/>
 </map>
@@ -139,7 +142,7 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Check if a type has a posterior function or not. </p>
-<p>A <a class="el" href="class_top_n.html">TopN</a> is a n object you can "add" hypotheses to (via add or &lt;&lt;) and it stores the best N of them. This is widely used in <a class="el" href="class_fleet.html">Fleet</a> in order to find good approximations to the top hypotheses found in MCTS or MCMC.</p>
+<p>A <a class="el" href="class_top_n.html">TopN</a> is a n object you can "add" hypotheses to (via add or &lt;&lt;) and it stores the best N of them. This is widely used in <a class="el" href="class_fleet.html">Fleet</a> in order to find good approximations to the top hypotheses found in MCTS or MCMC. The default constructor here reads from <a class="el" href="namespace_fleet_args.html#acbc0f011abb2f878bf68a85617d8c183">FleetArgs::ntop</a> as the default value.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a6a30d87d866180b49aea546d0024dcca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6a30d87d866180b49aea546d0024dcca">&#9670;&nbsp;</a></span>operator&lt;&lt;()</h2>

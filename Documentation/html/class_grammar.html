@@ -178,6 +178,8 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a858e2ef1ff87d9d81c673a191e82a8f7"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a858e2ef1ff87d9d81c673a191e82a8f7">GRAMMAR_MAX_DEPTH</a> = 64</td></tr>
+<tr class="separator:a858e2ef1ff87d9d81c673a191e82a8f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a89ced0753d72f52ccf2b04c0ccc82b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_rule.html">Rule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a8a89ced0753d72f52ccf2b04c0ccc82b">rules</a> [<a class="el" href="class_grammar.html#a45877d4d7a5ee98bf6753af593d6ca08">N_NTs</a>]</td></tr>
 <tr class="separator:a8a89ced0753d72f52ccf2b04c0ccc82b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63420ee4232c46523a46bd881cb3e2f5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a63420ee4232c46523a46bd881cb3e2f5">Z</a> [<a class="el" href="class_grammar.html#a45877d4d7a5ee98bf6753af593d6ca08">N_NTs</a>]</td></tr>
@@ -187,8 +189,6 @@ Public Attributes</h2></td></tr>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a45877d4d7a5ee98bf6753af593d6ca08"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a45877d4d7a5ee98bf6753af593d6ca08">N_NTs</a> = std::tuple_size&lt;std::tuple&lt;GRAMMAR_TYPES...&gt;&gt;::value</td></tr>
 <tr class="separator:a45877d4d7a5ee98bf6753af593d6ca08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a0d1d38426ce7f1b68c001e9ddec064"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a4a0d1d38426ce7f1b68c001e9ddec064">GRAMMAR_MAX_DEPTH</a> = 64</td></tr>
-<tr class="separator:a4a0d1d38426ce7f1b68c001e9ddec064"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a5ba44586d1c6f847cbbeeead91964e3c"></a>
@@ -1556,26 +1556,18 @@ template&lt;typename... GRAMMAR_TYPES&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a4a0d1d38426ce7f1b68c001e9ddec064"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a0d1d38426ce7f1b68c001e9ddec064">&#9670;&nbsp;</a></span>GRAMMAR_MAX_DEPTH</h2>
+<a id="a858e2ef1ff87d9d81c673a191e82a8f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a858e2ef1ff87d9d81c673a191e82a8f7">&#9670;&nbsp;</a></span>GRAMMAR_MAX_DEPTH</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename... GRAMMAR_TYPES&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const size_t <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::GRAMMAR_MAX_DEPTH = 64</td>
+          <td class="memname">size_t <a class="el" href="class_grammar.html">Grammar</a>&lt; GRAMMAR_TYPES &gt;::GRAMMAR_MAX_DEPTH = 64</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>

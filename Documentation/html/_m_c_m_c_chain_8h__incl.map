@@ -1,25 +1,27 @@
 <map id="src/Inference/MCMCChain.h" name="src/Inference/MCMCChain.h">
-<area shape="rect" id="node1" title=" " alt="" coords="91,7,280,33"/>
-<area shape="rect" id="node2" title=" " alt="" coords="30,81,109,108"/>
-<area shape="rect" id="node3" href="$_finite_history_8h.html" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="133,81,238,108"/>
-<area shape="rect" id="node5" href="$_control_8h.html" title="This bundles together information for running MCMC or MCTS, including number of steps,..." alt="" coords="288,81,363,108"/>
-<area shape="rect" id="node4" title=" " alt="" coords="5,231,64,257"/>
-<area shape="rect" id="node6" title=" " alt="" coords="307,156,373,183"/>
-<area shape="rect" id="node7" href="$_timing_8h.html" title=" " alt="" coords="643,156,715,183"/>
-<area shape="rect" id="node13" href="$_i_o_8h.html" title=" " alt="" coords="235,156,282,183"/>
-<area shape="rect" id="node8" title=" " alt="" coords="648,231,709,257"/>
-<area shape="rect" id="node9" href="$_errors_8h.html" title=" " alt="" coords="734,231,802,257"/>
-<area shape="rect" id="node10" title=" " alt="" coords="814,305,893,332"/>
-<area shape="rect" id="node11" title=" " alt="" coords="711,305,790,332"/>
-<area shape="rect" id="node12" title=" " alt="" coords="599,305,654,332"/>
-<area shape="rect" id="node14" title=" " alt="" coords="88,231,147,257"/>
-<area shape="rect" id="node15" title=" " alt="" coords="229,380,301,407"/>
-<area shape="rect" id="node16" title=" " alt="" coords="320,231,387,257"/>
-<area shape="rect" id="node17" title=" " alt="" coords="411,231,573,257"/>
-<area shape="rect" id="node18" href="$_strings_8h.html" title=" " alt="" coords="221,231,296,257"/>
-<area shape="rect" id="node19" title=" " alt="" coords="222,305,285,332"/>
-<area shape="rect" id="node20" title=" " alt="" coords="309,305,374,332"/>
-<area shape="rect" id="node21" href="$_numerics_8h.html" title=" " alt="" coords="398,305,487,332"/>
-<area shape="rect" id="node22" title=" " alt="" coords="455,380,521,407"/>
-<area shape="rect" id="node23" title=" " alt="" coords="361,380,431,407"/>
+<area shape="rect" id="node1" title=" " alt="" coords="321,7,510,33"/>
+<area shape="rect" id="node2" title=" " alt="" coords="275,81,353,108"/>
+<area shape="rect" id="node3" href="$_finite_history_8h.html" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="563,81,668,108"/>
+<area shape="rect" id="node5" href="$_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="378,81,453,108"/>
+<area shape="rect" id="node4" title=" " alt="" coords="774,231,833,257"/>
+<area shape="rect" id="node6" title=" " alt="" coords="463,156,530,183"/>
+<area shape="rect" id="node7" href="$_fleet_args_8h.html" title=" " alt="" coords="5,156,95,183"/>
+<area shape="rect" id="node9" href="$_timing_8h.html" title=" " alt="" coords="170,156,242,183"/>
+<area shape="rect" id="node14" href="$_i_o_8h.html" title=" " alt="" coords="392,156,439,183"/>
+<area shape="rect" id="node8" title=" " alt="" coords="88,305,143,332"/>
+<area shape="rect" id="node10" title=" " alt="" coords="35,231,97,257"/>
+<area shape="rect" id="node11" href="$_errors_8h.html" title=" " alt="" coords="172,231,240,257"/>
+<area shape="rect" id="node12" title=" " alt="" coords="269,305,348,332"/>
+<area shape="rect" id="node13" title=" " alt="" coords="167,305,245,332"/>
+<area shape="rect" id="node15" title=" " alt="" coords="265,231,323,257"/>
+<area shape="rect" id="node16" title=" " alt="" coords="415,380,487,407"/>
+<area shape="rect" id="node17" title=" " alt="" coords="347,231,414,257"/>
+<area shape="rect" id="node18" title=" " alt="" coords="489,231,651,257"/>
+<area shape="rect" id="node19" href="$_strings_8h.html" title=" " alt="" coords="675,231,750,257"/>
+<area shape="rect" id="node20" title=" " alt="" coords="615,305,672,332"/>
+<area shape="rect" id="node21" title=" " alt="" coords="696,305,759,332"/>
+<area shape="rect" id="node22" title=" " alt="" coords="783,305,848,332"/>
+<area shape="rect" id="node23" href="$_numerics_8h.html" title=" " alt="" coords="501,305,591,332"/>
+<area shape="rect" id="node24" title=" " alt="" coords="605,380,671,407"/>
+<area shape="rect" id="node25" title=" " alt="" coords="511,380,581,407"/>
 </map>

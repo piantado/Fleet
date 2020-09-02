@@ -1,12 +1,12 @@
 <map id="src/VirtualMachine/Instruction.h" name="src/VirtualMachine/Instruction.h">
-<area shape="rect" id="node1" title="This is an error type that is returned if we get a runtime error (e.g. string length,..." alt="" coords="247,5,378,47"/>
-<area shape="rect" id="node2" href="$apply_primitives_8h.html" title=" " alt="" coords="66,95,197,136"/>
-<area shape="rect" id="node5" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="243,102,383,129"/>
-<area shape="rect" id="node10" href="$_primitives_8h.html" title="If there are any references in the arguments, only the first can be a reference." alt="" coords="437,184,567,225"/>
-<area shape="rect" id="node3" href="$_fleet_8h.html" title="A fleet object manages processing the command line, prints a useful summary of command lines,..." alt="" coords="47,191,131,218"/>
-<area shape="rect" id="node4" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="5,273,127,300"/>
-<area shape="rect" id="node6" href="$_node_8h.html" title=" " alt="" coords="241,191,385,218"/>
-<area shape="rect" id="node7" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="283,348,412,375"/>
-<area shape="rect" id="node8" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="447,273,613,300"/>
-<area shape="rect" id="node9" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="203,273,423,300"/>
+<area shape="rect" id="node1" title="This is an error type that is returned if we get a runtime error (e.g. string length,..." alt="" coords="291,5,421,47"/>
+<area shape="rect" id="node2" href="$apply_primitives_8h.html" title=" " alt="" coords="104,95,235,136"/>
+<area shape="rect" id="node5" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="286,102,426,129"/>
+<area shape="rect" id="node10" href="$_primitives_8h.html" title="If there are any references in the arguments, only the first can be a reference." alt="" coords="480,184,611,225"/>
+<area shape="rect" id="node3" href="$_fleet_8h.html" title="A fleet object manages processing the command line, prints a useful summary of command lines,..." alt="" coords="74,191,158,218"/>
+<area shape="rect" id="node4" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="5,273,171,300"/>
+<area shape="rect" id="node6" href="$_node_8h.html" title=" " alt="" coords="284,191,428,218"/>
+<area shape="rect" id="node7" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="326,348,455,375"/>
+<area shape="rect" id="node8" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="490,273,657,300"/>
+<area shape="rect" id="node9" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="246,273,466,300"/>
 </map>

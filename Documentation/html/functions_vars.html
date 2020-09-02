@@ -110,7 +110,7 @@ $(function() {
 : <a class="el" href="struct_primitive.html#a8bf9484d49731d0d0165f52d38e29a89">Primitive</a>
 </li>
 <li>callback
-: <a class="el" href="class_astar.html#a73b7b4ac7d9bdea8b8ce19c94c901705">Astar&lt; HYP, callback_t &gt;</a>
+: <a class="el" href="class_beam_search.html#a5fee466cb98b974f517a2ee6c0ed2ae7">BeamSearch&lt; HYP, callback_t &gt;</a>
 , <a class="el" href="class_enumeration_inference.html#a792b247c4874b9f879ac204749bea1c3">EnumerationInference&lt; HYP, Grammar_t, callback_t &gt;</a>
 , <a class="el" href="class_full_m_c_t_s_node.html#a9bba77400c22c878cb3f015f8ad97613">FullMCTSNode&lt; this_t, HYP, callback_t &gt;</a>
 , <a class="el" href="class_m_c_m_c_chain.html#aa7a4a0d46ae2d9818c2f076f839badd7">MCMCChain&lt; HYP, callback_t &gt;</a>
@@ -120,7 +120,7 @@ $(function() {
 : <a class="el" href="class_node.html#a98c14a51b240fbc7e438f40a12276257">Node</a>
 </li>
 <li>chance
-: <a class="el" href="struct_human_datum.html#ae566c76c85e90bfc5093b021006aee55">HumanDatum&lt; HYP &gt;</a>
+: <a class="el" href="struct_human_datum.html#ac1c5eb254faf89b76e8d040da8daa930">HumanDatum&lt; HYP, _output_t, _datum_t, _data_t &gt;</a>
 </li>
 <li>child_types
 : <a class="el" href="class_rule.html#afdd38b9432cea46b5cea54b1bb841c07">Rule</a>
@@ -149,10 +149,10 @@ $(function() {
 
 <h3><a id="index_d"></a>- d -</h3><ul>
 <li>data
-: <a class="el" href="class_astar.html#a6b4ed5bb7ce08dcdceea3697d4f8eb2b">Astar&lt; HYP, callback_t &gt;</a>
+: <a class="el" href="class_beam_search.html#a2c6f8666e3451a58cdd03a975f252aa7">BeamSearch&lt; HYP, callback_t &gt;</a>
 , <a class="el" href="class_enumeration_inference.html#a74a0f7bcc9701f2078a9dedea4352e63">EnumerationInference&lt; HYP, Grammar_t, callback_t &gt;</a>
 , <a class="el" href="class_full_m_c_t_s_node.html#a77c852db32724d86ad449eb08a9a1e83">FullMCTSNode&lt; this_t, HYP, callback_t &gt;</a>
-, <a class="el" href="struct_human_datum.html#ae7e84e42eadf74123b0770a378e98c20">HumanDatum&lt; HYP &gt;</a>
+, <a class="el" href="struct_human_datum.html#aaf85efe4e8529282096c1331f24b61b1">HumanDatum&lt; HYP, _output_t, _datum_t, _data_t &gt;</a>
 , <a class="el" href="class_m_c_m_c_chain.html#ab235f08fad93a9626ffb566c001ed5c9">MCMCChain&lt; HYP, callback_t &gt;</a>
 , <a class="el" href="class_prior_inference.html#a537a489d953992aca5327899548df8ac">PriorInference&lt; HYP, callback_t &gt;</a>
 </li>
@@ -160,7 +160,7 @@ $(function() {
 : <a class="el" href="class_grammar_hypothesis.html#a8fdf03aba2c05f6d025a46420ae96f23">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
 </li>
 <li>decay_position
-: <a class="el" href="struct_human_datum.html#a24b9b34afc3a0334fc9b994455c6d71f">HumanDatum&lt; HYP &gt;</a>
+: <a class="el" href="struct_human_datum.html#a72c3ad2a4442b67dd2b39c3008f89c3d">HumanDatum&lt; HYP, _output_t, _datum_t, _data_t &gt;</a>
 </li>
 <li>decayedLikelihood
 : <a class="el" href="class_grammar_hypothesis.html#a1038047bf0921fe85d82906dd2a249df">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
@@ -211,10 +211,10 @@ $(function() {
 , <a class="el" href="class_enumeration_inference.html#a5bba83e097730fd566d0a47336c9473d">EnumerationInference&lt; HYP, Grammar_t, callback_t &gt;</a>
 , <a class="el" href="class_grammar_hypothesis.html#af41c077efd4f5df143ace251309a6571">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#a49984416fef88fd2c84292dc0db490a2">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;</a>
-, <a class="el" href="class_prior_inference.html#abafbe828a4c4a98d3828c65e9826fab6">PriorInference&lt; HYP, callback_t &gt;</a>
+, <a class="el" href="class_prior_inference.html#a43d11fa29f7eba36eebf1de72db3afc4">PriorInference&lt; HYP, callback_t &gt;</a>
 </li>
 <li>GRAMMAR_MAX_DEPTH
-: <a class="el" href="class_grammar.html#a4a0d1d38426ce7f1b68c001e9ddec064">Grammar&lt; GRAMMAR_TYPES &gt;</a>
+: <a class="el" href="class_grammar.html#a858e2ef1ff87d9d81c673a191e82a8f7">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 </ul>
 
@@ -238,10 +238,7 @@ $(function() {
 : <a class="el" href="class_combinators_1_1_lazy_normal_forms.html#aad988f6c06e3e1cf4e516ecfc1198c7f">Combinators::LazyNormalForms</a>
 </li>
 <li>index
-: <a class="el" href="class_parallel_inference_interface.html#a7ae040da2f19cfb41851760759fc9b33">ParallelInferenceInterface&lt; Args &gt;</a>
-</li>
-<li>INITIAL_SIZE
-: <a class="el" href="class_astar.html#af674f24278326383c5972fc30f0b21d9">Astar&lt; HYP, callback_t &gt;</a>
+: <a class="el" href="class_parallel_inference_interface.html#a1494ba5ab10b5fda9bca6acc39de37cb">ParallelInferenceInterface&lt; Args &gt;</a>
 </li>
 <li>input
 : <a class="el" href="classdefauldatum__t.html#a282269cf029cd4068c94db8c8edee01e">defauldatum_t&lt; input_t, output_t &gt;</a>
@@ -350,7 +347,8 @@ $(function() {
 
 <h3><a id="index_n"></a>- n -</h3><ul>
 <li>N
-: <a class="el" href="class_finite_history.html#a5967a95efc3ef8aa4391942da511eab7">FiniteHistory&lt; T &gt;</a>
+: <a class="el" href="class_beam_search.html#ad8d10554d704658cf16fff174b24d8e6">BeamSearch&lt; HYP, callback_t &gt;</a>
+, <a class="el" href="class_finite_history.html#a5967a95efc3ef8aa4391942da511eab7">FiniteHistory&lt; T &gt;</a>
 </li>
 <li>n
 : <a class="el" href="class_median_f_a_m_e.html#a0318b43dd3ae39b735a152c16ae4baec">MedianFAME&lt; T &gt;</a>
@@ -365,10 +363,10 @@ $(function() {
 : <a class="el" href="class_grammar.html#a45877d4d7a5ee98bf6753af593d6ca08">Grammar&lt; GRAMMAR_TYPES &gt;</a>
 </li>
 <li>N_REPS
-: <a class="el" href="class_astar.html#a4086ae1c376d4d1b8d456f46f09cfa8a">Astar&lt; HYP, callback_t &gt;</a>
+: <a class="el" href="class_beam_search.html#ac3a4e99fa773823f128004a3441e6763">BeamSearch&lt; HYP, callback_t &gt;</a>
 </li>
 <li>ndata
-: <a class="el" href="struct_human_datum.html#ac3f0740f0039b4a94f6c4cbee4b6a94a">HumanDatum&lt; HYP &gt;</a>
+: <a class="el" href="struct_human_datum.html#a1dcceba908420f512da7b2b2fc1247fe">HumanDatum&lt; HYP, _output_t, _datum_t, _data_t &gt;</a>
 </li>
 <li>NPARAMS
 : <a class="el" href="class_grammar_hypothesis.html#a49a34bac57a0f49acf9c7d3c189d64f9">GrammarHypothesis&lt; HYP, datum_t, data_t &gt;</a>
@@ -378,6 +376,9 @@ $(function() {
 </li>
 <li>NTDelimiter
 : <a class="el" href="class_node.html#a72d47382356d51bdff43636f2c20c140">Node</a>
+</li>
+<li>nthreads
+: <a class="el" href="struct_control.html#a7c7748be70415c187e9cfd8124ab711b">Control</a>
 </li>
 <li>nvisits
 : <a class="el" href="class_full_m_c_t_s_node.html#ae7f1126893f5c6efe675d51f67db6003">FullMCTSNode&lt; this_t, HYP, callback_t &gt;</a>
@@ -424,7 +425,7 @@ $(function() {
 : <a class="el" href="class_base_node.html#aa1ad671f67931a82120d5852520417b7">BaseNode&lt; this_t &gt;</a>
 </li>
 <li>PARENT_PENALTY
-: <a class="el" href="class_astar.html#a111836518f01d8d4495d00e3b2a17531">Astar&lt; HYP, callback_t &gt;</a>
+: <a class="el" href="class_beam_search.html#ac6d09fe117860580f830a4f7006ca4d4">BeamSearch&lt; HYP, callback_t &gt;</a>
 </li>
 <li>pi
 : <a class="el" href="class_base_node.html#a6e2caf1ce4e3f0436c277b7331dbd554">BaseNode&lt; this_t &gt;</a>
@@ -436,7 +437,10 @@ $(function() {
 : <a class="el" href="class_bayesable.html#a268442b9aae5b763c17ca29c39231915">Bayesable&lt; _datum_t, _data_t &gt;</a>
 </li>
 <li>predict
-: <a class="el" href="struct_human_datum.html#a0a5e235df708ae7af0ddb324fbd05f14">HumanDatum&lt; HYP &gt;</a>
+: <a class="el" href="struct_human_datum.html#ae82de9e30e32e86b013dd3ebf475eb71">HumanDatum&lt; HYP, _output_t, _datum_t, _data_t &gt;</a>
+</li>
+<li>print
+: <a class="el" href="struct_control.html#a508fb30a9e74771b84bb846bcd6f2f2a">Control</a>
 </li>
 <li>print_best
 : <a class="el" href="class_top_n.html#a90472852f225e5b851446e4b7ced4856">TopN&lt; T &gt;</a>
@@ -455,7 +459,7 @@ $(function() {
 
 <h3><a id="index_q"></a>- q -</h3><ul>
 <li>Q
-: <a class="el" href="class_astar.html#af96593236e2f3ea3d15b37d513308391">Astar&lt; HYP, callback_t &gt;</a>
+: <a class="el" href="class_beam_search.html#aea50d5d592cccbb9c85ee3ca02e2c7f3">BeamSearch&lt; HYP, callback_t &gt;</a>
 , <a class="el" href="class_virtual_machine_pool.html#a6bb6ec72e4b6fb87bb3b7ea6eb0e4d6e">VirtualMachinePool&lt; VMState &gt;</a>
 </li>
 </ul>
@@ -475,7 +479,7 @@ $(function() {
 : <a class="el" href="class_streaming_statistics.html#af21bb0006db1b937c404458bd6dae160">StreamingStatistics</a>
 </li>
 <li>responses
-: <a class="el" href="struct_human_datum.html#a341153158ffb62d4732e7b756bff5eed">HumanDatum&lt; HYP &gt;</a>
+: <a class="el" href="struct_human_datum.html#aad2be31d72b759b1c7a15631bc07993f">HumanDatum&lt; HYP, _output_t, _datum_t, _data_t &gt;</a>
 </li>
 <li>restart
 : <a class="el" href="struct_control.html#acd75b8aa48fdb33f063bae7469a9721b">Control</a>
@@ -491,6 +495,9 @@ $(function() {
 </li>
 <li>run_program
 : <a class="el" href="class_virtual_machine_state.html#afc2691c3bd3c7c3feba0708c2929ffe2">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
+</li>
+<li>runtime
+: <a class="el" href="struct_control.html#ae14b7e8a0d59a10d5fb7d000707ed4b9">Control</a>
 </li>
 </ul>
 
@@ -544,7 +551,7 @@ $(function() {
 
 <h3><a id="index_t"></a>- t -</h3><ul>
 <li>temperature
-: <a class="el" href="class_astar.html#a9c708491f187aca582d7a3499a442bba">Astar&lt; HYP, callback_t &gt;</a>
+: <a class="el" href="class_beam_search.html#a39b5bff55c281fb0ecc78deb4b43953d">BeamSearch&lt; HYP, callback_t &gt;</a>
 , <a class="el" href="class_m_c_m_c_chain.html#a7173287e1c0e681a9912a84c87320ece">MCMCChain&lt; HYP, callback_t &gt;</a>
 </li>
 <li>temperatures
@@ -556,12 +563,6 @@ $(function() {
 </li>
 <li>thin
 : <a class="el" href="struct_control.html#a08030350e86fd21411599690892e31a8">Control</a>
-</li>
-<li>threads
-: <a class="el" href="struct_control.html#af130110f07dc3bced4d8d0fafac5b755">Control</a>
-</li>
-<li>time
-: <a class="el" href="struct_control.html#a273f3488d567bb10871e71245a406f3e">Control</a>
 </li>
 <li>time_before_change
 : <a class="el" href="class_chain_pool.html#a1ff48aa1e09a9a31871dec05d3c0e9d3">ChainPool&lt; HYP, callback_t &gt;</a>

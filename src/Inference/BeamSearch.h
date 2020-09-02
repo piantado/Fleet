@@ -9,20 +9,20 @@
 #include "FleetStatistics.h"
 #include "ParallelInferenceInterface.h"
 
-//#define DEBUG_ASTAR 1
+//#define DEBUG_BEAMSEARCH 1
 
 extern volatile sig_atomic_t CTRL_C; 
 
 /**
- * @class Astar
+ * @class BeamSearch
  * @author piantado
  * @date 07/06/20
- * @file Astar.h
- * @brief This is an implementation of kinda-A* search that maintains a priority queue of partial states and attempts to find 
+ * @file BeamSearch.h
+ * @brief This is an implementation of beam search that maintains a priority queue of partial states and attempts to find 
  * 			a program with the lowest posterior score. To do this, we choose a node to expand based on its prior plus
  * 		    N_REPS samples of its likelihood, computed by filling in its children at random. This stochastic heuristic is actually
- *  		inadmissable since it usually overestimates the cost. As a result, it usually makes sense to run
- *  		A* at a pretty high temperature, corresponding to a downweighting of the likelihood, and making the heuristic more likely
+ *  		inadmissable (in A* terms) since it usually overestimates the cost. As a result, it usually makes sense to run
+ *  		at a pretty high temperature, corresponding to a downweighting of the likelihood, and making the heuristic more likely
  * 			to be admissable. 
  * 
  * 			One general challenge is how to handle -inf likelihoods, and here we've done that by, if you end up with -inf, taking
@@ -33,7 +33,7 @@ extern volatile sig_atomic_t CTRL_C;
  * 
  */
 template<typename HYP, typename callback_t>
-class Astar :public ParallelInferenceInterface<> {
+class BeamSearch : public ParallelInferenceInterface<> {
 	
 	std::mutex lock; 
 public:
@@ -49,7 +49,7 @@ public:
 	// the smallest element appears on top of this vector
 	TopN<HYP> Q;
 	 
-	Astar(HYP& h0, typename HYP::data_t* d, callback_t& cb, double temp)  : Q(N) {
+	BeamSearch(HYP& h0, typename HYP::data_t* d, callback_t& cb, double temp)  : Q(N) {
 		
 		// set these static members (static so GraphNode can use them without having so many copies)
 		callback = &cb; 
@@ -89,11 +89,11 @@ public:
 				lock.unlock();
 				continue; // this is necesssary because we might have more threads than Q to start off. 
 			}
-			auto t = Q.best(); Q.pop(); ++FleetStatistics::astar_steps;
+			auto t = Q.best(); Q.pop(); ++FleetStatistics::beam_steps;
 			lock.unlock();
 			
-			#ifdef DEBUG_ASTAR
-				CERR std::this_thread::get_id() TAB "ASTAR popped " << t.posterior TAB t.string() ENDL;
+			#ifdef DEBUG_BEAMSEARCH
+				CERR std::this_thread::get_id() TAB "BeamSearch popped " << t.posterior TAB t.string() ENDL;
 			#endif
 			
 			size_t neigh = t.neighbors();
@@ -166,10 +166,10 @@ public:
 };
 
 template<typename HYP, typename callback_t>
-callback_t* Astar<HYP,callback_t>::callback = nullptr;
+callback_t* BeamSearch<HYP,callback_t>::callback = nullptr;
 
 template<typename HYP, typename callback_t>
-typename HYP::data_t* Astar<HYP,callback_t>::data = nullptr;
+typename HYP::data_t* BeamSearch<HYP,callback_t>::data = nullptr;
 
 template<typename HYP, typename callback_t>
-double Astar<HYP,callback_t>::temperature = 100.0;
+double BeamSearch<HYP,callback_t>::temperature = 100.0;

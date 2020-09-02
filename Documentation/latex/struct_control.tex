@@ -7,7 +7,7 @@
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{struct_control_a4ff9d1cb18c06b5438f09ef6a8e7af80}{Control}} (unsigned long s=0, time\+\_\+ms t=0, size\+\_\+t thr=1, unsigned long r=0)
+\mbox{\hyperlink{struct_control_a1403ae58ef8c681793bd3d94b3f3e704}{Control}} (unsigned long st=\mbox{\hyperlink{namespace_fleet_args_a0cabfaa21ab6740518265b14df5948c7}{Fleet\+Args\+::steps}}, unsigned long t=\mbox{\hyperlink{namespace_fleet_args_a094bc8aa2836c57906405cde03d24fc6}{Fleet\+Args\+::runtime}}, size\+\_\+t thr=\mbox{\hyperlink{namespace_fleet_args_a90ee834a1804002baec2366daeda54a5}{Fleet\+Args\+::nthreads}}, unsigned long bu=\mbox{\hyperlink{namespace_fleet_args_a7dc1ce66659f9dc509b370d5660582e8}{Fleet\+Args\+::burn}}, unsigned long re=\mbox{\hyperlink{namespace_fleet_args_af0c62e1528330a5fb0ba9f01082aa823}{Fleet\+Args\+::restart}}, unsigned long th=\mbox{\hyperlink{namespace_fleet_args_add2603eb3b9b47d79684e1a12bcca2aa}{Fleet\+Args\+::thin}}, unsigned long pr=\mbox{\hyperlink{namespace_fleet_args_acf2f80bb2810cea3b3eeef0c4b0edf03}{Fleet\+Args\+::print}})
 \item 
 void \mbox{\hyperlink{struct_control_a933994a3524f2f6d7ef0a17086e7cf66}{start}} ()
 \item 
@@ -18,15 +18,17 @@ bool \mbox{\hyperlink{struct_control_a9217475a8ad619e7360524ae49c559a7}{running}
 \item 
 unsigned long \mbox{\hyperlink{struct_control_af4bd5a6c779079b5e921b4df40760266}{steps}}
 \item 
-time\+\_\+ms \mbox{\hyperlink{struct_control_a273f3488d567bb10871e71245a406f3e}{time}}
+time\+\_\+ms \mbox{\hyperlink{struct_control_ae14b7e8a0d59a10d5fb7d000707ed4b9}{runtime}}
 \item 
-size\+\_\+t \mbox{\hyperlink{struct_control_af130110f07dc3bced4d8d0fafac5b755}{threads}}
+size\+\_\+t \mbox{\hyperlink{struct_control_a7c7748be70415c187e9cfd8124ab711b}{nthreads}}
 \item 
 unsigned long \mbox{\hyperlink{struct_control_acb1e669784385d64b9f840674a3e08c1}{burn}}
 \item 
+unsigned long \mbox{\hyperlink{struct_control_acd75b8aa48fdb33f063bae7469a9721b}{restart}}
+\item 
 unsigned long \mbox{\hyperlink{struct_control_a08030350e86fd21411599690892e31a8}{thin}}
 \item 
-unsigned long \mbox{\hyperlink{struct_control_acd75b8aa48fdb33f063bae7469a9721b}{restart}}
+unsigned long \mbox{\hyperlink{struct_control_a508fb30a9e74771b84bb846bcd6f2f2a}{print}}
 \item 
 timept \mbox{\hyperlink{struct_control_ad3c2691a66705880844f467cf5da8aab}{start\+\_\+time}}
 \item 
@@ -38,19 +40,19 @@ bool \mbox{\hyperlink{struct_control_a3a1856c582efd2a6a1b8f40351038d0c}{break\+\
 
 \doxysubsection{Detailed Description}
 \begin{DoxyAuthor}{Author}
-steven piantadosi 
+Steven Piantadosi 
 \end{DoxyAuthor}
 \begin{DoxyDate}{Date}
-03/02/20 
+17/08/20 
 \end{DoxyDate}
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{struct_control_a4ff9d1cb18c06b5438f09ef6a8e7af80}\label{struct_control_a4ff9d1cb18c06b5438f09ef6a8e7af80}} 
+\mbox{\Hypertarget{struct_control_a1403ae58ef8c681793bd3d94b3f3e704}\label{struct_control_a1403ae58ef8c681793bd3d94b3f3e704}} 
 \index{Control@{Control}!Control@{Control}}
 \index{Control@{Control}!Control@{Control}}
 \doxysubsubsection{\texorpdfstring{Control()}{Control()}}
-{\footnotesize\ttfamily Control\+::\+Control (\begin{DoxyParamCaption}\item[{unsigned long}]{s = {\ttfamily 0},  }\item[{time\+\_\+ms}]{t = {\ttfamily 0},  }\item[{size\+\_\+t}]{thr = {\ttfamily 1},  }\item[{unsigned long}]{r = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily Control\+::\+Control (\begin{DoxyParamCaption}\item[{unsigned long}]{st = {\ttfamily \mbox{\hyperlink{namespace_fleet_args_a0cabfaa21ab6740518265b14df5948c7}{Fleet\+Args\+::steps}}},  }\item[{unsigned long}]{t = {\ttfamily \mbox{\hyperlink{namespace_fleet_args_a094bc8aa2836c57906405cde03d24fc6}{Fleet\+Args\+::runtime}}},  }\item[{size\+\_\+t}]{thr = {\ttfamily \mbox{\hyperlink{namespace_fleet_args_a90ee834a1804002baec2366daeda54a5}{Fleet\+Args\+::nthreads}}},  }\item[{unsigned long}]{bu = {\ttfamily \mbox{\hyperlink{namespace_fleet_args_a7dc1ce66659f9dc509b370d5660582e8}{Fleet\+Args\+::burn}}},  }\item[{unsigned long}]{re = {\ttfamily \mbox{\hyperlink{namespace_fleet_args_af0c62e1528330a5fb0ba9f01082aa823}{Fleet\+Args\+::restart}}},  }\item[{unsigned long}]{th = {\ttfamily \mbox{\hyperlink{namespace_fleet_args_add2603eb3b9b47d79684e1a12bcca2aa}{Fleet\+Args\+::thin}}},  }\item[{unsigned long}]{pr = {\ttfamily \mbox{\hyperlink{namespace_fleet_args_acf2f80bb2810cea3b3eeef0c4b0edf03}{Fleet\+Args\+::print}}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -91,11 +93,29 @@ Start running
 \doxysubsubsection{\texorpdfstring{done\_steps}{done\_steps}}
 {\footnotesize\ttfamily unsigned long Control\+::done\+\_\+steps}
 
+\mbox{\Hypertarget{struct_control_a7c7748be70415c187e9cfd8124ab711b}\label{struct_control_a7c7748be70415c187e9cfd8124ab711b}} 
+\index{Control@{Control}!nthreads@{nthreads}}
+\index{nthreads@{nthreads}!Control@{Control}}
+\doxysubsubsection{\texorpdfstring{nthreads}{nthreads}}
+{\footnotesize\ttfamily size\+\_\+t Control\+::nthreads}
+
+\mbox{\Hypertarget{struct_control_a508fb30a9e74771b84bb846bcd6f2f2a}\label{struct_control_a508fb30a9e74771b84bb846bcd6f2f2a}} 
+\index{Control@{Control}!print@{print}}
+\index{print@{print}!Control@{Control}}
+\doxysubsubsection{\texorpdfstring{print}{print}}
+{\footnotesize\ttfamily unsigned long Control\+::print}
+
 \mbox{\Hypertarget{struct_control_acd75b8aa48fdb33f063bae7469a9721b}\label{struct_control_acd75b8aa48fdb33f063bae7469a9721b}} 
 \index{Control@{Control}!restart@{restart}}
 \index{restart@{restart}!Control@{Control}}
 \doxysubsubsection{\texorpdfstring{restart}{restart}}
 {\footnotesize\ttfamily unsigned long Control\+::restart}
+
+\mbox{\Hypertarget{struct_control_ae14b7e8a0d59a10d5fb7d000707ed4b9}\label{struct_control_ae14b7e8a0d59a10d5fb7d000707ed4b9}} 
+\index{Control@{Control}!runtime@{runtime}}
+\index{runtime@{runtime}!Control@{Control}}
+\doxysubsubsection{\texorpdfstring{runtime}{runtime}}
+{\footnotesize\ttfamily time\+\_\+ms Control\+::runtime}
 
 \mbox{\Hypertarget{struct_control_ad3c2691a66705880844f467cf5da8aab}\label{struct_control_ad3c2691a66705880844f467cf5da8aab}} 
 \index{Control@{Control}!start\_time@{start\_time}}
@@ -114,18 +134,6 @@ Start running
 \index{thin@{thin}!Control@{Control}}
 \doxysubsubsection{\texorpdfstring{thin}{thin}}
 {\footnotesize\ttfamily unsigned long Control\+::thin}
-
-\mbox{\Hypertarget{struct_control_af130110f07dc3bced4d8d0fafac5b755}\label{struct_control_af130110f07dc3bced4d8d0fafac5b755}} 
-\index{Control@{Control}!threads@{threads}}
-\index{threads@{threads}!Control@{Control}}
-\doxysubsubsection{\texorpdfstring{threads}{threads}}
-{\footnotesize\ttfamily size\+\_\+t Control\+::threads}
-
-\mbox{\Hypertarget{struct_control_a273f3488d567bb10871e71245a406f3e}\label{struct_control_a273f3488d567bb10871e71245a406f3e}} 
-\index{Control@{Control}!time@{time}}
-\index{time@{time}!Control@{Control}}
-\doxysubsubsection{\texorpdfstring{time}{time}}
-{\footnotesize\ttfamily time\+\_\+ms Control\+::time}
 
 
 

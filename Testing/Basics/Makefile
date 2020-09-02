@@ -1,6 +1,6 @@
 
 # Define where Fleet lives (directory containing src)
-FLEET_ROOT=../
+FLEET_ROOT=../../
 
 include $(FLEET_ROOT)/Fleet.mk
 

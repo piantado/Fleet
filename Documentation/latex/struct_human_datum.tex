@@ -1,29 +1,38 @@
-\hypertarget{struct_human_datum}{}\doxysection{Human\+Datum$<$ H\+YP $>$ Class Template Reference}
-\label{struct_human_datum}\index{HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}}
+\hypertarget{struct_human_datum}{}\doxysection{Human\+Datum$<$ H\+YP, \+\_\+output\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$ Class Template Reference}
+\label{struct_human_datum}\index{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}}
 
 
 {\ttfamily \#include $<$Human\+Datum.\+h$>$}
 
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \+\_\+data\+\_\+t \mbox{\hyperlink{struct_human_datum_ad442cb9ab3d48a298c8e92b36099d049}{data\+\_\+t}}
+\item 
+typedef \+\_\+datum\+\_\+t \mbox{\hyperlink{struct_human_datum_ac25e73a87ace1bdfdf24a5c950b08f4f}{datum\+\_\+t}}
+\item 
+typedef \+\_\+output\+\_\+t \mbox{\hyperlink{struct_human_datum_a15c95575a11867683feff4437fc90b98}{output\+\_\+t}}
+\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-H\+Y\+P\+::data\+\_\+t $\ast$ \mbox{\hyperlink{struct_human_datum_ae7e84e42eadf74123b0770a378e98c20}{data}}
+\mbox{\hyperlink{struct_human_datum_ad442cb9ab3d48a298c8e92b36099d049}{data\+\_\+t}} $\ast$ \mbox{\hyperlink{struct_human_datum_aaf85efe4e8529282096c1331f24b61b1}{data}}
 \item 
-size\+\_\+t \mbox{\hyperlink{struct_human_datum_ac3f0740f0039b4a94f6c4cbee4b6a94a}{ndata}}
+size\+\_\+t \mbox{\hyperlink{struct_human_datum_a1dcceba908420f512da7b2b2fc1247fe}{ndata}}
 \item 
-H\+Y\+P\+::input\+\_\+t $\ast$ \mbox{\hyperlink{struct_human_datum_a0a5e235df708ae7af0ddb324fbd05f14}{predict}}
+\mbox{\hyperlink{struct_human_datum_ac25e73a87ace1bdfdf24a5c950b08f4f}{datum\+\_\+t}} $\ast$ \mbox{\hyperlink{struct_human_datum_ae82de9e30e32e86b013dd3ebf475eb71}{predict}}
 \item 
-std\+::map$<$ typename H\+Y\+P\+::output\+\_\+t, size\+\_\+t $>$ \mbox{\hyperlink{struct_human_datum_a341153158ffb62d4732e7b756bff5eed}{responses}}
+std\+::map$<$ \mbox{\hyperlink{struct_human_datum_a15c95575a11867683feff4437fc90b98}{output\+\_\+t}}, size\+\_\+t $>$ \mbox{\hyperlink{struct_human_datum_aad2be31d72b759b1c7a15631bc07993f}{responses}}
 \item 
-double \mbox{\hyperlink{struct_human_datum_ae566c76c85e90bfc5093b021006aee55}{chance}}
+double \mbox{\hyperlink{struct_human_datum_ac1c5eb254faf89b76e8d040da8daa930}{chance}}
 \item 
-int \mbox{\hyperlink{struct_human_datum_a24b9b34afc3a0334fc9b994455c6d71f}{decay\+\_\+position}}
+int \mbox{\hyperlink{struct_human_datum_a72c3ad2a4442b67dd2b39c3008f89c3d}{decay\+\_\+position}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-\subsubsection*{template$<$typename H\+YP$>$\newline
-class Human\+Datum$<$ H\+Y\+P $>$}
+\subsubsection*{template$<$typename H\+YP, typename \+\_\+output\+\_\+t = H\+Y\+P\+::output\+\_\+t, typename \+\_\+datum\+\_\+t = H\+Y\+P\+::datum\+\_\+t, typename \+\_\+data\+\_\+t = H\+Y\+P\+::data\+\_\+t$>$\newline
+class Human\+Datum$<$ H\+Y\+P, \+\_\+output\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}
 
 \begin{DoxyAuthor}{Author}
 piantado 
@@ -33,48 +42,72 @@ piantado
 \end{DoxyDate}
 
 
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{struct_human_datum_ad442cb9ab3d48a298c8e92b36099d049}\label{struct_human_datum_ad442cb9ab3d48a298c8e92b36099d049}} 
+\index{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}!data\_t@{data\_t}}
+\index{data\_t@{data\_t}!HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}}
+\doxysubsubsection{\texorpdfstring{data\_t}{data\_t}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename \+\_\+output\+\_\+t  = H\+Y\+P\+::output\+\_\+t, typename \+\_\+datum\+\_\+t  = H\+Y\+P\+::datum\+\_\+t, typename \+\_\+data\+\_\+t  = H\+Y\+P\+::data\+\_\+t$>$ \\
+typedef \+\_\+data\+\_\+t \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP, \+\_\+output\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::\mbox{\hyperlink{struct_human_datum_ad442cb9ab3d48a298c8e92b36099d049}{data\+\_\+t}}}
+
+\mbox{\Hypertarget{struct_human_datum_ac25e73a87ace1bdfdf24a5c950b08f4f}\label{struct_human_datum_ac25e73a87ace1bdfdf24a5c950b08f4f}} 
+\index{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}!datum\_t@{datum\_t}}
+\index{datum\_t@{datum\_t}!HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}}
+\doxysubsubsection{\texorpdfstring{datum\_t}{datum\_t}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename \+\_\+output\+\_\+t  = H\+Y\+P\+::output\+\_\+t, typename \+\_\+datum\+\_\+t  = H\+Y\+P\+::datum\+\_\+t, typename \+\_\+data\+\_\+t  = H\+Y\+P\+::data\+\_\+t$>$ \\
+typedef \+\_\+datum\+\_\+t \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP, \+\_\+output\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::\mbox{\hyperlink{struct_human_datum_ac25e73a87ace1bdfdf24a5c950b08f4f}{datum\+\_\+t}}}
+
+\mbox{\Hypertarget{struct_human_datum_a15c95575a11867683feff4437fc90b98}\label{struct_human_datum_a15c95575a11867683feff4437fc90b98}} 
+\index{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}!output\_t@{output\_t}}
+\index{output\_t@{output\_t}!HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}}
+\doxysubsubsection{\texorpdfstring{output\_t}{output\_t}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename \+\_\+output\+\_\+t  = H\+Y\+P\+::output\+\_\+t, typename \+\_\+datum\+\_\+t  = H\+Y\+P\+::datum\+\_\+t, typename \+\_\+data\+\_\+t  = H\+Y\+P\+::data\+\_\+t$>$ \\
+typedef \+\_\+output\+\_\+t \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP, \+\_\+output\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::\mbox{\hyperlink{struct_human_datum_a15c95575a11867683feff4437fc90b98}{output\+\_\+t}}}
+
+
+
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{struct_human_datum_ae566c76c85e90bfc5093b021006aee55}\label{struct_human_datum_ae566c76c85e90bfc5093b021006aee55}} 
-\index{HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}!chance@{chance}}
-\index{chance@{chance}!HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}}
+\mbox{\Hypertarget{struct_human_datum_ac1c5eb254faf89b76e8d040da8daa930}\label{struct_human_datum_ac1c5eb254faf89b76e8d040da8daa930}} 
+\index{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}!chance@{chance}}
+\index{chance@{chance}!HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}}
 \doxysubsubsection{\texorpdfstring{chance}{chance}}
-{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-double \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP $>$\+::chance}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename \+\_\+output\+\_\+t  = H\+Y\+P\+::output\+\_\+t, typename \+\_\+datum\+\_\+t  = H\+Y\+P\+::datum\+\_\+t, typename \+\_\+data\+\_\+t  = H\+Y\+P\+::data\+\_\+t$>$ \\
+double \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP, \+\_\+output\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::chance}
 
-\mbox{\Hypertarget{struct_human_datum_ae7e84e42eadf74123b0770a378e98c20}\label{struct_human_datum_ae7e84e42eadf74123b0770a378e98c20}} 
-\index{HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}!data@{data}}
-\index{data@{data}!HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}}
+\mbox{\Hypertarget{struct_human_datum_aaf85efe4e8529282096c1331f24b61b1}\label{struct_human_datum_aaf85efe4e8529282096c1331f24b61b1}} 
+\index{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}!data@{data}}
+\index{data@{data}!HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}}
 \doxysubsubsection{\texorpdfstring{data}{data}}
-{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-H\+Y\+P\+::data\+\_\+t$\ast$ \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP $>$\+::data}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename \+\_\+output\+\_\+t  = H\+Y\+P\+::output\+\_\+t, typename \+\_\+datum\+\_\+t  = H\+Y\+P\+::datum\+\_\+t, typename \+\_\+data\+\_\+t  = H\+Y\+P\+::data\+\_\+t$>$ \\
+\mbox{\hyperlink{struct_human_datum_ad442cb9ab3d48a298c8e92b36099d049}{data\+\_\+t}}$\ast$ \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP, \+\_\+output\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::data}
 
-\mbox{\Hypertarget{struct_human_datum_a24b9b34afc3a0334fc9b994455c6d71f}\label{struct_human_datum_a24b9b34afc3a0334fc9b994455c6d71f}} 
-\index{HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}!decay\_position@{decay\_position}}
-\index{decay\_position@{decay\_position}!HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}}
+\mbox{\Hypertarget{struct_human_datum_a72c3ad2a4442b67dd2b39c3008f89c3d}\label{struct_human_datum_a72c3ad2a4442b67dd2b39c3008f89c3d}} 
+\index{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}!decay\_position@{decay\_position}}
+\index{decay\_position@{decay\_position}!HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}}
 \doxysubsubsection{\texorpdfstring{decay\_position}{decay\_position}}
-{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-int \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP $>$\+::decay\+\_\+position}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename \+\_\+output\+\_\+t  = H\+Y\+P\+::output\+\_\+t, typename \+\_\+datum\+\_\+t  = H\+Y\+P\+::datum\+\_\+t, typename \+\_\+data\+\_\+t  = H\+Y\+P\+::data\+\_\+t$>$ \\
+int \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP, \+\_\+output\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::decay\+\_\+position}
 
-\mbox{\Hypertarget{struct_human_datum_ac3f0740f0039b4a94f6c4cbee4b6a94a}\label{struct_human_datum_ac3f0740f0039b4a94f6c4cbee4b6a94a}} 
-\index{HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}!ndata@{ndata}}
-\index{ndata@{ndata}!HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}}
+\mbox{\Hypertarget{struct_human_datum_a1dcceba908420f512da7b2b2fc1247fe}\label{struct_human_datum_a1dcceba908420f512da7b2b2fc1247fe}} 
+\index{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}!ndata@{ndata}}
+\index{ndata@{ndata}!HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}}
 \doxysubsubsection{\texorpdfstring{ndata}{ndata}}
-{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-size\+\_\+t \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP $>$\+::ndata}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename \+\_\+output\+\_\+t  = H\+Y\+P\+::output\+\_\+t, typename \+\_\+datum\+\_\+t  = H\+Y\+P\+::datum\+\_\+t, typename \+\_\+data\+\_\+t  = H\+Y\+P\+::data\+\_\+t$>$ \\
+size\+\_\+t \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP, \+\_\+output\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::ndata}
 
-\mbox{\Hypertarget{struct_human_datum_a0a5e235df708ae7af0ddb324fbd05f14}\label{struct_human_datum_a0a5e235df708ae7af0ddb324fbd05f14}} 
-\index{HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}!predict@{predict}}
-\index{predict@{predict}!HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}}
+\mbox{\Hypertarget{struct_human_datum_ae82de9e30e32e86b013dd3ebf475eb71}\label{struct_human_datum_ae82de9e30e32e86b013dd3ebf475eb71}} 
+\index{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}!predict@{predict}}
+\index{predict@{predict}!HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}}
 \doxysubsubsection{\texorpdfstring{predict}{predict}}
-{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-H\+Y\+P\+::input\+\_\+t$\ast$ \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP $>$\+::predict}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename \+\_\+output\+\_\+t  = H\+Y\+P\+::output\+\_\+t, typename \+\_\+datum\+\_\+t  = H\+Y\+P\+::datum\+\_\+t, typename \+\_\+data\+\_\+t  = H\+Y\+P\+::data\+\_\+t$>$ \\
+\mbox{\hyperlink{struct_human_datum_ac25e73a87ace1bdfdf24a5c950b08f4f}{datum\+\_\+t}}$\ast$ \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP, \+\_\+output\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::predict}
 
-\mbox{\Hypertarget{struct_human_datum_a341153158ffb62d4732e7b756bff5eed}\label{struct_human_datum_a341153158ffb62d4732e7b756bff5eed}} 
-\index{HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}!responses@{responses}}
-\index{responses@{responses}!HumanDatum$<$ HYP $>$@{HumanDatum$<$ HYP $>$}}
+\mbox{\Hypertarget{struct_human_datum_aad2be31d72b759b1c7a15631bc07993f}\label{struct_human_datum_aad2be31d72b759b1c7a15631bc07993f}} 
+\index{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}!responses@{responses}}
+\index{responses@{responses}!HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$@{HumanDatum$<$ HYP, \_output\_t, \_datum\_t, \_data\_t $>$}}
 \doxysubsubsection{\texorpdfstring{responses}{responses}}
-{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-std\+::map$<$typename H\+Y\+P\+::output\+\_\+t,size\+\_\+t$>$ \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP $>$\+::responses}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename \+\_\+output\+\_\+t  = H\+Y\+P\+::output\+\_\+t, typename \+\_\+datum\+\_\+t  = H\+Y\+P\+::datum\+\_\+t, typename \+\_\+data\+\_\+t  = H\+Y\+P\+::data\+\_\+t$>$ \\
+std\+::map$<$\mbox{\hyperlink{struct_human_datum_a15c95575a11867683feff4437fc90b98}{output\+\_\+t}},size\+\_\+t$>$ \mbox{\hyperlink{struct_human_datum}{Human\+Datum}}$<$ H\+YP, \+\_\+output\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::responses}
 
 
 

@@ -8,7 +8,7 @@ var searchData=
   ['start_5ftime_1224',['start_time',['../class_fleet.html#a287f9cf06613b5ad1b511cc82216d42b',1,'Fleet::start_time()'],['../struct_control.html#ad3c2691a66705880844f467cf5da8aab',1,'Control::start_time()']]],
   ['status_1225',['status',['../class_virtual_machine_state.html#a6e561a217081654b4187620953e86fff',1,'VirtualMachineState']]],
   ['step_1226',['step',['../class_median_f_a_m_e.html#a99c7b975965259ed4079c08836583732',1,'MedianFAME']]],
-  ['steps_1227',['steps',['../struct_control.html#af4bd5a6c779079b5e921b4df40760266',1,'Control']]],
+  ['steps_1227',['steps',['../struct_control.html#af4bd5a6c779079b5e921b4df40760266',1,'Control::steps()'],['../namespace_fleet_args.html#a0cabfaa21ab6740518265b14df5948c7',1,'FleetArgs::steps()']]],
   ['steps_5fbefore_5fchange_1228',['steps_before_change',['../class_chain_pool.html#a143f3e4f9b60c03c67ffbc2db3e57d53',1,'ChainPool']]],
   ['steps_5fsince_5fimprovement_1229',['steps_since_improvement',['../class_m_c_m_c_chain.html#aeac1cd63d13c397ba01cca35b605b786',1,'MCMCChain']]],
   ['streaming_5fmedian_1230',['streaming_median',['../class_streaming_statistics.html#a3a16ed90414b6fefd56d519162406bbd',1,'StreamingStatistics']]],

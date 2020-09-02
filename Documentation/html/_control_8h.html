@@ -76,9 +76,10 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here)  
+<p>This class has all the information for running MCMC or MCTS in a little package. It defaultly constructs (via <a class="el" href="struct_control.html">Control()</a>) to read these from <a class="el" href="namespace_fleet_args.html">FleetArgs</a>, which are a bunch of variables set by Fleet::initialize from the command line. This makes it especially convenient to call with command line arguments, but others can be specified as well.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;signal.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="_fleet_args_8h_source.html">FleetArgs.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_timing_8h_source.html">Timing.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_i_o_8h_source.html">IO.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -86,26 +87,28 @@ Include dependency graph for Control.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_control_8h__incl.png" border="0" usemap="#src_2_inference_2_control_8h" alt=""/></div>
 <map name="src_2_inference_2_control_8h" id="src_2_inference_2_control_8h">
-<area shape="rect" title="This bundles together information for running MCMC or MCTS, including number of steps,..." alt="" coords="74,5,229,32"/>
-<area shape="rect" title=" " alt="" coords="25,80,91,107"/>
-<area shape="rect" href="_timing_8h.html" title=" " alt="" coords="115,80,187,107"/>
-<area shape="rect" href="_i_o_8h.html" title=" " alt="" coords="392,80,439,107"/>
-<area shape="rect" title=" " alt="" coords="31,155,93,181"/>
-<area shape="rect" href="_errors_8h.html" title=" " alt="" coords="117,155,185,181"/>
-<area shape="rect" title=" " alt="" coords="5,229,84,256"/>
-<area shape="rect" title=" " alt="" coords="108,229,187,256"/>
-<area shape="rect" title=" " alt="" coords="211,229,265,256"/>
-<area shape="rect" title=" " alt="" coords="270,155,329,181"/>
-<area shape="rect" title=" " alt="" coords="353,155,411,181"/>
-<area shape="rect" title=" " alt="" coords="593,304,665,331"/>
-<area shape="rect" title=" " alt="" coords="486,155,553,181"/>
-<area shape="rect" title=" " alt="" coords="577,155,739,181"/>
-<area shape="rect" href="_strings_8h.html" title=" " alt="" coords="763,155,838,181"/>
-<area shape="rect" title=" " alt="" coords="631,229,693,256"/>
-<area shape="rect" title=" " alt="" coords="717,229,783,256"/>
-<area shape="rect" href="_numerics_8h.html" title=" " alt="" coords="807,229,896,256"/>
-<area shape="rect" title=" " alt="" coords="772,304,837,331"/>
-<area shape="rect" title=" " alt="" coords="862,304,931,331"/>
+<area shape="rect" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="116,5,271,32"/>
+<area shape="rect" title=" " alt="" coords="5,80,72,107"/>
+<area shape="rect" href="_fleet_args_8h.html" title=" " alt="" coords="97,80,186,107"/>
+<area shape="rect" href="_timing_8h.html" title=" " alt="" coords="211,80,283,107"/>
+<area shape="rect" href="_i_o_8h.html" title=" " alt="" coords="605,80,651,107"/>
+<area shape="rect" title=" " alt="" coords="78,229,133,256"/>
+<area shape="rect" title=" " alt="" coords="128,155,189,181"/>
+<area shape="rect" href="_errors_8h.html" title=" " alt="" coords="265,155,333,181"/>
+<area shape="rect" title=" " alt="" coords="259,229,338,256"/>
+<area shape="rect" title=" " alt="" coords="157,229,235,256"/>
+<area shape="rect" title=" " alt="" coords="971,155,1029,181"/>
+<area shape="rect" title=" " alt="" coords="461,155,520,181"/>
+<area shape="rect" title=" " alt="" coords="671,304,743,331"/>
+<area shape="rect" title=" " alt="" coords="643,155,709,181"/>
+<area shape="rect" title=" " alt="" coords="784,155,947,181"/>
+<area shape="rect" href="_strings_8h.html" title=" " alt="" coords="544,155,619,181"/>
+<area shape="rect" title=" " alt="" coords="565,229,622,256"/>
+<area shape="rect" title=" " alt="" coords="646,229,709,256"/>
+<area shape="rect" title=" " alt="" coords="362,229,427,256"/>
+<area shape="rect" href="_numerics_8h.html" title=" " alt="" coords="451,229,541,256"/>
+<area shape="rect" title=" " alt="" coords="410,304,475,331"/>
+<area shape="rect" title=" " alt="" coords="500,304,569,331"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -113,18 +116,18 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_control_8h__dep__incl.png" border="0" usemap="#src_2_inference_2_control_8hdep" alt=""/></div>
 <map name="src_2_inference_2_control_8hdep" id="src_2_inference_2_control_8hdep">
-<area shape="rect" title="This bundles together information for running MCMC or MCTS, including number of steps,..." alt="" coords="349,5,503,32"/>
-<area shape="rect" href="_fleet_8h.html" title="A fleet object manages processing the command line, prints a useful summary of command lines,..." alt="" coords="79,259,163,285"/>
-<area shape="rect" href="_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="1032,177,1281,203"/>
-<area shape="rect" href="_astar_8h.html" title="This is an implementation of kinda&#45;A* search that maintains a priority queue of partial states and at..." alt="" coords="224,177,367,203"/>
-<area shape="rect" href="_parallel_inference_interface_8h.html" title=" " alt="" coords="395,80,593,121"/>
-<area shape="rect" href="_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="25,169,200,211"/>
-<area shape="rect" href="_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree." alt="" coords="391,177,541,203"/>
-<area shape="rect" href="_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="566,177,761,203"/>
-<area shape="rect" href="_m_c_m_c_chain_8h.html" title=" " alt="" coords="809,87,998,114"/>
-<area shape="rect" href="_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="383,333,504,360"/>
-<area shape="rect" href="_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="785,177,958,203"/>
-<area shape="rect" href="_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="446,259,662,285"/>
+<area shape="rect" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="381,5,536,32"/>
+<area shape="rect" href="_fleet_8h.html" title="A fleet object manages processing the command line, prints a useful summary of command lines,..." alt="" coords="84,259,168,285"/>
+<area shape="rect" href="_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="1078,177,1327,203"/>
+<area shape="rect" href="_beam_search_8h.html" title="This is an implementation of beam search that maintains a priority queue of partial states and attemp..." alt="" coords="224,177,412,203"/>
+<area shape="rect" href="_parallel_inference_interface_8h.html" title=" " alt="" coords="427,80,626,121"/>
+<area shape="rect" href="_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="26,169,200,211"/>
+<area shape="rect" href="_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree." alt="" coords="436,177,587,203"/>
+<area shape="rect" href="_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="612,177,806,203"/>
+<area shape="rect" href="_m_c_m_c_chain_8h.html" title=" " alt="" coords="854,87,1044,114"/>
+<area shape="rect" href="_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="378,333,544,360"/>
+<area shape="rect" href="_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="830,177,1004,203"/>
+<area shape="rect" href="_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="469,259,685,285"/>
 </map>
 </div>
 </div>
@@ -141,7 +144,7 @@ Variables</h2></td></tr>
 <tr class="separator:a6f7c4963bb8a36031664821219e3159e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This bundles together information for running MCMC or MCTS, including number of steps, amount of time, etc. NOTE: In general this should NOT be passed by reference because we want start_time to be the time we started the function it is passed to (start time is the time of construction, here) </p>
+<div class="textblock"><p>This class has all the information for running MCMC or MCTS in a little package. It defaultly constructs (via <a class="el" href="struct_control.html">Control()</a>) to read these from <a class="el" href="namespace_fleet_args.html">FleetArgs</a>, which are a bunch of variables set by Fleet::initialize from the command line. This makes it especially convenient to call with command line arguments, but others can be specified as well. </p>
 </div><h2 class="groupheader">Variable Documentation</h2>
 <a id="a6f7c4963bb8a36031664821219e3159e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6f7c4963bb8a36031664821219e3159e">&#9670;&nbsp;</a></span>CTRL_C</h2>

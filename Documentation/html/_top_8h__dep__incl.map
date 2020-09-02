@@ -2,7 +2,7 @@
 <area shape="rect" id="node1" title="Check if a type has a posterior function or not." alt="" coords="287,5,429,32"/>
 <area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,87,255,114"/>
 <area shape="rect" id="node3" href="$_reservoir_sample_8h.html" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="279,80,437,121"/>
-<area shape="rect" id="node6" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="461,87,583,114"/>
+<area shape="rect" id="node6" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="462,87,627,114"/>
 <area shape="rect" id="node4" href="$_streaming_statistics_8h.html" title="A class to store a bunch of statistics about incoming data points, including min, max,..." alt="" coords="277,169,439,211"/>
 <area shape="rect" id="node5" href="$_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree." alt="" coords="283,259,433,285"/>
 </map>

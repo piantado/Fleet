@@ -11,7 +11,7 @@ namespace FleetStatistics {
 	std::atomic<uintmax_t> mcmc_proposal_calls(0);
 	std::atomic<uintmax_t> mcmc_acceptance_count(0);
 	std::atomic<uintmax_t> global_sample_count(0);
-	std::atomic<uintmax_t> astar_steps(0);
+	std::atomic<uintmax_t> beam_steps(0);
 	std::atomic<uintmax_t> enumeration_steps(0);
 	
 	void reset() {
@@ -21,7 +21,7 @@ namespace FleetStatistics {
 		mcmc_proposal_calls = 0;
 		mcmc_acceptance_count = 0;
 		global_sample_count = 0;
-		astar_steps = 0;
+		beam_steps = 0;
 		enumeration_steps = 0;
 	}
 }

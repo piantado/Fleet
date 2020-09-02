@@ -12,7 +12,7 @@ using \mbox{\hyperlink{class_top_n_ae734a8791a54516fecbc8cac2c67d16a}{Hypothesis
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{class_top_n_a0ad4e5b78ff09e519ef1c5f361d4c6c0}{TopN}} (size\+\_\+t n=std\+::numeric\+\_\+limits$<$ size\+\_\+t $>$\+::max())
+\mbox{\hyperlink{class_top_n_aa8c18f3b2b9a26256a71dcc619052639}{TopN}} (size\+\_\+t n=\mbox{\hyperlink{namespace_fleet_args_acbc0f011abb2f878bf68a85617d8c183}{Fleet\+Args\+::ntop}})
 \item 
 \mbox{\hyperlink{class_top_n_a8bd54bb09006a68c350a173eddc55549}{TopN}} (const \mbox{\hyperlink{class_top_n}{TopN}}$<$ T $>$ \&x)
 \item 
@@ -46,6 +46,8 @@ void \mbox{\hyperlink{class_top_n_a1bc031e453f4d32cbc4cf6df04da51bc}{operator()}
 \item 
 size\+\_\+t \mbox{\hyperlink{class_top_n_a7eafee63f9094086c3193ff005cd9f0f}{operator\mbox{[}$\,$\mbox{]}}} (const T \&x)
 \item 
+void \mbox{\hyperlink{class_top_n_a7f611b791e96b900e6a2b34432868157}{pop}} ()
+\begin{DoxyCompactList}\small\item\em Pops off the top -- you usually won\textquotesingle{}t want to do this and it\textquotesingle{}s not efficient. \end{DoxyCompactList}\item 
 const T \& \mbox{\hyperlink{class_top_n_a071e232087705b131627bd8a805d217c}{best}} () const
 \item 
 const T \& \mbox{\hyperlink{class_top_n_a29d25f1254f2c2e31612004593afa498}{worst}} () const
@@ -96,12 +98,12 @@ using \mbox{\hyperlink{class_top_n}{TopN}}$<$ T $>$\+::\mbox{\hyperlink{class_to
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{class_top_n_a0ad4e5b78ff09e519ef1c5f361d4c6c0}\label{class_top_n_a0ad4e5b78ff09e519ef1c5f361d4c6c0}} 
+\mbox{\Hypertarget{class_top_n_aa8c18f3b2b9a26256a71dcc619052639}\label{class_top_n_aa8c18f3b2b9a26256a71dcc619052639}} 
 \index{TopN$<$ T $>$@{TopN$<$ T $>$}!TopN@{TopN}}
 \index{TopN@{TopN}!TopN$<$ T $>$@{TopN$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{TopN()}{TopN()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
 {\footnotesize\ttfamily template$<$class T $>$ \\
-\mbox{\hyperlink{class_top_n}{TopN}}$<$ T $>$\+::\mbox{\hyperlink{class_top_n}{TopN}} (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n = {\ttfamily std\+:\+:numeric\+\_\+limits$<$size\+\_\+t$>$\+:\+:max()} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\mbox{\hyperlink{class_top_n}{TopN}}$<$ T $>$\+::\mbox{\hyperlink{class_top_n}{TopN}} (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n = {\ttfamily \mbox{\hyperlink{namespace_fleet_args_acbc0f011abb2f878bf68a85617d8c183}{Fleet\+Args\+::ntop}}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_top_n_a8bd54bb09006a68c350a173eddc55549}\label{class_top_n_a8bd54bb09006a68c350a173eddc55549}} 
 \index{TopN$<$ T $>$@{TopN$<$ T $>$}!TopN@{TopN}}
@@ -278,6 +280,17 @@ Access the counts for a given element x
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\mbox{\Hypertarget{class_top_n_a7f611b791e96b900e6a2b34432868157}\label{class_top_n_a7f611b791e96b900e6a2b34432868157}} 
+\index{TopN$<$ T $>$@{TopN$<$ T $>$}!pop@{pop}}
+\index{pop@{pop}!TopN$<$ T $>$@{TopN$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{pop()}{pop()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{class_top_n}{TopN}}$<$ T $>$\+::pop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Pops off the top -- you usually won\textquotesingle{}t want to do this and it\textquotesingle{}s not efficient. 
+
 \mbox{\Hypertarget{class_top_n_a5064ec2e4e9f1defdc3cb62d9b7ddd00}\label{class_top_n_a5064ec2e4e9f1defdc3cb62d9b7ddd00}} 
 \index{TopN$<$ T $>$@{TopN$<$ T $>$}!print@{print}}
 \index{print@{print}!TopN$<$ T $>$@{TopN$<$ T $>$}}

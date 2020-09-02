@@ -14,7 +14,7 @@
  * @brief Inference by sampling from the prior -- doesn't tend to work well, but might be a useful baseline
  */
 template<typename HYP, typename callback_t>
-class PriorInference : public ParallelInferenceInterface {
+class PriorInference : public ParallelInferenceInterface<> {
 
 public:
 	
@@ -31,7 +31,7 @@ public:
 
 		ctl.start();
 		while(ctl.running()) {
-			HYP h(grammar, n);
+			auto h = MyHypothesis::make(grammar);
 			h.compute_posterior(*data);
 			(*callback)(h);
 		}

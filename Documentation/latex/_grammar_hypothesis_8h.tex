@@ -2,7 +2,7 @@
 \label{_grammar_hypothesis_8h}\index{src/Hypotheses/GrammarHypothesis.h@{src/Hypotheses/GrammarHypothesis.h}}
 
 
-This stores the human data, as a list of data to condition on data\mbox{[}0\+:ndata\mbox{]}, the data you predict on, and then correct/total counts.  
+This stores the human data, as a list of data to condition on data\mbox{[}0\+:ndata\mbox{]}, the data you predict on, and then correct/total counts We defaultly use the H\+YP\textquotesingle{}s output, datum, and data types, but this allows us to specify something different if that\textquotesingle{}s more convenient.  
 
 
 {\ttfamily \#include $<$signal.\+h$>$}\newline
@@ -32,7 +32,7 @@ class \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis$<$ H\+Y\+P,
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename H\+YP $>$ }\\std\+::vector$<$ H\+YP $>$ \mbox{\hyperlink{_grammar_hypothesis_8h_a6dfa47a2ba549c19bc735670ce2e93ca}{get\+\_\+hypotheses\+\_\+from\+\_\+mcmc}} (H\+YP \&h0, std\+::vector$<$ typename H\+Y\+P\+::data\+\_\+t $\ast$ $>$ \&mcmc\+\_\+data, \mbox{\hyperlink{struct_control}{Control}} c, size\+\_\+t \mbox{\hyperlink{_fleet_8h_affafd1fd79c4b9326a59ab232ed717b5}{ntop}})
+{\footnotesize template$<$typename H\+YP $>$ }\\std\+::vector$<$ H\+YP $>$ \mbox{\hyperlink{_grammar_hypothesis_8h_a6dfa47a2ba549c19bc735670ce2e93ca}{get\+\_\+hypotheses\+\_\+from\+\_\+mcmc}} (H\+YP \&h0, std\+::vector$<$ typename H\+Y\+P\+::data\+\_\+t $\ast$ $>$ \&mcmc\+\_\+data, \mbox{\hyperlink{struct_control}{Control}} c, size\+\_\+t ntop)
 \begin{DoxyCompactList}\small\item\em Runs M\+C\+MC on hypotheses, resampling when the data stops being incremental and returns a unioned vector of all the tops. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -42,7 +42,7 @@ volatile sig\+\_\+atomic\+\_\+t \mbox{\hyperlink{_grammar_hypothesis_8h_a6f7c496
 
 
 \doxysubsection{Detailed Description}
-This stores the human data, as a list of data to condition on data\mbox{[}0\+:ndata\mbox{]}, the data you predict on, and then correct/total counts. 
+This stores the human data, as a list of data to condition on data\mbox{[}0\+:ndata\mbox{]}, the data you predict on, and then correct/total counts We defaultly use the H\+YP\textquotesingle{}s output, datum, and data types, but this allows us to specify something different if that\textquotesingle{}s more convenient. 
 
 This class does grammar inference with some collection of Human\+Data and fixed set of hypotheses.
 

@@ -7,11 +7,11 @@ var searchData=
   ['reduction_5fexception_1209',['reduction_exception',['../namespace_combinators.html#a64c32cd83ab0bfe747532d053ee0df44',1,'Combinators']]],
   ['reliability_1210',['reliability',['../classdefauldatum__t.html#a113548381865b87bd1332d8c73e56608',1,'defauldatum_t']]],
   ['reservoir_5fsample_1211',['reservoir_sample',['../class_streaming_statistics.html#af21bb0006db1b937c404458bd6dae160',1,'StreamingStatistics']]],
-  ['responses_1212',['responses',['../struct_human_datum.html#a341153158ffb62d4732e7b756bff5eed',1,'HumanDatum']]],
-  ['restart_1213',['restart',['../struct_control.html#acd75b8aa48fdb33f063bae7469a9721b',1,'Control']]],
+  ['responses_1212',['responses',['../struct_human_datum.html#aad2be31d72b759b1c7a15631bc07993f',1,'HumanDatum']]],
+  ['restart_1213',['restart',['../struct_control.html#acd75b8aa48fdb33f063bae7469a9721b',1,'Control::restart()'],['../namespace_fleet_args.html#af0c62e1528330a5fb0ba9f01082aa823',1,'FleetArgs::restart()']]],
   ['rule_1214',['rule',['../class_node.html#a02f5c9463cceb270ad5730760f19c722',1,'Node']]],
   ['ruledelimiter_1215',['RuleDelimiter',['../class_node.html#aa053fff4aee5ed47843a86d661632f15',1,'Node']]],
   ['rules_1216',['rules',['../class_grammar.html#a8a89ced0753d72f52ccf2b04c0ccc82b',1,'Grammar']]],
   ['run_5fprogram_1217',['run_program',['../class_virtual_machine_state.html#afc2691c3bd3c7c3feba0708c2929ffe2',1,'VirtualMachineState']]],
-  ['runtime_1218',['runtime',['../_fleet_8h.html#ad0c33678732e81d04a53bcf7b5ca690d',1,'Fleet.h']]]
+  ['runtime_1218',['runtime',['../struct_control.html#ae14b7e8a0d59a10d5fb7d000707ed4b9',1,'Control::runtime()'],['../namespace_fleet_args.html#a094bc8aa2836c57906405cde03d24fc6',1,'FleetArgs::runtime()']]]
 ];

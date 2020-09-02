@@ -15,6 +15,7 @@ Check if a type has a posterior function or not.
 {\ttfamily \#include $<$unordered\+\_\+set$>$}\newline
 {\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
 {\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include \char`\"{}Fleet\+Args.\+h\char`\"{}}\newline
 Include dependency graph for Top.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -50,7 +51,7 @@ class \mbox{\hyperlink{class_top_n}{Top\+N$<$ T $>$}}
 \doxysubsection{Detailed Description}
 Check if a type has a posterior function or not. 
 
-A \mbox{\hyperlink{class_top_n}{TopN}} is a n object you can \char`\"{}add\char`\"{} hypotheses to (via add or $<$$<$) and it stores the best N of them. This is widely used in \mbox{\hyperlink{class_fleet}{Fleet}} in order to find good approximations to the top hypotheses found in M\+C\+TS or M\+C\+MC.
+A \mbox{\hyperlink{class_top_n}{TopN}} is a n object you can \char`\"{}add\char`\"{} hypotheses to (via add or $<$$<$) and it stores the best N of them. This is widely used in \mbox{\hyperlink{class_fleet}{Fleet}} in order to find good approximations to the top hypotheses found in M\+C\+TS or M\+C\+MC. The default constructor here reads from \mbox{\hyperlink{namespace_fleet_args_acbc0f011abb2f878bf68a85617d8c183}{Fleet\+Args\+::ntop}} as the default value.
 
 \doxysubsection{Function Documentation}
 \mbox{\Hypertarget{_top_8h_a6a30d87d866180b49aea546d0024dcca}\label{_top_8h_a6a30d87d866180b49aea546d0024dcca}} 

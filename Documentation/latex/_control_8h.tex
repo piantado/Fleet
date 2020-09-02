@@ -2,10 +2,11 @@
 \label{_control_8h}\index{src/Inference/Control.h@{src/Inference/Control.h}}
 
 
-This bundles together information for running M\+C\+MC or M\+C\+TS, including number of steps, amount of time, etc. N\+O\+TE\+: In general this should N\+OT be passed by reference because we want start\+\_\+time to be the time we started the function it is passed to (start time is the time of construction, here)  
+This class has all the information for running M\+C\+MC or M\+C\+TS in a little package. It defaultly constructs (via \mbox{\hyperlink{struct_control}{Control()}}) to read these from \mbox{\hyperlink{namespace_fleet_args}{Fleet\+Args}}, which are a bunch of variables set by Fleet\+::initialize from the command line. This makes it especially convenient to call with command line arguments, but others can be specified as well.  
 
 
 {\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Fleet\+Args.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Timing.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}I\+O.\+h\char`\"{}}\newline
 Include dependency graph for Control.\+h\+:
@@ -37,7 +38,7 @@ volatile sig\+\_\+atomic\+\_\+t \mbox{\hyperlink{_control_8h_a6f7c4963bb8a360316
 
 
 \doxysubsection{Detailed Description}
-This bundles together information for running M\+C\+MC or M\+C\+TS, including number of steps, amount of time, etc. N\+O\+TE\+: In general this should N\+OT be passed by reference because we want start\+\_\+time to be the time we started the function it is passed to (start time is the time of construction, here) 
+This class has all the information for running M\+C\+MC or M\+C\+TS in a little package. It defaultly constructs (via \mbox{\hyperlink{struct_control}{Control()}}) to read these from \mbox{\hyperlink{namespace_fleet_args}{Fleet\+Args}}, which are a bunch of variables set by Fleet\+::initialize from the command line. This makes it especially convenient to call with command line arguments, but others can be specified as well. 
 
 
 

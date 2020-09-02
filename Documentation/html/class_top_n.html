@@ -83,8 +83,8 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0ad4e5b78ff09e519ef1c5f361d4c6c0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a0ad4e5b78ff09e519ef1c5f361d4c6c0">TopN</a> (size_t n=std::numeric_limits&lt; size_t &gt;::max())</td></tr>
-<tr class="separator:a0ad4e5b78ff09e519ef1c5f361d4c6c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8c18f3b2b9a26256a71dcc619052639"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#aa8c18f3b2b9a26256a71dcc619052639">TopN</a> (size_t n=<a class="el" href="namespace_fleet_args.html#acbc0f011abb2f878bf68a85617d8c183">FleetArgs::ntop</a>)</td></tr>
+<tr class="separator:aa8c18f3b2b9a26256a71dcc619052639"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bd54bb09006a68c350a173eddc55549"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a8bd54bb09006a68c350a173eddc55549">TopN</a> (const <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt; &amp;x)</td></tr>
 <tr class="separator:a8bd54bb09006a68c350a173eddc55549"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7bccf0028a9a4972cd8d5ae4a555553"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#ab7bccf0028a9a4972cd8d5ae4a555553">TopN</a> (<a class="el" href="class_top_n.html">TopN</a>&lt; T &gt; &amp;&amp;x)</td></tr>
@@ -118,6 +118,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1bc031e453f4d32cbc4cf6df04da51bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7eafee63f9094086c3193ff005cd9f0f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a7eafee63f9094086c3193ff005cd9f0f">operator[]</a> (const T &amp;x)</td></tr>
 <tr class="separator:a7eafee63f9094086c3193ff005cd9f0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f611b791e96b900e6a2b34432868157"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a7f611b791e96b900e6a2b34432868157">pop</a> ()</td></tr>
+<tr class="memdesc:a7f611b791e96b900e6a2b34432868157"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pops off the top &ndash; you usually won't want to do this and it's not efficient.  <a href="class_top_n.html#a7f611b791e96b900e6a2b34432868157">More...</a><br /></td></tr>
+<tr class="separator:a7f611b791e96b900e6a2b34432868157"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a071e232087705b131627bd8a805d217c"><td class="memItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a071e232087705b131627bd8a805d217c">best</a> () const</td></tr>
 <tr class="separator:a071e232087705b131627bd8a805d217c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29d25f1254f2c2e31612004593afa498"><td class="memItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a29d25f1254f2c2e31612004593afa498">worst</a> () const</td></tr>
@@ -169,8 +172,8 @@ template&lt;class T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a0ad4e5b78ff09e519ef1c5f361d4c6c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ad4e5b78ff09e519ef1c5f361d4c6c0">&#9670;&nbsp;</a></span>TopN() <span class="overload">[1/3]</span></h2>
+<a id="aa8c18f3b2b9a26256a71dcc619052639"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8c18f3b2b9a26256a71dcc619052639">&#9670;&nbsp;</a></span>TopN() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -184,7 +187,7 @@ template&lt;class T &gt; </div>
           <td class="memname"><a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;::<a class="el" href="class_top_n.html">TopN</a> </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>n</em> = <code>std::numeric_limits&lt;size_t&gt;::max()</code></td><td>)</td>
+          <td class="paramname"><em>n</em> = <code><a class="el" href="namespace_fleet_args.html#acbc0f011abb2f878bf68a85617d8c183">FleetArgs::ntop</a></code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -704,6 +707,35 @@ template&lt;class T &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a7f611b791e96b900e6a2b34432868157"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f611b791e96b900e6a2b34432868157">&#9670;&nbsp;</a></span>pop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;::pop </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pops off the top &ndash; you usually won't want to do this and it's not efficient. </p>
 
 </div>
 </div>

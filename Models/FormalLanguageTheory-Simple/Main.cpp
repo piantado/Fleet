@@ -132,21 +132,7 @@ public:
 
 #include "Top.h"
 #include "ParallelTempering.h"
-#include "MCTS.h"
-#include "Astar.h"
-#include "EnumerationInference.h"
-
 #include "Fleet.h" 
-
-// Must define this to use the CRTP
-class MyMCTS : public PartialMCTSNode<MyMCTS, MyHypothesis, TopN<MyHypothesis>> {
-public:
-	using Super = PartialMCTSNode<MyMCTS, MyHypothesis, TopN<MyHypothesis>>;
-	using Super::Super;
-
-	// we must declare this to use these in a vector, but we can't call it since we can't move the locks
-	MyMCTS(MyMCTS&& m){ throw YouShouldNotBeHereError("*** This must be defined for but should never be called"); } 
-};
 
 int main(int argc, char** argv){ 
 	
@@ -225,35 +211,8 @@ int main(int argc, char** argv){
 //	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
 //	c.run(Control());
 
-	// A FullMCTSNode run is one where each time you descend the tree, you go until you make it to a terminal
-//	MyHypothesis h0(&grammar);
-//	FullMCTSNode<MyHypothesis,TopN<MyHypothesis>> m(h0, explore, &mydata, top);
-//	top.print_best = true;
-//	m.run(Control(), h0);
-//	m.print(h0, "tree.txt");
-//	CERR "# MCTS size: " TAB m.size() ENDL;
-	
-	// A PartialMCTSNode is one where you stop one step after reaching an unexpanded kid in the tree
-//	MyHypothesis h0(&grammar);
-//	MyMCTS m(h0, explore, &mydata, top);
-//	top.print_best = true;
-//	m.run(Control(), h0);
-//	m.print(h0, "tree.txt");
-//	CERR "# MCTS size: " TAB m.count() ENDL;
 
-	// Do some A* search -- here we maintain a priority queue of partially open nodes, sorted by 
-	// their prior and a single sample of their likelihood (which we end up downweighting a lot) (see Astar.h)
-	// This heuristic is inadmissable, but ends up working pretty well. 
-//	top.print_best = true;
-//	MyHypothesis h0(&grammar);
-//	Astar astar(h0,&mydata, top, 10.0);
-//	astar.run(Control());
 
-	// do inference via enumeration -- this doesn't usually work well
-//	top.print_best = true;
-//	EnumerationInference<MyHypothesis,MyGrammar,decltype(top)> e(&grammar, grammar.nt<S>(), &mydata, top);
-//	e.run(Control(mcts_steps, runtime, nthreads));
-	
 	top.print();
 
 	

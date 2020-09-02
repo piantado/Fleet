@@ -245,8 +245,8 @@ public:
 				COUT "# Samples per second:"  TAB FleetStatistics::global_sample_count/elapsed_seconds ENDL;
 				COUT "# Global sample count:" TAB FleetStatistics::global_sample_count ENDL;
 			}
-			if(FleetStatistics::astar_steps > 0) {
-				COUT "# Total A* steps:" TAB FleetStatistics::astar_steps ENDL;
+			if(FleetStatistics::beam_steps > 0) {
+				COUT "# Total Beam Search steps:" TAB FleetStatistics::beam_steps ENDL;
 			}
 			if(FleetStatistics::enumeration_steps > 0) {
 				COUT "# Total enumeration steps:" TAB FleetStatistics::enumeration_steps ENDL;
