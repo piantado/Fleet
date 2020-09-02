@@ -196,7 +196,7 @@ int main(int argc, char** argv){
 	// Basic setup
 	
 	// top stores the top hypotheses we have found
-	TopN<MyHypothesis> top(ntop);//------------------
+	TopN<MyHypothesis> top;
 	
 	// Define the grammar (default initialize using our primitives will add all those rules)
 	// in doing this, grammar deduces the types from the input and output types of each primitive
@@ -222,10 +222,8 @@ int main(int argc, char** argv){
 		
 	auto h0 = MyHypothesis::make(&grammar);
 	ParallelTempering samp(h0, &mydata, top, 16, 10.0); 
-	tic();
-	samp.run(Control(mcmc_steps,runtime,nthreads), 100, 1000); 		
-	tic();
-
+	samp.run(Control(), 100, 1000); 		
+	
 	// Show the best we've found
 	top.print();
 }
