@@ -9,4 +9,4 @@ d$restart <- as.factor(d$restart)
 plt <- ggplot(subset(d, restart==0), aes(x=runtime, y=posterior, color=chains, group=chains)) + 
     stat_summary(fun=mean, geom="line") + 
     scale_x_log10() +
-    facet_wrap(~data, scales="free")
+    facet_grid(data~method, scales="free")
