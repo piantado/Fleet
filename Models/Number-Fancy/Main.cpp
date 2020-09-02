@@ -355,7 +355,6 @@ MyHypothesis::datum_t sample_adjusted_datum(std::function<double(MyHypothesis::d
 // Main
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "Astar.h"
 #include "ParallelTempering.h"
 #include "Fleet.h"
 
@@ -417,14 +416,6 @@ int main(int argc, char** argv) {
 		MCMCChain samp(h0, &alldata[di], alltops[di]);
 		samp.run(Control()); 
 	}
-
-	///////////////
-	// check out A*	
-//
-//	MyHypothesis h0(&grammar);
-//	Astar astar(h0,&alldata[alldata.size()-1], top, 100.0);
-//	astar.run(Control());
-//	top.print();
 	
 	fleet.completed(); // print the search/mcmc stats here instead of when fleet is destroyed
 	

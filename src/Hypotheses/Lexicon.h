@@ -24,8 +24,8 @@ template<typename this_t,
 		 typename output_t, 
 		 typename datum_t=defauldatum_t<input_t, output_t>>
 class Lexicon : public MCMCable<this_t,datum_t>,
-				public ProgramLoader,
-				public Searchable<this_t,input_t,output_t>
+				public Searchable<this_t,input_t,output_t>,
+				public Callable<input_t, output_t, typename INNER::Grammar_t::template VirtualMachineState_t<input_t, output_t>>
 {
 		// Store a lexicon of type INNER elements
 	const static char FactorDelimiter = '|';
@@ -341,7 +341,7 @@ public:
 	/********************************************************
 	 * How to call 
 	 ********************************************************/
-	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t err) {
+	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t err) override {
 		// subclass must define what it means to call a lexicon
 		throw NotImplementedError();
 	}

@@ -32,14 +32,14 @@ template<typename this_t,
 		 typename _datum_t=defauldatum_t<_input_t, _output_t>, 
 		 typename _data_t=std::vector<_datum_t>
 		 >
-class LOTHypothesis : public ProgramLoader,
-				      public MCMCable<this_t,_datum_t,_data_t>, // remember, this defines data_t, datum_t
+class LOTHypothesis : public MCMCable<this_t,_datum_t,_data_t>, // remember, this defines data_t, datum_t
 					  public Searchable<this_t,_input_t,_output_t>,
-					  public Callable<_input_t, _output_t, this_t, typename _Grammar_t::template VirtualMachineState_t<_input_t, _output_t>>
+					  public Callable<_input_t, _output_t, typename _Grammar_t::template VirtualMachineState_t<_input_t, _output_t>>
 {
 public:     
 	typedef typename Bayesable<_datum_t,_data_t>::datum_t datum_t;
 	typedef typename Bayesable<_datum_t,_data_t>::data_t   data_t;
+	using Callable_t = Callable<_input_t, _output_t, typename _Grammar_t::template VirtualMachineState_t<_input_t, _output_t>>;
 	using Grammar_t = _Grammar_t;
 	using input_t   = _input_t;
 	using output_t  = _output_t;
@@ -202,12 +202,6 @@ public:
 			return grammar->neighbor_prior(value, k);
 		}
 	}
-	
-	
-	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t err) override {
-		return this->call(x, err, this); // defaulty I myself handle recursion/loading
-	}
-	
 	
 	virtual bool is_evaluable() const override {
 		// This checks whether it should be allowed to call "call" on this Hypothesis. 

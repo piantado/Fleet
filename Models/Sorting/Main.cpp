@@ -136,7 +136,7 @@ public:
 	using Super::Super; // inherit the constructors
 	
 	double compute_single_likelihood(const datum_t& x) override {	
-		const auto out = call(x.input, "<err>", this, 256, 256); 
+		const auto out = call(x.input, "<err>"); 
 		
 		const auto log_A = log(alphabet.size());
 		

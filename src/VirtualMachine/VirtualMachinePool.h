@@ -129,7 +129,8 @@ public:
 		return false;
 	}
 
-	DiscreteDistribution<typename VMState::output_t> run(ProgramLoader* loader) { 
+	template<typename loader_t>
+	DiscreteDistribution<typename VMState::output_t> run(loader_t* loader) { 
 		/**
 		 * @brief This runs and adds up the probability mass for everything, returning a dictionary outcomes->log_probabilities. This is the main 
 		 * 		  running loop, which pops frmo the top of our queue, runs, and continues until we've done enough or all. 
