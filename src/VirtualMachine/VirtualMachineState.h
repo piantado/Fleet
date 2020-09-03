@@ -9,7 +9,7 @@
 #include "Program.h"
 #include "Stack.h"
 #include "Statistics/FleetStatistics.h"
-
+#include "RuntimeCounter.h"
 
 
 /**
@@ -83,7 +83,7 @@ public:
 	unsigned long 	  recursion_depth; // when I was created, what was my depth?
 	unsigned long     run_program; // how many program ops have I done?
 	
-	// This is a little bit of fancy template metaprogramming that allows us to define a stack
+		// This is a little bit of fancy template metaprogramming that allows us to define a stack
 	// like std::tuple<VMSStack<bool>, VMSStack<std::string> > using a list of type names defined in VM_TYPES
 	template<typename... args>
 	struct t_stack { std::tuple<VMSStack<args>...> value; };
@@ -100,8 +100,13 @@ public:
 
 	vmstatus_t status; // are we still running? Did we get an error?
 	
-	VirtualMachineState(input_t x, output_t e, size_t _recursion_depth=0) :
-		err(e), lp(0.0), recursion_depth(_recursion_depth), run_program(0), status(vmstatus_t::GOOD) {
+	// what do we use to count up instructions (if we should be doing this)
+	RuntimeCounter* runtime_counter;
+	
+
+	
+	VirtualMachineState(input_t x, output_t e, RuntimeCounter* rc=nullptr) :
+		err(e), lp(0.0), recursion_depth(0), run_program(0), status(vmstatus_t::GOOD), runtime_counter(rc){
 		xstack.push(x);	
 	}
 	
@@ -299,6 +304,11 @@ public:
 				FleetStatistics::vm_ops++;
 				
 				Instruction i = opstack.top(); opstack.pop();
+				
+				// if we are tracking runtime, tell it we are doing this instruction. 
+				if(runtime_counter != nullptr) {
+					runtime_counter->increment(i);
+				}
 				
 				if(i.is<PrimitiveOp>()) {
 					if constexpr(sizeof...(VM_TYPES) > 0) {

@@ -141,6 +141,6 @@ std::ostream& operator<<(std::ostream& stream, Instruction& i) {
 	else if(i.is<PrimitiveOp>())   { t = "P"; o = (size_t)i.as<PrimitiveOp>(); }
 	
 	
-	stream << "[" << t << "" << o << "_" << i.arg << "]";
+	stream << "[" << t << "" << o << "." << i.arg << "]";
 	return stream;
 }

@@ -84,7 +84,33 @@ public:
 	using Super::Super; // inherit the constructors
 	
 	double compute_single_likelihood(const datum_t& x) override {	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		CERR "::" TAB this->string() ENDL;
+		RuntimeCounter rc; this->runtime_counter = &rc; // defined in Callable, must be set before calling
+		
 		const auto out = call(x.input, "<err>", this, 256, 256); 
+			
+		// and print out:
+		for(nonterminal_t nt=0;nt<grammar->count_nonterminals();nt++) {
+			for(auto& r : grammar->rules[nt]) {
+				CERR rc.get(r.instr) TAB r ENDL;
+			}
+		}
+		
+		
 		
 		const auto log_A = log(alphabet.size());
 		
@@ -93,6 +119,9 @@ public:
 		for(auto& o : out.values()) { // add up the probability from all of the strings
 			lp = logplusexp(lp, o.second + p_delete_append<strgamma,strgamma>(o.first, x.output, log_A));
 		}
+		
+
+		
 		return lp;
 	}
 		
