@@ -630,6 +630,21 @@ public:
 								break;		
 							} else { throw YouShouldNotBeHereError("*** Cannot use op_IF without defining bool in VM_TYPES"); }			
 						}
+//						case BuiltinOp::op_AND:
+//						{
+//							
+//							break;
+//						}
+//						case BuiltinOp::op_OR:
+//						{
+//							
+//							break;
+//						}
+//						case BuiltinOp::op_NOT:
+//						{
+//							// we include this just for simplicity 
+//							break;
+//						}
 						case BuiltinOp::op_I:
 						case BuiltinOp::op_S:
 						case BuiltinOp::op_K:

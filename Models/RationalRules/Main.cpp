@@ -78,20 +78,20 @@ public:
 	// can just define the likelihood of a single data point, which is here the true
 	// value with probability di.reliability, and otherwise a coin flip. 
 	double compute_single_likelihood(const datum_t& di) override {
-		//bool out = callOne(di.input, false);
-		//return log((1.0-di.reliability)/2.0 + (out == di.output)*di.reliability);
+		bool out = callOne(di.input, false);
+		return log((1.0-di.reliability)/2.0 + (out == di.output)*di.reliability);
 		
 		// We can come up with a runtime version if we want:
-		auto v = callOne_vms(di.input, false);
-		CERR string() TAB v.runtime_counter.string() ENDL;
-//		for(nonterminal_t nt=0;nt<grammar->count_nonterminals();nt++) {
-//			for(auto& r : grammar->rules[nt]) {
-//				CERR v.runtime_counter.get(r.instr) TAB r ENDL;
-//			}
-//		}		
-
-		bool o = v.get_output();
-		return log( (1.0-di.reliability)/2.0 + (o == di.output)*di.reliability);
+//		auto v = callOne_vms(di.input, false);
+//		CERR string() TAB v.runtime_counter.string() ENDL;
+////		for(nonterminal_t nt=0;nt<grammar->count_nonterminals();nt++) {
+////			for(auto& r : grammar->rules[nt]) {
+////				CERR v.runtime_counter.get(r.instr) TAB r ENDL;
+////			}
+////		}		
+//
+//		bool o = v.get_output();
+//		return log( (1.0-di.reliability)/2.0 + (o == di.output)*di.reliability);
 		
 		
 	}
