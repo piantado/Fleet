@@ -145,7 +145,7 @@ std::tuple PRIMITIVES = {
 	Primitive("sample(%s)", +[](StrSet s) -> S { return S{}; }, 
 						    +[](VirtualMachineState<S,S,MY_TYPES>* vms, 
 								VirtualMachinePool<VirtualMachineState<S,S,MY_TYPES>>* pool, 
-								void* loader) -> vmstatus_t  {
+								ProgramLoader* loader) -> vmstatus_t  {
 		
 		// This function is a bit more complex than it otherwise would be because this was taking 40% of time initially. 
 		// The reason was that it was copying the entire vms stack for single elements (which are the most common sets) 

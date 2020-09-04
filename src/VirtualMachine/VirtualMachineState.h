@@ -10,7 +10,7 @@
 #include "Stack.h"
 #include "Statistics/FleetStatistics.h"
 #include "RuntimeCounter.h"
-
+#include "Hypotheses/Interfaces/ProgramLoader.h"
 
 /**
  * @class has_operator_lessthan_impl
@@ -274,8 +274,7 @@ public:
 		return run(nullptr, d);
 	}
 	
-	template<typename HYP>
-	output_t run(VirtualMachinePool<VirtualMachineState<input_t,output_t, VM_TYPES...>>* pool, HYP* loader) {
+	output_t run(VirtualMachinePool<VirtualMachineState<input_t,output_t, VM_TYPES...>>* pool, ProgramLoader* loader) {
 		/**
 		 * @brief Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
 		 * 		  Note that here we allow a tempalte on HYP, which actually gets passed all the way down to 

@@ -85,31 +85,17 @@ public:
 	
 	double compute_single_likelihood(const datum_t& x) override {	
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		CERR "::" TAB this->string() ENDL;
-		RuntimeCounter rc; this->runtime_counter = &rc; // defined in Callable, must be set before calling
+		RuntimeCounter rc; this->runtime_counter = &rc; // defined in Callable, must be set before calling?
 		
 		const auto out = call(x.input, "<err>", this, 256, 256); 
-			
+		
 		// and print out:
 		for(nonterminal_t nt=0;nt<grammar->count_nonterminals();nt++) {
 			for(auto& r : grammar->rules[nt]) {
 				CERR rc.get(r.instr) TAB r ENDL;
 			}
 		}
-		
+		this->runtime_counter = nullptr; // must reset this or else it will access bad memory
 		
 		
 		const auto log_A = log(alphabet.size());

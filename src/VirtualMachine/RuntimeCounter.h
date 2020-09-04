@@ -16,7 +16,7 @@ public:
 	RuntimeCounter() : builtin_count(32,0), primitive_count(32,0) {	}
 	
 	void increment(Instruction& i) {
-		CERR ">>" TAB builtin_count.size() TAB primitive_count.size() TAB i TAB this ENDL;
+		//CERR ">>" TAB builtin_count.size() TAB primitive_count.size() TAB i TAB this ENDL;
 		
 		if(i.is<BuiltinOp>()) {
 			auto idx = (size_t)i.as<BuiltinOp>();
@@ -32,8 +32,6 @@ public:
 			
 			primitive_count[idx]++;
 		}
-		
-		CERR "||" TAB builtin_count.size() TAB primitive_count.size() TAB i ENDL;
 	}
 	
 	// retrieve the count corresponding to some grammar rule

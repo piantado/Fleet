@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DiscreteDistribution.h"
+#include "Hypotheses/Interfaces/ProgramLoader.h"
 
 #include <vector>
 #include <queue>
@@ -129,8 +130,7 @@ public:
 		return false;
 	}
 
-	template<typename loader_t>
-	DiscreteDistribution<typename VMState::output_t> run(loader_t* loader) { 
+	DiscreteDistribution<typename VMState::output_t> run(ProgramLoader* loader) { 
 		/**
 		 * @brief This runs and adds up the probability mass for everything, returning a dictionary outcomes->log_probabilities. This is the main 
 		 * 		  running loop, which pops frmo the top of our queue, runs, and continues until we've done enough or all. 
