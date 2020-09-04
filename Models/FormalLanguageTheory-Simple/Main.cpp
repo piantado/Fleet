@@ -85,19 +85,20 @@ public:
 	
 	double compute_single_likelihood(const datum_t& x) override {	
 		
-		RuntimeCounter rc; this->runtime_counter = &rc; // defined in Callable, must be set before calling?
+		// This would be a normal call:
+		//const auto out = call(x.input, "<err>", this, 256, 256); 
+
 		
-		const auto out = call(x.input, "<err>", this, 256, 256); 
-		
-		// and print out:
-		for(nonterminal_t nt=0;nt<grammar->count_nonterminals();nt++) {
-			for(auto& r : grammar->rules[nt]) {
-				CERR rc.get(r.instr) TAB r ENDL;
-			}
-		}
-		this->runtime_counter = nullptr; // must reset this or else it will access bad memory
-		
-		
+		// convert a list of vms_states to a distribution over runtimes:
+//		auto v = call_vms(x.input, "<err>", this); // return the states instead of the marginal outputs
+//		RuntimeCounter& rc = v[0].runtime_counter; // this only gets the first execution path
+//		for(nonterminal_t nt=0;nt<grammar->count_nonterminals();nt++) {
+//			for(auto& r : grammar->rules[nt]) {
+//				CERR rc.get(r.instr) TAB r ENDL;
+//			}
+//		}		
+//		auto out = marginal_vms_output(v);
+
 		const auto log_A = log(alphabet.size());
 		
 		// Likelihood comes from all of the ways that we can delete from the end and the append to make the observed output. 

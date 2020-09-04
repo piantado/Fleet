@@ -47,5 +47,5 @@ public:
 			else				       return primitive_count[idx];
 		}
 	}
-	
+
 };

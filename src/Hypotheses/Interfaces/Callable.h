@@ -18,25 +18,31 @@
 template<typename input_t, typename output_t, typename VirtualMachineState_t>
 class Callable : public ProgramLoader {
 public:
-	// runcount here is a class which can optionally be passed to VirtualMachineState 
-	// 	to count up how many times each operation has been called. However, it defaults to nullptr
-	// in which case it is ignored. 
-	RuntimeCounter* runtime_counter;
+	
+	Callable() { }
 
-	Callable() : runtime_counter(nullptr) { }
-
-
+	/**
+	 * @brief Can this be evalutaed (really should be named -- can be called?). Sometimes partial hypotheses
+	 * 		  can't be called.
+	 */
 	[[nodiscard]]  virtual bool is_evaluable() const = 0; 
 		
-	// we defaultly map outputs to log probabilities
-	// the this_t must be a ProgramLoader, but other than that we don't care. NOte that this type gets passed all the way down to VirtualMachine
-	// and potentially back to primitives, allowing us to access the current Hypothesis if we want
-	// LOADERthis_t is the kind of Hypothesis we use to load, and it is not the same as this_t
-	// because in a Lexicon, we want to use its InnerHypothesis
+	/**
+	 * @brief Run the virtual machine on input x, and marginalize over execution paths to return a distribution
+	 * 		  on outputs. Note that loader must be a program loader, and that is to handle recursion and 
+	 *        other function calls. 
+	 * @param x - input
+	 * @param err - output value on error
+	 * @param loader - where to load recursive calls
+	 * @param max_steps - max steps the virtual machine pool will run for
+	 * @param max_outputs - max outputs the virtual machine pool will run for
+	 * @param minlp - the virtual machine pool doesn't consider paths less than this probability
+	 * @return 
+	 */	
 	DiscreteDistribution<output_t> call(const input_t x, const output_t err, ProgramLoader* loader, 
 				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
 					
-		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err, runtime_counter);	
+		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err);	
 		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
 
 		VirtualMachinePool<VirtualMachineState_t> pool(max_steps, max_outputs, minlp); 		
@@ -48,10 +54,18 @@ public:
 		return call(x,err);
 	}
 
+	/**
+	 * @brief A variant of call that assumes no stochasticity and therefore outputs only a single value. 
+	 * 		  (This uses a nullptr virtual machine pool, so will throw an error on flip)
+	 * @param x
+	 * @param err
+	 * @param loader
+	 * @return 
+	 */
 	output_t callOne(const input_t x, const output_t err, ProgramLoader* loader) {
 		// we can use this if we are guaranteed that we don't have a stochastic Hypothesis
 		// the savings is that we don't have to create a VirtualMachinePool		
-		VirtualMachineState_t vms(x, err, runtime_counter);		
+		VirtualMachineState_t vms(x, err);		
 
 		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
 		return vms.run(loader); // default to using "this" as the loader		
@@ -60,11 +74,51 @@ public:
 	output_t callOne(const input_t x, const output_t err=output_t{}) {
 		return callOne(x,err,this);	
 	}
-	
+		
+	/**
+	 * @brief Default call with myself as the loader.
+	 * @param x
+	 * @param err
+	 * @return 
+	 */	
 	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t err) {
 		// Note there's some fanciness there because this is a Callable type, which then should then call push_program (or whatever) overwritten by the subclass
 		return call(x, err, this); // defaulty I myself handle recursion/loading 
 	}
 	
+	
+	/**
+	 * @brief A fancy form of calling which returns all the VMS states that completed. The normal call function 
+	 * 		  marginalizes out the execution path.
+	 * @return a vector of virtual machine states
+	 */	
+	std::vector<VirtualMachineState_t> call_vms(const input_t x, const output_t err, ProgramLoader* loader, 
+				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
+					
+		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err);	
+		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
+
+		VirtualMachinePool<VirtualMachineState_t> pool(max_steps, max_outputs, minlp); 		
+		pool.push(vms);		
+		return pool.run_vms(loader);				
+	}
+	
+	
+	/**
+	 * @brief Call, assuming no stochastics, return the virtual machine instead of the output
+	 * @param x
+	 * @param err
+	 * @param loader
+	 * @return 
+	 */
+	VirtualMachineState_t callOne_vms(const input_t x, const output_t err, ProgramLoader* loader) {
+		VirtualMachineState_t vms(x, err);		
+		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
+		vms.run(loader); // default to using "this" as the loader		
+		return vms;
+	}
+	VirtualMachineState_t callOne_vms(const input_t x, const output_t err) {
+		return callOne_vms(x,err,this);
+	}
 	
 };

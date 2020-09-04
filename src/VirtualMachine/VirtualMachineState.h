@@ -76,7 +76,7 @@ public:
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
 	Program            opstack; 
-	VMSStack<input_t>     xstack; //xstackthis stores a stack of the x values (for recursive calls)
+	VMSStack<input_t>  xstack; //xstackthis stores a stack of the x values (for recursive calls)
 	output_t           err; // what error output do we return?
 	double             lp; // the probability of this context
 	
@@ -100,13 +100,14 @@ public:
 
 	vmstatus_t status; // are we still running? Did we get an error?
 	
-	// what do we use to count up instructions (if we should be doing this)
-	RuntimeCounter* runtime_counter;
+	// what do we use to count up instructions 
+	// NOTE for now this may be a bit slower and unnecessary but it doesnt' seem so bad at the
+	// moment so this may need to be optimized later to be optional
+	RuntimeCounter runtime_counter;
 	
-
 	
-	VirtualMachineState(input_t x, output_t e, RuntimeCounter* rc=nullptr) :
-		err(e), lp(0.0), recursion_depth(0), run_program(0), status(vmstatus_t::GOOD), runtime_counter(rc){
+	VirtualMachineState(input_t x, output_t e) :
+		err(e), lp(0.0), recursion_depth(0), run_program(0), status(vmstatus_t::GOOD) {
 		xstack.push(x);	
 	}
 	
@@ -189,7 +190,7 @@ public:
 		
 		return stack<T>().topref();
 	}
-	
+		
 	template<typename T>
 	typename std::conditional<std::is_reference<T>::value, T&, T>::type
 	get() {
@@ -213,7 +214,6 @@ public:
 		}
 		else {
 			T x = std::move(stack<Tdecay>().top());
-//			CERR "POPPING ONE " TAB x  ENDL;
 			stack<Tdecay>().pop();
 			return x;
 		}
@@ -264,6 +264,31 @@ public:
 		return this->all_stacks_empty<VM_TYPES...>();
 	}
 	
+	/**
+	 * @brief Return the output and do some checks that the stacks are as they should be if you're reading the output.
+	 * @return 
+	 * 		// TODO: FIX THIS SO IT DOESN'T POP FROM OUTPUT_T
+	 */	
+	output_t get_output() {
+		
+		if(status == vmstatus_t::ERROR) {
+			return err;		
+		}
+		else {
+			assert(status == vmstatus_t::COMPLETE && "*** Probably should not be calling this unless we are complete");
+		}
+			
+		// TODO CHECK THESE:
+	//	assert(stacks_empty() and xstack.size() == 1 and "When we return, all of the stacks should be empty or else something is awry.");
+		
+		return gettop<output_t>();
+//		auto ret = getpop<output_t>();
+		
+	//	assert(stacks_empty() and xstack.size() == 1 and "When we return, all of the stacks should be empty or else something is awry.");
+		
+		//return ret; 
+	}
+	
 	template<typename HYP>
 	output_t run(HYP* d) {
 		/**
@@ -304,11 +329,10 @@ public:
 				
 				Instruction i = opstack.top(); opstack.pop();
 				
-				// if we are tracking runtime, tell it we are doing this instruction. 
-				if(runtime_counter != nullptr) {
-					runtime_counter->increment(i);
-				}
+				// keep track of what instruction we've run
+				runtime_counter.increment(i);
 				
+				// Now actually dispatch for whatever i is doing to this stack
 				if(i.is<PrimitiveOp>()) {
 					if constexpr(sizeof...(VM_TYPES) > 0) {
 						// call this fancy template magic to index into the global tuple variable PRIMITIVES
@@ -624,17 +648,12 @@ public:
 		} catch (VMSRuntimeError_t& e) {
 			// this may be thrown by a primitive
 			status = vmstatus_t::ERROR;
-			return err; // don't go below because then you'll assert stacks_empty() which they needn't be
 		}
-	
-		if(status != vmstatus_t::GOOD) 
-			return err;		
-	
-		auto ret = getpop<output_t>();
 		
-		assert(stacks_empty() and xstack.size() == 1 and "When we return, all of the stacks should be empty or else something is awry.");
-		
-		return ret; 
+		status = vmstatus_t::COMPLETE;
+	
+		// This is a separate function so we can use it other places too
+		return get_output();
 	}	
 	
 };
