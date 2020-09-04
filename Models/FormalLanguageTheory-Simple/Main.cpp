@@ -86,7 +86,7 @@ public:
 	double compute_single_likelihood(const datum_t& x) override {	
 		
 		// This would be a normal call:
-		//const auto out = call(x.input, "<err>", this, 256, 256); 
+		const auto out = call(x.input, "<err>", this, 256, 256); 
 
 		
 		// convert a list of vms_states to a distribution over runtimes:

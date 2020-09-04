@@ -211,7 +211,7 @@ public:
 			vms->run(this, loader);
 				
 			if(vms->status == vmstatus_t::COMPLETE) { // can't add up probability for errors
-				out.push_back(*vms);
+				out.push_back(*vms); // note this pushes a copy
 			}
 			
 			if(vms->status != vmstatus_t::RANDOM_CHOICE_NO_DELETE) {
