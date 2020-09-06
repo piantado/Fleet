@@ -30,8 +30,9 @@ const size_t MAX_PR_LINES = 1000000;
 
 const size_t RESTART = 0;
 const size_t NTEMPS = 10;
-const size_t MAX_TEMP = 10.0; // std::max(1, stoi(data_amounts[di]));
+const size_t MAX_TEMP = 10.0; 
 unsigned long SWAP_EVERY = 1500; // ms
+unsigned long PRINT_STRINGS; // print at most this many strings for each hypothesis
 
 std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000"}; // how many data points do we run on?
 //std::vector<S> data_amounts={"1","1000"}; // how many data points do we run on?
@@ -39,10 +40,6 @@ std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500
 // Parameters for running a virtual machine
 
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	unsigned long MAX_STEPS_PER_FACTOR   = 5000; //4096;  
-	unsigned long MAX_OUTPUTS_PER_FACTOR = 1500; //512; - make it bigger than
-	unsigned long PRINT_STRINGS = 350; // print at most this many strings for each hypothesis
-	double MIN_LP = -25.0; // -10 corresponds to 1/10000 approximately, but we go to -25 to catch some less frequent things that happen by chance
 /// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -78,12 +75,6 @@ std::tuple PRIMITIVES = {
 	
 	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
 	Primitive("empty(%s)",     +[](S x) -> bool            { return x.length()==0; }),
-	
-
-	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }), // optional specification of prior weight (default=1.0)
-	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }),
-	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }),
-	
 	
 	Primitive("insert(%s,%s)", +[](S x, S y) -> S { 
 				
@@ -128,12 +119,6 @@ std::tuple PRIMITIVES = {
 		// we just have single elemnents
 		std::set_difference(s.begin(), s.end(), x.begin(), x.end(), std::inserter(output, output.begin()));
 		
-//		for(auto& v : s) {
-//			if(not x.contains(v)) {
-//				output.insert(std::move(v));
-//			}
-//		}
-//		
 		return output;
 	}),	
 	
@@ -150,41 +135,52 @@ std::tuple PRIMITIVES = {
 		// This function is a bit more complex than it otherwise would be because this was taking 40% of time initially. 
 		// The reason was that it was copying the entire vms stack for single elements (which are the most common sets) 
 		// and so we have optimized this out. 
-								
+					
+		// implement sampling from the set.
+		// to do this, we read the set and then push all the alternatives onto the stack
+		StrSet s = vms->template getpop<StrSet>();
+			
 		// One useful optimization here is that sometimes that set only has one element. So first we check that, and if so we don't need to do anything 
 		// also this is especially convenient because we only have one element to pop
-		if(vms->template gettopref<StrSet>().size() == 1) {
-			auto it = vms->template gettopref<StrSet>().begin();
+		if(s.size() == 1) {
+			auto it = s.begin();
 			S x = *it;
 			vms->push<S>(std::move(x));
-			assert(++it == vms->template gettopref<StrSet>().end()); // just double-check its empty
 			
-			vms->template stack<StrSet>().pop();
+			// we return good since we keep evaluating this path
+			return vmstatus_t::GOOD;
+		}
+		else if(s.size() == 0) {
+			// we'll call this an error (although we could force it to be the emptystring)
+			return vmstatus_t::ERROR;
+		}
+		else if(s.size() > max_setsize) {
+			// also an error -- though this should not happen
+			return vmstatus_t::ERROR;
 		}
 		else {
 			// else there is more than one, so we have to copy the stack and increment the lp etc for each
 			// NOTE: The function could just be this latter branch, but that's much slower because it copies vms
 			// even for single stack elements
 			
-			// implement sampling from the set.
-			// to do this, we read the set and then push all the alternatives onto the stack
-			StrSet s = vms->template getpop<StrSet>();
-			
 			// now just push on each, along with their probability
 			// which is here decided to be uniform.
-			const double lp = (s.empty()?-infinity:-log(s.size()));
+			const double lp = -log(s.size());
 			for(const auto& x : s) {
 				bool b = pool->copy_increment_push(vms,x,lp);
 				if(not b) break; // we can break since all of these have the same lp -- if we don't add one, we won't add any!
 			}
-		}
 			
-		return vmstatus_t::RANDOM_CHOICE; // if we don't continue with this context		
-		
+			return vmstatus_t::RANDOM_CHOICE; // we don't continue with this context		
+		}
 	}),
 	
 	
 	// And add built-ins:
+	Builtin::And("and(%s,%s)"),
+	Builtin::Or("or(%s,%s)"),
+	Builtin::Not("not(%s)"),
+	
 	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
 	Builtin::If<StrSet>("if(%s,%s,%s)", 1.0),		
 	Builtin::If<double>("if(%s,%s,%s)", 1.0),		
@@ -244,7 +240,7 @@ public:
 		if(!has_valid_indices()) return DiscreteDistribution<S>();
 		
 		size_t i = factors.size()-1; 
-		return factors[i].call(x, err, this, MAX_STEPS_PER_FACTOR, MAX_OUTPUTS_PER_FACTOR, MIN_LP); 
+		return factors[i].call(x, err, this); // we call the factor but with this as the loader.  
 	}
 	 
 	 // We assume input,output with reliability as the number of counts that input was seen going to that output
@@ -266,15 +262,6 @@ public:
 				
 				// we can always take away all character and generate a anew
 				alp = logplusexp(alp, m.second + p_delete_append<alpha,alpha>(m.first, a.output, log_A));
-				
-				// In an old version of this, we considered a noise model where you just add characters on the end
-				// with probability gamma. The trouble with that is that sometimes long new data has strings that
-				// are not generated by the "best" (due to approximations used in not evaluation *all* possible
-				// execution traces). As a result, we have changed this to allow deletions and insertions, both 
-				// of which must be from the end. 
-//				if(is_prefix(mstr, astr)) {
-//					alp = logplusexp(alp, m.second + lpnoise * (astr.size() - mstr.size()) + lpend);
-//				}
 			}
 			likelihood += alp * a.reliability; 
 			
@@ -417,21 +404,28 @@ int main(int argc, char** argv){
 
 		// set up to print using a larger set if we were given this option
 		if(long_output){
-			MAX_STEPS_PER_FACTOR   = 32000; //4096; 
-			MAX_OUTPUTS_PER_FACTOR = 12000; //512; - make it bigger than
+			VirtualMachineControl::MAX_STEPS  = 32000; //4096; 
+			VirtualMachineControl::MAX_OUTPUTS = 12000; //512; - make it bigger than
+			VirtualMachineControl::MIN_LP = -100;
 			PRINT_STRINGS = 1024;
-			max_length = 2048; 
-			MIN_LP = -100;
+			max_length = 2048; 			
+		}
+		else {
+			VirtualMachineControl::MAX_STEPS  = 4096; 
+			VirtualMachineControl::MAX_OUTPUTS = 1024; 
+			VirtualMachineControl::MIN_LP = -13;
+			PRINT_STRINGS = 512;
+			max_length = 350; 	
 		}
 		
 		all.print(data_amounts[di]);
 		
 		if(long_output) {
-			max_length = 256;
-			MAX_STEPS_PER_FACTOR   = 4096; 
-			MAX_OUTPUTS_PER_FACTOR = 1024; 
-			PRINT_STRINGS = 128;
-			MIN_LP = -25;
+			VirtualMachineControl::MAX_STEPS  = 2048; 
+			VirtualMachineControl::MAX_OUTPUTS = 1024; 
+			VirtualMachineControl::MIN_LP = -13;
+			PRINT_STRINGS = 512;
+			max_length = 350; 	
 		}	
 		
 		if(di+1 < datas.size()) {
@@ -446,22 +440,4 @@ int main(int argc, char** argv){
 	}
 	tic();
 	
-	
-	// Vanilla MCMC, serial
-//	for(size_t i=0;i<datas.size();i++){
-//		tic();
-//		MCMCChain chain(h0, &datas[i], all);
-//		chain.run(Control(mcmc_steps/datas[i].size(), runtime/datas.size()));
-//		tic();	
-//	}
-
-	// Multiple chain MCMC
-//	for(size_t i=0;i<datas.size();i++){
-//		tic();
-//		ChainPool chains(h0, &datas[i], all, 1);
-//		assert(chains.pool.size() == 1);
-//		chains.run(Control(mcmc_steps/datas.size(), runtime/datas.size()));
-//		tic();	
-//	}
-//	
 }

@@ -39,13 +39,12 @@ public:
 	 * @param minlp - the virtual machine pool doesn't consider paths less than this probability
 	 * @return 
 	 */	
-	DiscreteDistribution<output_t> call(const input_t x, const output_t err, ProgramLoader* loader, 
-				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
+	DiscreteDistribution<output_t> call(const input_t x, const output_t err, ProgramLoader* loader){
 					
 		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err);	
 		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
 
-		VirtualMachinePool<VirtualMachineState_t> pool(max_steps, max_outputs, minlp); 		
+		VirtualMachinePool<VirtualMachineState_t> pool; 		
 		pool.push(vms);		
 		return pool.run(loader);				
 	}
@@ -92,13 +91,12 @@ public:
 	 * 		  marginalizes out the execution path.
 	 * @return a vector of virtual machine states
 	 */	
-	std::vector<VirtualMachineState_t> call_vms(const input_t x, const output_t err, ProgramLoader* loader, 
-				unsigned long max_steps=2048, unsigned long max_outputs=256, double minlp=-10.0){
+	std::vector<VirtualMachineState_t> call_vms(const input_t x, const output_t err, ProgramLoader* loader){
 					
 		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err);	
 		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
 
-		VirtualMachinePool<VirtualMachineState_t> pool(max_steps, max_outputs, minlp); 		
+		VirtualMachinePool<VirtualMachineState_t> pool; 		
 		pool.push(vms);		
 		return pool.run_vms(loader);				
 	}

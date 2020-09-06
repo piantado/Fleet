@@ -96,15 +96,14 @@ std::tuple PRIMITIVES = {
 		return count(x,y);
 	}),
 
-	
-	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }), // optional specification of prior weight (default=1.0)
-	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }),
-	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }),
-	
 	Primitive("'B'",       +[]()         -> S { return S("B"); }, TERMINAL_P),
 	Primitive("'O'",       +[]()         -> S { return S("O"); }, TERMINAL_P),
 	
 	// And add built-ins - NOTE these must come last
+	Builtin::And("and(%s,%s)"),
+	Builtin::Or("or(%s,%s)"),
+	Builtin::Not("not(%s)"),
+	
 	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
 	Builtin::X<S>("x"),
 	Builtin::FlipP("flip(%s)", 5.0),

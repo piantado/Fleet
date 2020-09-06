@@ -11,6 +11,7 @@
 #include "Statistics/FleetStatistics.h"
 #include "RuntimeCounter.h"
 #include "Hypotheses/Interfaces/ProgramLoader.h"
+#include "VirtualMachineControl.h"
 
 /**
  * @class has_operator_lessthan_impl
@@ -54,7 +55,7 @@ extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
  * 			that there are no stochastics. 
  */ 
 template<typename _t_input, typename _t_output, typename... VM_TYPES>
-class VirtualMachineState {
+class VirtualMachineState : public VirtualMachineControl {
 
 	template<typename T>
 	class VMSStack : public Stack<T> {		
@@ -70,8 +71,6 @@ public:
 	typedef _t_input  input_t;
 	typedef _t_output output_t;
 	
-	static const unsigned long MAX_RECURSE = 64; // this is the max number of times we can call recurse, NOT the max depth
-	unsigned long MAX_RUN_PROGRAM = 1024; // what is the longest I'll run a single program for? If we try to do more than this many ops, we're done
 	
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
@@ -81,7 +80,6 @@ public:
 	double             lp; // the probability of this context
 	
 	unsigned long 	  recursion_depth; // when I was created, what was my depth?
-	unsigned long     run_program; // how many program ops have I done?
 	
 		// This is a little bit of fancy template metaprogramming that allows us to define a stack
 	// like std::tuple<VMSStack<bool>, VMSStack<std::string> > using a list of type names defined in VM_TYPES
@@ -107,7 +105,7 @@ public:
 	
 	
 	VirtualMachineState(input_t x, output_t e) :
-		err(e), lp(0.0), recursion_depth(0), run_program(0), status(vmstatus_t::GOOD) {
+		err(e), lp(0.0), recursion_depth(0), status(vmstatus_t::GOOD) {
 		xstack.push(x);	
 	}
 	
@@ -137,7 +135,7 @@ public:
 		 * @brief How many more steps can I be run for? This is useful for not adding programs that contain too many ops
 		 * @return 
 		 */		
-		return MAX_RUN_PROGRAM - run_program;
+		return MAX_RUN_PROGRAM - runtime_counter.total;
 	}
 	
 	// Functions to access the stack
@@ -265,6 +263,19 @@ public:
 	}
 	
 	/**
+	 * @brief There is one element in stack T and the rest are empty. Used to check in returning the output.
+	 * @return 
+	 */
+	template<typename T, typename... args>
+	bool _exactly_one() const {
+		return (... && ((std::is_same<T,args>::value and stack<T>().size()==1) or stack<args>().empty())); 
+	}
+	template<typename T>
+	bool exactly_one() const {
+		return this->_exactly_one<output_t, VM_TYPES...>();
+	}
+	
+	/**
 	 * @brief Return the output and do some checks that the stacks are as they should be if you're reading the output.
 	 * @return 
 	 * 		// TODO: FIX THIS SO IT DOESN'T POP FROM OUTPUT_T
@@ -274,19 +285,11 @@ public:
 		if(status == vmstatus_t::ERROR) {
 			return err;		
 		}
-		else {
-			assert(status == vmstatus_t::COMPLETE && "*** Probably should not be calling this unless we are complete");
-		}
-			
-		// TODO CHECK THESE:
-	//	assert(stacks_empty() and xstack.size() == 1 and "When we return, all of the stacks should be empty or else something is awry.");
+		
+		assert(status == vmstatus_t::COMPLETE && "*** Probably should not be calling this unless we are complete");
+		assert( exactly_one<output_t>() and xstack.size() == 1 and "When we return, all of the stacks should be empty or else something is awry.");
 		
 		return gettop<output_t>();
-//		auto ret = getpop<output_t>();
-		
-	//	assert(stacks_empty() and xstack.size() == 1 and "When we return, all of the stacks should be empty or else something is awry.");
-		
-		//return ret; 
 	}
 	
 	template<typename HYP>
@@ -315,6 +318,7 @@ public:
 		try { 
 			
 			while(!opstack.empty()){
+				
 				if(opstack.size() > remaining_steps() ) {  // if we've run too long or we couldn't possibly finish
 					status = vmstatus_t::RUN_TOO_LONG;
 				}
@@ -323,8 +327,6 @@ public:
 					return err;
 				}
 					
-				
-				run_program++;
 				FleetStatistics::vm_ops++;
 				
 				Instruction i = opstack.top(); opstack.pop();
@@ -689,16 +691,23 @@ public:
 				} // end if not custom
 			} // end while loop over ops
 	
-			// and when we exit, set the status to complete
-			status = vmstatus_t::COMPLETE;
-	
+			// and when we exit, set the status to complete if we are good
+			// otherwise, leave it where it was!
+			if(status == vmstatus_t::GOOD) {
+				status = vmstatus_t::COMPLETE;
+				return get_output();
+			}
+			else {
+				return err;
+			}
+			
 		} catch (VMSRuntimeError_t& e) {
 			// this may be thrown by a primitive
 			status = vmstatus_t::ERROR;
+			
+			return err;
 		}
 		
-		// This is a separate function so we can use it other places too
-		return get_output();
 	}	
 	
 };

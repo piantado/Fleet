@@ -63,9 +63,6 @@ typedef bool                                       MyOutput;
 const double FEATURE_WEIGHT = 5.0; // in our prior, what's the weight on features?
 
 std::tuple PRIMITIVES = {
-	Primitive("and(%s,%s)",     +[](bool a, bool b) -> bool { return (a and b); }), // optional specification of prior weight (default=1.0)
-	Primitive("or(%s,%s)",      +[](bool a, bool b) -> bool { return (a or b); }),
-	Primitive("not(%s)",        +[](bool a)         -> bool { return (not a); }),
 	Primitive("iff(%s,%s)",     +[](bool a, bool b) -> bool { return (a == b); }),
 	Primitive("implies(%s,%s)", +[](bool a, bool b) -> bool { return ((not a) or (a and b)); }),
 	Primitive("xor(%s,%s)",     +[](bool a, bool b) -> bool { return (a xor b); }),
@@ -88,6 +85,10 @@ std::tuple PRIMITIVES = {
 	Primitive("%s.arg",         +[](MyInput x)       -> MyObject { return x.second; }),
 		
 	// but we also have to add a rule for the BuiltinOp that access x, our argument
+	Builtin::And("and(%s,%s)"),
+	Builtin::Or("or(%s,%s)"),
+	Builtin::Not("not(%s)"),
+
 	Builtin::X<MyInput>("x", 10.0)
 };
 

@@ -44,10 +44,9 @@ std::tuple PRIMITIVES = {
 	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),
 	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
 	
-	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }), // optional specification of prior weight (default=1.0)
-	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }),
-	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }),
-	
+	Builtin::And("and(%s,%s)"),
+	Builtin::Or("or(%s,%s)"),
+	Builtin::Not("not(%s)"),
 	
 	// And add built-ins - NOTE these must come last
 	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
@@ -86,7 +85,7 @@ public:
 	double compute_single_likelihood(const datum_t& x) override {	
 		
 		// This would be a normal call:
-		const auto out = call(x.input, "<err>", this, 256, 256); 
+		const auto out = call(x.input, "<err>"); 
 
 		// Or we can call and get back a list of completed virtual machine states
 		// these store a bit more information, like runtime counts and haven't computer the
@@ -173,8 +172,19 @@ int main(int argc, char** argv){
 		CERR "#" TAB r ENDL;
 	}
 	
+		
+	//------------------
 	// top stores the top hypotheses we have found
+	//------------------	
+	
 	TopN<MyHypothesis> top;
+	
+	//------------------
+	// set these global variables to make VMS a little faster, less accurate
+	//------------------
+	
+	VirtualMachineControl::MAX_STEPS = 256;
+	VirtualMachineControl::MAX_OUTPUTS = 256;
 	
 	//------------------
 	// set up the data

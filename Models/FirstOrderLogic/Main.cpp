@@ -77,6 +77,7 @@ std::tuple PRIMITIVES = {
 	// Define logical operators as operating over the functions. These combine functions from Object->Bool into 
 	// new ones from Object->Bool. Note that these inner lambdas must capture by copy, not reference, since when we 
 	// call them, a and b may not be around anymore. We've written them with [] to remind us their arguments are functions, not objects
+	// NOTE: These do not short circuit...
 	Primitive("and[%s,%s]",   +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](Object x) { return a(x) and b(x);}; }, 2.0), // optional specification of prior weight (default=1.0)
 	Primitive("or[%s,%s]",    +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](Object x) { return a(x) or b(x);}; }), 
 	Primitive("not[%s]",      +[](ObjectToBool a)                 -> ObjectToBool { return [=](Object x) { return not a(x);}; }), 

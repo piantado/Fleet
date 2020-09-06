@@ -149,11 +149,7 @@ std::tuple PRIMITIVES = {
 	Primitive("{o}",           +[]() -> wmset { return (wmset)1; }),
 	Primitive("{o,o}",         +[]() -> wmset { return (wmset)2; }),
 	Primitive("{o,o,o}",       +[]() -> wmset { return (wmset)3; }),
-	
-	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 1.0/3.0),
-	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); },  1.0/3.0),
-	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); },   1.0/3.0),
-	
+		
 	// ANS operations 
 	Primitive("ANSeq(%s,%s)",     +[](set a, set b)       -> double { return ANSzero(a.length(), b.length()); }, 1.0/3.0),
 	Primitive("ANSeq(%s,%s)",     +[](set a, wmset b)     -> double { return ANSzero(a.length(), b); }, 1.0/3.0),
@@ -177,6 +173,10 @@ std::tuple PRIMITIVES = {
 	Primitive("10",    +[]() -> magnitude { return 10; }),
 	
 	//x, recurse, ifset, ifword
+	Builtin::And("and(%s,%s)", 1./3.),
+	Builtin::Or("or(%s,%s)", 1./3.),
+	Builtin::Not("not(%s)", 1./3.),
+	
 	Builtin::If<set>("if(%s,%s,%s)", 1/5.),		
 	Builtin::If<word>("if(%s,%s,%s)", 1/5.),	
 	Builtin::If<wmset>("if(%s,%s,%s)", 1./5.),		
