@@ -42,6 +42,18 @@ struct BuiltinPrimitive : public BuiltinPrimitiveBase {
 
 namespace Builtin {
 
+	// these are short-circuit versions of And and Or
+	struct And : public BuiltinPrimitive<bool,bool,bool> {
+		And(std::string fmt, double _p=1.0) : BuiltinPrimitive<bool,bool,bool>{fmt, BuiltinOp::op_AND, _p} { }		
+	};
+	struct Or : public BuiltinPrimitive<bool,bool,bool> {
+		Or(std::string fmt, double _p=1.0) : BuiltinPrimitive<bool,bool,bool>{fmt, BuiltinOp::op_OR, _p} { }		
+	};
+	struct Not : public BuiltinPrimitive<bool,bool> {
+		Not(std::string fmt, double _p=1.0) : BuiltinPrimitive<bool,bool>{fmt, BuiltinOp::op_NOT, _p} { }		
+	};
+	
+	// If is fancy because it must short circuit depending on the outcome of the bool
 	template<typename t> struct If : public BuiltinPrimitive<t,bool,t,t> {
 		If(std::string fmt, double _p=1.0) : BuiltinPrimitive<t,bool,t,t>{fmt, BuiltinOp::op_IF, _p} { }		
 	};

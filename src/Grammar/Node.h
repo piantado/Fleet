@@ -288,7 +288,7 @@ public:
 		
 		assert(rule != NullRule && "*** Cannot linearize if there is a null rule");
 		
-		// Main code
+		// If we are an if, then we must do some fancy short-circuiting
 		if( rule->instr.is_a(BuiltinOp::op_IF) ) {
 			assert(rule->N == 3 && "BuiltinOp::op_IF require three arguments"); // must have 3 parts
 			
@@ -306,14 +306,32 @@ public:
 			// evaluate the bool first so its on the stack when we get to if
 			int boolsize = children[0].linearize(ops);
 			
-			return ysize + xsize + boolsize+1; // +1 for if
+			return ysize + xsize + boolsize + 1; // +1 for if
+		}
+		else if( rule->instr.is_a(BuiltinOp::op_AND, BuiltinOp::op_OR)) {
+			// short circuit forms of and(x,y) and or(x,y)
+			assert(rule->N == 2 && "BuiltinOp::op_AND and BuiltinOp::op_OR require two arguments");
+			
+			// second arg pushed on first, on the bottom
+			int ysize = children[1].linearize(ops);
+			
+			if(rule->instr.is_a(BuiltinOp::op_AND)) {
+				ops.emplace_back(BuiltinOp::op_AND, ysize);
+			}
+			else {
+				assert(rule->instr.is_a(BuiltinOp::op_OR));
+				ops.emplace_back(BuiltinOp::op_OR, ysize);
+			}
+			
+			return children[0].linearize(ops)+ysize+1;			
 		}
 		else {
-			/* Here we push the children in increasing order. Then, when we pop rightmost first (as Primitive does), it 
+			/* Else we just process a normal child. 
+			 * Here we push the children in increasing order. Then, when we pop rightmost first (as Primitive does), it 
 			 * assigns the correct index.  */
 			ops.emplace_back(rule->instr); 
 			
-			int mysize = 1;
+			int mysize = 1; // one for my own instruction
 			for(int i=rule->N-1;i>=0;i--) { // here we linearize right to left so that when we call right to left, it matches string order			
 				mysize += children[i].linearize(ops);
 			}

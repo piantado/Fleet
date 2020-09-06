@@ -3,6 +3,13 @@
 #include <vector>
 #include "Instruction.h"
 
+template<typename T>
+void increment(std::vector<T>& v, size_t idx, T count=1) {
+	// Increment and potentially increase my vector size if needed
+	if(idx > v.size()) 
+		v.resize(idx+1,0);
+	v[idx] += count;
+}
 
 /**
  * @class RuntimeCounter
@@ -30,18 +37,10 @@ public:
 		//CERR ">>" TAB builtin_count.size() TAB primitive_count.size() TAB i TAB this ENDL;
 		
 		if(i.is<BuiltinOp>()) {
-			auto idx = (size_t)i.as<BuiltinOp>();
-			if(idx >= builtin_count.size())
-				builtin_count.resize(idx+1,0);
-			
-			builtin_count[idx] += count;
+			increment(builtin_count, (size_t)i.as<BuiltinOp>(), 1);
 		}
 		else {
-			auto idx = (size_t)i.as<PrimitiveOp>();
-			if(idx >= primitive_count.size()) 
-				primitive_count.resize(idx+1,0);
-			
-			primitive_count[idx] += count;
+			increment(primitive_count, (size_t)i.as<PrimitiveOp>(), 1);
 		}
 	}
 		
@@ -49,9 +48,14 @@ public:
 	 * @brief Add the results of another runtime counter
 	 * @param rc
 	 */	
-//	void increment(RuntimeCounter& rc) {
-//		
-//	}
+	void increment(RuntimeCounter& rc) {
+		for(size_t i=0;i<rc.builtin_count.size();i++) {
+			increment(builtin_count, i, rc.builtin_count[i]);
+		}
+		for(size_t i=0;i<rc.primitive_count.size();i++) {
+			increment(primitive_count, i, rc.primitive_count[i]);
+		}
+	}
 		
 	/**
 	 * @brief Retrieve the rule count for a given instruction

@@ -328,6 +328,7 @@ public:
 				FleetStatistics::vm_ops++;
 				
 				Instruction i = opstack.top(); opstack.pop();
+				//CERR i ENDL;
 				
 				// keep track of what instruction we've run
 				runtime_counter.increment(i);
@@ -630,21 +631,49 @@ public:
 								break;		
 							} else { throw YouShouldNotBeHereError("*** Cannot use op_IF without defining bool in VM_TYPES"); }			
 						}
-//						case BuiltinOp::op_AND:
-//						{
-//							
-//							break;
-//						}
-//						case BuiltinOp::op_OR:
-//						{
-//							
-//							break;
-//						}
-//						case BuiltinOp::op_NOT:
-//						{
-//							// we include this just for simplicity 
-//							break;
-//						}
+						case BuiltinOp::op_AND:
+						{
+							if constexpr (contains_type<bool,VM_TYPES...>()) { 
+								// process the short circuit
+								bool b = getpop<bool>(); // bool has already evaluted
+								
+								if(!b) {
+									opstack.popn(i.arg); // pop off the other branch 
+									push<bool>(false); //  entire and must be false
+								}
+								else {
+									// else our value is just the other value -- true when its true and false when its false
+								}
+								
+								break;		
+							} else { throw YouShouldNotBeHereError("*** Cannot use op_AND without defining bool in VM_TYPES"); }		
+						}
+						case BuiltinOp::op_OR:
+						{
+							if constexpr (contains_type<bool,VM_TYPES...>()) { 
+								// process the short circuit
+								bool b = getpop<bool>(); // bool has already evaluted
+								
+								if(b) {
+									opstack.popn(i.arg); // pop off the other branch 
+									push<bool>(true); //  entire and must be false
+								}
+								else {
+									// else our value is just the other value -- true when its true and false when its false
+								}
+								
+								break;		
+							} else { throw YouShouldNotBeHereError("*** Cannot use op_OR without defining bool in VM_TYPES"); }							
+						}
+						case BuiltinOp::op_NOT: // we want to include just for simplicity
+						{
+							if constexpr (contains_type<bool,VM_TYPES...>()) { 
+								bool b = getpop<bool>();
+								push<bool>(not b);
+								break;		
+							} else { throw YouShouldNotBeHereError("*** Cannot use op_NOT without defining bool in VM_TYPES"); }		
+							
+						}
 						case BuiltinOp::op_I:
 						case BuiltinOp::op_S:
 						case BuiltinOp::op_K:

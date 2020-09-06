@@ -117,7 +117,7 @@ public:
 		vms.run(loader); // default to using "this" as the loader		
 		return vms;
 	}
-	VirtualMachineState_t callOne_vms(const input_t x, const output_t err) {
+	VirtualMachineState_t callOne_vms(const input_t x, const output_t err=output_t{}) {
 		return callOne_vms(x,err,this);
 	}
 	

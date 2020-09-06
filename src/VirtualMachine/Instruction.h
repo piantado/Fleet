@@ -32,6 +32,7 @@ enum class BuiltinOp {
 	op_SAFE_RECURSE, op_SAFE_MEM_RECURSE,
 	op_FLIP,op_FLIPP,op_IF,op_JMP,
 	op_TRUE,op_FALSE,
+	op_AND,op_OR,op_NOT, // these are short circuit versions
 	op_ALPHABET,op_ALPHABETchar, // strings by default, also can do chars
 	op_INT,// decode integers from arg
 	op_FLOAT,
@@ -97,8 +98,7 @@ public:
 		/**
 		 * @brief Return the argument (an int)
 		 * @return 
-		 */
-		
+		 */		
 		return arg; 
 	}
 	
