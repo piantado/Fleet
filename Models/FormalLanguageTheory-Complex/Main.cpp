@@ -252,14 +252,12 @@ public:
 		 
 		const auto& M = call(S(""), S("<err>")); 
 		
-		likelihood = 0.0;
-		
 		const float log_A = log(alphabet.size());
 
+		likelihood = 0.0;
 		for(const auto& a : data) {
 			double alp = -infinity; // the model's probability of this
-			for(const auto& m : M.values()) {
-				
+			for(const auto& m : M.values()) {				
 				// we can always take away all character and generate a anew
 				alp = logplusexp(alp, m.second + p_delete_append<alpha,alpha>(m.first, a.output, log_A));
 			}

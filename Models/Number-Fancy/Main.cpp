@@ -226,7 +226,7 @@ public:
 	}
 	
 	DiscreteDistribution<word> call(const utterance& input) {
-		return Super::call(input, U, this, 128, 128);
+		return Super::call(input, U, this);
 	}
 	
 	double compute_single_likelihood(const datum_t& d) override {
@@ -365,6 +365,10 @@ int main(int argc, char** argv) {
 	Fleet fleet("Fancy number inference model");
 	fleet.initialize(argc, argv);
 
+	// can just set these
+	VirtualMachineControl::MAX_STEPS = 128;
+	VirtualMachineControl::MAX_OUTPUTS = 128;
+
 	MyGrammar grammar(PRIMITIVES);
 	
 	typedef MyHypothesis::data_t  data_t;
@@ -386,21 +390,6 @@ int main(int argc, char** argv) {
 		alltops.push_back(TopN<MyHypothesis>());
 	}
 	data_t biggestData = *alldata.rbegin();
-	
-	
-//	TopN<MyHypothesis> top;
-//	// This will print out the best ones we see:
-//	top.print_best = true;
-
-	// MCTS  - here just on the last data
-//	MyHypothesis h0(&grammar);
-//	MyMCTS m(explore, h0, &alldata[alldata.size()-1]);
-//	tic();
-//	m.parallel_search(Control(mcts_steps, runtime, nthreads));
-//	tic();
-//	m.print();
-	
-//	CERR "# Starting sampling." ENDL;
 	
 	
 	// Run parallel tempering
