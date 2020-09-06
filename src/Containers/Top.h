@@ -97,7 +97,7 @@ public:
 		 * @brief As I add things, should I print the best I've seen so far? 
 		 * @param b
 		 */
-		if(N == 0) { CERR "*** Warning since N=0, TopN will not print the best even though you set_print_best(true)!" ENDL; }
+		if(N == 0) { CERR "# *** Warning since N=0, TopN will not print the best even though you set_print_best(true)!" ENDL; }
 		print_best = b;
 	}
 

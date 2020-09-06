@@ -21,7 +21,7 @@ public:
 	std::vector<T> builtin_count;
 	std::vector<T> primitive_count;
 
-	T total;
+	T total; // overall count of everything
 
 	// we defaulty initialize these
 	RuntimeCounter() : builtin_count(16,0), primitive_count(16,0), total(0) {	}

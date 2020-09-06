@@ -86,20 +86,20 @@ public:
 	double compute_single_likelihood(const datum_t& x) override {	
 		
 		// This would be a normal call:
-		//const auto out = call(x.input, "<err>", this, 256, 256); 
+		const auto out = call(x.input, "<err>", this, 256, 256); 
 
 		// Or we can call and get back a list of completed virtual machine states
 		// these store a bit more information, like runtime counts and haven't computer the
 		// marginal probability of strings
-		auto v = call_vms(x.input, "<err>", this); // return the states instead of the marginal outputs
-
-		// compute a "runtime" prior penalty
-		// NOTE this is fine since a Bayesable first computes the prior before the likelihood so this will not be overwritten
-		for(auto& vi : v) {
-			prior += -exp(vi.lp) * vi.runtime_counter.total;
-		}
-		// and convert v to a disribution on strings
-		auto out = marginal_vms_output(v);
+//		auto v = call_vms(x.input, "<err>", this); // return the states instead of the marginal outputs
+//
+//		// compute a "runtime" prior penalty
+//		// NOTE this is fine since a Bayesable first computes the prior before the likelihood so this will not be overwritten
+//		for(auto& vi : v) {
+//			prior += -exp(vi.lp)*vi.runtime_counter.total;
+//		}
+//		// and convert v to a disribution on strings
+//		auto out = marginal_vms_output(v);
 
 		const auto log_A = log(alphabet.size());
 		
@@ -161,11 +161,16 @@ int main(int argc, char** argv){
 	fleet.initialize(argc, argv);
 	
 	MyGrammar grammar(PRIMITIVES);
-	
+		
 	// here we create an alphabet op with an "arg" that stores the character (this is faster than alphabet.substring with i.arg as an index) 
 	// here, op_ALPHABET converts arg to a string (and pushes it)
 	for(size_t i=0;i<alphabet.length();i++) {
 		grammar.add<S>     (BuiltinOp::op_ALPHABET, Q(alphabet.substr(i,1)), 5.0/alphabet.length(), (int)alphabet.at(i)); 
+	}
+	
+	// Just to show iterating over rules:
+	for(auto& r : grammar){
+		CERR "#" TAB r ENDL;
 	}
 	
 	// top stores the top hypotheses we have found
