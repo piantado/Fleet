@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <vector>
 #include "Instruction.h"
 #include "Miscellaneous.h"
@@ -20,8 +21,10 @@ public:
 	std::vector<T> builtin_count;
 	std::vector<T> primitive_count;
 
+	T total;
+
 	// we defaulty initialize these
-	RuntimeCounter() : builtin_count(16,0), primitive_count(16,0) {	}
+	RuntimeCounter() : builtin_count(16,0), primitive_count(16,0), total(0) {	}
 	
 	/**
 	 * @brief Add count number of items to this instruction's count
@@ -29,13 +32,13 @@ public:
 	 */	
 	void increment(Instruction& i, T count=1) {
 		//CERR ">>" TAB builtin_count.size() TAB primitive_count.size() TAB i TAB this ENDL;
-		
+		total += count;
 		if(i.is<BuiltinOp>()) {
 			// this general vector increment lives in miscellaneous
-			::increment(builtin_count, (size_t)i.as<BuiltinOp>(), (T)1);
+			::increment(builtin_count, (size_t)i.as<BuiltinOp>(), (T)count);
 		}
 		else {
-			::increment(primitive_count, (size_t)i.as<PrimitiveOp>(), (T)1);
+			::increment(primitive_count, (size_t)i.as<PrimitiveOp>(), (T)count);
 		}
 	}
 		

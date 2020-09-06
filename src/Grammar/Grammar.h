@@ -18,29 +18,37 @@
 template<typename T, typename... args> // function type
 struct Primitive;
 
+
+/**
+ * @class Grammar
+ * @author Steven Piantadosi
+ * @date 05/09/20
+ * @file Grammar.h
+ * @brief A grammar stores all of the rules associated with any kind of nonterminal and permits us
+ * to sample as well as compute log probabilities. 
+ * 
+ * A grammar stores rules in a fixed (sorted) order that is guaranteed
+ * not to change, and that puts terminals first and (lower priority) high probability first
+ * as determined by Rule's sort order. This can be accessed with an iterator that goes over 
+ * all grammar rules, via Grammar.begin() and Grammar.end()
+ * 
+ * Note that Primitives are used to initialize a grammar, and they get "parsed" by Gramar.add
+ * to store them in the right places according to their return types (the index comes from
+ * the index of each type in GRAMMAR_TYPES).
+ * The trees that Grammar generates use nt<T>() -> size_t to represent types, not the types
+ * themselves. 
+ * The trees also use Primitive.op (a size_t) to represent operations
+ * 
+ * The template args GRAMMAR_TYPES stores the types used in this grammar. This is inherited
+ * by LOTHypothesis, which also passes them along to VirtualMachineState (in the form of
+ * a Tuple). So the types used and order are fixed/standardized in the grammar
+ */
 template<typename... GRAMMAR_TYPES>
 class Grammar {
-	/* 
-	 * A grammar stores all of the rules associated with any kind of nonterminal and permits us
-	 * to sample as well as compute log probabilities. 
-	 * A grammar also is nwo required to store them in a fixed (sorted) order that is guaranteed
-	 * not to change, adn that puts terminals first and (lower priority) high probability first
-	 * as determined by Rule's sort order.
-	 * 
-	 * Note that Primitives are used to initialize a grammar, and they get "parsed" by Gramar.add
-	 * to store them in the right places according to their return types (the index comes from
-	 * the index of each type in GRAMMAR_TYPES).
-	 * The trees that Grammar generates use nt<T>() -> size_t to represent types, not the types
-	 * themselves. 
-	 * The trees also use Primitive.op (a size_t) to represent operations
-	 * 
-	 * The template args GRAMMAR_TYPES stores the types used in this grammar. This is inherited
-	 * by LOTHypothesis, which also passes them along to VirtualMachineState (in the form of
-	 * a Tuple). So the types used and order are fixed/standardized in the grammar
-	 */
-		
 public:
 
+	using this_t = Grammar<GRAMMAR_TYPES...>;
+	
 	// how many nonterminal types do we have?
 	static constexpr size_t N_NTs = std::tuple_size<std::tuple<GRAMMAR_TYPES...>>::value;
 	size_t GRAMMAR_MAX_DEPTH = 64;
@@ -60,11 +68,11 @@ public:
 	// stored in this tuple so they can be extracted
 	typedef std::tuple<GRAMMAR_TYPES...> GrammarTypesAsTuple;
 
+	// rules[k] stores a SORTED vector of rules for the kth' nonterminal. 
+	// our iteration order is first for k = 0 ... N_NTs then for r in rules[k]
 	std::vector<Rule> rules[N_NTs];
 	double	  	      Z[N_NTs]; // keep the normalizer handy for each nonterminal (not log space)
 	
-public:
-
 	// This function converts a type (passed as a template parameter) into a 
 	// size_t index for which one it in in GRAMMAR_TYPES. 
 	// This is used so that a Rule doesn't need type subclasses/templates, it can
@@ -87,20 +95,87 @@ public:
 		}
 	}
 	
+	/**
+	 * @brief Constructor for grammar that uses a tuple of Primitives. This is the most important and commonly
+	 * 		  used grammar constructor in Fleet
+	 * @param tup - a tuple of Primitives
+	 */
 	template<typename... T>
 	Grammar(std::tuple<T...> tup) : Grammar() {
-		/**
-		 * @brief Constructor for grammar that uses a tuple of Primitives.
-		 * @param tup - a tuple of Primitives
-		 */
 		
 		static_assert(checkBuiltinsAreLast<T...>(), "*** You cannot have a Primitive (or something else) after a BuiltinPrimitive, due to how applyPrimitives.h works. Just reorder.");
 		
 		add(tup, std::make_index_sequence<sizeof...(T)>{});
 	}	
 	
-	Grammar(const Grammar& g) = delete; // should not be doing these
-	Grammar(const Grammar&& g) = delete; // should not be doing these
+	// should not be doing these
+	Grammar(const Grammar& g)  = delete; 
+	Grammar(const Grammar&& g) = delete; 	
+	
+	
+	/**
+	 * @class RuleIterator
+	 * @author Steven Piantadosi
+	 * @date 05/09/20
+	 * @file Grammar.h
+	 * @brief This allows us to iterate over rules in a grammar, guaranteed to be in a fixed order (first by 
+	 * 		  nonterminals, then by rule sort order. 
+	 */	
+	class RuleIterator : public std::iterator<std::forward_iterator_tag, Rule> {
+	protected:
+			this_t* grammar;
+			nonterminal_t current_nt;
+			std::vector<Rule>::iterator current_rule;
+			
+	public:
+		
+			RuleIterator(this_t* g, bool is_end) : grammar(g), current_nt(0) { 
+				if(not is_end) {
+					current_rule = g->rules[0].begin();
+				} 
+				else {
+					// by convention we set current_rule and current_nt to the last items
+					// since this is what ++ will leave them as below
+					current_nt = N_NTs-1;
+					current_rule = grammar->rules[current_nt].end();
+				}
+			}
+			Rule& operator*() const  { return *current_rule; }
+//			Rule* operator->() const { return  current_rule; }
+			 
+			RuleIterator& operator++(int blah) { this->operator++(); return *this; }
+			RuleIterator& operator++() {
+				
+				current_rule++;
+				
+				// keep incrementing over rules that are empty, and if we run out of 
+				// nonterminals, set us to the end and break
+				while( current_rule == grammar->rules[current_nt].end() ) {
+					if(current_nt < grammar->N_NTs-1) {
+						current_nt++; // next nonterminal
+						current_rule = grammar->rules[current_nt].begin();
+					}
+					else { 
+						current_rule = grammar->rules[current_nt].end();
+						break;
+					}					
+				}
+				
+				return *this;
+			}
+				
+			RuleIterator& operator+(size_t n) {
+				for(size_t i=0;i<n;i++) this->operator++();					
+				return *this;
+			}
+
+			bool operator==(const RuleIterator& rhs) { return current_nt == rhs.current_nt and current_rule == rhs.current_rule; }
+			bool operator!=(const RuleIterator& rhs) { return current_nt != rhs.current_nt or  current_rule != rhs.current_rule; }
+	};	
+	
+	// these are set up to 
+	RuleIterator begin() const { return RuleIterator(const_cast<this_t*>(this), false); }
+	RuleIterator end()   const { return RuleIterator(const_cast<this_t*>(this), true);; }
 	
 	size_t count_nonterminals() const {
 		/**
@@ -192,11 +267,8 @@ public:
 		/**
 		 * @brief Show the grammar by printing each rule
 		 */
-		
-		for(nonterminal_t nt=0;nt<N_NTs;nt++) {
-			for(size_t i=0;i<count_rules(nt);i++) {
-				COUT prefix << get_rule(nt,i)->string() ENDL;
-			}
+		for(auto& r : *this) {
+			COUT prefix << r.string() ENDL;
 		}
 	}
 
@@ -355,15 +427,13 @@ public:
 		 */
 		
 		Rule* ret = nullptr;
-		for(size_t nt=0;nt<N_NTs;nt++) {
-			for(auto& r: rules[nt]) {
-				if( (s != "" and is_prefix(s, r.format)) or (s=="" and s==r.format)) {
-					if(ret != nullptr) {
-						CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
-						assert(0);
-					}
-					ret = const_cast<Rule*>(&r);
-				} 
+		for(auto& r : *this) {
+			if( (s != "" and is_prefix(s, r.format)) or (s=="" and s==r.format)) {
+				if(ret != nullptr) {
+					CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
+					assert(0);
+				}
+				ret = &r;
 			}
 		}
 		
@@ -676,4 +746,3 @@ public:
 	}
 	
 };
-

@@ -102,16 +102,20 @@ public:
 		}
 	}
 
-
+	/**
+	 * @brief Compute the posterior, by calling prior and likelihood. 
+	 * 		  This involves only a little bit of fanciness, which is that if our prior is -inf, then
+	 *        we don't both computing the likelihood. 
+	 * 
+	 * 		  NOTE: The order here is fixed to compute the prior first. This permits us to penalize the "prior"
+	 * 		  with something in the likelihood -- for instance if we want to use a runtime prior that is computed
+	 * 		  as we run the likelihood
+	 * @param data
+	 * @param breakout
+	 * @return 
+	 */
 	virtual double compute_posterior(const data_t& data, const double breakout=-infinity) {
-		/**
-		 * @brief Compute the posterior, by calling prior and likelihood. 
-		 * 		  This involves only a little bit of fanciness, which is that if our prior is -inf, then
-		 *        we don't both computing the likelihood. 
-		 * @param data
-		 * @param breakout
-		 * @return 
-		 */
+
 		
 		++FleetStatistics::posterior_calls; // just keep track of how many calls 
 		

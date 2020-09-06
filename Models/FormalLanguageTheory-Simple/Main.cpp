@@ -86,18 +86,20 @@ public:
 	double compute_single_likelihood(const datum_t& x) override {	
 		
 		// This would be a normal call:
-		const auto out = call(x.input, "<err>", this, 256, 256); 
+		//const auto out = call(x.input, "<err>", this, 256, 256); 
 
-		
-		// convert a list of vms_states to a distribution over runtimes:
-//		auto v = call_vms(x.input, "<err>", this); // return the states instead of the marginal outputs
-//		RuntimeCounter& rc = v[0].runtime_counter; // this only gets the first execution path
-//		for(nonterminal_t nt=0;nt<grammar->count_nonterminals();nt++) {
-//			for(auto& r : grammar->rules[nt]) {
-//				CERR rc.get(r.instr) TAB r ENDL;
-//			}
-//		}		
-//		auto out = marginal_vms_output(v);
+		// Or we can call and get back a list of completed virtual machine states
+		// these store a bit more information, like runtime counts and haven't computer the
+		// marginal probability of strings
+		auto v = call_vms(x.input, "<err>", this); // return the states instead of the marginal outputs
+
+		// compute a "runtime" prior penalty
+		// NOTE this is fine since a Bayesable first computes the prior before the likelihood so this will not be overwritten
+		for(auto& vi : v) {
+			prior += -exp(vi.lp) * vi.runtime_counter.total;
+		}
+		// and convert v to a disribution on strings
+		auto out = marginal_vms_output(v);
 
 		const auto log_A = log(alphabet.size());
 		
