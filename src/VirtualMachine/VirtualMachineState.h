@@ -688,14 +688,15 @@ public:
 				
 				} // end if not custom
 			} // end while loop over ops
-		
+	
+			// and when we exit, set the status to complete
+			status = vmstatus_t::COMPLETE;
+	
 		} catch (VMSRuntimeError_t& e) {
 			// this may be thrown by a primitive
 			status = vmstatus_t::ERROR;
 		}
 		
-		status = vmstatus_t::COMPLETE;
-	
 		// This is a separate function so we can use it other places too
 		return get_output();
 	}	
