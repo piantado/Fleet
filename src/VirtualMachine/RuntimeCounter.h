@@ -2,14 +2,7 @@
 
 #include <vector>
 #include "Instruction.h"
-
-template<typename T>
-void increment(std::vector<T>& v, size_t idx, T count=1) {
-	// Increment and potentially increase my vector size if needed
-	if(idx > v.size()) 
-		v.resize(idx+1,0);
-	v[idx] += count;
-}
+#include "Miscellaneous.h"
 
 /**
  * @class RuntimeCounter
@@ -21,10 +14,11 @@ void increment(std::vector<T>& v, size_t idx, T count=1) {
  */
 class RuntimeCounter {
 public:
+	using T = unsigned long;
 
 	// counts of each type of primitive
-	std::vector<size_t> builtin_count;
-	std::vector<size_t> primitive_count;
+	std::vector<T> builtin_count;
+	std::vector<T> primitive_count;
 
 	// we defaulty initialize these
 	RuntimeCounter() : builtin_count(16,0), primitive_count(16,0) {	}
@@ -33,14 +27,15 @@ public:
 	 * @brief Add count number of items to this instruction's count
 	 * @param i
 	 */	
-	void increment(Instruction& i, size_t count=1) {
+	void increment(Instruction& i, T count=1) {
 		//CERR ">>" TAB builtin_count.size() TAB primitive_count.size() TAB i TAB this ENDL;
 		
 		if(i.is<BuiltinOp>()) {
-			increment(builtin_count, (size_t)i.as<BuiltinOp>(), 1);
+			// this general vector increment lives in miscellaneous
+			::increment(builtin_count, (size_t)i.as<BuiltinOp>(), (T)1);
 		}
 		else {
-			increment(primitive_count, (size_t)i.as<PrimitiveOp>(), 1);
+			::increment(primitive_count, (size_t)i.as<PrimitiveOp>(), (T)1);
 		}
 	}
 		
@@ -50,10 +45,10 @@ public:
 	 */	
 	void increment(RuntimeCounter& rc) {
 		for(size_t i=0;i<rc.builtin_count.size();i++) {
-			increment(builtin_count, i, rc.builtin_count[i]);
+			::increment(builtin_count, i, (T)rc.builtin_count[i]);
 		}
 		for(size_t i=0;i<rc.primitive_count.size();i++) {
-			increment(primitive_count, i, rc.primitive_count[i]);
+			::increment(primitive_count, i, (T)rc.primitive_count[i]);
 		}
 	}
 		

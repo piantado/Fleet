@@ -47,7 +47,7 @@ std::tuple PRIMITIVES = {
 	
 	// And and,or,not -- we use Builtins here because any user defined one won't short-circuit
 	Builtin::And("and(%s,%s)"),
-	//Builtin::Or("or(%s,%s)"),
+	Builtin::Or("or(%s,%s)"),
 	Builtin::Not("not(%s)")
 	// But if we did define our own, they'd be:
 	//	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 2.0), // optional specification of prior weight (default=1.0)

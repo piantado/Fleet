@@ -41,6 +41,15 @@ std::vector<T> slice(const std::vector<T> &v, size_t start) {
 	return slice(v, start, v.size()-start);
 }
 
+template<typename T>
+void increment(std::vector<T>& v, size_t idx, T count=1) {
+	// Increment and potentially increase my vector size if needed
+	if(idx > v.size()) 
+		v.resize(idx+1,0);
+	v[idx] += count;
+}
+
+
 /* If x is a prefix of y -- works for strings and vectors */
 template<typename T>
 bool is_prefix(const T& prefix, const T& x) {
