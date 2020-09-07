@@ -2,7 +2,7 @@
 
 
 /**
-* @class defauldatum_t
+* @class defaultdatum_t
 * @author piantado
 * @date 29/01/20
 * @file Datum.h
@@ -11,24 +11,24 @@
 * 		 points, sometimes its the noise in the likelihood. 
 */ 
 template<typename input_t, typename output_t>
-class defauldatum_t { // a single data point
+class defaultdatum_t { // a single data point
 public:
 	input_t  input;
 	output_t output;
 	double   reliability; // the noise probability (typically required)
 	
-	defauldatum_t() { }
-	defauldatum_t(const input_t& i, const output_t& o, double r) : input(i), output(o), reliability(r) {}
-	defauldatum_t(const input_t& i, const output_t& o) : input(i), output(o), reliability(NaN) {}
+	defaultdatum_t() { }
+	defaultdatum_t(const input_t& i, const output_t& o, double r) : input(i), output(o), reliability(r) {}
+	defaultdatum_t(const input_t& i, const output_t& o) : input(i), output(o), reliability(NaN) {}
 	
-	bool operator==(const defauldatum_t& y) const {
+	bool operator==(const defaultdatum_t& y) const {
 		return input==y.input and output==y.output and reliability==y.reliability;
 	}
 	
 }; 
 
 template<typename input_t, typename output_t>
-std::ostream& operator<<(std::ostream& o, const defauldatum_t<input_t,output_t>& d) {
+std::ostream& operator<<(std::ostream& o, const defaultdatum_t<input_t,output_t>& d) {
 	
 	if constexpr( std::is_pointer<input_t>::value and std::is_pointer<output_t>::value) {
 		o << "[DATA: PTR " << *d.input << " -> PTR " << *d.output << " w/ reliability " << d.reliability << "]";

@@ -62,7 +62,7 @@ class VirtualMachineState : public VirtualMachineControl {
 		// This is a kind of stack that just reserves some for VirtualMachineStates (if that's faster, which its not)
 	public:
 		VMSStack() {
-	//		this->reserve(8);
+			// this->reserve(8);
 		}
 	};
 	
@@ -110,94 +110,92 @@ public:
 	}
 	
 	virtual ~VirtualMachineState() {}	// needed so VirtualMachinePool can delete
-	
+
+	/**
+	 * @brief These must be sortable by lp so that we can enumerate them from low to high probability in a VirtualMachinePool 
+	 * 		  NOTE: VirtualMachineStates shouldn't be put in a set because they might evaluate to equal! 
+	 * @param m
+	 * @return 
+	 */
 	bool operator<(const VirtualMachineState& m) const {
-		/**
-		 * @brief These must be sortable by lp so that we can enumerate them from low to high probability in a VirtualMachinePool 
-		 * 		  NOTE: VirtualMachineStates shouldn't be put in a set because they might evaluate to equal! 
-		 * @param m
-		 * @return 
-		 */
 		return lp < m.lp; 
 	}
-	
+
+	/**
+	 * @brief Add v to my lp
+	 * @param v
+	 */
 	void increment_lp(double v) {
-		/**
-		 * @brief Add v to my lp
-		 * @param v
-		 */
-		
 		lp += v;
 	}
 	
+	/**
+	 * @brief How many more steps can I be run for? This is useful for not adding programs that contain too many ops
+	 * @return 
+	 */		
 	unsigned long remaining_steps() {
-		/**
-		 * @brief How many more steps can I be run for? This is useful for not adding programs that contain too many ops
-		 * @return 
-		 */		
 		return MAX_RUN_PROGRAM - runtime_counter.total;
 	}
 	
-	// Functions to access the stack
+	/**
+	 * @brief Returns a reference to the stack (of a given type)
+	 * @return 
+	 */
 	template<typename T>
 	VMSStack<T>& stack()             { 
-		/**
-		 * @brief Returns a reference to the stack (of a given type)
-		 * @return 
-		 */
-		return std::get<VMSStack<T>>(_stack.value); 
-	}
-	template<typename T>
-	const VMSStack<T>& stack() const { 
-		/**
-		 * @brief Const reference to top of stack
-		 * @return 
-		 */		
 		return std::get<VMSStack<T>>(_stack.value); 
 	}
 	
+	/**
+	 * @brief Const reference to top of stack
+	 * @return 
+	 */	
+	template<typename T>
+	const VMSStack<T>& stack() const { 
+		return std::get<VMSStack<T>>(_stack.value); 
+	}
+	
+	/**
+	 * @brief Retrieves and pops the element of type T from the stack
+	 * @return 
+	 */
 	template<typename T>
 	T getpop() {
-		/**
-		 * @brief Retrieves and pops the element of type T from the stack
-		 * @return 
-		 */
 		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
 		T x = std::move(stack<T>().top());
 		stack<T>().pop();
 		return x;
 	}
+	
+	/**
+	* @brief Retrieves the top of the stack as a copy and does *not* remove
+	* @return 
+	*/
 	template<typename T>
 	T gettop() {
-		/**
-		* @brief Retrieves the top of the stack as a copy and does *not* remove
-		* @return 
-		*/
 		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
-		
 		return stack<T>().top();
 	}
-	template<typename T>
+	/**
+	* @brief Retrieves the top of the stack as a copy and does *not* remove
+	* @return 
+	*/	template<typename T>
 	T& gettopref() {
-		/**
-		* @brief Retrieves the top of the stack as a copy and does *not* remove
-		* @return 
-		*/
 		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
 		return stack<T>().topref();
 	}
 		
+	/**
+	 * @brief This is some fanciness that will return a reference to the top of the stack if we give it a reference type 
+	 * 			otherwise it will return the type. This lets us get the top of a stack with a reference in PRIMITIVES
+	 * 			as though we were some kind of wizards
+	 * @return 
+	 */		
 	template<typename T>
 	typename std::conditional<std::is_reference<T>::value, T&, T>::type
 	get() {
-		/**
-		 * @brief This is some fanciness that will return a reference to the top of the stack if we give it a reference type 
-		 * 			otherwise it will return the type. This lets us get the top of a stack with a reference in PRIMITIVES
-		 * 			as though we were some kind of wizards
-		 * @return 
-		 */		
 		using Tdecay = typename std::decay<T>::type; // remove the ref from it since that's how we access the stack -- TODO: put this into this->stack() maybe?
 		
 		assert(stack<Tdecay>().size() > 0 && "Cannot get from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
@@ -216,13 +214,13 @@ public:
 			return x;
 		}
 	}
-	
+
+	/**
+	 * @brief Is this stack empty?
+	 * @return 
+	 */
 	template<typename T>
-	bool empty() {
-		/**
-		 * @brief Is this stack empty?
-		 * @return 
-		 */
+	bool empty() {		
 		return stack<T>().empty();
 	}
 
@@ -302,35 +300,31 @@ public:
 		return run(nullptr, d);
 	}
 	
-	output_t run(VirtualMachinePool<VirtualMachineState<input_t,output_t, VM_TYPES...>>* pool, ProgramLoader* loader) {
-		/**
-		 * @brief Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
-		 * 		  Note that here we allow a tempalte on HYP, which actually gets passed all the way down to 
-		 *        applyPrimitives, which means that whatever arguments we give here are passed all teh way back 
-		 *        to the VMS Primitives when they are called. They really should be loaders, but they could be anything. 
-		 * @param pool
-		 * @param loader
-		 * @return 
-		 */
+	/**
+	 * @brief Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
+	 * 		  Note that here we allow a tempalte on HYP, which actually gets passed all the way down to 
+	 *        applyPrimitives, which means that whatever arguments we give here are passed all teh way back 
+	 *        to the VMS Primitives when they are called. They really should be loaders, but they could be anything. 
+	 * @param pool
+	 * @param loader
+	 * @return 
+	 */	
+	 output_t run(VirtualMachinePool<VirtualMachineState<input_t,output_t, VM_TYPES...>>* pool, ProgramLoader* loader) {
 
 		status = vmstatus_t::GOOD;
 		
 		try { 
 			
-			while(!opstack.empty()){
+			while(status == vmstatus_t::GOOD and (not opstack.empty()) ) {
 				
 				if(opstack.size() > remaining_steps() ) {  // if we've run too long or we couldn't possibly finish
 					status = vmstatus_t::RUN_TOO_LONG;
+					break;
 				}
 				
-				if(status != vmstatus_t::GOOD)  {
-					return err;
-				}
-					
 				FleetStatistics::vm_ops++;
 				
 				Instruction i = opstack.top(); opstack.pop();
-				//CERR i ENDL;
 				
 				// keep track of what instruction we've run
 				runtime_counter.increment(i);
@@ -479,7 +473,8 @@ public:
 							}
 							// if we get here, then we have processed our arguments and they are stored in the input_t stack. 
 							// so we must move them to the x stack (where there are accessible by op_X)
-							xstack.push(std::move(getpop<input_t>()));
+							auto mynewx = getpop<input_t>();
+							xstack.push(std::move(mynewx));
 							opstack.push(Instruction(BuiltinOp::op_POPX)); // we have to remember to remove X once the other program evaluates, *after* everything has evaluated
 							
 							// push this program 
@@ -588,29 +583,9 @@ public:
 								else {
 									status = vmstatus_t::RANDOM_CHOICE; 
 								}
-
-					
-								// which branch did we take?
-	//							bool decision = (p >= 0.5); 
-	//							
-	//							// save (possibly) the path not taken
-	//							pool->copy_increment_push(*this, not decision, log( MIN(p,1.0-p) ));
-	//							
-	//							// if I am still ok in terms of LP_BREAKOUT, push and keep running
-	//							double decisionlp = log(MAX(p, 1.0-p));
-	//							if(lp+decisionlp > MAX(pool->min_lp, pool->Q.top().lp - LP_BREAKOUT) ) { // if we can keep going and stay within the bound
-	////							if(pool->wouldIadd(lp+decisionlp)){ // if I would be added here (a little imprecise because I may be allowing myself to run for too many steps)
-	//								increment_lp(decisionlp);
-	//								push<bool>(decision);
-	//								// and just continue -- no need to do anything to the stack
-	//							}
-	//							else {
-	//								
-	//								// else we just push and return control to the stack
-	//								pool->copy_increment_push(std::move(*this), decision, decisionlp);
-	//								status = vmstatus_t::RANDOM_CHOICE;
-	//							}
-
+								
+								// TODO: We can also keep running here -- though its more complex. 
+								
 								break;
 		
 							} else { throw YouShouldNotBeHereError("*** Cannot use op_FLIP without defining bool in VM_TYPES"); }

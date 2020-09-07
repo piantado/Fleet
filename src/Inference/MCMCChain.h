@@ -114,12 +114,13 @@ public:
 		return maxval; 
 	} 
 	
-	void run(Control ctl) {
-		/**
-		 * @brief Run MCMC according to the control parameters passed in.
-		 * 		  NOTE: ctl cannot be passed by reference. 
-		 * @param ctl
-		 */
+	/**
+	 * @brief Run MCMC according to the control parameters passed in.
+	 * 		  NOTE: ctl cannot be passed by reference. 
+	 * @param ctl
+	 */	
+	 void run(Control ctl) {
+
 		assert(ctl.nthreads == 1 && "*** You seem to have called MCMCChain with nthreads>1. This is not how you paralle. Check out ChainPool"); 
 		
 		#ifdef DEBUG_MCMC

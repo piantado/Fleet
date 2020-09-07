@@ -47,10 +47,11 @@ public:
 	 * @param rc
 	 */	
 	void increment(RuntimeCounter& rc) {
-		for(size_t i=0;i<rc.builtin_count.size();i++) {
+		// we'll go in decreasing order so we don't have to resize each time
+		for(size_t i=rc.builtin_count.size()-1; i != 0; i--) {
 			::increment(builtin_count, i, (T)rc.builtin_count[i]);
 		}
-		for(size_t i=0;i<rc.primitive_count.size();i++) {
+		for(size_t i=rc.primitive_count.size()-1; i != 0; i--) {
 			::increment(primitive_count, i, (T)rc.primitive_count[i]);
 		}
 	}

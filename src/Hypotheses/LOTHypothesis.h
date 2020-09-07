@@ -29,7 +29,7 @@ template<typename this_t,
 		 typename _input_t, 
 		 typename _output_t, 
 		 typename _Grammar_t,
-		 typename _datum_t=defauldatum_t<_input_t, _output_t>, 
+		 typename _datum_t=defaultdatum_t<_input_t, _output_t>, 
 		 typename _data_t=std::vector<_datum_t>
 		 >
 class LOTHypothesis : public MCMCable<this_t,_datum_t,_data_t>, // remember, this defines data_t, datum_t

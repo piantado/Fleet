@@ -39,10 +39,10 @@ public:
 	 * @param minlp - the virtual machine pool doesn't consider paths less than this probability
 	 * @return 
 	 */	
-	DiscreteDistribution<output_t> call(const input_t x, const output_t err, ProgramLoader* loader){
+	DiscreteDistribution<output_t> call(const input_t x, const output_t err, ProgramLoader* loader) {
 					
 		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err);	
-		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
+		push_program(vms->opstack); // write my program into vms
 
 		VirtualMachinePool<VirtualMachineState_t> pool; 		
 		pool.push(vms);		

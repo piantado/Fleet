@@ -5,10 +5,10 @@ FLEET_ROOT=../../
 include $(FLEET_ROOT)/Fleet.mk
 
 all:
-	g++-9 -o main Main.cpp -O2 $(FLEET_FLAGS) $(FLEET_INCLUDE) $(FLEET_LIBS)
+	g++ -o main Main.cpp -O2 $(FLEET_FLAGS) $(FLEET_INCLUDE) $(FLEET_LIBS)
 
 debug:
-	g++-9 -o main Main.cpp -g -O2 $(FLEET_FLAGS) $(FLEET_INCLUDE) $(FLEET_LIBS)
+	g++ -o main Main.cpp -g -O2 $(FLEET_FLAGS) $(FLEET_INCLUDE) $(FLEET_LIBS)
 clang:
 	clang++ Main.cpp -o main -O2 $(CLANG_FLAGS) $(FLEET_INCLUDE) $(FLEET_LIBS)
 	

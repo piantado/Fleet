@@ -21,9 +21,10 @@ double recursion_penalty = -75.0;
 typedef int         word;
 typedef std::string set; 	/* This models sets as strings */
 typedef char        objectkind; // store this as that
-typedef struct { set s; objectkind o; } utterance; 
 typedef short       wmset; // just need an integerish type
 typedef float       magnitude; 
+
+struct utterance { set s; objectkind o; }; 
 
 std::vector<objectkind>   OBJECTS = {'a', 'b', 'c', 'd', 'e'}; //, 'f', 'g', 'h', 'i', 'j'};
 std::vector<std::string>    WORDS = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
@@ -38,9 +39,10 @@ const double W = 0.2; // weber ratio for ans
 // TODO: UPDATE WITH data from Gunderson & Levine?
 std::discrete_distribution<> number_distribution({0, 7187, 1484, 593, 334, 297, 165, 151, 86, 105, 112}); // 0-indexed
 	
-std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600, 1000};//, 500, 600, 700, 800, 900, 1000};
+//std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600, 1000};//, 500, 600, 700, 800, 900, 1000};
 //std::vector<int> data_amounts = {1000};
 //std::vector<int> data_amounts = {1, 5, 10, 50, 100};//, 500, 600, 700, 800, 900, 1000};
+std::vector<int> data_amounts = {1};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define the primitives (which are already defined in MyPrimitives
@@ -220,7 +222,7 @@ public:
 	double compute_prior() override {
 		// include recusion penalty
 		prior = Super::compute_prior() +
-		       (recursion_count() > 0 ? recursion_penalty : log(1.0-exp(recursion_penalty))); 
+		       (recursion_count() > 0 ? recursion_penalty : log1p(-exp(recursion_penalty))); 
 		
 		return prior;
 	}
@@ -230,6 +232,7 @@ public:
 	}
 	
 	double compute_single_likelihood(const datum_t& d) override {
+		
 		auto v = call(d.input); // something of the type
 		
 		// average likelihood when sampling from this posterior

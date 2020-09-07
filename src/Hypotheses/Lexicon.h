@@ -22,7 +22,7 @@ template<typename this_t,
 		 typename INNER, 
 		 typename input_t,
 		 typename output_t, 
-		 typename datum_t=defauldatum_t<input_t, output_t>>
+		 typename datum_t=defaultdatum_t<input_t, output_t>>
 class Lexicon : public MCMCable<this_t,datum_t>,
 				public Searchable<this_t,input_t,output_t>,
 				public Callable<input_t, output_t, typename INNER::Grammar_t::template VirtualMachineState_t<input_t, output_t>>

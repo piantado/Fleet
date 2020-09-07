@@ -44,8 +44,10 @@ std::vector<T> slice(const std::vector<T> &v, size_t start) {
 template<typename T>
 void increment(std::vector<T>& v, size_t idx, T count=1) {
 	// Increment and potentially increase my vector size if needed
-	if(idx > v.size()) 
+	if(idx >= v.size()) {
 		v.resize(idx+1,0);
+	}
+	
 	v[idx] += count;
 }
 

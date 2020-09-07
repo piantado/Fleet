@@ -60,22 +60,18 @@ public:
 	// how many steps have I run so far? -- this needs to be global so that we can keep track of 
 	// whether we should push a new state that occurs too late. 
 	unsigned long current_steps; 
-	double worst_lp = infinity;
+	double worst_lp;
 	
 	std::priority_queue<VirtualMachineState_t*, std::vector<VirtualMachineState_t*>, VirtualMachinePool::compare_VirtualMachineState_t_prt> Q; // Q of states sorted by probability
 //	std::priority_queue<VirtualMachineState_t*, ReservedVector<VirtualMachineState_t*,1024>, VirtualMachinePool::compare_VirtualMachineState_t_prt> Q; // Does not seem to speed things up 
 
 
 	VirtualMachinePool() { 
-		clear(); 
+		current_steps = 0;
+		worst_lp = infinity;
 	}
 	
-	// a constructor that also allows us to deduce VirtualMachineState_t type
-	VirtualMachinePool(VirtualMachineState_t* vms) {
-		push(vms);
-		clear();
-	}
-	
+
 	virtual ~VirtualMachinePool() {
 		clear();
 	}
@@ -86,9 +82,9 @@ public:
 	virtual void clear() {
 		while(!Q.empty()) {
 			VirtualMachineState_t* vms = Q.top(); Q.pop();
+			//CERR "Clear deleting " TAB vms ENDL;
 			delete vms;
 		}
-		
 		current_steps = 0;
 		worst_lp = infinity;
 	}
@@ -101,7 +97,7 @@ public:
 	bool wouldIadd(double lp) {
 		// we won't add stuff that's worse than MIN_LP or that will never run
 		// (it will never run if it's lp < worst_lp and we don't have enough steps to get there)
-		return lp >= MIN_LP and 
+		return lp > MIN_LP and 
 			   (Q.size() <= (MAX_STEPS-current_steps) or lp > worst_lp);
 	}
 	
@@ -113,6 +109,9 @@ public:
 		if(wouldIadd(o->lp)){ // TODO: might be able to add an optimization here that doesn't push if we don't have enough steps left to get it 
 			Q.push(o);			
 			worst_lp = std::min(worst_lp, o->lp); //keep track of the worst we've seen
+		} 
+		else {
+			assert(false && "*** Should not get here");
 		}
 	}
 	
@@ -172,17 +171,19 @@ public:
 		while(current_steps < MAX_STEPS && out.size() < MAX_OUTPUTS && !Q.empty()) {
 			
 			VirtualMachineState_t* vms = Q.top(); Q.pop();
+
 			// if we ever go back to the non-pointer version, we might need fanciness to move out of top https://stackoverflow.com/questions/20149471/move-out-element-of-std-priority-queue-in-c11
 			assert(vms->lp >= MIN_LP);
 			
 			current_steps++;
 			
 			auto y = vms->run(this, loader);
-				
+			
 			if(vms->status == vmstatus_t::COMPLETE) { // can't add up probability for errors
 				out.addmass(y, vms->lp);
 			}
 			
+			// not else if because we need to delete complete ones too
 			if(vms->status != vmstatus_t::RANDOM_CHOICE_NO_DELETE) {
 				delete vms; // if our previous copy isn't pushed back on the stack, delete it
 			}
@@ -216,10 +217,9 @@ public:
 			vms->run(this, loader);
 				
 			if(vms->status == vmstatus_t::COMPLETE) { // can't add up probability for errors
-				out.push_back(*vms); // note this pushes a copy
+				out.push_back(*vms);
 			}
-			
-			if(vms->status != vmstatus_t::RANDOM_CHOICE_NO_DELETE) {
+			else if(vms->status != vmstatus_t::RANDOM_CHOICE_NO_DELETE) {
 				delete vms; // if our previous copy isn't pushed back on the stack, delete it
 			}
 		}
