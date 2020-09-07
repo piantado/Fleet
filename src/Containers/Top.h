@@ -60,14 +60,14 @@ public:
 	
 	TopN(const TopN<T>& x) {
 		clear();
-		set_print_best(x.print_best); // must be set before we add!
 		set_size(x.N);
+		set_print_best(x.print_best); // must be set before we add!
 		add(x);
 	}
 	TopN(TopN<T>&& x) {
+		set_size(x.N);
 		set_print_best(x.print_best);
 		cnt = x.cnt;
-		set_size(x.N);
 		s = x.s;
 	}
 	

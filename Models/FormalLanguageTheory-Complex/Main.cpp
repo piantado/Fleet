@@ -34,8 +34,8 @@ const size_t MAX_TEMP = 10.0;
 unsigned long SWAP_EVERY = 1500; // ms
 unsigned long PRINT_STRINGS; // print at most this many strings for each hypothesis
 
-std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000"}; // how many data points do we run on?
-//std::vector<S> data_amounts={"1","1000"}; // how many data points do we run on?
+//std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000"}; // how many data points do we run on?
+std::vector<S> data_amounts={"100"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
 
@@ -371,7 +371,6 @@ int main(int argc, char** argv){
 		
 	// we are building up data and TopNs to give t parallel tempering
 	std::vector<MyHypothesis::data_t> datas; // load all the data	
-	std::vector<TopN<MyHypothesis>> tops;
 	for(size_t i=0;i<data_amounts.size();i++){ 
 		MyHypothesis::data_t d;
 		
@@ -379,15 +378,14 @@ int main(int argc, char** argv){
 		load_data_file(d, data_path.c_str());
 		
 		datas.push_back(d);
-		tops.push_back(TopN<MyHypothesis>());
 	}
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Actually run
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	TopN<MyHypothesis> all(std::numeric_limits<size_t>::max()); 
-//	all.set_print_best(true);
+	TopN<MyHypothesis> all; 
+	//	all.set_print_best(true);
 	
 	tic();	
 	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
@@ -397,7 +395,6 @@ int main(int argc, char** argv){
 		// we don't get good mixing in the lowest chains. 
 		// No theory here, this just seems to be about what works well. 
 		ParallelTempering samp(h0, &datas[di], all, NTEMPS, MAX_TEMP); 
-//		for(auto& x: datas[di]) { CERR di TAB x.output TAB x.reliability ENDL;	}
 		samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, RESTART), SWAP_EVERY, 5*60*1000);	
 
 		// set up to print using a larger set if we were given this option

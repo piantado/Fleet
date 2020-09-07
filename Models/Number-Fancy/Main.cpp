@@ -39,10 +39,9 @@ const double W = 0.2; // weber ratio for ans
 // TODO: UPDATE WITH data from Gunderson & Levine?
 std::discrete_distribution<> number_distribution({0, 7187, 1484, 593, 334, 297, 165, 151, 86, 105, 112}); // 0-indexed
 	
-//std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600, 1000};//, 500, 600, 700, 800, 900, 1000};
+std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600, 1000};//, 500, 600, 700, 800, 900, 1000};
 //std::vector<int> data_amounts = {1000};
 //std::vector<int> data_amounts = {1, 5, 10, 50, 100};//, 500, 600, 700, 800, 900, 1000};
-std::vector<int> data_amounts = {1};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define the primitives (which are already defined in MyPrimitives
