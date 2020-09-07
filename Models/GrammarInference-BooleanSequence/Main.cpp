@@ -134,7 +134,7 @@ public:
 	using Super::Super; // inherit the constructors
 	
 	double compute_single_likelihood(const datum_t& x) override {	
-		const auto out = call(x.input, "<err>", this, 256, 256); 
+		const auto out = call(x.input, "<err>"); 
 		
 		// Likelihood comes from all of the ways that we can delete from the end and the append to make the observed output. 
 		double lp = -infinity;
@@ -225,7 +225,7 @@ int main(int argc, char** argv){
 	if(runtype == "hypotheses" or runtype == "both") {
 		
 		auto h0 = MyHypothesis::make(&grammar); 
-		hypotheses = get_hypotheses_from_mcmc(h0, mcmc_data, Control(inner_mcmc_steps, inner_runtime), ntop);
+		hypotheses = get_hypotheses_from_mcmc(h0, mcmc_data, Control(FleetArgs::inner_steps, FleetArgs::inner_runtime), FleetArgs::ntop);
 		CTRL_C = 0; // reset control-C so we can break again for the next mcmc
 		
 		save(hypothesis_path, hypotheses);
@@ -243,7 +243,7 @@ int main(int argc, char** argv){
 	
 		tic();
 		auto thechain = MCMCChain(h0, &human_data, &gcallback);
-		thechain.run(Control(mcmc_steps, runtime));
+		thechain.run(Control());
 		tic();
 	}
 	

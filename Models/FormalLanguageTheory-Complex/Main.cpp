@@ -369,7 +369,7 @@ int main(int argc, char** argv){
 		h0.factors.push_back(f.restart());
 	}
 		
-	// we are building up data and TopNs to give t parallel tempering
+	// We are going to build up the data
 	std::vector<MyHypothesis::data_t> datas; // load all the data	
 	for(size_t i=0;i<data_amounts.size();i++){ 
 		MyHypothesis::data_t d;
@@ -399,9 +399,9 @@ int main(int argc, char** argv){
 
 		// set up to print using a larger set if we were given this option
 		if(long_output){
-			VirtualMachineControl::MAX_STEPS  = 32000; //4096; 
-			VirtualMachineControl::MAX_OUTPUTS = 12000; //512; - make it bigger than
-			VirtualMachineControl::MIN_LP = -100;
+			VirtualMachineControl::MAX_STEPS  = 32000; 
+			VirtualMachineControl::MAX_OUTPUTS = 12000;
+			VirtualMachineControl::MIN_LP = -25;
 			PRINT_STRINGS = 1024;
 			max_length = 2048; 			
 		}
