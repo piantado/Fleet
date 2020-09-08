@@ -2,7 +2,7 @@
  
  // Tune up eigen wrt thread safety
  
- 
+#include <regex>
 #include <signal.h>
 
 #include "EigenLib.h"
@@ -119,11 +119,11 @@ public:
 	// These variables store some parameters and get recomputed
 	// in proposal when necessary 
 	std::shared_ptr<Matrix> decayedLikelihood;
-	
-	const data_t* which_data; // stored so we can remember what we computed for. 
-	
 	double alpha, llt, decay; // the parameters 
-		
+	
+	// stored so we can remember what we computed for. 
+	const data_t* which_data; 
+			
 	GrammarHypothesis() {	}
 	
 	GrammarHypothesis(std::vector<HYP>& hypotheses, const data_t* human_data) {
@@ -167,6 +167,14 @@ public:
 	void recompute_llt()   { llt = expf(params(1)/4.0);	} // centered around 1
 	void recompute_decay() { decay = expf(params(2)-2); } // peaked near zero
 	
+	
+	/**
+	 * @brief A convenient function that uses C to say how many hypotheses
+	 * @return 
+	 */	
+	size_t nhypotheses() const {
+		return C->rows();
+	}
 	
 	/**
 	 * @brief Computes our matrix C[h,r] of hypotheses (rows) by counts of each grammar rule.
@@ -331,21 +339,11 @@ public:
 	}
 	
 	/**
-	 * @brief This computes the likelihood of the *human data*.
-	 * @param data
-	 * @param breakout
+	 * @brief This returns a vector where the i'th element is the normalized posterior probability
 	 * @return 
-	 */		
-	virtual double compute_likelihood(const data_t& human_data, const double breakout=-infinity) override {
+	 */	
+	Vector compute_normalized_posterior() {
 		Vector hprior = hypothesis_prior(*C); 
-		
-		// recompute our likelihood if its the wrong size or not using this data
-		if(which_data != std::addressof(human_data)) { 
-			CERR "*** You are computing likelihood on a dataset that the GrammarHypothesis was not constructed with." ENDL
-			CERR "		You must call set_hypotheses_and_data before calling this likelihood, but note that when you" ENDL
-			CERR "      do that, it will need to recompute everything (which might take a while)." ENDL;
-			assert(false);
-		}		
 		
 		Matrix hposterior = decayedLikelihood->colwise() + hprior; // the model's posterior
 		
@@ -356,16 +354,33 @@ public:
 			hposterior.col(i) = lognormalize(hposterior.col(i)).array().exp();
 		}
 		
-		// HMM Maybe the loop orders should be switched? 
-		// We can then filter out hypotheses? Or if we do it above we always compute exp which 
-		// is non-ideal
+		return hposterior;
+	}
+	
+	/**
+	 * @brief This computes the likelihood of the *human data*.
+	 * @param data
+	 * @param breakout
+	 * @return 
+	 */		
+	virtual double compute_likelihood(const data_t& human_data, const double breakout=-infinity) override {
+		
+		// recompute our likelihood if its the wrong size or not using this data
+		if(which_data != std::addressof(human_data)) { 
+			CERR "*** You are computing likelihood on a dataset that the GrammarHypothesis was not constructed with." ENDL
+			CERR "		You must call set_hypotheses_and_data before calling this likelihood, but note that when you" ENDL
+			CERR "      do that, it will need to recompute everything (which might take a while)." ENDL;
+			assert(false);
+		}		
+		
+		Vector hposterior = compute_normalized_posterior();
 		
 		this->likelihood  = 0.0; // of the human data
 		#pragma omp parallel for
 		for(size_t i=0;i<human_data.size();i++) {
 			
 			// the non-log version. Here we avoid computing ang logs, logsumexp, or even exp in this loop
-			// because its very slow
+			// because it is very slow. 
 			std::map<typename HYP::output_t, double> model_predictions;
 			for(int h=0;h<hposterior.rows();h++) {
 				if(hposterior(h,i) < 1e-6)  continue;  // skip very low probability for speed
@@ -445,7 +460,7 @@ public:
 		// and return a prior for each hypothesis under my own X
 		// (If this was just a PCFG, which its not, we'd use something like lognormalize(C*proposal.getX()))
 
-		Vector out(C.rows()); // one for each hypothesis
+		Vector out(nhypotheses()); // one for each hypothesis
 		
 		// get the marginal probability of the counts via  dirichlet-multinomial
 		Vector allA = logA.value.array().exp(); // translate [-inf,inf] into [0,inf]
