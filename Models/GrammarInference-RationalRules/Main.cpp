@@ -56,6 +56,8 @@ typedef std::pair<std::vector<MyObject>, MyObject> MyInput;
 typedef bool                                       MyOutput;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Set up primitives
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Primitives.h"
 #include "Builtins.h"
@@ -93,6 +95,8 @@ std::tuple PRIMITIVES = {
 };
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Set up the grammar
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Grammar.h"
 
@@ -102,12 +106,12 @@ class MyGrammar : public Grammar<bool,MyObject,MyInput> {
 };
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
+// Define the LOTHypothesis type
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "GrammarHypothesis.h" 
 #include "LOTHypothesis.h"
 #include "Data.h"
-
 
 /// The type here is a little complex -- a LOTHypothesis here is type MyObject->bool even though
 //  but the datum format we use is these sets, MyInput, MyOutput
@@ -124,8 +128,22 @@ public:
 	}
 };
 
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// I must declare my own in order to fill in the this_t in the template
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include "GrammarHypothesis.h" 
+
+class MyGrammarHypothesis final : public GrammarHypothesis<MyGrammarHypothesis, MyHypothesis> {
+public:
+	using Super = GrammarHypothesis<MyGrammarHypothesis, MyHypothesis>;
+	using Super::Super;
+};
+
+
 size_t grammar_callback_count = 0;
-void gcallback(GrammarHypothesis<MyHypothesis>& h) {
+void gcallback(MyGrammarHypothesis& h) {
 	if(++grammar_callback_count % 100 == 0) {
 		COUT h.string(str(grammar_callback_count)+"\t");
 	}
@@ -260,7 +278,7 @@ int main(int argc, char** argv){
 	
 	if(runtype == "grammar" or runtype == "both") { 
 		
-		auto h0 = GrammarHypothesis<MyHypothesis>::make(hypotheses, &human_data);
+		auto h0 = MyGrammarHypothesis::make(hypotheses, &human_data);
 	
 		tic();
 		auto thechain = MCMCChain(h0, &human_data, &gcallback);

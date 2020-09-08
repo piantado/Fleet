@@ -1,7 +1,7 @@
 #pragma once 
  
  // Tune up eigen wrt thread safety
- 
+#include <assert.h>
 #include <regex>
 #include <signal.h>
 
@@ -89,10 +89,9 @@ std::vector<HYP> get_hypotheses_from_mcmc(HYP& h0, std::vector<typename HYP::dat
  * 			NOTE: Without likelihood decay, this would be much faster. It should work fine if likelihood decay is just set once. 
  * 
  */
-template<typename HYP, typename datum_t=HumanDatum<HYP>, typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
-class GrammarHypothesis : public MCMCable<GrammarHypothesis<HYP, datum_t, data_t>, datum_t, data_t>  {
+template<typename this_t, typename HYP, typename datum_t=HumanDatum<HYP>, typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
+class GrammarHypothesis : public MCMCable<this_t, datum_t, data_t>  {
 public:
-	typedef GrammarHypothesis<HYP,datum_t,data_t> self_t;
 
 	// index by hypothesis, data point, an Eigen Vector of all individual data point likelihoods
 	typedef Vector2D<std::pair<Vector,Vector>> LL_t; // likelihood type
@@ -137,7 +136,7 @@ public:
 	 * @param hypotheses
 	 * @param human_data
 	 */	
-	void set_hypotheses_and_data(std::vector<HYP>& hypotheses, const data_t& human_data) {
+	virtual void set_hypotheses_and_data(std::vector<HYP>& hypotheses, const data_t& human_data) {
 		
 		// set first because it's required below
 		which_data = std::addressof(human_data);
@@ -161,18 +160,20 @@ public:
 		// this gets constructed here so it doesn't need to be reallocated each time we call recompute_decayedLikelihood
 		decayedLikelihood.reset(new Matrix(C->rows(), human_data.size()));
 		recompute_decayedLikelihood(human_data);
+		COUT "# Done computing decayedLikelihood" ENDL;
+		COUT "# Starting MCMC" ENDL;
 	}
 	
-	void recompute_alpha() { alpha = 1.0/(1.0+expf(-3.0*params(0))); }
-	void recompute_llt()   { llt = expf(params(1)/4.0);	} // centered around 1
-	void recompute_decay() { decay = expf(params(2)-2); } // peaked near zero
+	virtual void recompute_alpha() { alpha = 1.0/(1.0+expf(-3.0*params(0))); }
+	virtual void recompute_llt()   { llt = expf(params(1)/4.0);	} // centered around 1
+	virtual void recompute_decay() { decay = expf(params(2)-2); } // peaked near zero
 	
 	
 	/**
 	 * @brief A convenient function that uses C to say how many hypotheses
 	 * @return 
 	 */	
-	size_t nhypotheses() const {
+	virtual size_t nhypotheses() const {
 		return C->rows();
 	}
 	
@@ -181,7 +182,7 @@ public:
 	 *			(requires that each hypothesis use the same grammar)
 	 * @param hypotheses
 	 */
-	void recompute_C(std::vector<HYP>& hypotheses) {
+	virtual void recompute_C(std::vector<HYP>& hypotheses) {
 		   
 		assert(hypotheses.size() > 0);
 
@@ -211,7 +212,7 @@ public:
 	 * @param human_data
 	 * @return 
 	 */
-	void recompute_LL(std::vector<HYP>& hypotheses, const data_t& human_data) {
+	virtual void recompute_LL(std::vector<HYP>& hypotheses, const data_t& human_data) {
 		assert(which_data == std::addressof(human_data));
 		
 		LL.reset(new LL_t(hypotheses.size(), human_data.size())); 
@@ -268,7 +269,7 @@ public:
 	 * @param human_data
 	 * @return 
 	 */
-	void recompute_decayedLikelihood(const data_t& human_data) {
+	virtual void recompute_decayedLikelihood(const data_t& human_data) {
 		assert(which_data == std::addressof(human_data));
 		
 		// find the max power we'll ever need
@@ -309,7 +310,7 @@ public:
 	 * @param human_data
 	 * @return 
 	 */
-	void recompute_P(std::vector<HYP>& hypotheses, const data_t& human_data) {
+	virtual void recompute_P(std::vector<HYP>& hypotheses, const data_t& human_data) {
 		assert(which_data == std::addressof(human_data));
 		
 		P.reset(new Predict_t(hypotheses.size(), human_data.size())); 
@@ -334,7 +335,7 @@ public:
 	}
 
 	
-	double compute_prior() override {
+	virtual double compute_prior() override {
 		return this->prior = logA.compute_prior() + params.compute_prior();
 	}
 	
@@ -342,7 +343,8 @@ public:
 	 * @brief This returns a vector where the i'th element is the normalized posterior probability
 	 * @return 
 	 */	
-	Vector compute_normalized_posterior() {
+	virtual Matrix compute_normalized_posterior() {
+		
 		Vector hprior = hypothesis_prior(*C); 
 		
 		Matrix hposterior = decayedLikelihood->colwise() + hprior; // the model's posterior
@@ -372,41 +374,55 @@ public:
 			CERR "      do that, it will need to recompute everything (which might take a while)." ENDL;
 			assert(false);
 		}		
-		
-		Vector hposterior = compute_normalized_posterior();
-		
-		this->likelihood  = 0.0; // of the human data
-		#pragma omp parallel for
-		for(size_t i=0;i<human_data.size();i++) {
+
+		// Ok this needs a little explanation. IF we have overwritten the types, then we can get compilation
+		// errors below because for instance r.first won't be of the right type to index into model_predictions.
+		// So this line catches that and removes this chunk of code at compile time if we have removed
+		// those types. In its place, we add a runtime assertion fail, meaning you should have overwritten
+		// compute_likelihood if you change these types
+		if constexpr(std::is_same<std::map<typename HYP::output_t,size_t>, typename datum_t::response_t>::value) {
 			
-			// the non-log version. Here we avoid computing ang logs, logsumexp, or even exp in this loop
-			// because it is very slow. 
-			std::map<typename HYP::output_t, double> model_predictions;
-			for(int h=0;h<hposterior.rows();h++) {
-				if(hposterior(h,i) < 1e-6)  continue;  // skip very low probability for speed
-					
-				for(const auto& mp : P->at(h,i)) {						
-					float p = hposterior(h,i) * mp.second;
-					// map 0 for nonexisting doubles
-					model_predictions[mp.first] += p;
+			Matrix hposterior = compute_normalized_posterior();
+			
+			this->likelihood  = 0.0; // of the human data
+			#pragma omp parallel for
+			for(size_t i=0;i<human_data.size();i++) {
+				
+				// the non-log version. Here we avoid computing ang logs, logsumexp, or even exp in this loop
+				// because it is very slow. 
+				std::map<typename HYP::output_t, double> model_predictions;
+				for(int h=0;h<hposterior.rows();h++) {
+					if(hposterior(h,i) < 1e-6)  continue;  // skip very low probability for speed
+						
+					for(const auto& mp : P->at(h,i)) {						
+						float p = hposterior(h,i) * mp.second;
+						// map 0 for nonexisting doubles
+						model_predictions[mp.first] += p;
+					}
 				}
+				
+				
+				double ll = 0.0; // the likelihood here
+				auto& di = human_data[i];
+				for(const auto& r : di.responses) {
+					ll += log( (1.0-alpha)*di.chance + alpha*model_predictions[r.first]) * r.second; // log probability times the number of times they answered this
+				}
+				
+				#pragma omp critical
+				this->likelihood += ll;
 			}
-			
-			double ll = 0.0; // the likelihood here
-			auto& di = human_data[i];
-			for(const auto& r : di.responses) {
-				ll += log( (1.0-alpha)*di.chance + alpha*model_predictions[r.first]) * r.second; // log probability times the number of times they answered this
-			}
-			
-			#pragma omp critical
-			this->likelihood += ll;
-		}
 		
-		return this->likelihood;		
+			return this->likelihood;	
+		}
+		else {
+			assert(false && "*** If you use GrammarHypothesis with non-default types, you need to overwrite compute_likelihood so it does the right thing.");
+		}
+	
 	}
 	
-	[[nodiscard]] virtual self_t restart() const override {
-		self_t out(*this); // copy
+	[[nodiscard]] virtual this_t restart() const override {
+		this_t out(*static_cast<const this_t*>(this)); // copy
+		
 		out.logA = logA.restart();
 		out.params = params.restart();	
 
@@ -426,8 +442,8 @@ public:
 	 * @param breakout
 	 * @return 
 	 */		
-	[[nodiscard]] virtual std::pair<self_t,double> propose() const override {
-		self_t out = *this;
+	[[nodiscard]] virtual std::pair<this_t,double> propose() const override {
+		this_t out(*static_cast<const this_t*>(this)); // copy
 		
 		if(flip(0.1)){
 			auto [ p, fb ] = params.propose();
@@ -455,7 +471,7 @@ public:
 	 * @param C
 	 * @return 
 	 */	
-	Vector hypothesis_prior(Matrix& C) {
+	virtual Vector hypothesis_prior(Matrix& C) {
 		// take a matrix of counts (each row is a hypothesis)
 		// and return a prior for each hypothesis under my own X
 		// (If this was just a PCFG, which its not, we'd use something like lognormalize(C*proposal.getX()))
@@ -494,7 +510,7 @@ public:
 		return out;		
 	}
 	
-	virtual bool operator==(const self_t& h) const override {
+	virtual bool operator==(const this_t& h) const override {
 		return (C == h.C and LL == h.LL and P == h.P) and 
 				(logA == h.logA) and (params == h.params);
 	}

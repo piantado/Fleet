@@ -137,42 +137,26 @@ class MyGrammar : public Grammar<NumberSet,int> {
 #include<set>
 #include "LOTHypothesis.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,int,NumberSet,MyGrammar,int,std::multiset<int> > {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,int,NumberSet,MyGrammar,std::multiset<int> > {
 public:
-	using Super = LOTHypothesis<MyHypothesis,int,NumberSet,MyGrammar,int,std::multiset<int> >;
+	using Super = LOTHypothesis<MyHypothesis,int,NumberSet,MyGrammar,std::multiset<int> >;
 	using Super::Super; // inherit the constructors
 	
-	// NOTE: This likelihood function calls callOne for each data point, but really
-	// we only need to call it once. We could write a whole compute_likelihood function
-	// like below for speed, but grammar inference needs compute_single_likelihood. Another
-	// option would be to cache these callOne calls. 
+	// Ok so technically since we don't take any args, this will callOne for each data point
+	// but it shouldn't matter because all of our data is of length 1. 
+	// NOTE: This is needed for GrammarHypothesis, so we can't just overwrite compute_likelihood
 	virtual double compute_single_likelihood(const datum_t& datum) override {
 		NumberSet out = callOne(1); // just give x=1
 		double sz = out.size();
-		return log(  (out.find(datum)!=out.end() ? 
-					  reliability / sz : 
-					  0.0) 
-					  + (1.0-reliability)/N);
+		
+		double ll = 0.0;
+		for(auto& x : datum) {
+			ll += log((out.find(x)!=out.end() ? reliability / sz : 0.0)  +
+							  (1.0-reliability)/N);
+		}
+		return ll;
 	}
-	
-	// Here, we override compute_likelihood instead of compute_single_likelihood since it's
-	// more efficient to evaluate the likelihood on an entire dataset
-//	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
-//		// TODO: This uses 0 for NAN -- probably not the best...
-//		
-//		NumberSet out = callOne(1); // just give x=1
-//		double sz = out.size(); // size principle likelihood
-//		
-//		// now go through and compute the likelihood
-//		likelihood = 0.0;
-//		for(auto& d : data) {
-//			bool b = (out.find(d)!=out.end()); // does it contain?
-//			likelihood += log(  (b ? reliability / sz : 0.0) + (1.0-reliability)/N);
-//		}
-//		
-//		return likelihood;
-//	}
-	
+
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -202,7 +186,7 @@ int main(int argc, char** argv){
 	// our data
 	//MyHypothesis::data_t mydata = {25, 36, 49, 25, 36, 49, 25, 36, 49, 25, 36, 49};	// squares in a range
 	//MyHypothesis::data_t mydata = {3,4,6,8,12};	
-	MyHypothesis::data_t mydata = {2,4,32};	
+	MyHypothesis::data_t mydata = { std::multiset<int>{2,4,32} };	
 
 	// create a hypothesis
 	auto h0 = MyHypothesis::make(&grammar);

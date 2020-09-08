@@ -1,8 +1,3 @@
-
-
-// TODO: Change to use FlipP
-
-
 #include <assert.h>
 #include <set>
 #include <string>
@@ -29,6 +24,8 @@ const auto log_A = log(2); // size of the alphabet -- here fixed in the grammar 
 // This could change by data point but we'll leave it constant here
 const double pchance = 0.000000001; 
 
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Primitives
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Primitives.h"
@@ -111,6 +108,9 @@ std::tuple PRIMITIVES = {
 };
 
 
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Set up the grammar 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Grammar.h"
@@ -123,7 +123,8 @@ class MyGrammar : public Grammar<S,bool,int,double> {
 };
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Includes critical files. Also defines some variables (mcts_steps, explore, etc.) that get processed from argv 
+// Define the kind of hypothesis we're dealing with
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "LOTHypothesis.h"
 
@@ -151,10 +152,21 @@ public:
 	}
 };
 
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// I must declare my own in order to fill in the this_t in the template
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 #include "GrammarHypothesis.h" 
 
+class MyGrammarHypothesis final : public GrammarHypothesis<MyGrammarHypothesis, MyHypothesis> {
+public:
+	using Super = GrammarHypothesis<MyGrammarHypothesis, MyHypothesis>;
+	using Super::Super;
+};
+
 size_t grammar_callback_count = 0;
-void gcallback(GrammarHypothesis<MyHypothesis>& h) {
+void gcallback(MyGrammarHypothesis& h) {
 	if(++grammar_callback_count % 100 == 0) {
 		COUT h.string(str(grammar_callback_count)+"\t");
 	}
@@ -239,7 +251,7 @@ int main(int argc, char** argv){
 	
 	if(runtype == "grammar" or runtype == "both") { 
 		
-		auto h0 = GrammarHypothesis<MyHypothesis>::make(hypotheses, &human_data);
+		auto h0 = MyGrammarHypothesis::make(hypotheses, &human_data);
 	
 		tic();
 		auto thechain = MCMCChain(h0, &human_data, &gcallback);
