@@ -39,9 +39,6 @@ std::vector<S> data_amounts={"100"}; // how many data points do we run on?
 
 // Parameters for running a virtual machine
 
-/// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// NOTE: IF YOU CHANGE, CHANGE BELOW TOO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We declare these because we use a custom primitive below, which needs them in the 
 /// same order as the grammar
