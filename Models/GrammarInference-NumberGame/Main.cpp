@@ -46,22 +46,25 @@ public:
 			
 			const auto& di = human_data[i];
 			
-			// treat everything as std::vectors
-			// (Sadly we could optimize this even more if we wanted with Vector)
 			double ll = 0.0; // the likelihood here
-			for(int i=0;i<=N;i++) {
+			std::vector<double> ps(N+1,0); 
+			for(size_t h=0;h<nhypotheses();h++){
+				if(hposterior(h,i) < 1e-6) continue; // these contribute very little...
 				
-				double p = 0.0; // marginalize over probabilities
-				for(size_t h=0;h<nhypotheses();h++){
-					if(hposterior(h,i) < 1e-6) continue; // these contribute very little...
-					for(const auto& mp : P->at(h,i)) {	
-						p += hposterior(h,i) * mp.second;
-					}
+				assert(P->at(h,i).size() == 1); // should be just one element
+				assert(P->at(h,i)[0].second == 1.0); // should be 100% probability
+				NumberSet& ns = P->at(h,i)[0].first; // this hypothesis' number set
+				
+				for(auto& n : ns) {
+					ps[n] += hposterior(h,i);
 				}
-				
+			}
+			
+			for(size_t n=Nlow;n<=N;n++) {
+				auto p = ps[n];
 				/// and the likelihood of yes and no
 				ll += log( (1.0-alpha)*di.chance + alpha*p) * di.responses[i].first;
-				ll += log( (1.0-alpha)*di.chance + alpha*(1-p)) * di.responses[i].second;
+				ll += log( (1.0-alpha)*di.chance + alpha*(1.0-p)) * di.responses[i].second;
 			}
 			
 			#pragma omp critical
@@ -89,7 +92,7 @@ int main(int argc, char** argv){
 	MyGrammar grammar(PRIMITIVES);
 	
 	// don't forget to add these or the grammar won't finish
-	for(int i=m;i<=N;i++) {
+	for(int i=Nlow;i<=N;i++) {
 		grammar.add<int>(BuiltinOp::op_INT, str(i), 10.0/N, i);		
 	}
 	
@@ -185,11 +188,19 @@ int main(int argc, char** argv){
 			// we'll not propose to all those goddamn integers we added
 			// NOTE when we do this, GrammarHypothesis won't print these either
 			if(r.instr.is_a(BuiltinOp::op_INT)) {
-				h0.logA.set(i, 1.0); // set the value to 1 (you MUST do this)
+				h0.logA.set(i, 0.0); // set the value to 1 (you MUST do this) 
 				h0.set_can_propose(i, false);
 			}
 			i++;
 		}
+		
+		
+		
+		
+		// tODO: HMM 
+		//	where did the non-op-int rules go?
+		
+		
 		
 		
 	

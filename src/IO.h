@@ -5,10 +5,14 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "dependencies/CL11.hpp"
-#include "Strings.h"
 
-//#include "fmt/format.h"
+// Don't warn shadow on this its a nightmare
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wshadow"
+#include "dependencies/CL11.hpp"
+#pragma GCC diagnostic pop
+
+#include "Strings.h"
 
 // so sick of typing this horseshit
 #define TAB <<"\t"<< 

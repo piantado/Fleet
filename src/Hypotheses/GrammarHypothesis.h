@@ -167,9 +167,9 @@ public:
 	}
 	
 	virtual void recompute_alpha() { alpha = 1.0/(1.0+expf(-3.0*params(0))); }
-	virtual void recompute_llt()   { llt = expf(params(1)/10.0);	} // centered around 1
+	virtual void recompute_llt()   { llt = expf(params(1)/5.0);	} // centered near 1
 	virtual void recompute_decay() { decay = expf(params(2)-2); } // peaked near zero
-	virtual void recompute_pt()    { pt  = expf(params(3)/10.0); }
+	virtual void recompute_pt()    { pt  = expf(params(3)/5.0); }
 	
 	/**
 	 * @brief Set whether I can propose to a value in logA -- this is handled by VectorHypothesis
@@ -181,8 +181,8 @@ public:
 	virtual void set_can_propose(size_t i, bool b) {
 		logA.set_can_propose(i,b);
 		
-		if(logA(i) != 1.0) {
-			CERR "# Warning, set_can_propose is setting false to logA(" << str(i) << ") != 1.0" ENDL;
+		if(logA(i) != 0.0) {
+			CERR "# Warning, set_can_propose is setting false to logA(" << str(i) << ") != 0.0 (this is untransformed space)" ENDL;
 		}
 		
 	}
@@ -212,8 +212,8 @@ public:
 		for(size_t i=0;i<hypotheses.size();i++) {
 			auto c = hypotheses[i].grammar->get_counts(hypotheses[i].get_value());
 			Vector cv = Vector::Zero(c.size());
-			for(size_t i=0;i<c.size();i++){
-				cv(i) = c[i];
+			for(size_t k=0;k<c.size();k++){
+				cv(k) = c[k];
 			}
 			
 			assert(hypotheses[i].grammar == grammar); // just a check that the grammars are identical
@@ -474,9 +474,10 @@ public:
 			
 			// figure out what we need to recompute
 			if(p(0) != params(0)) out.recompute_alpha();
-			
 			if(p(1) != params(1)) out.recompute_llt();
 			if(p(2) != params(2)) out.recompute_decay();
+			if(p(3) != params(3)) out.recompute_pt();
+			
 			if(p(1) != params(1) or p(2) != params(2))	{// note: must come after its computed
 				out.recompute_decayedLikelihood(*out.which_data); // must recompute this when we get to likelihood
 			}			
@@ -494,7 +495,7 @@ public:
 	 * @param C
 	 * @return 
 	 */	
-	virtual Vector hypothesis_prior(Matrix& C) {
+	virtual Vector hypothesis_prior(Matrix& myC) {
 		// take a matrix of counts (each row is a hypothesis)
 		// and return a prior for each hypothesis under my own X
 		// (If this was just a PCFG, which its not, we'd use something like lognormalize(C*proposal.getX()))
@@ -505,7 +506,7 @@ public:
 		Vector allA = logA.value.array().exp(); // translate [-inf,inf] into [0,inf]
 		
 		#pragma omp parallel for
-		for(auto i=0;i<C.rows();i++) {
+		for(auto i=0;i<myC.rows();i++) {
 			
 			double lp = 0.0;
 			size_t offset = 0; // 
@@ -513,7 +514,7 @@ public:
 				size_t nrules = grammar->count_rules( (nonterminal_t) nt);
 				if(nrules > 1) { // don't need to do anything if only one rule (but must incremnet offset)
 					Vector a = eigenslice(allA,offset,nrules); // TODO: seqN doesn't seem to work with this eigen version
-					Vector c = eigenslice(C.row(i),offset,nrules);
+					Vector c = eigenslice(myC.row(i),offset,nrules);
 					double n = a.sum(); assert(n > 0.0); 
 					double c0 = c.sum();
 					if(c0 != 0.0) { // TODO: Check this...  
@@ -553,7 +554,7 @@ public:
 		out += prefix + "-1\tposterior.score" +"\t"+ str(this->posterior) + "\n";
 		out += prefix + "-1\tparameter.prior" +"\t"+ str(this->prior) + "\n";
 		out += prefix + "-1\thuman.likelihood" +"\t"+ str(this->likelihood) + "\n";
-		out += prefix + "-1\tforwardalpha" +"\t"+ str(alpha) + "\n";
+		out += prefix + "-1\talpha" +"\t"+ str(alpha) + "\n";
 		out += prefix + "-1\tllt" +"\t"+ str(llt) + "\n";
 		out += prefix + "-1\tdecay" +"\t"+ str(decay) + "\n";
 		out += prefix + "-1\tpt" +"\t"+ str(pt) + "\n";
@@ -561,10 +562,11 @@ public:
 		// now add the grammar operations
 		size_t xi=0;
 		for(auto& r : *grammar) {
-			if(not logA.can_propose[xi]) continue; // we'll skip the things we set as effectively constants
-			std::string rs = r.format;
-			rs = std::regex_replace(rs, std::regex("\\%s"), "X");
-			out += prefix + str(r.nt) + "\t" + QQ(rs) +"\t" + str(exp(logA(xi))) + "\n"; // unlogged here
+			if(logA.can_propose[xi]) { // we'll skip the things we set as effectively constants (but still increment xi)
+				std::string rs = r.format;
+				rs = std::regex_replace(rs, std::regex("\\%s"), "X");
+				out += prefix + str(r.nt) + "\t" + QQ(rs) +"\t" + str(exp(logA(xi))) + "\n"; // unlogged here
+			}
 			xi++;
 		}	
 		

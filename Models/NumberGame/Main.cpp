@@ -7,7 +7,7 @@
 
 const double reliability = 0.99;
 const int N = 100; // what number do we go up to?
-const int m = 1; // min -- 1 or 0, who can ever remember?
+const int Nlow = 1; // min -- 1 or 0, who can ever remember?
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define primitives
@@ -42,7 +42,7 @@ std::tuple PRIMITIVES = {
 	// we give range a very low prior here or else it sure dominates
 	Primitive("range(%s,%s)",  +[](int x, int y) -> NumberSet { 
 		NumberSet out;
-		for(int i=std::max(x,m);i<=std::min(y,N);i++) { // we need min/max bounds here or we spend all our time adding garbage
+		for(int i=std::max(x,Nlow);i<=std::min(y,N);i++) { // we need min/max bounds here or we spend all our time adding garbage
 			out.insert(i);
 		}
 		return out;
@@ -68,7 +68,7 @@ std::tuple PRIMITIVES = {
 
 	Primitive("complement(%s)",    +[](NumberSet a) -> NumberSet { 
 		NumberSet out;
-		for(size_t i=m;i<N;i++) {
+		for(size_t i=Nlow;i<N;i++) {
 			if(a.find(i) == a.end())
 				out.insert(i);
 		}

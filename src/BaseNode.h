@@ -376,7 +376,7 @@ public:
 		return nullptr; // not here, losers
 	}
 	virtual this_t* get_nth(int n) { // default true on every node
-		std::function<int(const this_t&)> f = [](const this_t& n) { return 1;};
+		std::function<int(const this_t&)> f = [](const this_t& x) { return 1;};
 		return get_nth(n, f); 
 	}
 	
