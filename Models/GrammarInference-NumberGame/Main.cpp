@@ -46,7 +46,6 @@ public:
 			
 			const auto& di = human_data[i];
 			
-			double ll = 0.0; // the likelihood here
 			std::vector<double> ps(N+1,0); 
 			for(size_t h=0;h<nhypotheses();h++){
 				if(hposterior(h,i) < 1e-6) continue; // these contribute very little...
@@ -60,11 +59,12 @@ public:
 				}
 			}
 			
+			double ll = 0.0; // the likelihood here
 			for(size_t n=Nlow;n<=N;n++) {
 				auto p = ps[n];
 				/// and the likelihood of yes and no
-				ll += log( (1.0-alpha)*di.chance + alpha*p) * di.responses[i].first;
-				ll += log( (1.0-alpha)*di.chance + alpha*(1.0-p)) * di.responses[i].second;
+				ll += log( (1.0-alpha)*di.chance + alpha*p) * di.responses[n].first;
+				ll += log( (1.0-alpha)*di.chance + alpha*(1.0-p)) * di.responses[n].second;
 			}
 			
 			#pragma omp critical
