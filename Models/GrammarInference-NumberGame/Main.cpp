@@ -53,6 +53,7 @@ public:
 				
 				double p = 0.0; // marginalize over probabilities
 				for(size_t h=0;h<nhypotheses();h++){
+					if(hposterior(h,i) < 1e-6) continue; // these contribute very little...
 					for(const auto& mp : P->at(h,i)) {	
 						p += hposterior(h,i) * mp.second;
 					}
@@ -147,6 +148,8 @@ int main(int argc, char** argv){
 		
 		// now the human data comes from d:
 		// k.second already is a vector of yes/no pairs
+		// Hmm 1/N is not really the right chance rate here -- its really the probability
+		// for each individual number, but it's probably good for it to be sparse?
 		MyHumanDatum hd{learner_data, learner_data->size(), one, k.second, 1.0/N, 0};
 		human_data.push_back(std::move(hd));
 	}
@@ -175,6 +178,20 @@ int main(int argc, char** argv){
 	if(runtype == "grammar" or runtype == "both") { 
 		
 		auto h0 = MyGrammarHypothesis::make(hypotheses, &human_data);
+		
+		// Set this up so that we don't do MCMC on some grammar rules
+		size_t i = 0;
+		for(auto& r : grammar) {
+			// we'll not propose to all those goddamn integers we added
+			// NOTE when we do this, GrammarHypothesis won't print these either
+			if(r.instr.is_a(BuiltinOp::op_INT)) {
+				h0.logA.set(i, 1.0); // set the value to 1 (you MUST do this)
+				h0.set_can_propose(i, false);
+			}
+			i++;
+		}
+		
+		
 	
 		tic();
 		auto thechain = MCMCChain<MyGrammarHypothesis, decltype(gcallback)>(h0, &human_data, &gcallback);

@@ -27,6 +27,10 @@ public:
 	
 	Vector value;
 	
+	// whether each element of value is constant or not? 
+	// This is useful because sometimes we don't want to do MCMC on some parts of the grammar
+	std::vector<bool> can_propose; 
+	
 	VectorHypothesis() {
 	}
 
@@ -39,8 +43,21 @@ public:
 		return value(i); 
 	}
 	
+	void set(int i, double v) {
+		value(i) = v;
+	}
+	
+	/**
+	 * @brief Set whether we can propose to each element of b or not
+	 * @param i
+	 */	
+	void set_can_propose(size_t i, bool b) {
+		can_propose[i] = b;
+	}
+	
 	void set_size(size_t n) {
 		value = Vector::Zero(n);
+		can_propose.resize(n,true);
 	}
 	
 	virtual double compute_prior() override {
@@ -63,8 +80,14 @@ public:
 	virtual std::pair<self_t,double> propose() const override {
 		self_t out = *this;
 		
+		// choose an index
+		// (NOTE -- if can_propose is all false, this might loop infinitely...)
+		size_t i;
+		do {
+			i = myrandom(value.size()); 
+		} while(!can_propose[i]);
+		
 		// propose to one coefficient w/ SD of 0.1
-		auto i = myrandom(value.size()); 
 		out.value(i) = value(i) + PROPOSAL_SCALE*normal(rng);
 		
 		// everything is symmetrical so fb=0
@@ -73,7 +96,10 @@ public:
 	virtual self_t restart() const override {
 		self_t out = *this;
 		for(auto i=0;i<value.size();i++) {
-			out.value(i) = MEAN + SD*normal(rng);
+			if(out.can_propose[i]) {
+				// we don't want to change parameters unless we can propose to them
+				out.value(i) = MEAN + SD*normal(rng);
+			}
 		}
 		return out;
 	}

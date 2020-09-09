@@ -101,9 +101,11 @@ public:
 	// iterate so now we might make a map in constructing, but we stores as a vector of pairs
 	typedef Vector2D<std::vector<std::pair<typename HYP::output_t,double>>> Predict_t; 
 		
-	VectorHypothesis logA; // a simple normal vector for the log of a
+	VectorHypothesis  logA; // a simple normal vector for the log of a
+	
+	// This stores all of our parameters -- with standard normal priors
 	VectorHypothesis params; // alpha, likelihood temperature, decay
-	constexpr static int NPARAMS = 3; // how many parameters do we have?
+	constexpr static int NPARAMS = 4; // how many parameters do we have?
 	
 	typename HYP::Grammar_t* grammar;
 	
@@ -118,7 +120,7 @@ public:
 	// These variables store some parameters and get recomputed
 	// in proposal when necessary 
 	std::shared_ptr<Matrix> decayedLikelihood;
-	double alpha, llt, decay; // the parameters 
+	double alpha, llt, decay, pt; // the parameters 
 	
 	// stored so we can remember what we computed for. 
 	const data_t* which_data; 
@@ -165,9 +167,25 @@ public:
 	}
 	
 	virtual void recompute_alpha() { alpha = 1.0/(1.0+expf(-3.0*params(0))); }
-	virtual void recompute_llt()   { llt = expf(params(1)/4.0);	} // centered around 1
+	virtual void recompute_llt()   { llt = expf(params(1)/10.0);	} // centered around 1
 	virtual void recompute_decay() { decay = expf(params(2)-2); } // peaked near zero
+	virtual void recompute_pt()    { pt  = expf(params(3)/10.0); }
 	
+	/**
+	 * @brief Set whether I can propose to a value in logA -- this is handled by VectorHypothesis
+	 * 		  Here, though, we warn if the value is not 1.0
+	 * @param i
+	 * @param b
+	 */
+	
+	virtual void set_can_propose(size_t i, bool b) {
+		logA.set_can_propose(i,b);
+		
+		if(logA(i) != 1.0) {
+			CERR "# Warning, set_can_propose is setting false to logA(" << str(i) << ") != 1.0" ENDL;
+		}
+		
+	}
 	
 	/**
 	 * @brief A convenient function that uses C to say how many hypotheses
@@ -319,11 +337,12 @@ public:
 		for(size_t di=0;di<human_data.size();di++) {	
 			for(size_t h=0;h<hypotheses.size();h++) {			
 				
-				// we get back a distcrete distribution, but we'd like to store it as a vector
+				// we get back a discrete distribution, but we'd like to store it as a vector
 				// so its faster to iterature
 				auto ret = hypotheses[h](*human_data[di].predict);
 				
-				std::vector<std::pair<typename HYP::output_t,double>> v(ret.size());
+				std::vector<std::pair<typename HYP::output_t,double>> v;
+				v.reserve(ret.size());
 				
 				for(auto& x : ret.values()) {
 					v.push_back(std::make_pair(x.first, exp(x.second)));
@@ -345,7 +364,10 @@ public:
 	 */	
 	virtual Matrix compute_normalized_posterior() {
 		
-		Vector hprior = hypothesis_prior(*C); 
+		Vector hprior = hypothesis_prior(*C) / pt; 
+		
+		// do we need to normalize the prior here? The answer is no -- because its just a constant
+		// and that will get normalized away in posterior
 		
 		Matrix hposterior = decayedLikelihood->colwise() + hprior; // the model's posterior
 		
@@ -429,6 +451,7 @@ public:
 		out.recompute_alpha();
 		out.recompute_llt();
 		out.recompute_decay();
+		out.recompute_pt();
 		
 		out.recompute_decayedLikelihood(*out.which_data);
 		
@@ -517,7 +540,8 @@ public:
 	
 	/**
 	 * @brief This returns a string for this hypothesis. Defaulty, now, just in tidy format
-	 * 		  with all the parameters, one on each row
+	 * 		  with all the parameters, one on each row. Note these parameters are shown after
+	 * 		  transformation (e.g. the prior parameters are NOT logged)
 	 * @return 
 	 */	
 	virtual std::string string(std::string prefix="") const override {
@@ -532,16 +556,16 @@ public:
 		out += prefix + "-1\tforwardalpha" +"\t"+ str(alpha) + "\n";
 		out += prefix + "-1\tllt" +"\t"+ str(llt) + "\n";
 		out += prefix + "-1\tdecay" +"\t"+ str(decay) + "\n";
+		out += prefix + "-1\tpt" +"\t"+ str(pt) + "\n";
 		
 		// now add the grammar operations
 		size_t xi=0;
-		for(size_t nt=0;nt<grammar->count_nonterminals();nt++) {
-			for(size_t i=0;i<grammar->count_rules( (nonterminal_t) nt);i++) {
-				std::string rs = grammar->get_rule((nonterminal_t) nt,i)->format;
-		 		rs = std::regex_replace(rs, std::regex("\\%s"), "X");
-				out += prefix + str(nt) + "\t" + QQ(rs) +"\t" + str(exp(logA(xi))) + "\n"; // unlogged here
-				xi++;
-			}
+		for(auto& r : *grammar) {
+			if(not logA.can_propose[xi]) continue; // we'll skip the things we set as effectively constants
+			std::string rs = r.format;
+			rs = std::regex_replace(rs, std::regex("\\%s"), "X");
+			out += prefix + str(r.nt) + "\t" + QQ(rs) +"\t" + str(exp(logA(xi))) + "\n"; // unlogged here
+			xi++;
 		}	
 		
 		return out;	
