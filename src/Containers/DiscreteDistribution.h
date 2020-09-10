@@ -129,7 +129,7 @@ public:
 	}
 	
 	
-	std::vector<T> best(size_t N) const {
+	std::vector<T> best(size_t n) const {
 		/**
 		 * @brief Get the N best from this distribution
 		 * @param N
@@ -141,7 +141,7 @@ public:
 		std::sort(v.begin(), v.end(), [](auto x, auto y){ return x.second > y.second; }); // put the big stuff first
 		
 		std::vector<T> out;
-		for(size_t i=0;i<std::min(N, v.size());i++){
+		for(size_t i=0;i<std::min(n, v.size());i++){
 			out.push_back(v[i].first);
 		}
 

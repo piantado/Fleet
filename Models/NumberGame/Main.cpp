@@ -26,6 +26,13 @@ const NumberSet odds    = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29
 const NumberSet squares = {1, 4, 9, 16, 25, 36, 49, 64, 81, 100};
 const NumberSet decades = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 
+// just for fun here
+const NumberSet elevens = {11, 22, 33, 44, 55, 66, 77, 88, 99};
+
+// probably should expect to be low:
+const NumberSet fibonacci = {1, 2, 3, 5, 8, 13, 21, 34, 55, 89};
+const NumberSet weird = {7, 44, 89}; // just some arbitrary set -- probably low prior in grammar inference
+
 
 #include "Primitives.h"
 #include "Builtins.h"
@@ -38,6 +45,9 @@ std::tuple PRIMITIVES = {
 	Primitive("odds",       +[]() -> NumberSet { return odds; }),
 	Primitive("squares",    +[]() -> NumberSet { return squares; }),
 	Primitive("decades",    +[]() -> NumberSet { return decades; }),
+	Primitive("elevens",    +[]() -> NumberSet { return elevens; }),
+	Primitive("fibonacci",  +[]() -> NumberSet { return fibonacci; }),
+	Primitive("weird",      +[]() -> NumberSet { return weird; }),
 	
 	// we give range a very low prior here or else it sure dominates
 	Primitive("range(%s,%s)",  +[](int x, int y) -> NumberSet { 

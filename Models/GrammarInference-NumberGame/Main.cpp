@@ -48,7 +48,9 @@ public:
 			
 			std::vector<double> ps(N+1,0); 
 			for(size_t h=0;h<nhypotheses();h++){
-				if(hposterior(h,i) < 1e-6) continue; // these contribute very little...
+				
+				// these contribute very little and should be skipped
+				if(hposterior(h,i) < 1e-6) continue; 
 				
 				assert(P->at(h,i).size() == 1); // should be just one element
 				assert(P->at(h,i)[0].second == 1.0); // should be 100% probability
