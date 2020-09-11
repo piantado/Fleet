@@ -6,6 +6,10 @@
 #include "RuntimeCounter.h"
 #include "ProgramLoader.h"
 
+// We define a type for missing arguments -- this can be passed as input (or even output)
+// and callable will handle with thunks
+//class empty_t {};
+
 /**
  * @class Callable
  * @author Steven Piantadosi

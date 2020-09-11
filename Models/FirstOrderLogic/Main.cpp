@@ -1,12 +1,15 @@
 
 
 ///########################################################################################
-// This is a differnet formulation of rational rules that uses std::function to allow 
+// This is a different formulation of rational rules that uses std::function to allow 
 // primitives that manipulate functions (and thus quantifiers like forall, exists)
 // To make these useful, we need to include sets of nodes too.
 // This also illustrates throwing exceptions in primitives.  
 ///########################################################################################
 
+// TODO: 
+//  Add equal-shape, equal-color operations
+// 	Is there a way to make and/or short-circuit?
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We need to define some structs to hold the object features
@@ -14,42 +17,36 @@
 #include <set>
 #include <functional>
 
+#include "Object.h"
+
 enum class Shape { Square, Triangle, Circle};
 enum class Color { Red, Green, Blue};
 
-struct Object { 
-	Color color; 
-	Shape shape; 
-	
-	// Must define operator< in order to be stored in a set
-	bool operator<(const Object& o) const {
-		if( color != o.color) return color < o.color;
-		else                  return shape < o.shape;
-	}
-	
-	bool operator==(const Object o) const {
-		return (shape==o.shape) and (color==o.color);
-	}
+// Define an object with these features
+class MyObject : public Object<Shape,Color> {
+	using Super = Object<Shape,Color>;
+	using Super::Super;
 };
 
-
 // Define a set of objects
-typedef std::set<Object> ObjectSet;
+typedef std::set<MyObject> ObjectSet;
 
 /**
  * @class ObjectToBool
  * @brief Declare a function type so that we can construct with a pointer
  */
-struct ObjectToBool : public std::function<bool(Object)> {
-	using F = std::function<bool(Object)>;
+struct ObjectToBool : public std::function<bool(MyObject)> {
+	using F = std::function<bool(MyObject)>;
 	using F::F;
-	ObjectToBool( bool* f(Object) ) {
-		*this = f;
+	
+	// define a constructor
+	ObjectToBool( bool* f(MyObject) ) {
+		this->operator=(f);
 	}
 };
 
 // The arguments to a hypothesis will be a pair of a set and an object (as in Piantadosi, Tenenbaum, Goodman 2016)
-typedef std::tuple<Object,ObjectSet> ArgType; // this is the type of arguments we give to our function
+typedef std::tuple<MyObject,ObjectSet> ArgType; // this is the type of arguments we give to our function
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare primitives
@@ -66,21 +63,21 @@ std::tuple PRIMITIVES = {
 
 	// these are funny primitives that to fleet are functions with no arguments, but themselves
 	// return functions from objects to bool (ObjectToBool):
-	Primitive("red",       +[]() -> ObjectToBool { return +[](Object x) {return x.color == Color::Red;}; }),
-	Primitive("green",     +[]() -> ObjectToBool { return +[](Object x) {return x.color == Color::Green;}; }),
-	Primitive("blue",      +[]() -> ObjectToBool { return +[](Object x) {return x.color == Color::Blue;}; }),
+	Primitive("red",       +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Red);}; }),
+	Primitive("green",     +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Green);}; }),
+	Primitive("blue",      +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Blue);}; }),
 
-	Primitive("square",    +[]() -> ObjectToBool { return +[](Object x) {return x.shape == Shape::Square;}; }),
-	Primitive("triangle",  +[]() -> ObjectToBool { return +[](Object x) {return x.shape == Shape::Triangle;}; }),
-	Primitive("circle",    +[]() -> ObjectToBool { return +[](Object x) {return x.shape == Shape::Circle;}; }),
+	Primitive("square",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Square);}; }),
+	Primitive("triangle",  +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Triangle);}; }),
+	Primitive("circle",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Circle);}; }),
 	
-	// Define logical operators as operating over the functions. These combine functions from Object->Bool into 
-	// new ones from Object->Bool. Note that these inner lambdas must capture by copy, not reference, since when we 
+	// Define logical operators as operating over the functions. These combine functions from MyObject->Bool into 
+	// new ones from MyObject->Bool. Note that these inner lambdas must capture by copy, not reference, since when we 
 	// call them, a and b may not be around anymore. We've written them with [] to remind us their arguments are functions, not objects
 	// NOTE: These do not short circuit...
-	Primitive("and[%s,%s]",   +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](Object x) { return a(x) and b(x);}; }, 2.0), // optional specification of prior weight (default=1.0)
-	Primitive("or[%s,%s]",    +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](Object x) { return a(x) or b(x);}; }), 
-	Primitive("not[%s]",      +[](ObjectToBool a)                 -> ObjectToBool { return [=](Object x) { return not a(x);}; }), 
+	Primitive("and[%s,%s]",   +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) and b(x);}; }, 2.0), // optional specification of prior weight (default=1.0)
+	Primitive("or[%s,%s]",    +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) or b(x);}; }), 
+	Primitive("not[%s]",      +[](ObjectToBool a)                 -> ObjectToBool { return [=](MyObject x) { return not a(x);}; }), 
 	
 	Primitive("forall(%s,%s)",   +[](ObjectToBool f, ObjectSet s)    -> bool { 
 		for(auto& x : s) {
@@ -96,7 +93,7 @@ std::tuple PRIMITIVES = {
 		return false;
 	}), 
 	
-	Primitive("contains(%s, %s)",   +[](Object z, ObjectSet s)    -> bool { 
+	Primitive("contains(%s, %s)",   +[](MyObject z, ObjectSet s)    -> bool { 
 		for(auto& x : s) {
 			if(z == x) return true;
 		}
@@ -116,7 +113,7 @@ std::tuple PRIMITIVES = {
 	}), 
 
 	
-	Primitive("iota(%s)",   +[](ObjectSet s)    -> Object { 
+	Primitive("iota(%s)",   +[](ObjectSet s)    -> MyObject { 
 		// return the unique element in the set. If not, we throw an exception
 		// which must be caught in calling below. 
 		if(s.size() > 1) throw IotaException();
@@ -125,10 +122,10 @@ std::tuple PRIMITIVES = {
 	
 	
 	// add an application operator
-	Primitive("apply(%s,%s)",       +[](ObjectToBool f, Object x)  -> bool { return f(x); }, 10.0),
+	Primitive("apply(%s,%s)",       +[](ObjectToBool f, MyObject x)  -> bool { return f(x); }, 10.0),
 	
 	// And we assume that we're passed a tuple of an object and set
-	Primitive("%s.o",       +[](ArgType t)  -> Object    { return std::get<0>(t); }),
+	Primitive("%s.o",       +[](ArgType t)  -> MyObject    { return std::get<0>(t); }),
 	Primitive("%s.s",       +[](ArgType t)  -> ObjectSet { return std::get<1>(t); }),
 	
 	Builtin::X<ArgType>("x")
@@ -141,8 +138,8 @@ std::tuple PRIMITIVES = {
 
 #include "Grammar.h"
 
-class MyGrammar : public Grammar<bool,Object,ArgType,ObjectSet,ObjectToBool> {
-	using Super =  Grammar<bool,Object,ArgType,ObjectSet,ObjectToBool>;
+class MyGrammar : public Grammar<bool,MyObject,ArgType,ObjectSet,ObjectToBool> {
+	using Super =  Grammar<bool,MyObject,ArgType,ObjectSet,ObjectToBool>;
 	using Super::Super;
 };
 
@@ -210,10 +207,10 @@ int main(int argc, char** argv){
 	// mydata stores the data for the inference model
 	MyHypothesis::data_t mydata;	
 	
-	ObjectSet s = {Object{.color=Color::Red, .shape=Shape::Triangle},
-				   Object{.color=Color::Red, .shape=Shape::Triangle},
-				   Object{.color=Color::Red, .shape=Shape::Triangle}};
-	Object x = Object{.color=Color::Red, .shape=Shape::Triangle};
+	ObjectSet s = {MyObject(Shape::Triangle, Color::Red),
+				   MyObject(Shape::Square, Color::Green),
+				   MyObject(Shape::Triangle, Color::Red)};
+	MyObject x = MyObject(Shape::Triangle, Color::Red);
 	
 	mydata.push_back(MyHypothesis::datum_t{.input=std::make_tuple(x,s), .output=true,  .reliability=0.99});
 	

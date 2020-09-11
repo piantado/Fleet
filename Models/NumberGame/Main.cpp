@@ -185,7 +185,7 @@ int main(int argc, char** argv){
 
 	MyGrammar grammar(PRIMITIVES);
 	
-	for(int i=m;i<=N;i++) {
+	for(int i=Nlow;i<=N;i++) {
 		grammar.add<int>(BuiltinOp::op_INT, str(i), 10.0/N, i);		
 	}
 

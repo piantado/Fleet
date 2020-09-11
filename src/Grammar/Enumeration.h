@@ -6,19 +6,26 @@
 
 /* Functions for enumerating trees */
 
+/**
+ * @brief This is a handy function to enumerate trees produced by the grammar. 
+ *  This works by encoding each tree into an integer using some "pairing functions" 
+ *  (see https://arxiv.org/pdf/1706.04129.pdf)
+ * 	Specifically, here is how we encode a tree: if it's a terminal,
+ * 	encode the index of the terminal in the grammar. 
+ * 	If it's a nonterminal, encode the rule with a modular pairing function
+ * 	and then use Rosenberg-Strong encoding to encode each of the children. 
+ * 	In this way, we can make a 1-1 pairing between trees and integers,
+ * 	and therefore store trees as integers in a reversible way
+ * 	as well as enumerate by giving this integers. 
+
+ * @param g - the grammar
+ * @param nt
+ * @param is
+ * @return 
+ */
 template<typename Grammar_t>
 Node expand_from_integer(Grammar_t* g, nonterminal_t nt, IntegerizedStack& is) {
-	// this is a handy function to enumerate trees produced by the grammar. 
-	// This works by encoding each tree into an integer using some "pairing functions"
-	// (see https://arxiv.org/pdf/1706.04129.pdf)
-	// Specifically, here is how we encode a tree: if it's a terminal,
-	// encode the index of the terminal in the grammar. 
-	// If it's a nonterminal, encode the rule with a modular pairing function
-	// and then use Rosenberg-Strong encoding to encode each of the children. 
-	// In this way, we can make a 1-1 pairing between trees and integers,
-	// and therefore store trees as integers in a reversible way
-	// as well as enumerate by giving this integers. 
-	
+
 	// NOTE: for now this doesn't work when nt only has finitely many expansions/trees
 	// below it. Otherwise we'll get an assertion error eventually.
 	
