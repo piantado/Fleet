@@ -48,8 +48,7 @@ public:
 	void run_thread(Control ctl) override {
 		
 		while( ctl.running() ) {
-			int index = next_index() % pool.size();
-			auto& chain = pool[index];
+			auto& chain = pool[next_index() % pool.size()];
 			
 			//#ifdef DEBUG_CHAINPOOL
 			//			COUT "# Running thread " <<std::this_thread::get_id() << " on "<< idx TAB chain.current.posterior TAB chain.current.string() ENDL;

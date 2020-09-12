@@ -21,6 +21,7 @@
 
 enum class Shape { Square, Triangle, Circle};
 enum class Color { Red, Green, Blue};
+//enum class Size  { Small, Medium, Large}
 
 // Define an object with these features
 class MyObject : public Object<Shape,Color> {
@@ -50,12 +51,8 @@ struct ObjectxObjectToBool : public std::function<bool(MyObject,MyObject)> {
 	using F::F;
 	
 	// define a constructor
-	ObjectToBool( bool* f(MyObject,MyObject) ) {
+	ObjectxObjectToBool( bool* f(MyObject,MyObject) ) {
 		this->operator=(f);
-	}
-	
-	ObjectToBool curry(MyObject& x) {
-		
 	}
 };
 
@@ -134,9 +131,21 @@ std::tuple PRIMITIVES = {
 		else             return *s.begin();
 	}), 
 	
+	// Relations -- these will require currying
+	Primitive("same-shape",   +[]() -> ObjectxObjectToBool { 
+		return +[](MyObject x, MyObject y) { return x.get<Shape>() == y.get<Shape>();}; 
+	}),
+	
+	Primitive("same-color",   +[]() -> ObjectxObjectToBool { 
+		return +[](MyObject x, MyObject y) { return x.get<Color>() == y.get<Color>();}; 
+	}),
+	
+	Primitive("curry[%s,%s]",   +[](ObjectxObjectToBool f, MyObject x) -> ObjectToBool { 
+		return [f,x](MyObject y) { return f(x,y); }; 
+	}),
 	
 	// add an application operator
-	Primitive("apply(%s,%s)",       +[](ObjectToBool f, MyObject x)  -> bool { return f(x); }, 10.0),
+	Primitive("apply[%s,%s]",       +[](ObjectToBool f, MyObject x)  -> bool { return f(x); }, 10.0),
 	
 	// And we assume that we're passed a tuple of an object and set
 	Primitive("%s.o",       +[](ArgType t)  -> MyObject    { return std::get<0>(t); }),
@@ -152,8 +161,8 @@ std::tuple PRIMITIVES = {
 
 #include "Grammar.h"
 
-class MyGrammar : public Grammar<bool,MyObject,ArgType,ObjectSet,ObjectToBool> {
-	using Super =  Grammar<bool,MyObject,ArgType,ObjectSet,ObjectToBool>;
+class MyGrammar : public Grammar<bool,MyObject,ArgType,ObjectSet,ObjectToBool,ObjectxObjectToBool> {
+	using Super =  Grammar<bool,MyObject,ArgType,ObjectSet,ObjectToBool,ObjectxObjectToBool>;
 	using Super::Super;
 };
 
