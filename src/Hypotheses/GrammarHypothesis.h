@@ -19,6 +19,7 @@
 extern volatile sig_atomic_t CTRL_C;
 
 #include "VectorHypothesis.h"
+#include "TNormalVariable.h"
 
 // If we do this, then we compute the grammar hypothesis's predictive values in log space. This is more
 // accurate but quite a bit slower, so it's off by default. 
@@ -73,9 +74,6 @@ std::vector<HYP> get_hypotheses_from_mcmc(HYP& h0, std::vector<typename HYP::dat
 }
 
 
-
-
-
 /**
  * @class GrammarHypothesis
  * @author piantado
@@ -89,7 +87,10 @@ std::vector<HYP> get_hypotheses_from_mcmc(HYP& h0, std::vector<typename HYP::dat
  * 			NOTE: Without likelihood decay, this would be much faster. It should work fine if likelihood decay is just set once. 
  * 
  */
-template<typename this_t, typename HYP, typename datum_t=HumanDatum<HYP>, typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
+template<typename this_t, 
+         typename HYP, 
+		 typename datum_t=HumanDatum<HYP>, 
+		 typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
 class GrammarHypothesis : public MCMCable<this_t, datum_t, data_t>  {
 public:
 
@@ -103,9 +104,12 @@ public:
 		
 	VectorHypothesis  logA; // a simple normal vector for the log of a
 	
-	// This stores all of our parameters -- with standard normal priors
-	VectorHypothesis params; // alpha, likelihood temperature, decay
-	constexpr static int NPARAMS = 4; // how many parameters do we have?
+	// Here is a list of built-in parameters that we can use. Each stores a standard
+	// normal and a value under the specified transformation
+	TNormalVariable< +[](float x)->float { return 1.0/(1.0+expf(-1.7*x)); }> alpha;
+	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            llt;
+	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            pt;
+	TNormalVariable< +[](float x)->float { return expf(x-2); }>              decay;  // peaked near zero
 	
 	typename HYP::Grammar_t* grammar;
 	
@@ -120,7 +124,6 @@ public:
 	// These variables store some parameters and get recomputed
 	// in proposal when necessary 
 	std::shared_ptr<Matrix> decayedLikelihood;
-	double alpha, llt, decay, pt; // the parameters 
 	
 	// stored so we can remember what we computed for. 
 	const data_t* which_data; 
@@ -150,7 +153,6 @@ public:
 		}
 		
 		logA.set_size(grammar->count_rules());
-		params.set_size(NPARAMS); 
 		
 		// when we are initialized this way, we compute C, LL, P, and the decayed ll. 
 		recompute_C(hypotheses);
@@ -165,19 +167,13 @@ public:
 		COUT "# Done computing decayedLikelihood" ENDL;
 		COUT "# Starting MCMC" ENDL;
 	}
-	
-	virtual void recompute_alpha() { alpha = 1.0/(1.0+expf(-3.0*params(0))); }
-	virtual void recompute_llt()   { llt = expf(params(1)/5.0);	} // centered near 1
-	virtual void recompute_decay() { decay = expf(params(2)-2); } // peaked near zero
-	virtual void recompute_pt()    { pt  = expf(params(3)/5.0); }
-	
+		
 	/**
 	 * @brief Set whether I can propose to a value in logA -- this is handled by VectorHypothesis
 	 * 		  Here, though, we warn if the value is not 1.0
 	 * @param i
 	 * @param b
-	 */
-	
+	 */	
 	virtual void set_can_propose(size_t i, bool b) {
 		logA.set_can_propose(i,b);
 		
@@ -301,7 +297,7 @@ public:
 		// so that we can just take the tail for what we need
 		Vector powers = Vector::Ones(MX);
 		for(int i=1;i<MX;i++) { // intentionally leaving powers(0) = 1 here
-			powers(i) = powf(i,-decay);
+			powers(i) = powf(i,-decay.get());
 		}
 		
 		// fix it if its the wrong size
@@ -316,7 +312,7 @@ public:
 			for(int di=0;di<decayedLikelihood->cols();di++) {
 				const Vector& v = LL->at(h,di).first;
 				const Vector  d = powers(LL->at(h,di).second.array());
-				decayedLikelihood->operator()(h,di) = v.dot(d) / llt;							
+				decayedLikelihood->operator()(h,di) = v.dot(d);							
 				//CERR decayedLikelihood->operator()(h,di) ENDL;
 			}
 		}
@@ -355,7 +351,11 @@ public:
 
 	
 	virtual double compute_prior() override {
-		return this->prior = logA.compute_prior() + params.compute_prior();
+		return this->prior = logA.compute_prior() + 
+							 alpha.compute_prior() +
+							 llt.compute_prior() + 
+							 pt.compute_prior() + 
+							 decay.compute_prior();
 	}
 	
 	/**
@@ -364,12 +364,12 @@ public:
 	 */	
 	virtual Matrix compute_normalized_posterior() {
 		
-		Vector hprior = hypothesis_prior(*C) / pt; 
+		Vector hprior = hypothesis_prior(*C) / pt.get(); 
 		
 		// do we need to normalize the prior here? The answer is no -- because its just a constant
 		// and that will get normalized away in posterior
 		
-		Matrix hposterior = decayedLikelihood->colwise() + hprior; // the model's posterior
+		Matrix hposterior = (*decayedLikelihood / llt.get()).colwise() + hprior; // the model's posterior
 		
 		// now normalize it and convert to probabilities
 		#pragma omp parallel for
@@ -427,13 +427,13 @@ public:
 				double ll = 0.0; // the likelihood here
 				auto& di = human_data[i];
 				for(const auto& r : di.responses) {
-					ll += log( (1.0-alpha)*di.chance + alpha*model_predictions[r.first]) * r.second; // log probability times the number of times they answered this
+					ll += log( (1.0-alpha.get())*di.chance + alpha.get()*model_predictions[r.first]) * r.second; // log probability times the number of times they answered this
 				}
 				
 				#pragma omp critical
 				this->likelihood += ll;
 			}
-		
+			//CERR this->likelihood ENDL;
 			return this->likelihood;	
 		}
 		else {
@@ -446,12 +446,11 @@ public:
 		this_t out(*static_cast<const this_t*>(this)); // copy
 		
 		out.logA = logA.restart();
-		out.params = params.restart();	
-
-		out.recompute_alpha();
-		out.recompute_llt();
-		out.recompute_decay();
-		out.recompute_pt();
+		
+		out.alpha = alpha.restart();
+		out.llt   = llt.restart();
+		out.decay = decay.restart();
+		out.pt    = pt.restart();
 		
 		out.recompute_decayedLikelihood(*out.which_data);
 		
@@ -466,26 +465,52 @@ public:
 	 * @return 
 	 */		
 	[[nodiscard]] virtual std::pair<this_t,double> propose() const override {
-		this_t out(*static_cast<const this_t*>(this)); // copy
 		
-		if(flip(0.1)){
-			auto [ p, fb ] = params.propose();
-			out.params = p;
+		// make a copy
+		this_t out(*static_cast<const this_t*>(this)); 
+		
+		if(flip(0.15)){
 			
-			// figure out what we need to recompute
-			if(p(0) != params(0)) out.recompute_alpha();
-			if(p(1) != params(1)) out.recompute_llt();
-			if(p(2) != params(2)) out.recompute_decay();
-			if(p(3) != params(3)) out.recompute_pt();
+			// see what to propose to
+			double myfb = 0.0;
+			switch(myrandom(4)) {
+				case 0: {
+					auto [ v, fb ] = alpha.propose();
+					out.alpha = v;
+					myfb += fb;
+					break;
+				}
+				case 1: {
+					auto [ v, fb ] = llt.propose();
+					out.llt = v;
+					myfb += fb;
+					break;
+				}
+				case 2: {
+					auto [ v, fb ] = pt.propose();
+					out.pt = v;
+					myfb += fb;
+					break;
+				}
+				case 3: {
+					auto [ v, fb ] = decay.propose();
+					out.decay = v;
+					myfb += fb;
+					break;
+				}
+				default: assert(false);
+			}
 			
-			if(p(1) != params(1) or p(2) != params(2))	{// note: must come after its computed
+			// if we need to recompute the decay:
+			if(decay != out.decay)	{
 				out.recompute_decayedLikelihood(*out.which_data); // must recompute this when we get to likelihood
 			}			
-			return std::make_pair(out, fb);
+			return std::make_pair(out, myfb);
 		}		
 		else {
-			auto [ h, fb ] = logA.propose();
-			out.logA = h;
+			//CERR "HERE" ENDL;
+			auto [ v, fb ] = logA.propose();
+			out.logA = v;
 			return std::make_pair(out, fb);
 		}
 	}
@@ -534,9 +559,15 @@ public:
 		return out;		
 	}
 	
+//	virtual bool operator==(const this_t& h) const = default;
+	
 	virtual bool operator==(const this_t& h) const override {
 		return (C == h.C and LL == h.LL and P == h.P) and 
-				(logA == h.logA) and (params == h.params);
+				(logA == h.logA)   and 
+				(alpha == h.alpha) and
+				(llt   == h.llt)   and
+				(pt    == h.pt)    and
+				(decay == h.decay);
 	}
 	
 	/**
@@ -554,10 +585,10 @@ public:
 		out += prefix + "-1\tposterior.score" +"\t"+ str(this->posterior) + "\n";
 		out += prefix + "-1\tparameter.prior" +"\t"+ str(this->prior) + "\n";
 		out += prefix + "-1\thuman.likelihood" +"\t"+ str(this->likelihood) + "\n";
-		out += prefix + "-1\talpha" +"\t"+ str(alpha) + "\n";
-		out += prefix + "-1\tllt" +"\t"+ str(llt) + "\n";
-		out += prefix + "-1\tdecay" +"\t"+ str(decay) + "\n";
-		out += prefix + "-1\tpt" +"\t"+ str(pt) + "\n";
+		out += prefix + "-1\talpha" +"\t"+ str(alpha.get()) + "\n";
+		out += prefix + "-1\tllt" +"\t"+ str(llt.get()) + "\n";
+		out += prefix + "-1\tpt" +"\t"+ str(pt.get()) + "\n";
+		out += prefix + "-1\tdecay" +"\t"+ str(decay.get()) + "\n";
 		
 		// now add the grammar operations
 		size_t xi=0;
@@ -583,7 +614,7 @@ public:
 	
 	virtual size_t hash() const override { 
 		size_t output = logA.hash();
-		hash_combine(output, params.hash());
+		hash_combine(output, alpha.hash(), llt.hash(), pt.hash(), decay.hash());
 		return output;
 	}
 	

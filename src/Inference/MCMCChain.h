@@ -6,7 +6,7 @@
 #include "FiniteHistory.h"
 #include "Control.h"
 
-//#define DEBUG_MCMC 
+//#define DEBUG_MCMC 1
 
 // we take callback as a type (which hopefully can be deduce) so we can pass any callable object as callback (like a TopN)
 // This must be stored as a shared_ptr 

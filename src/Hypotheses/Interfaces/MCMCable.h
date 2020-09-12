@@ -30,6 +30,11 @@ public:
 		auto h = this_t(a...);
 		return h.restart();
 	}
+	
+	// Just define for convenience
+	virtual bool operator!=(const this_t& h)   const {
+		return not this->operator==(h);
+	}
 };
 
 

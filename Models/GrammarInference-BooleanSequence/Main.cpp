@@ -159,10 +159,43 @@ public:
 
 #include "GrammarHypothesis.h" 
 
+/**
+ * @class MyGrammarHypothesis
+ * @author Steven Piantadosi
+ * @date 11/09/20
+ * @file Main.cpp
+ * @brief Here is a version where we include inferring a parameter for runtime. I have to override a few things:
+ */
 class MyGrammarHypothesis final : public GrammarHypothesis<MyGrammarHypothesis, MyHypothesis> {
 public:
 	using Super = GrammarHypothesis<MyGrammarHypothesis, MyHypothesis>;
 	using Super::Super;
+
+//	std::shared_ptr<Vector> runtimes; // one for each hypothesis
+//	NormalHypothesis<[](double* x){return x;}> beta_rt;
+//
+//	virtual void set_hypotheses_and_data(std::vector<HYP>& hypotheses, const data_t& human_data) {
+//		
+//		// do the standard call
+//		Super::set_hypotheses_and_data(hypotheses, human_data);
+//		
+//		// and then compute the runtimes -- we'll make it the average runtime across all the human datasets
+//		// NOTE: This is a little inefficient since it runs everything twice, but it should only be run once
+//		runtimes.reset(new Vector(hypotheses.size()));
+//		unsigned long total_rt = 0;
+//		unsigned long numdata = 0;
+//		for(auto& hd : human_data) {
+//			for(auto& 
+//			hypotheses[i].callvms(human
+//		}
+//	}
+//
+//	// add in prior on beta_rt
+//	virtual double compute_prior() override {
+//		return this->prior = Super::compute_prior() + beta_rt.compute_prior();
+//	}
+//	
+	
 };
 
 size_t grammar_callback_count = 0;
@@ -181,7 +214,8 @@ void gcallback(MyGrammarHypothesis& h) {
 S hypothesis_path = "hypotheses.txt";
 S runtype         = "both"; // can be both, hypotheses (just find hypotheses), or grammar (just do mcmc, loading from hypothesis_path)
 
-int main(int argc, char** argv){ 	
+int main(int argc, char** argv){
+ 	
 	Fleet fleet("An example of grammar inference for boolean concepts");
 	fleet.add_option("--hypotheses",  hypothesis_path, "Where to load or save hypotheses.");
 	fleet.add_option("--runtype",  runtype, "hypotheses = do we just do mcmc on hypotheses; grammar = mcmc on the grammar, loading the hypotheses; both = do both");

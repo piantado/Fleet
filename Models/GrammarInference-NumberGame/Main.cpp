@@ -65,8 +65,8 @@ public:
 			for(size_t n=Nlow;n<=N;n++) {
 				auto p = ps[n];
 				/// and the likelihood of yes and no
-				ll += log( (1.0-alpha)*di.chance + alpha*p) * di.responses[n].first;
-				ll += log( (1.0-alpha)*di.chance + alpha*(1.0-p)) * di.responses[n].second;
+				ll += log( (1.0-alpha.get())*di.chance + alpha.get()*p) * di.responses[n].first;
+				ll += log( (1.0-alpha.get())*di.chance + alpha.get()*(1.0-p)) * di.responses[n].second;
 			}
 			
 			#pragma omp critical
