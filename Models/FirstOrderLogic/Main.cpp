@@ -24,40 +24,17 @@ enum class Color { Red, Green, Blue};
 //enum class Size  { Small, Medium, Large}
 
 // Define an object with these features
-class MyObject : public Object<Shape,Color> {
-	using Super = Object<Shape,Color>;
-	using Super::Super;
-};
+using MyObject = Object<Shape,Color>;
 
 // Define a set of objects
-typedef std::set<MyObject> ObjectSet;
+using ObjectSet = std::set<MyObject>;
 
-/**
- * @class ObjectToBool
- * @brief Declare a function type so that we can construct with a pointer
- */
-struct ObjectToBool : public std::function<bool(MyObject)> {
-	using F = std::function<bool(MyObject)>;
-	using F::F;
-	
-	// define a constructor
-	ObjectToBool( bool* f(MyObject) ) {
-		this->operator=(f);
-	}
-};
-
-struct ObjectxObjectToBool : public std::function<bool(MyObject,MyObject)> {
-	using F = std::function<bool(MyObject,MyObject)>;
-	using F::F;
-	
-	// define a constructor
-	ObjectxObjectToBool( bool* f(MyObject,MyObject) ) {
-		this->operator=(f);
-	}
-};
+// Declare function types
+using ObjectToBool        = std::function<bool(MyObject)>;
+using ObjectxObjectToBool = std::function<bool(MyObject,MyObject)> ;
 
 // The arguments to a hypothesis will be a pair of a set and an object (as in Piantadosi, Tenenbaum, Goodman 2016)
-typedef std::tuple<MyObject,ObjectSet> ArgType; // this is the type of arguments we give to our function
+using ArgType = std::tuple<MyObject,ObjectSet>; // this is the type of arguments we give to our function
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare primitives
@@ -123,7 +100,6 @@ std::tuple PRIMITIVES = {
 		return s.empty();
 	}), 
 
-	
 	Primitive("iota(%s)",   +[](ObjectSet s)    -> MyObject { 
 		// return the unique element in the set. If not, we throw an exception
 		// which must be caught in calling below. 
@@ -145,7 +121,7 @@ std::tuple PRIMITIVES = {
 	}),
 	
 	// add an application operator
-	Primitive("apply[%s,%s]",       +[](ObjectToBool f, MyObject x)  -> bool { return f(x); }, 10.0),
+	Primitive("apply(%s,%s)",       +[](ObjectToBool f, MyObject x)  -> bool { return f(x); }, 10.0),
 	
 	// And we assume that we're passed a tuple of an object and set
 	Primitive("%s.o",       +[](ArgType t)  -> MyObject    { return std::get<0>(t); }),
@@ -161,11 +137,7 @@ std::tuple PRIMITIVES = {
 
 #include "Grammar.h"
 
-class MyGrammar : public Grammar<bool,MyObject,ArgType,ObjectSet,ObjectToBool,ObjectxObjectToBool> {
-	using Super =  Grammar<bool,MyObject,ArgType,ObjectSet,ObjectToBool,ObjectxObjectToBool>;
-	using Super::Super;
-};
-
+using MyGrammar = Grammar<bool,MyObject,ArgType,ObjectSet,ObjectToBool,ObjectxObjectToBool>;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define a class for handling my specific hypotheses and data. Everything is defaultly 
