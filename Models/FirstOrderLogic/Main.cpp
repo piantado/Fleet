@@ -7,24 +7,60 @@
 // This also illustrates throwing exceptions in primitives.  
 ///########################################################################################
 
-// TODO: 
-//  Add equal-shape, equal-color operations
-// 	Is there a way to make and/or short-circuit?
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We need to define some structs to hold the object features
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include <assert.h>
 #include <set>
 #include <functional>
 
 #include "Object.h"
 
-enum class Shape { Square, Triangle, Circle};
-enum class Color { Red, Green, Blue};
-//enum class Size  { Small, Medium, Large}
+using S = std::string;
 
-// Define an object with these features
-using MyObject = Object<Shape,Color>;
+enum class Shape { Square, Triangle, Circle};
+enum class Color { Blue, Yellow, Green};
+enum class Size  { size1, size2, size3};
+
+/**
+ * @class MyObject
+ * @author Steven Piantadosi
+ * @date 11/09/20
+ * @file MyObject.h
+ * @brief Just have a convenient constructor
+ */
+struct MyObject : public Object<Shape,Color,Size>  {
+	using Super = Object<Shape,Color,Size>;
+	using Super::Super;
+	
+	MyObject() {}
+	
+	/**
+	 * @brief Mainly we just define a constructor which takes strings
+	 * @param _shape
+	 * @param _color
+	 * @param _size
+	 */		
+	MyObject(S _shape, S _color, S _size) {
+		// NOT: we could use magic_enum, but haven't here to avoid a dependency
+		if     (_shape == "triangle")   this->set(Shape::Triangle);
+		else if(_shape == "square")     this->set(Shape::Square);
+		else if(_shape == "circle")     this->set(Shape::Circle);
+		else assert(0);
+		
+		if     (_color == "blue")     this->set(Color::Blue);
+		else if(_color == "yellow")   this->set(Color::Yellow);
+		else if(_color == "green")    this->set(Color::Green);
+		else assert(0);
+		
+		if     (_size == "1")        this->set(Size::size1);
+		else if(_size == "2")        this->set(Size::size2);
+		else if(_size == "3")        this->set(Size::size3);
+		else assert(0);
+	}
+	
+};
+
 
 // Define a set of objects
 using ObjectSet = std::set<MyObject>;
@@ -34,7 +70,7 @@ using ObjectToBool        = std::function<bool(MyObject)>;
 using ObjectxObjectToBool = std::function<bool(MyObject,MyObject)> ;
 
 // The arguments to a hypothesis will be a pair of a set and an object (as in Piantadosi, Tenenbaum, Goodman 2016)
-using ArgType = std::tuple<MyObject,ObjectSet>; // this is the type of arguments we give to our function
+using MyInput = std::tuple<MyObject,ObjectSet>; // this is the type of arguments we give to our function
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare primitives
@@ -49,15 +85,22 @@ class IotaException : public std::exception {};
 
 std::tuple PRIMITIVES = {
 
+	Primitive("true",    +[]() -> bool { return true; }),
+	Primitive("false",   +[]() -> bool { return false; }),
+	
 	// these are funny primitives that to fleet are functions with no arguments, but themselves
 	// return functions from objects to bool (ObjectToBool):
-	Primitive("red",       +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Red);}; }),
+	Primitive("yellow",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Yellow);}; }),
 	Primitive("green",     +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Green);}; }),
 	Primitive("blue",      +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Blue);}; }),
 
 	Primitive("square",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Square);}; }),
 	Primitive("triangle",  +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Triangle);}; }),
 	Primitive("circle",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Circle);}; }),
+	
+	Primitive("size1",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Size::size1);}; }),
+	Primitive("size2",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Size::size2);}; }),
+	Primitive("size3",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Size::size3);}; }),
 	
 	// Define logical operators as operating over the functions. These combine functions from MyObject->Bool into 
 	// new ones from MyObject->Bool. Note that these inner lambdas must capture by copy, not reference, since when we 
@@ -116,6 +159,32 @@ std::tuple PRIMITIVES = {
 		return +[](MyObject x, MyObject y) { return x.get<Color>() == y.get<Color>();}; 
 	}),
 	
+	Primitive("same-size",   +[]() -> ObjectxObjectToBool { 
+		return +[](MyObject x, MyObject y) { return x.get<Size>() == y.get<Size>();}; 
+	}),
+	
+	Primitive("size-lt",   +[]() -> ObjectxObjectToBool { 
+		// we can cast to int to compare gt size
+		return +[](MyObject x, MyObject y) { return (int)x.get<Size>() < (int)y.get<Size>();}; 
+	}, 0.25),
+	
+	Primitive("size-leq",   +[]() -> ObjectxObjectToBool { 
+		// we can cast to int to compare gt size
+		return +[](MyObject x, MyObject y) { return (int)x.get<Size>() <= (int)y.get<Size>();}; 
+	}, 0.25),
+	
+	// Since we only curry by taking the first arg, we include both orders here (and give them low priors)
+	Primitive("size-gt",   +[]() -> ObjectxObjectToBool { 
+		// we can cast to int to compare gt size
+		return +[](MyObject x, MyObject y) { return (int)x.get<Size>() > (int)y.get<Size>();}; 
+	}, 0.25),
+	
+	Primitive("size-geq",   +[]() -> ObjectxObjectToBool { 
+		// we can cast to int to compare gt size
+		return +[](MyObject x, MyObject y) { return (int)x.get<Size>() >= (int)y.get<Size>();}; 
+	}, 0.25),
+	
+	
 	Primitive("curry[%s,%s]",   +[](ObjectxObjectToBool f, MyObject x) -> ObjectToBool { 
 		return [f,x](MyObject y) { return f(x,y); }; 
 	}),
@@ -124,10 +193,10 @@ std::tuple PRIMITIVES = {
 	Primitive("apply(%s,%s)",       +[](ObjectToBool f, MyObject x)  -> bool { return f(x); }, 10.0),
 	
 	// And we assume that we're passed a tuple of an object and set
-	Primitive("%s.o",       +[](ArgType t)  -> MyObject    { return std::get<0>(t); }),
-	Primitive("%s.s",       +[](ArgType t)  -> ObjectSet { return std::get<1>(t); }),
+	Primitive("%s.o",       +[](MyInput t)  -> MyObject    { return std::get<0>(t); }),
+	Primitive("%s.s",       +[](MyInput t)  -> ObjectSet { return std::get<1>(t); }),
 	
-	Builtin::X<ArgType>("x")
+	Builtin::X<MyInput>("x")
 };
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -137,7 +206,7 @@ std::tuple PRIMITIVES = {
 
 #include "Grammar.h"
 
-using MyGrammar = Grammar<bool,MyObject,ArgType,ObjectSet,ObjectToBool,ObjectxObjectToBool>;
+using MyGrammar = Grammar<bool,MyObject,MyInput,ObjectSet,ObjectToBool,ObjectxObjectToBool>;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define a class for handling my specific hypotheses and data. Everything is defaultly 
@@ -146,9 +215,9 @@ using MyGrammar = Grammar<bool,MyObject,ArgType,ObjectSet,ObjectToBool,ObjectxOb
 
 #include "LOTHypothesis.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,ArgType,bool,MyGrammar> {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,ArgType,bool,MyGrammar>;
+	using Super = LOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar>;
 	using Super::Super; // inherit the constructors
 	
 	// Now, if we defaultly assume that our data is a std::vector of t_data, then we 
@@ -157,10 +226,8 @@ public:
 	double compute_single_likelihood(const datum_t& x) override {
 		bool out = false;
 		
-		try { 
-			
-			out = callOne(x.input, false);
-			
+		try { 			
+			out = callOne(x.input, false);			
 		} catch (IotaException& e) { 
 			// we could default (e.g. to false with nothing here) 
 			// or we could want to avoid ever calling iota unless it works
@@ -174,6 +241,9 @@ public:
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Main code
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// we can not include main by defining this
+#ifndef NO_FOL_MAIN
 
 #include "Top.h"
 #include "ParallelTempering.h"
@@ -202,10 +272,10 @@ int main(int argc, char** argv){
 	// mydata stores the data for the inference model
 	MyHypothesis::data_t mydata;	
 	
-	ObjectSet s = {MyObject(Shape::Triangle, Color::Red),
-				   MyObject(Shape::Square, Color::Green),
-				   MyObject(Shape::Triangle, Color::Red)};
-	MyObject x = MyObject(Shape::Triangle, Color::Red);
+	ObjectSet s = {MyObject(Shape::Triangle, Color::Blue, Size::size1),
+				   MyObject(Shape::Square, Color::Green, Size::size2),
+				   MyObject(Shape::Triangle, Color::Blue, Size::size3)};
+	MyObject x = MyObject(Shape::Triangle, Color::Blue, Size::size1);
 	
 	mydata.push_back(MyHypothesis::datum_t{.input=std::make_tuple(x,s), .output=true,  .reliability=0.99});
 	
@@ -220,3 +290,5 @@ int main(int argc, char** argv){
 	// Show the best we've found
 	top.print();
 }
+
+#endif

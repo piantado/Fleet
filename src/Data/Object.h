@@ -17,8 +17,7 @@ struct Object {
 	
 	Object() { 	}
 	
-	Object(feature_t... types) : feature(types...) {		
-	}
+	Object(feature_t... types) : feature(types...) { }
 	
 	/**
 	 * @brief Get one of the feature values
@@ -29,6 +28,10 @@ struct Object {
 		return std::get<t>(feature);
 	}
 
+	/**
+	 * @brief Set a feature value
+	 * @param val
+	 */
 	template<typename t>
 	void set(t val) {
 		std::get<t>(feature) = val;

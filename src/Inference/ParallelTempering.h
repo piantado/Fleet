@@ -165,19 +165,19 @@ public:
 	
 	void adapt(double v=3, double t0=1000000) {
 		
-		std::vector<double> S(this->pool.size());
+		std::vector<double> sw(this->pool.size());
 		
 		for(size_t i=1;i<this->pool.size()-1;i++) { // never adjust i=0 (T=1) or the max temperature
-			S[i] = log(this->pool[i].temperature - this->pool[i-1].temperature);
+			sw[i] = log(this->pool[i].temperature - this->pool[i-1].temperature);
 			
 			if( swap_history[i].N>0 && swap_history[i+1].N>0 ) { // only adjust if there are samples
-				S[i] += k(this->pool[i].samples, v, t0) * (swap_history[i].mean()-swap_history[i+1].mean()); 
+				sw[i] += k(this->pool[i].samples, v, t0) * (swap_history[i].mean()-swap_history[i+1].mean()); 
 			}
 		}
 		
 		// and then convert S to temperatures again
 		for(size_t i=1;i<this->pool.size()-1;i++) { // never adjust i=0 (T=1)
-			this->pool[i].temperature = this->pool[i-1].temperature + exp(S[i]);
+			this->pool[i].temperature = this->pool[i-1].temperature + exp(sw[i]);
 		}
 	}
 	

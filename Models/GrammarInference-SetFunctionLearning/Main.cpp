@@ -15,91 +15,14 @@
 
 #include "EigenLib.h"
 
-#include "Object.h"
-
-using S=std::string;
-
-const double alpha = 0.9; // fixed for the learning part of the model
-
-#include "MyObject.h"
-
-// An input here is a set of objects and responses
-typedef std::pair<std::vector<MyObject>, MyObject> MyInput;
-typedef bool                                       MyOutput;
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Set up primitives
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "Primitives.h"
-#include "Builtins.h"
+// Define this so we don't import its main function
+#define NO_FOL_MAIN 1
 
-const double FEATURE_WEIGHT = 5.0; // in our prior, what's the weight on features?
-
-std::tuple PRIMITIVES = {
-	Primitive("iff(%s,%s)",     +[](bool a, bool b) -> bool { return (a == b); }),
-	Primitive("implies(%s,%s)", +[](bool a, bool b) -> bool { return ((not a) or (a and b)); }),
-	Primitive("xor(%s,%s)",     +[](bool a, bool b) -> bool { return (a xor b); }),
-	Primitive("nand(%s,%s)",    +[](bool a, bool b) -> bool { return not (a and b); }),
-	Primitive("nor(%s,%s)",     +[](bool a, bool b) -> bool { return not (a or b); }),
-	// that + is really insane, but is needed to convert a lambda to a function pointer
-
-	Primitive("yellow(%s)",    +[](MyObject x)       -> bool { return x.is(Color::yellow); }, FEATURE_WEIGHT),
-	Primitive("green(%s)",     +[](MyObject x)       -> bool { return x.is(Color::green); }, FEATURE_WEIGHT),
-	Primitive("blue(%s)",      +[](MyObject x)       -> bool { return x.is(Color::blue); }, FEATURE_WEIGHT),
-
-	Primitive("rectangle(%s)", +[](MyObject x)       -> bool { return x.is(Shape::rectangle); }, FEATURE_WEIGHT),
-	Primitive("triangle(%s)",  +[](MyObject x)       -> bool { return x.is(Shape::triangle); }, FEATURE_WEIGHT),
-	Primitive("circle(%s)",    +[](MyObject x)       -> bool { return x.is(Shape::circle); }, FEATURE_WEIGHT),
-	
-	Primitive("size1(%s)",     +[](MyObject x)       -> bool { return x.is(Size::size1); }, FEATURE_WEIGHT),
-	Primitive("size2(%s)",     +[](MyObject x)       -> bool { return x.is(Size::size2); }, FEATURE_WEIGHT),
-	Primitive("size3(%s)",     +[](MyObject x)       -> bool { return x.is(Size::size3); }, FEATURE_WEIGHT),
-	
-	Primitive("%s.arg",         +[](MyInput x)       -> MyObject { return x.second; }),
-		
-	// but we also have to add a rule for the BuiltinOp that access x, our argument
-	Builtin::And("and(%s,%s)"),
-	Builtin::Or("or(%s,%s)"),
-	Builtin::Not("not(%s)"),
-
-	Builtin::X<MyInput>("x", 10.0)
-};
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Set up the grammar
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#include "Grammar.h"
-
-class MyGrammar : public Grammar<bool,MyObject,MyInput> {
-	using Super=Grammar<bool,MyObject,MyInput>;
-	using Super::Super;
-};
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Define the LOTHypothesis type
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#include "GrammarHypothesis.h" 
-#include "LOTHypothesis.h"
-#include "Data.h"
-
-/// The type here is a little complex -- a LOTHypothesis here is type MyObject->bool even though
-//  but the datum format we use is these sets, MyInput, MyOutput
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,MyInput,MyOutput,MyGrammar> {
-public:
-	// This is going to assume that all variables other than x are universally quantified over. 
-	using Super = LOTHypothesis<MyHypothesis,MyInput,MyOutput,MyGrammar>;
-	using Super::Super;
-	using output_t = MyOutput; // needed since inheritance doesn't get these?
-	
-	double compute_single_likelihood(const datum_t& di) override {
-		bool o = callOne(di.input, false);
-		return log( (1.0-di.reliability)/2.0 + (o == di.output)*di.reliability);
-	}
-};
-
+#include "../FirstOrderLogic/Main.cpp"
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // I must declare my own in order to fill in the this_t in the template
@@ -126,6 +49,10 @@ void gcallback(MyGrammarHypothesis& h) {
 #include "Fleet.h"
 #include "Miscellaneous.h"
 #include "MCMCChain.h"
+
+#include "Data.h"
+
+const double alpha = 0.95; // in learning
 
 S hypothesis_path = "hypotheses.txt";
 S runtype         = "both"; // can be both, hypotheses (just find hypotheses), or grammar (just do mcmc, loading from hypothesis_path)
@@ -182,6 +109,7 @@ int main(int argc, char** argv){
 		}
 		
 		// now put the relevant stuff onto learner_data
+		
 		for(size_t i=0;i<objs->size();i++) {
 			MyInput inp{*objs, (*objs)[i]};
 			learner_data->emplace_back(inp, (*corrects)[i], alpha);
