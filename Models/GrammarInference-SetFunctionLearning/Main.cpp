@@ -111,7 +111,7 @@ int main(int argc, char** argv){
 		// now put the relevant stuff onto learner_data
 		
 		for(size_t i=0;i<objs->size();i++) {
-			MyInput inp{*objs, (*objs)[i]};
+			MyInput inp{objs->at(i), *objs};
 			learner_data->emplace_back(inp, (*corrects)[i], alpha);
 			assert(learner_data->size() < LEANER_RESERVE_SIZE);
 		}
@@ -138,23 +138,7 @@ int main(int argc, char** argv){
 		
 		ndata += objs->size();
 		decay_position++;
-		prev_conceptlist = conceptlist;
-		
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		//
-		//		
-		//if(human_data.size() > 100) break;
-	
+		prev_conceptlist = conceptlist;	
 	}
 	if(learner_data != nullptr) 
 		mcmc_data.push_back(learner_data); // and add that last dataset

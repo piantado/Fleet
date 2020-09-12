@@ -18,7 +18,7 @@
 
 using S = std::string;
 
-enum class Shape { Square, Triangle, Circle};
+enum class Shape { Rectangle, Triangle, Circle};
 enum class Color { Blue, Yellow, Green};
 enum class Size  { size1, size2, size3};
 
@@ -44,7 +44,7 @@ struct MyObject : public Object<Shape,Color,Size>  {
 	MyObject(S _shape, S _color, S _size) {
 		// NOT: we could use magic_enum, but haven't here to avoid a dependency
 		if     (_shape == "triangle")   this->set(Shape::Triangle);
-		else if(_shape == "square")     this->set(Shape::Square);
+		else if(_shape == "rectangle")  this->set(Shape::Rectangle);
 		else if(_shape == "circle")     this->set(Shape::Circle);
 		else assert(0);
 		
@@ -62,8 +62,8 @@ struct MyObject : public Object<Shape,Color,Size>  {
 };
 
 
-// Define a set of objects
-using ObjectSet = std::set<MyObject>;
+// Define a set of objects -- really it's a multiset so we'll use a vector
+using ObjectSet = std::vector<MyObject>;
 
 // Declare function types
 using ObjectToBool        = std::function<bool(MyObject)>;
@@ -79,9 +79,15 @@ using MyInput = std::tuple<MyObject,ObjectSet>; // this is the type of arguments
 #include "Primitives.h"
 #include "Builtins.h"
 
-#include <exception>
-
-class IotaException : public std::exception {};
+#include "VMSRuntimeError.h"
+/**
+ * @class IotaException
+ * @author Steven Piantadosi
+ * @date 12/09/20
+ * @file Main.cpp
+ * @brief We make an exception for violating iota -- this is caught in VMS
+ */
+class IotaException : public VMSRuntimeError {};
 
 std::tuple PRIMITIVES = {
 
@@ -94,7 +100,7 @@ std::tuple PRIMITIVES = {
 	Primitive("green",     +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Green);}; }),
 	Primitive("blue",      +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Blue);}; }),
 
-	Primitive("square",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Square);}; }),
+	Primitive("rectangle", +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Rectangle);}; }),
 	Primitive("triangle",  +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Triangle);}; }),
 	Primitive("circle",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Circle);}; }),
 	
@@ -134,7 +140,7 @@ std::tuple PRIMITIVES = {
 	Primitive("filter(%s, %s)",   +[](ObjectSet s, ObjectToBool f)    -> ObjectSet { 
 		ObjectSet out;
 		for(auto& x : s) {
-			if(f(x)) out.insert(x);
+			if(f(x)) out.push_back(x);
 		}
 		return out;
 	}), 
@@ -146,20 +152,20 @@ std::tuple PRIMITIVES = {
 	Primitive("iota(%s)",   +[](ObjectSet s)    -> MyObject { 
 		// return the unique element in the set. If not, we throw an exception
 		// which must be caught in calling below. 
-		if(s.size() > 1) throw IotaException();
+		if(s.size() != 1) throw IotaException();
 		else             return *s.begin();
 	}), 
 	
 	// Relations -- these will require currying
-	Primitive("same-shape",   +[]() -> ObjectxObjectToBool { 
+	Primitive("same_shape",   +[]() -> ObjectxObjectToBool { 
 		return +[](MyObject x, MyObject y) { return x.get<Shape>() == y.get<Shape>();}; 
 	}),
 	
-	Primitive("same-color",   +[]() -> ObjectxObjectToBool { 
+	Primitive("same_color",   +[]() -> ObjectxObjectToBool { 
 		return +[](MyObject x, MyObject y) { return x.get<Color>() == y.get<Color>();}; 
 	}),
 	
-	Primitive("same-size",   +[]() -> ObjectxObjectToBool { 
+	Primitive("same_size",   +[]() -> ObjectxObjectToBool { 
 		return +[](MyObject x, MyObject y) { return x.get<Size>() == y.get<Size>();}; 
 	}),
 	
@@ -184,7 +190,6 @@ std::tuple PRIMITIVES = {
 		return +[](MyObject x, MyObject y) { return (int)x.get<Size>() >= (int)y.get<Size>();}; 
 	}, 0.25),
 	
-	
 	Primitive("curry[%s,%s]",   +[](ObjectxObjectToBool f, MyObject x) -> ObjectToBool { 
 		return [f,x](MyObject y) { return f(x,y); }; 
 	}),
@@ -193,7 +198,7 @@ std::tuple PRIMITIVES = {
 	Primitive("apply(%s,%s)",       +[](ObjectToBool f, MyObject x)  -> bool { return f(x); }, 10.0),
 	
 	// And we assume that we're passed a tuple of an object and set
-	Primitive("%s.o",       +[](MyInput t)  -> MyObject    { return std::get<0>(t); }),
+	Primitive("%s.o",       +[](MyInput t)  -> MyObject  { return std::get<0>(t); }),
 	Primitive("%s.s",       +[](MyInput t)  -> ObjectSet { return std::get<1>(t); }),
 	
 	Builtin::X<MyInput>("x")
@@ -224,18 +229,12 @@ public:
 	// can just define the likelihood of a single data point, which is here the true
 	// value with probability x.reliability, and otherwise a coin flip. 
 	double compute_single_likelihood(const datum_t& x) override {
-		bool out = false;
-		
-		try { 			
-			out = callOne(x.input, false);			
-		} catch (IotaException& e) { 
-			// we could default (e.g. to false with nothing here) 
-			// or we could want to avoid ever calling iota unless it works
-			//return -infinity; 
-		} 
+		bool out = callOne(x.input, false);			
 		
 		return out == x.output ? log(x.reliability + (1.0-x.reliability)/2.0) : log((1.0-x.reliability)/2.0);
 	}
+	
+	
 };
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -273,7 +272,7 @@ int main(int argc, char** argv){
 	MyHypothesis::data_t mydata;	
 	
 	ObjectSet s = {MyObject(Shape::Triangle, Color::Blue, Size::size1),
-				   MyObject(Shape::Square, Color::Green, Size::size2),
+				   MyObject(Shape::Rectangle, Color::Green, Size::size2),
 				   MyObject(Shape::Triangle, Color::Blue, Size::size3)};
 	MyObject x = MyObject(Shape::Triangle, Color::Blue, Size::size1);
 	

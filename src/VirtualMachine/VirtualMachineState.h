@@ -13,6 +13,8 @@
 #include "Hypotheses/Interfaces/ProgramLoader.h"
 #include "VirtualMachineControl.h"
 
+#include "VMSRuntimeError.h"
+
 /**
  * @class has_operator_lessthan_impl
  * @author piantado
@@ -676,7 +678,7 @@ public:
 				return err;
 			}
 			
-		} catch (VMSRuntimeError_t& e) {
+		} catch (VMSRuntimeError& e) {
 			// this may be thrown by a primitive
 			status = vmstatus_t::ERROR;
 			

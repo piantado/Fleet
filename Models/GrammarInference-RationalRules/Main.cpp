@@ -21,39 +21,8 @@ using S=std::string;
 
 const double alpha = 0.9; // fixed for the learning part of the model
 
-enum class Shape { rectangle, triangle, circle};
-enum class Color { yellow, green, blue};
-enum class Size  { size1, size2, size3};
-
-// Define a kind of object with these features
-// this is just a Fleet::Object, but with string constructors for simplicity
-struct MyObject : public Object<Shape,Color,Size>  {
-	
-	MyObject() {}
-	
-	MyObject(S _shape, S _color, S _size) {
-		// NOT: we could use magic_enum, but haven't here to avoid a dependency
-		if     (_shape == "triangle")   this->set(Shape::triangle);
-		else if(_shape == "rectangle")  this->set(Shape::rectangle);
-		else if(_shape == "circle")     this->set(Shape::circle);
-		else assert(0);
-		
-		if     (_color == "blue")     this->set(Color::blue);
-		else if(_color == "yellow")   this->set(Color::yellow);
-		else if(_color == "green")    this->set(Color::green);
-		else assert(0);
-		
-		if     (_size == "1")        this->set(Size::size1);
-		else if(_size == "2")        this->set(Size::size2);
-		else if(_size == "3")        this->set(Size::size3);
-		else assert(0);
-	}
-	
-};
-
 // An input here is a set of objects and responses
-typedef std::pair<std::vector<MyObject>, MyObject> MyInput;
-typedef bool                                       MyOutput;
+using MyInput = std::pair<std::vector<MyObject>, MyObject>;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Set up primitives
@@ -100,10 +69,7 @@ std::tuple PRIMITIVES = {
 
 #include "Grammar.h"
 
-class MyGrammar : public Grammar<bool,MyObject,MyInput> {
-	using Super=Grammar<bool,MyObject,MyInput>;
-	using Super::Super;
-};
+using MyGrammar = Grammar<bool,MyObject,MyInput>;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Define the LOTHypothesis type
