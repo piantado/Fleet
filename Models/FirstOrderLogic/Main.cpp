@@ -45,6 +45,20 @@ struct ObjectToBool : public std::function<bool(MyObject)> {
 	}
 };
 
+struct ObjectxObjectToBool : public std::function<bool(MyObject,MyObject)> {
+	using F = std::function<bool(MyObject,MyObject)>;
+	using F::F;
+	
+	// define a constructor
+	ObjectToBool( bool* f(MyObject,MyObject) ) {
+		this->operator=(f);
+	}
+	
+	ObjectToBool curry(MyObject& x) {
+		
+	}
+};
+
 // The arguments to a hypothesis will be a pair of a set and an object (as in Piantadosi, Tenenbaum, Goodman 2016)
 typedef std::tuple<MyObject,ObjectSet> ArgType; // this is the type of arguments we give to our function
 
