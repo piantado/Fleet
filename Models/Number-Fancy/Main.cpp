@@ -44,7 +44,7 @@ std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 
 //std::vector<int> data_amounts = {1, 5, 10, 50, 100};//, 500, 600, 700, 800, 900, 1000};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Define the primitives (which are already defined in MyPrimitives
+/// Define the primitives
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Random.h"
@@ -99,7 +99,7 @@ std::tuple PRIMITIVES = {
 	
 	Primitive("union(%s,%s)", +[](set x, set y) -> set { 
 		if(x.size()+y.size() > MAX_SET_SIZE) 
-			throw VMSRuntimeError; 
+			throw VMSRuntimeError(); 
 		return x+y; 
 	}),
 	Primitive("intersection(%s,%s)", +[](set x, set y) -> set {

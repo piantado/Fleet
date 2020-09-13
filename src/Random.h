@@ -56,7 +56,7 @@ double random_cauchy() {
 }
 
 template<typename t>
-std::vector<t> random_multinomial(t alpha, size_t len) {
+std::vector<t> random_multinomial(t a, size_t len) {
 	/**
 	 * @brief Generate a random vector from a multinomial, with constant alpha
 	 * @param alpha
@@ -64,7 +64,7 @@ std::vector<t> random_multinomial(t alpha, size_t len) {
 	 * @return 
 	 */
 
-	std::gamma_distribution<t> g(alpha, 1.0);
+	std::gamma_distribution<t> g(a, 1.0);
 	std::vector<t> out(len);
 	t total = 0.0;
 	for(size_t i =0;i<len;i++){
