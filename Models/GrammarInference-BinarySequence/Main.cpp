@@ -37,10 +37,8 @@ double TERMINAL_P = 5.0;
 std::tuple PRIMITIVES = {
 	Primitive("tail(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : s.substr(1,S::npos)); }),
 	Primitive("head(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : S(1,s.at(0))); }),
-	// This version takes a reference for the first argument and that is assumed (by Fleet) to be the
-	// return value. It is never popped off the stack and should just be modified. 
 	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void        { 
-			if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError;
+			if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError();
 			a.append(b); // modify on stack
 	}), 
 	
@@ -49,7 +47,7 @@ std::tuple PRIMITIVES = {
 
 	Primitive("repeat(%s,%s)",    +[](S x, int y) -> S       { 
 		S out = "";
-		if(x.length()*y > MAX_LENGTH) throw VMSRuntimeError;
+		if(x.length()*y > MAX_LENGTH) throw VMSRuntimeError();
 		for(int i=0;i<y;i++) 
 			out += x;
 		return out;			
@@ -61,7 +59,7 @@ std::tuple PRIMITIVES = {
 		for(auto& c : x) {
 			if      (c == 'B') x.append("O");
 			else if (c == 'O') x.append("B");
-			else throw VMSRuntimeError;
+			else throw VMSRuntimeError();
 		}
 		return out;
 	}),
@@ -117,10 +115,7 @@ std::tuple PRIMITIVES = {
 
 // declare a grammar with our primitives
 // Note that this ordering of primitives defines the order in Grammar
-class MyGrammar : public Grammar<S,bool,int,double> {
-	using Super = Grammar<S,bool,int,double>;
-	using Super::Super;
-};
+using MyGrammar = Grammar<S,bool,int,double>;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Define the kind of hypothesis we're dealing with

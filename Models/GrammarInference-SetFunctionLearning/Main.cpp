@@ -1,7 +1,3 @@
-
-
-// TODO: Might be easier to have responses be to the entire list of objects?
-
 #include <assert.h>
 #include <set>
 #include <string>
@@ -115,17 +111,7 @@ int main(int argc, char** argv){
 			learner_data->emplace_back(inp, (*corrects)[i], alpha);
 			assert(learner_data->size() < LEANER_RESERVE_SIZE);
 		}
-				
 
-
-
-
-
-		// TODO: CHECK IF THIS IS RIGHT WE SHOULD HAVE AN EMPTY element to start
-
-
-		
-				
 		// now unpack this data into human_data for each point in the concept
 		for(size_t i=0;i<objs->size();i++) {
 			// make a map of the responses

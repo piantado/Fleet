@@ -62,7 +62,7 @@ std::tuple PRIMITIVES = {
 	
 	Primitive("pair(%s,%s)",   +[](S a, char b) -> S        { 
 			if(a.length() + 1> MAX_LENGTH) 
-				throw VMSRuntimeError;
+				throw VMSRuntimeError();
 			return a+b; //a += b; // modify on stack
 	}), 
 	
@@ -88,7 +88,7 @@ std::tuple PRIMITIVES = {
 			S w = "";
 			
 			if(x.size() * n > MAX_LENGTH or n < 0 or n > MAX_LENGTH) 
-				throw VMSRuntimeError; // need n > MAX_LENGTH in case n is huge but string is empty
+				throw VMSRuntimeError(); // need n > MAX_LENGTH in case n is huge but string is empty
 				
 			for(int i=0;i<n;i++) {
 				w = w+x;

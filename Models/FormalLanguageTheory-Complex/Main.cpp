@@ -64,7 +64,7 @@ std::tuple PRIMITIVES = {
 	Primitive("head(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : S(1,s.at(0))); }), // MAYBE REPLACE:  S(1,vms.stack<S>().topref().at(0));
 	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void      { 
 			if(a.length() + b.length() > max_length) 
-				throw VMSRuntimeError;
+				throw VMSRuntimeError();
 			a.append(b); // modify on stack
 	}), // also add a function to check length to throw an error if its getting too long
 
@@ -79,7 +79,7 @@ std::tuple PRIMITIVES = {
 				if(l == 0) 
 					return y;
 				else if(l + y.length() > max_length) 
-					throw VMSRuntimeError;
+					throw VMSRuntimeError();
 				else {
 					// put y into the middle of x
 					size_t pos = l/2;
@@ -104,7 +104,7 @@ std::tuple PRIMITIVES = {
 	Primitive("{%s}",         +[](S x) -> StrSet          { StrSet s; s.insert(x); return s; }, 10.0),
 	Primitive("(%s\u222A%s)", +[](StrSet& s, StrSet x) -> void { 
 		if(s.size() + x.size() > max_setsize) 
-			throw VMSRuntimeError; 
+			throw VMSRuntimeError(); 
 
 		s.insert(x.begin(), x.end());
 	}),

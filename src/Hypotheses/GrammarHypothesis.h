@@ -38,32 +38,33 @@ std::vector<HYP> get_hypotheses_from_mcmc(HYP& h0, std::vector<typename HYP::dat
 	
 	#pragma omp parallel for
 	for(size_t vi=0; vi<mcmc_data.size();vi++) {
-		if(!CTRL_C) {  // needed for openmp
+		if(CTRL_C) std::terminate();
+		
+		#pragma omp critical
+		{
+		COUT "# Running " TAB vi TAB " of " TAB mcmc_data.size() ENDL;
+		}
+		
+		// start at i=0 so we actually always include prior samples
+		// maybe this isn't a good way to do it
+		for(size_t i=0;i<=mcmc_data[vi]->size() and !CTRL_C;i++) {
+			
+			TopN<HYP> top(ntop);
+			
+			HYP myh0 = h0.restart();
+			
+			// slices [0,i]
+			auto givendata = slice(*(mcmc_data[vi]), 0, i);
+			
+			MCMCChain chain(myh0, &givendata, top);
+			chain.run(Control(c)); // must run on a copy 
 		
 			#pragma omp critical
-			{
-			COUT "# Running " TAB vi TAB " of " TAB mcmc_data.size() ENDL;
+			for(auto h : top.values()) {
+				h.clear_bayes(); // zero and insert
+				all.insert(h);
 			}
-			
-			for(size_t i=1;i<=mcmc_data[vi]->size() and !CTRL_C;i++) {
-				
-				TopN<HYP> top(ntop);
-				
-				HYP myh0 = h0.restart();
-				
-				// slices [0,i]
-				auto givendata = slice(*(mcmc_data[vi]), 0, i);
-				
-				MCMCChain chain(myh0, &givendata, top);
-				chain.run(Control(c)); // must run on a copy 
-			
-				#pragma omp critical
-				for(auto h : top.values()) {
-					h.clear_bayes(); // zero and insert
-					all.insert(h);
-				}
-			}
-		}
+		}	
 	}
 	
 	std::vector<HYP> out;
@@ -234,45 +235,42 @@ public:
 		#pragma omp parallel for
 		for(size_t h=0;h<hypotheses.size();h++) {
 			
-			if(!CTRL_C) {
+			// This will assume that as things are sorted in human_data, they will tend to use
+			// the same human_data.data pointer (e.g. they are sorted this way) so that
+			// we can re-use prior likelihood items for them
+			
+			for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
+				if(CTRL_C) std::terminate();
 				
-				// This will assume that as things are sorted in human_data, they will tend to use
-				// the same human_data.data pointer (e.g. they are sorted this way) so that
-				// we can re-use prior likelihood items for them
-				
-				for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
-					
-					Vector data_lls  = Vector::Zero(human_data[di].ndata); // one for each of the data points
-					Vector decay_pos = Vector::Zero(human_data[di].ndata); // one for each of the data points
-					
-					// check if these pointers are equal so we can reuse the previous data			
-					if(di > 0 and 
-					   human_data[di].data == human_data[di-1].data and 
-					   human_data[di].ndata > human_data[di-1].ndata) { 
-						   
-						// just copy over the beginning
-						for(size_t i=0;i<human_data[di-1].ndata;i++){
-							data_lls(i)  = LL->at(h,di-1).first(i);
-							decay_pos(i) = LL->at(h,di-1).second(i);
-						}
-						// and fill in the rest
-						for(size_t i=human_data[di-1].ndata;i<human_data[di].ndata;i++) {
-							data_lls(i)  = hypotheses[h].compute_single_likelihood((*human_data[di].data)[i]);
-							decay_pos(i) = human_data[di].decay_position;
-						}
+				Vector data_lls  = Vector::Zero(human_data[di].ndata); // one for each of the data points
+				Vector decay_pos = Vector::Zero(human_data[di].ndata); // one for each of the data points
+				// check if these pointers are equal so we can reuse the previous data			
+				if(di > 0 and 
+				   human_data[di].data == human_data[di-1].data and 
+				   human_data[di].ndata >= human_data[di-1].ndata) { 
+					   
+					// just copy over the beginning
+					for(size_t i=0;i<human_data[di-1].ndata;i++){
+						data_lls(i)  = LL->at(h,di-1).first(i);
+						decay_pos(i) = LL->at(h,di-1).second(i);
 					}
-					else {
-						// compute anew; if ndata=0 then we should just include a 0.0
-						for(size_t i=0;i<human_data[di].ndata;i++) {
-							data_lls(i) = hypotheses[h].compute_single_likelihood((*human_data[di].data)[i]);
-							decay_pos(i) = human_data[di].decay_position;
-						}				
+					// and fill in the rest
+					for(size_t i=human_data[di-1].ndata;i<human_data[di].ndata;i++) {
+						data_lls(i)  = hypotheses[h].compute_single_likelihood((*human_data[di].data)[i]);
+						decay_pos(i) = human_data[di].decay_position;
 					}
-					
-					// set as an Eigen vector in out
-					#pragma omp critical
-					LL->at(h,di) = std::make_pair(data_lls,decay_pos);
 				}
+				else {
+					// compute anew; if ndata=0 then we should just include a 0.0
+					for(size_t i=0;i<human_data[di].ndata;i++) {
+						data_lls(i) = hypotheses[h].compute_single_likelihood((*human_data[di].data)[i]);
+						decay_pos(i) = human_data[di].decay_position;
+					}				
+				}
+				
+				// set as an Eigen vector in out
+				#pragma omp critical
+				LL->at(h,di) = std::make_pair(data_lls,decay_pos);
 			}
 		}
 	}

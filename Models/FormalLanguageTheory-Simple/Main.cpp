@@ -37,7 +37,7 @@ std::tuple PRIMITIVES = {
 	// return value. It is never popped off the stack and should just be modified. 
 	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void        { 
 			if(a.length() + b.length() > MAX_LENGTH) 
-				throw VMSRuntimeError;
+				throw VMSRuntimeError();
 			a.append(b); // modify on stack
 	}), 
 	
