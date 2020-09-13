@@ -1,13 +1,13 @@
 #include <vector>
 #include <string>
 #include <random>
+#include <bitset>
 
-// For speed, here we can just treat words and sets as both integers in the implementation
-// since all that matters is their number of elements (although this means that unions 
-// are reallly multi-unions, and intersections are a bit weird)
-// TODO: We should change this to use bit fields as a set
+// For speed, here we can just treat words as ints and use a std::bitset for sets. 
+// NOTE that this is a slightly different set implementation than the original work
+// (which used ints)
 using word = int;
-using set  = long;
+using set  = std::bitset<16>;
 
 const word U = -999;
 const double alpha = 0.9;
@@ -17,10 +17,22 @@ double recursion_penalty = -25.0;
 // probability of each set size 0,1,2,...
 const std::vector<double> Np = {0.000000000, 0.683564771, 0.141145140, 0.056400989, 0.031767168, 0.028248050, 0.015693361, 0.014361803, 0.008179570, 0.009986684, 0.010652463};
 
+/**
+ * @brief Make a bit with nset number of set bits. 
+ * @param nset
+ * @return 
+ */
+set make_set(int nset) {
+	set out;
+	for(int i=0;i<nset;i++) out[i] = true;
+	return out; 
+}
+
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define the primitives
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+/// We need some opeartions to manipualte bits
 #include "Primitives.h"
 #include "Builtins.h"	
 	
@@ -42,19 +54,29 @@ std::tuple PRIMITIVES = {
 	Primitive("prev(%s)",    +[](word w) -> word { return w == U or w == 1 ? U : w-1; }),
 	
 	// extract from the context/utterance
-	Primitive("singleton(%s)",   +[](set s) -> bool    { return s==1; }, 2.0),
-	Primitive("doubleton(%s)",   +[](set s) -> bool    { return s==2; }, 2.0),
-	Primitive("tripleton(%s)",   +[](set s) -> bool    { return s==3; }, 2.0),
+	Primitive("singleton(%s)",   +[](set s) -> bool    { return s.count()==1; }, 2.0),
+	Primitive("doubleton(%s)",   +[](set s) -> bool    { return s.count()==2; }, 2.0),
+	Primitive("tripleton(%s)",   +[](set s) -> bool    { return s.count()==3; }, 2.0),
 	
 	Primitive("select(%s)",      +[](set s) -> set    { 
-		if(s==0) throw VMSRuntimeError();
-		else return 1;
+		if(s.count()==0) throw VMSRuntimeError();
+		else {
+			for(size_t i=0;i<s.size();i++) {
+				if(s[i]) { // return the first set
+					set out;
+					out[i] = true;
+					return out;
+				}
+			}
+			assert(false && "*** Should not get here");
+		}
 	}),
 	
-	// set operations on ints
-	Primitive("union(%s,%s)",        +[](set x, set y) -> set { return set(x+y); }),
-	Primitive("setdiff(%s,%s)",      +[](set x, set y) -> set { return set(x-y); }),
-	Primitive("intersection(%s,%s)", +[](set x, set y) -> set { return (set)std::min(x,y); }),
+	// set operations on ints -- these will modify x in place
+	Primitive("union(%s,%s)",        +[](set& x, set y) -> void { x |= y; }),
+	Primitive("setdifference(%s,%s)",      +[](set& x, set y) -> void { x &= ~y; }),
+	Primitive("intersection(%s,%s)", +[](set& x, set y) -> void { x &= y; }),
+	Primitive("complement(%s,%s)",   +[](set& x, set y) -> void { x = ~x; }), // not in the original
 	
 	Builtin::And("and(%s,%s)", 1./3.),
 	Builtin::Or("or(%s,%s)", 1./3.),
@@ -85,24 +107,16 @@ public:
 	using Super = LOTHypothesis<MyHypothesis,set,word,MyGrammar>;
 	using Super::Super;
 	
-	size_t recursion_count() {
-		size_t cnt = 0;
-		for(auto& n : value) {
-			cnt += n.rule->instr.is_a(BuiltinOp::op_RECURSE);
-		}
-		return cnt;
-	}
-		
 	double compute_prior() override {
 		// include recusion penalty
 		return prior = Super::compute_prior() + (recursion_count() > 0 ? recursion_penalty : log1p(-exp(recursion_penalty))); 
 	}
 		
 	// As in the original paper, we compute hte likelihood by averaging over all numbers, weighting by their probabilities
-	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) {
+	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		this->likelihood = 0.0;
-		for(set x=1;x<10;x++) {
-			auto v = callOne(x);
+		for(int x=1;x<10;x++) {
+			auto v = callOne(make_set(x));
 			this->likelihood += Ndata*Np[x]*log(  (1.0-alpha)/10.0 + (v==x)*alpha);
 		}
 		return this->likelihood;
@@ -110,8 +124,8 @@ public:
 	
 	virtual void print(std::string prefix="") override {
 		std::string outputstring;
-		for(size_t x=1;x<=10;x++) {
-			auto v = callOne(x);
+		for(int x=1;x<=10;x++) {
+			auto v = callOne(make_set(x));
 			outputstring += (v == U ? "U" : str(v)) + ".";
 		}
 		

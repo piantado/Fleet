@@ -210,14 +210,6 @@ public:
 	using Super = LOTHypothesis<MyHypothesis,utterance,word,MyGrammar>;
 	using Super::Super;
 	
-	size_t recursion_count() {
-		size_t cnt = 0;
-		for(auto& n : value) {
-			cnt += n.rule->instr.is_a(BuiltinOp::op_RECURSE);
-		}
-		return cnt;
-	}
-		
 	double compute_prior() override {
 		// include recusion penalty
 		prior = Super::compute_prior() +

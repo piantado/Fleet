@@ -208,6 +208,21 @@ public:
 		// Usually this means that that the value is complete, meaning no partial subtrees
 		return value.is_complete();
 	}
+	
+	 /**
+	  * @brief Count up how many times I use recursion -- we keep a list of recursion here
+	  * @return 
+	  */ 
+	size_t recursion_count() {
+		size_t cnt = 0;
+		for(auto& n : value) {
+			cnt += n.rule->instr.is_a(BuiltinOp::op_RECURSE, 
+									  BuiltinOp::op_MEM_RECURSE,
+									  BuiltinOp::op_SAFE_RECURSE, 
+									  BuiltinOp::op_SAFE_MEM_RECURSE);
+		}
+		return cnt;
+	} 
 	 
 };
 
