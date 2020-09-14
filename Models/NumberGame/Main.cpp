@@ -133,11 +133,7 @@ std::tuple PRIMITIVES = {
 
 #include "Grammar.h"
 
-class MyGrammar : public Grammar<NumberSet,int> {
-	using Super=Grammar<NumberSet,int>;
-	using Super::Super;
-};
-
+using MyGrammar = Grammar<NumberSet,int>;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define hypothesis

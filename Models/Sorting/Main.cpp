@@ -118,10 +118,7 @@ std::tuple PRIMITIVES = {
 
 // declare a grammar with our primitives
 // Note that this ordering of primitives defines the order in Grammar
-class MyGrammar : public Grammar<S,char,bool,int> {
-	using Super = Grammar<S,char,bool,int>;
-	using Super::Super;
-};
+using MyGrammar = Grammar<S,char,bool,int>;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type

@@ -33,7 +33,6 @@ const double pchance = 0.000000001;
 
 double TERMINAL_P = 5.0;
 
-
 std::tuple PRIMITIVES = {
 	Primitive("tail(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : s.substr(1,S::npos)); }),
 	Primitive("head(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : S(1,s.at(0))); }),

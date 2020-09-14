@@ -62,11 +62,7 @@ std::tuple PRIMITIVES = {
 
 #include "Grammar.h"
 
-class MyGrammar : public Grammar<bool,MyObject> {
-	using Super = Grammar<bool,MyObject>;
-	using Super::Super;
-};
-
+using MyGrammar = Grammar<bool,MyObject>;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define a class for handling my specific hypotheses and data. Everything is defaultly 
