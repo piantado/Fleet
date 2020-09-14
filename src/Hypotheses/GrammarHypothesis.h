@@ -21,10 +21,6 @@ extern volatile sig_atomic_t CTRL_C;
 #include "VectorHypothesis.h"
 #include "TNormalVariable.h"
 
-// If we do this, then we compute the grammar hypothesis's predictive values in log space. This is more
-// accurate but quite a bit slower, so it's off by default. 
-//#define GRAMMAR_HYPOTHESIS_USE_LOG_PREDICTIVE 1
-
 /**
  * @brief Runs MCMC on hypotheses, resampling when the data stops being incremental and returns a unioned
  * 			vector of all the tops
@@ -242,6 +238,8 @@ public:
 			for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
 				if(CTRL_C) std::terminate();
 				
+				//CERR ">>>>" TAB human_data[di].ndata ENDL;
+				
 				Vector data_lls  = Vector::Zero(human_data[di].ndata); // one for each of the data points
 				Vector decay_pos = Vector::Zero(human_data[di].ndata); // one for each of the data points
 				// check if these pointers are equal so we can reuse the previous data			
@@ -263,7 +261,7 @@ public:
 				else {
 					// compute anew; if ndata=0 then we should just include a 0.0
 					for(size_t i=0;i<human_data[di].ndata;i++) {
-						data_lls(i) = hypotheses[h].compute_single_likelihood((*human_data[di].data)[i]);
+						data_lls(i)  = hypotheses[h].compute_single_likelihood((*human_data[di].data)[i]);
 						decay_pos(i) = human_data[di].decay_position;
 					}				
 				}

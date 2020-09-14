@@ -116,10 +116,10 @@ std::tuple PRIMITIVES = {
 	Primitive("or[%s,%s]",    +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) or b(x);}; }), 
 	Primitive("not[%s]",      +[](ObjectToBool a)                 -> ObjectToBool { return [=](MyObject x) { return not a(x);}; }), 
 	
-	Primitive("nand[%s,%s]",      +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return not(a(x) and b(x));}; }),
-	Primitive("nor[%s,%s]",       +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return not(a(x) or b(x));}; }), 
-	Primitive("iff[%s,%s]",       +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) == b(x);}; }), 
-	Primitive("implies[%s,%s]",   +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return (not a(x)) or b(x);};} ), 
+	Primitive("nand[%s,%s]",      +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return not(a(x) and b(x));}; }, .25),
+	Primitive("nor[%s,%s]",       +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return not(a(x) or b(x));}; }, .25), 
+	Primitive("iff[%s,%s]",       +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) == b(x);}; }, .25), 
+	Primitive("implies[%s,%s]",   +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return (not a(x)) or b(x);};}, .25 ), 
 	
 	Primitive("forall(%s,%s)",   +[](ObjectToBool f, ObjectSet s)    -> bool { 
 		for(auto& x : s) {
