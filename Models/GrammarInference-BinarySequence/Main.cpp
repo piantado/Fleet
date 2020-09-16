@@ -288,6 +288,10 @@ int main(int argc, char** argv){
 		
 		// this input is sequential with each character of generated coming after each part of seen
 		// and the output is a single character (in computeP of MyGrammarHypothesis)
+		// So we're goign to pretend that the output data is a single character (the human's next prediction
+		// before they see more data) and override recompute_P above to compute the marginal probability
+		// NOTE This is being a little tricky and pretending the next output was just a string
+		
 		assert(seen.length() == generated.length());
 		for(size_t i=0;i<seen.length();i++) {
 			d[seen.substr(0,i)][S(1,generated.at(i))]++; // put a single character as this string
