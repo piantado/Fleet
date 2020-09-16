@@ -165,6 +165,55 @@ public:
 	using Super = GrammarHypothesis<MyGrammarHypothesis, MyHypothesis>;
 	using Super::Super;
 
+
+	virtual void recompute_P(std::vector<MyHypothesis>& hypotheses, const data_t& human_data) override {
+		assert(which_data == std::addressof(human_data));
+
+		// Because of the format of the data, we need to rewrite P to compute the conditional output
+		// of B vs O, conditioning on some prefix sequence. We will predict from the empty string
+		// but compute from the output of the hypothesis a conditional probability of B and O
+		
+		P.reset(new Predict_t(hypotheses.size(), human_data.size())); 
+		
+		#pragma omp parallel for
+		for(size_t di=0;di<human_data.size();di++) {	
+			for(size_t h=0;h<hypotheses.size();h++) {		
+				const datum_t& hd = human_data[di];
+				auto ret = hypotheses[h](*hd.predict);
+				
+				// get what the subject saw (as output) so we can marignalize
+				S& seen = hd.data[0][0].output; assert(hd.ndata == 1); assert(hd.data[0].size() == 1);
+				
+				// now we need to compute the probability conditioned on the prefix
+				double blp = -infinity; // just for this example
+				double olp = -infinity; 
+				for(auto& [s, lp] : ret.values() ) {
+					// if it's a longer string containing seen
+					// then it will contribute to the conditional probability
+					if(s.length() > seen.length() and is_prefix(seen, s)) {
+						
+						if(s.at(seen.length()) == 'B') 
+							blp = logplusexp(blp, lp);
+						else if(s.at(seen.length()) == 'O') 
+							olp = logplusexp(olp, lp);
+						else
+							assert(false);
+					}
+				}
+				double z = logplusexp(blp, olp);				
+				
+				// now we make a vector of each "output" and their conditional
+				// probabilities				
+				std::vector<std::pair<S,double>> v;
+				v.emplace_back("B", blp-z);
+				v.emplace_back("O", olp-z);
+				
+				P->at(h,di) = v;
+			}
+		}
+	}
+
+
 //	std::shared_ptr<Vector> runtimes; // one for each hypothesis
 //	NormalHypothesis<[](double* x){return x;}> beta_rt;
 //
@@ -230,21 +279,29 @@ int main(int argc, char** argv){
 	///////////////////////////////
 	// We'll read all the input here and dump it into a map
 	///////////////////////////////	
-	std::map<MyInput,std::map<MyOutput,size_t>> d; 
+	std::map<MyInput,std::map<S,size_t>> d; 
 	std::ifstream fs("binary_data.csv");
 	S line; std::getline(fs, line); // skip the first line
 	while(std::getline(fs, line)) {
 		auto parts = split(line, ',');
-		auto [input, output] = std::tie(parts[4], parts[5]);
-		d[input][output]++;  // just add up the input/output pairs we get
-		//CERR input TAB output TAB d[input][output] ENDL;
+		auto [seen, generated] = std::tie(parts[4], parts[5]);
+		
+		// this input is sequential with each character of generated coming after each part of seen
+		// and the output is a single character (in computeP of MyGrammarHypothesis)
+		assert(seen.length() == generated.length());
+		for(size_t i=0;i<seen.length();i++) {
+			d[seen.substr(0,i)][S(1,generated.at(i))]++; // put a single character as this string
+		}
 	}
+	
+//	for(auto& v : d) {
+//		CERR v.first TAB v.second["O"] TAB v.second["B"] ENDL;
+//	}
 		
 	///////////////////////////////
 	// Go through and convert this data to the form we need. 
 	///////////////////////////////
 	for(const auto& x : d) {		
-		// the learner sees "" -> x.first
 		auto learner_data = new MyHypothesis::data_t();
 		learner_data->emplace_back("", x.first, 0.0);
 		

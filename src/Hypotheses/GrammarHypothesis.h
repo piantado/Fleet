@@ -107,7 +107,7 @@ public:
 	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            llt;
 	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            pt;
 	TNormalVariable< +[](float x)->float { return expf(x-2); }>              decay;  // peaked near zero
-	
+		
 	typename HYP::Grammar_t* grammar;
 	
 	// All of these are shared_ptr so that we can copy hypotheses quickly
@@ -150,6 +150,10 @@ public:
 		}
 		
 		logA.set_size(grammar->count_rules());
+		
+		
+		// r1^nr1 * r2^nr2 ..
+		// nr1 * log(r1) + nr2*log(r2) ...
 		
 		// when we are initialized this way, we compute C, LL, P, and the decayed ll. 
 		recompute_C(hypotheses);
@@ -330,7 +334,7 @@ public:
 			for(size_t h=0;h<hypotheses.size();h++) {			
 				
 				// we get back a discrete distribution, but we'd like to store it as a vector
-				// so its faster to iterature
+				// so its faster to iterate
 				auto ret = hypotheses[h](*human_data[di].predict);
 				
 				std::vector<std::pair<typename HYP::output_t,double>> v;
