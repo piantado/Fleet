@@ -358,7 +358,7 @@ public:
 						case BuiltinOp::op_X:
 						{
 							assert(!xstack.empty());
-							push<input_t>(std::move(xstack.top()));
+							push<input_t>(xstack.top()); // WARNING: Do NOT move out of here!
 							break;
 						}
 						case BuiltinOp::op_POPX:
