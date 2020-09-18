@@ -21,17 +21,17 @@
   * @brief A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. 
   *  Here we "emulate" a type system using t_nonterminal to store an integer for the types.   * 
   */ 
+template<typename VirtualMachineState_t>
 class Rule {
-
 
 public:
 	static const std::string ChildStr; // how do strings get substituted?
 
-	nonterminal_t         nt;
-	Instruction           instr; // a template for my instruction, which here mainly stores my optype
-	std::string           format; // how am I printed?
-	size_t                N; // how many children?
-	double                p;
+	nonterminal_t                      nt;
+	Instruction<VirtualMachineState_t> instr; // a template for my instruction, which here mainly stores my optype
+	std::string                        format; // how am I printed?
+	size_t                             N; // how many children?
+	double                             p;
 		
 protected:
 	std::vector<nonterminal_t> child_types; // An array of what I expand to; note that this should be const but isn't to allow list initialization (https://stackoverflow.com/questions/5549524/how-do-i-initialize-a-member-array-with-an-initializer-list)
@@ -40,16 +40,19 @@ protected:
 	
 public:
 	// Rule's constructors convert CustomOp and BuiltinOp to the appropriate instruction types
-	template<typename OPT> // same constructor for CustomOp, BuiltinOp,PrimitiveOp
-	constexpr Rule(const nonterminal_t rt, const OPT o, const char* fmt, std::initializer_list<nonterminal_t> c, double _p, const int arg=0) :
-		nt(rt), instr(o,arg), format(fmt), N(c.size()), p(_p), child_types(c) {
+	Rule(const nonterminal_t rt, 
+	     const Instruction<VirtualMachineState_t> i, 
+		 const char* fmt, 
+		 std::initializer_list<nonterminal_t> c, 
+		 double _p) :
+		nt(rt), instr(i), format(fmt), N(c.size()), p(_p), child_types(c) {
 			
 		// Set up hashing for rules (cached so we only do it once)
 		std::hash<std::string> h; 
 		my_hash = h(fmt);
-		hash_combine(my_hash, (size_t) o, (size_t) arg, (size_t)nt);
+		hash_combine(my_hash, (size_t) o, (size_t)nt);
 		for(size_t i=0;i<N;i++) 
-			hash_combine(my_hash, i, (size_t)child_types[i]);
+			hash_combine(my_hash, (int)i.f, (size_t)child_types[i]);
 		
 		
 		// check that the format string has the right number of %s

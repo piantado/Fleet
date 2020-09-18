@@ -77,7 +77,7 @@ public:
 	
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
-	Program            opstack; 
+	Program<this_t>    opstack; 
 	VMSStack<input_t>  xstack; //xstackthis stores a stack of the x values (for recursive calls)
 	output_t           err; // what error output do we return?
 	double             lp; // the probability of this context
@@ -335,7 +335,10 @@ public:
 				Instruction i = opstack.top(); opstack.pop();
 				
 				// keep track of what instruction we've run
-				runtime_counter.increment(i);
+				//runtime_counter.increment(i);
+				
+				status = i.f(this);
+				/*
 				
 				// Now actually dispatch for whatever i is doing to this stack
 				if(i.is<PrimitiveOp>()) {
@@ -672,6 +675,11 @@ public:
 					} // end switch
 				
 				} // end if not custom
+				 * 
+				 * 
+				 * */
+				 
+				 
 			} // end while loop over ops
 	
 			// and when we exit, set the status to complete if we are good

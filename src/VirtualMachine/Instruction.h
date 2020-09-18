@@ -8,6 +8,25 @@
 #include "Ops.h"
 #include "VMStatus.h"
 
+// Instead of lambdas, which are hard to put on the stack, 
+// we define these callable objects
+//template<typename VirtualMachineState_t>
+//class VMSFunction {
+//	using F = vmstatus_t(*)(VirtualMachineState_t*);
+//
+//	template<typename T, typename... args> 
+//	VMSFunction( T(*fargs)(args...) ) {
+//		
+//	}
+//
+//	vmstatus_t operator()(VirtualMachineState_t*) {
+//		
+//	}
+//
+//};
+
+
+
 /**
 * @class Instruction
 * @author piantado
@@ -25,36 +44,17 @@
 	 we use arg to store which alphabet terminal, etc. 
 
 */
+template<typename VirtualMachineState_t>
 class Instruction { 
 public:
 
-	std::variant<BuiltinOp, 
-				 PrimitiveOp> op; // what kind of op is this? custom or built in?
-	int                       arg; // 
+	// the function type we use takes a virtual machine state and returns a status
+	using F = vmstatus_t(*)(VirtualMachineState_t*);
+
+	F f;
 
 	// constructors to make this a little easier to deal with
-	Instruction()                            : op(BuiltinOp::op_NOP), arg(0x0) {}
-	Instruction(BuiltinOp x,   int arg_=0x0) : op(x), arg(arg_)  { }
-	Instruction(PrimitiveOp x, int arg_=0x0) : op(x), arg(arg_) { }
-
-	template<typename t>
-	bool is() const {
-		/**
-		 * @brief Template to check if this instruction is holding type t
-		 * @return 
-		 */
-		return std::holds_alternative<t>(op);
-	}
-
-	template<typename t>
-	t as() const {
-		/**
-		 * @brief Get as type t
-		 * @return 
-		 */
-		
-		assert(is<t>() && "*** Something is very wrong if we can't get it as type t");
-		return std::get<t>(op);
+	Instruction(F* _f) : f(_f) {
 	}
 
 	int getArg() const {
@@ -66,25 +66,7 @@ public:
 	}
 	
 	bool operator==(const Instruction& i) const {
-		return op==i.op and arg==i.arg;
-	}
-
-	/// compare the instruction types (ignores the arg)
-	template<typename T>
-	bool is_a(const T x)    const {
-		return (is<T>() and as<T>() == x);
-	}
-	template<typename T, typename... Ts>
-	bool is_a(T x, Ts... args) const {
-		/**
-		 * @brief Variadic checking of whether this is a given op type
-		 * @param x
-		 * @return 
-		 */
-				
-		// we defaulty allow is_a to take a list of possible ops, either builtin or custom,
-		// and returns true if ANY of the types are matched
-		return is_a(x) || is_a(args...);
+		return f==i.f and arg==i.arg;
 	}
 		
 };
@@ -97,13 +79,6 @@ std::ostream& operator<<(std::ostream& stream, Instruction& i) {
 	 * @param i
 	 * @return 
 	 */
-	
-	std::string t;
-	size_t      o{};
-	if(i.is<BuiltinOp>())          { t = "B"; o = (size_t)i.as<BuiltinOp>(); }
-	else if(i.is<PrimitiveOp>())   { t = "P"; o = (size_t)i.as<PrimitiveOp>(); }
-	
-	
-	stream << "[" << t << "" << o << "." << i.arg << "]";
+	stream << "[" << i.f << "\t" << i.arg << "]";
 	return stream;
 }
