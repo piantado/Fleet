@@ -50,7 +50,7 @@ public:
 
 protected:
 
-	Node value;
+	Node<Grammar_t::VirtualMachineState_t> value;
 	
 public:
 	LOTHypothesis(Grammar_t* g=nullptr)     : MCMCable<this_t,datum_t,data_t>(), grammar(g), value(NullRule,0.0,true) {}

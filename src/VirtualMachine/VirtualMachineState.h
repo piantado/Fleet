@@ -9,7 +9,7 @@
 #include "Program.h"
 #include "Stack.h"
 #include "Statistics/FleetStatistics.h"
-#include "RuntimeCounter.h"
+//#include "RuntimeCounter.h"
 #include "Hypotheses/Interfaces/ProgramLoader.h"
 #include "VirtualMachineControl.h"
 
@@ -104,15 +104,15 @@ public:
 	// what do we use to count up instructions 
 	// NOTE for now this may be a bit slower and unnecessary but it doesnt' seem so bad at the
 	// moment so this may need to be optimized later to be optional
-	RuntimeCounter runtime_counter;
+	//RuntimeCounter runtime_counter;
 	
 	// what we use to load programs
-	ProgramLoader* program_loader;
+	ProgramLoader<this_t>* program_loader;
 	
 	// where we place random flips back onto
 	VirtualMachinePool<this_t>* pool;
 	
-	VirtualMachineState(input_t x, output_t e, ProgramLoader* pl, VirtualMachinePool<this_t>* po) :
+	VirtualMachineState(input_t x, output_t e, ProgramLoader<this_t>* pl, VirtualMachinePool<this_t>* po) :
 		err(e), lp(0.0), recursion_depth(0), status(vmstatus_t::GOOD), program_loader(pl), pool(po) {
 		xstack.push(x);	
 	}
@@ -141,9 +141,9 @@ public:
 	 * @brief How many more steps can I be run for? This is useful for not adding programs that contain too many ops
 	 * @return 
 	 */		
-	unsigned long remaining_steps() {
-		return MAX_RUN_PROGRAM - runtime_counter.total;
-	}
+//	unsigned long remaining_steps() {
+//		return MAX_RUN_PROGRAM - runtime_counter.total;
+//	}
 	
 	/**
 	 * @brief Returns a reference to the stack (of a given type)
@@ -325,10 +325,10 @@ public:
 			
 			while(status == vmstatus_t::GOOD and (not opstack.empty()) ) {
 				
-				if(opstack.size() > remaining_steps() ) {  // if we've run too long or we couldn't possibly finish
-					status = vmstatus_t::RUN_TOO_LONG;
-					break;
-				}
+//				if(opstack.size() > remaining_steps() ) {  // if we've run too long or we couldn't possibly finish
+//					status = vmstatus_t::RUN_TOO_LONG;
+//					break;
+//				}
 				
 				FleetStatistics::vm_ops++;
 				

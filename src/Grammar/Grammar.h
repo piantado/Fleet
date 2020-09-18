@@ -70,7 +70,7 @@ public:
 
 	// rules[k] stores a SORTED vector of rules for the kth' nonterminal. 
 	// our iteration order is first for k = 0 ... N_NTs then for r in rules[k]
-	std::vector<Rule<this_t>> rules[N_NTs];
+	std::vector<Rule<VirtualMachineState_t>> rules[N_NTs];
 	double	  	              Z[N_NTs]; // keep the normalizer handy for each nonterminal (not log space)
 	
 	// This function converts a type (passed as a template parameter) into a 
@@ -121,11 +121,11 @@ public:
 	 * @brief This allows us to iterate over rules in a grammar, guaranteed to be in a fixed order (first by 
 	 * 		  nonterminals, then by rule sort order. 
 	 */	
-	class RuleIterator : public std::iterator<std::forward_iterator_tag, Rule<this_t>> {
+	class RuleIterator : public std::iterator<std::forward_iterator_tag, Rule<VirtualMachineState_t>> {
 	protected:
 			this_t* grammar;
 			nonterminal_t current_nt;
-			std::vector<Rule<this_t>>::iterator current_rule;
+			std::vector<Rule<VirtualMachineState_t>>::iterator current_rule;
 			
 	public:
 		
@@ -140,8 +140,8 @@ public:
 					current_rule = grammar->rules[current_nt].end();
 				}
 			}
-			Rule<this_t>& operator*() const  { return *current_rule; }
-//			Rule<this_t>* operator->() const { return  current_rule; }
+			Rule<VirtualMachineState_t>& operator*() const  { return *current_rule; }
+//			Rule<VirtualMachineState_t>* operator->() const { return  current_rule; }
 			 
 			RuleIterator& operator++(int blah) { this->operator++(); return *this; }
 			RuleIterator& operator++() {
@@ -287,7 +287,7 @@ public:
 			
 	template<typename T, typename... args> 
 	void add(const char* fmt, vmstatus_t(*fvms)(VirtualMachineState_t*), double p=1.0) {
-		Rule<this_t> r(this->template nt<T>(), Instruction{f}, fmt, {nt<args>()...}, p);
+		Rule<VirtualMachineState_t> r(this->template nt<T>(), Instruction{f}, fmt, {nt<args>()...}, p);
 		Z[nt] += r.p; // keep track of the total probability
 		nonterminal_t nt = r.nt;
 		auto pos = std::lower_bound( rules[nt].begin(), rules[nt].end(), r);
@@ -342,7 +342,7 @@ public:
 	// Methods for getting rules by some info
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	size_t get_index_of(const Rule<this_t>* r) const {
+	size_t get_index_of(const Rule<VirtualMachineState_t>* r) const {
 		/**
 		 * @brief Find the index in rules of where r is.
 		 * @param r
@@ -357,7 +357,7 @@ public:
 		throw YouShouldNotBeHereError("*** Did not find rule in get_index_of.");
 	}
 	
-	virtual Rule<this_t>* get_rule(const nonterminal_t nt, size_t k) const {
+	virtual Rule<VirtualMachineState_t>* get_rule(const nonterminal_t nt, size_t k) const {
 		/**
 		 * @brief Get the k'th rule of type nt 
 		 * @param nt
@@ -367,10 +367,10 @@ public:
 		
 		assert(nt < N_NTs);
 		assert(k < rules[nt].size());
-		return const_cast<Rule<this_t>*>(&rules[nt][k]);
+		return const_cast<Rule<VirtualMachineState_t>*>(&rules[nt][k]);
 	}
 	
-	virtual Rule<this_t>* get_rule(const nonterminal_t nt, const BuiltinOp o, const int a=0) {
+	virtual Rule<VirtualMachineState_t>* get_rule(const nonterminal_t nt, const BuiltinOp o, const int a=0) {
 		/**
 		 * @brief Get rule of type nt with a given BuiltinOp and argument a
 		 * @param nt
@@ -385,12 +385,12 @@ public:
 		throw YouShouldNotBeHereError("*** Could not find rule");		
 	}
 	
-//	virtual Rule<this_t>* get_rule(const nonterminal_t nt, size_t i) {
+//	virtual Rule<VirtualMachineState_t>* get_rule(const nonterminal_t nt, size_t i) {
 //		assert(i <= rules[nt].size());
 //		return &rules[nt][i];
 //	}
 	
-	virtual Rule<this_t>* get_rule(const nonterminal_t nt, const std::string s) const {
+	virtual Rule<VirtualMachineState_t>* get_rule(const nonterminal_t nt, const std::string s) const {
 		/**
 		 * @brief Return a rule based on s, which must uniquely be a prefix of the rule's format of a given nonterminal type. 
 		 * 			If s is the empty string, however, it must match exactly. 
@@ -398,14 +398,14 @@ public:
 		 * @return 
 		 */
 		
-		Rule<this_t>* ret = nullptr;
+		Rule<VirtualMachineState_t>* ret = nullptr;
 		for(auto& r: rules[nt]) {
 			if( (s != "" and is_prefix(s, r.format)) or (s=="" and s==r.format)) {
 				if(ret != nullptr) {
 					CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
 					throw YouShouldNotBeHereError();
 				}
-				ret = const_cast<Rule<this_t>*>(&r);
+				ret = const_cast<Rule<VirtualMachineState_t>*>(&r);
 			} 
 		}
 		
@@ -416,7 +416,7 @@ public:
 		}
 	}
 	
-	virtual Rule<this_t>* get_rule(const std::string s) const {
+	virtual Rule<VirtualMachineState_t>* get_rule(const std::string s) const {
 		/**
 		 * @brief Return a rule based on s, which must uniquely be a prefix of the rule's format.
 		 * 			If s is the empty string, however, it must match exactly. 
@@ -424,7 +424,7 @@ public:
 		 * @return 
 		 */
 		
-		Rule<this_t>* ret = nullptr;
+		Rule<VirtualMachineState_t>* ret = nullptr;
 		for(auto& r : *this) {
 			if( (s != "" and is_prefix(s, r.format)) or (s=="" and s==r.format)) {
 				if(ret != nullptr) {
@@ -457,16 +457,16 @@ public:
 		return Z[nt];
 	}
 
-	virtual Rule<this_t>* sample_rule(const nonterminal_t nt) const {
+	virtual Rule<VirtualMachineState_t>* sample_rule(const nonterminal_t nt) const {
 		/**
 		 * @brief Randomly sample a rule of type nt. 
 		 * @param nt
 		 * @return 
 		 */
 		
-		std::function<double(const Rule<this_t>& r)> f = [](const Rule<this_t>& r){return r.p;};
+		std::function<double(const Rule<VirtualMachineState_t>& r)> f = [](const Rule<VirtualMachineState_t>& r){return r.p;};
 		assert(rules[nt].size() > 0 && "*** You are trying to sample from a nonterminal with no rules!");
-		return sample<Rule<this_t>,std::vector<Rule<this_t>>>(rules[nt], Z[nt], f).first; // ignore the probabiltiy 
+		return sample<Rule<VirtualMachineState_t>,std::vector<Rule<VirtualMachineState_t>>>(rules[nt], Z[nt], f).first; // ignore the probabiltiy 
 	}
 	
 	
@@ -475,18 +475,18 @@ public:
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	
-	Node makeNode(const Rule<this_t>* r) const {
+	Node<VirtualMachineState_t> makeNode(const Rule<VirtualMachineState_t>* r) const {
 		/**
 		 * @brief Helper function to create a node according to this grammar. This is how nodes get their log probabilities. 
 		 * @param r
 		 * @return 
 		 */
 		
-		return Node(r, log(r->p)-log(rule_normalizer(r->nt)));
+		return Node<VirtualMachineState_t>(r, log(r->p)-log(rule_normalizer(r->nt)));
 	}
 	
 
-	Node generate(const nonterminal_t nt, unsigned long depth=0) const {
+	Node<VirtualMachineState_t> generate(const nonterminal_t nt, unsigned long depth=0) const {
 		/**
 		 * @brief Sample an entire tree from this grammar (keeping track of depth in case we recurse too far) of return type nt. This samples a rule, makes them with makeNode, and then recurses. 
 		 * @param nt
@@ -504,8 +504,8 @@ public:
 			throw YouShouldNotBeHereError("*** Grammar exceeded max depth, are you sure the grammar probabilities are right?");
 		}
 		
-		Rule<this_t>* r = sample_rule(nt);
-		Node n = makeNode(r);
+		Rule<VirtualMachineState_t>* r = sample_rule(nt);
+		Node<VirtualMachineState_t> n = makeNode(r);
 		
 		for(size_t i=0;i<r->N;i++) {
 			n.set_child(i, generate(r->type(i), depth+1)); // recurse down
@@ -514,7 +514,7 @@ public:
 	}	
 	
 	template<class t>
-	Node generate(unsigned long depth=0) {
+	Node<VirtualMachineState_t> generate(unsigned long depth=0) {
 		/**
 		 * @brief A friendly version of generate that can be called with template by type.  
 		 * @param depth
@@ -524,7 +524,7 @@ public:
 		return generate(nt<t>(),depth);
 	}
 	
-	Node copy_resample(const Node& node, bool f(const Node& n)) const {
+	Node<VirtualMachineState_t> copy_resample(const Node<VirtualMachineState_t>& node, bool f(const Node<VirtualMachineState_t>& n)) const {
 		/**
 		 * @brief Make a copy of node where all nodes satisfying f are regenerated from the grammar. 
 		 * @param node
@@ -539,7 +539,7 @@ public:
 		else {
 		
 			// otherwise normal copy
-			Node ret = node;
+			auto ret = node;
 			for(size_t i=0;i<ret.nchildren();i++) {
 				ret.set_child(i, copy_resample(ret.child(i), f));
 			}
@@ -551,7 +551,7 @@ public:
 	// Computing log probabilities and priors
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	std::vector<size_t> get_counts(const Node& node) const {
+	std::vector<size_t> get_counts(const Node<VirtualMachineState_t>& node) const {
 		/**
 		 * @brief Compute a vector of counts of how often each rule was used, in a *standard* order given by iterating over nts and then iterating over rules
 		 * @param node
@@ -600,7 +600,7 @@ public:
 	#endif
 	
 	
-	double log_probability(const Node& n) const {
+	double log_probability(const Node<VirtualMachineState_t>& n) const {
 		/**
 		 * @brief Compute the log probability of a tree according to the grammar. NOTE: here we ignore nodes that are Null
 		 * 		  meaning that we compute the partial probability
@@ -622,7 +622,7 @@ public:
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	
-	Node expand_from_names(std::deque<std::string>& q) const {
+	Node<VirtualMachineState_t> expand_from_names(std::deque<std::string>& q) const {
 		/**
 		 * @brief Fills an entire tree using the string format prefixes -- see get_rule(std::string).
 		 * 		  Here q should contain strings like "3:'a'" which says expand nonterminal type 3 to the rule matching 'a'
@@ -632,7 +632,7 @@ public:
 		
 		assert(!q.empty() && "*** Should not ever get to here with an empty queue -- are you missing arguments?");
 		
-		auto [nts, pfx] = divide(q.front(), Node::NTDelimiter);
+		auto [nts, pfx] = divide(q.front(), Node<VirtualMachineState_t>::NTDelimiter);
 		q.pop_front();
 		
 		// null rules:
@@ -640,9 +640,9 @@ public:
 			return makeNode(NullRule);
 
 		// otherwise find the matching rule
-		Rule<this_t>* r = this->get_rule(stoi(nts), pfx);
+		Rule<VirtualMachineState_t>* r = this->get_rule(stoi(nts), pfx);
 
-		Node v = makeNode(r);
+		Node<VirtualMachineState_t> v = makeNode(r);
 		for(size_t i=0;i<r->N;i++) {	
 		
 			v.set_child(i, expand_from_names(q));
@@ -656,24 +656,24 @@ public:
 		return v;
 	}
 
-	Node expand_from_names(std::string s) const {
+	Node<VirtualMachineState_t> expand_from_names(std::string s) const {
 		/**
 		 * @brief Expand from names where s is delimited by ':'
 		 * @param s
 		 * @return 
 		 */
 		
-		std::deque<std::string> stk = split(s, Node::RuleDelimiter);    
+		std::deque<std::string> stk = split(s, Node<VirtualMachineState_t>::RuleDelimiter);    
         return expand_from_names(stk);
 	}
 	
-	Node expand_from_names(const char* c) const {
+	Node<VirtualMachineState_t> expand_from_names(const char* c) const {
 		std::string s = c;
         return expand_from_names(s);
 	}
 
 
-	size_t neighbors(const Node& node) const {
+	size_t neighbors(const Node<VirtualMachineState_t>& node) const {
 		// How many neighbors do I have? This is the number of neighbors the first gap has
 		for(size_t i=0;i<node.rule->N;i++){
 			if(node.child(i).is_null()) {
@@ -687,7 +687,7 @@ public:
 		return 0;
 	}
 
-	void expand_to_neighbor(Node& node, int& which) {
+	void expand_to_neighbor(Node<VirtualMachineState_t>& node, int& which) {
 		// here we find the neighbor indicated by which and expand it into the which'th neighbor
 		// to do this, we loop through until which is less than the number of neighbors,
 		// and then it must specify which expansion we want to take. This means that when we
@@ -708,7 +708,7 @@ public:
 		}
 	}
 	
-	double neighbor_prior(const Node& node, int& which) const {
+	double neighbor_prior(const Node<VirtualMachineState_t>& node, int& which) const {
 		// here we find the neighbor indicated by which and expand it into the which'th neighbor
 		// to do this, we loop through until which is less than the number of neighbors,
 		// and then it must specify which expansion we want to take. This means that when we
@@ -731,7 +731,7 @@ public:
 		return 0.0; // if no neighbors
 	}
 
-	void complete(Node& node) {
+	void complete(Node<v>& node) {
 		// go through and fill in the tree at random
 		for(size_t i=0;i<node.rule->N;i++){
 			if(node.child(i).is_null()) {
