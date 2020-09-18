@@ -68,6 +68,11 @@ public:
 #include "ParallelTempering.h"
 #include "Fleet.h" 
 
+
+bool myf() {
+	return true;
+}
+
 int main(int argc, char** argv){ 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
@@ -90,7 +95,11 @@ int main(int argc, char** argv){
 	
 	grammar.add("nand(%s,%s)",    +[](bool x, bool y) -> bool { return not (x and y); });
 
-	grammar.add_vms<MyObject>("x", +[](MyGrammar::VirtualMachineState_t* vms) {
+
+	grammar.add("and(%s,%s)",    Builtins::And<MyGrammar::VirtualMachineState_t>);
+
+
+	grammar.add<MyObject>("x", +[](MyGrammar::VirtualMachineState_t* vms, int arg) -> void {
 		assert(!vms->xstack.empty());
 		vms->push<MyObject>(vms->xstack.top());
 	});

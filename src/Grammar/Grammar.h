@@ -65,9 +65,6 @@ public:
 
 	// The input/output types must be repeated to VirtualMachineState
 	using VirtualMachineState_t = VirtualMachineState<input_t, output_t, GRAMMAR_TYPES...>;
-	
-	// the type of function that manipulates the VMS
-	using F = void(VirtualMachineState_t*);
 
 	// rules[k] stores a SORTED vector of rules for the kth' nonterminal. 
 	// our iteration order is first for k = 0 ... N_NTs then for r in rules[k]
@@ -97,19 +94,6 @@ public:
 			Z[i] = 0.0;
 		}
 	}
-	
-	/**
-	 * @brief Constructor for grammar that uses a tuple of Primitives. This is the most important and commonly
-	 * 		  used grammar constructor in Fleet
-	 * @param tup - a tuple of Primitives
-	 */
-	template<typename... T>
-	Grammar(std::tuple<T...> tup) : Grammar() {
-		
-		static_assert(checkBuiltinsAreLast<T...>(), "*** You cannot have a Primitive (or something else) after a BuiltinPrimitive, due to how applyPrimitives.h works. Just reorder.");
-		
-		add(tup, std::make_index_sequence<sizeof...(T)>{});
-	}	
 	
 	// should not be doing these
 	Grammar(const Grammar& g)  = delete; 
@@ -287,27 +271,42 @@ public:
 		// TODO: UPDATE FOR DECAY SINCE WE DONT WANT THAT UNTIL WE HAVE REFERENCES AGAIN?
 		return contains_type<X,GRAMMAR_TYPES...>();
 	}
-			
-	template<typename T, typename... args> 
-	void add_vms(const char* fmt, F fvms, double p=1.0) {
-//	void add_vms(const char* fmt, void(*fvms)(VirtualMachineState_t*) , double p=1.0) {
-		CERR "Adding rule " TAB fmt TAB (void*)fvms ENDL;
 		
+	template<typename T, typename... args> 
+	void add(const char* fmt, void* f, double p=1.0, Op o=Op::Standard) {
 		nonterminal_t Tnt = this->nt<T>();
-		Rule r(Tnt, Instruction{(void*)fvms}, fmt, {nt<args>()...}, p);
+		Rule r(Tnt, f, fmt, {nt<args>()...}, p, o);
 		Z[Tnt] += r.p; // keep track of the total probability
 		auto pos = std::lower_bound( rules[Tnt].begin(), rules[Tnt].end(), r);
 		rules[Tnt].insert( pos, r ); // put this before	
 	}
-			
+	
+	template<typename T, typename... args> 
+	void add(const char* fmt, std::function<void(VirtualMachineState_t*,int)> fvms, double p=1.0, Op o=Op::Standard) {
+		//CERR "Adding rule " TAB fmt TAB (void*)fvms ENDL;
+		
+		// move this to the heap so it persists
+		std::function<void(VirtualMachineState_t*,int)>* f = new std::function(fvms);
+		
+		add(fmt, (void*)f, p, o);
+	}
+		
+		
+	template<typename T, typename... args> 
+	void add(const char* fmt, Builtin<T,args...>& b, double p=1.0) {
+		// read f and o from b
+		add(fmt, b.f, p, b.o);
+	}
+		
 	// unpack a lambda and convert it into an instruction for the rule we add here
 	// TODO: ADD REFERENCE SUPPORT HERE
 	template<typename T, typename... args> 
-	void add(const char* fmt, T(*_f)(args...), double p=1.0) {
+	void add(const char* fmt, T(*f)(args...), double p=1.0) {
 		
 		// put a copy of this on the stack so it is accessible to the below
 		// lambda once we exit this function
-		std::function<T(args...)>* f = new std::function<T(args...)>(_f);
+		// TODO: It seems we don't need this maybe?
+		//std::function<T(args...)>* f = new std::function<T(args...)>(*_f);
 		
 		// first check that the types are allowed
 		static_assert(is_in_GRAMMAR_TYPES<T>() , "*** Return type is not in GRAMMAR_TYPES");
@@ -315,48 +314,38 @@ public:
 	
 		// create a lambda on the heap that is a function of a VMS, since
 		// this is what an instruction must be. This implements the calling order convention too. 
-		auto newf = new auto ([f](VirtualMachineState_t* vms) -> void {
+		//auto newf = new auto ( [=](VirtualMachineState_t* vms) -> void {
+		std::function<void(VirtualMachineState_t*,int)> fvms = [f](VirtualMachineState_t* vms, int a=0) -> void {
 				assert(vms != nullptr);
-				CERR "STARTING" ENDL;
+			
 				if constexpr (sizeof...(args) ==  0){	
-					vms->push( (*f)() );
+					vms->push( f() );
 				}
 				if constexpr (sizeof...(args) ==  1) {
 					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
-					vms->push((*f)(std::move(a0)));
+					vms->push(f(std::move(a0)));
 				}
 				else if constexpr (sizeof...(args) ==  2) {
 					auto a1 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
 					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();	
-					vms->push((*f)(std::move(a0), std::move(a1)));
+					vms->push(f(std::move(a0), std::move(a1)));
 				}
 				else if constexpr (sizeof...(args) ==  3) {
 					auto a2 = vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
 					auto a1 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
 					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
-					vms->push((*f)(std::move(a0), std::move(a1), std::move(a2)));
+					vms->push(f(std::move(a0), std::move(a1), std::move(a2)));
 				}
 				else if constexpr (sizeof...(args) ==  4) {
 					auto a3 = vms->template get<typename std::tuple_element<3, std::tuple<args...> >::type>();
 					auto a2 = vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
 					auto a1 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
 					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
-					vms->push((*f)(std::move(a0), std::move(a1), std::move(a2), std::move(a3)));
+					vms->push(f(std::move(a0), std::move(a1), std::move(a2), std::move(a3)));
 				}
-				
-				CERR "DONEHERE" ENDL;
-
-			});
+			};
 			
-//		 add_vms<T, args...>(fmt, newf, p);
-		CERR "Adding rule " TAB fmt TAB (void*)newf ENDL;
-		
-		nonterminal_t Tnt = this->nt<T>();
-		Rule r(Tnt, Instruction{(void*)newf}, fmt, {nt<args>()...}, p);
-		Z[Tnt] += r.p; // keep track of the total probability
-		auto pos = std::lower_bound( rules[Tnt].begin(), rules[Tnt].end(), r);
-		rules[Tnt].insert( pos, r ); // put this before	
-
+		this->add<T,args...>(fmt, fvms, p);
 	}
 
 

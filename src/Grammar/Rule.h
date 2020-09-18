@@ -27,11 +27,14 @@ public:
 	static const std::string ChildStr; // how do strings get substituted?
 
 	nonterminal_t                      nt;
-	Instruction instr; // a template for my instruction, which here mainly stores my optype
 	std::string                        format; // how am I printed?
 	size_t                             N; // how many children?
 	double                             p;
-		
+	
+	void*				fptr;
+	Op 					op; // for ops that need names
+	
+	
 protected:
 	std::vector<nonterminal_t> child_types; // An array of what I expand to; note that this should be const but isn't to allow list initialization (https://stackoverflow.com/questions/5549524/how-do-i-initialize-a-member-array-with-an-initializer-list)
 
@@ -40,11 +43,12 @@ protected:
 public:
 	// Rule's constructors convert CustomOp and BuiltinOp to the appropriate instruction types
 	Rule(const nonterminal_t rt, 
-	     const Instruction i, 
+	     void* f, 
 		 const char* fmt, 
 		 std::initializer_list<nonterminal_t> c, 
-		 double _p) :
-		nt(rt), instr(i), format(fmt), N(c.size()), p(_p), child_types(c) {
+		 double _p, 
+		 Op o) :
+		nt(rt), fptr(f), format(fmt), N(c.size()), p(_p), op(o), child_types(c) {
 			
 		// Set up hashing for rules (cached so we only do it once)
 		std::hash<std::string> h; 
@@ -57,7 +61,16 @@ public:
 		// check that the format string has the right number of %s
 		assert( N == count(fmt, ChildStr) && "*** Wrong number of format string arguments");
 	}
-		
+	
+	
+	bool is_a(Op o) {
+		return o == op;
+	}
+	
+	Instruction makeInstruction(int a=0) {
+		return Instruction(fptr, a);
+	}
+	
 	bool operator<(const Rule& r) const {
 		/**
 		 * @brief We sort rules so that they can be stored in arrays in a standard order. For enumeration, it's actually important that we sort them with the terminals first. 

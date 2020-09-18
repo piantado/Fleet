@@ -73,7 +73,7 @@ public:
 	typedef _t_input  input_t;
 	typedef _t_output output_t;
 	
-	typedef VirtualMachineState<input_t,output_t, VM_TYPES...> this_t; 
+	typedef VirtualMachineState<input_t, output_t, VM_TYPES...> this_t; 
 	
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
@@ -336,8 +336,11 @@ public:
 				// keep track of what instruction we've run
 				//runtime_counter.increment(i);
 				
-				auto f = reinterpret_cast<void(*)(this_t*)>(i.f);
-				(*f)(this);
+				//auto f = reinterpret_cast<void(*)(this_t*)>(i.f);
+				//f(const_cast<this_t*>(this));
+				using FT = std::function<void(this_t*)>;
+				auto f = reinterpret_cast<FT*>(i.f);
+				(*f)(const_cast<this_t*>(this));
 				
 				/*
 				
