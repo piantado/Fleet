@@ -114,7 +114,7 @@ public:
 	 * @return 
 	 */
 	VirtualMachineState_t callOne_vms(const input_t x, const output_t err, ProgramLoader* loader) {
-		VirtualMachineState_t vms(x, err);		
+		VirtualMachineState_t vms(x, err);
 		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
 		vms.run(loader); // default to using "this" as the loader		
 		return vms;

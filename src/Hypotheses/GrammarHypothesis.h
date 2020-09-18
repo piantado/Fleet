@@ -20,56 +20,7 @@ extern volatile sig_atomic_t CTRL_C;
 
 #include "VectorHypothesis.h"
 #include "TNormalVariable.h"
-
-/**
- * @brief Runs MCMC on hypotheses, resampling when the data stops being incremental and returns a unioned
- * 			vector of all the tops
- * @param hypotheses
- * @return 
- */
-template<typename HYP>
-std::vector<HYP> get_hypotheses_from_mcmc(HYP& h0, std::vector<typename HYP::data_t*>& mcmc_data, Control c, size_t ntop) {
-	
-	std::set<HYP> all;	
-	
-	#pragma omp parallel for
-	for(size_t vi=0; vi<mcmc_data.size();vi++) {
-		if(CTRL_C) std::terminate();
-		
-		#pragma omp critical
-		{
-		COUT "# Running " TAB vi TAB " of " TAB mcmc_data.size() ENDL;
-		}
-		
-		// start at i=0 so we actually always include prior samples
-		// maybe this isn't a good way to do it
-		for(size_t i=0;i<=mcmc_data[vi]->size() and !CTRL_C;i++) {
-			
-			TopN<HYP> top(ntop);
-			
-			HYP myh0 = h0.restart();
-			
-			// slices [0,i]
-			auto givendata = slice(*(mcmc_data[vi]), 0, i);
-			
-			MCMCChain chain(myh0, &givendata, top);
-			chain.run(Control(c)); // must run on a copy 
-		
-			#pragma omp critical
-			for(auto h : top.values()) {
-				h.clear_bayes(); // zero and insert
-				all.insert(h);
-			}
-		}	
-	}
-	
-	std::vector<HYP> out;
-	for(auto& h : all) {
-		out.push_back(h);
-	}
-	return out;
-}
-
+#include "Batch.h"
 
 /**
  * @class GrammarHypothesis
@@ -85,11 +36,12 @@ std::vector<HYP> get_hypotheses_from_mcmc(HYP& h0, std::vector<typename HYP::dat
  * 
  */
 template<typename this_t, 
-         typename HYP, 
-		 typename datum_t=HumanDatum<HYP>, 
+         typename _HYP, 
+		 typename datum_t=HumanDatum<_HYP>, 
 		 typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
 class GrammarHypothesis : public MCMCable<this_t, datum_t, data_t>  {
 public:
+	typedef _HYP HYP;
 
 	// index by hypothesis, data point, an Eigen Vector of all individual data point likelihoods
 	typedef Vector2D<std::pair<Vector,Vector>> LL_t; // likelihood type
@@ -130,7 +82,7 @@ public:
 	GrammarHypothesis(std::vector<HYP>& hypotheses, const data_t* human_data) {
 		// This has to take human_data as a pointer because of how MCMCable::make works -- can't forward a reference
 		// but the rest of this class likes the references, so we convert here
-		set_hypotheses_and_data(hypotheses, *human_data);
+		this->set_hypotheses_and_data(hypotheses, *human_data);
 	}	
 	
 	/**
@@ -364,7 +316,7 @@ public:
 	 */	
 	virtual Matrix compute_normalized_posterior() {
 		
-		Vector hprior = hypothesis_prior(*C) / pt.get(); 
+		Vector hprior = this->hypothesis_prior(*C) / pt.get(); 
 		
 		// do we need to normalize the prior here? The answer is no -- because its just a constant
 		// and that will get normalized away in posterior
@@ -404,7 +356,7 @@ public:
 		// compute_likelihood if you change these types
 		if constexpr(std::is_same<std::map<typename HYP::output_t,size_t>, typename datum_t::response_t>::value) {
 			
-			Matrix hposterior = compute_normalized_posterior();
+			Matrix hposterior = this->compute_normalized_posterior();
 			
 			this->likelihood  = 0.0; // of the human data
 			#pragma omp parallel for
