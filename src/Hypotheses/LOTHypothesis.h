@@ -34,12 +34,12 @@ template<typename this_t,
 		 >
 class LOTHypothesis : public MCMCable<this_t,_datum_t,_data_t>, // remember, this defines data_t, datum_t
 					  public Searchable<this_t,_input_t,_output_t>,
-					  public Callable<_input_t, _output_t, typename _Grammar_t::template VirtualMachineState_t<_input_t, _output_t>>
+					  public Callable<_input_t, _output_t, typename _Grammar_t::VirtualMachineState_t>
 {
 public:     
 	typedef typename Bayesable<_datum_t,_data_t>::datum_t datum_t;
 	typedef typename Bayesable<_datum_t,_data_t>::data_t   data_t;
-	using Callable_t = Callable<_input_t, _output_t, typename _Grammar_t::template VirtualMachineState_t<_input_t, _output_t>>;
+	using Callable_t = Callable<_input_t, _output_t, typename _Grammar_t::VirtualMachineState_t>;
 	using Grammar_t = _Grammar_t;
 	using input_t   = _input_t;
 	using output_t  = _output_t;
@@ -50,7 +50,7 @@ public:
 
 protected:
 
-	Node<Grammar_t::VirtualMachineState_t> value;
+	Node value;
 	
 public:
 	LOTHypothesis(Grammar_t* g=nullptr)     : MCMCable<this_t,datum_t,data_t>(), grammar(g), value(NullRule,0.0,true) {}
@@ -119,7 +119,7 @@ public:
 	virtual double compute_single_likelihood(const datum_t& datum) override {
 		// compute the likelihood of a *single* data point. 
 		throw NotImplementedError("*** You must define compute_single_likelihood");// for base classes to implement, but don't set = 0 since then we can't create Hypothesis classes. 
-	}
+	}           
 
 	virtual size_t program_size(short s) override {
 		assert(s == 0 && "*** You shouldn't be passing nonzero s to a LOTHypothesis because it does nothing!");
@@ -216,10 +216,12 @@ public:
 	size_t recursion_count() {
 		size_t cnt = 0;
 		for(auto& n : value) {
-			cnt += n.rule->instr.is_a(BuiltinOp::op_RECURSE, 
-									  BuiltinOp::op_MEM_RECURSE,
-									  BuiltinOp::op_SAFE_RECURSE, 
-									  BuiltinOp::op_SAFE_MEM_RECURSE);
+			// TODO: ADD BACK IN RECURSION COUNTS
+			assert(false);
+//			cnt += n.rule->instr.is_a(BuiltinOp::op_RECURSE, 
+//									  BuiltinOp::op_MEM_RECURSE,
+//									  BuiltinOp::op_SAFE_RECURSE, 
+//									  BuiltinOp::op_SAFE_MEM_RECURSE);
 		}
 		return cnt;
 	} 

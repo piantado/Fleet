@@ -21,14 +21,13 @@
   * @brief A Rule stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. 
   *  Here we "emulate" a type system using t_nonterminal to store an integer for the types.   * 
   */ 
-template<typename VirtualMachineState_t>
 class Rule {
 
 public:
 	static const std::string ChildStr; // how do strings get substituted?
 
 	nonterminal_t                      nt;
-	Instruction<VirtualMachineState_t> instr; // a template for my instruction, which here mainly stores my optype
+	Instruction instr; // a template for my instruction, which here mainly stores my optype
 	std::string                        format; // how am I printed?
 	size_t                             N; // how many children?
 	double                             p;
@@ -41,7 +40,7 @@ protected:
 public:
 	// Rule's constructors convert CustomOp and BuiltinOp to the appropriate instruction types
 	Rule(const nonterminal_t rt, 
-	     const Instruction<VirtualMachineState_t> i, 
+	     const Instruction i, 
 		 const char* fmt, 
 		 std::initializer_list<nonterminal_t> c, 
 		 double _p) :
@@ -129,16 +128,13 @@ public:
 	
 };
 
-template<typename VirtualMachineState_t>
-std::ostream& operator<<(std::ostream& o, const Rule<VirtualMachineState_t>& r) {
+std::ostream& operator<<(std::ostream& o, const Rule& r) {
 	o << r.string();
 	return o;
 }
 
 // A single constant NullRule for gaps in trees. Always has type 0
 // old format was \u2b1c 
-template<typename VirtualMachineState_t>
-const Rule<VirtualMachineState_t>* NullRule = new Rule<VirtualMachineState_t>((nonterminal_t)0, BuiltinOp::op_NOP, "\u25A0", {}, 0.0);
+const Rule* NullRule = new Rule((nonterminal_t)0, nullptr, "\u25A0", {}, 0.0);
 
-template<typename VirtualMachineState_t>
-const std::string Rule<VirtualMachineState_t>::ChildStr = "%s";
+const std::string Rule::ChildStr = "%s";

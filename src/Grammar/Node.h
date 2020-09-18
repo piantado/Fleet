@@ -8,9 +8,8 @@
 #include "Program.h"
 #include "BaseNode.h"
 
-template<typename VirtualMachineState_t>
-class Node : public BaseNode<Node<VirtualMachineState_t>> {
-	friend class BaseNode<Node<VirtualMachineState_t>>;
+class Node : public BaseNode<Node> {
+	friend class BaseNode<Node>;
 	
 public:
 
@@ -19,22 +18,22 @@ public:
 	const static char RuleDelimiter = ';'; // delimit a sequence of nt:format;nt:format; etc
 
 public:
-	const Rule<VirtualMachineState_t>*  rule; // which rule did I use?
+	const Rule*  rule; // which rule did I use?
 	double       lp; 
 	bool         can_resample;	
 	
-	Node(const Rule<VirtualMachineState_t>* r=nullptr, double _lp=0.0, bool cr=true) : 
-		BaseNode(r==nullptr?0:r->N), rule(r==nullptr ? NullRule<VirtualMachineState_t> : r), lp(_lp), can_resample(cr) {	
+	Node(const Rule* r=nullptr, double _lp=0.0, bool cr=true) : 
+		BaseNode(r==nullptr?0:r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
 		// NOTE: We don't allow parent to be set here bcause that maeks pi hard to set. We shuold only be placed
 		// in trees with set_child
 	}
 	
 	/* We must define our own copy and move since parent can't just be simply copied */	
-	Node(const Node<VirtualMachineState_t>& n) :
+	Node(const Node& n) :
 		BaseNode(n), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
 		this->fix_child_info();
 	}
-	Node(Node<VirtualMachineState_t>&& n) :
+	Node(Node&& n) :
 		BaseNode(n), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
 		this->children = std::move(n.children);
 		this->fix_child_info();
@@ -138,11 +137,11 @@ public:
 		 * @return 
 		 */
 	
-		return this->rule == NullRule<VirtualMachineState_t>;
+		return this->rule == NullRule;
 	}
 
 	template<typename T>
-	T sum(std::function<T(const Node<VirtualMachineState_t>&)>& f ) const {
+	T sum(std::function<T(const Node&)>& f ) const {
 		/**
 		 * @brief Apply f to me and everything below me, adding up the result. 
 		 * @param f
@@ -157,7 +156,7 @@ public:
 	}
 
 	template<typename T>
-	T sum(T(*f)(const Node<VirtualMachineState_t>&) ) const {
+	T sum(T(*f)(const Node&) ) const {
 		std::function ff = f;
 		return sum(ff);
 	}
@@ -216,9 +215,9 @@ public:
 			if(not this->can_resample) s = "\u2022"+s; // just to help out in some cases, we'll add this to nodes that we can't resample
 			
 			for(size_t i=0;i<this->rule->N;i++) {
-				auto pos = s.find(Rule<VirtualMachineState_t>::ChildStr);
+				auto pos = s.find(Rule::ChildStr);
 				assert(pos != std::string::npos && "Node format must contain one ChildStr (typically='%s') for each argument"); // must contain the ChildStr for all children all children
-				s.replace(pos, Rule<VirtualMachineState_t>::ChildStr.length(), childStrings[i] );
+				s.replace(pos, Rule::ChildStr.length(), childStrings[i] );
 			}
 			return s;
 		}
@@ -265,7 +264,7 @@ public:
 		return n;
 	}
 	
-	inline virtual int linearize(Program<VirtualMachineState_t> &ops) const { 
+	inline virtual int linearize(Program &ops) const { 
 		/**
 		 * @brief convert tree to a linear sequence of operations. 
 		 * 		To do this, we first linearize the kids, leaving their values as the top on the stack
@@ -293,7 +292,7 @@ public:
 		}
 		
 		
-		assert(rule != NullRule<VirtualMachineState_t> && "*** Cannot linearize if there is a null rule");
+		assert(rule != NullRule && "*** Cannot linearize if there is a null rule");
 		
 		// If we are an if, then we must do some fancy short-circuiting
 //		if( rule->instr.is_a(BuiltinOp::op_IF) ) {
@@ -360,7 +359,7 @@ public:
 		if(this->children.size() != n.children.size())
 			return false; 
 	
-		for(size_t i=0;i<this->hildren.size();i++){
+		for(size_t i=0;i<this->children.size();i++){
 			if(not (this->children[i] == n.children[i])) return false;
 		}
 		return true;

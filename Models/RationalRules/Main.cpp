@@ -37,7 +37,7 @@ typedef Object<Color,Shape> MyObject;
 
 #include "Grammar.h"
 
-using MyGrammar = Grammar<bool,MyObject>;
+using MyGrammar = Grammar<MyObject, bool>;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define a class for handling my specific hypotheses and data. Everything is defaultly 
@@ -80,20 +80,20 @@ int main(int argc, char** argv){
 	
 	// Define the grammar (default initialize using our primitives will add all those rules)
 	// in doing this, grammar deduces the types from the input and output types of each primitive
-	MyGrammar grammar(PRIMITIVES);
-	grammar.add("red(%s)",   +[](MyObject x) -> bool { return x.is(Color::Red); });
-	grammar.add("green(%s)", +[](MyObject x) -> bool { return x.is(Color::Green); });
-	grammar.add("blue(%s)",  +[](MyObject x) -> bool { return x.is(Color::Blue); });
+	MyGrammar grammar;
+	grammar.add("red(%s)",       +[](MyObject x) -> bool { return x.is(Color::Red); });
+	grammar.add("green(%s)",     +[](MyObject x) -> bool { return x.is(Color::Green); });
+	grammar.add("blue(%s)",      +[](MyObject x) -> bool { return x.is(Color::Blue); });
 	grammar.add("square(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Square); });
 	grammar.add("triangle(%s)",  +[](MyObject x) -> bool { return x.is(Shape::Triangle); });
 	grammar.add("circle(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Circle); });
 	
 	grammar.add("nand(%s,%s)",    +[](bool x, bool y) -> bool { return not (x and y); });
 
-	grammar.add<MyObject>("x", +[](MyGrammar::VirtualMachineState_t* vms)->vmstatus_t {
-		assert(!xstack.empty());
+	grammar.add_vms<MyObject>("x", +[](MyGrammar::VirtualMachineState_t* vms) {
+		assert(!vms->xstack.empty());
 		vms->push<MyObject>(vms->xstack.top());
-	}
+	});
 	
 	// but we also have to add a rule for the BuiltinOp that access x, our argument
 //	Builtin::X<MyObject>("x", 10.0),

@@ -44,26 +44,17 @@
 	 we use arg to store which alphabet terminal, etc. 
 
 */
-template<typename VirtualMachineState_t>
 class Instruction { 
 public:
 
 	// the function type we use takes a virtual machine state and returns a status
-	using F = vmstatus_t(*)(VirtualMachineState_t*);
+	//
 
-	F f;
+	void* f;
 
 	// constructors to make this a little easier to deal with
-	Instruction(F* _f) : f(_f) {
-	}
+	Instruction(void* _f) : f(_f) {	}
 
-//	int getArg() const {
-//		/**
-//		 * @brief Return the argument (an int)
-//		 * @return 
-//		 */		
-//		return arg; 
-//	}
 	
 	bool operator==(const Instruction& i) const {
 		return f==i.f;
@@ -71,8 +62,7 @@ public:
 		
 };
 
-template<typename VirtualMachineState_t>
-std::ostream& operator<<(std::ostream& stream, Instruction<VirtualMachineState_t>& i) {
+std::ostream& operator<<(std::ostream& stream, Instruction& i) {
 	/**
 	 * @brief Output for instructions. 
 	 * @param stream

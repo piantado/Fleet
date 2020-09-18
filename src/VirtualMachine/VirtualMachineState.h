@@ -77,7 +77,7 @@ public:
 	
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
-	Program<this_t>    opstack; 
+	Program            opstack; 
 	VMSStack<input_t>  xstack; //xstackthis stores a stack of the x values (for recursive calls)
 	output_t           err; // what error output do we return?
 	double             lp; // the probability of this context
@@ -107,12 +107,12 @@ public:
 	//RuntimeCounter runtime_counter;
 	
 	// what we use to load programs
-	ProgramLoader<this_t>* program_loader;
+	ProgramLoader* program_loader;
 	
 	// where we place random flips back onto
 	VirtualMachinePool<this_t>* pool;
 	
-	VirtualMachineState(input_t x, output_t e, ProgramLoader<this_t>* pl, VirtualMachinePool<this_t>* po) :
+	VirtualMachineState(input_t x, output_t e, ProgramLoader* pl, VirtualMachinePool<this_t>* po) :
 		err(e), lp(0.0), recursion_depth(0), status(vmstatus_t::GOOD), program_loader(pl), pool(po) {
 		xstack.push(x);	
 	}
@@ -150,7 +150,7 @@ public:
 	 * @return 
 	 */
 	template<typename T>
-	VMSStack<T>& stack()             { 
+	VMSStack<T>& stack() { 
 		return std::get<VMSStack<T>>(_stack.value); 
 	}
 	
@@ -318,7 +318,6 @@ public:
 	 * @return 
 	 */	
 	 output_t run() {
-
 		status = vmstatus_t::GOOD;
 		
 		try { 
@@ -337,7 +336,9 @@ public:
 				// keep track of what instruction we've run
 				//runtime_counter.increment(i);
 				
-				status = i.f(this);
+				auto f = reinterpret_cast<void(*)(this_t*)>(i.f);
+				(*f)(this);
+				
 				/*
 				
 				// Now actually dispatch for whatever i is doing to this stack

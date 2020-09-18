@@ -46,32 +46,35 @@ struct Primitive;
 template<typename... GRAMMAR_TYPES>
 class Grammar {
 public:
-
 	using this_t = Grammar<GRAMMAR_TYPES...>;
+
+	// Keep track of what types we are using here as our types -- thesee types are 
+	// stored in this tuple so they can be extracted
+	using GrammarTypesAsTuple = std::tuple<GRAMMAR_TYPES...>;
+
+	// the firsrt and second are *Assumed* to be input and output types
+	using input_t  = std::tuple_element<0,GrammarTypesAsTuple>::type;
+	using output_t = std::tuple_element<1,GrammarTypesAsTuple>::type;
+
 	
 	// how many nonterminal types do we have?
 	static constexpr size_t N_NTs = std::tuple_size<std::tuple<GRAMMAR_TYPES...>>::value;
-	size_t GRAMMAR_MAX_DEPTH = 64;
 	
 	// an exception for recursing too deep so we can print a trace of what went wrong
 //	class DepthException: public std::exception {} depth_exception;
 
-	// We define a type for the VM. This would be more natural to have in LOTHypothesis, except that 
-	// it doesn't have nice access to GRAMMAR_TYPES. So, defaultly, we will define a VM type here 
-	// so that when a LOTHypothesis gets a grammar, it can read the VM type from it (assuming that
-	// it wants the VM type from it!) This is defaultly chosen as teh VirtualMachineState_t for a 
-	// LOTHypothesis, but it can be overridden. 
-	template<typename input_t, typename output_t>
+	// The input/output types must be repeated to VirtualMachineState
 	using VirtualMachineState_t = VirtualMachineState<input_t, output_t, GRAMMAR_TYPES...>;
 	
-	// Keep track of what types we are using here as our types -- thesee types are 
-	// stored in this tuple so they can be extracted
-	typedef std::tuple<GRAMMAR_TYPES...> GrammarTypesAsTuple;
+	// the type of function that manipulates the VMS
+	using F = void(VirtualMachineState_t*);
 
 	// rules[k] stores a SORTED vector of rules for the kth' nonterminal. 
 	// our iteration order is first for k = 0 ... N_NTs then for r in rules[k]
-	std::vector<Rule<VirtualMachineState_t>> rules[N_NTs];
+	std::vector<Rule> rules[N_NTs];
 	double	  	              Z[N_NTs]; // keep the normalizer handy for each nonterminal (not log space)
+	
+	size_t GRAMMAR_MAX_DEPTH = 64;
 	
 	// This function converts a type (passed as a template parameter) into a 
 	// size_t index for which one it in in GRAMMAR_TYPES. 
@@ -121,11 +124,11 @@ public:
 	 * @brief This allows us to iterate over rules in a grammar, guaranteed to be in a fixed order (first by 
 	 * 		  nonterminals, then by rule sort order. 
 	 */	
-	class RuleIterator : public std::iterator<std::forward_iterator_tag, Rule<VirtualMachineState_t>> {
+	class RuleIterator : public std::iterator<std::forward_iterator_tag, Rule> {
 	protected:
 			this_t* grammar;
 			nonterminal_t current_nt;
-			std::vector<Rule<VirtualMachineState_t>>::iterator current_rule;
+			std::vector<Rule>::iterator current_rule;
 			
 	public:
 		
@@ -140,8 +143,8 @@ public:
 					current_rule = grammar->rules[current_nt].end();
 				}
 			}
-			Rule<VirtualMachineState_t>& operator*() const  { return *current_rule; }
-//			Rule<VirtualMachineState_t>* operator->() const { return  current_rule; }
+			Rule& operator*() const  { return *current_rule; }
+//			Rule* operator->() const { return  current_rule; }
 			 
 			RuleIterator& operator++(int blah) { this->operator++(); return *this; }
 			RuleIterator& operator++() {
@@ -286,19 +289,25 @@ public:
 	}
 			
 	template<typename T, typename... args> 
-	void add(const char* fmt, vmstatus_t(*fvms)(VirtualMachineState_t*), double p=1.0) {
-		Rule<VirtualMachineState_t> r(this->template nt<T>(), Instruction{f}, fmt, {nt<args>()...}, p);
-		Z[nt] += r.p; // keep track of the total probability
-		nonterminal_t nt = r.nt;
-		auto pos = std::lower_bound( rules[nt].begin(), rules[nt].end(), r);
-		rules[nt].insert( pos, r ); // put this before	
+	void add_vms(const char* fmt, F fvms, double p=1.0) {
+//	void add_vms(const char* fmt, void(*fvms)(VirtualMachineState_t*) , double p=1.0) {
+		CERR "Adding rule " TAB fmt TAB (void*)fvms ENDL;
+		
+		nonterminal_t Tnt = this->nt<T>();
+		Rule r(Tnt, Instruction{(void*)fvms}, fmt, {nt<args>()...}, p);
+		Z[Tnt] += r.p; // keep track of the total probability
+		auto pos = std::lower_bound( rules[Tnt].begin(), rules[Tnt].end(), r);
+		rules[Tnt].insert( pos, r ); // put this before	
 	}
 			
 	// unpack a lambda and convert it into an instruction for the rule we add here
 	// TODO: ADD REFERENCE SUPPORT HERE
 	template<typename T, typename... args> 
-	void add(const char* fmt, T(*f)(args...), double p=1.0) {
-		using F = vmstatus_t(*)(VirtualMachineState_t*);
+	void add(const char* fmt, T(*_f)(args...), double p=1.0) {
+		
+		// put a copy of this on the stack so it is accessible to the below
+		// lambda once we exit this function
+		std::function<T(args...)>* f = new std::function<T(args...)>(_f);
 		
 		// first check that the types are allowed
 		static_assert(is_in_GRAMMAR_TYPES<T>() , "*** Return type is not in GRAMMAR_TYPES");
@@ -306,35 +315,48 @@ public:
 	
 		// create a lambda on the heap that is a function of a VMS, since
 		// this is what an instruction must be. This implements the calling order convention too. 
-		F* newf = new auto ([fargs](VirtualMachineState_t* vms) -> vmstatus_t {
+		auto newf = new auto ([f](VirtualMachineState_t* vms) -> void {
+				assert(vms != nullptr);
+				CERR "STARTING" ENDL;
 				if constexpr (sizeof...(args) ==  0){	
-					vms->push(fargs());
+					vms->push( (*f)() );
 				}
 				if constexpr (sizeof...(args) ==  1) {
-					auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
-					vms->push(fargs(std::move(a0)));
+					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
+					vms->push((*f)(std::move(a0)));
 				}
 				else if constexpr (sizeof...(args) ==  2) {
 					auto a1 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
 					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();	
-					vms->push(fargs(std::move(a0), std::move(a1)));
+					vms->push((*f)(std::move(a0), std::move(a1)));
 				}
 				else if constexpr (sizeof...(args) ==  3) {
 					auto a2 = vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
 					auto a1 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
 					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
-					vms->push(fargs(std::move(a0), std::move(a1), std::move(a2)));
+					vms->push((*f)(std::move(a0), std::move(a1), std::move(a2)));
 				}
 				else if constexpr (sizeof...(args) ==  4) {
 					auto a3 = vms->template get<typename std::tuple_element<3, std::tuple<args...> >::type>();
 					auto a2 = vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
 					auto a1 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
 					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
-					vms->push(fargs(std::move(a0), std::move(a1), std::move(a2), std::move(a3)));
-				}			
+					vms->push((*f)(std::move(a0), std::move(a1), std::move(a2), std::move(a3)));
+				}
+				
+				CERR "DONEHERE" ENDL;
+
 			});
 			
-		 add<T, args...>(fmt, newf, p) {
+//		 add_vms<T, args...>(fmt, newf, p);
+		CERR "Adding rule " TAB fmt TAB (void*)newf ENDL;
+		
+		nonterminal_t Tnt = this->nt<T>();
+		Rule r(Tnt, Instruction{(void*)newf}, fmt, {nt<args>()...}, p);
+		Z[Tnt] += r.p; // keep track of the total probability
+		auto pos = std::lower_bound( rules[Tnt].begin(), rules[Tnt].end(), r);
+		rules[Tnt].insert( pos, r ); // put this before	
+
 	}
 
 
@@ -342,7 +364,7 @@ public:
 	// Methods for getting rules by some info
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	size_t get_index_of(const Rule<VirtualMachineState_t>* r) const {
+	size_t get_index_of(const Rule* r) const {
 		/**
 		 * @brief Find the index in rules of where r is.
 		 * @param r
@@ -357,7 +379,7 @@ public:
 		throw YouShouldNotBeHereError("*** Did not find rule in get_index_of.");
 	}
 	
-	virtual Rule<VirtualMachineState_t>* get_rule(const nonterminal_t nt, size_t k) const {
+	virtual Rule* get_rule(const nonterminal_t nt, size_t k) const {
 		/**
 		 * @brief Get the k'th rule of type nt 
 		 * @param nt
@@ -367,10 +389,10 @@ public:
 		
 		assert(nt < N_NTs);
 		assert(k < rules[nt].size());
-		return const_cast<Rule<VirtualMachineState_t>*>(&rules[nt][k]);
+		return const_cast<Rule*>(&rules[nt][k]);
 	}
 	
-	virtual Rule<VirtualMachineState_t>* get_rule(const nonterminal_t nt, const BuiltinOp o, const int a=0) {
+	virtual Rule* get_rule(const nonterminal_t nt, const BuiltinOp o, const int a=0) {
 		/**
 		 * @brief Get rule of type nt with a given BuiltinOp and argument a
 		 * @param nt
@@ -379,18 +401,20 @@ public:
 		 * @return 
 		 */
 		for(auto& r: rules[nt]) {
-			if(r.instr.is_a(o) && r.instr.arg == a) 
-				return &r;
+			assert(false);
+			// Need to fix this because it used is_a:
+//			if(r.instr.is_a(o) && r.instr.arg == a) 
+//				return &r;
 		}
 		throw YouShouldNotBeHereError("*** Could not find rule");		
 	}
 	
-//	virtual Rule<VirtualMachineState_t>* get_rule(const nonterminal_t nt, size_t i) {
+//	virtual Rule* get_rule(const nonterminal_t nt, size_t i) {
 //		assert(i <= rules[nt].size());
 //		return &rules[nt][i];
 //	}
 	
-	virtual Rule<VirtualMachineState_t>* get_rule(const nonterminal_t nt, const std::string s) const {
+	virtual Rule* get_rule(const nonterminal_t nt, const std::string s) const {
 		/**
 		 * @brief Return a rule based on s, which must uniquely be a prefix of the rule's format of a given nonterminal type. 
 		 * 			If s is the empty string, however, it must match exactly. 
@@ -398,14 +422,14 @@ public:
 		 * @return 
 		 */
 		
-		Rule<VirtualMachineState_t>* ret = nullptr;
+		Rule* ret = nullptr;
 		for(auto& r: rules[nt]) {
 			if( (s != "" and is_prefix(s, r.format)) or (s=="" and s==r.format)) {
 				if(ret != nullptr) {
 					CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
 					throw YouShouldNotBeHereError();
 				}
-				ret = const_cast<Rule<VirtualMachineState_t>*>(&r);
+				ret = const_cast<Rule*>(&r);
 			} 
 		}
 		
@@ -416,7 +440,7 @@ public:
 		}
 	}
 	
-	virtual Rule<VirtualMachineState_t>* get_rule(const std::string s) const {
+	virtual Rule* get_rule(const std::string s) const {
 		/**
 		 * @brief Return a rule based on s, which must uniquely be a prefix of the rule's format.
 		 * 			If s is the empty string, however, it must match exactly. 
@@ -424,7 +448,7 @@ public:
 		 * @return 
 		 */
 		
-		Rule<VirtualMachineState_t>* ret = nullptr;
+		Rule* ret = nullptr;
 		for(auto& r : *this) {
 			if( (s != "" and is_prefix(s, r.format)) or (s=="" and s==r.format)) {
 				if(ret != nullptr) {
@@ -457,16 +481,16 @@ public:
 		return Z[nt];
 	}
 
-	virtual Rule<VirtualMachineState_t>* sample_rule(const nonterminal_t nt) const {
+	virtual Rule* sample_rule(const nonterminal_t nt) const {
 		/**
 		 * @brief Randomly sample a rule of type nt. 
 		 * @param nt
 		 * @return 
 		 */
 		
-		std::function<double(const Rule<VirtualMachineState_t>& r)> f = [](const Rule<VirtualMachineState_t>& r){return r.p;};
+		std::function<double(const Rule& r)> f = [](const Rule& r){return r.p;};
 		assert(rules[nt].size() > 0 && "*** You are trying to sample from a nonterminal with no rules!");
-		return sample<Rule<VirtualMachineState_t>,std::vector<Rule<VirtualMachineState_t>>>(rules[nt], Z[nt], f).first; // ignore the probabiltiy 
+		return sample<Rule,std::vector<Rule>>(rules[nt], Z[nt], f).first; // ignore the probabiltiy 
 	}
 	
 	
@@ -475,18 +499,18 @@ public:
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	
-	Node<VirtualMachineState_t> makeNode(const Rule<VirtualMachineState_t>* r) const {
+	Node makeNode(const Rule* r) const {
 		/**
 		 * @brief Helper function to create a node according to this grammar. This is how nodes get their log probabilities. 
 		 * @param r
 		 * @return 
 		 */
 		
-		return Node<VirtualMachineState_t>(r, log(r->p)-log(rule_normalizer(r->nt)));
+		return Node(r, log(r->p)-log(rule_normalizer(r->nt)));
 	}
 	
 
-	Node<VirtualMachineState_t> generate(const nonterminal_t nt, unsigned long depth=0) const {
+	Node generate(const nonterminal_t nt, unsigned long depth=0) const {
 		/**
 		 * @brief Sample an entire tree from this grammar (keeping track of depth in case we recurse too far) of return type nt. This samples a rule, makes them with makeNode, and then recurses. 
 		 * @param nt
@@ -504,8 +528,8 @@ public:
 			throw YouShouldNotBeHereError("*** Grammar exceeded max depth, are you sure the grammar probabilities are right?");
 		}
 		
-		Rule<VirtualMachineState_t>* r = sample_rule(nt);
-		Node<VirtualMachineState_t> n = makeNode(r);
+		Rule* r = sample_rule(nt);
+		Node n = makeNode(r);
 		
 		for(size_t i=0;i<r->N;i++) {
 			n.set_child(i, generate(r->type(i), depth+1)); // recurse down
@@ -514,7 +538,7 @@ public:
 	}	
 	
 	template<class t>
-	Node<VirtualMachineState_t> generate(unsigned long depth=0) {
+	Node generate(unsigned long depth=0) {
 		/**
 		 * @brief A friendly version of generate that can be called with template by type.  
 		 * @param depth
@@ -524,7 +548,7 @@ public:
 		return generate(nt<t>(),depth);
 	}
 	
-	Node<VirtualMachineState_t> copy_resample(const Node<VirtualMachineState_t>& node, bool f(const Node<VirtualMachineState_t>& n)) const {
+	Node copy_resample(const Node& node, bool f(const Node& n)) const {
 		/**
 		 * @brief Make a copy of node where all nodes satisfying f are regenerated from the grammar. 
 		 * @param node
@@ -551,7 +575,7 @@ public:
 	// Computing log probabilities and priors
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	std::vector<size_t> get_counts(const Node<VirtualMachineState_t>& node) const {
+	std::vector<size_t> get_counts(const Node& node) const {
 		/**
 		 * @brief Compute a vector of counts of how often each rule was used, in a *standard* order given by iterating over nts and then iterating over rules
 		 * @param node
@@ -600,7 +624,7 @@ public:
 	#endif
 	
 	
-	double log_probability(const Node<VirtualMachineState_t>& n) const {
+	double log_probability(const Node& n) const {
 		/**
 		 * @brief Compute the log probability of a tree according to the grammar. NOTE: here we ignore nodes that are Null
 		 * 		  meaning that we compute the partial probability
@@ -622,7 +646,7 @@ public:
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	
-	Node<VirtualMachineState_t> expand_from_names(std::deque<std::string>& q) const {
+	Node expand_from_names(std::deque<std::string>& q) const {
 		/**
 		 * @brief Fills an entire tree using the string format prefixes -- see get_rule(std::string).
 		 * 		  Here q should contain strings like "3:'a'" which says expand nonterminal type 3 to the rule matching 'a'
@@ -632,7 +656,7 @@ public:
 		
 		assert(!q.empty() && "*** Should not ever get to here with an empty queue -- are you missing arguments?");
 		
-		auto [nts, pfx] = divide(q.front(), Node<VirtualMachineState_t>::NTDelimiter);
+		auto [nts, pfx] = divide(q.front(), Node::NTDelimiter);
 		q.pop_front();
 		
 		// null rules:
@@ -640,9 +664,9 @@ public:
 			return makeNode(NullRule);
 
 		// otherwise find the matching rule
-		Rule<VirtualMachineState_t>* r = this->get_rule(stoi(nts), pfx);
+		Rule* r = this->get_rule(stoi(nts), pfx);
 
-		Node<VirtualMachineState_t> v = makeNode(r);
+		Node v = makeNode(r);
 		for(size_t i=0;i<r->N;i++) {	
 		
 			v.set_child(i, expand_from_names(q));
@@ -656,24 +680,24 @@ public:
 		return v;
 	}
 
-	Node<VirtualMachineState_t> expand_from_names(std::string s) const {
+	Node expand_from_names(std::string s) const {
 		/**
 		 * @brief Expand from names where s is delimited by ':'
 		 * @param s
 		 * @return 
 		 */
 		
-		std::deque<std::string> stk = split(s, Node<VirtualMachineState_t>::RuleDelimiter);    
+		std::deque<std::string> stk = split(s, Node::RuleDelimiter);    
         return expand_from_names(stk);
 	}
 	
-	Node<VirtualMachineState_t> expand_from_names(const char* c) const {
+	Node expand_from_names(const char* c) const {
 		std::string s = c;
         return expand_from_names(s);
 	}
 
 
-	size_t neighbors(const Node<VirtualMachineState_t>& node) const {
+	size_t neighbors(const Node& node) const {
 		// How many neighbors do I have? This is the number of neighbors the first gap has
 		for(size_t i=0;i<node.rule->N;i++){
 			if(node.child(i).is_null()) {
@@ -687,7 +711,7 @@ public:
 		return 0;
 	}
 
-	void expand_to_neighbor(Node<VirtualMachineState_t>& node, int& which) {
+	void expand_to_neighbor(Node& node, int& which) {
 		// here we find the neighbor indicated by which and expand it into the which'th neighbor
 		// to do this, we loop through until which is less than the number of neighbors,
 		// and then it must specify which expansion we want to take. This means that when we
@@ -708,7 +732,7 @@ public:
 		}
 	}
 	
-	double neighbor_prior(const Node<VirtualMachineState_t>& node, int& which) const {
+	double neighbor_prior(const Node& node, int& which) const {
 		// here we find the neighbor indicated by which and expand it into the which'th neighbor
 		// to do this, we loop through until which is less than the number of neighbors,
 		// and then it must specify which expansion we want to take. This means that when we
@@ -731,7 +755,7 @@ public:
 		return 0.0; // if no neighbors
 	}
 
-	void complete(Node<v>& node) {
+	void complete(Node& node) {
 		// go through and fill in the tree at random
 		for(size_t i=0;i<node.rule->N;i++){
 			if(node.child(i).is_null()) {

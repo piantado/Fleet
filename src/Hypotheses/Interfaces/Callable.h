@@ -3,7 +3,6 @@
 #include "VirtualMachine/VirtualMachineState.h"
 #include "VirtualMachine/VirtualMachinePool.h"
 #include "DiscreteDistribution.h"
-#include "RuntimeCounter.h"
 #include "ProgramLoader.h"
 
 // We define a type for missing arguments -- this can be passed as input (or even output)
