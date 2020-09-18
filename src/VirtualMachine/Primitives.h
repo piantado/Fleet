@@ -12,24 +12,7 @@
 #include "Miscellaneous.h"
 
 
-/// Hmm instead of a Primitive I tihnk we want to put everything into a Rule?
 
-//template<typename VirtualMachineState_t>
-//class Primitive {
-//	using F = void(VirtualMachineState_t*,int);
-//	
-//	// the op here is needed so we can give functions a friendly name for linearizing and checking
-//	Op op;
-//	
-//	// the actual function that is computed
-//	std::function<F> f;
-//	
-//	Primitive(F* _f, Op o=Op::Standard) : f(_f), op(o) {
-//		
-//	}
-//	
-//
-//}
 ///**
 // * @class CountReferences
 // * @author piantado
@@ -37,13 +20,13 @@
 // * @file VirtualMachineState.h
 // * @brief Count references in lambda arguments (used to ensure we only passs one)
 // */
-//template <class T, class... Types>
-//struct CountReferences {
-//    static const size_t value = std::is_reference<T>::value + CountReferences<Types...>::value;
-//};
-//template <class T>
-//struct CountReferences<T> { static const size_t value = std::is_reference<T>::value; };
-//
+template <class T, class... Types>
+struct CountReferences {
+    static const size_t value = std::is_reference<T>::value + CountReferences<Types...>::value;
+};
+template <class T>
+struct CountReferences<T> { static const size_t value = std::is_reference<T>::value; };
+
 ///**
 // * @class CheckReferenceIsFirst
 // * @author piantado
@@ -51,14 +34,14 @@
 // * @file Primitives.h
 // * @brief If there are any references in the arguments, only the first can be a reference
 // */
-//template <class T, class... Types>
-//struct CheckReferenceIsFirst {
-//	static const bool value = (CountReferences<Types...>::value == 0);
-//};
-//template <class T>
-//struct CheckReferenceIsFirst<T> { static const bool value = true; };
-//
-//
+template <class T, class... Types>
+struct CheckReferenceIsFirst {
+	static const bool value = (CountReferences<Types...>::value == 0);
+};
+template <class T>
+struct CheckReferenceIsFirst<T> { static const bool value = true; };
+
+
 ///**
 // * @class TypeHead
 // * @author piantado
@@ -66,11 +49,11 @@
 // * @file Primitives.h
 // * @brief The first type in Args
 // */
-//template<class... Args>
-//struct TypeHead {
-//	typedef typename std::tuple_element<0, std::tuple<Args...>>::type type;
-//};
-//
+template<class... Args>
+struct TypeHead {
+	typedef typename std::tuple_element<0, std::tuple<Args...>>::type type;
+};
+
 ///**
 // * @class HeadIfReferenceElseT
 // * @author piantado
@@ -78,30 +61,30 @@
 // * @file Primitives.h
 // * @brief Gives head(args)::value if head(args)::value is a reference, otherwise T...
 // */
-//template<class T, class... args>
-//struct HeadIfReferenceElseT {
-//	typedef typename std::conditional<std::is_reference<typename TypeHead<args...>::type>::value,
-//									  typename std::decay<typename TypeHead<args...>::type>::type,
-//									  T
-//									  >::type type;
-//};	
-//template<class T> 
-//struct HeadIfReferenceElseT<T> { 
-//	typedef T type;
-//};
-//
-//
+template<class T, class... args>
+struct HeadIfReferenceElseT {
+	typedef typename std::conditional<std::is_reference<typename TypeHead<args...>::type>::value,
+									  typename std::decay<typename TypeHead<args...>::type>::type,
+									  T
+									  >::type type;
+};	
+template<class T> 
+struct HeadIfReferenceElseT<T> { 
+	typedef T type;
+};
+
+
 ///**
 // * @brief Check if a type is contained in parameter pack
 // * @return 
 // */
-//template<typename X, typename... Ts>
-//constexpr bool contains_type() {
-//	return std::disjunction<std::is_same<X, Ts>...>::value;
-//}
-//
-//
-///**
+template<typename X, typename... Ts>
+constexpr bool contains_type() {
+	return std::disjunction<std::is_same<X, Ts>...>::value;
+}
+
+
+/////**
 // * @class PrePrimitive
 // * @author piantado
 // * @date 05/03/20
@@ -114,7 +97,7 @@
 //};
 //PrimitiveOp PrePrimitive::op_counter = 0;
 //
-//
+////
 ///**
 // * @class Primitive
 // * @author piantado

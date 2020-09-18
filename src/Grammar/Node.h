@@ -315,19 +315,19 @@ public:
 //			return ysize + xsize + boolsize + 1; // +1 for if
 //		}
 //		else 
-			if( rule.is_a(Op::And) or rule.is_a(Op::Or)) {
+			if( rule->is_a(Op::And) or rule->is_a(Op::Or)) {
 			// short circuit forms of and(x,y) and or(x,y)
 			assert(rule->N == 2 && "BuiltinOp::op_AND and BuiltinOp::op_OR require two arguments");
 			
 			// second arg pushed on first, on the bottom
-			int ysize = children[1].linearize(ops);
+			int ysize = children[1].linearize(program);
 			
-			if(rule.is_a(Op::And)) {
-				program.emplace_back(rule.instr, ysize);
+			if(rule->is_a(Op::And)) {
+				program.emplace_back(rule->makeInstruction(ysize));
 			}
 			else {
-				assert(rule->instr.is_a(Op::Or));
-				program.emplace_back(rule.instr, ysize);
+				assert(rule->is_a(Op::Or));
+				program.emplace_back(rule->makeInstruction(ysize));
 			}
 			
 			return children[0].linearize(program)+ysize+1;			
@@ -336,7 +336,7 @@ public:
 			/* Else we just process a normal child. 
 			 * Here we push the children in increasing order. Then, when we pop rightmost first (as Primitive does), it 
 			 * assigns the correct index.  */
-			program.emplace_back(this->rule->instr); 
+			program.emplace_back(this->rule->makeInstruction()); 
 			
 			int mysize = 1; // one for my own instruction
 			for(int i=this->rule->N-1;i>=0;i--) { // here we linearize right to left so that when we call right to left, it matches string order			

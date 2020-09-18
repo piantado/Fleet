@@ -381,22 +381,22 @@ public:
 		return const_cast<Rule*>(&rules[nt][k]);
 	}
 	
-	virtual Rule* get_rule(const nonterminal_t nt, const BuiltinOp o, const int a=0) {
-		/**
-		 * @brief Get rule of type nt with a given BuiltinOp and argument a
-		 * @param nt
-		 * @param o
-		 * @param a
-		 * @return 
-		 */
-		for(auto& r: rules[nt]) {
-			assert(false);
-			// Need to fix this because it used is_a:
-//			if(r.instr.is_a(o) && r.instr.arg == a) 
-//				return &r;
-		}
-		throw YouShouldNotBeHereError("*** Could not find rule");		
-	}
+//	virtual Rule* get_rule(const nonterminal_t nt, const BuiltinOp o, const int a=0) {
+//		/**
+//		 * @brief Get rule of type nt with a given BuiltinOp and argument a
+//		 * @param nt
+//		 * @param o
+//		 * @param a
+//		 * @return 
+//		 */
+//		for(auto& r: rules[nt]) {
+//			assert(false);
+//			// Need to fix this because it used is_a:
+////			if(r.instr.is_a(o) && r.instr.arg == a) 
+////				return &r;
+//		}
+//		throw YouShouldNotBeHereError("*** Could not find rule");		
+//	}
 	
 //	virtual Rule* get_rule(const nonterminal_t nt, size_t i) {
 //		assert(i <= rules[nt].size());

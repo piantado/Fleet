@@ -31,6 +31,7 @@ public:
 	size_t                             N; // how many children?
 	double                             p;
 	
+	// store this information for creating instructions
 	void*				fptr;
 	Op 					op; // for ops that need names
 	
@@ -46,8 +47,8 @@ public:
 	     void* f, 
 		 const char* fmt, 
 		 std::initializer_list<nonterminal_t> c, 
-		 double _p, 
-		 Op o) :
+		 double _p=1.0, 
+		 Op o=Op::Standard) :
 		nt(rt), fptr(f), format(fmt), N(c.size()), p(_p), op(o), child_types(c) {
 			
 		// Set up hashing for rules (cached so we only do it once)
@@ -55,7 +56,7 @@ public:
 		my_hash = h(fmt);
 		hash_combine(my_hash, (size_t)nt);
 		for(size_t k=0;k<N;k++) 
-			hash_combine(my_hash, reinterpret_cast<std::uintptr_t>(i.f), (size_t)child_types[k]);
+			hash_combine(my_hash, (size_t)fptr, (size_t)op, (size_t)child_types[k]);
 		
 		
 		// check that the format string has the right number of %s
@@ -63,11 +64,11 @@ public:
 	}
 	
 	
-	bool is_a(Op o) {
+	bool is_a(Op o) const {
 		return o == op;
 	}
 	
-	Instruction makeInstruction(int a=0) {
+	Instruction makeInstruction(int a=0) const {
 		return Instruction(fptr, a);
 	}
 	
@@ -95,7 +96,7 @@ public:
 		 * @return 
 		 */
 		
-		if(not (nt==r.nt and instr==r.instr and format==r.format and N==r.N and p==r.p)) return false;
+		if(not (nt==r.nt and fptr == r.fptr and op ==r.op and format==r.format and N==r.N and p==r.p)) return false;
 		for(size_t i=0;i<N;i++) {
 			if(child_types[i] != r.child_types[i]) return false;
 		}
