@@ -54,7 +54,6 @@ class VirtualMachinePool : public VirtualMachineControl {
 	struct compare_VirtualMachineState_t_prt {
 		bool operator()(const VirtualMachineState_t* lhs, const VirtualMachineState_t* rhs) { return lhs->lp < rhs->lp;	}
 	};
-
 	
 public:	
 
@@ -69,7 +68,7 @@ public:
 	std::priority_queue<VirtualMachineState_t*, std::vector<VirtualMachineState_t*>, VirtualMachinePool::compare_VirtualMachineState_t_prt> Q; // Q of states sorted by probability
 //	std::priority_queue<VirtualMachineState_t*, ReservedVector<VirtualMachineState_t*,1024>, VirtualMachinePool::compare_VirtualMachineState_t_prt> Q; // Does not seem to speed things up 
 
-	VirtualMachinePool(ProgramLoader* pl) : current_steps(0), worst_lp(infinity) { 
+	VirtualMachinePool() : current_steps(0), worst_lp(infinity) { 
 	}
 	
 

@@ -230,11 +230,14 @@ public:
 	 * Calling
 	 ********************************************************/
 	 
-	virtual DiscreteDistribution<S> call(const S x, const S err) override {
+	virtual DiscreteDistribution<S> call(const S x, const S err=S{}, ProgramLoader* loader=nullptr) override {
 		// this calls by calling only the last factor, which, according to our prior,
-		// must call everything else
 		
-		if(!has_valid_indices()) return DiscreteDistribution<S>();
+		assert(loader==nullptr); // we really don't want people passing this in to this lexicon
+		
+		// must call everything else
+		if(!has_valid_indices()) 
+			return DiscreteDistribution<S>();
 		
 		size_t i = factors.size()-1; 
 		return factors[i].call(x, err, this); // we call the factor but with this as the loader.  
