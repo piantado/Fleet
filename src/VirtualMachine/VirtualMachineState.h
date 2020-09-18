@@ -73,6 +73,7 @@ public:
 	typedef _t_input  input_t;
 	typedef _t_output output_t;
 	
+	typedef VirtualMachineState<input_t,output_t, VM_TYPES...> this_t; 
 	
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
@@ -105,9 +106,14 @@ public:
 	// moment so this may need to be optimized later to be optional
 	RuntimeCounter runtime_counter;
 	
+	// what we use to load programs
+	ProgramLoader* program_loader;
 	
-	VirtualMachineState(input_t x, output_t e) :
-		err(e), lp(0.0), recursion_depth(0), status(vmstatus_t::GOOD) {
+	// where we place random flips back onto
+	VirtualMachinePool<this_t>* pool;
+	
+	VirtualMachineState(input_t x, output_t e, ProgramLoader* pl, VirtualMachinePool<this_t>* po) :
+		err(e), lp(0.0), recursion_depth(0), status(vmstatus_t::GOOD), program_loader(pl), pool(po) {
 		xstack.push(x);	
 	}
 	
@@ -311,7 +317,7 @@ public:
 	 * @param loader
 	 * @return 
 	 */	
-	 output_t run(VirtualMachinePool<VirtualMachineState<input_t,output_t, VM_TYPES...>>* pool, ProgramLoader* loader) {
+	 output_t run() {
 
 		status = vmstatus_t::GOOD;
 		
@@ -335,7 +341,7 @@ public:
 				if(i.is<PrimitiveOp>()) {
 					if constexpr(sizeof...(VM_TYPES) > 0) {
 						// call this fancy template magic to index into the global tuple variable PRIMITIVES
-						status = applyPRIMITIVEStoVMS(i.as<PrimitiveOp>(), this, pool, loader);
+						status = applyPRIMITIVEStoVMS(i.as<PrimitiveOp>(), this, pool, program_loader);
 					}
 					else {
 						throw YouShouldNotBeHereError("*** Cannot call PrimitiveOp without defining VM_TYPES");
@@ -438,7 +444,7 @@ public:
 							// simplifying the condition
 							if constexpr (std::is_same<input_t, std::string>::value) { 						
 
-								assert(loader != nullptr);
+								assert(program_loader != nullptr);
 								
 								// need to check if stack<input_t> is empty since thats where we get x
 								if (empty<input_t>()) {
@@ -463,13 +469,13 @@ public:
 						case BuiltinOp::op_RECURSE:
 						{
 							
-							assert(loader != nullptr);
+							assert(program_loader != nullptr);
 							
 							if(recursion_depth++ > MAX_RECURSE) { // there is one of these for each recurse
 								status = vmstatus_t::RECURSION_DEPTH;
 								return err;
 							}
-							else if( loader->program_size(i.getArg()) + opstack.size() > remaining_steps()) { // check if we have too many
+							else if( program_loader->program_size(i.getArg()) + opstack.size() > remaining_steps()) { // check if we have too many
 								status = vmstatus_t::RUN_TOO_LONG;
 								return err;
 							}
@@ -482,7 +488,7 @@ public:
 							// push this program 
 							// but we give i.arg so that we can pass factorized recursed
 							// in argument if we want to
-							loader->push_program(opstack,i.getArg()); 
+							program_loader->push_program(opstack,i.getArg()); 
 							
 							// after execution is done, the result will be pushed onto output_t
 							// which is what gets returned when we are all done
@@ -493,7 +499,7 @@ public:
 							// same as SAFE_RECURSE. Note that there is no memoization here
 							if constexpr (std::is_same<input_t,std::string>::value and has_operator_lessthan<input_t>::value) {				
 								
-								assert(loader != nullptr);
+								assert(program_loader != nullptr);
 								
 								// Here we don't need to memoize because it will always give us the same answer!
 								if (empty<input_t>()) {
@@ -522,11 +528,11 @@ public:
 									status = vmstatus_t::RECURSION_DEPTH;
 									return err;
 								}
-								else if( loader->program_size(i.getArg()) + opstack.size() > remaining_steps()) { // check if we have too many
+								else if( program_loader->program_size(i.getArg()) + opstack.size() > remaining_steps()) { // check if we have too many
 									status = vmstatus_t::RUN_TOO_LONG;
 									return err;
 								}
-								assert(loader != nullptr);
+								assert(program_loader != nullptr);
 								
 								input_t x = getpop<input_t>(); // get the argument
 							
@@ -540,7 +546,7 @@ public:
 									memstack.push(memindex); // popped off by op_MEM
 									opstack.push(Instruction(BuiltinOp::op_MEM));
 									opstack.push(Instruction(BuiltinOp::op_POPX));
-									loader->push_program(opstack,i.getArg()); // this leaves the answer on top
+									program_loader->push_program(opstack,i.getArg()); // this leaves the answer on top
 								}
 								
 								break;						
@@ -558,7 +564,7 @@ public:
 						case BuiltinOp::op_FLIPP:
 						{
 							if constexpr (contains_type<bool,VM_TYPES...>()) { 
-								assert(pool != nullptr && "op_FLIP and op_FLIPP require the pool to be non-null, since they push onto the pool"); // can't do that, for sure
+								assert(pool != nullptr && "op_FLIP and op_FLIPP require the pool to be non-null, since they push onto the pool. Maybe you used callOne instead of call?"); // can't do that, for sure
 						
 								double p = 0.5; 
 								

@@ -43,17 +43,18 @@ public:
 	 * @param minlp - the virtual machine pool doesn't consider paths less than this probability
 	 * @return 
 	 */	
-	DiscreteDistribution<output_t> call(const input_t x, const output_t err, ProgramLoader* loader) {
+	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t err) {
 					
-		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err);	
+		VirtualMachinePool<VirtualMachineState_t> pool; 		
+		
+		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err, this, &pool);	
 		push_program(vms->opstack); // write my program into vms
 
-		VirtualMachinePool<VirtualMachineState_t> pool; 		
 		pool.push(vms);		
 		return pool.run(loader);				
 	}
 	
-	auto operator()(const input_t x, const output_t err=output_t{}){ // just fancy syntax for call
+	virtual DiscreteDistribution<output_t>  operator()(const input_t x, const output_t err=output_t{}){ // just fancy syntax for call
 		return call(x,err);
 	}
 
@@ -65,18 +66,15 @@ public:
 	 * @param loader
 	 * @return 
 	 */
-	output_t callOne(const input_t x, const output_t err, ProgramLoader* loader) {
+	virtual output_t callOne(const input_t x, const output_t err=output_t{}) {
 		// we can use this if we are guaranteed that we don't have a stochastic Hypothesis
 		// the savings is that we don't have to create a VirtualMachinePool		
-		VirtualMachineState_t vms(x, err);		
+		VirtualMachineState_t vms(x, err, this, nullptr);		
 
 		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
 		return vms.run(loader); // default to using "this" as the loader		
 	}
-	
-	output_t callOne(const input_t x, const output_t err=output_t{}) {
-		return callOne(x,err,this);	
-	}
+
 		
 	/**
 	 * @brief Default call with myself as the loader.
@@ -95,12 +93,11 @@ public:
 	 * 		  marginalizes out the execution path.
 	 * @return a vector of virtual machine states
 	 */	
-	std::vector<VirtualMachineState_t> call_vms(const input_t x, const output_t err, ProgramLoader* loader){
+	std::vector<VirtualMachineState_t> call_vms(const input_t x, const output_t err){
 					
-		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err);	
-		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
-
 		VirtualMachinePool<VirtualMachineState_t> pool; 		
+		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err, this, &pool);	
+		push_program(vms->opstack); // write my program into vms (loader is used for everything else)
 		pool.push(vms);		
 		return pool.run_vms(loader);				
 	}
@@ -114,7 +111,7 @@ public:
 	 * @return 
 	 */
 	VirtualMachineState_t callOne_vms(const input_t x, const output_t err, ProgramLoader* loader) {
-		VirtualMachineState_t vms(x, err);
+		VirtualMachineState_t vms(x, err, this, nullptr);
 		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
 		vms.run(loader); // default to using "this" as the loader		
 		return vms;

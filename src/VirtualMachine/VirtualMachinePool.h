@@ -57,6 +57,10 @@ class VirtualMachinePool : public VirtualMachineControl {
 
 	
 public:	
+
+	typedef typename VirtualMachineState_t::output_t output_t;
+	typedef typename VirtualMachineState_t::input_t  input_t;
+	
 	// how many steps have I run so far? -- this needs to be global so that we can keep track of 
 	// whether we should push a new state that occurs too late. 
 	unsigned long current_steps; 
@@ -65,10 +69,7 @@ public:
 	std::priority_queue<VirtualMachineState_t*, std::vector<VirtualMachineState_t*>, VirtualMachinePool::compare_VirtualMachineState_t_prt> Q; // Q of states sorted by probability
 //	std::priority_queue<VirtualMachineState_t*, ReservedVector<VirtualMachineState_t*,1024>, VirtualMachinePool::compare_VirtualMachineState_t_prt> Q; // Does not seem to speed things up 
 
-
-	VirtualMachinePool() { 
-		current_steps = 0;
-		worst_lp = infinity;
+	VirtualMachinePool(ProgramLoader* pl) : current_steps(0), worst_lp(infinity) { 
 	}
 	
 
@@ -162,10 +163,9 @@ public:
 	 * @param loader
 	 * @return 
 	 */
-	DiscreteDistribution<typename VirtualMachineState_t::output_t> run(ProgramLoader* loader) { 
+	DiscreteDistribution<output_t> run() { 
 
-		
-		DiscreteDistribution<typename VirtualMachineState_t::output_t> out;
+		DiscreteDistribution<output_t> out;
 		
 		current_steps = 0;
 		while(current_steps < MAX_STEPS && out.size() < MAX_OUTPUTS && !Q.empty()) {
@@ -177,7 +177,7 @@ public:
 			
 			current_steps++;
 			
-			auto y = vms->run(this, loader);
+			auto y = vms->run();
 			
 			if(vms->status == vmstatus_t::COMPLETE) { // can't add up probability for errors
 				out.addmass(y, vms->lp);
@@ -201,7 +201,7 @@ public:
 	 * @param loader
 	 * @return 
 	 */	
-	std::vector<VirtualMachineState_t> run_vms(ProgramLoader* loader) { 
+	std::vector<VirtualMachineState_t> run_vms() { 
 
 		
 		std::vector<VirtualMachineState_t> out;
@@ -214,7 +214,7 @@ public:
 			
 			current_steps++;
 			
-			vms->run(this, loader);
+			vms->run();
 				
 			if(vms->status == vmstatus_t::COMPLETE) { // can't add up probability for errors
 				out.push_back(*vms);
