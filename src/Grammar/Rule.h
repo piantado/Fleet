@@ -50,9 +50,9 @@ public:
 		// Set up hashing for rules (cached so we only do it once)
 		std::hash<std::string> h; 
 		my_hash = h(fmt);
-		hash_combine(my_hash, (size_t) o, (size_t)nt);
-		for(size_t i=0;i<N;i++) 
-			hash_combine(my_hash, (int)i.f, (size_t)child_types[i]);
+		hash_combine(my_hash, (size_t)nt);
+		for(size_t k=0;k<N;k++) 
+			hash_combine(my_hash, reinterpret_cast<std::uintptr_t>(i.f), (size_t)child_types[k]);
 		
 		
 		// check that the format string has the right number of %s
@@ -129,13 +129,16 @@ public:
 	
 };
 
-std::ostream& operator<<(std::ostream& o, const Rule& r) {
+template<typename VirtualMachineState_t>
+std::ostream& operator<<(std::ostream& o, const Rule<VirtualMachineState_t>& r) {
 	o << r.string();
 	return o;
 }
 
 // A single constant NullRule for gaps in trees. Always has type 0
 // old format was \u2b1c 
-const Rule* NullRule = new Rule((nonterminal_t)0, BuiltinOp::op_NOP, "\u25A0", {}, 0.0);
+template<typename VirtualMachineState_t>
+const Rule<VirtualMachineState_t>* NullRule = new Rule<VirtualMachineState_t>((nonterminal_t)0, BuiltinOp::op_NOP, "\u25A0", {}, 0.0);
 
-const std::string Rule::ChildStr = "%s";
+template<typename VirtualMachineState_t>
+const std::string Rule<VirtualMachineState_t>::ChildStr = "%s";

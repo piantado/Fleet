@@ -30,31 +30,6 @@ typedef Object<Color,Shape> MyObject;
 #include "Primitives.h"
 #include "Builtins.h"
 
-std::tuple PRIMITIVES = {
-
-	// that + is really insane, but is needed to convert a lambda to a function pointer
-	Primitive("red(%s)",       +[](MyObject x)       -> bool { return x.is(Color::Red); }),
-	Primitive("green(%s)",     +[](MyObject x)       -> bool { return x.is(Color::Green); }),
-	Primitive("blue(%s)",      +[](MyObject x)       -> bool { return x.is(Color::Blue); }),
-
-	Primitive("square(%s)",    +[](MyObject x)       -> bool { return x.is(Shape::Square); }),
-	Primitive("triangle(%s)",  +[](MyObject x)       -> bool { return x.is(Shape::Triangle); }),
-	Primitive("circle(%s)",    +[](MyObject x)       -> bool { return x.is(Shape::Circle); }),
-	
-		
-	// but we also have to add a rule for the BuiltinOp that access x, our argument
-	Builtin::X<MyObject>("x", 10.0),
-	
-	// And and,or,not -- we use Builtins here because any user defined one won't short-circuit
-	Builtin::And("and(%s,%s)"),
-	Builtin::Or("or(%s,%s)"),
-	Builtin::Not("not(%s)")
-	// But if we did define our own, they'd be:
-	//	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 2.0), // optional specification of prior weight (default=1.0)
-	//	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }),
-	//	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }),
-};
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define the grammar
 /// Thid requires the types of the thing we will add to the grammar (bool,MyObject)
@@ -106,7 +81,28 @@ int main(int argc, char** argv){
 	// Define the grammar (default initialize using our primitives will add all those rules)
 	// in doing this, grammar deduces the types from the input and output types of each primitive
 	MyGrammar grammar(PRIMITIVES);
+	grammar.add("red(%s)",   +[](MyObject x) -> bool { return x.is(Color::Red); });
+	grammar.add("green(%s)", +[](MyObject x) -> bool { return x.is(Color::Green); });
+	grammar.add("blue(%s)",  +[](MyObject x) -> bool { return x.is(Color::Blue); });
+	grammar.add("square(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Square); });
+	grammar.add("triangle(%s)",  +[](MyObject x) -> bool { return x.is(Shape::Triangle); });
+	grammar.add("circle(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Circle); });
 	
+	grammar.add("nand(%s,%s)",    +[](bool x, bool y) -> bool { return not (x and y); });
+
+	grammar.add<MyObject>("x", +[](MyGrammar::VirtualMachineState_t* vms)->vmstatus_t {
+		assert(!xstack.empty());
+		vms->push<MyObject>(vms->xstack.top());
+	}
+	
+	// but we also have to add a rule for the BuiltinOp that access x, our argument
+//	Builtin::X<MyObject>("x", 10.0),
+//	
+//	// And and,or,not -- we use Builtins here because any user defined one won't short-circuit
+//	Builtin::And("and(%s,%s)"),
+//	Builtin::Or("or(%s,%s)"),
+//	Builtin::Not("not(%s)")
+//	
 	// top stores the top hypotheses we have found
 	TopN<MyHypothesis> top;
 	

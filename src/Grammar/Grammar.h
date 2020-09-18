@@ -285,6 +285,15 @@ public:
 		return contains_type<X,GRAMMAR_TYPES...>();
 	}
 			
+	template<typename T, typename... args> 
+	void add(const char* fmt, vmstatus_t(*fvms)(VirtualMachineState_t*), double p=1.0) {
+		Rule<this_t> r(this->template nt<T>(), Instruction{f}, fmt, {nt<args>()...}, p);
+		Z[nt] += r.p; // keep track of the total probability
+		nonterminal_t nt = r.nt;
+		auto pos = std::lower_bound( rules[nt].begin(), rules[nt].end(), r);
+		rules[nt].insert( pos, r ); // put this before	
+	}
+			
 	// unpack a lambda and convert it into an instruction for the rule we add here
 	// TODO: ADD REFERENCE SUPPORT HERE
 	template<typename T, typename... args> 
@@ -296,8 +305,8 @@ public:
 		static_assert((is_in_GRAMMAR_TYPES<args>() && ...),	"*** Argument type is not in GRAMMAR_TYPES");
 	
 		// create a lambda on the heap that is a function of a VMS, since
-		// this is what an instruction must be. This implements the calling convention
-		F* f = new auto ([fargs](VirtualMachineState_t* vms) -> vmstatus_t {
+		// this is what an instruction must be. This implements the calling order convention too. 
+		F* newf = new auto ([fargs](VirtualMachineState_t* vms) -> vmstatus_t {
 				if constexpr (sizeof...(args) ==  0){	
 					vms->push(fargs());
 				}
@@ -306,32 +315,26 @@ public:
 					vms->push(fargs(std::move(a0)));
 				}
 				else if constexpr (sizeof...(args) ==  2) {
-					auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
-					auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();	
+					auto a1 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
+					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();	
 					vms->push(fargs(std::move(a0), std::move(a1)));
 				}
 				else if constexpr (sizeof...(args) ==  3) {
-					auto a2 =  vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
-					auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
-					auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
+					auto a2 = vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
+					auto a1 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
+					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
 					vms->push(fargs(std::move(a0), std::move(a1), std::move(a2)));
 				}
 				else if constexpr (sizeof...(args) ==  4) {
-					auto a3 =  vms->template get<typename std::tuple_element<3, std::tuple<args...> >::type>();
-					auto a2 =  vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
-					auto a1 =  vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
-					auto a0 =  vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
+					auto a3 = vms->template get<typename std::tuple_element<3, std::tuple<args...> >::type>();
+					auto a2 = vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
+					auto a1 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
+					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
 					vms->push(fargs(std::move(a0), std::move(a1), std::move(a2), std::move(a3)));
 				}			
 			});
-	
-		// now we convert fargs into a lambda that operates only on VMS objects
-		// which is what we need in order to store it as an instruction
-		Rule<this_t> r(this->template nt<T>(), Instruction{f}, fmt, {nt<args>()...}, p);
-		Z[nt] += r.p; // keep track of the total probability
-		nonterminal_t nt = r.nt;
-		auto pos = std::lower_bound( rules[nt].begin(), rules[nt].end(), r);
-		rules[nt].insert( pos, r ); // put this before		
+			
+		 add<T, args...>(fmt, newf, p) {
 	}
 
 

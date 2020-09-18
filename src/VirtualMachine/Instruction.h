@@ -57,28 +57,28 @@ public:
 	Instruction(F* _f) : f(_f) {
 	}
 
-	int getArg() const {
-		/**
-		 * @brief Return the argument (an int)
-		 * @return 
-		 */		
-		return arg; 
-	}
+//	int getArg() const {
+//		/**
+//		 * @brief Return the argument (an int)
+//		 * @return 
+//		 */		
+//		return arg; 
+//	}
 	
 	bool operator==(const Instruction& i) const {
-		return f==i.f and arg==i.arg;
+		return f==i.f;
 	}
 		
 };
 
-
-std::ostream& operator<<(std::ostream& stream, Instruction& i) {
+template<typename VirtualMachineState_t>
+std::ostream& operator<<(std::ostream& stream, Instruction<VirtualMachineState_t>& i) {
 	/**
 	 * @brief Output for instructions. 
 	 * @param stream
 	 * @param i
 	 * @return 
 	 */
-	stream << "[" << i.f << "\t" << i.arg << "]";
+	stream << "[INSTR " << i.f << "]";
 	return stream;
 }
