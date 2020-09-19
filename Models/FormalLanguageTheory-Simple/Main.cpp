@@ -11,50 +11,9 @@ using S = std::string; // just for convenience
 
 S alphabet = "01"; // the alphabet we use (possibly specified on command line)
 thread_local S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated
+//thread_local S datastr  = "101"; // the data, comma separated
 const float strgamma = 0.01; //75; // penalty on string length
 const size_t MAX_LENGTH = 64; // longest strings cons will handle
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// This is a global variable that provides a convenient way to wrap our primitives
-/// where we can pair up a function with a name, and pass that as a constructor
-/// to the grammar. We need a tuple here because Primitive has a bunch of template
-/// types to handle thee function it has, so each is actually a different type.
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#include "Primitives.h"
-#include "Builtins.h"
-
-std::tuple PRIMITIVES = {
-	Primitive("tail(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : s.substr(1,S::npos)); }),
-	Primitive("head(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : S(1,s.at(0))); }),
-	// We could call like this, but it's a little inefficient since it pops a string from the stack
-	// and then pushes a result on.. much better to modify it
-//	Primitive("pair(%s,%s)",   +[](S a, S b) -> S          { if(a.length() + b.length() > MAX_LENGTH) 
-//																throw VMSRuntimeError;
-//															else return a+b; 
-//															}),
-	// This version takes a reference for the first argument and that is assumed (by Fleet) to be the
-	// return value. It is never popped off the stack and should just be modified. 
-	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void        { 
-			if(a.length() + b.length() > MAX_LENGTH) 
-				throw VMSRuntimeError();
-			a.append(b); // modify on stack
-	}), 
-	
-	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),
-	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }),
-	
-	Builtin::And("and(%s,%s)"),
-	Builtin::Or("or(%s,%s)"),
-	Builtin::Not("not(%s)"),
-	
-	// And add built-ins - NOTE these must come last
-	Builtin::If<S>("if(%s,%s,%s)", 1.0),		
-	Builtin::X<S>("x"),
-	Builtin::Flip("flip()", 10.0),
-	Builtin::SafeRecurse<S,S>("F(%s)")	
-};
-
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare a grammar
@@ -63,12 +22,7 @@ std::tuple PRIMITIVES = {
  
 #include "Grammar.h"
 
-// declare a grammar with our primitives
-// Note that this ordering of primitives defines the order in Grammar
-class MyGrammar : public Grammar<S,bool> {
-	using Super = Grammar<S,bool>;
-	using Super::Super;
-};
+using MyGrammar =  Grammar<S,S,  S,bool>;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
@@ -150,6 +104,8 @@ public:
 #include "Top.h"
 #include "ParallelTempering.h"
 #include "Fleet.h" 
+#include "Builtins.h"
+#include "VMSRuntimeError.h"
 
 int main(int argc, char** argv){ 
 	
@@ -159,19 +115,56 @@ int main(int argc, char** argv){
 	fleet.add_option("-d,--data",     datastr, "Comma separated list of input data strings");	
 	fleet.initialize(argc, argv);
 	
-	MyGrammar grammar(PRIMITIVES);
+	MyGrammar grammar;
+	grammar.add("tail(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); });
+	grammar.add("head(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
+	// We could call like this, but it's a little inefficient since it pops a string from the stack
+	// and then pushes a result on.. much better to modify it
+	grammar.add("pair(%s,%s)",   +[](S a, S b) -> S { 
+		if(a.length() + b.length() > MAX_LENGTH) 
+			throw VMSRuntimeError();
+		else 
+			return a+b; 
+	});
+	// This version takes a reference for the first argument and that is assumed (by Fleet) to be the
+	// return value. It is never popped off the stack and should just be modified. 
+//	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void        { 
+//			if(a.length() + b.length() > MAX_LENGTH) 
+//				throw VMSRuntimeError();
+//			a.append(b); // modify on stack
+//	}), 
+	grammar.add("\u00D8",        +[]()         -> S          { return S(""); });
+	grammar.add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; });
+	
+	using VMS_t = MyGrammar::VirtualMachineState_t;
+	grammar.add("and(%s,%s)",    Builtins::And<VMS_t>, 1./3.);
+	grammar.add("or(%s,%s)",     Builtins::Or<VMS_t>, 1./3.);
+	grammar.add("not(%s)",       Builtins::Not<VMS_t>, 1./3.);
+	
+	grammar.add("x",             Builtins::X<S,VMS_t>);
+	grammar.add("if(%s,%s,%s)",  Builtins::If<S,VMS_t>);
+	grammar.add("flip()",        Builtins::Flip<VMS_t>);
+	grammar.add("recurse(%s)",   Builtins::Recurse<VMS_t>);
 		
-	// here we create an alphabet op with an "arg" that stores the character (this is faster than alphabet.substring with i.arg as an index) 
-	// here, op_ALPHABET converts arg to a string (and pushes it)
+		
+	grammar.add("0",      +[]() -> S { return "0"; }, 10./2);
+	grammar.add("1",      +[]() -> S { return "1"; }, 10./2);
+//	for(size_t i=0;i<alphabet.length();i++) {
+//		const S c = alphabet.substr(i,1);
+//		std::function f = [&]()-> S { return c; };
+//		grammar.add<S>( Q(c).c_str(), f, 5.0/alphabet.length());
+//	}
+
 	for(size_t i=0;i<alphabet.length();i++) {
-		grammar.add<S>     (BuiltinOp::op_ALPHABET, Q(alphabet.substr(i,1)), 5.0/alphabet.length(), (int)alphabet.at(i)); 
+		const S c = alphabet.substr(i,1);
+		auto f = new auto ([&]()->S { return c; });
+		grammar.add<S>( Q(c).c_str(), f, 5.0/alphabet.length());
 	}
 	
 	// Just to show iterating over rules:
 	for(auto& r : grammar){
 		CERR "#" TAB r ENDL;
 	}
-	
 		
 	//------------------
 	// top stores the top hypotheses we have found
@@ -226,17 +219,17 @@ int main(int argc, char** argv){
 //
 //	return 0;
 	
-	top.print_best = true;
-	auto h0 = MyHypothesis::make(&grammar);
-	ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 1000.0);
-	samp.run(Control(), 100, 30000);		
+//	top.print_best = true;
+//	auto h0 = MyHypothesis::make(&grammar);
+//	ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 1000.0);
+//	samp.run(Control(), 100, 30000);		
 	
 
-//	top.print_best = true; // print out each best hypothesis you find
-//	auto h0 = MyHypothesis::make(&grammar);
-//	MCMCChain c(h0, &mydata, top);
-//	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-//	c.run(Control());
+	top.print_best = true; // print out each best hypothesis you find
+	auto h0 = MyHypothesis::make(&grammar);
+	MCMCChain c(h0, &mydata, top);
+	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
+	c.run(Control());
 
 	// run multiple chains
 //	auto h0 = MyHypothesis::make(&grammar);

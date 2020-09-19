@@ -7,6 +7,7 @@
 #include "Rule.h"
 #include "Program.h"
 #include "BaseNode.h"
+#include "Builtins.h"
 
 class Node : public BaseNode<Node> {
 	friend class BaseNode<Node>;

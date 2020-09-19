@@ -37,7 +37,7 @@ typedef Object<Color,Shape> MyObject;
 
 #include "Grammar.h"
 
-using MyGrammar = Grammar<MyObject, bool>;
+using MyGrammar = Grammar<MyObject,bool,   MyObject, bool>;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define a class for handling my specific hypotheses and data. Everything is defaultly 

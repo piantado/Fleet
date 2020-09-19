@@ -43,18 +43,18 @@ struct Primitive;
  * by LOTHypothesis, which also passes them along to VirtualMachineState (in the form of
  * a Tuple). So the types used and order are fixed/standardized in the grammar
  */
-template<typename... GRAMMAR_TYPES>
+template<typename input_t, typename output_t, typename... GRAMMAR_TYPES>
 class Grammar {
 public:
-	using this_t = Grammar<GRAMMAR_TYPES...>;
+	using this_t = Grammar<input_t, output_t, GRAMMAR_TYPES...>;
 
 	// Keep track of what types we are using here as our types -- thesee types are 
 	// stored in this tuple so they can be extracted
 	using GrammarTypesAsTuple = std::tuple<GRAMMAR_TYPES...>;
 
 	// the firsrt and second are *Assumed* to be input and output types
-	using input_t  = std::tuple_element<0,GrammarTypesAsTuple>::type;
-	using output_t = std::tuple_element<1,GrammarTypesAsTuple>::type;
+	//using input_t  = std::tuple_element<0,GrammarTypesAsTuple>::type;
+	//using output_t = std::tuple_element<1,GrammarTypesAsTuple>::type;
 	
 	// how many nonterminal types do we have?
 	static constexpr size_t N_NTs = std::tuple_size<std::tuple<GRAMMAR_TYPES...>>::value;
