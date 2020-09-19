@@ -93,10 +93,9 @@ int main(int argc, char** argv){
 	grammar.add("triangle(%s)",  +[](MyObject x) -> bool { return x.is(Shape::Triangle); });
 	grammar.add("circle(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Circle); });
 	
-	grammar.add("nand(%s,%s)",    +[](bool x, bool y) -> bool { return not (x and y); });
-
-
 	grammar.add("and(%s,%s)",    Builtins::And<MyGrammar::VirtualMachineState_t>);
+	grammar.add("or(%s,%s)",     Builtins::Or<MyGrammar::VirtualMachineState_t>);
+	grammar.add("not(%s)",       Builtins::Not<MyGrammar::VirtualMachineState_t>);
 
 
 	grammar.add<MyObject>("x", +[](MyGrammar::VirtualMachineState_t* vms, int arg) -> void {

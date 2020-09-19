@@ -317,7 +317,7 @@ public:
 //		else 
 			if( rule->is_a(Op::And) or rule->is_a(Op::Or)) {
 			// short circuit forms of and(x,y) and or(x,y)
-			assert(rule->N == 2 && "BuiltinOp::op_AND and BuiltinOp::op_OR require two arguments");
+			assert(rule->N == 2 and children.size() == 2 && "BuiltinOp::op_AND and BuiltinOp::op_OR require two arguments");
 			
 			// second arg pushed on first, on the bottom
 			int ysize = children[1].linearize(program);
@@ -325,10 +325,10 @@ public:
 			if(rule->is_a(Op::And)) {
 				program.emplace_back(rule->makeInstruction(ysize));
 			}
-			else {
-				assert(rule->is_a(Op::Or));
+			else if(rule->is_a(Op::Or)) {
 				program.emplace_back(rule->makeInstruction(ysize));
 			}
+			else assert(false);
 			
 			return children[0].linearize(program)+ysize+1;			
 		}

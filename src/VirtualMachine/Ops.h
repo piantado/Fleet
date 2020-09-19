@@ -1,7 +1,7 @@
 #pragma once 
 
 enum class Op {
-	Standard, And, Or, If
+	Standard, And, Or, Not, If
 };
 
 // Not sure Where to put this...

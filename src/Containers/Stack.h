@@ -49,7 +49,7 @@ public:
 		/**
 		 * @brief Remove the top element (returning void)
 		 */
-		
+		assert(!empty());
 		value.pop_back();
 	}
 	

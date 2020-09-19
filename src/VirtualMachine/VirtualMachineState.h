@@ -338,9 +338,9 @@ public:
 				
 				//auto f = reinterpret_cast<void(*)(this_t*)>(i.f);
 				//f(const_cast<this_t*>(this));
-				using FT = std::function<void(this_t*)>;
+				using FT = std::function<void(this_t*,int)>;
 				auto f = reinterpret_cast<FT*>(i.f);
-				(*f)(const_cast<this_t*>(this));
+				(*f)(const_cast<this_t*>(this), i.arg);
 				
 				/*
 				

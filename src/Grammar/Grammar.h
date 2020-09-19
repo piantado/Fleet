@@ -55,7 +55,6 @@ public:
 	// the firsrt and second are *Assumed* to be input and output types
 	using input_t  = std::tuple_element<0,GrammarTypesAsTuple>::type;
 	using output_t = std::tuple_element<1,GrammarTypesAsTuple>::type;
-
 	
 	// how many nonterminal types do we have?
 	static constexpr size_t N_NTs = std::tuple_size<std::tuple<GRAMMAR_TYPES...>>::value;
@@ -288,14 +287,14 @@ public:
 		// move this to the heap so it persists
 		std::function<void(VirtualMachineState_t*,int)>* f = new std::function(fvms);
 		
-		add(fmt, (void*)f, p, o);
+		add<T,args...>(fmt, (void*)f, p, o);
 	}
 		
 		
 	template<typename T, typename... args> 
 	void add(const char* fmt, Builtin<T,args...>& b, double p=1.0) {
 		// read f and o from b
-		add(fmt, b.f, p, b.o);
+		add<T,args...>(fmt, b.f, p, b.op);
 	}
 		
 	// unpack a lambda and convert it into an instruction for the rule we add here

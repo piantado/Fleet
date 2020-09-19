@@ -12,8 +12,12 @@ struct Builtin {
 	
 	template<typename VirtualMachineState_t>
 	Builtin(std::function<void(VirtualMachineState_t*,int)>* _f, Op o = Op::Standard) : f((void*)_f), op(o) {
-		
 	}	
+	
+	template<typename VirtualMachineState_t>
+	Builtin(void(*_f)(VirtualMachineState_t*,int), Op o = Op::Standard) : op(o) {
+		f = (void*)(new std::function<void(VirtualMachineState_t*,int)>(_f)); // make a copy
+	}
 };
 
 namespace Builtins {
@@ -32,6 +36,26 @@ namespace Builtins {
 			// else our value is just the other value -- true when its true and false when its false
 		}		
 	}, Op::And);
+	
+	template<typename VirtualMachineState_t>
+	Builtin<bool,bool,bool> Or( +[](VirtualMachineState_t* vms, int arg) -> void {
+	
+		// process the short circuit
+		bool b = vms->template getpop<bool>(); // bool has already evaluted
+			
+		if(b) {
+			vms->opstack.popn(arg); // pop off the other branch 
+			vms->template push<bool>(true);
+		}
+		else {
+			// else our value is just the other value -- true when its true and false when its false
+		}		
+	}, Op::Or);
+	
+	template<typename VirtualMachineState_t>
+	Builtin<bool,bool> Not( +[](VirtualMachineState_t* vms, int arg) -> void {
+		vms->push(not vms->template getpop<bool>()); 
+	}, Op::Not);
 	
 //
 //	// these are short-circuit versions of And and Or
