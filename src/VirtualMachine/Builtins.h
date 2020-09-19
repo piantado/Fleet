@@ -130,6 +130,54 @@ namespace Builtins {
 	});
 	
 	
+	template<typename VirtualMachineState_t>
+	Builtin<bool> Flip(Op::Flip, +[](VirtualMachineState_t* vms, int arg) -> void {
+		assert(vms->pool != nullptr);
+		
+		// push both routes onto the stack
+		vms->pool->copy_increment_push(vms, true, -LOG2);
+		bool b = vms->pool->increment_push(vms, false, -LOG2); 
+		
+		// TODO: This is clumsy, ugly mechanism -- need to re-do
+		
+		// since we pushed this back onto the queue (via increment_push), we need to tell the 
+		// pool not to delete this, so we send back this special signal
+		if(b) { // theoutcome of increment_push decides whether I am deleted or not
+			vms->status = vmstatus_t::RANDOM_CHOICE_NO_DELETE; 
+		}
+		else {
+			vms->status = vmstatus_t::RANDOM_CHOICE; 
+		}
+	});
+	
+	
+	template<typename VirtualMachineState_t>
+	Builtin<bool> FlipP(Op::FlipP, +[](VirtualMachineState_t* vms, int arg) -> void {
+		assert(vms->pool != nullptr);
+		
+		// get the coin weight
+		double p = vms->template getpop<double>(); 
+		
+		// some checking
+		if(std::isnan(p)) { p = 0.0; } // treat nans as 0s
+		assert(p <= 1.0 and p >= 0.0);
+		
+		// push both routes onto the stack
+		vms->pool->copy_increment_push(vms, true, log(p));
+		bool b = vms->pool->increment_push(vms, false, log(1.0-p)); 
+		
+		// TODO: This is clumsy, ugly mechanism -- need to re-do
+		
+		// since we pushed this back onto the queue (via increment_push), we need to tell the 
+		// pool not to delete this, so we send back this special signal
+		if(b) { // theoutcome of increment_push decides whether I am deleted or not
+			vms->status = vmstatus_t::RANDOM_CHOICE_NO_DELETE; 
+		}
+		else {
+			vms->status = vmstatus_t::RANDOM_CHOICE; 
+		}
+	});
+	
 	
 //
 //	// these are short-circuit versions of And and Or

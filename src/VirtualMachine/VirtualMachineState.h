@@ -151,6 +151,7 @@ public:
 	 */
 	template<typename T>
 	VMSStack<T>& stack() { 
+		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
 		return std::get<VMSStack<T>>(_stack.value); 
 	}
 	
@@ -160,6 +161,7 @@ public:
 	 */	
 	template<typename T>
 	const VMSStack<T>& stack() const { 
+		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
 		return std::get<VMSStack<T>>(_stack.value); 
 	}
 	
@@ -169,6 +171,7 @@ public:
 	 */
 	template<typename T>
 	T getpop() {
+		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
 		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
 		T x = std::move(stack<T>().top());
@@ -182,6 +185,7 @@ public:
 	*/
 	template<typename T>
 	T gettop() {
+		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
 		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		return stack<T>().top();
 	}
@@ -190,6 +194,7 @@ public:
 	* @return 
 	*/	template<typename T>
 	T& gettopref() {
+		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
 		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
 		return stack<T>().topref();
@@ -202,25 +207,11 @@ public:
 	 * @return 
 	 */		
 	template<typename T>
-	typename std::conditional<std::is_reference<T>::value, T&, T>::type
-	get() {
-		using Tdecay = typename std::decay<T>::type; // remove the ref from it since that's how we access the stack -- TODO: put this into this->stack() maybe?
-		
-		assert(stack<Tdecay>().size() > 0 && "Cannot get from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
-		
-		// some magic: if its a reference, we return a reference to the top of the stack
-		// otherwise we move off and return
-		if constexpr (std::is_reference<T>::value) { 
-			// if its a reference, reference the un-referenced stack type and return a reference to its top
-			// NOTE: It is important that this does not pop, because that means it doesn't matter when we call it
-			// in Primitives
-			return std::forward<T>(stack<Tdecay>().topref());
-		}
-		else {
-			T x = std::move(stack<Tdecay>().top());
-			stack<Tdecay>().pop();
-			return x;
-		}
+	T get() {
+		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
+		T x = std::move(stack<T>().top());
+		stack<T>().pop();
+		return x;
 	}
 
 	/**
@@ -234,6 +225,7 @@ public:
 
 	template<typename T>
 	void push(T& x){
+		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
 		/**
 		 * @brief Push things onto the appropriate stack
 		 * @param x
@@ -242,6 +234,7 @@ public:
 	}
 	template<typename T>
 	void push(T&& x){
+		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
 		stack<T>().push(std::move(x));
 	}
 	template<typename... args>
@@ -418,20 +411,7 @@ public:
 								
 							} else { throw YouShouldNotBeHereError("*** Cannot call op_MEM without defining operator< on input_t"); }
 						}
-						case BuiltinOp::op_TRUE: 
-						{
-							if constexpr (contains_type<bool,VM_TYPES...>()) { 
-								push<bool>(true);
-							} else { throw YouShouldNotBeHereError("*** Must have bool defined to use op_TRUE");}
-							break;
-						}
-						case BuiltinOp::op_FALSE: 
-						{
-							if constexpr (contains_type<bool,VM_TYPES...>()) { 
-								push<bool>(false);
-							} else { throw YouShouldNotBeHereError("*** Must have bool defined to use op_FALSE");}
-							break;
-						}
+
 						case BuiltinOp::op_SAFE_RECURSE: {
 							// This is a recursion that returns empty for empty arguments 
 							// simplifying the condition
@@ -521,51 +501,7 @@ public:
 								
 							} else { throw YouShouldNotBeHereError("*** Cannot MEM_RECURSE unless input_t has operator< defined"); }
 						}
-						
-						// Both flips come here so we don't duplicate code
-						// and then we sort out whether the p is a default value 
-						// or not				
-						case BuiltinOp::op_FLIP: 
-						{
-							[[fallthrough]];
-						}
-						case BuiltinOp::op_FLIPP:
-						{
-							if constexpr (contains_type<bool,VM_TYPES...>()) { 
-								assert(pool != nullptr && "op_FLIP and op_FLIPP require the pool to be non-null, since they push onto the pool. Maybe you used callOne instead of call?"); // can't do that, for sure
-						
-								double p = 0.5; 
-								
-								if constexpr (contains_type<double,VM_TYPES...>()) {  // if we have double allowed we cna do this
-									if(i.is_a(BuiltinOp::op_FLIPP)) { // only for built-in ops do we 
-										p = getpop<double>(); // reads a double argfor the coin weight
-										if(std::isnan(p)) { p = 0.0; } // treat nans as 0s
-										assert(p <= 1.0 and p >= 0.0);
-									}
-								} else { assert( (!i.is_a(BuiltinOp::op_FLIPP) && "*** Cannot us flipp without double defined")); } // if there is no double, we can't use flipp
-								
-					
-								pool->copy_increment_push(this, true,  log(p));
-	//							pool->copy_increment_push(*this, false,  log(1.0-p));
-								bool b = pool->increment_push(this, false, log(1.0-p)); 
-								
-								// TODO: This is clumsy, ugly mechanism -- need to re-do
-								
-								// since we pushed this back onto the queue (via increment_push), we need to tell the 
-								// pool not to delete this, so we send back this special signal
-								if(b) { // theoutcome of increment_push decides whether I am deleted or not
-									status = vmstatus_t::RANDOM_CHOICE_NO_DELETE; 
-								}
-								else {
-									status = vmstatus_t::RANDOM_CHOICE; 
-								}
-								
-								// TODO: We can also keep running here -- though its more complex. 
-								
-								break;
-		
-							} else { throw YouShouldNotBeHereError("*** Cannot use op_FLIP without defining bool in VM_TYPES"); }
-						}
+
 						case BuiltinOp::op_I:
 						case BuiltinOp::op_S:
 						case BuiltinOp::op_K:

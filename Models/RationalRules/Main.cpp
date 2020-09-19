@@ -93,15 +93,18 @@ int main(int argc, char** argv){
 	grammar.add("triangle(%s)",  +[](MyObject x) -> bool { return x.is(Shape::Triangle); });
 	grammar.add("circle(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Circle); });
 	
-	grammar.add("and(%s,%s)",    Builtins::And<MyGrammar::VirtualMachineState_t>);
-	grammar.add("or(%s,%s)",     Builtins::Or<MyGrammar::VirtualMachineState_t>);
-	grammar.add("not(%s)",       Builtins::Not<MyGrammar::VirtualMachineState_t>);
+	using VMS_t = MyGrammar::VirtualMachineState_t;
+	
+	grammar.add("and(%s,%s)",    Builtins::And<VMS_t>);
+	grammar.add("or(%s,%s)",     Builtins::Or<VMS_t>);
+	grammar.add("not(%s)",       Builtins::Not<VMS_t>);
 
-	grammar.add("x",             Builtins::X<MyObject,MyGrammar::VirtualMachineState_t>);
+	grammar.add("x",             Builtins::X<MyObject,VMS_t>);
 	
-	grammar.add("if(%s,%s,%s)",  Builtins::If<bool,MyGrammar::VirtualMachineState_t>);
+	grammar.add("if(%s,%s,%s)",  Builtins::If<bool,VMS_t>);
+//	grammar.add("flip(%s)",        Builtins::FlipP<VMS_t>);
 	
-	grammar.add("recurse(%s)",   Builtins::Recurse<MyGrammar::VirtualMachineState_t>);
+	grammar.add("recurse(%s)",   Builtins::Recurse<VMS_t>);
 	// but we also have to add a rule for the BuiltinOp that access x, our argument
 //	Builtin::X<MyObject>("x", 10.0),
 //	

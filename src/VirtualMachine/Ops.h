@@ -5,7 +5,8 @@ enum class Op {
 	And, Or, Not, 
 	X,
 	If, Jmp,
-	Recurse, PopX
+	Recurse, PopX,
+	Flip, FlipP
 };
 
 // Not sure Where to put this...
