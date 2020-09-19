@@ -70,14 +70,14 @@ class VirtualMachineState : public VirtualMachineControl {
 	
 public:
 
-	typedef _t_input  input_t;
-	typedef _t_output output_t;
+	using input_t  = _t_input;
+	using output_t = _t_output;
 	
 	typedef VirtualMachineState<input_t, output_t, VM_TYPES...> this_t; 
 	
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
-	Program            opstack; 
+	Program            program; 
 	VMSStack<input_t>  xstack; //xstackthis stores a stack of the x values (for recursive calls)
 	output_t           err; // what error output do we return?
 	double             lp; // the probability of this context
@@ -322,16 +322,16 @@ public:
 		
 		try { 
 			
-			while(status == vmstatus_t::GOOD and (not opstack.empty()) ) {
+			while(status == vmstatus_t::GOOD and (not program.empty()) ) {
 				
-//				if(opstack.size() > remaining_steps() ) {  // if we've run too long or we couldn't possibly finish
+//				if(program.size() > remaining_steps() ) {  // if we've run too long or we couldn't possibly finish
 //					status = vmstatus_t::RUN_TOO_LONG;
 //					break;
 //				}
 				
 				FleetStatistics::vm_ops++;
 				
-				Instruction i = opstack.top(); opstack.pop();
+				Instruction i = program.top(); program.pop();
 				
 				// keep track of what instruction we've run
 				//runtime_counter.increment(i);
@@ -358,21 +358,7 @@ public:
 					assert(i.is<BuiltinOp>());
 					
 					switch(i.as<BuiltinOp>()) {
-						case BuiltinOp::op_NOP: 
-						{
-							break;
-						}
-						case BuiltinOp::op_X:
-						{
-							assert(!xstack.empty());
-							push<input_t>(std::move(xstack.top()));
-							break;
-						}
-						case BuiltinOp::op_POPX:
-						{
-							xstack.pop(); // NOTE: Remember NOT to pop from getpop<input_t>() since that's not where x is stored
-							break;
-						}
+
 						case BuiltinOp::op_ALPHABET: 
 						{
 							if constexpr (contains_type<std::string,VM_TYPES...>()) { 
@@ -475,32 +461,7 @@ public:
 						}
 						case BuiltinOp::op_RECURSE:
 						{
-							
-							assert(program_loader != nullptr);
-							
-							if(recursion_depth++ > MAX_RECURSE) { // there is one of these for each recurse
-								status = vmstatus_t::RECURSION_DEPTH;
-								return err;
-							}
-							else if( program_loader->program_size(i.getArg()) + opstack.size() > remaining_steps()) { // check if we have too many
-								status = vmstatus_t::RUN_TOO_LONG;
-								return err;
-							}
-							// if we get here, then we have processed our arguments and they are stored in the input_t stack. 
-							// so we must move them to the x stack (where there are accessible by op_X)
-							auto mynewx = getpop<input_t>();
-							xstack.push(std::move(mynewx));
-							opstack.push(Instruction(BuiltinOp::op_POPX)); // we have to remember to remove X once the other program evaluates, *after* everything has evaluated
-							
-							// push this program 
-							// but we give i.arg so that we can pass factorized recursed
-							// in argument if we want to
-							program_loader->push_program(opstack,i.getArg()); 
-							
-							// after execution is done, the result will be pushed onto output_t
-							// which is what gets returned when we are all done
-							
-							break;
+
 						}
 						case BuiltinOp::op_SAFE_MEM_RECURSE: {
 							// same as SAFE_RECURSE. Note that there is no memoization here
@@ -535,7 +496,7 @@ public:
 									status = vmstatus_t::RECURSION_DEPTH;
 									return err;
 								}
-								else if( program_loader->program_size(i.getArg()) + opstack.size() > remaining_steps()) { // check if we have too many
+								else if( program_loader->program_size(i.getArg()) + program.size() > remaining_steps()) { // check if we have too many
 									status = vmstatus_t::RUN_TOO_LONG;
 									return err;
 								}
@@ -551,9 +512,9 @@ public:
 								else {	
 									xstack.push(x);	
 									memstack.push(memindex); // popped off by op_MEM
-									opstack.push(Instruction(BuiltinOp::op_MEM));
-									opstack.push(Instruction(BuiltinOp::op_POPX));
-									program_loader->push_program(opstack,i.getArg()); // this leaves the answer on top
+									program.push(Instruction(BuiltinOp::op_MEM));
+									program.push(Instruction(BuiltinOp::op_POPX));
+									program_loader->push_program(program,i.getArg()); // this leaves the answer on top
 								}
 								
 								break;						
@@ -604,67 +565,6 @@ public:
 								break;
 		
 							} else { throw YouShouldNotBeHereError("*** Cannot use op_FLIP without defining bool in VM_TYPES"); }
-						}
-						case BuiltinOp::op_JMP:
-						{
-							opstack.popn(i.arg);
-							break;
-						}
-						case BuiltinOp::op_IF: 
-						{
-							if constexpr (contains_type<bool,VM_TYPES...>()) { 
-								// Here we evaluate op_IF, which has to short circuit and skip (pop some of the stack) 
-								bool b = getpop<bool>(); // bool has already evaluted
-								
-								// now ops must skip the xbranch
-								if(!b) opstack.popn(i.arg);
-								else   {}; // do nothing, we pass through and then get to the jump we placed at the end of the x branch
-								
-								break;		
-							} else { throw YouShouldNotBeHereError("*** Cannot use op_IF without defining bool in VM_TYPES"); }			
-						}
-						case BuiltinOp::op_AND:
-						{
-							if constexpr (contains_type<bool,VM_TYPES...>()) { 
-								// process the short circuit
-								bool b = getpop<bool>(); // bool has already evaluted
-								
-								if(!b) {
-									opstack.popn(i.arg); // pop off the other branch 
-									push<bool>(false); //  entire and must be false
-								}
-								else {
-									// else our value is just the other value -- true when its true and false when its false
-								}
-								
-								break;		
-							} else { throw YouShouldNotBeHereError("*** Cannot use op_AND without defining bool in VM_TYPES"); }		
-						}
-						case BuiltinOp::op_OR:
-						{
-							if constexpr (contains_type<bool,VM_TYPES...>()) { 
-								// process the short circuit
-								bool b = getpop<bool>(); // bool has already evaluted
-								
-								if(b) {
-									opstack.popn(i.arg); // pop off the other branch 
-									push<bool>(true); //  entire and must be false
-								}
-								else {
-									// else our value is just the other value -- true when its true and false when its false
-								}
-								
-								break;		
-							} else { throw YouShouldNotBeHereError("*** Cannot use op_OR without defining bool in VM_TYPES"); }							
-						}
-						case BuiltinOp::op_NOT: // we want to include just for simplicity
-						{
-							if constexpr (contains_type<bool,VM_TYPES...>()) { 
-								bool b = getpop<bool>();
-								push<bool>(not b);
-								break;		
-							} else { throw YouShouldNotBeHereError("*** Cannot use op_NOT without defining bool in VM_TYPES"); }		
-							
 						}
 						case BuiltinOp::op_I:
 						case BuiltinOp::op_S:

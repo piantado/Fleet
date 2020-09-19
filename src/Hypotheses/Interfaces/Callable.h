@@ -51,7 +51,7 @@ public:
 		VirtualMachinePool<VirtualMachineState_t> pool; 		
 		
 		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err, loader, &pool);	
-		push_program(vms->opstack); // write my program into vms
+		push_program(vms->program); // write my program into vms
 
 		pool.push(vms);		
 		return pool.run();				
@@ -77,7 +77,7 @@ public:
 		// the savings is that we don't have to create a VirtualMachinePool		
 		VirtualMachineState_t vms(x, err, loader, nullptr);		
 
-		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
+		push_program(vms.program); // write my program into vms (loader is used for everything else)
 		return vms.run(); // default to using "this" as the loader		
 	}
 
@@ -93,7 +93,7 @@ public:
 			
 		VirtualMachinePool<VirtualMachineState_t> pool; 		
 		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err, loader, &pool);	
-		push_program(vms->opstack); 
+		push_program(vms->program); 
 		pool.push(vms);		
 		return pool.run_vms();				
 	}
@@ -110,7 +110,7 @@ public:
 			loader = this;
 			
 		VirtualMachineState_t vms(x, err, loader, nullptr);
-		push_program(vms.opstack); // write my program into vms (loader is used for everything else)
+		push_program(vms.program); // write my program into vms (loader is used for everything else)
 		vms.run(); // default to using "this" as the loader		
 		return vms;
 	}

@@ -264,7 +264,8 @@ public:
 		return n;
 	}
 	
-	inline virtual int linearize(Program &program) const { 
+	template<typename VirtualMachineState_t>
+	int linearize(Program &program) const { 
 		/**
 		 * @brief convert tree to a linear sequence of operations. 
 		 * 		To do this, we first linearize the kids, leaving their values as the top on the stack
@@ -295,52 +296,50 @@ public:
 		assert(rule != NullRule && "*** Cannot linearize if there is a null rule");
 		
 		// If we are an if, then we must do some fancy short-circuiting
-//		if( rule.is_a(Op::op_IF) ) {
-//			assert(rule->N == 3 && "BuiltinOp::op_IF require three arguments"); // must have 3 parts
-//			
-//			
-//			int ysize = children[2].linearize(ops);
-//			
-//			// encode the jump
-//			ops.emplace_back(BuiltinOp::op_JMP, ysize);
-//			
-//			int xsize = children[1].linearize(ops)+1; // must be +1 in order to skip over the JMP too
-//			
-//			// encode the if
-//			ops.emplace_back(BuiltinOp::op_IF, xsize);
-//			
-//			// evaluate the bool first so its on the stack when we get to if
-//			int boolsize = children[0].linearize(ops);
-//			
-//			return ysize + xsize + boolsize + 1; // +1 for if
-//		}
-//		else 
-			if( rule->is_a(Op::And) or rule->is_a(Op::Or)) {
+		if( rule->is_a(Op::If) ) {
+			assert(rule->N == 3 && "BuiltinOp::op_IF require three arguments"); // must have 3 parts
+			
+			int ysize = children[2].linearize<VirtualMachineState_t>(program);
+			
+			// encode the jump
+			program.push(Builtins::Jmp<VirtualMachineState_t>.makeInstruction(ysize));
+			
+			int xsize = children[1].linearize<VirtualMachineState_t>(program)+1; // must be +1 in order to skip over the JMP too
+			
+			// encode the if
+			program.push(rule->makeInstruction(xsize));
+			
+			// evaluate the bool first so its on the stack when we get to if
+			int boolsize = children[0].linearize<VirtualMachineState_t>(program);
+			
+			return ysize + xsize + boolsize + 1; // +1 for if
+		}
+		else if( rule->is_a(Op::And) or rule->is_a(Op::Or)) {
 			// short circuit forms of and(x,y) and or(x,y)
 			assert(rule->N == 2 and children.size() == 2 && "BuiltinOp::op_AND and BuiltinOp::op_OR require two arguments");
 			
 			// second arg pushed on first, on the bottom
-			int ysize = children[1].linearize(program);
+			int ysize = children[1].linearize<VirtualMachineState_t>(program);
 			
 			if(rule->is_a(Op::And)) {
-				program.emplace_back(rule->makeInstruction(ysize));
+				program.push(rule->makeInstruction(ysize));
 			}
 			else if(rule->is_a(Op::Or)) {
-				program.emplace_back(rule->makeInstruction(ysize));
+				program.push(rule->makeInstruction(ysize));
 			}
 			else assert(false);
 			
-			return children[0].linearize(program)+ysize+1;			
+			return children[0].linearize<VirtualMachineState_t>(program)+ysize+1;			
 		}
 		else {
 			/* Else we just process a normal child. 
 			 * Here we push the children in increasing order. Then, when we pop rightmost first (as Primitive does), it 
 			 * assigns the correct index.  */
-			program.emplace_back(this->rule->makeInstruction()); 
+			program.push(this->rule->makeInstruction()); 
 			
 			int mysize = 1; // one for my own instruction
 			for(int i=this->rule->N-1;i>=0;i--) { // here we linearize right to left so that when we call right to left, it matches string order			
-				mysize += this->children[i].linearize(program);
+				mysize += this->children[i].linearize<VirtualMachineState_t>(program);
 			}
 			return mysize; 
 		}

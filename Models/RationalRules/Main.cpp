@@ -97,12 +97,11 @@ int main(int argc, char** argv){
 	grammar.add("or(%s,%s)",     Builtins::Or<MyGrammar::VirtualMachineState_t>);
 	grammar.add("not(%s)",       Builtins::Not<MyGrammar::VirtualMachineState_t>);
 
-
-	grammar.add<MyObject>("x", +[](MyGrammar::VirtualMachineState_t* vms, int arg) -> void {
-		assert(!vms->xstack.empty());
-		vms->push<MyObject>(vms->xstack.top());
-	});
+	grammar.add("x",             Builtins::X<MyObject,MyGrammar::VirtualMachineState_t>);
 	
+	grammar.add("if(%s,%s,%s)",  Builtins::If<bool,MyGrammar::VirtualMachineState_t>);
+	
+	grammar.add("recurse(%s)",   Builtins::Recurse<MyGrammar::VirtualMachineState_t>);
 	// but we also have to add a rule for the BuiltinOp that access x, our argument
 //	Builtin::X<MyObject>("x", 10.0),
 //	

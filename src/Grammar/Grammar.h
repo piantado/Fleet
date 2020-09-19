@@ -282,14 +282,11 @@ public:
 	
 	template<typename T, typename... args> 
 	void add(const char* fmt, std::function<void(VirtualMachineState_t*,int)> fvms, double p=1.0, Op o=Op::Standard) {
-		//CERR "Adding rule " TAB fmt TAB (void*)fvms ENDL;
-		
 		// move this to the heap so it persists
 		std::function<void(VirtualMachineState_t*,int)>* f = new std::function(fvms);
 		
 		add<T,args...>(fmt, (void*)f, p, o);
 	}
-		
 		
 	template<typename T, typename... args> 
 	void add(const char* fmt, Builtin<T,args...>& b, double p=1.0) {
