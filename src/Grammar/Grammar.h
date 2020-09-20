@@ -15,7 +15,6 @@
 // an exception for recursing too deep
 class DepthException : public std::exception {};
 
-
 /**
  * @class Grammar
  * @author Steven Piantadosi
@@ -62,23 +61,6 @@ public:
 	std::array<double,N_NTs> Z; // keep the normalizer handy for each nonterminal (not log space)
 	
 	size_t GRAMMAR_MAX_DEPTH = 64;
-	
-	
-	
-	/// Helpers to Find the numerical index (as a nonterminal_t) in a tuple of a given type
-	// from https://stackoverflow.com/questions/42258608/c-constexpr-values-for-types
-	template <class T, class Tuple> struct TypeIndex;
-
-	template <class T, class... Types>
-	struct TypeIndex<T, std::tuple<T, Types...>> {
-		static const nonterminal_t value = 0;
-	};
-
-	template <class T, class U, class... Types>
-	struct TypeIndex<T, std::tuple<U, Types...>> {
-		static const nonterminal_t value = 1 + TypeIndex<T, std::tuple<Types...>>::value;
-	};
-
 	
 	// This function converts a type (passed as a template parameter) into a 
 	// size_t index for which one it in in GRAMMAR_TYPES. 
@@ -164,12 +146,11 @@ public:
 	RuleIterator begin() const { return RuleIterator(const_cast<this_t*>(this), false); }
 	RuleIterator end()   const { return RuleIterator(const_cast<this_t*>(this), true);; }
 	
-	size_t count_nonterminals() const {
+	constexpr size_t count_nonterminals() const {
 		/**
 		 * @brief How many nonterminals are there in the grammar. 
 		 * @return 
 		 */
-		
 		return N_NTs;
 	}
 	
@@ -179,7 +160,7 @@ public:
 		 * @param nt
 		 * @return 
 		 */		
-		assert(nt < N_NTs);
+		assert(nt >= 0 and nt < N_NTs);
 		return rules[nt].size();
 	}	
 	size_t count_rules() const {
@@ -249,15 +230,6 @@ public:
 //			
 //		} while(updated);
 //	}
-
-	void show(std::string prefix="# ") {
-		/**
-		 * @brief Show the grammar by printing each rule
-		 */
-		for(auto& r : *this) {
-			COUT prefix << r.string() ENDL;
-		}
-	}
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Managing rules 

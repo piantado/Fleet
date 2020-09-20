@@ -15,16 +15,6 @@
 
 #include "VMSRuntimeError.h"
 
-///**
-// * @brief Check if a type is contained in parameter pack
-// * @return 
-// */
-template<typename X, typename... Ts>
-constexpr bool contains_type() {
-	return std::disjunction<std::is_same<X, Ts>...>::value;
-}
-
-
 namespace FleetStatistics {}
 template<typename X> class VirtualMachinePool;
 extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
@@ -156,7 +146,7 @@ public:
 	template<size_t n, typename...args>
 	auto getpop_nth() {
 		static_assert( n >= 0 and n < sizeof...(args) && "*** Higher n than args.");
-		return getpop<typename std::tuple_element<0, std::tuple<args...> >::type>();
+		return getpop<typename std::tuple_element<n, std::tuple<args...> >::type>();
 	}
 	
 	/**

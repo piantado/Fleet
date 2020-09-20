@@ -125,3 +125,35 @@ public:
 	}
 };
 
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Find the index of a type in variadic args
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/// Helpers to Find the numerical index (as a nonterminal_t) in a tuple of a given type
+// from https://stackoverflow.com/questions/42258608/c-constexpr-values-for-types
+template <class T, class Tuple> 
+struct TypeIndex;
+
+template <class T, class... Types>
+struct TypeIndex<T, std::tuple<T, Types...>> {
+	static const nonterminal_t value = 0;
+};
+
+template <class T, class U, class... Types>
+struct TypeIndex<T, std::tuple<U, Types...>> {
+	static const nonterminal_t value = 1 + TypeIndex<T, std::tuple<Types...>>::value;
+};
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Check if variadic args contain a type
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+///**
+// * @brief Check if a type is contained in parameter pack
+// * @return 
+// */
+template<typename X, typename... Ts>
+constexpr bool contains_type() {
+	return std::disjunction<std::is_same<X, Ts>...>::value;
+}
