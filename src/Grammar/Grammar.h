@@ -42,6 +42,8 @@ public:
 	using output_t = _output_t;
 	using this_t = Grammar<input_t, output_t, GRAMMAR_TYPES...>;
 
+
+
 	// Keep track of what types we are using here as our types -- thesee types are 
 	// stored in this tuple so they can be extracted
 	using TypeTuple = std::tuple<GRAMMAR_TYPES...>;
@@ -67,11 +69,11 @@ public:
 	// This is used so that a Rule doesn't need type subclasses/templates, it can
 	// store a type as e.g. nt<double>() -> size_t 
 	template <class T>
-	constexpr nonterminal_t nt() {
+	static constexpr nonterminal_t nt() {
 		static_assert(contains_type<T, GRAMMAR_TYPES...>(), "*** The type T (decayed) must be in GRAMMAR_TYPES");
 		return TypeIndex<T, std::tuple<GRAMMAR_TYPES...>>::value;
 	}
-
+	
 	Grammar() {
 		for(size_t i=0;i<N_NTs;i++) {
 			Z[i] = 0.0;
@@ -457,7 +459,7 @@ public:
 	}
 	
 
-	Node generate(const nonterminal_t nt, unsigned long depth=0) const {
+	Node generate(const nonterminal_t nt=nt<output_t>(), unsigned long depth=0) const {
 		/**
 		 * @brief Sample an entire tree from this grammar (keeping track of depth in case we recurse too far) of return type nt. This samples a rule, makes them with makeNode, and then recurses. 
 		 * @param nt
@@ -483,17 +485,6 @@ public:
 		}
 		return n;
 	}	
-	
-	template<class t>
-	Node generate(unsigned long depth=0) {
-		/**
-		 * @brief A friendly version of generate that can be called with template by type.  
-		 * @param depth
-		 * @return 
-		 */
-		
-		return generate(nt<t>(),depth);
-	}
 	
 	Node copy_resample(const Node& node, bool f(const Node& n)) const {
 		/**

@@ -34,106 +34,14 @@ const NumberSet fibonacci = {1, 2, 3, 5, 8, 13, 21, 34, 55, 89};
 const NumberSet weird = {7, 44, 89}; // just some arbitrary set -- probably low prior in grammar inference
 
 
-#include "Primitives.h"
-#include "Builtins.h"
-
-
-std::tuple PRIMITIVES = {
-	Primitive("numbers",    +[]() -> NumberSet { return numbers; }),
-	Primitive("primes",     +[]() -> NumberSet { return primes; }),
-	Primitive("evens",      +[]() -> NumberSet { return evens; }),
-	Primitive("odds",       +[]() -> NumberSet { return odds; }),
-	Primitive("squares",    +[]() -> NumberSet { return squares; }),
-	Primitive("decades",    +[]() -> NumberSet { return decades; }),
-	Primitive("elevens",    +[]() -> NumberSet { return elevens; }),
-	Primitive("fibonacci",  +[]() -> NumberSet { return fibonacci; }),
-	Primitive("weird",      +[]() -> NumberSet { return weird; }),
-	
-	// we give range a very low prior here or else it sure dominates
-	Primitive("range(%s,%s)",  +[](int x, int y) -> NumberSet { 
-		NumberSet out;
-		for(int i=std::max(x,Nlow);i<=std::min(y,N);i++) { // we need min/max bounds here or we spend all our time adding garbage
-			out.insert(i);
-		}
-		return out;
-	}, 0.1),
-	
-	// ADD UNION, INTERSECTION, MIN, MAX
-	
-	Primitive("union(%s,%s)",    +[](NumberSet& a, NumberSet b) -> void { 
-		for(auto& x : b) {
-			a.insert(x);
-		}
-	}),
-	
-	Primitive("intersection(%s,%s)",    +[](NumberSet a, NumberSet b) -> NumberSet { 
-		NumberSet out;
-		for(auto& x : a) {
-			if(b.find(x) != b.end())
-				out.insert(x);
-		}
-		return out;
-	}),
-
-
-	Primitive("complement(%s)",    +[](NumberSet a) -> NumberSet { 
-		NumberSet out;
-		for(size_t i=Nlow;i<N;i++) {
-			if(a.find(i) == a.end())
-				out.insert(i);
-		}
-		return out;
-	}),
-
-	
-	Primitive("(%s+%s)",    +[](NumberSet s, int n) -> NumberSet { 
-		NumberSet out;
-		for(auto& x : s) {
-			out.insert(x + n);
-		}
-		return out;
-	}),
-	
-	Primitive("(%s*%s)",    +[](NumberSet s, int n) -> NumberSet { 
-		NumberSet out;
-		for(auto& x : s) {
-			out.insert(x * n);
-		}
-		return out;
-	}),
-	
-	Primitive("(%s^%s)",    +[](NumberSet s, int n) -> NumberSet { 
-		NumberSet out;
-		for(auto& x : s) {
-			out.insert(std::pow(x,n));
-		}
-		return out;
-	}),	
-	Primitive("(%s^%s)",    +[](int n, NumberSet s) -> NumberSet { 
-		NumberSet out;
-		for(auto& x : s) {
-			out.insert(std::pow(n,x));
-		}
-		return out;
-	}),
-	
-	// int operations
-	Primitive("(%s+%s)",    +[](int x, int y) -> int { return x+y;}),
-	Primitive("(%s*%s)",    +[](int x, int y) -> int { return x*y;}),
-	Primitive("(%s-%s)",    +[](int x, int y) -> int { return x-y;}),
-	Primitive("(%s^%s)",    +[](int x, int y) -> int { return std::pow(x,y);}),
-	
-	Builtin::X<int>("x", 1.0)
-};
-
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define the grammar
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Grammar.h"
 
-using MyGrammar = Grammar<NumberSet,int>;
+using MyGrammar = Grammar<int, NumberSet,
+						  int, NumberSet>;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define hypothesis
@@ -179,12 +87,106 @@ int main(int argc, char** argv){
 	Fleet fleet("Number Game");
 	fleet.initialize(argc, argv);
 
-	MyGrammar grammar(PRIMITIVES);
+	//------------------
+	// Set up the grammar
+	//------------------	
+	
+	MyGrammar grammar;
+	
+	grammar.add("numbers",    +[]() -> NumberSet { return numbers; });
+	grammar.add("primes",     +[]() -> NumberSet { return primes; });
+	grammar.add("evens",      +[]() -> NumberSet { return evens; });
+	grammar.add("odds",       +[]() -> NumberSet { return odds; });
+	grammar.add("squares",    +[]() -> NumberSet { return squares; });
+	grammar.add("decades",    +[]() -> NumberSet { return decades; });
+	grammar.add("elevens",    +[]() -> NumberSet { return elevens; });
+	grammar.add("fibonacci",  +[]() -> NumberSet { return fibonacci; });
+	grammar.add("weird",      +[]() -> NumberSet { return weird; });
+	
+	// we give range a very low prior here or else it sure dominates
+	grammar.add("range(%s,%s)",  +[](int x, int y) -> NumberSet { 
+		NumberSet out;
+		for(int i=std::max(x,Nlow);i<=std::min(y,N);i++) { // we need min/max bounds here or we spend all our time adding garbage
+			out.insert(i);
+		}
+		return out;
+	}, 0.1);
+	
+	// ADD UNION, INTERSECTION, MIN, MAX
+	
+	grammar.add("union(%s,%s)",    +[](NumberSet a, NumberSet b) -> NumberSet { 
+		for(auto& x : b) {
+			a.insert(x);
+		}
+		return a;
+	});
+	
+	grammar.add("intersection(%s,%s)",    +[](NumberSet a, NumberSet b) -> NumberSet { 
+		NumberSet out;
+		for(auto& x : a) {
+			if(b.find(x) != b.end())
+				out.insert(x);
+		}
+		return out;
+	});
+
+
+	grammar.add("complement(%s)",    +[](NumberSet a) -> NumberSet { 
+		NumberSet out;
+		for(size_t i=Nlow;i<N;i++) {
+			if(a.find(i) == a.end())
+				out.insert(i);
+		}
+		return out;
+	});
+
+	
+	grammar.add("(%s+%s)",    +[](NumberSet s, int n) -> NumberSet { 
+		NumberSet out;
+		for(auto& x : s) {
+			out.insert(x + n);
+		}
+		return out;
+	});
+	
+	grammar.add("(%s*%s)",    +[](NumberSet s, int n) -> NumberSet { 
+		NumberSet out;
+		for(auto& x : s) {
+			out.insert(x * n);
+		}
+		return out;
+	});
+	
+	grammar.add("(%s^%s)",    +[](NumberSet s, int n) -> NumberSet { 
+		NumberSet out;
+		for(auto& x : s) {
+			out.insert(std::pow(x,n));
+		}
+		return out;
+	});	
+	grammar.add("(%s^%s)",    +[](int n, NumberSet s) -> NumberSet { 
+		NumberSet out;
+		for(auto& x : s) {
+			out.insert(std::pow(n,x));
+		}
+		return out;
+	});
+	
+	// int operations
+	grammar.add("(%s+%s)",    +[](int x, int y) -> int { return x+y;});
+	grammar.add("(%s*%s)",    +[](int x, int y) -> int { return x*y;});
+	grammar.add("(%s-%s)",    +[](int x, int y) -> int { return x-y;});
+	grammar.add("(%s^%s)",    +[](int x, int y) -> int { return std::pow(x,y);});
 	
 	for(int i=Nlow;i<=N;i++) {
-		grammar.add<int>(BuiltinOp::op_INT, str(i), 10.0/N, i);		
+		grammar.add<int>(str(i).c_str(), std::function( [=]() -> int { return i; }), 10.0/(N-Nlow));
 	}
-
+	
+	grammar.add("x",             Builtins::X<MyGrammar>);
+	
+	//------------------
+	// Run
+	//------------------	
 
 	// Define something to hold the best hypotheses
 	TopN<MyHypothesis> top;

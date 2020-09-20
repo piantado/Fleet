@@ -94,7 +94,7 @@ public:
 			return this_t(this->grammar, this->grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
 		}
 		else {
-			return this_t(this->grammar, this->grammar->template generate<output_t>());
+			return this_t(this->grammar, this->grammar->generate());
 		}
 	}
 	
@@ -216,12 +216,10 @@ public:
 	size_t recursion_count() {
 		size_t cnt = 0;
 		for(auto& n : value) {
-			// TODO: ADD BACK IN RECURSION COUNTS
-			assert(false);
-//			cnt += n.rule->instr.is_a(BuiltinOp::op_RECURSE, 
-//									  BuiltinOp::op_MEM_RECURSE,
-//									  BuiltinOp::op_SAFE_RECURSE, 
-//									  BuiltinOp::op_SAFE_MEM_RECURSE);
+			cnt +=  n.rule->is_a(Op::Recurse) + 
+					n.rule->is_a(Op::MemRecurse) +
+					n.rule->is_a(Op::SafeRecurse) +
+					n.rule->is_a(Op::SafeMemRecurse);
 		}
 		return cnt;
 	} 

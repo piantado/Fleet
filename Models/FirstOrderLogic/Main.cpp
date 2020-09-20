@@ -79,7 +79,8 @@ using MyInput = std::tuple<MyObject,ObjectSet>; // this is the type of arguments
 
 #include "Grammar.h"
 
-using MyGrammar = Grammar<MyInput,bool,   bool,MyObject,MyInput,ObjectSet,ObjectToBool,ObjectxObjectToBool>;
+using MyGrammar = Grammar<MyInput,bool,   
+						  bool,MyObject,MyInput,ObjectSet,ObjectToBool,ObjectxObjectToBool>;
 
 #include "VMSRuntimeError.h"
 
@@ -124,7 +125,7 @@ public:
 int main(int argc, char** argv){ 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	Fleet fleet("Rational rules");
+	Fleet fleet("First order logic example");
 	fleet.initialize(argc, argv);
 		
 	// Define the grammar (default initialize using our primitives will add all those rules)
@@ -246,7 +247,6 @@ int main(int argc, char** argv){
 	grammar.add("%s.o",       +[](MyInput t)  -> MyObject  { return std::get<0>(t); }),
 	grammar.add("%s.s",       +[](MyInput t)  -> ObjectSet { return std::get<1>(t); }),
 	grammar.add("x",          Builtins::X<MyGrammar>);
-	
 	
 	//------------------
 	// set up the data
