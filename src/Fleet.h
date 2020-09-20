@@ -81,10 +81,6 @@ const std::string FLEET_VERSION = "0.0.98";
 #include "Timing.h"
 #include "Control.h"
 
-// Thie one really should be included last because it depends on Primitves
-// so we will include it here 
-#include "VirtualMachine/applyPrimitives.h"
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Fleet global variables
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

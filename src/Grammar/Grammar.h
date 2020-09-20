@@ -43,9 +43,12 @@ struct Primitive;
  * by LOTHypothesis, which also passes them along to VirtualMachineState (in the form of
  * a Tuple). So the types used and order are fixed/standardized in the grammar
  */
-template<typename input_t, typename output_t, typename... GRAMMAR_TYPES>
+template<typename _input_t, typename _output_t, typename... GRAMMAR_TYPES>
 class Grammar {
 public:
+
+	using input_t = _input_t;
+	using output_t = _output_t;
 	using this_t = Grammar<input_t, output_t, GRAMMAR_TYPES...>;
 
 	// Keep track of what types we are using here as our types -- thesee types are 

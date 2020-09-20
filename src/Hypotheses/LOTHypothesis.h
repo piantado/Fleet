@@ -129,7 +129,7 @@ public:
 	virtual void push_program(Program& s, short k=0) override {
 		assert(k==0 && "*** the short argument in push_program should only be nonzero for lexica");
 		//s.reserve(s.size() + value.program_size()+1);
-		value.template linearize<typename Grammar_t::VirtualMachineState_t>(s);
+		value.template linearize<Grammar_t>(s);
 	}
 
 	virtual std::string string(std::string prefix="") const override {

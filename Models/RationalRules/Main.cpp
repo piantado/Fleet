@@ -77,14 +77,12 @@ int main(int argc, char** argv){
 	grammar.add("triangle(%s)",  +[](MyObject x) -> bool { return x.is(Shape::Triangle); });
 	grammar.add("circle(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Circle); });
 	
-	using VMS_t = MyGrammar::VirtualMachineState_t;
-	
 	// these need to know the grammar type
-	grammar.add("and(%s,%s)",    Builtins::And<VMS_t>);
-	grammar.add("or(%s,%s)",     Builtins::Or<VMS_t>);
-	grammar.add("not(%s)",       Builtins::Not<VMS_t>);
+	grammar.add("and(%s,%s)",    Builtins::And<MyGrammar>);
+	grammar.add("or(%s,%s)",     Builtins::Or<MyGrammar>);
+	grammar.add("not(%s)",       Builtins::Not<MyGrammar>);
 
-	grammar.add("x",             Builtins::X<MyObject,VMS_t>);
+	grammar.add("x",             Builtins::X<MyGrammar>);
 	
 
 	// top stores the top hypotheses we have found

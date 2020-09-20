@@ -5,7 +5,9 @@ enum class Op {
 	And, Or, Not, 
 	X,
 	If, Jmp,
-	Recurse, PopX,
-	Flip, FlipP
+	Recurse, PopX, SafeRecurse, MemRecurse, SafeMemRecurse,
+	Flip, FlipP,
+	Mem,
+	NoOp
 };
 

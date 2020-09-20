@@ -135,26 +135,20 @@ int main(int argc, char** argv){
 //	}), 
 	grammar.add("\u00D8",        +[]()         -> S          { return S(""); });
 	grammar.add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; });
+
+	grammar.add("and(%s,%s)",    Builtins::And<MyGrammar>, 1./3.);
+	grammar.add("or(%s,%s)",     Builtins::Or<MyGrammar>, 1./3.);
+	grammar.add("not(%s)",       Builtins::Not<MyGrammar>, 1./3.);
 	
-	using VMS_t = MyGrammar::VirtualMachineState_t;
-	grammar.add("and(%s,%s)",    Builtins::And<VMS_t>, 1./3.);
-	grammar.add("or(%s,%s)",     Builtins::Or<VMS_t>, 1./3.);
-	grammar.add("not(%s)",       Builtins::Not<VMS_t>, 1./3.);
-	
-	grammar.add("x",             Builtins::X<S,VMS_t>);
-	grammar.add("if(%s,%s,%s)",  Builtins::If<S,VMS_t>);
-	grammar.add("flip()",        Builtins::Flip<VMS_t>);
-	grammar.add("recurse(%s)",   Builtins::Recurse<VMS_t>);
+	grammar.add("x",             Builtins::X<MyGrammar>);
+	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
+	grammar.add("flip()",        Builtins::Flip<MyGrammar>);
+	grammar.add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
 		
 		
 	for(size_t i=0;i<alphabet.length();i++) {
 		const S c = alphabet.substr(i,1);
-		grammar.add<S>( Q(c).c_str(), std::function([=]()->S { return alphabet.substr(i,1); }), 5.0/alphabet.length());
-	}
-
-	// Just to show iterating over rules:
-	for(auto& r : grammar){
-		CERR "#" TAB r ENDL;
+		grammar.add<S>( Q(c).c_str(), std::function( [=]() -> S { return alphabet.substr(i,1); }), 5.0/alphabet.length());
 	}
 		
 	//------------------

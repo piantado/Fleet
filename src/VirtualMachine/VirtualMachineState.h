@@ -9,34 +9,11 @@
 #include "Program.h"
 #include "Stack.h"
 #include "Statistics/FleetStatistics.h"
-//#include "RuntimeCounter.h"
+#include "RuntimeCounter.h"
 #include "Hypotheses/Interfaces/ProgramLoader.h"
 #include "VirtualMachineControl.h"
 
 #include "VMSRuntimeError.h"
-
-/**
- * @class has_operator_lessthan_impl
- * @author piantado
- * @date 07/05/20
- * @file VirtualMachineState.h
- * @brief See if a class implements operator< (for filtering out in op_MEM code so it doesn't give an error if we use input_t that doesn't implement operator<
- * 		  as long as no op_MEM is called
- */
-template<class T, class EqualTo>
-struct has_operator_lessthan_impl {
-    template<class U, class V>
-    static auto test(U*) -> decltype(std::declval<U>() < std::declval<V>());
-    template<typename, typename>
-    static auto test(...) -> std::false_type;
-
-    using type = typename std::is_same<bool, decltype(test<T, EqualTo>(0))>::type;
-};
-
-template<class T, class EqualTo = T>
-struct has_operator_lessthan : has_operator_lessthan_impl<T, EqualTo>::type {};
-// https://stackoverflow.com/questions/6534041/how-to-check-whether-operator-exists
-
 
 
 namespace FleetStatistics {}
@@ -104,7 +81,7 @@ public:
 	// what do we use to count up instructions 
 	// NOTE for now this may be a bit slower and unnecessary but it doesnt' seem so bad at the
 	// moment so this may need to be optimized later to be optional
-	//RuntimeCounter runtime_counter;
+	RuntimeCounter runtime_counter;
 	
 	// what we use to load programs
 	ProgramLoader* program_loader;
@@ -141,9 +118,9 @@ public:
 	 * @brief How many more steps can I be run for? This is useful for not adding programs that contain too many ops
 	 * @return 
 	 */		
-//	unsigned long remaining_steps() {
-//		return MAX_RUN_PROGRAM - runtime_counter.total;
-//	}
+	unsigned long remaining_steps() {
+		return MAX_RUN_PROGRAM - runtime_counter.total;
+	}
 	
 	/**
 	 * @brief Returns a reference to the stack (of a given type)
@@ -316,208 +293,20 @@ public:
 			
 			while(status == vmstatus_t::GOOD and (not program.empty()) ) {
 				
-//				if(program.size() > remaining_steps() ) {  // if we've run too long or we couldn't possibly finish
-//					status = vmstatus_t::RUN_TOO_LONG;
-//					break;
-//				}
+				if(program.size() > remaining_steps() ) {  // if we've run too long or we couldn't possibly finish
+					status = vmstatus_t::RUN_TOO_LONG;
+					break;
+				}
 				
 				FleetStatistics::vm_ops++;
 				
 				Instruction i = program.top(); program.pop();
 				
 				// keep track of what instruction we've run
-				//runtime_counter.increment(i);
+				runtime_counter.increment(i);
 				
-				//auto f = reinterpret_cast<void(*)(this_t*)>(i.f);
-				//f(const_cast<this_t*>(this));
-				using FT = std::function<void(this_t*,int)>;
-				auto f = reinterpret_cast<FT*>(i.f);
+				auto f = reinterpret_cast<std::function<void(this_t*,int)>*>(i.f);
 				(*f)(const_cast<this_t*>(this), i.arg);
-				
-				/*
-				
-				// Now actually dispatch for whatever i is doing to this stack
-				if(i.is<PrimitiveOp>()) {
-					if constexpr(sizeof...(VM_TYPES) > 0) {
-						// call this fancy template magic to index into the global tuple variable PRIMITIVES
-						status = applyPRIMITIVEStoVMS(i.as<PrimitiveOp>(), this, pool, program_loader);
-					}
-					else {
-						throw YouShouldNotBeHereError("*** Cannot call PrimitiveOp without defining VM_TYPES");
-					}
-				}
-				else {
-					assert(i.is<BuiltinOp>());
-					
-					switch(i.as<BuiltinOp>()) {
-
-						case BuiltinOp::op_ALPHABET: 
-						{
-							if constexpr (contains_type<std::string,VM_TYPES...>()) { 
-								// convert the instruction arg to a string and push it
-								push(std::move(std::string(1,(char)i.arg)));
-								break;
-							}
-							else { throw YouShouldNotBeHereError("*** Cannot use op_ALPHABET if std::string is not in VM_TYPES"); }
-						}
-						case BuiltinOp::op_ALPHABETchar: 
-						{
-							if constexpr (contains_type<char,VM_TYPES...>()) { 
-								// convert the instruction arg to a string and push it
-								push((char)i.arg);
-								break;
-							}
-							else { throw YouShouldNotBeHereError("*** Cannot use op_ALPHABET if char is not in VM_TYPES"); }
-						}
-						case BuiltinOp::op_INT: 
-						{
-							if constexpr (contains_type<int,VM_TYPES...>()) { 
-								// convert the instruction arg to a string and push it
-								push((int)i.arg);
-								break;
-							}
-							else { throw YouShouldNotBeHereError("*** Cannot use op_INT if int is not in VM_TYPES"); }
-						}	
-						case BuiltinOp::op_FLOAT: 
-						{
-							if constexpr (contains_type<float,VM_TYPES...>()) { 
-								// convert the instruction arg to a string and push it
-								push((float)i.arg);
-								break;
-							}
-							else { throw YouShouldNotBeHereError("*** Cannot use op_FLOAT if float is not in VM_TYPES"); }
-						}				
-						case BuiltinOp::op_P: {
-							if constexpr (contains_type<double,VM_TYPES...>()) { 
-								push( double(i.arg)/double(Pdenom) );
-								break;
-							} 
-							else { throw YouShouldNotBeHereError("*** Cannot use op_P if double is not in VM_TYPES"); }
-
-						}					
-						case BuiltinOp::op_MEM:
-						{
-							// Let's not make a big deal when 
-							if constexpr (has_operator_lessthan<input_t>::value) {
-								
-								auto v = gettop<output_t>(); // what I should memoize should be on top here, but don't remove because we also return it
-								auto memindex = memstack.top(); memstack.pop();
-								if(mem.count(memindex)==0) { // you might actually have already placed mem in crazy recursive situations, so don't overwrte if you have
-									mem[memindex] = v;
-								}
-								
-								break;
-								
-							} else { throw YouShouldNotBeHereError("*** Cannot call op_MEM without defining operator< on input_t"); }
-						}
-
-						case BuiltinOp::op_SAFE_RECURSE: {
-							// This is a recursion that returns empty for empty arguments 
-							// simplifying the condition
-							if constexpr (std::is_same<input_t, std::string>::value) { 						
-
-								assert(program_loader != nullptr);
-								
-								// need to check if stack<input_t> is empty since thats where we get x
-								if (empty<input_t>()) {
-									push<output_t>(output_t{});
-									continue;
-								}
-								else if(stack<input_t>().top().size() == 0) { 
-									getpop<input_t>(); // this would have been the argument
-									push<output_t>(output_t{}); //push default (null) return
-									continue;
-								}
-								else if(recursion_depth+1 > MAX_RECURSE) {
-									getpop<input_t>(); // ignored b/c we're bumping out
-									push<output_t>(output_t{});
-									continue;
-								}
-							} else { throw YouShouldNotBeHereError("*** Can only use SAFE_RECURSE on strings");}
-							
-							// want to fallthrough here
-							[[fallthrough]];
-						}
-						case BuiltinOp::op_RECURSE:
-						{
-
-						}
-						case BuiltinOp::op_SAFE_MEM_RECURSE: {
-							// same as SAFE_RECURSE. Note that there is no memoization here
-							if constexpr (std::is_same<input_t,std::string>::value and has_operator_lessthan<input_t>::value) {				
-								
-								assert(program_loader != nullptr);
-								
-								// Here we don't need to memoize because it will always give us the same answer!
-								if (empty<input_t>()) {
-									push<output_t>(output_t{});
-									continue;
-								}
-								else if(stack<input_t>().top().size() == 0) { //exists but is empty
-									getpop<input_t>(); // this would have been the argument
-									push<output_t>(output_t{}); //push default (null) return
-									continue;
-								}
-								else if(recursion_depth+1 > MAX_RECURSE) {
-									getpop<input_t>();
-									push<output_t>(output_t{});
-									continue;
-								}
-							} else { throw YouShouldNotBeHereError("*** Can only use SAFE_MEM_RECURSE on strings.");}
-
-							// want to fallthrough here
-							[[fallthrough]];
-						}
-						case BuiltinOp::op_MEM_RECURSE:
-						{
-							if constexpr (has_operator_lessthan<input_t>::value) {
-								if(recursion_depth++ > MAX_RECURSE) {
-									status = vmstatus_t::RECURSION_DEPTH;
-									return err;
-								}
-								else if( program_loader->program_size(i.getArg()) + program.size() > remaining_steps()) { // check if we have too many
-									status = vmstatus_t::RUN_TOO_LONG;
-									return err;
-								}
-								assert(program_loader != nullptr);
-								
-								input_t x = getpop<input_t>(); // get the argument
-							
-								std::pair<index_t,input_t> memindex(i.getArg(),x);
-								
-								if(mem.count(memindex)){
-									push(std::move(mem[memindex])); 
-								}
-								else {	
-									xstack.push(x);	
-									memstack.push(memindex); // popped off by op_MEM
-									program.push(Instruction(BuiltinOp::op_MEM));
-									program.push(Instruction(BuiltinOp::op_POPX));
-									program_loader->push_program(program,i.getArg()); // this leaves the answer on top
-								}
-								
-								break;						
-								
-							} else { throw YouShouldNotBeHereError("*** Cannot MEM_RECURSE unless input_t has operator< defined"); }
-						}
-
-						case BuiltinOp::op_I:
-						case BuiltinOp::op_S:
-						case BuiltinOp::op_K:
-						case BuiltinOp::op_SKAPPLY: {
-								throw YouShouldNotBeHereError("*** Should not call these -- instead use Fleet::Combinator::Reduce");
-						}												
-						default: 
-						{
-							throw YouShouldNotBeHereError("Bad op name");
-						}
-					} // end switch
-				
-				} // end if not custom
-				 * 
-				 * 
-				 * */
-				 
 				 
 			} // end while loop over ops
 	
@@ -527,17 +316,14 @@ public:
 				status = vmstatus_t::COMPLETE;
 				return get_output();
 			}
-			else {
-				return err;
-			}
 			
 		} catch (VMSRuntimeError& e) {
 			// this may be thrown by a primitive
 			status = vmstatus_t::ERROR;
-			
-			return err;
 		}
 		
+		// if we get here, there was a problem 
+		return err;
 	}	
 	
 };
