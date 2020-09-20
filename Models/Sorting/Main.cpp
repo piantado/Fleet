@@ -49,66 +49,6 @@ const float strgamma = 0.0001;
 const int   MAX_LENGTH = 64; // longest strings cons will handle
 size_t      MAX_GRAMMAR_DEPTH = 256;
 
-
-#include "Primitives.h"
-#include "Builtins.h"
-
-std::tuple PRIMITIVES = {
-	Primitive("tail(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : s.substr(1,S::npos)); }),
-	
-	// we need something to prevent us from always proposing from the alphabet, so we make it high probability that we 
-	// go to head(x)
-	Primitive("head(%s)",      +[](S s)      -> char       { return (s.empty() ? ' ' : s[0]); }, 5),
-	
-	Primitive("pair(%s,%s)",   +[](S a, char b) -> S        { 
-			if(a.length() + 1> MAX_LENGTH) 
-				throw VMSRuntimeError();
-			return a+b; //a += b; // modify on stack
-	}), 
-	
-	Primitive("\u00D8",        +[]()         -> S          { return S(""); }),
-	Primitive("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }, 1./2.),
-	Primitive("(%s==%s)",      +[](char x, char y) -> bool { return x==y; }, 1./2.),
-	
-	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 1./6.), // optional specification of prior weight (default=1.0)
-	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }, 1./6.),
-	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); },  1./3.),
-	
-	Primitive("(%s<%s)",     +[](S x, S y) -> bool { return x < y; }, 1./2.),
-	Primitive("(%s<%s)",     +[](char x, char y) -> bool { return x < y; }, 1./2.),
-
-	Primitive("incr(%s)",     +[](char x) -> char { return x+1;}),
-	Primitive("decr(%s)",     +[](char x) -> char { return x-1;}),
-		
-	// Pretty easy to learn with reverse
-	Primitive("reverse(%s)",     +[](S x) -> S { return reverse(x);	}, 1./2.),
-	
-	// repetitions 
-	Primitive("repeat(%s,%s)",     +[](S x, int n) -> S { 
-			S w = "";
-			
-			if(x.size() * n > MAX_LENGTH or n < 0 or n > MAX_LENGTH) 
-				throw VMSRuntimeError(); // need n > MAX_LENGTH in case n is huge but string is empty
-				
-			for(int i=0;i<n;i++) {
-				w = w+x;
-			}
-			return w;
-	}, 1./2.),
-		
-		
-	Primitive("int(%s)",     +[](char c) -> int {
-		return int(c-'0'); // int here starting at '0'
-	}),
-	
-	// And add built-ins - NOTE these must come last
-	Builtin::If<S>("if(%s,%s,%s)",1./6.),		
-	Builtin::If<char>("if(%s,%s,%s)",1./6.),		
-	Builtin::X<S>("x",5),
-	Builtin::SafeRecurse<S,S>("F(%s)")	
-};
-
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare a grammar
 /// This requires a template to specify what types they are (and what order they are stored in)
@@ -118,7 +58,8 @@ std::tuple PRIMITIVES = {
 
 // declare a grammar with our primitives
 // Note that this ordering of primitives defines the order in Grammar
-using MyGrammar = Grammar<S,char,bool,int>;
+using MyGrammar = Grammar<S,S,
+					      S,char,bool,int>;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
@@ -219,18 +160,69 @@ int main(int argc, char** argv){
 	fleet.add_option("--method",      method, "Specify an inference method");	
 	fleet.initialize(argc, argv);
 	
-	MyGrammar grammar(PRIMITIVES);
+	//------------------
+	// Define the grammar
+	//------------------	
+	
+	MyGrammar grammar;
 	grammar.GRAMMAR_MAX_DEPTH = MAX_GRAMMAR_DEPTH;
 	
+	grammar.add("tail(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : s.substr(1,S::npos)); });
+	grammar.add("head(%s)",      +[](S s)      -> char       { return (s.empty() ? ' ' : s[0]); }, 5);
+	grammar.add("pair(%s,%s)",   +[](S a, char b) -> S        { 
+			if(a.length() + 1> MAX_LENGTH) 
+				throw VMSRuntimeError();
+			return a+b; 
+	});
+	
+	grammar.add("\u00D8",        +[]()         -> S          { return S(""); });
+	grammar.add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }, 1./2.);
+	grammar.add("(%s==%s)",      +[](char x, char y) -> bool { return x==y; }, 1./2.);
+	
+	grammar.add("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 1./3.);
+	grammar.add("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }, 1./3.);
+	grammar.add("not(%s)",       +[](bool a)         -> bool { return (not a); },  1./3.);
+	
+	grammar.add("(%s<%s)",     +[](S x, S y) -> bool { return x < y; }, 1./2);
+	grammar.add("(%s<%s)",     +[](char x, char y) -> bool { return x < y; }, 1./2);
+
+	grammar.add("incr(%s)",     +[](char x) -> char { return x+1;});
+	grammar.add("decr(%s)",     +[](char x) -> char { return x-1;});
+		
+	// Pretty easy to learn with reverse
+	grammar.add("reverse(%s)",     +[](S x) -> S { return reverse(x);	}, 1.);
+	
+	// repetitions 
+	grammar.add("repeat(%s,%s)",     +[](S x, int n) -> S { 
+			S w = "";
+			
+			if(x.size() * n > MAX_LENGTH or n < 0 or n > MAX_LENGTH) 
+				throw VMSRuntimeError(); // need n > MAX_LENGTH in case n is huge but string is empty
+				
+			for(int i=0;i<n;i++) {
+				w = w+x;
+			}
+			return w;
+	}, 1.);
+		
+		
+	grammar.add("int(%s)",     +[](char c) -> int {
+		return int(c-'0'); // int here starting at '0'
+	});
+	
+	grammar.add("x",             Builtins::X<MyGrammar>, 10);
+	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>, 1./3);
+	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,char>, 1./3);
+	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,int>, 1./3);
+	grammar.add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
+		
 	// interestingly if we remove the alphabet, that's even better since we can't
 	// just memorize the data. We'll make it pretty rare
 	for(size_t i=0;i<alphabet.length();i++) {
-		grammar.add<char>(BuiltinOp::op_ALPHABETchar, Q(alphabet.substr(i,1)), 0.1/alphabet.length(), (int)alphabet.at(i)); 
+		const char c = alphabet.at(i);
+		grammar.add<S>( Q(S(1,c)).c_str(), std::function( [=]()->S { return S(1,c); }), 5./alphabet.length());
 	}
 	
-	// top stores the top hypotheses we have found
-	TopN<MyHypothesis> top;
-	//top.print_best = true;
 	
 	//------------------
 	// set up the data
@@ -255,14 +247,18 @@ int main(int argc, char** argv){
 	// Run inference with each scheme
 	//------------------
 	
+	// top stores the top hypotheses we have found
+	TopN<MyHypothesis> top;
+	//top.print_best = true;
+	
 	if(method == "parallel-tempering") {
 		auto h0 = MyHypothesis::make(&grammar);
 		ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 10.0);
 		samp.run(Control(), 250, 10000);		
 	}
 	else if(method == "prior-sampling") {
-		PriorInference<MyHypothesis, decltype(top)> pi(&grammar, grammar.nt<S>(), &mydata, top);
-		pi.run(Control());
+		PriorInference<MyHypothesis, decltype(top)> pri(&grammar, grammar.nt<S>(), &mydata, top);
+		pri.run(Control());
 	}
 	else if(method == "enumeration") {
 		EnumerationInference<MyHypothesis,MyGrammar,decltype(top)> e(&grammar, grammar.nt<S>(), &mydata, top);

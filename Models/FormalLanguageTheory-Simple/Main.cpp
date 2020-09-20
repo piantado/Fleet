@@ -145,7 +145,7 @@ int main(int argc, char** argv){
 		
 	for(size_t i=0;i<alphabet.length();i++) {
 		const S c = alphabet.substr(i,1);
-		grammar.add<S>( Q(c).c_str(), std::function( [=]() -> S { return alphabet.substr(i,1); }), 5.0/alphabet.length());
+		grammar.add<S>( Q(c).c_str(), std::function( [=]()->S { return S(1,c); }), 5.0/alphabet.length());
 	}
 		
 	//------------------
