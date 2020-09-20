@@ -155,11 +155,10 @@ int main(int argc, char** argv){
 //		grammar.add<S>( Q(c).c_str(), f, 5.0/alphabet.length());
 //	}
 
-	for(size_t i=0;i<alphabet.length();i++) {
-		const S c = alphabet.substr(i,1);
-		auto f = new auto ([&]()->S { return c; });
-		grammar.add<S>( Q(c).c_str(), f, 5.0/alphabet.length());
-	}
+//	for(size_t i=0;i<alphabet.length();i++) {
+//		auto f = new auto ([]()->S { return "1"; });
+//		grammar.add<S>( Q(alphabet.substr(i,1)).c_str(), f, 5.0/alphabet.length());
+//	}
 	
 	// Just to show iterating over rules:
 	for(auto& r : grammar){

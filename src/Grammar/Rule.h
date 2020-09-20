@@ -49,7 +49,7 @@ public:
 		 std::initializer_list<nonterminal_t> c, 
 		 double _p=1.0, 
 		 Op o=Op::Standard) :
-		nt(rt), fptr(f), format(fmt), N(c.size()), p(_p), op(o), child_types(c) {
+		nt(rt), format(fmt), N(c.size()), p(_p), fptr(f),  op(o), child_types(c) {
 			
 		// Set up hashing for rules (cached so we only do it once)
 		std::hash<std::string> h; 

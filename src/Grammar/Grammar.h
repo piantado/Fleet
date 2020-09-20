@@ -65,6 +65,9 @@ public:
 	// The input/output types must be repeated to VirtualMachineState
 	using VirtualMachineState_t = VirtualMachineState<input_t, output_t, GRAMMAR_TYPES...>;
 
+	// This is the function type
+	using FT = std::function<void(VirtualMachineState_t*,int)>; 
+
 	// rules[k] stores a SORTED vector of rules for the kth' nonterminal. 
 	// our iteration order is first for k = 0 ... N_NTs then for r in rules[k]
 	std::vector<Rule> rules[N_NTs];
@@ -272,32 +275,22 @@ public:
 	}
 		
 	template<typename T, typename... args> 
-	void add(const char* fmt, void* f, double p=1.0, Op o=Op::Standard) {
+	void add_vms(const char* fmt, FT* f, double p=1.0, Op o=Op::Standard) {
 		nonterminal_t Tnt = this->nt<T>();
-		Rule r(Tnt, f, fmt, {nt<args>()...}, p, o);
+		Rule r(Tnt, (void*)f, fmt, {nt<args>()...}, p, o);
 		Z[Tnt] += r.p; // keep track of the total probability
 		auto pos = std::lower_bound( rules[Tnt].begin(), rules[Tnt].end(), r);
 		rules[Tnt].insert( pos, r ); // put this before	
 	}
-	
-	template<typename T, typename... args> 
-	void add(const char* fmt, std::function<void(VirtualMachineState_t*,int)> fvms, double p=1.0, Op o=Op::Standard) {
-		// move this to the heap so it persists
-		std::function<void(VirtualMachineState_t*,int)>* f = new std::function(fvms);
-		
-		add<T,args...>(fmt, (void*)f, p, o);
-	}
 		
 	template<typename T, typename... args> 
-	void add(const char* fmt, Builtin<T,args...>& b, double p=1.0) {
+	void add(const char* fmt, Builtin<T,args...> b, double p=1.0) {
 		// read f and o from b
-		add<T,args...>(fmt, b.f, p, b.op);
+		add_vms<T,args...>(fmt, (FT*)b.f, p, b.op);
 	}
 		
-	// unpack a lambda and convert it into an instruction for the rule we add here
-	// TODO: ADD REFERENCE SUPPORT HERE
 	template<typename T, typename... args> 
-	void add(const char* fmt, T(*f)(args...), double p=1.0) {
+	void add(const char* fmt, std::function<T(args...)> f, double p=1.0, Op o=Op::Standard) {
 		
 		// put a copy of this on the stack so it is accessible to the below
 		// lambda once we exit this function
@@ -311,7 +304,7 @@ public:
 		// create a lambda on the heap that is a function of a VMS, since
 		// this is what an instruction must be. This implements the calling order convention too. 
 		//auto newf = new auto ( [=](VirtualMachineState_t* vms) -> void {
-		std::function<void(VirtualMachineState_t*,int)> fvms = [f](VirtualMachineState_t* vms, int a=0) -> void {
+		auto fvms = new FT([f](VirtualMachineState_t* vms, int a=0) -> void {
 				assert(vms != nullptr);
 			
 				if constexpr (sizeof...(args) ==  0){	
@@ -339,12 +332,16 @@ public:
 					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
 					vms->push(f(std::move(a0), std::move(a1), std::move(a2), std::move(a3)));
 				}
-			};
+			});
 			
-		this->add<T,args...>(fmt, fvms, p);
+		add_vms<T,args...>(fmt, fvms, p, o);
 	}
 
-
+	template<typename T, typename... args> 
+	void add(const char* fmt,  T(*_f)(args...), double p=1.0, Op o=Op::Standard) {
+		add<T,args...>(fmt, std::function<T(args...)>(_f), p);
+	}	
+	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Methods for getting rules by some info
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
