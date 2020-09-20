@@ -53,12 +53,8 @@ public:
 
 	// Keep track of what types we are using here as our types -- thesee types are 
 	// stored in this tuple so they can be extracted
-	using GrammarTypesAsTuple = std::tuple<GRAMMAR_TYPES...>;
+	using TypeTuple = std::tuple<GRAMMAR_TYPES...>;
 
-	// the firsrt and second are *Assumed* to be input and output types
-	//using input_t  = std::tuple_element<0,GrammarTypesAsTuple>::type;
-	//using output_t = std::tuple_element<1,GrammarTypesAsTuple>::type;
-	
 	// how many nonterminal types do we have?
 	static constexpr size_t N_NTs = std::tuple_size<std::tuple<GRAMMAR_TYPES...>>::value;
 	
@@ -294,12 +290,7 @@ public:
 		
 	template<typename T, typename... args> 
 	void add(const char* fmt, std::function<T(args...)> f, double p=1.0, Op o=Op::Standard) {
-		
-		// put a copy of this on the stack so it is accessible to the below
-		// lambda once we exit this function
-		// TODO: It seems we don't need this maybe?
-		//std::function<T(args...)>* f = new std::function<T(args...)>(*_f);
-		
+				
 		// first check that the types are allowed
 		static_assert(is_in_GRAMMAR_TYPES<T>() , "*** Return type is not in GRAMMAR_TYPES");
 		static_assert((is_in_GRAMMAR_TYPES<args>() && ...),	"*** Argument type is not in GRAMMAR_TYPES");
@@ -307,32 +298,32 @@ public:
 		// create a lambda on the heap that is a function of a VMS, since
 		// this is what an instruction must be. This implements the calling order convention too. 
 		//auto newf = new auto ( [=](VirtualMachineState_t* vms) -> void {
-		auto fvms = new FT([f](VirtualMachineState_t* vms, int a=0) -> void {
+		auto fvms = new FT([=](VirtualMachineState_t* vms, int a=0) -> void {
 				assert(vms != nullptr);
 			
 				if constexpr (sizeof...(args) ==  0){	
 					vms->push( f() );
 				}
 				if constexpr (sizeof...(args) ==  1) {
-					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
+					auto a0 = vms->template getpop_nth<0,args...>();		
 					vms->push(f(std::move(a0)));
 				}
 				else if constexpr (sizeof...(args) ==  2) {
-					auto a1 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
-					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();	
+					auto a1 = vms->template getpop_nth<1,args...>();	
+					auto a0 = vms->template getpop_nth<0,args...>();		
 					vms->push(f(std::move(a0), std::move(a1)));
 				}
 				else if constexpr (sizeof...(args) ==  3) {
-					auto a2 = vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
-					auto a1 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
-					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
+					auto a2 = vms->template getpop_nth<2,args...>();	;
+					auto a1 = vms->template getpop_nth<1,args...>();	
+					auto a0 = vms->template getpop_nth<0,args...>();	
 					vms->push(f(std::move(a0), std::move(a1), std::move(a2)));
 				}
 				else if constexpr (sizeof...(args) ==  4) {
-					auto a3 = vms->template get<typename std::tuple_element<3, std::tuple<args...> >::type>();
-					auto a2 = vms->template get<typename std::tuple_element<2, std::tuple<args...> >::type>();
-					auto a1 = vms->template get<typename std::tuple_element<1, std::tuple<args...> >::type>();
-					auto a0 = vms->template get<typename std::tuple_element<0, std::tuple<args...> >::type>();		
+					auto a3 = vms->template getpop_nth<3,args...>();	
+					auto a2 = vms->template getpop_nth<2,args...>();	
+					auto a1 = vms->template getpop_nth<1,args...>();	
+					auto a0 = vms->template getpop_nth<0,args...>();		
 					vms->push(f(std::move(a0), std::move(a1), std::move(a2), std::move(a3)));
 				}
 			});

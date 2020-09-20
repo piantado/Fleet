@@ -129,7 +129,7 @@ public:
 		if(wouldIadd(x->lp + lpinc)) {	
 			auto s = new VirtualMachineState_t(*x); // copy
 			s->template push<T>(v); // add v
-			s->increment_lp(lpinc);
+			s->lp += lpinc;
 			this->push(s);	
 			return true;
 		}	
@@ -147,7 +147,7 @@ public:
 	bool increment_push(VirtualMachineState_t* s, T v, double lpinc) {		
 		if(wouldIadd(s->lp + lpinc)) {		
 			s->template push<T>(v); // add this
-			s->increment_lp(lpinc);
+			s->lp += lpinc;
 			this->push(s);	
 			return true;
 		}	

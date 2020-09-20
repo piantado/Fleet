@@ -67,7 +67,7 @@ public:
 	struct t_stack { std::tuple<VMSStack<args>...> value; };
 	t_stack<VM_TYPES...> _stack; // our stacks of different types
 	
-	typedef int index_t; // how we index into factorized lexica -- NOTE: probably should be castable from Instruction.arg 
+	typedef int index_t; // how we index into factorized lexica -- NOTE: must be castable from Instruction.arg 
 	
 	// must have a memoized return value, that permits factorized by requiring an index argument
 	std::map<std::pair<index_t, input_t>, output_t> mem; 
@@ -105,22 +105,6 @@ public:
 	bool operator<(const VirtualMachineState& m) const {
 		return lp < m.lp; 
 	}
-
-	/**
-	 * @brief Add v to my lp
-	 * @param v
-	 */
-	void increment_lp(double v) {
-		lp += v;
-	}
-	
-	/**
-	 * @brief How many more steps can I be run for? This is useful for not adding programs that contain too many ops
-	 * @return 
-	 */		
-	unsigned long remaining_steps() {
-		return MAX_RUN_PROGRAM - runtime_counter.total;
-	}
 	
 	/**
 	 * @brief Returns a reference to the stack (of a given type)
@@ -157,6 +141,16 @@ public:
 	}
 	
 	/**
+	* @brief Getpops the n'th element of args (useful for writing primitives)
+	* @return 
+	*/
+	template<size_t n, typename...args>
+	auto getpop_nth() {
+		static_assert( n >= 0 and n < sizeof...(args) && "*** Higher n than args.");
+		return getpop<typename std::tuple_element<0, std::tuple<args...> >::type>();
+	}
+	
+	/**
 	* @brief Retrieves the top of the stack as a copy and does *not* remove
 	* @return 
 	*/
@@ -166,40 +160,7 @@ public:
 		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		return stack<T>().top();
 	}
-	/**
-	* @brief Retrieves the top of the stack as a copy and does *not* remove
-	* @return 
-	*/	template<typename T>
-	T& gettopref() {
-		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
-		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
-		return stack<T>().topref();
-	}
-		
-	/**
-	 * @brief This is some fanciness that will return a reference to the top of the stack if we give it a reference type 
-	 * 			otherwise it will return the type. This lets us get the top of a stack with a reference in PRIMITIVES
-	 * 			as though we were some kind of wizards
-	 * @return 
-	 */		
-	template<typename T>
-	T get() {
-		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
-		T x = std::move(stack<T>().top());
-		stack<T>().pop();
-		return x;
-	}
-
-	/**
-	 * @brief Is this stack empty?
-	 * @return 
-	 */
-	template<typename T>
-	bool empty() {		
-		return stack<T>().empty();
-	}
-
 	template<typename T>
 	void push(T& x){
 		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
@@ -214,30 +175,7 @@ public:
 		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
 		stack<T>().push(std::move(x));
 	}
-	template<typename... args>
-	bool any_stacks_empty() const { 
-		/**
-		 * @brief Check if any of the stacks are empty
-		 * @return 
-		 */		
-		return (... || stack<args>().empty()); 
-	}
-	template<typename... args>
-	bool all_stacks_empty() const { 
-		/**
-		 * @brief Check if all of the stacks are empty (should be at the end of evaluation)
-		 * @return 
-		 */
-		return (... && stack<args>().empty()); 
-	}	
-	bool stacks_empty() const { 
-		/**
-		 * @brief True if all stacks are empty for the VM_TYPES
-		 * @return 
-		 */
-		return this->all_stacks_empty<VM_TYPES...>();
-	}
-	
+
 	/**
 	 * @brief There is one element in stack T and the rest are empty. Used to check in returning the output.
 	 * @return 
@@ -267,16 +205,6 @@ public:
 		return gettop<output_t>();
 	}
 	
-	template<typename HYP>
-	output_t run(HYP* d) {
-		/**
-		 * @brief Defaultly run a non-random hypothesis
-		 * @param d
-		 * @return 
-		 */
-		return run(nullptr, d);
-	}
-	
 	/**
 	 * @brief Run with a pointer back to pool p. This is required because "flip" may push things onto the pool.
 	 * 		  Note that here we allow a tempalte on HYP, which actually gets passed all the way down to 
@@ -293,7 +221,7 @@ public:
 			
 			while(status == vmstatus_t::GOOD and (not program.empty()) ) {
 				
-				if(program.size() > remaining_steps() ) {  // if we've run too long or we couldn't possibly finish
+				if(program.size() + runtime_counter.total > MAX_RUN_PROGRAM ) {  // if we've run too long or we couldn't possibly finish
 					status = vmstatus_t::RUN_TOO_LONG;
 					break;
 				}
