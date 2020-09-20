@@ -19,18 +19,6 @@ enum class Color { Red, Green, Blue};
 typedef Object<Color,Shape> MyObject;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// This is a global variable that provides a convenient way to wrap our primitives
-/// where we can pair up a function with a name, and pass that as a constructor
-/// to the grammar. We need a tuple here because Primitive has a bunch of template
-/// types to handle thee function it has, so each is actually a different type.
-/// This must be defined before we import Fleet because Fleet does some template
-/// magic internally
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#include "Primitives.h"
-#include "Builtins.h"
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define the grammar
 /// Thid requires the types of the thing we will add to the grammar (bool,MyObject)
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,11 +55,7 @@ public:
 #include "Top.h"
 #include "ParallelTempering.h"
 #include "Fleet.h" 
-
-
-bool myf() {
-	return true;
-}
+#include "Builtins.h"
 
 int main(int argc, char** argv){ 
 	
@@ -101,18 +85,7 @@ int main(int argc, char** argv){
 
 	grammar.add("x",             Builtins::X<MyObject,VMS_t>);
 	
-	grammar.add("if(%s,%s,%s)",  Builtins::If<bool,VMS_t>);
-//	grammar.add("flip(%s)",        Builtins::FlipP<VMS_t>);
-	
-	grammar.add("recurse(%s)",   Builtins::Recurse<VMS_t>);
-	// but we also have to add a rule for the BuiltinOp that access x, our argument
-//	Builtin::X<MyObject>("x", 10.0),
-//	
-//	// And and,or,not -- we use Builtins here because any user defined one won't short-circuit
-//	Builtin::And("and(%s,%s)"),
-//	Builtin::Or("or(%s,%s)"),
-//	Builtin::Not("not(%s)")
-//	
+
 	// top stores the top hypotheses we have found
 	TopN<MyHypothesis> top;
 	
