@@ -281,9 +281,8 @@ public:
 	 */	
 	output_t get_output() {
 		
-		if(status == vmstatus_t::ERROR) {
+		if(status == vmstatus_t::ERROR) 
 			return err;		
-		}
 		
 		assert(status == vmstatus_t::COMPLETE && "*** Probably should not be calling this unless we are complete");
 		assert( exactly_one<output_t>() and xstack.size() == 1 and "When we return, all of the stacks should be empty or else something is awry.");

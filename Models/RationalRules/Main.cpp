@@ -79,6 +79,7 @@ int main(int argc, char** argv){
 	
 	using VMS_t = MyGrammar::VirtualMachineState_t;
 	
+	// these need to know the grammar type
 	grammar.add("and(%s,%s)",    Builtins::And<VMS_t>);
 	grammar.add("or(%s,%s)",     Builtins::Or<VMS_t>);
 	grammar.add("not(%s)",       Builtins::Not<VMS_t>);
