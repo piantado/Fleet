@@ -50,7 +50,7 @@ void checkLOTHypothesis(const Grammar_t* g, const Hypothesis_t h){
 	
 	// we should only be calling this after we've computed a posterior, so these should be set
 	assert(not std::isnan(h.prior));		
-	assert(not std::isnan(h.likelihood));		
+	// likelihood could be nan if prior is -inf (then likelihood isn't called)
 	assert(not std::isnan(h.posterior));		
 
 	// Check that copies and things work right:
@@ -60,8 +60,13 @@ void checkLOTHypothesis(const Grammar_t* g, const Hypothesis_t h){
 	assert(newH.get_value() == h.get_value());
 	assert(newH.posterior == h.posterior);
 	assert(newH.prior == h.prior);
-	assert(newH.likelihood == h.likelihood); // NOTE: We somtimes might fail on these, but that's usually from NaNs, which don't evaluate to equal to each other. 
-	assert(newH.posterior == newH.prior + newH.likelihood);
+	if(not  std::isnan(h.likelihood)){
+		assert(newH.likelihood == h.likelihood); // NOTE: We somtimes might fail on these, but that's usually from NaNs, which don't evaluate to equal to each other. 
+		assert(newH.posterior == newH.prior + newH.likelihood);
+	}
+	else {
+		assert(newH.posterior == -infinity);
+	}
 	assert(newH.hash() == h.hash());	
 }
 
