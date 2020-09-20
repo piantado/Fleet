@@ -25,15 +25,15 @@ namespace Combinators {
 	 * @file Combinators.h
 	 * @brief A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. 
 	 */
-	class SKGrammar : public Grammar<CL> { 
+	class SKGrammar : public Grammar<void,void, CL> { 
 		using Super=Grammar<CL>;
 		using Super::Super;
 		
 		public:
 		SKGrammar() : Grammar<CL>() {
-			add<CL>(BuiltinOp::op_K,                           "K");
-			add<CL>(BuiltinOp::op_S,                           "S");
-			add<CL, CL, CL>(BuiltinOp::op_SKAPPLY,         "(%s %s)");		
+			add("K", Builtin::NoOp);
+			add("S", Builtin::NoOp);
+			add<CL, CL, CL>("(%s %s)", Builtin::NoOp);		
 		}
 	} skgrammar;
 

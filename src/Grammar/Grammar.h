@@ -71,7 +71,7 @@ public:
 	template <class T>
 	static constexpr nonterminal_t nt() {
 		static_assert(contains_type<T, GRAMMAR_TYPES...>(), "*** The type T (decayed) must be in GRAMMAR_TYPES");
-		return TypeIndex<T, std::tuple<GRAMMAR_TYPES...>>::value;
+		return (nonterminal_t)TypeIndex<T, std::tuple<GRAMMAR_TYPES...>>::value;
 	}
 	
 	Grammar() {

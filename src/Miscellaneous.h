@@ -94,6 +94,27 @@ std::string system_exec(const char* cmd) {
 
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Hash combinations
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Hash combination from https://stackoverflow.com/questions/2590677/how-do-i-combine-hash-values-in-c0x
+inline void hash_combine(std::size_t& seed) { }
+
+template <typename T, typename... Rest>
+inline void hash_combine(std::size_t& seed, const T& v, Rest... rest) {
+	/**
+	 * @brief Simple way to combine hash functions
+	 * @param seed
+	 * @param v
+	 */
+	
+    std::hash<T> hasher;
+    seed ^= hasher(v) + 0x9e3779b9 + (seed<<6) + (seed>>2);
+    hash_combine(seed, rest...);
+}
+
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Template magic to check if a class is iterable
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -137,12 +158,12 @@ struct TypeIndex;
 
 template <class T, class... Types>
 struct TypeIndex<T, std::tuple<T, Types...>> {
-	static const nonterminal_t value = 0;
+	static const size_t value = 0;
 };
 
 template <class T, class U, class... Types>
 struct TypeIndex<T, std::tuple<U, Types...>> {
-	static const nonterminal_t value = 1 + TypeIndex<T, std::tuple<Types...>>::value;
+	static const size_t value = 1 + TypeIndex<T, std::tuple<Types...>>::value;
 };
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

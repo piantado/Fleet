@@ -3,7 +3,7 @@
 #include <functional>
 #include <stack>
 
-#include "Hash.h"
+#include "Miscellaneous.h"
 #include "Rule.h"
 #include "Program.h"
 #include "BaseNode.h"
