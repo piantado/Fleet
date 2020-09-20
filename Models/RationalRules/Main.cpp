@@ -77,6 +77,7 @@ int main(int argc, char** argv){
 	grammar.add("triangle(%s)",  +[](MyObject x) -> bool { return x.is(Shape::Triangle); });
 	grammar.add("circle(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Circle); });
 	
+	// These are the short-circuiting versions:
 	// these need to know the grammar type
 	grammar.add("and(%s,%s)",    Builtins::And<MyGrammar>);
 	grammar.add("or(%s,%s)",     Builtins::Or<MyGrammar>);
