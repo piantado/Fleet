@@ -146,14 +146,41 @@ int main(int argc, char** argv){
 	//------------------
 	
 	// Define the grammar (default initialize using our primitives will add all those rules)	
-	MyGrammar grammar(PRIMITIVES);
+	MyGrammar grammar;
+	grammar.add("tail(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); });
+	grammar.add("head(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
+	// We could call like this, but it's a little inefficient since it pops a string from the stack
+	// and then pushes a result on.. much better to modify it
+	grammar.add("pair(%s,%s)",   +[](S a, S b) -> S { 
+		if(a.length() + b.length() > MAX_LENGTH) 
+			throw VMSRuntimeError();
+		else 
+			return a+b; 
+	});
+	// This version takes a reference for the first argument and that is assumed (by Fleet) to be the
+	// return value. It is never popped off the stack and should just be modified. 
+//	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void        { 
+//			if(a.length() + b.length() > MAX_LENGTH) 
+//				throw VMSRuntimeError();
+//			a.append(b); // modify on stack
+//	}), 
+	grammar.add("\u00D8",        +[]()         -> S          { return S(""); });
+	grammar.add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; });
+
+	grammar.add("and(%s,%s)",    Builtins::And<MyGrammar>, 1./3.);
+	grammar.add("or(%s,%s)",     Builtins::Or<MyGrammar>, 1./3.);
+	grammar.add("not(%s)",       Builtins::Not<MyGrammar>, 1./3.);
 	
-	// here we create an alphabet op with an "arg" that stores the character (this is faster than alphabet.substring with i.arg as an index) 
-	// here, op_ALPHABET converts arg to a string (and pushes it)
+	grammar.add("x",             Builtins::X<MyGrammar>);
+	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
+	grammar.add("flip()",        Builtins::Flip<MyGrammar>);
+	grammar.add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
+		
 	for(size_t i=0;i<alphabet.length();i++) {
-		grammar.add<S>     (BuiltinOp::op_ALPHABET, Q(alphabet.substr(i,1)), 5.0/alphabet.length(), (int)alphabet.at(i)); 
+		const char c = alphabet.at(i);
+		grammar.add<S>( Q(S(1,c)).c_str(), std::function( [=]()->S { return S(1,c); }), 5.0/alphabet.length());
 	}
-	
+		
 	
 	// mydata stores the data for the inference model
 	MyHypothesis::data_t mydata;
@@ -228,7 +255,7 @@ int main(int argc, char** argv){
 	COUT "# Prior sampling...";
 	TopN<MyHypothesis> top_generate(N);
 	for(enumerationidx_t z=0;z<1000 and !CTRL_C;z++) {
-		auto n = grammar.generate<S>();
+		auto n = grammar.generate();
 		checkNode(&grammar, n);
 		
 		MyHypothesis h(&grammar);
@@ -274,11 +301,9 @@ int main(int argc, char** argv){
 	std::vector<int> dyckShouldBe = {1, 1, 2, 5, 14, 42}; // we actually don't get very far with this
 	size_t checkDyckTill = dyckShouldBe.size();
 	std::vector<int> count(checkDyckTill,0);
-	std::tuple DYCK_PRIMITIVES = {
-		Primitive("(%s)%s",  +[](S x, S y) -> S { throw YouShouldNotBeHereError();	}),
-		Primitive("",        +[]()         -> S { throw YouShouldNotBeHereError();	}),
-	};
-	MyGrammar dyck_grammar(DYCK_PRIMITIVES);
+	MyGrammar dyck_grammar;
+	dyck_grammar.add("(%s)%s",  +[](S x, S y) -> S { throw YouShouldNotBeHereError();	});
+	dyck_grammar.add("",        +[]()         -> S { throw YouShouldNotBeHereError();	});
 	for(enumerationidx_t z=0;z<500000 and !CTRL_C;z++) {
 		auto n = expand_from_integer(&dyck_grammar, dyck_grammar.nt<S>(), z);
 		checkNode(&dyck_grammar, n);

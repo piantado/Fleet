@@ -112,6 +112,10 @@ int main(int argc, char** argv){
 	fleet.add_option("-d,--data",     datastr, "Comma separated list of input data strings");	
 	fleet.initialize(argc, argv);
 	
+	//------------------
+	// Set up the grammar
+	//------------------	
+	
 	MyGrammar grammar;
 	grammar.add("tail(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); });
 	grammar.add("head(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
@@ -144,8 +148,8 @@ int main(int argc, char** argv){
 		
 		
 	for(size_t i=0;i<alphabet.length();i++) {
-		const S c = alphabet.substr(i,1);
-		grammar.add<S>( Q(c).c_str(), std::function( [=]()->S { return S(1,c); }), 5.0/alphabet.length());
+		const char c = alphabet.at(i);
+		grammar.add<S>( Q(S(1,c)).c_str(), std::function( [=]()->S { return S(1,c); }), 5.0/alphabet.length());
 	}
 		
 	//------------------
