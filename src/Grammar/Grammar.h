@@ -262,7 +262,7 @@ public:
 	}
 		
 	template<typename T, typename... args> 
-	void add(const char* fmt, std::function<T(args...)> f, double p=1.0, Op o=Op::Standard) {
+	void add(const char* fmt,  std::function<T(args...)> f, double p=1.0, Op o=Op::Standard) {
 				
 		// first check that the types are allowed
 		static_assert(is_in_GRAMMAR_TYPES<T>() , "*** Return type is not in GRAMMAR_TYPES");
