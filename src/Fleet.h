@@ -142,7 +142,6 @@ public:
 //		app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");
 
 		start_time = now();
-		
 	}
 	
 	/**

@@ -1,8 +1,6 @@
 
 #include <string>
 
-//#define DEBUG_MCMC
-
 using S = std::string; // just for convenience
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -11,7 +9,6 @@ using S = std::string; // just for convenience
 
 S alphabet = "01"; // the alphabet we use (possibly specified on command line)
 thread_local S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated
-//thread_local S datastr  = "101"; // the data, comma separated
 const float strgamma = 0.01; //75; // penalty on string length
 const size_t MAX_LENGTH = 64; // longest strings cons will handle
 
@@ -22,7 +19,7 @@ const size_t MAX_LENGTH = 64; // longest strings cons will handle
  
 #include "Grammar.h"
 
-using MyGrammar =  Grammar<S,S,  S,bool>;
+using MyGrammar = Grammar<S,S,  S,bool>;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
@@ -204,17 +201,17 @@ int main(int argc, char** argv){
 //
 //	return 0;
 	
-//	top.print_best = true;
-//	auto h0 = MyHypothesis::make(&grammar);
-//	ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 1000.0);
-//	samp.run(Control(), 100, 30000);		
+	top.print_best = true;
+	auto h0 = MyHypothesis::make(&grammar);
+	ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 1000.0);
+	samp.run(Control(), 100, 30000);		
 	
 
-	top.print_best = true; // print out each best hypothesis you find
-	auto h0 = MyHypothesis::make(&grammar);
-	MCMCChain c(h0, &mydata, top);
-	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-	c.run(Control());
+//	top.print_best = true; // print out each best hypothesis you find
+//	auto h0 = MyHypothesis::make(&grammar);
+//	MCMCChain c(h0, &mydata, top);
+//	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
+//	c.run(Control());
 
 	// run multiple chains
 //	auto h0 = MyHypothesis::make(&grammar);
