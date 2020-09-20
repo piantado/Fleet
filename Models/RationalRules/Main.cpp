@@ -103,17 +103,17 @@ int main(int argc, char** argv){
 	// Actually run
 	//------------------
 	
-	auto h0 = MyHypothesis::make(&grammar);
-	MCMCChain chain(h0, &mydata, top);
-	tic();
-	chain.run(Control());
-	tic();
-	
 //	auto h0 = MyHypothesis::make(&grammar);
-//	ParallelTempering samp(h0, &mydata, top, 16, 10.0); 
+//	MCMCChain chain(h0, &mydata, top);
 //	tic();
-//	samp.run(Control(mcmc_steps,runtime,nthreads), 100, 1000); 		
+//	chain.run(Control());
 //	tic();
+//	
+	auto h0 = MyHypothesis::make(&grammar);
+	ParallelTempering samp(h0, &mydata, top, 16, 10.0); 
+	tic();
+	samp.run(Control(), 100, 1000); 		
+	tic();
 
 	// Show the best we've found
 	top.print();
