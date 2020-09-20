@@ -1,22 +1,19 @@
 #pragma once
 
 #include <tuple>
-#include <deque>
+#include <array>
 #include <exception>
-#include "IO.h"
 
+#include "IO.h"
 #include "Errors.h"
 #include "Node.h"
 #include "Random.h"
 #include "Nonterminal.h"
-#include "Primitives.h"
-
 #include "VirtualMachineState.h"
-#include "Primitives.h"
 #include "Builtins.h"
 
-template<typename T, typename... args> // function type
-struct Primitive;
+// an exception for recursing too deep
+class DepthException : public std::exception {};
 
 
 /**
@@ -32,12 +29,7 @@ struct Primitive;
  * as determined by Rule's sort order. This can be accessed with an iterator that goes over 
  * all grammar rules, via Grammar.begin() and Grammar.end()
  * 
- * Note that Primitives are used to initialize a grammar, and they get "parsed" by Gramar.add
- * to store them in the right places according to their return types (the index comes from
- * the index of each type in GRAMMAR_TYPES).
- * The trees that Grammar generates use nt<T>() -> size_t to represent types, not the types
- * themselves. 
- * The trees also use Primitive.op (a size_t) to represent operations
+ * The grammar hypothesis can take lambdas and parse them into rules, using GRAMMAR_TYPES.
  * 
  * The template args GRAMMAR_TYPES stores the types used in this grammar. This is inherited
  * by LOTHypothesis, which also passes them along to VirtualMachineState (in the form of
@@ -58,9 +50,6 @@ public:
 	// how many nonterminal types do we have?
 	static constexpr size_t N_NTs = std::tuple_size<std::tuple<GRAMMAR_TYPES...>>::value;
 	
-	// an exception for recursing too deep so we can print a trace of what went wrong
-//	class DepthException: public std::exception {} depth_exception;
-
 	// The input/output types must be repeated to VirtualMachineState
 	using VirtualMachineState_t = VirtualMachineState<input_t, output_t, GRAMMAR_TYPES...>;
 
@@ -69,10 +58,27 @@ public:
 
 	// rules[k] stores a SORTED vector of rules for the kth' nonterminal. 
 	// our iteration order is first for k = 0 ... N_NTs then for r in rules[k]
-	std::vector<Rule> rules[N_NTs];
-	double	  	              Z[N_NTs]; // keep the normalizer handy for each nonterminal (not log space)
+	std::vector<Rule>        rules[N_NTs];
+	std::array<double,N_NTs> Z; // keep the normalizer handy for each nonterminal (not log space)
 	
 	size_t GRAMMAR_MAX_DEPTH = 64;
+	
+	
+	
+	/// Helpers to Find the numerical index (as a nonterminal_t) in a tuple of a given type
+	// from https://stackoverflow.com/questions/42258608/c-constexpr-values-for-types
+	template <class T, class Tuple> struct TypeIndex;
+
+	template <class T, class... Types>
+	struct TypeIndex<T, std::tuple<T, Types...>> {
+		static const nonterminal_t value = 0;
+	};
+
+	template <class T, class U, class... Types>
+	struct TypeIndex<T, std::tuple<U, Types...>> {
+		static const nonterminal_t value = 1 + TypeIndex<T, std::tuple<Types...>>::value;
+	};
+
 	
 	// This function converts a type (passed as a template parameter) into a 
 	// size_t index for which one it in in GRAMMAR_TYPES. 
@@ -80,14 +86,8 @@ public:
 	// store a type as e.g. nt<double>() -> size_t 
 	template <class T>
 	constexpr nonterminal_t nt() {
-		/**
-		 * @brief template function giving the index of its template argument (index in GRAMMAR_TYPES). 
-		 * NOTE: The names here are decayed (meaning that references and base types are the same. 
-		 */
-		using DT = typename std::decay<T>::type;
-		
-		static_assert(contains_type<DT, GRAMMAR_TYPES...>(), "*** The type T (decayed) must be in GRAMMAR_TYPES");
-		return TypeIndex<DT, std::tuple<GRAMMAR_TYPES...>>::value;
+		static_assert(contains_type<T, GRAMMAR_TYPES...>(), "*** The type T (decayed) must be in GRAMMAR_TYPES");
+		return TypeIndex<T, std::tuple<GRAMMAR_TYPES...>>::value;
 	}
 
 	Grammar() {
@@ -98,8 +98,7 @@ public:
 	
 	// should not be doing these
 	Grammar(const Grammar& g)  = delete; 
-	Grammar(const Grammar&& g) = delete; 	
-	
+	Grammar(const Grammar&& g) = delete; 		
 	
 	/**
 	 * @class RuleIterator
@@ -493,7 +492,7 @@ public:
 		 * @param depth
 		 * @return Returns a Node sampled from the grammar. 
 		 * 
-		 * NOTE: this may throw a DepthException if the grammar recurses too far (usually that means the grammar is improper)
+		 * NOTE: this may throw a if the grammar recurses too far (usually that means the grammar is improper)
 		 */
 		
 		
@@ -501,7 +500,7 @@ public:
 			CERR "*** Grammar exceeded max depth, are you sure the grammar probabilities are right?" ENDL;
 			CERR "*** You might be able to figure out what's wrong with gdb and then looking at the backtrace of" ENDL;
 			CERR "*** which nonterminals are called." ENDL;
-			throw YouShouldNotBeHereError("*** Grammar exceeded max depth, are you sure the grammar probabilities are right?");
+			throw DepthException();
 		}
 		
 		Rule* r = sample_rule(nt);

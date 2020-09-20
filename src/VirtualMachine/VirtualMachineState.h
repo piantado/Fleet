@@ -15,6 +15,15 @@
 
 #include "VMSRuntimeError.h"
 
+///**
+// * @brief Check if a type is contained in parameter pack
+// * @return 
+// */
+template<typename X, typename... Ts>
+constexpr bool contains_type() {
+	return std::disjunction<std::is_same<X, Ts>...>::value;
+}
+
 
 namespace FleetStatistics {}
 template<typename X> class VirtualMachinePool;
