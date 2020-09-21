@@ -49,7 +49,11 @@ public:
 	using input_t  = _t_input;
 	using output_t = _t_output;
 	
-	typedef VirtualMachineState<input_t, output_t, VM_TYPES...> this_t; 
+	using this_t = VirtualMachineState<input_t, output_t, VM_TYPES...>; 
+	
+	// Define the function type for instructions and things operating on this VirtualMachineState
+	// This is read a few other places, like in Builtins
+	using FT = std::function<void(this_t*,int)>;
 	
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
@@ -232,7 +236,7 @@ public:
 				// keep track of what instruction we've run
 				runtime_counter.increment(i);
 				
-				auto f = reinterpret_cast<std::function<void(this_t*,int)>*>(i.f);
+				auto f = reinterpret_cast<FT*>(i.f);
 				(*f)(const_cast<this_t*>(this), i.arg);
 				 
 			} // end while loop over ops

@@ -26,41 +26,44 @@ namespace Combinators {
 	 * @brief A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. 
 	 */
 	class SKGrammar : public Grammar<void,void, CL> { 
-		using Super=Grammar<CL>;
+		using Super=Grammar<void,void,CL>;
 		using Super::Super;
 		
 		public:
-		SKGrammar() : Grammar<CL>() {
-			add("K", Builtin::NoOp);
-			add("S", Builtin::NoOp);
-			add<CL, CL, CL>("(%s %s)", Builtin::NoOp);		
+		SKGrammar() : Grammar<void,void,CL>() {
+			// These are given NoOps because they are't interpreted in the normal evaluator
+			add<CL>("K", Builtins::NoOp<SKGrammar>, Op::CL_K);
+			add<CL>("S", Builtins::NoOp<SKGrammar>, Op::CL_S);
+			add<CL>("I", Builtins::NoOp<SKGrammar>, Op::CL_I);
+			add<CL, CL, CL>("(%s %s)", Builtins::NoOp<SKGrammar>, Op::CL_Apply);		
 		}
 	} skgrammar;
 
 	// Define a function to check whether we can reduce each nodes via each bulit-in op
-	template<BuiltinOp> bool can_reduce(const Node& n);
+	template<Op> bool can_reduce(const Node& n);
 
 	template<>
-	bool can_reduce<BuiltinOp::op_I>(const Node& n) {
-		// (I x)
-		return n.nchildren() > 0 and 
-			   n[0].rule->instr.is_a(BuiltinOp::op_I);
-	}
-	template<>
-	bool can_reduce<BuiltinOp::op_K>(const Node& n) {
-		// ((K x) y)
-		return n.nchildren() > 0 and 
-			   n[0].nchildren() > 0 and
-			   n[0][0].rule->instr.is_a(BuiltinOp::op_K);
-	}
-	template<>
-	bool can_reduce<BuiltinOp::op_S>(const Node& n) {
+	bool can_reduce<Op::CL_S>(const Node& n) {
 		// (((S x) y) z)
 		return n.nchildren() > 0 and 
 			   n[0].nchildren() > 0 and
 			   n[0][0].nchildren() > 0 and
 			   n[0][0][0].rule->instr.is_a(BuiltinOp::op_S);
 	}
+	template<>
+	bool can_reduce<Op::CL_K>(const Node& n) {
+		// ((K x) y)
+		return n.nchildren() > 0 and 
+			   n[0].nchildren() > 0 and
+			   n[0][0].rule->instr.is_a(BuiltinOp::op_K);
+	}
+	template<>
+	bool can_reduce<Op::CL_I>(const Node& n) {
+		// (I x)
+		return n.nchildren() > 0 and 
+			   n[0].rule.is_a(BuiltinOp::op_I);
+	}
+	
 
 
 	/**
@@ -122,7 +125,7 @@ namespace Combinators {
 				modified = true;
 			} 
 			else if(can_reduce<BuiltinOp::op_S>(n)) {
-				Rule* rule = skgrammar.get_rule(skgrammar.nt<CL>(), BuiltinOp::op_SKAPPLY);
+				Rule* rule = skgrammar.get_rule(skgrammar.nt<CL>(), Op::CL_Apply);
 				
 				// just make the notation handier here
 				auto x = std::move(n[0][0][1] );

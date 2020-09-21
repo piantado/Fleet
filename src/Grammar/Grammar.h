@@ -55,7 +55,7 @@ public:
 	using VirtualMachineState_t = VirtualMachineState<input_t, output_t, GRAMMAR_TYPES...>;
 
 	// This is the function type
-	using FT = std::function<void(VirtualMachineState_t*,int)>; 
+	using FT = VirtualMachineState_t::FT; 
 
 	// rules[k] stores a SORTED vector of rules for the kth' nonterminal. 
 	// our iteration order is first for k = 0 ... N_NTs then for r in rules[k]
@@ -70,6 +70,7 @@ public:
 	// store a type as e.g. nt<double>() -> size_t 
 	template <class T>
 	static constexpr nonterminal_t nt() {
+		static_assert(sizeof...(GRAMMAR_TYPES) > 0, "*** Cannot use empty grammar types here");
 		static_assert(contains_type<T, GRAMMAR_TYPES...>(), "*** The type T (decayed) must be in GRAMMAR_TYPES");
 		return (nonterminal_t)TypeIndex<T, std::tuple<GRAMMAR_TYPES...>>::value;
 	}
@@ -384,27 +385,25 @@ public:
 		return const_cast<Rule*>(&rules[nt][k]);
 	}
 	
-//	virtual Rule* get_rule(const nonterminal_t nt, const BuiltinOp o, const int a=0) {
-//		/**
-//		 * @brief Get rule of type nt with a given BuiltinOp and argument a
-//		 * @param nt
-//		 * @param o
-//		 * @param a
-//		 * @return 
-//		 */
-//		for(auto& r: rules[nt]) {
-//			assert(false);
-//			// Need to fix this because it used is_a:
-////			if(r.instr.is_a(o) && r.instr.arg == a) 
-////				return &r;
-//		}
-//		throw YouShouldNotBeHereError("*** Could not find rule");		
-//	}
+	virtual Rule* get_rule(const nonterminal_t nt, const Op o, const int a=0) {
+		/**
+		 * @brief Get rule of type nt with a given BuiltinOp and argument a
+		 * @param nt
+		 * @param o
+		 * @param a
+		 * @return 
+		 */
+		for(auto& r: rules[nt]) {
+			// Need to fix this because it used is_a:
+			if(r.is_a(o) and r.arg == a) 
+				return &r;
+		}
+		throw YouShouldNotBeHereError("*** Could not find rule");		
+	}
 	
-//	virtual Rule* get_rule(const nonterminal_t nt, size_t i) {
-//		assert(i <= rules[nt].size());
-//		return &rules[nt][i];
-//	}
+	virtual Rule* get_rule(const nonterminal_t nt, size_t i) {
+		return &rules[nt].at(i);
+	}
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const std::string s) const {
 		/**

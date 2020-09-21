@@ -84,9 +84,6 @@ using MyGrammar = Grammar<MyInput,bool,
 
 #include "VMSRuntimeError.h"
 
-// an exception for violating iota -- caught in VMS since its VMSRuntimeError
-class IotaException : public VMSRuntimeError { };
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define a class for handling my specific hypotheses and data. Everything is defaultly 
 /// a PCFG prior and regeneration proposals, but I have to define a likelihood
@@ -198,7 +195,7 @@ int main(int argc, char** argv){
 	grammar.add("iota(%s)",   +[](ObjectSet s)    -> MyObject { 
 		// return the unique element in the set. If not, we throw an exception
 		// which must be caught in calling below. 
-		if(s.size() != 1) throw IotaException();
+		if(s.size() != 1) throw VMSRuntimeError();
 		else             return *s.begin();
 	}), 
 	

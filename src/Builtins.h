@@ -13,18 +13,18 @@ struct Builtin {
 	void* f;
 	
 	template<typename VirtualMachineState_t>
-	Builtin(Op o, std::function<void(VirtualMachineState_t*,int)>* _f) : f((void*)_f), op(o) {
+	Builtin(Op o, typename VirtualMachineState_t::FT* _f) : f((void*)_f), op(o) {
 	}	
 	
 	template<typename VirtualMachineState_t>
 	Builtin(Op o, void(*_f)(VirtualMachineState_t*,int)) : op(o) {
-		f = (void*)(new std::function<void(VirtualMachineState_t*,int)>(_f)); // make a copy
+		f = (void*)(new typename VirtualMachineState_t::FT(_f)); // make a copy
 	}
 	
 	// this is helpful for other Builtins to call 
 	template<typename VirtualMachineState_t>
 	void call(VirtualMachineState_t* vms, int arg) {
-		auto myf = reinterpret_cast<std::function<void(VirtualMachineState_t*,int)>*>(f);
+		auto myf = reinterpret_cast<typename VirtualMachineState_t::FT*>(f);
 		(*myf)(vms, arg);
 	}
 	
@@ -35,14 +35,17 @@ struct Builtin {
 
 namespace Builtins {
 	
+	// Define this because it's an ugly expression to keep typing and we might want to change all at once
+	#define BUILTIN_LAMBDA             +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void
+	
 	template<typename Grammar_t>
-	Builtin<typename Grammar_t::input_t> X(Op::X, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {
+	Builtin<typename Grammar_t::input_t> X(Op::X, BUILTIN_LAMBDA {
 		assert(!vms->xstack.empty());
 		vms->template push<typename Grammar_t::input_t>(vms->xstack.top()); // not a pop!
 	});
 	
 	template<typename Grammar_t>
-	Builtin<bool,bool,bool> And(Op::And, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {
+	Builtin<bool,bool,bool> And(Op::And, BUILTIN_LAMBDA {
 	
 		// process the short circuit
 		bool b = vms->template getpop<bool>(); // bool has already evaluted
@@ -57,7 +60,7 @@ namespace Builtins {
 	});
 	
 	template<typename Grammar_t>
-	Builtin<bool,bool,bool> Or(Op::Or, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {
+	Builtin<bool,bool,bool> Or(Op::Or, BUILTIN_LAMBDA {
 	
 		// process the short circuit
 		bool b = vms->template getpop<bool>(); // bool has already evaluted
@@ -72,13 +75,13 @@ namespace Builtins {
 	});
 	
 	template<typename Grammar_t>
-	Builtin<bool,bool> Not(Op::Not, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {
+	Builtin<bool,bool> Not(Op::Not, BUILTIN_LAMBDA {
 		vms->push(not vms->template getpop<bool>()); 
 	});
 	
 	
 	template<typename Grammar_t, typename T>
-	Builtin<T,bool,T,T> If(Op::If, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {
+	Builtin<T,bool,T,T> If(Op::If, BUILTIN_LAMBDA {
 		// Op::If has to short circuit and skip (pop some of the stack) 
 		bool b = vms->template getpop<bool>(); // bool has already evaluted
 		
@@ -88,17 +91,17 @@ namespace Builtins {
 	});
 	
 	template<typename Grammar_t>
-	Builtin<> Jmp(Op::Jmp, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {
+	Builtin<> Jmp(Op::Jmp, BUILTIN_LAMBDA {
 		vms->program.popn(arg);
 	});
 	
 	template<typename Grammar_t>
-	Builtin<> PopX(Op::PopX, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {
+	Builtin<> PopX(Op::PopX, BUILTIN_LAMBDA {
 		vms->xstack.pop();
 	});	
 	
 	template<typename Grammar_t>
-	Builtin<bool> Flip(Op::Flip, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {
+	Builtin<bool> Flip(Op::Flip, BUILTIN_LAMBDA {
 		assert(vms->pool != nullptr);
 		
 		// push both routes onto the stack
@@ -119,7 +122,7 @@ namespace Builtins {
 	
 	
 	template<typename Grammar_t>
-	Builtin<bool,double> FlipP(Op::FlipP, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {
+	Builtin<bool,double> FlipP(Op::FlipP, BUILTIN_LAMBDA {
 		assert(vms->pool != nullptr);
 		
 		// get the coin weight
@@ -148,7 +151,7 @@ namespace Builtins {
 	
 	
 	template<typename Grammar_t>
-	Builtin<> Mem(Op::Mem, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {	
+	Builtin<> Mem(Op::Mem, BUILTIN_LAMBDA {	
 		auto memindex = vms->memstack.top(); vms->memstack.pop();
 		if(vms->mem.count(memindex)==0) { // you might actually have already placed mem in crazy recursive situations, so don't overwrte if you have
 			vms->mem[memindex] = vms->template gettop<typename Grammar_t::output_t>(); // what I should memoize should be on top here, but don't remove because we also return it
@@ -157,7 +160,7 @@ namespace Builtins {
 	
 		
 	template<typename Grammar_t>
-	Builtin<> NoOp(Op::NoOp, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {	
+	Builtin<> NoOp(Op::NoOp, BUILTIN_LAMBDA {	
 		
 	});
 
@@ -165,7 +168,7 @@ namespace Builtins {
 	
 	template<typename Grammar_t>
 	Builtin<typename Grammar_t::output_t, typename Grammar_t::input_t> 
-		Recurse(Op::Recurse, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {
+		Recurse(Op::Recurse, BUILTIN_LAMBDA {
 			
 			using input_t = Grammar_t::VirtualMachineState_t::input_t;
 			
@@ -194,7 +197,8 @@ namespace Builtins {
 	
 	
 	template<typename Grammar_t>
-	Builtin<> SafeRecurse(Op::SafeRecurse, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {	
+	Builtin<typename Grammar_t::output_t, typename Grammar_t::input_t> 
+	SafeRecurse(Op::SafeRecurse, BUILTIN_LAMBDA {	
 		using input_t = Grammar_t::VirtualMachineState_t::input_t;
 		using output_t = Grammar_t::VirtualMachineState_t::output_t;
 		
@@ -212,7 +216,8 @@ namespace Builtins {
 	
 	
 	template<typename Grammar_t>
-	Builtin<> MemRecurse(Op::MemRecurse, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {	
+	Builtin<typename Grammar_t::output_t, typename Grammar_t::input_t> 
+	MemRecurse(Op::MemRecurse, BUILTIN_LAMBDA {	
 		assert(vms->program_loader != nullptr);
 						
 		if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
@@ -237,7 +242,8 @@ namespace Builtins {
 
 
 	template<typename Grammar_t>
-	Builtin<> SafeMemRecurse(Op::SafeMemRecurse, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {	
+	Builtin<typename Grammar_t::output_t, typename Grammar_t::input_t> 
+	SafeMemRecurse(Op::SafeMemRecurse, BUILTIN_LAMBDA {	
 		
 		using input_t = Grammar_t::VirtualMachineState_t::input_t;
 		using output_t = Grammar_t::VirtualMachineState_t::output_t;

@@ -11,7 +11,7 @@ using set  = std::bitset<16>;
 
 const word U = -999;
 const double alpha = 0.9;
-const double Ndata = 300; // how many data points?
+const double Ndata = 250; // how many data points?
 double recursion_penalty = -25.0;
 
 // probability of each set size 0,1,2,...
@@ -57,8 +57,10 @@ public:
 	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		this->likelihood = 0.0;
 		for(int x=1;x<10;x++) {
-			auto v = callOne(make_set(x));
-			this->likelihood += Ndata*Np[x]*log(  (1.0-alpha)/10.0 + (v==x)*alpha);
+			auto v = callOne(make_set(x), U);
+			// Likelihood is a little special here -- if we have U, then we treat it as though there
+			// were no predictions (not out of 10)
+			this->likelihood += Ndata*Np[x]*log( v == U ? (1.0-alpha) : (1.0-alpha)/10.0 + (v==x)*alpha);
 		}
 		return this->likelihood;
 	}	
@@ -66,7 +68,7 @@ public:
 	virtual void print(std::string prefix="") override {
 		std::string outputstring;
 		for(int x=1;x<=10;x++) {
-			auto v = callOne(make_set(x));
+			auto v = callOne(make_set(x), U);
 			outputstring += (v == U ? "U" : str(v)) + ".";
 		}
 		

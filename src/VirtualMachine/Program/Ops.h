@@ -8,6 +8,7 @@ enum class Op {
 	Recurse, PopX, SafeRecurse, MemRecurse, SafeMemRecurse,
 	Flip, FlipP,
 	Mem,
-	NoOp
+	NoOp,
+	CL_I, CL_S, CL_K, CL_Apply
 };
 

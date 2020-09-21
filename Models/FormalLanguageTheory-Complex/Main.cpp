@@ -167,33 +167,19 @@ int main(int argc, char** argv){
 	
 	COUT "# Using alphabet=" << alphabet ENDL;
 	
-	
-	// Input here is going to specify the PRdata path, minus the txt
-	if(prdata_path == "") {	prdata_path = FleetArgs::input_path+".txt"; }
-	
-	load_data_file(prdata, prdata_path.c_str()); // put all the data in prdata
-	for(auto d : prdata) {	// Add a check for any data not in the alphabet
-		for(size_t i=0;i<d.output.length();i++){
-			if(alphabet.find(d.output.at(i)) == std::string::npos) {
-				CERR "*** Character '" << d.output.at(i) << "' in " << d.output << " is not in the alphabet '" << alphabet << "'" ENDL;
-				assert(0);
-			}
-		}
-	}
-	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Define the grammar
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	MyGrammar grammar;
 	
-	grammar.add("tail(%s)",      +[](S s) -> S { 
+	grammar.add("tail(%s)", +[](S s) -> S { 
 		if(s.length()>0) 
 			s.erase(0); 
 		return s;
 	});
 	
-	grammar.add("head(%s)",      +[](S s)      -> S { 
+	grammar.add("head(%s)", +[](S s) -> S { 
 		return (s.empty() ? S("") : S(1,s.at(0))); 
 	});
 	
@@ -203,15 +189,15 @@ int main(int argc, char** argv){
 			return a+b;
 	});
 
-	grammar.add("\u00D8",        +[]() -> S { 
+	grammar.add("\u00D8", +[]() -> S { 
 		return S(""); 
 	}, 10.0);
 	
-	grammar.add("(%s==%s)",      +[](S x, S y) -> bool { 
+	grammar.add("(%s==%s)", +[](S x, S y) -> bool { 
 		return x==y; 
 	});
 	
-	grammar.add("empty(%s)",     +[](S x) -> bool { 
+	grammar.add("empty(%s)", +[](S x) -> bool { 
 		return x.length()==0; 
 	});
 	
@@ -242,7 +228,7 @@ int main(int argc, char** argv){
 	}, 5.0);
 	
 	// set operations:
-	grammar.add("{%s}",         +[](S x) -> StrSet  { 
+	grammar.add("{%s}", +[](S x) -> StrSet  { 
 		StrSet s; s.insert(x); return s; 
 	}, 10.0);
 	
@@ -305,6 +291,7 @@ int main(int argc, char** argv){
 	grammar.add("not(%s)",       Builtins::Not<MyGrammar>);
 	
 	grammar.add("x",             Builtins::X<MyGrammar>, 5);
+	
 	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
 	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,StrSet>);
 	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,double>);
@@ -319,38 +306,45 @@ int main(int argc, char** argv){
 		double p = 1.0/(4*nfactors); // NOTE: Slightly different prior
 
 		grammar.add(S("F")+s+"(%s)" ,  Builtins::Recurse<MyGrammar>, p, a);
-//		grammar.add(S("Fm")+s+"(%s)",  Builtins::MemRecurse<MyGrammar>, p, a);
-//		
-//		grammar.add(S("Fs")+s+"(%s)",  Builtins::SafeRecurse<MyGrammar>, p, a);
-//		grammar.add(S("Fms")+s+"(%s)", Builtins::SafeMemRecurse<MyGrammar>, p, a);
+		grammar.add(S("Fm")+s+"(%s)",  Builtins::MemRecurse<MyGrammar>, p, a);
+
+		grammar.add(S("Fs")+s+"(%s)",  Builtins::SafeRecurse<MyGrammar>, p, a);
+		grammar.add(S("Fms")+s+"(%s)", Builtins::SafeMemRecurse<MyGrammar>, p, a);
 	}
 		
 	for(size_t i=0;i<alphabet.length();i++) {
 		const char c = alphabet.at(i);
-		grammar.add<S>( Q(S(1,c)).c_str(), std::function( [=]()->S { return S(1,c); }), 5.0/alphabet.length());
+		grammar.add<S>( Q(S(1,c)), std::function( [=]()->S { return S(1,c); }), 5.0/alphabet.length());
 	}
 	
 	const int pdenom=24;
 	for(int a=1;a<=pdenom/2;a++) { 
 		std::string s = str(a/std::gcd(a,pdenom)) + "/" + str(pdenom/std::gcd(a,pdenom)); 
 		if(a==pdenom/2) {
-			grammar.add( s.c_str(), std::function( [=]()->double { return double(a)/pdenom; }), 5.0);
+			grammar.add( s, std::function( [=]()->double { return double(a)/pdenom; }), 5.0);
 		}
 		else {
-			grammar.add( s.c_str(), std::function( [=]()->double { return double(a)/pdenom; }), 1.0);
+			grammar.add( s, std::function( [=]()->double { return double(a)/pdenom; }), 1.0);
 		}
 	}
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Construct a hypothesis
+	// Load the data
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	MyHypothesis h0; 
-	for(size_t fi=0;fi<nfactors;fi++) {// start with the right number of factors
-		InnerHypothesis f(&grammar);
-		h0.factors.push_back(f.restart());
+	// Input here is going to specify the PRdata path, minus the txt
+	if(prdata_path == "") {	prdata_path = FleetArgs::input_path+".txt"; }
+	
+	load_data_file(prdata, prdata_path.c_str()); // put all the data in prdata
+	for(auto d : prdata) {	// Add a check for any data not in the alphabet
+		for(size_t i=0;i<d.output.length();i++){
+			if(alphabet.find(d.output.at(i)) == std::string::npos) {
+				CERR "*** Character '" << d.output.at(i) << "' in " << d.output << " is not in the alphabet '" << alphabet << "'" ENDL;
+				assert(0);
+			}
+		}
 	}
-		
+	
 	// We are going to build up the data
 	std::vector<MyHypothesis::data_t> datas; // load all the data	
 	for(size_t i=0;i<data_amounts.size();i++){ 
@@ -365,6 +359,13 @@ int main(int argc, char** argv){
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Actually run
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// Build up an initial hypothesis with the right number of factors
+	MyHypothesis h0; 
+	for(size_t fi=0;fi<nfactors;fi++) {// start with the right number of factors
+		InnerHypothesis f(&grammar);
+		h0.factors.push_back(f.restart());
+	}
 	
 	TopN<MyHypothesis> all; 
 	//	all.set_print_best(true);
