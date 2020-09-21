@@ -20,7 +20,7 @@ for(language in c( "Saffran", "ABA", "ABB", "Milne", "Elman", "MorganNewport", "
     for(nf in c(1,2,3,4,5,6,7,8)) {
 #       for(nf in c(1)) {
 
-            f <- paste("./out/", language, "-", nf, ".out", sep="")
+            f <- paste("./out-2020Sep20/", language, "-", nf, ".out", sep="")
 
 #             f <- paste("./out-2020PNASSubmission/out/", language, "-", nf, ".out", sep="")
 #             f <- paste("./out-English/", language, "-", nf, ".out", sep="")

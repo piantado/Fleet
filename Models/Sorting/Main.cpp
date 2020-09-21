@@ -113,10 +113,9 @@ public:
 		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
 			
 		// interestingly if we remove the alphabet, that's even better since we can't
-		// just memorize the data. We'll make it pretty rare
-		for(size_t i=0;i<alphabet.length();i++) {
-			const char c = alphabet.at(i);
-			add(Q(S(1,c)).c_str(), std::function( [=]()->char { return c; }), 5./alphabet.length());
+		// just memorize the data. 
+		for(const char c : alphabet) {
+			add_terminal( Q(S(1,c)), c, 5.0/alphabet.length());
 		}
 	}
 };

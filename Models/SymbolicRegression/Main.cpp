@@ -202,10 +202,10 @@ public:
 				// propose on a few scales here
 				double scale = 1.0;
 				switch(myrandom(5)){
-					case 0: scale = 10.0; break;
-					case 1: scale =  1.0; break;
-					case 2: scale =  0.10; break;
-					case 3: scale =  0.01; break;
+					case 0: scale = 10.0;   break;
+					case 1: scale =  1.0;   break;
+					case 2: scale =  0.10;  break;
+					case 3: scale =  0.01;  break;
 					case 4: scale =  0.001; break;
 				}
 				
@@ -372,12 +372,12 @@ public:
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
-
+#include "FleetArgs.h"
 #include "Fleet.h" 
 
 int main(int argc, char** argv){ 
 	
-	std::string innertimestr = "1m";
+	FleetArgs::inner_timestring = "1m";
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	Fleet fleet("Symbolic regression");

@@ -338,6 +338,21 @@ public:
 		add<T,args...>(fmt, std::function<T(args...)>(_f), p, o, a);
 	}	
 	
+	/**
+	 * @brief Add a variable that is NOT A function -- simplification for adding alphabets etc.
+	 * 		  This just wraps stuff in a thunk for us to make it easier. NOTE: x is copied by value
+	 * @param fmt
+	 * @param x
+	 * @param p
+	 * @param o
+	 * @param a
+	 */
+	template<typename T>
+	void add_terminal(std::string fmt,  T x, double p=1.0, Op o=Op::Standard, int a=0) {
+		add(fmt, std::function( [=]()->T { return x; }), p, o, a);
+	}	
+	
+	
 	
 	/**
 	 * @brief Add a bunch of elements of something

@@ -177,19 +177,18 @@ public:
 			add(S("Fms")+s+"(%s)", Builtins::SafeMemRecurse<MyGrammar>, p, a);
 		}
 			
-		for(size_t i=0;i<alphabet.length();i++) {
-			const char c = alphabet.at(i);
-			add<S>( Q(S(1,c)), std::function( [=]()->S { return S(1,c); }), 5.0/alphabet.length());
+		for(const char c : alphabet) {
+			add_terminal( Q(S(1,c)), S(1,c), 5.0/alphabet.length());
 		}
 		
 		const int pdenom=24;
 		for(int a=1;a<=pdenom/2;a++) { 
 			std::string s = str(a/std::gcd(a,pdenom)) + "/" + str(pdenom/std::gcd(a,pdenom)); 
 			if(a==pdenom/2) {
-				add( s, std::function( [=]()->double { return double(a)/pdenom; }), 5.0);
+				add_terminal( s, double(a)/pdenom, 5.0);
 			}
 			else {
-				add( s, std::function( [=]()->double { return double(a)/pdenom; }), 1.0);
+				add_terminal( s, double(a)/pdenom, 1.0);
 			}
 		}
 	}

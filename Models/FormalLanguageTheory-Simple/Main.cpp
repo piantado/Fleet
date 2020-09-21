@@ -53,9 +53,8 @@ public:
 		add("flip()",        Builtins::Flip<MyGrammar>, 10.0);
 		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
 			
-		for(size_t i=0;i<alphabet.length();i++) {
-			const char c = alphabet.at(i);
-			add<S>( Q(S(1,c)).c_str(), std::function( [=]()->S { return S(1,c); }), 5.0/alphabet.length());
+		for(const char c : alphabet) {
+			add_terminal( Q(S(1,c)), S(1,c), 5.0/alphabet.length());
 		}
 		
 	}

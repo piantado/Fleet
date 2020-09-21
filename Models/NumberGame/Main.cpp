@@ -134,7 +134,7 @@ public:
 		
 		for(int i=Nlow;i<=N;i++) {
 			// We put "#" here so that in grammar inference we cna find these rules easily!
-			add<int>( "#"+str(i), std::function( [=]() -> int { return i; }), 10.0/(N-Nlow));
+			add_terminal( "#"+str(i), i, 10.0/(N-Nlow));
 		}
 		
 		add("x",             Builtins::X<MyGrammar>);
