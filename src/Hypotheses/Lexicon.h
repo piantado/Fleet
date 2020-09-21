@@ -2,11 +2,11 @@
 
 #include <limits.h>
 
-
-#include "Hash.h"
 #include "Hypotheses/Interfaces/Bayesable.h"
 #include "Hypotheses/Interfaces/MCMCable.h"
 #include "Hypotheses/Interfaces/Searchable.h"
+
+
 
 
 /**
@@ -25,7 +25,7 @@ template<typename this_t,
 		 typename datum_t=defaultdatum_t<input_t, output_t>>
 class Lexicon : public MCMCable<this_t,datum_t>,
 				public Searchable<this_t,input_t,output_t>,
-				public Callable<input_t, output_t, typename INNER::Grammar_t::template VirtualMachineState_t<input_t, output_t>>
+				public Callable<input_t, output_t, typename INNER::Grammar_t::VirtualMachineState_t>
 {
 		// Store a lexicon of type INNER elements
 	const static char FactorDelimiter = '|';
@@ -130,10 +130,10 @@ public:
 		
 		// check to make sure that if we have rn recursive factors, we never try to call F on higher 
 		
-		for(auto& a : factors) {
-			for(const auto& n : a.get_value() ) {
-				if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,BuiltinOp::op_MEM_RECURSE,BuiltinOp::op_SAFE_RECURSE,BuiltinOp::op_SAFE_MEM_RECURSE) ) {
-					int fi = (size_t)n.rule->instr.arg; // which factor is called?
+		for(auto& f : factors) {
+			for(const auto& n : f.get_value() ) {
+				if(n.rule->is_recursive()) {
+					int fi = n.rule->arg; // which factor is called?
 					if(fi >= (int)factors.size() or fi < 0)
 						return false;
 				}
@@ -167,11 +167,8 @@ public:
 		for(size_t i=0;i<N;i++){
 			
 			for(const auto& n : factors[i].get_value() ) {
-				if(n.rule->instr.is_a(BuiltinOp::op_RECURSE,
-									  BuiltinOp::op_MEM_RECURSE,
-									  BuiltinOp::op_SAFE_RECURSE,
-									  BuiltinOp::op_SAFE_MEM_RECURSE)) {
-					calls[i][n.rule->instr.arg] = true;
+				if(n.rule->is_recursive()) {
+					calls[i][n.rule->arg] = true;
 				}
 			}
 		}

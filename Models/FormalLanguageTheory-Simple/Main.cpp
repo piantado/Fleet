@@ -137,16 +137,16 @@ int main(int argc, char** argv){
 	grammar.add("\u00D8",        +[]()         -> S          { return S(""); });
 	grammar.add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; });
 
-	grammar.add("and(%s,%s)",    Builtins::And<MyGrammar>, 1./3.);
-	grammar.add("or(%s,%s)",     Builtins::Or<MyGrammar>, 1./3.);
-	grammar.add("not(%s)",       Builtins::Not<MyGrammar>, 1./3.);
+	grammar.add("and(%s,%s)",    Builtins::And<MyGrammar>);
+	grammar.add("or(%s,%s)",     Builtins::Or<MyGrammar>);
+	grammar.add("not(%s)",       Builtins::Not<MyGrammar>);
 	
 	grammar.add("x",             Builtins::X<MyGrammar>);
 	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
-	grammar.add("flip()",        Builtins::Flip<MyGrammar>);
+	grammar.add("flip()",        Builtins::Flip<MyGrammar>, 10.0);
 	grammar.add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
 		
-		
+//	grammar.add(str)	
 	for(size_t i=0;i<alphabet.length();i++) {
 		const char c = alphabet.at(i);
 		grammar.add<S>( Q(S(1,c)).c_str(), std::function( [=]()->S { return S(1,c); }), 5.0/alphabet.length());
@@ -205,17 +205,17 @@ int main(int argc, char** argv){
 //
 //	return 0;
 	
-	top.print_best = true;
-	auto h0 = MyHypothesis::make(&grammar);
-	ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 1000.0);
-	samp.run(Control(), 100, 30000);		
-	
-
-//	top.print_best = true; // print out each best hypothesis you find
+//	top.print_best = true;
 //	auto h0 = MyHypothesis::make(&grammar);
-//	MCMCChain c(h0, &mydata, top);
-//	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-//	c.run(Control());
+//	ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 1000.0);
+//	samp.run(Control(), 100, 30000);		
+//	
+
+	top.print_best = true; // print out each best hypothesis you find
+	auto h0 = MyHypothesis::make(&grammar);
+	MCMCChain c(h0, &mydata, top);
+	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
+	c.run(Control());
 
 	// run multiple chains
 //	auto h0 = MyHypothesis::make(&grammar);

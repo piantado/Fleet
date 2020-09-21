@@ -245,33 +245,56 @@ public:
 		// TODO: UPDATE FOR DECAY SINCE WE DONT WANT THAT UNTIL WE HAVE REFERENCES AGAIN?
 		return contains_type<X,GRAMMAR_TYPES...>();
 	}
-		
+	
+	/**
+	 * @brief 
+	 * @param fmt
+	 * @param f
+	 * @param p
+	 * @param o
+	 */		
 	template<typename T, typename... args> 
-	void add_vms(const char* fmt, FT* f, double p=1.0, Op o=Op::Standard) {
+	void add_vms(std::string fmt, FT* f, double p=1.0, Op o=Op::Standard, int a=0) {
 		nonterminal_t Tnt = this->nt<T>();
-		Rule r(Tnt, (void*)f, fmt, {nt<args>()...}, p, o);
+		Rule r(Tnt, (void*)f, fmt, {nt<args>()...}, p, o, a);
 		Z[Tnt] += r.p; // keep track of the total probability
 		auto pos = std::lower_bound( rules[Tnt].begin(), rules[Tnt].end(), r);
 		rules[Tnt].insert( pos, r ); // put this before	
 	}
-		
+	
+	/**
+	 * @brief 
+	 * @param fmt
+	 * @param b
+	 * @param p
+	 */		
 	template<typename T, typename... args> 
-	void add(const char* fmt, Builtin<T,args...> b, double p=1.0) {
+	void add(std::string fmt, Builtin<T,args...> b, double p=1.0, int a=0) {
 		// read f and o from b
-		add_vms<T,args...>(fmt, (FT*)b.f, p, b.op);
+		add_vms<T,args...>(fmt, (FT*)b.f, p, b.op, a);
 	}
-		
+	
+	/**
+	 * @brief 
+	 * @param fmt
+	 * @param f
+	 * @param p
+	 * @param o
+	 */	
 	template<typename T, typename... args> 
-	void add(const char* fmt,  std::function<T(args...)> f, double p=1.0, Op o=Op::Standard) {
+	void add(std::string fmt,  std::function<T(args...)> f, double p=1.0, Op o=Op::Standard, int a=0) {
 				
 		// first check that the types are allowed
+		static_assert((not std::is_reference<T>::value) && "*** Primitives cannot return references.");
+		static_assert((not std::is_reference<args>::value && ...) && "*** Arguments cannot be references.");
 		static_assert(is_in_GRAMMAR_TYPES<T>() , "*** Return type is not in GRAMMAR_TYPES");
 		static_assert((is_in_GRAMMAR_TYPES<args>() && ...),	"*** Argument type is not in GRAMMAR_TYPES");
+		
 	
 		// create a lambda on the heap that is a function of a VMS, since
 		// this is what an instruction must be. This implements the calling order convention too. 
 		//auto newf = new auto ( [=](VirtualMachineState_t* vms) -> void {
-		auto fvms = new FT([=](VirtualMachineState_t* vms, int a=0) -> void {
+		auto fvms = new FT([=](VirtualMachineState_t* vms, int _a=0) -> void {
 				assert(vms != nullptr);
 			
 				if constexpr (sizeof...(args) ==  0){	
@@ -301,14 +324,34 @@ public:
 				}
 			});
 			
-		add_vms<T,args...>(fmt, fvms, p, o);
+		add_vms<T,args...>(fmt, fvms, p, o, a);
 	}
 
+	/**
+	 * @brief 
+	 * @param fmt
+	 * @param p
+	 * @param o
+	 */
 	template<typename T, typename... args> 
-	void add(const char* fmt,  T(*_f)(args...), double p=1.0, Op o=Op::Standard) {
-		add<T,args...>(fmt, std::function<T(args...)>(_f), p);
+	void add(std::string fmt,  T(*_f)(args...), double p=1.0, Op o=Op::Standard, int a=0) {
+		add<T,args...>(fmt, std::function<T(args...)>(_f), p, o, a);
 	}	
 	
+	
+	/**
+	 * @brief Add a bunch of elements of something
+	 * @param v
+	 * @param p
+	 */
+//	template<typename T> 
+//	void add_iter(T v, double p=1.0) {
+//		for(auto x : v) {
+//			this->add<decltype(x)>( QQ(str(x)).c_str(), 
+//								    std::function( [=](){ return x; }), 
+//								    p);
+//		}
+//	}	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Methods for getting rules by some info
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -98,36 +98,6 @@ namespace Builtins {
 	});	
 	
 	template<typename Grammar_t>
-	Builtin<typename Grammar_t::output_t, typename Grammar_t::input_t> 
-		Recurse(Op::Recurse, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {
-			
-			using input_t = Grammar_t::VirtualMachineState_t::input_t;
-			
-			assert(vms->program_loader != nullptr);
-							
-			if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
-				vms->status = vmstatus_t::RECURSION_DEPTH;
-				return;
-			}
-
-			// if we get here, then we have processed our arguments and they are stored in the input_t stack. 
-			// so we must move them to the x stack (where there are accessible by op_X)
-			auto mynewx = vms->template getpop<input_t>();
-			vms->xstack.push(std::move(mynewx));
-			vms->program.push(Builtins::PopX<Grammar_t>.makeInstruction()); // we have to remember to remove X once the other program evaluates, *after* everything has evaluated
-			
-			// push this program 
-			// but we give i.arg so that we can pass factorized recursed
-			// in argument if we want to
-			vms->program_loader->push_program(vms->program,arg); 
-			
-			// after execution is done, the result will be pushed onto output_t
-			// which is what gets returned when we are all done
-			
-	});
-	
-	
-	template<typename Grammar_t>
 	Builtin<bool> Flip(Op::Flip, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {
 		assert(vms->pool != nullptr);
 		
@@ -149,7 +119,7 @@ namespace Builtins {
 	
 	
 	template<typename Grammar_t>
-	Builtin<bool> FlipP(Op::FlipP, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {
+	Builtin<bool,double> FlipP(Op::FlipP, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {
 		assert(vms->pool != nullptr);
 		
 		// get the coin weight
@@ -185,6 +155,43 @@ namespace Builtins {
 		}
 	});
 	
+		
+	template<typename Grammar_t>
+	Builtin<> NoOp(Op::NoOp, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {	
+		
+	});
+
+	
+	
+	template<typename Grammar_t>
+	Builtin<typename Grammar_t::output_t, typename Grammar_t::input_t> 
+		Recurse(Op::Recurse, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {
+			
+			using input_t = Grammar_t::VirtualMachineState_t::input_t;
+			
+			assert(vms->program_loader != nullptr);
+							
+			if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
+				vms->status = vmstatus_t::RECURSION_DEPTH;
+				return;
+			}
+
+			// if we get here, then we have processed our arguments and they are stored in the input_t stack. 
+			// so we must move them to the x stack (where there are accessible by op_X)
+			auto mynewx = vms->template getpop<input_t>();
+			vms->xstack.push(std::move(mynewx));
+			vms->program.push(Builtins::PopX<Grammar_t>.makeInstruction()); // we have to remember to remove X once the other program evaluates, *after* everything has evaluated
+			
+			// push this program 
+			// but we give i.arg so that we can pass factorized recursed
+			// in argument if we want to
+			vms->program_loader->push_program(vms->program,arg); 
+			
+			// after execution is done, the result will be pushed onto output_t
+			// which is what gets returned when we are all done
+			
+	});
+	
 	
 	template<typename Grammar_t>
 	Builtin<> SafeRecurse(Op::SafeRecurse, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {	
@@ -213,7 +220,7 @@ namespace Builtins {
 			return;
 		}
 				
-		auto x = vms->template getpop<Grammar_t::input_t>(); // get the argumen
+		auto x = vms->template getpop<typename Grammar_t::input_t>(); // get the argumen
 		auto memindex = std::make_pair(arg,x);
 		
 		if(vms->mem.count(memindex)){
@@ -245,11 +252,6 @@ namespace Builtins {
 		else {
 			MemRecurse<Grammar_t>.call(vms,arg);
 		}
-	});
-	
-	template<typename Grammar_t>
-	Builtin<> NoOp(Op::NoOp, +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void {	
-		
 	});
 
 }

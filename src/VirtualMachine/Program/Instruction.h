@@ -8,6 +8,15 @@
 #include "Ops.h"
 #include "VMStatus.h"
  
+/**
+* @class Instruction
+* @author Steven Piantadosi
+* @date 20/09/20
+* @file Instruction.h
+* @brief f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg
+* 	 is just a supplemental argument, used to pass indices in lexica and jump sizes etc
+*      for other primitives
+*/ 
 struct Instruction { 
 public:
 

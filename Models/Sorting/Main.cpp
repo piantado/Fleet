@@ -220,7 +220,7 @@ int main(int argc, char** argv){
 	// just memorize the data. We'll make it pretty rare
 	for(size_t i=0;i<alphabet.length();i++) {
 		const char c = alphabet.at(i);
-		grammar.add<S>( Q(S(1,c)).c_str(), std::function( [=]()->S { return S(1,c); }), 5./alphabet.length());
+		grammar.add(Q(S(1,c)).c_str(), std::function( [=]()->char { return c; }), 5./alphabet.length());
 	}
 	
 	

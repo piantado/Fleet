@@ -34,7 +34,7 @@ public:
 	// store this information for creating instructions
 	void*				fptr;
 	Op 					op; // for ops that need names
-	
+	int 				arg=0;
 	
 protected:
 	std::vector<nonterminal_t> child_types; // An array of what I expand to; note that this should be const but isn't to allow list initialization (https://stackoverflow.com/questions/5549524/how-do-i-initialize-a-member-array-with-an-initializer-list)
@@ -45,11 +45,12 @@ public:
 	// Rule's constructors convert CustomOp and BuiltinOp to the appropriate instruction types
 	Rule(const nonterminal_t rt, 
 	     void* f, 
-		 const char* fmt, 
+		 const std::string fmt, 
 		 std::initializer_list<nonterminal_t> c, 
 		 double _p=1.0, 
-		 Op o=Op::Standard) :
-		nt(rt), format(fmt), N(c.size()), p(_p), fptr(f),  op(o), child_types(c) {
+		 Op o=Op::Standard, 
+		 int a=0) :
+		nt(rt), format(fmt), N(c.size()), p(_p), fptr(f),  op(o), arg(a), child_types(c) {
 			
 		// Set up hashing for rules (cached so we only do it once)
 		std::hash<std::string> h; 
@@ -60,12 +61,22 @@ public:
 		
 		
 		// check that the format string has the right number of %s
-		assert( N == count(fmt, ChildStr) && "*** Wrong number of format string arguments");
+		if(N != count(fmt, ChildStr)) {
+			CERR "*** Wrong number of format string arguments in " << fmt ENDL;
+			assert(false);
+		}
 	}
 	
 	
 	bool is_a(Op o) const {
 		return o == op;
+	}
+	
+	bool is_recursive() const {
+		return is_a(Op::Recurse) or 
+			   is_a(Op::MemRecurse) or 
+			   is_a(Op::SafeRecurse) or 
+			   is_a(Op::SafeMemRecurse);
 	}
 	
 	Instruction makeInstruction(int a=0) const {
