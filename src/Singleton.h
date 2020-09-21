@@ -1,5 +1,6 @@
 #pragma once 
 
+#include <assert.h>
 
 template<typename T>
 class Singleton {
