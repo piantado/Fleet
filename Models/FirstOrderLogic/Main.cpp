@@ -18,6 +18,7 @@
 
 using S = std::string;
 
+// Define features
 enum class Shape { Rectangle, Triangle, Circle};
 enum class Color { Blue, Yellow, Green};
 enum class Size  { size1, size2, size3};
@@ -78,11 +79,132 @@ using MyInput = std::tuple<MyObject,ObjectSet>; // this is the type of arguments
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "Grammar.h"
+#include "Singleton.h"
 
-using MyGrammar = Grammar<MyInput,bool,   
-						  bool,MyObject,MyInput,ObjectSet,ObjectToBool,ObjectxObjectToBool>;
+class MyGrammar : public Grammar<MyInput,bool,   
+						         bool,MyObject,MyInput,ObjectSet,ObjectToBool,ObjectxObjectToBool>,
+				  public Singleton<MyGrammar> {
+public:
+	MyGrammar() {
+		
+		this->add("true",    +[]() -> bool { return true; }),
+		this->add("false",   +[]() -> bool { return false; }),
+		
+		// these are funny primitives that to fleet are functions with no arguments, but themselves
+		// return functions from objects to bool (ObjectToBool):
+		this->add("yellow",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Yellow);}; }),
+		this->add("green",     +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Green);}; }),
+		this->add("blue",      +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Blue);}; }),
 
-#include "VMSRuntimeError.h"
+		this->add("rectangle", +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Rectangle);}; }),
+		this->add("triangle",  +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Triangle);}; }),
+		this->add("circle",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Circle);}; }),
+		
+		this->add("size1",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Size::size1);}; }),
+		this->add("size2",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Size::size2);}; }),
+		this->add("size3",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Size::size3);}; }),
+		
+		// Define logical operators as operating over the functions. These combine functions from MyObject->Bool into 
+		// new ones from MyObject->Bool. Note that these inner lambdas must capture by copy, not reference, since when we 
+		// call them, a and b may not be around anymore. We've written them with [] to remind us their arguments are functions, not objects
+		// NOTE: These do not short circuit...
+		this->add("and[%s,%s]",   +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) and b(x);}; }, 2.0), // optional specification of prior weight (default=1.0)
+		this->add("or[%s,%s]",    +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) or b(x);}; }), 
+		this->add("not[%s]",      +[](ObjectToBool a)                 -> ObjectToBool { return [=](MyObject x) { return not a(x);}; }), 
+		
+		this->add("nand[%s,%s]",      +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return not(a(x) and b(x));}; }, .25),
+		this->add("nor[%s,%s]",       +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return not(a(x) or b(x));}; }, .25), 
+		this->add("iff[%s,%s]",       +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) == b(x);}; }, .25), 
+		this->add("implies[%s,%s]",   +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return (not a(x)) or b(x);};}, .25 ), 
+		
+		this->add("forall(%s,%s)",   +[](ObjectToBool f, ObjectSet s)    -> bool { 
+			for(auto& x : s) {
+				if(not f(x)) return false;
+			}
+			return true;
+		}), 
+		
+		this->add("exists(%s, %s)",   +[](ObjectToBool f, ObjectSet s)    -> bool { 
+			for(auto& x : s) {
+				if(f(x)) return true;
+			}
+			return false;
+		}), 
+		
+		this->add("contains(%s, %s)",   +[](MyObject z, ObjectSet s)    -> bool { 
+			for(auto& x : s) {
+				if(z == x) return true;
+			}
+			return false;
+		}), 
+		
+		this->add("filter(%s, %s)",   +[](ObjectSet s, ObjectToBool f)    -> ObjectSet { 
+			ObjectSet out;
+			for(auto& x : s) {
+				if(f(x)) out.push_back(x);
+			}
+			return out;
+		}), 
+		
+		this->add("empty(%s)",   +[](ObjectSet s)    -> bool { 
+			return s.empty();
+		}), 
+
+		this->add("iota(%s)",   +[](ObjectSet s)    -> MyObject { 
+			// return the unique element in the set. If not, we throw an exception
+			// which must be caught in calling below. 
+			if(s.size() != 1) throw VMSRuntimeError();
+			else             return *s.begin();
+		}), 
+		
+		// Relations -- these will require currying
+		this->add("same_shape",   +[]() -> ObjectxObjectToBool { 
+			return +[](MyObject x, MyObject y) { return x.get<Shape>() == y.get<Shape>();}; 
+		}),
+		
+		this->add("same_color",   +[]() -> ObjectxObjectToBool { 
+			return +[](MyObject x, MyObject y) { return x.get<Color>() == y.get<Color>();}; 
+		}),
+		
+		this->add("same_size",   +[]() -> ObjectxObjectToBool { 
+			return +[](MyObject x, MyObject y) { return x.get<Size>() == y.get<Size>();}; 
+		}),
+		
+		this->add("size-lt",   +[]() -> ObjectxObjectToBool { 
+			// we can cast to int to compare gt size
+			return +[](MyObject x, MyObject y) { return (int)x.get<Size>() < (int)y.get<Size>();}; 
+		}, 0.25),
+		
+		this->add("size-leq",   +[]() -> ObjectxObjectToBool { 
+			// we can cast to int to compare gt size
+			return +[](MyObject x, MyObject y) { return (int)x.get<Size>() <= (int)y.get<Size>();}; 
+		}, 0.25),
+		
+		// Since we only curry by taking the first arg, we include both orders here (and give them low priors)
+		this->add("size-gt",   +[]() -> ObjectxObjectToBool { 
+			// we can cast to int to compare gt size
+			return +[](MyObject x, MyObject y) { return (int)x.get<Size>() > (int)y.get<Size>();}; 
+		}, 0.25),
+		
+		this->add("size-geq",   +[]() -> ObjectxObjectToBool { 
+			// we can cast to int to compare gt size
+			return +[](MyObject x, MyObject y) { return (int)x.get<Size>() >= (int)y.get<Size>();}; 
+		}, 0.25),
+		
+		this->add("apply(%s,%s)",   +[](ObjectxObjectToBool f, MyObject x) -> ObjectToBool { 
+			return [f,x](MyObject y) { return f(x,y); }; 
+		}),
+		
+		// add an application operator
+		this->add("apply(%s,%s)",       +[](ObjectToBool f, MyObject x)  -> bool { return f(x); }, 10.0),
+		
+		// And we assume that we're passed a tuple of an object and set
+		this->add("%s.o",       +[](MyInput t)  -> MyObject  { return std::get<0>(t); }),
+		this->add("%s.s",       +[](MyInput t)  -> ObjectSet { return std::get<1>(t); }),
+		this->add("x",          Builtins::X<MyGrammar>);
+		
+	}
+};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define a class for handling my specific hypotheses and data. Everything is defaultly 
@@ -128,122 +250,6 @@ int main(int argc, char** argv){
 	// Define the grammar (default initialize using our primitives will add all those rules)
 	// in doing this, grammar deduces the types from the input and output types of each primitive
 	MyGrammar grammar;
-	
-	grammar.add("true",    +[]() -> bool { return true; }),
-	grammar.add("false",   +[]() -> bool { return false; }),
-	
-	// these are funny primitives that to fleet are functions with no arguments, but themselves
-	// return functions from objects to bool (ObjectToBool):
-	grammar.add("yellow",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Yellow);}; }),
-	grammar.add("green",     +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Green);}; }),
-	grammar.add("blue",      +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Blue);}; }),
-
-	grammar.add("rectangle", +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Rectangle);}; }),
-	grammar.add("triangle",  +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Triangle);}; }),
-	grammar.add("circle",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Circle);}; }),
-	
-	grammar.add("size1",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Size::size1);}; }),
-	grammar.add("size2",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Size::size2);}; }),
-	grammar.add("size3",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Size::size3);}; }),
-	
-	// Define logical operators as operating over the functions. These combine functions from MyObject->Bool into 
-	// new ones from MyObject->Bool. Note that these inner lambdas must capture by copy, not reference, since when we 
-	// call them, a and b may not be around anymore. We've written them with [] to remind us their arguments are functions, not objects
-	// NOTE: These do not short circuit...
-	grammar.add("and[%s,%s]",   +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) and b(x);}; }, 2.0), // optional specification of prior weight (default=1.0)
-	grammar.add("or[%s,%s]",    +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) or b(x);}; }), 
-	grammar.add("not[%s]",      +[](ObjectToBool a)                 -> ObjectToBool { return [=](MyObject x) { return not a(x);}; }), 
-	
-	grammar.add("nand[%s,%s]",      +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return not(a(x) and b(x));}; }, .25),
-	grammar.add("nor[%s,%s]",       +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return not(a(x) or b(x));}; }, .25), 
-	grammar.add("iff[%s,%s]",       +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) == b(x);}; }, .25), 
-	grammar.add("implies[%s,%s]",   +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return (not a(x)) or b(x);};}, .25 ), 
-	
-	grammar.add("forall(%s,%s)",   +[](ObjectToBool f, ObjectSet s)    -> bool { 
-		for(auto& x : s) {
-			if(not f(x)) return false;
-		}
-		return true;
-	}), 
-	
-	grammar.add("exists(%s, %s)",   +[](ObjectToBool f, ObjectSet s)    -> bool { 
-		for(auto& x : s) {
-			if(f(x)) return true;
-		}
-		return false;
-	}), 
-	
-	grammar.add("contains(%s, %s)",   +[](MyObject z, ObjectSet s)    -> bool { 
-		for(auto& x : s) {
-			if(z == x) return true;
-		}
-		return false;
-	}), 
-	
-	grammar.add("filter(%s, %s)",   +[](ObjectSet s, ObjectToBool f)    -> ObjectSet { 
-		ObjectSet out;
-		for(auto& x : s) {
-			if(f(x)) out.push_back(x);
-		}
-		return out;
-	}), 
-	
-	grammar.add("empty(%s)",   +[](ObjectSet s)    -> bool { 
-		return s.empty();
-	}), 
-
-	grammar.add("iota(%s)",   +[](ObjectSet s)    -> MyObject { 
-		// return the unique element in the set. If not, we throw an exception
-		// which must be caught in calling below. 
-		if(s.size() != 1) throw VMSRuntimeError();
-		else             return *s.begin();
-	}), 
-	
-	// Relations -- these will require currying
-	grammar.add("same_shape",   +[]() -> ObjectxObjectToBool { 
-		return +[](MyObject x, MyObject y) { return x.get<Shape>() == y.get<Shape>();}; 
-	}),
-	
-	grammar.add("same_color",   +[]() -> ObjectxObjectToBool { 
-		return +[](MyObject x, MyObject y) { return x.get<Color>() == y.get<Color>();}; 
-	}),
-	
-	grammar.add("same_size",   +[]() -> ObjectxObjectToBool { 
-		return +[](MyObject x, MyObject y) { return x.get<Size>() == y.get<Size>();}; 
-	}),
-	
-	grammar.add("size-lt",   +[]() -> ObjectxObjectToBool { 
-		// we can cast to int to compare gt size
-		return +[](MyObject x, MyObject y) { return (int)x.get<Size>() < (int)y.get<Size>();}; 
-	}, 0.25),
-	
-	grammar.add("size-leq",   +[]() -> ObjectxObjectToBool { 
-		// we can cast to int to compare gt size
-		return +[](MyObject x, MyObject y) { return (int)x.get<Size>() <= (int)y.get<Size>();}; 
-	}, 0.25),
-	
-	// Since we only curry by taking the first arg, we include both orders here (and give them low priors)
-	grammar.add("size-gt",   +[]() -> ObjectxObjectToBool { 
-		// we can cast to int to compare gt size
-		return +[](MyObject x, MyObject y) { return (int)x.get<Size>() > (int)y.get<Size>();}; 
-	}, 0.25),
-	
-	grammar.add("size-geq",   +[]() -> ObjectxObjectToBool { 
-		// we can cast to int to compare gt size
-		return +[](MyObject x, MyObject y) { return (int)x.get<Size>() >= (int)y.get<Size>();}; 
-	}, 0.25),
-	
-	grammar.add("apply(%s,%s)",   +[](ObjectxObjectToBool f, MyObject x) -> ObjectToBool { 
-		return [f,x](MyObject y) { return f(x,y); }; 
-	}),
-	
-	// add an application operator
-	grammar.add("apply(%s,%s)",       +[](ObjectToBool f, MyObject x)  -> bool { return f(x); }, 10.0),
-	
-	// And we assume that we're passed a tuple of an object and set
-	grammar.add("%s.o",       +[](MyInput t)  -> MyObject  { return std::get<0>(t); }),
-	grammar.add("%s.s",       +[](MyInput t)  -> ObjectSet { return std::get<1>(t); }),
-	grammar.add("x",          Builtins::X<MyGrammar>);
 	
 	//------------------
 	// set up the data

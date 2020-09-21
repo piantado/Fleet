@@ -37,16 +37,163 @@ unsigned long PRINT_STRINGS; // print at most this many strings for each hypothe
 std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000"}; // how many data points do we run on?
 //std::vector<S> data_amounts={"100"}; // how many data points do we run on?
 
-// Parameters for running a virtual machine
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare a grammar
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 
-#include "Grammar.h"
 
-using MyGrammar = Grammar<S,S,
-						  S,bool,double,StrSet>;
+#include "Grammar.h"
+#include "Singleton.h"
+
+class MyGrammar : public Grammar<S,S,     S,bool,double,StrSet>,
+				  public Singleton<MyGrammar> {
+public:
+	MyGrammar() {
+		add("tail(%s)", +[](S s) -> S { 
+			if(s.length()>0) 
+				s.erase(0); 
+			return s;
+		});
+		
+		
+		add("pair(%s,%s)",   +[](S a, S b) -> S { 
+				if(a.length() + b.length() > max_length) 
+					throw VMSRuntimeError();
+				return a+b;
+		});
+
+		add("head(%s)", +[](S s) -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
+		add("\u00D8", +[]() -> S { return S(""); }, 10.0);
+		add("(%s==%s)", +[](S x, S y) -> bool { return x==y; });
+		add("empty(%s)", +[](S x) -> bool { 	return x.length()==0; });
+		
+		add("insert(%s,%s)", +[](S x, S y) -> S { 
+			size_t l = x.length();
+			if(l == 0) 
+				return y;
+			else if(l + y.length() > max_length) 
+				throw VMSRuntimeError();
+			else {
+				// put y into the middle of x
+				size_t pos = l/2;
+				S out = x.substr(0, pos); 
+				out.append(y);
+				out.append(x.substr(pos));
+				return out;
+			}				
+		}, 0.2);
+		
+		
+		// add an alphabet symbol (\Sigma)
+		add("\u03A3", +[]() -> StrSet {
+			StrSet out; 
+			for(const auto& a: alphabet) {
+				out.emplace(1,a);
+			}
+			return out;
+		}, 5.0);
+		
+		// set operations:
+		add("{%s}", +[](S x) -> StrSet  { 
+			StrSet s; s.insert(x); return s; 
+		}, 10.0);
+		
+		add("(%s\u222A%s)", +[](StrSet s, StrSet x) -> StrSet { 
+			for(auto& xi : x) {
+				s.insert(xi);
+				if(s.size() > max_setsize) throw VMSRuntimeError();
+			}
+			return s;
+		});
+		
+		add("(%s\u2216%s)", +[](StrSet s, StrSet x) -> StrSet {
+			StrSet output; 
+			
+			// this would usually be implemented like this, but it's overkill (and slower) because normally 
+			// we just have single elemnents
+			std::set_difference(s.begin(), s.end(), x.begin(), x.end(), std::inserter(output, output.begin()));
+			
+			return output;
+		});
+
+		// Define our custom op here, which works on the VMS, because otherwise sampling is very slow
+		// here we can optimize the small s examples
+		add_vms<S,StrSet>("sample(%s)", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
+						
+			// implement sampling from the set.
+			// to do this, we read the set and then push all the alternatives onto the stack
+			StrSet s = vms->template getpop<StrSet>();
+				
+			if(s.size() == 0 or s.size() > max_setsize) {
+				throw VMSRuntimeError();
+			}
+			
+			// One useful optimization here is that sometimes that set only has one element. So first we check that, and if so we don't need to do anything 
+			// also this is especially convenient because we only have one element to pop
+			if(s.size() == 1) {
+				auto it = s.begin();
+				S x = *it;
+				vms->push<S>(std::move(x));
+			}
+			else {
+				// else there is more than one, so we have to copy the stack and increment the lp etc for each
+				// NOTE: The function could just be this latter branch, but that's much slower because it copies vms
+				// even for single stack elements
+				
+				// now just push on each, along with their probability
+				// which is here decided to be uniform.
+				const double lp = -log(s.size());
+				for(const auto& x : s) {
+					bool b = vms->pool->copy_increment_push(vms,x,lp);
+					if(not b) break; // we can break since all of these have the same lp -- if we don't add one, we won't add any!
+				}
+				
+				vms->status = vmstatus_t::RANDOM_CHOICE; // we don't continue with this context		
+			}
+		}));
+			
+		add("and(%s,%s)",    Builtins::And<MyGrammar>);
+		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
+		add("not(%s)",       Builtins::Not<MyGrammar>);
+		
+		add("x",             Builtins::X<MyGrammar>, 5);
+		
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,StrSet>);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,double>);
+
+		add("flip(%s)",      Builtins::FlipP<MyGrammar>, 10.0);
+
+		for(size_t a=0;a<nfactors;a++) {	
+			// here we pass in a as a index into these recursive arguments since it
+			// gets passed to the program loader
+			
+			auto s = std::to_string(a);
+			double p = 1.0/(4*nfactors); // NOTE: Slightly different prior
+
+			add(S("F")+s+"(%s)" ,  Builtins::Recurse<MyGrammar>, p, a);
+			add(S("Fm")+s+"(%s)",  Builtins::MemRecurse<MyGrammar>, p, a);
+
+			add(S("Fs")+s+"(%s)",  Builtins::SafeRecurse<MyGrammar>, p, a);
+			add(S("Fms")+s+"(%s)", Builtins::SafeMemRecurse<MyGrammar>, p, a);
+		}
+			
+		for(size_t i=0;i<alphabet.length();i++) {
+			const char c = alphabet.at(i);
+			add<S>( Q(S(1,c)), std::function( [=]()->S { return S(1,c); }), 5.0/alphabet.length());
+		}
+		
+		const int pdenom=24;
+		for(int a=1;a<=pdenom/2;a++) { 
+			std::string s = str(a/std::gcd(a,pdenom)) + "/" + str(pdenom/std::gcd(a,pdenom)); 
+			if(a==pdenom/2) {
+				add( s, std::function( [=]()->double { return double(a)/pdenom; }), 5.0);
+			}
+			else {
+				add( s, std::function( [=]()->double { return double(a)/pdenom; }), 1.0);
+			}
+		}
+	}
+};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
@@ -168,167 +315,6 @@ int main(int argc, char** argv){
 	COUT "# Using alphabet=" << alphabet ENDL;
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Define the grammar
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
-	MyGrammar grammar;
-	
-	grammar.add("tail(%s)", +[](S s) -> S { 
-		if(s.length()>0) 
-			s.erase(0); 
-		return s;
-	});
-	
-	grammar.add("head(%s)", +[](S s) -> S { 
-		return (s.empty() ? S("") : S(1,s.at(0))); 
-	});
-	
-	grammar.add("pair(%s,%s)",   +[](S a, S b) -> S { 
-			if(a.length() + b.length() > max_length) 
-				throw VMSRuntimeError();
-			return a+b;
-	});
-
-	grammar.add("\u00D8", +[]() -> S { 
-		return S(""); 
-	}, 10.0);
-	
-	grammar.add("(%s==%s)", +[](S x, S y) -> bool { 
-		return x==y; 
-	});
-	
-	grammar.add("empty(%s)", +[](S x) -> bool { 
-		return x.length()==0; 
-	});
-	
-	grammar.add("insert(%s,%s)", +[](S x, S y) -> S { 
-		size_t l = x.length();
-		if(l == 0) 
-			return y;
-		else if(l + y.length() > max_length) 
-			throw VMSRuntimeError();
-		else {
-			// put y into the middle of x
-			size_t pos = l/2;
-			S out = x.substr(0, pos); 
-			out.append(y);
-			out.append(x.substr(pos));
-			return out;
-		}				
-	}, 0.2);
-	
-	
-	// add an alphabet symbol (\Sigma)
-	grammar.add("\u03A3", +[]() -> StrSet {
-		StrSet out; 
-		for(const auto& a: alphabet) {
-			out.emplace(1,a);
-		}
-		return out;
-	}, 5.0);
-	
-	// set operations:
-	grammar.add("{%s}", +[](S x) -> StrSet  { 
-		StrSet s; s.insert(x); return s; 
-	}, 10.0);
-	
-	grammar.add("(%s\u222A%s)", +[](StrSet s, StrSet x) -> StrSet { 
-		for(auto& xi : x) {
-			s.insert(xi);
-			if(s.size() > max_setsize) throw VMSRuntimeError();
-		}
-		return s;
-	});
-	
-	grammar.add("(%s\u2216%s)", +[](StrSet s, StrSet x) -> StrSet {
-		StrSet output; 
-		
-		// this would usually be implemented like this, but it's overkill (and slower) because normally 
-		// we just have single elemnents
-		std::set_difference(s.begin(), s.end(), x.begin(), x.end(), std::inserter(output, output.begin()));
-		
-		return output;
-	});
-
-	// Define our custom op here, which works on the VMS, because otherwise sampling is very slow
-	// here we can optimize the small s examples
-	grammar.add_vms<S,StrSet>("sample(%s)", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
-					
-		// implement sampling from the set.
-		// to do this, we read the set and then push all the alternatives onto the stack
-		StrSet s = vms->template getpop<StrSet>();
-			
-		if(s.size() == 0 or s.size() > max_setsize) {
-			throw VMSRuntimeError();
-		}
-		
-		// One useful optimization here is that sometimes that set only has one element. So first we check that, and if so we don't need to do anything 
-		// also this is especially convenient because we only have one element to pop
-		if(s.size() == 1) {
-			auto it = s.begin();
-			S x = *it;
-			vms->push<S>(std::move(x));
-		}
-		else {
-			// else there is more than one, so we have to copy the stack and increment the lp etc for each
-			// NOTE: The function could just be this latter branch, but that's much slower because it copies vms
-			// even for single stack elements
-			
-			// now just push on each, along with their probability
-			// which is here decided to be uniform.
-			const double lp = -log(s.size());
-			for(const auto& x : s) {
-				bool b = vms->pool->copy_increment_push(vms,x,lp);
-				if(not b) break; // we can break since all of these have the same lp -- if we don't add one, we won't add any!
-			}
-			
-			vms->status = vmstatus_t::RANDOM_CHOICE; // we don't continue with this context		
-		}
-	}));
-		
-	grammar.add("and(%s,%s)",    Builtins::And<MyGrammar>);
-	grammar.add("or(%s,%s)",     Builtins::Or<MyGrammar>);
-	grammar.add("not(%s)",       Builtins::Not<MyGrammar>);
-	
-	grammar.add("x",             Builtins::X<MyGrammar>, 5);
-	
-	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
-	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,StrSet>);
-	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,double>);
-
-	grammar.add("flip(%s)",      Builtins::FlipP<MyGrammar>, 10.0);
-
-	for(size_t a=0;a<nfactors;a++) {	
-		// here we pass in a as a index into these recursive arguments since it
-		// gets passed to the program loader
-		
-		auto s = std::to_string(a);
-		double p = 1.0/(4*nfactors); // NOTE: Slightly different prior
-
-		grammar.add(S("F")+s+"(%s)" ,  Builtins::Recurse<MyGrammar>, p, a);
-		grammar.add(S("Fm")+s+"(%s)",  Builtins::MemRecurse<MyGrammar>, p, a);
-
-		grammar.add(S("Fs")+s+"(%s)",  Builtins::SafeRecurse<MyGrammar>, p, a);
-		grammar.add(S("Fms")+s+"(%s)", Builtins::SafeMemRecurse<MyGrammar>, p, a);
-	}
-		
-	for(size_t i=0;i<alphabet.length();i++) {
-		const char c = alphabet.at(i);
-		grammar.add<S>( Q(S(1,c)), std::function( [=]()->S { return S(1,c); }), 5.0/alphabet.length());
-	}
-	
-	const int pdenom=24;
-	for(int a=1;a<=pdenom/2;a++) { 
-		std::string s = str(a/std::gcd(a,pdenom)) + "/" + str(pdenom/std::gcd(a,pdenom)); 
-		if(a==pdenom/2) {
-			grammar.add( s, std::function( [=]()->double { return double(a)/pdenom; }), 5.0);
-		}
-		else {
-			grammar.add( s, std::function( [=]()->double { return double(a)/pdenom; }), 1.0);
-		}
-	}
-	
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Load the data
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
@@ -360,6 +346,8 @@ int main(int argc, char** argv){
 	// Actually run
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
+	MyGrammar grammar;
+		
 	// Build up an initial hypothesis with the right number of factors
 	MyHypothesis h0; 
 	for(size_t fi=0;fi<nfactors;fi++) {// start with the right number of factors

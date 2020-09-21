@@ -66,10 +66,139 @@ double ANSdiff(const double n1, const double n2) {  // SD of the weber value
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
 #include "Grammar.h"
+#include "Singleton.h"
 
-using MyGrammar = Grammar<utterance,word,
-						  bool,word,set,objectkind,utterance,wmset,magnitude,double>;
+class MyGrammar : public Grammar<utterance,word,      bool,word,set,objectkind,utterance,wmset,magnitude,double>,
+				  public Singleton<MyGrammar> {
+public:
+	MyGrammar() {
+			
+		add("undef",         +[]() -> word { return U; });
+		
+		add("a",         +[]() -> objectkind { return 'a'; });
+		add("b",         +[]() -> objectkind { return 'b'; });
+		add("c",         +[]() -> objectkind { return 'c'; });
+		add("d",         +[]() -> objectkind { return 'd'; });
+		add("e",         +[]() -> objectkind { return 'e'; });
+		
+		add("one",         +[]() -> word { return 1; }, 0.1);
+		add("two",         +[]() -> word { return 2; }, 0.1);
+		add("three",       +[]() -> word { return 3; }, 0.1);
+		add("four",        +[]() -> word { return 4; }, 0.1);
+		add("five",        +[]() -> word { return 5; }, 0.1);
+		add("six",         +[]() -> word { return 6; }, 0.1);
+		add("seven",       +[]() -> word { return 7; }, 0.1);
+		add("eight",       +[]() -> word { return 8; }, 0.1);
+		add("nine",        +[]() -> word { return 9; }, 0.1);
+		add("ten",         +[]() -> word { return 10; }, 0.1);
+		
+		add("next(%s)",    +[](word w) -> word { return w == U ? U : w+1;});
+		add("prev(%s)",    +[](word w) -> word { return w == U or w == 1 ? U : w-1; });
+		
+		// extract from the context/utterance
+		add("%s.set",      +[](utterance u) -> set    { return u.s; }, 25.0);
+		add("%s.obj",      +[](utterance u) -> objectkind { return u.o; }, 10.0);
+		
+		// build utterances -- needed for useful recursion
+		add("<%s,%s>",     +[](set s, objectkind o) -> utterance { return utterance{s,o}; });
+		
+		add("union(%s,%s)", +[](set x, set y) -> set { 
+			if(x.size()+y.size() > MAX_SET_SIZE) 
+				throw VMSRuntimeError(); 
+			return x+y; 
+		});
+		
+		add("intersection(%s,%s)", +[](set x, set y) -> set {
+			std::string out = "";
+			for(size_t yi=0;yi<y.length();yi++) {
+				std::string s = y.substr(yi,1);
+				size_t pos = x.find(s); // do I occur?
+				if(pos != std::string::npos) {
+					out.append(s);
+				}
+			}
+			return out;
+		});
+		
+		add("difference(%s,%s)", +[](set x, set y) -> set {
+			std::string out = x;
+			for(size_t yi=0;yi<y.length();yi++) {
+				std::string s = y.substr(yi,1);
+				size_t pos = out.find(s); // do I occur?
+				if(pos != std::string::npos) {
+					out.erase(pos,1); // remove that character
+				}
+			}
+			return out;
+		});
+		
+		add("filter(%s,%s)", +[](set x, objectkind t) -> set {
+			std::string tstr = std::string(1,t); // a std::string to find
+			std::string out = "";
+			size_t pos = x.find(tstr);
+			while (pos != std::string::npos) {
+				out = out + tstr;
+				pos = x.find(tstr,pos+1);
+			}
+			return out;
+		});
+		
+		add("select(%s)",      +[](set x) -> set { 
+			return x.substr(0,1); 
+		});
+		
+		add("selectO(%s,%s)",  +[](set x, objectkind o) -> set {
+			if(x.find(o) != std::string::npos){
+				return std::string(1,o); // must exist there
+			}
+			else {
+				return set("");
+			}
+		});
+		
+		add("match(%s,%s)",  +[](wmset x, set s) -> bool { return x == (wmset)s.size(); }, 1.0);
+		add("{}",            +[]() -> wmset { return (wmset)0; });
+		add("{o}",           +[]() -> wmset { return (wmset)1; });
+		add("{o,o}",         +[]() -> wmset { return (wmset)2; });
+		add("{o,o,o}",       +[]() -> wmset { return (wmset)3; });
+			
+		// ANS operations 
+		add("ANSeq(%s,%s)",     +[](set a, set b)       -> double { return ANSzero(a.length(), b.length()); }, 1.0/3.0);
+		add("ANSeq(%s,%s)",     +[](set a, wmset b)     -> double { return ANSzero(a.length(), b); }, 1.0/3.0);
+		add("ANSeq(%s,%s)",     +[](set a, magnitude b) -> double { return ANSzero(a.length(), b); }, 1.0/3.0);
+		
+		add("ANSlt(%s,%s)",     +[](set a, set b)       -> double { return 1.0-normcdf(ANSdiff(a.length(), b.length())); }, 1.0/5.0);
+		add("ANSlt(%s,%s)",     +[](set a, wmset b)     -> double { return 1.0-normcdf(ANSdiff(a.length(), b)); }, 1.0/5.0);
+		add("ANSlt(%s,%s)",     +[](set a, magnitude b) -> double { return 1.0-normcdf(ANSdiff(a.length(), b)); }, 1.0/5.0);
+		add("ANSlt(%s,%s)",     +[](wmset b, set a)     -> double { return 1.0-normcdf(ANSdiff(b, a.length())); }, 1.0/5.0);
+		add("ANSlt(%s,%s)",     +[](magnitude b, set a) -> double { return 1.0-normcdf(ANSdiff(b, a.length())); }, 1.0/5.0);
 
+		add("1",     +[]() -> magnitude { return 1; });
+		add("2",     +[]() -> magnitude { return 2; });
+		add("3",     +[]() -> magnitude { return 3; });
+		add("4",     +[]() -> magnitude { return 4; });
+		add("5",     +[]() -> magnitude { return 5; });
+		add("6",     +[]() -> magnitude { return 6; });
+		add("7",     +[]() -> magnitude { return 7; });
+		add("8",     +[]() -> magnitude { return 8; });
+		add("9",     +[]() -> magnitude { return 9; });
+		add("10",    +[]() -> magnitude { return 10; });
+		
+		add("and(%s,%s)",    Builtins::And<MyGrammar>, 1./3);
+		add("or(%s,%s)",     Builtins::Or<MyGrammar>, 1./3);
+		add("not(%s)",       Builtins::Not<MyGrammar>, 1./3);
+		
+		add("x",             Builtins::X<MyGrammar>, 10.);
+		add("flip()",        Builtins::Flip<MyGrammar>, 2.0);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,set>,        1./5);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,word>,       1./5);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,wmset>,      1./5);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,objectkind>, 1./5);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,magnitude>,  1./5);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,utterance>,  1./5);
+		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
+	}
+};
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -235,132 +364,6 @@ int main(int argc, char** argv) {
 	VirtualMachineControl::MAX_OUTPUTS = 128;
 
 	MyGrammar grammar;
-	
-	grammar.add("undef",         +[]() -> word { return U; });
-	
-	grammar.add("a",         +[]() -> objectkind { return 'a'; });
-	grammar.add("b",         +[]() -> objectkind { return 'b'; });
-	grammar.add("c",         +[]() -> objectkind { return 'c'; });
-	grammar.add("d",         +[]() -> objectkind { return 'd'; });
-	grammar.add("e",         +[]() -> objectkind { return 'e'; });
-	
-	grammar.add("one",         +[]() -> word { return 1; }, 0.1);
-	grammar.add("two",         +[]() -> word { return 2; }, 0.1);
-	grammar.add("three",       +[]() -> word { return 3; }, 0.1);
-	grammar.add("four",        +[]() -> word { return 4; }, 0.1);
-	grammar.add("five",        +[]() -> word { return 5; }, 0.1);
-	grammar.add("six",         +[]() -> word { return 6; }, 0.1);
-	grammar.add("seven",       +[]() -> word { return 7; }, 0.1);
-	grammar.add("eight",       +[]() -> word { return 8; }, 0.1);
-	grammar.add("nine",        +[]() -> word { return 9; }, 0.1);
-	grammar.add("ten",         +[]() -> word { return 10; }, 0.1);
-	
-	grammar.add("next(%s)",    +[](word w) -> word { return w == U ? U : w+1;});
-	grammar.add("prev(%s)",    +[](word w) -> word { return w == U or w == 1 ? U : w-1; });
-	
-	// extract from the context/utterance
-	grammar.add("%s.set",      +[](utterance u) -> set    { return u.s; }, 25.0);
-	grammar.add("%s.obj",      +[](utterance u) -> objectkind { return u.o; }, 10.0);
-	
-	// build utterances -- needed for useful recursion
-	grammar.add("<%s,%s>",     +[](set s, objectkind o) -> utterance { return utterance{s,o}; });
-	
-	grammar.add("union(%s,%s)", +[](set x, set y) -> set { 
-		if(x.size()+y.size() > MAX_SET_SIZE) 
-			throw VMSRuntimeError(); 
-		return x+y; 
-	});
-	
-	grammar.add("intersection(%s,%s)", +[](set x, set y) -> set {
-		std::string out = "";
-		for(size_t yi=0;yi<y.length();yi++) {
-			std::string s = y.substr(yi,1);
-			size_t pos = x.find(s); // do I occur?
-			if(pos != std::string::npos) {
-				out.append(s);
-			}
-		}
-		return out;
-	});
-	
-	grammar.add("difference(%s,%s)", +[](set x, set y) -> set {
-		std::string out = x;
-		for(size_t yi=0;yi<y.length();yi++) {
-			std::string s = y.substr(yi,1);
-			size_t pos = out.find(s); // do I occur?
-			if(pos != std::string::npos) {
-				out.erase(pos,1); // remove that character
-			}
-		}
-		return out;
-	});
-	
-	grammar.add("filter(%s,%s)", +[](set x, objectkind t) -> set {
-		std::string tstr = std::string(1,t); // a std::string to find
-		std::string out = "";
-		size_t pos = x.find(tstr);
-		while (pos != std::string::npos) {
-			out = out + tstr;
-			pos = x.find(tstr,pos+1);
-		}
-		return out;
-	});
-	
-	grammar.add("select(%s)",      +[](set x) -> set { 
-		return x.substr(0,1); 
-	});
-	
-	grammar.add("selectO(%s,%s)",  +[](set x, objectkind o) -> set {
-		if(x.find(o) != std::string::npos){
-			return std::string(1,o); // must exist there
-		}
-		else {
-			return set("");
-		}
-	});
-	
-	grammar.add("match(%s,%s)",  +[](wmset x, set s) -> bool { return x == (wmset)s.size(); }, 1.0);
-	grammar.add("{}",            +[]() -> wmset { return (wmset)0; });
-	grammar.add("{o}",           +[]() -> wmset { return (wmset)1; });
-	grammar.add("{o,o}",         +[]() -> wmset { return (wmset)2; });
-	grammar.add("{o,o,o}",       +[]() -> wmset { return (wmset)3; });
-		
-	// ANS operations 
-	grammar.add("ANSeq(%s,%s)",     +[](set a, set b)       -> double { return ANSzero(a.length(), b.length()); }, 1.0/3.0);
-	grammar.add("ANSeq(%s,%s)",     +[](set a, wmset b)     -> double { return ANSzero(a.length(), b); }, 1.0/3.0);
-	grammar.add("ANSeq(%s,%s)",     +[](set a, magnitude b) -> double { return ANSzero(a.length(), b); }, 1.0/3.0);
-	
-	grammar.add("ANSlt(%s,%s)",     +[](set a, set b)       -> double { return 1.0-normcdf(ANSdiff(a.length(), b.length())); }, 1.0/5.0);
-	grammar.add("ANSlt(%s,%s)",     +[](set a, wmset b)     -> double { return 1.0-normcdf(ANSdiff(a.length(), b)); }, 1.0/5.0);
-	grammar.add("ANSlt(%s,%s)",     +[](set a, magnitude b) -> double { return 1.0-normcdf(ANSdiff(a.length(), b)); }, 1.0/5.0);
-	grammar.add("ANSlt(%s,%s)",     +[](wmset b, set a)     -> double { return 1.0-normcdf(ANSdiff(b, a.length())); }, 1.0/5.0);
-	grammar.add("ANSlt(%s,%s)",     +[](magnitude b, set a) -> double { return 1.0-normcdf(ANSdiff(b, a.length())); }, 1.0/5.0);
-
-	grammar.add("1",     +[]() -> magnitude { return 1; });
-	grammar.add("2",     +[]() -> magnitude { return 2; });
-	grammar.add("3",     +[]() -> magnitude { return 3; });
-	grammar.add("4",     +[]() -> magnitude { return 4; });
-	grammar.add("5",     +[]() -> magnitude { return 5; });
-	grammar.add("6",     +[]() -> magnitude { return 6; });
-	grammar.add("7",     +[]() -> magnitude { return 7; });
-	grammar.add("8",     +[]() -> magnitude { return 8; });
-	grammar.add("9",     +[]() -> magnitude { return 9; });
-	grammar.add("10",    +[]() -> magnitude { return 10; });
-	
-	grammar.add("and(%s,%s)",    Builtins::And<MyGrammar>, 1./3);
-	grammar.add("or(%s,%s)",     Builtins::Or<MyGrammar>, 1./3);
-	grammar.add("not(%s)",       Builtins::Not<MyGrammar>, 1./3);
-	
-	grammar.add("x",             Builtins::X<MyGrammar>, 10.);
-	grammar.add("flip()",        Builtins::Flip<MyGrammar>, 2.0);
-	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,set>,        1./5);
-	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,word>,       1./5);
-	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,wmset>,      1./5);
-	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,objectkind>, 1./5);
-	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,magnitude>,  1./5);
-	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,utterance>,  1./5);
-	grammar.add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
-
 	
 	
 	

@@ -260,5 +260,19 @@ namespace Builtins {
 		}
 	});
 
+
+	// Combinatory logic operations
+	template<typename Grammar_t>
+	Builtin<> CL_I(Op::CL_I, BUILTIN_LAMBDA {assert(false);});
+
+	template<typename Grammar_t>
+	Builtin<> CL_S(Op::CL_S, BUILTIN_LAMBDA {assert(false);});
+
+	template<typename Grammar_t>
+	Builtin<> CL_K(Op::CL_K, BUILTIN_LAMBDA {assert(false);});
+
+	template<typename Grammar_t>
+	Builtin<> CL_Apply(Op::CL_Apply, BUILTIN_LAMBDA {assert(false);});
+
 }
 

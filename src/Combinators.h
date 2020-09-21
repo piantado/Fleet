@@ -11,6 +11,12 @@ extern volatile sig_atomic_t CTRL_C;
 
 namespace Combinators {
 	
+	// we need a void class to pass to Grammar, but void won't work!
+	// So here we make a class we can never instantiate
+	struct cl_void {
+		cl_void() { assert(false); }
+	};
+	
 	struct CL {
 		
 		// must be defined (but not used)
@@ -25,17 +31,17 @@ namespace Combinators {
 	 * @file Combinators.h
 	 * @brief A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. 
 	 */
-	class SKGrammar : public Grammar<void,void, CL> { 
-		using Super=Grammar<void,void,CL>;
+	class SKGrammar : public Grammar<cl_void,cl_void, CL> { 
+		using Super=Grammar<cl_void,cl_void,CL>;
 		using Super::Super;
 		
 		public:
-		SKGrammar() : Grammar<void,void,CL>() {
+		SKGrammar() : Grammar<cl_void,cl_void,CL>() {
 			// These are given NoOps because they are't interpreted in the normal evaluator
-			add<CL>("K", Builtins::NoOp<SKGrammar>, Op::CL_K);
-			add<CL>("S", Builtins::NoOp<SKGrammar>, Op::CL_S);
-			add<CL>("I", Builtins::NoOp<SKGrammar>, Op::CL_I);
-			add<CL, CL, CL>("(%s %s)", Builtins::NoOp<SKGrammar>, Op::CL_Apply);		
+			add<CL>("I", Builtins::CL_I<SKGrammar>);
+			add<CL>("S", Builtins::CL_S<SKGrammar>);
+			add<CL>("K", Builtins::CL_K<SKGrammar>);
+			add<CL, CL, CL>("(%s %s)", Builtins::CL_Apply<SKGrammar>);		
 		}
 	} skgrammar;
 

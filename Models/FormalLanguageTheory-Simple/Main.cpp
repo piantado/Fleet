@@ -18,8 +18,48 @@ const size_t MAX_LENGTH = 64; // longest strings cons will handle
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
 #include "Grammar.h"
+#include "Singleton.h"
 
-using MyGrammar = Grammar<S,S,  S,bool>;
+class MyGrammar : public Grammar<S,S,  S,bool>,
+				  public Singleton<MyGrammar> {
+public:
+	MyGrammar() {
+		add("tail(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); });
+		add("head(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
+		// We could call like this, but it's a little inefficient since it pops a string from the stack
+		// and then pushes a result on.. much better to modify it
+		add("pair(%s,%s)",   +[](S a, S b) -> S { 
+			if(a.length() + b.length() > MAX_LENGTH) 
+				throw VMSRuntimeError();
+			else 
+				return a+b; 
+		});
+		// This version takes a reference for the first argument and that is assumed (by Fleet) to be the
+		// return value. It is never popped off the stack and should just be modified. 
+	//	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void        { 
+	//			if(a.length() + b.length() > MAX_LENGTH) 
+	//				throw VMSRuntimeError();
+	//			a.append(b); // modify on stack
+	//	}), 
+		add("\u00D8",        +[]()         -> S          { return S(""); });
+		add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; });
+
+		add("and(%s,%s)",    Builtins::And<MyGrammar>);
+		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
+		add("not(%s)",       Builtins::Not<MyGrammar>);
+		
+		add("x",             Builtins::X<MyGrammar>);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
+		add("flip()",        Builtins::Flip<MyGrammar>, 10.0);
+		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
+			
+		for(size_t i=0;i<alphabet.length();i++) {
+			const char c = alphabet.at(i);
+			add<S>( Q(S(1,c)).c_str(), std::function( [=]()->S { return S(1,c); }), 5.0/alphabet.length());
+		}
+		
+	}
+};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
@@ -117,41 +157,7 @@ int main(int argc, char** argv){
 	//------------------	
 	
 	MyGrammar grammar;
-	grammar.add("tail(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); });
-	grammar.add("head(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
-	// We could call like this, but it's a little inefficient since it pops a string from the stack
-	// and then pushes a result on.. much better to modify it
-	grammar.add("pair(%s,%s)",   +[](S a, S b) -> S { 
-		if(a.length() + b.length() > MAX_LENGTH) 
-			throw VMSRuntimeError();
-		else 
-			return a+b; 
-	});
-	// This version takes a reference for the first argument and that is assumed (by Fleet) to be the
-	// return value. It is never popped off the stack and should just be modified. 
-//	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void        { 
-//			if(a.length() + b.length() > MAX_LENGTH) 
-//				throw VMSRuntimeError();
-//			a.append(b); // modify on stack
-//	}), 
-	grammar.add("\u00D8",        +[]()         -> S          { return S(""); });
-	grammar.add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; });
-
-	grammar.add("and(%s,%s)",    Builtins::And<MyGrammar>);
-	grammar.add("or(%s,%s)",     Builtins::Or<MyGrammar>);
-	grammar.add("not(%s)",       Builtins::Not<MyGrammar>);
 	
-	grammar.add("x",             Builtins::X<MyGrammar>);
-	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
-	grammar.add("flip()",        Builtins::Flip<MyGrammar>, 10.0);
-	grammar.add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
-		
-//	grammar.add(str)	
-	for(size_t i=0;i<alphabet.length();i++) {
-		const char c = alphabet.at(i);
-		grammar.add<S>( Q(S(1,c)).c_str(), std::function( [=]()->S { return S(1,c); }), 5.0/alphabet.length());
-	}
-		
 	//------------------
 	// top stores the top hypotheses we have found
 	//------------------	

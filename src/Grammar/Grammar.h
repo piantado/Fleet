@@ -10,6 +10,7 @@
 #include "Random.h"
 #include "Nonterminal.h"
 #include "VirtualMachineState.h"
+#include "VirtualMachinePool.h"
 #include "Builtins.h"
 
 // an exception for recursing too deep
@@ -42,14 +43,12 @@ public:
 	using output_t = _output_t;
 	using this_t = Grammar<input_t, output_t, GRAMMAR_TYPES...>;
 
-
-
 	// Keep track of what types we are using here as our types -- thesee types are 
 	// stored in this tuple so they can be extracted
 	using TypeTuple = std::tuple<GRAMMAR_TYPES...>;
 
 	// how many nonterminal types do we have?
-	static constexpr size_t N_NTs = std::tuple_size<std::tuple<GRAMMAR_TYPES...>>::value;
+	static constexpr size_t N_NTs = std::tuple_size<TypeTuple>::value;
 	
 	// The input/output types must be repeated to VirtualMachineState
 	using VirtualMachineState_t = VirtualMachineState<input_t, output_t, GRAMMAR_TYPES...>;

@@ -32,10 +32,68 @@ set make_set(int nset) {
 /// Declare a grammar
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
+ 
 #include "Grammar.h"
+#include "Singleton.h"
 
-using MyGrammar = Grammar<set, word,
-						  bool, word, set>;
+class MyGrammar : public Grammar<set, word,    bool, word, set>,
+				  public Singleton<MyGrammar> {
+public:
+	MyGrammar() {
+			
+		add("undef",         +[]() -> word { return U; });
+		
+		add("one",         +[]() -> word { return 1; }, 0.1);
+		add("two",         +[]() -> word { return 2; }, 0.1);
+		add("three",       +[]() -> word { return 3; }, 0.1);
+		add("four",        +[]() -> word { return 4; }, 0.1);
+		add("five",        +[]() -> word { return 5; }, 0.1);
+		add("six",         +[]() -> word { return 6; }, 0.1);
+		add("seven",       +[]() -> word { return 7; }, 0.1);
+		add("eight",       +[]() -> word { return 8; }, 0.1);
+		add("nine",        +[]() -> word { return 9; }, 0.1);
+		add("ten",         +[]() -> word { return 10; }, 0.1);
+		
+		add("next(%s)",    +[](word w) -> word { return w == U ? U : w+1;});
+		add("prev(%s)",    +[](word w) -> word { return w == U or w == 1 ? U : w-1; });
+		
+		// extract from the context/utterance
+		add("singleton(%s)",   +[](set s) -> bool    { return s.count()==1; }, 2.0);
+		add("doubleton(%s)",   +[](set s) -> bool    { return s.count()==2; }, 2.0);
+		add("tripleton(%s)",   +[](set s) -> bool    { return s.count()==3; }, 2.0);
+		
+		add("select(%s)",      +[](set s) -> set    { 
+			if(s.count()==0) {
+				throw VMSRuntimeError();
+			}
+			else {
+				for(size_t i=0;i<s.size();i++) {
+					if(s[i]) { // return the first element of th eset
+						set out;
+						out[i] = true;
+						return out;
+					}
+				}
+				assert(false && "*** Should not get here");
+			}
+		});
+		
+		// set operations on ints -- these will modify x in place
+		add("union(%s,%s)",         +[](set x, set y) -> set { return x |= y; });
+		add("setdifference(%s,%s)", +[](set x, set y) -> set { return x &= ~y; });
+		add("intersection(%s,%s)",  +[](set x, set y) -> set { return x &= y; });
+		add("complement(%s,%s)",    +[](set x, set y) -> set { return x = ~x; }); // not in the original
+		
+		add("and(%s,%s)",    Builtins::And<MyGrammar>, 1./3.);
+		add("or(%s,%s)",     Builtins::Or<MyGrammar>, 1./3.);
+		add("not(%s)",       Builtins::Not<MyGrammar>, 1./3.);
+		
+		add("x",             Builtins::X<MyGrammar>, 25.0);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,set>,  1./2);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,word>, 1./2);
+		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
+	}
+};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
@@ -90,67 +148,10 @@ int main(int argc, char** argv) {
 	fleet.initialize(argc, argv);
 
 	//------------------
-	// Set up the grammar 
+	// Run the MCMC
 	//------------------	
 	
 	MyGrammar grammar;
-	
-	grammar.add("undef",         +[]() -> word { return U; });
-	
-	grammar.add("one",         +[]() -> word { return 1; }, 0.1);
-	grammar.add("two",         +[]() -> word { return 2; }, 0.1);
-	grammar.add("three",       +[]() -> word { return 3; }, 0.1);
-	grammar.add("four",        +[]() -> word { return 4; }, 0.1);
-	grammar.add("five",        +[]() -> word { return 5; }, 0.1);
-	grammar.add("six",         +[]() -> word { return 6; }, 0.1);
-	grammar.add("seven",       +[]() -> word { return 7; }, 0.1);
-	grammar.add("eight",       +[]() -> word { return 8; }, 0.1);
-	grammar.add("nine",        +[]() -> word { return 9; }, 0.1);
-	grammar.add("ten",         +[]() -> word { return 10; }, 0.1);
-	
-	grammar.add("next(%s)",    +[](word w) -> word { return w == U ? U : w+1;});
-	grammar.add("prev(%s)",    +[](word w) -> word { return w == U or w == 1 ? U : w-1; });
-	
-	// extract from the context/utterance
-	grammar.add("singleton(%s)",   +[](set s) -> bool    { return s.count()==1; }, 2.0);
-	grammar.add("doubleton(%s)",   +[](set s) -> bool    { return s.count()==2; }, 2.0);
-	grammar.add("tripleton(%s)",   +[](set s) -> bool    { return s.count()==3; }, 2.0);
-	
-	grammar.add("select(%s)",      +[](set s) -> set    { 
-		if(s.count()==0) {
-			throw VMSRuntimeError();
-		}
-		else {
-			for(size_t i=0;i<s.size();i++) {
-				if(s[i]) { // return the first element of th eset
-					set out;
-					out[i] = true;
-					return out;
-				}
-			}
-			assert(false && "*** Should not get here");
-		}
-	});
-	
-	// set operations on ints -- these will modify x in place
-	grammar.add("union(%s,%s)",         +[](set x, set y) -> set { return x |= y; });
-	grammar.add("setdifference(%s,%s)", +[](set x, set y) -> set { return x &= ~y; });
-	grammar.add("intersection(%s,%s)",  +[](set x, set y) -> set { return x &= y; });
-	grammar.add("complement(%s,%s)",    +[](set x, set y) -> set { return x = ~x; }); // not in the original
-	
-	grammar.add("and(%s,%s)",    Builtins::And<MyGrammar>, 1./3.);
-	grammar.add("or(%s,%s)",     Builtins::Or<MyGrammar>, 1./3.);
-	grammar.add("not(%s)",       Builtins::Not<MyGrammar>, 1./3.);
-	
-	grammar.add("x",             Builtins::X<MyGrammar>, 25.0);
-	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,set>,  1./2);
-	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,word>, 1./2);
-	grammar.add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
-		
-	
-	//------------------
-	// Run the MCMC
-	//------------------	
 	
 	MyHypothesis::data_t mydata; // just dummy
 

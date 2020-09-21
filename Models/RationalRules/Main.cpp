@@ -23,10 +23,30 @@ typedef Object<Color,Shape> MyObject;
 /// Thid requires the types of the thing we will add to the grammar (bool,MyObject)
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
 #include "Grammar.h"
+#include "Singleton.h"
 
-using MyGrammar = Grammar<MyObject,bool,   MyObject, bool>;
+class MyGrammar : public Grammar<MyObject,bool,   MyObject, bool>,
+				  public Singleton<MyGrammar> {
+public:
+	MyGrammar() {
+		add("red(%s)",       +[](MyObject x) -> bool { return x.is(Color::Red); });
+		add("green(%s)",     +[](MyObject x) -> bool { return x.is(Color::Green); });
+		add("blue(%s)",      +[](MyObject x) -> bool { return x.is(Color::Blue); });
+		add("square(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Square); });
+		add("triangle(%s)",  +[](MyObject x) -> bool { return x.is(Shape::Triangle); });
+		add("circle(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Circle); });
+		
+		// These are the short-circuiting versions:
+		// these need to know the grammar type
+		add("and(%s,%s)",    Builtins::And<MyGrammar>);
+		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
+		add("not(%s)",       Builtins::Not<MyGrammar>);
 
+		add("x",             Builtins::X<MyGrammar>);
+	}
+};
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define a class for handling my specific hypotheses and data. Everything is defaultly 
 /// a PCFG prior and regeneration proposals, but I have to define a likelihood
@@ -64,32 +84,6 @@ int main(int argc, char** argv){
 	fleet.initialize(argc, argv);
 	
 	//------------------
-	// Basic setup
-	//------------------
-	
-	// Define the grammar (default initialize using our primitives will add all those rules)
-	// in doing this, grammar deduces the types from the input and output types of each primitive
-	MyGrammar grammar;
-	grammar.add("red(%s)",       +[](MyObject x) -> bool { return x.is(Color::Red); });
-	grammar.add("green(%s)",     +[](MyObject x) -> bool { return x.is(Color::Green); });
-	grammar.add("blue(%s)",      +[](MyObject x) -> bool { return x.is(Color::Blue); });
-	grammar.add("square(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Square); });
-	grammar.add("triangle(%s)",  +[](MyObject x) -> bool { return x.is(Shape::Triangle); });
-	grammar.add("circle(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Circle); });
-	
-	// These are the short-circuiting versions:
-	// these need to know the grammar type
-	grammar.add("and(%s,%s)",    Builtins::And<MyGrammar>);
-	grammar.add("or(%s,%s)",     Builtins::Or<MyGrammar>);
-	grammar.add("not(%s)",       Builtins::Not<MyGrammar>);
-
-	grammar.add("x",             Builtins::X<MyGrammar>);
-	
-
-	// top stores the top hypotheses we have found
-	TopN<MyHypothesis> top;
-	
-	//------------------
 	// set up the data
 	//------------------
 	// mydata stores the data for the inference model
@@ -100,8 +94,13 @@ int main(int argc, char** argv){
 	mydata.push_back(MyHypothesis::datum_t{.input=MyObject{.color=Color::Red, .shape=Shape::Square},   .output=false, .reliability=0.75});
 	
 	//------------------
-	// Actually run
+	// Run
 	//------------------
+	
+	MyGrammar grammar;
+
+	TopN<MyHypothesis> top;
+	
 	
 //	auto h0 = MyHypothesis::make(&grammar);
 //	MCMCChain chain(h0, &mydata, top);

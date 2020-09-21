@@ -54,13 +54,72 @@ size_t      MAX_GRAMMAR_DEPTH = 256;
 /// This requires a template to specify what types they are (and what order they are stored in)
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
+ 
 #include "Grammar.h"
+#include "Singleton.h"
 
-// declare a grammar with our primitives
-// Note that this ordering of primitives defines the order in Grammar
-using MyGrammar = Grammar<S,S,
-					      S,char,bool,int>;
+class MyGrammar : public Grammar<S,S,     S,char,bool,int>,
+				  public Singleton<MyGrammar> {
+public:
+	MyGrammar() {
 
+		add("tail(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : s.substr(1,S::npos)); });
+		add("head(%s)",      +[](S s)      -> char       { return (s.empty() ? ' ' : s[0]); }, 5);
+		add("pair(%s,%s)",   +[](S a, char b) -> S        { 
+				if(a.length() + 1> MAX_LENGTH) 
+					throw VMSRuntimeError();
+				return a+b; 
+		});
+		
+		add("\u00D8",        +[]()         -> S          { return S(""); });
+		add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }, 1./2.);
+		add("(%s==%s)",      +[](char x, char y) -> bool { return x==y; }, 1./2.);
+		
+		add("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 1./3.);
+		add("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }, 1./3.);
+		add("not(%s)",       +[](bool a)         -> bool { return (not a); },  1./3.);
+		
+		add("(%s<%s)",     +[](S x, S y) -> bool { return x < y; }, 1./2);
+		add("(%s<%s)",     +[](char x, char y) -> bool { return x < y; }, 1./2);
+
+		add("incr(%s)",     +[](char x) -> char { return x+1;});
+		add("decr(%s)",     +[](char x) -> char { return x-1;});
+			
+		// Pretty easy to learn with reverse
+		add("reverse(%s)",     +[](S x) -> S { return reverse(x);	}, 1.);
+		
+		// repetitions 
+		add("repeat(%s,%s)",     +[](S x, int n) -> S { 
+				S w = "";
+				
+				if(x.size() * n > MAX_LENGTH or n < 0 or n > MAX_LENGTH) 
+					throw VMSRuntimeError(); // need n > MAX_LENGTH in case n is huge but string is empty
+					
+				for(int i=0;i<n;i++) {
+					w = w+x;
+				}
+				return w;
+		}, 1.);
+			
+			
+		add("int(%s)",     +[](char c) -> int {
+			return int(c-'0'); // int here starting at '0'
+		});
+		
+		add("x",             Builtins::X<MyGrammar>, 10);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>, 1./3);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,char>, 1./3);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,int>, 1./3);
+		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
+			
+		// interestingly if we remove the alphabet, that's even better since we can't
+		// just memorize the data. We'll make it pretty rare
+		for(size_t i=0;i<alphabet.length();i++) {
+			const char c = alphabet.at(i);
+			add(Q(S(1,c)).c_str(), std::function( [=]()->char { return c; }), 5./alphabet.length());
+		}
+	}
+};
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -161,70 +220,6 @@ int main(int argc, char** argv){
 	fleet.initialize(argc, argv);
 	
 	//------------------
-	// Define the grammar
-	//------------------	
-	
-	MyGrammar grammar;
-	grammar.GRAMMAR_MAX_DEPTH = MAX_GRAMMAR_DEPTH;
-	
-	grammar.add("tail(%s)",      +[](S s)      -> S          { return (s.empty() ? S("") : s.substr(1,S::npos)); });
-	grammar.add("head(%s)",      +[](S s)      -> char       { return (s.empty() ? ' ' : s[0]); }, 5);
-	grammar.add("pair(%s,%s)",   +[](S a, char b) -> S        { 
-			if(a.length() + 1> MAX_LENGTH) 
-				throw VMSRuntimeError();
-			return a+b; 
-	});
-	
-	grammar.add("\u00D8",        +[]()         -> S          { return S(""); });
-	grammar.add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }, 1./2.);
-	grammar.add("(%s==%s)",      +[](char x, char y) -> bool { return x==y; }, 1./2.);
-	
-	grammar.add("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 1./3.);
-	grammar.add("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }, 1./3.);
-	grammar.add("not(%s)",       +[](bool a)         -> bool { return (not a); },  1./3.);
-	
-	grammar.add("(%s<%s)",     +[](S x, S y) -> bool { return x < y; }, 1./2);
-	grammar.add("(%s<%s)",     +[](char x, char y) -> bool { return x < y; }, 1./2);
-
-	grammar.add("incr(%s)",     +[](char x) -> char { return x+1;});
-	grammar.add("decr(%s)",     +[](char x) -> char { return x-1;});
-		
-	// Pretty easy to learn with reverse
-	grammar.add("reverse(%s)",     +[](S x) -> S { return reverse(x);	}, 1.);
-	
-	// repetitions 
-	grammar.add("repeat(%s,%s)",     +[](S x, int n) -> S { 
-			S w = "";
-			
-			if(x.size() * n > MAX_LENGTH or n < 0 or n > MAX_LENGTH) 
-				throw VMSRuntimeError(); // need n > MAX_LENGTH in case n is huge but string is empty
-				
-			for(int i=0;i<n;i++) {
-				w = w+x;
-			}
-			return w;
-	}, 1.);
-		
-		
-	grammar.add("int(%s)",     +[](char c) -> int {
-		return int(c-'0'); // int here starting at '0'
-	});
-	
-	grammar.add("x",             Builtins::X<MyGrammar>, 10);
-	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>, 1./3);
-	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,char>, 1./3);
-	grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,int>, 1./3);
-	grammar.add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
-		
-	// interestingly if we remove the alphabet, that's even better since we can't
-	// just memorize the data. We'll make it pretty rare
-	for(size_t i=0;i<alphabet.length();i++) {
-		const char c = alphabet.at(i);
-		grammar.add(Q(S(1,c)).c_str(), std::function( [=]()->char { return c; }), 5./alphabet.length());
-	}
-	
-	
-	//------------------
 	// set up the data
 	//------------------
 		
@@ -244,8 +239,11 @@ int main(int argc, char** argv){
 	}
 	
 	//------------------
-	// Run inference with each scheme
+	// Run 
 	//------------------
+	
+	MyGrammar grammar;
+	grammar.GRAMMAR_MAX_DEPTH = MAX_GRAMMAR_DEPTH;
 	
 	// top stores the top hypotheses we have found
 	TopN<MyHypothesis> top;

@@ -59,8 +59,6 @@ int main(int argc, char** argv){
 	fleet.add_option("--runtype",  runtype, "hypotheses = do we just do mcmc on hypotheses; grammar = mcmc on the grammar, loading the hypotheses; both = do both");
 	fleet.initialize(argc, argv);
 	
-	MyGrammar grammar(PRIMITIVES);
-	
 	//------------------
 	// set up the data
 	//------------------
@@ -130,6 +128,8 @@ int main(int argc, char** argv){
 		mcmc_data.push_back(learner_data); // and add that last dataset
 	
 	COUT "# Loaded " << human_data.size() << " human data points and " << mcmc_data.size() << " mcmc data points" ENDL;
+	
+	MyGrammar grammar;
 	
 	std::vector<MyHypothesis> hypotheses; 
 	if(runtype == "hypotheses" or runtype == "both") {
