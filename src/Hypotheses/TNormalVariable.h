@@ -21,7 +21,7 @@ public:
 	
 	float MEAN = 0.0;
 	float SD   = 1.0;
-	float PROPOSAL_SCALE = 0.20; 
+	float PROPOSAL_SCALE = 0.10; 
 	
 	bool can_propose;
 	
