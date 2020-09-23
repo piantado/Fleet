@@ -21,7 +21,7 @@ double uniform() {
 }
 
 double random_normal() {
-	reutrn normal(rng);
+	return normal(rng);
 }
 
 double cauchy_lpdf(double x, double loc=0.0, double gamma=1.0) {
