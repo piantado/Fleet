@@ -87,7 +87,7 @@ public:
 		} while(!can_propose[i]);
 		
 		// propose to one coefficient w/ SD of 0.1
-		out.value(i) = value(i) + PROPOSAL_SCALE*normal(rng);
+		out.value(i) = value(i) + PROPOSAL_SCALE*random_normal();
 		
 		// everything is symmetrical so fb=0
 		return std::make_pair(out, 0.0);	
@@ -97,7 +97,7 @@ public:
 		for(auto i=0;i<value.size();i++) {
 			if(out.can_propose[i]) {
 				// we don't want to change parameters unless we can propose to them
-				out.value(i) = MEAN + SD*normal(rng);
+				out.value(i) = MEAN + SD*random_normal();
 			}
 		}
 		return out;

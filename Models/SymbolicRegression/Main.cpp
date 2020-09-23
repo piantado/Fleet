@@ -225,7 +225,7 @@ public:
 	virtual void randomize_constants() {
 		constants.resize(count_constants());
 		for(size_t i=0;i<constants.size();i++) {
-			constants[i] = normal(rng);
+			constants[i] = random_normal();
 		}
 	}
 

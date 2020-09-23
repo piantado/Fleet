@@ -62,7 +62,7 @@ public:
 		self_t out = *this;
 		
 		if(can_propose)
-			out.set(value + PROPOSAL_SCALE*normal(rng));
+			out.set(value + PROPOSAL_SCALE*random_normal());
 		
 		// everything is symmetrical so fb=0
 		return std::make_pair(out, 0.0);	
@@ -71,7 +71,7 @@ public:
 	virtual self_t restart() const override {
 		self_t out = *this;
 		if(can_propose) {
-			out.set(MEAN + SD*normal(rng));
+			out.set(MEAN + SD*random_normal());
 		}
 		else {
 			// should have just copied it anyways
