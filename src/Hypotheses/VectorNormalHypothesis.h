@@ -4,21 +4,21 @@
 #include "Interfaces/MCMCable.h"
 
 /**
- * @class VectorHypothesis
+ * @class VectorNormalHypothesis
  * @author Steven Piantadosi
  * @date 09/08/20
- * @file VectorHypothesis.h
+ * @file VectorNormalHypothesis.h
  * @brief This has all of the MCMCable interfaces but jsut represents n unit Gaussians. This
  * 		  is primarily used in GrammarInference to represent parameters, but it could be used
  *  	  in any other too
  */
-class VectorHypothesis : public MCMCable<VectorHypothesis, void*> {
+class VectorNormalHypothesis : public MCMCable<VectorNormalHypothesis, void*> {
 	// This represents a vector of reals, defaultly here just unit normals. 
 	// This gets used in GrammarHypothesis to store both the grammar values and
 	// parameters for the model. 
 public:
 
-	typedef VectorHypothesis self_t; 
+	typedef VectorNormalHypothesis self_t; 
 	
 	double MEAN = 0.0;
 	double SD   = 1.0;
@@ -30,10 +30,10 @@ public:
 	// This is useful because sometimes we don't want to do MCMC on some parts of the grammar
 	std::vector<bool> can_propose; 
 	
-	VectorHypothesis() {
+	VectorNormalHypothesis() {
 	}
 
-	VectorHypothesis(int n) {
+	VectorNormalHypothesis(int n) {
 		set_size(n);
 	}
 	
