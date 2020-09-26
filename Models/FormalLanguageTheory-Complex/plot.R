@@ -13,14 +13,14 @@ label <- setNames(as.list(as.character(rp$latex)), rp$language)  # label[[langua
 D <- NULL
 # for(language in c("Gomez2", "Gomez6", "Gomez12" )) {
 # for(language in c("HudsonKamNewport45", "HudsonKamNewport60", "HudsonKamNewport75", "HudsonKamNewport100" )) {
-# for(language in c("An", "AB", "ABn", "AAA", "AAAA", "AnBm", "GoldenMean", "Even", "ApBAp", "AsBAsp", "ApBApp", "ABaaaAB", "CountA2", "CountAEven", "aABb", "AnBn", "Dyck", "AnB2n", "AnCBn", "AnABn", "AnABAn", "ABnABAn", "AnBmCn", "AnBmA2n", "AnBnC2n", "ABAnBn", "AnBmCm", "AnBmCnpm", "AnBmCnm", "AnBk", "AnBmCmAn", "AnB2nC3n", "AnBnp1Cnp2", "AnUBn", "AnUAnBn", "ABnUBAn", "XX", "XXX", "XY", "XXR", "XXI", "XXRI", "Unequal", "Bach2", "Bach3", "WeW", "An2", "AnBmCnDm", "AnBmAnBm", "AnBmAnBmCCC", "AnBnCn", "AnBnCnDn", "AnBnCnDnEn", "A2en", "ABnen", "Count", "ChineseNumeral", "Fibo")) {
-for(language in c( "Saffran", "ABA", "ABB", "Milne", "Elman", "MorganNewport", "MorganMeierNewport", "NewportAslin",  "Braine66",  "HudsonKamNewport60", "Gomez2", "Gomez6",  "Gomez12", "Man", "ReederNewportAslin", "Reber", "BerwickPilato")) {
+for(language in c("An", "AB", "ABn", "AAA", "AAAA", "AnBm", "GoldenMean", "Even", "ApBAp", "AsBAsp", "ApBApp", "ABaaaAB", "CountA2", "CountAEven", "aABb", "AnBn", "Dyck", "AnB2n", "AnCBn", "AnABn", "AnABAn", "ABnABAn", "AnBmCn", "AnBmA2n", "AnBnC2n", "ABAnBn", "AnBmCm", "AnBmCnpm", "AnBmCnm", "AnBk", "AnBmCmAn", "AnB2nC3n", "AnBnp1Cnp2", "AnUBn", "AnUAnBn", "ABnUBAn", "XX", "XXX", "XY", "XXR", "XXI", "XXRI", "Unequal", "Bach2", "Bach3", "WeW", "An2", "AnBmCnDm", "AnBmAnBm", "AnBmAnBmCCC", "AnBnCn", "AnBnCnDn", "AnBnCnDnEn", "A2en", "ABnen", "Count", "ChineseNumeral", "Fibo")) {
+# for(language in c( "Saffran", "ABA", "ABB", "Milne", "Elman", "MorganNewport", "MorganMeierNewport", "NewportAslin",  "Braine66",  "HudsonKamNewport60", "Gomez2", "Gomez6",  "Gomez12", "Man", "ReederNewportAslin", "Reber", "BerwickPilato")) {
 # for(language in c("English")) {
     q <- NULL
     for(nf in c(1,2,3,4,5,6,7,8)) {
 #       for(nf in c(1)) {
 
-            f <- paste("./out-2020Sep20/", language, "-", nf, ".out", sep="")
+            f <- paste("./out/", language, "-", nf, ".out", sep="")
 
 #             f <- paste("./out-2020PNASSubmission/out/", language, "-", nf, ".out", sep="")
 #             f <- paste("./out-English/", language, "-", nf, ".out", sep="")
@@ -66,24 +66,24 @@ for(r in 1:nrow(D)) {
     
 library(ggplot2)
 require(scales)
-# 
-# plt <- ggplot(D, aes(x=ndata, y=value, group=Measure, color=Measure)) + 
-# 	  geom_line(size=0.70, position=position_dodge(.1)) +  # a little dodging here to show overlap
-# 	  theme_bw() +
-# 	  xlab("Amount of data") + ylab("") +
-#  	  scale_x_log10(breaks=c(1,10,100,1000,10000,100000), labels=c("1", "10", "100", expression(10^3), expression(10^4), expression(10^5)))  +
-# 	  ylim(-1e-9,1.01) +
-#       facet_wrap( ~ language, labeller=function(labels) { ## This nighmare is hacked together to sort in language order but then use languageLabel 
-#         lapply(labels, function(values) {
-#             values <- paste0("list(", languageLabel[values], ")")
-#             lapply(values, function(expr) c(parse(text = expr)))
-#         })
-#        }) +
-# #  	  facet_wrap( ~ paste(languageTeX), labeller=label_parsed) + 
-# 	  theme(strip.background = element_rect(fill="white")) #+
-# # 	  theme(legend.position = c(1, 0), legend.justification = c(1.5, 0))
-# plt
-# ggsave("SimpleLanguages.pdf", plt, width=12, height=10)
+
+plt <- ggplot(D, aes(x=ndata, y=value, group=Measure, color=Measure)) + 
+	  geom_line(size=0.70, position=position_dodge(.1)) +  # a little dodging here to show overlap
+	  theme_bw() +
+	  xlab("Amount of data") + ylab("") +
+ 	  scale_x_log10(breaks=c(1,10,100,1000,10000,100000), labels=c("1", "10", "100", expression(10^3), expression(10^4), expression(10^5)))  +
+	  ylim(-1e-9,1.01) +
+      facet_wrap( ~ language, labeller=function(labels) { ## This nighmare is hacked together to sort in language order but then use languageLabel 
+        lapply(labels, function(values) {
+            values <- paste0("list(", languageLabel[values], ")")
+            lapply(values, function(expr) c(parse(text = expr)))
+        })
+       }) +
+#  	  facet_wrap( ~ paste(languageTeX), labeller=label_parsed) + 
+	  theme(strip.background = element_rect(fill="white")) #+
+# 	  theme(legend.position = c(1, 0), legend.justification = c(1.5, 0))
+plt
+ggsave("SimpleLanguages.pdf", plt, width=12, height=10)
 
 ## For plotting English:
 # plt <- ggplot(D, aes(x=ndata, y=value, group=Measure, color=Measure)) + 
@@ -98,20 +98,20 @@ require(scales)
 # ggsave("English.pdf", plt, height=4, width=5)
 
 ## For plotting the artificial languages
-plt <- ggplot(D, aes(x=ndata, y=value, group=Measure, color=Measure)) + 
-	  geom_line(size=0.70, position=position_dodge(.1)) +  # a little dodging here to show overlap
-	  theme_bw() +
-	  xlab("Amount of data") + ylab("") +
- 	  scale_x_log10(breaks=c(1,10,100,1000,10000,100000), labels=c("1", "10", "100", expression(10^3), expression(10^4), expression(10^5)))  +
-      #scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
-      #        labels = trans_format("log10", math_format(10^.x))) +
-	  ylim(-1e-9,1.01) +
- 	  facet_wrap( ~ language, labeller=label_parsed, nrow=2) + 
-	  theme(strip.background = element_rect(fill="white")) + 
-      theme(legend.position = c(0.95, 0.25))
-plt
-ggsave("ArtificialLanguages.pdf", plt, height=4, width=14)
-# 
+# plt <- ggplot(D, aes(x=ndata, y=value, group=Measure, color=Measure)) + 
+# 	  geom_line(size=0.70, position=position_dodge(.1)) +  # a little dodging here to show overlap
+# 	  theme_bw() +
+# 	  xlab("Amount of data") + ylab("") +
+#  	  scale_x_log10(breaks=c(1,10,100,1000,10000,100000), labels=c("1", "10", "100", expression(10^3), expression(10^4), expression(10^5)))  +
+#       #scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
+#       #        labels = trans_format("log10", math_format(10^.x))) +
+# 	  ylim(-1e-9,1.01) +
+#  	  facet_wrap( ~ language, labeller=label_parsed, nrow=2) + 
+# 	  theme(strip.background = element_rect(fill="white")) + 
+#       theme(legend.position = c(0.95, 0.25))
+# plt
+# ggsave("ArtificialLanguages.pdf", plt, height=4, width=14)
+# # 
 
 # ggsave("SimpleLanguages.pdf", plt)
 # 

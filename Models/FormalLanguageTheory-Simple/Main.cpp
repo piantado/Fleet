@@ -26,21 +26,14 @@ public:
 	MyGrammar() {
 		add("tail(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); });
 		add("head(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
-		// We could call like this, but it's a little inefficient since it pops a string from the stack
-		// and then pushes a result on.. much better to modify it
+
 		add("pair(%s,%s)",   +[](S a, S b) -> S { 
 			if(a.length() + b.length() > MAX_LENGTH) 
 				throw VMSRuntimeError();
 			else 
 				return a+b; 
 		});
-		// This version takes a reference for the first argument and that is assumed (by Fleet) to be the
-		// return value. It is never popped off the stack and should just be modified. 
-	//	Primitive("pair(%s,%s)",   +[](S& a, S b) -> void        { 
-	//			if(a.length() + b.length() > MAX_LENGTH) 
-	//				throw VMSRuntimeError();
-	//			a.append(b); // modify on stack
-	//	}), 
+
 		add("\u00D8",        +[]()         -> S          { return S(""); });
 		add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; });
 
