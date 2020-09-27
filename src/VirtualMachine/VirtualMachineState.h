@@ -97,8 +97,6 @@ public:
 		xstack.push(x);	
 	}
 	
-	virtual ~VirtualMachineState() {}	// needed so VirtualMachinePool can delete
-
 	/**
 	 * @brief These must be sortable by lp so that we can enumerate them from low to high probability in a VirtualMachinePool 
 	 * 		  NOTE: VirtualMachineStates shouldn't be put in a set because they might evaluate to equal! 

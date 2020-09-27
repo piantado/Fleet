@@ -55,11 +55,15 @@ public:
 		});
 		
 		
-		add("pair(%s,%s)",   +[](S a, S b) -> S { 
-				if(a.length() + b.length() > max_length) 
-					throw VMSRuntimeError();
-				return a+b;
-		});
+		add_vms<S,S,S>("pair(%s,%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
+			S b = vms->getpop<S>();
+			S& a = vms->stack<S>().topref();
+			
+			if(a.length() + b.length() > max_length) 
+				throw VMSRuntimeError();
+			else 
+				a += b; 
+		}));
 
 		add("head(%s)", +[](S s) -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
 		add("\u00D8", +[]() -> S { return S(""); }, 10.0);

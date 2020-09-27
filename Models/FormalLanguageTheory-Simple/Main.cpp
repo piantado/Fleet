@@ -36,10 +36,8 @@ public:
 			S b = vms->getpop<S>();
 			S& a = vms->stack<S>().topref();
 			
-			if(a.length() + b.length() > MAX_LENGTH) 
-				throw VMSRuntimeError();
-			else 
-				a += b; 
+			if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError();
+			else 									 a += b; 
 		}));
 
 		add("\u00D8",        +[]()         -> S          { return S(""); });
