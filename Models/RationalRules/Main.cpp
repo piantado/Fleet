@@ -19,51 +19,34 @@ enum class Color { Red, Green, Blue};
 typedef Object<Color,Shape> MyObject;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// This is a global variable that provides a convenient way to wrap our primitives
-/// where we can pair up a function with a name, and pass that as a constructor
-/// to the grammar. We need a tuple here because Primitive has a bunch of template
-/// types to handle thee function it has, so each is actually a different type.
-/// This must be defined before we import Fleet because Fleet does some template
-/// magic internally
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#include "Primitives.h"
-#include "Builtins.h"
-
-std::tuple PRIMITIVES = {
-
-	// that + is really insane, but is needed to convert a lambda to a function pointer
-	Primitive("red(%s)",       +[](MyObject x)       -> bool { return x.is(Color::Red); }),
-	Primitive("green(%s)",     +[](MyObject x)       -> bool { return x.is(Color::Green); }),
-	Primitive("blue(%s)",      +[](MyObject x)       -> bool { return x.is(Color::Blue); }),
-
-	Primitive("square(%s)",    +[](MyObject x)       -> bool { return x.is(Shape::Square); }),
-	Primitive("triangle(%s)",  +[](MyObject x)       -> bool { return x.is(Shape::Triangle); }),
-	Primitive("circle(%s)",    +[](MyObject x)       -> bool { return x.is(Shape::Circle); }),
-	
-		
-	// but we also have to add a rule for the BuiltinOp that access x, our argument
-	Builtin::X<MyObject>("x", 10.0),
-	
-	// And and,or,not -- we use Builtins here because any user defined one won't short-circuit
-	Builtin::And("and(%s,%s)"),
-	Builtin::Or("or(%s,%s)"),
-	Builtin::Not("not(%s)")
-	// But if we did define our own, they'd be:
-	//	Primitive("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 2.0), // optional specification of prior weight (default=1.0)
-	//	Primitive("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }),
-	//	Primitive("not(%s)",       +[](bool a)         -> bool { return (not a); }),
-};
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define the grammar
 /// Thid requires the types of the thing we will add to the grammar (bool,MyObject)
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
 #include "Grammar.h"
+#include "Singleton.h"
 
-using MyGrammar = Grammar<bool,MyObject>;
+class MyGrammar : public Grammar<MyObject,bool,   MyObject, bool>,
+				  public Singleton<MyGrammar> {
+public:
+	MyGrammar() {
+		add("red(%s)",       +[](MyObject x) -> bool { return x.is(Color::Red); });
+		add("green(%s)",     +[](MyObject x) -> bool { return x.is(Color::Green); });
+		add("blue(%s)",      +[](MyObject x) -> bool { return x.is(Color::Blue); });
+		add("square(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Square); });
+		add("triangle(%s)",  +[](MyObject x) -> bool { return x.is(Shape::Triangle); });
+		add("circle(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Circle); });
+		
+		// These are the short-circuiting versions:
+		// these need to know the grammar type
+		add("and(%s,%s)",    Builtins::And<MyGrammar>);
+		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
+		add("not(%s)",       Builtins::Not<MyGrammar>);
 
+		add("x",             Builtins::X<MyGrammar>);
+	}
+};
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define a class for handling my specific hypotheses and data. Everything is defaultly 
 /// a PCFG prior and regeneration proposals, but I have to define a likelihood
@@ -92,23 +75,13 @@ public:
 #include "Top.h"
 #include "ParallelTempering.h"
 #include "Fleet.h" 
+#include "Builtins.h"
 
 int main(int argc, char** argv){ 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	Fleet fleet("Rational rules");
 	fleet.initialize(argc, argv);
-	
-	//------------------
-	// Basic setup
-	//------------------
-	
-	// Define the grammar (default initialize using our primitives will add all those rules)
-	// in doing this, grammar deduces the types from the input and output types of each primitive
-	MyGrammar grammar(PRIMITIVES);
-	
-	// top stores the top hypotheses we have found
-	TopN<MyHypothesis> top;
 	
 	//------------------
 	// set up the data
@@ -121,20 +94,25 @@ int main(int argc, char** argv){
 	mydata.push_back(MyHypothesis::datum_t{.input=MyObject{.color=Color::Red, .shape=Shape::Square},   .output=false, .reliability=0.75});
 	
 	//------------------
-	// Actually run
+	// Run
 	//------------------
 	
-	auto h0 = MyHypothesis::make(&grammar);
-	MCMCChain chain(h0, &mydata, top);
-	tic();
-	chain.run(Control());
-	tic();
+	MyGrammar grammar;
+
+	TopN<MyHypothesis> top;
+	
 	
 //	auto h0 = MyHypothesis::make(&grammar);
-//	ParallelTempering samp(h0, &mydata, top, 16, 10.0); 
+//	MCMCChain chain(h0, &mydata, top);
 //	tic();
-//	samp.run(Control(mcmc_steps,runtime,nthreads), 100, 1000); 		
+//	chain.run(Control());
 //	tic();
+//	
+	auto h0 = MyHypothesis::make(&grammar);
+	ParallelTempering samp(h0, &mydata, top, 16, 10.0); 
+	tic();
+	samp.run(Control(), 100, 1000); 		
+	tic();
 
 	// Show the best we've found
 	top.print();

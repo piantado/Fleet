@@ -190,6 +190,7 @@ public:
 			DEBUG("# Proposed \t", proposal.posterior, proposal.prior, proposal.likelihood, fb, proposal.string());
 			#endif 
 			
+//			CERR "MCMC Chain U = " << uniform() ENDL;
 			// use MH acceptance rule, with some fanciness for NaNs
 			double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb; 		
 			if((std::isnan(current.posterior))  or

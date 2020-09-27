@@ -7,7 +7,7 @@
  * @class TNormalVariable
  * @author Steven Piantadosi
  * @date 11/09/20
- * @file VectorHypothesis.h
+ * @file VectorNormalHypothesis.h
  * @brief A TNormalVariable encapsulates MCMC operations on a single
  * 		  real number with a standard normal prior. This is useful for variables in e.g. GrammarInference.
  * 		  This has a normal prior on a parameter and then allows an output transformation, which is 
@@ -21,7 +21,7 @@ public:
 	
 	float MEAN = 0.0;
 	float SD   = 1.0;
-	float PROPOSAL_SCALE = 0.20; 
+	float PROPOSAL_SCALE = 0.10; 
 	
 	bool can_propose;
 	
@@ -62,7 +62,7 @@ public:
 		self_t out = *this;
 		
 		if(can_propose)
-			out.set(value + PROPOSAL_SCALE*normal(rng));
+			out.set(value + PROPOSAL_SCALE*random_normal());
 		
 		// everything is symmetrical so fb=0
 		return std::make_pair(out, 0.0);	
@@ -71,7 +71,7 @@ public:
 	virtual self_t restart() const override {
 		self_t out = *this;
 		if(can_propose) {
-			out.set(MEAN + SD*normal(rng));
+			out.set(MEAN + SD*random_normal());
 		}
 		else {
 			// should have just copied it anyways

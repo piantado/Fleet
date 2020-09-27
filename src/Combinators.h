@@ -11,6 +11,12 @@ extern volatile sig_atomic_t CTRL_C;
 
 namespace Combinators {
 	
+	// we need a void class to pass to Grammar, but void won't work!
+	// So here we make a class we can never instantiate
+	struct cl_void {
+		cl_void() { assert(false); }
+	};
+	
 	struct CL {
 		
 		// must be defined (but not used)
@@ -25,42 +31,45 @@ namespace Combinators {
 	 * @file Combinators.h
 	 * @brief A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. 
 	 */
-	class SKGrammar : public Grammar<CL> { 
-		using Super=Grammar<CL>;
+	class SKGrammar : public Grammar<cl_void,cl_void, CL> { 
+		using Super=Grammar<cl_void,cl_void,CL>;
 		using Super::Super;
 		
 		public:
-		SKGrammar() : Grammar<CL>() {
-			add<CL>(BuiltinOp::op_K,                           "K");
-			add<CL>(BuiltinOp::op_S,                           "S");
-			add<CL, CL, CL>(BuiltinOp::op_SKAPPLY,         "(%s %s)");		
+		SKGrammar() : Grammar<cl_void,cl_void,CL>() {
+			// These are given NoOps because they are't interpreted in the normal evaluator
+			add<CL>("I", Builtins::CL_I<SKGrammar>);
+			add<CL>("S", Builtins::CL_S<SKGrammar>);
+			add<CL>("K", Builtins::CL_K<SKGrammar>);
+			add<CL, CL, CL>("(%s %s)", Builtins::CL_Apply<SKGrammar>);		
 		}
 	} skgrammar;
 
 	// Define a function to check whether we can reduce each nodes via each bulit-in op
-	template<BuiltinOp> bool can_reduce(const Node& n);
+	template<Op> bool can_reduce(const Node& n);
 
 	template<>
-	bool can_reduce<BuiltinOp::op_I>(const Node& n) {
-		// (I x)
-		return n.nchildren() > 0 and 
-			   n[0].rule->instr.is_a(BuiltinOp::op_I);
-	}
-	template<>
-	bool can_reduce<BuiltinOp::op_K>(const Node& n) {
-		// ((K x) y)
-		return n.nchildren() > 0 and 
-			   n[0].nchildren() > 0 and
-			   n[0][0].rule->instr.is_a(BuiltinOp::op_K);
-	}
-	template<>
-	bool can_reduce<BuiltinOp::op_S>(const Node& n) {
+	bool can_reduce<Op::CL_S>(const Node& n) {
 		// (((S x) y) z)
 		return n.nchildren() > 0 and 
 			   n[0].nchildren() > 0 and
 			   n[0][0].nchildren() > 0 and
 			   n[0][0][0].rule->instr.is_a(BuiltinOp::op_S);
 	}
+	template<>
+	bool can_reduce<Op::CL_K>(const Node& n) {
+		// ((K x) y)
+		return n.nchildren() > 0 and 
+			   n[0].nchildren() > 0 and
+			   n[0][0].rule->instr.is_a(BuiltinOp::op_K);
+	}
+	template<>
+	bool can_reduce<Op::CL_I>(const Node& n) {
+		// (I x)
+		return n.nchildren() > 0 and 
+			   n[0].rule.is_a(BuiltinOp::op_I);
+	}
+	
 
 
 	/**
@@ -122,7 +131,7 @@ namespace Combinators {
 				modified = true;
 			} 
 			else if(can_reduce<BuiltinOp::op_S>(n)) {
-				Rule* rule = skgrammar.get_rule(skgrammar.nt<CL>(), BuiltinOp::op_SKAPPLY);
+				Rule* rule = skgrammar.get_rule(skgrammar.nt<CL>(), Op::CL_Apply);
 				
 				// just make the notation handier here
 				auto x = std::move(n[0][0][1] );

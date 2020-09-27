@@ -75,14 +75,14 @@ struct Control {
 			return false; 
 		}
 		
-		if(steps > 0 and done_steps > steps) {
+		if(steps > 0 and done_steps >= steps) {
 			#ifdef DEBUG_CONTROL
 				std::cerr << "Control break on steps"  << std::endl;
 			#endif			
 			return false;
 		}
 		
-		if(runtime > 0 and time_since(start_time) > runtime) {
+		if(runtime > 0 and time_since(start_time) >= runtime) {
 			#ifdef DEBUG_CONTROL
 				std::cerr << "Control break on runtime\t"<< runtime << std::endl;
 			#endif	

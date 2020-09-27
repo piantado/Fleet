@@ -36,12 +36,9 @@ const size_t MAX_SET_SIZE = 25;
 const double alpha = 0.9;
 const double W = 0.2; // weber ratio for ans
 
-// TODO: UPDATE WITH data from Gunderson & Levine?
 std::discrete_distribution<> number_distribution({0, 7187, 1484, 593, 334, 297, 165, 151, 86, 105, 112}); // 0-indexed
 	
 std::vector<int> data_amounts = {1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600, 1000};//, 500, 600, 700, 800, 900, 1000};
-//std::vector<int> data_amounts = {1000};
-//std::vector<int> data_amounts = {1, 5, 10, 50, 100};//, 500, 600, 700, 800, 900, 1000};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define the primitives
@@ -64,141 +61,144 @@ double ANSdiff(const double n1, const double n2) {  // SD of the weber value
 	return (n1-n2) / (W*sqrt(n1*n1+n2*n2));
 }
 
-#include "Primitives.h"
-#include "Builtins.h"	
-	
-std::tuple PRIMITIVES = {
-	Primitive("undef",         +[]() -> word { return U; }),
-	
-	Primitive("a",         +[]() -> objectkind { return 'a'; }),
-	Primitive("b",         +[]() -> objectkind { return 'b'; }),
-	Primitive("c",         +[]() -> objectkind { return 'c'; }),
-	Primitive("d",         +[]() -> objectkind { return 'd'; }),
-	Primitive("e",         +[]() -> objectkind { return 'e'; }), // TODO: Older versions had through j 
-	
-	Primitive("one",         +[]() -> word { return 1; }, 0.1),
-	Primitive("two",         +[]() -> word { return 2; }, 0.1),
-	Primitive("three",       +[]() -> word { return 3; }, 0.1),
-	Primitive("four",        +[]() -> word { return 4; }, 0.1),
-	Primitive("five",        +[]() -> word { return 5; }, 0.1),
-	Primitive("six",         +[]() -> word { return 6; }, 0.1),
-	Primitive("seven",       +[]() -> word { return 7; }, 0.1),
-	Primitive("eight",       +[]() -> word { return 8; }, 0.1),
-	Primitive("nine",        +[]() -> word { return 9; }, 0.1),
-	Primitive("ten",         +[]() -> word { return 10; }, 0.1),
-	
-	Primitive("next(%s)",    +[](word w) -> word { return w == U ? U : w+1;}),
-	Primitive("prev(%s)",    +[](word w) -> word { return w == U or w == 1 ? U : w-1; }),
-	
-	// extract from the context/utterance
-	Primitive("%s.set",      +[](utterance u) -> set    { return u.s; }, 25.0),
-	Primitive("%s.obj",      +[](utterance u) -> objectkind { return u.o; }, 10.0),
-	
-	// build utterances -- needed for useful recursion
-	Primitive("<%s,%s>",     +[](set s, objectkind o) -> utterance { return utterance{s,o}; }),
-	
-	Primitive("union(%s,%s)", +[](set x, set y) -> set { 
-		if(x.size()+y.size() > MAX_SET_SIZE) 
-			throw VMSRuntimeError(); 
-		return x+y; 
-	}),
-	Primitive("intersection(%s,%s)", +[](set x, set y) -> set {
-		std::string out = "";
-		for(size_t yi=0;yi<y.length();yi++) {
-			std::string s = y.substr(yi,1);
-			size_t pos = x.find(s); // do I occur?
-			if(pos != std::string::npos) {
-				out.append(s);
-			}
-		}
-		return out;
-	}),
-	Primitive("difference(%s,%s)", +[](set x, set y) -> set {
-		std::string out = x;
-		for(size_t yi=0;yi<y.length();yi++) {
-			std::string s = y.substr(yi,1);
-			size_t pos = out.find(s); // do I occur?
-			if(pos != std::string::npos) {
-				out.erase(pos,1); // remove that character
-			}
-		}
-		return out;
-	}),
-	Primitive("filter(%s,%s)", +[](set x, objectkind t) -> set {
-		std::string tstr = std::string(1,t); // a std::string to find
-		std::string out = "";
-		size_t pos = x.find(tstr);
-		while (pos != std::string::npos) {
-			out = out + tstr;
-			pos = x.find(tstr,pos+1);
-		}
-		return out;
-	}),
-	Primitive("select(%s)",      +[](set x) -> set { 
-		return x.substr(0,1); 
-	}),
-	Primitive("selectO(%s,%s)",  +[](set x, objectkind o) -> set {
-		if(x.find(o) != std::string::npos){
-			return std::string(1,o); // must exist there
-		}
-		else {
-			return set("");
-		}
-	}),
-	Primitive("match(%s,%s)",  +[](wmset x, set s) -> bool { return x == (wmset)s.size(); }, 1.0),
-	Primitive("{}",            +[]() -> wmset { return (wmset)0; }),
-	Primitive("{o}",           +[]() -> wmset { return (wmset)1; }),
-	Primitive("{o,o}",         +[]() -> wmset { return (wmset)2; }),
-	Primitive("{o,o,o}",       +[]() -> wmset { return (wmset)3; }),
-		
-	// ANS operations 
-	Primitive("ANSeq(%s,%s)",     +[](set a, set b)       -> double { return ANSzero(a.length(), b.length()); }, 1.0/3.0),
-	Primitive("ANSeq(%s,%s)",     +[](set a, wmset b)     -> double { return ANSzero(a.length(), b); }, 1.0/3.0),
-	Primitive("ANSeq(%s,%s)",     +[](set a, magnitude b) -> double { return ANSzero(a.length(), b); }, 1.0/3.0),
-	
-	Primitive("ANSlt(%s,%s)",     +[](set a, set b)       -> double { return 1.0-normcdf(ANSdiff(a.length(), b.length())); }, 1.0/5.0),
-	Primitive("ANSlt(%s,%s)",     +[](set a, wmset b)     -> double { return 1.0-normcdf(ANSdiff(a.length(), b)); }, 1.0/5.0),
-	Primitive("ANSlt(%s,%s)",     +[](set a, magnitude b) -> double { return 1.0-normcdf(ANSdiff(a.length(), b)); }, 1.0/5.0),
-	Primitive("ANSlt(%s,%s)",     +[](wmset b, set a)     -> double { return 1.0-normcdf(ANSdiff(b, a.length())); }, 1.0/5.0),
-	Primitive("ANSlt(%s,%s)",     +[](magnitude b, set a) -> double { return 1.0-normcdf(ANSdiff(b, a.length())); }, 1.0/5.0),
-
-	Primitive("1",     +[]() -> magnitude { return 1; }),
-	Primitive("2",     +[]() -> magnitude { return 2; }),
-	Primitive("3",     +[]() -> magnitude { return 3; }),
-	Primitive("4",     +[]() -> magnitude { return 4; }),
-	Primitive("5",     +[]() -> magnitude { return 5; }),
-	Primitive("6",     +[]() -> magnitude { return 6; }),
-	Primitive("7",     +[]() -> magnitude { return 7; }),
-	Primitive("8",     +[]() -> magnitude { return 8; }),
-	Primitive("9",     +[]() -> magnitude { return 9; }),
-	Primitive("10",    +[]() -> magnitude { return 10; }),
-	
-	//x, recurse, ifset, ifword
-	Builtin::And("and(%s,%s)", 1./3.),
-	Builtin::Or("or(%s,%s)", 1./3.),
-	Builtin::Not("not(%s)", 1./3.),
-	
-	Builtin::If<set>("if(%s,%s,%s)", 1/5.),		
-	Builtin::If<word>("if(%s,%s,%s)", 1/5.),	
-	Builtin::If<wmset>("if(%s,%s,%s)", 1./5.),		
-	Builtin::If<objectkind>("if(%s,%s,%s)", 1./5.),
-	Builtin::If<magnitude>("if(%s,%s,%s)", 1./5.),		
-	Builtin::X<utterance>("x", 10.0),
-	Builtin::FlipP("flip(%s)", 2.0),
-	Builtin::Recurse<word,utterance>("F(%s)")	
-};
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare a grammar
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
 #include "Grammar.h"
+#include "Singleton.h"
 
-class MyGrammar : public Grammar<bool,word,set,objectkind,utterance,wmset,magnitude,double> {
-	using Super=Grammar<bool,word,set,objectkind,utterance,wmset,magnitude,double>;
-	using Super::Super;
+class MyGrammar : public Grammar<utterance,word,      bool,word,set,objectkind,utterance,wmset,magnitude,double>,
+				  public Singleton<MyGrammar> {
+public:
+	MyGrammar() {
+			
+		add("undef",         +[]() -> word { return U; });
+		
+		add("a",         +[]() -> objectkind { return 'a'; });
+		add("b",         +[]() -> objectkind { return 'b'; });
+		add("c",         +[]() -> objectkind { return 'c'; });
+		add("d",         +[]() -> objectkind { return 'd'; });
+		add("e",         +[]() -> objectkind { return 'e'; });
+		
+		add("one",         +[]() -> word { return 1; }, 0.1);
+		add("two",         +[]() -> word { return 2; }, 0.1);
+		add("three",       +[]() -> word { return 3; }, 0.1);
+		add("four",        +[]() -> word { return 4; }, 0.1);
+		add("five",        +[]() -> word { return 5; }, 0.1);
+		add("six",         +[]() -> word { return 6; }, 0.1);
+		add("seven",       +[]() -> word { return 7; }, 0.1);
+		add("eight",       +[]() -> word { return 8; }, 0.1);
+		add("nine",        +[]() -> word { return 9; }, 0.1);
+		add("ten",         +[]() -> word { return 10; }, 0.1);
+		
+		add("next(%s)",    +[](word w) -> word { return w == U ? U : w+1;});
+		add("prev(%s)",    +[](word w) -> word { return w == U or w == 1 ? U : w-1; });
+		
+		// extract from the context/utterance
+		add("%s.set",      +[](utterance u) -> set    { return u.s; }, 25.0);
+		add("%s.obj",      +[](utterance u) -> objectkind { return u.o; }, 10.0);
+		
+		// build utterances -- needed for useful recursion
+		add("<%s,%s>",     +[](set s, objectkind o) -> utterance { return utterance{s,o}; });
+		
+		add("union(%s,%s)", +[](set x, set y) -> set { 
+			if(x.size()+y.size() > MAX_SET_SIZE) 
+				throw VMSRuntimeError(); 
+			return x+y; 
+		});
+		
+		add("intersection(%s,%s)", +[](set x, set y) -> set {
+			std::string out = "";
+			for(size_t yi=0;yi<y.length();yi++) {
+				std::string s = y.substr(yi,1);
+				size_t pos = x.find(s); // do I occur?
+				if(pos != std::string::npos) {
+					out.append(s);
+				}
+			}
+			return out;
+		});
+		
+		add("difference(%s,%s)", +[](set x, set y) -> set {
+			std::string out = x;
+			for(size_t yi=0;yi<y.length();yi++) {
+				std::string s = y.substr(yi,1);
+				size_t pos = out.find(s); // do I occur?
+				if(pos != std::string::npos) {
+					out.erase(pos,1); // remove that character
+				}
+			}
+			return out;
+		});
+		
+		add("filter(%s,%s)", +[](set x, objectkind t) -> set {
+			std::string tstr = std::string(1,t); // a std::string to find
+			std::string out = "";
+			size_t pos = x.find(tstr);
+			while (pos != std::string::npos) {
+				out = out + tstr;
+				pos = x.find(tstr,pos+1);
+			}
+			return out;
+		});
+		
+		add("select(%s)",      +[](set x) -> set { 
+			return x.substr(0,1); 
+		});
+		
+		add("selectO(%s,%s)",  +[](set x, objectkind o) -> set {
+			if(x.find(o) != std::string::npos){
+				return std::string(1,o); // must exist there
+			}
+			else {
+				return set("");
+			}
+		});
+		
+		add("match(%s,%s)",  +[](wmset x, set s) -> bool { return x == (wmset)s.size(); }, 1.0);
+		add("{}",            +[]() -> wmset { return (wmset)0; });
+		add("{o}",           +[]() -> wmset { return (wmset)1; });
+		add("{o,o}",         +[]() -> wmset { return (wmset)2; });
+		add("{o,o,o}",       +[]() -> wmset { return (wmset)3; });
+			
+		// ANS operations 
+		add("ANSeq(%s,%s)",     +[](set a, set b)       -> double { return ANSzero(a.length(), b.length()); }, 1.0/3.0);
+		add("ANSeq(%s,%s)",     +[](set a, wmset b)     -> double { return ANSzero(a.length(), b); }, 1.0/3.0);
+		add("ANSeq(%s,%s)",     +[](set a, magnitude b) -> double { return ANSzero(a.length(), b); }, 1.0/3.0);
+		
+		add("ANSlt(%s,%s)",     +[](set a, set b)       -> double { return 1.0-normcdf(ANSdiff(a.length(), b.length())); }, 1.0/5.0);
+		add("ANSlt(%s,%s)",     +[](set a, wmset b)     -> double { return 1.0-normcdf(ANSdiff(a.length(), b)); }, 1.0/5.0);
+		add("ANSlt(%s,%s)",     +[](set a, magnitude b) -> double { return 1.0-normcdf(ANSdiff(a.length(), b)); }, 1.0/5.0);
+		add("ANSlt(%s,%s)",     +[](wmset b, set a)     -> double { return 1.0-normcdf(ANSdiff(b, a.length())); }, 1.0/5.0);
+		add("ANSlt(%s,%s)",     +[](magnitude b, set a) -> double { return 1.0-normcdf(ANSdiff(b, a.length())); }, 1.0/5.0);
+
+		add("1",     +[]() -> magnitude { return 1; });
+		add("2",     +[]() -> magnitude { return 2; });
+		add("3",     +[]() -> magnitude { return 3; });
+		add("4",     +[]() -> magnitude { return 4; });
+		add("5",     +[]() -> magnitude { return 5; });
+		add("6",     +[]() -> magnitude { return 6; });
+		add("7",     +[]() -> magnitude { return 7; });
+		add("8",     +[]() -> magnitude { return 8; });
+		add("9",     +[]() -> magnitude { return 9; });
+		add("10",    +[]() -> magnitude { return 10; });
+		
+		add("and(%s,%s)",    Builtins::And<MyGrammar>, 1./3);
+		add("or(%s,%s)",     Builtins::Or<MyGrammar>, 1./3);
+		add("not(%s)",       Builtins::Not<MyGrammar>, 1./3);
+		
+		add("x",             Builtins::X<MyGrammar>, 10.);
+		add("flip()",        Builtins::Flip<MyGrammar>, 2.0);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,set>,        1./5);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,word>,       1./5);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,wmset>,      1./5);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,objectkind>, 1./5);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,magnitude>,  1./5);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,utterance>,  1./5);
+		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
+	}
 };
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -275,31 +275,31 @@ std::vector<MyHypothesis::data_t> alldata;
 // If we want to do MCTS
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "Inference/MCTS.h"
-#include "Inference/MCMCChain.h"
-
-class MyMCTS final : public PartialMCTSNode<MyMCTS, MyHypothesis, decltype(all)> {
-	using PartialMCTSNode::PartialMCTSNode;
-
-	virtual void playout(MyHypothesis& h) override {
-
-		MyHypothesis h0 = h; // need a copy to change resampling on 
-		for(auto& n : h0.get_value() ){
-			n.can_resample = false;
-		}
-		
-		// make a wrapper to add samples
-		std::function<void(MyHypothesis& h)> cb = [&](MyHypothesis& v) { 
-			this->add_sample(v.likelihood);
-			(*this->callback)(v);
-		};
-		
-		h0.complete(); // fill in any structural gaps
-		MCMCChain chain(h0, data, cb);
-		chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1)); // run mcmc with restarts; we sure shouldn't run more than runtime
-	}
-	
-};
+//#include "Inference/MCTS.h"
+//#include "Inference/MCMCChain.h"
+//
+//class MyMCTS final : public PartialMCTSNode<MyMCTS, MyHypothesis, decltype(all)> {
+//	using PartialMCTSNode::PartialMCTSNode;
+//
+//	virtual void playout(MyHypothesis& h) override {
+//
+//		MyHypothesis h0 = h; // need a copy to change resampling on 
+//		for(auto& n : h0.get_value() ){
+//			n.can_resample = false;
+//		}
+//		
+//		// make a wrapper to add samples
+//		std::function<void(MyHypothesis& h)> cb = [&](MyHypothesis& v) { 
+//			this->add_sample(v.likelihood);
+//			(*this->callback)(v);
+//		};
+//		
+//		h0.complete(); // fill in any structural gaps
+//		MCMCChain chain(h0, data, cb);
+//		chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1)); // run mcmc with restarts; we sure shouldn't run more than runtime
+//	}
+//	
+//};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Sampling for the data
@@ -363,7 +363,11 @@ int main(int argc, char** argv) {
 	VirtualMachineControl::MAX_STEPS = 128;
 	VirtualMachineControl::MAX_OUTPUTS = 128;
 
-	MyGrammar grammar(PRIMITIVES);
+	MyGrammar grammar;
+	
+	
+	
+	
 	
 	typedef MyHypothesis::data_t  data_t;
 	typedef MyHypothesis::datum_t datum_t;

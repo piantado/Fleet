@@ -15,30 +15,6 @@
 
 #include "VMSRuntimeError.h"
 
-/**
- * @class has_operator_lessthan_impl
- * @author piantado
- * @date 07/05/20
- * @file VirtualMachineState.h
- * @brief See if a class implements operator< (for filtering out in op_MEM code so it doesn't give an error if we use input_t that doesn't implement operator<
- * 		  as long as no op_MEM is called
- */
-template<class T, class EqualTo>
-struct has_operator_lessthan_impl {
-    template<class U, class V>
-    static auto test(U*) -> decltype(std::declval<U>() < std::declval<V>());
-    template<typename, typename>
-    static auto test(...) -> std::false_type;
-
-    using type = typename std::is_same<bool, decltype(test<T, EqualTo>(0))>::type;
-};
-
-template<class T, class EqualTo = T>
-struct has_operator_lessthan : has_operator_lessthan_impl<T, EqualTo>::type {};
-// https://stackoverflow.com/questions/6534041/how-to-check-whether-operator-exists
-
-
-
 namespace FleetStatistics {}
 template<typename X> class VirtualMachinePool;
 extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
@@ -70,14 +46,18 @@ class VirtualMachineState : public VirtualMachineControl {
 	
 public:
 
-	typedef _t_input  input_t;
-	typedef _t_output output_t;
+	using input_t  = _t_input;
+	using output_t = _t_output;
 	
-	typedef VirtualMachineState<input_t,output_t, VM_TYPES...> this_t; 
+	using this_t = VirtualMachineState<input_t, output_t, VM_TYPES...>; 
+	
+	// Define the function type for instructions and things operating on this VirtualMachineState
+	// This is read a few other places, like in Builtins
+	using FT = std::function<void(this_t*,int)>;
 	
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
-	Program            opstack; 
+	Program            program; 
 	VMSStack<input_t>  xstack; //xstackthis stores a stack of the x values (for recursive calls)
 	output_t           err; // what error output do we return?
 	double             lp; // the probability of this context
@@ -90,7 +70,7 @@ public:
 	struct t_stack { std::tuple<VMSStack<args>...> value; };
 	t_stack<VM_TYPES...> _stack; // our stacks of different types
 	
-	typedef int index_t; // how we index into factorized lexica -- NOTE: probably should be castable from Instruction.arg 
+	typedef int index_t; // how we index into factorized lexica -- NOTE: must be castable from Instruction.arg 
 	
 	// must have a memoized return value, that permits factorized by requiring an index argument
 	std::map<std::pair<index_t, input_t>, output_t> mem; 
@@ -117,8 +97,6 @@ public:
 		xstack.push(x);	
 	}
 	
-	virtual ~VirtualMachineState() {}	// needed so VirtualMachinePool can delete
-
 	/**
 	 * @brief These must be sortable by lp so that we can enumerate them from low to high probability in a VirtualMachinePool 
 	 * 		  NOTE: VirtualMachineStates shouldn't be put in a set because they might evaluate to equal! 
@@ -128,29 +106,14 @@ public:
 	bool operator<(const VirtualMachineState& m) const {
 		return lp < m.lp; 
 	}
-
-	/**
-	 * @brief Add v to my lp
-	 * @param v
-	 */
-	void increment_lp(double v) {
-		lp += v;
-	}
-	
-	/**
-	 * @brief How many more steps can I be run for? This is useful for not adding programs that contain too many ops
-	 * @return 
-	 */		
-	unsigned long remaining_steps() {
-		return MAX_RUN_PROGRAM - runtime_counter.total;
-	}
 	
 	/**
 	 * @brief Returns a reference to the stack (of a given type)
 	 * @return 
 	 */
 	template<typename T>
-	VMSStack<T>& stack()             { 
+	VMSStack<T>& stack() { 
+		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
 		return std::get<VMSStack<T>>(_stack.value); 
 	}
 	
@@ -160,6 +123,7 @@ public:
 	 */	
 	template<typename T>
 	const VMSStack<T>& stack() const { 
+		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
 		return std::get<VMSStack<T>>(_stack.value); 
 	}
 	
@@ -169,6 +133,7 @@ public:
 	 */
 	template<typename T>
 	T getpop() {
+		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
 		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
 		T x = std::move(stack<T>().top());
@@ -177,63 +142,29 @@ public:
 	}
 	
 	/**
+	* @brief Getpops the n'th element of args (useful for writing primitives)
+	* @return 
+	*/
+	template<size_t n, typename...args>
+	auto getpop_nth() {
+		static_assert( n >= 0 and n < sizeof...(args) && "*** Higher n than args.");
+		return getpop<typename std::tuple_element<n, std::tuple<args...> >::type>();
+	}
+	
+	/**
 	* @brief Retrieves the top of the stack as a copy and does *not* remove
 	* @return 
 	*/
 	template<typename T>
 	T gettop() {
+		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
 		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		return stack<T>().top();
 	}
-	/**
-	* @brief Retrieves the top of the stack as a copy and does *not* remove
-	* @return 
-	*/	template<typename T>
-	T& gettopref() {
-		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		
-		return stack<T>().topref();
-	}
-		
-	/**
-	 * @brief This is some fanciness that will return a reference to the top of the stack if we give it a reference type 
-	 * 			otherwise it will return the type. This lets us get the top of a stack with a reference in PRIMITIVES
-	 * 			as though we were some kind of wizards
-	 * @return 
-	 */		
-	template<typename T>
-	typename std::conditional<std::is_reference<T>::value, T&, T>::type
-	get() {
-		using Tdecay = typename std::decay<T>::type; // remove the ref from it since that's how we access the stack -- TODO: put this into this->stack() maybe?
-		
-		assert(stack<Tdecay>().size() > 0 && "Cannot get from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
-		
-		// some magic: if its a reference, we return a reference to the top of the stack
-		// otherwise we move off and return
-		if constexpr (std::is_reference<T>::value) { 
-			// if its a reference, reference the un-referenced stack type and return a reference to its top
-			// NOTE: It is important that this does not pop, because that means it doesn't matter when we call it
-			// in Primitives
-			return std::forward<T>(stack<Tdecay>().topref());
-		}
-		else {
-			T x = std::move(stack<Tdecay>().top());
-			stack<Tdecay>().pop();
-			return x;
-		}
-	}
-
-	/**
-	 * @brief Is this stack empty?
-	 * @return 
-	 */
-	template<typename T>
-	bool empty() {		
-		return stack<T>().empty();
-	}
-
 	template<typename T>
 	void push(T& x){
+		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
 		/**
 		 * @brief Push things onto the appropriate stack
 		 * @param x
@@ -242,32 +173,10 @@ public:
 	}
 	template<typename T>
 	void push(T&& x){
+		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
 		stack<T>().push(std::move(x));
 	}
-	template<typename... args>
-	bool any_stacks_empty() const { 
-		/**
-		 * @brief Check if any of the stacks are empty
-		 * @return 
-		 */		
-		return (... || stack<args>().empty()); 
-	}
-	template<typename... args>
-	bool all_stacks_empty() const { 
-		/**
-		 * @brief Check if all of the stacks are empty (should be at the end of evaluation)
-		 * @return 
-		 */
-		return (... && stack<args>().empty()); 
-	}	
-	bool stacks_empty() const { 
-		/**
-		 * @brief True if all stacks are empty for the VM_TYPES
-		 * @return 
-		 */
-		return this->all_stacks_empty<VM_TYPES...>();
-	}
-	
+
 	/**
 	 * @brief There is one element in stack T and the rest are empty. Used to check in returning the output.
 	 * @return 
@@ -288,24 +197,13 @@ public:
 	 */	
 	output_t get_output() {
 		
-		if(status == vmstatus_t::ERROR) {
+		if(status == vmstatus_t::ERROR) 
 			return err;		
-		}
 		
 		assert(status == vmstatus_t::COMPLETE && "*** Probably should not be calling this unless we are complete");
 		assert( exactly_one<output_t>() and xstack.size() == 1 and "When we return, all of the stacks should be empty or else something is awry.");
 		
 		return gettop<output_t>();
-	}
-	
-	template<typename HYP>
-	output_t run(HYP* d) {
-		/**
-		 * @brief Defaultly run a non-random hypothesis
-		 * @param d
-		 * @return 
-		 */
-		return run(nullptr, d);
 	}
 	
 	/**
@@ -318,25 +216,25 @@ public:
 	 * @return 
 	 */	
 	 output_t run() {
-
 		status = vmstatus_t::GOOD;
 		
 		try { 
 			
-			while(status == vmstatus_t::GOOD and (not opstack.empty()) ) {
+			while(status == vmstatus_t::GOOD and (not program.empty()) ) {
 				
-				if(opstack.size() > remaining_steps() ) {  // if we've run too long or we couldn't possibly finish
+				if(program.size() + runtime_counter.total > MAX_RUN_PROGRAM ) {  // if we've run too long or we couldn't possibly finish
 					status = vmstatus_t::RUN_TOO_LONG;
 					break;
 				}
 				
 				FleetStatistics::vm_ops++;
 				
-				Instruction i = opstack.top(); opstack.pop();
+				Instruction i = program.top(); program.pop();
 				
 				// keep track of what instruction we've run
 				runtime_counter.increment(i);
 				
+<<<<<<< HEAD
 				// Now actually dispatch for whatever i is doing to this stack
 				if(i.is<PrimitiveOp>()) {
 					if constexpr(sizeof...(VM_TYPES) > 0) {
@@ -672,6 +570,11 @@ public:
 					} // end switch
 				
 				} // end if not custom
+=======
+				auto f = reinterpret_cast<FT*>(i.f);
+				(*f)(const_cast<this_t*>(this), i.arg);
+				 
+>>>>>>> redoPrimitives2
 			} // end while loop over ops
 	
 			// and when we exit, set the status to complete if we are good
@@ -680,17 +583,14 @@ public:
 				status = vmstatus_t::COMPLETE;
 				return get_output();
 			}
-			else {
-				return err;
-			}
 			
 		} catch (VMSRuntimeError& e) {
 			// this may be thrown by a primitive
 			status = vmstatus_t::ERROR;
-			
-			return err;
 		}
 		
+		// if we get here, there was a problem 
+		return err;
 	}	
 	
 };

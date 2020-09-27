@@ -18,7 +18,7 @@
 
 extern volatile sig_atomic_t CTRL_C;
 
-#include "VectorHypothesis.h"
+#include "VectorNormalHypothesis.h"
 #include "TNormalVariable.h"
 #include "Batch.h"
 
@@ -51,7 +51,7 @@ public:
 	// iterate so now we might make a map in constructing, but we stores as a vector of pairs
 	typedef Vector2D<std::vector<std::pair<typename HYP::output_t,double>>> Predict_t; 
 		
-	VectorHypothesis  logA; // a simple normal vector for the log of a
+	VectorNormalHypothesis  logA; // a simple normal vector for the log of a
 	
 	// Here is a list of built-in parameters that we can use. Each stores a standard
 	// normal and a value under the specified transformation
@@ -122,7 +122,7 @@ public:
 	}
 		
 	/**
-	 * @brief Set whether I can propose to a value in logA -- this is handled by VectorHypothesis
+	 * @brief Set whether I can propose to a value in logA -- this is handled by VectorNormalHypothesis
 	 * 		  Here, though, we warn if the value is not 1.0
 	 * @param i
 	 * @param b

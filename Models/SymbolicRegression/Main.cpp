@@ -12,12 +12,53 @@ const size_t trim_to = 500;  // trim to this size
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define grammar
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+#include "Singleton.h"
 #include "Grammar.h"
 
-class MyGrammar : public Grammar<D> {
-	using Super=Grammar<D>;
-	using Super::Super;
+// We need these to declare this so it is defined before grammar,
+// and so these can be accessed in grammar.
+// What a goddamn nightmare (the other option is to separate header files)
+struct ConstantContainer {
+	std::vector<D> constants;
+	size_t         constant_idx; // in evaluation, this variable stores what constant we are in 
+};
+
+
+class MyGrammar : public Grammar<D,D, D>,
+				  public Singleton<MyGrammar> {
+public:
+	MyGrammar() {
+		
+		add("(%s+%s)",    +[](D a, D b) -> D     { return a+b; }),
+		add("(%s-%s)",    +[](D a, D b) -> D     { return a-b; }),
+		add("(%s*%s)",    +[](D a, D b) -> D     { return a*b; }),
+		add("(%s/%s)",    +[](D a, D b) -> D     { return (b==0 ? 0 : a/b); }),
+		
+		add("(%s^%s)",    +[](D a, D b) -> D     { return pow(a,b); }),
+		
+		add("(-%s)",      +[](D a)          -> D { return -a; }),
+		add("exp(%s)",    +[](D a)          -> D { return exp(a); }),
+		add("log(%s)",    +[](D a)          -> D { return log(a); }),
+		
+		add("1",          +[]()             -> D { return 1.0; }),
+		
+		// give the type to add and then a vms function
+		add_vms<D>("C", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
+						
+				// Here we are going to use a little hack -- we actually know that vms->program_loader
+				// is of type MyHypothesis, so we will cast to that
+				auto* h = dynamic_cast<ConstantContainer*>(vms->program_loader);
+				if(h == nullptr) { assert(false); }
+				else {
+					assert(h->constant_idx < h->constants.size()); 
+					vms->template push<D>(h->constants.at(h->constant_idx++));
+				}
+		}), 5.0);
+							
+		add("x",             Builtins::X<MyGrammar>, 5.0);
+	}
+					  
+					  
 };
 
 // check if a rule is constant
@@ -30,20 +71,19 @@ bool isConstant(const Rule* r) { return r->format == "C"; }
 
 #include "LOTHypothesis.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,D,D,MyGrammar> {
+class MyHypothesis final : public ConstantContainer,
+						   public LOTHypothesis<MyHypothesis,D,D,MyGrammar> {
 	/* This class handles enumeration of the structure and critically does MCMC over the constants */
 	
 public:
-	std::vector<D> constants;
-	size_t         constant_idx; // in evaluation, this variable stores what constant we are in 
-	
+
 	using Super = LOTHypothesis<MyHypothesis,D,D,MyGrammar>;
 	using Super::Super;
 
 	virtual D callOne(const D x, const D err) {
 		// my own wrapper that zeros the constant_i counter
 		constant_idx = 0;
-		auto out = Super::callOne<MyHypothesis>(x,err,this);
+		auto out = Super::callOne(x,err);
 		assert(constant_idx == constants.size()); // just check we used all constants
 		return out;
 	}
@@ -159,7 +199,17 @@ public:
 			
 			// now add to all that I have
 			for(size_t i=0;i<ret.constants.size();i++) { 
-				ret.constants[i] += 0.1*random_cauchy(); // symmetric, not counting in fb
+				// propose on a few scales here
+				double scale = 1.0;
+				switch(myrandom(5)){
+					case 0: scale = 10.0;   break;
+					case 1: scale =  1.0;   break;
+					case 2: scale =  0.10;  break;
+					case 3: scale =  0.01;  break;
+					case 4: scale =  0.001; break;
+				}
+				
+				ret.constants[i] += scale*normal(rng); // symmetric, not counting in fb
 			}
 			return std::make_pair(ret, 0.0);
 		}
@@ -175,7 +225,7 @@ public:
 	virtual void randomize_constants() {
 		constants.resize(count_constants());
 		for(size_t i=0;i<constants.size();i++) {
-			constants[i] = random_cauchy();
+			constants[i] = random_normal();
 		}
 	}
 
@@ -201,40 +251,6 @@ public:
 	}
 };
 
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Define primitives -- these must come after MyHypothesis since 
-/// we have to define a custom function that depends on them
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#include "Primitives.h"
-#include "Builtins.h"
-
-#include "VirtualMachine/VirtualMachineState.h"
-#include "VirtualMachine/VirtualMachinePool.h"
-
-std::tuple PRIMITIVES = {
-	Primitive("(%s+%s)",    +[](D a, D b) -> D     { return a+b; }),
-	Primitive("(%s-%s)",    +[](D a, D b) -> D     { return a-b; }),
-	Primitive("(%s*%s)",    +[](D a, D b) -> D     { return a*b; }),
-	Primitive("(%s/%s)",    +[](D a, D b) -> D     { return (b==0 ? 0 : a/b); }),
-	Primitive("(%s^%s)",    +[](D a, D b) -> D     { return pow(a,b); }),
-	Primitive("(-%s)",      +[](D a)          -> D { return -a; }),
-	Primitive("exp(%s)",    +[](D a)          -> D { return exp(a); }),
-	Primitive("log(%s)",    +[](D a)          -> D { return log(a); }),
-	
-	Primitive("1",          +[]()             -> D { return 1.0; }),
-	
-	
-	Primitive("C", +[]() -> D {return 0.0;}, 
-				   +[](VirtualMachineState<D,D,D>* vms, VirtualMachinePool<VirtualMachineState<D,D,D>>* pool, MyHypothesis* h) -> vmstatus_t {
-						assert(h->constant_idx < h->constants.size()); 
-						vms->push(h->constants.at(h->constant_idx++));
-						return vmstatus_t::GOOD;
-				   }, 5.0),
-				   
-	Builtin::X<D>("x", 5.0)
-};
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -251,12 +267,10 @@ using datum_t = MyHypothesis::datum_t;
 std::map<std::string,ReservoirSample<MyHypothesis>> overall_samples; 
 std::mutex overall_sample_lock;
 
-size_t innertime;
 data_t mydata;
 
 // useful for extracting the max
 std::function posterior = [](const MyHypothesis& h) {return h.posterior; };
-
 
 /**
  * @brief This trims overall_samples to the top N different structures with the best scores.
@@ -350,7 +364,7 @@ public:
 		// NOTE That we might run this when there are no constants. 
 		// This is hard to avoid if we want to allow restarts, since those occur within MCMCChain
 		MCMCChain chain(h0, data, cb);
-		chain.run(Control(0, innertime, 1, 10000)); // run mcmc with restarts; we sure shouldn't run more than runtime
+		chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, 10000)); // run mcmc with restarts; we sure shouldn't run more than runtime
 			
 	}
 	
@@ -358,22 +372,16 @@ public:
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
-
+#include "FleetArgs.h"
 #include "Fleet.h" 
 
 int main(int argc, char** argv){ 
 	
-	std::string innertimestr = "1m";
+	FleetArgs::inner_timestring = "1m";
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	Fleet fleet("Symbolic regression");
-	fleet.add_option("-I,--inner-time", innertimestr, "Alphabet we will use"); 	// add my own args
 	fleet.initialize(argc, argv);
-	
-	innertime = convert_time(innertimestr);
-
-	// Set up the grammar
-	MyGrammar grammar(PRIMITIVES);
 	
 	// set up the data
 	mydata = load_data_file(FleetArgs::input_path.c_str()); 
@@ -381,7 +389,9 @@ int main(int argc, char** argv){
  	//------------------
 	// Run
 	//------------------
- 
+ 	// Set up the grammar
+	MyGrammar grammar;
+	
 	MyHypothesis h0(&grammar);
 	MyMCTS m(h0, FleetArgs::explore, &mydata, myCallback);
 	tic();
@@ -412,23 +422,23 @@ int main(int argc, char** argv){
 
 	// figure out the structure normalizer
 	double Z = -infinity;
-	for(auto& m: overall_samples) {
-		Z = logplusexp(Z, max_of(m.second.values(), posterior).second);
+	for(auto& s: overall_samples) {
+		Z = logplusexp(Z, max_of(s.second.values(), posterior).second);
 	}
 	
 	// And display!
 	COUT "structure\tstructure.max\testimated.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\th\tparseable.h" ENDL;
-	for(auto& m : overall_samples) {
+	for(auto& s : overall_samples) {
 		
-		double best_posterior = max_of(m.second.values(), posterior).second;
+		double best_posterior = max_of(s.second.values(), posterior).second;
 		
 		// find the normalizer for this structure
 		double sz = -infinity;
-		for(auto& h : m.second.values()) {
+		for(auto& h : s.second.values()) {
 			sz = logplusexp(sz, h.posterior);
 		}
 		
-		for(auto h : m.second.values()) {
+		for(auto h : s.second.values()) {
 			COUT QQ(h.structure_string()) TAB 
 				 best_posterior TAB 
 				 ( (h.posterior-sz) + (best_posterior-Z)) TAB 

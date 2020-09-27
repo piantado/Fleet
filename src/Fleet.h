@@ -62,8 +62,6 @@
  * 	- Sample things, store in TopN, then evaluate...
  */
 
-/* Globally shared variables and declarations */
-
 #pragma once 
 
 #include <sys/resource.h> // just for setting priority defaulty 
@@ -71,19 +69,11 @@
 #include <stdlib.h>
 #include <signal.h>
 
-const std::string FLEET_VERSION = "0.0.98";
+const std::string FLEET_VERSION = "0.1.01";
 
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// We defaultly include all of the major requirements for Fleet
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//#include "Statistics/FleetStatistics.h"
-
+#include "Random.h"
 #include "Timing.h"
 #include "Control.h"
-
-// Thie one really should be included last because it depends on Primitves
-// so we will include it here 
-#include "VirtualMachine/applyPrimitives.h"
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Fleet global variables
@@ -146,7 +136,6 @@ public:
 //		app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");
 
 		start_time = now();
-		
 	}
 	
 	/**
@@ -193,6 +182,9 @@ public:
 		// set up the random seed:
 		if(random_seed != 0) {
 			rng.seed(random_seed);
+		}
+		else {
+			rng.seed(std::random_device{}());
 		}
 		
 		// convert everything to ms

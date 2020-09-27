@@ -6,6 +6,8 @@
 #include "Statistics/FleetStatistics.h"
 #include "Miscellaneous.h"
 
+#include "LRUCache.h"
+
 /**
  * @class Bayesable
  * @author steven piantadosi
@@ -15,6 +17,8 @@
  * 		  Note that this class stores prior, likelihood, posterior always at temperature 1.0, and you can get the values of the 
  * 		  posterior at other temperatures via Bayesable.at_temperature(double t)
  */
+
+//cache::lru_cache<size_t, std::tuple<double,double,double>> posterior_cache(10);
 
 template<typename _datum_t, typename _data_t=std::vector<_datum_t>>
 class Bayesable {
@@ -119,6 +123,16 @@ public:
 		
 		++FleetStatistics::posterior_calls; // just keep track of how many calls 
 		
+//		auto hsh = this->hash();
+//		if(posterior_cache.exists(hsh)) {
+//			CERR "HIT" ENDL;
+//			auto q = posterior_cache.get(hsh); // TODO: Should also set likelihood and prior
+//			this->posterior  = std::get<0>(q);
+//			this->prior      = std::get<1>(q);
+//			this->likelihood = std::get<2>(q);
+//			return posterior;
+//		}
+		
 		// Always compute a prior
 		prior = compute_prior();
 		
@@ -131,6 +145,8 @@ public:
 			likelihood = compute_likelihood(data, breakout-prior);
 			posterior = prior + likelihood;	
 		}
+		
+//		posterior_cache.put(hsh, std::make_tuple(posterior, prior, likelihood));
 		
 		return posterior;
 	}

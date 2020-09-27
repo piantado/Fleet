@@ -33,13 +33,13 @@ public:
 	void increment(Instruction& i, T count=1) {
 		//CERR ">>" TAB builtin_count.size() TAB primitive_count.size() TAB i TAB this ENDL;
 		total += count;
-		if(i.is<BuiltinOp>()) {
-			// this general vector increment lives in miscellaneous
-			::increment(builtin_count, (size_t)i.as<BuiltinOp>(), (T)count);
-		}
-		else {
-			::increment(primitive_count, (size_t)i.as<PrimitiveOp>(), (T)count);
-		}
+//		if(i.is<BuiltinOp>()) {
+//			// this general vector increment lives in miscellaneous
+//			::increment(builtin_count, (size_t)i.as<BuiltinOp>(), (T)count);
+//		}
+//		else {
+//			::increment(primitive_count, (size_t)i.as<PrimitiveOp>(), (T)count);
+//		}
 	}
 		
 	/**
@@ -48,12 +48,16 @@ public:
 	 */	
 	void increment(RuntimeCounter& rc) {
 		// we'll go in decreasing order so we don't have to resize each time
-		for(size_t i=rc.builtin_count.size()-1; i != 0; i--) {
-			::increment(builtin_count, i, (T)rc.builtin_count[i]);
-		}
-		for(size_t i=rc.primitive_count.size()-1; i != 0; i--) {
-			::increment(primitive_count, i, (T)rc.primitive_count[i]);
-		}
+		
+		// FOR NOW: 
+		total += rc.total;
+		
+//		for(size_t i=rc.builtin_count.size()-1; i != 0; i--) {
+//			::increment(builtin_count, i, (T)rc.builtin_count[i]);
+//		}
+//		for(size_t i=rc.primitive_count.size()-1; i != 0; i--) {
+//			::increment(primitive_count, i, (T)rc.primitive_count[i]);
+//		}
 	}
 		
 	/**
@@ -63,16 +67,17 @@ public:
 	 */
 	// retrieve the count corresponding to some grammar rule
 	size_t get(Instruction& i) {
-		if(i.is<BuiltinOp>()) {
-			auto idx = (size_t)i.as<BuiltinOp>();
-			if(idx >= builtin_count.size()) return 0;
-			else				     return builtin_count[idx];
-		}
-		else {
-			auto idx = (size_t)i.as<PrimitiveOp>();
-			if(idx >= primitive_count.size()) return 0;
-			else				       return primitive_count[idx];
-		}
+		throw NotImplementedError();
+//		if(i.is<BuiltinOp>()) {
+//			auto idx = (size_t)i.as<BuiltinOp>();
+//			if(idx >= builtin_count.size()) return 0;
+//			else				     return builtin_count[idx];
+//		}
+//		else {
+//			auto idx = (size_t)i.as<PrimitiveOp>();
+//			if(idx >= primitive_count.size()) return 0;
+//			else				       return primitive_count[idx];
+//		}
 	}
 
 	
@@ -83,13 +88,14 @@ public:
 	 */	
 	std::string string() const {
 		std::string out = "< ";
-		for(auto& n : builtin_count) {
-			out += str(n) + " ";
-		}
-		out += " : ";
-		for(auto& n : primitive_count) {
-			out += str(n) + " ";
-		}
+		out += str(total);
+//		for(auto& n : builtin_count) {
+//			out += str(n) + " ";
+//		}
+//		out += " : ";
+//		for(auto& n : primitive_count) {
+//			out += str(n) + " ";
+//		}
 		out += ">";
 		return out;
 	}

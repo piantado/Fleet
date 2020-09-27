@@ -9,7 +9,7 @@
 // Don't warn shadow on this its a nightmare
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wshadow"
-#include "dependencies/CL11.hpp"
+#include "Dependencies/CL11.hpp"
 #pragma GCC diagnostic pop
 
 #include "Strings.h"

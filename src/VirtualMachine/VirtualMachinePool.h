@@ -66,7 +66,7 @@ public:
 	double worst_lp;
 	
 	std::priority_queue<VirtualMachineState_t*, std::vector<VirtualMachineState_t*>, VirtualMachinePool::compare_VirtualMachineState_t_prt> Q; // Q of states sorted by probability
-//	std::priority_queue<VirtualMachineState_t*, ReservedVector<VirtualMachineState_t*,1024>, VirtualMachinePool::compare_VirtualMachineState_t_prt> Q; // Does not seem to speed things up 
+	//std::priority_queue<VirtualMachineState_t*, ReservedVector<VirtualMachineState_t*,16>, VirtualMachinePool::compare_VirtualMachineState_t_prt> Q; // Does not seem to speed things up 
 
 	VirtualMachinePool() : current_steps(0), worst_lp(infinity) { 
 	}
@@ -129,7 +129,7 @@ public:
 		if(wouldIadd(x->lp + lpinc)) {	
 			auto s = new VirtualMachineState_t(*x); // copy
 			s->template push<T>(v); // add v
-			s->increment_lp(lpinc);
+			s->lp += lpinc;
 			this->push(s);	
 			return true;
 		}	
@@ -147,7 +147,7 @@ public:
 	bool increment_push(VirtualMachineState_t* s, T v, double lpinc) {		
 		if(wouldIadd(s->lp + lpinc)) {		
 			s->template push<T>(v); // add this
-			s->increment_lp(lpinc);
+			s->lp += lpinc;
 			this->push(s);	
 			return true;
 		}	
@@ -201,7 +201,6 @@ public:
 	 * @return 
 	 */	
 	std::vector<VirtualMachineState_t> run_vms() { 
-
 		
 		std::vector<VirtualMachineState_t> out;
 		

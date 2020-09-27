@@ -4,21 +4,21 @@
 #include "Interfaces/MCMCable.h"
 
 /**
- * @class VectorHypothesis
+ * @class VectorNormalHypothesis
  * @author Steven Piantadosi
  * @date 09/08/20
- * @file VectorHypothesis.h
+ * @file VectorNormalHypothesis.h
  * @brief This has all of the MCMCable interfaces but jsut represents n unit Gaussians. This
  * 		  is primarily used in GrammarInference to represent parameters, but it could be used
  *  	  in any other too
  */
-class VectorHypothesis : public MCMCable<VectorHypothesis, void*> {
+class VectorNormalHypothesis : public MCMCable<VectorNormalHypothesis, void*> {
 	// This represents a vector of reals, defaultly here just unit normals. 
 	// This gets used in GrammarHypothesis to store both the grammar values and
 	// parameters for the model. 
 public:
 
-	typedef VectorHypothesis self_t; 
+	typedef VectorNormalHypothesis self_t; 
 	
 	double MEAN = 0.0;
 	double SD   = 1.0;
@@ -30,10 +30,10 @@ public:
 	// This is useful because sometimes we don't want to do MCMC on some parts of the grammar
 	std::vector<bool> can_propose; 
 	
-	VectorHypothesis() {
+	VectorNormalHypothesis() {
 	}
 
-	VectorHypothesis(int n) {
+	VectorNormalHypothesis(int n) {
 		set_size(n);
 	}
 	
@@ -87,7 +87,7 @@ public:
 		} while(!can_propose[i]);
 		
 		// propose to one coefficient w/ SD of 0.1
-		out.value(i) = value(i) + PROPOSAL_SCALE*normal(rng);
+		out.value(i) = value(i) + PROPOSAL_SCALE*random_normal();
 		
 		// everything is symmetrical so fb=0
 		return std::make_pair(out, 0.0);	
@@ -97,7 +97,7 @@ public:
 		for(auto i=0;i<value.size();i++) {
 			if(out.can_propose[i]) {
 				// we don't want to change parameters unless we can propose to them
-				out.value(i) = MEAN + SD*normal(rng);
+				out.value(i) = MEAN + SD*random_normal();
 			}
 		}
 		return out;

@@ -1,23 +1,20 @@
 #pragma once
 
 #include <tuple>
-#include <deque>
+#include <array>
 #include <exception>
-#include "IO.h"
 
+#include "IO.h"
 #include "Errors.h"
 #include "Node.h"
 #include "Random.h"
 #include "Nonterminal.h"
-#include "Primitives.h"
-
 #include "VirtualMachineState.h"
-#include "Primitives.h"
+#include "VirtualMachinePool.h"
 #include "Builtins.h"
 
-template<typename T, typename... args> // function type
-struct Primitive;
-
+// an exception for recursing too deep
+class DepthException : public std::exception {};
 
 /**
  * @class Grammar
@@ -32,86 +29,60 @@ struct Primitive;
  * as determined by Rule's sort order. This can be accessed with an iterator that goes over 
  * all grammar rules, via Grammar.begin() and Grammar.end()
  * 
- * Note that Primitives are used to initialize a grammar, and they get "parsed" by Gramar.add
- * to store them in the right places according to their return types (the index comes from
- * the index of each type in GRAMMAR_TYPES).
- * The trees that Grammar generates use nt<T>() -> size_t to represent types, not the types
- * themselves. 
- * The trees also use Primitive.op (a size_t) to represent operations
+ * The grammar hypothesis can take lambdas and parse them into rules, using GRAMMAR_TYPES.
  * 
  * The template args GRAMMAR_TYPES stores the types used in this grammar. This is inherited
  * by LOTHypothesis, which also passes them along to VirtualMachineState (in the form of
  * a Tuple). So the types used and order are fixed/standardized in the grammar
  */
-template<typename... GRAMMAR_TYPES>
+template<typename _input_t, typename _output_t, typename... GRAMMAR_TYPES>
 class Grammar {
 public:
 
-	using this_t = Grammar<GRAMMAR_TYPES...>;
-	
-	// how many nonterminal types do we have?
-	static constexpr size_t N_NTs = std::tuple_size<std::tuple<GRAMMAR_TYPES...>>::value;
-	size_t GRAMMAR_MAX_DEPTH = 64;
-	
-	// an exception for recursing too deep so we can print a trace of what went wrong
-//	class DepthException: public std::exception {} depth_exception;
+	using input_t = _input_t;
+	using output_t = _output_t;
+	using this_t = Grammar<input_t, output_t, GRAMMAR_TYPES...>;
 
-	// We define a type for the VM. This would be more natural to have in LOTHypothesis, except that 
-	// it doesn't have nice access to GRAMMAR_TYPES. So, defaultly, we will define a VM type here 
-	// so that when a LOTHypothesis gets a grammar, it can read the VM type from it (assuming that
-	// it wants the VM type from it!) This is defaultly chosen as teh VirtualMachineState_t for a 
-	// LOTHypothesis, but it can be overridden. 
-	template<typename input_t, typename output_t>
-	using VirtualMachineState_t = VirtualMachineState<input_t, output_t, GRAMMAR_TYPES...>;
-	
 	// Keep track of what types we are using here as our types -- thesee types are 
 	// stored in this tuple so they can be extracted
-	typedef std::tuple<GRAMMAR_TYPES...> GrammarTypesAsTuple;
+	using TypeTuple = std::tuple<GRAMMAR_TYPES...>;
+
+	// how many nonterminal types do we have?
+	static constexpr size_t N_NTs = std::tuple_size<TypeTuple>::value;
+	
+	// The input/output types must be repeated to VirtualMachineState
+	using VirtualMachineState_t = VirtualMachineState<input_t, output_t, GRAMMAR_TYPES...>;
+
+	// This is the function type
+	using FT = VirtualMachineState_t::FT; 
 
 	// rules[k] stores a SORTED vector of rules for the kth' nonterminal. 
 	// our iteration order is first for k = 0 ... N_NTs then for r in rules[k]
-	std::vector<Rule> rules[N_NTs];
-	double	  	      Z[N_NTs]; // keep the normalizer handy for each nonterminal (not log space)
+	std::vector<Rule>        rules[N_NTs];
+	std::array<double,N_NTs> Z; // keep the normalizer handy for each nonterminal (not log space)
+	
+	size_t GRAMMAR_MAX_DEPTH = 64;
 	
 	// This function converts a type (passed as a template parameter) into a 
 	// size_t index for which one it in in GRAMMAR_TYPES. 
 	// This is used so that a Rule doesn't need type subclasses/templates, it can
 	// store a type as e.g. nt<double>() -> size_t 
 	template <class T>
-	constexpr nonterminal_t nt() {
-		/**
-		 * @brief template function giving the index of its template argument (index in GRAMMAR_TYPES). 
-		 * NOTE: The names here are decayed (meaning that references and base types are the same. 
-		 */
-		using DT = typename std::decay<T>::type;
-		
-		static_assert(contains_type<DT, GRAMMAR_TYPES...>(), "*** The type T (decayed) must be in GRAMMAR_TYPES");
-		return TypeIndex<DT, std::tuple<GRAMMAR_TYPES...>>::value;
+	static constexpr nonterminal_t nt() {
+		static_assert(sizeof...(GRAMMAR_TYPES) > 0, "*** Cannot use empty grammar types here");
+		static_assert(contains_type<T, GRAMMAR_TYPES...>(), "*** The type T (decayed) must be in GRAMMAR_TYPES");
+		return (nonterminal_t)TypeIndex<T, std::tuple<GRAMMAR_TYPES...>>::value;
 	}
-
+	
 	Grammar() {
 		for(size_t i=0;i<N_NTs;i++) {
 			Z[i] = 0.0;
 		}
 	}
 	
-	/**
-	 * @brief Constructor for grammar that uses a tuple of Primitives. This is the most important and commonly
-	 * 		  used grammar constructor in Fleet
-	 * @param tup - a tuple of Primitives
-	 */
-	template<typename... T>
-	Grammar(std::tuple<T...> tup) : Grammar() {
-		
-		static_assert(checkBuiltinsAreLast<T...>(), "*** You cannot have a Primitive (or something else) after a BuiltinPrimitive, due to how applyPrimitives.h works. Just reorder.");
-		
-		add(tup, std::make_index_sequence<sizeof...(T)>{});
-	}	
-	
 	// should not be doing these
 	Grammar(const Grammar& g)  = delete; 
-	Grammar(const Grammar&& g) = delete; 	
-	
+	Grammar(const Grammar&& g) = delete; 		
 	
 	/**
 	 * @class RuleIterator
@@ -177,12 +148,11 @@ public:
 	RuleIterator begin() const { return RuleIterator(const_cast<this_t*>(this), false); }
 	RuleIterator end()   const { return RuleIterator(const_cast<this_t*>(this), true);; }
 	
-	size_t count_nonterminals() const {
+	constexpr size_t count_nonterminals() const {
 		/**
 		 * @brief How many nonterminals are there in the grammar. 
 		 * @return 
 		 */
-		
 		return N_NTs;
 	}
 	
@@ -192,7 +162,7 @@ public:
 		 * @param nt
 		 * @return 
 		 */		
-		assert(nt < N_NTs);
+		assert(nt >= 0 and nt < N_NTs);
 		return rules[nt].size();
 	}	
 	size_t count_rules() const {
@@ -263,83 +233,125 @@ public:
 //		} while(updated);
 //	}
 
-	void show(std::string prefix="# ") {
-		/**
-		 * @brief Show the grammar by printing each rule
-		 */
-		for(auto& r : *this) {
-			COUT prefix << r.string() ENDL;
-		}
-	}
-
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Managing rules 
 	// (this holds a lot of complexity for how we initialize from PRIMITIVES)
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	virtual void add(Rule&& r) {
-		/**
-		 * @brief Add a rule
-		 */		
-		nonterminal_t nt = r.nt;
-		//rules[r.nt].push_back(r);
-		
-		auto pos = std::lower_bound( rules[nt].begin(), rules[nt].end(), r);
-		rules[nt].insert( pos, r ); // put this before
-		
-		Z[nt] += r.p; // keep track of the total probability
-	}
 
 	template<typename X>
 	static constexpr bool is_in_GRAMMAR_TYPES() {
 		// check if X is in GRAMMAR_TYPES
-		return std::is_same<typename std::decay<X>::type,void>::value or 
-			   contains_type<typename std::decay<X>::type,GRAMMAR_TYPES...>();
+		// TODO: UPDATE FOR DECAY SINCE WE DONT WANT THAT UNTIL WE HAVE REFERENCES AGAIN?
+		return contains_type<X,GRAMMAR_TYPES...>();
 	}
 	
-	// recursively add a bunch of rules in a tuple -- called via
-	// Grammar(std::tuple<T...> tup)
-	template<typename... args, size_t... Is>
-	void add(std::tuple<args...> t, std::index_sequence<Is...>) {
-		(add(std::get<Is>(t)), ...); // dispatches to Primtiive or Primitives::BuiltinPrimitive
+	/**
+	 * @brief 
+	 * @param fmt
+	 * @param f
+	 * @param p
+	 * @param o
+	 */		
+	template<typename T, typename... args> 
+	void add_vms(std::string fmt, FT* f, double p=1.0, Op o=Op::Standard, int a=0) {
+		nonterminal_t Tnt = this->nt<T>();
+		Rule r(Tnt, (void*)f, fmt, {nt<args>()...}, p, o, a);
+		Z[Tnt] += r.p; // keep track of the total probability
+		auto pos = std::lower_bound( rules[Tnt].begin(), rules[Tnt].end(), r);
+		rules[Tnt].insert( pos, r ); // put this before	
 	}
 	
-	template<typename T, typename... args>
-	void add(Primitive<T, args...> p, const int arg=0) {
-		
-		static_assert(is_in_GRAMMAR_TYPES<T>() , "*** Type is not in GRAMMAR_TYPES");
-		static_assert((is_in_GRAMMAR_TYPES<args>() && ...),	"*** Type is not in GRAMMAR_TYPES");
+	/**
+	 * @brief 
+	 * @param fmt
+	 * @param b
+	 * @param p
+	 */		
+	template<typename T, typename... args> 
+	void add(std::string fmt, Builtin<T,args...> b, double p=1.0, int a=0) {
+		// read f and o from b
+		add_vms<T,args...>(fmt, (FT*)b.f, p, b.op, a);
+	}
+	
+	/**
+	 * @brief 
+	 * @param fmt
+	 * @param f
+	 * @param p
+	 * @param o
+	 */	
+	template<typename T, typename... args> 
+	void add(std::string fmt,  std::function<T(args...)> f, double p=1.0, Op o=Op::Standard, int a=0) {
 				
-		// add a single primitive -- unpacks the types to put the rule into the right place
-		// NOTE: we can't use T as the return type, we have ot use p::GrammarReturnType in order to handle
-		// return-by-reference primitives
-		add(Rule(this->template nt<typename decltype(p)::GrammarReturnType>(), p.op, p.format.c_str(), {nt<args>()...}, p.p, arg));
-	}
-	
-	template<typename T, typename... args>
-	void add(BuiltinPrimitive<T, args...> p, const int arg=0) {
-	
-		static_assert(is_in_GRAMMAR_TYPES<T>() , "*** Type is not in GRAMMAR_TYPES");
-		static_assert((is_in_GRAMMAR_TYPES<args>() && ...),	"*** Type is not in GRAMMAR_TYPES");
-	
-		// add a single primitive -- unpacks the types to put the rule into the right place
-		// NOTE: we can't use T as the return type, we have ot use p::GrammarReturnType in order to handle
-		// return-by-reference primitives
-		add(Rule(this->template nt<T>(), p.op, p.format.c_str(), {nt<args>()...}, p.p, arg));
-	}
-	
-	
-	template<typename T, typename... args>
-	void add(BuiltinOp o, std::string format, const double p=1.0, const int arg=0) {
+		// first check that the types are allowed
+		static_assert((not std::is_reference<T>::value) && "*** Primitives cannot return references.");
+		static_assert((not std::is_reference<args>::value && ...) && "*** Arguments cannot be references.");
+		static_assert(is_in_GRAMMAR_TYPES<T>() , "*** Return type is not in GRAMMAR_TYPES");
+		static_assert((is_in_GRAMMAR_TYPES<args>() && ...),	"*** Argument type is not in GRAMMAR_TYPES");
 		
-		static_assert(is_in_GRAMMAR_TYPES<T>() , "*** Type is not in GRAMMAR_TYPES");
-		static_assert((is_in_GRAMMAR_TYPES<args>() && ...),	"*** Type is not in GRAMMAR_TYPES");
 	
-		// add a single primitive -- unpacks the types to put the rule into the right place
-		add(Rule(nt<T>(), o, format.c_str(), {nt<args>()...}, p, arg));
+		// create a lambda on the heap that is a function of a VMS, since
+		// this is what an instruction must be. This implements the calling order convention too. 
+		//auto newf = new auto ( [=](VirtualMachineState_t* vms) -> void {
+		auto fvms = new FT([=](VirtualMachineState_t* vms, int _a=0) -> void {
+				assert(vms != nullptr);
+			
+				if constexpr (sizeof...(args) ==  0){	
+					vms->push( f() );
+				}
+				if constexpr (sizeof...(args) ==  1) {
+					auto a0 = vms->template getpop_nth<0,args...>();		
+					vms->push(f(std::move(a0)));
+				}
+				else if constexpr (sizeof...(args) ==  2) {
+					auto a1 = vms->template getpop_nth<1,args...>();	
+					auto a0 = vms->template getpop_nth<0,args...>();		
+					vms->push(f(std::move(a0), std::move(a1)));
+				}
+				else if constexpr (sizeof...(args) ==  3) {
+					auto a2 = vms->template getpop_nth<2,args...>();	;
+					auto a1 = vms->template getpop_nth<1,args...>();	
+					auto a0 = vms->template getpop_nth<0,args...>();	
+					vms->push(f(std::move(a0), std::move(a1), std::move(a2)));
+				}
+				else if constexpr (sizeof...(args) ==  4) {
+					auto a3 = vms->template getpop_nth<3,args...>();	
+					auto a2 = vms->template getpop_nth<2,args...>();	
+					auto a1 = vms->template getpop_nth<1,args...>();	
+					auto a0 = vms->template getpop_nth<0,args...>();		
+					vms->push(f(std::move(a0), std::move(a1), std::move(a2), std::move(a3)));
+				}
+			});
+			
+		add_vms<T,args...>(fmt, fvms, p, o, a);
 	}
 
-
+	/**
+	 * @brief 
+	 * @param fmt
+	 * @param p
+	 * @param o
+	 */
+	template<typename T, typename... args> 
+	void add(std::string fmt,  T(*_f)(args...), double p=1.0, Op o=Op::Standard, int a=0) {
+		add<T,args...>(fmt, std::function<T(args...)>(_f), p, o, a);
+	}	
+	
+	/**
+	 * @brief Add a variable that is NOT A function -- simplification for adding alphabets etc.
+	 * 		  This just wraps stuff in a thunk for us to make it easier. NOTE: x is copied by value
+	 * @param fmt
+	 * @param x
+	 * @param p
+	 * @param o
+	 * @param a
+	 */
+	template<typename T>
+	void add_terminal(std::string fmt,  T x, double p=1.0, Op o=Op::Standard, int a=0) {
+		add(fmt, std::function( [=]()->T { return x; }), p, o, a);
+	}	
+	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Methods for getting rules by some info
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -372,7 +384,7 @@ public:
 		return const_cast<Rule*>(&rules[nt][k]);
 	}
 	
-	virtual Rule* get_rule(const nonterminal_t nt, const BuiltinOp o, const int a=0) {
+	virtual Rule* get_rule(const nonterminal_t nt, const Op o, const int a=0) {
 		/**
 		 * @brief Get rule of type nt with a given BuiltinOp and argument a
 		 * @param nt
@@ -381,16 +393,16 @@ public:
 		 * @return 
 		 */
 		for(auto& r: rules[nt]) {
-			if(r.instr.is_a(o) && r.instr.arg == a) 
+			// Need to fix this because it used is_a:
+			if(r.is_a(o) and r.arg == a) 
 				return &r;
 		}
 		throw YouShouldNotBeHereError("*** Could not find rule");		
 	}
 	
-//	virtual Rule* get_rule(const nonterminal_t nt, size_t i) {
-//		assert(i <= rules[nt].size());
-//		return &rules[nt][i];
-//	}
+	virtual Rule* get_rule(const nonterminal_t nt, size_t i) {
+		return &rules[nt].at(i);
+	}
 	
 	virtual Rule* get_rule(const nonterminal_t nt, const std::string s) const {
 		/**
@@ -488,14 +500,14 @@ public:
 	}
 	
 
-	Node generate(const nonterminal_t nt, unsigned long depth=0) const {
+	Node generate(const nonterminal_t nt=nt<output_t>(), unsigned long depth=0) const {
 		/**
 		 * @brief Sample an entire tree from this grammar (keeping track of depth in case we recurse too far) of return type nt. This samples a rule, makes them with makeNode, and then recurses. 
 		 * @param nt
 		 * @param depth
 		 * @return Returns a Node sampled from the grammar. 
 		 * 
-		 * NOTE: this may throw a DepthException if the grammar recurses too far (usually that means the grammar is improper)
+		 * NOTE: this may throw a if the grammar recurses too far (usually that means the grammar is improper)
 		 */
 		
 		
@@ -503,7 +515,7 @@ public:
 			CERR "*** Grammar exceeded max depth, are you sure the grammar probabilities are right?" ENDL;
 			CERR "*** You might be able to figure out what's wrong with gdb and then looking at the backtrace of" ENDL;
 			CERR "*** which nonterminals are called." ENDL;
-			throw YouShouldNotBeHereError("*** Grammar exceeded max depth, are you sure the grammar probabilities are right?");
+			throw DepthException();
 		}
 		
 		Rule* r = sample_rule(nt);
@@ -514,17 +526,6 @@ public:
 		}
 		return n;
 	}	
-	
-	template<class t>
-	Node generate(unsigned long depth=0) {
-		/**
-		 * @brief A friendly version of generate that can be called with template by type.  
-		 * @param depth
-		 * @return 
-		 */
-		
-		return generate(nt<t>(),depth);
-	}
 	
 	Node copy_resample(const Node& node, bool f(const Node& n)) const {
 		/**
@@ -541,7 +542,7 @@ public:
 		else {
 		
 			// otherwise normal copy
-			Node ret = node;
+			auto ret = node;
 			for(size_t i=0;i<ret.nchildren();i++) {
 				ret.set_child(i, copy_resample(ret.child(i), f));
 			}

@@ -91,12 +91,7 @@ int main(int argc, char** argv){
 	fleet.add_option("--runtype",  runtype, "hypotheses = do we just do mcmc on hypotheses; grammar = mcmc on the grammar, loading the hypotheses; both = do both");
 	fleet.initialize(argc, argv);
 	
-	MyGrammar grammar(PRIMITIVES);
-	
-	// don't forget to add these or the grammar won't finish
-	for(int i=Nlow;i<=N;i++) {
-		grammar.add<int>(BuiltinOp::op_INT, str(i), 10.0/N, i);		
-	}
+	MyGrammar grammar;
 	
 	// two main things we are building -- a list of human data points
 	std::vector<MyHumanDatum> human_data;
@@ -189,7 +184,8 @@ int main(int argc, char** argv){
 		for(auto& r : grammar) {
 			// we'll not propose to all those goddamn integers we added
 			// NOTE when we do this, GrammarHypothesis won't print these either
-			if(r.instr.is_a(BuiltinOp::op_INT)) {
+			// Here, we fine them because we have prefixed raw integers in MyGrammar with "#"
+			if(r.format.at(0) == '#') {
 				h0.logA.set(i, 0.0); // set the value to 1 (you MUST do this) 
 				h0.set_can_propose(i, false);
 			}

@@ -18,7 +18,7 @@ typedef S MyOutput;
 
 const float strgamma = 0.01;
 const size_t MAX_LENGTH = 64;
-const auto log_A = log(2); // size of the alphabet -- here fixed in the grammar to 2 (not command line!)
+const auto log_A = LOG2; // size of the alphabet -- here fixed in the grammar to 2 (not command line!)
 
 // probability of right string by chance -- small but should be nonzero in case we don't find the string
 // This could change by data point but we'll leave it constant here

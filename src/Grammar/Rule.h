@@ -23,16 +23,19 @@
   */ 
 class Rule {
 
-
 public:
 	static const std::string ChildStr; // how do strings get substituted?
 
-	nonterminal_t         nt;
-	Instruction           instr; // a template for my instruction, which here mainly stores my optype
-	std::string           format; // how am I printed?
-	size_t                N; // how many children?
-	double                p;
-		
+	nonterminal_t                      nt;
+	std::string                        format; // how am I printed?
+	size_t                             N; // how many children?
+	double                             p;
+	
+	// store this information for creating instructions
+	void*				fptr;
+	Op 					op; // for ops that need names
+	int 				arg=0;
+	
 protected:
 	std::vector<nonterminal_t> child_types; // An array of what I expand to; note that this should be const but isn't to allow list initialization (https://stackoverflow.com/questions/5549524/how-do-i-initialize-a-member-array-with-an-initializer-list)
 
@@ -40,22 +43,50 @@ protected:
 	
 public:
 	// Rule's constructors convert CustomOp and BuiltinOp to the appropriate instruction types
-	template<typename OPT> // same constructor for CustomOp, BuiltinOp,PrimitiveOp
-	constexpr Rule(const nonterminal_t rt, const OPT o, const char* fmt, std::initializer_list<nonterminal_t> c, double _p, const int arg=0) :
-		nt(rt), instr(o,arg), format(fmt), N(c.size()), p(_p), child_types(c) {
+	Rule(const nonterminal_t rt, 
+	     void* f, 
+		 const std::string fmt, 
+		 std::initializer_list<nonterminal_t> c, 
+		 double _p=1.0, 
+		 Op o=Op::Standard, 
+		 int a=0) :
+		nt(rt), format(fmt), N(c.size()), p(_p), fptr(f),  op(o), arg(a), child_types(c) {
 			
 		// Set up hashing for rules (cached so we only do it once)
-		std::hash<std::string> h; 
-		my_hash = h(fmt);
-		hash_combine(my_hash, (size_t) o, (size_t) arg, (size_t)nt);
-		for(size_t i=0;i<N;i++) 
-			hash_combine(my_hash, i, (size_t)child_types[i]);
+		// NOTE: We do NOT want to hash anything about the function pointer, since then our ordering
+		// will change (and thus our runs will change) from run to run. So we don't include that. 
+		my_hash = 1;
+		hash_combine(my_hash, (size_t)nt);
 		
+		for(size_t k=0;k<N;k++) 
+			hash_combine(my_hash, (size_t)op, (size_t)child_types[k], (size_t) arg);
 		
+		for(auto& thechar : format) 
+			hash_combine(my_hash, (size_t)thechar );
+			
 		// check that the format string has the right number of %s
-		assert( N == count(fmt, ChildStr) && "*** Wrong number of format string arguments");
+		if(N != count(fmt, ChildStr)) {
+			CERR "*** Wrong number of format string arguments in " << fmt ENDL;
+			assert(false);
+		}
 	}
-		
+	
+	
+	bool is_a(Op o) const {
+		return o == op;
+	}
+	
+	bool is_recursive() const {
+		return is_a(Op::Recurse) or 
+			   is_a(Op::MemRecurse) or 
+			   is_a(Op::SafeRecurse) or 
+			   is_a(Op::SafeMemRecurse);
+	}
+	
+	Instruction makeInstruction(int a=0) const {
+		return Instruction(fptr, a);
+	}
+	
 	bool operator<(const Rule& r) const {
 		/**
 		 * @brief We sort rules so that they can be stored in arrays in a standard order. For enumeration, it's actually important that we sort them with the terminals first. 
@@ -80,7 +111,7 @@ public:
 		 * @return 
 		 */
 		
-		if(not (nt==r.nt and instr==r.instr and format==r.format and N==r.N and p==r.p)) return false;
+		if(not (nt==r.nt and fptr == r.fptr and op ==r.op and format==r.format and N==r.N and p==r.p)) return false;
 		for(size_t i=0;i<N;i++) {
 			if(child_types[i] != r.child_types[i]) return false;
 		}
@@ -133,6 +164,6 @@ std::ostream& operator<<(std::ostream& o, const Rule& r) {
 
 // A single constant NullRule for gaps in trees. Always has type 0
 // old format was \u2b1c 
-const Rule* NullRule = new Rule((nonterminal_t)0, BuiltinOp::op_NOP, "\u25A0", {}, 0.0);
+const Rule* NullRule = new Rule((nonterminal_t)0, nullptr, "\u25A0", {}, 0.0);
 
 const std::string Rule::ChildStr = "%s";
