@@ -201,7 +201,6 @@ public:
 	 * @return 
 	 */	
 	std::vector<VirtualMachineState_t> run_vms() { 
-
 		
 		std::vector<VirtualMachineState_t> out;
 		

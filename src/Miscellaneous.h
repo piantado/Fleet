@@ -1,68 +1,8 @@
 #pragma once
 
 #include <chrono>
-#include <vector>
 
 #include "IO.h"
-
-template<typename T>
-std::vector<T> slice(const std::vector<T> &v, size_t start, int len) {
-	/**
-	 * @brief Take a slice of a vector v starting at start of length len
-	 * @param v
-	 * @param start
-	 * @param len
-	 * @return 
-	 */
-	
-	std::vector<T> out;
-	if(len > 0) {
-		out.resize(len); // in case len=-1
-		std::copy(v.begin() + start, v.begin()+start+len, out.begin());
-	}
-	return out;
-}
-
-template<typename T>
-std::vector<T> slice(const std::vector<T> &v, size_t start) {
-	/**
-	 * @brief Take a slice of a vector until its end
-	 * @param v
-	 * @param start
-	 * @return 
-	 */
-		
-	// just chop off the end 
-	return slice(v, start, v.size()-start);
-}
-
-template<typename T>
-void increment(std::vector<T>& v, size_t idx, T count=1) {
-	// Increment and potentially increase my vector size if needed
-	if(idx >= v.size()) {
-		v.resize(idx+1,0);
-	}
-	
-	v[idx] += count;
-}
-
-
-/* If x is a prefix of y -- works for strings and vectors */
-template<typename T>
-bool is_prefix(const T& prefix, const T& x) {
-	/**
-	 * @brief For any number of iterable types, is prefix a prefix of x
-	 * @param prefix
-	 * @param x
-	 * @return 
-	 */
-		
-	if(prefix.size() > x.size()) return false;
-	if(prefix.size() == 0) return true;
-	
-	return std::equal(prefix.begin(), prefix.end(), x.begin());
-}
-
 
 // From https://stackoverflow.com/questions/478898/how-to-execute-a-command-and-get-output-of-command-within-c-using-posix
 std::string system_exec(const char* cmd) {

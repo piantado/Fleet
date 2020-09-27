@@ -16,6 +16,22 @@ std::string str(T x){
 	return std::to_string(x);
 }
 
+/* If x is a prefix of y -- works for strings and vectors */
+template<typename T>
+bool is_prefix(const T& prefix, const T& x) {
+	/**
+	 * @brief For any number of iterable types, is prefix a prefix of x
+	 * @param prefix
+	 * @param x
+	 * @return 
+	 */
+		
+	if(prefix.size() > x.size()) return false;
+	if(prefix.size() == 0) return true;
+	
+	return std::equal(prefix.begin(), prefix.end(), x.begin());
+}
+
 /**
  * @brief Probability of converting x into y by deleting some number (each with del_p, then stopping with prob 1-del_p), adding with 
  * 		  probability add_p, and then when we add selecting from an alphabet of size alpha_n
