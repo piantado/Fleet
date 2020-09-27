@@ -5,11 +5,6 @@
 
 #include "IO.h"
 
-// This disables unusued parameter warnings. 
-#define UNUSED(x) (void)(x) 
-
-typedef struct null_t {} null_t; // just a blank type
-
 template<typename T>
 std::vector<T> slice(const std::vector<T> &v, size_t start, int len) {
 	/**
@@ -89,9 +84,12 @@ std::string system_exec(const char* cmd) {
     return result;
 }
 
-// Python-like pass statements
-#define pass ((void)0)
 
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Python-like pass statements
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#define pass ((void)0)
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Hash combinations
