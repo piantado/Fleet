@@ -352,21 +352,6 @@ public:
 		add(fmt, std::function( [=]()->T { return x; }), p, o, a);
 	}	
 	
-	
-	
-	/**
-	 * @brief Add a bunch of elements of something
-	 * @param v
-	 * @param p
-	 */
-//	template<typename T> 
-//	void add_iter(T v, double p=1.0) {
-//		for(auto x : v) {
-//			this->add<decltype(x)>( QQ(str(x)).c_str(), 
-//								    std::function( [=](){ return x; }), 
-//								    p);
-//		}
-//	}	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Methods for getting rules by some info
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

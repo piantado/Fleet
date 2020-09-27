@@ -6,8 +6,7 @@
 #include "Numerics.h"
 
 // it's important to make these thread-local or else they block each other in parallel cores
-thread_local std::random_device rd;     // only used once to initialise (seed) engine
-thread_local std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
+thread_local std::mt19937 rng;    // random-number engine used (Mersenne-Twister in this case)
 thread_local std::uniform_real_distribution<double> uniform_dist(0.0, 1.0);
 thread_local std::normal_distribution<float> normal(0.0, 1.0);
 	
@@ -149,8 +148,8 @@ std::pair<t*,double> sample(const T& s, double z, const std::function<double(con
 	// (i.e. we defaultly don't double-count equal options). For that, use p_sample_eq below
 	// here z is the normalizer, z = sum_x f(x) 
 	double r = z * uniform();
-	
 	for(auto& x : s) {
+		
 		double fx = f(x);
 		if(std::isnan(fx)) continue; // treat as zero prob
 		assert(fx >= 0.0);

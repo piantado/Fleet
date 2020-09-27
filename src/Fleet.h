@@ -62,8 +62,6 @@
  * 	- Sample things, store in TopN, then evaluate...
  */
 
-/* Globally shared variables and declarations */
-
 #pragma once 
 
 #include <sys/resource.h> // just for setting priority defaulty 
@@ -73,11 +71,7 @@
 
 const std::string FLEET_VERSION = "0.1.01";
 
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// We defaultly include all of the major requirements for Fleet
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//#include "Statistics/FleetStatistics.h"
-
+#include "Random.h"
 #include "Timing.h"
 #include "Control.h"
 
@@ -188,6 +182,9 @@ public:
 		// set up the random seed:
 		if(random_seed != 0) {
 			rng.seed(random_seed);
+		}
+		else {
+			rng.seed(std::random_device{}());
 		}
 		
 		// convert everything to ms

@@ -26,13 +26,21 @@ public:
 	MyGrammar() {
 		add("tail(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); });
 		add("head(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
+//
+//		add("pair(%s,%s)",   +[](S a, S b) -> S { 
+//			if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError();
+//			else                     				 return a+b; 
+//		});
 
-		add("pair(%s,%s)",   +[](S a, S b) -> S { 
+		add_vms<S,S,S>("pair(%s,%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
+			S b = vms->getpop<S>();
+			S& a = vms->stack<S>().topref();
+			
 			if(a.length() + b.length() > MAX_LENGTH) 
 				throw VMSRuntimeError();
 			else 
-				return a+b; 
-		});
+				a += b; 
+		}));
 
 		add("\u00D8",        +[]()         -> S          { return S(""); });
 		add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; });
@@ -149,7 +157,7 @@ int main(int argc, char** argv){
 	//------------------	
 	
 	MyGrammar grammar;
-	
+
 	//------------------
 	// top stores the top hypotheses we have found
 	//------------------	

@@ -53,13 +53,17 @@ public:
 		nt(rt), format(fmt), N(c.size()), p(_p), fptr(f),  op(o), arg(a), child_types(c) {
 			
 		// Set up hashing for rules (cached so we only do it once)
-		std::hash<std::string> h; 
-		my_hash = h(fmt);
+		// NOTE: We do NOT want to hash anything about the function pointer, since then our ordering
+		// will change (and thus our runs will change) from run to run. So we don't include that. 
+		my_hash = 1;
 		hash_combine(my_hash, (size_t)nt);
+		
 		for(size_t k=0;k<N;k++) 
-			hash_combine(my_hash, (size_t)fptr, (size_t)op, (size_t)child_types[k]);
+			hash_combine(my_hash, (size_t)op, (size_t)child_types[k], (size_t) arg);
 		
-		
+		for(auto& thechar : format) 
+			hash_combine(my_hash, (size_t)thechar );
+			
 		// check that the format string has the right number of %s
 		if(N != count(fmt, ChildStr)) {
 			CERR "*** Wrong number of format string arguments in " << fmt ENDL;
