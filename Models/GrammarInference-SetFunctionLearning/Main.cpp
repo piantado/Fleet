@@ -45,7 +45,7 @@ void gcallback(MyGrammarHypothesis& h) {
 #include "Fleet.h"
 #include "Miscellaneous.h"
 #include "MCMCChain.h"
-
+#include "Vectors.h"
 #include "Data.h"
 
 const double alpha = 0.95; // in learning
@@ -69,7 +69,7 @@ int main(int argc, char** argv){
 	// data format for the model. 
 	std::ifstream infile("preprocessing/data.txt");
 	
-	MyHypothesis::data_t* learner_data = nullptr; // pointer to a vector of learner data
+	MyHypothesis::data_t* learner_data = nullptr; // pointer to a vector of the current learner data
 	
 	// what data do I run mcmc on? not just human_data since that will have many reps
 	// NOTE here we store only the pointers to sequences of data, and the loop below loops
@@ -80,7 +80,7 @@ int main(int argc, char** argv){
 	size_t ndata = 0;
 	int    decay_position = 0;
 	S prev_conceptlist = ""; // what was the previous concept/list we saw? 
-	size_t LEANER_RESERVE_SIZE = 512; // reserve this much so our pointers don't break;
+	size_t LEANER_RESERVE_SIZE = 128; // reserve this much so our pointers don't break;
 	
 	while(! infile.eof() ) {
 		if(CTRL_C) break;
@@ -106,7 +106,7 @@ int main(int argc, char** argv){
 		
 		for(size_t i=0;i<objs->size();i++) {
 			MyInput inp{objs->at(i), *objs};
-			learner_data->emplace_back(inp, (*corrects)[i], alpha);
+			learner_data->emplace_back(inp, corrects->at(i), alpha);
 			assert(learner_data->size() < LEANER_RESERVE_SIZE);
 		}
 
@@ -115,13 +115,13 @@ int main(int argc, char** argv){
 			// make a map of the responses
 			std::map<bool,size_t> m; m[true] = (*yeses)[i]; m[false] = (*nos)[i];
 			
-			HumanDatum<MyHypothesis> hd{learner_data, ndata, &((*learner_data)[ndata+i].input), std::move(m), 0.5, decay_position};
+			HumanDatum<MyHypothesis> hd{learner_data, ndata, &( learner_data->at(ndata+i).input ), std::move(m), 0.5, decay_position};
 		
 			human_data.push_back(std::move(hd));
 		}
 		
 		ndata += objs->size();
-		decay_position++;
+		decay_position++; // this counts sets, not items in sets
 		prev_conceptlist = conceptlist;	
 	}
 	if(learner_data != nullptr) 

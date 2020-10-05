@@ -103,6 +103,12 @@ int main(int argc, char** argv){
 	
 	
 //	auto h0 = MyHypothesis::make(&grammar);
+//	ChainPool chain(h0, &mydata, top, FleetArgs::nchains);
+//	tic();
+//	chain.run(Control());
+//	tic();
+//	
+//	auto h0 = MyHypothesis::make(&grammar);
 //	MCMCChain chain(h0, &mydata, top);
 //	tic();
 //	chain.run(Control());

@@ -94,6 +94,8 @@ volatile sig_atomic_t CTRL_C = false;
 #endif
 char hostname[HOST_NAME_MAX]; 	
 
+#include "FleetStatistics.h"
+
 /**
  * @class Fleet
  * @author piantado

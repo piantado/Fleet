@@ -194,7 +194,7 @@ public:
 			for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
 				if(CTRL_C) std::terminate();
 				
-				//CERR ">>>>" TAB human_data[di].ndata ENDL;
+				//CERR human_data[di].ndata ENDL;
 				
 				Vector data_lls  = Vector::Zero(human_data[di].ndata); // one for each of the data points
 				Vector decay_pos = Vector::Zero(human_data[di].ndata); // one for each of the data points

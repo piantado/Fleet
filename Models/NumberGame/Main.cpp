@@ -1,5 +1,7 @@
 #include <cmath>
 
+// TODO: Add min/max?
+
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// These define all of the types that are used in the grammar.
 /// This macro must be defined before we import Fleet.
@@ -65,8 +67,6 @@ public:
 			}
 			return out;
 		}, 0.1);
-		
-		// ADD UNION, INTERSECTION, MIN, MAX
 		
 		add("union(%s,%s)",    +[](NumberSet a, NumberSet b) -> NumberSet { 
 			for(auto& x : b) {
