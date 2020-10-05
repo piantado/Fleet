@@ -32,12 +32,9 @@ public:
 	/* We must define our own copy and move since parent can't just be simply copied */	
 	Node(const Node& n) :
 		BaseNode(n), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
-		this->fix_child_info();
 	}
 	Node(Node&& n) :
 		BaseNode(n), rule(n.rule), lp(n.lp), can_resample(n.can_resample) {
-		this->children = std::move(n.children);
-		this->fix_child_info();
 	}
 	
 	virtual ~Node() {}
@@ -104,6 +101,9 @@ public:
 		// if we have fewer children
 		if(*rule < *n.rule) {
 			return true;
+		}
+		else if(*n.rule < *rule) {
+			return false;
 		}
 		else {
 			

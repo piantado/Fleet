@@ -155,7 +155,7 @@ int main(int argc, char** argv){
 	//------------------	
 	
 	MyGrammar grammar;
-
+	
 	//------------------
 	// top stores the top hypotheses we have found
 	//------------------	
@@ -209,17 +209,17 @@ int main(int argc, char** argv){
 //
 //	return 0;
 	
-//	top.print_best = true;
-//	auto h0 = MyHypothesis::make(&grammar);
-//	ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 1000.0);
-//	samp.run(Control(), 100, 30000);		
-//	
-
-	top.print_best = true; // print out each best hypothesis you find
+	top.print_best = true;
 	auto h0 = MyHypothesis::make(&grammar);
-	MCMCChain c(h0, &mydata, top);
-	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-	c.run(Control());
+	ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 1000.0);
+	samp.run(Control(), 100, 30000);		
+	
+
+//	top.print_best = true; // print out each best hypothesis you find
+//	auto h0 = MyHypothesis::make(&grammar);
+//	MCMCChain c(h0, &mydata, top);
+//	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
+//	c.run(Control());
 
 	// run multiple chains
 //	auto h0 = MyHypothesis::make(&grammar);
