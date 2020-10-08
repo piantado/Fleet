@@ -43,8 +43,9 @@ class GrammarHypothesis : public MCMCable<this_t, datum_t, data_t>  {
 public:
 	typedef _HYP HYP;
 
-	// index by hypothesis, data point, an Eigen Vector of all individual data point likelihoods
-	typedef Vector2D<std::pair<Vector,Vector>> LL_t; // likelihood type
+	// take a hypothesis and a data point and map it to 
+	typedef std::unorderd_map<std::pair<int, typename data_t::data_t*>, Vector> LL_t; // likelihood type
+	
 
 	// a prediction is a list of pairs of outputs and NON-log probabilities
 	// we used to stored this as a map--a DiscreteDistribution--but that was slow to 
@@ -181,52 +182,38 @@ public:
 	 */
 	virtual void recompute_LL(std::vector<HYP>& hypotheses, const data_t& human_data) {
 		assert(which_data == std::addressof(human_data));
-		
-		LL.reset(new LL_t(hypotheses.size(), human_data.size())); 
-		
-		#pragma omp parallel for
-		for(size_t h=0;h<hypotheses.size();h++) {
-			
-			// This will assume that as things are sorted in human_data, they will tend to use
-			// the same human_data.data pointer (e.g. they are sorted this way) so that
-			// we can re-use prior likelihood items for them
-			
-			for(size_t di=0;di<human_data.size() and !CTRL_C;di++) {
-				if(CTRL_C) std::terminate();
-				
-				//CERR human_data[di].ndata ENDL;
-				
-				Vector data_lls  = Vector::Zero(human_data[di].ndata); // one for each of the data points
-				Vector decay_pos = Vector::Zero(human_data[di].ndata); // one for each of the data points
-				// check if these pointers are equal so we can reuse the previous data			
-				if(di > 0 and 
-				   human_data[di].data == human_data[di-1].data and 
-				   human_data[di].ndata >= human_data[di-1].ndata) { 
-					   
-					// just copy over the beginning
-					for(size_t i=0;i<human_data[di-1].ndata;i++){
-						data_lls(i)  = LL->at(h,di-1).first(i);
-						decay_pos(i) = LL->at(h,di-1).second(i);
-					}
-					// and fill in the rest
-					for(size_t i=human_data[di-1].ndata;i<human_data[di].ndata;i++) {
-						data_lls(i)  = hypotheses[h].compute_single_likelihood((*human_data[di].data)[i]);
-						decay_pos(i) = human_data[di].decay_position;
-					}
-				}
-				else {
-					// compute anew; if ndata=0 then we should just include a 0.0
-					for(size_t i=0;i<human_data[di].ndata;i++) {
-						data_lls(i)  = hypotheses[h].compute_single_likelihood((*human_data[di].data)[i]);
-						decay_pos(i) = human_data[di].decay_position;
-					}				
-				}
-				
-				// set as an Eigen vector in out
-				#pragma omp critical
-				LL->at(h,di) = std::make_pair(data_lls,decay_pos);
+	
+		// For each HumanDatum::data, figure out the max amount of data it contains
+		std::unordered_map<data_t::data_t*, size_t> max_sizes;
+		for(auto& d : human_data) {
+			if( (not max_sizes.contains(d.data)) or max_sizes[d.data] < d.ndata) {
+				max_sizes[d.data] = d.ndata;
 			}
 		}
+
+	
+		LL.reset(new LL_t()); 
+		
+			
+		// now go through and compute the likelihood of each hypothesis on each data set
+		for(auto& x : max_sizes) {
+			
+			#pragma omp parallel for
+			for(size_t h=0;h<nhypotheses();h++) {
+				
+				// set up all the likelihoods here
+				Vector data_lls  = Vector::Zero(x.second.ndata);				
+				
+				// read the max size from above and compute all the likelihoods
+				for(size_t i=0;i<max_sizes[x.first];i++) {
+					data_lls(i) = hypotheses[h].compute_single_likelihood(x.first->at(i));
+				}
+				
+				#pragma omp critical
+				LL->at(h, x.first) = data_lls;
+			}
+		}
+		
 	}
 	
 	/**
@@ -359,6 +346,7 @@ public:
 			Matrix hposterior = this->compute_normalized_posterior();
 			
 			this->likelihood  = 0.0; // of the human data
+			
 			#pragma omp parallel for
 			for(size_t i=0;i<human_data.size();i++) {
 				
