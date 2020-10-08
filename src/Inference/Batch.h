@@ -4,6 +4,7 @@
 #include "Control.h"
 #include "Top.h"
 #include "MCMCChain.h"
+#include "Vectors.h"
 
 /**
  * @brief Runs MCMC on hypotheses, resampling when the data stops being incremental and returns a unioned
@@ -47,6 +48,7 @@ std::vector<HYP> get_hypotheses_from_mcmc(HYP& h0, std::vector<typename HYP::dat
 		}	
 	}
 	
+	// copy to a vector since it's handier
 	std::vector<HYP> out;
 	for(auto& h : all) {
 		out.push_back(h);
