@@ -13,8 +13,8 @@ std::vector<T> slice(const std::vector<T> &v, size_t start, int len) {
 	 */
 	
 	std::vector<T> out;
-	if(len > 0) {
-		out.resize(len); // in case len=-1
+	if(len > 0) { // in case len=-1
+		out.resize(len); 
 		std::copy(v.begin() + start, v.begin()+start+len, out.begin());
 	}
 	return out;

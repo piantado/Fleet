@@ -15,7 +15,12 @@ template<typename... feature_t> // template of the features
 struct Object { 
 	std::tuple<feature_t...> feature;
 	
-	Object() { 	}
+	// Well.. this is the craziest hack. Down below we need to define operator<<
+	// and that complains when given feature_t={} because it redefines this constructor
+	// however, there is no problem if we define this with a *default* parameter
+	// (which allows it ot be called as Object(), but doesn't seem to clash with the 
+	// empty list anymore, which makes no sense)
+	Object(int __nothing=0) { 	}
 	
 	Object(feature_t... types) : feature(types...) { }
 	
@@ -24,7 +29,7 @@ struct Object {
 	 * @return 
 	 */	
 	template<typename t> 
-	t get() {
+	t get() const {
 		return std::get<t>(feature);
 	}
 
@@ -43,7 +48,7 @@ struct Object {
 	 * @return 
 	 */
 	template<typename t>
-	bool is(t v) {
+	bool is(t v) const {
 		return get<t>() == v;
 	}
 	
@@ -55,3 +60,14 @@ struct Object {
 		return feature == o.feature;
 	}
 };
+
+
+
+
+template<typename... feature_t> 
+std::ostream& operator<<(std::ostream& o, const Object<feature_t...>& t) {
+	o << "[Object ";
+	(o << ... << (int)t.template get<feature_t>()); // NOTE: This casts to ints
+	o << "]";
+	return o;
+}
