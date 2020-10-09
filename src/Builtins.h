@@ -170,7 +170,7 @@ namespace Builtins {
 	Builtin<typename Grammar_t::output_t, typename Grammar_t::input_t> 
 		Recurse(Op::Recurse, BUILTIN_LAMBDA {
 			
-			using input_t = Grammar_t::VirtualMachineState_t::input_t;
+			using input_t = typename Grammar_t::VirtualMachineState_t::input_t;
 			
 			assert(vms->program_loader != nullptr);
 							
@@ -199,8 +199,8 @@ namespace Builtins {
 	template<typename Grammar_t>
 	Builtin<typename Grammar_t::output_t, typename Grammar_t::input_t> 
 	SafeRecurse(Op::SafeRecurse, BUILTIN_LAMBDA {	
-		using input_t = Grammar_t::VirtualMachineState_t::input_t;
-		using output_t = Grammar_t::VirtualMachineState_t::output_t;
+		using input_t = typename Grammar_t::VirtualMachineState_t::input_t;
+		using output_t = typename Grammar_t::VirtualMachineState_t::output_t;
 		
 		assert(not vms->template stack<input_t>().empty());
 		
@@ -245,8 +245,8 @@ namespace Builtins {
 	Builtin<typename Grammar_t::output_t, typename Grammar_t::input_t> 
 	SafeMemRecurse(Op::SafeMemRecurse, BUILTIN_LAMBDA {	
 		
-		using input_t = Grammar_t::VirtualMachineState_t::input_t;
-		using output_t = Grammar_t::VirtualMachineState_t::output_t;
+		using input_t = typename Grammar_t::VirtualMachineState_t::input_t;
+		using output_t = typename Grammar_t::VirtualMachineState_t::output_t;
 		
 		assert(not vms->template stack<input_t>().empty());
 		

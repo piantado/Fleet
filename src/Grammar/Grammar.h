@@ -54,7 +54,7 @@ public:
 	using VirtualMachineState_t = VirtualMachineState<input_t, output_t, GRAMMAR_TYPES...>;
 
 	// This is the function type
-	using FT = VirtualMachineState_t::FT; 
+	using FT = typename VirtualMachineState_t::FT; 
 
 	// rules[k] stores a SORTED vector of rules for the kth' nonterminal. 
 	// our iteration order is first for k = 0 ... N_NTs then for r in rules[k]

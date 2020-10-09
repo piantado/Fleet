@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <regex>
 #include <signal.h>
+#include <unordered_map>
 
 #include "EigenLib.h"
 #include "Errors.h"
@@ -41,16 +42,15 @@ template<typename this_t,
 		 typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
 class GrammarHypothesis : public MCMCable<this_t, datum_t, data_t>  {
 public:
-	typedef _HYP HYP;
+	using HYP = _HYP;
 
-	// take a hypothesis and a data point and map it to 
-	typedef std::unorderd_map<std::pair<int, typename data_t::data_t*>, Vector> LL_t; // likelihood type
-	
+	// take a data pointer and map it to a hypothesis x i'th item for that data point
+	using LL_t = std::unordered_map<typename datum_t::data_t*, std::vector<Vector> >; 
 
 	// a prediction is a list of pairs of outputs and NON-log probabilities
 	// we used to stored this as a map--a DiscreteDistribution--but that was slow to 
 	// iterate so now we might make a map in constructing, but we stores as a vector of pairs
-	typedef Vector2D<std::vector<std::pair<typename HYP::output_t,double>>> Predict_t; 
+	using Predict_t = Vector2D<std::vector<std::pair<typename HYP::output_t,double>>>; 
 		
 	VectorNormalHypothesis  logA; // a simple normal vector for the log of a
 	
@@ -184,25 +184,25 @@ public:
 		assert(which_data == std::addressof(human_data));
 	
 		// For each HumanDatum::data, figure out the max amount of data it contains
-		std::unordered_map<data_t::data_t*, size_t> max_sizes;
+		std::unordered_map<typename datum_t::data_t*, size_t> max_sizes;
 		for(auto& d : human_data) {
 			if( (not max_sizes.contains(d.data)) or max_sizes[d.data] < d.ndata) {
 				max_sizes[d.data] = d.ndata;
 			}
 		}
-
 	
 		LL.reset(new LL_t()); 
+		//LL->reserve(nitems); // TODO: Should we reserve the size? 
 		
-			
 		// now go through and compute the likelihood of each hypothesis on each data set
 		for(auto& x : max_sizes) {
+			LL->emplace(x.first, nhypotheses()); // in this place, make something of size nhypotheses
 			
 			#pragma omp parallel for
 			for(size_t h=0;h<nhypotheses();h++) {
 				
 				// set up all the likelihoods here
-				Vector data_lls  = Vector::Zero(x.second.ndata);				
+				Vector data_lls  = Vector::Zero(x.second);				
 				
 				// read the max size from above and compute all the likelihoods
 				for(size_t i=0;i<max_sizes[x.first];i++) {
@@ -210,7 +210,7 @@ public:
 				}
 				
 				#pragma omp critical
-				LL->at(h, x.first) = data_lls;
+				LL->at(x.first)[h] = data_lls;
 			}
 		}
 		
@@ -228,7 +228,9 @@ public:
 		// find the max power we'll ever need
 		int MX = -1;
 		for(auto& di : human_data) {
-			MX = std::max(MX, di.decay_position+1); // need +1 since 0 decay needs one value
+			for(auto& dp : *di.decay_position) {
+				MX = std::max(MX, dp+1); // need +1 since 0 decay needs one value
+			}
 		}
 		
 		// just compute this once -- should be faster to use vector intrinsics? 
@@ -246,12 +248,18 @@ public:
 	    } // else we don't need to do anything since it' all overwritten below
 		   
 		// sum up with the memory decay
-		//#pragma omp parallel for
+		#pragma omp parallel for
 		for(int h=0;h<C->rows();h++) {
-			for(int di=0;di<decayedLikelihood->cols();di++) {
-				const Vector& v = LL->at(h,di).first;
-				const Vector  d = powers(LL->at(h,di).second.array());
-				decayedLikelihood->operator()(h,di) = v.dot(d);							
+			for(int di=0;di<(int)human_data.size();di++) {
+				const datum_t& d = human_data[di];
+				const Vector& v = LL->at(d.data)[h]; // get the pre-computed vector of data here
+			
+				double dl = 0.0; // the decayed likelihood value here
+				for(size_t k=0;k<d.ndata;k++) {
+					dl += v(k) * powers( d.ndata-d.decay_position->at(k)-1 ); // -1 here ensures that the last element, where decay_position=ndata-1, has zero decay
+				}
+
+				decayedLikelihood->operator()(h,di) = dl;							
 				//CERR decayedLikelihood->operator()(h,di) ENDL;
 			}
 		}

@@ -17,7 +17,7 @@ template<float (*f)(float) > // transformat set at compile time
 class TNormalVariable : public MCMCable<TNormalVariable<f>, void*> {
 public:
 	using self_t = TNormalVariable<f>;
-	using data_t = MCMCable<TNormalVariable<f>, void*>::data_t;
+	using data_t = typename MCMCable<TNormalVariable<f>, void*>::data_t;
 	
 	float MEAN = 0.0;
 	float SD   = 1.0;
