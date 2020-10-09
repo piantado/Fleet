@@ -70,6 +70,7 @@ int main(int argc, char** argv){
 	std::ifstream infile("preprocessing/data.txt");
 	
 	MyHypothesis::data_t* learner_data = nullptr; // pointer to a vector of the current learner data
+	std::vector<int>* decay_position = nullptr;
 	
 	// what data do I run mcmc on? not just human_data since that will have many reps
 	// NOTE here we store only the pointers to sequences of data, and the loop below loops
@@ -78,7 +79,7 @@ int main(int argc, char** argv){
 	std::vector<MyHypothesis::data_t*> mcmc_data; 
 	
 	size_t ndata = 0;
-	int    decay_position = 0;
+	int    decay_position_counter = 0;
 	S prev_conceptlist = ""; // what was the previous concept/list we saw? 
 	size_t LEANER_RESERVE_SIZE = 128; // reserve this much so our pointers don't break;
 	
@@ -97,9 +98,10 @@ int main(int argc, char** argv){
 			
 			// need to reserve enough here so that we don't have to move -- or else the pointers break
 			learner_data = new MyHypothesis::data_t();
+			decay_position = new std::vector<int>();
 			learner_data->reserve(LEANER_RESERVE_SIZE);		
 			ndata = 0;
-			decay_position = 0;
+			decay_position_counter = 0;
 		}
 		
 		// now put the relevant stuff onto learner_data
@@ -107,6 +109,7 @@ int main(int argc, char** argv){
 		for(size_t i=0;i<objs->size();i++) {
 			MyInput inp{objs->at(i), *objs};
 			learner_data->emplace_back(inp, corrects->at(i), alpha);
+			decay_position->push_back(decay_position_counter); // these all occur at the same decay position
 			assert(learner_data->size() < LEANER_RESERVE_SIZE);
 		}
 
@@ -121,7 +124,7 @@ int main(int argc, char** argv){
 		}
 		
 		ndata += objs->size();
-		decay_position++; // this counts sets, not items in sets
+		decay_position_counter++; // this counts sets, not items in sets
 		prev_conceptlist = conceptlist;	
 	}
 	if(learner_data != nullptr) 

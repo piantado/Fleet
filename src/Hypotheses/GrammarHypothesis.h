@@ -104,10 +104,6 @@ public:
 		
 		logA.set_size(grammar->count_rules());
 		
-		
-		// r1^nr1 * r2^nr2 ..
-		// nr1 * log(r1) + nr2*log(r2) ...
-		
 		// when we are initialized this way, we compute C, LL, P, and the decayed ll. 
 		recompute_C(hypotheses);
 		COUT "# Done computing prior counts" ENDL;
@@ -192,11 +188,13 @@ public:
 		}
 	
 		LL.reset(new LL_t()); 
-		//LL->reserve(nitems); // TODO: Should we reserve the size? 
+		LL->reserve(max_sizes.size()); // reserve for the same number of elements 
 		
 		// now go through and compute the likelihood of each hypothesis on each data set
 		for(auto& x : max_sizes) {
 			LL->emplace(x.first, nhypotheses()); // in this place, make something of size nhypotheses
+			
+			auto& v = LL->at(x.first);
 			
 			#pragma omp parallel for
 			for(size_t h=0;h<nhypotheses();h++) {
@@ -210,7 +208,7 @@ public:
 				}
 				
 				#pragma omp critical
-				LL->at(x.first)[h] = data_lls;
+				v[h] = data_lls;
 			}
 		}
 		
