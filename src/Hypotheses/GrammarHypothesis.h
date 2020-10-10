@@ -52,10 +52,11 @@ public:
 	// iterate so now we might make a map in constructing, but we stores as a vector of pairs
 	using Predict_t = Vector2D<std::vector<std::pair<typename HYP::output_t,double>>>; 
 		
-	VectorNormalHypothesis  logA; // a simple normal vector for the log of a
+	VectorNormalHypothesis logA; // a simple normal vector for the log of a
 	
 	// Here is a list of built-in parameters that we can use. Each stores a standard
-	// normal and a value under the specified transformation
+	// normal and a value under the specified transformation, which is chosen here to give 
+	// a reasonably shaped prior
 	TNormalVariable< +[](float x)->float { return 1.0/(1.0+expf(-1.7*x)); }> alpha;
 	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            llt;
 	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            pt;
@@ -227,7 +228,7 @@ public:
 		int MX = -1;
 		for(auto& di : human_data) {
 			for(auto& dp : *di.decay_position) {
-				MX = std::max(MX, dp+1); // need +1 since 0 decay needs one value
+				MX = std::max(MX, dp+1); // need +2 since 0 decay needs one value
 			}
 		}
 		
@@ -242,23 +243,27 @@ public:
 		// fix it if its the wrong size
 		if(decayedLikelihood->rows() != C->rows() or
 		   decayedLikelihood->cols() != (int)human_data.size()) {
-			decayedLikelihood.reset(new Matrix(C->rows(), human_data.size()));
+			decayedLikelihood.reset(new Matrix(nhypotheses(), human_data.size()));
 	    } // else we don't need to do anything since it' all overwritten below
 		   
 		// sum up with the memory decay
 		#pragma omp parallel for
-		for(int h=0;h<C->rows();h++) {
+		for(size_t h=0;h<nhypotheses();h++) {
 			for(int di=0;di<(int)human_data.size();di++) {
 				const datum_t& d = human_data[di];
 				const Vector& v = LL->at(d.data)[h]; // get the pre-computed vector of data here
+				
+				// what is the decay position of the thing we are using?
+				const int K = d.my_decay_position;
 			
 				double dl = 0.0; // the decayed likelihood value here
 				for(size_t k=0;k<d.ndata;k++) {
-					dl += v(k) * powers( d.ndata-d.decay_position->at(k)-1 ); // -1 here ensures that the last element, where decay_position=ndata-1, has zero decay
+					dl += v(k) * powers(K - d.decay_position->at(k)); // TODO: This could be stored as a vector -- might be faster w/o loop?
 				}
 
+				// #pragma may not be needed?
+				#pragma omp critical
 				decayedLikelihood->operator()(h,di) = dl;							
-				//CERR decayedLikelihood->operator()(h,di) ENDL;
 			}
 		}
 	}
@@ -304,23 +309,23 @@ public:
 	}
 	
 	/**
-	 * @brief This returns a vector where the i'th element is the normalized posterior probability
+	 * @brief This returns a matrix hposter[h,di] giving the posterior on the h'th element
 	 * @return 
 	 */	
 	virtual Matrix compute_normalized_posterior() {
 		
-		Vector hprior = this->hypothesis_prior(*C) / pt.get(); 
-		
+		// the model's posterior
 		// do we need to normalize the prior here? The answer is no -- because its just a constant
 		// and that will get normalized away in posterior
-		
-		Matrix hposterior = (*decayedLikelihood / llt.get()).colwise() + hprior; // the model's posterior
+		Matrix hposterior = (*decayedLikelihood / llt.get()).colwise() 
+							+ 
+						    this->hypothesis_prior(*C) / pt.get();
 		
 		// now normalize it and convert to probabilities
 		#pragma omp parallel for
-		for(int i=0;i<hposterior.cols();i++) { 
+		for(int di=0;di<hposterior.cols();di++) { 
 			// here we normalize and convert it to *probability* space
-			hposterior.col(i) = lognormalize(hposterior.col(i)).array().exp();
+			hposterior.col(di) = lognormalize(hposterior.col(di)).array().exp();
 		}
 		
 		return hposterior;

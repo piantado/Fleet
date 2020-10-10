@@ -118,7 +118,7 @@ int main(int argc, char** argv){
 			// make a map of the responses
 			std::map<bool,size_t> m; m[true] = (*yeses)[i]; m[false] = (*nos)[i];
 			
-			HumanDatum<MyHypothesis> hd{learner_data, ndata, &( learner_data->at(ndata+i).input ), std::move(m), 0.5, decay_position};
+			HumanDatum<MyHypothesis> hd{learner_data, ndata, &( learner_data->at(ndata+i).input ), std::move(m), 0.5, decay_position, decay_position_counter};
 		
 			human_data.push_back(std::move(hd));
 		}
