@@ -18,7 +18,7 @@ using StrSet = std::set<S>;
 
 const std::string my_default_input = "data/English"; 
 S alphabet="nvadtp";
-size_t max_length = 256; // max string length, else throw an error (more than 256 needed for count, a^2^n, a^n^2, etc
+size_t max_length = 64; // was 256 // max string length, else throw an error (more than 256 needed for count, a^2^n, a^n^2, etc
 size_t max_setsize = 64; // throw error if we have more than this
 size_t nfactors = 2; // how may factors do we run on? (defaultly)
 
@@ -29,9 +29,9 @@ const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The m
 const size_t MAX_PR_LINES = 1000000; 
 
 const size_t RESTART = 0;
-const size_t NTEMPS = 10;
-const size_t MAX_TEMP = 10.0; 
-unsigned long SWAP_EVERY = 1500; // ms
+const size_t NTEMPS = 50; // 10 for the main run -- updated to 20 here
+const size_t MAX_TEMP = 25.0;  // 10 for the main run -- updated to 50 here
+unsigned long SWAP_EVERY = 250; // ms
 unsigned long PRINT_STRINGS; // print at most this many strings for each hypothesis
 
 std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000"}; // how many data points do we run on?
@@ -361,14 +361,13 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> all; 
 	//	all.set_print_best(true);
 	
+	ParallelTempering samp(h0, &datas[0], all, NTEMPS, MAX_TEMP); 
+	
 	tic();	
 	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
 		
-		// the max temperature here is going to be the amount of data
-		// that's because if we make it much bigger, we waste lower chains; if we make it much smaller, 
-		// we don't get good mixing in the lowest chains. 
-		// No theory here, this just seems to be about what works well. 
-		ParallelTempering samp(h0, &datas[di], all, NTEMPS, MAX_TEMP); 
+		samp.set_data(&datas[di], true);
+		
 		samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, RESTART), SWAP_EVERY, 5*60*1000);	
 
 		// set up to print using a larger set if we were given this option
@@ -376,8 +375,8 @@ int main(int argc, char** argv){
 			VirtualMachineControl::MAX_STEPS  = 32000; 
 			VirtualMachineControl::MAX_OUTPUTS = 12000;
 			VirtualMachineControl::MIN_LP = -25;
-			PRINT_STRINGS = 2048;
-			max_length = 2048; 			
+			PRINT_STRINGS = 4096;
+			max_length = 1024; 			
 		}
 		else {
 			VirtualMachineControl::MAX_STEPS  = 4096; 
@@ -401,11 +400,6 @@ int main(int argc, char** argv){
 		if(di+1 < datas.size()) {
 			all = all.compute_posterior(datas[di+1]); // update for next time
 		}
-		
-		// start next time on the best hypothesis we've found so far
-		if(not all.empty()) {
-			h0 = all.best();			
-		}	
 		
 	}
 	tic();

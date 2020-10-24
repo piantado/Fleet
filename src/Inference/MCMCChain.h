@@ -88,6 +88,18 @@ public:
 	
 	virtual ~MCMCChain() { }
 	
+	/**
+	 * @brief Set this data
+	 * @param d - what data to set
+	 * @param recompute_posterior - should I recompute the posterior on current?
+	 */
+	void set_data(typename HYP::data_t* d, bool recompute_posterior=true) {
+		data = d;
+		if(recompute_posterior) {
+			current.compute_posterior(*data);
+		}
+	}
+	
 	HYP& getCurrent() {
 		/**
 		 * @brief get a reference to the current value

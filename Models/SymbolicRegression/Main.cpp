@@ -1,3 +1,5 @@
+// TODO: Check that we never put a nan in a map because that's not alloewd!
+
 #include <cmath>
 
 using D = double;

@@ -41,6 +41,18 @@ public:
 		}
 	}
 	
+	
+	/**
+	 * @brief Set this data
+	 * @param d -- what data to set
+	 * @param recompute -- should I recompute all of the posteriors?
+	 */	
+	void set_data(typename HYP::data_t* d, bool recompute=true) {
+		for(auto& c : pool) {
+			c.set_data(d, recompute);
+		}
+	}
+	
 	/**
 	 * @brief This run helper is called internally by multiple different threads, and runs a given pool.
 	 * @param ctl
