@@ -116,7 +116,7 @@ public:
 		// updates current and calls callback (in constructor)
 		std::lock_guard guard(current_mutex);
 		current.compute_posterior(*data);
-		if(callback != nullptr) (*callback)(current);
+		if(callback != nullptr) (*callback)(current); // hmm this gets called even with burn -- maybe not good?
 		++FleetStatistics::global_sample_count;
 		++samples;
 	}
@@ -168,17 +168,11 @@ public:
 				continue;
 			}
 			
-			
 			#ifdef DEBUG_MCMC
 			DEBUG("\n# Current\t", data->size(), current.posterior, current.prior, current.likelihood, current.string());
 			#endif 
 			
 			std::lock_guard guard(current_mutex); // lock below otherwise others can modify
-
-//			extern unsigned long thin;
-//			if(thin > 0 and FleetStatistics::global_sample_count % thin == 0) {
-//				current.print();
-//			}
 
 			// propose, but restart if we're -infinity
 			auto [proposal, fb] = (current.posterior > -infinity ? current.propose() : std::make_pair(current.restart(), 0.0));			
@@ -202,7 +196,6 @@ public:
 			DEBUG("# Proposed \t", proposal.posterior, proposal.prior, proposal.likelihood, fb, proposal.string());
 			#endif 
 			
-//			CERR "MCMC Chain U = " << uniform() ENDL;
 			// use MH acceptance rule, with some fanciness for NaNs
 			double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb; 		
 			if((std::isnan(current.posterior))  or
@@ -235,10 +228,6 @@ public:
 				current.print();
 			}
 			
-//			if( FleetStatistics::global_sample_count>0 and FleetStatistics::global_sample_count % 100 == 0 ) {
-//				CERR "# Acceptance rate: " TAB double(acceptances)/double(proposals) ENDL;
-//			}
-				
 			++samples;
 			++FleetStatistics::global_sample_count;
 			

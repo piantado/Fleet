@@ -6,8 +6,6 @@
 #include "Statistics/FleetStatistics.h"
 #include "Miscellaneous.h"
 
-#include "LRUCache.h"
-
 /**
  * @class Bayesable
  * @author steven piantadosi

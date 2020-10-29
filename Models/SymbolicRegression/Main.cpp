@@ -1,4 +1,5 @@
 // TODO: Check that we never put a nan in a map because that's not alloewd!
+// ./main --time=1h --inner-time=5s --explore=0.1 --thin=0 --threads=1 --input=./data-sources/Science/Zipf/data.txt --tree=./out/tree.txt
 
 #include <cmath>
 
@@ -91,14 +92,17 @@ public:
 	}
 
 	double compute_single_likelihood(const datum_t& datum) override {
+		
 		double fx = this->callOne(datum.input, NaN);
-		if(std::isnan(fx)) return -infinity;
+		
+		if(std::isnan(fx)) 
+			return -infinity;
             
 		return normal_lpdf( (fx-datum.output)/datum.reliability );		
 	}
 	
 	size_t count_constants() const {
-		size_t cnt=0;
+		size_t cnt = 0;
 		for(const auto& x : value) {
 			cnt += isConstant(x.rule);
 		}
@@ -106,16 +110,16 @@ public:
 	}
 	
 	virtual double compute_constants_prior() const {
+		// NOTE: because of fb below, this must be computed the same way as sampling (which is normal)
 		double lp = 0.0;
 		for(auto& c : constants) {
-			lp += cauchy_lpdf(c);
+			lp += normal_lpdf(c);
 		}
 		return lp;
 	}
 	
 	virtual double compute_prior() override {
-		this->prior = Super::compute_prior() + compute_constants_prior();
-		return this->prior;
+		return this->prior = Super::compute_prior() + compute_constants_prior();
 	}
 	
 	virtual std::string __my_string_recurse(const Node* n, size_t& idx) const {
@@ -171,13 +175,8 @@ public:
 	
 	virtual bool operator==(const MyHypothesis& h) const override {
 		// equality requires our constants to be equal 
-		if(! this->Super::operator==(h) ) return false;
-		
-		assert(constants.size() == h.constants.size()); // has to be if we passed the previous test
-		for(size_t i=0;i<constants.size();i++){
-			if(constants[i] != h.constants[i]) return false;
-		}
-		return true;
+		return this->Super::operator==(h) and
+			   constants == h.constants;
 	}
 
 	virtual size_t hash() const override {
@@ -196,7 +195,7 @@ public:
 	virtual std::pair<MyHypothesis,double> propose() const override {
 		// Our proposals will either be to constants, or entirely from the prior
 		
-		if(flip()){
+		if(flip(0.5)){
 			MyHypothesis ret = *this;
 			
 			// now add to all that I have
@@ -209,6 +208,7 @@ public:
 					case 2: scale =  0.10;  break;
 					case 3: scale =  0.01;  break;
 					case 4: scale =  0.001; break;
+					default: assert(false);
 				}
 				
 				ret.constants[i] += scale*normal(rng); // symmetric, not counting in fb
@@ -216,15 +216,16 @@ public:
 			return std::make_pair(ret, 0.0);
 		}
 		else {
-			auto [h, fb] = Super::propose(); // a proposal to structure
+			auto [ret, fb] = Super::propose(); // a proposal to structure
 			
-			h.randomize_constants(); // with random constants
+			ret.randomize_constants(); // with random constants
 			
-			return std::make_pair(h, fb + h.compute_constants_prior() - this->compute_constants_prior());
+			return std::make_pair(ret, fb + ret.compute_constants_prior() - this->compute_constants_prior());
 		}
 	}
 	
 	virtual void randomize_constants() {
+		// NOTE: Because of how fb is computed in propose, we need to make this the same as the prior
 		constants.resize(count_constants());
 		for(size_t i=0;i<constants.size();i++) {
 			constants[i] = random_normal();
@@ -282,7 +283,7 @@ std::function posterior = [](const MyHypothesis& h) {return h.posterior; };
  */
 void trim_overall_samples(size_t N) {
 	
-	std::lock_guard guard(overall_sample_lock);
+	//std::lock_guard guard(overall_sample_lock); // This is called in myCallback so we can't lock in here
 	
 	if(overall_samples.size() < N) return;
 	
@@ -323,7 +324,7 @@ void trim_overall_samples(size_t N) {
  */
 void myCallback(MyHypothesis& h) {
 		if(h.posterior == -infinity or std::isnan(h.posterior)) return; // ignore these
-
+		
 		auto ss = h.structure_string();
 		
 		std::lock_guard guard(overall_sample_lock);
@@ -366,8 +367,7 @@ public:
 		// NOTE That we might run this when there are no constants. 
 		// This is hard to avoid if we want to allow restarts, since those occur within MCMCChain
 		MCMCChain chain(h0, data, cb);
-		chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, 10000)); // run mcmc with restarts; we sure shouldn't run more than runtime
-			
+		chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, 2500)); // run mcmc with restarts; we sure shouldn't run more than runtime
 	}
 	
 };
@@ -400,6 +400,8 @@ int main(int argc, char** argv){
 	m.run(Control(), h0);
 	tic();
 	
+	COUT "# Printing trees." ENDL;
+	
 	m.print(h0, FleetArgs::tree_path.c_str());
 
 	// set up a paralle tempering object
@@ -419,7 +421,9 @@ int main(int argc, char** argv){
 	//------------------
 	// Postprocessing
 	//------------------
-
+	
+	COUT "# Trimming." ENDL;
+	
 	trim_overall_samples(nstructs);
 
 	// figure out the structure normalizer

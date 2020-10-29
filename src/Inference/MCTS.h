@@ -360,17 +360,20 @@ class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {
 		
 		// if everyone has been visited, we'll descend with a UCT-like rule
 		if(this->all_children_visited()) {
+			
 			std::vector<double> children_lps(neigh, -infinity);		
 			for(int k=0;k<neigh;k++) {
 				if(this->children[k].open){
 					children_lps[k] = current.neighbor_prior(k) + 
-									  (this->children[k].nvisits == 0 ? 0.0 : this->children[k].max + this->explore*sqrt(log(1+this->nvisits)/(1+this->children[k].nvisits)));
+									  (this->child(k).nvisits == 0 ? 0.0 : (this->max / this->child(k).max) +
+																		   FleetArgs::explore * sqrt(log(this->nvisits)/this->children[k].nvisits)) ;
 				}
 			}			
 			
 			int idx = arg_max_int(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
 			current.expand_to_neighbor(idx); // idx here gives which expansion we follow
 			this->children[idx].search_one(current);
+			
 		}
 		else {
 			
@@ -383,7 +386,6 @@ class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {
 			this->children[idx].nvisits++; // since it's not counted in add_sample and we don't search_one on it
 			this->children[idx].playout(current);
 		}
-		
 	}
 
 	/**
