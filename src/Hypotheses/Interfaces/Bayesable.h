@@ -1,5 +1,7 @@
 #pragma once 
 
+#include <iomanip>
+
 #include "Errors.h"
 #include "Datum.h"
 #include "IO.h"
@@ -197,7 +199,7 @@ public:
 		
 		std::lock_guard guard(output_lock);
 		// TODO: Include  this->born  once that is updated correctly
-		COUT prefix << this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->string()) ENDL;		
+		COUT std::setprecision(14) << prefix << this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->string()) ENDL;		
 	}
 };
 

@@ -151,14 +151,14 @@ public:
 			
 			// if we haven't improved
 			if(ctl.restart>0 and steps_since_improvement > ctl.restart){
-				steps_since_improvement = 0; // reset the couter
 				
 				std::lock_guard guard(current_mutex);
 				
 				current = current.restart();
 				current.compute_posterior(*data);
 				
-				maxval = current.posterior;
+				steps_since_improvement = 0; // reset the couter
+				maxval = current.posterior; // and the new max
 				
 				++samples;
 				++FleetStatistics::global_sample_count;

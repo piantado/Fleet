@@ -9,8 +9,8 @@ const double sdscale = 1.0; // can change if we want
 const size_t nsamples = 250; // how many per structure?
 const size_t nstructs = 50; // print out all the samples from the top this many structures
 
-const size_t trim_at = 2000; // when we get this big in overall_sample structures
-const size_t trim_to = 500;  // trim to this size
+const size_t trim_at = 5000; // when we get this big in overall_sample structures
+const size_t trim_to = 1000;  // trim to this size
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define grammar
@@ -125,7 +125,7 @@ public:
 	virtual std::string __my_string_recurse(const Node* n, size_t& idx) const {
 		// we need this to print strings -- its in a similar format to evaluation
 		if(isConstant(n->rule)) {
-			return "("+str(constants[idx++])+")";
+			return "("+to_string_with_precision(constants[idx++], 14)+")";
 		}
 		else if(n->rule->N == 0) {
 			return n->rule->format;
@@ -139,7 +139,6 @@ public:
 			/// recurse on the children. NOTE: they are linearized left->right, 
 			// which means that they are popped 
 			for(size_t i=0;i<n->rule->N;i++) {
-//			for(int i=(int)n->rule->N-1;i>=0;i--) {
 				childStrings[i] = __my_string_recurse(&n->child(i),idx);
 			}
 			
@@ -194,20 +193,23 @@ public:
 	
 	virtual std::pair<MyHypothesis,double> propose() const override {
 		// Our proposals will either be to constants, or entirely from the prior
+		// Note that if we have no constants, we will always do prior proposals
+		auto NC = count_constants();
 		
-		if(flip(0.5)){
+		if(NC != 0 and flip(0.95)){
 			MyHypothesis ret = *this;
 			
 			// now add to all that I have
-			for(size_t i=0;i<ret.constants.size();i++) { 
+			for(size_t i=0;i<NC;i++) { 
 				// propose on a few scales here
 				double scale = 1.0;
-				switch(myrandom(5)){
-					case 0: scale = 10.0;   break;
-					case 1: scale =  1.0;   break;
-					case 2: scale =  0.10;  break;
-					case 3: scale =  0.01;  break;
-					case 4: scale =  0.001; break;
+				switch(myrandom(6)){
+					case 0: scale = 100.0;  break;
+					case 1: scale = 10.0;   break;
+					case 2: scale =  1.0;   break;
+					case 3: scale =  0.10;  break;
+					case 4: scale =  0.01;  break;
+					case 5: scale =  0.001; break;
 					default: assert(false);
 				}
 				
@@ -367,7 +369,7 @@ public:
 		// NOTE That we might run this when there are no constants. 
 		// This is hard to avoid if we want to allow restarts, since those occur within MCMCChain
 		MCMCChain chain(h0, data, cb);
-		chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, 2500)); // run mcmc with restarts; we sure shouldn't run more than runtime
+		chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, 1000)); // run mcmc with restarts; we sure shouldn't run more than runtime
 	}
 	
 };
@@ -445,7 +447,8 @@ int main(int argc, char** argv){
 		}
 		
 		for(auto h : s.second.values()) {
-			COUT QQ(h.structure_string()) TAB 
+			COUT std::setprecision(14) <<
+				 QQ(h.structure_string()) TAB 
 				 best_posterior TAB 
 				 ( (h.posterior-sz) + (best_posterior-Z)) TAB 
 				 h.posterior TAB h.prior TAB h.likelihood TAB

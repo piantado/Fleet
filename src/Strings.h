@@ -1,5 +1,6 @@
 #pragma once
 
+#include <sstream>
 #include <queue>
 #include <math.h>
 #include <string.h>
@@ -14,6 +15,16 @@ std::string str(T x){
 	 */
 		
 	return std::to_string(x);
+}
+
+
+template <typename T>
+std::string to_string_with_precision(const T a_value, const int n = 14) {
+	// https://stackoverflow.com/questions/16605967/set-precision-of-stdto-string-when-converting-floating-point-values
+    std::ostringstream out;
+    out.precision(n);
+    out << std::fixed << a_value;
+    return out.str();
 }
 
 /* If x is a prefix of y -- works for strings and vectors */
