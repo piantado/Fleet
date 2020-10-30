@@ -158,6 +158,8 @@ public:
 				current = current.restart();
 				current.compute_posterior(*data);
 				
+				maxval = current.posterior;
+				
 				++samples;
 				++FleetStatistics::global_sample_count;
 
