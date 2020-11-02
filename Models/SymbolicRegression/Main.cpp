@@ -2,15 +2,25 @@
 // ./main --time=1h --inner-time=5s --explore=0.1 --thin=0 --threads=1 --input=./data-sources/Science/Zipf/data.txt --tree=./out/tree.txt
 
 #include <cmath>
+#include "Random.h"
 
 using D = double;
 
-const double sdscale = 1.0; // can change if we want
-const size_t nsamples = 250; // how many per structure?
-const size_t nstructs = 50; // print out all the samples from the top this many structures
+const double sdscale  = 1.0; // can change if we want
+size_t nsamples = 100; // how many per structure?
+size_t nstructs = 100; // print out all the samples from the top this many structures
+int    polynomial_degree = -1; //-1 means do everything, otherwise store ONLY polynomials less than or equal to this bound
 
 const size_t trim_at = 5000; // when we get this big in overall_sample structures
 const size_t trim_to = 1000;  // trim to this size
+
+size_t inner_restarts = 5000;
+
+// We define these here so we can substitute normal and cauchy or something else if we want
+double constant_propose(double c) { return c+random_normal(); } // should be symmetric for use below
+double constant_prior(double c)   { return normal_lpdf(c);}
+//double constant_propose(double c) { return c+random_cauchy(); } // should be symmetric for use below
+//double constant_prior(double c)   { return cauchy_lpdf(c);}
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define grammar
@@ -113,7 +123,7 @@ public:
 		// NOTE: because of fb below, this must be computed the same way as sampling (which is normal)
 		double lp = 0.0;
 		for(auto& c : constants) {
-			lp += normal_lpdf(c);
+			lp += constant_prior(c);
 		}
 		return lp;
 	}
@@ -203,17 +213,18 @@ public:
 			for(size_t i=0;i<NC;i++) { 
 				// propose on a few scales here
 				double scale = 1.0;
-				switch(myrandom(6)){
+				switch(myrandom(7)){
 					case 0: scale = 100.0;  break;
-					case 1: scale = 10.0;   break;
-					case 2: scale =  1.0;   break;
-					case 3: scale =  0.10;  break;
-					case 4: scale =  0.01;  break;
-					case 5: scale =  0.001; break;
+					case 1: scale =  10.0;   break;
+					case 2: scale =   1.0;   break;
+					case 3: scale =   0.10;  break;
+					case 4: scale =   0.01;  break;
+					case 5: scale =   0.001; break;
+					case 6: scale =   0.0001; break;
 					default: assert(false);
 				}
 				
-				ret.constants[i] += scale*normal(rng); // symmetric, not counting in fb
+				ret.constants[i] = scale * constant_propose(ret.constants[i]); // symmetric, not counting in fb
 			}
 			return std::make_pair(ret, 0.0);
 		}
@@ -230,7 +241,7 @@ public:
 		// NOTE: Because of how fb is computed in propose, we need to make this the same as the prior
 		constants.resize(count_constants());
 		for(size_t i=0;i<constants.size();i++) {
-			constants[i] = random_normal();
+			constants[i] = constant_propose(0);
 		}
 	}
 
@@ -327,6 +338,10 @@ void trim_overall_samples(size_t N) {
 void myCallback(MyHypothesis& h) {
 		if(h.posterior == -infinity or std::isnan(h.posterior)) return; // ignore these
 		
+		// toss non-linear samples here if we request linearity
+		if(polynomial_degree > -1 and not (get_polynomial_degree(h.get_value(), h.constants) <= polynomial_degree)) 
+			return;
+		
 		auto ss = h.structure_string();
 		
 		std::lock_guard guard(overall_sample_lock);
@@ -369,7 +384,7 @@ public:
 		// NOTE That we might run this when there are no constants. 
 		// This is hard to avoid if we want to allow restarts, since those occur within MCMCChain
 		MCMCChain chain(h0, data, cb);
-		chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, 1000)); // run mcmc with restarts; we sure shouldn't run more than runtime
+		chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, inner_restarts)); // run mcmc with restarts; we sure shouldn't run more than runtime
 	}
 	
 };
@@ -385,6 +400,10 @@ int main(int argc, char** argv){
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	Fleet fleet("Symbolic regression");
+	fleet.add_option("--nsamples", nsamples, "How many samples per structure?");
+	fleet.add_option("--nstructs", nstructs, "How many structures?");
+	fleet.add_option("--polynomial-degree",   polynomial_degree,   "Defaultly -1 means we store everything, otherwise only keep polynomials <= this bound");
+	fleet.add_option("--inner-restart",   inner_restarts,   "When does the inner MCMC chain restart?");	
 	fleet.initialize(argc, argv);
 	
 	// set up the data

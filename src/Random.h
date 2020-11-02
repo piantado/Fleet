@@ -23,7 +23,18 @@ double random_normal() {
 	return normal(rng);
 }
 
-double cauchy_lpdf(double x, double loc=0.0, double gamma=1.0) {
+double random_cauchy() {
+	/**
+	 * @brief Generate a random sample from a standard cauchy
+	 * @return 
+	 */
+	
+	return tan(pi*(uniform()-0.5));
+}
+
+
+template<typename T>
+T cauchy_lpdf(T x, T loc=0.0, T gamma=1.0) {
 	/**
 	 * @brief Compute the log PDF of a cauchy distribution
 	 * @param x - value
@@ -35,7 +46,8 @@ double cauchy_lpdf(double x, double loc=0.0, double gamma=1.0) {
     return -log(pi) - log(gamma) - log(1+((x-loc)/gamma)*((x-loc)/gamma));
 }
 
-double normal_lpdf(double x, double mu=0.0, double sd=1.0) {
+template<typename T>
+T normal_lpdf(T x, T mu=0.0, T sd=1.0) {
 	/**
 	 * @brief Compute the log PDF of a normal distribution
 	 * @param x
@@ -45,18 +57,11 @@ double normal_lpdf(double x, double mu=0.0, double sd=1.0) {
 	 */
 	
     //https://stackoverflow.com/questions/10847007/using-the-gaussian-probability-density-function-in-c
-    const float linv_sqrt_2pi = -0.5*log(2*pi*sd);
-    return linv_sqrt_2pi  - ((x-mu)/sd)*((x-mu)/sd) / 2.0;
+    const T linv_sqrt_2pi = -0.5*log(2*pi*sd);
+	const T z = (x-mu)/sd;
+    return linv_sqrt_2pi  - z*z / 2.0;
 }
 
-double random_cauchy() {
-	/**
-	 * @brief Generate a random sample from a standard cauchy
-	 * @return 
-	 */
-	
-	return tan(pi*(uniform()-0.5));
-}
 
 template<typename t>
 std::vector<t> random_multinomial(t a, size_t len) {

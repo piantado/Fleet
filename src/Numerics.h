@@ -8,10 +8,10 @@
 // Constants
 /////////////////////////////////////////////////////////////
 
-const double LOG2 = log(2.0);
-const double infinity = std::numeric_limits<double>::infinity();
-const double NaN = std::numeric_limits<double>::quiet_NaN();
-const double pi  = M_PI;
+constexpr double LOG2 = log(2.0);
+constexpr double infinity = std::numeric_limits<double>::infinity();
+constexpr double NaN = std::numeric_limits<double>::quiet_NaN();
+constexpr double pi  = M_PI;
 
 /////////////////////////////////////////////////////////////
 // A fater logarithm 
