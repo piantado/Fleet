@@ -17,10 +17,27 @@ const size_t trim_to = 1000;  // trim to this size
 size_t inner_restarts = 5000;
 
 // We define these here so we can substitute normal and cauchy or something else if we want
-double constant_propose(double c) { return c+random_normal(); } // should be symmetric for use below
+double constant_propose(double c, double s) { return c+s*random_normal(); } // should be symmetric for use below
 double constant_prior(double c)   { return normal_lpdf(c);}
 //double constant_propose(double c) { return c+random_cauchy(); } // should be symmetric for use below
 //double constant_prior(double c)   { return cauchy_lpdf(c);}
+
+// Proposals and random generation happen on a variety of scales
+double random_scale() {
+	double scale = 1.0;
+	switch(myrandom(7)){
+		case 0: scale = 100.0;  break;
+		case 1: scale =  10.0;   break;
+		case 2: scale =   1.0;   break;
+		case 3: scale =   0.10;  break;
+		case 4: scale =   0.01;  break;
+		case 5: scale =   0.001; break;
+		case 6: scale =   0.0001; break;
+		default: assert(false);
+	}
+	return scale; 
+}
+
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define grammar
@@ -211,20 +228,7 @@ public:
 			
 			// now add to all that I have
 			for(size_t i=0;i<NC;i++) { 
-				// propose on a few scales here
-				double scale = 1.0;
-				switch(myrandom(7)){
-					case 0: scale = 100.0;  break;
-					case 1: scale =  10.0;   break;
-					case 2: scale =   1.0;   break;
-					case 3: scale =   0.10;  break;
-					case 4: scale =   0.01;  break;
-					case 5: scale =   0.001; break;
-					case 6: scale =   0.0001; break;
-					default: assert(false);
-				}
-				
-				ret.constants[i] = scale * constant_propose(ret.constants[i]); // symmetric, not counting in fb
+				ret.constants[i] = constant_propose(ret.constants[i], random_scale()); // symmetric, not counting in fb
 			}
 			return std::make_pair(ret, 0.0);
 		}
@@ -241,7 +245,8 @@ public:
 		// NOTE: Because of how fb is computed in propose, we need to make this the same as the prior
 		constants.resize(count_constants());
 		for(size_t i=0;i<constants.size();i++) {
-			constants[i] = constant_propose(0);
+			
+			constants[i] = constant_propose(0, random_scale());
 		}
 	}
 
@@ -314,7 +319,7 @@ void trim_overall_samples(size_t N) {
 	while(it != overall_samples.end()) {
 		double b = max_of((*it).second.values(), posterior).second;
 		if(b < cutoff) { // if we erase
-			it = overall_samples.erase(it);// wow erase returns a new iterator which is valid
+			it = overall_samples.erase(it);// wow, erase returns a new iterator which is valid
 		}
 		else {
 			++it;
@@ -349,12 +354,12 @@ void myCallback(MyHypothesis& h) {
 			overall_samples.emplace(ss,nsamples);
 		}
 		
+		// and add it
+		overall_samples[ss] << h;
+		
 		if(overall_samples.size() >= trim_at) {
 			trim_overall_samples(trim_to);
 		}
-		
-		// and add it
-		overall_samples[ss] << h;
 }
 
 
