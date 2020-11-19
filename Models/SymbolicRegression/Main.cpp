@@ -64,7 +64,7 @@ public:
 		add("(%s*%s)",    +[](D a, D b) -> D     { return a*b; }),
 		add("(%s/%s)",    +[](D a, D b) -> D     { return (b==0 ? 0 : a/b); }),
 		
-		add("(%s^%s)",    +[](D a, D b) -> D     { return pow(a,b); }),
+		add("pow(%s,%s)",    +[](D a, D b) -> D     { return pow(a,b); }),
 		
 		add("(-%s)",      +[](D a)          -> D { return -a; }),
 		add("exp(%s)",    +[](D a)          -> D { return exp(a); }),
@@ -191,8 +191,8 @@ public:
 		return  prefix+std::string("\u03BBx.") +  __my_string_recurse(&value, idx);
 	}
 	
-	virtual std::string structure_string() const {
-		return Super::string();
+	virtual std::string structure_string(bool usedot=true) const {
+		return Super::string("", usedot);
 	}
 	
 	/// *****************************************************************************
@@ -347,7 +347,9 @@ void myCallback(MyHypothesis& h) {
 		if(polynomial_degree > -1 and not (get_polynomial_degree(h.get_value(), h.constants) <= polynomial_degree)) 
 			return;
 		
-		auto ss = h.structure_string();
+		// It's important here that we do a structure_string without a dot, because
+		// we want to store hypotheses in the same place, even if they came from different MCTS nodes
+		auto ss = h.structure_string(false); 
 		
 		std::lock_guard guard(overall_sample_lock);
 		if(!overall_samples.count(ss)) { // create this if it doesn't exist
@@ -459,7 +461,7 @@ int main(int argc, char** argv){
 	}
 	
 	// And display!
-	COUT "structure\tstructure.max\testimated.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\th\tparseable.h" ENDL;
+	COUT "structure\tstructure.max\tweighted.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\th\tparseable.h" ENDL;
 	for(auto& s : overall_samples) {
 		
 		double best_posterior = max_of(s.second.values(), posterior).second;

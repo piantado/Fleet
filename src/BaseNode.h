@@ -58,7 +58,7 @@ public:
 	virtual ~BaseNode() {}
 
 	// Functions to be defined by subclasses
-	virtual std::string string() const {
+	virtual std::string string(bool usedot) const {
 		throw YouShouldNotBeHereError("*** BaseNode subclass has no defined string()"); 
 	}
 	virtual std::string my_string() const { /// just print myself, not all my kids (single row per node display)

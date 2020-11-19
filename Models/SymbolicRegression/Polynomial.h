@@ -63,7 +63,7 @@ Polydeg get_polynomial_degree_rec(const Node& n, const std::vector<double>& cons
         else if(v2.is_const) return v1; // v1 is an exponent, constant doesn't matter
         return Polydeg(NaN,true); 
     }
-    else if(fmt == "(%s^%s)") {
+    else if(fmt == "(%s^%s)" or fmt == "pow(%s,%s)") { // either format allowed
         Polydeg v1 = get_polynomial_degree_rec(n.child(0), constants, cidx);
         Polydeg v2 = get_polynomial_degree_rec(n.child(1), constants, cidx);
 		if(v1.isnan() or v2.isnan()) return Polydeg(NaN,false); 

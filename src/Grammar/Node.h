@@ -191,9 +191,10 @@ public:
 	}
 		
 	
-	virtual std::string string() const override { 
+	virtual std::string string(bool usedot=true) const override { 
 		/**
 		 * @brief Convert a tree to a string, using each node's format.  
+		 * @param usedot - do we print a dot in front of pieces of nodes that cannot be resampled? Useful for mcts
 		 * @return 
 		 */
 		
@@ -213,7 +214,7 @@ public:
 			
 			// now substitute the children into the format
 			std::string s = this->rule->format;
-			if(not this->can_resample) s = "\u2022"+s; // just to help out in some cases, we'll add this to nodes that we can't resample
+			if(usedot and not this->can_resample) s = "\u2022"+s; // just to help out in some cases, we'll add this to nodes that we can't resample
 			
 			for(size_t i=0;i<this->rule->N;i++) {
 				auto pos = s.find(Rule::ChildStr);
