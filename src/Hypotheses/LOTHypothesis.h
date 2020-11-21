@@ -132,7 +132,10 @@ public:
 		value.template linearize<Grammar_t>(s);
 	}
 
-	virtual std::string string(std::string prefix="", bool usedot=true) const {
+	virtual std::string string(std::string prefix="") const override {
+		return this->string(prefix,true);
+	}
+	virtual std::string string(std::string prefix, bool usedot) const {
 		return prefix + std::string("\u03BBx.") + value.string(usedot);
 	}
 	virtual std::string parseable() const { 
