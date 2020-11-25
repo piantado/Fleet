@@ -225,7 +225,7 @@ namespace Builtins {
 			return;
 		}
 				
-		auto x = vms->template getpop<typename Grammar_t::input_t>(); // get the argumen
+		auto x = vms->template getpop<typename Grammar_t::input_t>(); // get the argument
 		auto memindex = std::make_pair(arg,x);
 		
 		if(vms->mem.count(memindex)){
