@@ -83,9 +83,18 @@ public:
 			   is_a(Op::SafeMemRecurse);
 	}
 	
-	Instruction makeInstruction(int a=0) const {
+	// Two versions: one for when we have a specified, and one for where we read from arg
+	// NOTE: These can't be defauled into templates because in one case we use a data member
+	// and in the other we specify what a should be 
+	Instruction makeInstruction(int a) const {
+		assert(arg==0 && "*** You have specified a when arg != 0 -- this is probably a mistake.");
 		return Instruction(fptr, a);
 	}
+	
+	Instruction makeInstruction() const {
+		return Instruction(fptr, arg);
+	}
+	
 	
 	bool operator<(const Rule& r) const {
 		/**

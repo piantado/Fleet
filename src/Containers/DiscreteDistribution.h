@@ -67,7 +67,7 @@ public:
 		std::string out = "{";
 		auto upper_bound = (nprint == 0 ? v.size() : std::min(v.size(), nprint));
 		for(size_t i=0;i<upper_bound;i++){
-			out += "'"  + v[i] + "':" + std::to_string(m.at(v[i]));
+			out += "'"  + str(v[i]) + "':" + std::to_string(m.at(v[i]));
 			if(i < upper_bound-1) { out += ", "; }
 		}
 		out += "} [Z=" + str(z) + ", N=" + std::to_string(v.size()) + "]";

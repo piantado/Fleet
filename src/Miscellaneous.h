@@ -31,7 +31,9 @@ std::string system_exec(const char* cmd) {
 
 #define pass ((void)0)
 
-#define UNUSED(x) (void)(x)
+template <typename T>
+void UNUSED(const T& x) {}
+//#define UNUSED(x) (void)(x)
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Hash combinations

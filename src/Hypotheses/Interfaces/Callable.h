@@ -43,18 +43,25 @@ public:
 	 * @return 
 	 */	
 	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t err=output_t{}, ProgramLoader* loader=nullptr) {
-					
-		// make this defaulty be the loader
-		if(loader == nullptr) 
-			loader = this;
 		
-		VirtualMachinePool<VirtualMachineState_t> pool; 		
-		
-		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err, loader, &pool);	
-		push_program(vms->program); // write my program into vms
+		// The below condition is needed in case we create e.g. a lexicon whose input_t and output_t differ from the VirtualMachineState
+		// in that case, these functions are all overwritten and must be called on their own. 
+		if constexpr (std::is_same<typename VirtualMachineState_t::input_t, input_t>::value and 
+				      std::is_same<typename VirtualMachineState_t::output_t, output_t>::value) {
+			
+			// make this defaulty be the loader
+			if(loader == nullptr) 
+				loader = this;
+			
+			VirtualMachinePool<VirtualMachineState_t> pool; 		
+			
+			VirtualMachineState_t* vms = new VirtualMachineState_t(x, err, loader, &pool);	
+			push_program(vms->program); // write my program into vms
 
-		pool.push(vms);		
-		return pool.run();				
+			pool.push(vms);		
+			return pool.run();				
+	
+	  } else { UNUSED(x); UNUSED(err); assert(false && "*** Cannot use call when VirtualMachineState_t has different input_t or output_t."); }
 	}
 	
 	virtual DiscreteDistribution<output_t>  operator()(const input_t x, const output_t err=output_t{}, ProgramLoader* loader=nullptr){ // just fancy syntax for call
@@ -69,16 +76,20 @@ public:
 	 * @return 
 	 */
 	virtual output_t callOne(const input_t x, const output_t err=output_t{}, ProgramLoader* loader=nullptr) {
-		
-		if(loader == nullptr) 
-			loader = this;
-		
-		// we can use this if we are guaranteed that we don't have a stochastic Hypothesis
-		// the savings is that we don't have to create a VirtualMachinePool		
-		VirtualMachineState_t vms(x, err, loader, nullptr);		
+		if constexpr (std::is_same<typename VirtualMachineState_t::input_t, input_t>::value and 
+					  std::is_same<typename VirtualMachineState_t::output_t, output_t>::value) {
+						  
+			if(loader == nullptr) 
+				loader = this;
+			
+			// we can use this if we are guaranteed that we don't have a stochastic Hypothesis
+			// the savings is that we don't have to create a VirtualMachinePool		
+			VirtualMachineState_t vms(x, err, loader, nullptr);		
 
-		push_program(vms.program); // write my program into vms (loader is used for everything else)
-		return vms.run(); // default to using "this" as the loader		
+			push_program(vms.program); // write my program into vms (loader is used for everything else)
+			return vms.run(); // default to using "this" as the loader		
+			
+		} else { UNUSED(x); UNUSED(err); assert(false && "*** Cannot use call when VirtualMachineState_t has different input_t or output_t."); }
 	}
 
 	
@@ -88,14 +99,19 @@ public:
 	 * @return a vector of virtual machine states
 	 */	
 	std::vector<VirtualMachineState_t> call_vms(const input_t x, const output_t err=output_t{}, ProgramLoader* loader=nullptr){
-		if(loader == nullptr) 
-			loader = this;
+		if constexpr (std::is_same<typename VirtualMachineState_t::input_t, input_t>::value and 
+					  std::is_same<typename VirtualMachineState_t::output_t, output_t>::value) {
+		
+			if(loader == nullptr) 
+				loader = this;
+				
+			VirtualMachinePool<VirtualMachineState_t> pool; 		
+			VirtualMachineState_t* vms = new VirtualMachineState_t(x, err, loader, &pool);	
+			push_program(vms->program); 
+			pool.push(vms);		
+			return pool.run_vms();		
 			
-		VirtualMachinePool<VirtualMachineState_t> pool; 		
-		VirtualMachineState_t* vms = new VirtualMachineState_t(x, err, loader, &pool);	
-		push_program(vms->program); 
-		pool.push(vms);		
-		return pool.run_vms();				
+		} else { UNUSED(x); UNUSED(err); assert(false && "*** Cannot use call when VirtualMachineState_t has different input_t or output_t."); }		
 	}
 	
 	
@@ -106,13 +122,18 @@ public:
 	 * @return 
 	 */
 	VirtualMachineState_t callOne_vms(const input_t x, const output_t err=output_t{}, ProgramLoader* loader=nullptr) {
-		if(loader == nullptr) 
-			loader = this;
+		if constexpr (std::is_same<typename VirtualMachineState_t::input_t, input_t>::value and 
+					  std::is_same<typename VirtualMachineState_t::output_t, output_t>::value) {
+				
+			if(loader == nullptr) 
+				loader = this;
+				
+			VirtualMachineState_t vms(x, err, loader, nullptr);
+			push_program(vms.program); // write my program into vms (loader is used for everything else)
+			vms.run(); // default to using "this" as the loader		
+			return vms;
 			
-		VirtualMachineState_t vms(x, err, loader, nullptr);
-		push_program(vms.program); // write my program into vms (loader is used for everything else)
-		vms.run(); // default to using "this" as the loader		
-		return vms;
+		} else { UNUSED(x); UNUSED(err); assert(false && "*** Cannot use call when VirtualMachineState_t has different input_t or output_t."); }		
 	}
 
 	

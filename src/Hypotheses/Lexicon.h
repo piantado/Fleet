@@ -22,19 +22,29 @@ template<typename this_t,
 		 typename INNER, 
 		 typename input_t,
 		 typename output_t, 
-		 typename datum_t=defaultdatum_t<input_t, output_t>>
+		 typename datum_t=defaultdatum_t<input_t, output_t>,
+		 typename _VirtualMachineState_t=typename INNER::Grammar_t::VirtualMachineState_t
+		 >
 class Lexicon : public MCMCable<this_t,datum_t>,
 				public Searchable<this_t,input_t,output_t>,
-				public Callable<input_t, output_t, typename INNER::Grammar_t::VirtualMachineState_t>
+				public Callable<input_t, output_t, _VirtualMachineState_t>
 {
-		// Store a lexicon of type INNER elements
-	const static char FactorDelimiter = '|';
 public:
+	
+	using VirtualMachineState_t = _VirtualMachineState_t;
+	
+	// Store a lexicon of type INNER elements
+	const static char FactorDelimiter = '|';
+
 	std::vector<INNER> factors;
 	
 	Lexicon(size_t n)  : MCMCable<this_t,datum_t>()  { factors.resize(n); }
 	Lexicon()          : MCMCable<this_t,datum_t>()  { }
-		
+	
+	size_t nfactors() const  {
+		return factors.size();
+	}
+	
 	virtual std::string string(std::string prefix="") const override {
 		/**
 		 * @brief AConvert a lexicon to a string -- defaultly includes all arguments. 

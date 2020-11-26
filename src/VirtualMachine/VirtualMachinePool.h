@@ -82,7 +82,6 @@ public:
 	virtual void clear() {
 		while(!Q.empty()) {
 			VirtualMachineState_t* vms = Q.top(); Q.pop();
-			//CERR "Clear deleting " TAB vms ENDL;
 			delete vms;
 		}
 		current_steps = 0;
@@ -110,9 +109,7 @@ public:
 			Q.push(o);			
 			worst_lp = std::min(worst_lp, o->lp); //keep track of the worst we've seen
 		} 
-		else {
-			assert(false && "*** Should not get here");
-		}
+		// else nothing 
 	}
 	
 	/**
@@ -196,13 +193,14 @@ public:
 	
 	/**
 	 * @brief Run but return a vector of completed virtual machines instead of marginalizing outputs. 
-	 * 			You might want this if you needed to separate execution paths, or wanted to access runtime counts
+	 * 			You might want this if you needed to separate execution paths, or wanted to access runtime counts. This also
+	 * 			can get joint distributions on outputs by running a VirtualMachineState multiple times
 	 * @param loader
 	 * @return 
 	 */	
-	std::vector<VirtualMachineState_t> run_vms() { 
+	std::vector<VirtualMachineState_t*> run_vms() { 
 		
-		std::vector<VirtualMachineState_t> out;
+		std::vector<VirtualMachineState_t*> out;
 		
 		current_steps = 0;
 		while(current_steps < MAX_STEPS && !Q.empty()) {
@@ -215,7 +213,7 @@ public:
 			vms->run();
 				
 			if(vms->status == vmstatus_t::COMPLETE) { // can't add up probability for errors
-				out.push_back(*vms);
+				out.push_back(vms);
 			}
 			else if(vms->status != vmstatus_t::RANDOM_CHOICE_NO_DELETE) {
 				delete vms; // if our previous copy isn't pushed back on the stack, delete it

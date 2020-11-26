@@ -18,7 +18,7 @@ public:
 	// instead they return a new one
 	[[nodiscard]] virtual std::pair<this_t,double> propose() const = 0; // return a proposal and its forward-backward probs
 	[[nodiscard]] virtual this_t                   restart() const = 0; // restart a new chain -- typically by sampling from the prior 
-	virtual bool operator==(const this_t& h)   const = 0; // speeds up a check in MCMC
+	virtual bool operator==(const this_t& h)                 const = 0; // speeds up a check in MCMC
 	
 	/**
 	 * @brief Static function for making a hypothesis. Be careful using this with references because they may not foward right (for reasons

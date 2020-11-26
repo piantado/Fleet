@@ -17,9 +17,9 @@ void load_data_file(std::vector<tdata> &data, const char* datapath) {
 	 */
 	
 	FILE* fp = fopen(datapath, "r");
-	if(fp==NULL) { fprintf(stderr, "*** ERROR: Cannot open file! [%s]", datapath); exit(1);}
+	if(fp==nullptr) { fprintf(stderr, "*** ERROR: Cannot open file! [%s]", datapath); exit(1);}
 	
-	char* line = NULL; size_t len=0; 
+	char* line = nullptr; size_t len=0; 
         
 	char buffer[1000000];
     

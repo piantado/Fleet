@@ -36,7 +36,7 @@ struct Builtin {
 namespace Builtins {
 	
 	// Define this because it's an ugly expression to keep typing and we might want to change all at once
-	#define BUILTIN_LAMBDA             +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void
+	#define BUILTIN_LAMBDA             +[](Grammar_t::VirtualMachineState_t* vms, int arg) -> void
 	
 	template<typename Grammar_t>
 	Builtin<typename Grammar_t::input_t> X(Op::X, BUILTIN_LAMBDA {
@@ -150,11 +150,11 @@ namespace Builtins {
 	
 	
 	
-	template<typename Grammar_t>
+	template<typename Grammar_t, typename output_t=Grammar_t::output_t>
 	Builtin<> Mem(Op::Mem, BUILTIN_LAMBDA {	
 		auto memindex = vms->memstack.top(); vms->memstack.pop();
-		if(vms->mem.count(memindex)==0) { // you might actually have already placed mem in crazy recursive situations, so don't overwrte if you have
-			vms->mem[memindex] = vms->template gettop<typename Grammar_t::output_t>(); // what I should memoize should be on top here, but don't remove because we also return it
+		if(vms->mem.count(memindex)==0) { // you might actually have already placed mem in crazy recursive situations, so don't overwrite if you have
+			vms->mem[memindex] = vms->template gettop<output_t>(); // what I should memoize should be on top here, but don't remove because we also return it
 		}
 	});
 	
@@ -166,11 +166,11 @@ namespace Builtins {
 
 	
 	
-	template<typename Grammar_t>
-	Builtin<typename Grammar_t::output_t, typename Grammar_t::input_t> 
+	template<typename Grammar_t,
+			 typename input_t=typename Grammar_t::input_t,
+			 typename output_t=typename Grammar_t::output_t>
+	Builtin<output_t,input_t> 
 		Recurse(Op::Recurse, BUILTIN_LAMBDA {
-			
-			using input_t = typename Grammar_t::VirtualMachineState_t::input_t;
 			
 			assert(vms->program_loader != nullptr);
 							
@@ -196,12 +196,11 @@ namespace Builtins {
 	});
 	
 	
-	template<typename Grammar_t>
-	Builtin<typename Grammar_t::output_t, typename Grammar_t::input_t> 
+	template<typename Grammar_t,
+			 typename input_t=typename Grammar_t::input_t,
+			 typename output_t=typename Grammar_t::output_t>
+	Builtin<output_t, input_t> 
 	SafeRecurse(Op::SafeRecurse, BUILTIN_LAMBDA {	
-		using input_t = typename Grammar_t::VirtualMachineState_t::input_t;
-		using output_t = typename Grammar_t::VirtualMachineState_t::output_t;
-		
 		assert(not vms->template stack<input_t>().empty());
 		
 		// if the size of the top is zero, we return output{}
@@ -215,8 +214,11 @@ namespace Builtins {
 	});
 	
 	
-	template<typename Grammar_t>
-	Builtin<typename Grammar_t::output_t, typename Grammar_t::input_t> 
+
+	template<typename Grammar_t,
+			 typename input_t=typename Grammar_t::input_t,
+			 typename output_t=typename Grammar_t::output_t>
+	Builtin<output_t,input_t>  // note the order switch -- that's right!
 	MemRecurse(Op::MemRecurse, BUILTIN_LAMBDA {	
 		assert(vms->program_loader != nullptr);
 						
@@ -225,29 +227,54 @@ namespace Builtins {
 			return;
 		}
 				
-		auto x = vms->template getpop<typename Grammar_t::input_t>(); // get the argument
+		auto x = vms->template getpop<input_t>(); // get the argument
 		auto memindex = std::make_pair(arg,x);
 		
 		if(vms->mem.count(memindex)){
-			vms->push(std::move(vms->mem[memindex])); 
+			vms->push(vms->mem[memindex]); // hmm probably should not be a move?
 		}
 		else {	
 			vms->xstack.push(x);	
-			vms->memstack.push(memindex); // popped off by op_MEM
-			vms->program.push(Builtins::Mem<Grammar_t>.makeInstruction());
 			vms->program.push(Builtins::PopX<Grammar_t>.makeInstruction());
-			vms->program_loader->push_program(vms->program,arg); // this leaves the answer on top
+
+			vms->memstack.push(memindex); // popped off by op_MEM			
+			vms->program.push(Builtins::Mem<Grammar_t,output_t>.makeInstruction());
+
+			vms->program_loader->push_program(vms->program, arg); // this leaves the answer on top
 		}		
 	});
+	
+//	template<typename Grammar_t>
+//	Builtin<typename Grammar_t::output_t, typename Grammar_t::input_t> 
+//	MemRecurse(Op::MemRecurse, BUILTIN_LAMBDA {	
+//		assert(vms->program_loader != nullptr);
+//						
+//		if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
+//			vms->status = vmstatus_t::RECURSION_DEPTH;
+//			return;
+//		}
+//				
+//		auto x = vms->template getpop<typename Grammar_t::input_t>(); // get the argument
+//		auto memindex = std::make_pair(arg,x);
+//		
+//		if(vms->mem.count(memindex)){
+//			vms->push(vms->mem[memindex]); // hmm probably should not be a move?
+//		}
+//		else {	
+//			vms->xstack.push(x);	
+//			vms->memstack.push(memindex); // popped off by op_MEM
+//			vms->program.push(Builtins::Mem<Grammar_t>.makeInstruction());
+//			vms->program.push(Builtins::PopX<Grammar_t>.makeInstruction());
+//			vms->program_loader->push_program(vms->program,arg); // this leaves the answer on top
+//		}		
+//	});
 
 
-	template<typename Grammar_t>
-	Builtin<typename Grammar_t::output_t, typename Grammar_t::input_t> 
+	template<typename Grammar_t,
+			 typename input_t=typename Grammar_t::input_t,
+			 typename output_t=typename Grammar_t::output_t>
+    Builtin<output_t,input_t>
 	SafeMemRecurse(Op::SafeMemRecurse, BUILTIN_LAMBDA {	
-		
-		using input_t = typename Grammar_t::VirtualMachineState_t::input_t;
-		using output_t = typename Grammar_t::VirtualMachineState_t::output_t;
-		
 		assert(not vms->template stack<input_t>().empty());
 		
 		// if the size of the top is zero, we return output{}

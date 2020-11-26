@@ -13,9 +13,29 @@ std::string str(T x){
 	 * @param x
 	 * @return 
 	 */
-		
 	return std::to_string(x);
 }
+
+template<typename... T, size_t... I >
+std::string str(std::tuple<T...>& x, std::index_sequence<I...> idx){
+	/**
+	 * @brief A pythonesque string function
+	 * @param x
+	 * @return 
+	 */
+	return "<" + ( (std::to_string(std::get<I>(x)) + ",") + ...) + ">";
+}
+template<typename... T>
+std::string str(std::tuple<T...>& x ){
+	/**
+	 * @brief A pythonesque string function
+	 * @param x
+	 * @return 
+	 */
+	return str(x, std::make_index_sequence<sizeof...(T)>() );
+}
+
+
 
 
 template <typename T>

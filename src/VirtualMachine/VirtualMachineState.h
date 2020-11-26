@@ -15,6 +15,12 @@
 
 #include "VMSRuntimeError.h"
 
+// if defined, we do NOT check that the stack sizes are empty at the end. 
+// You might want this if we are using one VirtualMachineState to compute multiple outputs.
+// NOTE: This is risky because if we mess up something in implementation, this check often 
+// helps to find it 
+//#define NO_CHECK_END_STACK_SIZE 1 
+
 namespace FleetStatistics {}
 template<typename X> class VirtualMachinePool;
 extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
@@ -158,7 +164,7 @@ public:
 	template<typename T>
 	T gettop() {
 		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
-		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
+		assert(stack<T>().size() > 0 && "Cannot gettop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
 		return stack<T>().top();
 	}
 		
@@ -177,6 +183,10 @@ public:
 		stack<T>().push(std::move(x));
 	}
 
+	void push_x(input_t x) {
+		xstack.push(x);
+	}
+
 	/**
 	 * @brief There is one element in stack T and the rest are empty. Used to check in returning the output.
 	 * @return 
@@ -187,7 +197,7 @@ public:
 	}
 	template<typename T>
 	bool exactly_one() const {
-		return this->_exactly_one<output_t, VM_TYPES...>();
+		return this->_exactly_one<T, VM_TYPES...>();
 	}
 	
 	/**
@@ -201,7 +211,10 @@ public:
 			return err;		
 		
 		assert(status == vmstatus_t::COMPLETE && "*** Probably should not be calling this unless we are complete");
+		
+		#ifndef NO_CHECK_END_STACK_SIZE
 		assert( exactly_one<output_t>() and xstack.size() == 1 and "When we return, all of the stacks should be empty or else something is awry.");
+		#endif 
 		
 		return gettop<output_t>();
 	}
