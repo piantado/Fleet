@@ -89,7 +89,35 @@ std::vector<HYP> load(std::string filename, typename HYP::Grammar_t* g) {
 	return out;
 }
 
-
+// For loading data -- divides the columns and checks that there are N
+// So we can use like:  for(auto [b1, b2, b3, b4, c] : read_csv<5>(FleetArgs::input_path)) {
+template<size_t N>
+std::vector<std::array<std::string,N>> read_csv(const std::string path, const char delimiter='\t', bool skipheader=true) {
+	
+	FILE* fp = fopen(path.c_str(), "r");
+	if(fp==nullptr) { CERR "*** ERROR: Cannot open file " << path ENDL; exit(1);}
+	
+	char* line = nullptr; size_t len=0;
+    
+	if(skipheader) { auto __ignored = getline(&line, &len, fp); (void) __ignored; }
+	
+	std::vector<std::array<std::string,N>> out;	
+	while( getline(&line, &len, fp) != -1 ) {
+		if( line[0] == '#' ) continue;  // skip comments
+		
+		std::string s = line;
+		
+		// chomp the newline at the end
+		if( (not s.empty()) and s[s.length()-1] == '\n') {
+			s.erase(s.length()-1);
+		}
+		
+		out.push_back(split<N>(s,delimiter));
+	}
+	fclose(fp);
+	
+	return out;
+}
 
 // ADD DEBUG(...) that is only there if we have a defined debug symbol....
 // DEBUG(DEBUG_MCMC, ....)

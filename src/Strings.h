@@ -16,8 +16,13 @@ std::string str(T x){
 	return std::to_string(x);
 }
 
+std::string str(const std::string& x){
+	// Need to specialize this, otherwise std::to_string fails
+	return x;
+}
+
 template<typename... T, size_t... I >
-std::string str(std::tuple<T...>& x, std::index_sequence<I...> idx){
+std::string str(const std::tuple<T...>& x, std::index_sequence<I...> idx){
 	/**
 	 * @brief A pythonesque string function
 	 * @param x
@@ -26,7 +31,7 @@ std::string str(std::tuple<T...>& x, std::index_sequence<I...> idx){
 	return "<" + ( (std::to_string(std::get<I>(x)) + ",") + ...) + ">";
 }
 template<typename... T>
-std::string str(std::tuple<T...>& x ){
+std::string str(const std::tuple<T...>& x ){
 	/**
 	 * @brief A pythonesque string function
 	 * @param x
@@ -37,7 +42,7 @@ std::string str(std::tuple<T...>& x ){
 
 
 template<typename T, size_t N>
-std::string str(std::array<T, N>& a ){
+std::string str(const std::array<T, N>& a ){
 	/**
 	 * @brief A pythonesque string function
 	 * @param x
@@ -126,19 +131,17 @@ inline double p_delete_append(const std::string& x, const std::string& y, const 
 }
 
 
-
-std::deque<std::string> split(const std::string& s, const char delimiter){
-	/**
-	 * @brief Split is returns a deque of s split up at the character delimiter. 
-	 * It handles these special cases:
-	 * split("a:", ':') -> ["a", ""]
-	 * split(":", ':')  -> [""]
-	 * split(":a", ':') -> ["", "a"]
-	 * @param s
-	 * @param delimiter
-	 * @return 
-	 */
-		
+/**
+ * @brief Split is returns a deque of s split up at the character delimiter. 
+ * It handles these special cases:
+ * split("a:", ':') -> ["a", ""]
+ * split(":", ':')  -> [""]
+ * split(":a", ':') -> ["", "a"]
+ * @param s
+ * @param delimiter
+ * @return 
+ */
+std::deque<std::string> split(const std::string& s, const char delimiter) {
 	std::deque<std::string> tokens;
 	
 	if(s.length() == 0) {
@@ -163,6 +166,33 @@ std::deque<std::string> split(const std::string& s, const char delimiter){
 	// character, which means we need to append ""
 	tokens.push_back("");
 	return tokens;
+}
+
+/**
+ * @brief Split iwith a fixed return size, useful in parsing csv
+ * @param s
+ * @param delimiter
+ * @return 
+ */
+template<size_t N>
+std::array<std::string, N> split(const std::string& s, const char delimiter) {
+	std::array<std::string, N> out;
+	
+	auto q = split(s, delimiter);
+	
+	// must be hte right size 
+	if(q.size() != N) {
+		std::cerr << "*** String in split<N> has " << q.size() << " not " << N << " elements: " << s << std::endl;
+		assert(false);
+	}
+	
+	// convert to an array now that we know it's the right size
+	size_t i = 0;
+	for(auto& x : q) {
+		out[i++] = x;
+	}
+
+	return out;
 }
 
 std::pair<std::string, std::string> divide(const std::string& s, const char delimiter) {
