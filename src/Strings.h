@@ -36,6 +36,20 @@ std::string str(std::tuple<T...>& x ){
 }
 
 
+template<typename T, size_t N>
+std::string str(std::array<T, N>& a ){
+	/**
+	 * @brief A pythonesque string function
+	 * @param x
+	 * @return 
+	 */
+	std::string out = "<";
+	for(auto& x : a) {
+		out += str(x) + ",";
+	}
+	return out+">";
+}
+
 
 
 template <typename T>
