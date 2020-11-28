@@ -257,7 +257,7 @@ public:
 				// we can always take away all character and generate a anew
 				alp = logplusexp(alp, m.second + p_delete_append<alpha,alpha>(m.first, a.output, log_A));
 			}
-			likelihood += alp * a.reliability; 
+			likelihood += alp * a.count; 
 			
 			if(likelihood == -infinity) {
 				return likelihood;

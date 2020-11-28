@@ -16,10 +16,10 @@ public:
 	input_t  input;
 	output_t output;
 	double   reliability; // the noise probability (typically required)
-	size_t   count;
+	double   count;
 	
 	defaultdatum_t() { }
-	defaultdatum_t(const input_t& i, const output_t& o, double r=NaN, size_t c=1) : input(i), output(o), reliability(r), count(c) {}
+	defaultdatum_t(const input_t& i, const output_t& o, double r=NaN, double c=1.0) : input(i), output(o), reliability(r), count(c) {}
 	
 	bool operator==(const defaultdatum_t& y) const {
 		return input==y.input and output==y.output and reliability==y.reliability;

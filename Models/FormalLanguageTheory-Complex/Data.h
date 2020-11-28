@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "DiscreteDistribution.h"
 
+#include "FleetArgs.h"
 
 template<typename tdata>
 void load_data_file(std::vector<tdata> &data, const char* datapath) {
@@ -16,26 +17,9 @@ void load_data_file(std::vector<tdata> &data, const char* datapath) {
 	 * @param datapath
 	 */
 	
-	FILE* fp = fopen(datapath, "r");
-	if(fp==nullptr) { fprintf(stderr, "*** ERROR: Cannot open file! [%s]", datapath); exit(1);}
-	
-	char* line = nullptr; size_t len=0; 
-        
-	char buffer[1000000];
-    
-	double cnt;
-	while( getline(&line, &len, fp) != -1 ) {
-		if( line[0] == '#' ) continue;  // skip comments
-		else if (sscanf(line, "%s\t%lf\n", buffer, &cnt) == 2) { // floats
-			data.push_back(tdata({std::string(""), std::string(buffer), cnt}) );
-		}
-		else {
-			fprintf(stderr, "*** ERROR IN PARSING INPUT [%s]\n", line);
-			exit(1);
-		}
-	}
-	fclose(fp);
-	
+	for(auto [s, cnt] : read_csv<2>(datapath, '\t')) {
+		data.push_back({.input=std::string(""), .output=s, .reliability=NaN, .count=std::stod(cnt)});
+	}	
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

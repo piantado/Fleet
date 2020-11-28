@@ -280,7 +280,6 @@ public:
 using data_t  = MyHypothesis::data_t;
 using datum_t = MyHypothesis::datum_t;
 
-#include "Data.h"
 #include "Polynomial.h"
 #include "ReservoirSample.h"
 
@@ -414,11 +413,18 @@ int main(int argc, char** argv){
 	fleet.initialize(argc, argv);
 	
 	// set up the data
-	mydata = load_data_file(FleetArgs::input_path.c_str()); 
- 
- 	//------------------
-	// Run
-	//------------------
+	for(auto [xstr, ystr, sdstr] : read_csv<3>(FleetArgs::input_path, '\t')) {
+		auto x = std::stod(xstr);
+		auto y = std::stod(xstr);
+		
+		// process percentages
+		double sd; 
+		if(sdstr[sdstr.length()-1] == '%') sd = y * std::stod(sdstr.substr(0, sdstr.length()-1));
+		else                               sd = std::stod(sdstr);
+		
+		mydata.push_back( {.input=(double)x, .output=(double)y, .reliability=sdscale*(double)sd} );
+	}
+	
  	// Set up the grammar
 	MyGrammar grammar;
 	
