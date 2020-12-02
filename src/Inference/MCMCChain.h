@@ -133,7 +133,7 @@ public:
 	 */	
 	 void run(Control ctl) {
 
-		assert(ctl.nthreads == 1 && "*** You seem to have called MCMCChain with nthreads>1. This is not how you paralle. Check out ChainPool"); 
+		assert(ctl.nthreads == 1 && "*** You seem to have called MCMCChain with nthreads>1. This is not how you parallel. Check out ChainPool"); 
 		
 		#ifdef DEBUG_MCMC
 		DEBUG("# Starting MCMC Chain on\t", current.posterior, current.prior, current.likelihood, current.string());
@@ -144,14 +144,16 @@ public:
 		
 		while(ctl.running()) {
 			
-			if(current.posterior > maxval) {
+			if(current.posterior > maxval) { // if we improve, store it
 				maxval = current.posterior;
 				steps_since_improvement = 0;
+			}
+			else { // else keep track of how long
+				steps_since_improvement++;
 			}
 			
 			// if we haven't improved
 			if(ctl.restart>0 and steps_since_improvement > ctl.restart){
-				
 				std::lock_guard guard(current_mutex);
 				
 				current = current.restart();

@@ -82,6 +82,10 @@ bool is_prefix(const T& prefix, const T& x) {
 	return std::equal(prefix.begin(), prefix.end(), x.begin());
 }
 
+bool contains(const std::string& s, const std::string& x) {
+	return s.find(x) != std::string::npos;
+}
+
 /**
  * @brief Probability of converting x into y by deleting some number (each with del_p, then stopping with prob 1-del_p), adding with 
  * 		  probability add_p, and then when we add selecting from an alphabet of size alpha_n

@@ -417,6 +417,9 @@ int main(int argc, char** argv){
 		auto x = std::stod(xstr);
 		auto y = std::stod(xstr);
 		
+		auto k = xstr + ystr + sdstr;
+		assert( (not contains(k, " ")) && "*** Whitespace is probably not intended? Columns should be tab separated"); // just check for
+		
 		// process percentages
 		double sd; 
 		if(sdstr[sdstr.length()-1] == '%') sd = y * std::stod(sdstr.substr(0, sdstr.length()-1));
