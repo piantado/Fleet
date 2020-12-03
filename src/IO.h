@@ -104,7 +104,6 @@ std::vector<std::array<std::string,N>> read_csv(const std::string path, const ch
 	std::vector<std::array<std::string,N>> out;	
 	while( getline(&line, &len, fp) != -1 ) {
 		if( line[0] == '#' ) continue;  // skip comments
-		if( strlen(line) == 0) continue; // skip empty lines 
 		
 		std::string s = line;
 		
@@ -113,6 +112,9 @@ std::vector<std::array<std::string,N>> read_csv(const std::string path, const ch
 			s.erase(s.length()-1);
 		}
 		
+		if( s.length() == 0) continue; // skip empty lines 
+		assert(s.length() >= N && "*** Error with reading line -- not enough delimiters");
+				
 		out.push_back(split<N>(s,delimiter));
 	}
 	fclose(fp);

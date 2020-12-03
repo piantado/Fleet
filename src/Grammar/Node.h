@@ -161,6 +161,24 @@ public:
 		std::function ff = f;
 		return sum(ff);
 	}
+	
+	
+	bool all(std::function<bool(const Node&)>& f ) const {
+		/**
+		 * @brief Check if f is true of me and every node below 
+		 * @param f
+		 * @return 
+		 */
+		
+		if(not f(*this)) 
+			return false;
+			
+		for(auto& c: this->children) {
+			if(not c.all(f)) 
+				return false;
+		}
+		return true;
+	}
 
 	void map( const std::function<void(Node&)>& f) {
 		/**

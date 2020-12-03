@@ -146,7 +146,8 @@ public:
 	}
 	
 	virtual double compute_prior() override {
-		return this->prior = Super::compute_prior() + compute_constants_prior();
+		this->prior = Super::compute_prior() + compute_constants_prior();
+		return this->prior;
 	}
 	
 	virtual std::string __my_string_recurse(const Node* n, size_t& idx) const {
@@ -378,19 +379,26 @@ public:
 		for(auto& n : h0.get_value() ){
 			n.can_resample = false;
 		}
+
 		h0.complete(); // fill in any structural gaps
-		
+
 		// make a wrapper to add samples
 		std::function cb = [&](MyHypothesis& h) { 
 			myCallback(h);
-			// and update MCTS -- here every sample
-			add_sample(h.posterior);
+			add_sample(h.posterior); // and update MCTS -- here every sample
 		};		
 		
-		// NOTE That we might run this when there are no constants. 
-		// This is hard to avoid if we want to allow restarts, since those occur within MCMCChain
-		MCMCChain chain(h0, data, cb);
-		chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, inner_restarts)); // run mcmc with restarts; we sure shouldn't run more than runtime
+		// check to see if we have no gaps and no resamples, then we just run one sample. 
+		std::function no_resamples = +[](const Node& n) -> bool { return not n.can_resample;};
+		if(h0.count_constants() == 0 and h0.get_value().all(no_resamples)) {
+			h0.compute_posterior(*data);
+			cb(h0);
+		}
+		else {
+			// else we run vanilla MCMC
+			MCMCChain chain(h0, data, cb);
+			chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, inner_restarts)); // run mcmc with restarts; we sure shouldn't run more than runtime
+		}
 	}
 	
 };
@@ -415,15 +423,20 @@ int main(int argc, char** argv){
 	// set up the data
 	for(auto [xstr, ystr, sdstr] : read_csv<3>(FleetArgs::input_path, '\t')) {
 		auto x = std::stod(xstr);
-		auto y = std::stod(xstr);
+		auto y = std::stod(ystr);
 		
 		auto k = xstr + ystr + sdstr;
-		assert( (not contains(k, " ")) && "*** Whitespace is probably not intended? Columns should be tab separated"); // just check for
+		if(contains(k, " ")) {
+			CERR "*** Whitespace error on [" << k << "]" ENDL;
+			assert( false && "*** Whitespace is probably not intended? Columns should be tab separated"); // just check for
+		}
 		
 		// process percentages
 		double sd; 
 		if(sdstr[sdstr.length()-1] == '%') sd = y * std::stod(sdstr.substr(0, sdstr.length()-1));
 		else                               sd = std::stod(sdstr);
+		
+		//COUT "# Data:\t" << x TAB y TAB sd ENDL;
 		
 		mydata.push_back( {.input=(double)x, .output=(double)y, .reliability=sdscale*(double)sd} );
 	}
@@ -437,9 +450,9 @@ int main(int argc, char** argv){
 	m.run(Control(), h0);
 	tic();
 	
-	COUT "# Printing trees." ENDL;
+	//COUT "# Printing trees." ENDL;
 	
-	m.print(h0, FleetArgs::tree_path.c_str());
+	//m.print(h0, FleetArgs::tree_path.c_str());
 
 	// set up a paralle tempering object
 //	auto h0 = MyHypothesis::make(&grammar);
@@ -449,9 +462,9 @@ int main(int argc, char** argv){
 //	tic();
 
 //	auto h0 = MyHypothesis::make(&grammar);
-//	MCMCChain samp(h0, &mydata, cb);
+//	MCMCChain samp(h0, &mydata, &myCallback);
 //	tic();
-//	samp.run(Control(mcts_steps, runtime)); //30000);		
+//	samp.run(Control()); //30000);		
 //	tic();
 
 	
@@ -498,5 +511,5 @@ int main(int argc, char** argv){
 	COUT "# **** REMINDER: These are not printed in order! ****" ENDL;
 	
 	
-	COUT "# MCTS tree size:" TAB m.count() ENDL;	
+//	COUT "# MCTS tree size:" TAB m.count() ENDL;	
 }
