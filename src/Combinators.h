@@ -9,6 +9,7 @@
 
 extern volatile sig_atomic_t CTRL_C;
 
+// Funny ordering is requird here because Builtins need these, Grammar needs builtins
 namespace Combinators {
 	
 	// we need a void class to pass to Grammar, but void won't work!
@@ -17,12 +18,34 @@ namespace Combinators {
 		cl_void() { assert(false); }
 	};
 	
-	struct CL {
-		
+	struct CL {		
 		// must be defined (but not used)
-		bool operator<(const CL& other) const { throw NotImplementedError(); }
-	
-	}; // just a dummy type here
+		bool operator<(const CL& other) const { throw NotImplementedError(); }	
+	}; // just a dummy type here for the grammar
+}
+
+namespace Builtins {	
+
+	// Combinatory logic operations 
+	template<typename Grammar_t>
+	Builtin<Combinators::CL> 
+	CL_I(Op::CL_I, BUILTIN_LAMBDA {assert(false);});
+
+	template<typename Grammar_t>
+	Builtin<Combinators::CL> 
+	CL_S(Op::CL_S, BUILTIN_LAMBDA {assert(false);});
+
+	template<typename Grammar_t>
+	Builtin<Combinators::CL>
+	CL_K(Op::CL_K, BUILTIN_LAMBDA {assert(false);});
+
+	template<typename Grammar_t>
+	Builtin<Combinators::CL, Combinators::CL, Combinators::CL> 
+	CL_Apply(Op::CL_Apply, BUILTIN_LAMBDA {assert(false);});
+
+}
+
+namespace Combinators {
 	
 	/**
 	 * @class SKGrammar
@@ -31,12 +54,12 @@ namespace Combinators {
 	 * @file Combinators.h
 	 * @brief A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. 
 	 */
-	class SKGrammar : public Grammar<cl_void,cl_void, CL> { 
-		using Super=Grammar<cl_void,cl_void,CL>;
+	class SKGrammar : public Grammar<cl_void,CL, CL, cl_void> { 
+		using Super=Grammar<cl_void,CL,CL,cl_void>;
 		using Super::Super;
 		
 		public:
-		SKGrammar() : Grammar<cl_void,cl_void,CL>() {
+		SKGrammar() : Super() {
 			// These are given NoOps because they are't interpreted in the normal evaluator
 			add("I", Builtins::CL_I<SKGrammar>);
 			add("S", Builtins::CL_S<SKGrammar>);
@@ -54,20 +77,20 @@ namespace Combinators {
 		return n.nchildren() > 0 and 
 			   n[0].nchildren() > 0 and
 			   n[0][0].nchildren() > 0 and
-			   n[0][0][0].rule->instr.is_a(BuiltinOp::op_S);
+			   n[0][0][0].rule->is_a(Op::CL_S);
 	}
 	template<>
 	bool can_reduce<Op::CL_K>(const Node& n) {
 		// ((K x) y)
 		return n.nchildren() > 0 and 
 			   n[0].nchildren() > 0 and
-			   n[0][0].rule->instr.is_a(BuiltinOp::op_K);
+			   n[0][0].rule->is_a(Op::CL_K);
 	}
 	template<>
 	bool can_reduce<Op::CL_I>(const Node& n) {
 		// (I x)
 		return n.nchildren() > 0 and 
-			   n[0].rule.is_a(BuiltinOp::op_I);
+			   n[0].rule->is_a(Op::CL_I);
 	}
 	
 
@@ -80,14 +103,13 @@ namespace Combinators {
 	bool is_normal_form(const Node& n) {
 		// Check if n can be reduced at all
 		for(const auto& ni : n) {
-			if(can_reduce<BuiltinOp::op_I>(ni) or
-			   can_reduce<BuiltinOp::op_S>(ni) or
-			   can_reduce<BuiltinOp::op_K>(ni)) return false;
+			if(can_reduce<Op::CL_I>(ni) or
+			   can_reduce<Op::CL_S>(ni) or
+			   can_reduce<Op::CL_K>(ni)) return false;
 		}
 		return true;	
 	}
 			
-
 	/**
 	 * @class ReductionException
 	 * @author piantado
@@ -120,17 +142,17 @@ namespace Combinators {
 			modified = false;
 			
 			// try to evaluate n according to the rules
-			if(can_reduce<BuiltinOp::op_I>(n)) {
+			if(can_reduce<Op::CL_I>(n)) {
 				auto x = std::move(n[1]);
 				n = x;
 				modified = true;
 			}
-			else if(can_reduce<BuiltinOp::op_K>(n)) {
+			else if(can_reduce<Op::CL_K>(n)) {
 				auto x = std::move(n[0][1]);
 				n = x;
 				modified = true;
 			} 
-			else if(can_reduce<BuiltinOp::op_S>(n)) {
+			else if(can_reduce<Op::CL_S>(n)) {
 				Rule* rule = skgrammar.get_rule(skgrammar.nt<CL>(), Op::CL_Apply);
 				
 				// just make the notation handier here
@@ -226,3 +248,4 @@ namespace Combinators {
 	
 	
 }
+
