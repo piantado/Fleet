@@ -38,10 +38,10 @@ namespace Combinators {
 		public:
 		SKGrammar() : Grammar<cl_void,cl_void,CL>() {
 			// These are given NoOps because they are't interpreted in the normal evaluator
-			add<CL>("I", Builtins::CL_I<SKGrammar>);
-			add<CL>("S", Builtins::CL_S<SKGrammar>);
-			add<CL>("K", Builtins::CL_K<SKGrammar>);
-			add<CL, CL, CL>("(%s %s)", Builtins::CL_Apply<SKGrammar>);		
+			add("I", Builtins::CL_I<SKGrammar>);
+			add("S", Builtins::CL_S<SKGrammar>);
+			add("K", Builtins::CL_K<SKGrammar>);
+			add("(%s %s)", Builtins::CL_Apply<SKGrammar>);		
 		}
 	} skgrammar;
 

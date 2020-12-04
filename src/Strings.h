@@ -4,6 +4,8 @@
 #include <queue>
 #include <math.h>
 #include <string.h>
+#include <array>
+
 #include "Numerics.h"
 
 template<typename T>

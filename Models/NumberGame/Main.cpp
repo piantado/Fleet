@@ -133,7 +133,7 @@ public:
 		add("(%s^%s)",    +[](int x, int y) -> int { return std::pow(x,y);});
 		
 		for(int i=Nlow;i<=N;i++) {
-			// We put "#" here so that in grammar inference we cna find these rules easily!
+			// We put "#" here so that in grammar inference we can find these rules easily!
 			add_terminal( "#"+str(i), i, 10.0/(N-Nlow));
 		}
 		
@@ -195,8 +195,6 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> top;
 
 	// our data
-	//MyHypothesis::data_t mydata = {25, 36, 49, 25, 36, 49, 25, 36, 49, 25, 36, 49};	// squares in a range
-	//MyHypothesis::data_t mydata = {3,4,6,8,12};	
 	MyHypothesis::data_t mydata = { std::multiset<int>{2,4,32} };	
 
 	// and sample with just one chain
