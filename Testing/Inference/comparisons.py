@@ -2,15 +2,18 @@
 
 import itertools
 
-times = [1, 5, 10, 50, 100, 500, 1000]
-chains = [1, 2, 5, 10, 20, 50, 100, 200, 500]
-iterations = range(100)
-restart = [0]
+times = [1, 2, 5, 10, 30, 60]; # minutes # [1, 5, 10, 50, 100, 500, 1000]
+chains = [1, 2, 5, 10, 20] #, 200, 500]
+replications = range(100)
+restart = [0, 1000, 10000]
+inner_times = ["10", "100", "1000", "5000"] # measured in q
 
 # some methods don't need chains:
-methods = ['prior-sampling', 'enumeration', 'beam', 'partial-mcts']
+methods = ['prior-sampling', 'enumeration', 'beam']
 # some do:
 chainy_methods = ['parallel-tempering', 'chain-pool']
+# and do mcts
+mcts_methods = ['mcmc-within-mcts', 'prior-sample-mcts'] # 'full-mcts'
 
 datas = {
     "sort":"734:347,1987:1789,113322:112233,679:679,214:124,9142385670:0123456789",
@@ -29,14 +32,21 @@ datas = {
 
 ex = "./main --top=1 --threads=1 --header=0 "
 
-for i,t,dk,r in itertools.product(iterations, times, datas.keys(), restart):
+for i,t,dk,r in itertools.product(replications, times, datas.keys(), restart):
     
     # Run all the other methods
     for m in methods:
-         prefix = "%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,r,dk,1)        
-         print(ex, "--time=%ss"%t, "--method=%s"%m, "--restart=%s"%r, "--data=\"%s\""%datas[dk], "--chains=1", "--prefix=$\"%s\""%prefix)
+         prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,r,dk,1,"NA")        
+         print(ex, "--time=%sm"%t, "--method=%s"%m, "--restart=%s"%r, "--data=\"%s\""%datas[dk], "--chains=1", "--prefix=$\"%s\""%prefix)
     
     for m in chainy_methods:
         for c in chains:
-            prefix = "%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,r,dk,c)        
-            print(ex, "--time=%ss"%t, "--method=%s"%m, "--restart=%s"%r, "--data=\"%s\""%datas[dk], "--chains=%s"%c, "--prefix=$\"%s\""%prefix)
+            prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,r,dk,c,"NA")        
+            print(ex, "--time=%sm"%t, "--method=%s"%m, "--restart=%s"%r, "--data=\"%s\""%datas[dk], "--chains=%s"%c, "--prefix=$\"%s\""%prefix)
+    
+    for m, it, c in itertools.product(mcts_methods, inner_times, chains):
+         prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,r,dk,c,it)      
+         # NOTE: This has to be inner-restart or else it isn't used 
+         print(ex, "--time=%sm"%t, "--method=%s"%m, "--inner-restart=%s"%r, "--data=\"%s\""%datas[dk],  "--chains=%s"%c, "--prefix=$\"%s\""%prefix, "--inner-time=%sq"%it)
+    
+    

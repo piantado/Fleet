@@ -23,6 +23,7 @@ namespace FleetArgs {
 
 	unsigned long runtime          = 0; // in ms
 	unsigned long inner_runtime    = 0; // in ms
+	unsigned long inner_restart    = 0;
 	std::string   timestring       = "0s";
 	std::string   inner_timestring = "0s";
 

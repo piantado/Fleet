@@ -166,15 +166,50 @@ public:
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "MCTS.h"
+#include "MCMCChain.h"
 
-class MyPartialMCTS : public PartialMCTSNode<MyPartialMCTS, MyHypothesis, TopN<MyHypothesis>> {
+class PriorSampleMCTS : public PartialMCTSNode<PriorSampleMCTS, MyHypothesis, TopN<MyHypothesis>> {
 public:
-	using Super = PartialMCTSNode<MyPartialMCTS, MyHypothesis, TopN<MyHypothesis>>;
+	using Super = PartialMCTSNode<PriorSampleMCTS, MyHypothesis, TopN<MyHypothesis>>;
 	using Super::Super;
 
 	// we must declare this to use these in a vector, but we can't call it since we can't move the locks
-	MyPartialMCTS(MyPartialMCTS&& m){ throw YouShouldNotBeHereError("*** This must be defined for but should never be called"); } 
+	PriorSampleMCTS(PriorSampleMCTS&& m){ throw YouShouldNotBeHereError("*** This must be defined for but should never be called"); } 
 };
+
+class MCMCwithinMCTS : public PartialMCTSNode<MCMCwithinMCTS, MyHypothesis, TopN<MyHypothesis>> {
+public:
+	using Super = PartialMCTSNode<MCMCwithinMCTS, MyHypothesis, TopN<MyHypothesis>>;
+	using Super::Super;
+
+	// we must declare this to use these in a vector, but we can't call it since we can't move the locks
+	MCMCwithinMCTS(MCMCwithinMCTS&& m){ throw YouShouldNotBeHereError("*** This must be defined for but should never be called"); } 
+	
+	virtual void playout(MyHypothesis& current) override {
+		// define our own playout here to call our callback and add sample to the MCTS
+		
+		MyHypothesis h0 = current; // need a copy to change resampling on 
+		for(auto& n : h0.get_value() ){
+			n.can_resample = false;
+		}
+
+		h0.complete(); // fill in any structural gaps
+		
+		// check to see if we have no gaps and no resamples, then we just run one sample. 
+		std::function no_resamples = +[](const Node& n) -> bool { return not n.can_resample;};
+		if(h0.get_value().all(no_resamples)) {
+			h0.compute_posterior(*data);
+			(*callback)(h0);
+		}
+		else {
+			// else we run vanilla MCMC
+			MCMCChain chain(h0, data, callback);
+			chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart)); // run mcmc with restarts; we sure shouldn't run more than runtime
+		}
+	}
+	
+};
+
 
 
 class MyFullMCTS : public FullMCTSNode<MyFullMCTS, MyHypothesis, TopN<MyHypothesis>> {
@@ -254,7 +289,7 @@ int main(int argc, char** argv){
 		samp.run(Control(), 250, 10000);		
 	}
 	else if(method == "prior-sampling") {
-		PriorInference<MyHypothesis, decltype(top)> pri(&grammar, grammar.nt<S>(), &mydata, top);
+		PriorInference<MyHypothesis, decltype(top)> pri(&grammar, &mydata, top);
 		pri.run(Control());
 	}
 	else if(method == "enumeration") {
@@ -271,13 +306,19 @@ int main(int argc, char** argv){
 		ChainPool c(h0, &mydata, top, FleetArgs::nchains);
 		c.run(Control());
 	}
-	else if(method == "partial-mcts") {
+	else if(method == "prior-sample-mcts") {
 		// A PartialMCTSNode is one where you stop one step after reaching an unexpanded kid in the tree
 		MyHypothesis h0(&grammar);
-		MyPartialMCTS m(h0, FleetArgs::explore, &mydata, top);
+		PriorSampleMCTS m(h0, FleetArgs::explore, &mydata, top);
 		m.run(Control(), h0);
 		//m.print(h0, "tree.txt");
 		//COUT "# MCTS size: " TAB m.count() ENDL;
+	}
+	else if(method == "mcmc-within-mcts") {
+		// A PartialMCTSNode is one where you stop one step after reaching an unexpanded kid in the tree
+		MyHypothesis h0(&grammar);
+		MCMCwithinMCTS m(h0, FleetArgs::explore, &mydata, top);
+		m.run(Control(), h0);
 	}
 	else if(method == "full-mcts") {
 		// A FullMCTSNode run is one where each time you descend the tree, you go until you make it to a terminal

@@ -131,6 +131,7 @@ public:
 		app.add_option("--output",      FleetArgs::output_path, "Where we write output");
 		app.add_option("--input",       FleetArgs::input_path, "Read standard input from here");
 		app.add_option("-T,--time",     FleetArgs::timestring, "Stop (via CTRL-C) after this much time (takes smhd as seconds/minutes/hour/day units)");
+		app.add_option("--inner-restart",  FleetArgs::inner_restart, "Inner restart");
 		app.add_option("--inner-time",  FleetArgs::inner_timestring, "Inner time");
 		app.add_option("--tree",        FleetArgs::tree_path, "Write the tree here");
 		

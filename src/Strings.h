@@ -121,7 +121,7 @@ inline double p_delete_append(const std::string& x, const std::string& y, const 
 	float lp = log_del_p*x.length()                 + // we don't add log_1mdel_p again here since we can't delete past the beginning
 				(log_add_p-log_alphabet)*y.length() + log_1madd_p;
 	
-	// now as log as they are equal, we can take only down that far if we want
+	// now as long as they are equal, we can take only down that far if we want
 	// here we index over mi, the length of the string that so far is equal
 	for(size_t mi=1;mi<=std::min(x.length(),y.length());mi++){
 		if(x[mi-1] == y[mi-1]) {

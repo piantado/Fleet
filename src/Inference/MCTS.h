@@ -39,6 +39,7 @@
 #include "SpinLock.h"
 #include "Random.h"
 #include "FleetArgs.h"
+#include "PriorInference.h"
 
 #include "BaseNode.h"
 
@@ -142,7 +143,7 @@ public:
         
 		std::string opn = (open?" ":"*");
 		
-		o << idnt TAB opn TAB last_lp TAB max TAB "visits=" << nvisits TAB which_expansion TAB from ENDL;
+		o << idnt TAB opn TAB  max TAB "visits=" << nvisits TAB which_expansion TAB from ENDL;
 		
 		// optional sort
 		if(sort) {
@@ -191,9 +192,12 @@ public:
 		if(std::isnan(v)) return;
 		
         max = std::max(max,v);	
+		
 		if(v != -infinity) // keep track of the smallest non-inf value -- we use this instead of inf for sampling
 			min = std::min(min, v); 
+		
 		lse = logplusexp(lse, v);
+		
 		last_lp = v;
 		
 		// and propagate up the tree
@@ -265,16 +269,40 @@ public:
 	 * @brief This goes down the tree, sampling children. Defaultly here it's total probability mass per child
 	 * @param current
 	 */
+//	virtual void descend(HYP& current) {
+//		int neigh = current.neighbors(); 
+//		std::vector<double> children_lps(neigh, -infinity);
+//		for(int k=0;k<neigh;k++) {
+//			if(this->child(k).open){
+//				/// how much probability mass PER sample came from each child, dividing by explore for the temperature.
+//				/// If no exploraiton steps, we just pretend lse-1.0 was the probability mass 
+//				children_lps[k] = current.neighbor_prior(k) + 
+//								  (this->child(k).nvisits == 0 ? lse-1.0 : this->child(k).lse-log(this->child(k).nvisits)) / this->explore;
+//			}
+//		}
+//		
+//		// choose an index into children
+//		int idx = sample_int_lp(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
+//		
+//		// expand 
+//		current.expand_to_neighbor(idx); // idx here gives which expansion we follow
+//		
+//		// and recurse down
+//		this->child(idx).search_one(current);
+//	}
+
+	/**
+	 * @brief This goes down the tree, sampling children. Defaultly here it's total probability mass per child
+	 * @param current
+	 */
 	virtual void descend(HYP& current) {
 		int neigh = current.neighbors(); 
 		std::vector<double> children_lps(neigh, -infinity);
 		for(int k=0;k<neigh;k++) {
-			if(this->child(k).open){
-				/// how much probability mass PER sample came from each child, dividing by explore for the temperature.
-				/// If no exploraiton steps, we just pretend lse-1.0 was the probability mass 
-				children_lps[k] = current.neighbor_prior(k) + 
-								  (this->child(k).nvisits == 0 ? lse-1.0 : this->child(k).lse-log(this->child(k).nvisits)) / this->explore;
-			}
+				if(this->children[k].open){
+					children_lps[k] = (this->child(k).nvisits == 0 ? 0.0 : (this->max / this->child(k).max) +
+																		   FleetArgs::explore * sqrt(log(this->nvisits)/this->children[k].nvisits));
+				}
 		}
 		
 		// choose an index into children
@@ -348,6 +376,27 @@ class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {
 	using data_t = typename HYP::data_t;
 	static constexpr size_t nplayouts = 100; // when we playout, how many do we do?
 	
+
+
+	/**
+	 * @brief This gets called on a child that is unvisited. Typically it would consist of filling in h some number of times and
+	 * 		  saving the stats
+	 * @param h
+	 */
+	virtual void playout(HYP& h) {
+		
+		if(h.is_evaluable()) { // if we have filled it in
+			h.compute_posterior(*this->data);
+			(*this->callback)(h);
+		}
+		else {
+			PriorInference samp(h.grammar, this->data, *(this->callback), &h);
+			samp.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart));
+		}
+	}
+	
+	
+	
 	/**
 	 * @brief Choose the max according to a UCT-like bound
 	 * @param current
@@ -364,9 +413,8 @@ class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {
 			std::vector<double> children_lps(neigh, -infinity);		
 			for(int k=0;k<neigh;k++) {
 				if(this->children[k].open){
-					children_lps[k] = current.neighbor_prior(k) + 
-									  (this->child(k).nvisits == 0 ? 0.0 : (this->max / this->child(k).max) +
-																		   FleetArgs::explore * sqrt(log(this->nvisits)/this->children[k].nvisits)) ;
+					children_lps[k] = (this->child(k).nvisits == 0 ? 0.0 : (this->max / this->child(k).max) +
+																		   FleetArgs::explore * sqrt(log(this->nvisits)/this->children[k].nvisits));
 				}
 			}			
 			
@@ -388,19 +436,5 @@ class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {
 		}
 	}
 
-	/**
-	 * @brief This gets called on a child that is unvisited. Typically it would consist of filling in h some number of times and
-	 * 		  saving the stats
-	 * @param h
-	 */
-	virtual void playout(HYP& h) {
-		for(size_t i=0;i<nplayouts;i++) {
-			HYP v = h; v.complete();
-			v.compute_posterior(*this->data);
-			this->add_sample(v.likelihood);
-			(*this->callback)(v);
-		}		
-	}
-	
 	
 };

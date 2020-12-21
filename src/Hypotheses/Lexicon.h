@@ -260,8 +260,9 @@ public:
 		 * @return 
 		 */
 		
+		// cannot be 0, since that is not proposing to anything
 		std::uniform_int_distribution<size_t> d(1, pow(2,factors.size())-1 );
-		size_t u = d(rng); // cannot be 1, since that is not proposing to anything
+		size_t u = d(rng);
 		
 		// now copy over
 		// TODO: Check that detailed balance is ok?

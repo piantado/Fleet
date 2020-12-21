@@ -397,7 +397,7 @@ public:
 		else {
 			// else we run vanilla MCMC
 			MCMCChain chain(h0, data, cb);
-			chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, inner_restarts)); // run mcmc with restarts; we sure shouldn't run more than runtime
+			chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart)); // run mcmc with restarts; we sure shouldn't run more than runtime
 		}
 	}
 	
@@ -433,10 +433,10 @@ int main(int argc, char** argv){
 		
 		// process percentages
 		double sd; 
-		if(sdstr[sdstr.length()-1] == '%') sd = y * std::stod(sdstr.substr(0, sdstr.length()-1));
+		if(sdstr[sdstr.length()-1] == '%') sd = y * std::stod(sdstr.substr(0, sdstr.length()-1)) / 100; // it's a percentage
 		else                               sd = std::stod(sdstr);
 		
-		//COUT "# Data:\t" << x TAB y TAB sd ENDL;
+		COUT "# Data:\t" << x TAB y TAB sd ENDL;
 		
 		mydata.push_back( {.input=(double)x, .output=(double)y, .reliability=sdscale*(double)sd} );
 	}
@@ -452,7 +452,7 @@ int main(int argc, char** argv){
 	
 	//COUT "# Printing trees." ENDL;
 	
-	//m.print(h0, FleetArgs::tree_path.c_str());
+	m.print(h0, FleetArgs::tree_path.c_str());
 
 	// set up a paralle tempering object
 //	auto h0 = MyHypothesis::make(&grammar);
