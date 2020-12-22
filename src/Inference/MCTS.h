@@ -23,7 +23,7 @@
  * */
 #pragma once 
 
-#define DEBUG_MCTS 1
+#define DEBUG_MCTS 0
 
 #include <atomic>
 #include <mutex>
@@ -203,23 +203,10 @@ public:
 		// and propagate up the tree
 		if(not this->is_root()) {
 			this->parent->add_sample(v);
-		}
-		
+		}		
     }
 	
-	/**
-	 * @brief Have all my children been visited?
-	 * @return 
-	 */	
-	bool all_children_visited() const {
-		for(auto& c: this->get_children() ) {
-			if(c.nvisits == 0) return false;
-		}
-		return true;
-	}
-	
-	virtual void run_thread(Control ctl, HYP h0) override {
-		
+	virtual void run_thread(Control ctl, HYP h0) override {		
 		ctl.start();
 		
 		while(ctl.running()) {
@@ -230,7 +217,6 @@ public:
 		}		
 	}
 	
-
 	
 	/**
 	 * @brief If we can evaluate this current node (usually: compute a posterior and add_sample)
@@ -250,7 +236,7 @@ public:
 	 * 		  NOTE: This could add all the children (default) or be overwritten to add one, or none
 	 * @param current
 	 */
-	virtual void add_next_child(HYP& current) {
+	virtual void add_children(HYP& current) {
 		int neigh = current.neighbors(); 
 		
 		mylock.lock();
@@ -264,6 +250,12 @@ public:
 		mylock.unlock();		
 	}
 
+
+	virtual this_t* sample_child(HYP& current) {
+		
+	}
+
+
 	/**
 	 * @brief This goes down the tree, sampling children. When it gets to the bottom,
 	 * 		  it returns a pointer to the last child found and has altered current to store that hypothesis
@@ -271,31 +263,28 @@ public:
 	 */
 	virtual this_t* descend(HYP& current) {
 		this->nvisits++; // change on the way down so other threads don't follow
-		
+			
+		int neigh = current.neighbors(); 
+	
 		// return self if I have no children
-		if(this->children.size() == 0) {
+		if(neigh == 0) {
 			return reinterpret_cast<this_t*>(this);
 		}
-		
-		// otherwise, compute the probabilities and descend
-		
-		int neigh = current.neighbors(); 
-		
-		if(this->children.size() < neigh) {
-			add_next_child(current);
+		else if(this->children.size() < (size_t)neigh) {
+			add_children(current);
 		}
 		
-		
+		// probability of expanding to each child
 		std::vector<double> children_lps(neigh, -infinity);
 		
 		// first, load up children_lps with whether they have been visited
-//		bool all_visited = true;
-//		for(int k=0;k<neigh;k++) { 
-//			if(this->children[k].open and this->children[k].nvisits == 0) {
-//				all_visited = false;
-//				children_lps[k] = current.neighbor_prior(k);
-//			}
-//		}
+		bool all_visited = true;
+		for(int k=0;k<neigh;k++) { 
+			if(this->children[k].open and this->children[k].nvisits == 0) {
+				all_visited = false;
+				children_lps[k] = current.neighbor_prior(k);
+			}
+		}
 		
 		// if all the neighbors have been visited, we'll overwrite everything
 		// with UCT
@@ -308,10 +297,10 @@ public:
 			}
 		} 
 		
-		for(int k=0;k<neigh;k++) {
-			CERR k TAB all_visited TAB children_lps[k] TAB current.neighbor_prior(k) TAB current.string() ENDL;
-		}
-		
+//		for(int k=0;k<neigh;k++) {
+//			CERR k TAB all_visited TAB children_lps[k] TAB current.neighbor_prior(k) TAB current.string() ENDL;
+//		}
+//		
 		// someitmes we'll get all NaNs, which is bad new sfor sampling
 		bool allNaN = true;
 		for(int k=0;k<neigh;k++) {
@@ -334,12 +323,12 @@ public:
 		
 		// expand 
 		current.expand_to_neighbor(idx); // idx here gives which expansion we follow
-		CERR "SAMPLED " TAB idx TAB current ENDL;
+		//CERR "SAMPLED " TAB idx TAB current ENDL;
 		
 		return this->children[idx].descend(current);
 	}
 
-    void search_one(HYP& current) {
+    virtual void search_one(HYP& current) {
 		
 		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
 		
@@ -347,45 +336,12 @@ public:
 		
 		// if we are a terminal 
 		if(current.is_evaluable()) {
-			CERR "HERE" ENDL;
 			c->process_evaluable(current);
 		}
 		else {
-			CERR "THERE" ENDL;
-			process_add_children(current);
 			this->search_one(current); // and keep going (defaultly for FullMCTS)
 		}
     } // end search
-
-	/**
-	 * @brief recurse down the tree, building and/or evaluating as needed.
-	 * @param current
-	 */
-//    void search_one(HYP& current) {
-//		
-//		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", nvisits);
-//		
-//		++nvisits; // increment our visit count on our way down so other threads don't follow
-//		
-//		int neigh = current.neighbors(); 
-//		
-//		// if we can evaluate this 
-//		if(current.is_evaluable()) {
-//			process_evaluable(current);
-//		}
-//		
-//		// if I don't have all of my children, add them
-//		if(this->nchildren() != (size_t) neigh) {
-//			process_add_children(current);
-//		}
-//		
-//		// otherwise keep going down the tree
-//		if(neigh > 0) {
-//			descend(current);
-//		}
-//		
-//    } // end search
-
 };
 
 // Must be defined for the linker to find them, apparently:
@@ -409,30 +365,26 @@ callback_t* FullMCTSNode<this_t, HYP,callback_t>::callback = nullptr;
  */
 template<typename this_t, typename HYP, typename callback_t>
 class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {	
-	friend class FullMCTSNode<this_t,HYP,callback_t>;
+	//friend class FullMCTSNode<this_t,HYP,callback_t>;
 	using Super = FullMCTSNode<this_t,HYP,callback_t>;
 	using Super::Super; // get constructors
 
 	using data_t = typename HYP::data_t;
-	static constexpr size_t nplayouts = 100; // when we playout, how many do we do?
 	
-
-    void search_one(HYP& current) {
-		
-		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
+	virtual void search_one(HYP& current) override {
+		if(DEBUG_MCTS) DEBUG("PartialMCTSNode SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
 	
-		auto c = descend(current); //sets current and returns the node. 
+		auto c = this->descend(current); //sets current and returns the node. 
 		
 		// if we are a terminal 
 		if(current.is_evaluable()) {
 			c->process_evaluable(current);
 		}
 		else {
-			process_add_children(current);
 			this->playout(current);  // the difference is that here, we call playout instead of search_one
 		}
-    } // end search
-
+    }
+	
 
 	/**
 	 * @brief This gets called on a child that is unvisited. Typically it would consist of filling in h some number of times and
@@ -440,13 +392,8 @@ class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {
 	 * @param h
 	 */
 	virtual void playout(HYP& h) {
-		
-		if(h.is_evaluable()) { // if we have filled it in
-			this->process_evaluable(h);
-		}
-		else {
-			PriorInference samp(h.grammar, this->data, *(this->callback), &h);
-			samp.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart));
-		}
+		assert(not h.is_evaluable());
+		PriorInference samp(h.grammar, this->data, *(this->callback), &h);
+		samp.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart));
 	}	
 };
