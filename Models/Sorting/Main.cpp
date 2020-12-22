@@ -198,13 +198,13 @@ public:
 		// check to see if we have no gaps and no resamples, then we just run one sample. 
 		std::function no_resamples = +[](const Node& n) -> bool { return not n.can_resample;};
 		if(h0.get_value().all(no_resamples)) {
-			h0.compute_posterior(*data);
-			(*callback)(h0);
+			this->process_evaluable(h0);
 		}
 		else {
 			// else we run vanilla MCMC
 			MCMCChain chain(h0, data, callback);
 			chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart)); // run mcmc with restarts; we sure shouldn't run more than runtime
+			this->process_evaluable(chain.current);
 		}
 	}
 	
@@ -311,6 +311,7 @@ int main(int argc, char** argv){
 		MyHypothesis h0(&grammar);
 		PriorSampleMCTS m(h0, FleetArgs::explore, &mydata, top);
 		m.run(Control(), h0);
+		m.print(h0);
 		//m.print(h0, "tree.txt");
 		//COUT "# MCTS size: " TAB m.count() ENDL;
 	}
@@ -319,12 +320,14 @@ int main(int argc, char** argv){
 		MyHypothesis h0(&grammar);
 		MCMCwithinMCTS m(h0, FleetArgs::explore, &mydata, top);
 		m.run(Control(), h0);
+		m.print(h0);
 	}
 	else if(method == "full-mcts") {
 		// A FullMCTSNode run is one where each time you descend the tree, you go until you make it to a terminal
 		MyHypothesis h0(&grammar);
 		MyFullMCTS m(h0, FleetArgs::explore, &mydata, top);
 		m.run(Control(), h0);
+		m.print(h0);
 		//m.print(h0, "tree.txt");
 		//COUT "# MCTS size: " TAB m.count() ENDL;
 	}

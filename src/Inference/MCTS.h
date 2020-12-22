@@ -23,7 +23,7 @@
  * */
 #pragma once 
 
-#define DEBUG_MCTS 0
+#define DEBUG_MCTS 1
 
 #include <atomic>
 #include <mutex>
@@ -250,7 +250,7 @@ public:
 	 * 		  NOTE: This could add all the children (default) or be overwritten to add one, or none
 	 * @param current
 	 */
-	virtual void process_add_children(HYP& current) {
+	virtual void add_next_child(HYP& current) {
 		int neigh = current.neighbors(); 
 		
 		mylock.lock();
@@ -264,87 +264,127 @@ public:
 		mylock.unlock();		
 	}
 
-		
 	/**
-	 * @brief This goes down the tree, sampling children. Defaultly here it's total probability mass per child
+	 * @brief This goes down the tree, sampling children. When it gets to the bottom,
+	 * 		  it returns a pointer to the last child found and has altered current to store that hypothesis
 	 * @param current
 	 */
-//	virtual void descend(HYP& current) {
-//		int neigh = current.neighbors(); 
-//		std::vector<double> children_lps(neigh, -infinity);
-//		for(int k=0;k<neigh;k++) {
-//			if(this->child(k).open){
-//				/// how much probability mass PER sample came from each child, dividing by explore for the temperature.
-//				/// If no exploraiton steps, we just pretend lse-1.0 was the probability mass 
-//				children_lps[k] = current.neighbor_prior(k) + 
-//								  (this->child(k).nvisits == 0 ? lse-1.0 : this->child(k).lse-log(this->child(k).nvisits)) / this->explore;
+	virtual this_t* descend(HYP& current) {
+		this->nvisits++; // change on the way down so other threads don't follow
+		
+		// return self if I have no children
+		if(this->children.size() == 0) {
+			return reinterpret_cast<this_t*>(this);
+		}
+		
+		// otherwise, compute the probabilities and descend
+		
+		int neigh = current.neighbors(); 
+		
+		if(this->children.size() < neigh) {
+			add_next_child(current);
+		}
+		
+		
+		std::vector<double> children_lps(neigh, -infinity);
+		
+		// first, load up children_lps with whether they have been visited
+//		bool all_visited = true;
+//		for(int k=0;k<neigh;k++) { 
+//			if(this->children[k].open and this->children[k].nvisits == 0) {
+//				all_visited = false;
+//				children_lps[k] = current.neighbor_prior(k);
 //			}
 //		}
-//		
-//		// choose an index into children
-//		int idx = sample_int_lp(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
-//		
-//		// expand 
-//		current.expand_to_neighbor(idx); // idx here gives which expansion we follow
-//		
-//		// and recurse down
-//		this->child(idx).search_one(current);
-//	}
-
-	/**
-	 * @brief This goes down the tree, sampling children. Defaultly here it's total probability mass per child
-	 * @param current
-	 */
-	virtual void descend(HYP& current) {
-		int neigh = current.neighbors(); 
-		std::vector<double> children_lps(neigh, -infinity);
-		for(int k=0;k<neigh;k++) {
+		
+		// if all the neighbors have been visited, we'll overwrite everything
+		// with UCT
+		if(all_visited) {
+			for(int k=0;k<neigh;k++) {
 				if(this->children[k].open){
 					children_lps[k] = (this->child(k).nvisits == 0 ? 0.0 : (this->max / this->child(k).max) +
 																		   FleetArgs::explore * sqrt(log(this->nvisits)/this->children[k].nvisits));
 				}
+			}
+		} 
+		
+		for(int k=0;k<neigh;k++) {
+			CERR k TAB all_visited TAB children_lps[k] TAB current.neighbor_prior(k) TAB current.string() ENDL;
 		}
 		
-		// choose an index into children
-		int idx = sample_int_lp(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
+		// someitmes we'll get all NaNs, which is bad new sfor sampling
+		bool allNaN = true;
+		for(int k=0;k<neigh;k++) {
+			if(this->children[k].open and not std::isnan(children_lps[k])) {
+				allNaN = false;
+				break;
+			}
+		}
+		
+		int idx;  // what child we end up expanding		
+		if(allNaN) {
+			idx = myrandom(neigh); // just pick at random if all NaN
+		}
+		else {
+			// choose an index into children
+			//idx = sample_int_lp(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
+			// choose the max (either of prior or of UCT)
+			idx = arg_max_int(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
+		}
 		
 		// expand 
 		current.expand_to_neighbor(idx); // idx here gives which expansion we follow
+		CERR "SAMPLED " TAB idx TAB current ENDL;
 		
-		// and recurse down
-		this->child(idx).search_one(current);
+		return this->children[idx].descend(current);
 	}
 
+    void search_one(HYP& current) {
+		
+		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
+		
+		auto c = descend(current); //sets current and returns the node. 
+		
+		// if we are a terminal 
+		if(current.is_evaluable()) {
+			CERR "HERE" ENDL;
+			c->process_evaluable(current);
+		}
+		else {
+			CERR "THERE" ENDL;
+			process_add_children(current);
+			this->search_one(current); // and keep going (defaultly for FullMCTS)
+		}
+    } // end search
 
 	/**
 	 * @brief recurse down the tree, building and/or evaluating as needed.
 	 * @param current
 	 */
-    void search_one(HYP& current) {
-		//  
-		
-		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", nvisits);
-		
-		++nvisits; // increment our visit count on our way down so other threads don't follow
-		
-		int neigh = current.neighbors(); 
-		
-		// if we can evaluate this 
-		if(current.is_evaluable()) {
-			process_evaluable(current);
-		}
-		
-		// if I don't have all of my children, add them
-		if(this->nchildren() != (size_t) neigh) {
-			process_add_children(current);
-		}
-		
-		// otherwise keep going down the tree
-		if(neigh > 0) {
-			descend(current);
-		}
-		
-    } // end search
+//    void search_one(HYP& current) {
+//		
+//		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", nvisits);
+//		
+//		++nvisits; // increment our visit count on our way down so other threads don't follow
+//		
+//		int neigh = current.neighbors(); 
+//		
+//		// if we can evaluate this 
+//		if(current.is_evaluable()) {
+//			process_evaluable(current);
+//		}
+//		
+//		// if I don't have all of my children, add them
+//		if(this->nchildren() != (size_t) neigh) {
+//			process_add_children(current);
+//		}
+//		
+//		// otherwise keep going down the tree
+//		if(neigh > 0) {
+//			descend(current);
+//		}
+//		
+//    } // end search
 
 };
 
@@ -377,6 +417,22 @@ class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {
 	static constexpr size_t nplayouts = 100; // when we playout, how many do we do?
 	
 
+    void search_one(HYP& current) {
+		
+		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
+	
+		auto c = descend(current); //sets current and returns the node. 
+		
+		// if we are a terminal 
+		if(current.is_evaluable()) {
+			c->process_evaluable(current);
+		}
+		else {
+			process_add_children(current);
+			this->playout(current);  // the difference is that here, we call playout instead of search_one
+		}
+    } // end search
+
 
 	/**
 	 * @brief This gets called on a child that is unvisited. Typically it would consist of filling in h some number of times and
@@ -386,55 +442,11 @@ class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {
 	virtual void playout(HYP& h) {
 		
 		if(h.is_evaluable()) { // if we have filled it in
-			h.compute_posterior(*this->data);
-			(*this->callback)(h);
+			this->process_evaluable(h);
 		}
 		else {
 			PriorInference samp(h.grammar, this->data, *(this->callback), &h);
 			samp.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart));
 		}
-	}
-	
-	
-	
-	/**
-	 * @brief Choose the max according to a UCT-like bound
-	 * @param current
-	 */
-	virtual void descend(HYP& current) override {
-		
-		// check if all my children have been visited
-		
-		int neigh = current.neighbors(); 
-		
-		// if everyone has been visited, we'll descend with a UCT-like rule
-		if(this->all_children_visited()) {
-			
-			std::vector<double> children_lps(neigh, -infinity);		
-			for(int k=0;k<neigh;k++) {
-				if(this->children[k].open){
-					children_lps[k] = (this->child(k).nvisits == 0 ? 0.0 : (this->max / this->child(k).max) +
-																		   FleetArgs::explore * sqrt(log(this->nvisits)/this->children[k].nvisits));
-				}
-			}			
-			
-			int idx = arg_max_int(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
-			current.expand_to_neighbor(idx); // idx here gives which expansion we follow
-			this->children[idx].search_one(current);
-			
-		}
-		else {
-			
-			// otherwise choose the highest prior one that is unvisited and run playout (which users must define)
-			int idx = arg_max_int(neigh, [&](const int k) -> double { return (this->children[k].nvisits == 0 ? current.neighbor_prior(k) : -infinity); } ).first;
-			current.expand_to_neighbor(idx); // idx here gives which expansion we follow
-			
-			// NOTE: here we do not search_one -- we just stop at this node -- adding one expansion to children
-			// we have to call children[idx] here because otherwise it won't get the sample
-			this->children[idx].nvisits++; // since it's not counted in add_sample and we don't search_one on it
-			this->children[idx].playout(current);
-		}
-	}
-
-	
+	}	
 };

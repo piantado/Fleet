@@ -727,11 +727,15 @@ public:
 				which -= c;
 			}
 			else { // otherwise we have to process that which
-				neighbor_prior(node.child(i), which);
+				auto o = neighbor_prior(node.child(i), which);
+				if(not std::isnan(o)) { // if this child returned something. 
+					//assert(which <= 0);
+					return o;
+				}
 			}
 		}
 		
-		return 0.0; // if no neighbors
+		return NaN; // if no neighbors
 	}
 
 	void complete(Node& node) {

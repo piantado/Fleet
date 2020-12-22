@@ -203,7 +203,7 @@ std::pair<int,double> sample_int_lp(unsigned int max, const std::function<double
 	for(size_t i=0;i<max;i++){
 		double fx = f(i);
 		if(std::isnan(fx)) continue; // treat as zero prob
-		assert(fx <= 0.0);
+		//assert(fx <= 0.0); // we actually can have lp > 0 if we wanted...
 		fz = logplusexp(fz, fx);
 		if(r <= fz) 
 			return std::make_pair(i, fx-z);
