@@ -251,28 +251,11 @@ public:
 	}
 
 
-	virtual this_t* sample_child(HYP& current) {
+	virtual int sample_child_index(HYP& current) {
 		
-	}
-
-
-	/**
-	 * @brief This goes down the tree, sampling children. When it gets to the bottom,
-	 * 		  it returns a pointer to the last child found and has altered current to store that hypothesis
-	 * @param current
-	 */
-	virtual this_t* descend(HYP& current) {
-		this->nvisits++; // change on the way down so other threads don't follow
-			
+		assert(this->children.size() > 0) ;
+		
 		int neigh = current.neighbors(); 
-	
-		// return self if I have no children
-		if(neigh == 0) {
-			return reinterpret_cast<this_t*>(this);
-		}
-		else if(this->children.size() < (size_t)neigh) {
-			add_children(current);
-		}
 		
 		// probability of expanding to each child
 		std::vector<double> children_lps(neigh, -infinity);
@@ -297,10 +280,10 @@ public:
 			}
 		} 
 		
-//		for(int k=0;k<neigh;k++) {
-//			CERR k TAB all_visited TAB children_lps[k] TAB current.neighbor_prior(k) TAB current.string() ENDL;
-//		}
-//		
+		//		for(int k=0;k<neigh;k++) {
+		//			CERR k TAB all_visited TAB children_lps[k] TAB current.neighbor_prior(k) TAB current.string() ENDL;
+		//		}
+
 		// someitmes we'll get all NaNs, which is bad new sfor sampling
 		bool allNaN = true;
 		for(int k=0;k<neigh;k++) {
@@ -310,37 +293,78 @@ public:
 			}
 		}
 		
-		int idx;  // what child we end up expanding		
 		if(allNaN) {
-			idx = myrandom(neigh); // just pick at random if all NaN
+			return myrandom(neigh); // just pick at random if all NaN
 		}
 		else {
 			// choose an index into children
 			//idx = sample_int_lp(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
 			// choose the max (either of prior or of UCT)
-			idx = arg_max_int(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
+			return arg_max_int(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
+		}
+	}
+
+	/**
+	 * @brief This goes down the tree to a node with no children (OR evaluable)
+	 * @param current
+	 */
+	virtual this_t* descend_to_childless(HYP& current) {
+		this->nvisits++; // change on the way down so other threads don't follow
+			
+		if(current.is_evaluable()) {
+			return reinterpret_cast<this_t*>(this);
+		}
+		
+		// add missing kids if we need them
+		if(this->children.size() < (size_t)current.neighbors()) {
+			return reinterpret_cast<this_t*>(this);
 		}
 		
 		// expand 
-		current.expand_to_neighbor(idx); // idx here gives which expansion we follow
-		//CERR "SAMPLED " TAB idx TAB current ENDL;
+		auto idx = sample_child_index(current);
+		current.expand_to_neighbor(idx); 
 		
-		return this->children[idx].descend(current);
+		return this->children[idx].descend_to_childless(current);
+	}
+	
+	/**
+	 * @brief This goes down the tree, sampling children until it finds an evaluable (building a full tree)
+	 * @param current
+	 */
+	virtual this_t* descend_to_evaluable(HYP& current) {
+		this->nvisits++; // change on the way down so other threads don't follow
+			
+		if(current.is_evaluable()) {
+			return reinterpret_cast<this_t*>(this);
+		}
+		
+		// add missing kids if we need them
+		if(this->children.size() < (size_t)current.neighbors()) {
+			this->add_children(current);
+		}
+		
+		// expand 
+		auto idx = this->sample_child_index(current);
+		current.expand_to_neighbor(idx); 
+		
+		return this->children[idx].descend_to_evaluable(current);
 	}
 
     virtual void search_one(HYP& current) {
 		
 		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
+				
+		auto c = descend_to_evaluable(current); //sets current and returns the node. 
 		
-		auto c = descend(current); //sets current and returns the node. 
+		c->process_evaluable(current);
 		
 		// if we are a terminal 
-		if(current.is_evaluable()) {
-			c->process_evaluable(current);
-		}
-		else {
-			this->search_one(current); // and keep going (defaultly for FullMCTS)
-		}
+//		if(current.is_evaluable()) {
+//			c->process_evaluable(current);
+//		}
+//		else {
+//			this->search_one(current); // and keep going (defaultly for FullMCTS)
+//		}
     } // end search
 };
 
@@ -374,13 +398,17 @@ class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {
 	virtual void search_one(HYP& current) override {
 		if(DEBUG_MCTS) DEBUG("PartialMCTSNode SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
 	
-		auto c = this->descend(current); //sets current and returns the node. 
+		auto c = this->descend_to_childless(current); //sets current and returns the node. 
 		
 		// if we are a terminal 
 		if(current.is_evaluable()) {
 			c->process_evaluable(current);
 		}
 		else {
+			// else add the next row of children and choose one to playout
+			c->add_children(current); 
+			auto idx = c->sample_child_index(current);
+			current.expand_to_neighbor(idx); 
 			this->playout(current);  // the difference is that here, we call playout instead of search_one
 		}
     }
@@ -391,9 +419,22 @@ class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {
 	 * 		  saving the stats
 	 * @param h
 	 */
-	virtual void playout(HYP& h) {
-		assert(not h.is_evaluable());
-		PriorInference samp(h.grammar, this->data, *(this->callback), &h);
-		samp.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart));
+	virtual void playout(HYP& current) {
+		if(current.is_evaluable()) {
+			this->process_evaluable(current);
+		}
+		else {
+		
+			// keep track of max since that's what we'll store
+			double mx = -infinity;
+			auto my_cb = [&](HYP& h) {
+				if(h.posterior > mx) mx = h.posterior;
+				(*this->callback)(h);
+			};
+			
+			PriorInference samp(current.grammar, this->data, my_cb, &current);
+			samp.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart));
+			this->add_sample(mx);
+		}
 	}	
 };

@@ -311,7 +311,7 @@ int main(int argc, char** argv){
 		MyHypothesis h0(&grammar);
 		PriorSampleMCTS m(h0, FleetArgs::explore, &mydata, top);
 		m.run(Control(), h0);
-		m.print(h0);
+		//m.print(h0);
 		//m.print(h0, "tree.txt");
 		//COUT "# MCTS size: " TAB m.count() ENDL;
 	}
@@ -320,14 +320,14 @@ int main(int argc, char** argv){
 		MyHypothesis h0(&grammar);
 		MCMCwithinMCTS m(h0, FleetArgs::explore, &mydata, top);
 		m.run(Control(), h0);
-		m.print(h0);
+		//m.print(h0);
 	}
 	else if(method == "full-mcts") {
 		// A FullMCTSNode run is one where each time you descend the tree, you go until you make it to a terminal
 		MyHypothesis h0(&grammar);
 		MyFullMCTS m(h0, FleetArgs::explore, &mydata, top);
 		m.run(Control(), h0);
-		m.print(h0);
+		//m.print(h0);
 		//m.print(h0, "tree.txt");
 		//COUT "# MCTS size: " TAB m.count() ENDL;
 	}
