@@ -9,9 +9,8 @@ restart = [0, 1000, 10000]
 inner_times = ["100", "1000", "5000", "10000"] # measured in q
 
 # some methods don't need chains:
-methods = ['prior-sampling', 'beam']
 # some do:
-chainy_methods = ['parallel-tempering', 'chain-pool']
+#chainy_methods = ['parallel-tempering', 'chain-pool']
 # and do mcts
 # mcts_methods = ['mcmc-within-mcts', 'prior-sample-mcts'] # 'full-mcts'
 
@@ -33,33 +32,38 @@ datas = {
 ex = "../../Models/Sorting/main --top=1 --threads=1 --header=0 "
 
 # Enumeration only needs to run once:
+m='enumeration'
 for dk in itertools.product(times, datas.keys()):
-	m='enumeration'
 	prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (1,t,m,r,dk,1,1)        
 	print(ex, "--time=%ss"%t, "--method=%s"%m, "--restart=%s"%r, "--data=\"%s\""%datas[dk], "--chains=1", "--prefix=$\"%s\""%prefix)
         
-for i,t,dk in itertools.product(replications, times, datas.keys()):
-    
-    for r in restart:
-        # Run all the other methods
-        for m in methods:
-            prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,r,dk,1,1)        
-            print(ex, "--time=%ss"%t, "--method=%s"%m, "--restart=%s"%r, "--data=\"%s\""%datas[dk], "--chains=1", "--prefix=$\"%s\""%prefix)
         
-        for m in chainy_methods:
-            for c in chains:
-                prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,r,dk,c,1)        
-                print(ex, "--time=%ss"%t, "--method=%s"%m, "--restart=%s"%r, "--data=\"%s\""%datas[dk], "--chains=%s"%c, "--prefix=$\"%s\""%prefix)
+m = 'prior-sampling'        
+for i,t,r,dk in itertools.product(replications, times, restart, datas.keys()):
+	prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,r,dk,1,1)        
+	print(ex, "--time=%ss"%t, "--method=%s"%m, "--restart=%s"%r, "--data=\"%s\""%datas[dk], "--chains=1", "--prefix=$\"%s\""%prefix)	
+
+
+m = 'beam' 
+for i,t,r,dk in itertools.product(times, datas.keys()):
+	prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,1,dk,1,1)        
+	print(ex, "--time=%ss"%t, "--method=%s"%m, "--data=\"%s\""%datas[dk], "--chains=1", "--prefix=$\"%s\""%prefix)	
+
+for m, i,t,r, dk in itertools.product(['parallel-tempering', 'chain-pool'], replications, times, restart, datas.keys()):    
+	prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,r,dk,1,1)        
+	print(ex, "--time=%ss"%t, "--method=%s"%m, "--restart=%s"%r, "--data=\"%s\""%datas[dk], "--chains=1", "--prefix=$\"%s\""%prefix)
         
-        for it, c in itertools.product(inner_times, chains):
-            m = 'mcmc-within-mcts'
-            prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,r,dk,c,it)      
-            # NOTE: This has to be inner-restart or else it isn't used 
-            print(ex, "--time=%ss"%t, "--method=%s"%m, "--inner-restart=%s"%r, "--data=\"%s\""%datas[dk],  "--chains=%s"%c, "--prefix=$\"%s\""%prefix, "--inner-time=%sq"%it)
-    
-    for it in itertools.product(inner_times):
-        m = 'prior-sample-mcts' # no restart, chains, or inner-times
-        prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,0,dk,0,it)      
-        # NOTE: This has to be inner-restart or else it isn't used 
-        print(ex, "--time=%ss"%t, "--method=%s"%m, "--data=\"%s\""%datas[dk],  "--chains=%s"%c, "--prefix=$\"%s\""%prefix, "--inner-time=%sq"%it)
+
+        
+for i,t,r,dk, it, c in itertools.product(inner_times, chains):
+	m = 'mcmc-within-mcts'
+	prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,r,dk,c,it)      
+	# NOTE: This has to be inner-restart or else it isn't used 
+	print(ex, "--time=%ss"%t, "--method=%s"%m, "--inner-restart=%s"%r, "--data=\"%s\""%datas[dk],  "--chains=%s"%c, "--prefix=$\"%s\""%prefix, "--inner-time=%sq"%it)
+
+for it in itertools.product(inner_times):
+	m = 'prior-sample-mcts' # no restart, chains, or inner-times
+	prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,0,dk,0,it)      
+	# NOTE: This has to be inner-restart or else it isn't used 
+	print(ex, "--time=%ss"%t, "--method=%s"%m, "--data=\"%s\""%datas[dk],  "--chains=%s"%c, "--prefix=$\"%s\""%prefix, "--inner-time=%sq"%it)
         

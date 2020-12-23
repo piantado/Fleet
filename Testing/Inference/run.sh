@@ -1,1 +1,1 @@
-nohup python3 comparisons.py | parallel --line-buffer > o.txt &
+nohup python3 comparisons.py | shuf | parallel --line-buffer > o.txt &

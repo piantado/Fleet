@@ -46,7 +46,7 @@
 
 
 /**
- * @class FullMCTSNode
+ * @class MCTSBase
  * @author piantado
  * @date 03/06/20
  * @file FullMCTS.h
@@ -63,7 +63,7 @@
  */
 
 template<typename this_t, typename HYP, typename callback_t>
-class FullMCTSNode : public ParallelInferenceInterface<HYP>, public BaseNode<this_t> {
+class MCTSBase : public ParallelInferenceInterface<HYP>, public BaseNode<this_t> {
 	friend class BaseNode<this_t>;
 		
 public:
@@ -88,10 +88,10 @@ public:
 	float lse;
 	float last_lp;
     
-	FullMCTSNode() {
+	MCTSBase() {
 	}
 	
-    FullMCTSNode(HYP& start, this_t* par,  size_t w) : 
+    MCTSBase(HYP& start, this_t* par,  size_t w) : 
 		BaseNode<this_t>(0,par,0),
 		open(true), which_expansion(w), nvisits(0), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
@@ -101,7 +101,7 @@ public:
 		mylock.unlock();
     }
     
-    FullMCTSNode(HYP& start, double ex, data_t* d, callback_t& cb) : 
+    MCTSBase(HYP& start, double ex, data_t* d, callback_t& cb) : 
 		BaseNode<this_t>(),
 		open(true), which_expansion(0), nvisits(0), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
 		// This is the constructor that gets called from main, and it sets the static variables. All the other constructors
@@ -118,21 +118,21 @@ public:
     }
 	
 	// should not copy or move because then the parent pointers get all messed up 
-	FullMCTSNode(const this_t& m) { // because what happens to the child pointers?
+	MCTSBase(const this_t& m) { // because what happens to the child pointers?
 		throw YouShouldNotBeHereError("*** should not be copying or moving MCTS nodes");
 	}
 	
-	FullMCTSNode(this_t&& m) {
+	MCTSBase(this_t&& m) {
 		// This must be defined for us to emplace_Back, but we don't actually want to move because that messes with 
 		// the multithreading. So we'll throw an exception. You can avoid moves by reserving children up above, 
 		// which should make it so that we never call this		
 		throw YouShouldNotBeHereError("*** This must be defined for children.emplace_back, but should never be called");
 	}
 		
-	void operator=(const FullMCTSNode& m) {
+	void operator=(const MCTSBase& m) {
 		throw YouShouldNotBeHereError("*** This must be defined for but should never be called");
 	}
-	void operator=(FullMCTSNode&& m) {
+	void operator=(MCTSBase&& m) {
 		throw YouShouldNotBeHereError("*** This must be defined for but should never be called");
 	}
     
@@ -349,34 +349,24 @@ public:
 		
 		return this->children[idx].descend_to_evaluable(current);
 	}
-
-    virtual void search_one(HYP& current) {
-		
-		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
-				
-		auto c = descend_to_evaluable(current); //sets current and returns the node. 
-		
-		c->process_evaluable(current);
-		
-		// if we are a terminal 
-//		if(current.is_evaluable()) {
-//			c->process_evaluable(current);
-//		}
-//		else {
-//			this->search_one(current); // and keep going (defaultly for FullMCTS)
-//		}
-    } // end search
+	
+	/**
+	 * @brief This is not implemented in MCTSBase because it is different in Partial and Full (below).
+	 * 		  So, subclasses must implement this.
+	 * @param current
+	 */
+	virtual void search_one(HYP& current) = 0;
 };
 
 // Must be defined for the linker to find them, apparently:
 template<typename this_t, typename HYP, typename callback_t>
-double FullMCTSNode<this_t, HYP, callback_t>::explore = 1.0;
+double MCTSBase<this_t, HYP, callback_t>::explore = 1.0;
 
 template<typename this_t, typename HYP, typename callback_t>
-typename HYP::data_t* FullMCTSNode<this_t, HYP,callback_t>::data = nullptr;
+typename HYP::data_t* MCTSBase<this_t, HYP,callback_t>::data = nullptr;
 
 template<typename this_t, typename HYP, typename callback_t>
-callback_t* FullMCTSNode<this_t, HYP,callback_t>::callback = nullptr;
+callback_t* MCTSBase<this_t, HYP,callback_t>::callback = nullptr;
 
 
 
@@ -388,9 +378,9 @@ callback_t* FullMCTSNode<this_t, HYP,callback_t>::callback = nullptr;
  * @brief This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree
  */
 template<typename this_t, typename HYP, typename callback_t>
-class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {	
-	//friend class FullMCTSNode<this_t,HYP,callback_t>;
-	using Super = FullMCTSNode<this_t,HYP,callback_t>;
+class PartialMCTSNode : public MCTSBase<this_t,HYP,callback_t> {	
+	//friend class MCTSBase<this_t,HYP,callback_t>;
+	using Super = MCTSBase<this_t,HYP,callback_t>;
 	using Super::Super; // get constructors
 
 	using data_t = typename HYP::data_t;
@@ -412,6 +402,59 @@ class PartialMCTSNode : public FullMCTSNode<this_t,HYP,callback_t> {
 			this->playout(current);  // the difference is that here, we call playout instead of search_one
 		}
     }
+	
+
+	/**
+	 * @brief This gets called on a child that is unvisited. Typically it would consist of filling in h some number of times and
+	 * 		  saving the stats
+	 * @param h
+	 */
+	virtual void playout(HYP& current) {
+		if(current.is_evaluable()) {
+			this->process_evaluable(current);
+		}
+		else {
+		
+			// keep track of max since that's what we'll store
+			double mx = -infinity;
+			auto my_cb = [&](HYP& h) {
+				if(h.posterior > mx) mx = h.posterior;
+				(*this->callback)(h);
+			};
+			
+			PriorInference samp(current.grammar, this->data, my_cb, &current);
+			samp.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart));
+			this->add_sample(mx);
+		}
+	}	
+};
+
+
+
+/**
+ * @class FullMCTSNode
+ * @author Steven Piantadosi
+ * @date 22/12/20
+ * @file MCTS.h
+ * @brief This is a MCTS node that descends all the way until it builds a tree to a terminal -- usually it uses too much memory
+ */
+template<typename this_t, typename HYP, typename callback_t>
+class FullMCTSNode : public MCTSBase<this_t,HYP,callback_t> {	
+	//friend class MCTSBase<this_t,HYP,callback_t>;
+	using Super = MCTSBase<this_t,HYP,callback_t>;
+	using Super::Super; // get constructors
+
+	using data_t = typename HYP::data_t;
+	
+	
+    virtual void search_one(HYP& current) override {
+		
+		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
+				
+		auto c = this->descend_to_evaluable(current); //sets current and returns the node. 
+		
+		c->process_evaluable(current);
+    } 
 	
 
 	/**
