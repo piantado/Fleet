@@ -378,8 +378,7 @@ callback_t* MCTSBase<this_t, HYP,callback_t>::callback = nullptr;
  * @brief This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree
  */
 template<typename this_t, typename HYP, typename callback_t>
-class PartialMCTSNode : public MCTSBase<this_t,HYP,callback_t> {	
-	//friend class MCTSBase<this_t,HYP,callback_t>;
+class PartialMCTSNode : public MCTSBase<this_t,HYP,callback_t> {
 	using Super = MCTSBase<this_t,HYP,callback_t>;
 	using Super::Super; // get constructors
 
@@ -440,7 +439,6 @@ class PartialMCTSNode : public MCTSBase<this_t,HYP,callback_t> {
  */
 template<typename this_t, typename HYP, typename callback_t>
 class FullMCTSNode : public MCTSBase<this_t,HYP,callback_t> {	
-	//friend class MCTSBase<this_t,HYP,callback_t>;
 	using Super = MCTSBase<this_t,HYP,callback_t>;
 	using Super::Super; // get constructors
 
@@ -456,28 +454,43 @@ class FullMCTSNode : public MCTSBase<this_t,HYP,callback_t> {
 		c->process_evaluable(current);
     } 
 	
+};
 
-	/**
-	 * @brief This gets called on a child that is unvisited. Typically it would consist of filling in h some number of times and
-	 * 		  saving the stats
-	 * @param h
-	 */
-	virtual void playout(HYP& current) {
-		if(current.is_evaluable()) {
-			this->process_evaluable(current);
-		}
-		else {
+
+/**
+ * @class MinimalMCTSNode
+ * @author piantado
+ * @date 03/07/20
+ * @file MCTS.h
+ * @brief When this gets to a leaf, it expands the highest probability things from the prior. But it uses the same sampling scheme to reach a leaf
+ */
+template<typename this_t, typename HYP, typename callback_t>
+class MinimalMCTSNode : public MCTSBase<this_t,HYP,callback_t> {	
+	using Super = MCTSBase<this_t,HYP,callback_t>;
+	using Super::Super; // get constructors
+
+	using data_t = typename HYP::data_t;
+	
+	virtual void search_one(HYP& current) override {
+		if(DEBUG_MCTS) DEBUG("MinimalMCTSNode SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
+	
+		auto c = this->descend_to_childless(current); //sets current and returns the node. 
 		
-			// keep track of max since that's what we'll store
-			double mx = -infinity;
-			auto my_cb = [&](HYP& h) {
-				if(h.posterior > mx) mx = h.posterior;
-				(*this->callback)(h);
-			};
+		while(not current.is_evaluable()) {
+			c->add_children(current); 
 			
-			PriorInference samp(current.grammar, this->data, my_cb, &current);
-			samp.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart));
-			this->add_sample(mx);
+			// find the highest prior child
+			auto neigh = current.neighbors();
+			std::vector<double> children_lps(neigh,-infinity);
+			for(int k=0;k<neigh;k++) {
+				children_lps[k] = current.neighbor_prior(k);
+			}
+			
+			auto idx = arg_max_int(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
+			current.expand_to_neighbor(idx);
+			c = &c->children[idx];
 		}
-	}	
+		
+		c->process_evaluable(current);
+    }
 };

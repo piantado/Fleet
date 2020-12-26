@@ -17,9 +17,10 @@ namespace FleetArgs {
 	
 	int           print_header  = 1; 
 
-	double        explore      = 1.0; // we want to exploit the string prefixes we find
-	size_t        nthreads     = 1;
-	size_t        nchains      = 1;
+	double        explore         = 1.0; // we want to exploit the string prefixes we find
+	size_t        nthreads        = 1;
+	size_t        nchains         = 1;
+	size_t        partition_depth = 3;
 
 	unsigned long runtime          = 0; // in ms
 	unsigned long inner_runtime    = 0; // in ms

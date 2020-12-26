@@ -1,7 +1,7 @@
 library(ggplot2)
 
 d <- read.table("o.txt", header=F)
-names(d) <- c("repetition", "runtime", "method", "restart", "data", "chains", "inner.times", "posterior", "prior", "likelihood", "hypothesis")
+names(d) <- c("repetition", "runtime", "method", "restart", "data", "chains", "inner.times", "explore", "posterior", "prior", "likelihood", "hypothesis")
 
 d$chains <- as.factor(d$chains)
 d$restart <- as.factor(d$restart)

@@ -124,9 +124,11 @@ public:
 		app.add_option("--explore",     FleetArgs::explore, "Exploration parameter for MCTS");
 		app.add_option("--restart",     FleetArgs::restart, "If we don't improve after this many, restart a chain");
 		app.add_option("-c,--chains",   FleetArgs::nchains, "How many chains to run");
+		app.add_option("--partition-depth",   FleetArgs::partition_depth, "How deep do we recurse when we do partition-mcmc?");
 		
 		app.add_option("--header",      FleetArgs::print_header, "Set to 0 to not print header");
 
+		
 		
 		app.add_option("--output",      FleetArgs::output_path, "Where we write output");
 		app.add_option("--input",       FleetArgs::input_path, "Read standard input from here");

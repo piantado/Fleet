@@ -222,6 +222,17 @@ public:
 };
 
 
+class MyMinimalMCTS : public MinimalMCTSNode<MyMinimalMCTS, MyHypothesis, TopN<MyHypothesis>> {
+public:
+	using Super = MinimalMCTSNode<MyMinimalMCTS, MyHypothesis, TopN<MyHypothesis>>;
+	using Super::Super;
+
+	// we must declare this to use these in a vector, but we can't call it since we can't move the locks
+	MyMinimalMCTS(MyMinimalMCTS&& m){ throw YouShouldNotBeHereError("*** This must be defined for but should never be called"); } 
+};
+
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 // This needs to be included last because it includes VirtualMachine/applyPrimitives.h
 // which really requires Primitives to be defined already
@@ -235,6 +246,7 @@ public:
 #include "PriorInference.h"
 #include "BeamSearch.h"
 #include "ChainPool.h"
+#include "PartitionMCMC.h"
 
 #include "Fleet.h" 
 
@@ -330,6 +342,20 @@ int main(int argc, char** argv){
 		//m.print(h0);
 		//m.print(h0, "tree.txt");
 		//COUT "# MCTS size: " TAB m.count() ENDL;
+	}
+	else if(method == "minimal-mcts") {
+		// A FullMCTSNode run is one where each time you descend the tree, you go until you make it to a terminal
+		MyHypothesis h0(&grammar);
+		MyMinimalMCTS m(h0, FleetArgs::explore, &mydata, top);
+		m.run(Control(), h0);
+		//m.print(h0);
+		//m.print(h0, "tree.txt");
+		//COUT "# MCTS size: " TAB m.count() ENDL;
+	}
+	else if(method == "partition-mcmc") {
+		MyHypothesis h0(&grammar); // start empty
+		PartitionMCMC c(h0, FleetArgs::partition_depth, &mydata, top);
+		c.run(Control());
 	}
 	else {
 		throw NotImplementedError();

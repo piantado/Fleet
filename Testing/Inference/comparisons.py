@@ -1,18 +1,14 @@
 # a little python script to output commands for use with parallel
-
+from copy import copy
 import itertools
 
-times = [1, 2, 5, 10, 30, 60, 120, 300, 500, 1000]; # seconds # [1, 5, 10, 50, 100, 500, 1000]
-chains = [1, 5, 10, 20, 50, 100] #, 200, 500]
+times = [1, 5, 10, 30, 60, 120, 30]; # seconds # [1, 5, 10, 50, 100, 500, 1000]
+chains = [1, 10, 100] #, 200, 500]
 replications = range(25)
 restart = [0, 1000, 10000]
-inner_times = ["100", "1000", "5000", "10000"] # measured in q
-
-# some methods don't need chains:
-# some do:
-#chainy_methods = ['parallel-tempering', 'chain-pool']
-# and do mcts
-# mcts_methods = ['mcmc-within-mcts', 'prior-sample-mcts'] # 'full-mcts'
+inner_times = ["100", "1000", "5000"] # measured in q
+explores = [1.0, 0.1, 10.0]
+partition_depths = [1,2,3,4]
 
 datas = {
     "sort":"734:347,1987:1789,113322:112233,679:679,214:124,9142385670:0123456789",
@@ -29,41 +25,71 @@ datas = {
 }
 
 
-ex = "../../Models/Sorting/main --top=1 --threads=1 --header=0 "
+ex = "../../Models/Sorting/main "
 
-# Enumeration only needs to run once:
-m='enumeration'
-for dk in itertools.product(times, datas.keys()):
-	prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (1,t,m,r,dk,1,1)        
-	print(ex, "--time=%ss"%t, "--method=%s"%m, "--restart=%s"%r, "--data=\"%s\""%datas[dk], "--chains=1", "--prefix=$\"%s\""%prefix)
-        
-        
-m = 'prior-sampling'        
-for i,t,r,dk in itertools.product(replications, times, restart, datas.keys()):
-	prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,r,dk,1,1)        
-	print(ex, "--time=%ss"%t, "--method=%s"%m, "--restart=%s"%r, "--data=\"%s\""%datas[dk], "--chains=1", "--prefix=$\"%s\""%prefix)	
+defaults = {'time':'1m',
+			'method':'chain-pool',
+			'restart':'0',
+			'data':'NA',
+			'chains':'1',
+			'header':'0',
+			'top':'1',
+			'threads':'1',
+			'inner_time':'1s',
+			'explore':'1.0',
+			'header':'0',
+			'partition_depth':'1'}
 
+def runplease(it, **d):
+	# any arguments we given in d override the defaults:
+	q = copy(defaults)
+	q.update(d)
 
-m = 'beam' 
-for i,t,r,dk in itertools.product(times, datas.keys()):
-	prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,1,dk,1,1)        
-	print(ex, "--time=%ss"%t, "--method=%s"%m, "--data=\"%s\""%datas[dk], "--chains=1", "--prefix=$\"%s\""%prefix)	
+	# fix the underscores:
+	q['inner-time'] = q['inner_time']
+	del q['inner_time']
+	q['partition-depth'] = q['partition_depth']
+	del q['partition_depth']
 
-for m, i,t,r, dk in itertools.product(['parallel-tempering', 'chain-pool'], replications, times, restart, datas.keys()):    
-	prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,r,dk,1,1)        
-	print(ex, "--time=%ss"%t, "--method=%s"%m, "--restart=%s"%r, "--data=\"%s\""%datas[dk], "--chains=1", "--prefix=$\"%s\""%prefix)
-        
+	# make everything strings
+	q = {str(k):str(v) for k,v in q.items()}
 
-        
-for i,t,r,dk, it, c in itertools.product(inner_times, chains):
-	m = 'mcmc-within-mcts'
-	prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,r,dk,c,it)      
-	# NOTE: This has to be inner-restart or else it isn't used 
-	print(ex, "--time=%ss"%t, "--method=%s"%m, "--inner-restart=%s"%r, "--data=\"%s\""%datas[dk],  "--chains=%s"%c, "--prefix=$\"%s\""%prefix, "--inner-time=%sq"%it)
+	# get the prefix
+	q['prefix'] = "\""+'\t'.join([str(it), q['time'], q['method'], q['restart'],
+							      q['data'], q['chains'], q['inner-time'], q['explore'], q['partition-depth'] ])+'\t'+"\""
 
-for it in itertools.product(inner_times):
-	m = 'prior-sample-mcts' # no restart, chains, or inner-times
-	prefix = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % (i,t,m,0,dk,0,it)      
-	# NOTE: This has to be inner-restart or else it isn't used 
-	print(ex, "--time=%ss"%t, "--method=%s"%m, "--data=\"%s\""%datas[dk],  "--chains=%s"%c, "--prefix=$\"%s\""%prefix, "--inner-time=%sq"%it)
-        
+	# Add units (so they aren't in the prefix)
+	q['time'] += 's'
+	q['inner-time'] += 'q'
+
+	# and fix the dat aargument
+	q['data'] = datas[q['data']]
+
+	print(ex, ' '.join('--'+k+'='+v for k,v in q.items()))
+
+for d,t in itertools.product(datas.keys(), times):
+
+	# Enumeration only needs to run once:
+	runplease(1, method='enumeration', time=t, data=d)
+
+	for i in itertools.product(replications):
+		runplease(i, method='prior-sampling', time=t, data=d)
+
+	for i in itertools.product(replications):
+		runplease(i, method='beam', time=t, data=d)
+
+	for i,r,c in itertools.product(replications, restart, chains):
+		runplease(i, method='parallel-tempering', time=t, restart=r, data=d, chains=c)
+
+	for i,r,c in itertools.product(replications, restart, chains):
+		runplease(i, method='chain-pool', time=t, restart=r, data=d, chains=c)
+
+	for i,r,pd in itertools.product(replications, restart, partition_depths):
+		runplease(i, method='partition-mcmc', time=t, restart=r, data=d, partition_depth=pd)
+
+	for i,it,c,r,e in itertools.product(replications, inner_times, chains, restart, explores):
+		runplease(i, method='mcmc-within-mcts', inner_time=it, chains=c, restart=r, time=t, data=d, explore=e)
+
+	for i,it,r,e in itertools.product(replications, inner_times, restart, explores):
+		runplease(i, method='prior-sample-mcts', inner_time=it, restart=r, time=t, data=d, explore=e)
+

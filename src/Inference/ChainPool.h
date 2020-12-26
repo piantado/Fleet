@@ -58,6 +58,7 @@ public:
 	 * @param ctl
 	 */
 	void run_thread(Control ctl) override {
+		assert(pool.size() > 0 && "*** Cannot run on an empty ChainPool");
 		
 		while( ctl.running() ) {
 			auto& chain = pool[next_index() % pool.size()];
