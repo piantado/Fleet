@@ -48,7 +48,7 @@ public:
 		if(z == 0) 
 			return std::make_pair(0,0); // I think?
 		
-		auto x = z%k;
+		auto x = z % k;
 		return std::make_pair(x, (z-x)/k);
 	}
 

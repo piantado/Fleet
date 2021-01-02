@@ -289,11 +289,18 @@ enumerationidx_t compute_enumeration_order(Grammar_t* g, const Node& n) {
 // Subtrees
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-[[no_discard]] enumerationidx_t count_partial_subtrees(const Node& n) {
+/**
+ * @brief How many partial subtrees are there?
+ * @param n
+ * @return 
+ */
+
+[[nodiscard]] enumerationidx_t count_partial_subtrees(const Node& n) {
 	// how many possible connected, partial subtrees do I have
 	// (e.g. including a path back to my root)
 			
-	assert(not n.is_null()); // can't really be connected if I'm null
+	if(n.is_null()) 
+		return 1; // only one tree there!
 
 	enumerationidx_t k=1; 
 	for(enumerationidx_t i=0;i<n.nchildren();i++){
@@ -306,18 +313,26 @@ enumerationidx_t compute_enumeration_order(Grammar_t* g, const Node& n) {
 	return k+1; // +1 because I could make the root null
 }
 
+/**
+ * @brief Get this partial subtree in an enumeration (uses IntegerizedStack instead of z)
+ * @param g
+ * @param n
+ * @param is
+ * @return 
+ */
+
 template<typename Grammar_t>
-[[no_discard]] Node partial_subtree(Grammar_t* g, const Node& n, IntegerizedStack& is) {
+[[nodiscard]] Node partial_subtree(Grammar_t* g, const Node& n, IntegerizedStack& is) {
 	// make a copy of the z'th partial subtree 
 
 	if(is.get_value() == 0) {
 		return Node();
 	}
 	else {
-		is -= 1; // for not Node
+		is -= 1; // for not null
 		
 		Node out = g->makeNode(n.rule); // copy the first level
-		for(enumerationidx_t i=0;i<out.nchildren();i++) {
+		for(size_t i=0;i<out.nchildren();i++) {
 			
 			// the most we can pop from a child is the number of partial trees they have
 			auto cz = count_partial_subtrees(n.child(i));
@@ -328,22 +343,74 @@ template<typename Grammar_t>
 			
 			
 			// if we are on the last child, we must use everything
-			if(i == out.nchildren()-1) {
-				assert(is.get_value() <= cz);
-				out.set_child(i, partial_subtree(g, n.child(i), is.get_value() ));
-			}
-			else {
-				out.set_child(i, partial_subtree(g, n.child(i), is.pop(cz) ));
-			}
+//			if(i == out.nchildren()-1) {
+//				assert(is.get_value() <= cz);
+//				out.set_child(i, partial_subtree(g, n.child(i), is.get_value() ));
+//			}
+//			else {
+//				out.set_child(i, partial_subtree(g, n.child(i), is.pop(cz) ));
+//			}
+			out.set_child(i, partial_subtree(g, n.child(i), is.pop(cz) ));
+		
 		}
 		return out;
 		
 	}
 }
 
-
+/**
+ * @brief Get the z'th partial subtree in an enumeration
+ * @param g
+ * @param n
+ * @param z
+ * @return 
+ */
 template<typename Grammar_t>
-Node partial_subtree(Grammar_t* g, const Node& n, enumerationidx_t z) {
+[[nodiscard]] Node partial_subtree(Grammar_t* g, const Node& n, enumerationidx_t z) {
 	IntegerizedStack is(z);
 	return partial_subtree(g, n, is);
 }
+
+
+/**
+ * @brief What order am I in a partial subtree enumeration?
+ * @param g
+ * @param n
+ * @param is
+ */
+template<typename Grammar_t>
+[[nodiscard]] enumerationidx_t compute_partial_subtree_order(Grammar_t* g, const Node& n) {
+	
+	if(n.is_null()) {
+		return 0;
+	}
+	else {
+		
+		const int N = n.nchildren();
+	
+		IntegerizedStack is;
+		
+		// push the last (which is not popped mod)
+		
+		// We have to go in reverse order here, remember, since that's hwo things are unpacked
+		//IntegerizedStack is(compute_partial_subtree_order(g, n.child(N-1)));
+		for(int i=N-1;i>=0;i--) {
+		//for(enumerationidx_t i=0;i<N;i++) {
+			
+			// the most we can pop from a child is the number of partial trees they have
+			auto cz = count_partial_subtrees(n.child(i));
+			auto cx = compute_partial_subtree_order(g, n.child(i));
+
+			is.push(cx, cz);
+			
+			COUT ">>" TAB cx TAB cz TAB is.get_value() TAB n.child(i) << " in " << n.string() ENDL;
+
+		}
+		
+		
+		// 1+ becuase it wasn't null
+		return 1+is.get_value();		
+	}
+}
+
+ 
