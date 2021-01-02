@@ -55,6 +55,10 @@ public:
 
 	// This is the function type
 	using FT = typename VirtualMachineState_t::FT; 
+	
+	// get the n'th type
+	//template<size_t N>
+	//using type = typename std::tuple_element<N, TypeTuple>::type;
 
 	// rules[k] stores a SORTED vector of rules for the kth' nonterminal. 
 	// our iteration order is first for k = 0 ... N_NTs then for r in rules[k]

@@ -17,8 +17,11 @@
 // so sick of typing this horseshit
 #define TAB <<"\t"<< 
 #define ENDL <<std::endl;
+#define ENDLL <<"\n"<<std::endl;
 #define CERR std::cerr<<
 #define COUT std::cout<<
+#define COUTT std::cout<<"\t"<<
+#define COUTTT std::cout<<"\t\t"<<
 
 std::mutex output_lock;
 

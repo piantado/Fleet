@@ -283,42 +283,67 @@ enumerationidx_t compute_enumeration_order(Grammar_t* g, const Node& n) {
 //		return out;		
 //		
 //	}
-		
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Subtrees
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-	virtual enumerationidx_t count_connected_partial_subtrees(const Node& n) const {
-		// how many possible connected, partial subtrees do I have
-		// (e.g. including a path back to my root)
-				
-		assert(not n.is_null()); // can't really be connected if I'm null
 	
-		enumerationidx_t k=1; 
-		for(enumerationidx_t i=0;i<n.nchildren();i++){
-			if(not n.child(i).is_null())  {
-				// for each child independently, I can either make them null, or I can include them
-				// and choose one of their own subtrees
-				k = k * count_connected_partial_subtrees(n.child(i)); 
+*/	
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Subtrees
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[[no_discard]] enumerationidx_t count_partial_subtrees(const Node& n) {
+	// how many possible connected, partial subtrees do I have
+	// (e.g. including a path back to my root)
+			
+	assert(not n.is_null()); // can't really be connected if I'm null
+
+	enumerationidx_t k=1; 
+	for(enumerationidx_t i=0;i<n.nchildren();i++){
+		if(not n.child(i).is_null())  {
+			// for each child independently, I can either make them null, or I can include them
+			// and choose one of their own subtrees
+			k = k * count_partial_subtrees(n.child(i)); 
+		}
+	}
+	return k+1; // +1 because I could make the root null
+}
+
+template<typename Grammar_t>
+[[no_discard]] Node partial_subtree(Grammar_t* g, const Node& n, IntegerizedStack& is) {
+	// make a copy of the z'th partial subtree 
+
+	if(is.get_value() == 0) {
+		return Node();
+	}
+	else {
+		is -= 1; // for not Node
+		
+		Node out = g->makeNode(n.rule); // copy the first level
+		for(enumerationidx_t i=0;i<out.nchildren();i++) {
+			
+			// the most we can pop from a child is the number of partial trees they have
+			auto cz = count_partial_subtrees(n.child(i));
+			//CERR "  =" TAB i TAB is.get_value() TAB cz TAB n.child(i).string() ENDL;
+			
+			// Problem is that when we mod pop from everything before, sometimes we are left with 
+			// too much at the end?
+			
+			
+			// if we are on the last child, we must use everything
+			if(i == out.nchildren()-1) {
+				assert(is.get_value() <= cz);
+				out.set_child(i, partial_subtree(g, n.child(i), is.get_value() ));
+			}
+			else {
+				out.set_child(i, partial_subtree(g, n.child(i), is.pop(cz) ));
 			}
 		}
-		return k+1; // +1 because I could make the root null
+		return out;
+		
 	}
+}
 
 
-//	virtual Node copy_connected_partial_subtree(const Node& n, IntegerizedStack is) const {
-//		// make a copy of the z'th partial subtree 
-// 
-//		if(is.get_value() == 0) 
-//			return Node(); // return null for me
-//		
-//		Node out = makeNode(n.rule); // copy the first level
-//		for(enumerationidx_t i=0;i<out.nchildren();i++) {
-//			out.set_child(i, copy_connected_partial_subtree(n.child(i), (i==out.nchildren() ? is.get_value() : is.pop() )));
-//		}
-//		return out;
-//	}
-//	
-
-
-*/
+template<typename Grammar_t>
+Node partial_subtree(Grammar_t* g, const Node& n, enumerationidx_t z) {
+	IntegerizedStack is(z);
+	return partial_subtree(g, n, is);
+}

@@ -22,7 +22,7 @@ public:
 	const Rule*  rule; // which rule did I use?
 	double       lp; 
 	bool         can_resample;	
-	
+
 	Node(const Rule* r=nullptr, double _lp=0.0, bool cr=true) : 
 		BaseNode(r==nullptr?0:r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
 		// NOTE: We don't allow parent to be set here bcause that maeks pi hard to set. We shuold only be placed
@@ -57,7 +57,7 @@ public:
 		 * @param n
 		 */
 		assert(i < rule->N);
-		assert(n.nt() == rule->type(i));
+		assert(n.nt() == rule->type(i) or n.rule == NullRule); // no type checking when the rule is null
 		BaseNode<Node>::set_child(i,n);
 	}
 	void set_child(size_t i, Node&& n) {
@@ -67,7 +67,7 @@ public:
 		 * @param n
 		 */
 		assert(i < rule->N);
-		assert(n.nt() == rule->type(i));
+		assert(n.nt() == rule->type(i) or n.rule == NullRule); // no type checking when the rule is null
 		BaseNode<Node>::set_child(i,std::move(n));
 	}
 

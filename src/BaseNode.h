@@ -26,9 +26,16 @@ public:
 	this_t* parent; 
 	size_t pi; // what index am I in the parent?
 
+	/**
+	 * @brief Constructor of basenode -- sizes children to n 
+	 * @param n
+	 * @param p
+	 * @param i
+	 */	
 	BaseNode(size_t n=0, this_t* p=nullptr, size_t i=0) : children(n), parent(p), pi(i) {
 		
 	}
+	
 	BaseNode(const this_t& n) {
 		children = n.children;
 		parent = n.parent;
@@ -58,7 +65,7 @@ public:
 	virtual ~BaseNode() {}
 
 	// Functions to be defined by subclasses
-	virtual std::string string(bool usedot) const {
+	virtual std::string string(bool usedot=true) const {
 		throw YouShouldNotBeHereError("*** BaseNode subclass has no defined string()"); 
 	}
 	virtual std::string my_string() const { /// just print myself, not all my kids (single row per node display)
