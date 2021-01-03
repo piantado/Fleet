@@ -35,10 +35,6 @@ public:
 		throw NotImplementedError("*** Subclasses must implement toNode");
 	}
 	
-	// ensure these don't get called 
-	//virtual Node toNode(nonterminal_t nt, IntegerizedStack is) = delete;
-	//virtual Node toNode(nonterminal_t nt, const Node& frm, IntegerizedStack is) = delete; 
-	
 	/**
 	 * @brief Expand an integer to a node using this nonterminal type. 
 	 * @param nt
