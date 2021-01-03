@@ -152,6 +152,13 @@ public:
 	RuleIterator begin() const { return RuleIterator(const_cast<this_t*>(this), false); }
 	RuleIterator end()   const { return RuleIterator(const_cast<this_t*>(this), true);; }
 	
+	/**
+	 * @brief The start nonterminal type
+	 */
+	constexpr nonterminal_t start() {
+		return nt<output_t>();
+	}
+	
 	constexpr size_t count_nonterminals() const {
 		/**
 		 * @brief How many nonterminals are there in the grammar. 

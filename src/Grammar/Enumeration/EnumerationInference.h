@@ -11,9 +11,14 @@
  * @brief This interface an easy enumeratino interface which provides an abstract class for various
  * 		  types of enumeration. Most need to know about the grammar type.  
  * 
+ * 		   from_t is very odd -- might be too clever to use -- basically each kind of enumeration neesd
+ *        a little more information. SubtreeEnumeration needs a node to get subtrees from,
+ *        GrammarEnumeration needs a nonterminal type, etc. So that is set as from_t and passed in
+ *        to toNode. This prevents us from having to have different types in the arguments for toNode
+ * 
  * 		  NOTE: This is NOT the infernece scheme -- for that see Inference/Enumeration.h
  */
-template<typename Grammar_t>
+template<typename Grammar_t, typename from_t>
 class EnumerationInterface {
 public:
 	Grammar_t* grammar;
@@ -28,10 +33,7 @@ public:
 	 * @param is
 	 * @return 
 	 */
-	virtual Node toNode(nonterminal_t nt, IntegerizedStack& is)  {
-		throw NotImplementedError("*** Subclasses must implement toNode");
-	}
-	virtual Node toNode(nonterminal_t nt, const Node& frm, IntegerizedStack& is) {
+	virtual Node toNode(const from_t& frm, IntegerizedStack& is)  {
 		throw NotImplementedError("*** Subclasses must implement toNode");
 	}
 	
@@ -41,18 +43,11 @@ public:
 	 * @param z
 	 * @return 
 	 */
-	virtual Node toNode(nonterminal_t nt, enumerationidx_t z) {
+	virtual Node toNode(const from_t& frm, enumerationidx_t z) {
 		++FleetStatistics::enumeration_steps;
 	
 		IntegerizedStack is(z);
-		return toNode(nt, is);
-	}
-	
-	virtual Node toNode(nonterminal_t nt, const Node& frm, enumerationidx_t z) {
-		++FleetStatistics::enumeration_steps;
-	
-		IntegerizedStack is(z);
-		return toNode(nt, frm, is);
+		return toNode(frm, is);
 	}
 	
 	/**
@@ -60,20 +55,9 @@ public:
 	 * @param n
 	 * @return 
 	 */
-	virtual enumerationidx_t toInteger(const Node& n) {
+	virtual enumerationidx_t toInteger(const from_t& frm, const Node& n) {
 		throw NotImplementedError("*** Subclasses must implement toInteger(Node&)");
 	}
-	
-	/**
-	 * @brief Convert a node to an integer where we come from something
-	 * @param frm
-	 * @param n
-	 * @return 
-	 */
-	virtual enumerationidx_t toInteger(const Node& frm, const Node& n) {
-		throw NotImplementedError("*** Subclasses must implement toInteger(Node&,Node&)");
-	}
-	
 	
 };
 

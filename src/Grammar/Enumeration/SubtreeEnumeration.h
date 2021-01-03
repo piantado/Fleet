@@ -10,8 +10,8 @@
  * @brief Enumerate subtrees of a given tree
  */
 template<typename Grammar_t>
-class SubtreeEnumeration : public EnumerationInterface<Grammar_t> {
-	using Super = EnumerationInterface<Grammar_t>;
+class SubtreeEnumeration : public EnumerationInterface<Grammar_t,Node> {
+	using Super = EnumerationInterface<Grammar_t,Node>;
 public:
 	SubtreeEnumeration(Grammar_t* g) : Super(g) {}
 		
@@ -42,7 +42,7 @@ public:
 	 * @param is
 	 * @return 
 	 */
-	[[nodiscard]] virtual Node toNode(nonterminal_t nt, const Node& frm, IntegerizedStack& is) override {
+	[[nodiscard]] virtual Node toNode(const Node& frm, IntegerizedStack& is) override {
 		if(is.get_value() == 0) {
 			return Node();
 		}
@@ -51,15 +51,15 @@ public:
 			Node out = this->grammar->makeNode(frm.rule); // copy the first level
 			for(size_t i=0;i<out.nchildren();i++) {
 				auto cz = count(frm.child(i));
-				out.set_child(i, toNode(frm.type(i), frm.child(i), is.pop(cz) ));		
+				out.set_child(i, toNode(frm.child(i), is.pop(cz) ));		
 			}
 			return out;
 		}
 	}
 
 	// Required here or else we get z converted implicity to IntegerizedStack
-	[[nodiscard]] virtual Node toNode(nonterminal_t nt, const Node& frm, enumerationidx_t z) override {
-		return Super::toNode(nt,frm,z);
+	[[nodiscard]] virtual Node toNode(const Node& frm, enumerationidx_t z) override {
+		return Super::toNode(frm,z);
 	}
 	
 
