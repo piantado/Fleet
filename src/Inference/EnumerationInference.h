@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "Enumeration.h"
+#include "GrammarEnumeration.h"
 #include "Control.h"
 #include <queue>
 #include <thread>
@@ -32,11 +32,13 @@ public:
 	}
 	
 	void run_thread(Control ctl) override {
-
+	
+		GrammarEnumeration ge(this->grammar);
+		
 		ctl.start();
 		while(ctl.running()) {
 			enumerationidx_t nxt = (enumerationidx_t) next_index();
-			auto n = expand_from_integer(grammar, start, nxt);
+			auto n = ge.toNode(start, nxt);
 			auto h = MyHypothesis::make(grammar, n);
 			h.compute_posterior(*data);
 			(*callback)(h);
