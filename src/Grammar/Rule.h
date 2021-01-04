@@ -110,7 +110,9 @@ public:
 			return (r.N==0) < (N==0);
 		else if(p != r.p) 
 			return p > r.p; // weird, but helpful, that we sort in decreasing order of probability
-		else  // if probabilities and children are equal, set a fixed order based on hash
+		else if(format != r.format) // if probabilities and children are equal, set a fixed order based on hash
+			return format < r.format;
+		else
 			return my_hash < r.my_hash;
 	}
 	bool operator==(const Rule& r) const {
