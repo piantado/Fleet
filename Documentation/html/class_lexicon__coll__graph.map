@@ -1,7 +1,7 @@
-<map id="Lexicon&lt; this_t, INNER, input_t, output_t, datum_t &gt;" name="Lexicon&lt; this_t, INNER, input_t, output_t, datum_t &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="457,64,644,105"/>
-<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="199,5,409,47"/>
-<area shape="rect" id="node3" href="$class_bayesable.html" title=" " alt="" coords="5,13,151,39"/>
-<area shape="rect" id="node4" title=" " alt="" coords="249,71,359,98"/>
-<area shape="rect" id="node5" href="$class_searchable.html" title=" " alt="" coords="237,123,371,164"/>
+<map id="Lexicon&lt; this_t, INNER, input_t, output_t, datum_t, _VirtualMachineState_t &gt;" name="Lexicon&lt; this_t, INNER, input_t, output_t, datum_t, _VirtualMachineState_t &gt;">
+<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title="MCMCable\&lt; this_t, datum_t \&gt;" alt="" coords="200,5,399,32"/>
+<area shape="rect" id="node3" href="$class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="5,5,152,32"/>
+<area shape="rect" id="node4" href="$class_searchable.html" title="Searchable\&lt; this_t,\l input_t, output_t \&gt;" alt="" coords="232,57,367,98"/>
+<area shape="rect" id="node5" href="$class_callable.html" title="Callable\&lt; input_t,\l output_t, _VirtualMachine\lState_t \&gt;" alt="" coords="212,123,387,179"/>
+<area shape="rect" id="node6" href="$class_program_loader.html" title="ProgramLoader" alt="" coords="23,137,134,164"/>
 </map>

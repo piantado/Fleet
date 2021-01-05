@@ -1,5 +1,5 @@
-\hypertarget{class_parallel_tempering}{}\doxysection{Parallel\+Tempering$<$ H\+YP, callback\+\_\+t $>$ Class Template Reference}
-\label{class_parallel_tempering}\index{ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}}
+\hypertarget{class_parallel_tempering}{}\section{Parallel\+Tempering$<$ H\+YP, callback\+\_\+t $>$ Class Template Reference}
+\label{class_parallel_tempering}\index{Parallel\+Tempering$<$ H\+Y\+P, callback\+\_\+t $>$@{Parallel\+Tempering$<$ H\+Y\+P, callback\+\_\+t $>$}}
 
 
 {\ttfamily \#include $<$Parallel\+Tempering.\+h$>$}
@@ -11,7 +11,7 @@ Inheritance diagram for Parallel\+Tempering$<$ H\+YP, callback\+\_\+t $>$\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=229pt]{class_parallel_tempering__inherit__graph}
+\includegraphics[width=231pt]{class_parallel_tempering__inherit__graph}
 \end{center}
 \end{figure}
 
@@ -24,44 +24,44 @@ Collaboration diagram for Parallel\+Tempering$<$ H\+YP, callback\+\_\+t $>$\+:
 \includegraphics[width=350pt]{class_parallel_tempering__coll__graph}
 \end{center}
 \end{figure}
-\doxysubsection*{Public Member Functions}
+\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{class_parallel_tempering_aec98f6abe3a51a3cf79b508ba176d290}{Parallel\+Tempering}} (H\+YP \&h0, typename H\+Y\+P\+::data\+\_\+t $\ast$d, callback\+\_\+t \&cb, std\+::initializer\+\_\+list$<$ double $>$ t, bool allcallback=true)
+\hyperlink{class_parallel_tempering_aec98f6abe3a51a3cf79b508ba176d290}{Parallel\+Tempering} (H\+YP \&h0, typename H\+Y\+P\+::data\+\_\+t $\ast$d, callback\+\_\+t \&cb, std\+::initializer\+\_\+list$<$ double $>$ t, bool allcallback=true)
 \item 
-\mbox{\hyperlink{class_parallel_tempering_a28bc2e02ad875e2b1cfcde9e428bf97e}{Parallel\+Tempering}} (H\+YP \&h0, typename H\+Y\+P\+::data\+\_\+t $\ast$d, callback\+\_\+t \&cb, unsigned long n, double maxT, bool allcallback=true)
+\hyperlink{class_parallel_tempering_a28bc2e02ad875e2b1cfcde9e428bf97e}{Parallel\+Tempering} (H\+YP \&h0, typename H\+Y\+P\+::data\+\_\+t $\ast$d, callback\+\_\+t \&cb, unsigned long n, double maxT, bool allcallback=true)
 \item 
-\mbox{\hyperlink{class_parallel_tempering_a96763c107a95f4a120f2b65c896cb5b2}{$\sim$\+Parallel\+Tempering}} ()
+\hyperlink{class_parallel_tempering_a96763c107a95f4a120f2b65c896cb5b2}{$\sim$\+Parallel\+Tempering} ()
 \item 
-void \mbox{\hyperlink{class_parallel_tempering_aa704d462a41cb45b461b967a97dedcbb}{\+\_\+\+\_\+swapper\+\_\+thread}} (time\+\_\+ms swap\+\_\+every)
+void \hyperlink{class_parallel_tempering_aa704d462a41cb45b461b967a97dedcbb}{\+\_\+\+\_\+swapper\+\_\+thread} (time\+\_\+ms swap\+\_\+every)
 \item 
-void \mbox{\hyperlink{class_parallel_tempering_a6ae6bd8581ec13aad5983886b1a739e6}{\+\_\+\+\_\+adapter\+\_\+thread}} (time\+\_\+ms adapt\+\_\+every)
+void \hyperlink{class_parallel_tempering_a6ae6bd8581ec13aad5983886b1a739e6}{\+\_\+\+\_\+adapter\+\_\+thread} (time\+\_\+ms adapt\+\_\+every)
 \item 
-void \mbox{\hyperlink{class_parallel_tempering_a5332ab465d8ec7a1d882e393a416a1f0}{run}} (\mbox{\hyperlink{struct_control}{Control}} ctl)
+void \hyperlink{class_parallel_tempering_a5332ab465d8ec7a1d882e393a416a1f0}{run} (\hyperlink{struct_control}{Control} ctl)
 \item 
-void \mbox{\hyperlink{class_parallel_tempering_ac8f4d01107b5f6a429179a1ad5d22896}{run}} (\mbox{\hyperlink{struct_control}{Control}} ctl, time\+\_\+ms swap\+\_\+every, time\+\_\+ms adapt\+\_\+every)
+void \hyperlink{class_parallel_tempering_ac8f4d01107b5f6a429179a1ad5d22896}{run} (\hyperlink{struct_control}{Control} ctl, time\+\_\+ms swap\+\_\+every, time\+\_\+ms adapt\+\_\+every)
 \item 
-void \mbox{\hyperlink{class_parallel_tempering_a9e1960158b12a4dadfab54eb4fb895d3}{show\+\_\+statistics}} ()
+void \hyperlink{class_parallel_tempering_a9e1960158b12a4dadfab54eb4fb895d3}{show\+\_\+statistics} ()
 \item 
-double \mbox{\hyperlink{class_parallel_tempering_a439c50d3f616319803d4ab83804d1ae0}{k}} (unsigned long t, double v, double t0)
+double \hyperlink{class_parallel_tempering_a439c50d3f616319803d4ab83804d1ae0}{k} (unsigned long t, double v, double t0)
 \item 
-void \mbox{\hyperlink{class_parallel_tempering_a673feff316b65cad63f56ceb81b128ae}{adapt}} (double v=3, double t0=1000000)
+void \hyperlink{class_parallel_tempering_a673feff316b65cad63f56ceb81b128ae}{adapt} (double v=3, double t0=1000000)
 \end{DoxyCompactItemize}
-\doxysubsection*{Public Attributes}
+\subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-std\+::vector$<$ double $>$ \mbox{\hyperlink{class_parallel_tempering_a5aca1e6ca522986f183d61c91c94d21d}{temperatures}}
+std\+::vector$<$ double $>$ \hyperlink{class_parallel_tempering_a5aca1e6ca522986f183d61c91c94d21d}{temperatures}
 \item 
-\mbox{\hyperlink{class_finite_history}{Finite\+History}}$<$ bool $>$ $\ast$ \mbox{\hyperlink{class_parallel_tempering_af9ae9446ae4d22c0a26755f3d3a1d86a}{swap\+\_\+history}}
+\hyperlink{class_finite_history}{Finite\+History}$<$ bool $>$ $\ast$ \hyperlink{class_parallel_tempering_af9ae9446ae4d22c0a26755f3d3a1d86a}{swap\+\_\+history}
 \item 
-bool \mbox{\hyperlink{class_parallel_tempering_ae9f0a2af938df838cc4010983860394e}{is\+\_\+temperature}}
+bool \hyperlink{class_parallel_tempering_ae9f0a2af938df838cc4010983860394e}{is\+\_\+temperature}
 \item 
-std\+::atomic$<$ bool $>$ \mbox{\hyperlink{class_parallel_tempering_acda523b375468743e7d8ac471af65285}{terminate}}
+std\+::atomic$<$ bool $>$ \hyperlink{class_parallel_tempering_acda523b375468743e7d8ac471af65285}{terminate}
 \end{DoxyCompactItemize}
-\doxysubsection*{Additional Inherited Members}
+\subsection*{Additional Inherited Members}
 
 
-\doxysubsection{Detailed Description}
+\subsection{Detailed Description}
 \subsubsection*{template$<$typename H\+YP, typename callback\+\_\+t$>$\newline
 class Parallel\+Tempering$<$ H\+Y\+P, callback\+\_\+t $>$}
 
@@ -73,113 +73,113 @@ piantado
 \end{DoxyDate}
 
 
-\doxysubsection{Constructor \& Destructor Documentation}
+\subsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{class_parallel_tempering_aec98f6abe3a51a3cf79b508ba176d290}\label{class_parallel_tempering_aec98f6abe3a51a3cf79b508ba176d290}} 
-\index{ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}!ParallelTempering@{ParallelTempering}}
-\index{ParallelTempering@{ParallelTempering}!ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{ParallelTempering()}{ParallelTempering()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!Parallel\+Tempering@{Parallel\+Tempering}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!Parallel\+Tempering@{Parallel\+Tempering}}
+\subsubsection{\texorpdfstring{Parallel\+Tempering()}{ParallelTempering()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-\mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::\mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}} (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{callback\+\_\+t \&}]{cb,  }\item[{std\+::initializer\+\_\+list$<$ double $>$}]{t,  }\item[{bool}]{allcallback = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\hyperlink{class_parallel_tempering}{Parallel\+Tempering}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_parallel_tempering}{Parallel\+Tempering} (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{callback\+\_\+t \&}]{cb,  }\item[{std\+::initializer\+\_\+list$<$ double $>$}]{t,  }\item[{bool}]{allcallback = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_parallel_tempering_a28bc2e02ad875e2b1cfcde9e428bf97e}\label{class_parallel_tempering_a28bc2e02ad875e2b1cfcde9e428bf97e}} 
-\index{ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}!ParallelTempering@{ParallelTempering}}
-\index{ParallelTempering@{ParallelTempering}!ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{ParallelTempering()}{ParallelTempering()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!Parallel\+Tempering@{Parallel\+Tempering}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!Parallel\+Tempering@{Parallel\+Tempering}}
+\subsubsection{\texorpdfstring{Parallel\+Tempering()}{ParallelTempering()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-\mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::\mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}} (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{callback\+\_\+t \&}]{cb,  }\item[{unsigned long}]{n,  }\item[{double}]{maxT,  }\item[{bool}]{allcallback = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\hyperlink{class_parallel_tempering}{Parallel\+Tempering}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_parallel_tempering}{Parallel\+Tempering} (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{callback\+\_\+t \&}]{cb,  }\item[{unsigned long}]{n,  }\item[{double}]{maxT,  }\item[{bool}]{allcallback = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_parallel_tempering_a96763c107a95f4a120f2b65c896cb5b2}\label{class_parallel_tempering_a96763c107a95f4a120f2b65c896cb5b2}} 
-\index{ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}!````~ParallelTempering@{$\sim$ParallelTempering}}
-\index{````~ParallelTempering@{$\sim$ParallelTempering}!ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{$\sim$ParallelTempering()}{~ParallelTempering()}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!````~Parallel\+Tempering@{$\sim$\+Parallel\+Tempering}}
+\index{````~Parallel\+Tempering@{$\sim$\+Parallel\+Tempering}!Parallel\+Tempering@{Parallel\+Tempering}}
+\subsubsection{\texorpdfstring{$\sim$\+Parallel\+Tempering()}{~ParallelTempering()}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-\mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::$\sim$\mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\hyperlink{class_parallel_tempering}{Parallel\+Tempering}$<$ H\+YP, callback\+\_\+t $>$\+::$\sim$\hyperlink{class_parallel_tempering}{Parallel\+Tempering} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-\doxysubsection{Member Function Documentation}
+\subsection{Member Function Documentation}
 \mbox{\Hypertarget{class_parallel_tempering_a6ae6bd8581ec13aad5983886b1a739e6}\label{class_parallel_tempering_a6ae6bd8581ec13aad5983886b1a739e6}} 
-\index{ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}!\_\_adapter\_thread@{\_\_adapter\_thread}}
-\index{\_\_adapter\_thread@{\_\_adapter\_thread}!ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{\_\_adapter\_thread()}{\_\_adapter\_thread()}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!\+\_\+\+\_\+adapter\+\_\+thread@{\+\_\+\+\_\+adapter\+\_\+thread}}
+\index{\+\_\+\+\_\+adapter\+\_\+thread@{\+\_\+\+\_\+adapter\+\_\+thread}!Parallel\+Tempering@{Parallel\+Tempering}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+adapter\+\_\+thread()}{\_\_adapter\_thread()}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-void \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::\+\_\+\+\_\+adapter\+\_\+thread (\begin{DoxyParamCaption}\item[{time\+\_\+ms}]{adapt\+\_\+every }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+void \hyperlink{class_parallel_tempering}{Parallel\+Tempering}$<$ H\+YP, callback\+\_\+t $>$\+::\+\_\+\+\_\+adapter\+\_\+thread (\begin{DoxyParamCaption}\item[{time\+\_\+ms}]{adapt\+\_\+every }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_parallel_tempering_aa704d462a41cb45b461b967a97dedcbb}\label{class_parallel_tempering_aa704d462a41cb45b461b967a97dedcbb}} 
-\index{ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}!\_\_swapper\_thread@{\_\_swapper\_thread}}
-\index{\_\_swapper\_thread@{\_\_swapper\_thread}!ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{\_\_swapper\_thread()}{\_\_swapper\_thread()}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!\+\_\+\+\_\+swapper\+\_\+thread@{\+\_\+\+\_\+swapper\+\_\+thread}}
+\index{\+\_\+\+\_\+swapper\+\_\+thread@{\+\_\+\+\_\+swapper\+\_\+thread}!Parallel\+Tempering@{Parallel\+Tempering}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+swapper\+\_\+thread()}{\_\_swapper\_thread()}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-void \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::\+\_\+\+\_\+swapper\+\_\+thread (\begin{DoxyParamCaption}\item[{time\+\_\+ms}]{swap\+\_\+every }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+void \hyperlink{class_parallel_tempering}{Parallel\+Tempering}$<$ H\+YP, callback\+\_\+t $>$\+::\+\_\+\+\_\+swapper\+\_\+thread (\begin{DoxyParamCaption}\item[{time\+\_\+ms}]{swap\+\_\+every }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_parallel_tempering_a673feff316b65cad63f56ceb81b128ae}\label{class_parallel_tempering_a673feff316b65cad63f56ceb81b128ae}} 
-\index{ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}!adapt@{adapt}}
-\index{adapt@{adapt}!ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{adapt()}{adapt()}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!adapt@{adapt}}
+\index{adapt@{adapt}!Parallel\+Tempering@{Parallel\+Tempering}}
+\subsubsection{\texorpdfstring{adapt()}{adapt()}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-void \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::adapt (\begin{DoxyParamCaption}\item[{double}]{v = {\ttfamily 3},  }\item[{double}]{t0 = {\ttfamily 1000000} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+void \hyperlink{class_parallel_tempering}{Parallel\+Tempering}$<$ H\+YP, callback\+\_\+t $>$\+::adapt (\begin{DoxyParamCaption}\item[{double}]{v = {\ttfamily 3},  }\item[{double}]{t0 = {\ttfamily 1000000} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_parallel_tempering_a439c50d3f616319803d4ab83804d1ae0}\label{class_parallel_tempering_a439c50d3f616319803d4ab83804d1ae0}} 
-\index{ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}!k@{k}}
-\index{k@{k}!ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{k()}{k()}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!k@{k}}
+\index{k@{k}!Parallel\+Tempering@{Parallel\+Tempering}}
+\subsubsection{\texorpdfstring{k()}{k()}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-double \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::k (\begin{DoxyParamCaption}\item[{unsigned long}]{t,  }\item[{double}]{v,  }\item[{double}]{t0 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+double \hyperlink{class_parallel_tempering}{Parallel\+Tempering}$<$ H\+YP, callback\+\_\+t $>$\+::k (\begin{DoxyParamCaption}\item[{unsigned long}]{t,  }\item[{double}]{v,  }\item[{double}]{t0 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_parallel_tempering_a5332ab465d8ec7a1d882e393a416a1f0}\label{class_parallel_tempering_a5332ab465d8ec7a1d882e393a416a1f0}} 
-\index{ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}!run@{run}}
-\index{run@{run}!ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{run()}{run()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!run@{run}}
+\index{run@{run}!Parallel\+Tempering@{Parallel\+Tempering}}
+\subsubsection{\texorpdfstring{run()}{run()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-void \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::run (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+void \hyperlink{class_parallel_tempering}{Parallel\+Tempering}$<$ H\+YP, callback\+\_\+t $>$\+::run (\begin{DoxyParamCaption}\item[{\hyperlink{struct_control}{Control}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_parallel_tempering_ac8f4d01107b5f6a429179a1ad5d22896}\label{class_parallel_tempering_ac8f4d01107b5f6a429179a1ad5d22896}} 
-\index{ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}!run@{run}}
-\index{run@{run}!ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{run()}{run()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!run@{run}}
+\index{run@{run}!Parallel\+Tempering@{Parallel\+Tempering}}
+\subsubsection{\texorpdfstring{run()}{run()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-void \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::run (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl,  }\item[{time\+\_\+ms}]{swap\+\_\+every,  }\item[{time\+\_\+ms}]{adapt\+\_\+every }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+void \hyperlink{class_parallel_tempering}{Parallel\+Tempering}$<$ H\+YP, callback\+\_\+t $>$\+::run (\begin{DoxyParamCaption}\item[{\hyperlink{struct_control}{Control}}]{ctl,  }\item[{time\+\_\+ms}]{swap\+\_\+every,  }\item[{time\+\_\+ms}]{adapt\+\_\+every }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_parallel_tempering_a9e1960158b12a4dadfab54eb4fb895d3}\label{class_parallel_tempering_a9e1960158b12a4dadfab54eb4fb895d3}} 
-\index{ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}!show\_statistics@{show\_statistics}}
-\index{show\_statistics@{show\_statistics}!ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{show\_statistics()}{show\_statistics()}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!show\+\_\+statistics@{show\+\_\+statistics}}
+\index{show\+\_\+statistics@{show\+\_\+statistics}!Parallel\+Tempering@{Parallel\+Tempering}}
+\subsubsection{\texorpdfstring{show\+\_\+statistics()}{show\_statistics()}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-void \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::show\+\_\+statistics (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+void \hyperlink{class_parallel_tempering}{Parallel\+Tempering}$<$ H\+YP, callback\+\_\+t $>$\+::show\+\_\+statistics (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-\doxysubsection{Member Data Documentation}
+\subsection{Member Data Documentation}
 \mbox{\Hypertarget{class_parallel_tempering_ae9f0a2af938df838cc4010983860394e}\label{class_parallel_tempering_ae9f0a2af938df838cc4010983860394e}} 
-\index{ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}!is\_temperature@{is\_temperature}}
-\index{is\_temperature@{is\_temperature}!ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{is\_temperature}{is\_temperature}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!is\+\_\+temperature@{is\+\_\+temperature}}
+\index{is\+\_\+temperature@{is\+\_\+temperature}!Parallel\+Tempering@{Parallel\+Tempering}}
+\subsubsection{\texorpdfstring{is\+\_\+temperature}{is\_temperature}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-bool \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::is\+\_\+temperature}
+bool \hyperlink{class_parallel_tempering}{Parallel\+Tempering}$<$ H\+YP, callback\+\_\+t $>$\+::is\+\_\+temperature}
 
 \mbox{\Hypertarget{class_parallel_tempering_af9ae9446ae4d22c0a26755f3d3a1d86a}\label{class_parallel_tempering_af9ae9446ae4d22c0a26755f3d3a1d86a}} 
-\index{ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}!swap\_history@{swap\_history}}
-\index{swap\_history@{swap\_history}!ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{swap\_history}{swap\_history}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!swap\+\_\+history@{swap\+\_\+history}}
+\index{swap\+\_\+history@{swap\+\_\+history}!Parallel\+Tempering@{Parallel\+Tempering}}
+\subsubsection{\texorpdfstring{swap\+\_\+history}{swap\_history}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-\mbox{\hyperlink{class_finite_history}{Finite\+History}}$<$bool$>$$\ast$ \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::swap\+\_\+history}
+\hyperlink{class_finite_history}{Finite\+History}$<$bool$>$$\ast$ \hyperlink{class_parallel_tempering}{Parallel\+Tempering}$<$ H\+YP, callback\+\_\+t $>$\+::swap\+\_\+history}
 
 \mbox{\Hypertarget{class_parallel_tempering_a5aca1e6ca522986f183d61c91c94d21d}\label{class_parallel_tempering_a5aca1e6ca522986f183d61c91c94d21d}} 
-\index{ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}!temperatures@{temperatures}}
-\index{temperatures@{temperatures}!ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{temperatures}{temperatures}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!temperatures@{temperatures}}
+\index{temperatures@{temperatures}!Parallel\+Tempering@{Parallel\+Tempering}}
+\subsubsection{\texorpdfstring{temperatures}{temperatures}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-std\+::vector$<$double$>$ \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::temperatures}
+std\+::vector$<$double$>$ \hyperlink{class_parallel_tempering}{Parallel\+Tempering}$<$ H\+YP, callback\+\_\+t $>$\+::temperatures}
 
 \mbox{\Hypertarget{class_parallel_tempering_acda523b375468743e7d8ac471af65285}\label{class_parallel_tempering_acda523b375468743e7d8ac471af65285}} 
-\index{ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}!terminate@{terminate}}
-\index{terminate@{terminate}!ParallelTempering$<$ HYP, callback\_t $>$@{ParallelTempering$<$ HYP, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{terminate}{terminate}}
+\index{Parallel\+Tempering@{Parallel\+Tempering}!terminate@{terminate}}
+\index{terminate@{terminate}!Parallel\+Tempering@{Parallel\+Tempering}}
+\subsubsection{\texorpdfstring{terminate}{terminate}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-std\+::atomic$<$bool$>$ \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::terminate}
+std\+::atomic$<$bool$>$ \hyperlink{class_parallel_tempering}{Parallel\+Tempering}$<$ H\+YP, callback\+\_\+t $>$\+::terminate}
 
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/\+Inference/\mbox{\hyperlink{_parallel_tempering_8h}{Parallel\+Tempering.\+h}}\end{DoxyCompactItemize}
+src/\+Inference/\hyperlink{_parallel_tempering_8h}{Parallel\+Tempering.\+h}\end{DoxyCompactItemize}

@@ -1,11 +1,13 @@
-\hypertarget{_virtual_machine_pool_8h}{}\doxysection{src/\+Virtual\+Machine/\+Virtual\+Machine\+Pool.h File Reference}
-\label{_virtual_machine_pool_8h}\index{src/VirtualMachine/VirtualMachinePool.h@{src/VirtualMachine/VirtualMachinePool.h}}
+\hypertarget{_virtual_machine_pool_8h}{}\section{src/\+Virtual\+Machine/\+Virtual\+Machine\+Pool.h File Reference}
+\label{_virtual_machine_pool_8h}\index{src/\+Virtual\+Machine/\+Virtual\+Machine\+Pool.\+h@{src/\+Virtual\+Machine/\+Virtual\+Machine\+Pool.\+h}}
 
 
-This manages a collection of Virtual\+Machines -- this is what handles the enumeration of flip by probability. Basically each machine state stores the state of some evaluator and is able to push things back on to the Q if it encounters a random flip This stores pointers because it is impossible to copy out of std collections, so we are constantly having to call \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} constructors. Using pointers speeds us up by about 20\%.  
+A little class that any \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool} A\+ND Virtual\+Machines inherit to control their behavior. N\+O\+TE That this is not passed around like Fleet\+::\+Control--it is just meant to be a place to set static variables.  
 
 
 {\ttfamily \#include \char`\"{}Discrete\+Distribution.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Hypotheses/\+Interfaces/\+Program\+Loader.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Virtual\+Machine\+Control.\+h\char`\"{}}\newline
 {\ttfamily \#include $<$vector$>$}\newline
 {\ttfamily \#include $<$queue$>$}\newline
 Include dependency graph for Virtual\+Machine\+Pool.\+h\+:
@@ -21,16 +23,42 @@ This graph shows which files directly or indirectly include this file\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=245pt]{_virtual_machine_pool_8h__dep__incl}
+\includegraphics[width=350pt]{_virtual_machine_pool_8h__dep__incl}
 \end{center}
 \end{figure}
-\doxysubsection*{Classes}
+\subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool$<$ V\+M\+State $>$}}
+class \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool$<$ Virtual\+Machine\+State\+\_\+t $>$}
 \end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Virtual\+Machine\+State\+\_\+t $>$ }\\\hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$ typename Virtual\+Machine\+State\+\_\+t\+::output\+\_\+t $>$ \hyperlink{_virtual_machine_pool_8h_a04e1e032b1267c641de673754897d2bc}{marginal\+\_\+vms\+\_\+output} (std\+::vector$<$ Virtual\+Machine\+State\+\_\+t $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Compute the marginal output of a collection of Virtual\+Machine\+States (as we might get from run\+\_\+vms) \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
-\doxysubsection{Detailed Description}
-This manages a collection of Virtual\+Machines -- this is what handles the enumeration of flip by probability. Basically each machine state stores the state of some evaluator and is able to push things back on to the Q if it encounters a random flip This stores pointers because it is impossible to copy out of std collections, so we are constantly having to call \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} constructors. Using pointers speeds us up by about 20\%. 
+\subsection{Detailed Description}
+A little class that any \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool} A\+ND Virtual\+Machines inherit to control their behavior. N\+O\+TE That this is not passed around like Fleet\+::\+Control--it is just meant to be a place to set static variables. 
 
+Compare pointers to Virtual\+Machine\+States by their log probability.
+
+This manages a collection of Virtual\+Machines -- this is what handles the enumeration of flip by probability. Basically each machine state stores the state of some evaluator and is able to push things back on to the Q if it encounters a random flip This stores pointers because it is impossible to copy out of std collections, so we are constantly having to call \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State} constructors. Using pointers speeds us up by about 20\%.
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_virtual_machine_pool_8h_a04e1e032b1267c641de673754897d2bc}\label{_virtual_machine_pool_8h_a04e1e032b1267c641de673754897d2bc}} 
+\index{Virtual\+Machine\+Pool.\+h@{Virtual\+Machine\+Pool.\+h}!marginal\+\_\+vms\+\_\+output@{marginal\+\_\+vms\+\_\+output}}
+\index{marginal\+\_\+vms\+\_\+output@{marginal\+\_\+vms\+\_\+output}!Virtual\+Machine\+Pool.\+h@{Virtual\+Machine\+Pool.\+h}}
+\subsubsection{\texorpdfstring{marginal\+\_\+vms\+\_\+output()}{marginal\_vms\_output()}}
+{\footnotesize\ttfamily template$<$typename Virtual\+Machine\+State\+\_\+t $>$ \\
+\hyperlink{class_discrete_distribution}{Discrete\+Distribution}$<$typename Virtual\+Machine\+State\+\_\+t\+::output\+\_\+t$>$ marginal\+\_\+vms\+\_\+output (\begin{DoxyParamCaption}\item[{std\+::vector$<$ Virtual\+Machine\+State\+\_\+t $>$ \&}]{v }\end{DoxyParamCaption})}
+
+
+
+Compute the marginal output of a collection of Virtual\+Machine\+States (as we might get from run\+\_\+vms) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & \\
+\hline
+\end{DoxyParams}

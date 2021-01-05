@@ -1,10 +1,11 @@
 var searchData=
 [
-  ['datatempering_852',['DataTempering',['../class_data_tempering.html#a21a8c93e110fdcebce332300bfea5ece',1,'DataTempering']]],
-  ['debug_853',['DEBUG',['../_i_o_8h.html#a06738d9fd0166a7a5c1f7864b2f67595',1,'IO.h']]],
-  ['defauldatum_5ft_854',['defauldatum_t',['../classdefauldatum__t.html#a60dbe7a244471992011e822a274111fb',1,'defauldatum_t::defauldatum_t()'],['../classdefauldatum__t.html#aec837adfff605f08b75e8157f542fb90',1,'defauldatum_t::defauldatum_t(const input_t &amp;i, const output_t &amp;o, double r)'],['../classdefauldatum__t.html#a338eb6eda0b2c7adb2b83476b57561d3',1,'defauldatum_t::defauldatum_t(const input_t &amp;i, const output_t &amp;o)']]],
-  ['delete_5ftree_855',['delete_tree',['../namespace_proposals.html#a785ec0b4f2f5df9b78bbb8c0c5f16118',1,'Proposals']]],
-  ['descend_856',['descend',['../class_full_m_c_t_s_node.html#ab5cf544f500703c9b8b46892a961ec32',1,'FullMCTSNode']]],
-  ['discretedistribution_857',['DiscreteDistribution',['../class_discrete_distribution.html#a8ffb7c55f85cf42af7aec6deb97ec4ab',1,'DiscreteDistribution']]],
-  ['divide_858',['divide',['../_strings_8h.html#af8ae1cb99a3ece3691d6673b40b9d621',1,'Strings.h']]]
+  ['datatempering',['DataTempering',['../class_data_tempering.html#a21a8c93e110fdcebce332300bfea5ece',1,'DataTempering']]],
+  ['debug',['DEBUG',['../_i_o_8h.html#a06738d9fd0166a7a5c1f7864b2f67595',1,'IO.h']]],
+  ['defaultdatum_5ft',['defaultdatum_t',['../classdefaultdatum__t.html#a5bc33b52846e24799da7af3dc99dd3f4',1,'defaultdatum_t::defaultdatum_t()'],['../classdefaultdatum__t.html#accc94705ca4d9e4e14bd1171fbad3879',1,'defaultdatum_t::defaultdatum_t(const input_t &amp;i, const output_t &amp;o, double r=NaN, double c=1.0)']]],
+  ['delete_5ftree',['delete_tree',['../namespace_proposals.html#a785ec0b4f2f5df9b78bbb8c0c5f16118',1,'Proposals']]],
+  ['descend_5fto_5fchildless',['descend_to_childless',['../class_m_c_t_s_base.html#a7755d2c3643ea43f386e15aeb3a17f98',1,'MCTSBase']]],
+  ['descend_5fto_5fevaluable',['descend_to_evaluable',['../class_m_c_t_s_base.html#a27be3009797afe0e59d0dae242fa1c72',1,'MCTSBase']]],
+  ['discretedistribution',['DiscreteDistribution',['../class_discrete_distribution.html#a8ffb7c55f85cf42af7aec6deb97ec4ab',1,'DiscreteDistribution']]],
+  ['divide',['divide',['../_strings_8h.html#af8ae1cb99a3ece3691d6673b40b9d621',1,'Strings.h']]]
 ];

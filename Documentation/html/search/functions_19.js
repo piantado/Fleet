@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['z_1081',['Z',['../class_discrete_distribution.html#ad634a339172a69c006fded1beb423bb7',1,'DiscreteDistribution::Z()'],['../class_top_n.html#a94191264b36318ce50e32c36018ef104',1,'TopN::Z()']]]
+  ['youshouldnotbehereerror',['YouShouldNotBeHereError',['../class_you_should_not_be_here_error.html#a07ad83d10d42cb5edea6e0a16ffcd225',1,'YouShouldNotBeHereError::YouShouldNotBeHereError()'],['../class_you_should_not_be_here_error.html#ad4ccc32bd90603898ae927ef90b36651',1,'YouShouldNotBeHereError::YouShouldNotBeHereError(std::string s)']]]
 ];

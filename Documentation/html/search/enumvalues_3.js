@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['random_5fbreakout_1299',['RANDOM_BREAKOUT',['../_instruction_8h.html#a6202215407ab29590bb936ca2996cf64a744399cc9222b7fb2eb79740e4fd0c34',1,'Instruction.h']]],
-  ['random_5fchoice_1300',['RANDOM_CHOICE',['../_instruction_8h.html#a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974',1,'Instruction.h']]],
-  ['random_5fchoice_5fno_5fdelete_1301',['RANDOM_CHOICE_NO_DELETE',['../_instruction_8h.html#a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460',1,'Instruction.h']]],
-  ['recursion_5fdepth_1302',['RECURSION_DEPTH',['../_instruction_8h.html#a6202215407ab29590bb936ca2996cf64a8427e4c0e4c7fc8456948b268f81ec6c',1,'Instruction.h']]],
-  ['run_5ftoo_5flong_1303',['RUN_TOO_LONG',['../_instruction_8h.html#a6202215407ab29590bb936ca2996cf64a18a6a8e9b2c160d9894261b480283a6b',1,'Instruction.h']]]
+  ['error',['ERROR',['../_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64abb1ca97ec761fc37101737ba0aa2e7c5',1,'VMStatus.h']]],
+  ['excludeserror',['ExcludesError',['../namespace_c_l_i.html#a1d8108a219533f0b0361640a017f037ea180b6078f0a0618bbdbaeda656841923',1,'CLI']]],
+  ['extraserror',['ExtrasError',['../namespace_c_l_i.html#a1d8108a219533f0b0361640a017f037ea12e25f67fcb619ec309d229ae4b9d75e',1,'CLI']]]
 ];

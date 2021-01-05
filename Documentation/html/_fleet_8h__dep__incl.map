@@ -1,4 +1,3 @@
 <map id="src/Fleet.h" name="src/Fleet.h">
-<area shape="rect" id="node1" title="A fleet object manages processing the command line, prints a useful summary of command lines,..." alt="" coords="46,5,130,32"/>
-<area shape="rect" id="node2" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="5,80,171,107"/>
+<area shape="rect" id="node2" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums. These are often used to store features that LOT expressions operate on, for instance the objects that boolean logic operates on. " alt="" coords="5,80,172,107"/>
 </map>

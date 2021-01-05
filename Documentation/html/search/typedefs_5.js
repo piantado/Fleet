@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['ll_5ft_1260',['LL_t',['../class_grammar_hypothesis.html#a27075c887aa5fd19f1d96f9391f6291e',1,'GrammarHypothesis']]]
+  ['hyp',['HYP',['../class_grammar_hypothesis.html#a28fc99df28de741179719c94ecd77699',1,'GrammarHypothesis']]],
+  ['hypothesis_5ft',['Hypothesis_t',['../class_top_n.html#ae734a8791a54516fecbc8cac2c67d16a',1,'TopN']]]
 ];

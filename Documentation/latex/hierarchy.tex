@@ -1,9 +1,11 @@
-\doxysection{Class Hierarchy}
+\section{Class Hierarchy}
 This inheritance list is sorted roughly, but not completely, alphabetically\+:\begin{DoxyCompactList}
 \item \contentsline{section}{Base\+Node$<$ this\+\_\+t $>$}{\pageref{class_base_node}}{}
 \begin{DoxyCompactList}
-\item \contentsline{section}{Full\+M\+C\+T\+S\+Node$<$ this\+\_\+t, H\+YP, callback\+\_\+t $>$}{\pageref{class_full_m_c_t_s_node}}{}
+\item \contentsline{section}{M\+C\+T\+S\+Base$<$ this\+\_\+t, H\+YP, callback\+\_\+t $>$}{\pageref{class_m_c_t_s_base}}{}
 \begin{DoxyCompactList}
+\item \contentsline{section}{Full\+M\+C\+T\+S\+Node$<$ this\+\_\+t, H\+YP, callback\+\_\+t $>$}{\pageref{class_full_m_c_t_s_node}}{}
+\item \contentsline{section}{Minimal\+M\+C\+T\+S\+Node$<$ this\+\_\+t, H\+YP, callback\+\_\+t $>$}{\pageref{class_minimal_m_c_t_s_node}}{}
 \item \contentsline{section}{Partial\+M\+C\+T\+S\+Node$<$ this\+\_\+t, H\+YP, callback\+\_\+t $>$}{\pageref{class_partial_m_c_t_s_node}}{}
 \end{DoxyCompactList}
 \end{DoxyCompactList}
@@ -11,103 +13,84 @@ This inheritance list is sorted roughly, but not completely, alphabetically\+:\b
 \begin{DoxyCompactList}
 \item \contentsline{section}{Node}{\pageref{class_node}}{}
 \end{DoxyCompactList}
+\item \contentsline{section}{Basic\+Enumeration$<$ Grammar\+\_\+t $>$}{\pageref{class_basic_enumeration}}{}
 \item \contentsline{section}{Bayesable$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}{\pageref{class_bayesable}}{}
 \item \contentsline{section}{Bayesable$<$ Args... $>$}{\pageref{class_bayesable}}{}
 \begin{DoxyCompactList}
 \item \contentsline{section}{M\+C\+M\+Cable$<$ this\+\_\+t, Args $>$}{\pageref{class_m_c_m_cable}}{}
-\item \contentsline{section}{M\+C\+M\+Cable$<$ Grammar\+Hypothesis$<$ H\+YP, Human\+Datum$<$ H\+YP $>$, std\+::vector$<$ Human\+Datum$<$ H\+YP $>$ $>$ $>$, Human\+Datum$<$ H\+YP $>$, std\+::vector$<$ Human\+Datum$<$ H\+YP $>$ $>$ $>$}{\pageref{class_m_c_m_cable}}{}
+\item \contentsline{section}{M\+C\+M\+Cable$<$ this\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}{\pageref{class_m_c_m_cable}}{}
 \begin{DoxyCompactList}
-\item \contentsline{section}{Grammar\+Hypothesis$<$ H\+YP, datum\+\_\+t, data\+\_\+t $>$}{\pageref{class_grammar_hypothesis}}{}
+\item \contentsline{section}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}{\pageref{class_l_o_t_hypothesis}}{}
 \end{DoxyCompactList}
-\item \contentsline{section}{M\+C\+M\+Cable$<$ this\+\_\+t, defauldatum\+\_\+t$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t $>$, std\+::vector$<$ defauldatum\+\_\+t$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t $>$ $>$ $>$}{\pageref{class_m_c_m_cable}}{}
+\item \contentsline{section}{M\+C\+M\+Cable$<$ this\+\_\+t, datum\+\_\+t $>$}{\pageref{class_m_c_m_cable}}{}
 \begin{DoxyCompactList}
-\item \contentsline{section}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}{\pageref{class_l_o_t_hypothesis}}{}
+\item \contentsline{section}{Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}{\pageref{class_lexicon}}{}
 \end{DoxyCompactList}
-\item \contentsline{section}{M\+C\+M\+Cable$<$ this\+\_\+t, defauldatum\+\_\+t$<$ input\+\_\+t, output\+\_\+t $>$ $>$}{\pageref{class_m_c_m_cable}}{}
+\item \contentsline{section}{M\+C\+M\+Cable$<$ this\+\_\+t, datum\+\_\+t, data\+\_\+t $>$}{\pageref{class_m_c_m_cable}}{}
 \begin{DoxyCompactList}
-\item \contentsline{section}{Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}{\pageref{class_lexicon}}{}
+\item \contentsline{section}{Grammar\+Hypothesis$<$ this\+\_\+t, \+\_\+\+H\+YP, datum\+\_\+t, data\+\_\+t $>$}{\pageref{class_grammar_hypothesis}}{}
 \end{DoxyCompactList}
-\item \contentsline{section}{M\+C\+M\+Cable$<$ Vector\+Hypothesis, void $\ast$ $>$}{\pageref{class_m_c_m_cable}}{}
+\item \contentsline{section}{M\+C\+M\+Cable$<$ T\+Normal\+Variable$<$ f $>$, void $\ast$$>$}{\pageref{class_m_c_m_cable}}{}
 \begin{DoxyCompactList}
-\item \contentsline{section}{Vector\+Hypothesis}{\pageref{class_vector_hypothesis}}{}
+\item \contentsline{section}{T\+Normal\+Variable$<$ f $>$}{\pageref{class_t_normal_variable}}{}
+\item \contentsline{section}{T\+Normal\+Variable$<$+\mbox{[}\mbox{]}(float x) -\/$>$}{\pageref{class_t_normal_variable}}{}
 \end{DoxyCompactList}
-\end{DoxyCompactList}
-\item \contentsline{section}{Builtin\+Primitive\+Base}{\pageref{struct_builtin_primitive_base}}{}
+\item \contentsline{section}{M\+C\+M\+Cable$<$ Vector\+Normal\+Hypothesis, void $\ast$$>$}{\pageref{class_m_c_m_cable}}{}
 \begin{DoxyCompactList}
-\item \contentsline{section}{Builtin\+Primitive$<$ t, args $>$}{\pageref{struct_builtin_primitive}}{}
-\item \contentsline{section}{Builtin\+Primitive$<$ bool $>$}{\pageref{struct_builtin_primitive}}{}
-\begin{DoxyCompactList}
-\item \contentsline{section}{Builtin\+::Flip}{\pageref{struct_builtin_1_1_flip}}{}
-\end{DoxyCompactList}
-\item \contentsline{section}{Builtin\+Primitive$<$ bool, double $>$}{\pageref{struct_builtin_primitive}}{}
-\begin{DoxyCompactList}
-\item \contentsline{section}{Builtin\+::FlipP}{\pageref{struct_builtin_1_1_flip_p}}{}
-\end{DoxyCompactList}
-\item \contentsline{section}{Builtin\+Primitive$<$ t $>$}{\pageref{struct_builtin_primitive}}{}
-\begin{DoxyCompactList}
-\item \contentsline{section}{Builtin\+::X$<$ t $>$}{\pageref{struct_builtin_1_1_x}}{}
-\end{DoxyCompactList}
-\item \contentsline{section}{Builtin\+Primitive$<$ t, bool, t, t $>$}{\pageref{struct_builtin_primitive}}{}
-\begin{DoxyCompactList}
-\item \contentsline{section}{Builtin\+::If$<$ t $>$}{\pageref{struct_builtin_1_1_if}}{}
-\end{DoxyCompactList}
-\item \contentsline{section}{Builtin\+Primitive$<$ t\+\_\+out, t\+\_\+in $>$}{\pageref{struct_builtin_primitive}}{}
-\begin{DoxyCompactList}
-\item \contentsline{section}{Builtin\+::Recurse$<$ t\+\_\+out, t\+\_\+in $>$}{\pageref{struct_builtin_1_1_recurse}}{}
-\item \contentsline{section}{Builtin\+::Safe\+Mem\+Recurse$<$ t\+\_\+out, t\+\_\+in $>$}{\pageref{struct_builtin_1_1_safe_mem_recurse}}{}
-\item \contentsline{section}{Builtin\+::Safe\+Recurse$<$ t\+\_\+out, t\+\_\+in $>$}{\pageref{struct_builtin_1_1_safe_recurse}}{}
+\item \contentsline{section}{Vector\+Normal\+Hypothesis}{\pageref{class_vector_normal_hypothesis}}{}
 \end{DoxyCompactList}
 \end{DoxyCompactList}
-\item \contentsline{section}{Builtin\+Primitive\+Root}{\pageref{class_builtin_primitive_root}}{}
-\item \contentsline{section}{check\+Builtins\+Are\+Last}{\pageref{classcheck_builtins_are_last}}{}
-\item \contentsline{section}{Check\+Reference\+Is\+First$<$ T, Types $>$}{\pageref{struct_check_reference_is_first}}{}
-\item \contentsline{section}{Check\+Reference\+Is\+First$<$ T $>$}{\pageref{struct_check_reference_is_first_3_01_t_01_4}}{}
-\item \contentsline{section}{Combinators\+::CL}{\pageref{struct_combinators_1_1_c_l}}{}
+\item \contentsline{section}{Builtin$<$ T, args $>$}{\pageref{struct_builtin}}{}
+\item \contentsline{section}{Combinators\+:\+:CL}{\pageref{struct_combinators_1_1_c_l}}{}
+\item \contentsline{section}{Combinators\+:\+:cl\+\_\+void}{\pageref{struct_combinators_1_1cl__void}}{}
 \item \contentsline{section}{Control}{\pageref{struct_control}}{}
-\item \contentsline{section}{Count\+References$<$ T, Types $>$}{\pageref{struct_count_references}}{}
-\item \contentsline{section}{Count\+References$<$ T $>$}{\pageref{struct_count_references_3_01_t_01_4}}{}
-\item \contentsline{section}{defauldatum\+\_\+t$<$ input\+\_\+t, output\+\_\+t $>$}{\pageref{classdefauldatum__t}}{}
+\item \contentsline{section}{defaultdatum\+\_\+t$<$ input\+\_\+t, output\+\_\+t $>$}{\pageref{classdefaultdatum__t}}{}
 \item \contentsline{section}{Discrete\+Distribution$<$ T $>$}{\pageref{class_discrete_distribution}}{}
+\item \contentsline{section}{Enumeration\+Interface$<$ Grammar\+\_\+t, A\+R\+GS $>$}{\pageref{class_enumeration_interface}}{}
 \item exception\begin{DoxyCompactList}
-\item \contentsline{section}{Combinators\+::Reduction\+Exception}{\pageref{class_combinators_1_1_reduction_exception}}{}
-\item \contentsline{section}{V\+M\+S\+Runtime\+Error\+\_\+t}{\pageref{class_v_m_s_runtime_error__t}}{}
+\item \contentsline{section}{Combinators\+:\+:Reduction\+Exception}{\pageref{class_combinators_1_1_reduction_exception}}{}
+\item \contentsline{section}{Depth\+Exception}{\pageref{class_depth_exception}}{}
+\item \contentsline{section}{V\+M\+S\+Runtime\+Error}{\pageref{class_v_m_s_runtime_error}}{}
 \end{DoxyCompactList}
 \item false\+\_\+type\begin{DoxyCompactList}
 \item \contentsline{section}{Has\+Posterior$<$ T, typename $>$}{\pageref{struct_has_posterior}}{}
+\item \contentsline{section}{is\+\_\+iterable$<$ T, typename $>$}{\pageref{structis__iterable}}{}
 \end{DoxyCompactList}
 \item \contentsline{section}{Finite\+History$<$ T $>$}{\pageref{class_finite_history}}{}
 \item \contentsline{section}{Finite\+History$<$ bool $>$}{\pageref{class_finite_history}}{}
-\item \contentsline{section}{Fleet}{\pageref{class_fleet}}{}
-\item \contentsline{section}{Grammar$<$ G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$}{\pageref{class_grammar}}{}
-\item \contentsline{section}{Grammar$<$ CL $>$}{\pageref{class_grammar}}{}
+\item \contentsline{section}{Full\+L\+Z\+Enumeration$<$ Grammar\+\_\+t $>$}{\pageref{class_full_l_z_enumeration}}{}
+\item \contentsline{section}{Grammar$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$}{\pageref{class_grammar}}{}
+\item \contentsline{section}{Grammar$<$ cl\+\_\+void, CL, CL, cl\+\_\+void $>$}{\pageref{class_grammar}}{}
 \begin{DoxyCompactList}
-\item \contentsline{section}{Combinators\+::S\+K\+Grammar}{\pageref{class_combinators_1_1_s_k_grammar}}{}
+\item \contentsline{section}{Combinators\+:\+:S\+K\+Grammar}{\pageref{class_combinators_1_1_s_k_grammar}}{}
 \end{DoxyCompactList}
-\item \contentsline{section}{has\+\_\+operator\+\_\+lessthan\+\_\+impl$<$ T, Equal\+To $>$}{\pageref{structhas__operator__lessthan__impl}}{}
-\item \contentsline{section}{Head\+If\+Reference\+ElseT$<$ T, args $>$}{\pageref{struct_head_if_reference_else_t}}{}
-\item \contentsline{section}{Head\+If\+Reference\+ElseT$<$ T $>$}{\pageref{struct_head_if_reference_else_t_3_01_t_01_4}}{}
-\item \contentsline{section}{Human\+Datum$<$ H\+YP, \+\_\+output\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}{\pageref{struct_human_datum}}{}
+\item \contentsline{section}{Human\+Datum$<$ H\+YP, \+\_\+input\+\_\+t, \+\_\+response\+\_\+t, \+\_\+data\+\_\+t $>$}{\pageref{struct_human_datum}}{}
 \item \contentsline{section}{Inferece\+Interface}{\pageref{class_inferece_interface}}{}
-\item \contentsline{section}{Instruction}{\pageref{class_instruction}}{}
+\item \contentsline{section}{Instruction}{\pageref{struct_instruction}}{}
 \item \contentsline{section}{Integerized\+Stack}{\pageref{class_integerized_stack}}{}
-\item \contentsline{section}{Reservoir\+Sample$<$ T $>$\+::Item}{\pageref{struct_reservoir_sample_1_1_item}}{}
+\item \contentsline{section}{C\+LI\+:\+:is\+\_\+bool$<$ T $>$}{\pageref{struct_c_l_i_1_1is__bool}}{}
+\item \contentsline{section}{C\+LI\+:\+:is\+\_\+bool$<$ bool $>$}{\pageref{struct_c_l_i_1_1is__bool_3_01bool_01_4}}{}
+\item \contentsline{section}{C\+LI\+:\+:is\+\_\+vector$<$ T $>$}{\pageref{struct_c_l_i_1_1is__vector}}{}
+\item \contentsline{section}{C\+LI\+:\+:is\+\_\+vector$<$ std\+:\+:vector$<$ T, A $>$ $>$}{\pageref{struct_c_l_i_1_1is__vector_3_01std_1_1vector_3_01_t_00_01_a_01_4_01_4}}{}
+\item \contentsline{section}{Reservoir\+Sample$<$ T $>$\+:\+:Item}{\pageref{struct_reservoir_sample_1_1_item}}{}
 \item iterator\begin{DoxyCompactList}
-\item \contentsline{section}{Base\+Node$<$ this\+\_\+t $>$\+::Node\+Iterator}{\pageref{class_base_node_1_1_node_iterator}}{}
+\item \contentsline{section}{Base\+Node$<$ this\+\_\+t $>$\+:\+:Node\+Iterator}{\pageref{class_base_node_1_1_node_iterator}}{}
+\item \contentsline{section}{Grammar$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+:\+:Rule\+Iterator}{\pageref{class_grammar_1_1_rule_iterator}}{}
 \end{DoxyCompactList}
-\item \contentsline{section}{Combinators\+::Lazy\+Normal\+Forms}{\pageref{class_combinators_1_1_lazy_normal_forms}}{}
+\item \contentsline{section}{Combinators\+:\+:Lazy\+Normal\+Forms}{\pageref{class_combinators_1_1_lazy_normal_forms}}{}
 \item logic\+\_\+error\begin{DoxyCompactList}
 \item \contentsline{section}{Not\+Implemented\+Error}{\pageref{class_not_implemented_error}}{}
 \item \contentsline{section}{You\+Should\+Not\+Be\+Here\+Error}{\pageref{class_you_should_not_be_here_error}}{}
 \end{DoxyCompactList}
+\item \contentsline{section}{cache\+:\+:lru\+\_\+cache$<$ key\+\_\+t, value\+\_\+t $>$}{\pageref{classcache_1_1lru__cache}}{}
 \item \contentsline{section}{M\+C\+M\+C\+Chain$<$ H\+YP, callback\+\_\+t $>$}{\pageref{class_m_c_m_c_chain}}{}
 \item \contentsline{section}{Median\+F\+A\+ME$<$ T $>$}{\pageref{class_median_f_a_m_e}}{}
 \item \contentsline{section}{Median\+F\+A\+ME$<$ double $>$}{\pageref{class_median_f_a_m_e}}{}
-\item \contentsline{section}{null\+\_\+t}{\pageref{structnull__t}}{}
 \item \contentsline{section}{Object$<$ feature\+\_\+t $>$}{\pageref{struct_object}}{}
 \item \contentsline{section}{Parallel\+Inference\+Interface$<$ Args $>$}{\pageref{class_parallel_inference_interface}}{}
 \item \contentsline{section}{Parallel\+Inference\+Interface$<$ H\+YP $>$}{\pageref{class_parallel_inference_interface}}{}
 \begin{DoxyCompactList}
-\item \contentsline{section}{Full\+M\+C\+T\+S\+Node$<$ this\+\_\+t, H\+YP, callback\+\_\+t $>$}{\pageref{class_full_m_c_t_s_node}}{}
+\item \contentsline{section}{M\+C\+T\+S\+Base$<$ this\+\_\+t, H\+YP, callback\+\_\+t $>$}{\pageref{class_m_c_t_s_base}}{}
 \end{DoxyCompactList}
 \item \contentsline{section}{Parallel\+Inference\+Interface$<$$>$}{\pageref{class_parallel_inference_interface}}{}
 \begin{DoxyCompactList}
@@ -116,52 +99,88 @@ This inheritance list is sorted roughly, but not completely, alphabetically\+:\b
 \begin{DoxyCompactList}
 \item \contentsline{section}{Data\+Tempering$<$ H\+YP, callback\+\_\+t $>$}{\pageref{class_data_tempering}}{}
 \item \contentsline{section}{Parallel\+Tempering$<$ H\+YP, callback\+\_\+t $>$}{\pageref{class_parallel_tempering}}{}
+\item \contentsline{section}{Partition\+M\+C\+MC$<$ H\+YP, callback\+\_\+t $>$}{\pageref{class_partition_m_c_m_c}}{}
 \end{DoxyCompactList}
-\item \contentsline{section}{Enumeration\+Inference$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t $>$}{\pageref{class_enumeration_inference}}{}
+\item \contentsline{section}{Enumeration\+Inference$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t, Enumerator $>$}{\pageref{class_enumeration_inference}}{}
 \item \contentsline{section}{Prior\+Inference$<$ H\+YP, callback\+\_\+t $>$}{\pageref{class_prior_inference}}{}
 \end{DoxyCompactList}
-\item \contentsline{section}{Pre\+Primitive}{\pageref{struct_pre_primitive}}{}
-\item \contentsline{section}{Primitive}{\pageref{struct_primitive}}{}
-\item Program\+Loader\begin{DoxyCompactList}
-\item \contentsline{section}{Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}{\pageref{class_lexicon}}{}
-\item \contentsline{section}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}{\pageref{class_l_o_t_hypothesis}}{}
+\item \contentsline{section}{Partial\+L\+Z\+Enumeration$<$ Grammar\+\_\+t $>$}{\pageref{class_partial_l_z_enumeration}}{}
+\item \contentsline{section}{Program\+Loader}{\pageref{class_program_loader}}{}
+\begin{DoxyCompactList}
+\item \contentsline{section}{Callable$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}{\pageref{class_callable}}{}
+\item \contentsline{section}{Callable$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t\+:\+:Virtual\+Machine\+State\+\_\+t $>$}{\pageref{class_callable}}{}
+\begin{DoxyCompactList}
+\item \contentsline{section}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}{\pageref{class_l_o_t_hypothesis}}{}
+\end{DoxyCompactList}
+\item \contentsline{section}{Callable$<$ input\+\_\+t, output\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}{\pageref{class_callable}}{}
+\begin{DoxyCompactList}
+\item \contentsline{section}{Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}{\pageref{class_lexicon}}{}
+\end{DoxyCompactList}
 \end{DoxyCompactList}
 \item \contentsline{section}{Reservoir\+Sample$<$ T $>$}{\pageref{class_reservoir_sample}}{}
 \item \contentsline{section}{Reservoir\+Sample$<$ double $>$}{\pageref{class_reservoir_sample}}{}
 \item \contentsline{section}{Rule}{\pageref{class_rule}}{}
+\item runtime\+\_\+error\begin{DoxyCompactList}
+\item \contentsline{section}{C\+LI\+:\+:Error}{\pageref{class_c_l_i_1_1_error}}{}
+\begin{DoxyCompactList}
+\item \contentsline{section}{C\+LI\+:\+:Construction\+Error}{\pageref{class_c_l_i_1_1_construction_error}}{}
+\begin{DoxyCompactList}
+\item \contentsline{section}{C\+LI\+:\+:Bad\+Name\+String}{\pageref{class_c_l_i_1_1_bad_name_string}}{}
+\item \contentsline{section}{C\+LI\+:\+:Incorrect\+Construction}{\pageref{class_c_l_i_1_1_incorrect_construction}}{}
+\item \contentsline{section}{C\+LI\+:\+:Option\+Already\+Added}{\pageref{class_c_l_i_1_1_option_already_added}}{}
+\end{DoxyCompactList}
+\item \contentsline{section}{C\+LI\+:\+:Option\+Not\+Found}{\pageref{class_c_l_i_1_1_option_not_found}}{}
+\item \contentsline{section}{C\+LI\+:\+:Parse\+Error}{\pageref{class_c_l_i_1_1_parse_error}}{}
+\begin{DoxyCompactList}
+\item \contentsline{section}{C\+LI\+:\+:Argument\+Mismatch}{\pageref{class_c_l_i_1_1_argument_mismatch}}{}
+\item \contentsline{section}{C\+LI\+:\+:Call\+For\+Help}{\pageref{class_c_l_i_1_1_call_for_help}}{}
+\item \contentsline{section}{C\+LI\+:\+:Conversion\+Error}{\pageref{class_c_l_i_1_1_conversion_error}}{}
+\item \contentsline{section}{C\+LI\+:\+:Excludes\+Error}{\pageref{class_c_l_i_1_1_excludes_error}}{}
+\item \contentsline{section}{C\+LI\+:\+:Extras\+Error}{\pageref{class_c_l_i_1_1_extras_error}}{}
+\item \contentsline{section}{C\+LI\+:\+:File\+Error}{\pageref{class_c_l_i_1_1_file_error}}{}
+\item \contentsline{section}{C\+LI\+:\+:Horrible\+Error}{\pageref{class_c_l_i_1_1_horrible_error}}{}
+\item \contentsline{section}{C\+LI\+:\+:I\+N\+I\+Error}{\pageref{class_c_l_i_1_1_i_n_i_error}}{}
+\item \contentsline{section}{C\+LI\+:\+:Invalid\+Error}{\pageref{class_c_l_i_1_1_invalid_error}}{}
+\item \contentsline{section}{C\+LI\+:\+:Required\+Error}{\pageref{class_c_l_i_1_1_required_error}}{}
+\item \contentsline{section}{C\+LI\+:\+:Requires\+Error}{\pageref{class_c_l_i_1_1_requires_error}}{}
+\item \contentsline{section}{C\+LI\+:\+:Runtime\+Error}{\pageref{class_c_l_i_1_1_runtime_error}}{}
+\item \contentsline{section}{C\+LI\+:\+:Success}{\pageref{class_c_l_i_1_1_success}}{}
+\item \contentsline{section}{C\+LI\+:\+:Validation\+Error}{\pageref{class_c_l_i_1_1_validation_error}}{}
+\end{DoxyCompactList}
+\end{DoxyCompactList}
+\end{DoxyCompactList}
+\item \contentsline{section}{Runtime\+Counter}{\pageref{class_runtime_counter}}{}
 \item \contentsline{section}{Searchable$<$ this\+\_\+t, Args $>$}{\pageref{class_searchable}}{}
 \item \contentsline{section}{Searchable$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t $>$}{\pageref{class_searchable}}{}
 \begin{DoxyCompactList}
-\item \contentsline{section}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}{\pageref{class_l_o_t_hypothesis}}{}
+\item \contentsline{section}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}{\pageref{class_l_o_t_hypothesis}}{}
 \end{DoxyCompactList}
 \item \contentsline{section}{Searchable$<$ this\+\_\+t, input\+\_\+t, output\+\_\+t $>$}{\pageref{class_searchable}}{}
 \begin{DoxyCompactList}
-\item \contentsline{section}{Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t $>$}{\pageref{class_lexicon}}{}
+\item \contentsline{section}{Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}{\pageref{class_lexicon}}{}
 \end{DoxyCompactList}
+\item \contentsline{section}{Singleton$<$ T $>$}{\pageref{class_singleton}}{}
 \item \contentsline{section}{Spin\+Lock}{\pageref{class_spin_lock}}{}
-\item \contentsline{section}{Streaming\+Statistics}{\pageref{class_streaming_statistics}}{}
-\item \contentsline{section}{Virtual\+Machine\+State$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::t\+\_\+stack$<$ args $>$}{\pageref{struct_virtual_machine_state_1_1t__stack}}{}
-\item \contentsline{section}{Virtual\+Machine\+State$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::t\+\_\+stack$<$ V\+M\+\_\+\+T\+Y\+P\+ES... $>$}{\pageref{struct_virtual_machine_state_1_1t__stack}}{}
-\item \contentsline{section}{TopN$<$ T $>$}{\pageref{class_top_n}}{}
-\item \contentsline{section}{TopN$<$ H\+YP $>$}{\pageref{class_top_n}}{}
-\item \contentsline{section}{TopN$<$ Reservoir\+Sample\+::Item $>$}{\pageref{class_top_n}}{}
-\item true\+\_\+type\begin{DoxyCompactList}
-\item \contentsline{section}{Has\+Posterior$<$ T, decltype((void) T\+::posterior, 0)$>$}{\pageref{struct_has_posterior_3_01_t_00_01decltype_07_07void_08_01_t_1_1posterior_00_010_08_4}}{}
-\end{DoxyCompactList}
-\item type\begin{DoxyCompactList}
-\item \contentsline{section}{has\+\_\+operator\+\_\+lessthan$<$ T, Equal\+To $>$}{\pageref{structhas__operator__lessthan}}{}
-\end{DoxyCompactList}
-\item \contentsline{section}{Type\+Head$<$ Args $>$}{\pageref{struct_type_head}}{}
-\item \contentsline{section}{Type\+Index$<$ T, Tuple $>$}{\pageref{struct_type_index}}{}
-\item \contentsline{section}{Type\+Index$<$ T, std\+::tuple$<$ T, Types... $>$ $>$}{\pageref{struct_type_index_3_01_t_00_01std_1_1tuple_3_01_t_00_01_types_8_8_8_01_4_01_4}}{}
-\item \contentsline{section}{Type\+Index$<$ T, std\+::tuple$<$ U, Types... $>$ $>$}{\pageref{struct_type_index_3_01_t_00_01std_1_1tuple_3_01_u_00_01_types_8_8_8_01_4_01_4}}{}
-\item vector\begin{DoxyCompactList}
-\item \contentsline{section}{Reserved\+Vector$<$ T, N $>$}{\pageref{class_reserved_vector}}{}
 \item \contentsline{section}{Stack$<$ T $>$}{\pageref{class_stack}}{}
 \item \contentsline{section}{Stack$<$ input\+\_\+t $>$}{\pageref{class_stack}}{}
-\item \contentsline{section}{Stack$<$ std\+::pair$<$ index\+\_\+t, input\+\_\+t $>$ $>$}{\pageref{class_stack}}{}
+\item \contentsline{section}{Stack$<$ std\+:\+:pair$<$ index\+\_\+t, input\+\_\+t $>$ $>$}{\pageref{class_stack}}{}
+\item \contentsline{section}{Streaming\+Statistics}{\pageref{class_streaming_statistics}}{}
+\item \contentsline{section}{Subtree\+Enumeration$<$ Grammar\+\_\+t $>$}{\pageref{class_subtree_enumeration}}{}
+\item \contentsline{section}{Virtual\+Machine\+State$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+:\+:t\+\_\+stack$<$ args $>$}{\pageref{struct_virtual_machine_state_1_1t__stack}}{}
+\item \contentsline{section}{Virtual\+Machine\+State$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+:\+:t\+\_\+stack$<$ V\+M\+\_\+\+T\+Y\+P\+ES... $>$}{\pageref{struct_virtual_machine_state_1_1t__stack}}{}
+\item \contentsline{section}{TopN$<$ T $>$}{\pageref{class_top_n}}{}
+\item \contentsline{section}{TopN$<$ H\+YP $>$}{\pageref{class_top_n}}{}
+\item \contentsline{section}{TopN$<$ Reservoir\+Sample\+:\+:Item $>$}{\pageref{class_top_n}}{}
+\item true\+\_\+type\begin{DoxyCompactList}
+\item \contentsline{section}{Has\+Posterior$<$ T, decltype((void) T\+:\+:posterior, 0)$>$}{\pageref{struct_has_posterior_3_01_t_00_01decltype_07_07void_08_01_t_1_1posterior_00_010_08_4}}{}
+\item \contentsline{section}{is\+\_\+iterable$<$ T, std\+:\+:void\+\_\+t$<$ decltype(std\+:\+:begin(std\+:\+:declval$<$ T $>$())), decltype(std\+:\+:end(std\+:\+:declval$<$ T $>$())) $>$ $>$}{\pageref{structis__iterable_3_01_t_00_01std_1_1void__t_3_01decltype_07std_1_1begin_07std_1_1declval_3_01_6e9fb167ef7cf6be085c68f3355f458c}}{}
 \end{DoxyCompactList}
 \item \contentsline{section}{Vector2D$<$ T $>$}{\pageref{struct_vector2_d}}{}
-\item \contentsline{section}{Virtual\+Machine\+Pool$<$ V\+M\+State $>$}{\pageref{class_virtual_machine_pool}}{}
+\item \contentsline{section}{Virtual\+Machine\+Control}{\pageref{struct_virtual_machine_control}}{}
+\begin{DoxyCompactList}
+\item \contentsline{section}{Virtual\+Machine\+Pool$<$ Virtual\+Machine\+State\+\_\+t $>$}{\pageref{class_virtual_machine_pool}}{}
+\item \contentsline{section}{Virtual\+Machine\+Pool$<$ Virtual\+Machine\+State $>$}{\pageref{class_virtual_machine_pool}}{}
 \item \contentsline{section}{Virtual\+Machine\+State$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$}{\pageref{class_virtual_machine_state}}{}
+\end{DoxyCompactList}
+\item \contentsline{section}{Virtual\+Machine\+Pool\+Control}{\pageref{class_virtual_machine_pool_control}}{}
 \end{DoxyCompactList}

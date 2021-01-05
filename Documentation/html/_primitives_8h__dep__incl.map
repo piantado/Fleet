@@ -1,5 +1,0 @@
-<map id="src/VirtualMachine/Primitives.h" name="src/VirtualMachine/Primitives.h">
-<area shape="rect" id="node1" title="If there are any references in the arguments, only the first can be a reference." alt="" coords="23,5,154,47"/>
-<area shape="rect" id="node2" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="5,95,172,121"/>
-<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="24,169,153,196"/>
-</map>

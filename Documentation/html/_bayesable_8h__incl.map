@@ -1,26 +1,10 @@
 <map id="src/Hypotheses/Interfaces/Bayesable.h" name="src/Hypotheses/Interfaces/Bayesable.h">
-<area shape="rect" id="node1" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e...." alt="" coords="241,5,417,47"/>
-<area shape="rect" id="node2" href="$_errors_8h.html" title=" " alt="" coords="52,95,120,121"/>
-<area shape="rect" id="node6" href="$_datum_8h.html" title="A datum is the default data point for likelihoods, consisting of an input and output type...." alt="" coords="145,95,217,121"/>
-<area shape="rect" id="node7" href="$_i_o_8h.html" title=" " alt="" coords="431,169,477,196"/>
-<area shape="rect" id="node20" href="$_fleet_statistics_8h.html" title=" " alt="" coords="241,95,417,121"/>
-<area shape="rect" id="node22" href="$_miscellaneous_8h.html" title=" " alt="" coords="492,95,608,121"/>
-<area shape="rect" id="node3" title=" " alt="" coords="160,169,239,196"/>
-<area shape="rect" id="node4" title=" " alt="" coords="5,169,84,196"/>
-<area shape="rect" id="node5" title=" " alt="" coords="133,244,188,271"/>
-<area shape="rect" id="node8" title=" " alt="" coords="742,244,801,271"/>
-<area shape="rect" id="node9" title=" " alt="" coords="233,244,291,271"/>
-<area shape="rect" id="node10" title=" " alt="" coords="421,393,493,420"/>
-<area shape="rect" id="node11" title=" " alt="" coords="366,244,433,271"/>
-<area shape="rect" id="node12" title=" " alt="" coords="457,244,619,271"/>
-<area shape="rect" id="node13" href="$_strings_8h.html" title=" " alt="" coords="643,244,718,271"/>
-<area shape="rect" id="node14" title=" " alt="" coords="749,319,807,345"/>
-<area shape="rect" id="node15" title=" " alt="" coords="460,319,523,345"/>
-<area shape="rect" id="node16" title=" " alt="" coords="547,319,612,345"/>
-<area shape="rect" id="node17" href="$_numerics_8h.html" title=" " alt="" coords="636,319,725,345"/>
-<area shape="rect" id="node18" title=" " alt="" coords="693,393,759,420"/>
-<area shape="rect" id="node19" title=" " alt="" coords="599,393,669,420"/>
-<area shape="rect" id="node21" title=" " alt="" coords="298,169,359,196"/>
-<area shape="rect" id="node23" title=" " alt="" coords="594,169,655,196"/>
-<area shape="rect" id="node24" title=" " alt="" coords="511,169,570,196"/>
+<area shape="rect" id="node3" href="$_errors_8h.html" title="Errors.h" alt="" coords="207,244,275,271"/>
+<area shape="rect" id="node7" href="$_datum_8h.html" title="A datum is the default data point for likelihoods, consisting of an input and output type..." alt="" coords="304,95,376,121"/>
+<area shape="rect" id="node8" href="$_i_o_8h.html" title="IO.h" alt="" coords="702,169,749,196"/>
+<area shape="rect" id="node37" href="$_fleet_statistics_8h.html" title="Statistics/FleetStatistics.h" alt="" coords="400,95,576,121"/>
+<area shape="rect" id="node39" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="667,95,783,121"/>
+<area shape="rect" id="node13" href="$_c_l11_8hpp.html" title="Dependencies/CL11.hpp" alt="" coords="789,244,955,271"/>
+<area shape="rect" id="node29" href="$_strings_8h.html" title="Strings.h" alt="" coords="1967,244,2041,271"/>
+<area shape="rect" id="node34" href="$_numerics_8h.html" title="Numerics.h" alt="" coords="2095,319,2185,345"/>
 </map>

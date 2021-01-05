@@ -1,16 +1,18 @@
 <map id="src/VirtualMachine/VirtualMachineState.h" name="src/VirtualMachine/VirtualMachineState.h">
-<area shape="rect" id="node1" title="Count references in lambda arguments (used to ensure we only passs one)" alt="" coords="251,5,405,47"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,95,88,121"/>
-<area shape="rect" id="node3" title=" " alt="" coords="113,95,159,121"/>
-<area shape="rect" id="node4" title=" " alt="" coords="184,95,237,121"/>
-<area shape="rect" id="node5" title=" " alt="" coords="261,95,312,121"/>
-<area shape="rect" id="node6" href="$_errors_8h.html" title=" " alt="" coords="337,95,405,121"/>
-<area shape="rect" id="node10" href="$_program_8h.html" title=" " alt="" coords="429,95,512,121"/>
-<area shape="rect" id="node11" href="$_stack_8h.html" title=" " alt="" coords="515,169,581,196"/>
-<area shape="rect" id="node13" href="$_fleet_statistics_8h.html" title=" " alt="" coords="587,95,763,121"/>
-<area shape="rect" id="node7" title=" " alt="" coords="229,169,307,196"/>
-<area shape="rect" id="node8" title=" " alt="" coords="331,169,410,196"/>
-<area shape="rect" id="node9" title=" " alt="" coords="434,169,489,196"/>
-<area shape="rect" id="node12" title=" " alt="" coords="519,244,577,271"/>
-<area shape="rect" id="node14" title=" " alt="" coords="644,169,705,196"/>
+<area shape="rect" id="node6" href="$_errors_8h.html" title="Errors.h" alt="" coords="1366,333,1434,360"/>
+<area shape="rect" id="node10" href="$_program_8h.html" title="Program.h" alt="" coords="1860,102,1943,129"/>
+<area shape="rect" id="node11" href="$_stack_8h.html" title="Many things in Fleet are stacks and this is designed to allow for rapid changse to the stack type in ..." alt="" coords="1856,184,1923,211"/>
+<area shape="rect" id="node13" href="$_fleet_statistics_8h.html" title="Statistics/FleetStatistics.h" alt="" coords="2119,102,2295,129"/>
+<area shape="rect" id="node15" href="$_runtime_counter_8h.html" title="This class manages counting operations at runtime and interfaces operations to a grammar NOTE: Curren..." alt="" coords="1967,102,2095,129"/>
+<area shape="rect" id="node20" href="$_v_m_s_runtime_error_8h.html" title="VMSRuntimeError.h" alt="" coords="1725,333,1864,360"/>
+<area shape="rect" id="node49" href="$_program_loader_8h.html" title="Hypotheses/Interfaces\l/ProgramLoader.h" alt="" coords="2391,95,2545,136"/>
+<area shape="rect" id="node50" href="$_virtual_machine_control_8h.html" title="VirtualMachineControl.h" alt="" coords="2570,102,2731,129"/>
+<area shape="rect" id="node16" href="$_instruction_8h.html" title="f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg is just a supplemental ar..." alt="" coords="2237,259,2331,285"/>
+<area shape="rect" id="node23" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="1947,184,2063,211"/>
+<area shape="rect" id="node21" href="$_ops_8h.html" title="Ops.h" alt="" coords="2339,333,2397,360"/>
+<area shape="rect" id="node22" href="$_v_m_status_8h.html" title="VMStatus.h" alt="" coords="2139,333,2229,360"/>
+<area shape="rect" id="node25" href="$_i_o_8h.html" title="IO.h" alt="" coords="1631,259,1678,285"/>
+<area shape="rect" id="node29" href="$_c_l11_8hpp.html" title="Dependencies/CL11.hpp" alt="" coords="900,333,1065,360"/>
+<area shape="rect" id="node42" href="$_strings_8h.html" title="Strings.h" alt="" coords="1888,333,1963,360"/>
+<area shape="rect" id="node47" href="$_numerics_8h.html" title="Numerics.h" alt="" coords="1798,408,1887,435"/>
 </map>

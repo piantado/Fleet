@@ -1,44 +1,44 @@
-\hypertarget{class_parallel_inference_interface}{}\doxysection{Parallel\+Inference\+Interface$<$ Args $>$ Class Template Reference}
-\label{class_parallel_inference_interface}\index{ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}}
+\hypertarget{class_parallel_inference_interface}{}\section{Parallel\+Inference\+Interface$<$ Args $>$ Class Template Reference}
+\label{class_parallel_inference_interface}\index{Parallel\+Inference\+Interface$<$ Args $>$@{Parallel\+Inference\+Interface$<$ Args $>$}}
 
 
 {\ttfamily \#include $<$Parallel\+Inference\+Interface.\+h$>$}
 
-\doxysubsection*{Public Member Functions}
+\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-virtual void \mbox{\hyperlink{class_parallel_inference_interface_a79f626a400fbc11ed530c97f32dfd5c3}{run\+\_\+thread}} (\mbox{\hyperlink{struct_control}{Control}} ctl, Args... args)=0
+virtual void \hyperlink{class_parallel_inference_interface_a79f626a400fbc11ed530c97f32dfd5c3}{run\+\_\+thread} (\hyperlink{struct_control}{Control} ctl, Args... args)=0
 \item 
-\mbox{\hyperlink{class_parallel_inference_interface_a59989833c3d7fde08746087b29c7dcef}{Parallel\+Inference\+Interface}} ()
+\hyperlink{class_parallel_inference_interface_a59989833c3d7fde08746087b29c7dcef}{Parallel\+Inference\+Interface} ()
 \item 
-unsigned long \mbox{\hyperlink{class_parallel_inference_interface_aaa1fe948131956b21a89c8c267e46b6c}{next\+\_\+index}} ()
+unsigned long \hyperlink{class_parallel_inference_interface_aaa1fe948131956b21a89c8c267e46b6c}{next\+\_\+index} ()
 \begin{DoxyCompactList}\small\item\em Return the next index to operate on (in a thread-\/safe way). \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{class_parallel_inference_interface_a836204d148b8b5187d39e494d926d7b3}{run}} (\mbox{\hyperlink{struct_control}{Control}} ctl, Args... args)
+void \hyperlink{class_parallel_inference_interface_a836204d148b8b5187d39e494d926d7b3}{run} (\hyperlink{struct_control}{Control} ctl, Args... args)
 \begin{DoxyCompactList}\small\item\em Run is the main control interface. Copies of ctl get made and passed to each thread in run\+\_\+thread. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Public Attributes}
+\subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-std\+::atomic$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_parallel_inference_interface_a1494ba5ab10b5fda9bca6acc39de37cb}{index}}
+std\+::atomic$<$ size\+\_\+t $>$ \hyperlink{class_parallel_inference_interface_a1494ba5ab10b5fda9bca6acc39de37cb}{index}
 \end{DoxyCompactItemize}
 
 
-\doxysubsection{Constructor \& Destructor Documentation}
+\subsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{class_parallel_inference_interface_a59989833c3d7fde08746087b29c7dcef}\label{class_parallel_inference_interface_a59989833c3d7fde08746087b29c7dcef}} 
-\index{ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}!ParallelInferenceInterface@{ParallelInferenceInterface}}
-\index{ParallelInferenceInterface@{ParallelInferenceInterface}!ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}}
-\doxysubsubsection{\texorpdfstring{ParallelInferenceInterface()}{ParallelInferenceInterface()}}
+\index{Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}!Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}}
+\index{Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}!Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}}
+\subsubsection{\texorpdfstring{Parallel\+Inference\+Interface()}{ParallelInferenceInterface()}}
 {\footnotesize\ttfamily template$<$typename... Args$>$ \\
-\mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ Args $>$\+::\mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}$<$ Args $>$\+::\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-\doxysubsection{Member Function Documentation}
+\subsection{Member Function Documentation}
 \mbox{\Hypertarget{class_parallel_inference_interface_aaa1fe948131956b21a89c8c267e46b6c}\label{class_parallel_inference_interface_aaa1fe948131956b21a89c8c267e46b6c}} 
-\index{ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}!next\_index@{next\_index}}
-\index{next\_index@{next\_index}!ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}}
-\doxysubsubsection{\texorpdfstring{next\_index()}{next\_index()}}
+\index{Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}!next\+\_\+index@{next\+\_\+index}}
+\index{next\+\_\+index@{next\+\_\+index}!Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}}
+\subsubsection{\texorpdfstring{next\+\_\+index()}{next\_index()}}
 {\footnotesize\ttfamily template$<$typename... Args$>$ \\
-unsigned long \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ Args $>$\+::next\+\_\+index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+unsigned long \hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}$<$ Args $>$\+::next\+\_\+index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -48,11 +48,11 @@ Return the next index to operate on (in a thread-\/safe way).
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_parallel_inference_interface_a836204d148b8b5187d39e494d926d7b3}\label{class_parallel_inference_interface_a836204d148b8b5187d39e494d926d7b3}} 
-\index{ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}!run@{run}}
-\index{run@{run}!ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}}
-\doxysubsubsection{\texorpdfstring{run()}{run()}}
+\index{Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}!run@{run}}
+\index{run@{run}!Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}}
+\subsubsection{\texorpdfstring{run()}{run()}}
 {\footnotesize\ttfamily template$<$typename... Args$>$ \\
-void \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ Args $>$\+::run (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl,  }\item[{Args...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+void \hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}$<$ Args $>$\+::run (\begin{DoxyParamCaption}\item[{\hyperlink{struct_control}{Control}}]{ctl,  }\item[{Args...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -64,24 +64,24 @@ Run is the main control interface. Copies of ctl get made and passed to each thr
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{class_parallel_inference_interface_a79f626a400fbc11ed530c97f32dfd5c3}\label{class_parallel_inference_interface_a79f626a400fbc11ed530c97f32dfd5c3}} 
-\index{ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}!run\_thread@{run\_thread}}
-\index{run\_thread@{run\_thread}!ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}}
-\doxysubsubsection{\texorpdfstring{run\_thread()}{run\_thread()}}
+\index{Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}!run\+\_\+thread@{run\+\_\+thread}}
+\index{run\+\_\+thread@{run\+\_\+thread}!Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}}
+\subsubsection{\texorpdfstring{run\+\_\+thread()}{run\_thread()}}
 {\footnotesize\ttfamily template$<$typename... Args$>$ \\
-virtual void \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ Args $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl,  }\item[{Args...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+virtual void \hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}$<$ Args $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\hyperlink{struct_control}{Control}}]{ctl,  }\item[{Args...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 
 
-\doxysubsection{Member Data Documentation}
+\subsection{Member Data Documentation}
 \mbox{\Hypertarget{class_parallel_inference_interface_a1494ba5ab10b5fda9bca6acc39de37cb}\label{class_parallel_inference_interface_a1494ba5ab10b5fda9bca6acc39de37cb}} 
-\index{ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}!index@{index}}
-\index{index@{index}!ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}}
-\doxysubsubsection{\texorpdfstring{index}{index}}
+\index{Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}!index@{index}}
+\index{index@{index}!Parallel\+Inference\+Interface@{Parallel\+Inference\+Interface}}
+\subsubsection{\texorpdfstring{index}{index}}
 {\footnotesize\ttfamily template$<$typename... Args$>$ \\
-std\+::atomic$<$size\+\_\+t$>$ \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ Args $>$\+::index}
+std\+::atomic$<$size\+\_\+t$>$ \hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}$<$ Args $>$\+::index}
 
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/\+Inference/\mbox{\hyperlink{_parallel_inference_interface_8h}{Parallel\+Inference\+Interface.\+h}}\end{DoxyCompactItemize}
+src/\+Inference/\hyperlink{_parallel_inference_interface_8h}{Parallel\+Inference\+Interface.\+h}\end{DoxyCompactItemize}

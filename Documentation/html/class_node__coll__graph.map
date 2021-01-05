@@ -1,8 +1,5 @@
 <map id="Node" name="Node">
-<area shape="rect" id="node1" title=" " alt="" coords="215,221,268,247"/>
-<area shape="rect" id="node2" href="$class_base_node.html" title=" " alt="" coords="141,317,280,344"/>
-<area shape="rect" id="node3" href="$class_base_node_1_1_node_iterator.html" title=" " alt="" coords="11,213,149,255"/>
-<area shape="rect" id="node4" title=" " alt="" coords="5,95,155,151"/>
-<area shape="rect" id="node5" href="$class_rule.html" title=" " alt="" coords="217,109,266,136"/>
-<area shape="rect" id="node6" href="$class_instruction.html" title=" " alt="" coords="200,5,283,32"/>
+<area shape="rect" id="node2" href="$class_base_node.html" title="BaseNode\&lt; Node \&gt;" alt="" coords="141,228,280,255"/>
+<area shape="rect" id="node3" href="$class_base_node_1_1_node_iterator.html" title="BaseNode\&lt; this_t \&gt;\l::NodeIterator" alt="" coords="11,124,149,165"/>
+<area shape="rect" id="node5" href="$class_rule.html" title="Rule" alt="" coords="217,20,266,47"/>
 </map>

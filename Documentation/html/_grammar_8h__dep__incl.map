@@ -1,4 +1,3 @@
 <map id="src/Grammar/Grammar.h" name="src/Grammar/Grammar.h">
-<area shape="rect" id="node1" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="5,5,172,32"/>
-<area shape="rect" id="node2" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="24,80,153,107"/>
+<area shape="rect" id="node2" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="24,80,153,107"/>
 </map>

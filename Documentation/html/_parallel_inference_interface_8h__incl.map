@@ -1,26 +1,10 @@
 <map id="src/Inference/ParallelInferenceInterface.h" name="src/Inference/ParallelInferenceInterface.h">
-<area shape="rect" id="node1" title=" " alt="" coords="316,5,515,47"/>
-<area shape="rect" id="node2" title=" " alt="" coords="293,95,354,121"/>
-<area shape="rect" id="node3" title=" " alt="" coords="774,244,833,271"/>
-<area shape="rect" id="node4" href="$_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="378,95,453,121"/>
-<area shape="rect" id="node5" title=" " alt="" coords="463,169,530,196"/>
-<area shape="rect" id="node6" href="$_fleet_args_8h.html" title=" " alt="" coords="5,169,95,196"/>
-<area shape="rect" id="node8" href="$_timing_8h.html" title=" " alt="" coords="170,169,242,196"/>
-<area shape="rect" id="node13" href="$_i_o_8h.html" title=" " alt="" coords="392,169,439,196"/>
-<area shape="rect" id="node7" title=" " alt="" coords="88,319,143,345"/>
-<area shape="rect" id="node9" title=" " alt="" coords="35,244,97,271"/>
-<area shape="rect" id="node10" href="$_errors_8h.html" title=" " alt="" coords="172,244,240,271"/>
-<area shape="rect" id="node11" title=" " alt="" coords="269,319,348,345"/>
-<area shape="rect" id="node12" title=" " alt="" coords="167,319,245,345"/>
-<area shape="rect" id="node14" title=" " alt="" coords="265,244,323,271"/>
-<area shape="rect" id="node15" title=" " alt="" coords="415,393,487,420"/>
-<area shape="rect" id="node16" title=" " alt="" coords="347,244,414,271"/>
-<area shape="rect" id="node17" title=" " alt="" coords="489,244,651,271"/>
-<area shape="rect" id="node18" href="$_strings_8h.html" title=" " alt="" coords="675,244,750,271"/>
-<area shape="rect" id="node19" title=" " alt="" coords="615,319,672,345"/>
-<area shape="rect" id="node20" title=" " alt="" coords="696,319,759,345"/>
-<area shape="rect" id="node21" title=" " alt="" coords="783,319,848,345"/>
-<area shape="rect" id="node22" href="$_numerics_8h.html" title=" " alt="" coords="501,319,591,345"/>
-<area shape="rect" id="node23" title=" " alt="" coords="605,393,671,420"/>
-<area shape="rect" id="node24" title=" " alt="" coords="511,393,581,420"/>
+<area shape="rect" id="node4" href="$_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="207,95,282,121"/>
+<area shape="rect" id="node6" href="$_fleet_args_8h.html" title="FleetArgs.h" alt="" coords="5,169,95,196"/>
+<area shape="rect" id="node8" href="$_timing_8h.html" title="Timing.h" alt="" coords="119,169,191,196"/>
+<area shape="rect" id="node13" href="$_i_o_8h.html" title="IO.h" alt="" coords="439,169,485,196"/>
+<area shape="rect" id="node10" href="$_errors_8h.html" title="Errors.h" alt="" coords="307,244,375,271"/>
+<area shape="rect" id="node17" href="$_c_l11_8hpp.html" title="Dependencies/CL11.hpp" alt="" coords="889,244,1054,271"/>
+<area shape="rect" id="node34" href="$_strings_8h.html" title="Strings.h" alt="" coords="2122,244,2197,271"/>
+<area shape="rect" id="node39" href="$_numerics_8h.html" title="Numerics.h" alt="" coords="2209,319,2299,345"/>
 </map>

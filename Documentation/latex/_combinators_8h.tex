@@ -1,5 +1,5 @@
-\hypertarget{_combinators_8h}{}\doxysection{src/\+Combinators.h File Reference}
-\label{_combinators_8h}\index{src/Combinators.h@{src/Combinators.h}}
+\hypertarget{_combinators_8h}{}\section{src/\+Combinators.h File Reference}
+\label{_combinators_8h}\index{src/\+Combinators.\+h@{src/\+Combinators.\+h}}
 
 
 A grammar for SK combinatory logic. N\+O\+TE\+: Custom\+Ops must be defined here.  
@@ -18,63 +18,75 @@ Include dependency graph for Combinators.\+h\+:
 \includegraphics[width=350pt]{_combinators_8h__incl}
 \end{center}
 \end{figure}
-\doxysubsection*{Classes}
+\subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \mbox{\hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}}
+struct \hyperlink{struct_combinators_1_1cl__void}{Combinators\+::cl\+\_\+void}
 \item 
-class \mbox{\hyperlink{class_combinators_1_1_s_k_grammar}{Combinators\+::\+S\+K\+Grammar}}
+struct \hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}
 \item 
-class \mbox{\hyperlink{class_combinators_1_1_reduction_exception}{Combinators\+::\+Reduction\+Exception}}
+class \hyperlink{class_combinators_1_1_s_k_grammar}{Combinators\+::\+S\+K\+Grammar}
 \item 
-class \mbox{\hyperlink{class_combinators_1_1_lazy_normal_forms}{Combinators\+::\+Lazy\+Normal\+Forms}}
+class \hyperlink{class_combinators_1_1_reduction_exception}{Combinators\+::\+Reduction\+Exception}
+\item 
+class \hyperlink{class_combinators_1_1_lazy_normal_forms}{Combinators\+::\+Lazy\+Normal\+Forms}
 \end{DoxyCompactItemize}
-\doxysubsection*{Namespaces}
+\subsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
- \mbox{\hyperlink{namespace_combinators}{Combinators}}
+ \hyperlink{namespace_combinators}{Combinators}
+\item 
+ \hyperlink{namespace_builtins}{Builtins}
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$Builtin\+Op $>$ }\\bool \mbox{\hyperlink{namespace_combinators_aa3c93f1edab6764d54dda56aafac9cd3}{Combinators\+::can\+\_\+reduce}} (const \mbox{\hyperlink{class_node}{Node}} \&n)
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\hyperlink{struct_builtin}{Builtin}$<$ \hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL} $>$ \hyperlink{namespace_builtins_afe1446ba92e6e07331409d827b8b3cba}{Builtins\+::\+C\+L\+\_\+I} (Op\+::\+C\+L\+\_\+I, \hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA} \{assert(false);\})
 \item 
-template$<$$>$ bool \mbox{\hyperlink{namespace_combinators_ad95b1d79317c4d84eb4f96bac4176fc5}{Combinators\+::can\+\_\+reduce$<$ Builtin\+Op\+::op\+\_\+\+I $>$}} (const \mbox{\hyperlink{class_node}{Node}} \&n)
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\hyperlink{struct_builtin}{Builtin}$<$ \hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL} $>$ \hyperlink{namespace_builtins_ac96edbc51e01af439a34431911df6088}{Builtins\+::\+C\+L\+\_\+S} (Op\+::\+C\+L\+\_\+S, \hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA} \{assert(false);\})
 \item 
-template$<$$>$ bool \mbox{\hyperlink{namespace_combinators_acf147e40e9f56872bedc87bd63705672}{Combinators\+::can\+\_\+reduce$<$ Builtin\+Op\+::op\+\_\+\+K $>$}} (const \mbox{\hyperlink{class_node}{Node}} \&n)
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\hyperlink{struct_builtin}{Builtin}$<$ \hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL} $>$ \hyperlink{namespace_builtins_ae4ee43b6a6f98511f57536be1c90cc6c}{Builtins\+::\+C\+L\+\_\+K} (Op\+::\+C\+L\+\_\+K, \hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA} \{assert(false);\})
 \item 
-template$<$$>$ bool \mbox{\hyperlink{namespace_combinators_a20138fc667812b7b36885b52387f85e0}{Combinators\+::can\+\_\+reduce$<$ Builtin\+Op\+::op\+\_\+\+S $>$}} (const \mbox{\hyperlink{class_node}{Node}} \&n)
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\hyperlink{struct_builtin}{Builtin}$<$ \hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}, \hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}, \hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL} $>$ \hyperlink{namespace_builtins_a702cd60e1528b142c68e9484574aa15a}{Builtins\+::\+C\+L\+\_\+\+Apply} (Op\+::\+C\+L\+\_\+\+Apply, \hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA} \{assert(false);\})
 \item 
-bool \mbox{\hyperlink{namespace_combinators_a29877c1bfde5b9807fd7a7538efe9e0c}{Combinators\+::is\+\_\+normal\+\_\+form}} (const \mbox{\hyperlink{class_node}{Node}} \&n)
+{\footnotesize template$<$Op $>$ }\\bool \hyperlink{namespace_combinators_aa3c93f1edab6764d54dda56aafac9cd3}{Combinators\+::can\+\_\+reduce} (const \hyperlink{class_node}{Node} \&n)
+\item 
+{\footnotesize template$<$$>$ }\\bool \hyperlink{namespace_combinators_aa038cd10e92daa6feb9f9010f705fb33}{Combinators\+::can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+S $>$} (const \hyperlink{class_node}{Node} \&n)
+\item 
+{\footnotesize template$<$$>$ }\\bool \hyperlink{namespace_combinators_a5c0e720989a7b4ad841c071c48924b78}{Combinators\+::can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+K $>$} (const \hyperlink{class_node}{Node} \&n)
+\item 
+{\footnotesize template$<$$>$ }\\bool \hyperlink{namespace_combinators_a5fe26e0973d49aa2b6cedd39529705bf}{Combinators\+::can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+I $>$} (const \hyperlink{class_node}{Node} \&n)
+\item 
+bool \hyperlink{namespace_combinators_a29877c1bfde5b9807fd7a7538efe9e0c}{Combinators\+::is\+\_\+normal\+\_\+form} (const \hyperlink{class_node}{Node} \&n)
 \begin{DoxyCompactList}\small\item\em check if a tree n is in SK normal form, meaning that no subnodes can be reduced \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{namespace_combinators_a6abc966e0ab0f2aa8170712f32541458}{Combinators\+::reduce}} (\mbox{\hyperlink{class_node}{Node}} \&n, size\+\_\+t \&remaining\+\_\+calls)
+void \hyperlink{namespace_combinators_a6abc966e0ab0f2aa8170712f32541458}{Combinators\+::reduce} (\hyperlink{class_node}{Node} \&n, size\+\_\+t \&remaining\+\_\+calls)
 \begin{DoxyCompactList}\small\item\em Reduce a combinator. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{namespace_combinators_a10b79cf8cc79cd5505e8d3c70470aab7}{Combinators\+::reduce}} (\mbox{\hyperlink{class_node}{Node}} \&n)
+void \hyperlink{namespace_combinators_a10b79cf8cc79cd5505e8d3c70470aab7}{Combinators\+::reduce} (\hyperlink{class_node}{Node} \&n)
 \begin{DoxyCompactList}\small\item\em Reduce (automtically set remaining\+\_\+calls=256 default) \end{DoxyCompactList}\item 
-\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{namespace_combinators_a30e2a8ed9eb766eb35ce3feb10cbd59a}{Combinators\+::apply\+\_\+and\+\_\+reduce}} (\mbox{\hyperlink{class_node}{Node}} f, \mbox{\hyperlink{class_node}{Node}} x)
+\hyperlink{class_node}{Node} \hyperlink{namespace_combinators_a30e2a8ed9eb766eb35ce3feb10cbd59a}{Combinators\+::apply\+\_\+and\+\_\+reduce} (\hyperlink{class_node}{Node} f, \hyperlink{class_node}{Node} x)
 \begin{DoxyCompactList}\small\item\em Apply a function f to a node x and reduce. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Variables}
+\subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-volatile sig\+\_\+atomic\+\_\+t \mbox{\hyperlink{_combinators_8h_a6f7c4963bb8a36031664821219e3159e}{C\+T\+R\+L\+\_\+C}}
+volatile sig\+\_\+atomic\+\_\+t \hyperlink{_combinators_8h_a6f7c4963bb8a36031664821219e3159e}{C\+T\+R\+L\+\_\+C}
 \item 
-\mbox{\hyperlink{class_combinators_1_1_s_k_grammar}{Combinators\+::\+S\+K\+Grammar}} \mbox{\hyperlink{namespace_combinators_ab21b42a6029a4b03d9a19c8597c9880f}{Combinators\+::skgrammar}}
+\hyperlink{class_combinators_1_1_s_k_grammar}{Combinators\+::\+S\+K\+Grammar} \hyperlink{namespace_combinators_a24aeacfa083d06000a89cb59d14eeccb}{Combinators\+::skgrammar}
 \item 
-\mbox{\hyperlink{class_combinators_1_1_reduction_exception}{Combinators\+::\+Reduction\+Exception}} \mbox{\hyperlink{namespace_combinators_a64c32cd83ab0bfe747532d053ee0df44}{Combinators\+::reduction\+\_\+exception}}
+\hyperlink{class_combinators_1_1_reduction_exception}{Combinators\+::\+Reduction\+Exception} \hyperlink{namespace_combinators_a47aa4c813bc5305c8b818c9be952235c}{Combinators\+::reduction\+\_\+exception}
 \end{DoxyCompactItemize}
 
 
-\doxysubsection{Detailed Description}
+\subsection{Detailed Description}
 A grammar for SK combinatory logic. N\+O\+TE\+: Custom\+Ops must be defined here. 
 
 Use a nice data structure to enumerate the combinators in normal form lazily so that we can do this -- it will store the max enumerated so far, and allow access.
 
 A class that gets thrown when we\textquotesingle{}ve reduced too much.
 
-\doxysubsection{Variable Documentation}
+\subsection{Variable Documentation}
 \mbox{\Hypertarget{_combinators_8h_a6f7c4963bb8a36031664821219e3159e}\label{_combinators_8h_a6f7c4963bb8a36031664821219e3159e}} 
-\index{Combinators.h@{Combinators.h}!CTRL\_C@{CTRL\_C}}
-\index{CTRL\_C@{CTRL\_C}!Combinators.h@{Combinators.h}}
-\doxysubsubsection{\texorpdfstring{CTRL\_C}{CTRL\_C}}
+\index{Combinators.\+h@{Combinators.\+h}!C\+T\+R\+L\+\_\+C@{C\+T\+R\+L\+\_\+C}}
+\index{C\+T\+R\+L\+\_\+C@{C\+T\+R\+L\+\_\+C}!Combinators.\+h@{Combinators.\+h}}
+\subsubsection{\texorpdfstring{C\+T\+R\+L\+\_\+C}{CTRL\_C}}
 {\footnotesize\ttfamily volatile sig\+\_\+atomic\+\_\+t C\+T\+R\+L\+\_\+C}
 

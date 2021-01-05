@@ -1,20 +1,7 @@
 var searchData=
 [
-  ['value_590',['value',['../struct_vector2_d.html#a6c97eca85f7330f9773a248bbd268b7d',1,'Vector2D::value()'],['../class_integerized_stack.html#afcfb2d32d51c88b556f3bb7ff2544be5',1,'IntegerizedStack::value()'],['../struct_type_index_3_01_t_00_01std_1_1tuple_3_01_t_00_01_types_8_8_8_01_4_01_4.html#a163ba00344b287c191f05761d34556d2',1,'TypeIndex&lt; T, std::tuple&lt; T, Types... &gt; &gt;::value()'],['../struct_type_index_3_01_t_00_01std_1_1tuple_3_01_u_00_01_types_8_8_8_01_4_01_4.html#a87bb4c7885986ec91881b421ad1758b7',1,'TypeIndex&lt; T, std::tuple&lt; U, Types... &gt; &gt;::value()'],['../class_l_o_t_hypothesis.html#aa746fab1833b86fd8ed6c44a69c2fa23',1,'LOTHypothesis::value()'],['../class_vector_hypothesis.html#a410d42491708f317403baa2e217f44b8',1,'VectorHypothesis::value()'],['../struct_count_references.html#abeeaf4de9f66ebc6c15965a5cf92455a',1,'CountReferences::value()'],['../struct_count_references_3_01_t_01_4.html#a9e9c1c7749c5c42903d7115afe453ab2',1,'CountReferences&lt; T &gt;::value()'],['../struct_check_reference_is_first.html#a0b4db809c2e3980d79ba182e7da8d50f',1,'CheckReferenceIsFirst::value()'],['../struct_check_reference_is_first_3_01_t_01_4.html#aa06e980782a7c07ee58484ee20974f5c',1,'CheckReferenceIsFirst&lt; T &gt;::value()'],['../struct_virtual_machine_state_1_1t__stack.html#afe95593f469950dcc3bd2332f21fbf12',1,'VirtualMachineState::t_stack::value()']]],
-  ['values_591',['values',['../class_discrete_distribution.html#a995377a760a6fe0d44077892053acdbb',1,'DiscreteDistribution::values()'],['../class_top_n.html#a50b05f8d4580c4652e8c1f6770943adc',1,'TopN::values()'],['../class_reservoir_sample.html#a0f0abf510882715b487f2254b6af25b1',1,'ReservoirSample::values()']]],
-  ['vector_592',['Vector',['../_eigen_lib_8h.html#aca2956bc379bce2ed88ab3c0e1b61d1d',1,'EigenLib.h']]],
-  ['vector2d_593',['Vector2D',['../struct_vector2_d.html',1,'Vector2D&lt; T &gt;'],['../struct_vector2_d.html#a96580267fed7cd6686cbbf8e11048023',1,'Vector2D::Vector2D()'],['../struct_vector2_d.html#a9addb650ad17e59bfc240018508157db',1,'Vector2D::Vector2D(int x, int y)']]],
-  ['vector2d_2eh_594',['Vector2D.h',['../_vector2_d_8h.html',1,'']]],
-  ['vectorhypothesis_595',['VectorHypothesis',['../class_vector_hypothesis.html',1,'VectorHypothesis'],['../class_vector_hypothesis.html#a18cdfa22c9e08f60a99064959a30668e',1,'VectorHypothesis::VectorHypothesis()'],['../class_vector_hypothesis.html#a3f351ed1565b00e99b18c002d9113cae',1,'VectorHypothesis::VectorHypothesis(int n)']]],
-  ['vectorhypothesis_2eh_596',['VectorHypothesis.h',['../_vector_hypothesis_8h.html',1,'']]],
-  ['virtualmachinepool_597',['VirtualMachinePool',['../class_virtual_machine_pool.html',1,'VirtualMachinePool&lt; VMState &gt;'],['../class_virtual_machine_pool.html#a2187554e3a4fd48ebe7ea6712e161e01',1,'VirtualMachinePool::VirtualMachinePool(unsigned long ms=2048, unsigned long mo=256, double mlp=-10)'],['../class_virtual_machine_pool.html#a84ea4b824ccc758de7de7c81d839c694',1,'VirtualMachinePool::VirtualMachinePool(VMState *vms, unsigned long ms, unsigned long mo, double mlp)']]],
-  ['virtualmachinepool_2eh_598',['VirtualMachinePool.h',['../_virtual_machine_pool_8h.html',1,'']]],
-  ['virtualmachinestate_599',['VirtualMachineState',['../class_virtual_machine_state.html',1,'VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;'],['../class_virtual_machine_state.html#a29c8e836431bb281d86215bf6f3e54d9',1,'VirtualMachineState::VirtualMachineState()']]],
-  ['virtualmachinestate_2eh_600',['VirtualMachineState.h',['../_virtual_machine_state_8h.html',1,'']]],
-  ['virtualmachinestate_5ft_601',['VirtualMachineState_t',['../class_grammar.html#a30c2eaa4b378738686365fc6d8697f61',1,'Grammar']]],
-  ['vm_5fops_602',['vm_ops',['../namespace_fleet_statistics.html#ad64460a8eef2b5d661f5cf19a02e9480',1,'FleetStatistics']]],
-  ['vmscall_603',['VMScall',['../struct_builtin_primitive.html#a6403ebb7076028fa99751436768d6d81',1,'BuiltinPrimitive::VMScall()'],['../struct_primitive.html#a49bd8209d88633390f8ff0deb959229c',1,'Primitive::VMScall()']]],
-  ['vmsruntimeerror_604',['VMSRuntimeError',['../_instruction_8h.html#ad52a943cab94a4e21d8d0dee7d010b9e',1,'Instruction.h']]],
-  ['vmsruntimeerror_5ft_605',['VMSRuntimeError_t',['../class_v_m_s_runtime_error__t.html',1,'']]],
-  ['vmstatus_5ft_606',['vmstatus_t',['../_instruction_8h.html#a6202215407ab29590bb936ca2996cf64',1,'Instruction.h']]]
+  ['uniform',['uniform',['../_random_8h.html#a30d1e43990eafb316df89c96cd213e6b',1,'Random.h']]],
+  ['uniform_5fdist',['uniform_dist',['../_random_8h.html#a988b2215f5ac07500f8f1d901ae4188a',1,'Random.h']]],
+  ['unlock',['unlock',['../class_spin_lock.html#a25ef6814d1e3fbd621db947ae7522d0e',1,'SpinLock']]],
+  ['unused',['UNUSED',['../_miscellaneous_8h.html#ae0f833b96f7afe863a14ac443c29b5b4',1,'Miscellaneous.h']]]
 ];

@@ -1,8 +1,10 @@
-\hypertarget{_strings_8h}{}\doxysection{src/\+Strings.h File Reference}
-\label{_strings_8h}\index{src/Strings.h@{src/Strings.h}}
+\hypertarget{_strings_8h}{}\section{src/\+Strings.h File Reference}
+\label{_strings_8h}\index{src/\+Strings.\+h@{src/\+Strings.\+h}}
+{\ttfamily \#include $<$sstream$>$}\newline
 {\ttfamily \#include $<$queue$>$}\newline
 {\ttfamily \#include $<$math.\+h$>$}\newline
 {\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$array$>$}\newline
 {\ttfamily \#include \char`\"{}Numerics.\+h\char`\"{}}\newline
 Include dependency graph for Strings.\+h\+:
 \nopagebreak
@@ -20,34 +22,54 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=350pt]{_strings_8h__dep__incl}
 \end{center}
 \end{figure}
-\doxysubsection*{Functions}
+\subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename T $>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_a4bc77a6f47e3046cc934b49f5e03a56f}{str}} (T x)
+{\footnotesize template$<$typename T $>$ }\\std\+::string \hyperlink{_strings_8h_a4bc77a6f47e3046cc934b49f5e03a56f}{str} (T x)
 \item 
-{\footnotesize template$<$const float \& add\+\_\+p, const float \& del\+\_\+p$>$ }\\double \mbox{\hyperlink{_strings_8h_a006f42339c42d12497ad559987a8597c}{p\+\_\+delete\+\_\+append}} (const std\+::string \&x, const std\+::string \&y, const float log\+\_\+alphabet)
+std\+::string \hyperlink{_strings_8h_a21b313a5a03eda533ac68a4501c68c17}{str} (const std\+::string \&x)
+\item 
+{\footnotesize template$<$typename... T, size\+\_\+t... I$>$ }\\std\+::string \hyperlink{_strings_8h_a9ab3d622399a5cd1e9fbaf8f38d8d394}{str} (const std\+::tuple$<$ T... $>$ \&x, std\+::index\+\_\+sequence$<$ I... $>$ idx)
+\item 
+{\footnotesize template$<$typename... T$>$ }\\std\+::string \hyperlink{_strings_8h_af4fcc184e9e474c84204591dd7c95f1c}{str} (const std\+::tuple$<$ T... $>$ \&x)
+\item 
+{\footnotesize template$<$typename T , size\+\_\+t N$>$ }\\std\+::string \hyperlink{_strings_8h_a66fc50785d7283d32f7f2e039e31b982}{str} (const std\+::array$<$ T, N $>$ \&a)
+\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::string \hyperlink{_strings_8h_a74a3109333f6ec7fc237e492a524da6a}{to\+\_\+string\+\_\+with\+\_\+precision} (const T a\+\_\+value, const int n=14)
+\item 
+{\footnotesize template$<$typename T $>$ }\\bool \hyperlink{_strings_8h_ac63ed4e974b8dc3b49eae65049ad7804}{is\+\_\+prefix} (const T \&prefix, const T \&x)
+\item 
+bool \hyperlink{_strings_8h_a9e236149ce0f5aa64d809fcca5cf1c27}{contains} (const std\+::string \&s, const std\+::string \&x)
+\item 
+{\footnotesize template$<$const float \& add\+\_\+p, const float \& del\+\_\+p$>$ }\\double \hyperlink{_strings_8h_a006f42339c42d12497ad559987a8597c}{p\+\_\+delete\+\_\+append} (const std\+::string \&x, const std\+::string \&y, const float log\+\_\+alphabet)
 \begin{DoxyCompactList}\small\item\em Probability of converting x into y by deleting some number (each with del\+\_\+p, then stopping with prob 1-\/del\+\_\+p), adding with probability add\+\_\+p, and then when we add selecting from an alphabet of size alpha\+\_\+n. \end{DoxyCompactList}\item 
-std\+::deque$<$ std\+::string $>$ \mbox{\hyperlink{_strings_8h_a60d3a9b47a988443407a595730086318}{split}} (const std\+::string \&s, const char delimiter)
+std\+::deque$<$ std\+::string $>$ \hyperlink{_strings_8h_ab5379fc8a5e2a85d4b1088aa32116636}{split} (const std\+::string \&s, const char delimiter)
+\begin{DoxyCompactList}\small\item\em Split is returns a deque of s split up at the character delimiter. It handles these special cases\+: split(\char`\"{}a\+:\char`\"{}, \textquotesingle{}\+:\textquotesingle{}) -\/$>$ \mbox{[}\char`\"{}a\char`\"{}, \char`\"{}\char`\"{}\mbox{]} split(\char`\"{}\+:\char`\"{}, \textquotesingle{}\+:\textquotesingle{}) -\/$>$ \mbox{[}\char`\"{}\char`\"{}\mbox{]} split(\char`\"{}\+:a\char`\"{}, \textquotesingle{}\+:\textquotesingle{}) -\/$>$ \mbox{[}\char`\"{}\char`\"{}, \char`\"{}a\char`\"{}\mbox{]}. \end{DoxyCompactList}\item 
+std\+::pair$<$ std\+::string, std\+::string $>$ \hyperlink{_strings_8h_af8ae1cb99a3ece3691d6673b40b9d621}{divide} (const std\+::string \&s, const char delimiter)
 \item 
-std\+::pair$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{_strings_8h_af8ae1cb99a3ece3691d6673b40b9d621}{divide}} (const std\+::string \&s, const char delimiter)
+unsigned int \hyperlink{_strings_8h_a51fc480ff96576142fbe0c1a5fc9114b}{levenshtein\+\_\+distance} (const std\+::string \&s1, const std\+::string \&s2)
 \item 
-unsigned int \mbox{\hyperlink{_strings_8h_a51fc480ff96576142fbe0c1a5fc9114b}{levenshtein\+\_\+distance}} (const std\+::string \&s1, const std\+::string \&s2)
+size\+\_\+t \hyperlink{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}{count} (const std\+::string \&\hyperlink{_strings_8h_a66fc50785d7283d32f7f2e039e31b982}{str}, const std\+::string \&sub)
 \item 
-size\+\_\+t \mbox{\hyperlink{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}{count}} (const std\+::string \&\mbox{\hyperlink{_strings_8h_a4bc77a6f47e3046cc934b49f5e03a56f}{str}}, const std\+::string \&sub)
+std\+::string \hyperlink{_strings_8h_a95521755321516e684a5bf762eb001d7}{reverse} (std\+::string x)
 \item 
-std\+::string \mbox{\hyperlink{_strings_8h_a95521755321516e684a5bf762eb001d7}{reverse}} (std\+::string x)
+std\+::string \hyperlink{_strings_8h_a7058817dff18bae565e0f06bb9492bc4}{QQ} (std\+::string x)
 \item 
-std\+::string \mbox{\hyperlink{_strings_8h_a7058817dff18bae565e0f06bb9492bc4}{QQ}} (std\+::string x)
-\item 
-std\+::string \mbox{\hyperlink{_strings_8h_a1bb5ec0bee0c8456e3fcc87cc012d055}{Q}} (std\+::string x)
+std\+::string \hyperlink{_strings_8h_a1bb5ec0bee0c8456e3fcc87cc012d055}{Q} (std\+::string x)
 \end{DoxyCompactItemize}
 
 
-\doxysubsection{Function Documentation}
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_strings_8h_a9e236149ce0f5aa64d809fcca5cf1c27}\label{_strings_8h_a9e236149ce0f5aa64d809fcca5cf1c27}} 
+\index{Strings.\+h@{Strings.\+h}!contains@{contains}}
+\index{contains@{contains}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily bool contains (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s,  }\item[{const std\+::string \&}]{x }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}\label{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}} 
-\index{Strings.h@{Strings.h}!count@{count}}
-\index{count@{count}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{count()}{count()}}
+\index{Strings.\+h@{Strings.\+h}!count@{count}}
+\index{count@{count}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{count()}{count()}}
 {\footnotesize\ttfamily size\+\_\+t count (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str,  }\item[{const std\+::string \&}]{sub }\end{DoxyParamCaption})}
 
 How many times does sub occur in str? Does not count overlapping substrings 
@@ -61,15 +83,32 @@ How many times does sub occur in str? Does not count overlapping substrings
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{_strings_8h_af8ae1cb99a3ece3691d6673b40b9d621}\label{_strings_8h_af8ae1cb99a3ece3691d6673b40b9d621}} 
-\index{Strings.h@{Strings.h}!divide@{divide}}
-\index{divide@{divide}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{divide()}{divide()}}
+\index{Strings.\+h@{Strings.\+h}!divide@{divide}}
+\index{divide@{divide}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{divide()}{divide()}}
 {\footnotesize\ttfamily std\+::pair$<$std\+::string, std\+::string$>$ divide (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s,  }\item[{const char}]{delimiter }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{_strings_8h_ac63ed4e974b8dc3b49eae65049ad7804}\label{_strings_8h_ac63ed4e974b8dc3b49eae65049ad7804}} 
+\index{Strings.\+h@{Strings.\+h}!is\+\_\+prefix@{is\+\_\+prefix}}
+\index{is\+\_\+prefix@{is\+\_\+prefix}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{is\+\_\+prefix()}{is\_prefix()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool is\+\_\+prefix (\begin{DoxyParamCaption}\item[{const T \&}]{prefix,  }\item[{const T \&}]{x }\end{DoxyParamCaption})}
+
+For any number of iterable types, is prefix a prefix of x 
+\begin{DoxyParams}{Parameters}
+{\em prefix} & \\
+\hline
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
 \mbox{\Hypertarget{_strings_8h_a51fc480ff96576142fbe0c1a5fc9114b}\label{_strings_8h_a51fc480ff96576142fbe0c1a5fc9114b}} 
-\index{Strings.h@{Strings.h}!levenshtein\_distance@{levenshtein\_distance}}
-\index{levenshtein\_distance@{levenshtein\_distance}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{levenshtein\_distance()}{levenshtein\_distance()}}
+\index{Strings.\+h@{Strings.\+h}!levenshtein\+\_\+distance@{levenshtein\+\_\+distance}}
+\index{levenshtein\+\_\+distance@{levenshtein\+\_\+distance}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{levenshtein\+\_\+distance()}{levenshtein\_distance()}}
 {\footnotesize\ttfamily unsigned int levenshtein\+\_\+distance (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s1,  }\item[{const std\+::string \&}]{s2 }\end{DoxyParamCaption})}
 
 Compute levenshtein distiance between two strings (N\+O\+TE\+: Or O(\+N$^\wedge$2)) 
@@ -83,9 +122,9 @@ Compute levenshtein distiance between two strings (N\+O\+TE\+: Or O(\+N$^\wedge$
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{_strings_8h_a006f42339c42d12497ad559987a8597c}\label{_strings_8h_a006f42339c42d12497ad559987a8597c}} 
-\index{Strings.h@{Strings.h}!p\_delete\_append@{p\_delete\_append}}
-\index{p\_delete\_append@{p\_delete\_append}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{p\_delete\_append()}{p\_delete\_append()}}
+\index{Strings.\+h@{Strings.\+h}!p\+\_\+delete\+\_\+append@{p\+\_\+delete\+\_\+append}}
+\index{p\+\_\+delete\+\_\+append@{p\+\_\+delete\+\_\+append}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{p\+\_\+delete\+\_\+append()}{p\_delete\_append()}}
 {\footnotesize\ttfamily template$<$const float \& add\+\_\+p, const float \& del\+\_\+p$>$ \\
 double p\+\_\+delete\+\_\+append (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{x,  }\item[{const std\+::string \&}]{y,  }\item[{const float}]{log\+\_\+alphabet }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
@@ -122,9 +161,9 @@ This function computes the probability that x would be converted into y, when we
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{_strings_8h_a1bb5ec0bee0c8456e3fcc87cc012d055}\label{_strings_8h_a1bb5ec0bee0c8456e3fcc87cc012d055}} 
-\index{Strings.h@{Strings.h}!Q@{Q}}
-\index{Q@{Q}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{Q()}{Q()}}
+\index{Strings.\+h@{Strings.\+h}!Q@{Q}}
+\index{Q@{Q}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{Q()}{Q()}}
 {\footnotesize\ttfamily std\+::string Q (\begin{DoxyParamCaption}\item[{std\+::string}]{x }\end{DoxyParamCaption})}
 
 Handy adding single quotes to a string 
@@ -136,9 +175,9 @@ Handy adding single quotes to a string
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{_strings_8h_a7058817dff18bae565e0f06bb9492bc4}\label{_strings_8h_a7058817dff18bae565e0f06bb9492bc4}} 
-\index{Strings.h@{Strings.h}!QQ@{QQ}}
-\index{QQ@{QQ}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{QQ()}{QQ()}}
+\index{Strings.\+h@{Strings.\+h}!QQ@{QQ}}
+\index{QQ@{QQ}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{Q\+Q()}{QQ()}}
 {\footnotesize\ttfamily std\+::string QQ (\begin{DoxyParamCaption}\item[{std\+::string}]{x }\end{DoxyParamCaption})}
 
 Handy adding double quotes to a string 
@@ -150,18 +189,24 @@ Handy adding double quotes to a string
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{_strings_8h_a95521755321516e684a5bf762eb001d7}\label{_strings_8h_a95521755321516e684a5bf762eb001d7}} 
-\index{Strings.h@{Strings.h}!reverse@{reverse}}
-\index{reverse@{reverse}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{reverse()}{reverse()}}
+\index{Strings.\+h@{Strings.\+h}!reverse@{reverse}}
+\index{reverse@{reverse}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{reverse()}{reverse()}}
 {\footnotesize\ttfamily std\+::string reverse (\begin{DoxyParamCaption}\item[{std\+::string}]{x }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{_strings_8h_a60d3a9b47a988443407a595730086318}\label{_strings_8h_a60d3a9b47a988443407a595730086318}} 
-\index{Strings.h@{Strings.h}!split@{split}}
-\index{split@{split}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{split()}{split()}}
-{\footnotesize\ttfamily std\+::deque$<$std\+::string$>$ split (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s,  }\item[{const char}]{delimiter }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{_strings_8h_ab5379fc8a5e2a85d4b1088aa32116636}\label{_strings_8h_ab5379fc8a5e2a85d4b1088aa32116636}} 
+\index{Strings.\+h@{Strings.\+h}!split@{split}}
+\index{split@{split}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{split()}{split()}}
+{\footnotesize\ttfamily std\+::array$<$ std\+::string, N $>$ split (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s,  }\item[{const char}]{delimiter }\end{DoxyParamCaption})}
 
-Split is returns a deque of s split up at the character delimiter. It handles these special cases\+: split(\char`\"{}a\+:\char`\"{}, \textquotesingle{}\+:\textquotesingle{}) -\/$>$ \mbox{[}\char`\"{}a\char`\"{}, \char`\"{}\char`\"{}\mbox{]} split(\char`\"{}\+:\char`\"{}, \textquotesingle{}\+:\textquotesingle{}) -\/$>$ \mbox{[}\char`\"{}\char`\"{}\mbox{]} split(\char`\"{}\+:a\char`\"{}, \textquotesingle{}\+:\textquotesingle{}) -\/$>$ \mbox{[}\char`\"{}\char`\"{}, \char`\"{}a\char`\"{}\mbox{]} 
+
+
+Split is returns a deque of s split up at the character delimiter. It handles these special cases\+: split(\char`\"{}a\+:\char`\"{}, \textquotesingle{}\+:\textquotesingle{}) -\/$>$ \mbox{[}\char`\"{}a\char`\"{}, \char`\"{}\char`\"{}\mbox{]} split(\char`\"{}\+:\char`\"{}, \textquotesingle{}\+:\textquotesingle{}) -\/$>$ \mbox{[}\char`\"{}\char`\"{}\mbox{]} split(\char`\"{}\+:a\char`\"{}, \textquotesingle{}\+:\textquotesingle{}) -\/$>$ \mbox{[}\char`\"{}\char`\"{}, \char`\"{}a\char`\"{}\mbox{]}. 
+
+Split iwith a fixed return size, useful in parsing csv.
+
+
 \begin{DoxyParams}{Parameters}
 {\em s} & \\
 \hline
@@ -172,9 +217,9 @@ Split is returns a deque of s split up at the character delimiter. It handles th
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{_strings_8h_a4bc77a6f47e3046cc934b49f5e03a56f}\label{_strings_8h_a4bc77a6f47e3046cc934b49f5e03a56f}} 
-\index{Strings.h@{Strings.h}!str@{str}}
-\index{str@{str}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{str()}{str()}}
+\index{Strings.\+h@{Strings.\+h}!str@{str}}
+\index{str@{str}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 std\+::string str (\begin{DoxyParamCaption}\item[{T}]{x }\end{DoxyParamCaption})}
 
@@ -186,3 +231,61 @@ A pythonesque string function
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\mbox{\Hypertarget{_strings_8h_a21b313a5a03eda533ac68a4501c68c17}\label{_strings_8h_a21b313a5a03eda533ac68a4501c68c17}} 
+\index{Strings.\+h@{Strings.\+h}!str@{str}}
+\index{str@{str}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{x }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_strings_8h_a9ab3d622399a5cd1e9fbaf8f38d8d394}\label{_strings_8h_a9ab3d622399a5cd1e9fbaf8f38d8d394}} 
+\index{Strings.\+h@{Strings.\+h}!str@{str}}
+\index{str@{str}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily template$<$typename... T, size\+\_\+t... I$>$ \\
+std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::tuple$<$ T... $>$ \&}]{x,  }\item[{std\+::index\+\_\+sequence$<$ I... $>$}]{idx }\end{DoxyParamCaption})}
+
+A pythonesque string function 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{_strings_8h_af4fcc184e9e474c84204591dd7c95f1c}\label{_strings_8h_af4fcc184e9e474c84204591dd7c95f1c}} 
+\index{Strings.\+h@{Strings.\+h}!str@{str}}
+\index{str@{str}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily template$<$typename... T$>$ \\
+std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::tuple$<$ T... $>$ \&}]{x }\end{DoxyParamCaption})}
+
+A pythonesque string function 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{_strings_8h_a66fc50785d7283d32f7f2e039e31b982}\label{_strings_8h_a66fc50785d7283d32f7f2e039e31b982}} 
+\index{Strings.\+h@{Strings.\+h}!str@{str}}
+\index{str@{str}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily template$<$typename T , size\+\_\+t N$>$ \\
+std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::array$<$ T, N $>$ \&}]{a }\end{DoxyParamCaption})}
+
+A pythonesque string function 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{_strings_8h_a74a3109333f6ec7fc237e492a524da6a}\label{_strings_8h_a74a3109333f6ec7fc237e492a524da6a}} 
+\index{Strings.\+h@{Strings.\+h}!to\+\_\+string\+\_\+with\+\_\+precision@{to\+\_\+string\+\_\+with\+\_\+precision}}
+\index{to\+\_\+string\+\_\+with\+\_\+precision@{to\+\_\+string\+\_\+with\+\_\+precision}!Strings.\+h@{Strings.\+h}}
+\subsubsection{\texorpdfstring{to\+\_\+string\+\_\+with\+\_\+precision()}{to\_string\_with\_precision()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::string to\+\_\+string\+\_\+with\+\_\+precision (\begin{DoxyParamCaption}\item[{const T}]{a\+\_\+value,  }\item[{const int}]{n = {\ttfamily 14} }\end{DoxyParamCaption})}
+

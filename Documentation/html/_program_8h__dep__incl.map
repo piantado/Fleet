@@ -1,8 +1,8 @@
-<map id="src/VirtualMachine/Program.h" name="src/VirtualMachine/Program.h">
-<area shape="rect" id="node1" title=" " alt="" coords="203,5,334,47"/>
-<area shape="rect" id="node2" href="$_node_8h.html" title=" " alt="" coords="23,102,167,129"/>
-<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="239,184,459,211"/>
-<area shape="rect" id="node6" href="$_virtual_machine_state_8h.html" title="Count references in lambda arguments (used to ensure we only passs one)" alt="" coords="191,95,346,136"/>
-<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="5,259,135,285"/>
-<area shape="rect" id="node4" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="48,184,215,211"/>
+<map id="src/VirtualMachine/Program/Program.h" name="src/VirtualMachine/Program/Program.h">
+<area shape="rect" id="node2" href="$_node_8h.html" title="src/Grammar/Node.h" alt="" coords="25,102,169,129"/>
+<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="243,273,463,300"/>
+<area shape="rect" id="node6" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="234,95,389,136"/>
+<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="5,273,135,300"/>
+<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="73,191,240,218"/>
+<area shape="rect" id="node7" href="$_callable_8h.html" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="265,184,441,225"/>
 </map>

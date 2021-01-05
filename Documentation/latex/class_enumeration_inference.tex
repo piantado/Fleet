@@ -1,52 +1,50 @@
-\hypertarget{class_enumeration_inference}{}\doxysection{Enumeration\+Inference$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t $>$ Class Template Reference}
-\label{class_enumeration_inference}\index{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$@{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$}}
+\hypertarget{class_enumeration_inference}{}\section{Enumeration\+Inference$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t, Enumerator $>$ Class Template Reference}
+\label{class_enumeration_inference}\index{Enumeration\+Inference$<$ H\+Y\+P, Grammar\+\_\+t, callback\+\_\+t, Enumerator $>$@{Enumeration\+Inference$<$ H\+Y\+P, Grammar\+\_\+t, callback\+\_\+t, Enumerator $>$}}
 
 
 {\ttfamily \#include $<$Enumeration\+Inference.\+h$>$}
 
 
 
-Inheritance diagram for Enumeration\+Inference$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t $>$\+:
+Inheritance diagram for Enumeration\+Inference$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t, Enumerator $>$\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=239pt]{class_enumeration_inference__inherit__graph}
+\includegraphics[width=223pt]{class_enumeration_inference__inherit__graph}
 \end{center}
 \end{figure}
 
 
-Collaboration diagram for Enumeration\+Inference$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t $>$\+:
+Collaboration diagram for Enumeration\+Inference$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t, Enumerator $>$\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=239pt]{class_enumeration_inference__coll__graph}
+\includegraphics[width=223pt]{class_enumeration_inference__coll__graph}
 \end{center}
 \end{figure}
-\doxysubsection*{Public Member Functions}
+\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{class_enumeration_inference_acce2365fb3b45ab53414d5dd93c18f11}{Enumeration\+Inference}} (Grammar\+\_\+t $\ast$g, \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} st, typename H\+Y\+P\+::data\+\_\+t $\ast$d, callback\+\_\+t \&cb)
+\hyperlink{class_enumeration_inference_a0726b90614680808bb5ac87ca440a683}{Enumeration\+Inference} (Grammar\+\_\+t $\ast$g, typename H\+Y\+P\+::data\+\_\+t $\ast$d, callback\+\_\+t \&cb)
 \item 
-void \mbox{\hyperlink{class_enumeration_inference_a257f7b3346772057c6f5b7ff049a9350}{run\+\_\+thread}} (\mbox{\hyperlink{struct_control}{Control}} ctl) override
+void \hyperlink{class_enumeration_inference_a128e8af05312e3a4a537e90ceb45c5ba}{run\+\_\+thread} (\hyperlink{struct_control}{Control} ctl) override
 \end{DoxyCompactItemize}
-\doxysubsection*{Public Attributes}
+\subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-Grammar\+\_\+t $\ast$ \mbox{\hyperlink{class_enumeration_inference_a5bba83e097730fd566d0a47336c9473d}{grammar}}
+Grammar\+\_\+t $\ast$ \hyperlink{class_enumeration_inference_aa39598587ac2d15550f8f9c6ca0c7089}{grammar}
 \item 
-\mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} \mbox{\hyperlink{class_enumeration_inference_af8fdb3bdee96254a2d35346cf5fb8450}{start}}
+H\+Y\+P\+::data\+\_\+t $\ast$ \hyperlink{class_enumeration_inference_a04537935bdd05d4320a51b15ddbca015}{data}
 \item 
-H\+Y\+P\+::data\+\_\+t $\ast$ \mbox{\hyperlink{class_enumeration_inference_a74a0f7bcc9701f2078a9dedea4352e63}{data}}
-\item 
-callback\+\_\+t $\ast$ \mbox{\hyperlink{class_enumeration_inference_a792b247c4874b9f879ac204749bea1c3}{callback}}
+callback\+\_\+t $\ast$ \hyperlink{class_enumeration_inference_a25d87b73385c434bdc34192b3408c0d0}{callback}
 \end{DoxyCompactItemize}
 
 
-\doxysubsection{Detailed Description}
-\subsubsection*{template$<$typename H\+YP, typename Grammar\+\_\+t, typename callback\+\_\+t$>$\newline
-class Enumeration\+Inference$<$ H\+Y\+P, Grammar\+\_\+t, callback\+\_\+t $>$}
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename H\+YP, typename Grammar\+\_\+t, typename callback\+\_\+t, typename Enumerator$>$\newline
+class Enumeration\+Inference$<$ H\+Y\+P, Grammar\+\_\+t, callback\+\_\+t, Enumerator $>$}
 
 \begin{DoxyAuthor}{Author}
 piantado 
@@ -56,57 +54,50 @@ piantado
 \end{DoxyDate}
 
 
-\doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{class_enumeration_inference_acce2365fb3b45ab53414d5dd93c18f11}\label{class_enumeration_inference_acce2365fb3b45ab53414d5dd93c18f11}} 
-\index{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$@{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$}!EnumerationInference@{EnumerationInference}}
-\index{EnumerationInference@{EnumerationInference}!EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$@{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{EnumerationInference()}{EnumerationInference()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename Grammar\+\_\+t , typename callback\+\_\+t $>$ \\
-\mbox{\hyperlink{class_enumeration_inference}{Enumeration\+Inference}}$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t $>$\+::\mbox{\hyperlink{class_enumeration_inference}{Enumeration\+Inference}} (\begin{DoxyParamCaption}\item[{Grammar\+\_\+t $\ast$}]{g,  }\item[{\mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}}]{st,  }\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{callback\+\_\+t \&}]{cb }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_enumeration_inference_a0726b90614680808bb5ac87ca440a683}\label{class_enumeration_inference_a0726b90614680808bb5ac87ca440a683}} 
+\index{Enumeration\+Inference@{Enumeration\+Inference}!Enumeration\+Inference@{Enumeration\+Inference}}
+\index{Enumeration\+Inference@{Enumeration\+Inference}!Enumeration\+Inference@{Enumeration\+Inference}}
+\subsubsection{\texorpdfstring{Enumeration\+Inference()}{EnumerationInference()}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename Grammar\+\_\+t , typename callback\+\_\+t , typename Enumerator $>$ \\
+\hyperlink{class_enumeration_inference}{Enumeration\+Inference}$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t, Enumerator $>$\+::\hyperlink{class_enumeration_inference}{Enumeration\+Inference} (\begin{DoxyParamCaption}\item[{Grammar\+\_\+t $\ast$}]{g,  }\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{callback\+\_\+t \&}]{cb }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-\doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_enumeration_inference_a257f7b3346772057c6f5b7ff049a9350}\label{class_enumeration_inference_a257f7b3346772057c6f5b7ff049a9350}} 
-\index{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$@{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$}!run\_thread@{run\_thread}}
-\index{run\_thread@{run\_thread}!EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$@{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{run\_thread()}{run\_thread()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename Grammar\+\_\+t , typename callback\+\_\+t $>$ \\
-void \mbox{\hyperlink{class_enumeration_inference}{Enumeration\+Inference}}$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_enumeration_inference_a128e8af05312e3a4a537e90ceb45c5ba}\label{class_enumeration_inference_a128e8af05312e3a4a537e90ceb45c5ba}} 
+\index{Enumeration\+Inference@{Enumeration\+Inference}!run\+\_\+thread@{run\+\_\+thread}}
+\index{run\+\_\+thread@{run\+\_\+thread}!Enumeration\+Inference@{Enumeration\+Inference}}
+\subsubsection{\texorpdfstring{run\+\_\+thread()}{run\_thread()}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename Grammar\+\_\+t , typename callback\+\_\+t , typename Enumerator $>$ \\
+void \hyperlink{class_enumeration_inference}{Enumeration\+Inference}$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t, Enumerator $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\hyperlink{struct_control}{Control}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
 
 
 
-\doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{class_enumeration_inference_a792b247c4874b9f879ac204749bea1c3}\label{class_enumeration_inference_a792b247c4874b9f879ac204749bea1c3}} 
-\index{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$@{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$}!callback@{callback}}
-\index{callback@{callback}!EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$@{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{callback}{callback}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename Grammar\+\_\+t , typename callback\+\_\+t $>$ \\
-callback\+\_\+t$\ast$ \mbox{\hyperlink{class_enumeration_inference}{Enumeration\+Inference}}$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t $>$\+::callback}
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_enumeration_inference_a25d87b73385c434bdc34192b3408c0d0}\label{class_enumeration_inference_a25d87b73385c434bdc34192b3408c0d0}} 
+\index{Enumeration\+Inference@{Enumeration\+Inference}!callback@{callback}}
+\index{callback@{callback}!Enumeration\+Inference@{Enumeration\+Inference}}
+\subsubsection{\texorpdfstring{callback}{callback}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename Grammar\+\_\+t , typename callback\+\_\+t , typename Enumerator $>$ \\
+callback\+\_\+t$\ast$ \hyperlink{class_enumeration_inference}{Enumeration\+Inference}$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t, Enumerator $>$\+::callback}
 
-\mbox{\Hypertarget{class_enumeration_inference_a74a0f7bcc9701f2078a9dedea4352e63}\label{class_enumeration_inference_a74a0f7bcc9701f2078a9dedea4352e63}} 
-\index{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$@{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$}!data@{data}}
-\index{data@{data}!EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$@{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{data}{data}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename Grammar\+\_\+t , typename callback\+\_\+t $>$ \\
-H\+Y\+P\+::data\+\_\+t$\ast$ \mbox{\hyperlink{class_enumeration_inference}{Enumeration\+Inference}}$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t $>$\+::data}
+\mbox{\Hypertarget{class_enumeration_inference_a04537935bdd05d4320a51b15ddbca015}\label{class_enumeration_inference_a04537935bdd05d4320a51b15ddbca015}} 
+\index{Enumeration\+Inference@{Enumeration\+Inference}!data@{data}}
+\index{data@{data}!Enumeration\+Inference@{Enumeration\+Inference}}
+\subsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename Grammar\+\_\+t , typename callback\+\_\+t , typename Enumerator $>$ \\
+H\+Y\+P\+::data\+\_\+t$\ast$ \hyperlink{class_enumeration_inference}{Enumeration\+Inference}$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t, Enumerator $>$\+::data}
 
-\mbox{\Hypertarget{class_enumeration_inference_a5bba83e097730fd566d0a47336c9473d}\label{class_enumeration_inference_a5bba83e097730fd566d0a47336c9473d}} 
-\index{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$@{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$}!grammar@{grammar}}
-\index{grammar@{grammar}!EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$@{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{grammar}{grammar}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename Grammar\+\_\+t , typename callback\+\_\+t $>$ \\
-Grammar\+\_\+t$\ast$ \mbox{\hyperlink{class_enumeration_inference}{Enumeration\+Inference}}$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t $>$\+::grammar}
-
-\mbox{\Hypertarget{class_enumeration_inference_af8fdb3bdee96254a2d35346cf5fb8450}\label{class_enumeration_inference_af8fdb3bdee96254a2d35346cf5fb8450}} 
-\index{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$@{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$}!start@{start}}
-\index{start@{start}!EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$@{EnumerationInference$<$ HYP, Grammar\_t, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{start}{start}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename Grammar\+\_\+t , typename callback\+\_\+t $>$ \\
-\mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} \mbox{\hyperlink{class_enumeration_inference}{Enumeration\+Inference}}$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t $>$\+::start}
+\mbox{\Hypertarget{class_enumeration_inference_aa39598587ac2d15550f8f9c6ca0c7089}\label{class_enumeration_inference_aa39598587ac2d15550f8f9c6ca0c7089}} 
+\index{Enumeration\+Inference@{Enumeration\+Inference}!grammar@{grammar}}
+\index{grammar@{grammar}!Enumeration\+Inference@{Enumeration\+Inference}}
+\subsubsection{\texorpdfstring{grammar}{grammar}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename Grammar\+\_\+t , typename callback\+\_\+t , typename Enumerator $>$ \\
+Grammar\+\_\+t$\ast$ \hyperlink{class_enumeration_inference}{Enumeration\+Inference}$<$ H\+YP, Grammar\+\_\+t, callback\+\_\+t, Enumerator $>$\+::grammar}
 
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/\+Inference/\mbox{\hyperlink{_enumeration_inference_8h}{Enumeration\+Inference.\+h}}\end{DoxyCompactItemize}
+src/\+Inference/\hyperlink{_inference_2_enumeration_inference_8h}{Enumeration\+Inference.\+h}\end{DoxyCompactItemize}

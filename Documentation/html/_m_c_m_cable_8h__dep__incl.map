@@ -1,7 +1,7 @@
 <map id="src/Hypotheses/Interfaces/MCMCable.h" name="src/Hypotheses/Interfaces/MCMCable.h">
-<area shape="rect" id="node1" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="270,5,446,47"/>
-<area shape="rect" id="node2" href="$_vector_hypothesis_8h.html" title="This has all of the MCMCable interfaces but jsut represents n unit Gaussians. This is primarily used ..." alt="" coords="13,95,247,121"/>
-<area shape="rect" id="node4" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="271,95,445,121"/>
-<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="469,95,689,121"/>
-<area shape="rect" id="node3" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,169,255,196"/>
+<area shape="rect" id="node2" href="$_vector_normal_hypothesis_8h.html" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior..." alt="" coords="5,95,204,136"/>
+<area shape="rect" id="node4" href="$_t_normal_variable_8h.html" title="src/Hypotheses/TNormalVariable.h" alt="" coords="229,102,455,129"/>
+<area shape="rect" id="node5" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="480,102,655,129"/>
+<area shape="rect" id="node6" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="679,102,899,129"/>
+<area shape="rect" id="node3" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on..." alt="" coords="99,184,348,211"/>
 </map>

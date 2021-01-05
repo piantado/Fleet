@@ -1,7 +1,8 @@
 <map id="src/Inference/MCMCChain.h" name="src/Inference/MCMCChain.h">
-<area shape="rect" id="node1" title=" " alt="" coords="271,6,461,33"/>
-<area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,81,255,108"/>
-<area shape="rect" id="node3" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="279,81,453,108"/>
-<area shape="rect" id="node5" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="345,230,510,257"/>
-<area shape="rect" id="node4" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="247,156,463,182"/>
+<area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on..." alt="" coords="5,156,255,182"/>
+<area shape="rect" id="node3" href="$_batch_8h.html" title="src/Inference/Batch.h" alt="" coords="159,81,306,108"/>
+<area shape="rect" id="node4" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel..." alt="" coords="330,81,503,108"/>
+<area shape="rect" id="node6" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums. These are often used to store features that LOT expressions operate on, for instance the objects that boolean logic operates on. " alt="" coords="384,230,551,257"/>
+<area shape="rect" id="node7" href="$_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="578,81,781,108"/>
+<area shape="rect" id="node5" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="285,156,503,182"/>
 </map>

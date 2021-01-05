@@ -1,5 +1,5 @@
-\hypertarget{_timing_8h}{}\doxysection{src/\+Timing.h File Reference}
-\label{_timing_8h}\index{src/Timing.h@{src/Timing.h}}
+\hypertarget{_timing_8h}{}\section{src/\+Timing.h File Reference}
+\label{_timing_8h}\index{src/\+Timing.\+h@{src/\+Timing.\+h}}
 {\ttfamily \#include $<$chrono$>$}\newline
 {\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
 Include dependency graph for Timing.\+h\+:
@@ -18,74 +18,77 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=350pt]{_timing_8h__dep__incl}
 \end{center}
 \end{figure}
-\doxysubsection*{Functions}
+\subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-time\+\_\+t \mbox{\hyperlink{_timing_8h_aba95791cdf05e46e95d8cda8075717c2}{convert\+\_\+time}} (std\+::string \&s)
-\end{DoxyCompactItemize}
+time\+\_\+t \hyperlink{_timing_8h_aba95791cdf05e46e95d8cda8075717c2}{convert\+\_\+time} (std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em Give a timepoint for the current time. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
-\doxysubsection{Function Documentation}
+\subsection{Function Documentation}
 \mbox{\Hypertarget{_timing_8h_aba95791cdf05e46e95d8cda8075717c2}\label{_timing_8h_aba95791cdf05e46e95d8cda8075717c2}} 
-\index{Timing.h@{Timing.h}!convert\_time@{convert\_time}}
-\index{convert\_time@{convert\_time}!Timing.h@{Timing.h}}
-\doxysubsubsection{\texorpdfstring{convert\_time()}{convert\_time()}}
+\index{Timing.\+h@{Timing.\+h}!convert\+\_\+time@{convert\+\_\+time}}
+\index{convert\+\_\+time@{convert\+\_\+time}!Timing.\+h@{Timing.\+h}}
+\subsubsection{\texorpdfstring{convert\+\_\+time()}{convert\_time()}}
 {\footnotesize\ttfamily time\+\_\+t convert\+\_\+time (\begin{DoxyParamCaption}\item[{std\+::string \&}]{s }\end{DoxyParamCaption})}
 
 
-\begin{DoxyCode}{0}
-\DoxyCodeLine{    Time is a goddamn nightmare, we are going to define our own time type}
-\DoxyCodeLine{    In \mbox{\hyperlink{class_fleet}{Fleet}}, EVERYTHING is going to be stored as an \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordflow}{for} ms}
-\DoxyCodeLine{   \string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~ */}
-\DoxyCodeLine{}
-\DoxyCodeLine{}
-\DoxyCodeLine{}
-\DoxyCodeLine{}
-\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} time\_ms;}
-\DoxyCodeLine{\textcolor{keyword}{typedef} std::chrono::high\_resolution\_clock::time\_point timept;}
-\DoxyCodeLine{}
-\DoxyCodeLine{timept now() \{ }
-\DoxyCodeLine{    \textcolor{keywordflow}{return} std::chrono::high\_resolution\_clock::now();}
-\DoxyCodeLine{\}}
-\DoxyCodeLine{}
-\DoxyCodeLine{time\_ms time\_since(timept x) \{}
-\DoxyCodeLine{    \textcolor{keywordflow}{return} std::chrono::duration\_cast<std::chrono::milliseconds>(std::chrono::high\_resolution\_clock::now()-\/x).count();}
-\DoxyCodeLine{\}}
-\DoxyCodeLine{}
-\DoxyCodeLine{}
-\DoxyCodeLine{\textcolor{comment}{// this is just handy for timing stuff -\/-\/ put blocks of code between tic() and tic()}}
-\DoxyCodeLine{timept tic\_start;}
-\DoxyCodeLine{time\_ms tic\_elapsed;}
-\DoxyCodeLine{\textcolor{keywordtype}{void} tic() \{}
-\DoxyCodeLine{    tic\_elapsed =  time\_since(tic\_start);}
-\DoxyCodeLine{    tic\_start = now();}
-\DoxyCodeLine{\}}
-\DoxyCodeLine{\textcolor{keywordtype}{double} elapsed\_seconds() \{ }
-\DoxyCodeLine{    \textcolor{keywordflow}{return} tic\_elapsed / 1000.0; }
-\DoxyCodeLine{\}}
-\DoxyCodeLine{}
-\DoxyCodeLine{}
-\DoxyCodeLine{std::string datestring() \{}
-\DoxyCodeLine{    \textcolor{comment}{//https://stackoverflow.com/questions/40100507/how-\/do-\/i-\/get-\/the-\/current-\/date-\/in-\/c}}
-\DoxyCodeLine{    }
-\DoxyCodeLine{    time\_t rawtime;}
-\DoxyCodeLine{    \textcolor{keyword}{struct }tm * timeinfo;}
-\DoxyCodeLine{    \textcolor{keywordtype}{char} buffer[80];}
-\DoxyCodeLine{}
-\DoxyCodeLine{    time (\&rawtime);}
-\DoxyCodeLine{    timeinfo = localtime(\&rawtime);}
-\DoxyCodeLine{}
-\DoxyCodeLine{    strftime(buffer,80,\textcolor{stringliteral}{"\%Y-\/\%m-\/\%d \%I:\%M:\%S"},timeinfo);}
-\DoxyCodeLine{    \textcolor{keywordflow}{return} std::string(buffer);}
-\DoxyCodeLine{\}}
-\DoxyCodeLine{}
-\DoxyCodeLine{}
-\DoxyCodeLine{}
-\DoxyCodeLine{\textcolor{comment}{/*}}
+
+Give a timepoint for the current time. 
+
+
+\begin{DoxyCode}
+    Time is a goddamn nightmare, we are going to define our own time type
+    In Fleet, EVERYTHING is going to be stored as an \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordflow}{for} ms
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+\textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} time\_ms;
+\textcolor{keyword}{typedef} std::chrono::high\_resolution\_clock::time\_point timept;
+
+timept now() \{ 
+    \textcolor{keywordflow}{return} std::chrono::high\_resolution\_clock::now();
+\}
+
+time\_ms time\_since(timept x) \{
+    \textcolor{keywordflow}{return} std::chrono::duration\_cast<std::chrono::milliseconds>(std::chrono::high\_resolution\_clock::now()-
+      x).\hyperlink{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}{count}();
+\}
+
+
+\textcolor{comment}{// this is just handy for timing stuff -- put blocks of code between tic() and tic()}
+timept tic\_start;
+time\_ms tic\_elapsed;
+\textcolor{keywordtype}{void} tic() \{
+    tic\_elapsed =  time\_since(tic\_start);
+    tic\_start = now();
+\}
+\textcolor{keywordtype}{double} elapsed\_seconds() \{ 
+    \textcolor{keywordflow}{return} tic\_elapsed / 1000.0; 
+\}
+
+
+std::string datestring() \{
+    \textcolor{comment}{//https://stackoverflow.com/questions/40100507/how-do-i-get-the-current-date-in-c}
+
+    time\_t rawtime;
+    \textcolor{keyword}{struct }tm * timeinfo;
+    \textcolor{keywordtype}{char} buffer[80];
+
+    time (&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    strftime(buffer,80,\textcolor{stringliteral}{"%Y-%m-%d %I:%M:%S"},timeinfo);
+    \textcolor{keywordflow}{return} std::string(buffer);
+\}
+
+
+
+\textcolor{comment}{/*}
 \end{DoxyCode}
- \begin{DoxyVerb}Time conversions for fleet
-\end{DoxyVerb}
- $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ Converts our own time format to ms, which is what \mbox{\hyperlink{class_fleet}{Fleet}}\textquotesingle{}s time utilities use The time format we accept is \#+(.\#+)\mbox{[}smhd\mbox{]} where shmd specifies seconds, minutes, hours days 
+ Time conversions for fleet $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ Converts our own time format to ms, which is what Fleet\textquotesingle{}s time utilities use The time format we accept is \#+(.\#+)\mbox{[}smhd\mbox{]} where shmd specifies seconds, minutes, hours days 
 \begin{DoxyParams}{Parameters}
 {\em s} & \\
 \hline

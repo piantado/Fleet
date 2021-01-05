@@ -1,3 +1,21 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$struct_reservoir_sample_1_1_item.html" title=" " alt="" coords="5,5,148,47"/>
+<area shape="rect" id="node1" href="$class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="5,219,152,245"/>
+<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title="MCMCable\&lt; this_t, Args \&gt;" alt="" coords="236,248,415,275"/>
+<area shape="rect" id="node3" href="$class_m_c_m_cable.html" title="MCMCable\&lt; this_t, \l_datum_t, _data_t \&gt;" alt="" coords="255,365,395,406"/>
+<area shape="rect" id="node5" href="$class_m_c_m_cable.html" title="MCMCable\&lt; this_t, datum_t \&gt;" alt="" coords="226,431,425,457"/>
+<area shape="rect" id="node7" href="$class_m_c_m_cable.html" title="MCMCable\&lt; this_t, datum\l_t, data_t \&gt;" alt="" coords="237,26,413,67"/>
+<area shape="rect" id="node9" href="$class_m_c_m_cable.html" title="MCMCable\&lt; TNormalVariable\l\&lt; f \&gt;, void *\&gt;" alt="" coords="227,117,424,158"/>
+<area shape="rect" id="node12" href="$class_m_c_m_cable.html" title="MCMCable\&lt; VectorNormalHypothesis,\l void *\&gt;" alt="" coords="200,182,451,223"/>
+<area shape="rect" id="node4" href="$class_l_o_t_hypothesis.html" title="LOTHypothesis\&lt; this\l_t, _input_t, _output\l_t, _Grammar_t, _datum\l_t, _data_t \&gt;" alt="" coords="511,350,675,421"/>
+<area shape="rect" id="node6" href="$class_lexicon.html" title="Lexicon\&lt; this_t, INNER,\l input_t, output_t, datum\l_t, _VirtualMachineState_t \&gt;" alt="" coords="499,561,687,617"/>
+<area shape="rect" id="node8" href="$class_grammar_hypothesis.html" title="GrammarHypothesis\&lt;\l this_t, _HYP, datum\l_t, data_t \&gt;" alt="" coords="517,5,668,61"/>
+<area shape="rect" id="node10" href="$class_t_normal_variable.html" title="TNormalVariable\&lt; f \&gt;" alt="" coords="519,85,666,112"/>
+<area shape="rect" id="node11" href="$class_t_normal_variable.html" title="TNormalVariable\&lt;+[]\l(float x) &#45;\&gt;" alt="" coords="521,137,664,178"/>
+<area shape="rect" id="node13" href="$class_vector_normal_hypothesis.html" title="VectorNormalHypothesis" alt="" coords="509,203,677,229"/>
+<area shape="rect" id="node14" href="$class_program_loader.html" title="ProgramLoader" alt="" coords="23,576,134,603"/>
+<area shape="rect" id="node15" href="$class_callable.html" title="Callable\&lt; input_t,\l output_t, VirtualMachineState_t \&gt;" alt="" coords="215,642,436,683"/>
+<area shape="rect" id="node16" href="$class_callable.html" title="Callable\&lt; _input_t,\l _output_t, _Grammar\l_t::VirtualMachineState_t \&gt;" alt="" coords="235,481,416,537"/>
+<area shape="rect" id="node17" href="$class_callable.html" title="Callable\&lt; input_t,\l output_t, _VirtualMachine\lState_t \&gt;" alt="" coords="238,561,413,617"/>
+<area shape="rect" id="node18" href="$class_searchable.html" title="Searchable\&lt; this_t,\l _input_t, _output_t \&gt;" alt="" coords="252,299,399,341"/>
+<area shape="rect" id="node19" href="$class_searchable.html" title="Searchable\&lt; this_t,\l input_t, output_t \&gt;" alt="" coords="258,707,393,749"/>
 </map>

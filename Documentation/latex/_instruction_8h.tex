@@ -1,19 +1,22 @@
-\hypertarget{_instruction_8h}{}\doxysection{src/\+Virtual\+Machine/\+Instruction.h File Reference}
-\label{_instruction_8h}\index{src/VirtualMachine/Instruction.h@{src/VirtualMachine/Instruction.h}}
+\hypertarget{_instruction_8h}{}\section{src/\+Virtual\+Machine/\+Program/\+Instruction.h File Reference}
+\label{_instruction_8h}\index{src/\+Virtual\+Machine/\+Program/\+Instruction.\+h@{src/\+Virtual\+Machine/\+Program/\+Instruction.\+h}}
 
 
-This is an error type that is returned if we get a runtime error (e.\+g. string length, etc.)  
+f here is a point to a void(\+Virtual\+Machine\+State\+\_\+t$\ast$ vms, int arg), where arg is just a supplemental argument, used to pass indices in lexica and jump sizes etc for other primitives  
 
 
 {\ttfamily \#include $<$assert.\+h$>$}\newline
 {\ttfamily \#include $<$iostream$>$}\newline
 {\ttfamily \#include $<$variant$>$}\newline
+{\ttfamily \#include \char`\"{}V\+M\+S\+Runtime\+Error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Ops.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}V\+M\+Status.\+h\char`\"{}}\newline
 Include dependency graph for Instruction.\+h\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=268pt]{_instruction_8h__incl}
+\includegraphics[width=350pt]{_instruction_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:
@@ -24,247 +27,29 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=350pt]{_instruction_8h__dep__incl}
 \end{center}
 \end{figure}
-\doxysubsection*{Classes}
+\subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{class_v_m_s_runtime_error__t}{V\+M\+S\+Runtime\+Error\+\_\+t}}
-\item 
-class \mbox{\hyperlink{class_instruction}{Instruction}}
+class \hyperlink{struct_instruction}{Instruction}
 \end{DoxyCompactItemize}
-\doxysubsection*{Typedefs}
+\subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-typedef short \mbox{\hyperlink{_instruction_8h_a227278394efd1e2313c727102db09ea9}{Primitive\+Op}}
-\end{DoxyCompactItemize}
-\doxysubsection*{Enumerations}
-\begin{DoxyCompactItemize}
-\item 
-enum \mbox{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t}} \{ \newline
-\mbox{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64a45802158e78dd9584161629098018fe8}{vmstatus\+\_\+t\+::\+G\+O\+OD}} =0, 
-\mbox{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64abb1ca97ec761fc37101737ba0aa2e7c5}{vmstatus\+\_\+t\+::\+E\+R\+R\+OR}}, 
-\mbox{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64a8427e4c0e4c7fc8456948b268f81ec6c}{vmstatus\+\_\+t\+::\+R\+E\+C\+U\+R\+S\+I\+O\+N\+\_\+\+D\+E\+P\+TH}}, 
-\mbox{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE}}, 
-\newline
-\mbox{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE}}, 
-\mbox{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64a67b10974a97cedee08e6161b8f81e1cb}{vmstatus\+\_\+t\+::\+S\+I\+Z\+E\+\_\+\+E\+X\+C\+E\+P\+T\+I\+ON}}, 
-\mbox{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64a18a6a8e9b2c160d9894261b480283a6b}{vmstatus\+\_\+t\+::\+R\+U\+N\+\_\+\+T\+O\+O\+\_\+\+L\+O\+NG}}, 
-\mbox{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64acb15e3bbc847e78a1b1352165d03f157}{vmstatus\+\_\+t\+::\+O\+P\+\_\+\+E\+R\+R\+\_\+\+A\+B\+O\+RT}}, 
-\newline
-\mbox{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64a744399cc9222b7fb2eb79740e4fd0c34}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+B\+R\+E\+A\+K\+O\+UT}}
- \}
-\item 
-enum \mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}{Builtin\+Op}} \{ \newline
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad4a8b4f8133e76e25475d25a38d66b84}{Builtin\+Op\+::op\+\_\+\+N\+OP}} =0, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7abb368ec2ea2dad144edceda5af4d3c91}{Builtin\+Op\+::op\+\_\+X}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a0c25df1402043c1b63892dc40546fbae}{Builtin\+Op\+::op\+\_\+\+P\+O\+PX}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a7bed11c79cc13a4323499087fb9f2916}{Builtin\+Op\+::op\+\_\+\+M\+EM}}, 
-\newline
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5fa4edc259e6408058c0df50fb88138a}{Builtin\+Op\+::op\+\_\+\+R\+E\+C\+U\+R\+SE}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad5967a709ff8c12814543509f10bb97c}{Builtin\+Op\+::op\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae5cb64ef0fd9566611fff6a9f5e4ff8e}{Builtin\+Op\+::op\+\_\+\+S\+A\+F\+E\+\_\+\+R\+E\+C\+U\+R\+SE}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae5bdbf72adbf50e3b4a1da86087ce808}{Builtin\+Op\+::op\+\_\+\+S\+A\+F\+E\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE}}, 
-\newline
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a44f109761f9ab5171f4ac61a3a1e27c9}{Builtin\+Op\+::op\+\_\+\+F\+L\+IP}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ab369d693d8c216d6e3d5192349435ef8}{Builtin\+Op\+::op\+\_\+\+F\+L\+I\+PP}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a8f69a9fe993189d72cf7b07e8517801d}{Builtin\+Op\+::op\+\_\+\+IF}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7aa83fd4252a4bb350a85e58c8c381c721}{Builtin\+Op\+::op\+\_\+\+J\+MP}}, 
-\newline
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a0e8b8a53eb40824e4c185936aba607cd}{Builtin\+Op\+::op\+\_\+\+T\+R\+UE}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5bdb1bb7e493d8d7eafb7fc5e328f33b}{Builtin\+Op\+::op\+\_\+\+F\+A\+L\+SE}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a4f5b048d1b1b175da91b5241b56aaa2d}{Builtin\+Op\+::op\+\_\+\+A\+L\+P\+H\+A\+B\+ET}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7af58eeb2c4016cc74b9a2081cad1ff12b}{Builtin\+Op\+::op\+\_\+\+A\+L\+P\+H\+A\+B\+E\+Tchar}}, 
-\newline
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5aba0a5bece4ccca57a34a235691a938}{Builtin\+Op\+::op\+\_\+\+I\+NT}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a26edb709754b83f524bf3287fff0d264}{Builtin\+Op\+::op\+\_\+\+F\+L\+O\+AT}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ab96043283e424acda93488de3a6ece5f}{Builtin\+Op\+::op\+\_\+P}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ada11f6673f193a79dc1fcf36e27f2e2b}{Builtin\+Op\+::op\+\_\+\+S\+K\+A\+P\+P\+LY}}, 
-\newline
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae77dc89233eb1fc00d3d1f1a1c1c462e}{Builtin\+Op\+::op\+\_\+S}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a2fb436da7a3a42d51ead8de1ff97583b}{Builtin\+Op\+::op\+\_\+K}}, 
-\mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad44d28cb2a17778a81beb232dd72759a}{Builtin\+Op\+::op\+\_\+I}}
- \}
-\end{DoxyCompactItemize}
-\doxysubsection*{Functions}
-\begin{DoxyCompactItemize}
-\item 
-std\+::ostream \& \mbox{\hyperlink{_instruction_8h_aa8616c19ad0730c798f233cc34778b7c}{operator$<$$<$}} (std\+::ostream \&stream, \mbox{\hyperlink{class_instruction}{Instruction}} \&i)
-\end{DoxyCompactItemize}
-\doxysubsection*{Variables}
-\begin{DoxyCompactItemize}
-\item 
-\mbox{\hyperlink{class_v_m_s_runtime_error__t}{V\+M\+S\+Runtime\+Error\+\_\+t}} \mbox{\hyperlink{_instruction_8h_ad52a943cab94a4e21d8d0dee7d010b9e}{V\+M\+S\+Runtime\+Error}}
+std\+::ostream \& \hyperlink{_instruction_8h_aa8616c19ad0730c798f233cc34778b7c}{operator$<$$<$} (std\+::ostream \&stream, \hyperlink{struct_instruction}{Instruction} \&i)
 \end{DoxyCompactItemize}
 
 
-\doxysubsection{Detailed Description}
-This is an error type that is returned if we get a runtime error (e.\+g. string length, etc.) 
+\subsection{Detailed Description}
+f here is a point to a void(\+Virtual\+Machine\+State\+\_\+t$\ast$ vms, int arg), where arg is just a supplemental argument, used to pass indices in lexica and jump sizes etc for other primitives 
 
-This is how we store an instruction in the program. It can take one of three types\+: Builtin\+Op -- these are operations that are defined as part of \mbox{\hyperlink{class_fleet}{Fleet}}\textquotesingle{}s core library, and are implemented automatically in \mbox{\hyperlink{class_virtual_machine_state_a815d2e072590b97e314aa947130efb70}{Virtual\+Machine\+State\+::run}} Primitive\+Op -- these are defined {\itshape automatically} through the global variable P\+R\+I\+M\+I\+T\+I\+V\+ES (see Models/\+Rational\+Rules). When you construct a grammar with these, it automatically figures out all the types and automatically gives each a sequential numbering, which it takes some template magic to access at runtime Dispatch\+Op -- if we store this kind, our primitive gets called with teh V\+MS stuff (vms, pool, loader) rather than the stuff on the stack. This permits us to access these pieces in fancier primitives.
+This is an error type that is returned if we get a runtime error (e.\+g. string length, etc.) and it is handled in V\+MS.
 
-For any op type, an \mbox{\hyperlink{class_instruction}{Instruction}} always takes an \char`\"{}arg\char`\"{} type that essentially allow us to define classes of instructions for instance, jump takes an arg, factorized recursion uses arg for index, in Formal\+Language\+Theory we use arg to store which alphabet terminal, etc. 
-
-\doxysubsection{Typedef Documentation}
-\mbox{\Hypertarget{_instruction_8h_a227278394efd1e2313c727102db09ea9}\label{_instruction_8h_a227278394efd1e2313c727102db09ea9}} 
-\index{Instruction.h@{Instruction.h}!PrimitiveOp@{PrimitiveOp}}
-\index{PrimitiveOp@{PrimitiveOp}!Instruction.h@{Instruction.h}}
-\doxysubsubsection{\texorpdfstring{PrimitiveOp}{PrimitiveOp}}
-{\footnotesize\ttfamily typedef short \mbox{\hyperlink{_instruction_8h_a227278394efd1e2313c727102db09ea9}{Primitive\+Op}}}
-
-
-
-\doxysubsection{Enumeration Type Documentation}
-\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}} 
-\index{Instruction.h@{Instruction.h}!BuiltinOp@{BuiltinOp}}
-\index{BuiltinOp@{BuiltinOp}!Instruction.h@{Instruction.h}}
-\doxysubsubsection{\texorpdfstring{BuiltinOp}{BuiltinOp}}
-{\footnotesize\ttfamily enum \mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7}{Builtin\+Op}}\hspace{0.3cm}{\ttfamily [strong]}}
-
-\begin{DoxyEnumFields}{Enumerator}
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_NOP@{op\_NOP}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_NOP@{op\_NOP}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad4a8b4f8133e76e25475d25a38d66b84}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad4a8b4f8133e76e25475d25a38d66b84}} 
-op\+\_\+\+N\+OP&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_X@{op\_X}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_X@{op\_X}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7abb368ec2ea2dad144edceda5af4d3c91}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7abb368ec2ea2dad144edceda5af4d3c91}} 
-op\+\_\+X&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_POPX@{op\_POPX}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_POPX@{op\_POPX}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a0c25df1402043c1b63892dc40546fbae}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a0c25df1402043c1b63892dc40546fbae}} 
-op\+\_\+\+P\+O\+PX&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_MEM@{op\_MEM}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_MEM@{op\_MEM}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a7bed11c79cc13a4323499087fb9f2916}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a7bed11c79cc13a4323499087fb9f2916}} 
-op\+\_\+\+M\+EM&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_RECURSE@{op\_RECURSE}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_RECURSE@{op\_RECURSE}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5fa4edc259e6408058c0df50fb88138a}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5fa4edc259e6408058c0df50fb88138a}} 
-op\+\_\+\+R\+E\+C\+U\+R\+SE&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_MEM\_RECURSE@{op\_MEM\_RECURSE}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_MEM\_RECURSE@{op\_MEM\_RECURSE}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad5967a709ff8c12814543509f10bb97c}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad5967a709ff8c12814543509f10bb97c}} 
-op\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_SAFE\_RECURSE@{op\_SAFE\_RECURSE}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_SAFE\_RECURSE@{op\_SAFE\_RECURSE}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae5cb64ef0fd9566611fff6a9f5e4ff8e}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae5cb64ef0fd9566611fff6a9f5e4ff8e}} 
-op\+\_\+\+S\+A\+F\+E\+\_\+\+R\+E\+C\+U\+R\+SE&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_SAFE\_MEM\_RECURSE@{op\_SAFE\_MEM\_RECURSE}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_SAFE\_MEM\_RECURSE@{op\_SAFE\_MEM\_RECURSE}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae5bdbf72adbf50e3b4a1da86087ce808}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae5bdbf72adbf50e3b4a1da86087ce808}} 
-op\+\_\+\+S\+A\+F\+E\+\_\+\+M\+E\+M\+\_\+\+R\+E\+C\+U\+R\+SE&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_FLIP@{op\_FLIP}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_FLIP@{op\_FLIP}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a44f109761f9ab5171f4ac61a3a1e27c9}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a44f109761f9ab5171f4ac61a3a1e27c9}} 
-op\+\_\+\+F\+L\+IP&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_FLIPP@{op\_FLIPP}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_FLIPP@{op\_FLIPP}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ab369d693d8c216d6e3d5192349435ef8}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ab369d693d8c216d6e3d5192349435ef8}} 
-op\+\_\+\+F\+L\+I\+PP&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_IF@{op\_IF}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_IF@{op\_IF}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a8f69a9fe993189d72cf7b07e8517801d}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a8f69a9fe993189d72cf7b07e8517801d}} 
-op\+\_\+\+IF&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_JMP@{op\_JMP}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_JMP@{op\_JMP}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7aa83fd4252a4bb350a85e58c8c381c721}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7aa83fd4252a4bb350a85e58c8c381c721}} 
-op\+\_\+\+J\+MP&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_TRUE@{op\_TRUE}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_TRUE@{op\_TRUE}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a0e8b8a53eb40824e4c185936aba607cd}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a0e8b8a53eb40824e4c185936aba607cd}} 
-op\+\_\+\+T\+R\+UE&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_FALSE@{op\_FALSE}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_FALSE@{op\_FALSE}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5bdb1bb7e493d8d7eafb7fc5e328f33b}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5bdb1bb7e493d8d7eafb7fc5e328f33b}} 
-op\+\_\+\+F\+A\+L\+SE&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_ALPHABET@{op\_ALPHABET}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_ALPHABET@{op\_ALPHABET}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a4f5b048d1b1b175da91b5241b56aaa2d}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a4f5b048d1b1b175da91b5241b56aaa2d}} 
-op\+\_\+\+A\+L\+P\+H\+A\+B\+ET&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_ALPHABETchar@{op\_ALPHABETchar}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_ALPHABETchar@{op\_ALPHABETchar}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7af58eeb2c4016cc74b9a2081cad1ff12b}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7af58eeb2c4016cc74b9a2081cad1ff12b}} 
-op\+\_\+\+A\+L\+P\+H\+A\+B\+E\+Tchar&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_INT@{op\_INT}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_INT@{op\_INT}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5aba0a5bece4ccca57a34a235691a938}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a5aba0a5bece4ccca57a34a235691a938}} 
-op\+\_\+\+I\+NT&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_FLOAT@{op\_FLOAT}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_FLOAT@{op\_FLOAT}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a26edb709754b83f524bf3287fff0d264}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a26edb709754b83f524bf3287fff0d264}} 
-op\+\_\+\+F\+L\+O\+AT&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_P@{op\_P}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_P@{op\_P}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ab96043283e424acda93488de3a6ece5f}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ab96043283e424acda93488de3a6ece5f}} 
-op\+\_\+P&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_SKAPPLY@{op\_SKAPPLY}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_SKAPPLY@{op\_SKAPPLY}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ada11f6673f193a79dc1fcf36e27f2e2b}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ada11f6673f193a79dc1fcf36e27f2e2b}} 
-op\+\_\+\+S\+K\+A\+P\+P\+LY&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_S@{op\_S}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_S@{op\_S}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae77dc89233eb1fc00d3d1f1a1c1c462e}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae77dc89233eb1fc00d3d1f1a1c1c462e}} 
-op\+\_\+S&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_K@{op\_K}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_K@{op\_K}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a2fb436da7a3a42d51ead8de1ff97583b}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a2fb436da7a3a42d51ead8de1ff97583b}} 
-op\+\_\+K&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{op\_I@{op\_I}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!op\_I@{op\_I}}}\mbox{\Hypertarget{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad44d28cb2a17778a81beb232dd72759a}\label{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad44d28cb2a17778a81beb232dd72759a}} 
-op\+\_\+I&\\
-\hline
-
-\end{DoxyEnumFields}
-\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64}} 
-\index{Instruction.h@{Instruction.h}!vmstatus\_t@{vmstatus\_t}}
-\index{vmstatus\_t@{vmstatus\_t}!Instruction.h@{Instruction.h}}
-\doxysubsubsection{\texorpdfstring{vmstatus\_t}{vmstatus\_t}}
-{\footnotesize\ttfamily enum \mbox{\hyperlink{_instruction_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t}}\hspace{0.3cm}{\ttfamily [strong]}}
-
-\begin{DoxyEnumFields}{Enumerator}
-\raisebox{\heightof{T}}[0pt][0pt]{\index{GOOD@{GOOD}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!GOOD@{GOOD}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64a45802158e78dd9584161629098018fe8}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64a45802158e78dd9584161629098018fe8}} 
-G\+O\+OD&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{ERROR@{ERROR}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!ERROR@{ERROR}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64abb1ca97ec761fc37101737ba0aa2e7c5}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64abb1ca97ec761fc37101737ba0aa2e7c5}} 
-E\+R\+R\+OR&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{RECURSION\_DEPTH@{RECURSION\_DEPTH}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!RECURSION\_DEPTH@{RECURSION\_DEPTH}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64a8427e4c0e4c7fc8456948b268f81ec6c}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64a8427e4c0e4c7fc8456948b268f81ec6c}} 
-R\+E\+C\+U\+R\+S\+I\+O\+N\+\_\+\+D\+E\+P\+TH&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{RANDOM\_CHOICE@{RANDOM\_CHOICE}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!RANDOM\_CHOICE@{RANDOM\_CHOICE}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}} 
-R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{RANDOM\_CHOICE\_NO\_DELETE@{RANDOM\_CHOICE\_NO\_DELETE}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!RANDOM\_CHOICE\_NO\_DELETE@{RANDOM\_CHOICE\_NO\_DELETE}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460}} 
-R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{SIZE\_EXCEPTION@{SIZE\_EXCEPTION}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!SIZE\_EXCEPTION@{SIZE\_EXCEPTION}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64a67b10974a97cedee08e6161b8f81e1cb}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64a67b10974a97cedee08e6161b8f81e1cb}} 
-S\+I\+Z\+E\+\_\+\+E\+X\+C\+E\+P\+T\+I\+ON&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{RUN\_TOO\_LONG@{RUN\_TOO\_LONG}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!RUN\_TOO\_LONG@{RUN\_TOO\_LONG}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64a18a6a8e9b2c160d9894261b480283a6b}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64a18a6a8e9b2c160d9894261b480283a6b}} 
-R\+U\+N\+\_\+\+T\+O\+O\+\_\+\+L\+O\+NG&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{OP\_ERR\_ABORT@{OP\_ERR\_ABORT}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!OP\_ERR\_ABORT@{OP\_ERR\_ABORT}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64acb15e3bbc847e78a1b1352165d03f157}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64acb15e3bbc847e78a1b1352165d03f157}} 
-O\+P\+\_\+\+E\+R\+R\+\_\+\+A\+B\+O\+RT&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{RANDOM\_BREAKOUT@{RANDOM\_BREAKOUT}!Instruction.h@{Instruction.h}}\index{Instruction.h@{Instruction.h}!RANDOM\_BREAKOUT@{RANDOM\_BREAKOUT}}}\mbox{\Hypertarget{_instruction_8h_a6202215407ab29590bb936ca2996cf64a744399cc9222b7fb2eb79740e4fd0c34}\label{_instruction_8h_a6202215407ab29590bb936ca2996cf64a744399cc9222b7fb2eb79740e4fd0c34}} 
-R\+A\+N\+D\+O\+M\+\_\+\+B\+R\+E\+A\+K\+O\+UT&\\
-\hline
-
-\end{DoxyEnumFields}
-
-
-\doxysubsection{Function Documentation}
+\subsection{Function Documentation}
 \mbox{\Hypertarget{_instruction_8h_aa8616c19ad0730c798f233cc34778b7c}\label{_instruction_8h_aa8616c19ad0730c798f233cc34778b7c}} 
-\index{Instruction.h@{Instruction.h}!operator$<$$<$@{operator$<$$<$}}
-\index{operator$<$$<$@{operator$<$$<$}!Instruction.h@{Instruction.h}}
-\doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
-{\footnotesize\ttfamily std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{stream,  }\item[{\mbox{\hyperlink{class_instruction}{Instruction}} \&}]{i }\end{DoxyParamCaption})}
+\index{Instruction.\+h@{Instruction.\+h}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Instruction.\+h@{Instruction.\+h}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{stream,  }\item[{\hyperlink{struct_instruction}{Instruction} \&}]{i }\end{DoxyParamCaption})}
 
 Output for instructions. 
 \begin{DoxyParams}{Parameters}
@@ -276,12 +61,3 @@ Output for instructions.
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-
-
-\doxysubsection{Variable Documentation}
-\mbox{\Hypertarget{_instruction_8h_ad52a943cab94a4e21d8d0dee7d010b9e}\label{_instruction_8h_ad52a943cab94a4e21d8d0dee7d010b9e}} 
-\index{Instruction.h@{Instruction.h}!VMSRuntimeError@{VMSRuntimeError}}
-\index{VMSRuntimeError@{VMSRuntimeError}!Instruction.h@{Instruction.h}}
-\doxysubsubsection{\texorpdfstring{VMSRuntimeError}{VMSRuntimeError}}
-{\footnotesize\ttfamily \mbox{\hyperlink{class_v_m_s_runtime_error__t}{V\+M\+S\+Runtime\+Error\+\_\+t}} V\+M\+S\+Runtime\+Error}
-

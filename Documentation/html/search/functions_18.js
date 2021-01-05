@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['youshouldnotbehereerror_1080',['YouShouldNotBeHereError',['../class_you_should_not_be_here_error.html#a07ad83d10d42cb5edea6e0a16ffcd225',1,'YouShouldNotBeHereError::YouShouldNotBeHereError()'],['../class_you_should_not_be_here_error.html#ad4ccc32bd90603898ae927ef90b36651',1,'YouShouldNotBeHereError::YouShouldNotBeHereError(std::string s)']]]
+  ['x',['X',['../namespace_builtins.html#a25cc5743603132ee78d118a4ca039c68',1,'Builtins']]]
 ];

@@ -1,6 +1,7 @@
 <map id="src/Random.h" name="src/Random.h">
-<area shape="rect" id="node1" title=" " alt="" coords="127,5,231,32"/>
-<area shape="rect" id="node2" href="$_grammar_8h.html" title="This is a little magic used to check the ordering of PRIMITIVES to ensure that we never have a Primit..." alt="" coords="5,80,172,107"/>
-<area shape="rect" id="node4" href="$_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree." alt="" coords="196,80,347,107"/>
-<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="24,155,153,181"/>
+<area shape="rect" id="node2" href="$_fleet_8h.html" title="src/Fleet.h" alt="" coords="52,80,136,107"/>
+<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="171,80,337,107"/>
+<area shape="rect" id="node6" href="$_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree..." alt="" coords="361,80,512,107"/>
+<area shape="rect" id="node3" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums. These are often used to store features that LOT expressions operate on, for instance the objects that boolean logic operates on. " alt="" coords="5,155,172,181"/>
+<area shape="rect" id="node5" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="196,155,325,181"/>
 </map>

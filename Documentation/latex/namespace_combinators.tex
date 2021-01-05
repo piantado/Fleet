@@ -1,50 +1,52 @@
-\hypertarget{namespace_combinators}{}\doxysection{Combinators Namespace Reference}
+\hypertarget{namespace_combinators}{}\section{Combinators Namespace Reference}
 \label{namespace_combinators}\index{Combinators@{Combinators}}
-\doxysubsection*{Classes}
+\subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \mbox{\hyperlink{struct_combinators_1_1_c_l}{CL}}
+struct \hyperlink{struct_combinators_1_1_c_l}{CL}
 \item 
-class \mbox{\hyperlink{class_combinators_1_1_lazy_normal_forms}{Lazy\+Normal\+Forms}}
+struct \hyperlink{struct_combinators_1_1cl__void}{cl\+\_\+void}
 \item 
-class \mbox{\hyperlink{class_combinators_1_1_reduction_exception}{Reduction\+Exception}}
+class \hyperlink{class_combinators_1_1_lazy_normal_forms}{Lazy\+Normal\+Forms}
 \item 
-class \mbox{\hyperlink{class_combinators_1_1_s_k_grammar}{S\+K\+Grammar}}
+class \hyperlink{class_combinators_1_1_reduction_exception}{Reduction\+Exception}
+\item 
+class \hyperlink{class_combinators_1_1_s_k_grammar}{S\+K\+Grammar}
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$Builtin\+Op $>$ }\\bool \mbox{\hyperlink{namespace_combinators_aa3c93f1edab6764d54dda56aafac9cd3}{can\+\_\+reduce}} (const \mbox{\hyperlink{class_node}{Node}} \&n)
+{\footnotesize template$<$Op $>$ }\\bool \hyperlink{namespace_combinators_aa3c93f1edab6764d54dda56aafac9cd3}{can\+\_\+reduce} (const \hyperlink{class_node}{Node} \&n)
 \item 
-template$<$$>$ bool \mbox{\hyperlink{namespace_combinators_ad95b1d79317c4d84eb4f96bac4176fc5}{can\+\_\+reduce$<$ Builtin\+Op\+::op\+\_\+\+I $>$}} (const \mbox{\hyperlink{class_node}{Node}} \&n)
+{\footnotesize template$<$$>$ }\\bool \hyperlink{namespace_combinators_aa038cd10e92daa6feb9f9010f705fb33}{can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+S $>$} (const \hyperlink{class_node}{Node} \&n)
 \item 
-template$<$$>$ bool \mbox{\hyperlink{namespace_combinators_acf147e40e9f56872bedc87bd63705672}{can\+\_\+reduce$<$ Builtin\+Op\+::op\+\_\+\+K $>$}} (const \mbox{\hyperlink{class_node}{Node}} \&n)
+{\footnotesize template$<$$>$ }\\bool \hyperlink{namespace_combinators_a5c0e720989a7b4ad841c071c48924b78}{can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+K $>$} (const \hyperlink{class_node}{Node} \&n)
 \item 
-template$<$$>$ bool \mbox{\hyperlink{namespace_combinators_a20138fc667812b7b36885b52387f85e0}{can\+\_\+reduce$<$ Builtin\+Op\+::op\+\_\+\+S $>$}} (const \mbox{\hyperlink{class_node}{Node}} \&n)
+{\footnotesize template$<$$>$ }\\bool \hyperlink{namespace_combinators_a5fe26e0973d49aa2b6cedd39529705bf}{can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+I $>$} (const \hyperlink{class_node}{Node} \&n)
 \item 
-bool \mbox{\hyperlink{namespace_combinators_a29877c1bfde5b9807fd7a7538efe9e0c}{is\+\_\+normal\+\_\+form}} (const \mbox{\hyperlink{class_node}{Node}} \&n)
+bool \hyperlink{namespace_combinators_a29877c1bfde5b9807fd7a7538efe9e0c}{is\+\_\+normal\+\_\+form} (const \hyperlink{class_node}{Node} \&n)
 \begin{DoxyCompactList}\small\item\em check if a tree n is in SK normal form, meaning that no subnodes can be reduced \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{namespace_combinators_a6abc966e0ab0f2aa8170712f32541458}{reduce}} (\mbox{\hyperlink{class_node}{Node}} \&n, size\+\_\+t \&remaining\+\_\+calls)
+void \hyperlink{namespace_combinators_a6abc966e0ab0f2aa8170712f32541458}{reduce} (\hyperlink{class_node}{Node} \&n, size\+\_\+t \&remaining\+\_\+calls)
 \begin{DoxyCompactList}\small\item\em Reduce a combinator. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{namespace_combinators_a10b79cf8cc79cd5505e8d3c70470aab7}{reduce}} (\mbox{\hyperlink{class_node}{Node}} \&n)
+void \hyperlink{namespace_combinators_a10b79cf8cc79cd5505e8d3c70470aab7}{reduce} (\hyperlink{class_node}{Node} \&n)
 \begin{DoxyCompactList}\small\item\em Reduce (automtically set remaining\+\_\+calls=256 default) \end{DoxyCompactList}\item 
-\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{namespace_combinators_a30e2a8ed9eb766eb35ce3feb10cbd59a}{apply\+\_\+and\+\_\+reduce}} (\mbox{\hyperlink{class_node}{Node}} f, \mbox{\hyperlink{class_node}{Node}} x)
+\hyperlink{class_node}{Node} \hyperlink{namespace_combinators_a30e2a8ed9eb766eb35ce3feb10cbd59a}{apply\+\_\+and\+\_\+reduce} (\hyperlink{class_node}{Node} f, \hyperlink{class_node}{Node} x)
 \begin{DoxyCompactList}\small\item\em Apply a function f to a node x and reduce. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Variables}
+\subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{class_combinators_1_1_s_k_grammar}{Combinators\+::\+S\+K\+Grammar}} \mbox{\hyperlink{namespace_combinators_ab21b42a6029a4b03d9a19c8597c9880f}{skgrammar}}
+\hyperlink{class_combinators_1_1_s_k_grammar}{Combinators\+::\+S\+K\+Grammar} \hyperlink{namespace_combinators_a24aeacfa083d06000a89cb59d14eeccb}{skgrammar}
 \item 
-\mbox{\hyperlink{class_combinators_1_1_reduction_exception}{Combinators\+::\+Reduction\+Exception}} \mbox{\hyperlink{namespace_combinators_a64c32cd83ab0bfe747532d053ee0df44}{reduction\+\_\+exception}}
+\hyperlink{class_combinators_1_1_reduction_exception}{Combinators\+::\+Reduction\+Exception} \hyperlink{namespace_combinators_a47aa4c813bc5305c8b818c9be952235c}{reduction\+\_\+exception}
 \end{DoxyCompactItemize}
 
 
-\doxysubsection{Function Documentation}
+\subsection{Function Documentation}
 \mbox{\Hypertarget{namespace_combinators_a30e2a8ed9eb766eb35ce3feb10cbd59a}\label{namespace_combinators_a30e2a8ed9eb766eb35ce3feb10cbd59a}} 
-\index{Combinators@{Combinators}!apply\_and\_reduce@{apply\_and\_reduce}}
-\index{apply\_and\_reduce@{apply\_and\_reduce}!Combinators@{Combinators}}
-\doxysubsubsection{\texorpdfstring{apply\_and\_reduce()}{apply\_and\_reduce()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{class_node}{Node}} Combinators\+::apply\+\_\+and\+\_\+reduce (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}}}]{f,  }\item[{\mbox{\hyperlink{class_node}{Node}}}]{x }\end{DoxyParamCaption})}
+\index{Combinators@{Combinators}!apply\+\_\+and\+\_\+reduce@{apply\+\_\+and\+\_\+reduce}}
+\index{apply\+\_\+and\+\_\+reduce@{apply\+\_\+and\+\_\+reduce}!Combinators@{Combinators}}
+\subsubsection{\texorpdfstring{apply\+\_\+and\+\_\+reduce()}{apply\_and\_reduce()}}
+{\footnotesize\ttfamily \hyperlink{class_node}{Node} Combinators\+::apply\+\_\+and\+\_\+reduce (\begin{DoxyParamCaption}\item[{\hyperlink{class_node}{Node}}]{f,  }\item[{\hyperlink{class_node}{Node}}]{x }\end{DoxyParamCaption})}
 
 
 
@@ -61,38 +63,38 @@ Apply a function f to a node x and reduce.
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{namespace_combinators_aa3c93f1edab6764d54dda56aafac9cd3}\label{namespace_combinators_aa3c93f1edab6764d54dda56aafac9cd3}} 
-\index{Combinators@{Combinators}!can\_reduce@{can\_reduce}}
-\index{can\_reduce@{can\_reduce}!Combinators@{Combinators}}
-\doxysubsubsection{\texorpdfstring{can\_reduce()}{can\_reduce()}}
-{\footnotesize\ttfamily template$<$Builtin\+Op $>$ \\
-bool Combinators\+::can\+\_\+reduce (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{n }\end{DoxyParamCaption})}
+\index{Combinators@{Combinators}!can\+\_\+reduce@{can\+\_\+reduce}}
+\index{can\+\_\+reduce@{can\+\_\+reduce}!Combinators@{Combinators}}
+\subsubsection{\texorpdfstring{can\+\_\+reduce()}{can\_reduce()}}
+{\footnotesize\ttfamily template$<$Op $>$ \\
+bool Combinators\+::can\+\_\+reduce (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{namespace_combinators_ad95b1d79317c4d84eb4f96bac4176fc5}\label{namespace_combinators_ad95b1d79317c4d84eb4f96bac4176fc5}} 
-\index{Combinators@{Combinators}!can\_reduce$<$ BuiltinOp::op\_I $>$@{can\_reduce$<$ BuiltinOp::op\_I $>$}}
-\index{can\_reduce$<$ BuiltinOp::op\_I $>$@{can\_reduce$<$ BuiltinOp::op\_I $>$}!Combinators@{Combinators}}
-\doxysubsubsection{\texorpdfstring{can\_reduce$<$ BuiltinOp::op\_I $>$()}{can\_reduce< BuiltinOp::op\_I >()}}
+\mbox{\Hypertarget{namespace_combinators_a5fe26e0973d49aa2b6cedd39529705bf}\label{namespace_combinators_a5fe26e0973d49aa2b6cedd39529705bf}} 
+\index{Combinators@{Combinators}!can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+I $>$@{can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+I $>$}}
+\index{can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+I $>$@{can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+I $>$}!Combinators@{Combinators}}
+\subsubsection{\texorpdfstring{can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+I $>$()}{can\_reduce< Op::CL\_I >()}}
 {\footnotesize\ttfamily template$<$$>$ \\
-bool \mbox{\hyperlink{namespace_combinators_aa3c93f1edab6764d54dda56aafac9cd3}{Combinators\+::can\+\_\+reduce}}$<$ \mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ad44d28cb2a17778a81beb232dd72759a}{Builtin\+Op\+::op\+\_\+I}} $>$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{n }\end{DoxyParamCaption})}
+bool \hyperlink{namespace_combinators_aa3c93f1edab6764d54dda56aafac9cd3}{Combinators\+::can\+\_\+reduce}$<$ \hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba562c8c99e2e0d9f20d5e7017b45b33ce}{Op\+::\+C\+L\+\_\+I} $>$ (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{namespace_combinators_acf147e40e9f56872bedc87bd63705672}\label{namespace_combinators_acf147e40e9f56872bedc87bd63705672}} 
-\index{Combinators@{Combinators}!can\_reduce$<$ BuiltinOp::op\_K $>$@{can\_reduce$<$ BuiltinOp::op\_K $>$}}
-\index{can\_reduce$<$ BuiltinOp::op\_K $>$@{can\_reduce$<$ BuiltinOp::op\_K $>$}!Combinators@{Combinators}}
-\doxysubsubsection{\texorpdfstring{can\_reduce$<$ BuiltinOp::op\_K $>$()}{can\_reduce< BuiltinOp::op\_K >()}}
+\mbox{\Hypertarget{namespace_combinators_a5c0e720989a7b4ad841c071c48924b78}\label{namespace_combinators_a5c0e720989a7b4ad841c071c48924b78}} 
+\index{Combinators@{Combinators}!can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+K $>$@{can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+K $>$}}
+\index{can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+K $>$@{can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+K $>$}!Combinators@{Combinators}}
+\subsubsection{\texorpdfstring{can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+K $>$()}{can\_reduce< Op::CL\_K >()}}
 {\footnotesize\ttfamily template$<$$>$ \\
-bool \mbox{\hyperlink{namespace_combinators_aa3c93f1edab6764d54dda56aafac9cd3}{Combinators\+::can\+\_\+reduce}}$<$ \mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7a2fb436da7a3a42d51ead8de1ff97583b}{Builtin\+Op\+::op\+\_\+K}} $>$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{n }\end{DoxyParamCaption})}
+bool \hyperlink{namespace_combinators_aa3c93f1edab6764d54dda56aafac9cd3}{Combinators\+::can\+\_\+reduce}$<$ \hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45abaf1d70317b3258fef8e24bf9501d7ad0c}{Op\+::\+C\+L\+\_\+K} $>$ (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{namespace_combinators_a20138fc667812b7b36885b52387f85e0}\label{namespace_combinators_a20138fc667812b7b36885b52387f85e0}} 
-\index{Combinators@{Combinators}!can\_reduce$<$ BuiltinOp::op\_S $>$@{can\_reduce$<$ BuiltinOp::op\_S $>$}}
-\index{can\_reduce$<$ BuiltinOp::op\_S $>$@{can\_reduce$<$ BuiltinOp::op\_S $>$}!Combinators@{Combinators}}
-\doxysubsubsection{\texorpdfstring{can\_reduce$<$ BuiltinOp::op\_S $>$()}{can\_reduce< BuiltinOp::op\_S >()}}
+\mbox{\Hypertarget{namespace_combinators_aa038cd10e92daa6feb9f9010f705fb33}\label{namespace_combinators_aa038cd10e92daa6feb9f9010f705fb33}} 
+\index{Combinators@{Combinators}!can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+S $>$@{can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+S $>$}}
+\index{can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+S $>$@{can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+S $>$}!Combinators@{Combinators}}
+\subsubsection{\texorpdfstring{can\+\_\+reduce$<$ Op\+::\+C\+L\+\_\+\+S $>$()}{can\_reduce< Op::CL\_S >()}}
 {\footnotesize\ttfamily template$<$$>$ \\
-bool \mbox{\hyperlink{namespace_combinators_aa3c93f1edab6764d54dda56aafac9cd3}{Combinators\+::can\+\_\+reduce}}$<$ \mbox{\hyperlink{_instruction_8h_af2fb7c87c5854c5733d7bb0506b06de7ae77dc89233eb1fc00d3d1f1a1c1c462e}{Builtin\+Op\+::op\+\_\+S}} $>$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{n }\end{DoxyParamCaption})}
+bool \hyperlink{namespace_combinators_aa3c93f1edab6764d54dda56aafac9cd3}{Combinators\+::can\+\_\+reduce}$<$ \hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba7a08f6d182bdbb1be7e6b1eb6092b27b}{Op\+::\+C\+L\+\_\+S} $>$ (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{namespace_combinators_a29877c1bfde5b9807fd7a7538efe9e0c}\label{namespace_combinators_a29877c1bfde5b9807fd7a7538efe9e0c}} 
-\index{Combinators@{Combinators}!is\_normal\_form@{is\_normal\_form}}
-\index{is\_normal\_form@{is\_normal\_form}!Combinators@{Combinators}}
-\doxysubsubsection{\texorpdfstring{is\_normal\_form()}{is\_normal\_form()}}
-{\footnotesize\ttfamily bool Combinators\+::is\+\_\+normal\+\_\+form (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{n }\end{DoxyParamCaption})}
+\index{Combinators@{Combinators}!is\+\_\+normal\+\_\+form@{is\+\_\+normal\+\_\+form}}
+\index{is\+\_\+normal\+\_\+form@{is\+\_\+normal\+\_\+form}!Combinators@{Combinators}}
+\subsubsection{\texorpdfstring{is\+\_\+normal\+\_\+form()}{is\_normal\_form()}}
+{\footnotesize\ttfamily bool Combinators\+::is\+\_\+normal\+\_\+form (\begin{DoxyParamCaption}\item[{const \hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption})}
 
 
 
@@ -106,11 +108,28 @@ check if a tree n is in SK normal form, meaning that no subnodes can be reduced
 \begin{DoxyReturn}{Returns}
 boolean 
 \end{DoxyReturn}
+\mbox{\Hypertarget{namespace_combinators_a6abc966e0ab0f2aa8170712f32541458}\label{namespace_combinators_a6abc966e0ab0f2aa8170712f32541458}} 
+\index{Combinators@{Combinators}!reduce@{reduce}}
+\index{reduce@{reduce}!Combinators@{Combinators}}
+\subsubsection{\texorpdfstring{reduce()}{reduce()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Combinators\+::reduce (\begin{DoxyParamCaption}\item[{\hyperlink{class_node}{Node} \&}]{n,  }\item[{size\+\_\+t \&}]{remaining\+\_\+calls }\end{DoxyParamCaption})}
+
+
+
+Reduce a combinator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & -\/ what node do we reduce? \\
+\hline
+{\em remaining\+\_\+calls} & -\/ how many calls can we make before throwing a \hyperlink{class_combinators_1_1_reduction_exception}{Reduction\+Exception} \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{namespace_combinators_a10b79cf8cc79cd5505e8d3c70470aab7}\label{namespace_combinators_a10b79cf8cc79cd5505e8d3c70470aab7}} 
 \index{Combinators@{Combinators}!reduce@{reduce}}
 \index{reduce@{reduce}!Combinators@{Combinators}}
-\doxysubsubsection{\texorpdfstring{reduce()}{reduce()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily void Combinators\+::reduce (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}} \&}]{n }\end{DoxyParamCaption})}
+\subsubsection{\texorpdfstring{reduce()}{reduce()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Combinators\+::reduce (\begin{DoxyParamCaption}\item[{\hyperlink{class_node}{Node} \&}]{n }\end{DoxyParamCaption})}
 
 
 
@@ -121,35 +140,18 @@ Reduce (automtically set remaining\+\_\+calls=256 default)
 {\em n} & \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{namespace_combinators_a6abc966e0ab0f2aa8170712f32541458}\label{namespace_combinators_a6abc966e0ab0f2aa8170712f32541458}} 
-\index{Combinators@{Combinators}!reduce@{reduce}}
-\index{reduce@{reduce}!Combinators@{Combinators}}
-\doxysubsubsection{\texorpdfstring{reduce()}{reduce()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily void Combinators\+::reduce (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}} \&}]{n,  }\item[{size\+\_\+t \&}]{remaining\+\_\+calls }\end{DoxyParamCaption})}
 
 
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{namespace_combinators_a47aa4c813bc5305c8b818c9be952235c}\label{namespace_combinators_a47aa4c813bc5305c8b818c9be952235c}} 
+\index{Combinators@{Combinators}!reduction\+\_\+exception@{reduction\+\_\+exception}}
+\index{reduction\+\_\+exception@{reduction\+\_\+exception}!Combinators@{Combinators}}
+\subsubsection{\texorpdfstring{reduction\+\_\+exception}{reduction\_exception}}
+{\footnotesize\ttfamily  \hyperlink{class_combinators_1_1_reduction_exception}{Combinators\+::\+Reduction\+Exception}  Combinators\+::reduction\+\_\+exception}
 
-Reduce a combinator. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em n} & -\/ what node do we reduce? \\
-\hline
-{\em remaining\+\_\+calls} & -\/ how many calls can we make before throwing a \mbox{\hyperlink{class_combinators_1_1_reduction_exception}{Reduction\+Exception}} \\
-\hline
-\end{DoxyParams}
-
-
-\doxysubsection{Variable Documentation}
-\mbox{\Hypertarget{namespace_combinators_a64c32cd83ab0bfe747532d053ee0df44}\label{namespace_combinators_a64c32cd83ab0bfe747532d053ee0df44}} 
-\index{Combinators@{Combinators}!reduction\_exception@{reduction\_exception}}
-\index{reduction\_exception@{reduction\_exception}!Combinators@{Combinators}}
-\doxysubsubsection{\texorpdfstring{reduction\_exception}{reduction\_exception}}
-{\footnotesize\ttfamily \mbox{\hyperlink{class_combinators_1_1_reduction_exception}{Combinators\+::\+Reduction\+Exception}} Combinators\+::reduction\+\_\+exception}
-
-\mbox{\Hypertarget{namespace_combinators_ab21b42a6029a4b03d9a19c8597c9880f}\label{namespace_combinators_ab21b42a6029a4b03d9a19c8597c9880f}} 
+\mbox{\Hypertarget{namespace_combinators_a24aeacfa083d06000a89cb59d14eeccb}\label{namespace_combinators_a24aeacfa083d06000a89cb59d14eeccb}} 
 \index{Combinators@{Combinators}!skgrammar@{skgrammar}}
 \index{skgrammar@{skgrammar}!Combinators@{Combinators}}
-\doxysubsubsection{\texorpdfstring{skgrammar}{skgrammar}}
-{\footnotesize\ttfamily \mbox{\hyperlink{class_combinators_1_1_s_k_grammar}{Combinators\+::\+S\+K\+Grammar}} Combinators\+::skgrammar}
+\subsubsection{\texorpdfstring{skgrammar}{skgrammar}}
+{\footnotesize\ttfamily  \hyperlink{class_combinators_1_1_s_k_grammar}{Combinators\+::\+S\+K\+Grammar}  Combinators\+::skgrammar}
 

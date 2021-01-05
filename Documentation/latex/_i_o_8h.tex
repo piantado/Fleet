@@ -1,11 +1,11 @@
-\hypertarget{_i_o_8h}{}\doxysection{src/\+IO.h File Reference}
-\label{_i_o_8h}\index{src/IO.h@{src/IO.h}}
+\hypertarget{_i_o_8h}{}\section{src/\+IO.h File Reference}
+\label{_i_o_8h}\index{src/\+I\+O.\+h@{src/\+I\+O.\+h}}
 {\ttfamily \#include $<$thread$>$}\newline
 {\ttfamily \#include $<$mutex$>$}\newline
 {\ttfamily \#include $<$iostream$>$}\newline
 {\ttfamily \#include $<$fstream$>$}\newline
 {\ttfamily \#include $<$string$>$}\newline
-{\ttfamily \#include \char`\"{}dependencies/\+C\+L11.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Dependencies/\+C\+L11.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Strings.\+h\char`\"{}}\newline
 Include dependency graph for I\+O.\+h\+:
 \nopagebreak
@@ -23,93 +23,119 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=350pt]{_i_o_8h__dep__incl}
 \end{center}
 \end{figure}
-\doxysubsection*{Macros}
+\subsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
-\#define \mbox{\hyperlink{_i_o_8h_ad58a1fbfc85c7e4790fc55e654f50221}{T\+AB}}~$<$$<$\char`\"{}\textbackslash{}t\char`\"{}$<$$<$
+\#define \hyperlink{_i_o_8h_ad58a1fbfc85c7e4790fc55e654f50221}{T\+AB}~$<$$<$\char`\"{}\textbackslash{}t\char`\"{}$<$$<$
 \item 
-\#define \mbox{\hyperlink{_i_o_8h_a90dc3f3ee970394e0080300526390a84}{E\+N\+DL}}~$<$$<$std\+::endl;
+\#define \hyperlink{_i_o_8h_a90dc3f3ee970394e0080300526390a84}{E\+N\+DL}~$<$$<$std\+::endl;
 \item 
-\#define \mbox{\hyperlink{_i_o_8h_a176c0577baa96c686397bca42f7ee6ff}{C\+E\+RR}}~std\+::cerr$<$$<$
+\#define \hyperlink{_i_o_8h_a62b57f80e07ba8e9bb67e1cca5addf9a}{E\+N\+D\+LL}~$<$$<$\char`\"{}\textbackslash{}n\char`\"{}$<$$<$std\+::endl;
 \item 
-\#define \mbox{\hyperlink{_i_o_8h_a8c54b10b84183429bcbcbc82c92fcca9}{C\+O\+UT}}~std\+::cout$<$$<$
+\#define \hyperlink{_i_o_8h_a176c0577baa96c686397bca42f7ee6ff}{C\+E\+RR}~std\+::cerr$<$$<$
+\item 
+\#define \hyperlink{_i_o_8h_a8c54b10b84183429bcbcbc82c92fcca9}{C\+O\+UT}~std\+::cout$<$$<$
+\item 
+\#define \hyperlink{_i_o_8h_a2016f66b4893f52c27c39992a93f2d44}{C\+O\+U\+TT}~std\+::cout$<$$<$\char`\"{}\textbackslash{}t\char`\"{}$<$$<$
+\item 
+\#define \hyperlink{_i_o_8h_aca1c91333af71b366db920a8f3d218bc}{C\+O\+U\+T\+TT}~std\+::cout$<$$<$\char`\"{}\textbackslash{}t\textbackslash{}t\char`\"{}$<$$<$
 \end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{_i_o_8h_a1336250e0870b09c7f0d7b168a5e804f}{\+\_\+\+\_\+\+P\+R\+I\+NT}} ()
+void \hyperlink{_i_o_8h_a1336250e0870b09c7f0d7b168a5e804f}{\+\_\+\+\_\+\+P\+R\+I\+NT} ()
 \item 
-{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_aebfb8498bc8d95c7a344068feaa59f94}{\+\_\+\+\_\+\+P\+R\+I\+NT}} (First \&\&first, Rest \&\&...rest)
+{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \hyperlink{_i_o_8h_aebfb8498bc8d95c7a344068feaa59f94}{\+\_\+\+\_\+\+P\+R\+I\+NT} (First \&\&first, Rest \&\&...rest)
 \item 
-{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_a00a6f97bb3962ae0a898045f28e71a9b}{P\+R\+I\+NT}} (First \&\&first, Rest \&\&...rest)
+{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \hyperlink{_i_o_8h_a00a6f97bb3962ae0a898045f28e71a9b}{P\+R\+I\+NT} (First \&\&first, Rest \&\&...rest)
 \item 
-{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_acfec45821653aafe56188146ad2a98cc}{P\+R\+I\+N\+TN}} (First \&\&first, Rest \&\&...rest)
+{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \hyperlink{_i_o_8h_acfec45821653aafe56188146ad2a98cc}{P\+R\+I\+N\+TN} (First \&\&first, Rest \&\&...rest)
 \item 
-{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_a06738d9fd0166a7a5c1f7864b2f67595}{D\+E\+B\+UG}} (First \&\&first, Rest \&\&...rest)
+{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \hyperlink{_i_o_8h_a06738d9fd0166a7a5c1f7864b2f67595}{D\+E\+B\+UG} (First \&\&first, Rest \&\&...rest)
 \item 
-{\footnotesize template$<$typename H\+YP $>$ }\\void \mbox{\hyperlink{_i_o_8h_ac92ba25496b93368f6d92bd36f91480e}{save}} (std\+::string filename, std\+::vector$<$ H\+YP $>$ \&hypotheses)
+{\footnotesize template$<$typename H\+YP $>$ }\\void \hyperlink{_i_o_8h_ac92ba25496b93368f6d92bd36f91480e}{save} (std\+::string filename, std\+::vector$<$ H\+YP $>$ \&hypotheses)
 \begin{DoxyCompactList}\small\item\em Simple saving of a vector of hypotheses. \end{DoxyCompactList}\item 
-{\footnotesize template$<$typename H\+YP $>$ }\\std\+::vector$<$ H\+YP $>$ \mbox{\hyperlink{_i_o_8h_aae62df8b7ee87dd75ee076ffd3bf9206}{load}} (std\+::string filename, typename H\+Y\+P\+::\+Grammar\+\_\+t $\ast$g)
-\begin{DoxyCompactList}\small\item\em Simple loading for a vector of hypotheses. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Variables}
+{\footnotesize template$<$typename H\+YP $>$ }\\std\+::vector$<$ H\+YP $>$ \hyperlink{_i_o_8h_aae62df8b7ee87dd75ee076ffd3bf9206}{load} (std\+::string filename, typename H\+Y\+P\+::\+Grammar\+\_\+t $\ast$g)
+\begin{DoxyCompactList}\small\item\em Simple loading for a vector of hypotheses. \end{DoxyCompactList}\item 
+{\footnotesize template$<$size\+\_\+t N$>$ }\\std\+::vector$<$ std\+::array$<$ std\+::string, N $>$ $>$ \hyperlink{_i_o_8h_a58a7621fc7b6cedc321e7c60866993b0}{read\+\_\+csv} (const std\+::string path, const char delimiter=\textquotesingle{}\textbackslash{}t\textquotesingle{}, bool skipheader=true)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-std\+::mutex \mbox{\hyperlink{_i_o_8h_a76e8b7c2e4a8940cee2c392012c04943}{output\+\_\+lock}}
+std\+::mutex \hyperlink{_i_o_8h_a76e8b7c2e4a8940cee2c392012c04943}{output\+\_\+lock}
 \end{DoxyCompactItemize}
 
 
-\doxysubsection{Macro Definition Documentation}
+\subsection{Macro Definition Documentation}
 \mbox{\Hypertarget{_i_o_8h_a176c0577baa96c686397bca42f7ee6ff}\label{_i_o_8h_a176c0577baa96c686397bca42f7ee6ff}} 
-\index{IO.h@{IO.h}!CERR@{CERR}}
-\index{CERR@{CERR}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{CERR}{CERR}}
+\index{I\+O.\+h@{I\+O.\+h}!C\+E\+RR@{C\+E\+RR}}
+\index{C\+E\+RR@{C\+E\+RR}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{C\+E\+RR}{CERR}}
 {\footnotesize\ttfamily \#define C\+E\+RR~std\+::cerr$<$$<$}
 
 \mbox{\Hypertarget{_i_o_8h_a8c54b10b84183429bcbcbc82c92fcca9}\label{_i_o_8h_a8c54b10b84183429bcbcbc82c92fcca9}} 
-\index{IO.h@{IO.h}!COUT@{COUT}}
-\index{COUT@{COUT}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{COUT}{COUT}}
+\index{I\+O.\+h@{I\+O.\+h}!C\+O\+UT@{C\+O\+UT}}
+\index{C\+O\+UT@{C\+O\+UT}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{C\+O\+UT}{COUT}}
 {\footnotesize\ttfamily \#define C\+O\+UT~std\+::cout$<$$<$}
 
+\mbox{\Hypertarget{_i_o_8h_a2016f66b4893f52c27c39992a93f2d44}\label{_i_o_8h_a2016f66b4893f52c27c39992a93f2d44}} 
+\index{I\+O.\+h@{I\+O.\+h}!C\+O\+U\+TT@{C\+O\+U\+TT}}
+\index{C\+O\+U\+TT@{C\+O\+U\+TT}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{C\+O\+U\+TT}{COUTT}}
+{\footnotesize\ttfamily \#define C\+O\+U\+TT~std\+::cout$<$$<$\char`\"{}\textbackslash{}t\char`\"{}$<$$<$}
+
+\mbox{\Hypertarget{_i_o_8h_aca1c91333af71b366db920a8f3d218bc}\label{_i_o_8h_aca1c91333af71b366db920a8f3d218bc}} 
+\index{I\+O.\+h@{I\+O.\+h}!C\+O\+U\+T\+TT@{C\+O\+U\+T\+TT}}
+\index{C\+O\+U\+T\+TT@{C\+O\+U\+T\+TT}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{C\+O\+U\+T\+TT}{COUTTT}}
+{\footnotesize\ttfamily \#define C\+O\+U\+T\+TT~std\+::cout$<$$<$\char`\"{}\textbackslash{}t\textbackslash{}t\char`\"{}$<$$<$}
+
 \mbox{\Hypertarget{_i_o_8h_a90dc3f3ee970394e0080300526390a84}\label{_i_o_8h_a90dc3f3ee970394e0080300526390a84}} 
-\index{IO.h@{IO.h}!ENDL@{ENDL}}
-\index{ENDL@{ENDL}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{ENDL}{ENDL}}
+\index{I\+O.\+h@{I\+O.\+h}!E\+N\+DL@{E\+N\+DL}}
+\index{E\+N\+DL@{E\+N\+DL}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{E\+N\+DL}{ENDL}}
 {\footnotesize\ttfamily \#define E\+N\+DL~$<$$<$std\+::endl;}
 
+\mbox{\Hypertarget{_i_o_8h_a62b57f80e07ba8e9bb67e1cca5addf9a}\label{_i_o_8h_a62b57f80e07ba8e9bb67e1cca5addf9a}} 
+\index{I\+O.\+h@{I\+O.\+h}!E\+N\+D\+LL@{E\+N\+D\+LL}}
+\index{E\+N\+D\+LL@{E\+N\+D\+LL}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{E\+N\+D\+LL}{ENDLL}}
+{\footnotesize\ttfamily \#define E\+N\+D\+LL~$<$$<$\char`\"{}\textbackslash{}n\char`\"{}$<$$<$std\+::endl;}
+
 \mbox{\Hypertarget{_i_o_8h_ad58a1fbfc85c7e4790fc55e654f50221}\label{_i_o_8h_ad58a1fbfc85c7e4790fc55e654f50221}} 
-\index{IO.h@{IO.h}!TAB@{TAB}}
-\index{TAB@{TAB}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{TAB}{TAB}}
+\index{I\+O.\+h@{I\+O.\+h}!T\+AB@{T\+AB}}
+\index{T\+AB@{T\+AB}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{T\+AB}{TAB}}
 {\footnotesize\ttfamily \#define T\+AB~$<$$<$\char`\"{}\textbackslash{}t\char`\"{}$<$$<$}
 
 
 
-\doxysubsection{Function Documentation}
+\subsection{Function Documentation}
 \mbox{\Hypertarget{_i_o_8h_a1336250e0870b09c7f0d7b168a5e804f}\label{_i_o_8h_a1336250e0870b09c7f0d7b168a5e804f}} 
-\index{IO.h@{IO.h}!\_\_PRINT@{\_\_PRINT}}
-\index{\_\_PRINT@{\_\_PRINT}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{\_\_PRINT()}{\_\_PRINT()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+\index{I\+O.\+h@{I\+O.\+h}!\+\_\+\+\_\+\+P\+R\+I\+NT@{\+\_\+\+\_\+\+P\+R\+I\+NT}}
+\index{\+\_\+\+\_\+\+P\+R\+I\+NT@{\+\_\+\+\_\+\+P\+R\+I\+NT}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+\+P\+R\+I\+N\+T()}{\_\_PRINT()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily void \+\_\+\+\_\+\+P\+R\+I\+NT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_i_o_8h_aebfb8498bc8d95c7a344068feaa59f94}\label{_i_o_8h_aebfb8498bc8d95c7a344068feaa59f94}} 
-\index{IO.h@{IO.h}!\_\_PRINT@{\_\_PRINT}}
-\index{\_\_PRINT@{\_\_PRINT}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{\_\_PRINT()}{\_\_PRINT()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+\index{I\+O.\+h@{I\+O.\+h}!\+\_\+\+\_\+\+P\+R\+I\+NT@{\+\_\+\+\_\+\+P\+R\+I\+NT}}
+\index{\+\_\+\+\_\+\+P\+R\+I\+NT@{\+\_\+\+\_\+\+P\+R\+I\+NT}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+\+P\+R\+I\+N\+T()}{\_\_PRINT()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
 void \+\_\+\+\_\+\+P\+R\+I\+NT (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_i_o_8h_a06738d9fd0166a7a5c1f7864b2f67595}\label{_i_o_8h_a06738d9fd0166a7a5c1f7864b2f67595}} 
-\index{IO.h@{IO.h}!DEBUG@{DEBUG}}
-\index{DEBUG@{DEBUG}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{DEBUG()}{DEBUG()}}
+\index{I\+O.\+h@{I\+O.\+h}!D\+E\+B\+UG@{D\+E\+B\+UG}}
+\index{D\+E\+B\+UG@{D\+E\+B\+UG}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{D\+E\+B\+U\+G()}{DEBUG()}}
 {\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
 void D\+E\+B\+UG (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_i_o_8h_aae62df8b7ee87dd75ee076ffd3bf9206}\label{_i_o_8h_aae62df8b7ee87dd75ee076ffd3bf9206}} 
-\index{IO.h@{IO.h}!load@{load}}
-\index{load@{load}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{load()}{load()}}
+\index{I\+O.\+h@{I\+O.\+h}!load@{load}}
+\index{load@{load}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{load()}{load()}}
 {\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
 std\+::vector$<$H\+YP$>$ load (\begin{DoxyParamCaption}\item[{std\+::string}]{filename,  }\item[{typename H\+Y\+P\+::\+Grammar\+\_\+t $\ast$}]{g }\end{DoxyParamCaption})}
 
@@ -128,23 +154,30 @@ Simple loading for a vector of hypotheses.
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{_i_o_8h_a00a6f97bb3962ae0a898045f28e71a9b}\label{_i_o_8h_a00a6f97bb3962ae0a898045f28e71a9b}} 
-\index{IO.h@{IO.h}!PRINT@{PRINT}}
-\index{PRINT@{PRINT}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{PRINT()}{PRINT()}}
+\index{I\+O.\+h@{I\+O.\+h}!P\+R\+I\+NT@{P\+R\+I\+NT}}
+\index{P\+R\+I\+NT@{P\+R\+I\+NT}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{P\+R\+I\+N\+T()}{PRINT()}}
 {\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
 void P\+R\+I\+NT (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_i_o_8h_acfec45821653aafe56188146ad2a98cc}\label{_i_o_8h_acfec45821653aafe56188146ad2a98cc}} 
-\index{IO.h@{IO.h}!PRINTN@{PRINTN}}
-\index{PRINTN@{PRINTN}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{PRINTN()}{PRINTN()}}
+\index{I\+O.\+h@{I\+O.\+h}!P\+R\+I\+N\+TN@{P\+R\+I\+N\+TN}}
+\index{P\+R\+I\+N\+TN@{P\+R\+I\+N\+TN}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{P\+R\+I\+N\+T\+N()}{PRINTN()}}
 {\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
 void P\+R\+I\+N\+TN (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{_i_o_8h_a58a7621fc7b6cedc321e7c60866993b0}\label{_i_o_8h_a58a7621fc7b6cedc321e7c60866993b0}} 
+\index{I\+O.\+h@{I\+O.\+h}!read\+\_\+csv@{read\+\_\+csv}}
+\index{read\+\_\+csv@{read\+\_\+csv}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{read\+\_\+csv()}{read\_csv()}}
+{\footnotesize\ttfamily template$<$size\+\_\+t N$>$ \\
+std\+::vector$<$std\+::array$<$std\+::string,N$>$ $>$ read\+\_\+csv (\begin{DoxyParamCaption}\item[{const std\+::string}]{path,  }\item[{const char}]{delimiter = {\ttfamily \textquotesingle{}\textbackslash{}t\textquotesingle{}},  }\item[{bool}]{skipheader = {\ttfamily true} }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{_i_o_8h_ac92ba25496b93368f6d92bd36f91480e}\label{_i_o_8h_ac92ba25496b93368f6d92bd36f91480e}} 
-\index{IO.h@{IO.h}!save@{save}}
-\index{save@{save}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{save()}{save()}}
+\index{I\+O.\+h@{I\+O.\+h}!save@{save}}
+\index{save@{save}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{save()}{save()}}
 {\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
 void save (\begin{DoxyParamCaption}\item[{std\+::string}]{filename,  }\item[{std\+::vector$<$ H\+YP $>$ \&}]{hypotheses }\end{DoxyParamCaption})}
 
@@ -161,10 +194,10 @@ Simple saving of a vector of hypotheses.
 \end{DoxyParams}
 
 
-\doxysubsection{Variable Documentation}
+\subsection{Variable Documentation}
 \mbox{\Hypertarget{_i_o_8h_a76e8b7c2e4a8940cee2c392012c04943}\label{_i_o_8h_a76e8b7c2e4a8940cee2c392012c04943}} 
-\index{IO.h@{IO.h}!output\_lock@{output\_lock}}
-\index{output\_lock@{output\_lock}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{output\_lock}{output\_lock}}
+\index{I\+O.\+h@{I\+O.\+h}!output\+\_\+lock@{output\+\_\+lock}}
+\index{output\+\_\+lock@{output\+\_\+lock}!I\+O.\+h@{I\+O.\+h}}
+\subsubsection{\texorpdfstring{output\+\_\+lock}{output\_lock}}
 {\footnotesize\ttfamily std\+::mutex output\+\_\+lock}
 

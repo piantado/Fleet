@@ -1,29 +1,5 @@
 var searchData=
 [
-  ['last_5flp_262',['last_lp',['../class_full_m_c_t_s_node.html#a35fe0f5a86059bd1041151dbe982d649',1,'FullMCTSNode']]],
-  ['lazynormalforms_263',['LazyNormalForms',['../class_combinators_1_1_lazy_normal_forms.html',1,'Combinators::LazyNormalForms'],['../class_combinators_1_1_lazy_normal_forms.html#ab3e10fd3a3d3611aaffbd11e6e6dd6f0',1,'Combinators::LazyNormalForms::LazyNormalForms()']]],
-  ['left_5fdescend_264',['left_descend',['../class_base_node.html#ad319f28caf14e730bc62560f1bd682b6',1,'BaseNode']]],
-  ['levenshtein_5fdistance_265',['levenshtein_distance',['../_strings_8h.html#a51fc480ff96576142fbe0c1a5fc9114b',1,'Strings.h']]],
-  ['lexicon_266',['Lexicon',['../class_lexicon.html',1,'Lexicon&lt; this_t, INNER, input_t, output_t, datum_t &gt;'],['../class_lexicon.html#ad5e2614a7faff7b31355d70384d79d3c',1,'Lexicon::Lexicon(size_t n)'],['../class_lexicon.html#ad451007a5401c03f21106a02b333f20c',1,'Lexicon::Lexicon()']]],
-  ['lexicon_2eh_267',['Lexicon.h',['../_lexicon_8h.html',1,'']]],
-  ['likelihood_268',['likelihood',['../class_bayesable.html#a4d1a9ed826013bf079cea1867b6d4183',1,'Bayesable']]],
-  ['linearize_269',['linearize',['../class_node.html#a54676f34db2c299693c9b55148589230',1,'Node']]],
-  ['list_270',['list',['../class_combinators_1_1_lazy_normal_forms.html#aad1e727e4cdf1e6d85c79359698a756b',1,'Combinators::LazyNormalForms']]],
-  ['ll_271',['LL',['../class_grammar_hypothesis.html#a895a75b0f273a1015f7c11b668790c94',1,'GrammarHypothesis']]],
-  ['ll_5ft_272',['LL_t',['../class_grammar_hypothesis.html#a27075c887aa5fd19f1d96f9391f6291e',1,'GrammarHypothesis']]],
-  ['llt_273',['llt',['../class_grammar_hypothesis.html#a43605435ccbebea77178ac53ea801f5e',1,'GrammarHypothesis']]],
-  ['load_274',['load',['../_i_o_8h.html#aae62df8b7ee87dd75ee076ffd3bf9206',1,'IO.h']]],
-  ['lock_275',['lock',['../class_streaming_statistics.html#a4be98d1901cf9054a0a97587763b3c6f',1,'StreamingStatistics::lock()'],['../class_spin_lock.html#a2db046cb75c8febd532923ce36c4c3ad',1,'SpinLock::lock()']]],
-  ['log05_276',['LOG05',['../_numerics_8h.html#a63a7b698258aa319aacc36776054c7b5',1,'Numerics.h']]],
-  ['log_5fprobability_277',['log_probability',['../class_grammar.html#a4b19c0b8d0b4d792181ae47bd2f68268',1,'Grammar']]],
-  ['loga_278',['logA',['../class_grammar_hypothesis.html#a6a0ce43a8cd39a8e5f874d4e0a919329',1,'GrammarHypothesis']]],
-  ['lognormalize_279',['lognormalize',['../_eigen_lib_8h.html#a3444ba786055e8a0782bdd5043fdfd0d',1,'EigenLib.h']]],
-  ['logplusexp_280',['logplusexp',['../_numerics_8h.html#a558a1133b9942f8debd559bb9317bca3',1,'Numerics.h']]],
-  ['logsumexp_281',['logsumexp',['../_eigen_lib_8h.html#ad7c0c9173f6c20030a3615680b46ef5f',1,'logsumexp(const Vector &amp;v):&#160;EigenLib.h'],['../_numerics_8h.html#abb96a05282957c6c5c3d226b357ed134',1,'logsumexp(const t &amp;v):&#160;Numerics.h']]],
-  ['lothypothesis_282',['LOTHypothesis',['../class_l_o_t_hypothesis.html',1,'LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, _datum_t, _data_t, VirtualMachineState_t &gt;'],['../class_l_o_t_hypothesis.html#a54f15bdd661b7ecc101bedbad513896d',1,'LOTHypothesis::LOTHypothesis(Grammar_t *g=nullptr)'],['../class_l_o_t_hypothesis.html#a412001be057812134fb5e1ac815bc441',1,'LOTHypothesis::LOTHypothesis(Grammar_t *g, Node &amp;&amp;x)'],['../class_l_o_t_hypothesis.html#a53ec8b20b905e8546e49f739abf404f8',1,'LOTHypothesis::LOTHypothesis(Grammar_t *g, Node &amp;x)'],['../class_l_o_t_hypothesis.html#ad1443caa138a1af308ad9ae4022a8f0d',1,'LOTHypothesis::LOTHypothesis(Grammar_t *g, std::string s)']]],
-  ['lothypothesis_2eh_283',['LOTHypothesis.h',['../_l_o_t_hypothesis_8h.html',1,'']]],
-  ['lp_284',['lp',['../class_node.html#a298eaa3743b774a3f9ef396e1dc42a08',1,'Node::lp()'],['../class_virtual_machine_state.html#a5937b2c3afdfe35b9bba71dbdd83d5bd',1,'VirtualMachineState::lp()'],['../class_discrete_distribution.html#a185ef689b1e133b962fff5bcf1443ba1',1,'DiscreteDistribution::lp()']]],
-  ['lp_5fsample_5feq_285',['lp_sample_eq',['../_random_8h.html#a898a8e7dc41231c2fbb5c5704f48cf4b',1,'lp_sample_eq(const t &amp;x, const T &amp;s, std::function&lt; double(const t &amp;)&gt; &amp;f=[](const t &amp;v){return 1.0;}):&#160;Random.h'],['../_random_8h.html#aadcd7972613ccc5e1bd33ab70990d4a3',1,'lp_sample_eq(const t &amp;x, const T &amp;s, double(*f)(const t &amp;)):&#160;Random.h']]],
-  ['lp_5fsample_5fone_286',['lp_sample_one',['../_random_8h.html#a35fe7ab92187a603f35e9aafba147f81',1,'lp_sample_one(const t &amp;x, const T &amp;s, std::function&lt; double(const t &amp;)&gt; &amp;f=[](const t &amp;v){return 1.0;}):&#160;Random.h'],['../_random_8h.html#ac0e864d8c9c5fa20dafbefc9e1f92a3c',1,'lp_sample_one(const t &amp;x, const T &amp;s, double(*f)(const t &amp;)):&#160;Random.h']]],
-  ['lse_287',['lse',['../class_full_m_c_t_s_node.html#a9bf1a9e08377dbf41965a94f1d36575a',1,'FullMCTSNode::lse()'],['../class_streaming_statistics.html#a3a97b9810d5f7e52197689166c908da9',1,'StreamingStatistics::lse()']]]
+  ['k',['k',['../class_parallel_tempering.html#a439c50d3f616319803d4ab83804d1ae0',1,'ParallelTempering']]],
+  ['key_5fvalue_5fpair_5ft',['key_value_pair_t',['../classcache_1_1lru__cache.html#a8f8224d98265b4dcb5b77d04e4b9c80d',1,'cache::lru_cache']]]
 ];

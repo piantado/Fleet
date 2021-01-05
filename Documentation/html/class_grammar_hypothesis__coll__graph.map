@@ -1,7 +1,8 @@
-<map id="GrammarHypothesis&lt; HYP, datum_t, data_t &gt;" name="GrammarHypothesis&lt; HYP, datum_t, data_t &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="905,67,1068,108"/>
-<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="432,5,659,105"/>
-<area shape="rect" id="node3" href="$class_bayesable.html" title=" " alt="" coords="5,74,151,101"/>
-<area shape="rect" id="node5" href="$class_m_c_m_cable.html" title=" " alt="" coords="200,99,408,140"/>
-<area shape="rect" id="node4" href="$class_vector_hypothesis.html" title=" " alt="" coords="683,102,809,129"/>
+<map id="GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;" name="GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;">
+<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title="MCMCable\&lt; this_t, datum\l_t, data_t \&gt;" alt="" coords="476,5,652,47"/>
+<area shape="rect" id="node3" href="$class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="5,71,152,98"/>
+<area shape="rect" id="node5" href="$class_m_c_m_cable.html" title="MCMCable\&lt; TNormalVariable\l\&lt; f \&gt;, void *\&gt;" alt="" coords="228,64,425,105"/>
+<area shape="rect" id="node7" href="$class_m_c_m_cable.html" title="MCMCable\&lt; VectorNormalHypothesis,\l void *\&gt;" alt="" coords="201,129,452,171"/>
+<area shape="rect" id="node4" href="$class_t_normal_variable.html" title="TNormalVariable\&lt;+[]\l(float x) &#45;\&gt;" alt="" coords="689,64,831,105"/>
+<area shape="rect" id="node6" href="$class_vector_normal_hypothesis.html" title="VectorNormalHypothesis" alt="" coords="676,131,844,158"/>
 </map>
