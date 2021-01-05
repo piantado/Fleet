@@ -7,18 +7,13 @@
  * @class EnumerationInterface
  * @author piantado
  * @date 02/01/21
- * @file Enumeration.h
+ * @file EnumerationInterface.h
  * @brief This interface an easy enumeratino interface which provides an abstract class for various
  * 		  types of enumeration. Most need to know about the grammar type.  
  * 
- * 		   from_t is very odd -- might be too clever to use -- basically each kind of enumeration neesd
- *        a little more information. SubtreeEnumeration needs a node to get subtrees from,
- *        GrammarEnumeration needs a nonterminal type, etc. So that is set as from_t and passed in
- *        to toNode. This prevents us from having to have different types in the arguments for toNode
- * 
- * 		  NOTE: This is NOT the infernece scheme -- for that see Inference/Enumeration.h
+ * 		  NOTE: This is NOT the inference scheme -- for that see Inference/Enumeration.h
  */
-template<typename Grammar_t, typename from_t>
+template<typename Grammar_t, typename... ARGS>
 class EnumerationInterface {
 public:
 	Grammar_t* grammar;
@@ -33,7 +28,7 @@ public:
 	 * @param is
 	 * @return 
 	 */
-	virtual Node toNode(const from_t& frm, IntegerizedStack& is)  {
+	virtual Node toNode(IntegerizedStack& is, ARGS... args)  {
 		throw NotImplementedError("*** Subclasses must implement toNode");
 	}
 	
@@ -43,11 +38,11 @@ public:
 	 * @param z
 	 * @return 
 	 */
-	virtual Node toNode(const from_t& frm, enumerationidx_t z) {
+	virtual Node toNode(enumerationidx_t z, ARGS... args) {
 		++FleetStatistics::enumeration_steps;
 	
 		IntegerizedStack is(z);
-		return toNode(frm, is);
+		return toNode(is, args...);
 	}
 	
 	/**
@@ -55,7 +50,7 @@ public:
 	 * @param n
 	 * @return 
 	 */
-	virtual enumerationidx_t toInteger(const from_t& frm, const Node& n) {
+	virtual enumerationidx_t toInteger(const Node& n, ARGS... args) {
 		throw NotImplementedError("*** Subclasses must implement toInteger(Node&)");
 	}
 	

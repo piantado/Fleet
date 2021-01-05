@@ -103,6 +103,24 @@ public:
 		assert(before <= value && "*** Overflow in encoding IntegerizedStack::push");
 	}
 	
+	/**
+	 * @brief Split into n children -- this is the same as looping and popping, but provides a nicer interface
+	 * 		  NOTE here that this is *not* just n pops -- the last remaining amount is returned as the last
+	 *        value in the vector. 
+	 * 		  NOTE: After doing this, the value=0 (since it's been poped into split)
+	 * @param n
+	 * @return 
+	 */	
+	std::vector<value_t> split(size_t n) {
+		std::vector<value_t> out(n);
+		for(size_t i=0;i<n-1;i++) {
+			out[i] = pop();
+		}
+		out[n-1] = get_value();
+		value = 0; // we remove that last value so nobody gets confused, although the stack really shouldn't be accessed after this
+		return out;
+	}
+	
 	value_t get_value() const {
 		return value; 
 	}

@@ -73,8 +73,10 @@ def runplease(it, **d):
 for d,t in itertools.product(datas.keys(), times):
 
 	# Enumeration only needs to run once:
-	runplease(1, method='enumeration', time=t, data=d)
-
+	runplease(1, method='basic-enumeration', time=t, data=d)
+	runplease(1, method='partial-LZ-enumeration', time=t, data=d)
+	runplease(1, method='full-LZ-enumeration', time=t, data=d)
+	
 	for i in itertools.product(replications):
 		runplease(i, method='prior-sampling', time=t, data=d)
 

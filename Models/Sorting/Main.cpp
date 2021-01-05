@@ -248,6 +248,11 @@ public:
 #include "ChainPool.h"
 #include "PartitionMCMC.h"
 
+#include "FullLZEnumeration.h"
+#include "PartialLZEnumeration.h"
+#include "BasicEnumeration.h"
+
+
 #include "Fleet.h" 
 
 // we need to declare mydata up here so that it can be accessed in print
@@ -304,8 +309,16 @@ int main(int argc, char** argv){
 		PriorInference<MyHypothesis, decltype(top)> pri(&grammar, &mydata, top);
 		pri.run(Control());
 	}
-	else if(method == "enumeration") {
-		EnumerationInference<MyHypothesis,MyGrammar,decltype(top)> e(&grammar, grammar.nt<S>(), &mydata, top);
+	else if(method == "basic-enumeration") {
+		EnumerationInference<MyHypothesis,MyGrammar,decltype(top),BasicEnumeration<MyGrammar>> e(&grammar, &mydata, top);
+		e.run(Control());
+	}
+	else if(method == "partial-LZ-enumeration") {
+		EnumerationInference<MyHypothesis,MyGrammar,decltype(top),PartialLZEnumeration<MyGrammar>> e(&grammar, &mydata, top);
+		e.run(Control());
+	}
+	else if(method == "full-LZ-enumeration") {
+		EnumerationInference<MyHypothesis,MyGrammar,decltype(top),FullLZEnumeration<MyGrammar>> e(&grammar, &mydata, top);
 		e.run(Control());
 	}
 	else if(method == "beam") {

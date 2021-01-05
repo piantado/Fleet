@@ -1,19 +1,20 @@
 #pragma once
 
-#include "EnumerationInference.h"
+#include "BasicEnumeration.h"
 
 /**
  * @class SubtreeEnumeration
  * @author piantado
  * @date 02/01/21
- * @file Enumeration.h
+ * @file SubtreeEnumeration.h
  * @brief Enumerate subtrees of a given tree
  */
 template<typename Grammar_t>
-class SubtreeEnumeration : public EnumerationInterface<Grammar_t,Node> {
-	using Super = EnumerationInterface<Grammar_t,Node>;
+class SubtreeEnumeration  {
 public:
-	SubtreeEnumeration(Grammar_t* g) : Super(g) {}
+	Grammar_t* grammar;
+
+	SubtreeEnumeration(Grammar_t* g) : grammar(g) {}
 		
 	/**
 	 * @brief How many partial subtrees are there?
@@ -42,7 +43,7 @@ public:
 	 * @param is
 	 * @return 
 	 */
-	[[nodiscard]] virtual Node toNode(const Node& frm, IntegerizedStack& is) override {
+	[[nodiscard]] virtual Node toNode(IntegerizedStack& is, const Node& frm) {
 		if(is.get_value() == 0) {
 			return Node();
 		}
@@ -51,19 +52,22 @@ public:
 			Node out = this->grammar->makeNode(frm.rule); // copy the first level
 			for(size_t i=0;i<out.nchildren();i++) {
 				auto cz = count(frm.child(i));
-				out.set_child(i, toNode(frm.child(i), is.pop(cz) ));		
+				out.set_child(i, toNode(is.pop(cz), frm.child(i)));		
 			}
 			return out;
 		}
 	}
 
 	// Required here or else we get z converted implicity to IntegerizedStack
-	[[nodiscard]] virtual Node toNode(const Node& frm, enumerationidx_t z) override {
-		return Super::toNode(frm,z);
+	[[nodiscard]] virtual Node toNode(enumerationidx_t z, const Node& frm) {
+		++FleetStatistics::enumeration_steps;
+	
+		IntegerizedStack is(z);
+		return toNode(is, frm);
 	}
 	
 
-	[[nodiscard]] virtual enumerationidx_t toInteger(const Node& frm, const Node& n) override {
+	[[nodiscard]] virtual enumerationidx_t toInteger(const Node& n, const Node& frm) {
 		if(n.is_null()) {
 			return 0;
 		}
@@ -80,7 +84,7 @@ public:
 			
 				// the most we can pop from a child is the number of partial trees they have
 				auto cx = count(frm.child(i));
-				auto k = toInteger(frm.child(i), n.child(i));
+				auto k = toInteger(n.child(i), frm.child(i));
 				
 				is.push(k, cx);
 				

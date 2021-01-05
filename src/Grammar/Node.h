@@ -140,6 +140,19 @@ public:
 	
 		return this->rule == NullRule;
 	}
+		
+	virtual size_t count_nonnull() const {
+		/**
+		 * @brief How many nodes total are below me?
+		 * @param n
+		 * @return 
+		 */
+		size_t n = 1*(not this->is_null()); // me
+		for(auto& c : children) {
+			n += c.count_nonnull();			
+		}
+		return n;
+	}
 
 	template<typename T>
 	T sum(std::function<T(const Node&)>& f ) const {
