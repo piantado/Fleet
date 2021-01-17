@@ -12,13 +12,7 @@ cp Main.cpp run/Main.cpp.$myhost # for a record
 parameters=AllParameters.csv
 #parameters=AllParameters-SmallRun.csv
 
-# if [ $myhost = "colala-hastings" ] ; then
-#     factors=(1)
-#     jobs=24
-# elif [ $myhost = "colala-metropolis" ] ; then
-#     factors=(2)
-#     jobs=24
-# el
+
 if [ $myhost = "simon" ] ; then
     factors=(1 3 5)
     jobs=140

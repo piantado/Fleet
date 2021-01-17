@@ -125,7 +125,13 @@ public:
 
 #include "LOTHypothesis.h"
 
-// Declare a hypothesis class
+// Declare a hypothesis base class (required to be a template
+// so that others can override with CRTP)
+enum class ProposalType { RationalRules, InsertDelete, Prior};
+
+// default proposal type
+static ProposalType whichProposal = ProposalType::RationalRules;
+
 class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S,MyGrammar> {
 public:
 	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar>;
@@ -146,7 +152,7 @@ public:
 		
 	void print(std::string prefix="#\n") override {
 		// make this hypothesis string show all the data too
-		extern MyHypothesis::data_t mydata;
+		extern data_t mydata;
 		
 		if(show_data) {
 			for(auto& di : mydata) {
@@ -159,7 +165,38 @@ public:
 		
 		Super::print(prefix); 
 	}
+	
+	
+	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const override {
+		switch(whichProposal) {
+			case ProposalType::RationalRules: {
+				return Super::propose();
+			}
+			case ProposalType::InsertDelete: {
+				std::pair<Node,double> x;
+				if(flip()) {
+					x = Proposals::regenerate(grammar, value);	
+				}
+				else {
+					if(flip()) x = Proposals::insert_tree(grammar, value);	
+					else       x = Proposals::delete_tree(grammar, value);	
+				}
+				return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second);
+			} 
+			case ProposalType::Prior: {
+				auto g = grammar->generate();	
+				return std::make_pair(MyHypothesis(grammar, g), grammar->log_probability(g) - grammar->log_probability(value));
+			}
+			default:
+				assert(false);
+		}
+	}	
+
+	
 };
+
+
+
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define classes for MCTS
@@ -301,6 +338,18 @@ int main(int argc, char** argv){
 	//top.print_best = true;
 	
 	if(method == "parallel-tempering") {
+		auto h0 = MyHypothesis::make(&grammar);
+		ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 10.0);
+		samp.run(Control(), 250, 10000);		
+	}
+	else if(method == "parallel-tempering-ID") {
+		whichProposal = ProposalType::InsertDelete;
+		auto h0 = MyHypothesis::make(&grammar);
+		ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 10.0);
+		samp.run(Control(), 250, 10000);		
+	}
+	else if(method == "parallel-tempering-prior-propose") {
+		whichProposal = ProposalType::Prior;
 		auto h0 = MyHypothesis::make(&grammar);
 		ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 10.0);
 		samp.run(Control(), 250, 10000);		

@@ -16,6 +16,7 @@
 
 // so sick of typing this horseshit
 #define TAB <<"\t"<< 
+#define NL <<"\n"<<
 #define ENDL <<std::endl;
 #define ENDLL <<"\n"<<std::endl;
 #define CERR std::cerr<<

@@ -55,6 +55,11 @@ public:
 		return toNode(is, nt);
 	}
 	
+	[[nodiscard]] virtual Node toNode(const nonterminal_t nt, enumerationidx_t z)  {
+		// include this because we are SO bad at getting the order right
+		assert(false && "*** You got the order wrong");
+	}
+	
 	virtual enumerationidx_t toInteger(const Node& n)  {
 		// inverse of the above function -- what order would we be enumerated in?
 		if(n.nchildren() == 0) {

@@ -176,5 +176,22 @@ public:
 		else		   return -infinity;
 	}
 
+
+	/**
+	 * @brief This compares using just a standard ordering on keys -- mainly here so we can
+	 * 		  put DiscreteDistributions in maps
+	 * @param x
+	 * @return 
+	 */
+	bool operator<(const DiscreteDistribution<T>& x) const {
+		return m < x.m;
+	}
 	
 };
+
+
+template<typename T>
+std::ostream& operator<<(std::ostream& o, const DiscreteDistribution<T>& x) {
+	o << x.string();
+	return o;
+}

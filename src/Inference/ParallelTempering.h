@@ -50,7 +50,6 @@ public:
 		ChainPool<HYP,callback_t>(h0, d, cb, n, allcallback),terminate(false) {
 		assert(n != 0);
 		
-		// allcallback is true means that all chains call the callback, otherwise only t=0
 		if(n == 1) {
 			this->pool[0].temperature = 1.0;
 		}

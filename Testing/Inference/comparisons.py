@@ -2,7 +2,7 @@
 from copy import copy
 import itertools
 
-times = [1, 5, 10, 30, 60, 120, 300, 500, 1000, 3000]; # seconds # [1, 5, 10, 50, 100, 500, 1000]
+times = [1, 5, 10, 30, 60, 120, 300, 500, 1000, 3000, 5000, 10000]; # seconds # [1, 5, 10, 50, 100, 500, 1000]
 chains = [1, 5, 10] 
 replications = range(25)
 restart = [0, 10000]
@@ -76,7 +76,7 @@ for d,t in itertools.product(datas.keys(), times):
 	runplease(1, method='basic-enumeration', time=t, data=d)
 	runplease(1, method='partial-LZ-enumeration', time=t, data=d)
 	runplease(1, method='full-LZ-enumeration', time=t, data=d)
-	
+
 	for i in itertools.product(replications):
 		runplease(i, method='prior-sampling', time=t, data=d)
 
@@ -85,7 +85,9 @@ for d,t in itertools.product(datas.keys(), times):
 
 	for i,r,c in itertools.product(replications, restart, chains):
 		runplease(i, method='parallel-tempering', time=t, restart=r, data=d, chains=c)
-
+		runplease(i, method='parallel-tempering-ID', time=t, restart=r, data=d, chains=c)
+		runplease(i, method='parallel-tempering-prior-propose', time=t, restart=r, data=d, chains=c)
+        
 	for i,r,c in itertools.product(replications, restart, chains):
 		runplease(i, method='chain-pool', time=t, restart=r, data=d, chains=c)
 

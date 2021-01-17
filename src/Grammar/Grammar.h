@@ -403,6 +403,8 @@ public:
 		 * @param a
 		 * @return 
 		 */
+		 
+		assert(nt >= 0 and nt < N_NTs);
 		for(auto& r: rules[nt]) {
 			// Need to fix this because it used is_a:
 			if(r.is_a(o) and r.arg == a) 

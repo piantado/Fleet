@@ -48,6 +48,8 @@ public:
 			cur = nxt;
 		}
 		
+		CERR cur.size() ENDL;
+		
 		// now make an MCMC chain on each of these
 		// (all must use the callback)
 		for(auto& h: cur) {

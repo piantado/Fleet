@@ -10,8 +10,8 @@ d$restart <- as.factor(d$restart)
 
 d$method.plot <- as.character(d$method)
 d$method.plot <- ifelse(d$method=="partition-mcmc",     paste0("partition-mcmc ", d$partition.depth),             d$method.plot)
-d$method.plot <- ifelse(d$method=="mcmc-within-mcts",   paste0("mcmc-within-mcts ", d$inner.times, d$explore),    d$method.plot)
-d$method.plot <- ifelse(d$method=="prior-sample-mcts",  paste0("prior-sample-mcts ", d$inner.times, d$explore),   d$method.plot)
+d$method.plot <- ifelse(d$method=="mcmc-within-mcts",   paste0("mcmc-within-mcts ", d$inner.times, " ", d$explore),    d$method.plot)
+d$method.plot <- ifelse(d$method=="prior-sample-mcts",  paste0("prior-sample-mcts ", d$inner.times, " ", d$explore),   d$method.plot)
 # d$method.plot <- ifelse(d$method=="parallel-tempering", paste0("parallel-tempering ", d$chains),                  d$method.plot)
 
 plt <- ggplot(subset(d, restart=0), aes(x=runtime, y=posterior, color=chains, group=chains)) + 
