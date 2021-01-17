@@ -21,11 +21,14 @@ public:
 	// gets called on (and each thread manages its own locks etc)
 	virtual void run_thread(Control ctl, Args... args) = 0;
 	
-	// index here is used to index into larger parallel collections or enumerate. Each thread
+	// index here is used to index into larger parallel collections. Each thread
 	// is expected to get its next item to work on through index, though how will vary
 	std::atomic<size_t> index; 
 	
-	ParallelInferenceInterface() : index(0) {
+	// How many threads? Used by some subclasses as asserts
+	size_t __nthreads; 
+	
+	ParallelInferenceInterface() : index(0), __nthreads(0) {
 		
 	}
 	
@@ -38,12 +41,23 @@ public:
 	}
 	
 	/**
+	 * @brief How many threads are currently run in this interface? 
+	 * @return 
+	 */
+	size_t nthreads() {
+		return __nthreads;
+	}
+	
+	/**
 	 * @brief Run is the main control interface. Copies of ctl get made and passed to each thread in run_thread. 
 	 * @param ctl
 	 */	
 	void run(Control ctl, Args... args) {
 		
 		std::vector<std::thread> threads(ctl.nthreads); 
+
+		// save this for children
+		__nthreads = ctl.nthreads;
 
 		for(unsigned long t=0;t<ctl.nthreads;t++) {
 			Control ctl2 = ctl; ctl2.nthreads=1; // we'll make each thread just one

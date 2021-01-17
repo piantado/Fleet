@@ -32,9 +32,13 @@ public:
 	static const unsigned long steps_before_change = 0;
 	static const time_ms time_before_change = 200; 
 	
+	// keep track of which threads are currently running
+	std::vector<bool> running;
+	std::mutex running_lock;
+	
 	ChainPool() {}
 	
-	ChainPool(HYP& h0, typename HYP::data_t* d, callback_t& cb, size_t n, bool allcallback=true) {
+	ChainPool(HYP& h0, typename HYP::data_t* d, callback_t& cb, size_t n, bool allcallback=true) : running(n, false) {
 		for(size_t i=0;i<n;i++) {
 			if(allcallback or i==0) pool.push_back(MCMCChain<HYP,callback_t>(i==0?h0:h0.restart(), d, cb));
 			else                    pool.push_back(MCMCChain<HYP,callback_t>(i==0?h0:h0.restart(), d));
@@ -59,9 +63,22 @@ public:
 	 */
 	void run_thread(Control ctl) override {
 		assert(pool.size() > 0 && "*** Cannot run on an empty ChainPool");
+		assert(nthreads() <= pool.size() && "*** Cannot have more threads than pool items");
 		
 		while( ctl.running() ) {
-			auto& chain = pool[next_index() % pool.size()];
+			
+			// find the next open thread
+			size_t idx;
+			{
+				std::lock_guard guard(running_lock);
+			
+				do { 
+					idx = next_index() % pool.size();
+				} while( running[idx] );
+				running[idx] = true; // say I'm running this one 
+			}
+			
+			auto& chain = pool[idx];
 			
 			//#ifdef DEBUG_CHAINPOOL
 			//			COUT "# Running thread " <<std::this_thread::get_id() << " on "<< idx TAB chain.current.posterior TAB chain.current.string() ENDL;
@@ -81,6 +98,12 @@ public:
 			#ifdef DEBUG_CHAINPOOL
 						COUT "# Thread " <<std::this_thread::get_id() << " stopping chain "<< idx TAB "at " TAB chain.current.posterior TAB chain.current.string() ENDL;
 			#endif
+			
+			// and free this lock space
+			{
+				std::lock_guard guard(running_lock);
+				running[idx] = false; // say I'm running this one 
+			}
 						
 		}
 	}
