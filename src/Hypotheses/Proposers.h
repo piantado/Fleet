@@ -13,12 +13,12 @@
 
 namespace Proposals { 
 		
+	/**
+	 * @brief Helper function for whether we can resample from a node (just accesses n.can_resample)
+	 * @param n - what node are we asking about?
+	 * @return - a double (1.0 or 0.0) depending on whether n can be sampled
+	 */
 	double can_resample(const Node& n) {
-		/**
-		 * @brief Helper function for whether we can resample from a node (just accesses n.can_resample)
-		 * @param n - what node are we asking about?
-		 * @return - a double (1.0 or 0.0) depending on whether n can be sampled
-		 */
 		return n.can_resample*1.0;
 	}
 	
@@ -28,14 +28,15 @@ namespace Proposals {
 		return std::make_pair(g, grammar->log_probability(g) - grammar->log_probability(from));
 	}
 
+	/**
+	 * @brief Regenerate with a rational-rules (Goodman et al.) style regeneration proposal: pick a node uniformly and regenerate it from the grammar. 
+	 * @param grammar - what grammar to use
+	 * @param from - what node are we proposing from
+	 * @return A pair of the new proposed tree and the forward-backward log probability (for use in MCMC)
+	 */
 	template<typename GrammarType>
 	std::pair<Node,double> regenerate(GrammarType* grammar, const Node& from) {
-		/**
-		 * @brief Regenerate with a rational-rules (Goodman et al.) style regeneration proposal: pick a node uniformly and regenerate it from the grammar. 
-		 * @param grammar - what grammar to use
-		 * @param from - what node are we proposing from
-		 * @return A pair of the new proposed tree and the forward-backward log probability (for use in MCMC)
-		 */
+
 				
 		// copy, regenerate a random node, and return that and forward-backward prob
 		#ifdef DEBUG_MCMC
@@ -59,6 +60,46 @@ namespace Proposals {
 
 		return std::make_pair(ret, fb);
 	}
+	
+	/**
+	 * @brief Regenerate with rational-rules style proposals, but only allow proposals to trees
+	 *        with a max depth of D. This encourages smaller changes, but also gets you stuck
+	 *        pretty bad in local maxima since you can't take big hops. Probably will work 
+	 *        best with restarts
+	 * @param grammar
+	 * @param from
+	 * @return 
+	 */
+	template<typename GrammarType, int D>
+	std::pair<Node,double> regenerate_shallow(GrammarType* grammar, const Node& from) {
+		
+		auto my_can_resample = +[](const Node& n) {
+			return (n.can_resample and n.depth() <= D )*1.0;
+		};
+		
+		#ifdef DEBUG_MCMC
+			CERR "REGENERATE_SHALLOW" TAB from.string() ENDL;
+		#endif
+
+		Node ret = from; // copy
+
+		if(from.sum<double>(my_can_resample) == 0.0) {
+			return std::make_pair(ret, 0.0);
+		}
+		
+		auto s = sample<Node,Node>(ret, my_can_resample);
+		
+		double oldgp = grammar->log_probability(*s.first); // reverse probability generating 
+		
+		*s.first = grammar->generate(s.first->nt()); 
+		
+		double fb = s.second + grammar->log_probability(*s.first) 
+				  - (log(my_can_resample(*s.first)) - log(ret.sum(my_can_resample)) + oldgp);
+
+		return std::make_pair(ret, fb);
+	}
+
+	
 
 	template<typename GrammarType>
 	std::pair<Node, double> insert_tree(GrammarType* grammar, const Node& from) {

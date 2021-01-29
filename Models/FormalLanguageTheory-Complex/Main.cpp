@@ -37,6 +37,10 @@ unsigned long PRINT_STRINGS; // print at most this many strings for each hypothe
 std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000"}; //, "10000", "50000"}; // how many data points do we run on?
 //std::vector<S> data_amounts={"100"}; // how many data points do we run on?
 
+// useful for printing -- so we know how many tokens there were in the data
+size_t current_ntokens = 0; // how many tokens are there currently? Just useful to know
+
+
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare a grammar
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -279,7 +283,7 @@ public:
 		auto [prec, rec] = get_precision_and_recall(std::cout, o, prdata, PREC_REC_N);
 		COUT "#\n";
 		COUT "# "; o.print(PRINT_STRINGS);	COUT "\n";
-		COUT prefix << current_data TAB this->born TAB this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->parseable()) TAB prec TAB rec;
+		COUT prefix << current_data TAB current_ntokens TAB this->born TAB this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->parseable()) TAB prec TAB rec;
 		COUT "" TAB QQ(this->string()) ENDL
 	}
 	
@@ -367,6 +371,10 @@ int main(int argc, char** argv){
 	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
 		
 		samp.set_data(&datas[di], true);
+		
+		// set this global variable so we know
+		current_ntokens = 0;
+		for(auto& d : datas[di]) { UNUSED(d); current_ntokens++; }
 		
 		samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, RESTART), SWAP_EVERY, 5*60*1000);	
 

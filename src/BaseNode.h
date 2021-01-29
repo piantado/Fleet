@@ -210,6 +210,14 @@ public:
 		return k;
 	}
 	
+	size_t depth() const {
+		size_t d = 0;
+		for(const auto& c: children) {
+			d = std::max(d, c.depth()+1);
+		}
+		return d;
+	}
+	
 	void fix_child_info() {
 		/**
 		 * @brief Fix my immediate children's pointers to ensure that children's parent pointers and indices are correct. 
