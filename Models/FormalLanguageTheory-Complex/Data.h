@@ -29,15 +29,15 @@ void load_data_file(std::vector<tdata> &data, const char* datapath) {
 
 template<typename T, typename TDATA>
 std::map<T, double> highest(const std::vector<TDATA>& m, unsigned long N) {
-	// take a type of data and make a map of strings to reliability, pulling out the top N
+	// take a type of data and make a map of strings to counts, pulling out the top N
 	// and converting into a map
 	std::map<T, double> out;
 	
 	std::vector<TDATA> v = m; 
-	std::sort(v.begin(), v.end(), [](auto x, auto y){ return x.reliability > y.reliability; });
+	std::sort(v.begin(), v.end(), [](auto x, auto y){ return x.count > y.count; });
 	
 	for(size_t i=0;i<std::min(N, v.size()); i++) {
-		out[v[i].output] = v[i].reliability; // remember: must be output since that's what we're modeling
+		out[v[i].output] = v[i].count; // remember: must be output since that's what we're modeling
 	}
 	return out;
 }
@@ -52,7 +52,7 @@ std::pair<double, double> get_precision_and_recall(std::ostream& output, Discret
 	// know the "true" precision and recall
 	
 	auto A = model.best(N);
-	auto B = highest<std::string,TDATA>(data,   std::min(N, data.size())  );
+	auto B = highest<std::string,TDATA>(data, std::min(N,data.size()) );
 	
 	std::set<std::string> mdata; // make a map of all observed output strings
 	for(auto v : data) mdata.insert(v.output); 
