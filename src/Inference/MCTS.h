@@ -1,26 +1,3 @@
-/* 
-
- * Some ideas:
- * 
- * 	For a node, we stor ethe last *likelihood*. We then sample the next child with the current prior and the last likelihood. 
- * 
- * 	what if we preferentially follow leaves that have a *variable* likelihood distribution. Otherwise we might find something good 
- *  and then follow up on minor modifications of it? This would automatically be handled by doing some kind of UCT/percentile estimate
- * 	
- *	Maybe if we estimate quantiles rather than means or maxes, this will take care of this? If you tak ethe 90th or 99th quantile, 
- *  then you'll naturally start with 
- * 
- *  We should be counting gaps against hypotheses in the selection -- the gaps really make us bound the prior, since each gap must be filled. 
- * 
- * TODO: Should be using FAME NO OS as in the paper
- * 
- * 
- * 	Another idea: what if we sample from the bottom of the tree according to probability? To do that we sample and then sum up the lses (excluding closed nodes)
- * 		and then recurse down until we find what we need
- * 
- * 		-- Strange if we just do the A* version, then we'll have a priority queue and that's a lot liek sampling from the leaves? 
- * 
- * */
 #pragma once 
 
 #define DEBUG_MCTS 0
@@ -42,8 +19,6 @@
 #include "PriorInference.h"
 
 #include "BaseNode.h"
-
-
 
 /**
  * @class MCTSBase
@@ -83,17 +58,15 @@ public:
 	static callback_t* callback; 
 
 	unsigned int nvisits;  // how many times have I visited each node?
-	float max;
-	float min;
-	float lse;
-	float last_lp;
+	
+	StreamingStatistics statistics;
     
 	MCTSBase() {
 	}
 	
     MCTSBase(HYP& start, this_t* par,  size_t w) : 
 		BaseNode<this_t>(0,par,0),
-		open(true), which_expansion(w), nvisits(0), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
+		open(true), which_expansion(w), nvisits(0) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
 		mylock.lock();
 			
@@ -103,7 +76,7 @@ public:
     
     MCTSBase(HYP& start, double ex, data_t* d, callback_t& cb) : 
 		BaseNode<this_t>(),
-		open(true), which_expansion(0), nvisits(0), max(-infinity), min(infinity), lse(-infinity), last_lp(-infinity) {
+		open(true), which_expansion(0), nvisits(0) {
 		// This is the constructor that gets called from main, and it sets the static variables. All the other constructors
 		// should use the above one
 		
@@ -143,7 +116,7 @@ public:
         
 		std::string opn = (open?" ":"*");
 		
-		o << idnt TAB opn TAB  max TAB "visits=" << nvisits TAB which_expansion TAB from ENDL;
+		o << idnt TAB opn TAB statistics.max TAB statistics.mean TAB statistics.get_sd() TAB "visits=" << nvisits TAB which_expansion TAB from ENDL;
 		
 		// optional sort
 		if(sort) {
@@ -189,16 +162,10 @@ public:
 
     void add_sample(const float v) {
 		
+		// add to my stream
+		statistics << v;
+		
 		if(std::isnan(v)) return;
-		
-        max = std::max(max,v);	
-		
-		if(v != -infinity) // keep track of the smallest non-inf value -- we use this instead of inf for sampling
-			min = std::min(min, v); 
-		
-		lse = logplusexp(lse, v);
-		
-		last_lp = v;
 		
 		// and propagate up the tree
 		if(not this->is_root()) {
@@ -270,21 +237,38 @@ public:
 		}
 		
 		// if all the neighbors have been visited, we'll overwrite everything
-		// with UCT
 		if(all_visited) {
+			
+			// this is basically UCT
 			for(int k=0;k<neigh;k++) {
 				if(this->children[k].open){
-					children_lps[k] = (this->child(k).nvisits == 0 ? 0.0 : (this->max / this->child(k).max) +
+					children_lps[k] = (this->child(k).nvisits == 0 ? 0.0 : (this->statistics.max / this->child(k).statistics.max) +
 																		   FleetArgs::explore * sqrt(log(this->nvisits)/this->children[k].nvisits));
 				}
 			}
+
+			// We'll use our thing to try to compute the 
+//			const double l1ma = log(1.0-0.9); // upper bound of CI we want to compute
+//			for(int k=0;k<neigh;k++) {
+//				auto& c = this->children[k];
+//				if(c.open){
+//					// here, we'll model as an exponential above the max
+//					// and compute the CI
+//					// a = 1 - exp(-sd*x) // CDF of exponential 
+//					// x = l1ma / -sd
+//					double sd = c.statistics.get_sd()+1; // the +1 here is just a quick hack to deal with zeroes...
+//	 				double r = c.statistics.max + l1ma / -sd; 
+//					children_lps[k] = (c.nvisits == 0 or std::isnan(sd) ? 0.0 : r);
+//				}
+//			}
+
 		} 
 		
 		//		for(int k=0;k<neigh;k++) {
 		//			CERR k TAB all_visited TAB children_lps[k] TAB current.neighbor_prior(k) TAB current.string() ENDL;
 		//		}
 
-		// someitmes we'll get all NaNs, which is bad new sfor sampling
+		// sometimes we'll get all NaNs, which is bad new sfor sampling
 		bool allNaN = true;
 		for(int k=0;k<neigh;k++) {
 			if(this->children[k].open and not std::isnan(children_lps[k])) {

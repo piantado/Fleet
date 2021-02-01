@@ -1,17 +1,8 @@
 
 #pragma once
 
-#include "stdlib.h"
-#include "stdio.h"
-
-#include <cmath>
-#include <type_traits>
 #include <set>
-#include <queue>
-#include <list>
-#include <unordered_set>
-#include <unordered_map>
-#include <cassert>
+#include <map>
 
 #include "FleetArgs.h"
 
