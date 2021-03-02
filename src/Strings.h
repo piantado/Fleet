@@ -308,8 +308,8 @@ std::string Q(std::string x) {
  * @param nalphabet
  * @return 
  */
-double p_KashyapOommen1983_edit(const std::string x, const std::string y, const double perr, const size_t nalphabet) {
-	// From Kashyap & Oommen, 1983
+double p_KashyapOommen1984_edit(const std::string x, const std::string y, const double perr, const size_t nalphabet) {
+	// From Kashyap & Oommen, 1984
 	// perr gets used here to define the probability of each of these operations
 	// BUT Note here that we use the logs of these 
 	
@@ -323,7 +323,10 @@ double p_KashyapOommen1983_edit(const std::string x, const std::string y, const 
 	const double lp_delete = log(perr);           // P(phi|d_x) -- probability of deleting
 	
 	#pragma GCC diagnostic ignored "-Wvla" // my god, just kill me
-	double W[T+1][E+1][R+1]; 	// unlike in Kashyap & Oommen, this will store the LOG of the probability
+	// unlike in Kashyap & Oommen, this will store the LOG of the probability
+	// Note the last index here goes up to max(m,n) -- not clear in their paper what this should be
+	// but R doesn't work!
+	double W[T+1][E+1][T+1]; 		
 	#pragma GCC diagnostic warning "-Wvla"
 	
 	// set to 1 in log space
