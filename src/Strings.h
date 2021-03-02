@@ -7,6 +7,7 @@
 #include <array>
 
 #include "Numerics.h"
+#include "Random.h"
 
 template<typename T>
 std::string str(T x){
@@ -292,3 +293,88 @@ std::string Q(std::string x) {
 //	
 //	
 //}
+
+
+/**
+ * @brief The string probability model from Kashyap & Oommen, 1983, basically giving a string
+ *        edit distance that is a probability model. This could really use some unit tests,
+ *        but it is hard to find implementations. 
+ * 			
+ * 		  This assumes that the deletions, insertions, and changes all happen with a constant, equal
+ *        probability of perr, but note that swaps and insertions also have to choose the character
+ *        out of nalphabet. This could probably be optimized to not have to compute these logs
+ * @param x
+ * @param y
+ * @param perr
+ * @param nalphabet
+ * @return 
+ */
+double p_KashyapOommen1983_edit(const std::string x, const std::string y, const double perr, const size_t nalphabet) {
+	// From Kashyap & Oommen, 1983
+	// perr gets used here to define the probability of each of these operations
+	// BUT Note here that we use the logs of these 
+	
+	const int m = x.length(); // these must be ints or some negatives below go bad
+	const int n = y.length();
+	const int T = std::max(m,n); // max insertions allowed
+	const int E = std::max(m,n); // max deletions allowed
+	const int R = std::min(m,n);
+	
+	const double lp_insert = -log(nalphabet); // P(y_t|lambda) - probability of generating a single character from nothing
+	const double lp_delete = log(perr);           // P(phi|d_x) -- probability of deleting
+	
+	#pragma GCC diagnostic ignored "-Wvla" // my god, just kill me
+	double W[T+1][E+1][R+1]; 	// unlike in Kashyap & Oommen, this will store the LOG of the probability
+	#pragma GCC diagnostic warning "-Wvla"
+	
+	// set to 1 in log space
+	W[0][0][0] = 0.0; 
+	
+	// indexes into y and x, and returns the swap probability
+	// when they are different. Also corrects so i,j are 0-indexed
+	// instead of 1-indexed, as they are below
+	const auto Sab = [&](int i, int j) -> double {	
+		return (y[i-1]==x[j-1] ? log(1-perr) : log(perr)-log(nalphabet) );
+	};
+	
+	for(int t=1;t<=T;t++) 
+		W[t][0][0] = W[t-1][0][0] + lp_insert;
+		
+	for(int d=1;d<=E;d++)
+		W[0][d][0] = W[0][d-1][0] + lp_delete;
+	
+	for(int s=1;s<=R;s++) 
+		W[0][0][s] = W[0][0][s-1] + Sab(s-1,s-1);
+		
+	for(int t=1;t<=T;t++) 
+		for(int d=1;d<=E;d++) 
+			W[t][d][0] = logplusexp(W[t-1][d][0]+lp_insert, 
+							        W[t][d-1][0]+lp_delete);
+			
+	for(int t=1;t<=T;t++)
+		for(int s=1;s<=n-t;s++)
+			W[t][0][s] = logplusexp(W[t-1][0][s]+lp_insert,
+			                        W[t][0][s-1]+Sab(s+t-1,s-1));
+	
+	for(int d=1;d<=E;d++)
+		for(int s=1;s<=m-d;s++) 
+			W[0][d][s] = logplusexp(W[0][d-1][s]+lp_delete, 
+			                        W[0][d][s-1]+Sab(s-1,s+d-1));
+
+	for(int t=1;t<=T;t++)
+		for(int d=1;d<=E;d++)
+			for(int s=1;s<=std::min(n-t,m-d);s++)
+				W[t][d][s] = logplusexp(W[t-1][d][s]+lp_insert,
+				             logplusexp(W[t][d-1][s]+lp_delete,
+								        W[t][d][s-1]+Sab(t+s-1,d+s-1))); // shoot me in the face	
+	
+	
+	// now we sum up
+	double lp_yGx = -infinity; // p(Y|X)
+	for(int t=std::max(0,n-m); t<=std::min(T,E+n-m);t++){
+		double qt = lpmf_geometric(t+1,1.0-perr); // probability of t insertions -- but must use t+1 to allow t=0 (geometric is defined on 1,2,3,...)
+		lp_yGx = logplusexp(lp_yGx, W[t][m-n+t][n-t] + qt + lfactorial(m)+lfactorial(t)-lfactorial(m+t));
+	}
+	return lp_yGx;
+	
+}
