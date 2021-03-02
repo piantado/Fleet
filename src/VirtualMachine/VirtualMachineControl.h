@@ -8,6 +8,7 @@
  * @file VirtualMachinePool.h
  * @brief A little class that any VirtualMachinePool AND VirtualMachines inherit to control their behavior.
  * 		  NOTE That this is not passed around like Fleet::Control--it is just meant to be a place to set static variables
+ * 		  And then it is inherited by VirtualMachinePool
  */
 struct VirtualMachineControl {	
 	

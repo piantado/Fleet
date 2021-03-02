@@ -62,6 +62,10 @@ T normal_lpdf(T x, T mu=0.0, T sd=1.0) {
     return linv_sqrt_2pi  - z*z / 2.0;
 }
 
+double lpmf_geometric(size_t k, double p) {
+	return log(p) + (k-1)*log(1-p);
+}
+
 
 template<typename t>
 std::vector<t> random_multinomial(t a, size_t len) {

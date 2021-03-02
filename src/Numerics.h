@@ -120,3 +120,7 @@ double logsumexp(const t& v) {
 	}
 	return lse;
 }
+
+double lfactorial(double x) {
+	return lgamma(x+1);
+}

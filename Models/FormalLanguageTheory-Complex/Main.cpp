@@ -29,12 +29,12 @@ const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The m
 const size_t MAX_PR_LINES = 1000000; 
 
 const size_t RESTART = 0;
-const size_t NTEMPS = 50; // 10 for the main run -- updated to 20 here
+const size_t NTEMPS = 15; // 10 for the main run -- updated to 20 here
 const size_t MAX_TEMP = 25.0;  // 10 for the main run -- updated to 50 here
 unsigned long SWAP_EVERY = 250; // ms
 unsigned long PRINT_STRINGS; // print at most this many strings for each hypothesis
 
-std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000"}; //, "10000", "50000"}; // how many data points do we run on?
+std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000"}; // how many data points do we run on?
 //std::vector<S> data_amounts={"100"}; // how many data points do we run on?
 
 // useful for printing -- so we know how many tokens there were in the data
@@ -308,6 +308,10 @@ bool long_output = false; // if true, we allow extra strings, recursions etc. on
 
 int main(int argc, char** argv){ 
 	
+	// Set this
+	VirtualMachineControl::MIN_LP = -15;
+
+	
 	FleetArgs::input_path = my_default_input; // set this so it's not fleet's normal input default
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
@@ -381,15 +385,15 @@ int main(int argc, char** argv){
 		// set up to print using a larger set if we were given this option
 		if(long_output){
 			VirtualMachineControl::MAX_STEPS  = 32000; 
-			VirtualMachineControl::MAX_OUTPUTS = 12000;
-			VirtualMachineControl::MIN_LP = -25;
-			PRINT_STRINGS = 4096;
-			max_length = 1024; 			
+			VirtualMachineControl::MAX_OUTPUTS = 16000;
+			VirtualMachineControl::MIN_LP = -40;
+			PRINT_STRINGS = 5000;
+			max_length = 350; 			
 		}
 		else {
 			VirtualMachineControl::MAX_STEPS  = 4096; 
 			VirtualMachineControl::MAX_OUTPUTS = 1024; 
-			VirtualMachineControl::MIN_LP = -13;
+			VirtualMachineControl::MIN_LP = -15;
 			PRINT_STRINGS = 512;
 			max_length = 350; 	
 		}
@@ -400,7 +404,7 @@ int main(int argc, char** argv){
 		if(long_output) {
 			VirtualMachineControl::MAX_STEPS  = 4096; 
 			VirtualMachineControl::MAX_OUTPUTS = 1024; 
-			VirtualMachineControl::MIN_LP = -13;
+			VirtualMachineControl::MIN_LP = -15;
 			PRINT_STRINGS = 512;
 			max_length = 350; 	
 		}	

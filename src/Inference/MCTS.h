@@ -247,7 +247,12 @@ public:
 				}
 			}
 
-			// We'll use our thing to try to compute the 
+			// We'll use our thing to try to compute the posterior upper bound on the max
+			// here, we essentially assume that the mean and variance of the generative model
+			// are the sample mean and variance. Then, a uniform prior on the max M
+			// will mean that it only affects the likelihod of those N samples
+			// so the probability mass saved per sample is tau = 1-norm_cdf(M)
+			// So, the posterior should look like tau
 //			const double l1ma = log(1.0-0.9); // upper bound of CI we want to compute
 //			for(int k=0;k<neigh;k++) {
 //				auto& c = this->children[k];
