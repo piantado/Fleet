@@ -2,7 +2,6 @@
 
 #include <sstream>
 #include <queue>
-#include <math.h>
 #include <string.h>
 #include <array>
 

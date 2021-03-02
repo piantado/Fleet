@@ -495,8 +495,8 @@ public:
 					double n = a.sum(); assert(n > 0.0); 
 					double c0 = c.sum();
 					if(c0 != 0.0) { // TODO: Check this...  
-						// NOTE: std::lgamma here is not thread safe, but by my read it should be when the argument is positive
-						lp += std::lgamma(n+1) + std::lgamma(c0) - std::lgamma(n+c0) 
+						// NOTE: std::lgamma here is not thread safe, so we use mylgamma defined in Numerics
+						lp += mylgamma(n+1) + mylgamma(c0) - mylgamma(n+c0) 
 							 + (c.array() + a.array()).array().lgamma().sum() 
 							 - (c.array()+1).array().lgamma().sum() 
 							 - a.array().lgamma().sum();

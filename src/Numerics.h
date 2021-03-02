@@ -4,6 +4,11 @@
 #include <iostream>
 #include <assert.h>
 
+// This includes our thread-safe lgamma and must be declared before math.h is imported
+// This means that we should NOT import math.h anywhere else
+# define _REENTRANT 1 
+#include <math.h>
+
 /////////////////////////////////////////////////////////////
 // Constants
 /////////////////////////////////////////////////////////////
@@ -121,6 +126,21 @@ double logsumexp(const t& v) {
 	return lse;
 }
 
+double mylgamma(double v) {
+	// thread safe version
+	int sgn = 1;
+	auto ret = lgamma_r(v, &sgn);
+	return ret;
+}
+
+double mygamma(double v) {
+	// thread safe usage
+	int sgn = 1;
+	auto ret = lgamma_r(v, &sgn);
+	return sgn*exp(ret);
+}
+
+
 double lfactorial(double x) {
-	return lgamma(x+1);
+	return mylgamma(x+1);
 }
