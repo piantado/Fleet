@@ -34,6 +34,10 @@ struct Vector2D {
 		return value.at(x*ysize + y);
 	}
 	
+	T& operator()(int x, int y) {
+		return value.at(x*ysize + y);
+	}
+	
 	template<typename X>
 	void operator[](X x) {
 		CERR "**** Cannot use [] with Vector2d, use .at()" ENDL;

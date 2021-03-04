@@ -1,5 +1,6 @@
 #pragma once 
 
+#include "IO.h"
 #include <vector>
 
 /**
@@ -22,6 +23,10 @@ struct Vector3D {
 		resize(x,y,z);
 	}
 	
+	void fill(T v){
+		value.assign(v, xsize*ysize*zsize);
+	}
+	
 	void resize(int x, int y, int z) {
 		xsize = x; ysize=y; zsize=z;
 		value.resize(x*y*z);
@@ -32,14 +37,17 @@ struct Vector3D {
 		value.reserve(x*y*z);
 	}
 	
-	T& at(int x, int y, int z) {
+	T& at(const int x, const int y, const int z) {
+		return value.at((x*ysize + y)*zsize + z);
+	}
+		
+	T& operator()(const int x, const int y, const int z) {
 		// NOTE: this indexing makes iteration over z the fastest
 		return value.at((x*ysize + y)*zsize + z);
 	}
 	
 	template<typename X>
 	void operator[](X x) {
-		CERR "**** Cannot use [] with Vector2d, use .at()" ENDL;
-		throw YouShouldNotBeHereError();
+		assert(false && "**** Cannot use [] with Vector2d, use .at()");
 	}
 };

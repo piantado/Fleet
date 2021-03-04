@@ -282,19 +282,6 @@ std::string Q(std::string x) {
 }
 
 
-// Some functions for converting to and from strings:
-//namespace Fleet {
-//	
-//	
-//	
-//	const char NodeDelimiter = ';';
-//	const char FactorDelimiter = '|';
-//	
-//	
-//	
-//}
-
-
 /**
  * @brief The string probability model from Kashyap & Oommen, 1983, basically giving a string
  *        edit distance that is a probability model. This could really use some unit tests,
