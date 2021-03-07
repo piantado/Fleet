@@ -1,9 +1,12 @@
 <map id="VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;" name="VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;">
-<area shape="rect" id="node2" href="$struct_virtual_machine_control.html" title="VirtualMachineControl" alt="" coords="9,8,160,34"/>
-<area shape="rect" id="node6" href="$class_virtual_machine_pool.html" title="VirtualMachinePool\l\&lt; VirtualMachineState \&gt;" alt="" coords="235,30,398,71"/>
-<area shape="rect" id="node3" href="$class_runtime_counter.html" title="RuntimeCounter" alt="" coords="258,96,375,122"/>
-<area shape="rect" id="node5" href="$class_stack.html" title="Stack\&lt; input_t \&gt;" alt="" coords="25,169,144,196"/>
-<area shape="rect" id="node7" href="$class_program_loader.html" title="ProgramLoader" alt="" coords="261,242,372,269"/>
-<area shape="rect" id="node9" href="$class_stack.html" title="Stack\&lt; std::pair\&lt; index\l_t, input_t \&gt; \&gt;" alt="" coords="5,308,164,350"/>
-<area shape="rect" id="node10" href="$struct_virtual_machine_state_1_1t__stack.html" title="VirtualMachineState\l\&lt; _t_input, _t_output,\l VM_TYPES \&gt;::t_stack\&lt;\l VM_TYPES... \&gt;" alt="" coords="233,388,401,459"/>
+<area shape="rect" id="node1" title=" " alt="" coords="565,154,712,210"/>
+<area shape="rect" id="node2" href="$struct_virtual_machine_control.html" title=" " alt="" coords="9,8,160,34"/>
+<area shape="rect" id="node6" href="$class_virtual_machine_pool.html" title=" " alt="" coords="235,30,398,71"/>
+<area shape="rect" id="node3" href="$class_runtime_counter.html" title=" " alt="" coords="258,96,375,122"/>
+<area shape="rect" id="node4" title=" " alt="" coords="227,147,407,218"/>
+<area shape="rect" id="node5" href="$class_stack.html" title=" " alt="" coords="25,169,144,196"/>
+<area shape="rect" id="node7" href="$class_program_loader.html" title=" " alt="" coords="261,242,372,269"/>
+<area shape="rect" id="node8" title=" " alt="" coords="213,294,420,364"/>
+<area shape="rect" id="node9" href="$class_stack.html" title=" " alt="" coords="5,308,164,350"/>
+<area shape="rect" id="node10" href="$struct_virtual_machine_state_1_1t__stack.html" title=" " alt="" coords="233,388,401,459"/>
 </map>

@@ -1,5 +1,5 @@
-\hypertarget{_grammar_8h}{}\section{src/\+Grammar/\+Grammar.h File Reference}
-\label{_grammar_8h}\index{src/\+Grammar/\+Grammar.\+h@{src/\+Grammar/\+Grammar.\+h}}
+\hypertarget{_grammar_8h}{}\doxysection{src/\+Grammar/\+Grammar.h File Reference}
+\label{_grammar_8h}\index{src/Grammar/Grammar.h@{src/Grammar/Grammar.h}}
 
 
 A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as well as compute log probabilities.  
@@ -32,24 +32,24 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=205pt]{_grammar_8h__dep__incl}
 \end{center}
 \end{figure}
-\subsection*{Classes}
+\doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{class_depth_exception}{Depth\+Exception}
+class \mbox{\hyperlink{class_depth_exception}{Depth\+Exception}}
 \item 
-class \hyperlink{class_grammar}{Grammar$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+E\+S $>$}
+class \mbox{\hyperlink{class_grammar}{Grammar$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+E\+S $>$}}
 \item 
-class \hyperlink{class_grammar_1_1_rule_iterator}{Grammar$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+E\+S $>$\+::\+Rule\+Iterator}
+class \mbox{\hyperlink{class_grammar_1_1_rule_iterator}{Grammar$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+E\+S $>$\+::\+Rule\+Iterator}}
 \end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
+\doxysubsection{Detailed Description}
 A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as well as compute log probabilities. 
 
 This allows us to iterate over rules in a grammar, guaranteed to be in a fixed order (first by nonterminals, then by rule sort order.
 
-A grammar stores rules in a fixed (sorted) order that is guaranteed not to change, and that puts terminals first and (lower priority) high probability first as determined by \hyperlink{class_rule}{Rule}\textquotesingle{}s sort order. This can be accessed with an iterator that goes over all grammar rules, via \hyperlink{class_grammar_aee5716f6501e8a366e33e12c7a675b8d}{Grammar.\+begin()} and \hyperlink{class_grammar_a141508d214bb721b71e8ee27a1aa2915}{Grammar.\+end()}
+A grammar stores rules in a fixed (sorted) order that is guaranteed not to change, and that puts terminals first and (lower priority) high probability first as determined by \mbox{\hyperlink{class_rule}{Rule}}\textquotesingle{}s sort order. This can be accessed with an iterator that goes over all grammar rules, via \mbox{\hyperlink{class_grammar_aee5716f6501e8a366e33e12c7a675b8d}{Grammar.\+begin()}} and \mbox{\hyperlink{class_grammar_a141508d214bb721b71e8ee27a1aa2915}{Grammar.\+end()}}
 
 The grammar hypothesis can take lambdas and parse them into rules, using G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES.
 
-The template args G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES stores the types used in this grammar. This is inherited by \hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}, which also passes them along to \hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State} (in the form of a Tuple). So the types used and order are fixed/standardized in the grammar
+The template args G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES stores the types used in this grammar. This is inherited by \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}}, which also passes them along to \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} (in the form of a Tuple). So the types used and order are fixed/standardized in the grammar

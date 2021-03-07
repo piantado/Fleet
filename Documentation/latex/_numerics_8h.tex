@@ -1,14 +1,15 @@
-\hypertarget{_numerics_8h}{}\section{src/\+Numerics.h File Reference}
-\label{_numerics_8h}\index{src/\+Numerics.\+h@{src/\+Numerics.\+h}}
+\hypertarget{_numerics_8h}{}\doxysection{src/\+Numerics.h File Reference}
+\label{_numerics_8h}\index{src/Numerics.h@{src/Numerics.h}}
 {\ttfamily \#include $<$random$>$}\newline
 {\ttfamily \#include $<$iostream$>$}\newline
 {\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
 Include dependency graph for Numerics.\+h\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=272pt]{_numerics_8h__incl}
+\includegraphics[width=337pt]{_numerics_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:
@@ -19,43 +20,65 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=350pt]{_numerics_8h__dep__incl}
 \end{center}
 \end{figure}
-\subsection*{Functions}
+\doxysubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename T $>$ }\\T \hyperlink{_numerics_8h_a8b71b974f44117f5ce7f5d0a23feebde}{get\+\_\+log1pexp\+\_\+breakout\+\_\+bound} (const double precision, T f(T), const T lower=-\/1e6, const T upper=1e6)
-\begin{DoxyCompactList}\small\item\em Tis takes a function f(x) and finds a bound B so that f(x) $<$ precision for all x $<$ B. This is useful in logsumexp where at compile time we don\textquotesingle{}t bother adding if the addition will be too tiny. For instance\+: constexpr auto f = +\mbox{[}\mbox{]}(T x) -\/$>$ const double \{return log1p(exp(x));\}; const T bound = get\+\_\+fx\+\_\+compiletime\+\_\+bound$<$\+T$>$(1e-\/6, f);. \end{DoxyCompactList}\item 
-{\footnotesize template$<$typename T $>$ }\\T \hyperlink{_numerics_8h_a558a1133b9942f8debd559bb9317bca3}{logplusexp} (const T a, const T b)
-\item 
-{\footnotesize template$<$typename t $>$ }\\double \hyperlink{_numerics_8h_abb96a05282957c6c5c3d226b357ed134}{logsumexp} (const t \&v)
-\begin{DoxyCompactList}\small\item\em Compute log(sum(exp(v)). For now, this just unrolls logplusexp, but we might consider the faster (standard) variant where we pull out the max. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Variables}
+\#define \mbox{\hyperlink{_numerics_8h_ac15da069257627fefd71d875d538b73d}{\+\_\+\+R\+E\+E\+N\+T\+R\+A\+NT}}~1
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-constexpr double \hyperlink{_numerics_8h_a86b66aa18326dc4ebe8e36d253c14f40}{L\+O\+G2} = log(2.\+0)
+{\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{_numerics_8h_a8b71b974f44117f5ce7f5d0a23feebde}{get\+\_\+log1pexp\+\_\+breakout\+\_\+bound}} (const double precision, T f(T), const T lower=-\/1e6, const T upper=1e6)
+\begin{DoxyCompactList}\small\item\em Tis takes a function f(x) and finds a bound B so that f(x) $<$ precision for all x $<$ B. This is useful in logsumexp where at compile time we don\textquotesingle{}t bother adding if the addition will be too tiny. For instance\+: constexpr auto f = +\mbox{[}\mbox{]}(T x) -\/$>$ const double \{return log1p(exp(x));\}; ~\newline
+ const T bound = get\+\_\+fx\+\_\+compiletime\+\_\+bound$<$\+T$>$(1e-\/6, f);. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{_numerics_8h_a558a1133b9942f8debd559bb9317bca3}{logplusexp}} (const T a, const T b)
 \item 
-constexpr double \hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity} = std\+::numeric\+\_\+limits$<$double$>$\+::infinity()
+{\footnotesize template$<$typename t $>$ }\\double \mbox{\hyperlink{_numerics_8h_abb96a05282957c6c5c3d226b357ed134}{logsumexp}} (const t \&v)
+\begin{DoxyCompactList}\small\item\em Compute log(sum(exp(v)). For now, this just unrolls logplusexp, but we might consider the faster (standard) variant where we pull out the max. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{_numerics_8h_abd834126f73048ccc1de54db3daff98d}{mylgamma}} (double v)
 \item 
-constexpr double \hyperlink{_numerics_8h_a23cd69b9bcaba6ec06598bc08ed5b6c3}{NaN} = std\+::numeric\+\_\+limits$<$double$>$\+::quiet\+\_\+\+NaN()
+double \mbox{\hyperlink{_numerics_8h_a5fdae733d4a94abc71ba1177024a375d}{mygamma}} (double v)
 \item 
-constexpr double \hyperlink{_numerics_8h_ad172e8d1a294401209781f9aeaa77410}{pi} = M\+\_\+\+PI
+double \mbox{\hyperlink{_numerics_8h_a4bd5e68efa9ae0bd7383f132b766bb57}{lfactorial}} (double x)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr double \mbox{\hyperlink{_numerics_8h_a86b66aa18326dc4ebe8e36d253c14f40}{L\+O\+G2}} = log(2.\+0)
+\item 
+constexpr double \mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}} = std\+::numeric\+\_\+limits$<$double$>$\+::infinity()
+\item 
+constexpr double \mbox{\hyperlink{_numerics_8h_a23cd69b9bcaba6ec06598bc08ed5b6c3}{NaN}} = std\+::numeric\+\_\+limits$<$double$>$\+::quiet\+\_\+\+NaN()
+\item 
+constexpr double \mbox{\hyperlink{_numerics_8h_ad172e8d1a294401209781f9aeaa77410}{pi}} = M\+\_\+\+PI
 \end{DoxyCompactItemize}
 
 
-\subsection{Function Documentation}
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_numerics_8h_ac15da069257627fefd71d875d538b73d}\label{_numerics_8h_ac15da069257627fefd71d875d538b73d}} 
+\index{Numerics.h@{Numerics.h}!\_REENTRANT@{\_REENTRANT}}
+\index{\_REENTRANT@{\_REENTRANT}!Numerics.h@{Numerics.h}}
+\doxysubsubsection{\texorpdfstring{\_REENTRANT}{\_REENTRANT}}
+{\footnotesize\ttfamily \#define \+\_\+\+R\+E\+E\+N\+T\+R\+A\+NT~1}
+
+
+
+\doxysubsection{Function Documentation}
 \mbox{\Hypertarget{_numerics_8h_a8b71b974f44117f5ce7f5d0a23feebde}\label{_numerics_8h_a8b71b974f44117f5ce7f5d0a23feebde}} 
-\index{Numerics.\+h@{Numerics.\+h}!get\+\_\+log1pexp\+\_\+breakout\+\_\+bound@{get\+\_\+log1pexp\+\_\+breakout\+\_\+bound}}
-\index{get\+\_\+log1pexp\+\_\+breakout\+\_\+bound@{get\+\_\+log1pexp\+\_\+breakout\+\_\+bound}!Numerics.\+h@{Numerics.\+h}}
-\subsubsection{\texorpdfstring{get\+\_\+log1pexp\+\_\+breakout\+\_\+bound()}{get\_log1pexp\_breakout\_bound()}}
+\index{Numerics.h@{Numerics.h}!get\_log1pexp\_breakout\_bound@{get\_log1pexp\_breakout\_bound}}
+\index{get\_log1pexp\_breakout\_bound@{get\_log1pexp\_breakout\_bound}!Numerics.h@{Numerics.h}}
+\doxysubsubsection{\texorpdfstring{get\_log1pexp\_breakout\_bound()}{get\_log1pexp\_breakout\_bound()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 T get\+\_\+log1pexp\+\_\+breakout\+\_\+bound (\begin{DoxyParamCaption}\item[{const double}]{precision,  }\item[{T }]{fT,  }\item[{const T}]{lower = {\ttfamily -\/1e6},  }\item[{const T}]{upper = {\ttfamily 1e6} }\end{DoxyParamCaption})}
 
 
 
-Tis takes a function f(x) and finds a bound B so that f(x) $<$ precision for all x $<$ B. This is useful in logsumexp where at compile time we don\textquotesingle{}t bother adding if the addition will be too tiny. For instance\+: constexpr auto f = +\mbox{[}\mbox{]}(T x) -\/$>$ const double \{return log1p(exp(x));\}; const T bound = get\+\_\+fx\+\_\+compiletime\+\_\+bound$<$\+T$>$(1e-\/6, f);. 
+Tis takes a function f(x) and finds a bound B so that f(x) $<$ precision for all x $<$ B. This is useful in logsumexp where at compile time we don\textquotesingle{}t bother adding if the addition will be too tiny. For instance\+: constexpr auto f = +\mbox{[}\mbox{]}(T x) -\/$>$ const double \{return log1p(exp(x));\}; ~\newline
+ const T bound = get\+\_\+fx\+\_\+compiletime\+\_\+bound$<$\+T$>$(1e-\/6, f);. 
 
 
 \begin{DoxyItemize}
-\item natural log on \mbox{[}0x1.\+f7a5ecp-\/127, 0x1.\+fffffep127\mbox{]}. Maximum relative error 9.\+4529e-\/5 $\ast$/ / From \href{https://stackoverflow.com/questions/39821367/very-fast-approximate-logarithm-natural-log-function-in-c}{\tt https\+://stackoverflow.\+com/questions/39821367/very-\/fast-\/approximate-\/logarithm-\/natural-\/log-\/function-\/in-\/c} 
+\item natural log on \mbox{[}0x1.\+f7a5ecp-\/127, 0x1.\+fffffep127\mbox{]}. Maximum relative error 9.\+4529e-\/5 $\ast$/ / From \href{https://stackoverflow.com/questions/39821367/very-fast-approximate-logarithm-natural-log-function-in-c}{\texttt{ https\+://stackoverflow.\+com/questions/39821367/very-\/fast-\/approximate-\/logarithm-\/natural-\/log-\/function-\/in-\/c}} 
 \begin{DoxyParams}{Parameters}
 {\em precision} & \\
 \hline
@@ -67,17 +90,23 @@ Tis takes a function f(x) and finds a bound B so that f(x) $<$ precision for all
 \hline
 \end{DoxyParams}
 
-\end{DoxyItemize}\mbox{\Hypertarget{_numerics_8h_a558a1133b9942f8debd559bb9317bca3}\label{_numerics_8h_a558a1133b9942f8debd559bb9317bca3}} 
-\index{Numerics.\+h@{Numerics.\+h}!logplusexp@{logplusexp}}
-\index{logplusexp@{logplusexp}!Numerics.\+h@{Numerics.\+h}}
-\subsubsection{\texorpdfstring{logplusexp()}{logplusexp()}}
+\end{DoxyItemize}\mbox{\Hypertarget{_numerics_8h_a4bd5e68efa9ae0bd7383f132b766bb57}\label{_numerics_8h_a4bd5e68efa9ae0bd7383f132b766bb57}} 
+\index{Numerics.h@{Numerics.h}!lfactorial@{lfactorial}}
+\index{lfactorial@{lfactorial}!Numerics.h@{Numerics.h}}
+\doxysubsubsection{\texorpdfstring{lfactorial()}{lfactorial()}}
+{\footnotesize\ttfamily double lfactorial (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_numerics_8h_a558a1133b9942f8debd559bb9317bca3}\label{_numerics_8h_a558a1133b9942f8debd559bb9317bca3}} 
+\index{Numerics.h@{Numerics.h}!logplusexp@{logplusexp}}
+\index{logplusexp@{logplusexp}!Numerics.h@{Numerics.h}}
+\doxysubsubsection{\texorpdfstring{logplusexp()}{logplusexp()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 T logplusexp (\begin{DoxyParamCaption}\item[{const T}]{a,  }\item[{const T}]{b }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_numerics_8h_abb96a05282957c6c5c3d226b357ed134}\label{_numerics_8h_abb96a05282957c6c5c3d226b357ed134}} 
-\index{Numerics.\+h@{Numerics.\+h}!logsumexp@{logsumexp}}
-\index{logsumexp@{logsumexp}!Numerics.\+h@{Numerics.\+h}}
-\subsubsection{\texorpdfstring{logsumexp()}{logsumexp()}}
+\index{Numerics.h@{Numerics.h}!logsumexp@{logsumexp}}
+\index{logsumexp@{logsumexp}!Numerics.h@{Numerics.h}}
+\doxysubsubsection{\texorpdfstring{logsumexp()}{logsumexp()}}
 {\footnotesize\ttfamily template$<$typename t $>$ \\
 double logsumexp (\begin{DoxyParamCaption}\item[{const t \&}]{v }\end{DoxyParamCaption})}
 
@@ -93,30 +122,42 @@ Compute log(sum(exp(v)). For now, this just unrolls logplusexp, but we might con
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\mbox{\Hypertarget{_numerics_8h_a5fdae733d4a94abc71ba1177024a375d}\label{_numerics_8h_a5fdae733d4a94abc71ba1177024a375d}} 
+\index{Numerics.h@{Numerics.h}!mygamma@{mygamma}}
+\index{mygamma@{mygamma}!Numerics.h@{Numerics.h}}
+\doxysubsubsection{\texorpdfstring{mygamma()}{mygamma()}}
+{\footnotesize\ttfamily double mygamma (\begin{DoxyParamCaption}\item[{double}]{v }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_numerics_8h_abd834126f73048ccc1de54db3daff98d}\label{_numerics_8h_abd834126f73048ccc1de54db3daff98d}} 
+\index{Numerics.h@{Numerics.h}!mylgamma@{mylgamma}}
+\index{mylgamma@{mylgamma}!Numerics.h@{Numerics.h}}
+\doxysubsubsection{\texorpdfstring{mylgamma()}{mylgamma()}}
+{\footnotesize\ttfamily double mylgamma (\begin{DoxyParamCaption}\item[{double}]{v }\end{DoxyParamCaption})}
 
 
-\subsection{Variable Documentation}
+
+\doxysubsection{Variable Documentation}
 \mbox{\Hypertarget{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}\label{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}} 
-\index{Numerics.\+h@{Numerics.\+h}!infinity@{infinity}}
-\index{infinity@{infinity}!Numerics.\+h@{Numerics.\+h}}
-\subsubsection{\texorpdfstring{infinity}{infinity}}
-{\footnotesize\ttfamily constexpr double infinity = std\+::numeric\+\_\+limits$<$double$>$\+::infinity()}
+\index{Numerics.h@{Numerics.h}!infinity@{infinity}}
+\index{infinity@{infinity}!Numerics.h@{Numerics.h}}
+\doxysubsubsection{\texorpdfstring{infinity}{infinity}}
+{\footnotesize\ttfamily constexpr double infinity = std\+::numeric\+\_\+limits$<$double$>$\+::infinity()\hspace{0.3cm}{\ttfamily [constexpr]}}
 
 \mbox{\Hypertarget{_numerics_8h_a86b66aa18326dc4ebe8e36d253c14f40}\label{_numerics_8h_a86b66aa18326dc4ebe8e36d253c14f40}} 
-\index{Numerics.\+h@{Numerics.\+h}!L\+O\+G2@{L\+O\+G2}}
-\index{L\+O\+G2@{L\+O\+G2}!Numerics.\+h@{Numerics.\+h}}
-\subsubsection{\texorpdfstring{L\+O\+G2}{LOG2}}
-{\footnotesize\ttfamily constexpr double L\+O\+G2 = log(2.\+0)}
+\index{Numerics.h@{Numerics.h}!LOG2@{LOG2}}
+\index{LOG2@{LOG2}!Numerics.h@{Numerics.h}}
+\doxysubsubsection{\texorpdfstring{LOG2}{LOG2}}
+{\footnotesize\ttfamily constexpr double L\+O\+G2 = log(2.\+0)\hspace{0.3cm}{\ttfamily [constexpr]}}
 
 \mbox{\Hypertarget{_numerics_8h_a23cd69b9bcaba6ec06598bc08ed5b6c3}\label{_numerics_8h_a23cd69b9bcaba6ec06598bc08ed5b6c3}} 
-\index{Numerics.\+h@{Numerics.\+h}!NaN@{NaN}}
-\index{NaN@{NaN}!Numerics.\+h@{Numerics.\+h}}
-\subsubsection{\texorpdfstring{NaN}{NaN}}
-{\footnotesize\ttfamily constexpr double NaN = std\+::numeric\+\_\+limits$<$double$>$\+::quiet\+\_\+\+NaN()}
+\index{Numerics.h@{Numerics.h}!NaN@{NaN}}
+\index{NaN@{NaN}!Numerics.h@{Numerics.h}}
+\doxysubsubsection{\texorpdfstring{NaN}{NaN}}
+{\footnotesize\ttfamily constexpr double NaN = std\+::numeric\+\_\+limits$<$double$>$\+::quiet\+\_\+\+NaN()\hspace{0.3cm}{\ttfamily [constexpr]}}
 
 \mbox{\Hypertarget{_numerics_8h_ad172e8d1a294401209781f9aeaa77410}\label{_numerics_8h_ad172e8d1a294401209781f9aeaa77410}} 
-\index{Numerics.\+h@{Numerics.\+h}!pi@{pi}}
-\index{pi@{pi}!Numerics.\+h@{Numerics.\+h}}
-\subsubsection{\texorpdfstring{pi}{pi}}
-{\footnotesize\ttfamily constexpr double pi = M\+\_\+\+PI}
+\index{Numerics.h@{Numerics.h}!pi@{pi}}
+\index{pi@{pi}!Numerics.h@{Numerics.h}}
+\doxysubsubsection{\texorpdfstring{pi}{pi}}
+{\footnotesize\ttfamily constexpr double pi = M\+\_\+\+PI\hspace{0.3cm}{\ttfamily [constexpr]}}
 

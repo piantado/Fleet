@@ -1,8 +1,9 @@
 <map id="src/Containers/DiscreteDistribution.h" name="src/Containers/DiscreteDistribution.h">
-<area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on..." alt="" coords="5,87,255,114"/>
+<area shape="rect" id="node1" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="198,5,435,32"/>
+<area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,87,255,114"/>
 <area shape="rect" id="node3" href="$_callable_8h.html" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="329,169,505,211"/>
 <area shape="rect" id="node4" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="243,259,463,285"/>
-<area shape="rect" id="node5" href="$_virtual_machine_pool_8h.html" title="A little class that any VirtualMachinePool AND VirtualMachines inherit to control their behavior..." alt="" coords="379,80,529,121"/>
+<area shape="rect" id="node5" href="$_virtual_machine_pool_8h.html" title="A little class that any VirtualMachinePool AND VirtualMachines inherit to control their behavior...." alt="" coords="379,80,529,121"/>
 <area shape="rect" id="node6" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="529,177,696,203"/>
-<area shape="rect" id="node7" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="548,259,677,285"/>
+<area shape="rect" id="node7" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="548,259,677,285"/>
 </map>

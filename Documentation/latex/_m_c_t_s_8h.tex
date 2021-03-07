@@ -1,5 +1,5 @@
-\hypertarget{_m_c_t_s_8h}{}\section{src/\+Inference/\+M\+C\+TS.h File Reference}
-\label{_m_c_t_s_8h}\index{src/\+Inference/\+M\+C\+T\+S.\+h@{src/\+Inference/\+M\+C\+T\+S.\+h}}
+\hypertarget{_m_c_t_s_8h}{}\doxysection{src/\+Inference/\+M\+C\+TS.h File Reference}
+\label{_m_c_t_s_8h}\index{src/Inference/MCTS.h@{src/Inference/MCTS.h}}
 
 
 This is a version of M\+C\+TS that plays out children nplayouts times instead of expanding a full tree.  
@@ -28,35 +28,35 @@ Include dependency graph for M\+C\+T\+S.\+h\+:
 \includegraphics[width=350pt]{_m_c_t_s_8h__incl}
 \end{center}
 \end{figure}
-\subsection*{Classes}
+\doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{class_m_c_t_s_base}{M\+C\+T\+S\+Base$<$ this\+\_\+t, H\+Y\+P, callback\+\_\+t $>$}
+class \mbox{\hyperlink{class_m_c_t_s_base}{M\+C\+T\+S\+Base$<$ this\+\_\+t, H\+Y\+P, callback\+\_\+t $>$}}
 \item 
-class \hyperlink{class_partial_m_c_t_s_node}{Partial\+M\+C\+T\+S\+Node$<$ this\+\_\+t, H\+Y\+P, callback\+\_\+t $>$}
+class \mbox{\hyperlink{class_partial_m_c_t_s_node}{Partial\+M\+C\+T\+S\+Node$<$ this\+\_\+t, H\+Y\+P, callback\+\_\+t $>$}}
 \item 
-class \hyperlink{class_full_m_c_t_s_node}{Full\+M\+C\+T\+S\+Node$<$ this\+\_\+t, H\+Y\+P, callback\+\_\+t $>$}
+class \mbox{\hyperlink{class_full_m_c_t_s_node}{Full\+M\+C\+T\+S\+Node$<$ this\+\_\+t, H\+Y\+P, callback\+\_\+t $>$}}
 \item 
-class \hyperlink{class_minimal_m_c_t_s_node}{Minimal\+M\+C\+T\+S\+Node$<$ this\+\_\+t, H\+Y\+P, callback\+\_\+t $>$}
+class \mbox{\hyperlink{class_minimal_m_c_t_s_node}{Minimal\+M\+C\+T\+S\+Node$<$ this\+\_\+t, H\+Y\+P, callback\+\_\+t $>$}}
 \end{DoxyCompactItemize}
-\subsection*{Macros}
+\doxysubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
-\#define \hyperlink{_m_c_t_s_8h_a857233142bc725dbd1873d8e31add283}{D\+E\+B\+U\+G\+\_\+\+M\+C\+TS}~0
+\#define \mbox{\hyperlink{_m_c_t_s_8h_a857233142bc725dbd1873d8e31add283}{D\+E\+B\+U\+G\+\_\+\+M\+C\+TS}}~0
 \end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
+\doxysubsection{Detailed Description}
 This is a version of M\+C\+TS that plays out children nplayouts times instead of expanding a full tree. 
 
 When this gets to a leaf, it expands the highest probability things from the prior. But it uses the same sampling scheme to reach a leaf.
 
 This is a M\+C\+TS node that descends all the way until it builds a tree to a terminal -- usually it uses too much memory.
 
-\subsection{Macro Definition Documentation}
+\doxysubsection{Macro Definition Documentation}
 \mbox{\Hypertarget{_m_c_t_s_8h_a857233142bc725dbd1873d8e31add283}\label{_m_c_t_s_8h_a857233142bc725dbd1873d8e31add283}} 
-\index{M\+C\+T\+S.\+h@{M\+C\+T\+S.\+h}!D\+E\+B\+U\+G\+\_\+\+M\+C\+TS@{D\+E\+B\+U\+G\+\_\+\+M\+C\+TS}}
-\index{D\+E\+B\+U\+G\+\_\+\+M\+C\+TS@{D\+E\+B\+U\+G\+\_\+\+M\+C\+TS}!M\+C\+T\+S.\+h@{M\+C\+T\+S.\+h}}
-\subsubsection{\texorpdfstring{D\+E\+B\+U\+G\+\_\+\+M\+C\+TS}{DEBUG\_MCTS}}
+\index{MCTS.h@{MCTS.h}!DEBUG\_MCTS@{DEBUG\_MCTS}}
+\index{DEBUG\_MCTS@{DEBUG\_MCTS}!MCTS.h@{MCTS.h}}
+\doxysubsubsection{\texorpdfstring{DEBUG\_MCTS}{DEBUG\_MCTS}}
 {\footnotesize\ttfamily \#define D\+E\+B\+U\+G\+\_\+\+M\+C\+TS~0}
 

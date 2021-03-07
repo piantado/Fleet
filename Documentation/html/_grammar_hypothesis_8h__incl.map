@@ -1,22 +1,52 @@
 <map id="src/Hypotheses/GrammarHypothesis.h" name="src/Hypotheses/GrammarHypothesis.h">
-<area shape="rect" id="node6" href="$_eigen_lib_8h.html" title="EigenLib.h" alt="" coords="2078,155,2160,181"/>
-<area shape="rect" id="node7" href="$_numerics_8h.html" title="Numerics.h" alt="" coords="294,468,384,495"/>
-<area shape="rect" id="node21" href="$_errors_8h.html" title="Errors.h" alt="" coords="2209,393,2277,420"/>
-<area shape="rect" id="node24" href="$_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="398,155,546,181"/>
-<area shape="rect" id="node30" href="$_vector2_d_8h.html" title="Vector2D.h" alt="" coords="636,80,724,107"/>
-<area shape="rect" id="node31" href="$_human_datum_8h.html" title="HumanDatum.h" alt="" coords="674,155,788,181"/>
-<area shape="rect" id="node32" href="$_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="1770,237,1844,263"/>
-<area shape="rect" id="node35" href="$_top_8h.html" title="Check if a type has a posterior function or not. " alt="" coords="1245,155,1300,181"/>
-<area shape="rect" id="node43" href="$_m_c_m_c_chain_8h.html" title="MCMCChain.h" alt="" coords="1752,155,1862,181"/>
-<area shape="rect" id="node46" href="$_vector_normal_hypothesis_8h.html" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior..." alt="" coords="1972,80,2151,107"/>
-<area shape="rect" id="node48" href="$_t_normal_variable_8h.html" title="TNormalVariable.h" alt="" coords="2175,80,2306,107"/>
-<area shape="rect" id="node49" href="$_batch_8h.html" title="Batch.h" alt="" coords="1083,80,1150,107"/>
-<area shape="rect" id="node15" href="$_i_o_8h.html" title="IO.h" alt="" coords="825,319,872,345"/>
-<area shape="rect" id="node19" href="$_strings_8h.html" title="Strings.h" alt="" coords="490,393,564,420"/>
-<area shape="rect" id="node29" href="$_miscellaneous_8h.html" title="Miscellaneous.h" alt="" coords="561,237,677,263"/>
-<area shape="rect" id="node33" href="$_fleet_args_8h.html" title="FleetArgs.h" alt="" coords="1725,319,1814,345"/>
-<area shape="rect" id="node34" href="$_timing_8h.html" title="Timing.h" alt="" coords="2207,319,2279,345"/>
-<area shape="rect" id="node45" href="$_finite_history_8h.html" title="A FiniteHistory stores the previous N examples of something of type T. This is used e..." alt="" coords="1914,319,2020,345"/>
-<area shape="rect" id="node47" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="2185,155,2346,181"/>
-<area shape="rect" id="node50" href="$_vectors_8h.html" title="Vectors.h" alt="" coords="813,155,892,181"/>
+<area shape="rect" id="node1" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="1202,5,1451,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="15,677,84,704"/>
+<area shape="rect" id="node3" title=" " alt="" coords="1867,80,1922,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="1608,379,1675,405"/>
+<area shape="rect" id="node5" title=" " alt="" coords="1946,80,2057,107"/>
+<area shape="rect" id="node6" title=" " alt="" coords="1021,155,1104,181"/>
+<area shape="rect" id="node7" href="$_errors_8h.html" title=" " alt="" coords="1358,603,1426,629"/>
+<area shape="rect" id="node11" href="$_numerics_8h.html" title=" " alt="" coords="101,603,190,629"/>
+<area shape="rect" id="node15" href="$_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="549,229,697,256"/>
+<area shape="rect" id="node35" href="$_vector2_d_8h.html" title=" " alt="" coords="1839,155,1927,181"/>
+<area shape="rect" id="node36" href="$_human_datum_8h.html" title=" " alt="" coords="1525,229,1640,256"/>
+<area shape="rect" id="node37" href="$_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="1332,304,1407,331"/>
+<area shape="rect" id="node40" href="$_top_8h.html" title="Check if a type has a posterior function or not." alt="" coords="1187,229,1242,256"/>
+<area shape="rect" id="node42" href="$_m_c_m_c_chain_8h.html" title=" " alt="" coords="1368,229,1477,256"/>
+<area shape="rect" id="node44" href="$_vector_normal_hypothesis_8h.html" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior...." alt="" coords="973,80,1152,107"/>
+<area shape="rect" id="node48" href="$_t_normal_variable_8h.html" title=" " alt="" coords="819,80,949,107"/>
+<area shape="rect" id="node49" href="$_batch_8h.html" title=" " alt="" coords="1387,155,1453,181"/>
+<area shape="rect" id="node8" title=" " alt="" coords="1455,677,1534,704"/>
+<area shape="rect" id="node9" title=" " alt="" coords="1353,677,1431,704"/>
+<area shape="rect" id="node10" title=" " alt="" coords="1274,677,1329,704"/>
+<area shape="rect" id="node12" title=" " alt="" coords="195,677,261,704"/>
+<area shape="rect" id="node13" title=" " alt="" coords="285,677,357,704"/>
+<area shape="rect" id="node14" title=" " alt="" coords="109,677,171,704"/>
+<area shape="rect" id="node16" title=" " alt="" coords="1106,528,1153,555"/>
+<area shape="rect" id="node17" title=" " alt="" coords="1785,603,1844,629"/>
+<area shape="rect" id="node18" title=" " alt="" coords="489,304,564,331"/>
+<area shape="rect" id="node19" title=" " alt="" coords="588,304,657,331"/>
+<area shape="rect" id="node20" href="$_miscellaneous_8h.html" title=" " alt="" coords="834,304,950,331"/>
+<area shape="rect" id="node22" href="$_i_o_8h.html" title=" " alt="" coords="769,379,815,405"/>
+<area shape="rect" id="node27" href="$_strings_8h.html" title=" " alt="" coords="415,453,489,480"/>
+<area shape="rect" id="node21" title=" " alt="" coords="1212,453,1273,480"/>
+<area shape="rect" id="node23" title=" " alt="" coords="895,453,953,480"/>
+<area shape="rect" id="node24" title=" " alt="" coords="1079,453,1137,480"/>
+<area shape="rect" id="node25" title=" " alt="" coords="615,453,681,480"/>
+<area shape="rect" id="node26" title=" " alt="" coords="705,453,871,480"/>
+<area shape="rect" id="node28" title=" " alt="" coords="543,528,612,555"/>
+<area shape="rect" id="node29" title=" " alt="" coords="297,528,354,555"/>
+<area shape="rect" id="node30" title=" " alt="" coords="378,528,443,555"/>
+<area shape="rect" id="node31" title=" " alt="" coords="468,528,519,555"/>
+<area shape="rect" id="node32" href="$_random_8h.html" title=" " alt="" coords="636,528,719,555"/>
+<area shape="rect" id="node34" href="$_vector3_d_8h.html" title=" " alt="" coords="947,528,1035,555"/>
+<area shape="rect" id="node33" title=" " alt="" coords="1041,603,1119,629"/>
+<area shape="rect" id="node38" href="$_fleet_args_8h.html" title=" " alt="" coords="1167,379,1257,405"/>
+<area shape="rect" id="node39" href="$_timing_8h.html" title=" " alt="" coords="1411,379,1483,405"/>
+<area shape="rect" id="node41" title=" " alt="" coords="1268,304,1308,331"/>
+<area shape="rect" id="node43" href="$_finite_history_8h.html" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="1281,379,1386,405"/>
+<area shape="rect" id="node45" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="823,155,985,181"/>
+<area shape="rect" id="node46" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e...." alt="" coords="857,229,951,256"/>
+<area shape="rect" id="node47" title=" " alt="" coords="1025,304,1092,331"/>
+<area shape="rect" id="node50" href="$_vectors_8h.html" title=" " alt="" coords="1801,379,1879,405"/>
 </map>

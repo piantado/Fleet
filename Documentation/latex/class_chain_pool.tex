@@ -1,5 +1,5 @@
-\hypertarget{class_chain_pool}{}\section{Chain\+Pool$<$ H\+YP, callback\+\_\+t $>$ Class Template Reference}
-\label{class_chain_pool}\index{Chain\+Pool$<$ H\+Y\+P, callback\+\_\+t $>$@{Chain\+Pool$<$ H\+Y\+P, callback\+\_\+t $>$}}
+\hypertarget{class_chain_pool}{}\doxysection{Chain\+Pool$<$ H\+YP, callback\+\_\+t $>$ Class Template Reference}
+\label{class_chain_pool}\index{ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}}
 
 
 {\ttfamily \#include $<$Chain\+Pool.\+h$>$}
@@ -21,35 +21,39 @@ Collaboration diagram for Chain\+Pool$<$ H\+YP, callback\+\_\+t $>$\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=231pt]{class_chain_pool__coll__graph}
+\includegraphics[width=229pt]{class_chain_pool__coll__graph}
 \end{center}
 \end{figure}
-\subsection*{Public Member Functions}
+\doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_chain_pool_ae8795a9a7c0fff45c82334fa821c8c3c}{Chain\+Pool} ()
+\mbox{\hyperlink{class_chain_pool_ae8795a9a7c0fff45c82334fa821c8c3c}{Chain\+Pool}} ()
 \item 
-\hyperlink{class_chain_pool_a7794efde5588ecbf3603170d6226cd6f}{Chain\+Pool} (H\+YP \&h0, typename H\+Y\+P\+::data\+\_\+t $\ast$d, callback\+\_\+t \&cb, size\+\_\+t n, bool allcallback=true)
+\mbox{\hyperlink{class_chain_pool_a7794efde5588ecbf3603170d6226cd6f}{Chain\+Pool}} (H\+YP \&h0, typename H\+Y\+P\+::data\+\_\+t $\ast$d, callback\+\_\+t \&cb, size\+\_\+t n, bool allcallback=true)
 \item 
-void \hyperlink{class_chain_pool_af64237977e8608113092e5c1ea1ff965}{set\+\_\+data} (typename H\+Y\+P\+::data\+\_\+t $\ast$d, bool recompute=true)
+void \mbox{\hyperlink{class_chain_pool_af64237977e8608113092e5c1ea1ff965}{set\+\_\+data}} (typename H\+Y\+P\+::data\+\_\+t $\ast$d, bool recompute=true)
 \begin{DoxyCompactList}\small\item\em Set this data. \end{DoxyCompactList}\item 
-void \hyperlink{class_chain_pool_a0943aa34e6c0931611d552e686fbcb4b}{run\+\_\+thread} (\hyperlink{struct_control}{Control} ctl) override
+void \mbox{\hyperlink{class_chain_pool_a0943aa34e6c0931611d552e686fbcb4b}{run\+\_\+thread}} (\mbox{\hyperlink{struct_control}{Control}} ctl) override
 \begin{DoxyCompactList}\small\item\em This run helper is called internally by multiple different threads, and runs a given pool. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Public Attributes}
+\doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-std\+::vector$<$ \hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$ H\+YP, callback\+\_\+t $>$ $>$ \hyperlink{class_chain_pool_af89400f6e9a2312fe2ee7873745a6e91}{pool}
+std\+::vector$<$ \mbox{\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}}$<$ H\+YP, callback\+\_\+t $>$ $>$ \mbox{\hyperlink{class_chain_pool_af89400f6e9a2312fe2ee7873745a6e91}{pool}}
+\item 
+std\+::vector$<$ bool $>$ \mbox{\hyperlink{class_chain_pool_a34f7f948b8b5ab2846fef6d204363d42}{running}}
+\item 
+std\+::mutex \mbox{\hyperlink{class_chain_pool_adb5fee524dc9bc035beeddbff32303fc}{running\+\_\+lock}}
 \end{DoxyCompactItemize}
-\subsection*{Static Public Attributes}
+\doxysubsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-static const unsigned long \hyperlink{class_chain_pool_a143f3e4f9b60c03c67ffbc2db3e57d53}{steps\+\_\+before\+\_\+change} = 0
+static const unsigned long \mbox{\hyperlink{class_chain_pool_a143f3e4f9b60c03c67ffbc2db3e57d53}{steps\+\_\+before\+\_\+change}} = 0
 \item 
-static const time\+\_\+ms \hyperlink{class_chain_pool_a1ff48aa1e09a9a31871dec05d3c0e9d3}{time\+\_\+before\+\_\+change} = 200
+static const time\+\_\+ms \mbox{\hyperlink{class_chain_pool_a1ff48aa1e09a9a31871dec05d3c0e9d3}{time\+\_\+before\+\_\+change}} = 200
 \end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
+\doxysubsection{Detailed Description}
 \subsubsection*{template$<$typename H\+YP, typename callback\+\_\+t$>$\newline
 class Chain\+Pool$<$ H\+Y\+P, callback\+\_\+t $>$}
 
@@ -61,30 +65,30 @@ steven piantadosi
 \end{DoxyDate}
 
 
-\subsection{Constructor \& Destructor Documentation}
+\doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{class_chain_pool_ae8795a9a7c0fff45c82334fa821c8c3c}\label{class_chain_pool_ae8795a9a7c0fff45c82334fa821c8c3c}} 
-\index{Chain\+Pool@{Chain\+Pool}!Chain\+Pool@{Chain\+Pool}}
-\index{Chain\+Pool@{Chain\+Pool}!Chain\+Pool@{Chain\+Pool}}
-\subsubsection{\texorpdfstring{Chain\+Pool()}{ChainPool()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+\index{ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}!ChainPool@{ChainPool}}
+\index{ChainPool@{ChainPool}!ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}}
+\doxysubsubsection{\texorpdfstring{ChainPool()}{ChainPool()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-\hyperlink{class_chain_pool}{Chain\+Pool}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_chain_pool}{Chain\+Pool} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP, callback\+\_\+t $>$\+::\mbox{\hyperlink{class_chain_pool}{Chain\+Pool}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_chain_pool_a7794efde5588ecbf3603170d6226cd6f}\label{class_chain_pool_a7794efde5588ecbf3603170d6226cd6f}} 
-\index{Chain\+Pool@{Chain\+Pool}!Chain\+Pool@{Chain\+Pool}}
-\index{Chain\+Pool@{Chain\+Pool}!Chain\+Pool@{Chain\+Pool}}
-\subsubsection{\texorpdfstring{Chain\+Pool()}{ChainPool()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+\index{ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}!ChainPool@{ChainPool}}
+\index{ChainPool@{ChainPool}!ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}}
+\doxysubsubsection{\texorpdfstring{ChainPool()}{ChainPool()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-\hyperlink{class_chain_pool}{Chain\+Pool}$<$ H\+YP, callback\+\_\+t $>$\+::\hyperlink{class_chain_pool}{Chain\+Pool} (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{callback\+\_\+t \&}]{cb,  }\item[{size\+\_\+t}]{n,  }\item[{bool}]{allcallback = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP, callback\+\_\+t $>$\+::\mbox{\hyperlink{class_chain_pool}{Chain\+Pool}} (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{callback\+\_\+t \&}]{cb,  }\item[{size\+\_\+t}]{n,  }\item[{bool}]{allcallback = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-\subsection{Member Function Documentation}
+\doxysubsection{Member Function Documentation}
 \mbox{\Hypertarget{class_chain_pool_a0943aa34e6c0931611d552e686fbcb4b}\label{class_chain_pool_a0943aa34e6c0931611d552e686fbcb4b}} 
-\index{Chain\+Pool@{Chain\+Pool}!run\+\_\+thread@{run\+\_\+thread}}
-\index{run\+\_\+thread@{run\+\_\+thread}!Chain\+Pool@{Chain\+Pool}}
-\subsubsection{\texorpdfstring{run\+\_\+thread()}{run\_thread()}}
+\index{ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}!run\_thread@{run\_thread}}
+\index{run\_thread@{run\_thread}!ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}}
+\doxysubsubsection{\texorpdfstring{run\_thread()}{run\_thread()}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-void \hyperlink{class_chain_pool}{Chain\+Pool}$<$ H\+YP, callback\+\_\+t $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\hyperlink{struct_control}{Control}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
+void \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP, callback\+\_\+t $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
 
 
 
@@ -96,11 +100,11 @@ This run helper is called internally by multiple different threads, and runs a g
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{class_chain_pool_af64237977e8608113092e5c1ea1ff965}\label{class_chain_pool_af64237977e8608113092e5c1ea1ff965}} 
-\index{Chain\+Pool@{Chain\+Pool}!set\+\_\+data@{set\+\_\+data}}
-\index{set\+\_\+data@{set\+\_\+data}!Chain\+Pool@{Chain\+Pool}}
-\subsubsection{\texorpdfstring{set\+\_\+data()}{set\_data()}}
+\index{ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}!set\_data@{set\_data}}
+\index{set\_data@{set\_data}!ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}}
+\doxysubsubsection{\texorpdfstring{set\_data()}{set\_data()}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-void \hyperlink{class_chain_pool}{Chain\+Pool}$<$ H\+YP, callback\+\_\+t $>$\+::set\+\_\+data (\begin{DoxyParamCaption}\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{bool}]{recompute = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+void \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP, callback\+\_\+t $>$\+::set\+\_\+data (\begin{DoxyParamCaption}\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{bool}]{recompute = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -115,30 +119,44 @@ Set this data.
 \end{DoxyParams}
 
 
-\subsection{Member Data Documentation}
+\doxysubsection{Member Data Documentation}
 \mbox{\Hypertarget{class_chain_pool_af89400f6e9a2312fe2ee7873745a6e91}\label{class_chain_pool_af89400f6e9a2312fe2ee7873745a6e91}} 
-\index{Chain\+Pool@{Chain\+Pool}!pool@{pool}}
-\index{pool@{pool}!Chain\+Pool@{Chain\+Pool}}
-\subsubsection{\texorpdfstring{pool}{pool}}
+\index{ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}!pool@{pool}}
+\index{pool@{pool}!ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}}
+\doxysubsubsection{\texorpdfstring{pool}{pool}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-std\+::vector$<$\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}$<$H\+YP,callback\+\_\+t$>$ $>$ \hyperlink{class_chain_pool}{Chain\+Pool}$<$ H\+YP, callback\+\_\+t $>$\+::pool}
+std\+::vector$<$\mbox{\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}}$<$H\+YP,callback\+\_\+t$>$ $>$ \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP, callback\+\_\+t $>$\+::pool}
+
+\mbox{\Hypertarget{class_chain_pool_a34f7f948b8b5ab2846fef6d204363d42}\label{class_chain_pool_a34f7f948b8b5ab2846fef6d204363d42}} 
+\index{ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}!running@{running}}
+\index{running@{running}!ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}}
+\doxysubsubsection{\texorpdfstring{running}{running}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
+std\+::vector$<$bool$>$ \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP, callback\+\_\+t $>$\+::running}
+
+\mbox{\Hypertarget{class_chain_pool_adb5fee524dc9bc035beeddbff32303fc}\label{class_chain_pool_adb5fee524dc9bc035beeddbff32303fc}} 
+\index{ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}!running\_lock@{running\_lock}}
+\index{running\_lock@{running\_lock}!ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}}
+\doxysubsubsection{\texorpdfstring{running\_lock}{running\_lock}}
+{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
+std\+::mutex \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP, callback\+\_\+t $>$\+::running\+\_\+lock}
 
 \mbox{\Hypertarget{class_chain_pool_a143f3e4f9b60c03c67ffbc2db3e57d53}\label{class_chain_pool_a143f3e4f9b60c03c67ffbc2db3e57d53}} 
-\index{Chain\+Pool@{Chain\+Pool}!steps\+\_\+before\+\_\+change@{steps\+\_\+before\+\_\+change}}
-\index{steps\+\_\+before\+\_\+change@{steps\+\_\+before\+\_\+change}!Chain\+Pool@{Chain\+Pool}}
-\subsubsection{\texorpdfstring{steps\+\_\+before\+\_\+change}{steps\_before\_change}}
+\index{ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}!steps\_before\_change@{steps\_before\_change}}
+\index{steps\_before\_change@{steps\_before\_change}!ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}}
+\doxysubsubsection{\texorpdfstring{steps\_before\_change}{steps\_before\_change}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-const unsigned long \hyperlink{class_chain_pool}{Chain\+Pool}$<$ H\+YP, callback\+\_\+t $>$\+::steps\+\_\+before\+\_\+change = 0\hspace{0.3cm}{\ttfamily [static]}}
+const unsigned long \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP, callback\+\_\+t $>$\+::steps\+\_\+before\+\_\+change = 0\hspace{0.3cm}{\ttfamily [static]}}
 
 \mbox{\Hypertarget{class_chain_pool_a1ff48aa1e09a9a31871dec05d3c0e9d3}\label{class_chain_pool_a1ff48aa1e09a9a31871dec05d3c0e9d3}} 
-\index{Chain\+Pool@{Chain\+Pool}!time\+\_\+before\+\_\+change@{time\+\_\+before\+\_\+change}}
-\index{time\+\_\+before\+\_\+change@{time\+\_\+before\+\_\+change}!Chain\+Pool@{Chain\+Pool}}
-\subsubsection{\texorpdfstring{time\+\_\+before\+\_\+change}{time\_before\_change}}
+\index{ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}!time\_before\_change@{time\_before\_change}}
+\index{time\_before\_change@{time\_before\_change}!ChainPool$<$ HYP, callback\_t $>$@{ChainPool$<$ HYP, callback\_t $>$}}
+\doxysubsubsection{\texorpdfstring{time\_before\_change}{time\_before\_change}}
 {\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-const time\+\_\+ms \hyperlink{class_chain_pool}{Chain\+Pool}$<$ H\+YP, callback\+\_\+t $>$\+::time\+\_\+before\+\_\+change = 200\hspace{0.3cm}{\ttfamily [static]}}
+const time\+\_\+ms \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP, callback\+\_\+t $>$\+::time\+\_\+before\+\_\+change = 200\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/\+Inference/\hyperlink{_chain_pool_8h}{Chain\+Pool.\+h}\end{DoxyCompactItemize}
+src/\+Inference/\mbox{\hyperlink{_chain_pool_8h}{Chain\+Pool.\+h}}\end{DoxyCompactItemize}

@@ -1,4 +1,5 @@
 <map id="src/Data/HumanDatum.h" name="src/Data/HumanDatum.h">
-<area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on..." alt="" coords="5,155,255,181"/>
-<area shape="rect" id="node3" href="$_batch_8h.html" title="src/Inference/Batch.h" alt="" coords="113,80,259,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="46,5,214,32"/>
+<area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,155,255,181"/>
+<area shape="rect" id="node3" href="$_batch_8h.html" title=" " alt="" coords="113,80,259,107"/>
 </map>

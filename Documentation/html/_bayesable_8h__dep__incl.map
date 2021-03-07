@@ -1,8 +1,9 @@
 <map id="src/Hypotheses/Interfaces/Bayesable.h" name="src/Hypotheses/Interfaces/Bayesable.h">
-<area shape="rect" id="node2" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="397,95,573,136"/>
-<area shape="rect" id="node6" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="480,191,655,218"/>
-<area shape="rect" id="node7" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="679,191,899,218"/>
-<area shape="rect" id="node3" href="$_vector_normal_hypothesis_8h.html" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior..." alt="" coords="5,184,204,225"/>
-<area shape="rect" id="node5" href="$_t_normal_variable_8h.html" title="src/Hypotheses/TNormalVariable.h" alt="" coords="229,191,455,218"/>
-<area shape="rect" id="node4" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on..." alt="" coords="99,273,348,300"/>
+<area shape="rect" id="node1" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e...." alt="" coords="519,5,695,47"/>
+<area shape="rect" id="node2" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="394,95,570,136"/>
+<area shape="rect" id="node6" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="477,191,652,218"/>
+<area shape="rect" id="node7" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="676,191,896,218"/>
+<area shape="rect" id="node3" href="$_vector_normal_hypothesis_8h.html" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior...." alt="" coords="5,184,204,225"/>
+<area shape="rect" id="node5" href="$_t_normal_variable_8h.html" title=" " alt="" coords="228,191,453,218"/>
+<area shape="rect" id="node4" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="97,273,347,300"/>
 </map>

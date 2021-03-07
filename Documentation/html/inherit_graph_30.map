@@ -1,3 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_m_c_m_c_chain.html" title="MCMCChain\&lt; HYP, callback_t \&gt;" alt="" coords="5,5,223,32"/>
+<area shape="rect" id="node1" href="$class_base_node.html" title=" " alt="" coords="21,49,160,75"/>
+<area shape="rect" id="node2" href="$class_m_c_t_s_base.html" title=" " alt="" coords="224,71,396,112"/>
+<area shape="rect" id="node3" href="$class_full_m_c_t_s_node.html" title=" " alt="" coords="455,5,602,47"/>
+<area shape="rect" id="node4" href="$class_minimal_m_c_t_s_node.html" title=" " alt="" coords="444,71,613,112"/>
+<area shape="rect" id="node5" href="$class_partial_m_c_t_s_node.html" title=" " alt="" coords="448,136,609,177"/>
+<area shape="rect" id="node6" href="$class_parallel_inference_interface.html" title=" " alt="" coords="5,100,176,141"/>
 </map>

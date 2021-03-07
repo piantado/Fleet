@@ -1,6 +1,7 @@
 <map id="BaseNode&lt; this_t &gt;" name="BaseNode&lt; this_t &gt;">
-<area shape="rect" id="node2" href="$class_m_c_t_s_base.html" title="MCTSBase\&lt; this_t \&gt;" alt="" coords="192,78,339,105"/>
-<area shape="rect" id="node3" href="$class_full_m_c_t_s_node.html" title="FullMCTSNode\&lt; this\l_t, HYP, callback_t \&gt;" alt="" coords="397,5,545,47"/>
-<area shape="rect" id="node4" href="$class_minimal_m_c_t_s_node.html" title="MinimalMCTSNode\&lt; this\l_t, HYP, callback_t \&gt;" alt="" coords="387,71,556,112"/>
-<area shape="rect" id="node5" href="$class_partial_m_c_t_s_node.html" title="PartialMCTSNode\&lt; this\l_t, HYP, callback_t \&gt;" alt="" coords="391,136,552,177"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,78,144,105"/>
+<area shape="rect" id="node2" href="$class_m_c_t_s_base.html" title=" " alt="" coords="192,78,339,105"/>
+<area shape="rect" id="node3" href="$class_full_m_c_t_s_node.html" title=" " alt="" coords="398,5,545,47"/>
+<area shape="rect" id="node4" href="$class_minimal_m_c_t_s_node.html" title=" " alt="" coords="387,71,556,112"/>
+<area shape="rect" id="node5" href="$class_partial_m_c_t_s_node.html" title=" " alt="" coords="391,136,552,177"/>
 </map>

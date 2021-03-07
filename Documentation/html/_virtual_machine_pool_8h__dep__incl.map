@@ -1,6 +1,7 @@
 <map id="src/VirtualMachine/VirtualMachinePool.h" name="src/VirtualMachine/VirtualMachinePool.h">
+<area shape="rect" id="node1" title="A little class that any VirtualMachinePool AND VirtualMachines inherit to control their behavior...." alt="" coords="111,5,261,47"/>
 <area shape="rect" id="node2" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="5,102,172,129"/>
 <area shape="rect" id="node4" href="$_callable_8h.html" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="197,95,373,136"/>
-<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="23,184,152,211"/>
+<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="23,184,152,211"/>
 <area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="176,184,396,211"/>
 </map>

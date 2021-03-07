@@ -1,3 +1,4 @@
 <map id="src/Statistics/StreamingStatistics.h" name="src/Statistics/StreamingStatistics.h">
-<area shape="rect" id="node2" href="$_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree..." alt="" coords="11,95,162,121"/>
+<area shape="rect" id="node1" title="A class to store a bunch of statistics about incoming data points, including min, max,..." alt="" coords="5,5,168,47"/>
+<area shape="rect" id="node2" href="$_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree." alt="" coords="11,95,162,121"/>
 </map>

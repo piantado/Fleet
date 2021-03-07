@@ -1,5 +1,5 @@
-\hypertarget{dir_69acd907a0659b8a578a2751af70f096}{}\section{src/\+Virtual\+Machine Directory Reference}
-\label{dir_69acd907a0659b8a578a2751af70f096}\index{src/\+Virtual\+Machine Directory Reference@{src/\+Virtual\+Machine Directory Reference}}
+\hypertarget{dir_69acd907a0659b8a578a2751af70f096}{}\doxysection{src/\+Virtual\+Machine Directory Reference}
+\label{dir_69acd907a0659b8a578a2751af70f096}\index{src/VirtualMachine Directory Reference@{src/VirtualMachine Directory Reference}}
 Directory dependency graph for Virtual\+Machine\+:
 \nopagebreak
 \begin{figure}[H]
@@ -8,23 +8,24 @@ Directory dependency graph for Virtual\+Machine\+:
 \includegraphics[width=283pt]{dir_69acd907a0659b8a578a2751af70f096_dep}
 \end{center}
 \end{figure}
-\subsection*{Directories}
+\doxysubsection*{Directories}
 \begin{DoxyCompactItemize}
 \item 
-directory \hyperlink{dir_ebbb08ef9bb22b706f77b56555854265}{Program}
+directory \mbox{\hyperlink{dir_ebbb08ef9bb22b706f77b56555854265}{Program}}
 \end{DoxyCompactItemize}
-\subsection*{Files}
+\doxysubsection*{Files}
 \begin{DoxyCompactItemize}
 \item 
-file \hyperlink{_runtime_counter_8h}{Runtime\+Counter.\+h}
+file \mbox{\hyperlink{_runtime_counter_8h}{Runtime\+Counter.\+h}}
 \begin{DoxyCompactList}\small\item\em This class manages counting operations at runtime and interfaces operations to a grammar N\+O\+TE\+: Currently we don\textquotesingle{}t track each arg separately, since that\textquotesingle{}s a pain. \end{DoxyCompactList}\item 
-file \hyperlink{_virtual_machine_control_8h}{Virtual\+Machine\+Control.\+h}
+file \mbox{\hyperlink{_virtual_machine_control_8h}{Virtual\+Machine\+Control.\+h}}
 \item 
-file \hyperlink{_virtual_machine_pool_8h}{Virtual\+Machine\+Pool.\+h}
-\begin{DoxyCompactList}\small\item\em A little class that any \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool} A\+ND Virtual\+Machines inherit to control their behavior. N\+O\+TE That this is not passed around like Fleet\+::\+Control--it is just meant to be a place to set static variables. \end{DoxyCompactList}\item 
-file \hyperlink{_virtual_machine_state_8h}{Virtual\+Machine\+State.\+h}
-\begin{DoxyCompactList}\small\item\em This represents the state of a partial evaluation of a program, corresponding to the value of all of the stacks of various types (which are stored as templates from V\+M\+\_\+\+T\+Y\+P\+ES). The idea here is that we want to be able to encapsulate everything about the evaluation of a tree so that we can stop it in the middle and resume later, as is required for stochastics. This must be templated because it depends on the types in the grammar. These will typically be stored in a \hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool} and not called directly, unless you know that there are no stochastics. \end{DoxyCompactList}\item 
-file \hyperlink{_v_m_s_runtime_error_8h}{V\+M\+S\+Runtime\+Error.\+h}
+file \mbox{\hyperlink{_virtual_machine_pool_8h}{Virtual\+Machine\+Pool.\+h}}
+\begin{DoxyCompactList}\small\item\em A little class that any \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}} A\+ND Virtual\+Machines inherit to control their behavior. N\+O\+TE That this is not passed around like Fleet\+::\+Control--it is just meant to be a place to set static variables And then it is inherited by \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{_virtual_machine_state_8h}{Virtual\+Machine\+State.\+h}}
+\begin{DoxyCompactList}\small\item\em This represents the state of a partial evaluation of a program, corresponding to the value of all of the stacks of various types (which are stored as templates from V\+M\+\_\+\+T\+Y\+P\+ES). ~\newline
+ The idea here is that we want to be able to encapsulate everything about the evaluation of a tree so that we can stop it in the middle and resume later, as is required for stochastics. This must be templated because it depends on the types in the grammar. These will typically be stored in a \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}} and not called directly, unless you know that there are no stochastics. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{_v_m_s_runtime_error_8h}{V\+M\+S\+Runtime\+Error.\+h}}
 \item 
-file \hyperlink{_v_m_status_8h}{V\+M\+Status.\+h}
+file \mbox{\hyperlink{_v_m_status_8h}{V\+M\+Status.\+h}}
 \end{DoxyCompactItemize}

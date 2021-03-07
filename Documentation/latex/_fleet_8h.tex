@@ -1,5 +1,5 @@
-\hypertarget{_fleet_8h}{}\section{src/\+Fleet.h File Reference}
-\label{_fleet_8h}\index{src/\+Fleet.\+h@{src/\+Fleet.\+h}}
+\hypertarget{_fleet_8h}{}\doxysection{src/\+Fleet.h File Reference}
+\label{_fleet_8h}\index{src/Fleet.h@{src/Fleet.h}}
 {\ttfamily \#include $<$sys/resource.\+h$>$}\newline
 {\ttfamily \#include $<$unistd.\+h$>$}\newline
 {\ttfamily \#include $<$stdlib.\+h$>$}\newline
@@ -22,20 +22,60 @@ This graph shows which files directly or indirectly include this file\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=205pt]{_fleet_8h__dep__incl}
+\includegraphics[width=204pt]{_fleet_8h__dep__incl}
 \end{center}
 \end{figure}
-\subsection*{Variables}
+\doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-const std\+::string \hyperlink{_fleet_8h_a6dc2dde25f2b066b658bb78010bf63cc}{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON} = \char`\"{}0.\+1.\+01\char`\"{}
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{_fleet_8h_acaf8797c860151aa004c15bf29a99b6e}{add\+\_\+option}} (std\+::string c, T \&var, std\+::string description)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{_fleet_8h_a3ef6c1f6422f18000fc727f6d56f6682}{add\+\_\+flag}} (std\+::string c, T \&var, std\+::string description)
+\item 
+int \mbox{\hyperlink{_fleet_8h_a18a80089fe72841079e7993f0e8291f0}{initialize}} (int argc, char $\ast$$\ast$argv)
+\item 
+void \mbox{\hyperlink{_fleet_8h_aa553deba12d12f3decd58995515e4c65}{completed}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const std\+::string \mbox{\hyperlink{_fleet_8h_a6dc2dde25f2b066b658bb78010bf63cc}{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON}} = \char`\"{}0.\+1.\+01\char`\"{}
 \end{DoxyCompactItemize}
 
 
-\subsection{Variable Documentation}
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_fleet_8h_a3ef6c1f6422f18000fc727f6d56f6682}\label{_fleet_8h_a3ef6c1f6422f18000fc727f6d56f6682}} 
+\index{Fleet.h@{Fleet.h}!add\_flag@{add\_flag}}
+\index{add\_flag@{add\_flag}!Fleet.h@{Fleet.h}}
+\doxysubsubsection{\texorpdfstring{add\_flag()}{add\_flag()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void add\+\_\+flag (\begin{DoxyParamCaption}\item[{std\+::string}]{c,  }\item[{T \&}]{var,  }\item[{std\+::string}]{description }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_fleet_8h_acaf8797c860151aa004c15bf29a99b6e}\label{_fleet_8h_acaf8797c860151aa004c15bf29a99b6e}} 
+\index{Fleet.h@{Fleet.h}!add\_option@{add\_option}}
+\index{add\_option@{add\_option}!Fleet.h@{Fleet.h}}
+\doxysubsubsection{\texorpdfstring{add\_option()}{add\_option()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void add\+\_\+option (\begin{DoxyParamCaption}\item[{std\+::string}]{c,  }\item[{T \&}]{var,  }\item[{std\+::string}]{description }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_fleet_8h_aa553deba12d12f3decd58995515e4c65}\label{_fleet_8h_aa553deba12d12f3decd58995515e4c65}} 
+\index{Fleet.h@{Fleet.h}!completed@{completed}}
+\index{completed@{completed}!Fleet.h@{Fleet.h}}
+\doxysubsubsection{\texorpdfstring{completed()}{completed()}}
+{\footnotesize\ttfamily void completed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_fleet_8h_a18a80089fe72841079e7993f0e8291f0}\label{_fleet_8h_a18a80089fe72841079e7993f0e8291f0}} 
+\index{Fleet.h@{Fleet.h}!initialize@{initialize}}
+\index{initialize@{initialize}!Fleet.h@{Fleet.h}}
+\doxysubsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily int initialize (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
 \mbox{\Hypertarget{_fleet_8h_a6dc2dde25f2b066b658bb78010bf63cc}\label{_fleet_8h_a6dc2dde25f2b066b658bb78010bf63cc}} 
-\index{Fleet.\+h@{Fleet.\+h}!F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON@{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON}}
-\index{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON@{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON}!Fleet.\+h@{Fleet.\+h}}
-\subsubsection{\texorpdfstring{F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON}{FLEET\_VERSION}}
+\index{Fleet.h@{Fleet.h}!FLEET\_VERSION@{FLEET\_VERSION}}
+\index{FLEET\_VERSION@{FLEET\_VERSION}!Fleet.h@{Fleet.h}}
+\doxysubsubsection{\texorpdfstring{FLEET\_VERSION}{FLEET\_VERSION}}
 {\footnotesize\ttfamily const std\+::string F\+L\+E\+E\+T\+\_\+\+V\+E\+R\+S\+I\+ON = \char`\"{}0.\+1.\+01\char`\"{}}
 

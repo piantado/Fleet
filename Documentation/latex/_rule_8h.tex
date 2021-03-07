@@ -1,8 +1,8 @@
-\hypertarget{_rule_8h}{}\section{src/\+Grammar/\+Rule.h File Reference}
-\label{_rule_8h}\index{src/\+Grammar/\+Rule.\+h@{src/\+Grammar/\+Rule.\+h}}
+\hypertarget{_rule_8h}{}\doxysection{src/\+Grammar/\+Rule.h File Reference}
+\label{_rule_8h}\index{src/Grammar/Rule.h@{src/Grammar/Rule.h}}
 
 
-A \hyperlink{class_rule}{Rule} stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we \char`\"{}emulate\char`\"{} a type system using t\+\_\+nonterminal to store an integer for the types. $\ast$.  
+A \mbox{\hyperlink{class_rule}{Rule}} stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we \char`\"{}emulate\char`\"{} a type system using t\+\_\+nonterminal to store an integer for the types. $\ast$.  
 
 
 {\ttfamily \#include $<$functional$>$}\newline
@@ -28,41 +28,41 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=350pt]{_rule_8h__dep__incl}
 \end{center}
 \end{figure}
-\subsection*{Classes}
+\doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{class_rule}{Rule}
+class \mbox{\hyperlink{class_rule}{Rule}}
 \end{DoxyCompactItemize}
-\subsection*{Functions}
+\doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-std\+::ostream \& \hyperlink{_rule_8h_a0872babe65702e1f4484c72844a60700}{operator$<$$<$} (std\+::ostream \&o, const \hyperlink{class_rule}{Rule} \&r)
+std\+::ostream \& \mbox{\hyperlink{_rule_8h_a0872babe65702e1f4484c72844a60700}{operator$<$$<$}} (std\+::ostream \&o, const \mbox{\hyperlink{class_rule}{Rule}} \&r)
 \end{DoxyCompactItemize}
-\subsection*{Variables}
+\doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-const \hyperlink{class_rule}{Rule} $\ast$ \hyperlink{_rule_8h_aa3fc95ef973d7c99a41e470aed7fe03b}{Null\+Rule} = new \hyperlink{class_rule}{Rule}((\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t})0, nullptr, \char`\"{}\textbackslash{}u25\+A0\char`\"{}, \{\}, 0.\+0)
+const \mbox{\hyperlink{class_rule}{Rule}} $\ast$ \mbox{\hyperlink{_rule_8h_aa3fc95ef973d7c99a41e470aed7fe03b}{Null\+Rule}} = new \mbox{\hyperlink{class_rule}{Rule}}((\mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}})0, nullptr, \char`\"{}\textbackslash{}u25\+A0\char`\"{}, \{\}, 0.\+0)
 \end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
-A \hyperlink{class_rule}{Rule} stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we \char`\"{}emulate\char`\"{} a type system using t\+\_\+nonterminal to store an integer for the types. $\ast$. 
+\doxysubsection{Detailed Description}
+A \mbox{\hyperlink{class_rule}{Rule}} stores one possible expansion in the grammar, specifying a nonterminal type, an instruction that gets executed, a forma string, a number of children, and an array of types of each child. Here we \char`\"{}emulate\char`\"{} a type system using t\+\_\+nonterminal to store an integer for the types. $\ast$. 
 
 
 
-\subsection{Function Documentation}
+\doxysubsection{Function Documentation}
 \mbox{\Hypertarget{_rule_8h_a0872babe65702e1f4484c72844a60700}\label{_rule_8h_a0872babe65702e1f4484c72844a60700}} 
-\index{Rule.\+h@{Rule.\+h}!operator$<$$<$@{operator$<$$<$}}
-\index{operator$<$$<$@{operator$<$$<$}!Rule.\+h@{Rule.\+h}}
-\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
-{\footnotesize\ttfamily std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{o,  }\item[{const \hyperlink{class_rule}{Rule} \&}]{r }\end{DoxyParamCaption})}
+\index{Rule.h@{Rule.h}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Rule.h@{Rule.h}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{o,  }\item[{const \mbox{\hyperlink{class_rule}{Rule}} \&}]{r }\end{DoxyParamCaption})}
 
 
 
-\subsection{Variable Documentation}
+\doxysubsection{Variable Documentation}
 \mbox{\Hypertarget{_rule_8h_aa3fc95ef973d7c99a41e470aed7fe03b}\label{_rule_8h_aa3fc95ef973d7c99a41e470aed7fe03b}} 
-\index{Rule.\+h@{Rule.\+h}!Null\+Rule@{Null\+Rule}}
-\index{Null\+Rule@{Null\+Rule}!Rule.\+h@{Rule.\+h}}
-\subsubsection{\texorpdfstring{Null\+Rule}{NullRule}}
-{\footnotesize\ttfamily const \hyperlink{class_rule}{Rule}$\ast$ Null\+Rule = new \hyperlink{class_rule}{Rule}((\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t})0, nullptr, \char`\"{}\textbackslash{}u25\+A0\char`\"{}, \{\}, 0.\+0)}
+\index{Rule.h@{Rule.h}!NullRule@{NullRule}}
+\index{NullRule@{NullRule}!Rule.h@{Rule.h}}
+\doxysubsubsection{\texorpdfstring{NullRule}{NullRule}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{class_rule}{Rule}}$\ast$ Null\+Rule = new \mbox{\hyperlink{class_rule}{Rule}}((\mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}})0, nullptr, \char`\"{}\textbackslash{}u25\+A0\char`\"{}, \{\}, 0.\+0)}
 

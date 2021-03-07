@@ -1,27 +1,19 @@
-\hypertarget{_top_8h}{}\section{src/\+Containers/\+Top.h File Reference}
-\label{_top_8h}\index{src/\+Containers/\+Top.\+h@{src/\+Containers/\+Top.\+h}}
+\hypertarget{_top_8h}{}\doxysection{src/\+Containers/\+Top.h File Reference}
+\label{_top_8h}\index{src/Containers/Top.h@{src/Containers/Top.h}}
 
 
 Check if a type has a posterior function or not.  
 
 
-{\ttfamily \#include \char`\"{}stdlib.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}stdio.\+h\char`\"{}}\newline
-{\ttfamily \#include $<$cmath$>$}\newline
-{\ttfamily \#include $<$type\+\_\+traits$>$}\newline
 {\ttfamily \#include $<$set$>$}\newline
-{\ttfamily \#include $<$queue$>$}\newline
-{\ttfamily \#include $<$list$>$}\newline
-{\ttfamily \#include $<$unordered\+\_\+set$>$}\newline
-{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
-{\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include $<$map$>$}\newline
 {\ttfamily \#include \char`\"{}Fleet\+Args.\+h\char`\"{}}\newline
 Include dependency graph for Top.\+h\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{_top_8h__incl}
+\includegraphics[width=249pt]{_top_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:
@@ -32,32 +24,32 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=350pt]{_top_8h__dep__incl}
 \end{center}
 \end{figure}
-\subsection*{Classes}
+\doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{struct_has_posterior}{Has\+Posterior$<$ T, typename $>$}
+class \mbox{\hyperlink{struct_has_posterior}{Has\+Posterior$<$ T, typename $>$}}
 \item 
-struct \hyperlink{struct_has_posterior_3_01_t_00_01decltype_07_07void_08_01_t_1_1posterior_00_010_08_4}{Has\+Posterior$<$ T, decltype((void) T\+::posterior, 0)$>$}
+struct \mbox{\hyperlink{struct_has_posterior_3_01_t_00_01decltype_07_07void_08_01_t_1_1posterior_00_010_08_4}{Has\+Posterior$<$ T, decltype((void) T\+::posterior, 0)$>$}}
 \item 
-class \hyperlink{class_top_n}{Top\+N$<$ T $>$}
+class \mbox{\hyperlink{class_top_n}{Top\+N$<$ T $>$}}
 \end{DoxyCompactItemize}
-\subsection*{Functions}
+\doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename H\+YP $>$ }\\void \hyperlink{_top_8h_a6a30d87d866180b49aea546d0024dcca}{operator$<$$<$} (std\+::set$<$ H\+YP $>$ \&s, \hyperlink{class_top_n}{TopN}$<$ H\+YP $>$ \&t)
+{\footnotesize template$<$typename H\+YP $>$ }\\void \mbox{\hyperlink{_top_8h_a6a30d87d866180b49aea546d0024dcca}{operator$<$$<$}} (std\+::set$<$ H\+YP $>$ \&s, \mbox{\hyperlink{class_top_n}{TopN}}$<$ H\+YP $>$ \&t)
 \end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
+\doxysubsection{Detailed Description}
 Check if a type has a posterior function or not. 
 
-A \hyperlink{class_top_n}{TopN} is a n object you can \char`\"{}add\char`\"{} hypotheses to (via add or $<$$<$) and it stores the best N of them. This is widely used in Fleet in order to find good approximations to the top hypotheses found in M\+C\+TS or M\+C\+MC. The default constructor here reads from \hyperlink{namespace_fleet_args_acbc0f011abb2f878bf68a85617d8c183}{Fleet\+Args\+::ntop} as the default value.
+A \mbox{\hyperlink{class_top_n}{TopN}} is a n object you can \char`\"{}add\char`\"{} hypotheses to (via add or $<$$<$) and it stores the best N of them. This is widely used in Fleet in order to find good approximations to the top hypotheses found in M\+C\+TS or M\+C\+MC. The default constructor here reads from \mbox{\hyperlink{namespace_fleet_args_acbc0f011abb2f878bf68a85617d8c183}{Fleet\+Args\+::ntop}} as the default value.
 
-\subsection{Function Documentation}
+\doxysubsection{Function Documentation}
 \mbox{\Hypertarget{_top_8h_a6a30d87d866180b49aea546d0024dcca}\label{_top_8h_a6a30d87d866180b49aea546d0024dcca}} 
-\index{Top.\+h@{Top.\+h}!operator$<$$<$@{operator$<$$<$}}
-\index{operator$<$$<$@{operator$<$$<$}!Top.\+h@{Top.\+h}}
-\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+\index{Top.h@{Top.h}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Top.h@{Top.h}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
 {\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-void operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::set$<$ H\+YP $>$ \&}]{s,  }\item[{\hyperlink{class_top_n}{TopN}$<$ H\+YP $>$ \&}]{t }\end{DoxyParamCaption})}
+void operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::set$<$ H\+YP $>$ \&}]{s,  }\item[{\mbox{\hyperlink{class_top_n}{TopN}}$<$ H\+YP $>$ \&}]{t }\end{DoxyParamCaption})}
 

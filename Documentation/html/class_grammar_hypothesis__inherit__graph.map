@@ -1,4 +1,5 @@
 <map id="GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;" name="GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;">
-<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title="MCMCable\&lt; this_t, datum\l_t, data_t \&gt;" alt="" coords="5,80,181,121"/>
-<area shape="rect" id="node3" href="$class_bayesable.html" title="Bayesable\&lt; Args... \&gt;" alt="" coords="20,5,167,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="52,184,203,240"/>
+<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="5,80,249,136"/>
+<area shape="rect" id="node3" href="$class_bayesable.html" title=" " alt="" coords="55,5,200,32"/>
 </map>

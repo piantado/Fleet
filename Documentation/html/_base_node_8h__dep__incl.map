@@ -1,7 +1,8 @@
 <map id="src/BaseNode.h" name="src/BaseNode.h">
-<area shape="rect" id="node2" href="$_node_8h.html" title="src/Grammar/Node.h" alt="" coords="59,80,203,107"/>
-<area shape="rect" id="node6" href="$_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree..." alt="" coords="228,80,379,107"/>
-<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here. " alt="" coords="5,229,135,256"/>
+<area shape="rect" id="node1" title="This is a general tree class, which we are adding because there are currently at least 3 different tr..." alt="" coords="159,5,275,32"/>
+<area shape="rect" id="node2" href="$_node_8h.html" title=" " alt="" coords="59,80,203,107"/>
+<area shape="rect" id="node6" href="$_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree." alt="" coords="228,80,379,107"/>
+<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="5,229,135,256"/>
 <area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="48,155,215,181"/>
 <area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="239,155,459,181"/>
 </map>
