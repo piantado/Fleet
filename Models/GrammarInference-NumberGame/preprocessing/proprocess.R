@@ -7,7 +7,7 @@ d$set <- gsub("_ ", ",", as.character(d$set))
 
 # check out this dataset: table(d$set, d$target)
 
-# now go throguh and compute
+# now go through and compute the yes/no responses for each number
 a <- aggregate( cbind(rating==1,rating==0) ~ target + set, d, sum)
 
 names(a)[3:4] <- c("yes", "no")
