@@ -28,3 +28,6 @@ struct HumanDatum {
 	std::vector<int>*  decay_position; // a pointer to memory decay positions for each of ndata (i'th point is decayed (my_decay_position-decay_position[i])**(-decay))
 	int				   my_decay_position; // what position was I in terms of decay?
 };
+
+
+

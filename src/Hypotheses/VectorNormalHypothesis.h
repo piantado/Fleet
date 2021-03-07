@@ -64,7 +64,7 @@ public:
 		this->prior = 0.0;
 		
 		for(auto i=0;i<value.size();i++) {
-			this->prior += normal_lpdf(value(i), MEAN, SD);
+			this->prior += normal_lpdf((double)value(i), MEAN, SD);
 		}
 		
 		return this->prior;

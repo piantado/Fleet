@@ -87,6 +87,13 @@ public:
 		this->set_hypotheses_and_data(hypotheses, *human_data);
 	}	
 	
+	// we overwrite this because in MCMCable, this wants to check get_value, which is not defined here
+	template<typename... A>
+	[[nodiscard]] static this_t make(A... a) {
+		auto h = this_t(a...);
+		return h.restart();
+	}
+	
 	/**
 	 * @brief This is the primary function for setting hypothese and data on construction. 
 	 * @param hypotheses

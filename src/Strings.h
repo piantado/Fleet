@@ -4,10 +4,13 @@
 #include <queue>
 #include <string.h>
 #include <array>
+#include <map>
 
 #include "Numerics.h"
 #include "Random.h"
 #include "Vector3D.h"
+
+const std::string EMPTY_STRING = "";
 
 template<typename T>
 std::string str(T x){
@@ -364,3 +367,53 @@ double p_KashyapOommen1984_edit(const std::string x, const std::string y, const 
 	return lp_yGx;
 	
 }
+
+
+//https://stackoverflow.com/questions/16337610/how-to-know-if-a-type-is-a-specialization-of-stdvector
+template<typename Test, template<typename...> class Ref>
+struct is_specialization : std::false_type {};
+
+template<template<typename...> class Ref, typename... Args>
+struct is_specialization<Ref<Args...>, Ref>: std::true_type {};
+
+
+/**
+ * @brief Fleet includes this templated function to allow us to convert strings to a variety of formats. 
+ * 		  This is mostly used for reading data from text files
+ * @param s
+ * @return 
+ */
+template<typename T>
+T string_to(const std::string s) {
+	
+	// process some special cases here
+	if constexpr(is_specialization<T,std::map>::value) {
+		T m;
+		for(auto& r : split(s, ',')) { // TODO might want a diff delim here
+			auto [x, y] = split<2>(r, ':');
+			m[string_to<typename T::key_type>(x)] = string_to<typename T::mapped_type>(y);	
+		}
+		return m;
+	}
+	else if constexpr(is_specialization<T,std::vector>::value) {
+		T v;
+		for(auto& x : split(s, ',')) {
+			v.push_back(x);
+		}
+		return v;
+	}
+	else {
+		
+		assert(false);
+		return T{};
+	}	
+}
+
+
+template<> int           string_to(const std::string s) { return std::stoi(s); }
+template<> long          string_to(const std::string s) { return std::stol(s); }
+template<> unsigned long string_to(const std::string s) { return std::stoul(s); }
+template<> double        string_to(const std::string s) { return std::stod(s); }
+template<> float         string_to(const std::string s) { return std::stof(s); }
+
+
