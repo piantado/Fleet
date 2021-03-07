@@ -409,7 +409,7 @@ T string_to(const std::string s) {
 	}	
 }
 
-
+template<> std::string   string_to(const std::string s) { return s; }
 template<> int           string_to(const std::string s) { return std::stoi(s); }
 template<> long          string_to(const std::string s) { return std::stol(s); }
 template<> unsigned long string_to(const std::string s) { return std::stoul(s); }
