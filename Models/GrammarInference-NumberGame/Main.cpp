@@ -108,33 +108,26 @@ int main(int argc, char** argv){
 	
 	int* one = new int(1);
 	
-	std::ifstream fs("data.txt");
-	std::string line; std::getline(fs, line); // skip the first line
-	while(std::getline(fs, line)) {
-		auto parts  = split(line, '\t');
-		auto target = stoi(parts[0]);
-		int yes     = stoi(parts[2]);
-		int no      = stoi(parts[3]);
+	// need to give the decay position
+	auto decay_position = new std::vector<int>();
+	decay_position->push_back(0); // everything is just zero here
 	
-		// build up the multiset of data from this line
-		std::multiset<int> s;
-		for(const auto& x : split(parts[1], ',')) {
-			s.insert(atoi(x.c_str()));
+	// here we build up a mapping from mutliset<int> to a vector of 
+	// responses, using d to hold them
+	for(auto [target, setstr, yes, no] : read_csv<4>("human-data.txt", '\t', true)) {
+		auto set = string_to<std::multiset<int>>(setstr);
+		
+		// if this doesn't exist, add it
+		if(d.find(set) == d.end()) {
+			d[set] = std::vector(N+1,std::make_pair(0,0));
 		}
 		
-		if(d.find(s) == d.end()) {
-			d[s] = std::vector(N+1,std::make_pair(0,0));
-		}
-		
-		
-		// convert s into a NumberSet and insert (growing the vector if needed)
-		d[s][target] = std::make_pair(yes,no);
+		// then store this
+		d[set][string_to<int>(target)] = std::make_pair(string_to<int>(yes),
+		                                                string_to<int>(no));
 	}
-		
-	///////////////////////////////
-	// Go through and convert this data to the form we need. 
-	///////////////////////////////
 	
+	// Next, go through and convert this data to the form we need. 	
 	for(const auto& k : d) {		
 		// the learner sees 0 -> the set (first in values of d)
 		// NOTE: We must put these on the heap so that they can be accessed outside of this loop
@@ -150,8 +143,14 @@ int main(int argc, char** argv){
 		// k.second already is a vector of yes/no pairs
 		// Hmm 1/N is not really the right chance rate here -- its really the probability
 		// for each individual number, but it's probably good for it to be sparse?
-		MyHumanDatum hd{learner_data, learner_data->size(), one, k.second, 1.0/N, 0};
-		human_data.push_back(std::move(hd));
+		human_data.push_back({.data=learner_data, 
+							  .ndata=learner_data->size(), 
+							  .predict=one, 
+							  .responses=k.second,
+							  .chance=1.0/N,
+							  .decay_position=decay_position,
+							  .my_decay_position=0
+							  });
 	}
 	COUT "# Loaded " << human_data.size() << " human data points and " << mcmc_data.size() << " mcmc data points" ENDL;
 	
@@ -191,17 +190,7 @@ int main(int argc, char** argv){
 			}
 			i++;
 		}
-		
-		
-		
-		
-		// tODO: HMM 
-		//	where did the non-op-int rules go?
-		
-		
-		
-		
-	
+			
 		tic();
 		auto thechain = MCMCChain<MyGrammarHypothesis, decltype(gcallback)>(h0, &human_data, &gcallback);
 		thechain.run(Control());

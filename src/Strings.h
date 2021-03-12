@@ -402,6 +402,13 @@ T string_to(const std::string s) {
 		}
 		return v;
 	}
+	else if constexpr(is_specialization<T,std::multiset>::value) {
+		T ret;
+		for(auto& x : split(s, ',')) {
+			ret.insert( string_to<typename T::key_type>(x));
+		}
+		return ret; 
+	}
 	else {
 		
 		assert(false);
