@@ -2,9 +2,11 @@
 
 #include <sstream>
 #include <queue>
-#include <string.h>
 #include <array>
 #include <map>
+#include <set>
+
+#include <string.h>
 
 #include "Numerics.h"
 #include "Random.h"
@@ -89,6 +91,10 @@ bool is_prefix(const T& prefix, const T& x) {
 }
 
 bool contains(const std::string& s, const std::string& x) {
+	return s.find(x) != std::string::npos;
+}
+
+bool contains(const std::string& s, const char x) {
 	return s.find(x) != std::string::npos;
 }
 
@@ -376,10 +382,11 @@ struct is_specialization : std::false_type {};
 template<template<typename...> class Ref, typename... Args>
 struct is_specialization<Ref<Args...>, Ref>: std::true_type {};
 
-
 /**
  * @brief Fleet includes this templated function to allow us to convert strings to a variety of formats. 
- * 		  This is mostly used for reading data from text files
+ * 		  This is mostly used for reading data from text files. This recursively will unpack containers
+ * 		  with some standard delimiters. Since it can handle Fleet types (e.g. defaultdata_t) it
+ *        can be used to unpack data stored in strings (see e.g. Models/Sorting)
  * @param s
  * @return 
  */
@@ -398,7 +405,7 @@ T string_to(const std::string s) {
 	else if constexpr(is_specialization<T,std::vector>::value) {
 		T v;
 		for(auto& x : split(s, ',')) {
-			v.push_back(x);
+			v.push_back(string_to<typename T::value_type>(x));
 		}
 		return v;
 	}
@@ -410,9 +417,10 @@ T string_to(const std::string s) {
 		return ret; 
 	}
 	else {
-		
-		assert(false);
-		return T{};
+		// Otherwise we must have a string constructor
+		return T{s};
+//		assert(false);
+//		return T{};
 	}	
 }
 
@@ -422,5 +430,4 @@ template<> long          string_to(const std::string s) { return std::stol(s); }
 template<> unsigned long string_to(const std::string s) { return std::stoul(s); }
 template<> double        string_to(const std::string s) { return std::stod(s); }
 template<> float         string_to(const std::string s) { return std::stof(s); }
-
 

@@ -1,6 +1,10 @@
 #pragma once
 
+#include<assert.h>
+
+#include "Object.h"
 #include "Strings.h"
+#include "IO.h"
 
 // Define features
 enum class Shape { Rectangle, Triangle, Circle};
@@ -26,27 +30,31 @@ struct ShapeColorSizeObject : public Object<Shape,Color,Size>  {
 	 * @param _color
 	 * @param _size
 	 */		
-	ShapeColorSizeObject(S _shape, S _color, S _size) {
+	ShapeColorSizeObject(const std::string _shape, const std::string _color, const std::string _size) {
+		set(_shape, _color, _size);
+	}
+	
+	ShapeColorSizeObject(const std::string s) {
+		auto [_shape, _color, _size] = split<3>(s, '-');
+		set(_shape,_color,_size);	
+	}
+	
+	void set(const std::string _shape, const std::string _color, const std::string _size) {
 		// NOT: we could use magic_enum, but haven't here to avoid a dependency
-		if     (_shape == "triangle")   this->set(Shape::Triangle);
-		else if(_shape == "rectangle")  this->set(Shape::Rectangle);
-		else if(_shape == "circle")     this->set(Shape::Circle);
-		else assert(0);
+		if     (_shape == "triangle")   Super::set(Shape::Triangle);
+		else if(_shape == "rectangle")  Super::set(Shape::Rectangle);
+		else if(_shape == "circle")     Super::set(Shape::Circle);
+		else { CERR _shape ENDL; assert(0); }
 		
-		if     (_color == "blue")     this->set(Color::Blue);
-		else if(_color == "yellow")   this->set(Color::Yellow);
-		else if(_color == "green")    this->set(Color::Green);
-		else assert(0);
+		if     (_color == "blue")     Super::set(Color::Blue);
+		else if(_color == "yellow")   Super::set(Color::Yellow);
+		else if(_color == "green")    Super::set(Color::Green);
+		else { CERR _color ENDL; assert(0); }
 		
-		if     (_size == "1")        this->set(Size::size1);
-		else if(_size == "2")        this->set(Size::size2);
-		else if(_size == "3")        this->set(Size::size3);
-		else assert(0);
+		if     (_size == "1")        Super::set(Size::size1);
+		else if(_size == "2")        Super::set(Size::size2);
+		else if(_size == "3")        Super::set(Size::size3);
+		else { CERR _size ENDL; assert(0); }
 	}
 };
 
-// Define this specialization
-template<> ShapeColorSizeObject string_to(const std::string s) {
-	auto [shape, color, size] = split<3>(s, '-');
-	return ShapeColorSizeObject(shape,color,size);	
-}

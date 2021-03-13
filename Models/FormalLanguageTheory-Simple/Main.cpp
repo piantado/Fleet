@@ -174,17 +174,15 @@ int main(int argc, char** argv){
 	//------------------
 	
 	// mydata stores the data for the inference model
-	MyHypothesis::data_t mydata;
+	auto mydata = string_to<MyHypothesis::data_t>(datastr);
 		
-	// we will parse the data from a comma-separated list of "data" on the command line
-	for(auto di : split(datastr, ',')) {
-		// add check that data is in the alphabet
-		for(auto& c : di) {			
-			assert(alphabet.find(c) != std::string::npos && "*** alphabet does not include all data characters");
+	/// check the alphabet
+	assert(not contains(alphabet, ":"));// can't have these or else our string_to doesn't work
+	assert(not contains(alphabet, ","));
+	for(auto& di : mydata) {
+		for(auto& c: di.output) {
+			assert(contains(alphabet, c));
 		}
-		
-		// and add to data:
-		mydata.push_back( MyHypothesis::datum_t({S(""), di}) );		
 	}
 	
 	//------------------

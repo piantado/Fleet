@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Strings.h"
 
 /**
 * @class defaultdatum_t
@@ -10,9 +11,12 @@
 * 		 The reliability is measures the reliability of the data (sometimes number of effective data 
 * 		 points, sometimes its the noise in the likelihood. 
 */ 
-template<typename input_t, typename output_t>
+template<typename __input_t, typename __output_t>
 class defaultdatum_t { // a single data point
 public:
+	using input_t  = __input_t;
+	using output_t = __output_t;
+
 	input_t  input;
 	output_t output;
 	double   reliability; // the noise probability (typically required)
@@ -20,11 +24,31 @@ public:
 	
 	defaultdatum_t() { }
 	defaultdatum_t(const input_t& i, const output_t& o, double r=NaN, double c=1.0) : input(i), output(o), reliability(r), count(c) {}
-	
-	bool operator==(const defaultdatum_t& y) const {
-		return input==y.input and output==y.output and reliability==y.reliability;
+	defaultdatum_t(const std::string s){
+		
+		// if s is x:y then its input output
+		// otherwise, we'll treat it as a thunk, no input
+		if(contains(s, ":")) {
+		
+			// define this so we can use string_to
+			auto [x, y] = split<2>(s, ':');
+			input = string_to<input_t>(x);
+			output = string_to<output_t>(y);
+		}
+		else {
+			input = input_t{};
+			output = s;
+		}
+		
+		reliability = NaN;
+		count = 1;
 	}
 	
+	bool operator==(const defaultdatum_t& y) const {
+		
+		return input==y.input and output==y.output and count == count and
+			   (reliability==y.reliability or (isnan(reliability) and isnan(y.reliability)));
+	}	
 }; 
 
 template<typename input_t, typename output_t>

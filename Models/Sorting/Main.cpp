@@ -311,20 +311,18 @@ int main(int argc, char** argv){
 	//------------------
 	// set up the data
 	//------------------
-		
-	// parse into i/o pairs
-	assert(alphabet.find(":") == std::string::npos); // alphabet can't have :
-	for(auto di : split(datastr, ',')) {
-		// add check that data is in the alphabet
-		for(auto& c : di) {	
-			if(c == ':') continue;
-			assert(alphabet.find(c) != std::string::npos && "*** alphabet does not include all data characters");
+
+	// This uses string_to to convert datastr into a vector of defaultdatum_t. This uses some fanciness in
+	// Strings.h that unpacks comma-separated vectors and then input/output types for defaultdatum_t
+	mydata = string_to<MyHypothesis::data_t>(datastr);
+
+	// Let's include a check on our alphabet
+	assert(not contains(alphabet, ":"));// can't have these or else our string_to doesn't work
+	assert(not contains(alphabet, ","));
+	for(auto& di : mydata) {
+		for(auto& c: di.output) {
+			assert(contains(alphabet, c));
 		}
-		
-		auto [x,y] = divide(di, ':');
-		
-		// and add to data:
-		mydata.push_back( MyHypothesis::datum_t({x,y}) );		
 	}
 	
 	//------------------

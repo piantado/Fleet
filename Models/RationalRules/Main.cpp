@@ -6,17 +6,14 @@
 // My laptop gets around 200-300k samples per second on 4 threads
 ///########################################################################################
 
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// We need to define some structs to hold the MyObject features
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-enum class Shape { Square, Triangle, Circle};
-enum class Color { Red, Green, Blue};
+// This is a default object with three dimensions (shape, color, size) and three values for each
+#include "ShapeColorSizeObject.h"
 
-#include "Object.h"
-
-typedef Object<Color,Shape> MyObject;
+using MyObject = ShapeColorSizeObject;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define the grammar
@@ -31,12 +28,17 @@ class MyGrammar : public Grammar<MyObject,bool,   MyObject, bool>,
 				  public Singleton<MyGrammar> {
 public:
 	MyGrammar() {
-		add("red(%s)",       +[](MyObject x) -> bool { return x.is(Color::Red); });
-		add("green(%s)",     +[](MyObject x) -> bool { return x.is(Color::Green); });
-		add("blue(%s)",      +[](MyObject x) -> bool { return x.is(Color::Blue); });
-		add("square(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Square); });
-		add("triangle(%s)",  +[](MyObject x) -> bool { return x.is(Shape::Triangle); });
-		add("circle(%s)",    +[](MyObject x) -> bool { return x.is(Shape::Circle); });
+		add("blue(%s)",       +[](MyObject x) -> bool { return x.is(Color::Blue); });
+		add("yellow(%s)",     +[](MyObject x) -> bool { return x.is(Color::Yellow); });
+		add("green(%s)",      +[](MyObject x) -> bool { return x.is(Color::Green); });
+		
+		add("rectangle(%s)",  +[](MyObject x) -> bool { return x.is(Shape::Rectangle); });
+		add("triangle(%s)",   +[](MyObject x) -> bool { return x.is(Shape::Triangle); });
+		add("circle(%s)",     +[](MyObject x) -> bool { return x.is(Shape::Circle); });
+		
+		add("size1(%s)",      +[](MyObject x) -> bool { return x.is(Size::size1); });
+		add("size2(%s)",      +[](MyObject x) -> bool { return x.is(Size::size2); });
+		add("size3(%s)",      +[](MyObject x) -> bool { return x.is(Size::size3); });
 		
 		// These are the short-circuiting versions:
 		// these need to know the grammar type
@@ -88,10 +90,10 @@ int main(int argc, char** argv){
 	//------------------
 	// mydata stores the data for the inference model
 	MyHypothesis::data_t mydata;
-	
-	mydata.push_back(MyHypothesis::datum_t{.input=MyObject{.color=Color::Red, .shape=Shape::Triangle}, .output=true,  .reliability=0.75});
-	mydata.push_back(MyHypothesis::datum_t{.input=MyObject{.color=Color::Red, .shape=Shape::Square},   .output=false, .reliability=0.75});
-	mydata.push_back(MyHypothesis::datum_t{.input=MyObject{.color=Color::Red, .shape=Shape::Square},   .output=false, .reliability=0.75});
+
+	mydata.emplace_back(MyObject("triangle-blue-1"),   true, 0.75);
+	mydata.emplace_back(MyObject("circle-blue-1"),     false, 0.75);
+	mydata.emplace_back(MyObject("circle-yellow-1"),   false, 0.75);
 	
 	//------------------
 	// Run
