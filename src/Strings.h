@@ -12,6 +12,8 @@
 #include "Random.h"
 #include "Vector3D.h"
 
+// This constant is occasionally useful, especially in grammar inference where we might
+// want a reference to an empty input
 const std::string EMPTY_STRING = "";
 
 template<typename T>
