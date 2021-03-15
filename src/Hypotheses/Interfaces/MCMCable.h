@@ -29,6 +29,7 @@ public:
 	[[nodiscard]] static this_t make(A... a) {
 		auto h = this_t(a...);
 		
+		
 		assert(h.get_value().is_null() && "*** You probably didn't mean to call make (which calls restart) instead of the constructor?");
 		return h.restart();
 	}

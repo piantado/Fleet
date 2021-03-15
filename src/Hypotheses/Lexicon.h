@@ -294,6 +294,13 @@ public:
 		return x;
 	}
 	
+	template<typename... A>
+	[[nodiscard]] static this_t make(A... a) {
+		auto h = this_t(a...);
+		return h.restart();
+	}
+	
+	
 	/********************************************************
 	 * Implementation of Searchabel interace 
 	 ********************************************************/

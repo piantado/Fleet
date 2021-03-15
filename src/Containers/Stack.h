@@ -1,8 +1,10 @@
 #pragma once
 
 #include <vector> 
-
+#include <assert.h>
  
+#include "Strings.h"
+
  /**
   * @class Stack
   * @author Steven Piantadosi
@@ -77,6 +79,10 @@ public:
 		return std::forward<T&>(value.back());
 	}
 	
+	const std::vector<T>& get_value() const {
+		return value;
+	}
+	
 	size_t size() const { 
 		return value.size();
 	}
@@ -84,4 +90,13 @@ public:
 	bool empty() const {
 		return value.empty();
 	}
+	
+	std::string string() const {
+		return str(value);
+	}
 };
+
+template<typename T>
+std::string str(const Stack<T>& a ){
+	return str(a.get_value());
+}

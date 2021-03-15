@@ -186,9 +186,6 @@ int main(int argc, char** argv){
 	Fleet fleet("Number Game");
 	fleet.initialize(argc, argv);
 	
-	//------------------
-	// Run
-	//------------------	
 	MyGrammar grammar;
 
 	// Define something to hold the best hypotheses

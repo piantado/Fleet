@@ -62,9 +62,30 @@ std::string str(const std::array<T, N>& a ){
 	for(auto& x : a) {
 		out += str(x) + ",";
 	}
+	
+	if(a.size()>0) 
+		out.erase(out.size()-1); // remove that last dumb comma
+	
 	return out+">";
 }
 
+
+template<typename T>
+std::string str(const std::vector<T>& a ){
+	/**
+	 * @brief A pythonesque string function
+	 * @param x
+	 * @return 
+	 */
+	std::string out = "[";
+	for(auto& x : a) {
+		out += str(x) + ",";
+	}
+	if(a.size()>0) 
+		out.erase(out.size()-1); // remove that last dumb comma
+	
+	return out+"]";
+}
 
 
 template <typename T>
