@@ -93,10 +93,21 @@ std::vector<HYP> load(std::string filename, typename HYP::Grammar_t* g) {
 	return out;
 }
 
-// For loading data -- divides the columns and checks that there are N
-// So we can use like:  for(auto [b1, b2, b3, b4, c] : read_csv<5>(FleetArgs::input_path)) {
+/**
+ * @brief Load data -- divides in columns at the delimiter. NOTE: we are required to say whetehr we skip
+ *        a header (first line) or not. Checks tha tthere are exactly N on each line. 
+ *        So we can use like:  
+ * 				for(auto [b1, b2, b3, b4, c] : read_csv<5>(FleetArgs::input_path, true)) { 
+ * 					....
+ * 				}
+ * @param filename
+ * @param g
+ * @return 
+ */
+
+
 template<size_t N>
-std::vector<std::array<std::string,N>> read_csv(const std::string path, const char delimiter='\t', bool skipheader=true) {
+std::vector<std::array<std::string,N>> read_csv(const std::string path, bool skipheader, const char delimiter='\t') {
 	
 	FILE* fp = fopen(path.c_str(), "r");
 	if(fp==nullptr) { CERR "*** ERROR: Cannot open file " << path ENDL; exit(1);}
