@@ -42,7 +42,7 @@
  * 
  * Fleet is developed using GCC 9 (version >8 required) and requires C++-17 at present, but this may move to C++-20 in the future.
  *
- * \section install_sec Tutorial 
+ * \section tutorial_sec Tutorial 
  * 
  * To illustrate how Fleet works, let's walk through a simple example: the key parts of FormalLanguageTheory-Simple. This is
  * a program induction model which takes a collection of strings and tries to find a stochastic program which can explain
@@ -56,9 +56,7 @@
  * strings) and the next two are (variadic) template arguments for all of the nonterminal types used by the grammar (here, 
  * strings and bools). 
  * 
- * \code{.py}
- * 
- * 
+ * \code{.cpp}
 
 #include <string>
 using S = std::string; // just for convenience
@@ -138,10 +136,65 @@ public:
  * 
  * We then add built-in logical operations. Note that we do *not* define our own versions of these functions with lambda 
  * expressions. We certainly could, but in most computer science applications we want the versions of these functions which involve
- * "short circuit" evaluation. For example, and(x,y) won't evaluate y if x is false, which for us ends up with a measurably
- * faster implementation. This is maybe most important though for "if(%s,%s,%s)", 
+ * <a href="https://en.wikipedia.org/wiki/Short-circuit_evaluation">short circuit evaluation</a>. 
+ * For example, and(x,y) won't evaluate y if x is false, which for us ends up with a measurably
+ * faster implementation. This is maybe most important though for "if(%s,%s,%s)", where we only want to evaluate one branch, depending
+ * on which way the boolean comes out. The implementation of correct short-circuit evaluation depends on some of the internals of 
+ * Fleet and so it's best to use the built-in versions of these functions. 
  * 
- * -> Defined to be relativel fault-tolerant, although we can throw exceptions 
+ * Next, we have a special fucntion Builtins::X which provides the argument to the function/program we are learning. We defaulty
+ * give this the name "x".
+ * 
+ * The "flip()" primitive is somewhat fancy (and Buillt-in) because it is a stochastic operation, which acts like a coin flip, 
+ * returning true half of the time and false half of the time (Fleet also a built-in biased coin, which takes a coin weight as a
+ * parameter). This is fancy because it means that when the program evaluates, there is no longer one single output, but rather
+ * a distribution of possible return values. Fleet will hand these back to you as a DiscreteDistribution of the output type of the
+ * function. Here, we have included 10.0 after the Builtins::Flip. This is an optional number which can be included for any primitive 
+ * and it determines the probability in the PCFG of each each expansion (they are summed and renormalized for each nonterminal type).
+ * In this case, we need to upweight the probability of Flip in order to make a proper PCFG (e.g. one where no probabliity is given to
+ * infinite trees) because otherwise the and,or,not operatiosn above will lead to infinite trees. The default weight for all operations 
+ * (when its not specified) is 1.0, meaning that 10.0 makes it ten times as likely that a bool will expand to a flip than the others. 
+ * In general, you will want to upweight the terminal rules (those with no children) in order to keep grammars proper. 
+ * 
+ * The next operation is Builtin::Recurse, which allows a defined function to call itself recursively. 
+ * 
+ * Finally, this grammar adds one terminal rule for each character in the global string "alphabet." Here, these characters are 
+ * converted to strings containing a single character because char is not a nonterminal type in the grammar we defined. Here, the entire
+ * collection of characters is given an unnonormalized grammar probabiltiy of 5.0. 
+ * 
+ * Next, we define a class, MyHypothesis, which defines the program hypotheses we are going to be learning. The simplest form for
+ * this is to use something of type LOTHypothesis, which defines built-in  
+ * \code{.cpp}
+ 
+#include "LOTHypothesis.h"
+
+// Declare a hypothesis class
+class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S,MyGrammar> {
+public:
+	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar>;
+	using Super::Super; // inherit the constructors
+	
+	double compute_single_likelihood(const datum_t& x) override {	
+		const auto out = call(x.input, "<err>"); 
+		const auto log_A = log(alphabet.size());
+		
+		// Likelihood comes from all of the ways that we can delete from the end and the append to make the observed output. 
+		double lp = -infinity;
+		for(auto& o : out.values()) { // add up the probability from all of the strings
+			lp = logplusexp(lp, o.second + p_delete_append<strgamma,strgamma>(o.first, x.output, log_A));
+		}
+		return lp;
+	}
+	
+	void print(std::string prefix="") override {
+		prefix = prefix+"#\n#" +  this->call("", "<err>").string() + "\n";
+		Super::print(prefix); 
+	}
+};
+
+ 
+  
+ * /endcode
  * 
  * 
  * \section install_sec Inference

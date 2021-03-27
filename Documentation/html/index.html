@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Fleet: Fleet - Fast inference in the Language of Thought</title>
+<title>Fleet: Main Page</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,104 +63,12 @@ $(function() {
 </iframe>
 </div>
 
-<div class="PageDoc"><div class="header">
+<div class="header">
   <div class="headertitle">
-<div class="title">Fleet - Fast inference in the Language of Thought </div>  </div>
+<div class="title">Fleet Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="intro_sec"></a>
-Introduction</h1>
-<p>Fleet is a C++ library for programming language of thought models. In these models, we specify a grammar of primitive operations which can be composed to form complex hypotheses. These hypotheses are best thought of as programs in a (mental) programming language, and the job of learners is to observe data (typically inputs and outputs of programs) and infer the most likely program to have generated the outputs from the inputs. This is accomplished in Fleet by using a fully-Bayesian setup, with a prior over programs typically defined thought a Probabilistic Context-Free <a class="el" href="class_grammar.html">Grammar</a> (PCFG) and a likelihood model that typically says that the output of a program is observed with some noise.</p>
-<p>Fleet is most similar to LOTlib (<a href="https://github.com/piantado/LOTlib3">https://github.com/piantado/LOTlib3</a>) but is considerably faster. LOTlib converts grammar productions into python expressions which are then evaled in python; this process is flexible and powerful, but slow. Fleet avoids this by implementing a lightweight stack-based virtual machine in which programs can be directly evaluated. This is especially advantageous when evaluating stochastic hypotheses (e.g. those using <a class="el" href="_random_8h.html#a40e7e030d95195c87c566b03fdefe44c">flip()</a> or <a class="el" href="_random_8h.html#ac2ea1cac6b4c8cad207512d19abe42d7">sample()</a>) in which multiple execution paths must be evaluated. Fleet stores these multiple execution traces of a single program in a priority queue (sorted by probability) and allows you to rapidly explore the space of execution traces.</p>
-<p>Fleet is structured to automatically create this virtual machine and a grammar for programs from just the type specification on primitives: a function signature yields a PCFG because the return type can be thought of as a nonterminal in a PCFG and its arguments can be thought of as children (right hand side of a PCFG rule). A PCFG expanded in this way will yield a correctly-typed expression, a program, where each function has arguments of the correct types. Note that in Fleet, these types in the PCFG must be C++ types (intrinsics, classes, or structs), and two types that are the same are always considered to have the same nonterminal type.</p>
-<p>Fleet requires you to define a <a class="el" href="class_grammar.html">Grammar</a> which includes <em>all</em> of the nonterminal types that are used anywhere in the grammar. Fleet makes heavy use of template metaprogramming, which prevents you from ever having to explicitly write the grammar itself, but it does implicitly construct a grammar using these operations.</p>
-<p>In addition, Fleet has a number of built-in operations, which do special things to the virtual machine. These include Builtin::Flip, which stores multiple execution traces; Builtin::If which uses short-circuit evaluation; Builtin::Recurse, which handles recursives hypotheses; and Builtin::X which provides the argument to the expression.</p>
-<h1><a class="anchor" id="install_sec"></a>
-Installation</h1>
-<p>Fleet is based on header-files, and requires no additional dependencies. Command line arguments are processed in CL11.hpp, which is included in src/dependencies/.</p>
-<p>The easiest way to begin using Fleet is to modify one of the examples. For simple rational-rules style inference, try Models/RationalRules; for an example using stochastic operations, try Models/FormalLanguageTheory-Simple.</p>
-<p>Fleet is developed using GCC 9 (version &gt;8 required) and requires C++-17 at present, but this may move to C++-20 in the future.</p>
-<h1><a class="anchor" id="install_sec"></a>
-Installation</h1>
-<p>To illustrate how Fleet works, let's walk through a simple example: the key parts of FormalLanguageTheory-Simple. This is a program induction model which takes a collection of strings and tries to find a stochastic program which can explain the observed strings. For example, it might see data like {"ab", "abab", "ababab"} and then infer that the language is (ab)^n.</p>
-<p>Let's first walk through the grammar definition. Here, we first import <a class="el" href="_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as...">Grammar.h</a> and also <a class="el" href="_singleton_8h.html">Singleton.h</a>. <a class="el" href="class_singleton.html">Singleton</a> is a design pattern that permits only one copy of an object to be constructed, which is used here to ensure that we only have one grammar (and aren't, e.g. passing copies of it around). Typical to Fleet's code, we define our own grammar as MyGrammar. The first two template arguments are the input and output types of the function we are learning (here, strings to strings) and the next two are (variadic) template arguments for all of the nonterminal types used by the grammar (here, strings and bools).</p>
-<div class="fragment"><div class="line"><span class="comment">#include &lt;string&gt;</span></div>
-<div class="line">using S = std::string; // just <span class="keywordflow">for</span> convenience</div>
-<div class="line"> </div>
-<div class="line"><span class="comment">#include &quot;Grammar.h&quot;</span></div>
-<div class="line"><span class="comment">#include &quot;Singleton.h&quot;</span></div>
-<div class="line"> </div>
-<div class="line"><span class="keyword">class </span>MyGrammar : public Grammar&lt;S,S,  S,bool&gt;,</div>
-<div class="line">                  public Singleton&lt;MyGrammar&gt; {</div>
-<div class="line">public:</div>
-<div class="line">    MyGrammar() {</div>
-<div class="line">        // compute the tail of a string: tail(wxyz) -&gt; xyz</div>
-<div class="line">        add(<span class="stringliteral">&quot;tail(%s)&quot;</span>,      +[](S s)      -&gt; S { <span class="keywordflow">return</span> (s.empty() ? S(<span class="stringliteral">&quot;&quot;</span>) : s.substr(1,S::npos)); });</div>
-<div class="line"> </div>
-<div class="line">        // compute the head of a string: tail(wxyz) -&gt; w</div>
-<div class="line">        add(<span class="stringliteral">&quot;head(%s)&quot;</span>,      +[](S s)      -&gt; S { <span class="keywordflow">return</span> (s.empty() ? S(<span class="stringliteral">&quot;&quot;</span>) : S(1,s.at(0))); });</div>
-<div class="line"> </div>
-<div class="line">        // concatenate strings pair(wx,yz) -&gt; wxyz</div>
-<div class="line">        add(<span class="stringliteral">&quot;pair(%s,%s)&quot;</span>,   +[](S a, S b) -&gt; S { </div>
-<div class="line">            if(a.length() + b.length() &gt; MAX_LENGTH) throw <a class="code" href="class_v_m_s_runtime_error.html">VMSRuntimeError</a>();</div>
-<div class="line">            <span class="keywordflow">else</span>                                     <span class="keywordflow">return</span> a+b; </div>
-<div class="line">        });</div>
-<div class="line"> </div>
-<div class="line">        // the empty string</div>
-<div class="line">        add(<span class="stringliteral">&quot;\u00D8&quot;</span>,        +[]()         -&gt; S          { <span class="keywordflow">return</span> S(<span class="stringliteral">&quot;&quot;</span>); });</div>
-<div class="line">          </div>
-<div class="line">        // check <span class="keywordflow">if</span> two strings are equal</div>
-<div class="line">        add(<span class="stringliteral">&quot;(%s==%s)&quot;</span>,      +[](S x, S y) -&gt; bool       { <span class="keywordflow">return</span> x==y; });</div>
-<div class="line"> </div>
-<div class="line"> </div>
-<div class="line">        // logical operations</div>
-<div class="line">        add(<span class="stringliteral">&quot;and(%s,%s)&quot;</span>,    Builtins::And&lt;MyGrammar&gt;);</div>
-<div class="line">        add(<span class="stringliteral">&quot;or(%s,%s)&quot;</span>,     Builtins::Or&lt;MyGrammar&gt;);</div>
-<div class="line">        add(<span class="stringliteral">&quot;not(%s)&quot;</span>,       Builtins::Not&lt;MyGrammar&gt;);</div>
-<div class="line">        add(<span class="stringliteral">&quot;if(%s,%s,%s)&quot;</span>,  Builtins::If&lt;MyGrammar,S&gt;);</div>
-<div class="line">        </div>
-<div class="line">        // access the argument x to the program (defined to a string type above)</div>
-<div class="line">        add(<span class="stringliteral">&quot;x&quot;</span>,             Builtins::X&lt;MyGrammar&gt;);</div>
-<div class="line">         </div>
-<div class="line">        // random coin flip (this does something fancy <span class="keywordflow">in</span> evaluation)</div>
-<div class="line">        add(<span class="stringliteral">&quot;flip()&quot;</span>,        Builtins::Flip&lt;MyGrammar&gt;, 10.0);</div>
-<div class="line">         </div>
-<div class="line">        // recursion</div>
-<div class="line">        add(<span class="stringliteral">&quot;recurse(%s)&quot;</span>,   Builtins::Recurse&lt;MyGrammar&gt;);</div>
-<div class="line">        </div>
-<div class="line">        // add all the characters <span class="keywordflow">in</span> our alphabet (a <span class="keyword">global</span> variable)</div>
-<div class="line">        for(const char c : alphabet) {</div>
-<div class="line">            add_terminal( <a class="code" href="_strings_8h.html#a1bb5ec0bee0c8456e3fcc87cc012d055">Q</a>(S(1,c)), S(1,c), 5.0/alphabet.length());</div>
-<div class="line">        }</div>
-<div class="line">        </div>
-<div class="line">    }</div>
-<div class="line">};</div>
-</div><!-- fragment --><p>Then, in the constructor MyGrammar(), we call the member function <a class="el" href="class_grammar.html#a07ae62095abaf00b3da2fc5065c941bf">Grammar::add</a> which takes two argumetns: a string for how to show the function, and a lambda expression for the function itself. For example, the first function computes the tail of a string (everything except the first character), which shows up in printed programs as "tail(%s)" (where the s is replaced by the arguments to the function. Note that in Fleet, you must include as many s as there are arugments, meaning that all arguments must be shown.</p>
-<p>The second argument to <a class="el" href="class_grammar.html#a07ae62095abaf00b3da2fc5065c941bf">Grammar::add</a> is a lambda expression which computes and returns the tail of a string. Note that this function, as is generally the case in Fleet, attempts to be relatively fault-tolerant rather than throwing exceptions because that's faster. In this case, we just define the tail of an empty string to be the empty string, rather than an error.</p>
-<p>The functions for computing the head of a string is defined similarly. The "pair(%s,%s)" function is meant to concatenate strings but it actually needs to do a little checking because otherwise it's very easy to write programs which create exponentially long strings. So this function checks if its two argument lengths are above a global variable MAX_LENGTH and if so it throws a <a class="el" href="class_v_m_s_runtime_error.html">VMSRuntimeError</a> (<a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a> error) which is caught and handled internally in Fleet. (Note that in the actual Model code, there is a more complex version of pair which is a bit faster, as it modifies strings stored in the <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a> stack rather than passing them around, as here).</p>
-<p>Then, we have a function which takes no arguments and only returns the empty string. Here, we have given it a Unicode name \u00D8 which will appear/render in most terminals as epsilon (a convention for the empty string in formal language theory).</p>
-<p>The "(%s==%s)" function computes whether two strings are equal and returns a bool. Note that generally it is helpful to enclose expressions like this in parentheses (i.e. "(...)") because without this, the printed programs can be ambiguous.</p>
-<p>We then add built-in logical operations. Note that we do <em>not</em> define our own versions of these functions with lambda expressions. We certainly could, but in most computer science applications we want the versions of these functions which involve "short circuit" evaluation. For example, and(x,y) won't evaluate y if x is false, which for us ends up with a measurably faster implementation. This is maybe most important though for "if(%s,%s,%s)",</p>
-<p>-&gt; Defined to be relativel fault-tolerant, although we can throw exceptions</p>
-<h1><a class="anchor" id="install_sec"></a>
-Installation</h1>
-<p>Fleet provides a number of simple inference routines to use. These are all displayed in Models/FormalLanguageTheory-Simple.</p>
-<h2><a class="anchor" id="step1"></a>
-Markov-Chain Monte-Carlo</h2>
-<h2><a class="anchor" id="step2"></a>
-Search (Monte-Carlo Tree Search)</h2>
-<h2><a class="anchor" id="step3"></a>
-Enumeration</h2>
-<p>etc...</p>
-<h1><a class="anchor" id="install_sec"></a>
-Installation</h1>
-<ul>
-<li>Sample things, store in <a class="el" href="class_top_n.html">TopN</a>, then evaluate... </li>
-</ul>
-</div></div><!-- PageDoc -->
 </div><!-- contents -->
-<div class="ttc" id="aclass_v_m_s_runtime_error_html"><div class="ttname"><a href="class_v_m_s_runtime_error.html">VMSRuntimeError</a></div><div class="ttdef"><b>Definition:</b> VMSRuntimeError.h:13</div></div>
-<div class="ttc" id="a_strings_8h_html_a1bb5ec0bee0c8456e3fcc87cc012d055"><div class="ttname"><a href="_strings_8h.html#a1bb5ec0bee0c8456e3fcc87cc012d055">Q</a></div><div class="ttdeci">std::string Q(std::string x)</div><div class="ttdef"><b>Definition:</b> Strings.h:306</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
