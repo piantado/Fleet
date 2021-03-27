@@ -32,7 +32,7 @@
  * Builtin::Flip, which stores multiple execution traces; Builtin::If which uses short-circuit evaluation; 
  * Builtin::Recurse, which handles recursives hypotheses; and Builtin::X which provides the argument to the expression.
  * 
- * \section install_sec Installation
+ * \subsection subsec_install Installation
  * 
  * Fleet is based on header-files, and requires no additional dependencies. Command line arguments are processed in CL11.hpp,
  * which is included in src/dependencies/. 
@@ -41,7 +41,25 @@
  * Models/RationalRules; for an example using stochastic operations, try Models/FormalLanguageTheory-Simple. 
  * 
  * Fleet is developed using GCC 9 (version >8 required) and requires C++-17 at present, but this may move to C++-20 in the future.
- *
+ * 
+ * \subsection subsec_examples Examples
+ * 
+ * Fleet contains several implemented examples of existing program-induction models, including identical or close variants of:
+ * 
+ * 	- The rational rules model (Examples/RationalRules): Goodman, N. D., Tenenbaum, J. B., Feldman, J., & Griffiths, T. L. (2008). A rational analysis of rule‐based concept learning. Cognitive science, 32(1), 108-154.
+ *  - The number model (Examples/Number-Simple): Piantadosi, S. T., Tenenbaum, J. B., & Goodman, N. D. (2012). Bootstrapping in a language of thought: A formal model of numerical concept learning. Cognition, 123(2), 199-217.
+ *  - The number game (Examples/NumberGame): Tenenbaum, J. B. (1999). A Bayesian framework for concept learning (Doctoral dissertation, Massachusetts Institute of Technology).
+ *  - Grammar inference (Examples/GrammarInference-*): Piantadosi, S. T., Tenenbaum, J. B., & Goodman, N. D. (2016). The logical primitives of thought: Empirical foundations for compositional cognitive models. Psychological review, 123(4), 392.
+ *  - Formal language theory learning (Examples/FormalLanguageTheory-*): Yang & Piantadosi, forthcoming
+ * 
+ * as well as several other examples, including sorting and first order logical theories. 
+ * 
+ * \subsection subsec_style Style
+ * 
+ * Fleet is currently written using a signle-file, header-only style. This a nonstandard C++ style, but it allows for rapid
+ * refactoring and prototyping since declarations and implementations are not in separate files. This style may change in the future
+ * because it also leads to higher compilation times. 
+ * 
  * \section tutorial_sec Tutorial 
  * 
  * To illustrate how Fleet works, let's walk through a simple example: the key parts of FormalLanguageTheory-Simple. This is
@@ -163,21 +181,137 @@ public:
  * collection of characters is given an unnonormalized grammar probabiltiy of 5.0. 
  * 
  * Next, we define a class, MyHypothesis, which defines the program hypotheses we are going to be learning. The simplest form for
- * this is to use something of type LOTHypothesis, which defines built-in  
+ * this is to use something of type LOTHypothesis, which defines built-in  functions for computing the prior, copying, proposing, etc.
+ * \code{.cpp}
+ 
+#include "LOTHypothesis.h"
 
+// Declare a hypothesis class
+class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S,MyGrammar> {
+public:
+	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar>;
+	using Super::Super; // inherit the constructors
+	
+	double compute_single_likelihood(const datum_t& x) override {	
+		const auto out = call(x.input, ""); 
+		const auto log_A = log(alphabet.size());
+		
+		// Likelihood comes from all of the ways that we can delete from the end and the append to make the observed output. 
+		double lp = -infinity;
+		for(auto& o : out.values()) { // add up the probability from all of the strings
+			lp = logplusexp(lp, o.second + p_delete_append<strgamma,strgamma>(o.first, x.output, log_A));
+		}
+		return lp;
+	}
+	
+	void print(std::string prefix="") override {
+		prefix = prefix+"#\n#" +  this->call("", "<err>").string() + "\n";
+		Super::print(prefix); 
+	}
+};  
+ * \endcode
+ *  
+ * Here, MyHypothesis uses the 
+ * <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">curiously recurring template pattern</a> to pass itself, so 
+ * that it knows how to make copies of itself. The other template arguments ar ethe input and output types of its function (string to string) 
+ * and the Grammar type it uses (MyGrammar). Then, we inherit LOTHypothesis' constructors (via Super::Super). Primarily, what we have to define
+ * here is the compute_single_likelihood function, which defines the likelihood of a single observed data string. To compute this, we first
+ * call the function (LOTHypothesis::call) on the observed input. This returns a DiscreteDistribution<std::string> of outputs. Note that the
+ * outputs which return errors are mapped to the second argument to call, in this case the empty stirng. Then, we loop over outputs and add up
+ * the likelihood of the observed output x.ouput given the program output o.first weighted by the program's probability of that output o.second. 
+ * This part uses p_delete_append, which is a string edit likelihood that assigns nonzero probability of any string being corrupted to any other. 
+ * It computes this by imagining that the output string was corrupted by noise that deleted from the end of the string, and then appended, where
+ * both operations take place with geometric probabilities. These probabilities are passed as template arguments since that lets us compute
+ * some key pieces of this at compile time, yielding much faster code (this is a hot part of any string-based inference model).
  * 
+ * We also define a print function which allows us to say how we print out the program hypothesis. Defaultly, any LOTHypothesis will just 
+ * print (using the format strings like "pair(%s,%s)" above) but here we would like to also show the distribution of outputs when we print,
+ * so this prints a line with a LOTHypothesis::call (which is a DiscreteDistribution) and then a .string() call on the returned value. 
+ * 
+ * The last piece of code is the actual running: Here, we define a Fleet object, which basically manages the input/output. We tell it
+ * that we want to be able to specify the alphabet and a string for the data (comma separated strings) on the command line. We create a grammar
+ * and note that this must happend after Fleet.initialize, since creating the grammar object needs to know the alphabet. Then, we create a 
+ * TopN object to store the top hypotheses we have found. This is basically a sorted collection of the best hypotheses found so far. We set
+ * a few control aspects of our VirtualMachine (e.g. how many steps we should run each program for, how many outputs we will consider for 
+ * each program). We convert our datastr (specified on the command line) to type MyHypothesis::data_t, and do a check on whether the data contains
+ * anything not in the alphabet. 
+ * 
+ * \code{.cpp}
+ 
+#include "Top.h"
+#include "ParallelTempering.h"
+#include "Fleet.h" 
+#include "Builtins.h"
+#include "VMSRuntimeError.h"
+
+int main(int argc, char** argv){ 
+	
+	// define a Fleet object
+	Fleet fleet("A simple, one-factor formal language learner");
+	fleet.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
+	fleet.add_option("-d,--data",     datastr, "Comma separated list of input data strings");	
+	fleet.initialize(argc, argv);
+	
+	// create a grammar
+	MyGrammar grammar;
+	
+	// top stores the top hypotheses we have found
+	TopN<MyHypothesis> top;
+	
+	// set these global variables to make VMS a little faster, less accurate
+	VirtualMachineControl::MAX_STEPS = 256;
+	VirtualMachineControl::MAX_OUTPUTS = 256;
+	
+	// mydata stores the data for the inference model
+	auto mydata = string_to<MyHypothesis::data_t>(datastr);
+		
+	/// check the alphabet
+	assert(not contains(alphabet, ":"));// can't have these or else our string_to doesn't work
+	assert(not contains(alphabet, ","));
+	for(auto& di : mydata) {
+		for(auto& c: di.output) {
+			assert(contains(alphabet, c));
+		}
+	}
+	
+	// Run
+	top.print_best = true; // print out each best hypothesis you find
+	auto h0 = MyHypothesis::make(&grammar);
+	MCMCChain c(h0, &mydata, top);
+	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
+	c.run(Control());
+
+    // print the hypotheses we found
+	top.print();
+}
+  
+ *  \endcode
+ * 
+ * And finally,w e run the actual model. We make an initial hypothesis using MyHypothesis::make (which needs to know the grammar),
+ * we make an MCMCChain, which takes an initial hypothesis, data, and a callback (which top functions as), and then we run it. The c.run
+ * function takes a Control object, which basically specifies the number of steps to run or amount of time to run, the amount of thinning,
+ * etc. When Control() is called with no arguments, it gets its arguments from the command line. This means that automatically, we can give a
+ * commandline arugment like "--time=30s" and this fleet program will run for 30 seconds (times can be in days (d), hours (h), minutes (m), 
+ * seconds (s) or miliseconds (q).
+ * 
+ * Note that there are several inference schemes, and most (including the examples in Models) use ParallelTempering, which seems to work best.
+ * 
+ * As the chain runs, it will place hypotheses into "top" (which defaultly reads the command line argument (e.g. "--top=25") to figure out
+ * how many of the best hypotheses to store. At the end of this code, we call top.print(), which will call the .print() function on everything
+ * in top and show them sorted by posterior probability score (remember above we overwrote MyHypothesis::print in order to have it run the 
+ * program). 
+ * 
+ * At the end of this program, as the Fleet object is destroyed, it will print out some statistics about the total number of MCMC steps, total
+ * runtime, etc. (This can be turned off by setting FleetArgs::print_header=false). 
  * 
  * \section install_sec Inference
  * 
- * Fleet provides a number of simple inference routines to use. These are all displayed in Models/FormalLanguageTheory-Simple. 
+ * Fleet provides a number of simple inference routines to use. Examples of each can be found in Models/Sorting
  * 
  * \subsection step1 Markov-Chain Monte-Carlo
  * \subsection step2 Search (Monte-Carlo Tree Search)
  * \subsection step3 Enumeration 
  * etc...
- * 
- * \section install_sec Typical approach
- * 	- Sample things, store in TopN, then evaluate...
  */
 
 #pragma once 

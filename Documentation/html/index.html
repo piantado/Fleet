@@ -75,11 +75,25 @@ Introduction</h1>
 <p>Fleet is structured to automatically create this virtual machine and a grammar for programs from just the type specification on primitives: a function signature yields a PCFG because the return type can be thought of as a nonterminal in a PCFG and its arguments can be thought of as children (right hand side of a PCFG rule). A PCFG expanded in this way will yield a correctly-typed expression, a program, where each function has arguments of the correct types. Note that in Fleet, these types in the PCFG must be C++ types (intrinsics, classes, or structs), and two types that are the same are always considered to have the same nonterminal type.</p>
 <p>Fleet requires you to define a <a class="el" href="class_grammar.html">Grammar</a> which includes <em>all</em> of the nonterminal types that are used anywhere in the grammar. Fleet makes heavy use of template metaprogramming, which prevents you from ever having to explicitly write the grammar itself, but it does implicitly construct a grammar using these operations.</p>
 <p>In addition, Fleet has a number of built-in operations, which do special things to the virtual machine. These include Builtin::Flip, which stores multiple execution traces; Builtin::If which uses short-circuit evaluation; Builtin::Recurse, which handles recursives hypotheses; and Builtin::X which provides the argument to the expression.</p>
-<h1><a class="anchor" id="install_sec"></a>
-Installation</h1>
+<h2><a class="anchor" id="subsec_install"></a>
+Installation</h2>
 <p>Fleet is based on header-files, and requires no additional dependencies. Command line arguments are processed in CL11.hpp, which is included in src/dependencies/.</p>
 <p>The easiest way to begin using Fleet is to modify one of the examples. For simple rational-rules style inference, try Models/RationalRules; for an example using stochastic operations, try Models/FormalLanguageTheory-Simple.</p>
 <p>Fleet is developed using GCC 9 (version &gt;8 required) and requires C++-17 at present, but this may move to C++-20 in the future.</p>
+<h2><a class="anchor" id="subsec_examples"></a>
+Examples</h2>
+<p>Fleet contains several implemented examples of existing program-induction models, including identical or close variants of:</p>
+<ul>
+<li>The rational rules model (Examples/RationalRules): Goodman, N. D., Tenenbaum, J. B., Feldman, J., &amp; Griffiths, T. L. (2008). A rational analysis of rule‐based concept learning. Cognitive science, 32(1), 108-154.</li>
+<li>The number model (Examples/Number-Simple): Piantadosi, S. T., Tenenbaum, J. B., &amp; Goodman, N. D. (2012). Bootstrapping in a language of thought: A formal model of numerical concept learning. Cognition, 123(2), 199-217.</li>
+<li>The number game (Examples/NumberGame): Tenenbaum, J. B. (1999). A Bayesian framework for concept learning (Doctoral dissertation, Massachusetts Institute of Technology).</li>
+<li><a class="el" href="class_grammar.html">Grammar</a> inference (Examples/GrammarInference-*): Piantadosi, S. T., Tenenbaum, J. B., &amp; Goodman, N. D. (2016). The logical primitives of thought: Empirical foundations for compositional cognitive models. Psychological review, 123(4), 392.</li>
+<li>Formal language theory learning (Examples/FormalLanguageTheory-*): Yang &amp; Piantadosi, forthcoming</li>
+</ul>
+<p>as well as several other examples, including sorting and first order logical theories.</p>
+<h2><a class="anchor" id="subsec_style"></a>
+Style</h2>
+<p>Fleet is currently written using a signle-file, header-only style. This a nonstandard C++ style, but it allows for rapid refactoring and prototyping since declarations and implementations are not in separate files. This style may change in the future because it also leads to higher compilation times.</p>
 <h1><a class="anchor" id="tutorial_sec"></a>
 Tutorial</h1>
 <p>To illustrate how Fleet works, let's walk through a simple example: the key parts of FormalLanguageTheory-Simple. This is a program induction model which takes a collection of strings and tries to find a stochastic program which can explain the observed strings. For example, it might see data like {"ab", "abab", "ababab"} and then infer that the language is (ab)^n.</p>
@@ -145,33 +159,124 @@ Tutorial</h1>
 <p>The "flip()" primitive is somewhat fancy (and Buillt-in) because it is a stochastic operation, which acts like a coin flip, returning true half of the time and false half of the time (Fleet also a built-in biased coin, which takes a coin weight as a parameter). This is fancy because it means that when the program evaluates, there is no longer one single output, but rather a distribution of possible return values. Fleet will hand these back to you as a <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a> of the output type of the function. Here, we have included 10.0 after the <a class="el" href="namespace_builtins.html#afc5e30bbc3268c0f88d8540421d453ff">Builtins::Flip</a>. This is an optional number which can be included for any primitive and it determines the probability in the PCFG of each each expansion (they are summed and renormalized for each nonterminal type). In this case, we need to upweight the probability of Flip in order to make a proper PCFG (e.g. one where no probabliity is given to infinite trees) because otherwise the and,or,not operatiosn above will lead to infinite trees. The default weight for all operations (when its not specified) is 1.0, meaning that 10.0 makes it ten times as likely that a bool will expand to a flip than the others. In general, you will want to upweight the terminal rules (those with no children) in order to keep grammars proper.</p>
 <p>The next operation is Builtin::Recurse, which allows a defined function to call itself recursively.</p>
 <p>Finally, this grammar adds one terminal rule for each character in the global string "alphabet." Here, these characters are converted to strings containing a single character because char is not a nonterminal type in the grammar we defined. Here, the entire collection of characters is given an unnonormalized grammar probabiltiy of 5.0.</p>
-<p>Next, we define a class, MyHypothesis, which defines the program hypotheses we are going to be learning. The simplest form for this is to use something of type <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>, which defines built-in <br  />
-</p>
+<p>Next, we define a class, MyHypothesis, which defines the program hypotheses we are going to be learning. The simplest form for this is to use something of type <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>, which defines built-in functions for computing the prior, copying, proposing, etc. </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="_l_o_t_hypothesis_8h.html">LOTHypothesis.h</a>&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Declare a hypothesis class</span></div>
+<div class="line"><span class="keyword">class </span>MyHypothesis : <span class="keyword">public</span> <a class="code" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt;MyHypothesis,S,S,MyGrammar&gt; {</div>
+<div class="line"><span class="keyword">public</span>:</div>
+<div class="line">    <span class="keyword">using</span> Super =  <a class="code" href="class_l_o_t_hypothesis.html">LOTHypothesis&lt;MyHypothesis,S,S,MyGrammar&gt;</a>;</div>
+<div class="line">    <span class="keyword">using</span> Super::Super; <span class="comment">// inherit the constructors</span></div>
+<div class="line">    </div>
+<div class="line">    <span class="keywordtype">double</span> <a class="code" href="class_l_o_t_hypothesis.html#aba33afbf945d7eed8c7e07d5a0d31562">compute_single_likelihood</a>(<span class="keyword">const</span> datum_t&amp; x)<span class="keyword"> override </span>{   </div>
+<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> out = <a class="code" href="class_callable.html#af10dbf87425f03b7153f8ec230bf9116">call</a>(x.input, <span class="stringliteral">&quot;&quot;</span>); </div>
+<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> log_A = log(alphabet.size());</div>
+<div class="line">        </div>
+<div class="line">        <span class="comment">// Likelihood comes from all of the ways that we can delete from the end and the append to make the observed output. </span></div>
+<div class="line">        <span class="keywordtype">double</span> lp = -<a class="code" href="_numerics_8h.html#af9434aea82baf2f6a5d9b6f9e36db08e">infinity</a>;</div>
+<div class="line">        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; o : out.values()) { <span class="comment">// add up the probability from all of the strings</span></div>
+<div class="line">            lp = <a class="code" href="_numerics_8h.html#a558a1133b9942f8debd559bb9317bca3">logplusexp</a>(lp, o.second + p_delete_append&lt;strgamma,strgamma&gt;(o.first, x.output, log_A));</div>
+<div class="line">        }</div>
+<div class="line">        <span class="keywordflow">return</span> lp;</div>
+<div class="line">    }</div>
+<div class="line">    </div>
+<div class="line">    <span class="keywordtype">void</span> <a class="code" href="class_bayesable.html#a87d5d9481d6a72b017e44b175071fa5e">print</a>(std::string prefix=<span class="stringliteral">&quot;&quot;</span>)<span class="keyword"> override </span>{</div>
+<div class="line">        prefix = prefix+<span class="stringliteral">&quot;#\n#&quot;</span> +  this-&gt;<a class="code" href="class_callable.html#af10dbf87425f03b7153f8ec230bf9116">call</a>(<span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;&lt;err&gt;&quot;</span>).string() + <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line">        <a class="code" href="namespace_fleet_args.html#acf2f80bb2810cea3b3eeef0c4b0edf03">Super::print</a>(prefix); </div>
+<div class="line">    }</div>
+<div class="line">};  </div>
+</div><!-- fragment --><p>Here, MyHypothesis uses the <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">curiously recurring template pattern</a> to pass itself, so that it knows how to make copies of itself. The other template arguments ar ethe input and output types of its function (string to string) and the <a class="el" href="class_grammar.html">Grammar</a> type it uses (MyGrammar). Then, we inherit <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>' constructors (via Super::Super). Primarily, what we have to define here is the compute_single_likelihood function, which defines the likelihood of a single observed data string. To compute this, we first call the function (<a class="el" href="class_callable.html#af10dbf87425f03b7153f8ec230bf9116" title="Run the virtual machine on input x, and marginalize over execution paths to return a distribution on ...">LOTHypothesis::call</a>) on the observed input. This returns a DiscreteDistribution&lt;std::string&gt; of outputs. Note that the outputs which return errors are mapped to the second argument to call, in this case the empty stirng. Then, we loop over outputs and add up the likelihood of the observed output x.ouput given the program output o.first weighted by the program's probability of that output o.second. This part uses p_delete_append, which is a string edit likelihood that assigns nonzero probability of any string being corrupted to any other. It computes this by imagining that the output string was corrupted by noise that deleted from the end of the string, and then appended, where both operations take place with geometric probabilities. These probabilities are passed as template arguments since that lets us compute some key pieces of this at compile time, yielding much faster code (this is a hot part of any string-based inference model).</p>
+<p>We also define a print function which allows us to say how we print out the program hypothesis. Defaultly, any <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a> will just print (using the format strings like "pair(%s,%s)" above) but here we would like to also show the distribution of outputs when we print, so this prints a line with a <a class="el" href="class_callable.html#af10dbf87425f03b7153f8ec230bf9116" title="Run the virtual machine on input x, and marginalize over execution paths to return a distribution on ...">LOTHypothesis::call</a> (which is a <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>) and then a .string() call on the returned value.</p>
+<p>The last piece of code is the actual running: Here, we define a Fleet object, which basically manages the input/output. We tell it that we want to be able to specify the alphabet and a string for the data (comma separated strings) on the command line. We create a grammar and note that this must happend after Fleet.initialize, since creating the grammar object needs to know the alphabet. Then, we create a <a class="el" href="class_top_n.html">TopN</a> object to store the top hypotheses we have found. This is basically a sorted collection of the best hypotheses found so far. We set a few control aspects of our VirtualMachine (e.g. how many steps we should run each program for, how many outputs we will consider for each program). We convert our datastr (specified on the command line) to type MyHypothesis::data_t, and do a check on whether the data contains anything not in the alphabet.</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="_top_8h.html">Top.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="_parallel_tempering_8h.html">ParallelTempering.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="_fleet_8h.html">Fleet.h</a>&quot;</span> </div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="_builtins_8h.html">Builtins.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="_v_m_s_runtime_error_8h.html">VMSRuntimeError.h</a>&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv){ </div>
+<div class="line">    </div>
+<div class="line">    <span class="comment">// define a Fleet object</span></div>
+<div class="line">    Fleet fleet(<span class="stringliteral">&quot;A simple, one-factor formal language learner&quot;</span>);</div>
+<div class="line">    fleet.add_option(<span class="stringliteral">&quot;-a,--alphabet&quot;</span>, alphabet, <span class="stringliteral">&quot;Alphabet we will use&quot;</span>);    <span class="comment">// add my own args</span></div>
+<div class="line">    fleet.add_option(<span class="stringliteral">&quot;-d,--data&quot;</span>,     datastr, <span class="stringliteral">&quot;Comma separated list of input data strings&quot;</span>);   </div>
+<div class="line">    fleet.initialize(argc, argv);</div>
+<div class="line">    </div>
+<div class="line">    <span class="comment">// create a grammar</span></div>
+<div class="line">    MyGrammar grammar;</div>
+<div class="line">    </div>
+<div class="line">    <span class="comment">// top stores the top hypotheses we have found</span></div>
+<div class="line">    <a class="code" href="class_top_n.html">TopN&lt;MyHypothesis&gt;</a> top;</div>
+<div class="line">    </div>
+<div class="line">    <span class="comment">// set these global variables to make VMS a little faster, less accurate</span></div>
+<div class="line">    <a class="code" href="struct_virtual_machine_control.html#a06c58af00696ae605591479ca1d7ccc9">VirtualMachineControl::MAX_STEPS</a> = 256;</div>
+<div class="line">    <a class="code" href="struct_virtual_machine_control.html#a0f7fc535fbcbc25b9be7a377aad1b283">VirtualMachineControl::MAX_OUTPUTS</a> = 256;</div>
+<div class="line">    </div>
+<div class="line">    <span class="comment">// mydata stores the data for the inference model</span></div>
+<div class="line">    <span class="keyword">auto</span> mydata = string_to&lt;MyHypothesis::data_t&gt;(datastr);</div>
+<div class="line">        </div>
+<div class="line">    assert(not <a class="code" href="_strings_8h.html#a9e236149ce0f5aa64d809fcca5cf1c27">contains</a>(alphabet, <span class="stringliteral">&quot;:&quot;</span>));<span class="comment">// can&#39;t have these or else our string_to doesn&#39;t work</span></div>
+<div class="line">    assert(not <a class="code" href="_strings_8h.html#a9e236149ce0f5aa64d809fcca5cf1c27">contains</a>(alphabet, <span class="stringliteral">&quot;,&quot;</span>));</div>
+<div class="line">    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; di : mydata) {</div>
+<div class="line">        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; c: di.output) {</div>
+<div class="line">            assert(<a class="code" href="_strings_8h.html#a9e236149ce0f5aa64d809fcca5cf1c27">contains</a>(alphabet, c));</div>
+<div class="line">        }</div>
+<div class="line">    }</div>
+<div class="line">    </div>
+<div class="line">    <span class="comment">// Run</span></div>
+<div class="line">    top.<a class="code" href="class_top_n.html#a90472852f225e5b851446e4b7ced4856">print_best</a> = <span class="keyword">true</span>; <span class="comment">// print out each best hypothesis you find</span></div>
+<div class="line">    <span class="keyword">auto</span> h0 = MyHypothesis::make(&amp;grammar);</div>
+<div class="line">    <a class="code" href="class_m_c_m_c_chain.html">MCMCChain</a> c(h0, &amp;mydata, top);</div>
+<div class="line">    <span class="comment">//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!</span></div>
+<div class="line">    c.run(<a class="code" href="struct_control.html">Control</a>());</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// print the hypotheses we found</span></div>
+<div class="line">    top.<a class="code" href="class_top_n.html#a5064ec2e4e9f1defdc3cb62d9b7ddd00">print</a>();</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>And finally,w e run the actual model. We make an initial hypothesis using MyHypothesis::make (which needs to know the grammar), we make an <a class="el" href="class_m_c_m_c_chain.html">MCMCChain</a>, which takes an initial hypothesis, data, and a callback (which top functions as), and then we run it. The c.run function takes a <a class="el" href="struct_control.html">Control</a> object, which basically specifies the number of steps to run or amount of time to run, the amount of thinning, etc. When <a class="el" href="struct_control.html">Control()</a> is called with no arguments, it gets its arguments from the command line. This means that automatically, we can give a commandline arugment like "--time=30s" and this fleet program will run for 30 seconds (times can be in days (d), hours (h), minutes (m), seconds (s) or miliseconds (q).</p>
+<p>Note that there are several inference schemes, and most (including the examples in Models) use <a class="el" href="class_parallel_tempering.html">ParallelTempering</a>, which seems to work best.</p>
+<p>As the chain runs, it will place hypotheses into "top" (which defaultly reads the command line argument (e.g. "--top=25") to figure out how many of the best hypotheses to store. At the end of this code, we call <a class="el" href="namespace_fleet_args.html#acf2f80bb2810cea3b3eeef0c4b0edf03">top.print()</a>, which will call the .<a class="el" href="namespace_fleet_args.html#acf2f80bb2810cea3b3eeef0c4b0edf03">print()</a> function on everything in top and show them sorted by posterior probability score (remember above we overwrote MyHypothesis::print in order to have it run the program).</p>
+<p>At the end of this program, as the Fleet object is destroyed, it will print out some statistics about the total number of MCMC steps, total runtime, etc. (This can be turned off by setting <a class="el" href="namespace_fleet_args.html#acb1d87c67d763d1edf83ebe1377c948e">FleetArgs::print_header</a>=false).</p>
 <h1><a class="anchor" id="install_sec"></a>
-Installation</h1>
-<p>Fleet provides a number of simple inference routines to use. These are all displayed in Models/FormalLanguageTheory-Simple.</p>
+Inference</h1>
+<p>Fleet provides a number of simple inference routines to use. Examples of each can be found in Models/Sorting</p>
 <h2><a class="anchor" id="step1"></a>
 Markov-Chain Monte-Carlo</h2>
 <h2><a class="anchor" id="step2"></a>
 Search (Monte-Carlo Tree Search)</h2>
 <h2><a class="anchor" id="step3"></a>
 Enumeration</h2>
-<p>etc...</p>
-<h1><a class="anchor" id="install_sec"></a>
-Installation</h1>
-<ul>
-<li>Sample things, store in <a class="el" href="class_top_n.html">TopN</a>, then evaluate... </li>
-</ul>
+<p>etc... </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
+<div class="ttc" id="aclass_l_o_t_hypothesis_html_aba33afbf945d7eed8c7e07d5a0d31562"><div class="ttname"><a href="class_l_o_t_hypothesis.html#aba33afbf945d7eed8c7e07d5a0d31562">LOTHypothesis::compute_single_likelihood</a></div><div class="ttdeci">virtual double compute_single_likelihood(const datum_t &amp;datum) override</div><div class="ttdef"><b>Definition:</b> LOTHypothesis.h:120</div></div>
+<div class="ttc" id="aclass_callable_html_af10dbf87425f03b7153f8ec230bf9116"><div class="ttname"><a href="class_callable.html#af10dbf87425f03b7153f8ec230bf9116">Callable&lt; _input_t, _output_t, _Grammar_t::VirtualMachineState_t &gt;::call</a></div><div class="ttdeci">virtual DiscreteDistribution&lt; _output_t &gt; call(const _input_t x, const _output_t err=_output_t {}, ProgramLoader *loader=nullptr)</div><div class="ttdoc">Run the virtual machine on input x, and marginalize over execution paths to return a distribution on ...</div><div class="ttdef"><b>Definition:</b> Callable.h:45</div></div>
+<div class="ttc" id="a_numerics_8h_html_af9434aea82baf2f6a5d9b6f9e36db08e"><div class="ttname"><a href="_numerics_8h.html#af9434aea82baf2f6a5d9b6f9e36db08e">infinity</a></div><div class="ttdeci">constexpr double infinity</div><div class="ttdef"><b>Definition:</b> Numerics.h:17</div></div>
+<div class="ttc" id="a_top_8h_html"><div class="ttname"><a href="_top_8h.html">Top.h</a></div><div class="ttdoc">Check if a type has a posterior function or not.</div></div>
+<div class="ttc" id="a_fleet_8h_html"><div class="ttname"><a href="_fleet_8h.html">Fleet.h</a></div></div>
 <div class="ttc" id="a_grammar_8h_html"><div class="ttname"><a href="_grammar_8h.html">Grammar.h</a></div><div class="ttdoc">A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as...</div></div>
+<div class="ttc" id="a_builtins_8h_html"><div class="ttname"><a href="_builtins_8h.html">Builtins.h</a></div></div>
+<div class="ttc" id="anamespace_fleet_args_html_acf2f80bb2810cea3b3eeef0c4b0edf03"><div class="ttname"><a href="namespace_fleet_args.html#acf2f80bb2810cea3b3eeef0c4b0edf03">FleetArgs::print</a></div><div class="ttdeci">unsigned long print</div><div class="ttdef"><b>Definition:</b> FleetArgs.h:33</div></div>
+<div class="ttc" id="a_strings_8h_html_a9e236149ce0f5aa64d809fcca5cf1c27"><div class="ttname"><a href="_strings_8h.html#a9e236149ce0f5aa64d809fcca5cf1c27">contains</a></div><div class="ttdeci">bool contains(const std::string &amp;s, const std::string &amp;x)</div><div class="ttdef"><b>Definition:</b> Strings.h:116</div></div>
+<div class="ttc" id="a_parallel_tempering_8h_html"><div class="ttname"><a href="_parallel_tempering_8h.html">ParallelTempering.h</a></div><div class="ttdoc">This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp...</div></div>
+<div class="ttc" id="a_v_m_s_runtime_error_8h_html"><div class="ttname"><a href="_v_m_s_runtime_error_8h.html">VMSRuntimeError.h</a></div></div>
+<div class="ttc" id="aclass_l_o_t_hypothesis_html"><div class="ttname"><a href="class_l_o_t_hypothesis.html">LOTHypothesis</a></div><div class="ttdef"><b>Definition:</b> LOTHypothesis.h:35</div></div>
+<div class="ttc" id="astruct_virtual_machine_control_html_a06c58af00696ae605591479ca1d7ccc9"><div class="ttname"><a href="struct_virtual_machine_control.html#a06c58af00696ae605591479ca1d7ccc9">VirtualMachineControl::MAX_STEPS</a></div><div class="ttdeci">static unsigned long MAX_STEPS</div><div class="ttdef"><b>Definition:</b> VirtualMachineControl.h:30</div></div>
 <div class="ttc" id="a_singleton_8h_html"><div class="ttname"><a href="_singleton_8h.html">Singleton.h</a></div></div>
 <div class="ttc" id="aclass_singleton_html"><div class="ttname"><a href="class_singleton.html">Singleton</a></div><div class="ttdef"><b>Definition:</b> Singleton.h:6</div></div>
+<div class="ttc" id="aclass_top_n_html_a5064ec2e4e9f1defdc3cb62d9b7ddd00"><div class="ttname"><a href="class_top_n.html#a5064ec2e4e9f1defdc3cb62d9b7ddd00">TopN::print</a></div><div class="ttdeci">void print(std::string prefix=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> Top.h:258</div></div>
+<div class="ttc" id="astruct_virtual_machine_control_html_a0f7fc535fbcbc25b9be7a377aad1b283"><div class="ttname"><a href="struct_virtual_machine_control.html#a0f7fc535fbcbc25b9be7a377aad1b283">VirtualMachineControl::MAX_OUTPUTS</a></div><div class="ttdeci">static unsigned long MAX_OUTPUTS</div><div class="ttdef"><b>Definition:</b> VirtualMachineControl.h:33</div></div>
 <div class="ttc" id="aclass_v_m_s_runtime_error_html"><div class="ttname"><a href="class_v_m_s_runtime_error.html">VMSRuntimeError</a></div><div class="ttdef"><b>Definition:</b> VMSRuntimeError.h:13</div></div>
 <div class="ttc" id="aclass_grammar_html"><div class="ttname"><a href="class_grammar.html">Grammar</a></div><div class="ttdef"><b>Definition:</b> Grammar.h:39</div></div>
+<div class="ttc" id="aclass_top_n_html"><div class="ttname"><a href="class_top_n.html">TopN</a></div><div class="ttdef"><b>Definition:</b> Top.h:37</div></div>
+<div class="ttc" id="astruct_control_html"><div class="ttname"><a href="struct_control.html">Control</a></div><div class="ttdef"><b>Definition:</b> Control.h:23</div></div>
 <div class="ttc" id="a_strings_8h_html_a1bb5ec0bee0c8456e3fcc87cc012d055"><div class="ttname"><a href="_strings_8h.html#a1bb5ec0bee0c8456e3fcc87cc012d055">Q</a></div><div class="ttdeci">std::string Q(std::string x)</div><div class="ttdef"><b>Definition:</b> Strings.h:306</div></div>
+<div class="ttc" id="aclass_m_c_m_c_chain_html"><div class="ttname"><a href="class_m_c_m_c_chain.html">MCMCChain</a></div><div class="ttdef"><b>Definition:</b> MCMCChain.h:14</div></div>
 <div class="ttc" id="aclass_grammar_html_af43a4d8c3c2c7df80a916a5219b7232c"><div class="ttname"><a href="class_grammar.html#af43a4d8c3c2c7df80a916a5219b7232c">Grammar::add_terminal</a></div><div class="ttdeci">void add_terminal(std::string fmt, T x, double p=1.0, Op o=Op::Standard, int a=0)</div><div class="ttdoc">Add a variable that is NOT A function – simplification for adding alphabets etc. This just wraps stuf...</div><div class="ttdef"><b>Definition:</b> Grammar.h:362</div></div>
+<div class="ttc" id="a_l_o_t_hypothesis_8h_html"><div class="ttname"><a href="_l_o_t_hypothesis_8h.html">LOTHypothesis.h</a></div><div class="ttdoc">A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re...</div></div>
 <div class="ttc" id="aclass_grammar_html_a07ae62095abaf00b3da2fc5065c941bf"><div class="ttname"><a href="class_grammar.html#a07ae62095abaf00b3da2fc5065c941bf">Grammar::add</a></div><div class="ttdeci">void add(std::string fmt, Builtin&lt; T, args... &gt; b, double p=1.0, int a=0)</div><div class="ttdef"><b>Definition:</b> Grammar.h:283</div></div>
+<div class="ttc" id="aclass_top_n_html_a90472852f225e5b851446e4b7ced4856"><div class="ttname"><a href="class_top_n.html#a90472852f225e5b851446e4b7ced4856">TopN::print_best</a></div><div class="ttdeci">bool print_best</div><div class="ttdef"><b>Definition:</b> Top.h:43</div></div>
+<div class="ttc" id="a_numerics_8h_html_a558a1133b9942f8debd559bb9317bca3"><div class="ttname"><a href="_numerics_8h.html#a558a1133b9942f8debd559bb9317bca3">logplusexp</a></div><div class="ttdeci">T logplusexp(const T a, const T b)</div><div class="ttdef"><b>Definition:</b> Numerics.h:87</div></div>
+<div class="ttc" id="aclass_bayesable_html_a87d5d9481d6a72b017e44b175071fa5e"><div class="ttname"><a href="class_bayesable.html#a87d5d9481d6a72b017e44b175071fa5e">Bayesable&lt; Args... &gt;::print</a></div><div class="ttdeci">virtual void print(std::string prefix=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> Bayesable.h:194</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

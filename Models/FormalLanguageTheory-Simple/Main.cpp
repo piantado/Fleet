@@ -74,7 +74,7 @@ public:
 	double compute_single_likelihood(const datum_t& x) override {	
 		
 		// This would be a normal call:
-		const auto out = call(x.input, "<err>"); 
+		const auto out = call(x.input, ""); 
 
 		// Or we can call and get back a list of completed virtual machine states
 		// these store a bit more information, like runtime counts and haven't computer the
