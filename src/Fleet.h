@@ -45,10 +45,22 @@
  * \section install_sec Tutorial 
  * 
  * To illustrate how Fleet works, let's walk through a simple example: the key parts of FormalLanguageTheory-Simple. This is
- * a program induction model which takes a collection of strings
+ * a program induction model which takes a collection of strings and tries to find a stochastic program which can explain
+ * the observed strings. For example, it might see data like {"ab", "abab", "ababab"} and then infer that the language is 
+ * (ab)^n. 
+ * 
+ * Let's first walk through the grammar definition. Here, we first import Grammar.h and also Singleton.h. Singleton is a 
+ * design pattern that permits only one copy of an object to be constructed, which is used here to ensure that we only
+ * have one grammar (and aren't, e.g. passing copies of it around). Typical to Fleet's code, we define our own grammar as
+ * MyGrammar. The first two template arguments 
  * 
  * \code{.py}
  * 
+ * 
+
+#include <string>
+using S = std::string; // just for convenience
+ 
 #include "Grammar.h"
 #include "Singleton.h"
 
@@ -58,11 +70,6 @@ public:
 	MyGrammar() {
 		add("tail(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); });
 		add("head(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
-//
-//		add("pair(%s,%s)",   +[](S a, S b) -> S { 
-//			if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError();
-//			else                     				 return a+b; 
-//		});
 
 		add_vms<S,S,S>("pair(%s,%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
 			S b = vms->getpop<S>();

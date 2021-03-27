@@ -82,8 +82,12 @@ Installation</h1>
 <p>Fleet is developed using GCC 9 (version &gt;8 required) and requires C++-17 at present, but this may move to C++-20 in the future.</p>
 <h1><a class="anchor" id="install_sec"></a>
 Installation</h1>
-<p>To illustrate how Fleet works, let's walk through a simple example: the key parts of FormalLanguageTheory-Simple. This is a program induction model which takes a collection of strings</p>
-<div class="fragment"><div class="line"><span class="comment">#include &quot;Grammar.h&quot;</span></div>
+<p>To illustrate how Fleet works, let's walk through a simple example: the key parts of FormalLanguageTheory-Simple. This is a program induction model which takes a collection of strings and tries to find a stochastic program which can explain the observed strings. For example, it might see data like {"ab", "abab", "ababab"} and then infer that the language is (ab)^n.</p>
+<p>Let's first walk through the grammar definition. Here, we first import <a class="el" href="_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as...">Grammar.h</a> and also <a class="el" href="_singleton_8h.html">Singleton.h</a>. <a class="el" href="class_singleton.html">Singleton</a> is a design pattern that permits only one copy of an object to be constructed, which is used here to ensure that we only have one grammar (and aren't, e.g. passing copies of it around). Typical to Fleet's code, we define our own grammar as MyGrammar. The first two template arguments</p>
+<div class="fragment"><div class="line"><span class="comment">#include &lt;string&gt;</span></div>
+<div class="line">using S = std::string; // just <span class="keywordflow">for</span> convenience</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">#include &quot;Grammar.h&quot;</span></div>
 <div class="line"><span class="comment">#include &quot;Singleton.h&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">class </span>MyGrammar : public Grammar&lt;S,S,  S,bool&gt;,</div>
@@ -92,11 +96,6 @@ Installation</h1>
 <div class="line">    MyGrammar() {</div>
 <div class="line">        add(<span class="stringliteral">&quot;tail(%s)&quot;</span>,      +[](S s)      -&gt; S { <span class="keywordflow">return</span> (s.empty() ? S(<span class="stringliteral">&quot;&quot;</span>) : s.substr(1,S::npos)); });</div>
 <div class="line">        add(<span class="stringliteral">&quot;head(%s)&quot;</span>,      +[](S s)      -&gt; S { <span class="keywordflow">return</span> (s.empty() ? S(<span class="stringliteral">&quot;&quot;</span>) : S(1,s.at(0))); });</div>
-<div class="line">//</div>
-<div class="line">//      add(<span class="stringliteral">&quot;pair(%s,%s)&quot;</span>,   +[](S a, S b) -&gt; S { </div>
-<div class="line">//          if(a.length() + b.length() &gt; MAX_LENGTH) throw <a class="code" href="class_v_m_s_runtime_error.html">VMSRuntimeError</a>();</div>
-<div class="line">//          <span class="keywordflow">else</span>                                     <span class="keywordflow">return</span> a+b; </div>
-<div class="line">//      });</div>
 <div class="line"> </div>
 <div class="line">        add_vms&lt;S,S,S&gt;(<span class="stringliteral">&quot;pair(%s,%s)&quot;</span>,  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {</div>
 <div class="line">            S b = vms-&gt;getpop&lt;S&gt;();</div>

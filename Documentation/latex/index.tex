@@ -13,10 +13,15 @@ Fleet is based on header-\/files, and requires no additional dependencies. Comma
 The easiest way to begin using Fleet is to modify one of the examples. For simple rational-\/rules style inference, try Models/\+Rational\+Rules; for an example using stochastic operations, try Models/\+Formal\+Language\+Theory-\/\+Simple.
 
 Fleet is developed using G\+CC 9 (version $>$8 required) and requires C++-\/17 at present, but this may move to C++-\/20 in the future.\hypertarget{index_install_sec}{}\doxysection{Installation}\label{index_install_sec}
-To illustrate how Fleet works, let\textquotesingle{}s walk through a simple example\+: the key parts of Formal\+Language\+Theory-\/\+Simple. This is a program induction model which takes a collection of strings
+To illustrate how Fleet works, let\textquotesingle{}s walk through a simple example\+: the key parts of Formal\+Language\+Theory-\/\+Simple. This is a program induction model which takes a collection of strings and tries to find a stochastic program which can explain the observed strings. For example, it might see data like \{\char`\"{}ab\char`\"{}, \char`\"{}abab\char`\"{}, \char`\"{}ababab\char`\"{}\} and then infer that the language is (ab)$^\wedge$n.
+
+Let\textquotesingle{}s first walk through the grammar definition. Here, we first import \mbox{\hyperlink{_grammar_8h}{Grammar.\+h}} and also \mbox{\hyperlink{_singleton_8h}{Singleton.\+h}}. \mbox{\hyperlink{class_singleton}{Singleton}} is a design pattern that permits only one copy of an object to be constructed, which is used here to ensure that we only have one grammar (and aren\textquotesingle{}t, e.\+g. passing copies of it around). Typical to Fleet\textquotesingle{}s code, we define our own grammar as My\+Grammar. The first two template arguments
 
 
 \begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{\#include <string>}}
+\DoxyCodeLine{using S = std::string; // just \textcolor{keywordflow}{for} convenience}
+\DoxyCodeLine{ }
 \DoxyCodeLine{\textcolor{comment}{\#include "Grammar.h"}}
 \DoxyCodeLine{\textcolor{comment}{\#include "Singleton.h"}}
 \DoxyCodeLine{}
@@ -26,11 +31,6 @@ To illustrate how Fleet works, let\textquotesingle{}s walk through a simple exam
 \DoxyCodeLine{    MyGrammar() \{}
 \DoxyCodeLine{        add(\textcolor{stringliteral}{"tail(\%s)"},      +[](S s)      -\/> S \{ \textcolor{keywordflow}{return} (s.empty() ? S(\textcolor{stringliteral}{""}) : s.substr(1,S::npos)); \});}
 \DoxyCodeLine{        add(\textcolor{stringliteral}{"head(\%s)"},      +[](S s)      -\/> S \{ \textcolor{keywordflow}{return} (s.empty() ? S(\textcolor{stringliteral}{""}) : S(1,s.at(0))); \});}
-\DoxyCodeLine{//}
-\DoxyCodeLine{//      add(\textcolor{stringliteral}{"pair(\%s,\%s)"},   +[](S a, S b) -\/> S \{ }
-\DoxyCodeLine{//          if(a.length() + b.length() > MAX\_LENGTH) throw \mbox{\hyperlink{class_v_m_s_runtime_error}{VMSRuntimeError}}();}
-\DoxyCodeLine{//          \textcolor{keywordflow}{else}                                     \textcolor{keywordflow}{return} a+b; }
-\DoxyCodeLine{//      \});}
 \DoxyCodeLine{}
 \DoxyCodeLine{        add\_vms<S,S,S>(\textcolor{stringliteral}{"pair(\%s,\%s)"},  new std::function(+[](MyGrammar::VirtualMachineState\_t* vms, int) \{}
 \DoxyCodeLine{            S b = vms-\/>getpop<S>();}
