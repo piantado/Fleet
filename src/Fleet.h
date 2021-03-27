@@ -56,7 +56,7 @@
  * strings) and the next two are (variadic) template arguments for all of the nonterminal types used by the grammar (here, 
  * strings and bools). 
  * 
- * \code{.cpp}
+ * \code{.c}
 
 #include <string>
 using S = std::string; // just for convenience
@@ -164,7 +164,7 @@ public:
  * 
  * Next, we define a class, MyHypothesis, which defines the program hypotheses we are going to be learning. The simplest form for
  * this is to use something of type LOTHypothesis, which defines built-in  
- * \code{.cpp}
+ * \code{.c}
  
 #include "LOTHypothesis.h"
 
