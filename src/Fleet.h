@@ -52,7 +52,9 @@
  * Let's first walk through the grammar definition. Here, we first import Grammar.h and also Singleton.h. Singleton is a 
  * design pattern that permits only one copy of an object to be constructed, which is used here to ensure that we only
  * have one grammar (and aren't, e.g. passing copies of it around). Typical to Fleet's code, we define our own grammar as
- * MyGrammar. The first two template arguments 
+ * MyGrammar. The first two template arguments are the input and output types of the function we are learning (here, strings to
+ * strings) and the next two are (variadic) template arguments for all of the nonterminal types used by the grammar (here, 
+ * strings and bools). 
  * 
  * \code{.py}
  * 
@@ -68,29 +70,41 @@ class MyGrammar : public Grammar<S,S,  S,bool>,
 				  public Singleton<MyGrammar> {
 public:
 	MyGrammar() {
+	    // compute the tail of a string: tail(wxyz) -> xyz
 		add("tail(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); });
+
+	    // compute the head of a string: tail(wxyz) -> w
 		add("head(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
 
-		add_vms<S,S,S>("pair(%s,%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
-			S b = vms->getpop<S>();
-			S& a = vms->stack<S>().topref();
-			
+	    // concatenate strings pair(wx,yz) -> wxyz
+		add("pair(%s,%s)",   +[](S a, S b) -> S { 
 			if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError();
-			else 									 a += b; 
-		}));
+			else                     				 return a+b; 
+		});
 
+		// the empty string
 		add("\u00D8",        +[]()         -> S          { return S(""); });
+		  
+		// check if two strings are equal
 		add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; });
 
+
+		// logical operations
 		add("and(%s,%s)",    Builtins::And<MyGrammar>);
 		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
 		add("not(%s)",       Builtins::Not<MyGrammar>);
-		
-		add("x",             Builtins::X<MyGrammar>);
 		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
+		
+		// access the argument x to the program (defined to a string type above)
+		add("x",             Builtins::X<MyGrammar>);
+		 
+		// random coin flip (this does something fancy in evaluation)
 		add("flip()",        Builtins::Flip<MyGrammar>, 10.0);
+		 
+		// recursion
 		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
-			
+		
+		// add all the characters in our alphabet (a global variable)
 		for(const char c : alphabet) {
 			add_terminal( Q(S(1,c)), S(1,c), 5.0/alphabet.length());
 		}
@@ -98,6 +112,36 @@ public:
 	}
 };
  * \endcode
+ * 
+ * Then, in the constructor MyGrammar(), we call the member function Grammar::add which takes two argumetns: a string 
+ * for how to show the function, and a lambda expression for the function itself. For example, the first function computes
+ * the tail of a string (everything except the first character), which shows up in printed programs as "tail(%s)" (where
+ * the %s is replaced by the arguments to the function. Note that in Fleet, you must include as many %s as there are
+ * arugments, meaning that all arguments must be shown. 
+ * 
+ * The second argument to Grammar::add is a lambda expression which computes and returns the tail of a string. Note that
+ * this function, as is generally the case in Fleet, attempts to be relatively fault-tolerant rather than throwing exceptions
+ * because that's faster. In this case, we just define the tail of an empty string to be the empty string, rather than an error. 
+ * 
+ * The functions for computing the head of a string is defined similarly. The "pair(%s,%s)" function is meant to concatenate strings
+ * but it actually needs to do a little checking because otherwise it's very easy to write programs which create exponentially
+ * long strings. So this function checks if its two argument lengths are above a global variable MAX_LENGTH and if so it throws a
+ * VMSRuntimeError (VirtualMachineState error) which is caught and handled internally in Fleet. (Note that in the actual Model code, 
+ * there is a more complex version of pair which is a bit faster, as it modifies strings stored in the VirtualMachineState stack rather
+ * than passing them around, as here). 
+ *
+ * Then, we have a function which takes no arguments and only returns the empty string. Here, we have given it a Unicode name \u00D8
+ * which will appear/render in most terminals as epsilon (a convention for the empty string in formal language theory). 
+ * 
+ * The "(%s==%s)" function computes whether two strings are equal and returns a bool. Note that generally it is helpful to enclose
+ * expressions like this in parentheses (i.e. "(...)") because without this, the printed programs can be ambiguous. 
+ * 
+ * We then add built-in logical operations. Note that we do *not* define our own versions of these functions with lambda 
+ * expressions. We certainly could, but in most computer science applications we want the versions of these functions which involve
+ * "short circuit" evaluation. For example, and(x,y) won't evaluate y if x is false, which for us ends up with a measurably
+ * faster implementation. This is maybe most important though for "if(%s,%s,%s)", 
+ * 
+ * -> Defined to be relativel fault-tolerant, although we can throw exceptions 
  * 
  * 
  * \section install_sec Inference
