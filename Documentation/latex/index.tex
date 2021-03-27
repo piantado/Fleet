@@ -20,7 +20,7 @@ Fleet contains several implemented examples of existing program-\/induction mode
 \item The rational rules model (Examples/\+Rational\+Rules)\+: Goodman, N. D., Tenenbaum, J. B., Feldman, J., \& Griffiths, T. L. (2008). A rational analysis of rule‐based concept learning. Cognitive science, 32(1), 108-\/154.
 \item The number model (Examples/\+Number-\/\+Simple)\+: Piantadosi, S. T., Tenenbaum, J. B., \& Goodman, N. D. (2012). Bootstrapping in a language of thought\+: A formal model of numerical concept learning. Cognition, 123(2), 199-\/217.
 \item The number game (Examples/\+Number\+Game)\+: Tenenbaum, J. B. (1999). A Bayesian framework for concept learning (Doctoral dissertation, Massachusetts Institute of Technology).
-\item \mbox{\hyperlink{class_grammar}{Grammar}} inference (Examples/\+Grammar\+Inference-\/$\ast$)\+: Piantadosi, S. T., Tenenbaum, J. B., \& Goodman, N. D. (2016). The logical primitives of thought\+: Empirical foundations for compositional cognitive models. Psychological review, 123(4), 392.
+\item Inference of a grammar (Examples/\+Grammar\+Inference-\/$\ast$)\+: Piantadosi, S. T., Tenenbaum, J. B., \& Goodman, N. D. (2016). The logical primitives of thought\+: Empirical foundations for compositional cognitive models. Psychological review, 123(4), 392.
 \item Formal language theory learning (Examples/\+Formal\+Language\+Theory-\/$\ast$)\+: Yang \& Piantadosi, forthcoming
 \end{DoxyItemize}
 
@@ -192,14 +192,22 @@ The last piece of code is the actual running\+: Here, we define a Fleet object, 
 \end{DoxyCode}
 
 
-And finally,w e run the actual model. We make an initial hypothesis using My\+Hypothesis\+::make (which needs to know the grammar), we make an \mbox{\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}}, which takes an initial hypothesis, data, and a callback (which top functions as), and then we run it. The c.\+run function takes a \mbox{\hyperlink{struct_control}{Control}} object, which basically specifies the number of steps to run or amount of time to run, the amount of thinning, etc. When \mbox{\hyperlink{struct_control}{Control()}} is called with no arguments, it gets its arguments from the command line. This means that automatically, we can give a commandline arugment like \char`\"{}-\/-\/time=30s\char`\"{} and this fleet program will run for 30 seconds (times can be in days (d), hours (h), minutes (m), seconds (s) or miliseconds (q).
+And finally, we run the actual model. We make an initial hypothesis using My\+Hypothesis\+::make (which needs to know the grammar), we make an \mbox{\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}}, which takes an initial hypothesis, data, and a callback (which top functions as), and then we run it. The c.\+run function takes a \mbox{\hyperlink{struct_control}{Control}} object, which basically specifies the number of steps to run or amount of time to run, the amount of thinning, etc. When \mbox{\hyperlink{struct_control}{Control()}} is called with no arguments, it gets its arguments from the command line. This means that automatically, we can give a commandline arugment like \char`\"{}-\/-\/time=30s\char`\"{} and this fleet program will run for 30 seconds (times can be in days (d), hours (h), minutes (m), seconds (s) or miliseconds (q).
 
 Note that there are several inference schemes, and most (including the examples in Models) use \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}}, which seems to work best.
 
 As the chain runs, it will place hypotheses into \char`\"{}top\char`\"{} (which defaultly reads the command line argument (e.\+g. \char`\"{}-\/-\/top=25\char`\"{}) to figure out how many of the best hypotheses to store. At the end of this code, we call \mbox{\hyperlink{namespace_fleet_args_acf2f80bb2810cea3b3eeef0c4b0edf03}{top.\+print()}}, which will call the .\mbox{\hyperlink{namespace_fleet_args_acf2f80bb2810cea3b3eeef0c4b0edf03}{print()}} function on everything in top and show them sorted by posterior probability score (remember above we overwrote My\+Hypothesis\+::print in order to have it run the program).
 
 At the end of this program, as the Fleet object is destroyed, it will print out some statistics about the total number of M\+C\+MC steps, total runtime, etc. (This can be turned off by setting \mbox{\hyperlink{namespace_fleet_args_acb1d87c67d763d1edf83ebe1377c948e}{Fleet\+Args\+::print\+\_\+header}}=false).\hypertarget{index_install_sec}{}\doxysection{Inference}\label{index_install_sec}
-Fleet provides a number of simple inference routines to use. Examples of each can be found in Models/\+Sorting\hypertarget{index_step1}{}\doxysubsection{Markov-\/\+Chain Monte-\/\+Carlo}\label{index_step1}
-\hypertarget{index_step2}{}\doxysubsection{Search (\+Monte-\/\+Carlo Tree Search)}\label{index_step2}
-\hypertarget{index_step3}{}\doxysubsection{Enumeration}\label{index_step3}
-etc... 
+Fleet provides a number of simple inference routines to use. Examples of each can be found in Models/\+Sorting
+
+
+\begin{DoxyItemize}
+\item Markov-\/\+Chain Monte-\/\+Carlo
+\item M\+C\+MC With Parallel Tempering
+\item Monte-\/\+Carlo Tree search
+\item Beam search
+\item Enumeration (with a fast, fancy implementation)
+\end{DoxyItemize}
+
+Generally, we find that \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}} is the fastest and most effective way to search these spaces of programs. 

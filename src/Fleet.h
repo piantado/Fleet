@@ -49,7 +49,7 @@
  * 	- The rational rules model (Examples/RationalRules): Goodman, N. D., Tenenbaum, J. B., Feldman, J., & Griffiths, T. L. (2008). A rational analysis of rule‐based concept learning. Cognitive science, 32(1), 108-154.
  *  - The number model (Examples/Number-Simple): Piantadosi, S. T., Tenenbaum, J. B., & Goodman, N. D. (2012). Bootstrapping in a language of thought: A formal model of numerical concept learning. Cognition, 123(2), 199-217.
  *  - The number game (Examples/NumberGame): Tenenbaum, J. B. (1999). A Bayesian framework for concept learning (Doctoral dissertation, Massachusetts Institute of Technology).
- *  - Grammar inference (Examples/GrammarInference-*): Piantadosi, S. T., Tenenbaum, J. B., & Goodman, N. D. (2016). The logical primitives of thought: Empirical foundations for compositional cognitive models. Psychological review, 123(4), 392.
+ *  - Inference of a grammar (Examples/GrammarInference-*): Piantadosi, S. T., Tenenbaum, J. B., & Goodman, N. D. (2016). The logical primitives of thought: Empirical foundations for compositional cognitive models. Psychological review, 123(4), 392.
  *  - Formal language theory learning (Examples/FormalLanguageTheory-*): Yang & Piantadosi, forthcoming
  * 
  * as well as several other examples, including sorting and first order logical theories. 
@@ -287,7 +287,7 @@ int main(int argc, char** argv){
   
  *  \endcode
  * 
- * And finally,w e run the actual model. We make an initial hypothesis using MyHypothesis::make (which needs to know the grammar),
+ * And finally, we run the actual model. We make an initial hypothesis using MyHypothesis::make (which needs to know the grammar),
  * we make an MCMCChain, which takes an initial hypothesis, data, and a callback (which top functions as), and then we run it. The c.run
  * function takes a Control object, which basically specifies the number of steps to run or amount of time to run, the amount of thinning,
  * etc. When Control() is called with no arguments, it gets its arguments from the command line. This means that automatically, we can give a
@@ -308,10 +308,14 @@ int main(int argc, char** argv){
  * 
  * Fleet provides a number of simple inference routines to use. Examples of each can be found in Models/Sorting
  * 
- * \subsection step1 Markov-Chain Monte-Carlo
- * \subsection step2 Search (Monte-Carlo Tree Search)
- * \subsection step3 Enumeration 
- * etc...
+ * - Markov-Chain Monte-Carlo
+ * - MCMC With Parallel Tempering
+ * - Monte-Carlo Tree search 
+ * - Beam search
+ * - Enumeration (with a fast, fancy implementation)
+ * 
+ * Generally, we find that ParallelTempering is the fastest and most effective way to search these spaces of programs. 
+ * 
  */
 
 #pragma once 

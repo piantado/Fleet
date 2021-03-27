@@ -87,7 +87,7 @@ Examples</h2>
 <li>The rational rules model (Examples/RationalRules): Goodman, N. D., Tenenbaum, J. B., Feldman, J., &amp; Griffiths, T. L. (2008). A rational analysis of rule‐based concept learning. Cognitive science, 32(1), 108-154.</li>
 <li>The number model (Examples/Number-Simple): Piantadosi, S. T., Tenenbaum, J. B., &amp; Goodman, N. D. (2012). Bootstrapping in a language of thought: A formal model of numerical concept learning. Cognition, 123(2), 199-217.</li>
 <li>The number game (Examples/NumberGame): Tenenbaum, J. B. (1999). A Bayesian framework for concept learning (Doctoral dissertation, Massachusetts Institute of Technology).</li>
-<li><a class="el" href="class_grammar.html">Grammar</a> inference (Examples/GrammarInference-*): Piantadosi, S. T., Tenenbaum, J. B., &amp; Goodman, N. D. (2016). The logical primitives of thought: Empirical foundations for compositional cognitive models. Psychological review, 123(4), 392.</li>
+<li>Inference of a grammar (Examples/GrammarInference-*): Piantadosi, S. T., Tenenbaum, J. B., &amp; Goodman, N. D. (2016). The logical primitives of thought: Empirical foundations for compositional cognitive models. Psychological review, 123(4), 392.</li>
 <li>Formal language theory learning (Examples/FormalLanguageTheory-*): Yang &amp; Piantadosi, forthcoming</li>
 </ul>
 <p>as well as several other examples, including sorting and first order logical theories.</p>
@@ -232,20 +232,21 @@ Tutorial</h1>
 <div class="line">    <span class="comment">// print the hypotheses we found</span></div>
 <div class="line">    top.<a class="code" href="class_top_n.html#a5064ec2e4e9f1defdc3cb62d9b7ddd00">print</a>();</div>
 <div class="line">}</div>
-</div><!-- fragment --><p>And finally,w e run the actual model. We make an initial hypothesis using MyHypothesis::make (which needs to know the grammar), we make an <a class="el" href="class_m_c_m_c_chain.html">MCMCChain</a>, which takes an initial hypothesis, data, and a callback (which top functions as), and then we run it. The c.run function takes a <a class="el" href="struct_control.html">Control</a> object, which basically specifies the number of steps to run or amount of time to run, the amount of thinning, etc. When <a class="el" href="struct_control.html">Control()</a> is called with no arguments, it gets its arguments from the command line. This means that automatically, we can give a commandline arugment like "--time=30s" and this fleet program will run for 30 seconds (times can be in days (d), hours (h), minutes (m), seconds (s) or miliseconds (q).</p>
+</div><!-- fragment --><p>And finally, we run the actual model. We make an initial hypothesis using MyHypothesis::make (which needs to know the grammar), we make an <a class="el" href="class_m_c_m_c_chain.html">MCMCChain</a>, which takes an initial hypothesis, data, and a callback (which top functions as), and then we run it. The c.run function takes a <a class="el" href="struct_control.html">Control</a> object, which basically specifies the number of steps to run or amount of time to run, the amount of thinning, etc. When <a class="el" href="struct_control.html">Control()</a> is called with no arguments, it gets its arguments from the command line. This means that automatically, we can give a commandline arugment like "--time=30s" and this fleet program will run for 30 seconds (times can be in days (d), hours (h), minutes (m), seconds (s) or miliseconds (q).</p>
 <p>Note that there are several inference schemes, and most (including the examples in Models) use <a class="el" href="class_parallel_tempering.html">ParallelTempering</a>, which seems to work best.</p>
 <p>As the chain runs, it will place hypotheses into "top" (which defaultly reads the command line argument (e.g. "--top=25") to figure out how many of the best hypotheses to store. At the end of this code, we call <a class="el" href="namespace_fleet_args.html#acf2f80bb2810cea3b3eeef0c4b0edf03">top.print()</a>, which will call the .<a class="el" href="namespace_fleet_args.html#acf2f80bb2810cea3b3eeef0c4b0edf03">print()</a> function on everything in top and show them sorted by posterior probability score (remember above we overwrote MyHypothesis::print in order to have it run the program).</p>
 <p>At the end of this program, as the Fleet object is destroyed, it will print out some statistics about the total number of MCMC steps, total runtime, etc. (This can be turned off by setting <a class="el" href="namespace_fleet_args.html#acb1d87c67d763d1edf83ebe1377c948e">FleetArgs::print_header</a>=false).</p>
 <h1><a class="anchor" id="install_sec"></a>
 Inference</h1>
 <p>Fleet provides a number of simple inference routines to use. Examples of each can be found in Models/Sorting</p>
-<h2><a class="anchor" id="step1"></a>
-Markov-Chain Monte-Carlo</h2>
-<h2><a class="anchor" id="step2"></a>
-Search (Monte-Carlo Tree Search)</h2>
-<h2><a class="anchor" id="step3"></a>
-Enumeration</h2>
-<p>etc... </p>
+<ul>
+<li>Markov-Chain Monte-Carlo</li>
+<li>MCMC With Parallel Tempering</li>
+<li>Monte-Carlo Tree search</li>
+<li>Beam search</li>
+<li>Enumeration (with a fast, fancy implementation)</li>
+</ul>
+<p>Generally, we find that <a class="el" href="class_parallel_tempering.html">ParallelTempering</a> is the fastest and most effective way to search these spaces of programs. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <div class="ttc" id="aclass_l_o_t_hypothesis_html_aba33afbf945d7eed8c7e07d5a0d31562"><div class="ttname"><a href="class_l_o_t_hypothesis.html#aba33afbf945d7eed8c7e07d5a0d31562">LOTHypothesis::compute_single_likelihood</a></div><div class="ttdeci">virtual double compute_single_likelihood(const datum_t &amp;datum) override</div><div class="ttdef"><b>Definition:</b> LOTHypothesis.h:120</div></div>
