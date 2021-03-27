@@ -12,60 +12,60 @@ Fleet is based on header-\/files, and requires no additional dependencies. Comma
 
 The easiest way to begin using Fleet is to modify one of the examples. For simple rational-\/rules style inference, try Models/\+Rational\+Rules; for an example using stochastic operations, try Models/\+Formal\+Language\+Theory-\/\+Simple.
 
-Fleet is developed using G\+CC 9 (version $>$8 required) and requires C++-\/17 at present, but this may move to C++-\/20 in the future.\hypertarget{index_install_sec}{}\doxysection{Installation}\label{index_install_sec}
+Fleet is developed using G\+CC 9 (version $>$8 required) and requires C++-\/17 at present, but this may move to C++-\/20 in the future.\hypertarget{index_tutorial_sec}{}\doxysection{Tutorial}\label{index_tutorial_sec}
 To illustrate how Fleet works, let\textquotesingle{}s walk through a simple example\+: the key parts of Formal\+Language\+Theory-\/\+Simple. This is a program induction model which takes a collection of strings and tries to find a stochastic program which can explain the observed strings. For example, it might see data like \{\char`\"{}ab\char`\"{}, \char`\"{}abab\char`\"{}, \char`\"{}ababab\char`\"{}\} and then infer that the language is (ab)$^\wedge$n.
 
 Let\textquotesingle{}s first walk through the grammar definition. Here, we first import \mbox{\hyperlink{_grammar_8h}{Grammar.\+h}} and also \mbox{\hyperlink{_singleton_8h}{Singleton.\+h}}. \mbox{\hyperlink{class_singleton}{Singleton}} is a design pattern that permits only one copy of an object to be constructed, which is used here to ensure that we only have one grammar (and aren\textquotesingle{}t, e.\+g. passing copies of it around). Typical to Fleet\textquotesingle{}s code, we define our own grammar as My\+Grammar. The first two template arguments are the input and output types of the function we are learning (here, strings to strings) and the next two are (variadic) template arguments for all of the nonterminal types used by the grammar (here, strings and bools).
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\textcolor{comment}{\#include <string>}}
-\DoxyCodeLine{using S = std::string; // just \textcolor{keywordflow}{for} convenience}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{\textcolor{keyword}{using} S = std::string; \textcolor{comment}{// just for convenience}}
 \DoxyCodeLine{ }
-\DoxyCodeLine{\textcolor{comment}{\#include "Grammar.h"}}
-\DoxyCodeLine{\textcolor{comment}{\#include "Singleton.h"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "\mbox{\hyperlink{_grammar_8h}{Grammar.h}}"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "\mbox{\hyperlink{_singleton_8h}{Singleton.h}}"}}
 \DoxyCodeLine{}
-\DoxyCodeLine{\textcolor{keyword}{class }MyGrammar : public Grammar<S,S,  S,bool>,}
-\DoxyCodeLine{                  public Singleton<MyGrammar> \{}
-\DoxyCodeLine{public:}
+\DoxyCodeLine{\textcolor{keyword}{class }MyGrammar : \textcolor{keyword}{public} \mbox{\hyperlink{class_grammar}{Grammar}}<S,S,  S,bool>,}
+\DoxyCodeLine{                  \textcolor{keyword}{public} \mbox{\hyperlink{class_singleton}{Singleton}}<MyGrammar> \{}
+\DoxyCodeLine{\textcolor{keyword}{public}:}
 \DoxyCodeLine{    MyGrammar() \{}
-\DoxyCodeLine{        // compute the tail of a string: tail(wxyz) -\/> xyz}
-\DoxyCodeLine{        add(\textcolor{stringliteral}{"tail(\%s)"},      +[](S s)      -\/> S \{ \textcolor{keywordflow}{return} (s.empty() ? S(\textcolor{stringliteral}{""}) : s.substr(1,S::npos)); \});}
+\DoxyCodeLine{        \textcolor{comment}{// compute the tail of a string: tail(wxyz) -\/> xyz}}
+\DoxyCodeLine{        \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{add}}(\textcolor{stringliteral}{"tail(\%s)"},      +[](S s)      -\/> S \{ \textcolor{keywordflow}{return} (s.empty() ? S(\textcolor{stringliteral}{""}) : s.substr(1,S::npos)); \});}
 \DoxyCodeLine{}
-\DoxyCodeLine{        // compute the head of a string: tail(wxyz) -\/> w}
-\DoxyCodeLine{        add(\textcolor{stringliteral}{"head(\%s)"},      +[](S s)      -\/> S \{ \textcolor{keywordflow}{return} (s.empty() ? S(\textcolor{stringliteral}{""}) : S(1,s.at(0))); \});}
+\DoxyCodeLine{        \textcolor{comment}{// compute the head of a string: tail(wxyz) -\/> w}}
+\DoxyCodeLine{        \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{add}}(\textcolor{stringliteral}{"head(\%s)"},      +[](S s)      -\/> S \{ \textcolor{keywordflow}{return} (s.empty() ? S(\textcolor{stringliteral}{""}) : S(1,s.at(0))); \});}
 \DoxyCodeLine{}
-\DoxyCodeLine{        // concatenate strings pair(wx,yz) -\/> wxyz}
-\DoxyCodeLine{        add(\textcolor{stringliteral}{"pair(\%s,\%s)"},   +[](S a, S b) -\/> S \{ }
-\DoxyCodeLine{            if(a.length() + b.length() > MAX\_LENGTH) throw \mbox{\hyperlink{class_v_m_s_runtime_error}{VMSRuntimeError}}();}
+\DoxyCodeLine{        \textcolor{comment}{// concatenate strings pair(wx,yz) -\/> wxyz}}
+\DoxyCodeLine{        \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{add}}(\textcolor{stringliteral}{"pair(\%s,\%s)"},   +[](S a, S b) -\/> S \{ }
+\DoxyCodeLine{            \textcolor{keywordflow}{if}(a.length() + b.length() > MAX\_LENGTH) \textcolor{keywordflow}{throw} \mbox{\hyperlink{class_v_m_s_runtime_error}{VMSRuntimeError}}();}
 \DoxyCodeLine{            \textcolor{keywordflow}{else}                                     \textcolor{keywordflow}{return} a+b; }
 \DoxyCodeLine{        \});}
 \DoxyCodeLine{}
-\DoxyCodeLine{        // the empty string}
-\DoxyCodeLine{        add(\textcolor{stringliteral}{"\(\backslash\)u00D8"},        +[]()         -\/> S          \{ \textcolor{keywordflow}{return} S(\textcolor{stringliteral}{""}); \});}
+\DoxyCodeLine{        \textcolor{comment}{// the empty string}}
+\DoxyCodeLine{        \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{add}}(\textcolor{stringliteral}{"\(\backslash\)u00D8"},        +[]()         -\/> S          \{ \textcolor{keywordflow}{return} S(\textcolor{stringliteral}{""}); \});}
 \DoxyCodeLine{          }
-\DoxyCodeLine{        // check \textcolor{keywordflow}{if} two strings are equal}
-\DoxyCodeLine{        add(\textcolor{stringliteral}{"(\%s==\%s)"},      +[](S x, S y) -\/> bool       \{ \textcolor{keywordflow}{return} x==y; \});}
+\DoxyCodeLine{        \textcolor{comment}{// check if two strings are equal}}
+\DoxyCodeLine{        \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{add}}(\textcolor{stringliteral}{"(\%s==\%s)"},      +[](S x, S y) -\/> \textcolor{keywordtype}{bool}       \{ \textcolor{keywordflow}{return} x==y; \});}
 \DoxyCodeLine{}
 \DoxyCodeLine{}
-\DoxyCodeLine{        // logical operations}
-\DoxyCodeLine{        add(\textcolor{stringliteral}{"and(\%s,\%s)"},    Builtins::And<MyGrammar>);}
-\DoxyCodeLine{        add(\textcolor{stringliteral}{"or(\%s,\%s)"},     Builtins::Or<MyGrammar>);}
-\DoxyCodeLine{        add(\textcolor{stringliteral}{"not(\%s)"},       Builtins::Not<MyGrammar>);}
-\DoxyCodeLine{        add(\textcolor{stringliteral}{"if(\%s,\%s,\%s)"},  Builtins::If<MyGrammar,S>);}
+\DoxyCodeLine{        \textcolor{comment}{// logical operations}}
+\DoxyCodeLine{        \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{add}}(\textcolor{stringliteral}{"and(\%s,\%s)"},    Builtins::And<MyGrammar>);}
+\DoxyCodeLine{        \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{add}}(\textcolor{stringliteral}{"or(\%s,\%s)"},     Builtins::Or<MyGrammar>);}
+\DoxyCodeLine{        \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{add}}(\textcolor{stringliteral}{"not(\%s)"},       Builtins::Not<MyGrammar>);}
+\DoxyCodeLine{        \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{add}}(\textcolor{stringliteral}{"if(\%s,\%s,\%s)"},  Builtins::If<MyGrammar,S>);}
 \DoxyCodeLine{        }
-\DoxyCodeLine{        // access the argument x to the program (defined to a string type above)}
-\DoxyCodeLine{        add(\textcolor{stringliteral}{"x"},             Builtins::X<MyGrammar>);}
+\DoxyCodeLine{        \textcolor{comment}{// access the argument x to the program (defined to a string type above)}}
+\DoxyCodeLine{        \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{add}}(\textcolor{stringliteral}{"x"},             Builtins::X<MyGrammar>);}
 \DoxyCodeLine{         }
-\DoxyCodeLine{        // random coin flip (this does something fancy \textcolor{keywordflow}{in} evaluation)}
-\DoxyCodeLine{        add(\textcolor{stringliteral}{"flip()"},        Builtins::Flip<MyGrammar>, 10.0);}
+\DoxyCodeLine{        \textcolor{comment}{// random coin flip (this does something fancy in evaluation)}}
+\DoxyCodeLine{        \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{add}}(\textcolor{stringliteral}{"flip()"},        Builtins::Flip<MyGrammar>, 10.0);}
 \DoxyCodeLine{         }
-\DoxyCodeLine{        // recursion}
-\DoxyCodeLine{        add(\textcolor{stringliteral}{"recurse(\%s)"},   Builtins::Recurse<MyGrammar>);}
+\DoxyCodeLine{        \textcolor{comment}{// recursion}}
+\DoxyCodeLine{        \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{add}}(\textcolor{stringliteral}{"recurse(\%s)"},   Builtins::Recurse<MyGrammar>);}
 \DoxyCodeLine{        }
-\DoxyCodeLine{        // add all the characters \textcolor{keywordflow}{in} our alphabet (a \textcolor{keyword}{global} variable)}
-\DoxyCodeLine{        for(const char c : alphabet) \{}
-\DoxyCodeLine{            add\_terminal( \mbox{\hyperlink{_strings_8h_a1bb5ec0bee0c8456e3fcc87cc012d055}{Q}}(S(1,c)), S(1,c), 5.0/alphabet.length());}
+\DoxyCodeLine{        \textcolor{comment}{// add all the characters in our alphabet (a global variable)}}
+\DoxyCodeLine{        \textcolor{keywordflow}{for}(\textcolor{keyword}{const} \textcolor{keywordtype}{char} c : alphabet) \{}
+\DoxyCodeLine{            \mbox{\hyperlink{class_grammar_af43a4d8c3c2c7df80a916a5219b7232c}{add\_terminal}}( \mbox{\hyperlink{_strings_8h_a1bb5ec0bee0c8456e3fcc87cc012d055}{Q}}(S(1,c)), S(1,c), 5.0/alphabet.length());}
 \DoxyCodeLine{        \}}
 \DoxyCodeLine{        }
 \DoxyCodeLine{    \}}
@@ -83,9 +83,18 @@ Then, we have a function which takes no arguments and only returns the empty str
 
 The \char`\"{}(\%s==\%s)\char`\"{} function computes whether two strings are equal and returns a bool. Note that generally it is helpful to enclose expressions like this in parentheses (i.\+e. \char`\"{}(...)\char`\"{}) because without this, the printed programs can be ambiguous.
 
-We then add built-\/in logical operations. Note that we do {\itshape not} define our own versions of these functions with lambda expressions. We certainly could, but in most computer science applications we want the versions of these functions which involve \char`\"{}short circuit\char`\"{} evaluation. For example, and(x,y) won\textquotesingle{}t evaluate y if x is false, which for us ends up with a measurably faster implementation. This is maybe most important though for \char`\"{}if(\%s,\%s,\%s)\char`\"{},
+We then add built-\/in logical operations. Note that we do {\itshape not} define our own versions of these functions with lambda expressions. We certainly could, but in most computer science applications we want the versions of these functions which involve \href{https://en.wikipedia.org/wiki/Short-circuit_evaluation}{\texttt{ short circuit evaluation}}. For example, and(x,y) won\textquotesingle{}t evaluate y if x is false, which for us ends up with a measurably faster implementation. This is maybe most important though for \char`\"{}if(\%s,\%s,\%s)\char`\"{}, where we only want to evaluate one branch, depending on which way the boolean comes out. The implementation of correct short-\/circuit evaluation depends on some of the internals of Fleet and so it\textquotesingle{}s best to use the built-\/in versions of these functions.
 
--\/$>$ Defined to be relativel fault-\/tolerant, although we can throw exceptions\hypertarget{index_install_sec}{}\doxysection{Installation}\label{index_install_sec}
+Next, we have a special fucntion \mbox{\hyperlink{namespace_builtins_a25cc5743603132ee78d118a4ca039c68}{Builtins\+::X}} which provides the argument to the function/program we are learning. We defaulty give this the name \char`\"{}x\char`\"{}.
+
+The \char`\"{}flip()\char`\"{} primitive is somewhat fancy (and Buillt-\/in) because it is a stochastic operation, which acts like a coin flip, returning true half of the time and false half of the time (Fleet also a built-\/in biased coin, which takes a coin weight as a parameter). This is fancy because it means that when the program evaluates, there is no longer one single output, but rather a distribution of possible return values. Fleet will hand these back to you as a \mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}} of the output type of the function. Here, we have included 10.\+0 after the \mbox{\hyperlink{namespace_builtins_afc5e30bbc3268c0f88d8540421d453ff}{Builtins\+::\+Flip}}. This is an optional number which can be included for any primitive and it determines the probability in the P\+C\+FG of each each expansion (they are summed and renormalized for each nonterminal type). In this case, we need to upweight the probability of Flip in order to make a proper P\+C\+FG (e.\+g. one where no probabliity is given to infinite trees) because otherwise the and,or,not operatiosn above will lead to infinite trees. The default weight for all operations (when its not specified) is 1.\+0, meaning that 10.\+0 makes it ten times as likely that a bool will expand to a flip than the others. In general, you will want to upweight the terminal rules (those with no children) in order to keep grammars proper.
+
+The next operation is Builtin\+::\+Recurse, which allows a defined function to call itself recursively.
+
+Finally, this grammar adds one terminal rule for each character in the global string \char`\"{}alphabet.\char`\"{} Here, these characters are converted to strings containing a single character because char is not a nonterminal type in the grammar we defined. Here, the entire collection of characters is given an unnonormalized grammar probabiltiy of 5.\+0.
+
+Next, we define a class, My\+Hypothesis, which defines the program hypotheses we are going to be learning. The simplest form for this is to use something of type \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}}, which defines built-\/in ~\newline
+\hypertarget{index_install_sec}{}\doxysection{Installation}\label{index_install_sec}
 Fleet provides a number of simple inference routines to use. These are all displayed in Models/\+Formal\+Language\+Theory-\/\+Simple.\hypertarget{index_step1}{}\doxysubsection{Markov-\/\+Chain Monte-\/\+Carlo}\label{index_step1}
 \hypertarget{index_step2}{}\doxysubsection{Search (\+Monte-\/\+Carlo Tree Search)}\label{index_step2}
 \hypertarget{index_step3}{}\doxysubsection{Enumeration}\label{index_step3}

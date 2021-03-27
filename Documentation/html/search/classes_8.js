@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['lazynormalforms_704',['LazyNormalForms',['../class_combinators_1_1_lazy_normal_forms.html',1,'Combinators']]],
-  ['lexicon_705',['Lexicon',['../class_lexicon.html',1,'']]],
-  ['lothypothesis_706',['LOTHypothesis',['../class_l_o_t_hypothesis.html',1,'']]]
+  ['lazynormalforms_710',['LazyNormalForms',['../class_combinators_1_1_lazy_normal_forms.html',1,'Combinators']]],
+  ['lexicon_711',['Lexicon',['../class_lexicon.html',1,'']]],
+  ['lothypothesis_712',['LOTHypothesis',['../class_l_o_t_hypothesis.html',1,'']]]
 ];

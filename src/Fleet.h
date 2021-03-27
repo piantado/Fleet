@@ -164,37 +164,7 @@ public:
  * 
  * Next, we define a class, MyHypothesis, which defines the program hypotheses we are going to be learning. The simplest form for
  * this is to use something of type LOTHypothesis, which defines built-in  
- * \code{.cpp}
- 
-#include "LOTHypothesis.h"
 
-// Declare a hypothesis class
-class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S,MyGrammar> {
-public:
-	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar>;
-	using Super::Super; // inherit the constructors
-	
-	double compute_single_likelihood(const datum_t& x) override {	
-		const auto out = call(x.input, "<err>"); 
-		const auto log_A = log(alphabet.size());
-		
-		// Likelihood comes from all of the ways that we can delete from the end and the append to make the observed output. 
-		double lp = -infinity;
-		for(auto& o : out.values()) { // add up the probability from all of the strings
-			lp = logplusexp(lp, o.second + p_delete_append<strgamma,strgamma>(o.first, x.output, log_A));
-		}
-		return lp;
-	}
-	
-	void print(std::string prefix="") override {
-		prefix = prefix+"#\n#" +  this->call("", "<err>").string() + "\n";
-		Super::print(prefix); 
-	}
-};
-
- 
-  
- * /endcode
  * 
  * 
  * \section install_sec Inference
