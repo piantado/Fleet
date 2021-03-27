@@ -226,6 +226,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ae3ccf40adf7f3b6337bfe9728a551fc0"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
 <tr class="memitem:ae3ccf40adf7f3b6337bfe9728a551fc0"><td class="memTemplItemLeft" align="right" valign="top">static this_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_lexicon.html#ae3ccf40adf7f3b6337bfe9728a551fc0">from_string</a> (GrammarType &amp;g, std::string s)</td></tr>
 <tr class="separator:ae3ccf40adf7f3b6337bfe9728a551fc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d6fbc0fbb716975ab3d22ccbdfdc612"><td class="memTemplParams" colspan="2">template&lt;typename... A&gt; </td></tr>
+<tr class="memitem:a3d6fbc0fbb716975ab3d22ccbdfdc612"><td class="memTemplItemLeft" align="right" valign="top">static this_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_lexicon.html#a3d6fbc0fbb716975ab3d22ccbdfdc612">make</a> (A... a)</td></tr>
+<tr class="separator:a3d6fbc0fbb716975ab3d22ccbdfdc612"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_class_m_c_m_cable"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_m_c_m_cable')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_m_c_m_cable.html">MCMCable&lt; this_t, defaultdatum_t&lt; input_t, output_t &gt; &gt;</a></td></tr>
 <tr class="memitem:a75b545fc2afd188bfdd199a7256eeed9 inherit pub_static_methods_class_m_c_m_cable"><td class="memItemLeft" align="right" valign="top">static this_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_m_cable.html#a75b545fc2afd188bfdd199a7256eeed9">make</a> (A... a)</td></tr>
 <tr class="memdesc:a75b545fc2afd188bfdd199a7256eeed9 inherit pub_static_methods_class_m_c_m_cable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static function for making a hypothesis. Be careful using this with references because they may not foward right (for reasons that are unclear to me)  <a href="class_m_c_m_cable.html#a75b545fc2afd188bfdd199a7256eeed9">More...</a><br /></td></tr>
@@ -643,6 +646,36 @@ template&lt;typename this_t , typename INNER , typename input_t , typename outpu
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3d6fbc0fbb716975ab3d22ccbdfdc612"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d6fbc0fbb716975ab3d22ccbdfdc612">&#9670;&nbsp;</a></span>make()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename this_t , typename INNER , typename input_t , typename output_t , typename datum_t  = defaultdatum_t&lt;input_t, output_t&gt;, typename _VirtualMachineState_t  = typename INNER::Grammar_t::VirtualMachineState_t&gt; </div>
+<div class="memtemplate">
+template&lt;typename... A&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static this_t <a class="el" href="class_lexicon.html">Lexicon</a>&lt; this_t, INNER, input_t, output_t, <a class="el" href="class_bayesable.html#a9f1a6c0cd7855550fa10b1a8f13a5867">datum_t</a>, _VirtualMachineState_t &gt;::make </td>
+          <td>(</td>
+          <td class="paramtype">A...&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

@@ -75,73 +75,92 @@ $(function() {
 <a href="_stack_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span> </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;assert.h&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="class_stack.html">   19</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_stack.html">Stack</a>  {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    std::vector&lt;T&gt; value;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="class_stack.html#aefee698059467258bbd79045aca62a63">   25</a></span>&#160;    <a class="code" href="class_stack.html#aefee698059467258bbd79045aca62a63">Stack</a>() {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    }</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="class_stack.html#a9f5e3b440e955d4c4e67203d8ad589c0">   29</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_stack.html#a9f5e3b440e955d4c4e67203d8ad589c0">emplace_back</a>(Args... args) {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        value.emplace_back(args...);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    }</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    </div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="class_stack.html#a112b1dda8f0187bd63c4cd0cb877bd92">   33</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_stack.html#a112b1dda8f0187bd63c4cd0cb877bd92">reserve</a>(<span class="keywordtype">size_t</span> t) {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        value.reserve(t);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="class_stack.html#a6e8312460808f468b004d709d3308757">   41</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_stack.html#a6e8312460808f468b004d709d3308757">push</a>(<span class="keyword">const</span> T&amp; val) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        value.push_back(val);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="class_stack.html#ace7170c5a65f27155d77af269054943a">   44</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_stack.html#ace7170c5a65f27155d77af269054943a">push</a>(<span class="keyword">const</span> T&amp;&amp; val) {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        value.push_back(std::move(val));</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    </div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="class_stack.html#a2723aec5c7e2611b97fcffeb7709de33">   48</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_stack.html#a2723aec5c7e2611b97fcffeb7709de33">pop</a>() {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        assert(!<a class="code" href="class_stack.html#a275d43ff89b91a9c6c5636cc8539d285">empty</a>());</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        value.pop_back();</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">/* There is a little sublety here -- for integral types, it&#39;s a pain to return a reference</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">     * so we want to just return T. But some optimizations of the virtual machine will do better</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">     * with references, leaving the top value on the stack. So by default we don&#39;t return a reference</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">     * with top() but we do with topref</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    </div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="class_stack.html#ad461f6de40c8672dbf743068f4515061">   62</a></span>&#160;    [[nodiscard]] T <a class="code" href="class_stack.html#ad461f6de40c8672dbf743068f4515061">top</a>() {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordflow">return</span> value.back();</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="class_stack.html#a318da5613921ddf481a21c62ce006c3c">   71</a></span>&#160;    [[nodiscard]] T&amp; <a class="code" href="class_stack.html#a318da5613921ddf481a21c62ce006c3c">topref</a>() {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">return</span> std::forward&lt;T&amp;&gt;(value.back());</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    </div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="class_stack.html#aa34222dbc28544189d97add837498b71">   80</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_stack.html#aa34222dbc28544189d97add837498b71">size</a>()<span class="keyword"> const </span>{ </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordflow">return</span> value.size();</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    </div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="class_stack.html#a275d43ff89b91a9c6c5636cc8539d285">   84</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_stack.html#a275d43ff89b91a9c6c5636cc8539d285">empty</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">return</span> value.empty();</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    }</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_strings_8h.html">Strings.h</a>&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="class_stack.html">   21</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_stack.html">Stack</a>  {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    std::vector&lt;T&gt; value;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="class_stack.html#aefee698059467258bbd79045aca62a63">   27</a></span>&#160;    <a class="code" href="class_stack.html#aefee698059467258bbd79045aca62a63">Stack</a>() {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    }</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="class_stack.html#a9f5e3b440e955d4c4e67203d8ad589c0">   31</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_stack.html#a9f5e3b440e955d4c4e67203d8ad589c0">emplace_back</a>(Args... args) {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        value.emplace_back(args...);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    }</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    </div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="class_stack.html#a112b1dda8f0187bd63c4cd0cb877bd92">   35</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_stack.html#a112b1dda8f0187bd63c4cd0cb877bd92">reserve</a>(<span class="keywordtype">size_t</span> t) {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        value.reserve(t);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="class_stack.html#a6e8312460808f468b004d709d3308757">   43</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_stack.html#a6e8312460808f468b004d709d3308757">push</a>(<span class="keyword">const</span> T&amp; val) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        value.push_back(val);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="class_stack.html#ace7170c5a65f27155d77af269054943a">   46</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_stack.html#ace7170c5a65f27155d77af269054943a">push</a>(<span class="keyword">const</span> T&amp;&amp; val) {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        value.push_back(std::move(val));</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    </div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="class_stack.html#a2723aec5c7e2611b97fcffeb7709de33">   50</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_stack.html#a2723aec5c7e2611b97fcffeb7709de33">pop</a>() {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        assert(!<a class="code" href="class_stack.html#a275d43ff89b91a9c6c5636cc8539d285">empty</a>());</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        value.pop_back();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="comment">/* There is a little sublety here -- for integral types, it&#39;s a pain to return a reference</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">     * so we want to just return T. But some optimizations of the virtual machine will do better</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">     * with references, leaving the top value on the stack. So by default we don&#39;t return a reference</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">     * with top() but we do with topref</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    </div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="class_stack.html#ad461f6de40c8672dbf743068f4515061">   64</a></span>&#160;    [[nodiscard]] T <a class="code" href="class_stack.html#ad461f6de40c8672dbf743068f4515061">top</a>() {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">return</span> value.back();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="class_stack.html#a318da5613921ddf481a21c62ce006c3c">   73</a></span>&#160;    [[nodiscard]] T&amp; <a class="code" href="class_stack.html#a318da5613921ddf481a21c62ce006c3c">topref</a>() {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">return</span> std::forward&lt;T&amp;&gt;(value.back());</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    </div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="class_stack.html#add0c8bc53547f3c18b37a9c624725462">   82</a></span>&#160;    <span class="keyword">const</span> std::vector&lt;T&gt;&amp; <a class="code" href="class_stack.html#add0c8bc53547f3c18b37a9c624725462">get_value</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">return</span> value;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    </div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="class_stack.html#aa34222dbc28544189d97add837498b71">   86</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_stack.html#aa34222dbc28544189d97add837498b71">size</a>()<span class="keyword"> const </span>{ </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordflow">return</span> value.size();</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    }</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    </div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="class_stack.html#a275d43ff89b91a9c6c5636cc8539d285">   90</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_stack.html#a275d43ff89b91a9c6c5636cc8539d285">empty</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordflow">return</span> value.empty();</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    </div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="class_stack.html#a95718fc2833a1fb9fd1f2bff387d5a54">   94</a></span>&#160;    std::string <a class="code" href="class_stack.html#a95718fc2833a1fb9fd1f2bff387d5a54">string</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="_stack_8h.html#adc09d66898ce4f9c29ec2382b87d13c4">str</a>(value);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="_stack_8h.html#adc09d66898ce4f9c29ec2382b87d13c4">  100</a></span>&#160;std::string <a class="code" href="_stack_8h.html#adc09d66898ce4f9c29ec2382b87d13c4">str</a>(<span class="keyword">const</span> <a class="code" href="class_stack.html">Stack&lt;T&gt;</a>&amp; a ){</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="_stack_8h.html#adc09d66898ce4f9c29ec2382b87d13c4">str</a>(a.<a class="code" href="class_stack.html#add0c8bc53547f3c18b37a9c624725462">get_value</a>());</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclass_stack_html_a112b1dda8f0187bd63c4cd0cb877bd92"><div class="ttname"><a href="class_stack.html#a112b1dda8f0187bd63c4cd0cb877bd92">Stack::reserve</a></div><div class="ttdeci">void reserve(size_t t)</div><div class="ttdef"><b>Definition:</b> Stack.h:33</div></div>
-<div class="ttc" id="aclass_stack_html_a9f5e3b440e955d4c4e67203d8ad589c0"><div class="ttname"><a href="class_stack.html#a9f5e3b440e955d4c4e67203d8ad589c0">Stack::emplace_back</a></div><div class="ttdeci">void emplace_back(Args... args)</div><div class="ttdef"><b>Definition:</b> Stack.h:29</div></div>
-<div class="ttc" id="aclass_stack_html_aefee698059467258bbd79045aca62a63"><div class="ttname"><a href="class_stack.html#aefee698059467258bbd79045aca62a63">Stack::Stack</a></div><div class="ttdeci">Stack()</div><div class="ttdef"><b>Definition:</b> Stack.h:25</div></div>
-<div class="ttc" id="aclass_stack_html"><div class="ttname"><a href="class_stack.html">Stack</a></div><div class="ttdef"><b>Definition:</b> Stack.h:19</div></div>
-<div class="ttc" id="aclass_stack_html_a318da5613921ddf481a21c62ce006c3c"><div class="ttname"><a href="class_stack.html#a318da5613921ddf481a21c62ce006c3c">Stack::topref</a></div><div class="ttdeci">T &amp; topref()</div><div class="ttdef"><b>Definition:</b> Stack.h:71</div></div>
-<div class="ttc" id="aclass_stack_html_aa34222dbc28544189d97add837498b71"><div class="ttname"><a href="class_stack.html#aa34222dbc28544189d97add837498b71">Stack::size</a></div><div class="ttdeci">size_t size() const</div><div class="ttdef"><b>Definition:</b> Stack.h:80</div></div>
-<div class="ttc" id="aclass_stack_html_ad461f6de40c8672dbf743068f4515061"><div class="ttname"><a href="class_stack.html#ad461f6de40c8672dbf743068f4515061">Stack::top</a></div><div class="ttdeci">T top()</div><div class="ttdef"><b>Definition:</b> Stack.h:62</div></div>
-<div class="ttc" id="aclass_stack_html_a2723aec5c7e2611b97fcffeb7709de33"><div class="ttname"><a href="class_stack.html#a2723aec5c7e2611b97fcffeb7709de33">Stack::pop</a></div><div class="ttdeci">void pop()</div><div class="ttdef"><b>Definition:</b> Stack.h:48</div></div>
-<div class="ttc" id="aclass_stack_html_ace7170c5a65f27155d77af269054943a"><div class="ttname"><a href="class_stack.html#ace7170c5a65f27155d77af269054943a">Stack::push</a></div><div class="ttdeci">void push(const T &amp;&amp;val)</div><div class="ttdef"><b>Definition:</b> Stack.h:44</div></div>
-<div class="ttc" id="aclass_stack_html_a275d43ff89b91a9c6c5636cc8539d285"><div class="ttname"><a href="class_stack.html#a275d43ff89b91a9c6c5636cc8539d285">Stack::empty</a></div><div class="ttdeci">bool empty() const</div><div class="ttdef"><b>Definition:</b> Stack.h:84</div></div>
-<div class="ttc" id="aclass_stack_html_a6e8312460808f468b004d709d3308757"><div class="ttname"><a href="class_stack.html#a6e8312460808f468b004d709d3308757">Stack::push</a></div><div class="ttdeci">void push(const T &amp;val)</div><div class="ttdoc">Push val onto the stack.</div><div class="ttdef"><b>Definition:</b> Stack.h:41</div></div>
+<div class="ttc" id="aclass_stack_html_a95718fc2833a1fb9fd1f2bff387d5a54"><div class="ttname"><a href="class_stack.html#a95718fc2833a1fb9fd1f2bff387d5a54">Stack::string</a></div><div class="ttdeci">std::string string() const</div><div class="ttdef"><b>Definition:</b> Stack.h:94</div></div>
+<div class="ttc" id="aclass_stack_html_a112b1dda8f0187bd63c4cd0cb877bd92"><div class="ttname"><a href="class_stack.html#a112b1dda8f0187bd63c4cd0cb877bd92">Stack::reserve</a></div><div class="ttdeci">void reserve(size_t t)</div><div class="ttdef"><b>Definition:</b> Stack.h:35</div></div>
+<div class="ttc" id="aclass_stack_html_a9f5e3b440e955d4c4e67203d8ad589c0"><div class="ttname"><a href="class_stack.html#a9f5e3b440e955d4c4e67203d8ad589c0">Stack::emplace_back</a></div><div class="ttdeci">void emplace_back(Args... args)</div><div class="ttdef"><b>Definition:</b> Stack.h:31</div></div>
+<div class="ttc" id="aclass_stack_html_add0c8bc53547f3c18b37a9c624725462"><div class="ttname"><a href="class_stack.html#add0c8bc53547f3c18b37a9c624725462">Stack::get_value</a></div><div class="ttdeci">const std::vector&lt; T &gt; &amp; get_value() const</div><div class="ttdef"><b>Definition:</b> Stack.h:82</div></div>
+<div class="ttc" id="aclass_stack_html_aefee698059467258bbd79045aca62a63"><div class="ttname"><a href="class_stack.html#aefee698059467258bbd79045aca62a63">Stack::Stack</a></div><div class="ttdeci">Stack()</div><div class="ttdef"><b>Definition:</b> Stack.h:27</div></div>
+<div class="ttc" id="aclass_stack_html"><div class="ttname"><a href="class_stack.html">Stack</a></div><div class="ttdef"><b>Definition:</b> Stack.h:21</div></div>
+<div class="ttc" id="aclass_stack_html_a318da5613921ddf481a21c62ce006c3c"><div class="ttname"><a href="class_stack.html#a318da5613921ddf481a21c62ce006c3c">Stack::topref</a></div><div class="ttdeci">T &amp; topref()</div><div class="ttdef"><b>Definition:</b> Stack.h:73</div></div>
+<div class="ttc" id="a_stack_8h_html_adc09d66898ce4f9c29ec2382b87d13c4"><div class="ttname"><a href="_stack_8h.html#adc09d66898ce4f9c29ec2382b87d13c4">str</a></div><div class="ttdeci">std::string str(const Stack&lt; T &gt; &amp;a)</div><div class="ttdef"><b>Definition:</b> Stack.h:100</div></div>
+<div class="ttc" id="aclass_stack_html_aa34222dbc28544189d97add837498b71"><div class="ttname"><a href="class_stack.html#aa34222dbc28544189d97add837498b71">Stack::size</a></div><div class="ttdeci">size_t size() const</div><div class="ttdef"><b>Definition:</b> Stack.h:86</div></div>
+<div class="ttc" id="aclass_stack_html_ad461f6de40c8672dbf743068f4515061"><div class="ttname"><a href="class_stack.html#ad461f6de40c8672dbf743068f4515061">Stack::top</a></div><div class="ttdeci">T top()</div><div class="ttdef"><b>Definition:</b> Stack.h:64</div></div>
+<div class="ttc" id="aclass_stack_html_a2723aec5c7e2611b97fcffeb7709de33"><div class="ttname"><a href="class_stack.html#a2723aec5c7e2611b97fcffeb7709de33">Stack::pop</a></div><div class="ttdeci">void pop()</div><div class="ttdef"><b>Definition:</b> Stack.h:50</div></div>
+<div class="ttc" id="aclass_stack_html_ace7170c5a65f27155d77af269054943a"><div class="ttname"><a href="class_stack.html#ace7170c5a65f27155d77af269054943a">Stack::push</a></div><div class="ttdeci">void push(const T &amp;&amp;val)</div><div class="ttdef"><b>Definition:</b> Stack.h:46</div></div>
+<div class="ttc" id="aclass_stack_html_a275d43ff89b91a9c6c5636cc8539d285"><div class="ttname"><a href="class_stack.html#a275d43ff89b91a9c6c5636cc8539d285">Stack::empty</a></div><div class="ttdeci">bool empty() const</div><div class="ttdef"><b>Definition:</b> Stack.h:90</div></div>
+<div class="ttc" id="aclass_stack_html_a6e8312460808f468b004d709d3308757"><div class="ttname"><a href="class_stack.html#a6e8312460808f468b004d709d3308757">Stack::push</a></div><div class="ttdeci">void push(const T &amp;val)</div><div class="ttdoc">Push val onto the stack.</div><div class="ttdef"><b>Definition:</b> Stack.h:43</div></div>
+<div class="ttc" id="a_strings_8h_html"><div class="ttname"><a href="_strings_8h.html">Strings.h</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

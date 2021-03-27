@@ -15,12 +15,13 @@ var searchData=
   ['beamsearch_2eh_40',['BeamSearch.h',['../_beam_search_8h.html',1,'']]],
   ['begin_41',['begin',['../class_base_node.html#ac735dd6fe296af4b8d2951cc6d9052c8',1,'BaseNode::begin()'],['../class_grammar.html#aee5716f6501e8a366e33e12c7a675b8d',1,'Grammar::begin()']]],
   ['best_42',['best',['../class_discrete_distribution.html#add71949e73131894f28a0fa9af3d2fc1',1,'DiscreteDistribution::best()'],['../class_top_n.html#a071e232087705b131627bd8a805d217c',1,'TopN::best()']]],
-  ['born_43',['born',['../class_bayesable.html#a898e03a20e1851c868b77ef4e844f0bf',1,'Bayesable']]],
-  ['break_5fctrlc_44',['break_CTRLC',['../struct_control.html#a3a1856c582efd2a6a1b8f40351038d0c',1,'Control']]],
-  ['builtin_45',['Builtin',['../struct_builtin.html',1,'Builtin&lt; T, args &gt;'],['../struct_builtin.html#a45f8bc05bcc1eb10be8cca1de6b5e04a',1,'Builtin::Builtin(Op o, typename VirtualMachineState_t::FT *_f)'],['../struct_builtin.html#ae9add538a98e5fccdee49ca48092f517',1,'Builtin::Builtin(Op o, void(*_f)(VirtualMachineState_t *, int))']]],
-  ['builtin_5fcount_46',['builtin_count',['../class_runtime_counter.html#ac3d8bd18c05cb16426a1d0759b7cadfb',1,'RuntimeCounter']]],
-  ['builtin_5flambda_47',['BUILTIN_LAMBDA',['../_builtins_8h.html#ad05e94221ff2967761018674d5cbb960',1,'Builtins.h']]],
-  ['builtins_48',['Builtins',['../namespace_builtins.html',1,'']]],
-  ['builtins_2eh_49',['Builtins.h',['../_builtins_8h.html',1,'']]],
-  ['burn_50',['burn',['../struct_control.html#acb1e669784385d64b9f840674a3e08c1',1,'Control::burn()'],['../namespace_fleet_args.html#a7dc1ce66659f9dc509b370d5660582e8',1,'FleetArgs::burn()']]]
+  ['blue_43',['Blue',['../_shape_color_size_object_8h.html#ab87bacfdad76e61b9412d7124be44c1ca9594eec95be70e7b1710f730fdda33d9',1,'ShapeColorSizeObject.h']]],
+  ['born_44',['born',['../class_bayesable.html#a898e03a20e1851c868b77ef4e844f0bf',1,'Bayesable']]],
+  ['break_5fctrlc_45',['break_CTRLC',['../struct_control.html#a3a1856c582efd2a6a1b8f40351038d0c',1,'Control']]],
+  ['builtin_46',['Builtin',['../struct_builtin.html',1,'Builtin&lt; T, args &gt;'],['../struct_builtin.html#a45f8bc05bcc1eb10be8cca1de6b5e04a',1,'Builtin::Builtin(Op o, typename VirtualMachineState_t::FT *_f)'],['../struct_builtin.html#ae9add538a98e5fccdee49ca48092f517',1,'Builtin::Builtin(Op o, void(*_f)(VirtualMachineState_t *, int))']]],
+  ['builtin_5fcount_47',['builtin_count',['../class_runtime_counter.html#ac3d8bd18c05cb16426a1d0759b7cadfb',1,'RuntimeCounter']]],
+  ['builtin_5flambda_48',['BUILTIN_LAMBDA',['../_builtins_8h.html#ad05e94221ff2967761018674d5cbb960',1,'Builtins.h']]],
+  ['builtins_49',['Builtins',['../namespace_builtins.html',1,'']]],
+  ['builtins_2eh_50',['Builtins.h',['../_builtins_8h.html',1,'']]],
+  ['burn_51',['burn',['../struct_control.html#acb1e669784385d64b9f840674a3e08c1',1,'Control::burn()'],['../namespace_fleet_args.html#a7dc1ce66659f9dc509b370d5660582e8',1,'FleetArgs::burn()']]]
 ];

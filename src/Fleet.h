@@ -2,9 +2,9 @@
  *
  * \section intro_sec Introduction
  *
- * Fleet is a C++ library for programming language of thought models. In these models, you will typically
- * specify a grammar of primitive operations which can be composed to form complex hypotheses. These hypotheses
- * are best thought of as programs in a mental programming language, and the job of learners is to observe
+ * Fleet is a C++ library for programming language of thought models. In these models, we  specify a grammar of primitive 
+ * operations which can be composed to form complex hypotheses. These hypotheses
+ * are best thought of as programs in a (mental) programming language, and the job of learners is to observe
  * data (typically inputs and outputs of programs) and infer the most likely program to have generated the outputs
  * from the inputs. This is accomplished in Fleet by using a fully-Bayesian setup, with a prior over programs typically
  * defined thought a Probabilistic Context-Free Grammar (PCFG) and a likelihood model that typically says that the 
@@ -12,25 +12,25 @@
  * 
  * Fleet is most similar to LOTlib (https://github.com/piantado/LOTlib3) but is considerably faster. LOTlib converts
  * grammar productions into python expressions which are then evaled in python; this process is flexible and powerful, 
- * but very slow. Fleet avoids this by implementing a lightweight stack-based virtual machine in which programs can be 
+ * but slow. Fleet avoids this by implementing a lightweight stack-based virtual machine in which programs can be 
  * directly evaluated. This is especially advantageous when evaluating stochastic hypotheses (e.g. those using flip() or 
  * sample()) in which multiple execution paths must be evaluated. Fleet stores these multiple execution traces of a single
  * program in a priority queue (sorted by probability) and allows you to rapidly explore the space of execution traces. 
  * 
  * Fleet is structured to automatically create this virtual machine and a grammar for programs from just the type
- * specification on primitives. The bulk of a Fleet program is therefore in specifying the primitives that are used
- * and a likelihood model that scores any potential program against the data. 
+ * specification on primitives: a function signature yields a PCFG because the return type can be thought of as a nonterminal
+ * in a PCFG and its arguments can be thought of as children (right hand side of a PCFG rule). A PCFG expanded in this way 
+ * will yield a correctly-typed expression, a program, where each function has arguments of the correct types. Note that in
+ * Fleet, these types in the PCFG must be C++ types (intrinsics, classes, or structs), and two types that are the same
+ * are always considered to have the same nonterminal type. 
  * 
- * To accomplish this, Fleet makes heavy use of C++ template metaprogramming. It requires strongly-typed functions
- * and requires you to specify the macro FLEET_GRAMMAR_TYPES in order to tell its virtual machine what kinds of variables
- * must be stored. In addition, Fleet uses a std::tuple named PRIMITIVES in order to help define the grammar. This tuple consists of
- * a collection of Primitive objects, essentially just lambda functions and weights). The input/output types of these primitives
- * are automatically deduced from the lambdas (using templates) and the corresponding functions are added to the grammar. Note
- * that the details of this mechanism may change in future versions in order to make it easier to add grammar types in 
- * other ways. In addition, Fleet has a number of built-in operations, which do special things to the virtual machine 
- * (including Builtin::Flip, which stores multiple execution traces; Builtin::If which uses short-circuit evaluation; 
- * Builtin::Recurse, which handles recursives hypotheses; and Builtin::X which provides the argument to the expression). 
- * These are not currently well documented but should be soon.  * 
+ * Fleet requires you to define a Grammar which includes *all* of the nonterminal types that are used anywhere in the grammar.
+ * Fleet makes heavy use of template metaprogramming, which prevents you from ever having to explicitly write the grammar
+ * itself, but it does implicitly construct a grammar using these operations. 
+ * 
+ * In addition, Fleet has a number of built-in operations, which do special things to the virtual machine. These include
+ * Builtin::Flip, which stores multiple execution traces; Builtin::If which uses short-circuit evaluation; 
+ * Builtin::Recurse, which handles recursives hypotheses; and Builtin::X which provides the argument to the expression.
  * 
  * \section install_sec Installation
  * 
@@ -40,12 +40,56 @@
  * The easiest way to begin using Fleet is to modify one of the examples. For simple rational-rules style inference, try
  * Models/RationalRules; for an example using stochastic operations, try Models/FormalLanguageTheory-Simple. 
  * 
- * Fleet is developed using GCC 9 (version >8 required).
+ * Fleet is developed using GCC 9 (version >8 required) and requires C++-17 at present, but this may move to C++-20 in the future.
  *
  * \section install_sec Tutorial 
  * 
+ * To illustrate how Fleet works, let's walk through a simple example: the key parts of FormalLanguageTheory-Simple. This is
+ * a program induction model which takes a collection of strings
+ * 
  * \code{.py}
- * code goes here
+ * 
+#include "Grammar.h"
+#include "Singleton.h"
+
+class MyGrammar : public Grammar<S,S,  S,bool>,
+				  public Singleton<MyGrammar> {
+public:
+	MyGrammar() {
+		add("tail(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); });
+		add("head(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
+//
+//		add("pair(%s,%s)",   +[](S a, S b) -> S { 
+//			if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError();
+//			else                     				 return a+b; 
+//		});
+
+		add_vms<S,S,S>("pair(%s,%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
+			S b = vms->getpop<S>();
+			S& a = vms->stack<S>().topref();
+			
+			if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError();
+			else 									 a += b; 
+		}));
+
+		add("\u00D8",        +[]()         -> S          { return S(""); });
+		add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; });
+
+		add("and(%s,%s)",    Builtins::And<MyGrammar>);
+		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
+		add("not(%s)",       Builtins::Not<MyGrammar>);
+		
+		add("x",             Builtins::X<MyGrammar>);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
+		add("flip()",        Builtins::Flip<MyGrammar>, 10.0);
+		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
+			
+		for(const char c : alphabet) {
+			add_terminal( Q(S(1,c)), S(1,c), 5.0/alphabet.length());
+		}
+		
+	}
+};
  * \endcode
  * 
  * 

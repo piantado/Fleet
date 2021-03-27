@@ -59,8 +59,9 @@ void \mbox{\hyperlink{_i_o_8h_a1336250e0870b09c7f0d7b168a5e804f}{\+\_\+\+\_\+\+P
 \begin{DoxyCompactList}\small\item\em Simple saving of a vector of hypotheses. \end{DoxyCompactList}\item 
 {\footnotesize template$<$typename H\+YP $>$ }\\std\+::vector$<$ H\+YP $>$ \mbox{\hyperlink{_i_o_8h_aae62df8b7ee87dd75ee076ffd3bf9206}{load}} (std\+::string filename, typename H\+Y\+P\+::\+Grammar\+\_\+t $\ast$g)
 \begin{DoxyCompactList}\small\item\em Simple loading for a vector of hypotheses. \end{DoxyCompactList}\item 
-{\footnotesize template$<$size\+\_\+t N$>$ }\\std\+::vector$<$ std\+::array$<$ std\+::string, N $>$ $>$ \mbox{\hyperlink{_i_o_8h_a58a7621fc7b6cedc321e7c60866993b0}{read\+\_\+csv}} (const std\+::string path, const char delimiter=\textquotesingle{}\textbackslash{}t\textquotesingle{}, bool skipheader=true)
-\end{DoxyCompactItemize}
+{\footnotesize template$<$size\+\_\+t N$>$ }\\std\+::vector$<$ std\+::array$<$ std\+::string, N $>$ $>$ \mbox{\hyperlink{_i_o_8h_a917c5bd217eff49da014535e85121975}{read\+\_\+csv}} (const std\+::string path, bool skipheader, const char delimiter=\textquotesingle{}\textbackslash{}t\textquotesingle{})
+\begin{DoxyCompactList}\small\item\em Load data -- divides in columns at the delimiter. N\+O\+TE\+: we are required to say whetehr we skip a header (first line) or not. Checks tha tthere are exactly N on each line. So we can use like\+: ~\newline
+ for(auto \mbox{[}b1, b2, b3, b4, c\mbox{]} \+: read\+\_\+csv$<$5$>$(\+Fleet\+Args\+::input\+\_\+path, true)) \{ .... \}. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
@@ -175,13 +176,28 @@ void P\+R\+I\+NT (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Re
 {\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
 void P\+R\+I\+N\+TN (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{_i_o_8h_a58a7621fc7b6cedc321e7c60866993b0}\label{_i_o_8h_a58a7621fc7b6cedc321e7c60866993b0}} 
+\mbox{\Hypertarget{_i_o_8h_a917c5bd217eff49da014535e85121975}\label{_i_o_8h_a917c5bd217eff49da014535e85121975}} 
 \index{IO.h@{IO.h}!read\_csv@{read\_csv}}
 \index{read\_csv@{read\_csv}!IO.h@{IO.h}}
 \doxysubsubsection{\texorpdfstring{read\_csv()}{read\_csv()}}
 {\footnotesize\ttfamily template$<$size\+\_\+t N$>$ \\
-std\+::vector$<$std\+::array$<$std\+::string,N$>$ $>$ read\+\_\+csv (\begin{DoxyParamCaption}\item[{const std\+::string}]{path,  }\item[{const char}]{delimiter = {\ttfamily \textquotesingle{}\textbackslash{}t\textquotesingle{}},  }\item[{bool}]{skipheader = {\ttfamily true} }\end{DoxyParamCaption})}
+std\+::vector$<$std\+::array$<$std\+::string,N$>$ $>$ read\+\_\+csv (\begin{DoxyParamCaption}\item[{const std\+::string}]{path,  }\item[{bool}]{skipheader,  }\item[{const char}]{delimiter = {\ttfamily \textquotesingle{}\textbackslash{}t\textquotesingle{}} }\end{DoxyParamCaption})}
 
+
+
+Load data -- divides in columns at the delimiter. N\+O\+TE\+: we are required to say whetehr we skip a header (first line) or not. Checks tha tthere are exactly N on each line. So we can use like\+: ~\newline
+ for(auto \mbox{[}b1, b2, b3, b4, c\mbox{]} \+: read\+\_\+csv$<$5$>$(\+Fleet\+Args\+::input\+\_\+path, true)) \{ .... \}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & \\
+\hline
+{\em g} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
 \mbox{\Hypertarget{_i_o_8h_ac92ba25496b93368f6d92bd36f91480e}\label{_i_o_8h_ac92ba25496b93368f6d92bd36f91480e}} 
 \index{IO.h@{IO.h}!save@{save}}
 \index{save@{save}!IO.h@{IO.h}}

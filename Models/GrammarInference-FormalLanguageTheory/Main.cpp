@@ -3,8 +3,8 @@
 #define DO_NOT_INCLUDE_MAIN 1
 
 #include "../FormalLanguageTheory-Simple/Main.cpp"
-#include "Data/HumanDatum.h"
 
+#include "Data/HumanDatum.h"
 #include "Top.h"
 #include "Fleet.h"
 #include "Miscellaneous.h"
@@ -31,8 +31,14 @@ public:
 
 
 // Define a function to be called on each sample
+MyGrammarHypothesis MAP;
 size_t grammar_callback_count = 0;
 void gcallback(MyGrammarHypothesis& h) {
+	
+	if(h.posterior > MAP.posterior or isnan(MAP.posterior)) {
+		MAP = h;
+	}
+	
 	if(++grammar_callback_count % 100 == 0) {
 		COUT h.string(str(grammar_callback_count)+"\t");
 	}
@@ -52,8 +58,8 @@ int main(int argc, char** argv){
 	// Read the human data
 	///////////////////////////////	
 	
-	std::vector<MyHumanDatum> human_data;
-	std::vector<MyHypothesis::data_t*> mcmc_data; 
+	std::vector<MyHumanDatum> human_data;         // what do we run grammar inference on
+	std::vector<MyHypothesis::data_t*> mcmc_data; // what will we run search over MyHypothesis on?
 	for(auto [row, stimulus, all_responses] : read_csv<3>("human-data.csv", '\t')) {
 		
 		// split up stimulus into components
@@ -64,6 +70,11 @@ int main(int argc, char** argv){
 			MyHypothesis::datum_t d{.input="", .output=s};
 			this_data->push_back(d);
 			decay_pos->push_back(i++);
+			
+			// add a check that we're using the right alphabet here
+			for(auto& c: s) 
+				assert(contains(alphabet,c));
+			
 		}
 		
 		// process all_responses into a map from strings to counts
@@ -73,7 +84,7 @@ int main(int argc, char** argv){
 										  .ndata=this_data->size(), 
 										  .predict=const_cast<S*>(&EMPTY_STRING), 
 										  .responses=m,
-										  .chance=0.00001, // TODO: UPDATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+										  .chance=1e-6, // TODO: UPDATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 										  .decay_position=decay_pos,
 										  .my_decay_position=i-1
 										  });
@@ -116,6 +127,20 @@ int main(int argc, char** argv){
 		auto thechain = MCMCChain<MyGrammarHypothesis, decltype(gcallback)>(h0, &human_data, &gcallback);
 		thechain.run(Control());
 		tic();
+		
+		
+		// Now when we're done, show the model predicted outputs on the data
+		
+		Matrix hposterior = MAP.compute_normalized_posterior(); // this is shared in the loop below, so computed separately		
+		#pragma omp parallel for
+		for(size_t i=0;i<human_data.size();i++) {
+			auto model_predictions = MAP.compute_model_predictions(i, hposterior);		
+			
+			#pragma omp critical
+			for(const auto& r : model_predictions) {
+				COUT i TAB Q(r.first) TAB r.second ENDL;
+			}
+		}
 	}
 	
 }

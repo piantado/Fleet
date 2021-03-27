@@ -51,7 +51,7 @@ public:
 	// we used to stored this as a map--a DiscreteDistribution--but that was slow to 
 	// iterate so now we might make a map in constructing, but we stores as a vector of pairs
 	using Predict_t = Vector2D<std::vector<std::pair<typename HYP::output_t,double>>>; 
-		
+	
 	VectorNormalHypothesis logA; // a simple normal vector for the log of a
 	
 	// Here is a list of built-in parameters that we can use. Each stores a standard
@@ -339,6 +339,33 @@ public:
 	}
 	
 	/**
+	 * @brief This uses hposterior (computed via this->compute_normalized_posterior()) to compute the model predictions
+	 * 		  on a the i'th human data point. To do this, we marginalize over hypotheses, computing the weighted sum of
+	 *        outputs. 
+	 * @param hd
+	 * @param hposterior
+	 */
+	std::map<typename HYP::output_t, double> compute_model_predictions(const size_t i, Matrix& hposterior) {
+	
+		std::map<typename HYP::output_t, double> model_predictions;
+		
+		// Note this is the non-log version. Here we avoid computing ang logs, logsumexp, or even exp in this loop
+		// because it is very slow. 
+		// P(output | learner_data) = sum_h P(h | learner_data) * P(output | h):
+		for(int h=0;h<hposterior.rows();h++) {
+			if(hposterior(h,i) < 1e-6)  continue;  // skip very low probability for speed
+			
+			for(const auto& mp : P->at(h,i)) {						
+				float p = hposterior(h,i) * mp.second;
+				// map 0 for nonexisting doubles
+				model_predictions[mp.first] += p;
+			}
+		}
+		
+		return model_predictions;
+	}
+	
+	/**
 	 * @brief This computes the likelihood of the *human data*.
 	 * @param data
 	 * @param breakout
@@ -368,20 +395,7 @@ public:
 			#pragma omp parallel for
 			for(size_t i=0;i<human_data.size();i++) {
 				
-				// the non-log version. Here we avoid computing ang logs, logsumexp, or even exp in this loop
-				// because it is very slow. 
-				std::map<typename HYP::output_t, double> model_predictions;
-				// P(output | learner_data) = sum_h P(h | learner_data) * P(output | h):
-				for(int h=0;h<hposterior.rows();h++) {
-					if(hposterior(h,i) < 1e-6)  continue;  // skip very low probability for speed
-					
-					for(const auto& mp : P->at(h,i)) {						
-						float p = hposterior(h,i) * mp.second;
-						// map 0 for nonexisting doubles
-						model_predictions[mp.first] += p;
-					}
-				}
-				
+				auto model_predictions = compute_model_predictions(i, hposterior);			
 				
 				double ll = 0.0; // the likelihood here
 				auto& di = human_data[i];

@@ -1,19 +1,63 @@
 \hypertarget{index_intro_sec}{}\doxysection{Introduction}\label{index_intro_sec}
-Fleet is a C++ library for programming language of thought models. In these models, you will typically specify a grammar of primitive operations which can be composed to form complex hypotheses. These hypotheses are best thought of as programs in a mental programming language, and the job of learners is to observe data (typically inputs and outputs of programs) and infer the most likely program to have generated the outputs from the inputs. This is accomplished in Fleet by using a fully-\/\+Bayesian setup, with a prior over programs typically defined thought a Probabilistic Context-\/\+Free \mbox{\hyperlink{class_grammar}{Grammar}} (P\+C\+FG) and a likelihood model that typically says that the output of a program is observed with some noise.
+Fleet is a C++ library for programming language of thought models. In these models, we specify a grammar of primitive operations which can be composed to form complex hypotheses. These hypotheses are best thought of as programs in a (mental) programming language, and the job of learners is to observe data (typically inputs and outputs of programs) and infer the most likely program to have generated the outputs from the inputs. This is accomplished in Fleet by using a fully-\/\+Bayesian setup, with a prior over programs typically defined thought a Probabilistic Context-\/\+Free \mbox{\hyperlink{class_grammar}{Grammar}} (P\+C\+FG) and a likelihood model that typically says that the output of a program is observed with some noise.
 
-Fleet is most similar to L\+O\+Tlib (\href{https://github.com/piantado/LOTlib3}{\texttt{ https\+://github.\+com/piantado/\+L\+O\+Tlib3}}) but is considerably faster. L\+O\+Tlib converts grammar productions into python expressions which are then evaled in python; this process is flexible and powerful, but very slow. Fleet avoids this by implementing a lightweight stack-\/based virtual machine in which programs can be directly evaluated. This is especially advantageous when evaluating stochastic hypotheses (e.\+g. those using \mbox{\hyperlink{_random_8h_a40e7e030d95195c87c566b03fdefe44c}{flip()}} or \mbox{\hyperlink{_random_8h_ac2ea1cac6b4c8cad207512d19abe42d7}{sample()}}) in which multiple execution paths must be evaluated. Fleet stores these multiple execution traces of a single program in a priority queue (sorted by probability) and allows you to rapidly explore the space of execution traces.
+Fleet is most similar to L\+O\+Tlib (\href{https://github.com/piantado/LOTlib3}{\texttt{ https\+://github.\+com/piantado/\+L\+O\+Tlib3}}) but is considerably faster. L\+O\+Tlib converts grammar productions into python expressions which are then evaled in python; this process is flexible and powerful, but slow. Fleet avoids this by implementing a lightweight stack-\/based virtual machine in which programs can be directly evaluated. This is especially advantageous when evaluating stochastic hypotheses (e.\+g. those using \mbox{\hyperlink{_random_8h_a40e7e030d95195c87c566b03fdefe44c}{flip()}} or \mbox{\hyperlink{_random_8h_ac2ea1cac6b4c8cad207512d19abe42d7}{sample()}}) in which multiple execution paths must be evaluated. Fleet stores these multiple execution traces of a single program in a priority queue (sorted by probability) and allows you to rapidly explore the space of execution traces.
 
-Fleet is structured to automatically create this virtual machine and a grammar for programs from just the type specification on primitives. The bulk of a Fleet program is therefore in specifying the primitives that are used and a likelihood model that scores any potential program against the data.
+Fleet is structured to automatically create this virtual machine and a grammar for programs from just the type specification on primitives\+: a function signature yields a P\+C\+FG because the return type can be thought of as a nonterminal in a P\+C\+FG and its arguments can be thought of as children (right hand side of a P\+C\+FG rule). A P\+C\+FG expanded in this way will yield a correctly-\/typed expression, a program, where each function has arguments of the correct types. Note that in Fleet, these types in the P\+C\+FG must be C++ types (intrinsics, classes, or structs), and two types that are the same are always considered to have the same nonterminal type.
 
-To accomplish this, Fleet makes heavy use of C++ template metaprogramming. It requires strongly-\/typed functions and requires you to specify the macro F\+L\+E\+E\+T\+\_\+\+G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES in order to tell its virtual machine what kinds of variables must be stored. In addition, Fleet uses a std\+::tuple named P\+R\+I\+M\+I\+T\+I\+V\+ES in order to help define the grammar. This tuple consists of a collection of Primitive objects, essentially just lambda functions and weights). The input/output types of these primitives are automatically deduced from the lambdas (using templates) and the corresponding functions are added to the grammar. Note that the details of this mechanism may change in future versions in order to make it easier to add grammar types in other ways. In addition, Fleet has a number of built-\/in operations, which do special things to the virtual machine (including Builtin\+::\+Flip, which stores multiple execution traces; Builtin\+::\+If which uses short-\/circuit evaluation; Builtin\+::\+Recurse, which handles recursives hypotheses; and Builtin\+::X which provides the argument to the expression). These are not currently well documented but should be soon. $\ast$\hypertarget{index_install_sec}{}\doxysection{Installation}\label{index_install_sec}
+Fleet requires you to define a \mbox{\hyperlink{class_grammar}{Grammar}} which includes {\itshape all} of the nonterminal types that are used anywhere in the grammar. Fleet makes heavy use of template metaprogramming, which prevents you from ever having to explicitly write the grammar itself, but it does implicitly construct a grammar using these operations.
+
+In addition, Fleet has a number of built-\/in operations, which do special things to the virtual machine. These include Builtin\+::\+Flip, which stores multiple execution traces; Builtin\+::\+If which uses short-\/circuit evaluation; Builtin\+::\+Recurse, which handles recursives hypotheses; and Builtin\+::X which provides the argument to the expression.\hypertarget{index_install_sec}{}\doxysection{Installation}\label{index_install_sec}
 Fleet is based on header-\/files, and requires no additional dependencies. Command line arguments are processed in C\+L11.\+hpp, which is included in src/dependencies/.
 
 The easiest way to begin using Fleet is to modify one of the examples. For simple rational-\/rules style inference, try Models/\+Rational\+Rules; for an example using stochastic operations, try Models/\+Formal\+Language\+Theory-\/\+Simple.
 
-Fleet is developed using G\+CC 9 (version $>$8 required).\hypertarget{index_install_sec}{}\doxysection{Installation}\label{index_install_sec}
+Fleet is developed using G\+CC 9 (version $>$8 required) and requires C++-\/17 at present, but this may move to C++-\/20 in the future.\hypertarget{index_install_sec}{}\doxysection{Installation}\label{index_install_sec}
+To illustrate how Fleet works, let\textquotesingle{}s walk through a simple example\+: the key parts of Formal\+Language\+Theory-\/\+Simple. This is a program induction model which takes a collection of strings
+
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{code goes here}
+\DoxyCodeLine{\textcolor{comment}{\#include "Grammar.h"}}
+\DoxyCodeLine{\textcolor{comment}{\#include "Singleton.h"}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{class }MyGrammar : public Grammar<S,S,  S,bool>,}
+\DoxyCodeLine{                  public Singleton<MyGrammar> \{}
+\DoxyCodeLine{public:}
+\DoxyCodeLine{    MyGrammar() \{}
+\DoxyCodeLine{        add(\textcolor{stringliteral}{"tail(\%s)"},      +[](S s)      -\/> S \{ \textcolor{keywordflow}{return} (s.empty() ? S(\textcolor{stringliteral}{""}) : s.substr(1,S::npos)); \});}
+\DoxyCodeLine{        add(\textcolor{stringliteral}{"head(\%s)"},      +[](S s)      -\/> S \{ \textcolor{keywordflow}{return} (s.empty() ? S(\textcolor{stringliteral}{""}) : S(1,s.at(0))); \});}
+\DoxyCodeLine{//}
+\DoxyCodeLine{//      add(\textcolor{stringliteral}{"pair(\%s,\%s)"},   +[](S a, S b) -\/> S \{ }
+\DoxyCodeLine{//          if(a.length() + b.length() > MAX\_LENGTH) throw \mbox{\hyperlink{class_v_m_s_runtime_error}{VMSRuntimeError}}();}
+\DoxyCodeLine{//          \textcolor{keywordflow}{else}                                     \textcolor{keywordflow}{return} a+b; }
+\DoxyCodeLine{//      \});}
+\DoxyCodeLine{}
+\DoxyCodeLine{        add\_vms<S,S,S>(\textcolor{stringliteral}{"pair(\%s,\%s)"},  new std::function(+[](MyGrammar::VirtualMachineState\_t* vms, int) \{}
+\DoxyCodeLine{            S b = vms-\/>getpop<S>();}
+\DoxyCodeLine{            S\& a = vms-\/>stack<S>().topref();}
+\DoxyCodeLine{            }
+\DoxyCodeLine{            if(a.length() + b.length() > MAX\_LENGTH) throw \mbox{\hyperlink{class_v_m_s_runtime_error}{VMSRuntimeError}}();}
+\DoxyCodeLine{            \textcolor{keywordflow}{else}                                     a += b; }
+\DoxyCodeLine{        \}));}
+\DoxyCodeLine{}
+\DoxyCodeLine{        add(\textcolor{stringliteral}{"\(\backslash\)u00D8"},        +[]()         -\/> S          \{ \textcolor{keywordflow}{return} S(\textcolor{stringliteral}{""}); \});}
+\DoxyCodeLine{        add(\textcolor{stringliteral}{"(\%s==\%s)"},      +[](S x, S y) -\/> bool       \{ \textcolor{keywordflow}{return} x==y; \});}
+\DoxyCodeLine{}
+\DoxyCodeLine{        add(\textcolor{stringliteral}{"and(\%s,\%s)"},    Builtins::And<MyGrammar>);}
+\DoxyCodeLine{        add(\textcolor{stringliteral}{"or(\%s,\%s)"},     Builtins::Or<MyGrammar>);}
+\DoxyCodeLine{        add(\textcolor{stringliteral}{"not(\%s)"},       Builtins::Not<MyGrammar>);}
+\DoxyCodeLine{        }
+\DoxyCodeLine{        add(\textcolor{stringliteral}{"x"},             Builtins::X<MyGrammar>);}
+\DoxyCodeLine{        add(\textcolor{stringliteral}{"if(\%s,\%s,\%s)"},  Builtins::If<MyGrammar,S>);}
+\DoxyCodeLine{        add(\textcolor{stringliteral}{"flip()"},        Builtins::Flip<MyGrammar>, 10.0);}
+\DoxyCodeLine{        add(\textcolor{stringliteral}{"recurse(\%s)"},   Builtins::Recurse<MyGrammar>);}
+\DoxyCodeLine{            }
+\DoxyCodeLine{        for(const char c : alphabet) \{}
+\DoxyCodeLine{            add\_terminal( \mbox{\hyperlink{_strings_8h_a1bb5ec0bee0c8456e3fcc87cc012d055}{Q}}(S(1,c)), S(1,c), 5.0/alphabet.length());}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{        }
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\};}
 \end{DoxyCode}
 \hypertarget{index_install_sec}{}\doxysection{Installation}\label{index_install_sec}
 Fleet provides a number of simple inference routines to use. These are all displayed in Models/\+Formal\+Language\+Theory-\/\+Simple.\hypertarget{index_step1}{}\doxysubsection{Markov-\/\+Chain Monte-\/\+Carlo}\label{index_step1}

@@ -23,7 +23,7 @@ std::vector<HYP> get_hypotheses_from_mcmc(HYP& h0, std::vector<typename HYP::dat
 		
 		#pragma omp critical
 		{
-		COUT "# Running " TAB vi TAB " of " TAB mcmc_data.size() ENDL;
+		COUT "# Running " TAB vi TAB " of " TAB mcmc_data.size() TAB mcmc_data[vi] ENDL;
 		}
 		
 		// start at i=0 so we actually always include prior samples

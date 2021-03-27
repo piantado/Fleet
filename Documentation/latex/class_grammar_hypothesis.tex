@@ -6,8 +6,7 @@
 
 
 
-Inheritance diagram for Grammar\+Hypothesis$<$ this\+\_\+t, \+\_\+\+H\+YP, datum\+\_\+t, data\+\_\+t $>$\+:
-\nopagebreak
+Inheritance diagram for Grammar\+Hypothesis$<$ this\+\_\+t, \+\_\+\+H\+YP, datum\+\_\+t, data\+\_\+t $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -16,8 +15,7 @@ Inheritance diagram for Grammar\+Hypothesis$<$ this\+\_\+t, \+\_\+\+H\+YP, datum
 \end{figure}
 
 
-Collaboration diagram for Grammar\+Hypothesis$<$ this\+\_\+t, \+\_\+\+H\+YP, datum\+\_\+t, data\+\_\+t $>$\+:
-\nopagebreak
+Collaboration diagram for Grammar\+Hypothesis$<$ this\+\_\+t, \+\_\+\+H\+YP, datum\+\_\+t, data\+\_\+t $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -58,6 +56,8 @@ virtual double \mbox{\hyperlink{class_grammar_hypothesis_a8ad537345ab55b581825b8
 \begin{DoxyCompactList}\small\item\em Compute the prior -- defaultly not defined. \end{DoxyCompactList}\item 
 virtual Matrix \mbox{\hyperlink{class_grammar_hypothesis_a2e4105060c6b5e96679fdb116591b3f1}{compute\+\_\+normalized\+\_\+posterior}} ()
 \begin{DoxyCompactList}\small\item\em This returns a matrix hposter\mbox{[}h,di\mbox{]} giving the posterior on the h\textquotesingle{}th element. \end{DoxyCompactList}\item 
+std\+::map$<$ typename H\+Y\+P\+::output\+\_\+t, double $>$ \mbox{\hyperlink{class_grammar_hypothesis_a716ff720be7093286ff5cf0139805fca}{compute\+\_\+model\+\_\+predictions}} (const size\+\_\+t i, Matrix \&hposterior)
+\begin{DoxyCompactList}\small\item\em This uses hposterior (computed via this-\/$>$\mbox{\hyperlink{class_grammar_hypothesis_a2e4105060c6b5e96679fdb116591b3f1}{compute\+\_\+normalized\+\_\+posterior()}}) to compute the model predictions on a the i\textquotesingle{}th human data point. To do this, we marginalize over hypotheses, computing the weighted sum of outputs. \end{DoxyCompactList}\item 
 virtual double \mbox{\hyperlink{class_grammar_hypothesis_a769eea50d9e40668022b120b6fddfe06}{compute\+\_\+likelihood}} (const \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} \&human\+\_\+data, const double breakout=-\/\mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}}) override
 \begin{DoxyCompactList}\small\item\em This computes the likelihood of the {\itshape human data}. \end{DoxyCompactList}\item 
 virtual this\+\_\+t \mbox{\hyperlink{class_grammar_hypothesis_a85c5aad5990900d4da6eca5a24deb3e6}{restart}} () const override
@@ -187,6 +187,24 @@ This computes the likelihood of the {\itshape human data}.
 
 Reimplemented from \mbox{\hyperlink{class_bayesable_a202493156cec15937bee304d807fdbdb}{Bayesable$<$ Args... $>$}}.
 
+\mbox{\Hypertarget{class_grammar_hypothesis_a716ff720be7093286ff5cf0139805fca}\label{class_grammar_hypothesis_a716ff720be7093286ff5cf0139805fca}} 
+\index{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}!compute\_model\_predictions@{compute\_model\_predictions}}
+\index{compute\_model\_predictions@{compute\_model\_predictions}!GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}}
+\doxysubsubsection{\texorpdfstring{compute\_model\_predictions()}{compute\_model\_predictions()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename \+\_\+\+H\+YP , typename datum\+\_\+t  = Human\+Datum$<$\+\_\+\+H\+Y\+P$>$, typename data\+\_\+t  = std\+::vector$<$datum\+\_\+t$>$$>$ \\
+std\+::map$<$typename H\+Y\+P\+::output\+\_\+t, double$>$ \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis}}$<$ this\+\_\+t, \+\_\+\+H\+YP, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} $>$\+::compute\+\_\+model\+\_\+predictions (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{i,  }\item[{Matrix \&}]{hposterior }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This uses hposterior (computed via this-\/$>$\mbox{\hyperlink{class_grammar_hypothesis_a2e4105060c6b5e96679fdb116591b3f1}{compute\+\_\+normalized\+\_\+posterior()}}) to compute the model predictions on a the i\textquotesingle{}th human data point. To do this, we marginalize over hypotheses, computing the weighted sum of outputs. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em hd} & \\
+\hline
+{\em hposterior} & \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{class_grammar_hypothesis_a2e4105060c6b5e96679fdb116591b3f1}\label{class_grammar_hypothesis_a2e4105060c6b5e96679fdb116591b3f1}} 
 \index{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}!compute\_normalized\_posterior@{compute\_normalized\_posterior}}
 \index{compute\_normalized\_posterior@{compute\_normalized\_posterior}!GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}}

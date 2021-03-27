@@ -2,9 +2,10 @@
 \label{_strings_8h}\index{src/Strings.h@{src/Strings.h}}
 {\ttfamily \#include $<$sstream$>$}\newline
 {\ttfamily \#include $<$queue$>$}\newline
-{\ttfamily \#include $<$string.\+h$>$}\newline
 {\ttfamily \#include $<$array$>$}\newline
 {\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$set$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
 {\ttfamily \#include \char`\"{}Numerics.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Random.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Vector3\+D.\+h\char`\"{}}\newline
@@ -44,11 +45,15 @@ std\+::string \mbox{\hyperlink{_strings_8h_a21b313a5a03eda533ac68a4501c68c17}{st
 \item 
 {\footnotesize template$<$typename T , size\+\_\+t N$>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_a66fc50785d7283d32f7f2e039e31b982}{str}} (const std\+::array$<$ T, N $>$ \&a)
 \item 
+{\footnotesize template$<$typename T $>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_ac841190187b17808b2c4a82ecde6a140}{str}} (const std\+::vector$<$ T $>$ \&a)
+\item 
 {\footnotesize template$<$typename T $>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_a74a3109333f6ec7fc237e492a524da6a}{to\+\_\+string\+\_\+with\+\_\+precision}} (const T a\+\_\+value, const int n=14)
 \item 
 {\footnotesize template$<$typename T $>$ }\\bool \mbox{\hyperlink{_strings_8h_ac63ed4e974b8dc3b49eae65049ad7804}{is\+\_\+prefix}} (const T \&prefix, const T \&x)
 \item 
 bool \mbox{\hyperlink{_strings_8h_a9e236149ce0f5aa64d809fcca5cf1c27}{contains}} (const std\+::string \&s, const std\+::string \&x)
+\item 
+bool \mbox{\hyperlink{_strings_8h_a6424a030ce8c78fc72f206b0f92640e6}{contains}} (const std\+::string \&s, const char x)
 \item 
 {\footnotesize template$<$const float \& add\+\_\+p, const float \& del\+\_\+p$>$ }\\double \mbox{\hyperlink{_strings_8h_a006f42339c42d12497ad559987a8597c}{p\+\_\+delete\+\_\+append}} (const std\+::string \&x, const std\+::string \&y, const float log\+\_\+alphabet)
 \begin{DoxyCompactList}\small\item\em Probability of converting x into y by deleting some number (each with del\+\_\+p, then stopping with prob 1-\/del\+\_\+p), adding with probability add\+\_\+p, and then when we add selecting from an alphabet of size alpha\+\_\+n. \end{DoxyCompactList}\item 
@@ -58,7 +63,7 @@ std\+::pair$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{_strings_8h_af8
 \item 
 unsigned int \mbox{\hyperlink{_strings_8h_a51fc480ff96576142fbe0c1a5fc9114b}{levenshtein\+\_\+distance}} (const std\+::string \&s1, const std\+::string \&s2)
 \item 
-size\+\_\+t \mbox{\hyperlink{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}{count}} (const std\+::string \&\mbox{\hyperlink{_strings_8h_a66fc50785d7283d32f7f2e039e31b982}{str}}, const std\+::string \&sub)
+size\+\_\+t \mbox{\hyperlink{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}{count}} (const std\+::string \&\mbox{\hyperlink{_strings_8h_ac841190187b17808b2c4a82ecde6a140}{str}}, const std\+::string \&sub)
 \item 
 std\+::string \mbox{\hyperlink{_strings_8h_a95521755321516e684a5bf762eb001d7}{reverse}} (std\+::string x)
 \item 
@@ -69,7 +74,7 @@ std\+::string \mbox{\hyperlink{_strings_8h_a1bb5ec0bee0c8456e3fcc87cc012d055}{Q}
 double \mbox{\hyperlink{_strings_8h_ac4b9409cdfb6a213710a66f0c02d5792}{p\+\_\+\+Kashyap\+Oommen1984\+\_\+edit}} (const std\+::string x, const std\+::string y, const double perr, const size\+\_\+t nalphabet)
 \begin{DoxyCompactList}\small\item\em The string probability model from Kashyap \& Oommen, 1983, basically giving a string edit distance that is a probability model. This could really use some unit tests, but it is hard to find implementations. \end{DoxyCompactList}\item 
 {\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{_strings_8h_aa8cda3705f8674293669932185337ebb}{string\+\_\+to}} (const std\+::string s)
-\begin{DoxyCompactList}\small\item\em Fleet includes this templated function to allow us to convert strings to a variety of formats. This is mostly used for reading data from text files. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Fleet includes this templated function to allow us to convert strings to a variety of formats. This is mostly used for reading data from text files. This recursively will unpack containers with some standard delimiters. Since it can handle Fleet types (e.\+g. defaultdata\+\_\+t) it can be used to unpack data stored in strings (see e.\+g. Models/\+Sorting) \end{DoxyCompactList}\item 
 template$<$$>$ std\+::string \mbox{\hyperlink{_strings_8h_ad1dfc3165dc24230d4269628a84ff58f}{string\+\_\+to}} (const std\+::string s)
 \end{DoxyCompactItemize}
 \doxysubsection*{Variables}
@@ -80,10 +85,16 @@ const std\+::string \mbox{\hyperlink{_strings_8h_aefd49a74af3b4afc27512f639bcc33
 
 
 \doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_strings_8h_a6424a030ce8c78fc72f206b0f92640e6}\label{_strings_8h_a6424a030ce8c78fc72f206b0f92640e6}} 
+\index{Strings.h@{Strings.h}!contains@{contains}}
+\index{contains@{contains}!Strings.h@{Strings.h}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool contains (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s,  }\item[{const char}]{x }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{_strings_8h_a9e236149ce0f5aa64d809fcca5cf1c27}\label{_strings_8h_a9e236149ce0f5aa64d809fcca5cf1c27}} 
 \index{Strings.h@{Strings.h}!contains@{contains}}
 \index{contains@{contains}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{contains()}{contains()}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily bool contains (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s,  }\item[{const std\+::string \&}]{x }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}\label{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}} 
@@ -263,7 +274,7 @@ Split iwith a fixed return size, useful in parsing csv.
 \mbox{\Hypertarget{_strings_8h_a66fc50785d7283d32f7f2e039e31b982}\label{_strings_8h_a66fc50785d7283d32f7f2e039e31b982}} 
 \index{Strings.h@{Strings.h}!str@{str}}
 \index{str@{str}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
 {\footnotesize\ttfamily template$<$typename T , size\+\_\+t N$>$ \\
 std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::array$<$ T, N $>$ \&}]{a }\end{DoxyParamCaption})}
 
@@ -278,13 +289,13 @@ A pythonesque string function
 \mbox{\Hypertarget{_strings_8h_a21b313a5a03eda533ac68a4501c68c17}\label{_strings_8h_a21b313a5a03eda533ac68a4501c68c17}} 
 \index{Strings.h@{Strings.h}!str@{str}}
 \index{str@{str}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
 {\footnotesize\ttfamily std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{x }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_strings_8h_af4fcc184e9e474c84204591dd7c95f1c}\label{_strings_8h_af4fcc184e9e474c84204591dd7c95f1c}} 
 \index{Strings.h@{Strings.h}!str@{str}}
 \index{str@{str}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
 {\footnotesize\ttfamily template$<$typename... T$>$ \\
 std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::tuple$<$ T... $>$ \&}]{x }\end{DoxyParamCaption})}
 
@@ -299,9 +310,24 @@ A pythonesque string function
 \mbox{\Hypertarget{_strings_8h_a9ab3d622399a5cd1e9fbaf8f38d8d394}\label{_strings_8h_a9ab3d622399a5cd1e9fbaf8f38d8d394}} 
 \index{Strings.h@{Strings.h}!str@{str}}
 \index{str@{str}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
 {\footnotesize\ttfamily template$<$typename... T, size\+\_\+t... I$>$ \\
 std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::tuple$<$ T... $>$ \&}]{x,  }\item[{std\+::index\+\_\+sequence$<$ I... $>$}]{idx }\end{DoxyParamCaption})}
+
+A pythonesque string function 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{_strings_8h_ac841190187b17808b2c4a82ecde6a140}\label{_strings_8h_ac841190187b17808b2c4a82ecde6a140}} 
+\index{Strings.h@{Strings.h}!str@{str}}
+\index{str@{str}!Strings.h@{Strings.h}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [5/6]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{a }\end{DoxyParamCaption})}
 
 A pythonesque string function 
 \begin{DoxyParams}{Parameters}
@@ -314,7 +340,7 @@ A pythonesque string function
 \mbox{\Hypertarget{_strings_8h_a4bc77a6f47e3046cc934b49f5e03a56f}\label{_strings_8h_a4bc77a6f47e3046cc934b49f5e03a56f}} 
 \index{Strings.h@{Strings.h}!str@{str}}
 \index{str@{str}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [6/6]}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 std\+::string str (\begin{DoxyParamCaption}\item[{T}]{x }\end{DoxyParamCaption})}
 
@@ -335,7 +361,7 @@ T string\+\_\+to (\begin{DoxyParamCaption}\item[{const std\+::string}]{s }\end{D
 
 
 
-Fleet includes this templated function to allow us to convert strings to a variety of formats. This is mostly used for reading data from text files. 
+Fleet includes this templated function to allow us to convert strings to a variety of formats. This is mostly used for reading data from text files. This recursively will unpack containers with some standard delimiters. Since it can handle Fleet types (e.\+g. defaultdata\+\_\+t) it can be used to unpack data stored in strings (see e.\+g. Models/\+Sorting) 
 
 
 \begin{DoxyParams}{Parameters}

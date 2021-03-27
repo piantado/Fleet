@@ -17,7 +17,7 @@ void load_data_file(std::vector<tdata> &data, const char* datapath) {
 	 * @param datapath
 	 */
 	
-	for(auto [s, cnt] : read_csv<2>(datapath, '\t')) {
+	for(auto [s, cnt] : read_csv<2>(datapath, false, '\t')) {
 		data.push_back({.input=std::string(""), .output=s, .reliability=NaN, .count=std::stod(cnt)});
 	}	
 }

@@ -6,16 +6,17 @@ Many things in Fleet are stacks and this is designed to allow for rapid changse 
 
 
 {\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Strings.\+h\char`\"{}}\newline
 Include dependency graph for Stack.\+h\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=197pt]{_stack_8h__incl}
+\includegraphics[width=350pt]{_stack_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -27,9 +28,23 @@ This graph shows which files directly or indirectly include this file\+:
 \item 
 class \mbox{\hyperlink{class_stack}{Stack$<$ T $>$}}
 \end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::string \mbox{\hyperlink{_stack_8h_adc09d66898ce4f9c29ec2382b87d13c4}{str}} (const \mbox{\hyperlink{class_stack}{Stack}}$<$ T $>$ \&a)
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
 Many things in Fleet are stacks and this is designed to allow for rapid changse to the stack type in order to improve speed. std\+::stack appears to be slow. Using vector with some wrappers is faster. 
 
 N\+O\+TE\+: We have tried reserving the intiial vector size and it doesn\textquotesingle{}t seem to speed things up, nor does using a list 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_stack_8h_adc09d66898ce4f9c29ec2382b87d13c4}\label{_stack_8h_adc09d66898ce4f9c29ec2382b87d13c4}} 
+\index{Stack.h@{Stack.h}!str@{str}}
+\index{str@{str}!Stack.h@{Stack.h}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::string str (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_stack}{Stack}}$<$ T $>$ \&}]{a }\end{DoxyParamCaption})}
+

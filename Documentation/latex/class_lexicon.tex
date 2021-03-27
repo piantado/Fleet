@@ -6,8 +6,7 @@
 
 
 
-Inheritance diagram for Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+:
-\nopagebreak
+Inheritance diagram for Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -16,8 +15,7 @@ Inheritance diagram for Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, outpu
 \end{figure}
 
 
-Collaboration diagram for Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+:
-\nopagebreak
+Collaboration diagram for Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -76,6 +74,8 @@ virtual \mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}}$<
 \begin{DoxyCompactItemize}
 \item 
 {\footnotesize template$<$typename Grammar\+Type $>$ }\\static this\+\_\+t \mbox{\hyperlink{class_lexicon_ae3ccf40adf7f3b6337bfe9728a551fc0}{from\+\_\+string}} (Grammar\+Type \&g, std\+::string s)
+\item 
+{\footnotesize template$<$typename... A$>$ }\\static this\+\_\+t \mbox{\hyperlink{class_lexicon_a3d6fbc0fbb716975ab3d22ccbdfdc612}{make}} (A... a)
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -266,6 +266,14 @@ Hash a \mbox{\hyperlink{class_lexicon}{Lexicon}} by hashing each part \begin{Dox
 \doxysubsubsection{\texorpdfstring{is\_evaluable()}{is\_evaluable()}}
 {\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defaultdatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+\+Virtual\+Machine\+State\+\_\+t  = typename I\+N\+N\+E\+R\+::\+Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t$>$ \\
 bool \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::is\+\_\+evaluable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
+
+\mbox{\Hypertarget{class_lexicon_a3d6fbc0fbb716975ab3d22ccbdfdc612}\label{class_lexicon_a3d6fbc0fbb716975ab3d22ccbdfdc612}} 
+\index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t, \_VirtualMachineState\_t $>$}!make@{make}}
+\index{make@{make}!Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t, \_VirtualMachineState\_t $>$}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename input\+\_\+t , typename output\+\_\+t , typename datum\+\_\+t  = defaultdatum\+\_\+t$<$input\+\_\+t, output\+\_\+t$>$, typename \+\_\+\+Virtual\+Machine\+State\+\_\+t  = typename I\+N\+N\+E\+R\+::\+Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t$>$ \\
+template$<$typename... A$>$ \\
+static this\+\_\+t \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, input\+\_\+t, output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::make (\begin{DoxyParamCaption}\item[{A...}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
 \mbox{\Hypertarget{class_lexicon_ac4cb2e1a2db91e0aa8984aa5aaad70a9}\label{class_lexicon_ac4cb2e1a2db91e0aa8984aa5aaad70a9}} 
 \index{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, INNER, input\_t, output\_t, datum\_t, \_VirtualMachineState\_t $>$}!neighbor\_prior@{neighbor\_prior}}

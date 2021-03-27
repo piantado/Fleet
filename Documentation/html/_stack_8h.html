@@ -69,7 +69,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Stack.h File Reference</div>  </div>
 </div><!--header-->
@@ -78,13 +79,34 @@ $(function() {
 <p>Many things in Fleet are stacks and this is designed to allow for rapid changse to the stack type in order to improve speed. std::stack appears to be slow. Using vector with some wrappers is faster.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;vector&gt;</code><br />
+<code>#include &lt;assert.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="_strings_8h_source.html">Strings.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Stack.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_stack_8h__incl.png" border="0" usemap="#src_2_containers_2_stack_8h" alt=""/></div>
 <map name="src_2_containers_2_stack_8h" id="src_2_containers_2_stack_8h">
-<area shape="rect" title="Many things in Fleet are stacks and this is designed to allow for rapid changse to the stack type in ..." alt="" coords="5,5,161,32"/>
-<area shape="rect" title=" " alt="" coords="54,80,113,107"/>
+<area shape="rect" title="Many things in Fleet are stacks and this is designed to allow for rapid changse to the stack type in ..." alt="" coords="262,5,418,32"/>
+<area shape="rect" title=" " alt="" coords="683,229,741,256"/>
+<area shape="rect" title=" " alt="" coords="5,304,75,331"/>
+<area shape="rect" href="_strings_8h.html" title=" " alt="" coords="303,80,377,107"/>
+<area shape="rect" title=" " alt="" coords="616,155,685,181"/>
+<area shape="rect" title=" " alt="" coords="710,155,767,181"/>
+<area shape="rect" title=" " alt="" coords="96,155,147,181"/>
+<area shape="rect" title=" " alt="" coords="171,155,218,181"/>
+<area shape="rect" title=" " alt="" coords="243,155,283,181"/>
+<area shape="rect" title=" " alt="" coords="307,155,373,181"/>
+<area shape="rect" href="_numerics_8h.html" title=" " alt="" coords="147,229,237,256"/>
+<area shape="rect" href="_random_8h.html" title=" " alt="" coords="397,155,480,181"/>
+<area shape="rect" href="_vector3_d_8h.html" title=" " alt="" coords="504,155,592,181"/>
+<area shape="rect" title=" " alt="" coords="307,304,373,331"/>
+<area shape="rect" title=" " alt="" coords="203,304,275,331"/>
+<area shape="rect" title=" " alt="" coords="115,304,178,331"/>
+<area shape="rect" title=" " alt="" coords="394,229,473,256"/>
+<area shape="rect" href="_errors_8h.html" title=" " alt="" coords="497,229,565,256"/>
+<area shape="rect" title=" " alt="" coords="582,304,661,331"/>
+<area shape="rect" title=" " alt="" coords="401,304,479,331"/>
+<area shape="rect" title=" " alt="" coords="503,304,558,331"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -109,11 +131,38 @@ This graph shows which files directly or indirectly include this file:</div>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stack.html">Stack&lt; T &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:adc09d66898ce4f9c29ec2382b87d13c4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:adc09d66898ce4f9c29ec2382b87d13c4"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_stack_8h.html#adc09d66898ce4f9c29ec2382b87d13c4">str</a> (const <a class="el" href="class_stack.html">Stack</a>&lt; T &gt; &amp;a)</td></tr>
+<tr class="separator:adc09d66898ce4f9c29ec2382b87d13c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Many things in Fleet are stacks and this is designed to allow for rapid changse to the stack type in order to improve speed. std::stack appears to be slow. Using vector with some wrappers is faster. </p>
 <p>NOTE: We have tried reserving the intiial vector size and it doesn't seem to speed things up, nor does using a list </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="adc09d66898ce4f9c29ec2382b87d13c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc09d66898ce4f9c29ec2382b87d13c4">&#9670;&nbsp;</a></span>str()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string str </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_stack.html">Stack</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
