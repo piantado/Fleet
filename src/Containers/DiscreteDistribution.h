@@ -12,6 +12,8 @@
 #include "IO.h"
 #include "Strings.h"
 
+
+
 /**
  * @class DiscreteDistribution
  * @author steven piantadosi
@@ -23,10 +25,17 @@ template<typename T>
 class DiscreteDistribution {
 	
 public:
-	std::map<T,double> m; // map from values to log probabilities
-	
-	DiscreteDistribution() {
-	}
+
+
+	// m here will store the map from values to log probabilities. We need to ensure, though
+	// that when T is either float or double, it correctly sorts NaN (which operator< does not defaulty do)
+	// so, here we have a conditional to handle that
+	using my_map_t = std::conditional< std::is_same<T,double>::value or std::is_same<T,float>::value,
+									std::map<T,double,floating_point_compare<double>>,
+									std::map<T,double>>::type;
+	my_map_t m;
+
+	DiscreteDistribution() { }
 	
 	virtual T argmax() const {
 		T best{}; // Note defaults to this when there are none!
@@ -83,11 +92,26 @@ public:
 		 * @param v
 		 */
 		
+		// We can't store NaN in this container ugh
+		if constexpr (std::is_same<T, double>::value or 
+					  std::is_same<T, float>::value){
+			assert((not std::isnan(x)) && "*** Cannot store NaNs here, sorry. They don't work with maps and you'll be in for an unholy nightmare");
+		}
+		
 		if(m.find(x) == m.end()) {
 			m[x] = v;
 		}
 		else {
 			m[x] = logplusexp(m[x], v);
+		}
+	}
+	
+	double get(T x, double v) {
+		if(m.find(x) == m.end()) {
+			return v;
+		} 
+		else {
+			return m[x]; 
 		}
 	}
 	

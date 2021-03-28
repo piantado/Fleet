@@ -6,7 +6,7 @@ enum class Op {
 	X,
 	If, Jmp,
 	Recurse, PopX, SafeRecurse, MemRecurse, SafeMemRecurse,
-	Flip, FlipP,
+	Flip, FlipP, SafeFlipP,
 	Mem,
 	NoOp,
 	CL_I, CL_S, CL_K, CL_Apply

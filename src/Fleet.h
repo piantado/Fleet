@@ -60,6 +60,20 @@
  * refactoring and prototyping since declarations and implementations are not in separate files. This style may change in the future
  * because it also leads to higher compilation times. 
  * 
+ * \subection subsec_inference Inference
+ * 
+ * Fleet provides a number of simple inference routines to use. Examples of each can be found in Models/Sorting
+ * 
+ * - Markov-Chain Monte-Carlo
+ * - MCMC With Parallel Tempering
+ * - Monte-Carlo Tree search 
+ * - Beam search
+ * - Enumeration (with a fast, fancy implementation)
+ * 
+ * Generally, we find that ParallelTempering is the fastest and most effective way to search these spaces of programs. These can 
+ * be compared in Models/Sorting, which has examples of each.  
+ * 
+ * 
  * \section tutorial_sec Tutorial 
  * 
  * To illustrate how Fleet works, let's walk through a simple example: the key parts of FormalLanguageTheory-Simple. This is
@@ -303,19 +317,7 @@ int main(int argc, char** argv){
  * 
  * At the end of this program, as the Fleet object is destroyed, it will print out some statistics about the total number of MCMC steps, total
  * runtime, etc. (This can be turned off by setting FleetArgs::print_header=false). 
- * 
- * \section install_sec Inference
- * 
- * Fleet provides a number of simple inference routines to use. Examples of each can be found in Models/Sorting
- * 
- * - Markov-Chain Monte-Carlo
- * - MCMC With Parallel Tempering
- * - Monte-Carlo Tree search 
- * - Beam search
- * - Enumeration (with a fast, fancy implementation)
- * 
- * Generally, we find that ParallelTempering is the fastest and most effective way to search these spaces of programs. 
- * 
+ *
  */
 
 #pragma once 

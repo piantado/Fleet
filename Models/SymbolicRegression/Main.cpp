@@ -405,6 +405,7 @@ public:
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
+
 #include "FleetArgs.h"
 #include "Fleet.h" 
 
@@ -417,7 +418,6 @@ int main(int argc, char** argv){
 	fleet.add_option("--nsamples", nsamples, "How many samples per structure?");
 	fleet.add_option("--nstructs", nstructs, "How many structures?");
 	fleet.add_option("--polynomial-degree",   polynomial_degree,   "Defaultly -1 means we store everything, otherwise only keep polynomials <= this bound");
-	fleet.add_option("--inner-restart",   inner_restarts,   "When does the inner MCMC chain restart?");	
 	fleet.initialize(argc, argv);
 	
 	// set up the data

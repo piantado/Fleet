@@ -55,16 +55,16 @@ template<typename input_t, typename output_t>
 std::ostream& operator<<(std::ostream& o, const defaultdatum_t<input_t,output_t>& d) {
 	
 	if constexpr( std::is_pointer<input_t>::value and std::is_pointer<output_t>::value) {
-		o << "[DATA: PTR " << *d.input << " -> PTR " << *d.output << " w/ reliability " << d.reliability << "]";
+		o << "[DATA: PTR " << *d.input << " -> PTR " << *d.output << " w/ reliability " << d.reliability << " and count " << d.count << "]";
 	}
 	if constexpr( std::is_pointer<input_t>::value and not std::is_pointer<output_t>::value) {
-		o << "[DATA: PTR " << *d.input << " -> " << d.output << " w/ reliability " << d.reliability << "]";
+		o << "[DATA: PTR " << *d.input << " -> " << d.output << " w/ reliability " << d.reliability << " and count " << d.count << "]";
 	}
 	if constexpr( (not std::is_pointer<input_t>::value) and std::is_pointer<output_t>::value) {
-		o << "[DATA: " << d.input << " -> " << *d.output << " w/ reliability " << d.reliability << "]";
+		o << "[DATA: " << d.input << " -> " << *d.output << " w/ reliability " << d.reliability << " and count " << d.count << "]";
 	}
 	if constexpr( (not std::is_pointer<input_t>::value) and (not std::is_pointer<output_t>::value)) {
-		o << "[DATA: " << d.input << " -> " << d.output << " w/ reliability " << d.reliability << "]";
+		o << "[DATA: " << d.input << " -> " << d.output << " w/ reliability " << d.reliability << " and count " << d.count << "]";
 	}
 
 	// TODO: Check if pointer and deref for printing

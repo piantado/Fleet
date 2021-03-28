@@ -144,3 +144,19 @@ double mygamma(double v) {
 double lfactorial(double x) {
 	return mylgamma(x+1);
 }
+
+
+/**
+ * @brief This allows sorting of things that contain NaN
+ * @param x
+ * @param y
+ * @return 
+ */
+template<typename T>
+struct floating_point_compare {
+	bool operator()(const T &x, const T &y) const {
+		if(std::isnan(x)) return false;
+		if(std::isnan(y)) return true;
+		return x < y;
+	}
+};
