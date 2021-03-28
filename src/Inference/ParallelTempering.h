@@ -1,6 +1,6 @@
 #pragma once 
 
-//#define PARALLEL_TEMPERING_SHOW_DETAIL
+#define PARALLEL_TEMPERING_SHOW_DETAIL
 
 #include "Errors.h"
 #include <signal.h>
@@ -68,7 +68,8 @@ public:
 	}
 	
 	void __swapper_thread(time_ms swap_every ) {
-		// runs a swapper every swap_every seconds (double)
+			
+		// runs a swapper every swap_every ms (double)
 		// NOTE: If we have 1 element in the pool, it is caught below
 		auto last = now();
 		while(!(terminate or CTRL_C)) {
@@ -152,8 +153,9 @@ public:
 	void show_statistics() {
 		COUT "# Pool info: \n";
 		for(size_t i=0;i<this->pool.size();i++) {
+			std::lock_guard guard1(this->pool[i].current_mutex); // definitely need this to print
 			COUT "# " << i TAB this->pool[i].temperature TAB this->pool[i].current.posterior TAB
-					     this->pool[i].acceptance_ratio() TAB swap_history[i].mean() TAB this->pool[i].samples TAB this->pool[i].current.string()
+					     this->pool[i].acceptance_ratio() TAB swap_history[i].N TAB this->pool[i].samples TAB this->pool[i].current.string()
 						 ENDL;
 		}
 	}
@@ -163,6 +165,7 @@ public:
 	}
 	
 	void adapt(double v=3, double t0=1000000) {
+		//show_statistics();
 		
 		std::vector<double> sw(this->pool.size());
 		

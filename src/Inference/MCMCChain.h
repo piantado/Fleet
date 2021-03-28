@@ -5,6 +5,7 @@
 #include "MCMCChain.h"
 #include "FiniteHistory.h"
 #include "Control.h"
+#include "OrderedLock.h"
 
 //#define DEBUG_MCMC 1
 
@@ -20,7 +21,7 @@ class MCMCChain {
 public:
 	
 	HYP current;
-	mutable std::mutex current_mutex; // for access in parallelTempering
+	mutable OrderedLock current_mutex; // for access in parallelTempering
 	typename HYP::data_t* data;
 	
 	double maxval;

@@ -37,6 +37,7 @@ struct VirtualMachineControl {
 	
 };
 
+// The defaults:
 unsigned long VirtualMachineControl::MAX_RECURSE = 64;
 unsigned long VirtualMachineControl::MAX_RUN_PROGRAM = 1024;
 
