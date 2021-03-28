@@ -21,7 +21,12 @@ class MCMCChain {
 public:
 	
 	HYP current;
-	mutable OrderedLock current_mutex; // for access in parallelTempering
+	
+	// It's a little important that we use an OrderedLock, because otherwise we have
+	// no guarantees about chains accessing in a FIFO order. Non-FIFO is especially
+	// bad for ParallelTempering, where there are threads doing the adaptation etc. 
+	mutable OrderedLock current_mutex; 
+	
 	typename HYP::data_t* data;
 	
 	double maxval;

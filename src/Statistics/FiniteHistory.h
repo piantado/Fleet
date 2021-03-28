@@ -60,7 +60,12 @@ public:
 		N = (unsigned long)fh.N;
 	}
 	
-	
+	void reset() {
+		std::lock_guard guard(mutex);
+		history.clear();
+		history_index = 0;
+		N = 0;
+	}
 	
 	/**
 	 * @brief Add x to this history

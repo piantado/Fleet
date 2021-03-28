@@ -28,6 +28,8 @@ class ParallelTempering : public ChainPool<HYP,callback_t> {
 	
 public:
 	std::vector<double> temperatures;
+	
+	// Swap history stores how often the i'th chain swaps with the (i-1)'st chain
 	FiniteHistory<bool>* swap_history;
 	
 	bool is_temperature; // set for whether we initialize according to a temperature ladder (true) or data
@@ -123,7 +125,7 @@ public:
 				last = now();
 				
 				#ifdef PARALLEL_TEMPERING_SHOW_DETAIL
-				show_statistics();
+					show_statistics();
 				#endif
 				
 				adapt(); // TOOD: Check what counts as t
@@ -175,10 +177,18 @@ public:
 			if( swap_history[i].N>0 && swap_history[i+1].N>0 ) { // only adjust if there are samples
 				sw[i] += k(this->pool[i].samples, v, t0) * (swap_history[i].mean()-swap_history[i+1].mean()); 
 			}
+			
+		}
+		
+		// Reset all of the swap histories (otherwise we keep adapting in a bad way)
+		for(size_t i=1;i<this->pool.size();i++) { 
+			swap_history[i].reset();
+			swap_history[i] << true; swap_history[i] << false; // this is a little +1 smoothing
 		}
 		
 		// and then convert S to temperatures again
-		for(size_t i=1;i<this->pool.size()-1;i++) { // never adjust i=0 (T=1)
+		// but never adjust i=0 (T=1) OR the last one
+		for(size_t i=1;i<this->pool.size()-1;i++) { 
 			this->pool[i].temperature = this->pool[i-1].temperature + exp(sw[i]);
 		}
 	}
