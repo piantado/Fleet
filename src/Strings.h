@@ -88,6 +88,18 @@ std::string str(const std::vector<T>& a ){
 }
 
 
+template<typename T>
+std::string str(const std::atomic<T>& a ){
+	/**
+	 * @brief A pythonesque string function
+	 * @param x
+	 * @return 
+	 */
+	return str(a.load());
+}
+
+
+
 template <typename T>
 std::string to_string_with_precision(const T a_value, const int n = 14) {
 	// https://stackoverflow.com/questions/16605967/set-precision-of-stdto-string-when-converting-floating-point-values
