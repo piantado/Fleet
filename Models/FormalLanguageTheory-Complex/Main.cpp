@@ -31,7 +31,7 @@ const size_t MAX_PR_LINES = 1000000;
 const size_t RESTART = 0;
 const size_t NTEMPS = 15; // 10 for the main run -- updated to 20 here
 const size_t MAX_TEMP = 25.0;  // 10 for the main run -- updated to 50 here
-unsigned long SWAP_EVERY = 250; // ms
+unsigned long SWAP_EVERY = 150; // ms
 unsigned long PRINT_STRINGS; // print at most this many strings for each hypothesis
 
 std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
@@ -279,11 +279,12 @@ public:
 		std::lock_guard guard(output_lock); // better not call Super wtih this here
 		extern MyHypothesis::data_t prdata;
 		extern std::string current_data;
+		extern std::pair<double,double> mem_pr;
 		auto o = this->call(S(""), S("<err>"));
-		auto [prec, rec] = get_precision_and_recall(std::cout, o, prdata, PREC_REC_N);
+		auto [prec, rec] = get_precision_and_recall(o, prdata, PREC_REC_N);
 		COUT "#\n";
 		COUT "# "; o.print(PRINT_STRINGS);	COUT "\n";
-		COUT prefix << current_data TAB current_ntokens TAB this->born TAB this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->parseable()) TAB prec TAB rec;
+		COUT prefix << current_data TAB current_ntokens TAB mem_pr.first TAB mem_pr.second TAB this->born TAB this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->parseable()) TAB prec TAB rec;
 		COUT "" TAB QQ(this->string()) ENDL
 	}
 	
@@ -295,6 +296,7 @@ std::string prdata_path = "";
 MyHypothesis::data_t prdata; // used for computing precision and recall -- in case we want to use more strings?
 S current_data = "";
 bool long_output = false; // if true, we allow extra strings, recursions etc. on output
+std::pair<double,double> mem_pr; 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Main
@@ -373,14 +375,29 @@ int main(int argc, char** argv){
 	
 	tic();	
 	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
+		auto& this_data = datas[di];
 		
-		samp.set_data(&datas[di], true);
+		samp.set_data(&this_data, true);
+		
+		// compute the prevision and recall if we just memorize the data
+		{
+			double cz = 0; // find the normalizer for counts			
+			for(auto& d: this_data) cz += d.count; 
+			
+			DiscreteDistribution<S> mem_d;
+			for(auto& d: this_data) 
+				mem_d.addmass(d.output, log(d.count)-log(cz)); 
+			
+			// set a global var to be used when printing hypotheses above
+			mem_pr = get_precision_and_recall(mem_d, prdata, PREC_REC_N);
+		}
+		
 		
 		// set this global variable so we know
 		current_ntokens = 0;
-		for(auto& d : datas[di]) { UNUSED(d); current_ntokens++; }
+		for(auto& d : this_data) { UNUSED(d); current_ntokens++; }
 		
-		samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, RESTART), SWAP_EVERY, 5*60*1000);	
+		samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, RESTART), SWAP_EVERY, 60*1000);	
 
 		// set up to print using a larger set if we were given this option
 		if(long_output){

@@ -119,7 +119,6 @@ public:
 	 * @return 
 	 */
 	virtual double compute_posterior(const data_t& data, const double breakout=-infinity) {
-
 		
 		++FleetStatistics::posterior_calls; // just keep track of how many calls 
 		

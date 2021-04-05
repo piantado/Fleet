@@ -31,6 +31,7 @@ template<typename T, typename TDATA>
 std::map<T, double> highest(const std::vector<TDATA>& m, unsigned long N) {
 	// take a type of data and make a map of strings to counts, pulling out the top N
 	// and converting into a map
+
 	std::map<T, double> out;
 	
 	std::vector<TDATA> v = m; 
@@ -45,13 +46,13 @@ std::map<T, double> highest(const std::vector<TDATA>& m, unsigned long N) {
 
 
 template<typename TDATA>
-std::pair<double, double> get_precision_and_recall(std::ostream& output, DiscreteDistribution<std::string>& model, std::vector<TDATA>& data, unsigned long N) {
+std::pair<double, double> get_precision_and_recall(DiscreteDistribution<std::string>& model, std::vector<TDATA>& data, unsigned long N) {
 	// How many of the top N generated strings appear *anywhere* in the data
 	// And how many of the top N data appear *anywhere* in the generated strings
 	// Note: This is a little complicated if the data has fewer strings that the model, since we don't
 	// know the "true" precision and recall
 	
-	auto A = model.best(N);
+	auto A = model.best(N, true);
 	auto B = highest<std::string,TDATA>(data, std::min(N,data.size()) );
 	
 	std::set<std::string> mdata; // make a map of all observed output strings

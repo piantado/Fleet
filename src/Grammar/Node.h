@@ -405,11 +405,11 @@ public:
 		 * @return 
 		 */
 		
-		size_t output = rule->get_hash(); // tunrs out, this is actually important to prevent hash collisions when rule_id and i are small
+		size_t ret = rule->get_hash(); // tunrs out, this is actually important to prevent hash collisions when rule_id and i are small
 		for(size_t i=0;i<this->children.size();i++) {
-			hash_combine(output, depth, this->children[i].hash(depth+1), i); // modifies output
+			hash_combine(ret, depth, this->children[i].hash(depth+1), i); // modifies output
 		}
-		return output;
+		return ret;
 	}
 
 	

@@ -152,10 +152,11 @@ public:
 	}
 	
 	
-	std::vector<T> best(size_t n) const {
+	std::vector<T> best(size_t n, bool include_equal) const {
 		/**
 		 * @brief Get the N best from this distribution
-		 * @param N
+		 * @param N - how many to get
+		 * @param include_equal - should we include ones that are equal to the best (potentially giving more than N)?
 		 * @return 
 		 */
 		
@@ -164,7 +165,8 @@ public:
 		std::sort(v.begin(), v.end(), [](auto x, auto y){ return x.second > y.second; }); // put the big stuff first
 		
 		std::vector<T> out;
-		for(size_t i=0;i<std::min(n, v.size());i++){
+		auto until = std::min(n, v.size())-1;
+		for(size_t i=0;i<=until or (include_equal and v[i].second == v[until].second);i++){
 			out.push_back(v[i].first);
 		}
 
