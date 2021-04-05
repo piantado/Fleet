@@ -166,7 +166,7 @@ public:
 		
 		std::vector<T> out;
 		auto until = std::min(n, v.size())-1;
-		for(size_t i=0;i<=until or  (include_equal and v[i].second == v[until].second);i++){
+		for(size_t i=0;i<=until or (include_equal and v[i].second == v[until].second);i++){
 			out.push_back(v[i].first);
 		}
 
