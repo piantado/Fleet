@@ -65,7 +65,7 @@ public:
 		return top.size();
 	}
 
-	void add(T x) {
+	virtual void add(T x) {
 		//std::lock_guard guard(lock);
 		top << Item(x, uniform());
 		++N;				
@@ -101,6 +101,8 @@ public:
 	void clear() {
 		top.clear();
 	}
+	
+	
 	
 };
 

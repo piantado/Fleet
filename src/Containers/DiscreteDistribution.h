@@ -165,8 +165,8 @@ public:
 		std::sort(v.begin(), v.end(), [](auto x, auto y){ return x.second > y.second; }); // put the big stuff first
 		
 		std::vector<T> out;
-		auto until = std::min(n, v.size())-1;
-		for(size_t i=0;i<=until or (include_equal and v[i].second == v[until].second);i++){
+		auto until = n-1;
+		for(size_t i=0; (i<v.size()) and ((i<=until) or (include_equal and v[i].second == v[until].second));i++){
 			out.push_back(v[i].first);
 		}
 
