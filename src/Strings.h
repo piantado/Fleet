@@ -50,6 +50,15 @@ std::string str(const std::tuple<T...>& x ){
 	return str(x, std::make_index_sequence<sizeof...(T)>() );
 }
 
+template<typename A, typename B >
+std::string str(const std::pair<A,B> x){
+	/**
+	 * @brief A pythonesque string function
+	 * @param x
+	 * @return 
+	 */
+	return "<" + str(x.first) + "," + str(x.second) + ">";
+}
 
 template<typename T, size_t N>
 std::string str(const std::array<T, N>& a ){
@@ -87,6 +96,23 @@ std::string str(const std::vector<T>& a ){
 	return out+"]";
 }
 
+template<typename T, typename U>
+std::string str(const std::map<T,U>& a ){
+	/**
+	 * @brief A pythonesque string function
+	 * @param x
+	 * @return 
+	 */
+	std::string out = "{";
+	for(auto& x : a) {
+		out += str(x.first) + ":" + str(x.second) + ",";
+	}
+	if(a.size()>0) 
+		out.erase(out.size()-1); // remove that last dumb comma
+	out += "}";
+	
+	return out;
+}
 
 template<typename T>
 std::string str(const std::atomic<T>& a ){
@@ -410,6 +436,8 @@ double p_KashyapOommen1984_edit(const std::string x, const std::string y, const 
 }
 
 
+#include "Datum.h" // needed so we can map strings to this
+
 //https://stackoverflow.com/questions/16337610/how-to-know-if-a-type-is-a-specialization-of-stdvector
 template<typename Test, template<typename...> class Ref>
 struct is_specialization : std::false_type {};
@@ -465,4 +493,4 @@ template<> long          string_to(const std::string s) { return std::stol(s); }
 template<> unsigned long string_to(const std::string s) { return std::stoul(s); }
 template<> double        string_to(const std::string s) { return std::stod(s); }
 template<> float         string_to(const std::string s) { return std::stof(s); }
-
+template<> bool          string_to(const std::string s) { assert(s.size()==1); return s=="1"; } // 0/1 for t/f

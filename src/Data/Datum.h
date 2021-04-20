@@ -37,7 +37,7 @@ public:
 		}
 		else {
 			input = input_t{};
-			output = s;
+			output = string_to<output_t>(s);
 		}
 		
 		reliability = NaN;

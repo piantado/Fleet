@@ -48,7 +48,7 @@ double random_scale() {
 // We need these to declare this so it is defined before grammar,
 // and so these can be accessed in grammar.
 // What a goddamn nightmare (the other option is to separate header files)
-struct ConstantContainer {
+struct ConstantContainer final {
 	std::vector<D> constants;
 	size_t         constant_idx; // in evaluation, this variable stores what constant we are in 
 };

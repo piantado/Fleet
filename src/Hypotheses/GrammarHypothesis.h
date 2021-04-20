@@ -213,6 +213,7 @@ public:
 				// read the max size from above and compute all the likelihoods
 				for(size_t i=0;i<max_sizes[x.first];i++) {
 					data_lls(i) = hypotheses[h].compute_single_likelihood(x.first->at(i));
+					assert(not std::isnan(data_lls(i))); // NaNs will really mess everything up
 				}
 				
 				#pragma omp critical
@@ -270,7 +271,8 @@ public:
 
 				// #pragma may not be needed?
 				#pragma omp critical
-				decayedLikelihood->operator()(h,di) = dl;							
+				assert(not std::isnan(dl));
+				(*decayedLikelihood)(h,di) = dl;							
 			}
 		}
 	}
@@ -300,7 +302,8 @@ public:
 				for(auto& x : ret.values()) {
 					v.push_back(std::make_pair(x.first, exp(x.second)));
 				}
-				
+
+				#pragma omp critical
 				P->at(h,di) = v;
 			}
 		}
@@ -403,10 +406,10 @@ public:
 					ll += log( (1.0-alpha.get())*di.chance + alpha.get()*model_predictions[r.first]) * r.second; // log probability times the number of times they answered this
 				}
 				
+				
 				#pragma omp critical
 				this->likelihood += ll;
 			}
-			//CERR this->likelihood ENDL;
 			return this->likelihood;	
 		}
 		else {
