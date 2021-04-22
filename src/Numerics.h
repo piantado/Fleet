@@ -6,7 +6,7 @@
 
 // This includes our thread-safe lgamma and must be declared before math.h is imported
 // This means that we should NOT import math.h anywhere else
-# define _REENTRANT 1 
+#define _REENTRANT 1 
 #include <math.h>
 
 /////////////////////////////////////////////////////////////
