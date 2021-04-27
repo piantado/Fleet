@@ -25,7 +25,7 @@ public:
 	int arg;
 	
 	// constructors to make this a little easier to deal with
-	Instruction(void* _f, int a=0x0) : f(_f), arg(a) {	
+	Instruction(void* _f=nullptr, int a=0x0) : f(_f), arg(a) {	
 	}		
 };
 

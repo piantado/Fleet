@@ -25,6 +25,7 @@ class Stack  {
 public:
 
 	Stack() {
+//		reserve(100); // does nothing
 	}
 
 	template<typename... Args>

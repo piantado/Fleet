@@ -276,29 +276,35 @@ public:
 	 * Operaitons for running programs
 	 ********************************************************/
 
-	virtual size_t program_size() const {
-		/**
-		 * @brief How big of a program does this correspond to? This is mostly the number of nodes, except that short-circuit evaluation of IF makes things a little more complex. 
-		 * @return 
-		 */
-		
-		// compute the size of the program -- just number of nodes plus special stuff for IF
-		size_t n = 1; // I am one operation
-		
-		
-		
-		// TODO: FIX THIS PROGRAM-SIZE FOR IF ETC 
-		
-		
-		//if( rule->instr.is_a(BuiltinOp::op_IF) ) { n += 1; } // I have to add this many more instructions for an if
-		for(const auto& c: this->children) {
-			n += c.program_size();
-		}
-		return n;
-	}
+//	virtual size_t program_size() const {
+	
+	// TODO: This was removed because it wasn't up to date with IF, AND, OR, etc. 
+	//       If we needed it, it could be added in again, but I don't think anything needs it
+	
+//		/**
+//		 * @brief How big of a program does this correspond to? This is mostly the number of nodes, except that short-circuit evaluation of IF makes things a little more complex. 
+//		 * @return 
+//		 */
+//		
+//		// compute the size of the program -- just number of nodes plus special stuff for IF
+//		size_t n = 1; // I am one operation
+//		
+//		
+//		assert(false); // This is probably no longer needed?
+//		
+//		
+//		// TODO: FIX THIS PROGRAM-SIZE FOR IF ETC 
+//		
+//		
+//		//if( rule->instr.is_a(BuiltinOp::op_IF) ) { n += 1; } // I have to add this many more instructions for an if
+//		for(const auto& c: this->children) {
+//			n += c.program_size();
+//		}
+//		return n;
+//	}
 	
 	template<typename Grammar_t>
-	int linearize(Program &program) const { 
+	inline int linearize(Program &program) const { 
 		/**
 		 * @brief convert tree to a linear sequence of operations. 
 		 * 		To do this, we first linearize the kids, leaving their values as the top on the stack
@@ -316,17 +322,13 @@ public:
 				
 		// NOTE: If you change the order here ever, you have to change how string() works so that 
 		//       string order matches evaluation order
-		// TODO: We should restructure this to use "map" so that the order is always the same as for printing
-		
 		
 		// and just a little checking here
+		assert(rule != NullRule && "*** Cannot linearize if there is a null rule");
 		for(size_t i=0;i<this->rule->N;i++) {
 			assert(not this->children[i].is_null() && "Cannot linearize a Node with null children");
 			assert(this->children[i].rule->nt == rule->type(i) && "Somehow the child has incorrect types -- this is bad news for you."); // make sure my kids types are what they should be
 		}
-		
-		
-		assert(rule != NullRule && "*** Cannot linearize if there is a null rule");
 		
 		// If we are an if, then we must do some fancy short-circuiting
 		if( rule->is_a(Op::If) ) {

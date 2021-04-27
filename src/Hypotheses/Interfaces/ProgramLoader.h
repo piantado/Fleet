@@ -12,7 +12,7 @@
 class ProgramLoader {
 public:
 	// Ways to push a program onto s
-	[[nodiscard]] virtual size_t program_size(short s) = 0;
+//	[[nodiscard]] virtual size_t program_size(short s) = 0;
 	
 	virtual void push_program(Program& s, short k=0) = 0;
 

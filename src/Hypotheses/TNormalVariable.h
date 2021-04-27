@@ -74,7 +74,7 @@ public:
 			out.set(MEAN + SD*random_normal());
 		}
 		else {
-			// should have just copied it anyways
+			// should already have just copied it anyways
 		}
 		return out;
 	}
@@ -88,7 +88,7 @@ public:
 	}
 	
 	virtual std::string string(std::string prefix="") const override {
-		return prefix+"N<"+str(value)+">";
+		return prefix+"TN<"+str(value)+">";
 	}
 	
 };

@@ -212,10 +212,10 @@ public:
 			
 			vms->run();
 				
-			if(vms->status == vmstatus_t::COMPLETE) { // can't add up probability for errors
+			if(vms->status == vmstatus_t::COMPLETE) {
 				out.push_back(vms);
 			}
-			else if(vms->status != vmstatus_t::RANDOM_CHOICE_NO_DELETE) {
+			else if(vms->status != vmstatus_t::RANDOM_CHOICE_NO_DELETE) { 
 				delete vms; // if our previous copy isn't pushed back on the stack, delete it
 			}
 		}

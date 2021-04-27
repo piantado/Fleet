@@ -160,6 +160,7 @@ public:
 			
 			// if we haven't improved
 			if(ctl.restart>0 and steps_since_improvement > ctl.restart){
+				[[unlikely]];
 				std::lock_guard guard(current_mutex);
 				
 				current = current.restart();
@@ -212,6 +213,7 @@ public:
 			   (current.posterior == -infinity) or
 			   ((not std::isnan(proposal.posterior)) and
 				(ratio >= 0.0 or uniform() < exp(ratio) ))) {
+				[[unlikely]];
 							
 				#ifdef DEBUG_MCMC
 				DEBUG("# Accept");
@@ -222,7 +224,7 @@ public:
 				history << true;
 				++acceptances;
 				
-				[[unlikely]];
+				
 			}
 			else {
 				history << false;
@@ -230,11 +232,13 @@ public:
 				
 			// and call on the sample if we meet all our criteria
 			if(callback != nullptr and samples >= ctl.burn and
-				(ctl.thin == 0 or FleetStatistics::global_sample_count % ctl.thin == 0)) {
+				(ctl.thin == 0 or FleetStatistics::global_sample_count % ctl.thin == 0)) { 
+				[[unlikely]];
 				(*callback)(current);
 			}
 			
 			if(ctl.print > 0 and FleetStatistics::global_sample_count % ctl.print == 0) {
+				[[unlikely]];
 				current.print();
 			}
 			

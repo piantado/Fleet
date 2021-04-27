@@ -61,7 +61,7 @@ public:
 	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            llt;
 	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            pt;
 	TNormalVariable< +[](float x)->float { return expf(x-2); }>              decay;  // peaked near zero
-		
+	
 	typename HYP::Grammar_t* grammar;
 	
 	// All of these are shared_ptr so that we can copy hypotheses quickly
@@ -335,7 +335,10 @@ public:
 		#pragma omp parallel for
 		for(int di=0;di<hposterior.cols();di++) { 
 			// here we normalize and convert it to *probability* space
-			hposterior.col(di) = lognormalize(hposterior.col(di)).array().exp();
+			auto val = lognormalize(hposterior.col(di)).array().exp();
+			
+			#pragma omp critical
+			hposterior.col(di) = val;
 		}
 		
 		return hposterior;
@@ -529,6 +532,7 @@ public:
 				offset += nrules;
 			}
 		
+			#pragma omp critical
 			out(i) = lp;
 		}		
 		
