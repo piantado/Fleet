@@ -166,7 +166,7 @@ bool contains(const std::string& s, const char x) {
  * @param y
  * @param del_p - probability of deleting the next character (geometric)
  * @param add_p - probability of adding (geometric)
- * @param alpha_n - size of alphabet
+ * @param log_alphabet - log of the size of alphabet
  * @return The probability of converting x to y by deleting characters with probability del_p and then adding with probability add_p
  */
  template<const float& add_p, const float& del_p>

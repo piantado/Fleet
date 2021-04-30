@@ -70,11 +70,11 @@ public:
 	
 	unsigned long 	  recursion_depth; // when I was created, what was my depth?
 	
-		// This is a little bit of fancy template metaprogramming that allows us to define a stack
+	// This is a little bit of fancy template metaprogramming that allows us to define a stack
 	// like std::tuple<VMSStack<bool>, VMSStack<std::string> > using a list of type names defined in VM_TYPES
 	template<typename... args>
-	struct t_stack { std::tuple<VMSStack<args>...> value; };
-	t_stack<VM_TYPES...> _stack; // our stacks of different types
+	struct stack_t { std::tuple<VMSStack<args>...> value; };
+	stack_t<VM_TYPES...> _stack; // our stacks of different types
 	
 	typedef int index_t; // how we index into factorized lexica -- NOTE: must be castable from Instruction.arg 
 	
@@ -203,7 +203,6 @@ public:
 	/**
 	 * @brief Return the output and do some checks that the stacks are as they should be if you're reading the output.
 	 * @return 
-	 * 		// TODO: FIX THIS SO IT DOESN'T POP FROM OUTPUT_T
 	 */	
 	output_t get_output() {
 		
