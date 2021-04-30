@@ -20,11 +20,11 @@
  * 		  NOTE: When you use a ChainPool, the results will not be reproducible with seed because timing determines when you
  *        switch chains. 
  */
-template<typename HYP, typename callback_t>
+template<typename HYP>
 class ChainPool : public ParallelInferenceInterface<> { 
 	
 public:
-	std::vector<MCMCChain<HYP,callback_t>> pool;
+	std::vector<MCMCChain<HYP>> pool;
 	
 	// these parameters define the amount of a thread spends on each chain before changing to another
 	// NOTE: these interact with ParallelTempering swap/adapt values (because if these are too small, then
@@ -38,10 +38,9 @@ public:
 	
 	ChainPool() {}
 	
-	ChainPool(HYP& h0, typename HYP::data_t* d, callback_t& cb, size_t n, bool allcallback=true) : running(n, false) {
+	ChainPool(HYP& h0, typename HYP::data_t* d,size_t n) : running(n, false) {
 		for(size_t i=0;i<n;i++) {
-			if(allcallback or i==0) pool.push_back(MCMCChain<HYP,callback_t>(i==0?h0:h0.restart(), d, cb));
-			else                    pool.push_back(MCMCChain<HYP,callback_t>(i==0?h0:h0.restart(), d));
+			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), d));
 		}
 	}
 	
@@ -74,7 +73,7 @@ public:
 			
 				do { 
 					idx = next_index() % pool.size();
-				} while( running[idx] );
+				} while( running[idx] ); // so we exit on a false running idx
 				running[idx] = true; // say I'm running this one 
 			}
 			

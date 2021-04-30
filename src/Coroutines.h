@@ -18,7 +18,7 @@ struct thin {
 
 	// funny little increment here returns true for 0 mod m
 	bool operator++() {
-		if(++cnt == m) {
+		if(++cnt == m or m==0) {
 			cnt = 0;
 			return true;
 		}
@@ -37,7 +37,7 @@ generator<T> operator|(generator<T> g, thin t) {
 // chaining together generator and TopN
 #include "Top.h"
 template<typename T> 
-generator<T> operator|(generator<T> g, TopN<T> tn) {
+generator<T> operator|(generator<T> g, TopN<T>& tn) { // NOTE: tn MUST be a ref here...
 	for(auto& x : g) {
 		tn << x; // add
 		co_yield x; // and yield 
