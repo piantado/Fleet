@@ -137,7 +137,8 @@ public:
 #ifndef DO_NOT_INCLUDE_MAIN
 
 #include "Top.h"
-#include "ParallelTempering.h"
+#include "MCMCChain.h"
+//#include "ParallelTempering.h"
 #include "Fleet.h" 
 #include "Builtins.h"
 #include "VMSRuntimeError.h"
@@ -207,17 +208,20 @@ int main(int argc, char** argv){
 //
 //	return 0;
 	
-	top.print_best = true;
-	auto h0 = MyHypothesis::make(&grammar);
-	ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 1000.0);
-	samp.run(Control(), 100, 30000);		
-	
-
-//	top.print_best = true; // print out each best hypothesis you find
+//	top.print_best = true;
 //	auto h0 = MyHypothesis::make(&grammar);
-//	MCMCChain c(h0, &mydata, top);
-//	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-//	c.run(Control());
+//	ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 1000.0);
+//	samp.run(Control(), 100, 30000);		
+//	
+
+	top.print_best = true; // print out each best hypothesis you find
+	auto h0 = MyHypothesis::make(&grammar);
+	MCMCChain c(h0, &mydata);
+	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
+	for(auto& h : c.run(Control())) {
+		top << h;
+		
+	}
 
 	// run multiple chains
 //	auto h0 = MyHypothesis::make(&grammar);
