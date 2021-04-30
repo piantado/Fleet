@@ -320,5 +320,3 @@ void operator<<(std::set<HYP>& s, TopN<HYP>& t){
 		s.insert(h);
 	}
 }
-
-

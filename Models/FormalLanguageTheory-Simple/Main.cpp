@@ -218,9 +218,8 @@ int main(int argc, char** argv){
 	auto h0 = MyHypothesis::make(&grammar);
 	MCMCChain c(h0, &mydata);
 	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-	for(auto& h : c.run(Control())) {
-		top << h;
-		
+	for(auto& h : c.run(Control()) | top | thin(10000)) {
+		h.print();			
 	}
 
 	// run multiple chains

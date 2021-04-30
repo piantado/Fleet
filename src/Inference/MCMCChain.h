@@ -1,9 +1,7 @@
 #pragma once 
 
 #include <functional>
-#include <coroutine>
-#include "generator.hpp"
-
+#include "Coroutines.h"
 #include "MCMCChain.h"
 #include "FiniteHistory.h"
 #include "Control.h"
@@ -118,7 +116,7 @@ public:
 	 * 		  NOTE: ctl cannot be passed by reference. 
 	 * @param ctl
 	 */	
-	 cppcoro::generator<HYP> run(Control ctl) {
+	 generator<HYP> run(Control ctl) {
 
 		assert(ctl.nthreads == 1 && "*** You seem to have called MCMCChain with nthreads>1. This is not how you parallel. Check out ChainPool"); 
 		
