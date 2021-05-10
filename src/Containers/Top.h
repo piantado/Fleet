@@ -6,24 +6,6 @@
 
 #include "FleetArgs.h"
 
-
-/**
- * @class HasPosterior
- * @author piantado
- * @date 07/05/20
- * @file Top.h
- * @brief Check if a type has a posterior function or not
- */
-template <typename T, typename = double>
-struct HasPosterior : std::false_type { };
-
-template <typename T>
-struct HasPosterior <T, decltype((void) T::posterior, 0)> : std::true_type { };
-//https://stackoverflow.com/questions/1005476/how-to-detect-whether-there-is-a-specific-member-variable-in-class
-
-
-
-
 /**
  * @class TopN
  * @author steven piantadosi
@@ -35,18 +17,30 @@ struct HasPosterior <T, decltype((void) T::posterior, 0)> : std::true_type { };
  * */
 template<class T>
 class TopN {	
+	using Hypothesis_t = T;
+	
 	std::mutex lock;
 	
 public:
 	std::map<T,unsigned long> cnt; // also let's count how many times we've seen each for easy debugging
 	std::multiset<T> s; // important that it stores in sorted order by posterior! Multiset because we may have multiple samples that are "equal" (as in SymbolicRegression)
 	bool print_best; // should we print the best?
-	
-	using Hypothesis_t = T;
-	
-public:
 	std::atomic<size_t> N;
 	
+	
+	/**
+	 * @class HasPosterior
+	 * @author piantado
+	 * @date 07/05/20
+	 * @file Top.h
+	 * @brief Check if a type has a posterior function or not
+	 */
+	template <typename X, typename = double>
+	struct HasPosterior : std::false_type { };
+	template <typename X>
+	struct HasPosterior <X, decltype((void) X::posterior, 0)> : std::true_type { };
+	//https://stackoverflow.com/questions/1005476/how-to-detect-whether-there-is-a-specific-member-variable-in-class
+		
 	TopN(size_t n=FleetArgs::ntop) : N(n) { set_print_best(false); }
 	
 	TopN(const TopN<T>& x) {
@@ -81,6 +75,7 @@ public:
 		 * @brief Set the size of n that I cna have. NOTE: this does not resize the existing data. 
 		 * @param n
 		 */
+		assert(n >= N && "*** Settting TopN size to something smaller probably won't do what you want");
 		N = n;
 	}
 	void set_print_best(bool b) {
@@ -135,6 +130,7 @@ public:
 		 * @param x
 		 * @param count
 		 */
+		 
 		if(N == 0) return; // if we happen to not store anything
 		
 		// enable this when we use posterior as the variable, we don't add -inf values

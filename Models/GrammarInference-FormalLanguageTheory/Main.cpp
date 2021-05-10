@@ -19,7 +19,6 @@ using MyHumanDatum = HumanDatum<MyHypothesis>;
 
 #include "GrammarHypothesis.h"
 
-
 // Define a grammar inference class -- nothing special needed here
 class MyGrammarHypothesis final : public GrammarHypothesis<MyGrammarHypothesis, MyHypothesis, MyHumanDatum> {
 public:
@@ -33,8 +32,7 @@ public:
 // Define a function to be called on each sample
 MyGrammarHypothesis MAP;
 size_t grammar_callback_count = 0;
-void gcallback(MyGrammarHypothesis& h) {
-	
+void gcallback(MyGrammarHypothesis& h) {	
 	if(h.posterior > MAP.posterior or isnan(MAP.posterior)) {
 		MAP = h;
 	}
@@ -65,32 +63,38 @@ int main(int argc, char** argv){
 		// split up stimulus into components
 		auto this_data = new MyHypothesis::data_t();
 		auto decay_pos = new std::vector<int>(); 
+		size_t ndata = 0; // how many data points?
 		int i=0;
 		for(auto& s : string_to<std::vector<S>>(stimulus)) { // convert to a string vector and then to data
 			MyHypothesis::datum_t d{.input="", .output=s};
 			this_data->push_back(d);
+			ndata = this_data->size(); // note that below we might change this_data's pointer, but we still need this length
 			decay_pos->push_back(i++);
 			
 			// add a check that we're using the right alphabet here
-			for(auto& c: s) 
-				assert(contains(alphabet,c));
+			for(auto& c: s) assert(contains(alphabet,c));
 			
 		}
 		
 		// process all_responses into a map from strings to counts
 		auto m = string_to<std::map<std::string,unsigned long>>(all_responses);
 		
+		// This glom thing will use anything overlapping in mcmc_data, and give
+		// us a new pointer if it can. This decreases the amount we need to run MCMC search
+		// on and saves memory
+		glom(mcmc_data, this_data); 	// TODO: Change to reference to pointer?
+		
+		// now just put into the data
 		human_data.push_back(MyHumanDatum{.data=this_data, 
-										  .ndata=this_data->size(), 
+										  .ndata=ndata, 
 										  .predict=const_cast<S*>(&EMPTY_STRING), 
 										  .responses=m,
-										  .chance=1e-6, // TODO: UPDATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+										  .chance=1e-6, // TODO: UPDATE ~~~~~~
 										  .decay_position=decay_pos,
 										  .my_decay_position=i-1
 										  });
-										  
-		// save this dataset for mcmc
-		mcmc_data.push_back(this_data);
+		
+
 	}	
 	
 	COUT "# Loaded " << human_data.size() << " human data points and " << mcmc_data.size() << " mcmc data points" ENDL;

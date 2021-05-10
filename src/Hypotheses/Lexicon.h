@@ -208,9 +208,9 @@ public:
 	 * Required for VMS to dispatch to the right sub
 	 ********************************************************/
 	 
-	virtual size_t program_size(short s) override {
-		return factors[s].program_size(0);
-	}
+//	virtual size_t program_size(short s) override {
+//		return factors[s].program_size(0);
+//	}
 	 
 	virtual void push_program(Program& s, short j) override {
 		/**
