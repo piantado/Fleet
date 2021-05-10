@@ -24,7 +24,7 @@ size_t nfactors = 2; // how may factors do we run on? (defaultly)
 
 static constexpr float alpha = 0.01; // probability of insert/delete errors (must be a float for the string function below)
 
-const size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite so we won't see some stuff
+size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite so we won't see some stuff
 const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The more data, the slower...
 const size_t MAX_PR_LINES = 1000000; 
 
@@ -322,6 +322,7 @@ int main(int argc, char** argv){
 	fleet.add_option("-L,--maxlength",     max_length, "Max allowed string length");
 	fleet.add_option("-A,--alphabet",  alphabet, "The alphabet of characters to use");
 	fleet.add_option("-P,--prdata",  prdata_path, "What data do we use to compute precion/recall?");
+	fleet.add_option("--prN",  PREC_REC_N, "How many data points to compute precision and recall?");	
 	fleet.add_flag("-l,--long-output",  long_output, "Allow extra computation/recursion/strings when we output");
 	fleet.initialize(argc, argv); 
 	
@@ -372,7 +373,7 @@ int main(int argc, char** argv){
 	//	all.set_print_best(true);
 	
 	ParallelTempering samp(h0, &datas[0], all, NTEMPS, MAX_TEMP); 
-	
+		
 	tic();	
 	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
 		auto& this_data = datas[di];

@@ -1,12 +1,12 @@
 #pragma once
 
-#include <random>
-#include <iostream>
-#include <assert.h>
-
 // This includes our thread-safe lgamma and must be declared before math.h is imported
 // This means that we should NOT import math.h anywhere else
 #define _REENTRANT 1 
+
+#include <random>
+#include <iostream>
+#include <assert.h>
 #include <math.h>
 
 /////////////////////////////////////////////////////////////
