@@ -3,6 +3,7 @@
 
 #include <set>
 #include <map>
+#include "OrderedLock.h"
 
 #include "FleetArgs.h"
 
@@ -19,14 +20,13 @@ template<class T>
 class TopN {	
 	using Hypothesis_t = T;
 	
-	std::mutex lock;
+	OrderedLock lock;
 	
 public:
 	std::map<T,unsigned long> cnt; // also let's count how many times we've seen each for easy debugging
 	std::multiset<T> s; // important that it stores in sorted order by posterior! Multiset because we may have multiple samples that are "equal" (as in SymbolicRegression)
 	bool print_best; // should we print the best?
-	std::atomic<size_t> N;
-	
+	std::atomic<size_t> N;	
 	
 	/**
 	 * @class HasPosterior
