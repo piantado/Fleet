@@ -372,7 +372,7 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> all; 
 	//	all.set_print_best(true);
 	
-	ParallelTempering samp(h0, &datas[0], all, NTEMPS, MAX_TEMP); 
+	ParallelTempering samp(h0, &datas[0], NTEMPS, MAX_TEMP); 
 		
 	tic();	
 	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
@@ -398,7 +398,9 @@ int main(int argc, char** argv){
 		current_ntokens = 0;
 		for(auto& d : this_data) { UNUSED(d); current_ntokens++; }
 		
-		samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, RESTART), SWAP_EVERY, 60*1000);	
+		for(auto& h : samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, RESTART), SWAP_EVERY, 60*1000)) {
+			all << h;
+		}	
 
 		// set up to print using a larger set if we were given this option
 		if(long_output){
