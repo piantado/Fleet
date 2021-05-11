@@ -38,7 +38,6 @@ public:
 					// because if there are, we won't include them in any trees below
 					if(newh.is_evaluable()) {
 						newh.compute_posterior(*data);
-						callback(newh);
 					}
 					else {
 						nxt.insert(newh);

@@ -13,8 +13,8 @@
  * @file PriorInference.h
  * @brief Inference by sampling from the prior -- doesn't tend to work well, but might be a useful baseline
  */
-template<typename HYP, typename callback_t>
-class PriorInference : public ParallelInferenceInterface<> {
+template<typename HYP>
+class PriorInference : public ParallelInferenceInterface<HYP> {
 
 public:
 	

@@ -16,7 +16,7 @@
  * 		  and requires a hypothesis, grammar, start type, and callback.
  */
 template<typename HYP, typename Grammar_t, typename Enumerator>
-class EnumerationInference : public ParallelInferenceInterface<> {
+class EnumerationInference : public ParallelInferenceInterface<HYP> {
 
 public:
 	
@@ -33,7 +33,7 @@ public:
 		
 		ctl.start();
 		while(ctl.running()) {
-			enumerationidx_t nxt = (enumerationidx_t) next_index();
+			enumerationidx_t nxt = (enumerationidx_t) this->next_index();
 			auto n = ge.toNode(nxt, grammar->start());
 			auto h = MyHypothesis(grammar, n); // don't call make -- that restarts
 			h.compute_posterior(*data);

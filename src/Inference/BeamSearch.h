@@ -32,8 +32,8 @@ extern volatile sig_atomic_t CTRL_C;
  * 
  * 
  */
-template<typename HYP, typename callback_t>
-class BeamSearch : public ParallelInferenceInterface<> {
+template<typename HYP>
+class BeamSearch : public ParallelInferenceInterface<HYP> {
 	
 	std::mutex lock; 
 public:
@@ -43,16 +43,14 @@ public:
 	static constexpr size_t N_REPS = 10; // how many times do we try randomly filling in to determine priority? 
 	static constexpr double PARENT_PENALTY = 1.1;
 	static double temperature;	
-	static callback_t* callback; // must be static so it can be accessed in GraphNode
 	static typename HYP::data_t* data;
 	
 	// the smallest element appears on top of this vector
 	TopN<HYP> Q;
 	 
-	BeamSearch(HYP& h0, typename HYP::data_t* d, callback_t& cb, double temp)  : Q(N) {
+	BeamSearch(HYP& h0, typename HYP::data_t* d, double temp)  : Q(N) {
 		
 		// set these static members (static so GraphNode can use them without having so many copies)
-		callback = &cb; 
 		data = d;
 		temperature = temp;
 		
@@ -63,7 +61,7 @@ public:
 			g.complete();
 			
 			g.compute_posterior(*data);
-			(*callback)(g);
+			
 			if(g.likelihood > -infinity) {
 				h0.prior = 0.0;
 				h0.likelihood = g.likelihood / temperature;				
@@ -78,7 +76,7 @@ public:
 	void add(HYP& h)  { Q.add(h); }	
 	void add(HYP&& h) { Q.add(std::move(h)); }
 	
-	void run_thread(Control ctl) override {
+	generator<HYP&> run_thread(Control ctl) override {
 
 		ctl.start();
 		unsigned long samples = 0;
@@ -101,20 +99,13 @@ public:
 			for(size_t k=0;k<neigh and ctl.running();k++) {
 				auto v = t.make_neighbor(k);
 				
-				// if v is a terminal, we callback
+				// if v is a terminal, we co_yield
 				// otherwise we 
 				if(v.is_evaluable()) {
 					
 					v.compute_posterior(*data); 
 					
-					if(callback != nullptr and samples >= ctl.burn and
-						(ctl.thin == 0 or FleetStatistics::global_sample_count % ctl.thin == 0)) {
-						(*callback)(v);
-					}
-					
-					if(ctl.print > 0 and FleetStatistics::global_sample_count % ctl.print == 0) {
-						v.print();
-					}
+					co_yield v;
 				}
 				else {
 					//CERR v.string() ENDL;
@@ -127,16 +118,7 @@ public:
 						auto g = v; g.complete();
 						g.compute_posterior(*data);
 						
-						//CERR "\t" << g.string() ENDL;
-				
-						if(callback != nullptr and samples >= ctl.burn and
-							(ctl.thin == 0 or FleetStatistics::global_sample_count % ctl.thin == 0)) {
-							(*callback)(g);
-						}
-						
-						if(ctl.print > 0 and FleetStatistics::global_sample_count % ctl.print == 0) {
-							g.print();
-						}
+						co_yield g; 
 						
 						// this assigns a likelihood as the max of the samples
 						if(not std::isnan(g.likelihood)) {
@@ -165,11 +147,9 @@ public:
 	
 };
 
-template<typename HYP, typename callback_t>
-callback_t* BeamSearch<HYP,callback_t>::callback = nullptr;
 
-template<typename HYP, typename callback_t>
-typename HYP::data_t* BeamSearch<HYP,callback_t>::data = nullptr;
+template<typename HYP>
+typename HYP::data_t* BeamSearch<HYP>::data = nullptr;
 
-template<typename HYP, typename callback_t>
-double BeamSearch<HYP,callback_t>::temperature = 100.0;
+template<typename HYP>
+double BeamSearch<HYP>::temperature = 100.0;
