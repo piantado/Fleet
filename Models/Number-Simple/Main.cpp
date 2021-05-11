@@ -158,8 +158,10 @@ int main(int argc, char** argv) {
 	// Run parallel tempering
 	TopN<MyHypothesis> top;
 	auto h0 = MyHypothesis::make(&grammar);
-	ParallelTempering samp(h0, &mydata, top, 10, 100.0);
-	samp.run(Control(), 200, 5000); 
+	ParallelTempering samp(h0, &mydata, 10, 100.0);
+	for(auto& h : samp.run(Control(), 200, 5000)){
+		top << h;
+	}
 	
 	top.print();
 }

@@ -4,6 +4,7 @@
  */
 #include <tuple>
 #include <map>
+#include <string>
 
 // this maps each symbol to an index; 
 const std::map<std::string,size_t> symbol2idx = {{"true",0}, {"false",1}, {"and",2}, {"or",3}, {"not",4}};
@@ -133,10 +134,10 @@ int main(int argc, char** argv){
 	
 	TopN<MyHypothesis> top;
 	
-	tic();
-	MCMCChain chain(h0, nullptr, top);
-	chain.run(Control());
-	tic();	
+	MCMCChain chain(h0, nullptr);
+	for(auto& h : chain.run(Control())) {
+		top << h;
+	}
 	
 	top.print();
 }

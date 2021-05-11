@@ -5,6 +5,7 @@
 #include <array>
 #include <map>
 #include <set>
+#include <atomic>
 
 #include <string.h>
 

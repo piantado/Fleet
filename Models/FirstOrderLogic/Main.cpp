@@ -232,8 +232,10 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> top;
 	
 	auto h0 = MyHypothesis::make(&grammar);
-	ParallelTempering samp(h0, &mydata, top, 16, 10.0); 
-	samp.run(Control(), 100, 1000); 		
+	ParallelTempering samp(h0, &mydata, 16, 10.0); 
+	for(auto& h : samp.run(Control(), 100, 1000)) { 
+		top << h;
+	}
 	
 	// Show the best we've found
 	top.print();

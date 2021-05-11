@@ -102,25 +102,15 @@ int main(int argc, char** argv){
 	MyGrammar grammar;
 
 	TopN<MyHypothesis> top;
-	
-	
-//	auto h0 = MyHypothesis::make(&grammar);
-//	ChainPool chain(h0, &mydata, top, FleetArgs::nchains);
-//	tic();
-//	chain.run(Control());
-//	tic();
-//	
-//	auto h0 = MyHypothesis::make(&grammar);
-//	MCMCChain chain(h0, &mydata, top);
-//	tic();
-//	chain.run(Control());
-//	tic();
-//	
+
 	auto h0 = MyHypothesis::make(&grammar);
-	ParallelTempering samp(h0, &mydata, top, 16, 10.0); 
-	tic();
-	samp.run(Control(), 100, 1000); 		
-	tic();
+
+//	MCMCChain samp(h0, &mydata, top);
+//  ChainPool samp(h0, &mydata, top, FleetArgs::nchains);
+	ParallelTempering samp(h0, &mydata, 16, 10.0); 
+	for(auto& h : samp.run(Control(), 100, 1000)) {
+		top << h;
+	}
 
 	// Show the best we've found
 	top.print();

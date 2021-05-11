@@ -19,11 +19,11 @@
  * @brief This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each 
  * 		  partial subtree that is generated. 
  */
-template<typename HYP, typename callback_t>
-class PartitionMCMC : public ChainPool<HYP, callback_t> { 
+template<typename HYP>
+class PartitionMCMC : public ChainPool<HYP> { 
 public:
 	
-	PartitionMCMC(HYP& h0, size_t depth, typename HYP::data_t* data, callback_t& callback) {
+	PartitionMCMC(HYP& h0, size_t depth, typename HYP::data_t* data) {
 		std::set<HYP> cur = {h0};
 		std::set<HYP> nxt;
 		
@@ -60,7 +60,7 @@ public:
 
 			x.complete(); // fill in any structural gaps
 		
-			this->pool.push_back(MCMCChain<HYP,callback_t>(x, data, callback));
+			this->pool.push_back(MCMCChain<HYP>(x, data));
 			
 			#ifdef DEBUG_PARTITION_MCMC
 				COUT "Starting PartitionMCMC on " << x.string() ENDL;

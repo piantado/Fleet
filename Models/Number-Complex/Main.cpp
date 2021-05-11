@@ -400,8 +400,11 @@ int main(int argc, char** argv) {
 	// just simple mcmc on one
 	for(size_t di=0;di<alldata.size();di++){
 		auto h0 = MyHypothesis::make(&grammar);
-		MCMCChain samp(h0, &alldata[di], alltops[di]);
-		samp.run(Control()); 
+		MCMCChain samp(h0, &alldata[di]);
+		for(auto& h : samp.run(Control())) {
+			alltops[di] << h;
+		}
+		
 	}
 	
 	fleet.completed(); // print the search/mcmc stats here instead of when fleet is destroyed
