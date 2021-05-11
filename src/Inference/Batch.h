@@ -37,7 +37,7 @@ std::vector<HYP> get_hypotheses_from_mcmc(HYP& h0, std::vector<typename HYP::dat
 			// slices [0,i]
 			auto givendata = slice(*(mcmc_data[vi]), 0, i);
 			
-			MCMCChain chain(myh0, &givendata, top);
+			MCMCChain chain(myh0, &givendata);
 			for(auto& h : chain.run(Control(c))) { // must run on a copy 
 				top << h;
 			}

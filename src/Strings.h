@@ -240,7 +240,7 @@ std::deque<std::string> split(const std::string& s, const char delimiter) {
 		}
 	}	
 
-	// if we get here, that means that the last foudn k was the last
+	// if we get here, that means that the last found k was the last
 	// character, which means we need to append ""
 	tokens.push_back("");
 	return tokens;
@@ -258,7 +258,7 @@ std::array<std::string, N> split(const std::string& s, const char delimiter) {
 	
 	auto q = split(s, delimiter);
 	
-	// must be hte right size 
+	// must be the right size 
 	if(q.size() != N) {
 		std::cerr << "*** String in split<N> has " << q.size() << " not " << N << " elements: " << s << std::endl;
 		assert(false);

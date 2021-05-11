@@ -43,7 +43,3 @@ generator<T&> operator|(generator<T&> g, TopN<T>& tn) { // NOTE: tn MUST be a re
 		co_yield x; // and yield 
 	}
 }
-
-
-
-

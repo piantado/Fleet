@@ -33,13 +33,6 @@ public:
 };
 
 
-size_t grammar_callback_count = 0;
-void gcallback(MyGrammarHypothesis& h) {
-	if(++grammar_callback_count % 100 == 0) {
-		COUT h.string(str(grammar_callback_count)+"\t");
-	}
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 #include "Top.h"
 #include "Fleet.h"
@@ -153,10 +146,10 @@ int main(int argc, char** argv){
 		
 		auto h0 = MyGrammarHypothesis::make(hypotheses, &human_data);
 	
-		tic();
-		auto thechain = MCMCChain(h0, &human_data, &gcallback);
-		thechain.run(Control());
-		tic();
+		auto thechain = MCMCChain(h0, &human_data);
+		for(auto& h : thechain.run(Control()) | thin(FleetArgs::thin) ){
+			COUT h.string(str(thechain.samples)+"\t");
+		}	
 	}
 	
 }
