@@ -192,12 +192,6 @@ public:
 		add(x);
 	}
 	
-	// We also define this so we can pass TopN as a callback to MCMC sampling
-	//void operator()(const T& x) { add(x); }
-	void operator()(T& x) { 
-		add(x); 
-	}
-	
 	
 	// get the count
 	size_t operator[](const T& x) {
