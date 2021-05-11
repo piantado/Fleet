@@ -2,7 +2,9 @@
 
 #include <atomic>
 #include <thread>
+#include <condition_variable>
 #include "Control.h"
+#include "OrderedLock.h"
 
 /**
  * @class InfereceInterface
@@ -28,6 +30,15 @@ public:
 	// How many threads? Used by some subclasses as asserts
 	size_t __nthreads; 
 	
+	
+	// this lock controls the output of the run generator
+	// It's kinda important that its FIFO so that we don't hang on one thread for a while
+	OrderedLock generator_lock; 
+	std::atomic<size_t> who; // who is currently hodling the lock
+	std::vector<std::condition_variable> cvars(__nthreads);
+		
+	
+	
 	ParallelInferenceInterface() : index(0), __nthreads(0) {
 		
 	}
@@ -52,16 +63,48 @@ public:
 	 * @brief Run is the main control interface. Copies of ctl get made and passed to each thread in run_thread. 
 	 * @param ctl
 	 */	
-	void run(Control ctl, Args... args) {
+//	void run(Control ctl, Args... args) {
+//		
+//		std::vector<std::thread> threads(ctl.nthreads); 
+//
+//		// save this for children
+//		__nthreads = ctl.nthreads;
+//
+//		for(unsigned long t=0;t<ctl.nthreads;t++) {
+//			Control ctl2 = ctl; ctl2.nthreads=1; // we'll make each thread just one
+//			threads[t] = std::thread(&ParallelInferenceInterface<Args...>::run_thread, this, ctl2, args...);
+//		}
+//		
+//		// wait for all to complete
+//		for(unsigned long t=0;t<ctl.nthreads;t++) {
+//			threads[t].join();
+//		}
+//	}
+	
+	
+	generator<HYP> run(Control ctl, Args... args) {
 		
 		std::vector<std::thread> threads(ctl.nthreads); 
-
-		// save this for children
-		__nthreads = ctl.nthreads;
-
+		__nthreads = ctl.nthreads; // save this for children
+		
+		// everyone updates this when they are done
+		std::atomic<size_t> __nrunning = 0;
+		
+		// start each thread
 		for(unsigned long t=0;t<ctl.nthreads;t++) {
 			Control ctl2 = ctl; ctl2.nthreads=1; // we'll make each thread just one
 			threads[t] = std::thread(&ParallelInferenceInterface<Args...>::run_thread, this, ctl2, args...);
+			__nrunning++;
+		}
+		
+		
+		
+		
+		// now 
+		while(true) {
+			
+			
+			
 		}
 		
 		// wait for all to complete

@@ -10,6 +10,7 @@
 #include "MCMCChain.h"
 #include "Timing.h"
 #include "ParallelInferenceInterface.h"
+#include "OrderedLock.h"
 
 /**
  * @class ChainPool
