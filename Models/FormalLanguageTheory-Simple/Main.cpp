@@ -138,6 +138,7 @@ public:
 
 #include "Top.h"
 #include "MCMCChain.h"
+#include "ChainPool.h"
 //#include "ParallelTempering.h"
 #include "Fleet.h" 
 #include "Builtins.h"
@@ -215,12 +216,12 @@ int main(int argc, char** argv){
 //	
 
 //	top.print_best = true; // print out each best hypothesis you find
-	auto h0 = MyHypothesis::make(&grammar);
-	MCMCChain c(h0, &mydata);
-	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-	for(auto& h : c.run(Control()) | top | thin(1000) ) {
-		h.print();			
-	}
+//	auto h0 = MyHypothesis::make(&grammar);
+//	MCMCChain c(h0, &mydata);
+//	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
+//	for(auto& h : c.run(Control()) | top | thin(1000) ) {
+//		h.print();			
+//	}
 
 	// run multiple chains
 //	auto h0 = MyHypothesis::make(&grammar);
@@ -228,6 +229,13 @@ int main(int argc, char** argv){
 //	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
 //	c.run(Control());
 
+	auto h0 = MyHypothesis::make(&grammar);
+	ChainPool c(h0, &mydata, FleetArgs::nchains);
+	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
+	for(auto& h : c.run(Control()) | top | thin(FleetArgs::thin) ) {
+	
+//		h.print();			
+	}
 
 
 	top.print();

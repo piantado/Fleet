@@ -116,7 +116,7 @@ public:
 	 * 		  NOTE: ctl cannot be passed by reference. 
 	 * @param ctl
 	 */	
-	 generator<HYP> run(Control ctl) {
+	 generator<HYP&> run(Control ctl) {
 
 		assert(ctl.nthreads == 1 && "*** You seem to have called MCMCChain with nthreads>1. This is not how you parallel. Check out ChainPool"); 
 		
@@ -125,8 +125,7 @@ public:
 		#endif 
 		
 		// I may have copied its start time from somewhere else, so change that here
-		ctl.start();
-		
+		ctl.start();		
 		while(ctl.running()) {
 			
 			if(current.posterior > maxval) { // if we improve, store it
