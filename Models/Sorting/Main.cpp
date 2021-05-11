@@ -203,7 +203,9 @@ public:
 /// Define classes for MCTS
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "MCTS.h"
+#include "FullMCTSNode.h"
+#include "PartialMCTSNode.h"
+#include "MinimalMCTSNode.h"
 #include "MCMCChain.h"
 
 class PriorSampleMCTS : public PartialMCTSNode<PriorSampleMCTS, MyHypothesis> {
