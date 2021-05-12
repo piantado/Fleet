@@ -73,10 +73,12 @@ public:
 				next_set = true;
 			} 
 			cv.notify_one(); // after unlocking lk
-			
-			if(CTRL_C) break;
 		}
+		
+		// we always notify when we're done, after making sure we're not running or else the
+		// other thread can block
 		__nrunning--;
+		cv.notify_one(); 
 	}	
 	
 	generator<X&> run(Control ctl, Args... args) {
