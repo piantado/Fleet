@@ -134,7 +134,7 @@ double top_difference(Top_t& x, Top_t& y) {
 
 
 class DyckGrammar : public Grammar<S,S,  S,bool>,
-				  public Singleton<DyckGrammar> {
+				    public Singleton<DyckGrammar> {
 public:
 	DyckGrammar() {
 		add("(%s)%s",  +[](S x, S y) -> S { throw YouShouldNotBeHereError();	});
@@ -148,6 +148,10 @@ public:
 #include "MCMCChain.h"
 #include "ParallelTempering.h"
 #include "EnumerationInference.h"
+#include "BasicEnumeration.h"
+#include "FullLZEnumeration.h"
+#include "PartialLZEnumeration.h"
+#include "SubtreeEnumeration.h"
 
 #include "Fleet.h" 
 
@@ -195,8 +199,10 @@ int main(int argc, char** argv){
 	COUT "# MCMC...";
 	TopN<MyHypothesis> top_mcmc(N);  //	top_mcmc.print_best = true;
 	h0 = h0.restart();
-	MCMCChain chain(h0, &mydata, top_mcmc);
-	chain.run(Control());
+	MCMCChain chain(h0, &mydata);
+	for(auto& h : chain.run(Control())) { 
+		top_mcmc << h; 
+	}
 	checkTop(&grammar, top_mcmc);
 	assert(not top_mcmc.empty());
 	COUT "GOOD" ENDL;
@@ -217,8 +223,11 @@ int main(int argc, char** argv){
 	COUT "# Parallel Tempering...";
 	TopN<MyHypothesis> top_tempering(N);
 	h0 = h0.restart();
-	ParallelTempering samp(h0, &mydata, top_tempering, 8, 1000.0, false);
-	samp.run(Control(), 500, 1000);	// we run here with fast swaps, adaptation to fit more in 
+	ParallelTempering samp(h0, &mydata, 8, 1000.0);
+	for(auto& h : samp.run(Control(), 500, 1000)) { 
+		top_tempering << h; 
+	}
+	// we run here with fast swaps, adaptation to fit more in 
  	// NOTE: Running ParallelTempering with allcallback (default) will try to put
 	// *everything* into top, which means that the counts you get will no longer 
 	// be samples (and in fact should be biased towards high-prior hypotheses)	
@@ -230,8 +239,10 @@ int main(int argc, char** argv){
 
 	COUT "# Enumeration...";
 	TopN<MyHypothesis> top_enumerate(N);
-	EnumerationInference<MyHypothesis,MyGrammar,decltype(top_enumerate)> e(&grammar, grammar.nt<S>(), &mydata, top_enumerate);
-	e.run(Control());
+	EnumerationInference<MyHypothesis,MyGrammar,BasicEnumeration<MyGrammar>> e(&grammar, &mydata);
+	for(auto& h : e.run(Control())) {
+		top_enumerate << h;
+	}
 	assert(not top_enumerate.empty());
 	checkTop(&grammar, top_enumerate);
 	COUT "GOOD" ENDL;
@@ -257,14 +268,15 @@ int main(int argc, char** argv){
 
 	// Let's check that when we enumerate, we don't get repeats
 	COUT "# Checking enumeration is unique...";
+	BasicEnumeration bz(&grammar);
 	const size_t N_checkdup = 1000000;
 	std::set<Node> s;
 	for(enumerationidx_t z=0;z<N_checkdup and !CTRL_C;z++) {
-		auto n = expand_from_integer(&grammar, grammar.nt<S>(), z);
+		auto n = bz.toNode(z, grammar.nt<S>());
 		checkNode(&grammar, n);
 		
 		// this should give me back the right enumeration order
-		assert(z == compute_enumeration_order(&grammar,n));
+		assert(z == bz.toInteger(n));
 		
 		// we should not have duplicates
 		if(not s.empty()) {
@@ -286,8 +298,9 @@ int main(int argc, char** argv){
 	size_t checkDyckTill = dyckShouldBe.size();
 	std::vector<int> count(checkDyckTill,0);
 	DyckGrammar dyck_grammar;
+	BasicEnumeration dz(&dyck_grammar);
 	for(enumerationidx_t z=0;z<500000 and !CTRL_C;z++) {
-		auto n = expand_from_integer(&dyck_grammar, dyck_grammar.nt<S>(), z);
+		auto n = dz.toNode(z, dyck_grammar.nt<S>());
 		checkNode(&dyck_grammar, n);
 		
 		auto l = n.string().length()/2;

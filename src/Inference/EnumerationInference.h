@@ -1,9 +1,11 @@
 #pragma once
 
-#include "BasicEnumeration.h"
-#include "Control.h"
 #include <queue>
 #include <thread>
+
+#include "BasicEnumeration.h"
+#include "Control.h"
+#include "Coroutines.h"
 
 #include "ParallelInferenceInterface.h"
 

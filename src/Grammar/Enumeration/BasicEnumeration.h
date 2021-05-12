@@ -57,7 +57,7 @@ public:
 	
 	[[nodiscard]] virtual Node toNode(const nonterminal_t nt, enumerationidx_t z)  {
 		// include this because we are SO bad at getting the order right
-		assert(false && "*** You got the order wrong");
+		assert(false && "*** You got the order of nonterminal_t and enumerationidx_t wrong and I'm really friendly because I'm here just to tell you that you should switch the order. ");
 	}
 	
 	virtual enumerationidx_t toInteger(const Node& n)  {
