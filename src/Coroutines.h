@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <string>
 #include <coroutine>
 #include "generator.hpp"
 
@@ -35,9 +36,30 @@ generator<T&> operator|(generator<T&> g, thin t) {
 }
 
 struct print { 
+	size_t every;
+	size_t cnt;
+	std::string prefix; 
 	
-};
+	print(size_t e, const std::string p="") : every(e), cnt(0), prefix(p) { }
 
+	// funny little increment here returns true for when we print
+	bool operator++() {
+		if(++cnt == every or every==0) {
+			cnt = 0;
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+};
+template<typename T> 
+generator<T&> operator|(generator<T&> g, print t) {
+	for(auto& x : g) {
+		if(++t) x.print(t.prefix);
+		co_yield x;
+	}
+}
 
 // chaining together generator and TopN
 #include "Top.h"

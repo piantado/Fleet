@@ -399,7 +399,7 @@ int main(int argc, char** argv){
 	else if(method == "chain-pool") {
 		auto h0 = MyHypothesis::make(&grammar);
 		ChainPool c(h0, &mydata, FleetArgs::nchains);
-		for(auto& h : c.run(Control())) {
+		for(auto& h : c.run(Control()) | print(FleetArgs::print) ) {
 			top << h;
 		}
 	}
