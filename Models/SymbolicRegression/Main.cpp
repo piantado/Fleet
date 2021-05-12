@@ -48,7 +48,7 @@ double random_scale() {
 // We need these to declare this so it is defined before grammar,
 // and so these can be accessed in grammar.
 // What a goddamn nightmare (the other option is to separate header files)
-struct ConstantContainer final {
+struct ConstantContainer {
 	std::vector<D> constants;
 	size_t         constant_idx; // in evaluation, this variable stores what constant we are in 
 };
@@ -284,11 +284,11 @@ using datum_t = MyHypothesis::datum_t;
 #include "Polynomial.h"
 #include "ReservoirSample.h"
 
-// keep a big set of samples form structures to the best found for each structure
-std::map<std::string,ReservoirSample<MyHypothesis>> overall_samples; 
-std::mutex overall_sample_lock;
 
 data_t mydata;
+// keep a big set of samples form structures to the best found for each structure
+std::map<std::string,ReservoirSample<MyHypothesis>> overall_samples; 
+
 
 // useful for extracting the max
 std::function posterior = [](const MyHypothesis& h) {return h.posterior; };
@@ -300,8 +300,6 @@ std::function posterior = [](const MyHypothesis& h) {return h.posterior; };
  * 			    have missed everything before...
  */
 void trim_overall_samples(size_t N) {
-	
-	//std::lock_guard guard(overall_sample_lock); // This is called in myCallback so we can't lock in here
 	
 	if(overall_samples.size() < N) return;
 	
@@ -330,49 +328,17 @@ void trim_overall_samples(size_t N) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "MCTS.h"
+#include "PartialMCTSNode.h"
 #include "MCMCChain.h"
 
-/**
- * @class MyCallback
- * @author piantado
- * @date 03/07/20
- * @file Main.cpp
- * @brief A callback here for processing samples, putting them into the right places
- */
-void myCallback(MyHypothesis& h) {
-		if(h.posterior == -infinity or std::isnan(h.posterior)) return; // ignore these
-		
-		// toss non-linear samples here if we request linearity
-		if(polynomial_degree > -1 and not (get_polynomial_degree(h.get_value(), h.constants) <= polynomial_degree)) 
-			return;
-		
-		// It's important here that we do a structure_string without a dot, because
-		// we want to store hypotheses in the same place, even if they came from different MCTS nodes
-		auto ss = h.structure_string(false); 
-		
-		std::lock_guard guard(overall_sample_lock);
-		if(!overall_samples.count(ss)) { // create this if it doesn't exist
-			overall_samples.emplace(ss,nsamples);
-		}
-		
-		// and add it
-		overall_samples[ss] << h;
-		
-		if(overall_samples.size() >= trim_at) {
-			trim_overall_samples(trim_to);
-		}
-}
-
-
-class MyMCTS : public PartialMCTSNode<MyMCTS, MyHypothesis, decltype(myCallback) > {
-	using Super = PartialMCTSNode<MyMCTS, MyHypothesis, decltype(myCallback)>;
+class MyMCTS : public PartialMCTSNode<MyMCTS, MyHypothesis> {
+	using Super = PartialMCTSNode<MyMCTS, MyHypothesis>;
 	using Super::Super;
 
 public:
 	MyMCTS(MyMCTS&&) { assert(false); } // must be defined but not used
 
-	virtual void playout(MyHypothesis& current) override {
+	virtual generator<MyHypothesis&> playout(MyHypothesis& current) override {
 		// define our own playout here to call our callback and add sample to the MCTS
 		
 		MyHypothesis h0 = current; // need a copy to change resampling on 
@@ -380,24 +346,22 @@ public:
 			n.can_resample = false;
 		}
 
-		h0.complete(); // fill in any structural gaps
-
-		// make a wrapper to add samples
-		std::function cb = [&](MyHypothesis& h) { 
-			myCallback(h);
-			add_sample(h.posterior); // and update MCTS -- here every sample
-		};		
+		h0.complete(); // fill in any structural gaps	
 		
 		// check to see if we have no gaps and no resamples, then we just run one sample. 
 		std::function no_resamples = +[](const Node& n) -> bool { return not n.can_resample;};
 		if(h0.count_constants() == 0 and h0.get_value().all(no_resamples)) {
 			h0.compute_posterior(*data);
-			cb(h0);
+			co_yield h0;
 		}
 		else {
 			// else we run vanilla MCMC
-			MCMCChain chain(h0, data, cb);
-			chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart)); // run mcmc with restarts; we sure shouldn't run more than runtime
+			MCMCChain chain(h0, data);
+			for(auto& h : chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart)))  {
+				add_sample(h.posterior);
+				co_yield h;
+			}
+
 		}
 	}
 	
@@ -445,10 +409,30 @@ int main(int argc, char** argv){
 	MyGrammar grammar;
 	
 	MyHypothesis h0(&grammar);
-	MyMCTS m(h0, FleetArgs::explore, &mydata, myCallback);
-	tic();
-	m.run(Control(), h0);
-	tic();
+	MyMCTS m(h0, FleetArgs::explore, &mydata);
+	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# ") ) {
+
+		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these
+		
+		// toss non-linear samples here if we request linearity
+		if(polynomial_degree > -1 and not (get_polynomial_degree(h.get_value(), h.constants) <= polynomial_degree)) 
+			continue;
+		
+		// It's important here that we do a structure_string without a dot, because
+		// we want to store hypotheses in the same place, even if they came from different MCTS nodes
+		auto ss = h.structure_string(false); 
+		
+		if(! overall_samples.count(ss)) { // create this if it doesn't exist
+			overall_samples.emplace(ss,nsamples);
+		}
+		
+		// and add it
+		overall_samples[ss] << h;
+		
+		if(overall_samples.size() >= trim_at) {
+			trim_overall_samples(trim_to);
+		}
+	}
 	
 	//COUT "# Printing trees." ENDL;
 	

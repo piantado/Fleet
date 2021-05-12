@@ -117,7 +117,7 @@ int main(int argc, char** argv){
 		auto h0 = MyGrammarHypothesis::make(hypotheses, &human_data);
 
 		auto thechain = MCMCChain<MyGrammarHypothesis>(h0, &human_data);
-		for(auto& h : thechain.run(Control()) | topMAP | thin(FleetArgs::thin) ){
+		for(auto& h : thechain.run(Control()) | topMAP | print (FleetArgs::print) | thin(FleetArgs::thin) ){
 			COUT h.string(str(thechain.samples)+"\t");
 		}		
 		
