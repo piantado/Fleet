@@ -5,6 +5,7 @@
 #include <map>
 
 #include "FleetArgs.h"
+#include "OrderedLock.h"
 
 /**
  * @class TopN
@@ -19,7 +20,7 @@ template<class T>
 class TopN {	
 	using Hypothesis_t = T;
 	
-	std::mutex lock;
+	OrderedLock lock;
 	
 public:
 	std::map<T,unsigned long> cnt; // also let's count how many times we've seen each for easy debugging
