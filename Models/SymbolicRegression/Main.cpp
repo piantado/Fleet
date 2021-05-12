@@ -384,7 +384,10 @@ int main(int argc, char** argv){
 	fleet.add_option("--polynomial-degree",   polynomial_degree,   "Defaultly -1 means we store everything, otherwise only keep polynomials <= this bound");
 	fleet.initialize(argc, argv);
 	
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// set up the data
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
 	for(auto [xstr, ystr, sdstr] : read_csv<3>(FleetArgs::input_path, '\t')) {
 		auto x = std::stod(xstr);
 		auto y = std::stod(ystr);
@@ -405,10 +408,18 @@ int main(int argc, char** argv){
 		mydata.push_back( {.input=(double)x, .output=(double)y, .reliability=sdscale*(double)sd} );
 	}
 	
- 	// Set up the grammar
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 	// Set up the grammar and hypothesis
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
 	MyGrammar grammar;
 	
 	MyHypothesis h0(&grammar);
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Run MCTS
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
 	MyMCTS m(h0, FleetArgs::explore, &mydata);
 	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# ") ) {
 
@@ -434,23 +445,8 @@ int main(int argc, char** argv){
 		}
 	}
 	
-	//COUT "# Printing trees." ENDL;
-	
+	// print our trees if we want them
 	m.print(h0, FleetArgs::tree_path.c_str());
-
-	// set up a paralle tempering object
-//	auto h0 = MyHypothesis::make(&grammar);
-//	ParallelTempering<MyHypothesis> samp(h0, &mydata, myCallback, 8, 1000.0, false);
-//	tic();
-//	samp.run(mcmc_steps, runtime, .25, 3.00); 
-//	tic();
-
-//	auto h0 = MyHypothesis::make(&grammar);
-//	MCMCChain samp(h0, &mydata, &myCallback);
-//	tic();
-//	samp.run(Control()); //30000);		
-//	tic();
-
 	
 	//------------------
 	// Postprocessing
