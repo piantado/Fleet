@@ -433,7 +433,7 @@ int main(int argc, char** argv){
 		// we want to store hypotheses in the same place, even if they came from different MCTS nodes
 		auto ss = h.structure_string(false); 
 		
-		if(! overall_samples.count(ss)) { // create this if it doesn't exist
+		if(not overall_samples.count(ss)) { // create this if it doesn't exist
 			overall_samples.emplace(ss,nsamples);
 		}
 		

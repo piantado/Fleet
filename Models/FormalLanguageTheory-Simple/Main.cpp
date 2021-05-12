@@ -216,7 +216,7 @@ int main(int argc, char** argv){
 	for(auto& h : samp.run(Control()) | top | thin(FleetArgs::thin)) {
 	//	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
 //	for(auto& h : samp.run(Control(), 100, 30000) | top | thin(FleetArgs::thin)) {
-		h.print();
+		//h.print();
 	}
 
 	top.print();
