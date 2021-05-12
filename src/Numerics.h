@@ -126,6 +126,16 @@ double logsumexp(const t& v) {
 	return lse;
 }
 
+template<typename t>
+double logsumexp(const std::vector<t>& v, double f(const t&) ) {
+	double lse = -infinity;
+	for(auto& x : v) {
+		lse = logplusexp(lse,f(x));
+	}
+	return lse;
+}
+
+
 double mylgamma(double v) {
 	// thread safe version
 	int sgn = 1;

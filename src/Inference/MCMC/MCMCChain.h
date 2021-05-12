@@ -200,7 +200,6 @@ public:
 				history << true;
 				++acceptances;
 				
-				
 			}
 			else {
 				history << false;

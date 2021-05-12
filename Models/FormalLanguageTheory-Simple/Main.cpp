@@ -77,17 +77,15 @@ public:
 		const auto out = call(x.input, ""); 
 
 		// Or we can call and get back a list of completed virtual machine states
-		// these store a bit more information, like runtime counts and haven't computer the
+		// these store a bit more information, like runtime counts and haven't computed the
 		// marginal probability of strings
 //		auto v = call_vms(x.input, "<err>", this); // return the states instead of the marginal outputs
-//
-//		// compute a "runtime" prior penalty
-//		// NOTE this is fine since a Bayesable first computes the prior before the likelihood so this will not be overwritten
+//		auto z = logsumexp(v, +[](const VirtualMachineState_t& a) { return a.lp;});
 //		for(auto& vi : v) {
-//			prior += -exp(vi.lp)*vi.runtime_counter.total;
+//			prior += -exp(vi.lp-z)*vi.runtime_counter.total; // compute a "runtime" prior penalty NOTE this is fine since a Bayesable first computes the prior before the likelihood so this will not be overwritten
 //		}
-//		// and convert v to a disribution on strings
-//		auto out = marginal_vms_output(v);
+//		auto out = marginal_vms_output(v); // and convert v to a disribution on strings
+
 
 		const auto log_A = log(alphabet.size());
 		
