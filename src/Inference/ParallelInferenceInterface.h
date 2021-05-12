@@ -95,10 +95,12 @@ public:
 		}
 	
 		// now yield as long as we have some that are running
-		while(__nrunning > 0 and not CTRL_C) {
+		while(true) {
 			// wait for the next worker to set next_x, then yield it
 			std::unique_lock lk(generator_lock);
-			cv.wait(lk, [this]{return next_set or CTRL_C;}); // wait until its set
+			cv.wait(lk, [this]{ return next_set or CTRL_C or __nrunning==0;}); // wait until its set
+			
+			if(__nrunning == 0 or CTRL_C) break;
 			
 			co_yield next_x; // yield that next one, holding the lock so nothing modifies next_x
 			next_set = false; 

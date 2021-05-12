@@ -39,8 +39,6 @@ public:
 	 * @return 
 	 */
 	virtual Node toNode(enumerationidx_t z, ARGS... args) {
-		++FleetStatistics::enumeration_steps;
-	
 		IntegerizedStack is(z);
 		return toNode(is, args...);
 	}

@@ -140,8 +140,6 @@ public:
 
 	// Required here or else we get z converted implicity to IntegerizedStack
 	[[nodiscard]] virtual Node toNode(enumerationidx_t z, const nonterminal_t nt, Node& root) {
-		++FleetStatistics::enumeration_steps;
-	
 		IntegerizedStack is(z);
 		return toNode(is, nt, root);
 	}

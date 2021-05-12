@@ -34,6 +34,11 @@ generator<T&> operator|(generator<T&> g, thin t) {
 	}
 }
 
+struct print { 
+	
+};
+
+
 // chaining together generator and TopN
 #include "Top.h"
 template<typename T> 

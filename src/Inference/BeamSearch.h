@@ -79,7 +79,6 @@ public:
 	generator<HYP&> run_thread(Control ctl) override {
 
 		ctl.start();
-		unsigned long samples = 0;
 		while(ctl.running()) {
 			
 			lock.lock();
