@@ -207,10 +207,10 @@ int main(int argc, char** argv){
 //
 //	return 0;
 	
-//	top.print_best = true;
-//	auto h0 = MyHypothesis::make(&grammar);
-//	ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 1000.0);
-//	samp.run(Control(), 100, 30000);		
+	top.print_best = true;
+	auto h0 = MyHypothesis::make(&grammar);
+	ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 10.0);
+	samp.run(Control(), 100, 30000);		
 //	
 
 //	top.print_best = true; // print out each best hypothesis you find
@@ -220,10 +220,10 @@ int main(int argc, char** argv){
 //	c.run(Control());
 
 	// run multiple chains
-	auto h0 = MyHypothesis::make(&grammar);
-	ChainPool c(h0, &mydata, top, FleetArgs::nchains);
-	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-	c.run(Control());
+//	auto h0 = MyHypothesis::make(&grammar);
+//	ChainPool c(h0, &mydata, top, FleetArgs::nchains);
+//	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
+//	c.run(Control());
 
 
 
