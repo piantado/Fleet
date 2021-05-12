@@ -28,7 +28,7 @@
  * @brief This monte care tree search always plays out a full tree. It is mostly optimized to keep the tree as small as possible. 
  * 		To do this, it doesn't even store the value (HYP) in the tree, it just constructs it as a search step goes down the tree. 
  * 	    It also doesn't store parent pointers, it just passes them down the tree. We use SpinLock here because std::mutex is much
- *      bigger. Finally, explore, data, and callback are all static variables, which means that you will need to subclass this
+ *      bigger. Finally, explore, and data are all static variables, which means that you will need to subclass this
  *      if you want to let those vary across nodes (or parallel runs). 
  * 		This lets us cram everything into 56 bytes. 
  * 
@@ -37,8 +37,8 @@
  * 		TODO: We also store terminals currently in the tree, but there's no need for that -- we should eliminate that. 
  */
 
-template<typename this_t, typename HYP, typename callback_t>
-class MCTSBase : public ParallelInferenceInterface<HYP>, public BaseNode<this_t> {
+template<typename this_t, typename HYP>
+class MCTSBase : public ParallelInferenceInterface<HYP, HYP>, public BaseNode<this_t> {
 	friend class BaseNode<this_t>;
 		
 public:
@@ -55,7 +55,6 @@ public:
 	// this means that if we want to change them for multiple MCTS nodes, we need to subclass
 	static double explore; 
 	static data_t* data;
-	static callback_t* callback; 
 
 	unsigned int nvisits;  // how many times have I visited each node?
 	
@@ -74,7 +73,7 @@ public:
 		mylock.unlock();
     }
     
-    MCTSBase(HYP& start, double ex, data_t* d, callback_t& cb) : 
+    MCTSBase(HYP& start, double ex, data_t* d) : 
 		BaseNode<this_t>(),
 		open(true), which_expansion(0), nvisits(0) {
 		// This is the constructor that gets called from main, and it sets the static variables. All the other constructors
@@ -85,7 +84,6 @@ public:
 		this->reserve_children(start.neighbors());
 		explore = ex; 
 		data = d;
-		callback = &cb;
 		
 		mylock.unlock();
     }
@@ -173,14 +171,17 @@ public:
 		}		
     }
 	
-	virtual void run_thread(Control ctl, HYP h0) override {		
+	virtual generator<HYP&> run_thread(Control ctl, HYP h0) override {		
 		ctl.start();
 		
 		while(ctl.running()) {
 			if(DEBUG_MCTS) DEBUG("\tMCTS SEARCH LOOP");
 			
 			HYP current = h0; // each thread makes a real copy here 
-			this->search_one(current); 
+			
+			for(auto& h : this->search_one(current)) {
+				co_yield h;
+			}
 		}		
 	}
 	
@@ -195,7 +196,6 @@ public:
 		// if its a terminal, compute the posterior
 		current.compute_posterior(*data);
 		add_sample(current.likelihood);
-		(*callback)(current);
 	}
 
 	/**
@@ -344,142 +344,14 @@ public:
 	 * 		  So, subclasses must implement this.
 	 * @param current
 	 */
-	virtual void search_one(HYP& current) = 0;
+	virtual generator<HYP&> search_one(HYP& current) = 0;
 };
 
 // Must be defined for the linker to find them, apparently:
-template<typename this_t, typename HYP, typename callback_t>
-double MCTSBase<this_t, HYP, callback_t>::explore = 1.0;
+template<typename this_t, typename HYP>
+double MCTSBase<this_t, HYP>::explore = 1.0;
 
-template<typename this_t, typename HYP, typename callback_t>
-typename HYP::data_t* MCTSBase<this_t, HYP,callback_t>::data = nullptr;
-
-template<typename this_t, typename HYP, typename callback_t>
-callback_t* MCTSBase<this_t, HYP,callback_t>::callback = nullptr;
+template<typename this_t, typename HYP>
+typename HYP::data_t* MCTSBase<this_t, HYP>::data = nullptr;
 
 
-
-/**
- * @class PartialMCTSNode
- * @author piantado
- * @date 03/07/20
- * @file MCTS.h
- * @brief This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree
- */
-template<typename this_t, typename HYP, typename callback_t>
-class PartialMCTSNode : public MCTSBase<this_t,HYP,callback_t> {
-	using Super = MCTSBase<this_t,HYP,callback_t>;
-	using Super::Super; // get constructors
-
-	using data_t = typename HYP::data_t;
-	
-	virtual void search_one(HYP& current) override {
-		if(DEBUG_MCTS) DEBUG("PartialMCTSNode SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
-	
-		auto c = this->descend_to_childless(current); //sets current and returns the node. 
-		
-		// if we are a terminal 
-		if(current.is_evaluable()) {
-			c->process_evaluable(current);
-		}
-		else {
-			// else add the next row of children and choose one to playout
-			c->add_children(current); 
-			auto idx = c->sample_child_index(current);
-			current.expand_to_neighbor(idx); 
-			this->playout(current);  // the difference is that here, we call playout instead of search_one
-		}
-    }
-	
-
-	/**
-	 * @brief This gets called on a child that is unvisited. Typically it would consist of filling in h some number of times and
-	 * 		  saving the stats
-	 * @param h
-	 */
-	virtual void playout(HYP& current) {
-		if(current.is_evaluable()) {
-			this->process_evaluable(current);
-		}
-		else {
-		
-			// keep track of max since that's what we'll store
-			double mx = -infinity;
-			auto my_cb = [&](HYP& h) {
-				if(h.posterior > mx) mx = h.posterior;
-				(*this->callback)(h);
-			};
-			
-			PriorInference samp(current.grammar, this->data, my_cb, &current);
-			samp.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart));
-			this->add_sample(mx);
-		}
-	}	
-};
-
-
-
-/**
- * @class FullMCTSNode
- * @author Steven Piantadosi
- * @date 22/12/20
- * @file MCTS.h
- * @brief This is a MCTS node that descends all the way until it builds a tree to a terminal -- usually it uses too much memory
- */
-template<typename this_t, typename HYP, typename callback_t>
-class FullMCTSNode : public MCTSBase<this_t,HYP,callback_t> {	
-	using Super = MCTSBase<this_t,HYP,callback_t>;
-	using Super::Super; // get constructors
-
-	using data_t = typename HYP::data_t;
-	
-	
-    virtual void search_one(HYP& current) override {
-		
-		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
-				
-		auto c = this->descend_to_evaluable(current); //sets current and returns the node. 
-		
-		c->process_evaluable(current);
-    } 
-	
-};
-
-
-/**
- * @class MinimalMCTSNode
- * @author piantado
- * @date 03/07/20
- * @file MCTS.h
- * @brief When this gets to a leaf, it expands the highest probability things from the prior. But it uses the same sampling scheme to reach a leaf
- */
-template<typename this_t, typename HYP, typename callback_t>
-class MinimalMCTSNode : public MCTSBase<this_t,HYP,callback_t> {	
-	using Super = MCTSBase<this_t,HYP,callback_t>;
-	using Super::Super; // get constructors
-
-	using data_t = typename HYP::data_t;
-	
-	virtual void search_one(HYP& current) override {
-		if(DEBUG_MCTS) DEBUG("MinimalMCTSNode SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
-	
-		auto c = this->descend_to_childless(current); //sets current and returns the node. 
-		
-		while(not current.is_evaluable()) {
-			c->add_children(current); 
-			
-			// find the highest prior child
-			auto neigh = current.neighbors();
-			std::vector<double> children_lps(neigh,-infinity);
-			for(int k=0;k<neigh;k++) {
-				children_lps[k] = current.neighbor_prior(k);
-			}
-			
-			auto idx = arg_max_int(neigh, [&](const int i) -> double {return children_lps[i];} ).first;
-			current.expand_to_neighbor(idx);
-			c = &c->children[idx];
-		}
-		
-		c->process_evaluable(current);
-    }
-};

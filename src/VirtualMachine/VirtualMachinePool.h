@@ -198,9 +198,9 @@ public:
 	 * @param loader
 	 * @return 
 	 */	
-	std::vector<VirtualMachineState_t*> run_vms() { 
+	std::vector<VirtualMachineState_t> run_vms() { 
 		
-		std::vector<VirtualMachineState_t*> out;
+		std::vector<VirtualMachineState_t> out;
 		
 		current_steps = 0;
 		while(current_steps < MAX_STEPS && !Q.empty()) {
@@ -213,9 +213,10 @@ public:
 			vms->run();
 				
 			if(vms->status == vmstatus_t::COMPLETE) {
-				out.push_back(vms);
+				out.push_back(*vms);
 			}
-			else if(vms->status != vmstatus_t::RANDOM_CHOICE_NO_DELETE) { 
+			
+			if(vms->status != vmstatus_t::RANDOM_CHOICE_NO_DELETE) { 
 				delete vms; // if our previous copy isn't pushed back on the stack, delete it
 			}
 		}

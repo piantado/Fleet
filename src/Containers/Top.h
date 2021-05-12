@@ -3,6 +3,7 @@
 
 #include <set>
 #include <map>
+#include "OrderedLock.h"
 
 #include "FleetArgs.h"
 #include "OrderedLock.h"
@@ -26,8 +27,7 @@ public:
 	std::map<T,unsigned long> cnt; // also let's count how many times we've seen each for easy debugging
 	std::multiset<T> s; // important that it stores in sorted order by posterior! Multiset because we may have multiple samples that are "equal" (as in SymbolicRegression)
 	bool print_best; // should we print the best?
-	std::atomic<size_t> N;
-	
+	std::atomic<size_t> N;	
 	
 	/**
 	 * @class HasPosterior
@@ -193,12 +193,6 @@ public:
 		add(x);
 	}
 	
-	// We also define this so we can pass TopN as a callback to MCMC sampling
-	//void operator()(const T& x) { add(x); }
-	void operator()(T& x) { 
-		add(x); 
-	}
-	
 	
 	// get the count
 	size_t operator[](const T& x) {
@@ -317,5 +311,3 @@ void operator<<(std::set<HYP>& s, TopN<HYP>& t){
 		s.insert(h);
 	}
 }
-
-

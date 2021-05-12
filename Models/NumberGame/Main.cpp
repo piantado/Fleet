@@ -196,10 +196,10 @@ int main(int argc, char** argv){
 
 	// and sample with just one chain
 	auto h0 = MyHypothesis::make(&grammar);
-	MCMCChain samp(h0, &mydata, top);
-	tic();
-	samp.run(Control()); //30000);		
-	tic();
+	MCMCChain samp(h0, &mydata);
+	for(auto& h : samp.run(Control())) {
+		top << h;
+	}
 
 	// print the results
 	top.print();

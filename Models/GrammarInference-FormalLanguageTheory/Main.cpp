@@ -10,6 +10,7 @@
 #include "Miscellaneous.h"
 #include "Strings.h"
 #include "MCMCChain.h"
+#include "Coroutines.h"
 
 std::string hypothesis_path = "hypotheses.txt";
 std::string runtype         = "both"; // can be both, hypotheses (just find hypotheses), or grammar (just do mcmc, loading from hypothesis_path)
@@ -27,20 +28,6 @@ public:
 	using data_t = Super::data_t;		
 	
 };
-
-
-// Define a function to be called on each sample
-MyGrammarHypothesis MAP;
-size_t grammar_callback_count = 0;
-void gcallback(MyGrammarHypothesis& h) {	
-	if(h.posterior > MAP.posterior or isnan(MAP.posterior)) {
-		MAP = h;
-	}
-	
-	if(++grammar_callback_count % 100 == 0) {
-		COUT h.string(str(grammar_callback_count)+"\t");
-	}
-}
 
 
 int main(int argc, char** argv){ 	
@@ -124,16 +111,19 @@ int main(int argc, char** argv){
 	///////////////////////////////	
 	
 	if(runtype == "grammar" or runtype == "both") { 
-		
+
+		TopN<MyGrammarHypothesis> topMAP(1); // keeps track of the map
+
 		auto h0 = MyGrammarHypothesis::make(hypotheses, &human_data);
 
-		tic();
-		auto thechain = MCMCChain<MyGrammarHypothesis, decltype(gcallback)>(h0, &human_data, &gcallback);
-		thechain.run(Control());
-		tic();
-		
+		auto thechain = MCMCChain<MyGrammarHypothesis>(h0, &human_data);
+		for(auto& h : thechain.run(Control()) | topMAP | print (FleetArgs::print) | thin(FleetArgs::thin) ){
+			COUT h.string(str(thechain.samples)+"\t");
+		}		
 		
 		// Now when we're done, show the model predicted outputs on the data
+		// We'll use the MAP grammar hypothesis for this
+		GrammarHypothesis MAP = topMAP.best();
 		
 		Matrix hposterior = MAP.compute_normalized_posterior(); // this is shared in the loop below, so computed separately		
 		#pragma omp parallel for

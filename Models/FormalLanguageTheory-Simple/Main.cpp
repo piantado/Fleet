@@ -77,17 +77,15 @@ public:
 		const auto out = call(x.input, ""); 
 
 		// Or we can call and get back a list of completed virtual machine states
-		// these store a bit more information, like runtime counts and haven't computer the
+		// these store a bit more information, like runtime counts and haven't computed the
 		// marginal probability of strings
 //		auto v = call_vms(x.input, "<err>", this); // return the states instead of the marginal outputs
-//
-//		// compute a "runtime" prior penalty
-//		// NOTE this is fine since a Bayesable first computes the prior before the likelihood so this will not be overwritten
+//		auto z = logsumexp(v, +[](const VirtualMachineState_t& a) { return a.lp;});
 //		for(auto& vi : v) {
-//			prior += -exp(vi.lp)*vi.runtime_counter.total;
+//			prior += -exp(vi.lp-z)*vi.runtime_counter.total; // compute a "runtime" prior penalty NOTE this is fine since a Bayesable first computes the prior before the likelihood so this will not be overwritten
 //		}
-//		// and convert v to a disribution on strings
-//		auto out = marginal_vms_output(v);
+//		auto out = marginal_vms_output(v); // and convert v to a disribution on strings
+
 
 		const auto log_A = log(alphabet.size());
 		
@@ -137,6 +135,8 @@ public:
 #ifndef DO_NOT_INCLUDE_MAIN
 
 #include "Top.h"
+#include "MCMCChain.h"
+#include "ChainPool.h"
 #include "ParallelTempering.h"
 #include "Fleet.h" 
 #include "Builtins.h"
@@ -209,23 +209,14 @@ int main(int argc, char** argv){
 	
 	top.print_best = true;
 	auto h0 = MyHypothesis::make(&grammar);
-	ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 10.0);
-	samp.run(Control(), 100, 30000);		
-//	
-
-//	top.print_best = true; // print out each best hypothesis you find
-//	auto h0 = MyHypothesis::make(&grammar);
-//	MCMCChain c(h0, &mydata, top);
-//	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-//	c.run(Control());
-
-	// run multiple chains
-//	auto h0 = MyHypothesis::make(&grammar);
-//	ChainPool c(h0, &mydata, top, FleetArgs::nchains);
-//	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-//	c.run(Control());
-
-
+	
+//	MCMCChain samp(h0, &mydata);
+//    ChainPool samp(h0, &mydata, FleetArgs::nchains);
+//	for(auto& h : samp.run(Control()) | top | thin(FleetArgs::thin)) {
+	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+	for(auto& h : samp.run(Control(), 100, 30000) | top | thin(FleetArgs::thin)) {
+		//h.print();
+	}
 
 	top.print();
 

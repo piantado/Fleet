@@ -24,10 +24,7 @@ struct Control {
 	unsigned long steps;
 	time_ms runtime;
 	size_t nthreads;
-	unsigned long burn;
 	unsigned long restart;
-	unsigned long thin;
-	unsigned long print; 
 	
 	timept start_time;
 	unsigned long done_steps; // how many have we done?
@@ -37,11 +34,8 @@ struct Control {
 	Control(unsigned long st=FleetArgs::steps, 
 			unsigned long t=FleetArgs::runtime,
 			size_t thr=FleetArgs::nthreads, 
-			unsigned long bu=FleetArgs::burn, 
-			unsigned long re=FleetArgs::restart, 
-			unsigned long th=FleetArgs::thin, 
-			unsigned long pr=FleetArgs::print) : 
-					steps(st), runtime(t), nthreads(thr), burn(bu), restart(re), thin(th), print(pr), break_CTRLC(true) {
+			unsigned long re=FleetArgs::restart) : 
+					steps(st), runtime(t), nthreads(thr), restart(re), break_CTRLC(true) {
 		// We defaultly read arguments from FleetArgs
 		
 		start(); // just defaultly because it's easier

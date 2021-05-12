@@ -15,9 +15,9 @@
 
 class OrderedLock {
 public:
-    std::queue<std::condition_variable *> cvar;
-    std::mutex                            cvar_lock;
-    bool                                  locked;
+    std::queue<std::condition_variable*> cvar;
+    std::mutex                           cvar_lock;
+    bool                                 locked;
 
     OrderedLock() : locked(false) {}
 	

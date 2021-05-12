@@ -203,28 +203,30 @@ public:
 /// Define classes for MCTS
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "MCTS.h"
+#include "FullMCTSNode.h"
+#include "PartialMCTSNode.h"
+#include "MinimalMCTSNode.h"
 #include "MCMCChain.h"
 
-class PriorSampleMCTS : public PartialMCTSNode<PriorSampleMCTS, MyHypothesis, TopN<MyHypothesis>> {
+class PriorSampleMCTS : public PartialMCTSNode<PriorSampleMCTS, MyHypothesis> {
 public:
-	using Super = PartialMCTSNode<PriorSampleMCTS, MyHypothesis, TopN<MyHypothesis>>;
+	using Super = PartialMCTSNode<PriorSampleMCTS, MyHypothesis>;
 	using Super::Super;
 
 	// we must declare this to use these in a vector, but we can't call it since we can't move the locks
 	PriorSampleMCTS(PriorSampleMCTS&& m){ throw YouShouldNotBeHereError("*** This must be defined for but should never be called"); } 
 };
 
-class MCMCwithinMCTS : public PartialMCTSNode<MCMCwithinMCTS, MyHypothesis, TopN<MyHypothesis>> {
+class MCMCwithinMCTS : public PartialMCTSNode<MCMCwithinMCTS, MyHypothesis> {
 public:
-	using Super = PartialMCTSNode<MCMCwithinMCTS, MyHypothesis, TopN<MyHypothesis>>;
+	using Super = PartialMCTSNode<MCMCwithinMCTS, MyHypothesis>;
 	using Super::Super;
 
 	// we must declare this to use these in a vector, but we can't call it since we can't move the locks
 	MCMCwithinMCTS(MCMCwithinMCTS&& m){ throw YouShouldNotBeHereError("*** This must be defined for but should never be called"); } 
 	
-	virtual void playout(MyHypothesis& current) override {
-		// define our own playout here to call our callback and add sample to the MCTS
+	virtual generator<MyHypothesis&> playout(MyHypothesis& current) override {
+		// define our own playout here to call, yield, and add sample to the MCTS
 		
 		MyHypothesis h0 = current; // need a copy to change resampling on 
 		for(auto& n : h0.get_value() ){
@@ -237,11 +239,15 @@ public:
 		std::function no_resamples = +[](const Node& n) -> bool { return not n.can_resample;};
 		if(h0.get_value().all(no_resamples)) {
 			this->process_evaluable(h0);
+			co_yield h0;
 		}
 		else {
 			// else we run vanilla MCMC
-			MCMCChain chain(h0, data, callback);
-			chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart)); // run mcmc with restarts; we sure shouldn't run more than runtime
+			MCMCChain chain(h0, data);
+			// run mcmc with restarts; we sure shouldn't run more than runtime
+			for(auto& h : chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart))) {
+				co_yield h;
+			}
 			this->process_evaluable(chain.current);
 		}
 	}
@@ -250,9 +256,9 @@ public:
 
 
 
-class MyFullMCTS : public FullMCTSNode<MyFullMCTS, MyHypothesis, TopN<MyHypothesis>> {
+class MyFullMCTS : public FullMCTSNode<MyFullMCTS, MyHypothesis> {
 public:
-	using Super = FullMCTSNode<MyFullMCTS, MyHypothesis, TopN<MyHypothesis>>;
+	using Super = FullMCTSNode<MyFullMCTS, MyHypothesis>;
 	using Super::Super;
 
 	// we must declare this to use these in a vector, but we can't call it since we can't move the locks
@@ -260,9 +266,9 @@ public:
 };
 
 
-class MyMinimalMCTS : public MinimalMCTSNode<MyMinimalMCTS, MyHypothesis, TopN<MyHypothesis>> {
+class MyMinimalMCTS : public MinimalMCTSNode<MyMinimalMCTS, MyHypothesis> {
 public:
-	using Super = MinimalMCTSNode<MyMinimalMCTS, MyHypothesis, TopN<MyHypothesis>>;
+	using Super = MinimalMCTSNode<MyMinimalMCTS, MyHypothesis>;
 	using Super::Super;
 
 	// we must declare this to use these in a vector, but we can't call it since we can't move the locks
@@ -338,52 +344,72 @@ int main(int argc, char** argv){
 	
 	if(method == "parallel-tempering") {
 		auto h0 = MyHypothesis::make(&grammar);
-		ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 10.0);
-		samp.run(Control(), 250, 10000);		
+		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+		for(auto& h : samp.run(Control(), 250, 10000)) {
+			top << h;
+		}
 	}
 	else if(method == "parallel-tempering-ID") {
 		whichProposal = ProposalType::InsertDelete;
 		auto h0 = MyHypothesis::make(&grammar);
-		ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 10.0);
-		samp.run(Control(), 250, 10000);		
+		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+		for(auto& h : samp.run(Control(), 250, 10000)){
+			top << h;
+		}
 	}
 	else if(method == "parallel-tempering-prior-propose") {
 		whichProposal = ProposalType::Prior;
 		auto h0 = MyHypothesis::make(&grammar);
-		ParallelTempering samp(h0, &mydata, top, FleetArgs::nchains, 10.0);
-		samp.run(Control(), 250, 10000);		
+		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+		for(auto& h : samp.run(Control(), 250, 10000)) {
+			top << h;
+		}
 	}
 	else if(method == "prior-sampling") {
-		PriorInference<MyHypothesis, decltype(top)> pri(&grammar, &mydata, top);
-		pri.run(Control());
+		PriorInference<MyHypothesis> pri(&grammar, &mydata);
+		for(auto& h : pri.run(Control())) {
+			top << h;
+		}
 	}
 	else if(method == "basic-enumeration") {
-		EnumerationInference<MyHypothesis,MyGrammar,decltype(top),BasicEnumeration<MyGrammar>> e(&grammar, &mydata, top);
-		e.run(Control());
+		EnumerationInference<MyHypothesis,MyGrammar,BasicEnumeration<MyGrammar>> e(&grammar, &mydata);
+		for(auto& h : e.run(Control())){
+			top << h;
+		}
 	}
 	else if(method == "partial-LZ-enumeration") {
-		EnumerationInference<MyHypothesis,MyGrammar,decltype(top),PartialLZEnumeration<MyGrammar>> e(&grammar, &mydata, top);
-		e.run(Control());
+		EnumerationInference<MyHypothesis,MyGrammar,PartialLZEnumeration<MyGrammar>> e(&grammar, &mydata);
+		for(auto& h : e.run(Control())) {
+			top << h;
+		}
 	}
 	else if(method == "full-LZ-enumeration") {
-		EnumerationInference<MyHypothesis,MyGrammar,decltype(top),FullLZEnumeration<MyGrammar>> e(&grammar, &mydata, top);
-		e.run(Control());
+		EnumerationInference<MyHypothesis,MyGrammar,FullLZEnumeration<MyGrammar>> e(&grammar, &mydata);
+		for(auto& h : e.run(Control())){
+			top << h;
+		}
 	}
 	else if(method == "beam") {
 		MyHypothesis h0(&grammar); // don't use make -- must start with empty value
-		BeamSearch bs(h0, &mydata, top, 1000.0);
-		bs.run(Control());
+		BeamSearch bs(h0, &mydata, 1000.0);
+		for(auto& h : bs.run(Control())) {
+			top << h;
+		}
 	}
 	else if(method == "chain-pool") {
 		auto h0 = MyHypothesis::make(&grammar);
-		ChainPool c(h0, &mydata, top, FleetArgs::nchains);
-		c.run(Control());
+		ChainPool c(h0, &mydata, FleetArgs::nchains);
+		for(auto& h : c.run(Control()) | print(FleetArgs::print) ) {
+			top << h;
+		}
 	}
 	else if(method == "prior-sample-mcts") {
 		// A PartialMCTSNode is one where you stop one step after reaching an unexpanded kid in the tree
 		MyHypothesis h0(&grammar);
-		PriorSampleMCTS m(h0, FleetArgs::explore, &mydata, top);
-		m.run(Control(), h0);
+		PriorSampleMCTS m(h0, FleetArgs::explore, &mydata);
+		for(auto& h : m.run(Control(), h0)){
+			top << h;
+		}
 		//m.print(h0);
 		//m.print(h0, "tree.txt");
 		//COUT "# MCTS size: " TAB m.count() ENDL;
@@ -391,15 +417,19 @@ int main(int argc, char** argv){
 	else if(method == "mcmc-within-mcts") {
 		// A PartialMCTSNode is one where you stop one step after reaching an unexpanded kid in the tree
 		MyHypothesis h0(&grammar);
-		MCMCwithinMCTS m(h0, FleetArgs::explore, &mydata, top);
-		m.run(Control(), h0);
+		MCMCwithinMCTS m(h0, FleetArgs::explore, &mydata);
+		for(auto& h : m.run(Control(), h0)){
+			top << h;
+		}
 		m.print(h0);
 	}
 	else if(method == "full-mcts") {
 		// A FullMCTSNode run is one where each time you descend the tree, you go until you make it to a terminal
 		MyHypothesis h0(&grammar);
-		MyFullMCTS m(h0, FleetArgs::explore, &mydata, top);
-		m.run(Control(), h0);
+		MyFullMCTS m(h0, FleetArgs::explore, &mydata);
+		for(auto& h : m.run(Control(), h0)){
+			top << h;
+		}
 		//m.print(h0);
 		//m.print(h0, "tree.txt");
 		//COUT "# MCTS size: " TAB m.count() ENDL;
@@ -407,16 +437,20 @@ int main(int argc, char** argv){
 	else if(method == "minimal-mcts") {
 		// A FullMCTSNode run is one where each time you descend the tree, you go until you make it to a terminal
 		MyHypothesis h0(&grammar);
-		MyMinimalMCTS m(h0, FleetArgs::explore, &mydata, top);
-		m.run(Control(), h0);
+		MyMinimalMCTS m(h0, FleetArgs::explore, &mydata);
+		for(auto& h : m.run(Control(), h0)){
+			top << h;
+		}
 		//m.print(h0);
 		//m.print(h0, "tree.txt");
 		//COUT "# MCTS size: " TAB m.count() ENDL;
 	}
 	else if(method == "partition-mcmc") {
 		MyHypothesis h0(&grammar); // start empty
-		PartitionMCMC c(h0, FleetArgs::partition_depth, &mydata, top);
-		c.run(Control());
+		PartitionMCMC c(h0, FleetArgs::partition_depth, &mydata);
+		for(auto& h : c.run(Control())) {
+			top << h;
+		}
 	}
 	else {
 		throw NotImplementedError();

@@ -10,6 +10,7 @@
 #include "MCMCChain.h"
 #include "Timing.h"
 #include "ParallelInferenceInterface.h"
+#include "OrderedLock.h"
 
 /**
  * @class ChainPool
@@ -20,11 +21,11 @@
  * 		  NOTE: When you use a ChainPool, the results will not be reproducible with seed because timing determines when you
  *        switch chains. 
  */
-template<typename HYP, typename callback_t>
-class ChainPool : public ParallelInferenceInterface<> { 
+template<typename HYP>
+class ChainPool : public ParallelInferenceInterface<HYP> { 
 	
 public:
-	std::vector<MCMCChain<HYP,callback_t>> pool;
+	std::vector<MCMCChain<HYP>> pool;
 	
 	// these parameters define the amount of a thread spends on each chain before changing to another
 	// NOTE: these interact with ParallelTempering swap/adapt values (because if these are too small, then
@@ -38,10 +39,9 @@ public:
 	
 	ChainPool() {}
 	
-	ChainPool(HYP& h0, typename HYP::data_t* d, callback_t& cb, size_t n, bool allcallback=true) : running(n, false) {
+	ChainPool(HYP& h0, typename HYP::data_t* d, size_t n) : running(n, false) {
 		for(size_t i=0;i<n;i++) {
-			if(allcallback or i==0) pool.push_back(MCMCChain<HYP,callback_t>(i==0?h0:h0.restart(), d, cb));
-			else                    pool.push_back(MCMCChain<HYP,callback_t>(i==0?h0:h0.restart(), d));
+			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), d));
 		}
 	}
 	
@@ -61,9 +61,9 @@ public:
 	 * @brief This run helper is called internally by multiple different threads, and runs a given pool.
 	 * @param ctl
 	 */
-	void run_thread(Control ctl) override {
+	generator<HYP&> run_thread(Control ctl) override {
 		assert(pool.size() > 0 && "*** Cannot run on an empty ChainPool");
-		assert(nthreads() <= pool.size() && "*** Cannot have more threads than pool items");
+		assert(this->nthreads() <= pool.size() && "*** Cannot have more threads than pool items");
 		
 		while( ctl.running() ) {
 			
@@ -73,8 +73,8 @@ public:
 				std::lock_guard guard(running_lock);
 			
 				do { 
-					idx = next_index() % pool.size();
-				} while( running[idx] );
+					idx = this->next_index() % pool.size();
+				} while( running[idx] ); // so we exit on a false running idx
 				running[idx] = true; // say I'm running this one 
 			}
 			
@@ -90,7 +90,9 @@ public:
 			
 			// now run that chain -- TODO: Can update this to be more precise by running 
 			// a set number of samples computed from steps and old_samples
-			chain.run(Control(steps_before_change, time_before_change, 1));
+			for(auto& x : chain.run(Control(steps_before_change, time_before_change, 1))) {
+				co_yield x;
+			}
 			
 			// now update ctl's number of steps (since it might have been anything
 			ctl.done_steps += chain.samples - old_samples; // add up how many we've done

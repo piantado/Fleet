@@ -21,8 +21,8 @@ extern volatile sig_atomic_t CTRL_C;
  * 		
  */
 
-template<typename HYP, typename callback_t>
-class ParallelTempering : public ChainPool<HYP,callback_t> {
+template<typename HYP>
+class ParallelTempering : public ChainPool<HYP> {
 
 	const unsigned long WAIT_AND_SLEEP = 250; // how many ms to wait between checking to see if it is time to swap/adapt
 	
@@ -36,10 +36,9 @@ public:
 	
 	std::atomic<bool> terminate; // used to kill swapper and adapter
 	
-	ParallelTempering(HYP& h0, typename HYP::data_t* d, callback_t& cb, std::initializer_list<double> t, bool allcallback=true) : 
-		ChainPool<HYP,callback_t>(h0, d, cb, temperatures.size(),allcallback), temperatures(t), terminate(false) {
+	ParallelTempering(HYP& h0, typename HYP::data_t* d, std::initializer_list<double> t) : 
+		ChainPool<HYP>(h0, d, temperatures.size()), temperatures(t), terminate(false) {
 		
-		// allcallback is true means that all chains call the callback, otherwise only t=0
 		for(size_t i=0;i<temperatures.size();i++) {
 			this->pool[i].temperature = temperatures[i]; // set its temperature 
 		}
@@ -48,8 +47,8 @@ public:
 	}
 	
 	
-	ParallelTempering(HYP& h0, typename HYP::data_t* d, callback_t& cb, unsigned long n, double maxT, bool allcallback=true) : 
-		ChainPool<HYP,callback_t>(h0, d, cb, n, allcallback),terminate(false) {
+	ParallelTempering(HYP& h0, typename HYP::data_t* d, unsigned long n, double maxT) : 
+		ChainPool<HYP>(h0, d, n),terminate(false) {
 		assert(n != 0);
 		
 		if(n == 1) {
@@ -134,15 +133,17 @@ public:
 	}
 	
 	
-	void run(Control ctl) { throw NotImplementedError(); }
-	void run(Control ctl, time_ms swap_every, time_ms adapt_every) {
+	generator<HYP&> run(Control ctl) { throw NotImplementedError(); }
+	generator<HYP&> run(Control ctl, time_ms swap_every, time_ms adapt_every) {
 		
 		// Start a swapper and adapter thread
-		std::thread swapper(&ParallelTempering<HYP,callback_t>::__swapper_thread, this, swap_every); // pass in the non-static mebers like this:
-		std::thread adapter(&ParallelTempering<HYP,callback_t>::__adapter_thread, this, adapt_every);
+		std::thread swapper(&ParallelTempering<HYP>::__swapper_thread, this, swap_every); // pass in the non-static mebers like this:
+		std::thread adapter(&ParallelTempering<HYP>::__adapter_thread, this, adapt_every);
 
 		// run normal pool run
-		ChainPool<HYP,callback_t>::run(ctl); // passing copies here
+		for(auto& h : ChainPool<HYP>::run(ctl)) {
+			co_yield h;
+		}
 		
 		// kill everything else once that thread is done
 		terminate = true;
@@ -204,8 +205,8 @@ public:
  * @file ParallelTempering.h
  * @brief This is like ParallelTempering but it tempers on the amount of data. Note then it doesn't adapt anything. 
  */
-template<typename HYP, typename callback_t>
-class DataTempering : public ChainPool<HYP,callback_t> {
+template<typename HYP>
+class DataTempering : public ChainPool<HYP> {
 	
 	const unsigned long WAIT_AND_SLEEP = 250; // how many ms to wait between checking to see if it is time to swap/adapt
 	
@@ -213,11 +214,10 @@ public:
 	FiniteHistory<bool>* swap_history;
 	std::atomic<bool> terminate; // used to kill swapper and adapter
 	
-	DataTempering(HYP& h0, std::vector<typename HYP::data_t>& datas, std::vector<callback_t>& cb)  : terminate(false) {
-		assert(datas.size() == cb.size() && "*** Must provide equal length vectors of datas and callbacks");
+	DataTempering(HYP& h0, std::vector<typename HYP::data_t>& datas)  : terminate(false) {
 		// This version anneals on data, giving each chain a different amount in datas order
 		for(size_t i=0;i<datas.size();i++) {
-			this->pool.push_back(MCMCChain(i==0?h0:h0.restart(), &(datas[i]), cb[i]));
+			this->pool.push_back(MCMCChain(i==0?h0:h0.restart(), &(datas[i])));
 			this->pool[i].temperature = 1.0;
 		}
 
@@ -280,12 +280,14 @@ public:
 	}
 	
 	
-	virtual void run(Control ctl) override { throw NotImplementedError(); }
-	virtual void run(Control ctl, time_ms swap_every, time_ms adapt_every) {
+	virtual generator<HYP&> run(Control ctl) override { throw NotImplementedError(); }
+	virtual generator<HYP&> run(Control ctl, time_ms swap_every, time_ms adapt_every) {
 		
-		std::thread swapper(&ParallelTempering<HYP,callback_t>::__swapper_thread, this, swap_every); // pass in the non-static mebers like this:
+		std::thread swapper(&ParallelTempering<HYP>::__swapper_thread, this, swap_every); // pass in the non-static mebers like this:
 		
-		ChainPool<HYP,callback_t>::run(ctl);
+		for(auto& h : ChainPool<HYP>::run(ctl)) {
+			co_yield h;
+		}
 		
 		terminate = true;
 		

@@ -1,7 +1,7 @@
 #pragma once 
 
 #include <functional>
-
+#include "Coroutines.h"
 #include "MCMCChain.h"
 #include "FiniteHistory.h"
 #include "Control.h"
@@ -9,9 +9,7 @@
 
 //#define DEBUG_MCMC 1
 
-// we take callback as a type (which hopefully can be deduce) so we can pass any callable object as callback (like a TopN)
-// This must be stored as a shared_ptr 
-template<typename HYP, typename callback_t> 
+template<typename HYP> 
 class MCMCChain {
 	// An MCMC chain object. 
 	// NOTE: This defaultly loads its steps etc from the Fleet command line args
@@ -30,9 +28,8 @@ public:
 	typename HYP::data_t* data;
 	
 	double maxval;
-	callback_t* callback; // we don't want a shared_ptr because we don't want this deleted, it's owned elsewhere
 	
-	unsigned long samples; // total number of samples (callbacks) we've done
+	unsigned long samples; // total number of samples we've done
 	unsigned long proposals;
 	unsigned long acceptances;
 	unsigned long steps_since_improvement; 
@@ -41,37 +38,22 @@ public:
 	
 	FiniteHistory<bool> history;
 	
-	MCMCChain(HYP& h0, typename HYP::data_t* d, callback_t& cb ) : 
-			current(h0), data(d), maxval(-infinity), callback(&cb), 
+	MCMCChain(HYP& h0, typename HYP::data_t* d) : 
+			current(h0), data(d), maxval(-infinity), 
 			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
 			runOnCurrent();
 	}
 	
-	MCMCChain(HYP&& h0, typename HYP::data_t* d, callback_t& cb ) : 
-			current(h0), data(d), maxval(-infinity), callback(&cb), 
+	MCMCChain(HYP&& h0, typename HYP::data_t* d) : 
+			current(h0), data(d), maxval(-infinity),
 			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
 			temperature(1.0), history(100) {
-			runOnCurrent();
-	}
-
-	MCMCChain(HYP& h0, typename HYP::data_t* d, callback_t* cb=nullptr ) : 
-			current(h0), data(d), maxval(-infinity), callback(cb), 
-			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
-			temperature(1.0), history(100) {
-			runOnCurrent();
-	}
-	
-	MCMCChain(HYP&& h0, typename HYP::data_t* d, callback_t* cb=nullptr) : 
-			current(h0), data(d), maxval(-infinity), callback(cb), 
-			samples(0), proposals(0), acceptances(0), steps_since_improvement(0),
-			temperature(1.0), history(100) {
-				
 			runOnCurrent();
 	}
 
 	MCMCChain(const MCMCChain& m) :
-		current(m.current), data(m.data), maxval(m.maxval), callback(m.callback),
+		current(m.current), data(m.data), maxval(m.maxval),
 		samples(m.samples), proposals(m.proposals), acceptances(m.acceptances), 
 		steps_since_improvement(m.steps_since_improvement)	{
 			temperature = (double)m.temperature;
@@ -82,7 +64,6 @@ public:
 		current = m.current;
 		data = m.data;
 		maxval = m.maxval;
-		callback = m.callback;
 		samples = m.samples;
 		proposals = m.proposals;
 		acceptances = m.acceptances;
@@ -116,13 +97,11 @@ public:
 	
 	void runOnCurrent() {
 		/**
-		 * @brief This is called by the constructor to compute the posterior and callback for an initial h0
+		 * @brief This is called by the constructor to compute the posterior. NOTE it does not callback
 		 */
-				
-		// updates current and calls callback (in constructor)
+		
 		std::lock_guard guard(current_mutex);
 		current.compute_posterior(*data);
-		if(callback != nullptr) (*callback)(current); // hmm this gets called even with burn -- maybe not good?
 		++FleetStatistics::global_sample_count;
 		++samples;
 	}
@@ -137,7 +116,7 @@ public:
 	 * 		  NOTE: ctl cannot be passed by reference. 
 	 * @param ctl
 	 */	
-	 void run(Control ctl) {
+	 generator<HYP&> run(Control ctl) {
 
 		assert(ctl.nthreads == 1 && "*** You seem to have called MCMCChain with nthreads>1. This is not how you parallel. Check out ChainPool"); 
 		
@@ -146,8 +125,7 @@ public:
 		#endif 
 		
 		// I may have copied its start time from somewhere else, so change that here
-		ctl.start();
-		
+		ctl.start();		
 		while(ctl.running()) {
 			
 			if(current.posterior > maxval) { // if we improve, store it
@@ -172,9 +150,7 @@ public:
 				++samples;
 				++FleetStatistics::global_sample_count;
 
-				if(callback != nullptr and samples >= ctl.burn) {
-					(*callback)(current);
-				}
+				co_yield current; 
 				
 				continue;
 			}
@@ -224,27 +200,16 @@ public:
 				history << true;
 				++acceptances;
 				
-				
 			}
 			else {
 				history << false;
 			}
-				
-			// and call on the sample if we meet all our criteria
-			if(callback != nullptr and samples >= ctl.burn and
-				(ctl.thin == 0 or FleetStatistics::global_sample_count % ctl.thin == 0)) { 
-				[[unlikely]];
-				(*callback)(current);
-			}
-			
-			if(ctl.print > 0 and FleetStatistics::global_sample_count % ctl.print == 0) {
-				[[unlikely]];
-				current.print();
-			}
-			
+
 			++samples;
 			++FleetStatistics::global_sample_count;
-			
+						
+			co_yield current;
+						
 		} // end the main loop	
 		
 		
@@ -275,6 +240,3 @@ public:
 	}
 	
 };
-
-template<typename HYP>
-std::function<void(HYP&)> null_callback = [](HYP&){};

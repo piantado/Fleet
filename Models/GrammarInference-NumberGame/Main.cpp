@@ -77,13 +77,6 @@ public:
 	}
 };
 
-size_t grammar_callback_count = 0;
-void gcallback(MyGrammarHypothesis& h) {
-	if(++grammar_callback_count % 100 == 0) {
-		COUT h.string(str(grammar_callback_count)+"\t");
-	}
-}
-
 
 int main(int argc, char** argv){ 	
 	Fleet fleet("An example of grammar inference for boolean concepts");
@@ -114,7 +107,7 @@ int main(int argc, char** argv){
 	
 	// here we build up a mapping from mutliset<int> to a vector of 
 	// responses, using d to hold them
-	for(auto [target, setstr, yes, no] : read_csv<4>("human-data.txt", '\t', true)) {
+	for(auto [target, setstr, yes, no] : read_csv<4>("human-data.txt", true, '\t')) {
 		auto set = string_to<std::multiset<int>>(setstr);
 		
 		// if this doesn't exist, add it
@@ -191,10 +184,10 @@ int main(int argc, char** argv){
 			i++;
 		}
 			
-		tic();
-		auto thechain = MCMCChain<MyGrammarHypothesis, decltype(gcallback)>(h0, &human_data, &gcallback);
-		thechain.run(Control());
-		tic();
+		auto thechain = MCMCChain<MyGrammarHypothesis>(h0, &human_data);
+		for(auto& h : thechain.run(Control()) | thin(FleetArgs::thin) ){
+			COUT h.string(str(thechain.samples)+"\t");
+		}	
 	}
 	
 }

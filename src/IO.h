@@ -104,8 +104,6 @@ std::vector<HYP> load(std::string filename, typename HYP::Grammar_t* g) {
  * @param g
  * @return 
  */
-
-
 template<size_t N>
 std::vector<std::array<std::string,N>> read_csv(const std::string path, bool skipheader, const char delimiter='\t') {
 	
