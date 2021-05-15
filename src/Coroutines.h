@@ -44,7 +44,7 @@ struct print {
 
 	// funny little increment here returns true for when we print
 	bool operator++() {
-		if(++cnt == every or every==0) {
+		if(++cnt == every and every!=0) {
 			cnt = 0;
 			return true;
 		}

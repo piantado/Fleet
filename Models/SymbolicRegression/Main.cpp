@@ -401,7 +401,8 @@ int main(int argc, char** argv){
 		// process percentages
 		double sd; 
 		if(sdstr[sdstr.length()-1] == '%') sd = y * std::stod(sdstr.substr(0, sdstr.length()-1)) / 100; // it's a percentage
-		else                               sd = std::stod(sdstr);
+		else                               sd = std::stod(sdstr);		
+		assert(sd > 0.0 && "*** You probably didn't want a zero SD?");
 		
 		COUT "# Data:\t" << x TAB y TAB sd ENDL;
 		
