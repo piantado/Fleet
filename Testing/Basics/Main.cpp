@@ -146,7 +146,7 @@ public:
 
 
 
-#include "Top.h"
+#include "TopN.h"
 #include "MCMCChain.h"
 #include "ParallelTempering.h"
 #include "EnumerationInference.h"

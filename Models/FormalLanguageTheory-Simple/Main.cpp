@@ -134,7 +134,7 @@ public:
 // if we define DO_NOT_INCLUDE_MAIN then we can import everything *except* the below
 #ifndef DO_NOT_INCLUDE_MAIN
 
-#include "Top.h"
+#include "TopN.h"
 #include "MCMCChain.h"
 #include "ChainPool.h"
 #include "ParallelTempering.h"

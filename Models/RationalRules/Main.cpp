@@ -74,7 +74,7 @@ public:
 /// Main code
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "Top.h"
+#include "TopN.h"
 #include "ParallelTempering.h"
 #include "Fleet.h" 
 #include "Builtins.h"

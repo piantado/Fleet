@@ -14,7 +14,7 @@
 #include "Vector2D.h"
 #include "HumanDatum.h"
 #include "Control.h"
-#include "Top.h"
+#include "TopN.h"
 #include "MCMCChain.h"
 
 extern volatile sig_atomic_t CTRL_C;

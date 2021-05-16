@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Errors.h"
-#include "Top.h"
+#include "TopN.h"
 
 /**
  * @class ReservoirSample

@@ -1,7 +1,7 @@
 
 // we put this at the top so that grammar will be loaded with eigen 
 #include "EigenLib.h"
-#include "Top.h"
+#include "TopN.h"
 
 #include <string>
 using S = std::string; // just for convenience
@@ -284,7 +284,7 @@ public:
 // if we define DO_NOT_INCLUDE_MAIN then we can import everything *except* the below
 #ifndef DO_NOT_INCLUDE_MAIN
 
-#include "Top.h"
+#include "TopN.h"
 #include "ParallelTempering.h"
 #include "EnumerationInference.h"
 #include "PriorInference.h"

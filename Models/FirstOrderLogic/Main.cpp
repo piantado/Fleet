@@ -196,7 +196,7 @@ public:
 // we can not include main by defining this
 #ifndef NO_FOL_MAIN
 
-#include "Top.h"
+#include "TopN.h"
 #include "ParallelTempering.h"
 #include "Fleet.h" 
 

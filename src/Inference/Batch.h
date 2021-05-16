@@ -2,7 +2,7 @@
 
 #include "HumanDatum.h"
 #include "Control.h"
-#include "Top.h"
+#include "TopN.h"
 #include "MCMCChain.h"
 #include "Vectors.h"
 

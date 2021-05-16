@@ -304,7 +304,7 @@ std::pair<double,double> mem_pr;
 
 #include "VirtualMachine/VirtualMachineState.h"
 #include "VirtualMachine/VirtualMachinePool.h"
-#include "Top.h"
+#include "TopN.h"
 #include "ParallelTempering.h"
 #include "Fleet.h" 
 

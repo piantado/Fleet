@@ -179,7 +179,7 @@ public:
 #ifndef NUMBER_GAME_DO_NOT_INCLUDE_MAIN
 
 #include "Fleet.h"
-#include "Top.h"
+#include "TopN.h"
 #include "MCMCChain.h"
 
 int main(int argc, char** argv){ 	

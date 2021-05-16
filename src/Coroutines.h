@@ -62,7 +62,7 @@ generator<T&> operator|(generator<T&> g, print t) {
 }
 
 // chaining together generator and TopN
-#include "Top.h"
+#include "TopN.h"
 template<typename T> 
 generator<T&> operator|(generator<T&> g, TopN<T>& tn) { // NOTE: tn MUST be a ref here...
 	for(auto& x : g) {

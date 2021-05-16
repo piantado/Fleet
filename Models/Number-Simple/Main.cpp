@@ -141,7 +141,7 @@ public:
 
 #include "ParallelTempering.h"
 #include "Fleet.h"
-#include "Top.h"
+#include "TopN.h"
 
 int main(int argc, char** argv) { 
 	Fleet fleet("Simple number inference model");

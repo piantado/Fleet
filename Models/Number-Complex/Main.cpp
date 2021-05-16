@@ -266,7 +266,7 @@ public:
 /// Declare global set of data
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "Top.h"
+#include "TopN.h"
 TopN<MyHypothesis> all; // used by MCMC and MCTS locally
 
 std::vector<MyHypothesis::data_t> alldata;
