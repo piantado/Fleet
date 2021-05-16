@@ -43,7 +43,7 @@ public:
 	using Grammar_t = _Grammar_t;
 	using input_t   = _input_t;
 	using output_t  = _output_t;
-	using VirtualMachineState_t = Grammar_t::VirtualMachineState_t;
+	using VirtualMachineState_t = typename Grammar_t::VirtualMachineState_t;
 	
 	static const size_t MAX_NODES = 64; // max number of nodes we allow; otherwise -inf prior
 	

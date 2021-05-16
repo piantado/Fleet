@@ -107,3 +107,15 @@ template<typename X, typename... Ts>
 constexpr bool contains_type() {
 	return std::disjunction<std::is_same<X, Ts>...>::value;
 }
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Check if a type is a specialization of another
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+//https://stackoverflow.com/questions/16337610/how-to-know-if-a-type-is-a-specialization-of-stdvector
+template<typename Test, template<typename...> class Ref>
+struct is_specialization : std::false_type {};
+
+template<template<typename...> class Ref, typename... Args>
+struct is_specialization<Ref<Args...>, Ref>: std::true_type {};

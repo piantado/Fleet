@@ -12,6 +12,7 @@
 #include "Numerics.h"
 #include "Random.h"
 #include "Vector3D.h"
+#include "Miscellaneous.h"
 
 // This constant is occasionally useful, especially in grammar inference where we might
 // want a reference to an empty input
@@ -437,14 +438,6 @@ double p_KashyapOommen1984_edit(const std::string x, const std::string y, const 
 }
 
 
-#include "Datum.h" // needed so we can map strings to this
-
-//https://stackoverflow.com/questions/16337610/how-to-know-if-a-type-is-a-specialization-of-stdvector
-template<typename Test, template<typename...> class Ref>
-struct is_specialization : std::false_type {};
-
-template<template<typename...> class Ref, typename... Args>
-struct is_specialization<Ref<Args...>, Ref>: std::true_type {};
 
 /**
  * @brief Fleet includes this templated function to allow us to convert strings to a variety of formats. 
