@@ -1,5 +1,5 @@
-\hypertarget{_chain_pool_8h}{}\doxysection{src/\+Inference/\+Chain\+Pool.h File Reference}
-\label{_chain_pool_8h}\index{src/Inference/ChainPool.h@{src/Inference/ChainPool.h}}
+\hypertarget{_chain_pool_8h}{}\doxysection{src/\+Inference/\+M\+C\+M\+C/\+Chain\+Pool.h File Reference}
+\label{_chain_pool_8h}\index{src/Inference/MCMC/ChainPool.h@{src/Inference/MCMC/ChainPool.h}}
 
 
 A \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}} stores a bunch of M\+C\+M\+C\+Chains and allows you to run them serially or in parallel. N\+O\+TE\+: When you use a \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}, the results will not be reproducible with seed because timing determines when you switch chains.  
@@ -11,24 +11,27 @@ A \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}} stores a bunch of M\+C\+M\+C\
 {\ttfamily \#include \char`\"{}M\+C\+M\+C\+Chain.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Timing.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Parallel\+Inference\+Interface.\+h\char`\"{}}\newline
-Include dependency graph for Chain\+Pool.\+h\+:\nopagebreak
+{\ttfamily \#include \char`\"{}Ordered\+Lock.\+h\char`\"{}}\newline
+Include dependency graph for Chain\+Pool.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_chain_pool_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=242pt]{_chain_pool_8h__dep__incl}
+\includegraphics[width=204pt]{_chain_pool_8h__dep__incl}
 \end{center}
 \end{figure}
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{class_chain_pool}{Chain\+Pool$<$ H\+Y\+P, callback\+\_\+t $>$}}
+class \mbox{\hyperlink{class_chain_pool}{Chain\+Pool$<$ H\+Y\+P $>$}}
 \end{DoxyCompactItemize}
 
 

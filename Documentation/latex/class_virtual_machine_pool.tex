@@ -6,7 +6,8 @@
 
 
 
-Inheritance diagram for Virtual\+Machine\+Pool$<$ Virtual\+Machine\+State\+\_\+t $>$\+:\nopagebreak
+Inheritance diagram for Virtual\+Machine\+Pool$<$ Virtual\+Machine\+State\+\_\+t $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -15,7 +16,8 @@ Inheritance diagram for Virtual\+Machine\+Pool$<$ Virtual\+Machine\+State\+\_\+t
 \end{figure}
 
 
-Collaboration diagram for Virtual\+Machine\+Pool$<$ Virtual\+Machine\+State\+\_\+t $>$\+:\nopagebreak
+Collaboration diagram for Virtual\+Machine\+Pool$<$ Virtual\+Machine\+State\+\_\+t $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -48,7 +50,7 @@ void \mbox{\hyperlink{class_virtual_machine_pool_a9b164d9dc604f77825716e24323034
 \begin{DoxyCompactList}\small\item\em Same as copy\+\_\+increment\+\_\+push, but does not make a copy -- just add. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}}$<$ \mbox{\hyperlink{class_virtual_machine_pool_a1e659e76790f4aa4ae074d82a8c381e1}{output\+\_\+t}} $>$ \mbox{\hyperlink{class_virtual_machine_pool_adf1e2a48d262a341627a92771f31cfcd}{run}} ()
 \begin{DoxyCompactList}\small\item\em This runs and adds up the probability mass for everything, returning a dictionary outcomes-\/$>$log\+\_\+probabilities. This is the main running loop, which pops frmo the top of our queue, runs, and continues until we\textquotesingle{}ve done enough or all. Note that objects lower than min\+\_\+lp are not ever pushed onto the queue. \end{DoxyCompactList}\item 
-std\+::vector$<$ Virtual\+Machine\+State\+\_\+t $\ast$ $>$ \mbox{\hyperlink{class_virtual_machine_pool_a82da0edd512bd5b112583d1ead3db151}{run\+\_\+vms}} ()
+std\+::vector$<$ Virtual\+Machine\+State\+\_\+t $>$ \mbox{\hyperlink{class_virtual_machine_pool_ac8fe350a4d27f37a1e843a72947c4608}{run\+\_\+vms}} ()
 \begin{DoxyCompactList}\small\item\em Run but return a vector of completed virtual machines instead of marginalizing outputs. You might want this if you needed to separate execution paths, or wanted to access runtime counts. This also can get joint distributions on outputs by running a \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} multiple times. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -205,12 +207,12 @@ This runs and adds up the probability mass for everything, returning a dictionar
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_virtual_machine_pool_a82da0edd512bd5b112583d1ead3db151}\label{class_virtual_machine_pool_a82da0edd512bd5b112583d1ead3db151}} 
+\mbox{\Hypertarget{class_virtual_machine_pool_ac8fe350a4d27f37a1e843a72947c4608}\label{class_virtual_machine_pool_ac8fe350a4d27f37a1e843a72947c4608}} 
 \index{VirtualMachinePool$<$ VirtualMachineState\_t $>$@{VirtualMachinePool$<$ VirtualMachineState\_t $>$}!run\_vms@{run\_vms}}
 \index{run\_vms@{run\_vms}!VirtualMachinePool$<$ VirtualMachineState\_t $>$@{VirtualMachinePool$<$ VirtualMachineState\_t $>$}}
 \doxysubsubsection{\texorpdfstring{run\_vms()}{run\_vms()}}
 {\footnotesize\ttfamily template$<$typename Virtual\+Machine\+State\+\_\+t $>$ \\
-std\+::vector$<$Virtual\+Machine\+State\+\_\+t$\ast$$>$ \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ Virtual\+Machine\+State\+\_\+t $>$\+::run\+\_\+vms (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+std\+::vector$<$Virtual\+Machine\+State\+\_\+t$>$ \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ Virtual\+Machine\+State\+\_\+t $>$\+::run\+\_\+vms (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 

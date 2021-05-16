@@ -1,0 +1,180 @@
+\hypertarget{class_callable}{}\doxysection{Callable$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$ Class Template Reference}
+\label{class_callable}\index{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}}
+
+
+{\ttfamily \#include $<$Callable.\+h$>$}
+
+
+
+Inheritance diagram for Callable$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{class_callable__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Callable$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{class_callable__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_callable_a71b602efc1292a827f22f9a2d1cc6231}{Callable}} ()
+\item 
+virtual bool \mbox{\hyperlink{class_callable_ac05ae8491f3b90986b1ad016da412afa}{is\+\_\+evaluable}} () const =0
+\begin{DoxyCompactList}\small\item\em Can this be evalutaed (really should be named -- can be called?). Sometimes partial hypotheses can\textquotesingle{}t be called. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}}$<$ output\+\_\+t $>$ \mbox{\hyperlink{class_callable_af10dbf87425f03b7153f8ec230bf9116}{call}} (const input\+\_\+t x, const output\+\_\+t err=output\+\_\+t\{\}, \mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$loader=nullptr)
+\begin{DoxyCompactList}\small\item\em Run the virtual machine on input x, and marginalize over execution paths to return a distribution on outputs. Note that loader must be a program loader, and that is to handle recursion and other function calls. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}}$<$ output\+\_\+t $>$ \mbox{\hyperlink{class_callable_a3d6c7ea13284a123d7a6039fbfb4669b}{operator()}} (const input\+\_\+t x, const output\+\_\+t err=output\+\_\+t\{\}, \mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$loader=nullptr)
+\item 
+virtual output\+\_\+t \mbox{\hyperlink{class_callable_add1f694179cbf01a4c35de2a63d9c7ea}{call\+One}} (const input\+\_\+t x, const output\+\_\+t err=output\+\_\+t\{\}, \mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$loader=nullptr)
+\begin{DoxyCompactList}\small\item\em A variant of call that assumes no stochasticity and therefore outputs only a single value. (This uses a nullptr virtual machine pool, so will throw an error on flip) \end{DoxyCompactList}\item 
+std\+::vector$<$ Virtual\+Machine\+State\+\_\+t $>$ \mbox{\hyperlink{class_callable_af21dad96ab5055b8e7ca47cca1818ff0}{call\+\_\+vms}} (const input\+\_\+t x, const output\+\_\+t err=output\+\_\+t\{\}, \mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$loader=nullptr)
+\begin{DoxyCompactList}\small\item\em A fancy form of calling which returns all the V\+MS states that completed. The normal call function marginalizes out the execution path. \end{DoxyCompactList}\item 
+Virtual\+Machine\+State\+\_\+t \mbox{\hyperlink{class_callable_aee44c5449bd98545f0966218a6097be1}{call\+One\+\_\+vms}} (const input\+\_\+t x, const output\+\_\+t err=output\+\_\+t\{\}, \mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$loader=nullptr)
+\begin{DoxyCompactList}\small\item\em Call, assuming no stochastics, return the virtual machine instead of the output. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename input\+\_\+t, typename output\+\_\+t, typename Virtual\+Machine\+State\+\_\+t$>$\newline
+class Callable$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$}
+
+\begin{DoxyAuthor}{Author}
+Steven Piantadosi 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+03/09/20 
+\end{DoxyDate}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_callable_a71b602efc1292a827f22f9a2d1cc6231}\label{class_callable_a71b602efc1292a827f22f9a2d1cc6231}} 
+\index{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}!Callable@{Callable}}
+\index{Callable@{Callable}!Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}}
+\doxysubsubsection{\texorpdfstring{Callable()}{Callable()}}
+{\footnotesize\ttfamily template$<$typename input\+\_\+t , typename output\+\_\+t , typename Virtual\+Machine\+State\+\_\+t $>$ \\
+\mbox{\hyperlink{class_callable}{Callable}}$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::\mbox{\hyperlink{class_callable}{Callable}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_callable_af10dbf87425f03b7153f8ec230bf9116}\label{class_callable_af10dbf87425f03b7153f8ec230bf9116}} 
+\index{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}!call@{call}}
+\index{call@{call}!Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}}
+\doxysubsubsection{\texorpdfstring{call()}{call()}}
+{\footnotesize\ttfamily template$<$typename input\+\_\+t , typename output\+\_\+t , typename Virtual\+Machine\+State\+\_\+t $>$ \\
+virtual \mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}}$<$output\+\_\+t$>$ \mbox{\hyperlink{class_callable}{Callable}}$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::call (\begin{DoxyParamCaption}\item[{const input\+\_\+t}]{x,  }\item[{const output\+\_\+t}]{err = {\ttfamily output\+\_\+t\{\}},  }\item[{\mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$}]{loader = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Run the virtual machine on input x, and marginalize over execution paths to return a distribution on outputs. Note that loader must be a program loader, and that is to handle recursion and other function calls. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & -\/ input \\
+\hline
+{\em err} & -\/ output value on error \\
+\hline
+{\em loader} & -\/ where to load recursive calls \\
+\hline
+{\em max\+\_\+steps} & -\/ max steps the virtual machine pool will run for \\
+\hline
+{\em max\+\_\+outputs} & -\/ max outputs the virtual machine pool will run for \\
+\hline
+{\em minlp} & -\/ the virtual machine pool doesn\textquotesingle{}t consider paths less than this probability \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Reimplemented in \mbox{\hyperlink{class_lexicon_a622f63b82d7056564f2c03ec4d599c91}{Lexicon$<$ this\+\_\+t, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}}.
+
+\mbox{\Hypertarget{class_callable_af21dad96ab5055b8e7ca47cca1818ff0}\label{class_callable_af21dad96ab5055b8e7ca47cca1818ff0}} 
+\index{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}!call\_vms@{call\_vms}}
+\index{call\_vms@{call\_vms}!Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}}
+\doxysubsubsection{\texorpdfstring{call\_vms()}{call\_vms()}}
+{\footnotesize\ttfamily template$<$typename input\+\_\+t , typename output\+\_\+t , typename Virtual\+Machine\+State\+\_\+t $>$ \\
+std\+::vector$<$Virtual\+Machine\+State\+\_\+t$>$ \mbox{\hyperlink{class_callable}{Callable}}$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::call\+\_\+vms (\begin{DoxyParamCaption}\item[{const input\+\_\+t}]{x,  }\item[{const output\+\_\+t}]{err = {\ttfamily output\+\_\+t\{\}},  }\item[{\mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$}]{loader = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A fancy form of calling which returns all the V\+MS states that completed. The normal call function marginalizes out the execution path. 
+
+\begin{DoxyReturn}{Returns}
+a vector of virtual machine states 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_callable_add1f694179cbf01a4c35de2a63d9c7ea}\label{class_callable_add1f694179cbf01a4c35de2a63d9c7ea}} 
+\index{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}!callOne@{callOne}}
+\index{callOne@{callOne}!Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}}
+\doxysubsubsection{\texorpdfstring{callOne()}{callOne()}}
+{\footnotesize\ttfamily template$<$typename input\+\_\+t , typename output\+\_\+t , typename Virtual\+Machine\+State\+\_\+t $>$ \\
+virtual output\+\_\+t \mbox{\hyperlink{class_callable}{Callable}}$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::call\+One (\begin{DoxyParamCaption}\item[{const input\+\_\+t}]{x,  }\item[{const output\+\_\+t}]{err = {\ttfamily output\+\_\+t\{\}},  }\item[{\mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$}]{loader = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+A variant of call that assumes no stochasticity and therefore outputs only a single value. (This uses a nullptr virtual machine pool, so will throw an error on flip) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em err} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_callable_aee44c5449bd98545f0966218a6097be1}\label{class_callable_aee44c5449bd98545f0966218a6097be1}} 
+\index{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}!callOne\_vms@{callOne\_vms}}
+\index{callOne\_vms@{callOne\_vms}!Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}}
+\doxysubsubsection{\texorpdfstring{callOne\_vms()}{callOne\_vms()}}
+{\footnotesize\ttfamily template$<$typename input\+\_\+t , typename output\+\_\+t , typename Virtual\+Machine\+State\+\_\+t $>$ \\
+Virtual\+Machine\+State\+\_\+t \mbox{\hyperlink{class_callable}{Callable}}$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::call\+One\+\_\+vms (\begin{DoxyParamCaption}\item[{const input\+\_\+t}]{x,  }\item[{const output\+\_\+t}]{err = {\ttfamily output\+\_\+t\{\}},  }\item[{\mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$}]{loader = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Call, assuming no stochastics, return the virtual machine instead of the output. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em err} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_callable_ac05ae8491f3b90986b1ad016da412afa}\label{class_callable_ac05ae8491f3b90986b1ad016da412afa}} 
+\index{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}!is\_evaluable@{is\_evaluable}}
+\index{is\_evaluable@{is\_evaluable}!Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}}
+\doxysubsubsection{\texorpdfstring{is\_evaluable()}{is\_evaluable()}}
+{\footnotesize\ttfamily template$<$typename input\+\_\+t , typename output\+\_\+t , typename Virtual\+Machine\+State\+\_\+t $>$ \\
+virtual bool \mbox{\hyperlink{class_callable}{Callable}}$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::is\+\_\+evaluable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Can this be evalutaed (really should be named -- can be called?). Sometimes partial hypotheses can\textquotesingle{}t be called. 
+
+\mbox{\Hypertarget{class_callable_a3d6c7ea13284a123d7a6039fbfb4669b}\label{class_callable_a3d6c7ea13284a123d7a6039fbfb4669b}} 
+\index{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily template$<$typename input\+\_\+t , typename output\+\_\+t , typename Virtual\+Machine\+State\+\_\+t $>$ \\
+virtual \mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}}$<$output\+\_\+t$>$ \mbox{\hyperlink{class_callable}{Callable}}$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::operator() (\begin{DoxyParamCaption}\item[{const input\+\_\+t}]{x,  }\item[{const output\+\_\+t}]{err = {\ttfamily output\+\_\+t\{\}},  }\item[{\mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$}]{loader = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Hypotheses/\+Interfaces/\mbox{\hyperlink{_callable_8h}{Callable.\+h}}\end{DoxyCompactItemize}

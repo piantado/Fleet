@@ -1,4 +1,5 @@
-<map id="ChainPool&lt; HYP, callback_t &gt;" name="ChainPool&lt; HYP, callback_t &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="5,80,204,107"/>
-<area shape="rect" id="node2" href="$class_parallel_inference_interface.html" title=" " alt="" coords="11,5,198,32"/>
+<map id="ChainPool&lt; HYP &gt;" name="ChainPool&lt; HYP &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="23,185,158,212"/>
+<area shape="rect" id="node2" href="$class_parallel_inference_interface.html" title=" " alt="" coords="5,95,176,136"/>
+<area shape="rect" id="node3" href="$class_ordered_lock.html" title=" " alt="" coords="43,5,139,32"/>
 </map>

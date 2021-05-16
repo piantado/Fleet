@@ -1,0 +1,103 @@
+\hypertarget{_vectors_8h}{}\doxysection{src/\+Vectors.h File Reference}
+\label{_vectors_8h}\index{src/Vectors.h@{src/Vectors.h}}
+{\ttfamily \#include $<$vector$>$}\newline
+Include dependency graph for Vectors.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=155pt]{_vectors_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=267pt]{_vectors_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::vector$<$ T $>$ \mbox{\hyperlink{_vectors_8h_a49912de77a43aa7b0982a00e374adeb8}{slice}} (const std\+::vector$<$ T $>$ \&v, size\+\_\+t start, int len)
+\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::vector$<$ T $>$ \mbox{\hyperlink{_vectors_8h_a5c6a7eabfd9d59fdfab904eda8bd1bf3}{slice}} (const std\+::vector$<$ T $>$ \&v, size\+\_\+t start)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{_vectors_8h_a3c668deb0d49823fc26f2efca4b338be}{increment}} (std\+::vector$<$ T $>$ \&v, size\+\_\+t idx, T \mbox{\hyperlink{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}{count}}=1)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{_vectors_8h_a81e872a75b38d3d09b6dd7b724ed940a}{glom}} (std\+::vector$<$ std\+::vector$<$ T $>$ $\ast$ $>$ \&X, std\+::vector$<$ T $>$ $\ast$\&v)
+\begin{DoxyCompactList}\small\item\em Glom here takes a vector of pointers to vectors. It searches through X to find if anything matches the beginning of v, and if so, it will append the additional elements, and use the existing data. It then M\+O\+D\+I\+F\+I\+ES the v pointer (which is passed by reference). If no match can be found, glom will append v into x. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_vectors_8h_a81e872a75b38d3d09b6dd7b724ed940a}\label{_vectors_8h_a81e872a75b38d3d09b6dd7b724ed940a}} 
+\index{Vectors.h@{Vectors.h}!glom@{glom}}
+\index{glom@{glom}!Vectors.h@{Vectors.h}}
+\doxysubsubsection{\texorpdfstring{glom()}{glom()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void glom (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::vector$<$ T $>$ $\ast$ $>$ \&}]{X,  }\item[{std\+::vector$<$ T $>$ $\ast$\&}]{v }\end{DoxyParamCaption})}
+
+
+
+Glom here takes a vector of pointers to vectors. It searches through X to find if anything matches the beginning of v, and if so, it will append the additional elements, and use the existing data. It then M\+O\+D\+I\+F\+I\+ES the v pointer (which is passed by reference). If no match can be found, glom will append v into x. 
+
+Thus, at the end of this, v points to something in X, but preferentially re-\/uses data in X. This is especially useful when we\textquotesingle{}re compiling incremental data for learning models.
+
+N\+O\+TE\+: that sizes must be stored externally, since if a vector is stored in here, it may be appended to (so whatever is using X can\textquotesingle{}t just compute the size)
+
+This is used primarily for \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis}} storage of M\+C\+MC data, where we want to load multiple datasets and share overlap whenever possible (so we don\textquotesingle{}t duplicate M\+C\+MC sampling)
+
+
+\begin{DoxyParams}{Parameters}
+{\em X} & \\
+\hline
+{\em v} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This returns a (possibly) new pointer for v. That is, it will either leave v unchanged or it will point to something in x 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_vectors_8h_a3c668deb0d49823fc26f2efca4b338be}\label{_vectors_8h_a3c668deb0d49823fc26f2efca4b338be}} 
+\index{Vectors.h@{Vectors.h}!increment@{increment}}
+\index{increment@{increment}!Vectors.h@{Vectors.h}}
+\doxysubsubsection{\texorpdfstring{increment()}{increment()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void increment (\begin{DoxyParamCaption}\item[{std\+::vector$<$ T $>$ \&}]{v,  }\item[{size\+\_\+t}]{idx,  }\item[{T}]{count = {\ttfamily 1} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_vectors_8h_a5c6a7eabfd9d59fdfab904eda8bd1bf3}\label{_vectors_8h_a5c6a7eabfd9d59fdfab904eda8bd1bf3}} 
+\index{Vectors.h@{Vectors.h}!slice@{slice}}
+\index{slice@{slice}!Vectors.h@{Vectors.h}}
+\doxysubsubsection{\texorpdfstring{slice()}{slice()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$T$>$ slice (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{v,  }\item[{size\+\_\+t}]{start }\end{DoxyParamCaption})}
+
+Take a slice of a vector until its end 
+\begin{DoxyParams}{Parameters}
+{\em v} & \\
+\hline
+{\em start} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{_vectors_8h_a49912de77a43aa7b0982a00e374adeb8}\label{_vectors_8h_a49912de77a43aa7b0982a00e374adeb8}} 
+\index{Vectors.h@{Vectors.h}!slice@{slice}}
+\index{slice@{slice}!Vectors.h@{Vectors.h}}
+\doxysubsubsection{\texorpdfstring{slice()}{slice()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$T$>$ slice (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{v,  }\item[{size\+\_\+t}]{start,  }\item[{int}]{len }\end{DoxyParamCaption})}
+
+Take a slice of a vector v starting at start of length len 
+\begin{DoxyParams}{Parameters}
+{\em v} & \\
+\hline
+{\em start} & \\
+\hline
+{\em len} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}

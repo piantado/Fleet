@@ -110,7 +110,7 @@ $(function() {
 <div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="namespace_builtins.html">   36</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_builtins.html">Builtins</a> {</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// Define this because it&#39;s an ugly expression to keep typing and we might want to change all at once</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">   39</a></span>&#160;<span class="preprocessor">    #define BUILTIN_LAMBDA             +[](Grammar_t::VirtualMachineState_t* vms, int arg) -&gt; void</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">   39</a></span>&#160;<span class="preprocessor">    #define BUILTIN_LAMBDA             +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -&gt; void</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    </div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Grammar_t&gt;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;typename Grammar_t::input_t&gt;</a> <a class="code" href="namespace_builtins.html#a25cc5743603132ee78d118a4ca039c68">X</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383">Op::X</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> {</div>
@@ -155,12 +155,12 @@ $(function() {
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    </div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    </div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Grammar_t, <span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;T,bool,T,T&gt;</a> <a class="code" href="namespace_builtins.html#a9ec375cb1db3ecc268fb6e660ff9975e">If</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba786887572f6ef1c20f2d8177cb2f1639">Op::If</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;T,bool,T,T&gt;</a> <a class="code" href="namespace_builtins.html#abadd5f4188def3a49ec73f692460c9a2">If</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba786887572f6ef1c20f2d8177cb2f1639">Op::If</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> {</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="comment">// Op::If has to short circuit and skip (pop some of the stack) </span></div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordtype">bool</span> b = vms-&gt;template getpop&lt;bool&gt;(); <span class="comment">// bool has already evaluted</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        </div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="comment">// now ops must skip the xbranch</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">if</span>(!b) vms-&gt;template program.popn(arg);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">if</span>(!b) vms-&gt;program.popn(arg);</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordflow">else</span>   {}; <span class="comment">// do nothing, we pass through and then get to the jump we placed at the end of the x branch</span></div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    });</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    </div>
@@ -179,8 +179,8 @@ $(function() {
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        assert(vms-&gt;pool != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        </div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="comment">// push both routes onto the stack</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        vms-&gt;pool-&gt;copy_increment_push(vms, <span class="keyword">true</span>, -<a class="code" href="_numerics_8h.html#a86b66aa18326dc4ebe8e36d253c14f40">LOG2</a>);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordtype">bool</span> b = vms-&gt;pool-&gt;increment_push(vms, <span class="keyword">false</span>, -<a class="code" href="_numerics_8h.html#a86b66aa18326dc4ebe8e36d253c14f40">LOG2</a>); </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        vms-&gt;pool-&gt;copy_increment_push(vms, <span class="keyword">true</span>, -<a class="code" href="_numerics_8h.html#a1cab50ac2cae826eca1b03bb33eae1f1">LOG2</a>);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordtype">bool</span> b = vms-&gt;pool-&gt;increment_push(vms, <span class="keyword">false</span>, -<a class="code" href="_numerics_8h.html#a1cab50ac2cae826eca1b03bb33eae1f1">LOG2</a>); </div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        </div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="comment">// TODO: This is clumsy, ugly mechanism -- need to re-do</span></div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        </div>
@@ -223,146 +223,176 @@ $(function() {
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    });</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    </div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    </div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Grammar_t, <span class="keyword">typename</span> output_t=Grammar_t::output_t&gt;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;&gt;</a> <a class="code" href="namespace_builtins.html#a6ce5deaec3f817041a03bcbae5455d26">Mem</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abadba5553473d129a7985fb532dc249ff4">Op::Mem</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> { </div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        <span class="keyword">auto</span> memindex = vms-&gt;memstack.top(); vms-&gt;memstack.pop();</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <span class="keywordflow">if</span>(vms-&gt;mem.count(memindex)==0) { <span class="comment">// you might actually have already placed mem in crazy recursive situations, so don&#39;t overwrite if you have</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            vms-&gt;mem[memindex] = vms-&gt;template gettop&lt;output_t&gt;(); <span class="comment">// what I should memoize should be on top here, but don&#39;t remove because we also return it</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        }</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    });</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Grammar_t&gt;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;&gt;</a> <a class="code" href="namespace_builtins.html#a16d673425b3dd05c202dbbed7923dc45">NoOp</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba60832e2e4bbebccf26555b9ba658bad5">Op::NoOp</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> {   </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    });</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Grammar_t,</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;             <span class="keyword">typename</span> input_t=<span class="keyword">typename</span> Grammar_t::input_t,</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;             <span class="keyword">typename</span> output_t=<span class="keyword">typename</span> Grammar_t::output_t&gt;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;output_t,input_t&gt;</a> </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        <a class="code" href="namespace_builtins.html#aaf8ac531e0c02e508668811329856ea3">Recurse</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abaa91ac5d92dd723a15b516fab1133e6e5">Op::Recurse</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> {</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            </div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            assert(vms-&gt;program_loader != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                            </div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            <span class="keywordflow">if</span>(vms-&gt;recursion_depth++ &gt; vms-&gt;MAX_RECURSE) { <span class="comment">// there is one of these for each recurse</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                vms-&gt;status = <a class="code" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a8427e4c0e4c7fc8456948b268f81ec6c">vmstatus_t::RECURSION_DEPTH</a>;</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            }</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <span class="comment">// if we get here, then we have processed our arguments and they are stored in the input_t stack. </span></div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="comment">// so we must move them to the x stack (where there are accessible by op_X)</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            <span class="keyword">auto</span> mynewx = vms-&gt;template getpop&lt;input_t&gt;();</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            vms-&gt;xstack.push(std::move(mynewx));</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            vms-&gt;program.push(Builtins::PopX&lt;Grammar_t&gt;.makeInstruction()); <span class="comment">// we have to remember to remove X once the other program evaluates, *after* everything has evaluated</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            </div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            <span class="comment">// push this program </span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            <span class="comment">// but we give i.arg so that we can pass factorized recursed</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            <span class="comment">// in argument if we want to</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            vms-&gt;program_loader-&gt;push_program(vms-&gt;program,arg); </div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            </div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            <span class="comment">// after execution is done, the result will be pushed onto output_t</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            <span class="comment">// which is what gets returned when we are all done</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            </div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    });</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="comment">// This is a version of FlipP that doesn&#39;t complain if p&gt;1 or p&lt;0 -- it</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="comment">// just sets them to those values</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Grammar_t&gt;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;bool,double&gt;</a> <a class="code" href="namespace_builtins.html#a83628517c7ca1c349d1f42a40e01793d">SafeFlipP</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba7844dd5b72152559f4244d829e606ae0">Op::SafeFlipP</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> {</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        assert(vms-&gt;pool != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        </div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="comment">// get the coin weight</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordtype">double</span> p = vms-&gt;template getpop&lt;double&gt;(); </div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <span class="comment">// some checking</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keywordflow">if</span>(std::isnan(p))   p = 0.0;  <span class="comment">// treat nans as 0s</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span>(p &gt; 1.0)    p = 1.0;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span>(p &lt; 0.0)    p = 0;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <span class="comment">// push both routes onto the stack</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        vms-&gt;pool-&gt;copy_increment_push(vms, <span class="keyword">true</span>, log(p));</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        <span class="keywordtype">bool</span> b = vms-&gt;pool-&gt;increment_push(vms, <span class="keyword">false</span>, log(1.0-p)); </div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        </div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        <span class="comment">// TODO: This is clumsy, ugly mechanism -- need to re-do</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        </div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        <span class="comment">// since we pushed this back onto the queue (via increment_push), we need to tell the </span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        <span class="comment">// pool not to delete this, so we send back this special signal</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="keywordflow">if</span>(b) { <span class="comment">// theoutcome of increment_push decides whether I am deleted or not</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            vms-&gt;status = <a class="code" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460">vmstatus_t::RANDOM_CHOICE_NO_DELETE</a>; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        }</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            vms-&gt;status = <a class="code" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974">vmstatus_t::RANDOM_CHOICE</a>; </div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        }</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    });</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    </div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    </div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Grammar_t, <span class="keyword">typename</span> output_t=<span class="keyword">typename</span> Grammar_t::output_t&gt;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;&gt;</a> <a class="code" href="namespace_builtins.html#a6ce5deaec3f817041a03bcbae5455d26">Mem</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abadba5553473d129a7985fb532dc249ff4">Op::Mem</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> { </div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <span class="keyword">auto</span> memindex = vms-&gt;memstack.top(); vms-&gt;memstack.pop();</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        <span class="keywordflow">if</span>(vms-&gt;mem.count(memindex)==0) { <span class="comment">// you might actually have already placed mem in crazy recursive situations, so don&#39;t overwrite if you have</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            vms-&gt;mem[memindex] = vms-&gt;template gettop&lt;output_t&gt;(); <span class="comment">// what I should memoize should be on top here, but don&#39;t remove because we also return it</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        }</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    });</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        </div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Grammar_t&gt;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;&gt;</a> <a class="code" href="namespace_builtins.html#a16d673425b3dd05c202dbbed7923dc45">NoOp</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba60832e2e4bbebccf26555b9ba658bad5">Op::NoOp</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> {   </div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        </div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    });</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    </div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    </div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Grammar_t,</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;             <span class="keyword">typename</span> input_t=<span class="keyword">typename</span> Grammar_t::input_t,</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;             <span class="keyword">typename</span> output_t=<span class="keyword">typename</span> Grammar_t::output_t&gt;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;output_t, input_t&gt;</a> </div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <a class="code" href="namespace_builtins.html#a2bc2b89a6b231ea7a6b7c0af5fde8d6d">SafeRecurse</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba4154a7f9f64541a0939bf287c22925d2">Op::SafeRecurse</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> {   </div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        assert(not vms-&gt;template stack&lt;input_t&gt;().empty());</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        </div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <span class="comment">// if the size of the top is zero, we return output{}</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="keywordflow">if</span>(vms-&gt;template stack&lt;input_t&gt;().top().size() == 0) { </div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            vms-&gt;template getpop&lt;input_t&gt;(); <span class="comment">// this would have been the argument</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            vms-&gt;template push&lt;output_t&gt;(output_t{}); <span class="comment">//push default (null) return</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        }</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            Recurse&lt;Grammar_t&gt;.call(vms,arg);</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        }</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    });</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    </div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    </div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Grammar_t,</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;             <span class="keyword">typename</span> input_t=<span class="keyword">typename</span> Grammar_t::input_t,</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;             <span class="keyword">typename</span> output_t=<span class="keyword">typename</span> Grammar_t::output_t&gt;</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;output_t,input_t&gt;</a>  <span class="comment">// note the order switch -- that&#39;s right!</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <a class="code" href="namespace_builtins.html#a9840451f365b5a99c0dcba008aa28d19">MemRecurse</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abac06233e1bc52cb704757c997c86d7c68">Op::MemRecurse</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> { </div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        assert(vms-&gt;program_loader != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                        </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="keywordflow">if</span>(vms-&gt;recursion_depth++ &gt; vms-&gt;MAX_RECURSE) { <span class="comment">// there is one of these for each recurse</span></div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            vms-&gt;status = <a class="code" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a8427e4c0e4c7fc8456948b268f81ec6c">vmstatus_t::RECURSION_DEPTH</a>;</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        }</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                </div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="keyword">auto</span> x = vms-&gt;template getpop&lt;input_t&gt;(); <span class="comment">// get the argument</span></div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        <span class="keyword">auto</span> memindex = std::make_pair(arg,x);</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        </div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <span class="keywordflow">if</span>(vms-&gt;mem.count(memindex)){</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;            vms-&gt;push(vms-&gt;mem[memindex]); <span class="comment">// hmm probably should not be a move?</span></div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        }</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        <span class="keywordflow">else</span> {  </div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;            vms-&gt;xstack.push(x);    </div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;            vms-&gt;program.push(Builtins::PopX&lt;Grammar_t&gt;.makeInstruction());</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;            vms-&gt;memstack.push(memindex); <span class="comment">// popped off by op_MEM           </span></div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;            vms-&gt;program.push(Builtins::Mem&lt;Grammar_t,output_t&gt;.makeInstruction());</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            vms-&gt;program_loader-&gt;push_program(vms-&gt;program, arg); <span class="comment">// this leaves the answer on top</span></div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        }       </div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    });</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;output_t,input_t&gt;</a> </div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <a class="code" href="namespace_builtins.html#aaf8ac531e0c02e508668811329856ea3">Recurse</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abaa91ac5d92dd723a15b516fab1133e6e5">Op::Recurse</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> {</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;            </div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            assert(vms-&gt;program_loader != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                            </div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;            <span class="keywordflow">if</span>(vms-&gt;recursion_depth++ &gt; vms-&gt;MAX_RECURSE) { <span class="comment">// there is one of these for each recurse</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                vms-&gt;status = <a class="code" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a8427e4c0e4c7fc8456948b268f81ec6c">vmstatus_t::RECURSION_DEPTH</a>;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            }</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            <span class="comment">// if we get here, then we have processed our arguments and they are stored in the input_t stack. </span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            <span class="comment">// so we must move them to the x stack (where there are accessible by op_X)</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            <span class="keyword">auto</span> mynewx = vms-&gt;template getpop&lt;input_t&gt;();</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            vms-&gt;xstack.push(std::move(mynewx));</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            vms-&gt;program.push(Builtins::PopX&lt;Grammar_t&gt;.makeInstruction()); <span class="comment">// we have to remember to remove X once the other program evaluates, *after* everything has evaluated</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            </div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            <span class="comment">// push this program </span></div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;            <span class="comment">// but we give i.arg so that we can pass factorized recursed</span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            <span class="comment">// in argument if we want to</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            vms-&gt;program_loader-&gt;push_program(vms-&gt;program,arg); </div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            </div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            <span class="comment">// after execution is done, the result will be pushed onto output_t</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;            <span class="comment">// which is what gets returned when we are all done</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            </div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    });</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    </div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    </div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Grammar_t,</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;             <span class="keyword">typename</span> input_t=<span class="keyword">typename</span> Grammar_t::input_t,</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;             <span class="keyword">typename</span> output_t=<span class="keyword">typename</span> Grammar_t::output_t&gt;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;output_t, input_t&gt;</a> </div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <a class="code" href="namespace_builtins.html#a2bc2b89a6b231ea7a6b7c0af5fde8d6d">SafeRecurse</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba4154a7f9f64541a0939bf287c22925d2">Op::SafeRecurse</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> {   </div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        assert(not vms-&gt;template stack&lt;input_t&gt;().empty());</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        </div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        <span class="comment">// if the size of the top is zero, we return output{}</span></div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        <span class="keywordflow">if</span>(vms-&gt;template stack&lt;input_t&gt;().top().size() == 0) { </div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;            vms-&gt;template getpop&lt;input_t&gt;(); <span class="comment">// this would have been the argument</span></div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;            vms-&gt;template push&lt;output_t&gt;(output_t{}); <span class="comment">//push default (null) return</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        }</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            Recurse&lt;Grammar_t&gt;.call(vms,arg);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        }</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    });</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    </div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    </div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment">//  template&lt;typename Grammar_t&gt;</span></div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="comment">//  Builtin&lt;typename Grammar_t::output_t, typename Grammar_t::input_t&gt; </span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<span class="comment">//  MemRecurse(Op::MemRecurse, BUILTIN_LAMBDA { </span></div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;<span class="comment">//      assert(vms-&gt;program_loader != nullptr);</span></div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="comment">//                      </span></div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment">//      if(vms-&gt;recursion_depth++ &gt; vms-&gt;MAX_RECURSE) { // there is one of these for each recurse</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment">//          vms-&gt;status = vmstatus_t::RECURSION_DEPTH;</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment">//          return;</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment">//      }</span></div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="comment">//              </span></div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment">//      auto x = vms-&gt;template getpop&lt;typename Grammar_t::input_t&gt;(); // get the argument</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="comment">//      auto memindex = std::make_pair(arg,x);</span></div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="comment">//      </span></div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="comment">//      if(vms-&gt;mem.count(memindex)){</span></div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="comment">//          vms-&gt;push(vms-&gt;mem[memindex]); // hmm probably should not be a move?</span></div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="comment">//      }</span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="comment">//      else {  </span></div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="comment">//          vms-&gt;xstack.push(x);    </span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="comment">//          vms-&gt;memstack.push(memindex); // popped off by op_MEM</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="comment">//          vms-&gt;program.push(Builtins::Mem&lt;Grammar_t&gt;.makeInstruction());</span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="comment">//          vms-&gt;program.push(Builtins::PopX&lt;Grammar_t&gt;.makeInstruction());</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="comment">//          vms-&gt;program_loader-&gt;push_program(vms-&gt;program,arg); // this leaves the answer on top</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="comment">//      }       </span></div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="comment">//  });</span></div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160; </div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Grammar_t,</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;             <span class="keyword">typename</span> input_t=<span class="keyword">typename</span> Grammar_t::input_t,</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;             <span class="keyword">typename</span> output_t=<span class="keyword">typename</span> Grammar_t::output_t&gt;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;output_t,input_t&gt;</a>  <span class="comment">// note the order switch -- that&#39;s right!</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <a class="code" href="namespace_builtins.html#a9840451f365b5a99c0dcba008aa28d19">MemRecurse</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abac06233e1bc52cb704757c997c86d7c68">Op::MemRecurse</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> { </div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        assert(vms-&gt;program_loader != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                        </div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="keywordflow">if</span>(vms-&gt;recursion_depth++ &gt; vms-&gt;MAX_RECURSE) { <span class="comment">// there is one of these for each recurse</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;            vms-&gt;status = <a class="code" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a8427e4c0e4c7fc8456948b268f81ec6c">vmstatus_t::RECURSION_DEPTH</a>;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        }</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                </div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        <span class="keyword">auto</span> x = vms-&gt;template getpop&lt;input_t&gt;(); <span class="comment">// get the argument</span></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        <span class="keyword">auto</span> memindex = std::make_pair(arg,x);</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        </div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        <span class="keywordflow">if</span>(vms-&gt;mem.count(memindex)){</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            vms-&gt;push(vms-&gt;mem[memindex]); <span class="comment">// hmm probably should not be a move?</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        }</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <span class="keywordflow">else</span> {  </div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            vms-&gt;xstack.push(x);    </div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;            vms-&gt;program.push(Builtins::PopX&lt;Grammar_t&gt;.makeInstruction());</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;            vms-&gt;memstack.push(memindex); <span class="comment">// popped off by op_MEM           </span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;            vms-&gt;program.push(Builtins::Mem&lt;Grammar_t,output_t&gt;.makeInstruction());</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Grammar_t,</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;             <span class="keyword">typename</span> input_t=<span class="keyword">typename</span> Grammar_t::input_t,</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;             <span class="keyword">typename</span> output_t=<span class="keyword">typename</span> Grammar_t::output_t&gt;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;output_t,input_t&gt;</a></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <a class="code" href="namespace_builtins.html#a7264c94c7c641d7a29d438f20c7a1298">SafeMemRecurse</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba99c2111aea62b184445dfb4530fba861">Op::SafeMemRecurse</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> { </div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        assert(not vms-&gt;template stack&lt;input_t&gt;().empty());</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        </div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        <span class="comment">// if the size of the top is zero, we return output{}</span></div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keywordflow">if</span>(vms-&gt;template stack&lt;input_t&gt;().top().size() == 0) { </div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            vms-&gt;template getpop&lt;input_t&gt;(); <span class="comment">// this would have been the argument</span></div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;            vms-&gt;template push&lt;output_t&gt;(output_t{}); <span class="comment">//push default (null) return</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        }</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            MemRecurse&lt;Grammar_t&gt;.call(vms,arg);</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        }</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    });</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; </div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;}</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160; </div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            vms-&gt;program_loader-&gt;push_program(vms-&gt;program, arg); <span class="comment">// this leaves the answer on top</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        }       </div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    });</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    </div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="comment">//  template&lt;typename Grammar_t&gt;</span></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="comment">//  Builtin&lt;typename Grammar_t::output_t, typename Grammar_t::input_t&gt; </span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="comment">//  MemRecurse(Op::MemRecurse, BUILTIN_LAMBDA { </span></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="comment">//      assert(vms-&gt;program_loader != nullptr);</span></div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="comment">//                      </span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="comment">//      if(vms-&gt;recursion_depth++ &gt; vms-&gt;MAX_RECURSE) { // there is one of these for each recurse</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment">//          vms-&gt;status = vmstatus_t::RECURSION_DEPTH;</span></div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="comment">//          return;</span></div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">//      }</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment">//              </span></div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment">//      auto x = vms-&gt;template getpop&lt;typename Grammar_t::input_t&gt;(); // get the argument</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="comment">//      auto memindex = std::make_pair(arg,x);</span></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="comment">//      </span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">//      if(vms-&gt;mem.count(memindex)){</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="comment">//          vms-&gt;push(vms-&gt;mem[memindex]); // hmm probably should not be a move?</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment">//      }</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">//      else {  </span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">//          vms-&gt;xstack.push(x);    </span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">//          vms-&gt;memstack.push(memindex); // popped off by op_MEM</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">//          vms-&gt;program.push(Builtins::Mem&lt;Grammar_t&gt;.makeInstruction());</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">//          vms-&gt;program.push(Builtins::PopX&lt;Grammar_t&gt;.makeInstruction());</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">//          vms-&gt;program_loader-&gt;push_program(vms-&gt;program,arg); // this leaves the answer on top</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">//      }       </span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="comment">//  });</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; </div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Grammar_t,</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;             <span class="keyword">typename</span> input_t=<span class="keyword">typename</span> Grammar_t::input_t,</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;             <span class="keyword">typename</span> output_t=<span class="keyword">typename</span> Grammar_t::output_t&gt;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <a class="code" href="struct_builtin.html">Builtin&lt;output_t,input_t&gt;</a></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <a class="code" href="namespace_builtins.html#a7264c94c7c641d7a29d438f20c7a1298">SafeMemRecurse</a>(<a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba99c2111aea62b184445dfb4530fba861">Op::SafeMemRecurse</a>, <a class="code" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> { </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        assert(not vms-&gt;template stack&lt;input_t&gt;().empty());</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        </div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <span class="comment">// if the size of the top is zero, we return output{}</span></div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        <span class="keywordflow">if</span>(vms-&gt;template stack&lt;input_t&gt;().top().size() == 0) { </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;            vms-&gt;template getpop&lt;input_t&gt;(); <span class="comment">// this would have been the argument</span></div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;            vms-&gt;template push&lt;output_t&gt;(output_t{}); <span class="comment">//push default (null) return</span></div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        }</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;            MemRecurse&lt;Grammar_t&gt;.call(vms,arg);</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        }</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    });</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; </div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;}</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="a_builtins_8h_html_ad05e94221ff2967761018674d5cbb960"><div class="ttname"><a href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a></div><div class="ttdeci">#define BUILTIN_LAMBDA</div><div class="ttdef"><b>Definition:</b> Builtins.h:39</div></div>
 <div class="ttc" id="anamespace_builtins_html_a6ce5deaec3f817041a03bcbae5455d26"><div class="ttname"><a href="namespace_builtins.html#a6ce5deaec3f817041a03bcbae5455d26">Builtins::Mem</a></div><div class="ttdeci">Builtin Mem(Op::Mem, BUILTIN_LAMBDA { auto memindex=vms-&gt;memstack.top();vms-&gt;memstack.pop();if(vms-&gt;mem.count(memindex)==0) { vms-&gt;mem[memindex]=vms-&gt;template gettop&lt; output_t &gt;();} })</div></div>
@@ -377,6 +407,7 @@ $(function() {
 <div class="ttc" id="astruct_builtin_html"><div class="ttname"><a href="struct_builtin.html">Builtin</a></div><div class="ttdef"><b>Definition:</b> Builtins.h:10</div></div>
 <div class="ttc" id="a_ops_8h_html_a588e6b56097e045c733b60d25c4d45aba99c2111aea62b184445dfb4530fba861"><div class="ttname"><a href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba99c2111aea62b184445dfb4530fba861">Op::SafeMemRecurse</a></div><div class="ttdeci">@ SafeMemRecurse</div></div>
 <div class="ttc" id="anamespace_builtins_html_a25cc5743603132ee78d118a4ca039c68"><div class="ttname"><a href="namespace_builtins.html#a25cc5743603132ee78d118a4ca039c68">Builtins::X</a></div><div class="ttdeci">Builtin&lt; typename Grammar_t::input_t &gt; X(Op::X, BUILTIN_LAMBDA { assert(!vms-&gt;xstack.empty());vms-&gt;template push&lt; typename Grammar_t::input_t &gt;(vms-&gt;xstack.top());})</div></div>
+<div class="ttc" id="anamespace_builtins_html_a83628517c7ca1c349d1f42a40e01793d"><div class="ttname"><a href="namespace_builtins.html#a83628517c7ca1c349d1f42a40e01793d">Builtins::SafeFlipP</a></div><div class="ttdeci">Builtin&lt; bool, double &gt; SafeFlipP(Op::SafeFlipP, BUILTIN_LAMBDA { assert(vms-&gt;pool !=nullptr);double p=vms-&gt;template getpop&lt; double &gt;();if(std::isnan(p)) p=0.0;else if(p &gt; 1.0) p=1.0;else if(p&lt; 0.0) p=0;vms-&gt;pool-&gt;copy_increment_push(vms, true, log(p));bool b=vms-&gt;pool-&gt;increment_push(vms, false, log(1.0-p));if(b) { vms-&gt;status=vmstatus_t::RANDOM_CHOICE_NO_DELETE;} else { vms-&gt;status=vmstatus_t::RANDOM_CHOICE;} })</div></div>
 <div class="ttc" id="astruct_builtin_html_a45f8bc05bcc1eb10be8cca1de6b5e04a"><div class="ttname"><a href="struct_builtin.html#a45f8bc05bcc1eb10be8cca1de6b5e04a">Builtin::Builtin</a></div><div class="ttdeci">Builtin(Op o, typename VirtualMachineState_t::FT *_f)</div><div class="ttdef"><b>Definition:</b> Builtins.h:16</div></div>
 <div class="ttc" id="anamespace_builtins_html_a7264c94c7c641d7a29d438f20c7a1298"><div class="ttname"><a href="namespace_builtins.html#a7264c94c7c641d7a29d438f20c7a1298">Builtins::SafeMemRecurse</a></div><div class="ttdeci">Builtin&lt; output_t, input_t &gt; SafeMemRecurse(Op::SafeMemRecurse, BUILTIN_LAMBDA { assert(not vms-&gt;template stack&lt; input_t &gt;().empty());if(vms-&gt;template stack&lt; input_t &gt;().top().size()==0) { vms-&gt;template getpop&lt; input_t &gt;();vms-&gt;template push&lt; output_t &gt;(output_t{});} else { MemRecurse&lt; Grammar_t &gt;.call(vms, arg);} })</div></div>
 <div class="ttc" id="a_ops_8h_html_a588e6b56097e045c733b60d25c4d45aba60832e2e4bbebccf26555b9ba658bad5"><div class="ttname"><a href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba60832e2e4bbebccf26555b9ba658bad5">Op::NoOp</a></div><div class="ttdeci">@ NoOp</div></div>
@@ -386,7 +417,7 @@ $(function() {
 <div class="ttc" id="a_ops_8h_html_a588e6b56097e045c733b60d25c4d45aba786887572f6ef1c20f2d8177cb2f1639"><div class="ttname"><a href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba786887572f6ef1c20f2d8177cb2f1639">Op::If</a></div><div class="ttdeci">@ If</div></div>
 <div class="ttc" id="a_ops_8h_html_a588e6b56097e045c733b60d25c4d45abadba5553473d129a7985fb532dc249ff4"><div class="ttname"><a href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abadba5553473d129a7985fb532dc249ff4">Op::Mem</a></div><div class="ttdeci">@ Mem</div></div>
 <div class="ttc" id="astruct_builtin_html_aa4b6054ceca287a90939c604e7513c69"><div class="ttname"><a href="struct_builtin.html#aa4b6054ceca287a90939c604e7513c69">Builtin::call</a></div><div class="ttdeci">void call(VirtualMachineState_t *vms, int arg)</div><div class="ttdef"><b>Definition:</b> Builtins.h:26</div></div>
-<div class="ttc" id="a_numerics_8h_html_a86b66aa18326dc4ebe8e36d253c14f40"><div class="ttname"><a href="_numerics_8h.html#a86b66aa18326dc4ebe8e36d253c14f40">LOG2</a></div><div class="ttdeci">constexpr double LOG2</div><div class="ttdef"><b>Definition:</b> Numerics.h:16</div></div>
+<div class="ttc" id="anamespace_builtins_html_abadd5f4188def3a49ec73f692460c9a2"><div class="ttname"><a href="namespace_builtins.html#abadd5f4188def3a49ec73f692460c9a2">Builtins::If</a></div><div class="ttdeci">Builtin&lt; T, bool, T, T &gt; If(Op::If, BUILTIN_LAMBDA { bool b=vms-&gt;template getpop&lt; bool &gt;();if(!b) vms-&gt;program.popn(arg);else {};})</div></div>
 <div class="ttc" id="a_v_m_status_8h_html_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974"><div class="ttname"><a href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974">vmstatus_t::RANDOM_CHOICE</a></div><div class="ttdeci">@ RANDOM_CHOICE</div></div>
 <div class="ttc" id="a_v_m_status_8h_html_a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460"><div class="ttname"><a href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460">vmstatus_t::RANDOM_CHOICE_NO_DELETE</a></div><div class="ttdeci">@ RANDOM_CHOICE_NO_DELETE</div></div>
 <div class="ttc" id="anamespace_builtins_html_a0253eaae13c4bd9872249f12baa4eb88"><div class="ttname"><a href="namespace_builtins.html#a0253eaae13c4bd9872249f12baa4eb88">Builtins::PopX</a></div><div class="ttdeci">Builtin PopX(Op::PopX, BUILTIN_LAMBDA { vms-&gt;xstack.pop();})</div></div>
@@ -403,9 +434,10 @@ $(function() {
 <div class="ttc" id="anamespace_builtins_html_a2bc2b89a6b231ea7a6b7c0af5fde8d6d"><div class="ttname"><a href="namespace_builtins.html#a2bc2b89a6b231ea7a6b7c0af5fde8d6d">Builtins::SafeRecurse</a></div><div class="ttdeci">Builtin&lt; output_t, input_t &gt; SafeRecurse(Op::SafeRecurse, BUILTIN_LAMBDA { assert(not vms-&gt;template stack&lt; input_t &gt;().empty());if(vms-&gt;template stack&lt; input_t &gt;().top().size()==0) { vms-&gt;template getpop&lt; input_t &gt;();vms-&gt;template push&lt; output_t &gt;(output_t{});} else { Recurse&lt; Grammar_t &gt;.call(vms, arg);} })</div></div>
 <div class="ttc" id="astruct_builtin_html_a5c1e92fba29e585d77573166feeaecd1"><div class="ttname"><a href="struct_builtin.html#a5c1e92fba29e585d77573166feeaecd1">Builtin::makeInstruction</a></div><div class="ttdeci">Instruction makeInstruction(int arg=0)</div><div class="ttdef"><b>Definition:</b> Builtins.h:31</div></div>
 <div class="ttc" id="anamespace_builtins_html_a10d2c0df2341b5de83159178d6902d40"><div class="ttname"><a href="namespace_builtins.html#a10d2c0df2341b5de83159178d6902d40">Builtins::Not</a></div><div class="ttdeci">Builtin&lt; bool, bool &gt; Not(Op::Not, BUILTIN_LAMBDA { vms-&gt;push(not vms-&gt;template getpop&lt; bool &gt;());})</div></div>
+<div class="ttc" id="a_numerics_8h_html_a1cab50ac2cae826eca1b03bb33eae1f1"><div class="ttname"><a href="_numerics_8h.html#a1cab50ac2cae826eca1b03bb33eae1f1">LOG2</a></div><div class="ttdeci">const double LOG2</div><div class="ttdef"><b>Definition:</b> Numerics.h:16</div></div>
 <div class="ttc" id="a_ops_8h_html_a588e6b56097e045c733b60d25c4d45aba3a2d5fe857d8f9541136a124c2edec6c"><div class="ttname"><a href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba3a2d5fe857d8f9541136a124c2edec6c">Op::Or</a></div><div class="ttdeci">@ Or</div></div>
 <div class="ttc" id="a_ops_8h_html_a588e6b56097e045c733b60d25c4d45abaa91ac5d92dd723a15b516fab1133e6e5"><div class="ttname"><a href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abaa91ac5d92dd723a15b516fab1133e6e5">Op::Recurse</a></div><div class="ttdeci">@ Recurse</div></div>
-<div class="ttc" id="anamespace_builtins_html_a9ec375cb1db3ecc268fb6e660ff9975e"><div class="ttname"><a href="namespace_builtins.html#a9ec375cb1db3ecc268fb6e660ff9975e">Builtins::If</a></div><div class="ttdeci">Builtin&lt; T, bool, T, T &gt; If(Op::If, BUILTIN_LAMBDA { bool b=vms-&gt;template getpop&lt; bool &gt;();if(!b) vms-&gt;template program.popn(arg);else {};})</div></div>
+<div class="ttc" id="a_ops_8h_html_a588e6b56097e045c733b60d25c4d45aba7844dd5b72152559f4244d829e606ae0"><div class="ttname"><a href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba7844dd5b72152559f4244d829e606ae0">Op::SafeFlipP</a></div><div class="ttdeci">@ SafeFlipP</div></div>
 <div class="ttc" id="a_ops_8h_html_a588e6b56097e045c733b60d25c4d45abac06233e1bc52cb704757c997c86d7c68"><div class="ttname"><a href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abac06233e1bc52cb704757c997c86d7c68">Op::MemRecurse</a></div><div class="ttdeci">@ MemRecurse</div></div>
 <div class="ttc" id="a_ops_8h_html_a588e6b56097e045c733b60d25c4d45aba4154a7f9f64541a0939bf287c22925d2"><div class="ttname"><a href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba4154a7f9f64541a0939bf287c22925d2">Op::SafeRecurse</a></div><div class="ttdeci">@ SafeRecurse</div></div>
 <div class="ttc" id="anamespace_builtins_html"><div class="ttname"><a href="namespace_builtins.html">Builtins</a></div><div class="ttdef"><b>Definition:</b> Builtins.h:36</div></div>

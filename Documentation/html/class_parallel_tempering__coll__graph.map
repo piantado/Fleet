@@ -1,6 +1,7 @@
-<map id="ParallelTempering&lt; HYP, callback_t &gt;" name="ParallelTempering&lt; HYP, callback_t &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="135,171,269,212"/>
-<area shape="rect" id="node2" href="$class_chain_pool.html" title=" " alt="" coords="5,81,204,108"/>
-<area shape="rect" id="node3" href="$class_parallel_inference_interface.html" title=" " alt="" coords="11,5,198,32"/>
-<area shape="rect" id="node4" href="$class_finite_history.html" title=" " alt="" coords="229,81,373,108"/>
+<map id="ParallelTempering&lt; HYP &gt;" name="ParallelTempering&lt; HYP &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="105,275,239,316"/>
+<area shape="rect" id="node2" href="$class_chain_pool.html" title=" " alt="" coords="23,185,158,212"/>
+<area shape="rect" id="node3" href="$class_parallel_inference_interface.html" title=" " alt="" coords="5,95,176,136"/>
+<area shape="rect" id="node4" href="$class_ordered_lock.html" title=" " alt="" coords="43,5,139,32"/>
+<area shape="rect" id="node5" href="$class_finite_history.html" title=" " alt="" coords="183,185,327,212"/>
 </map>

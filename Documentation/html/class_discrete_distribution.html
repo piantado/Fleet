@@ -65,6 +65,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_discrete_distribution-members.html">List of all members</a>  </div>
@@ -75,6 +76,11 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="_discrete_distribution_8h_source.html">DiscreteDistribution.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a47fc1cc2bdfc9db1df9469d5bde4a551"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#a47fc1cc2bdfc9db1df9469d5bde4a551">my_map_t</a> = typename std::conditional&lt; std::is_same&lt; T, double &gt;::value or std::is_same&lt; T, float &gt;::value, std::map&lt; T, double, <a class="el" href="structfloating__point__compare.html">floating_point_compare</a>&lt; double &gt; &gt;, std::map&lt; T, double &gt; &gt;::type</td></tr>
+<tr class="separator:a47fc1cc2bdfc9db1df9469d5bde4a551"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8ffb7c55f85cf42af7aec6deb97ec4ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#a8ffb7c55f85cf42af7aec6deb97ec4ab">DiscreteDistribution</a> ()</td></tr>
@@ -89,6 +95,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a87d866919f4698e488aee9ce4bc42ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c41c7f4726019bc213d37d4e3cdea27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#a6c41c7f4726019bc213d37d4e3cdea27">addmass</a> (T x, double v)</td></tr>
 <tr class="separator:a6c41c7f4726019bc213d37d4e3cdea27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae00b206364286a1e3f54931cea2a5be6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#ae00b206364286a1e3f54931cea2a5be6">get</a> (T x, double v)</td></tr>
+<tr class="separator:ae00b206364286a1e3f54931cea2a5be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a995377a760a6fe0d44077892053acdbb"><td class="memItemLeft" align="right" valign="top">const std::map&lt; T, double &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#a995377a760a6fe0d44077892053acdbb">values</a> () const</td></tr>
 <tr class="separator:a995377a760a6fe0d44077892053acdbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c93983e2375a2353b10b82ebb11f751"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#a5c93983e2375a2353b10b82ebb11f751">operator&lt;&lt;</a> (const <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; T &gt; &amp;x)</td></tr>
@@ -97,8 +105,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad634a339172a69c006fded1beb423bb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a185ef689b1e133b962fff5bcf1443ba1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#a185ef689b1e133b962fff5bcf1443ba1">lp</a> (const T &amp;x)</td></tr>
 <tr class="separator:a185ef689b1e133b962fff5bcf1443ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add71949e73131894f28a0fa9af3d2fc1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#add71949e73131894f28a0fa9af3d2fc1">best</a> (size_t n) const</td></tr>
-<tr class="separator:add71949e73131894f28a0fa9af3d2fc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bdd82839fd7c56a9aa4adefdf95076b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#a6bdd82839fd7c56a9aa4adefdf95076b">best</a> (size_t n, bool include_equal) const</td></tr>
+<tr class="separator:a6bdd82839fd7c56a9aa4adefdf95076b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94488cfd094f6cde47f15a1f4c7cdbb9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; T, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#a94488cfd094f6cde47f15a1f4c7cdbb9">sorted</a> (bool decreasing=false) const</td></tr>
 <tr class="separator:a94488cfd094f6cde47f15a1f4c7cdbb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd3fd83dc776f5616e826de18093328b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#afd3fd83dc776f5616e826de18093328b">count</a> (T x) const</td></tr>
@@ -115,8 +123,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a72a09b5b79a5bf0c55f780b9a81271fb"><td class="memItemLeft" align="right" valign="top">std::map&lt; T, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#a72a09b5b79a5bf0c55f780b9a81271fb">m</a></td></tr>
-<tr class="separator:a72a09b5b79a5bf0c55f780b9a81271fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa56da86e58d4e1cee5d5340d1c17964e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_discrete_distribution.html#a47fc1cc2bdfc9db1df9469d5bde4a551">my_map_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_discrete_distribution.html#aa56da86e58d4e1cee5d5340d1c17964e">m</a></td></tr>
+<tr class="separator:aa56da86e58d4e1cee5d5340d1c17964e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
@@ -124,7 +132,24 @@ class DiscreteDistribution&lt; T &gt;</h3>
 
 <dl class="section author"><dt>Author</dt><dd>steven piantadosi </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>03/02/20 </dd></dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a47fc1cc2bdfc9db1df9469d5bde4a551"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47fc1cc2bdfc9db1df9469d5bde4a551">&#9670;&nbsp;</a></span>my_map_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; T &gt;::<a class="el" href="class_discrete_distribution.html#a47fc1cc2bdfc9db1df9469d5bde4a551">my_map_t</a> =  typename std::conditional&lt; std::is_same&lt;T,double&gt;::value or std::is_same&lt;T,float&gt;::value, std::map&lt;T,double,<a class="el" href="structfloating__point__compare.html">floating_point_compare</a>&lt;double&gt; &gt;, std::map&lt;T,double&gt; &gt;::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8ffb7c55f85cf42af7aec6deb97ec4ab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8ffb7c55f85cf42af7aec6deb97ec4ab">&#9670;&nbsp;</a></span>DiscreteDistribution()</h2>
 
@@ -253,8 +278,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="add71949e73131894f28a0fa9af3d2fc1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add71949e73131894f28a0fa9af3d2fc1">&#9670;&nbsp;</a></span>best()</h2>
+<a id="a6bdd82839fd7c56a9aa4adefdf95076b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6bdd82839fd7c56a9aa4adefdf95076b">&#9670;&nbsp;</a></span>best()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -268,8 +293,18 @@ template&lt;typename T &gt; </div>
           <td class="memname">std::vector&lt;T&gt; <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; T &gt;::best </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>n</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>include_equal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
   </td>
@@ -280,7 +315,8 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <p>Get the N best from this distribution </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">N</td><td></td></tr>
+    <tr><td class="paramname">N</td><td>- how many to get </td></tr>
+    <tr><td class="paramname">include_equal</td><td>- should we include ones that are equal to the best (potentially giving more than N)? </td></tr>
   </table>
   </dd>
 </dl>
@@ -305,6 +341,44 @@ template&lt;typename T &gt; </div>
           <td class="paramtype">T&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae00b206364286a1e3f54931cea2a5be6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae00b206364286a1e3f54931cea2a5be6">&#9670;&nbsp;</a></span>get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; T &gt;::get </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -456,7 +530,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; T &gt;::print </td>
+          <td class="memname">void <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; T &gt;::<a class="el" href="structprint.html">print</a> </td>
           <td>(</td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
           <td class="paramname"><em>out</em>, </td>
@@ -494,7 +568,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; T &gt;::print </td>
+          <td class="memname">void <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; T &gt;::<a class="el" href="structprint.html">print</a> </td>
           <td>(</td>
           <td class="paramtype">unsigned long&#160;</td>
           <td class="paramname"><em>nprint</em> = <code>0</code></td><td>)</td>
@@ -662,8 +736,8 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a72a09b5b79a5bf0c55f780b9a81271fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72a09b5b79a5bf0c55f780b9a81271fb">&#9670;&nbsp;</a></span>m</h2>
+<a id="aa56da86e58d4e1cee5d5340d1c17964e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa56da86e58d4e1cee5d5340d1c17964e">&#9670;&nbsp;</a></span>m</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -671,7 +745,7 @@ template&lt;typename T &gt; </div>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt;T,double&gt; <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; T &gt;::m</td>
+          <td class="memname"><a class="el" href="class_discrete_distribution.html#a47fc1cc2bdfc9db1df9469d5bde4a551">my_map_t</a> <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; T &gt;::m</td>
         </tr>
       </table>
 </div><div class="memdoc">

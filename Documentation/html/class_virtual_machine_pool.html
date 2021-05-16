@@ -128,9 +128,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adf1e2a48d262a341627a92771f31cfcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; <a class="el" href="class_virtual_machine_pool.html#a1e659e76790f4aa4ae074d82a8c381e1">output_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_pool.html#adf1e2a48d262a341627a92771f31cfcd">run</a> ()</td></tr>
 <tr class="memdesc:adf1e2a48d262a341627a92771f31cfcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">This runs and adds up the probability mass for everything, returning a dictionary outcomes-&gt;log_probabilities. This is the main running loop, which pops frmo the top of our queue, runs, and continues until we've done enough or all. Note that objects lower than min_lp are not ever pushed onto the queue.  <a href="class_virtual_machine_pool.html#adf1e2a48d262a341627a92771f31cfcd">More...</a><br /></td></tr>
 <tr class="separator:adf1e2a48d262a341627a92771f31cfcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82da0edd512bd5b112583d1ead3db151"><td class="memItemLeft" align="right" valign="top">std::vector&lt; VirtualMachineState_t * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_pool.html#a82da0edd512bd5b112583d1ead3db151">run_vms</a> ()</td></tr>
-<tr class="memdesc:a82da0edd512bd5b112583d1ead3db151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run but return a vector of completed virtual machines instead of marginalizing outputs. You might want this if you needed to separate execution paths, or wanted to access runtime counts. This also can get joint distributions on outputs by running a <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a> multiple times.  <a href="class_virtual_machine_pool.html#a82da0edd512bd5b112583d1ead3db151">More...</a><br /></td></tr>
-<tr class="separator:a82da0edd512bd5b112583d1ead3db151"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8fe350a4d27f37a1e843a72947c4608"><td class="memItemLeft" align="right" valign="top">std::vector&lt; VirtualMachineState_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_pool.html#ac8fe350a4d27f37a1e843a72947c4608">run_vms</a> ()</td></tr>
+<tr class="memdesc:ac8fe350a4d27f37a1e843a72947c4608"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run but return a vector of completed virtual machines instead of marginalizing outputs. You might want this if you needed to separate execution paths, or wanted to access runtime counts. This also can get joint distributions on outputs by running a <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a> multiple times.  <a href="class_virtual_machine_pool.html#ac8fe350a4d27f37a1e843a72947c4608">More...</a><br /></td></tr>
+<tr class="separator:ac8fe350a4d27f37a1e843a72947c4608"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -466,8 +466,8 @@ template&lt;typename VirtualMachineState_t &gt; </div>
 
 </div>
 </div>
-<a id="a82da0edd512bd5b112583d1ead3db151"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82da0edd512bd5b112583d1ead3db151">&#9670;&nbsp;</a></span>run_vms()</h2>
+<a id="ac8fe350a4d27f37a1e843a72947c4608"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8fe350a4d27f37a1e843a72947c4608">&#9670;&nbsp;</a></span>run_vms()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -478,7 +478,7 @@ template&lt;typename VirtualMachineState_t &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;VirtualMachineState_t*&gt; <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a>&lt; VirtualMachineState_t &gt;::run_vms </td>
+          <td class="memname">std::vector&lt;VirtualMachineState_t&gt; <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a>&lt; VirtualMachineState_t &gt;::run_vms </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>

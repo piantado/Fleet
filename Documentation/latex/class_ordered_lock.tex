@@ -1,0 +1,83 @@
+\hypertarget{class_ordered_lock}{}\doxysection{Ordered\+Lock Class Reference}
+\label{class_ordered_lock}\index{OrderedLock@{OrderedLock}}
+
+
+{\ttfamily \#include $<$Ordered\+Lock.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_ordered_lock_a9c6a74d10207f64b0ea1d19cc4ec5ba0}{Ordered\+Lock}} ()
+\item 
+void \mbox{\hyperlink{class_ordered_lock_a8677c2898c73a3622c359dd86909e9f7}{lock}} ()
+\item 
+void \mbox{\hyperlink{class_ordered_lock_ad117debf03de2c08bf8392358a46f96f}{unlock}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::queue$<$ std\+::condition\+\_\+variable $\ast$ $>$ \mbox{\hyperlink{class_ordered_lock_a4e7d83a6f9a6fd316b410bf5cb7433d0}{cvar}}
+\item 
+std\+::mutex \mbox{\hyperlink{class_ordered_lock_a926f9647fb1dc57167be0afcd7685b94}{cvar\+\_\+lock}}
+\item 
+bool \mbox{\hyperlink{class_ordered_lock_ac87d7e71fd12a7625bb36cf329044c42}{locked}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Steven Piantadosi 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+28/03/21 
+\end{DoxyDate}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_ordered_lock_a9c6a74d10207f64b0ea1d19cc4ec5ba0}\label{class_ordered_lock_a9c6a74d10207f64b0ea1d19cc4ec5ba0}} 
+\index{OrderedLock@{OrderedLock}!OrderedLock@{OrderedLock}}
+\index{OrderedLock@{OrderedLock}!OrderedLock@{OrderedLock}}
+\doxysubsubsection{\texorpdfstring{OrderedLock()}{OrderedLock()}}
+{\footnotesize\ttfamily Ordered\+Lock\+::\+Ordered\+Lock (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_ordered_lock_a8677c2898c73a3622c359dd86909e9f7}\label{class_ordered_lock_a8677c2898c73a3622c359dd86909e9f7}} 
+\index{OrderedLock@{OrderedLock}!lock@{lock}}
+\index{lock@{lock}!OrderedLock@{OrderedLock}}
+\doxysubsubsection{\texorpdfstring{lock()}{lock()}}
+{\footnotesize\ttfamily void Ordered\+Lock\+::lock (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_ordered_lock_ad117debf03de2c08bf8392358a46f96f}\label{class_ordered_lock_ad117debf03de2c08bf8392358a46f96f}} 
+\index{OrderedLock@{OrderedLock}!unlock@{unlock}}
+\index{unlock@{unlock}!OrderedLock@{OrderedLock}}
+\doxysubsubsection{\texorpdfstring{unlock()}{unlock()}}
+{\footnotesize\ttfamily void Ordered\+Lock\+::unlock (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_ordered_lock_a4e7d83a6f9a6fd316b410bf5cb7433d0}\label{class_ordered_lock_a4e7d83a6f9a6fd316b410bf5cb7433d0}} 
+\index{OrderedLock@{OrderedLock}!cvar@{cvar}}
+\index{cvar@{cvar}!OrderedLock@{OrderedLock}}
+\doxysubsubsection{\texorpdfstring{cvar}{cvar}}
+{\footnotesize\ttfamily std\+::queue$<$std\+::condition\+\_\+variable$\ast$$>$ Ordered\+Lock\+::cvar}
+
+\mbox{\Hypertarget{class_ordered_lock_a926f9647fb1dc57167be0afcd7685b94}\label{class_ordered_lock_a926f9647fb1dc57167be0afcd7685b94}} 
+\index{OrderedLock@{OrderedLock}!cvar\_lock@{cvar\_lock}}
+\index{cvar\_lock@{cvar\_lock}!OrderedLock@{OrderedLock}}
+\doxysubsubsection{\texorpdfstring{cvar\_lock}{cvar\_lock}}
+{\footnotesize\ttfamily std\+::mutex Ordered\+Lock\+::cvar\+\_\+lock}
+
+\mbox{\Hypertarget{class_ordered_lock_ac87d7e71fd12a7625bb36cf329044c42}\label{class_ordered_lock_ac87d7e71fd12a7625bb36cf329044c42}} 
+\index{OrderedLock@{OrderedLock}!locked@{locked}}
+\index{locked@{locked}!OrderedLock@{OrderedLock}}
+\doxysubsubsection{\texorpdfstring{locked}{locked}}
+{\footnotesize\ttfamily bool Ordered\+Lock\+::locked}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Threads/\mbox{\hyperlink{_ordered_lock_8h}{Ordered\+Lock.\+h}}\end{DoxyCompactItemize}

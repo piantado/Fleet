@@ -1,55 +1,57 @@
-\hypertarget{class_data_tempering}{}\doxysection{Data\+Tempering$<$ H\+YP, callback\+\_\+t $>$ Class Template Reference}
-\label{class_data_tempering}\index{DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}}
+\hypertarget{class_data_tempering}{}\doxysection{Data\+Tempering$<$ H\+YP $>$ Class Template Reference}
+\label{class_data_tempering}\index{DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}}
 
 
 {\ttfamily \#include $<$Parallel\+Tempering.\+h$>$}
 
 
 
-Inheritance diagram for Data\+Tempering$<$ H\+YP, callback\+\_\+t $>$\+:\nopagebreak
+Inheritance diagram for Data\+Tempering$<$ H\+YP $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=229pt]{class_data_tempering__inherit__graph}
+\includegraphics[width=208pt]{class_data_tempering__inherit__graph}
 \end{center}
 \end{figure}
 
 
-Collaboration diagram for Data\+Tempering$<$ H\+YP, callback\+\_\+t $>$\+:\nopagebreak
+Collaboration diagram for Data\+Tempering$<$ H\+YP $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{class_data_tempering__coll__graph}
+\includegraphics[width=321pt]{class_data_tempering__coll__graph}
 \end{center}
 \end{figure}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{class_data_tempering_a21a8c93e110fdcebce332300bfea5ece}{Data\+Tempering}} (H\+YP \&h0, std\+::vector$<$ typename H\+Y\+P\+::data\+\_\+t $>$ \&datas, std\+::vector$<$ callback\+\_\+t $>$ \&cb)
+\mbox{\hyperlink{class_data_tempering_a5c4f2a7d7690f86763c093070cd5605b}{Data\+Tempering}} (H\+YP \&h0, std\+::vector$<$ typename H\+Y\+P\+::data\+\_\+t $>$ \&datas)
 \item 
-\mbox{\hyperlink{class_data_tempering_a87d7969c6e9df8682d7912a5ef9cc41a}{$\sim$\+Data\+Tempering}} ()
+\mbox{\hyperlink{class_data_tempering_af4755dad592fa370fd630a4128de6d4b}{$\sim$\+Data\+Tempering}} ()
 \item 
-void \mbox{\hyperlink{class_data_tempering_a878981d5b443b50348fcd25a03135609}{\+\_\+\+\_\+swapper\+\_\+thread}} (time\+\_\+ms swap\+\_\+every)
+void \mbox{\hyperlink{class_data_tempering_a62a3fb5afcf0ff3bd92298da5f0d9328}{\+\_\+\+\_\+swapper\+\_\+thread}} (time\+\_\+ms swap\+\_\+every)
 \item 
-virtual void \mbox{\hyperlink{class_data_tempering_a47b07f1c97e7f65b7694efdaa088039b}{run}} (\mbox{\hyperlink{struct_control}{Control}} ctl) override
+virtual \mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ H\+YP \& $>$ \mbox{\hyperlink{class_data_tempering_a271a57d1d428427b826b631d32873228}{run}} (\mbox{\hyperlink{struct_control}{Control}} ctl) override
 \item 
-virtual void \mbox{\hyperlink{class_data_tempering_ae1fbeeddd743c7f70c2df1a4ff458f0e}{run}} (\mbox{\hyperlink{struct_control}{Control}} ctl, time\+\_\+ms swap\+\_\+every, time\+\_\+ms adapt\+\_\+every)
+virtual \mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ H\+YP \& $>$ \mbox{\hyperlink{class_data_tempering_a815f948a247278801114716b65b36c23}{run}} (\mbox{\hyperlink{struct_control}{Control}} ctl, time\+\_\+ms swap\+\_\+every, time\+\_\+ms adapt\+\_\+every)
 \item 
-void \mbox{\hyperlink{class_data_tempering_a01d9f1eb405ed44f8151bd79afd2d0cc}{show\+\_\+statistics}} ()
+void \mbox{\hyperlink{class_data_tempering_ab3601011b762bbd65f7a0e4c23c8aacb}{show\+\_\+statistics}} ()
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{class_finite_history}{Finite\+History}}$<$ bool $>$ $\ast$ \mbox{\hyperlink{class_data_tempering_a1479c10bde08cccc9764267738e429eb}{swap\+\_\+history}}
+\mbox{\hyperlink{class_finite_history}{Finite\+History}}$<$ bool $>$ $\ast$ \mbox{\hyperlink{class_data_tempering_a09b915796ca41770ddb6d16ab658ffbb}{swap\+\_\+history}}
 \item 
-std\+::atomic$<$ bool $>$ \mbox{\hyperlink{class_data_tempering_a03f9c6fd8faa8f88c63bbc84c388e82d}{terminate}}
+std\+::atomic$<$ bool $>$ \mbox{\hyperlink{class_data_tempering_a616acc628d1e6eae991b4e0c10da6753}{terminate}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
 
 
 \doxysubsection{Detailed Description}
-\subsubsection*{template$<$typename H\+YP, typename callback\+\_\+t$>$\newline
-class Data\+Tempering$<$ H\+Y\+P, callback\+\_\+t $>$}
+\subsubsection*{template$<$typename H\+YP$>$\newline
+class Data\+Tempering$<$ H\+Y\+P $>$}
 
 \begin{DoxyAuthor}{Author}
 piantado 
@@ -60,70 +62,70 @@ piantado
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{class_data_tempering_a21a8c93e110fdcebce332300bfea5ece}\label{class_data_tempering_a21a8c93e110fdcebce332300bfea5ece}} 
-\index{DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}!DataTempering@{DataTempering}}
-\index{DataTempering@{DataTempering}!DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}}
+\mbox{\Hypertarget{class_data_tempering_a5c4f2a7d7690f86763c093070cd5605b}\label{class_data_tempering_a5c4f2a7d7690f86763c093070cd5605b}} 
+\index{DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}!DataTempering@{DataTempering}}
+\index{DataTempering@{DataTempering}!DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{DataTempering()}{DataTempering()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-\mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::\mbox{\hyperlink{class_data_tempering}{Data\+Tempering}} (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{std\+::vector$<$ typename H\+Y\+P\+::data\+\_\+t $>$ \&}]{datas,  }\item[{std\+::vector$<$ callback\+\_\+t $>$ \&}]{cb }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+\mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP $>$\+::\mbox{\hyperlink{class_data_tempering}{Data\+Tempering}} (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{std\+::vector$<$ typename H\+Y\+P\+::data\+\_\+t $>$ \&}]{datas }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_data_tempering_a87d7969c6e9df8682d7912a5ef9cc41a}\label{class_data_tempering_a87d7969c6e9df8682d7912a5ef9cc41a}} 
-\index{DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}!````~DataTempering@{$\sim$DataTempering}}
-\index{````~DataTempering@{$\sim$DataTempering}!DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}}
+\mbox{\Hypertarget{class_data_tempering_af4755dad592fa370fd630a4128de6d4b}\label{class_data_tempering_af4755dad592fa370fd630a4128de6d4b}} 
+\index{DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}!````~DataTempering@{$\sim$DataTempering}}
+\index{````~DataTempering@{$\sim$DataTempering}!DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{$\sim$DataTempering()}{~DataTempering()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-\mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::$\sim$\mbox{\hyperlink{class_data_tempering}{Data\+Tempering}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+\mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP $>$\+::$\sim$\mbox{\hyperlink{class_data_tempering}{Data\+Tempering}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_data_tempering_a878981d5b443b50348fcd25a03135609}\label{class_data_tempering_a878981d5b443b50348fcd25a03135609}} 
-\index{DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}!\_\_swapper\_thread@{\_\_swapper\_thread}}
-\index{\_\_swapper\_thread@{\_\_swapper\_thread}!DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}}
+\mbox{\Hypertarget{class_data_tempering_a62a3fb5afcf0ff3bd92298da5f0d9328}\label{class_data_tempering_a62a3fb5afcf0ff3bd92298da5f0d9328}} 
+\index{DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}!\_\_swapper\_thread@{\_\_swapper\_thread}}
+\index{\_\_swapper\_thread@{\_\_swapper\_thread}!DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{\_\_swapper\_thread()}{\_\_swapper\_thread()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-void \mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::\+\_\+\+\_\+swapper\+\_\+thread (\begin{DoxyParamCaption}\item[{time\+\_\+ms}]{swap\+\_\+every }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+void \mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP $>$\+::\+\_\+\+\_\+swapper\+\_\+thread (\begin{DoxyParamCaption}\item[{time\+\_\+ms}]{swap\+\_\+every }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_data_tempering_a47b07f1c97e7f65b7694efdaa088039b}\label{class_data_tempering_a47b07f1c97e7f65b7694efdaa088039b}} 
-\index{DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}!run@{run}}
-\index{run@{run}!DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}}
+\mbox{\Hypertarget{class_data_tempering_a271a57d1d428427b826b631d32873228}\label{class_data_tempering_a271a57d1d428427b826b631d32873228}} 
+\index{DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}!run@{run}}
+\index{run@{run}!DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{run()}{run()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-virtual void \mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::run (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+virtual \mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$H\+YP\&$>$ \mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP $>$\+::run (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
-\mbox{\Hypertarget{class_data_tempering_ae1fbeeddd743c7f70c2df1a4ff458f0e}\label{class_data_tempering_ae1fbeeddd743c7f70c2df1a4ff458f0e}} 
-\index{DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}!run@{run}}
-\index{run@{run}!DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}}
+\mbox{\Hypertarget{class_data_tempering_a815f948a247278801114716b65b36c23}\label{class_data_tempering_a815f948a247278801114716b65b36c23}} 
+\index{DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}!run@{run}}
+\index{run@{run}!DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{run()}{run()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-virtual void \mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::run (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl,  }\item[{time\+\_\+ms}]{swap\+\_\+every,  }\item[{time\+\_\+ms}]{adapt\+\_\+every }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+virtual \mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$H\+YP\&$>$ \mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP $>$\+::run (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl,  }\item[{time\+\_\+ms}]{swap\+\_\+every,  }\item[{time\+\_\+ms}]{adapt\+\_\+every }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-\mbox{\Hypertarget{class_data_tempering_a01d9f1eb405ed44f8151bd79afd2d0cc}\label{class_data_tempering_a01d9f1eb405ed44f8151bd79afd2d0cc}} 
-\index{DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}!show\_statistics@{show\_statistics}}
-\index{show\_statistics@{show\_statistics}!DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}}
+\mbox{\Hypertarget{class_data_tempering_ab3601011b762bbd65f7a0e4c23c8aacb}\label{class_data_tempering_ab3601011b762bbd65f7a0e4c23c8aacb}} 
+\index{DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}!show\_statistics@{show\_statistics}}
+\index{show\_statistics@{show\_statistics}!DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{show\_statistics()}{show\_statistics()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-void \mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::show\+\_\+statistics (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+void \mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP $>$\+::show\+\_\+statistics (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{class_data_tempering_a1479c10bde08cccc9764267738e429eb}\label{class_data_tempering_a1479c10bde08cccc9764267738e429eb}} 
-\index{DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}!swap\_history@{swap\_history}}
-\index{swap\_history@{swap\_history}!DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}}
+\mbox{\Hypertarget{class_data_tempering_a09b915796ca41770ddb6d16ab658ffbb}\label{class_data_tempering_a09b915796ca41770ddb6d16ab658ffbb}} 
+\index{DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}!swap\_history@{swap\_history}}
+\index{swap\_history@{swap\_history}!DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{swap\_history}{swap\_history}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-\mbox{\hyperlink{class_finite_history}{Finite\+History}}$<$bool$>$$\ast$ \mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::swap\+\_\+history}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+\mbox{\hyperlink{class_finite_history}{Finite\+History}}$<$bool$>$$\ast$ \mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP $>$\+::swap\+\_\+history}
 
-\mbox{\Hypertarget{class_data_tempering_a03f9c6fd8faa8f88c63bbc84c388e82d}\label{class_data_tempering_a03f9c6fd8faa8f88c63bbc84c388e82d}} 
-\index{DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}!terminate@{terminate}}
-\index{terminate@{terminate}!DataTempering$<$ HYP, callback\_t $>$@{DataTempering$<$ HYP, callback\_t $>$}}
+\mbox{\Hypertarget{class_data_tempering_a616acc628d1e6eae991b4e0c10da6753}\label{class_data_tempering_a616acc628d1e6eae991b4e0c10da6753}} 
+\index{DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}!terminate@{terminate}}
+\index{terminate@{terminate}!DataTempering$<$ HYP $>$@{DataTempering$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{terminate}{terminate}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-std\+::atomic$<$bool$>$ \mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP, callback\+\_\+t $>$\+::terminate}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+std\+::atomic$<$bool$>$ \mbox{\hyperlink{class_data_tempering}{Data\+Tempering}}$<$ H\+YP $>$\+::terminate}
 
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/\+Inference/\mbox{\hyperlink{_parallel_tempering_8h}{Parallel\+Tempering.\+h}}\end{DoxyCompactItemize}
+src/\+Inference/\+M\+C\+M\+C/\mbox{\hyperlink{_parallel_tempering_8h}{Parallel\+Tempering.\+h}}\end{DoxyCompactItemize}

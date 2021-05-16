@@ -1,5 +1,5 @@
-\hypertarget{_parallel_tempering_8h}{}\doxysection{src/\+Inference/\+Parallel\+Tempering.h File Reference}
-\label{_parallel_tempering_8h}\index{src/Inference/ParallelTempering.h@{src/Inference/ParallelTempering.h}}
+\hypertarget{_parallel_tempering_8h}{}\doxysection{src/\+Inference/\+M\+C\+M\+C/\+Parallel\+Tempering.h File Reference}
+\label{_parallel_tempering_8h}\index{src/Inference/MCMC/ParallelTempering.h@{src/Inference/MCMC/ParallelTempering.h}}
 
 
 This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temperatures in order to balances swaps up and down the ladder (which makes it efficient). The adaptation scheme follows \href{https://arxiv.org/abs/1501.05823}{\texttt{ https\+://arxiv.\+org/abs/1501.\+05823}} N\+O\+TE This starts two extra threads, one for adapting and one for swapping, but they mostly wait around.  
@@ -9,26 +9,28 @@ This is a chain pool that runs multiple chains on a ladder of different temperat
 {\ttfamily \#include $<$signal.\+h$>$}\newline
 {\ttfamily \#include $<$functional$>$}\newline
 {\ttfamily \#include \char`\"{}Chain\+Pool.\+h\char`\"{}}\newline
-Include dependency graph for Parallel\+Tempering.\+h\+:\nopagebreak
+Include dependency graph for Parallel\+Tempering.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_parallel_tempering_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=242pt]{_parallel_tempering_8h__dep__incl}
+\includegraphics[width=204pt]{_parallel_tempering_8h__dep__incl}
 \end{center}
 \end{figure}
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering$<$ H\+Y\+P, callback\+\_\+t $>$}}
+class \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering$<$ H\+Y\+P $>$}}
 \item 
-class \mbox{\hyperlink{class_data_tempering}{Data\+Tempering$<$ H\+Y\+P, callback\+\_\+t $>$}}
+class \mbox{\hyperlink{class_data_tempering}{Data\+Tempering$<$ H\+Y\+P $>$}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}

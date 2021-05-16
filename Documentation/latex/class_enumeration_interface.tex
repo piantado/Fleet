@@ -1,0 +1,123 @@
+\hypertarget{class_enumeration_interface}{}\doxysection{Enumeration\+Interface$<$ Grammar\+\_\+t, A\+R\+GS $>$ Class Template Reference}
+\label{class_enumeration_interface}\index{EnumerationInterface$<$ Grammar\_t, ARGS $>$@{EnumerationInterface$<$ Grammar\_t, ARGS $>$}}
+
+
+{\ttfamily \#include $<$Enumeration\+Inference.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_enumeration_interface_a0609d91a933c59b379c1a8d57526a6e0}{Enumeration\+Interface}} (Grammar\+\_\+t $\ast$g)
+\item 
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_enumeration_interface_a6f99ee2cb893dc435fccc8fc06de3bdf}{to\+Node}} (\mbox{\hyperlink{class_integerized_stack}{Integerized\+Stack}} \&is, A\+R\+G\+S... args)
+\begin{DoxyCompactList}\small\item\em Subclass must implement for \mbox{\hyperlink{class_integerized_stack}{Integerized\+Stack}}. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_enumeration_interface_a4e40c7709a313936ecbd7dbf42dac89a}{to\+Node}} (\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} z, A\+R\+G\+S... args)
+\begin{DoxyCompactList}\small\item\em Expand an integer to a node using this nonterminal type. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} \mbox{\hyperlink{class_enumeration_interface_a5c0332b85fb614e667b3c5d763bd1661}{to\+Integer}} (const \mbox{\hyperlink{class_node}{Node}} \&n, A\+R\+G\+S... args)
+\begin{DoxyCompactList}\small\item\em Convert a node to an integer (should be the inverse of to\+Node) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Grammar\+\_\+t $\ast$ \mbox{\hyperlink{class_enumeration_interface_a47e4b669ebbec7a22de8b0140045ef41}{grammar}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Grammar\+\_\+t, typename... A\+R\+GS$>$\newline
+class Enumeration\+Interface$<$ Grammar\+\_\+t, A\+R\+G\+S $>$}
+
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+02/01/21 
+\end{DoxyDate}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_enumeration_interface_a0609d91a933c59b379c1a8d57526a6e0}\label{class_enumeration_interface_a0609d91a933c59b379c1a8d57526a6e0}} 
+\index{EnumerationInterface$<$ Grammar\_t, ARGS $>$@{EnumerationInterface$<$ Grammar\_t, ARGS $>$}!EnumerationInterface@{EnumerationInterface}}
+\index{EnumerationInterface@{EnumerationInterface}!EnumerationInterface$<$ Grammar\_t, ARGS $>$@{EnumerationInterface$<$ Grammar\_t, ARGS $>$}}
+\doxysubsubsection{\texorpdfstring{EnumerationInterface()}{EnumerationInterface()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t , typename... A\+R\+GS$>$ \\
+\mbox{\hyperlink{class_enumeration_interface}{Enumeration\+Interface}}$<$ Grammar\+\_\+t, A\+R\+GS $>$\+::\mbox{\hyperlink{class_enumeration_interface}{Enumeration\+Interface}} (\begin{DoxyParamCaption}\item[{Grammar\+\_\+t $\ast$}]{g }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_enumeration_interface_a5c0332b85fb614e667b3c5d763bd1661}\label{class_enumeration_interface_a5c0332b85fb614e667b3c5d763bd1661}} 
+\index{EnumerationInterface$<$ Grammar\_t, ARGS $>$@{EnumerationInterface$<$ Grammar\_t, ARGS $>$}!toInteger@{toInteger}}
+\index{toInteger@{toInteger}!EnumerationInterface$<$ Grammar\_t, ARGS $>$@{EnumerationInterface$<$ Grammar\_t, ARGS $>$}}
+\doxysubsubsection{\texorpdfstring{toInteger()}{toInteger()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t , typename... A\+R\+GS$>$ \\
+virtual \mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} \mbox{\hyperlink{class_enumeration_interface}{Enumeration\+Interface}}$<$ Grammar\+\_\+t, A\+R\+GS $>$\+::to\+Integer (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{n,  }\item[{A\+R\+G\+S...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Convert a node to an integer (should be the inverse of to\+Node) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_enumeration_interface_a4e40c7709a313936ecbd7dbf42dac89a}\label{class_enumeration_interface_a4e40c7709a313936ecbd7dbf42dac89a}} 
+\index{EnumerationInterface$<$ Grammar\_t, ARGS $>$@{EnumerationInterface$<$ Grammar\_t, ARGS $>$}!toNode@{toNode}}
+\index{toNode@{toNode}!EnumerationInterface$<$ Grammar\_t, ARGS $>$@{EnumerationInterface$<$ Grammar\_t, ARGS $>$}}
+\doxysubsubsection{\texorpdfstring{toNode()}{toNode()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t , typename... A\+R\+GS$>$ \\
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_enumeration_interface}{Enumeration\+Interface}}$<$ Grammar\+\_\+t, A\+R\+GS $>$\+::to\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}}]{z,  }\item[{A\+R\+G\+S...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Expand an integer to a node using this nonterminal type. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nt} & \\
+\hline
+{\em z} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_enumeration_interface_a6f99ee2cb893dc435fccc8fc06de3bdf}\label{class_enumeration_interface_a6f99ee2cb893dc435fccc8fc06de3bdf}} 
+\index{EnumerationInterface$<$ Grammar\_t, ARGS $>$@{EnumerationInterface$<$ Grammar\_t, ARGS $>$}!toNode@{toNode}}
+\index{toNode@{toNode}!EnumerationInterface$<$ Grammar\_t, ARGS $>$@{EnumerationInterface$<$ Grammar\_t, ARGS $>$}}
+\doxysubsubsection{\texorpdfstring{toNode()}{toNode()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t , typename... A\+R\+GS$>$ \\
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_enumeration_interface}{Enumeration\+Interface}}$<$ Grammar\+\_\+t, A\+R\+GS $>$\+::to\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_integerized_stack}{Integerized\+Stack}} \&}]{is,  }\item[{A\+R\+G\+S...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Subclass must implement for \mbox{\hyperlink{class_integerized_stack}{Integerized\+Stack}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nt} & \\
+\hline
+{\em is} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_enumeration_interface_a47e4b669ebbec7a22de8b0140045ef41}\label{class_enumeration_interface_a47e4b669ebbec7a22de8b0140045ef41}} 
+\index{EnumerationInterface$<$ Grammar\_t, ARGS $>$@{EnumerationInterface$<$ Grammar\_t, ARGS $>$}!grammar@{grammar}}
+\index{grammar@{grammar}!EnumerationInterface$<$ Grammar\_t, ARGS $>$@{EnumerationInterface$<$ Grammar\_t, ARGS $>$}}
+\doxysubsubsection{\texorpdfstring{grammar}{grammar}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t , typename... A\+R\+GS$>$ \\
+Grammar\+\_\+t$\ast$ \mbox{\hyperlink{class_enumeration_interface}{Enumeration\+Interface}}$<$ Grammar\+\_\+t, A\+R\+GS $>$\+::grammar}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Grammar/\+Enumeration/\mbox{\hyperlink{_grammar_2_enumeration_2_enumeration_inference_8h}{Enumeration\+Inference.\+h}}\end{DoxyCompactItemize}

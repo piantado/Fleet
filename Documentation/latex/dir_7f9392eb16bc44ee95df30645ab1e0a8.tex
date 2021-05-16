@@ -1,0 +1,21 @@
+\hypertarget{dir_7f9392eb16bc44ee95df30645ab1e0a8}{}\doxysection{src/\+Inference/\+M\+C\+MC Directory Reference}
+\label{dir_7f9392eb16bc44ee95df30645ab1e0a8}\index{src/Inference/MCMC Directory Reference@{src/Inference/MCMC Directory Reference}}
+Directory dependency graph for M\+C\+MC\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{dir_7f9392eb16bc44ee95df30645ab1e0a8_dep}
+\end{center}
+\end{figure}
+\doxysubsection*{Files}
+\begin{DoxyCompactItemize}
+\item 
+file \mbox{\hyperlink{_chain_pool_8h}{Chain\+Pool.\+h}}
+\begin{DoxyCompactList}\small\item\em A \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}} stores a bunch of M\+C\+M\+C\+Chains and allows you to run them serially or in parallel. N\+O\+TE\+: When you use a \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}, the results will not be reproducible with seed because timing determines when you switch chains. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{_m_c_m_c_chain_8h}{M\+C\+M\+C\+Chain.\+h}}
+\item 
+file \mbox{\hyperlink{_parallel_tempering_8h}{Parallel\+Tempering.\+h}}
+\begin{DoxyCompactList}\small\item\em This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temperatures in order to balances swaps up and down the ladder (which makes it efficient). The adaptation scheme follows \href{https://arxiv.org/abs/1501.05823}{\texttt{ https\+://arxiv.\+org/abs/1501.\+05823}} N\+O\+TE This starts two extra threads, one for adapting and one for swapping, but they mostly wait around. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{_partition_m_c_m_c_8h}{Partition\+M\+C\+M\+C.\+h}}
+\begin{DoxyCompactList}\small\item\em This takes a grammar and expands to a given depth, and then runs a separate M\+C\+MC chain in each partial subtree that is generated. \end{DoxyCompactList}\end{DoxyCompactItemize}

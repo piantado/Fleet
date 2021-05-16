@@ -75,45 +75,56 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;atomic&gt;</code><br />
+<code>#include &lt;mutex&gt;</code><br />
 <code>#include &lt;thread&gt;</code><br />
+<code>#include &lt;condition_variable&gt;</code><br />
 <code>#include &quot;<a class="el" href="_control_8h_source.html">Control.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_coroutines_8h_source.html">Coroutines.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_ordered_lock_8h_source.html">OrderedLock.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ParallelInferenceInterface.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_parallel_inference_interface_8h__incl.png" border="0" usemap="#src_2_inference_2_parallel_inference_interface_8h" alt=""/></div>
 <map name="src_2_inference_2_parallel_inference_interface_8h" id="src_2_inference_2_parallel_inference_interface_8h">
-<area shape="rect" title=" " alt="" coords="147,5,345,47"/>
-<area shape="rect" title=" " alt="" coords="123,95,185,121"/>
-<area shape="rect" title=" " alt="" coords="1018,244,1077,271"/>
-<area shape="rect" href="_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="209,95,283,121"/>
-<area shape="rect" title=" " alt="" coords="119,169,186,196"/>
-<area shape="rect" href="_fleet_args_8h.html" title=" " alt="" coords="5,169,95,196"/>
-<area shape="rect" href="_timing_8h.html" title=" " alt="" coords="210,169,282,196"/>
-<area shape="rect" href="_i_o_8h.html" title=" " alt="" coords="548,169,595,196"/>
-<area shape="rect" title=" " alt="" coords="192,468,247,495"/>
-<area shape="rect" title=" " alt="" coords="87,244,149,271"/>
-<area shape="rect" href="_errors_8h.html" title=" " alt="" coords="276,393,344,420"/>
-<area shape="rect" title=" " alt="" coords="373,468,452,495"/>
-<area shape="rect" title=" " alt="" coords="271,468,349,495"/>
-<area shape="rect" title=" " alt="" coords="935,244,994,271"/>
-<area shape="rect" title=" " alt="" coords="874,468,946,495"/>
-<area shape="rect" title=" " alt="" coords="326,244,393,271"/>
-<area shape="rect" title=" " alt="" coords="417,244,582,271"/>
-<area shape="rect" href="_strings_8h.html" title=" " alt="" coords="606,244,681,271"/>
-<area shape="rect" title=" " alt="" coords="274,319,343,345"/>
-<area shape="rect" title=" " alt="" coords="419,319,476,345"/>
-<area shape="rect" title=" " alt="" coords="501,319,551,345"/>
-<area shape="rect" title=" " alt="" coords="576,319,623,345"/>
-<area shape="rect" title=" " alt="" coords="754,319,794,345"/>
-<area shape="rect" title=" " alt="" coords="819,319,884,345"/>
-<area shape="rect" href="_numerics_8h.html" title=" " alt="" coords="557,393,647,420"/>
-<area shape="rect" href="_random_8h.html" title=" " alt="" coords="647,319,730,345"/>
-<area shape="rect" href="_vector3_d_8h.html" title=" " alt="" coords="909,319,997,345"/>
-<area shape="rect" title=" " alt="" coords="660,468,725,495"/>
-<area shape="rect" title=" " alt="" coords="566,468,635,495"/>
-<area shape="rect" title=" " alt="" coords="479,468,541,495"/>
-<area shape="rect" title=" " alt="" coords="727,393,805,420"/>
-<area shape="rect" title=" " alt="" coords="923,393,982,420"/>
+<area shape="rect" title=" " alt="" coords="1017,5,1215,47"/>
+<area shape="rect" title=" " alt="" coords="5,319,67,345"/>
+<area shape="rect" title=" " alt="" coords="1293,319,1352,345"/>
+<area shape="rect" title=" " alt="" coords="328,244,387,271"/>
+<area shape="rect" title=" " alt="" coords="1389,319,1515,345"/>
+<area shape="rect" href="_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="828,95,903,121"/>
+<area shape="rect" href="_coroutines_8h.html" title=" " alt="" coords="1068,95,1164,121"/>
+<area shape="rect" href="_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="1269,244,1376,271"/>
+<area shape="rect" title=" " alt="" coords="832,169,899,196"/>
+<area shape="rect" href="_fleet_args_8h.html" title=" " alt="" coords="1155,244,1245,271"/>
+<area shape="rect" href="_timing_8h.html" title=" " alt="" coords="411,319,483,345"/>
+<area shape="rect" href="_i_o_8h.html" title=" " alt="" coords="759,169,806,196"/>
+<area shape="rect" title=" " alt="" coords="1134,468,1189,495"/>
+<area shape="rect" title=" " alt="" coords="689,393,751,420"/>
+<area shape="rect" href="_errors_8h.html" title=" " alt="" coords="493,393,561,420"/>
+<area shape="rect" title=" " alt="" coords="565,468,643,495"/>
+<area shape="rect" title=" " alt="" coords="462,468,541,495"/>
+<area shape="rect" title=" " alt="" coords="72,468,144,495"/>
+<area shape="rect" title=" " alt="" coords="749,244,816,271"/>
+<area shape="rect" title=" " alt="" coords="461,244,627,271"/>
+<area shape="rect" href="_strings_8h.html" title=" " alt="" coords="651,244,725,271"/>
+<area shape="rect" title=" " alt="" coords="507,319,576,345"/>
+<area shape="rect" title=" " alt="" coords="1041,319,1098,345"/>
+<area shape="rect" title=" " alt="" coords="600,319,651,345"/>
+<area shape="rect" title=" " alt="" coords="970,319,1017,345"/>
+<area shape="rect" title=" " alt="" coords="905,319,945,345"/>
+<area shape="rect" title=" " alt="" coords="675,319,741,345"/>
+<area shape="rect" href="_numerics_8h.html" title=" " alt="" coords="225,393,314,420"/>
+<area shape="rect" href="_random_8h.html" title=" " alt="" coords="304,319,387,345"/>
+<area shape="rect" href="_vector3_d_8h.html" title=" " alt="" coords="141,319,229,345"/>
+<area shape="rect" href="_miscellaneous_8h.html" title=" " alt="" coords="765,319,881,345"/>
+<area shape="rect" title=" " alt="" coords="370,468,435,495"/>
+<area shape="rect" title=" " alt="" coords="269,468,339,495"/>
+<area shape="rect" title=" " alt="" coords="182,468,245,495"/>
+<area shape="rect" title=" " alt="" coords="338,393,417,420"/>
+<area shape="rect" title=" " alt="" coords="141,393,200,420"/>
+<area shape="rect" title=" " alt="" coords="1125,169,1200,196"/>
+<area shape="rect" title=" " alt="" coords="1225,169,1325,196"/>
+<area shape="rect" href="_top_n_8h.html" title=" " alt="" coords="1037,169,1101,196"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -121,15 +132,18 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_parallel_inference_interface_8h__dep__incl.png" border="0" usemap="#src_2_inference_2_parallel_inference_interface_8hdep" alt=""/></div>
 <map name="src_2_inference_2_parallel_inference_interface_8hdep" id="src_2_inference_2_parallel_inference_interface_8hdep">
-<area shape="rect" title=" " alt="" coords="355,5,553,47"/>
-<area shape="rect" href="_beam_search_8h.html" title="This is an implementation of beam search that maintains a priority queue of partial states and attemp..." alt="" coords="5,95,193,121"/>
-<area shape="rect" href="_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="218,95,391,121"/>
-<area shape="rect" href="_inference_2_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="340,169,515,211"/>
-<area shape="rect" href="_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree." alt="" coords="539,177,689,203"/>
-<area shape="rect" href="_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="517,95,711,121"/>
-<area shape="rect" href="_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="735,95,938,121"/>
-<area shape="rect" href="_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="99,177,315,203"/>
-<area shape="rect" href="_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="234,259,399,285"/>
+<area shape="rect" title=" " alt="" coords="325,5,524,47"/>
+<area shape="rect" href="_beam_search_8h.html" title="This is an implementation of beam search that maintains a priority queue of partial states and attemp..." alt="" coords="5,102,193,129"/>
+<area shape="rect" href="_inference_2_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="107,184,281,225"/>
+<area shape="rect" href="_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="269,95,413,136"/>
+<area shape="rect" href="_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="437,95,581,136"/>
+<area shape="rect" href="_m_c_t_s_base_8h.html" title=" " alt="" coords="611,184,751,225"/>
+<area shape="rect" href="_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="655,102,850,129"/>
+<area shape="rect" href="_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="231,281,397,307"/>
+<area shape="rect" href="_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="306,184,450,225"/>
+<area shape="rect" href="_full_m_c_t_s_node_8h.html" title=" " alt="" coords="441,273,581,315"/>
+<area shape="rect" href="_minimal_m_c_t_s_node_8h.html" title=" " alt="" coords="605,273,756,315"/>
+<area shape="rect" href="_partial_m_c_t_s_node_8h.html" title=" " alt="" coords="780,273,923,315"/>
 </map>
 </div>
 </div>
@@ -137,7 +151,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_inference_interface.html">ParallelInferenceInterface&lt; Args &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_inference_interface.html">ParallelInferenceInterface&lt; X, Args &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->

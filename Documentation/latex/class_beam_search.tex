@@ -1,0 +1,151 @@
+\hypertarget{class_beam_search}{}\doxysection{Beam\+Search$<$ H\+YP $>$ Class Template Reference}
+\label{class_beam_search}\index{BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}}
+
+
+{\ttfamily \#include $<$Beam\+Search.\+h$>$}
+
+
+
+Inheritance diagram for Beam\+Search$<$ H\+YP $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{class_beam_search__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Beam\+Search$<$ H\+YP $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=306pt]{class_beam_search__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_beam_search_a407b7a30d05141dbb4f63f283fd6e508}{Beam\+Search}} (H\+YP \&h0, typename H\+Y\+P\+::data\+\_\+t $\ast$d, double temp)
+\item 
+void \mbox{\hyperlink{class_beam_search_a940779167e7a2c0ab8c00c28b252c756}{add}} (H\+YP \&h)
+\item 
+void \mbox{\hyperlink{class_beam_search_acbd33a47b1b29686a638d5a1bc9c7b53}{add}} (H\+YP \&\&h)
+\item 
+\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ H\+YP \& $>$ \mbox{\hyperlink{class_beam_search_a2e679c493c15a3546a117a62e89461b9}{run\+\_\+thread}} (\mbox{\hyperlink{struct_control}{Control}} ctl) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_top_n}{TopN}}$<$ H\+YP $>$ \mbox{\hyperlink{class_beam_search_ac7987d3b9f3defbbbe88eaa4c6af549b}{Q}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr size\+\_\+t \mbox{\hyperlink{class_beam_search_a54677e3d944f43280c2e4693fcb5c987}{N}} = 1000000
+\item 
+static constexpr size\+\_\+t \mbox{\hyperlink{class_beam_search_aa97a46341c94404a897a06bcf9976257}{N\+\_\+\+R\+E\+PS}} = 10
+\item 
+static constexpr double \mbox{\hyperlink{class_beam_search_aa9134c56eb820ed8b2e273b7b08dd5ea}{P\+A\+R\+E\+N\+T\+\_\+\+P\+E\+N\+A\+L\+TY}} = 1.\+1
+\item 
+static double \mbox{\hyperlink{class_beam_search_af3482d61fda2fe73492be25524db436e}{temperature}} = 100.\+0
+\item 
+static H\+Y\+P\+::data\+\_\+t $\ast$ \mbox{\hyperlink{class_beam_search_a1516f105e4b3fb57ac3071013f51b10c}{data}} = nullptr
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename H\+YP$>$\newline
+class Beam\+Search$<$ H\+Y\+P $>$}
+
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+07/06/20 
+\end{DoxyDate}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_beam_search_a407b7a30d05141dbb4f63f283fd6e508}\label{class_beam_search_a407b7a30d05141dbb4f63f283fd6e508}} 
+\index{BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}!BeamSearch@{BeamSearch}}
+\index{BeamSearch@{BeamSearch}!BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{BeamSearch()}{BeamSearch()}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+\mbox{\hyperlink{class_beam_search}{Beam\+Search}}$<$ H\+YP $>$\+::\mbox{\hyperlink{class_beam_search}{Beam\+Search}} (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{double}]{temp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_beam_search_acbd33a47b1b29686a638d5a1bc9c7b53}\label{class_beam_search_acbd33a47b1b29686a638d5a1bc9c7b53}} 
+\index{BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}!add@{add}}
+\index{add@{add}!BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+void \mbox{\hyperlink{class_beam_search}{Beam\+Search}}$<$ H\+YP $>$\+::add (\begin{DoxyParamCaption}\item[{H\+YP \&\&}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_beam_search_a940779167e7a2c0ab8c00c28b252c756}\label{class_beam_search_a940779167e7a2c0ab8c00c28b252c756}} 
+\index{BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}!add@{add}}
+\index{add@{add}!BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+void \mbox{\hyperlink{class_beam_search}{Beam\+Search}}$<$ H\+YP $>$\+::add (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_beam_search_a2e679c493c15a3546a117a62e89461b9}\label{class_beam_search_a2e679c493c15a3546a117a62e89461b9}} 
+\index{BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}!run\_thread@{run\_thread}}
+\index{run\_thread@{run\_thread}!BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{run\_thread()}{run\_thread()}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$H\+YP\&$>$ \mbox{\hyperlink{class_beam_search}{Beam\+Search}}$<$ H\+YP $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_beam_search_a1516f105e4b3fb57ac3071013f51b10c}\label{class_beam_search_a1516f105e4b3fb57ac3071013f51b10c}} 
+\index{BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}!data@{data}}
+\index{data@{data}!BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+H\+Y\+P\+::data\+\_\+t $\ast$ \mbox{\hyperlink{class_beam_search}{Beam\+Search}}$<$ H\+YP $>$\+::data = nullptr\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_beam_search_a54677e3d944f43280c2e4693fcb5c987}\label{class_beam_search_a54677e3d944f43280c2e4693fcb5c987}} 
+\index{BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}!N@{N}}
+\index{N@{N}!BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{N}{N}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+constexpr size\+\_\+t \mbox{\hyperlink{class_beam_search}{Beam\+Search}}$<$ H\+YP $>$\+::N = 1000000\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{class_beam_search_aa97a46341c94404a897a06bcf9976257}\label{class_beam_search_aa97a46341c94404a897a06bcf9976257}} 
+\index{BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}!N\_REPS@{N\_REPS}}
+\index{N\_REPS@{N\_REPS}!BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{N\_REPS}{N\_REPS}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+constexpr size\+\_\+t \mbox{\hyperlink{class_beam_search}{Beam\+Search}}$<$ H\+YP $>$\+::N\+\_\+\+R\+E\+PS = 10\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{class_beam_search_aa9134c56eb820ed8b2e273b7b08dd5ea}\label{class_beam_search_aa9134c56eb820ed8b2e273b7b08dd5ea}} 
+\index{BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}!PARENT\_PENALTY@{PARENT\_PENALTY}}
+\index{PARENT\_PENALTY@{PARENT\_PENALTY}!BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{PARENT\_PENALTY}{PARENT\_PENALTY}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+constexpr double \mbox{\hyperlink{class_beam_search}{Beam\+Search}}$<$ H\+YP $>$\+::P\+A\+R\+E\+N\+T\+\_\+\+P\+E\+N\+A\+L\+TY = 1.\+1\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{class_beam_search_ac7987d3b9f3defbbbe88eaa4c6af549b}\label{class_beam_search_ac7987d3b9f3defbbbe88eaa4c6af549b}} 
+\index{BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}!Q@{Q}}
+\index{Q@{Q}!BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{Q}{Q}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+\mbox{\hyperlink{class_top_n}{TopN}}$<$H\+YP$>$ \mbox{\hyperlink{class_beam_search}{Beam\+Search}}$<$ H\+YP $>$\+::Q}
+
+\mbox{\Hypertarget{class_beam_search_af3482d61fda2fe73492be25524db436e}\label{class_beam_search_af3482d61fda2fe73492be25524db436e}} 
+\index{BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}!temperature@{temperature}}
+\index{temperature@{temperature}!BeamSearch$<$ HYP $>$@{BeamSearch$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{temperature}{temperature}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+double \mbox{\hyperlink{class_beam_search}{Beam\+Search}}$<$ H\+YP $>$\+::temperature = 100.\+0\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Inference/\mbox{\hyperlink{_beam_search_8h}{Beam\+Search.\+h}}\end{DoxyCompactItemize}

@@ -5,31 +5,28 @@
 {\ttfamily \#include $<$array$>$}\newline
 {\ttfamily \#include $<$map$>$}\newline
 {\ttfamily \#include $<$set$>$}\newline
+{\ttfamily \#include $<$atomic$>$}\newline
 {\ttfamily \#include $<$string.\+h$>$}\newline
 {\ttfamily \#include \char`\"{}Numerics.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Random.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Vector3\+D.\+h\char`\"{}}\newline
-Include dependency graph for Strings.\+h\+:\nopagebreak
+{\ttfamily \#include \char`\"{}Miscellaneous.\+h\char`\"{}}\newline
+Include dependency graph for Strings.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_strings_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_strings_8h__dep__incl}
 \end{center}
 \end{figure}
-\doxysubsection*{Classes}
-\begin{DoxyCompactItemize}
-\item 
-struct \mbox{\hyperlink{structis__specialization}{is\+\_\+specialization$<$ Test, Ref $>$}}
-\item 
-struct \mbox{\hyperlink{structis__specialization_3_01_ref_3_01_args_8_8_8_01_4_00_01_ref_01_4}{is\+\_\+specialization$<$ Ref$<$ Args... $>$, Ref $>$}}
-\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -41,9 +38,15 @@ std\+::string \mbox{\hyperlink{_strings_8h_a21b313a5a03eda533ac68a4501c68c17}{st
 \item 
 {\footnotesize template$<$typename... T$>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_af4fcc184e9e474c84204591dd7c95f1c}{str}} (const std\+::tuple$<$ T... $>$ \&x)
 \item 
+{\footnotesize template$<$typename A , typename B $>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_ab510ae4356ff2e0f94525500dcdb9ada}{str}} (const std\+::pair$<$ A, B $>$ x)
+\item 
 {\footnotesize template$<$typename T , size\+\_\+t N$>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_a66fc50785d7283d32f7f2e039e31b982}{str}} (const std\+::array$<$ T, N $>$ \&a)
 \item 
 {\footnotesize template$<$typename T $>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_ac841190187b17808b2c4a82ecde6a140}{str}} (const std\+::vector$<$ T $>$ \&a)
+\item 
+{\footnotesize template$<$typename T , typename U $>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_ac9fcb52c2f5a3b3dee61e4f5d3fdc1ff}{str}} (const std\+::map$<$ T, U $>$ \&a)
+\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_affc7c2f6347e86df8696c3b14f4e0f58}{str}} (const std\+::atomic$<$ T $>$ \&a)
 \item 
 {\footnotesize template$<$typename T $>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_a74a3109333f6ec7fc237e492a524da6a}{to\+\_\+string\+\_\+with\+\_\+precision}} (const T a\+\_\+value, const int n=14)
 \item 
@@ -61,7 +64,7 @@ std\+::pair$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{_strings_8h_af8
 \item 
 unsigned int \mbox{\hyperlink{_strings_8h_a51fc480ff96576142fbe0c1a5fc9114b}{levenshtein\+\_\+distance}} (const std\+::string \&s1, const std\+::string \&s2)
 \item 
-size\+\_\+t \mbox{\hyperlink{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}{count}} (const std\+::string \&\mbox{\hyperlink{_strings_8h_ac841190187b17808b2c4a82ecde6a140}{str}}, const std\+::string \&sub)
+size\+\_\+t \mbox{\hyperlink{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}{count}} (const std\+::string \&\mbox{\hyperlink{_strings_8h_affc7c2f6347e86df8696c3b14f4e0f58}{str}}, const std\+::string \&sub)
 \item 
 std\+::string \mbox{\hyperlink{_strings_8h_a95521755321516e684a5bf762eb001d7}{reverse}} (std\+::string x)
 \item 
@@ -73,7 +76,7 @@ double \mbox{\hyperlink{_strings_8h_ac4b9409cdfb6a213710a66f0c02d5792}{p\+\_\+\+
 \begin{DoxyCompactList}\small\item\em The string probability model from Kashyap \& Oommen, 1983, basically giving a string edit distance that is a probability model. This could really use some unit tests, but it is hard to find implementations. \end{DoxyCompactList}\item 
 {\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{_strings_8h_aa8cda3705f8674293669932185337ebb}{string\+\_\+to}} (const std\+::string s)
 \begin{DoxyCompactList}\small\item\em Fleet includes this templated function to allow us to convert strings to a variety of formats. This is mostly used for reading data from text files. This recursively will unpack containers with some standard delimiters. Since it can handle Fleet types (e.\+g. defaultdata\+\_\+t) it can be used to unpack data stored in strings (see e.\+g. Models/\+Sorting) \end{DoxyCompactList}\item 
-template$<$$>$ std\+::string \mbox{\hyperlink{_strings_8h_ad1dfc3165dc24230d4269628a84ff58f}{string\+\_\+to}} (const std\+::string s)
+template$<$$>$ std\+::string \mbox{\hyperlink{_strings_8h_a9f6ea497303a7870c262ce682a282fb3}{string\+\_\+to}} (const std\+::string s)
 \end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -171,7 +174,7 @@ Probability of converting x into y by deleting some number (each with del\+\_\+p
 \hline
 {\em add\+\_\+p} & -\/ probability of adding (geometric) \\
 \hline
-{\em alpha\+\_\+n} & -\/ size of alphabet \\
+{\em log\+\_\+alphabet} & -\/ log of the size of alphabet \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -272,9 +275,54 @@ Split iwith a fixed return size, useful in parsing csv.
 \mbox{\Hypertarget{_strings_8h_a66fc50785d7283d32f7f2e039e31b982}\label{_strings_8h_a66fc50785d7283d32f7f2e039e31b982}} 
 \index{Strings.h@{Strings.h}!str@{str}}
 \index{str@{str}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [1/9]}}
 {\footnotesize\ttfamily template$<$typename T , size\+\_\+t N$>$ \\
 std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::array$<$ T, N $>$ \&}]{a }\end{DoxyParamCaption})}
+
+A pythonesque string function 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{_strings_8h_affc7c2f6347e86df8696c3b14f4e0f58}\label{_strings_8h_affc7c2f6347e86df8696c3b14f4e0f58}} 
+\index{Strings.h@{Strings.h}!str@{str}}
+\index{str@{str}!Strings.h@{Strings.h}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [2/9]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::atomic$<$ T $>$ \&}]{a }\end{DoxyParamCaption})}
+
+A pythonesque string function 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{_strings_8h_ac9fcb52c2f5a3b3dee61e4f5d3fdc1ff}\label{_strings_8h_ac9fcb52c2f5a3b3dee61e4f5d3fdc1ff}} 
+\index{Strings.h@{Strings.h}!str@{str}}
+\index{str@{str}!Strings.h@{Strings.h}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [3/9]}}
+{\footnotesize\ttfamily template$<$typename T , typename U $>$ \\
+std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::map$<$ T, U $>$ \&}]{a }\end{DoxyParamCaption})}
+
+A pythonesque string function 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{_strings_8h_ab510ae4356ff2e0f94525500dcdb9ada}\label{_strings_8h_ab510ae4356ff2e0f94525500dcdb9ada}} 
+\index{Strings.h@{Strings.h}!str@{str}}
+\index{str@{str}!Strings.h@{Strings.h}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [4/9]}}
+{\footnotesize\ttfamily template$<$typename A , typename B $>$ \\
+std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::pair$<$ A, B $>$}]{x }\end{DoxyParamCaption})}
 
 A pythonesque string function 
 \begin{DoxyParams}{Parameters}
@@ -287,13 +335,13 @@ A pythonesque string function
 \mbox{\Hypertarget{_strings_8h_a21b313a5a03eda533ac68a4501c68c17}\label{_strings_8h_a21b313a5a03eda533ac68a4501c68c17}} 
 \index{Strings.h@{Strings.h}!str@{str}}
 \index{str@{str}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [5/9]}}
 {\footnotesize\ttfamily std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{x }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_strings_8h_af4fcc184e9e474c84204591dd7c95f1c}\label{_strings_8h_af4fcc184e9e474c84204591dd7c95f1c}} 
 \index{Strings.h@{Strings.h}!str@{str}}
 \index{str@{str}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [6/9]}}
 {\footnotesize\ttfamily template$<$typename... T$>$ \\
 std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::tuple$<$ T... $>$ \&}]{x }\end{DoxyParamCaption})}
 
@@ -308,7 +356,7 @@ A pythonesque string function
 \mbox{\Hypertarget{_strings_8h_a9ab3d622399a5cd1e9fbaf8f38d8d394}\label{_strings_8h_a9ab3d622399a5cd1e9fbaf8f38d8d394}} 
 \index{Strings.h@{Strings.h}!str@{str}}
 \index{str@{str}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [7/9]}}
 {\footnotesize\ttfamily template$<$typename... T, size\+\_\+t... I$>$ \\
 std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::tuple$<$ T... $>$ \&}]{x,  }\item[{std\+::index\+\_\+sequence$<$ I... $>$}]{idx }\end{DoxyParamCaption})}
 
@@ -323,7 +371,7 @@ A pythonesque string function
 \mbox{\Hypertarget{_strings_8h_ac841190187b17808b2c4a82ecde6a140}\label{_strings_8h_ac841190187b17808b2c4a82ecde6a140}} 
 \index{Strings.h@{Strings.h}!str@{str}}
 \index{str@{str}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [5/6]}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [8/9]}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{a }\end{DoxyParamCaption})}
 
@@ -338,7 +386,7 @@ A pythonesque string function
 \mbox{\Hypertarget{_strings_8h_a4bc77a6f47e3046cc934b49f5e03a56f}\label{_strings_8h_a4bc77a6f47e3046cc934b49f5e03a56f}} 
 \index{Strings.h@{Strings.h}!str@{str}}
 \index{str@{str}!Strings.h@{Strings.h}}
-\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [6/6]}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [9/9]}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 std\+::string str (\begin{DoxyParamCaption}\item[{T}]{x }\end{DoxyParamCaption})}
 
@@ -369,12 +417,12 @@ Fleet includes this templated function to allow us to convert strings to a varie
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{_strings_8h_ad1dfc3165dc24230d4269628a84ff58f}\label{_strings_8h_ad1dfc3165dc24230d4269628a84ff58f}} 
+\mbox{\Hypertarget{_strings_8h_a9f6ea497303a7870c262ce682a282fb3}\label{_strings_8h_a9f6ea497303a7870c262ce682a282fb3}} 
 \index{Strings.h@{Strings.h}!string\_to@{string\_to}}
 \index{string\_to@{string\_to}!Strings.h@{Strings.h}}
 \doxysubsubsection{\texorpdfstring{string\_to()}{string\_to()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily template$<$$>$ \\
-float string\+\_\+to (\begin{DoxyParamCaption}\item[{const std\+::string}]{s }\end{DoxyParamCaption})}
+bool string\+\_\+to (\begin{DoxyParamCaption}\item[{const std\+::string}]{s }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_strings_8h_a74a3109333f6ec7fc237e492a524da6a}\label{_strings_8h_a74a3109333f6ec7fc237e492a524da6a}} 
 \index{Strings.h@{Strings.h}!to\_string\_with\_precision@{to\_string\_with\_precision}}

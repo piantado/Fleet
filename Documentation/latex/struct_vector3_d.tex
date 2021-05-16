@@ -1,0 +1,154 @@
+\hypertarget{struct_vector3_d}{}\doxysection{Vector3D$<$ T $>$ Class Template Reference}
+\label{struct_vector3_d}\index{Vector3D$<$ T $>$@{Vector3D$<$ T $>$}}
+
+
+Like \mbox{\hyperlink{struct_vector2_d}{Vector2D}}, but one dimension bigger. T\+O\+DO\+: Replace this and \mbox{\hyperlink{struct_vector2_d}{Vector2D}} with a template please.  
+
+
+
+
+{\ttfamily \#include $<$Vector3\+D.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_vector3_d_abce4fda8bdc463b11d37c9ee2b30bd70}{Vector3D}} ()
+\item 
+\mbox{\hyperlink{struct_vector3_d_a325d2b16951007a17c02250d29552381}{Vector3D}} (int x, int y, int z)
+\item 
+void \mbox{\hyperlink{struct_vector3_d_a6ddbe1e249df33761a73dccd3fbf1fca}{fill}} (T v)
+\item 
+void \mbox{\hyperlink{struct_vector3_d_a54fcdb790037360f2255268a385c91f0}{resize}} (int x, int y, int z)
+\item 
+void \mbox{\hyperlink{struct_vector3_d_aa335fc643197af135c377a2076c0d08f}{reserve}} (int x, int y, int z)
+\item 
+T \& \mbox{\hyperlink{struct_vector3_d_a622fc5206edd1d8a4b21736fda9db271}{at}} (const int x, const int y, const int z)
+\item 
+T \& \mbox{\hyperlink{struct_vector3_d_a1d1ea64bb32652a1176466e9989687c4}{operator()}} (const int x, const int y, const int z)
+\item 
+{\footnotesize template$<$typename X $>$ }\\void \mbox{\hyperlink{struct_vector3_d_a76ce2dd222bdcab670e3a60a42784a97}{operator\mbox{[}$\,$\mbox{]}}} (\mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}} x)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{struct_vector3_d_a104db3f8b1efe7e3c9ffafeac668767b}{xsize}} = 0
+\item 
+int \mbox{\hyperlink{struct_vector3_d_a0fb31a4ed79a23a6df1b8c633a23e754}{ysize}} = 0
+\item 
+int \mbox{\hyperlink{struct_vector3_d_a22f98dd3441d2a7377475bbaab0abeb2}{zsize}} = 0
+\item 
+std\+::vector$<$ T $>$ \mbox{\hyperlink{struct_vector3_d_a0712e2153f17fd4919160dd66df8cc2b}{value}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Vector3\+D$<$ T $>$}
+
+Like \mbox{\hyperlink{struct_vector2_d}{Vector2D}}, but one dimension bigger. T\+O\+DO\+: Replace this and \mbox{\hyperlink{struct_vector2_d}{Vector2D}} with a template please. 
+
+\begin{DoxyAuthor}{Author}
+Steven Piantadosi 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+09/08/20 
+\end{DoxyDate}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{struct_vector3_d_abce4fda8bdc463b11d37c9ee2b30bd70}\label{struct_vector3_d_abce4fda8bdc463b11d37c9ee2b30bd70}} 
+\index{Vector3D$<$ T $>$@{Vector3D$<$ T $>$}!Vector3D@{Vector3D}}
+\index{Vector3D@{Vector3D}!Vector3D$<$ T $>$@{Vector3D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Vector3D()}{Vector3D()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{struct_vector3_d}{Vector3D}}$<$ T $>$\+::\mbox{\hyperlink{struct_vector3_d}{Vector3D}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{struct_vector3_d_a325d2b16951007a17c02250d29552381}\label{struct_vector3_d_a325d2b16951007a17c02250d29552381}} 
+\index{Vector3D$<$ T $>$@{Vector3D$<$ T $>$}!Vector3D@{Vector3D}}
+\index{Vector3D@{Vector3D}!Vector3D$<$ T $>$@{Vector3D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Vector3D()}{Vector3D()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{struct_vector3_d}{Vector3D}}$<$ T $>$\+::\mbox{\hyperlink{struct_vector3_d}{Vector3D}} (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_vector3_d_a622fc5206edd1d8a4b21736fda9db271}\label{struct_vector3_d_a622fc5206edd1d8a4b21736fda9db271}} 
+\index{Vector3D$<$ T $>$@{Vector3D$<$ T $>$}!at@{at}}
+\index{at@{at}!Vector3D$<$ T $>$@{Vector3D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{at()}{at()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T\& \mbox{\hyperlink{struct_vector3_d}{Vector3D}}$<$ T $>$\+::at (\begin{DoxyParamCaption}\item[{const int}]{x,  }\item[{const int}]{y,  }\item[{const int}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{struct_vector3_d_a6ddbe1e249df33761a73dccd3fbf1fca}\label{struct_vector3_d_a6ddbe1e249df33761a73dccd3fbf1fca}} 
+\index{Vector3D$<$ T $>$@{Vector3D$<$ T $>$}!fill@{fill}}
+\index{fill@{fill}!Vector3D$<$ T $>$@{Vector3D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{fill()}{fill()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{struct_vector3_d}{Vector3D}}$<$ T $>$\+::fill (\begin{DoxyParamCaption}\item[{T}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{struct_vector3_d_a1d1ea64bb32652a1176466e9989687c4}\label{struct_vector3_d_a1d1ea64bb32652a1176466e9989687c4}} 
+\index{Vector3D$<$ T $>$@{Vector3D$<$ T $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!Vector3D$<$ T $>$@{Vector3D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T\& \mbox{\hyperlink{struct_vector3_d}{Vector3D}}$<$ T $>$\+::operator() (\begin{DoxyParamCaption}\item[{const int}]{x,  }\item[{const int}]{y,  }\item[{const int}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{struct_vector3_d_a76ce2dd222bdcab670e3a60a42784a97}\label{struct_vector3_d_a76ce2dd222bdcab670e3a60a42784a97}} 
+\index{Vector3D$<$ T $>$@{Vector3D$<$ T $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!Vector3D$<$ T $>$@{Vector3D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename X $>$ \\
+void \mbox{\hyperlink{struct_vector3_d}{Vector3D}}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{struct_vector3_d_aa335fc643197af135c377a2076c0d08f}\label{struct_vector3_d_aa335fc643197af135c377a2076c0d08f}} 
+\index{Vector3D$<$ T $>$@{Vector3D$<$ T $>$}!reserve@{reserve}}
+\index{reserve@{reserve}!Vector3D$<$ T $>$@{Vector3D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{reserve()}{reserve()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{struct_vector3_d}{Vector3D}}$<$ T $>$\+::reserve (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{struct_vector3_d_a54fcdb790037360f2255268a385c91f0}\label{struct_vector3_d_a54fcdb790037360f2255268a385c91f0}} 
+\index{Vector3D$<$ T $>$@{Vector3D$<$ T $>$}!resize@{resize}}
+\index{resize@{resize}!Vector3D$<$ T $>$@{Vector3D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{resize()}{resize()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{struct_vector3_d}{Vector3D}}$<$ T $>$\+::resize (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_vector3_d_a0712e2153f17fd4919160dd66df8cc2b}\label{struct_vector3_d_a0712e2153f17fd4919160dd66df8cc2b}} 
+\index{Vector3D$<$ T $>$@{Vector3D$<$ T $>$}!value@{value}}
+\index{value@{value}!Vector3D$<$ T $>$@{Vector3D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{value}{value}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$T$>$ \mbox{\hyperlink{struct_vector3_d}{Vector3D}}$<$ T $>$\+::value}
+
+\mbox{\Hypertarget{struct_vector3_d_a104db3f8b1efe7e3c9ffafeac668767b}\label{struct_vector3_d_a104db3f8b1efe7e3c9ffafeac668767b}} 
+\index{Vector3D$<$ T $>$@{Vector3D$<$ T $>$}!xsize@{xsize}}
+\index{xsize@{xsize}!Vector3D$<$ T $>$@{Vector3D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{xsize}{xsize}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{struct_vector3_d}{Vector3D}}$<$ T $>$\+::xsize = 0}
+
+\mbox{\Hypertarget{struct_vector3_d_a0fb31a4ed79a23a6df1b8c633a23e754}\label{struct_vector3_d_a0fb31a4ed79a23a6df1b8c633a23e754}} 
+\index{Vector3D$<$ T $>$@{Vector3D$<$ T $>$}!ysize@{ysize}}
+\index{ysize@{ysize}!Vector3D$<$ T $>$@{Vector3D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{ysize}{ysize}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{struct_vector3_d}{Vector3D}}$<$ T $>$\+::ysize = 0}
+
+\mbox{\Hypertarget{struct_vector3_d_a22f98dd3441d2a7377475bbaab0abeb2}\label{struct_vector3_d_a22f98dd3441d2a7377475bbaab0abeb2}} 
+\index{Vector3D$<$ T $>$@{Vector3D$<$ T $>$}!zsize@{zsize}}
+\index{zsize@{zsize}!Vector3D$<$ T $>$@{Vector3D$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{zsize}{zsize}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{struct_vector3_d}{Vector3D}}$<$ T $>$\+::zsize = 0}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Containers/\mbox{\hyperlink{_vector3_d_8h}{Vector3\+D.\+h}}\end{DoxyCompactItemize}

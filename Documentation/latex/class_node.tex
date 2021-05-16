@@ -6,7 +6,8 @@
 
 
 
-Inheritance diagram for Node\+:\nopagebreak
+Inheritance diagram for Node\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -15,7 +16,8 @@ Inheritance diagram for Node\+:\nopagebreak
 \end{figure}
 
 
-Collaboration diagram for Node\+:\nopagebreak
+Collaboration diagram for Node\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -64,8 +66,6 @@ virtual bool \mbox{\hyperlink{class_node_ac2e36754ba8b1b1d452deeb2bdbd346f}{is\+
 virtual std\+::string \mbox{\hyperlink{class_node_a5d2a0e17dd2a00a79e6d1f763c9114d0}{string}} (bool usedot=true) const override
 \item 
 virtual std\+::string \mbox{\hyperlink{class_node_a70e879ceb71f47787137572d9bee8efa}{parseable}} () const
-\item 
-virtual size\+\_\+t \mbox{\hyperlink{class_node_a377548bcf1be99ac5181f9434c33c81e}{program\+\_\+size}} () const
 \item 
 {\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\int \mbox{\hyperlink{class_node_a2300ca04a56aeca14977915c4de0f53e}{linearize}} (Program \&program) const
 \item 
@@ -265,16 +265,7 @@ Reimplemented from \mbox{\hyperlink{class_base_node_a33bb5c59122f6b2778d39a0eaa0
 \doxysubsubsection{\texorpdfstring{parseable()}{parseable()}}
 {\footnotesize\ttfamily virtual std\+::string Node\+::parseable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-Create a string that can be parsed according to \mbox{\hyperlink{class_grammar_acd13159e6ec71f73b5398ba5a56ac109}{Grammar.\+expand\+\_\+from\+\_\+names}} \begin{DoxyReturn}{Returns}
-
-\end{DoxyReturn}
-\mbox{\Hypertarget{class_node_a377548bcf1be99ac5181f9434c33c81e}\label{class_node_a377548bcf1be99ac5181f9434c33c81e}} 
-\index{Node@{Node}!program\_size@{program\_size}}
-\index{program\_size@{program\_size}!Node@{Node}}
-\doxysubsubsection{\texorpdfstring{program\_size()}{program\_size()}}
-{\footnotesize\ttfamily virtual size\+\_\+t Node\+::program\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
-
-How big of a program does this correspond to? This is mostly the number of nodes, except that short-\/circuit evaluation of IF makes things a little more complex. \begin{DoxyReturn}{Returns}
+Create a string that can be parsed according to \mbox{\hyperlink{class_grammar_a63a4c7f6584fdd70aaa2882a19c2f04f}{Grammar.\+from\+\_\+parseable}} \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_node_a486882370d2c9592c6eabb52a3289253}\label{class_node_a486882370d2c9592c6eabb52a3289253}} 

@@ -1,14 +1,16 @@
 \hypertarget{_builtins_8h}{}\doxysection{src/\+Builtins.h File Reference}
 \label{_builtins_8h}\index{src/Builtins.h@{src/Builtins.h}}
 {\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
-Include dependency graph for Builtins.\+h\+:\nopagebreak
+Include dependency graph for Builtins.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=275pt]{_builtins_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -28,7 +30,7 @@ struct \mbox{\hyperlink{struct_builtin}{Builtin$<$ T, args $>$}}
 \doxysubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
-\#define \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}}~+\mbox{[}$\,$\mbox{]}(Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t$\ast$ vms, int arg) -\/$>$ void
+\#define \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}}~+\mbox{[}$\,$\mbox{]}(typename Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t$\ast$ vms, int arg) -\/$>$ void
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -41,17 +43,19 @@ struct \mbox{\hyperlink{struct_builtin}{Builtin$<$ T, args $>$}}
 \item 
 {\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_builtin}{Builtin}}$<$ bool, bool $>$ \mbox{\hyperlink{namespace_builtins_a10d2c0df2341b5de83159178d6902d40}{Builtins\+::\+Not}} (Op\+::\+Not, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ vms-\/$>$push(not vms-\/$>$template getpop$<$ bool $>$());\})
 \item 
-{\footnotesize template$<$typename Grammar\+\_\+t , typename T $>$ }\\\mbox{\hyperlink{struct_builtin}{Builtin}}$<$ T, bool, T, T $>$ \mbox{\hyperlink{namespace_builtins_a9ec375cb1db3ecc268fb6e660ff9975e}{Builtins\+::\+If}} (Op\+::\+If, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ bool b=vms-\/$>$template getpop$<$ bool $>$();if(!b) vms-\/$>$template program.\+popn(arg);else \{\};\})
+{\footnotesize template$<$typename Grammar\+\_\+t , typename T $>$ }\\\mbox{\hyperlink{struct_builtin}{Builtin}}$<$ T, bool, T, T $>$ \mbox{\hyperlink{namespace_builtins_abadd5f4188def3a49ec73f692460c9a2}{Builtins\+::\+If}} (Op\+::\+If, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ bool b=vms-\/$>$template getpop$<$ bool $>$();if(!b) vms-\/$>$program.\+popn(arg);else \{\};\})
 \item 
 {\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_builtin}{Builtin}} \mbox{\hyperlink{namespace_builtins_aabb0d4a3c7b76af0d4cfd24c75b49324}{Builtins\+::\+Jmp}} (Op\+::\+Jmp, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ vms-\/$>$program.\+popn(arg);\})
 \item 
 {\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_builtin}{Builtin}} \mbox{\hyperlink{namespace_builtins_a0253eaae13c4bd9872249f12baa4eb88}{Builtins\+::\+PopX}} (Op\+::\+PopX, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ vms-\/$>$xstack.\+pop();\})
 \item 
-{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_builtin}{Builtin}}$<$ bool $>$ \mbox{\hyperlink{namespace_builtins_afc5e30bbc3268c0f88d8540421d453ff}{Builtins\+::\+Flip}} (Op\+::\+Flip, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ assert(vms-\/$>$pool !=nullptr);vms-\/$>$pool-\/$>$copy\+\_\+increment\+\_\+push(vms, true, -\/\mbox{\hyperlink{_numerics_8h_a86b66aa18326dc4ebe8e36d253c14f40}{L\+O\+G2}});bool b=vms-\/$>$pool-\/$>$increment\+\_\+push(vms, false, -\/\mbox{\hyperlink{_numerics_8h_a86b66aa18326dc4ebe8e36d253c14f40}{L\+O\+G2}});if(b) \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE}};\} else \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE}};\} \})
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_builtin}{Builtin}}$<$ bool $>$ \mbox{\hyperlink{namespace_builtins_afc5e30bbc3268c0f88d8540421d453ff}{Builtins\+::\+Flip}} (Op\+::\+Flip, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ assert(vms-\/$>$pool !=nullptr);vms-\/$>$pool-\/$>$copy\+\_\+increment\+\_\+push(vms, true, -\/\mbox{\hyperlink{_numerics_8h_a1cab50ac2cae826eca1b03bb33eae1f1}{L\+O\+G2}});bool b=vms-\/$>$pool-\/$>$increment\+\_\+push(vms, false, -\/\mbox{\hyperlink{_numerics_8h_a1cab50ac2cae826eca1b03bb33eae1f1}{L\+O\+G2}});if(b) \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE}};\} else \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE}};\} \})
 \item 
 {\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_builtin}{Builtin}}$<$ bool, double $>$ \mbox{\hyperlink{namespace_builtins_a0186ad77a288c4a3bced3c80fc66f9d9}{Builtins\+::\+FlipP}} (Op\+::\+FlipP, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ assert(vms-\/$>$pool !=nullptr);double p=vms-\/$>$template getpop$<$ double $>$();if(std\+::isnan(p)) \{ p=0.\+0;\} assert(p$<$=1.\+0 and p $>$=0.\+0);vms-\/$>$pool-\/$>$copy\+\_\+increment\+\_\+push(vms, true, log(p));bool b=vms-\/$>$pool-\/$>$increment\+\_\+push(vms, false, log(1.\+0-\/p));if(b) \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE}};\} else \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE}};\} \})
 \item 
-{\footnotesize template$<$typename Grammar\+\_\+t , typename output\+\_\+t  = Grammar\+\_\+t\+::output\+\_\+t$>$ }\\\mbox{\hyperlink{struct_builtin}{Builtin}} \mbox{\hyperlink{namespace_builtins_a6ce5deaec3f817041a03bcbae5455d26}{Builtins\+::\+Mem}} (Op\+::\+Mem, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ auto memindex=vms-\/$>$memstack.\+top();vms-\/$>$memstack.\+pop();if(vms-\/$>$\mbox{\hyperlink{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}{mem.\+count}}(memindex)==0) \{ vms-\/$>$mem\mbox{[}memindex\mbox{]}=vms-\/$>$template gettop$<$ output\+\_\+t $>$();\} \})
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_builtin}{Builtin}}$<$ bool, double $>$ \mbox{\hyperlink{namespace_builtins_a83628517c7ca1c349d1f42a40e01793d}{Builtins\+::\+Safe\+FlipP}} (Op\+::\+Safe\+FlipP, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ assert(vms-\/$>$pool !=nullptr);double p=vms-\/$>$template getpop$<$ double $>$();if(std\+::isnan(p)) p=0.\+0;else if(p $>$ 1.\+0) p=1.\+0;else if(p$<$ 0.\+0) p=0;vms-\/$>$pool-\/$>$copy\+\_\+increment\+\_\+push(vms, true, log(p));bool b=vms-\/$>$pool-\/$>$increment\+\_\+push(vms, false, log(1.\+0-\/p));if(b) \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE}};\} else \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE}};\} \})
+\item 
+{\footnotesize template$<$typename Grammar\+\_\+t , typename output\+\_\+t  = typename Grammar\+\_\+t\+::output\+\_\+t$>$ }\\\mbox{\hyperlink{struct_builtin}{Builtin}} \mbox{\hyperlink{namespace_builtins_a6ce5deaec3f817041a03bcbae5455d26}{Builtins\+::\+Mem}} (Op\+::\+Mem, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ auto memindex=vms-\/$>$memstack.\+top();vms-\/$>$memstack.\+pop();if(vms-\/$>$\mbox{\hyperlink{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}{mem.\+count}}(memindex)==0) \{ vms-\/$>$mem\mbox{[}memindex\mbox{]}=vms-\/$>$template gettop$<$ output\+\_\+t $>$();\} \})
 \item 
 {\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_builtin}{Builtin}} \mbox{\hyperlink{namespace_builtins_a16d673425b3dd05c202dbbed7923dc45}{Builtins\+::\+No\+Op}} (Op\+::\+No\+Op, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ \})
 \item 
@@ -70,5 +74,5 @@ struct \mbox{\hyperlink{struct_builtin}{Builtin$<$ T, args $>$}}
 \index{Builtins.h@{Builtins.h}!BUILTIN\_LAMBDA@{BUILTIN\_LAMBDA}}
 \index{BUILTIN\_LAMBDA@{BUILTIN\_LAMBDA}!Builtins.h@{Builtins.h}}
 \doxysubsubsection{\texorpdfstring{BUILTIN\_LAMBDA}{BUILTIN\_LAMBDA}}
-{\footnotesize\ttfamily \#define B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA~+\mbox{[}$\,$\mbox{]}(Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t$\ast$ vms, int arg) -\/$>$ void}
+{\footnotesize\ttfamily \#define B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA~+\mbox{[}$\,$\mbox{]}(typename Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t$\ast$ vms, int arg) -\/$>$ void}
 

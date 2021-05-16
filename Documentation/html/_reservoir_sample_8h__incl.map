@@ -1,11 +1,15 @@
 <map id="src/Statistics/ReservoirSample.h" name="src/Statistics/ReservoirSample.h">
-<area shape="rect" id="node1" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="161,5,320,47"/>
-<area shape="rect" id="node2" href="$_errors_8h.html" title=" " alt="" coords="164,95,232,121"/>
-<area shape="rect" id="node6" href="$_top_8h.html" title="Check if a type has a posterior function or not." alt="" coords="280,95,335,121"/>
+<area shape="rect" id="node1" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="169,5,328,47"/>
+<area shape="rect" id="node2" href="$_errors_8h.html" title=" " alt="" coords="152,95,220,121"/>
+<area shape="rect" id="node6" href="$_top_n_8h.html" title=" " alt="" coords="318,95,382,121"/>
 <area shape="rect" id="node3" title=" " alt="" coords="5,169,84,196"/>
 <area shape="rect" id="node4" title=" " alt="" coords="108,169,187,196"/>
-<area shape="rect" id="node5" title=" " alt="" coords="305,244,360,271"/>
+<area shape="rect" id="node5" title=" " alt="" coords="268,244,323,271"/>
 <area shape="rect" id="node7" title=" " alt="" coords="262,169,302,196"/>
 <area shape="rect" id="node8" title=" " alt="" coords="327,169,373,196"/>
-<area shape="rect" id="node9" href="$_fleet_args_8h.html" title=" " alt="" coords="397,169,487,196"/>
+<area shape="rect" id="node9" href="$_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="511,169,618,196"/>
+<area shape="rect" id="node13" href="$_fleet_args_8h.html" title=" " alt="" coords="397,169,487,196"/>
+<area shape="rect" id="node10" title=" " alt="" coords="418,244,477,271"/>
+<area shape="rect" id="node11" title=" " alt="" coords="501,244,628,271"/>
+<area shape="rect" id="node12" title=" " alt="" coords="652,244,709,271"/>
 </map>

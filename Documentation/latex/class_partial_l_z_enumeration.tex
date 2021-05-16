@@ -1,0 +1,121 @@
+\hypertarget{class_partial_l_z_enumeration}{}\doxysection{Partial\+L\+Z\+Enumeration$<$ Grammar\+\_\+t $>$ Class Template Reference}
+\label{class_partial_l_z_enumeration}\index{PartialLZEnumeration$<$ Grammar\_t $>$@{PartialLZEnumeration$<$ Grammar\_t $>$}}
+
+
+{\ttfamily \#include $<$Partial\+L\+Z\+Enumeration.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_partial_l_z_enumeration_a7cfd2cb7fb2d9c2c6efe7a6107863a7d}{Partial\+L\+Z\+Enumeration}} (Grammar\+\_\+t $\ast$g)
+\item 
+size\+\_\+t \mbox{\hyperlink{class_partial_l_z_enumeration_a0089a4da03ec4769fb983c11fdfc6705}{compute\+\_\+possible\+\_\+referents}} (const \mbox{\hyperlink{class_node}{Node}} \&root, const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} nt)
+\begin{DoxyCompactList}\small\item\em Compute the number of things in n which could be referenced Here, we will require references to prior nodes to be unique and complete and only of type nt. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_partial_l_z_enumeration_a0d55ca4215f2f98b34bc92c51ee1c188}{get\+\_\+referent}} (const \mbox{\hyperlink{class_node}{Node}} \&root, size\+\_\+t cnt, const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} nt)
+\item 
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_partial_l_z_enumeration_a6668004a1e29ced0df16f2e466ff5193}{to\+Node}} (\mbox{\hyperlink{class_integerized_stack}{Integerized\+Stack}} \&is, const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} nt, \mbox{\hyperlink{class_node}{Node}} \&root)
+\begin{DoxyCompactList}\small\item\em Convert to a node, using root as the root -- N\+O\+TE that when root is null, we use out as the root. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_partial_l_z_enumeration_ad5990c735aa9f2b92ce23ba478c1302f}{to\+Node}} (\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} z, const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} nt, \mbox{\hyperlink{class_node}{Node}} \&root)
+\item 
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_partial_l_z_enumeration_a2467c1f47c49b2c7e7b40b0354d43bf9}{to\+Node}} (\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} z, const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} nt)
+\item 
+virtual \mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} \mbox{\hyperlink{class_partial_l_z_enumeration_aeebaa16e20e78e5d48d8d66908d89d50}{to\+Integer}} (const \mbox{\hyperlink{class_node}{Node}} \&root, const \mbox{\hyperlink{class_node}{Node}} \&n)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Grammar\+\_\+t$>$\newline
+class Partial\+L\+Z\+Enumeration$<$ Grammar\+\_\+t $>$}
+
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+02/01/21 
+\end{DoxyDate}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_partial_l_z_enumeration_a7cfd2cb7fb2d9c2c6efe7a6107863a7d}\label{class_partial_l_z_enumeration_a7cfd2cb7fb2d9c2c6efe7a6107863a7d}} 
+\index{PartialLZEnumeration$<$ Grammar\_t $>$@{PartialLZEnumeration$<$ Grammar\_t $>$}!PartialLZEnumeration@{PartialLZEnumeration}}
+\index{PartialLZEnumeration@{PartialLZEnumeration}!PartialLZEnumeration$<$ Grammar\_t $>$@{PartialLZEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{PartialLZEnumeration()}{PartialLZEnumeration()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+\mbox{\hyperlink{class_partial_l_z_enumeration}{Partial\+L\+Z\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::\mbox{\hyperlink{class_partial_l_z_enumeration}{Partial\+L\+Z\+Enumeration}} (\begin{DoxyParamCaption}\item[{Grammar\+\_\+t $\ast$}]{g }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_partial_l_z_enumeration_a0089a4da03ec4769fb983c11fdfc6705}\label{class_partial_l_z_enumeration_a0089a4da03ec4769fb983c11fdfc6705}} 
+\index{PartialLZEnumeration$<$ Grammar\_t $>$@{PartialLZEnumeration$<$ Grammar\_t $>$}!compute\_possible\_referents@{compute\_possible\_referents}}
+\index{compute\_possible\_referents@{compute\_possible\_referents}!PartialLZEnumeration$<$ Grammar\_t $>$@{PartialLZEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{compute\_possible\_referents()}{compute\_possible\_referents()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+size\+\_\+t \mbox{\hyperlink{class_partial_l_z_enumeration}{Partial\+L\+Z\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::compute\+\_\+possible\+\_\+referents (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{root,  }\item[{const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}}]{nt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Compute the number of things in n which could be referenced Here, we will require references to prior nodes to be unique and complete and only of type nt. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_partial_l_z_enumeration_a0d55ca4215f2f98b34bc92c51ee1c188}\label{class_partial_l_z_enumeration_a0d55ca4215f2f98b34bc92c51ee1c188}} 
+\index{PartialLZEnumeration$<$ Grammar\_t $>$@{PartialLZEnumeration$<$ Grammar\_t $>$}!get\_referent@{get\_referent}}
+\index{get\_referent@{get\_referent}!PartialLZEnumeration$<$ Grammar\_t $>$@{PartialLZEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{get\_referent()}{get\_referent()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_partial_l_z_enumeration}{Partial\+L\+Z\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::get\+\_\+referent (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{root,  }\item[{size\+\_\+t}]{cnt,  }\item[{const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}}]{nt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_partial_l_z_enumeration_aeebaa16e20e78e5d48d8d66908d89d50}\label{class_partial_l_z_enumeration_aeebaa16e20e78e5d48d8d66908d89d50}} 
+\index{PartialLZEnumeration$<$ Grammar\_t $>$@{PartialLZEnumeration$<$ Grammar\_t $>$}!toInteger@{toInteger}}
+\index{toInteger@{toInteger}!PartialLZEnumeration$<$ Grammar\_t $>$@{PartialLZEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{toInteger()}{toInteger()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+virtual \mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} \mbox{\hyperlink{class_partial_l_z_enumeration}{Partial\+L\+Z\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::to\+Integer (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{root,  }\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_partial_l_z_enumeration_a2467c1f47c49b2c7e7b40b0354d43bf9}\label{class_partial_l_z_enumeration_a2467c1f47c49b2c7e7b40b0354d43bf9}} 
+\index{PartialLZEnumeration$<$ Grammar\_t $>$@{PartialLZEnumeration$<$ Grammar\_t $>$}!toNode@{toNode}}
+\index{toNode@{toNode}!PartialLZEnumeration$<$ Grammar\_t $>$@{PartialLZEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{toNode()}{toNode()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_partial_l_z_enumeration}{Partial\+L\+Z\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::to\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}}]{z,  }\item[{const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}}]{nt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_partial_l_z_enumeration_ad5990c735aa9f2b92ce23ba478c1302f}\label{class_partial_l_z_enumeration_ad5990c735aa9f2b92ce23ba478c1302f}} 
+\index{PartialLZEnumeration$<$ Grammar\_t $>$@{PartialLZEnumeration$<$ Grammar\_t $>$}!toNode@{toNode}}
+\index{toNode@{toNode}!PartialLZEnumeration$<$ Grammar\_t $>$@{PartialLZEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{toNode()}{toNode()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_partial_l_z_enumeration}{Partial\+L\+Z\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::to\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}}]{z,  }\item[{const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}}]{nt,  }\item[{\mbox{\hyperlink{class_node}{Node}} \&}]{root }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_partial_l_z_enumeration_a6668004a1e29ced0df16f2e466ff5193}\label{class_partial_l_z_enumeration_a6668004a1e29ced0df16f2e466ff5193}} 
+\index{PartialLZEnumeration$<$ Grammar\_t $>$@{PartialLZEnumeration$<$ Grammar\_t $>$}!toNode@{toNode}}
+\index{toNode@{toNode}!PartialLZEnumeration$<$ Grammar\_t $>$@{PartialLZEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{toNode()}{toNode()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_partial_l_z_enumeration}{Partial\+L\+Z\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::to\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_integerized_stack}{Integerized\+Stack}} \&}]{is,  }\item[{const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}}]{nt,  }\item[{\mbox{\hyperlink{class_node}{Node}} \&}]{root }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Convert to a node, using root as the root -- N\+O\+TE that when root is null, we use out as the root. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nt} & \\
+\hline
+{\em is} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Grammar/\+Enumeration/\mbox{\hyperlink{_partial_l_z_enumeration_8h}{Partial\+L\+Z\+Enumeration.\+h}}\end{DoxyCompactItemize}

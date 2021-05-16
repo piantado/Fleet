@@ -1,0 +1,150 @@
+\hypertarget{class_runtime_counter}{}\doxysection{Runtime\+Counter Class Reference}
+\label{class_runtime_counter}\index{RuntimeCounter@{RuntimeCounter}}
+
+
+{\ttfamily \#include $<$Runtime\+Counter.\+h$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{class_runtime_counter_a7d6c5beadb0e6ed6de66c8c81dd8916b}{T}} = unsigned long
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_runtime_counter_aa0967223df70ee93ec1d02b7afd9278c}{Runtime\+Counter}} ()
+\item 
+void \mbox{\hyperlink{class_runtime_counter_adec6d9f5ba5cc67439790d832b30d757}{increment}} (\mbox{\hyperlink{struct_instruction}{Instruction}} \&i, \mbox{\hyperlink{class_runtime_counter_a7d6c5beadb0e6ed6de66c8c81dd8916b}{T}} \mbox{\hyperlink{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}{count}}=1)
+\begin{DoxyCompactList}\small\item\em Add count number of items to this instruction\textquotesingle{}s count. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_runtime_counter_a165e982a4505bf2f193e022902e295f6}{increment}} (\mbox{\hyperlink{class_runtime_counter}{Runtime\+Counter}} \&rc)
+\begin{DoxyCompactList}\small\item\em Add the results of another runtime counter. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{class_runtime_counter_a6f7c4448508536e393d60003696871f5}{get}} (\mbox{\hyperlink{struct_instruction}{Instruction}} \&i)
+\begin{DoxyCompactList}\small\item\em Retrieve the rule count for a given instruction. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{class_runtime_counter_adfdc5e539468c09ce15a99cd7d374747}{string}} () const
+\begin{DoxyCompactList}\small\item\em Display a runtime counter -- N\+O\+TE This may not display all zeros if instructions have not been run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{class_runtime_counter_a7d6c5beadb0e6ed6de66c8c81dd8916b}{T}} $>$ \mbox{\hyperlink{class_runtime_counter_ac3d8bd18c05cb16426a1d0759b7cadfb}{builtin\+\_\+count}}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{class_runtime_counter_a7d6c5beadb0e6ed6de66c8c81dd8916b}{T}} $>$ \mbox{\hyperlink{class_runtime_counter_a671ea82de409c5ddff2f49be0c322185}{primitive\+\_\+count}}
+\item 
+\mbox{\hyperlink{class_runtime_counter_a7d6c5beadb0e6ed6de66c8c81dd8916b}{T}} \mbox{\hyperlink{class_runtime_counter_adc178b45e94f54a21116c741cae438d7}{total}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Steven Piantadosi 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+04/09/20 
+\end{DoxyDate}
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_runtime_counter_a7d6c5beadb0e6ed6de66c8c81dd8916b}\label{class_runtime_counter_a7d6c5beadb0e6ed6de66c8c81dd8916b}} 
+\index{RuntimeCounter@{RuntimeCounter}!T@{T}}
+\index{T@{T}!RuntimeCounter@{RuntimeCounter}}
+\doxysubsubsection{\texorpdfstring{T}{T}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{class_runtime_counter_a7d6c5beadb0e6ed6de66c8c81dd8916b}{Runtime\+Counter\+::T}} =  unsigned long}
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_runtime_counter_aa0967223df70ee93ec1d02b7afd9278c}\label{class_runtime_counter_aa0967223df70ee93ec1d02b7afd9278c}} 
+\index{RuntimeCounter@{RuntimeCounter}!RuntimeCounter@{RuntimeCounter}}
+\index{RuntimeCounter@{RuntimeCounter}!RuntimeCounter@{RuntimeCounter}}
+\doxysubsubsection{\texorpdfstring{RuntimeCounter()}{RuntimeCounter()}}
+{\footnotesize\ttfamily Runtime\+Counter\+::\+Runtime\+Counter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_runtime_counter_a6f7c4448508536e393d60003696871f5}\label{class_runtime_counter_a6f7c4448508536e393d60003696871f5}} 
+\index{RuntimeCounter@{RuntimeCounter}!get@{get}}
+\index{get@{get}!RuntimeCounter@{RuntimeCounter}}
+\doxysubsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily size\+\_\+t Runtime\+Counter\+::get (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_instruction}{Instruction}} \&}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieve the rule count for a given instruction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_runtime_counter_adec6d9f5ba5cc67439790d832b30d757}\label{class_runtime_counter_adec6d9f5ba5cc67439790d832b30d757}} 
+\index{RuntimeCounter@{RuntimeCounter}!increment@{increment}}
+\index{increment@{increment}!RuntimeCounter@{RuntimeCounter}}
+\doxysubsubsection{\texorpdfstring{increment()}{increment()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Runtime\+Counter\+::increment (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_instruction}{Instruction}} \&}]{i,  }\item[{\mbox{\hyperlink{class_runtime_counter_a7d6c5beadb0e6ed6de66c8c81dd8916b}{T}}}]{count = {\ttfamily 1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Add count number of items to this instruction\textquotesingle{}s count. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_runtime_counter_a165e982a4505bf2f193e022902e295f6}\label{class_runtime_counter_a165e982a4505bf2f193e022902e295f6}} 
+\index{RuntimeCounter@{RuntimeCounter}!increment@{increment}}
+\index{increment@{increment}!RuntimeCounter@{RuntimeCounter}}
+\doxysubsubsection{\texorpdfstring{increment()}{increment()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Runtime\+Counter\+::increment (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_runtime_counter}{Runtime\+Counter}} \&}]{rc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Add the results of another runtime counter. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rc} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_runtime_counter_adfdc5e539468c09ce15a99cd7d374747}\label{class_runtime_counter_adfdc5e539468c09ce15a99cd7d374747}} 
+\index{RuntimeCounter@{RuntimeCounter}!string@{string}}
+\index{string@{string}!RuntimeCounter@{RuntimeCounter}}
+\doxysubsubsection{\texorpdfstring{string()}{string()}}
+{\footnotesize\ttfamily std\+::string Runtime\+Counter\+::string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Display a runtime counter -- N\+O\+TE This may not display all zeros if instructions have not been run. 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_runtime_counter_ac3d8bd18c05cb16426a1d0759b7cadfb}\label{class_runtime_counter_ac3d8bd18c05cb16426a1d0759b7cadfb}} 
+\index{RuntimeCounter@{RuntimeCounter}!builtin\_count@{builtin\_count}}
+\index{builtin\_count@{builtin\_count}!RuntimeCounter@{RuntimeCounter}}
+\doxysubsubsection{\texorpdfstring{builtin\_count}{builtin\_count}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{class_runtime_counter_a7d6c5beadb0e6ed6de66c8c81dd8916b}{T}}$>$ Runtime\+Counter\+::builtin\+\_\+count}
+
+\mbox{\Hypertarget{class_runtime_counter_a671ea82de409c5ddff2f49be0c322185}\label{class_runtime_counter_a671ea82de409c5ddff2f49be0c322185}} 
+\index{RuntimeCounter@{RuntimeCounter}!primitive\_count@{primitive\_count}}
+\index{primitive\_count@{primitive\_count}!RuntimeCounter@{RuntimeCounter}}
+\doxysubsubsection{\texorpdfstring{primitive\_count}{primitive\_count}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{class_runtime_counter_a7d6c5beadb0e6ed6de66c8c81dd8916b}{T}}$>$ Runtime\+Counter\+::primitive\+\_\+count}
+
+\mbox{\Hypertarget{class_runtime_counter_adc178b45e94f54a21116c741cae438d7}\label{class_runtime_counter_adc178b45e94f54a21116c741cae438d7}} 
+\index{RuntimeCounter@{RuntimeCounter}!total@{total}}
+\index{total@{total}!RuntimeCounter@{RuntimeCounter}}
+\doxysubsubsection{\texorpdfstring{total}{total}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_runtime_counter_a7d6c5beadb0e6ed6de66c8c81dd8916b}{T}} Runtime\+Counter\+::total}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Virtual\+Machine/\mbox{\hyperlink{_runtime_counter_8h}{Runtime\+Counter.\+h}}\end{DoxyCompactItemize}

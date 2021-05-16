@@ -1,11 +1,12 @@
-<map id="PartialMCTSNode&lt; this_t, HYP, callback_t &gt;" name="PartialMCTSNode&lt; this_t, HYP, callback_t &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="265,409,426,451"/>
-<area shape="rect" id="node2" href="$class_m_c_t_s_base.html" title=" " alt="" coords="259,319,431,360"/>
-<area shape="rect" id="node3" href="$class_parallel_inference_interface.html" title=" " alt="" coords="5,215,176,256"/>
-<area shape="rect" id="node4" href="$class_base_node.html" title=" " alt="" coords="200,222,339,249"/>
-<area shape="rect" id="node5" href="$class_base_node_1_1_node_iterator.html" title=" " alt="" coords="193,111,332,152"/>
-<area shape="rect" id="node6" title=" " alt="" coords="188,5,337,61"/>
-<area shape="rect" id="node7" href="$class_streaming_statistics.html" title=" " alt="" coords="363,222,499,249"/>
-<area shape="rect" id="node8" href="$class_median_f_a_m_e.html" title=" " alt="" coords="356,118,519,145"/>
-<area shape="rect" id="node9" href="$class_spin_lock.html" title=" " alt="" coords="523,222,599,249"/>
+<map id="PartialMCTSNode&lt; this_t, HYP &gt;" name="PartialMCTSNode&lt; this_t, HYP &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="1033,93,1195,135"/>
+<area shape="rect" id="node2" href="$class_m_c_t_s_base.html" title=" " alt="" coords="801,101,984,127"/>
+<area shape="rect" id="node3" href="$class_parallel_inference_interface.html" title=" " alt="" coords="525,5,696,47"/>
+<area shape="rect" id="node4" href="$class_ordered_lock.html" title=" " alt="" coords="237,13,333,39"/>
+<area shape="rect" id="node5" href="$class_base_node.html" title=" " alt="" coords="541,71,680,98"/>
+<area shape="rect" id="node6" href="$class_base_node_1_1_node_iterator.html" title=" " alt="" coords="216,64,355,105"/>
+<area shape="rect" id="node7" title=" " alt="" coords="5,57,155,113"/>
+<area shape="rect" id="node8" href="$class_streaming_statistics.html" title=" " alt="" coords="543,122,679,149"/>
+<area shape="rect" id="node9" href="$class_median_f_a_m_e.html" title=" " alt="" coords="204,130,367,157"/>
+<area shape="rect" id="node10" href="$class_spin_lock.html" title=" " alt="" coords="573,173,649,199"/>
 </map>

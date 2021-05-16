@@ -2,12 +2,14 @@
 \label{class_top_n}\index{TopN$<$ T $>$@{TopN$<$ T $>$}}
 
 
-{\ttfamily \#include $<$Top.\+h$>$}
+{\ttfamily \#include $<$Top\+N.\+h$>$}
 
-\doxysubsection*{Public Types}
+\doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-using \mbox{\hyperlink{class_top_n_ae734a8791a54516fecbc8cac2c67d16a}{Hypothesis\+\_\+t}} = T
+class \mbox{\hyperlink{struct_top_n_1_1_has_posterior}{Has\+Posterior}}
+\item 
+struct \mbox{\hyperlink{struct_top_n_1_1_has_posterior_3_01_x_00_01decltype_07_07void_08_01_x_1_1posterior_00_010_08_4}{Has\+Posterior$<$ X, decltype((void) X\+::posterior, 0)$>$}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
@@ -41,8 +43,6 @@ void \mbox{\hyperlink{class_top_n_a719a9b488e33a8266a25c594a8eb579d}{operator$<$
 void \mbox{\hyperlink{class_top_n_a09be6a8873eef07ea3993e9fe7b6c71d}{add}} (const \mbox{\hyperlink{class_top_n}{TopN}}$<$ T $>$ \&x)
 \item 
 void \mbox{\hyperlink{class_top_n_a4a4459831455f21c152f99993aa0a274}{operator$<$$<$}} (const \mbox{\hyperlink{class_top_n}{TopN}}$<$ T $>$ \&x)
-\item 
-void \mbox{\hyperlink{class_top_n_a1bc031e453f4d32cbc4cf6df04da51bc}{operator()}} (T \&x)
 \item 
 size\+\_\+t \mbox{\hyperlink{class_top_n_a7eafee63f9094086c3193ff005cd9f0f}{operator\mbox{[}$\,$\mbox{]}}} (const T \&x)
 \item 
@@ -85,16 +85,6 @@ steven piantadosi
 \begin{DoxyDate}{Date}
 03/02/20 
 \end{DoxyDate}
-
-
-\doxysubsection{Member Typedef Documentation}
-\mbox{\Hypertarget{class_top_n_ae734a8791a54516fecbc8cac2c67d16a}\label{class_top_n_ae734a8791a54516fecbc8cac2c67d16a}} 
-\index{TopN$<$ T $>$@{TopN$<$ T $>$}!Hypothesis\_t@{Hypothesis\_t}}
-\index{Hypothesis\_t@{Hypothesis\_t}!TopN$<$ T $>$@{TopN$<$ T $>$}}
-\doxysubsubsection{\texorpdfstring{Hypothesis\_t}{Hypothesis\_t}}
-{\footnotesize\ttfamily template$<$class T $>$ \\
-using \mbox{\hyperlink{class_top_n}{TopN}}$<$ T $>$\+::\mbox{\hyperlink{class_top_n_ae734a8791a54516fecbc8cac2c67d16a}{Hypothesis\+\_\+t}} =  T}
-
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
@@ -225,13 +215,6 @@ bool \mbox{\hyperlink{class_top_n}{TopN}}$<$ T $>$\+::empty (\begin{DoxyParamCap
 Is it empty? \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_top_n_a1bc031e453f4d32cbc4cf6df04da51bc}\label{class_top_n_a1bc031e453f4d32cbc4cf6df04da51bc}} 
-\index{TopN$<$ T $>$@{TopN$<$ T $>$}!operator()@{operator()}}
-\index{operator()@{operator()}!TopN$<$ T $>$@{TopN$<$ T $>$}}
-\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
-{\footnotesize\ttfamily template$<$class T $>$ \\
-void \mbox{\hyperlink{class_top_n}{TopN}}$<$ T $>$\+::operator() (\begin{DoxyParamCaption}\item[{T \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
 \mbox{\Hypertarget{class_top_n_a719a9b488e33a8266a25c594a8eb579d}\label{class_top_n_a719a9b488e33a8266a25c594a8eb579d}} 
 \index{TopN$<$ T $>$@{TopN$<$ T $>$}!operator$<$$<$@{operator$<$$<$}}
 \index{operator$<$$<$@{operator$<$$<$}!TopN$<$ T $>$@{TopN$<$ T $>$}}
@@ -296,7 +279,7 @@ Pops off the top -- you usually won\textquotesingle{}t want to do this and it\te
 \index{print@{print}!TopN$<$ T $>$@{TopN$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{print()}{print()}}
 {\footnotesize\ttfamily template$<$class T $>$ \\
-void \mbox{\hyperlink{class_top_n}{TopN}}$<$ T $>$\+::print (\begin{DoxyParamCaption}\item[{std\+::string}]{prefix = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+void \mbox{\hyperlink{class_top_n}{TopN}}$<$ T $>$\+::\mbox{\hyperlink{structprint}{print}} (\begin{DoxyParamCaption}\item[{std\+::string}]{prefix = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Sort and print from worst to best 
 \begin{DoxyParams}{Parameters}
@@ -402,4 +385,4 @@ std\+::multiset$<$T$>$ \mbox{\hyperlink{class_top_n}{TopN}}$<$ T $>$\+::s}
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/\+Containers/\mbox{\hyperlink{_top_8h}{Top.\+h}}\end{DoxyCompactItemize}
+src/\+Containers/\mbox{\hyperlink{_top_n_8h}{Top\+N.\+h}}\end{DoxyCompactItemize}

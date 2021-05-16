@@ -142,8 +142,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5d2a0e17dd2a00a79e6d1f763c9114d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70e879ceb71f47787137572d9bee8efa"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a70e879ceb71f47787137572d9bee8efa">parseable</a> () const</td></tr>
 <tr class="separator:a70e879ceb71f47787137572d9bee8efa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a377548bcf1be99ac5181f9434c33c81e"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a377548bcf1be99ac5181f9434c33c81e">program_size</a> () const</td></tr>
-<tr class="separator:a377548bcf1be99ac5181f9434c33c81e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2300ca04a56aeca14977915c4de0f53e"><td class="memTemplParams" colspan="2">template&lt;typename Grammar_t &gt; </td></tr>
 <tr class="memitem:a2300ca04a56aeca14977915c4de0f53e"><td class="memTemplItemLeft" align="right" valign="top">int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_node.html#a2300ca04a56aeca14977915c4de0f53e">linearize</a> (Program &amp;program) const</td></tr>
 <tr class="separator:a2300ca04a56aeca14977915c4de0f53e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -764,33 +762,7 @@ template&lt;typename Grammar_t &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Create a string that can be parsed according to <a class="el" href="class_grammar.html#acd13159e6ec71f73b5398ba5a56ac109">Grammar.expand_from_names</a> </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="a377548bcf1be99ac5181f9434c33c81e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a377548bcf1be99ac5181f9434c33c81e">&#9670;&nbsp;</a></span>program_size()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual size_t Node::program_size </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>How big of a program does this correspond to? This is mostly the number of nodes, except that short-circuit evaluation of IF makes things a little more complex. </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Create a string that can be parsed according to <a class="el" href="class_grammar.html#a63a4c7f6584fdd70aaa2882a19c2f04f">Grammar.from_parseable</a> </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

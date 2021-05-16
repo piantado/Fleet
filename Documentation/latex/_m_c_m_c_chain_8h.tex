@@ -1,17 +1,21 @@
-\hypertarget{_m_c_m_c_chain_8h}{}\doxysection{src/\+Inference/\+M\+C\+M\+C\+Chain.h File Reference}
-\label{_m_c_m_c_chain_8h}\index{src/Inference/MCMCChain.h@{src/Inference/MCMCChain.h}}
+\hypertarget{_m_c_m_c_chain_8h}{}\doxysection{src/\+Inference/\+M\+C\+M\+C/\+M\+C\+M\+C\+Chain.h File Reference}
+\label{_m_c_m_c_chain_8h}\index{src/Inference/MCMC/MCMCChain.h@{src/Inference/MCMC/MCMCChain.h}}
 {\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include \char`\"{}Coroutines.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}M\+C\+M\+C\+Chain.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Finite\+History.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Control.\+h\char`\"{}}\newline
-Include dependency graph for M\+C\+M\+C\+Chain.\+h\+:\nopagebreak
+{\ttfamily \#include \char`\"{}Ordered\+Lock.\+h\char`\"{}}\newline
+Include dependency graph for M\+C\+M\+C\+Chain.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_m_c_m_c_chain_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -21,20 +25,5 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain$<$ H\+Y\+P, callback\+\_\+t $>$}}
+class \mbox{\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain$<$ H\+Y\+P $>$}}
 \end{DoxyCompactItemize}
-\doxysubsection*{Variables}
-\begin{DoxyCompactItemize}
-\item 
-{\footnotesize template$<$typename H\+YP $>$ }\\std\+::function$<$ void(H\+YP \&)$>$ \mbox{\hyperlink{_m_c_m_c_chain_8h_a854206811ea069aaf94d8c0fd90dc828}{null\+\_\+callback}} = \mbox{[}$\,$\mbox{]}(H\+YP\&)\{\}
-\end{DoxyCompactItemize}
-
-
-\doxysubsection{Variable Documentation}
-\mbox{\Hypertarget{_m_c_m_c_chain_8h_a854206811ea069aaf94d8c0fd90dc828}\label{_m_c_m_c_chain_8h_a854206811ea069aaf94d8c0fd90dc828}} 
-\index{MCMCChain.h@{MCMCChain.h}!null\_callback@{null\_callback}}
-\index{null\_callback@{null\_callback}!MCMCChain.h@{MCMCChain.h}}
-\doxysubsubsection{\texorpdfstring{null\_callback}{null\_callback}}
-{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-std\+::function$<$void(H\+YP\&)$>$ null\+\_\+callback = \mbox{[}$\,$\mbox{]}(H\+YP\&)\{\}}
-

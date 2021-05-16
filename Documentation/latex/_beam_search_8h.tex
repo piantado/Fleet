@@ -1,0 +1,48 @@
+\hypertarget{_beam_search_8h}{}\doxysection{src/\+Inference/\+Beam\+Search.h File Reference}
+\label{_beam_search_8h}\index{src/Inference/BeamSearch.h@{src/Inference/BeamSearch.h}}
+
+
+This is an implementation of beam search that maintains a priority queue of partial states and attempts to find a program with the lowest posterior score. To do this, we choose a node to expand based on its prior plus N\+\_\+\+R\+E\+PS samples of its likelihood, computed by filling in its children at random. This stochastic heuristic is actually inadmissable (in A$\ast$ terms) since it usually overestimates the cost. As a result, it usually makes sense to run at a pretty high temperature, corresponding to a downweighting of the likelihood, and making the heuristic more likely to be admissable.  
+
+
+{\ttfamily \#include \char`\"{}I\+O.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Control.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$queue$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Fleet\+Statistics.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Parallel\+Inference\+Interface.\+h\char`\"{}}\newline
+Include dependency graph for Beam\+Search.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_beam_search_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_beam_search}{Beam\+Search$<$ H\+Y\+P $>$}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+volatile sig\+\_\+atomic\+\_\+t \mbox{\hyperlink{_beam_search_8h_a6f7c4963bb8a36031664821219e3159e}{C\+T\+R\+L\+\_\+C}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This is an implementation of beam search that maintains a priority queue of partial states and attempts to find a program with the lowest posterior score. To do this, we choose a node to expand based on its prior plus N\+\_\+\+R\+E\+PS samples of its likelihood, computed by filling in its children at random. This stochastic heuristic is actually inadmissable (in A$\ast$ terms) since it usually overestimates the cost. As a result, it usually makes sense to run at a pretty high temperature, corresponding to a downweighting of the likelihood, and making the heuristic more likely to be admissable. 
+
+One general challenge is how to handle -\/inf likelihoods, and here we\textquotesingle{}ve done that by, if you end up with -\/inf, taking your parent\textquotesingle{}s temperature and multiplying by P\+A\+R\+E\+N\+T\+\_\+\+P\+E\+N\+A\+L\+TY.
+
+T\+O\+DO\+: Is it worth making this stochastic, so we sample the the expansion with the probabilities and some temperature? 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{_beam_search_8h_a6f7c4963bb8a36031664821219e3159e}\label{_beam_search_8h_a6f7c4963bb8a36031664821219e3159e}} 
+\index{BeamSearch.h@{BeamSearch.h}!CTRL\_C@{CTRL\_C}}
+\index{CTRL\_C@{CTRL\_C}!BeamSearch.h@{BeamSearch.h}}
+\doxysubsubsection{\texorpdfstring{CTRL\_C}{CTRL\_C}}
+{\footnotesize\ttfamily volatile sig\+\_\+atomic\+\_\+t C\+T\+R\+L\+\_\+C}
+

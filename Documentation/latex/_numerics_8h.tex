@@ -4,20 +4,27 @@
 {\ttfamily \#include $<$iostream$>$}\newline
 {\ttfamily \#include $<$assert.\+h$>$}\newline
 {\ttfamily \#include $<$math.\+h$>$}\newline
-Include dependency graph for Numerics.\+h\+:\nopagebreak
+Include dependency graph for Numerics.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=337pt]{_numerics_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_numerics_8h__dep__incl}
 \end{center}
 \end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structfloating__point__compare}{floating\+\_\+point\+\_\+compare$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em This allows sorting of things that contain NaN. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
@@ -33,6 +40,8 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \item 
 {\footnotesize template$<$typename t $>$ }\\double \mbox{\hyperlink{_numerics_8h_abb96a05282957c6c5c3d226b357ed134}{logsumexp}} (const t \&v)
 \begin{DoxyCompactList}\small\item\em Compute log(sum(exp(v)). For now, this just unrolls logplusexp, but we might consider the faster (standard) variant where we pull out the max. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename t $>$ }\\double \mbox{\hyperlink{_numerics_8h_a388adc7bb0156893e49b1d565699d572}{logsumexp}} (const std\+::vector$<$ t $>$ \&v, double f(const t \&))
+\item 
 double \mbox{\hyperlink{_numerics_8h_abd834126f73048ccc1de54db3daff98d}{mylgamma}} (double v)
 \item 
 double \mbox{\hyperlink{_numerics_8h_a5fdae733d4a94abc71ba1177024a375d}{mygamma}} (double v)
@@ -42,7 +51,7 @@ double \mbox{\hyperlink{_numerics_8h_a4bd5e68efa9ae0bd7383f132b766bb57}{lfactori
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-constexpr double \mbox{\hyperlink{_numerics_8h_a86b66aa18326dc4ebe8e36d253c14f40}{L\+O\+G2}} = log(2.\+0)
+const double \mbox{\hyperlink{_numerics_8h_a1cab50ac2cae826eca1b03bb33eae1f1}{L\+O\+G2}} = log(2.\+0)
 \item 
 constexpr double \mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}} = std\+::numeric\+\_\+limits$<$double$>$\+::infinity()
 \item 
@@ -101,10 +110,17 @@ Tis takes a function f(x) and finds a bound B so that f(x) $<$ precision for all
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 T logplusexp (\begin{DoxyParamCaption}\item[{const T}]{a,  }\item[{const T}]{b }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{_numerics_8h_a388adc7bb0156893e49b1d565699d572}\label{_numerics_8h_a388adc7bb0156893e49b1d565699d572}} 
+\index{Numerics.h@{Numerics.h}!logsumexp@{logsumexp}}
+\index{logsumexp@{logsumexp}!Numerics.h@{Numerics.h}}
+\doxysubsubsection{\texorpdfstring{logsumexp()}{logsumexp()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename t $>$ \\
+double logsumexp (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ t $>$ \&}]{v,  }\item[{double }]{fconst t \& }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{_numerics_8h_abb96a05282957c6c5c3d226b357ed134}\label{_numerics_8h_abb96a05282957c6c5c3d226b357ed134}} 
 \index{Numerics.h@{Numerics.h}!logsumexp@{logsumexp}}
 \index{logsumexp@{logsumexp}!Numerics.h@{Numerics.h}}
-\doxysubsubsection{\texorpdfstring{logsumexp()}{logsumexp()}}
+\doxysubsubsection{\texorpdfstring{logsumexp()}{logsumexp()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily template$<$typename t $>$ \\
 double logsumexp (\begin{DoxyParamCaption}\item[{const t \&}]{v }\end{DoxyParamCaption})}
 
@@ -141,11 +157,11 @@ Compute log(sum(exp(v)). For now, this just unrolls logplusexp, but we might con
 \doxysubsubsection{\texorpdfstring{infinity}{infinity}}
 {\footnotesize\ttfamily constexpr double infinity = std\+::numeric\+\_\+limits$<$double$>$\+::infinity()\hspace{0.3cm}{\ttfamily [constexpr]}}
 
-\mbox{\Hypertarget{_numerics_8h_a86b66aa18326dc4ebe8e36d253c14f40}\label{_numerics_8h_a86b66aa18326dc4ebe8e36d253c14f40}} 
+\mbox{\Hypertarget{_numerics_8h_a1cab50ac2cae826eca1b03bb33eae1f1}\label{_numerics_8h_a1cab50ac2cae826eca1b03bb33eae1f1}} 
 \index{Numerics.h@{Numerics.h}!LOG2@{LOG2}}
 \index{LOG2@{LOG2}!Numerics.h@{Numerics.h}}
 \doxysubsubsection{\texorpdfstring{LOG2}{LOG2}}
-{\footnotesize\ttfamily constexpr double L\+O\+G2 = log(2.\+0)\hspace{0.3cm}{\ttfamily [constexpr]}}
+{\footnotesize\ttfamily const double L\+O\+G2 = log(2.\+0)}
 
 \mbox{\Hypertarget{_numerics_8h_a23cd69b9bcaba6ec06598bc08ed5b6c3}\label{_numerics_8h_a23cd69b9bcaba6ec06598bc08ed5b6c3}} 
 \index{Numerics.h@{Numerics.h}!NaN@{NaN}}

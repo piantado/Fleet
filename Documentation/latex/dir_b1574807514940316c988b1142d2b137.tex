@@ -1,12 +1,20 @@
 \hypertarget{dir_b1574807514940316c988b1142d2b137}{}\doxysection{src/\+Inference Directory Reference}
 \label{dir_b1574807514940316c988b1142d2b137}\index{src/Inference Directory Reference@{src/Inference Directory Reference}}
-Directory dependency graph for Inference\+:\nopagebreak
+Directory dependency graph for Inference\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=267pt]{dir_b1574807514940316c988b1142d2b137_dep}
+\includegraphics[width=350pt]{dir_b1574807514940316c988b1142d2b137_dep}
 \end{center}
 \end{figure}
+\doxysubsection*{Directories}
+\begin{DoxyCompactItemize}
+\item 
+directory \mbox{\hyperlink{dir_7f9392eb16bc44ee95df30645ab1e0a8}{M\+C\+MC}}
+\item 
+directory \mbox{\hyperlink{dir_045ac3f28eba4be8e6ae405066330345}{M\+C\+TS}}
+\end{DoxyCompactItemize}
 \doxysubsection*{Files}
 \begin{DoxyCompactItemize}
 \item 
@@ -14,21 +22,11 @@ file \mbox{\hyperlink{_batch_8h}{Batch.\+h}}
 \item 
 file \mbox{\hyperlink{_beam_search_8h}{Beam\+Search.\+h}}
 \begin{DoxyCompactList}\small\item\em This is an implementation of beam search that maintains a priority queue of partial states and attempts to find a program with the lowest posterior score. To do this, we choose a node to expand based on its prior plus N\+\_\+\+R\+E\+PS samples of its likelihood, computed by filling in its children at random. This stochastic heuristic is actually inadmissable (in A$\ast$ terms) since it usually overestimates the cost. As a result, it usually makes sense to run at a pretty high temperature, corresponding to a downweighting of the likelihood, and making the heuristic more likely to be admissable. \end{DoxyCompactList}\item 
-file \mbox{\hyperlink{_chain_pool_8h}{Chain\+Pool.\+h}}
-\begin{DoxyCompactList}\small\item\em A \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}} stores a bunch of M\+C\+M\+C\+Chains and allows you to run them serially or in parallel. N\+O\+TE\+: When you use a \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}, the results will not be reproducible with seed because timing determines when you switch chains. \end{DoxyCompactList}\item 
 file \mbox{\hyperlink{_control_8h}{Control.\+h}}
 \begin{DoxyCompactList}\small\item\em This class has all the information for running M\+C\+MC or M\+C\+TS in a little package. It defaultly constructs (via \mbox{\hyperlink{struct_control}{Control()}}) to read these from \mbox{\hyperlink{namespace_fleet_args}{Fleet\+Args}}, which are a bunch of variables set by Fleet\+::initialize from the command line. This makes it especially convenient to call with command line arguments, but others can be specified as well. \end{DoxyCompactList}\item 
 file \mbox{\hyperlink{_inference_2_enumeration_inference_8h}{Enumeration\+Inference.\+h}}
 \begin{DoxyCompactList}\small\item\em Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar. It supports multithreading and requires a hypothesis, grammar, start type, and callback. \end{DoxyCompactList}\item 
-file \mbox{\hyperlink{_m_c_m_c_chain_8h}{M\+C\+M\+C\+Chain.\+h}}
-\item 
-file \mbox{\hyperlink{_m_c_t_s_8h}{M\+C\+T\+S.\+h}}
-\begin{DoxyCompactList}\small\item\em This is a version of M\+C\+TS that plays out children nplayouts times instead of expanding a full tree. \end{DoxyCompactList}\item 
 file \mbox{\hyperlink{_parallel_inference_interface_8h}{Parallel\+Inference\+Interface.\+h}}
 \item 
-file \mbox{\hyperlink{_parallel_tempering_8h}{Parallel\+Tempering.\+h}}
-\begin{DoxyCompactList}\small\item\em This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temperatures in order to balances swaps up and down the ladder (which makes it efficient). The adaptation scheme follows \href{https://arxiv.org/abs/1501.05823}{\texttt{ https\+://arxiv.\+org/abs/1501.\+05823}} N\+O\+TE This starts two extra threads, one for adapting and one for swapping, but they mostly wait around. \end{DoxyCompactList}\item 
-file \mbox{\hyperlink{_partition_m_c_m_c_8h}{Partition\+M\+C\+M\+C.\+h}}
-\begin{DoxyCompactList}\small\item\em This takes a grammar and expands to a given depth, and then runs a separate M\+C\+MC chain in each partial subtree that is generated. \end{DoxyCompactList}\item 
 file \mbox{\hyperlink{_prior_inference_8h}{Prior\+Inference.\+h}}
 \begin{DoxyCompactList}\small\item\em Inference by sampling from the prior -- doesn\textquotesingle{}t tend to work well, but might be a useful baseline. \end{DoxyCompactList}\end{DoxyCompactItemize}

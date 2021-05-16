@@ -1,5 +1,8 @@
 <map id="src/Statistics/MedianFAME.h" name="src/Statistics/MedianFAME.h">
-<area shape="rect" id="node1" title="A streaming median class implementing the FAME algorithm Here, we initialize both the step size and M..." alt="" coords="5,5,199,32"/>
-<area shape="rect" id="node2" href="$_streaming_statistics_8h.html" title="A class to store a bunch of statistics about incoming data points, including min, max,..." alt="" coords="21,80,183,121"/>
-<area shape="rect" id="node3" href="$_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree." alt="" coords="27,169,177,196"/>
+<area shape="rect" id="node1" title="A streaming median class implementing the FAME algorithm Here, we initialize both the step size and M..." alt="" coords="148,5,341,32"/>
+<area shape="rect" id="node2" href="$_streaming_statistics_8h.html" title="A class to store a bunch of statistics about incoming data points, including min, max,..." alt="" coords="163,80,326,121"/>
+<area shape="rect" id="node3" href="$_m_c_t_s_base_8h.html" title=" " alt="" coords="175,169,315,211"/>
+<area shape="rect" id="node4" href="$_full_m_c_t_s_node_8h.html" title=" " alt="" coords="5,259,145,300"/>
+<area shape="rect" id="node5" href="$_minimal_m_c_t_s_node_8h.html" title=" " alt="" coords="169,259,320,300"/>
+<area shape="rect" id="node6" href="$_partial_m_c_t_s_node_8h.html" title=" " alt="" coords="344,259,487,300"/>
 </map>

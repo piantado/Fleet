@@ -1,0 +1,248 @@
+\hypertarget{class_t_normal_variable}{}\doxysection{T\+Normal\+Variable$<$ f $>$ Class Template Reference}
+\label{class_t_normal_variable}\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+
+
+{\ttfamily \#include $<$T\+Normal\+Variable.\+h$>$}
+
+
+
+Inheritance diagram for T\+Normal\+Variable$<$ f $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=227pt]{class_t_normal_variable__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for T\+Normal\+Variable$<$ f $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=227pt]{class_t_normal_variable__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{class_t_normal_variable_a6d4e85faf82d911f218d4bdca10780d1}{self\+\_\+t}} = \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$
+\item 
+using \mbox{\hyperlink{class_t_normal_variable_aabdc03ce663cce74d08fd7e44eaf5955}{data\+\_\+t}} = typename \mbox{\hyperlink{class_m_c_m_cable}{M\+C\+M\+Cable}}$<$ \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$, void $\ast$ $>$\+::\mbox{\hyperlink{class_t_normal_variable_aabdc03ce663cce74d08fd7e44eaf5955}{data\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_t_normal_variable_a50f025b6b3888c02b676a0e1c280a9b8}{T\+Normal\+Variable}} ()
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{class_t_normal_variable_ac0a63cdcc0949ea8ec5d3c45773c0df2}{set}} (T v)
+\item 
+float \mbox{\hyperlink{class_t_normal_variable_ad87e3aaa4a13df9c911a26a973f76d47}{get}} () const
+\begin{DoxyCompactList}\small\item\em Get interfaces to the transformed variable. \end{DoxyCompactList}\item 
+virtual double \mbox{\hyperlink{class_t_normal_variable_a5cb6223529b451239b505b3e5dbdd605}{compute\+\_\+prior}} () override
+\begin{DoxyCompactList}\small\item\em Compute the prior -- defaultly not defined. \end{DoxyCompactList}\item 
+virtual double \mbox{\hyperlink{class_t_normal_variable_a77e4954e8d30140fce241eca6d9abfa2}{compute\+\_\+likelihood}} (const \mbox{\hyperlink{class_t_normal_variable_aabdc03ce663cce74d08fd7e44eaf5955}{data\+\_\+t}} \&data, const double breakout=-\/\mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}}) override
+\item 
+virtual std\+::pair$<$ \mbox{\hyperlink{class_t_normal_variable_a6d4e85faf82d911f218d4bdca10780d1}{self\+\_\+t}}, double $>$ \mbox{\hyperlink{class_t_normal_variable_ad749023d34d2fad8b465aa2bfeba51a3}{propose}} () const override
+\item 
+virtual \mbox{\hyperlink{class_t_normal_variable_a6d4e85faf82d911f218d4bdca10780d1}{self\+\_\+t}} \mbox{\hyperlink{class_t_normal_variable_aacaa3c0962cf32dcee93f7e459cd0eac}{restart}} () const override
+\item 
+virtual size\+\_\+t \mbox{\hyperlink{class_t_normal_variable_aed121b256f5555f36e65e3a30156cfed}{hash}} () const override
+\item 
+virtual bool \mbox{\hyperlink{class_t_normal_variable_add62dd259e5d400ce6711f11e3e77455}{operator==}} (const \mbox{\hyperlink{class_t_normal_variable_a6d4e85faf82d911f218d4bdca10780d1}{self\+\_\+t}} \&h) const override
+\item 
+virtual std\+::string \mbox{\hyperlink{class_t_normal_variable_aa1d91679b1143624a018b073646a1c46}{string}} (std\+::string prefix=\char`\"{}\char`\"{}) const override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{class_t_normal_variable_a2e95a4211655a6e72ff80acda3d4f74e}{M\+E\+AN}} = 0.\+0
+\item 
+float \mbox{\hyperlink{class_t_normal_variable_a70478964ada03ce39fe74ec5bd013610}{SD}} = 1.\+0
+\item 
+float \mbox{\hyperlink{class_t_normal_variable_a4c7b954399e8e212d589afcf7aff6def}{P\+R\+O\+P\+O\+S\+A\+L\+\_\+\+S\+C\+A\+LE}} = 0.\+10
+\item 
+bool \mbox{\hyperlink{class_t_normal_variable_aa2ad3b60a888a46a3841055ad668dbcd}{can\+\_\+propose}}
+\item 
+float \mbox{\hyperlink{class_t_normal_variable_ac338239290067ee8d12a9456063d63d6}{value}}
+\item 
+float \mbox{\hyperlink{class_t_normal_variable_a73cae6d85d799356b214deeb5e0d8a2c}{fvalue}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$float($\ast$)(float) f$>$\newline
+class T\+Normal\+Variable$<$ f $>$}
+
+\begin{DoxyAuthor}{Author}
+Steven Piantadosi 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+11/09/20 
+\end{DoxyDate}
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_t_normal_variable_aabdc03ce663cce74d08fd7e44eaf5955}\label{class_t_normal_variable_aabdc03ce663cce74d08fd7e44eaf5955}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!data\_t@{data\_t}}
+\index{data\_t@{data\_t}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{data\_t}{data\_t}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+using \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::\mbox{\hyperlink{class_t_normal_variable_aabdc03ce663cce74d08fd7e44eaf5955}{data\+\_\+t}} =  typename \mbox{\hyperlink{class_m_c_m_cable}{M\+C\+M\+Cable}}$<$\mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$f$>$, void$\ast$$>$\+::\mbox{\hyperlink{class_t_normal_variable_aabdc03ce663cce74d08fd7e44eaf5955}{data\+\_\+t}}}
+
+\mbox{\Hypertarget{class_t_normal_variable_a6d4e85faf82d911f218d4bdca10780d1}\label{class_t_normal_variable_a6d4e85faf82d911f218d4bdca10780d1}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!self\_t@{self\_t}}
+\index{self\_t@{self\_t}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{self\_t}{self\_t}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+using \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::\mbox{\hyperlink{class_t_normal_variable_a6d4e85faf82d911f218d4bdca10780d1}{self\+\_\+t}} =  \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$f$>$}
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_t_normal_variable_a50f025b6b3888c02b676a0e1c280a9b8}\label{class_t_normal_variable_a50f025b6b3888c02b676a0e1c280a9b8}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!TNormalVariable@{TNormalVariable}}
+\index{TNormalVariable@{TNormalVariable}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{TNormalVariable()}{TNormalVariable()}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+\mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::\mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_t_normal_variable_a77e4954e8d30140fce241eca6d9abfa2}\label{class_t_normal_variable_a77e4954e8d30140fce241eca6d9abfa2}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!compute\_likelihood@{compute\_likelihood}}
+\index{compute\_likelihood@{compute\_likelihood}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{compute\_likelihood()}{compute\_likelihood()}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+virtual double \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::compute\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_t_normal_variable_aabdc03ce663cce74d08fd7e44eaf5955}{data\+\_\+t}} \&}]{data,  }\item[{const double}]{breakout = {\ttfamily -\/\mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_t_normal_variable_a5cb6223529b451239b505b3e5dbdd605}\label{class_t_normal_variable_a5cb6223529b451239b505b3e5dbdd605}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!compute\_prior@{compute\_prior}}
+\index{compute\_prior@{compute\_prior}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{compute\_prior()}{compute\_prior()}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+virtual double \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::compute\+\_\+prior (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Compute the prior -- defaultly not defined. 
+
+
+
+Implements \mbox{\hyperlink{class_bayesable_a1b057a17212ced123545133e2297c01b}{Bayesable$<$ Args... $>$}}.
+
+\mbox{\Hypertarget{class_t_normal_variable_ad87e3aaa4a13df9c911a26a973f76d47}\label{class_t_normal_variable_ad87e3aaa4a13df9c911a26a973f76d47}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!get@{get}}
+\index{get@{get}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+float \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::get (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get interfaces to the transformed variable. 
+
+\mbox{\Hypertarget{class_t_normal_variable_aed121b256f5555f36e65e3a30156cfed}\label{class_t_normal_variable_aed121b256f5555f36e65e3a30156cfed}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!hash@{hash}}
+\index{hash@{hash}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{hash()}{hash()}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+virtual size\+\_\+t \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::hash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_t_normal_variable_add62dd259e5d400ce6711f11e3e77455}\label{class_t_normal_variable_add62dd259e5d400ce6711f11e3e77455}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!operator==@{operator==}}
+\index{operator==@{operator==}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+virtual bool \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_t_normal_variable_a6d4e85faf82d911f218d4bdca10780d1}{self\+\_\+t}} \&}]{h }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_m_c_m_cable_a7b35c04d3d1326b930cfc69dfe0bd207}{M\+C\+M\+Cable$<$ T\+Normal\+Variable$<$ f $>$, void $\ast$ $>$}}.
+
+\mbox{\Hypertarget{class_t_normal_variable_ad749023d34d2fad8b465aa2bfeba51a3}\label{class_t_normal_variable_ad749023d34d2fad8b465aa2bfeba51a3}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!propose@{propose}}
+\index{propose@{propose}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{propose()}{propose()}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+virtual std\+::pair$<$\mbox{\hyperlink{class_t_normal_variable_a6d4e85faf82d911f218d4bdca10780d1}{self\+\_\+t}},double$>$ \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::propose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_t_normal_variable_aacaa3c0962cf32dcee93f7e459cd0eac}\label{class_t_normal_variable_aacaa3c0962cf32dcee93f7e459cd0eac}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!restart@{restart}}
+\index{restart@{restart}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{restart()}{restart()}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+virtual \mbox{\hyperlink{class_t_normal_variable_a6d4e85faf82d911f218d4bdca10780d1}{self\+\_\+t}} \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::restart (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_t_normal_variable_ac0a63cdcc0949ea8ec5d3c45773c0df2}\label{class_t_normal_variable_ac0a63cdcc0949ea8ec5d3c45773c0df2}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!set@{set}}
+\index{set@{set}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+template$<$typename T $>$ \\
+void \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::set (\begin{DoxyParamCaption}\item[{T}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_t_normal_variable_aa1d91679b1143624a018b073646a1c46}\label{class_t_normal_variable_aa1d91679b1143624a018b073646a1c46}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!string@{string}}
+\index{string@{string}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{string()}{string()}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+virtual std\+::string \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::string (\begin{DoxyParamCaption}\item[{std\+::string}]{prefix = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_bayesable_ab6944b4bfe5620c96048287a51d019c1}{Bayesable$<$ Args... $>$}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_t_normal_variable_aa2ad3b60a888a46a3841055ad668dbcd}\label{class_t_normal_variable_aa2ad3b60a888a46a3841055ad668dbcd}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!can\_propose@{can\_propose}}
+\index{can\_propose@{can\_propose}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{can\_propose}{can\_propose}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+bool \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::can\+\_\+propose}
+
+\mbox{\Hypertarget{class_t_normal_variable_a73cae6d85d799356b214deeb5e0d8a2c}\label{class_t_normal_variable_a73cae6d85d799356b214deeb5e0d8a2c}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!fvalue@{fvalue}}
+\index{fvalue@{fvalue}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{fvalue}{fvalue}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+float \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::fvalue}
+
+\mbox{\Hypertarget{class_t_normal_variable_a2e95a4211655a6e72ff80acda3d4f74e}\label{class_t_normal_variable_a2e95a4211655a6e72ff80acda3d4f74e}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!MEAN@{MEAN}}
+\index{MEAN@{MEAN}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{MEAN}{MEAN}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+float \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::M\+E\+AN = 0.\+0}
+
+\mbox{\Hypertarget{class_t_normal_variable_a4c7b954399e8e212d589afcf7aff6def}\label{class_t_normal_variable_a4c7b954399e8e212d589afcf7aff6def}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!PROPOSAL\_SCALE@{PROPOSAL\_SCALE}}
+\index{PROPOSAL\_SCALE@{PROPOSAL\_SCALE}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{PROPOSAL\_SCALE}{PROPOSAL\_SCALE}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+float \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::P\+R\+O\+P\+O\+S\+A\+L\+\_\+\+S\+C\+A\+LE = 0.\+10}
+
+\mbox{\Hypertarget{class_t_normal_variable_a70478964ada03ce39fe74ec5bd013610}\label{class_t_normal_variable_a70478964ada03ce39fe74ec5bd013610}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!SD@{SD}}
+\index{SD@{SD}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{SD}{SD}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+float \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::SD = 1.\+0}
+
+\mbox{\Hypertarget{class_t_normal_variable_ac338239290067ee8d12a9456063d63d6}\label{class_t_normal_variable_ac338239290067ee8d12a9456063d63d6}} 
+\index{TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}!value@{value}}
+\index{value@{value}!TNormalVariable$<$ f $>$@{TNormalVariable$<$ f $>$}}
+\doxysubsubsection{\texorpdfstring{value}{value}}
+{\footnotesize\ttfamily template$<$float($\ast$)(float) f$>$ \\
+float \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}}$<$ f $>$\+::value}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Hypotheses/\mbox{\hyperlink{_t_normal_variable_8h}{T\+Normal\+Variable.\+h}}\end{DoxyCompactItemize}

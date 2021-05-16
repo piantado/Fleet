@@ -153,6 +153,15 @@ $(function() {
 <div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="_miscellaneous_8h.html#a88e3d8e9f8a97406cabe4044308e649b">  107</a></span>&#160;constexpr <span class="keywordtype">bool</span> <a class="code" href="_miscellaneous_8h.html#a88e3d8e9f8a97406cabe4044308e649b">contains_type</a>() {</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordflow">return</span> std::disjunction&lt;std::is_same&lt;X, Ts&gt;...&gt;::value;</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;}</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">//https://stackoverflow.com/questions/16337610/how-to-know-if-a-type-is-a-specialization-of-stdvector</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Test, <span class="keyword">template</span>&lt;<span class="keyword">typename</span>...&gt; <span class="keyword">class </span>Ref&gt;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="keyword">struct </span>is_specialization : std::false_type {};</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">template</span>&lt;<span class="keyword">typename</span>...&gt; <span class="keyword">class </span>Ref, <span class="keyword">typename</span>... Args&gt;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="keyword">struct </span>is_specialization&lt;Ref&lt;Args...&gt;, Ref&gt;: std::true_type {};</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="a_miscellaneous_8h_html_a88e3d8e9f8a97406cabe4044308e649b"><div class="ttname"><a href="_miscellaneous_8h.html#a88e3d8e9f8a97406cabe4044308e649b">contains_type</a></div><div class="ttdeci">constexpr bool contains_type()</div><div class="ttdoc">‍**</div><div class="ttdef"><b>Definition:</b> Miscellaneous.h:107</div></div>
 <div class="ttc" id="anamespace_builtins_html_a25cc5743603132ee78d118a4ca039c68"><div class="ttname"><a href="namespace_builtins.html#a25cc5743603132ee78d118a4ca039c68">Builtins::X</a></div><div class="ttdeci">Builtin&lt; typename Grammar_t::input_t &gt; X(Op::X, BUILTIN_LAMBDA { assert(!vms-&gt;xstack.empty());vms-&gt;template push&lt; typename Grammar_t::input_t &gt;(vms-&gt;xstack.top());})</div></div>

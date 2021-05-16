@@ -1,12 +1,12 @@
 <map id="src/Containers/IntegerizedStack.h" name="src/Containers/IntegerizedStack.h">
-<area shape="rect" id="node1" title=" " alt="" coords="403,5,577,47"/>
-<area shape="rect" id="node2" href="$_grammar_2_enumeration_2_enumeration_inference_8h.html" title=" " alt="" coords="300,95,475,136"/>
-<area shape="rect" id="node9" href="$_enumeration_8h.html" title="An IntegerizedStack is just a wrapper around unsigned longs that allow them to behave like a of integ..." alt="" coords="499,102,686,129"/>
-<area shape="rect" id="node3" href="$_basic_enumeration_8h.html" title=" " alt="" coords="300,184,475,225"/>
-<area shape="rect" id="node4" href="$_subtree_enumeration_8h.html" title="Enumerate subtrees of a given tree." alt="" coords="201,273,376,315"/>
-<area shape="rect" id="node7" href="$_inference_2_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="400,273,575,315"/>
+<area shape="rect" id="node1" title=" " alt="" coords="484,5,659,47"/>
+<area shape="rect" id="node2" href="$_grammar_2_enumeration_2_enumeration_inference_8h.html" title=" " alt="" coords="381,95,556,136"/>
+<area shape="rect" id="node9" href="$_enumeration_8h.html" title="An IntegerizedStack is just a wrapper around unsigned longs that allow them to behave like a of integ..." alt="" coords="581,102,767,129"/>
+<area shape="rect" id="node3" href="$_basic_enumeration_8h.html" title=" " alt="" coords="381,184,556,225"/>
+<area shape="rect" id="node4" href="$_subtree_enumeration_8h.html" title="Enumerate subtrees of a given tree." alt="" coords="193,273,368,315"/>
+<area shape="rect" id="node6" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="261,452,426,479"/>
+<area shape="rect" id="node8" href="$_inference_2_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="507,273,681,315"/>
 <area shape="rect" id="node5" href="$_full_l_z_enumeration_8h.html" title="Enumerate where we may interpret low numbers as pointers back to COMPLETE subtrees...." alt="" coords="5,363,180,404"/>
-<area shape="rect" id="node6" href="$_partial_l_z_enumeration_8h.html" title="Same as FullLZEnumeration except that the pointers to previous trees are to partial trees,..." alt="" coords="204,363,379,404"/>
-<area shape="rect" id="node8" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="405,370,570,397"/>
-<area shape="rect" id="node10" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="528,191,657,218"/>
+<area shape="rect" id="node7" href="$_partial_l_z_enumeration_8h.html" title="Same as FullLZEnumeration except that the pointers to previous trees are to partial trees,..." alt="" coords="256,363,431,404"/>
+<area shape="rect" id="node10" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="609,191,739,218"/>
 </map>

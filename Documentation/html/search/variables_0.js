@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['_5f_5fnthreads_1193',['__nthreads',['../class_parallel_inference_interface.html#acdc4513dc32a40ba8f7f2a7aaa76c437',1,'ParallelInferenceInterface']]],
-  ['_5fstack_1194',['_stack',['../class_virtual_machine_state.html#a55e2a8e32597a15740e9e38ae539200c',1,'VirtualMachineState']]]
+  ['_5f_5fnrunning_1222',['__nrunning',['../class_parallel_inference_interface.html#a453b34818232bd489f7b8625ee9f9e0a',1,'ParallelInferenceInterface']]],
+  ['_5f_5fnthreads_1223',['__nthreads',['../class_parallel_inference_interface.html#ab73a9cd205e1aeea5a629243b3dbee7d',1,'ParallelInferenceInterface']]],
+  ['_5fstack_1224',['_stack',['../class_virtual_machine_state.html#a6e7c948fc550bd2343034a94173e926c',1,'VirtualMachineState']]]
 ];

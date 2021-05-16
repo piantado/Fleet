@@ -1,7 +1,7 @@
-<map id="ChainPool&lt; HYP, callback_t &gt;" name="ChainPool&lt; HYP, callback_t &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="240,78,439,105"/>
-<area shape="rect" id="node3" href="$class_data_tempering.html" title=" " alt="" coords="488,5,640,47"/>
-<area shape="rect" id="node4" href="$class_parallel_tempering.html" title=" " alt="" coords="497,71,631,112"/>
-<area shape="rect" id="node5" href="$class_partition_m_c_m_c.html" title=" " alt="" coords="487,136,641,177"/>
-<area shape="rect" id="node2" href="$class_parallel_inference_interface.html" title=" " alt="" coords="5,78,192,105"/>
+<map id="ChainPool&lt; HYP &gt;" name="ChainPool&lt; HYP &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="191,95,326,121"/>
+<area shape="rect" id="node3" href="$class_data_tempering.html" title=" " alt="" coords="5,177,168,203"/>
+<area shape="rect" id="node4" href="$class_parallel_tempering.html" title=" " alt="" coords="192,169,325,211"/>
+<area shape="rect" id="node5" href="$class_partition_m_c_m_c.html" title=" " alt="" coords="350,177,514,203"/>
+<area shape="rect" id="node2" href="$class_parallel_inference_interface.html" title=" " alt="" coords="173,5,344,47"/>
 </map>

@@ -1,11 +1,14 @@
 <map id="src/Inference/ParallelInferenceInterface.h" name="src/Inference/ParallelInferenceInterface.h">
-<area shape="rect" id="node1" title=" " alt="" coords="355,5,553,47"/>
-<area shape="rect" id="node2" href="$_beam_search_8h.html" title="This is an implementation of beam search that maintains a priority queue of partial states and attemp..." alt="" coords="5,95,193,121"/>
-<area shape="rect" id="node3" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="218,95,391,121"/>
-<area shape="rect" id="node6" href="$_inference_2_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="340,169,515,211"/>
-<area shape="rect" id="node7" href="$_m_c_t_s_8h.html" title="This is a version of MCTS that plays out children nplayouts times instead of expanding a full tree." alt="" coords="539,177,689,203"/>
-<area shape="rect" id="node8" href="$_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="517,95,711,121"/>
-<area shape="rect" id="node9" href="$_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="735,95,938,121"/>
-<area shape="rect" id="node4" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="99,177,315,203"/>
-<area shape="rect" id="node5" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="234,259,399,285"/>
+<area shape="rect" id="node1" title=" " alt="" coords="325,5,524,47"/>
+<area shape="rect" id="node2" href="$_beam_search_8h.html" title="This is an implementation of beam search that maintains a priority queue of partial states and attemp..." alt="" coords="5,102,193,129"/>
+<area shape="rect" id="node3" href="$_inference_2_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="107,184,281,225"/>
+<area shape="rect" id="node5" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="269,95,413,136"/>
+<area shape="rect" id="node7" href="$_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="437,95,581,136"/>
+<area shape="rect" id="node8" href="$_m_c_t_s_base_8h.html" title=" " alt="" coords="611,184,751,225"/>
+<area shape="rect" id="node12" href="$_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="655,102,850,129"/>
+<area shape="rect" id="node4" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="231,281,397,307"/>
+<area shape="rect" id="node6" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="306,184,450,225"/>
+<area shape="rect" id="node9" href="$_full_m_c_t_s_node_8h.html" title=" " alt="" coords="441,273,581,315"/>
+<area shape="rect" id="node10" href="$_minimal_m_c_t_s_node_8h.html" title=" " alt="" coords="605,273,756,315"/>
+<area shape="rect" id="node11" href="$_partial_m_c_t_s_node_8h.html" title=" " alt="" coords="780,273,923,315"/>
 </map>

@@ -25,7 +25,23 @@ Fleet contains several implemented examples of existing program-\/induction mode
 \end{DoxyItemize}
 
 as well as several other examples, including sorting and first order logical theories.\hypertarget{index_subsec_style}{}\doxysubsection{Style}\label{index_subsec_style}
-Fleet is currently written using a signle-\/file, header-\/only style. This a nonstandard C++ style, but it allows for rapid refactoring and prototyping since declarations and implementations are not in separate files. This style may change in the future because it also leads to higher compilation times.\hypertarget{index_tutorial_sec}{}\doxysection{Tutorial}\label{index_tutorial_sec}
+Fleet is currently written using a signle-\/file, header-\/only style. This a nonstandard C++ style, but it allows for rapid refactoring and prototyping since declarations and implementations are not in separate files. This style may change in the future because it also leads to higher compilation times.
+
+\textbackslash{}subection subsec\+\_\+inference Inference
+
+Fleet provides a number of simple inference routines to use. Examples of each can be found in Models/\+Sorting
+
+
+\begin{DoxyItemize}
+\item Markov-\/\+Chain Monte-\/\+Carlo
+\item M\+C\+MC With Parallel Tempering
+\item Monte-\/\+Carlo Tree search
+\item Beam search
+\item Enumeration (with a fast, fancy implementation)
+\end{DoxyItemize}
+
+Generally, we find that \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}} is the fastest and most effective way to search these spaces of programs. These can be compared in Models/\+Sorting, which has examples of each. ~\newline
+\hypertarget{index_tutorial_sec}{}\doxysection{Tutorial}\label{index_tutorial_sec}
 To illustrate how Fleet works, let\textquotesingle{}s walk through a simple example\+: the key parts of Formal\+Language\+Theory-\/\+Simple. This is a program induction model which takes a collection of strings and tries to find a stochastic program which can explain the observed strings. For example, it might see data like \{\char`\"{}ab\char`\"{}, \char`\"{}abab\char`\"{}, \char`\"{}ababab\char`\"{}\} and then infer that the language is (ab)$^\wedge$n.
 
 Let\textquotesingle{}s first walk through the grammar definition. Here, we first import \mbox{\hyperlink{_grammar_8h}{Grammar.\+h}} and also \mbox{\hyperlink{_singleton_8h}{Singleton.\+h}}. \mbox{\hyperlink{class_singleton}{Singleton}} is a design pattern that permits only one copy of an object to be constructed, which is used here to ensure that we only have one grammar (and aren\textquotesingle{}t, e.\+g. passing copies of it around). Typical to Fleet\textquotesingle{}s code, we define our own grammar as My\+Grammar. The first two template arguments are the input and output types of the function we are learning (here, strings to strings) and the next two are (variadic) template arguments for all of the nonterminal types used by the grammar (here, strings and bools).
@@ -144,7 +160,7 @@ The last piece of code is the actual running\+: Here, we define a Fleet object, 
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\textcolor{preprocessor}{\#include "\mbox{\hyperlink{_top_8h}{Top.h}}"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "Top.h"}}
 \DoxyCodeLine{\textcolor{preprocessor}{\#include "\mbox{\hyperlink{_parallel_tempering_8h}{ParallelTempering.h}}"}}
 \DoxyCodeLine{\textcolor{preprocessor}{\#include "\mbox{\hyperlink{_fleet_8h}{Fleet.h}}"} }
 \DoxyCodeLine{\textcolor{preprocessor}{\#include "\mbox{\hyperlink{_builtins_8h}{Builtins.h}}"}}
@@ -198,16 +214,4 @@ Note that there are several inference schemes, and most (including the examples 
 
 As the chain runs, it will place hypotheses into \char`\"{}top\char`\"{} (which defaultly reads the command line argument (e.\+g. \char`\"{}-\/-\/top=25\char`\"{}) to figure out how many of the best hypotheses to store. At the end of this code, we call \mbox{\hyperlink{namespace_fleet_args_acf2f80bb2810cea3b3eeef0c4b0edf03}{top.\+print()}}, which will call the .\mbox{\hyperlink{namespace_fleet_args_acf2f80bb2810cea3b3eeef0c4b0edf03}{print()}} function on everything in top and show them sorted by posterior probability score (remember above we overwrote My\+Hypothesis\+::print in order to have it run the program).
 
-At the end of this program, as the Fleet object is destroyed, it will print out some statistics about the total number of M\+C\+MC steps, total runtime, etc. (This can be turned off by setting \mbox{\hyperlink{namespace_fleet_args_acb1d87c67d763d1edf83ebe1377c948e}{Fleet\+Args\+::print\+\_\+header}}=false).\hypertarget{index_install_sec}{}\doxysection{Inference}\label{index_install_sec}
-Fleet provides a number of simple inference routines to use. Examples of each can be found in Models/\+Sorting
-
-
-\begin{DoxyItemize}
-\item Markov-\/\+Chain Monte-\/\+Carlo
-\item M\+C\+MC With Parallel Tempering
-\item Monte-\/\+Carlo Tree search
-\item Beam search
-\item Enumeration (with a fast, fancy implementation)
-\end{DoxyItemize}
-
-Generally, we find that \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tempering}} is the fastest and most effective way to search these spaces of programs. 
+At the end of this program, as the Fleet object is destroyed, it will print out some statistics about the total number of M\+C\+MC steps, total runtime, etc. (This can be turned off by setting \mbox{\hyperlink{namespace_fleet_args_acb1d87c67d763d1edf83ebe1377c948e}{Fleet\+Args\+::print\+\_\+header}}=false). 

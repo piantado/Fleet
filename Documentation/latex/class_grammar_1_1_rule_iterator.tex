@@ -1,0 +1,148 @@
+\hypertarget{class_grammar_1_1_rule_iterator}{}\doxysection{Grammar$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::Rule\+Iterator Class Reference}
+\label{class_grammar_1_1_rule_iterator}\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}}
+
+
+{\ttfamily \#include $<$Grammar.\+h$>$}
+
+
+
+Inheritance diagram for Grammar$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::Rule\+Iterator\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=201pt]{class_grammar_1_1_rule_iterator__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Grammar$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::Rule\+Iterator\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_grammar_1_1_rule_iterator__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_grammar_1_1_rule_iterator_af725652823a1aaf0d1da986c17e25ad8}{Rule\+Iterator}} (\mbox{\hyperlink{class_grammar_a3193857749e93b641ca05524f94c388e}{this\+\_\+t}} $\ast$g, bool is\+\_\+end)
+\item 
+\mbox{\hyperlink{class_rule}{Rule}} \& \mbox{\hyperlink{class_grammar_1_1_rule_iterator_a99230aa4d15b1cdd263e6f7946dff975}{operator$\ast$}} () const
+\item 
+\mbox{\hyperlink{class_grammar_1_1_rule_iterator}{Rule\+Iterator}} \& \mbox{\hyperlink{class_grammar_1_1_rule_iterator_a07fc5f31067a468952756284ff245fe9}{operator++}} (int blah)
+\item 
+\mbox{\hyperlink{class_grammar_1_1_rule_iterator}{Rule\+Iterator}} \& \mbox{\hyperlink{class_grammar_1_1_rule_iterator_ae988ac73a1745f97a57362921ad13f78}{operator++}} ()
+\item 
+\mbox{\hyperlink{class_grammar_1_1_rule_iterator}{Rule\+Iterator}} \& \mbox{\hyperlink{class_grammar_1_1_rule_iterator_a481b9d4ae3466928dd623e14fc06d0e4}{operator+}} (size\+\_\+t n)
+\item 
+bool \mbox{\hyperlink{class_grammar_1_1_rule_iterator_aae60fc8809ee7a43d9b159f5726a6768}{operator==}} (const \mbox{\hyperlink{class_grammar_1_1_rule_iterator}{Rule\+Iterator}} \&rhs)
+\item 
+bool \mbox{\hyperlink{class_grammar_1_1_rule_iterator_a222c131441fb032d4f40f050ec91071c}{operator!=}} (const \mbox{\hyperlink{class_grammar_1_1_rule_iterator}{Rule\+Iterator}} \&rhs)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_grammar_a3193857749e93b641ca05524f94c388e}{this\+\_\+t}} $\ast$ \mbox{\hyperlink{class_grammar_1_1_rule_iterator_aee52bbcb041f228356990946845495fd}{grammar}}
+\item 
+\mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} \mbox{\hyperlink{class_grammar_1_1_rule_iterator_a2bbc2736418e877e386796baf803e5c0}{current\+\_\+nt}}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{class_rule}{Rule}} $>$\+::iterator \mbox{\hyperlink{class_grammar_1_1_rule_iterator_a38dca46688c18cda16dbe7fa1a5e73fd}{current\+\_\+rule}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename \+\_\+input\+\_\+t, typename \+\_\+output\+\_\+t, typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$\newline
+class Grammar$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+E\+S $>$\+::\+Rule\+Iterator}
+
+\begin{DoxyAuthor}{Author}
+Steven Piantadosi 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+05/09/20 
+\end{DoxyDate}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_grammar_1_1_rule_iterator_af725652823a1aaf0d1da986c17e25ad8}\label{class_grammar_1_1_rule_iterator_af725652823a1aaf0d1da986c17e25ad8}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}!RuleIterator@{RuleIterator}}
+\index{RuleIterator@{RuleIterator}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}}
+\doxysubsubsection{\texorpdfstring{RuleIterator()}{RuleIterator()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+\mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::Rule\+Iterator\+::\+Rule\+Iterator (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_grammar_a3193857749e93b641ca05524f94c388e}{this\+\_\+t}} $\ast$}]{g,  }\item[{bool}]{is\+\_\+end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_grammar_1_1_rule_iterator_a222c131441fb032d4f40f050ec91071c}\label{class_grammar_1_1_rule_iterator_a222c131441fb032d4f40f050ec91071c}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+bool \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::Rule\+Iterator\+::operator!= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_grammar_1_1_rule_iterator}{Rule\+Iterator}} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_grammar_1_1_rule_iterator_a99230aa4d15b1cdd263e6f7946dff975}\label{class_grammar_1_1_rule_iterator_a99230aa4d15b1cdd263e6f7946dff975}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}}
+\doxysubsubsection{\texorpdfstring{operator$\ast$()}{operator*()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+\mbox{\hyperlink{class_rule}{Rule}}\& \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::Rule\+Iterator\+::operator$\ast$ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_grammar_1_1_rule_iterator_a481b9d4ae3466928dd623e14fc06d0e4}\label{class_grammar_1_1_rule_iterator_a481b9d4ae3466928dd623e14fc06d0e4}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}!operator+@{operator+}}
+\index{operator+@{operator+}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}}
+\doxysubsubsection{\texorpdfstring{operator+()}{operator+()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+\mbox{\hyperlink{class_grammar_1_1_rule_iterator}{Rule\+Iterator}}\& \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::Rule\+Iterator\+::operator+ (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_grammar_1_1_rule_iterator_ae988ac73a1745f97a57362921ad13f78}\label{class_grammar_1_1_rule_iterator_ae988ac73a1745f97a57362921ad13f78}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}!operator++@{operator++}}
+\index{operator++@{operator++}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}}
+\doxysubsubsection{\texorpdfstring{operator++()}{operator++()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+\mbox{\hyperlink{class_grammar_1_1_rule_iterator}{Rule\+Iterator}}\& \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::Rule\+Iterator\+::operator++ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_grammar_1_1_rule_iterator_a07fc5f31067a468952756284ff245fe9}\label{class_grammar_1_1_rule_iterator_a07fc5f31067a468952756284ff245fe9}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}!operator++@{operator++}}
+\index{operator++@{operator++}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}}
+\doxysubsubsection{\texorpdfstring{operator++()}{operator++()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+\mbox{\hyperlink{class_grammar_1_1_rule_iterator}{Rule\+Iterator}}\& \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::Rule\+Iterator\+::operator++ (\begin{DoxyParamCaption}\item[{int}]{blah }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_grammar_1_1_rule_iterator_aae60fc8809ee7a43d9b159f5726a6768}\label{class_grammar_1_1_rule_iterator_aae60fc8809ee7a43d9b159f5726a6768}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}!operator==@{operator==}}
+\index{operator==@{operator==}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+bool \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::Rule\+Iterator\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_grammar_1_1_rule_iterator}{Rule\+Iterator}} \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_grammar_1_1_rule_iterator_a2bbc2736418e877e386796baf803e5c0}\label{class_grammar_1_1_rule_iterator_a2bbc2736418e877e386796baf803e5c0}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}!current\_nt@{current\_nt}}
+\index{current\_nt@{current\_nt}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}}
+\doxysubsubsection{\texorpdfstring{current\_nt}{current\_nt}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+\mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::Rule\+Iterator\+::current\+\_\+nt\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{class_grammar_1_1_rule_iterator_a38dca46688c18cda16dbe7fa1a5e73fd}\label{class_grammar_1_1_rule_iterator_a38dca46688c18cda16dbe7fa1a5e73fd}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}!current\_rule@{current\_rule}}
+\index{current\_rule@{current\_rule}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}}
+\doxysubsubsection{\texorpdfstring{current\_rule}{current\_rule}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+std\+::vector$<$\mbox{\hyperlink{class_rule}{Rule}}$>$\+::iterator \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::Rule\+Iterator\+::current\+\_\+rule\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{class_grammar_1_1_rule_iterator_aee52bbcb041f228356990946845495fd}\label{class_grammar_1_1_rule_iterator_aee52bbcb041f228356990946845495fd}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}!grammar@{grammar}}
+\index{grammar@{grammar}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$::RuleIterator}}
+\doxysubsubsection{\texorpdfstring{grammar}{grammar}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+\mbox{\hyperlink{class_grammar_a3193857749e93b641ca05524f94c388e}{this\+\_\+t}}$\ast$ \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::Rule\+Iterator\+::grammar\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Grammar/\mbox{\hyperlink{_grammar_8h}{Grammar.\+h}}\end{DoxyCompactItemize}

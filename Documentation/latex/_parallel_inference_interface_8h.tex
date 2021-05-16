@@ -1,16 +1,22 @@
 \hypertarget{_parallel_inference_interface_8h}{}\doxysection{src/\+Inference/\+Parallel\+Inference\+Interface.h File Reference}
 \label{_parallel_inference_interface_8h}\index{src/Inference/ParallelInferenceInterface.h@{src/Inference/ParallelInferenceInterface.h}}
 {\ttfamily \#include $<$atomic$>$}\newline
+{\ttfamily \#include $<$mutex$>$}\newline
 {\ttfamily \#include $<$thread$>$}\newline
+{\ttfamily \#include $<$condition\+\_\+variable$>$}\newline
 {\ttfamily \#include \char`\"{}Control.\+h\char`\"{}}\newline
-Include dependency graph for Parallel\+Inference\+Interface.\+h\+:\nopagebreak
+{\ttfamily \#include \char`\"{}Coroutines.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Ordered\+Lock.\+h\char`\"{}}\newline
+Include dependency graph for Parallel\+Inference\+Interface.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_parallel_inference_interface_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -20,5 +26,5 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface$<$ Args $>$}}
+class \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface$<$ X, Args $>$}}
 \end{DoxyCompactItemize}

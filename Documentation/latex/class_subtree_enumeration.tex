@@ -1,0 +1,118 @@
+\hypertarget{class_subtree_enumeration}{}\doxysection{Subtree\+Enumeration$<$ Grammar\+\_\+t $>$ Class Template Reference}
+\label{class_subtree_enumeration}\index{SubtreeEnumeration$<$ Grammar\_t $>$@{SubtreeEnumeration$<$ Grammar\_t $>$}}
+
+
+{\ttfamily \#include $<$Subtree\+Enumeration.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_subtree_enumeration_a69497d89d26273149772f503a9d3e998}{Subtree\+Enumeration}} (Grammar\+\_\+t $\ast$g)
+\item 
+\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} \mbox{\hyperlink{class_subtree_enumeration_a0b32005d945cd9a39c7cb91922206d81}{count}} (const \mbox{\hyperlink{class_node}{Node}} \&n)
+\begin{DoxyCompactList}\small\item\em How many partial subtrees are there? \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_subtree_enumeration_a32e9ecdcb30d4f92793b8528732f44fc}{to\+Node}} (\mbox{\hyperlink{class_integerized_stack}{Integerized\+Stack}} \&is, const \mbox{\hyperlink{class_node}{Node}} \&frm)
+\begin{DoxyCompactList}\small\item\em Convert to the is\textquotesingle{}th partial subtree of frm. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_subtree_enumeration_a208453c425bd1de9bd152bfb676bfa94}{to\+Node}} (\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} z, const \mbox{\hyperlink{class_node}{Node}} \&frm)
+\item 
+virtual \mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} \mbox{\hyperlink{class_subtree_enumeration_aec0bc49fc4c2842712b65c5c0bbd4012}{to\+Integer}} (const \mbox{\hyperlink{class_node}{Node}} \&n, const \mbox{\hyperlink{class_node}{Node}} \&frm)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Grammar\+\_\+t $\ast$ \mbox{\hyperlink{class_subtree_enumeration_a4645f617e60f31e565cc013c8dfe660c}{grammar}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Grammar\+\_\+t$>$\newline
+class Subtree\+Enumeration$<$ Grammar\+\_\+t $>$}
+
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+02/01/21 
+\end{DoxyDate}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_subtree_enumeration_a69497d89d26273149772f503a9d3e998}\label{class_subtree_enumeration_a69497d89d26273149772f503a9d3e998}} 
+\index{SubtreeEnumeration$<$ Grammar\_t $>$@{SubtreeEnumeration$<$ Grammar\_t $>$}!SubtreeEnumeration@{SubtreeEnumeration}}
+\index{SubtreeEnumeration@{SubtreeEnumeration}!SubtreeEnumeration$<$ Grammar\_t $>$@{SubtreeEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{SubtreeEnumeration()}{SubtreeEnumeration()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+\mbox{\hyperlink{class_subtree_enumeration}{Subtree\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::\mbox{\hyperlink{class_subtree_enumeration}{Subtree\+Enumeration}} (\begin{DoxyParamCaption}\item[{Grammar\+\_\+t $\ast$}]{g }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_subtree_enumeration_a0b32005d945cd9a39c7cb91922206d81}\label{class_subtree_enumeration_a0b32005d945cd9a39c7cb91922206d81}} 
+\index{SubtreeEnumeration$<$ Grammar\_t $>$@{SubtreeEnumeration$<$ Grammar\_t $>$}!count@{count}}
+\index{count@{count}!SubtreeEnumeration$<$ Grammar\_t $>$@{SubtreeEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{count()}{count()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} \mbox{\hyperlink{class_subtree_enumeration}{Subtree\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::count (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+How many partial subtrees are there? 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_subtree_enumeration_aec0bc49fc4c2842712b65c5c0bbd4012}\label{class_subtree_enumeration_aec0bc49fc4c2842712b65c5c0bbd4012}} 
+\index{SubtreeEnumeration$<$ Grammar\_t $>$@{SubtreeEnumeration$<$ Grammar\_t $>$}!toInteger@{toInteger}}
+\index{toInteger@{toInteger}!SubtreeEnumeration$<$ Grammar\_t $>$@{SubtreeEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{toInteger()}{toInteger()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+virtual \mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} \mbox{\hyperlink{class_subtree_enumeration}{Subtree\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::to\+Integer (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{n,  }\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{frm }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_subtree_enumeration_a208453c425bd1de9bd152bfb676bfa94}\label{class_subtree_enumeration_a208453c425bd1de9bd152bfb676bfa94}} 
+\index{SubtreeEnumeration$<$ Grammar\_t $>$@{SubtreeEnumeration$<$ Grammar\_t $>$}!toNode@{toNode}}
+\index{toNode@{toNode}!SubtreeEnumeration$<$ Grammar\_t $>$@{SubtreeEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{toNode()}{toNode()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_subtree_enumeration}{Subtree\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::to\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}}]{z,  }\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{frm }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_subtree_enumeration_a32e9ecdcb30d4f92793b8528732f44fc}\label{class_subtree_enumeration_a32e9ecdcb30d4f92793b8528732f44fc}} 
+\index{SubtreeEnumeration$<$ Grammar\_t $>$@{SubtreeEnumeration$<$ Grammar\_t $>$}!toNode@{toNode}}
+\index{toNode@{toNode}!SubtreeEnumeration$<$ Grammar\_t $>$@{SubtreeEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{toNode()}{toNode()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_subtree_enumeration}{Subtree\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::to\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_integerized_stack}{Integerized\+Stack}} \&}]{is,  }\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{frm }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Convert to the is\textquotesingle{}th partial subtree of frm. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nt} & \\
+\hline
+{\em is} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_subtree_enumeration_a4645f617e60f31e565cc013c8dfe660c}\label{class_subtree_enumeration_a4645f617e60f31e565cc013c8dfe660c}} 
+\index{SubtreeEnumeration$<$ Grammar\_t $>$@{SubtreeEnumeration$<$ Grammar\_t $>$}!grammar@{grammar}}
+\index{grammar@{grammar}!SubtreeEnumeration$<$ Grammar\_t $>$@{SubtreeEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{grammar}{grammar}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+Grammar\+\_\+t$\ast$ \mbox{\hyperlink{class_subtree_enumeration}{Subtree\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::grammar}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Grammar/\+Enumeration/\mbox{\hyperlink{_subtree_enumeration_8h}{Subtree\+Enumeration.\+h}}\end{DoxyCompactItemize}

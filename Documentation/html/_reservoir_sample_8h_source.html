@@ -75,7 +75,7 @@ $(function() {
 <a href="_reservoir_sample_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_errors_8h.html">Errors.h</a>&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_top_8h.html">Top.h</a>&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_top_n_8h.html">TopN.h</a>&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="class_reservoir_sample.html">   18</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_reservoir_sample.html">ReservoirSample</a> {</div>
@@ -113,12 +113,12 @@ $(function() {
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_reservoir_sample.html#a94a92f438328cbca4aa5f0ba92867142">top</a>.size();</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="class_reservoir_sample.html#a471e41debe8c7081cbae2f5a1ca4ab54">   68</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_reservoir_sample.html#a471e41debe8c7081cbae2f5a1ca4ab54">add</a>(T x) {</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="class_reservoir_sample.html#a12257ed4961156b6614eeddacdcccb7c">   68</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_reservoir_sample.html#a12257ed4961156b6614eeddacdcccb7c">add</a>(T x) {</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="comment">//std::lock_guard guard(lock);</span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <a class="code" href="class_reservoir_sample.html#a94a92f438328cbca4aa5f0ba92867142">top</a> &lt;&lt; <a class="code" href="struct_reservoir_sample_1_1_item.html">Item</a>(x, <a class="code" href="_random_8h.html#a30d1e43990eafb316df89c96cd213e6b">uniform</a>());</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        ++<a class="code" href="class_reservoir_sample.html#a33f6cc3a51f9591f6e25dacf0cf8e663">N</a>;                </div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="class_reservoir_sample.html#a06e60e404cf49a9261f51d6b07bbf017">   73</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_reservoir_sample.html#a06e60e404cf49a9261f51d6b07bbf017">operator&lt;&lt;</a>(T x) {  <a class="code" href="class_reservoir_sample.html#a471e41debe8c7081cbae2f5a1ca4ab54">add</a>(x); }</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="class_reservoir_sample.html#a06e60e404cf49a9261f51d6b07bbf017">   73</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_reservoir_sample.html#a06e60e404cf49a9261f51d6b07bbf017">operator&lt;&lt;</a>(T x) {  <a class="code" href="class_reservoir_sample.html#a12257ed4961156b6614eeddacdcccb7c">add</a>(x); }</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    </div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    </div>
 <div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="class_reservoir_sample.html#a0f0abf510882715b487f2254b6af25b1">   80</a></span>&#160;    std::vector&lt;T&gt; <a class="code" href="class_reservoir_sample.html#a0f0abf510882715b487f2254b6af25b1">values</a>()<span class="keyword"> const </span>{</div>
@@ -142,12 +142,12 @@ $(function() {
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <a class="code" href="class_reservoir_sample.html#a94a92f438328cbca4aa5f0ba92867142">top</a>.clear();</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;};</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;};</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="a_top_8h_html"><div class="ttname"><a href="_top_8h.html">Top.h</a></div><div class="ttdoc">Check if a type has a posterior function or not.</div></div>
 <div class="ttc" id="a_errors_8h_html"><div class="ttname"><a href="_errors_8h.html">Errors.h</a></div></div>
-<div class="ttc" id="aclass_reservoir_sample_html_a471e41debe8c7081cbae2f5a1ca4ab54"><div class="ttname"><a href="class_reservoir_sample.html#a471e41debe8c7081cbae2f5a1ca4ab54">ReservoirSample::add</a></div><div class="ttdeci">void add(T x)</div><div class="ttdef"><b>Definition:</b> ReservoirSample.h:68</div></div>
 <div class="ttc" id="astruct_reservoir_sample_1_1_item_html_abc1ea374480d6d86d0466e4683c98337"><div class="ttname"><a href="struct_reservoir_sample_1_1_item.html#abc1ea374480d6d86d0466e4683c98337">ReservoirSample::Item::x</a></div><div class="ttdeci">T x</div><div class="ttdef"><b>Definition:</b> ReservoirSample.h:31</div></div>
 <div class="ttc" id="aclass_not_implemented_error_html"><div class="ttname"><a href="class_not_implemented_error.html">NotImplementedError</a></div><div class="ttdef"><b>Definition:</b> Errors.h:7</div></div>
 <div class="ttc" id="aclass_reservoir_sample_html"><div class="ttname"><a href="class_reservoir_sample.html">ReservoirSample</a></div><div class="ttdef"><b>Definition:</b> ReservoirSample.h:18</div></div>
@@ -160,10 +160,12 @@ $(function() {
 <div class="ttc" id="aclass_reservoir_sample_html_a33f6cc3a51f9591f6e25dacf0cf8e663"><div class="ttname"><a href="class_reservoir_sample.html#a33f6cc3a51f9591f6e25dacf0cf8e663">ReservoirSample::N</a></div><div class="ttdeci">unsigned long N</div><div class="ttdef"><b>Definition:</b> ReservoirSample.h:44</div></div>
 <div class="ttc" id="astruct_reservoir_sample_1_1_item_html_a3acc4a4c4aca6d80629d35f9a37220ff"><div class="ttname"><a href="struct_reservoir_sample_1_1_item.html#a3acc4a4c4aca6d80629d35f9a37220ff">ReservoirSample::Item::operator==</a></div><div class="ttdeci">bool operator==(const Item &amp;b) const</div><div class="ttdef"><b>Definition:</b> ReservoirSample.h:37</div></div>
 <div class="ttc" id="astruct_reservoir_sample_1_1_item_html"><div class="ttname"><a href="struct_reservoir_sample_1_1_item.html">ReservoirSample::Item</a></div><div class="ttdef"><b>Definition:</b> ReservoirSample.h:30</div></div>
+<div class="ttc" id="aclass_reservoir_sample_html_a12257ed4961156b6614eeddacdcccb7c"><div class="ttname"><a href="class_reservoir_sample.html#a12257ed4961156b6614eeddacdcccb7c">ReservoirSample::add</a></div><div class="ttdeci">virtual void add(T x)</div><div class="ttdef"><b>Definition:</b> ReservoirSample.h:68</div></div>
 <div class="ttc" id="astruct_reservoir_sample_1_1_item_html_ad74b6fb33eb3a534eeb4141c735dfaf5"><div class="ttname"><a href="struct_reservoir_sample_1_1_item.html#ad74b6fb33eb3a534eeb4141c735dfaf5">ReservoirSample::Item::r</a></div><div class="ttdeci">const double r</div><div class="ttdef"><b>Definition:</b> ReservoirSample.h:32</div></div>
-<div class="ttc" id="aclass_top_n_html"><div class="ttname"><a href="class_top_n.html">TopN</a></div><div class="ttdef"><b>Definition:</b> Top.h:37</div></div>
+<div class="ttc" id="aclass_top_n_html"><div class="ttname"><a href="class_top_n.html">TopN</a></div><div class="ttdef"><b>Definition:</b> TopN.h:21</div></div>
 <div class="ttc" id="aclass_reservoir_sample_html_a0f0abf510882715b487f2254b6af25b1"><div class="ttname"><a href="class_reservoir_sample.html#a0f0abf510882715b487f2254b6af25b1">ReservoirSample::values</a></div><div class="ttdeci">std::vector&lt; T &gt; values() const</div><div class="ttdoc">Get a multiset of values (ignoring the reservoir weights)</div><div class="ttdef"><b>Definition:</b> ReservoirSample.h:80</div></div>
 <div class="ttc" id="astruct_reservoir_sample_1_1_item_html_a6021bbb1eaadfab8990b05557e2758fa"><div class="ttname"><a href="struct_reservoir_sample_1_1_item.html#a6021bbb1eaadfab8990b05557e2758fa">ReservoirSample::Item::operator&lt;</a></div><div class="ttdeci">bool operator&lt;(const Item &amp;b) const</div><div class="ttdef"><b>Definition:</b> ReservoirSample.h:36</div></div>
+<div class="ttc" id="a_top_n_8h_html"><div class="ttname"><a href="_top_n_8h.html">TopN.h</a></div></div>
 <div class="ttc" id="a_numerics_8h_html_a23cd69b9bcaba6ec06598bc08ed5b6c3"><div class="ttname"><a href="_numerics_8h.html#a23cd69b9bcaba6ec06598bc08ed5b6c3">NaN</a></div><div class="ttdeci">constexpr double NaN</div><div class="ttdef"><b>Definition:</b> Numerics.h:18</div></div>
 <div class="ttc" id="aclass_reservoir_sample_html_a8527b800cc94f227a7793e8c93055d82"><div class="ttname"><a href="class_reservoir_sample.html#a8527b800cc94f227a7793e8c93055d82">ReservoirSample::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdef"><b>Definition:</b> ReservoirSample.h:101</div></div>
 <div class="ttc" id="a_random_8h_html_a80379e9c4dd11a0b2260f1a4ee934d44"><div class="ttname"><a href="_random_8h.html#a80379e9c4dd11a0b2260f1a4ee934d44">myrandom</a></div><div class="ttdeci">T myrandom(T max)</div><div class="ttdef"><b>Definition:</b> Random.h:93</div></div>

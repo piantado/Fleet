@@ -124,8 +124,8 @@ Public Types</h2></td></tr>
 <tr class="separator:aeb5adc395a32008d9fe1b5fb7ba75e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae524caf92d167011278706b6af8bf0bb"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#ae524caf92d167011278706b6af8bf0bb">output_t</a> = _output_t</td></tr>
 <tr class="separator:ae524caf92d167011278706b6af8bf0bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9121619ee7a99c2c5a177e38e3e098fc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a9121619ee7a99c2c5a177e38e3e098fc">VirtualMachineState_t</a> = Grammar_t::VirtualMachineState_t</td></tr>
-<tr class="separator:a9121619ee7a99c2c5a177e38e3e098fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c28d40949d4c254d3b5237520c5486a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a0c28d40949d4c254d3b5237520c5486a">VirtualMachineState_t</a> = typename Grammar_t::VirtualMachineState_t</td></tr>
+<tr class="separator:a0c28d40949d4c254d3b5237520c5486a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_class_bayesable"><td colspan="2" onclick="javascript:toggleInherit('pub_types_class_bayesable')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="class_bayesable.html">Bayesable&lt; Args... &gt;</a></td></tr>
 <tr class="memitem:a9f1a6c0cd7855550fa10b1a8f13a5867 inherit pub_types_class_bayesable"><td class="memItemLeft" align="right" valign="top">typedef Args...&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a9f1a6c0cd7855550fa10b1a8f13a5867">datum_t</a></td></tr>
 <tr class="separator:a9f1a6c0cd7855550fa10b1a8f13a5867 inherit pub_types_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,8 +159,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a32135631f7311a9a4a5a43c3f2ddfd6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba33afbf945d7eed8c7e07d5a0d31562"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#aba33afbf945d7eed8c7e07d5a0d31562">compute_single_likelihood</a> (const <a class="el" href="class_l_o_t_hypothesis.html#a3da7a75d135620a3d48a3bfe0be11401">datum_t</a> &amp;datum) override</td></tr>
 <tr class="separator:aba33afbf945d7eed8c7e07d5a0d31562"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4623fb6919b2bf209ba8cc4a4ba4a9bd"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a4623fb6919b2bf209ba8cc4a4ba4a9bd">program_size</a> (short s) override</td></tr>
-<tr class="separator:a4623fb6919b2bf209ba8cc4a4ba4a9bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef932da4e5ab819282ee59e17e65491f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#aef932da4e5ab819282ee59e17e65491f">push_program</a> (Program &amp;s, short k=0) override</td></tr>
 <tr class="separator:aef932da4e5ab819282ee59e17e65491f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d4f526264b781130674863164707927"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a0d4f526264b781130674863164707927">string</a> (std::string prefix=&quot;&quot;) const override</td></tr>
@@ -388,8 +386,8 @@ template&lt;typename this_t , typename _input_t , typename _output_t , typename 
 
 </div>
 </div>
-<a id="a9121619ee7a99c2c5a177e38e3e098fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9121619ee7a99c2c5a177e38e3e098fc">&#9670;&nbsp;</a></span>VirtualMachineState_t</h2>
+<a id="a0c28d40949d4c254d3b5237520c5486a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c28d40949d4c254d3b5237520c5486a">&#9670;&nbsp;</a></span>VirtualMachineState_t</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -397,7 +395,7 @@ template&lt;typename this_t , typename _input_t , typename _output_t , typename 
 template&lt;typename this_t , typename _input_t , typename _output_t , typename _Grammar_t , typename _datum_t  = defaultdatum_t&lt;_input_t, _output_t&gt;, typename _data_t  = std::vector&lt;_datum_t&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; this_t, _input_t, _output_t, _Grammar_t, _datum_t, _data_t &gt;::<a class="el" href="class_l_o_t_hypothesis.html#a9121619ee7a99c2c5a177e38e3e098fc">VirtualMachineState_t</a> =  Grammar_t::VirtualMachineState_t</td>
+          <td class="memname">using <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; this_t, _input_t, _output_t, _Grammar_t, _datum_t, _data_t &gt;::<a class="el" href="class_l_o_t_hypothesis.html#a0c28d40949d4c254d3b5237520c5486a">VirtualMachineState_t</a> =  typename Grammar_t::VirtualMachineState_t</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -941,36 +939,6 @@ template&lt;typename this_t , typename _input_t , typename _output_t , typename 
   </tr>
 </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="a4623fb6919b2bf209ba8cc4a4ba4a9bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4623fb6919b2bf209ba8cc4a4ba4a9bd">&#9670;&nbsp;</a></span>program_size()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename this_t , typename _input_t , typename _output_t , typename _Grammar_t , typename _datum_t  = defaultdatum_t&lt;_input_t, _output_t&gt;, typename _data_t  = std::vector&lt;_datum_t&gt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual size_t <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; this_t, _input_t, _output_t, _Grammar_t, _datum_t, _data_t &gt;::program_size </td>
-          <td>(</td>
-          <td class="paramtype">short&#160;</td>
-          <td class="paramname"><em>s</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implements <a class="el" href="class_program_loader.html#a9485aaa6c23687131ed902f88c4f5731">ProgramLoader</a>.</p>
 
 </div>
 </div>

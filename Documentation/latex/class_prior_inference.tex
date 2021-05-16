@@ -1,50 +1,50 @@
-\hypertarget{class_prior_inference}{}\doxysection{Prior\+Inference$<$ H\+YP, callback\+\_\+t $>$ Class Template Reference}
-\label{class_prior_inference}\index{PriorInference$<$ HYP, callback\_t $>$@{PriorInference$<$ HYP, callback\_t $>$}}
+\hypertarget{class_prior_inference}{}\doxysection{Prior\+Inference$<$ H\+YP $>$ Class Template Reference}
+\label{class_prior_inference}\index{PriorInference$<$ HYP $>$@{PriorInference$<$ HYP $>$}}
 
 
 {\ttfamily \#include $<$Prior\+Inference.\+h$>$}
 
 
 
-Inheritance diagram for Prior\+Inference$<$ H\+YP, callback\+\_\+t $>$\+:\nopagebreak
+Inheritance diagram for Prior\+Inference$<$ H\+YP $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=220pt]{class_prior_inference__inherit__graph}
+\includegraphics[width=208pt]{class_prior_inference__inherit__graph}
 \end{center}
 \end{figure}
 
 
-Collaboration diagram for Prior\+Inference$<$ H\+YP, callback\+\_\+t $>$\+:\nopagebreak
+Collaboration diagram for Prior\+Inference$<$ H\+YP $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=220pt]{class_prior_inference__coll__graph}
+\includegraphics[width=211pt]{class_prior_inference__coll__graph}
 \end{center}
 \end{figure}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{class_prior_inference_af4726e923dcecf83533ba806b27f37ea}{Prior\+Inference}} (typename H\+Y\+P\+::\+Grammar\+\_\+t $\ast$g, typename H\+Y\+P\+::data\+\_\+t $\ast$d, callback\+\_\+t \&cb, H\+YP $\ast$fr=nullptr)
+\mbox{\hyperlink{class_prior_inference_a16584b242a22dc5160b0dfa5b3c40974}{Prior\+Inference}} (typename H\+Y\+P\+::\+Grammar\+\_\+t $\ast$g, typename H\+Y\+P\+::data\+\_\+t $\ast$d, H\+YP $\ast$fr=nullptr)
 \item 
-void \mbox{\hyperlink{class_prior_inference_a1c641618dffc7d3182ffdb2451500c01}{run\+\_\+thread}} (\mbox{\hyperlink{struct_control}{Control}} ctl) override
+\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ H\+YP \& $>$ \mbox{\hyperlink{class_prior_inference_abcfbe7ebd3efe39fb088acdcc549127a}{run\+\_\+thread}} (\mbox{\hyperlink{struct_control}{Control}} ctl) override
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-H\+Y\+P\+::\+Grammar\+\_\+t $\ast$ \mbox{\hyperlink{class_prior_inference_a43d11fa29f7eba36eebf1de72db3afc4}{grammar}}
+H\+Y\+P\+::\+Grammar\+\_\+t $\ast$ \mbox{\hyperlink{class_prior_inference_a69fcff9932a2d61863848217000fba7f}{grammar}}
 \item 
-H\+Y\+P\+::data\+\_\+t $\ast$ \mbox{\hyperlink{class_prior_inference_a537a489d953992aca5327899548df8ac}{data}}
+H\+Y\+P\+::data\+\_\+t $\ast$ \mbox{\hyperlink{class_prior_inference_a4d4dfaed893ba6d0b3ffb2589496c447}{data}}
 \item 
-callback\+\_\+t $\ast$ \mbox{\hyperlink{class_prior_inference_a0b71e0bf3b2c27fa97be006a3c3738a0}{callback}}
-\item 
-H\+YP $\ast$ \mbox{\hyperlink{class_prior_inference_ae583f068334550a1e73fdf453359b7d3}{from}}
+H\+YP $\ast$ \mbox{\hyperlink{class_prior_inference_ad0c72d8af73ad73e75c80a3cad6682ca}{from}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-\subsubsection*{template$<$typename H\+YP, typename callback\+\_\+t$>$\newline
-class Prior\+Inference$<$ H\+Y\+P, callback\+\_\+t $>$}
+\subsubsection*{template$<$typename H\+YP$>$\newline
+class Prior\+Inference$<$ H\+Y\+P $>$}
 
 \begin{DoxyAuthor}{Author}
 piantado 
@@ -55,53 +55,46 @@ piantado
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{class_prior_inference_af4726e923dcecf83533ba806b27f37ea}\label{class_prior_inference_af4726e923dcecf83533ba806b27f37ea}} 
-\index{PriorInference$<$ HYP, callback\_t $>$@{PriorInference$<$ HYP, callback\_t $>$}!PriorInference@{PriorInference}}
-\index{PriorInference@{PriorInference}!PriorInference$<$ HYP, callback\_t $>$@{PriorInference$<$ HYP, callback\_t $>$}}
+\mbox{\Hypertarget{class_prior_inference_a16584b242a22dc5160b0dfa5b3c40974}\label{class_prior_inference_a16584b242a22dc5160b0dfa5b3c40974}} 
+\index{PriorInference$<$ HYP $>$@{PriorInference$<$ HYP $>$}!PriorInference@{PriorInference}}
+\index{PriorInference@{PriorInference}!PriorInference$<$ HYP $>$@{PriorInference$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{PriorInference()}{PriorInference()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-\mbox{\hyperlink{class_prior_inference}{Prior\+Inference}}$<$ H\+YP, callback\+\_\+t $>$\+::\mbox{\hyperlink{class_prior_inference}{Prior\+Inference}} (\begin{DoxyParamCaption}\item[{typename H\+Y\+P\+::\+Grammar\+\_\+t $\ast$}]{g,  }\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{callback\+\_\+t \&}]{cb,  }\item[{H\+YP $\ast$}]{fr = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+\mbox{\hyperlink{class_prior_inference}{Prior\+Inference}}$<$ H\+YP $>$\+::\mbox{\hyperlink{class_prior_inference}{Prior\+Inference}} (\begin{DoxyParamCaption}\item[{typename H\+Y\+P\+::\+Grammar\+\_\+t $\ast$}]{g,  }\item[{typename H\+Y\+P\+::data\+\_\+t $\ast$}]{d,  }\item[{H\+YP $\ast$}]{fr = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_prior_inference_a1c641618dffc7d3182ffdb2451500c01}\label{class_prior_inference_a1c641618dffc7d3182ffdb2451500c01}} 
-\index{PriorInference$<$ HYP, callback\_t $>$@{PriorInference$<$ HYP, callback\_t $>$}!run\_thread@{run\_thread}}
-\index{run\_thread@{run\_thread}!PriorInference$<$ HYP, callback\_t $>$@{PriorInference$<$ HYP, callback\_t $>$}}
+\mbox{\Hypertarget{class_prior_inference_abcfbe7ebd3efe39fb088acdcc549127a}\label{class_prior_inference_abcfbe7ebd3efe39fb088acdcc549127a}} 
+\index{PriorInference$<$ HYP $>$@{PriorInference$<$ HYP $>$}!run\_thread@{run\_thread}}
+\index{run\_thread@{run\_thread}!PriorInference$<$ HYP $>$@{PriorInference$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{run\_thread()}{run\_thread()}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-void \mbox{\hyperlink{class_prior_inference}{Prior\+Inference}}$<$ H\+YP, callback\+\_\+t $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$H\+YP\&$>$ \mbox{\hyperlink{class_prior_inference}{Prior\+Inference}}$<$ H\+YP $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
 
 
 
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{class_prior_inference_a0b71e0bf3b2c27fa97be006a3c3738a0}\label{class_prior_inference_a0b71e0bf3b2c27fa97be006a3c3738a0}} 
-\index{PriorInference$<$ HYP, callback\_t $>$@{PriorInference$<$ HYP, callback\_t $>$}!callback@{callback}}
-\index{callback@{callback}!PriorInference$<$ HYP, callback\_t $>$@{PriorInference$<$ HYP, callback\_t $>$}}
-\doxysubsubsection{\texorpdfstring{callback}{callback}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-callback\+\_\+t$\ast$ \mbox{\hyperlink{class_prior_inference}{Prior\+Inference}}$<$ H\+YP, callback\+\_\+t $>$\+::callback}
-
-\mbox{\Hypertarget{class_prior_inference_a537a489d953992aca5327899548df8ac}\label{class_prior_inference_a537a489d953992aca5327899548df8ac}} 
-\index{PriorInference$<$ HYP, callback\_t $>$@{PriorInference$<$ HYP, callback\_t $>$}!data@{data}}
-\index{data@{data}!PriorInference$<$ HYP, callback\_t $>$@{PriorInference$<$ HYP, callback\_t $>$}}
+\mbox{\Hypertarget{class_prior_inference_a4d4dfaed893ba6d0b3ffb2589496c447}\label{class_prior_inference_a4d4dfaed893ba6d0b3ffb2589496c447}} 
+\index{PriorInference$<$ HYP $>$@{PriorInference$<$ HYP $>$}!data@{data}}
+\index{data@{data}!PriorInference$<$ HYP $>$@{PriorInference$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{data}{data}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-H\+Y\+P\+::data\+\_\+t$\ast$ \mbox{\hyperlink{class_prior_inference}{Prior\+Inference}}$<$ H\+YP, callback\+\_\+t $>$\+::data}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+H\+Y\+P\+::data\+\_\+t$\ast$ \mbox{\hyperlink{class_prior_inference}{Prior\+Inference}}$<$ H\+YP $>$\+::data}
 
-\mbox{\Hypertarget{class_prior_inference_ae583f068334550a1e73fdf453359b7d3}\label{class_prior_inference_ae583f068334550a1e73fdf453359b7d3}} 
-\index{PriorInference$<$ HYP, callback\_t $>$@{PriorInference$<$ HYP, callback\_t $>$}!from@{from}}
-\index{from@{from}!PriorInference$<$ HYP, callback\_t $>$@{PriorInference$<$ HYP, callback\_t $>$}}
+\mbox{\Hypertarget{class_prior_inference_ad0c72d8af73ad73e75c80a3cad6682ca}\label{class_prior_inference_ad0c72d8af73ad73e75c80a3cad6682ca}} 
+\index{PriorInference$<$ HYP $>$@{PriorInference$<$ HYP $>$}!from@{from}}
+\index{from@{from}!PriorInference$<$ HYP $>$@{PriorInference$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{from}{from}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-H\+YP$\ast$ \mbox{\hyperlink{class_prior_inference}{Prior\+Inference}}$<$ H\+YP, callback\+\_\+t $>$\+::from}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+H\+YP$\ast$ \mbox{\hyperlink{class_prior_inference}{Prior\+Inference}}$<$ H\+YP $>$\+::from}
 
-\mbox{\Hypertarget{class_prior_inference_a43d11fa29f7eba36eebf1de72db3afc4}\label{class_prior_inference_a43d11fa29f7eba36eebf1de72db3afc4}} 
-\index{PriorInference$<$ HYP, callback\_t $>$@{PriorInference$<$ HYP, callback\_t $>$}!grammar@{grammar}}
-\index{grammar@{grammar}!PriorInference$<$ HYP, callback\_t $>$@{PriorInference$<$ HYP, callback\_t $>$}}
+\mbox{\Hypertarget{class_prior_inference_a69fcff9932a2d61863848217000fba7f}\label{class_prior_inference_a69fcff9932a2d61863848217000fba7f}} 
+\index{PriorInference$<$ HYP $>$@{PriorInference$<$ HYP $>$}!grammar@{grammar}}
+\index{grammar@{grammar}!PriorInference$<$ HYP $>$@{PriorInference$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{grammar}{grammar}}
-{\footnotesize\ttfamily template$<$typename H\+YP , typename callback\+\_\+t $>$ \\
-H\+Y\+P\+::\+Grammar\+\_\+t$\ast$ \mbox{\hyperlink{class_prior_inference}{Prior\+Inference}}$<$ H\+YP, callback\+\_\+t $>$\+::grammar}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+H\+Y\+P\+::\+Grammar\+\_\+t$\ast$ \mbox{\hyperlink{class_prior_inference}{Prior\+Inference}}$<$ H\+YP $>$\+::grammar}
 
 
 

@@ -1,4 +1,5 @@
-<map id="MCMCChain&lt; HYP, callback_t &gt;" name="MCMCChain&lt; HYP, callback_t &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="5,95,220,121"/>
-<area shape="rect" id="node2" href="$class_finite_history.html" title=" " alt="" coords="41,5,185,32"/>
+<map id="MCMCChain&lt; HYP &gt;" name="MCMCChain&lt; HYP &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="50,95,201,121"/>
+<area shape="rect" id="node2" href="$class_ordered_lock.html" title=" " alt="" coords="5,5,101,32"/>
+<area shape="rect" id="node3" href="$class_finite_history.html" title=" " alt="" coords="125,5,269,32"/>
 </map>

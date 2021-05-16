@@ -1,5 +1,0 @@
-<map id="src/Dependencies/EigenLib.h" name="src/Dependencies/EigenLib.h">
-<area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on..." alt="" coords="5,169,255,196"/>
-<area shape="rect" id="node3" href="$_vector_normal_hypothesis_8h.html" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior..." alt="" coords="31,80,229,121"/>
-<area shape="rect" id="node4" href="$_t_normal_variable_8h.html" title="src/Hypotheses/TNormalVariable.h" alt="" coords="254,87,481,114"/>
-</map>

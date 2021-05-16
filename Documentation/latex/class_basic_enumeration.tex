@@ -1,0 +1,84 @@
+\hypertarget{class_basic_enumeration}{}\doxysection{Basic\+Enumeration$<$ Grammar\+\_\+t $>$ Class Template Reference}
+\label{class_basic_enumeration}\index{BasicEnumeration$<$ Grammar\_t $>$@{BasicEnumeration$<$ Grammar\_t $>$}}
+
+
+{\ttfamily \#include $<$Basic\+Enumeration.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_basic_enumeration_a9c75191267ce42210089c1cd67e980fa}{Basic\+Enumeration}} (Grammar\+\_\+t $\ast$g)
+\item 
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_basic_enumeration_a46faea006116b0df469dc0d835b908b1}{to\+Node}} (\mbox{\hyperlink{class_integerized_stack}{Integerized\+Stack}} \&is, const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} \&nt)
+\begin{DoxyCompactList}\small\item\em This is a handy function to enumerate trees produced by the grammar. This works by encoding each tree into an integer using some \char`\"{}pairing functions\char`\"{} (see \href{https://arxiv.org/pdf/1706.04129.pdf}{\texttt{ https\+://arxiv.\+org/pdf/1706.\+04129.\+pdf}}) Specifically, here is how we encode a tree\+: if it\textquotesingle{}s a terminal, encode the index of the terminal in the grammar. If it\textquotesingle{}s a nonterminal, encode the rule with a modular pairing function and then use Rosenberg-\/\+Strong encoding to encode each of the children. In this way, we can make a 1-\/1 pairing between trees and integers, and therefore store trees as integers in a reversible way as well as enumerate by giving this integers. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_basic_enumeration_ad5930570535d395323c562eab36e08e6}{to\+Node}} (\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} z, const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} nt)
+\item 
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_basic_enumeration_acec6c79a482c80b3139986be72c6e2c1}{to\+Node}} (const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} nt, \mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} z)
+\item 
+virtual \mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} \mbox{\hyperlink{class_basic_enumeration_a307c136e8432bd2bc5f34835fc901ec9}{to\+Integer}} (const \mbox{\hyperlink{class_node}{Node}} \&n)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Grammar\+\_\+t $\ast$ \mbox{\hyperlink{class_basic_enumeration_a8d9991185d9224218f73f3c2e9065480}{grammar}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_basic_enumeration_a9c75191267ce42210089c1cd67e980fa}\label{class_basic_enumeration_a9c75191267ce42210089c1cd67e980fa}} 
+\index{BasicEnumeration$<$ Grammar\_t $>$@{BasicEnumeration$<$ Grammar\_t $>$}!BasicEnumeration@{BasicEnumeration}}
+\index{BasicEnumeration@{BasicEnumeration}!BasicEnumeration$<$ Grammar\_t $>$@{BasicEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{BasicEnumeration()}{BasicEnumeration()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+\mbox{\hyperlink{class_basic_enumeration}{Basic\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::\mbox{\hyperlink{class_basic_enumeration}{Basic\+Enumeration}} (\begin{DoxyParamCaption}\item[{Grammar\+\_\+t $\ast$}]{g }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_basic_enumeration_a307c136e8432bd2bc5f34835fc901ec9}\label{class_basic_enumeration_a307c136e8432bd2bc5f34835fc901ec9}} 
+\index{BasicEnumeration$<$ Grammar\_t $>$@{BasicEnumeration$<$ Grammar\_t $>$}!toInteger@{toInteger}}
+\index{toInteger@{toInteger}!BasicEnumeration$<$ Grammar\_t $>$@{BasicEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{toInteger()}{toInteger()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+virtual \mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}} \mbox{\hyperlink{class_basic_enumeration}{Basic\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::to\+Integer (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_basic_enumeration_acec6c79a482c80b3139986be72c6e2c1}\label{class_basic_enumeration_acec6c79a482c80b3139986be72c6e2c1}} 
+\index{BasicEnumeration$<$ Grammar\_t $>$@{BasicEnumeration$<$ Grammar\_t $>$}!toNode@{toNode}}
+\index{toNode@{toNode}!BasicEnumeration$<$ Grammar\_t $>$@{BasicEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{toNode()}{toNode()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_basic_enumeration}{Basic\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::to\+Node (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}}]{nt,  }\item[{\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_basic_enumeration_ad5930570535d395323c562eab36e08e6}\label{class_basic_enumeration_ad5930570535d395323c562eab36e08e6}} 
+\index{BasicEnumeration$<$ Grammar\_t $>$@{BasicEnumeration$<$ Grammar\_t $>$}!toNode@{toNode}}
+\index{toNode@{toNode}!BasicEnumeration$<$ Grammar\_t $>$@{BasicEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{toNode()}{toNode()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_basic_enumeration}{Basic\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::to\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{_integerized_stack_8h_a9fe2bbca873b046b2bd276fc6856bb88}{enumerationidx\+\_\+t}}}]{z,  }\item[{const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}}]{nt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_basic_enumeration_a46faea006116b0df469dc0d835b908b1}\label{class_basic_enumeration_a46faea006116b0df469dc0d835b908b1}} 
+\index{BasicEnumeration$<$ Grammar\_t $>$@{BasicEnumeration$<$ Grammar\_t $>$}!toNode@{toNode}}
+\index{toNode@{toNode}!BasicEnumeration$<$ Grammar\_t $>$@{BasicEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{toNode()}{toNode()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+virtual \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_basic_enumeration}{Basic\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::to\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_integerized_stack}{Integerized\+Stack}} \&}]{is,  }\item[{const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} \&}]{nt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+This is a handy function to enumerate trees produced by the grammar. This works by encoding each tree into an integer using some \char`\"{}pairing functions\char`\"{} (see \href{https://arxiv.org/pdf/1706.04129.pdf}{\texttt{ https\+://arxiv.\+org/pdf/1706.\+04129.\+pdf}}) Specifically, here is how we encode a tree\+: if it\textquotesingle{}s a terminal, encode the index of the terminal in the grammar. If it\textquotesingle{}s a nonterminal, encode the rule with a modular pairing function and then use Rosenberg-\/\+Strong encoding to encode each of the children. In this way, we can make a 1-\/1 pairing between trees and integers, and therefore store trees as integers in a reversible way as well as enumerate by giving this integers. 
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_basic_enumeration_a8d9991185d9224218f73f3c2e9065480}\label{class_basic_enumeration_a8d9991185d9224218f73f3c2e9065480}} 
+\index{BasicEnumeration$<$ Grammar\_t $>$@{BasicEnumeration$<$ Grammar\_t $>$}!grammar@{grammar}}
+\index{grammar@{grammar}!BasicEnumeration$<$ Grammar\_t $>$@{BasicEnumeration$<$ Grammar\_t $>$}}
+\doxysubsubsection{\texorpdfstring{grammar}{grammar}}
+{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
+Grammar\+\_\+t$\ast$ \mbox{\hyperlink{class_basic_enumeration}{Basic\+Enumeration}}$<$ Grammar\+\_\+t $>$\+::grammar}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Grammar/\+Enumeration/\mbox{\hyperlink{_basic_enumeration_8h}{Basic\+Enumeration.\+h}}\end{DoxyCompactItemize}

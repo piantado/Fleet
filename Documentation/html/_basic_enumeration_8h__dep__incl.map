@@ -1,0 +1,8 @@
+<map id="src/Grammar/Enumeration/BasicEnumeration.h" name="src/Grammar/Enumeration/BasicEnumeration.h">
+<area shape="rect" id="node1" title=" " alt="" coords="381,5,556,47"/>
+<area shape="rect" id="node2" href="$_subtree_enumeration_8h.html" title="Enumerate subtrees of a given tree." alt="" coords="193,95,368,136"/>
+<area shape="rect" id="node4" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="261,273,426,300"/>
+<area shape="rect" id="node6" href="$_inference_2_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="507,95,681,136"/>
+<area shape="rect" id="node3" href="$_full_l_z_enumeration_8h.html" title="Enumerate where we may interpret low numbers as pointers back to COMPLETE subtrees...." alt="" coords="5,184,180,225"/>
+<area shape="rect" id="node5" href="$_partial_l_z_enumeration_8h.html" title="Same as FullLZEnumeration except that the pointers to previous trees are to partial trees,..." alt="" coords="256,184,431,225"/>
+</map>

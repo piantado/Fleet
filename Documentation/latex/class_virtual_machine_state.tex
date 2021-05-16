@@ -6,7 +6,8 @@
 
 
 
-Inheritance diagram for Virtual\+Machine\+State$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+:\nopagebreak
+Inheritance diagram for Virtual\+Machine\+State$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -15,7 +16,8 @@ Inheritance diagram for Virtual\+Machine\+State$<$ \+\_\+t\+\_\+input, \+\_\+t\+
 \end{figure}
 
 
-Collaboration diagram for Virtual\+Machine\+State$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+:\nopagebreak
+Collaboration diagram for Virtual\+Machine\+State$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -25,7 +27,7 @@ Collaboration diagram for Virtual\+Machine\+State$<$ \+\_\+t\+\_\+input, \+\_\+t
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \mbox{\hyperlink{struct_virtual_machine_state_1_1t__stack}{t\+\_\+stack}}
+struct \mbox{\hyperlink{struct_virtual_machine_state_1_1stack__t}{stack\+\_\+t}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Types}
 \begin{DoxyCompactItemize}
@@ -84,7 +86,7 @@ double \mbox{\hyperlink{class_virtual_machine_state_a5937b2c3afdfe35b9bba71dbdd8
 \item 
 unsigned long \mbox{\hyperlink{class_virtual_machine_state_aa35593f67d1ea4e838fec8e7a8d33897}{recursion\+\_\+depth}}
 \item 
-\mbox{\hyperlink{struct_virtual_machine_state_1_1t__stack}{t\+\_\+stack}}$<$ V\+M\+\_\+\+T\+Y\+P\+E\+S... $>$ \mbox{\hyperlink{class_virtual_machine_state_a55e2a8e32597a15740e9e38ae539200c}{\+\_\+stack}}
+\mbox{\hyperlink{struct_virtual_machine_state_1_1stack__t}{stack\+\_\+t}}$<$ V\+M\+\_\+\+T\+Y\+P\+E\+S... $>$ \mbox{\hyperlink{class_virtual_machine_state_a6e7c948fc550bd2343034a94173e926c}{\+\_\+stack}}
 \item 
 std\+::map$<$ std\+::pair$<$ \mbox{\hyperlink{class_virtual_machine_state_a95ba2f54f65b778c8a012ea3e7a0ee50}{index\+\_\+t}}, \mbox{\hyperlink{class_virtual_machine_state_aeb5e01ec57466fd3734e0c29f2b8da0a}{input\+\_\+t}} $>$, \mbox{\hyperlink{class_virtual_machine_state_a1015cee5061f82f82ef6a953b51f9bd5}{output\+\_\+t}} $>$ \mbox{\hyperlink{class_virtual_machine_state_a8f36d4040b98a1e85fb7edf61e6085c9}{mem}}
 \item 
@@ -197,7 +199,7 @@ bool \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ 
 Return the output and do some checks that the stacks are as they should be if you\textquotesingle{}re reading the output. 
 
 \begin{DoxyReturn}{Returns}
-// T\+O\+DO\+: F\+IX T\+H\+IS SO IT D\+O\+E\+SN\textquotesingle{}T P\+OP F\+R\+OM O\+U\+T\+P\+U\+T\+\_\+T 
+
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_virtual_machine_state_a5c5373c434e10372d9e9a17df1532965}\label{class_virtual_machine_state_a5c5373c434e10372d9e9a17df1532965}} 
 \index{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$@{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$}!getpop@{getpop}}
@@ -345,12 +347,12 @@ Const reference to top of stack.
 
 
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{class_virtual_machine_state_a55e2a8e32597a15740e9e38ae539200c}\label{class_virtual_machine_state_a55e2a8e32597a15740e9e38ae539200c}} 
+\mbox{\Hypertarget{class_virtual_machine_state_a6e7c948fc550bd2343034a94173e926c}\label{class_virtual_machine_state_a6e7c948fc550bd2343034a94173e926c}} 
 \index{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$@{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$}!\_stack@{\_stack}}
 \index{\_stack@{\_stack}!VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$@{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$}}
 \doxysubsubsection{\texorpdfstring{\_stack}{\_stack}}
 {\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+input , typename \+\_\+t\+\_\+output , typename... V\+M\+\_\+\+T\+Y\+P\+ES$>$ \\
-\mbox{\hyperlink{struct_virtual_machine_state_1_1t__stack}{t\+\_\+stack}}$<$V\+M\+\_\+\+T\+Y\+P\+E\+S...$>$ \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::\+\_\+stack}
+\mbox{\hyperlink{struct_virtual_machine_state_1_1stack__t}{stack\+\_\+t}}$<$V\+M\+\_\+\+T\+Y\+P\+E\+S...$>$ \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::\+\_\+stack}
 
 \mbox{\Hypertarget{class_virtual_machine_state_aa3eaa4b1432d1604b86039d2ff0faae1}\label{class_virtual_machine_state_aa3eaa4b1432d1604b86039d2ff0faae1}} 
 \index{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$@{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$}!err@{err}}

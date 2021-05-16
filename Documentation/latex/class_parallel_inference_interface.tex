@@ -1,48 +1,70 @@
-\hypertarget{class_parallel_inference_interface}{}\doxysection{Parallel\+Inference\+Interface$<$ Args $>$ Class Template Reference}
-\label{class_parallel_inference_interface}\index{ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}}
+\hypertarget{class_parallel_inference_interface}{}\doxysection{Parallel\+Inference\+Interface$<$ X, Args $>$ Class Template Reference}
+\label{class_parallel_inference_interface}\index{ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}}
 
 
 {\ttfamily \#include $<$Parallel\+Inference\+Interface.\+h$>$}
 
+
+
+Collaboration diagram for Parallel\+Inference\+Interface$<$ X, Args $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=211pt]{class_parallel_inference_interface__coll__graph}
+\end{center}
+\end{figure}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-virtual void \mbox{\hyperlink{class_parallel_inference_interface_a79f626a400fbc11ed530c97f32dfd5c3}{run\+\_\+thread}} (\mbox{\hyperlink{struct_control}{Control}} ctl, Args... args)=0
+virtual \mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}} \& $>$ \mbox{\hyperlink{class_parallel_inference_interface_a0692323b9741123191462f339fac91cd}{run\+\_\+thread}} (\mbox{\hyperlink{struct_control}{Control}} ctl, Args... args)=0
 \item 
-\mbox{\hyperlink{class_parallel_inference_interface_a59989833c3d7fde08746087b29c7dcef}{Parallel\+Inference\+Interface}} ()
+\mbox{\hyperlink{class_parallel_inference_interface_af17faebb9c28f246e6b21f6cefda906c}{Parallel\+Inference\+Interface}} ()
 \item 
-unsigned long \mbox{\hyperlink{class_parallel_inference_interface_aaa1fe948131956b21a89c8c267e46b6c}{next\+\_\+index}} ()
+unsigned long \mbox{\hyperlink{class_parallel_inference_interface_aaa1c96ca99c9ef3054f9262efd2fc952}{next\+\_\+index}} ()
 \begin{DoxyCompactList}\small\item\em Return the next index to operate on (in a thread-\/safe way). \end{DoxyCompactList}\item 
-size\+\_\+t \mbox{\hyperlink{class_parallel_inference_interface_aaee747bb2a7feb529152233209922156}{nthreads}} ()
+size\+\_\+t \mbox{\hyperlink{class_parallel_inference_interface_a1827d1d68b47402ae195fb923596339e}{nthreads}} ()
 \begin{DoxyCompactList}\small\item\em How many threads are currently run in this interface? \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{class_parallel_inference_interface_a836204d148b8b5187d39e494d926d7b3}{run}} (\mbox{\hyperlink{struct_control}{Control}} ctl, Args... args)
-\begin{DoxyCompactList}\small\item\em Run is the main control interface. Copies of ctl get made and passed to each thread in run\+\_\+thread. \end{DoxyCompactList}\end{DoxyCompactItemize}
+void \mbox{\hyperlink{class_parallel_inference_interface_a8c1b7a54027bd50b89eb2c81f3a7e616}{run\+\_\+thread\+\_\+generator\+\_\+wrapper}} (\mbox{\hyperlink{struct_control}{Control}} ctl, Args... args)
+\begin{DoxyCompactList}\small\item\em We have to wrap run\+\_\+thread in something that manages the sync with main. This really just synchronizes the output of run\+\_\+thread with run below. N\+O\+TE this makes a copy of x into the local next\+\_\+x, so that when the thread keeps running, it doesn\textquotesingle{}t mess anything up. We may in the future block the thread and return a reference, but its not clear that\textquotesingle{}s faster. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}} \& $>$ \mbox{\hyperlink{class_parallel_inference_interface_a347ec6026207d7a6c760d346c7621573}{run}} (\mbox{\hyperlink{struct_control}{Control}} ctl, Args... args)
+\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-std\+::atomic$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_parallel_inference_interface_a1494ba5ab10b5fda9bca6acc39de37cb}{index}}
+std\+::atomic$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_parallel_inference_interface_a0d743cf161df1122a223180bc25e0a33}{index}}
 \item 
-size\+\_\+t \mbox{\hyperlink{class_parallel_inference_interface_acdc4513dc32a40ba8f7f2a7aaa76c437}{\+\_\+\+\_\+nthreads}}
+size\+\_\+t \mbox{\hyperlink{class_parallel_inference_interface_ab73a9cd205e1aeea5a629243b3dbee7d}{\+\_\+\+\_\+nthreads}}
+\item 
+std\+::atomic$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_parallel_inference_interface_a453b34818232bd489f7b8625ee9f9e0a}{\+\_\+\+\_\+nrunning}}
+\item 
+\mbox{\hyperlink{class_ordered_lock}{Ordered\+Lock}} \mbox{\hyperlink{class_parallel_inference_interface_ae8b40f52f087f33b013c2de65bfa51e2}{generator\+\_\+lock}}
+\item 
+\mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}} \mbox{\hyperlink{class_parallel_inference_interface_adc66576e72473ad2f08ec83c3b570265}{next\+\_\+x}}
+\item 
+bool \mbox{\hyperlink{class_parallel_inference_interface_a07c1bc7fd7e48bf4d18ef0e3f1b4ffca}{next\+\_\+set}}
+\item 
+std\+::condition\+\_\+variable\+\_\+any \mbox{\hyperlink{class_parallel_inference_interface_a50302fcb334619e6d616f920acceb0d7}{cv}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{class_parallel_inference_interface_a59989833c3d7fde08746087b29c7dcef}\label{class_parallel_inference_interface_a59989833c3d7fde08746087b29c7dcef}} 
-\index{ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}!ParallelInferenceInterface@{ParallelInferenceInterface}}
-\index{ParallelInferenceInterface@{ParallelInferenceInterface}!ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}}
+\mbox{\Hypertarget{class_parallel_inference_interface_af17faebb9c28f246e6b21f6cefda906c}\label{class_parallel_inference_interface_af17faebb9c28f246e6b21f6cefda906c}} 
+\index{ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}!ParallelInferenceInterface@{ParallelInferenceInterface}}
+\index{ParallelInferenceInterface@{ParallelInferenceInterface}!ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}}
 \doxysubsubsection{\texorpdfstring{ParallelInferenceInterface()}{ParallelInferenceInterface()}}
-{\footnotesize\ttfamily template$<$typename... Args$>$ \\
-\mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ Args $>$\+::\mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+\mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::\mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_parallel_inference_interface_aaa1fe948131956b21a89c8c267e46b6c}\label{class_parallel_inference_interface_aaa1fe948131956b21a89c8c267e46b6c}} 
-\index{ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}!next\_index@{next\_index}}
-\index{next\_index@{next\_index}!ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}}
+\mbox{\Hypertarget{class_parallel_inference_interface_aaa1c96ca99c9ef3054f9262efd2fc952}\label{class_parallel_inference_interface_aaa1c96ca99c9ef3054f9262efd2fc952}} 
+\index{ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}!next\_index@{next\_index}}
+\index{next\_index@{next\_index}!ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}}
 \doxysubsubsection{\texorpdfstring{next\_index()}{next\_index()}}
-{\footnotesize\ttfamily template$<$typename... Args$>$ \\
-unsigned long \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ Args $>$\+::next\+\_\+index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+unsigned long \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::next\+\_\+index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -51,12 +73,12 @@ Return the next index to operate on (in a thread-\/safe way).
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_parallel_inference_interface_aaee747bb2a7feb529152233209922156}\label{class_parallel_inference_interface_aaee747bb2a7feb529152233209922156}} 
-\index{ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}!nthreads@{nthreads}}
-\index{nthreads@{nthreads}!ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}}
+\mbox{\Hypertarget{class_parallel_inference_interface_a1827d1d68b47402ae195fb923596339e}\label{class_parallel_inference_interface_a1827d1d68b47402ae195fb923596339e}} 
+\index{ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}!nthreads@{nthreads}}
+\index{nthreads@{nthreads}!ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}}
 \doxysubsubsection{\texorpdfstring{nthreads()}{nthreads()}}
-{\footnotesize\ttfamily template$<$typename... Args$>$ \\
-size\+\_\+t \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ Args $>$\+::nthreads (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+size\+\_\+t \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::nthreads (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -65,45 +87,87 @@ How many threads are currently run in this interface?
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_parallel_inference_interface_a836204d148b8b5187d39e494d926d7b3}\label{class_parallel_inference_interface_a836204d148b8b5187d39e494d926d7b3}} 
-\index{ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}!run@{run}}
-\index{run@{run}!ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}}
+\mbox{\Hypertarget{class_parallel_inference_interface_a347ec6026207d7a6c760d346c7621573}\label{class_parallel_inference_interface_a347ec6026207d7a6c760d346c7621573}} 
+\index{ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}!run@{run}}
+\index{run@{run}!ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}}
 \doxysubsubsection{\texorpdfstring{run()}{run()}}
-{\footnotesize\ttfamily template$<$typename... Args$>$ \\
-void \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ Args $>$\+::run (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl,  }\item[{Args...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$\mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}\&$>$ \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::run (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl,  }\item[{Args...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_parallel_inference_interface_a0692323b9741123191462f339fac91cd}\label{class_parallel_inference_interface_a0692323b9741123191462f339fac91cd}} 
+\index{ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}!run\_thread@{run\_thread}}
+\index{run\_thread@{run\_thread}!ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{run\_thread()}{run\_thread()}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+virtual \mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$\mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}\&$>$ \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl,  }\item[{Args...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+\mbox{\Hypertarget{class_parallel_inference_interface_a8c1b7a54027bd50b89eb2c81f3a7e616}\label{class_parallel_inference_interface_a8c1b7a54027bd50b89eb2c81f3a7e616}} 
+\index{ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}!run\_thread\_generator\_wrapper@{run\_thread\_generator\_wrapper}}
+\index{run\_thread\_generator\_wrapper@{run\_thread\_generator\_wrapper}!ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{run\_thread\_generator\_wrapper()}{run\_thread\_generator\_wrapper()}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+void \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::run\+\_\+thread\+\_\+generator\+\_\+wrapper (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl,  }\item[{Args...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-Run is the main control interface. Copies of ctl get made and passed to each thread in run\+\_\+thread. 
+We have to wrap run\+\_\+thread in something that manages the sync with main. This really just synchronizes the output of run\+\_\+thread with run below. N\+O\+TE this makes a copy of x into the local next\+\_\+x, so that when the thread keeps running, it doesn\textquotesingle{}t mess anything up. We may in the future block the thread and return a reference, but its not clear that\textquotesingle{}s faster. 
 
 
 \begin{DoxyParams}{Parameters}
 {\em ctl} & \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{class_parallel_inference_interface_a79f626a400fbc11ed530c97f32dfd5c3}\label{class_parallel_inference_interface_a79f626a400fbc11ed530c97f32dfd5c3}} 
-\index{ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}!run\_thread@{run\_thread}}
-\index{run\_thread@{run\_thread}!ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}}
-\doxysubsubsection{\texorpdfstring{run\_thread()}{run\_thread()}}
-{\footnotesize\ttfamily template$<$typename... Args$>$ \\
-virtual void \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ Args $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl,  }\item[{Args...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
-
 
 
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{class_parallel_inference_interface_acdc4513dc32a40ba8f7f2a7aaa76c437}\label{class_parallel_inference_interface_acdc4513dc32a40ba8f7f2a7aaa76c437}} 
-\index{ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}!\_\_nthreads@{\_\_nthreads}}
-\index{\_\_nthreads@{\_\_nthreads}!ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}}
-\doxysubsubsection{\texorpdfstring{\_\_nthreads}{\_\_nthreads}}
-{\footnotesize\ttfamily template$<$typename... Args$>$ \\
-size\+\_\+t \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ Args $>$\+::\+\_\+\+\_\+nthreads}
+\mbox{\Hypertarget{class_parallel_inference_interface_a453b34818232bd489f7b8625ee9f9e0a}\label{class_parallel_inference_interface_a453b34818232bd489f7b8625ee9f9e0a}} 
+\index{ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}!\_\_nrunning@{\_\_nrunning}}
+\index{\_\_nrunning@{\_\_nrunning}!ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{\_\_nrunning}{\_\_nrunning}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+std\+::atomic$<$size\+\_\+t$>$ \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::\+\_\+\+\_\+nrunning}
 
-\mbox{\Hypertarget{class_parallel_inference_interface_a1494ba5ab10b5fda9bca6acc39de37cb}\label{class_parallel_inference_interface_a1494ba5ab10b5fda9bca6acc39de37cb}} 
-\index{ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}!index@{index}}
-\index{index@{index}!ParallelInferenceInterface$<$ Args $>$@{ParallelInferenceInterface$<$ Args $>$}}
+\mbox{\Hypertarget{class_parallel_inference_interface_ab73a9cd205e1aeea5a629243b3dbee7d}\label{class_parallel_inference_interface_ab73a9cd205e1aeea5a629243b3dbee7d}} 
+\index{ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}!\_\_nthreads@{\_\_nthreads}}
+\index{\_\_nthreads@{\_\_nthreads}!ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{\_\_nthreads}{\_\_nthreads}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+size\+\_\+t \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::\+\_\+\+\_\+nthreads}
+
+\mbox{\Hypertarget{class_parallel_inference_interface_a50302fcb334619e6d616f920acceb0d7}\label{class_parallel_inference_interface_a50302fcb334619e6d616f920acceb0d7}} 
+\index{ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}!cv@{cv}}
+\index{cv@{cv}!ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{cv}{cv}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+std\+::condition\+\_\+variable\+\_\+any \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::cv}
+
+\mbox{\Hypertarget{class_parallel_inference_interface_ae8b40f52f087f33b013c2de65bfa51e2}\label{class_parallel_inference_interface_ae8b40f52f087f33b013c2de65bfa51e2}} 
+\index{ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}!generator\_lock@{generator\_lock}}
+\index{generator\_lock@{generator\_lock}!ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{generator\_lock}{generator\_lock}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+\mbox{\hyperlink{class_ordered_lock}{Ordered\+Lock}} \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::generator\+\_\+lock}
+
+\mbox{\Hypertarget{class_parallel_inference_interface_a0d743cf161df1122a223180bc25e0a33}\label{class_parallel_inference_interface_a0d743cf161df1122a223180bc25e0a33}} 
+\index{ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}!index@{index}}
+\index{index@{index}!ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}}
 \doxysubsubsection{\texorpdfstring{index}{index}}
-{\footnotesize\ttfamily template$<$typename... Args$>$ \\
-std\+::atomic$<$size\+\_\+t$>$ \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ Args $>$\+::index}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+std\+::atomic$<$size\+\_\+t$>$ \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::index}
+
+\mbox{\Hypertarget{class_parallel_inference_interface_a07c1bc7fd7e48bf4d18ef0e3f1b4ffca}\label{class_parallel_inference_interface_a07c1bc7fd7e48bf4d18ef0e3f1b4ffca}} 
+\index{ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}!next\_set@{next\_set}}
+\index{next\_set@{next\_set}!ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{next\_set}{next\_set}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+bool \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::next\+\_\+set}
+
+\mbox{\Hypertarget{class_parallel_inference_interface_adc66576e72473ad2f08ec83c3b570265}\label{class_parallel_inference_interface_adc66576e72473ad2f08ec83c3b570265}} 
+\index{ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}!next\_x@{next\_x}}
+\index{next\_x@{next\_x}!ParallelInferenceInterface$<$ X, Args $>$@{ParallelInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{next\_x}{next\_x}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+\mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}} \mbox{\hyperlink{class_parallel_inference_interface}{Parallel\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::next\+\_\+x}
 
 
 

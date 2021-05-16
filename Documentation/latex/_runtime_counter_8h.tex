@@ -1,0 +1,66 @@
+\hypertarget{_runtime_counter_8h}{}\doxysection{src/\+Virtual\+Machine/\+Runtime\+Counter.h File Reference}
+\label{_runtime_counter_8h}\index{src/VirtualMachine/RuntimeCounter.h@{src/VirtualMachine/RuntimeCounter.h}}
+
+
+This class manages counting operations at runtime and interfaces operations to a grammar N\+O\+TE\+: Currently we don\textquotesingle{}t track each arg separately, since that\textquotesingle{}s a pain.  
+
+
+{\ttfamily \#include $<$atomic$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include \char`\"{}Instruction.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Miscellaneous.\+h\char`\"{}}\newline
+Include dependency graph for Runtime\+Counter.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_runtime_counter_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_runtime_counter_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_runtime_counter}{Runtime\+Counter}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename H\+YP $>$ }\\\mbox{\hyperlink{class_runtime_counter}{Runtime\+Counter}} \mbox{\hyperlink{_runtime_counter_8h_a5b61edd4c51c7e85bd9999ca64d04486}{runtime}} (H\+YP \&h, typename H\+Y\+P\+::datum\+\_\+t \&di)
+\begin{DoxyCompactList}\small\item\em $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename H\+YP $>$ }\\\mbox{\hyperlink{class_runtime_counter}{Runtime\+Counter}} \mbox{\hyperlink{_runtime_counter_8h_a9e0a51e1731c84efd543c64bdb7e3500}{runtime}} (H\+YP \&h, typename H\+Y\+P\+::data\+\_\+t \&d)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class manages counting operations at runtime and interfaces operations to a grammar N\+O\+TE\+: Currently we don\textquotesingle{}t track each arg separately, since that\textquotesingle{}s a pain. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_runtime_counter_8h_a9e0a51e1731c84efd543c64bdb7e3500}\label{_runtime_counter_8h_a9e0a51e1731c84efd543c64bdb7e3500}} 
+\index{RuntimeCounter.h@{RuntimeCounter.h}!runtime@{runtime}}
+\index{runtime@{runtime}!RuntimeCounter.h@{RuntimeCounter.h}}
+\doxysubsubsection{\texorpdfstring{runtime()}{runtime()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+\mbox{\hyperlink{class_runtime_counter}{Runtime\+Counter}} runtime (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h,  }\item[{typename H\+Y\+P\+::data\+\_\+t \&}]{d }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_runtime_counter_8h_a5b61edd4c51c7e85bd9999ca64d04486}\label{_runtime_counter_8h_a5b61edd4c51c7e85bd9999ca64d04486}} 
+\index{RuntimeCounter.h@{RuntimeCounter.h}!runtime@{runtime}}
+\index{runtime@{runtime}!RuntimeCounter.h@{RuntimeCounter.h}}
+\doxysubsubsection{\texorpdfstring{runtime()}{runtime()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+\mbox{\hyperlink{class_runtime_counter}{Runtime\+Counter}} runtime (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h,  }\item[{typename H\+Y\+P\+::datum\+\_\+t \&}]{di }\end{DoxyParamCaption})}
+
+
+
+$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
+
+$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 

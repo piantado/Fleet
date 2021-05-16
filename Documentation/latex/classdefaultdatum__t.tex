@@ -1,0 +1,134 @@
+\hypertarget{classdefaultdatum__t}{}\doxysection{defaultdatum\+\_\+t$<$ \+\_\+\+\_\+input\+\_\+t, \+\_\+\+\_\+output\+\_\+t $>$ Class Template Reference}
+\label{classdefaultdatum__t}\index{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}}
+
+
+{\ttfamily \#include $<$Datum.\+h$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{classdefaultdatum__t_a1fb4da2bbde290bca1ad4f52b4437284}{input\+\_\+t}} = \+\_\+\+\_\+input\+\_\+t
+\item 
+using \mbox{\hyperlink{classdefaultdatum__t_a0d7fadad452e2ddd0c17895a6c042d0e}{output\+\_\+t}} = \+\_\+\+\_\+output\+\_\+t
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classdefaultdatum__t_ad71e51e53811f42993c6667e9b79b254}{defaultdatum\+\_\+t}} ()
+\item 
+\mbox{\hyperlink{classdefaultdatum__t_ab2f98894040b6fe18bcef3c2c1135bc2}{defaultdatum\+\_\+t}} (const \mbox{\hyperlink{classdefaultdatum__t_a1fb4da2bbde290bca1ad4f52b4437284}{input\+\_\+t}} \&i, const \mbox{\hyperlink{classdefaultdatum__t_a0d7fadad452e2ddd0c17895a6c042d0e}{output\+\_\+t}} \&o, double r=\mbox{\hyperlink{_numerics_8h_a23cd69b9bcaba6ec06598bc08ed5b6c3}{NaN}}, double c=1.\+0)
+\item 
+\mbox{\hyperlink{classdefaultdatum__t_aa601bac8d0af8bd72ae3ff588ff63683}{defaultdatum\+\_\+t}} (const std\+::string s)
+\item 
+bool \mbox{\hyperlink{classdefaultdatum__t_a005f91a6d14842c5f225b037645d3460}{operator==}} (const \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}} \&y) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classdefaultdatum__t_a1fb4da2bbde290bca1ad4f52b4437284}{input\+\_\+t}} \mbox{\hyperlink{classdefaultdatum__t_a3614becbf87fc511d4a9652561b04c0b}{input}}
+\item 
+\mbox{\hyperlink{classdefaultdatum__t_a0d7fadad452e2ddd0c17895a6c042d0e}{output\+\_\+t}} \mbox{\hyperlink{classdefaultdatum__t_ae8ed80244d19cd51a1d80e8f974e533d}{output}}
+\item 
+double \mbox{\hyperlink{classdefaultdatum__t_ad0d81156cdcb25187eb7a759302e8a88}{reliability}}
+\item 
+double \mbox{\hyperlink{classdefaultdatum__t_a98aea59b794db7194227f08dcce28305}{count}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename \+\_\+\+\_\+input\+\_\+t, typename \+\_\+\+\_\+output\+\_\+t$>$\newline
+class defaultdatum\+\_\+t$<$ \+\_\+\+\_\+input\+\_\+t, \+\_\+\+\_\+output\+\_\+t $>$}
+
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+29/01/20 
+\end{DoxyDate}
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classdefaultdatum__t_a1fb4da2bbde290bca1ad4f52b4437284}\label{classdefaultdatum__t_a1fb4da2bbde290bca1ad4f52b4437284}} 
+\index{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}!input\_t@{input\_t}}
+\index{input\_t@{input\_t}!defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}}
+\doxysubsubsection{\texorpdfstring{input\_t}{input\_t}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+\_\+input\+\_\+t , typename \+\_\+\+\_\+output\+\_\+t $>$ \\
+using \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ \+\_\+\+\_\+input\+\_\+t, \+\_\+\+\_\+output\+\_\+t $>$\+::\mbox{\hyperlink{classdefaultdatum__t_a1fb4da2bbde290bca1ad4f52b4437284}{input\+\_\+t}} =  \+\_\+\+\_\+input\+\_\+t}
+
+\mbox{\Hypertarget{classdefaultdatum__t_a0d7fadad452e2ddd0c17895a6c042d0e}\label{classdefaultdatum__t_a0d7fadad452e2ddd0c17895a6c042d0e}} 
+\index{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}!output\_t@{output\_t}}
+\index{output\_t@{output\_t}!defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}}
+\doxysubsubsection{\texorpdfstring{output\_t}{output\_t}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+\_\+input\+\_\+t , typename \+\_\+\+\_\+output\+\_\+t $>$ \\
+using \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ \+\_\+\+\_\+input\+\_\+t, \+\_\+\+\_\+output\+\_\+t $>$\+::\mbox{\hyperlink{classdefaultdatum__t_a0d7fadad452e2ddd0c17895a6c042d0e}{output\+\_\+t}} =  \+\_\+\+\_\+output\+\_\+t}
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classdefaultdatum__t_ad71e51e53811f42993c6667e9b79b254}\label{classdefaultdatum__t_ad71e51e53811f42993c6667e9b79b254}} 
+\index{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}!defaultdatum\_t@{defaultdatum\_t}}
+\index{defaultdatum\_t@{defaultdatum\_t}!defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}}
+\doxysubsubsection{\texorpdfstring{defaultdatum\_t()}{defaultdatum\_t()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+\_\+input\+\_\+t , typename \+\_\+\+\_\+output\+\_\+t $>$ \\
+\mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ \+\_\+\+\_\+input\+\_\+t, \+\_\+\+\_\+output\+\_\+t $>$\+::\mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classdefaultdatum__t_ab2f98894040b6fe18bcef3c2c1135bc2}\label{classdefaultdatum__t_ab2f98894040b6fe18bcef3c2c1135bc2}} 
+\index{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}!defaultdatum\_t@{defaultdatum\_t}}
+\index{defaultdatum\_t@{defaultdatum\_t}!defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}}
+\doxysubsubsection{\texorpdfstring{defaultdatum\_t()}{defaultdatum\_t()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+\_\+input\+\_\+t , typename \+\_\+\+\_\+output\+\_\+t $>$ \\
+\mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ \+\_\+\+\_\+input\+\_\+t, \+\_\+\+\_\+output\+\_\+t $>$\+::\mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classdefaultdatum__t_a1fb4da2bbde290bca1ad4f52b4437284}{input\+\_\+t}} \&}]{i,  }\item[{const \mbox{\hyperlink{classdefaultdatum__t_a0d7fadad452e2ddd0c17895a6c042d0e}{output\+\_\+t}} \&}]{o,  }\item[{double}]{r = {\ttfamily \mbox{\hyperlink{_numerics_8h_a23cd69b9bcaba6ec06598bc08ed5b6c3}{NaN}}},  }\item[{double}]{c = {\ttfamily 1.0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classdefaultdatum__t_aa601bac8d0af8bd72ae3ff588ff63683}\label{classdefaultdatum__t_aa601bac8d0af8bd72ae3ff588ff63683}} 
+\index{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}!defaultdatum\_t@{defaultdatum\_t}}
+\index{defaultdatum\_t@{defaultdatum\_t}!defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}}
+\doxysubsubsection{\texorpdfstring{defaultdatum\_t()}{defaultdatum\_t()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+\_\+input\+\_\+t , typename \+\_\+\+\_\+output\+\_\+t $>$ \\
+\mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ \+\_\+\+\_\+input\+\_\+t, \+\_\+\+\_\+output\+\_\+t $>$\+::\mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}} (\begin{DoxyParamCaption}\item[{const std\+::string}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classdefaultdatum__t_a005f91a6d14842c5f225b037645d3460}\label{classdefaultdatum__t_a005f91a6d14842c5f225b037645d3460}} 
+\index{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}!operator==@{operator==}}
+\index{operator==@{operator==}!defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+\_\+input\+\_\+t , typename \+\_\+\+\_\+output\+\_\+t $>$ \\
+bool \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ \+\_\+\+\_\+input\+\_\+t, \+\_\+\+\_\+output\+\_\+t $>$\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ \+\_\+\+\_\+input\+\_\+t, \+\_\+\+\_\+output\+\_\+t $>$ \&}]{y }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classdefaultdatum__t_a98aea59b794db7194227f08dcce28305}\label{classdefaultdatum__t_a98aea59b794db7194227f08dcce28305}} 
+\index{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}!count@{count}}
+\index{count@{count}!defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}}
+\doxysubsubsection{\texorpdfstring{count}{count}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+\_\+input\+\_\+t , typename \+\_\+\+\_\+output\+\_\+t $>$ \\
+double \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ \+\_\+\+\_\+input\+\_\+t, \+\_\+\+\_\+output\+\_\+t $>$\+::count}
+
+\mbox{\Hypertarget{classdefaultdatum__t_a3614becbf87fc511d4a9652561b04c0b}\label{classdefaultdatum__t_a3614becbf87fc511d4a9652561b04c0b}} 
+\index{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}!input@{input}}
+\index{input@{input}!defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}}
+\doxysubsubsection{\texorpdfstring{input}{input}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+\_\+input\+\_\+t , typename \+\_\+\+\_\+output\+\_\+t $>$ \\
+\mbox{\hyperlink{classdefaultdatum__t_a1fb4da2bbde290bca1ad4f52b4437284}{input\+\_\+t}} \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ \+\_\+\+\_\+input\+\_\+t, \+\_\+\+\_\+output\+\_\+t $>$\+::input}
+
+\mbox{\Hypertarget{classdefaultdatum__t_ae8ed80244d19cd51a1d80e8f974e533d}\label{classdefaultdatum__t_ae8ed80244d19cd51a1d80e8f974e533d}} 
+\index{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}!output@{output}}
+\index{output@{output}!defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}}
+\doxysubsubsection{\texorpdfstring{output}{output}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+\_\+input\+\_\+t , typename \+\_\+\+\_\+output\+\_\+t $>$ \\
+\mbox{\hyperlink{classdefaultdatum__t_a0d7fadad452e2ddd0c17895a6c042d0e}{output\+\_\+t}} \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ \+\_\+\+\_\+input\+\_\+t, \+\_\+\+\_\+output\+\_\+t $>$\+::output}
+
+\mbox{\Hypertarget{classdefaultdatum__t_ad0d81156cdcb25187eb7a759302e8a88}\label{classdefaultdatum__t_ad0d81156cdcb25187eb7a759302e8a88}} 
+\index{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}!reliability@{reliability}}
+\index{reliability@{reliability}!defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}}
+\doxysubsubsection{\texorpdfstring{reliability}{reliability}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+\_\+input\+\_\+t , typename \+\_\+\+\_\+output\+\_\+t $>$ \\
+double \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ \+\_\+\+\_\+input\+\_\+t, \+\_\+\+\_\+output\+\_\+t $>$\+::reliability}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Data/\mbox{\hyperlink{_datum_8h}{Datum.\+h}}\end{DoxyCompactItemize}

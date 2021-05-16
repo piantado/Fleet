@@ -1,9 +1,9 @@
-<map id="src/Inference/MCMCChain.h" name="src/Inference/MCMCChain.h">
-<area shape="rect" id="node1" title=" " alt="" coords="322,6,511,33"/>
-<area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,156,255,182"/>
-<area shape="rect" id="node3" href="$_batch_8h.html" title=" " alt="" coords="159,81,306,108"/>
-<area shape="rect" id="node4" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="330,81,503,108"/>
-<area shape="rect" id="node6" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="385,230,550,257"/>
-<area shape="rect" id="node7" href="$_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="578,81,781,108"/>
-<area shape="rect" id="node5" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="287,156,503,182"/>
+<map id="src/Inference/MCMC/MCMCChain.h" name="src/Inference/MCMC/MCMCChain.h">
+<area shape="rect" id="node1" title=" " alt="" coords="309,5,453,47"/>
+<area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,191,255,218"/>
+<area shape="rect" id="node3" href="$_batch_8h.html" title=" " alt="" coords="138,102,285,129"/>
+<area shape="rect" id="node4" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="309,95,453,136"/>
+<area shape="rect" id="node6" href="$_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="353,273,518,300"/>
+<area shape="rect" id="node7" href="$_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="527,95,671,136"/>
+<area shape="rect" id="node5" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="309,184,453,225"/>
 </map>
