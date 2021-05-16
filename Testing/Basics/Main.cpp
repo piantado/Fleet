@@ -27,6 +27,8 @@ void checkNode(const Grammar_t* g, const Node& n) {
 	
 	// check that if we convert to names and back, we get an equal node
 	Node q = g->expand_from_names(n.parseable());
+	assert(q.hash() == n.hash());
+	assert(q.count() == n.count());
 	assert(q == n);
 	assert(&q != &n);
 	
@@ -277,7 +279,7 @@ int main(int argc, char** argv){
 		
 		// this should give me back the right enumeration order
 		assert(z == bz.toInteger(n));
-		
+				
 		// we should not have duplicates
 		if(not s.empty()) {
 			auto x = *s.begin();
