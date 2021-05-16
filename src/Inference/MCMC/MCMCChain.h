@@ -139,6 +139,7 @@ public:
 			// if we haven't improved
 			if(ctl.restart>0 and steps_since_improvement > ctl.restart){
 				[[unlikely]];
+				
 				std::lock_guard guard(current_mutex);
 				
 				current = current.restart();

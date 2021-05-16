@@ -13,7 +13,7 @@
 // Constants
 /////////////////////////////////////////////////////////////
 
-constexpr double LOG2 = log(2.0);
+const double LOG2 = log(2.0); // clang doesn't like constexpr??
 constexpr double infinity = std::numeric_limits<double>::infinity();
 constexpr double NaN = std::numeric_limits<double>::quiet_NaN();
 constexpr double pi  = M_PI;

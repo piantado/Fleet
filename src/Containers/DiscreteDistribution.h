@@ -29,9 +29,9 @@ public:
 	// m here will store the map from values to log probabilities. We need to ensure, though
 	// that when T is either float or double, it correctly sorts NaN (which std::less does not defaulty do)
 	// so, here we have a conditional to handle that, what a nightmare
-	using my_map_t = std::conditional< std::is_same<T,double>::value or std::is_same<T,float>::value,
-									std::map<T,double,floating_point_compare<double>>,
-									std::map<T,double>>::type;
+	using my_map_t = typename std::conditional< std::is_same<T,double>::value or std::is_same<T,float>::value,
+								   	            std::map<T,double,floating_point_compare<double>>,
+									            std::map<T,double>>::type;
 	my_map_t m;
 
 	DiscreteDistribution() { }

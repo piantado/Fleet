@@ -132,7 +132,7 @@ public:
 			}
 
 			bool operator==(const NodeIterator& rhs) { return current == rhs.current; }
-			bool operator!=(const NodeIterator& rhs) { return current != rhs.current; }
+			//bool operator!=(const NodeIterator& rhs) { return current != rhs.current; }
 	};	
 	static NodeIterator EndNodeIterator; // defined below
 	////////////////////////////////////////////////////////////////////////////

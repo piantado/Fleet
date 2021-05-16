@@ -36,7 +36,7 @@ struct Builtin {
 namespace Builtins {
 	
 	// Define this because it's an ugly expression to keep typing and we might want to change all at once
-	#define BUILTIN_LAMBDA             +[](Grammar_t::VirtualMachineState_t* vms, int arg) -> void
+	#define BUILTIN_LAMBDA             +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void
 	
 	template<typename Grammar_t>
 	Builtin<typename Grammar_t::input_t> X(Op::X, BUILTIN_LAMBDA {
@@ -86,7 +86,7 @@ namespace Builtins {
 		bool b = vms->template getpop<bool>(); // bool has already evaluted
 		
 		// now ops must skip the xbranch
-		if(!b) vms->template program.popn(arg);
+		if(!b) vms->program.popn(arg);
 		else   {}; // do nothing, we pass through and then get to the jump we placed at the end of the x branch
 	});
 	
@@ -180,7 +180,7 @@ namespace Builtins {
 	});
 	
 	
-	template<typename Grammar_t, typename output_t=Grammar_t::output_t>
+	template<typename Grammar_t, typename output_t=typename Grammar_t::output_t>
 	Builtin<> Mem(Op::Mem, BUILTIN_LAMBDA {	
 		auto memindex = vms->memstack.top(); vms->memstack.pop();
 		if(vms->mem.count(memindex)==0) { // you might actually have already placed mem in crazy recursive situations, so don't overwrite if you have
