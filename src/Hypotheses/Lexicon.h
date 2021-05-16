@@ -90,7 +90,7 @@ public:
 
 		this_t h;
 		for(auto f : split(s, Lexicon::FactorDelimiter)) {
-			INNER ih(&g, g.expand_from_names(f));
+			INNER ih(&g, g.from_parseable(f));
 			h.factors.push_back(ih);
 		}
 		return h;

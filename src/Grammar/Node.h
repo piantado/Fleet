@@ -259,7 +259,7 @@ public:
 	
 	virtual std::string parseable() const {
 		/**
-		 * @brief Create a string that can be parsed according to Grammar.expand_from_names
+		 * @brief Create a string that can be parsed according to Grammar.from_parseable
 		 * @return 
 		 */
 		

@@ -638,7 +638,7 @@ public:
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	
-	Node expand_from_names(std::deque<std::string>& q) const {
+	Node from_parseable(std::deque<std::string>& q) const {
 		/**
 		 * @brief Fills an entire tree using the string format prefixes -- see get_rule(std::string).
 		 * 		  Here q should contain strings like "3:'a'" which says expand nonterminal type 3 to the rule matching 'a'
@@ -661,18 +661,18 @@ public:
 		Node v = makeNode(r);
 		for(size_t i=0;i<r->N;i++) {	
 		
-			v.set_child(i, expand_from_names(q));
+			v.set_child(i, from_parseable(q));
 
 			if(r->type(i) != v.child(i).rule->nt) {
 				CERR "*** Grammar expected type " << r->type(i) << " but got type " << v.child(i).rule->nt << " at " << r->format << " argument " << i ENDL;
-				assert(false && "Bad names in expand_from_names."); // just check that we didn't miss this up
+				assert(false && "Bad names in from_parseable."); // just check that we didn't miss this up
 			}
 			
 		}
 		return v;
 	}
 
-	Node expand_from_names(std::string s) const {
+	Node from_parseable(std::string s) const {
 		/**
 		 * @brief Expand from names where s is delimited by ':'
 		 * @param s
@@ -680,12 +680,12 @@ public:
 		 */
 		
 		std::deque<std::string> stk = split(s, Node::RuleDelimiter);    
-        return expand_from_names(stk);
+        return from_parseable(stk);
 	}
 	
-	Node expand_from_names(const char* c) const {
+	Node from_parseable(const char* c) const {
 		std::string s = c;
-        return expand_from_names(s);
+        return from_parseable(s);
 	}
 
 

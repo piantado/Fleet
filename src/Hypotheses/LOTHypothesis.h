@@ -60,7 +60,7 @@ public:
 
 	// parse this from a string
 	LOTHypothesis(Grammar_t* g, std::string s) : MCMCable<this_t,datum_t,data_t>(), grammar(g)  {
-		value = grammar->expand_from_names(s);
+		value = grammar->from_parseable(s);
 	}
 	
 	[[nodiscard]] virtual std::pair<this_t,double> propose() const override {
@@ -143,7 +143,7 @@ public:
 		return value.parseable(); 
 	}
 	static this_t from_string(Grammar_t* g, std::string s) {
-		return this_t(g, g->expand_from_names(s));
+		return this_t(g, g->from_parseable(s));
 	}
 	
 	virtual size_t hash() const override {
