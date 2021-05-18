@@ -94,7 +94,7 @@ std::vector<HYP> load(std::string filename, typename HYP::Grammar_t* g) {
 }
 
 /**
- * @brief Load data -- divides in columns at the delimiter. NOTE: we are required to say whetehr we skip
+ * @brief Load data -- divides in columns at the delimiter. NOTE: we are required to say whether we skip
  *        a header (first line) or not. Checks tha tthere are exactly N on each line. 
  *        So we can use like:  
  * 				for(auto [b1, b2, b3, b4, c] : read_csv<5>(FleetArgs::input_path, true)) { 
@@ -126,7 +126,7 @@ std::vector<std::array<std::string,N>> read_csv(const std::string path, bool ski
 		}
 		
 		if( s.length() == 0) continue; // skip empty lines 
-		assert(s.length() >= N && "*** Error with reading line -- not enough delimiters");
+		assert(s.length() >= N-1 && "*** Error with reading line -- not enough delimiters");
 				
 		out.push_back(split<N>(s,delimiter));
 	}

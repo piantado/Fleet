@@ -6,13 +6,13 @@
 #include <map>
 #include <set>
 #include <atomic>
-
 #include <string.h>
 
+#include "Miscellaneous.h"
 #include "Numerics.h"
 #include "Random.h"
 #include "Vector3D.h"
-#include "Miscellaneous.h"
+
 
 // This constant is occasionally useful, especially in grammar inference where we might
 // want a reference to an empty input
