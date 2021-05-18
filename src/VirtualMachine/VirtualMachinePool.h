@@ -167,7 +167,9 @@ public:
 		while(current_steps < MAX_STEPS && out.size() < MAX_OUTPUTS && !Q.empty()) {
 			
 			VirtualMachineState_t* vms = Q.top(); Q.pop();
-
+			assert(vms->status == vmstatus_t::GOOD);
+			assert(vms->lp >= MIN_LP);
+			
 			// if we ever go back to the non-pointer version, we might need fanciness to move out of top https://stackoverflow.com/questions/20149471/move-out-element-of-std-priority-queue-in-c11
 			assert(vms->lp >= MIN_LP);
 			
@@ -182,6 +184,10 @@ public:
 			// not else if because we need to delete complete ones too
 			if(vms->status != vmstatus_t::RANDOM_CHOICE_NO_DELETE) {
 				delete vms; // if our previous copy isn't pushed back on the stack, delete it
+			} 
+			else {
+				// else restore to running order
+				vms->status = vmstatus_t::GOOD;
 			}
 		}
 
@@ -206,6 +212,7 @@ public:
 		while(current_steps < MAX_STEPS && !Q.empty()) {
 			
 			VirtualMachineState_t* vms = Q.top(); Q.pop();
+			assert(vms->status == vmstatus_t::GOOD);
 			assert(vms->lp >= MIN_LP);
 			
 			current_steps++;
@@ -218,6 +225,10 @@ public:
 			
 			if(vms->status != vmstatus_t::RANDOM_CHOICE_NO_DELETE) { 
 				delete vms; // if our previous copy isn't pushed back on the stack, delete it
+			}
+			else {
+				// else restore to running order
+				vms->status = vmstatus_t::GOOD;
 			}
 		}
 
