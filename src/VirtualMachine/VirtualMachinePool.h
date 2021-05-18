@@ -124,6 +124,7 @@ public:
 	template<typename T>
 	bool copy_increment_push(const VirtualMachineState_t* x, T v, double lpinc) {
 		if(wouldIadd(x->lp + lpinc)) {	
+			assert(x->status == vmstatus_t::GOOD);
 			auto s = new VirtualMachineState_t(*x); // copy
 			s->template push<T>(v); // add v
 			s->lp += lpinc;
@@ -143,6 +144,7 @@ public:
 	template<typename T>
 	bool increment_push(VirtualMachineState_t* s, T v, double lpinc) {		
 		if(wouldIadd(s->lp + lpinc)) {		
+			assert(s->status == vmstatus_t::GOOD);
 			s->template push<T>(v); // add this
 			s->lp += lpinc;
 			this->push(s);	
@@ -186,7 +188,7 @@ public:
 				delete vms; // if our previous copy isn't pushed back on the stack, delete it
 			} 
 			else {
-				// else restore to running order
+				// else restore to running order when we're RANDOM_CHOICE_NO_DELETE
 				vms->status = vmstatus_t::GOOD;
 			}
 		}
