@@ -210,11 +210,11 @@ int main(int argc, char** argv){
 	top.print_best = true;
 	auto h0 = MyHypothesis::make(&grammar);
 	
-//	MCMCChain samp(h0, &mydata);
+	MCMCChain samp(h0, &mydata);
 //    ChainPool samp(h0, &mydata, FleetArgs::nchains);
-//	for(auto& h : samp.run(Control()) | top | thin(FleetArgs::thin)) {
-	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
-	for(auto& h : samp.run(Control(), 100, 30000) | top | thin(FleetArgs::thin)) {
+	for(auto& h : samp.run(Control()) | top | thin(FleetArgs::thin)) {
+//	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+//	for(auto& h : samp.run(Control(), 100, 30000) | top | thin(FleetArgs::thin)) {
 		//h.print();
 	}
 
