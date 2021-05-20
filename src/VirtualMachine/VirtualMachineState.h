@@ -40,16 +40,6 @@ extern std::atomic<uintmax_t> FleetStatistics::vm_ops;
  */ 
 template<typename _t_input, typename _t_output, typename... VM_TYPES>
 class VirtualMachineState : public VirtualMachineControl {
-
-	template<typename T>
-	class VMSStack : public Stack<T> {		
-		// This is a kind of stack that just reserves some for VirtualMachineStates (if that's faster, which its not)
-	public:
-		VMSStack() {
-			// this->reserve(8);
-		}
-	};
-	
 public:
 
 	using input_t  = _t_input;
@@ -60,12 +50,16 @@ public:
 	// Define the function type for instructions and things operating on this VirtualMachineState
 	// This is read a few other places, like in Builtins
 	using FT = std::function<void(this_t*,int)>;
+
+	// what we use internally for stacks
+	template<typename T>
+	using VMSStack = Stack<T>;
 	
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
 	Program            program; 
 	VMSStack<input_t>  xstack; //xstackthis stores a stack of the x values (for recursive calls)
-	output_t           err; // what error output do we return?
+	const output_t&    err; // what error output do we return? Just a reference to a value for speed
 	double             lp; // the probability of this context
 	
 	unsigned long 	  recursion_depth; // when I was created, what was my depth?
@@ -98,7 +92,7 @@ public:
 	// where we place random flips back onto
 	VirtualMachinePool<this_t>* pool;
 	
-	VirtualMachineState(input_t x, output_t e, ProgramLoader* pl, VirtualMachinePool<this_t>* po) :
+	VirtualMachineState(input_t x, const output_t& e, ProgramLoader* pl, VirtualMachinePool<this_t>* po) :
 		err(e), lp(0.0), recursion_depth(0), status(vmstatus_t::GOOD), program_loader(pl), pool(po) {
 		xstack.push(x);	
 	}

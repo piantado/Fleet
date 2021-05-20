@@ -233,7 +233,7 @@ public:
 	 * Calling
 	 ********************************************************/
 	 
-	virtual DiscreteDistribution<S> call(const S x, const S err=S{}, ProgramLoader* loader=nullptr) override {
+	virtual DiscreteDistribution<S> call(const S x, const S& err=S{}, ProgramLoader* loader=nullptr) override {
 		// this calls by calling only the last factor, which, according to our prior,
 		
 		assert(loader==nullptr); // we really don't want people passing this in to this lexicon

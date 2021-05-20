@@ -80,7 +80,7 @@ public:
 	 * @brief Remove everything and reset my values
 	 */	
 	virtual void clear() {
-		while(!Q.empty()) {
+		while(not Q.empty()) {
 			VirtualMachineState_t* vms = Q.top(); Q.pop();
 			delete vms;
 		}
