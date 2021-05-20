@@ -42,7 +42,7 @@ public:
 	 * @param minlp - the virtual machine pool doesn't consider paths less than this probability
 	 * @return 
 	 */	
-	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t err=output_t{}, ProgramLoader* loader=nullptr) {
+	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t& err=output_t{}, ProgramLoader* loader=nullptr) {
 		
 		// The below condition is needed in case we create e.g. a lexicon whose input_t and output_t differ from the VirtualMachineState
 		// in that case, these functions are all overwritten and must be called on their own. 
@@ -64,7 +64,7 @@ public:
 	  } else { UNUSED(x); UNUSED(err); assert(false && "*** Cannot use call when VirtualMachineState_t has different input_t or output_t."); }
 	}
 	
-	virtual DiscreteDistribution<output_t>  operator()(const input_t x, const output_t err=output_t{}, ProgramLoader* loader=nullptr){ // just fancy syntax for call
+	virtual DiscreteDistribution<output_t>  operator()(const input_t x, const output_t& err=output_t{}, ProgramLoader* loader=nullptr){ // just fancy syntax for call
 		return call(x,err,loader);
 	}
 
@@ -75,7 +75,7 @@ public:
 	 * @param err
 	 * @return 
 	 */
-	virtual output_t callOne(const input_t x, const output_t err=output_t{}, ProgramLoader* loader=nullptr) {
+	virtual output_t callOne(const input_t x, const output_t& err=output_t{}, ProgramLoader* loader=nullptr) {
 		if constexpr (std::is_same<typename VirtualMachineState_t::input_t, input_t>::value and 
 					  std::is_same<typename VirtualMachineState_t::output_t, output_t>::value) {
 						  
@@ -98,7 +98,7 @@ public:
 	 * 		  marginalizes out the execution path.
 	 * @return a vector of virtual machine states
 	 */	
-	std::vector<VirtualMachineState_t> call_vms(const input_t x, const output_t err=output_t{}, ProgramLoader* loader=nullptr){
+	std::vector<VirtualMachineState_t> call_vms(const input_t x, const output_t& err=output_t{}, ProgramLoader* loader=nullptr){
 		if constexpr (std::is_same<typename VirtualMachineState_t::input_t, input_t>::value and 
 					  std::is_same<typename VirtualMachineState_t::output_t, output_t>::value) {
 		
@@ -121,7 +121,7 @@ public:
 	 * @param err
 	 * @return 
 	 */
-	VirtualMachineState_t callOne_vms(const input_t x, const output_t err=output_t{}, ProgramLoader* loader=nullptr) {
+	VirtualMachineState_t callOne_vms(const input_t x, const output_t& err=output_t{}, ProgramLoader* loader=nullptr) {
 		if constexpr (std::is_same<typename VirtualMachineState_t::input_t, input_t>::value and 
 					  std::is_same<typename VirtualMachineState_t::output_t, output_t>::value) {
 				
