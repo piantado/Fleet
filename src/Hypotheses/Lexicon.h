@@ -20,17 +20,19 @@
 
 template<typename this_t, 
 		 typename INNER, 
-		 typename input_t,
-		 typename output_t, 
-		 typename datum_t=defaultdatum_t<input_t, output_t>,
+		 typename _input_t,
+		 typename _output_t, 
+		 typename datum_t=defaultdatum_t<_input_t, _output_t>,
 		 typename _VirtualMachineState_t=typename INNER::Grammar_t::VirtualMachineState_t
 		 >
 class Lexicon : public MCMCable<this_t,datum_t>,
-				public Searchable<this_t,input_t,output_t>,
-				public Callable<input_t, output_t, _VirtualMachineState_t>
+				public Searchable<this_t, _input_t, _output_t>,
+				public Callable<_input_t, _output_t, _VirtualMachineState_t>
 {
 public:
-	
+	using Grammar_t = typename INNER::Grammar_t;
+	using input_t   = _input_t;
+	using output_t  = _output_t;
 	using VirtualMachineState_t = _VirtualMachineState_t;
 	
 	// Store a lexicon of type INNER elements
