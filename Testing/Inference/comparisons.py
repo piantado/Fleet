@@ -4,7 +4,7 @@ import itertools
 
 times = [1, 5, 10, 30, 60, 120, 300, 500, 1000, 3000, 5000, 10000]; # seconds # [1, 5, 10, 50, 100, 500, 1000]
 chains = [1, 5, 10] 
-replications = range(25)
+replications = range(100)
 restart = [0, 10000]
 inner_times = ["100", "1000"] # measured in q
 explores = [0.1, 1.0, 10.0, 100.0]

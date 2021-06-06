@@ -421,7 +421,7 @@ int main(int argc, char** argv){
 		for(auto& h : m.run(Control(), h0)){
 			top << h;
 		}
-		m.print(h0);
+		//m.print(h0);
 	}
 	else if(method == "full-mcts") {
 		// A FullMCTSNode run is one where each time you descend the tree, you go until you make it to a terminal
