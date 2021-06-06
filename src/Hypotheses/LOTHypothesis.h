@@ -12,6 +12,7 @@
 #include "Hypotheses/Interfaces/MCMCable.h"
 #include "Hypotheses/Interfaces/Searchable.h"
 #include "Hypotheses/Interfaces/Callable.h"
+#include "Hypotheses/Interfaces/Serializable.h"
 
 /**
  * @class LOTHypothesis
@@ -34,7 +35,8 @@ template<typename this_t,
 		 >
 class LOTHypothesis : public MCMCable<this_t,_datum_t,_data_t>, // remember, this defines data_t, datum_t
 					  public Searchable<this_t,_input_t,_output_t>,
-					  public Callable<_input_t, _output_t, typename _Grammar_t::VirtualMachineState_t>
+					  public Callable<_input_t, _output_t, typename _Grammar_t::VirtualMachineState_t>,
+					  public Serializable<this_t>
 {
 public:     
 	typedef typename Bayesable<_datum_t,_data_t>::datum_t datum_t;
@@ -139,9 +141,13 @@ public:
 	virtual std::string string(std::string prefix, bool usedot) const {
 		return prefix + std::string("\u03BBx.") + value.string(usedot);
 	}
-	virtual std::string parseable() const { 
-		return value.parseable(); 
+	virtual std::string serialize() const { 
+		return value.serialize(); 
 	}
+	static this_t deserialize(std::string& s) { 
+		return grammar->from_serialized(s);
+	}
+	
 	static this_t from_string(Grammar_t* g, std::string s) {
 		return this_t(g, g->from_parseable(s));
 	}

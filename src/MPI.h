@@ -23,9 +23,9 @@ bool am_mpi_head() {
 
 template<typename T> 
 void mpi_return(T& x) {
-	assert(mpi_rank() != MPI_HEAD_RANK); // the head can't return 
+	assert(mpi_rank() != MPI_HEAD_RANK && "*** Head rank cannot call mpi_return"); // the head can't return 
 	
-	std::string v = x.parseable(); // convert to string 
+	std::string v = x.serialize(); // convert to string 
 	
 	MPI_Send(&v.data(), v.size(), MPI_CHAR, MPI_HEAD_RANK, 0, MPI_COMM_WORLD);
 }
@@ -35,8 +35,9 @@ std::vector<T> mpi_gather() {
 	// read all of the MPI returns (of type T)
 	// Note that the output does not come with any order guarantees
 	// and waits until all are finished 
-	
-	assert(mpi_rank() == MPI_HEAD_RANK); 
+	//https://mpitutorial.com/tutorials/dynamic-receiving-with-mpi-probe-and-mpi-status/
+
+	assert(mpi_rank() == MPI_HEAD_RANK && "*** Cannot call mpi_gather unless you are head rank"); 
 	
 	int s = mpi_size();
 	std::vector<T> out;	
@@ -50,8 +51,7 @@ std::vector<T> mpi_gather() {
 
 			// When probe returns, the status object has the size and other
 			// attributes of the incoming message. Get the message size
-			int sz; 
-			MPI_Get_count(&status, MPI_INT, &sz);
+			int sz; MPI_Get_count(&status, MPI_INT, &sz);
 
 			// Allocate a buffer to hold the incoming numbers
 			char buf[sz];
@@ -60,15 +60,11 @@ std::vector<T> mpi_gather() {
 			MPI_Recv(buf, sz, MPI_INT, r, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
 			/// TODO FIX 
-			FIX THIS SO THAT WE PARSE IT THE RIGHT WAY 
-			out.push_back(T(buf));
-//https://mpitutorial.com/tutorials/dynamic-receiving-with-mpi-probe-and-mpi-status/
-
-// MPI_Recv(&number, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-			
+			out.push_back(T::deserialize(std::string(buf)));
 		}
 	}
 	
+	return out;	
 }
 
 

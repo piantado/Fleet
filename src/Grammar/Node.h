@@ -9,7 +9,9 @@
 #include "BaseNode.h"
 #include "Builtins.h"
 
-class Node : public BaseNode<Node> {
+class Node : public BaseNode<Node>
+			// Node has a serialize function but is not serializable because it needs a grammar to deserialize
+{
 	friend class BaseNode<Node>;
 	
 public:
@@ -257,7 +259,7 @@ public:
 	}
 	
 	
-	virtual std::string parseable() const {
+	virtual std::string serialize() const {
 		/**
 		 * @brief Create a string that can be parsed according to Grammar.from_parseable
 		 * @return 
@@ -266,7 +268,7 @@ public:
 		// get a string like one we could parse
 		std::string out = str(this->nt()) + NTDelimiter + this->rule->format;
 		for(auto& c: this->children) {
-			out += RuleDelimiter + c.parseable();
+			out += RuleDelimiter + c.serialize();
 		}
 		return out;
 	}
