@@ -36,7 +36,7 @@ template<typename this_t,
 class LOTHypothesis : public MCMCable<this_t,_datum_t,_data_t>, // remember, this defines data_t, datum_t
 					  public Searchable<this_t,_input_t,_output_t>,
 					  public Callable<_input_t, _output_t, typename _Grammar_t::VirtualMachineState_t>,
-					  public Serializable<this_t>
+					  public Serializable<this_t, _Grammar_t>
 {
 public:     
 	typedef typename Bayesable<_datum_t,_data_t>::datum_t datum_t;
@@ -141,11 +141,11 @@ public:
 	virtual std::string string(std::string prefix, bool usedot) const {
 		return prefix + std::string("\u03BBx.") + value.string(usedot);
 	}
-	virtual std::string serialize() const { 
-		return value.serialize(); 
+	virtual std::string serialize() const override { 
+		return value.parseable(); 
 	}
-	static this_t deserialize(std::string& s) { 
-		return grammar->from_serialized(s);
+	static virtual this_t deserialize(std::string& s, Grammar_t g) { 
+		return this_t(grammar, g->from_parseable(s));
 	}
 	
 	static this_t from_string(Grammar_t* g, std::string s) {

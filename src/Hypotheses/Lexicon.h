@@ -27,7 +27,8 @@ template<typename this_t,
 		 >
 class Lexicon : public MCMCable<this_t,datum_t>,
 				public Searchable<this_t, _input_t, _output_t>,
-				public Callable<_input_t, _output_t, _VirtualMachineState_t>
+				public Callable<_input_t, _output_t, _VirtualMachineState_t>,
+				public Serializable<this_t>
 {
 public:
 	using Grammar_t = typename INNER::Grammar_t;
@@ -66,7 +67,7 @@ public:
 		return s;		
 	}
 	
-	virtual std::string parseable() const {
+	virtual std::string serialize() const override {
 		/**
 		 * @brief Convert to a parseable format (using a delimiter for each factor)
 		 * @return 
@@ -74,7 +75,7 @@ public:
 		
 		std::string out = "";
 		for(size_t i=0;i<factors.size();i++) {
-			out += factors[i].parseable();
+			out += factors[i].serialize();
 			if(i < factors.size()-1) 
 				out += Lexicon::FactorDelimiter;
 		}
@@ -82,7 +83,7 @@ public:
 	}
 	
 	template<typename GrammarType>
-	static this_t from_string(GrammarType& g, std::string s) {
+	static this_t deserialize(std::string s, GrammarType& g) {
 		/**
 		 * @brief Convert a string to a lexicon of this type
 		 * @param g

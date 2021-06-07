@@ -638,10 +638,11 @@ public:
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	
-	Node from_serialized(std::deque<std::string>& q) const {
+	Node from_parseable(std::deque<std::string>& q) const {
 		/**
 		 * @brief Fills an entire tree using the string format prefixes -- see get_rule(std::string).
 		 * 		  Here q should contain strings like "3:'a'" which says expand nonterminal type 3 to the rule matching 'a'
+		 *        NOTE: This is not a Serializable interface because the Node needs to know which grammar
 		 * @param q
 		 * @return 
 		 */
@@ -661,18 +662,18 @@ public:
 		Node v = makeNode(r);
 		for(size_t i=0;i<r->N;i++) {	
 		
-			v.set_child(i, from_serialized(q));
+			v.set_child(i, from_parseable(q));
 
 			if(r->type(i) != v.child(i).rule->nt) {
 				CERR "*** Grammar expected type " << r->type(i) << " but got type " << v.child(i).rule->nt << " at " << r->format << " argument " << i ENDL;
-				assert(false && "Bad names in from_serialized."); // just check that we didn't miss this up
+				assert(false && "Bad names in from_parseable."); // just check that we didn't miss this up
 			}
 			
 		}
 		return v;
 	}
 
-	Node from_serialized(std::string s) const {
+	Node from_parseable(std::string s) const {
 		/**
 		 * @brief Expand from names where s is delimited by ':'
 		 * @param s
@@ -680,12 +681,12 @@ public:
 		 */
 		
 		std::deque<std::string> stk = split(s, Node::RuleDelimiter);    
-        return from_serialized(stk);
+        return from_parseable(stk);
 	}
 	
-	Node from_serialized(const char* c) const {
+	Node from_parseable(const char* c) const {
 		std::string s = c;
-        return from_serialized(s);
+        return from_parseable(s);
 	}
 
 

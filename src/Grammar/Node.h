@@ -259,7 +259,7 @@ public:
 	}
 	
 	
-	virtual std::string serialize() const {
+	virtual std::string parseable() const {
 		/**
 		 * @brief Create a string that can be parsed according to Grammar.from_parseable
 		 * @return 
@@ -268,7 +268,7 @@ public:
 		// get a string like one we could parse
 		std::string out = str(this->nt()) + NTDelimiter + this->rule->format;
 		for(auto& c: this->children) {
-			out += RuleDelimiter + c.serialize();
+			out += RuleDelimiter + c.parseable();
 		}
 		return out;
 	}
