@@ -144,8 +144,8 @@ public:
 	virtual std::string serialize() const override { 
 		return value.parseable(); 
 	}
-	static virtual this_t deserialize(std::string& s, Grammar_t g) { 
-		return this_t(grammar, g->from_parseable(s));
+	static this_t deserialize(std::string& s, Grammar_t* g) { 
+		return this_t(g, g->from_parseable(s));
 	}
 	
 	static this_t from_string(Grammar_t* g, std::string s) {
