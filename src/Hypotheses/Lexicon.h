@@ -6,9 +6,6 @@
 #include "Hypotheses/Interfaces/MCMCable.h"
 #include "Hypotheses/Interfaces/Searchable.h"
 
-
-
-
 /**
  * @class Lexicon
  * @author piantado
@@ -28,7 +25,7 @@ template<typename this_t,
 class Lexicon : public MCMCable<this_t,datum_t>,
 				public Searchable<this_t, _input_t, _output_t>,
 				public Callable<_input_t, _output_t, _VirtualMachineState_t>,
-				public Serializable<this_t,typename INNER::Grammar_t>
+				public Serializable<this_t>
 {
 public:
 	using Grammar_t = typename INNER::Grammar_t;
@@ -82,7 +79,6 @@ public:
 		return out;
 	}
 	
-	template<typename GrammarType>
 	static this_t deserialize(std::string s, typename INNER::Grammar_t* g) {
 		/**
 		 * @brief Convert a string to a lexicon of this type

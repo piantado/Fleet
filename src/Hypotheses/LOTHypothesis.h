@@ -36,7 +36,7 @@ template<typename this_t,
 class LOTHypothesis : public MCMCable<this_t,_datum_t,_data_t>, // remember, this defines data_t, datum_t
 					  public Searchable<this_t,_input_t,_output_t>,
 					  public Callable<_input_t, _output_t, typename _Grammar_t::VirtualMachineState_t>,
-					  public Serializable<this_t, _Grammar_t>
+					  public Serializable<this_t>
 {
 public:     
 	typedef typename Bayesable<_datum_t,_data_t>::datum_t datum_t;

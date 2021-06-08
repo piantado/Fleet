@@ -284,7 +284,7 @@ public:
 		auto [prec, rec] = get_precision_and_recall(o, prdata, PREC_REC_N);
 		COUT "#\n";
 		COUT "# "; o.print(PRINT_STRINGS);	COUT "\n";
-		COUT prefix << current_data TAB current_ntokens TAB mem_pr.first TAB mem_pr.second TAB this->born TAB this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->parseable()) TAB prec TAB rec;
+		COUT prefix << current_data TAB current_ntokens TAB mem_pr.first TAB mem_pr.second TAB this->born TAB this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->serialize()) TAB prec TAB rec;
 		COUT "" TAB QQ(this->string()) ENDL
 	}
 	

@@ -18,10 +18,12 @@
  * 			The default constructor here reads from FleetArgs::ntop as the default value
  * */
 template<class T>
-class TopN {	
+class TopN { //: public Serializable<T> {	
 	using Hypothesis_t = T;
 	
 	OrderedLock lock;
+	
+	const static char SerializationDelimiter = '\n';
 	
 public:
 	std::map<T,unsigned long> cnt; // also let's count how many times we've seen each for easy debugging
@@ -69,7 +71,6 @@ public:
 		cnt = x.cnt;
 		s =  x.s;
 	}
-	
 
 	void set_size(size_t n) {
 		/**
@@ -233,7 +234,7 @@ public:
 		return *s.begin(); 
 	}
 	
-	double Z() { // compute the normalizer (can't be const because it locks)
+	double Z() { // (can't be const because it locks)
 		/**
 		 * @brief Compute the logsumexp of all of the elements stored. 
 		 * @return 
@@ -301,6 +302,8 @@ public:
 		}
 		return o;
 	}
+	
+	
 	
 };
 
