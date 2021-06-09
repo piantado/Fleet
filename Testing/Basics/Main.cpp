@@ -168,15 +168,17 @@ int main(int argc, char** argv){
 	//------------------
 	// Basic setup
 	//------------------
-	
-	// Define the grammar (default initialize using our primitives will add all those rules)	
-	MyGrammar grammar;
-		
+			
 	// mydata stores the data for the inference model
 	MyHypothesis::data_t mydata;
 	
 	// initial hypothesis
-	MyHypothesis h0(&grammar);
+	MyHypothesis h0;
+	
+	// add alphabet	
+	for(const char c : alphabet) {
+		grammar.add_terminal( Q(S(1,c)), S(1,c), 5.0/alphabet.length());
+	}
 	
 	//------------------
 	// set up the data
@@ -200,7 +202,7 @@ int main(int argc, char** argv){
 	
 	COUT "# MCMC...";
 	TopN<MyHypothesis> top_mcmc(N);  //	top_mcmc.print_best = true;
-	h0 = h0.restart();
+	h0 = MyHypothesis::sample();
 	MCMCChain chain(h0, &mydata);
 	for(auto& h : chain.run(Control())) { 
 		top_mcmc << h; 
@@ -224,7 +226,7 @@ int main(int argc, char** argv){
 	
 	COUT "# Parallel Tempering...";
 	TopN<MyHypothesis> top_tempering(N);
-	h0 = h0.restart();
+	h0 = MyHypothesis::sample();
 	ParallelTempering samp(h0, &mydata, 8, 1000.0);
 	for(auto& h : samp.run(Control(), 500, 1000)) { 
 		top_tempering << h; 
@@ -255,7 +257,7 @@ int main(int argc, char** argv){
 		auto n = grammar.generate();
 		checkNode(&grammar, n);
 		
-		MyHypothesis h(&grammar);
+		MyHypothesis h;
 		h.set_value(n);
 		h.compute_posterior(mydata);
 		

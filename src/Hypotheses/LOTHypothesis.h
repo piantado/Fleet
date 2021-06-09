@@ -83,7 +83,7 @@ public:
 	
 	[[nodiscard]] virtual this_t restart() const override {
 		/**
-		 * @brief This is used to restart chains, sampling from prior
+		 * @brief This is used to restart chains, sampling from prior but ONLY for nodes that are can_resample
 		 * @return 
 		 */
 		

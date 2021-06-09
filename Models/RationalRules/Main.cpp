@@ -49,6 +49,7 @@ public:
 		add("x",             Builtins::X<MyGrammar>);
 	}
 } grammar;
+
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define a class for handling my specific hypotheses and data. Everything is defaultly 
 /// a PCFG prior and regeneration proposals, but I have to define a likelihood

@@ -389,7 +389,7 @@ int main(int argc, char** argv){
 	}
 	else if(method == "full-LZ-enumeration") {
 		EnumerationInference<MyHypothesis,MyGrammar,FullLZEnumeration<MyGrammar>> e(&grammar, &mydata);
-		for(auto& h : e.run(Control())){
+		for(auto& h : e.run(Control()) ){
 			top << h;
 		}
 	}
