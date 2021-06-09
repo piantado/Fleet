@@ -51,11 +51,6 @@ public:
 		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
 		add("flip()",        Builtins::Flip<MyGrammar>, 10.0);
 		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
-			
-		for(const char c : alphabet) {
-			add_terminal( Q(S(1,c)), S(1,c), 5.0/alphabet.length());
-		}
-		
 	}
 } grammar; 
 
@@ -150,6 +145,15 @@ int main(int argc, char** argv){
 	fleet.add_option("-d,--data",     datastr, "Comma separated list of input data strings");	
 	fleet.initialize(argc, argv);
 	
+	
+	//------------------
+	// Add the terminals to the grammar
+	//------------------	
+	
+	for(const char c : alphabet) {
+		grammar.add_terminal( Q(S(1,c)), S(1,c), 5.0/alphabet.length());
+	}
+		
 	//------------------
 	// top stores the top hypotheses we have found
 	//------------------	

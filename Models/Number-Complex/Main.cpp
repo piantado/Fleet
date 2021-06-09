@@ -198,24 +198,23 @@ public:
 		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,utterance>,  1./5);
 		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
 	}
-};
+} grammar;
+
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "LOTHypothesis.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,utterance,word,MyGrammar> {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,utterance,word,MyGrammar,&grammar> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,utterance,word,MyGrammar>;
+	using Super = LOTHypothesis<MyHypothesis,utterance,word,MyGrammar,&grammar>;
 	using Super::Super;
 	
 	double compute_prior() override {
 		// include recusion penalty
-		prior = Super::compute_prior() +
+		return prior = Super::compute_prior() +
 		       (recursion_count() > 0 ? recursion_penalty : log1p(-exp(recursion_penalty))); 
-		
-		return prior;
 	}
 	
 	DiscreteDistribution<word> call(const utterance& input) {
@@ -362,12 +361,6 @@ int main(int argc, char** argv) {
 	// can just set these
 	VirtualMachineControl::MAX_STEPS = 128;
 	VirtualMachineControl::MAX_OUTPUTS = 128;
-
-	MyGrammar grammar;
-	
-	
-	
-	
 	
 	typedef MyHypothesis::data_t  data_t;
 	typedef MyHypothesis::datum_t datum_t;
@@ -391,7 +384,7 @@ int main(int argc, char** argv) {
 	
 	
 	// Run parallel tempering
-//	auto h0 = MyHypothesis::make(&grammar);
+//	auto h0 = MyHypothesis().restart();
 //	ParallelTempering samp(h0, alldata, alltops);
 //	tic();
 //	samp.run(Control(mcmc_steps, runtime, nthreads), 200, 5000); 
@@ -399,7 +392,7 @@ int main(int argc, char** argv) {
 
 	// just simple mcmc on one
 	for(size_t di=0;di<alldata.size();di++){
-		auto h0 = MyHypothesis::make(&grammar);
+		auto h0 = MyHypothesis().restart();
 		MCMCChain samp(h0, &alldata[di]);
 		for(auto& h : samp.run(Control())) {
 			alltops[di] << h;

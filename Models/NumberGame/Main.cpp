@@ -140,7 +140,7 @@ public:
 		add("x",             Builtins::X<MyGrammar>);
 		
 	}
-};
+} grammar;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define hypothesis
@@ -150,9 +150,9 @@ public:
 #include<set>
 #include "LOTHypothesis.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,int,NumberSet,MyGrammar,std::multiset<int> > {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,int,NumberSet,MyGrammar,&grammar,std::multiset<int> > {
 public:
-	using Super = LOTHypothesis<MyHypothesis,int,NumberSet,MyGrammar,std::multiset<int> >;
+	using Super = LOTHypothesis<MyHypothesis,int,NumberSet,MyGrammar,&grammar,std::multiset<int> >;
 	using Super::Super; // inherit the constructors
 	
 	// Ok so technically since we don't take any args, this will callOne for each data point
@@ -185,8 +185,6 @@ public:
 int main(int argc, char** argv){ 	
 	Fleet fleet("Number Game");
 	fleet.initialize(argc, argv);
-	
-	MyGrammar grammar;
 
 	// Define something to hold the best hypotheses
 	TopN<MyHypothesis> top;
@@ -195,7 +193,7 @@ int main(int argc, char** argv){
 	MyHypothesis::data_t mydata = { std::multiset<int>{2,4,32} };	
 
 	// and sample with just one chain
-	auto h0 = MyHypothesis::make(&grammar);
+	auto h0 = MyHypothesis().restart();
 	MCMCChain samp(h0, &mydata);
 	for(auto& h : samp.run(Control())) {
 		top << h;

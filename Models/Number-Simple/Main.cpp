@@ -93,7 +93,7 @@ public:
 		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,word>, 1./2);
 		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
 	}
-};
+} grammar;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
@@ -101,9 +101,9 @@ public:
 
 #include "LOTHypothesis.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,set,word,MyGrammar> {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,set,word,MyGrammar,&grammar> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,set,word,MyGrammar>;
+	using Super = LOTHypothesis<MyHypothesis,set,word,MyGrammar,&grammar>;
 	using Super::Super;
 	
 	double compute_prior() override {
@@ -151,13 +151,11 @@ int main(int argc, char** argv) {
 	// Run the MCMC
 	//------------------	
 	
-	MyGrammar grammar;
-	
 	MyHypothesis::data_t mydata; // just dummy
 
 	// Run parallel tempering
 	TopN<MyHypothesis> top;
-	auto h0 = MyHypothesis::make(&grammar);
+	auto h0 = MyHypothesis().restart();
 	ParallelTempering samp(h0, &mydata, 10, 100.0);
 	for(auto& h : samp.run(Control(), 200, 5000)){
 		top << h;

@@ -48,7 +48,7 @@ public:
 
 		add("x",             Builtins::X<MyGrammar>);
 	}
-};
+} grammar;
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define a class for handling my specific hypotheses and data. Everything is defaultly 
 /// a PCFG prior and regeneration proposals, but I have to define a likelihood
@@ -56,9 +56,9 @@ public:
 
 #include "LOTHypothesis.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar> {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar,&grammar> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar>;
+	using Super = LOTHypothesis<MyHypothesis,MyObject,bool,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors
 	
 	// Now, if we defaultly assume that our data is a std::vector of t_data, then we 
@@ -99,11 +99,9 @@ int main(int argc, char** argv){
 	// Run
 	//------------------
 	
-	MyGrammar grammar;
-
 	TopN<MyHypothesis> top;
 
-	auto h0 = MyHypothesis::make(&grammar);
+	auto h0 = MyHypothesis().restart();
 
 //	MCMCChain samp(h0, &mydata, top);
 //  ChainPool samp(h0, &mydata, top, FleetArgs::nchains);

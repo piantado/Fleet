@@ -70,8 +70,6 @@ public:
 		 * @return 
 		 */
 	
-		assert(grammar != nullptr);
-
 		// simplest way of doing proposals
 		auto x = Proposals::regenerate(grammar, value);	
 		
@@ -85,8 +83,6 @@ public:
 		 * @brief This is used to restart chains, sampling from prior
 		 * @return 
 		 */
-		
-		assert(grammar != nullptr);
 		
 		// This is used in MCMC to restart chains 
 		// this ordinarily would be a resample from the grammar, but sometimes we have can_resample=false
@@ -107,8 +103,6 @@ public:
 	void set_value(Node&& v) { value = v; }
 	
 	virtual double compute_prior() override {
-		assert(grammar != nullptr && "Grammar was not initialized before trying to call compute_prior");
-		
 		/* This ends up being a really important check -- otherwise we spend tons of time on really long
 		 * this_totheses */
 		if(this->value.count() > MAX_NODES) {

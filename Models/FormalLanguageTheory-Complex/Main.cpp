@@ -171,24 +171,6 @@ public:
 
 		add("flip(%s)",      Builtins::FlipP<MyGrammar>, 10.0);
 
-		for(size_t a=0;a<nfactors;a++) {	
-			// here we pass in a as a index into these recursive arguments since it
-			// gets passed to the program loader
-			
-			auto s = std::to_string(a);
-			double p = 1.0/(4*nfactors); // NOTE: Slightly different prior
-
-			add(S("F")+s+"(%s)" ,  Builtins::Recurse<MyGrammar>, p, a);
-			add(S("Fm")+s+"(%s)",  Builtins::MemRecurse<MyGrammar>, p, a);
-
-			add(S("Fs")+s+"(%s)",  Builtins::SafeRecurse<MyGrammar>, p, a);
-			add(S("Fms")+s+"(%s)", Builtins::SafeMemRecurse<MyGrammar>, p, a);
-		}
-			
-		for(const char c : alphabet) {
-			add_terminal( Q(S(1,c)), S(1,c), 5.0/alphabet.length());
-		}
-		
 		const int pdenom=24;
 		for(int a=1;a<=pdenom/2;a++) { 
 			std::string s = str(a/std::gcd(a,pdenom)) + "/" + str(pdenom/std::gcd(a,pdenom)); 
@@ -327,7 +309,29 @@ int main(int argc, char** argv){
 	fleet.initialize(argc, argv); 
 	
 	COUT "# Using alphabet=" << alphabet ENDL;
+
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Set up the grammar using command line arguments
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
+	for(size_t a=0;a<nfactors;a++) {	
+		// here we pass in a as a index into these recursive arguments since it
+		// gets passed to the program loader
+		
+		auto s = std::to_string(a);
+		double p = 1.0/(4*nfactors); // NOTE: Slightly different prior
+
+		grammar.add(S("F")+s+"(%s)" ,  Builtins::Recurse<MyGrammar>, p, a);
+		grammar.add(S("Fm")+s+"(%s)",  Builtins::MemRecurse<MyGrammar>, p, a);
+
+		grammar.add(S("Fs")+s+"(%s)",  Builtins::SafeRecurse<MyGrammar>, p, a);
+		grammar.add(S("Fms")+s+"(%s)", Builtins::SafeMemRecurse<MyGrammar>, p, a);
+	}
+		
+	for(const char c : alphabet) {
+		grammar.add_terminal( Q(S(1,c)), S(1,c), 5.0/alphabet.length());
+	}
+
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Load the data
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

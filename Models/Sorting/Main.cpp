@@ -112,14 +112,9 @@ public:
 		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,char>, 1./3);
 		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,int>, 1./3);
 		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
-			
-		// interestingly if we remove the alphabet, that's even better since we can't
-		// just memorize the data. 
-		for(const char c : alphabet) {
-			add_terminal( Q(S(1,c)), c, 5.0/alphabet.length());
-		}
 	}
-};
+} grammar;
+
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -133,9 +128,9 @@ enum class ProposalType { RationalRules, InsertDelete, Prior};
 // default proposal type
 static ProposalType whichProposal = ProposalType::RationalRules;
 
-class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S,MyGrammar> {
+class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar> {
 public:
-	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar>;
+	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors
 	
 	double compute_single_likelihood(const datum_t& x) override {	
@@ -315,6 +310,16 @@ int main(int argc, char** argv){
 	fleet.initialize(argc, argv);
 	
 	//------------------
+	// add alphabet to grammar
+	//------------------
+	
+	// interestingly if we remove the alphabet, that's even better since we can't
+	// just memorize the data. 
+	for(const char c : alphabet) {
+		grammar.add_terminal( Q(S(1,c)), c, 5.0/alphabet.length());
+	}
+	
+	//------------------
 	// set up the data
 	//------------------
 
@@ -335,7 +340,6 @@ int main(int argc, char** argv){
 	// Run 
 	//------------------
 	
-	MyGrammar grammar;
 	grammar.GRAMMAR_MAX_DEPTH = MAX_GRAMMAR_DEPTH;
 	
 	// top stores the top hypotheses we have found
@@ -343,7 +347,7 @@ int main(int argc, char** argv){
 	//top.print_best = true;
 	
 	if(method == "parallel-tempering") {
-		auto h0 = MyHypothesis::make(&grammar);
+		auto h0 = MyHypothesis().restart();
 		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
 		for(auto& h : samp.run(Control(), 250, 10000)) {
 			top << h;
@@ -351,7 +355,7 @@ int main(int argc, char** argv){
 	}
 	else if(method == "parallel-tempering-ID") {
 		whichProposal = ProposalType::InsertDelete;
-		auto h0 = MyHypothesis::make(&grammar);
+		auto h0 = MyHypothesis().restart();
 		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
 		for(auto& h : samp.run(Control(), 250, 10000)){
 			top << h;
@@ -359,7 +363,7 @@ int main(int argc, char** argv){
 	}
 	else if(method == "parallel-tempering-prior-propose") {
 		whichProposal = ProposalType::Prior;
-		auto h0 = MyHypothesis::make(&grammar);
+		auto h0 = MyHypothesis().restart();
 		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
 		for(auto& h : samp.run(Control(), 250, 10000)) {
 			top << h;
@@ -390,14 +394,14 @@ int main(int argc, char** argv){
 		}
 	}
 	else if(method == "beam") {
-		MyHypothesis h0(&grammar); // don't use make -- must start with empty value
+		MyHypothesis h0; // don't use make -- must start with empty value
 		BeamSearch bs(h0, &mydata, 1000.0);
 		for(auto& h : bs.run(Control())) {
 			top << h;
 		}
 	}
 	else if(method == "chain-pool") {
-		auto h0 = MyHypothesis::make(&grammar);
+		auto h0 = MyHypothesis().restart();
 		ChainPool c(h0, &mydata, FleetArgs::nchains);
 		for(auto& h : c.run(Control()) | print(FleetArgs::print) ) {
 			top << h;
@@ -405,7 +409,7 @@ int main(int argc, char** argv){
 	}
 	else if(method == "prior-sample-mcts") {
 		// A PartialMCTSNode is one where you stop one step after reaching an unexpanded kid in the tree
-		MyHypothesis h0(&grammar);
+		MyHypothesis h0;
 		PriorSampleMCTS m(h0, FleetArgs::explore, &mydata);
 		for(auto& h : m.run(Control(), h0)){
 			top << h;
@@ -416,7 +420,7 @@ int main(int argc, char** argv){
 	}
 	else if(method == "mcmc-within-mcts") {
 		// A PartialMCTSNode is one where you stop one step after reaching an unexpanded kid in the tree
-		MyHypothesis h0(&grammar);
+		MyHypothesis h0;
 		MCMCwithinMCTS m(h0, FleetArgs::explore, &mydata);
 		for(auto& h : m.run(Control(), h0)){
 			top << h;
@@ -425,7 +429,7 @@ int main(int argc, char** argv){
 	}
 	else if(method == "full-mcts") {
 		// A FullMCTSNode run is one where each time you descend the tree, you go until you make it to a terminal
-		MyHypothesis h0(&grammar);
+		MyHypothesis h0;
 		MyFullMCTS m(h0, FleetArgs::explore, &mydata);
 		for(auto& h : m.run(Control(), h0)){
 			top << h;
@@ -436,7 +440,7 @@ int main(int argc, char** argv){
 	}
 	else if(method == "minimal-mcts") {
 		// A FullMCTSNode run is one where each time you descend the tree, you go until you make it to a terminal
-		MyHypothesis h0(&grammar);
+		MyHypothesis h0;
 		MyMinimalMCTS m(h0, FleetArgs::explore, &mydata);
 		for(auto& h : m.run(Control(), h0)){
 			top << h;
@@ -446,7 +450,7 @@ int main(int argc, char** argv){
 		//COUT "# MCTS size: " TAB m.count() ENDL;
 	}
 	else if(method == "partition-mcmc") {
-		MyHypothesis h0(&grammar); // start empty
+		MyHypothesis h0; // start empty
 		PartitionMCMC c(h0, FleetArgs::partition_depth, &mydata);
 		for(auto& h : c.run(Control())) {
 			top << h;

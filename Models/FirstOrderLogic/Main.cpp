@@ -163,7 +163,7 @@ public:
 		this->add("x",          Builtins::X<MyGrammar>);
 		
 	}
-};
+} grammar;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define a class for handling my specific hypotheses and data. Everything is defaultly 
@@ -172,9 +172,9 @@ public:
 
 #include "LOTHypothesis.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar> {
+class MyHypothesis final : public LOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar,&grammar> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar>;
+	using Super = LOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors
 	
 	// Now, if we defaultly assume that our data is a std::vector of t_data, then we 
@@ -205,11 +205,7 @@ int main(int argc, char** argv){
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	Fleet fleet("First order logic example");
 	fleet.initialize(argc, argv);
-		
-	// Define the grammar (default initialize using our primitives will add all those rules)
-	// in doing this, grammar deduces the types from the input and output types of each primitive
-	MyGrammar grammar;
-	
+
 	//------------------
 	// set up the data
 	//------------------
@@ -231,7 +227,7 @@ int main(int argc, char** argv){
 	// top stores the top hypotheses we have found
 	TopN<MyHypothesis> top;
 	
-	auto h0 = MyHypothesis::make(&grammar);
+	auto h0 = MyHypothesis::make();
 	ParallelTempering samp(h0, &mydata, 16, 10.0); 
 	for(auto& h : samp.run(Control(), 100, 1000)) { 
 		top << h;
