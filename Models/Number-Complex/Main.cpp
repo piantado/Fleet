@@ -384,7 +384,7 @@ int main(int argc, char** argv) {
 	
 	
 	// Run parallel tempering
-//	auto h0 = MyHypothesis().restart();
+//	auto h0 = MMyHypothesis::sample();
 //	ParallelTempering samp(h0, alldata, alltops);
 //	tic();
 //	samp.run(Control(mcmc_steps, runtime, nthreads), 200, 5000); 
@@ -392,7 +392,7 @@ int main(int argc, char** argv) {
 
 	// just simple mcmc on one
 	for(size_t di=0;di<alldata.size();di++){
-		auto h0 = MyHypothesis().restart();
+		auto h0 = MyHypothesis::sample();
 		MCMCChain samp(h0, &alldata[di]);
 		for(auto& h : samp.run(Control())) {
 			alltops[di] << h;

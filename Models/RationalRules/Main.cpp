@@ -101,7 +101,7 @@ int main(int argc, char** argv){
 	
 	TopN<MyHypothesis> top;
 
-	auto h0 = MyHypothesis().restart();
+	auto h0 = MyHypothesis::sample();
 
 //	MCMCChain samp(h0, &mydata, top);
 //  ChainPool samp(h0, &mydata, top, FleetArgs::nchains);

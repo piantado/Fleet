@@ -36,7 +36,7 @@ public:
 				h.complete();
 			}
 			else {
-				h = MyHypothesis::make();
+				h = MyHypothesis::sample();
 			}
 			h.compute_posterior(*data);
 			co_yield h;

@@ -193,7 +193,7 @@ int main(int argc, char** argv){
 	MyHypothesis::data_t mydata = { std::multiset<int>{2,4,32} };	
 
 	// and sample with just one chain
-	auto h0 = MyHypothesis().restart();
+	auto h0 = MyHypothesis::sample();
 	MCMCChain samp(h0, &mydata);
 	for(auto& h : samp.run(Control())) {
 		top << h;

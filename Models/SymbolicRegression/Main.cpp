@@ -413,7 +413,7 @@ int main(int argc, char** argv){
  	// Set up the grammar and hypothesis
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		
-	MyHypothesis h0 = MyHypothesis().restart();
+	MyHypothesis h0 = MyHypothesis::sample();
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Run MCTS
