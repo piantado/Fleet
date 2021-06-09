@@ -79,7 +79,7 @@ public:
 		return out;
 	}
 	
-	static this_t deserialize(std::string s, typename INNER::Grammar_t* g) {
+	static this_t deserialize(std::string s) {
 		/**
 		 * @brief Convert a string to a lexicon of this type
 		 * @param g
@@ -89,8 +89,7 @@ public:
 
 		this_t h;
 		for(auto f : split(s, Lexicon::FactorDelimiter)) {
-			INNER ih(g, g.from_parseable(f));
-			h.factors.push_back(ih);
+			h.factors.push_back(INNER::deserialize(f));
 		}
 		return h;
 	}

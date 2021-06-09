@@ -57,7 +57,7 @@ public:
 		}
 		
 	}
-};
+} grammar; 
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
@@ -66,9 +66,9 @@ public:
 #include "LOTHypothesis.h"
 
 // Declare a hypothesis class
-class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S,MyGrammar> {
+class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar> {
 public:
-	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar>;
+	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors
 	
 	double compute_single_likelihood(const datum_t& x) override {	
@@ -151,12 +151,6 @@ int main(int argc, char** argv){
 	fleet.initialize(argc, argv);
 	
 	//------------------
-	// Set up the grammar
-	//------------------	
-	
-	MyGrammar grammar;
-	
-	//------------------
 	// top stores the top hypotheses we have found
 	//------------------	
 	
@@ -208,7 +202,7 @@ int main(int argc, char** argv){
 //	return 0;
 	
 	top.print_best = true;
-	auto h0 = MyHypothesis::make(&grammar);
+	auto h0 = MyHypothesis::make();
 	
 //	MCMCChain samp(h0, &mydata);
     ChainPool samp(h0, &mydata, FleetArgs::nchains);

@@ -4,10 +4,7 @@ template<typename T>
 class Serializable { 
 public:
 	virtual std::string serialize() const = 0;
-	
-	// must define a deserialization with some number of arguments
-	template<typename... Args>
-	T deserialize(std::string&, Args...);
+	static T deserialize(std::string&);
 };
 
 

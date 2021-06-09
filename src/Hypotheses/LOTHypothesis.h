@@ -30,6 +30,7 @@ template<typename this_t,
 		 typename _input_t, 
 		 typename _output_t, 
 		 typename _Grammar_t,
+		 _Grammar_t* grammar,
 		 typename _datum_t=defaultdatum_t<_input_t, _output_t>, 
 		 typename _data_t=std::vector<_datum_t>
 		 >
@@ -49,19 +50,17 @@ public:
 	
 	static const size_t MAX_NODES = 64; // max number of nodes we allow; otherwise -inf prior
 	
-	Grammar_t* grammar;
-
 protected:
 
 	Node value;
 	
 public:
-	LOTHypothesis(Grammar_t* g=nullptr)     : MCMCable<this_t,datum_t,data_t>(), grammar(g), value(NullRule,0.0,true) {}
-	LOTHypothesis(Grammar_t* g, Node&& x)   : MCMCable<this_t,datum_t,data_t>(), grammar(g), value(x) {}
-	LOTHypothesis(Grammar_t* g, Node& x)    : MCMCable<this_t,datum_t,data_t>(), grammar(g), value(x) {}
+	LOTHypothesis()     : MCMCable<this_t,datum_t,data_t>(), value(NullRule,0.0,true) {}
+	LOTHypothesis(Node&& x)   : MCMCable<this_t,datum_t,data_t>(), value(x) {}
+	LOTHypothesis(Node& x)    : MCMCable<this_t,datum_t,data_t>(), value(x) {}
 
 	// parse this from a string
-	LOTHypothesis(Grammar_t* g, std::string s) : MCMCable<this_t,datum_t,data_t>(), grammar(g)  {
+	LOTHypothesis(std::string s) : MCMCable<this_t,datum_t,data_t>()  {
 		value = grammar->from_parseable(s);
 	}
 	
@@ -77,7 +76,7 @@ public:
 		auto x = Proposals::regenerate(grammar, value);	
 		
 		// return a pair of Hypothesis and forward-backward probabilities
-		return std::make_pair(this_t(this->grammar, std::move(x.first)), x.second); // return this_t and fb
+		return std::make_pair(this_t(std::move(x.first)), x.second); // return this_t and fb
 	}	
 
 	
@@ -94,10 +93,10 @@ public:
 		// and in that case we want to leave the non-propose nodes alone. 
 
 		if(not value.is_null()) { // if we are null
-			return this_t(this->grammar, this->grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
+			return this_t(grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
 		}
 		else {
-			return this_t(this->grammar, this->grammar->generate());
+			return this_t(grammar->generate());
 		}
 	}
 	
@@ -144,8 +143,8 @@ public:
 	virtual std::string serialize() const override { 
 		return value.parseable(); 
 	}
-	static this_t deserialize(std::string& s, Grammar_t* g) { 
-		return this_t(g, g->from_parseable(s));
+	static this_t deserialize(std::string& s) { 
+		return this_t(grammar->from_parseable(s));
 	}
 	
 	static this_t from_string(Grammar_t* g, std::string s) {
@@ -189,7 +188,7 @@ public:
 	}
 
 	virtual void expand_to_neighbor(int k) override {
-		assert(grammar != nullptr);
+		//assert(grammar != nullptr);
 		
 		if(value.is_null()){
 			auto nt = grammar->template nt<output_t>();

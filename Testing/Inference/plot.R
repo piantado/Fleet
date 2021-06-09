@@ -1,6 +1,6 @@
 library(ggplot2)
 
-d <- read.table("o2.txt", header=F)
+d <- read.table("o.txt", header=F)
 names(d) <- c("repetition", "runtime", "method", "restart", "data", "chains", "inner.times", "explore", "partition.depth", "posterior", "prior", "likelihood", "hypothesis")
 
 d <- subset(d, restart==0)

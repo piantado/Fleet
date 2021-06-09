@@ -200,7 +200,7 @@ public:
 			}
 		}
 	}
-};
+} grammar;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
@@ -208,8 +208,8 @@ public:
 
 #include "LOTHypothesis.h"
 
-class InnerHypothesis : public LOTHypothesis<InnerHypothesis,S,S,MyGrammar> {
-	using Super = LOTHypothesis<InnerHypothesis,S,S,MyGrammar>;
+class InnerHypothesis : public LOTHypothesis<InnerHypothesis,S,S,MyGrammar,&grammar> {
+	using Super = LOTHypothesis<InnerHypothesis,S,S,MyGrammar,&grammar>;
 	using Super::Super;
 };
 
@@ -359,13 +359,11 @@ int main(int argc, char** argv){
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Actually run
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
-	MyGrammar grammar;
 		
 	// Build up an initial hypothesis with the right number of factors
 	MyHypothesis h0; 
 	for(size_t fi=0;fi<nfactors;fi++) {// start with the right number of factors
-		InnerHypothesis f(&grammar);
+		InnerHypothesis f;
 		h0.factors.push_back(f.restart());
 	}
 	
