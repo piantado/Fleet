@@ -206,7 +206,7 @@ int main(int argc, char** argv){
 //	return 0;
 	
 	top.print_best = true;
-	auto h0 = MyHypothesis::make();
+	auto h0 = MyHypothesis::sample();
 	
 //	MCMCChain samp(h0, &mydata);
     ChainPool samp(h0, &mydata, FleetArgs::nchains);

@@ -77,6 +77,9 @@ public:
 		return std::make_pair(this_t(std::move(x.first)), x.second); // return this_t and fb
 	}	
 
+	[[nodiscard]] static this_t sample() {
+		return this_t(grammar->generate());
+	}
 	
 	[[nodiscard]] virtual this_t restart() const override {
 		/**
