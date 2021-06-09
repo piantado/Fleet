@@ -102,6 +102,8 @@ public:
 	void set_value(Node&  v) { value = v; }
 	void set_value(Node&& v) { value = v; }
 	
+	Grammar_t* get_grammar() const { return grammar; }
+	
 	virtual double compute_prior() override {
 		/* This ends up being a really important check -- otherwise we spend tons of time on really long
 		 * this_totheses */

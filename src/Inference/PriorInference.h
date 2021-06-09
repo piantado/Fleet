@@ -36,7 +36,7 @@ public:
 				h.complete();
 			}
 			else {
-				h = MyHypothesis::make(grammar);
+				h = MyHypothesis::make();
 			}
 			h.compute_posterior(*data);
 			co_yield h;

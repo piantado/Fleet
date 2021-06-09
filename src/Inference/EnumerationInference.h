@@ -37,7 +37,7 @@ public:
 		while(ctl.running()) {
 			enumerationidx_t nxt = (enumerationidx_t) this->next_index();
 			auto n = ge.toNode(nxt, grammar->start());
-			auto h = MyHypothesis(grammar, n); // don't call make -- that restarts
+			auto h = MyHypothesis(n); // don't call make -- that restarts
 			h.compute_posterior(*data);
 
 			co_yield h;

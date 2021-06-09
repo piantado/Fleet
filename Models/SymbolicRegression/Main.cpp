@@ -89,7 +89,7 @@ public:
 	}
 					  
 					  
-};
+} grammar;
 
 // check if a rule is constant
 bool isConstant(const Rule* r) { return r->format == "C"; }
@@ -102,12 +102,12 @@ bool isConstant(const Rule* r) { return r->format == "C"; }
 #include "LOTHypothesis.h"
 
 class MyHypothesis final : public ConstantContainer,
-						   public LOTHypothesis<MyHypothesis,D,D,MyGrammar> {
+						   public LOTHypothesis<MyHypothesis,D,D,MyGrammar,&grammar> {
 	/* This class handles enumeration of the structure and critically does MCMC over the constants */
 	
 public:
 
-	using Super = LOTHypothesis<MyHypothesis,D,D,MyGrammar>;
+	using Super = LOTHypothesis<MyHypothesis,D,D,MyGrammar,&grammar>;
 	using Super::Super;
 
 	virtual D callOne(const D x, const D err) {
@@ -413,9 +413,7 @@ int main(int argc, char** argv){
  	// Set up the grammar and hypothesis
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		
-	MyGrammar grammar;
-	
-	MyHypothesis h0(&grammar);
+	MyHypothesis h0 = MyHypothesis().restart();
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Run MCTS
@@ -485,7 +483,7 @@ int main(int argc, char** argv){
 				 h.callOne(1.0, NaN) TAB 
 				 get_polynomial_degree(h.get_value(), h.constants) TAB 
 				 Q(h.string()) TAB 
-				 Q(h.parseable()) 
+				 Q(h.serialize()) 
 				 ENDL;
 		}
 	}

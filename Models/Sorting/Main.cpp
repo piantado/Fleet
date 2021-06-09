@@ -171,17 +171,17 @@ public:
 			case ProposalType::InsertDelete: {
 				std::pair<Node,double> x;
 				if(flip()) {
-					x = Proposals::regenerate(grammar, value);	
+					x = Proposals::regenerate(this->get_grammar(), value);	
 				}
 				else {
-					if(flip()) x = Proposals::insert_tree(grammar, value);	
-					else       x = Proposals::delete_tree(grammar, value);	
+					if(flip()) x = Proposals::insert_tree(this->get_grammar(), value);	
+					else       x = Proposals::delete_tree(this->get_grammar(), value);	
 				}
-				return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second);
+				return std::make_pair(MyHypothesis(std::move(x.first)), x.second);
 			} 
 			case ProposalType::Prior: {
-				auto g = grammar->generate();	
-				return std::make_pair(MyHypothesis(grammar, g), grammar->log_probability(g) - grammar->log_probability(value));
+				auto g = this->get_grammar()->generate();	
+				return std::make_pair(MyHypothesis(g), this->get_grammar()->log_probability(g) - this->get_grammar()->log_probability(value));
 			}
 			default:
 				assert(false);
