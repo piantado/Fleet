@@ -1,7 +1,10 @@
 #pragma once 
 
-#include<string>
-#include<mpi>
+// Install MPI via
+// sudo apt install openmpi-bin openmpi-common openmpi-doc libopenmpi-dev
+
+#include <string>
+#include <mpi.h>
 
 const size_t MPI_HEAD_RANK = 0; // rank of the head node
 
@@ -17,7 +20,7 @@ int mpi_size() {
 	return s;
 }
 
-bool am_mpi_head() {
+bool is_mpi_head() {
 	return mpi_rank() == MPI_HEAD_RANK;
 }
 
@@ -27,7 +30,7 @@ void mpi_return(T& x) {
 	
 	std::string v = x.serialize(); // convert to string 
 	
-	MPI_Send(&v.data(), v.size(), MPI_CHAR, MPI_HEAD_RANK, 0, MPI_COMM_WORLD);
+	MPI_Send(v.data(), v.size(), MPI_CHAR, MPI_HEAD_RANK, 0, MPI_COMM_WORLD);
 }
 
 template<typename T>
@@ -59,7 +62,6 @@ std::vector<T> mpi_gather() {
 			// Now receive the message with the allocated buffer
 			MPI_Recv(buf, sz, MPI_INT, r, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-			/// TODO FIX 
 			out.push_back(T::deserialize(std::string(buf)));
 		}
 	}

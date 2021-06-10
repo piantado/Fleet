@@ -48,6 +48,9 @@ public:
 	using output_t  = _output_t;
 	using VirtualMachineState_t = typename Grammar_t::VirtualMachineState_t;
 	
+	// this splits the prior,likelihood,posterior,and value
+	static const char SerializationDelimiter = '\t';
+	
 	static const size_t MAX_NODES = 64; // max number of nodes we allow; otherwise -inf prior
 	
 protected:
@@ -139,13 +142,7 @@ public:
 	virtual std::string string(std::string prefix, bool usedot) const {
 		return prefix + std::string("\u03BBx.") + value.string(usedot);
 	}
-	virtual std::string serialize() const override { 
-		return value.parseable(); 
-	}
-	static this_t deserialize(std::string& s) { 
-		return this_t(grammar->from_parseable(s));
-	}
-	
+
 	static this_t from_string(Grammar_t* g, std::string s) {
 		return this_t(g, g->from_parseable(s));
 	}
@@ -231,6 +228,28 @@ public:
 		}
 		return cnt;
 	} 
+	
+	
+	virtual std::string serialize() const override { 
+		return str(this->prior)      + SerializationDelimiter + 
+		       str(this->likelihood) + SerializationDelimiter +
+			   str(this->posterior)  + SerializationDelimiter +
+			   value.parseable(); 
+	}
+	
+	static this_t deserialize(const std::string& s) { 
+		auto [pr, li, po, v] = split<4>(s, SerializationDelimiter);
+		
+		auto h = this_t(grammar->from_parseable(v));
+		
+		// restore the bayes stats
+		h.prior = string_to<double>(pr); 
+		h.likelihood = string_to<double>(li); 
+		h.posterior = string_to<double>(po);
+		
+		return h; 
+	}
+	
 	 
 };
 

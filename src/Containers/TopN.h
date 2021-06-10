@@ -18,7 +18,7 @@
  * 			The default constructor here reads from FleetArgs::ntop as the default value
  * */
 template<class T>
-class TopN { //: public Serializable<T> {	
+class TopN : public Serializable<TopN<T>> {	
 	using Hypothesis_t = T;
 	
 	OrderedLock lock;
@@ -303,6 +303,25 @@ public:
 		return o;
 	}
 	
+	virtual std::string serialize() const override { 
+		std::string out = str(N);
+		for(auto& h : s) {
+			out += SerializationDelimiter + h.serialize();
+		}
+	}
+	
+	static TopN<MyHypothesis> deserialize(const std::string& s) { 
+		
+		TopN<MyHypothesis> out;
+		auto q = split(s, SerializationDelimiter);
+		out.set_size(string_to<size_t>(q.front())); q.pop_front();
+		
+		for(auto& x : q) {
+			out << MyHypothesis::deserialize(x);
+		}
+		
+		return out; 
+	}
 	
 	
 };

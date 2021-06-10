@@ -70,6 +70,11 @@ void checkLOTHypothesis(const Grammar_t* g, const Hypothesis_t h){
 		assert(newH.posterior == -infinity);
 	}
 	assert(newH.hash() == h.hash());	
+	
+	// check serialization
+	std::string s = h.serialize();
+	assert(Hypothesis_t::deserialize(s) == h);
+	
 }
 
 /**

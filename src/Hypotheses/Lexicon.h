@@ -64,37 +64,6 @@ public:
 		return s;		
 	}
 	
-	virtual std::string serialize() const override {
-		/**
-		 * @brief Convert to a parseable format (using a delimiter for each factor)
-		 * @return 
-		 */
-		
-		std::string out = "";
-		for(size_t i=0;i<factors.size();i++) {
-			out += factors[i].serialize();
-			if(i < factors.size()-1) 
-				out += Lexicon::FactorDelimiter;
-		}
-		return out;
-	}
-	
-	static this_t deserialize(std::string s) {
-		/**
-		 * @brief Convert a string to a lexicon of this type
-		 * @param g
-		 * @param s
-		 * @return 
-		 */
-
-		this_t h;
-		for(auto f : split(s, Lexicon::FactorDelimiter)) {
-			h.factors.push_back(INNER::deserialize(f));
-		}
-		return h;
-	}
-
-	
 	virtual size_t hash() const override {
 		/**
 		 * @brief Hash a Lexicon by hashing each part
@@ -359,5 +328,36 @@ public:
 		throw NotImplementedError();
 	}
 	 
+	 
+	 
+	virtual std::string serialize() const override {
+		/**
+		 * @brief Convert to a parseable format (using a delimiter for each factor)
+		 * @return 
+		 */
+		
+		std::string out = "";
+		for(size_t i=0;i<factors.size();i++) {
+			out += factors[i].serialize();
+			if(i < factors.size()-1) 
+				out += Lexicon::FactorDelimiter;
+		}
+		return out;
+	}
+	
+	static this_t deserialize(const std::string s) {
+		/**
+		 * @brief Convert a string to a lexicon of this type
+		 * @param g
+		 * @param s
+		 * @return 
+		 */
+
+		this_t h;
+		for(auto f : split(s, Lexicon::FactorDelimiter)) {
+			h.factors.push_back(INNER::deserialize(f));
+		}
+		return h;
+	}
 };
 

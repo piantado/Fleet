@@ -214,6 +214,7 @@ int main(int argc, char** argv){
 //	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
 //	for(auto& h : samp.run(Control(), 100, 30000) | top | thin(FleetArgs::thin)) {
 		//h.print();
+		//COUT h.serialize() ENDL;
 	}
 
 	top.print();
