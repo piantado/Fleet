@@ -29,7 +29,7 @@ void mpi_return(T& x) {
 	assert(mpi_rank() != MPI_HEAD_RANK && "*** Head rank cannot call mpi_return"); // the head can't return 
 	
 	std::string v = x.serialize(); // convert to string 
-	
+
 	MPI_Send(v.data(), v.size(), MPI_CHAR, MPI_HEAD_RANK, 0, MPI_COMM_WORLD);
 }
 
@@ -47,22 +47,25 @@ std::vector<T> mpi_gather() {
 	
 	for(int r=0;r<s;r++) {
 		if(r != MPI_HEAD_RANK) {
-			
 			// get the status with the message size
 			MPI_Status status;
 			MPI_Probe(r, 0, MPI_COMM_WORLD, &status);
 
 			// When probe returns, the status object has the size and other
 			// attributes of the incoming message. Get the message size
-			int sz; MPI_Get_count(&status, MPI_INT, &sz);
+			int sz; MPI_Get_count(&status, MPI_CHAR, &sz);
+			assert(sz != MPI_UNDEFINED);
+			assert(sz >= 0);
 
 			// Allocate a buffer to hold the incoming numbers
-			char buf[sz];
+			char* buf = new char[sz];
 
 			// Now receive the message with the allocated buffer
-			MPI_Recv(buf, sz, MPI_INT, r, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-			out.push_back(T::deserialize(std::string(buf)));
+			MPI_Recv(buf, sz, MPI_CHAR, r, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+			out.push_back(T::deserialize(std::string(buf, sz))); // note must give size -- not null terminated
+			delete[] buf; 
+			
+			CERR r TAB sz TAB out.rbegin()->size() ENDL;
 		}
 	}
 	

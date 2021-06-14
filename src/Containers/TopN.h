@@ -308,6 +308,7 @@ public:
 		for(auto& h : s) {
 			out += SerializationDelimiter + h.serialize();
 		}
+		return out;
 	}
 	
 	static TopN<MyHypothesis> deserialize(const std::string& s) { 
