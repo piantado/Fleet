@@ -56,9 +56,9 @@
  * 
  * \subsection subsec_style Style
  * 
- * Fleet is currently written using a signle-file, header-only style. This a nonstandard C++ style, but it allows for rapid
+ * Fleet is currently written using a signle-file, header-only style. This allows for rapid
  * refactoring and prototyping since declarations and implementations are not in separate files. This style may change in the future
- * because it also leads to higher compilation times. 
+ * because it also leads to slower compilation times. 
  * 
  * \subection subsec_inference Inference
  * 
@@ -140,7 +140,7 @@ public:
 		}
 		
 	}
-};
+} grammar;
  * \endcode
  * 
  * Then, in the constructor MyGrammar(), we call the member function Grammar::add which takes two argumetns: a string 
@@ -201,7 +201,7 @@ public:
 #include "LOTHypothesis.h"
 
 // Declare a hypothesis class
-class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S,MyGrammar> {
+class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar> {
 public:
 	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar>;
 	using Super::Super; // inherit the constructors
@@ -227,8 +227,11 @@ public:
  *  
  * Here, MyHypothesis uses the 
  * <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">curiously recurring template pattern</a> to pass itself, so 
- * that it knows how to make copies of itself. The other template arguments ar ethe input and output types of its function (string to string) 
- * and the Grammar type it uses (MyGrammar). Then, we inherit LOTHypothesis' constructors (via Super::Super). Primarily, what we have to define
+ * that it knows how to make copies of itself. The other template arguments are the input and output types of its function (string to string) 
+ * and the Grammar type it uses (MyGrammar). The address of the grammar itself &grammar is also part of the type.
+ * Then, we inherit LOTHypothesis' constructors (via Super::Super).
+ *
+ *  Primarily, what we have to define
  * here is the compute_single_likelihood function, which defines the likelihood of a single observed data string. To compute this, we first
  * call the function (LOTHypothesis::call) on the observed input. This returns a DiscreteDistribution<std::string> of outputs. Note that the
  * outputs which return errors are mapped to the second argument to call, in this case the empty string. Then, we loop over outputs and add up
@@ -266,34 +269,20 @@ int main(int argc, char** argv){
 	fleet.add_option("-d,--data",     datastr, "Comma separated list of input data strings");	
 	fleet.initialize(argc, argv);
 	
-	// create a grammar
-	MyGrammar grammar;
-	
 	// top stores the top hypotheses we have found
 	TopN<MyHypothesis> top;
-	
-	// set these global variables to make VMS a little faster, less accurate
-	VirtualMachineControl::MAX_STEPS = 256;
-	VirtualMachineControl::MAX_OUTPUTS = 256;
 	
 	// mydata stores the data for the inference model
 	auto mydata = string_to<MyHypothesis::data_t>(datastr);
 		
-	/// check the alphabet
-	assert(not contains(alphabet, ":"));// can't have these or else our string_to doesn't work
-	assert(not contains(alphabet, ","));
-	for(auto& di : mydata) {
-		for(auto& c: di.output) {
-			assert(contains(alphabet, c));
-		}
-	}
-	
 	// Run
 	top.print_best = true; // print out each best hypothesis you find
-	auto h0 = MyHypothesis::make(&grammar);
+	auto h0 = MyHypothesis::sample();
 	MCMCChain c(h0, &mydata, top);
-	//c.temperature = 1.0; // if you want to change the temperature -- note that lower temperatures tend to be much slower!
-	c.run(Control());
+	for(auto& h : c.run(Control()) {
+	 COUT h.string() ENDL;
+	 top << h; // add h to top
+	}
 
     // print the hypotheses we found
 	top.print();
@@ -301,10 +290,10 @@ int main(int argc, char** argv){
   
  *  \endcode
  * 
- * And finally, we run the actual model. We make an initial hypothesis using MyHypothesis::make (which needs to know the grammar),
- * we make an MCMCChain, which takes an initial hypothesis, data, and a callback (which top functions as), and then we run it. The c.run
- * function takes a Control object, which basically specifies the number of steps to run or amount of time to run, the amount of thinning,
- * etc. When Control() is called with no arguments, it gets its arguments from the command line. This means that automatically, we can give a
+ * And finally, we run the actual model. We make an initial hypothesis using MyHypothesis::sample, which creates a random hypothesis from the prior,
+ * we make an MCMCChain, and we run it. This uses C++'s fancy coroutines to let us process the samples as a loop. The c.run
+ * function takes a Control object, which basically specifies the number of steps to run or amount of time to run etc. 
+ * When Control() is called with no arguments, it gets its arguments from the command line. This means that automatically, we can give a
  * commandline arugment like "--time=30s" and this fleet program will run for 30 seconds (times can be in days (d), hours (h), minutes (m), 
  * seconds (s) or miliseconds (q).
  * 
