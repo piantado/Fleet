@@ -65,7 +65,7 @@ void save(std::string filename, std::vector<HYP>& hypotheses) {
 	std::ofstream out(filename);
 	
 	for(auto& v: hypotheses) {
-		out << Q(v.string()) TAB v.parseable() ENDL;
+		out << Q(v.string()) TAB v.serialize() ENDL;
 	}
 	
 	out.close();	
@@ -87,7 +87,7 @@ std::vector<HYP> load(std::string filename, typename HYP::Grammar_t* g) {
 	std::string line;
 	while(std::getline(fs, line)) {
 		auto [col1, col2] = split<2>(line, '\t');
-		out.push_back(HYP::from_string(g,col2)); // we've stored hypotheses in position 1
+		out.push_back(HYP::deserialize(col2)); // we've stored hypotheses in position 1
 //		CERR line ENDL;
 	}
 	return out;

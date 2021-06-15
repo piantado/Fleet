@@ -2,6 +2,8 @@
 
 #include <random>
 #include <functional>
+#include <thread>
+
 #include "Errors.h"
 #include "Numerics.h"
 
@@ -15,9 +17,9 @@
 		  If we just make a thread_local variable, it is not seeded well. Note that if we specify random_seed it only
 		  applies to the first thread (and you get a warning for other threads)
  */
-thread_local class tlRng : public std::mt19937 {
+thread_local class thread_local_rng : public std::mt19937 {
 public:
-	tlRng() : std::mt19937() {
+	thread_local_rng() : std::mt19937() {
 		// both of these are in Fleet.h
 		extern unsigned long random_seed; 
 		extern std::thread::id main_thread_id;

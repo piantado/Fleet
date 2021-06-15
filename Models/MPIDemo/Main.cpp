@@ -49,39 +49,22 @@ int main(int argc, char** argv){
 	assert(provided == MPI_THREAD_FUNNELED);
 	
 	if(is_mpi_head()) {
-		TopN<MyHypothesis> top(99999); // take union of all
+		TopN<MyHypothesis> top(TopN<MyHypothesis>::MAX_N); // take union of all
 		// we will read back a bunch of tops
 		for(auto& t: mpi_gather<TopN<MyHypothesis>>()) {
 			top << t;
-			t.print();
 		}	
 		
 		top.print();
 	}	
 	else { // I am a worker
 		
-		//rng.seed(mpi_rank());
-//		COUT rng << "" ENDL;
-//		  std::array<int,624> seed_data;
-//		  std::random_device r;
-//		  std::generate_n(seed_data.data(), seed_data.size(), std::ref(r));
-//		  std::seed_seq seq(std::begin(seed_data), std::end(seed_data));
-//		  rng.seed(seq);
-		
 		TopN<MyHypothesis> top;
 		
-//		for(int i=0;i<10;i++){
-//			auto h0 = MyHypothesis::sample();
-//			CERR mpi_rank() TAB h0.string() ENDL;
-//		}
-		
 		auto h0 = MyHypothesis::sample();
-//		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
-//		for(auto& h : samp.run(Control(), 100, 30000) | top) { 
-//		MCMCChain samp(h0, &mydata);
-		ChainPool samp(h0, &mydata, FleetArgs::nchains);
-		for(auto& h : samp.run(Control()) | top) { 
-			COUT mpi_rank() TAB h.string() ENDL;
+		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+		for(auto& h : samp.run(Control(), 100, 30000) | top) { 
+			//COUT mpi_rank() TAB h.string() ENDL;
 		}
 //		//h0.compute_posterior(mydata);
 //		//top << h0;

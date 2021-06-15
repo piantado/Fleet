@@ -40,7 +40,8 @@ template<typename this_t,
          typename _HYP, 
 		 typename datum_t=HumanDatum<_HYP>, 
 		 typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
-class GrammarHypothesis : public MCMCable<this_t, datum_t, data_t>  {
+class GrammarHypothesis : public MCMCable<this_t, datum_t, data_t>,
+						  public Serializable<this_t> {
 public:
 	using HYP = _HYP;
 
@@ -105,9 +106,9 @@ public:
 		which_data = std::addressof(human_data);
 		
 		// read the hypothesis from the first grammar, and check its the same for everyone	
-		grammar = hypotheses.at(0).grammar;		
+		grammar = hypotheses.at(0).get_grammar();		
 		for(auto& h: hypotheses) {
-			assert(h.grammar == grammar && "*** It's bad news for GrammarHypothesis if your hypotheses don't all have the same grammar.");
+			assert(h.get_grammar() == grammar && "*** It's bad news for GrammarHypothesis if your hypotheses don't all have the same grammar.");
 		}
 		
 		logA.set_size(grammar->count_rules());
@@ -158,19 +159,19 @@ public:
 		   
 		assert(hypotheses.size() > 0);
 
-		size_t nRules = hypotheses[0].grammar->count_rules();
+		size_t nRules = hypotheses[0].get_grammar()->count_rules();
 
 		C.reset(new Matrix(hypotheses.size(), nRules)); 
 
 		#pragma omp parallel for
 		for(size_t i=0;i<hypotheses.size();i++) {
-			auto c = hypotheses[i].grammar->get_counts(hypotheses[i].get_value());
+			auto c = hypotheses[i].get_grammar()->get_counts(hypotheses[i].get_value());
 			Vector cv = Vector::Zero(c.size());
 			for(size_t k=0;k<c.size();k++){
 				cv(k) = c[k];
 			}
 			
-			assert(hypotheses[i].grammar == grammar); // just a check that the grammars are identical
+			assert(hypotheses[i].get_grammar() == grammar); // just a check that the grammars are identical
 			
 			#pragma omp critical
 			C->row(i) = cv;
@@ -596,6 +597,14 @@ public:
 		size_t output = logA.hash();
 		hash_combine(output, alpha.hash(), llt.hash(), pt.hash(), decay.hash());
 		return output;
+	}
+	
+	virtual std::string serialize() const override { 
+		throw NotImplementedError();
+	}
+	
+	static this_t deserialize(const std::string& s) { 
+		throw NotImplementedError();
 	}
 	
 };

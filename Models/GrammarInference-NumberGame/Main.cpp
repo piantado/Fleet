@@ -84,8 +84,6 @@ int main(int argc, char** argv){
 	fleet.add_option("--runtype",  runtype, "hypotheses = do we just do mcmc on hypotheses; grammar = mcmc on the grammar, loading the hypotheses; both = do both");
 	fleet.initialize(argc, argv);
 	
-	MyGrammar grammar;
-	
 	// two main things we are building -- a list of human data points
 	std::vector<MyHumanDatum> human_data;
 
@@ -154,7 +152,7 @@ int main(int argc, char** argv){
 	std::vector<MyHypothesis> hypotheses; 
 	if(runtype == "hypotheses" or runtype == "both") {
 		
-		auto h0 = MyHypothesis::make(&grammar); 
+		auto h0 = MyHypothesis::sample(); 
 		hypotheses = get_hypotheses_from_mcmc(h0, mcmc_data, Control(FleetArgs::inner_steps, FleetArgs::inner_runtime), FleetArgs::ntop);
 		CTRL_C = 0; // reset control-C so we can break again for the next mcmc
 		

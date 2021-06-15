@@ -26,6 +26,8 @@ class TopN : public Serializable<TopN<T>> {
 	const static char SerializationDelimiter = '\n';
 	
 public:
+	const static size_t MAX_N = SIZE_MAX; // largest N we can have -- useful if we need to store union of everything
+	
 	std::map<T,unsigned long> cnt; // also let's count how many times we've seen each for easy debugging
 	std::multiset<T> s; // important that it stores in sorted order by posterior! Multiset because we may have multiple samples that are "equal" (as in SymbolicRegression)
 	bool print_best; // should we print the best?

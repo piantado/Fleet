@@ -266,7 +266,7 @@ public:
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include "TopN.h"
-TopN<MyHypothesis> all; // used by MCMC and MCTS locally
+TopN<MyHypothesis> all(TopN<MyHypothesis>::MAX_N); // used by MCMC and MCTS locally
 
 std::vector<MyHypothesis::data_t> alldata;
 

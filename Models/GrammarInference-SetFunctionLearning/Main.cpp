@@ -124,12 +124,10 @@ int main(int argc, char** argv){
 		mcmc_data.push_back(learner_data); // and add that last dataset
 	
 	COUT "# Loaded " << human_data.size() << " human data points and " << mcmc_data.size() << " mcmc data points" ENDL;
-	
-	MyGrammar grammar;
-	
+		
 	std::vector<MyHypothesis> hypotheses; 
 	if(runtype == "hypotheses" or runtype == "both") {
-		auto h0 = MyHypothesis::make(&grammar); 
+		auto h0 = MyHypothesis::sample(); 
 		hypotheses = get_hypotheses_from_mcmc(h0, mcmc_data, Control(FleetArgs::inner_steps, FleetArgs::inner_runtime), FleetArgs::ntop);
 		CTRL_C = 0; // reset control-C so we can break again for the next mcmc
 		
