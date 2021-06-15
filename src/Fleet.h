@@ -231,7 +231,7 @@ public:
  * and the Grammar type it uses (MyGrammar). Then, we inherit LOTHypothesis' constructors (via Super::Super). Primarily, what we have to define
  * here is the compute_single_likelihood function, which defines the likelihood of a single observed data string. To compute this, we first
  * call the function (LOTHypothesis::call) on the observed input. This returns a DiscreteDistribution<std::string> of outputs. Note that the
- * outputs which return errors are mapped to the second argument to call, in this case the empty stirng. Then, we loop over outputs and add up
+ * outputs which return errors are mapped to the second argument to call, in this case the empty string. Then, we loop over outputs and add up
  * the likelihood of the observed output x.ouput given the program output o.first weighted by the program's probability of that output o.second. 
  * This part uses p_delete_append, which is a string edit likelihood that assigns nonzero probability of any string being corrupted to any other. 
  * It computes this by imagining that the output string was corrupted by noise that deleted from the end of the string, and then appended, where
@@ -352,6 +352,9 @@ volatile sig_atomic_t CTRL_C = false;
 #endif
 char hostname[HOST_NAME_MAX]; 	
 
+// store the main thread id if we want it
+std::thread::id main_thread_id = std::this_thread::get_id();
+
 #include "FleetStatistics.h"
 
 /**
@@ -399,6 +402,12 @@ public:
 //		app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");
 
 		start_time = now();
+		
+		// now if we are running MPI
+//		#ifdef FLEET_MPI
+		
+//		#endif
+		
 	}
 	
 	/**
@@ -441,14 +450,6 @@ public:
 		
 		// give us a defaultly kinda nice niceness
 		setpriority(PRIO_PROCESS, 0, 5);
-
-		// set up the random seed:
-		if(random_seed != 0) {
-			rng.seed(random_seed);
-		}
-		else {
-			rng.seed(std::random_device{}());
-		}
 		
 		// convert everything to ms
 		FleetArgs::runtime = convert_time(FleetArgs::timestring);	

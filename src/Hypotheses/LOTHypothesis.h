@@ -231,6 +231,7 @@ public:
 	
 	
 	virtual std::string serialize() const override { 
+		// NOTE: This doesn't preseve everything (it doesn't save can_propose, for example)
 		return str(this->prior)      + SerializationDelimiter + 
 		       str(this->likelihood) + SerializationDelimiter +
 			   str(this->posterior)  + SerializationDelimiter +
@@ -241,7 +242,7 @@ public:
 		auto [pr, li, po, v] = split<4>(s, SerializationDelimiter);
 		
 		auto h = this_t(grammar->from_parseable(v));
-		
+	
 		// restore the bayes stats
 		h.prior = string_to<double>(pr); 
 		h.likelihood = string_to<double>(li); 

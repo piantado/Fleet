@@ -64,6 +64,7 @@ public:
 	 * @param ctl
 	 */	
 	void run_thread_generator_wrapper(Control ctl, Args... args) {
+				
 		for(auto& x : run_thread(ctl, args...)) {
 			
 			// set next_x and then tell main after releasing the lock (see https://en.cppreference.com/w/cpp/thread/condition_variable)

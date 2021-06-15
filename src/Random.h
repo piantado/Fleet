@@ -5,21 +5,49 @@
 #include "Errors.h"
 #include "Numerics.h"
 
-// it's important to make these thread-local or else they block each other in parallel cores
-thread_local std::mt19937 rng;    // random-number engine used (Mersenne-Twister in this case)
-thread_local std::uniform_real_distribution<double> uniform_dist(0.0, 1.0);
-thread_local std::normal_distribution<float> normal(0.0, 1.0);
-	
+/**
+ * @class tlRng
+ * @author Steven Piantadosi
+ * @date 15/06/21
+ * @file Random.h
+ * @brief This is a thread_local rng that is seeded on construction so that each thread can get a different seed.
+ * 	      (Because this seeding is in a constructor, it will be called before rlRng is used)
+		  If we just make a thread_local variable, it is not seeded well. Note that if we specify random_seed it only
+		  applies to the first thread (and you get a warning for other threads)
+ */
+thread_local class tlRng : public std::mt19937 {
+public:
+	tlRng() : std::mt19937() {
+		// both of these are in Fleet.h
+		extern unsigned long random_seed; 
+		extern std::thread::id main_thread_id;
+		if(random_seed != 0) {
+			if(std::this_thread::get_id() == main_thread_id) {
+				this->seed(random_seed);
+			}
+			else {
+				std::cerr << "# Warning: seed " << random_seed << " is only applied to the first thread." << std::endl;
+				this->seed(std::random_device{}());
+			}
+		}
+		else {
+			this->seed(std::random_device{}());
+		}
+	}
+} rng;
+
+
 double uniform() {
 	/**
 	 * @brief Sample from a uniform distribution
 	 * @return 
 	 */
-	
+	std::uniform_real_distribution<double> uniform_dist(0.0, 1.0);
 	return uniform_dist(rng);
 }
 
 double random_normal() {
+	std::normal_distribution<float> normal(0.0, 1.0);
 	return normal(rng);
 }
 
