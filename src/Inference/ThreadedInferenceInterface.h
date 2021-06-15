@@ -18,7 +18,7 @@
  * 			copies the control for each thread (setting threads=1) and then passes the args arguments onward
  */
  template<typename X, typename... Args>
-class ParallelInferenceInterface {
+class ThreadedInferenceInterface {
 public:
 
 	// Subclasses must implement run_thread, which is what each individual thread 
@@ -41,7 +41,7 @@ public:
 	std::condition_variable_any cv; // This condition variable 
 	
 	
-	ParallelInferenceInterface() : index(0), __nthreads(0),  __nrunning(0), next_set(false) { }
+	ThreadedInferenceInterface() : index(0), __nthreads(0),  __nrunning(0), next_set(false) { }
 	
 	/**
 	 * @brief Return the next index to operate on (in a thread-safe way).
@@ -93,7 +93,7 @@ public:
 		// start each thread
 		for(unsigned long t=0;t<ctl.nthreads;t++) {
 			Control ctl2 = ctl; ctl2.nthreads=1; // we'll make each thread just one
-			threads[t] = std::thread(&ParallelInferenceInterface<X, Args...>::run_thread_generator_wrapper, this, ctl2, args...);
+			threads[t] = std::thread(&ThreadedInferenceInterface<X, Args...>::run_thread_generator_wrapper, this, ctl2, args...);
 			__nrunning++;
 		}
 	

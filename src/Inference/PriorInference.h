@@ -4,7 +4,7 @@
 #include <queue>
 #include <thread>
 
-#include "ParallelInferenceInterface.h"
+#include "ThreadedInferenceInterface.h"
 
 /**
  * @class PriorInference
@@ -14,7 +14,7 @@
  * @brief Inference by sampling from the prior -- doesn't tend to work well, but might be a useful baseline
  */
 template<typename HYP>
-class PriorInference : public ParallelInferenceInterface<HYP> {
+class PriorInference : public ThreadedInferenceInterface<HYP> {
 
 public:
 	

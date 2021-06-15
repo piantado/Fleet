@@ -9,7 +9,7 @@
 #include "Errors.h"
 #include "MCMCChain.h"
 #include "Timing.h"
-#include "ParallelInferenceInterface.h"
+#include "ThreadedInferenceInterface.h"
 #include "OrderedLock.h"
 
 /**
@@ -22,7 +22,7 @@
  *        switch chains. 
  */
 template<typename HYP>
-class ChainPool : public ParallelInferenceInterface<HYP> { 
+class ChainPool : public ThreadedInferenceInterface<HYP> { 
 	
 public:
 	std::vector<MCMCChain<HYP>> pool;

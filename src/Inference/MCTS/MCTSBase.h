@@ -11,7 +11,7 @@
 #include <functional>
 
 #include "StreamingStatistics.h"
-#include "ParallelInferenceInterface.h"
+#include "ThreadedInferenceInterface.h"
 #include "Control.h"
 #include "SpinLock.h"
 #include "Random.h"
@@ -38,7 +38,7 @@
  */
 
 template<typename this_t, typename HYP>
-class MCTSBase : public ParallelInferenceInterface<HYP, HYP>, public BaseNode<this_t> {
+class MCTSBase : public ThreadedInferenceInterface<HYP, HYP>, public BaseNode<this_t> {
 	friend class BaseNode<this_t>;
 		
 public:

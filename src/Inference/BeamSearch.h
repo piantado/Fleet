@@ -7,7 +7,7 @@
 #include <signal.h>
 
 #include "FleetStatistics.h"
-#include "ParallelInferenceInterface.h"
+#include "ThreadedInferenceInterface.h"
 
 //#define DEBUG_BEAMSEARCH 1
 
@@ -33,7 +33,7 @@ extern volatile sig_atomic_t CTRL_C;
  * 
  */
 template<typename HYP>
-class BeamSearch : public ParallelInferenceInterface<HYP> {
+class BeamSearch : public ThreadedInferenceInterface<HYP> {
 	
 	std::mutex lock; 
 public:

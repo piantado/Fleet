@@ -7,7 +7,7 @@
 #include "Control.h"
 #include "Coroutines.h"
 
-#include "ParallelInferenceInterface.h"
+#include "ThreadedInferenceInterface.h"
 
 /**
  * @class EnumerationInference
@@ -18,7 +18,7 @@
  * 		  and requires a hypothesis, grammar, start type, and callback.
  */
 template<typename HYP, typename Grammar_t, typename Enumerator>
-class EnumerationInference : public ParallelInferenceInterface<HYP> {
+class EnumerationInference : public ThreadedInferenceInterface<HYP> {
 
 public:
 	
