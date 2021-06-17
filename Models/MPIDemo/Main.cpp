@@ -17,6 +17,7 @@ int main(int argc, char** argv){
 	Fleet fleet("A simple, one-factor formal language learner");
 	fleet.add_option("-a,--alphabet",   alphabet, "Alphabet we will use"); 	// add my own args
 	fleet.add_option("-d,--data",       datastr, "Comma separated list of input data strings");	
+	fleet.add_option("--method", method, "What inference method to run");
 	fleet.add_option("--max-enumerate", max_enumerate, "Max value we will enumerate till");	
 	fleet.initialize(argc, argv);
 	
@@ -76,6 +77,8 @@ int main(int argc, char** argv){
 				top << h;
 			}
 			
+			// CERR "WORKER DONE " TAB mpi_rank() TAB top.best().string() ENDL;
+			
 			mpi_return(top);
 		}
 		else if(method == "mcmc") {
@@ -87,8 +90,8 @@ int main(int argc, char** argv){
 			for(auto& h : samp.run(Control(), 100, 30000) | top) { 
 				//COUT mpi_rank() TAB h.string() ENDL;
 			}
-	//		
-	//		CERR "WORKER DONE " TAB mpi_rank() TAB top.best().string() ENDL;
+			
+			// CERR "WORKER DONE " TAB mpi_rank() TAB top.best().string() ENDL;
 			mpi_return(top);
 			
 		}
