@@ -20,27 +20,35 @@ const size_t MAX_LENGTH = 64; // longest strings cons will handle
 #include "Grammar.h"
 #include "Singleton.h"
 
-class MyGrammar : public Grammar<S,S,  S,bool>,
+class MyGrammar : public Grammar<S,S,  S,char,bool>,
 				  public Singleton<MyGrammar> {
 public:
 	MyGrammar() {
 		add("tail(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : s.substr(1,S::npos)); });
 		add("head(%s)",      +[](S s)      -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
 //
-//		add("pair(%s,%s)",   +[](S a, S b) -> S { 
+//		add("append(%s,%s)",   +[](S a, S b) -> S { 
 //			if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError();
 //			else                     				 return a+b; 
 //		});
 
-		add_vms<S,S,S>("pair(%s,%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
+		add_vms<S,S,S>("append(%s,%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
 			S b = vms->getpop<S>();
 			S& a = vms->stack<S>().topref();
 			
 			if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError();
 			else 									 a += b; 
 		}));
+		
+		add_vms<S,S,char>("pair(%s,%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
+			char b = vms->getpop<char>();
+			S& a = vms->stack<S>().topref();
+			
+			if(a.length() + 1 > MAX_LENGTH) throw VMSRuntimeError();
+			else 						    a += b; 
+		}));
 
-		add("\u00D8",        +[]()         -> S          { return S(""); });
+		add("\u00D8",        +[]()         -> S          { return S(""); }, 10.0);
 		add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; });
 
 		add("and(%s,%s)",    Builtins::And<MyGrammar>);
@@ -49,6 +57,7 @@ public:
 		
 		add("x",             Builtins::X<MyGrammar>);
 		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,char>);
 		add("flip()",        Builtins::Flip<MyGrammar>, 10.0);
 		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
 	}
@@ -151,7 +160,7 @@ int main(int argc, char** argv){
 	//------------------	
 	
 	for(const char c : alphabet) {
-		grammar.add_terminal( Q(S(1,c)), S(1,c), 5.0/alphabet.length());
+		grammar.add_terminal( Q(S(1,c)), c, 10.0/alphabet.length());
 	}
 		
 	//------------------
