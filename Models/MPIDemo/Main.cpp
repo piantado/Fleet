@@ -43,7 +43,6 @@ int main(int argc, char** argv){
 	// for MPI programs, execution splits between the head and the rest. 
 	//------------------
 
-	//MPI_Init(NULL, NULL);
 	int provided;
 	MPI_Init_thread(NULL, NULL, MPI_THREAD_FUNNELED, &provided); // need this instead of MPI_Init, since we have threads. Only the current thread will make MPI calls though
 	assert(provided == MPI_THREAD_FUNNELED);
@@ -58,19 +57,20 @@ int main(int argc, char** argv){
 		top.print();
 	}	
 	else { // I am a worker
+
+		BasicEnumeration<MyGrammar> be;
 		
-		TopN<MyHypothesis> top;
 		
-		auto h0 = MyHypothesis::sample();
-		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
-		for(auto& h : samp.run(Control(), 100, 30000) | top) { 
-			//COUT mpi_rank() TAB h.string() ENDL;
-		}
-//		//h0.compute_posterior(mydata);
-//		//top << h0;
+//		TopN<MyHypothesis> top;
 //		
-//		CERR "WORKER DONE " TAB mpi_rank() TAB top.best().string() ENDL;
-		mpi_return(top);
+//		auto h0 = MyHypothesis::sample();
+//		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+//		for(auto& h : samp.run(Control(), 100, 30000) | top) { 
+//			//COUT mpi_rank() TAB h.string() ENDL;
+//		}
+////		
+////		CERR "WORKER DONE " TAB mpi_rank() TAB top.best().string() ENDL;
+//		mpi_return(top);
 
 	}
 	

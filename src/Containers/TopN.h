@@ -7,6 +7,9 @@
 
 #include "FleetArgs.h"
 #include "OrderedLock.h"
+#include "Interfaces/Serializable.h"
+
+//template<class T> class TopN;
 
 /**
  * @class TopN
@@ -313,14 +316,14 @@ public:
 		return out;
 	}
 	
-	static TopN<MyHypothesis> deserialize(const std::string& s) { 
+	static TopN<T> deserialize(const std::string& s) { 
 		
-		TopN<MyHypothesis> out;
+		TopN<T> out;
 		auto q = split(s, SerializationDelimiter);
 		out.set_size(string_to<size_t>(q.front())); q.pop_front();
 		
 		for(auto& x : q) {
-			out << MyHypothesis::deserialize(x);
+			out << T::deserialize(x);
 		}
 		
 		return out; 

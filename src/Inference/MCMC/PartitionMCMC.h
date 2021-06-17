@@ -9,7 +9,7 @@
 #include "Errors.h"
 #include "MCMCChain.h"
 #include "Timing.h"
-#include "ParallelInferenceInterface.h"
+#include "ThreadedInferenceInterface.h"
 
 /**
  * @class PartitionMCMC
