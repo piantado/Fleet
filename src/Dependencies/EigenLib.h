@@ -7,10 +7,10 @@
 
 // This is just a header to include Eigen, but preven us from warning about it. 
 #include <cmath>
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Eigen/Eigenvalues> 
-#include <unsupported/Eigen/SpecialFunctions>
+#include <eigen3/Eigen/Core>
+#include <eigen3/Eigen/Dense>
+#include <eigen3/Eigen/Eigenvalues> 
+#include <eigen3/unsupported/Eigen/SpecialFunctions>
 #include "IO.h"
 
 using Vector = Eigen::VectorXf; // set these and precision

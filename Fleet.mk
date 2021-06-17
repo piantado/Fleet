@@ -9,4 +9,4 @@ FLEET_FLAGS=-std=c++2a -Wall -fdiagnostics-color=auto -Wimplicit-fallthrough -Wa
 
 FLEET_LIBS=-lm -pthread
 
-CLANG_FLAGS=-std=c++2a -Wall -fdiagnostics-color=auto -Wimplicit-fallthrough -Wall -Wextra -Wextra-semi -Wpedantic -Wvla -Wnull-dereference -Wswitch-enum -Wno-unused-parameter  -march=native 
+CLANG_FLAGS=-std=c++20 -Wall -fdiagnostics-color=auto -Wimplicit-fallthrough -Wall -Wextra -Wextra-semi -Wpedantic -Wvla -Wnull-dereference -Wswitch-enum -Wno-unused-parameter  -march=native -fcoroutines-ts
