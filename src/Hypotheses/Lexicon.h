@@ -63,7 +63,7 @@ public:
 	 * @return 
 	 */	
 	[[nodiscard]] static this_t sample(size_t nf) {
-		this_t out(nf);
+		this_t out;
 		
 		for(size_t i=0;i<nf;i++) {// start with the right number of factors
 			out.factors.push_back(InnerHypothesis::sample());
