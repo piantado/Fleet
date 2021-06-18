@@ -7,7 +7,7 @@
 #define WHICH COMPLEX
 
 #include "../FormalLanguageTheory-Complex/Main.cpp"
-const size_t MAX_FACTORS = 4;
+const size_t MAX_FACTORS = 3;
 
 #include "Data/HumanDatum.h"
 #include "TopN.h"
