@@ -4,6 +4,7 @@
  * and then we'll add in the data amounts, so that now each call will loop over amounts of data
  * and preserve the top hypotheses
  * 
+ * NOTE: Since the PNAS resubmission, we have changed this to use char and changed serialization so that column will be different. 
  * */
   
 #include <set>
@@ -40,7 +41,6 @@ std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500
 // useful for printing -- so we know how many tokens there were in the data
 size_t current_ntokens = 0; // how many tokens are there currently? Just useful to know
 
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare a grammar
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,7 +48,7 @@ size_t current_ntokens = 0; // how many tokens are there currently? Just useful 
 #include "Grammar.h"
 #include "Singleton.h"
 
-class MyGrammar : public Grammar<S,S,     S,bool,double,StrSet>,
+class MyGrammar : public Grammar<S,S,     S,char,bool,double,StrSet>,
 				  public Singleton<MyGrammar> {
 public:
 	MyGrammar() {
@@ -58,17 +58,23 @@ public:
 			return s;
 		});
 		
-		
-		add_vms<S,S,S>("pair(%s,%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
+		add_vms<S,S,S>("append(%s,%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
 			S b = vms->getpop<S>();
 			S& a = vms->stack<S>().topref();
 			
-			if(a.length() + b.length() > max_length) 
-				throw VMSRuntimeError();
-			else 
-				a += b; 
+			if(a.length() + b.length() > max_length) throw VMSRuntimeError();
+			else 									 a += b; 
+		}));
+		
+		add_vms<S,S,char>("pair(%s,%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
+			char b = vms->getpop<char>();
+			S& a = vms->stack<S>().topref();
+			
+			if(a.length() + 1 > max_length) throw VMSRuntimeError();
+			else 							a += b; 
 		}));
 
+		// head here could be a char, except that it complicates head, so we'll use head as str
 		add("head(%s)", +[](S s) -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
 		add("\u00D8", +[]() -> S { return S(""); }, 10.0);
 		add("(%s==%s)", +[](S x, S y) -> bool { return x==y; });
@@ -331,7 +337,7 @@ int main(int argc, char** argv){
 	}
 		
 	for(const char c : alphabet) {
-		grammar.add_terminal( Q(S(1,c)), S(1,c), 5.0/alphabet.length());
+		grammar.add_terminal( Q(S(1,c)), c, 5.0/alphabet.length());
 	}
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

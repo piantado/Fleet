@@ -49,7 +49,7 @@ public:
 	struct HasPosterior <X, decltype((void) X::posterior, 0)> : std::true_type { };
 	//https://stackoverflow.com/questions/1005476/how-to-detect-whether-there-is-a-specific-member-variable-in-class
 		
-	TopN(size_t n=FleetArgs::ntop) : N(n) { set_print_best(false); }
+	TopN(size_t n=FleetArgs::ntop) : N(n) { set_print_best(FleetArgs::top_print_best); }
 	
 	TopN(const TopN<T>& x) {
 		clear();

@@ -32,6 +32,8 @@ namespace FleetArgs {
 	unsigned long thin = 0;
 	unsigned long print = 0;
 	
+	unsigned long top_print_best = 0; // default for printing top's best
+	
 	std::string   input_path   = "input.txt";
 	std::string   tree_path    = "tree.txt";
 	std::string   output_path  = "output";

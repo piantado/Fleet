@@ -12,7 +12,8 @@
   * @file Stack.h
   * @brief  Many things in Fleet are stacks and this is designed to allow for
   *         rapid changse to the stack type in order to improve speed. std::stack appears to be
-  *         slow. Using vector with some wrappers is faster. 
+  *         slow. Using vector with some wrappers is faster. Also, vector is great because it allows us
+  *         to reference the top.
   * 
   *         NOTE: We have tried reserving the intiial vector size and it doesn't seem to speed things up,
   *         nor does using a list

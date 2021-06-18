@@ -160,7 +160,7 @@ int main(int argc, char** argv){
 	//------------------	
 	
 	for(const char c : alphabet) {
-		grammar.add_terminal( Q(S(1,c)), c, 1.0/alphabet.length());
+		grammar.add_terminal( Q(S(1,c)), c, 10.0/alphabet.length());
 	}
 		
 	//------------------
@@ -217,11 +217,12 @@ int main(int argc, char** argv){
 	top.print_best = true;
 	auto h0 = MyHypothesis::sample();
 	
-//	MCMCChain samp(h0, &mydata);
+	MCMCChain samp(h0, &mydata);
 //    ChainPool samp(h0, &mydata, FleetArgs::nchains);
-//	for(auto& h : samp.run(Control()) | top | thin(FleetArgs::thin)) {
-	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
-	for(auto& h : samp.run(Control(), 100, 30000) | top | thin(FleetArgs::thin)) {
+	for(auto& h : samp.run(Control()) | top | thin(FleetArgs::thin)) {
+//	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+//	for(auto& h : samp.run(Control(), 100, 30000) | top | thin(FleetArgs::thin)) {
+		UNUSED(h);
 		//h.print();
 		//COUT h.serialize() ENDL;
 	}

@@ -377,8 +377,8 @@ public:
 		app.add_option("--partition-depth",   FleetArgs::partition_depth, "How deep do we recurse when we do partition-mcmc?");
 		
 		app.add_option("--header",      FleetArgs::print_header, "Set to 0 to not print header");
-
-		
+			
+		app.add_option("--top-print-best",      FleetArgs::top_print_best, "Should all tops defaultly print their best?");
 		
 		app.add_option("--output",      FleetArgs::output_path, "Where we write output");
 		app.add_option("--input",       FleetArgs::input_path, "Read standard input from here");
