@@ -2,9 +2,12 @@
 // We will define this so we can read from the NumberGame without main
 #define DO_NOT_INCLUDE_MAIN 1
 
-//#include "../FormalLanguageTheory-Simple/Main.cpp"
-#include "../FormalLanguageTheory-Complex/Main.cpp"
+// Now we can choose which of these to use 
+// these require different includes and slightly different setups below
+#define WHICH COMPLEX
 
+#include "../FormalLanguageTheory-Complex/Main.cpp"
+const size_t MAX_FACTORS = 4;
 
 #include "Data/HumanDatum.h"
 #include "TopN.h"
@@ -99,11 +102,24 @@ int main(int argc, char** argv){
 	std::vector<MyHypothesis> hypotheses; 
 	if(runtype == "hypotheses" or runtype == "both") {
 		
-		auto h0 = MyHypothesis::sample(); 
-		hypotheses = get_hypotheses_from_mcmc(h0, mcmc_data, Control(FleetArgs::inner_steps, FleetArgs::inner_runtime), FleetArgs::ntop);
+		std::set<MyHypothesis> all_hypotheses;
+		
+		// here, we need to run on each number of factors
+		for(size_t nf=1;nf<=MAX_FACTORS;nf++) {
+		
+			auto h0 = MyHypothesis::sample(nf); 
+			auto hyps = get_hypotheses_from_mcmc(h0, mcmc_data, Control(FleetArgs::inner_steps, FleetArgs::inner_runtime), FleetArgs::ntop);
+		
+			all_hypotheses.insert(hyps.begin(), hyps.end() );
+		}
+		
 		CTRL_C = 0; // reset control-C so we can break again for the next mcmc
 		
-		save(hypothesis_path, hypotheses);
+		save(hypothesis_path, all_hypotheses);
+		
+		// put these into the vector
+		for(auto& h : all_hypotheses) 
+			hypotheses.push_back(h);
 	}
 	else {
 		hypotheses = load<MyHypothesis>(hypothesis_path, &grammar); // only load if we haven't run 
@@ -113,7 +129,7 @@ int main(int argc, char** argv){
 	
 	
 	///////////////////////////////
-	// Run the grammar inferece
+	// Run the grammar inference
 	///////////////////////////////	
 	
 	if(runtype == "grammar" or runtype == "both") { 

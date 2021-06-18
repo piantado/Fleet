@@ -213,7 +213,16 @@ public:
 				
 				// read the max size from above and compute all the likelihoods
 				for(size_t i=0;i<max_sizes[x.first];i++) {
-					data_lls(i) = hypotheses[h].compute_single_likelihood(x.first->at(i));
+					
+					// here we could do 
+					// data_lls(i) = hypotheses[h].compute_single_likelihood(x.first->at(i));
+					// but the problem is that isn't defined for some hypothese. So we'll use 
+					// the slower
+					typename HYP::data_t d;
+					d.push_back(x.first->at(i));
+					data_lls(i) = hypotheses[h].compute_likelihood(d);
+					
+					
 					assert(not std::isnan(data_lls(i))); // NaNs will really mess everything up
 				}
 				

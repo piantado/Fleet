@@ -367,11 +367,7 @@ int main(int argc, char** argv){
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		
 	// Build up an initial hypothesis with the right number of factors
-	MyHypothesis h0; 
-	for(size_t fi=0;fi<nfactors;fi++) {// start with the right number of factors
-		InnerHypothesis f;
-		h0.factors.push_back(f.restart());
-	}
+	auto h0 = MyHypothesis::sample(nfactors); 
 	
 	TopN<MyHypothesis> all; 
 	//	all.set_print_best(true);

@@ -59,8 +59,8 @@ void DEBUG(First && first, Rest && ...rest) {
  * @param filename
  * @param hypotheses
  */
-template<typename HYP>
-void save(std::string filename, std::vector<HYP>& hypotheses) {
+template<typename T>
+void save(std::string filename, T& hypotheses) {
 	
 	std::ofstream out(filename);
 	

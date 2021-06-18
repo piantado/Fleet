@@ -56,6 +56,22 @@ public:
 		return factors[0].get_grammar();
 	}
 	
+	
+	/**
+	 * @brief Sample with n factors
+	 * @param n
+	 * @return 
+	 */	
+	[[nodiscard]] static this_t sample(size_t nf) {
+		this_t out(nf);
+		
+		for(size_t i=0;i<nf;i++) {// start with the right number of factors
+			out.factors.push_back(InnerHypothesis::sample());
+		}
+		
+		return out;
+	}
+	
 	virtual std::string string(std::string prefix="") const override {
 		/**
 		 * @brief AConvert a lexicon to a string -- defaultly includes all arguments. 
