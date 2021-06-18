@@ -90,7 +90,7 @@ public:
 	
 	// we overwrite this because in MCMCable, this wants to check get_value, which is not defined here
 	template<typename... A>
-	[[nodiscard]] static this_t make(A... a) {
+	[[nodiscard]] static this_t sample(A... a) {
 		auto h = this_t(a...);
 		return h.restart();
 	}

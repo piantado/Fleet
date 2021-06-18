@@ -136,7 +136,7 @@ int main(int argc, char** argv){
 
 		TopN<MyGrammarHypothesis> topMAP(1); // keeps track of the map
 
-		auto h0 = MyGrammarHypothesis::make(hypotheses, &human_data);
+		auto h0 = MyGrammarHypothesis::sample(hypotheses, &human_data);
 
 		auto thechain = MCMCChain<MyGrammarHypothesis>(h0, &human_data);
 		for(auto& h : thechain.run(Control()) | topMAP | print (FleetArgs::print) | thin(FleetArgs::thin) ){

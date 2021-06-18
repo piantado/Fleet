@@ -167,7 +167,7 @@ int main(int argc, char** argv){
 	
 	if(runtype == "grammar" or runtype == "both") { 
 		
-		auto h0 = MyGrammarHypothesis::make(hypotheses, &human_data);
+		auto h0 = MyGrammarHypothesis::sample(hypotheses, &human_data);
 		
 		// Set this up so that we don't do MCMC on some grammar rules
 		size_t i = 0;
