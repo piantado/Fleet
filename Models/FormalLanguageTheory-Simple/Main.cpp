@@ -55,7 +55,7 @@ public:
 		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
 		add("not(%s)",       Builtins::Not<MyGrammar>);
 		
-		add("x",             Builtins::X<MyGrammar>);
+		add("x",             Builtins::X<MyGrammar>, 10);
 		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
 		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,char>);
 		add("flip()",        Builtins::Flip<MyGrammar>, 10.0);
@@ -160,7 +160,7 @@ int main(int argc, char** argv){
 	//------------------	
 	
 	for(const char c : alphabet) {
-		grammar.add_terminal( Q(S(1,c)), c, 10.0/alphabet.length());
+		grammar.add_terminal( Q(S(1,c)), c, 1.0/alphabet.length());
 	}
 		
 	//------------------

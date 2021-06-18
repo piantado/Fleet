@@ -81,7 +81,7 @@ public:
 	const data_t* which_data; 
 			
 	GrammarHypothesis() {	}
-	
+		
 	GrammarHypothesis(std::vector<HYP>& hypotheses, const data_t* human_data) {
 		// This has to take human_data as a pointer because of how MCMCable::make works -- can't forward a reference
 		// but the rest of this class likes the references, so we convert here

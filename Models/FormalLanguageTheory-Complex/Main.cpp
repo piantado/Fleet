@@ -284,6 +284,8 @@ std::pair<double,double> mem_pr;
 // Main
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef DO_NOT_INCLUDE_MAIN
+
 #include "VirtualMachine/VirtualMachineState.h"
 #include "VirtualMachine/VirtualMachinePool.h"
 #include "TopN.h"
@@ -439,3 +441,5 @@ int main(int argc, char** argv){
 	tic();
 	
 }
+
+#endif

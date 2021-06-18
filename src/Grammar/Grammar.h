@@ -567,6 +567,19 @@ public:
 	// Computing log probabilities and priors
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
+	std::vector<size_t> get_cumulative_indices() const {
+		// NOTE: This is an inefficiency because we build this up each time
+		// We had a version of grammar that cached this, but it was complex and ugly
+		// so I think we'll take the small performance hit and put it all in here
+		const size_t NT = count_nonterminals();
+		std::vector<size_t> rule_cumulative(NT); // how many rules are there before this (in our ordering)
+		rule_cumulative[0] = 0;
+		for(size_t nt=1;nt<NT;nt++) {
+			rule_cumulative[nt] = rule_cumulative[nt-1] + count_rules( nonterminal_t(nt-1) );
+		}
+		return rule_cumulative;
+	}
+	
 	std::vector<size_t> get_counts(const Node& node) const {
 		/**
 		 * @brief Compute a vector of counts of how often each rule was used, in a *standard* order given by iterating over nts and then iterating over rules
@@ -578,16 +591,8 @@ public:
 		
 		std::vector<size_t> out(R,0.0);
 		
-		// NOTE: This is an inefficiency because we build this up each time
-		// We had a version of grammar that cached this, but it was complex and ugly
-		// so I think we'll take the small performance hit and put it all in here
-		const size_t NT = count_nonterminals();
-		std::vector<size_t> rule_cumulative(NT); // how many rules are there before this (in our ordering)
-		rule_cumulative[0] = 0;
-		for(size_t nt=1;nt<NT;nt++) {
-			rule_cumulative[nt] = rule_cumulative[nt-1] + count_rules( nonterminal_t(nt-1) );
-		}
-		
+		auto rule_cumulative = get_cumulative_indices();
+
 		for(auto& n : node) {
 			// now increment out, accounting for the number of rules that must have come before!
 			out[rule_cumulative[n.rule->nt] + get_index_of(n.rule)] += 1;
@@ -595,6 +600,42 @@ public:
 		
 		return out;
 	}
+	
+	
+	template<typename T>
+	std::vector<size_t> get_counts(const std::vector<T>& v) const {
+		/**
+		 * @brief Compute a vector of counts of how often each rule was used, in a *standard* order given by iterating over nts and then iterating over rules
+		 * @param v
+		 * @return 
+		 */
+		 
+		// NOTE: When we use requires, we can require something like T is a hypothesis with a value...
+		//static_assert(std::is_base_of<LOTHypothesis,T>::value); // need to have LOTHypotheses as T to use T::get_value() below	
+		
+		const size_t R = count_rules(); 
+		
+		std::vector<size_t> out(R,0.0);
+		
+		auto rule_cumulative = get_cumulative_indices();
+		
+		for(auto vi : v) {
+
+			for(auto& n : vi.get_value()) { // assuming vi has a "value" 
+				// now increment out, accounting for the number of rules that must have come before!
+				out[rule_cumulative[n.rule->nt] + get_index_of(n.rule)] += 1;
+			}
+		}
+		
+		return out;
+	}
+//	template<typename T>
+//	std::vector<size_t> get_counts(const T& v) const {
+//		if constexpr (std::is_base_of<LOTHypothesis, T>) {
+//			return get_counts()
+//		}
+//	}
+
 	
 	// If eigen is defined we can get the transition matrix	
 	#ifdef AM_I_USING_EIGEN

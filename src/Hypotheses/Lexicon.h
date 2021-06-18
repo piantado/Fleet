@@ -45,6 +45,17 @@ public:
 		return factors.size();
 	}
 	
+	// A lexicon's value is just that vector (this is used by GrammarHypothesis)
+	      std::vector<INNER>& get_value()       {	return factors;	}
+	const std::vector<INNER>& get_value() const {	return factors;	}
+	
+	Grammar_t* get_grammar() {
+		// NOTE that since LOTHypothesis has grammar as its type, all INNER Must have the 
+		// same grammar type (But this may change in the future -- if it does, we need to 
+		// update GrammarHypothesis::set_hypotheses_and_data)
+		return factors[0].get_grammar();
+	}
+	
 	virtual std::string string(std::string prefix="") const override {
 		/**
 		 * @brief AConvert a lexicon to a string -- defaultly includes all arguments. 

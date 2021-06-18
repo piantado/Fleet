@@ -2,7 +2,9 @@
 // We will define this so we can read from the NumberGame without main
 #define DO_NOT_INCLUDE_MAIN 1
 
-#include "../FormalLanguageTheory-Simple/Main.cpp"
+//#include "../FormalLanguageTheory-Simple/Main.cpp"
+#include "../FormalLanguageTheory-Complex/Main.cpp"
+
 
 #include "Data/HumanDatum.h"
 #include "TopN.h"
@@ -36,6 +38,12 @@ int main(int argc, char** argv){
 	fleet.add_option("--runtype",  runtype, "hypotheses = do we just do mcmc on hypotheses; grammar = mcmc on the grammar, loading the hypotheses; both = do both");
 	fleet.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
 	fleet.initialize(argc, argv);
+
+	// Add to the grammar
+
+	for(const char c : alphabet) {
+		grammar.add_terminal( Q(S(1,c)), S(1,c), 10.0/alphabet.length());
+	}
 
 	///////////////////////////////
 	// Read the human data
