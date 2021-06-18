@@ -7,6 +7,7 @@
 #include "BasicEnumeration.h"
 #include "Fleet.h" 
 #include "MPI.h"
+#include "PartitionMCMC.h"
 
 size_t max_enumerate = 1000000; // maximum we'll increment too
 std::string method = "enumeration"; // enumeration, mcmc, partition-mcmc
@@ -26,7 +27,7 @@ int main(int argc, char** argv){
 	//------------------	
 	
 	for(const char c : alphabet) {
-		grammar.add_terminal( Q(S(1,c)), S(1,c), 5.0/alphabet.length());
+		grammar.add_terminal( Q(S(1,c)), c, 5.0/alphabet.length());
 	}
 			
 	//------------------
@@ -88,11 +89,45 @@ int main(int argc, char** argv){
 			auto h0 = MyHypothesis::sample();
 			ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
 			for(auto& h : samp.run(Control(), 100, 30000) | top) { 
+				UNUSED(h);
 				//COUT mpi_rank() TAB h.string() ENDL;
 			}
 			
 			// CERR "WORKER DONE " TAB mpi_rank() TAB top.best().string() ENDL;
 			mpi_return(top);
+			
+		}
+		else if(method == "partition-mcmc") {
+			
+			// this is cute -- we will put different partitions on differnet processors
+			// just for here, we'll automatically choose the size that will fit in our number of nodes
+			// but note this may not line up very well...
+			
+			// NOTE: This has a downside, which is that everyone computes the partitions 
+			
+			auto num = mpi_size()-1;
+			auto r = mpi_rank()-1;
+			
+			TopN<MyHypothesis> top;
+			
+			MyHypothesis h0; // NOTE must be empty 
+			auto P = get_partitions(h0, 0, num);
+			
+			if((size_t)r < P.size()){
+				auto myh0 = *std::next(P.begin(), r); // I work on the r'th rank
+				
+				COUT "# Starting partition chain on" TAB myh0.string() ENDL;
+				
+				myh0.complete(); // fill in the gaps
+				\
+				MCMCChain samp(myh0,&mydata);				// or we could do parallel tempering...
+				for(auto& h : samp.run(Control()) | top) { UNUSED(h); }
+			}
+			// else we return empty top
+			
+			// just return nothing
+			mpi_return(top);
+			
 			
 		}
 		else {
