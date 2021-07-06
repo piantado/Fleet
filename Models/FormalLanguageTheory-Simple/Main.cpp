@@ -216,7 +216,7 @@ int main(int argc, char** argv){
 //
 //	return 0;
 	
-//	top.print_best = true;
+	top.print_best = true;
 	auto h0 = MyHypothesis::sample();
 
 	TopNInference samp(h0, &mydata);
