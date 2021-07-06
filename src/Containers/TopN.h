@@ -213,16 +213,16 @@ public:
 		return *s.begin(); 
 	}
 	
-	double Z() { // (can't be const because it locks)
+	double Z(double temp=1.0) { // (can't be const because it locks)
 		/**
-		 * @brief Compute the logsumexp of all of the elements stored. 
+		 * @brief Compute the logsumexp of all of the elements stored at temperature T
 		 * @return 
 		 */
 	
 		double z = -infinity;
 		std::lock_guard guard(lock);
 		for(const auto& x : s) 
-			z = logplusexp(z, x.posterior);
+			z = logplusexp(z, x.posterior/temp);
 		return z;       
 	}
 	

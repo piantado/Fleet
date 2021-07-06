@@ -216,14 +216,16 @@ int main(int argc, char** argv){
 //
 //	return 0;
 	
-	top.print_best = true;
+//	top.print_best = true;
 	auto h0 = MyHypothesis::sample();
 
 	TopNInference samp(h0, &mydata);
-	for(auto& h : samp.run(Control()) ) {
-		h.print();
+	for(auto& h : samp.run(Control()) | top ) {
+//		h.print();
 		//COUT h.serialize() ENDL;
 	}
+	
+//	top.print();
 	
 /*	
 	MCMCChain samp(h0, &mydata);

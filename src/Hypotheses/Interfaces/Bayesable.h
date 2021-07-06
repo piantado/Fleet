@@ -150,7 +150,7 @@ public:
 		return posterior;
 	}
 	
-	virtual double at_temperature(double t) {
+	virtual double at_temperature(double t) const {
 		/**
 		 * @brief Return my posterior score at a given (likelihood) temperature
 		 * @param t

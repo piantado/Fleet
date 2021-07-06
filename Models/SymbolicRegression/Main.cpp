@@ -1,3 +1,8 @@
+
+
+TODO: FIX THIS BECAUSE WE CHANGED HOW TOPN WORKS 
+
+
 // TODO: Check that we never put a nan in a map because that's not alloewd!
 // ./main --time=1h --inner-time=5s --explore=0.1 --thin=0 --threads=1 --input=./data-sources/Science/Zipf/data.txt --tree=./out/tree.txt
 
