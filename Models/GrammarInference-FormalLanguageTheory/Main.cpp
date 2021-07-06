@@ -2,10 +2,6 @@
 // We will define this so we can read from the NumberGame without main
 #define DO_NOT_INCLUDE_MAIN 1
 
-// Now we can choose which of these to use 
-// these require different includes and slightly different setups below
-#define WHICH COMPLEX
-
 #include "../FormalLanguageTheory-Complex/Main.cpp"
 const size_t MAX_FACTORS = 3;
 
@@ -45,7 +41,7 @@ int main(int argc, char** argv){
 	// Add to the grammar
 
 	for(const char c : alphabet) {
-		grammar.add_terminal( Q(S(1,c)), S(1,c), 10.0/alphabet.length());
+		grammar.add_terminal( Q(S(1,c)), c, 10.0/alphabet.length());
 	}
 
 	///////////////////////////////

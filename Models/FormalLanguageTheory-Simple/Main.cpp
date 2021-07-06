@@ -146,6 +146,8 @@ public:
 #include "Builtins.h"
 #include "VMSRuntimeError.h"
 
+#include "TopNInference.h"
+
 int main(int argc, char** argv){ 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
@@ -216,7 +218,14 @@ int main(int argc, char** argv){
 	
 	top.print_best = true;
 	auto h0 = MyHypothesis::sample();
+
+	TopNInference samp(h0, &mydata);
+	for(auto& h : samp.run(Control()) ) {
+		h.print();
+		//COUT h.serialize() ENDL;
+	}
 	
+/*	
 	MCMCChain samp(h0, &mydata);
 //    ChainPool samp(h0, &mydata, FleetArgs::nchains);
 	for(auto& h : samp.run(Control()) | top | thin(FleetArgs::thin)) {
@@ -226,7 +235,7 @@ int main(int argc, char** argv){
 		//h.print();
 		//COUT h.serialize() ENDL;
 	}
-
+*/
 	top.print();
 
 	

@@ -15,7 +15,7 @@
  *               the stuff that's stored with ReservoirSample.values()
  */
 template<typename T>
-class ReservoirSample {
+class ReservoirSample : public Serializable<ReservoirSample<T>> {
 	
 public:
 
@@ -27,7 +27,7 @@ public:
 	 * @file ReservoirSample.h
 	 * @brief An item in a reservoir sample, grouping together an element x and its log weights, value, etc. 
 	 */
-	struct Item {
+	struct Item : public Serializable<ReservoirSample<Item>> {
 		T x;
 		const double r; 
 		
@@ -36,6 +36,11 @@ public:
 		bool operator<(const Item& b) const { return r < b.r; }
 		bool operator==(const Item& b) const { return x==b.x && r==b.r; } // equality here checks r and lw (which determine lv)
 		void print() const { throw NotImplementedError(); } // not needed here but must be defined to use in TopN
+		
+			
+		virtual std::string serialize() const override { throw NotImplementedError(); }
+		static Item deserialize(const std::string&) { throw NotImplementedError(); }
+		
 	};
 	
 public:
@@ -102,7 +107,9 @@ public:
 		top.clear();
 	}
 	
+	virtual std::string serialize() const override { throw NotImplementedError(); }
 	
+	static ReservoirSample<T> deserialize(const std::string&) { throw NotImplementedError(); }
 	
 };
 

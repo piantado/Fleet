@@ -60,8 +60,8 @@ public:
 	TopN(TopN<T>&& x) {
 		set_size(x.N);
 		set_print_best(x.print_best);
-		cnt = x.cnt;
-		s = x.s;
+		cnt = std::move(x.cnt);
+		s = std::move(x.s);
 	}
 	
 	void operator=(const TopN<T>& x) {
@@ -73,8 +73,8 @@ public:
 	void operator=(TopN<T>&& x) {
 		set_print_best(x.print_best);
 		set_size(x.N);
-		cnt = x.cnt;
-		s =  x.s;
+		cnt = std::move(x.cnt);
+		s = std::move(x.s);
 	}
 
 	void set_size(size_t n) {
