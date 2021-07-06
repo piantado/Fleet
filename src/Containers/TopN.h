@@ -31,8 +31,7 @@ class TopN : public Serializable<TopN<T>> {
 public:
 	const static size_t MAX_N = SIZE_MAX; // largest N we can have -- useful if we need to store union of everything
 	
-	std::map<T,unsigned long> cnt; // also let's count how many times we've seen each for easy debugging
-	std::multiset<T> s; // important that it stores in sorted order by posterior! Multiset because we may have multiple samples that are "equal" (as in SymbolicRegression)
+	std::set<T> s; 
 	bool print_best; // should we print the best?
 	std::atomic<size_t> N;	
 	
@@ -60,7 +59,6 @@ public:
 	TopN(TopN<T>&& x) {
 		set_size(x.N);
 		set_print_best(x.print_best);
-		cnt = std::move(x.cnt);
 		s = std::move(x.s);
 	}
 	
@@ -73,7 +71,6 @@ public:
 	void operator=(TopN<T>&& x) {
 		set_print_best(x.print_best);
 		set_size(x.N);
-		cnt = std::move(x.cnt);
 		s = std::move(x.s);
 	}
 
@@ -111,7 +108,7 @@ public:
 		return s.size() == 0;
 	}
 	
-	const std::multiset<T>& values() const {
+	const std::set<T>& values() const {
 		/**
 		 * @brief Return a multiset of all the values in TopN
 		 * @return 
@@ -130,12 +127,10 @@ public:
 		return s.find(x) != s.end();
 	}
 
-	void add(const T& x, size_t count=1) { 
+	void add(const T& x) { 
 		/**
-		 * @brief Add x. If count is set, that will add that many counts.
-		 * 		  NOTE that we do not add objects x such that x.posterior == -infinity or NaN
+		 * @brief Add x. NOTE that we do not add objects x such that x.posterior == -infinity or NaN
 		 * @param x
-		 * @param count
 		 */
 		 
 		if(N == 0) return; // if we happen to not store anything
@@ -157,22 +152,14 @@ public:
 					xcpy.print();
 				}
 			
-				s.insert(xcpy); // add this one
-				cnt[xcpy] = count;
+				// add this one
+				s.insert(xcpy); 
 				
 				// and remove until we are the right size
 				while(s.size() > N) {
-					size_t n = cnt.erase(*s.begin());
-					assert(n==1);
 					s.erase(s.begin()); 
 				}
 			}
-			else { 			
-				// it's not in there so don't increment the count
-			}
-		} 
-		else { // it's in there already
-			cnt[x] += count;
 		} 
 		
 	}
@@ -192,23 +179,11 @@ public:
 		 */
 	
 		for(auto& h: x.s){
-			add(h, x.cnt.at(h));
+			add(h);
 		}
 	}
 	void operator<<(const TopN<T>& x) {
 		add(x);
-	}
-	
-	
-	// get the count
-	size_t operator[](const T& x) {
-		/**
-		 * @brief Access the counts for a given element x
-		 * @param x
-		 * @return 
-		 */
-		
-		return cnt[x];
 	}
 	
 	/**
@@ -216,7 +191,6 @@ public:
 	 */	
 	void pop() {
 		auto& x = best();
-		cnt.erase(x);
 		s.erase(  std::next(s.rbegin()).base() ); // convert reverse iterator to forward to delete https://stackoverflow.com/questions/1830158/how-to-call-erase-with-a-reverse-iterator
 	}
 	
@@ -275,20 +249,6 @@ public:
 		
 		std::lock_guard guard(lock);
 		s.erase(s.begin(), s.end());
-		cnt.clear();
-	}
-	
-	unsigned long count(const T x) {
-		/**
-		 * @brief How many times have we seen x?
-		 * @param x
-		 * @return 
-		 */
-		
-		std::lock_guard guard(lock);
-		// This mightt get called by something not in here, so we can't assume x is in 
-		if(cnt.count(x)) return cnt.at(x);
-		else             return 0;
 	}
 	
 	template<typename data_t>
