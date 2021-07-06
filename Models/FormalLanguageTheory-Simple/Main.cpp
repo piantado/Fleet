@@ -8,7 +8,7 @@ using S = std::string; // just for convenience
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 S alphabet = "01"; // the alphabet we use (possibly specified on command line)
-thread_local S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated
+thread_local S datastr  = "01,01001,010010001,01001000100001"; // the data, comma separated -- this data should be able to get a posterior of -34.9
 const float strgamma = 0.01; //75; // penalty on string length
 const size_t MAX_LENGTH = 64; // longest strings cons will handle
 
@@ -216,31 +216,30 @@ int main(int argc, char** argv){
 //
 //	return 0;
 	
+//	top.print_best = true;
+//	auto h0 = MyHypothesis::sample();
+//	TopNInference samp(h0, &mydata);
+//	for(auto& h : samp.run(Control()) | top ) { UNUSED(h); }
+//	top.print();
+
+
+//	top.print_best = true;
+//	auto h0 = MyHypothesis::sample();
+//	MCMCChain samp(h0, &mydata);
+//	for(auto& h : samp.run(Control()) | top | thin(FleetArgs::thin)) {
+//		UNUSED(h);
+//	}
+//	top.print();
+
+
 	top.print_best = true;
 	auto h0 = MyHypothesis::sample();
-
-	TopNInference samp(h0, &mydata);
-	for(auto& h : samp.run(Control()) | top ) {
-//		h.print();
-		//COUT h.serialize() ENDL;
-	}
-	
-//	top.print();
-	
-/*	
-	MCMCChain samp(h0, &mydata);
-//    ChainPool samp(h0, &mydata, FleetArgs::nchains);
-	for(auto& h : samp.run(Control()) | top | thin(FleetArgs::thin)) {
-//	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
-//	for(auto& h : samp.run(Control(), 100, 30000) | top | thin(FleetArgs::thin)) {
+	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+	for(auto& h : samp.run(Control(), 100, 30000) | top | thin(FleetArgs::thin)) {
 		UNUSED(h);
-		//h.print();
-		//COUT h.serialize() ENDL;
 	}
-*/
 	top.print();
 
-	
 }
 
 #endif

@@ -31,7 +31,7 @@ public:
 	 * @return 
 	 */
 	[[nodiscard]] static this_t sample() {
-		assert(false && "*** This shold not e called -- must be overwritten in derived class");
+		assert(false && "*** This should not be called -- must be overwritten in derived class");
 	}
 	
 	// Just define for convenience

@@ -1,9 +1,4 @@
 
-
-TODO: FIX THIS BECAUSE WE CHANGED HOW TOPN WORKS 
-
-
-// TODO: Check that we never put a nan in a map because that's not alloewd!
 // ./main --time=1h --inner-time=5s --explore=0.1 --thin=0 --threads=1 --input=./data-sources/Science/Zipf/data.txt --tree=./out/tree.txt
 
 #include <cmath>
@@ -241,7 +236,7 @@ public:
 		else {
 			auto [ret, fb] = Super::propose(); // a proposal to structure
 			
-			ret.randomize_constants(); // with random constants
+			ret.randomize_constants(); // with random constants -- this resizes so that it's right for propose
 			
 			return std::make_pair(ret, fb + ret.compute_constants_prior() - this->compute_constants_prior());
 		}
@@ -275,6 +270,12 @@ public:
 	virtual void expand_to_neighbor(int k) override {
 		Super::expand_to_neighbor(k);
 		randomize_constants();		
+	}
+	
+	[[nodiscard]] static MyHypothesis sample() {
+		auto ret = Super::sample();
+		ret.randomize_constants();
+		return ret;
 	}
 };
 

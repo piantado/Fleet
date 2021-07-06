@@ -33,6 +33,7 @@ public:
 		
 		ctl.start();		
 		while(ctl.running()) {
+			if(ctl.steps > 0 and samples > ctl.steps) break; 
 			
 			TopN<HYP> newTop(N);
 			
@@ -49,7 +50,7 @@ public:
 				
 				for(size_t i=0;i<mysamples;i++) { // TODO: divide these proposals up uniformly to nodes...
 					if(not ctl.running()) break; 
-					if(samples++ > ctl.steps) break; 
+					if(ctl.steps > 0 and samples++ > ctl.steps) break; 
 					
 					// now propose to this
 					auto [proposal, fb] = h.propose();			
