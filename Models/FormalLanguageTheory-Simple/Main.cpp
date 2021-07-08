@@ -1,6 +1,6 @@
 
 #include <string>
-
+#include <unistd.h> // for getpid
 using S = std::string; // just for convenience
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -79,7 +79,8 @@ public:
 		
 		// This would be a normal call:
 		const auto out = call(x.input, ""); 
-
+		const auto outZ = out.Z();
+		
 		// Or we can call and get back a list of completed virtual machine states
 		// these store a bit more information, like runtime counts and haven't computed the
 		// marginal probability of strings
@@ -95,8 +96,8 @@ public:
 		
 		// Likelihood comes from all of the ways that we can delete from the end and the append to make the observed output. 
 		double lp = -infinity;
-		for(auto& o : out.values()) { // add up the probability from all of the strings
-			lp = logplusexp(lp, o.second + p_delete_append<strgamma,strgamma>(o.first, x.output, log_A));
+		for(auto& [s,slp] : out.values()) { // add up the probability from all of the strings
+			lp = logplusexp(lp, (slp-outZ) + p_delete_append<strgamma,strgamma>(s, x.output, log_A));
 		}
 		
 
@@ -125,6 +126,7 @@ public:
 	void print(std::string prefix="") override {
 		// we're going to make this print by showing the language we created on the line before
 		prefix = prefix+"#\n#" +  this->call("", "<err>").string() + "\n";
+		prefix = prefix+str(int(getpid()))+"\t"+str(FleetStatistics::global_sample_count)+"\t";
 //		prefix += str(grammar->compute_enumeration_order(value)) + "\t"; 
 		Super::print(prefix); 
 	}
@@ -146,7 +148,7 @@ public:
 #include "Builtins.h"
 #include "VMSRuntimeError.h"
 
-#include "TopNInference.h"
+#include "HillClimbing.h"
 
 int main(int argc, char** argv){ 
 	
@@ -216,12 +218,11 @@ int main(int argc, char** argv){
 //
 //	return 0;
 	
-//	top.print_best = true;
-//	auto h0 = MyHypothesis::sample();
-//	TopNInference samp(h0, &mydata);
-//	for(auto& h : samp.run(Control()) | top ) { UNUSED(h); }
-//	top.print();
-
+	top.print_best = true;
+	auto h0 = MyHypothesis::sample();
+	HillClimbing samp(h0, &mydata);
+	for(auto& h : samp.run(Control()) | top | print(FleetArgs::print) ) { UNUSED(h); }
+	top.print();
 
 //	top.print_best = true;
 //	auto h0 = MyHypothesis::sample();
@@ -231,14 +232,16 @@ int main(int argc, char** argv){
 //	}
 //	top.print();
 
+	// Let's look at the best run
 
-	top.print_best = true;
-	auto h0 = MyHypothesis::sample();
-	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
-	for(auto& h : samp.run(Control(), 100, 30000) | top | thin(FleetArgs::thin)) {
-		UNUSED(h);
-	}
-	top.print();
+
+//	top.print_best = true;
+//	auto h0 = MyHypothesis::sample();
+//	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+//	for(auto& h : samp.run(Control(), 100, 30000) | top | thin(FleetArgs::thin)) {
+//		UNUSED(h);
+//	}
+//	top.print();
 
 }
 

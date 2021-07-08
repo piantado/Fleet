@@ -290,7 +290,7 @@ public:
 #include "FullLZEnumeration.h"
 #include "PartialLZEnumeration.h"
 #include "BasicEnumeration.h"
-
+#include "HillClimbing.h"
 
 #include "Fleet.h" 
 
@@ -453,6 +453,14 @@ int main(int argc, char** argv){
 		MyHypothesis h0; // start empty
 		PartitionMCMC c(h0, FleetArgs::partition_depth, &mydata);
 		for(auto& h : c.run(Control())) {
+			top << h;
+		}
+	}
+	else if(method == "hill-climbing") {
+		auto h0 = MyHypothesis::sample();
+		HillClimbing samp(h0, &mydata);
+		// defaultly run with some restart:
+		for(auto& h : samp.run(Control(FleetArgs::steps,FleetArgs::runtime,FleetArgs::nthreads,1000))) {
 			top << h;
 		}
 	}

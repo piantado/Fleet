@@ -329,7 +329,7 @@ public:
 	}
 	
 	/**
-	 * @brief This returns a matrix hposter[h,di] giving the posterior on the h'th element
+	 * @brief This returns a matrix hposterior[h,di] giving the posterior on the h'th element. NOTE: not output is not logged
 	 * @return 
 	 */	
 	virtual Matrix compute_normalized_posterior() {
@@ -590,6 +590,7 @@ public:
 			}
 			xi++;
 		}	
+		out.erase(out.size()-1,1); // delete the final newline 
 		
 		return out;	
 	}
@@ -599,7 +600,7 @@ public:
 	 * @return 
 	 */	
 	virtual void print(std::string prefix="") override {
-		COUT string() ENDL;
+		COUT string(prefix) ENDL;
 	}
 	
 	virtual size_t hash() const override { 

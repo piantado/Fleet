@@ -79,7 +79,7 @@ public:
 		 * @brief Set the size of n that I cna have. NOTE: this does not resize the existing data. 
 		 * @param n
 		 */
-		assert(n >= N && "*** Settting TopN size to something smaller probably won't do what you want");
+		assert((empty() or n >= N) && "*** Settting TopN size to something smaller probably won't do what you want");
 		N = n;
 	}
 	void set_print_best(bool b) {
@@ -117,6 +117,7 @@ public:
 		return s;
 	}
 	
+
 	/**
 	 * @brief Does this contain x?
 	 * @param x
@@ -190,8 +191,8 @@ public:
 	 * @brief Pops off the top -- you usually won't want to do this and it's not efficient
 	 */	
 	void pop() {
-		auto& x = best();
-		s.erase(  std::next(s.rbegin()).base() ); // convert reverse iterator to forward to delete https://stackoverflow.com/questions/1830158/how-to-call-erase-with-a-reverse-iterator
+		if(not empty())
+			s.erase(  std::next(s.rbegin()).base() ); // convert reverse iterator to forward to delete https://stackoverflow.com/questions/1830158/how-to-call-erase-with-a-reverse-iterator
 	}
 	
 	const T& best() const { 
@@ -232,14 +233,30 @@ public:
 		 * @param prefix - an optional prefix to print before each line
 		 */
 		
-		// this sorts so that the highest probability is last
-		std::vector<T> v(s.size());
-		std::copy(s.begin(), s.end(), v.begin());
-		std::sort(v.begin(), v.end()); 
-		
-		for(auto& h : v) {
+		for(auto& h : sorted()) {
 			h.print(prefix);
 		}
+	}
+	
+	/**
+	 * @brief Sorted values
+	 * @param increasing -- do we sort increasing or decreasing?
+	 */
+	std::vector<T> sorted(bool increasing=true) const {
+		
+		std::vector<T> v(s.size());
+		
+		std::copy(s.begin(), s.end(), v.begin());
+		
+		std::sort(v.begin(), v.end(), std::less<T>()); 
+		
+		// this prevents us from having to define operator>
+		// because it should be faster to do std::sort(v.begin(), v.end(), std::greater<T>());
+		if(not increasing) {
+			std::reverse(v.begin(), v.end());
+		}
+		
+		return v;
 	}
 	
 	void clear() {

@@ -2,7 +2,7 @@
 from copy import copy
 import itertools
 
-times = [1, 5, 10, 30, 60, 120, 300, 500, 1000, 3000, 5000, 10000]; # seconds # [1, 5, 10, 50, 100, 500, 1000]
+times = [1, 5, 10, 30, 60, 120, 300] #, 500, 1000, 3000, 5000, 10000]; # seconds # [1, 5, 10, 50, 100, 500, 1000]
 chains = [1, 5, 10] 
 replications = range(100)
 restart = [0, 10000]
@@ -72,31 +72,34 @@ def runplease(it, **d):
 
 for d,t in itertools.product(datas.keys(), times):
 
-	# Enumeration only needs to run once:
-	runplease(1, method='basic-enumeration', time=t, data=d)
-	runplease(1, method='partial-LZ-enumeration', time=t, data=d)
-	runplease(1, method='full-LZ-enumeration', time=t, data=d)
-
+	# Enumeration only needs to run once since they're deterministic:
+	#runplease(1, method='basic-enumeration', time=t, data=d)
+	#runplease(1, method='partial-LZ-enumeration', time=t, data=d)
+	#runplease(1, method='full-LZ-enumeration', time=t, data=d)
+	
 	for i in itertools.product(replications):
-		runplease(i, method='prior-sampling', time=t, data=d)
+		runplease(i, method='hill-climbing', time=t, data=d)
 
-	for i in itertools.product(replications):
-		runplease(i, method='beam', time=t, data=d)
+	#for i in itertools.product(replications):
+		#runplease(i, method='prior-sampling', time=t, data=d)
+
+	#for i in itertools.product(replications):
+		#runplease(i, method='beam', time=t, data=d)
 
 	for i,r,c in itertools.product(replications, restart, chains):
 		runplease(i, method='parallel-tempering', time=t, restart=r, data=d, chains=c)
-		runplease(i, method='parallel-tempering-ID', time=t, restart=r, data=d, chains=c)
-		runplease(i, method='parallel-tempering-prior-propose', time=t, restart=r, data=d, chains=c)
+		#runplease(i, method='parallel-tempering-ID', time=t, restart=r, data=d, chains=c)
+		#runplease(i, method='parallel-tempering-prior-propose', time=t, restart=r, data=d, chains=c)
         
-	for i,r,c in itertools.product(replications, restart, chains):
-		runplease(i, method='chain-pool', time=t, restart=r, data=d, chains=c)
+	#for i,r,c in itertools.product(replications, restart, chains):
+		#runplease(i, method='chain-pool', time=t, restart=r, data=d, chains=c)
 
-	for i,r,pd in itertools.product(replications, restart, partition_depths):
-		runplease(i, method='partition-mcmc', time=t, restart=r, data=d, partition_depth=pd)
+	#for i,r,pd in itertools.product(replications, restart, partition_depths):
+		#runplease(i, method='partition-mcmc', time=t, restart=r, data=d, partition_depth=pd)
 
-	for i,it,c,r,e in itertools.product(replications, inner_times, chains, restart, explores):
-		runplease(i, method='mcmc-within-mcts', inner_time=it, chains=c, restart=r, time=t, data=d, explore=e)
+	#for i,it,c,r,e in itertools.product(replications, inner_times, chains, restart, explores):
+		#runplease(i, method='mcmc-within-mcts', inner_time=it, chains=c, restart=r, time=t, data=d, explore=e)
 
-	for i,it,r,e in itertools.product(replications, inner_times, restart, explores):
-		runplease(i, method='prior-sample-mcts', inner_time=it, restart=r, time=t, data=d, explore=e)
+	#for i,it,r,e in itertools.product(replications, inner_times, restart, explores):
+		#runplease(i, method='prior-sample-mcts', inner_time=it, restart=r, time=t, data=d, explore=e)
 
