@@ -118,7 +118,7 @@ int main(int argc, char** argv){
 			hypotheses.push_back(h);
 	}
 	else {
-		hypotheses = load<MyHypothesis>(hypothesis_path, &grammar); // only load if we haven't run 
+		hypotheses = load<MyHypothesis>(hypothesis_path); // only load if we haven't run 
 	}
 	COUT "# Hypothesis size: " TAB hypotheses.size() ENDL;
 	assert(hypotheses.size() > 0 && "*** Somehow we don't have any hypotheses!");
@@ -135,8 +135,8 @@ int main(int argc, char** argv){
 		auto h0 = MyGrammarHypothesis::sample(hypotheses, &human_data);
 
 		auto thechain = MCMCChain<MyGrammarHypothesis>(h0, &human_data);
-		for(auto& h : thechain.run(Control()) | topMAP | print (FleetArgs::print) | thin(FleetArgs::thin) ){
-			COUT h.string(str(thechain.samples)+"\t");
+		for(auto& h : thechain.run(Control()) | topMAP | print(FleetArgs::print) | thin(FleetArgs::thin) ){
+			COUT h.string(str(thechain.samples)+"\t") ENDL;
 		}		
 		
 		// Now when we're done, show the model predicted outputs on the data

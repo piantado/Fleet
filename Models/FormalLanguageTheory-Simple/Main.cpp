@@ -218,11 +218,11 @@ int main(int argc, char** argv){
 //
 //	return 0;
 	
-	top.print_best = true;
-	auto h0 = MyHypothesis::sample();
-	HillClimbing samp(h0, &mydata);
-	for(auto& h : samp.run(Control()) | top | print(FleetArgs::print) ) { UNUSED(h); }
-	top.print();
+//	top.print_best = true;
+//	auto h0 = MyHypothesis::sample();
+//	HillClimbing samp(h0, &mydata);
+//	for(auto& h : samp.run(Control()) | top | print(FleetArgs::print) ) { UNUSED(h); }
+//	top.print();
 
 //	top.print_best = true;
 //	auto h0 = MyHypothesis::sample();
@@ -235,13 +235,13 @@ int main(int argc, char** argv){
 	// Let's look at the best run
 
 
-//	top.print_best = true;
-//	auto h0 = MyHypothesis::sample();
-//	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
-//	for(auto& h : samp.run(Control(), 100, 30000) | top | thin(FleetArgs::thin)) {
-//		UNUSED(h);
-//	}
-//	top.print();
+	top.print_best = true;
+	auto h0 = MyHypothesis::sample();
+	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+	for(auto& h : samp.run(Control(), 100, 30000) | top | thin(FleetArgs::thin)) {
+		UNUSED(h);
+	}
+	top.print();
 
 }
 
