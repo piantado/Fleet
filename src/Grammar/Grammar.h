@@ -425,18 +425,39 @@ public:
 		 * @return 
 		 */
 		
+		// we're going to allow matches to prefixes, but we have to keep track
+		// if we have matched a prefix so we don't mutliple count (e.g if one rule was "str" and one was "string"),
+		// we'd want to match "string" as "string" and not "str"
+		
+		bool was_partial_match = true; 
+		
 		Rule* ret = nullptr;
 		for(auto& r: rules[nt]) {
-			if( (s != "" and is_prefix(s, r.format)) or (s=="" and s==r.format)) {
+			
+			if(s == r.format) {
+				if(ret != nullptr and not was_partial_match) { // if we previously found a full match
+					CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
+					throw YouShouldNotBeHereError();
+				}
+				else {
+					was_partial_match = false;  // not a partial match
+					ret = const_cast<Rule*>(&r);
+				}
+			} // else we look at partial matches
+			else if( was_partial_match and ((s != "" and is_prefix(s, r.format)) or (s=="" and s==r.format))) {
 				if(ret != nullptr) {
 					CERR "*** Multiple rules found matching " << s TAB r.format ENDL;
 					throw YouShouldNotBeHereError();
 				}
-				ret = const_cast<Rule*>(&r);
+				else {
+					ret = const_cast<Rule*>(&r);
+				}
 			} 
 		}
 		
-		if(ret != nullptr) { return ret; }
+		if(ret != nullptr) { 
+			return ret; 
+		}
 		else {			
 			CERR "*** No rule found to match " TAB s ENDL;
 			throw YouShouldNotBeHereError();
