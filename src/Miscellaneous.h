@@ -34,7 +34,6 @@ std::string system_exec(const char* cmd) {
 
 template <typename T>
 void UNUSED(const T& x) {}
-//#define UNUSED(x) (void)(x)
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Hash combinations
@@ -43,17 +42,34 @@ void UNUSED(const T& x) {}
 // Hash combination from https://stackoverflow.com/questions/2590677/how-do-i-combine-hash-values-in-c0x
 inline void hash_combine(std::size_t& seed) { }
 
+/**
+ * @brief Combine hash functions
+ * @param seed
+ * @param v
+ */
 template <typename T, typename... Rest>
 inline void hash_combine(std::size_t& seed, const T& v, Rest... rest) {
-	/**
-	 * @brief Simple way to combine hash functions
-	 * @param seed
-	 * @param v
-	 */
 	
     std::hash<T> hasher;
     seed ^= hasher(v) + 0x9e3779b9 + (seed<<6) + (seed>>2);
     hash_combine(seed, rest...);
+}
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Default getter for map
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/**
+ * @brief A getter for std::map that lets us specify a default to use when the key is missing
+ * @param m
+ * @param key
+ * @param def
+ * @return 
+ */
+template<typename M>
+M::mapped_type get(const M& m, const typename M::key_type& key, const typename M::mapped_type& def) {
+	if(m.contains(key)) return m.at(key);
+	else                return def;
 }
 
 

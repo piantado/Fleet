@@ -26,14 +26,13 @@ using Matrix = Eigen::MatrixXf;
 //	return lse;
 //}
 
-double logsumexp(const Vector& v) {
+double logsumexp_eigen(const Vector& v) {
 	double mx = v.maxCoeff();
-	//CERR v.transpose() TAB mx << "\n\n\n" ENDL;
 	return log((v.array()-mx).array().exp().sum()) + mx;
 }
 
 Vector lognormalize(const Vector& v) {
-	return v - Vector::Ones(v.size())*logsumexp(v);
+	return v - Vector::Ones(v.size())*logsumexp_eigen(v);
 }
 
 Vector eigenslice(const Vector& v, const size_t offset, const size_t len) {

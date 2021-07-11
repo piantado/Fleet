@@ -70,3 +70,8 @@ std::ostream& operator<<(std::ostream& o, const defaultdatum_t<input_t,output_t>
 	// TODO: Check if pointer and deref for printing
 	return o;
 }
+
+template<typename input_t, typename output_t>
+std::string str(const defaultdatum_t<input_t, output_t>& x) {
+	return str(x.input)+":"+str(x.output);
+}

@@ -9,6 +9,31 @@
 template<typename T>
 using generator = cppcoro::generator<T>;
 
+/**
+ * @class every
+ * @author Steven Piantadosi
+ * @date 11/07/21
+ * @file Coroutines.h
+ * @brief This little object will return true once every n times it is converted to a bool. 
+ */
+//template<char... chars>
+//struct every { 
+//	size_t cnt;
+//	size_t n; 
+//	every(size_t _n) : n(_n), cnt(0) {	}
+//	
+//	explicit operator bool() {
+//		if(cnt++==n or n==0) {
+//			cnt = 0;
+//			return true;
+//		}
+//		else {
+//			return false; 
+//		}
+//	}
+//	
+//};
+
 // thin samples by N
 struct thin {
 	size_t m;

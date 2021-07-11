@@ -74,7 +74,7 @@ int main(int argc, char** argv){
 		// This glom thing will use anything overlapping in mcmc_data, and give
 		// us a new pointer if it can. This decreases the amount we need to run MCMC search
 		// on and saves memory
-		glom(mcmc_data, this_data); 	// TODO: Change to reference to pointer?
+		glom(mcmc_data, this_data); 	
 		
 		// now just put into the data
 		human_data.push_back(MyHumanDatum{.data=this_data, 
@@ -134,25 +134,91 @@ int main(int argc, char** argv){
 
 		auto h0 = MyGrammarHypothesis::sample(hypotheses, &human_data);
 
+		size_t nloops = 0;
 		auto thechain = MCMCChain<MyGrammarHypothesis>(h0, &human_data);
-		for(auto& h : thechain.run(Control()) | topMAP | print(FleetArgs::print) | thin(FleetArgs::thin) ){
-			COUT h.string(str(thechain.samples)+"\t") ENDL;
+		
+		for(const auto& h : thechain.run(Control()) | topMAP | print(FleetArgs::print) | thin(FleetArgs::thin) ) {
+			
+			std::ofstream outsamples("out/samples.txt", std::ofstream::app);
+			outsamples << h.string(str(thechain.samples)+"\t") ENDL;
+			outsamples.close();
+			
+			// Every this many steps we print out the model predictions
+			if(nloops++ % 10 == 0) {
+				
+				// Now when we're done, show the model predicted outputs on the data
+				// We'll use the MAP grammar hypothesis for this
+				GrammarHypothesis MAP = topMAP.best();
+				
+				const Matrix hposterior = MAP.compute_normalized_posterior(); // this is shared in the loop below, so computed separately		
+				
+				std::ofstream outMAP("out/MAP-strings.txt");
+				std::ofstream outtop("out/top-H.txt");
+
+				
+				#pragma omp parallel for
+				for(size_t i=0;i<human_data.size();i++) {
+					auto& hd = human_data[i];
+					
+					// compute model predictions on each data point
+					auto model_predictions = MAP.compute_model_predictions(i, hposterior);		
+					
+					// now figure out the full set of strings
+					#pragma omp critical
+					{
+						
+						// find the MAP model hypothesis for this data point
+						double max_post = -infinity; 
+						size_t max_hi = 0;
+						double lse = -infinity;
+						for(auto hi=0;hi<hposterior.rows();hi++) {
+							lse = logplusexp(lse, (double)log(hposterior(hi,i)));
+							if(hposterior(hi,i) > max_post) { 
+								max_post = log(hposterior(hi,i)); 
+								max_hi = hi;
+							}
+							if(i == 42 and hposterior(hi,i) > 0.001) {
+								CERR i TAB hposterior(hi,i) TAB hypotheses[hi] ENDL;
+							}
+						}
+						if(i == 42) { CERR ">>>" TAB lse TAB logsumexp_eigen(hposterior.col(i).array().log()) ENDL; } 
+						
+						
+						// store the top hypothesis found
+						auto mapH = hypotheses[max_hi];
+						auto cll = mapH.call("");
+						outtop << cll.string() ENDL;
+						outtop << i TAB max_post TAB lse TAB QQ(mapH.string()) TAB str(*hd.data) ENDL;
+						
+						std::set<std::string> all_strings;
+						for(const auto& [s,p] : model_predictions) {
+							all_strings.insert(s);
+							UNUSED(p);
+						}
+						
+						size_t N = 0; // total number
+						for(const auto& [s,c] : hd.responses)  {
+							all_strings.insert(s);
+							N += c;
+						}
+					
+						for(const auto& s : all_strings) {
+							outMAP << i TAB 
+									   Q(s) TAB 
+									   get(model_predictions, s, 0) TAB 
+									   get(hd.responses, s, 0) TAB 
+									   N ENDL;
+						}
+					}
+					
+				}
+				outMAP.close();
+						
+			}
+			
 		}		
 		
-		// Now when we're done, show the model predicted outputs on the data
-		// We'll use the MAP grammar hypothesis for this
-		GrammarHypothesis MAP = topMAP.best();
 		
-		Matrix hposterior = MAP.compute_normalized_posterior(); // this is shared in the loop below, so computed separately		
-		#pragma omp parallel for
-		for(size_t i=0;i<human_data.size();i++) {
-			auto model_predictions = MAP.compute_model_predictions(i, hposterior);		
-			
-			#pragma omp critical
-			for(const auto& r : model_predictions) {
-				COUT i TAB Q(r.first) TAB r.second ENDL;
-			}
-		}
 	}
 	
 }

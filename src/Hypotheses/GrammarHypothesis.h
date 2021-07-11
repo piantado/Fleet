@@ -201,6 +201,8 @@ public:
 		
 		// now go through and compute the likelihood of each hypothesis on each data set
 		for(auto& x : max_sizes) {
+			if(CTRL_C) break;
+				
 			LL->emplace(x.first, nhypotheses()); // in this place, make something of size nhypotheses
 			
 			auto& v = LL->at(x.first);
@@ -329,10 +331,10 @@ public:
 	}
 	
 	/**
-	 * @brief This returns a matrix hposterior[h,di] giving the posterior on the h'th element. NOTE: not output is not logged
+	 * @brief This returns a matrix hposterior[h,di] giving the posterior on the h'th element. NOTE: not output is NOT logged
 	 * @return 
 	 */	
-	virtual Matrix compute_normalized_posterior() {
+	virtual Matrix compute_normalized_posterior() const {
 		
 		// the model's posterior
 		// do we need to normalize the prior here? The answer is no -- because its just a constant
@@ -344,11 +346,16 @@ public:
 		// now normalize it and convert to probabilities
 		#pragma omp parallel for
 		for(int di=0;di<hposterior.cols();di++) { 
+			
 			// here we normalize and convert it to *probability* space
-			auto val = lognormalize(hposterior.col(di)).array().exp();
+			const Vector& v = hposterior.col(di); 
+			const Vector lv = lognormalize(v).array().exp();
+			// wow it's a real mystery that the below does not work
+			// (it compiles, but gives weirdo answers...)
+			// const auto& lv = lognormalize(hposterior.col(di)).array().exp();
 			
 			#pragma omp critical
-			hposterior.col(di) = val;
+			hposterior.col(di) = lv;
 		}
 		
 		return hposterior;
@@ -361,7 +368,7 @@ public:
 	 * @param hd
 	 * @param hposterior
 	 */
-	std::map<typename HYP::output_t, double> compute_model_predictions(const size_t i, Matrix& hposterior) {
+	std::map<typename HYP::output_t, double> compute_model_predictions(const size_t i, const Matrix& hposterior) const {
 	
 		std::map<typename HYP::output_t, double> model_predictions;
 		
@@ -509,7 +516,7 @@ public:
 	 * @param C
 	 * @return 
 	 */	
-	virtual Vector hypothesis_prior(Matrix& myC) {
+	virtual Vector hypothesis_prior(Matrix& myC) const {
 		// take a matrix of counts (each row is a hypothesis)
 		// and return a prior for each hypothesis under my own X
 		// (If this was just a PCFG, which its not, we'd use something like lognormalize(C*proposal.getX()))
