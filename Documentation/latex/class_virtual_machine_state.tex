@@ -40,18 +40,20 @@ using \mbox{\hyperlink{class_virtual_machine_state_ada0e1bebef2d73581c6adcd55f8b
 \item 
 using \mbox{\hyperlink{class_virtual_machine_state_acacd9869c4a5ff3a765f6bd7d5bae35c}{FT}} = std\+::function$<$ void(\mbox{\hyperlink{class_virtual_machine_state_ada0e1bebef2d73581c6adcd55f8be521}{this\+\_\+t}} $\ast$, int)$>$
 \item 
+{\footnotesize template$<$typename T $>$ }\\using \mbox{\hyperlink{class_virtual_machine_state_aaa272d9002040c8c15908170fbe16a88}{V\+M\+S\+Stack}} = \mbox{\hyperlink{class_stack}{Stack}}$<$ T $>$
+\item 
 typedef int \mbox{\hyperlink{class_virtual_machine_state_a95ba2f54f65b778c8a012ea3e7a0ee50}{index\+\_\+t}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{class_virtual_machine_state_a9760db87745be704f046f08369ca5eb2}{Virtual\+Machine\+State}} (\mbox{\hyperlink{class_virtual_machine_state_aeb5e01ec57466fd3734e0c29f2b8da0a}{input\+\_\+t}} x, \mbox{\hyperlink{class_virtual_machine_state_a1015cee5061f82f82ef6a953b51f9bd5}{output\+\_\+t}} e, \mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$pl, \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ \mbox{\hyperlink{class_virtual_machine_state_ada0e1bebef2d73581c6adcd55f8be521}{this\+\_\+t}} $>$ $\ast$po)
+\mbox{\hyperlink{class_virtual_machine_state_a516424b0636cbf0539e8ab491f1577f9}{Virtual\+Machine\+State}} (\mbox{\hyperlink{class_virtual_machine_state_aeb5e01ec57466fd3734e0c29f2b8da0a}{input\+\_\+t}} x, const \mbox{\hyperlink{class_virtual_machine_state_a1015cee5061f82f82ef6a953b51f9bd5}{output\+\_\+t}} \&e, \mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$pl, \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ \mbox{\hyperlink{class_virtual_machine_state_ada0e1bebef2d73581c6adcd55f8be521}{this\+\_\+t}} $>$ $\ast$po)
 \item 
 bool \mbox{\hyperlink{class_virtual_machine_state_a213400a3e616f8d1a2041491ea4c782e}{operator$<$}} (const \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} \&m) const
 \begin{DoxyCompactList}\small\item\em These must be sortable by lp so that we can enumerate them from low to high probability in a \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}} N\+O\+TE\+: Virtual\+Machine\+States shouldn\textquotesingle{}t be put in a set because they might evaluate to equal! \end{DoxyCompactList}\item 
-{\footnotesize template$<$typename T $>$ }\\V\+M\+S\+Stack$<$ T $>$ \& \mbox{\hyperlink{class_virtual_machine_state_a580428f53e64cde8aef3c0a6a79838ec}{stack}} ()
+{\footnotesize template$<$typename T $>$ }\\\mbox{\hyperlink{class_virtual_machine_state_aaa272d9002040c8c15908170fbe16a88}{V\+M\+S\+Stack}}$<$ T $>$ \& \mbox{\hyperlink{class_virtual_machine_state_a580428f53e64cde8aef3c0a6a79838ec}{stack}} ()
 \begin{DoxyCompactList}\small\item\em Returns a reference to the stack (of a given type) \end{DoxyCompactList}\item 
-{\footnotesize template$<$typename T $>$ }\\const V\+M\+S\+Stack$<$ T $>$ \& \mbox{\hyperlink{class_virtual_machine_state_adc77f615f164e83ee4a25f06b3a5b64d}{stack}} () const
+{\footnotesize template$<$typename T $>$ }\\const \mbox{\hyperlink{class_virtual_machine_state_aaa272d9002040c8c15908170fbe16a88}{V\+M\+S\+Stack}}$<$ T $>$ \& \mbox{\hyperlink{class_virtual_machine_state_adc77f615f164e83ee4a25f06b3a5b64d}{stack}} () const
 \begin{DoxyCompactList}\small\item\em Const reference to top of stack. \end{DoxyCompactList}\item 
 {\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{class_virtual_machine_state_a5c5373c434e10372d9e9a17df1532965}{getpop}} ()
 \begin{DoxyCompactList}\small\item\em Retrieves and pops the element of type T from the stack. \end{DoxyCompactList}\item 
@@ -78,9 +80,9 @@ void \mbox{\hyperlink{class_virtual_machine_state_a3d67a597eda47200e61434ff8048b
 \item 
 Program \mbox{\hyperlink{class_virtual_machine_state_aa9204cc7523092fdc3d3e53e881bc841}{program}}
 \item 
-V\+M\+S\+Stack$<$ \mbox{\hyperlink{class_virtual_machine_state_aeb5e01ec57466fd3734e0c29f2b8da0a}{input\+\_\+t}} $>$ \mbox{\hyperlink{class_virtual_machine_state_aded245a367f3caca62faf7264feaff41}{xstack}}
+\mbox{\hyperlink{class_virtual_machine_state_aaa272d9002040c8c15908170fbe16a88}{V\+M\+S\+Stack}}$<$ \mbox{\hyperlink{class_virtual_machine_state_aeb5e01ec57466fd3734e0c29f2b8da0a}{input\+\_\+t}} $>$ \mbox{\hyperlink{class_virtual_machine_state_aded245a367f3caca62faf7264feaff41}{xstack}}
 \item 
-\mbox{\hyperlink{class_virtual_machine_state_a1015cee5061f82f82ef6a953b51f9bd5}{output\+\_\+t}} \mbox{\hyperlink{class_virtual_machine_state_aa3eaa4b1432d1604b86039d2ff0faae1}{err}}
+const \mbox{\hyperlink{class_virtual_machine_state_a1015cee5061f82f82ef6a953b51f9bd5}{output\+\_\+t}} \& \mbox{\hyperlink{class_virtual_machine_state_a3fcb81adddcc27cf4bca939d8b939efc}{err}}
 \item 
 double \mbox{\hyperlink{class_virtual_machine_state_a5937b2c3afdfe35b9bba71dbdd83d5bd}{lp}}
 \item 
@@ -90,7 +92,7 @@ unsigned long \mbox{\hyperlink{class_virtual_machine_state_aa35593f67d1ea4e838fe
 \item 
 std\+::map$<$ std\+::pair$<$ \mbox{\hyperlink{class_virtual_machine_state_a95ba2f54f65b778c8a012ea3e7a0ee50}{index\+\_\+t}}, \mbox{\hyperlink{class_virtual_machine_state_aeb5e01ec57466fd3734e0c29f2b8da0a}{input\+\_\+t}} $>$, \mbox{\hyperlink{class_virtual_machine_state_a1015cee5061f82f82ef6a953b51f9bd5}{output\+\_\+t}} $>$ \mbox{\hyperlink{class_virtual_machine_state_a8f36d4040b98a1e85fb7edf61e6085c9}{mem}}
 \item 
-V\+M\+S\+Stack$<$ std\+::pair$<$ \mbox{\hyperlink{class_virtual_machine_state_a95ba2f54f65b778c8a012ea3e7a0ee50}{index\+\_\+t}}, \mbox{\hyperlink{class_virtual_machine_state_aeb5e01ec57466fd3734e0c29f2b8da0a}{input\+\_\+t}} $>$ $>$ \mbox{\hyperlink{class_virtual_machine_state_a27df19177ca8ede5d88bf51cff785c00}{memstack}}
+\mbox{\hyperlink{class_virtual_machine_state_aaa272d9002040c8c15908170fbe16a88}{V\+M\+S\+Stack}}$<$ std\+::pair$<$ \mbox{\hyperlink{class_virtual_machine_state_a95ba2f54f65b778c8a012ea3e7a0ee50}{index\+\_\+t}}, \mbox{\hyperlink{class_virtual_machine_state_aeb5e01ec57466fd3734e0c29f2b8da0a}{input\+\_\+t}} $>$ $>$ \mbox{\hyperlink{class_virtual_machine_state_a27df19177ca8ede5d88bf51cff785c00}{memstack}}
 \item 
 \mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64}{vmstatus\+\_\+t}} \mbox{\hyperlink{class_virtual_machine_state_a6e561a217081654b4187620953e86fff}{status}}
 \item 
@@ -151,15 +153,23 @@ using \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$
 {\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+input , typename \+\_\+t\+\_\+output , typename... V\+M\+\_\+\+T\+Y\+P\+ES$>$ \\
 using \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::\mbox{\hyperlink{class_virtual_machine_state_ada0e1bebef2d73581c6adcd55f8be521}{this\+\_\+t}} =  \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$\mbox{\hyperlink{class_virtual_machine_state_aeb5e01ec57466fd3734e0c29f2b8da0a}{input\+\_\+t}}, \mbox{\hyperlink{class_virtual_machine_state_a1015cee5061f82f82ef6a953b51f9bd5}{output\+\_\+t}}, V\+M\+\_\+\+T\+Y\+P\+E\+S...$>$}
 
+\mbox{\Hypertarget{class_virtual_machine_state_aaa272d9002040c8c15908170fbe16a88}\label{class_virtual_machine_state_aaa272d9002040c8c15908170fbe16a88}} 
+\index{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$@{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$}!VMSStack@{VMSStack}}
+\index{VMSStack@{VMSStack}!VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$@{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$}}
+\doxysubsubsection{\texorpdfstring{VMSStack}{VMSStack}}
+{\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+input , typename \+\_\+t\+\_\+output , typename... V\+M\+\_\+\+T\+Y\+P\+ES$>$ \\
+template$<$typename T $>$ \\
+using \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::\mbox{\hyperlink{class_virtual_machine_state_aaa272d9002040c8c15908170fbe16a88}{V\+M\+S\+Stack}} =  \mbox{\hyperlink{class_stack}{Stack}}$<$T$>$}
+
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{class_virtual_machine_state_a9760db87745be704f046f08369ca5eb2}\label{class_virtual_machine_state_a9760db87745be704f046f08369ca5eb2}} 
+\mbox{\Hypertarget{class_virtual_machine_state_a516424b0636cbf0539e8ab491f1577f9}\label{class_virtual_machine_state_a516424b0636cbf0539e8ab491f1577f9}} 
 \index{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$@{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$}!VirtualMachineState@{VirtualMachineState}}
 \index{VirtualMachineState@{VirtualMachineState}!VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$@{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$}}
 \doxysubsubsection{\texorpdfstring{VirtualMachineState()}{VirtualMachineState()}}
 {\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+input , typename \+\_\+t\+\_\+output , typename... V\+M\+\_\+\+T\+Y\+P\+ES$>$ \\
-\mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::\mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_virtual_machine_state_aeb5e01ec57466fd3734e0c29f2b8da0a}{input\+\_\+t}}}]{x,  }\item[{\mbox{\hyperlink{class_virtual_machine_state_a1015cee5061f82f82ef6a953b51f9bd5}{output\+\_\+t}}}]{e,  }\item[{\mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$}]{pl,  }\item[{\mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ \mbox{\hyperlink{class_virtual_machine_state_ada0e1bebef2d73581c6adcd55f8be521}{this\+\_\+t}} $>$ $\ast$}]{po }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::\mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_virtual_machine_state_aeb5e01ec57466fd3734e0c29f2b8da0a}{input\+\_\+t}}}]{x,  }\item[{const \mbox{\hyperlink{class_virtual_machine_state_a1015cee5061f82f82ef6a953b51f9bd5}{output\+\_\+t}} \&}]{e,  }\item[{\mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$}]{pl,  }\item[{\mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ \mbox{\hyperlink{class_virtual_machine_state_ada0e1bebef2d73581c6adcd55f8be521}{this\+\_\+t}} $>$ $\ast$}]{po }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -320,7 +330,7 @@ Run with a pointer back to pool p. This is required because \char`\"{}flip\char`
 \doxysubsubsection{\texorpdfstring{stack()}{stack()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+input , typename \+\_\+t\+\_\+output , typename... V\+M\+\_\+\+T\+Y\+P\+ES$>$ \\
 template$<$typename T $>$ \\
-V\+M\+S\+Stack$<$T$>$\& \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::stack (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\mbox{\hyperlink{class_virtual_machine_state_aaa272d9002040c8c15908170fbe16a88}{V\+M\+S\+Stack}}$<$T$>$\& \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::stack (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -335,7 +345,7 @@ Returns a reference to the stack (of a given type)
 \doxysubsubsection{\texorpdfstring{stack()}{stack()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+input , typename \+\_\+t\+\_\+output , typename... V\+M\+\_\+\+T\+Y\+P\+ES$>$ \\
 template$<$typename T $>$ \\
-const V\+M\+S\+Stack$<$T$>$\& \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::stack (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+const \mbox{\hyperlink{class_virtual_machine_state_aaa272d9002040c8c15908170fbe16a88}{V\+M\+S\+Stack}}$<$T$>$\& \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::stack (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -354,12 +364,12 @@ Const reference to top of stack.
 {\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+input , typename \+\_\+t\+\_\+output , typename... V\+M\+\_\+\+T\+Y\+P\+ES$>$ \\
 \mbox{\hyperlink{struct_virtual_machine_state_1_1stack__t}{stack\+\_\+t}}$<$V\+M\+\_\+\+T\+Y\+P\+E\+S...$>$ \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::\+\_\+stack}
 
-\mbox{\Hypertarget{class_virtual_machine_state_aa3eaa4b1432d1604b86039d2ff0faae1}\label{class_virtual_machine_state_aa3eaa4b1432d1604b86039d2ff0faae1}} 
+\mbox{\Hypertarget{class_virtual_machine_state_a3fcb81adddcc27cf4bca939d8b939efc}\label{class_virtual_machine_state_a3fcb81adddcc27cf4bca939d8b939efc}} 
 \index{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$@{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$}!err@{err}}
 \index{err@{err}!VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$@{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$}}
 \doxysubsubsection{\texorpdfstring{err}{err}}
 {\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+input , typename \+\_\+t\+\_\+output , typename... V\+M\+\_\+\+T\+Y\+P\+ES$>$ \\
-\mbox{\hyperlink{class_virtual_machine_state_a1015cee5061f82f82ef6a953b51f9bd5}{output\+\_\+t}} \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::err}
+const \mbox{\hyperlink{class_virtual_machine_state_a1015cee5061f82f82ef6a953b51f9bd5}{output\+\_\+t}}\& \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::err}
 
 \mbox{\Hypertarget{class_virtual_machine_state_a5937b2c3afdfe35b9bba71dbdd83d5bd}\label{class_virtual_machine_state_a5937b2c3afdfe35b9bba71dbdd83d5bd}} 
 \index{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$@{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$}!lp@{lp}}
@@ -380,7 +390,7 @@ std\+::map$<$std\+::pair$<$\mbox{\hyperlink{class_virtual_machine_state_a95ba2f5
 \index{memstack@{memstack}!VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$@{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$}}
 \doxysubsubsection{\texorpdfstring{memstack}{memstack}}
 {\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+input , typename \+\_\+t\+\_\+output , typename... V\+M\+\_\+\+T\+Y\+P\+ES$>$ \\
-V\+M\+S\+Stack$<$std\+::pair$<$\mbox{\hyperlink{class_virtual_machine_state_a95ba2f54f65b778c8a012ea3e7a0ee50}{index\+\_\+t}}, \mbox{\hyperlink{class_virtual_machine_state_aeb5e01ec57466fd3734e0c29f2b8da0a}{input\+\_\+t}}$>$ $>$ \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::memstack}
+\mbox{\hyperlink{class_virtual_machine_state_aaa272d9002040c8c15908170fbe16a88}{V\+M\+S\+Stack}}$<$std\+::pair$<$\mbox{\hyperlink{class_virtual_machine_state_a95ba2f54f65b778c8a012ea3e7a0ee50}{index\+\_\+t}}, \mbox{\hyperlink{class_virtual_machine_state_aeb5e01ec57466fd3734e0c29f2b8da0a}{input\+\_\+t}}$>$ $>$ \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::memstack}
 
 \mbox{\Hypertarget{class_virtual_machine_state_a68860cf7a2971d7f8c4b817d360d7b43}\label{class_virtual_machine_state_a68860cf7a2971d7f8c4b817d360d7b43}} 
 \index{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$@{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$}!pool@{pool}}
@@ -429,7 +439,7 @@ unsigned long \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+St
 \index{xstack@{xstack}!VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$@{VirtualMachineState$<$ \_t\_input, \_t\_output, VM\_TYPES $>$}}
 \doxysubsubsection{\texorpdfstring{xstack}{xstack}}
 {\footnotesize\ttfamily template$<$typename \+\_\+t\+\_\+input , typename \+\_\+t\+\_\+output , typename... V\+M\+\_\+\+T\+Y\+P\+ES$>$ \\
-V\+M\+S\+Stack$<$\mbox{\hyperlink{class_virtual_machine_state_aeb5e01ec57466fd3734e0c29f2b8da0a}{input\+\_\+t}}$>$ \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::xstack}
+\mbox{\hyperlink{class_virtual_machine_state_aaa272d9002040c8c15908170fbe16a88}{V\+M\+S\+Stack}}$<$\mbox{\hyperlink{class_virtual_machine_state_aeb5e01ec57466fd3734e0c29f2b8da0a}{input\+\_\+t}}$>$ \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}}$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+ES $>$\+::xstack}
 
 
 

@@ -26,7 +26,11 @@ file \mbox{\hyperlink{_control_8h}{Control.\+h}}
 \begin{DoxyCompactList}\small\item\em This class has all the information for running M\+C\+MC or M\+C\+TS in a little package. It defaultly constructs (via \mbox{\hyperlink{struct_control}{Control()}}) to read these from \mbox{\hyperlink{namespace_fleet_args}{Fleet\+Args}}, which are a bunch of variables set by Fleet\+::initialize from the command line. This makes it especially convenient to call with command line arguments, but others can be specified as well. \end{DoxyCompactList}\item 
 file \mbox{\hyperlink{_inference_2_enumeration_inference_8h}{Enumeration\+Inference.\+h}}
 \begin{DoxyCompactList}\small\item\em Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar. It supports multithreading and requires a hypothesis, grammar, start type, and callback. \end{DoxyCompactList}\item 
-file \mbox{\hyperlink{_parallel_inference_interface_8h}{Parallel\+Inference\+Interface.\+h}}
+file \mbox{\hyperlink{_hill_climbing_8h}{Hill\+Climbing.\+h}}
+\begin{DoxyCompactList}\small\item\em This cute kind of inference keeps a body of N top hypotheses, and successively proposes to them using standard proposals. When it hasn\textquotesingle{}t improved in ctl.\+restart steps, it will restart (resample). Note that this really should use ctl.\+restart$>$0, or else you just climb up one hill. N\+O\+TE\+: We could propose propotional to each hypothesis\textquotesingle{} posterior, but it doesn\textquotesingle{}t matter much because the best gets most probability mass (that\textquotesingle{}s why we don\textquotesingle{}t store more than n=1 defaultly) \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{_m_p_i_inference_interface_8h}{M\+P\+I\+Inference\+Interface.\+h}}
 \item 
 file \mbox{\hyperlink{_prior_inference_8h}{Prior\+Inference.\+h}}
-\begin{DoxyCompactList}\small\item\em Inference by sampling from the prior -- doesn\textquotesingle{}t tend to work well, but might be a useful baseline. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Inference by sampling from the prior -- doesn\textquotesingle{}t tend to work well, but might be a useful baseline. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{_threaded_inference_interface_8h}{Threaded\+Inference\+Interface.\+h}}
+\end{DoxyCompactItemize}

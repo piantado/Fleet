@@ -1,7 +1,13 @@
 \hypertarget{_random_8h}{}\doxysection{src/\+Random.h File Reference}
 \label{_random_8h}\index{src/Random.h@{src/Random.h}}
+
+
+This is a thread\+\_\+local rng that is seeded on construction so that each thread can get a different seed. (Because this seeding is in a constructor, it will be called before rl\+Rng is used) If we just make a thread\+\_\+local variable, it is not seeded well. Note that if we specify random\+\_\+seed it only applies to the first thread (and you get a warning for other threads)  
+
+
 {\ttfamily \#include $<$random$>$}\newline
 {\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
 {\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Numerics.\+h\char`\"{}}\newline
 Include dependency graph for Random.\+h\+:
@@ -20,12 +26,13 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=350pt]{_random_8h__dep__incl}
 \end{center}
 \end{figure}
-\doxysubsection*{Functions}
+\doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-thread\+\_\+local std\+::uniform\+\_\+real\+\_\+distribution$<$ double $>$ \mbox{\hyperlink{_random_8h_a988b2215f5ac07500f8f1d901ae4188a}{uniform\+\_\+dist}} (0.\+0, 1.\+0)
-\item 
-thread\+\_\+local std\+::normal\+\_\+distribution$<$ float $>$ \mbox{\hyperlink{_random_8h_a112726533590b471a9443cdb65f766bc}{normal}} (0.\+0, 1.\+0)
+class \mbox{\hyperlink{classthread__local__rng}{thread\+\_\+local\+\_\+rng}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
 \item 
 double \mbox{\hyperlink{_random_8h_a30d1e43990eafb316df89c96cd213e6b}{uniform}} ()
 \item 
@@ -76,8 +83,13 @@ std\+::pair$<$ size\+\_\+t, double $>$ \mbox{\hyperlink{_random_8h_a941e30b37e9b
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-thread\+\_\+local std\+::mt19937 \mbox{\hyperlink{_random_8h_aafe399edd36d0c71ccd2bb247cf8365d}{rng}}
+\mbox{\hyperlink{classthread__local__rng}{thread\+\_\+local\+\_\+rng}} \mbox{\hyperlink{_random_8h_a12b0f9edd4d9426f80397579fd625598}{rng}}
 \end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This is a thread\+\_\+local rng that is seeded on construction so that each thread can get a different seed. (Because this seeding is in a constructor, it will be called before rl\+Rng is used) If we just make a thread\+\_\+local variable, it is not seeded well. Note that if we specify random\+\_\+seed it only applies to the first thread (and you get a warning for other threads) 
+
 
 
 \doxysubsection{Function Documentation}
@@ -195,12 +207,6 @@ Random integer distribution \mbox{[}min,max-\/1\mbox{]}
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{_random_8h_a112726533590b471a9443cdb65f766bc}\label{_random_8h_a112726533590b471a9443cdb65f766bc}} 
-\index{Random.h@{Random.h}!normal@{normal}}
-\index{normal@{normal}!Random.h@{Random.h}}
-\doxysubsubsection{\texorpdfstring{normal()}{normal()}}
-{\footnotesize\ttfamily thread\+\_\+local std\+::normal\+\_\+distribution$<$float$>$ normal (\begin{DoxyParamCaption}\item[{0.}]{0,  }\item[{1.}]{0 }\end{DoxyParamCaption})}
-
 \mbox{\Hypertarget{_random_8h_a763d241ae5509542501d09a5132bfc9f}\label{_random_8h_a763d241ae5509542501d09a5132bfc9f}} 
 \index{Random.h@{Random.h}!normal\_lpdf@{normal\_lpdf}}
 \index{normal\_lpdf@{normal\_lpdf}!Random.h@{Random.h}}
@@ -311,18 +317,12 @@ If f specifies the probability (N\+OT log probability) of each element of s, com
 Sample from a uniform distribution \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{_random_8h_a988b2215f5ac07500f8f1d901ae4188a}\label{_random_8h_a988b2215f5ac07500f8f1d901ae4188a}} 
-\index{Random.h@{Random.h}!uniform\_dist@{uniform\_dist}}
-\index{uniform\_dist@{uniform\_dist}!Random.h@{Random.h}}
-\doxysubsubsection{\texorpdfstring{uniform\_dist()}{uniform\_dist()}}
-{\footnotesize\ttfamily thread\+\_\+local std\+::uniform\+\_\+real\+\_\+distribution$<$double$>$ uniform\+\_\+dist (\begin{DoxyParamCaption}\item[{0.}]{0,  }\item[{1.}]{0 }\end{DoxyParamCaption})}
-
 
 
 \doxysubsection{Variable Documentation}
-\mbox{\Hypertarget{_random_8h_aafe399edd36d0c71ccd2bb247cf8365d}\label{_random_8h_aafe399edd36d0c71ccd2bb247cf8365d}} 
+\mbox{\Hypertarget{_random_8h_a12b0f9edd4d9426f80397579fd625598}\label{_random_8h_a12b0f9edd4d9426f80397579fd625598}} 
 \index{Random.h@{Random.h}!rng@{rng}}
 \index{rng@{rng}!Random.h@{Random.h}}
 \doxysubsubsection{\texorpdfstring{rng}{rng}}
-{\footnotesize\ttfamily thread\+\_\+local std\+::mt19937 rng}
+{\footnotesize\ttfamily \mbox{\hyperlink{classthread__local__rng}{thread\+\_\+local\+\_\+rng}} rng}
 

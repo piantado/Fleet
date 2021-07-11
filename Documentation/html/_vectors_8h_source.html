@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Fleet: src/Vectors.h Source File</title>
+<title>Fleet: src/Containers/Vectors.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_e378baa8d587564728b7986d6e7c1141.html">Containers</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -103,11 +103,11 @@ $(function() {
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="_vectors_8h.html#a81e872a75b38d3d09b6dd7b724ed940a">   67</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="_vectors_8h.html#a81e872a75b38d3d09b6dd7b724ed940a">glom</a>(std::vector&lt;std::vector&lt;T&gt;*&gt;&amp; <a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383">X</a>, std::vector&lt;T&gt;*&amp; v) {</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="_vectors_8h.html#a81e872a75b38d3d09b6dd7b724ed940a">   67</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="_vectors_8h.html#a81e872a75b38d3d09b6dd7b724ed940a">glom</a>(std::vector&lt;std::vector&lt;T&gt;*&gt;&amp; X, std::vector&lt;T&gt;*&amp; v) {</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">// if v is a prefix of anything in x, then </span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="comment">// we can just use that. </span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; x : <a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383">X</a>) {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; x : X) {</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">if</span>(<a class="code" href="_strings_8h.html#ac63ed4e974b8dc3b49eae65049ad7804">is_prefix</a>(*v, *x)) {</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keyword">delete</span> v;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            v = x; <span class="comment">// set V to the existing datset</span></div>
@@ -120,7 +120,7 @@ $(function() {
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">// to the stuff stored in X</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">size_t</span> mx = 0;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    std::vector&lt;T&gt;* match = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; x : <a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383">X</a>) {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; x : X) {</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">if</span>(<a class="code" href="_strings_8h.html#ac63ed4e974b8dc3b49eae65049ad7804">is_prefix</a>(*x, *v) and x-&gt;size() &gt; mx) {</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            mx = x-&gt;size();</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            match = x;</div>
@@ -142,7 +142,7 @@ $(function() {
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="comment">// else nothing matches so we have to just return v;</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <a class="code" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383">X</a>.push_back(v);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        X.push_back(v);</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    </div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    </div>
@@ -150,7 +150,6 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="a_vectors_8h_html_a81e872a75b38d3d09b6dd7b724ed940a"><div class="ttname"><a href="_vectors_8h.html#a81e872a75b38d3d09b6dd7b724ed940a">glom</a></div><div class="ttdeci">void glom(std::vector&lt; std::vector&lt; T &gt; * &gt; &amp;X, std::vector&lt; T &gt; *&amp;v)</div><div class="ttdoc">Glom here takes a vector of pointers to vectors. It searches through X to find if anything matches th...</div><div class="ttdef"><b>Definition:</b> Vectors.h:67</div></div>
 <div class="ttc" id="a_vectors_8h_html_a3c668deb0d49823fc26f2efca4b338be"><div class="ttname"><a href="_vectors_8h.html#a3c668deb0d49823fc26f2efca4b338be">increment</a></div><div class="ttdeci">void increment(std::vector&lt; T &gt; &amp;v, size_t idx, T count=1)</div><div class="ttdef"><b>Definition:</b> Vectors.h:37</div></div>
-<div class="ttc" id="a_ops_8h_html_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383"><div class="ttname"><a href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383">Op::X</a></div><div class="ttdeci">@ X</div></div>
 <div class="ttc" id="a_strings_8h_html_ac63ed4e974b8dc3b49eae65049ad7804"><div class="ttname"><a href="_strings_8h.html#ac63ed4e974b8dc3b49eae65049ad7804">is_prefix</a></div><div class="ttdeci">bool is_prefix(const T &amp;prefix, const T &amp;x)</div><div class="ttdef"><b>Definition:</b> Strings.h:142</div></div>
 <div class="ttc" id="a_vectors_8h_html_a49912de77a43aa7b0982a00e374adeb8"><div class="ttname"><a href="_vectors_8h.html#a49912de77a43aa7b0982a00e374adeb8">slice</a></div><div class="ttdeci">std::vector&lt; T &gt; slice(const std::vector&lt; T &gt; &amp;v, size_t start, int len)</div><div class="ttdef"><b>Definition:</b> Vectors.h:6</div></div>
 <div class="ttc" id="a_strings_8h_html_ae6eafa3700b097b96c1601a141a45de4"><div class="ttname"><a href="_strings_8h.html#ae6eafa3700b097b96c1601a141a45de4">count</a></div><div class="ttdeci">size_t count(const std::string &amp;str, const std::string &amp;sub)</div><div class="ttdef"><b>Definition:</b> Strings.h:311</div></div>

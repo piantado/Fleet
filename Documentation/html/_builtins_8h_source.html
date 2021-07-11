@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Fleet: src/Builtins.h Source File</title>
+<title>Fleet: src/VirtualMachine/Builtins.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_69acd907a0659b8a578a2751af70f096.html">VirtualMachine</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -107,7 +107,7 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    }</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;};</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="namespace_builtins.html">   36</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_builtins.html">Builtins</a> {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_builtins.html">Builtins</a> {</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// Define this because it&#39;s an ugly expression to keep typing and we might want to change all at once</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">   39</a></span>&#160;<span class="preprocessor">    #define BUILTIN_LAMBDA             +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -&gt; void</span></div>
@@ -440,7 +440,7 @@ $(function() {
 <div class="ttc" id="a_ops_8h_html_a588e6b56097e045c733b60d25c4d45aba7844dd5b72152559f4244d829e606ae0"><div class="ttname"><a href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba7844dd5b72152559f4244d829e606ae0">Op::SafeFlipP</a></div><div class="ttdeci">@ SafeFlipP</div></div>
 <div class="ttc" id="a_ops_8h_html_a588e6b56097e045c733b60d25c4d45abac06233e1bc52cb704757c997c86d7c68"><div class="ttname"><a href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abac06233e1bc52cb704757c997c86d7c68">Op::MemRecurse</a></div><div class="ttdeci">@ MemRecurse</div></div>
 <div class="ttc" id="a_ops_8h_html_a588e6b56097e045c733b60d25c4d45aba4154a7f9f64541a0939bf287c22925d2"><div class="ttname"><a href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba4154a7f9f64541a0939bf287c22925d2">Op::SafeRecurse</a></div><div class="ttdeci">@ SafeRecurse</div></div>
-<div class="ttc" id="anamespace_builtins_html"><div class="ttname"><a href="namespace_builtins.html">Builtins</a></div><div class="ttdef"><b>Definition:</b> Builtins.h:36</div></div>
+<div class="ttc" id="anamespace_builtins_html"><div class="ttname"><a href="namespace_builtins.html">Builtins</a></div><div class="ttdef"><b>Definition:</b> Combinators.h:27</div></div>
 <div class="ttc" id="anamespace_builtins_html_aaf8ac531e0c02e508668811329856ea3"><div class="ttname"><a href="namespace_builtins.html#aaf8ac531e0c02e508668811329856ea3">Builtins::Recurse</a></div><div class="ttdeci">Builtin&lt; output_t, input_t &gt; Recurse(Op::Recurse, BUILTIN_LAMBDA { assert(vms-&gt;program_loader !=nullptr);if(vms-&gt;recursion_depth++&gt; vms-&gt;MAX_RECURSE) { vms-&gt;status=vmstatus_t::RECURSION_DEPTH;return;} auto mynewx=vms-&gt;template getpop&lt; input_t &gt;();vms-&gt;xstack.push(std::move(mynewx));vms-&gt;program.push(Builtins::PopX&lt; Grammar_t &gt;.makeInstruction());vms-&gt;program_loader-&gt;push_program(vms-&gt;program, arg);})</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

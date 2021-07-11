@@ -5,7 +5,7 @@ Directory dependency graph for src\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[height=550pt]{dir_68267d1309a1af8e8297ef4c3efbcdba_dep}
+\includegraphics[width=350pt]{dir_68267d1309a1af8e8297ef4c3efbcdba_dep}
 \end{center}
 \end{figure}
 \doxysubsection*{Directories}
@@ -32,12 +32,8 @@ directory \mbox{\hyperlink{dir_69acd907a0659b8a578a2751af70f096}{Virtual\+Machin
 \item 
 file \mbox{\hyperlink{_base_node_8h}{Base\+Node.\+h}}
 \begin{DoxyCompactList}\small\item\em This is a general tree class, which we are adding because there are currently at least 3 different tree classes used in different parts of fleet (Nodes, M\+C\+TS, data for Binding\+Theory, etc.). This is an attempt to make a big superclass that puts all of this functionality in one place. It attempts to keep the node size small so that we can use this efficiently in M\+C\+TS in particular. \end{DoxyCompactList}\item 
-file \mbox{\hyperlink{_builtins_8h}{Builtins.\+h}}
-\item 
 file \mbox{\hyperlink{_combinators_8h}{Combinators.\+h}}
 \begin{DoxyCompactList}\small\item\em A grammar for SK combinatory logic. N\+O\+TE\+: Custom\+Ops must be defined here. \end{DoxyCompactList}\item 
-file \mbox{\hyperlink{_coroutines_8h}{Coroutines.\+h}}
-\item 
 file \mbox{\hyperlink{_errors_8h}{Errors.\+h}}
 \item 
 file \mbox{\hyperlink{_fleet_8h}{Fleet.\+h}}
@@ -48,15 +44,15 @@ file \mbox{\hyperlink{_i_o_8h}{I\+O.\+h}}
 \item 
 file \mbox{\hyperlink{_miscellaneous_8h}{Miscellaneous.\+h}}
 \item 
+file \mbox{\hyperlink{_m_p_i_8h}{M\+P\+I.\+h}}
+\item 
 file \mbox{\hyperlink{_numerics_8h}{Numerics.\+h}}
 \item 
 file \mbox{\hyperlink{_random_8h}{Random.\+h}}
-\item 
+\begin{DoxyCompactList}\small\item\em This is a thread\+\_\+local rng that is seeded on construction so that each thread can get a different seed. (Because this seeding is in a constructor, it will be called before rl\+Rng is used) If we just make a thread\+\_\+local variable, it is not seeded well. Note that if we specify random\+\_\+seed it only applies to the first thread (and you get a warning for other threads) \end{DoxyCompactList}\item 
 file \mbox{\hyperlink{_singleton_8h}{Singleton.\+h}}
 \item 
 file \mbox{\hyperlink{_strings_8h}{Strings.\+h}}
 \item 
 file \mbox{\hyperlink{_timing_8h}{Timing.\+h}}
-\item 
-file \mbox{\hyperlink{_vectors_8h}{Vectors.\+h}}
 \end{DoxyCompactItemize}

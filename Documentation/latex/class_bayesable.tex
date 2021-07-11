@@ -30,7 +30,7 @@ virtual double \mbox{\hyperlink{class_bayesable_a202493156cec15937bee304d807fdbd
 \begin{DoxyCompactList}\small\item\em Compute the likelihood of a collection of data, by calling compute\+\_\+single\+\_\+likelihood on each. This stops if our likelihood falls below breakout. \end{DoxyCompactList}\item 
 virtual double \mbox{\hyperlink{class_bayesable_a0b0552923602bcab6c768581ab8c7df8}{compute\+\_\+posterior}} (const \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} \&data, const double breakout=-\/\mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}})
 \begin{DoxyCompactList}\small\item\em Compute the posterior, by calling prior and likelihood. This involves only a little bit of fanciness, which is that if our prior is -\/inf, then we don\textquotesingle{}t both computing the likelihood. \end{DoxyCompactList}\item 
-virtual double \mbox{\hyperlink{class_bayesable_acf805473a9eea0df96d6267dca0e9c87}{at\+\_\+temperature}} (double t)
+virtual double \mbox{\hyperlink{class_bayesable_a8f061b73dd6eb3a0ef4233e2e63e23ad}{at\+\_\+temperature}} (double t) const
 \item 
 virtual bool \mbox{\hyperlink{class_bayesable_ac356e7e5b11c266b8442064186dbe89d}{operator$<$}} (const \mbox{\hyperlink{class_bayesable}{Bayesable}}$<$ \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} $>$ \&l) const
 \item 
@@ -89,12 +89,12 @@ typedef \+\_\+datum\+\_\+t \mbox{\hyperlink{class_bayesable}{Bayesable}}$<$ \+\_
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_bayesable_acf805473a9eea0df96d6267dca0e9c87}\label{class_bayesable_acf805473a9eea0df96d6267dca0e9c87}} 
+\mbox{\Hypertarget{class_bayesable_a8f061b73dd6eb3a0ef4233e2e63e23ad}\label{class_bayesable_a8f061b73dd6eb3a0ef4233e2e63e23ad}} 
 \index{Bayesable$<$ \_datum\_t, \_data\_t $>$@{Bayesable$<$ \_datum\_t, \_data\_t $>$}!at\_temperature@{at\_temperature}}
 \index{at\_temperature@{at\_temperature}!Bayesable$<$ \_datum\_t, \_data\_t $>$@{Bayesable$<$ \_datum\_t, \_data\_t $>$}}
 \doxysubsubsection{\texorpdfstring{at\_temperature()}{at\_temperature()}}
 {\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t , typename \+\_\+data\+\_\+t  = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
-virtual double \mbox{\hyperlink{class_bayesable}{Bayesable}}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::at\+\_\+temperature (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+virtual double \mbox{\hyperlink{class_bayesable}{Bayesable}}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::at\+\_\+temperature (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
 Return my posterior score at a given (likelihood) temperature 
 \begin{DoxyParams}{Parameters}
@@ -170,7 +170,7 @@ Compute the prior -- defaultly not defined.
 
 
 
-Implemented in \mbox{\hyperlink{class_grammar_hypothesis_a8ad537345ab55b581825b89c9b2cfad3}{Grammar\+Hypothesis$<$ this\+\_\+t, \+\_\+\+H\+Y\+P, datum\+\_\+t, data\+\_\+t $>$}}, \mbox{\hyperlink{class_lexicon_a73e4205ac7b0e6f4f207e5d71dea1910}{Lexicon$<$ this\+\_\+t, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}}, \mbox{\hyperlink{class_l_o_t_hypothesis_a32135631f7311a9a4a5a43c3f2ddfd6b}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}}, \mbox{\hyperlink{class_vector_normal_hypothesis_a2cf8e90e2d6e164e4bd86702ed83a9d9}{Vector\+Normal\+Hypothesis}}, \mbox{\hyperlink{class_t_normal_variable_a5cb6223529b451239b505b3e5dbdd605}{T\+Normal\+Variable$<$ f $>$}}, and \mbox{\hyperlink{class_t_normal_variable_a5cb6223529b451239b505b3e5dbdd605}{T\+Normal\+Variable$<$+\mbox{[}$\,$\mbox{]}(float x) -\/$>$}}.
+Implemented in \mbox{\hyperlink{class_grammar_hypothesis_a8ad537345ab55b581825b89c9b2cfad3}{Grammar\+Hypothesis$<$ this\+\_\+t, \+\_\+\+H\+Y\+P, datum\+\_\+t, data\+\_\+t $>$}}, \mbox{\hyperlink{class_lexicon_a7cc63246d2fd034be7ce4437ceafbdeb}{Lexicon$<$ this\+\_\+t, I\+N\+N\+E\+R, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}}, \mbox{\hyperlink{class_l_o_t_hypothesis_afee5fd63bbbe776f5a71cf6c7f2820cc}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, grammar, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}}, \mbox{\hyperlink{class_vector_normal_hypothesis_a2cf8e90e2d6e164e4bd86702ed83a9d9}{Vector\+Normal\+Hypothesis}}, \mbox{\hyperlink{class_t_normal_variable_a5cb6223529b451239b505b3e5dbdd605}{T\+Normal\+Variable$<$ f $>$}}, and \mbox{\hyperlink{class_t_normal_variable_a5cb6223529b451239b505b3e5dbdd605}{T\+Normal\+Variable$<$+\mbox{[}$\,$\mbox{]}(float x) -\/$>$}}.
 
 \mbox{\Hypertarget{class_bayesable_a87d195bfe5cdf6d293dae5fc01ae2e6c}\label{class_bayesable_a87d195bfe5cdf6d293dae5fc01ae2e6c}} 
 \index{Bayesable$<$ \_datum\_t, \_data\_t $>$@{Bayesable$<$ \_datum\_t, \_data\_t $>$}!compute\_single\_likelihood@{compute\_single\_likelihood}}
@@ -243,7 +243,7 @@ virtual std\+::string \mbox{\hyperlink{class_bayesable}{Bayesable}}$<$ \+\_\+dat
 
 
 
-Implemented in \mbox{\hyperlink{class_grammar_hypothesis_a4f978eb7e5b7e5dc86f8a434297f8c8e}{Grammar\+Hypothesis$<$ this\+\_\+t, \+\_\+\+H\+Y\+P, datum\+\_\+t, data\+\_\+t $>$}}, \mbox{\hyperlink{class_l_o_t_hypothesis_a0d4f526264b781130674863164707927}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}}, \mbox{\hyperlink{class_vector_normal_hypothesis_ad233ed5c8de7cbc7e44120dbe669cc5a}{Vector\+Normal\+Hypothesis}}, \mbox{\hyperlink{class_t_normal_variable_aa1d91679b1143624a018b073646a1c46}{T\+Normal\+Variable$<$ f $>$}}, \mbox{\hyperlink{class_t_normal_variable_aa1d91679b1143624a018b073646a1c46}{T\+Normal\+Variable$<$+\mbox{[}$\,$\mbox{]}(float x) -\/$>$}}, and \mbox{\hyperlink{class_lexicon_a94d839ba9055b7a8e859628828939ffb}{Lexicon$<$ this\+\_\+t, I\+N\+N\+E\+R, input\+\_\+t, output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}}.
+Implemented in \mbox{\hyperlink{class_grammar_hypothesis_a4f978eb7e5b7e5dc86f8a434297f8c8e}{Grammar\+Hypothesis$<$ this\+\_\+t, \+\_\+\+H\+Y\+P, datum\+\_\+t, data\+\_\+t $>$}}, \mbox{\hyperlink{class_l_o_t_hypothesis_ab0411933fd799db43ed9796673c4c7bc}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, grammar, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}}, \mbox{\hyperlink{class_vector_normal_hypothesis_ad233ed5c8de7cbc7e44120dbe669cc5a}{Vector\+Normal\+Hypothesis}}, \mbox{\hyperlink{class_t_normal_variable_aa1d91679b1143624a018b073646a1c46}{T\+Normal\+Variable$<$ f $>$}}, \mbox{\hyperlink{class_t_normal_variable_aa1d91679b1143624a018b073646a1c46}{T\+Normal\+Variable$<$+\mbox{[}$\,$\mbox{]}(float x) -\/$>$}}, and \mbox{\hyperlink{class_lexicon_a3c49db72bb6e8960a4374133fc900942}{Lexicon$<$ this\+\_\+t, I\+N\+N\+E\+R, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}}.
 
 
 

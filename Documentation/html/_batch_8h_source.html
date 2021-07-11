@@ -81,7 +81,7 @@ $(function() {
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_vectors_8h.html">Vectors.h</a>&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> HYP&gt;</div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="_batch_8h.html#a6dfa47a2ba549c19bc735670ce2e93ca">   16</a></span>&#160;std::vector&lt;HYP&gt; <a class="code" href="_batch_8h.html#a6dfa47a2ba549c19bc735670ce2e93ca">get_hypotheses_from_mcmc</a>(HYP&amp; h0, std::vector&lt;typename HYP::data_t*&gt;&amp; mcmc_data, <a class="code" href="struct_control.html">Control</a> c, <span class="keywordtype">size_t</span> <a class="code" href="namespace_fleet_args.html#acbc0f011abb2f878bf68a85617d8c183">ntop</a>) {</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="_batch_8h.html#accff822104c273d10d853457acd2d6d0">   16</a></span>&#160;std::set&lt;HYP&gt; <a class="code" href="_batch_8h.html#accff822104c273d10d853457acd2d6d0">get_hypotheses_from_mcmc</a>(HYP&amp; h0, std::vector&lt;typename HYP::data_t*&gt;&amp; mcmc_data, <a class="code" href="struct_control.html">Control</a> c, <span class="keywordtype">size_t</span> <a class="code" href="namespace_fleet_args.html#acbc0f011abb2f878bf68a85617d8c183">ntop</a>) {</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    </div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    std::set&lt;HYP&gt; all;  </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    </div>
@@ -111,19 +111,19 @@ $(function() {
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            }</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            </div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">            #pragma omp critical</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keywordflow">for</span>(<span class="keyword">auto</span> h : top.<a class="code" href="class_top_n.html#a50b05f8d4580c4652e8c1f6770943adc">values</a>()) {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keywordflow">for</span>(<span class="keyword">auto</span> h : top.<a class="code" href="class_top_n.html#a08bdd861217d98f91dd324480a522ac4">values</a>()) {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                h.clear_bayes(); <span class="comment">// zero and insert</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                all.insert(h);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            }</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        }   </div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">return</span> all;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">// copy to a vector since it&#39;s handier</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    std::vector&lt;HYP&gt; out;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; h : all) {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        out.push_back(h);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">return</span> out;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">//  std::vector&lt;HYP&gt; out;</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">//  for(auto&amp; h : all) {</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">//      out.push_back(h);</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">//  }</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">//  return out;</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclass_m_c_m_c_chain_html_a36a9ad234b12f1b3aee01dd877b91170"><div class="ttname"><a href="class_m_c_m_c_chain.html#a36a9ad234b12f1b3aee01dd877b91170">MCMCChain::run</a></div><div class="ttdeci">generator&lt; HYP &amp; &gt; run(Control ctl)</div><div class="ttdoc">Run MCMC according to the control parameters passed in. NOTE: ctl cannot be passed by reference.</div><div class="ttdef"><b>Definition:</b> MCMCChain.h:119</div></div>
@@ -131,11 +131,11 @@ $(function() {
 <div class="ttc" id="a_i_o_8h_html_ad58a1fbfc85c7e4790fc55e654f50221"><div class="ttname"><a href="_i_o_8h.html#ad58a1fbfc85c7e4790fc55e654f50221">TAB</a></div><div class="ttdeci">#define TAB</div><div class="ttdef"><b>Definition:</b> IO.h:18</div></div>
 <div class="ttc" id="a_i_o_8h_html_a8c54b10b84183429bcbcbc82c92fcca9"><div class="ttname"><a href="_i_o_8h.html#a8c54b10b84183429bcbcbc82c92fcca9">COUT</a></div><div class="ttdeci">#define COUT</div><div class="ttdef"><b>Definition:</b> IO.h:23</div></div>
 <div class="ttc" id="a_i_o_8h_html_a90dc3f3ee970394e0080300526390a84"><div class="ttname"><a href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a></div><div class="ttdeci">#define ENDL</div><div class="ttdef"><b>Definition:</b> IO.h:20</div></div>
-<div class="ttc" id="aclass_top_n_html_a50b05f8d4580c4652e8c1f6770943adc"><div class="ttname"><a href="class_top_n.html#a50b05f8d4580c4652e8c1f6770943adc">TopN::values</a></div><div class="ttdeci">const std::multiset&lt; T &gt; &amp; values() const</div><div class="ttdef"><b>Definition:</b> TopN.h:108</div></div>
+<div class="ttc" id="a_batch_8h_html_accff822104c273d10d853457acd2d6d0"><div class="ttname"><a href="_batch_8h.html#accff822104c273d10d853457acd2d6d0">get_hypotheses_from_mcmc</a></div><div class="ttdeci">std::set&lt; HYP &gt; get_hypotheses_from_mcmc(HYP &amp;h0, std::vector&lt; typename HYP::data_t * &gt; &amp;mcmc_data, Control c, size_t ntop)</div><div class="ttdoc">Runs MCMC on hypotheses, resampling when the data stops being incremental and returns a unioned vecto...</div><div class="ttdef"><b>Definition:</b> Batch.h:16</div></div>
 <div class="ttc" id="aclass_top_n_html"><div class="ttname"><a href="class_top_n.html">TopN&lt; HYP &gt;</a></div></div>
+<div class="ttc" id="aclass_top_n_html_a08bdd861217d98f91dd324480a522ac4"><div class="ttname"><a href="class_top_n.html#a08bdd861217d98f91dd324480a522ac4">TopN::values</a></div><div class="ttdeci">const std::set&lt; T &gt; &amp; values() const</div><div class="ttdef"><b>Definition:</b> TopN.h:111</div></div>
 <div class="ttc" id="astruct_control_html"><div class="ttname"><a href="struct_control.html">Control</a></div><div class="ttdef"><b>Definition:</b> Control.h:23</div></div>
 <div class="ttc" id="a_vectors_8h_html"><div class="ttname"><a href="_vectors_8h.html">Vectors.h</a></div></div>
-<div class="ttc" id="a_batch_8h_html_a6dfa47a2ba549c19bc735670ce2e93ca"><div class="ttname"><a href="_batch_8h.html#a6dfa47a2ba549c19bc735670ce2e93ca">get_hypotheses_from_mcmc</a></div><div class="ttdeci">std::vector&lt; HYP &gt; get_hypotheses_from_mcmc(HYP &amp;h0, std::vector&lt; typename HYP::data_t * &gt; &amp;mcmc_data, Control c, size_t ntop)</div><div class="ttdoc">Runs MCMC on hypotheses, resampling when the data stops being incremental and returns a unioned vecto...</div><div class="ttdef"><b>Definition:</b> Batch.h:16</div></div>
 <div class="ttc" id="aclass_m_c_m_c_chain_html"><div class="ttname"><a href="class_m_c_m_c_chain.html">MCMCChain</a></div><div class="ttdef"><b>Definition:</b> MCMCChain.h:13</div></div>
 <div class="ttc" id="anamespace_fleet_args_html_acbc0f011abb2f878bf68a85617d8c183"><div class="ttname"><a href="namespace_fleet_args.html#acbc0f011abb2f878bf68a85617d8c183">FleetArgs::ntop</a></div><div class="ttdeci">unsigned long ntop</div><div class="ttdef"><b>Definition:</b> FleetArgs.h:16</div></div>
 <div class="ttc" id="a_top_n_8h_html"><div class="ttname"><a href="_top_n_8h.html">TopN.h</a></div></div>

@@ -162,8 +162,13 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a63735fcfa3049ea5daef9dc5f5cb8a3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ce6fefd39e27641085efc3ad6a3b077"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a9ce6fefd39e27641085efc3ad6a3b077">copy_resample</a> (const <a class="el" href="class_node.html">Node</a> &amp;node, bool f(const <a class="el" href="class_node.html">Node</a> &amp;n)) const</td></tr>
 <tr class="separator:a9ce6fefd39e27641085efc3ad6a3b077"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a842ec663d0131ac6b8175f71cf003ce2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a842ec663d0131ac6b8175f71cf003ce2">get_cumulative_indices</a> () const</td></tr>
+<tr class="separator:a842ec663d0131ac6b8175f71cf003ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a354a5d9bdaced96748c599bc7c3bd64a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a354a5d9bdaced96748c599bc7c3bd64a">get_counts</a> (const <a class="el" href="class_node.html">Node</a> &amp;node) const</td></tr>
 <tr class="separator:a354a5d9bdaced96748c599bc7c3bd64a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a336d72ee766941a3ac8c6507c2022a83"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a336d72ee766941a3ac8c6507c2022a83"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; size_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#a336d72ee766941a3ac8c6507c2022a83">get_counts</a> (const std::vector&lt; T &gt; &amp;v) const</td></tr>
+<tr class="separator:a336d72ee766941a3ac8c6507c2022a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44385654719beb219184074602ee7440"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a44385654719beb219184074602ee7440">log_probability</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
 <tr class="separator:a44385654719beb219184074602ee7440"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63a4c7f6584fdd70aaa2882a19c2f04f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a63a4c7f6584fdd70aaa2882a19c2f04f">from_parseable</a> (std::deque&lt; std::string &gt; &amp;q) const</td></tr>
@@ -1104,7 +1109,7 @@ template&lt;typename _input_t , typename _output_t , typename... GRAMMAR_TYPES&g
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Fills an entire tree using the string format prefixes &ndash; see get_rule(std::string). Here q should contain strings like "3:'a'" which says expand nonterminal type 3 to the rule matching 'a' </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Fills an entire tree using the string format prefixes &ndash; see get_rule(std::string). Here q should contain strings like "3:'a'" which says expand nonterminal type 3 to the rule matching 'a' NOTE: This is not a <a class="el" href="class_serializable.html">Serializable</a> interface because the <a class="el" href="class_node.html">Node</a> needs to know which grammar </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">q</td><td></td></tr>
   </table>
@@ -1197,7 +1202,7 @@ template&lt;typename _input_t , typename _output_t , typename... GRAMMAR_TYPES&g
 </div>
 </div>
 <a id="a354a5d9bdaced96748c599bc7c3bd64a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a354a5d9bdaced96748c599bc7c3bd64a">&#9670;&nbsp;</a></span>get_counts()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a354a5d9bdaced96748c599bc7c3bd64a">&#9670;&nbsp;</a></span>get_counts() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1228,6 +1233,70 @@ template&lt;typename _input_t , typename _output_t , typename... GRAMMAR_TYPES&g
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a336d72ee766941a3ac8c6507c2022a83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a336d72ee766941a3ac8c6507c2022a83">&#9670;&nbsp;</a></span>get_counts() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename _input_t , typename _output_t , typename... GRAMMAR_TYPES&gt; </div>
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;size_t&gt; <a class="el" href="class_grammar.html">Grammar</a>&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;::get_counts </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Compute a vector of counts of how often each rule was used, in a <em>standard</em> order given by iterating over nts and then iterating over rules </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">v</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a842ec663d0131ac6b8175f71cf003ce2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a842ec663d0131ac6b8175f71cf003ce2">&#9670;&nbsp;</a></span>get_cumulative_indices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename _input_t , typename _output_t , typename... GRAMMAR_TYPES&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;size_t&gt; <a class="el" href="class_grammar.html">Grammar</a>&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;::get_cumulative_indices </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

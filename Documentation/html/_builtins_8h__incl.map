@@ -1,7 +1,7 @@
-<map id="src/Builtins.h" name="src/Builtins.h">
-<area shape="rect" id="node1" title=" " alt="" coords="98,5,197,32"/>
-<area shape="rect" id="node2" href="$_errors_8h.html" title=" " alt="" coords="113,80,181,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,155,84,181"/>
-<area shape="rect" id="node4" title=" " alt="" coords="108,155,187,181"/>
-<area shape="rect" id="node5" title=" " alt="" coords="211,155,265,181"/>
+<map id="src/VirtualMachine/Builtins.h" name="src/VirtualMachine/Builtins.h">
+<area shape="rect" id="node1" title=" " alt="" coords="82,5,213,47"/>
+<area shape="rect" id="node2" href="$_errors_8h.html" title=" " alt="" coords="113,95,181,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,169,84,196"/>
+<area shape="rect" id="node4" title=" " alt="" coords="108,169,187,196"/>
+<area shape="rect" id="node5" title=" " alt="" coords="211,169,265,196"/>
 </map>

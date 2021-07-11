@@ -1,8 +1,9 @@
-<map id="Lexicon&lt; this_t, INNER, input_t, output_t, datum_t, _VirtualMachineState_t &gt;" name="Lexicon&lt; this_t, INNER, input_t, output_t, datum_t, _VirtualMachineState_t &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="483,63,671,119"/>
+<map id="Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;" name="Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="483,103,711,159"/>
 <area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="209,5,424,47"/>
 <area shape="rect" id="node3" href="$class_bayesable.html" title=" " alt="" coords="5,13,151,39"/>
-<area shape="rect" id="node4" href="$class_searchable.html" title=" " alt="" coords="249,71,384,112"/>
+<area shape="rect" id="node4" href="$class_searchable.html" title=" " alt="" coords="243,71,390,112"/>
 <area shape="rect" id="node5" href="$class_callable.html" title=" " alt="" coords="199,136,435,207"/>
 <area shape="rect" id="node6" href="$class_program_loader.html" title=" " alt="" coords="23,158,133,185"/>
+<area shape="rect" id="node7" href="$class_serializable.html" title=" " alt="" coords="244,231,389,258"/>
 </map>

@@ -1,13 +1,14 @@
-<map id="LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, _datum_t, _data_t &gt;" name="LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, _datum_t, _data_t &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="591,104,755,175"/>
-<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="228,5,443,76"/>
-<area shape="rect" id="node3" href="$class_bayesable.html" title=" " alt="" coords="7,27,153,54"/>
-<area shape="rect" id="node4" href="$class_searchable.html" title=" " alt="" coords="262,100,409,141"/>
-<area shape="rect" id="node5" href="$class_callable.html" title=" " alt="" coords="245,166,426,222"/>
-<area shape="rect" id="node6" href="$class_program_loader.html" title=" " alt="" coords="25,181,135,207"/>
-<area shape="rect" id="node7" href="$class_node.html" title=" " alt="" coords="309,246,362,273"/>
-<area shape="rect" id="node8" href="$class_base_node.html" title=" " alt="" coords="603,283,742,310"/>
-<area shape="rect" id="node9" href="$class_base_node_1_1_node_iterator.html" title=" " alt="" coords="266,311,405,352"/>
-<area shape="rect" id="node10" title=" " alt="" coords="5,303,155,359"/>
-<area shape="rect" id="node11" href="$class_rule.html" title=" " alt="" coords="55,246,105,273"/>
+<map id="LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;" name="LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="591,137,765,207"/>
+<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="228,137,443,207"/>
+<area shape="rect" id="node3" href="$class_bayesable.html" title=" " alt="" coords="7,159,153,185"/>
+<area shape="rect" id="node4" href="$class_searchable.html" title=" " alt="" coords="262,231,409,273"/>
+<area shape="rect" id="node5" href="$class_callable.html" title=" " alt="" coords="245,5,426,61"/>
+<area shape="rect" id="node6" href="$class_program_loader.html" title=" " alt="" coords="25,20,135,47"/>
+<area shape="rect" id="node7" href="$class_serializable.html" title=" " alt="" coords="263,85,408,112"/>
+<area shape="rect" id="node8" href="$class_node.html" title=" " alt="" coords="309,308,362,335"/>
+<area shape="rect" id="node9" href="$class_base_node.html" title=" " alt="" coords="609,352,747,379"/>
+<area shape="rect" id="node10" href="$class_base_node_1_1_node_iterator.html" title=" " alt="" coords="266,379,405,421"/>
+<area shape="rect" id="node11" title=" " alt="" coords="5,372,155,428"/>
+<area shape="rect" id="node12" href="$class_rule.html" title=" " alt="" coords="55,308,105,335"/>
 </map>

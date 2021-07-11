@@ -128,20 +128,20 @@ $(function() {
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    std::cout &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> HYP&gt;</div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="_i_o_8h.html#ac92ba25496b93368f6d92bd36f91480e">   63</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="_i_o_8h.html#ac92ba25496b93368f6d92bd36f91480e">save</a>(std::string filename, std::vector&lt;HYP&gt;&amp; hypotheses) {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="_i_o_8h.html#a96c995bb00590c0945415eee56bf0eb2">   63</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="_i_o_8h.html#a96c995bb00590c0945415eee56bf0eb2">save</a>(std::string filename, T&amp; hypotheses) {</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    </div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::ofstream out(filename);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; v: hypotheses) {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        out &lt;&lt; <a class="code" href="_strings_8h.html#a1bb5ec0bee0c8456e3fcc87cc012d055">Q</a>(v.string()) <a class="code" href="_i_o_8h.html#ad58a1fbfc85c7e4790fc55e654f50221">TAB</a> v.parseable() <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        out &lt;&lt; v.serialize() <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    </div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    out.close();    </div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> HYP&gt;</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="_i_o_8h.html#aae62df8b7ee87dd75ee076ffd3bf9206">   81</a></span>&#160;std::vector&lt;HYP&gt; <a class="code" href="_i_o_8h.html#aae62df8b7ee87dd75ee076ffd3bf9206">load</a>(std::string filename, <span class="keyword">typename</span> HYP::Grammar_t* g) {</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="_i_o_8h.html#aeadafe3418f48a79ec06a8e582bd809a">   81</a></span>&#160;std::vector&lt;HYP&gt; <a class="code" href="_i_o_8h.html#aeadafe3418f48a79ec06a8e582bd809a">load</a>(std::string filename) {</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    </div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    std::vector&lt;HYP&gt; out;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    </div>
@@ -149,8 +149,8 @@ $(function() {
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    </div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    std::string line;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">while</span>(std::getline(fs, line)) {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keyword">auto</span> [col1, col2] = split&lt;2&gt;(line, <span class="charliteral">&#39;\t&#39;</span>);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        out.push_back(HYP::from_string(g,col2)); <span class="comment">// we&#39;ve stored hypotheses in position 1</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">//      auto [col1, col2] = split&lt;2&gt;(line, &#39;\t&#39;);</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        out.push_back(HYP::deserialize(line)); <span class="comment">// we&#39;ve stored hypotheses in position 1</span></div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">//      CERR line ENDL;</span></div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    }</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordflow">return</span> out;</div>
@@ -178,7 +178,7 @@ $(function() {
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        }</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        </div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keywordflow">if</span>( s.length() == 0) <span class="keywordflow">continue</span>; <span class="comment">// skip empty lines </span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        assert(s.length() &gt;= N &amp;&amp; <span class="stringliteral">&quot;*** Error with reading line -- not enough delimiters&quot;</span>);</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        assert(s.length() &gt;= N-1 &amp;&amp; <span class="stringliteral">&quot;*** Error with reading line -- not enough delimiters&quot;</span>);</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                </div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        out.push_back(split&lt;N&gt;(s,delimiter));</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    }</div>
@@ -242,17 +242,15 @@ $(function() {
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">//void PRINT()</span></div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="a_i_o_8h_html_ad58a1fbfc85c7e4790fc55e654f50221"><div class="ttname"><a href="_i_o_8h.html#ad58a1fbfc85c7e4790fc55e654f50221">TAB</a></div><div class="ttdeci">#define TAB</div><div class="ttdef"><b>Definition:</b> IO.h:18</div></div>
+<div class="ttc" id="a_i_o_8h_html_aeadafe3418f48a79ec06a8e582bd809a"><div class="ttname"><a href="_i_o_8h.html#aeadafe3418f48a79ec06a8e582bd809a">load</a></div><div class="ttdeci">std::vector&lt; HYP &gt; load(std::string filename)</div><div class="ttdoc">Simple loading for a vector of hypotheses.</div><div class="ttdef"><b>Definition:</b> IO.h:81</div></div>
 <div class="ttc" id="a_i_o_8h_html_a76e8b7c2e4a8940cee2c392012c04943"><div class="ttname"><a href="_i_o_8h.html#a76e8b7c2e4a8940cee2c392012c04943">output_lock</a></div><div class="ttdeci">std::mutex output_lock</div><div class="ttdef"><b>Definition:</b> IO.h:27</div></div>
-<div class="ttc" id="a_i_o_8h_html_ac92ba25496b93368f6d92bd36f91480e"><div class="ttname"><a href="_i_o_8h.html#ac92ba25496b93368f6d92bd36f91480e">save</a></div><div class="ttdeci">void save(std::string filename, std::vector&lt; HYP &gt; &amp;hypotheses)</div><div class="ttdoc">Simple saving of a vector of hypotheses.</div><div class="ttdef"><b>Definition:</b> IO.h:63</div></div>
 <div class="ttc" id="a_i_o_8h_html_a176c0577baa96c686397bca42f7ee6ff"><div class="ttname"><a href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a></div><div class="ttdeci">#define CERR</div><div class="ttdef"><b>Definition:</b> IO.h:22</div></div>
 <div class="ttc" id="a_i_o_8h_html_a90dc3f3ee970394e0080300526390a84"><div class="ttname"><a href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a></div><div class="ttdeci">#define ENDL</div><div class="ttdef"><b>Definition:</b> IO.h:20</div></div>
 <div class="ttc" id="a_i_o_8h_html_acfec45821653aafe56188146ad2a98cc"><div class="ttname"><a href="_i_o_8h.html#acfec45821653aafe56188146ad2a98cc">PRINTN</a></div><div class="ttdeci">void PRINTN(First &amp;&amp;first, Rest &amp;&amp;...rest)</div><div class="ttdef"><b>Definition:</b> IO.h:43</div></div>
-<div class="ttc" id="a_i_o_8h_html_aae62df8b7ee87dd75ee076ffd3bf9206"><div class="ttname"><a href="_i_o_8h.html#aae62df8b7ee87dd75ee076ffd3bf9206">load</a></div><div class="ttdeci">std::vector&lt; HYP &gt; load(std::string filename, typename HYP::Grammar_t *g)</div><div class="ttdoc">Simple loading for a vector of hypotheses.</div><div class="ttdef"><b>Definition:</b> IO.h:81</div></div>
+<div class="ttc" id="a_i_o_8h_html_a96c995bb00590c0945415eee56bf0eb2"><div class="ttname"><a href="_i_o_8h.html#a96c995bb00590c0945415eee56bf0eb2">save</a></div><div class="ttdeci">void save(std::string filename, T &amp;hypotheses)</div><div class="ttdoc">Simple saving of a vector of hypotheses.</div><div class="ttdef"><b>Definition:</b> IO.h:63</div></div>
 <div class="ttc" id="a_i_o_8h_html_a1336250e0870b09c7f0d7b168a5e804f"><div class="ttname"><a href="_i_o_8h.html#a1336250e0870b09c7f0d7b168a5e804f">__PRINT</a></div><div class="ttdeci">void __PRINT()</div><div class="ttdef"><b>Definition:</b> IO.h:31</div></div>
 <div class="ttc" id="a_i_o_8h_html_a00a6f97bb3962ae0a898045f28e71a9b"><div class="ttname"><a href="_i_o_8h.html#a00a6f97bb3962ae0a898045f28e71a9b">PRINT</a></div><div class="ttdeci">void PRINT(First &amp;&amp;first, Rest &amp;&amp;...rest)</div><div class="ttdef"><b>Definition:</b> IO.h:38</div></div>
-<div class="ttc" id="a_strings_8h_html_a1bb5ec0bee0c8456e3fcc87cc012d055"><div class="ttname"><a href="_strings_8h.html#a1bb5ec0bee0c8456e3fcc87cc012d055">Q</a></div><div class="ttdeci">std::string Q(std::string x)</div><div class="ttdef"><b>Definition:</b> Strings.h:346</div></div>
-<div class="ttc" id="a_i_o_8h_html_a917c5bd217eff49da014535e85121975"><div class="ttname"><a href="_i_o_8h.html#a917c5bd217eff49da014535e85121975">read_csv</a></div><div class="ttdeci">std::vector&lt; std::array&lt; std::string, N &gt; &gt; read_csv(const std::string path, bool skipheader, const char delimiter='\t')</div><div class="ttdoc">Load data – divides in columns at the delimiter. NOTE: we are required to say whetehr we skip a heade...</div><div class="ttdef"><b>Definition:</b> IO.h:108</div></div>
+<div class="ttc" id="a_i_o_8h_html_a917c5bd217eff49da014535e85121975"><div class="ttname"><a href="_i_o_8h.html#a917c5bd217eff49da014535e85121975">read_csv</a></div><div class="ttdeci">std::vector&lt; std::array&lt; std::string, N &gt; &gt; read_csv(const std::string path, bool skipheader, const char delimiter='\t')</div><div class="ttdoc">Load data – divides in columns at the delimiter. NOTE: we are required to say whether we skip a heade...</div><div class="ttdef"><b>Definition:</b> IO.h:108</div></div>
 <div class="ttc" id="a_i_o_8h_html_a06738d9fd0166a7a5c1f7864b2f67595"><div class="ttname"><a href="_i_o_8h.html#a06738d9fd0166a7a5c1f7864b2f67595">DEBUG</a></div><div class="ttdeci">void DEBUG(First &amp;&amp;first, Rest &amp;&amp;...rest)</div><div class="ttdef"><b>Definition:</b> IO.h:50</div></div>
 <div class="ttc" id="a_strings_8h_html"><div class="ttname"><a href="_strings_8h.html">Strings.h</a></div></div>
 <!-- start footer part -->

@@ -4,6 +4,26 @@
 
 {\ttfamily \#include $<$Reservoir\+Sample.\+h$>$}
 
+
+
+Inheritance diagram for Reservoir\+Sample$<$ T $>$\+::Item\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=231pt]{struct_reservoir_sample_1_1_item__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Reservoir\+Sample$<$ T $>$\+::Item\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=231pt]{struct_reservoir_sample_1_1_item__coll__graph}
+\end{center}
+\end{figure}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -14,6 +34,13 @@ bool \mbox{\hyperlink{struct_reservoir_sample_1_1_item_a6021bbb1eaadfab8990b0555
 bool \mbox{\hyperlink{struct_reservoir_sample_1_1_item_a3acc4a4c4aca6d80629d35f9a37220ff}{operator==}} (const \mbox{\hyperlink{struct_reservoir_sample_1_1_item}{Item}} \&b) const
 \item 
 void \mbox{\hyperlink{struct_reservoir_sample_1_1_item_aefa79bdf7a5dd70f62a41f6ccb0ac066}{print}} () const
+\item 
+virtual std\+::string \mbox{\hyperlink{struct_reservoir_sample_1_1_item_a92696114cc5bb287b99c0c3452e0973b}{serialize}} () const override
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{struct_reservoir_sample_1_1_item}{Item}} \mbox{\hyperlink{struct_reservoir_sample_1_1_item_a3dcc7bbd0d5c83522ff039627db44c23}{deserialize}} (const std\+::string \&)
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -47,6 +74,13 @@ piantado
 
 
 \doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_reservoir_sample_1_1_item_a3dcc7bbd0d5c83522ff039627db44c23}\label{struct_reservoir_sample_1_1_item_a3dcc7bbd0d5c83522ff039627db44c23}} 
+\index{ReservoirSample$<$ T $>$::Item@{ReservoirSample$<$ T $>$::Item}!deserialize@{deserialize}}
+\index{deserialize@{deserialize}!ReservoirSample$<$ T $>$::Item@{ReservoirSample$<$ T $>$::Item}}
+\doxysubsubsection{\texorpdfstring{deserialize()}{deserialize()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+static \mbox{\hyperlink{struct_reservoir_sample_1_1_item}{Item}} \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}}$<$ T $>$\+::Item\+::deserialize (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
 \mbox{\Hypertarget{struct_reservoir_sample_1_1_item_a6021bbb1eaadfab8990b05557e2758fa}\label{struct_reservoir_sample_1_1_item_a6021bbb1eaadfab8990b05557e2758fa}} 
 \index{ReservoirSample$<$ T $>$::Item@{ReservoirSample$<$ T $>$::Item}!operator$<$@{operator$<$}}
 \index{operator$<$@{operator$<$}!ReservoirSample$<$ T $>$::Item@{ReservoirSample$<$ T $>$::Item}}
@@ -67,6 +101,13 @@ bool \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}}$<$ T $>$\+::It
 \doxysubsubsection{\texorpdfstring{print()}{print()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 void \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}}$<$ T $>$\+::Item\+::print (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{struct_reservoir_sample_1_1_item_a92696114cc5bb287b99c0c3452e0973b}\label{struct_reservoir_sample_1_1_item_a92696114cc5bb287b99c0c3452e0973b}} 
+\index{ReservoirSample$<$ T $>$::Item@{ReservoirSample$<$ T $>$::Item}!serialize@{serialize}}
+\index{serialize@{serialize}!ReservoirSample$<$ T $>$::Item@{ReservoirSample$<$ T $>$::Item}}
+\doxysubsubsection{\texorpdfstring{serialize()}{serialize()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+virtual std\+::string \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}}$<$ T $>$\+::Item\+::serialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 

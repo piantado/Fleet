@@ -1,5 +1,5 @@
 <map id="PriorInference&lt; HYP &gt;" name="PriorInference&lt; HYP &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="13,185,168,212"/>
-<area shape="rect" id="node2" href="$class_parallel_inference_interface.html" title=" " alt="" coords="5,95,176,136"/>
-<area shape="rect" id="node3" href="$class_ordered_lock.html" title=" " alt="" coords="43,5,139,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="19,185,173,212"/>
+<area shape="rect" id="node2" href="$class_threaded_inference_interface.html" title=" " alt="" coords="5,95,187,136"/>
+<area shape="rect" id="node3" href="$class_ordered_lock.html" title=" " alt="" coords="48,5,144,32"/>
 </map>

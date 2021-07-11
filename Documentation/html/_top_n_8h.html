@@ -79,20 +79,22 @@ $(function() {
 <code>#include &lt;map&gt;</code><br />
 <code>#include &quot;<a class="el" href="_ordered_lock_8h_source.html">OrderedLock.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_fleet_args_8h_source.html">FleetArgs.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_serializable_8h_source.html">Interfaces/Serializable.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for TopN.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_top_n_8h__incl.png" border="0" usemap="#src_2_containers_2_top_n_8h" alt=""/></div>
 <map name="src_2_containers_2_top_n_8h" id="src_2_containers_2_top_n_8h">
-<area shape="rect" title=" " alt="" coords="67,5,221,32"/>
+<area shape="rect" title=" " alt="" coords="118,5,271,32"/>
 <area shape="rect" title=" " alt="" coords="5,80,45,107"/>
 <area shape="rect" title=" " alt="" coords="70,80,117,107"/>
 <area shape="rect" href="_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="141,80,248,107"/>
-<area shape="rect" href="_fleet_args_8h.html" title=" " alt="" coords="309,80,398,107"/>
-<area shape="rect" title=" " alt="" coords="29,155,88,181"/>
-<area shape="rect" title=" " alt="" coords="113,155,239,181"/>
-<area shape="rect" title=" " alt="" coords="263,155,321,181"/>
-<area shape="rect" title=" " alt="" coords="345,155,399,181"/>
+<area shape="rect" href="_fleet_args_8h.html" title=" " alt="" coords="273,80,362,107"/>
+<area shape="rect" href="_serializable_8h.html" title=" " alt="" coords="387,80,549,107"/>
+<area shape="rect" title=" " alt="" coords="11,155,69,181"/>
+<area shape="rect" title=" " alt="" coords="94,155,221,181"/>
+<area shape="rect" title=" " alt="" coords="245,155,302,181"/>
+<area shape="rect" title=" " alt="" coords="326,155,381,181"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -100,24 +102,25 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_top_n_8h__dep__incl.png" border="0" usemap="#src_2_containers_2_top_n_8hdep" alt=""/></div>
 <map name="src_2_containers_2_top_n_8hdep" id="src_2_containers_2_top_n_8hdep">
-<area shape="rect" title=" " alt="" coords="1327,5,1480,32"/>
-<area shape="rect" href="_coroutines_8h.html" title=" " alt="" coords="1007,87,1125,114"/>
-<area shape="rect" href="_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="1013,445,1178,471"/>
-<area shape="rect" href="_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="1329,355,1579,382"/>
-<area shape="rect" href="_batch_8h.html" title=" " alt="" coords="1330,266,1477,293"/>
-<area shape="rect" href="_reservoir_sample_8h.html" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="1552,80,1711,121"/>
-<area shape="rect" href="_parallel_inference_interface_8h.html" title=" " alt="" coords="631,169,829,211"/>
-<area shape="rect" href="_inference_2_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="643,259,817,300"/>
-<area shape="rect" href="_m_c_m_c_chain_8h.html" title=" " alt="" coords="1049,169,1193,211"/>
-<area shape="rect" href="_beam_search_8h.html" title="This is an implementation of beam search that maintains a priority queue of partial states and attemp..." alt="" coords="431,266,619,293"/>
-<area shape="rect" href="_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="842,259,986,300"/>
-<area shape="rect" href="_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="1010,259,1154,300"/>
-<area shape="rect" href="_m_c_t_s_base_8h.html" title=" " alt="" coords="172,348,312,389"/>
-<area shape="rect" href="_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="211,266,406,293"/>
-<area shape="rect" href="_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="926,348,1070,389"/>
-<area shape="rect" href="_full_m_c_t_s_node_8h.html" title=" " alt="" coords="172,437,312,479"/>
-<area shape="rect" href="_minimal_m_c_t_s_node_8h.html" title=" " alt="" coords="336,437,487,479"/>
-<area shape="rect" href="_partial_m_c_t_s_node_8h.html" title=" " alt="" coords="5,437,148,479"/>
+<area shape="rect" title=" " alt="" coords="857,5,1011,32"/>
+<area shape="rect" href="_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,355,255,382"/>
+<area shape="rect" href="_batch_8h.html" title=" " alt="" coords="57,266,203,293"/>
+<area shape="rect" href="_hill_climbing_8h.html" title="This cute kind of inference keeps a body of N top hypotheses, and successively proposes to them using..." alt="" coords="953,177,1136,203"/>
+<area shape="rect" href="_reservoir_sample_8h.html" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="1397,80,1556,121"/>
+<area shape="rect" href="_coroutines_8h.html" title=" " alt="" coords="739,87,908,114"/>
+<area shape="rect" href="_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="434,445,599,471"/>
+<area shape="rect" href="_threaded_inference_interface_8h.html" title=" " alt="" coords="718,169,929,211"/>
+<area shape="rect" href="_inference_2_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="665,259,840,300"/>
+<area shape="rect" href="_m_c_m_c_chain_8h.html" title=" " alt="" coords="274,169,418,211"/>
+<area shape="rect" href="_beam_search_8h.html" title="This is an implementation of beam search that maintains a priority queue of partial states and attemp..." alt="" coords="864,266,1052,293"/>
+<area shape="rect" href="_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="329,259,473,300"/>
+<area shape="rect" href="_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="497,259,641,300"/>
+<area shape="rect" href="_m_c_t_s_base_8h.html" title=" " alt="" coords="1397,348,1537,389"/>
+<area shape="rect" href="_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="1077,266,1271,293"/>
+<area shape="rect" href="_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="386,348,530,389"/>
+<area shape="rect" href="_full_m_c_t_s_node_8h.html" title=" " alt="" coords="1397,437,1537,479"/>
+<area shape="rect" href="_minimal_m_c_t_s_node_8h.html" title=" " alt="" coords="1561,437,1712,479"/>
+<area shape="rect" href="_partial_m_c_t_s_node_8h.html" title=" " alt="" coords="1231,437,1373,479"/>
 </map>
 </div>
 </div>

@@ -11,7 +11,7 @@ Inheritance diagram for Grammar\+Hypothesis$<$ this\+\_\+t, \+\_\+\+H\+YP, datum
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=263pt]{class_grammar_hypothesis__inherit__graph}
+\includegraphics[width=350pt]{class_grammar_hypothesis__inherit__graph}
 \end{center}
 \end{figure}
 
@@ -57,7 +57,7 @@ virtual void \mbox{\hyperlink{class_grammar_hypothesis_a5dc4c47ed55185ec1d1376bd
 virtual double \mbox{\hyperlink{class_grammar_hypothesis_a8ad537345ab55b581825b89c9b2cfad3}{compute\+\_\+prior}} () override
 \begin{DoxyCompactList}\small\item\em Compute the prior -- defaultly not defined. \end{DoxyCompactList}\item 
 virtual Matrix \mbox{\hyperlink{class_grammar_hypothesis_a2e4105060c6b5e96679fdb116591b3f1}{compute\+\_\+normalized\+\_\+posterior}} ()
-\begin{DoxyCompactList}\small\item\em This returns a matrix hposter\mbox{[}h,di\mbox{]} giving the posterior on the h\textquotesingle{}th element. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em This returns a matrix hposterior\mbox{[}h,di\mbox{]} giving the posterior on the h\textquotesingle{}th element. N\+O\+TE\+: not output is not logged. \end{DoxyCompactList}\item 
 std\+::map$<$ typename H\+Y\+P\+::output\+\_\+t, double $>$ \mbox{\hyperlink{class_grammar_hypothesis_a716ff720be7093286ff5cf0139805fca}{compute\+\_\+model\+\_\+predictions}} (const size\+\_\+t i, Matrix \&hposterior)
 \begin{DoxyCompactList}\small\item\em This uses hposterior (computed via this-\/$>$\mbox{\hyperlink{class_grammar_hypothesis_a2e4105060c6b5e96679fdb116591b3f1}{compute\+\_\+normalized\+\_\+posterior()}}) to compute the model predictions on a the i\textquotesingle{}th human data point. To do this, we marginalize over hypotheses, computing the weighted sum of outputs. \end{DoxyCompactList}\item 
 virtual double \mbox{\hyperlink{class_grammar_hypothesis_a769eea50d9e40668022b120b6fddfe06}{compute\+\_\+likelihood}} (const \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} \&human\+\_\+data, const double breakout=-\/\mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}}) override
@@ -75,11 +75,15 @@ virtual std\+::string \mbox{\hyperlink{class_grammar_hypothesis_a4f978eb7e5b7e5d
 virtual void \mbox{\hyperlink{class_grammar_hypothesis_a7b791d9da5ae86c52a42a2383c1c6bc0}{print}} (std\+::string prefix=\char`\"{}\char`\"{}) override
 \begin{DoxyCompactList}\small\item\em Need to override print since it will print in a different format. \end{DoxyCompactList}\item 
 virtual size\+\_\+t \mbox{\hyperlink{class_grammar_hypothesis_aeb9e858426a5ef273b87eafd8b2a5cd6}{hash}} () const override
+\item 
+virtual std\+::string \mbox{\hyperlink{class_grammar_hypothesis_a35d301f2c65f60fd8e7de84a071cb1fd}{serialize}} () const override
 \end{DoxyCompactItemize}
 \doxysubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename... A$>$ }\\static this\+\_\+t \mbox{\hyperlink{class_grammar_hypothesis_a7249002c5be7aba6b88adf440600bbef}{make}} (A... a)
+{\footnotesize template$<$typename... A$>$ }\\static this\+\_\+t \mbox{\hyperlink{class_grammar_hypothesis_a377d4ba55cd1884f0cba70bbaf6f4e9e}{sample}} (A... a)
+\item 
+static this\+\_\+t \mbox{\hyperlink{class_grammar_hypothesis_aeb0178f382440804bf03815ffe7fae44}{deserialize}} (const std\+::string \&s)
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -216,7 +220,7 @@ virtual Matrix \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis}}$
 
 
 
-This returns a matrix hposter\mbox{[}h,di\mbox{]} giving the posterior on the h\textquotesingle{}th element. 
+This returns a matrix hposterior\mbox{[}h,di\mbox{]} giving the posterior on the h\textquotesingle{}th element. N\+O\+TE\+: not output is not logged. 
 
 \begin{DoxyReturn}{Returns}
 
@@ -235,6 +239,13 @@ Compute the prior -- defaultly not defined.
 
 
 Implements \mbox{\hyperlink{class_bayesable_a1b057a17212ced123545133e2297c01b}{Bayesable$<$ Args... $>$}}.
+
+\mbox{\Hypertarget{class_grammar_hypothesis_aeb0178f382440804bf03815ffe7fae44}\label{class_grammar_hypothesis_aeb0178f382440804bf03815ffe7fae44}} 
+\index{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}!deserialize@{deserialize}}
+\index{deserialize@{deserialize}!GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}}
+\doxysubsubsection{\texorpdfstring{deserialize()}{deserialize()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename \+\_\+\+H\+YP , typename datum\+\_\+t  = Human\+Datum$<$\+\_\+\+H\+Y\+P$>$, typename data\+\_\+t  = std\+::vector$<$datum\+\_\+t$>$$>$ \\
+static this\+\_\+t \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis}}$<$ this\+\_\+t, \+\_\+\+H\+YP, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} $>$\+::deserialize (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
 \mbox{\Hypertarget{class_grammar_hypothesis_aeb9e858426a5ef273b87eafd8b2a5cd6}\label{class_grammar_hypothesis_aeb9e858426a5ef273b87eafd8b2a5cd6}} 
 \index{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}!hash@{hash}}
@@ -258,14 +269,6 @@ virtual Vector \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis}}$
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_grammar_hypothesis_a7249002c5be7aba6b88adf440600bbef}\label{class_grammar_hypothesis_a7249002c5be7aba6b88adf440600bbef}} 
-\index{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}!make@{make}}
-\index{make@{make}!GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}}
-\doxysubsubsection{\texorpdfstring{make()}{make()}}
-{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename \+\_\+\+H\+YP , typename datum\+\_\+t  = Human\+Datum$<$\+\_\+\+H\+Y\+P$>$, typename data\+\_\+t  = std\+::vector$<$datum\+\_\+t$>$$>$ \\
-template$<$typename... A$>$ \\
-static this\+\_\+t \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis}}$<$ this\+\_\+t, \+\_\+\+H\+YP, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} $>$\+::make (\begin{DoxyParamCaption}\item[{A...}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
-
 \mbox{\Hypertarget{class_grammar_hypothesis_a887f646d5c07a485721d7b89bb166274}\label{class_grammar_hypothesis_a887f646d5c07a485721d7b89bb166274}} 
 \index{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}!nhypotheses@{nhypotheses}}
 \index{nhypotheses@{nhypotheses}!GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}}
@@ -411,6 +414,21 @@ virtual void \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis}}$<$
 \doxysubsubsection{\texorpdfstring{restart()}{restart()}}
 {\footnotesize\ttfamily template$<$typename this\+\_\+t , typename \+\_\+\+H\+YP , typename datum\+\_\+t  = Human\+Datum$<$\+\_\+\+H\+Y\+P$>$, typename data\+\_\+t  = std\+::vector$<$datum\+\_\+t$>$$>$ \\
 virtual this\+\_\+t \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis}}$<$ this\+\_\+t, \+\_\+\+H\+YP, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} $>$\+::restart (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_grammar_hypothesis_a377d4ba55cd1884f0cba70bbaf6f4e9e}\label{class_grammar_hypothesis_a377d4ba55cd1884f0cba70bbaf6f4e9e}} 
+\index{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}!sample@{sample}}
+\index{sample@{sample}!GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}}
+\doxysubsubsection{\texorpdfstring{sample()}{sample()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename \+\_\+\+H\+YP , typename datum\+\_\+t  = Human\+Datum$<$\+\_\+\+H\+Y\+P$>$, typename data\+\_\+t  = std\+::vector$<$datum\+\_\+t$>$$>$ \\
+template$<$typename... A$>$ \\
+static this\+\_\+t \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis}}$<$ this\+\_\+t, \+\_\+\+H\+YP, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} $>$\+::sample (\begin{DoxyParamCaption}\item[{A...}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_grammar_hypothesis_a35d301f2c65f60fd8e7de84a071cb1fd}\label{class_grammar_hypothesis_a35d301f2c65f60fd8e7de84a071cb1fd}} 
+\index{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}!serialize@{serialize}}
+\index{serialize@{serialize}!GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}}
+\doxysubsubsection{\texorpdfstring{serialize()}{serialize()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t , typename \+\_\+\+H\+YP , typename datum\+\_\+t  = Human\+Datum$<$\+\_\+\+H\+Y\+P$>$, typename data\+\_\+t  = std\+::vector$<$datum\+\_\+t$>$$>$ \\
+virtual std\+::string \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis}}$<$ this\+\_\+t, \+\_\+\+H\+YP, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} $>$\+::serialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 \mbox{\Hypertarget{class_grammar_hypothesis_af658323081d132788bb5bebbd07c93e8}\label{class_grammar_hypothesis_af658323081d132788bb5bebbd07c93e8}} 
 \index{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}!set\_can\_propose@{set\_can\_propose}}

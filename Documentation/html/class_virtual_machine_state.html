@@ -90,16 +90,14 @@ Collaboration diagram for VirtualMachineState&lt; _t_input, _t_output, VM_TYPES 
 <div class="dyncontent">
 <div class="center"><img src="class_virtual_machine_state__coll__graph.png" border="0" usemap="#_virtual_machine_state_3_01__t__input_00_01__t__output_00_01_v_m___t_y_p_e_s_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="_virtual_machine_state_3_01__t__input_00_01__t__output_00_01_v_m___t_y_p_e_s_01_4_coll__map" id="_virtual_machine_state_3_01__t__input_00_01__t__output_00_01_v_m___t_y_p_e_s_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="565,154,712,210"/>
-<area shape="rect" href="struct_virtual_machine_control.html" title=" " alt="" coords="9,8,160,34"/>
-<area shape="rect" href="class_virtual_machine_pool.html" title=" " alt="" coords="235,30,398,71"/>
-<area shape="rect" href="class_runtime_counter.html" title=" " alt="" coords="258,96,375,122"/>
-<area shape="rect" title=" " alt="" coords="227,147,407,218"/>
-<area shape="rect" href="class_stack.html" title=" " alt="" coords="25,169,144,196"/>
-<area shape="rect" href="class_program_loader.html" title=" " alt="" coords="261,242,372,269"/>
-<area shape="rect" title=" " alt="" coords="213,294,420,364"/>
-<area shape="rect" href="class_stack.html" title=" " alt="" coords="5,308,164,350"/>
-<area shape="rect" href="struct_virtual_machine_state_1_1stack__t.html" title=" " alt="" coords="233,388,401,459"/>
+<area shape="rect" title=" " alt="" coords="519,137,665,193"/>
+<area shape="rect" href="struct_virtual_machine_control.html" title=" " alt="" coords="5,13,156,40"/>
+<area shape="rect" href="class_virtual_machine_pool.html" title=" " alt="" coords="208,35,371,76"/>
+<area shape="rect" href="class_runtime_counter.html" title=" " alt="" coords="231,101,348,128"/>
+<area shape="rect" href="class_stack.html" title=" " alt="" coords="230,152,349,178"/>
+<area shape="rect" href="class_stack.html" title=" " alt="" coords="210,203,369,244"/>
+<area shape="rect" href="class_program_loader.html" title=" " alt="" coords="234,269,345,296"/>
+<area shape="rect" href="struct_virtual_machine_state_1_1stack__t.html" title=" " alt="" coords="205,320,373,391"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -118,22 +116,25 @@ Public Types</h2></td></tr>
 <tr class="separator:ada0e1bebef2d73581c6adcd55f8be521"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acacd9869c4a5ff3a765f6bd7d5bae35c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#acacd9869c4a5ff3a765f6bd7d5bae35c">FT</a> = std::function&lt; void(<a class="el" href="class_virtual_machine_state.html#ada0e1bebef2d73581c6adcd55f8be521">this_t</a> *, int)&gt;</td></tr>
 <tr class="separator:acacd9869c4a5ff3a765f6bd7d5bae35c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa272d9002040c8c15908170fbe16a88"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aaa272d9002040c8c15908170fbe16a88"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#aaa272d9002040c8c15908170fbe16a88">VMSStack</a> = <a class="el" href="class_stack.html">Stack</a>&lt; T &gt;</td></tr>
+<tr class="separator:aaa272d9002040c8c15908170fbe16a88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95ba2f54f65b778c8a012ea3e7a0ee50"><td class="memItemLeft" align="right" valign="top">typedef int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a95ba2f54f65b778c8a012ea3e7a0ee50">index_t</a></td></tr>
 <tr class="separator:a95ba2f54f65b778c8a012ea3e7a0ee50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9760db87745be704f046f08369ca5eb2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a9760db87745be704f046f08369ca5eb2">VirtualMachineState</a> (<a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">input_t</a> x, <a class="el" href="class_virtual_machine_state.html#a1015cee5061f82f82ef6a953b51f9bd5">output_t</a> e, <a class="el" href="class_program_loader.html">ProgramLoader</a> *pl, <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a>&lt; <a class="el" href="class_virtual_machine_state.html#ada0e1bebef2d73581c6adcd55f8be521">this_t</a> &gt; *po)</td></tr>
-<tr class="separator:a9760db87745be704f046f08369ca5eb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a516424b0636cbf0539e8ab491f1577f9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a516424b0636cbf0539e8ab491f1577f9">VirtualMachineState</a> (<a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">input_t</a> x, const <a class="el" href="class_virtual_machine_state.html#a1015cee5061f82f82ef6a953b51f9bd5">output_t</a> &amp;e, <a class="el" href="class_program_loader.html">ProgramLoader</a> *pl, <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a>&lt; <a class="el" href="class_virtual_machine_state.html#ada0e1bebef2d73581c6adcd55f8be521">this_t</a> &gt; *po)</td></tr>
+<tr class="separator:a516424b0636cbf0539e8ab491f1577f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a213400a3e616f8d1a2041491ea4c782e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a213400a3e616f8d1a2041491ea4c782e">operator&lt;</a> (const <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a> &amp;m) const</td></tr>
 <tr class="memdesc:a213400a3e616f8d1a2041491ea4c782e"><td class="mdescLeft">&#160;</td><td class="mdescRight">These must be sortable by lp so that we can enumerate them from low to high probability in a <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a> NOTE: VirtualMachineStates shouldn't be put in a set because they might evaluate to equal!  <a href="class_virtual_machine_state.html#a213400a3e616f8d1a2041491ea4c782e">More...</a><br /></td></tr>
 <tr class="separator:a213400a3e616f8d1a2041491ea4c782e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a580428f53e64cde8aef3c0a6a79838ec"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a580428f53e64cde8aef3c0a6a79838ec"><td class="memTemplItemLeft" align="right" valign="top">VMSStack&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a580428f53e64cde8aef3c0a6a79838ec">stack</a> ()</td></tr>
+<tr class="memitem:a580428f53e64cde8aef3c0a6a79838ec"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="class_virtual_machine_state.html#aaa272d9002040c8c15908170fbe16a88">VMSStack</a>&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a580428f53e64cde8aef3c0a6a79838ec">stack</a> ()</td></tr>
 <tr class="memdesc:a580428f53e64cde8aef3c0a6a79838ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a reference to the stack (of a given type)  <a href="class_virtual_machine_state.html#a580428f53e64cde8aef3c0a6a79838ec">More...</a><br /></td></tr>
 <tr class="separator:a580428f53e64cde8aef3c0a6a79838ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc77f615f164e83ee4a25f06b3a5b64d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:adc77f615f164e83ee4a25f06b3a5b64d"><td class="memTemplItemLeft" align="right" valign="top">const VMSStack&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#adc77f615f164e83ee4a25f06b3a5b64d">stack</a> () const</td></tr>
+<tr class="memitem:adc77f615f164e83ee4a25f06b3a5b64d"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="class_virtual_machine_state.html#aaa272d9002040c8c15908170fbe16a88">VMSStack</a>&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#adc77f615f164e83ee4a25f06b3a5b64d">stack</a> () const</td></tr>
 <tr class="memdesc:adc77f615f164e83ee4a25f06b3a5b64d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Const reference to top of stack.  <a href="class_virtual_machine_state.html#adc77f615f164e83ee4a25f06b3a5b64d">More...</a><br /></td></tr>
 <tr class="separator:adc77f615f164e83ee4a25f06b3a5b64d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c5373c434e10372d9e9a17df1532965"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -174,10 +175,10 @@ Public Member Functions</h2></td></tr>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aa9204cc7523092fdc3d3e53e881bc841"><td class="memItemLeft" align="right" valign="top">Program&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#aa9204cc7523092fdc3d3e53e881bc841">program</a></td></tr>
 <tr class="separator:aa9204cc7523092fdc3d3e53e881bc841"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aded245a367f3caca62faf7264feaff41"><td class="memItemLeft" align="right" valign="top">VMSStack&lt; <a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">input_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#aded245a367f3caca62faf7264feaff41">xstack</a></td></tr>
+<tr class="memitem:aded245a367f3caca62faf7264feaff41"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_virtual_machine_state.html#aaa272d9002040c8c15908170fbe16a88">VMSStack</a>&lt; <a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">input_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#aded245a367f3caca62faf7264feaff41">xstack</a></td></tr>
 <tr class="separator:aded245a367f3caca62faf7264feaff41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3eaa4b1432d1604b86039d2ff0faae1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_virtual_machine_state.html#a1015cee5061f82f82ef6a953b51f9bd5">output_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#aa3eaa4b1432d1604b86039d2ff0faae1">err</a></td></tr>
-<tr class="separator:aa3eaa4b1432d1604b86039d2ff0faae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fcb81adddcc27cf4bca939d8b939efc"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_virtual_machine_state.html#a1015cee5061f82f82ef6a953b51f9bd5">output_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a3fcb81adddcc27cf4bca939d8b939efc">err</a></td></tr>
+<tr class="separator:a3fcb81adddcc27cf4bca939d8b939efc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5937b2c3afdfe35b9bba71dbdd83d5bd"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a5937b2c3afdfe35b9bba71dbdd83d5bd">lp</a></td></tr>
 <tr class="separator:a5937b2c3afdfe35b9bba71dbdd83d5bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa35593f67d1ea4e838fec8e7a8d33897"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#aa35593f67d1ea4e838fec8e7a8d33897">recursion_depth</a></td></tr>
@@ -186,7 +187,7 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a6e7c948fc550bd2343034a94173e926c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f36d4040b98a1e85fb7edf61e6085c9"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::pair&lt; <a class="el" href="class_virtual_machine_state.html#a95ba2f54f65b778c8a012ea3e7a0ee50">index_t</a>, <a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">input_t</a> &gt;, <a class="el" href="class_virtual_machine_state.html#a1015cee5061f82f82ef6a953b51f9bd5">output_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a8f36d4040b98a1e85fb7edf61e6085c9">mem</a></td></tr>
 <tr class="separator:a8f36d4040b98a1e85fb7edf61e6085c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27df19177ca8ede5d88bf51cff785c00"><td class="memItemLeft" align="right" valign="top">VMSStack&lt; std::pair&lt; <a class="el" href="class_virtual_machine_state.html#a95ba2f54f65b778c8a012ea3e7a0ee50">index_t</a>, <a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">input_t</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a27df19177ca8ede5d88bf51cff785c00">memstack</a></td></tr>
+<tr class="memitem:a27df19177ca8ede5d88bf51cff785c00"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_virtual_machine_state.html#aaa272d9002040c8c15908170fbe16a88">VMSStack</a>&lt; std::pair&lt; <a class="el" href="class_virtual_machine_state.html#a95ba2f54f65b778c8a012ea3e7a0ee50">index_t</a>, <a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">input_t</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a27df19177ca8ede5d88bf51cff785c00">memstack</a></td></tr>
 <tr class="separator:a27df19177ca8ede5d88bf51cff785c00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e561a217081654b4187620953e86fff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64">vmstatus_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a6e561a217081654b4187620953e86fff">status</a></td></tr>
 <tr class="separator:a6e561a217081654b4187620953e86fff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -298,9 +299,27 @@ template&lt;typename _t_input , typename _t_output , typename... VM_TYPES&gt; </
 
 </div>
 </div>
+<a id="aaa272d9002040c8c15908170fbe16a88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa272d9002040c8c15908170fbe16a88">&#9670;&nbsp;</a></span>VMSStack</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename _t_input , typename _t_output , typename... VM_TYPES&gt; </div>
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; _t_input, _t_output, VM_TYPES &gt;::<a class="el" href="class_virtual_machine_state.html#aaa272d9002040c8c15908170fbe16a88">VMSStack</a> =  <a class="el" href="class_stack.html">Stack</a>&lt;T&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a9760db87745be704f046f08369ca5eb2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9760db87745be704f046f08369ca5eb2">&#9670;&nbsp;</a></span>VirtualMachineState()</h2>
+<a id="a516424b0636cbf0539e8ab491f1577f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a516424b0636cbf0539e8ab491f1577f9">&#9670;&nbsp;</a></span>VirtualMachineState()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -319,7 +338,7 @@ template&lt;typename _t_input , typename _t_output , typename... VM_TYPES&gt; </
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="class_virtual_machine_state.html#a1015cee5061f82f82ef6a953b51f9bd5">output_t</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_virtual_machine_state.html#a1015cee5061f82f82ef6a953b51f9bd5">output_t</a> &amp;&#160;</td>
           <td class="paramname"><em>e</em>, </td>
         </tr>
         <tr>
@@ -719,7 +738,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">VMSStack&lt;T&gt;&amp; <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; _t_input, _t_output, VM_TYPES &gt;::stack </td>
+          <td class="memname"><a class="el" href="class_virtual_machine_state.html#aaa272d9002040c8c15908170fbe16a88">VMSStack</a>&lt;T&gt;&amp; <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; _t_input, _t_output, VM_TYPES &gt;::stack </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -751,7 +770,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const VMSStack&lt;T&gt;&amp; <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; _t_input, _t_output, VM_TYPES &gt;::stack </td>
+          <td class="memname">const <a class="el" href="class_virtual_machine_state.html#aaa272d9002040c8c15908170fbe16a88">VMSStack</a>&lt;T&gt;&amp; <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; _t_input, _t_output, VM_TYPES &gt;::stack </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -786,8 +805,8 @@ template&lt;typename _t_input , typename _t_output , typename... VM_TYPES&gt; </
 
 </div>
 </div>
-<a id="aa3eaa4b1432d1604b86039d2ff0faae1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3eaa4b1432d1604b86039d2ff0faae1">&#9670;&nbsp;</a></span>err</h2>
+<a id="a3fcb81adddcc27cf4bca939d8b939efc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fcb81adddcc27cf4bca939d8b939efc">&#9670;&nbsp;</a></span>err</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -795,7 +814,7 @@ template&lt;typename _t_input , typename _t_output , typename... VM_TYPES&gt; </
 template&lt;typename _t_input , typename _t_output , typename... VM_TYPES&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_virtual_machine_state.html#a1015cee5061f82f82ef6a953b51f9bd5">output_t</a> <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; _t_input, _t_output, VM_TYPES &gt;::err</td>
+          <td class="memname">const <a class="el" href="class_virtual_machine_state.html#a1015cee5061f82f82ef6a953b51f9bd5">output_t</a>&amp; <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; _t_input, _t_output, VM_TYPES &gt;::err</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -843,7 +862,7 @@ template&lt;typename _t_input , typename _t_output , typename... VM_TYPES&gt; </
 template&lt;typename _t_input , typename _t_output , typename... VM_TYPES&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">VMSStack&lt;std::pair&lt;<a class="el" href="class_virtual_machine_state.html#a95ba2f54f65b778c8a012ea3e7a0ee50">index_t</a>, <a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">input_t</a>&gt; &gt; <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; _t_input, _t_output, VM_TYPES &gt;::memstack</td>
+          <td class="memname"><a class="el" href="class_virtual_machine_state.html#aaa272d9002040c8c15908170fbe16a88">VMSStack</a>&lt;std::pair&lt;<a class="el" href="class_virtual_machine_state.html#a95ba2f54f65b778c8a012ea3e7a0ee50">index_t</a>, <a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">input_t</a>&gt; &gt; <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; _t_input, _t_output, VM_TYPES &gt;::memstack</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -955,7 +974,7 @@ template&lt;typename _t_input , typename _t_output , typename... VM_TYPES&gt; </
 template&lt;typename _t_input , typename _t_output , typename... VM_TYPES&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">VMSStack&lt;<a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">input_t</a>&gt; <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; _t_input, _t_output, VM_TYPES &gt;::xstack</td>
+          <td class="memname"><a class="el" href="class_virtual_machine_state.html#aaa272d9002040c8c15908170fbe16a88">VMSStack</a>&lt;<a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">input_t</a>&gt; <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; _t_input, _t_output, VM_TYPES &gt;::xstack</td>
         </tr>
       </table>
 </div><div class="memdoc">

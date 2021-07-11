@@ -10,7 +10,7 @@ This takes a grammar and expands to a given depth, and then runs a separate M\+C
 {\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}M\+C\+M\+C\+Chain.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Timing.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Parallel\+Inference\+Interface.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Threaded\+Inference\+Interface.\+h\char`\"{}}\newline
 Include dependency graph for Partition\+M\+C\+M\+C.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -24,8 +24,39 @@ Include dependency graph for Partition\+M\+C\+M\+C.\+h\+:
 \item 
 class \mbox{\hyperlink{class_partition_m_c_m_c}{Partition\+M\+C\+M\+C$<$ H\+Y\+P $>$}}
 \end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename H\+YP $>$ }\\std\+::set$<$ H\+YP $>$ \mbox{\hyperlink{_partition_m_c_m_c_8h_a7a4d0aee453e0210a4d117edfead4a97}{get\+\_\+partitions}} (H\+YP \&h0, const size\+\_\+t max\+\_\+depth, const size\+\_\+t max\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Compute \char`\"{}partitions\char`\"{} meaning trees with holes where we can run M\+C\+MC on the hole. This takes either a max depth or max number of partitions. N\+O\+TE here that anything which is a complete tree that gets evaluated is N\+OT included. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
 This takes a grammar and expands to a given depth, and then runs a separate M\+C\+MC chain in each partial subtree that is generated. 
 
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_partition_m_c_m_c_8h_a7a4d0aee453e0210a4d117edfead4a97}\label{_partition_m_c_m_c_8h_a7a4d0aee453e0210a4d117edfead4a97}} 
+\index{PartitionMCMC.h@{PartitionMCMC.h}!get\_partitions@{get\_partitions}}
+\index{get\_partitions@{get\_partitions}!PartitionMCMC.h@{PartitionMCMC.h}}
+\doxysubsubsection{\texorpdfstring{get\_partitions()}{get\_partitions()}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+std\+::set$<$H\+YP$>$ get\+\_\+partitions (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{const size\+\_\+t}]{max\+\_\+depth,  }\item[{const size\+\_\+t}]{max\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Compute \char`\"{}partitions\char`\"{} meaning trees with holes where we can run M\+C\+MC on the hole. This takes either a max depth or max number of partitions. N\+O\+TE here that anything which is a complete tree that gets evaluated is N\+OT included. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em h0} & \\
+\hline
+{\em max\+\_\+depth} & \\
+\hline
+{\em max\+\_\+size} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}

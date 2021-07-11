@@ -77,10 +77,13 @@ $(function() {
 : <a class="el" href="class_virtual_machine_pool.html#ad02b07439ca58a4c7f867c5eaceb2e5f">VirtualMachinePool&lt; VirtualMachineState_t &gt;</a>
 </li>
 <li>index
-: <a class="el" href="class_parallel_inference_interface.html#a0d743cf161df1122a223180bc25e0a33">ParallelInferenceInterface&lt; X, Args &gt;</a>
+: <a class="el" href="class_threaded_inference_interface.html#a0f03c872fb87c7cb6b408d5a4fc4e1cd">ThreadedInferenceInterface&lt; X, Args &gt;</a>
 </li>
 <li>index_t
 : <a class="el" href="class_virtual_machine_state.html#a95ba2f54f65b778c8a012ea3e7a0ee50">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
+</li>
+<li>inner_samples
+: <a class="el" href="class_hill_climbing.html#a23f60189dc7ada8966227d026c17643d">HillClimbing&lt; HYP &gt;</a>
 </li>
 <li>input
 : <a class="el" href="classdefaultdatum__t.html#a3614becbf87fc511d4a9652561b04c0b">defaultdatum_t&lt; __input_t, __output_t &gt;</a>
@@ -89,7 +92,8 @@ $(function() {
 : <a class="el" href="classdefaultdatum__t.html#a1fb4da2bbde290bca1ad4f52b4437284">defaultdatum_t&lt; __input_t, __output_t &gt;</a>
 , <a class="el" href="class_grammar.html#a11116f6d2f48f79def498a97549c67d4">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
 , <a class="el" href="struct_human_datum.html#a8229662f54f4b18d33b0d068d23b03b0">HumanDatum&lt; HYP, _input_t, _response_t, _data_t &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#aeb5adc395a32008d9fe1b5fb7ba75e95">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, _datum_t, _data_t &gt;</a>
+, <a class="el" href="class_lexicon.html#a903345d4e66ffcef1d223dc0710f6bd3">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#a6a8462f8bf43b47bacf8446569d2c410">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>
 , <a class="el" href="class_virtual_machine_pool.html#a8cbea2d216d16e9d23e074457b2997a0">VirtualMachinePool&lt; VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
@@ -110,8 +114,8 @@ $(function() {
 </li>
 <li>is_evaluable()
 : <a class="el" href="class_callable.html#ac05ae8491f3b90986b1ad016da412afa">Callable&lt; input_t, output_t, VirtualMachineState_t &gt;</a>
-, <a class="el" href="class_lexicon.html#a7742f252ea9909f12071b5af500310cf">Lexicon&lt; this_t, INNER, input_t, output_t, datum_t, _VirtualMachineState_t &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#ac5d6d329147999aee0e37b51c6529385">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, _datum_t, _data_t &gt;</a>
+, <a class="el" href="class_lexicon.html#a8e31180286754fa40b14c8892f5ba9bc">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#a4c143536c4f302a04f1e67c4b8348c1f">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>
 , <a class="el" href="class_searchable.html#a2f2e0290252b5f43c98bc345844070ae">Searchable&lt; this_t, Args &gt;</a>
 </li>
 <li>is_in_GRAMMAR_TYPES()

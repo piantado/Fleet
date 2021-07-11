@@ -67,7 +67,9 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="class_top_n-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">TopN&lt; T &gt; Class Template Reference</div>  </div>
@@ -75,6 +77,24 @@ $(function() {
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="_top_n_8h_source.html">TopN.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for TopN&lt; T &gt;:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_top_n__inherit__graph.png" border="0" usemap="#_top_n_3_01_t_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="_top_n_3_01_t_01_4_inherit__map" id="_top_n_3_01_t_01_4_inherit__map">
+<area shape="rect" title=" " alt="" coords="29,95,114,121"/>
+<area shape="rect" href="class_serializable.html" title=" " alt="" coords="5,5,137,47"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for TopN&lt; T &gt;:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_top_n__coll__graph.png" border="0" usemap="#_top_n_3_01_t_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="_top_n_3_01_t_01_4_coll__map" id="_top_n_3_01_t_01_4_coll__map">
+<area shape="rect" title=" " alt="" coords="29,95,114,121"/>
+<area shape="rect" href="class_serializable.html" title=" " alt="" coords="5,5,137,47"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -103,21 +123,19 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae32d3e10d1571af34f84f32f5ca78fff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb29d7b6490afe04adb88caac2f7fba0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#adb29d7b6490afe04adb88caac2f7fba0">empty</a> () const</td></tr>
 <tr class="separator:adb29d7b6490afe04adb88caac2f7fba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50b05f8d4580c4652e8c1f6770943adc"><td class="memItemLeft" align="right" valign="top">const std::multiset&lt; T &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a50b05f8d4580c4652e8c1f6770943adc">values</a> () const</td></tr>
-<tr class="separator:a50b05f8d4580c4652e8c1f6770943adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08bdd861217d98f91dd324480a522ac4"><td class="memItemLeft" align="right" valign="top">const std::set&lt; T &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a08bdd861217d98f91dd324480a522ac4">values</a> () const</td></tr>
+<tr class="separator:a08bdd861217d98f91dd324480a522ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e948bc78d03a92abd1623ae8f8bd3d4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a2e948bc78d03a92abd1623ae8f8bd3d4">contains</a> (const T &amp;x) const</td></tr>
 <tr class="memdesc:a2e948bc78d03a92abd1623ae8f8bd3d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this contain x?  <a href="class_top_n.html#a2e948bc78d03a92abd1623ae8f8bd3d4">More...</a><br /></td></tr>
 <tr class="separator:a2e948bc78d03a92abd1623ae8f8bd3d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fdddece51570832503747bf85d5ec19"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a4fdddece51570832503747bf85d5ec19">add</a> (const T &amp;x, size_t <a class="el" href="class_top_n.html#a8bfb8d5daa31a4fd95196cb41f0ac1ce">count</a>=1)</td></tr>
-<tr class="separator:a4fdddece51570832503747bf85d5ec19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0193e7025797fd0361f8186023f44a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#ab0193e7025797fd0361f8186023f44a5">add</a> (const T &amp;x)</td></tr>
+<tr class="separator:ab0193e7025797fd0361f8186023f44a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a719a9b488e33a8266a25c594a8eb579d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a719a9b488e33a8266a25c594a8eb579d">operator&lt;&lt;</a> (const T &amp;x)</td></tr>
 <tr class="separator:a719a9b488e33a8266a25c594a8eb579d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09be6a8873eef07ea3993e9fe7b6c71d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a09be6a8873eef07ea3993e9fe7b6c71d">add</a> (const <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt; &amp;x)</td></tr>
 <tr class="separator:a09be6a8873eef07ea3993e9fe7b6c71d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a4459831455f21c152f99993aa0a274"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a4a4459831455f21c152f99993aa0a274">operator&lt;&lt;</a> (const <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt; &amp;x)</td></tr>
 <tr class="separator:a4a4459831455f21c152f99993aa0a274"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7eafee63f9094086c3193ff005cd9f0f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a7eafee63f9094086c3193ff005cd9f0f">operator[]</a> (const T &amp;x)</td></tr>
-<tr class="separator:a7eafee63f9094086c3193ff005cd9f0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f611b791e96b900e6a2b34432868157"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a7f611b791e96b900e6a2b34432868157">pop</a> ()</td></tr>
 <tr class="memdesc:a7f611b791e96b900e6a2b34432868157"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pops off the top &ndash; you usually won't want to do this and it's not efficient.  <a href="class_top_n.html#a7f611b791e96b900e6a2b34432868157">More...</a><br /></td></tr>
 <tr class="separator:a7f611b791e96b900e6a2b34432868157"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,28 +143,45 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a071e232087705b131627bd8a805d217c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29d25f1254f2c2e31612004593afa498"><td class="memItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a29d25f1254f2c2e31612004593afa498">worst</a> () const</td></tr>
 <tr class="separator:a29d25f1254f2c2e31612004593afa498"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94191264b36318ce50e32c36018ef104"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a94191264b36318ce50e32c36018ef104">Z</a> ()</td></tr>
-<tr class="separator:a94191264b36318ce50e32c36018ef104"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae17a869f1507e07b58d16344809dd0ff"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#ae17a869f1507e07b58d16344809dd0ff">Z</a> (double temp=1.0)</td></tr>
+<tr class="separator:ae17a869f1507e07b58d16344809dd0ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5064ec2e4e9f1defdc3cb62d9b7ddd00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a5064ec2e4e9f1defdc3cb62d9b7ddd00">print</a> (std::string prefix=&quot;&quot;)</td></tr>
 <tr class="separator:a5064ec2e4e9f1defdc3cb62d9b7ddd00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a5d2196e2181a75aea82e7e133e090b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a3a5d2196e2181a75aea82e7e133e090b">sorted</a> (bool increasing=true) const</td></tr>
+<tr class="memdesc:a3a5d2196e2181a75aea82e7e133e090b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sorted values.  <a href="class_top_n.html#a3a5d2196e2181a75aea82e7e133e090b">More...</a><br /></td></tr>
+<tr class="separator:a3a5d2196e2181a75aea82e7e133e090b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1867a08e8be4ffca2f3b6ea8161caa96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a1867a08e8be4ffca2f3b6ea8161caa96">clear</a> ()</td></tr>
 <tr class="separator:a1867a08e8be4ffca2f3b6ea8161caa96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bfb8d5daa31a4fd95196cb41f0ac1ce"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a8bfb8d5daa31a4fd95196cb41f0ac1ce">count</a> (const T x)</td></tr>
-<tr class="separator:a8bfb8d5daa31a4fd95196cb41f0ac1ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a890f0653ac1c56e1af99a0f93dd3224a"><td class="memTemplParams" colspan="2">template&lt;typename data_t &gt; </td></tr>
 <tr class="memitem:a890f0653ac1c56e1af99a0f93dd3224a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="class_top_n.html">TopN</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_top_n.html#a890f0653ac1c56e1af99a0f93dd3224a">compute_posterior</a> (data_t &amp;data)</td></tr>
 <tr class="separator:a890f0653ac1c56e1af99a0f93dd3224a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af399e4461070ce1749fa4fd0fec30e89"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#af399e4461070ce1749fa4fd0fec30e89">serialize</a> () const override</td></tr>
+<tr class="separator:af399e4461070ce1749fa4fd0fec30e89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_serializable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_serializable')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_serializable.html">Serializable&lt; TopN&lt; T &gt; &gt;</a></td></tr>
+<tr class="memitem:ab3bc104a1b1defa794505d221c8586d2 inherit pub_methods_class_serializable"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serializable.html#ab3bc104a1b1defa794505d221c8586d2">serialize</a> () const=0</td></tr>
+<tr class="separator:ab3bc104a1b1defa794505d221c8586d2 inherit pub_methods_class_serializable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a7b8f9722c529a3fa188d3768c230cb71"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a7b8f9722c529a3fa188d3768c230cb71">deserialize</a> (const std::string &amp;<a class="el" href="class_top_n.html#a2f8acb9acd19ec2c2a0e0e768e72fe87">s</a>)</td></tr>
+<tr class="separator:a7b8f9722c529a3fa188d3768c230cb71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_class_serializable"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_serializable')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_serializable.html">Serializable&lt; TopN&lt; T &gt; &gt;</a></td></tr>
+<tr class="memitem:a7f58bcd2e168ba73a31e8675ebc4ef85 inherit pub_static_methods_class_serializable"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serializable.html#a7f58bcd2e168ba73a31e8675ebc4ef85">deserialize</a> (const std::string &amp;)</td></tr>
+<tr class="separator:a7f58bcd2e168ba73a31e8675ebc4ef85 inherit pub_static_methods_class_serializable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a0b10798cc83ac3b20bfe0dd5f1d45e86"><td class="memItemLeft" align="right" valign="top">std::map&lt; T, unsigned long &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a0b10798cc83ac3b20bfe0dd5f1d45e86">cnt</a></td></tr>
-<tr class="separator:a0b10798cc83ac3b20bfe0dd5f1d45e86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fea03a721d2485b03cc38834775c924"><td class="memItemLeft" align="right" valign="top">std::multiset&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a1fea03a721d2485b03cc38834775c924">s</a></td></tr>
-<tr class="separator:a1fea03a721d2485b03cc38834775c924"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f8acb9acd19ec2c2a0e0e768e72fe87"><td class="memItemLeft" align="right" valign="top">std::set&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a2f8acb9acd19ec2c2a0e0e768e72fe87">s</a></td></tr>
+<tr class="separator:a2f8acb9acd19ec2c2a0e0e768e72fe87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90472852f225e5b851446e4b7ced4856"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a90472852f225e5b851446e4b7ced4856">print_best</a></td></tr>
 <tr class="separator:a90472852f225e5b851446e4b7ced4856"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a4f701ca7296acfadcb6d0511247fcf"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#a1a4f701ca7296acfadcb6d0511247fcf">N</a></td></tr>
 <tr class="separator:a1a4f701ca7296acfadcb6d0511247fcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:aa21dcbd87bc066d09bcc9c0e0a422d35"><td class="memItemLeft" align="right" valign="top">const static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_top_n.html#aa21dcbd87bc066d09bcc9c0e0a422d35">MAX_N</a> = SIZE_MAX</td></tr>
+<tr class="separator:aa21dcbd87bc066d09bcc9c0e0a422d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class T&gt;<br />
@@ -240,8 +275,8 @@ template&lt;class T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4fdddece51570832503747bf85d5ec19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fdddece51570832503747bf85d5ec19">&#9670;&nbsp;</a></span>add() <span class="overload">[1/2]</span></h2>
+<a id="ab0193e7025797fd0361f8186023f44a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0193e7025797fd0361f8186023f44a5">&#9670;&nbsp;</a></span>add() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -255,18 +290,8 @@ template&lt;class T &gt; </div>
           <td class="memname">void <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;::add </td>
           <td>(</td>
           <td class="paramtype">const T &amp;&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>count</em> = <code>1</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -275,10 +300,9 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Add x. If count is set, that will add that many counts. NOTE that we do not add objects x such that x.posterior == -infinity or NaN </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Add x. NOTE that we do not add objects x such that x.posterior == -infinity or NaN </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td></td></tr>
-    <tr><td class="paramname">count</td><td></td></tr>
   </table>
   </dd>
 </dl>
@@ -449,8 +473,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="a8bfb8d5daa31a4fd95196cb41f0ac1ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bfb8d5daa31a4fd95196cb41f0ac1ce">&#9670;&nbsp;</a></span>count()</h2>
+<a id="a7b8f9722c529a3fa188d3768c230cb71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b8f9722c529a3fa188d3768c230cb71">&#9670;&nbsp;</a></span>deserialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -461,26 +485,19 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned long <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;::count </td>
+          <td class="memname">static <a class="el" href="class_top_n.html">TopN</a>&lt;T&gt; <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;::deserialize </td>
           <td>(</td>
-          <td class="paramtype">const T&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>How many times have we seen x? </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">x</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -630,41 +647,6 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="a7eafee63f9094086c3193ff005cd9f0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7eafee63f9094086c3193ff005cd9f0f">&#9670;&nbsp;</a></span>operator[]()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;::operator[] </td>
-          <td>(</td>
-          <td class="paramtype">const T &amp;&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Access the counts for a given element x </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">x</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
 <a id="a7f611b791e96b900e6a2b34432868157"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7f611b791e96b900e6a2b34432868157">&#9670;&nbsp;</a></span>pop()</h2>
 
@@ -725,6 +707,33 @@ template&lt;class T &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="af399e4461070ce1749fa4fd0fec30e89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af399e4461070ce1749fa4fd0fec30e89">&#9670;&nbsp;</a></span>serialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::string <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;::serialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -824,8 +833,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="a50b05f8d4580c4652e8c1f6770943adc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50b05f8d4580c4652e8c1f6770943adc">&#9670;&nbsp;</a></span>values()</h2>
+<a id="a3a5d2196e2181a75aea82e7e133e090b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a5d2196e2181a75aea82e7e133e090b">&#9670;&nbsp;</a></span>sorted()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -836,7 +845,43 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::multiset&lt;T&gt;&amp; <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;::values </td>
+          <td class="memname">std::vector&lt;T&gt; <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;::sorted </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>increasing</em> = <code>true</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sorted values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">increasing</td><td>&ndash; do we sort increasing or decreasing? </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a08bdd861217d98f91dd324480a522ac4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08bdd861217d98f91dd324480a522ac4">&#9670;&nbsp;</a></span>values()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::set&lt;T&gt;&amp; <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;::values </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -880,8 +925,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="a94191264b36318ce50e32c36018ef104"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94191264b36318ce50e32c36018ef104">&#9670;&nbsp;</a></span>Z()</h2>
+<a id="ae17a869f1507e07b58d16344809dd0ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae17a869f1507e07b58d16344809dd0ff">&#9670;&nbsp;</a></span>Z()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -894,7 +939,8 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname">double <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;::Z </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>temp</em> = <code>1.0</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -904,23 +950,31 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Compute the logsumexp of all of the elements stored. </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Compute the logsumexp of all of the elements stored at temperature T </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a0b10798cc83ac3b20bfe0dd5f1d45e86"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b10798cc83ac3b20bfe0dd5f1d45e86">&#9670;&nbsp;</a></span>cnt</h2>
+<a id="aa21dcbd87bc066d09bcc9c0e0a422d35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa21dcbd87bc066d09bcc9c0e0a422d35">&#9670;&nbsp;</a></span>MAX_N</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt;T,unsigned long&gt; <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;::cnt</td>
+          <td class="memname">const static size_t <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;::MAX_N = SIZE_MAX</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -957,8 +1011,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="a1fea03a721d2485b03cc38834775c924"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1fea03a721d2485b03cc38834775c924">&#9670;&nbsp;</a></span>s</h2>
+<a id="a2f8acb9acd19ec2c2a0e0e768e72fe87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f8acb9acd19ec2c2a0e0e768e72fe87">&#9670;&nbsp;</a></span>s</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -966,7 +1020,7 @@ template&lt;class T &gt; </div>
 template&lt;class T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::multiset&lt;T&gt; <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;::s</td>
+          <td class="memname">std::set&lt;T&gt; <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt;::s</td>
         </tr>
       </table>
 </div><div class="memdoc">

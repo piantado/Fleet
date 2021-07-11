@@ -81,7 +81,11 @@ virtual \mbox{\hyperlink{class_rule}{Rule}} $\ast$ \mbox{\hyperlink{class_gramma
 \item 
 \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar_a9ce6fefd39e27641085efc3ad6a3b077}{copy\+\_\+resample}} (const \mbox{\hyperlink{class_node}{Node}} \&node, bool f(const \mbox{\hyperlink{class_node}{Node}} \&n)) const
 \item 
+std\+::vector$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_grammar_a842ec663d0131ac6b8175f71cf003ce2}{get\+\_\+cumulative\+\_\+indices}} () const
+\item 
 std\+::vector$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_grammar_a354a5d9bdaced96748c599bc7c3bd64a}{get\+\_\+counts}} (const \mbox{\hyperlink{class_node}{Node}} \&node) const
+\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::vector$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_grammar_a336d72ee766941a3ac8c6507c2022a83}{get\+\_\+counts}} (const std\+::vector$<$ T $>$ \&v) const
 \item 
 double \mbox{\hyperlink{class_grammar_a44385654719beb219184074602ee7440}{log\+\_\+probability}} (const \mbox{\hyperlink{class_node}{Node}} \&n) const
 \item 
@@ -426,7 +430,7 @@ void \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+outp
 {\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
 \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::from\+\_\+parseable (\begin{DoxyParamCaption}\item[{std\+::deque$<$ std\+::string $>$ \&}]{q }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
-Fills an entire tree using the string format prefixes -- see get\+\_\+rule(std\+::string). Here q should contain strings like \char`\"{}3\+:\textquotesingle{}a\textquotesingle{}\char`\"{} which says expand nonterminal type 3 to the rule matching \textquotesingle{}a\textquotesingle{} 
+Fills an entire tree using the string format prefixes -- see get\+\_\+rule(std\+::string). Here q should contain strings like \char`\"{}3\+:\textquotesingle{}a\textquotesingle{}\char`\"{} which says expand nonterminal type 3 to the rule matching \textquotesingle{}a\textquotesingle{} N\+O\+TE\+: This is not a \mbox{\hyperlink{class_serializable}{Serializable}} interface because the \mbox{\hyperlink{class_node}{Node}} needs to know which grammar 
 \begin{DoxyParams}{Parameters}
 {\em q} & \\
 \hline
@@ -469,7 +473,7 @@ Returns a \mbox{\hyperlink{class_node}{Node}} sampled from the grammar.
 N\+O\+TE\+: this may throw a if the grammar recurses too far (usually that means the grammar is improper)\mbox{\Hypertarget{class_grammar_a354a5d9bdaced96748c599bc7c3bd64a}\label{class_grammar_a354a5d9bdaced96748c599bc7c3bd64a}} 
 \index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!get\_counts@{get\_counts}}
 \index{get\_counts@{get\_counts}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
-\doxysubsubsection{\texorpdfstring{get\_counts()}{get\_counts()}}
+\doxysubsubsection{\texorpdfstring{get\_counts()}{get\_counts()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
 std\+::vector$<$size\+\_\+t$>$ \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::get\+\_\+counts (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{node }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
@@ -481,6 +485,29 @@ Compute a vector of counts of how often each rule was used, in a {\itshape stand
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\mbox{\Hypertarget{class_grammar_a336d72ee766941a3ac8c6507c2022a83}\label{class_grammar_a336d72ee766941a3ac8c6507c2022a83}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!get\_counts@{get\_counts}}
+\index{get\_counts@{get\_counts}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
+\doxysubsubsection{\texorpdfstring{get\_counts()}{get\_counts()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+template$<$typename T $>$ \\
+std\+::vector$<$size\+\_\+t$>$ \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::get\+\_\+counts (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{v }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Compute a vector of counts of how often each rule was used, in a {\itshape standard} order given by iterating over nts and then iterating over rules 
+\begin{DoxyParams}{Parameters}
+{\em v} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_grammar_a842ec663d0131ac6b8175f71cf003ce2}\label{class_grammar_a842ec663d0131ac6b8175f71cf003ce2}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!get\_cumulative\_indices@{get\_cumulative\_indices}}
+\index{get\_cumulative\_indices@{get\_cumulative\_indices}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
+\doxysubsubsection{\texorpdfstring{get\_cumulative\_indices()}{get\_cumulative\_indices()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+std\+::vector$<$size\+\_\+t$>$ \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::get\+\_\+cumulative\+\_\+indices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
 \mbox{\Hypertarget{class_grammar_a4dc14b38ba87cdc516deac5028fa1032}\label{class_grammar_a4dc14b38ba87cdc516deac5028fa1032}} 
 \index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!get\_index\_of@{get\_index\_of}}
 \index{get\_index\_of@{get\_index\_of}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}

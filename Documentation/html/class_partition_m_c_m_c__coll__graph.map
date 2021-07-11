@@ -1,6 +1,6 @@
 <map id="PartitionMCMC&lt; HYP &gt;" name="PartitionMCMC&lt; HYP &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="9,261,173,288"/>
-<area shape="rect" id="node2" href="$class_chain_pool.html" title=" " alt="" coords="23,185,158,212"/>
-<area shape="rect" id="node3" href="$class_parallel_inference_interface.html" title=" " alt="" coords="5,95,176,136"/>
-<area shape="rect" id="node4" href="$class_ordered_lock.html" title=" " alt="" coords="43,5,139,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="14,261,178,288"/>
+<area shape="rect" id="node2" href="$class_chain_pool.html" title=" " alt="" coords="29,185,163,212"/>
+<area shape="rect" id="node3" href="$class_threaded_inference_interface.html" title=" " alt="" coords="5,95,187,136"/>
+<area shape="rect" id="node4" href="$class_ordered_lock.html" title=" " alt="" coords="48,5,144,32"/>
 </map>

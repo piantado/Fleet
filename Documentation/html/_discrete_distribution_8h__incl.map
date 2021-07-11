@@ -1,33 +1,33 @@
 <map id="src/Containers/DiscreteDistribution.h" name="src/Containers/DiscreteDistribution.h">
-<area shape="rect" id="node1" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="173,5,411,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="167,304,214,331"/>
-<area shape="rect" id="node3" title=" " alt="" coords="211,379,269,405"/>
-<area shape="rect" id="node4" title=" " alt="" coords="93,80,168,107"/>
-<area shape="rect" id="node5" title=" " alt="" coords="1059,453,1131,480"/>
-<area shape="rect" id="node6" title=" " alt="" coords="176,453,245,480"/>
-<area shape="rect" id="node7" title=" " alt="" coords="293,80,363,107"/>
-<area shape="rect" id="node8" href="$_miscellaneous_8h.html" title=" " alt="" coords="458,80,574,107"/>
-<area shape="rect" id="node10" href="$_i_o_8h.html" title=" " alt="" coords="695,155,742,181"/>
-<area shape="rect" id="node16" href="$_strings_8h.html" title=" " alt="" coords="487,229,561,256"/>
-<area shape="rect" id="node23" href="$_numerics_8h.html" title=" " alt="" coords="439,379,529,405"/>
-<area shape="rect" id="node9" title=" " alt="" coords="437,155,499,181"/>
-<area shape="rect" id="node11" title=" " alt="" coords="825,229,884,256"/>
-<area shape="rect" id="node12" title=" " alt="" coords="908,229,967,256"/>
-<area shape="rect" id="node13" title=" " alt="" coords="991,229,1057,256"/>
-<area shape="rect" id="node14" title=" " alt="" coords="931,453,986,480"/>
-<area shape="rect" id="node15" title=" " alt="" coords="636,229,801,256"/>
-<area shape="rect" id="node17" title=" " alt="" coords="748,304,817,331"/>
-<area shape="rect" id="node18" title=" " alt="" coords="842,304,899,331"/>
-<area shape="rect" id="node19" title=" " alt="" coords="924,304,975,331"/>
-<area shape="rect" id="node20" title=" " alt="" coords="239,304,279,331"/>
-<area shape="rect" id="node21" title=" " alt="" coords="303,304,364,331"/>
-<area shape="rect" id="node22" title=" " alt="" coords="658,304,723,331"/>
-<area shape="rect" id="node26" href="$_random_8h.html" title=" " alt="" coords="551,304,633,331"/>
-<area shape="rect" id="node31" href="$_vector3_d_8h.html" title=" " alt="" coords="388,304,476,331"/>
-<area shape="rect" id="node24" title=" " alt="" coords="582,453,647,480"/>
-<area shape="rect" id="node25" title=" " alt="" coords="453,453,515,480"/>
-<area shape="rect" id="node27" title=" " alt="" coords="553,379,631,405"/>
-<area shape="rect" id="node28" href="$_errors_8h.html" title=" " alt="" coords="731,379,799,405"/>
-<area shape="rect" id="node29" title=" " alt="" coords="793,453,871,480"/>
-<area shape="rect" id="node30" title=" " alt="" coords="690,453,769,480"/>
+<area shape="rect" id="node1" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="381,5,619,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="94,229,141,256"/>
+<area shape="rect" id="node3" title=" " alt="" coords="1132,304,1191,331"/>
+<area shape="rect" id="node4" title=" " alt="" coords="1369,80,1444,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="283,379,355,405"/>
+<area shape="rect" id="node6" title=" " alt="" coords="767,379,836,405"/>
+<area shape="rect" id="node7" title=" " alt="" coords="71,304,140,331"/>
+<area shape="rect" id="node8" href="$_miscellaneous_8h.html" title=" " alt="" coords="165,229,281,256"/>
+<area shape="rect" id="node10" href="$_numerics_8h.html" title=" " alt="" coords="478,304,567,331"/>
+<area shape="rect" id="node13" href="$_i_o_8h.html" title=" " alt="" coords="717,80,763,107"/>
+<area shape="rect" id="node19" href="$_strings_8h.html" title=" " alt="" coords="569,155,644,181"/>
+<area shape="rect" id="node9" title=" " alt="" coords="192,304,253,331"/>
+<area shape="rect" id="node11" title=" " alt="" coords="629,379,694,405"/>
+<area shape="rect" id="node12" title=" " alt="" coords="491,379,554,405"/>
+<area shape="rect" id="node14" title=" " alt="" coords="1048,304,1107,331"/>
+<area shape="rect" id="node15" title=" " alt="" coords="668,155,727,181"/>
+<area shape="rect" id="node16" title=" " alt="" coords="751,155,817,181"/>
+<area shape="rect" id="node17" title=" " alt="" coords="1165,379,1219,405"/>
+<area shape="rect" id="node18" title=" " alt="" coords="841,155,1007,181"/>
+<area shape="rect" id="node20" title=" " alt="" coords="548,229,617,256"/>
+<area shape="rect" id="node21" title=" " alt="" coords="642,229,699,256"/>
+<area shape="rect" id="node22" title=" " alt="" coords="724,229,775,256"/>
+<area shape="rect" id="node23" title=" " alt="" coords="799,229,839,256"/>
+<area shape="rect" id="node24" title=" " alt="" coords="863,229,924,256"/>
+<area shape="rect" id="node25" title=" " alt="" coords="407,229,473,256"/>
+<area shape="rect" id="node26" href="$_random_8h.html" title="This is a thread_local rng that is seeded on construction so that each thread can get a different see..." alt="" coords="948,229,1031,256"/>
+<area shape="rect" id="node31" href="$_vector3_d_8h.html" title=" " alt="" coords="1105,229,1193,256"/>
+<area shape="rect" id="node27" title=" " alt="" coords="801,304,879,331"/>
+<area shape="rect" id="node28" href="$_errors_8h.html" title=" " alt="" coords="955,304,1023,331"/>
+<area shape="rect" id="node29" title=" " alt="" coords="885,379,963,405"/>
+<area shape="rect" id="node30" title=" " alt="" coords="987,379,1066,405"/>
 </map>

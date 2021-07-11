@@ -1,4 +1,6 @@
 <map id="ReservoirSample&lt; T &gt;" name="ReservoirSample&lt; T &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="11,109,165,136"/>
-<area shape="rect" id="node2" href="$class_top_n.html" title=" " alt="" coords="5,5,171,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="50,200,205,227"/>
+<area shape="rect" id="node2" href="$class_serializable.html" title=" " alt="" coords="5,96,207,137"/>
+<area shape="rect" id="node3" href="$class_top_n.html" title=" " alt="" coords="231,96,397,137"/>
+<area shape="rect" id="node4" href="$class_serializable.html" title=" " alt="" coords="218,5,410,47"/>
 </map>

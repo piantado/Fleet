@@ -78,10 +78,10 @@ $(function() {
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;queue&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;thread&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_parallel_inference_interface_8h.html">ParallelInferenceInterface.h</a>&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_threaded_inference_interface_8h.html">ThreadedInferenceInterface.h</a>&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> HYP&gt;</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="class_prior_inference.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_prior_inference.html">PriorInference</a> : <span class="keyword">public</span> <a class="code" href="class_parallel_inference_interface.html">ParallelInferenceInterface</a>&lt;HYP&gt; {</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="class_prior_inference.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_prior_inference.html">PriorInference</a> : <span class="keyword">public</span> <a class="code" href="class_threaded_inference_interface.html">ThreadedInferenceInterface</a>&lt;HYP&gt; {</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    </div>
@@ -103,7 +103,7 @@ $(function() {
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                h.complete();</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            }</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                h = MyHypothesis::make(<a class="code" href="class_prior_inference.html#a69fcff9932a2d61863848217000fba7f">grammar</a>);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                h = <a class="code" href="_random_8h.html#ac2ea1cac6b4c8cad207512d19abe42d7">MyHypothesis::sample</a>();</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            }</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            h.compute_posterior(*<a class="code" href="class_prior_inference.html#a4d4dfaed893ba6d0b3ffb2589496c447">data</a>);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            co_yield h;</div>
@@ -111,11 +111,12 @@ $(function() {
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;};</div>
 </div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="a_random_8h_html_ac2ea1cac6b4c8cad207512d19abe42d7"><div class="ttname"><a href="_random_8h.html#ac2ea1cac6b4c8cad207512d19abe42d7">sample</a></div><div class="ttdeci">std::pair&lt; t *, double &gt; sample(const T &amp;s, const std::function&lt; double(const t &amp;)&gt; &amp;f=[](const t &amp;v){return 1.0;})</div><div class="ttdef"><b>Definition:</b> Random.h:175</div></div>
 <div class="ttc" id="aclass_prior_inference_html_a4d4dfaed893ba6d0b3ffb2589496c447"><div class="ttname"><a href="class_prior_inference.html#a4d4dfaed893ba6d0b3ffb2589496c447">PriorInference::data</a></div><div class="ttdeci">HYP::data_t * data</div><div class="ttdef"><b>Definition:</b> PriorInference.h:22</div></div>
 <div class="ttc" id="aclass_prior_inference_html_a16584b242a22dc5160b0dfa5b3c40974"><div class="ttname"><a href="class_prior_inference.html#a16584b242a22dc5160b0dfa5b3c40974">PriorInference::PriorInference</a></div><div class="ttdeci">PriorInference(typename HYP::Grammar_t *g, typename HYP::data_t *d, HYP *fr=nullptr)</div><div class="ttdef"><b>Definition:</b> PriorInference.h:25</div></div>
-<div class="ttc" id="aclass_parallel_inference_interface_html"><div class="ttname"><a href="class_parallel_inference_interface.html">ParallelInferenceInterface</a></div><div class="ttdef"><b>Definition:</b> ParallelInferenceInterface.h:21</div></div>
 <div class="ttc" id="astruct_control_html_a933994a3524f2f6d7ef0a17086e7cf66"><div class="ttname"><a href="struct_control.html#a933994a3524f2f6d7ef0a17086e7cf66">Control::start</a></div><div class="ttdeci">void start()</div><div class="ttdef"><b>Definition:</b> Control.h:44</div></div>
-<div class="ttc" id="a_parallel_inference_interface_8h_html"><div class="ttname"><a href="_parallel_inference_interface_8h.html">ParallelInferenceInterface.h</a></div></div>
+<div class="ttc" id="a_threaded_inference_interface_8h_html"><div class="ttname"><a href="_threaded_inference_interface_8h.html">ThreadedInferenceInterface.h</a></div></div>
+<div class="ttc" id="aclass_threaded_inference_interface_html"><div class="ttname"><a href="class_threaded_inference_interface.html">ThreadedInferenceInterface</a></div><div class="ttdef"><b>Definition:</b> ThreadedInferenceInterface.h:21</div></div>
 <div class="ttc" id="aclass_prior_inference_html_ad0c72d8af73ad73e75c80a3cad6682ca"><div class="ttname"><a href="class_prior_inference.html#ad0c72d8af73ad73e75c80a3cad6682ca">PriorInference::from</a></div><div class="ttdeci">HYP * from</div><div class="ttdef"><b>Definition:</b> PriorInference.h:23</div></div>
 <div class="ttc" id="astruct_control_html"><div class="ttname"><a href="struct_control.html">Control</a></div><div class="ttdef"><b>Definition:</b> Control.h:23</div></div>
 <div class="ttc" id="aclass_prior_inference_html_abcfbe7ebd3efe39fb088acdcc549127a"><div class="ttname"><a href="class_prior_inference.html#abcfbe7ebd3efe39fb088acdcc549127a">PriorInference::run_thread</a></div><div class="ttdeci">generator&lt; HYP &amp; &gt; run_thread(Control ctl) override</div><div class="ttdef"><b>Definition:</b> PriorInference.h:29</div></div>

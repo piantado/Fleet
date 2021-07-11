@@ -71,7 +71,7 @@ $(function() {
 : <a class="el" href="class_grammar.html#a63735fcfa3049ea5daef9dc5f5cb8a3e">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
 </li>
 <li>generator_lock
-: <a class="el" href="class_parallel_inference_interface.html#ae8b40f52f087f33b013c2de65bfa51e2">ParallelInferenceInterface&lt; X, Args &gt;</a>
+: <a class="el" href="class_threaded_inference_interface.html#a3abd5648cd8e811346640506cf48a464">ThreadedInferenceInterface&lt; X, Args &gt;</a>
 </li>
 <li>get()
 : <a class="el" href="class_discrete_distribution.html#ae00b206364286a1e3f54931cea2a5be6">DiscreteDistribution&lt; T &gt;</a>
@@ -87,6 +87,13 @@ $(function() {
 </li>
 <li>get_counts()
 : <a class="el" href="class_grammar.html#a354a5d9bdaced96748c599bc7c3bd64a">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
+</li>
+<li>get_cumulative_indices()
+: <a class="el" href="class_grammar.html#a842ec663d0131ac6b8175f71cf003ce2">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
+</li>
+<li>get_grammar()
+: <a class="el" href="class_lexicon.html#afccf777d739f15801ef91db4b0d96241">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#a2d7000d2fa03a6b785f80186c3353933">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>
 </li>
 <li>get_hash()
 : <a class="el" href="class_rule.html#a62e4d931266a65d4aad9ca3c058d7e25">Rule</a>
@@ -112,7 +119,8 @@ $(function() {
 </li>
 <li>get_value()
 : <a class="el" href="class_integerized_stack.html#aedecc57b1bbb2c056f57a00ec6eea2e3">IntegerizedStack</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#ac1eb445a699bb8432ddee1052a8d5a58">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, _datum_t, _data_t &gt;</a>
+, <a class="el" href="class_lexicon.html#ab9b2eebff52ae679405600d712ac423d">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#a97bc39686a1cbfca004e3eba2b33ab0f">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>
 , <a class="el" href="class_stack.html#add0c8bc53547f3c18b37a9c624725462">Stack&lt; T &gt;</a>
 </li>
 <li>get_variance()
@@ -143,12 +151,11 @@ $(function() {
 , <a class="el" href="class_enumeration_interface.html#a47e4b669ebbec7a22de8b0140045ef41">EnumerationInterface&lt; Grammar_t, ARGS &gt;</a>
 </li>
 <li>Grammar()
-: <a class="el" href="class_grammar.html#aeeaa7bf30a9984e9b2c74b9924856066">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
+: <a class="el" href="class_grammar.html#a0ab84ce4f0bce6a88d73c5d91779fc62">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
 </li>
 <li>grammar
 : <a class="el" href="class_grammar_1_1_rule_iterator.html#aee52bbcb041f228356990946845495fd">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;::RuleIterator</a>
 , <a class="el" href="class_grammar_hypothesis.html#afa17cc4569b9ac59eb3d232919a73917">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#af61940657fe62dd86e21077cc64aca2f">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, _datum_t, _data_t &gt;</a>
 , <a class="el" href="class_prior_inference.html#a69fcff9932a2d61863848217000fba7f">PriorInference&lt; HYP &gt;</a>
 , <a class="el" href="class_subtree_enumeration.html#a4645f617e60f31e565cc013c8dfe660c">SubtreeEnumeration&lt; Grammar_t &gt;</a>
 </li>
@@ -156,10 +163,11 @@ $(function() {
 : <a class="el" href="class_grammar.html#a87c7974198d014c9fd324fbfd39b62e6">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
 </li>
 <li>Grammar_t
-: <a class="el" href="class_l_o_t_hypothesis.html#a5393058e614835e0f139bd40acb183b2">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, _datum_t, _data_t &gt;</a>
+: <a class="el" href="class_lexicon.html#a3e84defd50a371d1a9c48e4e06514fef">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#a0a631583f8c41e6e29ad896ce46d3b42">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>
 </li>
 <li>GrammarHypothesis()
-: <a class="el" href="class_grammar_hypothesis.html#af74bd80ebd8d4d1f2e16507826af5465">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_grammar_hypothesis.html#a83e43512aae4bfcbd0e3907a62c71132">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
