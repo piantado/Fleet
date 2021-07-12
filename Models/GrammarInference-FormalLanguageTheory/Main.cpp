@@ -106,7 +106,7 @@ int main(int argc, char** argv){
 		for(size_t nf=1;nf<=MAX_FACTORS;nf++) {
 		
 			auto h0 = MyHypothesis::sample(nf); 
-			auto hyps = get_hypotheses_from_mcmc(h0, mcmc_data, Control(FleetArgs::inner_steps, FleetArgs::inner_runtime), FleetArgs::ntop);
+			auto hyps = get_hypotheses_from_mcmc(h0, mcmc_data, InnerControl(), FleetArgs::ntop);
 		
 			all_hypotheses.insert(hyps.begin(), hyps.end() );
 		}
@@ -156,7 +156,6 @@ int main(int argc, char** argv){
 				
 				std::ofstream outMAP("out/MAP-strings.txt");
 				std::ofstream outtop("out/top-H.txt");
-
 				
 				#pragma omp parallel for
 				for(size_t i=0;i<human_data.size();i++) {

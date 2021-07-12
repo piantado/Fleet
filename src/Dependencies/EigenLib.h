@@ -13,7 +13,8 @@
 #include <eigen3/unsupported/Eigen/SpecialFunctions>
 #include "IO.h"
 
-using Vector = Eigen::VectorXf; // set these and precision
+// Define some useful names here 
+using Vector = Eigen::VectorXf; 
 using Matrix = Eigen::MatrixXf; 
 
 // Woah this is WAAAY slower

@@ -341,7 +341,7 @@ public:
 		// and that will get normalized away in posterior
 		Matrix hposterior = (*decayedLikelihood / llt.get()).colwise() 
 							+ 
-						    this->hypothesis_prior(*C) / pt.get();
+						    this->hypothesis_prior(*C);
 		
 		// now normalize it and convert to probabilities
 		#pragma omp parallel for
@@ -523,7 +523,8 @@ public:
 	}
 	
 	/**
-	 * @brief Compute a vector of the prior (one for each hypothesis) using the given counts matrix (hypotheses x rules)
+	 * @brief Compute a vector of the prior (one for each hypothesis) using the given counts matrix (hypotheses x rules), AT the specified
+	 * 	      temperature
 	 * @param C
 	 * @return 
 	 */	
@@ -536,6 +537,8 @@ public:
 		
 		// get the marginal probability of the counts via  dirichlet-multinomial
 		Vector allA = logA.value.array().exp(); // translate [-inf,inf] into [0,inf]
+		
+		double temp = pt.get();
 		
 		#pragma omp parallel for
 		for(auto i=0;i<myC.rows();i++) {
@@ -561,7 +564,7 @@ public:
 			}
 		
 			#pragma omp critical
-			out(i) = lp;
+			out(i) = lp / temp; // NOTE: we use the temp before we lognormalize
 		}		
 		
 		// TODO: Do we normalize the prior? Probably need to or else we end up getting

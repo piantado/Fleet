@@ -87,3 +87,15 @@ struct Control {
 	}
 	
 };
+
+/**
+ * @brief Make a Control object (NOTE it's a Control object not an InnerControl one) that has default 
+ *        parameters of FleetArgs::inner_* 
+ * @return 
+ */
+Control InnerControl(unsigned long st=FleetArgs::inner_steps, 
+					 unsigned long t=FleetArgs::inner_runtime, 
+					 size_t thr=1, 
+					 unsigned long re=FleetArgs::inner_restart) {
+	return {st,t,thr,re};
+}
