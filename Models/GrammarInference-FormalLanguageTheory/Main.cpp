@@ -28,6 +28,10 @@ public:
 	using Super::Super;
 	using data_t = Super::data_t;		
 	
+	virtual double human_chance_lp(const typename datum_t::response_t::key_type& r, const datum_t& hd) const override {
+		// here we are going to make chance be exponential in the length of the response
+		return -(double)r.length()*log(alphabet.size()); // NOTE: Without the double case, we negate r.length() first and it's awful
+	}
 };
 
 
@@ -81,13 +85,11 @@ int main(int argc, char** argv){
 										  .ndata=ndata, 
 										  .predict=const_cast<S*>(&EMPTY_STRING), 
 										  .responses=m,
-										  .chance=1e-6, // TODO: UPDATE ~~~~~~
+										  .chance=1e-30, // TODO: UPDATE ~~~~~~
 										  .decay_position=decay_pos,
 										  .my_decay_position=i-1
 										  });
-		
-
-	}	
+	}
 	
 	COUT "# Loaded " << human_data.size() << " human data points and " << mcmc_data.size() << " mcmc data points" ENDL;
 	
@@ -168,27 +170,22 @@ int main(int argc, char** argv){
 					{
 						
 						// find the MAP model hypothesis for this data point
-						double max_post = -infinity; 
+						double max_post = 0.0; 
 						size_t max_hi = 0;
 						double lse = -infinity;
 						for(auto hi=0;hi<hposterior.rows();hi++) {
 							lse = logplusexp(lse, (double)log(hposterior(hi,i)));
 							if(hposterior(hi,i) > max_post) { 
-								max_post = log(hposterior(hi,i)); 
+								max_post = hposterior(hi,i); 
 								max_hi = hi;
 							}
-							if(i == 42 and hposterior(hi,i) > 0.001) {
-								CERR i TAB hposterior(hi,i) TAB hypotheses[hi] ENDL;
-							}
-						}
-						if(i == 42) { CERR ">>>" TAB lse TAB logsumexp_eigen(hposterior.col(i).array().log()) ENDL; } 
-						
+						}					
 						
 						// store the top hypothesis found
 						auto mapH = hypotheses[max_hi];
 						auto cll = mapH.call("");
-						outtop << cll.string() ENDL;
-						outtop << i TAB max_post TAB lse TAB QQ(mapH.string()) TAB str(*hd.data) ENDL;
+						outtop << "# " << cll.string() ENDL;
+						outtop << i TAB max_hi TAB max_post TAB lse TAB QQ(mapH.string()) TAB QQ(str(slice(*hd.data, 0, hd.ndata))) ENDL;
 						
 						std::set<std::string> all_strings;
 						for(const auto& [s,p] : model_predictions) {

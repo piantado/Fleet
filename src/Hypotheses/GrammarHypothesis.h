@@ -378,14 +378,24 @@ public:
 		for(int h=0;h<hposterior.rows();h++) {
 			if(hposterior(h,i) < 1e-6)  continue;  // skip very low probability for speed
 			
-			for(const auto& mp : P->at(h,i)) {						
-				float p = hposterior(h,i) * mp.second;
+			for(const auto& [o,op] : P->at(h,i)) {						
+				float p = hposterior(h,i) * op;
 				// map 0 for nonexisting doubles
-				model_predictions[mp.first] += p;
+				model_predictions[o] += p;
 			}
 		}
 		
 		return model_predictions;
+	}
+	
+	/**
+	 * @brief Get the chance probability of response r in hd (i.e. of a human response). This may typically be pretty boring (like just hd.chance) but w
+	 * 	      we need to be able to overwrite it
+	 * @param hd
+	 * @return 
+	 */	
+	virtual double human_chance_lp(const typename datum_t::response_t::key_type& r, const datum_t& hd) const {
+		return log(hd.chance);
 	}
 	
 	/**
@@ -422,8 +432,9 @@ public:
 				
 				double ll = 0.0; // the likelihood here
 				auto& di = human_data[i];
-				for(const auto& r : di.responses) {
-					ll += log( (1.0-alpha.get())*di.chance + alpha.get()*model_predictions[r.first]) * r.second; // log probability times the number of times they answered this
+				for(const auto& [r,cnt] : di.responses) {
+					ll += cnt * logplusexp( log(1.0-alpha.get()) + human_chance_lp(r,di), 
+					                        log(alpha.get()) + log(model_predictions[r])); 
 				}
 				
 				
@@ -512,7 +523,7 @@ public:
 	}
 	
 	/**
-	 * @brief 
+	 * @brief Compute a vector of the prior (one for each hypothesis) using the given counts matrix (hypotheses x rules)
 	 * @param C
 	 * @return 
 	 */	
@@ -553,10 +564,10 @@ public:
 			out(i) = lp;
 		}		
 		
-		return out;		
+		// TODO: Do we normalize the prior? Probably need to or else we end up getting
+		// multiple hypotheses that have prior approx 1	
+		return lognormalize(out);		
 	}
-	
-//	virtual bool operator==(const this_t& h) const = default;
 	
 	virtual bool operator==(const this_t& h) const override {
 		return (C == h.C and LL == h.LL and P == h.P) and 

@@ -74,8 +74,8 @@ public:
 			else 							a += b; 
 		}));
 
-		// head here could be a char, except that it complicates head, so we'll use head as str
-		add("head(%s)", +[](S s) -> S { return (s.empty() ? S("") : S(1,s.at(0))); });
+//		add("c2s(%s)", +[](char c) -> S { return S(1,c); });
+		add("head(%s)", +[](S s) -> S { return (s.empty() ? S("") : S(1,s.at(0))); }); // head here could be a char, except that it complicates stuff, so we'll make it a string str
 		add("\u00D8", +[]() -> S { return S(""); }, 10.0);
 		add("(%s==%s)", +[](S x, S y) -> bool { return x==y; });
 		add("empty(%s)", +[](S x) -> bool { 	return x.length()==0; });

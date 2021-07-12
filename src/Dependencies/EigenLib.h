@@ -32,7 +32,7 @@ double logsumexp_eigen(const Vector& v) {
 }
 
 Vector lognormalize(const Vector& v) {
-	return v - Vector::Ones(v.size())*logsumexp_eigen(v);
+	return v.array() - logsumexp_eigen(v);
 }
 
 Vector eigenslice(const Vector& v, const size_t offset, const size_t len) {
