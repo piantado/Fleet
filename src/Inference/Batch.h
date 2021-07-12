@@ -49,11 +49,6 @@ std::set<HYP> get_hypotheses_from_mcmc(HYP& h0, std::vector<typename HYP::data_t
 			}
 		}	
 	}
+	
 	return all;
-	// copy to a vector since it's handier
-//	std::vector<HYP> out;
-//	for(auto& h : all) {
-//		out.push_back(h);
-//	}
-//	return out;
 }

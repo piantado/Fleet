@@ -150,9 +150,8 @@ int main(int argc, char** argv){
 				
 				// Now when we're done, show the model predicted outputs on the data
 				// We'll use the MAP grammar hypothesis for this
-				GrammarHypothesis MAP = topMAP.best();
-				
-				const Matrix hposterior = MAP.compute_normalized_posterior(); // this is shared in the loop below, so computed separately		
+				auto& MAP = topMAP.best();
+				const Matrix hposterior = MAP.compute_normalized_posterior(); 
 				
 				std::ofstream outMAP("out/MAP-strings.txt");
 				std::ofstream outtop("out/top-H.txt");

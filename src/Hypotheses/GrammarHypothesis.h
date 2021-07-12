@@ -273,7 +273,7 @@ public:
 				const datum_t& d = human_data[di];
 				const Vector& v = LL->at(d.data)[h]; // get the pre-computed vector of data here
 				
-				// what is the decay position of the thing we are using?
+				// what is the decay position of the thing we are using?R
 				const int K = d.my_decay_position;
 			
 				double dl = 0.0; // the decayed likelihood value here
