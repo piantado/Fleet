@@ -8,14 +8,18 @@
 
 /**
  * @brief Runs MCMC on hypotheses, resampling when the data stops being incremental and returns a unioned
- * 			vector of all the tops
+ * 			vector of all the tops. NOTE the wrapper for just singles
  * @param hypotheses
  * @return 
  */
 template<typename HYP>
-std::set<HYP> get_hypotheses_from_mcmc(const HYP& h0, const std::vector<typename HYP::data_t*>& mcmc_data, Control c, const size_t ntop) {
+std::vector<std::set<HYP>> get_hypotheses_from_mcmc(const HYP& h0, const std::vector<typename HYP::data_t*>& mcmc_data, Control c, const std::vector<size_t> ntop) {
+	assert(not ntop.empty());
 	
-	std::set<HYP> all;	
+	// find the largest top
+	auto maxntop = *std::max_element(ntop.begin(), ntop.end());
+	
+	std::vector<std::set<HYP>> out(ntop.size()); // one output for each ntop	
 	
 	#pragma omp parallel for
 	for(size_t vi=0; vi<mcmc_data.size();vi++) {
@@ -23,32 +27,44 @@ std::set<HYP> get_hypotheses_from_mcmc(const HYP& h0, const std::vector<typename
 		
 		#pragma omp critical
 		{
-		COUT "# Running " TAB vi TAB " of " TAB mcmc_data.size() TAB mcmc_data[vi] ENDL;
+			COUT "# Running " TAB vi TAB " of " TAB mcmc_data.size() TAB mcmc_data[vi] ENDL;
 		}
 		
-		// start at i=0 so we actually always include prior samples
+		// start at di=0 so we actually always include prior samples
 		// maybe this isn't a good way to do it
-		for(size_t i=0;i<=mcmc_data[vi]->size() and !CTRL_C;i++) {
+		for(size_t di=0;di<=mcmc_data[vi]->size() and !CTRL_C;di++) {
 			
-			TopN<HYP> top(ntop);
-			
+			TopN<HYP> top(maxntop);
 			HYP myh0 = h0.restart();
-			
-			// slices [0,i]
-			auto givendata = slice(*(mcmc_data[vi]), 0, i);
-			
+			auto givendata = slice(*(mcmc_data[vi]), 0, di); // slices [0,i]
+						
 			MCMCChain chain(myh0, &givendata);
-			for(auto& h : chain.run(Control(c))) { // must run on a copy 
-				top << h;
-			}
+			for(auto& h : chain.run(Control(c))) { top << h; } // NOTE must run on copy of c
 			
 			#pragma omp critical
-			for(auto h : top.values()) {
-				h.clear_bayes(); // zero and insert
-				all.insert(h);
+			{
+				// now make data of each size
+				for(size_t t=0;t<ntop.size();t++) {
+					
+					TopN<HYP> mytop(ntop[t]);
+					mytop << top; // choose the top ntop
+					
+					for(auto h : mytop.values()) {
+						h.clear_bayes(); // zero and insert
+						out[t].insert(h);
+					}				
+					
+				}
 			}
 		}	
 	}
 	
-	return all;
+	return out;
+}
+
+template<typename HYP>
+std::set<HYP> get_hypotheses_from_mcmc(const HYP& h0, const std::vector<typename HYP::data_t*>& mcmc_data, Control c, const size_t ntop) {
+	auto v = get_hypotheses_from_mcmc(h0, mcmc_data, c, std::vector<size_t>{1,ntop});
+	assert(v.size() == 1);
+	return *v.begin();
 }

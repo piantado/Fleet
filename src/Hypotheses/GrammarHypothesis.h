@@ -54,7 +54,6 @@ public:
 	// iterate so now we might make a map in constructing, but we stores as a vector of pairs
 	using Predict_t = Vector2D<std::vector<std::pair<typename HYP::output_t,double>>>; 
 	
-	//VectorNormalHypothesis logA; // a simple normal vector for the log of a
 	VectorHalfNormalHypothesis logA; 
 	
 	// Here is a list of built-in parameters that we can use. Each stores a standard
@@ -145,9 +144,7 @@ public:
 	 * @brief A convenient function that uses C to say how many hypotheses
 	 * @return 
 	 */	
-	virtual size_t nhypotheses() const {
-		return C->rows();
-	}
+	virtual size_t nhypotheses() const { return C->rows(); }
 	
 	/**
 	 * @brief Computes our matrix C[h,r] of hypotheses (rows) by counts of each grammar rule.
@@ -175,6 +172,8 @@ public:
 			#pragma omp critical
 			C->row(i) = cv;
 		}
+		
+		assert( (size_t)C->rows() == hypotheses.size());
 	}
 		
 	/**
@@ -635,12 +634,7 @@ public:
 		return output;
 	}
 	
-	virtual std::string serialize() const override { 
-		throw NotImplementedError();
-	}
-	
-	static this_t deserialize(const std::string& s) { 
-		throw NotImplementedError();
-	}
+	virtual std::string serialize() const override { throw NotImplementedError();}
+	static this_t deserialize(const std::string& s) { throw NotImplementedError(); }
 	
 };

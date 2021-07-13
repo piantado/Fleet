@@ -225,7 +225,9 @@ public:
 		// this calls by calling only the last factor, which, according to our prior,
 		
 		assert(loader==nullptr); // we really don't want people passing this in to this lexicon
-		assert(has_valid_indices());
+		
+//		assert(has_valid_indices()); // can either assert or return error
+		if(not has_valid_indices()) return {}; 
 		
 		size_t i = factors.size()-1; 
 		return factors[i].call(x, err, this); // we call the factor but with this as the loader.  

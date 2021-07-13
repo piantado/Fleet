@@ -16,6 +16,9 @@ const size_t MAX_FACTORS = 3;
 std::string hypothesis_path = "hypotheses.txt";
 std::string runtype         = "both"; // can be both, hypotheses (just find hypotheses), or grammar (just do mcmc, loading from hypothesis_path)
 
+
+std::vector<size_t> ntops = {1,5,10,25,100,250,500,1000}; // save the top this many from each hypothesis
+
 // The format of data for grammar inferece
 using MyHumanDatum = HumanDatum<MyHypothesis>;
 
@@ -47,6 +50,20 @@ int main(int argc, char** argv){
 	for(const char c : alphabet) {
 		grammar.add_terminal( Q(S(1,c)), c, 10.0/alphabet.length());
 	}
+
+	// this is slightly non-ideal because e.g. F0 will have a different role
+	// when there are 1 vs 2 vs 3 factors, but they all have the same prior here.
+	for(size_t a=0;a<MAX_FACTORS;a++) {	
+		auto s = std::to_string(a);
+		double p = 1.0/(4*nfactors); // NOTE: Slightly different prior
+
+		grammar.add(S("F")+s+"(%s)" ,  Builtins::Recurse<MyGrammar>, p, a);
+		grammar.add(S("Fm")+s+"(%s)",  Builtins::MemRecurse<MyGrammar>, p, a);
+
+		grammar.add(S("Fs")+s+"(%s)",  Builtins::SafeRecurse<MyGrammar>, p, a);
+		grammar.add(S("Fms")+s+"(%s)", Builtins::SafeMemRecurse<MyGrammar>, p, a);
+	}
+		
 
 	///////////////////////////////
 	// Read the human data
@@ -99,18 +116,20 @@ int main(int argc, char** argv){
 
 	if(runtype == "hypotheses" or runtype == "both") {
 		
-		std::set<MyHypothesis> all_hypotheses;
+		std::vector<std::set<MyHypothesis>> all_hypotheses(ntops.size());
 		
 		// here, we need to run on each number of factors
 		for(size_t nf=1;nf<=MAX_FACTORS;nf++) {
 		
 			auto h0 = MyHypothesis::sample(nf); 
-			auto hyps = get_hypotheses_from_mcmc(h0, mcmc_data, InnerControl(), FleetArgs::ntop);
+			auto hyps = get_hypotheses_from_mcmc(h0, mcmc_data, InnerControl(), ntops);
 		
-			all_hypotheses.insert(hyps.begin(), hyps.end() );
+			for(size_t t=0;t<ntops.size();t++) 
+				all_hypotheses[t].insert(hyps[t].begin(), hyps[t].end() );
 		}
 		
-		save(hypothesis_path, all_hypotheses);
+		for(size_t t=0;t<ntops.size();t++) 
+			save(hypothesis_path+"."+str(ntops[t]), all_hypotheses[t]);
 		
 		CTRL_C = 0; // reset control-C so we can break again for the next mcmc		
 	}
@@ -150,8 +169,8 @@ int main(int argc, char** argv){
 				auto& MAP = topMAP.best();
 				const Matrix hposterior = MAP.compute_normalized_posterior(); 
 				
-				std::ofstream outMAP(FleetArgs::output_path+"MAP-strings.txt");
-				std::ofstream outtop(FleetArgs::output_path+"top-H.txt");
+				std::ofstream outMAP(FleetArgs::output_path+"/MAP-strings.txt");
+				std::ofstream outtop(FleetArgs::output_path+"/top-H.txt");
 				
 				#pragma omp parallel for
 				for(size_t i=0;i<human_data.size();i++) {
