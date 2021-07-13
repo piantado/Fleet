@@ -19,6 +19,7 @@
 
 extern volatile sig_atomic_t CTRL_C;
 
+#include "VectorHalfNormalHypothesis.h"
 #include "VectorNormalHypothesis.h"
 #include "TNormalVariable.h"
 #include "Batch.h"
@@ -53,7 +54,8 @@ public:
 	// iterate so now we might make a map in constructing, but we stores as a vector of pairs
 	using Predict_t = Vector2D<std::vector<std::pair<typename HYP::output_t,double>>>; 
 	
-	VectorNormalHypothesis logA; // a simple normal vector for the log of a
+	//VectorNormalHypothesis logA; // a simple normal vector for the log of a
+	VectorHalfNormalHypothesis logA; 
 	
 	// Here is a list of built-in parameters that we can use. Each stores a standard
 	// normal and a value under the specified transformation, which is chosen here to give 
@@ -136,10 +138,7 @@ public:
 	virtual void set_can_propose(size_t i, bool b) {
 		logA.set_can_propose(i,b);
 		
-		if(logA(i) != 0.0) {
-			CERR "# Warning, set_can_propose is setting false to logA(" << str(i) << ") != 0.0 (this is untransformed space)" ENDL;
-		}
-		
+		if(logA(i) != 0.0) { CERR "# Warning, set_can_propose is setting false to logA(" << str(i) << ") != 0.0 (this is untransformed space)" ENDL; }
 	}
 	
 	/**
@@ -273,7 +272,7 @@ public:
 				const datum_t& d = human_data[di];
 				const Vector& v = LL->at(d.data)[h]; // get the pre-computed vector of data here
 				
-				// what is the decay position of the thing we are using?R
+				// what is the decay position of the thing we are using?Rs
 				const int K = d.my_decay_position;
 			
 				double dl = 0.0; // the decayed likelihood value here
@@ -528,48 +527,54 @@ public:
 	 * @param C
 	 * @return 
 	 */	
-	virtual Vector hypothesis_prior(Matrix& myC) const {
+	virtual Vector hypothesis_prior(const Matrix& myC) const {
 		// take a matrix of counts (each row is a hypothesis)
 		// and return a prior for each hypothesis under my own X
-		// (If this was just a PCFG, which its not, we'd use something like lognormalize(C*proposal.getX()))
+		// (If this was just a PCFG, which its not, we'd use something like lognormalize(C*logA))
 
-		Vector out(nhypotheses()); // one for each hypothesis
-		
-		// get the marginal probability of the counts via  dirichlet-multinomial
-		Vector allA = logA.value.array().exp(); // translate [-inf,inf] into [0,inf]
-		
-		double temp = pt.get();
-		
-		#pragma omp parallel for
-		for(auto i=0;i<myC.rows();i++) {
-			
-			double lp = 0.0;
-			size_t offset = 0; // 
-			for(size_t nt=0;nt<grammar->count_nonterminals();nt++) { // each nonterminal in the grammar is a DM
-				size_t nrules = grammar->count_rules( (nonterminal_t) nt);
-				if(nrules > 1) { // don't need to do anything if only one rule (but must incremnet offset)
-					Vector a = eigenslice(allA,offset,nrules); // TODO: seqN doesn't seem to work with this eigen version
-					Vector c = eigenslice(myC.row(i),offset,nrules);
-					double n = a.sum(); assert(n > 0.0); 
-					double c0 = c.sum();
-					if(c0 != 0.0) { // TODO: Check this...  
-						// NOTE: std::lgamma here is not thread safe, so we use mylgamma defined in Numerics
-						lp += mylgamma(n+1) + mylgamma(c0) - mylgamma(n+c0) 
-							 + (c.array() + a.array()).array().lgamma().sum() 
-							 - (c.array()+1).array().lgamma().sum() 
-							 - a.array().lgamma().sum();
-					}
-				}
-				offset += nrules;
-			}
-		
-			#pragma omp critical
-			out(i) = lp / temp; // NOTE: we use the temp before we lognormalize
-		}		
 		
 		// TODO: Do we normalize the prior? Probably need to or else we end up getting
 		// multiple hypotheses that have prior approx 1	
-		return lognormalize(out);		
+		return lognormalize( (*C * logA.value) / pt.get() );	
+		
+		// This version does the rational-rule thing and requires that logA store the log of the A values
+		// that ends up giving kinda crazy values. NOTE: This version also constrains each NT to sum to 1,
+		// which our general version below does not. 
+
+		//		Vector out(nhypotheses()); // one for each hypothesis
+
+		// get the marginal probability of the counts via  dirichlet-multinomial
+		//Vector allA = logA.value.array().exp(); // translate [-inf,inf] into [0,inf]
+		
+//		#pragma omp parallel for
+//		for(auto i=0;i<myC.rows();i++) {
+//			
+//			double lp = 0.0;
+//			size_t offset = 0; // 
+//			for(size_t nt=0;nt<grammar->count_nonterminals();nt++) { // each nonterminal in the grammar is a DM
+//				size_t nrules = grammar->count_rules( (nonterminal_t) nt);
+//				if(nrules > 1) { // don't need to do anything if only one rule (but must incremnet offset)
+//					Vector a = eigenslice(allA,offset,nrules); // TODO: seqN doesn't seem to work with this eigen version
+//					Vector c = eigenslice(myC.row(i),offset,nrules);
+//					
+//					// This version does RR marginalization and requires us to use logA.value.array().exp() above. 
+//					double n = a.sum(); assert(n > 0.0); 
+//					double c0 = c.sum();
+//					if(c0 != 0.0) { // TODO: Check this...  
+//						// NOTE: std::lgamma here is not thread safe, so we use mylgamma defined in Numerics
+//						lp += mylgamma(n+1) + mylgamma(c0) - mylgamma(n+c0) 
+//							 + (c.array() + a.array()).array().lgamma().sum() 
+//							 - (c.array()+1).array().lgamma().sum() 
+//							 - a.array().lgamma().sum();
+//					}
+//				}
+//				offset += nrules;
+//			}
+//		
+//			#pragma omp critical
+//			out(i) = lp / temp; // NOTE: we use the temp before we lognormalize
+//		}		
+	
 	}
 	
 	virtual bool operator==(const this_t& h) const override {
@@ -607,7 +612,7 @@ public:
 			if(logA.can_propose[xi]) { // we'll skip the things we set as effectively constants (but still increment xi)
 				std::string rs = r.format;
 				rs = std::regex_replace(rs, std::regex("\\%s"), "X");
-				out += prefix + str(r.nt) + "\t" + QQ(rs) +"\t" + str(exp(logA(xi))) + "\n"; // unlogged here
+				out += prefix + str(r.nt) + "\t" + QQ(rs) +"\t" + str(logA(xi)) + "\n"; // unlogged here
 			}
 			xi++;
 		}	

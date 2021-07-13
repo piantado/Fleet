@@ -69,7 +69,6 @@ int main(int argc, char** argv){
 			
 			// add a check that we're using the right alphabet here
 			for(auto& c: s) assert(contains(alphabet,c));
-			
 		}
 		
 		// process all_responses into a map from strings to counts
@@ -97,7 +96,7 @@ int main(int argc, char** argv){
 	// Run a search over hypotheses
 	///////////////////////////////	
 	
-	std::vector<MyHypothesis> hypotheses; 
+
 	if(runtype == "hypotheses" or runtype == "both") {
 		
 		std::set<MyHypothesis> all_hypotheses;
@@ -111,41 +110,39 @@ int main(int argc, char** argv){
 			all_hypotheses.insert(hyps.begin(), hyps.end() );
 		}
 		
-		CTRL_C = 0; // reset control-C so we can break again for the next mcmc
-		
 		save(hypothesis_path, all_hypotheses);
 		
-		// put these into the vector
-		for(auto& h : all_hypotheses) 
-			hypotheses.push_back(h);
+		CTRL_C = 0; // reset control-C so we can break again for the next mcmc		
 	}
-	else {
-		hypotheses = load<MyHypothesis>(hypothesis_path); // only load if we haven't run 
-	}
-	COUT "# Hypothesis size: " TAB hypotheses.size() ENDL;
-	assert(hypotheses.size() > 0 && "*** Somehow we don't have any hypotheses!");
-	
+
 	
 	///////////////////////////////
 	// Run the grammar inference
 	///////////////////////////////	
 	
 	if(runtype == "grammar" or runtype == "both") { 
-
-		TopN<MyGrammarHypothesis> topMAP(1); // keeps track of the map
-
-		auto h0 = MyGrammarHypothesis::sample(hypotheses, &human_data);
-
-		size_t nloops = 0;
-		auto thechain = MCMCChain<MyGrammarHypothesis>(h0, &human_data);
 		
+		auto hypotheses = load<MyHypothesis>(hypothesis_path);
+		COUT "# Hypothesis size: " TAB hypotheses.size() ENDL;
+		assert(hypotheses.size() > 0 && "*** Somehow we don't have any hypotheses!");
+	
+		// store the best
+		TopN<MyGrammarHypothesis> topMAP(1); // keeps track of the map
+	
+		// the MCMC chain we run over grammars
+		auto thechain = MCMCChain<MyGrammarHypothesis>(MyGrammarHypothesis::sample(hypotheses, &human_data), &human_data);
+		
+		// Main MCMC running loop!
+		size_t nloops = 0;
 		for(const auto& h : thechain.run(Control()) | topMAP | print(FleetArgs::print) | thin(FleetArgs::thin) ) {
 			
-			std::ofstream outsamples("out/samples.txt", std::ofstream::app);
-			outsamples << h.string(str(thechain.samples)+"\t") ENDL;
-			outsamples.close();
+			{
+				std::ofstream outsamples(FleetArgs::output_path+"/samples.txt", std::ofstream::app);
+				outsamples << h.string(str(thechain.samples)+"\t") ENDL;
+				outsamples.close();
+			}
 			
-			// Every this many steps we print out the model predictions
+			// Every this many steps (AFTER thinning) we print out the model predictions
 			if(nloops++ % 10 == 0) {
 				
 				// Now when we're done, show the model predicted outputs on the data
@@ -153,8 +150,8 @@ int main(int argc, char** argv){
 				auto& MAP = topMAP.best();
 				const Matrix hposterior = MAP.compute_normalized_posterior(); 
 				
-				std::ofstream outMAP("out/MAP-strings.txt");
-				std::ofstream outtop("out/top-H.txt");
+				std::ofstream outMAP(FleetArgs::output_path+"MAP-strings.txt");
+				std::ofstream outtop(FleetArgs::output_path+"top-H.txt");
 				
 				#pragma omp parallel for
 				for(size_t i=0;i<human_data.size();i++) {

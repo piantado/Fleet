@@ -17,8 +17,7 @@ class VectorNormalHypothesis : public MCMCable<VectorNormalHypothesis, void*> {
 	// This gets used in GrammarHypothesis to store both the grammar values and
 	// parameters for the model. 
 public:
-
-	typedef VectorNormalHypothesis self_t; 
+	using self_t = VectorNormalHypothesis;
 	
 	double MEAN = 0.0;
 	double SD   = 1.0;
@@ -30,12 +29,8 @@ public:
 	// This is useful because sometimes we don't want to do MCMC on some parts of the grammar
 	std::vector<bool> can_propose; 
 	
-	VectorNormalHypothesis() {
-	}
-
-	VectorNormalHypothesis(int n) {
-		set_size(n);
-	}
+	VectorNormalHypothesis() {}
+	VectorNormalHypothesis(int n) { set_size(n); }
 	
 	double operator()(int i) const {
 		// So we can treat this hypothesis like a vector
@@ -52,6 +47,12 @@ public:
 	 */	
 	void set_can_propose(size_t i, bool b) {
 		can_propose[i] = b;
+		
+		// let's just check they're not all can't propose
+		if(std::all_of(can_propose.begin(), can_propose.end(), [](bool v) { return not v; })) {
+			assert(false && "*** Cannot set everything to no-propose or else Vector[Half]NormalHypothesis breaks! (loops infinitely on propose)");
+		}
+		
 	}
 	
 	void set_size(size_t n) {
@@ -64,7 +65,7 @@ public:
 		this->prior = 0.0;
 		
 		for(auto i=0;i<value.size();i++) {
-			this->prior += normal_lpdf((double)value(i), MEAN, SD);
+			this->prior += normal_lpdf((double)value(i), this->MEAN, this->SD);
 		}
 		
 		return this->prior;
@@ -126,3 +127,4 @@ public:
 		return out; 
 	}
 };
+

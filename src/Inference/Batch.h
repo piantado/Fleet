@@ -13,7 +13,7 @@
  * @return 
  */
 template<typename HYP>
-std::set<HYP> get_hypotheses_from_mcmc(HYP& h0, std::vector<typename HYP::data_t*>& mcmc_data, Control c, size_t ntop) {
+std::set<HYP> get_hypotheses_from_mcmc(const HYP& h0, const std::vector<typename HYP::data_t*>& mcmc_data, Control c, const size_t ntop) {
 	
 	std::set<HYP> all;	
 	
