@@ -31,7 +31,7 @@ public:
 	using Super::Super;
 	using data_t = Super::data_t;		
 	
-	virtual double human_chance_lp(const typename datum_t::response_t::key_type& r, const datum_t& hd) const override {
+	virtual double human_chance_lp(const typename datum_t::output_t& r, const datum_t& hd) const override {
 		// here we are going to make chance be exponential in the length of the response
 		return -(double)r.length()*log(alphabet.size()); // NOTE: Without the double case, we negate r.length() first and it's awful
 	}
@@ -89,7 +89,7 @@ int main(int argc, char** argv){
 		}
 		
 		// process all_responses into a map from strings to counts
-		auto m = string_to<std::map<std::string,unsigned long>>(all_responses);
+		auto m = string_to<std::vector<std::pair<std::string,unsigned long>>>(all_responses);
 		
 		// This glom thing will use anything overlapping in mcmc_data, and give
 		// us a new pointer if it can. This decreases the amount we need to run MCMC search
@@ -162,7 +162,7 @@ int main(int argc, char** argv){
 			}
 			
 			// Every this many steps (AFTER thinning) we print out the model predictions
-			if(nloops++ % 10 == 0) {
+			if(nloops++ % 100 == 0) {
 				
 				// Now when we're done, show the model predicted outputs on the data
 				// We'll use the MAP grammar hypothesis for this
@@ -217,7 +217,7 @@ int main(int argc, char** argv){
 							outMAP << i TAB 
 									   Q(s) TAB 
 									   get(model_predictions, s, 0) TAB 
-									   get(hd.responses, s, 0) TAB 
+									   //get(hd.responses, s, 0) TAB  // TODO: ADD THIS BACK IN
 									   N ENDL;
 						}
 					}

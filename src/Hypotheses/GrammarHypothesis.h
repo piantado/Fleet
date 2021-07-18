@@ -198,36 +198,33 @@ public:
 		LL->reserve(max_sizes.size()); // reserve for the same number of elements 
 		
 		// now go through and compute the likelihood of each hypothesis on each data set
-		for(auto& x : max_sizes) {
+		for(const auto& [dptr, sz] : max_sizes) {
 			if(CTRL_C) break;
 				
-			LL->emplace(x.first, nhypotheses()); // in this place, make something of size nhypotheses
-			
-			auto& v = LL->at(x.first);
+			LL->emplace(dptr, nhypotheses()); // in this place, make something of size nhypotheses
 			
 			#pragma omp parallel for
 			for(size_t h=0;h<nhypotheses();h++) {
 				
 				// set up all the likelihoods here
-				Vector data_lls  = Vector::Zero(x.second);				
+				Vector data_lls  = Vector::Zero(sz);				
 				
 				// read the max size from above and compute all the likelihoods
-				for(size_t i=0;i<max_sizes[x.first];i++) {
+				for(size_t i=0;i<max_sizes[dptr];i++) {
 					
 					// here we could do 
 					// data_lls(i) = hypotheses[h].compute_single_likelihood(x.first->at(i));
-					// but the problem is that isn't defined for some hypothese. So we'll use 
+					// but the problem is that isn't defined for some hypotheses. So we'll use 
 					// the slower
 					typename HYP::data_t d;
-					d.push_back(x.first->at(i));
+					d.push_back(dptr->at(i));
 					data_lls(i) = hypotheses[h].compute_likelihood(d);
-					
-					
+										
 					assert(not std::isnan(data_lls(i))); // NaNs will really mess everything up
 				}
 				
 				#pragma omp critical
-				v[h] = data_lls;
+				LL->at(dptr)[h] = data_lls;
 			}
 		}
 		
@@ -299,17 +296,26 @@ public:
 		P.reset(new Predict_t(hypotheses.size(), human_data.size())); 
 		
 		#pragma omp parallel for
-		for(size_t di=0;di<human_data.size();di++) {	
-			for(size_t h=0;h<hypotheses.size();h++) {			
+		for(size_t h=0;h<hypotheses.size();h++) {			
+			
+			// sometimes our predicted data is the same as our previous data
+			// so we are going to include that so we don't keep recomputing it
+			auto ret = hypotheses[h](*human_data[0].predict);
+			
+			for(size_t di=0;di<human_data.size();di++) {	
+				
+				// only change ret if its different
+				if(di > 0 and (*human_data[di].predict != *human_data[di-1].predict))
+					ret = hypotheses[h](*human_data[di].predict);
 				
 				// we get back a discrete distribution, but we'd like to store it as a vector
-				// so its faster to iterate
-				auto ret = hypotheses[h](*human_data[di].predict);
-				
+				// so its faster to iterate. NOTE: the second elemnt here is exp(x.second), 
+				// so we are NOT in log probability anymore
 				std::vector<std::pair<typename HYP::output_t,double>> v;
 				v.reserve(ret.size());
 				
-				for(auto& x : ret.values()) {
+				// TODO: Do we normalize? Here we won't....
+				for(const auto& x : ret.values()) {
 					v.push_back(std::make_pair(x.first, exp(x.second)));
 				}
 
@@ -330,6 +336,7 @@ public:
 	
 	/**
 	 * @brief This returns a matrix hposterior[h,di] giving the posterior on the h'th element. NOTE: not output is NOT logged
+	 * @return 
 	 * @return 
 	 */	
 	virtual Matrix compute_normalized_posterior() const {
@@ -373,6 +380,7 @@ public:
 		// Note this is the non-log version. Here we avoid computing ang logs, logsumexp, or even exp in this loop
 		// because it is very slow. 
 		// P(output | learner_data) = sum_h P(h | learner_data) * P(output | h):
+		// NOTE We do not use omp because this is called by something that does
 		for(int h=0;h<hposterior.rows();h++) {
 			if(hposterior(h,i) < 1e-6)  continue;  // skip very low probability for speed
 			
@@ -392,7 +400,7 @@ public:
 	 * @param hd
 	 * @return 
 	 */	
-	virtual double human_chance_lp(const typename datum_t::response_t::key_type& r, const datum_t& hd) const {
+	virtual double human_chance_lp(const typename datum_t::output_t& r, const datum_t& hd) const {
 		return log(hd.chance);
 	}
 	
@@ -412,16 +420,17 @@ public:
 			assert(false);
 		}		
 
+
 		// Ok this needs a little explanation. IF we have overwritten the types, then we can get compilation
 		// errors below because for instance r.first won't be of the right type to index into model_predictions.
 		// So this line catches that and removes this chunk of code at compile time if we have removed
 		// those types. In its place, we add a runtime assertion fail, meaning you should have overwritten
 		// compute_likelihood if you change these types
-		if constexpr(std::is_same<std::map<typename HYP::output_t,size_t>, typename datum_t::response_t>::value) {
+		if constexpr(std::is_same<std::vector<std::pair<typename HYP::output_t,size_t>>, typename datum_t::response_t>::value) {
 			
 			Matrix hposterior = this->compute_normalized_posterior();
 			
-			this->likelihood  = 0.0; // of the human data
+			this->likelihood  = 0.0; // for af the human data
 			
 			#pragma omp parallel for
 			for(size_t i=0;i<human_data.size();i++) {
@@ -436,9 +445,10 @@ public:
 				}
 				
 				
-				#pragma omp critical
+				#pragma omp atomic
 				this->likelihood += ll;
 			}
+			
 			return this->likelihood;	
 		}
 		else {

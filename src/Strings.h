@@ -458,6 +458,10 @@ T string_to(const std::string s) {
 		}
 		return m;
 	}
+	if constexpr(is_specialization<T,std::pair>::value) {
+		auto [x,y] = split<2>(s, ':');
+		return {string_to<typename T::first_type>(x), string_to<typename T::second_type>(y)};		
+	}
 	else if constexpr(is_specialization<T,std::vector>::value) {
 		T v;
 		for(auto& x : split(s, ',')) {
@@ -487,3 +491,9 @@ template<> unsigned long string_to(const std::string s) { return std::stoul(s); 
 template<> double        string_to(const std::string s) { return std::stod(s); }
 template<> float         string_to(const std::string s) { return std::stof(s); }
 template<> bool          string_to(const std::string s) { assert(s.size()==1); return s=="1"; } // 0/1 for t/f
+
+//template<typename T, typename U>
+//std::pair<T,U> string_to(const std::string s) {	
+//	auto [x,y] = split<2>(s, ':');
+//	return {string_to<T>(x), string_to<U>(y)};		
+//}

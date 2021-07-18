@@ -13,11 +13,13 @@
  */
 template<typename HYP, 
 		 typename _input_t=typename HYP::input_t, 
-		 typename _response_t=std::map<typename HYP::output_t,size_t>, 
+		 typename _output_t=typename HYP::output_t,
+		 typename _response_t=std::vector<std::pair<_output_t,size_t>>, 
 		 typename _data_t=typename HYP::data_t>
 struct HumanDatum {
 	using data_t = _data_t;
 	using input_t = _input_t;
+	using output_t = _output_t;
 	using response_t = _response_t;
 	
 	data_t* const            data; 
