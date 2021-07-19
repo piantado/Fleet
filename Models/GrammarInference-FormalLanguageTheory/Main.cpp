@@ -129,7 +129,7 @@ int main(int argc, char** argv){
 		}
 		
 		for(size_t t=0;t<ntops.size();t++) 
-			save(hypothesis_path+"."+str(ntops[t]), all_hypotheses[t]);
+			save(FleetArgs::output_path+"."+str(ntops[t]), all_hypotheses[t]);
 		
 		CTRL_C = 0; // reset control-C so we can break again for the next mcmc		
 	}
