@@ -201,23 +201,26 @@ int main(int argc, char** argv){
 						outtop << "# " << cll.string() ENDL;
 						outtop << i TAB max_hi TAB max_post TAB lse TAB QQ(mapH.string()) TAB QQ(str(slice(*hd.data, 0, hd.ndata))) ENDL;
 						
+						// get all of the strings output by people or the model
 						std::set<std::string> all_strings;
 						for(const auto& [s,p] : model_predictions) {
 							all_strings.insert(s);
 							UNUSED(p);
 						}
 						
+						std::map<std::string, size_t> m; // make a map of outputs so we can index easily below
 						size_t N = 0; // total number
 						for(const auto& [s,c] : hd.responses)  {
 							all_strings.insert(s);
 							N += c;
+							m[s] = c;
 						}
 					
 						for(const auto& s : all_strings) {
 							outMAP << i TAB 
 									   Q(s) TAB 
 									   get(model_predictions, s, 0) TAB 
-									   //get(hd.responses, s, 0) TAB  // TODO: ADD THIS BACK IN
+									   get(m, s, 0) TAB  
 									   N ENDL;
 						}
 					}

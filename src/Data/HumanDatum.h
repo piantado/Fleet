@@ -25,7 +25,7 @@ struct HumanDatum {
 	data_t* const            data; 
 	const size_t             ndata; // we condition on the first ndata points in data (so we can point to a single stored data)
 	input_t* const           predict;	// what we compute on now
-	const response_t         responses; // map giving how many of each type of response you see
+	const response_t         responses; // vector giving how many of each type of response you see
 	const double             chance; // how many responses are alltogether possible? Needed for chance responding. 
 	std::vector<int>* const  decay_position; // a pointer to memory decay positions for each of ndata (i'th point is decayed (my_decay_position-decay_position[i])**(-decay))
 	const int				 my_decay_position; // what position was I in terms of decay?

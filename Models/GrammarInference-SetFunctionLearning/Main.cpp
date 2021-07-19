@@ -41,6 +41,8 @@ public:
 #include "Vectors.h"
 #include "Data.h"
 
+std::vector<size_t> ntops = {1,5,10,25,100,250,500,1000}; // save the top this many from each hypothesis
+
 const double alpha = 0.95; // in learning
 
 S hypothesis_path = "hypotheses.txt";
@@ -108,10 +110,14 @@ int main(int argc, char** argv){
 
 		// now unpack this data into human_data for each point in the concept
 		for(size_t i=0;i<objs->size();i++) {
-			// make a map of the responses
-			std::map<bool,size_t> m; m[true] = (*yeses)[i]; m[false] = (*nos)[i];
+			// make a vector of responses
+			std::vector<std::pair<bool,size_t>> v;
+			v.push_back(std::make_pair(true,yeses->at(i)));
+			v.push_back(std::make_pair(false,nos->at(i)));
 			
-			HumanDatum<MyHypothesis> hd{learner_data, ndata, &( learner_data->at(ndata+i).input ), std::move(m), 0.5, decay_position, decay_position_counter};
+//			std::map<bool,size_t> m; m[true] = (*yeses)[i]; m[false] = (*nos)[i];
+			
+			HumanDatum<MyHypothesis> hd{learner_data, ndata, &( learner_data->at(ndata+i).input ), v, 0.5, decay_position, decay_position_counter};
 		
 			human_data.push_back(std::move(hd));
 		}
@@ -125,24 +131,23 @@ int main(int argc, char** argv){
 	
 	COUT "# Loaded " << human_data.size() << " human data points and " << mcmc_data.size() << " mcmc data points" ENDL;
 		
-	std::vector<MyHypothesis> hypotheses; 
 	if(runtype == "hypotheses" or runtype == "both") {
-		auto h0 = MyHypothesis::sample(); 
-		hypotheses = get_hypotheses_from_mcmc(h0, mcmc_data, Control(FleetArgs::inner_steps, FleetArgs::inner_runtime), FleetArgs::ntop);
-		CTRL_C = 0; // reset control-C so we can break again for the next mcmc
 		
-		save(hypothesis_path, hypotheses);
+		auto h0 = MyHypothesis::sample(); 
+		auto hypotheses = get_hypotheses_from_mcmc(h0, mcmc_data, InnerControl(), ntops);
+		
+		for(size_t t=0;t<ntops.size();t++) 
+			save(hypothesis_path+"."+str(ntops[t]), hypotheses[t]);
 	}
-	else {
-		// only load if we haven't run 
-		hypotheses = load<MyHypothesis>(hypothesis_path, &grammar);
-	}
-	COUT "# Hypothesis size: " TAB hypotheses.size() ENDL;
-	assert(hypotheses.size() > 0 && "*** Somehow we don't have any hypotheses!");
+
 	
 	if(runtype == "grammar" or runtype == "both") { 
+
+		auto hypotheses = load<MyHypothesis>(hypothesis_path);
+		assert(hypotheses.size() > 0 && "*** Somehow we don't have any hypotheses!");
+		COUT "# Hypothesis size: " TAB hypotheses.size() ENDL;
 		
-		auto h0 = MyGrammarHypothesis::make(hypotheses, &human_data);
+		auto h0 = MyGrammarHypothesis::sample(hypotheses, &human_data);
 	
 		auto thechain = MCMCChain(h0, &human_data);
 		for(auto& h : thechain.run(Control()) | thin(FleetArgs::thin) ){
