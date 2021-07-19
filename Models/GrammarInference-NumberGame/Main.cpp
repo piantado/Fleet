@@ -11,13 +11,16 @@
 #include "Strings.h"
 #include "MCMCChain.h"
 
+std::vector<size_t> ntops = {1,5,10,25,100,250,500,1000}; // save the top this many from each hypothesis
+
 std::string hypothesis_path = "hypotheses.txt";
 std::string runtype         = "both"; // can be both, hypotheses (just find hypotheses), or grammar (just do mcmc, loading from hypothesis_path)
 
 // We're going to define a new kind of HumanDatum where the input is an int and the 
-// output is a list of yes/no counts for each integer (stored in a vector)
+// response type is a lsit of yes/no counts for each integer (rather than yes/no counts for
+// each possible NumberSet)
 // NOTE: This overrides the standard HumanDatum types since NumberGame naturally has a different format
-using MyHumanDatum = HumanDatum<MyHypothesis, int, std::vector<std::pair<int,int>>>;
+using MyHumanDatum = HumanDatum<MyHypothesis, int, NumberSet, std::vector<std::pair<int,int>>>;
 
 #include "GrammarHypothesis.h"
 
@@ -149,23 +152,21 @@ int main(int argc, char** argv){
 	// Now handle main running 
 	///////////////////////////////	
 	
-	std::vector<MyHypothesis> hypotheses; 
 	if(runtype == "hypotheses" or runtype == "both") {
 		
 		auto h0 = MyHypothesis::sample(); 
-		hypotheses = get_hypotheses_from_mcmc(h0, mcmc_data, Control(FleetArgs::inner_steps, FleetArgs::inner_runtime), FleetArgs::ntop);
-		CTRL_C = 0; // reset control-C so we can break again for the next mcmc
+		auto hypotheses = get_hypotheses_from_mcmc(h0, mcmc_data, InnerControl(), ntops);
 		
-		save(hypothesis_path, hypotheses);
+		for(size_t t=0;t<ntops.size();t++) 
+			save(hypothesis_path+"."+str(ntops[t]), hypotheses[t]);
 	}
-	else {
-		// only load if we haven't run 
-		hypotheses = load<MyHypothesis>(hypothesis_path, &grammar);
-	}
-	COUT "# Hypothesis size: " TAB hypotheses.size() ENDL;
-	assert(hypotheses.size() > 0 && "*** Somehow we don't have any hypotheses!");
+	
 	
 	if(runtype == "grammar" or runtype == "both") { 
+		
+		auto hypotheses = load<MyHypothesis>(hypothesis_path);
+		COUT "# Hypothesis size: " TAB hypotheses.size() ENDL;
+		assert(hypotheses.size() > 0 && "*** Somehow we don't have any hypotheses!");
 		
 		auto h0 = MyGrammarHypothesis::sample(hypotheses, &human_data);
 		
@@ -184,7 +185,7 @@ int main(int argc, char** argv){
 			
 		auto thechain = MCMCChain<MyGrammarHypothesis>(h0, &human_data);
 		for(auto& h : thechain.run(Control()) | thin(FleetArgs::thin) ){
-			COUT h.string(str(thechain.samples)+"\t");
+			COUT h.string(str(thechain.samples)+"\t") ENDL;
 		}	
 	}
 	

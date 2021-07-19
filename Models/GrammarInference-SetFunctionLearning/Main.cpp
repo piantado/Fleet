@@ -81,7 +81,7 @@ int main(int argc, char** argv){
 	while(! infile.eof() ) {
 		if(CTRL_C) break;
 		
-		// use the helper above to read the next chunk of human data 
+		// use the helper to read the next chunk of human data 
 		// (and put the file pointer back to the start of the next chunk)
 		auto [objs, corrects, yeses, nos, conceptlist] = get_next_human_data(infile);
 		// could assert that the sizes of these are all the same
@@ -151,7 +151,7 @@ int main(int argc, char** argv){
 	
 		auto thechain = MCMCChain(h0, &human_data);
 		for(auto& h : thechain.run(Control()) | thin(FleetArgs::thin) ){
-			COUT h.string(str(thechain.samples)+"\t");
+			COUT h.string(str(thechain.samples)+"\t") ENDL;
 		}	
 	}
 	

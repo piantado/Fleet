@@ -95,7 +95,7 @@ public:
 		});
 
 		
-		add("(%s+%s)",    +[](NumberSet s, int n) -> NumberSet { 
+		add("(%s + %s)",    +[](NumberSet s, int n) -> NumberSet { 
 			NumberSet out;
 			for(auto& x : s) {
 				out.insert(x + n);
@@ -103,7 +103,7 @@ public:
 			return out;
 		});
 		
-		add("(%s*%s)",    +[](NumberSet s, int n) -> NumberSet { 
+		add("(%s * %s)",    +[](NumberSet s, int n) -> NumberSet { 
 			NumberSet out;
 			for(auto& x : s) {
 				out.insert(x * n);
@@ -111,14 +111,16 @@ public:
 			return out;
 		});
 		
-		add("(%s^%s)",    +[](NumberSet s, int n) -> NumberSet { 
+		add("pow(%s,%s)",    +[](NumberSet s, int n) -> NumberSet { 
 			NumberSet out;
 			for(auto& x : s) {
 				out.insert(std::pow(x,n));
 			}
 			return out;
 		});	
-		add("(%s^%s)",    +[](int n, NumberSet s) -> NumberSet { 
+		
+		// we'll give this a space so it's different -- cute
+		add("pow(%s, %s)",    +[](int n, NumberSet s) -> NumberSet { 
 			NumberSet out;
 			for(auto& x : s) {
 				out.insert(std::pow(n,x));
