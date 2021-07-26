@@ -21,6 +21,15 @@ plt <- ggplot(subset(d, restart=0), aes(x=runtime, y=posterior, color=chains, gr
     theme_bw()
 plt
 
+q <- subset(d, data=="max" & restart==0)
+plt <- ggplot(q, aes(x=runtime, y=posterior, color=chains, group=chains)) + 
+    stat_summary(fun=mean, geom="line") + 
+    scale_x_log10() +
+    facet_wrap(~ method.plot) + 
+    theme_bw()
+plt
+
+
 
 # d$restart.innertime <- paste0(d$restart, ":", d$inner.times) # aggregate variable to facet by
 # plt <- ggplot(subset(d, method=="parallel-tempering"), aes(x=runtime, y=posterior, color=chains)) + 

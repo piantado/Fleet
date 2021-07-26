@@ -79,6 +79,7 @@ public:
 
 		auto cur = get_partitions(h0, max_depth, max_size);
 		
+		
 		// now make an MCMC chain on each of these
 		// (all must use the callback)
 		for(auto& h: cur) {
@@ -90,6 +91,7 @@ public:
 			x.complete(); // fill in any structural gaps
 		
 			this->pool.push_back(MCMCChain<HYP>(x, data));
+			this->running.push_back(false);
 			
 			#ifdef DEBUG_PARTITION_MCMC
 				COUT "Starting PartitionMCMC on " << x.string() ENDL;
