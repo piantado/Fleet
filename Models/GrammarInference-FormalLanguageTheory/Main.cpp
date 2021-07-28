@@ -16,7 +16,6 @@ const size_t MAX_FACTORS = 3;
 std::string hypothesis_path = "hypotheses.txt";
 std::string runtype         = "both"; // can be both, hypotheses (just find hypotheses), or grammar (just do mcmc, loading from hypothesis_path)
 
-
 std::vector<size_t> ntops = {1,5,10,25,100,250,500,1000}; // save the top this many from each hypothesis
 
 // The format of data for grammar inferece

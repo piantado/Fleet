@@ -3,6 +3,8 @@
 
 #include <set>
 #include <map>
+#include "IO.h"
+#include "Numerics.h"
 #include "OrderedLock.h"
 
 #include "FleetArgs.h"
