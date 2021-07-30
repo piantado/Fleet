@@ -29,9 +29,8 @@ size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite 
 const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The more data, the slower...
 const size_t MAX_PR_LINES = 1000000; 
 
-const size_t RESTART = 0;
-const size_t NTEMPS = 15; // 10 for the main run -- updated to 20 here
-const size_t MAX_TEMP = 25.0;  // 10 for the main run -- updated to 50 here
+const size_t NTEMPS = 15; 
+const size_t MAX_TEMP = 25.0; 
 unsigned long SWAP_EVERY = 150; // ms
 unsigned long PRINT_STRINGS; // print at most this many strings for each hypothesis
 
@@ -406,7 +405,7 @@ int main(int argc, char** argv){
 		current_ntokens = 0;
 		for(auto& d : this_data) { UNUSED(d); current_ntokens++; }
 		
-		for(auto& h : samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, RESTART), SWAP_EVERY, 60*1000)) {
+		for(auto& h : samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, FleetArgs::restart), SWAP_EVERY, 60*1000)) {
 			all << h;
 		}	
 
@@ -423,7 +422,7 @@ int main(int argc, char** argv){
 			VirtualMachineControl::MAX_OUTPUTS = 1024; 
 			VirtualMachineControl::MIN_LP = -15;
 			PRINT_STRINGS = 512;
-			max_length = 350; 	
+			max_length = 64; 	
 		}
 		
 		all.print(data_amounts[di]);
@@ -434,7 +433,7 @@ int main(int argc, char** argv){
 			VirtualMachineControl::MAX_OUTPUTS = 1024; 
 			VirtualMachineControl::MIN_LP = -15;
 			PRINT_STRINGS = 512;
-			max_length = 350; 	
+			max_length = 64; 	
 		}	
 		
 		if(di+1 < datas.size()) {

@@ -75,6 +75,8 @@ public:
 	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors
 	
+	static double regenerate_p;
+		
 	double compute_single_likelihood(const datum_t& x) override {	
 		
 		// This would be a normal call:
@@ -100,24 +102,28 @@ public:
 			lp = logplusexp(lp, (slp-outZ) + p_delete_append<strgamma,strgamma>(s, x.output, log_A));
 		}
 		
-
-		
 		return lp;
 	}
+	
+	/**
+	 * @brief We'll define a custom proposer here with a global static variable that says how much we 
+	 *        regenerate vs insert/delete (defaultly regenerate_p=0.5)
+	 * @return 
+	 */
+	
+	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const override {
 		
-//	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const override {
-//		
-//		std::pair<Node,double> x;
-//		if(flip()) {
-//			x = Proposals::regenerate(grammar, value);	
-//		}
-//		else {
-//			if(flip()) x = Proposals::insert_tree(grammar, value);	
-//			else       x = Proposals::delete_tree(grammar, value);	
-//		}
-//		return std::make_pair(MyHypothesis(this->grammar, std::move(x.first)), x.second); 
-//	}	
-//
+		std::pair<Node,double> x;
+		if(flip(regenerate_p)) {
+			x = Proposals::regenerate(&grammar, value);	
+		}
+		else {
+			if(flip()) x = Proposals::insert_tree(&grammar, value);	
+			else       x = Proposals::delete_tree(&grammar, value);	
+		}
+		return std::make_pair(MyHypothesis(std::move(x.first)), x.second); 
+	}	
+
 //	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const {
 //		auto g = grammar->generate<S>();
 //		return std::make_pair(MyHypothesis(grammar, g), grammar->log_probability(g) - grammar->log_probability(value));
@@ -132,6 +138,7 @@ public:
 	}
 };
 
+double MyHypothesis::regenerate_p = 0.5;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // This needs to be included last because it includes VirtualMachine/applyPrimitives.h

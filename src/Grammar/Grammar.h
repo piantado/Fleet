@@ -549,6 +549,7 @@ public:
 			CERR "*** Grammar exceeded max depth, are you sure the grammar probabilities are right?" ENDL;
 			CERR "*** You might be able to figure out what's wrong with gdb and then looking at the backtrace of" ENDL;
 			CERR "*** which nonterminals are called." ENDL;
+			CERR "*** Or.... maybe this nonterminal does not rewrite to a terminal?" ENDL;
 			throw DepthException();
 		}
 		
