@@ -138,7 +138,8 @@ public:
 	}
 };
 
-double MyHypothesis::regenerate_p = 0.5;
+// Probability of regenerating
+double MyHypothesis::regenerate_p = 0.75;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // This needs to be included last because it includes VirtualMachine/applyPrimitives.h

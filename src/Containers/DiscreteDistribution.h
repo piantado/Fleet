@@ -105,12 +105,12 @@ public:
 		}
 	}
 	
-	double get(T x, double v) {
+	double get(T x, double v) const {
 		if(m.find(x) == m.end()) {
 			return v;
 		} 
 		else {
-			return m[x]; 
+			return m.at(x);
 		}
 	}
 	

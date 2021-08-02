@@ -1,4 +1,8 @@
-
+/*
+ * 	TODO: This likelihood is not quite right because people in the experiment are sampling
+ *        without replacement.
+ * */
+ 
 // We will define this so we can read from the NumberGame without main
 #define DO_NOT_INCLUDE_MAIN 1
 

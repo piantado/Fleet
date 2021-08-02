@@ -140,7 +140,6 @@ namespace Proposals {
 //		CERR t ENDL;
 //		CERR s.second TAB grammar->log_probability(t) TAB grammar->log_probability(old_s) TAB lpq ENDL;
 		
-	
 		*s.first = t; // now since s pointed to something in ret, we're done  
 		
 		// forward is choosing s, generating everything *except* what replaced s, and then replacing
@@ -151,8 +150,6 @@ namespace Proposals {
 		/// backward is we choose t exactly, then we pick anything below that is equal to s
 		double backward = lp_sample_one<Node,Node>(*s.first, ret, can_resample) + 
 						  lp_sample_eq<Node,Node>(old_s, *s.first, can_resample_nt);
-//		CERR forward TAB backward ENDL;
-//		CERR ret ENDL;
 		
 		return std::make_pair(ret, forward-backward);		
 	}
@@ -180,7 +177,6 @@ namespace Proposals {
 		
 		auto q = sample(*s.first, can_resample_nt);
 		
-		
 //		CERR "----DELETE-----------" ENDL;
 //		CERR from ENDL;
 //		CERR old_s ENDL;		
@@ -198,9 +194,6 @@ namespace Proposals {
 		double backward = lp_sample_one<Node,Node>(*s.first,ret,can_resample) + 
 						  tlp + 
 						  lp_sample_eq<Node,Node>(*q.first,old_s,can_resample_nt);
-							
-//		CERR forward TAB backward ENDL;
-//		CERR ret ENDL;
 		
 		return std::make_pair(ret, forward-backward);		
 	}
