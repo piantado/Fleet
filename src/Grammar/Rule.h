@@ -9,10 +9,9 @@
 #include "Miscellaneous.h"
 #include "Strings.h"
 
-/* 
- * 
- * */
- 
+
+
+
  /**
   * @class Rule
   * @author piantado
@@ -65,7 +64,8 @@ public:
 			hash_combine(my_hash, (size_t)thechar );
 			
 		// check that the format string has the right number of %s
-		if(N != count(fmt, ChildStr)) {
+		// NOTE: here we ONLY check "%", not "%s" since we now allow %1, %2, %3, etc. 
+		if(N != count(fmt, ChildStr.substr(0,1))) {
 			CERR "*** Wrong number of format string arguments in " << fmt ENDL;
 			assert(false);
 		}

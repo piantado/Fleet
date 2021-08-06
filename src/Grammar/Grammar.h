@@ -301,7 +301,6 @@ public:
 		static_assert(is_in_GRAMMAR_TYPES<T>() , "*** Return type is not in GRAMMAR_TYPES");
 		static_assert((is_in_GRAMMAR_TYPES<args>() && ...),	"*** Argument type is not in GRAMMAR_TYPES");
 		
-	
 		// create a lambda on the heap that is a function of a VMS, since
 		// this is what an instruction must be. This implements the calling order convention too. 
 		//auto newf = new auto ( [=](VirtualMachineState_t* vms) -> void {

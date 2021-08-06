@@ -248,11 +248,24 @@ public:
 			// now substitute the children into the format
 			std::string s = this->rule->format;
 			if(usedot and not this->can_resample) s = "\u2022"+s; // just to help out in some cases, we'll add this to nodes that we can't resample
-			
+
 			for(size_t i=0;i<this->rule->N;i++) {
-				auto pos = s.find(Rule::ChildStr);
-				assert(pos != std::string::npos && "Node format must contain one ChildStr (typically='%s') for each argument"); // must contain the ChildStr for all children all children
-				s.replace(pos, Rule::ChildStr.length(), childStrings[i] );
+				// Here we put the i'th child by first trying position i, otherwise 
+				// we search for %S
+				// NOTE: This change might be a bit slower since it matches each %i, but hopefully that doesn't matter...
+				std::string numstr = "%"+str(i+1); // This indexing is 1-based for some reason
+				auto numpos = s.find(numstr);
+				if(numpos != std::string::npos){
+					s.replace(numpos, numstr.length(), childStrings[i]);
+				}
+				else { // match via %s
+					auto pos = s.find(Rule::ChildStr);
+					if(pos == std::string::npos) {
+						CERR "# Error on " TAB this->rule->format ENDL;
+						assert(false && "Node format must contain one ChildStr (typically='%s') for each argument"); // must contain the ChildStr for all children all children
+					}
+					s.replace(pos, Rule::ChildStr.length(), childStrings[i] );					
+				}
 			}
 			return s;
 		}
