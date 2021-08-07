@@ -41,6 +41,8 @@ public:
 	ParallelTempering(HYP& h0, typename HYP::data_t* d, std::initializer_list<double> t) : 
 		ChainPool<HYP>(h0, d, temperatures.size()), temperatures(t), terminate(false) {
 		
+		swap_history.reserve(temperatures.size()); // reserve so we don't move
+			
 		for(size_t i=0;i<temperatures.size();i++) {
 			this->pool[i].temperature = temperatures[i]; // set its temperature
 			swap_history.emplace_back();
@@ -52,12 +54,15 @@ public:
 		ChainPool<HYP>(h0, d, n),terminate(false) {
 		assert(n != 0);
 		
+		swap_history.reserve(n);
+		
 		if(n == 1) {
 			this->pool[0].temperature = 1.0;
 		}
 		else {
 			for(size_t i=0;i<n;i++) {
 				this->pool[i].temperature = exp(i * log(maxT)/(n-1));
+				swap_history.emplace_back();
 			}
 		}
 	}
@@ -92,10 +97,10 @@ public:
 					// swap the chains
 					std::swap(this->pool[k].current, this->pool[k-1].current);
 					
-					swap_history[k] << true;
+					swap_history.at(k) << true;
 				}
 				else {
-					swap_history[k] << false;
+					swap_history.at(k) << false;
 				}
 								
 			}
@@ -201,15 +206,18 @@ public:
  * @brief This is like ParallelTempering but it tempers on the amount of data. Note then it doesn't adapt anything. 
  */
 template<typename HYP>
-class DataTempering : public ChainPool<HYP> {
+class DataTempering : public ParallelTempering<HYP> {
 	
 	const unsigned long WAIT_AND_SLEEP = 100; // how many ms to wait between checking to see if it is time to swap/adapt
 	
 public:
-	FiniteHistory<bool>* swap_history;
+	std::vector<FiniteHistory<bool>> swap_history;
 	std::atomic<bool> terminate; // used to kill swapper and adapter
 	
 	DataTempering(HYP& h0, std::vector<typename HYP::data_t>& datas)  : terminate(false) {
+		
+		swap_history.reserve(datas.size());
+		
 		// This version anneals on data, giving each chain a different amount in datas order
 		for(size_t i=0;i<datas.size();i++) {
 			this->pool.push_back(MCMCChain(i==0?h0:h0.restart(), &(datas[i])));
@@ -218,4 +226,22 @@ public:
 		}
 	}
 	
+	// Same as ParallelTempering, but no adapter
+	generator<HYP&> run(Control ctl, time_ms swap_every, time_ms adapt_every) {
+		
+		// Start a swapper and adapter thread
+		std::thread swapper(&ParallelTempering<HYP>::__swapper_thread, this, swap_every); // pass in the non-static mebers like this:
+	
+		// run normal pool run
+		for(auto& h : ChainPool<HYP>::run(ctl)) {
+			co_yield h;
+		}
+		
+		// kill everything else once that thread is done
+		terminate = true;
+		
+		swapper.join();
+	}
+	
+	void adapt(double v=3, double t0=1000000) { assert(false && "*** You should not call adapt for DataTempering");}
 };

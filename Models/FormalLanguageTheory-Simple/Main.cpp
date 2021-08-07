@@ -111,18 +111,18 @@ public:
 	 * @return 
 	 */
 	
-//	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const override {
-//		
-//		std::pair<Node,double> x;
-//		if(flip(regenerate_p)) {
-//			x = Proposals::regenerate(&grammar, value);	
-//		}
-//		else {
-//			if(flip()) x = Proposals::insert_tree(&grammar, value);	
-//			else       x = Proposals::delete_tree(&grammar, value);	
-//		}
-//		return std::make_pair(MyHypothesis(std::move(x.first)), x.second); 
-//	}	
+	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const override {
+		
+		std::pair<Node,double> x;
+		if(flip(regenerate_p)) {
+			x = Proposals::regenerate(&grammar, value);	
+		}
+		else {
+			if(flip()) x = Proposals::insert_tree(&grammar, value);	
+			else       x = Proposals::delete_tree(&grammar, value);	
+		}
+		return std::make_pair(MyHypothesis(std::move(x.first)), x.second); 
+	}	
 
 //	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const {
 //		auto g = grammar->generate<S>();
@@ -255,7 +255,7 @@ int main(int argc, char** argv){
 //		if(idx++ % 10000 == 0) {
 //			samp.show_statistics();
 //		}
-		
+
 	}
 	top.print();
 

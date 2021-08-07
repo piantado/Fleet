@@ -19,7 +19,6 @@ class ReservoirSample : public Serializable<ReservoirSample<T>> {
 	
 public:
 
-
 	/**
 	 * @class Item
 	 * @author piantado

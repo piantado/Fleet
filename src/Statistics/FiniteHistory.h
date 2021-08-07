@@ -1,7 +1,8 @@
 #pragma once 
 
 #include <mutex>
-
+#include <pthread.h>
+#include "OrderedLock.h"
 
 
 /**
@@ -21,15 +22,13 @@ public:
 	std::atomic<size_t> history_size;
 	std::atomic<size_t> history_index;
 	std::atomic<unsigned long> N;
-	mutable std::mutex mutex;
+
+	OrderedLock mutex; 
 	
-	FiniteHistory(size_t n) : history_size(n), history_index(0), N(0) {
-		
-	}
+	FiniteHistory(size_t n) : history_size(n), history_index(0), N(0) {	}
 	
 	// default size
-	FiniteHistory() : history_size(100), history_index(0), N(0) { 
-	}
+	FiniteHistory() : history_size(100), history_index(0), N(0) { }
 	
 	FiniteHistory(const FiniteHistory &fh) {
 		history = fh.history;
@@ -43,8 +42,7 @@ public:
 		history_size = (size_t)fh.history_size;
 		history_index = (size_t)fh.history_index;
 		N = (unsigned long)fh.N;
-	}
-	
+	}	
 	
 	void operator=(const FiniteHistory &fh) {
 		history = fh.history;
