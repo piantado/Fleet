@@ -11,10 +11,7 @@
 
 template<typename HYP> 
 class MCMCChain {
-	// An MCMC chain object. 
-	// NOTE: This defaultly loads its steps etc from the Fleet command line args
-	// so we don't have to pass those in 
-	// should be thread safe for modifications to temperature and current 
+	// An MCMC chain object running Metropolis-Hastings on hypotheses, via HYP::propose and HYP::compute_posterior. 
 	
 public:
 	
@@ -160,55 +157,57 @@ public:
 			DEBUG("\n# Current\t", data->size(), current.posterior, current.prior, current.likelihood, current.string());
 			#endif 
 			
-			std::lock_guard guard(current_mutex); // lock below otherwise others can modify
+			{ // keep the lock except when we return (or else we can't modify when we return
+				std::lock_guard guard(current_mutex); // lock below otherwise others can modify
 
-			// propose, but restart if we're -infinity
-			auto [proposal, fb] = (current.posterior > -infinity ? current.propose() : std::make_pair(current.restart(), 0.0));			
-			
-			++proposals;
-			
-			// A lot of proposals end up with the same function, so if so, save time by not
-			// computing the posterior
-			if(proposal == current) {
-				// copy all the properties
-				proposal.posterior  = current.posterior;
-				proposal.prior      = current.prior;
-				proposal.likelihood = current.likelihood;
-				proposal.born       = current.born;
-			}
-			else {
-				proposal.compute_posterior(*data);
-			}
+				// propose, but restart if we're -infinity
+				auto [proposal, fb] = (current.posterior > -infinity ? current.propose() : std::make_pair(current.restart(), 0.0));			
+				
+				++proposals;
+				
+				// A lot of proposals end up with the same function, so if so, save time by not
+				// computing the posterior
+				if(proposal == current) {
+					// copy all the properties
+					proposal.posterior  = current.posterior;
+					proposal.prior      = current.prior;
+					proposal.likelihood = current.likelihood;
+					proposal.born       = current.born;
+				}
+				else {
+					proposal.compute_posterior(*data);
+				}
 
-			#ifdef DEBUG_MCMC
-			DEBUG("# Proposed \t", proposal.posterior, proposal.prior, proposal.likelihood, fb, proposal.string());
-			#endif 
-			
-			// use MH acceptance rule, with some fanciness for NaNs
-			double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb; 		
-			if((std::isnan(current.posterior))  or
-			   (current.posterior == -infinity) or
-			   ((not std::isnan(proposal.posterior)) and
-				(ratio >= 0.0 or uniform() < exp(ratio) ))) {
-				[[unlikely]];
-							
 				#ifdef DEBUG_MCMC
-				DEBUG("# Accept");
+				DEBUG("# Proposed \t", proposal.posterior, proposal.prior, proposal.likelihood, fb, proposal.string());
 				#endif 
 				
-				current = std::move(proposal);
-  
-				history << true;
-				++acceptances;
-				
-			}
-			else {
-				history << false;
-			}
+				// use MH acceptance rule, with some fanciness for NaNs
+				double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb; 		
+				if((std::isnan(current.posterior))  or
+				   (current.posterior == -infinity) or
+				   ((not std::isnan(proposal.posterior)) and
+					(ratio >= 0.0 or uniform() < exp(ratio) ))) {
+					[[unlikely]];
+								
+					#ifdef DEBUG_MCMC
+					DEBUG("# Accept");
+					#endif 
+					
+					current = std::move(proposal);
+	  
+					history << true;
+					++acceptances;
+					
+				}
+				else {
+					history << false;
+				}
 
-			++samples;
-			++FleetStatistics::global_sample_count;
-						
+				++samples;
+				++FleetStatistics::global_sample_count;
+			} // just free the lock before yielding
+			
 			co_yield current;
 						
 		} // end the main loop	

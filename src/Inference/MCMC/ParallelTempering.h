@@ -24,7 +24,7 @@ extern volatile sig_atomic_t CTRL_C;
 template<typename HYP>
 class ParallelTempering : public ChainPool<HYP> {
 
-	const unsigned long WAIT_AND_SLEEP = 250; // how many ms to wait between checking to see if it is time to swap/adapt
+	const unsigned long WAIT_AND_SLEEP = 100; // how many ms to wait between checking to see if it is time to swap/adapt
 	
 public:
 	std::vector<double> temperatures;
@@ -158,7 +158,7 @@ public:
 		for(size_t i=0;i<this->pool.size();i++) {
 			std::lock_guard guard1(this->pool[i].current_mutex); // definitely need this to print
 			COUT "# " << i TAB this->pool[i].temperature TAB this->pool[i].current.posterior TAB
-					     this->pool[i].acceptance_ratio() TAB swap_history[i].N TAB this->pool[i].samples TAB this->pool[i].current.string()
+					     this->pool[i].acceptance_ratio() TAB swap_history[i].mean() TAB swap_history[i].N TAB this->pool[i].samples TAB this->pool[i].current.string()
 						 ENDL;
 		}
 	}
@@ -208,7 +208,7 @@ public:
 template<typename HYP>
 class DataTempering : public ChainPool<HYP> {
 	
-	const unsigned long WAIT_AND_SLEEP = 250; // how many ms to wait between checking to see if it is time to swap/adapt
+	const unsigned long WAIT_AND_SLEEP = 100; // how many ms to wait between checking to see if it is time to swap/adapt
 	
 public:
 	FiniteHistory<bool>* swap_history;
