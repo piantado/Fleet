@@ -32,7 +32,7 @@ public:
 	std::vector<double> temperatures;
 	
 	// Swap history stores how often the i'th chain swaps with the (i-1)'st chain
-	FiniteHistory<bool>* swap_history;
+	std::vector<FiniteHistory<bool>> swap_history;
 	
 	bool is_temperature; // set for whether we initialize according to a temperature ladder (true) or data
 	
@@ -42,10 +42,9 @@ public:
 		ChainPool<HYP>(h0, d, temperatures.size()), temperatures(t), terminate(false) {
 		
 		for(size_t i=0;i<temperatures.size();i++) {
-			this->pool[i].temperature = temperatures[i]; // set its temperature 
+			this->pool[i].temperature = temperatures[i]; // set its temperature
+			swap_history.emplace_back();
 		}
-		
-		swap_history = new FiniteHistory<bool>[temperatures.size()];
 	}
 	
 	
@@ -61,13 +60,6 @@ public:
 				this->pool[i].temperature = exp(i * log(maxT)/(n-1));
 			}
 		}
-		
-		swap_history = new FiniteHistory<bool>[n];
-	}
-	
-	
-	~ParallelTempering() {
-		delete[] swap_history;
 	}
 	
 	void __swapper_thread(time_ms swap_every ) {
@@ -222,14 +214,8 @@ public:
 		for(size_t i=0;i<datas.size();i++) {
 			this->pool.push_back(MCMCChain(i==0?h0:h0.restart(), &(datas[i])));
 			this->pool[i].temperature = 1.0;
+			swap_history.emplace_back();
 		}
-
-		swap_history = new FiniteHistory<bool>[datas.size()];
 	}
-	
-	
-	~DataTempering() {
-		delete[] swap_history;
-	}	
 	
 };
