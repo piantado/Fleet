@@ -22,7 +22,12 @@ template<typename input_t, typename output_t, typename VirtualMachineState_t>
 class Callable : public ProgramLoader {
 public:
 	
-	Callable() { }
+	// store the the total number of instructions on the last call
+	// (summed up for stochastic, else just one for deterministic)
+	unsigned long total_instruction_count_last_call;
+	unsigned long total_vms_steps;
+	
+	Callable() : total_instruction_count_last_call(0), total_vms_steps(0) { }
 
 	/**
 	 * @brief Can this be evalutaed (really should be named -- can be called?). Sometimes partial hypotheses
@@ -59,7 +64,13 @@ public:
 			push_program(vms->program); // write my program into vms
 
 			pool.push(vms);		
-			return pool.run();				
+			
+			const auto out = pool.run();				
+			total_instruction_count_last_call = pool.total_instruction_count;
+			total_vms_steps = pool.total_vms_steps;
+			
+			return out;
+			
 	
 	  } else { UNUSED(x); UNUSED(err); assert(false && "*** Cannot use call when VirtualMachineState_t has different input_t or output_t."); }
 	}
@@ -87,7 +98,12 @@ public:
 			VirtualMachineState_t vms(x, err, loader, nullptr);		
 
 			push_program(vms.program); // write my program into vms (loader is used for everything else)
-			return vms.run(); // default to using "this" as the loader		
+			
+			const auto out = vms.run(); // default to using "this" as the loader		
+			total_instruction_count_last_call = vms.runtime_counter.total;
+			total_vms_steps = 1;
+			
+			return out;
 			
 		} else { UNUSED(x); UNUSED(err); assert(false && "*** Cannot use call when VirtualMachineState_t has different input_t or output_t."); }
 	}
@@ -109,7 +125,12 @@ public:
 			VirtualMachineState_t* vms = new VirtualMachineState_t(x, err, loader, &pool);	
 			push_program(vms->program); 
 			pool.push(vms);		
-			return pool.run_vms();		
+			
+			const auto out = pool.run_vms();					
+			total_instruction_count_last_call = pool.total_instruction_count;
+			total_vms_steps = pool.total_vms_steps;
+			
+			return out;
 			
 		} else { UNUSED(x); UNUSED(err); assert(false && "*** Cannot use call when VirtualMachineState_t has different input_t or output_t."); }		
 	}
@@ -130,7 +151,11 @@ public:
 				
 			VirtualMachineState_t vms(x, err, loader, nullptr);
 			push_program(vms.program); // write my program into vms (loader is used for everything else)
-			vms.run(); // default to using "this" as the loader		
+			vms.run(); // default to using "this" as the loader	
+
+			total_instruction_count_last_call = vms.runtime_counter.total;
+			total_vms_steps = 1;
+	
 			return vms;
 			
 		} else { UNUSED(x); UNUSED(err); assert(false && "*** Cannot use call when VirtualMachineState_t has different input_t or output_t."); }		

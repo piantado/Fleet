@@ -62,13 +62,14 @@ public:
 	
 	// how many steps have I run so far? -- this needs to be global so that we can keep track of 
 	// whether we should push a new state that occurs too late. 
-	unsigned long current_steps; 
+	unsigned long total_vms_steps; 
 	double worst_lp;
+	unsigned long total_instruction_count;
 	
 	std::priority_queue<VirtualMachineState_t*, std::vector<VirtualMachineState_t*>, VirtualMachinePool::compare_VirtualMachineState_t_prt> Q; // Q of states sorted by probability
 	//std::priority_queue<VirtualMachineState_t*, ReservedVector<VirtualMachineState_t*,16>, VirtualMachinePool::compare_VirtualMachineState_t_prt> Q; // Does not seem to speed things up 
 
-	VirtualMachinePool() : current_steps(0), worst_lp(infinity) { 
+	VirtualMachinePool() : total_vms_steps(0), worst_lp(infinity), total_instruction_count(0) { 
 	}
 	
 
@@ -84,7 +85,7 @@ public:
 			VirtualMachineState_t* vms = Q.top(); Q.pop();
 			delete vms;
 		}
-		current_steps = 0;
+		total_vms_steps = 0;
 		worst_lp = infinity;
 	}
 	
@@ -97,7 +98,7 @@ public:
 		// we won't add stuff that's worse than MIN_LP or that will never run
 		// (it will never run if it's lp < worst_lp and we don't have enough steps to get there)
 		return lp > MIN_LP and 
-			   (Q.size() <= (MAX_STEPS-current_steps) or lp > worst_lp);
+			   (Q.size() <= (MAX_STEPS-total_vms_steps) or lp > worst_lp);
 	}
 	
 	/**
@@ -165,8 +166,8 @@ public:
 
 		DiscreteDistribution<output_t> out;
 		
-		current_steps = 0;
-		while(current_steps < MAX_STEPS && out.size() < MAX_OUTPUTS && !Q.empty()) {
+		total_vms_steps = 0;
+		while(total_vms_steps < MAX_STEPS && out.size() < MAX_OUTPUTS && !Q.empty()) {
 			
 			VirtualMachineState_t* vms = Q.top(); Q.pop();
 			assert(vms->status == vmstatus_t::GOOD);
@@ -175,16 +176,18 @@ public:
 			// if we ever go back to the non-pointer version, we might need fanciness to move out of top https://stackoverflow.com/questions/20149471/move-out-element-of-std-priority-queue-in-c11
 			assert(vms->lp >= MIN_LP);
 			
-			current_steps++;
+			total_vms_steps++;
 			
 			auto y = vms->run();
 			
 			if(vms->status == vmstatus_t::COMPLETE) { // can't add up probability for errors
 				out.addmass(y, vms->lp);
+				total_instruction_count += vms->runtime_counter.total;
 			}
 			
 			// not else if because we need to delete complete ones too
 			if(vms->status != vmstatus_t::RANDOM_CHOICE_NO_DELETE) {
+				total_instruction_count += vms->runtime_counter.total; /// HMM Do we want to count these too? I guess since its called "total"....
 				delete vms; // if our previous copy isn't pushed back on the stack, delete it
 			} 
 			else {
@@ -210,22 +213,24 @@ public:
 		
 		std::vector<VirtualMachineState_t> out;
 		
-		current_steps = 0;
-		while(current_steps < MAX_STEPS && !Q.empty()) {
+		total_vms_steps = 0;
+		while(total_vms_steps < MAX_STEPS && !Q.empty()) {
 			
 			VirtualMachineState_t* vms = Q.top(); Q.pop();
 			assert(vms->status == vmstatus_t::GOOD);
 			assert(vms->lp >= MIN_LP);
 			
-			current_steps++;
+			total_vms_steps++;
 			
 			vms->run();
 				
 			if(vms->status == vmstatus_t::COMPLETE) {
 				out.push_back(*vms);
+				total_instruction_count += vms->runtime_counter.total; 
 			}
 			
 			if(vms->status != vmstatus_t::RANDOM_CHOICE_NO_DELETE) { 
+				total_instruction_count += vms->runtime_counter.total; 
 				delete vms; // if our previous copy isn't pushed back on the stack, delete it
 			}
 			else {
