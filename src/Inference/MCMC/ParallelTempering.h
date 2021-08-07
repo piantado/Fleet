@@ -133,8 +133,8 @@ public:
 	}
 	
 	
-	generator<HYP&> run(Control ctl) { throw NotImplementedError(); }
-	generator<HYP&> run(Control ctl, time_ms swap_every, time_ms adapt_every) {
+	generator<std::pair<size_t,HYP>> run(Control ctl) { throw NotImplementedError(); }
+	generator<std::pair<size_t,HYP>> run(Control ctl, time_ms swap_every, time_ms adapt_every) {
 		
 		// Start a swapper and adapter thread
 		std::thread swapper(&ParallelTempering<HYP>::__swapper_thread, this, swap_every); // pass in the non-static mebers like this:
@@ -150,7 +150,6 @@ public:
 		
 		swapper.join();
 		adapter.join();
-		
 	}
 	
 	void show_statistics() {

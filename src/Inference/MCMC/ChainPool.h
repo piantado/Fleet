@@ -61,7 +61,7 @@ public:
 	 * @brief This run helper is called internally by multiple different threads, and runs a given pool.
 	 * @param ctl
 	 */
-	generator<HYP&> run_thread(Control ctl) override {
+	generator<std::pair<size_t, HYP>> run_thread(Control ctl) override {
 		assert(pool.size() > 0 && "*** Cannot run on an empty ChainPool");
 		assert(this->nthreads() <= pool.size() && "*** Cannot have more threads than pool items");
 		
@@ -91,7 +91,7 @@ public:
 			// now run that chain -- TODO: Can update this to be more precise by running 
 			// a set number of samples computed from steps and old_samples
 			for(auto& x : chain.run(Control(steps_before_change, time_before_change, 1))) {
-				co_yield x;
+				co_yield std::make_pair(idx, x);
 			}
 			
 			// now update ctl's number of steps (since it might have been anything
