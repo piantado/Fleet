@@ -8,8 +8,8 @@
 #include <chrono>
 #include "Errors.h"
 
-typedef unsigned long time_ms;
-typedef std::chrono::high_resolution_clock::time_point timept;
+using time_ms = unsigned long;
+using timept = std::chrono::high_resolution_clock::time_point;
 
 timept now() { 
 	/**

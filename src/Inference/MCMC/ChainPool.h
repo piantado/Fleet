@@ -69,7 +69,7 @@ public:
 		assert(pool.size() > 0 && "*** Cannot run on an empty ChainPool");
 		assert(this->nthreads() <= pool.size() && "*** Cannot have more threads than pool items");
 		
-		while( ctl.running() ) {
+		while( ctl.running() and !CTRL_C ) {
 			
 			// find the next open thread
 			size_t idx;

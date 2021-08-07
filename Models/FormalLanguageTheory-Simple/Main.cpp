@@ -247,14 +247,14 @@ int main(int argc, char** argv){
 	top.print_best = true;
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
-	for(auto h : samp.run(Control(), 10, 30000) | top | print(FleetArgs::print) | thin(FleetArgs::thin)) {
+	for(auto h : samp.run(Control(), 250, 30000) | top | print(FleetArgs::print) | thin(FleetArgs::thin)) {
 		//UNUSED(h);
 	
 //		CERR h.born_chain_idx TAB h.string() ENDL;
-	
-		if(idx++ % 10000 == 0) {
-			samp.show_statistics();
-		}
+//	
+//		if(idx++ % 10000 == 0) {
+//			samp.show_statistics();
+//		}
 		
 	}
 	top.print();
