@@ -30,8 +30,12 @@ public:
 	// these parameters define the amount of a thread spends on each chain before changing to another
 	// NOTE: these interact with ParallelTempering swap/adapt values (because if these are too small, then
 	// we won't have time to update every chain before proposing more swaps)
-	static const unsigned long steps_before_change = 0;
-	static const time_ms time_before_change = 200; 
+	// NOTE: It seems probably better to set steps rather than time, because the hot chains run *much* faster
+	// than the cold chains, typically. This means that if you set it by time, then you are spending lots of
+	// time on the bad chains, which is the opposite of what you want. Actually, here, we probably should 
+	// run for *less* samples on the hot chains because they are faster to sample from.
+	static const unsigned long steps_before_change = 100;
+	static const time_ms time_before_change = 0; 
 	
 	// keep track of which threads are currently running
 	std::vector<bool> running;
@@ -61,7 +65,7 @@ public:
 	 * @brief This run helper is called internally by multiple different threads, and runs a given pool.
 	 * @param ctl
 	 */
-	generator<std::pair<size_t, HYP>> run_thread(Control ctl) override {
+	generator<HYP&> run_thread(Control ctl) override {
 		assert(pool.size() > 0 && "*** Cannot run on an empty ChainPool");
 		assert(this->nthreads() <= pool.size() && "*** Cannot have more threads than pool items");
 		
@@ -91,7 +95,8 @@ public:
 			// now run that chain -- TODO: Can update this to be more precise by running 
 			// a set number of samples computed from steps and old_samples
 			for(auto& x : chain.run(Control(steps_before_change, time_before_change, 1))) {
-				co_yield std::make_pair(idx, x);
+				x.born_chain_idx = idx; // set this
+				co_yield x;
 			}
 			
 			// now update ctl's number of steps (since it might have been anything

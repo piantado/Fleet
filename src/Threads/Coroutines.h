@@ -55,13 +55,7 @@ struct thin {
 };
 
 template<typename T> 
-generator<std::pair<size_t,T>> operator|(generator<std::pair<size_t,T>> g, thin t) {
-	for(auto& x : g) {
-		if(++t)	co_yield x; 
-	}
-}
-template<typename T> 
-generator<T> operator|(generator<T> g, thin t) {
+generator<T&> operator|(generator<T&> g, thin t) {
 	for(auto& x : g) {
 		if(++t)	co_yield x; 
 	}
@@ -85,15 +79,9 @@ struct print {
 		}
 	}
 };
+
 template<typename T> 
-generator<std::pair<size_t,T>> operator|(generator<std::pair<size_t,T>> g, print t) {
-	for(auto& x : g) {
-		if(++t) x.second.print(t.prefix);
-		co_yield x;
-	}
-}
-template<typename T> 
-generator<T> operator|(generator<T> g, print t) {
+generator<T&> operator|(generator<T&> g, print t) {
 	for(auto& x : g) {
 		if(++t) x.print(t.prefix);
 		co_yield x;
@@ -104,15 +92,9 @@ generator<T> operator|(generator<T> g, print t) {
 
 // chaining together generator and TopN
 #include "TopN.h"
+
 template<typename T> 
-generator<std::pair<size_t,T>> operator|(generator<std::pair<size_t,T>> g, TopN<T>& tn) { // NOTE: tn MUST be a ref here...
-	for(auto& x : g) {
-		tn << x.second; // add
-		co_yield x; // and yield 
-	}
-}
-template<typename T> 
-generator<T> operator|(generator<T> g, TopN<T>& tn) { // NOTE: tn MUST be a ref here...
+generator<T&> operator|(generator<T&> g, TopN<T>& tn) { // NOTE: tn MUST be a ref here...
 	for(auto& x : g) {
 		tn << x; // add
 		co_yield x; // and yield 

@@ -111,18 +111,18 @@ public:
 	 * @return 
 	 */
 	
-	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const override {
-		
-		std::pair<Node,double> x;
-		if(flip(regenerate_p)) {
-			x = Proposals::regenerate(&grammar, value);	
-		}
-		else {
-			if(flip()) x = Proposals::insert_tree(&grammar, value);	
-			else       x = Proposals::delete_tree(&grammar, value);	
-		}
-		return std::make_pair(MyHypothesis(std::move(x.first)), x.second); 
-	}	
+//	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const override {
+//		
+//		std::pair<Node,double> x;
+//		if(flip(regenerate_p)) {
+//			x = Proposals::regenerate(&grammar, value);	
+//		}
+//		else {
+//			if(flip()) x = Proposals::insert_tree(&grammar, value);	
+//			else       x = Proposals::delete_tree(&grammar, value);	
+//		}
+//		return std::make_pair(MyHypothesis(std::move(x.first)), x.second); 
+//	}	
 
 //	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const {
 //		auto g = grammar->generate<S>();
@@ -242,18 +242,19 @@ int main(int argc, char** argv){
 
 	// Let's look at the best run
 
+	size_t idx=0;
 	
 	top.print_best = true;
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
-	for(auto& [idx,h] : samp.run(Control(), 100, 30000) | top | print(FleetArgs::print) | thin(FleetArgs::thin)) {
+	for(auto h : samp.run(Control(), 10, 30000) | top | print(FleetArgs::print) | thin(FleetArgs::thin)) {
 		//UNUSED(h);
 	
-//		CERR idx TAB h.string() ENDL;
+//		CERR h.born_chain_idx TAB h.string() ENDL;
 	
-//		if(idx++ % 100000 == 0) {
-//			samp.show_statistics();
-//		}
+		if(idx++ % 10000 == 0) {
+			samp.show_statistics();
+		}
 		
 	}
 	top.print();

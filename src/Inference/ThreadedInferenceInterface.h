@@ -21,12 +21,9 @@
 class ThreadedInferenceInterface {
 public:
 
-	// we yield things of this type -- now a pair of the index and the value
-	using yield_t = std::pair<size_t, X>;
-
 	// Subclasses must implement run_thread, which is what each individual thread 
 	// gets called on (and each thread manages its own locks etc)
-	virtual generator<yield_t> run_thread(Control ctl, Args... args) = 0;
+	virtual generator<X&> run_thread(Control ctl, Args... args) = 0;
 	
 	// index here is used to index into larger parallel collections. Each thread
 	// is expected to get its next item to work on through index, though how will vary
@@ -39,7 +36,7 @@ public:
 	// this lock controls the output of the run generator
 	// It's kinda important that its FIFO so that we don't hang on one thread for a while
 	OrderedLock generator_lock; 
-	yield_t next_x; // a copy of the next value of x
+	X next_x; // a copy of the next value of x
 	bool next_set;
 	std::condition_variable_any cv; // This condition variable 
 	
@@ -85,7 +82,7 @@ public:
 		cv.notify_one(); 
 	}	
 	
-	generator<yield_t> run(Control ctl, Args... args) {
+	generator<X&> run(Control ctl, Args... args) {
 		
 		std::vector<std::thread> threads(ctl.nthreads); 
 		__nthreads = ctl.nthreads; // save this for children

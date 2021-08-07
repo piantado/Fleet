@@ -33,9 +33,12 @@ public:
 	double prior; 
 	double likelihood;
 	double posterior; // Posterior always stores at temperature 1
+	
+	// some born info/statistics
 	uintmax_t born; // what count were you born at?
-
-	Bayesable() : prior(NaN), likelihood(NaN), posterior(NaN), born(++FleetStatistics::hypothesis_births) {	}
+	size_t born_chain_idx; // if we came from a ChainPool, what chain index were we born on?
+	
+	Bayesable() : prior(NaN), likelihood(NaN), posterior(NaN), born(++FleetStatistics::hypothesis_births), born_chain_idx(0) {	}
 	
 	// Stuff for subclasses to implement: 
 	

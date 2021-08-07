@@ -24,7 +24,7 @@ extern volatile sig_atomic_t CTRL_C;
 template<typename HYP>
 class ParallelTempering : public ChainPool<HYP> {
 
-	const unsigned long WAIT_AND_SLEEP = 100; // how many ms to wait between checking to see if it is time to swap/adapt
+	const unsigned long WAIT_AND_SLEEP = 10; // how many ms to wait between checking to see if it is time to swap/adapt
 	
 public:
 	std::vector<double> temperatures;
@@ -133,8 +133,8 @@ public:
 	}
 	
 	
-	generator<std::pair<size_t,HYP>> run(Control ctl) { throw NotImplementedError(); }
-	generator<std::pair<size_t,HYP>> run(Control ctl, time_ms swap_every, time_ms adapt_every) {
+	generator<HYP&> run(Control ctl) { throw NotImplementedError(); }
+	generator<HYP&> run(Control ctl, time_ms swap_every, time_ms adapt_every) {
 		
 		// Start a swapper and adapter thread
 		std::thread swapper(&ParallelTempering<HYP>::__swapper_thread, this, swap_every); // pass in the non-static mebers like this:
@@ -150,12 +150,15 @@ public:
 		
 		swapper.join();
 		adapter.join();
+		
 	}
 	
 	void show_statistics() {
 		COUT "# Pool info: \n";
 		for(size_t i=0;i<this->pool.size();i++) {
-			std::lock_guard guard1(this->pool[i].current_mutex); // definitely need this to print
+			// NOTE: WE would normally want a lock guard here, EXCEPT that when we call this inside a loop, we can't get the guard
+			// because it's being held by the generator. So for now, there is no output lock
+//			std::lock_guard guard1(this->pool[i].current_mutex); // definitely need this to print
 			COUT "# " << i TAB this->pool[i].temperature TAB this->pool[i].current.posterior TAB
 					     this->pool[i].acceptance_ratio() TAB swap_history[i].mean() TAB swap_history[i].N TAB this->pool[i].samples TAB this->pool[i].current.string()
 						 ENDL;
