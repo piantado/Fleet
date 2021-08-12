@@ -121,6 +121,7 @@ public:
 			if(flip()) x = Proposals::insert_tree(&grammar, value);	
 			else       x = Proposals::delete_tree(&grammar, value);	
 		}
+		
 		return std::make_pair(MyHypothesis(std::move(x.first)), x.second); 
 	}	
 

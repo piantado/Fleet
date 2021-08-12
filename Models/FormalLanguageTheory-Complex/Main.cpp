@@ -196,8 +196,25 @@ public:
 #include "LOTHypothesis.h"
 
 class InnerHypothesis : public LOTHypothesis<InnerHypothesis,S,S,MyGrammar,&grammar> {
+public:
 	using Super = LOTHypothesis<InnerHypothesis,S,S,MyGrammar,&grammar>;
 	using Super::Super;
+	
+	static constexpr double regenerate_p = 0.7;
+	
+	[[nodiscard]] virtual std::pair<InnerHypothesis,double> propose() const override {
+		
+		std::pair<Node,double> x;
+		if(flip(regenerate_p)) {
+			x = Proposals::regenerate(&grammar, value);	
+		}
+		else {
+			if(flip()) x = Proposals::insert_tree(&grammar, value);	
+			else       x = Proposals::delete_tree(&grammar, value);	
+		}
+		return std::make_pair(InnerHypothesis(std::move(x.first)), x.second); 
+	}	
+	
 };
 
 #include "Lexicon.h"

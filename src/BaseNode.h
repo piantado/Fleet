@@ -61,6 +61,15 @@ public:
 		children = std::move(t.children);
 		fix_child_info();
 	}
+	
+
+	/**
+	 * @brief Make a node root -- just nulls the parent
+	 */
+	void make_root() {
+		parent = nullptr;
+		pi = 0;
+	}
 
 	virtual ~BaseNode() {}
 
@@ -239,7 +248,7 @@ public:
 		 */
 		
 		size_t i = 0;
-		for(auto& c : children) {
+		for(const auto& c : children) {
 			
 			// check that the kids point to the right things
 			assert(c.pi == i);

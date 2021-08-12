@@ -41,6 +41,25 @@ public:
 	
 	virtual ~Node() {}
 	
+	/**
+	 * @brief Assign will set everything to n BUT it will not copy the parent points etc since we're assuming
+	 *        this node is staying in the same place
+	 * @param n
+	 */
+	void assign(Node& n) {
+		children = n.children;
+		this->rule = n.rule;
+		this->lp = n.lp;
+		this->can_resample = n.can_resample;	
+		fix_child_info(); // update the children so they point to the right parent
+	}
+	void assign(Node&& n) {
+		children = std::move(n.children);
+		this->rule = n.rule;
+		this->lp = n.lp;
+		this->can_resample = n.can_resample;	
+		fix_child_info();
+	}
 	
 	nonterminal_t type(const size_t i) const {
 		/**
@@ -78,23 +97,20 @@ public:
 		// Here in the assignment operator we don't set the parent to n.parent, otherwise the parent pointers get broken
 		// (nor pi). This leaves them in their place in a tree (so e.g. we can set a node of a tree and it still works)
 		
-		this->children = n.children;
+		BaseNode<Node>::operator=(n);
+		
 		this->rule = n.rule;
 		this->lp = n.lp;
 		this->can_resample = n.can_resample;
-		
-		this->fix_child_info();
 	}
 
 	void operator=(Node&& n) {
-		this->children = std::move(n.children);
+		
+		BaseNode<Node>::operator=(n);
+		
 		this->rule = n.rule;
 		this->lp = n.lp;
 		this->can_resample = n.can_resample;
-		
-		// NOTE we don't set parent here
-
-		this->fix_child_info();
 	}
 	
 	bool operator<(const Node& n) const {
@@ -402,7 +418,7 @@ public:
 		 * @param n
 		 * @return 
 		 */
-		
+				
 		if(not (*rule == *n.rule))
 			return false;
 			
@@ -427,6 +443,24 @@ public:
 			hash_combine(ret, depth, this->children[i].hash(depth+1), i); // modifies output
 		}
 		return ret;
+	}
+
+	/**
+	 * @brief A function to print out everything, for debugging purposes
+	 * @param tab
+	 */
+	virtual void fullprint(size_t tab=0) {
+		
+		std::string tb;
+		for(size_t i=0;i<tab;i++) tb += "\t";
+		
+		PRINTN(tb, "this="+str(this), "parent="+str(parent), pi, children.size() == rule->N, rule->format);
+		for(size_t i=0;i<children.size();i++) {
+			children[i].fullprint(tab+1);
+			if(children[i].parent != this) PRINTN("*** Warning child above does not have correct parent pointer.");
+			if(children[i].pi != i) PRINTN("*** Warning child above does not have correct parent index.");
+			
+		}
 	}
 
 	

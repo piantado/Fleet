@@ -25,7 +25,15 @@ std::string str(T x){
 	 * @param x
 	 * @return 
 	 */
-	return std::to_string(x);
+	 
+	if constexpr (std::is_pointer<T>::value) {
+		std::ostringstream address;
+		address << (void const *)x;
+		return address.str();
+	}
+	else {
+		return std::to_string(x);
+	}
 }
 
 std::string str(const std::string& x){
