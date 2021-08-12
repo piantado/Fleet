@@ -129,7 +129,7 @@ namespace Proposals {
 //		PRINTN("Generated t=", t.string());
 		s->assign(t);// copy, not move, since we need it below
 //		s->fullprint();
-		checkNode(grammar, *s);
+//		checkNode(grammar, *s);
 				
 		// q is the thing in t that s will replace
 		// this is sampeld from t, but we do it from s after assignment
@@ -142,7 +142,7 @@ namespace Proposals {
 //		PRINTN("Ret after Q assignment=", ret.string());
 //		s->fullprint();
 		
-		checkNode(grammar, *s);
+//		checkNode(grammar, *s);
 
 		// now if we replace something below t with s, there are multiples ones we could have done...
 		auto lpq = lp_sample_eq(*s, t, can_resample_matches_s_nt); // 
