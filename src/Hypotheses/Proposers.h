@@ -1,41 +1,8 @@
 #pragma once
 
-/* NOTE: The insert/delete detailed balance have not been checked done yet 
- * 
- * 
- * There's a slight problem here, which is that we often have many ways we could have inserted, corresponding to
- * all of the ways we can pick a subtree of s (e.g. summing over that)
- * E.g. when we go backwards from a delete, when there are multiple identical subnodes, we can have many ways....
- * */
 
 #include <utility>
 #include <tuple>
-
-
-template<typename Grammar_t>
-void checkNode(const Grammar_t* g, const Node& n) {
-	
-	// first check the iterator hits all the nodes:
-	// NOTE: this works because count does not use the iterator, it uses recursion
-	size_t cnt = 0;
-	for(auto& ni : n) {
-		UNUSED(ni);
-		cnt++;	
-	}
-	assert(cnt == n.count());
-	
-	// check the parent references
-	for(auto& ni: n) {
-		ni.check_child_info();
-	}
-	
-	// check that if we convert to names and back, we get an equal node
-	Node q = g->from_parseable(n.parseable());
-	assert(q.hash() == n.hash());
-	assert(q.count() == n.count());
-	assert(q == n);
-	assert(&q != &n);
-}
 
 namespace Proposals { 
 		
@@ -62,7 +29,6 @@ namespace Proposals {
 	 */
 	template<typename GrammarType>
 	std::pair<Node,double> regenerate(GrammarType* grammar, const Node& from) {
-
 				
 		// copy, regenerate a random node, and return that and forward-backward prob
 		#ifdef DEBUG_MCMC
@@ -234,22 +200,13 @@ namespace Proposals {
 		// probability of generating everything in s except q
 		double tlp = grammar->log_probability(old_s) - grammar->log_probability(*q); 
 		
-//		auto rs = ret.string();
-//		auto ss = s->string();
-//		auto qs = q->string();
-//		PRINTN(ret.string(), s->string(), q->string());
-//		
-//		auto parent = s.first->parent;
-
 		// promote q here
 		s->assign(newq);
-//		checkNode(grammar, *s);
-		
+	
 		/// backward is we choose the *new* s, then generate everything else, and choose anything equal
 		double backward = lp_sample_one<Node,Node>(*s,ret,can_resample) + 
 						  tlp + 
-						  lp_sample_eq<Node,Node>(*q,old_s,can_resample_matches_s_nt);
-//		PRINTN("RETURNING", ret);
+						  lp_sample_eq<Node,Node>(newq,old_s,can_resample_matches_s_nt);
 		
 		return std::make_pair(ret, forward-backward);		
 	}

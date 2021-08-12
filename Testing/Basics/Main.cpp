@@ -176,13 +176,13 @@ int main(int argc, char** argv){
 			
 	// mydata stores the data for the inference model
 	MyHypothesis::data_t mydata;
-	
+		
 	// initial hypothesis
 	MyHypothesis h0;
 	
 	// add alphabet	
 	for(const char c : alphabet) {
-		grammar.add_terminal( Q(S(1,c)), S(1,c), 5.0/alphabet.length());
+		grammar.add_terminal( Q(S(1,c)), c, 5.0/alphabet.length());
 	}
 	
 	//------------------

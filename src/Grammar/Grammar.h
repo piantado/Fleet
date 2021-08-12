@@ -555,9 +555,18 @@ public:
 		Rule* r = sample_rule(nt);
 		Node n = makeNode(r);
 		
-		for(size_t i=0;i<r->N;i++) {
-			n.set_child(i, generate(r->type(i), depth+1)); // recurse down
+		// we'll wrap in a catch so we can see the sequence of nonterminals that failed us:
+		try {
+			
+			for(size_t i=0;i<r->N;i++) {
+				n.set_child(i, generate(r->type(i), depth+1)); // recurse down
+			}
+			
+		} catch(const DepthException& e) { 
+			CERR nt << " ";
+			throw e;
 		}
+		
 		return n;
 	}	
 	

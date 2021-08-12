@@ -320,7 +320,6 @@ int main(int argc, char** argv){
 	
 	// Set this
 	VirtualMachineControl::MIN_LP = -15;
-
 	
 	FleetArgs::input_path = my_default_input; // set this so it's not fleet's normal input default
 	

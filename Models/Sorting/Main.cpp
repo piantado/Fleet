@@ -316,7 +316,7 @@ int main(int argc, char** argv){
 	// interestingly if we remove the alphabet, that's even better since we can't
 	// just memorize the data. 
 	for(const char c : alphabet) {
-		grammar.add_terminal( Q(S(1,c)), c, 5.0/alphabet.length());
+		grammar.add_terminal( Q(S(1,c)), c, 10.0/alphabet.length());
 	}
 	
 	//------------------
