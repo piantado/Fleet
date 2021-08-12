@@ -20,15 +20,19 @@
 thread_local class thread_local_rng : public std::mt19937 {
 public:
 	thread_local_rng() : std::mt19937() {
-		// both of these are in Fleet.h
-		extern unsigned long random_seed; 
+	}
+	
+	/**
+	 * @brief Seed this but only on the first thread -- rest are random
+	 */	
+	void threaded_seed(unsigned long seed) {
 		extern std::thread::id main_thread_id;
-		if(random_seed != 0) {
+		if(seed != 0) {
 			if(std::this_thread::get_id() == main_thread_id) {
-				this->seed(random_seed);
+				this->seed(seed);
 			}
 			else {
-				std::cerr << "# Warning: seed " << random_seed << " is only applied to the first thread." << std::endl;
+				std::cerr << "# Warning: seed " << seed << " is only applied to the first thread." << std::endl;
 				this->seed(std::random_device{}());
 			}
 		}
@@ -36,6 +40,7 @@ public:
 			this->seed(std::random_device{}());
 		}
 	}
+	
 } rng;
 
 
@@ -306,7 +311,7 @@ double lp_sample_eq(const t& x, const T& s, std::function<double(const t&)>& f =
 	
 	double z = sample_z(s,f);
 	double px = 0.0; // find the probability of anything *equal* to x
-	for(auto& y : s) { 
+	for(const auto& y : s) { 
 		if(y == x) 
 			px += f(y); 
 	}
@@ -325,6 +330,7 @@ double lp_sample_eq(const t& x, const T& s, double(*f)(const t&)) {
 template<typename t, typename T> 
 double lp_sample_one(const t& x, const T& s, std::function<double(const t&)>& f = [](const t& v){return 1.0;}) {
 	// probability of sampling just this one
+	// NOTE: does not check that x is in s!
 	
 	double z = sample_z(s,f);
 	return log(f(x))-log(z);

@@ -444,6 +444,9 @@ public:
 		FleetArgs::runtime = convert_time(FleetArgs::timestring);	
 		FleetArgs::inner_runtime = convert_time(FleetArgs::inner_timestring);
 
+		// seed the rng
+		rng.threaded_seed(random_seed);
+
 		if(FleetArgs::print_header) {
 			// Print standard fleet header
 			gethostname(hostname, HOST_NAME_MAX);
