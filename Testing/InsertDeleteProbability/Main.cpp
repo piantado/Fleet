@@ -1,10 +1,6 @@
 #include <string>
 #include <map>
 
-
-// how many proposals per pair of hypotheses do we take?
-size_t NSAMPLES = 1000000;
-
 #define DO_NOT_INCLUDE_MAIN 1 
 #include "../Models/FormalLanguageTheory-Simple/Main.cpp"
 
@@ -55,7 +51,9 @@ int main(int argc, char** argv){
 			
 			#pragma omp critical
 			{
-				COUT rp TAB top.best().posterior TAB QQ(top.best().string()) ENDL;
+				if(not top.empty()){
+					COUT rp TAB top.best().posterior TAB QQ(top.best().string()) ENDL;
+				}
 			}
 		}
 		

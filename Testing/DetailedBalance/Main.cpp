@@ -18,30 +18,6 @@ size_t NSAMPLES = 1000000;
 
 #include "Fleet.h" 
 
-
-// Define a hypothesis that lets us fiddle with the proposer
-class TestHypothesis : public MyHypothesis {
-public:
-	using MyHypothesis::MyHypothesis;
-	
-	[[nodiscard]] virtual std::pair<TestHypothesis,double> propose() const override {
-		
-		std::pair<Node,double> x;
-		if(flip(0.1)) { // this proportion each way
-			x = Proposals::regenerate(&grammar, value);	
-		}
-		else {
-			if(flip()) x = Proposals::insert_tree(&grammar, value);	
-			else       x = Proposals::delete_tree(&grammar, value);	
-		}
-		return std::make_pair(TestHypothesis(x.first), x.second); 
-	}	
-
-
-};
-
-
-
 int main(int argc, char** argv){ 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
@@ -60,14 +36,15 @@ int main(int argc, char** argv){
 		grammar.add_terminal( Q(S(1,c)), c, 10.0/alphabet.length());
 	}
 	
+	MyHypothesis::regenerate_p = 0.5;
 	
 	// Well, this is a terrible way to test this, but golly it's easy:
 	// we'll just take two random hypotheses and count up how often proposals go from one to the others
 	#pragma omp parallel for
 	for(size_t r=0;r<10000;r++) {
 		if(CTRL_C) continue;
-		auto a = TestHypothesis::sample();
-		auto b = TestHypothesis::sample();
+		auto a = MyHypothesis::sample();
+		auto b = MyHypothesis::sample();
 		size_t fcnt = 0;
 		size_t bcnt = 0;
 		double fb = NAN;

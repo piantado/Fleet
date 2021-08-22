@@ -243,7 +243,7 @@ int main(int argc, char** argv){
 
 	// Let's look at the best run
 
-	size_t idx=0;
+//	size_t idx=0;
 	
 	top.print_best = true;
 	auto h0 = MyHypothesis::sample();
