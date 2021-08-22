@@ -25,10 +25,14 @@ extern volatile sig_atomic_t CTRL_C;
 
 template<typename HYP>
 class ParallelTempering : public ChainPool<HYP> {
-
-	const unsigned long WAIT_AND_SLEEP = 50; // how many ms to wait between checking to see if it is time to swap/adapt
 	
+	const unsigned long time_resolution_ms = 100; // loops on the swapper and adapter threads wait this long before checking their time, to make them interruptible
+		
 public:
+	
+	time_ms swap_every = 1000; // try a round of swaps this often 
+	time_ms adapt_every = 5000; // 
+	
 	std::vector<double> temperatures;
 	
 	// Swap history stores how often the i'th chain swaps with the (i-1)'st chain
@@ -67,13 +71,16 @@ public:
 		}
 	}
 	
-	void __swapper_thread(time_ms swap_every ) {
+	void __swapper_thread() {
 			
 		// runs a swapper every swap_every ms (double)
 		// NOTE: If we have 1 element in the pool, it is caught below
 		while(!(terminate or CTRL_C)) {
 			
-			std::this_thread::sleep_for(std::chrono::milliseconds(swap_every)); // every this long we'll do a whole swap round
+			// make this interruptible
+			auto last = now();
+			while(time_since(last) < swap_every and !CTRL_C) 
+				std::this_thread::sleep_for(std::chrono::milliseconds(time_resolution_ms)); 
 			
 			// Here we are going to go through and swap each chain with its neighbor
 			for(size_t k=this->pool.size()-1;k>=1;k--) { // swap k with k-1; starting at the bottom so stuff can percolate up
@@ -107,16 +114,15 @@ public:
 		}
 	}
 	
-	void __adapter_thread(time_ms adapt_every) {
+	void __adapter_thread() {
 		
 		while(! (terminate or CTRL_C) ) {
-			
 			
 			// we will sleep for adapt_every but in tiny chunks so that 
 			// we can be stopped with CTRL_C
 			auto last = now();
 			while(time_since(last) < adapt_every and !CTRL_C) 
-				std::this_thread::sleep_for(std::chrono::milliseconds(100)); 
+				std::this_thread::sleep_for(std::chrono::milliseconds(time_resolution_ms)); 
 			
 			if(CTRL_C) return;
 			
@@ -131,12 +137,11 @@ public:
 	}
 	
 	
-	generator<HYP&> run(Control ctl) { throw NotImplementedError(); }
-	generator<HYP&> run(Control ctl, time_ms swap_every, time_ms adapt_every) {
+	generator<HYP&> run(Control ctl) {
 		
 		// Start a swapper and adapter thread
-		std::thread swapper(&ParallelTempering<HYP>::__swapper_thread, this, swap_every); // pass in the non-static mebers like this:
-		std::thread adapter(&ParallelTempering<HYP>::__adapter_thread, this, adapt_every);
+		std::thread swapper(&ParallelTempering<HYP>::__swapper_thread, this); // pass in the non-static mebers like this:
+		std::thread adapter(&ParallelTempering<HYP>::__adapter_thread, this);
 
 		// run normal pool run
 		for(auto& h : ChainPool<HYP>::run(ctl)) {
@@ -207,8 +212,6 @@ public:
  */
 template<typename HYP>
 class DataTempering : public ParallelTempering<HYP> {
-	
-	const unsigned long WAIT_AND_SLEEP = 100; // how many ms to wait between checking to see if it is time to swap/adapt
 	
 public:
 	std::vector<FiniteHistory<bool>> swap_history;

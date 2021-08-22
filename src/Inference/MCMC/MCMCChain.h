@@ -15,7 +15,8 @@ class MCMCChain {
 	
 public:
 	
-	HYP current;
+//	 __attribute__ ((aligned (16))) HYP current;
+	 HYP current;
 	
 	// It's a little important that we use an OrderedLock, because otherwise we have
 	// no guarantees about chains accessing in a FIFO order. Non-FIFO is especially

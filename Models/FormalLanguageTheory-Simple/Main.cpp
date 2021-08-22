@@ -245,20 +245,28 @@ int main(int argc, char** argv){
 
 //	size_t idx=0;
 	
-	top.print_best = true;
+	//	top.print_best = true;
 	auto h0 = MyHypothesis::sample();
-	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
-	for(auto h : samp.run(Control(), 250, 30000) | top | print(FleetArgs::print) | thin(FleetArgs::thin)) {
-		//UNUSED(h);
-	
-//		CERR h.born_chain_idx TAB h.string() ENDL;
-//	
-//		if(idx++ % 10000 == 0) {
-//			samp.show_statistics();
-//		}
-
+	ChainPool samp(h0, &mydata, FleetArgs::nchains);
+	for(auto h : samp.run(Control()) | top | print(FleetArgs::print) | thin(FleetArgs::thin)) {
 	}
 	top.print();
+
+	
+//	top.print_best = true;
+//	auto h0 = MyHypothesis::sample();
+//	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+//	for(auto h : samp.run(Control(), 250, 30000) | top | print(FleetArgs::print) | thin(FleetArgs::thin)) {
+//		//UNUSED(h);
+//	
+////		CERR h.born_chain_idx TAB h.string() ENDL;
+////	
+////		if(idx++ % 10000 == 0) {
+////			samp.show_statistics();
+////		}
+//
+//	}
+//	top.print();
 
 }
 
