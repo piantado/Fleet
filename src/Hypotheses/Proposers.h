@@ -20,6 +20,60 @@ namespace Proposals {
 		auto g = grammar->generate(from.nt());
 		return std::make_pair(g, grammar->log_probability(g) - grammar->log_probability(from));
 	}
+	
+	/**
+	 * @brief Probability of proposing from a to b under regeneration
+	 * @param grammar
+	 * @param a
+	 * @param b
+	 * @return 
+	 */	
+	template<typename GrammarType>
+	double p_regeneration_propose_to(GrammarType* grammar, const Node& a, const Node& b) {
+		
+		// TODO: Currently does not take into account can_resample
+		// TODO: FIX THAT PLEASE
+		
+		// what's the probability of replacing the root of a and generating b?
+		double alp = -log(a.count()); // probability of choosing any given node o in a
+		double wholetree = alp + grammar->log_probability(b);
+		
+		if(a.rule != b.rule) {
+			// I must regenerate this whole tree
+			return wholetree;
+		}
+		else {
+			assert(a.nchildren() == b.nchildren()); // not handling missing kids
+			
+			size_t ndiff = 0; // how many children are different?
+			int who = 0; // if there is exactly one difference, who is it?
+			for(size_t i = 0;i<a.nchildren();i++) {
+				if(a.child(i) != b.child(i)) { 
+					who = i;
+					ndiff++;
+				}
+			}
+			
+			if(ndiff == 0) {
+				// if all the kids are the same, we could propose to any of them...
+				double lp = wholetree; // could propose to whole tree
+				for(size_t i=0;i<a.nchildren();i++) {
+					lp = logplusexp(lp, alp + p_regeneration_propose_to(grammar, a.child(i), b.child(i)));
+				}
+				return lp;
+			}
+			else if(ndiff == 1) {
+				// we have to propose to who or root
+				return logplusexp(wholetree, 
+								  alp + p_regeneration_propose_to(grammar, a.child(who), b.child(who)));
+			}
+			else {
+				// more than one difference means we have to propose to the root
+				return wholetree; 
+			}
+				
+		}
+	}
 
 	/**
 	 * @brief Regenerate with a rational-rules (Goodman et al.) style regeneration proposal: pick a node uniformly and regenerate it from the grammar. 

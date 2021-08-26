@@ -26,12 +26,14 @@ extern volatile sig_atomic_t CTRL_C;
 template<typename HYP>
 class ParallelTempering : public ChainPool<HYP> {
 	
-	const unsigned long time_resolution_ms = 100; // loops on the swapper and adapter threads wait this long before checking their time, to make them interruptible
+	const unsigned long time_resolution_ms = 25; // loops on the swapper and adapter threads wait this long before checking their time, to make them interruptible
 		
 public:
 	
-	time_ms swap_every = 1000; // try a round of swaps this often 
+	time_ms swap_every = 250; // try a round of swaps this often 
 	time_ms adapt_every = 5000; // 
+	
+	OrderedLock overall_mutex; // we need a mutex to control access to chains, otherwise swappers and adapters etc can lock
 	
 	std::vector<double> temperatures;
 	
@@ -87,6 +89,7 @@ public:
 				if(CTRL_C) break; 
 				
 				// get both of these thread locks
+				std::lock_guard og(overall_mutex); // must get this so we don't lock by another thread stealing one of below
 				std::lock_guard guard1(this->pool[k-1].current_mutex);
 				std::lock_guard guard2(this->pool[k  ].current_mutex);
 				
@@ -157,8 +160,14 @@ public:
 	}
 	
 	void show_statistics() {
+		
 		COUT "# Pool info: \n";
 		for(size_t i=0;i<this->pool.size();i++) {
+			
+			// must hold the lock or this can lock with the other
+			std::lock_guard og(overall_mutex);
+			std::lock_guard guard(this->pool[i].current_mutex);
+			
 			// NOTE: WE would normally want a lock guard here, EXCEPT that when we call this inside a loop, we can't get the guard
 			// because it's being held by the generator. So for now, there is no output lock
 //			std::lock_guard guard1(this->pool[i].current_mutex); // definitely need this to print

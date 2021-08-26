@@ -31,7 +31,6 @@ const size_t MAX_PR_LINES = 1000000;
 
 const size_t NTEMPS = 15; 
 const size_t MAX_TEMP = 25.0; 
-unsigned long SWAP_EVERY = 150; // ms
 unsigned long PRINT_STRINGS; // print at most this many strings for each hypothesis
 
 std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
@@ -421,7 +420,7 @@ int main(int argc, char** argv){
 		current_ntokens = 0;
 		for(auto& d : this_data) { UNUSED(d); current_ntokens++; }
 		
-		for(auto& h : samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, FleetArgs::restart), SWAP_EVERY, 60*1000)) {
+		for(auto& h : samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, FleetArgs::restart))) {
 			all << h;
 		}	
 
