@@ -26,7 +26,9 @@ extern volatile sig_atomic_t CTRL_C;
 template<typename HYP>
 class ParallelTempering : public ChainPool<HYP> {
 	
-	const unsigned long time_resolution_ms = 25; // loops on the swapper and adapter threads wait this long before checking their time, to make them interruptible
+	// loops on the swapper and adapter threads wait this long before checking their time, to make them interruptible
+	// NOTE that this can throw off timing speeds for e.g. parallel tempering for very small amounts of data
+	const unsigned long time_resolution_ms = 25; 
 		
 public:
 	
@@ -86,7 +88,7 @@ public:
 			
 			// Here we are going to go through and swap each chain with its neighbor
 			for(size_t k=this->pool.size()-1;k>=1;k--) { // swap k with k-1; starting at the bottom so stuff can percolate up
-				if(CTRL_C) break; 
+				if(CTRL_C or terminate) break; 
 				
 				// get both of these thread locks
 				std::lock_guard og(overall_mutex); // must get this so we don't lock by another thread stealing one of below
@@ -119,15 +121,15 @@ public:
 	
 	void __adapter_thread() {
 		
-		while(! (terminate or CTRL_C) ) {
+		while(not (terminate or CTRL_C) ) {
 			
 			// we will sleep for adapt_every but in tiny chunks so that 
 			// we can be stopped with CTRL_C
 			auto last = now();
-			while(time_since(last) < adapt_every and !CTRL_C) 
+			while(time_since(last) < adapt_every and not CTRL_C) 
 				std::this_thread::sleep_for(std::chrono::milliseconds(time_resolution_ms)); 
 			
-			if(CTRL_C) return;
+			if(CTRL_C or terminate) return;
 			
 			// This is not interruptible with CTRL_C: std::this_thread::sleep_for(std::chrono::milliseconds(adapt_every));
 			

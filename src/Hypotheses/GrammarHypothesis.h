@@ -54,7 +54,7 @@ public:
 	// iterate so now we might make a map in constructing, but we stores as a vector of pairs
 	using Predict_t = Vector2D<std::vector<std::pair<typename HYP::output_t,double>>>; 
 	
-	VectorHalfNormalHypothesis logA; 
+	VectorNormalHypothesis logA; 
 	
 	// Here is a list of built-in parameters that we can use. Each stores a standard
 	// normal and a value under the specified transformation, which is chosen here to give 

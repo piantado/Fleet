@@ -199,7 +199,7 @@ namespace Proposals {
 //		checkNode(grammar, *s);
 
 		// now if we replace something below t with s, there are multiples ones we could have done...
-		auto lpq = lp_sample_eq(*s, t, can_resample_matches_s_nt); // 
+		auto lpq = lp_sample_eq(*q, *s, can_resample_matches_s_nt); // 
 			
 //		CERR "----INSERT-----------" ENDL;
 //		CERR from ENDL;
@@ -216,6 +216,16 @@ namespace Proposals {
 		double backward = lp_sample_one<Node,Node>(t, ret, can_resample) + 
 						  lp_sample_eq<Node,Node>(old_s, *s, can_resample_matches_s_nt);
 //		PRINTN("RETURNINGI", ret);
+		
+//		if(std::isinf(forward)) {
+//			PRINTN(slp, lpq, grammar->log_probability(t), grammar->log_probability(old_s) );
+//			PRINTN(s->string(), t.string());
+//			
+//		}
+		
+		assert(not std::isinf(forward));
+		assert(not std::isinf(backward));
+		
 		
 		return std::make_pair(ret, forward-backward);		
 	}
@@ -261,6 +271,9 @@ namespace Proposals {
 		double backward = lp_sample_one<Node,Node>(*s,ret,can_resample) + 
 						  tlp + 
 						  lp_sample_eq<Node,Node>(newq,old_s,can_resample_matches_s_nt);
+		
+		assert(not std::isinf(forward));
+		assert(not std::isinf(backward));
 		
 		return std::make_pair(ret, forward-backward);		
 	}
