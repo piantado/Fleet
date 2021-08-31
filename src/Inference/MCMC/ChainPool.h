@@ -35,11 +35,11 @@ public:
 	// time on the bad chains, which is the opposite of what you want. Actually, here, we probably should 
 	// run for *less* samples on the hot chains because they are faster to sample from.
 	static const unsigned long steps_before_change = 100;
-	static const time_ms time_before_change = 0; 
 	
 	// keep track of which threads are currently running
 	std::vector<bool> running;
-	std::mutex running_lock;
+	
+	OrderedLock running_lock;
 	
 	ChainPool() {}
 	
@@ -94,13 +94,10 @@ public:
 			
 			// now run that chain -- TODO: Can update this to be more precise by running 
 			// a set number of samples computed from steps and old_samples
-			for(auto& x : chain.run(Control(steps_before_change, time_before_change, 1))) {
+			for(auto& x : chain.run(Control(steps_before_change, 0, 1))) {
 				x.born_chain_idx = idx; // set this
 				co_yield x;
-			}
-			
-			// now update ctl's number of steps (since it might have been anything
-			ctl.done_steps += chain.samples - old_samples; // add up how many we've done
+			}			
 						
 			#ifdef DEBUG_CHAINPOOL
 						COUT "# Thread " <<std::this_thread::get_id() << " stopping chain "<< idx TAB "at " TAB chain.current.posterior TAB chain.current.string() ENDL;
@@ -109,6 +106,10 @@ public:
 			// and free this lock space
 			{
 				std::lock_guard guard(running_lock);
+				
+				// move this so threads don't access at the same times
+				ctl.done_steps += chain.samples - old_samples; // add up how many we've done
+		
 				running[idx] = false; // say I'm running this one 
 			}
 						
