@@ -43,7 +43,7 @@ public:
 
 	// keep track of which threads are currently running
 	std::vector<RunningState> running;
-	std::mutex running_lock;
+	OrderedLock running_lock;
 	
 	ChainPool() {}
 	
@@ -73,60 +73,112 @@ public:
 		assert(pool.size() > 0 && "*** Cannot run on an empty ChainPool");
 		assert(this->nthreads() <= pool.size() && "*** Cannot have more threads than pool items");
 		
-		while( ctl.running() and !CTRL_C ) {
-			
-			
-			// find the next open thread
-			size_t idx;
-			unsigned long to_run_steps=0;
-			{
-				std::lock_guard guard(running_lock);
-			
-				do { 
-					idx = this->next_index() % pool.size();
-				} while( running[idx] != RunningState::READY ); // so we exit on a false running idx
-				running[idx] = RunningState::RUNNING; // say I'm running this one 
-				
-				// now run that chain -- TODO: Can update this to be more precise by running 
-				// a set number of samples computed from steps and old_samples
-				// NOTE: That this is only approximate when multithreaded because it could only 
-				// be exact if each thread knew how many samples the other threads took. 
-				to_run_steps = (this->steps_before_change == 0 ? 0 : std::min(ctl.steps-ctl.done_steps, this->steps_before_change));			
-				
-				// now update ctl's number of steps 
-				// NOTE if we do this here, we'll stop too early; if we do it later, we'll run too many...
-				// hmm.... Need a more complex solution it seems...
-				ctl.done_steps += to_run_steps-1; // -1 b/c we got one from running 
-			}
-			
-			auto& chain = pool[idx];
-
-			PRINTN(">>", idx, ctl.steps, ctl.done_steps, std::min(ctl.steps-ctl.done_steps, this->steps_before_change),  to_run_steps);
+		// We have to manage subthreads pretty differently depending on whether we have a time or a 
+		// sample constraint. For now, we assume we can't have both
 		
-			// Actually run and yield, being sure to save where everything came from 
-			for(auto& x : chain.run(Control(to_run_steps, 0, 1))) {
-				x.born_chain_idx = idx; // set this
-				co_yield x;
-			}
-			
-			#ifdef DEBUG_CHAINPOOL
-						COUT "# Thread " <<std::this_thread::get_id() << " stopping chain "<< idx TAB "at " TAB chain.current.posterior TAB chain.current.string() ENDL;
-			#endif
-			
-			// and free this lock space
-			{
-				std::lock_guard guard(running_lock);
+		// Here we don't care about being precise about the number of steps 
+		// (below we do)
+		
+		if(ctl.steps == 0) {
+			// we end up here if they're both zero, or steps=0. If they're both 0, we are running till CTRL_C
+		
+			while( ctl.running() and !CTRL_C ) {
+				
+				// find the next open thread
+				size_t idx;
+				{
+					std::lock_guard guard(running_lock);
+				
+					do { 
+						idx = this->next_index() % pool.size();
+					} while( running[idx] != RunningState::READY ); // so we exit on a false running idx
+					running[idx] = RunningState::RUNNING; // say I'm running this one 
+				}
+				
+				// Actually run and yield, being sure to save where everything came from 
+				for(auto& x : pool[idx].run(Control(steps_before_change, 0, 1))) {
+					x.born_chain_idx = idx; // set this
+					co_yield x;
+				}
+				
+				// and free this lock space
+				{
+					std::lock_guard guard(running_lock);
 					
-				// we are done if we ran out of steps to continue running. 
-				if(to_run_steps == steps_before_change) {
-					running[idx] = RunningState::READY;
+					ctl.done_steps += steps_before_change-1; // -1 because calling ctl.running adds one
+					
+					running[idx] = RunningState::READY;					
 				}
-				else {
-					running[idx] = RunningState::DONE; // say I'm running this one 
-				}
+							
 			}
-						
+			
+			
 		}
+		else { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
+			assert(ctl.runtime == 0 && "*** Cannot have both time and steps specified in ChainPool (not implemented yet).");
+			
+			// note here on the while loops, we don't use ctl.running() because we need all the things
+			// we start to actually finish (or else we won't run enough steps)
+			while( ctl.done_steps < ctl.steps and !CTRL_C ) {
+				
+				// find the next open thread
+				size_t idx;
+				unsigned long to_run_steps=0;
+				{
+					std::lock_guard guard(running_lock);
+				
+					do {
+						idx = this->next_index() % pool.size();
+					} while( running[idx] != RunningState::READY ); // so we exit on a ready idx
+					running[idx] = RunningState::RUNNING; // say I'm running this one 
+					
+					/// figure out how many steps to run
+					to_run_steps = std::min(ctl.steps-ctl.done_steps, this->steps_before_change);								
+								
+					// exit here if there is nothing else to do
+					if(to_run_steps <= 0) {
+						break; 
+					}	
+					
+					// now update ctl's number of steps 
+					// NOTE if we do this here, we'll stop too early; if we do it later, we'll run too many...
+					// hmm.... Need a more complex solution it seems...
+					ctl.done_steps += to_run_steps;
+					
+					PRINTN(">>", idx, ctl.steps, ctl.done_steps, to_run_steps, this->steps_before_change);
+				}
+				
+			
+				// Actually run and yield, being sure to save where everything came from 
+				for(auto& x : pool[idx].run(Control(to_run_steps, 0, 1))) {
+					x.born_chain_idx = idx; // set this
+					co_yield x;
+				}
+				
+				#ifdef DEBUG_CHAINPOOL
+					COUT "# Thread " <<std::this_thread::get_id() << " stopping chain "<< idx TAB "at " TAB chain.current.posterior TAB chain.current.string() ENDL;
+				#endif
+				
+				// and free this lock space
+				{
+					std::lock_guard guard(running_lock);
+						
+					// we are done if we ran out of steps to continue running. 
+					if(to_run_steps == steps_before_change) {
+						running[idx] = RunningState::READY;
+					}
+					else {
+						running[idx] = RunningState::DONE; // say I'm running this one 
+					}
+				}
+							
+			}
+			
+			
+		}
+		
+		
 	}
 	
 };
