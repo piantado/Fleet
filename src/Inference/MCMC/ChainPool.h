@@ -34,8 +34,9 @@ public:
 	// than the cold chains, typically. This means that if you set it by time, then you are spending lots of
 	// time on the bad chains, which is the opposite of what you want. Actually, here, we probably should 
 	// run for *less* samples on the hot chains because they are faster to sample from.
-	static const unsigned long steps_before_change = 100;
-	static const time_ms time_before_change = 0; 
+	// Also note that due to multithreading, this is actually a little complex, we can't perfectly get the 
+	// number of samples
+	unsigned long steps_before_change = 100;
 	
 	// Store which chains are running and which are done
 	enum class RunningState {READY, RUNNING, DONE};
@@ -74,8 +75,10 @@ public:
 		
 		while( ctl.running() and !CTRL_C ) {
 			
+			
 			// find the next open thread
 			size_t idx;
+			unsigned long to_run_steps=0;
 			{
 				std::lock_guard guard(running_lock);
 			
@@ -83,14 +86,24 @@ public:
 					idx = this->next_index() % pool.size();
 				} while( running[idx] != RunningState::READY ); // so we exit on a false running idx
 				running[idx] = RunningState::RUNNING; // say I'm running this one 
+				
+				// now run that chain -- TODO: Can update this to be more precise by running 
+				// a set number of samples computed from steps and old_samples
+				// NOTE: That this is only approximate when multithreaded because it could only 
+				// be exact if each thread knew how many samples the other threads took. 
+				to_run_steps = (this->steps_before_change == 0 ? 0 : std::min(ctl.steps-ctl.done_steps, this->steps_before_change));			
+				
+				// now update ctl's number of steps 
+				// NOTE if we do this here, we'll stop too early; if we do it later, we'll run too many...
+				// hmm.... Need a more complex solution it seems...
+				ctl.done_steps += to_run_steps-1; // -1 b/c we got one from running 
 			}
 			
 			auto& chain = pool[idx];
-			
-			// now run that chain -- TODO: Can update this to be more precise by running 
-			// a set number of samples computed from steps and old_samples
-			unsigned long to_run_steps = (steps_before_change == 0 ? 0 : std::min(ctl.done_steps - ctl.steps, steps_before_change));
-			
+
+			PRINTN(">>", idx, ctl.steps, ctl.done_steps, std::min(ctl.steps-ctl.done_steps, this->steps_before_change),  to_run_steps);
+		
+			// Actually run and yield, being sure to save where everything came from 
 			for(auto& x : chain.run(Control(to_run_steps, 0, 1))) {
 				x.born_chain_idx = idx; // set this
 				co_yield x;
@@ -103,16 +116,14 @@ public:
 			// and free this lock space
 			{
 				std::lock_guard guard(running_lock);
-				
-				// now update ctl's number of steps (since it might have been anything
-				// we moved this in here so its under running_lock -- won't be modified by multiple threads
-				ctl.done_steps += to_run_steps; 
-				
+					
 				// we are done if we ran out of steps to continue running. 
-				if(to_run_steps == steps_before_change)
+				if(to_run_steps == steps_before_change) {
 					running[idx] = RunningState::READY;
-				else					
+				}
+				else {
 					running[idx] = RunningState::DONE; // say I'm running this one 
+				}
 			}
 						
 		}
