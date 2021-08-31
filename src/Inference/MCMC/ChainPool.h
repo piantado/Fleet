@@ -81,7 +81,7 @@ public:
 		
 		if(ctl.steps == 0) {
 			// we end up here if they're both zero, or steps=0. If they're both 0, we are running till CTRL_C
-		
+			
 			while( ctl.running() and !CTRL_C ) {
 				
 				// find the next open thread

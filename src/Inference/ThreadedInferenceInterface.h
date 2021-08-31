@@ -8,11 +8,69 @@
 #include "Coroutines.h"
 #include "OrderedLock.h"
 
+template<typename T>
+class ConcurrentQueue {
+	
+	size_t N;  // length of the queue
+
+	std::vector<T> to_yield;
+
+	size_t push_idx;
+	size_t pop_idx; 	
+
+	std::condition_variable full_cv; 
+	std::condition_variable empty_cv;
+	
+	std::mutex lock;
+
+public:
+	
+	ConcurrentQueue(size_t n) : N(n), to_yield(n), push_idx(0), pop_idx(0) {
+	}
+	
+	void resize(size_t n) {
+		assert(n >= 2);
+		N = n;
+		to_yield.resize(n);
+	}
+	
+	bool empty() const { return push_idx == pop_idx; }
+	bool full()  const { return push_idx == pop_idx-1; }
+	
+	
+	void push(T& x) {
+		std::unique_lock lck(lock);
+		
+		// if we are here, we must wait until a spot frees up
+		while(full()) full_cv.wait(lck);
+		
+		to_yield[push_idx] = x;
+
+		push_idx = (push_idx + 1) % N;
+		
+		empty_cv.notify_one();
+	}
+	
+	T pop() {
+		std::unique_lock lck(lock);
+		
+		// we are empty so we must wait
+		while(empty()) empty_cv.wait(lck);
+		
+		T x = std::move(to_yield[pop_idx]);
+		pop_idx = (pop_idx + 1) % N;;
+		
+		full_cv.notify_one();		
+		return x;
+	}
+	
+};
+
 /**
- * @class InfereceInterface
+ * @class ThreadedInferenceInterface
  * @author piantado
  * @date 07/06/20
- * @file InferenceInterface.h
+ * @file ThreadedInferenceInterface.h
  * @brief This manages multiple threads for running inference. This requires a subclass to define run_thread, which 
  * 			is what each individual thread should do. All threads can then be called with run(Control, Args... args), which
  * 			copies the control for each thread (setting threads=1) and then passes the args arguments onward
@@ -33,15 +91,9 @@ public:
 	size_t __nthreads; 
 	std::atomic<size_t> __nrunning;// everyone updates this when they are done
 	
-	// this lock controls the output of the run generator
-	// It's kinda important that its FIFO so that we don't hang on one thread for a while
-	OrderedLock generator_lock; 
-	std::vector<X> next_x; // a copy of the next x to yield from each thread
-	std::atomic<bool> next_set;
-	std::condition_variable_any cv; // This condition variable 
-	
-	
-	ThreadedInferenceInterface() : index(0), __nthreads(0),  __nrunning(0), next_set(false) { }
+	ConcurrentQueue<X> to_yield;
+
+	ThreadedInferenceInterface() : index(0), __nthreads(0),  __nrunning(0), to_yield(16) { }
 	
 	/**
 	 * @brief Return the next index to operate on (in a thread-safe way).
@@ -65,28 +117,13 @@ public:
 	 */	
 	void run_thread_generator_wrapper(size_t thr, Control& ctl, Args... args) {
 		
-		
-		int mysamples2 = 0;
 		for(auto& x : run_thread(ctl, args...)) {
-			
-			// set next_x and then tell main after releasing the lock (see https://en.cppreference.com/w/cpp/thread/condition_variable)
-			{
-				std::unique_lock lk(generator_lock);
-				next_x[thr] = x; // NOTE: a copy! Copying here lets us allow the thread to continue, but it does make a copy ~~~~~~~~~~~~~~~~~~~
-				next_set = true;
-			} 
-			cv.notify_one(); // after unlocking lk
-			
-			mysamples2++;
-			
+			to_yield.push(x);
 		}
-		
-		PRINTN("MYSAMPLES2", mysamples2);
 		
 		// we always notify when we're done, after making sure we're not running or else the
 		// other thread can block
 		__nrunning--;
-		cv.notify_one(); 
 	}	
 	
 	generator<X&> run(Control ctl, Args... args) {
@@ -95,37 +132,26 @@ public:
 		__nthreads = ctl.nthreads; // save this for children
 		assert(__nrunning==0);
 		
-		next_set = false; // next hasn't been set to something new yet
-		
 		// Make a new control to run on each thread and then pass this to 
 		// each subthread. This way multiple threads all share the same control
 		// which is required for getting an accurate total count
-		Control ctl2  = ctl; ctl2.nthreads = 1;
-		
-		// reserve one position for each thread
-		next_x.resize(ctl.nthreads); 
-		
+		Control ctl2  = ctl; 
+		ctl2.nthreads = 1;
+		ctl2.start(); 
+
+		to_yield.resize(2*ctl.nthreads); // just some extra space here
+
 		// start each thread
 		for(unsigned long thr=0;thr<ctl.nthreads;thr++) {
-			__nrunning++;
+			++__nrunning;
 			threads[thr] = std::thread(&ThreadedInferenceInterface<X, Args...>::run_thread_generator_wrapper, this, thr, std::ref(ctl2), args...);
 		}
 	
 		// now yield as long as we have some that are running
-		int mycount = 0;
 		while(__nrunning > 0 and !CTRL_C) {
-			// wait for the next worker to set next_x, then yield it
-			std::unique_lock lk(generator_lock);
-			cv.wait(lk, [this]{ return next_set or CTRL_C or __nrunning==0;}); // wait until these are satisfied
-			
-			if(next_set) {
-				co_yield next_x; // yield that next one, holding the lock so nothing modifies next_x
-				mycount++;
-				next_set = false; 
-			} // else we broke from CTRL_C or __nrunning==0 and will exit next loop
+			co_yield to_yield.pop();
 		}
 		
-		PRINTN("MYCOUNT=", mycount);
 		
 		// wait for all to complete
 		for(auto& t : threads)
