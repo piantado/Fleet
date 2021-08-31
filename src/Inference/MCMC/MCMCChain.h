@@ -54,8 +54,8 @@ public:
 		current(m.current), data(m.data), maxval(m.maxval),
 		samples(m.samples), proposals(m.proposals), acceptances(m.acceptances), 
 		steps_since_improvement(m.steps_since_improvement)	{
-			temperature = (double)m.temperature;
-			history     = m.history;
+		temperature = m.temperature.load();
+		history     = m.history;
 		
 	}
 	MCMCChain(MCMCChain&& m) {
@@ -67,7 +67,7 @@ public:
 		acceptances = m.acceptances;
 		steps_since_improvement = m.steps_since_improvement;
 		
-		temperature = (double)m.temperature;
+		temperature = m.temperature.load();
 		history = std::move(m.history);		
 	}
 	
@@ -100,8 +100,7 @@ public:
 		
 		std::lock_guard guard(current_mutex);
 		current.compute_posterior(*data);
-		++FleetStatistics::global_sample_count;
-		++samples;
+		// NOTE: We do NOT count this as a "sample" since it is not yielded
 	}
 	
 	
@@ -119,12 +118,12 @@ public:
 		assert(ctl.nthreads == 1 && "*** You seem to have called MCMCChain with nthreads>1. This is not how you parallel. Check out ChainPool"); 
 		
 		#ifdef DEBUG_MCMC
-		DEBUG("# Starting MCMC Chain on\t", current.posterior, current.prior, current.likelihood, current.string());
+			DEBUG("# Starting MCMC Chain on\t", current.posterior, current.prior, current.likelihood, current.string());
 		#endif 
 		
 		// I may have copied its start time from somewhere else, so change that here
 		ctl.start();		
-		while(ctl.running()) {
+		do {
 			
 			if(current.posterior > maxval) { // if we improve, store it
 				maxval = current.posterior;
@@ -188,28 +187,29 @@ public:
 			   (current.posterior == -infinity) or
 			   ((not std::isnan(proposal.posterior)) and
 				(ratio >= 0.0 or uniform() < exp(ratio) ))) {
+			
 				[[unlikely]];
 							
 				#ifdef DEBUG_MCMC
-				DEBUG("# Accept");
+					DEBUG("# Accept");
 				#endif 
 				
 				current = std::move(proposal);
   
 				history << true;
-				++acceptances;
 				
+				++acceptances;
 			}
 			else {
 				history << false;
 			}
 
-			++samples;
+			++samples;			
 			++FleetStatistics::global_sample_count;
 		
 			co_yield current;
 						
-		} // end the main loop	
+		} while(ctl.running()); // end the main loop	-- at the end because ctl.running() counts the samples we've taken
 		
 		
 		

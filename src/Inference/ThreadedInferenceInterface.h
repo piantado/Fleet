@@ -23,7 +23,7 @@ public:
 
 	// Subclasses must implement run_thread, which is what each individual thread 
 	// gets called on (and each thread manages its own locks etc)
-	virtual generator<X&> run_thread(Control ctl, Args... args) = 0;
+	virtual generator<X&> run_thread(Control& ctl, Args... args) = 0;
 	
 	// index here is used to index into larger parallel collections. Each thread
 	// is expected to get its next item to work on through index, though how will vary
@@ -37,7 +37,7 @@ public:
 	// It's kinda important that its FIFO so that we don't hang on one thread for a while
 	OrderedLock generator_lock; 
 	X next_x; // a copy of the next value of x
-	bool next_set;
+	std::atomic<bool> next_set;
 	std::condition_variable_any cv; // This condition variable 
 	
 	
@@ -63,8 +63,10 @@ public:
 	 *        may in the future block the thread and return a reference, but its not clear that's faster
 	 * @param ctl
 	 */	
-	void run_thread_generator_wrapper(Control ctl, Args... args) {
-				
+	void run_thread_generator_wrapper(Control& ctl, Args... args) {
+		
+		
+		int mysamples2 = 0;
 		for(auto& x : run_thread(ctl, args...)) {
 			
 			// set next_x and then tell main after releasing the lock (see https://en.cppreference.com/w/cpp/thread/condition_variable)
@@ -74,7 +76,12 @@ public:
 				next_set = true;
 			} 
 			cv.notify_one(); // after unlocking lk
+			
+			mysamples2++;
+			
 		}
+		
+		PRINTN("MYSAMPLES2", mysamples2);
 		
 		// we always notify when we're done, after making sure we're not running or else the
 		// other thread can block
@@ -90,24 +97,32 @@ public:
 		
 		next_set = false; // next hasn't been set to something new yet
 		
+		// Make a new control to run on each thread and then pass this to 
+		// each subthread. This way multiple threads all share the same control
+		// which is required for getting an accurate total count
+		Control ctl2  = ctl; ctl2.nthreads = 1;
+		
 		// start each thread
 		for(unsigned long t=0;t<ctl.nthreads;t++) {
-			Control ctl2 = ctl; ctl2.nthreads=1; // we'll make each thread just one
-			threads[t] = std::thread(&ThreadedInferenceInterface<X, Args...>::run_thread_generator_wrapper, this, ctl2, args...);
 			__nrunning++;
+			threads[t] = std::thread(&ThreadedInferenceInterface<X, Args...>::run_thread_generator_wrapper, this, std::ref(ctl2), args...);
 		}
 	
 		// now yield as long as we have some that are running
-		while(true) {
+		int mycount = 0;
+		while(__nrunning > 0 and !CTRL_C) {
 			// wait for the next worker to set next_x, then yield it
 			std::unique_lock lk(generator_lock);
 			cv.wait(lk, [this]{ return next_set or CTRL_C or __nrunning==0;}); // wait until its set
 			
-			if(__nrunning == 0 or CTRL_C) break;
-			
-			co_yield next_x; // yield that next one, holding the lock so nothing modifies next_x
-			next_set = false; 
+			if(next_set) {
+				co_yield next_x; // yield that next one, holding the lock so nothing modifies next_x
+				mycount++;
+				next_set = false; 
+			} // else we broke from CTRL_C or __nrunning==0 and will exit next loop
 		}
+		
+		PRINTN("MYCOUNT=", mycount);
 		
 		// wait for all to complete
 		for(auto& t : threads)

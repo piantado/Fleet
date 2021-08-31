@@ -69,7 +69,7 @@ public:
 	 * @brief This run helper is called internally by multiple different threads, and runs a given pool.
 	 * @param ctl
 	 */
-	generator<HYP&> run_thread(Control ctl) override {
+	generator<HYP&> run_thread(Control& ctl) override {
 		assert(pool.size() > 0 && "*** Cannot run on an empty ChainPool");
 		assert(this->nthreads() <= pool.size() && "*** Cannot have more threads than pool items");
 		
