@@ -37,13 +37,16 @@ public:
 	static const unsigned long steps_before_change = 100;
 	static const time_ms time_before_change = 0; 
 	
+	// Store which chains are running and which are done
+	enum class RunningState {READY, RUNNING, DONE};
+
 	// keep track of which threads are currently running
-	std::vector<bool> running;
+	std::vector<RunningState> running;
 	std::mutex running_lock;
 	
 	ChainPool() {}
 	
-	ChainPool(HYP& h0, typename HYP::data_t* d, size_t n) : running(n, false) {
+	ChainPool(HYP& h0, typename HYP::data_t* d, size_t n) : running(n, RunningState::READY) {
 		for(size_t i=0;i<n;i++) {
 			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), d));
 		}
@@ -78,30 +81,21 @@ public:
 			
 				do { 
 					idx = this->next_index() % pool.size();
-				} while( running[idx] ); // so we exit on a false running idx
-				running[idx] = true; // say I'm running this one 
+				} while( running[idx] != RunningState::READY ); // so we exit on a false running idx
+				running[idx] = RunningState::RUNNING; // say I'm running this one 
 			}
 			
 			auto& chain = pool[idx];
 			
-			//#ifdef DEBUG_CHAINPOOL
-			//			COUT "# Running thread " <<std::this_thread::get_id() << " on "<< idx TAB chain.current.posterior TAB chain.current.string() ENDL;
-			//#endif
-
-			// we need to store how many samples we did 
-			// so we can keep track of our total number
-			auto old_samples =  chain.samples;
-			
 			// now run that chain -- TODO: Can update this to be more precise by running 
 			// a set number of samples computed from steps and old_samples
-			for(auto& x : chain.run(Control(steps_before_change, time_before_change, 1))) {
+			unsigned long to_run_steps = (steps_before_change == 0 ? 0 : std::min(ctl.done_steps - ctl.steps, steps_before_change));
+			
+			for(auto& x : chain.run(Control(to_run_steps, 0, 1))) {
 				x.born_chain_idx = idx; // set this
 				co_yield x;
 			}
 			
-			// now update ctl's number of steps (since it might have been anything
-			ctl.done_steps += chain.samples - old_samples; // add up how many we've done
-						
 			#ifdef DEBUG_CHAINPOOL
 						COUT "# Thread " <<std::this_thread::get_id() << " stopping chain "<< idx TAB "at " TAB chain.current.posterior TAB chain.current.string() ENDL;
 			#endif
@@ -109,7 +103,16 @@ public:
 			// and free this lock space
 			{
 				std::lock_guard guard(running_lock);
-				running[idx] = false; // say I'm running this one 
+				
+				// now update ctl's number of steps (since it might have been anything
+				// we moved this in here so its under running_lock -- won't be modified by multiple threads
+				ctl.done_steps += to_run_steps; 
+				
+				// we are done if we ran out of steps to continue running. 
+				if(to_run_steps == steps_before_change)
+					running[idx] = RunningState::READY;
+				else					
+					running[idx] = RunningState::DONE; // say I'm running this one 
 			}
 						
 		}

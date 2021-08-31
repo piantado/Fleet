@@ -175,6 +175,8 @@ int main(int argc, char** argv){
 				auto& MAP = topMAP.best();
 				const Matrix hposterior = MAP.compute_normalized_posterior(); 
 				
+				PRINTN("#", h.posterior ); 
+				
 				std::ofstream outMAP(FleetArgs::output_path+"/MAP-strings.txt");
 				std::ofstream outtop(FleetArgs::output_path+"/top-H.txt");
 				

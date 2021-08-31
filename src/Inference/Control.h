@@ -27,7 +27,10 @@ struct Control {
 	unsigned long restart;
 	
 	timept start_time;
-	unsigned long done_steps; // how many have we done?
+	
+	
+	// NOTE TODO: THE BELOW SHOULD BE UPDATED TO BE ATOMIC SINCE ITS ACCESSED BY MULTPLE THREADS 
+	unsigned long done_steps; // how many have we done -- updated by multiple threads
 
 	bool break_CTRLC; // should we break on ctrl_c?
 
