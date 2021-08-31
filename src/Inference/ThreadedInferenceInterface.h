@@ -36,7 +36,7 @@ public:
 	// this lock controls the output of the run generator
 	// It's kinda important that its FIFO so that we don't hang on one thread for a while
 	OrderedLock generator_lock; 
-	X next_x; // a copy of the next value of x
+	std::vector<X> next_x; // a copy of the next x to yield from each thread
 	std::atomic<bool> next_set;
 	std::condition_variable_any cv; // This condition variable 
 	
@@ -63,7 +63,7 @@ public:
 	 *        may in the future block the thread and return a reference, but its not clear that's faster
 	 * @param ctl
 	 */	
-	void run_thread_generator_wrapper(Control& ctl, Args... args) {
+	void run_thread_generator_wrapper(size_t thr, Control& ctl, Args... args) {
 		
 		
 		int mysamples2 = 0;
@@ -72,7 +72,7 @@ public:
 			// set next_x and then tell main after releasing the lock (see https://en.cppreference.com/w/cpp/thread/condition_variable)
 			{
 				std::unique_lock lk(generator_lock);
-				next_x = x; // NOTE: a copy! Copying here lets us allow the thread to continue, but it does make a copy ~~~~~~~~~~~~~~~~~~~
+				next_x[thr] = x; // NOTE: a copy! Copying here lets us allow the thread to continue, but it does make a copy ~~~~~~~~~~~~~~~~~~~
 				next_set = true;
 			} 
 			cv.notify_one(); // after unlocking lk
@@ -102,10 +102,13 @@ public:
 		// which is required for getting an accurate total count
 		Control ctl2  = ctl; ctl2.nthreads = 1;
 		
+		// reserve one position for each thread
+		next_x.resize(ctl.nthreads); 
+		
 		// start each thread
-		for(unsigned long t=0;t<ctl.nthreads;t++) {
+		for(unsigned long thr=0;thr<ctl.nthreads;thr++) {
 			__nrunning++;
-			threads[t] = std::thread(&ThreadedInferenceInterface<X, Args...>::run_thread_generator_wrapper, this, std::ref(ctl2), args...);
+			threads[thr] = std::thread(&ThreadedInferenceInterface<X, Args...>::run_thread_generator_wrapper, this, thr, std::ref(ctl2), args...);
 		}
 	
 		// now yield as long as we have some that are running
@@ -113,7 +116,7 @@ public:
 		while(__nrunning > 0 and !CTRL_C) {
 			// wait for the next worker to set next_x, then yield it
 			std::unique_lock lk(generator_lock);
-			cv.wait(lk, [this]{ return next_set or CTRL_C or __nrunning==0;}); // wait until its set
+			cv.wait(lk, [this]{ return next_set or CTRL_C or __nrunning==0;}); // wait until these are satisfied
 			
 			if(next_set) {
 				co_yield next_x; // yield that next one, holding the lock so nothing modifies next_x
