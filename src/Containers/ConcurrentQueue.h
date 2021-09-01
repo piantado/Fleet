@@ -2,6 +2,19 @@
 
 #include <vector>
 #include <mutex>
+#include <condition_variable>
+
+#include "OrderedLock.h"
+
+/**
+ * @class ConcurrentQueue
+ * @author Steven Piantadosi
+ * @date 31/08/21
+ * @file ConcurrentQueue.h
+ * @brief A concurrent queue class that allows multiple threads to push and consume. Note that this
+ *        has a fixed, finite size (n) and when its full, we'll block. This prevents us from 
+ *        eating up too much memory. 
+ */
 
 template<typename T>
 class ConcurrentQueue {
@@ -13,11 +26,12 @@ class ConcurrentQueue {
 	mutable size_t push_idx;
 	mutable size_t pop_idx; 	
 
-	std::condition_variable full_cv; 
-	std::condition_variable empty_cv;
+	std::condition_variable_any full_cv; // any needed here to use OrderedLock 
+	std::condition_variable_any empty_cv;
 	
-	mutable std::mutex lock;
-
+	//mutable std::mutex lock;
+	OrderedLock lock; 
+	
 public:
 	
 	ConcurrentQueue(size_t n) : N(n), to_yield(n), push_idx(0), pop_idx(0) {
