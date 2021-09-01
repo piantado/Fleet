@@ -67,6 +67,11 @@ public:
 		__nrunning--;
 	}	
 	
+	/**
+	 * @brief Set up the multiple threads and actually run, calling run_thread_generator_wrapper
+	 * @param ctl
+	 * @return 
+	 */	
 	generator<X&> run(Control ctl, Args... args) {
 		
 		std::vector<std::thread> threads(ctl.nthreads); 
@@ -81,7 +86,7 @@ public:
 		ctl2.start(); 
 
 		// give this just some extra space here
-		to_yield.resize(2*ctl.nthreads); // just some extra space here
+		to_yield.resize(4*ctl.nthreads); // just some extra space here
 
 		// start each thread
 		for(unsigned long thr=0;thr<ctl.nthreads;thr++) {

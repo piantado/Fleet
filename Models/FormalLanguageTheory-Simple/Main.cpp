@@ -226,38 +226,18 @@ int main(int argc, char** argv){
 //	tn.print();
 //
 //	return 0;
-	
-//	top.print_best = true;
-//	auto h0 = MyHypothesis::sample();
-//	HillClimbing samp(h0, &mydata);
-//	for(auto& h : samp.run(Control()) | top | print(FleetArgs::print) ) { UNUSED(h); }
-//	top.print();
-
-//	top.print_best = true;
-//	auto h0 = MyHypothesis::sample();
-//	MCMCChain samp(h0, &mydata);
-//	for(auto& h : samp.run(Control()) | top | thin(FleetArgs::thin)) {
-//		UNUSED(h);
-//	}
-//	top.print();
-
-	// Let's look at the best run
 
 	
-	//	top.print_best = true;
-//	auto h0 = MyHypothesis::sample();
-//	ChainPool samp(h0, &mydata, FleetArgs::nchains);
-//	for(auto h : samp.run(Control()) | top | print(FleetArgs::print) | thin(FleetArgs::thin)) {
-//	}
-//	top.print();
-//
-//	
-	size_t idx=0;
+
 	top.print_best = true;
 	auto h0 = MyHypothesis::sample();
-	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+//	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+	ChainPool samp(h0, &mydata, FleetArgs::nchains);
+//	MCMCChain samp(h0, &mydata);
+//	HillClimbing samp(h0, &mydata);
+
 	for(auto h : samp.run(Control()) | top | print(FleetArgs::print) | thin(FleetArgs::thin)) {
-		//UNUSED(h);
+		UNUSED(h);
 	
 //		CERR h.born_chain_idx TAB h.string() ENDL;
 //	

@@ -29,8 +29,8 @@ class ConcurrentQueue {
 	std::condition_variable_any full_cv; // any needed here to use OrderedLock 
 	std::condition_variable_any empty_cv;
 	
-	//mutable std::mutex lock;
-	OrderedLock lock; 
+//	mutable std::mutex lock;
+	mutable OrderedLock lock; 
 	
 public:
 	
