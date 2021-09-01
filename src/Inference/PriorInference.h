@@ -26,7 +26,7 @@ public:
 		grammar(g), data(d), from(fr) {
 	}
 	
-	generator<HYP&> run_thread(Control ctl) override {
+	generator<HYP&> run_thread(Control& ctl) override {
 
 		ctl.start();
 		while(ctl.running()) {

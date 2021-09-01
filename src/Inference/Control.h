@@ -27,7 +27,10 @@ struct Control {
 	unsigned long restart;
 	
 	timept start_time;
-	unsigned long done_steps; // how many have we done?
+	
+	
+	// NOTE TODO: THE BELOW SHOULD BE UPDATED TO BE ATOMIC SINCE ITS ACCESSED BY MULTPLE THREADS 
+	std::atomic<unsigned long> done_steps; // how many have we done -- updated by multiple threads
 
 	bool break_CTRLC; // should we break on ctrl_c?
 
@@ -41,19 +44,21 @@ struct Control {
 		start(); // just defaultly because it's easier
 	}
 	
+	Control(const Control& c)  : steps(c.steps), runtime(c.runtime), nthreads(c.nthreads), restart(c.restart), break_CTRLC(true) {		
+		
+		// NOTE: this is weird if using multiple threads 
+		done_steps = c.done_steps.load();
+	}
+	
 	void start() {
 		/**
 		 * @brief Start running
-		 */
-		
+		 */		
 		done_steps = 0;
 		start_time = now();
 	}
 	
-	// Add some functions here to chcek these
-//	bool burn() {  return done_steps < burn; }
-//	bool print() { 
-	
+
 	bool running() {
 		/**
 		 * @brief Check if we are currently running. 

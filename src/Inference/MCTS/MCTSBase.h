@@ -171,7 +171,7 @@ public:
 		}		
     }
 	
-	virtual generator<HYP&> run_thread(Control ctl, HYP h0) override {		
+	virtual generator<HYP&> run_thread(Control& ctl, HYP h0) override {		
 		ctl.start();
 		
 		while(ctl.running()) {
