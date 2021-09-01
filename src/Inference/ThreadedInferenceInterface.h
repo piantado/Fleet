@@ -7,64 +7,7 @@
 #include "Control.h"
 #include "Coroutines.h"
 #include "OrderedLock.h"
-
-template<typename T>
-class ConcurrentQueue {
-	
-	size_t N;  // length of the queue
-
-	std::vector<T> to_yield;
-
-	size_t push_idx;
-	size_t pop_idx; 	
-
-	std::condition_variable full_cv; 
-	std::condition_variable empty_cv;
-	
-	std::mutex lock;
-
-public:
-	
-	ConcurrentQueue(size_t n) : N(n), to_yield(n), push_idx(0), pop_idx(0) {
-	}
-	
-	void resize(size_t n) {
-		assert(n >= 2);
-		N = n;
-		to_yield.resize(n);
-	}
-	
-	bool empty() const { return push_idx == pop_idx; }
-	bool full()  const { return push_idx == pop_idx-1; }
-	
-	
-	void push(T& x) {
-		std::unique_lock lck(lock);
-		
-		// if we are here, we must wait until a spot frees up
-		while(full()) full_cv.wait(lck);
-		
-		to_yield[push_idx] = x;
-
-		push_idx = (push_idx + 1) % N;
-		
-		empty_cv.notify_one();
-	}
-	
-	T pop() {
-		std::unique_lock lck(lock);
-		
-		// we are empty so we must wait
-		while(empty()) empty_cv.wait(lck);
-		
-		T x = std::move(to_yield[pop_idx]);
-		pop_idx = (pop_idx + 1) % N;;
-		
-		full_cv.notify_one();		
-		return x;
-	}
-	
-};
+#include "ConcurrentQueue.h"
 
 /**
  * @class ThreadedInferenceInterface
@@ -107,7 +50,6 @@ public:
 	 */
 	size_t nthreads() {	return __nthreads; }
 	
-	
 	/**
 	 * @brief We have to wrap run_thread in something that manages the sync with main. This really just
 	 *        synchronizes the output of run_thread with run below. NOTE this makes a copy of x into
@@ -139,6 +81,7 @@ public:
 		ctl2.nthreads = 1;
 		ctl2.start(); 
 
+		// give this just some extra space here
 		to_yield.resize(2*ctl.nthreads); // just some extra space here
 
 		// start each thread
@@ -149,9 +92,15 @@ public:
 	
 		// now yield as long as we have some that are running
 		while(__nrunning > 0 and !CTRL_C) {
-			co_yield to_yield.pop();
+			if(not to_yield.empty()) { // w/o this we might pop when its empty...
+				co_yield to_yield.pop();
+			}
 		}
 		
+		// now we're done filling but we still may have stuff in the queue
+		while(not to_yield.empty()) {
+			co_yield to_yield.pop();
+		}
 		
 		// wait for all to complete
 		for(auto& t : threads)
