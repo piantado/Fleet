@@ -76,7 +76,7 @@ public:
 	void add(HYP& h)  { Q.add(h); }	
 	void add(HYP&& h) { Q.add(std::move(h)); }
 	
-	generator<HYP&> run_thread(Control ctl) override {
+	generator<HYP&> run_thread(Control& ctl) override {
 
 		ctl.start();
 		while(ctl.running()) {

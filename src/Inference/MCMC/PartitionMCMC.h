@@ -91,7 +91,7 @@ public:
 			x.complete(); // fill in any structural gaps
 		
 			this->pool.push_back(MCMCChain<HYP>(x, data));
-			this->running.push_back(false);
+			this->running.push_back(ChainPool<HYP>::RunningState::READY);
 			
 			#ifdef DEBUG_PARTITION_MCMC
 				COUT "Starting PartitionMCMC on " << x.string() ENDL;

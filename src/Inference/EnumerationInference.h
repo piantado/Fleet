@@ -29,7 +29,7 @@ public:
 		grammar(g), data(d) {
 	}
 	
-	generator<HYP&> run_thread(Control ctl) override {
+	generator<HYP&> run_thread(Control& ctl) override {
 	
 		Enumerator ge(this->grammar);
 		
