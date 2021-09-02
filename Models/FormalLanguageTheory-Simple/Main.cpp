@@ -167,7 +167,6 @@ int main(int argc, char** argv){
 	fleet.add_option("-d,--data",     datastr, "Comma separated list of input data strings");	
 	fleet.initialize(argc, argv);
 	
-	
 	//------------------
 	// Add the terminals to the grammar
 	//------------------	
@@ -231,8 +230,8 @@ int main(int argc, char** argv){
 
 	top.print_best = true;
 	auto h0 = MyHypothesis::sample();
-//	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
-	ChainPool samp(h0, &mydata, FleetArgs::nchains);
+	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+//	ChainPool samp(h0, &mydata, FleetArgs::nchains);
 //	MCMCChain samp(h0, &mydata);
 //	HillClimbing samp(h0, &mydata);
 

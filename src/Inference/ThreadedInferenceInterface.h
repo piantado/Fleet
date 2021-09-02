@@ -95,20 +95,19 @@ public:
 		}
 	
 		// now yield as long as we have some that are running
-		while(__nrunning > 0 and !CTRL_C) {
+		while(__nrunning > 0 and !CTRL_C) { // we don't want to stop when its empty because a thread might fill it
 			if(not to_yield.empty()) { // w/o this we might pop when its empty...
 				co_yield to_yield.pop();
 			}
 		}
 		
+		// wait for all to complete
+		for(auto& t : threads) t.join();
+			
 		// now we're done filling but we still may have stuff in the queue
 		while(not to_yield.empty()) {
 			co_yield to_yield.pop();
 		}
-		
-		// wait for all to complete
-		for(auto& t : threads)
-			t.join();
 	}
 	
 };
