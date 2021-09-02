@@ -4,6 +4,15 @@
 
 {\ttfamily \#include $<$Finite\+History.\+h$>$}
 
+
+
+Collaboration diagram for Finite\+History$<$ T $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=187pt]{class_finite_history__coll__graph}
+\end{center}
+\end{figure}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -38,7 +47,7 @@ std\+::atomic$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_finite_history_a17302701
 \item 
 std\+::atomic$<$ unsigned long $>$ \mbox{\hyperlink{class_finite_history_a5967a95efc3ef8aa4391942da511eab7}{N}}
 \item 
-std\+::mutex \mbox{\hyperlink{class_finite_history_a677c5c1c7115d5c8c8381aa4332025c6}{mutex}}
+\mbox{\hyperlink{class_ordered_lock}{Ordered\+Lock}} \mbox{\hyperlink{class_finite_history_a867aaaeb6042a82ea987373c50e6cbc7}{mutex}}
 \end{DoxyCompactItemize}
 
 
@@ -177,12 +186,12 @@ std\+::atomic$<$size\+\_\+t$>$ \mbox{\hyperlink{class_finite_history}{Finite\+Hi
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 std\+::atomic$<$size\+\_\+t$>$ \mbox{\hyperlink{class_finite_history}{Finite\+History}}$<$ T $>$\+::history\+\_\+size}
 
-\mbox{\Hypertarget{class_finite_history_a677c5c1c7115d5c8c8381aa4332025c6}\label{class_finite_history_a677c5c1c7115d5c8c8381aa4332025c6}} 
+\mbox{\Hypertarget{class_finite_history_a867aaaeb6042a82ea987373c50e6cbc7}\label{class_finite_history_a867aaaeb6042a82ea987373c50e6cbc7}} 
 \index{FiniteHistory$<$ T $>$@{FiniteHistory$<$ T $>$}!mutex@{mutex}}
 \index{mutex@{mutex}!FiniteHistory$<$ T $>$@{FiniteHistory$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{mutex}{mutex}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-std\+::mutex \mbox{\hyperlink{class_finite_history}{Finite\+History}}$<$ T $>$\+::mutex\hspace{0.3cm}{\ttfamily [mutable]}}
+\mbox{\hyperlink{class_ordered_lock}{Ordered\+Lock}} \mbox{\hyperlink{class_finite_history}{Finite\+History}}$<$ T $>$\+::mutex}
 
 \mbox{\Hypertarget{class_finite_history_a5967a95efc3ef8aa4391942da511eab7}\label{class_finite_history_a5967a95efc3ef8aa4391942da511eab7}} 
 \index{FiniteHistory$<$ T $>$@{FiniteHistory$<$ T $>$}!N@{N}}

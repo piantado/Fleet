@@ -1,0 +1,255 @@
+\hypertarget{class_vector_half_normal_hypothesis}{}\doxysection{Vector\+Half\+Normal\+Hypothesis Class Reference}
+\label{class_vector_half_normal_hypothesis}\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+
+
+{\ttfamily \#include $<$Vector\+Half\+Normal\+Hypothesis.\+h$>$}
+
+
+
+Inheritance diagram for Vector\+Half\+Normal\+Hypothesis\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=248pt]{class_vector_half_normal_hypothesis__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Vector\+Half\+Normal\+Hypothesis\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=248pt]{class_vector_half_normal_hypothesis__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{class_vector_half_normal_hypothesis_aa169571925876701368c66f646483bf3}{self\+\_\+t}} = \mbox{\hyperlink{class_vector_half_normal_hypothesis}{Vector\+Half\+Normal\+Hypothesis}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_vector_half_normal_hypothesis_a0346a9a30fe9cf86fd2fba1ffa718158}{Vector\+Half\+Normal\+Hypothesis}} ()
+\item 
+\mbox{\hyperlink{class_vector_half_normal_hypothesis_a6d63e93b89644e6e2111bfbd43d64af5}{Vector\+Half\+Normal\+Hypothesis}} (int n)
+\item 
+double \mbox{\hyperlink{class_vector_half_normal_hypothesis_a2e24c471acc8a5738993ba05b98a1883}{operator()}} (int i) const
+\item 
+void \mbox{\hyperlink{class_vector_half_normal_hypothesis_a58c2acb588a9c35bf009d940e465575e}{set}} (int i, double v)
+\item 
+void \mbox{\hyperlink{class_vector_half_normal_hypothesis_af6b30dc227b62e6f648b00a479c429c8}{set\+\_\+can\+\_\+propose}} (size\+\_\+t i, bool b)
+\begin{DoxyCompactList}\small\item\em Set whether we can propose to each element of b or not. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vector_half_normal_hypothesis_a44ad3d3c8699f8e04d077793dac6ac29}{set\+\_\+size}} (size\+\_\+t n)
+\item 
+virtual double \mbox{\hyperlink{class_vector_half_normal_hypothesis_a9bc5fb2392c379a286d62927fdfbf925}{compute\+\_\+prior}} () override
+\begin{DoxyCompactList}\small\item\em Compute the prior -- defaultly not defined. \end{DoxyCompactList}\item 
+virtual double \mbox{\hyperlink{class_vector_half_normal_hypothesis_ac11337651ba0be2f81751a01c7dac7c1}{compute\+\_\+likelihood}} (const \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} \&data, const double breakout=-\/\mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}}) override
+\begin{DoxyCompactList}\small\item\em Compute the likelihood of a collection of data, by calling compute\+\_\+single\+\_\+likelihood on each. This stops if our likelihood falls below breakout. \end{DoxyCompactList}\item 
+std\+::pair$<$ \mbox{\hyperlink{class_vector_half_normal_hypothesis_aa169571925876701368c66f646483bf3}{self\+\_\+t}}, double $>$ \mbox{\hyperlink{class_vector_half_normal_hypothesis_a9797d04ba10f25780527e1ea27625a43}{propose}} () const override
+\item 
+virtual \mbox{\hyperlink{class_vector_half_normal_hypothesis_aa169571925876701368c66f646483bf3}{self\+\_\+t}} \mbox{\hyperlink{class_vector_half_normal_hypothesis_ab3dad3a1b5babe38e004ad6f237a36b9}{restart}} () const override
+\item 
+virtual size\+\_\+t \mbox{\hyperlink{class_vector_half_normal_hypothesis_a58fb4c11b71bbc505de8007e1aa73076}{hash}} () const override
+\item 
+virtual bool \mbox{\hyperlink{class_vector_half_normal_hypothesis_ad6c4a4f67f0b53f35132295c00bedb2f}{operator==}} (const \mbox{\hyperlink{class_vector_half_normal_hypothesis_aa169571925876701368c66f646483bf3}{self\+\_\+t}} \&h) const override
+\item 
+virtual std\+::string \mbox{\hyperlink{class_vector_half_normal_hypothesis_a6fe57ed6b7282a745c55e6e31f1ef5b3}{string}} (std\+::string prefix=\char`\"{}\char`\"{}) const override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{class_vector_half_normal_hypothesis_a6e95a032ddd7f24e9a52013696574a3b}{M\+E\+AN}} = 0.\+0
+\item 
+double \mbox{\hyperlink{class_vector_half_normal_hypothesis_a6330ca53f498e0ca57b070d33e9a1f67}{SD}} = 1.\+0
+\item 
+double \mbox{\hyperlink{class_vector_half_normal_hypothesis_ab660ac82274a9da36683cccd7f3a27c8}{P\+R\+O\+P\+O\+S\+A\+L\+\_\+\+S\+C\+A\+LE}} = 0.\+20
+\item 
+Vector \mbox{\hyperlink{class_vector_half_normal_hypothesis_a606773d12eb77afb03717618cea20b4e}{value}}
+\item 
+std\+::vector$<$ bool $>$ \mbox{\hyperlink{class_vector_half_normal_hypothesis_a74f47d40bbf31b8cc1c4cbd0f42c17c6}{can\+\_\+propose}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Steven Piantadosi 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+13/07/21 
+\end{DoxyDate}
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_aa169571925876701368c66f646483bf3}\label{class_vector_half_normal_hypothesis_aa169571925876701368c66f646483bf3}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!self\_t@{self\_t}}
+\index{self\_t@{self\_t}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{self\_t}{self\_t}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{class_vector_half_normal_hypothesis_aa169571925876701368c66f646483bf3}{Vector\+Half\+Normal\+Hypothesis\+::self\+\_\+t}} =  \mbox{\hyperlink{class_vector_half_normal_hypothesis}{Vector\+Half\+Normal\+Hypothesis}}}
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_a0346a9a30fe9cf86fd2fba1ffa718158}\label{class_vector_half_normal_hypothesis_a0346a9a30fe9cf86fd2fba1ffa718158}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{VectorHalfNormalHypothesis()}{VectorHalfNormalHypothesis()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Vector\+Half\+Normal\+Hypothesis\+::\+Vector\+Half\+Normal\+Hypothesis (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_a6d63e93b89644e6e2111bfbd43d64af5}\label{class_vector_half_normal_hypothesis_a6d63e93b89644e6e2111bfbd43d64af5}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{VectorHalfNormalHypothesis()}{VectorHalfNormalHypothesis()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Vector\+Half\+Normal\+Hypothesis\+::\+Vector\+Half\+Normal\+Hypothesis (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_ac11337651ba0be2f81751a01c7dac7c1}\label{class_vector_half_normal_hypothesis_ac11337651ba0be2f81751a01c7dac7c1}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!compute\_likelihood@{compute\_likelihood}}
+\index{compute\_likelihood@{compute\_likelihood}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{compute\_likelihood()}{compute\_likelihood()}}
+{\footnotesize\ttfamily virtual double Vector\+Half\+Normal\+Hypothesis\+::compute\+\_\+likelihood (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} \&}]{data,  }\item[{const double}]{breakout = {\ttfamily -\/\mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Compute the likelihood of a collection of data, by calling compute\+\_\+single\+\_\+likelihood on each. This stops if our likelihood falls below breakout. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & \\
+\hline
+{\em breakout} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{class_bayesable_a202493156cec15937bee304d807fdbdb}{Bayesable$<$ Args... $>$}}.
+
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_a9bc5fb2392c379a286d62927fdfbf925}\label{class_vector_half_normal_hypothesis_a9bc5fb2392c379a286d62927fdfbf925}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!compute\_prior@{compute\_prior}}
+\index{compute\_prior@{compute\_prior}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{compute\_prior()}{compute\_prior()}}
+{\footnotesize\ttfamily virtual double Vector\+Half\+Normal\+Hypothesis\+::compute\+\_\+prior (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Compute the prior -- defaultly not defined. 
+
+
+
+Implements \mbox{\hyperlink{class_bayesable_a1b057a17212ced123545133e2297c01b}{Bayesable$<$ Args... $>$}}.
+
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_a58fb4c11b71bbc505de8007e1aa73076}\label{class_vector_half_normal_hypothesis_a58fb4c11b71bbc505de8007e1aa73076}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!hash@{hash}}
+\index{hash@{hash}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{hash()}{hash()}}
+{\footnotesize\ttfamily virtual size\+\_\+t Vector\+Half\+Normal\+Hypothesis\+::hash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_a2e24c471acc8a5738993ba05b98a1883}\label{class_vector_half_normal_hypothesis_a2e24c471acc8a5738993ba05b98a1883}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!operator()@{operator()}}
+\index{operator()@{operator()}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily double Vector\+Half\+Normal\+Hypothesis\+::operator() (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_ad6c4a4f67f0b53f35132295c00bedb2f}\label{class_vector_half_normal_hypothesis_ad6c4a4f67f0b53f35132295c00bedb2f}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!operator==@{operator==}}
+\index{operator==@{operator==}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily virtual bool Vector\+Half\+Normal\+Hypothesis\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_vector_half_normal_hypothesis_aa169571925876701368c66f646483bf3}{self\+\_\+t}} \&}]{h }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_m_c_m_cable_a7b35c04d3d1326b930cfc69dfe0bd207}{M\+C\+M\+Cable$<$ Vector\+Half\+Normal\+Hypothesis, void $\ast$ $>$}}.
+
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_a9797d04ba10f25780527e1ea27625a43}\label{class_vector_half_normal_hypothesis_a9797d04ba10f25780527e1ea27625a43}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!propose@{propose}}
+\index{propose@{propose}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{propose()}{propose()}}
+{\footnotesize\ttfamily std\+::pair$<$\mbox{\hyperlink{class_vector_half_normal_hypothesis_aa169571925876701368c66f646483bf3}{self\+\_\+t}},double$>$ Vector\+Half\+Normal\+Hypothesis\+::propose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
+
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_ab3dad3a1b5babe38e004ad6f237a36b9}\label{class_vector_half_normal_hypothesis_ab3dad3a1b5babe38e004ad6f237a36b9}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!restart@{restart}}
+\index{restart@{restart}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{restart()}{restart()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{class_vector_half_normal_hypothesis_aa169571925876701368c66f646483bf3}{self\+\_\+t}} Vector\+Half\+Normal\+Hypothesis\+::restart (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_a58c2acb588a9c35bf009d940e465575e}\label{class_vector_half_normal_hypothesis_a58c2acb588a9c35bf009d940e465575e}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!set@{set}}
+\index{set@{set}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily void Vector\+Half\+Normal\+Hypothesis\+::set (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{double}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_af6b30dc227b62e6f648b00a479c429c8}\label{class_vector_half_normal_hypothesis_af6b30dc227b62e6f648b00a479c429c8}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!set\_can\_propose@{set\_can\_propose}}
+\index{set\_can\_propose@{set\_can\_propose}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{set\_can\_propose()}{set\_can\_propose()}}
+{\footnotesize\ttfamily void Vector\+Half\+Normal\+Hypothesis\+::set\+\_\+can\+\_\+propose (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{bool}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set whether we can propose to each element of b or not. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_a44ad3d3c8699f8e04d077793dac6ac29}\label{class_vector_half_normal_hypothesis_a44ad3d3c8699f8e04d077793dac6ac29}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!set\_size@{set\_size}}
+\index{set\_size@{set\_size}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{set\_size()}{set\_size()}}
+{\footnotesize\ttfamily void Vector\+Half\+Normal\+Hypothesis\+::set\+\_\+size (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_a6fe57ed6b7282a745c55e6e31f1ef5b3}\label{class_vector_half_normal_hypothesis_a6fe57ed6b7282a745c55e6e31f1ef5b3}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!string@{string}}
+\index{string@{string}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{string()}{string()}}
+{\footnotesize\ttfamily virtual std\+::string Vector\+Half\+Normal\+Hypothesis\+::string (\begin{DoxyParamCaption}\item[{std\+::string}]{prefix = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_bayesable_ab6944b4bfe5620c96048287a51d019c1}{Bayesable$<$ Args... $>$}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_a74f47d40bbf31b8cc1c4cbd0f42c17c6}\label{class_vector_half_normal_hypothesis_a74f47d40bbf31b8cc1c4cbd0f42c17c6}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!can\_propose@{can\_propose}}
+\index{can\_propose@{can\_propose}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{can\_propose}{can\_propose}}
+{\footnotesize\ttfamily std\+::vector$<$bool$>$ Vector\+Half\+Normal\+Hypothesis\+::can\+\_\+propose}
+
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_a6e95a032ddd7f24e9a52013696574a3b}\label{class_vector_half_normal_hypothesis_a6e95a032ddd7f24e9a52013696574a3b}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!MEAN@{MEAN}}
+\index{MEAN@{MEAN}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{MEAN}{MEAN}}
+{\footnotesize\ttfamily double Vector\+Half\+Normal\+Hypothesis\+::\+M\+E\+AN = 0.\+0}
+
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_ab660ac82274a9da36683cccd7f3a27c8}\label{class_vector_half_normal_hypothesis_ab660ac82274a9da36683cccd7f3a27c8}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!PROPOSAL\_SCALE@{PROPOSAL\_SCALE}}
+\index{PROPOSAL\_SCALE@{PROPOSAL\_SCALE}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{PROPOSAL\_SCALE}{PROPOSAL\_SCALE}}
+{\footnotesize\ttfamily double Vector\+Half\+Normal\+Hypothesis\+::\+P\+R\+O\+P\+O\+S\+A\+L\+\_\+\+S\+C\+A\+LE = 0.\+20}
+
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_a6330ca53f498e0ca57b070d33e9a1f67}\label{class_vector_half_normal_hypothesis_a6330ca53f498e0ca57b070d33e9a1f67}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!SD@{SD}}
+\index{SD@{SD}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{SD}{SD}}
+{\footnotesize\ttfamily double Vector\+Half\+Normal\+Hypothesis\+::\+SD = 1.\+0}
+
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_a606773d12eb77afb03717618cea20b4e}\label{class_vector_half_normal_hypothesis_a606773d12eb77afb03717618cea20b4e}} 
+\index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!value@{value}}
+\index{value@{value}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
+\doxysubsubsection{\texorpdfstring{value}{value}}
+{\footnotesize\ttfamily Vector Vector\+Half\+Normal\+Hypothesis\+::value}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Hypotheses/\mbox{\hyperlink{_vector_half_normal_hypothesis_8h}{Vector\+Half\+Normal\+Hypothesis.\+h}}\end{DoxyCompactItemize}

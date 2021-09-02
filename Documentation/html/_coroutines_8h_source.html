@@ -83,43 +83,36 @@ $(function() {
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">   10</a></span>&#160;<span class="keyword">using</span> <a class="code" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a> = cppcoro::generator&lt;T&gt;;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// thin samples by N</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="structthin.html">   13</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structthin.html">thin</a> {</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="structthin.html#a298a530eb9c74c6d3247f647a7818f5f">   14</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="structthin.html#a298a530eb9c74c6d3247f647a7818f5f">m</a>;</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="structthin.html#a489e86e8bde6076f6406dd99e5045259">   15</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="structthin.html#a489e86e8bde6076f6406dd99e5045259">cnt</a>;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    </div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="structthin.html#ad51ea04e87c51e812fd6d90028ed3cb7">   17</a></span>&#160;    <a class="code" href="structthin.html#ad51ea04e87c51e812fd6d90028ed3cb7">thin</a>(<span class="keywordtype">size_t</span> _m) : <a class="code" href="structthin.html#a298a530eb9c74c6d3247f647a7818f5f">m</a>(_m), <a class="code" href="structthin.html#a489e86e8bde6076f6406dd99e5045259">cnt</a>(0) { </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    }</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="comment">// funny little increment here returns true for 0 mod m</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structthin.html#a7fed8205ed2467963aa8e3a2461b3b03">   21</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structthin.html#a7fed8205ed2467963aa8e3a2461b3b03">operator++</a>() {</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keywordflow">if</span>(++<a class="code" href="structthin.html#a489e86e8bde6076f6406dd99e5045259">cnt</a> == <a class="code" href="structthin.html#a298a530eb9c74c6d3247f647a7818f5f">m</a> or <a class="code" href="structthin.html#a298a530eb9c74c6d3247f647a7818f5f">m</a>==0) {</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            <a class="code" href="structthin.html#a489e86e8bde6076f6406dd99e5045259">cnt</a> = 0;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        }</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        }</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    }</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;};</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; </div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="_coroutines_8h.html#a6a2a436eab30d3f9fcb6345baea21fa5">   32</a></span>&#160;<a class="code" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator&lt;T&amp;&gt;</a> <a class="code" href="_coroutines_8h.html#a6a2a436eab30d3f9fcb6345baea21fa5">operator|</a>(<a class="code" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator&lt;T&amp;&gt;</a> g, <a class="code" href="structthin.html">thin</a> t) {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; x : g) {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordflow">if</span>(++t) co_yield x; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="structprint.html">   38</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structprint.html">print</a> { </div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="structprint.html#a1aa33d705b46889756d3607337a92c23">   39</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="structprint.html#a1aa33d705b46889756d3607337a92c23">every</a>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="structprint.html#a3a15ca6d611fe6ae655fa6e437a9506f">   40</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="structprint.html#a3a15ca6d611fe6ae655fa6e437a9506f">cnt</a>;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="structprint.html#a85ae211d582fd5a9496a2f9844a17a81">   41</a></span>&#160;    std::string <a class="code" href="structprint.html#a85ae211d582fd5a9496a2f9844a17a81">prefix</a>; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    </div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="structprint.html#a7e141bb2af61d6edf8895cf964ce130d">   43</a></span>&#160;    <a class="code" href="structprint.html#a7e141bb2af61d6edf8895cf964ce130d">print</a>(<span class="keywordtype">size_t</span> e, <span class="keyword">const</span> std::string p=<span class="stringliteral">&quot;&quot;</span>) : <a class="code" href="structprint.html#a1aa33d705b46889756d3607337a92c23">every</a>(e), <a class="code" href="structprint.html#a3a15ca6d611fe6ae655fa6e437a9506f">cnt</a>(0), <a class="code" href="structprint.html#a85ae211d582fd5a9496a2f9844a17a81">prefix</a>(p) { }</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">//template&lt;char... chars&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">//struct every { </span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">//  size_t cnt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//  size_t n; </span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//  every(size_t _n) : n(_n), cnt(0) {  }</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">//  </span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">//  explicit operator bool() {</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">//      if(cnt++==n or n==0) {</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">//          cnt = 0;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">//          return true;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">//      }</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">//      else {</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">//          return false; </span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">//      }</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//  }</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">//  </span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//};</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// thin samples by N</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="structthin.html">   38</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structthin.html">thin</a> {</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="structthin.html#a298a530eb9c74c6d3247f647a7818f5f">   39</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="structthin.html#a298a530eb9c74c6d3247f647a7818f5f">m</a>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="structthin.html#a489e86e8bde6076f6406dd99e5045259">   40</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="structthin.html#a489e86e8bde6076f6406dd99e5045259">cnt</a>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    </div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="structthin.html#ad51ea04e87c51e812fd6d90028ed3cb7">   42</a></span>&#160;    <a class="code" href="structthin.html#ad51ea04e87c51e812fd6d90028ed3cb7">thin</a>(<span class="keywordtype">size_t</span> _m) : <a class="code" href="structthin.html#a298a530eb9c74c6d3247f647a7818f5f">m</a>(_m), <a class="code" href="structthin.html#a489e86e8bde6076f6406dd99e5045259">cnt</a>(0) { </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">// funny little increment here returns true for when we print</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="structprint.html#a5eaf6db098aff32860511dd1d8fb4e2d">   46</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structprint.html#a5eaf6db098aff32860511dd1d8fb4e2d">operator++</a>() {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">if</span>(++<a class="code" href="structprint.html#a3a15ca6d611fe6ae655fa6e437a9506f">cnt</a> == <a class="code" href="structprint.html#a1aa33d705b46889756d3607337a92c23">every</a> and <a class="code" href="structprint.html#a1aa33d705b46889756d3607337a92c23">every</a>!=0) {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <a class="code" href="structprint.html#a3a15ca6d611fe6ae655fa6e437a9506f">cnt</a> = 0;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">// funny little increment here returns true for 0 mod m</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="structthin.html#a7fed8205ed2467963aa8e3a2461b3b03">   46</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structthin.html#a7fed8205ed2467963aa8e3a2461b3b03">operator++</a>() {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">if</span>(++<a class="code" href="structthin.html#a489e86e8bde6076f6406dd99e5045259">cnt</a> == <a class="code" href="structthin.html#a298a530eb9c74c6d3247f647a7818f5f">m</a> or <a class="code" href="structthin.html#a298a530eb9c74c6d3247f647a7818f5f">m</a>==0) {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <a class="code" href="structthin.html#a489e86e8bde6076f6406dd99e5045259">cnt</a> = 0;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        }</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordflow">else</span> {</div>
@@ -127,39 +120,70 @@ $(function() {
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        }</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;};</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; </div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="_coroutines_8h.html#aa2749f1ac87f4d6ec34634d6271a2d2c">   57</a></span>&#160;<a class="code" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator&lt;T&amp;&gt;</a> <a class="code" href="_coroutines_8h.html#a6a2a436eab30d3f9fcb6345baea21fa5">operator|</a>(<a class="code" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator&lt;T&amp;&gt;</a> g, <a class="code" href="structprint.html">print</a> t) {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; x : g) {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordflow">if</span>(++t) x.print(t.<a class="code" href="structprint.html#a85ae211d582fd5a9496a2f9844a17a81">prefix</a>);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        co_yield x;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; </div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="_coroutines_8h.html#a6a2a436eab30d3f9fcb6345baea21fa5">   58</a></span>&#160;<a class="code" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator&lt;T&amp;&gt;</a> <a class="code" href="_coroutines_8h.html#a6a2a436eab30d3f9fcb6345baea21fa5">operator|</a>(<a class="code" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator&lt;T&amp;&gt;</a> g, <a class="code" href="structthin.html">thin</a> t) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; x : g) {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordflow">if</span>(++t) co_yield x; </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">// chaining together generator and TopN</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_top_n_8h.html">TopN.h</a>&quot;</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; </div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="_coroutines_8h.html#a410582fbcd7bdfe3ac352e449af96d3a">   67</a></span>&#160;<a class="code" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator&lt;T&amp;&gt;</a> <a class="code" href="_coroutines_8h.html#a6a2a436eab30d3f9fcb6345baea21fa5">operator|</a>(<a class="code" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator&lt;T&amp;&gt;</a> g, <a class="code" href="class_top_n.html">TopN&lt;T&gt;</a>&amp; tn) { <span class="comment">// NOTE: tn MUST be a ref here...</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; x : g) {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        tn &lt;&lt; x; <span class="comment">// add</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        co_yield x; <span class="comment">// and yield </span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="structprint.html">   64</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structprint.html">print</a> { </div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="structprint.html#a1aa33d705b46889756d3607337a92c23">   65</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="structprint.html#a1aa33d705b46889756d3607337a92c23">every</a>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="structprint.html#a3a15ca6d611fe6ae655fa6e437a9506f">   66</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="structprint.html#a3a15ca6d611fe6ae655fa6e437a9506f">cnt</a>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="structprint.html#a85ae211d582fd5a9496a2f9844a17a81">   67</a></span>&#160;    std::string <a class="code" href="structprint.html#a85ae211d582fd5a9496a2f9844a17a81">prefix</a>; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    </div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="structprint.html#a7e141bb2af61d6edf8895cf964ce130d">   69</a></span>&#160;    <a class="code" href="structprint.html#a7e141bb2af61d6edf8895cf964ce130d">print</a>(<span class="keywordtype">size_t</span> e, <span class="keyword">const</span> std::string p=<span class="stringliteral">&quot;&quot;</span>) : <a class="code" href="classevery.html">every</a>(e), <a class="code" href="structprint.html#a3a15ca6d611fe6ae655fa6e437a9506f">cnt</a>(0), <a class="code" href="structprint.html#a85ae211d582fd5a9496a2f9844a17a81">prefix</a>(p) { }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="comment">// funny little increment here returns true for when we print</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="structprint.html#a5eaf6db098aff32860511dd1d8fb4e2d">   72</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structprint.html#a5eaf6db098aff32860511dd1d8fb4e2d">operator++</a>() {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">if</span>(++<a class="code" href="structprint.html#a3a15ca6d611fe6ae655fa6e437a9506f">cnt</a> == <a class="code" href="classevery.html">every</a> and <a class="code" href="classevery.html">every</a>!=0) {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <a class="code" href="structprint.html#a3a15ca6d611fe6ae655fa6e437a9506f">cnt</a> = 0;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;};</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; </div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="_coroutines_8h.html#aa2749f1ac87f4d6ec34634d6271a2d2c">   84</a></span>&#160;<a class="code" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator&lt;T&amp;&gt;</a> <a class="code" href="_coroutines_8h.html#a6a2a436eab30d3f9fcb6345baea21fa5">operator|</a>(<a class="code" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator&lt;T&amp;&gt;</a> g, <a class="code" href="structprint.html">print</a> t) {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; x : g) {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">if</span>(++t) x.print(t.<a class="code" href="structprint.html#a85ae211d582fd5a9496a2f9844a17a81">prefix</a>);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        co_yield x;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    }</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">// chaining together generator and TopN</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_top_n_8h.html">TopN.h</a>&quot;</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; </div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="_coroutines_8h.html#a410582fbcd7bdfe3ac352e449af96d3a">   97</a></span>&#160;<a class="code" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator&lt;T&amp;&gt;</a> <a class="code" href="_coroutines_8h.html#a6a2a436eab30d3f9fcb6345baea21fa5">operator|</a>(<a class="code" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator&lt;T&amp;&gt;</a> g, <a class="code" href="class_top_n.html">TopN&lt;T&gt;</a>&amp; tn) { <span class="comment">// NOTE: tn MUST be a ref here...</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; x : g) {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        tn &lt;&lt; x; <span class="comment">// add</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        co_yield x; <span class="comment">// and yield </span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="astructthin_html"><div class="ttname"><a href="structthin.html">thin</a></div><div class="ttdef"><b>Definition:</b> Coroutines.h:13</div></div>
-<div class="ttc" id="astructprint_html_a85ae211d582fd5a9496a2f9844a17a81"><div class="ttname"><a href="structprint.html#a85ae211d582fd5a9496a2f9844a17a81">print::prefix</a></div><div class="ttdeci">std::string prefix</div><div class="ttdef"><b>Definition:</b> Coroutines.h:41</div></div>
-<div class="ttc" id="astructprint_html_a1aa33d705b46889756d3607337a92c23"><div class="ttname"><a href="structprint.html#a1aa33d705b46889756d3607337a92c23">print::every</a></div><div class="ttdeci">size_t every</div><div class="ttdef"><b>Definition:</b> Coroutines.h:39</div></div>
-<div class="ttc" id="astructprint_html_a7e141bb2af61d6edf8895cf964ce130d"><div class="ttname"><a href="structprint.html#a7e141bb2af61d6edf8895cf964ce130d">print::print</a></div><div class="ttdeci">print(size_t e, const std::string p=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> Coroutines.h:43</div></div>
-<div class="ttc" id="astructprint_html_a3a15ca6d611fe6ae655fa6e437a9506f"><div class="ttname"><a href="structprint.html#a3a15ca6d611fe6ae655fa6e437a9506f">print::cnt</a></div><div class="ttdeci">size_t cnt</div><div class="ttdef"><b>Definition:</b> Coroutines.h:40</div></div>
-<div class="ttc" id="astructthin_html_a298a530eb9c74c6d3247f647a7818f5f"><div class="ttname"><a href="structthin.html#a298a530eb9c74c6d3247f647a7818f5f">thin::m</a></div><div class="ttdeci">size_t m</div><div class="ttdef"><b>Definition:</b> Coroutines.h:14</div></div>
-<div class="ttc" id="astructthin_html_a7fed8205ed2467963aa8e3a2461b3b03"><div class="ttname"><a href="structthin.html#a7fed8205ed2467963aa8e3a2461b3b03">thin::operator++</a></div><div class="ttdeci">bool operator++()</div><div class="ttdef"><b>Definition:</b> Coroutines.h:21</div></div>
-<div class="ttc" id="astructthin_html_a489e86e8bde6076f6406dd99e5045259"><div class="ttname"><a href="structthin.html#a489e86e8bde6076f6406dd99e5045259">thin::cnt</a></div><div class="ttdeci">size_t cnt</div><div class="ttdef"><b>Definition:</b> Coroutines.h:15</div></div>
-<div class="ttc" id="aclass_top_n_html"><div class="ttname"><a href="class_top_n.html">TopN</a></div><div class="ttdef"><b>Definition:</b> TopN.h:24</div></div>
-<div class="ttc" id="a_coroutines_8h_html_a6a2a436eab30d3f9fcb6345baea21fa5"><div class="ttname"><a href="_coroutines_8h.html#a6a2a436eab30d3f9fcb6345baea21fa5">operator|</a></div><div class="ttdeci">generator&lt; T &amp; &gt; operator|(generator&lt; T &amp; &gt; g, thin t)</div><div class="ttdef"><b>Definition:</b> Coroutines.h:32</div></div>
-<div class="ttc" id="astructthin_html_ad51ea04e87c51e812fd6d90028ed3cb7"><div class="ttname"><a href="structthin.html#ad51ea04e87c51e812fd6d90028ed3cb7">thin::thin</a></div><div class="ttdeci">thin(size_t _m)</div><div class="ttdef"><b>Definition:</b> Coroutines.h:17</div></div>
+<div class="ttc" id="astructthin_html"><div class="ttname"><a href="structthin.html">thin</a></div><div class="ttdef"><b>Definition:</b> Coroutines.h:38</div></div>
+<div class="ttc" id="astructprint_html_a85ae211d582fd5a9496a2f9844a17a81"><div class="ttname"><a href="structprint.html#a85ae211d582fd5a9496a2f9844a17a81">print::prefix</a></div><div class="ttdeci">std::string prefix</div><div class="ttdef"><b>Definition:</b> Coroutines.h:67</div></div>
+<div class="ttc" id="astructprint_html_a1aa33d705b46889756d3607337a92c23"><div class="ttname"><a href="structprint.html#a1aa33d705b46889756d3607337a92c23">print::every</a></div><div class="ttdeci">size_t every</div><div class="ttdef"><b>Definition:</b> Coroutines.h:65</div></div>
+<div class="ttc" id="astructprint_html_a7e141bb2af61d6edf8895cf964ce130d"><div class="ttname"><a href="structprint.html#a7e141bb2af61d6edf8895cf964ce130d">print::print</a></div><div class="ttdeci">print(size_t e, const std::string p=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> Coroutines.h:69</div></div>
+<div class="ttc" id="astructprint_html_a3a15ca6d611fe6ae655fa6e437a9506f"><div class="ttname"><a href="structprint.html#a3a15ca6d611fe6ae655fa6e437a9506f">print::cnt</a></div><div class="ttdeci">size_t cnt</div><div class="ttdef"><b>Definition:</b> Coroutines.h:66</div></div>
+<div class="ttc" id="astructthin_html_a298a530eb9c74c6d3247f647a7818f5f"><div class="ttname"><a href="structthin.html#a298a530eb9c74c6d3247f647a7818f5f">thin::m</a></div><div class="ttdeci">size_t m</div><div class="ttdef"><b>Definition:</b> Coroutines.h:39</div></div>
+<div class="ttc" id="astructthin_html_a7fed8205ed2467963aa8e3a2461b3b03"><div class="ttname"><a href="structthin.html#a7fed8205ed2467963aa8e3a2461b3b03">thin::operator++</a></div><div class="ttdeci">bool operator++()</div><div class="ttdef"><b>Definition:</b> Coroutines.h:46</div></div>
+<div class="ttc" id="astructthin_html_a489e86e8bde6076f6406dd99e5045259"><div class="ttname"><a href="structthin.html#a489e86e8bde6076f6406dd99e5045259">thin::cnt</a></div><div class="ttdeci">size_t cnt</div><div class="ttdef"><b>Definition:</b> Coroutines.h:40</div></div>
+<div class="ttc" id="aclass_top_n_html"><div class="ttname"><a href="class_top_n.html">TopN</a></div><div class="ttdef"><b>Definition:</b> TopN.h:26</div></div>
+<div class="ttc" id="a_coroutines_8h_html_a6a2a436eab30d3f9fcb6345baea21fa5"><div class="ttname"><a href="_coroutines_8h.html#a6a2a436eab30d3f9fcb6345baea21fa5">operator|</a></div><div class="ttdeci">generator&lt; T &amp; &gt; operator|(generator&lt; T &amp; &gt; g, thin t)</div><div class="ttdef"><b>Definition:</b> Coroutines.h:58</div></div>
+<div class="ttc" id="astructthin_html_ad51ea04e87c51e812fd6d90028ed3cb7"><div class="ttname"><a href="structthin.html#ad51ea04e87c51e812fd6d90028ed3cb7">thin::thin</a></div><div class="ttdeci">thin(size_t _m)</div><div class="ttdef"><b>Definition:</b> Coroutines.h:42</div></div>
 <div class="ttc" id="a_top_n_8h_html"><div class="ttname"><a href="_top_n_8h.html">TopN.h</a></div></div>
-<div class="ttc" id="astructprint_html"><div class="ttname"><a href="structprint.html">print</a></div><div class="ttdef"><b>Definition:</b> Coroutines.h:38</div></div>
-<div class="ttc" id="astructprint_html_a5eaf6db098aff32860511dd1d8fb4e2d"><div class="ttname"><a href="structprint.html#a5eaf6db098aff32860511dd1d8fb4e2d">print::operator++</a></div><div class="ttdeci">bool operator++()</div><div class="ttdef"><b>Definition:</b> Coroutines.h:46</div></div>
+<div class="ttc" id="astructprint_html"><div class="ttname"><a href="structprint.html">print</a></div><div class="ttdef"><b>Definition:</b> Coroutines.h:64</div></div>
+<div class="ttc" id="astructprint_html_a5eaf6db098aff32860511dd1d8fb4e2d"><div class="ttname"><a href="structprint.html#a5eaf6db098aff32860511dd1d8fb4e2d">print::operator++</a></div><div class="ttdeci">bool operator++()</div><div class="ttdef"><b>Definition:</b> Coroutines.h:72</div></div>
 <div class="ttc" id="a_coroutines_8h_html_ab06a612c41229b9582ada8655001e2b0"><div class="ttname"><a href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a></div><div class="ttdeci">cppcoro::generator&lt; T &gt; generator</div><div class="ttdef"><b>Definition:</b> Coroutines.h:10</div></div>
+<div class="ttc" id="aclassevery_html"><div class="ttname"><a href="classevery.html">every</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

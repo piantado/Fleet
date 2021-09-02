@@ -1,7 +1,6 @@
 \hypertarget{dir_b1574807514940316c988b1142d2b137}{}\doxysection{src/\+Inference Directory Reference}
 \label{dir_b1574807514940316c988b1142d2b137}\index{src/Inference Directory Reference@{src/Inference Directory Reference}}
-Directory dependency graph for Inference\+:
-\nopagebreak
+Directory dependency graph for Inference\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -33,4 +32,4 @@ file \mbox{\hyperlink{_m_p_i_inference_interface_8h}{M\+P\+I\+Inference\+Interfa
 file \mbox{\hyperlink{_prior_inference_8h}{Prior\+Inference.\+h}}
 \begin{DoxyCompactList}\small\item\em Inference by sampling from the prior -- doesn\textquotesingle{}t tend to work well, but might be a useful baseline. \end{DoxyCompactList}\item 
 file \mbox{\hyperlink{_threaded_inference_interface_8h}{Threaded\+Inference\+Interface.\+h}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em This manages multiple threads for running inference. This requires a subclass to define run\+\_\+thread, which is what each individual thread should do. All threads can then be called with run(\+Control, Args... args), which copies the control for each thread (setting threads=1) and then passes the args arguments onward. \end{DoxyCompactList}\end{DoxyCompactItemize}

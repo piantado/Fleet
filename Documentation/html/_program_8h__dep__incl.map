@@ -1,9 +1,9 @@
 <map id="src/VirtualMachine/Program/Program.h" name="src/VirtualMachine/Program/Program.h">
-<area shape="rect" id="node1" title=" " alt="" coords="242,5,381,47"/>
-<area shape="rect" id="node2" href="$_node_8h.html" title=" " alt="" coords="25,102,169,129"/>
-<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="243,273,463,300"/>
-<area shape="rect" id="node6" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="234,95,389,136"/>
-<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="5,273,135,300"/>
-<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="73,191,240,218"/>
-<area shape="rect" id="node7" href="$_callable_8h.html" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="265,184,441,225"/>
+<area shape="rect" id="node1" title=" " alt="" coords="257,5,409,47"/>
+<area shape="rect" id="node2" href="$_node_8h.html" title=" " alt="" coords="22,102,179,129"/>
+<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="260,273,496,300"/>
+<area shape="rect" id="node6" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="247,95,418,136"/>
+<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="5,273,145,300"/>
+<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="73,191,259,218"/>
+<area shape="rect" id="node7" href="$_callable_8h.html" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="283,184,473,225"/>
 </map>

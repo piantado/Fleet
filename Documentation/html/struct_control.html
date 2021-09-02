@@ -79,6 +79,8 @@ $(function() {
 Public Member Functions</h2></td></tr>
 <tr class="memitem:abcf6ded70a7e9c04ec2337387471af6b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_control.html#abcf6ded70a7e9c04ec2337387471af6b">Control</a> (unsigned long st=<a class="el" href="namespace_fleet_args.html#a0cabfaa21ab6740518265b14df5948c7">FleetArgs::steps</a>, unsigned long t=<a class="el" href="namespace_fleet_args.html#a094bc8aa2836c57906405cde03d24fc6">FleetArgs::runtime</a>, size_t thr=<a class="el" href="namespace_fleet_args.html#a90ee834a1804002baec2366daeda54a5">FleetArgs::nthreads</a>, unsigned long re=<a class="el" href="namespace_fleet_args.html#af0c62e1528330a5fb0ba9f01082aa823">FleetArgs::restart</a>)</td></tr>
 <tr class="separator:abcf6ded70a7e9c04ec2337387471af6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1520bca9129f40109cb5c0ef9835c52"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_control.html#ae1520bca9129f40109cb5c0ef9835c52">Control</a> (const <a class="el" href="struct_control.html">Control</a> &amp;c)</td></tr>
+<tr class="separator:ae1520bca9129f40109cb5c0ef9835c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a933994a3524f2f6d7ef0a17086e7cf66"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_control.html#a933994a3524f2f6d7ef0a17086e7cf66">start</a> ()</td></tr>
 <tr class="separator:a933994a3524f2f6d7ef0a17086e7cf66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9217475a8ad619e7360524ae49c559a7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_control.html#a9217475a8ad619e7360524ae49c559a7">running</a> ()</td></tr>
@@ -96,8 +98,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:acd75b8aa48fdb33f063bae7469a9721b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3c2691a66705880844f467cf5da8aab"><td class="memItemLeft" align="right" valign="top">timept&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_control.html#ad3c2691a66705880844f467cf5da8aab">start_time</a></td></tr>
 <tr class="separator:ad3c2691a66705880844f467cf5da8aab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a1867401c3e89aecaf14949521ed247"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_control.html#a4a1867401c3e89aecaf14949521ed247">done_steps</a></td></tr>
-<tr class="separator:a4a1867401c3e89aecaf14949521ed247"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a736f7d80c0981d546c2977ce01a5f16e"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; unsigned long &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_control.html#a736f7d80c0981d546c2977ce01a5f16e">done_steps</a></td></tr>
+<tr class="separator:a736f7d80c0981d546c2977ce01a5f16e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a1856c582efd2a6a1b8f40351038d0c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_control.html#a3a1856c582efd2a6a1b8f40351038d0c">break_CTRLC</a></td></tr>
 <tr class="separator:a3a1856c582efd2a6a1b8f40351038d0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -106,7 +108,7 @@ Public Attributes</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>17/08/20 </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abcf6ded70a7e9c04ec2337387471af6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abcf6ded70a7e9c04ec2337387471af6b">&#9670;&nbsp;</a></span>Control()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abcf6ded70a7e9c04ec2337387471af6b">&#9670;&nbsp;</a></span>Control() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -142,6 +144,32 @@ Public Attributes</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae1520bca9129f40109cb5c0ef9835c52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1520bca9129f40109cb5c0ef9835c52">&#9670;&nbsp;</a></span>Control() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Control::Control </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_control.html">Control</a> &amp;&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -221,14 +249,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a4a1867401c3e89aecaf14949521ed247"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a1867401c3e89aecaf14949521ed247">&#9670;&nbsp;</a></span>done_steps</h2>
+<a id="a736f7d80c0981d546c2977ce01a5f16e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a736f7d80c0981d546c2977ce01a5f16e">&#9670;&nbsp;</a></span>done_steps</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned long Control::done_steps</td>
+          <td class="memname">std::atomic&lt;unsigned long&gt; Control::done_steps</td>
         </tr>
       </table>
 </div><div class="memdoc">

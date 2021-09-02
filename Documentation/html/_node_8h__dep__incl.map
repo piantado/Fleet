@@ -1,6 +1,6 @@
 <map id="src/Grammar/Node.h" name="src/Grammar/Node.h">
-<area shape="rect" id="node1" title=" " alt="" coords="59,5,203,32"/>
-<area shape="rect" id="node2" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="5,155,135,181"/>
-<area shape="rect" id="node3" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="48,80,215,107"/>
-<area shape="rect" id="node4" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="239,80,459,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="62,5,219,32"/>
+<area shape="rect" id="node2" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="5,155,145,181"/>
+<area shape="rect" id="node3" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="48,80,233,107"/>
+<area shape="rect" id="node4" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="257,80,493,107"/>
 </map>

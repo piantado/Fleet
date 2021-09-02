@@ -78,60 +78,63 @@ $(function() {
 
 <p>This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temperatures in order to balances swaps up and down the ladder (which makes it efficient). The adaptation scheme follows <a href="https://arxiv.org/abs/1501.05823">https://arxiv.org/abs/1501.05823</a> NOTE This starts two extra threads, one for adapting and one for swapping, but they mostly wait around.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="_errors_8h_source.html">Errors.h</a>&quot;</code><br />
-<code>#include &lt;signal.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;signal.h&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
+<code>#include &quot;<a class="el" href="_errors_8h_source.html">Errors.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_chain_pool_8h_source.html">ChainPool.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_timing_8h_source.html">Timing.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ParallelTempering.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_parallel_tempering_8h__incl.png" border="0" usemap="#src_2_inference_2_m_c_m_c_2_parallel_tempering_8h" alt=""/></div>
 <map name="src_2_inference_2_m_c_m_c_2_parallel_tempering_8h" id="src_2_inference_2_m_c_m_c_2_parallel_tempering_8h">
-<area shape="rect" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="10,5,154,47"/>
-<area shape="rect" href="_errors_8h.html" title=" " alt="" coords="61,543,129,569"/>
-<area shape="rect" title=" " alt="" coords="201,319,267,345"/>
-<area shape="rect" title=" " alt="" coords="237,543,316,569"/>
-<area shape="rect" href="_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="690,95,783,121"/>
-<area shape="rect" title=" " alt="" coords="5,617,84,644"/>
-<area shape="rect" title=" " alt="" coords="108,617,187,644"/>
-<area shape="rect" title=" " alt="" coords="1388,617,1443,644"/>
-<area shape="rect" title=" " alt="" coords="1605,543,1663,569"/>
-<area shape="rect" title=" " alt="" coords="154,543,213,569"/>
-<area shape="rect" href="_m_c_m_c_chain_8h.html" title=" " alt="" coords="1159,169,1269,196"/>
-<area shape="rect" href="_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="1723,393,1830,420"/>
-<area shape="rect" href="_timing_8h.html" title=" " alt="" coords="342,319,414,345"/>
-<area shape="rect" href="_threaded_inference_interface_8h.html" title=" " alt="" coords="1522,169,1714,196"/>
-<area shape="rect" href="_coroutines_8h.html" title=" " alt="" coords="1447,244,1543,271"/>
-<area shape="rect" href="_finite_history_8h.html" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="1573,244,1679,271"/>
-<area shape="rect" href="_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="971,244,1046,271"/>
-<area shape="rect" title=" " alt="" coords="1563,319,1638,345"/>
-<area shape="rect" title=" " alt="" coords="1440,319,1540,345"/>
-<area shape="rect" href="_top_n_8h.html" title=" " alt="" coords="1351,319,1415,345"/>
-<area shape="rect" title=" " alt="" coords="1230,468,1270,495"/>
-<area shape="rect" title=" " alt="" coords="1159,468,1205,495"/>
-<area shape="rect" href="_fleet_args_8h.html" title=" " alt="" coords="1372,393,1461,420"/>
-<area shape="rect" href="_serializable_8h.html" title=" " alt="" coords="1486,393,1649,420"/>
-<area shape="rect" title=" " alt="" coords="1694,468,1753,495"/>
-<area shape="rect" title=" " alt="" coords="1865,468,1992,495"/>
-<area shape="rect" title=" " alt="" coords="1295,468,1352,495"/>
-<area shape="rect" href="_i_o_8h.html" title=" " alt="" coords="961,319,1008,345"/>
-<area shape="rect" title=" " alt="" coords="429,543,490,569"/>
-<area shape="rect" title=" " alt="" coords="382,617,454,644"/>
-<area shape="rect" title=" " alt="" coords="787,393,854,420"/>
-<area shape="rect" title=" " alt="" coords="878,393,1043,420"/>
-<area shape="rect" href="_strings_8h.html" title=" " alt="" coords="689,393,763,420"/>
-<area shape="rect" title=" " alt="" coords="707,468,777,495"/>
-<area shape="rect" title=" " alt="" coords="907,468,958,495"/>
-<area shape="rect" title=" " alt="" coords="1073,468,1134,495"/>
-<area shape="rect" title=" " alt="" coords="983,468,1048,495"/>
-<area shape="rect" href="_miscellaneous_8h.html" title=" " alt="" coords="516,468,632,495"/>
-<area shape="rect" href="_numerics_8h.html" title=" " alt="" coords="651,543,740,569"/>
-<area shape="rect" href="_random_8h.html" title="This is a thread_local rng that is seeded on construction so that each thread can get a different see..." alt="" coords="801,468,883,495"/>
-<area shape="rect" href="_vector3_d_8h.html" title=" " alt="" coords="403,468,491,495"/>
-<area shape="rect" title=" " alt="" coords="539,543,609,569"/>
-<area shape="rect" title=" " alt="" coords="796,617,861,644"/>
-<area shape="rect" title=" " alt="" coords="666,617,735,644"/>
-<area shape="rect" title=" " alt="" coords="579,617,641,644"/>
+<area shape="rect" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="113,5,267,47"/>
+<area shape="rect" title=" " alt="" coords="268,319,341,345"/>
+<area shape="rect" title=" " alt="" coords="1833,617,1920,644"/>
+<area shape="rect" href="_errors_8h.html" title=" " alt="" coords="67,617,139,644"/>
+<area shape="rect" href="_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="367,95,466,121"/>
+<area shape="rect" href="_timing_8h.html" title=" " alt="" coords="113,319,192,345"/>
+<area shape="rect" title=" " alt="" coords="116,692,203,719"/>
+<area shape="rect" title=" " alt="" coords="5,692,92,719"/>
+<area shape="rect" title=" " alt="" coords="314,692,373,719"/>
+<area shape="rect" title=" " alt="" coords="238,617,302,644"/>
+<area shape="rect" title=" " alt="" coords="1148,617,1211,644"/>
+<area shape="rect" href="_m_c_m_c_chain_8h.html" title=" " alt="" coords="1095,169,1208,196"/>
+<area shape="rect" href="_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="1088,393,1204,420"/>
+<area shape="rect" href="_threaded_inference_interface_8h.html" title="This manages multiple threads for running inference. This requires a subclass to define run_thread,..." alt="" coords="455,169,669,196"/>
+<area shape="rect" href="_coroutines_8h.html" title="This little object will return true once every n times it is converted to a bool." alt="" coords="1045,244,1149,271"/>
+<area shape="rect" href="_finite_history_8h.html" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="1578,319,1693,345"/>
+<area shape="rect" href="_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="521,244,603,271"/>
+<area shape="rect" title=" " alt="" coords="1001,319,1083,345"/>
+<area shape="rect" title=" " alt="" coords="1108,319,1221,345"/>
+<area shape="rect" href="_top_n_8h.html" title=" " alt="" coords="1369,319,1435,345"/>
+<area shape="rect" title=" " alt="" coords="1457,543,1499,569"/>
+<area shape="rect" title=" " alt="" coords="1574,543,1625,569"/>
+<area shape="rect" href="_i_o_8h.html" title=" " alt="" coords="747,393,795,420"/>
+<area shape="rect" href="_numerics_8h.html" title=" " alt="" coords="1286,617,1382,644"/>
+<area shape="rect" href="_fleet_args_8h.html" title=" " alt="" coords="1229,393,1325,420"/>
+<area shape="rect" href="_serializable_8h.html" title=" " alt="" coords="1349,393,1527,420"/>
+<area shape="rect" title=" " alt="" coords="1194,468,1258,495"/>
+<area shape="rect" title=" " alt="" coords="1386,692,1466,719"/>
+<area shape="rect" title=" " alt="" coords="843,468,916,495"/>
+<area shape="rect" title=" " alt="" coords="941,468,1119,495"/>
+<area shape="rect" href="_strings_8h.html" title=" " alt="" coords="740,468,819,495"/>
+<area shape="rect" title=" " alt="" coords="969,543,1043,569"/>
+<area shape="rect" title=" " alt="" coords="1319,543,1381,569"/>
+<area shape="rect" title=" " alt="" coords="1067,543,1123,569"/>
+<area shape="rect" title=" " alt="" coords="467,543,534,569"/>
+<area shape="rect" title=" " alt="" coords="761,543,832,569"/>
+<area shape="rect" href="_miscellaneous_8h.html" title=" " alt="" coords="559,543,685,569"/>
+<area shape="rect" href="_random_8h.html" title="This is a thread_local rng that is seeded on construction so that each thread can get a different see..." alt="" coords="857,543,945,569"/>
+<area shape="rect" href="_vector3_d_8h.html" title=" " alt="" coords="1148,543,1243,569"/>
+<area shape="rect" title=" " alt="" coords="583,617,661,644"/>
+<area shape="rect" title=" " alt="" coords="326,617,393,644"/>
+<area shape="rect" title=" " alt="" coords="985,692,1057,719"/>
+<area shape="rect" title=" " alt="" coords="1194,692,1269,719"/>
+<area shape="rect" title=" " alt="" coords="1293,692,1361,719"/>
+<area shape="rect" title=" " alt="" coords="1283,468,1425,495"/>
+<area shape="rect" title=" " alt="" coords="1755,393,1839,420"/>
+<area shape="rect" href="_concurrent_queue_8h.html" title="A concurrent queue class that allows multiple threads to push and consume. Note that this has a fixed..." alt="" coords="729,319,875,345"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -139,8 +142,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_parallel_tempering_8h__dep__incl.png" border="0" usemap="#src_2_inference_2_m_c_m_c_2_parallel_tempering_8hdep" alt=""/></div>
 <map name="src_2_inference_2_m_c_m_c_2_parallel_tempering_8hdep" id="src_2_inference_2_m_c_m_c_2_parallel_tempering_8hdep">
-<area shape="rect" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="16,5,160,47"/>
-<area shape="rect" href="_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="5,95,171,121"/>
+<area shape="rect" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="219,5,374,47"/>
+<area shape="rect" href="_basics_2_main_8cpp.html" title=" " alt="" coords="5,102,183,129"/>
+<area shape="rect" href="_detailed_balance_2_main_8cpp.html" title=" " alt="" coords="207,95,386,136"/>
+<area shape="rect" href="_insert_delete_probability_2_main_8cpp.html" title=" " alt="" coords="411,95,633,136"/>
 </map>
 </div>
 </div>

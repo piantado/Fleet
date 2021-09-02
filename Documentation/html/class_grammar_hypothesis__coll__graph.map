@@ -1,10 +1,10 @@
 <map id="GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;" name="GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="989,91,1140,147"/>
-<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="475,5,719,61"/>
-<area shape="rect" id="node3" href="$class_bayesable.html" title=" " alt="" coords="5,79,151,105"/>
-<area shape="rect" id="node6" href="$class_m_c_m_cable.html" title=" " alt="" coords="227,71,423,113"/>
-<area shape="rect" id="node8" href="$class_m_c_m_cable.html" title=" " alt="" coords="200,137,451,178"/>
-<area shape="rect" id="node4" href="$class_serializable.html" title=" " alt="" coords="754,188,899,215"/>
-<area shape="rect" id="node5" href="$class_t_normal_variable.html" title=" " alt="" coords="755,71,898,113"/>
-<area shape="rect" id="node7" href="$class_vector_normal_hypothesis.html" title=" " alt="" coords="743,137,911,164"/>
+<area shape="rect" id="node1" title=" " alt="" coords="1075,91,1243,147"/>
+<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="515,5,783,61"/>
+<area shape="rect" id="node3" href="$class_bayesable.html" title=" " alt="" coords="5,79,167,105"/>
+<area shape="rect" id="node6" href="$class_m_c_m_cable.html" title=" " alt="" coords="245,71,462,113"/>
+<area shape="rect" id="node8" href="$class_m_c_m_cable.html" title=" " alt="" coords="216,137,491,178"/>
+<area shape="rect" id="node4" href="$class_serializable.html" title=" " alt="" coords="817,188,981,215"/>
+<area shape="rect" id="node5" href="$class_t_normal_variable.html" title=" " alt="" coords="817,71,981,113"/>
+<area shape="rect" id="node7" href="$class_vector_normal_hypothesis.html" title=" " alt="" coords="807,137,992,164"/>
 </map>

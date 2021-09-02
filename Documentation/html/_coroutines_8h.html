@@ -76,6 +76,9 @@ $(function() {
 <div class="title">Coroutines.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This little object will return true once every n times it is converted to a bool.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;string&gt;</code><br />
 <code>#include &lt;coroutine&gt;</code><br />
 <code>#include &quot;generator.hpp&quot;</code><br />
@@ -85,19 +88,43 @@ Include dependency graph for Coroutines.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_coroutines_8h__incl.png" border="0" usemap="#src_2_threads_2_coroutines_8h" alt=""/></div>
 <map name="src_2_threads_2_coroutines_8h" id="src_2_threads_2_coroutines_8h">
-<area shape="rect" title=" " alt="" coords="35,5,204,32"/>
-<area shape="rect" title=" " alt="" coords="51,229,106,256"/>
-<area shape="rect" title=" " alt="" coords="26,80,101,107"/>
-<area shape="rect" title=" " alt="" coords="126,80,226,107"/>
-<area shape="rect" href="_top_n_8h.html" title=" " alt="" coords="250,80,314,107"/>
-<area shape="rect" title=" " alt="" coords="64,155,104,181"/>
-<area shape="rect" title=" " alt="" coords="128,155,175,181"/>
-<area shape="rect" href="_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="313,155,420,181"/>
-<area shape="rect" href="_fleet_args_8h.html" title=" " alt="" coords="199,155,288,181"/>
-<area shape="rect" href="_serializable_8h.html" title=" " alt="" coords="444,155,606,181"/>
-<area shape="rect" title=" " alt="" coords="220,229,278,256"/>
-<area shape="rect" title=" " alt="" coords="303,229,430,256"/>
-<area shape="rect" title=" " alt="" coords="454,229,511,256"/>
+<area shape="rect" title="This little object will return true once every n times it is converted to a bool." alt="" coords="1577,5,1759,32"/>
+<area shape="rect" title=" " alt="" coords="1327,453,1385,480"/>
+<area shape="rect" title=" " alt="" coords="1667,80,1749,107"/>
+<area shape="rect" title=" " alt="" coords="1774,80,1887,107"/>
+<area shape="rect" href="_top_n_8h.html" title=" " alt="" coords="1213,80,1280,107"/>
+<area shape="rect" title=" " alt="" coords="1037,304,1080,331"/>
+<area shape="rect" title=" " alt="" coords="25,304,76,331"/>
+<area shape="rect" href="_i_o_8h.html" title=" " alt="" coords="1001,155,1049,181"/>
+<area shape="rect" href="_numerics_8h.html" title=" " alt="" coords="119,379,215,405"/>
+<area shape="rect" href="_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="1102,155,1218,181"/>
+<area shape="rect" href="_fleet_args_8h.html" title=" " alt="" coords="1496,155,1592,181"/>
+<area shape="rect" href="_serializable_8h.html" title=" " alt="" coords="1243,155,1421,181"/>
+<area shape="rect" title=" " alt="" coords="904,379,968,405"/>
+<area shape="rect" title=" " alt="" coords="1139,229,1203,256"/>
+<area shape="rect" title=" " alt="" coords="1003,453,1083,480"/>
+<area shape="rect" title=" " alt="" coords="686,229,759,256"/>
+<area shape="rect" title=" " alt="" coords="784,229,963,256"/>
+<area shape="rect" href="_strings_8h.html" title=" " alt="" coords="553,229,631,256"/>
+<area shape="rect" title=" " alt="" coords="629,304,704,331"/>
+<area shape="rect" title=" " alt="" coords="899,304,962,331"/>
+<area shape="rect" title=" " alt="" coords="728,304,784,331"/>
+<area shape="rect" title=" " alt="" coords="808,304,875,331"/>
+<area shape="rect" title=" " alt="" coords="101,304,171,331"/>
+<area shape="rect" href="_miscellaneous_8h.html" title=" " alt="" coords="247,304,374,331"/>
+<area shape="rect" href="_random_8h.html" title="This is a thread_local rng that is seeded on construction so that each thread can get a different see..." alt="" coords="517,304,605,331"/>
+<area shape="rect" href="_vector3_d_8h.html" title=" " alt="" coords="398,304,493,331"/>
+<area shape="rect" title=" " alt="" coords="239,379,316,405"/>
+<area shape="rect" title=" " alt="" coords="340,379,407,405"/>
+<area shape="rect" title=" " alt="" coords="464,453,536,480"/>
+<area shape="rect" title=" " alt="" coords="177,453,252,480"/>
+<area shape="rect" title=" " alt="" coords="85,453,153,480"/>
+<area shape="rect" title=" " alt="" coords="518,379,605,405"/>
+<area shape="rect" href="_errors_8h.html" title=" " alt="" coords="743,379,815,405"/>
+<area shape="rect" title=" " alt="" coords="655,453,742,480"/>
+<area shape="rect" title=" " alt="" coords="766,453,853,480"/>
+<area shape="rect" title=" " alt="" coords="431,379,494,405"/>
+<area shape="rect" title=" " alt="" coords="1278,229,1421,256"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -105,23 +132,25 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_coroutines_8h__dep__incl.png" border="0" usemap="#src_2_threads_2_coroutines_8hdep" alt=""/></div>
 <map name="src_2_threads_2_coroutines_8hdep" id="src_2_threads_2_coroutines_8hdep">
-<area shape="rect" title=" " alt="" coords="893,5,1063,32"/>
-<area shape="rect" href="_threaded_inference_interface_8h.html" title=" " alt="" coords="625,80,835,121"/>
-<area shape="rect" href="_inference_2_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="643,169,817,211"/>
-<area shape="rect" href="_hill_climbing_8h.html" title="This cute kind of inference keeps a body of N top hypotheses, and successively proposes to them using..." alt="" coords="1203,87,1385,114"/>
-<area shape="rect" href="_m_c_m_c_chain_8h.html" title=" " alt="" coords="1010,80,1154,121"/>
-<area shape="rect" href="_beam_search_8h.html" title="This is an implementation of beam search that maintains a priority queue of partial states and attemp..." alt="" coords="431,177,619,203"/>
-<area shape="rect" href="_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="1010,169,1154,211"/>
-<area shape="rect" href="_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="842,169,986,211"/>
-<area shape="rect" href="_m_c_t_s_base_8h.html" title=" " alt="" coords="172,259,312,300"/>
-<area shape="rect" href="_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="211,177,406,203"/>
-<area shape="rect" href="_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="999,355,1165,382"/>
-<area shape="rect" href="_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="1010,259,1154,300"/>
-<area shape="rect" href="_full_m_c_t_s_node_8h.html" title=" " alt="" coords="172,348,312,389"/>
-<area shape="rect" href="_minimal_m_c_t_s_node_8h.html" title=" " alt="" coords="336,348,487,389"/>
-<area shape="rect" href="_partial_m_c_t_s_node_8h.html" title=" " alt="" coords="5,348,148,389"/>
-<area shape="rect" href="_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="1257,266,1507,293"/>
-<area shape="rect" href="_batch_8h.html" title=" " alt="" coords="1229,177,1375,203"/>
+<area shape="rect" title="This little object will return true once every n times it is converted to a bool." alt="" coords="1097,5,1279,32"/>
+<area shape="rect" href="_threaded_inference_interface_8h.html" title="This manages multiple threads for running inference. This requires a subclass to define run_thread,..." alt="" coords="669,80,901,121"/>
+<area shape="rect" href="_inference_2_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="689,169,882,211"/>
+<area shape="rect" href="_hill_climbing_8h.html" title="This cute kind of inference keeps a body of N top hypotheses, and successively proposes to them using..." alt="" coords="1396,87,1599,114"/>
+<area shape="rect" href="_m_c_m_c_chain_8h.html" title=" " alt="" coords="1196,80,1348,121"/>
+<area shape="rect" href="_beam_search_8h.html" title="This is an implementation of beam search that maintains a priority queue of partial states and attemp..." alt="" coords="461,177,665,203"/>
+<area shape="rect" href="_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="1083,169,1235,211"/>
+<area shape="rect" href="_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="907,169,1059,211"/>
+<area shape="rect" href="_m_c_t_s_base_8h.html" title=" " alt="" coords="184,259,331,300"/>
+<area shape="rect" href="_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="223,177,436,203"/>
+<area shape="rect" href="_basics_2_main_8cpp.html" title=" " alt="" coords="1005,355,1182,382"/>
+<area shape="rect" href="_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="1131,259,1285,300"/>
+<area shape="rect" href="_detailed_balance_2_main_8cpp.html" title=" " alt="" coords="1220,348,1399,389"/>
+<area shape="rect" href="_insert_delete_probability_2_main_8cpp.html" title=" " alt="" coords="1493,348,1715,389"/>
+<area shape="rect" href="_full_m_c_t_s_node_8h.html" title=" " alt="" coords="5,348,152,389"/>
+<area shape="rect" href="_minimal_m_c_t_s_node_8h.html" title=" " alt="" coords="176,348,339,389"/>
+<area shape="rect" href="_partial_m_c_t_s_node_8h.html" title=" " alt="" coords="363,348,514,389"/>
+<area shape="rect" href="_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="1361,266,1634,293"/>
+<area shape="rect" href="_batch_8h.html" title=" " alt="" coords="1417,177,1575,203"/>
 </map>
 </div>
 </div>
@@ -152,7 +181,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a410582fbcd7bdfe3ac352e449af96d3a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a>&lt; T &amp; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_coroutines_8h.html#a410582fbcd7bdfe3ac352e449af96d3a">operator|</a> (<a class="el" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a>&lt; T &amp; &gt; g, <a class="el" href="class_top_n.html">TopN</a>&lt; T &gt; &amp;tn)</td></tr>
 <tr class="separator:a410582fbcd7bdfe3ac352e449af96d3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This little object will return true once every n times it is converted to a bool. </p>
+</div><h2 class="groupheader">Typedef Documentation</h2>
 <a id="ab06a612c41229b9582ada8655001e2b0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab06a612c41229b9582ada8655001e2b0">&#9670;&nbsp;</a></span>generator</h2>
 

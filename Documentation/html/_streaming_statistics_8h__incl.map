@@ -1,5 +1,5 @@
 <map id="src/Statistics/StreamingStatistics.h" name="src/Statistics/StreamingStatistics.h">
-<area shape="rect" id="node1" title="A class to store a bunch of statistics about incoming data points, including min, max,..." alt="" coords="8,5,171,47"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,95,64,121"/>
-<area shape="rect" id="node3" href="$_median_f_a_m_e_8h.html" title="A streaming median class implementing the FAME algorithm Here, we initialize both the step size and M..." alt="" coords="88,95,200,121"/>
+<area shape="rect" id="node1" title="A class to store a bunch of statistics about incoming data points, including min, max,..." alt="" coords="7,5,183,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,95,69,121"/>
+<area shape="rect" id="node3" href="$_median_f_a_m_e_8h.html" title="A streaming median class implementing the FAME algorithm Here, we initialize both the step size and M..." alt="" coords="94,95,213,121"/>
 </map>

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['mem_1503',['Mem',['../_ops_8h.html#a588e6b56097e045c733b60d25c4d45abadba5553473d129a7985fb532dc249ff4',1,'Ops.h']]],
-  ['memrecurse_1504',['MemRecurse',['../_ops_8h.html#a588e6b56097e045c733b60d25c4d45abac06233e1bc52cb704757c997c86d7c68',1,'Ops.h']]]
+  ['jmp_1544',['Jmp',['../_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba6cff4b2c006c869ef3c73f7fbd6e2711',1,'Ops.h']]]
 ];

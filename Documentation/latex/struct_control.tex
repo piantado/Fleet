@@ -9,6 +9,8 @@
 \item 
 \mbox{\hyperlink{struct_control_abcf6ded70a7e9c04ec2337387471af6b}{Control}} (unsigned long st=\mbox{\hyperlink{namespace_fleet_args_a0cabfaa21ab6740518265b14df5948c7}{Fleet\+Args\+::steps}}, unsigned long t=\mbox{\hyperlink{namespace_fleet_args_a094bc8aa2836c57906405cde03d24fc6}{Fleet\+Args\+::runtime}}, size\+\_\+t thr=\mbox{\hyperlink{namespace_fleet_args_a90ee834a1804002baec2366daeda54a5}{Fleet\+Args\+::nthreads}}, unsigned long re=\mbox{\hyperlink{namespace_fleet_args_af0c62e1528330a5fb0ba9f01082aa823}{Fleet\+Args\+::restart}})
 \item 
+\mbox{\hyperlink{struct_control_ae1520bca9129f40109cb5c0ef9835c52}{Control}} (const \mbox{\hyperlink{struct_control}{Control}} \&c)
+\item 
 void \mbox{\hyperlink{struct_control_a933994a3524f2f6d7ef0a17086e7cf66}{start}} ()
 \item 
 bool \mbox{\hyperlink{struct_control_a9217475a8ad619e7360524ae49c559a7}{running}} ()
@@ -26,7 +28,7 @@ unsigned long \mbox{\hyperlink{struct_control_acd75b8aa48fdb33f063bae7469a9721b}
 \item 
 timept \mbox{\hyperlink{struct_control_ad3c2691a66705880844f467cf5da8aab}{start\+\_\+time}}
 \item 
-unsigned long \mbox{\hyperlink{struct_control_a4a1867401c3e89aecaf14949521ed247}{done\+\_\+steps}}
+std\+::atomic$<$ unsigned long $>$ \mbox{\hyperlink{struct_control_a736f7d80c0981d546c2977ce01a5f16e}{done\+\_\+steps}}
 \item 
 bool \mbox{\hyperlink{struct_control_a3a1856c582efd2a6a1b8f40351038d0c}{break\+\_\+\+C\+T\+R\+LC}}
 \end{DoxyCompactItemize}
@@ -45,8 +47,14 @@ Steven Piantadosi
 \mbox{\Hypertarget{struct_control_abcf6ded70a7e9c04ec2337387471af6b}\label{struct_control_abcf6ded70a7e9c04ec2337387471af6b}} 
 \index{Control@{Control}!Control@{Control}}
 \index{Control@{Control}!Control@{Control}}
-\doxysubsubsection{\texorpdfstring{Control()}{Control()}}
+\doxysubsubsection{\texorpdfstring{Control()}{Control()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily Control\+::\+Control (\begin{DoxyParamCaption}\item[{unsigned long}]{st = {\ttfamily \mbox{\hyperlink{namespace_fleet_args_a0cabfaa21ab6740518265b14df5948c7}{Fleet\+Args\+::steps}}},  }\item[{unsigned long}]{t = {\ttfamily \mbox{\hyperlink{namespace_fleet_args_a094bc8aa2836c57906405cde03d24fc6}{Fleet\+Args\+::runtime}}},  }\item[{size\+\_\+t}]{thr = {\ttfamily \mbox{\hyperlink{namespace_fleet_args_a90ee834a1804002baec2366daeda54a5}{Fleet\+Args\+::nthreads}}},  }\item[{unsigned long}]{re = {\ttfamily \mbox{\hyperlink{namespace_fleet_args_af0c62e1528330a5fb0ba9f01082aa823}{Fleet\+Args\+::restart}}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{struct_control_ae1520bca9129f40109cb5c0ef9835c52}\label{struct_control_ae1520bca9129f40109cb5c0ef9835c52}} 
+\index{Control@{Control}!Control@{Control}}
+\index{Control@{Control}!Control@{Control}}
+\doxysubsubsection{\texorpdfstring{Control()}{Control()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Control\+::\+Control (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_control}{Control}} \&}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -75,11 +83,11 @@ Start running
 \doxysubsubsection{\texorpdfstring{break\_CTRLC}{break\_CTRLC}}
 {\footnotesize\ttfamily bool Control\+::break\+\_\+\+C\+T\+R\+LC}
 
-\mbox{\Hypertarget{struct_control_a4a1867401c3e89aecaf14949521ed247}\label{struct_control_a4a1867401c3e89aecaf14949521ed247}} 
+\mbox{\Hypertarget{struct_control_a736f7d80c0981d546c2977ce01a5f16e}\label{struct_control_a736f7d80c0981d546c2977ce01a5f16e}} 
 \index{Control@{Control}!done\_steps@{done\_steps}}
 \index{done\_steps@{done\_steps}!Control@{Control}}
 \doxysubsubsection{\texorpdfstring{done\_steps}{done\_steps}}
-{\footnotesize\ttfamily unsigned long Control\+::done\+\_\+steps}
+{\footnotesize\ttfamily std\+::atomic$<$unsigned long$>$ Control\+::done\+\_\+steps}
 
 \mbox{\Hypertarget{struct_control_a7c7748be70415c187e9cfd8124ab711b}\label{struct_control_a7c7748be70415c187e9cfd8124ab711b}} 
 \index{Control@{Control}!nthreads@{nthreads}}

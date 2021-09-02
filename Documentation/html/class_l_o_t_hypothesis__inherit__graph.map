@@ -1,9 +1,9 @@
 <map id="LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;" name="LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="461,123,636,193"/>
-<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="199,5,413,76"/>
-<area shape="rect" id="node3" href="$class_bayesable.html" title=" " alt="" coords="5,27,151,54"/>
-<area shape="rect" id="node4" href="$class_searchable.html" title=" " alt="" coords="233,100,379,141"/>
-<area shape="rect" id="node5" href="$class_callable.html" title=" " alt="" coords="215,166,397,222"/>
-<area shape="rect" id="node6" href="$class_program_loader.html" title=" " alt="" coords="23,181,133,207"/>
-<area shape="rect" id="node7" href="$class_serializable.html" title=" " alt="" coords="233,246,379,273"/>
+<area shape="rect" id="node1" title=" " alt="" coords="501,123,696,193"/>
+<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="215,5,453,76"/>
+<area shape="rect" id="node3" href="$class_bayesable.html" title=" " alt="" coords="5,27,167,54"/>
+<area shape="rect" id="node4" href="$class_searchable.html" title=" " alt="" coords="253,100,415,141"/>
+<area shape="rect" id="node5" href="$class_callable.html" title=" " alt="" coords="233,166,435,222"/>
+<area shape="rect" id="node6" href="$class_program_loader.html" title=" " alt="" coords="25,181,147,207"/>
+<area shape="rect" id="node7" href="$class_serializable.html" title=" " alt="" coords="252,246,416,273"/>
 </map>

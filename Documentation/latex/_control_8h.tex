@@ -9,16 +9,14 @@ This class has all the information for running M\+C\+MC or M\+C\+TS in a little 
 {\ttfamily \#include \char`\"{}Fleet\+Args.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Timing.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}I\+O.\+h\char`\"{}}\newline
-Include dependency graph for Control.\+h\+:
-\nopagebreak
+Include dependency graph for Control.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_control_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -30,6 +28,11 @@ This graph shows which files directly or indirectly include this file\+:
 \item 
 class \mbox{\hyperlink{struct_control}{Control}}
 \end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_control}{Control}} \mbox{\hyperlink{_control_8h_a15a4477cdf8e90d582305954b1e999e3}{Inner\+Control}} (unsigned long st=\mbox{\hyperlink{namespace_fleet_args_ac31359264259cd1e56ea0774121390af}{Fleet\+Args\+::inner\+\_\+steps}}, unsigned long t=\mbox{\hyperlink{namespace_fleet_args_ad045ec9e5edc46d6a7e9b7f24d8d94aa}{Fleet\+Args\+::inner\+\_\+runtime}}, size\+\_\+t thr=1, unsigned long re=\mbox{\hyperlink{namespace_fleet_args_a77f4ccf30059926615723536a851b8d5}{Fleet\+Args\+::inner\+\_\+restart}})
+\begin{DoxyCompactList}\small\item\em Make a \mbox{\hyperlink{struct_control}{Control}} object (N\+O\+TE it\textquotesingle{}s a \mbox{\hyperlink{struct_control}{Control}} object not an Inner\+Control one) that has default parameters of Fleet\+Args\+::inner\+\_\+$\ast$. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
@@ -40,6 +43,22 @@ volatile sig\+\_\+atomic\+\_\+t \mbox{\hyperlink{_control_8h_a6f7c4963bb8a360316
 \doxysubsection{Detailed Description}
 This class has all the information for running M\+C\+MC or M\+C\+TS in a little package. It defaultly constructs (via \mbox{\hyperlink{struct_control}{Control()}}) to read these from \mbox{\hyperlink{namespace_fleet_args}{Fleet\+Args}}, which are a bunch of variables set by Fleet\+::initialize from the command line. This makes it especially convenient to call with command line arguments, but others can be specified as well. 
 
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_control_8h_a15a4477cdf8e90d582305954b1e999e3}\label{_control_8h_a15a4477cdf8e90d582305954b1e999e3}} 
+\index{Control.h@{Control.h}!InnerControl@{InnerControl}}
+\index{InnerControl@{InnerControl}!Control.h@{Control.h}}
+\doxysubsubsection{\texorpdfstring{InnerControl()}{InnerControl()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_control}{Control}} Inner\+Control (\begin{DoxyParamCaption}\item[{unsigned long}]{st = {\ttfamily \mbox{\hyperlink{namespace_fleet_args_ac31359264259cd1e56ea0774121390af}{Fleet\+Args\+::inner\+\_\+steps}}},  }\item[{unsigned long}]{t = {\ttfamily \mbox{\hyperlink{namespace_fleet_args_ad045ec9e5edc46d6a7e9b7f24d8d94aa}{Fleet\+Args\+::inner\+\_\+runtime}}},  }\item[{size\+\_\+t}]{thr = {\ttfamily 1},  }\item[{unsigned long}]{re = {\ttfamily \mbox{\hyperlink{namespace_fleet_args_a77f4ccf30059926615723536a851b8d5}{Fleet\+Args\+::inner\+\_\+restart}}} }\end{DoxyParamCaption})}
+
+
+
+Make a \mbox{\hyperlink{struct_control}{Control}} object (N\+O\+TE it\textquotesingle{}s a \mbox{\hyperlink{struct_control}{Control}} object not an Inner\+Control one) that has default parameters of Fleet\+Args\+::inner\+\_\+$\ast$. 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
 
 
 \doxysubsection{Variable Documentation}

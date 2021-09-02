@@ -6,22 +6,20 @@
 
 
 
-Inheritance diagram for Virtual\+Machine\+Pool$<$ Virtual\+Machine\+State\+\_\+t $>$\+:
-\nopagebreak
+Inheritance diagram for Virtual\+Machine\+Pool$<$ Virtual\+Machine\+State\+\_\+t $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=211pt]{class_virtual_machine_pool__inherit__graph}
+\includegraphics[width=227pt]{class_virtual_machine_pool__inherit__graph}
 \end{center}
 \end{figure}
 
 
-Collaboration diagram for Virtual\+Machine\+Pool$<$ Virtual\+Machine\+State\+\_\+t $>$\+:
-\nopagebreak
+Collaboration diagram for Virtual\+Machine\+Pool$<$ Virtual\+Machine\+State\+\_\+t $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=211pt]{class_virtual_machine_pool__coll__graph}
+\includegraphics[width=227pt]{class_virtual_machine_pool__coll__graph}
 \end{center}
 \end{figure}
 \doxysubsection*{Public Types}
@@ -55,9 +53,11 @@ std\+::vector$<$ Virtual\+Machine\+State\+\_\+t $>$ \mbox{\hyperlink{class_virtu
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-unsigned long \mbox{\hyperlink{class_virtual_machine_pool_aac7defa672fe880ecb6e47ba0c22e5d3}{current\+\_\+steps}}
+unsigned long \mbox{\hyperlink{class_virtual_machine_pool_ad8015bea021c26eacc321eeae6a915e3}{total\+\_\+vms\+\_\+steps}}
 \item 
 double \mbox{\hyperlink{class_virtual_machine_pool_a758c6a2a065cb17a0255cb6ad9da3ece}{worst\+\_\+lp}}
+\item 
+unsigned long \mbox{\hyperlink{class_virtual_machine_pool_a04a0d425c470d3cdc8532e400ac11847}{total\+\_\+instruction\+\_\+count}}
 \item 
 std\+::priority\+\_\+queue$<$ Virtual\+Machine\+State\+\_\+t $\ast$, std\+::vector$<$ Virtual\+Machine\+State\+\_\+t $\ast$ $>$, Virtual\+Machine\+Pool\+::compare\+\_\+\+Virtual\+Machine\+State\+\_\+t\+\_\+prt $>$ \mbox{\hyperlink{class_virtual_machine_pool_a9c8823331ead214c736dacb390a672a8}{Q}}
 \end{DoxyCompactItemize}
@@ -207,7 +207,7 @@ This runs and adds up the probability mass for everything, returning a dictionar
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_virtual_machine_pool_ac8fe350a4d27f37a1e843a72947c4608}\label{class_virtual_machine_pool_ac8fe350a4d27f37a1e843a72947c4608}} 
+H\+MM Do we want to count these too? I guess since its called \char`\"{}total\char`\"{}....\mbox{\Hypertarget{class_virtual_machine_pool_ac8fe350a4d27f37a1e843a72947c4608}\label{class_virtual_machine_pool_ac8fe350a4d27f37a1e843a72947c4608}} 
 \index{VirtualMachinePool$<$ VirtualMachineState\_t $>$@{VirtualMachinePool$<$ VirtualMachineState\_t $>$}!run\_vms@{run\_vms}}
 \index{run\_vms@{run\_vms}!VirtualMachinePool$<$ VirtualMachineState\_t $>$@{VirtualMachinePool$<$ VirtualMachineState\_t $>$}}
 \doxysubsubsection{\texorpdfstring{run\_vms()}{run\_vms()}}
@@ -248,19 +248,26 @@ Returns true if I would add something with this lp, given my M\+A\+X\+\_\+\+S\+T
 
 
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{class_virtual_machine_pool_aac7defa672fe880ecb6e47ba0c22e5d3}\label{class_virtual_machine_pool_aac7defa672fe880ecb6e47ba0c22e5d3}} 
-\index{VirtualMachinePool$<$ VirtualMachineState\_t $>$@{VirtualMachinePool$<$ VirtualMachineState\_t $>$}!current\_steps@{current\_steps}}
-\index{current\_steps@{current\_steps}!VirtualMachinePool$<$ VirtualMachineState\_t $>$@{VirtualMachinePool$<$ VirtualMachineState\_t $>$}}
-\doxysubsubsection{\texorpdfstring{current\_steps}{current\_steps}}
-{\footnotesize\ttfamily template$<$typename Virtual\+Machine\+State\+\_\+t $>$ \\
-unsigned long \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ Virtual\+Machine\+State\+\_\+t $>$\+::current\+\_\+steps}
-
 \mbox{\Hypertarget{class_virtual_machine_pool_a9c8823331ead214c736dacb390a672a8}\label{class_virtual_machine_pool_a9c8823331ead214c736dacb390a672a8}} 
 \index{VirtualMachinePool$<$ VirtualMachineState\_t $>$@{VirtualMachinePool$<$ VirtualMachineState\_t $>$}!Q@{Q}}
 \index{Q@{Q}!VirtualMachinePool$<$ VirtualMachineState\_t $>$@{VirtualMachinePool$<$ VirtualMachineState\_t $>$}}
 \doxysubsubsection{\texorpdfstring{Q}{Q}}
 {\footnotesize\ttfamily template$<$typename Virtual\+Machine\+State\+\_\+t $>$ \\
 std\+::priority\+\_\+queue$<$Virtual\+Machine\+State\+\_\+t$\ast$, std\+::vector$<$Virtual\+Machine\+State\+\_\+t$\ast$$>$, Virtual\+Machine\+Pool\+::compare\+\_\+\+Virtual\+Machine\+State\+\_\+t\+\_\+prt$>$ \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ Virtual\+Machine\+State\+\_\+t $>$\+::Q}
+
+\mbox{\Hypertarget{class_virtual_machine_pool_a04a0d425c470d3cdc8532e400ac11847}\label{class_virtual_machine_pool_a04a0d425c470d3cdc8532e400ac11847}} 
+\index{VirtualMachinePool$<$ VirtualMachineState\_t $>$@{VirtualMachinePool$<$ VirtualMachineState\_t $>$}!total\_instruction\_count@{total\_instruction\_count}}
+\index{total\_instruction\_count@{total\_instruction\_count}!VirtualMachinePool$<$ VirtualMachineState\_t $>$@{VirtualMachinePool$<$ VirtualMachineState\_t $>$}}
+\doxysubsubsection{\texorpdfstring{total\_instruction\_count}{total\_instruction\_count}}
+{\footnotesize\ttfamily template$<$typename Virtual\+Machine\+State\+\_\+t $>$ \\
+unsigned long \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ Virtual\+Machine\+State\+\_\+t $>$\+::total\+\_\+instruction\+\_\+count}
+
+\mbox{\Hypertarget{class_virtual_machine_pool_ad8015bea021c26eacc321eeae6a915e3}\label{class_virtual_machine_pool_ad8015bea021c26eacc321eeae6a915e3}} 
+\index{VirtualMachinePool$<$ VirtualMachineState\_t $>$@{VirtualMachinePool$<$ VirtualMachineState\_t $>$}!total\_vms\_steps@{total\_vms\_steps}}
+\index{total\_vms\_steps@{total\_vms\_steps}!VirtualMachinePool$<$ VirtualMachineState\_t $>$@{VirtualMachinePool$<$ VirtualMachineState\_t $>$}}
+\doxysubsubsection{\texorpdfstring{total\_vms\_steps}{total\_vms\_steps}}
+{\footnotesize\ttfamily template$<$typename Virtual\+Machine\+State\+\_\+t $>$ \\
+unsigned long \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}}$<$ Virtual\+Machine\+State\+\_\+t $>$\+::total\+\_\+vms\+\_\+steps}
 
 \mbox{\Hypertarget{class_virtual_machine_pool_a758c6a2a065cb17a0255cb6ad9da3ece}\label{class_virtual_machine_pool_a758c6a2a065cb17a0255cb6ad9da3ece}} 
 \index{VirtualMachinePool$<$ VirtualMachineState\_t $>$@{VirtualMachinePool$<$ VirtualMachineState\_t $>$}!worst\_lp@{worst\_lp}}

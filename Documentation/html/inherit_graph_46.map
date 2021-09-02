@@ -1,3 +1,23 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_singleton.html" title=" " alt="" coords="5,5,113,32"/>
+<area shape="rect" id="node1" href="$class_bayesable.html" title=" " alt="" coords="5,612,167,639"/>
+<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="255,801,449,828"/>
+<area shape="rect" id="node3" href="$class_m_c_m_cable.html" title=" " alt="" coords="233,458,471,499"/>
+<area shape="rect" id="node5" href="$class_m_c_m_cable.html" title=" " alt="" coords="233,151,471,222"/>
+<area shape="rect" id="node7" href="$class_m_c_m_cable.html" title=" " alt="" coords="218,524,486,580"/>
+<area shape="rect" id="node9" href="$class_m_c_m_cable.html" title=" " alt="" coords="243,605,461,646"/>
+<area shape="rect" id="node12" href="$class_m_c_m_cable.html" title=" " alt="" coords="240,670,464,711"/>
+<area shape="rect" id="node14" href="$class_m_c_m_cable.html" title=" " alt="" coords="215,735,489,777"/>
+<area shape="rect" id="node4" href="$class_lexicon.html" title=" " alt="" coords="537,387,792,443"/>
+<area shape="rect" id="node6" href="$class_l_o_t_hypothesis.html" title=" " alt="" coords="567,191,762,262"/>
+<area shape="rect" id="node8" href="$class_grammar_hypothesis.html" title=" " alt="" coords="581,468,749,524"/>
+<area shape="rect" id="node10" href="$class_t_normal_variable.html" title=" " alt="" coords="581,619,748,645"/>
+<area shape="rect" id="node11" href="$class_t_normal_variable.html" title=" " alt="" coords="583,553,747,594"/>
+<area shape="rect" id="node13" href="$class_vector_half_normal_hypothesis.html" title=" " alt="" coords="559,677,771,704"/>
+<area shape="rect" id="node15" href="$class_vector_normal_hypothesis.html" title=" " alt="" coords="572,743,757,769"/>
+<area shape="rect" id="node16" href="$class_program_loader.html" title=" " alt="" coords="25,93,147,120"/>
+<area shape="rect" id="node17" href="$class_callable.html" title=" " alt="" coords="229,86,475,127"/>
+<area shape="rect" id="node18" href="$class_callable.html" title=" " alt="" coords="251,5,453,61"/>
+<area shape="rect" id="node19" href="$class_callable.html" title=" " alt="" coords="225,311,479,382"/>
+<area shape="rect" id="node20" href="$class_searchable.html" title=" " alt="" coords="271,246,433,287"/>
+<area shape="rect" id="node21" href="$class_serializable.html" title=" " alt="" coords="270,407,434,433"/>
 </map>

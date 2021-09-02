@@ -6,22 +6,20 @@
 
 
 
-Inheritance diagram for Callable$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+:
-\nopagebreak
+Inheritance diagram for Callable$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=246pt]{class_callable__inherit__graph}
+\includegraphics[width=265pt]{class_callable__inherit__graph}
 \end{center}
 \end{figure}
 
 
-Collaboration diagram for Callable$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+:
-\nopagebreak
+Collaboration diagram for Callable$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=246pt]{class_callable__coll__graph}
+\includegraphics[width=265pt]{class_callable__coll__graph}
 \end{center}
 \end{figure}
 \doxysubsection*{Public Member Functions}
@@ -41,6 +39,13 @@ std\+::vector$<$ Virtual\+Machine\+State\+\_\+t $>$ \mbox{\hyperlink{class_calla
 \begin{DoxyCompactList}\small\item\em A fancy form of calling which returns all the V\+MS states that completed. The normal call function marginalizes out the execution path. \end{DoxyCompactList}\item 
 Virtual\+Machine\+State\+\_\+t \mbox{\hyperlink{class_callable_a96e346ee7168fe621dea76d53693e8fb}{call\+One\+\_\+vms}} (const input\+\_\+t x, const output\+\_\+t \&err=output\+\_\+t\{\}, \mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$loader=nullptr)
 \begin{DoxyCompactList}\small\item\em Call, assuming no stochastics, return the virtual machine instead of the output. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+unsigned long \mbox{\hyperlink{class_callable_a3933a2ac01758faa9081733c1ef50b75}{total\+\_\+instruction\+\_\+count\+\_\+last\+\_\+call}}
+\item 
+unsigned long \mbox{\hyperlink{class_callable_a26683f51baefced5ad411ed858490b04}{total\+\_\+vms\+\_\+steps}}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -172,6 +177,23 @@ Can this be evalutaed (really should be named -- can be called?). Sometimes part
 \doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
 {\footnotesize\ttfamily template$<$typename input\+\_\+t , typename output\+\_\+t , typename Virtual\+Machine\+State\+\_\+t $>$ \\
 virtual \mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}}$<$output\+\_\+t$>$ \mbox{\hyperlink{class_callable}{Callable}}$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::operator() (\begin{DoxyParamCaption}\item[{const input\+\_\+t}]{x,  }\item[{const output\+\_\+t \&}]{err = {\ttfamily output\+\_\+t\{\}},  }\item[{\mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$}]{loader = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_callable_a3933a2ac01758faa9081733c1ef50b75}\label{class_callable_a3933a2ac01758faa9081733c1ef50b75}} 
+\index{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}!total\_instruction\_count\_last\_call@{total\_instruction\_count\_last\_call}}
+\index{total\_instruction\_count\_last\_call@{total\_instruction\_count\_last\_call}!Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}}
+\doxysubsubsection{\texorpdfstring{total\_instruction\_count\_last\_call}{total\_instruction\_count\_last\_call}}
+{\footnotesize\ttfamily template$<$typename input\+\_\+t , typename output\+\_\+t , typename Virtual\+Machine\+State\+\_\+t $>$ \\
+unsigned long \mbox{\hyperlink{class_callable}{Callable}}$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::total\+\_\+instruction\+\_\+count\+\_\+last\+\_\+call}
+
+\mbox{\Hypertarget{class_callable_a26683f51baefced5ad411ed858490b04}\label{class_callable_a26683f51baefced5ad411ed858490b04}} 
+\index{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}!total\_vms\_steps@{total\_vms\_steps}}
+\index{total\_vms\_steps@{total\_vms\_steps}!Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$@{Callable$<$ input\_t, output\_t, VirtualMachineState\_t $>$}}
+\doxysubsubsection{\texorpdfstring{total\_vms\_steps}{total\_vms\_steps}}
+{\footnotesize\ttfamily template$<$typename input\+\_\+t , typename output\+\_\+t , typename Virtual\+Machine\+State\+\_\+t $>$ \\
+unsigned long \mbox{\hyperlink{class_callable}{Callable}}$<$ input\+\_\+t, output\+\_\+t, Virtual\+Machine\+State\+\_\+t $>$\+::total\+\_\+vms\+\_\+steps}
 
 
 

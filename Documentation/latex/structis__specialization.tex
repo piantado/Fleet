@@ -1,0 +1,52 @@
+\hypertarget{structis__specialization}{}\doxysection{is\+\_\+specialization$<$ Test, Ref $>$ Struct Template Reference}
+\label{structis__specialization}\index{is\_specialization$<$ Test, Ref $>$@{is\_specialization$<$ Test, Ref $>$}}
+
+
+{\ttfamily \#include $<$Miscellaneous.\+h$>$}
+
+
+
+Inheritance diagram for is\+\_\+specialization$<$ Test, Ref $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{structis__specialization__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for is\+\_\+specialization$<$ Test, Ref $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{structis__specialization__coll__graph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Test, template$<$ typename... $>$ class Ref$>$\newline
+struct is\+\_\+specialization$<$ Test, Ref $>$}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    Check \textcolor{keywordflow}{if} variadic args contain a type}
+\DoxyCodeLine{   \string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~ */}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{// * @brief Check if a type is contained in parameter pack}}
+\DoxyCodeLine{\textcolor{comment}{// * @return }}
+\DoxyCodeLine{\textcolor{comment}{// *\&zwj;/}}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename} \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, \textcolor{keyword}{typename}... Ts>}
+\DoxyCodeLine{constexpr \textcolor{keywordtype}{bool} contains\_type() \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} std::disjunction<std::is\_same<X, Ts>...>::value;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\end{DoxyCode}
+ \begin{DoxyVerb}Check if a type is a specialization of another
+\end{DoxyVerb}
+ $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{_miscellaneous_8h}{Miscellaneous.\+h}}\end{DoxyCompactItemize}

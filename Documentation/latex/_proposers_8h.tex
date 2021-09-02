@@ -2,20 +2,18 @@
 \label{_proposers_8h}\index{src/Hypotheses/Proposers.h@{src/Hypotheses/Proposers.h}}
 {\ttfamily \#include $<$utility$>$}\newline
 {\ttfamily \#include $<$tuple$>$}\newline
-Include dependency graph for Proposers.\+h\+:
-\nopagebreak
+Include dependency graph for Proposers.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=221pt]{_proposers_8h__incl}
+\includegraphics[width=232pt]{_proposers_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=245pt]{_proposers_8h__dep__incl}
+\includegraphics[width=257pt]{_proposers_8h__dep__incl}
 \end{center}
 \end{figure}
 \doxysubsection*{Namespaces}
@@ -30,6 +28,8 @@ double \mbox{\hyperlink{namespace_proposals_a73f20ef1547bc5beef3e6e3adad2139c}{P
 \begin{DoxyCompactList}\small\item\em Helper function for whether we can resample from a node (just accesses n.\+can\+\_\+resample) \end{DoxyCompactList}\item 
 {\footnotesize template$<$typename Grammar\+Type $>$ }\\std\+::pair$<$ \mbox{\hyperlink{class_node}{Node}}, double $>$ \mbox{\hyperlink{namespace_proposals_add01a544339cc3713d02f663c331f33b}{Proposals\+::prior\+\_\+proposal}} (Grammar\+Type $\ast$grammar, const \mbox{\hyperlink{class_node}{Node}} \&from)
 \item 
+{\footnotesize template$<$typename Grammar\+Type $>$ }\\double \mbox{\hyperlink{namespace_proposals_a8ddee063d47a51537e6c7a6ecdefa1aa}{Proposals\+::p\+\_\+regeneration\+\_\+propose\+\_\+to}} (Grammar\+Type $\ast$grammar, const \mbox{\hyperlink{class_node}{Node}} \&a, const \mbox{\hyperlink{class_node}{Node}} \&b)
+\begin{DoxyCompactList}\small\item\em Probability of proposing from a to b under regeneration. \end{DoxyCompactList}\item 
 {\footnotesize template$<$typename Grammar\+Type $>$ }\\std\+::pair$<$ \mbox{\hyperlink{class_node}{Node}}, double $>$ \mbox{\hyperlink{namespace_proposals_aedcca10b4519a9aad7739878036019f3}{Proposals\+::regenerate}} (Grammar\+Type $\ast$grammar, const \mbox{\hyperlink{class_node}{Node}} \&from)
 \begin{DoxyCompactList}\small\item\em Regenerate with a rational-\/rules (Goodman et al.) style regeneration proposal\+: pick a node uniformly and regenerate it from the grammar. \end{DoxyCompactList}\item 
 {\footnotesize template$<$typename Grammar\+Type , int D$>$ }\\std\+::pair$<$ \mbox{\hyperlink{class_node}{Node}}, double $>$ \mbox{\hyperlink{namespace_proposals_a0c990430ad048f427224a481f5f2a557}{Proposals\+::regenerate\+\_\+shallow}} (Grammar\+Type $\ast$grammar, const \mbox{\hyperlink{class_node}{Node}} \&from)

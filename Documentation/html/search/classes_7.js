@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['infereceinterface_750',['InfereceInterface',['../class_inferece_interface.html',1,'']]],
-  ['instruction_751',['Instruction',['../struct_instruction.html',1,'']]],
-  ['integerizedstack_752',['IntegerizedStack',['../class_integerized_stack.html',1,'']]],
-  ['is_5fiterable_753',['is_iterable',['../structis__iterable.html',1,'']]],
-  ['is_5fiterable_3c_20t_2c_20std_3a_3avoid_5ft_3c_20decltype_28std_3a_3abegin_28std_3a_3adeclval_3c_20t_20_3e_28_29_29_29_2c_20decltype_28std_3a_3aend_28std_3a_3adeclval_3c_20t_20_3e_28_29_29_29_20_3e_20_3e_754',['is_iterable&lt; T, std::void_t&lt; decltype(std::begin(std::declval&lt; T &gt;())), decltype(std::end(std::declval&lt; T &gt;())) &gt; &gt;',['../structis__iterable_3_01_t_00_01std_1_1void__t_3_01decltype_07std_1_1begin_07std_1_1declval_3_01_6e9fb167ef7cf6be085c68f3355f458c.html',1,'']]],
-  ['item_755',['Item',['../struct_reservoir_sample_1_1_item.html',1,'ReservoirSample']]]
+  ['hasposterior_771',['HasPosterior',['../struct_top_n_1_1_has_posterior.html',1,'TopN']]],
+  ['hasposterior_3c_20x_2c_20decltype_28_28void_29_20x_3a_3aposterior_2c_200_29_3e_772',['HasPosterior&lt; X, decltype((void) X::posterior, 0)&gt;',['../struct_top_n_1_1_has_posterior_3_01_x_00_01decltype_07_07void_08_01_x_1_1posterior_00_010_08_4.html',1,'TopN']]],
+  ['hillclimbing_773',['HillClimbing',['../class_hill_climbing.html',1,'']]],
+  ['humandatum_774',['HumanDatum',['../struct_human_datum.html',1,'']]]
 ];

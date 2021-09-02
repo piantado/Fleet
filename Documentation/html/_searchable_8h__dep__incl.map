@@ -1,5 +1,5 @@
 <map id="src/Hypotheses/Interfaces/Searchable.h" name="src/Hypotheses/Interfaces/Searchable.h">
-<area shape="rect" id="node1" title="A class is searchable if permits us to enumerate and make its neighbors. This class is used by MCTS a..." alt="" coords="115,5,291,47"/>
-<area shape="rect" id="node2" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="5,95,180,121"/>
-<area shape="rect" id="node3" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="204,95,424,121"/>
+<area shape="rect" id="node1" title="A class is searchable if permits us to enumerate and make its neighbors. This class is used by MCTS a..." alt="" coords="121,5,312,47"/>
+<area shape="rect" id="node2" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="5,95,193,121"/>
+<area shape="rect" id="node3" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="217,95,453,121"/>
 </map>

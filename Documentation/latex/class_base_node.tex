@@ -6,8 +6,7 @@
 
 
 
-Inheritance diagram for Base\+Node$<$ this\+\_\+t $>$\+:
-\nopagebreak
+Inheritance diagram for Base\+Node$<$ this\+\_\+t $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -16,12 +15,11 @@ Inheritance diagram for Base\+Node$<$ this\+\_\+t $>$\+:
 \end{figure}
 
 
-Collaboration diagram for Base\+Node$<$ this\+\_\+t $>$\+:
-\nopagebreak
+Collaboration diagram for Base\+Node$<$ this\+\_\+t $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=211pt]{class_base_node__coll__graph}
+\includegraphics[width=226pt]{class_base_node__coll__graph}
 \end{center}
 \end{figure}
 \doxysubsection*{Classes}
@@ -42,6 +40,8 @@ void \mbox{\hyperlink{class_base_node_a1a82f7670d09cdd2a7f12e00513b1d8f}{operato
 \item 
 void \mbox{\hyperlink{class_base_node_adc129f52a6d44237b7e8c62c65f8332c}{operator=}} (const this\+\_\+t \&\&t)
 \item 
+void \mbox{\hyperlink{class_base_node_a8c3616d00244a5e0fc7c15a8d584da98}{make\+\_\+root}} ()
+\begin{DoxyCompactList}\small\item\em Make a node root -- just nulls the parent. \end{DoxyCompactList}\item 
 virtual \mbox{\hyperlink{class_base_node_a2a33248b0eb051d7672691a73a38ff12}{$\sim$\+Base\+Node}} ()
 \item 
 virtual std\+::string \mbox{\hyperlink{class_base_node_a079dae7bec84f4de8eef6d6cb9368a22}{string}} (bool usedot=true) const
@@ -374,6 +374,17 @@ this\+\_\+t$\ast$ \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t 
 Go down a tree and find the leftmost child \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\mbox{\Hypertarget{class_base_node_a8c3616d00244a5e0fc7c15a8d584da98}\label{class_base_node_a8c3616d00244a5e0fc7c15a8d584da98}} 
+\index{BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}!make\_root@{make\_root}}
+\index{make\_root@{make\_root}!BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}}
+\doxysubsubsection{\texorpdfstring{make\_root()}{make\_root()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t $>$ \\
+void \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::make\+\_\+root (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Make a node root -- just nulls the parent. 
+
 \mbox{\Hypertarget{class_base_node_a263b93d5aaf1ce5eb7f103bf3b988db3}\label{class_base_node_a263b93d5aaf1ce5eb7f103bf3b988db3}} 
 \index{BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}!my\_string@{my\_string}}
 \index{my\_string@{my\_string}!BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}}

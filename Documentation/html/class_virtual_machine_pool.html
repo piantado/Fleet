@@ -81,8 +81,8 @@ Inheritance diagram for VirtualMachinePool&lt; VirtualMachineState_t &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_virtual_machine_pool__inherit__graph.png" border="0" usemap="#_virtual_machine_pool_3_01_virtual_machine_state__t_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="_virtual_machine_pool_3_01_virtual_machine_state__t_01_4_inherit__map" id="_virtual_machine_pool_3_01_virtual_machine_state__t_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,80,180,121"/>
-<area shape="rect" href="struct_virtual_machine_control.html" title=" " alt="" coords="17,5,168,32"/>
+<area shape="rect" title=" " alt="" coords="5,80,201,121"/>
+<area shape="rect" href="struct_virtual_machine_control.html" title=" " alt="" coords="20,5,187,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -90,8 +90,8 @@ Collaboration diagram for VirtualMachinePool&lt; VirtualMachineState_t &gt;:</di
 <div class="dyncontent">
 <div class="center"><img src="class_virtual_machine_pool__coll__graph.png" border="0" usemap="#_virtual_machine_pool_3_01_virtual_machine_state__t_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="_virtual_machine_pool_3_01_virtual_machine_state__t_01_4_coll__map" id="_virtual_machine_pool_3_01_virtual_machine_state__t_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="5,80,180,121"/>
-<area shape="rect" href="struct_virtual_machine_control.html" title=" " alt="" coords="17,5,168,32"/>
+<area shape="rect" title=" " alt="" coords="5,80,201,121"/>
+<area shape="rect" href="struct_virtual_machine_control.html" title=" " alt="" coords="20,5,187,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -134,10 +134,12 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aac7defa672fe880ecb6e47ba0c22e5d3"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_pool.html#aac7defa672fe880ecb6e47ba0c22e5d3">current_steps</a></td></tr>
-<tr class="separator:aac7defa672fe880ecb6e47ba0c22e5d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8015bea021c26eacc321eeae6a915e3"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_pool.html#ad8015bea021c26eacc321eeae6a915e3">total_vms_steps</a></td></tr>
+<tr class="separator:ad8015bea021c26eacc321eeae6a915e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a758c6a2a065cb17a0255cb6ad9da3ece"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_pool.html#a758c6a2a065cb17a0255cb6ad9da3ece">worst_lp</a></td></tr>
 <tr class="separator:a758c6a2a065cb17a0255cb6ad9da3ece"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04a0d425c470d3cdc8532e400ac11847"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_pool.html#a04a0d425c470d3cdc8532e400ac11847">total_instruction_count</a></td></tr>
+<tr class="separator:a04a0d425c470d3cdc8532e400ac11847"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c8823331ead214c736dacb390a672a8"><td class="memItemLeft" align="right" valign="top">std::priority_queue&lt; VirtualMachineState_t *, std::vector&lt; VirtualMachineState_t * &gt;, VirtualMachinePool::compare_VirtualMachineState_t_prt &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_pool.html#a9c8823331ead214c736dacb390a672a8">Q</a></td></tr>
 <tr class="separator:a9c8823331ead214c736dacb390a672a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -463,6 +465,7 @@ template&lt;typename VirtualMachineState_t &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>HMM Do we want to count these too? I guess since its called "total"....</p>
 
 </div>
 </div>
@@ -540,22 +543,6 @@ template&lt;typename VirtualMachineState_t &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="aac7defa672fe880ecb6e47ba0c22e5d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac7defa672fe880ecb6e47ba0c22e5d3">&#9670;&nbsp;</a></span>current_steps</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename VirtualMachineState_t &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned long <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a>&lt; VirtualMachineState_t &gt;::current_steps</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a9c8823331ead214c736dacb390a672a8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9c8823331ead214c736dacb390a672a8">&#9670;&nbsp;</a></span>Q</h2>
 
@@ -566,6 +553,38 @@ template&lt;typename VirtualMachineState_t &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::priority_queue&lt;VirtualMachineState_t*, std::vector&lt;VirtualMachineState_t*&gt;, VirtualMachinePool::compare_VirtualMachineState_t_prt&gt; <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a>&lt; VirtualMachineState_t &gt;::Q</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a04a0d425c470d3cdc8532e400ac11847"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04a0d425c470d3cdc8532e400ac11847">&#9670;&nbsp;</a></span>total_instruction_count</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename VirtualMachineState_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a>&lt; VirtualMachineState_t &gt;::total_instruction_count</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad8015bea021c26eacc321eeae6a915e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8015bea021c26eacc321eeae6a915e3">&#9670;&nbsp;</a></span>total_vms_steps</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename VirtualMachineState_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a>&lt; VirtualMachineState_t &gt;::total_vms_steps</td>
         </tr>
       </table>
 </div><div class="memdoc">

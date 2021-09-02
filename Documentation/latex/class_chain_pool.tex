@@ -6,8 +6,7 @@
 
 
 
-Inheritance diagram for Chain\+Pool$<$ H\+YP $>$\+:
-\nopagebreak
+Inheritance diagram for Chain\+Pool$<$ H\+YP $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -16,14 +15,21 @@ Inheritance diagram for Chain\+Pool$<$ H\+YP $>$\+:
 \end{figure}
 
 
-Collaboration diagram for Chain\+Pool$<$ H\+YP $>$\+:
-\nopagebreak
+Collaboration diagram for Chain\+Pool$<$ H\+YP $>$\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=216pt]{class_chain_pool__coll__graph}
+\includegraphics[width=339pt]{class_chain_pool__coll__graph}
 \end{center}
 \end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75}{Running\+State}} \{ \mbox{\hyperlink{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75a2baa69eafc7204f3bd8648eba580c489}{Running\+State\+::\+R\+E\+A\+DY}}, 
+\mbox{\hyperlink{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75a43491564ebcfd38568918efbd6e840fd}{Running\+State\+::\+R\+U\+N\+N\+I\+NG}}, 
+\mbox{\hyperlink{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75a2ba22e58ca17bb728d522bba36cf8350}{Running\+State\+::\+D\+O\+NE}}
+ \}
+\end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -33,23 +39,18 @@ Collaboration diagram for Chain\+Pool$<$ H\+YP $>$\+:
 \item 
 void \mbox{\hyperlink{class_chain_pool_a6c186d7addcd0e1ab0733aae3a760a47}{set\+\_\+data}} (typename H\+Y\+P\+::data\+\_\+t $\ast$d, bool recompute=true)
 \begin{DoxyCompactList}\small\item\em Set this data. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ H\+YP \& $>$ \mbox{\hyperlink{class_chain_pool_a695a8369810cd5bdebc234be19ce18a4}{run\+\_\+thread}} (\mbox{\hyperlink{struct_control}{Control}} ctl) override
+\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ H\+YP \& $>$ \mbox{\hyperlink{class_chain_pool_a84ad82009e98da528a9ab9aa97b6e81c}{run\+\_\+thread}} (\mbox{\hyperlink{struct_control}{Control}} \&ctl) override
 \begin{DoxyCompactList}\small\item\em This run helper is called internally by multiple different threads, and runs a given pool. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 std\+::vector$<$ \mbox{\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}}$<$ H\+YP $>$ $>$ \mbox{\hyperlink{class_chain_pool_aca174138c188771e02ef6cb2e0e9d42b}{pool}}
 \item 
-std\+::vector$<$ bool $>$ \mbox{\hyperlink{class_chain_pool_a189b1ba1b9f8021229b9cf33dbe06c8b}{running}}
+unsigned long \mbox{\hyperlink{class_chain_pool_a327b47178f3753da10661b08cd60b406}{steps\+\_\+before\+\_\+change}} = 100
 \item 
-std\+::mutex \mbox{\hyperlink{class_chain_pool_aefbe03ae7511dd0ee6265a6e6bd26f3c}{running\+\_\+lock}}
-\end{DoxyCompactItemize}
-\doxysubsection*{Static Public Attributes}
-\begin{DoxyCompactItemize}
+std\+::vector$<$ \mbox{\hyperlink{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75}{Running\+State}} $>$ \mbox{\hyperlink{class_chain_pool_a5bba2491596087935cea0fe02c7af423}{running}}
 \item 
-static const unsigned long \mbox{\hyperlink{class_chain_pool_ae8b8be7c2fe6f72c171a9d51abdcc96f}{steps\+\_\+before\+\_\+change}} = 0
-\item 
-static const time\+\_\+ms \mbox{\hyperlink{class_chain_pool_a3f107cb7ea8c1438a260acd80d2aba3d}{time\+\_\+before\+\_\+change}} = 200
+\mbox{\hyperlink{class_ordered_lock}{Ordered\+Lock}} \mbox{\hyperlink{class_chain_pool_aa66dd89ec348fab23911f3f8c91123d1}{running\+\_\+lock}}
 \end{DoxyCompactItemize}
 
 
@@ -63,6 +64,30 @@ steven piantadosi
 \begin{DoxyDate}{Date}
 29/01/20 
 \end{DoxyDate}
+
+
+\doxysubsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75}\label{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75}} 
+\index{ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}!RunningState@{RunningState}}
+\index{RunningState@{RunningState}!ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{RunningState}{RunningState}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+enum \mbox{\hyperlink{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75}{Chain\+Pool\+::\+Running\+State}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{READY@{READY}!ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}}\index{ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}!READY@{READY}}}\mbox{\Hypertarget{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75a2baa69eafc7204f3bd8648eba580c489}\label{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75a2baa69eafc7204f3bd8648eba580c489}} 
+R\+E\+A\+DY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{RUNNING@{RUNNING}!ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}}\index{ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}!RUNNING@{RUNNING}}}\mbox{\Hypertarget{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75a43491564ebcfd38568918efbd6e840fd}\label{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75a43491564ebcfd38568918efbd6e840fd}} 
+R\+U\+N\+N\+I\+NG&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DONE@{DONE}!ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}}\index{ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}!DONE@{DONE}}}\mbox{\Hypertarget{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75a2ba22e58ca17bb728d522bba36cf8350}\label{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75a2ba22e58ca17bb728d522bba36cf8350}} 
+D\+O\+NE&\\
+\hline
+
+\end{DoxyEnumFields}
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
@@ -83,12 +108,12 @@ steven piantadosi
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_chain_pool_a695a8369810cd5bdebc234be19ce18a4}\label{class_chain_pool_a695a8369810cd5bdebc234be19ce18a4}} 
+\mbox{\Hypertarget{class_chain_pool_a84ad82009e98da528a9ab9aa97b6e81c}\label{class_chain_pool_a84ad82009e98da528a9ab9aa97b6e81c}} 
 \index{ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}!run\_thread@{run\_thread}}
 \index{run\_thread@{run\_thread}!ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{run\_thread()}{run\_thread()}}
 {\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$H\+YP\&$>$ \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
+\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$H\+YP\&$>$ \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}} \&}]{ctl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
 
 
 
@@ -99,7 +124,7 @@ This run helper is called internally by multiple different threads, and runs a g
 {\em ctl} & \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{class_chain_pool_a6c186d7addcd0e1ab0733aae3a760a47}\label{class_chain_pool_a6c186d7addcd0e1ab0733aae3a760a47}} 
+figure out how many steps to run\mbox{\Hypertarget{class_chain_pool_a6c186d7addcd0e1ab0733aae3a760a47}\label{class_chain_pool_a6c186d7addcd0e1ab0733aae3a760a47}} 
 \index{ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}!set\_data@{set\_data}}
 \index{set\_data@{set\_data}!ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{set\_data()}{set\_data()}}
@@ -127,33 +152,26 @@ Set this data.
 {\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
 std\+::vector$<$\mbox{\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}}$<$H\+YP$>$ $>$ \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP $>$\+::pool}
 
-\mbox{\Hypertarget{class_chain_pool_a189b1ba1b9f8021229b9cf33dbe06c8b}\label{class_chain_pool_a189b1ba1b9f8021229b9cf33dbe06c8b}} 
+\mbox{\Hypertarget{class_chain_pool_a5bba2491596087935cea0fe02c7af423}\label{class_chain_pool_a5bba2491596087935cea0fe02c7af423}} 
 \index{ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}!running@{running}}
 \index{running@{running}!ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{running}{running}}
 {\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-std\+::vector$<$bool$>$ \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP $>$\+::running}
+std\+::vector$<$\mbox{\hyperlink{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75}{Running\+State}}$>$ \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP $>$\+::running}
 
-\mbox{\Hypertarget{class_chain_pool_aefbe03ae7511dd0ee6265a6e6bd26f3c}\label{class_chain_pool_aefbe03ae7511dd0ee6265a6e6bd26f3c}} 
+\mbox{\Hypertarget{class_chain_pool_aa66dd89ec348fab23911f3f8c91123d1}\label{class_chain_pool_aa66dd89ec348fab23911f3f8c91123d1}} 
 \index{ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}!running\_lock@{running\_lock}}
 \index{running\_lock@{running\_lock}!ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{running\_lock}{running\_lock}}
 {\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-std\+::mutex \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP $>$\+::running\+\_\+lock}
+\mbox{\hyperlink{class_ordered_lock}{Ordered\+Lock}} \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP $>$\+::running\+\_\+lock}
 
-\mbox{\Hypertarget{class_chain_pool_ae8b8be7c2fe6f72c171a9d51abdcc96f}\label{class_chain_pool_ae8b8be7c2fe6f72c171a9d51abdcc96f}} 
+\mbox{\Hypertarget{class_chain_pool_a327b47178f3753da10661b08cd60b406}\label{class_chain_pool_a327b47178f3753da10661b08cd60b406}} 
 \index{ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}!steps\_before\_change@{steps\_before\_change}}
 \index{steps\_before\_change@{steps\_before\_change}!ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}}
 \doxysubsubsection{\texorpdfstring{steps\_before\_change}{steps\_before\_change}}
 {\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-const unsigned long \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP $>$\+::steps\+\_\+before\+\_\+change = 0\hspace{0.3cm}{\ttfamily [static]}}
-
-\mbox{\Hypertarget{class_chain_pool_a3f107cb7ea8c1438a260acd80d2aba3d}\label{class_chain_pool_a3f107cb7ea8c1438a260acd80d2aba3d}} 
-\index{ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}!time\_before\_change@{time\_before\_change}}
-\index{time\_before\_change@{time\_before\_change}!ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}}
-\doxysubsubsection{\texorpdfstring{time\_before\_change}{time\_before\_change}}
-{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-const time\+\_\+ms \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP $>$\+::time\+\_\+before\+\_\+change = 200\hspace{0.3cm}{\ttfamily [static]}}
+unsigned long \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP $>$\+::steps\+\_\+before\+\_\+change = 100}
 
 
 

@@ -97,7 +97,8 @@ $(function() {
 : <a class="el" href="class_finite_history.html#aa0dd92a3ccda3b2cc94b4704aa3ba9aa">FiniteHistory&lt; T &gt;</a>
 </li>
 <li>resize()
-: <a class="el" href="struct_vector2_d.html#a686acefeb363d68e106fb4a951069a85">Vector2D&lt; T &gt;</a>
+: <a class="el" href="class_concurrent_queue.html#ac1d39ba7c6a7191b60c63ea5aac50fa5">ConcurrentQueue&lt; T &gt;</a>
+, <a class="el" href="struct_vector2_d.html#a686acefeb363d68e106fb4a951069a85">Vector2D&lt; T &gt;</a>
 , <a class="el" href="struct_vector3_d.html#a54fcdb790037360f2255268a385c91f0">Vector3D&lt; T &gt;</a>
 </li>
 <li>restart()
@@ -106,6 +107,7 @@ $(function() {
 , <a class="el" href="class_l_o_t_hypothesis.html#abad63f73bc2ac927761d76db1312939f">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>
 , <a class="el" href="class_m_c_m_cable.html#aa7017e18b4a1508bc4cff90fb82a8ec1">MCMCable&lt; this_t, Args &gt;</a>
 , <a class="el" href="class_t_normal_variable.html#aacaa3c0962cf32dcee93f7e459cd0eac">TNormalVariable&lt; f &gt;</a>
+, <a class="el" href="class_vector_half_normal_hypothesis.html#ab3dad3a1b5babe38e004ad6f237a36b9">VectorHalfNormalHypothesis</a>
 , <a class="el" href="class_vector_normal_hypothesis.html#aed2008aa5569f971373f99a97f33ba2c">VectorNormalHypothesis</a>
 </li>
 <li>root()
@@ -130,24 +132,24 @@ $(function() {
 : <a class="el" href="class_grammar_1_1_rule_iterator.html#af725652823a1aaf0d1da986c17e25ad8">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;::RuleIterator</a>
 </li>
 <li>run()
-: <a class="el" href="class_data_tempering.html#a271a57d1d428427b826b631d32873228">DataTempering&lt; HYP &gt;</a>
+: <a class="el" href="class_data_tempering.html#a7c217dddcdf6c2a1f1ecf9250f6da553">DataTempering&lt; HYP &gt;</a>
 , <a class="el" href="class_hill_climbing.html#af0d434aab33f53ed53146895374ac35d">HillClimbing&lt; HYP &gt;</a>
-, <a class="el" href="class_m_c_m_c_chain.html#a36a9ad234b12f1b3aee01dd877b91170">MCMCChain&lt; HYP &gt;</a>
-, <a class="el" href="class_parallel_tempering.html#a73d59234ddbcd3025ecb58feb8101b5c">ParallelTempering&lt; HYP &gt;</a>
+, <a class="el" href="class_m_c_m_c_chain.html#ade59d4ace25fa52b106353c6c7285f50">MCMCChain&lt; HYP &gt;</a>
+, <a class="el" href="class_parallel_tempering.html#ac9845f4906069ece88e04554cfb80825">ParallelTempering&lt; HYP &gt;</a>
 , <a class="el" href="class_threaded_inference_interface.html#a4b0d153ec182512dddfa7ddebfb4c8b2">ThreadedInferenceInterface&lt; X, Args &gt;</a>
 , <a class="el" href="class_virtual_machine_pool.html#adf1e2a48d262a341627a92771f31cfcd">VirtualMachinePool&lt; VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_virtual_machine_state.html#a59185fde0c905d418a96a6acf28c15c3">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>run_thread()
-: <a class="el" href="class_beam_search.html#a2e679c493c15a3546a117a62e89461b9">BeamSearch&lt; HYP &gt;</a>
-, <a class="el" href="class_chain_pool.html#a695a8369810cd5bdebc234be19ce18a4">ChainPool&lt; HYP &gt;</a>
-, <a class="el" href="class_enumeration_inference.html#a204020bbd9f2ecbbdabbb2eedfd208bd">EnumerationInference&lt; HYP, Grammar_t, Enumerator &gt;</a>
-, <a class="el" href="class_m_c_t_s_base.html#af50710c130b3f2d138a91567be766f2b">MCTSBase&lt; this_t, HYP &gt;</a>
-, <a class="el" href="class_prior_inference.html#abcfbe7ebd3efe39fb088acdcc549127a">PriorInference&lt; HYP &gt;</a>
-, <a class="el" href="class_threaded_inference_interface.html#ad3da8eea216e6264720c11f6dcd34782">ThreadedInferenceInterface&lt; X, Args &gt;</a>
+: <a class="el" href="class_beam_search.html#a45504847b24972921cb80bbd41d8dca6">BeamSearch&lt; HYP &gt;</a>
+, <a class="el" href="class_chain_pool.html#a84ad82009e98da528a9ab9aa97b6e81c">ChainPool&lt; HYP &gt;</a>
+, <a class="el" href="class_enumeration_inference.html#a2ce702fd12783f3cf6baffc09695d553">EnumerationInference&lt; HYP, Grammar_t, Enumerator &gt;</a>
+, <a class="el" href="class_m_c_t_s_base.html#acfa2c34e8176c9e4f62013ffb98a92b6">MCTSBase&lt; this_t, HYP &gt;</a>
+, <a class="el" href="class_prior_inference.html#ac50229daed4f3b8a0b5c83bc55076809">PriorInference&lt; HYP &gt;</a>
+, <a class="el" href="class_threaded_inference_interface.html#a1819cde5d03a54ab787364bf9147a2fa">ThreadedInferenceInterface&lt; X, Args &gt;</a>
 </li>
 <li>run_thread_generator_wrapper()
-: <a class="el" href="class_threaded_inference_interface.html#a8793e1875e4362b6265a7285652e6ebe">ThreadedInferenceInterface&lt; X, Args &gt;</a>
+: <a class="el" href="class_threaded_inference_interface.html#a1cfd95b81e63ae5ee3c03319e0cc319c">ThreadedInferenceInterface&lt; X, Args &gt;</a>
 </li>
 <li>run_vms()
 : <a class="el" href="class_virtual_machine_pool.html#ac8fe350a4d27f37a1e843a72947c4608">VirtualMachinePool&lt; VirtualMachineState_t &gt;</a>

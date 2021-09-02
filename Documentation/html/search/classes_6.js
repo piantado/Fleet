@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['hasposterior_746',['HasPosterior',['../struct_top_n_1_1_has_posterior.html',1,'TopN']]],
-  ['hasposterior_3c_20x_2c_20decltype_28_28void_29_20x_3a_3aposterior_2c_200_29_3e_747',['HasPosterior&lt; X, decltype((void) X::posterior, 0)&gt;',['../struct_top_n_1_1_has_posterior_3_01_x_00_01decltype_07_07void_08_01_x_1_1posterior_00_010_08_4.html',1,'TopN']]],
-  ['hillclimbing_748',['HillClimbing',['../class_hill_climbing.html',1,'']]],
-  ['humandatum_749',['HumanDatum',['../struct_human_datum.html',1,'']]]
+  ['grammar_768',['Grammar',['../class_grammar.html',1,'']]],
+  ['grammar_3c_20cl_5fvoid_2c_20cl_2c_20cl_2c_20cl_5fvoid_20_3e_769',['Grammar&lt; cl_void, CL, CL, cl_void &gt;',['../class_grammar.html',1,'']]],
+  ['grammarhypothesis_770',['GrammarHypothesis',['../class_grammar_hypothesis.html',1,'']]]
 ];

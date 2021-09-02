@@ -78,13 +78,19 @@ $(function() {
 <p>A <a class="el" href="class_finite_history.html">FiniteHistory</a> stores the previous N examples of something of type T. This is used e.g. in MCMC in order to count the acceptance ratio on the previous N samples.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;mutex&gt;</code><br />
+<code>#include &lt;pthread.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="_ordered_lock_8h_source.html">OrderedLock.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for FiniteHistory.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_finite_history_8h__incl.png" border="0" usemap="#src_2_statistics_2_finite_history_8h" alt=""/></div>
 <map name="src_2_statistics_2_finite_history_8h" id="src_2_statistics_2_finite_history_8h">
-<area shape="rect" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="5,5,192,32"/>
-<area shape="rect" title=" " alt="" coords="69,80,128,107"/>
+<area shape="rect" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="5,5,207,32"/>
+<area shape="rect" title=" " alt="" coords="31,155,95,181"/>
+<area shape="rect" title=" " alt="" coords="64,80,148,107"/>
+<area shape="rect" href="_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="172,80,288,107"/>
+<area shape="rect" title=" " alt="" coords="139,155,281,181"/>
+<area shape="rect" title=" " alt="" coords="305,155,368,181"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -92,14 +98,16 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_finite_history_8h__dep__incl.png" border="0" usemap="#src_2_statistics_2_finite_history_8hdep" alt=""/></div>
 <map name="src_2_statistics_2_finite_history_8hdep" id="src_2_statistics_2_finite_history_8hdep">
-<area shape="rect" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="287,5,474,32"/>
-<area shape="rect" href="_m_c_m_c_chain_8h.html" title=" " alt="" coords="309,80,453,121"/>
-<area shape="rect" href="_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,266,255,293"/>
-<area shape="rect" href="_batch_8h.html" title=" " alt="" coords="138,177,285,203"/>
-<area shape="rect" href="_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="309,169,453,211"/>
-<area shape="rect" href="_main_8cpp.html" title="This stores an ojbect with feature FARGS which is meant to be something like enums...." alt="" coords="353,348,518,375"/>
-<area shape="rect" href="_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="527,169,671,211"/>
-<area shape="rect" href="_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="309,259,453,300"/>
+<area shape="rect" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="267,5,468,32"/>
+<area shape="rect" href="_m_c_m_c_chain_8h.html" title=" " alt="" coords="291,80,443,121"/>
+<area shape="rect" href="_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,266,279,293"/>
+<area shape="rect" href="_batch_8h.html" title=" " alt="" coords="65,177,224,203"/>
+<area shape="rect" href="_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="406,169,558,211"/>
+<area shape="rect" href="_basics_2_main_8cpp.html" title=" " alt="" coords="136,355,313,382"/>
+<area shape="rect" href="_detailed_balance_2_main_8cpp.html" title=" " alt="" coords="338,348,517,389"/>
+<area shape="rect" href="_insert_delete_probability_2_main_8cpp.html" title=" " alt="" coords="541,348,764,389"/>
+<area shape="rect" href="_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="634,169,786,211"/>
+<area shape="rect" href="_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="405,259,559,300"/>
 </map>
 </div>
 </div>

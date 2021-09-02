@@ -1,0 +1,49 @@
+\hypertarget{struct_type_index}{}\doxysection{Type\+Index$<$ T, Tuple $>$ Struct Template Reference}
+\label{struct_type_index}\index{TypeIndex$<$ T, Tuple $>$@{TypeIndex$<$ T, Tuple $>$}}
+
+
+Helpers to Find the numerical index (as a nonterminal\+\_\+t) in a tuple of a given type.  
+
+
+
+
+{\ttfamily \#include $<$Miscellaneous.\+h$>$}
+
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T, class Tuple$>$\newline
+struct Type\+Index$<$ T, Tuple $>$}
+
+Helpers to Find the numerical index (as a nonterminal\+\_\+t) in a tuple of a given type. 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    Template magic to check \textcolor{keywordflow}{if} a \textcolor{keyword}{class }is iterable}
+\DoxyCodeLine{   \string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~ */}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{//https://stackoverflow.com/questions/13830158/check-\/if-\/a-\/variable-\/is-\/iterable}}
+\DoxyCodeLine{\textcolor{keyword}{template} <\textcolor{keyword}{typename} T, \textcolor{keyword}{typename} = \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{\textcolor{keyword}{struct }is\_iterable : std::false\_type \{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{// this gets used only when we can call std::begin() and std::end() on that type}}
+\DoxyCodeLine{\textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{\textcolor{keyword}{struct }is\_iterable<T, std::void\_t<decltype(std::begin(std::declval<T>())),}
+\DoxyCodeLine{                                  decltype(std::end(std::declval<T>()))}
+\DoxyCodeLine{                                 >}
+\DoxyCodeLine{                  > : std::true\_type \{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{// Here is a helper:}}
+\DoxyCodeLine{\textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{constexpr \textcolor{keywordtype}{bool} is\_iterable\_v = is\_iterable<T>::value;}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\end{DoxyCode}
+ \begin{DoxyVerb}Find the index of a type in variadic args
+\end{DoxyVerb}
+ $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{_miscellaneous_8h}{Miscellaneous.\+h}}\end{DoxyCompactItemize}

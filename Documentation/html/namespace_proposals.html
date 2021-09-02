@@ -79,6 +79,10 @@ Functions</h2></td></tr>
 <tr class="memitem:add01a544339cc3713d02f663c331f33b"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
 <tr class="memitem:add01a544339cc3713d02f663c331f33b"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#add01a544339cc3713d02f663c331f33b">prior_proposal</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
 <tr class="separator:add01a544339cc3713d02f663c331f33b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ddee063d47a51537e6c7a6ecdefa1aa"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
+<tr class="memitem:a8ddee063d47a51537e6c7a6ecdefa1aa"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#a8ddee063d47a51537e6c7a6ecdefa1aa">p_regeneration_propose_to</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;a, const <a class="el" href="class_node.html">Node</a> &amp;b)</td></tr>
+<tr class="memdesc:a8ddee063d47a51537e6c7a6ecdefa1aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Probability of proposing from a to b under regeneration.  <a href="namespace_proposals.html#a8ddee063d47a51537e6c7a6ecdefa1aa">More...</a><br /></td></tr>
+<tr class="separator:a8ddee063d47a51537e6c7a6ecdefa1aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedcca10b4519a9aad7739878036019f3"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
 <tr class="memitem:aedcca10b4519a9aad7739878036019f3"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#aedcca10b4519a9aad7739878036019f3">regenerate</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
 <tr class="memdesc:aedcca10b4519a9aad7739878036019f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Regenerate with a rational-rules (Goodman et al.) style regeneration proposal: pick a node uniformly and regenerate it from the grammar.  <a href="namespace_proposals.html#aedcca10b4519a9aad7739878036019f3">More...</a><br /></td></tr>
@@ -181,6 +185,53 @@ template&lt;typename GrammarType &gt; </div>
       </table>
 </div><div class="memdoc">
 <p>backward is we choose t exactly, then we pick anything below that is equal to s</p>
+
+</div>
+</div>
+<a id="a8ddee063d47a51537e6c7a6ecdefa1aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ddee063d47a51537e6c7a6ecdefa1aa">&#9670;&nbsp;</a></span>p_regeneration_propose_to()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename GrammarType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double Proposals::p_regeneration_propose_to </td>
+          <td>(</td>
+          <td class="paramtype">GrammarType *&#160;</td>
+          <td class="paramname"><em>grammar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Probability of proposing from a to b under regeneration. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">grammar</td><td></td></tr>
+    <tr><td class="paramname">a</td><td></td></tr>
+    <tr><td class="paramname">b</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

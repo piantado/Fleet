@@ -1,0 +1,172 @@
+\hypertarget{class_threaded_inference_interface}{}\doxysection{Threaded\+Inference\+Interface$<$ X, Args $>$ Class Template Reference}
+\label{class_threaded_inference_interface}\index{ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}}
+
+
+{\ttfamily \#include $<$Threaded\+Inference\+Interface.\+h$>$}
+
+
+
+Collaboration diagram for Threaded\+Inference\+Interface$<$ X, Args $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{class_threaded_inference_interface__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}} \& $>$ \mbox{\hyperlink{class_threaded_inference_interface_a1819cde5d03a54ab787364bf9147a2fa}{run\+\_\+thread}} (\mbox{\hyperlink{struct_control}{Control}} \&ctl, Args... args)=0
+\item 
+\mbox{\hyperlink{class_threaded_inference_interface_a97cde9b3262f8e918eb9524e8a601885}{Threaded\+Inference\+Interface}} ()
+\item 
+unsigned long \mbox{\hyperlink{class_threaded_inference_interface_af0bbee089dec77cf55d48f71d76e6a79}{next\+\_\+index}} ()
+\begin{DoxyCompactList}\small\item\em Return the next index to operate on (in a thread-\/safe way). \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{class_threaded_inference_interface_ad74cb20e3d79a36dea3dd4c0a835ef11}{nthreads}} ()
+\begin{DoxyCompactList}\small\item\em How many threads are currently run in this interface? \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_threaded_inference_interface_a1cfd95b81e63ae5ee3c03319e0cc319c}{run\+\_\+thread\+\_\+generator\+\_\+wrapper}} (size\+\_\+t thr, \mbox{\hyperlink{struct_control}{Control}} \&ctl, Args... args)
+\begin{DoxyCompactList}\small\item\em We have to wrap run\+\_\+thread in something that manages the sync with main. This really just synchronizes the output of run\+\_\+thread with run below. N\+O\+TE this makes a copy of x into the local next\+\_\+x, so that when the thread keeps running, it doesn\textquotesingle{}t mess anything up. We may in the future block the thread and return a reference, but its not clear that\textquotesingle{}s faster. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}} \& $>$ \mbox{\hyperlink{class_threaded_inference_interface_a4b0d153ec182512dddfa7ddebfb4c8b2}{run}} (\mbox{\hyperlink{struct_control}{Control}} ctl, Args... args)
+\begin{DoxyCompactList}\small\item\em Set up the multiple threads and actually run, calling run\+\_\+thread\+\_\+generator\+\_\+wrapper. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::atomic$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_threaded_inference_interface_a0f03c872fb87c7cb6b408d5a4fc4e1cd}{index}}
+\item 
+size\+\_\+t \mbox{\hyperlink{class_threaded_inference_interface_a7bed7a427161783065c6f29cc3c0a491}{\+\_\+\+\_\+nthreads}}
+\item 
+std\+::atomic$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_threaded_inference_interface_afa31e6d3cb4b17c28cdf3f0b58477c0b}{\+\_\+\+\_\+nrunning}}
+\item 
+\mbox{\hyperlink{class_concurrent_queue}{Concurrent\+Queue}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}} $>$ \mbox{\hyperlink{class_threaded_inference_interface_ab74aedaa0090ee1f993c8baf9b7fe0ba}{to\+\_\+yield}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename X, typename... Args$>$\newline
+class Threaded\+Inference\+Interface$<$ X, Args $>$}
+
+\begin{DoxyAuthor}{Author}
+piantado 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+07/06/20 
+\end{DoxyDate}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_threaded_inference_interface_a97cde9b3262f8e918eb9524e8a601885}\label{class_threaded_inference_interface_a97cde9b3262f8e918eb9524e8a601885}} 
+\index{ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}!ThreadedInferenceInterface@{ThreadedInferenceInterface}}
+\index{ThreadedInferenceInterface@{ThreadedInferenceInterface}!ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{ThreadedInferenceInterface()}{ThreadedInferenceInterface()}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+\mbox{\hyperlink{class_threaded_inference_interface}{Threaded\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::\mbox{\hyperlink{class_threaded_inference_interface}{Threaded\+Inference\+Interface}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_threaded_inference_interface_af0bbee089dec77cf55d48f71d76e6a79}\label{class_threaded_inference_interface_af0bbee089dec77cf55d48f71d76e6a79}} 
+\index{ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}!next\_index@{next\_index}}
+\index{next\_index@{next\_index}!ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{next\_index()}{next\_index()}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+unsigned long \mbox{\hyperlink{class_threaded_inference_interface}{Threaded\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::next\+\_\+index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return the next index to operate on (in a thread-\/safe way). 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_threaded_inference_interface_ad74cb20e3d79a36dea3dd4c0a835ef11}\label{class_threaded_inference_interface_ad74cb20e3d79a36dea3dd4c0a835ef11}} 
+\index{ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}!nthreads@{nthreads}}
+\index{nthreads@{nthreads}!ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{nthreads()}{nthreads()}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+size\+\_\+t \mbox{\hyperlink{class_threaded_inference_interface}{Threaded\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::nthreads (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+How many threads are currently run in this interface? 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_threaded_inference_interface_a4b0d153ec182512dddfa7ddebfb4c8b2}\label{class_threaded_inference_interface_a4b0d153ec182512dddfa7ddebfb4c8b2}} 
+\index{ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}!run@{run}}
+\index{run@{run}!ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$\mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}\&$>$ \mbox{\hyperlink{class_threaded_inference_interface}{Threaded\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::run (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl,  }\item[{Args...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set up the multiple threads and actually run, calling run\+\_\+thread\+\_\+generator\+\_\+wrapper. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ctl} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_threaded_inference_interface_a1819cde5d03a54ab787364bf9147a2fa}\label{class_threaded_inference_interface_a1819cde5d03a54ab787364bf9147a2fa}} 
+\index{ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}!run\_thread@{run\_thread}}
+\index{run\_thread@{run\_thread}!ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{run\_thread()}{run\_thread()}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+virtual \mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$\mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}\&$>$ \mbox{\hyperlink{class_threaded_inference_interface}{Threaded\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::run\+\_\+thread (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}} \&}]{ctl,  }\item[{Args...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+\mbox{\Hypertarget{class_threaded_inference_interface_a1cfd95b81e63ae5ee3c03319e0cc319c}\label{class_threaded_inference_interface_a1cfd95b81e63ae5ee3c03319e0cc319c}} 
+\index{ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}!run\_thread\_generator\_wrapper@{run\_thread\_generator\_wrapper}}
+\index{run\_thread\_generator\_wrapper@{run\_thread\_generator\_wrapper}!ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{run\_thread\_generator\_wrapper()}{run\_thread\_generator\_wrapper()}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+void \mbox{\hyperlink{class_threaded_inference_interface}{Threaded\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::run\+\_\+thread\+\_\+generator\+\_\+wrapper (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{thr,  }\item[{\mbox{\hyperlink{struct_control}{Control}} \&}]{ctl,  }\item[{Args...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+We have to wrap run\+\_\+thread in something that manages the sync with main. This really just synchronizes the output of run\+\_\+thread with run below. N\+O\+TE this makes a copy of x into the local next\+\_\+x, so that when the thread keeps running, it doesn\textquotesingle{}t mess anything up. We may in the future block the thread and return a reference, but its not clear that\textquotesingle{}s faster. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ctl} & \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_threaded_inference_interface_afa31e6d3cb4b17c28cdf3f0b58477c0b}\label{class_threaded_inference_interface_afa31e6d3cb4b17c28cdf3f0b58477c0b}} 
+\index{ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}!\_\_nrunning@{\_\_nrunning}}
+\index{\_\_nrunning@{\_\_nrunning}!ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{\_\_nrunning}{\_\_nrunning}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+std\+::atomic$<$size\+\_\+t$>$ \mbox{\hyperlink{class_threaded_inference_interface}{Threaded\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::\+\_\+\+\_\+nrunning}
+
+\mbox{\Hypertarget{class_threaded_inference_interface_a7bed7a427161783065c6f29cc3c0a491}\label{class_threaded_inference_interface_a7bed7a427161783065c6f29cc3c0a491}} 
+\index{ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}!\_\_nthreads@{\_\_nthreads}}
+\index{\_\_nthreads@{\_\_nthreads}!ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{\_\_nthreads}{\_\_nthreads}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+size\+\_\+t \mbox{\hyperlink{class_threaded_inference_interface}{Threaded\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::\+\_\+\+\_\+nthreads}
+
+\mbox{\Hypertarget{class_threaded_inference_interface_a0f03c872fb87c7cb6b408d5a4fc4e1cd}\label{class_threaded_inference_interface_a0f03c872fb87c7cb6b408d5a4fc4e1cd}} 
+\index{ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}!index@{index}}
+\index{index@{index}!ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{index}{index}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+std\+::atomic$<$size\+\_\+t$>$ \mbox{\hyperlink{class_threaded_inference_interface}{Threaded\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::index}
+
+\mbox{\Hypertarget{class_threaded_inference_interface_ab74aedaa0090ee1f993c8baf9b7fe0ba}\label{class_threaded_inference_interface_ab74aedaa0090ee1f993c8baf9b7fe0ba}} 
+\index{ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}!to\_yield@{to\_yield}}
+\index{to\_yield@{to\_yield}!ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{to\_yield}{to\_yield}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+\mbox{\hyperlink{class_concurrent_queue}{Concurrent\+Queue}}$<$\mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}$>$ \mbox{\hyperlink{class_threaded_inference_interface}{Threaded\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::to\+\_\+yield}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Inference/\mbox{\hyperlink{_threaded_inference_interface_8h}{Threaded\+Inference\+Interface.\+h}}\end{DoxyCompactItemize}

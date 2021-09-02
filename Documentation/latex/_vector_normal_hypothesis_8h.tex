@@ -7,20 +7,18 @@ A \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}} encapsulates M
 
 {\ttfamily \#include \char`\"{}Eigen\+Lib.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Interfaces/\+M\+C\+M\+Cable.\+h\char`\"{}}\newline
-Include dependency graph for Vector\+Normal\+Hypothesis.\+h\+:
-\nopagebreak
+Include dependency graph for Vector\+Normal\+Hypothesis.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_vector_normal_hypothesis_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=267pt]{_vector_normal_hypothesis_8h__dep__incl}
+\includegraphics[width=285pt]{_vector_normal_hypothesis_8h__dep__incl}
 \end{center}
 \end{figure}
 \doxysubsection*{Classes}
@@ -34,3 +32,7 @@ class \mbox{\hyperlink{class_vector_normal_hypothesis}{Vector\+Normal\+Hypothesi
 A \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}} encapsulates M\+C\+MC operations on a single real number with a standard normal prior. This is useful for variables in e.\+g. Grammar\+Inference. This has a normal prior on a parameter and then allows an output transformation, which is cached for speed. 
 
 This has all of the \mbox{\hyperlink{class_m_c_m_cable}{M\+C\+M\+Cable}} interfaces but jsut represents n unit Gaussians. This is primarily used in Grammar\+Inference to represent parameters, but it could be used in any other too.
+
+Half-\/normal hypothese are bounded at zero, normal proposals wrap around.
+
+Distribution on half-\/normals. Man, it was a pain to try to make this inherit from \mbox{\hyperlink{class_vector_normal_hypothesis}{Vector\+Normal\+Hypothesis}}.

@@ -1,0 +1,112 @@
+\hypertarget{_m_p_i_8h}{}\doxysection{src/\+M\+PI.h File Reference}
+\label{_m_p_i_8h}\index{src/MPI.h@{src/MPI.h}}
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$mpi.\+h$>$}\newline
+Include dependency graph for M\+P\+I.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=159pt]{_m_p_i_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=159pt]{_m_p_i_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{_m_p_i_8h_a7b8f6d1c68bc51aaebba2a4669f296de}{mpi\+\_\+rank}} ()
+\item 
+int \mbox{\hyperlink{_m_p_i_8h_aed4f3ac0e6ba87fd449903f2b6034a72}{mpi\+\_\+size}} ()
+\item 
+bool \mbox{\hyperlink{_m_p_i_8h_af20530d9083692930bb2dc89858cd83d}{is\+\_\+mpi\+\_\+head}} ()
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{_m_p_i_8h_a1992a6881797a664b20d2c050eb2c63b}{mpi\+\_\+return}} (T \&x)
+\begin{DoxyCompactList}\small\item\em Return my results via M\+PI. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::vector$<$ T $>$ \mbox{\hyperlink{_m_p_i_8h_afb3732c99a70ac5e813c22bd873ac56b}{mpi\+\_\+gather}} ()
+\begin{DoxyCompactList}\small\item\em Reads all the M\+PI returns from mpi\+\_\+return. N\+O\+TE that the output does not come with any order guarantees. This waits until all are finished. N\+O\+TE\+: This has NO robustness to losing nodes. \href{https://mpitutorial.com/tutorials/dynamic-receiving-with-mpi-probe-and-mpi-status/}{\texttt{ https\+://mpitutorial.\+com/tutorials/dynamic-\/receiving-\/with-\/mpi-\/probe-\/and-\/mpi-\/status/}}. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::vector$<$ T $>$ \mbox{\hyperlink{_m_p_i_8h_ab2fe9a6b9e9ef4d454cabf572672a1ec}{mpi\+\_\+map}} (const size\+\_\+t n)
+\begin{DoxyCompactList}\small\item\em Send an int n to each request. Each requestor can use this to index into some data which they are assumed to know already. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const size\+\_\+t \mbox{\hyperlink{_m_p_i_8h_a8e1812a28359a9a1a6080ddfbf379fd7}{M\+P\+I\+\_\+\+H\+E\+A\+D\+\_\+\+R\+A\+NK}} = 0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_m_p_i_8h_af20530d9083692930bb2dc89858cd83d}\label{_m_p_i_8h_af20530d9083692930bb2dc89858cd83d}} 
+\index{MPI.h@{MPI.h}!is\_mpi\_head@{is\_mpi\_head}}
+\index{is\_mpi\_head@{is\_mpi\_head}!MPI.h@{MPI.h}}
+\doxysubsubsection{\texorpdfstring{is\_mpi\_head()}{is\_mpi\_head()}}
+{\footnotesize\ttfamily bool is\+\_\+mpi\+\_\+head (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_m_p_i_8h_afb3732c99a70ac5e813c22bd873ac56b}\label{_m_p_i_8h_afb3732c99a70ac5e813c22bd873ac56b}} 
+\index{MPI.h@{MPI.h}!mpi\_gather@{mpi\_gather}}
+\index{mpi\_gather@{mpi\_gather}!MPI.h@{MPI.h}}
+\doxysubsubsection{\texorpdfstring{mpi\_gather()}{mpi\_gather()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$T$>$ mpi\+\_\+gather (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reads all the M\+PI returns from mpi\+\_\+return. N\+O\+TE that the output does not come with any order guarantees. This waits until all are finished. N\+O\+TE\+: This has NO robustness to losing nodes. \href{https://mpitutorial.com/tutorials/dynamic-receiving-with-mpi-probe-and-mpi-status/}{\texttt{ https\+://mpitutorial.\+com/tutorials/dynamic-\/receiving-\/with-\/mpi-\/probe-\/and-\/mpi-\/status/}}. 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{_m_p_i_8h_ab2fe9a6b9e9ef4d454cabf572672a1ec}\label{_m_p_i_8h_ab2fe9a6b9e9ef4d454cabf572672a1ec}} 
+\index{MPI.h@{MPI.h}!mpi\_map@{mpi\_map}}
+\index{mpi\_map@{mpi\_map}!MPI.h@{MPI.h}}
+\doxysubsubsection{\texorpdfstring{mpi\_map()}{mpi\_map()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$T$>$ mpi\+\_\+map (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{n }\end{DoxyParamCaption})}
+
+
+
+Send an int n to each request. Each requestor can use this to index into some data which they are assumed to know already. 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{_m_p_i_8h_a7b8f6d1c68bc51aaebba2a4669f296de}\label{_m_p_i_8h_a7b8f6d1c68bc51aaebba2a4669f296de}} 
+\index{MPI.h@{MPI.h}!mpi\_rank@{mpi\_rank}}
+\index{mpi\_rank@{mpi\_rank}!MPI.h@{MPI.h}}
+\doxysubsubsection{\texorpdfstring{mpi\_rank()}{mpi\_rank()}}
+{\footnotesize\ttfamily int mpi\+\_\+rank (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_m_p_i_8h_a1992a6881797a664b20d2c050eb2c63b}\label{_m_p_i_8h_a1992a6881797a664b20d2c050eb2c63b}} 
+\index{MPI.h@{MPI.h}!mpi\_return@{mpi\_return}}
+\index{mpi\_return@{mpi\_return}!MPI.h@{MPI.h}}
+\doxysubsubsection{\texorpdfstring{mpi\_return()}{mpi\_return()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void mpi\+\_\+return (\begin{DoxyParamCaption}\item[{T \&}]{x }\end{DoxyParamCaption})}
+
+
+
+Return my results via M\+PI. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_m_p_i_8h_aed4f3ac0e6ba87fd449903f2b6034a72}\label{_m_p_i_8h_aed4f3ac0e6ba87fd449903f2b6034a72}} 
+\index{MPI.h@{MPI.h}!mpi\_size@{mpi\_size}}
+\index{mpi\_size@{mpi\_size}!MPI.h@{MPI.h}}
+\doxysubsubsection{\texorpdfstring{mpi\_size()}{mpi\_size()}}
+{\footnotesize\ttfamily int mpi\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{_m_p_i_8h_a8e1812a28359a9a1a6080ddfbf379fd7}\label{_m_p_i_8h_a8e1812a28359a9a1a6080ddfbf379fd7}} 
+\index{MPI.h@{MPI.h}!MPI\_HEAD\_RANK@{MPI\_HEAD\_RANK}}
+\index{MPI\_HEAD\_RANK@{MPI\_HEAD\_RANK}!MPI.h@{MPI.h}}
+\doxysubsubsection{\texorpdfstring{MPI\_HEAD\_RANK}{MPI\_HEAD\_RANK}}
+{\footnotesize\ttfamily const size\+\_\+t M\+P\+I\+\_\+\+H\+E\+A\+D\+\_\+\+R\+A\+NK = 0}
+

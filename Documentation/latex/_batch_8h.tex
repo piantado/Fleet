@@ -5,40 +5,47 @@
 {\ttfamily \#include \char`\"{}Top\+N.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}M\+C\+M\+C\+Chain.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Vectors.\+h\char`\"{}}\newline
-Include dependency graph for Batch.\+h\+:
-\nopagebreak
+Include dependency graph for Batch.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_batch_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=267pt]{_batch_8h__dep__incl}
+\includegraphics[width=285pt]{_batch_8h__dep__incl}
 \end{center}
 \end{figure}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename H\+YP $>$ }\\std\+::set$<$ H\+YP $>$ \mbox{\hyperlink{_batch_8h_accff822104c273d10d853457acd2d6d0}{get\+\_\+hypotheses\+\_\+from\+\_\+mcmc}} (H\+YP \&h0, std\+::vector$<$ typename H\+Y\+P\+::data\+\_\+t $\ast$ $>$ \&mcmc\+\_\+data, \mbox{\hyperlink{struct_control}{Control}} c, size\+\_\+t ntop)
-\begin{DoxyCompactList}\small\item\em Runs M\+C\+MC on hypotheses, resampling when the data stops being incremental and returns a unioned vector of all the tops. \end{DoxyCompactList}\end{DoxyCompactItemize}
+{\footnotesize template$<$typename H\+YP $>$ }\\std\+::vector$<$ std\+::set$<$ H\+YP $>$ $>$ \mbox{\hyperlink{_batch_8h_a038339a755b6b42e943e8bcff2119202}{get\+\_\+hypotheses\+\_\+from\+\_\+mcmc}} (const H\+YP \&h0, const std\+::vector$<$ typename H\+Y\+P\+::data\+\_\+t $\ast$ $>$ \&mcmc\+\_\+data, \mbox{\hyperlink{struct_control}{Control}} c, const std\+::vector$<$ size\+\_\+t $>$ ntop)
+\begin{DoxyCompactList}\small\item\em Runs M\+C\+MC on hypotheses, resampling when the data stops being incremental and returns a unioned vector of all the tops. N\+O\+TE the wrapper for just singles. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename H\+YP $>$ }\\std\+::set$<$ H\+YP $>$ \mbox{\hyperlink{_batch_8h_a977993f7d497025160aa215e95fad4a1}{get\+\_\+hypotheses\+\_\+from\+\_\+mcmc}} (const H\+YP \&h0, const std\+::vector$<$ typename H\+Y\+P\+::data\+\_\+t $\ast$ $>$ \&mcmc\+\_\+data, \mbox{\hyperlink{struct_control}{Control}} c, const size\+\_\+t ntop)
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{_batch_8h_accff822104c273d10d853457acd2d6d0}\label{_batch_8h_accff822104c273d10d853457acd2d6d0}} 
+\mbox{\Hypertarget{_batch_8h_a977993f7d497025160aa215e95fad4a1}\label{_batch_8h_a977993f7d497025160aa215e95fad4a1}} 
 \index{Batch.h@{Batch.h}!get\_hypotheses\_from\_mcmc@{get\_hypotheses\_from\_mcmc}}
 \index{get\_hypotheses\_from\_mcmc@{get\_hypotheses\_from\_mcmc}!Batch.h@{Batch.h}}
-\doxysubsubsection{\texorpdfstring{get\_hypotheses\_from\_mcmc()}{get\_hypotheses\_from\_mcmc()}}
+\doxysubsubsection{\texorpdfstring{get\_hypotheses\_from\_mcmc()}{get\_hypotheses\_from\_mcmc()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
-std\+::set$<$H\+YP$>$ get\+\_\+hypotheses\+\_\+from\+\_\+mcmc (\begin{DoxyParamCaption}\item[{H\+YP \&}]{h0,  }\item[{std\+::vector$<$ typename H\+Y\+P\+::data\+\_\+t $\ast$ $>$ \&}]{mcmc\+\_\+data,  }\item[{\mbox{\hyperlink{struct_control}{Control}}}]{c,  }\item[{size\+\_\+t}]{ntop }\end{DoxyParamCaption})}
+std\+::set$<$H\+YP$>$ get\+\_\+hypotheses\+\_\+from\+\_\+mcmc (\begin{DoxyParamCaption}\item[{const H\+YP \&}]{h0,  }\item[{const std\+::vector$<$ typename H\+Y\+P\+::data\+\_\+t $\ast$ $>$ \&}]{mcmc\+\_\+data,  }\item[{\mbox{\hyperlink{struct_control}{Control}}}]{c,  }\item[{const size\+\_\+t}]{ntop }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_batch_8h_a038339a755b6b42e943e8bcff2119202}\label{_batch_8h_a038339a755b6b42e943e8bcff2119202}} 
+\index{Batch.h@{Batch.h}!get\_hypotheses\_from\_mcmc@{get\_hypotheses\_from\_mcmc}}
+\index{get\_hypotheses\_from\_mcmc@{get\_hypotheses\_from\_mcmc}!Batch.h@{Batch.h}}
+\doxysubsubsection{\texorpdfstring{get\_hypotheses\_from\_mcmc()}{get\_hypotheses\_from\_mcmc()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+std\+::vector$<$std\+::set$<$H\+YP$>$ $>$ get\+\_\+hypotheses\+\_\+from\+\_\+mcmc (\begin{DoxyParamCaption}\item[{const H\+YP \&}]{h0,  }\item[{const std\+::vector$<$ typename H\+Y\+P\+::data\+\_\+t $\ast$ $>$ \&}]{mcmc\+\_\+data,  }\item[{\mbox{\hyperlink{struct_control}{Control}}}]{c,  }\item[{const std\+::vector$<$ size\+\_\+t $>$}]{ntop }\end{DoxyParamCaption})}
 
 
 
-Runs M\+C\+MC on hypotheses, resampling when the data stops being incremental and returns a unioned vector of all the tops. 
+Runs M\+C\+MC on hypotheses, resampling when the data stops being incremental and returns a unioned vector of all the tops. N\+O\+TE the wrapper for just singles. 
 
 
 \begin{DoxyParams}{Parameters}

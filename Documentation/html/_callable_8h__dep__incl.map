@@ -1,4 +1,4 @@
 <map id="src/Hypotheses/Interfaces/Callable.h" name="src/Hypotheses/Interfaces/Callable.h">
-<area shape="rect" id="node1" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="27,5,203,47"/>
-<area shape="rect" id="node2" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="5,95,225,121"/>
+<area shape="rect" id="node1" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="28,5,219,47"/>
+<area shape="rect" id="node2" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="5,95,241,121"/>
 </map>

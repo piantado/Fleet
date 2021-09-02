@@ -1,0 +1,35 @@
+\hypertarget{_concurrent_queue_8h}{}\doxysection{src/\+Containers/\+Concurrent\+Queue.h File Reference}
+\label{_concurrent_queue_8h}\index{src/Containers/ConcurrentQueue.h@{src/Containers/ConcurrentQueue.h}}
+
+
+A concurrent queue class that allows multiple threads to push and consume. Note that this has a fixed, finite size (n) and when its full, we\textquotesingle{}ll block. This prevents us from eating up too much memory.  
+
+
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$mutex$>$}\newline
+{\ttfamily \#include $<$condition\+\_\+variable$>$}\newline
+{\ttfamily \#include \char`\"{}Ordered\+Lock.\+h\char`\"{}}\newline
+Include dependency graph for Concurrent\+Queue.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_concurrent_queue_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_concurrent_queue_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_concurrent_queue}{Concurrent\+Queue$<$ T $>$}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A concurrent queue class that allows multiple threads to push and consume. Note that this has a fixed, finite size (n) and when its full, we\textquotesingle{}ll block. This prevents us from eating up too much memory. 
+

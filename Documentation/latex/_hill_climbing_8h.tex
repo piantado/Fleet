@@ -1,0 +1,26 @@
+\hypertarget{_hill_climbing_8h}{}\doxysection{src/\+Inference/\+Hill\+Climbing.h File Reference}
+\label{_hill_climbing_8h}\index{src/Inference/HillClimbing.h@{src/Inference/HillClimbing.h}}
+
+
+This cute kind of inference keeps a body of N top hypotheses, and successively proposes to them using standard proposals. When it hasn\textquotesingle{}t improved in ctl.\+restart steps, it will restart (resample). Note that this really should use ctl.\+restart$>$0, or else you just climb up one hill. N\+O\+TE\+: We could propose propotional to each hypothesis\textquotesingle{} posterior, but it doesn\textquotesingle{}t matter much because the best gets most probability mass (that\textquotesingle{}s why we don\textquotesingle{}t store more than n=1 defaultly)  
+
+
+{\ttfamily \#include \char`\"{}Top\+N.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Coroutines.\+h\char`\"{}}\newline
+Include dependency graph for Hill\+Climbing.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_hill_climbing_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_hill_climbing}{Hill\+Climbing$<$ H\+Y\+P $>$}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This cute kind of inference keeps a body of N top hypotheses, and successively proposes to them using standard proposals. When it hasn\textquotesingle{}t improved in ctl.\+restart steps, it will restart (resample). Note that this really should use ctl.\+restart$>$0, or else you just climb up one hill. N\+O\+TE\+: We could propose propotional to each hypothesis\textquotesingle{} posterior, but it doesn\textquotesingle{}t matter much because the best gets most probability mass (that\textquotesingle{}s why we don\textquotesingle{}t store more than n=1 defaultly) 
+

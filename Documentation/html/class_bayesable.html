@@ -123,6 +123,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a268442b9aae5b763c17ca29c39231915"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a898e03a20e1851c868b77ef4e844f0bf"><td class="memItemLeft" align="right" valign="top">uintmax_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a898e03a20e1851c868b77ef4e844f0bf">born</a></td></tr>
 <tr class="separator:a898e03a20e1851c868b77ef4e844f0bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab770e48131dbb7688ca02a26adecbd7"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#aab770e48131dbb7688ca02a26adecbd7">born_chain_idx</a></td></tr>
+<tr class="separator:aab770e48131dbb7688ca02a26adecbd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename _datum_t, typename _data_t = std::vector&lt;_datum_t&gt;&gt;<br />
@@ -301,7 +303,7 @@ template&lt;typename _datum_t , typename _data_t  = std::vector&lt;_datum_t&gt;&
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_grammar_hypothesis.html#a769eea50d9e40668022b120b6fddfe06">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>, <a class="el" href="class_vector_normal_hypothesis.html#a8d705b46b3644217f5beac10a4d36f8d">VectorNormalHypothesis</a>, and <a class="el" href="class_t_normal_variable.html#a77e4954e8d30140fce241eca6d9abfa2">TNormalVariable&lt;+[](float x) -&gt;</a>.</p>
+<p>Reimplemented in <a class="el" href="class_grammar_hypothesis.html#a769eea50d9e40668022b120b6fddfe06">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>, <a class="el" href="class_vector_normal_hypothesis.html#a8d705b46b3644217f5beac10a4d36f8d">VectorNormalHypothesis</a>, <a class="el" href="class_vector_half_normal_hypothesis.html#ac11337651ba0be2f81751a01c7dac7c1">VectorHalfNormalHypothesis</a>, and <a class="el" href="class_t_normal_variable.html#a77e4954e8d30140fce241eca6d9abfa2">TNormalVariable&lt;+[](float x) -&gt;</a>.</p>
 
 </div>
 </div>
@@ -380,7 +382,7 @@ template&lt;typename _datum_t , typename _data_t  = std::vector&lt;_datum_t&gt;&
 
 <p>Compute the prior &ndash; defaultly not defined. </p>
 
-<p>Implemented in <a class="el" href="class_grammar_hypothesis.html#a8ad537345ab55b581825b89c9b2cfad3">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>, <a class="el" href="class_lexicon.html#a7cc63246d2fd034be7ce4437ceafbdeb">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#afee5fd63bbbe776f5a71cf6c7f2820cc">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>, <a class="el" href="class_vector_normal_hypothesis.html#a2cf8e90e2d6e164e4bd86702ed83a9d9">VectorNormalHypothesis</a>, <a class="el" href="class_t_normal_variable.html#a5cb6223529b451239b505b3e5dbdd605">TNormalVariable&lt; f &gt;</a>, and <a class="el" href="class_t_normal_variable.html#a5cb6223529b451239b505b3e5dbdd605">TNormalVariable&lt;+[](float x) -&gt;</a>.</p>
+<p>Implemented in <a class="el" href="class_grammar_hypothesis.html#a8ad537345ab55b581825b89c9b2cfad3">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>, <a class="el" href="class_lexicon.html#a7cc63246d2fd034be7ce4437ceafbdeb">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#afee5fd63bbbe776f5a71cf6c7f2820cc">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>, <a class="el" href="class_vector_normal_hypothesis.html#a2cf8e90e2d6e164e4bd86702ed83a9d9">VectorNormalHypothesis</a>, <a class="el" href="class_vector_half_normal_hypothesis.html#a9bc5fb2392c379a286d62927fdfbf925">VectorHalfNormalHypothesis</a>, <a class="el" href="class_t_normal_variable.html#a5cb6223529b451239b505b3e5dbdd605">TNormalVariable&lt; f &gt;</a>, and <a class="el" href="class_t_normal_variable.html#a5cb6223529b451239b505b3e5dbdd605">TNormalVariable&lt;+[](float x) -&gt;</a>.</p>
 
 </div>
 </div>
@@ -548,7 +550,7 @@ template&lt;typename _datum_t , typename _data_t  = std::vector&lt;_datum_t&gt;&
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_grammar_hypothesis.html#a4f978eb7e5b7e5dc86f8a434297f8c8e">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#ab0411933fd799db43ed9796673c4c7bc">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>, <a class="el" href="class_vector_normal_hypothesis.html#ad233ed5c8de7cbc7e44120dbe669cc5a">VectorNormalHypothesis</a>, <a class="el" href="class_t_normal_variable.html#aa1d91679b1143624a018b073646a1c46">TNormalVariable&lt; f &gt;</a>, <a class="el" href="class_t_normal_variable.html#aa1d91679b1143624a018b073646a1c46">TNormalVariable&lt;+[](float x) -&gt;</a>, and <a class="el" href="class_lexicon.html#a3c49db72bb6e8960a4374133fc900942">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>.</p>
+<p>Implemented in <a class="el" href="class_grammar_hypothesis.html#a4f978eb7e5b7e5dc86f8a434297f8c8e">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#ab0411933fd799db43ed9796673c4c7bc">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>, <a class="el" href="class_vector_half_normal_hypothesis.html#a6fe57ed6b7282a745c55e6e31f1ef5b3">VectorHalfNormalHypothesis</a>, <a class="el" href="class_vector_normal_hypothesis.html#ad233ed5c8de7cbc7e44120dbe669cc5a">VectorNormalHypothesis</a>, <a class="el" href="class_t_normal_variable.html#aa1d91679b1143624a018b073646a1c46">TNormalVariable&lt; f &gt;</a>, <a class="el" href="class_t_normal_variable.html#aa1d91679b1143624a018b073646a1c46">TNormalVariable&lt;+[](float x) -&gt;</a>, and <a class="el" href="class_lexicon.html#a3c49db72bb6e8960a4374133fc900942">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>.</p>
 
 </div>
 </div>
@@ -563,6 +565,22 @@ template&lt;typename _datum_t , typename _data_t  = std::vector&lt;_datum_t&gt;&
       <table class="memname">
         <tr>
           <td class="memname">uintmax_t <a class="el" href="class_bayesable.html">Bayesable</a>&lt; _datum_t, _data_t &gt;::born</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aab770e48131dbb7688ca02a26adecbd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab770e48131dbb7688ca02a26adecbd7">&#9670;&nbsp;</a></span>born_chain_idx</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename _datum_t , typename _data_t  = std::vector&lt;_datum_t&gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="class_bayesable.html">Bayesable</a>&lt; _datum_t, _data_t &gt;::born_chain_idx</td>
         </tr>
       </table>
 </div><div class="memdoc">

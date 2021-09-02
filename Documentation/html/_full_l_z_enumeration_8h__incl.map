@@ -1,9 +1,9 @@
 <map id="src/Grammar/Enumeration/FullLZEnumeration.h" name="src/Grammar/Enumeration/FullLZEnumeration.h">
-<area shape="rect" id="node1" title="Enumerate where we may interpret low numbers as pointers back to COMPLETE subtrees...." alt="" coords="50,5,225,47"/>
-<area shape="rect" id="node2" href="$_subtree_enumeration_8h.html" title="Enumerate subtrees of a given tree." alt="" coords="62,95,213,121"/>
-<area shape="rect" id="node3" href="$_basic_enumeration_8h.html" title=" " alt="" coords="68,169,207,196"/>
-<area shape="rect" id="node4" href="$_grammar_2_enumeration_2_enumeration_inference_8h.html" title=" " alt="" coords="57,244,217,271"/>
-<area shape="rect" id="node5" href="$_fleet_statistics_8h.html" title=" " alt="" coords="5,319,123,345"/>
-<area shape="rect" id="node7" href="$_integerized_stack_8h.html" title=" " alt="" coords="147,319,277,345"/>
-<area shape="rect" id="node6" title=" " alt="" coords="33,393,95,420"/>
+<area shape="rect" id="node1" title="Enumerate where we may interpret low numbers as pointers back to COMPLETE subtrees...." alt="" coords="50,5,245,47"/>
+<area shape="rect" id="node2" href="$_subtree_enumeration_8h.html" title="Enumerate subtrees of a given tree." alt="" coords="64,95,231,121"/>
+<area shape="rect" id="node3" href="$_basic_enumeration_8h.html" title=" " alt="" coords="71,169,223,196"/>
+<area shape="rect" id="node4" href="$_grammar_2_enumeration_2_enumeration_inference_8h.html" title=" " alt="" coords="58,244,237,271"/>
+<area shape="rect" id="node5" href="$_fleet_statistics_8h.html" title=" " alt="" coords="5,319,132,345"/>
+<area shape="rect" id="node7" href="$_integerized_stack_8h.html" title=" " alt="" coords="156,319,299,345"/>
+<area shape="rect" id="node6" title=" " alt="" coords="35,393,102,420"/>
 </map>

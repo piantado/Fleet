@@ -91,6 +91,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="_control_8h_source.html">Control.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_top_n_8h_source.html">TopN.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_m_c_m_c_chain_8h_source.html">MCMCChain.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_vector_half_normal_hypothesis_8h_source.html">VectorHalfNormalHypothesis.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_vector_normal_hypothesis_8h_source.html">VectorNormalHypothesis.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_t_normal_variable_8h_source.html">TNormalVariable.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_batch_8h_source.html">Batch.h</a>&quot;</code><br />
@@ -99,56 +100,56 @@ Include dependency graph for GrammarHypothesis.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_grammar_hypothesis_8h__incl.png" border="0" usemap="#src_2_hypotheses_2_grammar_hypothesis_8h" alt=""/></div>
 <map name="src_2_hypotheses_2_grammar_hypothesis_8h" id="src_2_hypotheses_2_grammar_hypothesis_8h">
-<area shape="rect" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="1675,5,1925,32"/>
-<area shape="rect" title=" " alt="" coords="31,528,100,555"/>
-<area shape="rect" title=" " alt="" coords="2049,80,2103,107"/>
-<area shape="rect" title=" " alt="" coords="1927,304,1993,331"/>
-<area shape="rect" title=" " alt="" coords="2127,80,2238,107"/>
-<area shape="rect" title=" " alt="" coords="2337,155,2420,181"/>
-<area shape="rect" href="_errors_8h.html" title=" " alt="" coords="1913,379,1981,405"/>
-<area shape="rect" href="_numerics_8h.html" title=" " alt="" coords="179,453,269,480"/>
-<area shape="rect" href="_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="379,229,527,256"/>
-<area shape="rect" href="_vector2_d_8h.html" title=" " alt="" coords="708,155,796,181"/>
-<area shape="rect" href="_human_datum_8h.html" title=" " alt="" coords="1204,155,1319,181"/>
-<area shape="rect" href="_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="1848,229,1923,256"/>
-<area shape="rect" href="_top_n_8h.html" title=" " alt="" coords="1356,304,1420,331"/>
-<area shape="rect" href="_m_c_m_c_chain_8h.html" title=" " alt="" coords="1596,155,1705,181"/>
-<area shape="rect" href="_vector_normal_hypothesis_8h.html" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior...." alt="" coords="2468,80,2647,107"/>
-<area shape="rect" href="_t_normal_variable_8h.html" title=" " alt="" coords="2314,80,2443,107"/>
-<area shape="rect" href="_batch_8h.html" title=" " alt="" coords="1537,80,1604,107"/>
-<area shape="rect" title=" " alt="" coords="2010,453,2089,480"/>
-<area shape="rect" title=" " alt="" coords="1907,453,1986,480"/>
-<area shape="rect" title=" " alt="" coords="1742,453,1797,480"/>
-<area shape="rect" title=" " alt="" coords="211,528,277,555"/>
-<area shape="rect" title=" " alt="" coords="301,528,373,555"/>
-<area shape="rect" title=" " alt="" coords="125,528,187,555"/>
-<area shape="rect" title=" " alt="" coords="881,453,927,480"/>
-<area shape="rect" title=" " alt="" coords="656,304,715,331"/>
-<area shape="rect" title=" " alt="" coords="144,304,219,331"/>
-<area shape="rect" title=" " alt="" coords="408,528,477,555"/>
-<area shape="rect" href="_miscellaneous_8h.html" title=" " alt="" coords="395,453,511,480"/>
-<area shape="rect" href="_i_o_8h.html" title=" " alt="" coords="907,304,954,331"/>
-<area shape="rect" href="_strings_8h.html" title=" " alt="" coords="507,379,581,405"/>
-<area shape="rect" title=" " alt="" coords="1164,528,1225,555"/>
-<area shape="rect" title=" " alt="" coords="1037,379,1096,405"/>
-<area shape="rect" title=" " alt="" coords="1533,453,1592,480"/>
-<area shape="rect" title=" " alt="" coords="757,379,824,405"/>
-<area shape="rect" title=" " alt="" coords="848,379,1013,405"/>
-<area shape="rect" title=" " alt="" coords="787,453,856,480"/>
-<area shape="rect" title=" " alt="" coords="1326,453,1383,480"/>
-<area shape="rect" title=" " alt="" coords="536,453,587,480"/>
-<area shape="rect" title=" " alt="" coords="1135,453,1175,480"/>
-<area shape="rect" title=" " alt="" coords="611,453,672,480"/>
-<area shape="rect" title=" " alt="" coords="697,453,762,480"/>
-<area shape="rect" href="_fleet_args_8h.html" title=" " alt="" coords="1691,379,1781,405"/>
-<area shape="rect" href="_timing_8h.html" title=" " alt="" coords="1831,304,1903,331"/>
-<area shape="rect" href="_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="1509,379,1616,405"/>
-<area shape="rect" href="_serializable_8h.html" title=" " alt="" coords="1323,379,1485,405"/>
-<area shape="rect" title=" " alt="" coords="1495,229,1574,256"/>
-<area shape="rect" href="_coroutines_8h.html" title=" " alt="" coords="1728,229,1824,256"/>
-<area shape="rect" href="_finite_history_8h.html" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="1598,229,1703,256"/>
-<area shape="rect" href="_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="2461,155,2622,181"/>
-<area shape="rect" href="_vectors_8h.html" title=" " alt="" coords="1007,155,1086,181"/>
+<area shape="rect" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="1215,5,1489,32"/>
+<area shape="rect" title=" " alt="" coords="5,603,80,629"/>
+<area shape="rect" title=" " alt="" coords="1497,80,1556,107"/>
+<area shape="rect" title=" " alt="" coords="1599,304,1673,331"/>
+<area shape="rect" title=" " alt="" coords="1581,80,1705,107"/>
+<area shape="rect" title=" " alt="" coords="1833,155,1922,181"/>
+<area shape="rect" href="_errors_8h.html" title=" " alt="" coords="1655,379,1727,405"/>
+<area shape="rect" href="_numerics_8h.html" title=" " alt="" coords="153,528,249,555"/>
+<area shape="rect" href="_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="350,304,514,331"/>
+<area shape="rect" href="_vector2_d_8h.html" title=" " alt="" coords="641,229,735,256"/>
+<area shape="rect" href="_human_datum_8h.html" title=" " alt="" coords="557,155,683,181"/>
+<area shape="rect" href="_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="1307,229,1389,256"/>
+<area shape="rect" href="_top_n_8h.html" title=" " alt="" coords="953,304,1020,331"/>
+<area shape="rect" href="_m_c_m_c_chain_8h.html" title=" " alt="" coords="1126,155,1239,181"/>
+<area shape="rect" href="_vector_half_normal_hypothesis_8h.html" title=" " alt="" coords="1948,80,2172,107"/>
+<area shape="rect" href="_vector_normal_hypothesis_8h.html" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior...." alt="" coords="2196,80,2393,107"/>
+<area shape="rect" href="_t_normal_variable_8h.html" title=" " alt="" coords="1780,80,1924,107"/>
+<area shape="rect" href="_batch_8h.html" title=" " alt="" coords="819,80,890,107"/>
+<area shape="rect" title=" " alt="" coords="1758,453,1845,480"/>
+<area shape="rect" title=" " alt="" coords="1647,453,1734,480"/>
+<area shape="rect" title=" " alt="" coords="1375,453,1433,480"/>
+<area shape="rect" title=" " alt="" coords="197,603,269,629"/>
+<area shape="rect" title=" " alt="" coords="293,603,373,629"/>
+<area shape="rect" title=" " alt="" coords="105,603,173,629"/>
+<area shape="rect" title=" " alt="" coords="539,528,589,555"/>
+<area shape="rect" title=" " alt="" coords="641,379,703,405"/>
+<area shape="rect" title=" " alt="" coords="227,379,312,405"/>
+<area shape="rect" title=" " alt="" coords="407,603,484,629"/>
+<area shape="rect" href="_miscellaneous_8h.html" title=" " alt="" coords="387,528,514,555"/>
+<area shape="rect" href="_i_o_8h.html" title=" " alt="" coords="1083,379,1131,405"/>
+<area shape="rect" href="_strings_8h.html" title=" " alt="" coords="781,453,859,480"/>
+<area shape="rect" title=" " alt="" coords="1037,603,1104,629"/>
+<area shape="rect" title=" " alt="" coords="1287,453,1351,480"/>
+<area shape="rect" title=" " alt="" coords="1508,453,1572,480"/>
+<area shape="rect" title=" " alt="" coords="986,453,1059,480"/>
+<area shape="rect" title=" " alt="" coords="1084,453,1263,480"/>
+<area shape="rect" title=" " alt="" coords="613,528,688,555"/>
+<area shape="rect" title=" " alt="" coords="1222,528,1285,555"/>
+<area shape="rect" title=" " alt="" coords="712,528,768,555"/>
+<area shape="rect" title=" " alt="" coords="883,528,925,555"/>
+<area shape="rect" title=" " alt="" coords="792,528,859,555"/>
+<area shape="rect" href="_fleet_args_8h.html" title=" " alt="" coords="1253,379,1349,405"/>
+<area shape="rect" href="_timing_8h.html" title=" " alt="" coords="1497,304,1575,331"/>
+<area shape="rect" href="_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="1374,379,1490,405"/>
+<area shape="rect" href="_serializable_8h.html" title=" " alt="" coords="829,379,1008,405"/>
+<area shape="rect" title=" " alt="" coords="966,229,1053,256"/>
+<area shape="rect" href="_coroutines_8h.html" title="This little object will return true once every n times it is converted to a bool." alt="" coords="1077,229,1181,256"/>
+<area shape="rect" href="_finite_history_8h.html" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="1357,304,1472,331"/>
+<area shape="rect" href="_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="1973,155,2147,181"/>
+<area shape="rect" href="_vectors_8h.html" title=" " alt="" coords="757,155,840,181"/>
 </map>
 </div>
 </div>

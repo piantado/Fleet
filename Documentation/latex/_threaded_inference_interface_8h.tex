@@ -1,0 +1,37 @@
+\hypertarget{_threaded_inference_interface_8h}{}\doxysection{src/\+Inference/\+Threaded\+Inference\+Interface.h File Reference}
+\label{_threaded_inference_interface_8h}\index{src/Inference/ThreadedInferenceInterface.h@{src/Inference/ThreadedInferenceInterface.h}}
+
+
+This manages multiple threads for running inference. This requires a subclass to define run\+\_\+thread, which is what each individual thread should do. All threads can then be called with run(\+Control, Args... args), which copies the control for each thread (setting threads=1) and then passes the args arguments onward.  
+
+
+{\ttfamily \#include $<$atomic$>$}\newline
+{\ttfamily \#include $<$mutex$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
+{\ttfamily \#include \char`\"{}Control.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Coroutines.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Concurrent\+Queue.\+h\char`\"{}}\newline
+Include dependency graph for Threaded\+Inference\+Interface.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_threaded_inference_interface_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_threaded_inference_interface_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_threaded_inference_interface}{Threaded\+Inference\+Interface$<$ X, Args $>$}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This manages multiple threads for running inference. This requires a subclass to define run\+\_\+thread, which is what each individual thread should do. All threads can then be called with run(\+Control, Args... args), which copies the control for each thread (setting threads=1) and then passes the args arguments onward. 
+

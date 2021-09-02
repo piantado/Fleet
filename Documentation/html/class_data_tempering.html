@@ -79,9 +79,10 @@ Inheritance diagram for DataTempering&lt; HYP &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_data_tempering__inherit__graph.png" border="0" usemap="#_data_tempering_3_01_h_y_p_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="_data_tempering_3_01_h_y_p_01_4_inherit__map" id="_data_tempering_3_01_h_y_p_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="15,169,177,196"/>
-<area shape="rect" href="class_chain_pool.html" title=" " alt="" coords="29,95,163,121"/>
-<area shape="rect" href="class_threaded_inference_interface.html" title=" " alt="" coords="5,5,187,47"/>
+<area shape="rect" title=" " alt="" coords="18,259,195,285"/>
+<area shape="rect" href="class_parallel_tempering.html" title=" " alt="" coords="31,169,182,211"/>
+<area shape="rect" href="class_chain_pool.html" title=" " alt="" coords="35,95,178,121"/>
+<area shape="rect" href="class_threaded_inference_interface.html" title=" " alt="" coords="5,5,208,47"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -89,11 +90,12 @@ Collaboration diagram for DataTempering&lt; HYP &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_data_tempering__coll__graph.png" border="0" usemap="#_data_tempering_3_01_h_y_p_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="_data_tempering_3_01_h_y_p_01_4_coll__map" id="_data_tempering_3_01_h_y_p_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="96,275,259,301"/>
-<area shape="rect" href="class_chain_pool.html" title=" " alt="" coords="29,185,163,212"/>
-<area shape="rect" href="class_threaded_inference_interface.html" title=" " alt="" coords="5,95,187,136"/>
-<area shape="rect" href="class_ordered_lock.html" title=" " alt="" coords="48,5,144,32"/>
-<area shape="rect" href="class_finite_history.html" title=" " alt="" coords="188,185,332,212"/>
+<area shape="rect" title=" " alt="" coords="135,365,313,392"/>
+<area shape="rect" href="class_parallel_tempering.html" title=" " alt="" coords="149,275,299,316"/>
+<area shape="rect" href="class_chain_pool.html" title=" " alt="" coords="93,199,235,225"/>
+<area shape="rect" href="class_threaded_inference_interface.html" title=" " alt="" coords="5,95,208,136"/>
+<area shape="rect" href="class_concurrent_queue.html" title=" " alt="" coords="11,5,202,32"/>
+<area shape="rect" href="class_ordered_lock.html" title=" " alt="" coords="232,102,336,129"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -101,16 +103,27 @@ Collaboration diagram for DataTempering&lt; HYP &gt;:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5c4f2a7d7690f86763c093070cd5605b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_tempering.html#a5c4f2a7d7690f86763c093070cd5605b">DataTempering</a> (HYP &amp;h0, std::vector&lt; typename HYP::data_t &gt; &amp;datas)</td></tr>
 <tr class="separator:a5c4f2a7d7690f86763c093070cd5605b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4755dad592fa370fd630a4128de6d4b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_tempering.html#af4755dad592fa370fd630a4128de6d4b">~DataTempering</a> ()</td></tr>
-<tr class="separator:af4755dad592fa370fd630a4128de6d4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62a3fb5afcf0ff3bd92298da5f0d9328"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_tempering.html#a62a3fb5afcf0ff3bd92298da5f0d9328">__swapper_thread</a> (time_ms swap_every)</td></tr>
-<tr class="separator:a62a3fb5afcf0ff3bd92298da5f0d9328"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a271a57d1d428427b826b631d32873228"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a>&lt; HYP &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_tempering.html#a271a57d1d428427b826b631d32873228">run</a> (<a class="el" href="struct_control.html">Control</a> ctl) override</td></tr>
-<tr class="separator:a271a57d1d428427b826b631d32873228"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a815f948a247278801114716b65b36c23"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a>&lt; HYP &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_tempering.html#a815f948a247278801114716b65b36c23">run</a> (<a class="el" href="struct_control.html">Control</a> ctl, time_ms swap_every, time_ms adapt_every)</td></tr>
-<tr class="separator:a815f948a247278801114716b65b36c23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3601011b762bbd65f7a0e4c23c8aacb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_tempering.html#ab3601011b762bbd65f7a0e4c23c8aacb">show_statistics</a> ()</td></tr>
-<tr class="separator:ab3601011b762bbd65f7a0e4c23c8aacb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c217dddcdf6c2a1f1ecf9250f6da553"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a>&lt; HYP &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_tempering.html#a7c217dddcdf6c2a1f1ecf9250f6da553">run</a> (<a class="el" href="struct_control.html">Control</a> ctl, time_ms <a class="el" href="class_parallel_tempering.html#a716edfaea91e10055b8cf4701f2782f4">swap_every</a>, time_ms <a class="el" href="class_parallel_tempering.html#aefcd733849b2817a6f6ddbf8d0a0875f">adapt_every</a>)</td></tr>
+<tr class="separator:a7c217dddcdf6c2a1f1ecf9250f6da553"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a920f4269ab4c11081506650b33642c97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_tempering.html#a920f4269ab4c11081506650b33642c97">adapt</a> (double v=3, double t0=1000000)</td></tr>
+<tr class="separator:a920f4269ab4c11081506650b33642c97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_parallel_tempering"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_parallel_tempering')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_parallel_tempering.html">ParallelTempering&lt; HYP &gt;</a></td></tr>
+<tr class="memitem:a351bb014faa06960f7d6f3e8b5d0cff5 inherit pub_methods_class_parallel_tempering"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_tempering.html#a351bb014faa06960f7d6f3e8b5d0cff5">ParallelTempering</a> (HYP &amp;h0, typename HYP::data_t *d, std::initializer_list&lt; double &gt; t)</td></tr>
+<tr class="separator:a351bb014faa06960f7d6f3e8b5d0cff5 inherit pub_methods_class_parallel_tempering"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89182dea11b24bf73625b6cde9023b75 inherit pub_methods_class_parallel_tempering"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_tempering.html#a89182dea11b24bf73625b6cde9023b75">ParallelTempering</a> (HYP &amp;h0, typename HYP::data_t *d, unsigned long n, double maxT)</td></tr>
+<tr class="separator:a89182dea11b24bf73625b6cde9023b75 inherit pub_methods_class_parallel_tempering"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b8556675cd4dc8d2fdeb8a6b91e0a98 inherit pub_methods_class_parallel_tempering"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_tempering.html#a9b8556675cd4dc8d2fdeb8a6b91e0a98">__swapper_thread</a> ()</td></tr>
+<tr class="separator:a9b8556675cd4dc8d2fdeb8a6b91e0a98 inherit pub_methods_class_parallel_tempering"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84bcc2c4cb8a0ce9b740202273c67c7f inherit pub_methods_class_parallel_tempering"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_tempering.html#a84bcc2c4cb8a0ce9b740202273c67c7f">__adapter_thread</a> ()</td></tr>
+<tr class="separator:a84bcc2c4cb8a0ce9b740202273c67c7f inherit pub_methods_class_parallel_tempering"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9845f4906069ece88e04554cfb80825 inherit pub_methods_class_parallel_tempering"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a>&lt; HYP &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_tempering.html#ac9845f4906069ece88e04554cfb80825">run</a> (<a class="el" href="struct_control.html">Control</a> ctl)</td></tr>
+<tr class="separator:ac9845f4906069ece88e04554cfb80825 inherit pub_methods_class_parallel_tempering"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab87dd4e52c023287c4fac8629019fd5 inherit pub_methods_class_parallel_tempering"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_tempering.html#aab87dd4e52c023287c4fac8629019fd5">show_statistics</a> ()</td></tr>
+<tr class="separator:aab87dd4e52c023287c4fac8629019fd5 inherit pub_methods_class_parallel_tempering"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5332a77d9b2e36bf966b5f8cc552d0b inherit pub_methods_class_parallel_tempering"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_tempering.html#ab5332a77d9b2e36bf966b5f8cc552d0b">k</a> (unsigned long t, double v, double t0)</td></tr>
+<tr class="separator:ab5332a77d9b2e36bf966b5f8cc552d0b inherit pub_methods_class_parallel_tempering"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba46e9f5ed4c985fb770026815059c6f inherit pub_methods_class_parallel_tempering"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_tempering.html#aba46e9f5ed4c985fb770026815059c6f">adapt</a> (double v=3, double t0=1000000)</td></tr>
+<tr class="separator:aba46e9f5ed4c985fb770026815059c6f inherit pub_methods_class_parallel_tempering"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_chain_pool"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_chain_pool')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_chain_pool.html">ChainPool&lt; HYP &gt;</a></td></tr>
 <tr class="memitem:a553f1f3e478b29d721b596854a2e6f52 inherit pub_methods_class_chain_pool"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#a553f1f3e478b29d721b596854a2e6f52">ChainPool</a> ()</td></tr>
 <tr class="separator:a553f1f3e478b29d721b596854a2e6f52 inherit pub_methods_class_chain_pool"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,12 +132,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6c186d7addcd0e1ab0733aae3a760a47 inherit pub_methods_class_chain_pool"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#a6c186d7addcd0e1ab0733aae3a760a47">set_data</a> (typename HYP::data_t *d, bool recompute=true)</td></tr>
 <tr class="memdesc:a6c186d7addcd0e1ab0733aae3a760a47 inherit pub_methods_class_chain_pool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this data.  <a href="class_chain_pool.html#a6c186d7addcd0e1ab0733aae3a760a47">More...</a><br /></td></tr>
 <tr class="separator:a6c186d7addcd0e1ab0733aae3a760a47 inherit pub_methods_class_chain_pool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a695a8369810cd5bdebc234be19ce18a4 inherit pub_methods_class_chain_pool"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a>&lt; HYP &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#a695a8369810cd5bdebc234be19ce18a4">run_thread</a> (<a class="el" href="struct_control.html">Control</a> ctl) override</td></tr>
-<tr class="memdesc:a695a8369810cd5bdebc234be19ce18a4 inherit pub_methods_class_chain_pool"><td class="mdescLeft">&#160;</td><td class="mdescRight">This run helper is called internally by multiple different threads, and runs a given pool.  <a href="class_chain_pool.html#a695a8369810cd5bdebc234be19ce18a4">More...</a><br /></td></tr>
-<tr class="separator:a695a8369810cd5bdebc234be19ce18a4 inherit pub_methods_class_chain_pool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84ad82009e98da528a9ab9aa97b6e81c inherit pub_methods_class_chain_pool"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a>&lt; HYP &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#a84ad82009e98da528a9ab9aa97b6e81c">run_thread</a> (<a class="el" href="struct_control.html">Control</a> &amp;ctl) override</td></tr>
+<tr class="memdesc:a84ad82009e98da528a9ab9aa97b6e81c inherit pub_methods_class_chain_pool"><td class="mdescLeft">&#160;</td><td class="mdescRight">This run helper is called internally by multiple different threads, and runs a given pool.  <a href="class_chain_pool.html#a84ad82009e98da528a9ab9aa97b6e81c">More...</a><br /></td></tr>
+<tr class="separator:a84ad82009e98da528a9ab9aa97b6e81c inherit pub_methods_class_chain_pool"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_threaded_inference_interface"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_threaded_inference_interface')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_threaded_inference_interface.html">ThreadedInferenceInterface&lt; HYP &gt;</a></td></tr>
-<tr class="memitem:ad3da8eea216e6264720c11f6dcd34782 inherit pub_methods_class_threaded_inference_interface"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a>&lt; HYP &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_threaded_inference_interface.html#ad3da8eea216e6264720c11f6dcd34782">run_thread</a> (<a class="el" href="struct_control.html">Control</a> ctl, Args... args)=0</td></tr>
-<tr class="separator:ad3da8eea216e6264720c11f6dcd34782 inherit pub_methods_class_threaded_inference_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1819cde5d03a54ab787364bf9147a2fa inherit pub_methods_class_threaded_inference_interface"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a>&lt; HYP &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_threaded_inference_interface.html#a1819cde5d03a54ab787364bf9147a2fa">run_thread</a> (<a class="el" href="struct_control.html">Control</a> &amp;ctl, Args... args)=0</td></tr>
+<tr class="separator:a1819cde5d03a54ab787364bf9147a2fa inherit pub_methods_class_threaded_inference_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97cde9b3262f8e918eb9524e8a601885 inherit pub_methods_class_threaded_inference_interface"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_threaded_inference_interface.html#a97cde9b3262f8e918eb9524e8a601885">ThreadedInferenceInterface</a> ()</td></tr>
 <tr class="separator:a97cde9b3262f8e918eb9524e8a601885 inherit pub_methods_class_threaded_inference_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0bbee089dec77cf55d48f71d76e6a79 inherit pub_methods_class_threaded_inference_interface"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_threaded_inference_interface.html#af0bbee089dec77cf55d48f71d76e6a79">next_index</a> ()</td></tr>
@@ -133,25 +146,43 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad74cb20e3d79a36dea3dd4c0a835ef11 inherit pub_methods_class_threaded_inference_interface"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_threaded_inference_interface.html#ad74cb20e3d79a36dea3dd4c0a835ef11">nthreads</a> ()</td></tr>
 <tr class="memdesc:ad74cb20e3d79a36dea3dd4c0a835ef11 inherit pub_methods_class_threaded_inference_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many threads are currently run in this interface?  <a href="class_threaded_inference_interface.html#ad74cb20e3d79a36dea3dd4c0a835ef11">More...</a><br /></td></tr>
 <tr class="separator:ad74cb20e3d79a36dea3dd4c0a835ef11 inherit pub_methods_class_threaded_inference_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8793e1875e4362b6265a7285652e6ebe inherit pub_methods_class_threaded_inference_interface"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_threaded_inference_interface.html#a8793e1875e4362b6265a7285652e6ebe">run_thread_generator_wrapper</a> (<a class="el" href="struct_control.html">Control</a> ctl, Args... args)</td></tr>
-<tr class="memdesc:a8793e1875e4362b6265a7285652e6ebe inherit pub_methods_class_threaded_inference_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">We have to wrap run_thread in something that manages the sync with main. This really just synchronizes the output of run_thread with run below. NOTE this makes a copy of x into the local next_x, so that when the thread keeps running, it doesn't mess anything up. We may in the future block the thread and return a reference, but its not clear that's faster.  <a href="class_threaded_inference_interface.html#a8793e1875e4362b6265a7285652e6ebe">More...</a><br /></td></tr>
-<tr class="separator:a8793e1875e4362b6265a7285652e6ebe inherit pub_methods_class_threaded_inference_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cfd95b81e63ae5ee3c03319e0cc319c inherit pub_methods_class_threaded_inference_interface"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_threaded_inference_interface.html#a1cfd95b81e63ae5ee3c03319e0cc319c">run_thread_generator_wrapper</a> (size_t thr, <a class="el" href="struct_control.html">Control</a> &amp;ctl, Args... args)</td></tr>
+<tr class="memdesc:a1cfd95b81e63ae5ee3c03319e0cc319c inherit pub_methods_class_threaded_inference_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">We have to wrap run_thread in something that manages the sync with main. This really just synchronizes the output of run_thread with run below. NOTE this makes a copy of x into the local next_x, so that when the thread keeps running, it doesn't mess anything up. We may in the future block the thread and return a reference, but its not clear that's faster.  <a href="class_threaded_inference_interface.html#a1cfd95b81e63ae5ee3c03319e0cc319c">More...</a><br /></td></tr>
+<tr class="separator:a1cfd95b81e63ae5ee3c03319e0cc319c inherit pub_methods_class_threaded_inference_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b0d153ec182512dddfa7ddebfb4c8b2 inherit pub_methods_class_threaded_inference_interface"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a>&lt; HYP &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_threaded_inference_interface.html#a4b0d153ec182512dddfa7ddebfb4c8b2">run</a> (<a class="el" href="struct_control.html">Control</a> ctl, Args... args)</td></tr>
+<tr class="memdesc:a4b0d153ec182512dddfa7ddebfb4c8b2 inherit pub_methods_class_threaded_inference_interface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up the multiple threads and actually run, calling run_thread_generator_wrapper.  <a href="class_threaded_inference_interface.html#a4b0d153ec182512dddfa7ddebfb4c8b2">More...</a><br /></td></tr>
 <tr class="separator:a4b0d153ec182512dddfa7ddebfb4c8b2 inherit pub_methods_class_threaded_inference_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a09b915796ca41770ddb6d16ab658ffbb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_finite_history.html">FiniteHistory</a>&lt; bool &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_tempering.html#a09b915796ca41770ddb6d16ab658ffbb">swap_history</a></td></tr>
-<tr class="separator:a09b915796ca41770ddb6d16ab658ffbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a432d00de0d211d7f90962dffd2a157b2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_finite_history.html">FiniteHistory</a>&lt; bool &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_tempering.html#a432d00de0d211d7f90962dffd2a157b2">swap_history</a></td></tr>
+<tr class="separator:a432d00de0d211d7f90962dffd2a157b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a616acc628d1e6eae991b4e0c10da6753"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_tempering.html#a616acc628d1e6eae991b4e0c10da6753">terminate</a></td></tr>
 <tr class="separator:a616acc628d1e6eae991b4e0c10da6753"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_class_parallel_tempering"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_parallel_tempering')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_parallel_tempering.html">ParallelTempering&lt; HYP &gt;</a></td></tr>
+<tr class="memitem:a716edfaea91e10055b8cf4701f2782f4 inherit pub_attribs_class_parallel_tempering"><td class="memItemLeft" align="right" valign="top">time_ms&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_tempering.html#a716edfaea91e10055b8cf4701f2782f4">swap_every</a> = 250</td></tr>
+<tr class="separator:a716edfaea91e10055b8cf4701f2782f4 inherit pub_attribs_class_parallel_tempering"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefcd733849b2817a6f6ddbf8d0a0875f inherit pub_attribs_class_parallel_tempering"><td class="memItemLeft" align="right" valign="top">time_ms&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_tempering.html#aefcd733849b2817a6f6ddbf8d0a0875f">adapt_every</a> = 5000</td></tr>
+<tr class="separator:aefcd733849b2817a6f6ddbf8d0a0875f inherit pub_attribs_class_parallel_tempering"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a719ae8a42336e5067cb8eeaf9e9a25ac inherit pub_attribs_class_parallel_tempering"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ordered_lock.html">OrderedLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_tempering.html#a719ae8a42336e5067cb8eeaf9e9a25ac">overall_mutex</a></td></tr>
+<tr class="separator:a719ae8a42336e5067cb8eeaf9e9a25ac inherit pub_attribs_class_parallel_tempering"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7cecf002249ebd8de94d92e73678552 inherit pub_attribs_class_parallel_tempering"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_tempering.html#ae7cecf002249ebd8de94d92e73678552">temperatures</a></td></tr>
+<tr class="separator:ae7cecf002249ebd8de94d92e73678552 inherit pub_attribs_class_parallel_tempering"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bfb4036a57a1d116d6efdda759c3f66 inherit pub_attribs_class_parallel_tempering"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_finite_history.html">FiniteHistory</a>&lt; bool &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_tempering.html#a8bfb4036a57a1d116d6efdda759c3f66">swap_history</a></td></tr>
+<tr class="separator:a8bfb4036a57a1d116d6efdda759c3f66 inherit pub_attribs_class_parallel_tempering"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18b67bde289ba72a19fca01eea142b78 inherit pub_attribs_class_parallel_tempering"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_tempering.html#a18b67bde289ba72a19fca01eea142b78">is_temperature</a></td></tr>
+<tr class="separator:a18b67bde289ba72a19fca01eea142b78 inherit pub_attribs_class_parallel_tempering"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ae6f396d257cd65d96676bfbb7cc0fd inherit pub_attribs_class_parallel_tempering"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parallel_tempering.html#a2ae6f396d257cd65d96676bfbb7cc0fd">terminate</a></td></tr>
+<tr class="separator:a2ae6f396d257cd65d96676bfbb7cc0fd inherit pub_attribs_class_parallel_tempering"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_class_chain_pool"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_chain_pool')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_chain_pool.html">ChainPool&lt; HYP &gt;</a></td></tr>
 <tr class="memitem:aca174138c188771e02ef6cb2e0e9d42b inherit pub_attribs_class_chain_pool"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_m_c_m_c_chain.html">MCMCChain</a>&lt; HYP &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#aca174138c188771e02ef6cb2e0e9d42b">pool</a></td></tr>
 <tr class="separator:aca174138c188771e02ef6cb2e0e9d42b inherit pub_attribs_class_chain_pool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a189b1ba1b9f8021229b9cf33dbe06c8b inherit pub_attribs_class_chain_pool"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#a189b1ba1b9f8021229b9cf33dbe06c8b">running</a></td></tr>
-<tr class="separator:a189b1ba1b9f8021229b9cf33dbe06c8b inherit pub_attribs_class_chain_pool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefbe03ae7511dd0ee6265a6e6bd26f3c inherit pub_attribs_class_chain_pool"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#aefbe03ae7511dd0ee6265a6e6bd26f3c">running_lock</a></td></tr>
-<tr class="separator:aefbe03ae7511dd0ee6265a6e6bd26f3c inherit pub_attribs_class_chain_pool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a327b47178f3753da10661b08cd60b406 inherit pub_attribs_class_chain_pool"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#a327b47178f3753da10661b08cd60b406">steps_before_change</a> = 100</td></tr>
+<tr class="separator:a327b47178f3753da10661b08cd60b406 inherit pub_attribs_class_chain_pool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bba2491596087935cea0fe02c7af423 inherit pub_attribs_class_chain_pool"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_chain_pool.html#a5a4f9d83b4492d9457a7db8581e25b75">RunningState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#a5bba2491596087935cea0fe02c7af423">running</a></td></tr>
+<tr class="separator:a5bba2491596087935cea0fe02c7af423 inherit pub_attribs_class_chain_pool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa66dd89ec348fab23911f3f8c91123d1 inherit pub_attribs_class_chain_pool"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ordered_lock.html">OrderedLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#aa66dd89ec348fab23911f3f8c91123d1">running_lock</a></td></tr>
+<tr class="separator:aa66dd89ec348fab23911f3f8c91123d1 inherit pub_attribs_class_chain_pool"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_class_threaded_inference_interface"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_threaded_inference_interface')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_threaded_inference_interface.html">ThreadedInferenceInterface&lt; HYP &gt;</a></td></tr>
 <tr class="memitem:a0f03c872fb87c7cb6b408d5a4fc4e1cd inherit pub_attribs_class_threaded_inference_interface"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_threaded_inference_interface.html#a0f03c872fb87c7cb6b408d5a4fc4e1cd">index</a></td></tr>
 <tr class="separator:a0f03c872fb87c7cb6b408d5a4fc4e1cd inherit pub_attribs_class_threaded_inference_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,22 +190,17 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a7bed7a427161783065c6f29cc3c0a491 inherit pub_attribs_class_threaded_inference_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa31e6d3cb4b17c28cdf3f0b58477c0b inherit pub_attribs_class_threaded_inference_interface"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_threaded_inference_interface.html#afa31e6d3cb4b17c28cdf3f0b58477c0b">__nrunning</a></td></tr>
 <tr class="separator:afa31e6d3cb4b17c28cdf3f0b58477c0b inherit pub_attribs_class_threaded_inference_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3abd5648cd8e811346640506cf48a464 inherit pub_attribs_class_threaded_inference_interface"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ordered_lock.html">OrderedLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_threaded_inference_interface.html#a3abd5648cd8e811346640506cf48a464">generator_lock</a></td></tr>
-<tr class="separator:a3abd5648cd8e811346640506cf48a464 inherit pub_attribs_class_threaded_inference_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed286c72431db3f4b1c4bc40dbdc2c32 inherit pub_attribs_class_threaded_inference_interface"><td class="memItemLeft" align="right" valign="top">HYP&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_threaded_inference_interface.html#aed286c72431db3f4b1c4bc40dbdc2c32">next_x</a></td></tr>
-<tr class="separator:aed286c72431db3f4b1c4bc40dbdc2c32 inherit pub_attribs_class_threaded_inference_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4a5827b17cc456153980f7b7741ad6c inherit pub_attribs_class_threaded_inference_interface"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_threaded_inference_interface.html#ad4a5827b17cc456153980f7b7741ad6c">next_set</a></td></tr>
-<tr class="separator:ad4a5827b17cc456153980f7b7741ad6c inherit pub_attribs_class_threaded_inference_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a42165c9cdc3687610a2b09f505cf75 inherit pub_attribs_class_threaded_inference_interface"><td class="memItemLeft" align="right" valign="top">std::condition_variable_any&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_threaded_inference_interface.html#a7a42165c9cdc3687610a2b09f505cf75">cv</a></td></tr>
-<tr class="separator:a7a42165c9cdc3687610a2b09f505cf75 inherit pub_attribs_class_threaded_inference_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab74aedaa0090ee1f993c8baf9b7fe0ba inherit pub_attribs_class_threaded_inference_interface"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_concurrent_queue.html">ConcurrentQueue</a>&lt; HYP &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_threaded_inference_interface.html#ab74aedaa0090ee1f993c8baf9b7fe0ba">to_yield</a></td></tr>
+<tr class="separator:ab74aedaa0090ee1f993c8baf9b7fe0ba inherit pub_attribs_class_threaded_inference_interface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_static_attribs_class_chain_pool"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_chain_pool')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_chain_pool.html">ChainPool&lt; HYP &gt;</a></td></tr>
-<tr class="memitem:ae8b8be7c2fe6f72c171a9d51abdcc96f inherit pub_static_attribs_class_chain_pool"><td class="memItemLeft" align="right" valign="top">static const unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#ae8b8be7c2fe6f72c171a9d51abdcc96f">steps_before_change</a> = 0</td></tr>
-<tr class="separator:ae8b8be7c2fe6f72c171a9d51abdcc96f inherit pub_static_attribs_class_chain_pool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f107cb7ea8c1438a260acd80d2aba3d inherit pub_static_attribs_class_chain_pool"><td class="memItemLeft" align="right" valign="top">static const time_ms&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#a3f107cb7ea8c1438a260acd80d2aba3d">time_before_change</a> = 200</td></tr>
-<tr class="separator:a3f107cb7ea8c1438a260acd80d2aba3d inherit pub_static_attribs_class_chain_pool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_class_chain_pool"><td colspan="2" onclick="javascript:toggleInherit('pub_types_class_chain_pool')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="class_chain_pool.html">ChainPool&lt; HYP &gt;</a></td></tr>
+<tr class="memitem:a5a4f9d83b4492d9457a7db8581e25b75 inherit pub_types_class_chain_pool"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#a5a4f9d83b4492d9457a7db8581e25b75">RunningState</a> { <a class="el" href="class_chain_pool.html#a5a4f9d83b4492d9457a7db8581e25b75a2baa69eafc7204f3bd8648eba580c489">RunningState::READY</a>, 
+<a class="el" href="class_chain_pool.html#a5a4f9d83b4492d9457a7db8581e25b75a43491564ebcfd38568918efbd6e840fd">RunningState::RUNNING</a>, 
+<a class="el" href="class_chain_pool.html#a5a4f9d83b4492d9457a7db8581e25b75a2ba22e58ca17bb728d522bba36cf8350">RunningState::DONE</a>
+ }</td></tr>
+<tr class="separator:a5a4f9d83b4492d9457a7db8581e25b75 inherit pub_types_class_chain_pool"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename HYP&gt;<br />
@@ -221,36 +247,9 @@ template&lt;typename HYP &gt; </div>
 
 </div>
 </div>
-<a id="af4755dad592fa370fd630a4128de6d4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4755dad592fa370fd630a4128de6d4b">&#9670;&nbsp;</a></span>~DataTempering()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename HYP &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_data_tempering.html">DataTempering</a>&lt; HYP &gt;::~<a class="el" href="class_data_tempering.html">DataTempering</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a62a3fb5afcf0ff3bd92298da5f0d9328"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62a3fb5afcf0ff3bd92298da5f0d9328">&#9670;&nbsp;</a></span>__swapper_thread()</h2>
+<a id="a920f4269ab4c11081506650b33642c97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a920f4269ab4c11081506650b33642c97">&#9670;&nbsp;</a></span>adapt()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -261,11 +260,21 @@ template&lt;typename HYP &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_data_tempering.html">DataTempering</a>&lt; HYP &gt;::__swapper_thread </td>
+          <td class="memname">void <a class="el" href="class_data_tempering.html">DataTempering</a>&lt; HYP &gt;::adapt </td>
           <td>(</td>
-          <td class="paramtype">time_ms&#160;</td>
-          <td class="paramname"><em>swap_every</em></td><td>)</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>v</em> = <code>3</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t0</em> = <code>1000000</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -277,8 +286,8 @@ template&lt;typename HYP &gt; </div>
 
 </div>
 </div>
-<a id="a271a57d1d428427b826b631d32873228"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a271a57d1d428427b826b631d32873228">&#9670;&nbsp;</a></span>run() <span class="overload">[1/2]</span></h2>
+<a id="a7c217dddcdf6c2a1f1ecf9250f6da553"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c217dddcdf6c2a1f1ecf9250f6da553">&#9670;&nbsp;</a></span>run()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -289,35 +298,7 @@ template&lt;typename HYP &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a>&lt;HYP&amp;&gt; <a class="el" href="class_data_tempering.html">DataTempering</a>&lt; HYP &gt;::run </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_control.html">Control</a>&#160;</td>
-          <td class="paramname"><em>ctl</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a815f948a247278801114716b65b36c23"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a815f948a247278801114716b65b36c23">&#9670;&nbsp;</a></span>run() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename HYP &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a>&lt;HYP&amp;&gt; <a class="el" href="class_data_tempering.html">DataTempering</a>&lt; HYP &gt;::run </td>
+          <td class="memname"><a class="el" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a>&lt;HYP&amp;&gt; <a class="el" href="class_data_tempering.html">DataTempering</a>&lt; HYP &gt;::run </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_control.html">Control</a>&#160;</td>
           <td class="paramname"><em>ctl</em>, </td>
@@ -342,33 +323,6 @@ template&lt;typename HYP &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ab3601011b762bbd65f7a0e4c23c8aacb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab3601011b762bbd65f7a0e4c23c8aacb">&#9670;&nbsp;</a></span>show_statistics()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename HYP &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="class_data_tempering.html">DataTempering</a>&lt; HYP &gt;::show_statistics </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
@@ -377,8 +331,8 @@ template&lt;typename HYP &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a09b915796ca41770ddb6d16ab658ffbb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09b915796ca41770ddb6d16ab658ffbb">&#9670;&nbsp;</a></span>swap_history</h2>
+<a id="a432d00de0d211d7f90962dffd2a157b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a432d00de0d211d7f90962dffd2a157b2">&#9670;&nbsp;</a></span>swap_history</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -386,7 +340,7 @@ template&lt;typename HYP &gt; </div>
 template&lt;typename HYP &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_finite_history.html">FiniteHistory</a>&lt;bool&gt;* <a class="el" href="class_data_tempering.html">DataTempering</a>&lt; HYP &gt;::swap_history</td>
+          <td class="memname">std::vector&lt;<a class="el" href="class_finite_history.html">FiniteHistory</a>&lt;bool&gt; &gt; <a class="el" href="class_data_tempering.html">DataTempering</a>&lt; HYP &gt;::swap_history</td>
         </tr>
       </table>
 </div><div class="memdoc">

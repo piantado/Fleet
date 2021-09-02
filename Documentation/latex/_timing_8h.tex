@@ -2,16 +2,14 @@
 \label{_timing_8h}\index{src/Timing.h@{src/Timing.h}}
 {\ttfamily \#include $<$chrono$>$}\newline
 {\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
-Include dependency graph for Timing.\+h\+:
-\nopagebreak
+Include dependency graph for Timing.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=275pt]{_timing_8h__incl}
+\includegraphics[width=291pt]{_timing_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -41,8 +39,8 @@ time\+\_\+t \mbox{\hyperlink{_timing_8h_aba95791cdf05e46e95d8cda8075717c2}{conve
 \DoxyCodeLine{}
 \DoxyCodeLine{}
 \DoxyCodeLine{}
-\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} time\_ms;}
-\DoxyCodeLine{\textcolor{keyword}{typedef} std::chrono::high\_resolution\_clock::time\_point timept;}
+\DoxyCodeLine{\textcolor{keyword}{using} time\_ms = \textcolor{keywordtype}{unsigned} long;}
+\DoxyCodeLine{\textcolor{keyword}{using} timept = std::chrono::high\_resolution\_clock::time\_point;}
 \DoxyCodeLine{}
 \DoxyCodeLine{timept now() \{ }
 \DoxyCodeLine{    \textcolor{keywordflow}{return} std::chrono::high\_resolution\_clock::now();}

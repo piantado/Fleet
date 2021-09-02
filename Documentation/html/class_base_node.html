@@ -82,11 +82,11 @@ Inheritance diagram for BaseNode&lt; this_t &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_base_node__inherit__graph.png" border="0" usemap="#_base_node_3_01this__t_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="_base_node_3_01this__t_01_4_inherit__map" id="_base_node_3_01this__t_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,78,144,105"/>
-<area shape="rect" href="class_m_c_t_s_base.html" title=" " alt="" coords="192,78,339,105"/>
-<area shape="rect" href="class_full_m_c_t_s_node.html" title=" " alt="" coords="399,5,544,47"/>
-<area shape="rect" href="class_minimal_m_c_t_s_node.html" title=" " alt="" coords="387,71,556,112"/>
-<area shape="rect" href="class_partial_m_c_t_s_node.html" title=" " alt="" coords="391,136,552,177"/>
+<area shape="rect" title=" " alt="" coords="5,78,160,105"/>
+<area shape="rect" href="class_m_c_t_s_base.html" title=" " alt="" coords="208,78,365,105"/>
+<area shape="rect" href="class_full_m_c_t_s_node.html" title=" " alt="" coords="429,5,583,47"/>
+<area shape="rect" href="class_minimal_m_c_t_s_node.html" title=" " alt="" coords="413,71,599,112"/>
+<area shape="rect" href="class_partial_m_c_t_s_node.html" title=" " alt="" coords="419,136,593,177"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -94,9 +94,9 @@ Collaboration diagram for BaseNode&lt; this_t &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_base_node__coll__graph.png" border="0" usemap="#_base_node_3_01this__t_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="_base_node_3_01this__t_01_4_coll__map" id="_base_node_3_01this__t_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="11,215,149,241"/>
-<area shape="rect" href="class_base_node_1_1_node_iterator.html" title=" " alt="" coords="11,111,149,152"/>
-<area shape="rect" title=" " alt="" coords="5,5,155,61"/>
+<area shape="rect" title=" " alt="" coords="11,215,166,241"/>
+<area shape="rect" href="class_base_node_1_1_node_iterator.html" title=" " alt="" coords="11,111,166,152"/>
+<area shape="rect" title=" " alt="" coords="5,5,172,61"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -118,6 +118,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1a82f7670d09cdd2a7f12e00513b1d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc129f52a6d44237b7e8c62c65f8332c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#adc129f52a6d44237b7e8c62c65f8332c">operator=</a> (const this_t &amp;&amp;t)</td></tr>
 <tr class="separator:adc129f52a6d44237b7e8c62c65f8332c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c3616d00244a5e0fc7c15a8d584da98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a8c3616d00244a5e0fc7c15a8d584da98">make_root</a> ()</td></tr>
+<tr class="memdesc:a8c3616d00244a5e0fc7c15a8d584da98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make a node root &ndash; just nulls the parent.  <a href="class_base_node.html#a8c3616d00244a5e0fc7c15a8d584da98">More...</a><br /></td></tr>
+<tr class="separator:a8c3616d00244a5e0fc7c15a8d584da98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a33248b0eb051d7672691a73a38ff12"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a2a33248b0eb051d7672691a73a38ff12">~BaseNode</a> ()</td></tr>
 <tr class="separator:a2a33248b0eb051d7672691a73a38ff12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a079dae7bec84f4de8eef6d6cb9368a22"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_node.html#a079dae7bec84f4de8eef6d6cb9368a22">string</a> (bool usedot=true) const</td></tr>
@@ -932,6 +935,35 @@ template&lt;typename this_t &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>Go down a tree and find the leftmost child </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a8c3616d00244a5e0fc7c15a8d584da98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c3616d00244a5e0fc7c15a8d584da98">&#9670;&nbsp;</a></span>make_root()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename this_t &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_base_node.html">BaseNode</a>&lt; this_t &gt;::make_root </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Make a node root &ndash; just nulls the parent. </p>
 
 </div>
 </div>

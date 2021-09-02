@@ -1,7 +1,7 @@
 <map id="BeamSearch&lt; HYP &gt;" name="BeamSearch&lt; HYP &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="104,213,253,240"/>
-<area shape="rect" id="node2" href="$class_threaded_inference_interface.html" title=" " alt="" coords="5,109,187,151"/>
-<area shape="rect" id="node3" href="$class_ordered_lock.html" title=" " alt="" coords="48,13,144,39"/>
-<area shape="rect" id="node4" href="$class_top_n.html" title=" " alt="" coords="211,117,317,143"/>
-<area shape="rect" id="node5" href="$class_serializable.html" title=" " alt="" coords="198,5,330,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="116,213,276,240"/>
+<area shape="rect" id="node2" href="$class_threaded_inference_interface.html" title=" " alt="" coords="5,109,208,151"/>
+<area shape="rect" id="node3" href="$class_concurrent_queue.html" title=" " alt="" coords="9,13,199,39"/>
+<area shape="rect" id="node4" href="$class_top_n.html" title=" " alt="" coords="238,117,349,143"/>
+<area shape="rect" id="node5" href="$class_serializable.html" title=" " alt="" coords="223,5,369,47"/>
 </map>

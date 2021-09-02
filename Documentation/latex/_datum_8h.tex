@@ -6,16 +6,14 @@ A datum is the default data point for likelihoods, consisting of an input and ou
 
 
 {\ttfamily \#include \char`\"{}Strings.\+h\char`\"{}}\newline
-Include dependency graph for Datum.\+h\+:
-\nopagebreak
+Include dependency graph for Datum.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_datum_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -31,6 +29,8 @@ class \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t$<$ \+\_\+\+\_\+
 \begin{DoxyCompactItemize}
 \item 
 {\footnotesize template$<$typename input\+\_\+t , typename output\+\_\+t $>$ }\\std\+::ostream \& \mbox{\hyperlink{_datum_8h_a5287d7e877988b8316762c060194921a}{operator$<$$<$}} (std\+::ostream \&o, const \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ input\+\_\+t, output\+\_\+t $>$ \&d)
+\item 
+{\footnotesize template$<$typename input\+\_\+t , typename output\+\_\+t $>$ }\\std\+::string \mbox{\hyperlink{_datum_8h_a28a38c994a421684345cc8db5ba61ba6}{str}} (const \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ input\+\_\+t, output\+\_\+t $>$ \&x)
 \end{DoxyCompactItemize}
 
 
@@ -46,4 +46,11 @@ A datum is the default data point for likelihoods, consisting of an input and ou
 \doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
 {\footnotesize\ttfamily template$<$typename input\+\_\+t , typename output\+\_\+t $>$ \\
 std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{o,  }\item[{const \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ input\+\_\+t, output\+\_\+t $>$ \&}]{d }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_datum_8h_a28a38c994a421684345cc8db5ba61ba6}\label{_datum_8h_a28a38c994a421684345cc8db5ba61ba6}} 
+\index{Datum.h@{Datum.h}!str@{str}}
+\index{str@{str}!Datum.h@{Datum.h}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}}
+{\footnotesize\ttfamily template$<$typename input\+\_\+t , typename output\+\_\+t $>$ \\
+std\+::string str (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ input\+\_\+t, output\+\_\+t $>$ \&}]{x }\end{DoxyParamCaption})}
 
