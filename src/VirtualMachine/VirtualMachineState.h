@@ -86,14 +86,11 @@ public:
 	// moment so this may need to be optimized later to be optional
 	RuntimeCounter runtime_counter;
 	
-	// what we use to load programs
-	ProgramLoader<this_t>* program_loader;
-	
 	// where we place random flips back onto
 	VirtualMachinePool<this_t>* pool;
 	
-	VirtualMachineState(input_t x, const output_t& e, ProgramLoader<this_t>* pl, VirtualMachinePool<this_t>* po) :
-		err(e), lp(0.0), recursion_depth(0), status(vmstatus_t::GOOD), program_loader(pl), pool(po) {
+	VirtualMachineState(input_t x, const output_t& e, VirtualMachinePool<this_t>* po) :
+		err(e), lp(0.0), recursion_depth(0), status(vmstatus_t::GOOD), pool(po) {
 		xstack.push(x);	
 	}
 	

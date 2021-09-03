@@ -9,7 +9,7 @@
  * 		  Adn importantly it doesn't have any tempalte args, which simplifies a lot
  */
  
- template<typename VirtualMachineState_t>
+template<typename VirtualMachineState_t>
 class ProgramLoader {
 public:
 	// Ways to push a program onto s

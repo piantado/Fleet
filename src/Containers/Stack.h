@@ -100,6 +100,11 @@ public:
 	std::string string() const {
 		return str(value);
 	}
+	
+	auto begin() { return value.begin(); }
+	auto end()   { return value.end(); }
+	auto rbegin() { return value.rbegin(); }
+	auto rend()   { return value.rend(); }
 };
 
 template<typename T>

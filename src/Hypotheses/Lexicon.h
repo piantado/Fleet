@@ -350,7 +350,7 @@ public:
 	/********************************************************
 	 * How to call 
 	 ********************************************************/
-	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t& err=output_t{}, ProgramLoader<VirtualMachineState_t>* loader=nullptr) override {
+	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t& err=output_t{}) override {
 		// subclass must define what it means to call a lexicon
 		throw NotImplementedError();
 	}

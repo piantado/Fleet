@@ -202,7 +202,7 @@ namespace Builtins {
 	Builtin<output_t,input_t> 
 		Recurse(Op::Recurse, BUILTIN_LAMBDA {
 			
-			assert(vms->program_loader != nullptr);
+			assert(vms->program.loader != nullptr);
 							
 			if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
 				vms->status = vmstatus_t::RECURSION_DEPTH;
@@ -218,7 +218,7 @@ namespace Builtins {
 			// push this program 
 			// but we give i.arg so that we can pass factorized recursed
 			// in argument if we want to
-			vms->program_loader->push_program(vms->program,arg); 
+			vms->program.loader->push_program(vms->program,arg); 
 			
 			// after execution is done, the result will be pushed onto output_t
 			// which is what gets returned when we are all done
@@ -250,7 +250,7 @@ namespace Builtins {
 			 typename output_t=typename Grammar_t::output_t>
 	Builtin<output_t,input_t>  // note the order switch -- that's right!
 	MemRecurse(Op::MemRecurse, BUILTIN_LAMBDA {	
-		assert(vms->program_loader != nullptr);
+		assert(vms->program.loader != nullptr);
 						
 		if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
 			vms->status = vmstatus_t::RECURSION_DEPTH;
@@ -270,7 +270,7 @@ namespace Builtins {
 			vms->memstack.push(memindex); // popped off by op_MEM			
 			vms->program.push(Builtins::Mem<Grammar_t,output_t>.makeInstruction());
 
-			vms->program_loader->push_program(vms->program, arg); // this leaves the answer on top
+			vms->program.loader->push_program(vms->program, arg); // this leaves the answer on top
 		}		
 	});
 	

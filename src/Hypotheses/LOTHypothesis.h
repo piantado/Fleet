@@ -115,7 +115,7 @@ public:
 	
 	void set_value(Node&  v) { 
 		value = v; 
-		this->compile();
+		this->compile(); // compile with myself defaultly as a loader
 	}
 	void set_value(Node&& v) { 
 		value = v;
@@ -139,10 +139,19 @@ public:
 		throw NotImplementedError("*** You must define compute_single_likelihood");// for base classes to implement, but don't set = 0 since then we can't create Hypothesis classes. 
 	}           
 
+	void compile() {
+		this->program.clear();
+		value.template linearize<VirtualMachineState_t, Grammar_t>(this->program);
+		this->program.loader = this; // program loader defaults to this
+	}
+
 	virtual void push_program(Program<VirtualMachineState_t>& s, short k=0) override {
 		assert(k==0 && "*** the short argument in push_program should only be nonzero for lexica");
 		//s.reserve(s.size() + value.program_size()+1);
-		value.template linearize<VirtualMachineState_t, Grammar_t>(s);
+		//for(auto it = this->program.rbegin(); it!= this->program.rend(); it++) {
+		for(auto it = this->program.begin(); it != this->program.end(); it++) {
+			s.push(*it);
+		}		
 	}
 
 	virtual std::string string(std::string prefix="") const override {

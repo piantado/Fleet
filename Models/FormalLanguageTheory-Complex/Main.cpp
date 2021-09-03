@@ -236,16 +236,17 @@ public:
 	 * Calling
 	 ********************************************************/
 	 
-	virtual DiscreteDistribution<S> call(const S x, const S& err=S{}, ProgramLoader<VirtualMachineState_t>* loader=nullptr) override {
+	virtual DiscreteDistribution<S> call(const S x, const S& err=S{}) override {
 		// this calls by calling only the last factor, which, according to our prior,
 		
-		assert(loader==nullptr); // we really don't want people passing this in to this lexicon
+		// make myself the loader for all factors -- TODO: CHANGE THIS
+		for(auto& f : factors) f.program.loader = this; 
 		
 //		assert(has_valid_indices()); // can either assert or return error
 		if(not has_valid_indices()) return {}; 
 		
 		size_t i = factors.size()-1; 
-		return factors[i].call(x, err, this); // we call the factor but with this as the loader.  
+		return factors[i].call(x, err); // we call the factor but with this as the loader.  
 	}
 	 
 	 // We assume input,output with reliability as the number of counts that input was seen going to that output
