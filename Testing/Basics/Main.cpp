@@ -71,6 +71,9 @@ void checkLOTHypothesis(const Grammar_t* g, const Hypothesis_t h){
 	}
 	assert(newH.hash() == h.hash());	
 	
+	// check that the loader is ok
+	assert(h.program.loader == &h);
+	
 	// check serialization
 	std::string s = h.serialize();
 	assert(Hypothesis_t::deserialize(s) == h);

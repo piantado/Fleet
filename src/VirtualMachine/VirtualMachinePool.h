@@ -27,8 +27,6 @@ DiscreteDistribution<typename VirtualMachineState_t::output_t>  marginal_vms_out
 }
 
 
-	
-	
 /**
  * @class VirtualMachinePool
  * @author piantado
