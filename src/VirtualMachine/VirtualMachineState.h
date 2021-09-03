@@ -10,7 +10,6 @@
 #include "Stack.h"
 #include "Statistics/FleetStatistics.h"
 #include "RuntimeCounter.h"
-#include "Hypotheses/Interfaces/ProgramLoader.h"
 #include "VirtualMachineControl.h"
 
 #include "VMSRuntimeError.h"

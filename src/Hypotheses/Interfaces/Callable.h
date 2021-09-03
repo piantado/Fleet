@@ -3,7 +3,7 @@
 #include "VirtualMachine/VirtualMachineState.h"
 #include "VirtualMachine/VirtualMachinePool.h"
 #include "DiscreteDistribution.h"
-#include "ProgramLoader.h"
+#include "Program.h"
 
 /**
  * @class Callable

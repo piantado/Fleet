@@ -1,7 +1,6 @@
 #pragma once
 
 #include "DiscreteDistribution.h"
-#include "Hypotheses/Interfaces/ProgramLoader.h"
 #include "VirtualMachineControl.h"
 
 #include <vector>

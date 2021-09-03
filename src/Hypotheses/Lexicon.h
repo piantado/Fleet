@@ -202,10 +202,6 @@ public:
 	 * Required for VMS to dispatch to the right sub
 	 ********************************************************/
 	 
-//	virtual size_t program_size(short s) override {
-//		return factors[s].program_size(0);
-//	}
-	 
 	virtual void push_program(Program<VirtualMachineState_t>& s, short j) override {
 		/**
 		 * @brief Put factor j onto program s
@@ -215,13 +211,10 @@ public:
 		
 		assert(factors.size() > 0);
 		
-		 // or else badness -- NOTE: We could take mod or insert op_ERR, or any number of other options. 
-		 // here, we decide just to defer to the subclass of this
-		assert(j < (short)factors.size());
-		assert(j >= 0);
+		// Here we don't check anything on the bounds for j except in vector.at(...)
 
 		// dispath to the right factor
-		factors[j].push_program(s); // on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)
+		factors.at(j).push_program(s); // on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)
 	}
 	
 	/********************************************************

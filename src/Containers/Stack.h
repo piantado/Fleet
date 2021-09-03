@@ -53,12 +53,25 @@ public:
 		value.push_back(std::move(val));
 	}
 	
+	/**
+	 * @brief Remove top from the stack 
+	 */
 	void pop() {
 		/**
 		 * @brief Remove the top element (returning void)
 		 */
 		assert(!empty());
 		value.pop_back();
+	}
+	
+	/**
+	 * @brief Remove n from the stack
+	 * @param n
+	 */
+	void popn(size_t n) {
+		for(size_t i=0;i<n;i++) {
+			this->pop();
+		}
 	}
 	
 	/* There is a little sublety here -- for integral types, it's a pain to return a reference
@@ -101,6 +114,9 @@ public:
 		return str(value);
 	}
 	
+	/**
+	 * @brief These are for iterating through the underlying vector. 
+	 */	
 	auto begin() { return value.begin(); }
 	auto end()   { return value.end(); }
 	auto rbegin() { return value.rbegin(); }

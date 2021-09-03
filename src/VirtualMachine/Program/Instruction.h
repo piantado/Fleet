@@ -29,7 +29,12 @@ public:
 	}		
 };
 
-
+/**
+ * @brief Output for instructions
+ * @param stream
+ * @param i
+ * @return 
+ */
 std::ostream& operator<<(std::ostream& stream, Instruction& i) {
 	/**
 	 * @brief Output for instructions. 
