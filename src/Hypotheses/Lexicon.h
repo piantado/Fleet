@@ -206,7 +206,7 @@ public:
 //		return factors[s].program_size(0);
 //	}
 	 
-	virtual void push_program(Program& s, short j) override {
+	virtual void push_program(Program<VirtualMachineState_t>& s, short j) override {
 		/**
 		 * @brief Put factor j onto program s
 		 * @param s
@@ -350,12 +350,10 @@ public:
 	/********************************************************
 	 * How to call 
 	 ********************************************************/
-	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t& err=output_t{}, ProgramLoader* loader=nullptr) override {
+	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t& err=output_t{}, ProgramLoader<VirtualMachineState_t>* loader=nullptr) override {
 		// subclass must define what it means to call a lexicon
 		throw NotImplementedError();
 	}
-	 
-	 
 	 
 	virtual std::string serialize() const override {
 		/**

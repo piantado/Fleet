@@ -334,8 +334,8 @@ public:
 //		return n;
 //	}
 	
-	template<typename Grammar_t>
-	inline int linearize(Program &program) const { 
+	template<typename VirtualMachineState_t, typename Grammar_t>
+	inline int linearize(Program<VirtualMachineState_t> &program) const { 
 		/**
 		 * @brief convert tree to a linear sequence of operations. 
 		 * 		To do this, we first linearize the kids, leaving their values as the top on the stack
@@ -365,18 +365,18 @@ public:
 		if( rule->is_a(Op::If) ) {
 			assert(rule->N == 3 && "BuiltinOp::op_IF require three arguments"); // must have 3 parts
 			
-			int ysize = children[2].linearize<Grammar_t>(program);
+			int ysize = children[2].linearize<VirtualMachineState_t,Grammar_t>(program);
 			
 			// encode the jump
 			program.push(Builtins::Jmp<Grammar_t>.makeInstruction(ysize));
 			
-			int xsize = children[1].linearize<Grammar_t>(program)+1; // must be +1 in order to skip over the JMP too
+			int xsize = children[1].linearize<VirtualMachineState_t,Grammar_t>(program)+1; // must be +1 in order to skip over the JMP too
 			
 			// encode the if
 			program.push(rule->makeInstruction(xsize));
 			
 			// evaluate the bool first so its on the stack when we get to if
-			int boolsize = children[0].linearize<Grammar_t>(program);
+			int boolsize = children[0].linearize<VirtualMachineState_t,Grammar_t>(program);
 			
 			return ysize + xsize + boolsize + 1; // +1 for if
 		}
@@ -385,7 +385,7 @@ public:
 			assert(rule->N == 2 and children.size() == 2 && "BuiltinOp::op_AND and BuiltinOp::op_OR require two arguments");
 			
 			// second arg pushed on first, on the bottom
-			int ysize = children[1].linearize<Grammar_t>(program);
+			int ysize = children[1].linearize<VirtualMachineState_t,Grammar_t>(program);
 			
 			if(rule->is_a(Op::And)) {
 				program.push(rule->makeInstruction(ysize));
@@ -395,7 +395,7 @@ public:
 			}
 			else assert(false);
 			
-			return children[0].linearize<Grammar_t>(program)+ysize+1;			
+			return children[0].linearize<VirtualMachineState_t,Grammar_t>(program)+ysize+1;			
 		}
 		else {
 			/* Else we just process a normal child. 
@@ -405,7 +405,7 @@ public:
 			
 			int mysize = 1; // one for my own instruction
 			for(int i=this->rule->N-1;i>=0;i--) { // here we linearize right to left so that when we call right to left, it matches string order			
-				mysize += this->children[i].linearize<Grammar_t>(program);
+				mysize += this->children[i].linearize<VirtualMachineState_t,Grammar_t>(program);
 			}
 			return mysize; 
 		}

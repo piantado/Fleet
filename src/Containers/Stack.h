@@ -37,6 +37,10 @@ public:
 	void reserve(size_t t) {
 		value.reserve(t);
 	}
+	
+	void clear() {
+		value.clear();
+	}
 
 	/**
 	* @brief Push val onto the stack

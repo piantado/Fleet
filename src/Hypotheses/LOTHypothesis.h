@@ -58,13 +58,21 @@ protected:
 	Node value;
 	
 public:
-	LOTHypothesis()           : MCMCable<this_t,datum_t,data_t>(), value(NullRule,0.0,true) {}
-	LOTHypothesis(Node&& x)   : MCMCable<this_t,datum_t,data_t>(), value(x) {}
-	LOTHypothesis(Node& x)    : MCMCable<this_t,datum_t,data_t>(), value(x) {}
+	LOTHypothesis()           : MCMCable<this_t,datum_t,data_t>(), value(NullRule,0.0,true) {
+	
+	}
+	
+	LOTHypothesis(Node&& x)   : MCMCable<this_t,datum_t,data_t>(){
+		set_value(x);
+	}
+	
+	LOTHypothesis(Node& x)    : MCMCable<this_t,datum_t,data_t>(){
+		set_value(x);
+	}
 
 	// parse this from a string
 	LOTHypothesis(std::string s) : MCMCable<this_t,datum_t,data_t>()  {
-		value = grammar->from_parseable(s);
+		set_value(grammar->from_parseable(s));
 	}
 	
 	[[nodiscard]] virtual std::pair<this_t,double> propose() const override {
@@ -105,8 +113,14 @@ public:
 		  Node& get_value()       {	return value; }
 	const Node& get_value() const {	return value; }
 	
-	void set_value(Node&  v) { value = v; }
-	void set_value(Node&& v) { value = v; }
+	void set_value(Node&  v) { 
+		value = v; 
+		this->compile();
+	}
+	void set_value(Node&& v) { 
+		value = v;
+		this->compile();
+	}
 	
 	Grammar_t* get_grammar() const { return grammar; }
 	
@@ -125,15 +139,10 @@ public:
 		throw NotImplementedError("*** You must define compute_single_likelihood");// for base classes to implement, but don't set = 0 since then we can't create Hypothesis classes. 
 	}           
 
-//	virtual size_t program_size(short s) override {
-//		assert(s == 0 && "*** You shouldn't be passing nonzero s to a LOTHypothesis because it does nothing!");
-//		return value.program_size();
-//	}
-
-	virtual void push_program(Program& s, short k=0) override {
+	virtual void push_program(Program<VirtualMachineState_t>& s, short k=0) override {
 		assert(k==0 && "*** the short argument in push_program should only be nonzero for lexica");
 		//s.reserve(s.size() + value.program_size()+1);
-		value.template linearize<Grammar_t>(s);
+		value.template linearize<VirtualMachineState_t, Grammar_t>(s);
 	}
 
 	virtual std::string string(std::string prefix="") const override {

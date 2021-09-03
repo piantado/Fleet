@@ -57,7 +57,7 @@ public:
 	
 	//static constexpr double    LP_BREAKOUT = 5.0; // we keep executing a probabilistic thread as long as it doesn't cost us more than this compared to the top
 	
-	Program            program; 
+	Program<this_t>    program; // programs are instructions for myself
 	VMSStack<input_t>  xstack; //xstackthis stores a stack of the x values (for recursive calls)
 	const output_t&    err; // what error output do we return? Just a reference to a value for speed
 	double             lp; // the probability of this context
@@ -87,12 +87,12 @@ public:
 	RuntimeCounter runtime_counter;
 	
 	// what we use to load programs
-	ProgramLoader* program_loader;
+	ProgramLoader<this_t>* program_loader;
 	
 	// where we place random flips back onto
 	VirtualMachinePool<this_t>* pool;
 	
-	VirtualMachineState(input_t x, const output_t& e, ProgramLoader* pl, VirtualMachinePool<this_t>* po) :
+	VirtualMachineState(input_t x, const output_t& e, ProgramLoader<this_t>* pl, VirtualMachinePool<this_t>* po) :
 		err(e), lp(0.0), recursion_depth(0), status(vmstatus_t::GOOD), program_loader(pl), pool(po) {
 		xstack.push(x);	
 	}

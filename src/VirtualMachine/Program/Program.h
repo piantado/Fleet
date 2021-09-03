@@ -7,7 +7,7 @@
 #include "Stack.h"
 
 template<typename VirtualMachineState_t>
-class Program : public Stack<Instruction<VirtualMachineState_t>> {
+class Program : public Stack<Instruction> {
 public:
 	Program() {
 		// This is chosen with a little experimentation, designed to prevent us from having to reallocate too often
@@ -21,5 +21,6 @@ public:
 			this->pop();
 		}
 	}
+	
 };
 

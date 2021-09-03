@@ -19,7 +19,7 @@
  * 			and running on a VirtualMachine
  */
 template<typename input_t, typename output_t, typename VirtualMachineState_t>
-class Callable : public ProgramLoader {
+class Callable : public ProgramLoader<VirtualMachineState_t> {
 public:
 	
 	// store the the total number of instructions on the last call
@@ -27,6 +27,13 @@ public:
 	unsigned long total_instruction_count_last_call;
 	unsigned long total_vms_steps;
 	
+	// A Callable stores its program
+	Program<VirtualMachineState_t> program;
+	
+	
+	/**
+	 * @brief Constructor for a callable 
+	 */	
 	Callable() : total_instruction_count_last_call(0), total_vms_steps(0) { }
 
 	/**
@@ -35,6 +42,16 @@ public:
 	 */
 	[[nodiscard]]  virtual bool is_evaluable() const = 0; 
 		
+
+	/**
+	 * @brief Convert our tree into a program for a virtual machine
+	 * @return 
+	 */	
+	void compile() {
+		program.clear();
+		this->push_program(program);
+	}
+
 	/**
 	 * @brief Run the virtual machine on input x, and marginalize over execution paths to return a distribution
 	 * 		  on outputs. Note that loader must be a program loader, and that is to handle recursion and 
@@ -42,17 +59,16 @@ public:
 	 * @param x - input
 	 * @param err - output value on error
 	 * @param loader - where to load recursive calls
-	 * @param max_steps - max steps the virtual machine pool will run for
-	 * @param max_outputs - max outputs the virtual machine pool will run for
-	 * @param minlp - the virtual machine pool doesn't consider paths less than this probability
 	 * @return 
 	 */	
-	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t& err=output_t{}, ProgramLoader* loader=nullptr) {
+	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t& err=output_t{}, ProgramLoader<VirtualMachineState_t>* loader=nullptr) {
 		
 		// The below condition is needed in case we create e.g. a lexicon whose input_t and output_t differ from the VirtualMachineState
 		// in that case, these functions are all overwritten and must be called on their own. 
 		if constexpr (std::is_same<typename VirtualMachineState_t::input_t, input_t>::value and 
 				      std::is_same<typename VirtualMachineState_t::output_t, output_t>::value) {
+			
+			assert(not program.empty());
 			
 			// make this defaulty be the loader
 			if(loader == nullptr) 
@@ -61,11 +77,14 @@ public:
 			VirtualMachinePool<VirtualMachineState_t> pool; 		
 			
 			VirtualMachineState_t* vms = new VirtualMachineState_t(x, err, loader, &pool);	
-			push_program(vms->program); // write my program into vms
-
-			pool.push(vms);		
 			
-			const auto out = pool.run();				
+			vms->program = program; // copy our program into vms
+			
+			pool.push(vms); // put vms into the pool
+			
+			const auto out = pool.run();	
+			
+			// update some stats
 			total_instruction_count_last_call = pool.total_instruction_count;
 			total_vms_steps = pool.total_vms_steps;
 			
@@ -75,7 +94,7 @@ public:
 	  } else { UNUSED(x); UNUSED(err); assert(false && "*** Cannot use call when VirtualMachineState_t has different input_t or output_t."); }
 	}
 	
-	virtual DiscreteDistribution<output_t>  operator()(const input_t x, const output_t& err=output_t{}, ProgramLoader* loader=nullptr){ // just fancy syntax for call
+	virtual DiscreteDistribution<output_t>  operator()(const input_t x, const output_t& err=output_t{}, ProgramLoader<VirtualMachineState_t>* loader=nullptr){ // just fancy syntax for call
 		return call(x,err,loader);
 	}
 
@@ -86,10 +105,12 @@ public:
 	 * @param err
 	 * @return 
 	 */
-	virtual output_t callOne(const input_t x, const output_t& err=output_t{}, ProgramLoader* loader=nullptr) {
+	virtual output_t callOne(const input_t x, const output_t& err=output_t{}, ProgramLoader<VirtualMachineState_t>* loader=nullptr) {
 		if constexpr (std::is_same<typename VirtualMachineState_t::input_t, input_t>::value and 
 					  std::is_same<typename VirtualMachineState_t::output_t, output_t>::value) {
-						  
+			
+		    assert(not program.empty());
+			
 			if(loader == nullptr) 
 				loader = this;
 			
@@ -97,7 +118,7 @@ public:
 			// the savings is that we don't have to create a VirtualMachinePool		
 			VirtualMachineState_t vms(x, err, loader, nullptr);		
 
-			push_program(vms.program); // write my program into vms (loader is used for everything else)
+			vms.program = program; // write my program into vms (loader is used for everything else)
 			
 			const auto out = vms.run(); // default to using "this" as the loader		
 			total_instruction_count_last_call = vms.runtime_counter.total;
@@ -114,16 +135,17 @@ public:
 	 * 		  marginalizes out the execution path.
 	 * @return a vector of virtual machine states
 	 */	
-	std::vector<VirtualMachineState_t> call_vms(const input_t x, const output_t& err=output_t{}, ProgramLoader* loader=nullptr){
+	std::vector<VirtualMachineState_t> call_vms(const input_t x, const output_t& err=output_t{}, ProgramLoader<VirtualMachineState_t>* loader=nullptr){
 		if constexpr (std::is_same<typename VirtualMachineState_t::input_t, input_t>::value and 
 					  std::is_same<typename VirtualMachineState_t::output_t, output_t>::value) {
-		
+			assert(not program.empty());
+			
 			if(loader == nullptr) 
 				loader = this;
 				
 			VirtualMachinePool<VirtualMachineState_t> pool; 		
 			VirtualMachineState_t* vms = new VirtualMachineState_t(x, err, loader, &pool);	
-			push_program(vms->program); 
+			vms->program = program; 
 			pool.push(vms);		
 			
 			const auto out = pool.run_vms();					
@@ -142,15 +164,16 @@ public:
 	 * @param err
 	 * @return 
 	 */
-	VirtualMachineState_t callOne_vms(const input_t x, const output_t& err=output_t{}, ProgramLoader* loader=nullptr) {
+	VirtualMachineState_t callOne_vms(const input_t x, const output_t& err=output_t{}, ProgramLoader<VirtualMachineState_t>* loader=nullptr) {
 		if constexpr (std::is_same<typename VirtualMachineState_t::input_t, input_t>::value and 
 					  std::is_same<typename VirtualMachineState_t::output_t, output_t>::value) {
+			assert(not program.empty());
 				
 			if(loader == nullptr) 
 				loader = this;
 				
 			VirtualMachineState_t vms(x, err, loader, nullptr);
-			push_program(vms.program); // write my program into vms (loader is used for everything else)
+			vms.program = program; // write my program into vms (loader is used for everything else)
 			vms.run(); // default to using "this" as the loader	
 
 			total_instruction_count_last_call = vms.runtime_counter.total;

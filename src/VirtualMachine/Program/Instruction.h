@@ -17,18 +17,18 @@
 * 	 is just a supplemental argument, used to pass indices in lexica and jump sizes etc
 *      for other primitives
 */ 
-template<typename VirtualMachineState_t>
 struct Instruction { 
 public:
 
 	// the function type we use takes a virtual machine state and returns a status
-	VirtualMachineState_t::FT* f;
+	void* f;
 	int arg;
 	
 	// constructors to make this a little easier to deal with
-	Instruction(VirtualMachineState_t::FT* _f=nullptr, int a=0x0) : f(_f), arg(a) {	
+	Instruction(void* _f=nullptr, int a=0x0) : f(_f), arg(a) {	
 	}		
 };
+
 
 std::ostream& operator<<(std::ostream& stream, Instruction& i) {
 	/**
