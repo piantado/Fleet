@@ -6,7 +6,8 @@
 #include "Instruction.h"
 #include "Stack.h"
 
-class Program : public Stack<Instruction> {
+template<typename VirtualMachineState_t>
+class Program : public Stack<Instruction<VirtualMachineState_t>> {
 public:
 	Program() {
 		// This is chosen with a little experimentation, designed to prevent us from having to reallocate too often

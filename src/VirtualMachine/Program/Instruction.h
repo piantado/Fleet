@@ -17,15 +17,16 @@
 * 	 is just a supplemental argument, used to pass indices in lexica and jump sizes etc
 *      for other primitives
 */ 
+template<typename VirtualMachineState_t>
 struct Instruction { 
 public:
 
 	// the function type we use takes a virtual machine state and returns a status
-	void* f;
+	VirtualMachineState_t::FT* f;
 	int arg;
 	
 	// constructors to make this a little easier to deal with
-	Instruction(void* _f=nullptr, int a=0x0) : f(_f), arg(a) {	
+	Instruction(VirtualMachineState_t::FT* _f=nullptr, int a=0x0) : f(_f), arg(a) {	
 	}		
 };
 
