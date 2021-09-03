@@ -116,7 +116,6 @@ public:
 			
 			return out;
 			
-	
 	  } else { UNUSED(x); UNUSED(err); assert(false && "*** Cannot use call when VirtualMachineState_t has different input_t or output_t."); }
 	}
 	

@@ -142,7 +142,7 @@ public:
 	void compile() {
 		this->program.clear();
 		value.template linearize<VirtualMachineState_t, Grammar_t>(this->program);
-		this->program.loader = this; // program loader defaults to this
+		this->program.loader = this; // program loader defaults to myself
 	}
 
 	virtual void push_program(Program<VirtualMachineState_t>& s, short k=0) override {
