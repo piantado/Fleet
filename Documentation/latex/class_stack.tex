@@ -13,12 +13,16 @@
 \item 
 void \mbox{\hyperlink{class_stack_a112b1dda8f0187bd63c4cd0cb877bd92}{reserve}} (size\+\_\+t t)
 \item 
+void \mbox{\hyperlink{class_stack_a0992f5d5b74abd9c717e108ecd6dbb9c}{clear}} ()
+\item 
 void \mbox{\hyperlink{class_stack_a6e8312460808f468b004d709d3308757}{push}} (const T \&val)
 \begin{DoxyCompactList}\small\item\em Push val onto the stack. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_stack_ace7170c5a65f27155d77af269054943a}{push}} (const T \&\&val)
 \item 
 void \mbox{\hyperlink{class_stack_a2723aec5c7e2611b97fcffeb7709de33}{pop}} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Remove top from the stack. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_stack_a6efe5e50e0e9dbecf1c7f0c83410befc}{popn}} (size\+\_\+t n)
+\begin{DoxyCompactList}\small\item\em Remove n from the stack. \end{DoxyCompactList}\item 
 T \mbox{\hyperlink{class_stack_ad461f6de40c8672dbf743068f4515061}{top}} ()
 \item 
 T \& \mbox{\hyperlink{class_stack_a318da5613921ddf481a21c62ce006c3c}{topref}} ()
@@ -30,6 +34,14 @@ size\+\_\+t \mbox{\hyperlink{class_stack_aa34222dbc28544189d97add837498b71}{size
 bool \mbox{\hyperlink{class_stack_a275d43ff89b91a9c6c5636cc8539d285}{empty}} () const
 \item 
 std\+::string \mbox{\hyperlink{class_stack_a95718fc2833a1fb9fd1f2bff387d5a54}{string}} () const
+\item 
+auto \mbox{\hyperlink{class_stack_a17545176dca11cc7e22f4d4a45507c52}{begin}} ()
+\begin{DoxyCompactList}\small\item\em These are for iterating through the underlying vector. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{class_stack_a6f227b3b14667475fb382f1bc0cc7f34}{end}} ()
+\item 
+auto \mbox{\hyperlink{class_stack_a701344656df8b58c9e0a41fe5b5e2c2e}{rbegin}} ()
+\item 
+auto \mbox{\hyperlink{class_stack_a8ffa907e61df6d5624f3b80bc3f99a5e}{rend}} ()
 \end{DoxyCompactItemize}
 
 
@@ -56,6 +68,24 @@ Steven Piantadosi
 
 
 \doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_stack_a17545176dca11cc7e22f4d4a45507c52}\label{class_stack_a17545176dca11cc7e22f4d4a45507c52}} 
+\index{Stack$<$ T $>$@{Stack$<$ T $>$}!begin@{begin}}
+\index{begin@{begin}!Stack$<$ T $>$@{Stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{begin()}{begin()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+auto \mbox{\hyperlink{class_stack}{Stack}}$<$ T $>$\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+These are for iterating through the underlying vector. 
+
+\mbox{\Hypertarget{class_stack_a0992f5d5b74abd9c717e108ecd6dbb9c}\label{class_stack_a0992f5d5b74abd9c717e108ecd6dbb9c}} 
+\index{Stack$<$ T $>$@{Stack$<$ T $>$}!clear@{clear}}
+\index{clear@{clear}!Stack$<$ T $>$@{Stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{class_stack}{Stack}}$<$ T $>$\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
 \mbox{\Hypertarget{class_stack_a9f5e3b440e955d4c4e67203d8ad589c0}\label{class_stack_a9f5e3b440e955d4c4e67203d8ad589c0}} 
 \index{Stack$<$ T $>$@{Stack$<$ T $>$}!emplace\_back@{emplace\_back}}
 \index{emplace\_back@{emplace\_back}!Stack$<$ T $>$@{Stack$<$ T $>$}}
@@ -71,6 +101,13 @@ void \mbox{\hyperlink{class_stack}{Stack}}$<$ T $>$\+::emplace\+\_\+back (\begin
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 bool \mbox{\hyperlink{class_stack}{Stack}}$<$ T $>$\+::empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
+\mbox{\Hypertarget{class_stack_a6f227b3b14667475fb382f1bc0cc7f34}\label{class_stack_a6f227b3b14667475fb382f1bc0cc7f34}} 
+\index{Stack$<$ T $>$@{Stack$<$ T $>$}!end@{end}}
+\index{end@{end}!Stack$<$ T $>$@{Stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+auto \mbox{\hyperlink{class_stack}{Stack}}$<$ T $>$\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
 \mbox{\Hypertarget{class_stack_add0c8bc53547f3c18b37a9c624725462}\label{class_stack_add0c8bc53547f3c18b37a9c624725462}} 
 \index{Stack$<$ T $>$@{Stack$<$ T $>$}!get\_value@{get\_value}}
 \index{get\_value@{get\_value}!Stack$<$ T $>$@{Stack$<$ T $>$}}
@@ -85,7 +122,27 @@ const std\+::vector$<$T$>$\& \mbox{\hyperlink{class_stack}{Stack}}$<$ T $>$\+::g
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 void \mbox{\hyperlink{class_stack}{Stack}}$<$ T $>$\+::pop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-Remove the top element (returning void)\mbox{\Hypertarget{class_stack_ace7170c5a65f27155d77af269054943a}\label{class_stack_ace7170c5a65f27155d77af269054943a}} 
+
+
+Remove top from the stack. 
+
+Remove the top element (returning void)\mbox{\Hypertarget{class_stack_a6efe5e50e0e9dbecf1c7f0c83410befc}\label{class_stack_a6efe5e50e0e9dbecf1c7f0c83410befc}} 
+\index{Stack$<$ T $>$@{Stack$<$ T $>$}!popn@{popn}}
+\index{popn@{popn}!Stack$<$ T $>$@{Stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{popn()}{popn()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{class_stack}{Stack}}$<$ T $>$\+::popn (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Remove n from the stack. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_stack_ace7170c5a65f27155d77af269054943a}\label{class_stack_ace7170c5a65f27155d77af269054943a}} 
 \index{Stack$<$ T $>$@{Stack$<$ T $>$}!push@{push}}
 \index{push@{push}!Stack$<$ T $>$@{Stack$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{push()}{push()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
@@ -108,6 +165,20 @@ Push val onto the stack.
 {\em val} & \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{class_stack_a701344656df8b58c9e0a41fe5b5e2c2e}\label{class_stack_a701344656df8b58c9e0a41fe5b5e2c2e}} 
+\index{Stack$<$ T $>$@{Stack$<$ T $>$}!rbegin@{rbegin}}
+\index{rbegin@{rbegin}!Stack$<$ T $>$@{Stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{rbegin()}{rbegin()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+auto \mbox{\hyperlink{class_stack}{Stack}}$<$ T $>$\+::rbegin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_stack_a8ffa907e61df6d5624f3b80bc3f99a5e}\label{class_stack_a8ffa907e61df6d5624f3b80bc3f99a5e}} 
+\index{Stack$<$ T $>$@{Stack$<$ T $>$}!rend@{rend}}
+\index{rend@{rend}!Stack$<$ T $>$@{Stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{rend()}{rend()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+auto \mbox{\hyperlink{class_stack}{Stack}}$<$ T $>$\+::rend (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
 \mbox{\Hypertarget{class_stack_a112b1dda8f0187bd63c4cd0cb877bd92}\label{class_stack_a112b1dda8f0187bd63c4cd0cb877bd92}} 
 \index{Stack$<$ T $>$@{Stack$<$ T $>$}!reserve@{reserve}}
 \index{reserve@{reserve}!Stack$<$ T $>$@{Stack$<$ T $>$}}

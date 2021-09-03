@@ -6,7 +6,8 @@
 
 
 
-Inheritance diagram for Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+:\nopagebreak
+Inheritance diagram for Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -15,7 +16,8 @@ Inheritance diagram for Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t,
 \end{figure}
 
 
-Collaboration diagram for Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+:\nopagebreak
+Collaboration diagram for Lexicon$<$ this\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -58,7 +60,7 @@ bool \mbox{\hyperlink{class_lexicon_a0e62a831486c3bc713df8cd0c552ea81}{has\+\_\+
 \item 
 bool \mbox{\hyperlink{class_lexicon_a2b311197900ca437790f35386f22ae34}{check\+\_\+reachable}} () const
 \item 
-virtual void \mbox{\hyperlink{class_lexicon_a37db511e07793275ae8005dc46183aa1}{push\+\_\+program}} (Program \&s, short j) override
+virtual void \mbox{\hyperlink{class_lexicon_a6996066714a5ce8156c1933f4f524c6f}{push\+\_\+program}} (\mbox{\hyperlink{class_program}{Program}}$<$ \mbox{\hyperlink{class_lexicon_ad1d8c5613fdf6fdd92c8d93a4114ef9f}{Virtual\+Machine\+State\+\_\+t}} $>$ \&s, short j) override
 \item 
 virtual void \mbox{\hyperlink{class_lexicon_a7a5df8a261c35cc00f19a70b8121fa7b}{complete}} () override
 \begin{DoxyCompactList}\small\item\em Fill in all the holes in this hypothesis, at random, modifying self. \end{DoxyCompactList}\item 
@@ -76,7 +78,7 @@ virtual double \mbox{\hyperlink{class_lexicon_a74a1d71aa16b6efb6c83acf9a119f809}
 \begin{DoxyCompactList}\small\item\em What is the prior of the k\textquotesingle{}th neighbor? This does not need to return the full prior, only relative (among ks) \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{class_lexicon_a8e31180286754fa40b14c8892f5ba9bc}{is\+\_\+evaluable}} () const override
 \item 
-virtual \mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}}$<$ \mbox{\hyperlink{class_lexicon_a77ef783583f4e58b90d31bc278bb17de}{output\+\_\+t}} $>$ \mbox{\hyperlink{class_lexicon_a8c883f15d913a29ef0b34377a16b7320}{call}} (const \mbox{\hyperlink{class_lexicon_a903345d4e66ffcef1d223dc0710f6bd3}{input\+\_\+t}} x, const \mbox{\hyperlink{class_lexicon_a77ef783583f4e58b90d31bc278bb17de}{output\+\_\+t}} \&err=\mbox{\hyperlink{class_lexicon_a77ef783583f4e58b90d31bc278bb17de}{output\+\_\+t}}\{\}, \mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$loader=nullptr) override
+virtual \mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}}$<$ \mbox{\hyperlink{class_lexicon_a77ef783583f4e58b90d31bc278bb17de}{output\+\_\+t}} $>$ \mbox{\hyperlink{class_lexicon_a5f78df5cf3fe2a42f677454e09bec6e7}{call}} (const \mbox{\hyperlink{class_lexicon_a903345d4e66ffcef1d223dc0710f6bd3}{input\+\_\+t}} x, const \mbox{\hyperlink{class_lexicon_a77ef783583f4e58b90d31bc278bb17de}{output\+\_\+t}} \&err=\mbox{\hyperlink{class_lexicon_a77ef783583f4e58b90d31bc278bb17de}{output\+\_\+t}}\{\}) override
 \begin{DoxyCompactList}\small\item\em Run the virtual machine on input x, and marginalize over execution paths to return a distribution on outputs. Note that loader must be a program loader, and that is to handle recursion and other function calls. \end{DoxyCompactList}\item 
 virtual std\+::string \mbox{\hyperlink{class_lexicon_a18e07f3210a97edf747cd211aff34745}{serialize}} () const override
 \end{DoxyCompactItemize}
@@ -162,12 +164,12 @@ using \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, \+\
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_lexicon_a8c883f15d913a29ef0b34377a16b7320}\label{class_lexicon_a8c883f15d913a29ef0b34377a16b7320}} 
+\mbox{\Hypertarget{class_lexicon_a5f78df5cf3fe2a42f677454e09bec6e7}\label{class_lexicon_a5f78df5cf3fe2a42f677454e09bec6e7}} 
 \index{Lexicon$<$ this\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}!call@{call}}
 \index{call@{call}!Lexicon$<$ this\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}}
 \doxysubsubsection{\texorpdfstring{call()}{call()}}
 {\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename datum\+\_\+t  = defaultdatum\+\_\+t$<$\+\_\+input\+\_\+t, \+\_\+output\+\_\+t$>$, typename \+\_\+\+Virtual\+Machine\+State\+\_\+t  = typename I\+N\+N\+E\+R\+::\+Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t$>$ \\
-virtual \mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}}$<$\mbox{\hyperlink{class_lexicon_a77ef783583f4e58b90d31bc278bb17de}{output\+\_\+t}}$>$ \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::call (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_lexicon_a903345d4e66ffcef1d223dc0710f6bd3}{input\+\_\+t}}}]{x,  }\item[{const \mbox{\hyperlink{class_lexicon_a77ef783583f4e58b90d31bc278bb17de}{output\+\_\+t}} \&}]{err = {\ttfamily \mbox{\hyperlink{class_lexicon_a77ef783583f4e58b90d31bc278bb17de}{output\+\_\+t}}\{\}},  }\item[{\mbox{\hyperlink{class_program_loader}{Program\+Loader}} $\ast$}]{loader = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+virtual \mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}}$<$\mbox{\hyperlink{class_lexicon_a77ef783583f4e58b90d31bc278bb17de}{output\+\_\+t}}$>$ \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::call (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_lexicon_a903345d4e66ffcef1d223dc0710f6bd3}{input\+\_\+t}}}]{x,  }\item[{const \mbox{\hyperlink{class_lexicon_a77ef783583f4e58b90d31bc278bb17de}{output\+\_\+t}} \&}]{err = {\ttfamily \mbox{\hyperlink{class_lexicon_a77ef783583f4e58b90d31bc278bb17de}{output\+\_\+t}}\{\}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -181,19 +183,13 @@ Run the virtual machine on input x, and marginalize over execution paths to retu
 \hline
 {\em loader} & -\/ where to load recursive calls \\
 \hline
-{\em max\+\_\+steps} & -\/ max steps the virtual machine pool will run for \\
-\hline
-{\em max\+\_\+outputs} & -\/ max outputs the virtual machine pool will run for \\
-\hline
-{\em minlp} & -\/ the virtual machine pool doesn\textquotesingle{}t consider paths less than this probability \\
-\hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
 
 
-Reimplemented from \mbox{\hyperlink{class_callable_a4f13b833999fbb9c2de24bbef2a12e3c}{Callable$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, typename I\+N\+N\+E\+R\+::\+Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t $>$}}.
+Reimplemented from \mbox{\hyperlink{class_callable_a4bba2177c3bb6c48dff14e9d189edca2}{Callable$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, typename I\+N\+N\+E\+R\+::\+Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t $>$}}.
 
 \mbox{\Hypertarget{class_lexicon_a2b311197900ca437790f35386f22ae34}\label{class_lexicon_a2b311197900ca437790f35386f22ae34}} 
 \index{Lexicon$<$ this\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}!check\_reachable@{check\_reachable}}
@@ -391,12 +387,12 @@ virtual std\+::pair$<$this\+\_\+t,double$>$ \mbox{\hyperlink{class_lexicon}{Lexi
 This proposal guarantees that there will be at least one factor that is proposed to. To do this, we draw random numbers on 2$\ast$$\ast$factors.size()-\/1 and then use the bits of that integer to determine which factors to propose to. \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_lexicon_a37db511e07793275ae8005dc46183aa1}\label{class_lexicon_a37db511e07793275ae8005dc46183aa1}} 
+\mbox{\Hypertarget{class_lexicon_a6996066714a5ce8156c1933f4f524c6f}\label{class_lexicon_a6996066714a5ce8156c1933f4f524c6f}} 
 \index{Lexicon$<$ this\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}!push\_program@{push\_program}}
 \index{push\_program@{push\_program}!Lexicon$<$ this\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}}
 \doxysubsubsection{\texorpdfstring{push\_program()}{push\_program()}}
 {\footnotesize\ttfamily template$<$typename this\+\_\+t , typename I\+N\+N\+ER , typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename datum\+\_\+t  = defaultdatum\+\_\+t$<$\+\_\+input\+\_\+t, \+\_\+output\+\_\+t$>$, typename \+\_\+\+Virtual\+Machine\+State\+\_\+t  = typename I\+N\+N\+E\+R\+::\+Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t$>$ \\
-virtual void \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::push\+\_\+program (\begin{DoxyParamCaption}\item[{Program \&}]{s,  }\item[{short}]{j }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+virtual void \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::push\+\_\+program (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_program}{Program}}$<$ \mbox{\hyperlink{class_lexicon_ad1d8c5613fdf6fdd92c8d93a4114ef9f}{Virtual\+Machine\+State\+\_\+t}} $>$ \&}]{s,  }\item[{short}]{j }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 Put factor j onto program s 
 \begin{DoxyParams}{Parameters}
@@ -405,10 +401,6 @@ Put factor j onto program s
 {\em j} & \\
 \hline
 \end{DoxyParams}
-
-
-Implements \mbox{\hyperlink{class_program_loader_a68b234befb88579aaeeeed52414f9bd1}{Program\+Loader}}.
-
 \mbox{\Hypertarget{class_lexicon_ab0aff8612d0f8c6bcca2f11a647feab9}\label{class_lexicon_ab0aff8612d0f8c6bcca2f11a647feab9}} 
 \index{Lexicon$<$ this\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}!restart@{restart}}
 \index{restart@{restart}!Lexicon$<$ this\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}}

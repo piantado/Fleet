@@ -74,29 +74,38 @@ $(function() {
 <div class="contents">
 <a href="_program_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once </span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_instruction_8h.html">Instruction.h</a>&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_stack_8h.html">Stack.h</a>&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">class </span>Program : <span class="keyword">public</span> <a class="code" href="class_stack.html">Stack</a>&lt;Instruction&gt; {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    Program() {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <span class="comment">// This is chosen with a little experimentation, designed to prevent us from having to reallocate too often</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="comment">// when we linearize, and also save us from having to compute program_size() when we linearize (since thats slow)</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        this-&gt;<a class="code" href="class_stack.html#a112b1dda8f0187bd63c4cd0cb877bd92">reserve</a>(64);</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    }</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="comment">// Remove n from the stack</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordtype">void</span> popn(<span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i=0;i&lt;n;i++) {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            this-&gt;<a class="code" href="class_stack.html#a2723aec5c7e2611b97fcffeb7709de33">pop</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        }</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    }</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;};</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_instruction_8h.html">Instruction.h</a>&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_stack_8h.html">Stack.h</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="class_program.html">    6</a></span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> VirtualMachineState_t&gt; <span class="keyword">class </span><a class="code" href="class_program.html">Program</a>;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> VirtualMachineState_t&gt;</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="class_program_loader.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_program_loader.html">ProgramLoader</a> {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_program_loader.html#a84268deadcb00f669613fac0b8777530">push_program</a>(<a class="code" href="class_program.html">Program&lt;VirtualMachineState_t&gt;</a>&amp; s, <span class="keywordtype">short</span> k=0) = 0;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;};</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> VirtualMachineState_t&gt;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">class </span><a class="code" href="class_program.html">Program</a> : <span class="keyword">public</span> <a class="code" href="class_stack.html">Stack</a>&lt;Instruction&gt; {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="class_program.html#a7189b4b19ae0e768cdd71953a2c601c4">   35</a></span>&#160;    <a class="code" href="class_program_loader.html">ProgramLoader&lt;VirtualMachineState_t&gt;</a>* <a class="code" href="class_program.html#a7189b4b19ae0e768cdd71953a2c601c4">loader</a>; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="class_program.html#a003e8e5adbe1b27d5c2b86e8c6f2511e">   37</a></span>&#160;    <a class="code" href="class_program.html#a003e8e5adbe1b27d5c2b86e8c6f2511e">Program</a>(<a class="code" href="class_program_loader.html">ProgramLoader&lt;VirtualMachineState_t&gt;</a>* pl=<span class="keyword">nullptr</span>) : <a class="code" href="class_program.html#a7189b4b19ae0e768cdd71953a2c601c4">loader</a>(pl) {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="comment">// This is chosen with a little experimentation, designed to prevent us from having to reallocate too often</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="comment">// when we linearize, and also save us from having to compute program_size() when we linearize (since thats slow)</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        this-&gt;reserve(64);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }   </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;};</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclass_stack_html_a112b1dda8f0187bd63c4cd0cb877bd92"><div class="ttname"><a href="class_stack.html#a112b1dda8f0187bd63c4cd0cb877bd92">Stack::reserve</a></div><div class="ttdeci">void reserve(size_t t)</div><div class="ttdef"><b>Definition:</b> Stack.h:37</div></div>
+<div class="ttc" id="aclass_program_loader_html"><div class="ttname"><a href="class_program_loader.html">ProgramLoader</a></div><div class="ttdef"><b>Definition:</b> Program.h:17</div></div>
 <div class="ttc" id="aclass_stack_html"><div class="ttname"><a href="class_stack.html">Stack</a></div><div class="ttdef"><b>Definition:</b> Stack.h:22</div></div>
-<div class="ttc" id="aclass_stack_html_a2723aec5c7e2611b97fcffeb7709de33"><div class="ttname"><a href="class_stack.html#a2723aec5c7e2611b97fcffeb7709de33">Stack::pop</a></div><div class="ttdeci">void pop()</div><div class="ttdef"><b>Definition:</b> Stack.h:52</div></div>
+<div class="ttc" id="aclass_program_html"><div class="ttname"><a href="class_program.html">Program</a></div><div class="ttdef"><b>Definition:</b> Program.h:6</div></div>
+<div class="ttc" id="aclass_program_loader_html_a84268deadcb00f669613fac0b8777530"><div class="ttname"><a href="class_program_loader.html#a84268deadcb00f669613fac0b8777530">ProgramLoader::push_program</a></div><div class="ttdeci">virtual void push_program(Program&lt; VirtualMachineState_t &gt; &amp;s, short k=0)=0</div></div>
+<div class="ttc" id="aclass_program_html_a003e8e5adbe1b27d5c2b86e8c6f2511e"><div class="ttname"><a href="class_program.html#a003e8e5adbe1b27d5c2b86e8c6f2511e">Program::Program</a></div><div class="ttdeci">Program(ProgramLoader&lt; VirtualMachineState_t &gt; *pl=nullptr)</div><div class="ttdef"><b>Definition:</b> Program.h:37</div></div>
+<div class="ttc" id="aclass_program_html_a7189b4b19ae0e768cdd71953a2c601c4"><div class="ttname"><a href="class_program.html#a7189b4b19ae0e768cdd71953a2c601c4">Program::loader</a></div><div class="ttdeci">ProgramLoader&lt; VirtualMachineState_t &gt; * loader</div><div class="ttdef"><b>Definition:</b> Program.h:35</div></div>
 <div class="ttc" id="a_instruction_8h_html"><div class="ttname"><a href="_instruction_8h.html">Instruction.h</a></div><div class="ttdoc">f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg is just a supplemental ar...</div></div>
 <div class="ttc" id="a_stack_8h_html"><div class="ttname"><a href="_stack_8h.html">Stack.h</a></div><div class="ttdoc">Many things in Fleet are stacks and this is designed to allow for rapid changse to the stack type in ...</div></div>
 <!-- start footer part -->

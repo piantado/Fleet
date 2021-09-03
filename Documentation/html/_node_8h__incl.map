@@ -4,7 +4,7 @@
 <area shape="rect" id="node3" title=" " alt="" coords="1675,80,1732,107"/>
 <area shape="rect" id="node4" href="$_miscellaneous_8h.html" title=" " alt="" coords="253,304,380,331"/>
 <area shape="rect" id="node7" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="1104,155,1167,181"/>
-<area shape="rect" id="node35" href="$_program_8h.html" title=" " alt="" coords="171,80,260,107"/>
+<area shape="rect" id="node35" href="$_program_8h.html" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="171,80,260,107"/>
 <area shape="rect" id="node37" href="$_base_node_8h.html" title="This is a general tree class, which we are adding because there are currently at least 3 different tr..." alt="" coords="1499,80,1599,107"/>
 <area shape="rect" id="node42" href="$_builtins_8h.html" title=" " alt="" coords="2229,155,2311,181"/>
 <area shape="rect" id="node5" title=" " alt="" coords="697,379,774,405"/>

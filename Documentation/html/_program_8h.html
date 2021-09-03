@@ -68,10 +68,15 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle">
 <div class="title">Program.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t. We've optimized the reserve in the constructor to be the fasest.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="_instruction_8h_source.html">Instruction.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_stack_8h_source.html">Stack.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -79,7 +84,7 @@ Include dependency graph for Program.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_program_8h__incl.png" border="0" usemap="#src_2_virtual_machine_2_program_2_program_8h" alt=""/></div>
 <map name="src_2_virtual_machine_2_program_2_program_8h" id="src_2_virtual_machine_2_program_2_program_8h">
-<area shape="rect" title=" " alt="" coords="684,5,836,47"/>
+<area shape="rect" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="684,5,836,47"/>
 <area shape="rect" href="_instruction_8h.html" title="f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg is just a supplemental ar..." alt="" coords="351,244,454,271"/>
 <area shape="rect" href="_stack_8h.html" title="Many things in Fleet are stacks and this is designed to allow for rapid changse to the stack type in ..." alt="" coords="1338,95,1409,121"/>
 <area shape="rect" title=" " alt="" coords="855,393,929,420"/>
@@ -118,18 +123,30 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_program_8h__dep__incl.png" border="0" usemap="#src_2_virtual_machine_2_program_2_program_8hdep" alt=""/></div>
 <map name="src_2_virtual_machine_2_program_2_program_8hdep" id="src_2_virtual_machine_2_program_2_program_8hdep">
-<area shape="rect" title=" " alt="" coords="257,5,409,47"/>
-<area shape="rect" href="_node_8h.html" title=" " alt="" coords="22,102,179,129"/>
-<area shape="rect" href="_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="260,273,496,300"/>
-<area shape="rect" href="_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="247,95,418,136"/>
-<area shape="rect" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="5,273,145,300"/>
-<area shape="rect" href="_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="73,191,259,218"/>
-<area shape="rect" href="_callable_8h.html" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="283,184,473,225"/>
+<area shape="rect" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="273,5,425,47"/>
+<area shape="rect" href="_node_8h.html" title=" " alt="" coords="5,102,163,129"/>
+<area shape="rect" href="_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="293,273,529,300"/>
+<area shape="rect" href="_callable_8h.html" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="315,184,506,225"/>
+<area shape="rect" href="_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="203,95,373,136"/>
+<area shape="rect" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="38,273,178,300"/>
+<area shape="rect" href="_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="106,191,291,218"/>
 </map>
 </div>
 </div>
 <p><a href="_program_8h_source.html">Go to the source code of this file.</a></p>
-</div><!-- contents -->
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html">Program</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program_loader.html">ProgramLoader&lt; VirtualMachineState_t &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html">Program</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t. We've optimized the reserve in the constructor to be the fasest. </p>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

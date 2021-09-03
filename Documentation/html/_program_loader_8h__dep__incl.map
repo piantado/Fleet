@@ -1,9 +1,0 @@
-<map id="src/Hypotheses/Interfaces/ProgramLoader.h" name="src/Hypotheses/Interfaces/ProgramLoader.h">
-<area shape="rect" id="node1" title=" " alt="" coords="48,5,239,47"/>
-<area shape="rect" id="node2" href="$_callable_8h.html" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="28,184,219,225"/>
-<area shape="rect" id="node4" href="$_virtual_machine_pool_8h.html" title="A little class that any VirtualMachinePool AND VirtualMachines inherit to control their behavior...." alt="" coords="253,95,417,136"/>
-<area shape="rect" id="node7" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="58,95,229,136"/>
-<area shape="rect" id="node3" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="5,273,241,300"/>
-<area shape="rect" id="node5" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="243,191,428,218"/>
-<area shape="rect" id="node6" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="265,273,405,300"/>
-</map>

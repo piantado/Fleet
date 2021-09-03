@@ -90,14 +90,14 @@ Collaboration diagram for VirtualMachineState&lt; _t_input, _t_output, VM_TYPES 
 <div class="dyncontent">
 <div class="center"><img src="class_virtual_machine_state__coll__graph.png" border="0" usemap="#_virtual_machine_state_3_01__t__input_00_01__t__output_00_01_v_m___t_y_p_e_s_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="_virtual_machine_state_3_01__t__input_00_01__t__output_00_01_v_m___t_y_p_e_s_01_4_coll__map" id="_virtual_machine_state_3_01__t__input_00_01__t__output_00_01_v_m___t_y_p_e_s_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="565,140,728,196"/>
-<area shape="rect" href="struct_virtual_machine_control.html" title=" " alt="" coords="5,16,172,42"/>
-<area shape="rect" href="class_virtual_machine_pool.html" title=" " alt="" coords="221,38,405,79"/>
-<area shape="rect" href="class_runtime_counter.html" title=" " alt="" coords="249,104,377,130"/>
-<area shape="rect" href="class_stack.html" title=" " alt="" coords="247,154,380,181"/>
-<area shape="rect" href="class_stack.html" title=" " alt="" coords="225,206,402,247"/>
-<area shape="rect" href="class_program_loader.html" title=" " alt="" coords="253,272,374,298"/>
-<area shape="rect" href="struct_virtual_machine_state_1_1stack__t.html" title=" " alt="" coords="226,323,401,394"/>
+<area shape="rect" title=" " alt="" coords="620,145,783,201"/>
+<area shape="rect" href="struct_virtual_machine_control.html" title=" " alt="" coords="5,21,172,47"/>
+<area shape="rect" href="class_virtual_machine_pool.html" title=" " alt="" coords="249,43,433,84"/>
+<area shape="rect" href="class_runtime_counter.html" title=" " alt="" coords="277,109,405,135"/>
+<area shape="rect" href="class_stack.html" title=" " alt="" coords="274,159,407,186"/>
+<area shape="rect" href="class_program.html" title=" " alt="" coords="221,210,460,237"/>
+<area shape="rect" href="class_stack.html" title=" " alt="" coords="252,261,429,303"/>
+<area shape="rect" href="struct_virtual_machine_state_1_1stack__t.html" title=" " alt="" coords="253,327,428,397"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -124,8 +124,8 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a516424b0636cbf0539e8ab491f1577f9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a516424b0636cbf0539e8ab491f1577f9">VirtualMachineState</a> (<a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">input_t</a> x, const <a class="el" href="class_virtual_machine_state.html#a1015cee5061f82f82ef6a953b51f9bd5">output_t</a> &amp;e, <a class="el" href="class_program_loader.html">ProgramLoader</a> *pl, <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a>&lt; <a class="el" href="class_virtual_machine_state.html#ada0e1bebef2d73581c6adcd55f8be521">this_t</a> &gt; *po)</td></tr>
-<tr class="separator:a516424b0636cbf0539e8ab491f1577f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1406c1a3443df2586553dc8e8f699ad"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#ad1406c1a3443df2586553dc8e8f699ad">VirtualMachineState</a> (<a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">input_t</a> x, const <a class="el" href="class_virtual_machine_state.html#a1015cee5061f82f82ef6a953b51f9bd5">output_t</a> &amp;e, <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a>&lt; <a class="el" href="class_virtual_machine_state.html#ada0e1bebef2d73581c6adcd55f8be521">this_t</a> &gt; *po)</td></tr>
+<tr class="separator:ad1406c1a3443df2586553dc8e8f699ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a213400a3e616f8d1a2041491ea4c782e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a213400a3e616f8d1a2041491ea4c782e">operator&lt;</a> (const <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a> &amp;m) const</td></tr>
 <tr class="memdesc:a213400a3e616f8d1a2041491ea4c782e"><td class="mdescLeft">&#160;</td><td class="mdescRight">These must be sortable by lp so that we can enumerate them from low to high probability in a <a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a> NOTE: VirtualMachineStates shouldn't be put in a set because they might evaluate to equal!  <a href="class_virtual_machine_state.html#a213400a3e616f8d1a2041491ea4c782e">More...</a><br /></td></tr>
 <tr class="separator:a213400a3e616f8d1a2041491ea4c782e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,8 +173,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aa9204cc7523092fdc3d3e53e881bc841"><td class="memItemLeft" align="right" valign="top">Program&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#aa9204cc7523092fdc3d3e53e881bc841">program</a></td></tr>
-<tr class="separator:aa9204cc7523092fdc3d3e53e881bc841"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeddb74afcc4855a804027764301dec4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_program.html">Program</a>&lt; <a class="el" href="class_virtual_machine_state.html#ada0e1bebef2d73581c6adcd55f8be521">this_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#aeddb74afcc4855a804027764301dec4c">program</a></td></tr>
+<tr class="separator:aeddb74afcc4855a804027764301dec4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aded245a367f3caca62faf7264feaff41"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_virtual_machine_state.html#aaa272d9002040c8c15908170fbe16a88">VMSStack</a>&lt; <a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">input_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#aded245a367f3caca62faf7264feaff41">xstack</a></td></tr>
 <tr class="separator:aded245a367f3caca62faf7264feaff41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fcb81adddcc27cf4bca939d8b939efc"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_virtual_machine_state.html#a1015cee5061f82f82ef6a953b51f9bd5">output_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a3fcb81adddcc27cf4bca939d8b939efc">err</a></td></tr>
@@ -193,8 +193,6 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a6e561a217081654b4187620953e86fff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad62a688573c8c8187b25731a417e57ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_runtime_counter.html">RuntimeCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#ad62a688573c8c8187b25731a417e57ac">runtime_counter</a></td></tr>
 <tr class="separator:ad62a688573c8c8187b25731a417e57ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada020ee6e13cbda67c9dfed264f7fc3f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_program_loader.html">ProgramLoader</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#ada020ee6e13cbda67c9dfed264f7fc3f">program_loader</a></td></tr>
-<tr class="separator:ada020ee6e13cbda67c9dfed264f7fc3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68860cf7a2971d7f8c4b817d360d7b43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_virtual_machine_pool.html">VirtualMachinePool</a>&lt; <a class="el" href="class_virtual_machine_state.html#ada0e1bebef2d73581c6adcd55f8be521">this_t</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_virtual_machine_state.html#a68860cf7a2971d7f8c4b817d360d7b43">pool</a></td></tr>
 <tr class="separator:a68860cf7a2971d7f8c4b817d360d7b43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -318,8 +316,8 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a516424b0636cbf0539e8ab491f1577f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a516424b0636cbf0539e8ab491f1577f9">&#9670;&nbsp;</a></span>VirtualMachineState()</h2>
+<a id="ad1406c1a3443df2586553dc8e8f699ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1406c1a3443df2586553dc8e8f699ad">&#9670;&nbsp;</a></span>VirtualMachineState()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -340,12 +338,6 @@ template&lt;typename _t_input , typename _t_output , typename... VM_TYPES&gt; </
           <td></td>
           <td class="paramtype">const <a class="el" href="class_virtual_machine_state.html#a1015cee5061f82f82ef6a953b51f9bd5">output_t</a> &amp;&#160;</td>
           <td class="paramname"><em>e</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_program_loader.html">ProgramLoader</a> *&#160;</td>
-          <td class="paramname"><em>pl</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -885,8 +877,8 @@ template&lt;typename _t_input , typename _t_output , typename... VM_TYPES&gt; </
 
 </div>
 </div>
-<a id="aa9204cc7523092fdc3d3e53e881bc841"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9204cc7523092fdc3d3e53e881bc841">&#9670;&nbsp;</a></span>program</h2>
+<a id="aeddb74afcc4855a804027764301dec4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeddb74afcc4855a804027764301dec4c">&#9670;&nbsp;</a></span>program</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -894,23 +886,7 @@ template&lt;typename _t_input , typename _t_output , typename... VM_TYPES&gt; </
 template&lt;typename _t_input , typename _t_output , typename... VM_TYPES&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">Program <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; _t_input, _t_output, VM_TYPES &gt;::program</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ada020ee6e13cbda67c9dfed264f7fc3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada020ee6e13cbda67c9dfed264f7fc3f">&#9670;&nbsp;</a></span>program_loader</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename _t_input , typename _t_output , typename... VM_TYPES&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_program_loader.html">ProgramLoader</a>* <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; _t_input, _t_output, VM_TYPES &gt;::program_loader</td>
+          <td class="memname"><a class="el" href="class_program.html">Program</a>&lt;<a class="el" href="class_virtual_machine_state.html#ada0e1bebef2d73581c6adcd55f8be521">this_t</a>&gt; <a class="el" href="class_virtual_machine_state.html">VirtualMachineState</a>&lt; _t_input, _t_output, VM_TYPES &gt;::program</td>
         </tr>
       </table>
 </div><div class="memdoc">

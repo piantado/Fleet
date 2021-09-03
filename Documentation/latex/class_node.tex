@@ -6,7 +6,8 @@
 
 
 
-Inheritance diagram for Node\+:\nopagebreak
+Inheritance diagram for Node\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -15,7 +16,8 @@ Inheritance diagram for Node\+:\nopagebreak
 \end{figure}
 
 
-Collaboration diagram for Node\+:\nopagebreak
+Collaboration diagram for Node\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -69,7 +71,7 @@ virtual std\+::string \mbox{\hyperlink{class_node_a5d2a0e17dd2a00a79e6d1f763c911
 \item 
 virtual std\+::string \mbox{\hyperlink{class_node_a70e879ceb71f47787137572d9bee8efa}{parseable}} () const
 \item 
-{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\int \mbox{\hyperlink{class_node_a2300ca04a56aeca14977915c4de0f53e}{linearize}} (Program \&program) const
+{\footnotesize template$<$typename Virtual\+Machine\+State\+\_\+t , typename Grammar\+\_\+t $>$ }\\int \mbox{\hyperlink{class_node_a3f6ddb5d39f893b34c64800270de0025}{linearize}} (\mbox{\hyperlink{class_program}{Program}}$<$ Virtual\+Machine\+State\+\_\+t $>$ \&program) const
 \item 
 virtual bool \mbox{\hyperlink{class_node_a8f42de356c047dd52472d24ace4d42c5}{operator==}} (const \mbox{\hyperlink{class_node}{Node}} \&n) const override
 \item 
@@ -225,12 +227,12 @@ A tree is complete if it contains no null nodes below it. \begin{DoxyReturn}{Ret
 Am I a null node? \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_node_a2300ca04a56aeca14977915c4de0f53e}\label{class_node_a2300ca04a56aeca14977915c4de0f53e}} 
+\mbox{\Hypertarget{class_node_a3f6ddb5d39f893b34c64800270de0025}\label{class_node_a3f6ddb5d39f893b34c64800270de0025}} 
 \index{Node@{Node}!linearize@{linearize}}
 \index{linearize@{linearize}!Node@{Node}}
 \doxysubsubsection{\texorpdfstring{linearize()}{linearize()}}
-{\footnotesize\ttfamily template$<$typename Grammar\+\_\+t $>$ \\
-int Node\+::linearize (\begin{DoxyParamCaption}\item[{Program \&}]{program }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename Virtual\+Machine\+State\+\_\+t , typename Grammar\+\_\+t $>$ \\
+int Node\+::linearize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_program}{Program}}$<$ Virtual\+Machine\+State\+\_\+t $>$ \&}]{program }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 convert tree to a linear sequence of operations. To do this, we first linearize the kids, leaving their values as the top on the stack then we compute our value, remove our kids\textquotesingle{} values to clean up the stack, and push on our return the only fanciness is for if\+: here we will use the following layout $<$\+T\+O\+P O\+F S\+T\+A\+C\+K$>$ $<$bool$>$ op\+\_\+\+I\+F(xsize) X-\/branch J\+U\+M\+P(ysize) Y-\/branch
 

@@ -13,7 +13,7 @@ var searchData=
   ['beam_5fsteps_42',['beam_steps',['../namespace_fleet_statistics.html#a13faa4e67945448f10b9ef6ec95be578',1,'FleetStatistics']]],
   ['beamsearch_43',['BeamSearch',['../class_beam_search.html',1,'BeamSearch&lt; HYP &gt;'],['../class_beam_search.html#a407b7a30d05141dbb4f63f283fd6e508',1,'BeamSearch::BeamSearch()']]],
   ['beamsearch_2eh_44',['BeamSearch.h',['../_beam_search_8h.html',1,'']]],
-  ['begin_45',['begin',['../class_base_node.html#ac735dd6fe296af4b8d2951cc6d9052c8',1,'BaseNode::begin()'],['../class_grammar.html#aee5716f6501e8a366e33e12c7a675b8d',1,'Grammar::begin()']]],
+  ['begin_45',['begin',['../class_base_node.html#ac735dd6fe296af4b8d2951cc6d9052c8',1,'BaseNode::begin()'],['../class_stack.html#a17545176dca11cc7e22f4d4a45507c52',1,'Stack::begin()'],['../class_grammar.html#aee5716f6501e8a366e33e12c7a675b8d',1,'Grammar::begin()']]],
   ['best_46',['best',['../class_discrete_distribution.html#a6bdd82839fd7c56a9aa4adefdf95076b',1,'DiscreteDistribution::best()'],['../class_top_n.html#a071e232087705b131627bd8a805d217c',1,'TopN::best()']]],
   ['blue_47',['Blue',['../_shape_color_size_object_8h.html#ab87bacfdad76e61b9412d7124be44c1ca9594eec95be70e7b1710f730fdda33d9',1,'ShapeColorSizeObject.h']]],
   ['born_48',['born',['../class_bayesable.html#a898e03a20e1851c868b77ef4e844f0bf',1,'Bayesable']]],

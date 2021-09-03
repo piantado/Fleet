@@ -1,10 +1,10 @@
 <map id="VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;" name="VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="565,140,728,196"/>
-<area shape="rect" id="node2" href="$struct_virtual_machine_control.html" title=" " alt="" coords="5,16,172,42"/>
-<area shape="rect" id="node6" href="$class_virtual_machine_pool.html" title=" " alt="" coords="221,38,405,79"/>
-<area shape="rect" id="node3" href="$class_runtime_counter.html" title=" " alt="" coords="249,104,377,130"/>
-<area shape="rect" id="node4" href="$class_stack.html" title=" " alt="" coords="247,154,380,181"/>
-<area shape="rect" id="node5" href="$class_stack.html" title=" " alt="" coords="225,206,402,247"/>
-<area shape="rect" id="node7" href="$class_program_loader.html" title=" " alt="" coords="253,272,374,298"/>
-<area shape="rect" id="node8" href="$struct_virtual_machine_state_1_1stack__t.html" title=" " alt="" coords="226,323,401,394"/>
+<area shape="rect" id="node1" title=" " alt="" coords="620,145,783,201"/>
+<area shape="rect" id="node2" href="$struct_virtual_machine_control.html" title=" " alt="" coords="5,21,172,47"/>
+<area shape="rect" id="node7" href="$class_virtual_machine_pool.html" title=" " alt="" coords="249,43,433,84"/>
+<area shape="rect" id="node3" href="$class_runtime_counter.html" title=" " alt="" coords="277,109,405,135"/>
+<area shape="rect" id="node4" href="$class_stack.html" title=" " alt="" coords="274,159,407,186"/>
+<area shape="rect" id="node5" href="$class_program.html" title=" " alt="" coords="221,210,460,237"/>
+<area shape="rect" id="node6" href="$class_stack.html" title=" " alt="" coords="252,261,429,303"/>
+<area shape="rect" id="node8" href="$struct_virtual_machine_state_1_1stack__t.html" title=" " alt="" coords="253,327,428,397"/>
 </map>

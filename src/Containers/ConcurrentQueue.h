@@ -23,8 +23,8 @@ class ConcurrentQueue {
 
 	std::vector<T> to_yield;
 
-	mutable size_t push_idx;
-	mutable size_t pop_idx; 	
+	size_t push_idx;
+	size_t pop_idx; 	
 
 	std::condition_variable_any full_cv; // any needed here to use OrderedLock 
 	std::condition_variable_any empty_cv;
@@ -43,8 +43,8 @@ public:
 		to_yield.resize(n);
 	}
 	
-	bool empty() const { return push_idx == pop_idx; }
-	bool full()  const { return (push_idx+1) % N == pop_idx; }
+	bool empty() { return push_idx == pop_idx; }
+	bool full()  { return (push_idx+1) % N == pop_idx; }
 	
 	void push(T& x) {		
 		std::unique_lock lck(lock);

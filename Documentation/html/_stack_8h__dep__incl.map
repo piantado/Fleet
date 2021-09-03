@@ -1,10 +1,10 @@
 <map id="src/Containers/Stack.h" name="src/Containers/Stack.h">
-<area shape="rect" id="node1" title="Many things in Fleet are stacks and this is designed to allow for rapid changse to the stack type in ..." alt="" coords="283,5,449,32"/>
-<area shape="rect" id="node2" href="$_program_8h.html" title=" " alt="" coords="234,80,386,121"/>
-<area shape="rect" id="node7" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="282,169,453,211"/>
-<area shape="rect" id="node3" href="$_node_8h.html" title=" " alt="" coords="82,177,239,203"/>
-<area shape="rect" id="node6" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="287,348,523,375"/>
-<area shape="rect" id="node4" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="5,348,145,375"/>
-<area shape="rect" id="node5" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="48,266,233,293"/>
-<area shape="rect" id="node8" href="$_callable_8h.html" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="309,259,500,300"/>
+<area shape="rect" id="node1" title="Many things in Fleet are stacks and this is designed to allow for rapid changse to the stack type in ..." alt="" coords="105,5,272,32"/>
+<area shape="rect" id="node2" href="$_program_8h.html" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="57,80,209,121"/>
+<area shape="rect" id="node8" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="161,169,331,211"/>
+<area shape="rect" id="node3" href="$_node_8h.html" title=" " alt="" coords="371,177,529,203"/>
+<area shape="rect" id="node6" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="5,348,241,375"/>
+<area shape="rect" id="node7" href="$_callable_8h.html" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="28,259,219,300"/>
+<area shape="rect" id="node4" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="356,348,496,375"/>
+<area shape="rect" id="node5" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="243,266,428,293"/>
 </map>

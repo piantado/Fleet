@@ -104,6 +104,9 @@ $(function() {
 , <a class="el" href="class_stack.html#a2723aec5c7e2611b97fcffeb7709de33">Stack&lt; T &gt;</a>
 , <a class="el" href="class_top_n.html#a7f611b791e96b900e6a2b34432868157">TopN&lt; T &gt;</a>
 </li>
+<li>popn()
+: <a class="el" href="class_stack.html#a6efe5e50e0e9dbecf1c7f0c83410befc">Stack&lt; T &gt;</a>
+</li>
 <li>posterior
 : <a class="el" href="class_bayesable.html#a268442b9aae5b763c17ca29c39231915">Bayesable&lt; _datum_t, _data_t &gt;</a>
 </li>
@@ -124,7 +127,7 @@ $(function() {
 , <a class="el" href="class_bayesable.html#a87d5d9481d6a72b017e44b175071fa5e">Bayesable&lt; _datum_t, _data_t &gt;</a>
 , <a class="el" href="class_discrete_distribution.html#a6ec6f590a3659c8bef32aaab77a8052e">DiscreteDistribution&lt; T &gt;</a>
 , <a class="el" href="class_grammar_hypothesis.html#a7b791d9da5ae86c52a42a2383c1c6bc0">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
-, <a class="el" href="class_m_c_t_s_base.html#a6ddfccb4d7b2b8b7ad1d8f7e0e9a130b">MCTSBase&lt; this_t, HYP &gt;</a>
+, <a class="el" href="class_m_c_t_s_base.html#a6292d5b27c6c9f3c3678e9fa7ef7ab87">MCTSBase&lt; this_t, HYP &gt;</a>
 , <a class="el" href="structprint.html#a7e141bb2af61d6edf8895cf964ce130d">print</a>
 , <a class="el" href="struct_reservoir_sample_1_1_item.html#aefa79bdf7a5dd70f62a41f6ccb0ac066">ReservoirSample&lt; T &gt;::Item</a>
 , <a class="el" href="class_top_n.html#a5064ec2e4e9f1defdc3cb62d9b7ddd00">TopN&lt; T &gt;</a>
@@ -142,10 +145,13 @@ $(function() {
 : <a class="el" href="class_m_c_t_s_base.html#ac55b685660fa0e324f183e6a3fec32a1">MCTSBase&lt; this_t, HYP &gt;</a>
 </li>
 <li>program
-: <a class="el" href="class_virtual_machine_state.html#aa9204cc7523092fdc3d3e53e881bc841">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
+: <a class="el" href="class_callable.html#af0723467a524fe937723f7552d351895">Callable&lt; input_t, output_t, VirtualMachineState_t &gt;</a>
 </li>
-<li>program_loader
-: <a class="el" href="class_virtual_machine_state.html#ada020ee6e13cbda67c9dfed264f7fc3f">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
+<li>Program()
+: <a class="el" href="class_program.html#a003e8e5adbe1b27d5c2b86e8c6f2511e">Program</a>
+</li>
+<li>program
+: <a class="el" href="class_virtual_machine_state.html#aeddb74afcc4855a804027764301dec4c">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>PROPOSAL_SCALE
 : <a class="el" href="class_t_normal_variable.html#a4c7b954399e8e212d589afcf7aff6def">TNormalVariable&lt; f &gt;</a>
@@ -170,17 +176,17 @@ $(function() {
 <li>push()
 : <a class="el" href="class_concurrent_queue.html#a6baf689e7763e243a53f26181fecf951">ConcurrentQueue&lt; T &gt;</a>
 , <a class="el" href="class_integerized_stack.html#a721481e52e56398bee39edf6a3d2ff80">IntegerizedStack</a>
-, <a class="el" href="class_stack.html#ace7170c5a65f27155d77af269054943a">Stack&lt; T &gt;</a>
+, <a class="el" href="class_stack.html#a6e8312460808f468b004d709d3308757">Stack&lt; T &gt;</a>
 , <a class="el" href="class_virtual_machine_pool.html#a9b164d9dc604f77825716e24323034a4">VirtualMachinePool&lt; VirtualMachineState_t &gt;</a>
-, <a class="el" href="class_virtual_machine_state.html#a7284f92013c7258d2d18ba238441c1a6">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
+, <a class="el" href="class_virtual_machine_state.html#a1f7aab5a5bb3b9cc4d79b50f6191ed36">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>push_back()
-: <a class="el" href="class_base_node.html#a6971173d807967deda4501eb70676533">BaseNode&lt; this_t &gt;</a>
+: <a class="el" href="class_base_node.html#ab5a808e3ec22f8061022f9ec286d4a03">BaseNode&lt; this_t &gt;</a>
 </li>
 <li>push_program()
-: <a class="el" href="class_lexicon.html#a37db511e07793275ae8005dc46183aa1">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#a3827e25e9b023f8c6c8806bde2014448">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>
-, <a class="el" href="class_program_loader.html#a68b234befb88579aaeeeed52414f9bd1">ProgramLoader</a>
+: <a class="el" href="class_lexicon.html#a6996066714a5ce8156c1933f4f524c6f">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#ac1358d46780121fb3ab964d9bfc7caf8">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>
+, <a class="el" href="class_program_loader.html#a84268deadcb00f669613fac0b8777530">ProgramLoader&lt; VirtualMachineState_t &gt;</a>
 </li>
 <li>push_x()
 : <a class="el" href="class_virtual_machine_state.html#a3d67a597eda47200e61434ff8048bc46">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>

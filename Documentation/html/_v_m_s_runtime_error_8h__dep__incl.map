@@ -1,13 +1,13 @@
 <map id="src/VirtualMachine/VMSRuntimeError.h" name="src/VirtualMachine/VMSRuntimeError.h">
-<area shape="rect" id="node1" title=" " alt="" coords="379,5,532,47"/>
-<area shape="rect" id="node2" href="$_instruction_8h.html" title="f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg is just a supplemental ar..." alt="" coords="312,95,479,136"/>
-<area shape="rect" id="node9" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="385,273,555,315"/>
-<area shape="rect" id="node3" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="63,191,215,218"/>
-<area shape="rect" id="node8" href="$_program_8h.html" title=" " alt="" coords="239,184,391,225"/>
-<area shape="rect" id="node11" href="$_runtime_counter_8h.html" title="This class manages counting operations at runtime and interfaces operations to a grammar NOTE: Curren..." alt="" coords="415,184,559,225"/>
-<area shape="rect" id="node4" href="$_node_8h.html" title=" " alt="" coords="77,281,234,307"/>
+<area shape="rect" id="node1" title=" " alt="" coords="401,5,555,47"/>
+<area shape="rect" id="node2" href="$_instruction_8h.html" title="f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg is just a supplemental ar..." alt="" coords="335,95,501,136"/>
+<area shape="rect" id="node10" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="425,273,595,315"/>
+<area shape="rect" id="node3" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="86,191,238,218"/>
+<area shape="rect" id="node8" href="$_program_8h.html" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="262,184,414,225"/>
+<area shape="rect" id="node11" href="$_runtime_counter_8h.html" title="This class manages counting operations at runtime and interfaces operations to a grammar NOTE: Curren..." alt="" coords="438,184,582,225"/>
+<area shape="rect" id="node4" href="$_node_8h.html" title=" " alt="" coords="83,281,241,307"/>
 <area shape="rect" id="node5" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="5,452,145,479"/>
 <area shape="rect" id="node6" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="63,370,248,397"/>
 <area shape="rect" id="node7" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="219,452,455,479"/>
-<area shape="rect" id="node10" href="$_callable_8h.html" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="375,363,565,404"/>
+<area shape="rect" id="node9" href="$_callable_8h.html" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="375,363,565,404"/>
 </map>

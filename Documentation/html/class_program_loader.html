@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Fleet: ProgramLoader Class Reference</title>
+<title>Fleet: ProgramLoader&lt; VirtualMachineState_t &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -68,47 +68,48 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="class_program_loader-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">ProgramLoader Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">ProgramLoader&lt; VirtualMachineState_t &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="_program_loader_8h_source.html">ProgramLoader.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_program_8h_source.html">Program.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for ProgramLoader:</div>
+Inheritance diagram for ProgramLoader&lt; VirtualMachineState_t &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="class_program_loader__inherit__graph.png" border="0" usemap="#_program_loader_inherit__map" alt="Inheritance graph"/></div>
-<map name="_program_loader_inherit__map" id="_program_loader_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,86,127,113"/>
-<area shape="rect" href="class_callable.html" title=" " alt="" coords="179,5,425,47"/>
-<area shape="rect" href="class_callable.html" title=" " alt="" coords="201,71,403,127"/>
-<area shape="rect" href="class_callable.html" title=" " alt="" coords="175,152,429,223"/>
-<area shape="rect" href="class_l_o_t_hypothesis.html" title=" " alt="" coords="507,64,702,135"/>
-<area shape="rect" href="class_lexicon.html" title=" " alt="" coords="477,159,732,215"/>
+<div class="center"><img src="class_program_loader__inherit__graph.png" border="0" usemap="#_program_loader_3_01_virtual_machine_state__t_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="_program_loader_3_01_virtual_machine_state__t_01_4_inherit__map" id="_program_loader_3_01_virtual_machine_state__t_01_4_inherit__map">
+<area shape="rect" title=" " alt="" coords="5,5,240,47"/>
+<area shape="rect" href="class_callable.html" title=" " alt="" coords="29,95,217,136"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a68b234befb88579aaeeeed52414f9bd1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program_loader.html#a68b234befb88579aaeeeed52414f9bd1">push_program</a> (Program &amp;s, short k=0)=0</td></tr>
-<tr class="separator:a68b234befb88579aaeeeed52414f9bd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84268deadcb00f669613fac0b8777530"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program_loader.html#a84268deadcb00f669613fac0b8777530">push_program</a> (<a class="el" href="class_program.html">Program</a>&lt; VirtualMachineState_t &gt; &amp;s, short k=0)=0</td></tr>
+<tr class="separator:a84268deadcb00f669613fac0b8777530"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section author"><dt>Author</dt><dd>Steven Piantadosi </dd></dl>
+<div class="textblock"><h3>template&lt;typename VirtualMachineState_t&gt;<br />
+class ProgramLoader&lt; VirtualMachineState_t &gt;</h3>
+
+<dl class="section author"><dt>Author</dt><dd>Steven Piantadosi </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>03/09/20 </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a68b234befb88579aaeeeed52414f9bd1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68b234befb88579aaeeeed52414f9bd1">&#9670;&nbsp;</a></span>push_program()</h2>
+<a id="a84268deadcb00f669613fac0b8777530"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84268deadcb00f669613fac0b8777530">&#9670;&nbsp;</a></span>push_program()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename VirtualMachineState_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void ProgramLoader::push_program </td>
+          <td class="memname">virtual void <a class="el" href="class_program_loader.html">ProgramLoader</a>&lt; VirtualMachineState_t &gt;::push_program </td>
           <td>(</td>
-          <td class="paramtype">Program &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_program.html">Program</a>&lt; VirtualMachineState_t &gt; &amp;&#160;</td>
           <td class="paramname"><em>s</em>, </td>
         </tr>
         <tr>
@@ -130,12 +131,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_l_o_t_hypothesis.html#a3827e25e9b023f8c6c8806bde2014448">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>, and <a class="el" href="class_lexicon.html#a37db511e07793275ae8005dc46183aa1">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>.</p>
-
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/Hypotheses/Interfaces/<a class="el" href="_program_loader_8h_source.html">ProgramLoader.h</a></li>
+<li>src/VirtualMachine/Program/<a class="el" href="_program_8h_source.html">Program.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

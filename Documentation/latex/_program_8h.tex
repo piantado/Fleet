@@ -1,18 +1,39 @@
 \hypertarget{_program_8h}{}\doxysection{src/\+Virtual\+Machine/\+Program/\+Program.h File Reference}
 \label{_program_8h}\index{src/VirtualMachine/Program/Program.h@{src/VirtualMachine/Program/Program.h}}
+
+
+A program here stores just a stack of instructions which can be executed by the Virtual\+Machine\+State\+\_\+t. We\textquotesingle{}ve optimized the reserve in the constructor to be the fasest.  
+
+
 {\ttfamily \#include \char`\"{}Instruction.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Stack.\+h\char`\"{}}\newline
-Include dependency graph for Program.\+h\+:\nopagebreak
+Include dependency graph for Program.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_program_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_program_8h__dep__incl}
 \end{center}
 \end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_program}{Program}}
+\item 
+class \mbox{\hyperlink{class_program_loader}{Program\+Loader$<$ Virtual\+Machine\+State\+\_\+t $>$}}
+\item 
+class \mbox{\hyperlink{class_program}{Program}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A program here stores just a stack of instructions which can be executed by the Virtual\+Machine\+State\+\_\+t. We\textquotesingle{}ve optimized the reserve in the constructor to be the fasest. 
+

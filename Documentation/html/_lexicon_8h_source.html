@@ -234,169 +234,160 @@ $(function() {
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment">     * Required for VMS to dispatch to the right sub</span></div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="comment">     ********************************************************/</span></div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;     </div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment">//  virtual size_t program_size(short s) override {</span></div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment">//      return factors[s].program_size(0);</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="comment">//  }</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;     </div>
-<div class="line"><a name="l00209"></a><span class="lineno"><a class="line" href="class_lexicon.html#a37db511e07793275ae8005dc46183aa1">  209</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_lexicon.html#a37db511e07793275ae8005dc46183aa1">push_program</a>(Program&amp; s, <span class="keywordtype">short</span> j)<span class="keyword"> override </span>{</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        assert(<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size() &gt; 0);</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;         <span class="comment">// or else badness -- NOTE: We could take mod or insert op_ERR, or any number of other options. </span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;         <span class="comment">// here, we decide just to defer to the subclass of this</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        assert(j &lt; (<span class="keywordtype">short</span>)<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size());</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        assert(j &gt;= 0);</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="comment">// dispath to the right factor</span></div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[j].push_program(s); <span class="comment">// on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    }</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    </div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="comment">    /********************************************************</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment">     * Implementation of MCMCable interace </span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="comment">     ********************************************************/</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    </div>
-<div class="line"><a name="l00231"></a><span class="lineno"><a class="line" href="class_lexicon.html#a7a5df8a261c35cc00f19a70b8121fa7b">  231</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_lexicon.html#a7a5df8a261c35cc00f19a70b8121fa7b">complete</a>()<span class="keyword"> override </span>{</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; v: <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>){</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            v.complete();</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        }</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    }</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        </div>
-<div class="line"><a name="l00237"></a><span class="lineno"><a class="line" href="class_lexicon.html#a7cc63246d2fd034be7ce4437ceafbdeb">  237</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="class_lexicon.html#a7cc63246d2fd034be7ce4437ceafbdeb">compute_prior</a>()<span class="keyword"> override </span>{</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        <span class="comment">// this uses a proper prior which flips a coin to determine the number of factors</span></div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        </div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        this-&gt;<a class="code" href="class_bayesable.html#a473790922c2dd73e227350d029d73003">prior</a> = log(0.5)*(<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size()+1); <span class="comment">// +1 to end adding factors, as in a geometric</span></div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        </div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; a : <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>) {</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            this-&gt;<a class="code" href="class_bayesable.html#a473790922c2dd73e227350d029d73003">prior</a> += a.compute_prior();</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        }</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        </div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        <span class="keywordflow">return</span> this-&gt;<a class="code" href="class_bayesable.html#a473790922c2dd73e227350d029d73003">prior</a>;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    }</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    </div>
-<div class="line"><a name="l00249"></a><span class="lineno"><a class="line" href="class_lexicon.html#af45c38659d9a31d21f271dc48bba9350">  249</a></span>&#160;    [[nodiscard]] <span class="keyword">virtual</span> std::pair&lt;this_t,double&gt; <a class="code" href="class_lexicon.html#af45c38659d9a31d21f271dc48bba9350">propose</a>()<span class="keyword"> const override </span>{</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        <span class="comment">// cannot be 0, since that is not proposing to anything</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        std::uniform_int_distribution&lt;size_t&gt; d(1, pow(2,<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size())-1 );</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="keywordtype">size_t</span> u = d(<a class="code" href="_random_8h.html#a12b0f9edd4d9426f80397579fd625598">rng</a>);</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        </div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        <span class="comment">// now copy over</span></div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        <span class="comment">// TODO: Check that detailed balance is ok?</span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        this_t x; <span class="keywordtype">double</span> fb = 0.0;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        x.factors.reserve(<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size());</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> k=0;k&lt;<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size();k++) {</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="keywordflow">if</span>(u &amp; 0x1) {</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                <span class="keyword">auto</span> [h, _fb] = <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[k].propose();</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                x.factors.push_back(h);</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                fb += _fb;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                <span class="keyword">auto</span> h = <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[k];</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                x.factors.push_back(h);</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            }</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;            u = u&gt;&gt;1;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        }</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        assert(x.factors.size() == <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size());</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <span class="keywordflow">return</span> std::make_pair(x, fb);                                   </div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    }</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    </div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    </div>
-<div class="line"><a name="l00282"></a><span class="lineno"><a class="line" href="class_lexicon.html#ab0aff8612d0f8c6bcca2f11a647feab9">  282</a></span>&#160;    [[nodiscard]] <span class="keyword">virtual</span> this_t <a class="code" href="class_lexicon.html#ab0aff8612d0f8c6bcca2f11a647feab9">restart</a>()<span class="keyword"> const override </span>{</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        this_t x;</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        x.factors.resize(<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size());</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i=0;i&lt;<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size();i++){</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            x.factors[i] = <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[i].restart();</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        }</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        <span class="keywordflow">return</span> x;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    }</div>
+<div class="line"><a name="l00205"></a><span class="lineno"><a class="line" href="class_lexicon.html#a6996066714a5ce8156c1933f4f524c6f">  205</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_lexicon.html#a6996066714a5ce8156c1933f4f524c6f">push_program</a>(<a class="code" href="class_program.html">Program&lt;VirtualMachineState_t&gt;</a>&amp; s, <span class="keywordtype">short</span> j)<span class="keyword"> override </span>{</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        assert(<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size() &gt; 0);</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        </div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        <span class="comment">// Here we don&#39;t check anything on the bounds for j except in vector.at(...)</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        <span class="comment">// dispath to the right factor</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.at(j).push_program(s); <span class="comment">// on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    }</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    </div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="comment">    /********************************************************</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="comment">     * Implementation of MCMCable interace </span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="comment">     ********************************************************/</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    </div>
+<div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="class_lexicon.html#a7a5df8a261c35cc00f19a70b8121fa7b">  224</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_lexicon.html#a7a5df8a261c35cc00f19a70b8121fa7b">complete</a>()<span class="keyword"> override </span>{</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; v: <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>){</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            v.complete();</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        }</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    }</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        </div>
+<div class="line"><a name="l00230"></a><span class="lineno"><a class="line" href="class_lexicon.html#a7cc63246d2fd034be7ce4437ceafbdeb">  230</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="class_lexicon.html#a7cc63246d2fd034be7ce4437ceafbdeb">compute_prior</a>()<span class="keyword"> override </span>{</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        <span class="comment">// this uses a proper prior which flips a coin to determine the number of factors</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        </div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        this-&gt;<a class="code" href="class_bayesable.html#a473790922c2dd73e227350d029d73003">prior</a> = log(0.5)*(<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size()+1); <span class="comment">// +1 to end adding factors, as in a geometric</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        </div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; a : <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>) {</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            this-&gt;<a class="code" href="class_bayesable.html#a473790922c2dd73e227350d029d73003">prior</a> += a.compute_prior();</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        }</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        </div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="keywordflow">return</span> this-&gt;<a class="code" href="class_bayesable.html#a473790922c2dd73e227350d029d73003">prior</a>;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    }</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    </div>
+<div class="line"><a name="l00242"></a><span class="lineno"><a class="line" href="class_lexicon.html#af45c38659d9a31d21f271dc48bba9350">  242</a></span>&#160;    [[nodiscard]] <span class="keyword">virtual</span> std::pair&lt;this_t,double&gt; <a class="code" href="class_lexicon.html#af45c38659d9a31d21f271dc48bba9350">propose</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="comment">// cannot be 0, since that is not proposing to anything</span></div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        std::uniform_int_distribution&lt;size_t&gt; d(1, pow(2,<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size())-1 );</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <span class="keywordtype">size_t</span> u = d(<a class="code" href="_random_8h.html#a12b0f9edd4d9426f80397579fd625598">rng</a>);</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        </div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="comment">// now copy over</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="comment">// TODO: Check that detailed balance is ok?</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        this_t x; <span class="keywordtype">double</span> fb = 0.0;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        x.factors.reserve(<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size());</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> k=0;k&lt;<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size();k++) {</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            <span class="keywordflow">if</span>(u &amp; 0x1) {</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                <span class="keyword">auto</span> [h, _fb] = <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[k].propose();</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                x.factors.push_back(h);</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                fb += _fb;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                <span class="keyword">auto</span> h = <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[k];</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                x.factors.push_back(h);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            }</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            u = u&gt;&gt;1;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        }</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        assert(x.factors.size() == <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size());</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        <span class="keywordflow">return</span> std::make_pair(x, fb);                                   </div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    }</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    </div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    </div>
+<div class="line"><a name="l00275"></a><span class="lineno"><a class="line" href="class_lexicon.html#ab0aff8612d0f8c6bcca2f11a647feab9">  275</a></span>&#160;    [[nodiscard]] <span class="keyword">virtual</span> this_t <a class="code" href="class_lexicon.html#ab0aff8612d0f8c6bcca2f11a647feab9">restart</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        this_t x;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        x.factors.resize(<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size());</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i=0;i&lt;<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size();i++){</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            x.factors[i] = <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[i].restart();</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        }</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keywordflow">return</span> x;</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    }</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    </div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... A&gt;</div>
+<div class="line"><a name="l00285"></a><span class="lineno"><a class="line" href="class_lexicon.html#a49e06e4fbf148e5cbe793d19ee088ead">  285</a></span>&#160;    [[nodiscard]] <span class="keyword">static</span> this_t <a class="code" href="class_lexicon.html#a49e06e4fbf148e5cbe793d19ee088ead">make</a>(A... a) {</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        <span class="keyword">auto</span> h = this_t(a...);</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        <span class="keywordflow">return</span> h.restart();</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    }</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    </div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    </div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... A&gt;</div>
-<div class="line"><a name="l00292"></a><span class="lineno"><a class="line" href="class_lexicon.html#a49e06e4fbf148e5cbe793d19ee088ead">  292</a></span>&#160;    [[nodiscard]] <span class="keyword">static</span> this_t <a class="code" href="class_lexicon.html#a49e06e4fbf148e5cbe793d19ee088ead">make</a>(A... a) {</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        <span class="keyword">auto</span> h = this_t(a...);</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <span class="keywordflow">return</span> h.restart();</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    }</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    </div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    </div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">    /********************************************************</span></div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">     * Implementation of Searchabel interace </span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="comment">     ********************************************************/</span></div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;     <span class="comment">// Main complication is that we need to manage nullptrs/empty in order to start, so we piggyback</span></div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;     <span class="comment">// on LOTHypothesis. To od this, we assume we can construct T with T tmp(grammar, nullptr) and </span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;     <span class="comment">// use that temporary object to compute neighbors etc. </span></div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;     </div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;     <span class="comment">// for now, we define neighbors only for *complete* (evaluable) trees -- so you can add a factor if you have a complete tree already</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;     <span class="comment">// otherwise, no adding factors</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno"><a class="line" href="class_lexicon.html#a8a7b91312c3f45d326cba7b81f9bc468">  307</a></span>&#160;     <span class="keywordtype">int</span> <a class="code" href="class_lexicon.html#a8a7b91312c3f45d326cba7b81f9bc468">neighbors</a>()<span class="keyword"> const override </span>{</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;         </div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        <span class="keywordflow">if</span>(<a class="code" href="class_lexicon.html#a8e31180286754fa40b14c8892f5ba9bc">is_evaluable</a>()) {</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;            INNER tmp;  <span class="comment">// make something null, and then count its neighbors</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;            <span class="keywordflow">return</span> tmp.neighbors();</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        }</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;            <span class="comment">// we should have everything complete except the last</span></div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;            <span class="keywordtype">size_t</span> s = <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size();</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[s-1].neighbors();</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        }</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;     }</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;         </div>
-<div class="line"><a name="l00320"></a><span class="lineno"><a class="line" href="class_lexicon.html#a51fa2364f871e3f321c740c622e38a55">  320</a></span>&#160;     <span class="keywordtype">void</span> <a class="code" href="class_lexicon.html#a51fa2364f871e3f321c740c622e38a55">expand_to_neighbor</a>(<span class="keywordtype">int</span> k)<span class="keyword"> override </span>{</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;         <span class="comment">// try adding a factor</span></div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;         <span class="keywordflow">if</span>(<a class="code" href="class_lexicon.html#a8e31180286754fa40b14c8892f5ba9bc">is_evaluable</a>()){ </div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;            INNER tmp; <span class="comment">// as above, assumes that this constructs will null</span></div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            assert(k &lt; tmp.neighbors());            </div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;            <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.push_back( tmp.make_neighbor(k) );   </div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        }</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;            <span class="comment">// expand the last factor</span></div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;            <span class="keywordtype">size_t</span> s = <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size();</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;            assert(k &lt; <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[s-1].<a class="code" href="class_lexicon.html#a8a7b91312c3f45d326cba7b81f9bc468">neighbors</a>());</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;            <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[s-1].expand_to_neighbor(k);</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        }</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="comment">    /********************************************************</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment">     * Implementation of Searchabel interace </span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">     ********************************************************/</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;     <span class="comment">// Main complication is that we need to manage nullptrs/empty in order to start, so we piggyback</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;     <span class="comment">// on LOTHypothesis. To od this, we assume we can construct T with T tmp(grammar, nullptr) and </span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;     <span class="comment">// use that temporary object to compute neighbors etc. </span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;     </div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;     <span class="comment">// for now, we define neighbors only for *complete* (evaluable) trees -- so you can add a factor if you have a complete tree already</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;     <span class="comment">// otherwise, no adding factors</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno"><a class="line" href="class_lexicon.html#a8a7b91312c3f45d326cba7b81f9bc468">  300</a></span>&#160;     <span class="keywordtype">int</span> <a class="code" href="class_lexicon.html#a8a7b91312c3f45d326cba7b81f9bc468">neighbors</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;         </div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        <span class="keywordflow">if</span>(<a class="code" href="class_lexicon.html#a8e31180286754fa40b14c8892f5ba9bc">is_evaluable</a>()) {</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;            INNER tmp;  <span class="comment">// make something null, and then count its neighbors</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            <span class="keywordflow">return</span> tmp.neighbors();</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        }</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;            <span class="comment">// we should have everything complete except the last</span></div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;            <span class="keywordtype">size_t</span> s = <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size();</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[s-1].neighbors();</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        }</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;     }</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;         </div>
+<div class="line"><a name="l00313"></a><span class="lineno"><a class="line" href="class_lexicon.html#a51fa2364f871e3f321c740c622e38a55">  313</a></span>&#160;     <span class="keywordtype">void</span> <a class="code" href="class_lexicon.html#a51fa2364f871e3f321c740c622e38a55">expand_to_neighbor</a>(<span class="keywordtype">int</span> k)<span class="keyword"> override </span>{</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;         <span class="comment">// try adding a factor</span></div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;         <span class="keywordflow">if</span>(<a class="code" href="class_lexicon.html#a8e31180286754fa40b14c8892f5ba9bc">is_evaluable</a>()){ </div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;            INNER tmp; <span class="comment">// as above, assumes that this constructs will null</span></div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;            assert(k &lt; tmp.neighbors());            </div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;            <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.push_back( tmp.make_neighbor(k) );   </div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;        }</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;            <span class="comment">// expand the last factor</span></div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;            <span class="keywordtype">size_t</span> s = <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size();</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;            assert(k &lt; <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[s-1].<a class="code" href="class_lexicon.html#a8a7b91312c3f45d326cba7b81f9bc468">neighbors</a>());</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[s-1].expand_to_neighbor(k);</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        }</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;     }</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    </div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    </div>
+<div class="line"><a name="l00329"></a><span class="lineno"><a class="line" href="class_lexicon.html#a74a1d71aa16b6efb6c83acf9a119f809">  329</a></span>&#160;     <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="class_lexicon.html#a74a1d71aa16b6efb6c83acf9a119f809">neighbor_prior</a>(<span class="keywordtype">int</span> k)<span class="keyword"> override </span>{</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        <span class="keywordtype">size_t</span> s = <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size();</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        assert(k &lt; <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[s-1].<a class="code" href="class_lexicon.html#a8a7b91312c3f45d326cba7b81f9bc468">neighbors</a>());</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[s-1].neighbor_prior(k);</div>
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;     }</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    </div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    </div>
-<div class="line"><a name="l00336"></a><span class="lineno"><a class="line" href="class_lexicon.html#a74a1d71aa16b6efb6c83acf9a119f809">  336</a></span>&#160;     <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="class_lexicon.html#a74a1d71aa16b6efb6c83acf9a119f809">neighbor_prior</a>(<span class="keywordtype">int</span> k)<span class="keyword"> override </span>{</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        <span class="keywordtype">size_t</span> s = <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size();</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        assert(k &lt; <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[s-1].<a class="code" href="class_lexicon.html#a8a7b91312c3f45d326cba7b81f9bc468">neighbors</a>());</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[s-1].neighbor_prior(k);</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;     </div>
+<div class="line"><a name="l00335"></a><span class="lineno"><a class="line" href="class_lexicon.html#a8e31180286754fa40b14c8892f5ba9bc">  335</a></span>&#160;     <span class="keywordtype">bool</span> <a class="code" href="class_lexicon.html#a8e31180286754fa40b14c8892f5ba9bc">is_evaluable</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; a: <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>) {</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;            <span class="keywordflow">if</span>(!a.is_evaluable()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        }</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;     }</div>
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;     </div>
-<div class="line"><a name="l00342"></a><span class="lineno"><a class="line" href="class_lexicon.html#a8e31180286754fa40b14c8892f5ba9bc">  342</a></span>&#160;     <span class="keywordtype">bool</span> <a class="code" href="class_lexicon.html#a8e31180286754fa40b14c8892f5ba9bc">is_evaluable</a>()<span class="keyword"> const override </span>{</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; a: <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>) {</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;            <span class="keywordflow">if</span>(!a.is_evaluable()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        }</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;     }</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;     </div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;     </div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="comment">    /********************************************************</span></div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="comment">     * How to call </span></div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="comment">     ********************************************************/</span></div>
-<div class="line"><a name="l00353"></a><span class="lineno"><a class="line" href="class_lexicon.html#a8c883f15d913a29ef0b34377a16b7320">  353</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_discrete_distribution.html">DiscreteDistribution&lt;output_t&gt;</a> <a class="code" href="class_lexicon.html#a8c883f15d913a29ef0b34377a16b7320">call</a>(<span class="keyword">const</span> <a class="code" href="class_lexicon.html#a903345d4e66ffcef1d223dc0710f6bd3">input_t</a> x, <span class="keyword">const</span> <a class="code" href="class_lexicon.html#a77ef783583f4e58b90d31bc278bb17de">output_t</a>&amp; err=<a class="code" href="class_lexicon.html#a77ef783583f4e58b90d31bc278bb17de">output_t</a>{}, <a class="code" href="class_program_loader.html">ProgramLoader</a>* loader=<span class="keyword">nullptr</span>) <span class="keyword">override</span> {</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        <span class="comment">// subclass must define what it means to call a lexicon</span></div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="class_not_implemented_error.html">NotImplementedError</a>();</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    }</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;     </div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;     </div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;     </div>
-<div class="line"><a name="l00360"></a><span class="lineno"><a class="line" href="class_lexicon.html#a18e07f3210a97edf747cd211aff34745">  360</a></span>&#160;    <span class="keyword">virtual</span> std::string <a class="code" href="class_lexicon.html#a18e07f3210a97edf747cd211aff34745">serialize</a>()<span class="keyword"> const override </span>{</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        std::string out = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i=0;i&lt;<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size();i++) {</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;            out += <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[i].serialize();</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;            <span class="keywordflow">if</span>(i &lt; <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size()-1) </div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;                out += <a class="code" href="class_lexicon.html#a3f0fef10b858e446b4bcfa1a37029ae5">Lexicon::FactorDelimiter</a>;</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        }</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        <span class="keywordflow">return</span> out;</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    }</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    </div>
-<div class="line"><a name="l00375"></a><span class="lineno"><a class="line" href="class_lexicon.html#a27230513c7a504cb114563e16d1803d5">  375</a></span>&#160;    <span class="keyword">static</span> this_t <a class="code" href="class_lexicon.html#a27230513c7a504cb114563e16d1803d5">deserialize</a>(<span class="keyword">const</span> std::string s) {</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        this_t h;</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span> f : <a class="code" href="_strings_8h.html#a60d3a9b47a988443407a595730086318">split</a>(s, <a class="code" href="class_lexicon.html#a3f0fef10b858e446b4bcfa1a37029ae5">Lexicon::FactorDelimiter</a>)) {</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;            h.factors.push_back(INNER::deserialize(f));</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;        }</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        <span class="keywordflow">return</span> h;</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    }</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;};</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160; </div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;     </div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="comment">    /********************************************************</span></div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="comment">     * How to call </span></div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="comment">     ********************************************************/</span></div>
+<div class="line"><a name="l00346"></a><span class="lineno"><a class="line" href="class_lexicon.html#a5f78df5cf3fe2a42f677454e09bec6e7">  346</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_discrete_distribution.html">DiscreteDistribution&lt;output_t&gt;</a> <a class="code" href="class_lexicon.html#a5f78df5cf3fe2a42f677454e09bec6e7">call</a>(<span class="keyword">const</span> <a class="code" href="class_lexicon.html#a903345d4e66ffcef1d223dc0710f6bd3">input_t</a> x, <span class="keyword">const</span> <a class="code" href="class_lexicon.html#a77ef783583f4e58b90d31bc278bb17de">output_t</a>&amp; err=<a class="code" href="class_lexicon.html#a77ef783583f4e58b90d31bc278bb17de">output_t</a>{}) <span class="keyword">override</span> {</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        <span class="comment">// subclass must define what it means to call a lexicon</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        <span class="keywordflow">throw</span> <a class="code" href="class_not_implemented_error.html">NotImplementedError</a>();</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    }</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;     </div>
+<div class="line"><a name="l00351"></a><span class="lineno"><a class="line" href="class_lexicon.html#a18e07f3210a97edf747cd211aff34745">  351</a></span>&#160;    <span class="keyword">virtual</span> std::string <a class="code" href="class_lexicon.html#a18e07f3210a97edf747cd211aff34745">serialize</a>()<span class="keyword"> const override </span>{</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        std::string out = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i=0;i&lt;<a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size();i++) {</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;            out += <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>[i].serialize();</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;            <span class="keywordflow">if</span>(i &lt; <a class="code" href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">factors</a>.size()-1) </div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;                out += <a class="code" href="class_lexicon.html#a3f0fef10b858e446b4bcfa1a37029ae5">Lexicon::FactorDelimiter</a>;</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        }</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        <span class="keywordflow">return</span> out;</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    }</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    </div>
+<div class="line"><a name="l00366"></a><span class="lineno"><a class="line" href="class_lexicon.html#a27230513c7a504cb114563e16d1803d5">  366</a></span>&#160;    <span class="keyword">static</span> this_t <a class="code" href="class_lexicon.html#a27230513c7a504cb114563e16d1803d5">deserialize</a>(<span class="keyword">const</span> std::string s) {</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        this_t h;</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span> f : <a class="code" href="_strings_8h.html#a60d3a9b47a988443407a595730086318">split</a>(s, <a class="code" href="class_lexicon.html#a3f0fef10b858e446b4bcfa1a37029ae5">Lexicon::FactorDelimiter</a>)) {</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;            h.factors.push_back(INNER::deserialize(f));</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        }</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        <span class="keywordflow">return</span> h;</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    }</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;};</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclass_lexicon_html_a18e07f3210a97edf747cd211aff34745"><div class="ttname"><a href="class_lexicon.html#a18e07f3210a97edf747cd211aff34745">Lexicon::serialize</a></div><div class="ttdeci">virtual std::string serialize() const override</div><div class="ttdef"><b>Definition:</b> Lexicon.h:360</div></div>
+<div class="ttc" id="aclass_lexicon_html_a18e07f3210a97edf747cd211aff34745"><div class="ttname"><a href="class_lexicon.html#a18e07f3210a97edf747cd211aff34745">Lexicon::serialize</a></div><div class="ttdeci">virtual std::string serialize() const override</div><div class="ttdef"><b>Definition:</b> Lexicon.h:351</div></div>
 <div class="ttc" id="a_random_8h_html_ac2ea1cac6b4c8cad207512d19abe42d7"><div class="ttname"><a href="_random_8h.html#ac2ea1cac6b4c8cad207512d19abe42d7">sample</a></div><div class="ttdeci">std::pair&lt; t *, double &gt; sample(const T &amp;s, const std::function&lt; double(const t &amp;)&gt; &amp;f=[](const t &amp;v){return 1.0;})</div><div class="ttdef"><b>Definition:</b> Random.h:180</div></div>
 <div class="ttc" id="aclass_lexicon_html_a3f0fef10b858e446b4bcfa1a37029ae5"><div class="ttname"><a href="class_lexicon.html#a3f0fef10b858e446b4bcfa1a37029ae5">Lexicon::FactorDelimiter</a></div><div class="ttdeci">const static char FactorDelimiter</div><div class="ttdef"><b>Definition:</b> Lexicon.h:37</div></div>
 <div class="ttc" id="aclass_lexicon_html_a2b311197900ca437790f35386f22ae34"><div class="ttname"><a href="class_lexicon.html#a2b311197900ca437790f35386f22ae34">Lexicon::check_reachable</a></div><div class="ttdeci">bool check_reachable() const</div><div class="ttdef"><b>Definition:</b> Lexicon.h:150</div></div>
@@ -406,44 +397,44 @@ $(function() {
 <div class="ttc" id="aclass_m_c_m_cable_html"><div class="ttname"><a href="class_m_c_m_cable.html">MCMCable</a></div><div class="ttdef"><b>Definition:</b> MCMCable.h:13</div></div>
 <div class="ttc" id="aclass_serializable_html"><div class="ttname"><a href="class_serializable.html">Serializable</a></div><div class="ttdef"><b>Definition:</b> Serializable.h:4</div></div>
 <div class="ttc" id="a_bayesable_8h_html"><div class="ttname"><a href="_bayesable_8h.html">Bayesable.h</a></div><div class="ttdoc">The Bayesable class provides an interface for hypotheses that support Bayesian inference (e....</div></div>
-<div class="ttc" id="aclass_program_loader_html"><div class="ttname"><a href="class_program_loader.html">ProgramLoader</a></div><div class="ttdef"><b>Definition:</b> ProgramLoader.h:12</div></div>
 <div class="ttc" id="aclass_searchable_html"><div class="ttname"><a href="class_searchable.html">Searchable</a></div><div class="ttdef"><b>Definition:</b> Searchable.h:13</div></div>
 <div class="ttc" id="aclass_lexicon_html_ab9b2eebff52ae679405600d712ac423d"><div class="ttname"><a href="class_lexicon.html#ab9b2eebff52ae679405600d712ac423d">Lexicon::get_value</a></div><div class="ttdeci">const std::vector&lt; INNER &gt; &amp; get_value() const</div><div class="ttdef"><b>Definition:</b> Lexicon.h:50</div></div>
 <div class="ttc" id="aclass_lexicon_html_ad1d8c5613fdf6fdd92c8d93a4114ef9f"><div class="ttname"><a href="class_lexicon.html#ad1d8c5613fdf6fdd92c8d93a4114ef9f">Lexicon::VirtualMachineState_t</a></div><div class="ttdeci">_VirtualMachineState_t VirtualMachineState_t</div><div class="ttdef"><b>Definition:</b> Lexicon.h:34</div></div>
 <div class="ttc" id="aclass_lexicon_html_a3e84defd50a371d1a9c48e4e06514fef"><div class="ttname"><a href="class_lexicon.html#a3e84defd50a371d1a9c48e4e06514fef">Lexicon::Grammar_t</a></div><div class="ttdeci">typename INNER::Grammar_t Grammar_t</div><div class="ttdef"><b>Definition:</b> Lexicon.h:31</div></div>
 <div class="ttc" id="aclass_bayesable_html_a473790922c2dd73e227350d029d73003"><div class="ttname"><a href="class_bayesable.html#a473790922c2dd73e227350d029d73003">Bayesable&lt; Args... &gt;::prior</a></div><div class="ttdeci">double prior</div><div class="ttdef"><b>Definition:</b> Bayesable.h:33</div></div>
+<div class="ttc" id="aclass_lexicon_html_a6996066714a5ce8156c1933f4f524c6f"><div class="ttname"><a href="class_lexicon.html#a6996066714a5ce8156c1933f4f524c6f">Lexicon::push_program</a></div><div class="ttdeci">virtual void push_program(Program&lt; VirtualMachineState_t &gt; &amp;s, short j) override</div><div class="ttdef"><b>Definition:</b> Lexicon.h:205</div></div>
 <div class="ttc" id="aclass_lexicon_html_ad90ffcb97bbccb6180eb43dcda0e8f12"><div class="ttname"><a href="class_lexicon.html#ad90ffcb97bbccb6180eb43dcda0e8f12">Lexicon::operator==</a></div><div class="ttdeci">virtual bool operator==(const this_t &amp;l) const override</div><div class="ttdef"><b>Definition:</b> Lexicon.h:110</div></div>
+<div class="ttc" id="aclass_program_html"><div class="ttname"><a href="class_program.html">Program&lt; VirtualMachineState_t &gt;</a></div></div>
 <div class="ttc" id="aclass_lexicon_html_a3c49db72bb6e8960a4374133fc900942"><div class="ttname"><a href="class_lexicon.html#a3c49db72bb6e8960a4374133fc900942">Lexicon::string</a></div><div class="ttdeci">virtual std::string string(std::string prefix=&quot;&quot;) const override</div><div class="ttdef"><b>Definition:</b> Lexicon.h:75</div></div>
-<div class="ttc" id="aclass_lexicon_html_a51fa2364f871e3f321c740c622e38a55"><div class="ttname"><a href="class_lexicon.html#a51fa2364f871e3f321c740c622e38a55">Lexicon::expand_to_neighbor</a></div><div class="ttdeci">void expand_to_neighbor(int k) override</div><div class="ttdoc">Modify this hypothesis to become the k'th neighbor.</div><div class="ttdef"><b>Definition:</b> Lexicon.h:320</div></div>
-<div class="ttc" id="aclass_lexicon_html_af45c38659d9a31d21f271dc48bba9350"><div class="ttname"><a href="class_lexicon.html#af45c38659d9a31d21f271dc48bba9350">Lexicon::propose</a></div><div class="ttdeci">virtual std::pair&lt; this_t, double &gt; propose() const override</div><div class="ttdef"><b>Definition:</b> Lexicon.h:249</div></div>
-<div class="ttc" id="aclass_lexicon_html_a49e06e4fbf148e5cbe793d19ee088ead"><div class="ttname"><a href="class_lexicon.html#a49e06e4fbf148e5cbe793d19ee088ead">Lexicon::make</a></div><div class="ttdeci">static this_t make(A... a)</div><div class="ttdef"><b>Definition:</b> Lexicon.h:292</div></div>
-<div class="ttc" id="aclass_lexicon_html_a7a5df8a261c35cc00f19a70b8121fa7b"><div class="ttname"><a href="class_lexicon.html#a7a5df8a261c35cc00f19a70b8121fa7b">Lexicon::complete</a></div><div class="ttdeci">virtual void complete() override</div><div class="ttdoc">Fill in all the holes in this hypothesis, at random, modifying self.</div><div class="ttdef"><b>Definition:</b> Lexicon.h:231</div></div>
+<div class="ttc" id="aclass_lexicon_html_a51fa2364f871e3f321c740c622e38a55"><div class="ttname"><a href="class_lexicon.html#a51fa2364f871e3f321c740c622e38a55">Lexicon::expand_to_neighbor</a></div><div class="ttdeci">void expand_to_neighbor(int k) override</div><div class="ttdoc">Modify this hypothesis to become the k'th neighbor.</div><div class="ttdef"><b>Definition:</b> Lexicon.h:313</div></div>
+<div class="ttc" id="aclass_lexicon_html_af45c38659d9a31d21f271dc48bba9350"><div class="ttname"><a href="class_lexicon.html#af45c38659d9a31d21f271dc48bba9350">Lexicon::propose</a></div><div class="ttdeci">virtual std::pair&lt; this_t, double &gt; propose() const override</div><div class="ttdef"><b>Definition:</b> Lexicon.h:242</div></div>
+<div class="ttc" id="aclass_lexicon_html_a49e06e4fbf148e5cbe793d19ee088ead"><div class="ttname"><a href="class_lexicon.html#a49e06e4fbf148e5cbe793d19ee088ead">Lexicon::make</a></div><div class="ttdeci">static this_t make(A... a)</div><div class="ttdef"><b>Definition:</b> Lexicon.h:285</div></div>
+<div class="ttc" id="aclass_lexicon_html_a7a5df8a261c35cc00f19a70b8121fa7b"><div class="ttname"><a href="class_lexicon.html#a7a5df8a261c35cc00f19a70b8121fa7b">Lexicon::complete</a></div><div class="ttdeci">virtual void complete() override</div><div class="ttdoc">Fill in all the holes in this hypothesis, at random, modifying self.</div><div class="ttdef"><b>Definition:</b> Lexicon.h:224</div></div>
 <div class="ttc" id="aclass_bayesable_html_a9f1a6c0cd7855550fa10b1a8f13a5867"><div class="ttname"><a href="class_bayesable.html#a9f1a6c0cd7855550fa10b1a8f13a5867">Bayesable&lt; Args... &gt;::datum_t</a></div><div class="ttdeci">Args... datum_t</div><div class="ttdef"><b>Definition:</b> Bayesable.h:29</div></div>
-<div class="ttc" id="aclass_callable_html"><div class="ttname"><a href="class_callable.html">Callable</a></div><div class="ttdef"><b>Definition:</b> Callable.h:22</div></div>
+<div class="ttc" id="aclass_callable_html"><div class="ttname"><a href="class_callable.html">Callable</a></div><div class="ttdef"><b>Definition:</b> Callable.h:18</div></div>
 <div class="ttc" id="aclass_lexicon_html"><div class="ttname"><a href="class_lexicon.html">Lexicon</a></div><div class="ttdef"><b>Definition:</b> Lexicon.h:25</div></div>
-<div class="ttc" id="aclass_lexicon_html_a37db511e07793275ae8005dc46183aa1"><div class="ttname"><a href="class_lexicon.html#a37db511e07793275ae8005dc46183aa1">Lexicon::push_program</a></div><div class="ttdeci">virtual void push_program(Program &amp;s, short j) override</div><div class="ttdef"><b>Definition:</b> Lexicon.h:209</div></div>
 <div class="ttc" id="aclass_discrete_distribution_html"><div class="ttname"><a href="class_discrete_distribution.html">DiscreteDistribution</a></div><div class="ttdef"><b>Definition:</b> DiscreteDistribution.h:25</div></div>
-<div class="ttc" id="aclass_lexicon_html_a8c883f15d913a29ef0b34377a16b7320"><div class="ttname"><a href="class_lexicon.html#a8c883f15d913a29ef0b34377a16b7320">Lexicon::call</a></div><div class="ttdeci">virtual DiscreteDistribution&lt; output_t &gt; call(const input_t x, const output_t &amp;err=output_t{}, ProgramLoader *loader=nullptr) override</div><div class="ttdoc">Run the virtual machine on input x, and marginalize over execution paths to return a distribution on ...</div><div class="ttdef"><b>Definition:</b> Lexicon.h:353</div></div>
 <div class="ttc" id="a_searchable_8h_html"><div class="ttname"><a href="_searchable_8h.html">Searchable.h</a></div><div class="ttdoc">A class is searchable if permits us to enumerate and make its neighbors. This class is used by MCTS a...</div></div>
-<div class="ttc" id="aclass_lexicon_html_a27230513c7a504cb114563e16d1803d5"><div class="ttname"><a href="class_lexicon.html#a27230513c7a504cb114563e16d1803d5">Lexicon::deserialize</a></div><div class="ttdeci">static this_t deserialize(const std::string s)</div><div class="ttdef"><b>Definition:</b> Lexicon.h:375</div></div>
+<div class="ttc" id="aclass_lexicon_html_a27230513c7a504cb114563e16d1803d5"><div class="ttname"><a href="class_lexicon.html#a27230513c7a504cb114563e16d1803d5">Lexicon::deserialize</a></div><div class="ttdeci">static this_t deserialize(const std::string s)</div><div class="ttdef"><b>Definition:</b> Lexicon.h:366</div></div>
 <div class="ttc" id="a_m_c_m_cable_8h_html"><div class="ttname"><a href="_m_c_m_cable_8h.html">MCMCable.h</a></div><div class="ttdoc">A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d...</div></div>
 <div class="ttc" id="aclass_lexicon_html_a878b00d0709489e78d7ca14a4c864c90"><div class="ttname"><a href="class_lexicon.html#a878b00d0709489e78d7ca14a4c864c90">Lexicon::Lexicon</a></div><div class="ttdeci">Lexicon(size_t n)</div><div class="ttdef"><b>Definition:</b> Lexicon.h:41</div></div>
-<div class="ttc" id="aclass_lexicon_html_a74a1d71aa16b6efb6c83acf9a119f809"><div class="ttname"><a href="class_lexicon.html#a74a1d71aa16b6efb6c83acf9a119f809">Lexicon::neighbor_prior</a></div><div class="ttdeci">virtual double neighbor_prior(int k) override</div><div class="ttdoc">What is the prior of the k'th neighbor? This does not need to return the full prior,...</div><div class="ttdef"><b>Definition:</b> Lexicon.h:336</div></div>
-<div class="ttc" id="aclass_lexicon_html_ab0aff8612d0f8c6bcca2f11a647feab9"><div class="ttname"><a href="class_lexicon.html#ab0aff8612d0f8c6bcca2f11a647feab9">Lexicon::restart</a></div><div class="ttdeci">virtual this_t restart() const override</div><div class="ttdef"><b>Definition:</b> Lexicon.h:282</div></div>
+<div class="ttc" id="aclass_lexicon_html_a74a1d71aa16b6efb6c83acf9a119f809"><div class="ttname"><a href="class_lexicon.html#a74a1d71aa16b6efb6c83acf9a119f809">Lexicon::neighbor_prior</a></div><div class="ttdeci">virtual double neighbor_prior(int k) override</div><div class="ttdoc">What is the prior of the k'th neighbor? This does not need to return the full prior,...</div><div class="ttdef"><b>Definition:</b> Lexicon.h:329</div></div>
+<div class="ttc" id="aclass_lexicon_html_ab0aff8612d0f8c6bcca2f11a647feab9"><div class="ttname"><a href="class_lexicon.html#ab0aff8612d0f8c6bcca2f11a647feab9">Lexicon::restart</a></div><div class="ttdeci">virtual this_t restart() const override</div><div class="ttdef"><b>Definition:</b> Lexicon.h:275</div></div>
 <div class="ttc" id="aclass_lexicon_html_a0e62a831486c3bc713df8cd0c552ea81"><div class="ttname"><a href="class_lexicon.html#a0e62a831486c3bc713df8cd0c552ea81">Lexicon::has_valid_indices</a></div><div class="ttdeci">bool has_valid_indices() const</div><div class="ttdef"><b>Definition:</b> Lexicon.h:128</div></div>
-<div class="ttc" id="aclass_lexicon_html_a8e31180286754fa40b14c8892f5ba9bc"><div class="ttname"><a href="class_lexicon.html#a8e31180286754fa40b14c8892f5ba9bc">Lexicon::is_evaluable</a></div><div class="ttdeci">bool is_evaluable() const override</div><div class="ttdef"><b>Definition:</b> Lexicon.h:342</div></div>
+<div class="ttc" id="aclass_lexicon_html_a8e31180286754fa40b14c8892f5ba9bc"><div class="ttname"><a href="class_lexicon.html#a8e31180286754fa40b14c8892f5ba9bc">Lexicon::is_evaluable</a></div><div class="ttdeci">bool is_evaluable() const override</div><div class="ttdef"><b>Definition:</b> Lexicon.h:335</div></div>
 <div class="ttc" id="aclassdefaultdatum__t_html"><div class="ttname"><a href="classdefaultdatum__t.html">defaultdatum_t</a></div><div class="ttdef"><b>Definition:</b> Datum.h:15</div></div>
 <div class="ttc" id="aclass_lexicon_html_a458a415af4d667c6785e9d56f443c158"><div class="ttname"><a href="class_lexicon.html#a458a415af4d667c6785e9d56f443c158">Lexicon::factors</a></div><div class="ttdeci">std::vector&lt; INNER &gt; factors</div><div class="ttdef"><b>Definition:</b> Lexicon.h:39</div></div>
 <div class="ttc" id="a_random_8h_html_a12b0f9edd4d9426f80397579fd625598"><div class="ttname"><a href="_random_8h.html#a12b0f9edd4d9426f80397579fd625598">rng</a></div><div class="ttdeci">thread_local_rng rng</div></div>
 <div class="ttc" id="aclass_lexicon_html_a903345d4e66ffcef1d223dc0710f6bd3"><div class="ttname"><a href="class_lexicon.html#a903345d4e66ffcef1d223dc0710f6bd3">Lexicon::input_t</a></div><div class="ttdeci">_input_t input_t</div><div class="ttdef"><b>Definition:</b> Lexicon.h:32</div></div>
+<div class="ttc" id="aclass_lexicon_html_a5f78df5cf3fe2a42f677454e09bec6e7"><div class="ttname"><a href="class_lexicon.html#a5f78df5cf3fe2a42f677454e09bec6e7">Lexicon::call</a></div><div class="ttdeci">virtual DiscreteDistribution&lt; output_t &gt; call(const input_t x, const output_t &amp;err=output_t{}) override</div><div class="ttdoc">Run the virtual machine on input x, and marginalize over execution paths to return a distribution on ...</div><div class="ttdef"><b>Definition:</b> Lexicon.h:346</div></div>
 <div class="ttc" id="aclass_lexicon_html_a77ef783583f4e58b90d31bc278bb17de"><div class="ttname"><a href="class_lexicon.html#a77ef783583f4e58b90d31bc278bb17de">Lexicon::output_t</a></div><div class="ttdeci">_output_t output_t</div><div class="ttdef"><b>Definition:</b> Lexicon.h:33</div></div>
 <div class="ttc" id="aclass_lexicon_html_a4e0359d01ad14a13304e02f37818dd23"><div class="ttname"><a href="class_lexicon.html#a4e0359d01ad14a13304e02f37818dd23">Lexicon::get_value</a></div><div class="ttdeci">std::vector&lt; INNER &gt; &amp; get_value()</div><div class="ttdef"><b>Definition:</b> Lexicon.h:49</div></div>
-<div class="ttc" id="aclass_lexicon_html_a8a7b91312c3f45d326cba7b81f9bc468"><div class="ttname"><a href="class_lexicon.html#a8a7b91312c3f45d326cba7b81f9bc468">Lexicon::neighbors</a></div><div class="ttdeci">int neighbors() const override</div><div class="ttdef"><b>Definition:</b> Lexicon.h:307</div></div>
+<div class="ttc" id="aclass_lexicon_html_a8a7b91312c3f45d326cba7b81f9bc468"><div class="ttname"><a href="class_lexicon.html#a8a7b91312c3f45d326cba7b81f9bc468">Lexicon::neighbors</a></div><div class="ttdeci">int neighbors() const override</div><div class="ttdef"><b>Definition:</b> Lexicon.h:300</div></div>
 <div class="ttc" id="aclass_lexicon_html_ad93c900817648a9ee09637400b81de70"><div class="ttname"><a href="class_lexicon.html#ad93c900817648a9ee09637400b81de70">Lexicon::nfactors</a></div><div class="ttdeci">size_t nfactors() const</div><div class="ttdef"><b>Definition:</b> Lexicon.h:44</div></div>
 <div class="ttc" id="a_strings_8h_html_a60d3a9b47a988443407a595730086318"><div class="ttname"><a href="_strings_8h.html#a60d3a9b47a988443407a595730086318">split</a></div><div class="ttdeci">std::deque&lt; std::string &gt; split(const std::string &amp;s, const char delimiter)</div><div class="ttdoc">Split is returns a deque of s split up at the character delimiter. It handles these special cases: sp...</div><div class="ttdef"><b>Definition:</b> Strings.h:231</div></div>
 <div class="ttc" id="aclass_lexicon_html_a7f0da0438447e749b0eb9071a3c691a7"><div class="ttname"><a href="class_lexicon.html#a7f0da0438447e749b0eb9071a3c691a7">Lexicon::Lexicon</a></div><div class="ttdeci">Lexicon()</div><div class="ttdef"><b>Definition:</b> Lexicon.h:42</div></div>
 <div class="ttc" id="aclass_lexicon_html_a0552bed538f6f0f578cb8a727221a81a"><div class="ttname"><a href="class_lexicon.html#a0552bed538f6f0f578cb8a727221a81a">Lexicon::sample</a></div><div class="ttdeci">static this_t sample(size_t nf)</div><div class="ttdoc">Sample with n factors.</div><div class="ttdef"><b>Definition:</b> Lexicon.h:65</div></div>
-<div class="ttc" id="aclass_lexicon_html_a7cc63246d2fd034be7ce4437ceafbdeb"><div class="ttname"><a href="class_lexicon.html#a7cc63246d2fd034be7ce4437ceafbdeb">Lexicon::compute_prior</a></div><div class="ttdeci">virtual double compute_prior() override</div><div class="ttdoc">Compute the prior – defaultly not defined.</div><div class="ttdef"><b>Definition:</b> Lexicon.h:237</div></div>
+<div class="ttc" id="aclass_lexicon_html_a7cc63246d2fd034be7ce4437ceafbdeb"><div class="ttname"><a href="class_lexicon.html#a7cc63246d2fd034be7ce4437ceafbdeb">Lexicon::compute_prior</a></div><div class="ttdeci">virtual double compute_prior() override</div><div class="ttdoc">Compute the prior – defaultly not defined.</div><div class="ttdef"><b>Definition:</b> Lexicon.h:230</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

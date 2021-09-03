@@ -147,9 +147,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5d2a0e17dd2a00a79e6d1f763c9114d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70e879ceb71f47787137572d9bee8efa"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a70e879ceb71f47787137572d9bee8efa">parseable</a> () const</td></tr>
 <tr class="separator:a70e879ceb71f47787137572d9bee8efa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2300ca04a56aeca14977915c4de0f53e"><td class="memTemplParams" colspan="2">template&lt;typename Grammar_t &gt; </td></tr>
-<tr class="memitem:a2300ca04a56aeca14977915c4de0f53e"><td class="memTemplItemLeft" align="right" valign="top">int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_node.html#a2300ca04a56aeca14977915c4de0f53e">linearize</a> (Program &amp;program) const</td></tr>
-<tr class="separator:a2300ca04a56aeca14977915c4de0f53e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f6ddb5d39f893b34c64800270de0025"><td class="memTemplParams" colspan="2">template&lt;typename VirtualMachineState_t , typename Grammar_t &gt; </td></tr>
+<tr class="memitem:a3f6ddb5d39f893b34c64800270de0025"><td class="memTemplItemLeft" align="right" valign="top">int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_node.html#a3f6ddb5d39f893b34c64800270de0025">linearize</a> (<a class="el" href="class_program.html">Program</a>&lt; VirtualMachineState_t &gt; &amp;program) const</td></tr>
+<tr class="separator:a3f6ddb5d39f893b34c64800270de0025"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f42de356c047dd52472d24ace4d42c5"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a8f42de356c047dd52472d24ace4d42c5">operator==</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const override</td></tr>
 <tr class="separator:a8f42de356c047dd52472d24ace4d42c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a212f2e1ba4ff71de6954b0b791d89979"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_node.html#a212f2e1ba4ff71de6954b0b791d89979">hash</a> (size_t <a class="el" href="class_base_node.html#a4bab446840126b79f4d70cdc9bc6974c">depth</a>=0) const</td></tr>
@@ -637,13 +637,13 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a2300ca04a56aeca14977915c4de0f53e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2300ca04a56aeca14977915c4de0f53e">&#9670;&nbsp;</a></span>linearize()</h2>
+<a id="a3f6ddb5d39f893b34c64800270de0025"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f6ddb5d39f893b34c64800270de0025">&#9670;&nbsp;</a></span>linearize()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Grammar_t &gt; </div>
+template&lt;typename VirtualMachineState_t , typename Grammar_t &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -651,7 +651,7 @@ template&lt;typename Grammar_t &gt; </div>
         <tr>
           <td class="memname">int Node::linearize </td>
           <td>(</td>
-          <td class="paramtype">Program &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_program.html">Program</a>&lt; VirtualMachineState_t &gt; &amp;&#160;</td>
           <td class="paramname"><em>program</em></td><td>)</td>
           <td> const</td>
         </tr>

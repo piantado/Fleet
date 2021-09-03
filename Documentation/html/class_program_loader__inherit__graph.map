@@ -1,8 +1,4 @@
-<map id="ProgramLoader" name="ProgramLoader">
-<area shape="rect" id="node1" title=" " alt="" coords="5,86,127,113"/>
-<area shape="rect" id="node2" href="$class_callable.html" title=" " alt="" coords="179,5,425,47"/>
-<area shape="rect" id="node3" href="$class_callable.html" title=" " alt="" coords="201,71,403,127"/>
-<area shape="rect" id="node5" href="$class_callable.html" title=" " alt="" coords="175,152,429,223"/>
-<area shape="rect" id="node4" href="$class_l_o_t_hypothesis.html" title=" " alt="" coords="507,64,702,135"/>
-<area shape="rect" id="node6" href="$class_lexicon.html" title=" " alt="" coords="477,159,732,215"/>
+<map id="ProgramLoader&lt; VirtualMachineState_t &gt;" name="ProgramLoader&lt; VirtualMachineState_t &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,240,47"/>
+<area shape="rect" id="node2" href="$class_callable.html" title=" " alt="" coords="29,95,217,136"/>
 </map>
