@@ -231,10 +231,11 @@ public:
 	virtual void complete() override {
 		if(value.is_null()) {
 			auto nt = grammar->template nt<output_t>();
-			value = grammar->generate(nt);
+			set_value(grammar->generate(nt));
 		}
 		else {
 			grammar->complete(value);
+			set_value(value); // this will compile it
 		}
 	}
 
@@ -248,6 +249,9 @@ public:
 	virtual output_t callOne(const input_t x, const output_t& err=output_t{}) {
 		if constexpr (std::is_same<typename VirtualMachineState_t::input_t, input_t>::value and 
 					  std::is_same<typename VirtualMachineState_t::output_t, output_t>::value) {
+			
+			if(program.empty()) PRINTN(">>", string(), program.size());
+						  
 			assert(not program.empty());
 			
 			// we can use this if we are guaranteed that we don't have a stochastic Hypothesis
@@ -328,8 +332,10 @@ public:
 			value = grammar->makeNode(r);
 		}
 		else {			
-			grammar->expand_to_neighbor(value, k);
+			grammar->expand_to_neighbor(value, k); // NOTE that if we do this, we have to compile still...
 		}
+		
+		if(value.is_complete()) compile(); // this seems slow/wasteful, but I'm not sure of the alternative. 
 	}
 	
 	virtual double neighbor_prior(int k) override {

@@ -20,14 +20,15 @@ public:
 	[[nodiscard]]  virtual int  neighbors() const = 0; // how many neighbors do I have?
 	
 	/**
-	 * @brief Modify this hypothesis to become the k'th neighbor
+	 * @brief Modify this hypothesis to become the k'th neighbor. NOTE This does not compile since it might not be complete. 
 	 * @param k
 	 */	
 	virtual void expand_to_neighbor(int k)  = 0; // modifies this hypothesis rather than making a new one
 	
 
 	/**
-	 * @brief Return a new hypothesis which is the k'th neighbor (just calls expand_to_neighbor)
+	 * @brief Return a new hypothesis which is the k'th neighbor (just calls expand_to_neighbor) 
+	 *        NOTE This does not compile since it might not be complete. 
 	 * @param k
 	 * @return 
 	 */	
@@ -46,6 +47,7 @@ public:
 	 
 	/**
 	 * @brief Fill in all the holes in this hypothesis, at random, modifying self. 
+	 * 		  NOTE for LOTHypotheses this will also compile, which is what we need to do for a LOTHypothesis
 	 */	
 	virtual void complete() = 0; 						
 	
