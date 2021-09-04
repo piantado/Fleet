@@ -59,7 +59,10 @@ public:
 	void run_thread_generator_wrapper(size_t thr, Control& ctl, Args... args) {
 		
 		for(auto& x : run_thread(ctl, args...)) {
+			
 			to_yield.push(x);
+			
+			if(CTRL_C) break;
 		}
 		
 		// we always notify when we're done, after making sure we're not running or else the
@@ -102,7 +105,8 @@ public:
 		}
 		
 		// wait for all to complete
-		for(auto& t : threads) t.join();
+		for(auto& t : threads) 
+			t.join();
 			
 		// now we're done filling but we still may have stuff in the queue
 		while(not to_yield.empty()) {
