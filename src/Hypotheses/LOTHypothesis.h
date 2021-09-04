@@ -40,6 +40,7 @@ class LOTHypothesis : public MCMCable<this_t,_datum_t,_data_t>, // remember, thi
 					  public ProgramLoader<_VirtualMachineState_t> 
 {
 public:     
+
 	typedef typename Bayesable<_datum_t,_data_t>::datum_t datum_t;
 	typedef typename Bayesable<_datum_t,_data_t>::data_t   data_t;
 	using Grammar_t = _Grammar_t;
@@ -65,6 +66,7 @@ protected:
 	Node value;
 	
 public:
+
 	LOTHypothesis()           : MCMCable<this_t,datum_t,data_t>(), value(NullRule,0.0,true) {
 	
 	}
@@ -84,8 +86,6 @@ public:
 	
 	LOTHypothesis(const LOTHypothesis& c) {
 		MCMCable<this_t,_datum_t,_data_t>::operator=(c); // copy all this garbage -- not sure what to do here
-		Searchable<this_t,_input_t,_output_t>::operator=(c);
-		Serializable<this_t>::operator=(c);
 		
 		total_instruction_count_last_call = c.total_instruction_count_last_call;
 		total_vms_steps = c.total_vms_steps;
@@ -97,8 +97,6 @@ public:
 
 	LOTHypothesis(const LOTHypothesis&& c) {
 		MCMCable<this_t,_datum_t,_data_t>::operator=(c); 
-		Searchable<this_t,_input_t,_output_t>::operator=(c);
-		Serializable<this_t>::operator=(c);
 		
 		total_instruction_count_last_call = c.total_instruction_count_last_call;
 		total_vms_steps = c.total_vms_steps;
@@ -110,8 +108,6 @@ public:
 
 	LOTHypothesis& operator=(const LOTHypothesis& c) {
 		MCMCable<this_t,_datum_t,_data_t>::operator=(c);
-		Searchable<this_t,_input_t,_output_t>::operator=(c);
-		Serializable<this_t>::operator=(c);
 		
 		total_instruction_count_last_call = c.total_instruction_count_last_call;
 		total_vms_steps = c.total_vms_steps;
@@ -124,8 +120,6 @@ public:
 
 	LOTHypothesis& operator=(const LOTHypothesis&& c) {
 		MCMCable<this_t,_datum_t,_data_t>::operator=(c);
-		Searchable<this_t,_input_t,_output_t>::operator=(c);
-		Serializable<this_t>::operator=(c);
 		
 		total_instruction_count_last_call = c.total_instruction_count_last_call;
 		total_vms_steps = c.total_vms_steps;

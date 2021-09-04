@@ -157,7 +157,7 @@ int main(int argc, char** argv) {
 	TopN<MyHypothesis> top;
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering samp(h0, &mydata, 10, 100.0);
-	for(auto& h : samp.run(Control(), 200, 5000)){
+	for(auto& h : samp.run(Control())){
 		top << h;
 	}
 	

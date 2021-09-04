@@ -20,9 +20,7 @@ extern volatile sig_atomic_t CTRL_C;
  * 			balances swaps up and down the ladder (which makes it efficient). 
  * 			The adaptation scheme follows https://arxiv.org/abs/1501.05823
  * 			NOTE This starts two extra threads, one for adapting and one for swapping, but they mostly wait around.
- * 		
  */
-
 template<typename HYP>
 class ParallelTempering : public ChainPool<HYP> {
 	
@@ -83,7 +81,7 @@ public:
 			
 			// make this interruptible
 			auto last = now();
-			while(time_since(last) < swap_every and !CTRL_C) 
+			while(time_since(last) < swap_every and (not CTRL_C) and (not terminate))
 				std::this_thread::sleep_for(std::chrono::milliseconds(time_resolution_ms)); 
 			
 			// Here we are going to go through and swap each chain with its neighbor
@@ -126,7 +124,7 @@ public:
 			// we will sleep for adapt_every but in tiny chunks so that 
 			// we can be stopped with CTRL_C
 			auto last = now();
-			while(time_since(last) < adapt_every and not CTRL_C) 
+			while(time_since(last) < adapt_every and (not CTRL_C) and (not terminate))
 				std::this_thread::sleep_for(std::chrono::milliseconds(time_resolution_ms)); 
 			
 			if(CTRL_C or terminate) return;

@@ -124,11 +124,6 @@ public:
 		
 		return std::make_pair(MyHypothesis(std::move(x.first)), x.second); 
 	}	
-
-//	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const {
-//		auto g = grammar->generate<S>();
-//		return std::make_pair(MyHypothesis(grammar, g), grammar->log_probability(g) - grammar->log_probability(value));
-//	}	
 	
 	void print(std::string prefix="") override {
 		// we're going to make this print by showing the language we created on the line before
@@ -225,8 +220,6 @@ int main(int argc, char** argv){
 //	tn.print();
 //
 //	return 0;
-
-	
 
 	top.print_best = true;
 	auto h0 = MyHypothesis::sample();

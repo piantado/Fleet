@@ -218,7 +218,7 @@ public:
 	}
 	
 	DiscreteDistribution<word> call(const utterance& input) {
-		return Super::call(input, U, this);
+		return Super::call(input, U);
 	}
 	
 	double compute_single_likelihood(const datum_t& d) override {
