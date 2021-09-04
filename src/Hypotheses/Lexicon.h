@@ -24,8 +24,8 @@ template<typename this_t,
 		 >
 class Lexicon : public MCMCable<this_t,datum_t>,
 				public Searchable<this_t, _input_t, _output_t>,
-				public Callable<_input_t, _output_t, _VirtualMachineState_t>,
-				public Serializable<this_t>
+				public Serializable<this_t>,
+				public ProgramLoader<_VirtualMachineState_t> 
 {
 public:
 	using Grammar_t = typename INNER::Grammar_t;
@@ -40,6 +40,7 @@ public:
 	
 	Lexicon(size_t n)  : MCMCable<this_t,datum_t>()  { factors.resize(n); }
 	Lexicon()          : MCMCable<this_t,datum_t>()  { }
+	
 	
 	size_t nfactors() const  {
 		return factors.size();
@@ -343,7 +344,7 @@ public:
 	/********************************************************
 	 * How to call 
 	 ********************************************************/
-	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t& err=output_t{}) override {
+	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t& err=output_t{}) {
 		// subclass must define what it means to call a lexicon
 		throw NotImplementedError();
 	}

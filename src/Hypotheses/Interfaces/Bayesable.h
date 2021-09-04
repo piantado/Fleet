@@ -106,6 +106,7 @@ public:
 				// add a break here 
 				if(CTRL_C) break; 
 			}
+			
 			return likelihood;		
 		}
 		else {

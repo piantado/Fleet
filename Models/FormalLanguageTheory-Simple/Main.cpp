@@ -82,7 +82,7 @@ public:
 		// This would be a normal call:
 		const auto out = call(x.input, ""); 
 		const auto outZ = out.Z();
-		
+
 		// Or we can call and get back a list of completed virtual machine states
 		// these store a bit more information, like runtime counts and haven't computed the
 		// marginal probability of strings
