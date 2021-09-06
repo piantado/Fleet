@@ -104,9 +104,9 @@ int main(int argc, char** argv){
 
 	auto h0 = MyHypothesis::sample();
 
-//	MCMCChain samp(h0, &mydata, top);
-//  ChainPool samp(h0, &mydata, top, FleetArgs::nchains);
-	ParallelTempering samp(h0, &mydata, 16, 10.0); 
+//	MCMCChain samp(h0, &mydata);
+  ChainPool samp(h0, &mydata, FleetArgs::nchains);
+//	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0); 
 	for(auto& h : samp.run(Control()) | print(FleetArgs::print) | top) {
 		UNUSED(h);
 	}

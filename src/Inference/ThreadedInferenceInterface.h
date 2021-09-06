@@ -104,14 +104,16 @@ public:
 			}
 		}
 		
+		// now we're done filling but we still may have stuff in the queue
+		// some threads may be waiting so we can't join yet
+		while(not to_yield.empty()) {
+			co_yield to_yield.pop();
+		}
+		
 		// wait for all to complete
 		for(auto& t : threads) 
 			t.join();
 			
-		// now we're done filling but we still may have stuff in the queue
-		while(not to_yield.empty()) {
-			co_yield to_yield.pop();
-		}
 	}
 	
 };
