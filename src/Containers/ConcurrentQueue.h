@@ -23,8 +23,8 @@ class ConcurrentQueue {
 
 	std::vector<T> to_yield;
 
-	size_t push_idx;
-	size_t pop_idx; 	
+	std::atomic<size_t> push_idx;
+	std::atomic<size_t> pop_idx; 	
 
 	std::condition_variable_any full_cv; // any needed here to use OrderedLock 
 	std::condition_variable_any empty_cv;
@@ -35,6 +35,7 @@ class ConcurrentQueue {
 public:
 	
 	ConcurrentQueue(size_t n) : N(n), to_yield(n), push_idx(0), pop_idx(0) {
+		
 	}
 	
 	void resize(size_t n) {

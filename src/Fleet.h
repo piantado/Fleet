@@ -421,6 +421,7 @@ public:
 		}	
 	} 
 	
+	
 	template<typename T> 
 	void add_option(std::string c, T& var, std::string description ) {
 		app.add_option(c, var, description);

@@ -107,8 +107,8 @@ int main(int argc, char** argv){
 //	MCMCChain samp(h0, &mydata, top);
 //  ChainPool samp(h0, &mydata, top, FleetArgs::nchains);
 	ParallelTempering samp(h0, &mydata, 16, 10.0); 
-	for(auto& h : samp.run(Control())) {
-		top << h;
+	for(auto& h : samp.run(Control()) | print(FleetArgs::print) | top) {
+		UNUSED(h);
 	}
 
 	// Show the best we've found

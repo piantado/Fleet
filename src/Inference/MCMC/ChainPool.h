@@ -82,7 +82,7 @@ public:
 		if(ctl.steps == 0) {
 			// we end up here if they're both zero, or steps=0. If they're both 0, we are running till CTRL_C
 			
-			while( ctl.running() and !CTRL_C ) {
+			while( ctl.running() and (not CTRL_C) ) {
 				
 				// find the next open thread
 				size_t idx;
@@ -120,7 +120,7 @@ public:
 			
 			// note here on the while loops, we don't use ctl.running() because we need all the things
 			// we start to actually finish (or else we won't run enough steps)
-			while( ctl.done_steps < ctl.steps and !CTRL_C ) {
+			while( ctl.done_steps < ctl.steps and (not CTRL_C) ) {
 				
 				// find the next open thread
 				size_t idx;

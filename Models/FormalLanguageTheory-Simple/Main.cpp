@@ -138,8 +138,6 @@ public:
 double MyHypothesis::regenerate_p = 0.75;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-// This needs to be included last because it includes VirtualMachine/applyPrimitives.h
-// which really requires Primitives to be defined already
 
 // if we define DO_NOT_INCLUDE_MAIN then we can import everything *except* the below
 #ifndef DO_NOT_INCLUDE_MAIN
