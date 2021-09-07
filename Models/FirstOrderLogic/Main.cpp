@@ -227,9 +227,9 @@ int main(int argc, char** argv){
 	// top stores the top hypotheses we have found
 	TopN<MyHypothesis> top;
 	
-	auto h0 = MyHypothesis::make();
-	ParallelTempering samp(h0, &mydata, 16, 10.0); 
-	for(auto& h : samp.run(Control(), 100, 1000)) { 
+	auto h0 = MyHypothesis::sample();
+	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0); 
+	for(auto& h : samp.run(Control())) { 
 		top << h;
 	}
 	
