@@ -25,9 +25,9 @@ using CL=Combinators::CL;
  * @file Main.cpp
  * @brief This just stores nodes from SKGrammar, and doesn't permit calling input/output
  */
-class InnerHypothesis final : public LOTHypothesis<InnerHypothesis,CL,CL,Combinators::SKGrammar> {
+class InnerHypothesis final : public LOTHypothesis<InnerHypothesis,CL,CL,Combinators::SKGrammar,&Combinators::skgrammar> {
 public:
-	using Super = LOTHypothesis<InnerHypothesis,CL,CL,Combinators::SKGrammar>;
+	using Super = LOTHypothesis<InnerHypothesis,CL,CL,Combinators::SKGrammar,&Combinators::skgrammar>;
 	using Super::Super; // inherit constructors
 };
 
@@ -92,7 +92,7 @@ public:
 		error += (apply(apply(C("or"), C("true")), C("false"))  != C("true"));
 		error += (apply(apply(C("or"), C("true")), C("true"))   != C("true"));
 				
-		likelihood = -50.0*error; 
+		likelihood = -100.0*error; 
 		return likelihood; 
 	
 	 }
@@ -109,6 +109,7 @@ std::tuple PRIMITIVES; // must be defined
 
 #include "TopN.h"
 #include "MCMCChain.h"
+#include "ParallelTempering.h"
 
 #include "Fleet.h" 
 
@@ -127,16 +128,17 @@ int main(int argc, char** argv){
 //	}
 
 	MyHypothesis h0;
-	for(auto x : symbol2idx) {
-		InnerHypothesis ih(&Combinators::skgrammar);
-		h0.factors.push_back(ih.restart());
+	for(auto x : symbol2idx) {;
+		h0.factors.push_back(InnerHypothesis::sample());
 	}
 	
 	TopN<MyHypothesis> top;
 	
-	MCMCChain chain(h0, nullptr);
-	for(auto& h : chain.run(Control())) {
-		top << h;
+	MyHypothesis::data_t dummy_data;
+	
+	ParallelTempering chain(h0, &dummy_data, FleetArgs::nchains, 10.0);
+	for(auto& h : chain.run(Control()) | top | print(FleetArgs::print)) {
+		UNUSED(h);
 	}
 	
 	top.print();
