@@ -19,7 +19,7 @@ using StrSet = std::set<S>;
 
 const std::string my_default_input = "data/English"; 
 S alphabet="nvadtp";
-size_t max_length = 64; // was 256 // max string length, else throw an error (more than 256 needed for count, a^2^n, a^n^2, etc
+size_t max_length = 64; // (more than 256 needed for count, a^2^n, a^n^2, etc
 size_t max_setsize = 64; // throw error if we have more than this
 size_t nfactors = 2; // how may factors do we run on? (defaultly)
 
@@ -302,6 +302,7 @@ std::string prdata_path = "";
 MyHypothesis::data_t prdata; // used for computing precision and recall -- in case we want to use more strings?
 S current_data = "";
 bool long_output = false; // if true, we allow extra strings, recursions etc. on output
+bool long_strings = false; 
 std::pair<double,double> mem_pr; 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -334,6 +335,7 @@ int main(int argc, char** argv){
 	fleet.initialize(argc, argv); 
 	
 	COUT "# Using alphabet=" << alphabet ENDL;
+
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Set up the grammar using command line arguments
@@ -395,7 +397,9 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> all; 
 	//	all.set_print_best(true);
 	
-	ParallelTempering samp(h0, &datas[0], NTEMPS, MAX_TEMP); 
+//	ParallelTempering samp(h0, &datas[0], NTEMPS, MAX_TEMP); 
+
+	ChainPool samp(h0, &datas[0], NTEMPS); 
 		
 	tic();	
 	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
@@ -420,7 +424,7 @@ int main(int argc, char** argv){
 		// set this global variable so we know
 		current_ntokens = 0;
 		for(auto& d : this_data) { UNUSED(d); current_ntokens++; }
-		
+				
 		for(auto& h : samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, FleetArgs::restart))) {
 			all << h;
 		}	
@@ -438,7 +442,7 @@ int main(int argc, char** argv){
 			VirtualMachineControl::MAX_OUTPUTS = 1024; 
 			VirtualMachineControl::MIN_LP = -15;
 			PRINT_STRINGS = 512;
-			max_length = 64; 	
+			max_length = 64; 	// NOTE: Incorrect if max-length was set.
 		}
 		
 		all.print(data_amounts[di]);

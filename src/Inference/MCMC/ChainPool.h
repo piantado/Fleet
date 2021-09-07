@@ -79,11 +79,11 @@ public:
 		// Here we don't care about being precise about the number of steps 
 		// (below we do)
 		
+		
 		if(ctl.steps == 0) {
 			// we end up here if they're both zero, or steps=0. If they're both 0, we are running till CTRL_C
 			
 			while( ctl.running() and (not CTRL_C) ) {
-				
 				// find the next open thread
 				size_t idx;
 				{

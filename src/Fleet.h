@@ -432,7 +432,10 @@ public:
 	}
 		
 	int initialize(int argc, char** argv) {
-		CLI11_PARSE(app, argc, argv);
+		
+		//CLI11_PARSE(app, argc, argv);
+		app.parse(argc, argv); // parse here -- and DO NOT catch exit codes (unlike the macro above)
+							   // if we catch exit codes, we silently keep running without parsing...
 		
 		// set our own handlers -- defaulty HUP won't stop
 		signal(SIGINT, Fleet::fleet_interrupt_handler);
