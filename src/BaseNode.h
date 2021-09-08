@@ -33,7 +33,6 @@ public:
 	 * @param i
 	 */	
 	BaseNode(size_t n=0, this_t* p=nullptr, size_t i=0) : children(n), parent(p), pi(i) {
-		
 	}
 	
 	BaseNode(const this_t& n) {
@@ -308,16 +307,20 @@ public:
 	void push_back(this_t&& n) {
 		set_child(children.size(), n);
 	}
-	
-	virtual bool is_root() const {
-		/**
-		 * @brief Am I a root node? I am if my parent is nullptr. 
-		 * @return 
-		 */
-		
+
+	/**
+	 * @brief Am I a root node? I am if my parent is nullptr. 
+	 * @return 
+	 */	
+	virtual bool is_root() const {		
 		return parent == nullptr;
 	}
 	
+	
+	/**
+	 * @brief Find the root of this node by walking up the tree
+	 * @return 
+	 */	
 	this_t* root() {
 		this_t* x = static_cast<this_t*>(this);
 		while(x->parent != nullptr) {
@@ -326,6 +329,11 @@ public:
 		return x;
 	}
 	
+	/**
+	 * @brief Return a pointer to the first node satisfying predicate f, in standard traversal; nullptr otherwise
+	 * @param f
+	 * @return 
+	 */	
 	this_t* get_via(std::function<bool(this_t&)>& f ) {
 		for(auto& n : *this) {
 			if(f(n)) return &n;
@@ -333,12 +341,13 @@ public:
 		return nullptr; 
 	}
 	
+	/**
+	 * @brief How many nodes total are below me?
+	 * @param n
+	 * @return 
+	 */	
 	virtual size_t count() const {
-		/**
-		 * @brief How many nodes total are below me?
-		 * @param n
-		 * @return 
-		 */
+
 		size_t n=1; // me
 		for(auto& c : children) {
 			n += c.count();			
@@ -346,26 +355,24 @@ public:
 		return n;
 	}
 	
+	/**
+	 * @brief How many nodes below me are equal to n?
+	 * @param n
+	 * @return 
+	 */
 	virtual size_t count(const this_t& n) const {
-		/**
-		 * @brief How many nodes below me are equal to n?
-		 * @param n
-		 * @return 
-		 */
-		
 		size_t cnt = (n == *static_cast<const this_t*>(this));
 		for(auto& c : children) {
 			cnt += c.count(n);
 		}
 		return cnt;
 	}
-	
+
+	/**
+	 * @brief Am I a terminal? I am if I have no children. 
+	 * @return 
+	 */
 	virtual bool is_terminal() const {
-		/**
-		 * @brief Am I a terminal? I am if I have no children. 
-		 * @return 
-		 */
-		
 		return children.size() == 0;
 	}
 	
@@ -403,6 +410,59 @@ public:
 		std::function<int(const this_t&)> f = [](const this_t& x) { return 1;};
 		return get_nth(n, f); 
 	}
+	
+	
+	template<typename T>
+	T sum(std::function<T(const this_t&)>& f ) const {
+		/**
+		 * @brief Apply f to me and everything below me, adding up the result. 
+		 * @param f
+		 * @return 
+		 */
+		
+		T s = f(* dynamic_cast<const this_t*>(this)); // a little ugly here because it needs to be the subclass type
+		for(auto& c: this->children) {
+			s += c.sum(f);
+		}
+		return s;
+	}
+
+	template<typename T>
+	T sum(T(*f)(const this_t&) ) const {
+		std::function ff = f;
+		return sum(ff);
+	}
+	
+	
+	bool all(std::function<bool(const this_t&)>& f ) const {
+		/**
+		 * @brief Check if f is true of me and every node below 
+		 * @param f
+		 * @return 
+		 */
+		
+		if(not f(* dynamic_cast<const this_t*>(this))) 
+			return false;
+			
+		for(auto& c: this->children) {
+			if(not c.all(f)) 
+				return false;
+		}
+		return true;
+	}
+
+	void map( const std::function<void(this_t&)>& f) {
+		/**
+		 * @brief Apply f to me and everything below.  
+		 * @param f
+		 */
+		
+		f(* dynamic_cast<const this_t*>(this));
+		for(auto& c: this->children) {
+			c.map(f); 
+		}
+	}
+	
 	
 	void print(size_t t=0) const {
 		

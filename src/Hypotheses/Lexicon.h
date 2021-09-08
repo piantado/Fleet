@@ -67,7 +67,7 @@ public:
 		this_t out;
 		
 		for(size_t i=0;i<nf;i++) {// start with the right number of factors
-			out.factors.push_back(InnerHypothesis::sample());
+			out.factors.push_back(INNER::sample());
 		}
 		
 		return out;

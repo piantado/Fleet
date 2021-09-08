@@ -172,56 +172,6 @@ public:
 		return n;
 	}
 
-	template<typename T>
-	T sum(std::function<T(const Node&)>& f ) const {
-		/**
-		 * @brief Apply f to me and everything below me, adding up the result. 
-		 * @param f
-		 * @return 
-		 */
-		
-		T s = f(*this);
-		for(auto& c: this->children) {
-			s += c.sum<T>(f);
-		}
-		return s;
-	}
-
-	template<typename T>
-	T sum(T(*f)(const Node&) ) const {
-		std::function ff = f;
-		return sum(ff);
-	}
-	
-	
-	bool all(std::function<bool(const Node&)>& f ) const {
-		/**
-		 * @brief Check if f is true of me and every node below 
-		 * @param f
-		 * @return 
-		 */
-		
-		if(not f(*this)) 
-			return false;
-			
-		for(auto& c: this->children) {
-			if(not c.all(f)) 
-				return false;
-		}
-		return true;
-	}
-
-	void map( const std::function<void(Node&)>& f) {
-		/**
-		 * @brief Apply f to me and everything below.  
-		 * @param f
-		 */
-		
-		f(*this);
-		for(auto& c: this->children) {
-			c.map(f); 
-		}
-	}
 	
 	virtual bool is_complete() const {
 		/**
