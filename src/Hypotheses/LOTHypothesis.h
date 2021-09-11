@@ -201,7 +201,7 @@ public:
 	}
 
 	virtual void push_program(Program<VirtualMachineState_t>& s, short k=0) override {
-		assert(k==0 && "*** the short argument in push_program should only be nonzero for lexica");
+		assert(k==0 && "*** the short argument in push_program should only be nonzero for lexica. Did you forget to set the program_loader in each LOTHypothesis to the lexicon?");
 		//s.reserve(s.size() + value.program_size()+1);
 		//for(auto it = this->program.rbegin(); it!= this->program.rend(); it++) {
 		for(auto it = this->program.begin(); it != this->program.end(); it++) {

@@ -4,12 +4,14 @@
 #include<iostream>
 #include<tuple>
 
+#include "Random.h"
+
 /**
  * @class Object
  * @author piantado
  * @date 02/08/20
  * @file Main.cpp
- * @brief This stores an ojbect with feature FARGS which is meant to be something like enums.
+ * @brief This stores an object with feature FARGS which is meant to be something like enums.
  * 			 These are often used to store features that LOT expressions operate on, for instance
  * 			 the objects that boolean logic operates on. 
  */
@@ -61,10 +63,27 @@ struct Object {
 	bool operator==(const Object& o) const { 
 		return feature == o.feature;
 	}
+	
+	/**
+	 * @brief Sample a uniformly random object. This requires our features to end in __count
+	 */	
+	template<typename... T>
+	static Object<T...> __sample() {
+		Object<T...> ret;
+		
+		// this parameter pack just sets everything assuming __count is 
+		// defined in our enum class. C++ is such a weird language. 
+		(ret.set(  static_cast<T>(myrandom(static_cast<int>(T::__count)))  ), 
+		 ...);
+		
+		return ret;		
+	}
+	
+	static Object<feature_t...> sample() {
+		return __sample<feature_t...>();
+	}
+	
 };
-
-
-
 
 template<typename... feature_t> 
 std::ostream& operator<<(std::ostream& o, const Object<feature_t...>& t) {

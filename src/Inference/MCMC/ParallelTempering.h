@@ -62,7 +62,7 @@ public:
 		
 		swap_history.reserve(n);
 		
-		if(n == 1) {
+		if(n == 1) { // just enforce this as a hard cosntraint. 
 			this->pool[0].temperature = 1.0;
 		}
 		else {

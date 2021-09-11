@@ -171,17 +171,12 @@ double sample_z(const T& s, const std::function<double(const t&)>& f) {
 		
 	double z = 0.0;
 	for(auto& x: s) {
-		z += f(x);
+		auto fx = f(x);
+		if(not std::isnan(fx))
+			z += f(x);
 	}
 	return z; 
 }
-
-template<typename t, typename T> 
-std::pair<t*,double> sample(const T& s, const std::function<double(const t&)>& f = [](const t& v){return 1.0;}) {
-	// An interface to sample that computes the normalizer for you 
-	return sample(s, sample_z(s,f), f);
-}
-
 
 template<typename t, typename T> 
 std::pair<t*,double> sample(const T& s, double z, const std::function<double(const t&)>& f = [](const t& v){return 1.0;}) {
@@ -191,10 +186,11 @@ std::pair<t*,double> sample(const T& s, double z, const std::function<double(con
 	// of selecting that *element* (index), not the probability of selecting anything equal to it
 	// (i.e. we defaultly don't double-count equal options). For that, use p_sample_eq below
 	// here z is the normalizer, z = sum_x f(x) 
+	assert(z > 0 && "*** Cannot call sample with zero normalizer -- is s empty?");
 	double r = z * uniform();
 	for(auto& x : s) {
 		
-		double fx = f(x);
+		auto fx = f(x);
 		if(std::isnan(fx)) continue; // treat as zero prob
 		assert(fx >= 0.0);
 		r -= fx;
@@ -204,6 +200,13 @@ std::pair<t*,double> sample(const T& s, double z, const std::function<double(con
 	
 	throw YouShouldNotBeHereError("*** Should not get here in sampling");	
 }
+
+template<typename t, typename T> 
+std::pair<t*,double> sample(const T& s, const std::function<double(const t&)>& f = [](const t& v){return 1.0;}) {
+	// An interface to sample that computes the normalizer for you 
+	return sample<t,T>(s, sample_z<t,T>(s,f), f);
+}
+
 
 std::pair<int,double> sample_int(unsigned int max, const std::function<double(const int)>& f = [](const int v){return 1.0;}) {
 	// special form for where the ints (e.g. indices) Are what f takes)
