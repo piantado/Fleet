@@ -228,7 +228,7 @@ public:
 		// since we aren't searching over nodes, we are going to enforce a prior that requires
 		// each function to be called -- this should make the search a bit more efficient by 
 		// allowing us to prune out the functions which could be found with a smaller number of factors
-		return prior = (check_reachable() ? Lexicon<MyHypothesis,InnerHypothesis,S,S>::compute_prior() : -infinity);
+		return prior = (check_reachable() ? Super::compute_prior() : -infinity);
 	}
 	
 

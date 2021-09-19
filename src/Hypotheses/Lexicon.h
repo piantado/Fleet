@@ -36,6 +36,8 @@ public:
 	// Store a lexicon of type INNER elements
 	const static char FactorDelimiter = '|';
 
+	static double p_factor_propose;
+
 	std::vector<INNER> factors;
 	
 	Lexicon(size_t n)  : MCMCable<this_t,datum_t>()  { factors.resize(n); }
@@ -75,7 +77,7 @@ public:
 	
 	virtual std::string string(std::string prefix="") const override {
 		/**
-		 * @brief AConvert a lexicon to a string -- defaultly includes all arguments. 
+		 * @brief Convert a lexicon to a string -- defaultly includes all arguments. 
 		 * @return 
 		 */
 		
@@ -240,24 +242,67 @@ public:
 		return this->prior;
 	}
 	
+//	[[nodiscard]] virtual std::pair<this_t,double> propose() const override {
+//		/**
+//		 * @brief This proposal guarantees that there will be at least one factor that is proposed to. 
+//		 * 		  To do this, we draw random numbers on 2**factors.size()-1 and then use the bits of that
+//		 * 		  integer to determine which factors to propose to. 
+//		 * @return 
+//		 */
+//		
+//		// cannot be 0, since that is not proposing to anything
+//		std::uniform_int_distribution<size_t> d(1, pow(2,factors.size())-1 );
+//		size_t u = d(rng);
+//		
+//		// now copy over
+//		// TODO: Check that detailed balance is ok?
+//		this_t x; double fb = 0.0;
+//		x.factors.reserve(factors.size());
+//		for(size_t k=0;k<factors.size();k++) {
+//			if(u & 0x1) {
+//				auto [h, _fb] = factors[k].propose();
+//				x.factors.push_back(h);
+//				fb += _fb;
+//			} else {
+//				auto h = factors[k];
+//				x.factors.push_back(h);
+//			}
+//			u = u>>1;
+//		}
+//
+//		assert(x.factors.size() == factors.size());
+//		return std::make_pair(x, fb);									
+//	}
+
+	/**
+	 * @brief This proposal guarantees that there will be at least one factor that is proposed to. 
+	 *        Each individual factor is proposed to with p_factor_propose
+	 * @return 
+	 */	
 	[[nodiscard]] virtual std::pair<this_t,double> propose() const override {
-		/**
-		 * @brief This proposal guarantees that there will be at least one factor that is proposed to. 
-		 * 		  To do this, we draw random numbers on 2**factors.size()-1 and then use the bits of that
-		 * 		  integer to determine which factors to propose to. 
-		 * @return 
-		 */
-		
-		// cannot be 0, since that is not proposing to anything
-		std::uniform_int_distribution<size_t> d(1, pow(2,factors.size())-1 );
-		size_t u = d(rng);
-		
-		// now copy over
-		// TODO: Check that detailed balance is ok?
+
+		// let's first make a vector to see which factor we propose to.
+		// NOTE That this is very inefficient for low p_factor_propose, since it's essentially
+		// rejection sampling on the full multinomial until we find something to change
+		// Probably we could make this faster by uniformly choosing one to flip and then randomly
+		// chanign the rest?
+		std::vector<bool> should_propose(factors.size(), false);
+		bool any = false;
+		while(not any) {
+			for(size_t i=0;i<factors.size();i++) {
+				if(flip(p_factor_propose)) {
+					should_propose[i] = true;
+					any = true;
+				}
+			}
+		}	
+	
+		// now go through and propose to those factors
+		// (NOTE fb is always zero)
 		this_t x; double fb = 0.0;
 		x.factors.reserve(factors.size());
 		for(size_t k=0;k<factors.size();k++) {
-			if(u & 0x1) {
+			if(should_propose[k] & 0x1) {
 				auto [h, _fb] = factors[k].propose();
 				x.factors.push_back(h);
 				fb += _fb;
@@ -265,12 +310,12 @@ public:
 				auto h = factors[k];
 				x.factors.push_back(h);
 			}
-			u = u>>1;
 		}
-
 		assert(x.factors.size() == factors.size());
+		
 		return std::make_pair(x, fb);									
 	}
+
 	
 	
 	[[nodiscard]] virtual this_t restart() const override {
@@ -380,3 +425,12 @@ public:
 	}
 };
 
+
+template<typename this_t,  // this is so stupid
+		 typename INNER, 
+		 typename _input_t,
+		 typename _output_t, 
+		 typename datum_t,
+		 typename _VirtualMachineState_t
+		 >
+double Lexicon<this_t,INNER,_input_t,_output_t,datum_t,_VirtualMachineState_t>::p_factor_propose = 0.5;

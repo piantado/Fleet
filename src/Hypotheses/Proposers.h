@@ -234,7 +234,7 @@ namespace Proposals {
 	std::pair<Node, double> delete_tree(GrammarType* grammar, const Node& from) {
 		// This proposal selects a node, regenerates, and then copies what was there before somewhere below 
 		// in the replaced tree. NOTE: it must regenerate something with the right nonterminal
-		// since that's what's being replaced! 
+		// since that's what's being replaced
 		
 		#ifdef DEBUG_MCMC
 			CERR "DELETE-TREE"  TAB from.string()  ENDL;
