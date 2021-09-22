@@ -14,11 +14,11 @@ parameters=AllParameters.csv
 
 
 if [ $myhost = "simon" ] ; then
-    #factors=(1 3)
+    factors=(1 3 5)
     jobs=120 # could be 140
 elif [ $myhost = "garfunkel" ] ; then
-    #factors=(2 4)
-    factors=(5,6) # add these factors
+    factors=(2 4 6)
+#     factors=(5,6) # add these factors
     jobs=120
 fi
 

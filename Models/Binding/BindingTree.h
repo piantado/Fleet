@@ -38,12 +38,13 @@ class BindingTree : public BaseNode<BindingTree> {
 public:
 	int referent; // parsed out of the string
 	bool target; // and I the target? 
-	int linear_order;
+	int linear_order; // order of leaves
+	int traversal_order; // order of nodes in traversal
 	POS pos;
 	std::string label;
 	
 	BindingTree(std::string s="") :
-		referent(-1), target(false), linear_order(0), pos(POS::None) {
+		referent(-1), target(false), linear_order(0), traversal_order(0), pos(POS::None) {
 		
 		// set up the referent if we can
 		auto position = s.find(".");

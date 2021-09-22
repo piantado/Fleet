@@ -17,6 +17,8 @@ std::vector<std::string> words = {"REXP", "him", "he", "himself"}; // his?
 static const double alpha = 0.99; 
 const int NDATA = 10; // how many data points from each sentence are we looking at?
 
+using S = std::string;
+
 /**
  * @class TreeException
  * @author Steven Piantadosi
@@ -25,8 +27,6 @@ const int NDATA = 10; // how many data points from each sentence are we looking 
  * @brief TreeExceptions get thrown when we try to do something crazy in the tree
  */
 class TreeException : public std::exception {};
-
-using S = std::string;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare a grammar
@@ -61,17 +61,21 @@ public:
 		});
 		
 		add("root(%s)",  +[](BindingTree* x) -> BindingTree* { 
-			if(x==nullptr) throw TreeException();
-			
+			if(x==nullptr) throw TreeException();			
 			return x->root();
 		});		
 
 		// linear order predicates
 		add("linear(%s)",        +[](BindingTree* x) -> int { 
-			if(x==nullptr) throw TreeException();
-			
+			if(x==nullptr) throw TreeException();			
 			return x->linear_order; 
 		});
+		
+		add("traversal(%s)",        +[](BindingTree* x) -> int { 
+			if(x==nullptr) throw TreeException();			
+			return x->traversal_order; 
+		});
+		
 		add("eq(%s,%s)",         +[](int a, int b) -> bool { return (a==b); });		
 		add("gt(%s,%s)",         +[](int a, int b) -> bool { return (a>b); });
 		
@@ -101,15 +105,13 @@ public:
 			if(x==nullptr) throw TreeException();
 			return x->nchildren() == 0;
 		});
-		
-						
+								
 		add("label(%s)",  +[](BindingTree* x) -> S { 
 			if(x==nullptr) throw TreeException();
 			if(x->target) throw TreeException(); // well it's very clever -- we can't allow label on the target or the problem is trivial
 			return x->label;
 		});
-		
-		
+				
 		add("dominates(%s,%s)",  +[](BindingTree* x, BindingTree* y) -> bool { 
 			if(y == nullptr or x == nullptr) 
 				throw TreeException();
@@ -134,8 +136,7 @@ public:
 				x = x->parent;
 			}
 			
-			return nullptr; 
-//			throw TreeException();
+			return nullptr; // or throw TreeException()?
 		});
 			
 		add("true",          +[]() -> bool               { return true; });
@@ -150,6 +151,11 @@ public:
 			add_terminal<S>(Q(w), w);
 		}
 		
+		// for absolute positions (up top 24)
+//		for(int p=0;p<24;p++) {
+//			add_terminal<int>(str(p), p, 1.0/24.);
+//		}
+//		
 		// add recursive calls
 //		for(size_t a=0;a<words.size();a++) {	
 //			add("F"+str(a)+"(%s)" ,  Builtins::Recurse<MyGrammar>, 1.0, a);
@@ -157,6 +163,9 @@ public:
 	}
 		
 } grammar;
+
+
+
 
 
 #include "LOTHypothesis.h"
@@ -171,8 +180,15 @@ public:
 	[[nodiscard]] virtual std::pair<InnerHypothesis,double> propose() const override {
 		
 		std::pair<Node,double> x;
+		
 		if(flip(0.5)) {
 			x = Proposals::regenerate(&grammar, value);	
+		}
+		else if (flip(0.1)) {
+			x = Proposals::sample_function_leaving_args(&grammar, value);
+		}
+		else if (flip(0.1)) {
+			x = Proposals::swap_args(&grammar, value);
 		}
 		else {
 			if(flip()) x = Proposals::insert_tree(&grammar, value);	
@@ -271,9 +287,11 @@ int main(int argc, char** argv){
 		
 		// and set the linear order of t
 		int lc=0; 
+		int tc=0;
 		for(auto& n : *t) { 
 			if(n.is_terminal()) n.linear_order = lc++;
 			else                n.linear_order = -1;
+			n.traversal_order = tc++;
 		}
 		
 		// assert that there is only one target per tree

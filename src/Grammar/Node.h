@@ -29,6 +29,8 @@ public:
 		BaseNode(r==nullptr?0:r->N), rule(r==nullptr ? NullRule : r), lp(_lp), can_resample(cr) {	
 		// NOTE: We don't allow parent to be set here bcause that maeks pi hard to set. We shuold only be placed
 		// in trees with set_child
+		if(r != nullptr)
+			children.resize(r->N);
 	}
 	
 	/* We must define our own copy and move since parent can't just be simply copied */	
@@ -71,24 +73,24 @@ public:
 		return rule->type(i);
 	}
 	
-	void set_child(size_t i, Node& n) {
+	void set_child(const size_t i, Node& n) {
 		/**
 		 * @brief Set my child to n. NOTE: This one needs to be used, rather than accessing children directly, because we have to set parent pointers and indices. 
 		 * @param i
 		 * @param n
 		 */
 		assert(i < rule->N);
-		assert(n.nt() == rule->type(i) or n.rule == NullRule); // no type checking when the rule is null
+		assert(n.rule == NullRule or n.nt() == rule->type(i)); // no type checking when the rule is null
 		BaseNode<Node>::set_child(i,n);
 	}
-	void set_child(size_t i, Node&& n) {
+	void set_child(const size_t i, Node&& n) {
 		/**
 		 * @brief Set my child to n. NOTE: This one needs to be used, rather than accessing children directly, because we have to set parent pointers and indices. 
 		 * @param i
 		 * @param n
 		 */
 		assert(i < rule->N);
-		assert(n.nt() == rule->type(i) or n.rule == NullRule); // no type checking when the rule is null
+		assert(n.rule == NullRule or n.nt() == rule->type(i)); // no type checking when the rule is null
 		BaseNode<Node>::set_child(i,std::move(n));
 	}
 

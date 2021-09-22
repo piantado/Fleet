@@ -271,7 +271,7 @@ public:
 		return children.at(i); 
 	}
 	
-	void set_child(size_t i, this_t& n) {
+	void set_child(const size_t i, this_t& n) {
 		/**
 		 * @brief Set my child to n. NOTE: This one needs to be used, rather than accessing children directly, because we have to set parent pointers and indices. 
 		 * @param i
@@ -285,7 +285,7 @@ public:
 		children[i].pi = i;
 		children[i].parent = static_cast<this_t*>(this);
 	}
-	void set_child(size_t i, this_t&& n) {
+	void set_child(const size_t i, this_t&& n) {
 		/**
 		 * @brief Child setter for move
 		 * @param i
