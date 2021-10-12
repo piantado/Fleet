@@ -10,15 +10,22 @@
 #include "BaseNode.h"
 
 // Some parts of speech here as a class 
-enum class POS { None, S, NP, VP, PP, CP, CC };
+enum class POS { None, S, SBAR, NP, NPS, VP, MD, PP, CP, CC, N, V, P, A };
 
 std::map<std::string,POS> posmap = { // just for decoding strings to tags -- ugh
 								    {"S",  POS::S}, 
 									{"NP", POS::NP}, 
+									{"NP-S", POS::NPS}, 
 									{"VP", POS::VP},
 									{"PP", POS::PP},
 									{"CP", POS::CP},
-									{"CC", POS::CC}
+									{"CC", POS::CC}, 
+									{"SBAR", POS::SBAR},
+									{"MD", POS::MD},
+									{"N", POS::N},
+									{"V", POS::V},
+									{"P", POS::P},
+									{"A", POS::A},
 								   };
 								   
 //using Referent = long; // we'll use these for referent, and distinguished from int for position
@@ -42,18 +49,24 @@ public:
 	int traversal_order; // order of nodes in traversal
 	POS pos;
 	std::string label;
+	std::string word; 
 	
 	BindingTree(std::string s="") :
-		referent(-1), target(false), linear_order(0), traversal_order(0), pos(POS::None) {
+		referent(-1), target(false), linear_order(0), traversal_order(0), pos(POS::None), word("") {
+
+		if(s.find(' ') != std::string::npos) {
+			auto [l, w] = split<2>(s, ' '); // must be two
+			label = l;
+			word = w;
+		}
+		else label = s;  // no word
+		
 		
 		// set up the referent if we can
-		auto position = s.find(".");
-		if(position != std::string::npos) {
-			referent = stoi(s.substr(position+1));
-			label = s.substr(0,position);
-		}
-		else {
-			label = s;
+		auto p = s.find(".");
+		if(p != std::string::npos) {
+			referent = stoi(s.substr(p+1));
+			label = s.substr(0,p);
 		}
 		
 		// and then fix label if it has a star
@@ -78,12 +91,14 @@ public:
 		label = t.label;
 		target = t.target;
 		referent = t.referent;
+		word = t.word;
 		linear_order = t.linear_order;
 	}
 	BindingTree(const BindingTree&& t) : BaseNode<BindingTree>(t) {
 		label = t.label;
 		target = t.target;
 		referent = t.referent;
+		word = t.word;
 		linear_order = t.linear_order;
 	}	
 	void operator=(const BindingTree& t) {
@@ -91,6 +106,7 @@ public:
 		label = t.label;
 		target = t.target;
 		referent = t.referent;
+		word = t.word;
 		linear_order = t.linear_order;
 	}	
 	void operator=(const BindingTree&& t) {
@@ -98,6 +114,7 @@ public:
 		label = t.label;
 		target = t.target;
 		referent = t.referent;
+		word = t.word;
 		linear_order = t.linear_order;
 	}	
 
@@ -119,7 +136,7 @@ public:
 	}
 	
 	std::string string(bool usedot=true) const override {
-		std::string out = "[" + label;
+		std::string out = "[" + label + (referent > -1 ? "."+str(referent) : "") + " " + word;
 		for(auto& c : children) {
 			out += " " + c.string();
 		}

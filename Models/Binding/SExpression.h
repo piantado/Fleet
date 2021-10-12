@@ -8,21 +8,24 @@ namespace SExpression {
 		std::string x;
 		for(char c : s) {
 			if(c == '(' or c == ')') {
-				if(x != "") out.push_back(x);
+				
+				// remove trailing spaces
+				while(x[x.size()-1] == ' ') {
+					x.erase(x.size()-1, 1);
+				}
+				
+				if(x != "" and x != " ") {
+					out.push_back(x);
+				}
 				x = "";
 				out.push_back(std::string(1,c));
 			}
-			else if(c == ' ' or c == '\t' or c == '\n') {
-				if(x != "") out.push_back(x);
-				x = "";
-			}
-			else {
+			else { // just accumulate here
 				x += c;
 			}
 		}
 		return out;	
-	}
-	
+	}	
 	
 	std::string pop_front(std::vector<std::string>& q) {
 		// not great for vector, but this is just data pre-processing -- could switch to std::list
@@ -35,10 +38,11 @@ namespace SExpression {
 	T parse(std::vector<std::string>& tok) {
 		// recursive parsing of tokenized s-expression. Not high quality.
 		// Requires that T can be constructed with a string argument
-		
 		assert(tok.size() > 1);
 		
 		// optionally allow us to start with "(" (makes the recursion simpler)
+		// NOTE: We do NOT allow multiple nesting at the start ((NP bb) ..) because
+		// we assume that the first token is the label
 		auto o = pop_front(tok);
 		if(o == "(") {
 			o = pop_front(tok);

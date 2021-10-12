@@ -41,6 +41,6 @@ struct VirtualMachineControl {
 unsigned long VirtualMachineControl::MAX_RECURSE = 64;
 unsigned long VirtualMachineControl::MAX_RUN_PROGRAM = 1024;
 
-unsigned long VirtualMachineControl::MAX_STEPS = 256;
+unsigned long VirtualMachineControl::MAX_STEPS = 512;
 unsigned long VirtualMachineControl::MAX_OUTPUTS = 512;
 double VirtualMachineControl::MIN_LP = -10;

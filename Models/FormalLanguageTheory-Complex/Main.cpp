@@ -397,10 +397,15 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> all; 
 	//	all.set_print_best(true);
 	
-//	ParallelTempering samp(h0, &datas[0], NTEMPS, MAX_TEMP); 
+	ParallelTempering samp(h0, &datas[0], NTEMPS, MAX_TEMP); 
+//	ChainPool samp(h0, &datas[0], NTEMPS); 
 
-	ChainPool samp(h0, &datas[0], NTEMPS); 
-		
+	// Set these up as the defaults as below
+	VirtualMachineControl::MAX_STEPS  = 1024; 
+	VirtualMachineControl::MAX_OUTPUTS = 256; 
+	VirtualMachineControl::MIN_LP = -15;
+	PRINT_STRINGS = 512;	
+	
 	tic();	
 	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
 		auto& this_data = datas[di];
@@ -435,25 +440,16 @@ int main(int argc, char** argv){
 			VirtualMachineControl::MAX_OUTPUTS = 16000;
 			VirtualMachineControl::MIN_LP = -40;
 			PRINT_STRINGS = 5000;
-			max_length = 350; 			
 		}
-		else {
-			VirtualMachineControl::MAX_STEPS  = 4096; 
-			VirtualMachineControl::MAX_OUTPUTS = 1024; 
-			VirtualMachineControl::MIN_LP = -15;
-			PRINT_STRINGS = 512;
-			max_length = 64; 	// NOTE: Incorrect if max-length was set.
-		}
-		
+
 		all.print(data_amounts[di]);
 		
 		// restore
 		if(long_output) {
-			VirtualMachineControl::MAX_STEPS  = 4096; 
-			VirtualMachineControl::MAX_OUTPUTS = 1024; 
+			VirtualMachineControl::MAX_STEPS  = 1024; 
+			VirtualMachineControl::MAX_OUTPUTS = 256; 
 			VirtualMachineControl::MIN_LP = -15;
 			PRINT_STRINGS = 512;
-			max_length = 64; 	
 		}	
 		
 		if(di+1 < datas.size()) {
