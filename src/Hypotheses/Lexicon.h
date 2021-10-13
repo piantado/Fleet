@@ -300,15 +300,14 @@ public:
 		// now go through and propose to those factors
 		// (NOTE fb is always zero)
 		this_t x; double fb = 0.0;
-		x.factors.reserve(factors.size());
+		x.factors.resize(factors.size());
 		for(size_t k=0;k<factors.size();k++) {
 			if(should_propose[k]) {
 				auto [h, _fb] = factors[k].propose();
-				x.factors.push_back(h);
+				x.factors[k] = h;
 				fb += _fb;
 			} else {
-				auto h = factors[k];
-				x.factors.push_back(h);
+				x.factors[k] = factors[k];
 			}
 		}
 		assert(x.factors.size() == factors.size());
