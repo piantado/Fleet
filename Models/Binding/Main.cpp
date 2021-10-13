@@ -80,7 +80,6 @@ public:
 		add("eq(%s,%s)",   +[](POS a, POS b) -> bool { return (a==b); });		
 		add("eq(%s,%s)",   +[](BindingTree* x, BindingTree* y) -> bool { return x == y;});
 
-		
 		// pos predicates
 		add("pos(%s)",           +[](BindingTree* x) -> POS { 
 			if(x==nullptr) throw TreeException();
@@ -110,33 +109,37 @@ public:
 		});
 				
 		add("dominates(%s,%s)",  +[](BindingTree* x, BindingTree* y) -> bool { 
-			// NOTE: a node does dominate itself
+			// NOTE: a node will NOT dominate itself
 			if(y == nullptr or x == nullptr) 
 				throw TreeException();
-			
-			while(true) {
-				if(y == x) 	   			        return true;
-				else if(y->parent == nullptr)   return false;
-				else							y = y->parent;
+				
+			while(y->parent != nullptr) {
+				y = y->parent; // step up one
+
+				if(y == x)
+					return true;
 			}
+			return false;
 		});
 		
-		add("inside(%s,%s)",  +[](BindingTree* x, POS y) -> bool { 
-			if(x == nullptr) 
-				throw TreeException();
-			
-			while(true) {
-				if(x->pos == y) 		        return true;
-				else if(x->parent == nullptr)   return false;
-				else							x = x->parent;
-			}
-		});
-		
+//		add("inside(%s,%s)",  +[](BindingTree* x, POS y) -> bool { 
+//			if(x == nullptr) 
+//				throw TreeException();
+//			
+//			while(true) {
+//				if(x->pos == y) 		        return true;
+//				else if(x->parent == nullptr)   return false;
+//				else							x = x->parent;
+//			}
+//		});
+//
+
 		add("first-dominating(%s,%s)",  +[](POS s, BindingTree* x) -> BindingTree* { 	
 			
 			if(x == nullptr) 
 				throw TreeException();
 			
+			x = x->parent;
 			while(x != nullptr) {
 				if(x->pos == s)
 					return x;
@@ -307,7 +310,7 @@ public:
 			
 			// see which words are permitted
 			for(size_t wi=0;wi<words.size();wi++) {
-				auto b = factors[wi].cache[di];
+				auto b = factors[wi].cache.at(di);
 				
 				ntrue += 1*b;
 				
@@ -364,9 +367,17 @@ public:
 	 
 };
 
-
-
-
+bool insidePOS(BindingTree* x) {
+	POS y = POS::NPPOSS;
+	
+	while(true) {
+		PRINTN(">>", (int)x->pos, str(x));
+		
+		if(x->pos == y) 		        return true;
+		else if(x->parent == nullptr)   return false;
+		else							x = x->parent;
+	}
+}
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Main code
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -444,6 +455,7 @@ int main(int argc, char** argv){
 			
 			PRINTN("#", myt->string());
 //			COUT "#" TAB str(myt->get_target()) TAB str(myt->get_target()->coreferent()) TAB "\n" ENDL;
+//			PRINTN(insidePOS(myt->get_target()));
 			
 			MyHypothesis::datum_t d1 = {myt->get_target(), myt->get_target()->word, alpha};	
 			mydata.push_back(d1);
@@ -451,6 +463,7 @@ int main(int argc, char** argv){
 		
 		delete t;
 	}
+		
 		
 	//////////////////////////////////
 	// run MCMC

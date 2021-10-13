@@ -98,6 +98,7 @@ public:
 		referent = t.referent;
 		word = t.word;
 		linear_order = t.linear_order;
+		pos = t.pos;
 	}
 	BindingTree(const BindingTree&& t) : BaseNode<BindingTree>(t) {
 		label = t.label;
@@ -105,6 +106,7 @@ public:
 		referent = t.referent;
 		word = t.word;
 		linear_order = t.linear_order;
+		pos = t.pos;
 	}	
 	void operator=(const BindingTree& t) {
 		BaseNode<BindingTree>::operator=(t);
@@ -113,6 +115,7 @@ public:
 		referent = t.referent;
 		word = t.word;
 		linear_order = t.linear_order;
+		pos = t.pos;
 	}	
 	void operator=(const BindingTree&& t) {
 		BaseNode<BindingTree>::operator=(t);
@@ -121,6 +124,7 @@ public:
 		referent = t.referent;
 		word = t.word;
 		linear_order = t.linear_order;
+		pos = t.pos;
 	}	
 
 	BindingTree* get_target() {
