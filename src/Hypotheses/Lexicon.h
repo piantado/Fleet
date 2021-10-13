@@ -287,18 +287,14 @@ public:
 		// Probably we could make this faster by uniformly choosing one to flip and then randomly
 		// chanign the rest?
 		std::vector<bool> should_propose(factors.size(), false);
-		bool any = false;
-		while(not any) {
-			for(size_t i=0;i<factors.size();i++) {
-				if(flip(p_factor_propose)) {
-					should_propose[i] = true;
-					any = true;
-				}
-			}
-		}	
-	
+		for(size_t i=0;i<factors.size();i++) {
+			should_propose[i] = flip(p_factor_propose);
+		}
+		should_propose[myrandom(should_propose.size())] = true; // always ensure one
+		
 		// now go through and propose to those factors
 		// (NOTE fb is always zero)
+		// NOTE: This is not great because it doesn't copy like we might want...
 		this_t x; double fb = 0.0;
 		x.factors.resize(factors.size());
 		for(size_t k=0;k<factors.size();k++) {
