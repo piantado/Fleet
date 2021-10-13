@@ -199,35 +199,25 @@ public:
 	
 	void const* cached_data = nullptr; // when null, we recompute the cache
 	std::vector<output_t> cache; 
-	
-	
+	bool got_error = false; // did an error throw?
 	
 	InnerHypothesis(const InnerHypothesis& c) : InnerHypothesis() {
 		Super::operator=(c); // copy all this garbage -- not sure what to do here
-		cache = c.cache; cached_data = c.cached_data;
+		this->cache = c.cache; this->cached_data = c.cached_data; got_error = c.got_error;
 	}
 	InnerHypothesis(const InnerHypothesis&& c) : InnerHypothesis() {
 		Super::operator=(c); // copy all this garbage -- not sure what to do here
-		cache = c.cache; cached_data = c.cached_data;
+		this->cache = c.cache; this->cached_data = c.cached_data; got_error = c.got_error;
 	}
 	InnerHypothesis& operator=(const InnerHypothesis& c) {
 		Super::operator=(c);
-		cache = c.cache; cached_data = c.cached_data;
+		this->cache = c.cache; this->cached_data = c.cached_data; got_error = c.got_error;
 		return *this;
 	}
 	InnerHypothesis& operator=(const InnerHypothesis&& c) {
 		Super::operator=(c);
-		cache = c.cache; cached_data = c.cached_data;
+		this->cache = c.cache; this->cached_data = c.cached_data; got_error = c.got_error;
 		return *this;
-	}
-
-	
-	
-	virtual double compute_prior() override {
-		/* This ends up being a really important check -- otherwise we spend tons of time on really long
-		 * this_totheses */
-		if(this->value.count() > 16) return this->prior = -infinity;
-		else					     return this->prior = this->get_grammar()->log_probability(value);
 	}
 	
 	// A cached version that will call on a whole dataset, but remember if we've done it before
@@ -237,32 +227,38 @@ public:
 		// NOTE THIS DOES NOT WORK IF WE HAVE RECURSION 
 		
 		if(cached_data != &data) {
-			PRINTN("CACHE MISS", this, cached_data, string());
-			cache.resize(data.size(), false);
+			// PRINTN("CACHE MISS", this, cached_data, string());
+			cache.resize(data.size());
 			for(size_t di=0;di<data.size();di++) {
+				cache[di] = false; 
 				try { 				
 					cache[di] = this->callOne(data[di].input, false); 
-				} catch( TreeException& e){  continue; }
+				} catch( TreeException& e){  got_error = true; break; } // break here because if we got_error, we return -inf likelihood
 			}
 			// store who is cached
 			cached_data = &data;
 		}
-		else {
-			PRINTN("CACHE HIT", this, cached_data, string());
-			
-		}
+		//else {
+		//	PRINTN("CACHE HIT", this, cached_data, string());			
+		//}
 	}
 	
 	
 	void set_value(Node&  v) { 
 		Super::set_value(v);
-		cached_data = nullptr; // tell it to recompute
+		cached_data = nullptr; // tell it to recompute (in operator= this gets overwritten)
 	}
 	void set_value(Node&& v) { 
 		Super::set_value(v);
 		cached_data = nullptr; // tell it to recompute
 	}
 	
+	virtual double compute_prior() override {
+		/* This ends up being a really important check -- otherwise we spend tons of time on really long
+		 * this_totheses */
+		if(this->value.count() > 16) return this->prior = -infinity;
+		else					     return this->prior = this->get_grammar()->log_probability(value);
+	}
 	
 	[[nodiscard]] virtual std::pair<InnerHypothesis,double> propose() const override {
 		
@@ -292,8 +288,13 @@ public:
 		for(auto& f : factors) f.program.loader = nullptr; 
 		
 		// make sure everyone's cache is right on this data
-		for(auto& f : factors) f.cachedCallOnData(data); 
-		PRINTN("------------");
+		for(auto& f : factors) {
+			f.cachedCallOnData(data); 
+			
+			// now if anything threw an error, break out, we don't have to compute
+			if(f.got_error) 
+				return likelihood = -infinity;
+		}
 		
 		// The likelihood here samples from all words that are true
 		likelihood = 0.0;
@@ -321,6 +322,7 @@ public:
 		return likelihood; 
 	 }
 
+	// Old likelihood, before caching:
 //	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 //		
 //		// need to set this so that if/when we recurse, we use the lexicon
@@ -390,7 +392,7 @@ int main(int argc, char** argv){
 		h0.factors.push_back(InnerHypothesis::sample());
 	}
 
-	MyHypothesis::p_factor_propose = 0.1;
+	MyHypothesis::p_factor_propose = 0.2;
 
 	// convert to data
 	MyHypothesis::data_t mydata;
@@ -418,7 +420,7 @@ int main(int argc, char** argv){
 			else                n.linear_order = -1;
 			n.traversal_order = tc++;
 		}
-//		PRINTN(t->string());
+		// PRINTN(t->string());
 		
 		for(int cr=0;cr<ncoref;cr++) {
 			raw_data.push_back(ds); // save for later in case we want to see
@@ -457,9 +459,8 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> top;
 
 	top.print_best = true;
-//	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 10.0);
-	MCMCChain chain(h0, &mydata);
-	chain.temperature = 0.10;
+	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 10.0);
+//	MCMCChain chain(h0, &mydata);
 	
 	for(auto& h : chain.run(Control()) | top | print(FleetArgs::print)) {
 		UNUSED(h);
@@ -468,22 +469,22 @@ int main(int argc, char** argv){
 	top.print();
 	
 	
-	MyHypothesis best = top.best();
-	for(auto& f : best.factors) f.program.loader = &best; 
-	
-	for(size_t i=0;i<mydata.size();i++) {
-		auto& di = mydata[i];
-		PRINTN("#", i, mydata.size(), di.input->root()->string()); //.at(i));
-		
-		size_t fi = 0;
-		for(auto& w : words) {
-	
-			int b = -1; // default value
-			try { 				
-				b = 1*best.factors[fi].callOne(di.input, false); 
-			} catch( TreeException& e) {  }
-			PRINTN("#", b, w);
-			++fi;
-		}
-	}
+//	MyHypothesis best = top.best();
+//	for(auto& f : best.factors) f.program.loader = &best; 
+//	
+//	for(size_t i=0;i<mydata.size();i++) {
+//		auto& di = mydata[i];
+//		PRINTN("#", i, mydata.size(), di.input->root()->string()); //.at(i));
+//		
+//		size_t fi = 0;
+//		for(auto& w : words) {
+//	
+//			int b = -1; // default value
+//			try { 				
+//				b = 1*best.factors[fi].callOne(di.input, false); 
+//			} catch( TreeException& e) {  }
+//			PRINTN("#", b, w);
+//			++fi;
+//		}
+//	}
 }

@@ -70,16 +70,16 @@ public:
 	LOTHypothesis()           : MCMCable<this_t,datum_t,data_t>(), value(NullRule,0.0,true) {	
 	}
 	
-	LOTHypothesis(Node&& x)   : MCMCable<this_t,datum_t,data_t>(){
+	LOTHypothesis(Node&& x)   : MCMCable<this_t,datum_t,data_t>() {
 		set_value(x);
 	}
 	
-	LOTHypothesis(Node& x)    : MCMCable<this_t,datum_t,data_t>(){
+	LOTHypothesis(Node& x)    : MCMCable<this_t,datum_t,data_t>() {
 		set_value(x);
 	}
 
 	// parse this from a string
-	LOTHypothesis(std::string s) : MCMCable<this_t,datum_t,data_t>()  {
+	LOTHypothesis(std::string s) : MCMCable<this_t,datum_t,data_t>() {
 		set_value(grammar->from_parseable(s));
 	}
 	

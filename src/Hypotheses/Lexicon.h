@@ -241,38 +241,6 @@ public:
 		
 		return this->prior;
 	}
-	
-//	[[nodiscard]] virtual std::pair<this_t,double> propose() const override {
-//		/**
-//		 * @brief This proposal guarantees that there will be at least one factor that is proposed to. 
-//		 * 		  To do this, we draw random numbers on 2**factors.size()-1 and then use the bits of that
-//		 * 		  integer to determine which factors to propose to. 
-//		 * @return 
-//		 */
-//		
-//		// cannot be 0, since that is not proposing to anything
-//		std::uniform_int_distribution<size_t> d(1, pow(2,factors.size())-1 );
-//		size_t u = d(rng);
-//		
-//		// now copy over
-//		// TODO: Check that detailed balance is ok?
-//		this_t x; double fb = 0.0;
-//		x.factors.reserve(factors.size());
-//		for(size_t k=0;k<factors.size();k++) {
-//			if(u & 0x1) {
-//				auto [h, _fb] = factors[k].propose();
-//				x.factors.push_back(h);
-//				fb += _fb;
-//			} else {
-//				auto h = factors[k];
-//				x.factors.push_back(h);
-//			}
-//			u = u>>1;
-//		}
-//
-//		assert(x.factors.size() == factors.size());
-//		return std::make_pair(x, fb);									
-//	}
 
 	/**
 	 * @brief This proposal guarantees that there will be at least one factor that is proposed to. 
