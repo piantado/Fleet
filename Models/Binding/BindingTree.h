@@ -10,12 +10,13 @@
 #include "BaseNode.h"
 
 // Some parts of speech here as a class 
-enum class POS { None, S, SBAR, NP, NPS, VP, MD, PP, CP, CC, N, V, P, A };
+enum class POS { None, S, SBAR, NP, NPS, NPO, NPPOSS, VP, MD, PP, CP, CC, N, V, P, A};
 
 std::map<std::string,POS> posmap = { // just for decoding strings to tags -- ugh
 								    {"S",  POS::S}, 
 									{"NP", POS::NP}, 
 									{"NP-S", POS::NPS}, 
+									{"NP-O", POS::NPO},
 									{"VP", POS::VP},
 									{"PP", POS::PP},
 									{"CP", POS::CP},
@@ -26,6 +27,7 @@ std::map<std::string,POS> posmap = { // just for decoding strings to tags -- ugh
 									{"V", POS::V},
 									{"P", POS::P},
 									{"A", POS::A},
+									{"NP-POSS", POS::NPPOSS},
 								   };
 								   
 //using Referent = long; // we'll use these for referent, and distinguished from int for position
@@ -78,6 +80,9 @@ public:
 		// and set the POS accordingly
 		if(posmap.count(label) != 0){
 			pos = posmap[label];
+		}
+		else {
+			assert(label == ""); 
 		}
 		
 	}
@@ -136,7 +141,11 @@ public:
 	}
 	
 	std::string string(bool usedot=true) const override {
-		std::string out = "[" + label + (referent > -1 ? "."+str(referent) : "") + " " + word;
+		std::string out = "[" + (target ? std::string(">") : "") + 
+		                        label + 
+								(referent > -1 ? "."+str(referent) : "") + 
+								" " + 
+								word;
 		for(auto& c : children) {
 			out += " " + c.string();
 		}

@@ -67,8 +67,7 @@ protected:
 	
 public:
 
-	LOTHypothesis()           : MCMCable<this_t,datum_t,data_t>(), value(NullRule,0.0,true) {
-	
+	LOTHypothesis()           : MCMCable<this_t,datum_t,data_t>(), value(NullRule,0.0,true) {	
 	}
 	
 	LOTHypothesis(Node&& x)   : MCMCable<this_t,datum_t,data_t>(){

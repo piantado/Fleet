@@ -3,7 +3,22 @@
 // Code for parsing and dealing with S-expressions
 namespace SExpression {
 		
+	void assert_check_parens(const std::string& s) {
+		int nopen = 0;
+		for(char c : s) {
+			if     (c == '(') nopen++;
+			else if(c == ')') nopen--;
+			assert(nopen >= 0);
+		}
+		if(nopen != 0) {
+			CERR "*** Bad parentheses in " << s ENDL;
+			assert(false);
+		}
+	}
+	
+	
 	std::vector<std::string> tokenize(std::string s) {
+		assert_check_parens(s);
 		std::vector<std::string> out;
 		std::string x;
 		for(char c : s) {
