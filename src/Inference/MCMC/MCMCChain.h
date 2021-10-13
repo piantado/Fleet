@@ -168,10 +168,8 @@ public:
 			// computing the posterior
 			if(proposal == current) {
 				// copy all the properties
-				proposal.posterior  = current.posterior;
-				proposal.prior      = current.prior;
-				proposal.likelihood = current.likelihood;
-				proposal.born       = current.born;
+				// NOTE: This is necessary because == might just check value, but operator= will copy everything else
+				proposal = current; 
 			}
 			else {
 				proposal.compute_posterior(*data);
