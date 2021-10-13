@@ -282,10 +282,6 @@ public:
 	[[nodiscard]] virtual std::pair<this_t,double> propose() const override {
 
 		// let's first make a vector to see which factor we propose to.
-		// NOTE That this is very inefficient for low p_factor_propose, since it's essentially
-		// rejection sampling on the full multinomial until we find something to change
-		// Probably we could make this faster by uniformly choosing one to flip and then randomly
-		// chanign the rest?
 		std::vector<bool> should_propose(factors.size(), false);
 		for(size_t i=0;i<factors.size();i++) {
 			should_propose[i] = flip(p_factor_propose);
