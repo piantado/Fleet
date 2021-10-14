@@ -3,9 +3,20 @@
 #include <random>
 #include <functional>
 #include <thread>
-
 #include "Errors.h"
 #include "Numerics.h"
+
+#include <sys/syscall.h>
+#include <linux/random.h>
+size_t sysrandom(void* dst, size_t dstlen) {
+	// from https://stackoverflow.com/questions/45069219/how-to-succinctly-portably-and-thoroughly-seed-the-mt19937-prng
+    char* buffer = reinterpret_cast<char*>(dst);
+    std::ifstream stream("/dev/urandom", std::ios_base::binary | std::ios_base::in);
+    stream.read(buffer, dstlen);
+
+    return dstlen;
+}
+
 
 /**
  * @class tlRng
@@ -27,17 +38,22 @@ public:
 	 */	
 	void threaded_seed(unsigned long seed) {
 		extern std::thread::id main_thread_id;
+		
+		std::array<unsigned long, std::mt19937::state_size> state;
+		sysrandom(state.begin(), state.size()*sizeof(unsigned long));
+		std::seed_seq seedseq(state.begin(), state.end());
+		
 		if(seed != 0) {
 			if(std::this_thread::get_id() == main_thread_id) {
 				this->seed(seed);
 			}
 			else {
 				std::cerr << "# Warning: seed " << seed << " is only applied to the first thread." << std::endl;
-				this->seed(std::random_device{}());
+				this->seed(seedseq);
 			}
 		}
 		else {
-			this->seed(std::random_device{}());
+			this->seed(seedseq);
 		}
 	}
 	
