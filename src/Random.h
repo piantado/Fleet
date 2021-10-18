@@ -1,5 +1,6 @@
 #pragma once
 
+#include <fstream>
 #include <random>
 #include <functional>
 #include <thread>
