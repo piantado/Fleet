@@ -43,7 +43,10 @@ public:
 	Lexicon(size_t n)  : MCMCable<this_t,datum_t>()  { factors.resize(n); }
 	Lexicon()          : MCMCable<this_t,datum_t>()  { }
 	
-	
+	/**
+	 * @brief Return the number of factors
+	 * @return 
+	 */	
 	size_t nfactors() const  {
 		return factors.size();
 	}
@@ -110,12 +113,13 @@ public:
 		return out;
 	}
 	
+	/**
+	 * @brief Equality checks equality on each part
+	 * @param l
+	 * @return 
+	 */
 	virtual bool operator==(const this_t& l) const override {
-		/**
-		 * @brief Equality checks equality on each part
-		 * @param l
-		 * @return 
-		 */
+
 			
 		// first, fewer factors are less
 		if(factors.size() != l.factors.size()) 
@@ -128,12 +132,13 @@ public:
 		return true; 
 	}
 	
+	/**
+	 * @brief A lexicon has valid indices if calls to  op_RECURSE, op_MEM_RECURSE, op_SAFE_RECURSE, and op_SAFE_MEM_RECURSE all have arguments that are less than the size. 
+	 *  	  (So this places no restrictions on the calling earlier factors)
+	 * @return 
+	 */
 	bool has_valid_indices() const {
-		/**
-		 * @brief A lexicon has valid indices if calls to  op_RECURSE, op_MEM_RECURSE, op_SAFE_RECURSE, and op_SAFE_MEM_RECURSE all have arguments that are less than the size. 
-		 *  	  (So this places no restrictions on the calling earlier factors)
-		 * @return 
-		 */
+
 		
 		// check to make sure that if we have rn recursive factors, we never try to call F on higher 
 		

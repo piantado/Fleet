@@ -20,11 +20,6 @@ public:
 	[[nodiscard]] virtual this_t                   restart() const = 0; // restart a new chain -- typically by sampling from the prior, but actually it only resamples can_resample 
 	virtual bool operator==(const this_t& h)                 const = 0; // speeds up a check in MCMC
 	
-	
-	// HMM HERE We want a static HYP::sample() as a builder, but maybe also 
-	// a non-static restart?
-	
-	
 	/**
 	 * @brief Static function for making a hypothesis. Be careful using this with references because they may not foward right (for reasons
 	 * 			that are unclear to me)
@@ -34,7 +29,7 @@ public:
 		assert(false && "*** This should not be called -- must be overwritten in derived class");
 	}
 	
-	// Just define for convenience
+	
 	virtual bool operator!=(const this_t& h)   const {
 		return not this->operator==(h);
 	}

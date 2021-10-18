@@ -18,7 +18,11 @@
  * @author piantado
  * @date 05/05/20
  * @file LOTHypothesis.h
- * @brief A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously recurring tempalte
+ * @brief A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value, and handles all of the proposing
+ *        and computing priors, likelihoods, etc. It compiles this Node into a "program" which is used to make function calls,
+ * 		  which means that the value should only be changed via LOTHypothesis::set_value. 
+ * 
+ * 		  LOTHypothsis is templated with itself (the curiously recurring tempalte
  *        pattern), an input type, and output type, a grammar type, and types for the individual data elements and vector
  *        of data. Usually you will subclass this (or a Lexicon) as this_totheses in a LOT model. 
  * 		  
@@ -129,12 +133,12 @@ public:
 		return *this;
 	}	
 	
+	/**
+	 * @brief Default proposal is rational-rules style regeneration. 
+	 * @return 
+	 */
 	[[nodiscard]] virtual std::pair<this_t,double> propose() const override {
-		/**
-		 * @brief Default proposal is rational-rules style regeneration. 
-		 * @return 
-		 */
-	
+
 		// simplest way of doing proposals
 		auto x = Proposals::regenerate(grammar, value);	
 		
@@ -145,12 +149,12 @@ public:
 	[[nodiscard]] static this_t sample() {
 		return this_t(grammar->generate());
 	}
-	
+
+	/**
+	 * @brief This is used to restart chains, sampling from prior but ONLY for nodes that are can_resample
+	 * @return 
+	 */	
 	[[nodiscard]] virtual this_t restart() const override {
-		/**
-		 * @brief This is used to restart chains, sampling from prior but ONLY for nodes that are can_resample
-		 * @return 
-		 */
 		
 		// This is used in MCMC to restart chains 
 		// this ordinarily would be a resample from the grammar, but sometimes we have can_resample=false
@@ -166,7 +170,11 @@ public:
 	
 		  Node& get_value()       {	return value; }
 	const Node& get_value() const {	return value; }
-	
+		
+	/**
+	 * @brief Set the value to v. (NOTE: This compiles into a program)
+	 * @param v
+	 */
 	void set_value(Node&  v) { 
 		value = v; 
 		this->compile(); // compile with myself defaultly as a loader
@@ -178,6 +186,10 @@ public:
 	
 	Grammar_t* get_grammar() const { return grammar; }
 	
+	/**
+	 * @brief Compute the prior -- defaultly just the PCFG (grammar) prior
+	 * @return 
+	 */	
 	virtual double compute_prior() override {
 		/* This ends up being a really important check -- otherwise we spend tons of time on really long
 		 * this_totheses */
@@ -199,6 +211,11 @@ public:
 		this->program.loader = this; // program loader defaults to myself
 	}
 
+	/**
+	 * @brief This puts the code from my node onto s. Used internally in e.g. recursion
+	 * @param s
+	 * @param k
+	 */
 	virtual void push_program(Program<VirtualMachineState_t>& s, short k=0) override {
 		assert(k==0 && "*** the short argument in push_program should only be nonzero for lexica. Did you forget to set the program_loader in each LOTHypothesis to the lexicon?");
 		//s.reserve(s.size() + value.program_size()+1);
@@ -223,10 +240,18 @@ public:
 		return value.hash();
 	}
 	
+	/**
+	 * @brief Equality is checked on equality of values; note that greater-than is still on posteriors. 
+	 * @param h
+	 * @return 
+	 */	
 	virtual bool operator==(const this_t& h) const override {
 		return this->value == h.value;
 	}
 	
+	/**
+	 * @brief Modify this hypothesis's value by filling in all the gaps. 
+	 */	
 	virtual void complete() override {
 		if(value.is_null()) {
 			auto nt = grammar->template nt<output_t>();
@@ -337,6 +362,7 @@ public:
 		if(value.is_complete()) compile(); // this seems slow/wasteful, but I'm not sure of the alternative. 
 	}
 	
+	
 	virtual double neighbor_prior(int k) override {
 		// What is the prior for this neighbor?
 		if(value.is_null()){
@@ -349,6 +375,10 @@ public:
 		}
 	}
 	
+	/**
+	 * @brief A node is "evaluable" if it is complete (meaning no null subnodes)
+	 * @return 
+	 */	
 	virtual bool is_evaluable() const override {
 		// This checks whether it should be allowed to call "call" on this Hypothesis. 
 		// Usually this means that that the value is complete, meaning no partial subtrees
@@ -368,9 +398,12 @@ public:
 					n.rule->is_a(Op::SafeMemRecurse);
 		}
 		return cnt;
-	} 
+	} 	
 	
-	
+	/**
+	 * @brief Convert this into a string which can be written to a file. 
+	 * @return 
+	 */	
 	virtual std::string serialize() const override { 
 		// NOTE: This doesn't preseve everything (it doesn't save can_propose, for example)
 		return str(this->prior)      + SerializationDelimiter + 
@@ -379,6 +412,11 @@ public:
 			   value.parseable(); 
 	}
 	
+	/**
+	 * @brief Convert this from a string which was in a file. 
+	 * @param s
+	 * @return 
+	 */	
 	static this_t deserialize(const std::string& s) { 
 		auto [pr, li, po, v] = split<4>(s, SerializationDelimiter);
 		
