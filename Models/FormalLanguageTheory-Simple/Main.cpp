@@ -93,7 +93,6 @@ public:
 //		}
 //		auto out = marginal_vms_output(v); // and convert v to a disribution on strings
 
-
 		const auto log_A = log(alphabet.size());
 		
 		// Likelihood comes from all of the ways that we can delete from the end and the append to make the observed output. 
@@ -221,7 +220,7 @@ int main(int argc, char** argv){
 
 	top.print_best = true;
 	auto h0 = MyHypothesis::sample();
-	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 1.20);
 //	ChainPool samp(h0, &mydata, FleetArgs::nchains);
 //	MCMCChain samp(h0, &mydata);
 //	HillClimbing samp(h0, &mydata);

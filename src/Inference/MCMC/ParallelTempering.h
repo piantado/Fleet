@@ -59,7 +59,6 @@ public:
 	ParallelTempering(HYP& h0, typename HYP::data_t* d, unsigned long n, double maxT) : 
 		ChainPool<HYP>(h0, d, n),terminate(false) {
 		assert(n != 0);
-		
 		swap_history.reserve(n);
 		
 		if(n == 1) { // just enforce this as a hard cosntraint. 
@@ -67,6 +66,7 @@ public:
 		}
 		else {
 			for(size_t i=0;i<n;i++) {
+				
 				this->pool[i].temperature = exp(i * log(maxT)/(n-1));
 				swap_history.emplace_back();
 			}
@@ -98,14 +98,18 @@ public:
 				double Tswp = this->pool[k-1].at_temperature(this->pool[k].temperature)     + this->pool[k].at_temperature(this->pool[k-1].temperature);
 				double R = Tswp-Tnow;
 			
+//				CERR R TAB  this->pool[k].getCurrent().likelihood TAB  this->pool[k-1].getCurrent().likelihood ENDL;
+			
 				if(R >= 0 or uniform() < exp(R)) { 
 										
 					#ifdef PARALLEL_TEMPERING_SHOW_DETAIL
-					COUT "# Swapping " <<k<< " and " <<(k-1)<<"." TAB this->pool[k].current.posterior TAB this->pool[k-1].current.posterior TAB this->pool[k].current.string() TAB this->pool[k-1].current.string() ENDL;
+					COUT "# Swapping " <<k<< " and " <<(k-1)<<"." TAB Tnow TAB Tswp TAB this->pool[k].current.likelihood TAB this->pool[k-1].current.likelihood ENDL;
+					COUT "# " TAB this->pool[k].current.string() ENDL;
+					COUT "# " TAB this->pool[k-1].current.string() ENDL;
 					#endif
 					
 					// swap the chains
-					std::swap(this->pool[k].current, this->pool[k-1].current);
+					std::swap(this->pool[k].getCurrent(), this->pool[k-1].getCurrent());
 					
 					swap_history.at(k) << true;
 				}
@@ -131,9 +135,9 @@ public:
 			
 			// This is not interruptible with CTRL_C: std::this_thread::sleep_for(std::chrono::milliseconds(adapt_every));
 			
-			#ifdef PARALLEL_TEMPERING_SHOW_DETAIL
-				show_statistics();
-			#endif
+//			#ifdef PARALLEL_TEMPERING_SHOW_DETAIL
+//				show_statistics();
+//			#endif
 				
 			adapt(); // TOOD: Check what counts as t
 		}
@@ -141,6 +145,7 @@ public:
 	
 	
 	generator<HYP&> run(Control ctl) {
+		
 		
 		// Start a swapper and adapter thread
 		std::thread swapper(&ParallelTempering<HYP>::__swapper_thread, this); // pass in the non-static mebers like this:

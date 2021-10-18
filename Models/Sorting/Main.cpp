@@ -348,7 +348,7 @@ int main(int argc, char** argv){
 	
 	if(method == "parallel-tempering") {
 		auto h0 = MyHypothesis::sample();
-		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 1.20);
 		for(auto& h : samp.run(Control())) {
 			top << h;
 		}
@@ -356,7 +356,7 @@ int main(int argc, char** argv){
 	else if(method == "parallel-tempering-ID") {
 		whichProposal = ProposalType::InsertDelete;
 		auto h0 = MyHypothesis::sample();
-		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 1.20);
 		for(auto& h : samp.run(Control())){
 			top << h;
 		}
@@ -364,7 +364,7 @@ int main(int argc, char** argv){
 	else if(method == "parallel-tempering-prior-propose") {
 		whichProposal = ProposalType::Prior;
 		auto h0 = MyHypothesis::sample();
-		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0);
+		ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 1.20);
 		for(auto& h : samp.run(Control())) {
 			top << h;
 		}

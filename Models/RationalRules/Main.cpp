@@ -20,7 +20,6 @@ using MyObject = ShapeColorSizeObject;
 /// Thid requires the types of the thing we will add to the grammar (bool,MyObject)
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
 #include "Grammar.h"
 #include "Singleton.h"
 
@@ -103,10 +102,10 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> top;
 
 	auto h0 = MyHypothesis::sample();
-
-//	MCMCChain samp(h0, &mydata);
-  ChainPool samp(h0, &mydata, FleetArgs::nchains);
-//	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0); 
+	
+	MCMCChain samp(h0, &mydata);
+	//ChainPool samp(h0, &mydata, FleetArgs::nchains);
+	//	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 10.0); 
 	for(auto& h : samp.run(Control()) | print(FleetArgs::print) | top) {
 		UNUSED(h);
 	}

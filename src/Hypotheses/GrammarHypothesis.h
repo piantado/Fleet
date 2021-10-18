@@ -421,7 +421,7 @@ public:
 		}		
 
 
-		// Ok this needs a little explanation. IF we have overwritten the types, then we can get compilation
+		// Ok this needs a little explanation. If we have overwritten the types, then we can get compilation
 		// errors below because for instance r.first won't be of the right type to index into model_predictions.
 		// So this line catches that and removes this chunk of code at compile time if we have removed
 		// those types. In its place, we add a runtime assertion fail, meaning you should have overwritten
@@ -440,6 +440,9 @@ public:
 				double ll = 0.0; // the likelihood here
 				auto& di = human_data[i];
 				for(const auto& [r,cnt] : di.responses) {
+					
+//					PRINTN(i, r, cnt, ll, alpha.get(), human_chance_lp(r,di), model_predictions[r]);
+					
 					ll += cnt * logplusexp( log(1.0-alpha.get()) + human_chance_lp(r,di), 
 					                        log(alpha.get()) + log(model_predictions[r])); 
 				}

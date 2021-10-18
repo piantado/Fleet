@@ -30,9 +30,6 @@ std::map<std::string,POS> posmap = { // just for decoding strings to tags -- ugh
 									{"NP-POSS", POS::NPPOSS},
 								   };
 								   
-//using Referent = long; // we'll use these for referent, and distinguished from int for position
-//enum class Referent { None, one, two, three, four };
-
 /**
  * @class BindingTree
  * @author piantado
@@ -98,6 +95,7 @@ public:
 		referent = t.referent;
 		word = t.word;
 		linear_order = t.linear_order;
+		traversal_order = t.traversal_order;
 		pos = t.pos;
 	}
 	BindingTree(const BindingTree&& t) : BaseNode<BindingTree>(t) {
@@ -106,6 +104,7 @@ public:
 		referent = t.referent;
 		word = t.word;
 		linear_order = t.linear_order;
+		traversal_order = t.traversal_order;
 		pos = t.pos;
 	}	
 	void operator=(const BindingTree& t) {
@@ -115,6 +114,7 @@ public:
 		referent = t.referent;
 		word = t.word;
 		linear_order = t.linear_order;
+		traversal_order = t.traversal_order;
 		pos = t.pos;
 	}	
 	void operator=(const BindingTree&& t) {
@@ -124,6 +124,7 @@ public:
 		referent = t.referent;
 		word = t.word;
 		linear_order = t.linear_order;
+		traversal_order = t.traversal_order;
 		pos = t.pos;
 	}	
 

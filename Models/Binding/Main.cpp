@@ -14,7 +14,7 @@
 // We use REXP here (John, Mary, etc) so that we don't have to distinguish which
 std::vector<std::string> words = {"REXP", "him", "his", "he", "himself"}; // his?
 
-static const double alpha = 0.99999; 
+static const double alpha = 0.95; 
 const int NDATA = 10; // how many data points from each sentence are we looking at?
 
 using S = std::string;
@@ -62,20 +62,21 @@ public:
 		});		
 
 		// linear order predicates
-//		add("linear(%s)",        +[](BindingTree* x) -> int { 
-//			if(x==nullptr) throw TreeException();			
-//			return x->linear_order; 
-//		});
-//		
+		add("linear(%s)",        +[](BindingTree* x) -> int { 
+			if(x==nullptr) throw TreeException();			
+			return x->linear_order; 
+		}, 5);
+		
 //		add("traversal(%s)",        +[](BindingTree* x) -> int { 
 //			if(x==nullptr) throw TreeException();			
 //			return x->traversal_order; 
 //		});
-//		
-//		add("eq(%s,%s)",         +[](int a, int b) -> bool { return (a==b); });		
-//		add("gt(%s,%s)",         +[](int a, int b) -> bool { return (a>b); });
 		
-		// string equality
+		add("gt(%s,%s)",         +[](int a, int b) -> bool { return (a>b); });
+		
+		// equality
+		add("eq(%s,%s)",   +[](bool a, bool b) -> bool { return (a==b); });		
+		add("eq(%s,%s)",   +[](int a, int b) -> bool { return (a==b); });		
 		add("eq(%s,%s)",   +[](S a, S b) -> bool { return (a==b); });		
 		add("eq(%s,%s)",   +[](POS a, POS b) -> bool { return (a==b); });		
 		add("eq(%s,%s)",   +[](BindingTree* x, BindingTree* y) -> bool { return x == y;});
@@ -109,58 +110,39 @@ public:
 		});
 				
 		add("dominates(%s,%s)",  +[](BindingTree* x, BindingTree* y) -> bool { 
-			// NOTE: a node will NOT dominate itself
+			// NOTE: a node will dominate itself
 			if(y == nullptr or x == nullptr) 
 				throw TreeException();
-				
-			while(y->parent != nullptr) {
-				y = y->parent; // step up one
-
-				if(y == x)
-					return true;
+							
+			while(true) {
+				if(y == nullptr) return false; // by definition, null doesn't dominate anything
+				else if(y == x) return true;
+				y = y->parent;
 			}
-			return false;
 		});
 		
-//		add("inside(%s,%s)",  +[](BindingTree* x, POS y) -> bool { 
-//			if(x == nullptr) 
-//				throw TreeException();
-//			
-//			while(true) {
-//				if(x->pos == y) 		        return true;
-//				else if(x->parent == nullptr)   return false;
-//				else							x = x->parent;
-//			}
-//		});
-//
-
 		add("first-dominating(%s,%s)",  +[](POS s, BindingTree* x) -> BindingTree* { 	
+			if(x == nullptr) throw TreeException();
 			
-			if(x == nullptr) 
-				throw TreeException();
-			
-			x = x->parent;
-			while(x != nullptr) {
-				if(x->pos == s)
-					return x;
-				
+			while(true) {
+				if(x == nullptr) return nullptr; // by definition, null doesn't dominate anything
+				else if(x->pos == s) return x;
 				x = x->parent;
 			}
-			
-			return nullptr; // or throw TreeException()?
 		});			
 			
-		add("true",          +[]() -> bool               { return true; });
-		add("false",         +[]() -> bool               { return false; });
+		add("true",          +[]() -> bool               { return true; }, 5);
+		add("false",         +[]() -> bool               { return false; }, 5);
 		add("and(%s,%s)",    Builtins::And<MyGrammar>);
 		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
 		add("not(%s)",       Builtins::Not<MyGrammar>);
 		
-//		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
-//		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,POS>);
-//		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,BindingTree*>);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,int>);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,POS>);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,BindingTree*>);
 //	
-		add("x",              Builtins::X<MyGrammar>, 5);	
+		add("x",              Builtins::X<MyGrammar>, 10);	
 		
 		for(auto& w : words) {
 			add_terminal<S>(Q(w), w, 5.0/words.size());
@@ -173,13 +155,12 @@ public:
 		
 		// for absolute positions (up top 24)
 //		for(int p=0;p<24;p++) {
-//			add_terminal<int>(str(p), p, 1.0/24.);
+//			add_terminal<int>(str(p), p, 5.0/24.);
 //		}
-//		
+
 		// add recursive calls
 		// 
 		// 
-		
 		// NOTE THIS DOES NOT WORK WITH THE CACHED VERSION
 //		for(size_t a=0;a<words.size();a++) {	
 //			add("F"+str(a)+"(%s)" ,  Builtins::Recurse<MyGrammar>, 1.0, a);
@@ -284,6 +265,7 @@ class MyHypothesis : public Lexicon<MyHypothesis, InnerHypothesis, BindingTree*,
 	using Super = Lexicon<MyHypothesis, InnerHypothesis, BindingTree*, std::string>;
 	using Super::Super; // inherit the constructors
 public:	
+
 
 	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		
@@ -471,9 +453,14 @@ int main(int argc, char** argv){
 	
 	TopN<MyHypothesis> top;
 
-	top.print_best = true;
-	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 10.0);
+//	top.print_best = true;
+	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1.20);
+//	ChainPool chain(h0, &mydata, FleetArgs::nchains);	
+
+//	chain.adapt_every = 100000000000;
+//	chain.swap_every = 100000000000;
 //	MCMCChain chain(h0, &mydata);
+//	chain.temperature = 1.;
 	
 	for(auto& h : chain.run(Control()) | top | print(FleetArgs::print)) {
 		UNUSED(h);
