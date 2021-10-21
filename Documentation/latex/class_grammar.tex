@@ -77,7 +77,7 @@ virtual \mbox{\hyperlink{class_rule}{Rule}} $\ast$ \mbox{\hyperlink{class_gramma
 \item 
 \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar_aec960301035c8f5f1f8e62338bb3f860}{make\+Node}} (const \mbox{\hyperlink{class_rule}{Rule}} $\ast$r) const
 \item 
-\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar_a63735fcfa3049ea5daef9dc5f5cb8a3e}{generate}} (const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} \mbox{\hyperlink{class_grammar_ac7ec043aec5203a2cfac44f9cec50132}{nt}}=\mbox{\hyperlink{class_grammar_ac7ec043aec5203a2cfac44f9cec50132}{nt}}$<$ \mbox{\hyperlink{class_grammar_aee7630d758322022048d06605b07e697}{output\+\_\+t}} $>$(), unsigned long depth=0) const
+\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar_abbf87abced1821fb1b6a2e1ed43eba74}{generate}} (const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} ntfrom=\mbox{\hyperlink{class_grammar_ac7ec043aec5203a2cfac44f9cec50132}{nt}}$<$ \mbox{\hyperlink{class_grammar_aee7630d758322022048d06605b07e697}{output\+\_\+t}} $>$(), unsigned long depth=0) const
 \item 
 \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar_a9ce6fefd39e27641085efc3ad6a3b077}{copy\+\_\+resample}} (const \mbox{\hyperlink{class_node}{Node}} \&node, bool f(const \mbox{\hyperlink{class_node}{Node}} \&n)) const
 \item 
@@ -453,12 +453,12 @@ Expand from names where s is delimited by \textquotesingle{}\+:\textquotesingle{
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_grammar_a63735fcfa3049ea5daef9dc5f5cb8a3e}\label{class_grammar_a63735fcfa3049ea5daef9dc5f5cb8a3e}} 
+\mbox{\Hypertarget{class_grammar_abbf87abced1821fb1b6a2e1ed43eba74}\label{class_grammar_abbf87abced1821fb1b6a2e1ed43eba74}} 
 \index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!generate@{generate}}
 \index{generate@{generate}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
 \doxysubsubsection{\texorpdfstring{generate()}{generate()}}
 {\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
-\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::generate (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}}]{nt = {\ttfamily \mbox{\hyperlink{class_grammar_ac7ec043aec5203a2cfac44f9cec50132}{nt}}$<$\mbox{\hyperlink{class_grammar_aee7630d758322022048d06605b07e697}{output\+\_\+t}}$>$()},  }\item[{unsigned long}]{depth = {\ttfamily 0} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::generate (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}}]{ntfrom = {\ttfamily \mbox{\hyperlink{class_grammar_ac7ec043aec5203a2cfac44f9cec50132}{nt}}$<$\mbox{\hyperlink{class_grammar_aee7630d758322022048d06605b07e697}{output\+\_\+t}}$>$()},  }\item[{unsigned long}]{depth = {\ttfamily 0} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 Sample an entire tree from this grammar (keeping track of depth in case we recurse too far) of return type nt. This samples a rule, makes them with make\+Node, and then recurses. 
 \begin{DoxyParams}{Parameters}

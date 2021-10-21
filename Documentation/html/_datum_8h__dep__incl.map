@@ -1,11 +1,11 @@
 <map id="src/Data/Datum.h" name="src/Data/Datum.h">
-<area shape="rect" id="node1" title="A datum is the default data point for likelihoods, consisting of an input and output type...." alt="" coords="763,5,899,32"/>
-<area shape="rect" id="node2" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e...." alt="" coords="735,80,926,121"/>
-<area shape="rect" id="node3" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="547,169,738,211"/>
-<area shape="rect" id="node8" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="737,266,925,293"/>
-<area shape="rect" id="node9" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="949,266,1185,293"/>
-<area shape="rect" id="node4" href="$_vector_half_normal_hypothesis_8h.html" title=" " alt="" coords="5,259,200,300"/>
-<area shape="rect" id="node6" href="$_vector_normal_hypothesis_8h.html" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior...." alt="" coords="224,259,440,300"/>
-<area shape="rect" id="node7" href="$_t_normal_variable_8h.html" title=" " alt="" coords="464,266,712,293"/>
-<area shape="rect" id="node5" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="195,348,469,375"/>
+<area shape="rect" id="node1" title="A datum is the default data point for likelihoods, consisting of an input and output type...." alt="" coords="705,5,832,32"/>
+<area shape="rect" id="node2" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e...." alt="" coords="681,80,857,121"/>
+<area shape="rect" id="node3" href="$_m_c_m_cable_8h.html" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="506,169,682,211"/>
+<area shape="rect" id="node8" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="681,266,856,293"/>
+<area shape="rect" id="node9" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="880,266,1100,293"/>
+<area shape="rect" id="node4" href="$_vector_half_normal_hypothesis_8h.html" title=" " alt="" coords="5,259,185,300"/>
+<area shape="rect" id="node6" href="$_vector_normal_hypothesis_8h.html" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior...." alt="" coords="209,259,408,300"/>
+<area shape="rect" id="node7" href="$_t_normal_variable_8h.html" title=" " alt="" coords="432,266,657,293"/>
+<area shape="rect" id="node5" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="184,348,433,375"/>
 </map>

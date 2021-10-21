@@ -1,13 +1,12 @@
 <map id="src/VirtualMachine/Program/Ops.h" name="src/VirtualMachine/Program/Ops.h">
-<area shape="rect" id="node1" title=" " alt="" coords="185,5,327,47"/>
-<area shape="rect" id="node2" href="$_instruction_8h.html" title="f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg is just a supplemental ar..." alt="" coords="173,95,339,136"/>
-<area shape="rect" id="node3" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="8,191,160,218"/>
-<area shape="rect" id="node8" href="$_program_8h.html" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="352,184,504,225"/>
-<area shape="rect" id="node11" href="$_runtime_counter_8h.html" title="This class manages counting operations at runtime and interfaces operations to a grammar NOTE: Curren..." alt="" coords="184,184,328,225"/>
-<area shape="rect" id="node4" href="$_node_8h.html" title=" " alt="" coords="5,281,163,307"/>
-<area shape="rect" id="node5" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="54,452,194,479"/>
-<area shape="rect" id="node6" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="122,370,307,397"/>
-<area shape="rect" id="node7" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="309,452,545,479"/>
-<area shape="rect" id="node9" href="$_callable_8h.html" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="331,363,522,404"/>
-<area shape="rect" id="node10" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="203,273,373,315"/>
+<area shape="rect" id="node1" title=" " alt="" coords="164,5,295,47"/>
+<area shape="rect" id="node2" href="$_instruction_8h.html" title="f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg is just a supplemental ar..." alt="" coords="154,95,305,136"/>
+<area shape="rect" id="node3" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="323,191,463,218"/>
+<area shape="rect" id="node8" href="$_program_8h.html" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="160,184,299,225"/>
+<area shape="rect" id="node10" href="$_runtime_counter_8h.html" title="This class manages counting operations at runtime and interfaces operations to a grammar NOTE: Curren..." alt="" coords="5,184,136,225"/>
+<area shape="rect" id="node4" href="$_node_8h.html" title=" " alt="" coords="267,281,411,307"/>
+<area shape="rect" id="node5" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="211,437,341,464"/>
+<area shape="rect" id="node6" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="10,363,177,389"/>
+<area shape="rect" id="node7" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="201,363,421,389"/>
+<area shape="rect" id="node9" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="16,273,171,315"/>
 </map>

@@ -7,7 +7,7 @@ Include dependency graph for Proposers.\+h\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=232pt]{_proposers_8h__incl}
+\includegraphics[width=221pt]{_proposers_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:
@@ -15,7 +15,7 @@ This graph shows which files directly or indirectly include this file\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=257pt]{_proposers_8h__dep__incl}
+\includegraphics[width=245pt]{_proposers_8h__dep__incl}
 \end{center}
 \end{figure}
 \doxysubsection*{Namespaces}
@@ -39,4 +39,8 @@ double \mbox{\hyperlink{namespace_proposals_a73f20ef1547bc5beef3e6e3adad2139c}{P
 {\footnotesize template$<$typename Grammar\+Type $>$ }\\std\+::pair$<$ \mbox{\hyperlink{class_node}{Node}}, double $>$ \mbox{\hyperlink{namespace_proposals_a8714ac1333d5aff2d248ef10a8eb5493}{Proposals\+::insert\+\_\+tree}} (Grammar\+Type $\ast$grammar, const \mbox{\hyperlink{class_node}{Node}} \&from)
 \item 
 {\footnotesize template$<$typename Grammar\+Type $>$ }\\std\+::pair$<$ \mbox{\hyperlink{class_node}{Node}}, double $>$ \mbox{\hyperlink{namespace_proposals_a785ec0b4f2f5df9b78bbb8c0c5f16118}{Proposals\+::delete\+\_\+tree}} (Grammar\+Type $\ast$grammar, const \mbox{\hyperlink{class_node}{Node}} \&from)
-\end{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Grammar\+Type $>$ }\\std\+::pair$<$ \mbox{\hyperlink{class_node}{Node}}, double $>$ \mbox{\hyperlink{namespace_proposals_aa7f6d33ccb0ba81730e267d1de60c476}{Proposals\+::sample\+\_\+function\+\_\+leaving\+\_\+args}} (Grammar\+Type $\ast$grammar, const \mbox{\hyperlink{class_node}{Node}} \&from)
+\begin{DoxyCompactList}\small\item\em This samples functions f(a,b) -\/$>$ g(a,b) (e.\+g. without destroying what\textquotesingle{}s below). This uses a little trick that the node only stores the rule, so we can swap it out if we want. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Grammar\+Type $>$ }\\std\+::pair$<$ \mbox{\hyperlink{class_node}{Node}}, double $>$ \mbox{\hyperlink{namespace_proposals_a88343558ba97fd2c5cf57cbb609ffdf1}{Proposals\+::swap\+\_\+args}} (Grammar\+Type $\ast$grammar, const \mbox{\hyperlink{class_node}{Node}} \&from)
+\begin{DoxyCompactList}\small\item\em This propose swaps around arguments of the same type. \end{DoxyCompactList}\end{DoxyCompactItemize}

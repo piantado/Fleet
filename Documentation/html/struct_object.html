@@ -66,6 +66,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="struct_object-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -97,6 +98,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0475b6347042bc03cf1cb023fc6c36b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39a1f236eb1afac749bf956124dab79d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_object.html#a39a1f236eb1afac749bf956124dab79d">operator==</a> (const <a class="el" href="struct_object.html">Object</a> &amp;o) const</td></tr>
 <tr class="separator:a39a1f236eb1afac749bf956124dab79d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:afb4dead3b89634ffa1a27108cfa188d9"><td class="memTemplParams" colspan="2">template&lt;typename... T&gt; </td></tr>
+<tr class="memitem:afb4dead3b89634ffa1a27108cfa188d9"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="struct_object.html">Object</a>&lt; T... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="struct_object.html#afb4dead3b89634ffa1a27108cfa188d9">__sample</a> ()</td></tr>
+<tr class="memdesc:afb4dead3b89634ffa1a27108cfa188d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample a uniformly random object. This requires our features to end in __count.  <a href="struct_object.html#afb4dead3b89634ffa1a27108cfa188d9">More...</a><br /></td></tr>
+<tr class="separator:afb4dead3b89634ffa1a27108cfa188d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6961d5811ef36022afaef8ae9c0546ae"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_object.html">Object</a>&lt; feature_t... &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_object.html#a6961d5811ef36022afaef8ae9c0546ae">sample</a> ()</td></tr>
+<tr class="separator:a6961d5811ef36022afaef8ae9c0546ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -167,6 +177,37 @@ template&lt;typename... feature_t&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="afb4dead3b89634ffa1a27108cfa188d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb4dead3b89634ffa1a27108cfa188d9">&#9670;&nbsp;</a></span>__sample()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... feature_t&gt; </div>
+<div class="memtemplate">
+template&lt;typename... T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="struct_object.html">Object</a>&lt;T...&gt; <a class="el" href="struct_object.html">Object</a>&lt; feature_t &gt;::__sample </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sample a uniformly random object. This requires our features to end in __count. </p>
+
+</div>
+</div>
 <a id="a380e8d879bd922eedbf3c6aabcd64a61"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a380e8d879bd922eedbf3c6aabcd64a61">&#9670;&nbsp;</a></span>get()</h2>
 
@@ -288,6 +329,33 @@ template&lt;typename... feature_t&gt; </div>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6961d5811ef36022afaef8ae9c0546ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6961d5811ef36022afaef8ae9c0546ae">&#9670;&nbsp;</a></span>sample()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... feature_t&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="struct_object.html">Object</a>&lt;feature_t...&gt; <a class="el" href="struct_object.html">Object</a>&lt; feature_t &gt;::sample </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

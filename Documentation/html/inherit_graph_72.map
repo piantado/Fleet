@@ -1,3 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$struct_vector2_d.html" title="Just a little wrapper to allow vectors to be handled as 2D arrays, which simplifie some stuff in Gram..." alt="" coords="5,5,125,32"/>
+<area shape="rect" id="node1" href="$struct_virtual_machine_control.html" title=" " alt="" coords="5,78,156,105"/>
+<area shape="rect" id="node2" href="$class_virtual_machine_pool.html" title=" " alt="" coords="204,5,379,47"/>
+<area shape="rect" id="node3" href="$class_virtual_machine_pool.html" title=" " alt="" coords="210,71,373,112"/>
+<area shape="rect" id="node4" href="$class_virtual_machine_state.html" title=" " alt="" coords="218,137,365,193"/>
 </map>

@@ -6,6 +6,7 @@ The \mbox{\hyperlink{class_bayesable}{Bayesable}} class provides an interface fo
 
 
 {\ttfamily \#include $<$iomanip$>$}\newline
+{\ttfamily \#include $<$signal.\+h$>$}\newline
 {\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Datum.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}I\+O.\+h\char`\"{}}\newline
@@ -37,6 +38,11 @@ class \mbox{\hyperlink{class_bayesable}{Bayesable$<$ \+\_\+datum\+\_\+t, \+\_\+d
 \item 
 {\footnotesize template$<$typename \+\_\+datum\+\_\+t , typename \+\_\+data\+\_\+t $>$ }\\std\+::ostream \& \mbox{\hyperlink{_bayesable_8h_a7a02befe19c4e1d087dec4d9dc57830a}{operator$<$$<$}} (std\+::ostream \&o, \mbox{\hyperlink{class_bayesable}{Bayesable}}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$ \&x)
 \end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+volatile sig\+\_\+atomic\+\_\+t \mbox{\hyperlink{_bayesable_8h_a6f7c4963bb8a36031664821219e3159e}{C\+T\+R\+L\+\_\+C}}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -51,4 +57,13 @@ The \mbox{\hyperlink{class_bayesable}{Bayesable}} class provides an interface fo
 \doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
 {\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t , typename \+\_\+data\+\_\+t $>$ \\
 std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{o,  }\item[{\mbox{\hyperlink{class_bayesable}{Bayesable}}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$ \&}]{x }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{_bayesable_8h_a6f7c4963bb8a36031664821219e3159e}\label{_bayesable_8h_a6f7c4963bb8a36031664821219e3159e}} 
+\index{Bayesable.h@{Bayesable.h}!CTRL\_C@{CTRL\_C}}
+\index{CTRL\_C@{CTRL\_C}!Bayesable.h@{Bayesable.h}}
+\doxysubsubsection{\texorpdfstring{CTRL\_C}{CTRL\_C}}
+{\footnotesize\ttfamily volatile sig\+\_\+atomic\+\_\+t C\+T\+R\+L\+\_\+C}
 

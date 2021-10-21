@@ -1,8 +1,9 @@
 <map id="src/Statistics/FiniteHistory.h" name="src/Statistics/FiniteHistory.h">
-<area shape="rect" id="node1" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="5,5,207,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="31,155,95,181"/>
-<area shape="rect" id="node3" title=" " alt="" coords="64,80,148,107"/>
-<area shape="rect" id="node4" href="$_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="172,80,288,107"/>
-<area shape="rect" id="node5" title=" " alt="" coords="139,155,281,181"/>
-<area shape="rect" id="node6" title=" " alt="" coords="305,155,368,181"/>
+<area shape="rect" id="node1" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="17,5,204,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,155,64,181"/>
+<area shape="rect" id="node3" title=" " alt="" coords="73,80,149,107"/>
+<area shape="rect" id="node4" href="$_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="173,80,280,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="88,155,149,181"/>
+<area shape="rect" id="node6" title=" " alt="" coords="174,155,301,181"/>
+<area shape="rect" id="node7" title=" " alt="" coords="325,155,382,181"/>
 </map>

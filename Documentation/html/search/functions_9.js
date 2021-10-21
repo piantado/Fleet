@@ -11,7 +11,7 @@ var searchData=
   ['is_1109',['is',['../struct_object.html#a7ced49ee95a75ef440d3c2934c6485e0',1,'Object']]],
   ['is_5fa_1110',['is_a',['../class_rule.html#abdf29814185995dbdc09b4d62658da2e',1,'Rule']]],
   ['is_5fcomplete_1111',['is_complete',['../class_node.html#ac2e36754ba8b1b1d452deeb2bdbd346f',1,'Node']]],
-  ['is_5fevaluable_1112',['is_evaluable',['../class_callable.html#ac05ae8491f3b90986b1ad016da412afa',1,'Callable::is_evaluable()'],['../class_searchable.html#a2f2e0290252b5f43c98bc345844070ae',1,'Searchable::is_evaluable()'],['../class_lexicon.html#a8e31180286754fa40b14c8892f5ba9bc',1,'Lexicon::is_evaluable()'],['../class_l_o_t_hypothesis.html#a4c143536c4f302a04f1e67c4b8348c1f',1,'LOTHypothesis::is_evaluable()']]],
+  ['is_5fevaluable_1112',['is_evaluable',['../class_searchable.html#a2f2e0290252b5f43c98bc345844070ae',1,'Searchable::is_evaluable()'],['../class_lexicon.html#a8e31180286754fa40b14c8892f5ba9bc',1,'Lexicon::is_evaluable()'],['../class_l_o_t_hypothesis.html#a451b928d380be4834386fba14312b56a',1,'LOTHypothesis::is_evaluable()']]],
   ['is_5fin_5fgrammar_5ftypes_1113',['is_in_GRAMMAR_TYPES',['../class_grammar.html#a09dff6ea6759e21aced0f655b496a93a',1,'Grammar']]],
   ['is_5fmpi_5fhead_1114',['is_mpi_head',['../_m_p_i_8h.html#af20530d9083692930bb2dc89858cd83d',1,'MPI.h']]],
   ['is_5fnormal_5fform_1115',['is_normal_form',['../namespace_combinators.html#a29877c1bfde5b9807fd7a7538efe9e0c',1,'Combinators']]],

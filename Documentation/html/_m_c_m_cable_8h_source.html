@@ -87,32 +87,27 @@ $(function() {
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    [[nodiscard]] <span class="keyword">virtual</span> this_t                   <a class="code" href="class_m_c_m_cable.html#aa7017e18b4a1508bc4cff90fb82a8ec1">restart</a>() <span class="keyword">const</span> = 0; <span class="comment">// restart a new chain -- typically by sampling from the prior, but actually it only resamples can_resample </span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_m_c_m_cable.html#a7b35c04d3d1326b930cfc69dfe0bd207">operator==</a>(<span class="keyword">const</span> this_t&amp; h)                 <span class="keyword">const</span> = 0; <span class="comment">// speeds up a check in MCMC</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="comment">// HMM HERE We want a static HYP::sample() as a builder, but maybe also </span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="comment">// a non-static restart?</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    </div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="class_m_c_m_cable.html#a376572ac482cac6d5352f45dbfefcb51">   33</a></span>&#160;    [[nodiscard]] <span class="keyword">static</span> this_t <a class="code" href="class_m_c_m_cable.html#a376572ac482cac6d5352f45dbfefcb51">sample</a>() {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;*** This should not be called -- must be overwritten in derived class&quot;</span>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="class_m_c_m_cable.html#a376572ac482cac6d5352f45dbfefcb51">   28</a></span>&#160;    [[nodiscard]] <span class="keyword">static</span> this_t <a class="code" href="class_m_c_m_cable.html#a376572ac482cac6d5352f45dbfefcb51">sample</a>() {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;*** This should not be called -- must be overwritten in derived class&quot;</span>);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    </div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="class_m_c_m_cable.html#a73f816785855f80f5d102528aa671f4b">   33</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_m_c_m_cable.html#a73f816785855f80f5d102528aa671f4b">operator!=</a>(<span class="keyword">const</span> this_t&amp; h)<span class="keyword">   const </span>{</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordflow">return</span> not this-&gt;<a class="code" href="class_m_c_m_cable.html#a7b35c04d3d1326b930cfc69dfe0bd207">operator==</a>(h);</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="comment">// Just define for convenience</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="class_m_c_m_cable.html#a73f816785855f80f5d102528aa671f4b">   38</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_m_c_m_cable.html#a73f816785855f80f5d102528aa671f4b">operator!=</a>(<span class="keyword">const</span> this_t&amp; h)<span class="keyword">   const </span>{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordflow">return</span> not this-&gt;<a class="code" href="class_m_c_m_cable.html#a7b35c04d3d1326b930cfc69dfe0bd207">operator==</a>(h);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;};</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;};</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclass_m_c_m_cable_html"><div class="ttname"><a href="class_m_c_m_cable.html">MCMCable</a></div><div class="ttdef"><b>Definition:</b> MCMCable.h:13</div></div>
-<div class="ttc" id="aclass_bayesable_html"><div class="ttname"><a href="class_bayesable.html">Bayesable</a></div><div class="ttdef"><b>Definition:</b> Bayesable.h:24</div></div>
+<div class="ttc" id="aclass_bayesable_html"><div class="ttname"><a href="class_bayesable.html">Bayesable</a></div><div class="ttdef"><b>Definition:</b> Bayesable.h:27</div></div>
 <div class="ttc" id="a_bayesable_8h_html"><div class="ttname"><a href="_bayesable_8h.html">Bayesable.h</a></div><div class="ttdoc">The Bayesable class provides an interface for hypotheses that support Bayesian inference (e....</div></div>
 <div class="ttc" id="aclass_m_c_m_cable_html_a98b52f1867ea0d72c1c91b4496d756d2"><div class="ttname"><a href="class_m_c_m_cable.html#a98b52f1867ea0d72c1c91b4496d756d2">MCMCable::propose</a></div><div class="ttdeci">virtual std::pair&lt; this_t, double &gt; propose() const =0</div></div>
 <div class="ttc" id="aclass_m_c_m_cable_html_a3bc2cc7dd7cf2385ade7c82a51f3a566"><div class="ttname"><a href="class_m_c_m_cable.html#a3bc2cc7dd7cf2385ade7c82a51f3a566">MCMCable::MCMCable</a></div><div class="ttdeci">MCMCable()</div><div class="ttdef"><b>Definition:</b> MCMCable.h:15</div></div>
-<div class="ttc" id="aclass_m_c_m_cable_html_a376572ac482cac6d5352f45dbfefcb51"><div class="ttname"><a href="class_m_c_m_cable.html#a376572ac482cac6d5352f45dbfefcb51">MCMCable::sample</a></div><div class="ttdeci">static this_t sample()</div><div class="ttdoc">Static function for making a hypothesis. Be careful using this with references because they may not f...</div><div class="ttdef"><b>Definition:</b> MCMCable.h:33</div></div>
+<div class="ttc" id="aclass_m_c_m_cable_html_a376572ac482cac6d5352f45dbfefcb51"><div class="ttname"><a href="class_m_c_m_cable.html#a376572ac482cac6d5352f45dbfefcb51">MCMCable::sample</a></div><div class="ttdeci">static this_t sample()</div><div class="ttdoc">Static function for making a hypothesis. Be careful using this with references because they may not f...</div><div class="ttdef"><b>Definition:</b> MCMCable.h:28</div></div>
 <div class="ttc" id="aclass_m_c_m_cable_html_aa7017e18b4a1508bc4cff90fb82a8ec1"><div class="ttname"><a href="class_m_c_m_cable.html#aa7017e18b4a1508bc4cff90fb82a8ec1">MCMCable::restart</a></div><div class="ttdeci">virtual this_t restart() const =0</div></div>
-<div class="ttc" id="aclass_m_c_m_cable_html_a73f816785855f80f5d102528aa671f4b"><div class="ttname"><a href="class_m_c_m_cable.html#a73f816785855f80f5d102528aa671f4b">MCMCable::operator!=</a></div><div class="ttdeci">virtual bool operator!=(const this_t &amp;h) const</div><div class="ttdef"><b>Definition:</b> MCMCable.h:38</div></div>
+<div class="ttc" id="aclass_m_c_m_cable_html_a73f816785855f80f5d102528aa671f4b"><div class="ttname"><a href="class_m_c_m_cable.html#a73f816785855f80f5d102528aa671f4b">MCMCable::operator!=</a></div><div class="ttdeci">virtual bool operator!=(const this_t &amp;h) const</div><div class="ttdef"><b>Definition:</b> MCMCable.h:33</div></div>
 <div class="ttc" id="aclass_m_c_m_cable_html_a7b35c04d3d1326b930cfc69dfe0bd207"><div class="ttname"><a href="class_m_c_m_cable.html#a7b35c04d3d1326b930cfc69dfe0bd207">MCMCable::operator==</a></div><div class="ttdeci">virtual bool operator==(const this_t &amp;h) const =0</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

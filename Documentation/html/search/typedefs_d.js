@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['self_5ft_1536',['self_t',['../class_t_normal_variable.html#a6d4e85faf82d911f218d4bdca10780d1',1,'TNormalVariable::self_t()'],['../class_vector_half_normal_hypothesis.html#aa169571925876701368c66f646483bf3',1,'VectorHalfNormalHypothesis::self_t()'],['../class_vector_normal_hypothesis.html#a09cee749dded61833bfa243aa84fd138',1,'VectorNormalHypothesis::self_t()']]],
-  ['super_1537',['Super',['../struct_shape_color_size_object.html#a94fae3a9deb8abb65346cd045d7e858d',1,'ShapeColorSizeObject']]]
+  ['t_1544',['T',['../class_runtime_counter.html#a7d6c5beadb0e6ed6de66c8c81dd8916b',1,'RuntimeCounter']]],
+  ['this_5ft_1545',['this_t',['../class_grammar.html#a3193857749e93b641ca05524f94c388e',1,'Grammar::this_t()'],['../class_virtual_machine_state.html#ada0e1bebef2d73581c6adcd55f8be521',1,'VirtualMachineState::this_t()']]],
+  ['typetuple_1546',['TypeTuple',['../class_grammar.html#abfb390f3654ce837c97c8b3d0d3b5f0f',1,'Grammar']]]
 ];

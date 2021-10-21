@@ -21,7 +21,7 @@ Collaboration diagram for Base\+Node$<$ this\+\_\+t $>$\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=226pt]{class_base_node__coll__graph}
+\includegraphics[width=211pt]{class_base_node__coll__graph}
 \end{center}
 \end{figure}
 \doxysubsection*{Classes}
@@ -84,31 +84,39 @@ this\+\_\+t \& \mbox{\hyperlink{class_base_node_a6aec587267d880a8f87312d90e74af5
 \item 
 const this\+\_\+t \& \mbox{\hyperlink{class_base_node_ad09bee05b19581e8827bdd03a31791a7}{operator\mbox{[}$\,$\mbox{]}}} (const size\+\_\+t i) const
 \item 
-void \mbox{\hyperlink{class_base_node_a575b94703d0c67ba8c04b6a725b48b56}{set\+\_\+child}} (size\+\_\+t i, this\+\_\+t \&n)
+void \mbox{\hyperlink{class_base_node_af6fd9f209baeb7b4799b1a1da5fc6897}{set\+\_\+child}} (const size\+\_\+t i, this\+\_\+t \&n)
 \item 
-void \mbox{\hyperlink{class_base_node_a7c2892c91eb31bc0d72bfb0c57ec8dea}{set\+\_\+child}} (size\+\_\+t i, this\+\_\+t \&\&n)
+void \mbox{\hyperlink{class_base_node_a5eb63d66f3d2aa4194aae33fa72bddc9}{set\+\_\+child}} (const size\+\_\+t i, this\+\_\+t \&\&n)
 \item 
 void \mbox{\hyperlink{class_base_node_ab5a808e3ec22f8061022f9ec286d4a03}{push\+\_\+back}} (this\+\_\+t \&n)
 \item 
 void \mbox{\hyperlink{class_base_node_a6971173d807967deda4501eb70676533}{push\+\_\+back}} (this\+\_\+t \&\&n)
 \item 
 virtual bool \mbox{\hyperlink{class_base_node_afce604388d562d347fcb31aeb2a8ef03}{is\+\_\+root}} () const
-\item 
+\begin{DoxyCompactList}\small\item\em Am I a root node? I am if my parent is nullptr. \end{DoxyCompactList}\item 
 this\+\_\+t $\ast$ \mbox{\hyperlink{class_base_node_ab953456c09fa01bbf8a29c07f4d2b5ad}{root}} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Find the root of this node by walking up the tree. \end{DoxyCompactList}\item 
 this\+\_\+t $\ast$ \mbox{\hyperlink{class_base_node_add31235ad96e659230cbca6c9e357523}{get\+\_\+via}} (std\+::function$<$ bool(this\+\_\+t \&)$>$ \&f)
-\item 
+\begin{DoxyCompactList}\small\item\em Return a pointer to the first node satisfying predicate f, in standard traversal; nullptr otherwise. \end{DoxyCompactList}\item 
 virtual size\+\_\+t \mbox{\hyperlink{class_base_node_a4007d1c72991b8599a6ff5a21c054ba5}{count}} () const
-\item 
+\begin{DoxyCompactList}\small\item\em How many nodes total are below me? \end{DoxyCompactList}\item 
 virtual size\+\_\+t \mbox{\hyperlink{class_base_node_aaaf113bd98ee404e71582ac1cf014ac0}{count}} (const this\+\_\+t \&n) const
-\item 
+\begin{DoxyCompactList}\small\item\em How many nodes below me are equal to n? \end{DoxyCompactList}\item 
 virtual bool \mbox{\hyperlink{class_base_node_af37331cbec1b32c874138d2ae9b89745}{is\+\_\+terminal}} () const
-\item 
+\begin{DoxyCompactList}\small\item\em Am I a terminal? I am if I have no children. \end{DoxyCompactList}\item 
 virtual size\+\_\+t \mbox{\hyperlink{class_base_node_adb6326eefe4ddc311651b4a4a5cb119e}{count\+\_\+terminals}} () const
 \item 
 virtual this\+\_\+t $\ast$ \mbox{\hyperlink{class_base_node_a1e4560f882d4cdb713aea5178a4e2d86}{get\+\_\+nth}} (int n, std\+::function$<$ int(const this\+\_\+t \&)$>$ \&f)
 \item 
 virtual this\+\_\+t $\ast$ \mbox{\hyperlink{class_base_node_a9381814fdc86029905dc283da5d3d931}{get\+\_\+nth}} (int n)
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{class_base_node_a32872bacb6a7c7e8f592a0abdb6dbb6d}{sum}} (std\+::function$<$ T(const this\+\_\+t \&)$>$ \&f) const
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{class_base_node_a1d71d0fee70974903720768c86a98d03}{sum}} (T($\ast$f)(const this\+\_\+t \&)) const
+\item 
+bool \mbox{\hyperlink{class_base_node_ab534dfbdebd79785db3971336ef34418}{all}} (std\+::function$<$ bool(const this\+\_\+t \&)$>$ \&f) const
+\item 
+void \mbox{\hyperlink{class_base_node_a56bc19ee155443b7600cf8a2e7db38cb}{map}} (const std\+::function$<$ void(this\+\_\+t \&)$>$ \&f)
 \item 
 void \mbox{\hyperlink{class_base_node_acbfcc951fe5858d0c85a5b3dc8843f05}{print}} (size\+\_\+t t=0) const
 \end{DoxyCompactItemize}
@@ -188,6 +196,21 @@ virtual \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::$\s
 
 
 \doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_base_node_ab534dfbdebd79785db3971336ef34418}\label{class_base_node_ab534dfbdebd79785db3971336ef34418}} 
+\index{BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}!all@{all}}
+\index{all@{all}!BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}}
+\doxysubsubsection{\texorpdfstring{all()}{all()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t $>$ \\
+bool \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::all (\begin{DoxyParamCaption}\item[{std\+::function$<$ bool(const this\+\_\+t \&)$>$ \&}]{f }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Check if f is true of me and every node below 
+\begin{DoxyParams}{Parameters}
+{\em f} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
 \mbox{\Hypertarget{class_base_node_ac735dd6fe296af4b8d2951cc6d9052c8}\label{class_base_node_ac735dd6fe296af4b8d2951cc6d9052c8}} 
 \index{BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}!begin@{begin}}
 \index{begin@{begin}!BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}}
@@ -239,7 +262,11 @@ Constant reference to the i\textquotesingle{}th child
 {\footnotesize\ttfamily template$<$typename this\+\_\+t $>$ \\
 virtual size\+\_\+t \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
+
+
 How many nodes total are below me? 
+
+
 \begin{DoxyParams}{Parameters}
 {\em n} & \\
 \hline
@@ -254,7 +281,11 @@ How many nodes total are below me?
 {\footnotesize\ttfamily template$<$typename this\+\_\+t $>$ \\
 virtual size\+\_\+t \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::count (\begin{DoxyParamCaption}\item[{const this\+\_\+t \&}]{n }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
+
+
 How many nodes below me are equal to n? 
+
+
 \begin{DoxyParams}{Parameters}
 {\em n} & \\
 \hline
@@ -346,6 +377,18 @@ Return a pointer to the n\textquotesingle{}th child satisfying f (f\textquotesin
 {\footnotesize\ttfamily template$<$typename this\+\_\+t $>$ \\
 this\+\_\+t$\ast$ \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::get\+\_\+via (\begin{DoxyParamCaption}\item[{std\+::function$<$ bool(this\+\_\+t \&)$>$ \&}]{f }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
+
+
+Return a pointer to the first node satisfying predicate f, in standard traversal; nullptr otherwise. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
 \mbox{\Hypertarget{class_base_node_afce604388d562d347fcb31aeb2a8ef03}\label{class_base_node_afce604388d562d347fcb31aeb2a8ef03}} 
 \index{BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}!is\_root@{is\_root}}
 \index{is\_root@{is\_root}!BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}}
@@ -353,7 +396,11 @@ this\+\_\+t$\ast$ \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t 
 {\footnotesize\ttfamily template$<$typename this\+\_\+t $>$ \\
 virtual bool \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::is\+\_\+root (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-Am I a root node? I am if my parent is nullptr. \begin{DoxyReturn}{Returns}
+
+
+Am I a root node? I am if my parent is nullptr. 
+
+\begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_base_node_af37331cbec1b32c874138d2ae9b89745}\label{class_base_node_af37331cbec1b32c874138d2ae9b89745}} 
@@ -363,7 +410,11 @@ Am I a root node? I am if my parent is nullptr. \begin{DoxyReturn}{Returns}
 {\footnotesize\ttfamily template$<$typename this\+\_\+t $>$ \\
 virtual bool \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::is\+\_\+terminal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-Am I a terminal? I am if I have no children. \begin{DoxyReturn}{Returns}
+
+
+Am I a terminal? I am if I have no children. 
+
+\begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_base_node_ad319f28caf14e730bc62560f1bd682b6}\label{class_base_node_ad319f28caf14e730bc62560f1bd682b6}} 
@@ -387,6 +438,19 @@ void \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::make\+
 
 Make a node root -- just nulls the parent. 
 
+\mbox{\Hypertarget{class_base_node_a56bc19ee155443b7600cf8a2e7db38cb}\label{class_base_node_a56bc19ee155443b7600cf8a2e7db38cb}} 
+\index{BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}!map@{map}}
+\index{map@{map}!BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t $>$ \\
+void \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::map (\begin{DoxyParamCaption}\item[{const std\+::function$<$ void(this\+\_\+t \&)$>$ \&}]{f }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Apply f to me and everything below. ~\newline
+ 
+\begin{DoxyParams}{Parameters}
+{\em f} & \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{class_base_node_a263b93d5aaf1ce5eb7f103bf3b988db3}\label{class_base_node_a263b93d5aaf1ce5eb7f103bf3b988db3}} 
 \index{BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}!my\_string@{my\_string}}
 \index{my\_string@{my\_string}!BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}}
@@ -493,24 +557,31 @@ void \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::reserv
 {\footnotesize\ttfamily template$<$typename this\+\_\+t $>$ \\
 this\+\_\+t$\ast$ \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::root (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_base_node_a7c2892c91eb31bc0d72bfb0c57ec8dea}\label{class_base_node_a7c2892c91eb31bc0d72bfb0c57ec8dea}} 
+
+
+Find the root of this node by walking up the tree. 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_base_node_a5eb63d66f3d2aa4194aae33fa72bddc9}\label{class_base_node_a5eb63d66f3d2aa4194aae33fa72bddc9}} 
 \index{BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}!set\_child@{set\_child}}
 \index{set\_child@{set\_child}!BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}}
 \doxysubsubsection{\texorpdfstring{set\_child()}{set\_child()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily template$<$typename this\+\_\+t $>$ \\
-void \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::set\+\_\+child (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{this\+\_\+t \&\&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+void \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::set\+\_\+child (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{i,  }\item[{this\+\_\+t \&\&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Child setter for move 
 \begin{DoxyParams}{Parameters}
 {\em i} & \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{class_base_node_a575b94703d0c67ba8c04b6a725b48b56}\label{class_base_node_a575b94703d0c67ba8c04b6a725b48b56}} 
+\mbox{\Hypertarget{class_base_node_af6fd9f209baeb7b4799b1a1da5fc6897}\label{class_base_node_af6fd9f209baeb7b4799b1a1da5fc6897}} 
 \index{BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}!set\_child@{set\_child}}
 \index{set\_child@{set\_child}!BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}}
 \doxysubsubsection{\texorpdfstring{set\_child()}{set\_child()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily template$<$typename this\+\_\+t $>$ \\
-void \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::set\+\_\+child (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{this\+\_\+t \&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+void \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::set\+\_\+child (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{i,  }\item[{this\+\_\+t \&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Set my child to n. N\+O\+TE\+: This one needs to be used, rather than accessing children directly, because we have to set parent pointers and indices. 
 \begin{DoxyParams}{Parameters}
@@ -529,6 +600,30 @@ virtual std\+::string \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_
 
 
 Reimplemented in \mbox{\hyperlink{class_node_a5d2a0e17dd2a00a79e6d1f763c9114d0}{Node}}.
+
+\mbox{\Hypertarget{class_base_node_a32872bacb6a7c7e8f592a0abdb6dbb6d}\label{class_base_node_a32872bacb6a7c7e8f592a0abdb6dbb6d}} 
+\index{BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}!sum@{sum}}
+\index{sum@{sum}!BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}}
+\doxysubsubsection{\texorpdfstring{sum()}{sum()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t $>$ \\
+template$<$typename T $>$ \\
+T \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::sum (\begin{DoxyParamCaption}\item[{std\+::function$<$ T(const this\+\_\+t \&)$>$ \&}]{f }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Apply f to me and everything below me, adding up the result. 
+\begin{DoxyParams}{Parameters}
+{\em f} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_base_node_a1d71d0fee70974903720768c86a98d03}\label{class_base_node_a1d71d0fee70974903720768c86a98d03}} 
+\index{BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}!sum@{sum}}
+\index{sum@{sum}!BaseNode$<$ this\_t $>$@{BaseNode$<$ this\_t $>$}}
+\doxysubsubsection{\texorpdfstring{sum()}{sum()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename this\+\_\+t $>$ \\
+template$<$typename T $>$ \\
+T \mbox{\hyperlink{class_base_node}{Base\+Node}}$<$ this\+\_\+t $>$\+::sum (\begin{DoxyParamCaption}\item[{T($\ast$)(const this\+\_\+t \&)}]{f }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 

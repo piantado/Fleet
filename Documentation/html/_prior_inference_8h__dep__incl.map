@@ -1,7 +1,7 @@
 <map id="src/Inference/PriorInference.h" name="src/Inference/PriorInference.h">
-<area shape="rect" id="node1" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="151,5,364,32"/>
-<area shape="rect" id="node2" href="$_m_c_t_s_base_8h.html" title=" " alt="" coords="184,80,331,121"/>
-<area shape="rect" id="node3" href="$_full_m_c_t_s_node_8h.html" title=" " alt="" coords="5,169,152,211"/>
-<area shape="rect" id="node4" href="$_minimal_m_c_t_s_node_8h.html" title=" " alt="" coords="176,169,339,211"/>
-<area shape="rect" id="node5" href="$_partial_m_c_t_s_node_8h.html" title=" " alt="" coords="363,169,514,211"/>
+<area shape="rect" id="node1" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="147,5,342,32"/>
+<area shape="rect" id="node2" href="$_m_c_t_s_base_8h.html" title=" " alt="" coords="175,80,315,121"/>
+<area shape="rect" id="node3" href="$_full_m_c_t_s_node_8h.html" title=" " alt="" coords="5,169,145,211"/>
+<area shape="rect" id="node4" href="$_minimal_m_c_t_s_node_8h.html" title=" " alt="" coords="169,169,320,211"/>
+<area shape="rect" id="node5" href="$_partial_m_c_t_s_node_8h.html" title=" " alt="" coords="344,169,487,211"/>
 </map>

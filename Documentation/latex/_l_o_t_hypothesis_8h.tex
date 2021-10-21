@@ -2,7 +2,7 @@
 \label{_l_o_t_hypothesis_8h}\index{src/Hypotheses/LOTHypothesis.h@{src/Hypotheses/LOTHypothesis.h}}
 
 
-A \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}} is the basic unit for doing L\+OT models. It is templated with itself (the curiously recurring tempalte pattern), an input type, and output type, a grammar type, and types for the individual data elements and vector of data. Usually you will subclass this (or a \mbox{\hyperlink{class_lexicon}{Lexicon}}) as this\+\_\+totheses in a L\+OT model.  
+A \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}} is the basic unit for doing L\+OT models. It store a \mbox{\hyperlink{class_node}{Node}} as its value, and handles all of the proposing and computing priors, likelihoods, etc. It compiles this \mbox{\hyperlink{class_node}{Node}} into a \char`\"{}program\char`\"{} which is used to make function calls, which means that the value should only be changed via \mbox{\hyperlink{class_l_o_t_hypothesis_af4c0128f8fd37bb8a02418e2f58c2bc0}{L\+O\+T\+Hypothesis\+::set\+\_\+value}}.  
 
 
 {\ttfamily \#include $<$string.\+h$>$}\newline
@@ -14,7 +14,6 @@ A \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}} is the basic un
 {\ttfamily \#include \char`\"{}Hypotheses/\+Interfaces/\+Bayesable.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Hypotheses/\+Interfaces/\+M\+C\+M\+Cable.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Hypotheses/\+Interfaces/\+Searchable.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Hypotheses/\+Interfaces/\+Callable.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Hypotheses/\+Interfaces/\+Serializable.\+h\char`\"{}}\newline
 Include dependency graph for L\+O\+T\+Hypothesis.\+h\+:
 \nopagebreak
@@ -27,11 +26,13 @@ Include dependency graph for L\+O\+T\+Hypothesis.\+h\+:
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, grammar, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}}
+class \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, grammar, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-A \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}} is the basic unit for doing L\+OT models. It is templated with itself (the curiously recurring tempalte pattern), an input type, and output type, a grammar type, and types for the individual data elements and vector of data. Usually you will subclass this (or a \mbox{\hyperlink{class_lexicon}{Lexicon}}) as this\+\_\+totheses in a L\+OT model. 
+A \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}} is the basic unit for doing L\+OT models. It store a \mbox{\hyperlink{class_node}{Node}} as its value, and handles all of the proposing and computing priors, likelihoods, etc. It compiles this \mbox{\hyperlink{class_node}{Node}} into a \char`\"{}program\char`\"{} which is used to make function calls, which means that the value should only be changed via \mbox{\hyperlink{class_l_o_t_hypothesis_af4c0128f8fd37bb8a02418e2f58c2bc0}{L\+O\+T\+Hypothesis\+::set\+\_\+value}}. 
+
+L\+O\+T\+Hypothsis is templated with itself (the curiously recurring tempalte pattern), an input type, and output type, a grammar type, and types for the individual data elements and vector of data. Usually you will subclass this (or a \mbox{\hyperlink{class_lexicon}{Lexicon}}) as this\+\_\+totheses in a L\+OT model.
 
 The kind of virtual machinse that are called here are defined inside \mbox{\hyperlink{class_grammar}{Grammar}} (even though \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}} would be a more natural palce) because we need access to the \mbox{\hyperlink{class_grammar}{Grammar}}\textquotesingle{}s parameter pack over types. 

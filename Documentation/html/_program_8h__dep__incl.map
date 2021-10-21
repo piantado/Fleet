@@ -1,9 +1,8 @@
 <map id="src/VirtualMachine/Program/Program.h" name="src/VirtualMachine/Program/Program.h">
-<area shape="rect" id="node1" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="273,5,425,47"/>
-<area shape="rect" id="node2" href="$_node_8h.html" title=" " alt="" coords="5,102,163,129"/>
-<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="293,273,529,300"/>
-<area shape="rect" id="node6" href="$_callable_8h.html" title="A callable function is one that can be called. It must be able to load a program. Putting this into a..." alt="" coords="315,184,506,225"/>
-<area shape="rect" id="node7" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="203,95,373,136"/>
-<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="38,273,178,300"/>
-<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="106,191,291,218"/>
+<area shape="rect" id="node1" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="187,5,325,47"/>
+<area shape="rect" id="node2" href="$_node_8h.html" title=" " alt="" coords="184,102,328,129"/>
+<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="255,184,475,211"/>
+<area shape="rect" id="node6" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="5,95,160,136"/>
+<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="91,259,221,285"/>
+<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="13,184,179,211"/>
 </map>

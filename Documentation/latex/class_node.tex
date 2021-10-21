@@ -11,7 +11,7 @@ Inheritance diagram for Node\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=194pt]{class_node__inherit__graph}
+\includegraphics[width=184pt]{class_node__inherit__graph}
 \end{center}
 \end{figure}
 
@@ -21,7 +21,7 @@ Collaboration diagram for Node\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=306pt]{class_node__coll__graph}
+\includegraphics[width=286pt]{class_node__coll__graph}
 \end{center}
 \end{figure}
 \doxysubsection*{Public Member Functions}
@@ -41,9 +41,9 @@ void \mbox{\hyperlink{class_node_affc6f5e92bb8f3e7ebba6825b87e2b26}{assign}} (\m
 \item 
 \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} \mbox{\hyperlink{class_node_aa727c354e38f60fb1560d72ae1aaa9af}{type}} (const size\+\_\+t i) const
 \item 
-void \mbox{\hyperlink{class_node_afff50c3712b8e30fffd479cad4eee023}{set\+\_\+child}} (size\+\_\+t i, \mbox{\hyperlink{class_node}{Node}} \&n)
+void \mbox{\hyperlink{class_node_a639ca55ac71fa4e7865f1ae7e3d23134}{set\+\_\+child}} (const size\+\_\+t i, \mbox{\hyperlink{class_node}{Node}} \&n)
 \item 
-void \mbox{\hyperlink{class_node_a486882370d2c9592c6eabb52a3289253}{set\+\_\+child}} (size\+\_\+t i, \mbox{\hyperlink{class_node}{Node}} \&\&n)
+void \mbox{\hyperlink{class_node_aa5b0f086d5d1704175702beefc733d0c}{set\+\_\+child}} (const size\+\_\+t i, \mbox{\hyperlink{class_node}{Node}} \&\&n)
 \item 
 void \mbox{\hyperlink{class_node_addbfe90949f473c91203389f48095cf0}{operator=}} (const \mbox{\hyperlink{class_node}{Node}} \&n)
 \item 
@@ -56,14 +56,6 @@ bool \mbox{\hyperlink{class_node_a8b05feb361beb04d465619751a2297b1}{operator$<$}
 bool \mbox{\hyperlink{class_node_a895ef3b66f975fbaec1e5866a57afbed}{is\+\_\+null}} () const
 \item 
 virtual size\+\_\+t \mbox{\hyperlink{class_node_a9dde16ce87ed78ca8c49f8b4c3be42f3}{count\+\_\+nonnull}} () const
-\item 
-{\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{class_node_ac91282056a0df2835f1579bdd21c93e1}{sum}} (std\+::function$<$ T(const \mbox{\hyperlink{class_node}{Node}} \&)$>$ \&f) const
-\item 
-{\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{class_node_a089e99addd93f91b2ef5a9d0c3e6bdeb}{sum}} (T($\ast$f)(const \mbox{\hyperlink{class_node}{Node}} \&)) const
-\item 
-bool \mbox{\hyperlink{class_node_ac6f1a0f5274eae688c1959aecbfde2b0}{all}} (std\+::function$<$ bool(const \mbox{\hyperlink{class_node}{Node}} \&)$>$ \&f) const
-\item 
-void \mbox{\hyperlink{class_node_adefac3cb7b411321c5af15dad1484834}{map}} (const std\+::function$<$ void(\mbox{\hyperlink{class_node}{Node}} \&)$>$ \&f)
 \item 
 virtual bool \mbox{\hyperlink{class_node_ac2e36754ba8b1b1d452deeb2bdbd346f}{is\+\_\+complete}} () const
 \item 
@@ -131,20 +123,6 @@ class \mbox{\hyperlink{class_node_ae875dded1044564c83cdc7147d86dfbf}{Base\+Node$
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_node_ac6f1a0f5274eae688c1959aecbfde2b0}\label{class_node_ac6f1a0f5274eae688c1959aecbfde2b0}} 
-\index{Node@{Node}!all@{all}}
-\index{all@{all}!Node@{Node}}
-\doxysubsubsection{\texorpdfstring{all()}{all()}}
-{\footnotesize\ttfamily bool Node\+::all (\begin{DoxyParamCaption}\item[{std\+::function$<$ bool(const \mbox{\hyperlink{class_node}{Node}} \&)$>$ \&}]{f }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
-
-Check if f is true of me and every node below 
-\begin{DoxyParams}{Parameters}
-{\em f} & \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-
-\end{DoxyReturn}
 \mbox{\Hypertarget{class_node_affc6f5e92bb8f3e7ebba6825b87e2b26}\label{class_node_affc6f5e92bb8f3e7ebba6825b87e2b26}} 
 \index{Node@{Node}!assign@{assign}}
 \index{assign@{assign}!Node@{Node}}
@@ -244,18 +222,6 @@ N\+O\+TE\+: Inline here lets gcc inline a few recursions of this function, which
 \begin{DoxyReturn}{Returns}
 This returns the {\itshape size} of the program that was pushed onto ops. This is useful for saving us lots of calls to program\+\_\+size, which ends up being an important optimization.
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_node_adefac3cb7b411321c5af15dad1484834}\label{class_node_adefac3cb7b411321c5af15dad1484834}} 
-\index{Node@{Node}!map@{map}}
-\index{map@{map}!Node@{Node}}
-\doxysubsubsection{\texorpdfstring{map()}{map()}}
-{\footnotesize\ttfamily void Node\+::map (\begin{DoxyParamCaption}\item[{const std\+::function$<$ void(\mbox{\hyperlink{class_node}{Node}} \&)$>$ \&}]{f }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
-Apply f to me and everything below. ~\newline
- 
-\begin{DoxyParams}{Parameters}
-{\em f} & \\
-\hline
-\end{DoxyParams}
 \mbox{\Hypertarget{class_node_a4abe3acdc804489a01ef13a25b130fd8}\label{class_node_a4abe3acdc804489a01ef13a25b130fd8}} 
 \index{Node@{Node}!nt@{nt}}
 \index{nt@{nt}!Node@{Node}}
@@ -310,11 +276,11 @@ Reimplemented from \mbox{\hyperlink{class_base_node_a33bb5c59122f6b2778d39a0eaa0
 Create a string that can be parsed according to \mbox{\hyperlink{class_grammar_a63a4c7f6584fdd70aaa2882a19c2f04f}{Grammar.\+from\+\_\+parseable}} \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_node_a486882370d2c9592c6eabb52a3289253}\label{class_node_a486882370d2c9592c6eabb52a3289253}} 
+\mbox{\Hypertarget{class_node_aa5b0f086d5d1704175702beefc733d0c}\label{class_node_aa5b0f086d5d1704175702beefc733d0c}} 
 \index{Node@{Node}!set\_child@{set\_child}}
 \index{set\_child@{set\_child}!Node@{Node}}
 \doxysubsubsection{\texorpdfstring{set\_child()}{set\_child()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily void Node\+::set\+\_\+child (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{\mbox{\hyperlink{class_node}{Node}} \&\&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily void Node\+::set\+\_\+child (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{i,  }\item[{\mbox{\hyperlink{class_node}{Node}} \&\&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Set my child to n. N\+O\+TE\+: This one needs to be used, rather than accessing children directly, because we have to set parent pointers and indices. 
 \begin{DoxyParams}{Parameters}
@@ -323,11 +289,11 @@ Set my child to n. N\+O\+TE\+: This one needs to be used, rather than accessing 
 {\em n} & \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{class_node_afff50c3712b8e30fffd479cad4eee023}\label{class_node_afff50c3712b8e30fffd479cad4eee023}} 
+\mbox{\Hypertarget{class_node_a639ca55ac71fa4e7865f1ae7e3d23134}\label{class_node_a639ca55ac71fa4e7865f1ae7e3d23134}} 
 \index{Node@{Node}!set\_child@{set\_child}}
 \index{set\_child@{set\_child}!Node@{Node}}
 \doxysubsubsection{\texorpdfstring{set\_child()}{set\_child()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily void Node\+::set\+\_\+child (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{\mbox{\hyperlink{class_node}{Node}} \&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily void Node\+::set\+\_\+child (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{i,  }\item[{\mbox{\hyperlink{class_node}{Node}} \&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Set my child to n. N\+O\+TE\+: This one needs to be used, rather than accessing children directly, because we have to set parent pointers and indices. 
 \begin{DoxyParams}{Parameters}
@@ -354,28 +320,6 @@ Convert a tree to a string, using each node\textquotesingle{}s format. ~\newline
 
 
 Reimplemented from \mbox{\hyperlink{class_base_node_a079dae7bec84f4de8eef6d6cb9368a22}{Base\+Node$<$ Node $>$}}.
-
-\mbox{\Hypertarget{class_node_ac91282056a0df2835f1579bdd21c93e1}\label{class_node_ac91282056a0df2835f1579bdd21c93e1}} 
-\index{Node@{Node}!sum@{sum}}
-\index{sum@{sum}!Node@{Node}}
-\doxysubsubsection{\texorpdfstring{sum()}{sum()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$typename T $>$ \\
-T Node\+::sum (\begin{DoxyParamCaption}\item[{std\+::function$<$ T(const \mbox{\hyperlink{class_node}{Node}} \&)$>$ \&}]{f }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
-
-Apply f to me and everything below me, adding up the result. 
-\begin{DoxyParams}{Parameters}
-{\em f} & \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-
-\end{DoxyReturn}
-\mbox{\Hypertarget{class_node_a089e99addd93f91b2ef5a9d0c3e6bdeb}\label{class_node_a089e99addd93f91b2ef5a9d0c3e6bdeb}} 
-\index{Node@{Node}!sum@{sum}}
-\index{sum@{sum}!Node@{Node}}
-\doxysubsubsection{\texorpdfstring{sum()}{sum()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$typename T $>$ \\
-T Node\+::sum (\begin{DoxyParamCaption}\item[{T($\ast$)(const \mbox{\hyperlink{class_node}{Node}} \&)}]{f }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_node_aa727c354e38f60fb1560d72ae1aaa9af}\label{class_node_aa727c354e38f60fb1560d72ae1aaa9af}} 
 \index{Node@{Node}!type@{type}}

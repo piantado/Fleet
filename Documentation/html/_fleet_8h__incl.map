@@ -1,40 +1,43 @@
 <map id="src/Fleet.h" name="src/Fleet.h">
-<area shape="rect" id="node1" title=" " alt="" coords="669,5,760,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="303,80,419,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="444,80,519,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="543,80,614,107"/>
-<area shape="rect" id="node5" title=" " alt="" coords="678,155,751,181"/>
-<area shape="rect" id="node6" href="$_random_8h.html" title="This is a thread_local rng that is seeded on construction so that each thread can get a different see..." alt="" coords="951,304,1039,331"/>
-<area shape="rect" id="node18" href="$_timing_8h.html" title=" " alt="" coords="355,229,434,256"/>
-<area shape="rect" id="node20" href="$_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="827,80,909,107"/>
-<area shape="rect" id="node21" href="$_fleet_args_8h.html" title=" " alt="" coords="1109,155,1205,181"/>
-<area shape="rect" id="node38" href="$_fleet_statistics_8h.html" title=" " alt="" coords="958,155,1085,181"/>
-<area shape="rect" id="node7" title=" " alt="" coords="1037,453,1109,480"/>
-<area shape="rect" id="node8" title=" " alt="" coords="951,379,1038,405"/>
-<area shape="rect" id="node9" title=" " alt="" coords="1113,379,1177,405"/>
-<area shape="rect" id="node10" href="$_errors_8h.html" title=" " alt="" coords="735,379,807,405"/>
-<area shape="rect" id="node14" href="$_numerics_8h.html" title=" " alt="" coords="831,379,927,405"/>
-<area shape="rect" id="node11" title=" " alt="" coords="618,453,705,480"/>
-<area shape="rect" id="node12" title=" " alt="" coords="729,453,815,480"/>
-<area shape="rect" id="node13" title=" " alt="" coords="1327,453,1385,480"/>
-<area shape="rect" id="node15" title=" " alt="" coords="1155,453,1235,480"/>
-<area shape="rect" id="node16" title=" " alt="" coords="935,453,1009,480"/>
-<area shape="rect" id="node17" title=" " alt="" coords="842,453,910,480"/>
-<area shape="rect" id="node19" title=" " alt="" coords="5,379,72,405"/>
-<area shape="rect" id="node22" href="$_i_o_8h.html" title=" " alt="" coords="885,155,933,181"/>
-<area shape="rect" id="node23" title=" " alt="" coords="877,229,941,256"/>
-<area shape="rect" id="node24" title=" " alt="" coords="966,229,1039,256"/>
-<area shape="rect" id="node25" title=" " alt="" coords="1064,229,1243,256"/>
-<area shape="rect" id="node26" href="$_strings_8h.html" title=" " alt="" coords="643,229,722,256"/>
-<area shape="rect" id="node27" title=" " alt="" coords="713,304,788,331"/>
-<area shape="rect" id="node28" title=" " alt="" coords="813,304,875,331"/>
-<area shape="rect" id="node29" title=" " alt="" coords="276,304,332,331"/>
-<area shape="rect" id="node30" title=" " alt="" coords="476,304,527,331"/>
-<area shape="rect" id="node31" title=" " alt="" coords="551,304,593,331"/>
-<area shape="rect" id="node32" title=" " alt="" coords="1252,304,1319,331"/>
-<area shape="rect" id="node33" title=" " alt="" coords="618,304,689,331"/>
-<area shape="rect" id="node34" href="$_miscellaneous_8h.html" title=" " alt="" coords="74,304,201,331"/>
-<area shape="rect" id="node36" href="$_vector3_d_8h.html" title=" " alt="" coords="357,304,451,331"/>
-<area shape="rect" id="node35" title=" " alt="" coords="99,379,176,405"/>
-<area shape="rect" id="node37" title=" " alt="" coords="373,379,435,405"/>
+<area shape="rect" id="node1" title=" " alt="" coords="340,5,424,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,80,113,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="137,80,205,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="230,80,294,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="382,155,449,181"/>
+<area shape="rect" id="node6" href="$_random_8h.html" title="This is a thread_local rng that is seeded on construction so that each thread can get a different see..." alt="" coords="518,304,601,331"/>
+<area shape="rect" id="node22" href="$_timing_8h.html" title=" " alt="" coords="473,155,545,181"/>
+<area shape="rect" id="node24" href="$_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="419,80,494,107"/>
+<area shape="rect" id="node25" href="$_fleet_args_8h.html" title=" " alt="" coords="268,155,357,181"/>
+<area shape="rect" id="node41" href="$_fleet_statistics_8h.html" title=" " alt="" coords="1291,229,1409,256"/>
+<area shape="rect" id="node7" title=" " alt="" coords="885,379,951,405"/>
+<area shape="rect" id="node8" title=" " alt="" coords="900,453,965,480"/>
+<area shape="rect" id="node9" title=" " alt="" coords="477,379,556,405"/>
+<area shape="rect" id="node10" title=" " alt="" coords="182,379,241,405"/>
+<area shape="rect" id="node11" href="$_errors_8h.html" title=" " alt="" coords="89,379,157,405"/>
+<area shape="rect" id="node15" href="$_numerics_8h.html" title=" " alt="" coords="1061,379,1151,405"/>
+<area shape="rect" id="node19" href="$_singleton_8h.html" title=" " alt="" coords="367,379,453,405"/>
+<area shape="rect" id="node20" title=" " alt="" coords="581,379,679,405"/>
+<area shape="rect" id="node21" title=" " alt="" coords="703,379,810,405"/>
+<area shape="rect" id="node12" title=" " alt="" coords="13,453,92,480"/>
+<area shape="rect" id="node13" title=" " alt="" coords="116,453,195,480"/>
+<area shape="rect" id="node14" title=" " alt="" coords="251,453,305,480"/>
+<area shape="rect" id="node16" title=" " alt="" coords="1365,453,1437,480"/>
+<area shape="rect" id="node17" title=" " alt="" coords="590,453,659,480"/>
+<area shape="rect" id="node18" title=" " alt="" coords="1075,453,1137,480"/>
+<area shape="rect" id="node23" title=" " alt="" coords="975,379,1037,405"/>
+<area shape="rect" id="node26" href="$_i_o_8h.html" title=" " alt="" coords="676,155,723,181"/>
+<area shape="rect" id="node27" title=" " alt="" coords="726,229,785,256"/>
+<area shape="rect" id="node28" title=" " alt="" coords="809,229,974,256"/>
+<area shape="rect" id="node29" href="$_strings_8h.html" title=" " alt="" coords="1034,229,1109,256"/>
+<area shape="rect" id="node30" title=" " alt="" coords="1143,304,1213,331"/>
+<area shape="rect" id="node31" title=" " alt="" coords="1237,304,1295,331"/>
+<area shape="rect" id="node32" title=" " alt="" coords="1319,304,1370,331"/>
+<area shape="rect" id="node33" title=" " alt="" coords="867,304,913,331"/>
+<area shape="rect" id="node34" title=" " alt="" coords="938,304,978,331"/>
+<area shape="rect" id="node35" title=" " alt="" coords="1506,304,1567,331"/>
+<area shape="rect" id="node36" title=" " alt="" coords="1003,304,1068,331"/>
+<area shape="rect" id="node37" href="$_miscellaneous_8h.html" title=" " alt="" coords="727,304,843,331"/>
+<area shape="rect" id="node39" href="$_vector3_d_8h.html" title=" " alt="" coords="1394,304,1482,331"/>
+<area shape="rect" id="node38" title=" " alt="" coords="1175,379,1245,405"/>
+<area shape="rect" id="node40" title=" " alt="" coords="1409,379,1467,405"/>
 </map>

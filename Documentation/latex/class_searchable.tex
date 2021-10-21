@@ -10,13 +10,13 @@
 virtual int \mbox{\hyperlink{class_searchable_a68819cd23119615baa51d65451765c74}{neighbors}} () const =0
 \begin{DoxyCompactList}\small\item\em Count the number of neighbors that are possible. (This should be size\+\_\+t but int is more convenient.) \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{class_searchable_a9088dba3920f4c66ce671aa16a7d29a4}{expand\+\_\+to\+\_\+neighbor}} (int k)=0
-\begin{DoxyCompactList}\small\item\em Modify this hypothesis to become the k\textquotesingle{}th neighbor. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Modify this hypothesis to become the k\textquotesingle{}th neighbor. N\+O\+TE This does not compile since it might not be complete. \end{DoxyCompactList}\item 
 virtual this\+\_\+t \mbox{\hyperlink{class_searchable_ac7d4105db85a6601dcb406074bdb3f8f}{make\+\_\+neighbor}} (int k) const
-\begin{DoxyCompactList}\small\item\em Return a new hypothesis which is the k\textquotesingle{}th neighbor (just calls expand\+\_\+to\+\_\+neighbor) \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Return a new hypothesis which is the k\textquotesingle{}th neighbor (just calls expand\+\_\+to\+\_\+neighbor) N\+O\+TE This does not compile since it might not be complete. \end{DoxyCompactList}\item 
 virtual double \mbox{\hyperlink{class_searchable_aa6f72073717a4df0d22c73705555b13a}{neighbor\+\_\+prior}} (int k)=0
 \begin{DoxyCompactList}\small\item\em What is the prior of the k\textquotesingle{}th neighbor? This does not need to return the full prior, only relative (among ks) \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{class_searchable_a29ab2eb0471e2e9d96d39f0349f21571}{complete}} ()=0
-\begin{DoxyCompactList}\small\item\em Fill in all the holes in this hypothesis, at random, modifying self. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Fill in all the holes in this hypothesis, at random, modifying self. N\+O\+TE for L\+O\+T\+Hypotheses this will also compile, which is what we need to do for a \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}}. \end{DoxyCompactList}\item 
 virtual bool \mbox{\hyperlink{class_searchable_a2f2e0290252b5f43c98bc345844070ae}{is\+\_\+evaluable}} () const =0
 \begin{DoxyCompactList}\small\item\em Check if we can evaluate this node (meaning compute a prior and posterior). N\+O\+TE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
@@ -43,11 +43,11 @@ virtual void \mbox{\hyperlink{class_searchable}{Searchable}}$<$ this\+\_\+t, Arg
 
 
 
-Fill in all the holes in this hypothesis, at random, modifying self. 
+Fill in all the holes in this hypothesis, at random, modifying self. N\+O\+TE for L\+O\+T\+Hypotheses this will also compile, which is what we need to do for a \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}}. 
 
 
 
-Implemented in \mbox{\hyperlink{class_lexicon_a7a5df8a261c35cc00f19a70b8121fa7b}{Lexicon$<$ this\+\_\+t, I\+N\+N\+E\+R, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}}, and \mbox{\hyperlink{class_l_o_t_hypothesis_ae5d03d2f515f93bfe1be05ab40aecad2}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, grammar, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}}.
+Implemented in \mbox{\hyperlink{class_l_o_t_hypothesis_afda1517e3cc79e871ecfbd7989f05530}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, grammar, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}}, and \mbox{\hyperlink{class_lexicon_a7a5df8a261c35cc00f19a70b8121fa7b}{Lexicon$<$ this\+\_\+t, I\+N\+N\+E\+R, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}}.
 
 \mbox{\Hypertarget{class_searchable_a9088dba3920f4c66ce671aa16a7d29a4}\label{class_searchable_a9088dba3920f4c66ce671aa16a7d29a4}} 
 \index{Searchable$<$ this\_t, Args $>$@{Searchable$<$ this\_t, Args $>$}!expand\_to\_neighbor@{expand\_to\_neighbor}}
@@ -58,7 +58,7 @@ virtual void \mbox{\hyperlink{class_searchable}{Searchable}}$<$ this\+\_\+t, Arg
 
 
 
-Modify this hypothesis to become the k\textquotesingle{}th neighbor. 
+Modify this hypothesis to become the k\textquotesingle{}th neighbor. N\+O\+TE This does not compile since it might not be complete. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -67,7 +67,7 @@ Modify this hypothesis to become the k\textquotesingle{}th neighbor.
 \end{DoxyParams}
 
 
-Implemented in \mbox{\hyperlink{class_lexicon_a51fa2364f871e3f321c740c622e38a55}{Lexicon$<$ this\+\_\+t, I\+N\+N\+E\+R, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}}, and \mbox{\hyperlink{class_l_o_t_hypothesis_a71adad273cdc23367926f3750cd2622b}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, grammar, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}}.
+Implemented in \mbox{\hyperlink{class_l_o_t_hypothesis_aef1f480e342420aa2a2c657c6650f47c}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, grammar, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}}, and \mbox{\hyperlink{class_lexicon_a51fa2364f871e3f321c740c622e38a55}{Lexicon$<$ this\+\_\+t, I\+N\+N\+E\+R, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}}.
 
 \mbox{\Hypertarget{class_searchable_a2f2e0290252b5f43c98bc345844070ae}\label{class_searchable_a2f2e0290252b5f43c98bc345844070ae}} 
 \index{Searchable$<$ this\_t, Args $>$@{Searchable$<$ this\_t, Args $>$}!is\_evaluable@{is\_evaluable}}
@@ -89,7 +89,7 @@ virtual this\+\_\+t \mbox{\hyperlink{class_searchable}{Searchable}}$<$ this\+\_\
 
 
 
-Return a new hypothesis which is the k\textquotesingle{}th neighbor (just calls expand\+\_\+to\+\_\+neighbor) 
+Return a new hypothesis which is the k\textquotesingle{}th neighbor (just calls expand\+\_\+to\+\_\+neighbor) N\+O\+TE This does not compile since it might not be complete. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -117,7 +117,7 @@ What is the prior of the k\textquotesingle{}th neighbor? This does not need to r
 \end{DoxyParams}
 
 
-Implemented in \mbox{\hyperlink{class_lexicon_a74a1d71aa16b6efb6c83acf9a119f809}{Lexicon$<$ this\+\_\+t, I\+N\+N\+E\+R, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}}, and \mbox{\hyperlink{class_l_o_t_hypothesis_a6bdb44590a3bd75bec0241435a137fab}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, grammar, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$}}.
+Implemented in \mbox{\hyperlink{class_l_o_t_hypothesis_a2f1f9f66b9037f6a3560561c1a5fe72b}{L\+O\+T\+Hypothesis$<$ this\+\_\+t, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \+\_\+\+Grammar\+\_\+t, grammar, \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}}, and \mbox{\hyperlink{class_lexicon_a74a1d71aa16b6efb6c83acf9a119f809}{Lexicon$<$ this\+\_\+t, I\+N\+N\+E\+R, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, datum\+\_\+t, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$}}.
 
 \mbox{\Hypertarget{class_searchable_a68819cd23119615baa51d65451765c74}\label{class_searchable_a68819cd23119615baa51d65451765c74}} 
 \index{Searchable$<$ this\_t, Args $>$@{Searchable$<$ this\_t, Args $>$}!neighbors@{neighbors}}

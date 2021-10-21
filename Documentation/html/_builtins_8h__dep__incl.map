@@ -1,7 +1,7 @@
 <map id="src/VirtualMachine/Builtins.h" name="src/VirtualMachine/Builtins.h">
-<area shape="rect" id="node1" title=" " alt="" coords="188,5,331,47"/>
-<area shape="rect" id="node2" href="$_node_8h.html" title=" " alt="" coords="94,95,251,121"/>
-<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="285,169,471,196"/>
-<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="113,244,253,271"/>
-<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="25,169,261,196"/>
+<area shape="rect" id="node1" title=" " alt="" coords="178,5,309,47"/>
+<area shape="rect" id="node2" href="$_node_8h.html" title=" " alt="" coords="117,95,261,121"/>
+<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="269,169,436,196"/>
+<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="105,244,235,271"/>
+<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="25,169,245,196"/>
 </map>

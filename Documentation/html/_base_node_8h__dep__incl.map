@@ -1,11 +1,11 @@
 <map id="src/BaseNode.h" name="src/BaseNode.h">
-<area shape="rect" id="node1" title="This is a general tree class, which we are adding because there are currently at least 3 different tr..." alt="" coords="305,5,427,32"/>
-<area shape="rect" id="node2" href="$_node_8h.html" title=" " alt="" coords="179,87,337,114"/>
-<area shape="rect" id="node6" href="$_m_c_t_s_base_8h.html" title=" " alt="" coords="607,80,754,121"/>
-<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="5,259,145,285"/>
-<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="48,177,233,203"/>
-<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It is templated with itself (the curiously re..." alt="" coords="257,177,493,203"/>
-<area shape="rect" id="node7" href="$_full_m_c_t_s_node_8h.html" title=" " alt="" coords="518,169,665,211"/>
-<area shape="rect" id="node8" href="$_minimal_m_c_t_s_node_8h.html" title=" " alt="" coords="689,169,851,211"/>
-<area shape="rect" id="node9" href="$_partial_m_c_t_s_node_8h.html" title=" " alt="" coords="876,169,1027,211"/>
+<area shape="rect" id="node1" title="This is a general tree class, which we are adding because there are currently at least 3 different tr..." alt="" coords="284,5,400,32"/>
+<area shape="rect" id="node2" href="$_node_8h.html" title=" " alt="" coords="169,87,313,114"/>
+<area shape="rect" id="node6" href="$_m_c_t_s_base_8h.html" title=" " alt="" coords="567,80,707,121"/>
+<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="5,259,135,285"/>
+<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="48,177,215,203"/>
+<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="239,177,459,203"/>
+<area shape="rect" id="node7" href="$_full_m_c_t_s_node_8h.html" title=" " alt="" coords="483,169,623,211"/>
+<area shape="rect" id="node8" href="$_minimal_m_c_t_s_node_8h.html" title=" " alt="" coords="647,169,797,211"/>
+<area shape="rect" id="node9" href="$_partial_m_c_t_s_node_8h.html" title=" " alt="" coords="821,169,964,211"/>
 </map>

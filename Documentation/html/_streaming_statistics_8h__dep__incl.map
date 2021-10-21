@@ -1,7 +1,7 @@
 <map id="src/Statistics/StreamingStatistics.h" name="src/Statistics/StreamingStatistics.h">
-<area shape="rect" id="node1" title="A class to store a bunch of statistics about incoming data points, including min, max,..." alt="" coords="169,5,345,47"/>
-<area shape="rect" id="node2" href="$_m_c_t_s_base_8h.html" title=" " alt="" coords="184,95,331,136"/>
-<area shape="rect" id="node3" href="$_full_m_c_t_s_node_8h.html" title=" " alt="" coords="5,184,152,225"/>
-<area shape="rect" id="node4" href="$_minimal_m_c_t_s_node_8h.html" title=" " alt="" coords="176,184,339,225"/>
-<area shape="rect" id="node5" href="$_partial_m_c_t_s_node_8h.html" title=" " alt="" coords="363,184,514,225"/>
+<area shape="rect" id="node1" title="A class to store a bunch of statistics about incoming data points, including min, max,..." alt="" coords="163,5,326,47"/>
+<area shape="rect" id="node2" href="$_m_c_t_s_base_8h.html" title=" " alt="" coords="175,95,315,136"/>
+<area shape="rect" id="node3" href="$_full_m_c_t_s_node_8h.html" title=" " alt="" coords="5,184,145,225"/>
+<area shape="rect" id="node4" href="$_minimal_m_c_t_s_node_8h.html" title=" " alt="" coords="169,184,320,225"/>
+<area shape="rect" id="node5" href="$_partial_m_c_t_s_node_8h.html" title=" " alt="" coords="344,184,487,225"/>
 </map>

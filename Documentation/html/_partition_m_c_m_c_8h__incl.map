@@ -1,48 +1,51 @@
 <map id="src/Inference/MCMC/PartitionMCMC.h" name="src/Inference/MCMC/PartitionMCMC.h">
-<area shape="rect" id="node1" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="1378,5,1530,47"/>
-<area shape="rect" id="node2" title=" " alt="" coords="1618,543,1682,569"/>
-<area shape="rect" id="node3" title=" " alt="" coords="1792,543,1855,569"/>
-<area shape="rect" id="node4" href="$_errors_8h.html" title=" " alt="" coords="34,543,106,569"/>
-<area shape="rect" id="node8" href="$_m_c_m_c_chain_8h.html" title=" " alt="" coords="1203,95,1316,121"/>
-<area shape="rect" id="node44" href="$_timing_8h.html" title=" " alt="" coords="59,393,137,420"/>
-<area shape="rect" id="node45" href="$_threaded_inference_interface_8h.html" title="This manages multiple threads for running inference. This requires a subclass to define run_thread,..." alt="" coords="1475,95,1689,121"/>
-<area shape="rect" id="node5" title=" " alt="" coords="5,617,92,644"/>
-<area shape="rect" id="node6" title=" " alt="" coords="116,617,203,644"/>
-<area shape="rect" id="node7" title=" " alt="" coords="241,617,299,644"/>
-<area shape="rect" id="node9" title=" " alt="" coords="609,543,696,569"/>
-<area shape="rect" id="node10" href="$_coroutines_8h.html" title="This little object will return true once every n times it is converted to a bool." alt="" coords="1323,169,1427,196"/>
-<area shape="rect" id="node36" href="$_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="1467,319,1583,345"/>
-<area shape="rect" id="node40" href="$_finite_history_8h.html" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="1134,244,1249,271"/>
-<area shape="rect" id="node42" href="$_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="311,244,392,271"/>
-<area shape="rect" id="node11" title=" " alt="" coords="1323,244,1406,271"/>
-<area shape="rect" id="node12" title=" " alt="" coords="1431,244,1544,271"/>
-<area shape="rect" id="node13" href="$_top_n_8h.html" title=" " alt="" coords="1013,244,1079,271"/>
-<area shape="rect" id="node14" title=" " alt="" coords="1345,468,1387,495"/>
-<area shape="rect" id="node15" title=" " alt="" coords="1219,468,1270,495"/>
-<area shape="rect" id="node16" href="$_i_o_8h.html" title=" " alt="" coords="930,319,978,345"/>
-<area shape="rect" id="node30" href="$_numerics_8h.html" title=" " alt="" coords="781,543,877,569"/>
-<area shape="rect" id="node38" href="$_fleet_args_8h.html" title=" " alt="" coords="301,319,397,345"/>
-<area shape="rect" id="node39" href="$_serializable_8h.html" title=" " alt="" coords="1053,319,1231,345"/>
-<area shape="rect" id="node17" title=" " alt="" coords="1495,393,1559,420"/>
-<area shape="rect" id="node18" title=" " alt="" coords="1199,617,1279,644"/>
-<area shape="rect" id="node19" title=" " alt="" coords="931,393,1004,420"/>
-<area shape="rect" id="node20" title=" " alt="" coords="1029,393,1207,420"/>
-<area shape="rect" id="node21" href="$_strings_8h.html" title=" " alt="" coords="776,393,855,420"/>
-<area shape="rect" id="node22" title=" " alt="" coords="1001,468,1075,495"/>
-<area shape="rect" id="node23" title=" " alt="" coords="424,468,487,495"/>
-<area shape="rect" id="node24" title=" " alt="" coords="825,468,881,495"/>
-<area shape="rect" id="node25" title=" " alt="" coords="1462,468,1529,495"/>
-<area shape="rect" id="node26" title=" " alt="" coords="905,468,976,495"/>
-<area shape="rect" id="node27" href="$_miscellaneous_8h.html" title=" " alt="" coords="511,468,637,495"/>
-<area shape="rect" id="node34" href="$_random_8h.html" title="This is a thread_local rng that is seeded on construction so that each thread can get a different see..." alt="" coords="662,468,750,495"/>
-<area shape="rect" id="node35" href="$_vector3_d_8h.html" title=" " alt="" coords="1100,468,1195,495"/>
-<area shape="rect" id="node28" title=" " alt="" coords="507,543,585,569"/>
-<area shape="rect" id="node29" title=" " alt="" coords="130,543,197,569"/>
-<area shape="rect" id="node31" title=" " alt="" coords="698,617,770,644"/>
-<area shape="rect" id="node32" title=" " alt="" coords="887,617,962,644"/>
-<area shape="rect" id="node33" title=" " alt="" coords="795,617,863,644"/>
-<area shape="rect" id="node37" title=" " alt="" coords="1587,393,1729,420"/>
-<area shape="rect" id="node41" title=" " alt="" coords="1307,319,1391,345"/>
-<area shape="rect" id="node43" title=" " alt="" coords="152,319,225,345"/>
-<area shape="rect" id="node46" href="$_concurrent_queue_8h.html" title="A concurrent queue class that allows multiple threads to push and consume. Note that this has a fixed..." alt="" coords="1619,244,1766,271"/>
+<area shape="rect" id="node1" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="1599,5,1743,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="1363,543,1421,569"/>
+<area shape="rect" id="node3" title=" " alt="" coords="1464,543,1523,569"/>
+<area shape="rect" id="node4" href="$_errors_8h.html" title=" " alt="" coords="1785,543,1853,569"/>
+<area shape="rect" id="node8" href="$_m_c_m_c_chain_8h.html" title=" " alt="" coords="465,95,575,121"/>
+<area shape="rect" id="node47" href="$_timing_8h.html" title=" " alt="" coords="1384,393,1456,420"/>
+<area shape="rect" id="node48" href="$_threaded_inference_interface_8h.html" title="This manages multiple threads for running inference. This requires a subclass to define run_thread,..." alt="" coords="1163,95,1355,121"/>
+<area shape="rect" id="node5" title=" " alt="" coords="1727,617,1806,644"/>
+<area shape="rect" id="node6" title=" " alt="" coords="1830,617,1909,644"/>
+<area shape="rect" id="node7" title=" " alt="" coords="1634,617,1689,644"/>
+<area shape="rect" id="node9" title=" " alt="" coords="74,543,153,569"/>
+<area shape="rect" id="node10" href="$_coroutines_8h.html" title="This little object will return true once every n times it is converted to a bool." alt="" coords="656,169,752,196"/>
+<area shape="rect" id="node39" href="$_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="205,319,312,345"/>
+<area shape="rect" id="node43" href="$_finite_history_8h.html" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="202,244,307,271"/>
+<area shape="rect" id="node45" href="$_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="1221,244,1296,271"/>
+<area shape="rect" id="node11" title=" " alt="" coords="543,244,617,271"/>
+<area shape="rect" id="node12" title=" " alt="" coords="642,244,742,271"/>
+<area shape="rect" id="node13" href="$_top_n_8h.html" title=" " alt="" coords="767,244,831,271"/>
+<area shape="rect" id="node14" title=" " alt="" coords="387,468,427,495"/>
+<area shape="rect" id="node15" title=" " alt="" coords="451,468,498,495"/>
+<area shape="rect" id="node16" href="$_i_o_8h.html" title=" " alt="" coords="945,319,991,345"/>
+<area shape="rect" id="node30" href="$_numerics_8h.html" title=" " alt="" coords="489,543,578,569"/>
+<area shape="rect" id="node41" href="$_fleet_args_8h.html" title=" " alt="" coords="1214,319,1303,345"/>
+<area shape="rect" id="node42" href="$_serializable_8h.html" title=" " alt="" coords="707,319,869,345"/>
+<area shape="rect" id="node17" title=" " alt="" coords="405,393,464,420"/>
+<area shape="rect" id="node18" title=" " alt="" coords="335,617,407,644"/>
+<area shape="rect" id="node19" title=" " alt="" coords="696,543,763,569"/>
+<area shape="rect" id="node20" title=" " alt="" coords="1043,393,1208,420"/>
+<area shape="rect" id="node21" href="$_strings_8h.html" title=" " alt="" coords="829,393,904,420"/>
+<area shape="rect" id="node22" title=" " alt="" coords="1013,468,1083,495"/>
+<area shape="rect" id="node23" title=" " alt="" coords="153,468,210,495"/>
+<area shape="rect" id="node24" title=" " alt="" coords="1107,468,1157,495"/>
+<area shape="rect" id="node25" title=" " alt="" coords="1395,468,1456,495"/>
+<area shape="rect" id="node26" title=" " alt="" coords="766,468,831,495"/>
+<area shape="rect" id="node27" href="$_miscellaneous_8h.html" title=" " alt="" coords="574,468,690,495"/>
+<area shape="rect" id="node34" href="$_random_8h.html" title="This is a thread_local rng that is seeded on construction so that each thread can get a different see..." alt="" coords="907,468,989,495"/>
+<area shape="rect" id="node38" href="$_vector3_d_8h.html" title=" " alt="" coords="1181,468,1269,495"/>
+<area shape="rect" id="node28" title=" " alt="" coords="603,543,672,569"/>
+<area shape="rect" id="node29" title=" " alt="" coords="403,543,464,569"/>
+<area shape="rect" id="node31" title=" " alt="" coords="830,617,895,644"/>
+<area shape="rect" id="node32" title=" " alt="" coords="687,617,756,644"/>
+<area shape="rect" id="node33" title=" " alt="" coords="502,617,565,644"/>
+<area shape="rect" id="node35" href="$_singleton_8h.html" title=" " alt="" coords="787,543,874,569"/>
+<area shape="rect" id="node36" title=" " alt="" coords="949,543,1048,569"/>
+<area shape="rect" id="node37" title=" " alt="" coords="1072,543,1179,569"/>
+<area shape="rect" id="node40" title=" " alt="" coords="43,393,170,420"/>
+<area shape="rect" id="node44" title=" " alt="" coords="54,319,130,345"/>
+<area shape="rect" id="node46" title=" " alt="" coords="1328,319,1395,345"/>
+<area shape="rect" id="node49" href="$_concurrent_queue_8h.html" title="A concurrent queue class that allows multiple threads to push and consume. Note that this has a fixed..." alt="" coords="383,244,518,271"/>
 </map>

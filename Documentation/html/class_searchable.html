@@ -80,16 +80,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a68819cd23119615baa51d65451765c74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count the number of neighbors that are possible. (This should be size_t but int is more convenient.)  <a href="class_searchable.html#a68819cd23119615baa51d65451765c74">More...</a><br /></td></tr>
 <tr class="separator:a68819cd23119615baa51d65451765c74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9088dba3920f4c66ce671aa16a7d29a4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#a9088dba3920f4c66ce671aa16a7d29a4">expand_to_neighbor</a> (int k)=0</td></tr>
-<tr class="memdesc:a9088dba3920f4c66ce671aa16a7d29a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify this hypothesis to become the k'th neighbor.  <a href="class_searchable.html#a9088dba3920f4c66ce671aa16a7d29a4">More...</a><br /></td></tr>
+<tr class="memdesc:a9088dba3920f4c66ce671aa16a7d29a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify this hypothesis to become the k'th neighbor. NOTE This does not compile since it might not be complete.  <a href="class_searchable.html#a9088dba3920f4c66ce671aa16a7d29a4">More...</a><br /></td></tr>
 <tr class="separator:a9088dba3920f4c66ce671aa16a7d29a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7d4105db85a6601dcb406074bdb3f8f"><td class="memItemLeft" align="right" valign="top">virtual this_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#ac7d4105db85a6601dcb406074bdb3f8f">make_neighbor</a> (int k) const</td></tr>
-<tr class="memdesc:ac7d4105db85a6601dcb406074bdb3f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a new hypothesis which is the k'th neighbor (just calls expand_to_neighbor)  <a href="class_searchable.html#ac7d4105db85a6601dcb406074bdb3f8f">More...</a><br /></td></tr>
+<tr class="memdesc:ac7d4105db85a6601dcb406074bdb3f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a new hypothesis which is the k'th neighbor (just calls expand_to_neighbor) NOTE This does not compile since it might not be complete.  <a href="class_searchable.html#ac7d4105db85a6601dcb406074bdb3f8f">More...</a><br /></td></tr>
 <tr class="separator:ac7d4105db85a6601dcb406074bdb3f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6f72073717a4df0d22c73705555b13a"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#aa6f72073717a4df0d22c73705555b13a">neighbor_prior</a> (int k)=0</td></tr>
 <tr class="memdesc:aa6f72073717a4df0d22c73705555b13a"><td class="mdescLeft">&#160;</td><td class="mdescRight">What is the prior of the k'th neighbor? This does not need to return the full prior, only relative (among ks)  <a href="class_searchable.html#aa6f72073717a4df0d22c73705555b13a">More...</a><br /></td></tr>
 <tr class="separator:aa6f72073717a4df0d22c73705555b13a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29ab2eb0471e2e9d96d39f0349f21571"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#a29ab2eb0471e2e9d96d39f0349f21571">complete</a> ()=0</td></tr>
-<tr class="memdesc:a29ab2eb0471e2e9d96d39f0349f21571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill in all the holes in this hypothesis, at random, modifying self.  <a href="class_searchable.html#a29ab2eb0471e2e9d96d39f0349f21571">More...</a><br /></td></tr>
+<tr class="memdesc:a29ab2eb0471e2e9d96d39f0349f21571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill in all the holes in this hypothesis, at random, modifying self. NOTE for LOTHypotheses this will also compile, which is what we need to do for a <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>.  <a href="class_searchable.html#a29ab2eb0471e2e9d96d39f0349f21571">More...</a><br /></td></tr>
 <tr class="separator:a29ab2eb0471e2e9d96d39f0349f21571"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f2e0290252b5f43c98bc345844070ae"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_searchable.html#a2f2e0290252b5f43c98bc345844070ae">is_evaluable</a> () const =0</td></tr>
 <tr class="memdesc:a2f2e0290252b5f43c98bc345844070ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if we can evaluate this node (meaning compute a prior and posterior). NOTE that this is not the same as whether it has zero neighbors, since lexica might have neighbors but be evalable.  <a href="class_searchable.html#a2f2e0290252b5f43c98bc345844070ae">More...</a><br /></td></tr>
@@ -127,9 +127,9 @@ template&lt;typename this_t , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Fill in all the holes in this hypothesis, at random, modifying self. </p>
+<p>Fill in all the holes in this hypothesis, at random, modifying self. NOTE for LOTHypotheses this will also compile, which is what we need to do for a <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>. </p>
 
-<p>Implemented in <a class="el" href="class_lexicon.html#a7a5df8a261c35cc00f19a70b8121fa7b">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>, and <a class="el" href="class_l_o_t_hypothesis.html#ae5d03d2f515f93bfe1be05ab40aecad2">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>.</p>
+<p>Implemented in <a class="el" href="class_l_o_t_hypothesis.html#afda1517e3cc79e871ecfbd7989f05530">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>, and <a class="el" href="class_lexicon.html#a7a5df8a261c35cc00f19a70b8121fa7b">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>.</p>
 
 </div>
 </div>
@@ -159,7 +159,7 @@ template&lt;typename this_t , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Modify this hypothesis to become the k'th neighbor. </p>
+<p>Modify this hypothesis to become the k'th neighbor. NOTE This does not compile since it might not be complete. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">k</td><td></td></tr>
@@ -167,7 +167,7 @@ template&lt;typename this_t , typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="class_lexicon.html#a51fa2364f871e3f321c740c622e38a55">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>, and <a class="el" href="class_l_o_t_hypothesis.html#a71adad273cdc23367926f3750cd2622b">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>.</p>
+<p>Implemented in <a class="el" href="class_l_o_t_hypothesis.html#aef1f480e342420aa2a2c657c6650f47c">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>, and <a class="el" href="class_lexicon.html#a51fa2364f871e3f321c740c622e38a55">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>.</p>
 
 </div>
 </div>
@@ -226,7 +226,7 @@ template&lt;typename this_t , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Return a new hypothesis which is the k'th neighbor (just calls expand_to_neighbor) </p>
+<p>Return a new hypothesis which is the k'th neighbor (just calls expand_to_neighbor) NOTE This does not compile since it might not be complete. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">k</td><td></td></tr>
@@ -271,7 +271,7 @@ template&lt;typename this_t , typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="class_lexicon.html#a74a1d71aa16b6efb6c83acf9a119f809">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>, and <a class="el" href="class_l_o_t_hypothesis.html#a6bdb44590a3bd75bec0241435a137fab">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;</a>.</p>
+<p>Implemented in <a class="el" href="class_l_o_t_hypothesis.html#a2f1f9f66b9037f6a3560561c1a5fe72b">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>, and <a class="el" href="class_lexicon.html#a74a1d71aa16b6efb6c83acf9a119f809">Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>.</p>
 
 </div>
 </div>

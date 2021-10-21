@@ -97,6 +97,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a785ec0b4f2f5df9b78bbb8c0c5f16118"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
 <tr class="memitem:a785ec0b4f2f5df9b78bbb8c0c5f16118"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#a785ec0b4f2f5df9b78bbb8c0c5f16118">delete_tree</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
 <tr class="separator:a785ec0b4f2f5df9b78bbb8c0c5f16118"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7f6d33ccb0ba81730e267d1de60c476"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
+<tr class="memitem:aa7f6d33ccb0ba81730e267d1de60c476"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#aa7f6d33ccb0ba81730e267d1de60c476">sample_function_leaving_args</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
+<tr class="memdesc:aa7f6d33ccb0ba81730e267d1de60c476"><td class="mdescLeft">&#160;</td><td class="mdescRight">This samples functions f(a,b) -&gt; g(a,b) (e.g. without destroying what's below). This uses a little trick that the node only stores the rule, so we can swap it out if we want.  <a href="namespace_proposals.html#aa7f6d33ccb0ba81730e267d1de60c476">More...</a><br /></td></tr>
+<tr class="separator:aa7f6d33ccb0ba81730e267d1de60c476"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88343558ba97fd2c5cf57cbb609ffdf1"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
+<tr class="memitem:a88343558ba97fd2c5cf57cbb609ffdf1"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#a88343558ba97fd2c5cf57cbb609ffdf1">swap_args</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
+<tr class="memdesc:a88343558ba97fd2c5cf57cbb609ffdf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This propose swaps around arguments of the same type.  <a href="namespace_proposals.html#a88343558ba97fd2c5cf57cbb609ffdf1">More...</a><br /></td></tr>
+<tr class="separator:a88343558ba97fd2c5cf57cbb609ffdf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a73f20ef1547bc5beef3e6e3adad2139c"></a>
@@ -334,6 +342,86 @@ template&lt;typename GrammarType , int D&gt; </div>
 </div><div class="memdoc">
 
 <p>Regenerate with rational-rules style proposals, but only allow proposals to trees with a max depth of D. This encourages smaller changes, but also gets you stuck pretty bad in local maxima since you can't take big hops. Probably will work best with restarts. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">grammar</td><td></td></tr>
+    <tr><td class="paramname">from</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="aa7f6d33ccb0ba81730e267d1de60c476"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7f6d33ccb0ba81730e267d1de60c476">&#9670;&nbsp;</a></span>sample_function_leaving_args()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename GrammarType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt;<a class="el" href="class_node.html">Node</a>,double&gt; Proposals::sample_function_leaving_args </td>
+          <td>(</td>
+          <td class="paramtype">GrammarType *&#160;</td>
+          <td class="paramname"><em>grammar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
+          <td class="paramname"><em>from</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This samples functions f(a,b) -&gt; g(a,b) (e.g. without destroying what's below). This uses a little trick that the node only stores the rule, so we can swap it out if we want. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">grammar</td><td></td></tr>
+    <tr><td class="paramname">from</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a88343558ba97fd2c5cf57cbb609ffdf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88343558ba97fd2c5cf57cbb609ffdf1">&#9670;&nbsp;</a></span>swap_args()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename GrammarType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt;<a class="el" href="class_node.html">Node</a>,double&gt; Proposals::swap_args </td>
+          <td>(</td>
+          <td class="paramtype">GrammarType *&#160;</td>
+          <td class="paramname"><em>grammar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
+          <td class="paramname"><em>from</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This propose swaps around arguments of the same type. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">grammar</td><td></td></tr>

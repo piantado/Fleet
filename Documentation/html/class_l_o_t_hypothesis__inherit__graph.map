@@ -1,9 +1,8 @@
-<map id="LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;" name="LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="545,123,740,193"/>
-<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="259,5,497,76"/>
-<area shape="rect" id="node3" href="$class_bayesable.html" title=" " alt="" coords="27,27,189,54"/>
-<area shape="rect" id="node4" href="$class_searchable.html" title=" " alt="" coords="297,100,459,141"/>
-<area shape="rect" id="node5" href="$class_callable.html" title=" " alt="" coords="277,166,479,222"/>
-<area shape="rect" id="node6" href="$class_program_loader.html" title=" " alt="" coords="5,173,211,215"/>
-<area shape="rect" id="node7" href="$class_serializable.html" title=" " alt="" coords="296,246,460,273"/>
+<map id="LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;" name="LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="461,107,693,193"/>
+<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="199,5,413,76"/>
+<area shape="rect" id="node3" href="$class_bayesable.html" title=" " alt="" coords="5,27,151,54"/>
+<area shape="rect" id="node4" href="$class_searchable.html" title=" " alt="" coords="233,100,379,141"/>
+<area shape="rect" id="node5" href="$class_serializable.html" title=" " alt="" coords="233,166,379,193"/>
+<area shape="rect" id="node6" href="$class_program_loader.html" title=" " alt="" coords="215,217,397,259"/>
 </map>

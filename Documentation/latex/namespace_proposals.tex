@@ -16,7 +16,11 @@ double \mbox{\hyperlink{namespace_proposals_a73f20ef1547bc5beef3e6e3adad2139c}{c
 {\footnotesize template$<$typename Grammar\+Type $>$ }\\std\+::pair$<$ \mbox{\hyperlink{class_node}{Node}}, double $>$ \mbox{\hyperlink{namespace_proposals_a8714ac1333d5aff2d248ef10a8eb5493}{insert\+\_\+tree}} (Grammar\+Type $\ast$grammar, const \mbox{\hyperlink{class_node}{Node}} \&from)
 \item 
 {\footnotesize template$<$typename Grammar\+Type $>$ }\\std\+::pair$<$ \mbox{\hyperlink{class_node}{Node}}, double $>$ \mbox{\hyperlink{namespace_proposals_a785ec0b4f2f5df9b78bbb8c0c5f16118}{delete\+\_\+tree}} (Grammar\+Type $\ast$grammar, const \mbox{\hyperlink{class_node}{Node}} \&from)
-\end{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Grammar\+Type $>$ }\\std\+::pair$<$ \mbox{\hyperlink{class_node}{Node}}, double $>$ \mbox{\hyperlink{namespace_proposals_aa7f6d33ccb0ba81730e267d1de60c476}{sample\+\_\+function\+\_\+leaving\+\_\+args}} (Grammar\+Type $\ast$grammar, const \mbox{\hyperlink{class_node}{Node}} \&from)
+\begin{DoxyCompactList}\small\item\em This samples functions f(a,b) -\/$>$ g(a,b) (e.\+g. without destroying what\textquotesingle{}s below). This uses a little trick that the node only stores the rule, so we can swap it out if we want. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Grammar\+Type $>$ }\\std\+::pair$<$ \mbox{\hyperlink{class_node}{Node}}, double $>$ \mbox{\hyperlink{namespace_proposals_a88343558ba97fd2c5cf57cbb609ffdf1}{swap\+\_\+args}} (Grammar\+Type $\ast$grammar, const \mbox{\hyperlink{class_node}{Node}} \&from)
+\begin{DoxyCompactList}\small\item\em This propose swaps around arguments of the same type. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
@@ -113,6 +117,48 @@ std\+::pair$<$\mbox{\hyperlink{class_node}{Node}},double$>$ Proposals\+::regener
 
 
 Regenerate with rational-\/rules style proposals, but only allow proposals to trees with a max depth of D. This encourages smaller changes, but also gets you stuck pretty bad in local maxima since you can\textquotesingle{}t take big hops. Probably will work best with restarts. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em grammar} & \\
+\hline
+{\em from} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespace_proposals_aa7f6d33ccb0ba81730e267d1de60c476}\label{namespace_proposals_aa7f6d33ccb0ba81730e267d1de60c476}} 
+\index{Proposals@{Proposals}!sample\_function\_leaving\_args@{sample\_function\_leaving\_args}}
+\index{sample\_function\_leaving\_args@{sample\_function\_leaving\_args}!Proposals@{Proposals}}
+\doxysubsubsection{\texorpdfstring{sample\_function\_leaving\_args()}{sample\_function\_leaving\_args()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+Type $>$ \\
+std\+::pair$<$\mbox{\hyperlink{class_node}{Node}},double$>$ Proposals\+::sample\+\_\+function\+\_\+leaving\+\_\+args (\begin{DoxyParamCaption}\item[{Grammar\+Type $\ast$}]{grammar,  }\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{from }\end{DoxyParamCaption})}
+
+
+
+This samples functions f(a,b) -\/$>$ g(a,b) (e.\+g. without destroying what\textquotesingle{}s below). This uses a little trick that the node only stores the rule, so we can swap it out if we want. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em grammar} & \\
+\hline
+{\em from} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespace_proposals_a88343558ba97fd2c5cf57cbb609ffdf1}\label{namespace_proposals_a88343558ba97fd2c5cf57cbb609ffdf1}} 
+\index{Proposals@{Proposals}!swap\_args@{swap\_args}}
+\index{swap\_args@{swap\_args}!Proposals@{Proposals}}
+\doxysubsubsection{\texorpdfstring{swap\_args()}{swap\_args()}}
+{\footnotesize\ttfamily template$<$typename Grammar\+Type $>$ \\
+std\+::pair$<$\mbox{\hyperlink{class_node}{Node}},double$>$ Proposals\+::swap\+\_\+args (\begin{DoxyParamCaption}\item[{Grammar\+Type $\ast$}]{grammar,  }\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{from }\end{DoxyParamCaption})}
+
+
+
+This propose swaps around arguments of the same type. 
 
 
 \begin{DoxyParams}{Parameters}

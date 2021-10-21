@@ -21,6 +21,13 @@ bool \mbox{\hyperlink{struct_object_a0475b6347042bc03cf1cb023fc6c36b3}{operator$
 \item 
 bool \mbox{\hyperlink{struct_object_a39a1f236eb1afac749bf956124dab79d}{operator==}} (const \mbox{\hyperlink{struct_object}{Object}} \&o) const
 \end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename... T$>$ }\\static \mbox{\hyperlink{struct_object}{Object}}$<$ T... $>$ \mbox{\hyperlink{struct_object_afb4dead3b89634ffa1a27108cfa188d9}{\+\_\+\+\_\+sample}} ()
+\begin{DoxyCompactList}\small\item\em Sample a uniformly random object. This requires our features to end in \+\_\+\+\_\+count. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{struct_object}{Object}}$<$ feature\+\_\+t... $>$ \mbox{\hyperlink{struct_object_a6961d5811ef36022afaef8ae9c0546ae}{sample}} ()
+\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -58,6 +65,18 @@ piantado
 
 
 \doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_object_afb4dead3b89634ffa1a27108cfa188d9}\label{struct_object_afb4dead3b89634ffa1a27108cfa188d9}} 
+\index{Object$<$ feature\_t $>$@{Object$<$ feature\_t $>$}!\_\_sample@{\_\_sample}}
+\index{\_\_sample@{\_\_sample}!Object$<$ feature\_t $>$@{Object$<$ feature\_t $>$}}
+\doxysubsubsection{\texorpdfstring{\_\_sample()}{\_\_sample()}}
+{\footnotesize\ttfamily template$<$typename... feature\+\_\+t$>$ \\
+template$<$typename... T$>$ \\
+static \mbox{\hyperlink{struct_object}{Object}}$<$T...$>$ \mbox{\hyperlink{struct_object}{Object}}$<$ feature\+\_\+t $>$\+::\+\_\+\+\_\+sample (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Sample a uniformly random object. This requires our features to end in \+\_\+\+\_\+count. 
+
 \mbox{\Hypertarget{struct_object_a380e8d879bd922eedbf3c6aabcd64a61}\label{struct_object_a380e8d879bd922eedbf3c6aabcd64a61}} 
 \index{Object$<$ feature\_t $>$@{Object$<$ feature\_t $>$}!get@{get}}
 \index{get@{get}!Object$<$ feature\_t $>$@{Object$<$ feature\_t $>$}}
@@ -106,6 +125,13 @@ bool \mbox{\hyperlink{struct_object}{Object}}$<$ feature\+\_\+t $>$\+::operator$
 \doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
 {\footnotesize\ttfamily template$<$typename... feature\+\_\+t$>$ \\
 bool \mbox{\hyperlink{struct_object}{Object}}$<$ feature\+\_\+t $>$\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_object}{Object}}$<$ feature\+\_\+t $>$ \&}]{o }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{struct_object_a6961d5811ef36022afaef8ae9c0546ae}\label{struct_object_a6961d5811ef36022afaef8ae9c0546ae}} 
+\index{Object$<$ feature\_t $>$@{Object$<$ feature\_t $>$}!sample@{sample}}
+\index{sample@{sample}!Object$<$ feature\_t $>$@{Object$<$ feature\_t $>$}}
+\doxysubsubsection{\texorpdfstring{sample()}{sample()}}
+{\footnotesize\ttfamily template$<$typename... feature\+\_\+t$>$ \\
+static \mbox{\hyperlink{struct_object}{Object}}$<$feature\+\_\+t...$>$ \mbox{\hyperlink{struct_object}{Object}}$<$ feature\+\_\+t $>$\+::sample (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
 \mbox{\Hypertarget{struct_object_a520a6392c6c1acf0a0a53a08b8ffaa7d}\label{struct_object_a520a6392c6c1acf0a0a53a08b8ffaa7d}} 
 \index{Object$<$ feature\_t $>$@{Object$<$ feature\_t $>$}!set@{set}}
