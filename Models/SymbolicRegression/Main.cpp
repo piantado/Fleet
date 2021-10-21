@@ -93,7 +93,6 @@ public:
 // check if a rule is constant
 bool isConstant(const Rule* r) { return r->format == "C"; }
 
-
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define hypothesis
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -112,18 +111,10 @@ public:
 	virtual D callOne(const D x, const D err) {
 		// We need to override this because LOTHypothesis::callOne asserts that the program is non-empty
 		// but actually ours can be if we are only a constant. 
-		
 		// my own wrapper that zeros the constant_i counter
-		constant_idx = 0;
-				
-		const auto out = Super::callOne(x,err);
-		// LOTHypothesis::callOne without the assert
-//		VirtualMachineState_t vms(x, err, nullptr);		
-//		vms.program = program; 
-//		const auto out = vms.run(); 	
-//		total_instruction_count_last_call = vms.runtime_counter.total;
-//		total_vms_steps = 1;		
 		
+		constant_idx = 0;
+		const auto out = Super::callOne(x,err);
 		assert(constant_idx == constants.size()); // just check we used all constants
 		return out;
 	}

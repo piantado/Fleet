@@ -6,21 +6,23 @@
 #include <thread>
 #include "Errors.h"
 #include "Numerics.h"
+#include "Singleton.h"
 
 #include <sys/syscall.h>
 #include <linux/random.h>
+
+
 size_t sysrandom(void* dst, size_t dstlen) {
 	// from https://stackoverflow.com/questions/45069219/how-to-succinctly-portably-and-thoroughly-seed-the-mt19937-prng
     char* buffer = reinterpret_cast<char*>(dst);
     std::ifstream stream("/dev/urandom", std::ios_base::binary | std::ios_base::in);
     stream.read(buffer, dstlen);
-
     return dstlen;
 }
 
 
 /**
- * @class tlRng
+ * @class thread_local_rng
  * @author Steven Piantadosi
  * @date 15/06/21
  * @file Random.h
@@ -32,6 +34,13 @@ size_t sysrandom(void* dst, size_t dstlen) {
 thread_local class thread_local_rng : public std::mt19937 {
 public:
 	thread_local_rng() : std::mt19937() {
+		
+		// on construction we initialize from /dev/urandom
+		std::array<unsigned long, std::mt19937::state_size> state;
+		sysrandom(state.begin(), state.size()*sizeof(unsigned long));
+		std::seed_seq seedseq(state.begin(), state.end());
+		
+		this->seed(seedseq);
 	}
 	
 	/**
@@ -54,6 +63,7 @@ public:
 			}
 		}
 		else {
+			// note this re-seeds relative to constructor
 			this->seed(seedseq);
 		}
 	}

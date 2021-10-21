@@ -173,68 +173,40 @@ public:
 #include "LOTHypothesis.h"
 #include "Timing.h"
 #include "Lexicon.h"
+#include "CachedCallHypothesis.h"
 
-class InnerHypothesis : public LOTHypothesis<InnerHypothesis,BindingTree*,bool,MyGrammar,&grammar> {
+class InnerHypothesis : public LOTHypothesis<InnerHypothesis,BindingTree*,bool,MyGrammar,&grammar>, 
+						public CachedCallHypothesis<InnerHypothesis,bool>{
 public:
 	using Super = LOTHypothesis<InnerHypothesis,BindingTree*,bool,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors
+	using CCH = CachedCallHypothesis<InnerHypothesis,bool>;
+	
 	using output_t = Super::output_t;
 	using data_t = Super::data_t;
 	
-	void const* cached_data = nullptr; // when null, we recompute the cache
-	std::vector<output_t> cache; 
-	bool got_error = false; // did an error throw?
+	InnerHypothesis(const InnerHypothesis& c) : Super(c), CCH(c) {}
 	
-	InnerHypothesis(const InnerHypothesis& c) : InnerHypothesis() {
-		Super::operator=(c); // copy all this garbage -- not sure what to do here
-		this->cache = c.cache; this->cached_data = c.cached_data; got_error = c.got_error;
-	}
-	InnerHypothesis(const InnerHypothesis&& c) : InnerHypothesis() {
-		Super::operator=(c); // copy all this garbage -- not sure what to do here
-		this->cache = c.cache; this->cached_data = c.cached_data; got_error = c.got_error;
-	}
+	InnerHypothesis(const InnerHypothesis&& c) :  Super(c), CCH(c) { }	
+	
 	InnerHypothesis& operator=(const InnerHypothesis& c) {
 		Super::operator=(c);
-		this->cache = c.cache; this->cached_data = c.cached_data; got_error = c.got_error;
+		CachedCallHypothesis::operator=(c);
 		return *this;
 	}
 	InnerHypothesis& operator=(const InnerHypothesis&& c) {
 		Super::operator=(c);
-		this->cache = c.cache; this->cached_data = c.cached_data; got_error = c.got_error;
+		CachedCallHypothesis::operator=(c);
 		return *this;
 	}
 	
-	// A cached version that will call on a whole dataset, but remember if we've done it before
-	template<typename dt>
-	void cachedCallOnData(const dt& data) {
-		
-		// NOTE THIS DOES NOT WORK IF WE HAVE RECURSION 
-		
-		if(cached_data != &data) {
-			// PRINTN("CACHE MISS", this, cached_data, string());
-			cache.resize(data.size());
-			for(size_t di=0;di<data.size();di++) {
-				cache[di] = false; 
-				try { 				
-					cache[di] = this->callOne(data[di].input, false); 
-				} catch( TreeException& e){  got_error = true; break; } // break here because if we got_error, we return -inf likelihood
-			}
-			// store who is cached
-			cached_data = &data;
-		}
-		//else {
-		//	PRINTN("CACHE HIT", this, cached_data, string());			
-		//}
-	}
-	
-	
 	void set_value(Node&  v) { 
 		Super::set_value(v);
-		cached_data = nullptr; // tell it to recompute (in operator= this gets overwritten)
+		CachedCallHypothesis::clear_cache();
 	}
 	void set_value(Node&& v) { 
 		Super::set_value(v);
-		cached_data = nullptr; // tell it to recompute
+		CachedCallHypothesis::clear_cache();
 	}
 	
 	virtual double compute_prior() override {
@@ -274,7 +246,7 @@ public:
 		
 		// make sure everyone's cache is right on this data
 		for(auto& f : factors) {
-			f.cachedCallOnData(data); 
+			f.cached_callOne(data); 
 			
 			// now if anything threw an error, break out, we don't have to compute
 			if(f.got_error) 
@@ -298,68 +270,17 @@ public:
 				
 				if(d.output == words[wi]) wtrue = b;			
 			}
-			
-			// COUT wtrue TAB ntrue TAB d.output TAB string() ENDL;
+
+			// Noisy size-principle likelihood
 			likelihood += NDATA * log( (wtrue ? d.reliability/ntrue : 0.0) + 
 							           (1.0-d.reliability)/words.size());
+
 		}
 		
 		return likelihood; 
-	 }
-
-	// Old likelihood, before caching:
-//	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
-//		
-//		// need to set this so that if/when we recurse, we use the lexicon
-//		for(auto& f : factors) f.program.loader = this; 
-//		
-//		// The likelihood here samples from all words that are true
-//		likelihood = 0.0;
-//		for(const auto& di : data) {
-//			assert(di.input != nullptr);
-//			
-//			// see how many factors are true:
-//			bool wtrue = false; // was w true?
-//			int  ntrue = 0; // how many are true?
-//			
-//			// see which words are permitted
-//			for(size_t wi=0;wi<words.size();wi++) {
-//				
-//				bool b = false; // default value
-//				try { 				
-//					b = factors[wi].callOne(di.input, false); 
-////				} catch( TreeException& e){ likelihood -= 1000; } // NOTE: Additional penalty here for exceptions
-//				} catch( TreeException& e){  return likelihood = -infinity; } // Muuuch faster here because we short circuit out
-//				
-//				ntrue += 1*b;
-//				
-//				if(di.output == words[wi]) 	
-//					wtrue = b;
-//				
-//			}
-//			
-//			// COUT wtrue TAB ntrue TAB di.output TAB string() ENDL;
-//			likelihood += NDATA * log( (wtrue ? di.reliability/ntrue : 0.0) + 
-//							           (1.0-di.reliability)/words.size());
-//		}
-//		
-//		return likelihood; 
-//	 }
-//	 
-	 
+	 }	 
 };
 
-bool insidePOS(BindingTree* x) {
-	POS y = POS::NPPOSS;
-	
-	while(true) {
-		PRINTN(">>", (int)x->pos, str(x));
-		
-		if(x->pos == y) 		        return true;
-		else if(x->parent == nullptr)   return false;
-		else							x = x->parent;
-	}
-}
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Main code
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -371,6 +292,7 @@ bool insidePOS(BindingTree* x) {
 #include "MCMCChain.h"
 #include "ParallelTempering.h"
 #include "SExpression.h"
+//#include "MPI.h"
 
 int main(int argc, char** argv){ 
 	
@@ -389,8 +311,7 @@ int main(int argc, char** argv){
 
 	// convert to data
 	MyHypothesis::data_t mydata;
-	std::vector<std::string> raw_data; 
-	
+	std::vector<std::string> raw_data; 	
 	for(auto& [ds, sentence] : read_csv<2>("lasnik-extensive.csv", false, ',')){
 		
 		// look at tokenization
@@ -436,8 +357,6 @@ int main(int argc, char** argv){
 			assert( myt->sum( +[](const BindingTree& bt) -> double { return 1.0*bt.target; }) == 1); 
 			
 			PRINTN("#", myt->string());
-//			COUT "#" TAB str(myt->get_target()) TAB str(myt->get_target()->coreferent()) TAB "\n" ENDL;
-//			PRINTN(insidePOS(myt->get_target()));
 			
 			MyHypothesis::datum_t d1 = {myt->get_target(), myt->get_target()->word, alpha};	
 			mydata.push_back(d1);
@@ -457,11 +376,7 @@ int main(int argc, char** argv){
 	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1.20);
 //	ChainPool chain(h0, &mydata, FleetArgs::nchains);	
 
-//	chain.adapt_every = 100000000000;
-//	chain.swap_every = 100000000000;
 //	MCMCChain chain(h0, &mydata);
-//	chain.temperature = 1.;
-	
 	for(auto& h : chain.run(Control()) | top | print(FleetArgs::print)) {
 		UNUSED(h);
 	}

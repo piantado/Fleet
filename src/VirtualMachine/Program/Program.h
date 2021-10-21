@@ -11,7 +11,7 @@ template<typename VirtualMachineState_t> class Program;
  * @date 03/09/20
  * @file Callable.h
  * @brief This tiny class is just the class of things that can be loaders -- it allows you to write a program.
- * 		  Adn importantly it doesn't have any tempalte args, which simplifies a lot
+ * 		  And importantly it doesn't have any tempalte args, which simplifies a lot
  */
 template<typename VirtualMachineState_t>
 class ProgramLoader {

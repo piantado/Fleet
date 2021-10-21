@@ -52,6 +52,10 @@ public:
 	void print(std::ostream& out, unsigned long nprint=0) const { out << this->string(nprint);	}
 	void print(unsigned long nprint=0)                  const {	print(std::cout, nprint);	}
 	
+	void erase(const T& k) {
+		m.erase(k);
+	}
+	
 	
 	std::string string(unsigned long nprint=0) const {
 		/**
