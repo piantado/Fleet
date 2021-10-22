@@ -9,7 +9,7 @@
 #include "Singleton.h"
 
 #include <sys/syscall.h>
-#include <linux/random.h>
+#include <sys/random.h>
 
 
 size_t sysrandom(void* dst, size_t dstlen) {

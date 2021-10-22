@@ -65,7 +65,7 @@ public:
 		add("linear(%s)",        +[](BindingTree* x) -> int { 
 			if(x==nullptr) throw TreeException();			
 			return x->linear_order; 
-		}, 5);
+		});
 		
 //		add("traversal(%s)",        +[](BindingTree* x) -> int { 
 //			if(x==nullptr) throw TreeException();			
@@ -75,11 +75,11 @@ public:
 		add("gt(%s,%s)",         +[](int a, int b) -> bool { return (a>b); });
 		
 		// equality
-		add("eq(%s,%s)",   +[](bool a, bool b) -> bool { return (a==b); });		
-		add("eq(%s,%s)",   +[](int a, int b) -> bool { return (a==b); });		
-		add("eq(%s,%s)",   +[](S a, S b) -> bool { return (a==b); });		
-		add("eq(%s,%s)",   +[](POS a, POS b) -> bool { return (a==b); });		
-		add("eq(%s,%s)",   +[](BindingTree* x, BindingTree* y) -> bool { return x == y;});
+		add("eq_bool(%s,%s)",   +[](bool a, bool b) -> bool { return (a==b); });		
+		add("eq_int(%s,%s)",   +[](int a, int b) -> bool { return (a==b); });		
+		add("eq_str(%s,%s)",   +[](S a, S b) -> bool { return (a==b); });		
+		add("eq_pos(%s,%s)",   +[](POS a, POS b) -> bool { return (a==b); });		
+		add("eq_bt(%s,%s)",   +[](BindingTree* x, BindingTree* y) -> bool { return x == y;});
 
 		// pos predicates
 		add("pos(%s)",           +[](BindingTree* x) -> POS { 
@@ -137,10 +137,10 @@ public:
 		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
 		add("not(%s)",       Builtins::Not<MyGrammar>);
 		
-		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,int>);
-		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
-		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,POS>);
-		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,BindingTree*>);
+//		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,int>);
+//		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
+//		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,POS>);
+//		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,BindingTree*>);
 //	
 		add("x",              Builtins::X<MyGrammar>, 10);	
 		
@@ -279,6 +279,19 @@ public:
 		
 		return likelihood; 
 	 }	 
+	 
+	
+	// restart will just sample one from the prior 
+//	[[nodiscard]] virtual MyHypothesis restart() const override {
+//		MyHypothesis x = *this;
+//		
+//		auto idx = myrandom(nfactors());
+//		x.factors[idx] = InnerHypothesis::sample();
+//		
+//		return x;
+//	}
+	
+	 
 };
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -300,15 +313,21 @@ int main(int argc, char** argv){
 	fleet.initialize(argc, argv);
 	
 	//------------------
-	// set up the data
+	// set up the hypothesis
 	//------------------
+	
 	MyHypothesis h0;
 	for(size_t w=0;w<words.size();w++){ // for each word
 		h0.factors.push_back(InnerHypothesis::sample());
 	}
 
 	MyHypothesis::p_factor_propose = 0.2;
+	
 
+	//------------------
+	// set up the data
+	//------------------
+	
 	// convert to data
 	MyHypothesis::data_t mydata;
 	std::vector<std::string> raw_data; 	
@@ -373,10 +392,10 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> top;
 
 //	top.print_best = true;
-	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1.20);
+//	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1.20);
 //	ChainPool chain(h0, &mydata, FleetArgs::nchains);	
-
-//	MCMCChain chain(h0, &mydata);
+	MCMCChain chain(h0, &mydata);
+	
 	for(auto& h : chain.run(Control()) | top | print(FleetArgs::print)) {
 		UNUSED(h);
 	}
@@ -384,7 +403,25 @@ int main(int argc, char** argv){
 	top.print();
 	
 	
-//	MyHypothesis best = top.best();
+	MyHypothesis best = top.best();
+
+	
+	PRINTN(best.serialize());
+	
+	for(auto& f: best.factors) f.clear_cache();
+	PRINTN(best.compute_posterior(mydata));
+
+	//------------------
+	// Make target hypothesis
+	//------------------
+	
+//	MyHypothesis target = MyHypothesis::deserialize(gulp("target.txt"));
+//	PRINTN(target.compute_posterior(mydata));
+
+	//------------------
+	// Print all the data
+	//------------------
+		
 //	for(auto& f : best.factors) f.program.loader = &best; 
 //	
 //	for(size_t i=0;i<mydata.size();i++) {

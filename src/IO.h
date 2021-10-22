@@ -46,6 +46,26 @@ void PRINTN(First && first, Rest && ...rest) {
 	std::cout << std::endl;
 }
 
+
+void __ERR(){}
+template<typename First, typename ...Rest>
+void __ERR(First && first, Rest && ...rest) {
+    std::cerr << std::forward<First>(first) << "\t";
+    __ERR(std::forward<Rest>(rest)...);
+}
+template<typename First, typename ...Rest>
+void ERR(First && first, Rest && ...rest) {
+	std::lock_guard guard(output_lock);
+	__ERR(first,std::forward<Rest>(rest)...);
+}
+template<typename First, typename ...Rest>
+void ERRN(First && first, Rest && ...rest) {
+	std::lock_guard guard(output_lock);
+	__ERR(first,std::forward<Rest>(rest)...);
+	std::cerr << std::endl;
+}
+
+
 template<typename First, typename ...Rest>
 void DEBUG(First && first, Rest && ...rest) {
 	std::lock_guard guard(output_lock);
@@ -94,6 +114,26 @@ std::vector<HYP> load(std::string filename) {
 }
 
 /**
+ * @brief Read this entire file as a string
+ *        Skipping comment # lines
+ * @param filename
+ * @return 
+ */
+std::string gulp(std::string filename) {
+	std::string ret;
+	std::ifstream fs(filename);
+	
+	std::string line;
+	while(std::getline(fs, line)) {
+		if(line.length() > 0 and line[0] != '#'){
+			ret += line + "\n";
+		}
+	}
+	ret.erase(ret.size()-1); // remove last newline
+	return ret;
+}
+
+/**
  * @brief Load data -- divides in columns at the delimiter. NOTE: we are required to say whether we skip
  *        a header (first line) or not. Checks tha tthere are exactly N on each line. 
  *        So we can use like:  
@@ -134,58 +174,3 @@ std::vector<std::array<std::string,N>> read_csv(const std::string path, bool ski
 	
 	return out;
 }
-
-// ADD DEBUG(...) that is only there if we have a defined debug symbol....
-// DEBUG(DEBUG_MCMC, ....)
-
-//#define DEBUG(fmt, ...) 
-// do { if (DEBUG) fprintf(stderr, fmt, ##__VA_ARGS__); } while (0)
-				
-//class DebugBlock {
-//	// Handy debug printing when a variable enters and exists scope
-//	std::string enter;
-//	std::string exit; 
-//	public:
-//	DebugBlock(std::string en, std::string ex) : enter(en), exit(ex) {
-//		COUT enter ENDL;
-//	}
-//	~DebugBlock() {
-//		COUT exit ENDL;
-//	}
-//};
-
-
-//template<typename T>
-//void _print_wrapper(T x, std::ostream& o) {
-//	o << x;
-//}
-//template<typename T, typename... Args>
-//void _print_wrapper(T x, Args... args, std::ostream& o, std::string sep) {
-//	_print_wrapper(x,o);
-//	o << sep;
-//	_print_wrapper(args..., o, sep);
-//}
-//
-//
-//template<typename... Args>
-//void PRINT(Args... args, std::string sep='\t', std::string end='\n') {
-//	// this appends end to the args
-//	std::lock_guard guard(Fleet::output_lock);
-//	_print_wrapper(args..., end, sep, std::cout);
-//}
-
-// Want: A handy debugging macro that takes a variable name and prints 
-// variadic tab separated list of args
-// Bleh can't seem to do this bc https://stackoverflow.com/questions/2831934/how-to-use-if-inside-define-in-the-c-preprocessor
-/*
- #define MYDEBUG(name, ...) \
-	#ifdef name \
-		coutall(__VA_ARGS__);\
-		std::cout std::endl; \
-	#endif
-*/
-
-
-//template<typename a, typename... ARGS>
-//void PRINT()
-

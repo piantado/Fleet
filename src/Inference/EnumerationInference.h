@@ -15,7 +15,7 @@
  * @date 09/06/20
  * @file EnumerationInference.h
  * @brief Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar. It supports multithreading
- * 		  and requires a hypothesis, grammar, start type, and callback.
+ * 		  and requires a hypothesis, grammar, and starting type.
  */
 template<typename HYP, typename Grammar_t, typename Enumerator>
 class EnumerationInference : public ThreadedInferenceInterface<HYP> {
@@ -37,7 +37,9 @@ public:
 		while(ctl.running()) {
 			enumerationidx_t nxt = (enumerationidx_t) this->next_index();
 			auto n = ge.toNode(nxt, grammar->start());
-			auto h = MyHypothesis(n); // don't call make -- that restarts
+			//PRINTN(n.string());
+			
+			MyHypothesis h(n); 
 			h.compute_posterior(*data);
 
 			co_yield h;

@@ -73,8 +73,8 @@ public:
 		});
 		
 		add("\u00D8",        +[]()         -> S          { return S(""); });
-		add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; }, 1./2.);
-		add("(%s==%s)",      +[](char x, char y) -> bool { return x==y; }, 1./2.);
+		add("eq_s(%s,%s)",      +[](S x, S y) -> bool       { return x==y; }, 1./2.);
+		add("eq_c(%s,%s)",      +[](char x, char y) -> bool { return x==y; }, 1./2.);
 		
 		add("and(%s,%s)",    +[](bool a, bool b) -> bool { return (a and b); }, 1./3.);
 		add("or(%s,%s)",     +[](bool a, bool b) -> bool { return (a or b); }, 1./3.);
@@ -371,25 +371,25 @@ int main(int argc, char** argv){
 	}
 	else if(method == "prior-sampling") {
 		PriorInference<MyHypothesis> pri(&grammar, &mydata);
-		for(auto& h : pri.run(Control())) {
+		for(auto& h : pri.run(Control()) | print(FleetArgs::print)) {
 			top << h;
 		}
 	}
 	else if(method == "basic-enumeration") {
 		EnumerationInference<MyHypothesis,MyGrammar,BasicEnumeration<MyGrammar>> e(&grammar, &mydata);
-		for(auto& h : e.run(Control())){
+		for(auto& h : e.run(Control()) | print(FleetArgs::print)){
 			top << h;
 		}
 	}
 	else if(method == "partial-LZ-enumeration") {
 		EnumerationInference<MyHypothesis,MyGrammar,PartialLZEnumeration<MyGrammar>> e(&grammar, &mydata);
-		for(auto& h : e.run(Control())) {
+		for(auto& h : e.run(Control()) | print(FleetArgs::print)) {
 			top << h;
 		}
 	}
 	else if(method == "full-LZ-enumeration") {
 		EnumerationInference<MyHypothesis,MyGrammar,FullLZEnumeration<MyGrammar>> e(&grammar, &mydata);
-		for(auto& h : e.run(Control()) ){
+		for(auto& h : e.run(Control()) | print(FleetArgs::print) ){
 			top << h;
 		}
 	}

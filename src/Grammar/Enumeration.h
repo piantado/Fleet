@@ -1,10 +1,8 @@
 #pragma once
 
-
 #include "FleetStatistics.h"
 #include "IntegerizedStack.h"
 
-/* Functions for enumerating trees */
 
 /**
  * @brief This is a handy function to enumerate trees produced by the grammar. 

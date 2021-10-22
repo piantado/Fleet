@@ -15,7 +15,6 @@ class MCMCChain {
 	
 public:
 	
-//	 __attribute__ ((aligned (16))) HYP current;
 	 HYP current;
 	
 	// It's a little important that we use an OrderedLock, because otherwise we have
@@ -145,73 +144,68 @@ public:
 				steps_since_improvement = 0; // reset the couter
 				maxval = current.posterior; // and the new max
 				
-				++samples;
-				++FleetStatistics::global_sample_count;
-
-				co_yield current; 
-				
-				continue;
-			}
-			
-			#ifdef DEBUG_MCMC
-			DEBUG("\n# Current\t", data->size(), current.posterior, current.prior, current.likelihood, current.string());
-			#endif 
-			
-			std::lock_guard guard(current_mutex); // lock below otherwise others can modify
-
-			// propose, but restart if we're -infinity
-			auto [proposal, fb] = (current.posterior > -infinity ? current.propose() : std::make_pair(current.restart(), 0.0));			
-			
-			++proposals;
-			
-			// A lot of proposals end up with the same function, so if so, save time by not
-			// computing the posterior
-			if(proposal == current) {
-				// copy all the properties
-				// NOTE: This is necessary because == might just check value, but operator= will copy everything else
-				proposal = current; 
-			}
+			} 
 			else {
-				proposal.compute_posterior(*data);
-			}
-
-			#ifdef DEBUG_MCMC
-			DEBUG("# Proposed \t", proposal.posterior, proposal.prior, proposal.likelihood, fb, proposal.string());
-			#endif 
-			
-			// use MH acceptance rule, with some fanciness for NaNs
-			double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb; 		
-			if((std::isnan(current.posterior))  or
-			   (current.posterior == -infinity) or
-			   ((not std::isnan(proposal.posterior)) and
-				(ratio >= 0.0 or uniform() < exp(ratio) ))) {
-			
-				[[unlikely]];
-							
+				// normally we go here and do a proper proposal
+				
 				#ifdef DEBUG_MCMC
-					DEBUG("# Accept");
+				DEBUG("\n# Current\t", data->size(), current.posterior, current.prior, current.likelihood, current.string());
 				#endif 
 				
-				current = std::move(proposal);
-  
-				history << true;
-				
-				++acceptances;
-			}
-			else {
-				history << false;
-			}
+				std::lock_guard guard(current_mutex); // lock below otherwise others can modify
 
+				// propose, but restart if we're -infinity
+				auto [proposal, fb] = (current.posterior > -infinity ? current.propose() : std::make_pair(current.restart(), 0.0));			
+				
+				++proposals;
+				
+				// A lot of proposals end up with the same function, so if so, save time by not
+				// computing the posterior
+				if(proposal == current) {
+					// copy all the properties
+					// NOTE: This is necessary because == might just check value, but operator= will copy everything else
+					proposal = current; 
+				}
+				else {
+					proposal.compute_posterior(*data);
+				}
+
+				#ifdef DEBUG_MCMC
+				DEBUG("# Proposed \t", proposal.posterior, proposal.prior, proposal.likelihood, fb, proposal.string());
+				#endif 
+				
+				// use MH acceptance rule, with some fanciness for NaNs
+				double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb; 		
+				if((std::isnan(current.posterior))  or
+				   (current.posterior == -infinity) or
+				   ((not std::isnan(proposal.posterior)) and
+					(ratio >= 0.0 or uniform() < exp(ratio) ))) {
+				
+					[[unlikely]];
+								
+					#ifdef DEBUG_MCMC
+						DEBUG("# Accept");
+					#endif 
+					
+					current = std::move(proposal);
+	  
+					history << true;
+					
+					++acceptances;
+				}
+				else {
+					history << false;
+				}
+			}
+			
 			++samples;			
 			++FleetStatistics::global_sample_count;
 		
 			co_yield current;
 						
 		} while(ctl.running()); // end the main loop	-- at the end because ctl.running() counts the samples we've taken
-		
-		
-		
 	}
+	
 	void run() { 
 		/**
 		 * @brief Run forever

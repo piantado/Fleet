@@ -103,13 +103,11 @@ public:
 			// and now we need to fill in the nodes
 			for(auto& x : n) {
 				if(x.is_null()) {
-					// need to find x's NT:
-					auto xnt = x.parent->type(x.pi);
-					
-					x = toNode(is, xnt, root);
+					x.assign(toNode(is, x.parent->type(x.pi), root));
 				}
 			}
-			
+
+			assert(n.is_complete());			
 			return n; 
 		}
 		else {
@@ -132,8 +130,8 @@ public:
 				
 				i++;
 			}
-		//	CERR "\t" << root TAB is TAB out ENDL;
-				
+
+			assert(out.is_complete());							
 			return out;					
 		}
 	}
