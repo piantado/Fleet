@@ -905,6 +905,9 @@ public:
 			auto r = this->get_rule(s);
 			return this->makeNode(r);
 		}
+		else if(close == open+1) { // special case of "f()"
+			return this->makeNode(get_rule(s)); // the whole string is what we want and its a terminal
+		}
 		else { 
 			assert(close != -1);
 			

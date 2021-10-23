@@ -108,9 +108,9 @@ public:
 		});
 		
 		add("x",             Builtins::X<MyGrammar>, 10);
-		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>, 1./3);
-		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,char>, 1./3);
-		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,int>, 1./3);
+		add("if_s(%s,%s,%s)",  Builtins::If<MyGrammar,S>, 1./3);
+		add("if_c(%s,%s,%s)",  Builtins::If<MyGrammar,char>, 1./3);
+		add("if_i(%s,%s,%s)",  Builtins::If<MyGrammar,int>, 1./3);
 		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
 	}
 } grammar;

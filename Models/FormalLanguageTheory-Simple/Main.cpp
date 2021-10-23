@@ -49,17 +49,17 @@ public:
 		}));
 
 		add("\u00D8",        +[]()         -> S          { return S(""); }, 10.0);
-		add("(%s==%s)",      +[](S x, S y) -> bool       { return x==y; });
+		add("eq(%s,%s)",      +[](S x, S y) -> bool       { return x==y; });
 
 		add("and(%s,%s)",    Builtins::And<MyGrammar>);
 		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
 		add("not(%s)",       Builtins::Not<MyGrammar>);
 		
-		add("x",             Builtins::X<MyGrammar>, 10);
-		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
-		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,char>);
-		add("flip()",        Builtins::Flip<MyGrammar>, 10.0);
-		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
+		add("x",               Builtins::X<MyGrammar>, 10);
+		add("if_s(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
+		add("if_c(%s,%s,%s)",  Builtins::If<MyGrammar,char>);
+		add("flip()",          Builtins::Flip<MyGrammar>, 10.0);
+		add("recurse(%s)",     Builtins::Recurse<MyGrammar>);
 	}
 } grammar; 
 

@@ -309,6 +309,14 @@ public:
 
 int main(int argc, char** argv){ 
 	
+	
+
+//	Node n = grammar.simple_parse("and(not(or(eq_pos(  pos(parent(x)), 'NP-POSS'),eq_pos('NP-S',pos(x)))), corefers(x))");
+//	PRINTN(n.string());
+//	
+//	return 0 ;
+
+	
 	Fleet fleet("Learn principles A,B,C of binding theory");
 	fleet.initialize(argc, argv);
 	

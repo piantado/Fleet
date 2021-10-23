@@ -208,6 +208,17 @@ int main(int argc, char** argv){
 	// Actually run
 	//------------------
 	
+	
+	COUT "# Parsing...";
+	for(size_t i=0;i<1000;i++) {
+		auto n = grammar.generate();
+		auto n2 = grammar.simple_parse(n.string());
+		assert(n == n2);		
+		assert(n.string() == n2.string());		
+	}
+	COUT "GOOD" ENDL;
+	
+	
 	COUT "# MCMC...";
 	TopN<MyHypothesis> top_mcmc(N);  //	top_mcmc.print_best = true;
 	h0 = MyHypothesis::sample();
