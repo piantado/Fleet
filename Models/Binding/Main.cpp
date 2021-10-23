@@ -392,7 +392,21 @@ int main(int argc, char** argv){
 		delete t;
 	}
 		
-		
+	
+	//------------------
+	// Make target hypothesis to compare
+	//------------------
+	
+	MyHypothesis target;
+	target.factors.emplace_back(grammar.simple_parse("not(and(corefers(x),dominates(parent(coreferent(x)),x)))"));
+	target.factors.emplace_back(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
+	target.factors.emplace_back(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));
+	target.factors.emplace_back(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
+	target.factors.emplace_back(grammar.simple_parse("and(corefers(x),dominates(parent(coreferent(x)),x))"));
+	
+	PRINTN("# Target:", target.compute_posterior(mydata));
+	
+	
 	//////////////////////////////////
 	// run MCMC
 	//////////////////////////////////
@@ -412,19 +426,10 @@ int main(int argc, char** argv){
 	
 	
 	MyHypothesis best = top.best();
-
-	
-	PRINTN(best.serialize());
-	
 	for(auto& f: best.factors) f.clear_cache();
 	PRINTN(best.compute_posterior(mydata));
 
-	//------------------
-	// Make target hypothesis
-	//------------------
-	
-//	MyHypothesis target = MyHypothesis::deserialize(gulp("target.txt"));
-//	PRINTN(target.compute_posterior(mydata));
+
 
 	//------------------
 	// Print all the data
