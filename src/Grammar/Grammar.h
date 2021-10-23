@@ -381,7 +381,7 @@ public:
 		throw YouShouldNotBeHereError("*** Did not find rule in get_index_of.");
 	}
 	
-	virtual Rule* get_rule(const nonterminal_t nt, size_t k) const {
+	[[nodiscard]] virtual Rule* get_rule(const nonterminal_t nt, size_t k) const {
 		/**
 		 * @brief Get the k'th rule of type nt 
 		 * @param nt
@@ -394,7 +394,7 @@ public:
 		return const_cast<Rule*>(&rules[nt][k]);
 	}
 	
-	virtual Rule* get_rule(const nonterminal_t nt, const Op o, const int a=0) {
+	[[nodiscard]] virtual Rule* get_rule(const nonterminal_t nt, const Op o, const int a=0) {
 		/**
 		 * @brief Get rule of type nt with a given BuiltinOp and argument a
 		 * @param nt
@@ -412,11 +412,11 @@ public:
 		throw YouShouldNotBeHereError("*** Could not find rule");		
 	}
 	
-	virtual Rule* get_rule(const nonterminal_t nt, size_t i) {
+	[[nodiscard]] virtual Rule* get_rule(const nonterminal_t nt, size_t i) {
 		return &rules[nt].at(i);
 	}
 	
-	virtual Rule* get_rule(const nonterminal_t nt, const std::string s) const {
+	[[nodiscard]] virtual Rule* get_rule(const nonterminal_t nt, const std::string s) const {
 		/**
 		 * @brief Return a rule based on s, which must uniquely be a prefix of the rule's format of a given nonterminal type. 
 		 * 			If s is the empty string, however, it must match exactly. 
@@ -458,12 +458,12 @@ public:
 			return ret; 
 		}
 		else {			
-			CERR "*** No rule found to match " TAB s ENDL;
+			CERR "*** No rule found to match " TAB QQ(s) ENDL;
 			throw YouShouldNotBeHereError();
 		}
 	}
 	
-	virtual Rule* get_rule(const std::string s) const {
+	[[nodiscard]] virtual Rule* get_rule(const std::string s) const {
 		/**
 		 * @brief Return a rule based on s, which must uniquely be a prefix of the rule's format.
 		 * 			If s is the empty string, however, it must match exactly. 
@@ -484,7 +484,7 @@ public:
 		
 		if(ret != nullptr) { return ret; }
 		else {			
-			CERR "*** No rule found to match " TAB s ENDL;
+			CERR "*** No rule found to match " TAB QQ(s) ENDL;
 			throw YouShouldNotBeHereError();
 		}
 	}
@@ -834,5 +834,109 @@ public:
 			}
 		}
 	}
+	
+	
+		
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Simple parsing routines -- not very well debugged
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	std::tuple<int,std::vector<int>,int> find_open_commas_close(const std::string s) {
+		
+		// return values
+		int openpos = -1;
+		std::vector<int> commas; // all commas with only one open
+		int closepos = -1; 
+		
+		// how many are open?
+		int opencount = 0;
+		
+		for(size_t i=0;i<s.length();i++){
+			char c = s.at(i);
+			// PRINTN("C=", c, opencount, openpos, commas.size(),closepos);
+			
+			if(opencount==0 and openpos==-1 and c=='(') {
+				openpos = i;
+			}
+			
+			if(opencount==1 and closepos==-1 and c==')') {
+				closepos = i;
+			}
+		
+			// commas position are first comma when there is one open
+			if(opencount==1 and c==','){
+				assert(closepos == -1);
+				commas.push_back(i);
+			}
+			
+			opencount += (c=='(');
+			opencount -= (c==')');
+		}
+		
+		return std::make_tuple(openpos, commas, closepos);
+	}
+
+	/**
+	 * @brief Very simple parsing routine that takes a string like 
+	 * 			"and(not(or(eq_pos(pos(parent(x)),'NP-POSS'),eq_pos('NP-S',pos(x)))),corefers(x))"
+	 * 		  (from the Binding example) and parses it into a Node. 
+	 * 
+	 * 		  NOTE: The resulting Node must then be put into a LOTHypothesis or Lexicon. 
+	 * 	  	  NOTE: This is not very robust or debugged. Just a quick ipmlementation. 
+	 * @param s
+	 * @return 
+	 */
+	Node simple_parse(std::string s) {
+		//PRINTN("Parsing ", s);
+		
+		// remove the lambda x. if its there
+		if(s.substr(0,3) == "\u03BBx.") s.erase(0,3);			
+		// remove leading whitespace
+		while(s.at(0) == ' ' or s.at(0) == '\t') s.erase(0,1);		
+		// remove trailing whitespace
+		while(s.at(s.size()-1) == ' ' or s.at(s.size()-1) == '\t') s.erase(s.size()-1,1);		
+		
+		// use the above function to find chunks	
+		auto [open, commas, close] = find_open_commas_close(s);
+		
+		// if it's a terminal
+		if(open == -1) {
+			assert(commas.size()==0 and close==-1);
+			auto r = this->get_rule(s);
+			return this->makeNode(r);
+		}
+		else { 
+			assert(close != -1);
+			
+			// recover the rule format -- no spaces, etc. 
+			std::string fmt = s.substr(0,open) + "(%s";
+			for(auto& c : commas) {
+				UNUSED(c);
+				fmt += ",%s";
+			}
+			fmt += ")";
+			
+			// find the rule for this format
+			auto r = this->get_rule(fmt);
+			auto out = this->makeNode(r);
+			
+			int prev=open+1;
+			int ci=0;
+			for(auto& c : commas) {
+				auto child_string = s.substr(prev,c-prev);
+				out.set_child(ci,simple_parse(child_string));
+				prev = c+1;
+				ci++;
+			}
+			
+			// and the last child
+			auto child_string = s.substr(prev,close-prev);
+			out.set_child(ci,simple_parse(child_string));
+			
+			return out;
+		}	
+	}
+
+	
 	
 };
