@@ -402,7 +402,10 @@ int main(int argc, char** argv){
 	target.factors.emplace_back(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
 	target.factors.emplace_back(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));
 	target.factors.emplace_back(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
-	target.factors.emplace_back(grammar.simple_parse("and(corefers(x),dominates(parent(coreferent(x)),x))"));
+//	target.factors.emplace_back(grammar.simple_parse("and(corefers(x),dominates(parent(coreferent(x)),x))"));
+	target.factors.emplace_back(grammar.simple_parse("and(eq_bool(eq_pos('NP-POSS',pos(parent(x))),eq_pos('NP-S',pos(x))),corefers(x))"));
+	/// Oooh what's going on here is probably that you can't have "himself" in possessives?
+	
 	
 	PRINTN("# Target:", target.compute_posterior(mydata));
 	

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map.h>
 #include <limits.h>
 
 #include "Hypotheses/Interfaces/Bayesable.h"
@@ -16,6 +17,7 @@
  */
 
 template<typename this_t, 
+		 typename key_t,
 		 typename INNER, 
 		 typename _input_t,
 		 typename _output_t, 
@@ -38,10 +40,9 @@ public:
 
 	static double p_factor_propose;
 
-	std::vector<INNER> factors;
+	std::map<key_t,INNER> factors;
 	
-	Lexicon(size_t n)  : MCMCable<this_t,datum_t>()  { factors.resize(n); }
-	Lexicon()          : MCMCable<this_t,datum_t>()  { }
+	Lexicon() : MCMCable<this_t,datum_t>()  { }
 	
 	/**
 	 * @brief Return the number of factors
@@ -55,11 +56,15 @@ public:
 	      std::vector<INNER>& get_value()       {	return factors;	}
 	const std::vector<INNER>& get_value() const {	return factors;	}
 	
+		  INNER& at(const key_t& k) { return factors.at(k); }
+	const INNER& at(const key_t& k) const { return factors.at(k); }
+	
+	
 	Grammar_t* get_grammar() {
 		// NOTE that since LOTHypothesis has grammar as its type, all INNER Must have the 
 		// same grammar type (But this may change in the future -- if it does, we need to 
 		// update GrammarHypothesis::set_hypotheses_and_data)
-		return factors[0].get_grammar();
+		return factors.begin()->get_grammar();
 	}
 	
 	
@@ -68,11 +73,11 @@ public:
 	 * @param n
 	 * @return 
 	 */	
-	[[nodiscard]] static this_t sample(size_t nf) {
-		this_t out;
+	[[nodiscard]] static this_t sample(std::initializer_list<key_t> lst) {
 		
-		for(size_t i=0;i<nf;i++) {// start with the right number of factors
-			out.factors.push_back(INNER::sample());
+		this_t out;
+		for(auto& k : lst){
+			out[k] = INNER::sample();
 		}
 		
 		return out;
@@ -85,14 +90,10 @@ public:
 		 */
 		
 		std::string s = prefix + "[";
-		for(size_t i =0;i<factors.size();i++){
-			s.append(std::string("F"));
-			s.append(std::to_string(i));
-			s.append(":=");
-			s.append(factors[i].string());
-			s.append(".");
-			if(i<factors.size()-1) s.append(" ");
+		for(auto& [k,v] : factors) { 
+			s += "F("+str(k)+", x) :=" + factors[i].string() + ". ";
 		}
+		s.erase(s.size()-1); // remove last empty space
 		s.append("]");
 		return s;		
 	}
@@ -106,7 +107,7 @@ public:
 		std::hash<size_t> h;
 		size_t out = h(factors.size());
 		size_t i=0;
-		for(auto& a: factors){
+		for(auto& [k,v] : factors){
 			hash_combine(out, a.hash(), i);
 			i++;
 		}
@@ -119,17 +120,7 @@ public:
 	 * @return 
 	 */
 	virtual bool operator==(const this_t& l) const override {
-
-			
-		// first, fewer factors are less
-		if(factors.size() != l.factors.size()) 
-			return  false;
-		
-		for(size_t i=0;i<factors.size();i++) {
-			if(!(factors[i] == l.factors[i]))
-				return false;
-		}
-		return true; 
+		return factors == l.factors;
 	}
 	
 	/**
@@ -138,11 +129,7 @@ public:
 	 * @return 
 	 */
 	bool has_valid_indices() const {
-
-		
-		// check to make sure that if we have rn recursive factors, we never try to call F on higher 
-		
-		for(auto& f : factors) {
+		for(auto& [k, f] : factors) {
 			for(const auto& n : f.get_value() ) {
 				if(n.rule->is_recursive()) {
 					int fi = n.rule->arg; // which factor is called?
@@ -176,9 +163,8 @@ public:
 			}
 		}
 		
-		for(size_t i=0;i<N;i++){
-			
-			for(const auto& n : factors[i].get_value() ) {
+		for(auto& [k, f] : factors)
+			for(const auto& n : f.get_value() ) {
 				if(n.rule->is_recursive()) {
 					calls[i][n.rule->arg] = true;
 				}
@@ -210,19 +196,15 @@ public:
 	 * Required for VMS to dispatch to the right sub
 	 ********************************************************/
 	 
-	virtual void push_program(Program<VirtualMachineState_t>& s, short j) override {
+	virtual void push_program(Program<VirtualMachineState_t>& s, key_t k) override {
 		/**
 		 * @brief Put factor j onto program s
 		 * @param s
 		 * @param j
 		 */
 		
-		assert(factors.size() > 0);
-		
-		// Here we don't check anything on the bounds for j except in vector.at(...)
-
 		// dispath to the right factor
-		factors.at(j).push_program(s); // on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)
+		factors.at(k).push_program(s); // on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)
 	}
 	
 	/********************************************************
@@ -230,8 +212,8 @@ public:
 	 ********************************************************/
 	
 	virtual void complete() override {
-		for(auto& v: factors){
-			v.complete();
+		for(auto& [k, f] : factors){
+			f.complete();
 		}
 	}
 		
@@ -240,8 +222,8 @@ public:
 		
 		this->prior = log(0.5)*(factors.size()+1); // +1 to end adding factors, as in a geometric
 		
-		for(auto& a : factors) {
-			this->prior += a.compute_prior();
+		for(auto& [k,f] : factors) {
+			this->prior += f.compute_prior();
 		}
 		
 		return this->prior;
@@ -265,15 +247,16 @@ public:
 		// (NOTE fb is always zero)
 		// NOTE: This is not great because it doesn't copy like we might want...
 		this_t x; double fb = 0.0;
-		x.factors.resize(factors.size());
-		for(size_t k=0;k<factors.size();k++) {
-			if(should_propose[k]) {
-				auto [h, _fb] = factors[k].propose();
+		int idx = 0;
+		for(auto& [k,f] : factors) {
+			if(should_propose[idx]) {
+				auto [h, _fb] = f.propose();
 				x.factors[k] = h;
 				fb += _fb;
 			} else {
-				x.factors[k] = factors[k];
+				x.factors[k] = f;
 			}
+			idx++;
 		}
 		assert(x.factors.size() == factors.size());
 		
@@ -284,9 +267,8 @@ public:
 	
 	[[nodiscard]] virtual this_t restart() const override {
 		this_t x;
-		x.factors.resize(factors.size());
-		for(size_t i=0;i<factors.size();i++){
-			x.factors[i] = factors[i].restart();
+		for(auto& [k,f] : factors) {
+			x.factors[k] = f.restart();
 		}
 		return x;
 	}
@@ -298,8 +280,31 @@ public:
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	TODO: NEEDED TO STOP HERE: 
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/********************************************************
-	 * Implementation of Searchabel interace 
+	 * Implementation of Searchable interace 
 	 ********************************************************/
 	 // Main complication is that we need to manage nullptrs/empty in order to start, so we piggyback
 	 // on LOTHypothesis. To od this, we assume we can construct T with T tmp(grammar, nullptr) and 
