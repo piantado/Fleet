@@ -279,30 +279,6 @@ public:
 		return h.restart();
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	TODO: NEEDED TO STOP HERE: 
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/********************************************************
 	 * Implementation of Searchable interace 
 	 ********************************************************/
@@ -320,36 +296,26 @@ public:
 		}
 		else {
 			// we should have everything complete except the last
-			size_t s = factors.size();
-			return factors[s-1].neighbors();
+			return factors.rbegin()->first.neighbors();
 		}
 	 }
 		 
 	 void expand_to_neighbor(int k) override {
-		 // try adding a factor
-		 if(is_evaluable()){ 
-			INNER tmp; // as above, assumes that this constructs will null
-			assert(k < tmp.neighbors());			
-			factors.push_back( tmp.make_neighbor(k) );	 
-		}
-		else {
-			// expand the last factor
-			size_t s = factors.size();
-			assert(k < factors[s-1].neighbors());
-			factors[s-1].expand_to_neighbor(k);
-		}
-	 }
+		 // This is currently a bit broken -- it used to know when to add a factor
+		 // but now we can't add a factor without knowing the key, so for now
+		 // this is just assert(false);
+		 throw NotImplementedError();
+	}
 	
 	
 	 virtual double neighbor_prior(int k) override {
-		size_t s = factors.size();
-		assert(k < factors[s-1].neighbors());
-		return factors[s-1].neighbor_prior(k);
+		assert(k <  factors.rbegin()->first.neighbors());
+		return factors.rbegin()->first.neighbor_prior(k);
 	 }
 	 
 	 bool is_evaluable() const override {
-		for(auto& a: factors) {
-			if(!a.is_evaluable()) return false;
+		for(auto& [k,f]: factors) {
+			if(not f.is_evaluable()) return false;
 		}
 		return true;
 	 }
@@ -369,12 +335,14 @@ public:
 		 * @return 
 		 */
 		
-		std::string out = "";
-		for(size_t i=0;i<factors.size();i++) {
-			out += factors[i].serialize();
-			if(i < factors.size()-1) 
-				out += Lexicon::FactorDelimiter;
+		std::string out = str(this->prior)      + Lexicon::FactorDelimiter + 
+						  str(this->likelihood) + Lexicon::FactorDelimiter +
+						  str(this->posterior)  + Lexicon::FactorDelimiter;
+		for(auto& [k,v] : factors) {
+			out += str(k) + Lexicon::FactorDelimiter + 
+				   factors[i].serialize() + Lexicon::FactorDelimiter;
 		}
+		out.erase(out.size()-1); // remove last delmiter
 		return out;
 	}
 	
@@ -387,8 +355,16 @@ public:
 		 */
 
 		this_t h;
-		for(auto f : split(s, Lexicon::FactorDelimiter)) {
-			h.factors.push_back(INNER::deserialize(f));
+		auto q = split(s, Lexicon::FactorDelimiter);
+		
+		h.prior      = string_to<double>(q.pop_front());
+		h.likelihood = string_to<double>(q.pop_front());
+		h.posterior  = string_to<double>(q.pop_front());
+
+		while(not q.empty()){
+			key_t k = string_to<key_t>(q.pop_front());
+			auto v = INNER::deserialize(q.pop_front());
+			h.factors[k] = v; 
 		}
 		return h;
 	}
