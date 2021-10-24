@@ -194,6 +194,35 @@ namespace Builtins {
 		
 	});
 
+		
+	template<typename Grammar_t,
+		     typename key_t,
+			 typename input_t=typename Grammar_t::input_t,
+			 typename output_t=typename Grammar_t::output_t>
+	Builtin<output_t,key_t,input_t> 
+		LexiconRecurse(Op::LexiconRecurse, BUILTIN_LAMBDA {
+			
+			assert(vms->program.loader != nullptr);
+							
+			if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
+				vms->status = vmstatus_t::RECURSION_DEPTH;
+				return;
+			}
+
+			// if we get here, then we have processed our arguments and they are stored in the input_t stack. 
+			// so we must move them to the x stack (where there are accessible by op_X)
+			auto mynewx = vms->template getpop<input_t>();
+			vms->xstack.push(std::move(mynewx));
+			vms->program.push(Builtins::PopX<Grammar_t>.makeInstruction()); // we have to remember to remove X once the other program evaluates, *after* everything has evaluated
+			
+			// the key here is the index into the lexicon
+			auto key = vms->template getpop<key_t>();
+			
+			// push this program 
+			// but we give i.arg so that we can pass factorized recursed
+			// in argument if we want to
+			vms->program.loader->push_program(vms->program,key); 
+	});
 	
 
 	

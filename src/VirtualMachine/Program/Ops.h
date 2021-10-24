@@ -6,6 +6,7 @@ enum class Op {
 	X,
 	If, Jmp,
 	Recurse, PopX, SafeRecurse, MemRecurse, SafeMemRecurse,
+	LexiconRecurse, LexiconSafeRecurse, LexiconMemRecurse, LexiconSafeMemRecurse,
 	Flip, FlipP, SafeFlipP,
 	Mem,
 	NoOp,

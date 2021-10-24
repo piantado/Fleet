@@ -16,7 +16,16 @@ template<typename VirtualMachineState_t> class Program;
 template<typename VirtualMachineState_t>
 class ProgramLoader {
 public:
-	virtual void push_program(Program<VirtualMachineState_t>& s, short k=0) = 0;
+
+
+	// This is a bit of hack -- we need a line here for eahc kind of key we might want to a lexicon. 
+	// For reasons I don't fully understand, the linker will not find this if templated. 
+	
+	virtual void push_program(Program<VirtualMachineState_t>& s)                      { throw NotImplementedError(); }
+	virtual void push_program(Program<VirtualMachineState_t>& s, const short a)       { throw NotImplementedError(); }
+	virtual void push_program(Program<VirtualMachineState_t>& s, const int a)         { throw NotImplementedError(); }
+	virtual void push_program(Program<VirtualMachineState_t>& s, const std::string k) { throw NotImplementedError(); }
+	
 };
 
 

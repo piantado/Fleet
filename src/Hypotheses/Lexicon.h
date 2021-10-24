@@ -26,8 +26,8 @@ template<typename this_t,
 		 >
 class Lexicon : public MCMCable<this_t,datum_t>,
 				public Searchable<this_t, _input_t, _output_t>, // TODO: Interface a little broken 
-				public Serializable<this_t>
-				//public ProgramLoader<_VirtualMachineState_t> 
+				public Serializable<this_t>,
+				public ProgramLoader<_VirtualMachineState_t> 
 {
 public:
 	using Grammar_t = typename INNER::Grammar_t;
@@ -202,16 +202,15 @@ public:
 	 * Required for VMS to dispatch to the right sub
 	 ********************************************************/
 	 
-//	virtual void push_program(Program<VirtualMachineState_t>& s, key_t k) override {
-//		/**
-//		 * @brief Put factor j onto program s
-//		 * @param s
-//		 * @param j
-//		 */
-//		
-//		// dispath to the right factor
-//		factors.at(k).push_program(s); // on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)
-//	}
+	/**
+	 * @brief Dispatch key k -- push its program onto the stack.
+	 * @param s
+	 * @param k
+	 */	 
+	virtual void push_program(Program<VirtualMachineState_t>& s, const key_t k) override {
+		// dispath to the right factor
+		factors.at(k).push_program(s); // on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)
+	}
 	
 	/********************************************************
 	 * Implementation of MCMCable interace 
