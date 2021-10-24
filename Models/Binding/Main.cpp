@@ -158,15 +158,9 @@ public:
 //			add_terminal<int>(str(p), p, 5.0/24.);
 //		}
 
-		// add recursive calls
-		// 
-		// 
+
 		// NOTE THIS DOES NOT WORK WITH THE CACHED VERSION
-//		for(const auto& w : words) {	
-//			add("F("+w+",%s)" ,  Builtins::LexiconRecurse<MyGrammar,S,w>);
-//		}
-		
-		add("F(%s,%s)" ,  Builtins::LexiconRecurse<MyGrammar,S>); // note the number of arguments here
+//		add("F(%s,%s)" ,  Builtins::LexiconRecurse<MyGrammar,S>); // note the number of arguments here
 	}
 		
 } grammar;
@@ -243,23 +237,12 @@ public:
 
 	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		
-		// set to null so that we get an error on recurse
+		// TODO: Can set to null so that we get an error on recurse
 		for(auto& [k, f] : factors) f.program.loader = this; 
 		
 		// make sure everyone's cache is right on this data
 		for(auto& [k, f] : factors) {
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			f.clear_cache();
-			
+			//f.clear_cache(); // if we always want to recompute (e.g. if using recursion)
 			f.cached_callOne(data); 
 			
 			// now if anything threw an error, break out, we don't have to compute

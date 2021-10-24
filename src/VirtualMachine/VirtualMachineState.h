@@ -69,14 +69,14 @@ public:
 	struct stack_t { std::tuple<VMSStack<args>...> value; };
 	stack_t<VM_TYPES...> _stack; // our stacks of different types
 	
-	typedef int index_t; // how we index into factorized lexica -- NOTE: must be castable from Instruction.arg 
+	using memoization_key_t = std::string; // we can only memoize lexica with this as the key in their map. 
 	
 	// must have a memoized return value, that permits factorized by requiring an index argument
-	std::map<std::pair<index_t, input_t>, output_t> mem; 
+	std::map<std::pair<memoization_key_t, input_t>, output_t> mem; 
 
 	// when we recurse and memoize, this stores the arguments (index and input_t) for us to 
 	// rember after the program trace is done
-	VMSStack<std::pair<index_t, input_t>> memstack;
+	VMSStack<std::pair<memoization_key_t, input_t>> memstack;
 
 	vmstatus_t status; // are we still running? Did we get an error?
 	

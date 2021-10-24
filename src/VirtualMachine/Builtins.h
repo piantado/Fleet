@@ -194,37 +194,6 @@ namespace Builtins {
 		
 	});
 
-		
-	template<typename Grammar_t,
-		     typename key_t,
-			 typename input_t=typename Grammar_t::input_t,
-			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t,key_t,input_t> 
-		LexiconRecurse(Op::LexiconRecurse, BUILTIN_LAMBDA {
-			
-			assert(vms->program.loader != nullptr);
-							
-			if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
-				vms->status = vmstatus_t::RECURSION_DEPTH;
-				return;
-			}
-
-			// if we get here, then we have processed our arguments and they are stored in the input_t stack. 
-			// so we must move them to the x stack (where there are accessible by op_X)
-			auto mynewx = vms->template getpop<input_t>();
-			vms->xstack.push(std::move(mynewx));
-			vms->program.push(Builtins::PopX<Grammar_t>.makeInstruction()); // we have to remember to remove X once the other program evaluates, *after* everything has evaluated
-			
-			// the key here is the index into the lexicon
-			auto key = vms->template getpop<key_t>();
-			
-			// push this program 
-			// but we give i.arg so that we can pass factorized recursed
-			// in argument if we want to
-			vms->program.loader->push_program(vms->program,key); 
-	});
-	
-
 	
 	template<typename Grammar_t,
 			 typename input_t=typename Grammar_t::input_t,
@@ -248,7 +217,7 @@ namespace Builtins {
 			// push this program 
 			// but we give i.arg so that we can pass factorized recursed
 			// in argument if we want to
-			vms->program.loader->push_program(vms->program,arg); 
+			vms->program.loader->push_program(vms->program); 
 			
 			// after execution is done, the result will be pushed onto output_t
 			// which is what gets returned when we are all done
@@ -300,35 +269,10 @@ namespace Builtins {
 			vms->memstack.push(memindex); // popped off by op_MEM			
 			vms->program.push(Builtins::Mem<Grammar_t,output_t>.makeInstruction());
 
-			vms->program.loader->push_program(vms->program, arg); // this leaves the answer on top
+			vms->program.loader->push_program(vms->program); // this leaves the answer on top
 		}		
 	});
 	
-//	template<typename Grammar_t>
-//	Builtin<typename Grammar_t::output_t, typename Grammar_t::input_t> 
-//	MemRecurse(Op::MemRecurse, BUILTIN_LAMBDA {	
-//		assert(vms->program_loader != nullptr);
-//						
-//		if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
-//			vms->status = vmstatus_t::RECURSION_DEPTH;
-//			return;
-//		}
-//				
-//		auto x = vms->template getpop<typename Grammar_t::input_t>(); // get the argument
-//		auto memindex = std::make_pair(arg,x);
-//		
-//		if(vms->mem.count(memindex)){
-//			vms->push(vms->mem[memindex]); // hmm probably should not be a move?
-//		}
-//		else {	
-//			vms->xstack.push(x);	
-//			vms->memstack.push(memindex); // popped off by op_MEM
-//			vms->program.push(Builtins::Mem<Grammar_t>.makeInstruction());
-//			vms->program.push(Builtins::PopX<Grammar_t>.makeInstruction());
-//			vms->program_loader->push_program(vms->program,arg); // this leaves the answer on top
-//		}		
-//	});
-
 
 	template<typename Grammar_t,
 			 typename input_t=typename Grammar_t::input_t,
@@ -343,9 +287,126 @@ namespace Builtins {
 			vms->template push<output_t>(output_t{}); //push default (null) return
 		}
 		else {
-			MemRecurse<Grammar_t>.call(vms,arg);
+			MemRecurse<Grammar_t>.call(vms, arg);
 		}
 	});
+	
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	
+			
+	template<typename Grammar_t,
+		     typename key_t,
+			 typename input_t=typename Grammar_t::input_t,
+			 typename output_t=typename Grammar_t::output_t>
+	Builtin<output_t,key_t,input_t> 
+		LexiconRecurse(Op::LexiconRecurse, BUILTIN_LAMBDA {
+			
+			assert(vms->program.loader != nullptr);
+							
+			if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
+				vms->status = vmstatus_t::RECURSION_DEPTH;
+				return;
+			}
+			
+			// the key here is the index into the lexicon
+			// NOTE: this is popped before the argument (which is relevant when they are the same type)
+			auto key = vms->template getpop<key_t>();
 
+			// if we get here, then we have processed our arguments and they are stored in the input_t stack. 
+			// so we must move them to the x stack (where there are accessible by op_X)
+			auto mynewx = vms->template getpop<input_t>();
+			vms->xstack.push(std::move(mynewx));
+			vms->program.push(Builtins::PopX<Grammar_t>.makeInstruction()); // we have to remember to remove X once the other program evaluates, *after* everything has evaluated
+			
+
+			
+			// push this program 
+			// but we give i.arg so that we can pass factorized recursed
+			// in argument if we want to
+			vms->program.loader->push_program(vms->program,key); 
+	});
+	
+	
+	template<typename Grammar_t,
+		     typename key_t,
+		     typename input_t=typename Grammar_t::input_t,
+			 typename output_t=typename Grammar_t::output_t>
+	Builtin<output_t,key_t,input_t> 
+	LexiconSafeRecurse(Op::LexiconSafeRecurse, BUILTIN_LAMBDA {
+			assert(not vms->template stack<input_t>().empty());
+			assert(vms->program.loader != nullptr);
+				
+			// if the size of the top is zero, we return output{}
+			if(vms->template stack<input_t>().top().size() == 0) { 
+				vms->template getpop<key_t>();
+				vms->template getpop<input_t>(); // this would have been the argument
+							
+				vms->template push<output_t>(output_t{}); //push default (null) return
+			}
+			else {
+				LexiconRecurse<Grammar_t,key_t>.call(vms,arg);
+			}
+		
+	});
+	
+	
+	template<typename Grammar_t,
+		     typename key_t,
+			 typename input_t=typename Grammar_t::input_t,
+			 typename output_t=typename Grammar_t::output_t>
+	Builtin<output_t,key_t,input_t> 
+	LexiconMemRecurse(Op::LexiconMemRecurse, BUILTIN_LAMBDA {
+		assert(vms->program.loader != nullptr);
+						
+		if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
+			vms->status = vmstatus_t::RECURSION_DEPTH;
+			return;
+		}
+		
+		auto key = vms->template getpop<key_t>();
+		auto x = vms->template getpop<input_t>(); // get the argument
+		
+		static_assert(std::is_same<typename decltype(*vms)::memoization_key_t,key_t>::value, "*** Fleet only supports memoization over strings (VirtualMachineState::memoization_key_t) right now.");
+		
+		auto memindex = std::make_pair(key,x);
+		
+		if(vms->mem.count(memindex)){
+			vms->push(vms->mem[memindex]); // copy over here
+		}
+		else {	
+			vms->xstack.push(x);	
+			vms->program.push(Builtins::PopX<Grammar_t>.makeInstruction());
+
+			vms->memstack.push(memindex); // popped off by op_MEM			
+			vms->program.push(Builtins::Mem<Grammar_t,output_t>.makeInstruction());
+
+			vms->program.loader->push_program(vms->program,key);  // this leaves the answer on top
+		}				
+	});
+	
+
+	template<typename Grammar_t,
+		     typename key_t,
+		     typename input_t=typename Grammar_t::input_t,
+			 typename output_t=typename Grammar_t::output_t>
+	Builtin<output_t,key_t,input_t> 
+	LexiconSafeMemRecurse(Op::LexiconSafeMemRecurse, BUILTIN_LAMBDA {
+			assert(not vms->template stack<input_t>().empty());
+			assert(vms->program.loader != nullptr);
+				
+			// if the size of the top is zero, we return output{}
+			if(vms->template stack<input_t>().top().size() == 0) { 
+				vms->template getpop<key_t>();
+				vms->template getpop<input_t>(); // this would have been the argument
+							
+				vms->template push<output_t>(output_t{}); //push default (null) return
+			}
+			else {
+				LexiconMemRecurse<Grammar_t,key_t>.call(vms,arg);
+			}
+		
+	});
 }
 
