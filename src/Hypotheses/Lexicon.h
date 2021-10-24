@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map.h>
+#include <map>
 #include <limits.h>
 
 #include "Hypotheses/Interfaces/Bayesable.h"
@@ -25,9 +25,9 @@ template<typename this_t,
 		 typename _VirtualMachineState_t=typename INNER::Grammar_t::VirtualMachineState_t
 		 >
 class Lexicon : public MCMCable<this_t,datum_t>,
-				public Searchable<this_t, _input_t, _output_t>,
-				public Serializable<this_t>,
-				public ProgramLoader<_VirtualMachineState_t> 
+				public Searchable<this_t, _input_t, _output_t>, // TODO: Interface a little broken 
+				public Serializable<this_t>
+				//public ProgramLoader<_VirtualMachineState_t> 
 {
 public:
 	using Grammar_t = typename INNER::Grammar_t;
@@ -59,6 +59,8 @@ public:
 		  INNER& at(const key_t& k) { return factors.at(k); }
 	const INNER& at(const key_t& k) const { return factors.at(k); }
 	
+		  INNER& operator[](const key_t& k) { return factors[k]; }
+	const INNER& operator[](const key_t& k) const { return factors[k]; }
 	
 	Grammar_t* get_grammar() {
 		// NOTE that since LOTHypothesis has grammar as its type, all INNER Must have the 
@@ -90,8 +92,8 @@ public:
 		 */
 		
 		std::string s = prefix + "[";
-		for(auto& [k,v] : factors) { 
-			s += "F("+str(k)+", x) :=" + factors[i].string() + ". ";
+		for(auto& [k,f] : factors) { 
+			s += "F("+str(k)+",x):=" + f.string() + ". ";
 		}
 		s.erase(s.size()-1); // remove last empty space
 		s.append("]");
@@ -107,8 +109,8 @@ public:
 		std::hash<size_t> h;
 		size_t out = h(factors.size());
 		size_t i=0;
-		for(auto& [k,v] : factors){
-			hash_combine(out, a.hash(), i);
+		for(auto& [k,f] : factors){
+			hash_combine(out, f.hash(), k);
 			i++;
 		}
 		return out;
@@ -163,11 +165,15 @@ public:
 			}
 		}
 		
-		for(auto& [k, f] : factors)
-			for(const auto& n : f.get_value() ) {
-				if(n.rule->is_recursive()) {
-					calls[i][n.rule->arg] = true;
+		{
+			int i=0;
+			for(auto& [k, f] : factors) {
+				for(const auto& n : f.get_value() ) {
+					if(n.rule->is_recursive()) {
+						calls[i][n.rule->arg] = true;
+					}
 				}
+				i++;
 			}
 		}
 		
@@ -196,16 +202,16 @@ public:
 	 * Required for VMS to dispatch to the right sub
 	 ********************************************************/
 	 
-	virtual void push_program(Program<VirtualMachineState_t>& s, key_t k) override {
-		/**
-		 * @brief Put factor j onto program s
-		 * @param s
-		 * @param j
-		 */
-		
-		// dispath to the right factor
-		factors.at(k).push_program(s); // on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)
-	}
+//	virtual void push_program(Program<VirtualMachineState_t>& s, key_t k) override {
+//		/**
+//		 * @brief Put factor j onto program s
+//		 * @param s
+//		 * @param j
+//		 */
+//		
+//		// dispath to the right factor
+//		factors.at(k).push_program(s); // on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)
+//	}
 	
 	/********************************************************
 	 * Implementation of MCMCable interace 
@@ -296,7 +302,7 @@ public:
 		}
 		else {
 			// we should have everything complete except the last
-			return factors.rbegin()->first.neighbors();
+			return factors.rbegin()->second.neighbors();
 		}
 	 }
 		 
@@ -309,8 +315,8 @@ public:
 	
 	
 	 virtual double neighbor_prior(int k) override {
-		assert(k <  factors.rbegin()->first.neighbors());
-		return factors.rbegin()->first.neighbor_prior(k);
+		assert(k <  factors.rbegin()->second.neighbors());
+		return factors.rbegin()->second.neighbor_prior(k);
 	 }
 	 
 	 bool is_evaluable() const override {
@@ -324,8 +330,7 @@ public:
 	/********************************************************
 	 * How to call 
 	 ********************************************************/
-	virtual DiscreteDistribution<output_t> call(const input_t x, const output_t& err=output_t{}) {
-		// subclass must define what it means to call a lexicon
+	virtual DiscreteDistribution<output_t> call(const key_t k, const input_t x, const output_t& err=output_t{}) {
 		throw NotImplementedError();
 	}
 	 
@@ -338,9 +343,9 @@ public:
 		std::string out = str(this->prior)      + Lexicon::FactorDelimiter + 
 						  str(this->likelihood) + Lexicon::FactorDelimiter +
 						  str(this->posterior)  + Lexicon::FactorDelimiter;
-		for(auto& [k,v] : factors) {
-			out += str(k) + Lexicon::FactorDelimiter + 
-				   factors[i].serialize() + Lexicon::FactorDelimiter;
+		for(auto& [k,f] : factors) {
+			out += str(k)        + Lexicon::FactorDelimiter + 
+				   f.serialize() + Lexicon::FactorDelimiter;
 		}
 		out.erase(out.size()-1); // remove last delmiter
 		return out;
@@ -357,13 +362,13 @@ public:
 		this_t h;
 		auto q = split(s, Lexicon::FactorDelimiter);
 		
-		h.prior      = string_to<double>(q.pop_front());
-		h.likelihood = string_to<double>(q.pop_front());
-		h.posterior  = string_to<double>(q.pop_front());
+		h.prior      = string_to<double>(q.front()); q.pop_front();
+		h.likelihood = string_to<double>(q.front()); q.pop_front();
+		h.posterior  = string_to<double>(q.front()); q.pop_front();
 
 		while(not q.empty()){
-			key_t k = string_to<key_t>(q.pop_front());
-			auto v = INNER::deserialize(q.pop_front());
+			key_t k = string_to<key_t>(q.front());  q.pop_front();
+			auto v = INNER::deserialize(q.front()); q.pop_front();
 			h.factors[k] = v; 
 		}
 		return h;
@@ -371,11 +376,12 @@ public:
 };
 
 
-template<typename this_t,  // this is so stupid
+template<typename this_t, 
+		 typename key_t,
 		 typename INNER, 
 		 typename _input_t,
 		 typename _output_t, 
 		 typename datum_t,
 		 typename _VirtualMachineState_t
 		 >
-double Lexicon<this_t,INNER,_input_t,_output_t,datum_t,_VirtualMachineState_t>::p_factor_propose = 0.5;
+double Lexicon<this_t,key_t,INNER,_input_t,_output_t,datum_t,_VirtualMachineState_t>::p_factor_propose = 0.5;

@@ -176,7 +176,7 @@ public:
 #include "CachedCallHypothesis.h"
 
 class InnerHypothesis : public LOTHypothesis<InnerHypothesis,BindingTree*,bool,MyGrammar,&grammar>, 
-						public CachedCallHypothesis<InnerHypothesis,bool>{
+						public CachedCallHypothesis<InnerHypothesis,bool> {
 public:
 	using Super = LOTHypothesis<InnerHypothesis,BindingTree*,bool,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors
@@ -232,9 +232,9 @@ public:
 };
 
 
-class MyHypothesis : public Lexicon<MyHypothesis, InnerHypothesis, BindingTree*, std::string> {
+class MyHypothesis : public Lexicon<MyHypothesis, std::string, InnerHypothesis, BindingTree*, std::string> {
 	// Takes a node (in a bigger tree) and a word
-	using Super = Lexicon<MyHypothesis, InnerHypothesis, BindingTree*, std::string>;
+	using Super = Lexicon<MyHypothesis, std::string, InnerHypothesis, BindingTree*, std::string>;
 	using Super::Super; // inherit the constructors
 public:	
 
@@ -242,10 +242,10 @@ public:
 	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		
 		// set to null so that we get an error on recurse
-		for(auto& f : factors) f.program.loader = nullptr; 
+		for(auto& [k, f] : factors) f.program.loader = nullptr; 
 		
 		// make sure everyone's cache is right on this data
-		for(auto& f : factors) {
+		for(auto& [k, f] : factors) {
 			f.cached_callOne(data); 
 			
 			// now if anything threw an error, break out, we don't have to compute
@@ -263,12 +263,12 @@ public:
 			int  ntrue = 0; // how many are true?
 			
 			// see which words are permitted
-			for(size_t wi=0;wi<words.size();wi++) {
-				auto b = factors[wi].cache.at(di);
+			for(const auto& w : words) {
+				auto b = factors[w].cache.at(di);
 				
 				ntrue += 1*b;
 				
-				if(d.output == words[wi]) wtrue = b;			
+				if(d.output == w) wtrue = b;			
 			}
 
 			// Noisy size-principle likelihood
@@ -325,8 +325,8 @@ int main(int argc, char** argv){
 	//------------------
 	
 	MyHypothesis h0;
-	for(size_t w=0;w<words.size();w++){ // for each word
-		h0.factors.push_back(InnerHypothesis::sample());
+	for(const auto& w : words) {
+		h0[w] = InnerHypothesis::sample();
 	}
 
 	MyHypothesis::p_factor_propose = 0.2;
@@ -397,13 +397,14 @@ int main(int argc, char** argv){
 	// Make target hypothesis to compare
 	//------------------
 	
+	//"REXP", "him", "his", "he", "himself"
 	MyHypothesis target;
-	target.factors.emplace_back(grammar.simple_parse("not(and(corefers(x),dominates(parent(coreferent(x)),x)))"));
-	target.factors.emplace_back(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
-	target.factors.emplace_back(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));
-	target.factors.emplace_back(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
-//	target.factors.emplace_back(grammar.simple_parse("and(corefers(x),dominates(parent(coreferent(x)),x))"));
-	target.factors.emplace_back(grammar.simple_parse("and(eq_bool(eq_pos('NP-POSS',pos(parent(x))),eq_pos('NP-S',pos(x))),corefers(x))"));
+	target["REXP"] = InnerHypothesis(grammar.simple_parse("not(and(corefers(x),dominates(parent(coreferent(x)),x)))"));
+	target["him"] = InnerHypothesis(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
+	target["his"] = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));
+	target["he"] = InnerHypothesis(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
+//	target["himself"] = InnerHypothesis(grammar.simple_parse("and(corefers(x),dominates(parent(coreferent(x)),x))"));
+	target["himself"] = InnerHypothesis(grammar.simple_parse("and(eq_bool(eq_pos('NP-POSS',pos(parent(x))),eq_pos('NP-S',pos(x))),corefers(x))"));
 	/// Oooh what's going on here is probably that you can't have "himself" in possessives?
 	
 	
@@ -429,7 +430,7 @@ int main(int argc, char** argv){
 	
 	
 	MyHypothesis best = top.best();
-	for(auto& f: best.factors) f.clear_cache();
+	for(auto& [k,f]: best.factors) f.clear_cache();
 	PRINTN(best.compute_posterior(mydata));
 
 
