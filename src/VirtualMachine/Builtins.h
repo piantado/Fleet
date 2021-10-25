@@ -180,11 +180,11 @@ namespace Builtins {
 	});
 	
 	
-	template<typename Grammar_t, typename output_t=typename Grammar_t::output_t>
+	template<typename Grammar_t, typename key_t, typename output_t=typename Grammar_t::output_t>
 	Builtin<> Mem(Op::Mem, BUILTIN_LAMBDA {	
-		auto memindex = vms->memstack.top(); vms->memstack.pop();
-		if(vms->mem.count(memindex)==0) { // you might actually have already placed mem in crazy recursive situations, so don't overwrite if you have
-			vms->mem[memindex] = vms->template gettop<output_t>(); // what I should memoize should be on top here, but don't remove because we also return it
+		auto memindex = vms->template memstack<key_t>().top(); vms->template memstack<key_t>().pop();
+		if(vms->template mem<key_t>().count(memindex)==0) { // you might actually have already placed mem in crazy recursive situations, so don't overwrite if you have
+			vms->template mem<key_t>()[memindex] = vms->template gettop<output_t>(); // what I should memoize should be on top here, but don't remove because we also return it
 		}
 	});
 	
@@ -250,7 +250,9 @@ namespace Builtins {
 	Builtin<output_t,input_t>  // note the order switch -- that's right!
 	MemRecurse(Op::MemRecurse, BUILTIN_LAMBDA {	
 		assert(vms->program.loader != nullptr);
-						
+		
+		using key_t = std::nullptr_t;
+		
 		if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
 			vms->status = vmstatus_t::RECURSION_DEPTH;
 			return;
@@ -259,15 +261,15 @@ namespace Builtins {
 		auto x = vms->template getpop<input_t>(); // get the argument
 		auto memindex = std::make_pair(arg,x);
 		
-		if(vms->mem.count(memindex)){
-			vms->push(vms->mem[memindex]); // hmm probably should not be a move?
+		if(vms->template mem<key_t>().count(memindex)){
+			vms->push(vms->template mem<key_t>()[memindex]); // hmm probably should not be a move?
 		}
 		else {	
 			vms->xstack.push(x);	
 			vms->program.push(Builtins::PopX<Grammar_t>.makeInstruction());
 
-			vms->memstack.push(memindex); // popped off by op_MEM			
-			vms->program.push(Builtins::Mem<Grammar_t,output_t>.makeInstruction());
+			vms->template memstack<key_t>().push(memindex); // popped off by op_MEM			
+			vms->program.push(Builtins::Mem<Grammar_t,key_t,output_t>.makeInstruction());
 
 			vms->program.loader->push_program(vms->program); // this leaves the answer on top
 		}		
@@ -368,19 +370,17 @@ namespace Builtins {
 		auto key = vms->template getpop<key_t>();
 		auto x = vms->template getpop<input_t>(); // get the argument
 		
-		static_assert(std::is_same<typename decltype(*vms)::memoization_key_t,key_t>::value, "*** Fleet only supports memoization over strings (VirtualMachineState::memoization_key_t) right now.");
-		
 		auto memindex = std::make_pair(key,x);
 		
-		if(vms->mem.count(memindex)){
-			vms->push(vms->mem[memindex]); // copy over here
+		if(vms->template mem<key_t>().count(memindex)){
+			vms->push(vms->template mem<key_t>()[memindex]); // copy over here
 		}
 		else {	
 			vms->xstack.push(x);	
 			vms->program.push(Builtins::PopX<Grammar_t>.makeInstruction());
 
-			vms->memstack.push(memindex); // popped off by op_MEM			
-			vms->program.push(Builtins::Mem<Grammar_t,output_t>.makeInstruction());
+			vms->template memstack<key_t>().push(memindex); // popped off by op_MEM			
+			vms->program.push(Builtins::Mem<Grammar_t,key_t,output_t>.makeInstruction());
 
 			vms->program.loader->push_program(vms->program,key);  // this leaves the answer on top
 		}				

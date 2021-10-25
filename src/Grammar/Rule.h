@@ -80,7 +80,11 @@ public:
 		return is_a(Op::Recurse) or 
 			   is_a(Op::MemRecurse) or 
 			   is_a(Op::SafeRecurse) or 
-			   is_a(Op::SafeMemRecurse);
+			   is_a(Op::SafeMemRecurse) or 
+			   is_a(Op::LexiconRecurse) or 
+			   is_a(Op::LexiconMemRecurse) or 
+			   is_a(Op::LexiconSafeRecurse) or 
+			   is_a(Op::LexiconSafeMemRecurse);
 	}
 	
 	// Two versions: one for when we have a specified, and one for where we read from arg

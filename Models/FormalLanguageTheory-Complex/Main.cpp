@@ -46,7 +46,7 @@ size_t current_ntokens = 0; // how many tokens are there currently? Just useful 
 #include "Grammar.h"
 #include "Singleton.h"
 
-class MyGrammar : public Grammar<S,S,     S,char,bool,double,StrSet>,
+class MyGrammar : public Grammar<S,S,     S,char,bool,double,StrSet,int>,
 				  public Singleton<MyGrammar> {
 public:
 	MyGrammar() {
@@ -185,6 +185,12 @@ public:
 				add_terminal( s, double(a)/pdenom, 1.0);
 			}
 		}
+		
+		add("F%s(%s)" ,  Builtins::LexiconRecurse<MyGrammar,int>, 1./4.);
+		add("Fm%s(%s)",  Builtins::LexiconMemRecurse<MyGrammar,int>, 1./4.);
+		add("Fs%s(%s)",  Builtins::LexiconSafeRecurse<MyGrammar,int>, 1./4.);
+		add("Fsm%s(%s)", Builtins::LexiconSafeMemRecurse<MyGrammar,int>, 1./4.);
+		
 	}
 } grammar;
 
@@ -218,10 +224,10 @@ public:
 
 #include "Lexicon.h"
 
-class MyHypothesis final : public Lexicon<MyHypothesis, InnerHypothesis, S, S> {
+class MyHypothesis final : public Lexicon<MyHypothesis, int,InnerHypothesis, S, S> {
 public:	
 	
-	using Super = Lexicon<MyHypothesis, InnerHypothesis, S, S>;
+	using Super = Lexicon<MyHypothesis, int,InnerHypothesis, S, S>;
 	using Super::Super;
 
 	virtual double compute_prior() override {
@@ -236,17 +242,18 @@ public:
 	 * Calling
 	 ********************************************************/
 	 
-	virtual DiscreteDistribution<S> call(const S x, const S& err=S{}) override {
+	virtual DiscreteDistribution<S> call(const S x, const S& err=S{}) {
 		// this calls by calling only the last factor, which, according to our prior,
 		
-		// make myself the loader for all factors -- TODO: CHANGE THIS
-		for(auto& f : factors) f.program.loader = this; 
+		// make myself the loader for all factors
+		for(auto& [k,f] : factors) f.program.loader = this; 
 		
 //		assert(has_valid_indices()); // can either assert or return error
 		if(not has_valid_indices()) return {}; 
 		
-		size_t i = factors.size()-1; 
-		return factors[i].call(x, err); // we call the factor but with this as the loader.  
+		extern size_t nfactors;
+		assert(nfactors == factors.size());
+		return factors[nfactors-1].call(x, err); // we call the factor but with this as the loader.  
 	}
 	 
 	 // We assume input,output with reliability as the number of counts that input was seen going to that output
@@ -341,18 +348,9 @@ int main(int argc, char** argv){
 	// Set up the grammar using command line arguments
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	for(size_t a=0;a<nfactors;a++) {	
-		// here we pass in a as a index into these recursive arguments since it
-		// gets passed to the program loader
-		
-		auto s = std::to_string(a);
-		double p = 1.0/(4*nfactors); // NOTE: Slightly different prior
-
-		grammar.add(S("F")+s+"(%s)" ,  Builtins::Recurse<MyGrammar>, p, a);
-		grammar.add(S("Fm")+s+"(%s)",  Builtins::MemRecurse<MyGrammar>, p, a);
-
-		grammar.add(S("Fs")+s+"(%s)",  Builtins::SafeRecurse<MyGrammar>, p, a);
-		grammar.add(S("Fms")+s+"(%s)", Builtins::SafeMemRecurse<MyGrammar>, p, a);
+	// each of the recursive calls we are allowed
+	for(size_t i=0;i<nfactors;i++) {	
+		grammar.add_terminal( str(i), i, 1.0/nfactors);
 	}
 		
 	for(const char c : alphabet) {
@@ -392,7 +390,9 @@ int main(int argc, char** argv){
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		
 	// Build up an initial hypothesis with the right number of factors
-	auto h0 = MyHypothesis::sample(nfactors); 
+	MyHypothesis h0;
+	for(size_t i=0;i<nfactors;i++) { h0[i] = InnerHypothesis::sample(); }
+ 
 	
 	TopN<MyHypothesis> all; 
 	//	all.set_print_best(true);
