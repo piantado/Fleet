@@ -9,9 +9,16 @@
 
 //#define DEBUG_MCMC 1
 
+/**
+ * @class MCMCChain
+ * @author Steven Piantadosi
+ * @date 25/10/21
+ * @file MCMCChain.h
+ * @brief This represents an MCMC hain on a hypothesis of type HYP. It uses HYP::propose and HYP::compute_posterior
+ * 		  to implement MetropolicHastings. 
+ */
 template<typename HYP> 
 class MCMCChain {
-	// An MCMC chain object running Metropolis-Hastings on hypotheses, via HYP::propose and HYP::compute_posterior. 
 	
 public:
 	
@@ -144,12 +151,13 @@ public:
 				steps_since_improvement = 0; // reset the couter
 				maxval = current.posterior; // and the new max
 				
+				co_yield current;// must be done with lock
 			} 
 			else {
 				// normally we go here and do a proper proposal
 				
 				#ifdef DEBUG_MCMC
-				DEBUG("\n# Current\t", data->size(), current.posterior, current.prior, current.likelihood, current.string());
+				DEBUG("# Current", current.posterior, current.prior, current.likelihood, current.string());
 				#endif 
 				
 				std::lock_guard guard(current_mutex); // lock below otherwise others can modify
@@ -171,7 +179,7 @@ public:
 				}
 
 				#ifdef DEBUG_MCMC
-				DEBUG("# Proposed \t", proposal.posterior, proposal.prior, proposal.likelihood, fb, proposal.string());
+				DEBUG("# Proposed", proposal.posterior, proposal.prior, proposal.likelihood, "fb="+str(fb), proposal.string());
 				#endif 
 				
 				// use MH acceptance rule, with some fanciness for NaNs
@@ -184,7 +192,7 @@ public:
 					[[unlikely]];
 								
 					#ifdef DEBUG_MCMC
-						DEBUG("# Accept");
+						DEBUG("# ACCEPT");
 					#endif 
 					
 					current = std::move(proposal);
@@ -196,13 +204,13 @@ public:
 				else {
 					history << false;
 				}
+				
+				co_yield current; // must be done with lock
 			}
 			
 			++samples;			
 			++FleetStatistics::global_sample_count;
-		
-			co_yield current;
-						
+			
 		} while(ctl.running()); // end the main loop	-- at the end because ctl.running() counts the samples we've taken
 	}
 	

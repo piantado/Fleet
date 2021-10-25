@@ -87,25 +87,11 @@ public:
 	}
 	
 	LOTHypothesis(const LOTHypothesis& c) {
-		MCMCable<this_t,_datum_t,_data_t>::operator=(c); // copy all this garbage -- not sure what to do here
-		
-		total_instruction_count_last_call = c.total_instruction_count_last_call;
-		total_vms_steps = c.total_vms_steps;
-		program = c.program; 
-		value = c.value; // no setting -- just copy the program
-		if(c.program.loader == &c) 
-			program.loader = this;  // something special here -- if c's loader was itself, make this myself; else leave it
+		this->operator=(c); // copy all this garbage -- not sure what to do here
 	}
 
 	LOTHypothesis(const LOTHypothesis&& c) {
-		MCMCable<this_t,_datum_t,_data_t>::operator=(c); 
-		
-		total_instruction_count_last_call = c.total_instruction_count_last_call;
-		total_vms_steps = c.total_vms_steps;
-		program = std::move(c.program); 
-		value = std::move(c.value); // no setting -- just copy the program
-		if(c.program.loader == &c) 
-			program.loader = this;  // something special here -- if c's loader was itself, make this myself; else leave it
+		this->operator=(std::move(c)); 
 	}
 
 	LOTHypothesis& operator=(const LOTHypothesis& c) {
@@ -125,8 +111,8 @@ public:
 		
 		total_instruction_count_last_call = c.total_instruction_count_last_call;
 		total_vms_steps = c.total_vms_steps;
-		program = std::move(c.program); 
-		value = std::move(c.value); // no setting -- just copy the program
+		program = c.program; //std::move(c.program); 
+		value = c.value; // std::move(c.value); // no setting -- just copy the program
 		if(c.program.loader == &c) 
 			program.loader = this;  // something special here -- if c's loader was itself, make this myself; else leave it
 		return *this;

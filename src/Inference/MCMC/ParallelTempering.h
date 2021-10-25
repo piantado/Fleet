@@ -110,7 +110,7 @@ public:
 					
 					// swap the chains
 					std::swap(this->pool[k].getCurrent(), this->pool[k-1].getCurrent());
-					
+
 					swap_history.at(k) << true;
 				}
 				else {

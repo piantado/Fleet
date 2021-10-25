@@ -161,7 +161,7 @@ namespace Builtins {
 		// some checking
 		if(std::isnan(p))   p = 0.0;  // treat nans as 0s
 		else if(p > 1.0)    p = 1.0;
-		else if(p < 0.0)    p = 0;
+		else if(p < 0.0)    p = 0.0;
 		
 		// push both routes onto the stack
 		vms->pool->copy_increment_push(vms, true, log(p));
@@ -198,8 +198,7 @@ namespace Builtins {
 	template<typename Grammar_t,
 			 typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t,input_t> 
-		Recurse(Op::Recurse, BUILTIN_LAMBDA {
+	Builtin<output_t,input_t> Recurse(Op::Recurse, BUILTIN_LAMBDA {
 			
 			assert(vms->program.loader != nullptr);
 							
@@ -228,8 +227,7 @@ namespace Builtins {
 	template<typename Grammar_t,
 			 typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t, input_t> 
-	SafeRecurse(Op::SafeRecurse, BUILTIN_LAMBDA {	
+	Builtin<output_t, input_t> SafeRecurse(Op::SafeRecurse, BUILTIN_LAMBDA {	
 		assert(not vms->template stack<input_t>().empty());
 		
 		// if the size of the top is zero, we return output{}
@@ -247,11 +245,10 @@ namespace Builtins {
 	template<typename Grammar_t,
 			 typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t,input_t>  // note the order switch -- that's right!
-	MemRecurse(Op::MemRecurse, BUILTIN_LAMBDA {	
+	Builtin<output_t,input_t>  MemRecurse(Op::MemRecurse, BUILTIN_LAMBDA {	 // note the order switch -- that's right!
 		assert(vms->program.loader != nullptr);
 		
-		using key_t = short; // this is just the default type used for non-lex recursion
+		using mykey_t = short; // this is just the default type used for non-lex recursion
 		
 		if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
 			vms->status = vmstatus_t::RECURSION_DEPTH;
@@ -261,15 +258,15 @@ namespace Builtins {
 		auto x = vms->template getpop<input_t>(); // get the argument
 		auto memindex = std::make_pair(arg,x);
 		
-		if(vms->template mem<key_t>().count(memindex)){
-			vms->push(vms->template mem<key_t>()[memindex]); // hmm probably should not be a move?
+		if(vms->template mem<mykey_t>().count(memindex)){
+			vms->push(vms->template mem<mykey_t>()[memindex]); // hmm probably should not be a move?
 		}
 		else {	
 			vms->xstack.push(x);	
 			vms->program.push(Builtins::PopX<Grammar_t>.makeInstruction());
 
-			vms->template memstack<key_t>().push(memindex); // popped off by op_MEM			
-			vms->program.push(Builtins::Mem<Grammar_t,key_t,output_t>.makeInstruction());
+			vms->template memstack<mykey_t>().push(memindex); // popped off by op_MEM			
+			vms->program.push(Builtins::Mem<Grammar_t,mykey_t,output_t>.makeInstruction());
 
 			vms->program.loader->push_program(vms->program); // this leaves the answer on top
 		}		
@@ -279,8 +276,7 @@ namespace Builtins {
 	template<typename Grammar_t,
 			 typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-    Builtin<output_t,input_t>
-	SafeMemRecurse(Op::SafeMemRecurse, BUILTIN_LAMBDA {	
+    Builtin<output_t,input_t> SafeMemRecurse(Op::SafeMemRecurse, BUILTIN_LAMBDA {	
 		assert(not vms->template stack<input_t>().empty());
 		
 		// if the size of the top is zero, we return output{}
@@ -302,8 +298,7 @@ namespace Builtins {
 		     typename key_t,
 			 typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t,key_t,input_t> 
-		LexiconRecurse(Op::LexiconRecurse, BUILTIN_LAMBDA {
+	Builtin<output_t,key_t,input_t> LexiconRecurse(Op::LexiconRecurse, BUILTIN_LAMBDA {
 			
 			assert(vms->program.loader != nullptr);
 							
@@ -335,8 +330,7 @@ namespace Builtins {
 		     typename key_t,
 		     typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t,key_t,input_t> 
-	LexiconSafeRecurse(Op::LexiconSafeRecurse, BUILTIN_LAMBDA {
+	Builtin<output_t,key_t,input_t> LexiconSafeRecurse(Op::LexiconSafeRecurse, BUILTIN_LAMBDA {
 			assert(not vms->template stack<input_t>().empty());
 			assert(vms->program.loader != nullptr);
 				
@@ -348,7 +342,7 @@ namespace Builtins {
 				vms->template push<output_t>(output_t{}); //push default (null) return
 			}
 			else {
-				LexiconRecurse<Grammar_t,key_t>.call(vms,arg);
+				LexiconRecurse<Grammar_t,key_t>.call(vms,arg); // NOTE: Key is popped in this call
 			}
 		
 	});
@@ -358,8 +352,7 @@ namespace Builtins {
 		     typename key_t,
 			 typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t,key_t,input_t> 
-	LexiconMemRecurse(Op::LexiconMemRecurse, BUILTIN_LAMBDA {
+	Builtin<output_t,key_t,input_t> LexiconMemRecurse(Op::LexiconMemRecurse, BUILTIN_LAMBDA {
 		assert(vms->program.loader != nullptr);
 						
 		if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
@@ -391,13 +384,13 @@ namespace Builtins {
 		     typename key_t,
 		     typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t,key_t,input_t> 
-	LexiconSafeMemRecurse(Op::LexiconSafeMemRecurse, BUILTIN_LAMBDA {
+	Builtin<output_t,key_t,input_t> LexiconSafeMemRecurse(Op::LexiconSafeMemRecurse, BUILTIN_LAMBDA {
 			assert(not vms->template stack<input_t>().empty());
 			assert(vms->program.loader != nullptr);
 				
 			// if the size of the top is zero, we return output{}
 			if(vms->template stack<input_t>().top().size() == 0) { 
+				
 				vms->template getpop<key_t>();
 				vms->template getpop<input_t>(); // this would have been the argument
 							

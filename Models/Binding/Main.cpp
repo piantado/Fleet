@@ -400,9 +400,38 @@ int main(int argc, char** argv){
 	target["him"] = InnerHypothesis(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
 	target["his"] = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));
 	target["he"] = InnerHypothesis(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
-//	target["himself"] = InnerHypothesis(grammar.simple_parse("and(corefers(x),dominates(parent(coreferent(x)),x))"));
-	target["himself"] = InnerHypothesis(grammar.simple_parse("and(eq_bool(eq_pos('NP-POSS',pos(parent(x))),eq_pos('NP-S',pos(x))),corefers(x))"));
-	/// Oooh what's going on here is probably that you can't have "himself" in possessives?
+	target["himself"] = InnerHypothesis(grammar.simple_parse("and(corefers(x),dominates(parent(coreferent(x)),x))"));
+
+	MyHypothesis target2;
+	target2["REXP"] = InnerHypothesis(grammar.simple_parse("not(and(corefers(x),dominates(parent(coreferent(x)),x)))"));
+	target2["him"] = InnerHypothesis(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
+	target2["his"] = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));
+	target2["he"] = InnerHypothesis(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
+	target2["himself"] = InnerHypothesis(grammar.simple_parse("and(eq_bool(eq_pos('NP-POSS',pos(parent(x))),eq_pos('NP-S',pos(x))),corefers(x))"));
+	
+	// Find sentences where these are different
+	for(auto& di : mydata){ 
+	
+		// make a little mini dataset
+		MyHypothesis::data_t thisdata;
+		thisdata.push_back(di);
+		
+		for(auto& w:words) {
+			target[w].clear_cache();
+			target2[w].clear_cache();
+		}
+		
+		target.compute_posterior(thisdata);
+		target2.compute_posterior(thisdata);
+		
+		if(target.likelihood != target2.likelihood)  {
+			PRINTN(target.likelihood, target2.likelihood, di.input->root()->string());
+		}
+	
+	}
+	
+	return 0;
+	
 	
 	
 	PRINTN("# Target:", target.compute_posterior(mydata));

@@ -19,7 +19,7 @@ using StrSet = std::set<S>;
 
 const std::string my_default_input = "data/English"; 
 S alphabet="nvadtp";
-size_t max_length = 128; // (more than 256 needed for count, a^2^n, a^n^2, etc
+size_t max_length = 128; // (more than 256 needed for count, a^2^n, a^n^2, etc -- see command line arg)
 size_t max_setsize = 64; // throw error if we have more than this
 size_t nfactors = 2; // how may factors do we run on? (defaultly)
 
@@ -29,8 +29,8 @@ size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite 
 const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The more data, the slower...
 const size_t MAX_PR_LINES = 1000000; 
 
-const size_t NTEMPS = 15; 
-const size_t MAX_TEMP = 25.0; 
+const size_t NTEMPS = 5; 
+const size_t MAX_TEMP = 2.0; 
 unsigned long PRINT_STRINGS; // print at most this many strings for each hypothesis
 
 std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
@@ -188,8 +188,8 @@ public:
 		
 		add("F%s(%s)" ,  Builtins::LexiconRecurse<MyGrammar,int>, 1./4.);
 		add("Fm%s(%s)",  Builtins::LexiconMemRecurse<MyGrammar,int>, 1./4.);
-		add("Fs%s(%s)",  Builtins::LexiconSafeRecurse<MyGrammar,int>, 1./4.);
-		add("Fsm%s(%s)", Builtins::LexiconSafeMemRecurse<MyGrammar,int>, 1./4.);
+//		add("Fs%s(%s)",  Builtins::LexiconSafeRecurse<MyGrammar,int>, 1./4.);
+//		add("Fsm%s(%s)", Builtins::LexiconSafeMemRecurse<MyGrammar,int>, 1./4.);
 	}
 } grammar;
 
@@ -229,28 +229,12 @@ public:
 	using Super = Lexicon<MyHypothesis, int,InnerHypothesis, S, S>;
 	using Super::Super;
 
-//	virtual double compute_prior() override {
-//		// since we aren't searching over nodes, we are going to enforce a prior that requires
-//		// each function to be called -- this should make the search a bit more efficient by 
-//		// allowing us to prune out the functions which could be found with a smaller number of factors
-//		return prior = (check_reachable() ? Super::compute_prior() : -infinity);
-//	}
-//	
-
-	/********************************************************
-	 * Calling
-	 ********************************************************/
-	 
 	virtual DiscreteDistribution<S> call(const S x, const S& err=S{}) {
 		// this calls by calling only the last factor, which, according to our prior,
 		
 		// make myself the loader for all factors
 		for(auto& [k,f] : factors) f.program.loader = this; 
 
-		// we
-//		assert(has_valid_indices()); // can either assert or return error
-//		if(not has_valid_indices()) return {}; 
-		
 		extern size_t nfactors;
 		assert(nfactors == factors.size());
 		return factors[nfactors-1].call(x, err); // we call the factor but with this as the loader.  
@@ -397,7 +381,7 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> all; 
 	//	all.set_print_best(true);
 	
-	ParallelTempering samp(h0, &datas[0], NTEMPS, MAX_TEMP); 
+	ParallelTempering samp(h0, &datas[0], FleetArgs::nchains, MAX_TEMP); 
 //	ChainPool samp(h0, &datas[0], NTEMPS); 
 
 	// Set these up as the defaults as below
