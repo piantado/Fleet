@@ -190,7 +190,6 @@ public:
 		add("Fm%s(%s)",  Builtins::LexiconMemRecurse<MyGrammar,int>, 1./4.);
 		add("Fs%s(%s)",  Builtins::LexiconSafeRecurse<MyGrammar,int>, 1./4.);
 		add("Fsm%s(%s)", Builtins::LexiconSafeMemRecurse<MyGrammar,int>, 1./4.);
-		
 	}
 } grammar;
 
@@ -230,13 +229,13 @@ public:
 	using Super = Lexicon<MyHypothesis, int,InnerHypothesis, S, S>;
 	using Super::Super;
 
-	virtual double compute_prior() override {
-		// since we aren't searching over nodes, we are going to enforce a prior that requires
-		// each function to be called -- this should make the search a bit more efficient by 
-		// allowing us to prune out the functions which could be found with a smaller number of factors
-		return prior = (check_reachable() ? Super::compute_prior() : -infinity);
-	}
-	
+//	virtual double compute_prior() override {
+//		// since we aren't searching over nodes, we are going to enforce a prior that requires
+//		// each function to be called -- this should make the search a bit more efficient by 
+//		// allowing us to prune out the functions which could be found with a smaller number of factors
+//		return prior = (check_reachable() ? Super::compute_prior() : -infinity);
+//	}
+//	
 
 	/********************************************************
 	 * Calling
@@ -247,9 +246,10 @@ public:
 		
 		// make myself the loader for all factors
 		for(auto& [k,f] : factors) f.program.loader = this; 
-		
+
+		// we
 //		assert(has_valid_indices()); // can either assert or return error
-		if(not has_valid_indices()) return {}; 
+//		if(not has_valid_indices()) return {}; 
 		
 		extern size_t nfactors;
 		assert(nfactors == factors.size());
@@ -350,7 +350,7 @@ int main(int argc, char** argv){
 	
 	// each of the recursive calls we are allowed
 	for(size_t i=0;i<nfactors;i++) {	
-		grammar.add_terminal( str(i), i, 1.0/nfactors);
+		grammar.add_terminal( str(i), (int)i, 1.0/nfactors);
 	}
 		
 	for(const char c : alphabet) {
@@ -430,8 +430,9 @@ int main(int argc, char** argv){
 		current_ntokens = 0;
 		for(auto& d : this_data) { UNUSED(d); current_ntokens++; }
 				
-		for(auto& h : samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, FleetArgs::restart))) {
-			all << h;
+		for(auto& h : samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, FleetArgs::restart))
+						| print(FleetArgs::print) | all) {
+			UNUSED(h);
 		}	
 
 		// set up to print using a larger set if we were given this option

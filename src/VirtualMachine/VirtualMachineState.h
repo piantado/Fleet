@@ -67,6 +67,9 @@ public:
 	
 	unsigned long 	  recursion_depth; // when I was created, what was my depth?
 	
+private:
+	// these are private and should only be accessed via stack(), mem(), memstack() below
+	
 	// This is a little bit of fancy template metaprogramming that allows us to define a stack
 	// like std::tuple<VMSStack<bool>, VMSStack<std::string> > using a list of type names defined in VM_TYPES
 	template<typename... args>
@@ -81,16 +84,8 @@ public:
 	template<typename... args>
 	struct memstack_t { std::tuple< VMSStack<std::pair<args, input_t>>...> value; };
 	memstack_t<LEXICON_MEMOIZATION_TYPES> _memstack;
-	
-//	
-//	using memoization_key_t = std::string; // we can only memoize lexica with this as the key in their map. 
-//	
-//	// must have a memoized return value, that permits factorized by requiring an index argument
-//	std::map<std::pair<memoization_key_t, input_t>, output_t> mem; 
-//
-//	// when we recurse and memoize, this stores the arguments (index and input_t) for us to 
-//	// rember after the program trace is done
-//	VMSStack<std::pair<memoization_key_t, input_t>> memstack;
+
+public:
 
 	vmstatus_t status; // are we still running? Did we get an error?
 	
@@ -108,10 +103,10 @@ public:
 	}
 	
 	template<typename T>
-	std::map<std::pair<T,input_t>,output_t>& mem() { return std::get<std::map<std::pair<T,input_t>,output_t>>(_stack.value); }
+	std::map<std::pair<T,input_t>,output_t>& mem() { return std::get<std::map<std::pair<T,input_t>,output_t>>(_mem.value); }
  
 	template<typename T>
-	VMSStack<std::pair<T,input_t>>& memstack() { return std::get<VMSStack<std::pair<T, input_t>>>(_stack.value); }
+	VMSStack<std::pair<T,input_t>>& memstack() { return std::get<VMSStack<std::pair<T,input_t>>>(_memstack.value); }
 	
 	/**
 	 * @brief These must be sortable by lp so that we can enumerate them from low to high probability in a VirtualMachinePool 

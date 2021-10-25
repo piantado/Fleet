@@ -125,77 +125,89 @@ public:
 		return factors == l.factors;
 	}
 	
-	/**
-	 * @brief A lexicon has valid indices if calls to  op_RECURSE, op_MEM_RECURSE, op_SAFE_RECURSE, and op_SAFE_MEM_RECURSE all have arguments that are less than the size. 
-	 *  	  (So this places no restrictions on the calling earlier factors)
-	 * @return 
-	 */
-	bool has_valid_indices() const {
-		for(auto& [k, f] : factors) {
-			for(const auto& n : f.get_value() ) {
-				if(n.rule->is_recursive()) {
-					int fi = n.rule->arg; // which factor is called?
-					if(fi >= (int)factors.size() or fi < 0)
-						return false;
-				}
-			}
-		}
-		return true;
-	}
+//	/**
+//	 * @brief A lexicon has valid indices if calls to  op_RECURSE, op_MEM_RECURSE, op_SAFE_RECURSE, and op_SAFE_MEM_RECURSE all have arguments that are less than the size. 
+//	 *  	  (So this places no restrictions on the calling earlier factors)
+//	 * @return 
+//	 */
+//	bool has_valid_indices() const {
+//		for(auto& [k, f] : factors) {
+//			for(const auto& n : f.get_value() ) {
+//				if(n.rule->is_recursive()) {
+//					int fi = n.rule->arg; // which factor is called?
+//					if(fi >= (int)factors.size() or fi < 0)
+//						return false;
+//				}
+//			}
+//		}
+//		return true;
+//	}
 	 
-
-	bool check_reachable() const {
-		/**
-		 * @brief Check if the last factor call everything else transitively (e.g. are we "wasting" factors)
-		 * 		  We do this by making a graph of what factors call which others and then computing the transitive closure. 
-		 * @return 
-		 */
-		
-		const size_t N = factors.size();
-		assert(N > 0); 
-		
-		// is calls[i][j] stores whether factor i calls factor j
-		//bool calls[N][N]; 
-		std::vector<std::vector<bool> > calls(N, std::vector<bool>(N, false)); 
-		 
-		// everyone calls themselves, zero the rest
-		for(size_t i=0;i<N;i++) {
-			for(size_t j=0;j<N;j++){
-				calls[i][j] = (i==j);
-			}
-		}
-		
-		{
-			int i=0;
-			for(auto& [k, f] : factors) {
-				for(const auto& n : f.get_value() ) {
-					if(n.rule->is_recursive()) {
-						calls[i][n.rule->arg] = true;
-					}
-				}
-				i++;
-			}
-		}
-		
-		// now we take the transitive closure to see if calls[N-1] calls everything (eventually)
-		// otherwise it has probability of zero
-		// TOOD: This could probably be lazier because we really only need to check reachability
-		for(size_t a=0;a<N;a++) {	
-		for(size_t b=0;b<N;b++) {
-		for(size_t c=0;c<N;c++) {
-			calls[b][c] = calls[b][c] or (calls[b][a] and calls[a][c]);		
-		}
-		}
-		}
-
-		// don't do anything if we have uncalled functions from the root
-		for(size_t i=0;i<N;i++) {
-			if(not calls[N-1][i]) {
-				return false;
-			}
-		}		
-		return true;		
-	}
+//
+//	bool check_reachable() const {
+//		/**
+//		 * @brief Check if the last factor call everything else transitively (e.g. are we "wasting" factors)
+//		 * 		  We do this by making a graph of what factors call which others and then computing the transitive closure. 
+//		 * 		  NOTE that this requires the key_type and assumes that a rule of that type can be gotten directly
+//		 *        from the first child of a recursive call (e.g. a terminal)
+//		 * @return 
+//		 */
+//		
+//		const size_t N = factors.size();
+//		assert(N > 0); 
+//		
+//		// is calls[i][j] stores whether factor i calls factor j
+//		//bool calls[N][N]; 
+//		std::vector<std::vector<bool> > calls(N, std::vector<bool>(N, false)); 
+//		 
+//		// everyone calls themselves, zero the rest
+//		for(size_t i=0;i<N;i++) {
+//			for(size_t j=0;j<N;j++){
+//				calls[i][j] = (i==j);
+//			}
+//		}
+//		
+//		{
+//			int i=0;
+//			for(auto& [k, f] : factors) {
+//				for(const auto& n : f.get_value() ) {					
+//					if(n.rule->is_recursive()) {
+//						
+//						// NOTE This assumes that n.child[0] is directly evaluable. 
+//						const Rule* r = n.child(0).rule;
+//						assert(r->is_terminal()); // or else we can't use this
+//						auto fptr = reinterpret_cast<VirtualMachineState_t::FT*>(r->fptr);						
+//						CERR string() ENDL;
+//						CERR ((*fptr)(nullptr,0)) ENDL;
+//
+//						BLEH this doesn't work well anymore because we have to run the function
+//						
+//						calls[i][n.rule->arg] = true;
+//					}
+//				}
+//				i++;
+//			}
+//		}
+//		
+//		// now we take the transitive closure to see if calls[N-1] calls everything (eventually)
+//		// otherwise it has probability of zero
+//		// TOOD: This could probably be lazier because we really only need to check reachability
+//		for(size_t a=0;a<N;a++) {	
+//		for(size_t b=0;b<N;b++) {
+//		for(size_t c=0;c<N;c++) {
+//			calls[b][c] = calls[b][c] or (calls[b][a] and calls[a][c]);		
+//		}
+//		}
+//		}
+//
+//		// don't do anything if we have uncalled functions from the root
+//		for(size_t i=0;i<N;i++) {
+//			if(not calls[N-1][i]) {
+//				return false;
+//			}
+//		}		
+//		return true;		
+//	}
 
 	
 	/********************************************************
