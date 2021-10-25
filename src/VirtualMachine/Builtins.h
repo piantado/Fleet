@@ -251,7 +251,7 @@ namespace Builtins {
 	MemRecurse(Op::MemRecurse, BUILTIN_LAMBDA {	
 		assert(vms->program.loader != nullptr);
 		
-		using key_t = std::nullptr_t;
+		using key_t = short; // this is just the default type used for non-lex recursion
 		
 		if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
 			vms->status = vmstatus_t::RECURSION_DEPTH;

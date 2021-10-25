@@ -21,8 +21,8 @@
 //#define NO_CHECK_END_STACK_SIZE 1 
 
 // These are the only types of classes we are able to memoize in a lexicon
-// NOTE: We need nullptr_t because that's the "key" used for LOTHypothesis instead of lexicon
-#define LEXICON_MEMOIZATION_TYPES  std::nullptr_t,std::string,int 
+// NOTE: We need short because that's the "key" used for LOTHypothesis instead of lexicon
+#define LEXICON_MEMOIZATION_TYPES  short,std::string,int 
 
 namespace FleetStatistics {}
 template<typename X> class VirtualMachinePool;

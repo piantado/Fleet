@@ -59,7 +59,8 @@ public:
 		add("if_s(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
 		add("if_c(%s,%s,%s)",  Builtins::If<MyGrammar,char>);
 		add("flip()",          Builtins::Flip<MyGrammar>, 10.0);
-		add("recurse(%s)",     Builtins::Recurse<MyGrammar>);
+		add("F(%s)",           Builtins::Recurse<MyGrammar>);
+		add("Fm(%s)",          Builtins::MemRecurse<MyGrammar>);
 	}
 } grammar; 
 
