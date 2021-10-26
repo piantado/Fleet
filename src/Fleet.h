@@ -29,8 +29,8 @@
  * itself, but it does implicitly construct a grammar using these operations. 
  * 
  * In addition, Fleet has a number of built-in operations, which do special things to the virtual machine. These include
- * Builtin::Flip, which stores multiple execution traces; Builtin::If which uses short-circuit evaluation; 
- * Builtin::Recurse, which handles recursives hypotheses; and Builtin::X which provides the argument to the expression.
+ * Builtins::Flip, which stores multiple execution traces; Builtins::If which uses short-circuit evaluation; 
+ * Builtins::Recurse, which handles recursives hypotheses; and Builtins::X which provides the argument to the expression.
  * 
  * \subsection subsec_install Installation
  * 
@@ -40,7 +40,7 @@
  * The easiest way to begin using Fleet is to modify one of the examples. For simple rational-rules style inference, try
  * Models/RationalRules; for an example using stochastic operations, try Models/FormalLanguageTheory-Simple. 
  * 
- * Fleet is developed using GCC 9 (version >8 required) and requires C++-17 at present, but this may move to C++-20 in the future.
+ * Fleet is developed using GNU g++ 10 and requires C++-20.
  * 
  * \subsection subsec_examples Examples
  * 
@@ -60,7 +60,7 @@
  * refactoring and prototyping since declarations and implementations are not in separate files. This style may change in the future
  * because it also leads to slower compilation times. 
  * 
- * \subection subsec_inference Inference
+ * \subsection subsec_inference Inference
  * 
  * Fleet provides a number of simple inference routines to use. Examples of each can be found in Models/Sorting
  * 
@@ -86,7 +86,8 @@
  * have one grammar (and aren't, e.g. passing copies of it around). Typical to Fleet's code, we define our own grammar as
  * MyGrammar. The first two template arguments are the input and output types of the function we are learning (here, strings to
  * strings) and the next two are (variadic) template arguments for all of the nonterminal types used by the grammar (here, 
- * strings and bools). 
+ * strings and bools). The input type determines the type of any arguments to productions in the grammar; the output type
+ * determines the type of the root (e.g. what evaluating a program generated from this grammar will return). 
  * 
  * \code{.cpp}
 
@@ -108,7 +109,7 @@ public:
 
 	    // concatenate strings pair(wx,yz) -> wxyz
 		add("pair(%s,%s)",   +[](S a, S b) -> S { 
-			if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError();
+			if(a.length() + b.length() > MAX_LENGTH) throw VMSRuntimeError(); // caught inside VirtualMachineState::run
 			else                     				 return a+b; 
 		});
 
@@ -134,7 +135,7 @@ public:
 		// recursion
 		add("recurse(%s)",   Builtins::Recurse<MyGrammar>);
 		
-		// add all the characters in our alphabet (a global variable)
+		// add all the characters in our alphabet (alphabet is global variable defined on the command line)
 		for(const char c : alphabet) {
 			add_terminal( Q(S(1,c)), S(1,c), 5.0/alphabet.length());
 		}
@@ -143,14 +144,17 @@ public:
 } grammar;
  * \endcode
  * 
- * Then, in the constructor MyGrammar(), we call the member function Grammar::add which takes two argumetns: a string 
- * for how to show the function, and a lambda expression for the function itself. For example, the first function computes
- * the tail of a string (everything except the first character), which shows up in printed programs as "tail(%s)" (where
- * the %s is replaced by the arguments to the function. Note that in Fleet, you must include as many %s as there are
- * arugments, meaning that all arguments must be shown. 
+ * Then, in the constructor MyGrammar(), we call the member function Grammar::add which takes two arguments: a string 
+ * for how to show the function (called a "format"), and a lambda expression for the function itself. The string formats are
+ * just for show -- they have nothing to do with how the program is evaluated and expressions in these strings are never
+ * interpreted as code. Each string format uses "%s" to denote the string of its children. So, when Fleet is asked to display
+ * a program, it recursively substitutes into these format strings. Fleet checks for you that you have as many "%s"es as you 
+ * have arguments to each function and will complain if it's wrong. (NOTE: if you need to display children in a different
+ * ordered sequence, Fleet also supports this via "%1", "%2", etc.). 
  * 
- * The second argument to Grammar::add is a lambda expression which computes and returns the tail of a string. Note that
- * this function, as is generally the case in Fleet, attempts to be relatively fault-tolerant rather than throwing exceptions
+ * The second argument to Grammar::add is a lambda expression which computes and returns the value of each function (e.g. for 
+ * "tail(%s)" it compute the tail of a string -- everything except the first character. 
+ * Note that this function, as is generally the case in Fleet, attempts to be relatively fault-tolerant rather than throwing exceptions
  * because that's faster. In this case, we just define the tail of an empty string to be the empty string, rather than an error. 
  * 
  * The functions for computing the head of a string is defined similarly. The "pair(%s,%s)" function is meant to concatenate strings
@@ -166,15 +170,20 @@ public:
  * The "(%s==%s)" function computes whether two strings are equal and returns a bool. Note that generally it is helpful to enclose
  * expressions like this in parentheses (i.e. "(...)") because without this, the printed programs can be ambiguous. 
  * 
- * We then add built-in logical operations. Note that we do *not* define our own versions of these functions with lambda 
- * expressions. We certainly could, but in most computer science applications we want the versions of these functions which involve
+ * Note that in each of these lambda expressions, the input types (e.g. "S a, S b" in "pair") and return type (S) really matter.
+ * Fleet uses some fancy template magic to extract these types from the functions themselves and build the required grammar. That
+ * allows it to start with MyGrammar's return type and sample a composition of functions which yield this type. 
+ * 
+ * MyGrammar also adds built-in logical operations. Builtins are functions that we do *not* define ourselves using lambdas. We certainly
+ * could, but these are buitlin because they are a bit fancier than what you might think. 
+ * Specifically, in most computer science applications we want the versions of these functions which involve
  * <a href="https://en.wikipedia.org/wiki/Short-circuit_evaluation">short circuit evaluation</a>. 
  * For example, and(x,y) won't evaluate y if x is false, which for us ends up with a measurably
  * faster implementation. This is maybe most important though for "if(%s,%s,%s)", where we only want to evaluate one branch, depending
  * on which way the boolean comes out. The implementation of correct short-circuit evaluation depends on some of the internals of 
  * Fleet and so it's best to use the built-in versions of these functions. 
  * 
- * Next, we have a special fucntion Builtins::X which provides the argument to the function/program we are learning. We defaulty
+ * We also have a special fucntion Builtins::X which provides the argument to the function/program we are learning. We defaulty
  * give this the name "x".
  * 
  * The "flip()" primitive is somewhat fancy (and Buillt-in) because it is a stochastic operation, which acts like a coin flip, 
@@ -188,10 +197,14 @@ public:
  * (when its not specified) is 1.0, meaning that 10.0 makes it ten times as likely that a bool will expand to a flip than the others. 
  * In general, you will want to upweight the terminal rules (those with no children) in order to keep grammars proper. 
  * 
- * The next operation is Builtin::Recurse, which allows a defined function to call itself recursively. 
+ * The next operation is Builtins::Recurse, which allows a defined function to call itself recursively. This is a special Builtin because
+ * it requires us to evaluate the entire program in which it occurs again, and use the output of that program. Note that in general
+ * as we search over programs, we will find things that recurse infinitely -- Fleet's VirtualMachineState keeps track of how many
+ * recursive calls a single program has made (via VirtualMachineState::recursion_depth) and when it exceeds VirtualMachineControl::MAX_RECURSE
+ * or when the total runtime exceeds VirtualMachineControl::MAX_RUN_PROGRAM, Fleet will halt evaluation of the program. 
  * 
  * Finally, this grammar adds one terminal rule for each character in the global string "alphabet." Here, these characters are 
- * converted to strings containing a single character because char is not a nonterminal type in the grammar we defined. Here, the entire
+ * converted to strings containing a single character because char is not a nonterminal type in the grammar we defined. The entire
  * collection of characters is given an unnonormalized grammar probabiltiy of 5.0. 
  * 
  * Next, we define a class, MyHypothesis, which defines the program hypotheses we are going to be learning. The simplest form for
@@ -207,10 +220,16 @@ public:
 	using Super::Super; // inherit the constructors
 	
 	double compute_single_likelihood(const datum_t& x) override {	
+	 
+	    // MyHypothesis stores a program, and "call" will call it with a given input
+		// The output is a DiscreteDistribution on all of the outputs of that program
 		const auto out = call(x.input, ""); 
+		  
+		// we need this to compute the likelihood
 		const auto log_A = log(alphabet.size());
 		
 		// Likelihood comes from all of the ways that we can delete from the end and the append to make the observed output. 
+		// So this requires us to sum over all of the output values, for a single data point. 
 		double lp = -infinity;
 		for(auto& o : out.values()) { // add up the probability from all of the strings
 			lp = logplusexp(lp, o.second + p_delete_append<strgamma,strgamma>(o.first, x.output, log_A));
@@ -219,6 +238,8 @@ public:
 	}
 	
 	void print(std::string prefix="") override {
+		// Override the default "print" function by prepending on a view of the distribution 
+		// that was output (Fleet normally would just show the program)
 		prefix = prefix+"#\n#" +  this->call("", "<err>").string() + "\n";
 		Super::print(prefix); 
 	}
@@ -229,7 +250,7 @@ public:
  * <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">curiously recurring template pattern</a> to pass itself, so 
  * that it knows how to make copies of itself. The other template arguments are the input and output types of its function (string to string) 
  * and the Grammar type it uses (MyGrammar). The address of the grammar itself &grammar is also part of the type.
- * Then, we inherit LOTHypothesis' constructors (via Super::Super).
+ * Then, we inherit LOTHypothesis' constructors (via Super::Super's <a href="https://en.wikipedia.org/wiki/C%2B%2B11#Object_construction_improvement">insanity</a> in C++).
  *
  *  Primarily, what we have to define
  * here is the compute_single_likelihood function, which defines the likelihood of a single observed data string. To compute this, we first
@@ -261,6 +282,11 @@ public:
 #include "Builtins.h"
 #include "VMSRuntimeError.h"
 
+// define this so we can use it
+std::string alphabet = "abcd";
+  
+std::string datastr = "a:aabb,c:ccbb"; // input-output pairs in our observed data
+ 
 int main(int argc, char** argv){ 
 	
 	// define a Fleet object
@@ -269,22 +295,45 @@ int main(int argc, char** argv){
 	fleet.add_option("-d,--data",     datastr, "Comma separated list of input data strings");	
 	fleet.initialize(argc, argv);
 	
-	// top stores the top hypotheses we have found
+	// top stores the top hypotheses we have found. We set the number of top to store
+	// via the command line --top=100. Internally, that sets FleetArgs::top, which is used
+	// as the constructor for TopN. So it only works after you call Fleet.initialize above.
 	TopN<MyHypothesis> top;
 	
 	// mydata stores the data for the inference model
+	// Note that Fleet has these nice string_to functions which will parse strings in a standard
+	// format into many of its standard data types. Here, MyHypothesis::data_t is a comma-separated
+	// list of MyHypothesis::datum_t's, and each of those is an input:output pair using the 
+	// alphabet
 	auto mydata = string_to<MyHypothesis::data_t>(datastr);
-		
-	// Run
-	top.print_best = true; // print out each best hypothesis you find
-	auto h0 = MyHypothesis::sample();
-	MCMCChain c(h0, &mydata, top);
-	for(auto& h : c.run(Control()) {
-	 COUT h.string() ENDL;
-	 top << h; // add h to top
+	
+	// let's just check that everything in the data is in the alphabet
+	for(const auto& di: mydata) {
+		for(char c: di.output) { // only checking the outputs are all in the alphabet
+			assert(contains(alphabet,c));
+		}
 	}
 
-    // print the hypotheses we found
+	// tell Fleet's top to print each best hypothesis it finds 
+	// (this can be set with the command line --print-top-best=1)
+	top.print_best = true;
+	 
+	// Create a hypothesis to start our MCMC chain on
+	auto h0 = MyHypothesis::sample();
+	 
+	// Create an MCMC chain
+	MCMCChain c(h0, &mydata, top);
+	 
+	// Actually run -- note this uses C++'s new coroutines (like python generators)
+	// the | print(FleetArgs::print) here will print out every FleetArgs::print steps
+	// (which is set via --print=1000). Defaultly FleetArgs::print=0, which does not print. 
+	for(auto& h : c.run(Control() | print(FleetArgs::print) ) {
+		top << h; // add h to top
+		 
+		// we can do other stuff with h in here if we want to. 
+	}
+
+	// at the end, print the hypotheses we found
 	top.print();
 }
   
