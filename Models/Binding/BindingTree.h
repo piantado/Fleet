@@ -45,13 +45,12 @@ public:
 	int referent; // parsed out of the string
 	bool target; // and I the target? 
 	int linear_order; // order of leaves
-	int traversal_order; // order of nodes in traversal
 	POS pos;
 	std::string label;
 	std::string word; 
 	
 	BindingTree(std::string s="") :
-		referent(-1), target(false), linear_order(0), traversal_order(0), pos(POS::None), word("") {
+		referent(-1), target(false), linear_order(0), pos(POS::None), word("") {
 
 		if(s.find(' ') != std::string::npos) {
 			auto [l, w] = split<2>(s, ' '); // must be two
@@ -95,7 +94,6 @@ public:
 		referent = t.referent;
 		word = t.word;
 		linear_order = t.linear_order;
-		traversal_order = t.traversal_order;
 		pos = t.pos;
 	}
 	BindingTree(const BindingTree&& t) : BaseNode<BindingTree>(t) {
@@ -104,7 +102,6 @@ public:
 		referent = t.referent;
 		word = t.word;
 		linear_order = t.linear_order;
-		traversal_order = t.traversal_order;
 		pos = t.pos;
 	}	
 	void operator=(const BindingTree& t) {
@@ -114,7 +111,6 @@ public:
 		referent = t.referent;
 		word = t.word;
 		linear_order = t.linear_order;
-		traversal_order = t.traversal_order;
 		pos = t.pos;
 	}	
 	void operator=(const BindingTree&& t) {
@@ -124,7 +120,6 @@ public:
 		referent = t.referent;
 		word = t.word;
 		linear_order = t.linear_order;
-		traversal_order = t.traversal_order;
 		pos = t.pos;
 	}	
 

@@ -17,6 +17,8 @@ public:
 	using input_t  = __input_t;
 	using output_t = __output_t;
 
+	static const char DATA_IO_DELIMITER = ':';
+
 	input_t  input;
 	output_t output;
 	double   reliability; // the noise probability (typically required)
@@ -28,10 +30,10 @@ public:
 		
 		// if s is x:y then its input output
 		// otherwise, we'll treat it as a thunk, no input
-		if(contains(s, ":")) {
+		if(contains(s, DATA_IO_DELIMITER)) {
 		
 			// define this so we can use string_to
-			auto [x, y] = split<2>(s, ':');
+			auto [x, y] = split<2>(s, DATA_IO_DELIMITER);
 			input = string_to<input_t>(x);
 			output = string_to<output_t>(y);
 		}
@@ -44,6 +46,11 @@ public:
 		count = 1;
 	}
 	
+	/**
+	 * @brief Defined to allow nan in reliability
+	 * @param y
+	 * @return 
+	 */	
 	bool operator==(const defaultdatum_t& y) const {
 		
 		return input==y.input and output==y.output and count == count and
@@ -73,5 +80,5 @@ std::ostream& operator<<(std::ostream& o, const defaultdatum_t<input_t,output_t>
 
 template<typename input_t, typename output_t>
 std::string str(const defaultdatum_t<input_t, output_t>& x) {
-	return str(x.input)+":"+str(x.output);
+	return str(x.input) + defaultdatum_t<input_t, output_t>::DATA_IO_DELIMITER + str(x.output);
 }

@@ -34,7 +34,7 @@ public:
 	const static size_t MAX_N = SIZE_MAX; // largest N we can have -- useful if we need to store union of everything
 	
 	std::set<T> s; 
-	bool print_best; // should we print the best?
+	bool print_best; // should we print the best each time we see it?
 	std::atomic<size_t> N;	
 	
 	/**

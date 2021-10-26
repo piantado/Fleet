@@ -67,11 +67,6 @@ public:
 			return x->linear_order; 
 		});
 		
-//		add("traversal(%s)",        +[](BindingTree* x) -> int { 
-//			if(x==nullptr) throw TreeException();			
-//			return x->traversal_order; 
-//		});
-		
 		add("gt(%s,%s)",         +[](int a, int b) -> bool { return (a>b); });
 		
 		// equality
@@ -275,20 +270,7 @@ public:
 		}
 		
 		return likelihood; 
-	 }	 
-	 
-	
-	// restart will just sample one from the prior 
-//	[[nodiscard]] virtual MyHypothesis restart() const override {
-//		MyHypothesis x = *this;
-//		
-//		auto idx = myrandom(nfactors());
-//		x.factors[idx] = InnerHypothesis::sample();
-//		
-//		return x;
-//	}
-	
-	 
+	 }	 	 
 };
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -302,17 +284,8 @@ public:
 #include "MCMCChain.h"
 #include "ParallelTempering.h"
 #include "SExpression.h"
-//#include "MPI.h"
 
 int main(int argc, char** argv){ 
-	
-	
-
-//	Node n = grammar.simple_parse("and(not(or(eq_pos(  pos(parent(x)), 'NP-POSS'),eq_pos('NP-S',pos(x)))), corefers(x))");
-//	PRINTN(n.string());
-//	
-//	return 0 ;
-
 	
 	Fleet fleet("Learn principles A,B,C of binding theory");
 	fleet.initialize(argc, argv);
@@ -336,7 +309,7 @@ int main(int argc, char** argv){
 	// convert to data
 	MyHypothesis::data_t mydata;
 	std::vector<std::string> raw_data; 	
-	for(auto& [ds, sentence] : read_csv<2>("lasnik-extensive.csv", false, ',')){
+	for(auto& [ds, sentence] : read_csv<2>("lasnik-extensive-noPOSS.csv", false, ',')){
 		
 		// look at tokenization
 		// for(auto k : SExpression::tokenize(ds)) { COUT ">>" << k << "<<" ENDL;}
@@ -346,8 +319,7 @@ int main(int argc, char** argv){
 		
 		// and set the linear order of t
 		// and count how many have coreferents (we need to make that many copies)
-		int lc=0; 
-		int tc=0;
+		int lc=0;
 		int ncoref = 0;
 		for(auto& n : *t) { 
 			
@@ -356,7 +328,6 @@ int main(int argc, char** argv){
 			
 			if(n.is_terminal()) n.linear_order = lc++;
 			else                n.linear_order = -1;
-			n.traversal_order = tc++;
 		}
 		// PRINTN(t->string());
 		
@@ -402,36 +373,36 @@ int main(int argc, char** argv){
 	target["he"] = InnerHypothesis(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
 	target["himself"] = InnerHypothesis(grammar.simple_parse("and(corefers(x),dominates(parent(coreferent(x)),x))"));
 
-	MyHypothesis target2;
-	target2["REXP"] = InnerHypothesis(grammar.simple_parse("not(and(corefers(x),dominates(parent(coreferent(x)),x)))"));
-	target2["him"] = InnerHypothesis(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
-	target2["his"] = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));
-	target2["he"] = InnerHypothesis(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
-	target2["himself"] = InnerHypothesis(grammar.simple_parse("and(eq_bool(eq_pos('NP-POSS',pos(parent(x))),eq_pos('NP-S',pos(x))),corefers(x))"));
-	
-	// Find sentences where these are different
-	for(auto& di : mydata){ 
-	
-		// make a little mini dataset
-		MyHypothesis::data_t thisdata;
-		thisdata.push_back(di);
-		
-		for(auto& w:words) {
-			target[w].clear_cache();
-			target2[w].clear_cache();
-		}
-		
-		target.compute_posterior(thisdata);
-		target2.compute_posterior(thisdata);
-		
-		if(target.likelihood != target2.likelihood)  {
-			PRINTN(target.likelihood, target2.likelihood, di.input->root()->string());
-		}
-	
-	}
-	
-	return 0;
-	
+//	MyHypothesis target2;
+//	target2["REXP"] = InnerHypothesis(grammar.simple_parse("not(and(corefers(x),dominates(parent(coreferent(x)),x)))"));
+//	target2["him"] = InnerHypothesis(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
+//	target2["his"] = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));
+//	target2["he"] = InnerHypothesis(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
+//	target2["himself"] = InnerHypothesis(grammar.simple_parse("and(eq_bool(eq_pos('NP-POSS',pos(parent(x))),eq_pos('NP-S',pos(x))),corefers(x))"));
+//	
+//	// Find sentences where these are different
+//	for(auto& di : mydata){ 
+//	
+//		// make a little mini dataset
+//		MyHypothesis::data_t thisdata;
+//		thisdata.push_back(di);
+//		
+//		for(auto& w:words) {
+//			target[w].clear_cache();
+//			target2[w].clear_cache();
+//		}
+//		
+//		target.compute_posterior(thisdata);
+//		target2.compute_posterior(thisdata);
+//		
+//		if(target.likelihood != target2.likelihood)  {
+//			PRINTN(target.likelihood, target2.likelihood, di.input->root()->string());
+//		}
+//	
+//	}
+//	
+//	return 0;
+//	
 	
 	
 	PRINTN("# Target:", target.compute_posterior(mydata));
@@ -444,22 +415,15 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> top;
 
 //	top.print_best = true;
-//	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1.20);
+	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1.20);
 //	ChainPool chain(h0, &mydata, FleetArgs::nchains);	
-	MCMCChain chain(h0, &mydata);
+//	MCMCChain chain(h0, &mydata);
 	
 	for(auto& h : chain.run(Control()) | top | print(FleetArgs::print)) {
 		UNUSED(h);
 	}
 	
 	top.print();
-	
-	
-	MyHypothesis best = top.best();
-	for(auto& [k,f]: best.factors) f.clear_cache();
-	PRINTN(best.compute_posterior(mydata));
-
-
 
 	//------------------
 	// Print all the data
