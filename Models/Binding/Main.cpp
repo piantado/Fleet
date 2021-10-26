@@ -309,7 +309,7 @@ int main(int argc, char** argv){
 	// convert to data
 	MyHypothesis::data_t mydata;
 	std::vector<std::string> raw_data; 	
-	for(auto& [ds, sentence] : read_csv<2>("lasnik-extensive-noPOSS.csv", false, ',')){
+	for(auto& [ds, sentence] : read_csv<2>("lasnik-extensive.csv", false, ',')){
 		
 		// look at tokenization
 		// for(auto k : SExpression::tokenize(ds)) { COUT ">>" << k << "<<" ENDL;}

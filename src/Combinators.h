@@ -5,7 +5,6 @@
 #include "Errors.h"
 #include "Grammar.h"
 #include "Node.h"
-#include "Enumeration.h"
 
 extern volatile sig_atomic_t CTRL_C;
 

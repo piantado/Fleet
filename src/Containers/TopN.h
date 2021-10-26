@@ -11,7 +11,6 @@
 #include "OrderedLock.h"
 #include "Interfaces/Serializable.h"
 
-//template<class T> class TopN;
 
 /**
  * @class TopN
