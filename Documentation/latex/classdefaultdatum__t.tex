@@ -21,7 +21,7 @@ using \mbox{\hyperlink{classdefaultdatum__t_a0d7fadad452e2ddd0c17895a6c042d0e}{o
 \mbox{\hyperlink{classdefaultdatum__t_aa601bac8d0af8bd72ae3ff588ff63683}{defaultdatum\+\_\+t}} (const std\+::string s)
 \item 
 bool \mbox{\hyperlink{classdefaultdatum__t_a005f91a6d14842c5f225b037645d3460}{operator==}} (const \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}} \&y) const
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Defined to allow nan in reliability. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -32,6 +32,11 @@ bool \mbox{\hyperlink{classdefaultdatum__t_a005f91a6d14842c5f225b037645d3460}{op
 double \mbox{\hyperlink{classdefaultdatum__t_ad0d81156cdcb25187eb7a759302e8a88}{reliability}}
 \item 
 double \mbox{\hyperlink{classdefaultdatum__t_a98aea59b794db7194227f08dcce28305}{count}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const char \mbox{\hyperlink{classdefaultdatum__t_ae292db9d2625c06bc11a9aab60bcada1}{D\+A\+T\+A\+\_\+\+I\+O\+\_\+\+D\+E\+L\+I\+M\+I\+T\+ER}} = \textquotesingle{}\+:\textquotesingle{}
 \end{DoxyCompactItemize}
 
 
@@ -98,6 +103,18 @@ bool \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ \+\_\+\+\_\
 
 
 
+Defined to allow nan in reliability. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em y} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
 \doxysubsection{Member Data Documentation}
 \mbox{\Hypertarget{classdefaultdatum__t_a98aea59b794db7194227f08dcce28305}\label{classdefaultdatum__t_a98aea59b794db7194227f08dcce28305}} 
 \index{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}!count@{count}}
@@ -105,6 +122,13 @@ bool \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ \+\_\+\+\_\
 \doxysubsubsection{\texorpdfstring{count}{count}}
 {\footnotesize\ttfamily template$<$typename \+\_\+\+\_\+input\+\_\+t , typename \+\_\+\+\_\+output\+\_\+t $>$ \\
 double \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ \+\_\+\+\_\+input\+\_\+t, \+\_\+\+\_\+output\+\_\+t $>$\+::count}
+
+\mbox{\Hypertarget{classdefaultdatum__t_ae292db9d2625c06bc11a9aab60bcada1}\label{classdefaultdatum__t_ae292db9d2625c06bc11a9aab60bcada1}} 
+\index{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}!DATA\_IO\_DELIMITER@{DATA\_IO\_DELIMITER}}
+\index{DATA\_IO\_DELIMITER@{DATA\_IO\_DELIMITER}!defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}}
+\doxysubsubsection{\texorpdfstring{DATA\_IO\_DELIMITER}{DATA\_IO\_DELIMITER}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+\_\+input\+\_\+t , typename \+\_\+\+\_\+output\+\_\+t $>$ \\
+const char \mbox{\hyperlink{classdefaultdatum__t}{defaultdatum\+\_\+t}}$<$ \+\_\+\+\_\+input\+\_\+t, \+\_\+\+\_\+output\+\_\+t $>$\+::D\+A\+T\+A\+\_\+\+I\+O\+\_\+\+D\+E\+L\+I\+M\+I\+T\+ER = \textquotesingle{}\+:\textquotesingle{}\hspace{0.3cm}{\ttfamily [static]}}
 
 \mbox{\Hypertarget{classdefaultdatum__t_a3614becbf87fc511d4a9652561b04c0b}\label{classdefaultdatum__t_a3614becbf87fc511d4a9652561b04c0b}} 
 \index{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$@{defaultdatum\_t$<$ \_\_input\_t, \_\_output\_t $>$}!input@{input}}

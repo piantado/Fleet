@@ -3,7 +3,7 @@
 <area shape="rect" id="node2" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="323,102,463,129"/>
 <area shape="rect" id="node7" href="$_program_8h.html" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="160,95,299,136"/>
 <area shape="rect" id="node9" href="$_runtime_counter_8h.html" title="This class manages counting operations at runtime and interfaces operations to a grammar NOTE: Curren..." alt="" coords="5,95,136,136"/>
-<area shape="rect" id="node3" href="$_node_8h.html" title=" " alt="" coords="267,191,411,218"/>
+<area shape="rect" id="node3" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="267,191,411,218"/>
 <area shape="rect" id="node4" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="211,348,341,375"/>
 <area shape="rect" id="node5" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="10,273,177,300"/>
 <area shape="rect" id="node6" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="201,273,421,300"/>

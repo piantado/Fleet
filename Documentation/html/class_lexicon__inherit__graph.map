@@ -1,5 +1,5 @@
-<map id="Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;" name="Lexicon&lt; this_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="483,93,711,149"/>
+<map id="Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;" name="Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="483,85,652,156"/>
 <area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="209,5,424,47"/>
 <area shape="rect" id="node3" href="$class_bayesable.html" title=" " alt="" coords="5,13,151,39"/>
 <area shape="rect" id="node4" href="$class_searchable.html" title=" " alt="" coords="243,71,390,112"/>

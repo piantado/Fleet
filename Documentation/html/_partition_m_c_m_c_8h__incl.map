@@ -3,7 +3,7 @@
 <area shape="rect" id="node2" title=" " alt="" coords="1363,543,1421,569"/>
 <area shape="rect" id="node3" title=" " alt="" coords="1464,543,1523,569"/>
 <area shape="rect" id="node4" href="$_errors_8h.html" title=" " alt="" coords="1785,543,1853,569"/>
-<area shape="rect" id="node8" href="$_m_c_m_c_chain_8h.html" title=" " alt="" coords="465,95,575,121"/>
+<area shape="rect" id="node8" href="$_m_c_m_c_chain_8h.html" title="This represents an MCMC hain on a hypothesis of type HYP. It uses HYP::propose and HYP::compute_poste..." alt="" coords="465,95,575,121"/>
 <area shape="rect" id="node47" href="$_timing_8h.html" title=" " alt="" coords="1384,393,1456,420"/>
 <area shape="rect" id="node48" href="$_threaded_inference_interface_8h.html" title="This manages multiple threads for running inference. This requires a subclass to define run_thread,..." alt="" coords="1163,95,1355,121"/>
 <area shape="rect" id="node5" title=" " alt="" coords="1727,617,1806,644"/>
@@ -43,7 +43,7 @@
 <area shape="rect" id="node33" title=" " alt="" coords="502,617,565,644"/>
 <area shape="rect" id="node35" href="$_singleton_8h.html" title=" " alt="" coords="787,543,874,569"/>
 <area shape="rect" id="node36" title=" " alt="" coords="949,543,1048,569"/>
-<area shape="rect" id="node37" title=" " alt="" coords="1072,543,1179,569"/>
+<area shape="rect" id="node37" title=" " alt="" coords="1072,543,1173,569"/>
 <area shape="rect" id="node40" title=" " alt="" coords="43,393,170,420"/>
 <area shape="rect" id="node44" title=" " alt="" coords="54,319,130,345"/>
 <area shape="rect" id="node46" title=" " alt="" coords="1328,319,1395,345"/>

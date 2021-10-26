@@ -12,7 +12,7 @@
 <area shape="rect" id="node34" href="$_human_datum_8h.html" title=" " alt="" coords="823,155,937,181"/>
 <area shape="rect" id="node35" href="$_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="1381,229,1456,256"/>
 <area shape="rect" id="node38" href="$_top_n_8h.html" title=" " alt="" coords="941,304,1005,331"/>
-<area shape="rect" id="node41" href="$_m_c_m_c_chain_8h.html" title=" " alt="" coords="1169,155,1279,181"/>
+<area shape="rect" id="node41" href="$_m_c_m_c_chain_8h.html" title="This represents an MCMC hain on a hypothesis of type HYP. It uses HYP::propose and HYP::compute_poste..." alt="" coords="1169,155,1279,181"/>
 <area shape="rect" id="node45" href="$_vector_half_normal_hypothesis_8h.html" title=" " alt="" coords="2192,80,2395,107"/>
 <area shape="rect" id="node47" href="$_vector_normal_hypothesis_8h.html" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior...." alt="" coords="1835,80,2013,107"/>
 <area shape="rect" id="node48" href="$_t_normal_variable_8h.html" title=" " alt="" coords="2038,80,2167,107"/>

@@ -53,12 +53,22 @@ void \mbox{\hyperlink{_i_o_8h_a1336250e0870b09c7f0d7b168a5e804f}{\+\_\+\+\_\+\+P
 \item 
 {\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_acfec45821653aafe56188146ad2a98cc}{P\+R\+I\+N\+TN}} (First \&\&first, Rest \&\&...rest)
 \item 
+void \mbox{\hyperlink{_i_o_8h_a17076232171e865b2cece72a27015001}{\+\_\+\+\_\+\+E\+RR}} ()
+\item 
+{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_aa21a74cbb3ac0c55b10ffc3b4a86f9d8}{\+\_\+\+\_\+\+E\+RR}} (First \&\&first, Rest \&\&...rest)
+\item 
+{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_a15d1fc9dc10feac9ac42fcb1016c894e}{E\+RR}} (First \&\&first, Rest \&\&...rest)
+\item 
+{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_a907845588694e44e9e480fd567fbaeb5}{E\+R\+RN}} (First \&\&first, Rest \&\&...rest)
+\item 
 {\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_a06738d9fd0166a7a5c1f7864b2f67595}{D\+E\+B\+UG}} (First \&\&first, Rest \&\&...rest)
 \item 
 {\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{_i_o_8h_a96c995bb00590c0945415eee56bf0eb2}{save}} (std\+::string filename, T \&hypotheses)
 \begin{DoxyCompactList}\small\item\em Simple saving of a vector of hypotheses. \end{DoxyCompactList}\item 
 {\footnotesize template$<$typename H\+YP $>$ }\\std\+::vector$<$ H\+YP $>$ \mbox{\hyperlink{_i_o_8h_aeadafe3418f48a79ec06a8e582bd809a}{load}} (std\+::string filename)
 \begin{DoxyCompactList}\small\item\em Simple loading for a vector of hypotheses. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{_i_o_8h_abd92671c9b71c77653e36bfd92877875}{gulp}} (std\+::string filename)
+\begin{DoxyCompactList}\small\item\em Read this entire file as a string Skipping comment \# lines. \end{DoxyCompactList}\item 
 {\footnotesize template$<$size\+\_\+t N$>$ }\\std\+::vector$<$ std\+::array$<$ std\+::string, N $>$ $>$ \mbox{\hyperlink{_i_o_8h_a917c5bd217eff49da014535e85121975}{read\+\_\+csv}} (const std\+::string path, bool skipheader, const char delimiter=\textquotesingle{}\textbackslash{}t\textquotesingle{})
 \begin{DoxyCompactList}\small\item\em Load data -- divides in columns at the delimiter. N\+O\+TE\+: we are required to say whether we skip a header (first line) or not. Checks tha tthere are exactly N on each line. So we can use like\+: ~\newline
  for(auto \mbox{[}b1, b2, b3, b4, c\mbox{]} \+: read\+\_\+csv$<$5$>$(\+Fleet\+Args\+::input\+\_\+path, true)) \{ .... \}. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -121,6 +131,19 @@ std\+::mutex \mbox{\hyperlink{_i_o_8h_a76e8b7c2e4a8940cee2c392012c04943}{output\
 
 
 \doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_i_o_8h_a17076232171e865b2cece72a27015001}\label{_i_o_8h_a17076232171e865b2cece72a27015001}} 
+\index{IO.h@{IO.h}!\_\_ERR@{\_\_ERR}}
+\index{\_\_ERR@{\_\_ERR}!IO.h@{IO.h}}
+\doxysubsubsection{\texorpdfstring{\_\_ERR()}{\_\_ERR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void \+\_\+\+\_\+\+E\+RR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_i_o_8h_aa21a74cbb3ac0c55b10ffc3b4a86f9d8}\label{_i_o_8h_aa21a74cbb3ac0c55b10ffc3b4a86f9d8}} 
+\index{IO.h@{IO.h}!\_\_ERR@{\_\_ERR}}
+\index{\_\_ERR@{\_\_ERR}!IO.h@{IO.h}}
+\doxysubsubsection{\texorpdfstring{\_\_ERR()}{\_\_ERR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
+void \+\_\+\+\_\+\+E\+RR (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{_i_o_8h_a1336250e0870b09c7f0d7b168a5e804f}\label{_i_o_8h_a1336250e0870b09c7f0d7b168a5e804f}} 
 \index{IO.h@{IO.h}!\_\_PRINT@{\_\_PRINT}}
 \index{\_\_PRINT@{\_\_PRINT}!IO.h@{IO.h}}
@@ -141,6 +164,38 @@ void \+\_\+\+\_\+\+P\+R\+I\+NT (\begin{DoxyParamCaption}\item[{First \&\&}]{firs
 {\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
 void D\+E\+B\+UG (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{_i_o_8h_a15d1fc9dc10feac9ac42fcb1016c894e}\label{_i_o_8h_a15d1fc9dc10feac9ac42fcb1016c894e}} 
+\index{IO.h@{IO.h}!ERR@{ERR}}
+\index{ERR@{ERR}!IO.h@{IO.h}}
+\doxysubsubsection{\texorpdfstring{ERR()}{ERR()}}
+{\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
+void E\+RR (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_i_o_8h_a907845588694e44e9e480fd567fbaeb5}\label{_i_o_8h_a907845588694e44e9e480fd567fbaeb5}} 
+\index{IO.h@{IO.h}!ERRN@{ERRN}}
+\index{ERRN@{ERRN}!IO.h@{IO.h}}
+\doxysubsubsection{\texorpdfstring{ERRN()}{ERRN()}}
+{\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
+void E\+R\+RN (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_i_o_8h_abd92671c9b71c77653e36bfd92877875}\label{_i_o_8h_abd92671c9b71c77653e36bfd92877875}} 
+\index{IO.h@{IO.h}!gulp@{gulp}}
+\index{gulp@{gulp}!IO.h@{IO.h}}
+\doxysubsubsection{\texorpdfstring{gulp()}{gulp()}}
+{\footnotesize\ttfamily std\+::string gulp (\begin{DoxyParamCaption}\item[{std\+::string}]{filename }\end{DoxyParamCaption})}
+
+
+
+Read this entire file as a string Skipping comment \# lines. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
 \mbox{\Hypertarget{_i_o_8h_aeadafe3418f48a79ec06a8e582bd809a}\label{_i_o_8h_aeadafe3418f48a79ec06a8e582bd809a}} 
 \index{IO.h@{IO.h}!load@{load}}
 \index{load@{load}!IO.h@{IO.h}}

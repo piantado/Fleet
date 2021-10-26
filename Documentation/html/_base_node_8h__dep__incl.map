@@ -1,6 +1,6 @@
 <map id="src/BaseNode.h" name="src/BaseNode.h">
 <area shape="rect" id="node1" title="This is a general tree class, which we are adding because there are currently at least 3 different tr..." alt="" coords="284,5,400,32"/>
-<area shape="rect" id="node2" href="$_node_8h.html" title=" " alt="" coords="169,87,313,114"/>
+<area shape="rect" id="node2" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="169,87,313,114"/>
 <area shape="rect" id="node6" href="$_m_c_t_s_base_8h.html" title=" " alt="" coords="567,80,707,121"/>
 <area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="5,259,135,285"/>
 <area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="48,177,215,203"/>

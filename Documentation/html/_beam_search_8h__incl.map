@@ -1,14 +1,14 @@
 <map id="src/Inference/BeamSearch.h" name="src/Inference/BeamSearch.h">
 <area shape="rect" id="node1" title="This is an implementation of beam search that maintains a priority queue of partial states and attemp..." alt="" coords="353,5,541,32"/>
 <area shape="rect" id="node2" href="$_i_o_8h.html" title=" " alt="" coords="707,304,754,331"/>
-<area shape="rect" id="node3" title=" " alt="" coords="32,528,91,555"/>
+<area shape="rect" id="node3" title=" " alt="" coords="35,528,93,555"/>
 <area shape="rect" id="node11" title=" " alt="" coords="195,453,253,480"/>
 <area shape="rect" id="node34" href="$_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="808,229,883,256"/>
 <area shape="rect" id="node35" title=" " alt="" coords="347,304,413,331"/>
 <area shape="rect" id="node38" href="$_fleet_statistics_8h.html" title=" " alt="" coords="1705,155,1823,181"/>
 <area shape="rect" id="node39" href="$_threaded_inference_interface_8h.html" title="This manages multiple threads for running inference. This requires a subclass to define run_thread,..." alt="" coords="1107,80,1299,107"/>
 <area shape="rect" id="node4" title=" " alt="" coords="1319,379,1377,405"/>
-<area shape="rect" id="node5" title=" " alt="" coords="612,603,684,629"/>
+<area shape="rect" id="node5" title=" " alt="" coords="615,603,687,629"/>
 <area shape="rect" id="node6" title=" " alt="" coords="753,528,820,555"/>
 <area shape="rect" id="node7" title=" " alt="" coords="1174,603,1229,629"/>
 <area shape="rect" id="node8" title=" " alt="" coords="355,379,520,405"/>
@@ -20,19 +20,19 @@
 <area shape="rect" id="node15" title=" " alt="" coords="1655,453,1716,480"/>
 <area shape="rect" id="node16" title=" " alt="" coords="403,453,469,480"/>
 <area shape="rect" id="node17" href="$_miscellaneous_8h.html" title=" " alt="" coords="745,453,861,480"/>
-<area shape="rect" id="node20" href="$_numerics_8h.html" title=" " alt="" coords="173,528,262,555"/>
+<area shape="rect" id="node20" href="$_numerics_8h.html" title=" " alt="" coords="178,528,267,555"/>
 <area shape="rect" id="node24" href="$_random_8h.html" title="This is a thread_local rng that is seeded on construction so that each thread can get a different see..." alt="" coords="587,453,669,480"/>
 <area shape="rect" id="node32" href="$_vector3_d_8h.html" title=" " alt="" coords="1268,453,1356,480"/>
 <area shape="rect" id="node18" title=" " alt="" coords="844,528,913,555"/>
 <area shape="rect" id="node19" title=" " alt="" coords="1132,528,1193,555"/>
-<area shape="rect" id="node21" title=" " alt="" coords="102,603,167,629"/>
-<area shape="rect" id="node22" title=" " alt="" coords="287,603,356,629"/>
-<area shape="rect" id="node23" title=" " alt="" coords="191,603,254,629"/>
-<area shape="rect" id="node25" title=" " alt="" coords="397,528,475,555"/>
+<area shape="rect" id="node21" title=" " alt="" coords="107,603,173,629"/>
+<area shape="rect" id="node22" title=" " alt="" coords="292,603,361,629"/>
+<area shape="rect" id="node23" title=" " alt="" coords="197,603,259,629"/>
+<area shape="rect" id="node25" title=" " alt="" coords="402,528,481,555"/>
 <area shape="rect" id="node26" href="$_errors_8h.html" title=" " alt="" coords="989,528,1057,555"/>
-<area shape="rect" id="node29" href="$_singleton_8h.html" title=" " alt="" coords="286,528,373,555"/>
-<area shape="rect" id="node30" title=" " alt="" coords="500,528,599,555"/>
-<area shape="rect" id="node31" title=" " alt="" coords="623,528,729,555"/>
+<area shape="rect" id="node29" href="$_singleton_8h.html" title=" " alt="" coords="291,528,378,555"/>
+<area shape="rect" id="node30" title=" " alt="" coords="505,528,604,555"/>
+<area shape="rect" id="node31" title=" " alt="" coords="628,528,729,555"/>
 <area shape="rect" id="node27" title=" " alt="" coords="1013,603,1091,629"/>
 <area shape="rect" id="node28" title=" " alt="" coords="910,603,989,629"/>
 <area shape="rect" id="node33" title=" " alt="" coords="1403,528,1461,555"/>

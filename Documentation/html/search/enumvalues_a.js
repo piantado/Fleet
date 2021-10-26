@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['noop_1573',['NoOp',['../_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba60832e2e4bbebccf26555b9ba658bad5',1,'Ops.h']]],
-  ['not_1574',['Not',['../_ops_8h.html#a588e6b56097e045c733b60d25c4d45abaa74c05d080620f087c4e523977230666',1,'Ops.h']]]
+  ['mem_1576',['Mem',['../_ops_8h.html#a588e6b56097e045c733b60d25c4d45abadba5553473d129a7985fb532dc249ff4',1,'Ops.h']]],
+  ['memrecurse_1577',['MemRecurse',['../_ops_8h.html#a588e6b56097e045c733b60d25c4d45abac06233e1bc52cb704757c997c86d7c68',1,'Ops.h']]]
 ];

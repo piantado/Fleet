@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['yellow_1597',['Yellow',['../_shape_color_size_object_8h.html#ab87bacfdad76e61b9412d7124be44c1ca51e6cd92b6c45f9affdc158ecca2b8b8',1,'ShapeColorSizeObject.h']]]
+  ['x_1601',['X',['../_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383',1,'Ops.h']]]
 ];

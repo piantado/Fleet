@@ -7,12 +7,12 @@ Fleet is structured to automatically create this virtual machine and a grammar f
 
 Fleet requires you to define a \mbox{\hyperlink{class_grammar}{Grammar}} which includes {\itshape all} of the nonterminal types that are used anywhere in the grammar. Fleet makes heavy use of template metaprogramming, which prevents you from ever having to explicitly write the grammar itself, but it does implicitly construct a grammar using these operations.
 
-In addition, Fleet has a number of built-\/in operations, which do special things to the virtual machine. These include Builtin\+::\+Flip, which stores multiple execution traces; Builtin\+::\+If which uses short-\/circuit evaluation; Builtin\+::\+Recurse, which handles recursives hypotheses; and Builtin\+::X which provides the argument to the expression.\hypertarget{index_subsec_install}{}\doxysubsection{Installation}\label{index_subsec_install}
+In addition, Fleet has a number of built-\/in operations, which do special things to the virtual machine. These include \mbox{\hyperlink{namespace_builtins_afc5e30bbc3268c0f88d8540421d453ff}{Builtins\+::\+Flip}}, which stores multiple execution traces; \mbox{\hyperlink{namespace_builtins_abadd5f4188def3a49ec73f692460c9a2}{Builtins\+::\+If}} which uses short-\/circuit evaluation; \mbox{\hyperlink{namespace_builtins_a0771c881975000f812bbb41fffcb9fb0}{Builtins\+::\+Recurse}}, which handles recursives hypotheses; and \mbox{\hyperlink{namespace_builtins_a25cc5743603132ee78d118a4ca039c68}{Builtins\+::X}} which provides the argument to the expression.\hypertarget{index_subsec_install}{}\doxysubsection{Installation}\label{index_subsec_install}
 Fleet is based on header-\/files, and requires no additional dependencies. Command line arguments are processed in C\+L11.\+hpp, which is included in src/dependencies/.
 
 The easiest way to begin using Fleet is to modify one of the examples. For simple rational-\/rules style inference, try Models/\+Rational\+Rules; for an example using stochastic operations, try Models/\+Formal\+Language\+Theory-\/\+Simple.
 
-Fleet is developed using G\+CC 9 (version $>$8 required) and requires C++-\/17 at present, but this may move to C++-\/20 in the future.\hypertarget{index_subsec_examples}{}\doxysubsection{Examples}\label{index_subsec_examples}
+Fleet is developed using G\+NU g++ 10 and requires C++-\/20.\hypertarget{index_subsec_examples}{}\doxysubsection{Examples}\label{index_subsec_examples}
 Fleet contains several implemented examples of existing program-\/induction models, including identical or close variants of\+:
 
 
@@ -25,10 +25,7 @@ Fleet contains several implemented examples of existing program-\/induction mode
 \end{DoxyItemize}
 
 as well as several other examples, including sorting and first order logical theories.\hypertarget{index_subsec_style}{}\doxysubsection{Style}\label{index_subsec_style}
-Fleet is currently written using a signle-\/file, header-\/only style. This allows for rapid refactoring and prototyping since declarations and implementations are not in separate files. This style may change in the future because it also leads to slower compilation times.
-
-\textbackslash{}subection subsec\+\_\+inference Inference
-
+Fleet is currently written using a signle-\/file, header-\/only style. This allows for rapid refactoring and prototyping since declarations and implementations are not in separate files. This style may change in the future because it also leads to slower compilation times.\hypertarget{index_subsec_inference}{}\doxysubsection{Inference}\label{index_subsec_inference}
 Fleet provides a number of simple inference routines to use. Examples of each can be found in Models/\+Sorting
 
 
@@ -44,7 +41,7 @@ Generally, we find that \mbox{\hyperlink{class_parallel_tempering}{Parallel\+Tem
 \hypertarget{index_tutorial_sec}{}\doxysection{Tutorial}\label{index_tutorial_sec}
 To illustrate how Fleet works, let\textquotesingle{}s walk through a simple example\+: the key parts of Formal\+Language\+Theory-\/\+Simple. This is a program induction model which takes a collection of strings and tries to find a stochastic program which can explain the observed strings. For example, it might see data like \{\char`\"{}ab\char`\"{}, \char`\"{}abab\char`\"{}, \char`\"{}ababab\char`\"{}\} and then infer that the language is (ab)$^\wedge$n.
 
-Let\textquotesingle{}s first walk through the grammar definition. Here, we first import \mbox{\hyperlink{_grammar_8h}{Grammar.\+h}} and also \mbox{\hyperlink{_singleton_8h}{Singleton.\+h}}. \mbox{\hyperlink{class_singleton}{Singleton}} is a design pattern that permits only one copy of an object to be constructed, which is used here to ensure that we only have one grammar (and aren\textquotesingle{}t, e.\+g. passing copies of it around). Typical to Fleet\textquotesingle{}s code, we define our own grammar as My\+Grammar. The first two template arguments are the input and output types of the function we are learning (here, strings to strings) and the next two are (variadic) template arguments for all of the nonterminal types used by the grammar (here, strings and bools).
+Let\textquotesingle{}s first walk through the grammar definition. Here, we first import \mbox{\hyperlink{_grammar_8h}{Grammar.\+h}} and also \mbox{\hyperlink{_singleton_8h}{Singleton.\+h}}. \mbox{\hyperlink{class_singleton}{Singleton}} is a design pattern that permits only one copy of an object to be constructed, which is used here to ensure that we only have one grammar (and aren\textquotesingle{}t, e.\+g. passing copies of it around). Typical to Fleet\textquotesingle{}s code, we define our own grammar as My\+Grammar. The first two template arguments are the input and output types of the function we are learning (here, strings to strings) and the next two are (variadic) template arguments for all of the nonterminal types used by the grammar (here, strings and bools). The input type determines the type of any arguments to productions in the grammar; the output type determines the type of the root (e.\+g. what evaluating a program generated from this grammar will return).
 
 
 \begin{DoxyCode}{0}
@@ -66,7 +63,7 @@ Let\textquotesingle{}s first walk through the grammar definition. Here, we first
 \DoxyCodeLine{}
 \DoxyCodeLine{        \textcolor{comment}{// concatenate strings pair(wx,yz) -\/> wxyz}}
 \DoxyCodeLine{        \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{add}}(\textcolor{stringliteral}{"pair(\%s,\%s)"},   +[](S a, S b) -\/> S \{ }
-\DoxyCodeLine{            \textcolor{keywordflow}{if}(a.length() + b.length() > MAX\_LENGTH) \textcolor{keywordflow}{throw} \mbox{\hyperlink{class_v_m_s_runtime_error}{VMSRuntimeError}}();}
+\DoxyCodeLine{            \textcolor{keywordflow}{if}(a.length() + b.length() > MAX\_LENGTH) \textcolor{keywordflow}{throw} \mbox{\hyperlink{class_v_m_s_runtime_error}{VMSRuntimeError}}(); \textcolor{comment}{// caught inside VirtualMachineState::run}}
 \DoxyCodeLine{            \textcolor{keywordflow}{else}                                     \textcolor{keywordflow}{return} a+b; }
 \DoxyCodeLine{        \});}
 \DoxyCodeLine{}
@@ -92,7 +89,7 @@ Let\textquotesingle{}s first walk through the grammar definition. Here, we first
 \DoxyCodeLine{        \textcolor{comment}{// recursion}}
 \DoxyCodeLine{        \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{add}}(\textcolor{stringliteral}{"recurse(\%s)"},   Builtins::Recurse<MyGrammar>);}
 \DoxyCodeLine{        }
-\DoxyCodeLine{        \textcolor{comment}{// add all the characters in our alphabet (a global variable)}}
+\DoxyCodeLine{        \textcolor{comment}{// add all the characters in our alphabet (alphabet is global variable defined on the command line)}}
 \DoxyCodeLine{        \textcolor{keywordflow}{for}(\textcolor{keyword}{const} \textcolor{keywordtype}{char} c : alphabet) \{}
 \DoxyCodeLine{            \mbox{\hyperlink{class_grammar_af43a4d8c3c2c7df80a916a5219b7232c}{add\_terminal}}( \mbox{\hyperlink{_strings_8h_a1bb5ec0bee0c8456e3fcc87cc012d055}{Q}}(S(1,c)), S(1,c), 5.0/alphabet.length());}
 \DoxyCodeLine{        \}}
@@ -102,9 +99,9 @@ Let\textquotesingle{}s first walk through the grammar definition. Here, we first
 \end{DoxyCode}
 
 
-Then, in the constructor My\+Grammar(), we call the member function \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{Grammar\+::add}} which takes two argumetns\+: a string for how to show the function, and a lambda expression for the function itself. For example, the first function computes the tail of a string (everything except the first character), which shows up in printed programs as \char`\"{}tail(\%s)\char`\"{} (where the s is replaced by the arguments to the function. Note that in Fleet, you must include as many s as there are arugments, meaning that all arguments must be shown.
+Then, in the constructor My\+Grammar(), we call the member function \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{Grammar\+::add}} which takes two arguments\+: a string for how to show the function (called a \char`\"{}format\char`\"{}), and a lambda expression for the function itself. The string formats are just for show -- they have nothing to do with how the program is evaluated and expressions in these strings are never interpreted as code. Each string format uses \char`\"{}\%s\char`\"{} to denote the string of its children. So, when Fleet is asked to display a program, it recursively substitutes into these format strings. Fleet checks for you that you have as many \char`\"{}\%s\char`\"{}es as you have arguments to each function and will complain if it\textquotesingle{}s wrong. (N\+O\+TE\+: if you need to display children in a different ordered sequence, Fleet also supports this via \char`\"{}\%1\char`\"{}, \char`\"{}\%2\char`\"{}, etc.).
 
-The second argument to \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{Grammar\+::add}} is a lambda expression which computes and returns the tail of a string. Note that this function, as is generally the case in Fleet, attempts to be relatively fault-\/tolerant rather than throwing exceptions because that\textquotesingle{}s faster. In this case, we just define the tail of an empty string to be the empty string, rather than an error.
+The second argument to \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{Grammar\+::add}} is a lambda expression which computes and returns the value of each function (e.\+g. for \char`\"{}tail(\%s)\char`\"{} it compute the tail of a string -- everything except the first character. Note that this function, as is generally the case in Fleet, attempts to be relatively fault-\/tolerant rather than throwing exceptions because that\textquotesingle{}s faster. In this case, we just define the tail of an empty string to be the empty string, rather than an error.
 
 The functions for computing the head of a string is defined similarly. The \char`\"{}pair(\%s,\%s)\char`\"{} function is meant to concatenate strings but it actually needs to do a little checking because otherwise it\textquotesingle{}s very easy to write programs which create exponentially long strings. So this function checks if its two argument lengths are above a global variable M\+A\+X\+\_\+\+L\+E\+N\+G\+TH and if so it throws a \mbox{\hyperlink{class_v_m_s_runtime_error}{V\+M\+S\+Runtime\+Error}} (\mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} error) which is caught and handled internally in Fleet. (Note that in the actual Model code, there is a more complex version of pair which is a bit faster, as it modifies strings stored in the \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} stack rather than passing them around, as here).
 
@@ -112,15 +109,17 @@ Then, we have a function which takes no arguments and only returns the empty str
 
 The \char`\"{}(\%s==\%s)\char`\"{} function computes whether two strings are equal and returns a bool. Note that generally it is helpful to enclose expressions like this in parentheses (i.\+e. \char`\"{}(...)\char`\"{}) because without this, the printed programs can be ambiguous.
 
-We then add built-\/in logical operations. Note that we do {\itshape not} define our own versions of these functions with lambda expressions. We certainly could, but in most computer science applications we want the versions of these functions which involve \href{https://en.wikipedia.org/wiki/Short-circuit_evaluation}{\texttt{ short circuit evaluation}}. For example, and(x,y) won\textquotesingle{}t evaluate y if x is false, which for us ends up with a measurably faster implementation. This is maybe most important though for \char`\"{}if(\%s,\%s,\%s)\char`\"{}, where we only want to evaluate one branch, depending on which way the boolean comes out. The implementation of correct short-\/circuit evaluation depends on some of the internals of Fleet and so it\textquotesingle{}s best to use the built-\/in versions of these functions.
+Note that in each of these lambda expressions, the input types (e.\+g. \char`\"{}\+S a, S b\char`\"{} in \char`\"{}pair\char`\"{}) and return type (S) really matter. Fleet uses some fancy template magic to extract these types from the functions themselves and build the required grammar. That allows it to start with My\+Grammar\textquotesingle{}s return type and sample a composition of functions which yield this type.
 
-Next, we have a special fucntion \mbox{\hyperlink{namespace_builtins_a25cc5743603132ee78d118a4ca039c68}{Builtins\+::X}} which provides the argument to the function/program we are learning. We defaulty give this the name \char`\"{}x\char`\"{}.
+My\+Grammar also adds built-\/in logical operations. \mbox{\hyperlink{namespace_builtins}{Builtins}} are functions that we do {\itshape not} define ourselves using lambdas. We certainly could, but these are buitlin because they are a bit fancier than what you might think. Specifically, in most computer science applications we want the versions of these functions which involve \href{https://en.wikipedia.org/wiki/Short-circuit_evaluation}{\texttt{ short circuit evaluation}}. For example, and(x,y) won\textquotesingle{}t evaluate y if x is false, which for us ends up with a measurably faster implementation. This is maybe most important though for \char`\"{}if(\%s,\%s,\%s)\char`\"{}, where we only want to evaluate one branch, depending on which way the boolean comes out. The implementation of correct short-\/circuit evaluation depends on some of the internals of Fleet and so it\textquotesingle{}s best to use the built-\/in versions of these functions.
+
+We also have a special fucntion \mbox{\hyperlink{namespace_builtins_a25cc5743603132ee78d118a4ca039c68}{Builtins\+::X}} which provides the argument to the function/program we are learning. We defaulty give this the name \char`\"{}x\char`\"{}.
 
 The \char`\"{}flip()\char`\"{} primitive is somewhat fancy (and Buillt-\/in) because it is a stochastic operation, which acts like a coin flip, returning true half of the time and false half of the time (Fleet also a built-\/in biased coin, which takes a coin weight as a parameter). This is fancy because it means that when the program evaluates, there is no longer one single output, but rather a distribution of possible return values. Fleet will hand these back to you as a \mbox{\hyperlink{class_discrete_distribution}{Discrete\+Distribution}} of the output type of the function. Here, we have included 10.\+0 after the \mbox{\hyperlink{namespace_builtins_afc5e30bbc3268c0f88d8540421d453ff}{Builtins\+::\+Flip}}. This is an optional number which can be included for any primitive and it determines the probability in the P\+C\+FG of each each expansion (they are summed and renormalized for each nonterminal type). In this case, we need to upweight the probability of Flip in order to make a proper P\+C\+FG (e.\+g. one where no probabliity is given to infinite trees) because otherwise the and,or,not operatiosn above will lead to infinite trees. The default weight for all operations (when its not specified) is 1.\+0, meaning that 10.\+0 makes it ten times as likely that a bool will expand to a flip than the others. In general, you will want to upweight the terminal rules (those with no children) in order to keep grammars proper.
 
-The next operation is Builtin\+::\+Recurse, which allows a defined function to call itself recursively.
+The next operation is \mbox{\hyperlink{namespace_builtins_a0771c881975000f812bbb41fffcb9fb0}{Builtins\+::\+Recurse}}, which allows a defined function to call itself recursively. This is a special \mbox{\hyperlink{struct_builtin}{Builtin}} because it requires us to evaluate the entire program in which it occurs again, and use the output of that program. Note that in general as we search over programs, we will find things that recurse infinitely -- Fleet\textquotesingle{}s \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State}} keeps track of how many recursive calls a single program has made (via \mbox{\hyperlink{class_virtual_machine_state_aa35593f67d1ea4e838fec8e7a8d33897}{Virtual\+Machine\+State\+::recursion\+\_\+depth}}) and when it exceeds \mbox{\hyperlink{struct_virtual_machine_control_a486795b8d9b8aab1d62840da25ae91be}{Virtual\+Machine\+Control\+::\+M\+A\+X\+\_\+\+R\+E\+C\+U\+R\+SE}} or when the total runtime exceeds \mbox{\hyperlink{struct_virtual_machine_control_a963c0a16ad95a4723255b4ce6eafb113}{Virtual\+Machine\+Control\+::\+M\+A\+X\+\_\+\+R\+U\+N\+\_\+\+P\+R\+O\+G\+R\+AM}}, Fleet will halt evaluation of the program.
 
-Finally, this grammar adds one terminal rule for each character in the global string \char`\"{}alphabet.\char`\"{} Here, these characters are converted to strings containing a single character because char is not a nonterminal type in the grammar we defined. Here, the entire collection of characters is given an unnonormalized grammar probabiltiy of 5.\+0.
+Finally, this grammar adds one terminal rule for each character in the global string \char`\"{}alphabet.\char`\"{} Here, these characters are converted to strings containing a single character because char is not a nonterminal type in the grammar we defined. The entire collection of characters is given an unnonormalized grammar probabiltiy of 5.\+0.
 
 Next, we define a class, My\+Hypothesis, which defines the program hypotheses we are going to be learning. The simplest form for this is to use something of type \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}}, which defines built-\/in functions for computing the prior, copying, proposing, etc. 
 \begin{DoxyCode}{0}
@@ -133,10 +132,16 @@ Next, we define a class, My\+Hypothesis, which defines the program hypotheses we
 \DoxyCodeLine{    \textcolor{keyword}{using} Super::Super; \textcolor{comment}{// inherit the constructors}}
 \DoxyCodeLine{    }
 \DoxyCodeLine{    \textcolor{keywordtype}{double} \mbox{\hyperlink{class_l_o_t_hypothesis_a020bfe8e12d80add92c665518650c4cb}{compute\_single\_likelihood}}(\textcolor{keyword}{const} datum\_t\& x)\textcolor{keyword}{ override }\{   }
+\DoxyCodeLine{     }
+\DoxyCodeLine{        \textcolor{comment}{// MyHypothesis stores a program, and "call" will call it with a given input}}
+\DoxyCodeLine{        \textcolor{comment}{// The output is a DiscreteDistribution on all of the outputs of that program}}
 \DoxyCodeLine{        \textcolor{keyword}{const} \textcolor{keyword}{auto} out = \mbox{\hyperlink{class_l_o_t_hypothesis_a625f5094ee8f59e8ada3a7bf5a6dd68f}{call}}(x.input, \textcolor{stringliteral}{""}); }
+\DoxyCodeLine{          }
+\DoxyCodeLine{        \textcolor{comment}{// we need this to compute the likelihood}}
 \DoxyCodeLine{        \textcolor{keyword}{const} \textcolor{keyword}{auto} log\_A = log(alphabet.size());}
 \DoxyCodeLine{        }
 \DoxyCodeLine{        \textcolor{comment}{// Likelihood comes from all of the ways that we can delete from the end and the append to make the observed output. }}
+\DoxyCodeLine{        \textcolor{comment}{// So this requires us to sum over all of the output values, for a single data point. }}
 \DoxyCodeLine{        \textcolor{keywordtype}{double} lp = -\/\mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}};}
 \DoxyCodeLine{        \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}\& o : out.values()) \{ \textcolor{comment}{// add up the probability from all of the strings}}
 \DoxyCodeLine{            lp = \mbox{\hyperlink{_numerics_8h_a558a1133b9942f8debd559bb9317bca3}{logplusexp}}(lp, o.second + p\_delete\_append<strgamma,strgamma>(o.first, x.output, log\_A));}
@@ -145,6 +150,8 @@ Next, we define a class, My\+Hypothesis, which defines the program hypotheses we
 \DoxyCodeLine{    \}}
 \DoxyCodeLine{    }
 \DoxyCodeLine{    \textcolor{keywordtype}{void} \mbox{\hyperlink{class_bayesable_a87d5d9481d6a72b017e44b175071fa5e}{print}}(std::string prefix=\textcolor{stringliteral}{""})\textcolor{keyword}{ override }\{}
+\DoxyCodeLine{        \textcolor{comment}{// Override the default "print" function by prepending on a view of the distribution }}
+\DoxyCodeLine{        \textcolor{comment}{// that was output (Fleet normally would just show the program)}}
 \DoxyCodeLine{        prefix = prefix+\textcolor{stringliteral}{"\#\(\backslash\)n\#"} +  this-\/>\mbox{\hyperlink{class_l_o_t_hypothesis_a625f5094ee8f59e8ada3a7bf5a6dd68f}{call}}(\textcolor{stringliteral}{""}, \textcolor{stringliteral}{"<err>"}).string() + \textcolor{stringliteral}{"\(\backslash\)n"};}
 \DoxyCodeLine{        \mbox{\hyperlink{namespace_fleet_args_acf2f80bb2810cea3b3eeef0c4b0edf03}{Super::print}}(prefix); }
 \DoxyCodeLine{    \}}
@@ -152,7 +159,7 @@ Next, we define a class, My\+Hypothesis, which defines the program hypotheses we
 \end{DoxyCode}
 
 
-Here, My\+Hypothesis uses the \href{https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern}{\texttt{ curiously recurring template pattern}} to pass itself, so that it knows how to make copies of itself. The other template arguments are the input and output types of its function (string to string) and the \mbox{\hyperlink{class_grammar}{Grammar}} type it uses (My\+Grammar). The address of the grammar itself \&grammar is also part of the type. Then, we inherit \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}}\textquotesingle{} constructors (via Super\+::\+Super).
+Here, My\+Hypothesis uses the \href{https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern}{\texttt{ curiously recurring template pattern}} to pass itself, so that it knows how to make copies of itself. The other template arguments are the input and output types of its function (string to string) and the \mbox{\hyperlink{class_grammar}{Grammar}} type it uses (My\+Grammar). The address of the grammar itself \&grammar is also part of the type. Then, we inherit \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}}\textquotesingle{} constructors (via Super\+::\+Super\textquotesingle{}s \href{https://en.wikipedia.org/wiki/C\%2B\%2B11\#Object_construction_improvement}{\texttt{ insanity}} in C++).
 
 Primarily, what we have to define here is the compute\+\_\+single\+\_\+likelihood function, which defines the likelihood of a single observed data string. To compute this, we first call the function (\mbox{\hyperlink{class_l_o_t_hypothesis_a625f5094ee8f59e8ada3a7bf5a6dd68f}{L\+O\+T\+Hypothesis\+::call}}) on the observed input. This returns a Discrete\+Distribution$<$std\+::string$>$ of outputs. Note that the outputs which return errors are mapped to the second argument to call, in this case the empty string. Then, we loop over outputs and add up the likelihood of the observed output x.\+ouput given the program output o.\+first weighted by the program\textquotesingle{}s probability of that output o.\+second. This part uses p\+\_\+delete\+\_\+append, which is a string edit likelihood that assigns nonzero probability of any string being corrupted to any other. It computes this by imagining that the output string was corrupted by noise that deleted from the end of the string, and then appended, where both operations take place with geometric probabilities. These probabilities are passed as template arguments since that lets us compute some key pieces of this at compile time, yielding much faster code (this is a hot part of any string-\/based inference model).
 
@@ -168,6 +175,11 @@ The last piece of code is the actual running\+: Here, we define a Fleet object, 
 \DoxyCodeLine{\textcolor{preprocessor}{\#include "\mbox{\hyperlink{_builtins_8h}{Builtins.h}}"}}
 \DoxyCodeLine{\textcolor{preprocessor}{\#include "\mbox{\hyperlink{_v_m_s_runtime_error_8h}{VMSRuntimeError.h}}"}}
 \DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{// define this so we can use it}}
+\DoxyCodeLine{std::string alphabet = \textcolor{stringliteral}{"abcd"};}
+\DoxyCodeLine{  }
+\DoxyCodeLine{std::string datastr = \textcolor{stringliteral}{"a:aabb,c:ccbb"}; \textcolor{comment}{// input-\/output pairs in our observed data}}
+\DoxyCodeLine{ }
 \DoxyCodeLine{\textcolor{keywordtype}{int} \mbox{\hyperlink{main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main}}(\textcolor{keywordtype}{int} argc, \textcolor{keywordtype}{char}** argv)\{ }
 \DoxyCodeLine{    }
 \DoxyCodeLine{    \textcolor{comment}{// define a Fleet object}}
@@ -176,22 +188,45 @@ The last piece of code is the actual running\+: Here, we define a Fleet object, 
 \DoxyCodeLine{    fleet.add\_option(\textcolor{stringliteral}{"-\/d,-\/-\/data"},     datastr, \textcolor{stringliteral}{"Comma separated list of input data strings"});   }
 \DoxyCodeLine{    fleet.initialize(argc, argv);}
 \DoxyCodeLine{    }
-\DoxyCodeLine{    \textcolor{comment}{// top stores the top hypotheses we have found}}
+\DoxyCodeLine{    \textcolor{comment}{// top stores the top hypotheses we have found. We set the number of top to store}}
+\DoxyCodeLine{    \textcolor{comment}{// via the command line -\/-\/top=100. Internally, that sets FleetArgs::top, which is used}}
+\DoxyCodeLine{    \textcolor{comment}{// as the constructor for TopN. So it only works after you call Fleet.initialize above.}}
 \DoxyCodeLine{    \mbox{\hyperlink{class_top_n}{TopN<MyHypothesis>}} top;}
 \DoxyCodeLine{    }
 \DoxyCodeLine{    \textcolor{comment}{// mydata stores the data for the inference model}}
+\DoxyCodeLine{    \textcolor{comment}{// Note that Fleet has these nice string\_to functions which will parse strings in a standard}}
+\DoxyCodeLine{    \textcolor{comment}{// format into many of its standard data types. Here, MyHypothesis::data\_t is a comma-\/separated}}
+\DoxyCodeLine{    \textcolor{comment}{// list of MyHypothesis::datum\_t's, and each of those is an input:output pair using the }}
+\DoxyCodeLine{    \textcolor{comment}{// alphabet}}
 \DoxyCodeLine{    \textcolor{keyword}{auto} mydata = string\_to<MyHypothesis::data\_t>(datastr);}
-\DoxyCodeLine{        }
-\DoxyCodeLine{    \textcolor{comment}{// Run}}
-\DoxyCodeLine{    top.\mbox{\hyperlink{class_top_n_a90472852f225e5b851446e4b7ced4856}{print\_best}} = \textcolor{keyword}{true}; \textcolor{comment}{// print out each best hypothesis you find}}
-\DoxyCodeLine{    \textcolor{keyword}{auto} h0 = \mbox{\hyperlink{_random_8h_a3585a6278806f57b964ccd1060f3b8ee}{MyHypothesis::sample}}();}
-\DoxyCodeLine{    \mbox{\hyperlink{class_m_c_m_c_chain}{MCMCChain}} c(h0, \&mydata, top);}
-\DoxyCodeLine{    \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}\& h : c.run(\mbox{\hyperlink{struct_control}{Control}}()) \{}
-\DoxyCodeLine{     \mbox{\hyperlink{_i_o_8h_a8c54b10b84183429bcbcbc82c92fcca9}{COUT}} h.string() \mbox{\hyperlink{_i_o_8h_a90dc3f3ee970394e0080300526390a84}{ENDL}};}
-\DoxyCodeLine{     top << h; \textcolor{comment}{// add h to top}}
+\DoxyCodeLine{    }
+\DoxyCodeLine{    \textcolor{comment}{// let's just check that everything in the data is in the alphabet}}
+\DoxyCodeLine{    \textcolor{keywordflow}{for}(\textcolor{keyword}{const} \textcolor{keyword}{auto}\& di: mydata) \{}
+\DoxyCodeLine{        \textcolor{keywordflow}{for}(\textcolor{keywordtype}{char} c: di.output) \{ \textcolor{comment}{// only checking the outputs are all in the alphabet}}
+\DoxyCodeLine{            assert(\mbox{\hyperlink{_strings_8h_a9e236149ce0f5aa64d809fcca5cf1c27}{contains}}(alphabet,c));}
+\DoxyCodeLine{        \}}
 \DoxyCodeLine{    \}}
 \DoxyCodeLine{}
-\DoxyCodeLine{    \textcolor{comment}{// print the hypotheses we found}}
+\DoxyCodeLine{    \textcolor{comment}{// tell Fleet's top to print each best hypothesis it finds }}
+\DoxyCodeLine{    \textcolor{comment}{// (this can be set with the command line -\/-\/print-\/top-\/best=1)}}
+\DoxyCodeLine{    top.\mbox{\hyperlink{class_top_n_a90472852f225e5b851446e4b7ced4856}{print\_best}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{     }
+\DoxyCodeLine{    \textcolor{comment}{// Create a hypothesis to start our MCMC chain on}}
+\DoxyCodeLine{    \textcolor{keyword}{auto} h0 = \mbox{\hyperlink{_random_8h_a3585a6278806f57b964ccd1060f3b8ee}{MyHypothesis::sample}}();}
+\DoxyCodeLine{     }
+\DoxyCodeLine{    \textcolor{comment}{// Create an MCMC chain}}
+\DoxyCodeLine{    \mbox{\hyperlink{class_m_c_m_c_chain}{MCMCChain}} c(h0, \&mydata, top);}
+\DoxyCodeLine{     }
+\DoxyCodeLine{    \textcolor{comment}{// Actually run -\/-\/ note this uses C++'s new coroutines (like python generators)}}
+\DoxyCodeLine{    \textcolor{comment}{// the | print(FleetArgs::print) here will print out every FleetArgs::print steps}}
+\DoxyCodeLine{    \textcolor{comment}{// (which is set via -\/-\/print=1000). Defaultly FleetArgs::print=0, which does not print. }}
+\DoxyCodeLine{    \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}\& h : c.run(\mbox{\hyperlink{struct_control}{Control}}() | \mbox{\hyperlink{namespace_fleet_args_acf2f80bb2810cea3b3eeef0c4b0edf03}{print}}(\mbox{\hyperlink{namespace_fleet_args_acf2f80bb2810cea3b3eeef0c4b0edf03}{FleetArgs::print}}) ) \{}
+\DoxyCodeLine{        top << h; \textcolor{comment}{// add h to top}}
+\DoxyCodeLine{         }
+\DoxyCodeLine{        \textcolor{comment}{// we can do other stuff with h in here if we want to. }}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{// at the end, print the hypotheses we found}}
 \DoxyCodeLine{    top.\mbox{\hyperlink{class_top_n_a5064ec2e4e9f1defdc3cb62d9b7ddd00}{print}}();}
 \DoxyCodeLine{\}}
 \end{DoxyCode}

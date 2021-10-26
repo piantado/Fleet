@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['x_1596',['X',['../_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383',1,'Ops.h']]]
+  ['triangle_1600',['Triangle',['../_shape_color_size_object_8h.html#a55b506070847a13554f8b879c1bfb37ca5e5500cb2b82eb72d550de644bd1b64b',1,'ShapeColorSizeObject.h']]]
 ];

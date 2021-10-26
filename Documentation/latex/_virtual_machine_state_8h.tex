@@ -39,17 +39,29 @@ This graph shows which files directly or indirectly include this file\+:
 class \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool$<$ Virtual\+Machine\+State\+\_\+t $>$}}
 \item 
 class \mbox{\hyperlink{class_virtual_machine_state}{Virtual\+Machine\+State$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+E\+S $>$}}
-\item 
-struct \mbox{\hyperlink{struct_virtual_machine_state_1_1stack__t}{Virtual\+Machine\+State$<$ \+\_\+t\+\_\+input, \+\_\+t\+\_\+output, V\+M\+\_\+\+T\+Y\+P\+E\+S $>$\+::stack\+\_\+t$<$ args $>$}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
  \mbox{\hyperlink{namespace_fleet_statistics}{Fleet\+Statistics}}
 \end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{_virtual_machine_state_8h_a2f22c09b6ae1f34e2fb6bbb5eab4e4d2}{L\+E\+X\+I\+C\+O\+N\+\_\+\+M\+E\+M\+O\+I\+Z\+A\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+ES}}~short,std\+::string,int
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
 This represents the state of a partial evaluation of a program, corresponding to the value of all of the stacks of various types (which are stored as templates from V\+M\+\_\+\+T\+Y\+P\+ES). ~\newline
  The idea here is that we want to be able to encapsulate everything about the evaluation of a tree so that we can stop it in the middle and resume later, as is required for stochastics. This must be templated because it depends on the types in the grammar. These will typically be stored in a \mbox{\hyperlink{class_virtual_machine_pool}{Virtual\+Machine\+Pool}} and not called directly, unless you know that there are no stochastics. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_virtual_machine_state_8h_a2f22c09b6ae1f34e2fb6bbb5eab4e4d2}\label{_virtual_machine_state_8h_a2f22c09b6ae1f34e2fb6bbb5eab4e4d2}} 
+\index{VirtualMachineState.h@{VirtualMachineState.h}!LEXICON\_MEMOIZATION\_TYPES@{LEXICON\_MEMOIZATION\_TYPES}}
+\index{LEXICON\_MEMOIZATION\_TYPES@{LEXICON\_MEMOIZATION\_TYPES}!VirtualMachineState.h@{VirtualMachineState.h}}
+\doxysubsubsection{\texorpdfstring{LEXICON\_MEMOIZATION\_TYPES}{LEXICON\_MEMOIZATION\_TYPES}}
+{\footnotesize\ttfamily \#define L\+E\+X\+I\+C\+O\+N\+\_\+\+M\+E\+M\+O\+I\+Z\+A\+T\+I\+O\+N\+\_\+\+T\+Y\+P\+ES~short,std\+::string,int}
 

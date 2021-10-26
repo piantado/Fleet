@@ -3,7 +3,7 @@
 <area shape="rect" id="node2" href="$_instruction_8h.html" title="f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg is just a supplemental ar..." alt="" coords="334,244,429,271"/>
 <area shape="rect" id="node10" href="$_stack_8h.html" title="Many things in Fleet are stacks and this is designed to allow for rapid changse to the stack type in ..." alt="" coords="549,95,616,121"/>
 <area shape="rect" id="node3" title=" " alt="" coords="701,393,771,420"/>
-<area shape="rect" id="node4" title=" " alt="" coords="1324,393,1396,420"/>
+<area shape="rect" id="node4" title=" " alt="" coords="1319,393,1391,420"/>
 <area shape="rect" id="node5" title=" " alt="" coords="5,319,67,345"/>
 <area shape="rect" id="node6" href="$_v_m_s_runtime_error_8h.html" title=" " alt="" coords="91,319,229,345"/>
 <area shape="rect" id="node8" href="$_ops_8h.html" title=" " alt="" coords="254,319,311,345"/>
@@ -19,20 +19,20 @@
 <area shape="rect" id="node18" title=" " alt="" coords="717,244,779,271"/>
 <area shape="rect" id="node19" title=" " alt="" coords="803,244,869,271"/>
 <area shape="rect" id="node20" href="$_miscellaneous_8h.html" title=" " alt="" coords="1006,244,1122,271"/>
-<area shape="rect" id="node23" href="$_numerics_8h.html" title=" " alt="" coords="1599,319,1689,345"/>
+<area shape="rect" id="node23" href="$_numerics_8h.html" title=" " alt="" coords="1594,319,1683,345"/>
 <area shape="rect" id="node26" href="$_random_8h.html" title="This is a thread_local rng that is seeded on construction so that each thread can get a different see..." alt="" coords="1323,244,1405,271"/>
 <area shape="rect" id="node36" href="$_vector3_d_8h.html" title=" " alt="" coords="893,244,981,271"/>
 <area shape="rect" id="node21" title=" " alt="" coords="685,319,755,345"/>
 <area shape="rect" id="node22" title=" " alt="" coords="779,319,840,345"/>
-<area shape="rect" id="node24" title=" " alt="" coords="1694,393,1759,420"/>
-<area shape="rect" id="node25" title=" " alt="" coords="1607,393,1670,420"/>
-<area shape="rect" id="node27" title=" " alt="" coords="1229,319,1296,345"/>
-<area shape="rect" id="node28" title=" " alt="" coords="1413,319,1491,345"/>
-<area shape="rect" id="node29" title=" " alt="" coords="1516,319,1575,345"/>
-<area shape="rect" id="node30" href="$_errors_8h.html" title=" " alt="" coords="1321,319,1389,345"/>
+<area shape="rect" id="node24" title=" " alt="" coords="1689,393,1754,420"/>
+<area shape="rect" id="node25" title=" " alt="" coords="1602,393,1665,420"/>
+<area shape="rect" id="node27" title=" " alt="" coords="1224,319,1291,345"/>
+<area shape="rect" id="node28" title=" " alt="" coords="1407,319,1486,345"/>
+<area shape="rect" id="node29" title=" " alt="" coords="1511,319,1569,345"/>
+<area shape="rect" id="node30" href="$_errors_8h.html" title=" " alt="" coords="1315,319,1383,345"/>
 <area shape="rect" id="node33" href="$_singleton_8h.html" title=" " alt="" coords="865,319,951,345"/>
 <area shape="rect" id="node34" title=" " alt="" coords="976,319,1075,345"/>
-<area shape="rect" id="node35" title=" " alt="" coords="1099,319,1205,345"/>
-<area shape="rect" id="node31" title=" " alt="" coords="1221,393,1299,420"/>
-<area shape="rect" id="node32" title=" " alt="" coords="1421,393,1475,420"/>
+<area shape="rect" id="node35" title=" " alt="" coords="1099,319,1200,345"/>
+<area shape="rect" id="node31" title=" " alt="" coords="1215,393,1294,420"/>
+<area shape="rect" id="node32" title=" " alt="" coords="1415,393,1470,420"/>
 </map>

@@ -5,12 +5,12 @@
 <area shape="rect" id="node4" href="$_hill_climbing_8h.html" title="This cute kind of inference keeps a body of N top hypotheses, and successively proposes to them using..." alt="" coords="960,177,1142,203"/>
 <area shape="rect" id="node5" href="$_reservoir_sample_8h.html" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="1588,80,1746,121"/>
 <area shape="rect" id="node6" href="$_coroutines_8h.html" title="This little object will return true once every n times it is converted to a bool." alt="" coords="520,87,689,114"/>
-<area shape="rect" id="node10" href="$_testing_2_basics_2main_8cpp.html" title=" " alt="" coords="371,445,536,471"/>
-<area shape="rect" id="node13" href="$_testing_2_detailed_balance_2main_8cpp.html" title=" " alt="" coords="560,437,723,479"/>
-<area shape="rect" id="node14" href="$_testing_2_insert_delete_probability_2main_8cpp.html" title=" " alt="" coords="748,437,948,479"/>
+<area shape="rect" id="node10" href="$_basics_2_main_8cpp.html" title=" " alt="" coords="371,445,536,471"/>
+<area shape="rect" id="node13" href="$_detailed_balance_2_main_8cpp.html" title=" " alt="" coords="560,437,723,479"/>
+<area shape="rect" id="node14" href="$_insert_delete_probability_2_main_8cpp.html" title=" " alt="" coords="748,437,948,479"/>
 <area shape="rect" id="node7" href="$_threaded_inference_interface_8h.html" title="This manages multiple threads for running inference. This requires a subclass to define run_thread,..." alt="" coords="724,169,935,211"/>
 <area shape="rect" id="node9" href="$_inference_2_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="366,259,541,300"/>
-<area shape="rect" id="node21" href="$_m_c_m_c_chain_8h.html" title=" " alt="" coords="532,169,676,211"/>
+<area shape="rect" id="node21" href="$_m_c_m_c_chain_8h.html" title="This represents an MCMC hain on a hypothesis of type HYP. It uses HYP::propose and HYP::compute_poste..." alt="" coords="532,169,676,211"/>
 <area shape="rect" id="node8" href="$_beam_search_8h.html" title="This is an implementation of beam search that maintains a priority queue of partial states and attemp..." alt="" coords="1054,266,1242,293"/>
 <area shape="rect" id="node11" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="886,259,1030,300"/>
 <area shape="rect" id="node15" href="$_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="718,259,862,300"/>

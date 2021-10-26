@@ -102,7 +102,11 @@ void \mbox{\hyperlink{class_grammar_a5849e85e2c5b34174f82f9c784c92fe2}{expand\+\
 double \mbox{\hyperlink{class_grammar_a195bd7a052b34884c2e006cbd6ed3c94}{neighbor\+\_\+prior}} (const \mbox{\hyperlink{class_node}{Node}} \&node, int \&which) const
 \item 
 void \mbox{\hyperlink{class_grammar_a1524560f792f87da632c21f665666d21}{complete}} (\mbox{\hyperlink{class_node}{Node}} \&node)
-\end{DoxyCompactItemize}
+\item 
+std\+::tuple$<$ int, std\+::vector$<$ int $>$, int $>$ \mbox{\hyperlink{class_grammar_a862cca16863630dcadbcc27dbf265e17}{find\+\_\+open\+\_\+commas\+\_\+close}} (const std\+::string s)
+\item 
+\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar_a842db94316bd0d4942766d4b86414a67}{simple\+\_\+parse}} (std\+::string s)
+\begin{DoxyCompactList}\small\item\em Very simple parsing routine that takes a string like \char`\"{}and(not(or(eq\+\_\+pos(pos(parent(x)),\textquotesingle{}\+N\+P-\/\+P\+O\+S\+S\textquotesingle{}),eq\+\_\+pos(\textquotesingle{}\+N\+P-\/\+S\textquotesingle{},pos(x)))),corefers(x))\char`\"{} (from the Binding example) and parses it into a \mbox{\hyperlink{class_node}{Node}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -416,6 +420,13 @@ Count the number of terminal rules of return type nt
 {\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
 void \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::expand\+\_\+to\+\_\+neighbor (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}} \&}]{node,  }\item[{int \&}]{which }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
+\mbox{\Hypertarget{class_grammar_a862cca16863630dcadbcc27dbf265e17}\label{class_grammar_a862cca16863630dcadbcc27dbf265e17}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!find\_open\_commas\_close@{find\_open\_commas\_close}}
+\index{find\_open\_commas\_close@{find\_open\_commas\_close}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
+\doxysubsubsection{\texorpdfstring{find\_open\_commas\_close()}{find\_open\_commas\_close()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+std\+::tuple$<$int,std\+::vector$<$int$>$,int$>$ \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::find\+\_\+open\+\_\+commas\+\_\+close (\begin{DoxyParamCaption}\item[{const std\+::string}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
 \mbox{\Hypertarget{class_grammar_abd714767f5c9909da54393c638a033e8}\label{class_grammar_abd714767f5c9909da54393c638a033e8}} 
 \index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!from\_parseable@{from\_parseable}}
 \index{from\_parseable@{from\_parseable}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
@@ -691,6 +702,25 @@ virtual \mbox{\hyperlink{class_rule}{Rule}}$\ast$ \mbox{\hyperlink{class_grammar
 Randomly sample a rule of type nt. 
 \begin{DoxyParams}{Parameters}
 {\em nt} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_grammar_a842db94316bd0d4942766d4b86414a67}\label{class_grammar_a842db94316bd0d4942766d4b86414a67}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!simple\_parse@{simple\_parse}}
+\index{simple\_parse@{simple\_parse}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
+\doxysubsubsection{\texorpdfstring{simple\_parse()}{simple\_parse()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::simple\+\_\+parse (\begin{DoxyParamCaption}\item[{std\+::string}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Very simple parsing routine that takes a string like \char`\"{}and(not(or(eq\+\_\+pos(pos(parent(x)),\textquotesingle{}\+N\+P-\/\+P\+O\+S\+S\textquotesingle{}),eq\+\_\+pos(\textquotesingle{}\+N\+P-\/\+S\textquotesingle{},pos(x)))),corefers(x))\char`\"{} (from the Binding example) and parses it into a \mbox{\hyperlink{class_node}{Node}}. 
+
+N\+O\+TE\+: The resulting \mbox{\hyperlink{class_node}{Node}} must then be put into a \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}} or \mbox{\hyperlink{class_lexicon}{Lexicon}}. N\+O\+TE\+: This is not very robust or debugged. Just a quick ipmlementation. 
+\begin{DoxyParams}{Parameters}
+{\em s} & \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}

@@ -14,7 +14,7 @@ Directory dependency graph for M\+C\+MC\+:
 file \mbox{\hyperlink{_chain_pool_8h}{Chain\+Pool.\+h}}
 \begin{DoxyCompactList}\small\item\em A \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}} stores a bunch of M\+C\+M\+C\+Chains and allows you to run them serially or in parallel. N\+O\+TE\+: When you use a \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}, the results will not be reproducible with seed because timing determines when you switch chains. \end{DoxyCompactList}\item 
 file \mbox{\hyperlink{_m_c_m_c_chain_8h}{M\+C\+M\+C\+Chain.\+h}}
-\item 
+\begin{DoxyCompactList}\small\item\em This represents an M\+C\+MC hain on a hypothesis of type H\+YP. It uses H\+Y\+P\+::propose and H\+Y\+P\+::compute\+\_\+posterior to implement Metropolic\+Hastings. \end{DoxyCompactList}\item 
 file \mbox{\hyperlink{_parallel_tempering_8h}{Parallel\+Tempering.\+h}}
 \begin{DoxyCompactList}\small\item\em This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temperatures in order to balances swaps up and down the ladder (which makes it efficient). The adaptation scheme follows \href{https://arxiv.org/abs/1501.05823}{\texttt{ https\+://arxiv.\+org/abs/1501.\+05823}} N\+O\+TE This starts two extra threads, one for adapting and one for swapping, but they mostly wait around. \end{DoxyCompactList}\item 
 file \mbox{\hyperlink{_partition_m_c_m_c_8h}{Partition\+M\+C\+M\+C.\+h}}

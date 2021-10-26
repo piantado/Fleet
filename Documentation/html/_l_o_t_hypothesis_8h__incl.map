@@ -3,7 +3,7 @@
 <area shape="rect" id="node2" title=" " alt="" coords="97,408,163,435"/>
 <area shape="rect" id="node3" href="$_proposers_8h.html" title=" " alt="" coords="1708,87,1800,114"/>
 <area shape="rect" id="node6" href="$_program_8h.html" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="1201,177,1283,203"/>
-<area shape="rect" id="node26" href="$_node_8h.html" title=" " alt="" coords="1331,87,1395,114"/>
+<area shape="rect" id="node26" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="1331,87,1395,114"/>
 <area shape="rect" id="node33" href="$_errors_8h.html" title=" " alt="" coords="1560,259,1628,285"/>
 <area shape="rect" id="node41" href="$_discrete_distribution_8h.html" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="236,177,384,203"/>
 <area shape="rect" id="node43" href="$_bayesable_8h.html" title="The Bayesable class provides an interface for hypotheses that support Bayesian inference (e...." alt="" coords="925,169,1079,211"/>

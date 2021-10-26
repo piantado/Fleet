@@ -1,5 +1,5 @@
 <map id="src/Grammar/Node.h" name="src/Grammar/Node.h">
-<area shape="rect" id="node1" title=" " alt="" coords="613,5,757,32"/>
+<area shape="rect" id="node1" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="613,5,757,32"/>
 <area shape="rect" id="node2" title=" " alt="" coords="185,379,263,405"/>
 <area shape="rect" id="node3" title=" " alt="" coords="1335,80,1390,107"/>
 <area shape="rect" id="node4" href="$_miscellaneous_8h.html" title=" " alt="" coords="131,304,247,331"/>
@@ -20,7 +20,7 @@
 <area shape="rect" id="node14" href="$_v_m_s_runtime_error_8h.html" title=" " alt="" coords="672,379,811,405"/>
 <area shape="rect" id="node16" href="$_ops_8h.html" title=" " alt="" coords="539,379,597,405"/>
 <area shape="rect" id="node17" href="$_v_m_status_8h.html" title=" " alt="" coords="339,379,429,405"/>
-<area shape="rect" id="node15" title=" " alt="" coords="1389,453,1467,480"/>
+<area shape="rect" id="node15" title=" " alt="" coords="1393,453,1471,480"/>
 <area shape="rect" id="node20" title=" " alt="" coords="1109,304,1179,331"/>
 <area shape="rect" id="node21" title=" " alt="" coords="1203,304,1261,331"/>
 <area shape="rect" id="node22" title=" " alt="" coords="1285,304,1336,331"/>
@@ -28,17 +28,17 @@
 <area shape="rect" id="node24" title=" " alt="" coords="1432,304,1472,331"/>
 <area shape="rect" id="node25" title=" " alt="" coords="1496,304,1557,331"/>
 <area shape="rect" id="node26" title=" " alt="" coords="1019,304,1085,331"/>
-<area shape="rect" id="node27" href="$_numerics_8h.html" title=" " alt="" coords="1282,379,1371,405"/>
+<area shape="rect" id="node27" href="$_numerics_8h.html" title=" " alt="" coords="1287,379,1377,405"/>
 <area shape="rect" id="node30" href="$_random_8h.html" title="This is a thread_local rng that is seeded on construction so that each thread can get a different see..." alt="" coords="1632,304,1715,331"/>
 <area shape="rect" id="node38" href="$_vector3_d_8h.html" title=" " alt="" coords="856,304,944,331"/>
-<area shape="rect" id="node28" title=" " alt="" coords="1497,453,1562,480"/>
-<area shape="rect" id="node29" title=" " alt="" coords="1295,453,1358,480"/>
+<area shape="rect" id="node28" title=" " alt="" coords="1499,453,1565,480"/>
+<area shape="rect" id="node29" title=" " alt="" coords="1301,453,1363,480"/>
 <area shape="rect" id="node31" title=" " alt="" coords="1700,379,1767,405"/>
 <area shape="rect" id="node32" title=" " alt="" coords="1791,379,1849,405"/>
 <area shape="rect" id="node33" href="$_errors_8h.html" title=" " alt="" coords="1874,379,1942,405"/>
-<area shape="rect" id="node35" href="$_singleton_8h.html" title=" " alt="" coords="1105,379,1191,405"/>
+<area shape="rect" id="node35" href="$_singleton_8h.html" title=" " alt="" coords="1107,379,1194,405"/>
 <area shape="rect" id="node36" title=" " alt="" coords="1577,379,1676,405"/>
-<area shape="rect" id="node37" title=" " alt="" coords="1396,379,1503,405"/>
+<area shape="rect" id="node37" title=" " alt="" coords="1401,379,1503,405"/>
 <area shape="rect" id="node34" title=" " alt="" coords="1869,453,1947,480"/>
 <area shape="rect" id="node40" href="$_stack_8h.html" title="Many things in Fleet are stacks and this is designed to allow for rapid changse to the stack type in ..." alt="" coords="709,155,776,181"/>
 <area shape="rect" id="node42" href="$_i_o_8h.html" title=" " alt="" coords="1583,155,1630,181"/>
