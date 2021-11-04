@@ -54,7 +54,7 @@ public:
 	// iterate so now we might make a map in constructing, but we stores as a vector of pairs
 	using Predict_t = Vector2D<std::vector<std::pair<typename HYP::output_t,double>>>; 
 	
-	VectorNormalHypothesis logA; 
+	VectorHalfNormalHypothesis logA; 
 	
 	// Here is a list of built-in parameters that we can use. Each stores a standard
 	// normal and a value under the specified transformation, which is chosen here to give 
@@ -285,7 +285,7 @@ public:
 	}
 	
 	/**
-	 * @brief 
+	 * @brief Recompute the predictions for the hypotheses and data
 	 * @param hypotheses
 	 * @param human_data
 	 * @return 
@@ -547,7 +547,7 @@ public:
 		
 		// TODO: Do we normalize the prior? Probably need to or else we end up getting
 		// multiple hypotheses that have prior approx 1	
-		return lognormalize( (*C * logA.value) / pt.get() );	
+		return lognormalize( (*C * -logA.value) / pt.get() );	
 		
 		// This version does the rational-rule thing and requires that logA store the log of the A values
 		// that ends up giving kinda crazy values. NOTE: This version also constrains each NT to sum to 1,
