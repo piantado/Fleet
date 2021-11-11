@@ -30,14 +30,18 @@ const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The m
 const size_t MAX_PR_LINES = 1000000; 
 
 const size_t NTEMPS = 5; 
-const size_t MAX_TEMP = 2.0; 
+const size_t MAX_TEMP = 1.20; 
 unsigned long PRINT_STRINGS; // print at most this many strings for each hypothesis
 
-std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
-//std::vector<S> data_amounts={"100"}; // how many data points do we run on?
+//std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
+std::vector<S> data_amounts={"100"}; // how many data points do we run on?
 
 // useful for printing -- so we know how many tokens there were in the data
 size_t current_ntokens = 0; // how many tokens are there currently? Just useful to know
+
+const std::string emptystring = "";
+const std::string errorstring = "<err>";
+
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare a grammar
@@ -73,8 +77,8 @@ public:
 		}));
 
 //		add("c2s(%s)", +[](char c) -> S { return S(1,c); });
-		add("head(%s)", +[](S s) -> S { return (s.empty() ? S("") : S(1,s.at(0))); }); // head here could be a char, except that it complicates stuff, so we'll make it a string str
-		add("\u00D8", +[]() -> S { return S(""); }, 10.0);
+		add("head(%s)", +[](S s) -> S { return (s.empty() ? emptystring : S(1,s.at(0))); }); // head here could be a char, except that it complicates stuff, so we'll make it a string str
+		add("\u00D8", +[]() -> S { return emptystring; }, 10.0);
 		add("(%s==%s)", +[](S x, S y) -> bool { return x==y; });
 		add("empty(%s)", +[](S x) -> bool { 	return x.length()==0; });
 		
@@ -204,7 +208,18 @@ public:
 	using Super = LOTHypothesis<InnerHypothesis,S,S,MyGrammar,&grammar>;
 	using Super::Super;
 	
+	// store whether or not I was called in the lexicon
+	// (this is used to require lexica to call every InnerHypothesis)
+	bool was_called; 
+	
 	static constexpr double regenerate_p = 0.7;
+	
+	// we need to override this so that we set was_called so we know we were used
+	// this allows us to set -inf prior to mutliple factors that are unusued
+	virtual void push_program(Program<Super::VirtualMachineState_t>& s) override {
+		was_called = true;
+		Super::push_program(s);
+	}
 	
 	[[nodiscard]] virtual std::pair<InnerHypothesis,double> propose() const override {
 		
@@ -233,11 +248,15 @@ public:
 		// this calls by calling only the last factor, which, according to our prior,
 		
 		// make myself the loader for all factors
-		for(auto& [k,f] : factors) f.program.loader = this; 
+		for(auto& [k,f] : factors) {
+			f.program.loader = this; 
+			f.was_called = false; 
+		}
 
 		extern size_t nfactors;
 		assert(nfactors == factors.size());
 		return factors[nfactors-1].call(x, err); // we call the factor but with this as the loader.  
+		
 	}
 	 
 	 // We assume input,output with reliability as the number of counts that input was seen going to that output
@@ -247,7 +266,22 @@ public:
 	 double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		// this version goes through and computes the predictive probability of each prefix
 		 
-		const auto& M = call(S(""), S("<err>")); 
+		const auto& M = call(emptystring, errorstring); 
+		
+		// calling "call" first made was_called false on everything, and
+		// this will only be set to true if it was called (via push_program)
+		// so here we check and make sure everything was used and if not
+		// we give it a -inf likelihood
+		// NOTE: This is a slow way to do this because it requires running the hypothesis
+		// but that's hard to get around with how factosr work. 
+		// NOTE that this checks factors over ALL prob. outcomes
+		for(auto& [k,f] : factors) {
+			if(not f.was_called) {
+				return likelihood=-infinity;
+			}
+		}
+		
+		// otherwise let's compute the likelihood
 		
 		const float log_A = log(alphabet.size());
 
@@ -277,7 +311,7 @@ public:
 		extern MyHypothesis::data_t prdata;
 		extern std::string current_data;
 		extern std::pair<double,double> mem_pr;
-		auto o = this->call(S(""), S("<err>"));
+		auto o = this->call(emptystring, errorstring);
 		auto [prec, rec] = get_precision_and_recall(o, prdata, PREC_REC_N);
 		COUT "#\n";
 		COUT "# "; o.print(PRINT_STRINGS);	COUT "\n";
@@ -377,15 +411,14 @@ int main(int argc, char** argv){
 	MyHypothesis h0;
 	for(size_t i=0;i<nfactors;i++) { h0[i] = InnerHypothesis::sample(); }
  
-	
+	// where to store these hypotheses
 	TopN<MyHypothesis> all; 
-	//	all.set_print_best(true);
 	
-	ParallelTempering samp(h0, &datas[0], FleetArgs::nchains, MAX_TEMP); 
+	ParallelTempering samp(h0, &datas[0], NTEMPS, MAX_TEMP); 
 //	ChainPool samp(h0, &datas[0], NTEMPS); 
 
 	// Set these up as the defaults as below
-	VirtualMachineControl::MAX_STEPS  = 1024; 
+	VirtualMachineControl::MAX_STEPS  = 1024; // TODO: Change to MAX_RUN_PROGRAM or remove?
 	VirtualMachineControl::MAX_OUTPUTS = 256; 
 	VirtualMachineControl::MIN_LP = -15;
 	PRINT_STRINGS = 512;	

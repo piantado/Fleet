@@ -59,8 +59,10 @@ public:
 	// Here is a list of built-in parameters that we can use. Each stores a standard
 	// normal and a value under the specified transformation, which is chosen here to give 
 	// a reasonably shaped prior
-	TNormalVariable< +[](float x)->float { return 1.0/(1.0+expf(-1.7*x)); }> alpha;
-	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            llt;
+//	TNormalVariable< +[](float x)->float { return 1.0/(1.0+expf(-1.7*x)); }> alpha;
+	TNormalVariable< +[](float x)->float { return 1.0/(1.0+expf(-1.0*x)); }> alpha;
+	TNormalVariable< +[](float x)->float { return expf((x-0.33)/1.50); }>    llt;
+//	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            llt;
 	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            pt;
 	TNormalVariable< +[](float x)->float { return expf(x-2); }>              decay;  // peaked near zero
 	
@@ -382,12 +384,10 @@ public:
 		// P(output | learner_data) = sum_h P(h | learner_data) * P(output | h):
 		// NOTE We do not use omp because this is called by something that does
 		for(int h=0;h<hposterior.rows();h++) {
-			if(hposterior(h,i) < 1e-6)  continue;  // skip very low probability for speed
+			if(hposterior(h,i) < 1e-6) continue;  // skip very low probability for speed
 			
-			for(const auto& [o,op] : P->at(h,i)) {						
-				float p = hposterior(h,i) * op;
-				// map 0 for nonexisting doubles
-				model_predictions[o] += p;
+			for(const auto& [outcome,outcomeprob] : P->at(h,i)) {						
+				model_predictions[outcome] += hposterior(h,i) * outcomeprob;
 			}
 		}
 		
@@ -430,7 +430,7 @@ public:
 			
 			Matrix hposterior = this->compute_normalized_posterior();
 			
-			this->likelihood  = 0.0; // for af the human data
+			this->likelihood  = 0.0; // for all the human data
 			
 			#pragma omp parallel for
 			for(size_t i=0;i<human_data.size();i++) {
@@ -442,7 +442,7 @@ public:
 				for(const auto& [r,cnt] : di.responses) {
 					
 //					PRINTN(i, r, cnt, ll, alpha.get(), human_chance_lp(r,di), model_predictions[r]);
-					
+
 					ll += cnt * logplusexp( log(1.0-alpha.get()) + human_chance_lp(r,di), 
 					                        log(alpha.get()) + log(model_predictions[r])); 
 				}

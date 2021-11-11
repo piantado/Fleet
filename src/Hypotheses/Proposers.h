@@ -1,5 +1,6 @@
 #pragma once
 
+//#define DEBUG_PROPOSE 1
 
 #include <utility>
 #include <tuple>
@@ -85,7 +86,7 @@ namespace Proposals {
 	std::pair<Node,double> regenerate(GrammarType* grammar, const Node& from) {
 				
 		// copy, regenerate a random node, and return that and forward-backward prob
-		#ifdef DEBUG_MCMC
+		#ifdef DEBUG_PROPOSE
 			CERR "REGENERATE" TAB from.string() ENDL;
 		#endif
 
@@ -97,12 +98,24 @@ namespace Proposals {
 		
 		auto [s, slp] = sample<Node,Node>(ret, can_resample);
 		
+		#ifdef DEBUG_PROPOSE
+		CERR "PROPOSING AT " TAB (*s) ENDL;
+		#endif
+			
 		double oldgp = grammar->log_probability(*s); // reverse probability generating 
 		
 		s->assign(grammar->generate(s->nt())); 
 		
 		double fb = slp + grammar->log_probability(*s) 
 				  - (log(can_resample(*s)) - log(ret.sum(can_resample)) + oldgp);
+
+		#ifdef DEBUG_PROPOSE
+			CERR "FORWARD" TAB slp + grammar->log_probability(*s) ENDL;
+			CERR "BACKWARD" TAB log(can_resample(*s)) - log(ret.sum(can_resample)) + oldgp ENDL;
+			CERR "PROPOSING" TAB ret ENDL;
+			CERR "----------------" ENDL;
+			
+		#endif
 
 		return std::make_pair(ret, fb);
 	}
@@ -123,8 +136,8 @@ namespace Proposals {
 			return (n.can_resample and n.depth() <= D )*1.0;
 		};
 		
-//		#ifdef DEBUG_MCMC
-			CERR "REGENERATE_SHALLOW" TAB from.string() ENDL;
+//		#ifdef DEBUG_PROPOSE
+//			CERR "REGENERATE_SHALLOW" TAB from.string() ENDL;
 //		#endif
 
 		Node ret = from; // copy
@@ -153,7 +166,7 @@ namespace Proposals {
 		// in the replaced tree. NOTE: it must regenerate something with the right nonterminal
 		// since that's what's being replaced! 
 		
-		#ifdef DEBUG_MCMC
+		#ifdef DEBUG_PROPOSE
 			CERR "INSERT-TREE"  TAB from.string()  ENDL;
 		#endif
 
@@ -236,7 +249,7 @@ namespace Proposals {
 		// in the replaced tree. NOTE: it must regenerate something with the right nonterminal
 		// since that's what's being replaced
 		
-		#ifdef DEBUG_MCMC
+		#ifdef DEBUG_PROPOSE
 			CERR "DELETE-TREE"  TAB from.string()  ENDL;
 		#endif
 
