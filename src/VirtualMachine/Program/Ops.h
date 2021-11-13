@@ -10,6 +10,7 @@ enum class Op {
 	Flip, FlipP, SafeFlipP,
 	Mem,
 	NoOp,
-	CL_I, CL_S, CL_K, CL_Apply
+	CL_I, CL_S, CL_K, CL_Apply,
+	Custom1, Custom2, Custom3, Custom4, Custom5 
 };
 

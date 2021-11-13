@@ -298,7 +298,7 @@ namespace Builtins {
 		     typename key_t,
 			 typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t,key_t,input_t> LexiconRecurse(Op::LexiconRecurse, BUILTIN_LAMBDA {
+	Builtin<output_t,key_t,input_t> LexiconRecurse(Op::Custom1, BUILTIN_LAMBDA {
 			
 			assert(vms->program.loader != nullptr);
 							
@@ -316,8 +316,6 @@ namespace Builtins {
 			auto mynewx = vms->template getpop<input_t>();
 			vms->xstack.push(std::move(mynewx));
 			vms->program.push(Builtins::PopX<Grammar_t>.makeInstruction()); // we have to remember to remove X once the other program evaluates, *after* everything has evaluated
-			
-
 			
 			// push this program 
 			// but we give i.arg so that we can pass factorized recursed

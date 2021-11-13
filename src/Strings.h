@@ -170,6 +170,23 @@ bool contains(const std::string& s, const char x) {
 }
 
 /**
+ * @brief Replace all occurances of x with y in s
+ * @param s
+ * @param x
+ * @param y
+ * @param add -- replace x plus this many characters
+ */
+
+void replace_all(std::string& s, const std::string& x, const std::string& y, int add=0) {
+	auto pos = s.find(x);
+	while(pos != std::string::npos) {
+		s.replace(pos,x.length()+add,y);
+		pos = s.find(x);
+	}
+}
+
+
+/**
  * @brief Probability of converting x into y by deleting some number (each with del_p, then stopping with prob 1-del_p), adding with 
  * 		  probability add_p, and then when we add selecting from an alphabet of size alpha_n
  * @param x
