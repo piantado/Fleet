@@ -1,51 +1,21 @@
 #pragma once 
 
 #include "Errors.h"
+#include "Primitive.h"
 
-// We'll bundle togehter some types and Ops so that
-// they can more direclty be added to the grammar and get the op right
-// We need this Op so that a rule can know what kind of op it's using, since
-// e.g. If and And need special linearization
-template<typename T=void, typename... args> 
-struct Builtin {
-	
-	Op op;
-	void* f;
-	
-	template<typename VirtualMachineState_t>
-	Builtin(Op o, typename VirtualMachineState_t::FT* _f) : f((void*)_f), op(o) {
-	}	
-	
-	template<typename VirtualMachineState_t>
-	Builtin(Op o, void(*_f)(VirtualMachineState_t*,int)) : op(o) {
-		f = (void*)(new typename VirtualMachineState_t::FT(_f)); // make a copy
-	}
-	
-	// this is helpful for other Builtins to call 
-	template<typename VirtualMachineState_t>
-	void call(VirtualMachineState_t* vms, int arg) {
-		auto myf = reinterpret_cast<typename VirtualMachineState_t::FT*>(f);
-		(*myf)(vms, arg);
-	}
-	
-	Instruction makeInstruction(int arg=0) {
-		return Instruction(f,arg);
-	}
-};
+// Define this because it's an ugly expression to keep typing and we might want to change all at once
+#define BUILTIN_LAMBDA             +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void
 
 namespace Builtins {
 	
-	// Define this because it's an ugly expression to keep typing and we might want to change all at once
-	#define BUILTIN_LAMBDA             +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void
-	
 	template<typename Grammar_t>
-	Builtin<typename Grammar_t::input_t> X(Op::X, BUILTIN_LAMBDA {
+	Primitive<typename Grammar_t::input_t> X(Op::X, BUILTIN_LAMBDA {
 		assert(!vms->xstack.empty());
 		vms->template push<typename Grammar_t::input_t>(vms->xstack.top()); // not a pop!
 	});
 	
 	template<typename Grammar_t>
-	Builtin<bool,bool,bool> And(Op::And, BUILTIN_LAMBDA {
+	Primitive<bool,bool,bool> And(Op::And, BUILTIN_LAMBDA {
 	
 		// process the short circuit
 		bool b = vms->template getpop<bool>(); // bool has already evaluted
@@ -60,7 +30,7 @@ namespace Builtins {
 	});
 	
 	template<typename Grammar_t>
-	Builtin<bool,bool,bool> Or(Op::Or, BUILTIN_LAMBDA {
+	Primitive<bool,bool,bool> Or(Op::Or, BUILTIN_LAMBDA {
 	
 		// process the short circuit
 		bool b = vms->template getpop<bool>(); // bool has already evaluted
@@ -75,13 +45,13 @@ namespace Builtins {
 	});
 	
 	template<typename Grammar_t>
-	Builtin<bool,bool> Not(Op::Not, BUILTIN_LAMBDA {
+	Primitive<bool,bool> Not(Op::Not, BUILTIN_LAMBDA {
 		vms->push(not vms->template getpop<bool>()); 
 	});
 	
 	
 	template<typename Grammar_t, typename T>
-	Builtin<T,bool,T,T> If(Op::If, BUILTIN_LAMBDA {
+	Primitive<T,bool,T,T> If(Op::If, BUILTIN_LAMBDA {
 		// Op::If has to short circuit and skip (pop some of the stack) 
 		bool b = vms->template getpop<bool>(); // bool has already evaluted
 		
@@ -91,17 +61,17 @@ namespace Builtins {
 	});
 	
 	template<typename Grammar_t>
-	Builtin<> Jmp(Op::Jmp, BUILTIN_LAMBDA {
+	Primitive<> Jmp(Op::Jmp, BUILTIN_LAMBDA {
 		vms->program.popn(arg);
 	});
 	
 	template<typename Grammar_t>
-	Builtin<> PopX(Op::PopX, BUILTIN_LAMBDA {
+	Primitive<> PopX(Op::PopX, BUILTIN_LAMBDA {
 		vms->xstack.pop();
 	});	
 	
 	template<typename Grammar_t>
-	Builtin<bool> Flip(Op::Flip, BUILTIN_LAMBDA {
+	Primitive<bool> Flip(Op::Flip, BUILTIN_LAMBDA {
 		assert(vms->pool != nullptr);
 		
 		// push both routes onto the stack
@@ -122,7 +92,7 @@ namespace Builtins {
 	
 	
 	template<typename Grammar_t>
-	Builtin<bool,double> FlipP(Op::FlipP, BUILTIN_LAMBDA {
+	Primitive<bool,double> FlipP(Op::FlipP, BUILTIN_LAMBDA {
 		assert(vms->pool != nullptr);
 		
 		// get the coin weight
@@ -152,7 +122,7 @@ namespace Builtins {
 	// This is a version of FlipP that doesn't complain if p>1 or p<0 -- it
 	// just sets them to those values
 	template<typename Grammar_t>
-	Builtin<bool,double> SafeFlipP(Op::SafeFlipP, BUILTIN_LAMBDA {
+	Primitive<bool,double> SafeFlipP(Op::SafeFlipP, BUILTIN_LAMBDA {
 		assert(vms->pool != nullptr);
 		
 		// get the coin weight
@@ -181,7 +151,7 @@ namespace Builtins {
 	
 	
 	template<typename Grammar_t, typename key_t, typename output_t=typename Grammar_t::output_t>
-	Builtin<> Mem(Op::Mem, BUILTIN_LAMBDA {	
+	Primitive<> Mem(Op::Mem, BUILTIN_LAMBDA {	
 		auto memindex = vms->template memstack<key_t>().top(); vms->template memstack<key_t>().pop();
 		if(vms->template mem<key_t>().count(memindex)==0) { // you might actually have already placed mem in crazy recursive situations, so don't overwrite if you have
 			vms->template mem<key_t>()[memindex] = vms->template gettop<output_t>(); // what I should memoize should be on top here, but don't remove because we also return it
@@ -190,7 +160,7 @@ namespace Builtins {
 	
 		
 	template<typename Grammar_t>
-	Builtin<> NoOp(Op::NoOp, BUILTIN_LAMBDA {	
+	Primitive<> NoOp(Op::NoOp, BUILTIN_LAMBDA {	
 		
 	});
 
@@ -198,7 +168,7 @@ namespace Builtins {
 	template<typename Grammar_t,
 			 typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t,input_t> Recurse(Op::Recurse, BUILTIN_LAMBDA {
+	Primitive<output_t,input_t> Recurse(Op::Recurse, BUILTIN_LAMBDA {
 			
 			assert(vms->program.loader != nullptr);
 							
@@ -227,7 +197,7 @@ namespace Builtins {
 	template<typename Grammar_t,
 			 typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t, input_t> SafeRecurse(Op::SafeRecurse, BUILTIN_LAMBDA {	
+	Primitive<output_t, input_t> SafeRecurse(Op::SafeRecurse, BUILTIN_LAMBDA {	
 		assert(not vms->template stack<input_t>().empty());
 		
 		// if the size of the top is zero, we return output{}
@@ -245,7 +215,7 @@ namespace Builtins {
 	template<typename Grammar_t,
 			 typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t,input_t>  MemRecurse(Op::MemRecurse, BUILTIN_LAMBDA {	 // note the order switch -- that's right!
+	Primitive<output_t,input_t>  MemRecurse(Op::MemRecurse, BUILTIN_LAMBDA {	 // note the order switch -- that's right!
 		assert(vms->program.loader != nullptr);
 		
 		using mykey_t = short; // this is just the default type used for non-lex recursion
@@ -276,7 +246,7 @@ namespace Builtins {
 	template<typename Grammar_t,
 			 typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-    Builtin<output_t,input_t> SafeMemRecurse(Op::SafeMemRecurse, BUILTIN_LAMBDA {	
+    Primitive<output_t,input_t> SafeMemRecurse(Op::SafeMemRecurse, BUILTIN_LAMBDA {	
 		assert(not vms->template stack<input_t>().empty());
 		
 		// if the size of the top is zero, we return output{}
@@ -298,7 +268,7 @@ namespace Builtins {
 		     typename key_t,
 			 typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t,key_t,input_t> LexiconRecurse(Op::Custom1, BUILTIN_LAMBDA {
+	Primitive<output_t,key_t,input_t> LexiconRecurse(Op::Custom1, BUILTIN_LAMBDA {
 			
 			assert(vms->program.loader != nullptr);
 							
@@ -328,7 +298,7 @@ namespace Builtins {
 		     typename key_t,
 		     typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t,key_t,input_t> LexiconSafeRecurse(Op::LexiconSafeRecurse, BUILTIN_LAMBDA {
+	Primitive<output_t,key_t,input_t> LexiconSafeRecurse(Op::LexiconSafeRecurse, BUILTIN_LAMBDA {
 			assert(not vms->template stack<input_t>().empty());
 			assert(vms->program.loader != nullptr);
 				
@@ -350,7 +320,7 @@ namespace Builtins {
 		     typename key_t,
 			 typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t,key_t,input_t> LexiconMemRecurse(Op::LexiconMemRecurse, BUILTIN_LAMBDA {
+	Primitive<output_t,key_t,input_t> LexiconMemRecurse(Op::LexiconMemRecurse, BUILTIN_LAMBDA {
 		assert(vms->program.loader != nullptr);
 						
 		if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
@@ -382,7 +352,7 @@ namespace Builtins {
 		     typename key_t,
 		     typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Builtin<output_t,key_t,input_t> LexiconSafeMemRecurse(Op::LexiconSafeMemRecurse, BUILTIN_LAMBDA {
+	Primitive<output_t,key_t,input_t> LexiconSafeMemRecurse(Op::LexiconSafeMemRecurse, BUILTIN_LAMBDA {
 			assert(not vms->template stack<input_t>().empty());
 			assert(vms->program.loader != nullptr);
 				

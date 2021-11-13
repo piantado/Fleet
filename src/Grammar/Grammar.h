@@ -280,7 +280,7 @@ public:
 	 * @param p
 	 */		
 	template<typename T, typename... args> 
-	void add(std::string fmt, Builtin<T,args...> b, double p=1.0, int a=0) {
+	void add(std::string fmt, Primitive<T,args...> b, double p=1.0, int a=0) {
 		// read f and o from b
 		add_vms<T,args...>(fmt, (FT*)b.f, p, b.op, a);
 	}
