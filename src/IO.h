@@ -6,13 +6,14 @@
 #include <fstream>
 #include <string>
 
+#include "OrderedLock.h"
+#include "Strings.h"
+
 // Don't warn shadow on this its a nightmare
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wshadow"
 #include "Dependencies/CL11.hpp"
 #pragma GCC diagnostic pop
-
-#include "Strings.h"
 
 // so sick of typing this horseshit
 #define TAB <<"\t"<< 
@@ -24,54 +25,54 @@
 #define COUTT std::cout<<"\t"<<
 #define COUTTT std::cout<<"\t\t"<<
 
-std::mutex output_lock;
+const std::string OUTPUT_SEP = "\t";  // standard output separator
 
-/* Define some macros that make handling IO a little easier */
+// These locks manage the standard output in PRINTN and ERRN below
+OrderedLock output_lock;
+OrderedLock err_lock;
 
-void __PRINT(){}
-template<typename First, typename ...Rest>
-void __PRINT(First && first, Rest && ...rest) {
-    std::cout << std::forward<First>(first) << "\t";
-    __PRINT(std::forward<Rest>(rest)...);
+/**
+ * @brief This assumes o has been appropriately locked
+ * @param o
+ * @param f
+ */
+template<typename FIRST, typename... ARGS>
+void OUTPUTN(std::ostream& o, FIRST f, ARGS... args) {
+	o << f; 
+	if constexpr(sizeof...(ARGS) > 0) {
+		((o << OUTPUT_SEP << args), ...);	
+	}
+	o << std::endl;
 }
-template<typename First, typename ...Rest>
-void PRINT(First && first, Rest && ...rest) {
+
+/**
+ * @brief Lock output_lcok and print to std:cout
+ * @param f
+ */
+template<typename FIRST, typename... ARGS>
+void PRINTN(FIRST f, ARGS... args) {
 	std::lock_guard guard(output_lock);
-	__PRINT(first,std::forward<Rest>(rest)...);
-}
-template<typename First, typename ...Rest>
-void PRINTN(First && first, Rest && ...rest) {
-	std::lock_guard guard(output_lock);
-	__PRINT(first,std::forward<Rest>(rest)...);
-	std::cout << std::endl;
+	OUTPUTN(std::cout, f, args...);
 }
 
-
-void __ERR(){}
-template<typename First, typename ...Rest>
-void __ERR(First && first, Rest && ...rest) {
-    std::cerr << std::forward<First>(first) << "\t";
-    __ERR(std::forward<Rest>(rest)...);
-}
-template<typename First, typename ...Rest>
-void ERR(First && first, Rest && ...rest) {
-	std::lock_guard guard(output_lock);
-	__ERR(first,std::forward<Rest>(rest)...);
-}
-template<typename First, typename ...Rest>
-void ERRN(First && first, Rest && ...rest) {
-	std::lock_guard guard(output_lock);
-	__ERR(first,std::forward<Rest>(rest)...);
-	std::cerr << std::endl;
+/**
+ * @brief Lock err_lock and print to std:cerr
+ * @param f
+ */
+template<typename FIRST, typename... ARGS>
+void ERRN(FIRST f, ARGS... args) {
+	std::lock_guard guard(err_lock);
+	OUTPUTN(std::cerr, f, args...);
 }
 
-
-template<typename First, typename ...Rest>
-void DEBUG(First && first, Rest && ...rest) {
+/**
+ * @brief Print to std:ccout with debugging info
+ * @param f
+ */
+template<typename FIRST, typename... ARGS>
+void DEBUG(FIRST f, ARGS... args) {
 	std::lock_guard guard(output_lock);
-	std::cout << "DEBUG." << std::this_thread::get_id() << ": ";
-	__PRINT(first,std::forward<Rest>(rest)...);
-	std::cout << std::endl;
+	OUTPUTN(std::cout, "DEBUG", std::this_thread::get_id(), f, args...);
 }
 
 /**

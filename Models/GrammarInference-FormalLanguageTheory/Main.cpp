@@ -43,6 +43,9 @@ public:
 
 int main(int argc, char** argv){ 	
 	
+	PRINTN("a", "b", 10);
+	return 0;
+	
 	alphabet = "abcd"; // set this as the default. 
 	
 	Fleet fleet("An example of grammar inference for formal languages");
@@ -88,7 +91,7 @@ int main(int argc, char** argv){
 		
 		// This glom thing will use anything overlapping in mcmc_data, and give
 		// us a new pointer if it can. This decreases the amount we need to run MCMC search
-		// on and saves memory
+		// on and saves memory; NOTE: This changes this_data
 		glom(mcmc_data, this_data); 	
 		
 		// now just put into the data
@@ -96,7 +99,7 @@ int main(int argc, char** argv){
 										  .ndata=ndata, 
 										  .predict=const_cast<S*>(&EMPTY_STRING), 
 										  .responses=m,
-										  .chance=1e-30, // TODO: UPDATE ~~~~~~
+										  .chance=0.0, // 1e-30, // TODO: UPDATE ~~~~~~
 										  .decay_position=decay_pos,
 										  .my_decay_position=i-1
 										  });
@@ -118,8 +121,7 @@ int main(int argc, char** argv){
 		
 			// Need to fix each of the recursive arguments to only use those up to nf
 			// NOTE That we can't use grammar.clear_all because that will change the
-			// counts of how things are aligned in the grammar inference
-			
+			// counts of how things are aligned in the grammar inference			
 			nonterminal_t nt = grammar.nt<int>();
 			grammar.Z[nt] = 0.0; // reset 
 			for(size_t i=0;i<MAX_FACTORS;i++) {	
@@ -184,7 +186,7 @@ int main(int argc, char** argv){
 				auto& MAP = topMAP.best();
 				const Matrix hposterior = MAP.compute_normalized_posterior(); 
 				
-				PRINTN("#", h.posterior ); 
+				//PRINTN("#", h.posterior ); 
 				
 				std::ofstream outMAP(FleetArgs::output_path+"/MAP-strings.txt");
 				std::ofstream outtop(FleetArgs::output_path+"/top-H.txt");

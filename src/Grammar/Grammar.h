@@ -672,7 +672,6 @@ public:
 	std::vector<size_t> get_counts(const std::map<K,T>& v) const {
 
 		std::vector<size_t> out(count_rules(),0.0);
-		PRINT("HERE");
 		
 		const auto rule_cumulative = get_cumulative_indices();		
 		for(auto vi : v) {
@@ -681,7 +680,6 @@ public:
 				out[rule_cumulative[n.rule->nt] + get_index_of(n.rule)] += 1;
 			}
 		}
-		PRINT("HERE2");
 		
 		return out;
 	}
