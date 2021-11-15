@@ -443,8 +443,8 @@ public:
 					
 //					PRINTN(i, r, cnt, ll, alpha.get(), human_chance_lp(r,di), model_predictions[r]);
 
-					ll += cnt * logplusexp( log(1.0-alpha.get()) + human_chance_lp(r,di), 
-					                        log(alpha.get()) + log(model_predictions[r])); 
+					ll += cnt * logplusexp( log(1-alpha.get()) + human_chance_lp(r,di), 
+											log(alpha.get()) + log(model_predictions[r])); 
 				}
 				
 				

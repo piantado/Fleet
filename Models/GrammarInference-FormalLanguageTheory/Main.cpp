@@ -52,24 +52,13 @@ int main(int argc, char** argv){
 	fleet.initialize(argc, argv);
 
 	// Add to the grammar
-
+	for(size_t i=0;i<MAX_FACTORS;i++) {	
+		grammar.add_terminal( str(i), (int)i, 1.0/MAX_FACTORS);
+	}
+	
 	for(const char c : alphabet) {
-		grammar.add_terminal( Q(S(1,c)), c, 10.0/alphabet.length());
+		grammar.add_terminal( Q(S(1,c)), c, 5.0/alphabet.length());
 	}
-
-	// this is slightly non-ideal because e.g. F0 will have a different role
-	// when there are 1 vs 2 vs 3 factors, but they all have the same prior here.
-	for(size_t a=0;a<MAX_FACTORS;a++) {	
-		auto s = std::to_string(a);
-		double p = 1.0/(4*nfactors); // NOTE: Slightly different prior
-
-		grammar.add(S("F")+s+"(%s)" ,  Builtins::Recurse<MyGrammar>, p, a);
-		grammar.add(S("Fm")+s+"(%s)",  Builtins::MemRecurse<MyGrammar>, p, a);
-
-		grammar.add(S("Fs")+s+"(%s)",  Builtins::SafeRecurse<MyGrammar>, p, a);
-		grammar.add(S("Fms")+s+"(%s)", Builtins::SafeMemRecurse<MyGrammar>, p, a);
-	}
-		
 
 	///////////////////////////////
 	// Read the human data
@@ -127,7 +116,27 @@ int main(int argc, char** argv){
 		// here, we need to run on each number of factors
 		for(size_t nf=1;nf<=MAX_FACTORS;nf++) {
 		
-			auto h0 = MyHypothesis::sample(nf); 
+			// Need to fix each of the recursive arguments to only use those up to nf
+			// NOTE That we can't use grammar.clear_all because that will change the
+			// counts of how things are aligned in the grammar inference
+			
+			nonterminal_t nt = grammar.nt<int>();
+			grammar.Z[nt] = 0.0; // reset 
+			for(size_t i=0;i<MAX_FACTORS;i++) {	
+				Rule* r = grammar.get_rule(nt, str(i));
+				if(i < nf) {
+					r->p = 1.0/nf; // change this rule -- warning, kinda dangerous
+					grammar.Z[nt] += 1.0/nf;
+				}
+				else {
+					r->p = 0.0; // set to be zero to assure it's never sampled. 
+				}
+			}
+			
+			auto h0 = MyHypothesis::sample({}); 
+			for(size_t i=0;i<nf;i++) 
+				h0.factors[i] = InnerHypothesis::sample();
+			
 			auto hyps = get_hypotheses_from_mcmc(h0, mcmc_data, InnerControl(), ntops);
 		
 			for(size_t t=0;t<ntops.size();t++) 

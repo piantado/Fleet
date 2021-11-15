@@ -53,8 +53,8 @@ public:
 	}
 	
 	// A lexicon's value is just that vector (this is used by GrammarHypothesis)
-	      std::vector<INNER>& get_value()       {	return factors;	}
-	const std::vector<INNER>& get_value() const {	return factors;	}
+	      auto& get_value()       {	return factors;	}
+	const auto& get_value() const {	return factors;	}
 	
 		  INNER& at(const key_t& k) { return factors.at(k); }
 	const INNER& at(const key_t& k) const { return factors.at(k); }
@@ -66,7 +66,7 @@ public:
 		// NOTE that since LOTHypothesis has grammar as its type, all INNER Must have the 
 		// same grammar type (But this may change in the future -- if it does, we need to 
 		// update GrammarHypothesis::set_hypotheses_and_data)
-		return factors.begin()->get_grammar();
+		return factors.begin()->second.get_grammar();
 	}
 	
 	

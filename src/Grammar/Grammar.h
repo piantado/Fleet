@@ -362,6 +362,17 @@ public:
 		add(fmt, std::function( [=]()->T { return x; }), p, o, a);
 	}	
 	
+	
+	/**
+	 * @brief Remove all the nonterminals of this type from the grammar. NOTE: This is generally a 
+	 * *really* bad idea unless you know what you are doing. 
+	 * @param nt
+	 */	
+	void remove_all(nonterminal_t nt) {
+		rules[nt].clear();
+		Z[nt] = 0.0;
+	}
+	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Methods for getting rules by some info
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -631,24 +642,20 @@ public:
 		return out;
 	}
 	
-	
+	/**
+	* @brief Compute a vector of counts of how often each rule was used, in a *standard* order given by iterating over nts and then iterating over rules
+	* @param v
+	* @return 
+	*/
 	template<typename T>
 	std::vector<size_t> get_counts(const std::vector<T>& v) const {
-		/**
-		 * @brief Compute a vector of counts of how often each rule was used, in a *standard* order given by iterating over nts and then iterating over rules
-		 * @param v
-		 * @return 
-		 */
-		 
+
 		// NOTE: When we use requires, we can require something like T is a hypothesis with a value...
 		//static_assert(std::is_base_of<LOTHypothesis,T>::value); // need to have LOTHypotheses as T to use T::get_value() below	
 		
-		const size_t R = count_rules(); 
+		std::vector<size_t> out(count_rules(),0.0);
 		
-		std::vector<size_t> out(R,0.0);
-		
-		auto rule_cumulative = get_cumulative_indices();
-		
+		const auto rule_cumulative = get_cumulative_indices();		
 		for(auto vi : v) {
 
 			for(auto& n : vi.get_value()) { // assuming vi has a "value" 
@@ -659,6 +666,29 @@ public:
 		
 		return out;
 	}
+	
+	
+	template<typename K, typename T>
+	std::vector<size_t> get_counts(const std::map<K,T>& v) const {
+
+		std::vector<size_t> out(count_rules(),0.0);
+		PRINT("HERE");
+		
+		const auto rule_cumulative = get_cumulative_indices();		
+		for(auto vi : v) {
+			for(const auto& n : vi.second.get_value()) { // assuming vi has a "value" 
+				// now increment out, accounting for the number of rules that must have come before!
+				out[rule_cumulative[n.rule->nt] + get_index_of(n.rule)] += 1;
+			}
+		}
+		PRINT("HERE2");
+		
+		return out;
+	}
+	
+	
+	
+	
 //	template<typename T>
 //	std::vector<size_t> get_counts(const T& v) const {
 //		if constexpr (std::is_base_of<LOTHypothesis, T>) {

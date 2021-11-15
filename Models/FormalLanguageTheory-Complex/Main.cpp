@@ -253,10 +253,7 @@ public:
 			f.was_called = false; 
 		}
 
-		extern size_t nfactors;
-		assert(nfactors == factors.size());
-		return factors[nfactors-1].call(x, err); // we call the factor but with this as the loader.  
-		
+		return factors[factors.size()-1].call(x, err); // we call the factor but with this as the loader.  
 	}
 	 
 	 // We assume input,output with reliability as the number of counts that input was seen going to that output
