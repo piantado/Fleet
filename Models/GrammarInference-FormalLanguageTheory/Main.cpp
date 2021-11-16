@@ -43,9 +43,6 @@ public:
 
 int main(int argc, char** argv){ 	
 	
-	PRINTN("a", "b", 10);
-	return 0;
-	
 	alphabet = "abcd"; // set this as the default. 
 	
 	Fleet fleet("An example of grammar inference for formal languages");
@@ -74,18 +71,16 @@ int main(int argc, char** argv){
 		// split up stimulus into components
 		auto this_data = new MyHypothesis::data_t();
 		auto decay_pos = new std::vector<int>(); 
-		size_t ndata = 0; // how many data points?
 		int i=0;
 		for(auto& s : string_to<std::vector<S>>(stimulus)) { // convert to a string vector and then to data
-			MyHypothesis::datum_t d{.input="", .output=s};
-			this_data->push_back(d);
-			ndata = this_data->size(); // note that below we might change this_data's pointer, but we still need this length
+			this_data->push_back(MyHypothesis::datum_t{.input=EMPTY_STRING, .output=s});
 			decay_pos->push_back(i++);
 			
 			// add a check that we're using the right alphabet here
 			for(auto& c: s) assert(contains(alphabet,c));
 		}
-		
+		size_t ndata = this_data->size(); // note that below we might change this_data's pointer, but we still need this length
+			
 		// process all_responses into a map from strings to counts
 		auto m = string_to<std::vector<std::pair<std::string,unsigned long>>>(all_responses);
 		
@@ -217,8 +212,8 @@ int main(int argc, char** argv){
 						// store the top hypothesis found
 						auto mapH = hypotheses[max_hi];
 						auto cll = mapH.call("");
-						outtop << "# " << cll.string() ENDL;
-						outtop << i TAB max_hi TAB max_post TAB lse TAB QQ(mapH.string()) TAB QQ(str(slice(*hd.data, 0, hd.ndata))) ENDL;
+						OUTPUTN(outtop, "#", cll.string());
+						OUTPUTN(outtop, i, max_hi, max_post, lse, QQ(mapH.string()), QQ(str(slice(*hd.data, 0, hd.ndata))));
 						
 						// get all of the strings output by people or the model
 						std::set<std::string> all_strings;
@@ -236,11 +231,7 @@ int main(int argc, char** argv){
 						}
 					
 						for(const auto& s : all_strings) {
-							outMAP << i TAB 
-									   Q(s) TAB 
-									   get(model_predictions, s, 0) TAB 
-									   get(m, s, 0) TAB  
-									   N ENDL;
+							OUTPUTN(outMAP, i, Q(s), get(model_predictions, s, 0), get(m, s, 0), N);
 						}
 					}
 					

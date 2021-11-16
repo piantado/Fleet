@@ -13,14 +13,13 @@
 #include "Random.h"
 #include "Vector3D.h"
 
-
 // This constant is occasionally useful, especially in grammar inference where we might
 // want a reference to an empty input
 const std::string EMPTY_STRING = "";
 
 template<typename T>
 std::string str(T x){
-	/**
+	/**c
 	 * @brief A pythonesque string function
 	 * @param x
 	 * @return 
@@ -378,6 +377,26 @@ std::string Q(std::string x) {
 	return std::string("\'") + x + std::string("\'");
 }
 
+
+/**
+ * @brief Check that s only uses characters from a. On failure, we print the string and assert false.
+ * @param s
+ * @param a
+ */
+void check_alphabet(const std::string& s, const std::string& a) {
+	for(char c: s) {
+		if(a.find(c) == std::string::npos) {
+			std::cerr << "*** Character '" << c << "' in " << s << " not in alphabet=" << a << std::endl;
+			assert(false);
+		}
+	}
+}
+
+void check_alphabet(std::vector<std::string> t, const std::string& a){
+	for(auto& x : t) {
+		check_alphabet(x,a);
+	}
+}
 
 /**
  * @brief The string probability model from Kashyap & Oommen, 1983, basically giving a string
