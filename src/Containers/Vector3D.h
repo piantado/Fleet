@@ -28,8 +28,8 @@ struct Vector3D {
 	}
 	
 	
-	void fill(T v){
-		value.assign(v, xsize*ysize*zsize);
+	void fill(T x){
+		std::fill(value.begin(), value.end(), x);
 	}
 	
 	void resize(const int x, const int y, const int z) {

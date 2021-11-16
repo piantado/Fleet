@@ -25,8 +25,8 @@ struct Vector2D {
 		fill(b);
 	}
 	
-	void fill(T v){
-		value.assign(v, xsize*ysize);
+	void fill(T x){
+		std::fill(value.begin(), value.end(), x);
 	}
 	
 	void resize(const int x, const int y) {
