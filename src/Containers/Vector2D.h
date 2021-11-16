@@ -20,21 +20,34 @@ struct Vector2D {
 		resize(x,y);
 	}
 	
-	void resize(int x, int y) {
-		xsize = x; ysize=y;
+	Vector2D(int x, int y, T b) { 
+		resize(x,y);
+		fill(b);
+	}
+	
+	void fill(T v){
+		value.assign(v, xsize*ysize);
+	}
+	
+	void resize(const int x, const int y) {
+		xsize=x; ysize=y;
 		value.resize(x*y);
 	}
 	
-	void reserve(int x, int y) {
-		xsize = x; ysize=y;
+	void reserve(const int x, const int y) {
+		xsize=x; ysize=y;
 		value.reserve(x*y);
 	}
 	
-	T& at(int x, int y) {
+	T& at(const int x, const int y) {
 		return value.at(x*ysize + y);
 	}
 	
-	T& operator()(int x, int y) {
+	T& operator()(const int x, const int y) {
+		return value.at(x*ysize + y);
+	}
+	
+	const T& operator()(const int x, const int y) const {
 		return value.at(x*ysize + y);
 	}
 	

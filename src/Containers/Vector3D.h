@@ -22,16 +22,22 @@ struct Vector3D {
 		resize(x,y,z);
 	}
 	
+	Vector3D(int x, int y, int z, T b) { 
+		resize(x,y,z);
+		fill(b);
+	}
+	
+	
 	void fill(T v){
 		value.assign(v, xsize*ysize*zsize);
 	}
 	
-	void resize(int x, int y, int z) {
+	void resize(const int x, const int y, const int z) {
 		xsize = x; ysize=y; zsize=z;
 		value.resize(x*y*z);
 	}
 	
-	void reserve(int x, int y, int z) {
+	void reserve(const int x, const int y, const int z) {
 		xsize = x; ysize=y; zsize=z;
 		value.reserve(x*y*z);
 	}

@@ -144,6 +144,12 @@ std::string to_string_with_precision(const T a_value, const int n = 14) {
     return out.str();
 }
 
+/**
+ * @brief Check if prefix is a prefix of x -- works with iterables, including strings and vectors
+ * @param prefix
+ * @param x
+ * @return 
+ */
 /* If x is a prefix of y -- works for strings and vectors */
 template<typename T>
 bool is_prefix(const T& prefix, const T& x) {
