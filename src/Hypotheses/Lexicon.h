@@ -220,6 +220,7 @@ public:
 	 * @param k
 	 */	 
 	virtual void push_program(Program<VirtualMachineState_t>& s, const key_t k) override {
+		this->was_called = true; // set this since we're a program loader
 		// dispath to the right factor
 		factors.at(k).push_program(s); // on a LOTHypothesis, we must call wiht j=0 (j is used in Lexicon to select the right one)
 	}

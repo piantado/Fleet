@@ -202,6 +202,8 @@ public:
 	 * @param k
 	 */
 	virtual void push_program(Program<VirtualMachineState_t>& s) override {
+		this->was_called = true; // by definition we should be setting this if we're a program loader
+		
 		for(auto it = this->program.begin(); it != this->program.end(); it++) {
 			s.push(*it);
 		}		

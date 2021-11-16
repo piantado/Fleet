@@ -208,18 +208,7 @@ public:
 	using Super = LOTHypothesis<InnerHypothesis,S,S,MyGrammar,&grammar>;
 	using Super::Super;
 	
-	// store whether or not I was called in the lexicon
-	// (this is used to require lexica to call every InnerHypothesis)
-	bool was_called; 
-	
 	static constexpr double regenerate_p = 0.7;
-	
-	// we need to override this so that we set was_called so we know we were used
-	// this allows us to set -inf prior to mutliple factors that are unusued
-	virtual void push_program(Program<Super::VirtualMachineState_t>& s) override {
-		was_called = true;
-		Super::push_program(s);
-	}
 	
 	[[nodiscard]] virtual std::pair<InnerHypothesis,double> propose() const override {
 		
@@ -250,7 +239,7 @@ public:
 		// make myself the loader for all factors
 		for(auto& [k,f] : factors) {
 			f.program.loader = this; 
-			f.was_called = false; 
+			f.was_called = false; // zero this please
 		}
 
 		return factors[factors.size()-1].call(x, err); // we call the factor but with this as the loader.  

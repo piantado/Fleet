@@ -17,6 +17,9 @@ template<typename VirtualMachineState_t>
 class ProgramLoader {
 public:
 
+	// we have a variable that is set to true each time we call push_program
+	// this is useful for tracking recursion etc.
+	bool was_called; 
 
 	// This is a bit of hack -- we need a line here for eahc kind of key we might want to a lexicon. 
 	// For reasons I don't fully understand, the linker will not find this if templated. 
