@@ -268,7 +268,7 @@ namespace Builtins {
 		     typename key_t,
 			 typename input_t=typename Grammar_t::input_t,
 			 typename output_t=typename Grammar_t::output_t>
-	Primitive<output_t,key_t,input_t> LexiconRecurse(Op::Custom1, BUILTIN_LAMBDA {
+	Primitive<output_t,key_t,input_t> LexiconRecurse(Op::LexiconRecurse, BUILTIN_LAMBDA {
 			
 			assert(vms->program.loader != nullptr);
 							

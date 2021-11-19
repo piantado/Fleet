@@ -26,6 +26,7 @@ public:
 	
 	// constructors to make this a little easier to deal with
 	Instruction(void* _f=nullptr, int a=0x0) : f(_f), arg(a) {	
+		assert(f != nullptr); // we just can't even store null f, and we'll get an error on construction.
 	}		
 };
 

@@ -5,6 +5,9 @@
 #include <utility>
 #include <tuple>
 
+#include "Node.h"
+
+
 namespace Proposals { 
 		
 	/**

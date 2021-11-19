@@ -31,9 +31,9 @@ public:
 	double                             p;
 	
 	// store this information for creating instructions
-	void*				fptr;
-	Op 					op; // for ops that need names
-	int 				arg=0;
+	void*					   fptr;
+	Op 						   op; // for ops that need names
+	int 					   arg=0;
 	std::vector<nonterminal_t> child_types; // An array of what I expand to; note that this should be const but isn't to allow list initialization (https://stackoverflow.com/questions/5549524/how-do-i-initialize-a-member-array-with-an-initializer-list)
 
 protected:

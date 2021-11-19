@@ -266,6 +266,8 @@ public:
 	 */		
 	template<typename T, typename... args> 
 	void add_vms(std::string fmt, FT* f, double p=1.0, Op o=Op::Standard, int a=0) {
+		assert(f != nullptr && "*** If you're passing a null f to add_vms, you've really screwed up.");
+		
 		nonterminal_t Tnt = this->nt<T>();
 		Rule r(Tnt, (void*)f, fmt, {nt<args>()...}, p, o, a);
 		Z[Tnt] += r.p; // keep track of the total probability
@@ -280,8 +282,9 @@ public:
 	 * @param p
 	 */		
 	template<typename T, typename... args> 
-	void add(std::string fmt, Primitive<T,args...> b, double p=1.0, int a=0) {
+	void add(std::string fmt, Primitive<T,args...>& b, double p=1.0, int a=0) {
 		// read f and o from b
+		assert(b.f != nullptr);
 		add_vms<T,args...>(fmt, (FT*)b.f, p, b.op, a);
 	}
 	
