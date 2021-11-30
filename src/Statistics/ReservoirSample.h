@@ -71,7 +71,7 @@ public:
 
 	virtual void add(T x) {
 		//std::lock_guard guard(lock);
-		top << Item(x, uniform());
+		top << Item(x,uniform());
 		++N;				
 	}
 	void operator<<(T x) {	add(x); }

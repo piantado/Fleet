@@ -67,7 +67,7 @@ inline void hash_combine(std::size_t& seed, const T& v, Rest... rest) {
  * @return 
  */
 template<typename M>
-M::mapped_type get(const M& m, const typename M::key_type& key, const typename M::mapped_type& def) {
+typename M::mapped_type get(const M& m, const typename M::key_type& key, const typename M::mapped_type& def) {
 	if(m.contains(key)) return m.at(key);
 	else                return def;
 }

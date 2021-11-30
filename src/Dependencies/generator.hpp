@@ -5,7 +5,16 @@
 #ifndef CPPCORO_GENERATOR_HPP_INCLUDED
 #define CPPCORO_GENERATOR_HPP_INCLUDED
 
-#include <coroutine>
+
+#ifdef __clang__
+	#include <experimental/coroutine>
+
+#endif
+
+#ifdef __GNUC__
+	#include <coroutine>
+#endif
+
 #include <type_traits>
 #include <utility>
 #include <exception>

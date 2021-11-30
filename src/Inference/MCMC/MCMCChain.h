@@ -152,7 +152,7 @@ public:
 				maxval = current.posterior; // and the new max
 				
 				co_yield current;// must be done with lock
-			} 
+			}
 			else {
 				// normally we go here and do a proper proposal
 				

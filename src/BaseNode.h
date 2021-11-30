@@ -139,8 +139,8 @@ public:
 				return *this;
 			}
 
-			bool operator==(const NodeIterator& rhs) { return current == rhs.current; }
-			//bool operator!=(const NodeIterator& rhs) { return current != rhs.current; }
+			bool operator==(const NodeIterator& rhs) const { return current == rhs.current; }
+			bool operator!=(const NodeIterator& rhs) const { return not(current == rhs.current); }
 	};	
 	static NodeIterator EndNodeIterator; // defined below
 	////////////////////////////////////////////////////////////////////////////

@@ -35,7 +35,7 @@ template<typename this_t,
 		 _Grammar_t* grammar,
 		 typename _datum_t=defaultdatum_t<_input_t, _output_t>, 
 		 typename _data_t=std::vector<_datum_t>,
-		 typename _VirtualMachineState_t=_Grammar_t::VirtualMachineState_t
+		 typename _VirtualMachineState_t=typename _Grammar_t::VirtualMachineState_t
 		 >
 class LOTHypothesis : public MCMCable<this_t,_datum_t,_data_t>, // remember, this defines data_t, datum_t
 					  public Searchable<this_t,_input_t,_output_t>,
@@ -73,14 +73,14 @@ public:
 	LOTHypothesis()           : MCMCable<this_t,datum_t,data_t>(), value(NullRule,0.0,true) {	
 	}
 	
-	LOTHypothesis(Node&& x)   : MCMCable<this_t,datum_t,data_t>() {
-		set_value(x);
-	}
-	
 	LOTHypothesis(Node& x)    : MCMCable<this_t,datum_t,data_t>() {
 		set_value(x);
 	}
 
+	LOTHypothesis(Node&& x)   : MCMCable<this_t,datum_t,data_t>() {
+		set_value(x);
+	}
+	
 	// parse this from a string
 	LOTHypothesis(std::string s) : MCMCable<this_t,datum_t,data_t>() {
 		set_value(grammar->from_parseable(s));
@@ -140,7 +140,7 @@ public:
 	 * @return 
 	 */	
 	[[nodiscard]] virtual this_t restart() const override {
-		
+		//DEBUGN("RESTART");
 		// This is used in MCMC to restart chains 
 		// this ordinarily would be a resample from the grammar, but sometimes we have can_resample=false
 		// and in that case we want to leave the non-propose nodes alone. 

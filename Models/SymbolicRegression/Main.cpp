@@ -7,14 +7,12 @@
 using D = double;
 
 const double sdscale  = 1.0; // can change if we want
-size_t nsamples = 100; // how many per structure?
-size_t nstructs = 100; // print out all the samples from the top this many structures
+size_t nsamples = 100; // 100 // how many per structure?
+size_t nstructs = 100; //100 // print out all the samples from the top this many structures
 int    polynomial_degree = -1; //-1 means do everything, otherwise store ONLY polynomials less than or equal to this bound
 
 const size_t trim_at = 5000; // when we get this big in overall_sample structures
 const size_t trim_to = 1000;  // trim to this size
-
-size_t inner_restarts = 5000;
 
 // We define these here so we can substitute normal and cauchy or something else if we want
 double constant_propose(double c, double s) { return c+s*random_normal(); } // should be symmetric for use below
@@ -308,7 +306,7 @@ std::function posterior = [](const MyHypothesis& h) {return h.posterior; };
  */
 void trim_overall_samples(size_t N) {
 	
-	if(overall_samples.size() < N) return;
+	if(overall_samples.size() < N or N <= 0) return;
 	
 	std::vector<double> structureScores;
 	for(auto& m: overall_samples) {
@@ -317,7 +315,7 @@ void trim_overall_samples(size_t N) {
 
 	// sorts low to high to find the nstructs best's score
 	std::sort(structureScores.begin(), structureScores.end(), std::greater<double>());	
-	double cutoff = structureScores[N];
+	double cutoff = structureScores[N-1];
 	
 	// now go through and trim
 	auto it = overall_samples.begin();
@@ -432,6 +430,7 @@ int main(int argc, char** argv){
 		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these
 		
 		// toss non-linear samples here if we request linearity
+		// and non-polynomials (NOTE: This is why we have "not" in the next line
 		if(polynomial_degree > -1 and not (get_polynomial_degree(h.get_value(), h.constants) <= polynomial_degree)) 
 			continue;
 		
@@ -469,7 +468,7 @@ int main(int argc, char** argv){
 	}
 	
 	// And display!
-	COUT "structure\tstructure.max\tweighted.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\th\tparseable.h" ENDL;
+	COUT "structure\tstructure.max\tweighted.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\th" ENDL;//\tparseable.h" ENDL;
 	for(auto& s : overall_samples) {
 		
 		double best_posterior = max_of(s.second.values(), posterior).second;
@@ -489,8 +488,8 @@ int main(int argc, char** argv){
 				 h.callOne(0.0, NaN) TAB 
 				 h.callOne(1.0, NaN) TAB 
 				 get_polynomial_degree(h.get_value(), h.constants) TAB 
-				 Q(h.string()) TAB 
-				 Q(h.serialize()) 
+				 Q(h.string()) // TAB 
+				 //Q(h.serialize()) 
 				 ENDL;
 		}
 	}
