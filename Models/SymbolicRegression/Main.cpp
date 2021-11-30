@@ -1,6 +1,8 @@
 
 // ./main --time=1h --inner-time=5s --explore=0.1 --thin=0 --threads=1 --input=./data-sources/Science/Zipf/data.txt --tree=./out/tree.txt
 
+// TODO: Maybe add burn-in??
+
 #include <cmath>
 #include "Random.h"
 
@@ -73,6 +75,7 @@ double constant_prior(double c)   {
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define grammar
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 #include "Singleton.h"
 #include "Grammar.h"
 
@@ -114,7 +117,7 @@ public:
 					assert(h->constant_idx < h->constants.size()); 
 					vms->template push<D>(h->constants.at(h->constant_idx++));
 				}
-		}), 5.0);
+		}), 3.0);
 							
 		add("x",             Builtins::X<MyGrammar>, 5.0);
 	}					  
@@ -155,7 +158,7 @@ public:
 		
 		double fx = this->callOne(datum.input, NaN);
 		
-		if(std::isnan(fx)) 
+		if(std::isnan(fx) or std::isinf(fx)) 
 			return -infinity;
             
 		return normal_lpdf( (fx-datum.output)/datum.reliability );		
@@ -339,15 +342,13 @@ double max_posterior(const ReservoirSample<MyHypothesis>& rs) {
 	return max_of(rs.values(), posterior).second;
 }
 
-
-
 /**
  * @brief This trims overall_samples to the top N different structures with the best scores.
  * 			NOTE: This is a bit inefficient because we really could avoid adding structures until they have
  * 		 		a high enough score (as we do in Top) but then if we did find a good sample, we'd
  * 			    have missed everything before...
  */
-void trim_overall_samples(size_t N) {
+void trim_overall_samples(const size_t N) {
 	
 	if(overall_samples.size() < N or N <= 0) return;
 	
@@ -435,8 +436,7 @@ int main(int argc, char** argv){
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// set up the data
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
-	
+		
 	// store the x and y values so we can do constant proposals
 	std::vector<double> data_x;
 	std::vector<double> data_y;
