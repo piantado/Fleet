@@ -80,9 +80,9 @@ double uniform() {
 	return uniform_dist(rng);
 }
 
-double random_normal() {
+double random_normal(double mu=0, double sd=1.0) {
 	std::normal_distribution<float> normal(0.0, 1.0);
-	return normal(rng);
+	return normal(rng)*sd + mu;
 }
 
 double random_cauchy() {

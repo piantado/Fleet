@@ -155,6 +155,21 @@ double lfactorial(double x) {
 	return mylgamma(x+1);
 }
 
+double mean(std::vector<double>& v){
+	double s = 0.0;
+	for(auto& x : v) s += x;
+	return s/v.size();
+}
+
+double sd(std::vector<double>& v) {
+	assert(v.size() > 1);
+	double m = mean(v);
+	double s = 0.0;
+	for(auto& x : v) {
+		s += pow(m-x,2.);
+	}
+	return sqrt(s / (v.size()-1));
+}
 
 /**
  * @brief This allows sorting of things that contain NaN

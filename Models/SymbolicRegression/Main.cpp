@@ -14,27 +14,60 @@ int    polynomial_degree = -1; //-1 means do everything, otherwise store ONLY po
 const size_t trim_at = 5000; // when we get this big in overall_sample structures
 const size_t trim_to = 1000;  // trim to this size
 
-// We define these here so we can substitute normal and cauchy or something else if we want
-double constant_propose(double c, double s) { return c+s*random_normal(); } // should be symmetric for use below
-double constant_prior(double c)   { return normal_lpdf(c);}
-//double constant_propose(double c) { return c+random_cauchy(); } // should be symmetric for use below
-//double constant_prior(double c)   { return cauchy_lpdf(c);}
+// these are used for some constant proposals
+double data_X_mean = NaN;
+double data_Y_mean = NaN;
+double data_X_sd   = NaN;
+double data_Y_sd   = NaN;
 
 // Proposals and random generation happen on a variety of scales
 double random_scale() {
 	double scale = 1.0;
-	switch(myrandom(7)){
+	switch(myrandom(6)){
 		case 0: scale = 100.0;  break;
 		case 1: scale =  10.0;   break;
 		case 2: scale =   1.0;   break;
 		case 3: scale =   0.10;  break;
 		case 4: scale =   0.01;  break;
 		case 5: scale =   0.001; break;
-		case 6: scale =   0.0001; break;
 		default: assert(false);
 	}
 	return scale; 
 }
+
+// Propose to a constant c, returning a new value and fb
+// NOTE: When we use a symmetric drift kernel, fb=0
+std::pair<double,double> constant_proposal(double c) { 
+		
+	if(flip(0.5)) {
+		return std::make_pair(random_normal(c, random_scale()), 0.0);
+	}
+	else { 
+		
+		// one third probability for each of the other choices
+		if(flip(0.33)) { 
+			auto v = random_normal(data_X_mean, data_X_sd);
+			double fb = normal_lpdf(v, data_X_mean, data_X_sd) - 
+						normal_lpdf(c, data_X_mean, data_X_sd);
+			return std::make_pair(v,fb);
+		}
+		else if(flip(0.5)) {
+			auto v = random_normal(data_Y_mean, data_Y_sd);
+			double fb = normal_lpdf(v, data_Y_mean, data_Y_sd) - 
+						normal_lpdf(c, data_Y_mean, data_Y_sd);
+			return std::make_pair(v,fb);
+		}
+		else {
+			// do nothing
+			return std::make_pair(c,0.0);
+		}
+	}
+}
+
+double constant_prior(double c)   { 
+	return normal_lpdf(c, 0.0, 1.0);
+}
+
 
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -224,14 +257,18 @@ public:
 		// Note that if we have no constants, we will always do prior proposals
 		auto NC = count_constants();
 		
-		if(NC != 0 and flip(0.95)){
+		if(NC != 0 and flip(0.5)){
 			MyHypothesis ret = *this;
+			
+			double fb = 0.0; 
 			
 			// now add to all that I have
 			for(size_t i=0;i<NC;i++) { 
-				ret.constants[i] = constant_propose(ret.constants[i], random_scale()); // symmetric, not counting in fb
+				auto [v, __fb] = constant_proposal(constants[i]);
+				ret.constants[i] = v;
+				fb += __fb;
 			}
-			return std::make_pair(ret, 0.0);
+			return std::make_pair(ret, fb);
 		}
 		else {
 			auto [ret, fb] = Super::propose(); // a proposal to structure
@@ -246,7 +283,8 @@ public:
 		// NOTE: Because of how fb is computed in propose, we need to make this the same as the prior
 		constants.resize(count_constants());
 		for(size_t i=0;i<constants.size();i++) {			
-			constants[i] = constant_propose(0, random_scale());
+			auto [v, __fb] = constant_proposal(0.0);
+			constants[i] = v;
 		}
 	}
 
@@ -294,9 +332,14 @@ data_t mydata;
 // keep a big set of samples form structures to the best found for each structure
 std::map<std::string,ReservoirSample<MyHypothesis>> overall_samples; 
 
-
 // useful for extracting the max
 std::function posterior = [](const MyHypothesis& h) {return h.posterior; };
+
+double max_posterior(const ReservoirSample<MyHypothesis>& rs) {
+	return max_of(rs.values(), posterior).second;
+}
+
+
 
 /**
  * @brief This trims overall_samples to the top N different structures with the best scores.
@@ -309,8 +352,8 @@ void trim_overall_samples(size_t N) {
 	if(overall_samples.size() < N or N <= 0) return;
 	
 	std::vector<double> structureScores;
-	for(auto& m: overall_samples) {
-		structureScores.push_back( max_of(m.second.values(), posterior).second );
+	for(auto& [ss, R] : overall_samples) {
+		structureScores.push_back( max_posterior(R) );
 	}
 
 	// sorts low to high to find the nstructs best's score
@@ -320,7 +363,7 @@ void trim_overall_samples(size_t N) {
 	// now go through and trim
 	auto it = overall_samples.begin();
 	while(it != overall_samples.end()) {
-		double b = max_of((*it).second.values(), posterior).second;
+		double b = max_posterior(it->second);
 		if(b < cutoff) { // if we erase
 			it = overall_samples.erase(it);// wow, erase returns a new iterator which is valid
 		}
@@ -393,6 +436,11 @@ int main(int argc, char** argv){
 	// set up the data
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
+	
+	// store the x and y values so we can do constant proposals
+	std::vector<double> data_x;
+	std::vector<double> data_y;
+	
 	for(auto [xstr, ystr, sdstr] : read_csv<3>(FleetArgs::input_path, '\t')) {
 		auto x = std::stod(xstr);
 		auto y = std::stod(ystr);
@@ -411,8 +459,18 @@ int main(int argc, char** argv){
 		
 		COUT "# Data:\t" << x TAB y TAB sd ENDL;
 		
-		mydata.push_back( {.input=(double)x, .output=(double)y, .reliability=sdscale*(double)sd} );
+		data_x.push_back(x);
+		data_y.push_back(y);
+		
+		mydata.push_back( {.input=x, .output=y, .reliability=sdscale*(double)sd} );
 	}
+	
+	
+	data_X_mean = mean(data_x);
+	data_Y_mean = mean(data_y);
+	data_X_sd   = mean(data_x);
+	data_Y_sd   = mean(data_y);
+	
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  	// Set up the grammar and hypothesis
@@ -463,23 +521,31 @@ int main(int argc, char** argv){
 
 	// figure out the structure normalizer
 	double Z = -infinity;
-	for(auto& s: overall_samples) {
-		Z = logplusexp(Z, max_of(s.second.values(), posterior).second);
+	for(auto& [ss,R]: overall_samples) {
+		Z = logplusexp(Z, max_posterior(R));
 	}
+	
+	// sort the keys into overall_samples by highest posterior so we print out in order
+	std::vector<std::pair<double,std::string>> K;
+	for(auto& [ss,R] : overall_samples) {
+		K.emplace_back(max_posterior(R), ss);
+	}
+	std::sort(K.begin(), K.end());
 	
 	// And display!
 	COUT "structure\tstructure.max\tweighted.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\th" ENDL;//\tparseable.h" ENDL;
-	for(auto& s : overall_samples) {
-		
-		double best_posterior = max_of(s.second.values(), posterior).second;
+	for(auto& k : K) {
+		auto& ss = k.second; 
+		auto& R = overall_samples[ss]; // the reservoir sample for ss
+		double best_posterior = k.first;
 		
 		// find the normalizer for this structure
 		double sz = -infinity;
-		for(auto& h : s.second.values()) {
+		for(auto& h : R.values()) {
 			sz = logplusexp(sz, h.posterior);
 		}
 		
-		for(auto h : s.second.values()) {
+		for(auto h : R.values()) {
 			COUT std::setprecision(14) <<
 				 QQ(h.structure_string()) TAB 
 				 best_posterior TAB 
@@ -493,7 +559,6 @@ int main(int argc, char** argv){
 				 ENDL;
 		}
 	}
-	COUT "# **** REMINDER: These are not printed in order! ****" ENDL;
 	
 	
 //	COUT "# MCTS tree size:" TAB m.count() ENDL;	
