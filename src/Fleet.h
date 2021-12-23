@@ -498,7 +498,7 @@ public:
 		FleetArgs::inner_runtime = convert_time(FleetArgs::inner_timestring);
 
 		// seed the rng
-		rng.threaded_seed(random_seed);
+		rng.seed(random_seed);
 
 		if(FleetArgs::print_header) {
 			// Print standard fleet header

@@ -11,7 +11,6 @@
 #include <sys/syscall.h>
 #include <sys/random.h>
 
-
 size_t sysrandom(void* dst, size_t dstlen) {
 	// from https://stackoverflow.com/questions/45069219/how-to-succinctly-portably-and-thoroughly-seed-the-mt19937-prng
     char* buffer = reinterpret_cast<char*>(dst);
@@ -26,50 +25,56 @@ size_t sysrandom(void* dst, size_t dstlen) {
  * @author Steven Piantadosi
  * @date 15/06/21
  * @file Random.h
- * @brief This is a thread_local rng that is seeded on construction so that each thread can get a different seed.
- * 	      (Because this seeding is in a constructor, it will be called before rlRng is used)
-		  If we just make a thread_local variable, it is not seeded well. Note that if we specify random_seed it only
-		  applies to the first thread (and you get a warning for other threads)
+ * @brief This is a thread_local rng whose first object is used to see others (in other threads). This way,
+ * 		  we can have thread_local rngs that all are seeded deterministcally in Fleet via --seed=X.
  */
 thread_local class thread_local_rng : public std::mt19937 {
 public:
+
+	// The first of these that is made is called the "base" and is used to seed any others.
+	// Because this variable rng is thread_local, each thread will get its own and its seed
+	// will be determined (deterministically) from base. 
+	static std::mutex mymut; 
+	static thread_local_rng* base; 
+
 	thread_local_rng() : std::mt19937() {
 		
-		// on construction we initialize from /dev/urandom
-		std::array<unsigned long, std::mt19937::state_size> state;
-		sysrandom(state.begin(), state.size()*sizeof(unsigned long));
-		std::seed_seq seedseq(state.begin(), state.end());
+		std::lock_guard guard(mymut);
 		
-		this->seed(seedseq);
+		if(base == nullptr) {
+			// on construction we initialize from /dev/urandom
+			std::array<unsigned long, std::mt19937::state_size> state;
+			sysrandom(state.begin(), state.size()*sizeof(unsigned long));
+			std::seed_seq seedseq(state.begin(), state.end());
+			this->std::mt19937::seed(seedseq);
+			
+			base = this;
+		}
+		else {
+			
+			// seed from base -- so we get replicable numbers assuming the 
+			// order of construction is fixed
+			std::array<unsigned long, std::mt19937::state_size> state;
+			for(size_t i=0;i<state.size();i++){
+				state[i] = base->operator()();
+			}
+			std::seed_seq seedseq(state.begin(), state.end());
+			this->std::mt19937::seed(seedseq);
+		}
 	}
 	
 	/**
-	 * @brief Seed this but only on the first thread -- rest are random
+	 * @brief Seed only if s is nonzero
 	 */	
-	void threaded_seed(unsigned long seed) {
-		extern std::thread::id main_thread_id;
-		
-		std::array<unsigned long, std::mt19937::state_size> state;
-		sysrandom(state.begin(), state.size()*sizeof(unsigned long));
-		std::seed_seq seedseq(state.begin(), state.end());
-		
-		if(seed != 0) {
-			if(std::this_thread::get_id() == main_thread_id) {
-				this->seed(seed);
-			}
-			else {
-				std::cerr << "# Warning: seed " << seed << " is only applied to the first thread." << std::endl;
-				this->seed(seedseq);
-			}
-		}
-		else {
-			// note this re-seeds relative to constructor
-			this->seed(seedseq);
-		}
-	}
+	 void seed(unsigned long s) {
+		 if(s != 0) {
+			 this->std::mt19937::seed(s);
+		 }
+	 }
 	
 } rng;
-
+std::mutex thread_local_rng::mymut;
+thread_local_rng* thread_local_rng::base = nullptr; 
 
 double uniform() {
 	/**
