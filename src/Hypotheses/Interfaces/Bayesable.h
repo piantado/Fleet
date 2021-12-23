@@ -220,6 +220,8 @@ std::ostream& operator<<(std::ostream& o, Bayesable<_datum_t,_data_t>& x) {
 }
 
 
+
+
 // Interface for std::fmt
 //#include "fmt/format.h"
 //

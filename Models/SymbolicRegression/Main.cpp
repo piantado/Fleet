@@ -13,6 +13,8 @@ size_t nsamples = 100; // 100 // how many per structure?
 size_t nstructs = 100; //100 // print out all the samples from the top this many structures
 int    polynomial_degree = -1; //-1 means do everything, otherwise store ONLY polynomials less than or equal to this bound
 
+size_t BURN_N = 1000; // burn this many at the start of each MCMC chain
+
 const size_t trim_at = 5000; // when we get this big in overall_sample structures
 const size_t trim_to = 1000;  // trim to this size
 
@@ -117,7 +119,7 @@ public:
 					assert(h->constant_idx < h->constants.size()); 
 					vms->template push<D>(h->constants.at(h->constant_idx++));
 				}
-		}), 3.0);
+		}), 5.0);
 							
 		add("x",             Builtins::X<MyGrammar>, 5.0);
 	}					  
@@ -323,15 +325,11 @@ public:
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-// Define these types -- they are needed below
-using data_t  = MyHypothesis::data_t;
-using datum_t = MyHypothesis::datum_t;
-
 #include "Polynomial.h"
 #include "ReservoirSample.h"
 
+MyHypothesis::data_t mydata;
 
-data_t mydata;
 // keep a big set of samples form structures to the best found for each structure
 std::map<std::string,ReservoirSample<MyHypothesis>> overall_samples; 
 
@@ -406,7 +404,7 @@ public:
 		else {
 			// else we run vanilla MCMC
 			MCMCChain chain(h0, data);
-			for(auto& h : chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart)))  {
+			for(auto& h : chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart)) | burn(BURN_N) )  {
 				add_sample(h.posterior);
 				co_yield h;
 			}
@@ -424,7 +422,7 @@ public:
 
 int main(int argc, char** argv){ 
 	
-	FleetArgs::inner_timestring = "1m";
+	FleetArgs::inner_timestring = "1m"; // default inner time
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	Fleet fleet("Symbolic regression");
@@ -465,12 +463,10 @@ int main(int argc, char** argv){
 		mydata.push_back( {.input=x, .output=y, .reliability=sdscale*(double)sd} );
 	}
 	
-	
 	data_X_mean = mean(data_x);
 	data_Y_mean = mean(data_y);
 	data_X_sd   = mean(data_x);
 	data_Y_sd   = mean(data_y);
-	
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  	// Set up the grammar and hypothesis
@@ -535,10 +531,10 @@ int main(int argc, char** argv){
 	// And display!
 	COUT "structure\tstructure.max\tweighted.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\th" ENDL;//\tparseable.h" ENDL;
 	for(auto& k : K) {
+		double best_posterior = k.first;
 		auto& ss = k.second; 
 		auto& R = overall_samples[ss]; // the reservoir sample for ss
-		double best_posterior = k.first;
-		
+			
 		// find the normalizer for this structure
 		double sz = -infinity;
 		for(auto& h : R.values()) {

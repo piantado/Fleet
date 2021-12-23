@@ -61,6 +61,33 @@ generator<T&> operator|(generator<T&> g, thin t) {
 	}
 }
 
+
+struct burn {
+	size_t m;
+	size_t cnt;
+	
+	burn(size_t _m) : m(_m), cnt(0) { 
+	}
+
+	// funny little increment here returns true for 0 mod m
+	bool operator++() {
+		if(cnt > m or m==0) {
+			return true;
+		}
+		else {
+			++cnt;
+			return false;
+		}
+	}
+};
+
+template<typename T> 
+generator<T&> operator|(generator<T&> g, burn t) {
+	for(auto& x : g) {
+		if(++t)	co_yield x; 
+	}
+}
+
 struct print { 
 	size_t every;
 	size_t cnt;
