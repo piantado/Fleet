@@ -44,10 +44,7 @@ public:
 	Bayesable() : prior(NaN), likelihood(NaN), posterior(NaN), born(++FleetStatistics::hypothesis_births), born_chain_idx(0) {	}
 	
 	// Stuff for subclasses to implement: 
-	
-	/**
-	 * @brief Default hash function
-	 */	
+
 	virtual size_t hash() const=0;
 	
 	virtual std::string string(std::string prefix="") const = 0; // my subclasses must implement string
@@ -150,6 +147,7 @@ public:
 			posterior = -infinity;
 		}
 		else {		
+			// NOTE: here we SUBTRACt off prior so the breakout in compute_likelihood is ONLY for the likelihood
 			likelihood = compute_likelihood(data, breakout-prior);
 			posterior = prior + likelihood;	
 		}

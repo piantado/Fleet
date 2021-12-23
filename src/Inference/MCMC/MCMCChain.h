@@ -172,39 +172,70 @@ public:
 				if(proposal == current) {
 					// copy all the properties
 					// NOTE: This is necessary because == might just check value, but operator= will copy everything else
-					proposal = current; 
+					//	proposal = current; 
+					
+					// we treat this as an accept
+					history << true; 
+					++acceptances;		
+
+					#ifdef DEBUG_MCMC
+					// they are equal but we just use current here
+					DEBUG("# Proposed", current.posterior, current.prior, current.likelihood, "fb="+str(fb), current.string());
+					#endif 
+							
 				}
 				else {
-					proposal.compute_posterior(*data);
-				}
-
-				#ifdef DEBUG_MCMC
-				DEBUG("# Proposed", proposal.posterior, proposal.prior, proposal.likelihood, "fb="+str(fb), proposal.string());
-				#endif 
-				
-				// use MH acceptance rule, with some fanciness for NaNs
-				double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb; 		
-				if((std::isnan(current.posterior))  or
-				   (current.posterior == -infinity) or
-				   ((not std::isnan(proposal.posterior)) and
-					(ratio >= 0.0 or uniform() < exp(ratio) ))) {
-				
-					[[unlikely]];
-								
+					
+					// here we actually need to compute, but we can do so at the breakout
+					double u = log(uniform());
+					
+					// ok we will accept if u < proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
+					// or u + current.at_temperature(temperature) + fb < proposal.at_temperature(temperature)
+					// or (u + current.at_temperature(temperature) + fb)*temperature < proposal.at_temperature(1)
+					// NOTE then that in compute_posterior and compute_likelihood, we must NOT take into 
+					// account tempearture when computing this
+					// NOTE: This breakout is on *posteriors* but in compute_posterior it is converted to one 
+					// on likelihoods for compute_likelihood
+ 					double breakout = (u + current.at_temperature(temperature) + fb)*temperature;
+					
+					// if special, then we're in a special case where we always compute (and accept) the proposal
+					bool special = (std::isnan(current.posterior)) or
+								   (current.posterior == -infinity);
+								   
+					proposal.compute_posterior(*data, special?-infinity:breakout);
+					
+					double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
 					#ifdef DEBUG_MCMC
-						DEBUG("# ACCEPT");
+						DEBUG("# Proposed", proposal.posterior, proposal.prior, proposal.likelihood, "fb="+str(fb), proposal.string());
 					#endif 
 					
-					current = std::move(proposal);
-	  
-					history << true;
+					// uncomment to check/debug breakouts:
+//					if(u < ratio){
+//						proposal.compute_posterior(*data, -infinity);
+//						double r = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
+//						TODO FINISH THIS
+//					}	
+//					
+					if( special or 
+						((not std::isnan(proposal.posterior)) and u < ratio)) {
 					
-					++acceptances;
-				}
-				else {
-					history << false;
-				}
+						[[unlikely]];
+									
+						#ifdef DEBUG_MCMC
+							DEBUG("# ACCEPT");
+						#endif 
+						
+						current = std::move(proposal);
+		  
+						history << true;
+						++acceptances;
+					}
+					else {
+						history << false;
+					}
 				
+				}
+
 				co_yield current; // must be done with lock
 			}
 			
