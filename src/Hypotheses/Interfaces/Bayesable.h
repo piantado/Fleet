@@ -100,6 +100,8 @@ public:
 					break;
 				}
 				
+				if(likelihood < breakout) return likelihood=-infinity;
+				
 				// add a break here 
 				if(CTRL_C) break; 
 			}

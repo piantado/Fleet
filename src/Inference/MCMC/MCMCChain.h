@@ -204,21 +204,13 @@ public:
 								   
 					proposal.compute_posterior(*data, special?-infinity:breakout);
 					
-					double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
 					#ifdef DEBUG_MCMC
 						DEBUG("# Proposed", proposal.posterior, proposal.prior, proposal.likelihood, "fb="+str(fb), proposal.string());
 					#endif 
 					
-					// uncomment to check/debug breakouts:
-//					if(u < ratio){
-//						proposal.compute_posterior(*data, -infinity);
-//						double r = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
-//						TODO FINISH THIS
-//					}	
-//					
-					if( special or 
-						((not std::isnan(proposal.posterior)) and u < ratio)) {
+					double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
 					
+					if( special or ((not std::isnan(proposal.posterior)) and u < ratio)) {					
 						[[unlikely]];
 									
 						#ifdef DEBUG_MCMC

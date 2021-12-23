@@ -36,6 +36,8 @@ int main(int argc, char** argv){
 		grammar.add_terminal( Q(S(1,c)), c, 10.0/alphabet.length());
 	}
 	
+	std::set<std::pair<MyHypothesis,MyHypothesis>> seen; // skip stuff we've seen; 
+	
 	MyHypothesis::regenerate_p = 0.5;
 	
 	// Well, this is a terrible way to test this, but golly it's easy:
@@ -45,6 +47,11 @@ int main(int argc, char** argv){
 		if(CTRL_C) continue;
 		auto a = MyHypothesis::sample();
 		auto b = MyHypothesis::sample();
+		
+		auto pr = std::make_pair(a,b);
+		if(seen.contains(pr)) continue;
+		else seen.insert(pr);
+		
 		size_t fcnt = 0;
 		size_t bcnt = 0;
 		double fb = NAN;
