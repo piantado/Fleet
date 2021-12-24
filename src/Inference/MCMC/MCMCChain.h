@@ -210,6 +210,11 @@ public:
 					
 					double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
 					
+					// this is just a little debugging/checking code to see that we are making the same decision as 
+					// without breakout. It should be commented out unless we're check
+//					assert( u < ratio == proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb
+	
+
 					if( special or ((not std::isnan(proposal.posterior)) and u < ratio)) {					
 						[[unlikely]];
 									

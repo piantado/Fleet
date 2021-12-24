@@ -9,6 +9,9 @@
 #include "Statistics/FleetStatistics.h"
 #include "Miscellaneous.h"
 
+// if we define this, then we won't use breakouts
+//#define NO_BREAKOUT 1
+
 extern volatile sig_atomic_t CTRL_C;
 
 /**
@@ -95,12 +98,11 @@ public:
 				if(likelihood == -infinity or std::isnan(likelihood)) break; // no need to continue
 				
 				// This is a breakout in case our ll is too low
+				#ifndef NO_BREAKOUT
 				if(likelihood < breakout) {
-					likelihood = -infinity; // should not matter what value, but let's make it -infinity
-					break;
+					return likelihood = -infinity; // should not matter what value, but let's make it -infinity
 				}
-				
-				if(likelihood < breakout) return likelihood=-infinity;
+				#endif 
 				
 				// add a break here 
 				if(CTRL_C) break; 
