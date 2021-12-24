@@ -196,7 +196,13 @@ public:
 					// account tempearture when computing this
 					// NOTE: This breakout is on *posteriors* but in compute_posterior it is converted to one 
 					// on likelihoods for compute_likelihood
- 					double breakout = (u + current.at_temperature(temperature) + fb)*temperature;
+ 					//double breakout = (u + current.at_temperature(temperature) + fb)*temperature;
+					
+					// NOTE: The above is NOT right because the prior is not at temperature, so
+					// instead of multiplying by temperature we have to do something smarter to fix the fact that
+					// its only on the likelihood. Reverting now to breakout=-infinity but keeping the rest of code in place
+					// for when this is fixed
+					double breakout = -infinity; 
 					
 					// if special, then we're in a special case where we always compute (and accept) the proposal
 					bool special = (std::isnan(current.posterior)) or
