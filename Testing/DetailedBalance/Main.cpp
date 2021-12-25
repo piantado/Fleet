@@ -3,7 +3,7 @@
 
 
 // how many proposals per pair of hypotheses do we take?
-size_t NSAMPLES = 1000000;
+size_t NSAMPLES = 10000000;
 
 #define DO_NOT_INCLUDE_MAIN 1 
 #include "../Models/FormalLanguageTheory-Simple/Main.cpp"

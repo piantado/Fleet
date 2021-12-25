@@ -1,5 +1,6 @@
 #pragma once 
 
+#include <utility>
 #include <functional>
 #include "Coroutines.h"
 #include "MCMCChain.h"
@@ -208,7 +209,7 @@ public:
 					// instead of multiplying by temperature we have to do something smarter to fix the fact that
 					// its only on the likelihood. Reverting now to breakout=-infinity but keeping the rest of code in place
 					// for when this is fixed
-					const auto breakoutpair = std::make_pair(-infinity, 1.0);
+//					const auto breakoutpair = std::make_pair(-infinity, 1.0);
 					
 					// ok we will accept if u < proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
 					// or u + current.at_temperature(temperature) + fb < proposal.at_temperature(temperature)
@@ -217,7 +218,7 @@ public:
 					// account tempearture
 					// NOTE: This breakout is on *posteriors* but in compute_posterior it is converted to one 
 					// on likelihoods for compute_likelihood
-					//const auto breakoutpair = std::make_pair(u + current.at_temperature(temperature) + fb, (double)temperature);
+					const auto breakoutpair = std::make_pair(u + current.at_temperature(temperature) + fb, (double)temperature);
 					
 					proposal.compute_posterior(*data, breakoutpair);
 					
