@@ -161,6 +161,8 @@ public:
 		return posterior;
 	}
 	
+	
+	
 	virtual double at_temperature(double t) const {
 		/**
 		 * @brief Return my posterior score at a given (likelihood) temperature
@@ -209,6 +211,7 @@ public:
 		
 		std::lock_guard guard(output_lock);
 		// TODO: Include  this->born  once that is updated correctly
+		// NOTE cannot use PRINT here because we already took lock_guard
 		COUT std::setprecision(14) << prefix << this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->string()) ENDL;		
 	}
 };

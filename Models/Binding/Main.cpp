@@ -12,7 +12,7 @@
 
 // need a fixed order of words to correspond to factor levels
 // We use REXP here (John, Mary, etc) so that we don't have to distinguish which
-std::vector<std::string> words = {"REXP", "him", "his", "he", "himself"}; // his?
+std::vector<std::string> words = {"REXP", "him", "his", "he", "himself"};
 
 static const double alpha = 0.95; 
 const int NDATA = 10; // how many data points from each sentence are we looking at?
@@ -266,11 +266,31 @@ public:
 			// Noisy size-principle likelihood
 			likelihood += NDATA * log( (wtrue ? d.reliability/ntrue : 0.0) + 
 							           (1.0-d.reliability)/words.size());
+									   
+			if(likelihood < breakout) return likelihood = -infinity;
 
 		}
 		
 		return likelihood; 
-	 }	 	 
+	 }	 	
+
+//	virtual void print(std::string prefix="") {
+//	
+//		COUT std::setprecision(14) << prefix << this->posterior TAB this->prior TAB this->likelihood TAB "";
+//		
+//		// when we print, we are going to compute overlap with each target item
+//		for(auto& w : words) {
+//			for(auto& d : target_precisionrecall_data) {
+//				auto bme = factors[w].cache.at(di)
+//				auto bar = 
+//			}
+//		}
+//		
+//		std::lock_guard guard(output_lock);
+//		// TODO: Include  this->born  once that is updated correctly
+//		 QQ(this->string()) ENDL;		
+//	}
+ 
 };
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -285,9 +305,11 @@ public:
 #include "ParallelTempering.h"
 #include "SExpression.h"
 
+MyHypothesis::data_t target_precisionrecall_data; // data for computing precision/recall 
+
 int main(int argc, char** argv){ 
 	
-	Fleet fleet("Learn principles A,B,C of binding theory");
+	Fleet fleet("Learn principles of binding theory");
 	fleet.initialize(argc, argv);
 	
 	//------------------
@@ -355,6 +377,8 @@ int main(int argc, char** argv){
 			
 			MyHypothesis::datum_t d1 = {myt->get_target(), myt->get_target()->word, alpha};	
 			mydata.push_back(d1);
+			
+			target_precisionrecall_data(d1);
 		}
 		
 		delete t;
