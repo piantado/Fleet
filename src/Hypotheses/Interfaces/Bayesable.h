@@ -118,8 +118,13 @@ public:
 
 	/**
 	 * @brief Compute the posterior, by calling prior and likelihood. 
-	 * 		  This involves only a little bit of fanciness, which is that if our prior is -inf, then
+	 * 		  This includes only a little bit of fanciness, which is that if our prior is -inf, then
 	 *        we don't both computing the likelihood. 
+	 * 
+	 * 		  To understand breakout, look at MCMCChain.h and see how compute_posterior is called -- the first
+	 * 		  term in breakout is (u + current.at_temperature(temperature) + fb), and the second is the temperature
+	 * 		  We have to pass in two pieces because the temperature only applies ot the likelihood.
+	 * 		  Note that when we use breakout in compute_likelihood, it is only for the likelihood temp.
 	 * 
 	 * 		  NOTE: The order here is fixed to compute the prior first. This permits us to penalize the "prior"
 	 * 		  with something in the likelihood -- for instance if we want to use a runtime prior that is computed
@@ -128,7 +133,7 @@ public:
 	 * @param breakout
 	 * @return 
 	 */
-	virtual double compute_posterior(const data_t& data, const double breakout=-infinity) {
+	virtual double compute_posterior(const data_t& data, const std::pair<double,double> breakoutpair=std::make_pair(-infinity,1.0)) {
 		
 		++FleetStatistics::posterior_calls; // just keep track of how many calls 
 		
@@ -151,8 +156,9 @@ public:
 			posterior = -infinity;
 		}
 		else {		
-			// NOTE: here we SUBTRACt off prior so the breakout in compute_likelihood is ONLY for the likelihood
-			likelihood = compute_likelihood(data, breakout-prior);
+			// NOTE: here we *subtract* off prior so the breakout in compute_likelihood is ONLY for the likelihood
+			auto [b,t] = breakoutpair; // see MCMCChain.h to understand this and hte next line
+			likelihood = compute_likelihood(data, (b-prior)*t);
 			posterior = prior + likelihood;	
 		}
 		
@@ -160,8 +166,6 @@ public:
 		
 		return posterior;
 	}
-	
-	
 	
 	virtual double at_temperature(double t) const {
 		/**

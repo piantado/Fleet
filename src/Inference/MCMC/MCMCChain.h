@@ -153,6 +153,19 @@ public:
 				
 				co_yield current;// must be done with lock
 			}
+			else if (std::isnan(current.posterior) or current.posterior == -infinity) {
+				// This is a special case where we just propose from restarting 
+				
+				std::lock_guard guard(current_mutex);
+				
+				current = current.restart();
+				current.compute_posterior(*data); // always must compute full posterior, no breakout
+		  
+				// Should we count in history? 
+				// Hmm maybe not. 
+//				history << true;
+//				++acceptances;
+			}
 			else {
 				// normally we go here and do a proper proposal
 				
@@ -163,7 +176,7 @@ public:
 				std::lock_guard guard(current_mutex); // lock below otherwise others can modify
 
 				// propose, but restart if we're -infinity
-				auto [proposal, fb] = (current.posterior > -infinity ? current.propose() : std::make_pair(current.restart(), 0.0));			
+				auto [proposal, fb] = current.propose();			
 				
 				++proposals;
 				
@@ -172,8 +185,8 @@ public:
 				if(proposal == current) {
 					// copy all the properties
 					// NOTE: This is necessary because == might just check value, but operator= will copy everything else
-					//	proposal = current; 
-					
+					proposal = current; 
+				
 					// we treat this as an accept
 					history << true; 
 					++acceptances;		
@@ -187,41 +200,38 @@ public:
 				else {
 					
 					// here we actually need to compute, but we can do so at the breakout
-					double u = log(uniform());
-					
-					// ok we will accept if u < proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
-					// or u + current.at_temperature(temperature) + fb < proposal.at_temperature(temperature)
-					// or (u + current.at_temperature(temperature) + fb)*temperature < proposal.at_temperature(1)
-					// NOTE then that in compute_posterior and compute_likelihood, we must NOT take into 
-					// account tempearture when computing this
-					// NOTE: This breakout is on *posteriors* but in compute_posterior it is converted to one 
-					// on likelihoods for compute_likelihood
- 					//double breakout = (u + current.at_temperature(temperature) + fb)*temperature;
-					
+					// TODO: This is a little inefficient in that we compute log(uniform()) even
+					// when we are special (and it is thus unused)
+					const double u = log(uniform());
+									
 					// NOTE: The above is NOT right because the prior is not at temperature, so
 					// instead of multiplying by temperature we have to do something smarter to fix the fact that
 					// its only on the likelihood. Reverting now to breakout=-infinity but keeping the rest of code in place
 					// for when this is fixed
-					const double breakout = -infinity; 
+					const auto breakoutpair = std::make_pair(-infinity, 1.0);
 					
-					// if special, then we're in a special case where we always compute (and accept) the proposal
-					const bool special = (std::isnan(current.posterior)) or
-								         (current.posterior == -infinity);
-								   
-					proposal.compute_posterior(*data, special?-infinity:breakout);
+					// ok we will accept if u < proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
+					// or u + current.at_temperature(temperature) + fb < proposal.at_temperature(temperature)
+					// or (u + current.at_temperature(temperature) + fb - PRIOR)*temperature < LIKELIHOOD
+					// NOTE then that in compute_posterior and compute_likelihood, we must NOT take into 
+					// account tempearture
+					// NOTE: This breakout is on *posteriors* but in compute_posterior it is converted to one 
+					// on likelihoods for compute_likelihood
+					//const auto breakoutpair = std::make_pair(u + current.at_temperature(temperature) + fb, (double)temperature);
+					
+					proposal.compute_posterior(*data, breakoutpair);
 					
 					#ifdef DEBUG_MCMC
 						DEBUG("# Proposed", proposal.posterior, proposal.prior, proposal.likelihood, "fb="+str(fb), proposal.string());
 					#endif 
 					
-					double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
+					const double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
 					
 					// this is just a little debugging/checking code to see that we are making the same decision as 
 					// without breakout. It should be commented out unless we're check
 //					assert( u < ratio == proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb
-	
 
-					if( special or ((not std::isnan(proposal.posterior)) and u < ratio)) {					
+					if((not std::isnan(proposal.posterior)) and u < ratio) {					
 						[[unlikely]];
 									
 						#ifdef DEBUG_MCMC
