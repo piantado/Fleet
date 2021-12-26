@@ -1,5 +1,6 @@
 #pragma once 
 
+#include <thread>
 #include <mutex>
 
 #include <sys/syscall.h>
@@ -24,6 +25,7 @@ public:
 
 	Rng() : std::mt19937() {
 		
+		// allow only one constructor at a time
 		std::lock_guard guard(mymut);
 		
 		if(base == nullptr) {

@@ -3,10 +3,9 @@
 #include <fstream>
 #include <random>
 #include <functional>
-#include <thread>
+
 #include "Errors.h"
 #include "Numerics.h"
-#include "Singleton.h"
 #include "Rng.h"
 
 double uniform() {
