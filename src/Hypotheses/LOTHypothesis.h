@@ -268,6 +268,12 @@ public:
 
 			vms.program = program; // write my program into vms (program->loader is used for everything else)
 			
+			// Ok this is a little odd -- in the original FLT we did not have this set was_called=true
+			// since it was not called by another factor; in retrospect, this is odd because it means the first one called
+			// is never was_called unless it was called by another factor (e.g. not counting the original function call)
+			// But probably it makes sense to make anything in here set was_called=true
+			this->was_called = true; 
+			
 			const auto out = vms.run(); 	
 			total_instruction_count_last_call = vms.runtime_counter.total;
 			total_vms_steps = 1;
@@ -300,6 +306,9 @@ public:
 			
 			vms->program = program; // copy our program into vms
 			
+			// See above
+			this->was_called = true; 
+
 			pool.push(vms); // put vms into the pool
 			
 			const auto out = pool.run();	
