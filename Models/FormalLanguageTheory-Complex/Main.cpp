@@ -29,12 +29,11 @@ size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite 
 const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The more data, the slower...
 const size_t MAX_PR_LINES = 1000000; 
 
-const size_t NTEMPS = 5; 
 const size_t MAX_TEMP = 1.20; 
 unsigned long PRINT_STRINGS; // print at most this many strings for each hypothesis
 
-//std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
-std::vector<S> data_amounts={"100"}; // how many data points do we run on?
+std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
+//std::vector<S> data_amounts={"100"}; // how many data points do we run on?
 
 // useful for printing -- so we know how many tokens there were in the data
 size_t current_ntokens = 0; // how many tokens are there currently? Just useful to know
@@ -332,6 +331,7 @@ int main(int argc, char** argv){
 	
 	// Set this
 	VirtualMachineControl::MIN_LP = -15;
+	FleetArgs::nchains = 5; // default number is 5
 	
 	FleetArgs::input_path = my_default_input; // set this so it's not fleet's normal input default
 	
@@ -400,7 +400,7 @@ int main(int argc, char** argv){
 	// where to store these hypotheses
 	TopN<MyHypothesis> all; 
 	
-	ParallelTempering samp(h0, &datas[0], NTEMPS, MAX_TEMP); 
+	ParallelTempering samp(h0, &datas[0], FleetArgs::nchains, MAX_TEMP); 
 //	ChainPool samp(h0, &datas[0], NTEMPS); 
 
 	// Set these up as the defaults as below

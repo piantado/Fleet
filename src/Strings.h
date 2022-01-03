@@ -17,6 +17,9 @@
 // want a reference to an empty input
 const std::string EMPTY_STRING = "";
 
+const std::string LAMBDA_STRING = "\u03BB";
+const std::string LAMBDAXDOT_STRING = LAMBDA_STRING+"x.";
+
 template<typename T>
 std::string str(T x){
 	/**c

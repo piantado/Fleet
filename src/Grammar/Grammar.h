@@ -921,7 +921,7 @@ public:
 		//PRINTN("Parsing ", s);
 		
 		// remove the lambda x. if its there
-		if(s.substr(0,3) == "\u03BBx.") s.erase(0,3);			
+		if(s.substr(0,3) == LAMBDAXDOT_STRING) s.erase(0,3);			
 		// remove leading whitespace
 		while(s.at(0) == ' ' or s.at(0) == '\t') s.erase(0,1);		
 		// remove trailing whitespace

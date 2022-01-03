@@ -227,7 +227,7 @@ public:
 		assert(constants.size() == count_constants()); // or something is broken
 		
 		size_t idx = 0;
-		return  prefix+std::string("\u03BBx.") +  __my_string_recurse(&value, idx);
+		return  prefix + LAMBDAXDOT_STRING +  __my_string_recurse(&value, idx);
 	}
 	
 	virtual std::string structure_string(bool usedot=true) const {

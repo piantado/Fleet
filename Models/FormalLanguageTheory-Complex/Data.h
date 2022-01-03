@@ -70,18 +70,6 @@ std::pair<double, double> get_precision_and_recall(DiscreteDistribution<std::str
 			nrec++;
 	}
 	
-	// and compute the max probability difference
-	// between items of data and their 
-//	unsigned long z = 0; // get normalizing constant for data
-//	for(auto d : data) { z += d.reliability; }
-//	
-//	double maxpdiff = -infinity;
-//	for(auto a : model.values()) {
-//		double dp = 0;
-//		if(mdata)
-//		double d = exp(model.second) - 
-//	}
-	
 	return std::make_pair(double(nprec)/A.size(), double(nrec)/B.size());
 }
 

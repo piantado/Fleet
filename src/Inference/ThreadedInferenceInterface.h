@@ -116,6 +116,18 @@ public:
 			
 	}
 	
+	generator<X&> unthreaded_run(Control ctl, Args... args) {
+
+		// This is a simple version where we don't use threads -- useful 
+		// because it's hard to debug otherwise 
+		
+		std::cerr << "*** Warning running unthreaded_run (intended for debugging)" << std::endl;
+		
+		for(auto& x : run_thread(ctl, args...)) {
+			co_yield x;
+		}		
+	}
+	
 };
 
 
