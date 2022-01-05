@@ -5,8 +5,9 @@
 {\ttfamily \#include $<$iostream$>$}\newline
 {\ttfamily \#include $<$fstream$>$}\newline
 {\ttfamily \#include $<$string$>$}\newline
-{\ttfamily \#include \char`\"{}Dependencies/\+C\+L11.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Ordered\+Lock.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Strings.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Dependencies/\+C\+L11.\+hpp\char`\"{}}\newline
 Include dependency graph for I\+O.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -45,24 +46,14 @@ This graph shows which files directly or indirectly include this file\+:
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{_i_o_8h_a1336250e0870b09c7f0d7b168a5e804f}{\+\_\+\+\_\+\+P\+R\+I\+NT}} ()
-\item 
-{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_aebfb8498bc8d95c7a344068feaa59f94}{\+\_\+\+\_\+\+P\+R\+I\+NT}} (First \&\&first, Rest \&\&...rest)
-\item 
-{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_a00a6f97bb3962ae0a898045f28e71a9b}{P\+R\+I\+NT}} (First \&\&first, Rest \&\&...rest)
-\item 
-{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_acfec45821653aafe56188146ad2a98cc}{P\+R\+I\+N\+TN}} (First \&\&first, Rest \&\&...rest)
-\item 
-void \mbox{\hyperlink{_i_o_8h_a17076232171e865b2cece72a27015001}{\+\_\+\+\_\+\+E\+RR}} ()
-\item 
-{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_aa21a74cbb3ac0c55b10ffc3b4a86f9d8}{\+\_\+\+\_\+\+E\+RR}} (First \&\&first, Rest \&\&...rest)
-\item 
-{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_a15d1fc9dc10feac9ac42fcb1016c894e}{E\+RR}} (First \&\&first, Rest \&\&...rest)
-\item 
-{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_a907845588694e44e9e480fd567fbaeb5}{E\+R\+RN}} (First \&\&first, Rest \&\&...rest)
-\item 
-{\footnotesize template$<$typename First , typename ... Rest$>$ }\\void \mbox{\hyperlink{_i_o_8h_a06738d9fd0166a7a5c1f7864b2f67595}{D\+E\+B\+UG}} (First \&\&first, Rest \&\&...rest)
-\item 
+{\footnotesize template$<$typename F\+I\+R\+ST , typename... A\+R\+GS$>$ }\\void \mbox{\hyperlink{_i_o_8h_a69e31dd29ab761526291c2210bc7ded0}{O\+U\+T\+P\+U\+TN}} (std\+::ostream \&o, F\+I\+R\+ST f, A\+R\+G\+S... args)
+\begin{DoxyCompactList}\small\item\em This assumes o has been appropriately locked. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename F\+I\+R\+ST , typename... A\+R\+GS$>$ }\\void \mbox{\hyperlink{_i_o_8h_a5e727e0c710d35259cfee7d2e8722dd5}{P\+R\+I\+N\+TN}} (F\+I\+R\+ST f, A\+R\+G\+S... args)
+\begin{DoxyCompactList}\small\item\em Lock output\+\_\+lcok and print to std\+:cout. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename F\+I\+R\+ST , typename... A\+R\+GS$>$ }\\void \mbox{\hyperlink{_i_o_8h_a171cb8ce17745ec454e4f5069eeda81e}{E\+R\+RN}} (F\+I\+R\+ST f, A\+R\+G\+S... args)
+\begin{DoxyCompactList}\small\item\em Lock err\+\_\+lock and print to std\+:cerr. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename F\+I\+R\+ST , typename... A\+R\+GS$>$ }\\void \mbox{\hyperlink{_i_o_8h_a69bfeadd71c3650be17f98956cb4e66e}{D\+E\+B\+UG}} (F\+I\+R\+ST f, A\+R\+G\+S... args)
+\begin{DoxyCompactList}\small\item\em Print to std\+:ccout with debugging info. \end{DoxyCompactList}\item 
 {\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{_i_o_8h_a96c995bb00590c0945415eee56bf0eb2}{save}} (std\+::string filename, T \&hypotheses)
 \begin{DoxyCompactList}\small\item\em Simple saving of a vector of hypotheses. \end{DoxyCompactList}\item 
 {\footnotesize template$<$typename H\+YP $>$ }\\std\+::vector$<$ H\+YP $>$ \mbox{\hyperlink{_i_o_8h_aeadafe3418f48a79ec06a8e582bd809a}{load}} (std\+::string filename)
@@ -75,7 +66,11 @@ std\+::string \mbox{\hyperlink{_i_o_8h_abd92671c9b71c77653e36bfd92877875}{gulp}}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-std\+::mutex \mbox{\hyperlink{_i_o_8h_a76e8b7c2e4a8940cee2c392012c04943}{output\+\_\+lock}}
+const std\+::string \mbox{\hyperlink{_i_o_8h_acacbcbf8ead646e28c70c0780802f158}{O\+U\+T\+P\+U\+T\+\_\+\+S\+EP}} = \char`\"{}\textbackslash{}t\char`\"{}
+\item 
+\mbox{\hyperlink{class_ordered_lock}{Ordered\+Lock}} \mbox{\hyperlink{_i_o_8h_a5601d33ab71bf86bd00332675c55be51}{output\+\_\+lock}}
+\item 
+\mbox{\hyperlink{class_ordered_lock}{Ordered\+Lock}} \mbox{\hyperlink{_i_o_8h_a1f78a4433f8ff9e6d006b66e299061a3}{err\+\_\+lock}}
 \end{DoxyCompactItemize}
 
 
@@ -131,53 +126,38 @@ std\+::mutex \mbox{\hyperlink{_i_o_8h_a76e8b7c2e4a8940cee2c392012c04943}{output\
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{_i_o_8h_a17076232171e865b2cece72a27015001}\label{_i_o_8h_a17076232171e865b2cece72a27015001}} 
-\index{IO.h@{IO.h}!\_\_ERR@{\_\_ERR}}
-\index{\_\_ERR@{\_\_ERR}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{\_\_ERR()}{\_\_ERR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily void \+\_\+\+\_\+\+E\+RR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{_i_o_8h_aa21a74cbb3ac0c55b10ffc3b4a86f9d8}\label{_i_o_8h_aa21a74cbb3ac0c55b10ffc3b4a86f9d8}} 
-\index{IO.h@{IO.h}!\_\_ERR@{\_\_ERR}}
-\index{\_\_ERR@{\_\_ERR}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{\_\_ERR()}{\_\_ERR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
-void \+\_\+\+\_\+\+E\+RR (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{_i_o_8h_a1336250e0870b09c7f0d7b168a5e804f}\label{_i_o_8h_a1336250e0870b09c7f0d7b168a5e804f}} 
-\index{IO.h@{IO.h}!\_\_PRINT@{\_\_PRINT}}
-\index{\_\_PRINT@{\_\_PRINT}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{\_\_PRINT()}{\_\_PRINT()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily void \+\_\+\+\_\+\+P\+R\+I\+NT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{_i_o_8h_aebfb8498bc8d95c7a344068feaa59f94}\label{_i_o_8h_aebfb8498bc8d95c7a344068feaa59f94}} 
-\index{IO.h@{IO.h}!\_\_PRINT@{\_\_PRINT}}
-\index{\_\_PRINT@{\_\_PRINT}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{\_\_PRINT()}{\_\_PRINT()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
-void \+\_\+\+\_\+\+P\+R\+I\+NT (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{_i_o_8h_a06738d9fd0166a7a5c1f7864b2f67595}\label{_i_o_8h_a06738d9fd0166a7a5c1f7864b2f67595}} 
+\mbox{\Hypertarget{_i_o_8h_a69bfeadd71c3650be17f98956cb4e66e}\label{_i_o_8h_a69bfeadd71c3650be17f98956cb4e66e}} 
 \index{IO.h@{IO.h}!DEBUG@{DEBUG}}
 \index{DEBUG@{DEBUG}!IO.h@{IO.h}}
 \doxysubsubsection{\texorpdfstring{DEBUG()}{DEBUG()}}
-{\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
-void D\+E\+B\+UG (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily template$<$typename F\+I\+R\+ST , typename... A\+R\+GS$>$ \\
+void D\+E\+B\+UG (\begin{DoxyParamCaption}\item[{F\+I\+R\+ST}]{f,  }\item[{A\+R\+G\+S...}]{args }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{_i_o_8h_a15d1fc9dc10feac9ac42fcb1016c894e}\label{_i_o_8h_a15d1fc9dc10feac9ac42fcb1016c894e}} 
-\index{IO.h@{IO.h}!ERR@{ERR}}
-\index{ERR@{ERR}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{ERR()}{ERR()}}
-{\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
-void E\+RR (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{_i_o_8h_a907845588694e44e9e480fd567fbaeb5}\label{_i_o_8h_a907845588694e44e9e480fd567fbaeb5}} 
+
+Print to std\+:ccout with debugging info. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_i_o_8h_a171cb8ce17745ec454e4f5069eeda81e}\label{_i_o_8h_a171cb8ce17745ec454e4f5069eeda81e}} 
 \index{IO.h@{IO.h}!ERRN@{ERRN}}
 \index{ERRN@{ERRN}!IO.h@{IO.h}}
 \doxysubsubsection{\texorpdfstring{ERRN()}{ERRN()}}
-{\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
-void E\+R\+RN (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily template$<$typename F\+I\+R\+ST , typename... A\+R\+GS$>$ \\
+void E\+R\+RN (\begin{DoxyParamCaption}\item[{F\+I\+R\+ST}]{f,  }\item[{A\+R\+G\+S...}]{args }\end{DoxyParamCaption})}
 
+
+
+Lock err\+\_\+lock and print to std\+:cerr. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{_i_o_8h_abd92671c9b71c77653e36bfd92877875}\label{_i_o_8h_abd92671c9b71c77653e36bfd92877875}} 
 \index{IO.h@{IO.h}!gulp@{gulp}}
 \index{gulp@{gulp}!IO.h@{IO.h}}
@@ -217,20 +197,40 @@ Simple loading for a vector of hypotheses.
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{_i_o_8h_a00a6f97bb3962ae0a898045f28e71a9b}\label{_i_o_8h_a00a6f97bb3962ae0a898045f28e71a9b}} 
-\index{IO.h@{IO.h}!PRINT@{PRINT}}
-\index{PRINT@{PRINT}!IO.h@{IO.h}}
-\doxysubsubsection{\texorpdfstring{PRINT()}{PRINT()}}
-{\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
-void P\+R\+I\+NT (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{_i_o_8h_a69e31dd29ab761526291c2210bc7ded0}\label{_i_o_8h_a69e31dd29ab761526291c2210bc7ded0}} 
+\index{IO.h@{IO.h}!OUTPUTN@{OUTPUTN}}
+\index{OUTPUTN@{OUTPUTN}!IO.h@{IO.h}}
+\doxysubsubsection{\texorpdfstring{OUTPUTN()}{OUTPUTN()}}
+{\footnotesize\ttfamily template$<$typename F\+I\+R\+ST , typename... A\+R\+GS$>$ \\
+void O\+U\+T\+P\+U\+TN (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{o,  }\item[{F\+I\+R\+ST}]{f,  }\item[{A\+R\+G\+S...}]{args }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{_i_o_8h_acfec45821653aafe56188146ad2a98cc}\label{_i_o_8h_acfec45821653aafe56188146ad2a98cc}} 
+
+
+This assumes o has been appropriately locked. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em o} & \\
+\hline
+{\em f} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_i_o_8h_a5e727e0c710d35259cfee7d2e8722dd5}\label{_i_o_8h_a5e727e0c710d35259cfee7d2e8722dd5}} 
 \index{IO.h@{IO.h}!PRINTN@{PRINTN}}
 \index{PRINTN@{PRINTN}!IO.h@{IO.h}}
 \doxysubsubsection{\texorpdfstring{PRINTN()}{PRINTN()}}
-{\footnotesize\ttfamily template$<$typename First , typename ... Rest$>$ \\
-void P\+R\+I\+N\+TN (\begin{DoxyParamCaption}\item[{First \&\&}]{first,  }\item[{Rest \&\&...}]{rest }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily template$<$typename F\+I\+R\+ST , typename... A\+R\+GS$>$ \\
+void P\+R\+I\+N\+TN (\begin{DoxyParamCaption}\item[{F\+I\+R\+ST}]{f,  }\item[{A\+R\+G\+S...}]{args }\end{DoxyParamCaption})}
 
+
+
+Lock output\+\_\+lcok and print to std\+:cout. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{_i_o_8h_a917c5bd217eff49da014535e85121975}\label{_i_o_8h_a917c5bd217eff49da014535e85121975}} 
 \index{IO.h@{IO.h}!read\_csv@{read\_csv}}
 \index{read\_csv@{read\_csv}!IO.h@{IO.h}}
@@ -274,9 +274,21 @@ Simple saving of a vector of hypotheses.
 
 
 \doxysubsection{Variable Documentation}
-\mbox{\Hypertarget{_i_o_8h_a76e8b7c2e4a8940cee2c392012c04943}\label{_i_o_8h_a76e8b7c2e4a8940cee2c392012c04943}} 
+\mbox{\Hypertarget{_i_o_8h_a1f78a4433f8ff9e6d006b66e299061a3}\label{_i_o_8h_a1f78a4433f8ff9e6d006b66e299061a3}} 
+\index{IO.h@{IO.h}!err\_lock@{err\_lock}}
+\index{err\_lock@{err\_lock}!IO.h@{IO.h}}
+\doxysubsubsection{\texorpdfstring{err\_lock}{err\_lock}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_ordered_lock}{Ordered\+Lock}} err\+\_\+lock}
+
+\mbox{\Hypertarget{_i_o_8h_a5601d33ab71bf86bd00332675c55be51}\label{_i_o_8h_a5601d33ab71bf86bd00332675c55be51}} 
 \index{IO.h@{IO.h}!output\_lock@{output\_lock}}
 \index{output\_lock@{output\_lock}!IO.h@{IO.h}}
 \doxysubsubsection{\texorpdfstring{output\_lock}{output\_lock}}
-{\footnotesize\ttfamily std\+::mutex output\+\_\+lock}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_ordered_lock}{Ordered\+Lock}} output\+\_\+lock}
+
+\mbox{\Hypertarget{_i_o_8h_acacbcbf8ead646e28c70c0780802f158}\label{_i_o_8h_acacbcbf8ead646e28c70c0780802f158}} 
+\index{IO.h@{IO.h}!OUTPUT\_SEP@{OUTPUT\_SEP}}
+\index{OUTPUT\_SEP@{OUTPUT\_SEP}!IO.h@{IO.h}}
+\doxysubsubsection{\texorpdfstring{OUTPUT\_SEP}{OUTPUT\_SEP}}
+{\footnotesize\ttfamily const std\+::string O\+U\+T\+P\+U\+T\+\_\+\+S\+EP = \char`\"{}\textbackslash{}t\char`\"{}}
 

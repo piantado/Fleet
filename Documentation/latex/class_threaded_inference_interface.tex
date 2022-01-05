@@ -28,7 +28,9 @@ size\+\_\+t \mbox{\hyperlink{class_threaded_inference_interface_ad74cb20e3d79a36
 void \mbox{\hyperlink{class_threaded_inference_interface_a1cfd95b81e63ae5ee3c03319e0cc319c}{run\+\_\+thread\+\_\+generator\+\_\+wrapper}} (size\+\_\+t thr, \mbox{\hyperlink{struct_control}{Control}} \&ctl, Args... args)
 \begin{DoxyCompactList}\small\item\em We have to wrap run\+\_\+thread in something that manages the sync with main. This really just synchronizes the output of run\+\_\+thread with run below. N\+O\+TE this makes a copy of x into the local next\+\_\+x, so that when the thread keeps running, it doesn\textquotesingle{}t mess anything up. We may in the future block the thread and return a reference, but its not clear that\textquotesingle{}s faster. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}} \& $>$ \mbox{\hyperlink{class_threaded_inference_interface_a4b0d153ec182512dddfa7ddebfb4c8b2}{run}} (\mbox{\hyperlink{struct_control}{Control}} ctl, Args... args)
-\begin{DoxyCompactList}\small\item\em Set up the multiple threads and actually run, calling run\+\_\+thread\+\_\+generator\+\_\+wrapper. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Set up the multiple threads and actually run, calling run\+\_\+thread\+\_\+generator\+\_\+wrapper. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}} \& $>$ \mbox{\hyperlink{class_threaded_inference_interface_a1f64688506d82cf11bd95347ef6f850e}{unthreaded\+\_\+run}} (\mbox{\hyperlink{struct_control}{Control}} ctl, Args... args)
+\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -135,6 +137,13 @@ We have to wrap run\+\_\+thread in something that manages the sync with main. Th
 {\em ctl} & \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{class_threaded_inference_interface_a1f64688506d82cf11bd95347ef6f850e}\label{class_threaded_inference_interface_a1f64688506d82cf11bd95347ef6f850e}} 
+\index{ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}!unthreaded\_run@{unthreaded\_run}}
+\index{unthreaded\_run@{unthreaded\_run}!ThreadedInferenceInterface$<$ X, Args $>$@{ThreadedInferenceInterface$<$ X, Args $>$}}
+\doxysubsubsection{\texorpdfstring{unthreaded\_run()}{unthreaded\_run()}}
+{\footnotesize\ttfamily template$<$typename X , typename... Args$>$ \\
+\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$\mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}\&$>$ \mbox{\hyperlink{class_threaded_inference_interface}{Threaded\+Inference\+Interface}}$<$ \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45aba02129bb861061d1a052c592e2dc6b383}{X}}, Args $>$\+::unthreaded\+\_\+run (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_control}{Control}}}]{ctl,  }\item[{Args...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
 
 
 \doxysubsection{Member Data Documentation}

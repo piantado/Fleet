@@ -7,9 +7,9 @@
 <area shape="rect" id="node5" href="$_hill_climbing_8h.html" title="This cute kind of inference keeps a body of N top hypotheses, and successively proposes to them using..." alt="" coords="960,266,1142,293"/>
 <area shape="rect" id="node6" href="$_reservoir_sample_8h.html" title="A reservoir sampling algorithm. NOTE: This was simplified from an old version that permitted unequal ..." alt="" coords="1588,169,1746,211"/>
 <area shape="rect" id="node7" href="$_coroutines_8h.html" title="This little object will return true once every n times it is converted to a bool." alt="" coords="520,177,689,203"/>
-<area shape="rect" id="node11" href="$_basics_2_main_8cpp.html" title=" " alt="" coords="371,534,536,561"/>
-<area shape="rect" id="node14" href="$_detailed_balance_2_main_8cpp.html" title=" " alt="" coords="560,527,723,568"/>
-<area shape="rect" id="node15" href="$_insert_delete_probability_2_main_8cpp.html" title=" " alt="" coords="748,527,948,568"/>
+<area shape="rect" id="node11" href="$_testing_2_basics_2main_8cpp.html" title=" " alt="" coords="371,534,536,561"/>
+<area shape="rect" id="node14" href="$_testing_2_detailed_balance_2main_8cpp.html" title=" " alt="" coords="560,527,723,568"/>
+<area shape="rect" id="node15" href="$_testing_2_insert_delete_probability_2main_8cpp.html" title=" " alt="" coords="748,527,948,568"/>
 <area shape="rect" id="node8" href="$_threaded_inference_interface_8h.html" title="This manages multiple threads for running inference. This requires a subclass to define run_thread,..." alt="" coords="724,259,935,300"/>
 <area shape="rect" id="node10" href="$_inference_2_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="366,348,541,389"/>
 <area shape="rect" id="node22" href="$_m_c_m_c_chain_8h.html" title="This represents an MCMC hain on a hypothesis of type HYP. It uses HYP::propose and HYP::compute_poste..." alt="" coords="532,259,676,300"/>

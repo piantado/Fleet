@@ -51,7 +51,7 @@ size\+\_\+t \mbox{\hyperlink{class_grammar_acf1de192a73f1c07c44375eb9e08d309}{co
 \item 
 {\footnotesize template$<$typename T , typename... args$>$ }\\void \mbox{\hyperlink{class_grammar_af6325e79ee8789f3fe851927f7354d91}{add\+\_\+vms}} (std\+::string fmt, \mbox{\hyperlink{class_grammar_af9b9935f4da29e68087b25ef75f22564}{FT}} $\ast$f, double p=1.\+0, \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45ab}{Op}} o=\mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45abaeb6d8ae6f20283755b339c0dc273988b}{Op\+::\+Standard}}, int a=0)
 \item 
-{\footnotesize template$<$typename T , typename... args$>$ }\\void \mbox{\hyperlink{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}{add}} (std\+::string fmt, \mbox{\hyperlink{struct_builtin}{Builtin}}$<$ T, args... $>$ b, double p=1.\+0, int a=0)
+{\footnotesize template$<$typename T , typename... args$>$ }\\void \mbox{\hyperlink{class_grammar_a2efa36c5150274bb68288e906b92874e}{add}} (std\+::string fmt, \mbox{\hyperlink{struct_primitive}{Primitive}}$<$ T, args... $>$ \&b, double p=1.\+0, int a=0)
 \item 
 {\footnotesize template$<$typename T , typename... args$>$ }\\void \mbox{\hyperlink{class_grammar_a633cc234bdf39f7a875bbb4691ba9470}{add}} (std\+::string fmt, std\+::function$<$ T(args...)$>$ f, double p=1.\+0, \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45ab}{Op}} o=\mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45abaeb6d8ae6f20283755b339c0dc273988b}{Op\+::\+Standard}}, int a=0)
 \item 
@@ -59,6 +59,8 @@ size\+\_\+t \mbox{\hyperlink{class_grammar_acf1de192a73f1c07c44375eb9e08d309}{co
 \item 
 {\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{class_grammar_af43a4d8c3c2c7df80a916a5219b7232c}{add\+\_\+terminal}} (std\+::string fmt, T x, double p=1.\+0, \mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45ab}{Op}} o=\mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45abaeb6d8ae6f20283755b339c0dc273988b}{Op\+::\+Standard}}, int a=0)
 \begin{DoxyCompactList}\small\item\em Add a variable that is N\+OT A function -- simplification for adding alphabets etc. This just wraps stuff in a thunk for us to make it easier. N\+O\+TE\+: x is copied by value. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_grammar_aec8c4c5ff062343bce0438470910efe5}{remove\+\_\+all}} (\mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} \mbox{\hyperlink{class_grammar_ac7ec043aec5203a2cfac44f9cec50132}{nt}})
+\begin{DoxyCompactList}\small\item\em Remove all the nonterminals of this type from the grammar. N\+O\+TE\+: This is generally a {\itshape really} bad idea unless you know what you are doing. \end{DoxyCompactList}\item 
 size\+\_\+t \mbox{\hyperlink{class_grammar_a4dc14b38ba87cdc516deac5028fa1032}{get\+\_\+index\+\_\+of}} (const \mbox{\hyperlink{class_rule}{Rule}} $\ast$r) const
 \item 
 virtual \mbox{\hyperlink{class_rule}{Rule}} $\ast$ \mbox{\hyperlink{class_grammar_ad340d2b8ee3b22ff8b697f917a50c0a5}{get\+\_\+rule}} (const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} \mbox{\hyperlink{class_grammar_ac7ec043aec5203a2cfac44f9cec50132}{nt}}, size\+\_\+t k) const
@@ -86,6 +88,8 @@ std\+::vector$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_grammar_a842ec663d0131ac
 std\+::vector$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_grammar_a354a5d9bdaced96748c599bc7c3bd64a}{get\+\_\+counts}} (const \mbox{\hyperlink{class_node}{Node}} \&node) const
 \item 
 {\footnotesize template$<$typename T $>$ }\\std\+::vector$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_grammar_a336d72ee766941a3ac8c6507c2022a83}{get\+\_\+counts}} (const std\+::vector$<$ T $>$ \&v) const
+\begin{DoxyCompactList}\small\item\em Compute a vector of counts of how often each rule was used, in a {\itshape standard} order given by iterating over nts and then iterating over rules. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename K , typename T $>$ }\\std\+::vector$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_grammar_aac5f819cd2708982cb22caa49949c225}{get\+\_\+counts}} (const std\+::map$<$ K, T $>$ \&v) const
 \item 
 double \mbox{\hyperlink{class_grammar_a44385654719beb219184074602ee7440}{log\+\_\+probability}} (const \mbox{\hyperlink{class_node}{Node}} \&n) const
 \item 
@@ -213,13 +217,13 @@ using \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+out
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}\label{class_grammar_a07ae62095abaf00b3da2fc5065c941bf}} 
+\mbox{\Hypertarget{class_grammar_a2efa36c5150274bb68288e906b92874e}\label{class_grammar_a2efa36c5150274bb68288e906b92874e}} 
 \index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!add@{add}}
 \index{add@{add}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
 \doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
 {\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
 template$<$typename T , typename... args$>$ \\
-void \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::add (\begin{DoxyParamCaption}\item[{std\+::string}]{fmt,  }\item[{\mbox{\hyperlink{struct_builtin}{Builtin}}$<$ T, args... $>$}]{b,  }\item[{double}]{p = {\ttfamily 1.0},  }\item[{int}]{a = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+void \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::add (\begin{DoxyParamCaption}\item[{std\+::string}]{fmt,  }\item[{\mbox{\hyperlink{struct_primitive}{Primitive}}$<$ T, args... $>$ \&}]{b,  }\item[{double}]{p = {\ttfamily 1.0},  }\item[{int}]{a = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 \begin{DoxyParams}{Parameters}
@@ -484,7 +488,7 @@ Returns a \mbox{\hyperlink{class_node}{Node}} sampled from the grammar.
 N\+O\+TE\+: this may throw a if the grammar recurses too far (usually that means the grammar is improper)\mbox{\Hypertarget{class_grammar_a354a5d9bdaced96748c599bc7c3bd64a}\label{class_grammar_a354a5d9bdaced96748c599bc7c3bd64a}} 
 \index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!get\_counts@{get\_counts}}
 \index{get\_counts@{get\_counts}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
-\doxysubsubsection{\texorpdfstring{get\_counts()}{get\_counts()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+\doxysubsubsection{\texorpdfstring{get\_counts()}{get\_counts()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
 {\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
 std\+::vector$<$size\+\_\+t$>$ \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::get\+\_\+counts (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{node }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
@@ -496,15 +500,27 @@ Compute a vector of counts of how often each rule was used, in a {\itshape stand
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\mbox{\Hypertarget{class_grammar_aac5f819cd2708982cb22caa49949c225}\label{class_grammar_aac5f819cd2708982cb22caa49949c225}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!get\_counts@{get\_counts}}
+\index{get\_counts@{get\_counts}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
+\doxysubsubsection{\texorpdfstring{get\_counts()}{get\_counts()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+template$<$typename K , typename T $>$ \\
+std\+::vector$<$size\+\_\+t$>$ \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::get\+\_\+counts (\begin{DoxyParamCaption}\item[{const std\+::map$<$ K, T $>$ \&}]{v }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
 \mbox{\Hypertarget{class_grammar_a336d72ee766941a3ac8c6507c2022a83}\label{class_grammar_a336d72ee766941a3ac8c6507c2022a83}} 
 \index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!get\_counts@{get\_counts}}
 \index{get\_counts@{get\_counts}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
-\doxysubsubsection{\texorpdfstring{get\_counts()}{get\_counts()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+\doxysubsubsection{\texorpdfstring{get\_counts()}{get\_counts()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
 {\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
 template$<$typename T $>$ \\
 std\+::vector$<$size\+\_\+t$>$ \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::get\+\_\+counts (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{v }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
-Compute a vector of counts of how often each rule was used, in a {\itshape standard} order given by iterating over nts and then iterating over rules 
+
+
+Compute a vector of counts of how often each rule was used, in a {\itshape standard} order given by iterating over nts and then iterating over rules. 
+
+
 \begin{DoxyParams}{Parameters}
 {\em v} & \\
 \hline
@@ -677,6 +693,22 @@ size\+\_\+t \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\
 template$<$class T $>$ \\
 static constexpr \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::nt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
 
+\mbox{\Hypertarget{class_grammar_aec8c4c5ff062343bce0438470910efe5}\label{class_grammar_aec8c4c5ff062343bce0438470910efe5}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!remove\_all@{remove\_all}}
+\index{remove\_all@{remove\_all}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
+\doxysubsubsection{\texorpdfstring{remove\_all()}{remove\_all()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+void \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::remove\+\_\+all (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}}]{nt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Remove all the nonterminals of this type from the grammar. N\+O\+TE\+: This is generally a {\itshape really} bad idea unless you know what you are doing. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nt} & \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{class_grammar_a52be4a9de3a90db8034ede12c344e241}\label{class_grammar_a52be4a9de3a90db8034ede12c344e241}} 
 \index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!rule\_normalizer@{rule\_normalizer}}
 \index{rule\_normalizer@{rule\_normalizer}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}

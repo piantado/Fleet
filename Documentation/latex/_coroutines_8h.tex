@@ -6,7 +6,6 @@ This little object will return true once every n times it is converted to a bool
 
 
 {\ttfamily \#include $<$string$>$}\newline
-{\ttfamily \#include $<$coroutine$>$}\newline
 {\ttfamily \#include \char`\"{}generator.\+hpp\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Top\+N.\+h\char`\"{}}\newline
 Include dependency graph for Coroutines.\+h\+:
@@ -30,6 +29,8 @@ This graph shows which files directly or indirectly include this file\+:
 \item 
 struct \mbox{\hyperlink{structthin}{thin}}
 \item 
+struct \mbox{\hyperlink{structburn}{burn}}
+\item 
 struct \mbox{\hyperlink{structprint}{print}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Typedefs}
@@ -41,6 +42,8 @@ struct \mbox{\hyperlink{structprint}{print}}
 \begin{DoxyCompactItemize}
 \item 
 {\footnotesize template$<$typename T $>$ }\\\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ T \& $>$ \mbox{\hyperlink{_coroutines_8h_a6a2a436eab30d3f9fcb6345baea21fa5}{operator$\vert$}} (\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ T \& $>$ g, \mbox{\hyperlink{structthin}{thin}} t)
+\item 
+{\footnotesize template$<$typename T $>$ }\\\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ T \& $>$ \mbox{\hyperlink{_coroutines_8h_a0d113dc855a670b24772da19964bfcab}{operator$\vert$}} (\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ T \& $>$ g, \mbox{\hyperlink{structburn}{burn}} t)
 \item 
 {\footnotesize template$<$typename T $>$ }\\\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ T \& $>$ \mbox{\hyperlink{_coroutines_8h_aa2749f1ac87f4d6ec34634d6271a2d2c}{operator$\vert$}} (\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ T \& $>$ g, \mbox{\hyperlink{structprint}{print}} t)
 \item 
@@ -64,24 +67,31 @@ using \mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generat
 
 
 \doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_coroutines_8h_a0d113dc855a670b24772da19964bfcab}\label{_coroutines_8h_a0d113dc855a670b24772da19964bfcab}} 
+\index{Coroutines.h@{Coroutines.h}!operator\texttt{"|}@{operator\texttt{"|}}}
+\index{operator\texttt{"|}@{operator\texttt{"|}}!Coroutines.h@{Coroutines.h}}
+\doxysubsubsection{\texorpdfstring{operator\texttt{"|}()}{operator|()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$T\&$>$ operator$\vert$ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ T \& $>$}]{g,  }\item[{\mbox{\hyperlink{structburn}{burn}}}]{t }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{_coroutines_8h_aa2749f1ac87f4d6ec34634d6271a2d2c}\label{_coroutines_8h_aa2749f1ac87f4d6ec34634d6271a2d2c}} 
 \index{Coroutines.h@{Coroutines.h}!operator\texttt{"|}@{operator\texttt{"|}}}
 \index{operator\texttt{"|}@{operator\texttt{"|}}!Coroutines.h@{Coroutines.h}}
-\doxysubsubsection{\texorpdfstring{operator\texttt{"|}()}{operator|()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+\doxysubsubsection{\texorpdfstring{operator\texttt{"|}()}{operator|()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 \mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$T\&$>$ operator$\vert$ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ T \& $>$}]{g,  }\item[{\mbox{\hyperlink{structprint}{print}}}]{t }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_coroutines_8h_a6a2a436eab30d3f9fcb6345baea21fa5}\label{_coroutines_8h_a6a2a436eab30d3f9fcb6345baea21fa5}} 
 \index{Coroutines.h@{Coroutines.h}!operator\texttt{"|}@{operator\texttt{"|}}}
 \index{operator\texttt{"|}@{operator\texttt{"|}}!Coroutines.h@{Coroutines.h}}
-\doxysubsubsection{\texorpdfstring{operator\texttt{"|}()}{operator|()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+\doxysubsubsection{\texorpdfstring{operator\texttt{"|}()}{operator|()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 \mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$T\&$>$ operator$\vert$ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ T \& $>$}]{g,  }\item[{\mbox{\hyperlink{structthin}{thin}}}]{t }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_coroutines_8h_a410582fbcd7bdfe3ac352e449af96d3a}\label{_coroutines_8h_a410582fbcd7bdfe3ac352e449af96d3a}} 
 \index{Coroutines.h@{Coroutines.h}!operator\texttt{"|}@{operator\texttt{"|}}}
 \index{operator\texttt{"|}@{operator\texttt{"|}}!Coroutines.h@{Coroutines.h}}
-\doxysubsubsection{\texorpdfstring{operator\texttt{"|}()}{operator|()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+\doxysubsubsection{\texorpdfstring{operator\texttt{"|}()}{operator|()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 \mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$T\&$>$ operator$\vert$ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ T \& $>$}]{g,  }\item[{\mbox{\hyperlink{class_top_n}{TopN}}$<$ T $>$ \&}]{tn }\end{DoxyParamCaption})}
 

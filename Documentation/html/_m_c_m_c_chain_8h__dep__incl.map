@@ -3,9 +3,9 @@
 <area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,191,255,218"/>
 <area shape="rect" id="node3" href="$_batch_8h.html" title=" " alt="" coords="57,102,203,129"/>
 <area shape="rect" id="node4" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="379,95,523,136"/>
-<area shape="rect" id="node6" href="$_basics_2_main_8cpp.html" title=" " alt="" coords="133,281,298,307"/>
-<area shape="rect" id="node7" href="$_detailed_balance_2_main_8cpp.html" title=" " alt="" coords="322,273,485,315"/>
-<area shape="rect" id="node8" href="$_insert_delete_probability_2_main_8cpp.html" title=" " alt="" coords="509,273,709,315"/>
+<area shape="rect" id="node6" href="$_testing_2_basics_2main_8cpp.html" title=" " alt="" coords="133,281,298,307"/>
+<area shape="rect" id="node7" href="$_testing_2_detailed_balance_2main_8cpp.html" title=" " alt="" coords="322,273,485,315"/>
+<area shape="rect" id="node8" href="$_testing_2_insert_delete_probability_2main_8cpp.html" title=" " alt="" coords="509,273,709,315"/>
 <area shape="rect" id="node9" href="$_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="598,95,742,136"/>
 <area shape="rect" id="node5" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="379,184,523,225"/>
 </map>

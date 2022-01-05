@@ -17,7 +17,7 @@ typedef \+\_\+data\+\_\+t \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1
 \mbox{\hyperlink{class_bayesable_aec41e7016c9c1eb6978e1360c23f20cd}{Bayesable}} ()
 \item 
 virtual size\+\_\+t \mbox{\hyperlink{class_bayesable_a26f6d55e7526ebd897cbb27c757b611b}{hash}} () const =0
-\begin{DoxyCompactList}\small\item\em Default hash function. \end{DoxyCompactList}\item 
+\item 
 virtual std\+::string \mbox{\hyperlink{class_bayesable_ab6944b4bfe5620c96048287a51d019c1}{string}} (std\+::string prefix=\char`\"{}\char`\"{}) const =0
 \item 
 virtual double \mbox{\hyperlink{class_bayesable_a1b057a17212ced123545133e2297c01b}{compute\+\_\+prior}} ()=0
@@ -28,8 +28,8 @@ virtual void \mbox{\hyperlink{class_bayesable_ac8ab4bb38c8782d2dcd57f3a43a3c605}
 \item 
 virtual double \mbox{\hyperlink{class_bayesable_a202493156cec15937bee304d807fdbdb}{compute\+\_\+likelihood}} (const \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} \&data, const double breakout=-\/\mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}})
 \begin{DoxyCompactList}\small\item\em Compute the likelihood of a collection of data, by calling compute\+\_\+single\+\_\+likelihood on each. This stops if our likelihood falls below breakout. \end{DoxyCompactList}\item 
-virtual double \mbox{\hyperlink{class_bayesable_a0b0552923602bcab6c768581ab8c7df8}{compute\+\_\+posterior}} (const \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} \&data, const double breakout=-\/\mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}})
-\begin{DoxyCompactList}\small\item\em Compute the posterior, by calling prior and likelihood. This involves only a little bit of fanciness, which is that if our prior is -\/inf, then we don\textquotesingle{}t both computing the likelihood. \end{DoxyCompactList}\item 
+virtual double \mbox{\hyperlink{class_bayesable_a83b36ba901849032ce10b846ee91f122}{compute\+\_\+posterior}} (const \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} \&data, const std\+::pair$<$ double, double $>$ breakoutpair=std\+::make\+\_\+pair(-\/\mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}}, 1.\+0))
+\begin{DoxyCompactList}\small\item\em Compute the posterior, by calling prior and likelihood. This includes only a little bit of fanciness, which is that if our prior is -\/inf, then we don\textquotesingle{}t both computing the likelihood. \end{DoxyCompactList}\item 
 virtual double \mbox{\hyperlink{class_bayesable_a8f061b73dd6eb3a0ef4233e2e63e23ad}{at\+\_\+temperature}} (double t) const
 \item 
 virtual bool \mbox{\hyperlink{class_bayesable_ac356e7e5b11c266b8442064186dbe89d}{operator$<$}} (const \mbox{\hyperlink{class_bayesable}{Bayesable}}$<$ \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} $>$ \&l) const
@@ -138,16 +138,18 @@ Compute the likelihood of a collection of data, by calling compute\+\_\+single\+
 
 Reimplemented in \mbox{\hyperlink{class_grammar_hypothesis_a769eea50d9e40668022b120b6fddfe06}{Grammar\+Hypothesis$<$ this\+\_\+t, \+\_\+\+H\+Y\+P, datum\+\_\+t, data\+\_\+t $>$}}, \mbox{\hyperlink{class_vector_normal_hypothesis_a8d705b46b3644217f5beac10a4d36f8d}{Vector\+Normal\+Hypothesis}}, \mbox{\hyperlink{class_vector_half_normal_hypothesis_ac11337651ba0be2f81751a01c7dac7c1}{Vector\+Half\+Normal\+Hypothesis}}, and \mbox{\hyperlink{class_t_normal_variable_a77e4954e8d30140fce241eca6d9abfa2}{T\+Normal\+Variable$<$+\mbox{[}$\,$\mbox{]}(float x) -\/$>$}}.
 
-\mbox{\Hypertarget{class_bayesable_a0b0552923602bcab6c768581ab8c7df8}\label{class_bayesable_a0b0552923602bcab6c768581ab8c7df8}} 
+\mbox{\Hypertarget{class_bayesable_a83b36ba901849032ce10b846ee91f122}\label{class_bayesable_a83b36ba901849032ce10b846ee91f122}} 
 \index{Bayesable$<$ \_datum\_t, \_data\_t $>$@{Bayesable$<$ \_datum\_t, \_data\_t $>$}!compute\_posterior@{compute\_posterior}}
 \index{compute\_posterior@{compute\_posterior}!Bayesable$<$ \_datum\_t, \_data\_t $>$@{Bayesable$<$ \_datum\_t, \_data\_t $>$}}
 \doxysubsubsection{\texorpdfstring{compute\_posterior()}{compute\_posterior()}}
 {\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t , typename \+\_\+data\+\_\+t  = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
-virtual double \mbox{\hyperlink{class_bayesable}{Bayesable}}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::compute\+\_\+posterior (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} \&}]{data,  }\item[{const double}]{breakout = {\ttfamily -\/\mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+virtual double \mbox{\hyperlink{class_bayesable}{Bayesable}}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::compute\+\_\+posterior (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} \&}]{data,  }\item[{const std\+::pair$<$ double, double $>$}]{breakoutpair = {\ttfamily std\+:\+:make\+\_\+pair(-\/\mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}},1.0)} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
 
 
-Compute the posterior, by calling prior and likelihood. This involves only a little bit of fanciness, which is that if our prior is -\/inf, then we don\textquotesingle{}t both computing the likelihood. 
+Compute the posterior, by calling prior and likelihood. This includes only a little bit of fanciness, which is that if our prior is -\/inf, then we don\textquotesingle{}t both computing the likelihood. 
+
+To understand breakout, look at \mbox{\hyperlink{_m_c_m_c_chain_8h}{M\+C\+M\+C\+Chain.\+h}} and see how compute\+\_\+posterior is called -- the first term in breakout is (u + current.\+at\+\_\+temperature(temperature) + fb), and the second is the temperature We have to pass in two pieces because the temperature only applies ot the likelihood. Note that when we use breakout in compute\+\_\+likelihood, it is only for the likelihood temp.
 
 N\+O\+TE\+: The order here is fixed to compute the prior first. This permits us to penalize the \char`\"{}prior\char`\"{} with something in the likelihood -- for instance if we want to use a runtime prior that is computed as we run the likelihood 
 \begin{DoxyParams}{Parameters}
@@ -196,10 +198,6 @@ Compute the likelihood of a single data point.
 \doxysubsubsection{\texorpdfstring{hash()}{hash()}}
 {\footnotesize\ttfamily template$<$typename \+\_\+datum\+\_\+t , typename \+\_\+data\+\_\+t  = std\+::vector$<$\+\_\+datum\+\_\+t$>$$>$ \\
 virtual size\+\_\+t \mbox{\hyperlink{class_bayesable}{Bayesable}}$<$ \+\_\+datum\+\_\+t, \+\_\+data\+\_\+t $>$\+::hash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
-
-
-
-Default hash function. 
 
 
 

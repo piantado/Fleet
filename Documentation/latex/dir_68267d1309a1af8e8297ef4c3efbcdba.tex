@@ -49,7 +49,9 @@ file \mbox{\hyperlink{_m_p_i_8h}{M\+P\+I.\+h}}
 file \mbox{\hyperlink{_numerics_8h}{Numerics.\+h}}
 \item 
 file \mbox{\hyperlink{_random_8h}{Random.\+h}}
-\begin{DoxyCompactList}\small\item\em This is a thread\+\_\+local rng that is seeded on construction so that each thread can get a different seed. (Because this seeding is in a constructor, it will be called before rl\+Rng is used) If we just make a thread\+\_\+local variable, it is not seeded well. Note that if we specify random\+\_\+seed it only applies to the first thread (and you get a warning for other threads) \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em This is a thread\+\_\+local rng whose first object is used to see others (in other threads). This way, we can have thread\+\_\+local rngs that all are seeded deterministcally in Fleet via --seed=X. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{_rng_8h}{Rng.\+h}}
+\item 
 file \mbox{\hyperlink{_singleton_8h}{Singleton.\+h}}
 \item 
 file \mbox{\hyperlink{_strings_8h}{Strings.\+h}}

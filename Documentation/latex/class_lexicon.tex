@@ -42,9 +42,9 @@ using \mbox{\hyperlink{class_lexicon_a37916cf677e3d9f3fe097453f27edb58}{Virtual\
 \item 
 size\+\_\+t \mbox{\hyperlink{class_lexicon_a6f746ae8e3c2d1111500362393b1fe34}{nfactors}} () const
 \begin{DoxyCompactList}\small\item\em Return the number of factors. \end{DoxyCompactList}\item 
-std\+::vector$<$ I\+N\+N\+ER $>$ \& \mbox{\hyperlink{class_lexicon_a50d43fd3dba3420bce9c2411c5176357}{get\+\_\+value}} ()
+auto \& \mbox{\hyperlink{class_lexicon_a10400e633590c75175f9c2e44bbafb41}{get\+\_\+value}} ()
 \item 
-const std\+::vector$<$ I\+N\+N\+ER $>$ \& \mbox{\hyperlink{class_lexicon_a224bd4eaec20beb4bf40865187ed84d7}{get\+\_\+value}} () const
+const auto \& \mbox{\hyperlink{class_lexicon_a2e49c52f34be839fc518b22acf019c32}{get\+\_\+value}} () const
 \item 
 I\+N\+N\+ER \& \mbox{\hyperlink{class_lexicon_a228ae238863c79bcced14891898ed44e}{at}} (const key\+\_\+t \&k)
 \item 
@@ -101,7 +101,7 @@ std\+::map$<$ key\+\_\+t, I\+N\+N\+ER $>$ \mbox{\hyperlink{class_lexicon_aa73021
 \doxysubsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-static const char \mbox{\hyperlink{class_lexicon_a63e64e600ff8322af2333271fbd88295}{Factor\+Delimiter}} = \textquotesingle{}$\vert$\textquotesingle{}
+const static char \mbox{\hyperlink{class_lexicon_ab786b4d297d3f6629f2be6a6f65ec131}{Factor\+Delimiter}} = \textquotesingle{}$\vert$\textquotesingle{}
 \item 
 static double \mbox{\hyperlink{class_lexicon_a6c45c5f96c1632c10c58e4b71fcf7059}{p\+\_\+factor\+\_\+propose}} = 0.\+5
 \end{DoxyCompactItemize}
@@ -256,19 +256,19 @@ Implements \mbox{\hyperlink{class_searchable_a9088dba3920f4c66ce671aa16a7d29a4}{
 {\footnotesize\ttfamily template$<$typename this\+\_\+t , typename key\+\_\+t , typename I\+N\+N\+ER , typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename datum\+\_\+t  = defaultdatum\+\_\+t$<$\+\_\+input\+\_\+t, \+\_\+output\+\_\+t$>$, typename \+\_\+\+Virtual\+Machine\+State\+\_\+t  = typename I\+N\+N\+E\+R\+::\+Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t$>$ \\
 \mbox{\hyperlink{class_lexicon_ad31914cd93f183a0a44867682f83e2ba}{Grammar\+\_\+t}}$\ast$ \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, key\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::get\+\_\+grammar (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_lexicon_a50d43fd3dba3420bce9c2411c5176357}\label{class_lexicon_a50d43fd3dba3420bce9c2411c5176357}} 
+\mbox{\Hypertarget{class_lexicon_a10400e633590c75175f9c2e44bbafb41}\label{class_lexicon_a10400e633590c75175f9c2e44bbafb41}} 
 \index{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}!get\_value@{get\_value}}
 \index{get\_value@{get\_value}!Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}}
 \doxysubsubsection{\texorpdfstring{get\_value()}{get\_value()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily template$<$typename this\+\_\+t , typename key\+\_\+t , typename I\+N\+N\+ER , typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename datum\+\_\+t  = defaultdatum\+\_\+t$<$\+\_\+input\+\_\+t, \+\_\+output\+\_\+t$>$, typename \+\_\+\+Virtual\+Machine\+State\+\_\+t  = typename I\+N\+N\+E\+R\+::\+Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t$>$ \\
-std\+::vector$<$I\+N\+N\+ER$>$\& \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, key\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::get\+\_\+value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+auto\& \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, key\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::get\+\_\+value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_lexicon_a224bd4eaec20beb4bf40865187ed84d7}\label{class_lexicon_a224bd4eaec20beb4bf40865187ed84d7}} 
+\mbox{\Hypertarget{class_lexicon_a2e49c52f34be839fc518b22acf019c32}\label{class_lexicon_a2e49c52f34be839fc518b22acf019c32}} 
 \index{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}!get\_value@{get\_value}}
 \index{get\_value@{get\_value}!Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}}
 \doxysubsubsection{\texorpdfstring{get\_value()}{get\_value()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily template$<$typename this\+\_\+t , typename key\+\_\+t , typename I\+N\+N\+ER , typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename datum\+\_\+t  = defaultdatum\+\_\+t$<$\+\_\+input\+\_\+t, \+\_\+output\+\_\+t$>$, typename \+\_\+\+Virtual\+Machine\+State\+\_\+t  = typename I\+N\+N\+E\+R\+::\+Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t$>$ \\
-const std\+::vector$<$I\+N\+N\+ER$>$\& \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, key\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::get\+\_\+value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+const auto\& \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, key\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::get\+\_\+value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_lexicon_a7bdb1eb6e4290e2528a50ef2d2d768b8}\label{class_lexicon_a7bdb1eb6e4290e2528a50ef2d2d768b8}} 
 \index{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}!hash@{hash}}
@@ -458,12 +458,12 @@ Implements \mbox{\hyperlink{class_bayesable_ab6944b4bfe5620c96048287a51d019c1}{B
 
 
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{class_lexicon_a63e64e600ff8322af2333271fbd88295}\label{class_lexicon_a63e64e600ff8322af2333271fbd88295}} 
+\mbox{\Hypertarget{class_lexicon_ab786b4d297d3f6629f2be6a6f65ec131}\label{class_lexicon_ab786b4d297d3f6629f2be6a6f65ec131}} 
 \index{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}!FactorDelimiter@{FactorDelimiter}}
 \index{FactorDelimiter@{FactorDelimiter}!Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}}
 \doxysubsubsection{\texorpdfstring{FactorDelimiter}{FactorDelimiter}}
 {\footnotesize\ttfamily template$<$typename this\+\_\+t , typename key\+\_\+t , typename I\+N\+N\+ER , typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename datum\+\_\+t  = defaultdatum\+\_\+t$<$\+\_\+input\+\_\+t, \+\_\+output\+\_\+t$>$, typename \+\_\+\+Virtual\+Machine\+State\+\_\+t  = typename I\+N\+N\+E\+R\+::\+Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t$>$ \\
-const char \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, key\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::Factor\+Delimiter = \textquotesingle{}$\vert$\textquotesingle{}\hspace{0.3cm}{\ttfamily [static]}}
+const static char \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, key\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::Factor\+Delimiter = \textquotesingle{}$\vert$\textquotesingle{}\hspace{0.3cm}{\ttfamily [static]}}
 
 \mbox{\Hypertarget{class_lexicon_aa73021310bd54abc022db58dac9dff48}\label{class_lexicon_aa73021310bd54abc022db58dac9dff48}} 
 \index{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}!factors@{factors}}

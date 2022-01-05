@@ -51,11 +51,13 @@ std\+::string \mbox{\hyperlink{_strings_8h_a21b313a5a03eda533ac68a4501c68c17}{st
 {\footnotesize template$<$typename T $>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_a74a3109333f6ec7fc237e492a524da6a}{to\+\_\+string\+\_\+with\+\_\+precision}} (const T a\+\_\+value, const int n=14)
 \item 
 {\footnotesize template$<$typename T $>$ }\\bool \mbox{\hyperlink{_strings_8h_ac63ed4e974b8dc3b49eae65049ad7804}{is\+\_\+prefix}} (const T \&prefix, const T \&x)
-\item 
+\begin{DoxyCompactList}\small\item\em Check if prefix is a prefix of x -- works with iterables, including strings and vectors. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{_strings_8h_a9e236149ce0f5aa64d809fcca5cf1c27}{contains}} (const std\+::string \&s, const std\+::string \&x)
 \item 
 bool \mbox{\hyperlink{_strings_8h_a6424a030ce8c78fc72f206b0f92640e6}{contains}} (const std\+::string \&s, const char x)
 \item 
+void \mbox{\hyperlink{_strings_8h_aa9f801c0b3a93e9baf742fc2ce79b1b8}{replace\+\_\+all}} (std\+::string \&s, const std\+::string \&x, const std\+::string \&y, int add=0)
+\begin{DoxyCompactList}\small\item\em Replace all occurances of x with y in s. \end{DoxyCompactList}\item 
 {\footnotesize template$<$const float \& add\+\_\+p, const float \& del\+\_\+p$>$ }\\double \mbox{\hyperlink{_strings_8h_a006f42339c42d12497ad559987a8597c}{p\+\_\+delete\+\_\+append}} (const std\+::string \&x, const std\+::string \&y, const float log\+\_\+alphabet)
 \begin{DoxyCompactList}\small\item\em Probability of converting x into y by deleting some number (each with del\+\_\+p, then stopping with prob 1-\/del\+\_\+p), adding with probability add\+\_\+p, and then when we add selecting from an alphabet of size alpha\+\_\+n. \end{DoxyCompactList}\item 
 std\+::deque$<$ std\+::string $>$ \mbox{\hyperlink{_strings_8h_a60d3a9b47a988443407a595730086318}{split}} (const std\+::string \&s, const char delimiter)
@@ -72,6 +74,10 @@ std\+::string \mbox{\hyperlink{_strings_8h_a7058817dff18bae565e0f06bb9492bc4}{QQ
 \item 
 std\+::string \mbox{\hyperlink{_strings_8h_a1bb5ec0bee0c8456e3fcc87cc012d055}{Q}} (std\+::string x)
 \item 
+void \mbox{\hyperlink{_strings_8h_adc4dfce03cc4717ed6be9b64b04a695a}{check\+\_\+alphabet}} (const std\+::string \&s, const std\+::string \&a)
+\begin{DoxyCompactList}\small\item\em Check that s only uses characters from a. On failure, we print the string and assert false. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_strings_8h_a8e880c6337130fdcf52fec4edba062e7}{check\+\_\+alphabet}} (std\+::vector$<$ std\+::string $>$ t, const std\+::string \&a)
+\item 
 double \mbox{\hyperlink{_strings_8h_ac4b9409cdfb6a213710a66f0c02d5792}{p\+\_\+\+Kashyap\+Oommen1984\+\_\+edit}} (const std\+::string x, const std\+::string y, const double perr, const size\+\_\+t nalphabet)
 \begin{DoxyCompactList}\small\item\em The string probability model from Kashyap \& Oommen, 1983, basically giving a string edit distance that is a probability model. This could really use some unit tests, but it is hard to find implementations. \end{DoxyCompactList}\item 
 {\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{_strings_8h_aa8cda3705f8674293669932185337ebb}{string\+\_\+to}} (const std\+::string s)
@@ -82,10 +88,37 @@ template$<$$>$ std\+::string \mbox{\hyperlink{_strings_8h_a9f6ea497303a7870c262c
 \begin{DoxyCompactItemize}
 \item 
 const std\+::string \mbox{\hyperlink{_strings_8h_aefd49a74af3b4afc27512f639bcc336f}{E\+M\+P\+T\+Y\+\_\+\+S\+T\+R\+I\+NG}} = \char`\"{}\char`\"{}
+\item 
+const std\+::string \mbox{\hyperlink{_strings_8h_a9a9e25e334b384128faea10ff26d9bc2}{L\+A\+M\+B\+D\+A\+\_\+\+S\+T\+R\+I\+NG}} = \char`\"{}\textbackslash{}u03\+BB\char`\"{}
+\item 
+const std\+::string \mbox{\hyperlink{_strings_8h_ac55885a972bc053c5f8ba3d4683f69b9}{L\+A\+M\+B\+D\+A\+X\+D\+O\+T\+\_\+\+S\+T\+R\+I\+NG}} = \mbox{\hyperlink{_strings_8h_a9a9e25e334b384128faea10ff26d9bc2}{L\+A\+M\+B\+D\+A\+\_\+\+S\+T\+R\+I\+NG}}+\char`\"{}x.\char`\"{}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_strings_8h_adc4dfce03cc4717ed6be9b64b04a695a}\label{_strings_8h_adc4dfce03cc4717ed6be9b64b04a695a}} 
+\index{Strings.h@{Strings.h}!check\_alphabet@{check\_alphabet}}
+\index{check\_alphabet@{check\_alphabet}!Strings.h@{Strings.h}}
+\doxysubsubsection{\texorpdfstring{check\_alphabet()}{check\_alphabet()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void check\+\_\+alphabet (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s,  }\item[{const std\+::string \&}]{a }\end{DoxyParamCaption})}
+
+
+
+Check that s only uses characters from a. On failure, we print the string and assert false. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & \\
+\hline
+{\em a} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_strings_8h_a8e880c6337130fdcf52fec4edba062e7}\label{_strings_8h_a8e880c6337130fdcf52fec4edba062e7}} 
+\index{Strings.h@{Strings.h}!check\_alphabet@{check\_alphabet}}
+\index{check\_alphabet@{check\_alphabet}!Strings.h@{Strings.h}}
+\doxysubsubsection{\texorpdfstring{check\_alphabet()}{check\_alphabet()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void check\+\_\+alphabet (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::string $>$}]{t,  }\item[{const std\+::string \&}]{a }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{_strings_8h_a6424a030ce8c78fc72f206b0f92640e6}\label{_strings_8h_a6424a030ce8c78fc72f206b0f92640e6}} 
 \index{Strings.h@{Strings.h}!contains@{contains}}
 \index{contains@{contains}!Strings.h@{Strings.h}}
@@ -127,6 +160,20 @@ How many times does sub occur in str? Does not count overlapping substrings
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 bool is\+\_\+prefix (\begin{DoxyParamCaption}\item[{const T \&}]{prefix,  }\item[{const T \&}]{x }\end{DoxyParamCaption})}
 
+
+
+Check if prefix is a prefix of x -- works with iterables, including strings and vectors. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em prefix} & \\
+\hline
+{\em x} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
 For any number of iterable types, is prefix a prefix of x 
 \begin{DoxyParams}{Parameters}
 {\em prefix} & \\
@@ -244,6 +291,27 @@ Handy adding double quotes to a string
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\mbox{\Hypertarget{_strings_8h_aa9f801c0b3a93e9baf742fc2ce79b1b8}\label{_strings_8h_aa9f801c0b3a93e9baf742fc2ce79b1b8}} 
+\index{Strings.h@{Strings.h}!replace\_all@{replace\_all}}
+\index{replace\_all@{replace\_all}!Strings.h@{Strings.h}}
+\doxysubsubsection{\texorpdfstring{replace\_all()}{replace\_all()}}
+{\footnotesize\ttfamily void replace\+\_\+all (\begin{DoxyParamCaption}\item[{std\+::string \&}]{s,  }\item[{const std\+::string \&}]{x,  }\item[{const std\+::string \&}]{y,  }\item[{int}]{add = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+
+Replace all occurances of x with y in s. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & \\
+\hline
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+{\em add} & -- replace x plus this many characters \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{_strings_8h_a95521755321516e684a5bf762eb001d7}\label{_strings_8h_a95521755321516e684a5bf762eb001d7}} 
 \index{Strings.h@{Strings.h}!reverse@{reverse}}
 \index{reverse@{reverse}!Strings.h@{Strings.h}}
@@ -390,7 +458,7 @@ A pythonesque string function
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 std\+::string str (\begin{DoxyParamCaption}\item[{T}]{x }\end{DoxyParamCaption})}
 
-A pythonesque string function 
+c A pythonesque string function 
 \begin{DoxyParams}{Parameters}
 {\em x} & \\
 \hline
@@ -439,4 +507,16 @@ std\+::string to\+\_\+string\+\_\+with\+\_\+precision (\begin{DoxyParamCaption}\
 \index{EMPTY\_STRING@{EMPTY\_STRING}!Strings.h@{Strings.h}}
 \doxysubsubsection{\texorpdfstring{EMPTY\_STRING}{EMPTY\_STRING}}
 {\footnotesize\ttfamily const std\+::string E\+M\+P\+T\+Y\+\_\+\+S\+T\+R\+I\+NG = \char`\"{}\char`\"{}}
+
+\mbox{\Hypertarget{_strings_8h_a9a9e25e334b384128faea10ff26d9bc2}\label{_strings_8h_a9a9e25e334b384128faea10ff26d9bc2}} 
+\index{Strings.h@{Strings.h}!LAMBDA\_STRING@{LAMBDA\_STRING}}
+\index{LAMBDA\_STRING@{LAMBDA\_STRING}!Strings.h@{Strings.h}}
+\doxysubsubsection{\texorpdfstring{LAMBDA\_STRING}{LAMBDA\_STRING}}
+{\footnotesize\ttfamily const std\+::string L\+A\+M\+B\+D\+A\+\_\+\+S\+T\+R\+I\+NG = \char`\"{}\textbackslash{}u03\+BB\char`\"{}}
+
+\mbox{\Hypertarget{_strings_8h_ac55885a972bc053c5f8ba3d4683f69b9}\label{_strings_8h_ac55885a972bc053c5f8ba3d4683f69b9}} 
+\index{Strings.h@{Strings.h}!LAMBDAXDOT\_STRING@{LAMBDAXDOT\_STRING}}
+\index{LAMBDAXDOT\_STRING@{LAMBDAXDOT\_STRING}!Strings.h@{Strings.h}}
+\doxysubsubsection{\texorpdfstring{LAMBDAXDOT\_STRING}{LAMBDAXDOT\_STRING}}
+{\footnotesize\ttfamily const std\+::string L\+A\+M\+B\+D\+A\+X\+D\+O\+T\+\_\+\+S\+T\+R\+I\+NG = \mbox{\hyperlink{_strings_8h_a9a9e25e334b384128faea10ff26d9bc2}{L\+A\+M\+B\+D\+A\+\_\+\+S\+T\+R\+I\+NG}}+\char`\"{}x.\char`\"{}}
 
