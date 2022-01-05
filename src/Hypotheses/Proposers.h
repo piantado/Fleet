@@ -187,10 +187,11 @@ namespace Proposals {
 		auto [s, slp] = sample<Node,Node>(ret, can_resample); // s is a ptr into ret
 //		PRINTN("Choosing s=", s->string());
 		
-		// the old value of s, copied -- needed for fb and for replacement
-		Node old_s = *s; 
-		std::function can_resample_matches_s_nt = [=](const Node& n) -> double { 
-			return can_resample(n)*(n.nt() == s->nt()); 
+		Node old_s = *s; // the old value of s, copied -- needed for fb and for replacement
+		
+		Node* captured_s = s; // clang doesn't like taking s for some reason
+		std::function can_resample_matches_s_nt = [captured_s](const Node& n) -> double { 
+			return can_resample(n)*(n.nt() == captured_s->nt()); 
 		};
 		
 		// make something of the same type as s that we can 
@@ -266,8 +267,9 @@ namespace Proposals {
 		auto [s, slp] = sample<Node,Node>(ret, can_resample); // s is a ptr to ret
 		Node old_s = *s; // the old value of s, copied -- needed for fb
 
+		Node* captured_s = s; // clang doesn't like capturing s for some reason
 		std::function can_resample_matches_s_nt = [&](const Node& n) -> double { 
-			return can_resample(n)*(n.nt() == s->nt()); 
+			return can_resample(n)*(n.nt() == captured_s->nt()); 
 		};
 		
 		// q is who we promote here

@@ -9,8 +9,8 @@
 
 #include "FleetArgs.h"
 
-template<typename tdata>
-void load_data_file(std::vector<tdata> &data, const char* datapath) {
+template<typename datum_t>
+void load_data_file(std::vector<datum_t> &data, const char* datapath) {
 	/**
 	 * @brief Load data from a file and puts stringprobs into obs, which is a dictionary of strings to ndata total elements, and obsv, which is a vector that is sorted by probability
 	 * @param data
@@ -18,7 +18,7 @@ void load_data_file(std::vector<tdata> &data, const char* datapath) {
 	 */
 	
 	for(auto [s, cnt] : read_csv<2>(datapath, false, '\t')) {
-		data.push_back({.input=std::string(""), .output=s, .reliability=NaN, .count=std::stod(cnt)});
+		data.emplace_back(std::string(""), s, NaN, std::stod(cnt));
 	}	
 }
 

@@ -29,7 +29,7 @@ size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite 
 const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The more data, the slower...
 const size_t MAX_PR_LINES = 1000000; 
 
-const size_t MAX_TEMP = 1.20; 
+const double MAX_TEMP = 1.20; 
 unsigned long PRINT_STRINGS; // print at most this many strings for each hypothesis
 
 std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?

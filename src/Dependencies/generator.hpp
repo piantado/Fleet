@@ -2,19 +2,27 @@
 // Copyright (c) Lewis Baker
 // Licenced under MIT license. See LICENSE.txt for details.
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef CPPCORO_GENERATOR_HPP_INCLUDED
-#define CPPCORO_GENERATOR_HPP_INCLUDED
 
+#pragma once 
 
 #ifdef __clang__
 	#include <experimental/coroutine>
-
-#endif
+	
+	//  This is horrible but we have to fix these names 
+	// UGH FIX THIS:
+	namespace std { 
+		using suspend_always = std::experimental::suspend_always;
+		using suspend_never  = std::experimental::suspend_never;
+		
+		template<typename T> 
+		using coroutine_handle = std::experimental::coroutine_handle<T>;
+	}
+#endif 
 
 #ifdef __GNUC__
 	#include <coroutine>
 #endif
-
+	
 #include <type_traits>
 #include <utility>
 #include <exception>
@@ -265,5 +273,3 @@ namespace cppcoro
 		}
 	}
 }
-
-#endif
