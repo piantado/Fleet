@@ -17,6 +17,9 @@
 		template<typename T> 
 		using coroutine_handle = std::experimental::coroutine_handle<T>;
 	}
+	
+	// this is probably important since otherwise we always think GNUC is defined. Wtf clang
+	#undef __GNUC__ 
 #endif 
 
 #ifdef __GNUC__

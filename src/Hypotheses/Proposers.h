@@ -7,7 +7,6 @@
 
 #include "Node.h"
 
-
 namespace Proposals { 
 		
 	/**
