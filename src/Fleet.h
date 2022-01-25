@@ -364,6 +364,7 @@ int main(int argc, char** argv){
 #include <unistd.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <string>
 
 const std::string FLEET_VERSION = "0.1.07";
 

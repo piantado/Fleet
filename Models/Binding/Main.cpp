@@ -15,7 +15,7 @@
 std::vector<std::string> words = {"REXP", "him", "his", "he", "himself"};
 
 static const double alpha = 0.95; 
-const int NDATA = 10; // how many data points from each sentence are we looking at?
+int NDATA = 10; // how many data points from each sentence are we looking at?
 
 using S = std::string;
 
@@ -274,22 +274,35 @@ public:
 		return likelihood; 
 	 }	 	
 
-//	virtual void print(std::string prefix="") {
-//	
-//		COUT std::setprecision(14) << prefix << this->posterior TAB this->prior TAB this->likelihood TAB "";
-//		
-//		// when we print, we are going to compute overlap with each target item
-//		for(auto& w : words) {
-//			for(auto& d : target_precisionrecall_data) {
-//				auto bme = factors[w].cache.at(di)
-//				auto bar = 
-//			}
-//		}
-//		
-//		std::lock_guard guard(output_lock);
-//		// TODO: Include  this->born  once that is updated correctly
-//		 QQ(this->string()) ENDL;		
-//	}
+	virtual void print(std::string prefix="") {
+		
+		extern MyHypothesis::data_t target_precisionrecall_data;
+		extern MyHypothesis target;
+
+		std::lock_guard guard(output_lock);
+		
+		COUT std::setprecision(5) << prefix << this->posterior TAB this->prior TAB this->likelihood TAB "";
+		
+		// when we print, we are going to compute overlap with each target item
+		for(auto& w : words) {
+			int nagree = 0;
+			int ntot = 0;
+			
+			for(size_t di=0;di<target_precisionrecall_data.size();di++) {
+				auto& d = target_precisionrecall_data[di];
+			
+				if(factors[w].cache.at(di) == target.factors[w].cache.at(di)) {
+					++nagree;
+				}
+				++ntot;
+			}
+			
+			COUT float(nagree)/float(ntot) TAB "";
+		}
+		
+		COUT QQ(this->string()) ENDL;
+
+	}
  
 };
 
@@ -306,10 +319,12 @@ public:
 #include "SExpression.h"
 
 MyHypothesis::data_t target_precisionrecall_data; // data for computing precision/recall 
-
+MyHypothesis target;
+	
 int main(int argc, char** argv){ 
 	
 	Fleet fleet("Learn principles of binding theory");
+	fleet.add_option("--ndata",   NDATA, "Run at a different likelihood temperature (strength of data)"); 
 	fleet.initialize(argc, argv);
 	
 	//------------------
@@ -378,7 +393,7 @@ int main(int argc, char** argv){
 			MyHypothesis::datum_t d1 = {myt->get_target(), myt->get_target()->word, alpha};	
 			mydata.push_back(d1);
 			
-			target_precisionrecall_data(d1);
+			target_precisionrecall_data.push_back(d1);
 		}
 		
 		delete t;
@@ -390,7 +405,6 @@ int main(int argc, char** argv){
 	//------------------
 	
 	//"REXP", "him", "his", "he", "himself"
-	MyHypothesis target;
 	target["REXP"] = InnerHypothesis(grammar.simple_parse("not(and(corefers(x),dominates(parent(coreferent(x)),x)))"));
 	target["him"] = InnerHypothesis(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
 	target["his"] = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));

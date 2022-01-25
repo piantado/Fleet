@@ -5,6 +5,7 @@
 #include "Errors.h"
 #include "Grammar.h"
 #include "Node.h"
+#include "Builtins.h"
 
 extern volatile sig_atomic_t CTRL_C;
 
@@ -27,19 +28,19 @@ namespace Builtins {
 
 	// Combinatory logic operations 
 	template<typename Grammar_t>
-	Builtin<Combinators::CL> 
+	Primitive<Combinators::CL> 
 	CL_I(Op::CL_I, BUILTIN_LAMBDA {assert(false);});
 
 	template<typename Grammar_t>
-	Builtin<Combinators::CL> 
+	Primitive<Combinators::CL> 
 	CL_S(Op::CL_S, BUILTIN_LAMBDA {assert(false);});
 
 	template<typename Grammar_t>
-	Builtin<Combinators::CL>
+	Primitive<Combinators::CL>
 	CL_K(Op::CL_K, BUILTIN_LAMBDA {assert(false);});
 
 	template<typename Grammar_t>
-	Builtin<Combinators::CL, Combinators::CL, Combinators::CL> 
+	Primitive<Combinators::CL, Combinators::CL, Combinators::CL> 
 	CL_Apply(Op::CL_Apply, BUILTIN_LAMBDA {assert(false);});
 
 }
@@ -218,30 +219,30 @@ namespace Combinators {
 			  lazily so that we can do this -- it will store the max enumerated so far,
 			  and allow access 
 	 */
-	class LazyNormalForms {
-	public:
-		
-		size_t idx; // what index are we currently at?
-		std::vector<Node> list;
-		SKGrammar* grammar;
-		
-		LazyNormalForms(SKGrammar* g=&skgrammar) : idx(0), grammar(g) { 
-		}
-		
-		Node& at(const size_t i) {
-			
-			while(list.size() < i+1 and !CTRL_C) {
-				auto n = expand_from_integer(grammar, grammar->nt<CL>(), idx++);
-				if(is_normal_form(n)) list.push_back(n);
-			}
-			
-			return list.at(i);		
-		}
-		
-		Node& next() {
-			return at(list.size());
-		}
-	};
+//	class LazyNormalForms {
+//	public:
+//		
+//		size_t idx; // what index are we currently at?
+//		std::vector<Node> list;
+//		SKGrammar* grammar;
+//		
+//		LazyNormalForms(SKGrammar* g=&skgrammar) : idx(0), grammar(g) { 
+//		}
+//		
+//		Node& at(const size_t i) {
+//			
+//			while(list.size() < i+1 and !CTRL_C) {
+//				auto n = expand_from_integer(grammar, grammar->nt<CL>(), idx++);
+//				if(is_normal_form(n)) list.push_back(n);
+//			}
+//			
+//			return list.at(i);		
+//		}
+//		
+//		Node& next() {
+//			return at(list.size());
+//		}
+//	};
 		
 	
 	
