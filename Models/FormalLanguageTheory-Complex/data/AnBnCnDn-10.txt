@@ -1,0 +1,6 @@
+abcd	3
+aaaabbbbccccdddd	2
+aaaaaaaabbbbbbbbccccccccdddddddd	2
+aabbccdd	1
+aaabbbcccddd	1
+aaaaabbbbbcccccddddd	1

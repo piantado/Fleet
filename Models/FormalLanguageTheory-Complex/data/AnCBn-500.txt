@@ -1,0 +1,12 @@
+acb	166
+aacbb	112
+aaacbbb	70
+aaaacbbbb	55
+aaaaacbbbbb	27
+aaaaaacbbbbbb	24
+aaaaaaacbbbbbbb	14
+aaaaaaaacbbbbbbbb	12
+aaaaaaaaacbbbbbbbbb	9
+aaaaaaaaaacbbbbbbbbbb	7
+aaaaaaaaaaaacbbbbbbbbbbbb	2
+aaaaaaaaaaacbbbbbbbbbbb	2

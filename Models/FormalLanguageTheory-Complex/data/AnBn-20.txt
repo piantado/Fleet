@@ -1,0 +1,7 @@
+ab	6
+aaaabbbb	5
+aabb	3
+aaabbb	3
+aaaaaaaabbbbbbbb	1
+aaaaaabbbbbb	1
+aaaaaaaaabbbbbbbbb	1

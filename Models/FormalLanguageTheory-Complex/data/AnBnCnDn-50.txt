@@ -1,0 +1,8 @@
+abcd	14
+aabbccdd	13
+aaabbbcccddd	12
+aaaabbbbccccdddd	6
+aaaaaabbbbbbccccccdddddd	2
+aaaaabbbbbcccccddddd	1
+aaaaaaaaabbbbbbbbbcccccccccddddddddd	1
+aaaaaaabbbbbbbcccccccddddddd	1

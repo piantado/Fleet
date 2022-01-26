@@ -1,0 +1,9 @@
+!vn	4
+vnd	3
+vn	3
+Vnn	2
+Vndnd	2
+!vnd	2
+Vnnd	2
+Vndn	1
+!Vnnd	1

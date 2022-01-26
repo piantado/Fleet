@@ -1,0 +1,4 @@
+a	157
+aa	34
+aaaa	8
+aaaaaaaa	1

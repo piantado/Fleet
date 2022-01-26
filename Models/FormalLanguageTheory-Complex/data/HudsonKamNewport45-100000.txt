@@ -1,0 +1,12 @@
+vn	13750
+!vn	13683
+vnd	11399
+!vnd	10984
+!Vnn	7711
+Vnn	7514
+!Vnnd	6239
+!Vndn	6238
+Vndn	6205
+Vnnd	6194
+!Vndnd	5083
+Vndnd	5000

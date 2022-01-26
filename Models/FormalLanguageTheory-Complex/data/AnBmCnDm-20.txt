@@ -1,0 +1,14 @@
+abbcdd	3
+abcd	2
+aabccd	2
+aabbbbbbbbbccddddddddd	2
+abbbcddd	2
+aaabbcccdd	1
+aaaaabbbbbbbcccccddddddd	1
+aaaabbccccdd	1
+aaaaaaabbbbcccccccdddd	1
+aaaaaaaaabcccccccccd	1
+aaaaaabbccccccdd	1
+aaaaaaabcccccccd	1
+abbbbcdddd	1
+aaaaabbbcccccddd	1

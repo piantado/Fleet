@@ -1,0 +1,5 @@
+a	804
+aa	157
+aaaa	28
+aaaaaaaa	8
+aaaaaaaaaaaaaaaa	3

@@ -1,0 +1,12 @@
+abababaaba	29
+ababa	25
+ababababaabaaba	14
+abababababaabaabaaba	10
+ababababababaabaabaabaaba	9
+abababababababaabaabaabaabaaba	5
+ababababababababababaabaabaabaabaabaabaabaaba	2
+abababababababababababaabaabaabaabaabaabaabaabaaba	2
+ababababababababaabaabaabaabaabaaba	1
+ababababababababababababaabaabaabaabaabaabaabaabaabaaba	1
+abababababababababaabaabaabaabaabaabaaba	1
+ababababababababababababababababaabaabaabaabaabaabaabaabaabaabaabaabaabaaba	1

@@ -1,0 +1,15 @@
+ab	332
+aabb	210
+aaabbb	148
+aaaabbbb	105
+aaaaabbbbb	63
+aaaaaabbbbbb	49
+aaaaaaabbbbbbb	25
+aaaaaaaabbbbbbbb	20
+aaaaaaaaabbbbbbbbb	14
+aaaaaaaaaabbbbbbbbbb	12
+aaaaaaaaaaabbbbbbbbbbb	10
+aaaaaaaaaaaaaabbbbbbbbbbbbbb	4
+aaaaaaaaaaaaabbbbbbbbbbbbb	3
+aaaaaaaaaaaabbbbbbbbbbbb	3
+aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb	2

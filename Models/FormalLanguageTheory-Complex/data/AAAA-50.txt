@@ -1,0 +1,4 @@
+a	30
+aa	12
+aaa	5
+aaaa	3

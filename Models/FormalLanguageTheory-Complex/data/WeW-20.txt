@@ -1,0 +1,13 @@
+baba	3
+a	3
+b	3
+aabaabaab	2
+abbbabbbabbbabbb	1
+aabbaaabbaaabbaaabbaaabba	1
+baabaabaa	1
+ababaabbaabaababaabbaabaababaabbaabaababaabbaabaababaabbaabaababaabbaabaababaabbaabaababaabbaabaababaabbaabaababaabbaabaababaabbaabaababaabbaaba	1
+aaabbbaaabbbaaabbbaaabbbaaabbbaaabbb	1
+aaaa	1
+abab	1
+aabbaabbaabbaabb	1
+ababbbbababbbbababbbbababbbbababbbbababbbbababbbb	1

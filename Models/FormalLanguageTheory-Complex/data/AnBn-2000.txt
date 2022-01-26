@@ -1,0 +1,17 @@
+ab	666
+aabb	454
+aaabbb	269
+aaaabbbb	212
+aaaaabbbbb	122
+aaaaaabbbbbb	86
+aaaaaaabbbbbbb	65
+aaaaaaaabbbbbbbb	40
+aaaaaaaaabbbbbbbbb	34
+aaaaaaaaaaabbbbbbbbbbb	14
+aaaaaaaaaabbbbbbbbbb	14
+aaaaaaaaaaaaabbbbbbbbbbbbb	12
+aaaaaaaaaaaabbbbbbbbbbbb	7
+aaaaaaaaaaaaaaabbbbbbbbbbbbbbb	2
+aaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbb	1
+aaaaaaaaaaaaaabbbbbbbbbbbbbb	1
+aaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbb	1

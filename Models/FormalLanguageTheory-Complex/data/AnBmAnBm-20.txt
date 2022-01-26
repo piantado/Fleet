@@ -1,0 +1,13 @@
+aabaab	7
+abab	2
+abbbabbb	1
+aaabbaaabb	1
+aaaabbbbbaaaabbbbb	1
+aaaabbbbaaaabbbb	1
+abbabb	1
+aabbaabb	1
+aaabbbaaabbb	1
+aabbbbbbaabbbbbb	1
+aaaabaaaab	1
+aaaaabbaaaaabb	1
+aabbbbbaabbbbb	1

@@ -1,0 +1,4 @@
+abbaa	2
+aaaaabaaaaaaaaaa	1
+aaaaabbbbbbaaaaaaaaaa	1
+aaaabbaaaaaaaa	1

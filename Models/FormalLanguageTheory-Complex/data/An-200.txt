@@ -1,0 +1,12 @@
+a	59
+aa	48
+aaa	34
+aaaa	26
+aaaaa	13
+aaaaaaaa	5
+aaaaaa	5
+aaaaaaa	4
+aaaaaaaaaa	2
+aaaaaaaaa	2
+aaaaaaaaaaaaa	1
+aaaaaaaaaaa	1

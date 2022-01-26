@@ -1,0 +1,6 @@
+abababaaba	7
+ababa	6
+abababababaabaabaaba	2
+ababababaabaaba	2
+abababababababaabaabaabaabaaba	2
+ababababababababababababaabaabaabaabaabaabaabaabaabaaba	1

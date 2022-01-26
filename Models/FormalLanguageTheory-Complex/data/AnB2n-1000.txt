@@ -1,0 +1,14 @@
+abb	316
+aabbbb	198
+aaabbbbbb	178
+aaaabbbbbbbb	99
+aaaaabbbbbbbbbb	69
+aaaaaabbbbbbbbbbbb	56
+aaaaaaabbbbbbbbbbbbbb	30
+aaaaaaaabbbbbbbbbbbbbbbb	21
+aaaaaaaaabbbbbbbbbbbbbbbbbb	11
+aaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbb	7
+aaaaaaaaaabbbbbbbbbbbbbbbbbbbb	6
+aaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbb	5
+aaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbb	3
+aaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb	1

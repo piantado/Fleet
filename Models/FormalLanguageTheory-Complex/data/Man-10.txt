@@ -1,0 +1,5 @@
+man	3
+am	2
+an	2
+mam	2
+a	1

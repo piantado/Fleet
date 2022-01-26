@@ -1,0 +1,2 @@
+ababa	1
+abababaaba	1

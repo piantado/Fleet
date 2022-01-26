@@ -1,0 +1,10 @@
+abbbbaa	1
+aaaaabbbaaaaaaaaaa	1
+aaaaaaaaaaaaaaaaabbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1
+aaabbbaaaaaa	1
+aabbaaaa	1
+aaabbaaaaaa	1
+aaaabbbbaaaaaaaa	1
+aabbbaaaa	1
+aaaaaaaabbbbaaaaaaaaaaaaaaaa	1
+aabaaaa	1

@@ -1,0 +1,11 @@
+abcde	38
+aabbccddee	26
+aaaabbbbccccddddeeee	11
+aaabbbcccdddeee	8
+aaaaabbbbbcccccdddddeeeee	6
+aaaaaabbbbbbccccccddddddeeeeee	3
+aaaaaaaaabbbbbbbbbcccccccccdddddddddeeeeeeeee	2
+aaaaaaaabbbbbbbbccccccccddddddddeeeeeeee	2
+aaaaaaabbbbbbbcccccccdddddddeeeeeee	2
+aaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbcccccccccccccccccdddddddddddddddddeeeeeeeeeeeeeeeee	1
+aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeee	1

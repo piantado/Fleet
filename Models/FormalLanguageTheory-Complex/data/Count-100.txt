@@ -1,0 +1,7 @@
+ab	40
+ababb	28
+ababbabbb	13
+ababbabbbabbbbabbbbb	8
+ababbabbbabbbb	7
+ababbabbbabbbbabbbbbabbbbbb	3
+ababbabbbabbbbabbbbbabbbbbbabbbbbbbabbbbbbbbabbbbbbbbbabbbbbbbbbbabbbbbbbbbbbabbbbbbbbbbbb	1

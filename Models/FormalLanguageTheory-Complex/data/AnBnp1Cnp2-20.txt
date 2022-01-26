@@ -1,0 +1,7 @@
+abbccc	10
+aabbbcccc	3
+aaaaabbbbbbccccccc	2
+aaabbbbccccc	2
+aaaaaabbbbbbbcccccccc	1
+aaaaaaabbbbbbbbccccccccc	1
+aaaaaaaaaabbbbbbbbbbbcccccccccccc	1

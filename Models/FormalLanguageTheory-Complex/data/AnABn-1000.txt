@@ -1,0 +1,14 @@
+aab	339
+aaabab	204
+aaaababab	149
+aaaaabababab	105
+aaaaaababababab	78
+aaaaaaabababababab	41
+aaaaaaaababababababab	30
+aaaaaaaaabababababababab	18
+aaaaaaaaaababababababababab	12
+aaaaaaaaaaaababababababababababab	8
+aaaaaaaaaaabababababababababab	8
+aaaaaaaaaaaaabababababababababababab	5
+aaaaaaaaaaaaaababababababababababababab	2
+aaaaaaaaaaaaaaaaaaaaabababababababababababababababababababab	1

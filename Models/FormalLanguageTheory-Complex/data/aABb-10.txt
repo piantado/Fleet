@@ -1,0 +1,6 @@
+aab	4
+aabb	2
+aabab	1
+abb	1
+aaaaabb	1
+ababaabbb	1

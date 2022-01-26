@@ -1,0 +1,10 @@
+abbab	1
+abb	1
+ab	1
+abbbbbbbbbbbbbbbabbbbbbbbbbabbbbbabbbabb	1
+abbbbbbbbbbabbbbbbabbbbabbb	1
+abbbbbbbbabbbbbbabbbbbabbbab	1
+abbbbbabbb	1
+abbbbbbbabbbbabbbab	1
+abbbbbbbbbbbbbabbbbbbbbbbbbabbbbbbbbb	1
+abbbbbbbbbabbbbbbbabbbbbabbbbabb	1

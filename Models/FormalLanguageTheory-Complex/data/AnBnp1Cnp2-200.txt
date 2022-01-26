@@ -1,0 +1,12 @@
+abbccc	68
+aabbbcccc	46
+aaabbbbccccc	28
+aaaabbbbbcccccc	22
+aaaaabbbbbbccccccc	9
+aaaaaaabbbbbbbbccccccccc	9
+aaaaaabbbbbbbcccccccc	8
+aaaaaaaaaaaabbbbbbbbbbbbbcccccccccccccc	3
+aaaaaaaaabbbbbbbbbbccccccccccc	2
+aaaaaaaabbbbbbbbbcccccccccc	2
+aaaaaaaaaabbbbbbbbbbbcccccccccccc	2
+aaaaaaaaaaaaabbbbbbbbbbbbbbccccccccccccccc	1

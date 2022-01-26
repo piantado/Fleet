@@ -1,0 +1,8 @@
+glb	2
+PDT	2
+PDTglbBdktpr	1
+tprtprBdk	1
+tprglb	1
+BdkPDT	1
+BdktprPDT	1
+tprBdkglbtpr	1

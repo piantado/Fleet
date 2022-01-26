@@ -1,0 +1,4 @@
+a	41
+aa	6
+aaa	2
+aaaaa	1

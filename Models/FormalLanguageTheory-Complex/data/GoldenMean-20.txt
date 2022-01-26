@@ -1,0 +1,15 @@
+ba	3
+a	2
+b	2
+ab	2
+ababbbab	1
+babb	1
+abbb	1
+bb	1
+abbbbb	1
+aba	1
+bbb	1
+bba	1
+ababababa	1
+babba	1
+abab	1

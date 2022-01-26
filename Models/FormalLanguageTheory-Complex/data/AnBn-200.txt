@@ -1,0 +1,14 @@
+ab	65
+aabb	46
+aaabbb	27
+aaaabbbb	21
+aaaaabbbbb	14
+aaaaaabbbbbb	12
+aaaaaaaabbbbbbbb	4
+aaaaaaaaaaaabbbbbbbbbbbb	3
+aaaaaaabbbbbbb	2
+aaaaaaaaabbbbbbbbb	2
+aaaaaaaaaaabbbbbbbbbbb	1
+aaaaaaaaaaaaaabbbbbbbbbbbbbb	1
+aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb	1
+aaaaaaaaaabbbbbbbbbb	1

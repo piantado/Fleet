@@ -1,0 +1,4 @@
+ADCDF	2
+ADCF	1
+AEC	1
+AECD	1

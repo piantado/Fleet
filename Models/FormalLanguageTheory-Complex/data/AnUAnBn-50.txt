@@ -1,0 +1,13 @@
+ab	13
+aaa	7
+a	6
+aaabbb	6
+aabb	5
+aa	4
+aaaaaaabbbbbbb	2
+aaaaaabbbbbb	2
+aaaaaaaa	1
+aaaabbbb	1
+aaaaaaaaaa	1
+aaaaaaaaabbbbbbbbb	1
+aaaaabbbbb	1

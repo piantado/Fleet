@@ -1,0 +1,8 @@
+ab	7
+ba	5
+abab	2
+ababab	2
+babababa	1
+babababababababa	1
+ababababababababababababab	1
+bababa	1

@@ -1,0 +1,12 @@
+abbc	5
+aabcc	3
+abbbbc	2
+aaaaabccccc	2
+abc	1
+abbbbbbc	1
+abbbbbbbbc	1
+aabbbcc	1
+aabbbbbbcc	1
+aaaabbbbbbcccc	1
+aabbcc	1
+aaaaabbbbbccccc	1

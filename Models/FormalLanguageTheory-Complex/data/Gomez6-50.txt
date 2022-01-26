@@ -1,0 +1,12 @@
+b4e	7
+a2d	7
+b3e	7
+b1e	5
+b6e	5
+a1d	4
+a3d	4
+a4d	3
+a5d	2
+a6d	2
+b2e	2
+b5e	2

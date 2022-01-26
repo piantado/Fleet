@@ -1,0 +1,17 @@
+aaa	3
+bababa	2
+babababababa	1
+aaaaaa	1
+abbabbabb	1
+ababab	1
+baabbabbaabbabbaabbab	1
+baaaababaaaababaaaaba	1
+abaabaaba	1
+baaabaaabaaa	1
+bbabaabaabbaabaababbabaabaabbaabaababbabaabaabbaabaaba	1
+bbb	1
+aaaaaaaaa	1
+babbbabbbabb	1
+aababaababaabab	1
+bbbbbbbbb	1
+baaaaaabaaaaaabaaaaaa	1

@@ -1,0 +1,4 @@
+ababa	2
+ababababababababaabaabaabaabaabaaba	1
+ababababababaabaabaabaaba	1
+abababaaba	1

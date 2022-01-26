@@ -1,0 +1,6 @@
+a	75
+aa	10
+aaa	7
+aaaaa	4
+aaaaaaaa	3
+aaaaaaaaaaaaaaaaaaaaa	1

@@ -1,0 +1,4 @@
+frg	2
+Gys	1
+fn	1
+fbd	1

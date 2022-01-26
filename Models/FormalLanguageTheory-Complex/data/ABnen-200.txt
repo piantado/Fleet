@@ -1,0 +1,6 @@
+ab	126
+abababab	43
+ababababababababab	19
+abababababababababababababababab	5
+ababababababababababababababababababababababababab	4
+abababababababababababababababababababababababababababababababababababab	3

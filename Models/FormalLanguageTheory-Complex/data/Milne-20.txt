@@ -1,0 +1,10 @@
+adcf	3
+adcgf	3
+acgfcg	3
+acfcg	3
+acf	2
+acgf	2
+adcfcg	1
+acfc	1
+adcgfc	1
+acgfc	1

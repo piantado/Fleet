@@ -1,0 +1,12 @@
+aab	37
+aaabab	22
+aaaababab	14
+aaaaabababab	14
+aaaaaaabababababab	3
+aaaaaaaaabababababababab	2
+aaaaaaaaaababababababababab	2
+aaaaaababababab	2
+aaaaaaaababababababab	1
+aaaaaaaaaaabababababababababab	1
+aaaaaaaaaaaababababababababababab	1
+aaaaaaaaaaaaaaabababababababababababababab	1

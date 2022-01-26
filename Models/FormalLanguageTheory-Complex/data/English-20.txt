@@ -1,0 +1,14 @@
+nv	5
+danvdn	2
+dnvtnvdn	2
+npnpnpnvdn	1
+npdanvdan	1
+danvn	1
+dnpdnvn	1
+danvtdnvn	1
+dnvtdanv	1
+dnv	1
+danvtnv	1
+daanvpdan	1
+nvtnv	1
+dnvdan	1

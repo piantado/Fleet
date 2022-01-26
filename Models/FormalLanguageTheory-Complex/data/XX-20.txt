@@ -1,0 +1,13 @@
+aa	4
+bb	4
+baba	2
+abab	1
+abbabbabbabb	1
+bbbaabbbaa	1
+aaabbbaaabbb	1
+bbabbaaaabbabbaaaa	1
+aaaa	1
+aabaab	1
+bbaaabbbaaab	1
+abbababbab	1
+babbbbababbbba	1

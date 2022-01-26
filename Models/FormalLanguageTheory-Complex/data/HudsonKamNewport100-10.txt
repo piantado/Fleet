@@ -1,0 +1,7 @@
+!Vndnd	2
+!vnD	2
+vnd	2
+VndnD	1
+Vndnd	1
+VnDnd	1
+!vnd	1

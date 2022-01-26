@@ -1,0 +1,6 @@
+abab	6
+ab	6
+ababab	4
+ababababababab	2
+abababab	1
+ababababab	1

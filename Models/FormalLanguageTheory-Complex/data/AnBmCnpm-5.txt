@@ -1,0 +1,4 @@
+aabccc	2
+aaaabbbbbccccccccc	1
+aaaaabbbcccccccc	1
+aaaabccccc	1

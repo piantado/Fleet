@@ -1,0 +1,4 @@
+a	16
+aa	2
+aaaaaaaaaaaaa	1
+aaaaaaaa	1

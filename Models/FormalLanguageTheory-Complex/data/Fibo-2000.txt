@@ -1,0 +1,10 @@
+a	1510
+aa	246
+aaa	123
+aaaaa	58
+aaaaaaaa	30
+aaaaaaaaaaaaa	16
+aaaaaaaaaaaaaaaaaaaaa	11
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	3
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	2
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1

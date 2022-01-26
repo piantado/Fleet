@@ -1,0 +1,14 @@
+abb	155
+aabbbb	113
+aaabbbbbb	67
+aaaabbbbbbbb	54
+aaaaabbbbbbbbbb	33
+aaaaaabbbbbbbbbbbb	24
+aaaaaaabbbbbbbbbbbbbb	16
+aaaaaaaabbbbbbbbbbbbbbbb	14
+aaaaaaaaabbbbbbbbbbbbbbbbbb	8
+aaaaaaaaaabbbbbbbbbbbbbbbbbbbb	5
+aaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbb	5
+aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb	3
+aaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbb	2
+aaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbb	1

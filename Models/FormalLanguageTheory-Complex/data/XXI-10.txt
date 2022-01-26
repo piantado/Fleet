@@ -1,0 +1,8 @@
+ba	3
+bbaa	1
+ab	1
+aabbbbaa	1
+bbbabbbaaaaabaaabb	1
+abaaababbb	1
+baaabb	1
+aabbba	1

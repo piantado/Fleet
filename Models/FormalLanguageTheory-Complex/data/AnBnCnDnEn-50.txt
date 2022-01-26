@@ -1,0 +1,7 @@
+abcde	15
+aabbccddee	12
+aaabbbcccdddeee	8
+aaaaabbbbbcccccdddddeeeee	7
+aaaabbbbccccddddeeee	4
+aaaaaaaaabbbbbbbbbcccccccccdddddddddeeeeeeeee	3
+aaaaaaaabbbbbbbbccccccccddddddddeeeeeeee	1

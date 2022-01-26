@@ -1,0 +1,2 @@
+ab	4
+abababab	1

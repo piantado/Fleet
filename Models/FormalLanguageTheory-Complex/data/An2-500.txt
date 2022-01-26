@@ -1,0 +1,9 @@
+a	239
+aaaa	127
+aaaaaaaaa	72
+aaaaaaaaaaaaaaaa	36
+aaaaaaaaaaaaaaaaaaaaaaaaa	11
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	10
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	3
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1

@@ -1,0 +1,13 @@
+aabbccaa	4
+aaabcaaa	2
+abca	2
+abbbccca	2
+aaabbccaaa	2
+aabcaa	1
+aaaaaaaaaabbbcccaaaaaaaaaa	1
+abbcca	1
+aaabbbbbbbbbbbbbbbbbcccccccccccccccccaaa	1
+aaaaaabbbbbbbbbcccccccccaaaaaa	1
+aaaaaaaaaaaaaabbbbbbbcccccccaaaaaaaaaaaaaa	1
+aaaaaaabbccaaaaaaa	1
+abbbbcccca	1

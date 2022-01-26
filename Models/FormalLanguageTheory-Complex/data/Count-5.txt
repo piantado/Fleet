@@ -1,0 +1,3 @@
+ab	3
+ababbabbb	1
+ababbabbbabbbbabbbbbabbbbbb	1

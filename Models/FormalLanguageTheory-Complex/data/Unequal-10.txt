@@ -1,0 +1,7 @@
+a	3
+b	2
+aa	1
+aaa	1
+aabbb	1
+baaab	1
+baaabaaab	1

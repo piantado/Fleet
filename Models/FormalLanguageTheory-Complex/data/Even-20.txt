@@ -1,0 +1,16 @@
+b	4
+baa	2
+aa	1
+aabaa	1
+bbbaab	1
+bb	1
+aabaaaaaab	1
+baaaabbbb	1
+bbbb	1
+aaaabbb	1
+aabbb	1
+baab	1
+aaaab	1
+baaaa	1
+aaaabaab	1
+bbbbb	1

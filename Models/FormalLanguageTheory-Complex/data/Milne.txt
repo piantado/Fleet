@@ -1,0 +1,12 @@
+acgf	125681
+adcgf	124942
+acf	124458
+adcf	124424
+acfc	62961
+adcgfcg	62655
+adcfc	62631
+acgfcg	62618
+adcfcg	62594
+adcgfc	62558
+acgfc	62400
+acfcg	62078

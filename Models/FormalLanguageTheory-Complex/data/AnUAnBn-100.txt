@@ -1,0 +1,16 @@
+a	27
+ab	23
+aa	6
+aaabbb	6
+aaaabbbb	6
+aaa	5
+aabb	5
+aaaaa	5
+aaaaaa	4
+aaaa	3
+aaaaabbbbb	3
+aaaaaabbbbbb	2
+aaaaaaaaaaa	2
+aaaaaaabbbbbbb	1
+aaaaaaaabbbbbbbb	1
+aaaaaaa	1

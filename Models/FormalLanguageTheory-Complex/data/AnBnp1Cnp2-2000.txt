@@ -1,0 +1,17 @@
+abbccc	668
+aabbbcccc	442
+aaabbbbccccc	277
+aaaabbbbbcccccc	206
+aaaaabbbbbbccccccc	150
+aaaaaabbbbbbbcccccccc	71
+aaaaaaabbbbbbbbccccccccc	63
+aaaaaaaabbbbbbbbbcccccccccc	30
+aaaaaaaaabbbbbbbbbbccccccccccc	28
+aaaaaaaaaabbbbbbbbbbbcccccccccccc	26
+aaaaaaaaaaabbbbbbbbbbbbccccccccccccc	15
+aaaaaaaaaaaaaabbbbbbbbbbbbbbbcccccccccccccccc	9
+aaaaaaaaaaaaabbbbbbbbbbbbbbccccccccccccccc	7
+aaaaaaaaaaaabbbbbbbbbbbbbcccccccccccccc	4
+aaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccc	2
+aaaaaaaaaaaaaaabbbbbbbbbbbbbbbbccccccccccccccccc	1
+aaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbccccccccccccccccccc	1

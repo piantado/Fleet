@@ -1,0 +1,3 @@
+abbbbabbbb	2
+aabaab	2
+aaaaabbbbbbaaaaabbbbbb	1

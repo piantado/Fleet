@@ -1,0 +1,17 @@
+aa	3
+baa	2
+aaaba	1
+abab	1
+aab	1
+baaabbab	1
+aba	1
+aabbb	1
+abbaaa	1
+aaab	1
+bbaab	1
+baabbabaa	1
+babbab	1
+aaabbabaa	1
+baab	1
+baaabaab	1
+aabaaa	1

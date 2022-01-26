@@ -1,0 +1,10 @@
+abbccc	16
+aabbbcccc	11
+aaabbbbccccc	7
+aaaabbbbbcccccc	4
+aaaaabbbbbbccccccc	3
+aaaaaaabbbbbbbbccccccccc	3
+aaaaaabbbbbbbcccccccc	2
+aaaaaaaaabbbbbbbbbbccccccccccc	2
+aaaaaaaaaaaabbbbbbbbbbbbbcccccccccccccc	1
+aaaaaaaabbbbbbbbbcccccccccc	1

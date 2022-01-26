@@ -1,0 +1,5 @@
+ltt	1
+GGG	1
+TLL	1
+Tgg	1
+LLL	1

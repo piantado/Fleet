@@ -1,0 +1,4 @@
+abcde	2
+aaabbbcccdddeee	1
+aaaabbbbccccddddeeee	1
+aaaaabbbbbcccccdddddeeeee	1

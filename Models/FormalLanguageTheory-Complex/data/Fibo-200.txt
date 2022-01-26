@@ -1,0 +1,6 @@
+a	146
+aa	31
+aaa	15
+aaaaa	4
+aaaaaaaa	3
+aaaaaaaaaaaaa	1

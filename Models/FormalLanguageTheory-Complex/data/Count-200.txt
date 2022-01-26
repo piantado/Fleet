@@ -1,0 +1,11 @@
+ab	81
+ababb	57
+ababbabbb	20
+ababbabbbabbbb	15
+ababbabbbabbbbabbbbb	13
+ababbabbbabbbbabbbbbabbbbbb	5
+ababbabbbabbbbabbbbbabbbbbbabbbbbbbabbbbbbbbabbbbbbbbbabbbbbbbbbb	3
+ababbabbbabbbbabbbbbabbbbbbabbbbbbb	2
+ababbabbbabbbbabbbbbabbbbbbabbbbbbbabbbbbbbbabbbbbbbbbabbbbbbbbbbabbbbbbbbbbbabbbbbbbbbbbb	2
+ababbabbbabbbbabbbbbabbbbbbabbbbbbbabbbbbbbbabbbbbbbbb	1
+ababbabbbabbbbabbbbbabbbbbbabbbbbbbabbbbbbbb	1

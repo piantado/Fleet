@@ -1,0 +1,15 @@
+gTT	3
+ttt	2
+Ggg	2
+Gll	2
+nNN	1
+Ngg	1
+gll	1
+ltt	1
+ggg	1
+Lnn	1
+GTT	1
+tgg	1
+Lll	1
+tTT	1
+nll	1

@@ -1,0 +1,13 @@
+abcd	174
+aabbccdd	109
+aaabbbcccddd	68
+aaaabbbbccccdddd	49
+aaaaabbbbbcccccddddd	31
+aaaaaabbbbbbccccccdddddd	20
+aaaaaaabbbbbbbcccccccddddddd	13
+aaaaaaaaabbbbbbbbbcccccccccddddddddd	10
+aaaaaaaaaabbbbbbbbbbccccccccccdddddddddd	8
+aaaaaaaabbbbbbbbccccccccdddddddd	7
+aaaaaaaaaaaabbbbbbbbbbbbccccccccccccdddddddddddd	6
+aaaaaaaaaaaaabbbbbbbbbbbbbcccccccccccccddddddddddddd	4
+aaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbcccccccccccccccccccddddddddddddddddddd	1

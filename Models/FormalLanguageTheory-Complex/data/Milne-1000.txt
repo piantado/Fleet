@@ -1,0 +1,12 @@
+adcgf	131
+adcf	120
+acgf	118
+acf	113
+acgfcg	70
+acfcg	69
+acfc	68
+adcfcg	67
+adcfc	64
+adcgfcg	61
+acgfc	60
+adcgfc	59

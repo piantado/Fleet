@@ -1,0 +1,7 @@
+a	39952
+aa	8111
+aaaa	1558
+aaaaaaaa	295
+aaaaaaaaaaaaaaaa	71
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	10
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	3

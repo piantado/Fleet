@@ -1,0 +1,8 @@
+vnd	5
+vnD	4
+!vnd	3
+VnDnd	2
+!vnD	2
+!VnDnD	2
+VndnD	1
+Vndnd	1

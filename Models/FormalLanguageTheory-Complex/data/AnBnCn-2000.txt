@@ -1,0 +1,17 @@
+abc	693
+aabbcc	464
+aaabbbccc	279
+aaaabbbbcccc	178
+aaaaabbbbbccccc	131
+aaaaaabbbbbbcccccc	78
+aaaaaaabbbbbbbccccccc	63
+aaaaaaaabbbbbbbbcccccccc	39
+aaaaaaaaabbbbbbbbbccccccccc	32
+aaaaaaaaaabbbbbbbbbbcccccccccc	12
+aaaaaaaaaaabbbbbbbbbbbccccccccccc	12
+aaaaaaaaaaaabbbbbbbbbbbbcccccccccccc	9
+aaaaaaaaaaaaaaabbbbbbbbbbbbbbbccccccccccccccc	3
+aaaaaaaaaaaaabbbbbbbbbbbbbccccccccccccc	3
+aaaaaaaaaaaaaabbbbbbbbbbbbbbcccccccccccccc	2
+aaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccc	1
+aaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccc	1

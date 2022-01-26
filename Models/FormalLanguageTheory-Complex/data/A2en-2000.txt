@@ -1,0 +1,6 @@
+a	1568
+aa	336
+aaaa	77
+aaaaaaaa	16
+aaaaaaaaaaaaaaaa	2
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1

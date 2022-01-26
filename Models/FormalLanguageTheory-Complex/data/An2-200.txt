@@ -1,0 +1,9 @@
+a	106
+aaaa	50
+aaaaaaaaa	18
+aaaaaaaaaaaaaaaa	15
+aaaaaaaaaaaaaaaaaaaaaaaaa	6
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	2
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1

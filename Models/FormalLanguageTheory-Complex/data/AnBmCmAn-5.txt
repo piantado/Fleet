@@ -1,0 +1,3 @@
+aaabcaaa	2
+abca	2
+abbbccca	1

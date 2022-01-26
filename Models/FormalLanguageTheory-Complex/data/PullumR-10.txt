@@ -1,0 +1,6 @@
+ab	5
+acdcdccdcdcb	1
+adcccdb	1
+acccccccccdcdcccccccccccccdcdcccccccccccccdcdccccb	1
+acddccddccddcb	1
+accdccdccdccdb	1

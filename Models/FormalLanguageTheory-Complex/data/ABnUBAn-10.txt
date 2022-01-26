@@ -1,0 +1,8 @@
+abab	2
+ab	2
+abababababababababababababababab	1
+bababababa	1
+abababab	1
+baba	1
+ababab	1
+ba	1

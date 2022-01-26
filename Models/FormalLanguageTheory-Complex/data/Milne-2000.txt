@@ -1,0 +1,12 @@
+adcf	266
+acgf	251
+adcgf	242
+acf	230
+adcfcg	137
+acfcg	137
+acfc	131
+adcgfcg	123
+acgfcg	123
+acgfc	123
+adcfc	122
+adcgfc	115

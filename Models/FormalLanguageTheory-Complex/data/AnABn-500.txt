@@ -1,0 +1,13 @@
+aab	186
+aaabab	109
+aaaababab	71
+aaaaabababab	48
+aaaaaababababab	34
+aaaaaaabababababab	20
+aaaaaaaababababababab	9
+aaaaaaaaaababababababababab	8
+aaaaaaaaabababababababab	7
+aaaaaaaaaaaaabababababababababababab	3
+aaaaaaaaaaaababababababababababab	3
+aaaaaaaaaaabababababababababab	1
+aaaaaaaaaaaaaababababababababababababab	1

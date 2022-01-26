@@ -1,0 +1,8 @@
+aabbbb	7
+abb	6
+aaabbbbbb	2
+aaaabbbbbbbb	1
+aaaaaaaaaabbbbbbbbbbbbbbbbbbbb	1
+aaaaabbbbbbbbbb	1
+aaaaaaabbbbbbbbbbbbbb	1
+aaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbb	1

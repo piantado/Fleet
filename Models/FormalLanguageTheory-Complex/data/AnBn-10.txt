@@ -1,0 +1,3 @@
+aabb	5
+ab	4
+aaaabbbb	1

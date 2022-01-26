@@ -1,0 +1,4 @@
+ab	36
+abababab	10
+ababababababababab	3
+abababababababababababababababab	1

@@ -1,0 +1,10 @@
+abb	16
+aabbbb	10
+aaabbbbbb	7
+aaaabbbbbbbb	4
+aaaaaabbbbbbbbbbbb	4
+aaaaaaabbbbbbbbbbbbbb	4
+aaaaabbbbbbbbbb	2
+aaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbb	1
+aaaaaaaabbbbbbbbbbbbbbbb	1
+aaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb	1

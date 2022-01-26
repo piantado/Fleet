@@ -1,0 +1,2 @@
+abbbbbccccca	1
+aaaaabbccaaaaa	1

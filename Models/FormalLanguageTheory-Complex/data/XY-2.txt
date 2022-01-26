@@ -1,0 +1,2 @@
+ba	1
+abaaabbbababa	1

@@ -1,0 +1,12 @@
+b	6
+aa	2
+aba	2
+baa	2
+abba	1
+aab	1
+abbabbaa	1
+aabbaaaa	1
+abbba	1
+aaaa	1
+bbbbaaaa	1
+aabb	1

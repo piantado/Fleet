@@ -1,0 +1,15 @@
+oADuE	11
+oAuE	9
+oAuEiCD	4
+oADaiCFiCD	4
+oAaiCF	4
+oAaiCDFiCD	3
+oAaiCDFiC	3
+oADuEiC	3
+oAaiCDF	2
+oADuEiCD	2
+oAaiCFiC	1
+oAaiCFiCD	1
+oADaiCDF	1
+oADaiCFiC	1
+oADaiCDFiC	1

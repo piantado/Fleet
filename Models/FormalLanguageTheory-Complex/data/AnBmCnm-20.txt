@@ -1,0 +1,15 @@
+abc	3
+aabbcccc	3
+abbbccc	2
+aaabbbbbccccccccccccccc	1
+aaaaabbcccccccccc	1
+abbcc	1
+abbbbbbbccccccc	1
+abbbbbbcccccc	1
+aaaaaabcccccc	1
+abbbbcccc	1
+aaabbcccccc	1
+aaabccc	1
+aaaaaaabbbccccccccccccccccccccc	1
+aaaabbbbbbcccccccccccccccccccccccc	1
+aaaaaaaaaabcccccccccc	1

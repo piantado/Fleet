@@ -1,0 +1,6 @@
+ab	25
+ababbabbb	8
+ababb	7
+ababbabbbabbbbabbbbb	5
+ababbabbbabbbb	3
+ababbabbbabbbbabbbbbabbbbbb	2

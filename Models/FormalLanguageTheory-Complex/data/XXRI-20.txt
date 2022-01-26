@@ -1,0 +1,13 @@
+ba	6
+ab	3
+baba	1
+abab	1
+bbaa	1
+bbbaaa	1
+aabbaabb	1
+babbbabbabaabaaaba	1
+aaaaababbbbb	1
+bbabaa	1
+babbbbabababababaaaaba	1
+aabbbbaaaabb	1
+bbababaa	1

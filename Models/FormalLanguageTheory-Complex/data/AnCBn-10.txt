@@ -1,0 +1,4 @@
+aacbb	5
+acb	3
+aaacbbb	1
+aaaacbbbb	1

@@ -1,0 +1,3 @@
+ba	3
+aabb	1
+bbaaabababbaab	1

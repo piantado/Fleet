@@ -1,0 +1,4 @@
+aab	5
+aaabab	2
+aaaaaababababab	2
+aaaaabababab	1

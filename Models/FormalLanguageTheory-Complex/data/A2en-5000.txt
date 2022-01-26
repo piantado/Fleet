@@ -1,0 +1,6 @@
+a	3994
+aa	806
+aaaa	162
+aaaaaaaa	28
+aaaaaaaaaaaaaaaa	8
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	2

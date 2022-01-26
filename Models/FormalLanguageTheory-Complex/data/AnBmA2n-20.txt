@@ -1,0 +1,15 @@
+abaa	2
+aabbaaaa	2
+aaaaaabaaaaaaaaaaaa	2
+aaabbaaaaaa	2
+aaabaaaaaa	2
+aaaabbbbbbbbbbbbbbaaaaaaaa	1
+aaabbbaaaaaa	1
+abbaa	1
+aabbbbbbbbaaaa	1
+aaaabaaaaaaaa	1
+abbbbbbbaa	1
+aaaaabaaaaaaaaaa	1
+aabbbaaaa	1
+aaaabbbbbbbaaaaaaaa	1
+aabaaaa	1

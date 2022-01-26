@@ -1,0 +1,6 @@
+a	21
+aaaa	14
+aaaaaaaaaaaaaaaa	7
+aaaaaaaaa	5
+aaaaaaaaaaaaaaaaaaaaaaaaa	2
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1

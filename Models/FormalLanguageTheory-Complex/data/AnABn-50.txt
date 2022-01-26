@@ -1,0 +1,7 @@
+aab	15
+aaabab	10
+aaaaaababababab	9
+aaaaabababab	7
+aaaababab	5
+aaaaaaabababababab	3
+aaaaaaaaaaabababababababababab	1

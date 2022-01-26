@@ -1,0 +1,17 @@
+a	18
+b	18
+aa	16
+aaa	8
+bb	6
+bbb	5
+bbbbb	5
+bbbbbb	4
+bbbb	4
+bbbbbbb	3
+aaaa	3
+aaaaa	2
+bbbbbbbb	2
+aaaaaaa	2
+aaaaaa	2
+aaaaaaaa	1
+bbbbbbbbbbbbbbb	1

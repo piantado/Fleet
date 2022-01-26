@@ -1,0 +1,7 @@
+a	7
+aa	4
+aaa	3
+aaaaaaaaa	2
+aaaaaa	2
+aaaa	1
+aaaaaaa	1

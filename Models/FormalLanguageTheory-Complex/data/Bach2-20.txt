@@ -1,0 +1,15 @@
+ab	3
+ba	3
+abba	2
+abaabb	1
+bbaa	1
+bbbabaababbaaa	1
+aaabbbababba	1
+bababa	1
+bababbaabaabbbaa	1
+aabaababbbabbaaabbbbababaaaabaabbb	1
+abaabbabab	1
+aababbabbbaa	1
+ababaabb	1
+bbbaabaabaab	1
+bbbaabaaab	1

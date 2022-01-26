@@ -1,0 +1,8 @@
+acfc	2
+acgf	2
+adcf	1
+acf	1
+adcgf	1
+adcfcg	1
+acgfcg	1
+adcgfc	1

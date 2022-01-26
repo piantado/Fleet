@@ -1,0 +1,10 @@
+ab	58
+abab	41
+abababab	32
+ababab	23
+ababababab	14
+abababababab	13
+abababababababab	8
+abababababababababab	4
+ababababababab	4
+ababababababababab	3

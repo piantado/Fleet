@@ -1,0 +1,4 @@
+a	10
+aaa	6
+aa	3
+aaaa	1

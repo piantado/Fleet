@@ -1,0 +1,11 @@
+ab	8
+adcddcddcdb	2
+addcb	2
+acccccddcccb	1
+acddccddccddccddccddcb	1
+adcccddcccddcccdb	1
+acddcddb	1
+acdcdccdcdccdcdcb	1
+acdccdccccb	1
+adcdccb	1
+adcddcdb	1

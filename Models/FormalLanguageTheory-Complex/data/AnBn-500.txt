@@ -1,0 +1,16 @@
+ab	156
+aabb	119
+aaabbb	71
+aaaabbbb	50
+aaaaabbbbb	31
+aaaaaabbbbbb	25
+aaaaaaabbbbbbb	16
+aaaaaaaabbbbbbbb	9
+aaaaaaaaaabbbbbbbbbb	8
+aaaaaaaaabbbbbbbbb	6
+aaaaaaaaaaaaabbbbbbbbbbbbb	2
+aaaaaaaaaaaabbbbbbbbbbbb	2
+aaaaaaaaaaaaaaabbbbbbbbbbbbbbb	2
+aaaaaaaaaaabbbbbbbbbbb	1
+aaaaaaaaaaaaaabbbbbbbbbbbbbb	1
+aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb	1

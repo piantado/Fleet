@@ -1,0 +1,15 @@
+abc	4
+aaabbbccc	3
+aabbbbcccc	1
+abbcc	1
+aabc	1
+aaaaaaabc	1
+aaaaaabbbbcccc	1
+abbbccc	1
+aabbbbbbbbbbbbbbbccccccccccccccc	1
+aaabbbbbbbccccccc	1
+abbbbbccccc	1
+abbbbbbbbbccccccccc	1
+aaaabbbbcccc	1
+aabbbccc	1
+aaaabc	1

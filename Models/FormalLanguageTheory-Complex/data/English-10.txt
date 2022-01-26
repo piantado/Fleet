@@ -1,0 +1,8 @@
+dnvn	2
+nv	2
+danv	1
+danvdan	1
+npdanvtdnvdanpdn	1
+dnvtnv	1
+danvnpdn	1
+nvtnv	1

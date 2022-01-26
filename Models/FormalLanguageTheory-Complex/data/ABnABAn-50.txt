@@ -1,0 +1,7 @@
+ababa	23
+abababaaba	12
+abababababaabaabaaba	6
+ababababaabaaba	6
+abababababababaabaabaabaabaaba	1
+abababababababababaabaabaabaabaabaabaaba	1
+ababababababaabaabaabaaba	1

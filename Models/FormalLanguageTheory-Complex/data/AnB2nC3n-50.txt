@@ -1,0 +1,8 @@
+abbccc	17
+aabbbbcccccc	13
+aaabbbbbbccccccccc	7
+aaaabbbbbbbbcccccccccccc	7
+aaaaaaabbbbbbbbbbbbbbccccccccccccccccccccc	2
+aaaaaabbbbbbbbbbbbcccccccccccccccccc	2
+aaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccc	1
+aaaaabbbbbbbbbbccccccccccccccc	1

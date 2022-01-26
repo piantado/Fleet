@@ -1,0 +1,16 @@
+ababa	3
+aaabaabaa	2
+aaaba	2
+aaaaababa	1
+aaabababababa	1
+abaa	1
+aaaabaabaabaabaa	1
+aabaabaabaabaa	1
+aba	1
+aaabaa	1
+aaababa	1
+aaaaabaabaabaa	1
+aabaaaaaa	1
+aaba	1
+abaaabaaa	1
+aaaaaaabaaa	1

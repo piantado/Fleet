@@ -1,0 +1,8 @@
+a	79710
+aa	16226
+aaaa	3250
+aaaaaaaa	652
+aaaaaaaaaaaaaaaa	130
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	26
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	5
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1

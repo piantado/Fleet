@@ -1,0 +1,9 @@
+a3d	2
+a4d	1
+a5d	1
+a1d	1
+a2d	1
+b6e	1
+a6d	1
+b3e	1
+b2e	1

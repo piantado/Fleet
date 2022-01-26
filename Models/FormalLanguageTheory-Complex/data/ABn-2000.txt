@@ -1,0 +1,17 @@
+ab	642
+abab	432
+ababab	313
+abababab	203
+ababababab	124
+abababababab	96
+ababababababab	67
+abababababababab	36
+ababababababababab	30
+abababababababababab	22
+ababababababababababab	11
+abababababababababababab	10
+ababababababababababababab	5
+abababababababababababababab	4
+ababababababababababababababab	3
+abababababababababababababababab	1
+ababababababababababababababababab	1

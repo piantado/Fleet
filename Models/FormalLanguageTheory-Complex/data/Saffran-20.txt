@@ -1,0 +1,15 @@
+Bdk	3
+glb	2
+tprglb	2
+tpr	2
+PDTPDTglb	1
+tprPDT	1
+tprtprBdktprPDT	1
+PDTtpr	1
+tprtprBdkglb	1
+BdkPDTglbPDTPDTglb	1
+tprglbglb	1
+BdkPDTPDTglb	1
+glbtprBdkPDTPDTtprPDTtprBdkBdkglb	1
+PDTglbPDT	1
+Bdktpr	1

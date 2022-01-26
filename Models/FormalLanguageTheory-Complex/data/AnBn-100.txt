@@ -1,0 +1,9 @@
+ab	37
+aabb	24
+aaabbb	14
+aaaabbbb	13
+aaaaabbbbb	5
+aaaaaaabbbbbbb	4
+aaaaaaaabbbbbbbb	1
+aaaaaabbbbbb	1
+aaaaaaaaabbbbbbbbb	1

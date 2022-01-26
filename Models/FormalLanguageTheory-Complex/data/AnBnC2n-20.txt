@@ -1,0 +1,6 @@
+abcc	8
+aabbcccc	5
+aaabbbcccccc	3
+aaaabbbbcccccccc	2
+aaaaabbbbbcccccccccc	1
+aaaaaaaaaaaabbbbbbbbbbbbcccccccccccccccccccccccc	1

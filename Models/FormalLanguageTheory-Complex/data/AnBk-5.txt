@@ -1,0 +1,3 @@
+abb	2
+abbb	2
+abbbb	1

@@ -1,0 +1,17 @@
+acb	2
+bac	2
+cab	2
+cba	1
+bcacacbab	1
+cababc	1
+bbcaac	1
+acaabaaaccbabbccbcccababbcb	1
+aaacbcbcb	1
+ccbbaa	1
+bcbaca	1
+cbbaca	1
+aacbccabb	1
+ccabba	1
+abcbcbaca	1
+abbbaccca	1
+abcaabbccacabcb	1

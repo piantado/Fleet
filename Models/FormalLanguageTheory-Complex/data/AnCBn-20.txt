@@ -1,0 +1,6 @@
+acb	10
+aaacbbb	4
+aacbb	3
+aaaaaaaaaacbbbbbbbbbb	1
+aaaaaaaaacbbbbbbbbb	1
+aaaaacbbbbb	1

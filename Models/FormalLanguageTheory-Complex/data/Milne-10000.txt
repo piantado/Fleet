@@ -1,0 +1,12 @@
+adcf	1319
+acf	1304
+acgf	1275
+adcgf	1231
+adcgfc	647
+acfc	629
+adcgfcg	624
+adcfc	621
+acgfcg	605
+adcfcg	589
+acfcg	578
+acgfc	578

@@ -1,0 +1,14 @@
+acb	326
+aacbb	205
+aaacbbb	165
+aaaacbbbb	101
+aaaaacbbbbb	71
+aaaaaacbbbbbb	50
+aaaaaaacbbbbbbb	25
+aaaaaaaacbbbbbbbb	17
+aaaaaaaaacbbbbbbbbb	14
+aaaaaaaaaacbbbbbbbbbb	12
+aaaaaaaaaaaaaacbbbbbbbbbbbbbb	5
+aaaaaaaaaaaacbbbbbbbbbbbb	4
+aaaaaaaaaaaaacbbbbbbbbbbbbb	3
+aaaaaaaaaaacbbbbbbbbbbb	2

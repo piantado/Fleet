@@ -1,0 +1,12 @@
+aab	71
+aaabab	39
+aaaababab	26
+aaaaabababab	22
+aaaaaababababab	10
+aaaaaaabababababab	10
+aaaaaaaaaaabababababababababab	5
+aaaaaaaaaababababababababab	5
+aaaaaaaababababababab	5
+aaaaaaaaabababababababab	4
+aaaaaaaaaaaaabababababababababababab	2
+aaaaaaaaaaaaaaaaaababababababababababababababababab	1

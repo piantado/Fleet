@@ -1,0 +1,16 @@
+aaaabbbbbb	3
+aaaaaabbbbbbb	2
+aabbbbbb	2
+aaabbbb	1
+abb	1
+aaaabbbbbbbbbbbbbb	1
+aaaaaaaaabbbbbbbbbbbbbbbbbbbb	1
+abbb	1
+aaaaabbbbbbbbbb	1
+aabbbbb	1
+aabbb	1
+abbbbbbbbbbbbbb	1
+aabbbbbbbbbb	1
+aabbbbbbb	1
+aabbbb	1
+aaabbbbbbb	1

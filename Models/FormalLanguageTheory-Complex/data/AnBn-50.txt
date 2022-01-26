@@ -1,0 +1,10 @@
+ab	18
+aabb	9
+aaabbb	7
+aaaabbbb	7
+aaaaabbbbb	4
+aaaaaaabbbbbbb	1
+aaaaaaaaaaabbbbbbbbbbb	1
+aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb	1
+aaaaaabbbbbb	1
+aaaaaaaaabbbbbbbbb	1

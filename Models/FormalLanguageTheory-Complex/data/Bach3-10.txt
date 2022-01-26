@@ -1,0 +1,10 @@
+bbaaacacbbccbaabcaababccbcc	1
+cbacacbacbab	1
+aabcbc	1
+caabcb	1
+bccaab	1
+cababc	1
+baabbbcacbbcaccbaacac	1
+cabcab	1
+abaabccbc	1
+bcacabbca	1

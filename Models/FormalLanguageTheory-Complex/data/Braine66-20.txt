@@ -1,0 +1,15 @@
+fbd	5
+Glw	2
+Gyw	1
+Gls	1
+fbdGlw	1
+Gyefk	1
+Gle	1
+Glefbd	1
+Gms	1
+Gywfk	1
+Gywfn	1
+Glwfk	1
+fk	1
+Gmw	1
+fn	1

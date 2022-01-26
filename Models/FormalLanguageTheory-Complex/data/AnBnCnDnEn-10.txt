@@ -1,0 +1,4 @@
+abcde	5
+aaabbbcccdddeee	3
+aabbccddee	1
+aaaaaaaaaaaaabbbbbbbbbbbbbcccccccccccccdddddddddddddeeeeeeeeeeeee	1

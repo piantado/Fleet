@@ -1,0 +1,14 @@
+a	5
+b	3
+aa	1
+abb	1
+aaa	1
+abbb	1
+bb	1
+aabbaaaaba	1
+bbaba	1
+ababb	1
+bba	1
+baa	1
+baab	1
+ba	1

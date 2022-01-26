@@ -1,0 +1,4 @@
+a	53
+aa	31
+aaaa	8
+aaa	8

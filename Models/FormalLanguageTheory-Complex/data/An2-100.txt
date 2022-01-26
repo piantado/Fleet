@@ -1,0 +1,8 @@
+a	49
+aaaa	26
+aaaaaaaaa	9
+aaaaaaaaaaaaaaaa	7
+aaaaaaaaaaaaaaaaaaaaaaaaa	5
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	2
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1

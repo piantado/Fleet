@@ -1,0 +1,10 @@
+b4t	4
+l4i	4
+l3i	3
+k3u	2
+g4d	2
+g1d	1
+g2d	1
+b1t	1
+g3d	1
+p2r	1

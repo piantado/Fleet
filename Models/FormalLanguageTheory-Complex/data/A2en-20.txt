@@ -1,0 +1,3 @@
+a	16
+aa	3
+aaaaaaaa	1

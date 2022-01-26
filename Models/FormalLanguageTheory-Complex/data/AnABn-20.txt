@@ -1,0 +1,7 @@
+aaabab	8
+aab	4
+aaaababab	2
+aaaaabababab	2
+aaaaaaaaaaaababababababababababab	2
+aaaaaaaaabababababababab	1
+aaaaaaaababababababab	1

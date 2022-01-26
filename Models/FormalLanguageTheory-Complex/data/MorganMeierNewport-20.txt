@@ -1,0 +1,13 @@
+oAaiCFiCD	3
+oAuEiC	2
+oAuEiCD	2
+oAuE	2
+oADaiCDF	2
+oADuE	2
+oAaiCDFiCD	1
+oAaiCFiC	1
+oADuEiC	1
+oADaiCDFiCD	1
+oADuEiCD	1
+oADaiCDFiC	1
+oADaiCFiC	1

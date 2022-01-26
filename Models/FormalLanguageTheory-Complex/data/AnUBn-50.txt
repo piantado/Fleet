@@ -1,0 +1,14 @@
+b	8
+bb	7
+a	6
+aa	5
+aaa	5
+bbb	4
+bbbbb	4
+aaaa	2
+bbbb	2
+aaaaaa	2
+aaaaa	2
+aaaaaaaaaa	1
+aaaaaaa	1
+bbbbbbbbbb	1

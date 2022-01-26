@@ -1,0 +1,4 @@
+a	415
+aa	69
+aaaa	12
+aaaaaaaa	4

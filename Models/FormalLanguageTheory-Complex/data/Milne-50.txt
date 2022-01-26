@@ -1,0 +1,12 @@
+adcgf	10
+acf	9
+adcf	6
+acgfc	5
+adcfcg	4
+acgfcg	4
+acgf	3
+adcgfc	3
+adcgfcg	2
+acfc	2
+adcfc	1
+acfcg	1

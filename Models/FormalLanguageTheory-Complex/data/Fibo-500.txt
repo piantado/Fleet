@@ -1,0 +1,9 @@
+a	375
+aa	57
+aaa	34
+aaaaa	19
+aaaaaaaa	4
+aaaaaaaaaaaaa	4
+aaaaaaaaaaaaaaaaaaaaa	3
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	3
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1

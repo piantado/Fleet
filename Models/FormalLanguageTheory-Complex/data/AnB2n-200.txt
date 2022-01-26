@@ -1,0 +1,12 @@
+abb	62
+aabbbb	51
+aaabbbbbb	26
+aaaabbbbbbbb	21
+aaaaabbbbbbbbbb	18
+aaaaaabbbbbbbbbbbb	7
+aaaaaaaabbbbbbbbbbbbbbbb	5
+aaaaaaabbbbbbbbbbbbbb	5
+aaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbb	2
+aaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbb	1
+aaaaaaaaaabbbbbbbbbbbbbbbbbbbb	1
+aaaaaaaaabbbbbbbbbbbbbbbbbb	1

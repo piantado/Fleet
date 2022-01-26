@@ -1,0 +1,4 @@
+ab	71
+abababab	20
+ababababababababab	8
+abababababababababababababababab	1

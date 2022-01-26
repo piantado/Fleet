@@ -1,0 +1,11 @@
+ab	12
+ba	11
+baba	5
+bababa	5
+ababab	4
+babababa	3
+abab	3
+abababababababababab	2
+babababababa	2
+bababababa	2
+ababababababab	1

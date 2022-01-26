@@ -1,0 +1,10 @@
+a	751
+aa	112
+aaa	70
+aaaaa	29
+aaaaaaaa	21
+aaaaaaaaaaaaa	8
+aaaaaaaaaaaaaaaaaaaaa	3
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	3
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	2
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	1

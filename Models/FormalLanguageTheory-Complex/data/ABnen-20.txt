@@ -1,0 +1,3 @@
+ab	17
+ababababababababab	2
+abababab	1
