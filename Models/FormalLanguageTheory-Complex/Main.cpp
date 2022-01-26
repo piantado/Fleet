@@ -1,10 +1,7 @@
-/* //
- * In this version, input specifies the prdata minus the txt 
+/* 
+ * In this version, input specifies the target data minus the txt in the filename:
  * 	--input=data/NewportAslin
- * and then we'll add in the data amounts, so that now each call will loop over amounts of data
- * and preserve the top hypotheses
- * 
- * NOTE: Since the PNAS resubmission, we have changed this to use char and changed serialization so that column will be different. 
+ * and then we'll add in the data amounts from the directory (via the vector of strings data_amounts) * 
  * */
   
 #include <set>
