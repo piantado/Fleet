@@ -1,0 +1,74 @@
+An,abcd,1,1m,FS,$a^n$,128
+AB,abcd,1,10m,FS,$\Sigma^+$,128
+ABn,abcd,1,1m,FS,$(ab)^n$,128
+AAA,abcd,1,10m,F,"$a^{1,2,3}$",128
+AAAA,abcd,1,10m,F,"$a^{1,2,3,4}$",128
+AnBm,abcd,1,1h,CF,$a^n b^{m}$,128
+GoldenMean,abcd,1,1h,FS,GoldenMean,128
+Even,abcd,1,1h,FS,Even,128
+ApBAp,ab,1,2h,FS,$a^+ba^+$,128
+AsBAsp,ab,1,2d,FS,$a^+(ba^+)^+$,128
+ApBApp,ab,1,2d,FS,$a^*(ba^*)^+$,128
+ABaaaAB,abcd,4,2d,FS,$\Sigma^+ aaa \Sigma^+$,128
+CountA2,ab,2,1d,FS,"Count(a,x) $\geq$ 2",128
+CountAEven,ab,2,1d,FS,"Count(a,x) even",128
+aABb,abcd,1,1h,FS,$a \Sigma^+ b$,128
+AnBn,abcd,1,10m,CF,$a^n b^n$,128
+Dyck,(),1,1d,CF,Dyck,128
+AnB2n,abcd,1,10m,CF,$a^n b^{2n} $,128
+AnCBn,abcd,1,10m,CF,$a^n c b^n$,128
+AnABn,abcd,1,10m,CF,$a^n (ab)^n$,1024
+AnABAn,abcd,1,1h,CF,$a^n (aba)^n$,1024
+ABnABAn,abcd,1,5d,CF,$(ab)^n (aba)^n$,128
+AnBmCn,abcd,1,2h,CF,$a^n b^m c^n$,128
+AnBmA2n,abcd,1,1d,CF,$a^n b^m a^{2n}$,128
+AnBnC2n,abcd,4,1d,CS,$a^n b^n c^{2n}$,1024
+ABAnBn,abcd,4,7d,CF,$\Sigma^+ a^n b^n$,128
+AnBmCm,abcd,1,4h,CF,$a^n b^m c^{m}$,128
+AnBmCnpm,abcd,1,4d,CF,$a^n b^m c^{n+m}$,128
+AnBmCnm,abcd,1,7d,CS,$a^n b^m c^{nm}$,1024
+AnBk,abcd,1,1h,CF,$a^n b^{n+m}$,128
+AnBmCmAn,abcd,1,2d,CF,$a^n b^m c^m a^n$,128
+AnB2nC3n,abcd,1,5d,CS,$a^n b^{2n} c^{3n}$,128
+AnBnp1Cnp2,abcd,1,1d,CS,$a^n b^{n+1} c^{n+2}$,128
+AnUBn,abcd,1,10m,FS,$a^n \cup b^n$,128
+AnUAnBn,abcd,1,1h,FS,$a^n \cup a^n b^n$,128
+ABnUBAn,abcd,1,1h,FS,$(ab)^n \cup (ba)^n$,128
+XX,ab,1,1h,CS,$xx$,128
+XXX,ab,1,2h,CS?,$xxx$,128
+XY,ab,1,2d,CS?,$xy :x \neq y $,128
+XXR,ab,1,1h,CF,$xx^R$,128
+XXI,ab,1,7d,CF,$x x^I$,128
+XXRI,ab,1,2d,CF,$x(x^R)^I$,128
+Unequal,ab,1,7d,?,Unequal,128
+Bach2,abcd,1,7d,CS,Bach 2,128
+Bach3,abcd,1,7d,CS,Bach 3,128
+WeW,ab,1,7d,CS,$x^{|x|}$,1024
+An2,ab,1,2d,CS,$a^{n^2}$,1024
+AnBmCnDm,abcd,1,4d,CS,$a^n b^m c^n d^m$,128
+AnBmAnBm,abcd,1,1d,CS,$a^n b^m a^n b^m$,128
+AnBmAnBmCCC,abcd,1,5d,CS,$a^n b^m a^n b^m ccc$,128
+AnBnCn,abcd,4,4h,CS,$a^n b^n c^n$,1024
+AnBnCnDn,abcd,1,5d,CS,$a^n b^n c^n d^n$,1024
+AnBnCnDnEn,abcde,4,7d,?,$a^n b^n c^n d^n e^n$,1024
+A2en,abcd,1,7d,CS,$a^{2^n}$,1024
+ABnen,abcd,1,7d,CS,$((ab)^{n^2}$,1024
+Count,abcd,4,2d,NA,Count,1024
+ChineseNumeral,ab,4,7d,CS,ChineseNumeral,1024
+NewportAslin,btgdprkuli1234,4,7d,F,Newport & Aslin (2004),128
+MorganNewport,ACDEF,1,5d,F,Morgan & Newport (1981),128
+MorganMeierNewport,ACDEFouai,4,7d,F,Morgan et al. (1987),128
+Braine66,bdrgknfGmylsew,4,7d,F,Simple Braine (1963),128
+ABA,gGtTnNlL,1,4h,F,ABA (Marcus 1999 et al.),128
+ABB,gGtTnNlL,1,4h,F,ABB (Marcus 1999 et al.),128
+HudsonKamNewport60,!vVnd,1,2d,F,Modified from Hudson Kam (2009),128
+Gomez2,abcde1234567890wxyz,1,1d,F,Gomez (2002) 1b for $n=2$,128
+Gomez6,abcde1234567890wxyz,1,5d,F,Gomez (2002) 1b for $n=6$,128
+Saffran,tprglbBdkPDT,4,7d,FS,Saffran,128
+Milne,acdgf,1,1d,FS,Milne (2018),128
+Elman,badigu,1,5d,FS,Simple Elman (1990),128
+Man,man,1,5d,F,"$man, am, an, a, mam$",128
+Gomez12,abcde1234567890wxyz,1,5d,F,Gomez (2002) 1b for $n=12$,128
+ReederNewportAslin,aAsbBnxXcqQrR,1,5d,F,Reeder et al. (2013),128
+Reber,PSTVX,4,7d,FS,Reber (1967),128
+BerwickPilato,JgGdDeiWhHNvVmMjbBEow,4,7d,FS,Berwick & Pilato (1987),128
