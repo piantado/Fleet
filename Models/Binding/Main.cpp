@@ -248,7 +248,7 @@ public:
 		// The likelihood here samples from all words that are true
 		likelihood = 0.0;
 		for(size_t di=0;di<data.size();di++) {
-			auto& d = data[di];
+//			auto& d = data[di];
 			
 			// see how many factors are true:
 			bool wtrue = false; // was w true?
@@ -264,8 +264,8 @@ public:
 			}
 
 			// Noisy size-principle likelihood
-			likelihood += NDATA * log( (wtrue ? d.reliability/ntrue : 0.0) + 
-							           (1.0-d.reliability)/words.size());
+			likelihood += (double(NDATA)/double(data.size())) * log( (wtrue ? d.reliability/ntrue : 0.0) + 
+							                         (1.0-d.reliability)/words.size());
 									   
 			if(likelihood < breakout) return likelihood = -infinity;
 
@@ -274,7 +274,7 @@ public:
 		return likelihood; 
 	 }	 	
 
-	virtual void print(std::string prefix="") {
+	virtual void print(std::string prefix="") override {
 		
 		extern MyHypothesis::data_t target_precisionrecall_data;
 		extern MyHypothesis target;

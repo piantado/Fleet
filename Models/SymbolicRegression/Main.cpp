@@ -5,6 +5,7 @@
 
 #include <cmath>
 #include "Random.h"
+#include "ConstantContainer.h"
 
 using D = double;
 
@@ -24,54 +25,9 @@ double data_Y_mean = NaN;
 double data_X_sd   = NaN;
 double data_Y_sd   = NaN;
 
+
 // Proposals and random generation happen on a variety of scales
-double random_scale() {
-	double scale = 1.0;
-	switch(myrandom(6)){
-		case 0: scale = 100.0;  break;
-		case 1: scale =  10.0;   break;
-		case 2: scale =   1.0;   break;
-		case 3: scale =   0.10;  break;
-		case 4: scale =   0.01;  break;
-		case 5: scale =   0.001; break;
-		default: assert(false);
-	}
-	return scale; 
-}
-
-// Propose to a constant c, returning a new value and fb
-// NOTE: When we use a symmetric drift kernel, fb=0
-std::pair<double,double> constant_proposal(double c) { 
-		
-	if(flip(0.5)) {
-		return std::make_pair(random_normal(c, random_scale()), 0.0);
-	}
-	else { 
-		
-		// one third probability for each of the other choices
-		if(flip(0.33)) { 
-			auto v = random_normal(data_X_mean, data_X_sd);
-			double fb = normal_lpdf(v, data_X_mean, data_X_sd) - 
-						normal_lpdf(c, data_X_mean, data_X_sd);
-			return std::make_pair(v,fb);
-		}
-		else if(flip(0.5)) {
-			auto v = random_normal(data_Y_mean, data_Y_sd);
-			double fb = normal_lpdf(v, data_Y_mean, data_Y_sd) - 
-						normal_lpdf(c, data_Y_mean, data_Y_sd);
-			return std::make_pair(v,fb);
-		}
-		else {
-			// do nothing
-			return std::make_pair(c,0.0);
-		}
-	}
-}
-
-double constant_prior(double c)   { 
-	return normal_lpdf(c, 0.0, 1.0);
-}
-
+double random_scale() { return pow(10, myrandom(-4, 5)); }
 
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -80,14 +36,6 @@ double constant_prior(double c)   {
 
 #include "Singleton.h"
 #include "Grammar.h"
-
-// We need these to declare this so it is defined before grammar,
-// and so these can be accessed in grammar.
-// What a goddamn nightmare (the other option is to separate header files)
-struct ConstantContainer {
-	std::vector<D> constants;
-	size_t         constant_idx; // in evaluation, this variable stores what constant we are in 
-};
 
 
 class MyGrammar : public Grammar<D,D, D>,
@@ -126,7 +74,7 @@ public:
 					  
 } grammar;
 
-// check if a rule is constant
+// check if a rule is constant 
 bool isConstant(const Rule* r) { return r->format == "C"; }
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -155,6 +103,42 @@ public:
 		return out;
 	}
 	
+	size_t count_constants() const override {
+		size_t cnt = 0;
+		for(const auto& x : value) {
+			cnt += isConstant(x.rule);
+		}
+		return cnt;
+	}
+	
+	// Propose to a constant c, returning a new value and fb
+	// NOTE: When we use a symmetric drift kernel, fb=0
+	std::pair<double,double> constant_proposal(double c) const override { 
+			
+		if(flip(0.5)) {
+			return std::make_pair(random_normal(c, random_scale()), 0.0);
+		}
+		else { 
+			
+			// one third probability for each of the other choices
+			if(flip(0.33)) { 
+				auto v = random_normal(data_X_mean, data_X_sd);
+				double fb = normal_lpdf(v, data_X_mean, data_X_sd) - 
+							normal_lpdf(c, data_X_mean, data_X_sd);
+				return std::make_pair(v,fb);
+			}
+			else if(flip(0.5)) {
+				auto v = random_normal(data_Y_mean, data_Y_sd);
+				double fb = normal_lpdf(v, data_Y_mean, data_Y_sd) - 
+							normal_lpdf(c, data_Y_mean, data_Y_sd);
+				return std::make_pair(v,fb);
+			}
+			else {
+				// do nothing
+				return std::make_pair(c,0.0);
+			}
+		}
+	}
 
 	double compute_single_likelihood(const datum_t& datum) override {
 		
@@ -166,25 +150,9 @@ public:
 		return normal_lpdf( (fx-datum.output)/datum.reliability );		
 	}
 	
-	size_t count_constants() const {
-		size_t cnt = 0;
-		for(const auto& x : value) {
-			cnt += isConstant(x.rule);
-		}
-		return cnt;
-	}
-	
-	virtual double compute_constants_prior() const {
-		// NOTE: because of fb below, this must be computed the same way as sampling (which is normal)
-		double lp = 0.0;
-		for(auto& c : constants) {
-			lp += constant_prior(c);
-		}
-		return lp;
-	}
 	
 	virtual double compute_prior() override {
-		this->prior = Super::compute_prior() + compute_constants_prior();
+		this->prior = Super::compute_prior() + ConstantContainer::constant_prior();
 		return this->prior;
 	}
 	
@@ -240,16 +208,13 @@ public:
 	
 	virtual bool operator==(const MyHypothesis& h) const override {
 		// equality requires our constants to be equal 
-		return this->Super::operator==(h) and
-			   constants == h.constants;
+		return this->Super::operator==(h) and ConstantContainer::operator==(h);
 	}
 
 	virtual size_t hash() const override {
 		// hash includes constants so they are only ever equal if constants are equal
 		size_t h = Super::hash();
-		for(size_t i=0;i<constants.size();i++) {
-			hash_combine(h, i, constants[i]);
-		}
+		hash_combine(h, ConstantContainer::hash());
 		return h;
 	}
 	
@@ -280,19 +245,10 @@ public:
 			
 			ret.randomize_constants(); // with random constants -- this resizes so that it's right for propose
 			
-			return std::make_pair(ret, fb + ret.compute_constants_prior() - this->compute_constants_prior());
+			return std::make_pair(ret, fb + ret.constant_prior() - this->constant_prior());
 		}
 	}
 	
-	virtual void randomize_constants() {
-		// NOTE: Because of how fb is computed in propose, we need to make this the same as the prior
-		constants.resize(count_constants());
-		for(size_t i=0;i<constants.size();i++) {			
-			auto [v, __fb] = constant_proposal(0.0);
-			constants[i] = v;
-		}
-	}
-
 	virtual MyHypothesis restart() const override {
 		MyHypothesis ret = Super::restart(); // may reset my structure
 		ret.randomize_constants();
@@ -419,6 +375,8 @@ public:
 
 #include "FleetArgs.h"
 #include "Fleet.h" 
+
+#ifndef DO_NOT_INCLUDE_MAIN
 
 int main(int argc, char** argv){ 
 	
@@ -559,3 +517,5 @@ int main(int argc, char** argv){
 	
 //	COUT "# MCTS tree size:" TAB m.count() ENDL;	
 }
+
+#endif 

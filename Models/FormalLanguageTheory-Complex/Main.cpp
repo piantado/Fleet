@@ -30,9 +30,8 @@ const double MAX_TEMP = 1.20;
 unsigned long PRINT_STRINGS; // print at most this many strings for each hypothesis
 
 std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
-//std::vector<S> data_amounts={"100"}; // how many data points do we run on?
+//std::vector<S> data_amounts={"100"}; // 
 
-// useful for printing -- so we know how many tokens there were in the data
 size_t current_ntokens = 0; // how many tokens are there currently? Just useful to know
 
 const std::string emptystring = "";
