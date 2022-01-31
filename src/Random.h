@@ -56,7 +56,7 @@ T normal_lpdf(T x, T mu=0.0, T sd=1.0) {
 	 */
 	
     //https://stackoverflow.com/questions/10847007/using-the-gaussian-probability-density-function-in-c
-    const T linv_sqrt_2pi = -0.5*log(2*pi*sd);
+    const T linv_sqrt_2pi = -0.5*log(2*pi*sd*sd);
 	const T z = (x-mu)/sd;
     return linv_sqrt_2pi  - z*z / 2.0;
 }

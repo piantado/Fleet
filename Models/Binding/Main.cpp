@@ -149,9 +149,9 @@ public:
 		
 		
 		// for absolute positions (up top 24)
-//		for(int p=0;p<24;p++) {
-//			add_terminal<int>(str(p), p, 5.0/24.);
-//		}
+		for(int p=0;p<24;p++) {
+			add_terminal<int>("abs"+str(p), p, 5.0/24.);
+		}
 
 
 		// NOTE THIS DOES NOT WORK WITH THE CACHED VERSION
@@ -248,7 +248,7 @@ public:
 		// The likelihood here samples from all words that are true
 		likelihood = 0.0;
 		for(size_t di=0;di<data.size();di++) {
-//			auto& d = data[di];
+			auto& d = data[di];
 			
 			// see how many factors are true:
 			bool wtrue = false; // was w true?
@@ -281,7 +281,7 @@ public:
 
 		std::lock_guard guard(output_lock);
 		
-		COUT std::setprecision(5) << prefix << this->posterior TAB this->prior TAB this->likelihood TAB "";
+		COUT std::setprecision(5) << prefix << NDATA TAB this->posterior TAB this->prior TAB this->likelihood TAB "";
 		
 		// when we print, we are going to compute overlap with each target item
 		for(auto& w : words) {
@@ -289,7 +289,7 @@ public:
 			int ntot = 0;
 			
 			for(size_t di=0;di<target_precisionrecall_data.size();di++) {
-				auto& d = target_precisionrecall_data[di];
+//				auto& d = target_precisionrecall_data[di];
 			
 				if(factors[w].cache.at(di) == target.factors[w].cache.at(di)) {
 					++nagree;

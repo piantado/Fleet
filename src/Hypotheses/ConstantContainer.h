@@ -14,8 +14,11 @@
  * @file ConstantsHypothesis.h
  * @brief A ConstantContainer is a hypothesis that has a vector of real-valued constants. This is used in SymbolicRegression
  * 	      to store parameters etc. 
+ * 
+ * 		  Note that this not a hypothesis, but just a little struct to help keep track of things. It does implement
+ *        many similar functions to a Bayesable though. 
  */
-class ConstantContainer {
+struct ConstantContainer {
 public:
 	std::vector<double> constants;
 	size_t         constant_idx; // in evaluation, this variable stores what constant we are in 

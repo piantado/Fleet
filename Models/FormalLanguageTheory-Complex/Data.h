@@ -1,5 +1,4 @@
-#ifndef DATA_H
-#define DATA_H
+#pragma once
 
 #include <cstring>
 #include <vector>
@@ -74,6 +73,3 @@ std::pair<double, double> get_precision_and_recall(DiscreteDistribution<std::str
 }
 
 
-
-
-#endif
