@@ -94,7 +94,10 @@ public:
 			likelihood = 0.0;
 			for(const auto& d : data) {
 				
-				likelihood += compute_single_likelihood(d);
+				auto sll = compute_single_likelihood(d);
+				assert((sll <= 0 or breakout==-infinity) && "*** Cannot use breakout if likelihoods are positive");
+				
+				likelihood += sll;
 				
 				if(likelihood == -infinity or std::isnan(likelihood)) break; // no need to continue
 				

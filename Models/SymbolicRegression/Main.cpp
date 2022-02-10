@@ -26,6 +26,9 @@ double data_X_sd   = NaN;
 double data_Y_sd   = NaN;
 
 
+// we also consider our scale variables as powers of 10
+const int MIN_SCALE = -3; 
+const int MAX_SCALE = 4;
 // Proposals and random generation happen on a variety of scales
 double random_scale() { return pow(10, myrandom(-4, 5)); }
 
@@ -225,9 +228,11 @@ public:
 	virtual std::pair<MyHypothesis,double> propose() const override {
 		// Our proposals will either be to constants, or entirely from the prior
 		// Note that if we have no constants, we will always do prior proposals
+//		PRINTN("\nProposing from\t\t", string());
+		
 		auto NC = count_constants();
 		
-		if(NC != 0 and flip(0.5)){
+		if(NC > 0 and flip(0.95)){
 			MyHypothesis ret = *this;
 			
 			double fb = 0.0; 
@@ -238,12 +243,16 @@ public:
 				ret.constants[i] = v;
 				fb += __fb;
 			}
+			
+//			PRINTN("Constant Proposal\t", ret.string());
 			return std::make_pair(ret, fb);
 		}
 		else {
+			
 			auto [ret, fb] = Super::propose(); // a proposal to structure
 			
 			ret.randomize_constants(); // with random constants -- this resizes so that it's right for propose
+//			PRINTN("Structural proposal\t", ret.string());
 			
 			return std::make_pair(ret, fb + ret.constant_prior() - this->constant_prior());
 		}
@@ -418,7 +427,7 @@ int main(int argc, char** argv){
 		data_x.push_back(x);
 		data_y.push_back(y);
 		
-		mydata.push_back( {.input=x, .output=y, .reliability=sdscale*(double)sd} );
+		mydata.emplace_back(x,y,sdscale*(double)sd);
 	}
 	
 	data_X_mean = mean(data_x);

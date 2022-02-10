@@ -265,7 +265,7 @@ public:
 
 			// Noisy size-principle likelihood
 			likelihood += (double(NDATA)/double(data.size())) * log( (wtrue ? d.reliability/ntrue : 0.0) + 
-							                         (1.0-d.reliability)/words.size());
+							                                         (1.0-d.reliability)/words.size());
 									   
 			if(likelihood < breakout) return likelihood = -infinity;
 
