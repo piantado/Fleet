@@ -19,19 +19,43 @@ size_t BURN_N = 1000; // burn this many at the start of each MCMC chain
 const size_t trim_at = 5000; // when we get this big in overall_sample structures
 const size_t trim_to = 1000;  // trim to this size
 
+size_t head_data = 0; // if nonzero, this is the max number of lines we'll read in
+
+double fix_sd = -1; // when -1, we won't fix the SD to any particular value
+
 // these are used for some constant proposals
 double data_X_mean = NaN;
 double data_Y_mean = NaN;
 double data_X_sd   = NaN;
 double data_Y_sd   = NaN;
 
+const size_t MAX_VARS = 9; // arguments are at most this many 
+size_t       NUM_VARS = 1; // how many predictor variables 
+
+using X_t = std::array<D,MAX_VARS>;
 
 // we also consider our scale variables as powers of 10
 const int MIN_SCALE = -3; 
 const int MAX_SCALE = 4;
+
 // Proposals and random generation happen on a variety of scales
 double random_scale() { return pow(10, myrandom(-4, 5)); }
 
+
+// Friendly printing but only the first NUM_VARS of them
+std::ostream& operator <<(std::ostream& o, X_t a) {
+	
+	std::string out = "";
+	
+	for(size_t i=0;i<NUM_VARS;i++) {
+		out = out + str(a[i]) + " ";
+	}
+	out.erase(out.size()-1); // last separator
+	
+	o << "<"+out+">";
+	
+	return o;
+}
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define grammar
@@ -41,7 +65,7 @@ double random_scale() { return pow(10, myrandom(-4, 5)); }
 #include "Grammar.h"
 
 
-class MyGrammar : public Grammar<D,D, D>,
+class MyGrammar : public Grammar<X_t,D, D,X_t>,
 				  public Singleton<MyGrammar> {
 public:
 	MyGrammar() {
@@ -71,8 +95,12 @@ public:
 					vms->template push<D>(h->constants.at(h->constant_idx++));
 				}
 		}), 5.0);
-							
-		add("x",             Builtins::X<MyGrammar>, 5.0);
+		
+		add("x",             Builtins::X<MyGrammar>, 1.0);
+		
+		// NOTE: Below we must add all the accessors like		
+//		add("%s1", 			+[](X_t x) -> D { return x[1]; });
+		
 	}					  
 					  
 } grammar;
@@ -87,15 +115,15 @@ bool isConstant(const Rule* r) { return r->format == "C"; }
 #include "LOTHypothesis.h"
 
 class MyHypothesis final : public ConstantContainer,
-						   public LOTHypothesis<MyHypothesis,D,D,MyGrammar,&grammar> {
+						   public LOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar> {
 	/* This class handles enumeration of the structure and critically does MCMC over the constants */
 	
 public:
 
-	using Super = LOTHypothesis<MyHypothesis,D,D,MyGrammar,&grammar>;
+	using Super = LOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar>;
 	using Super::Super;
 
-	virtual D callOne(const D x, const D err) {
+	virtual D callOne(const X_t x, const D err) {
 		// We need to override this because LOTHypothesis::callOne asserts that the program is non-empty
 		// but actually ours can be if we are only a constant. 
 		// my own wrapper that zeros the constant_i counter
@@ -149,7 +177,9 @@ public:
 		
 		if(std::isnan(fx) or std::isinf(fx)) 
 			return -infinity;
-            
+			
+//		PRINTN(datum.output, fx, normal_lpdf( (fx-datum.output)/datum.reliability ));
+		
 		return normal_lpdf( (fx-datum.output)/datum.reliability );		
 	}
 	
@@ -259,7 +289,7 @@ public:
 	}
 	
 	virtual MyHypothesis restart() const override {
-		MyHypothesis ret = Super::restart(); // may reset my structure
+		MyHypothesis ret = Super::restart(); // reset my structure
 		ret.randomize_constants();
 		return ret;
 	}
@@ -390,13 +420,26 @@ public:
 int main(int argc, char** argv){ 
 	
 	FleetArgs::inner_timestring = "1m"; // default inner time
+	FleetArgs::inner_restart = 2500; // set this as the default 
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	Fleet fleet("Symbolic regression");
+	fleet.add_option("--nvars", NUM_VARS, "How many predictor variables are there?");
+	fleet.add_option("--head-data", head_data, "Only take this many lines of data (default: 0 means all)");
+	fleet.add_option("--fix-sd", fix_sd, "Should we force the sd to have a particular value?");
 	fleet.add_option("--nsamples", nsamples, "How many samples per structure?");
 	fleet.add_option("--nstructs", nstructs, "How many structures?");
 	fleet.add_option("--polynomial-degree",   polynomial_degree,   "Defaultly -1 means we store everything, otherwise only keep polynomials <= this bound");
 	fleet.initialize(argc, argv);
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// set up the accessors of the variables
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	for(size_t i=0;i<NUM_VARS;i++){
+		std::function fi = [=](X_t x) -> D { return x[i]; };
+		grammar.add("%s"+str(i), fi, 5.0); // hmm 5 each? Or total?
+	}
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// set up the data
@@ -406,28 +449,46 @@ int main(int argc, char** argv){
 	std::vector<double> data_x;
 	std::vector<double> data_y;
 	
-	for(auto [xstr, ystr, sdstr] : read_csv<3>(FleetArgs::input_path, '\t')) {
-		auto x = std::stod(xstr);
-		auto y = std::stod(ystr);
+//	for(auto [xstr, ystr, sdstr] : read_csv<3>(FleetArgs::input_path, false, '\t')) {
+	for(auto v : read_csv(FleetArgs::input_path, false, ' ')) { // NOTE: MUST BE \t for our data!!
 		
-		auto k = xstr + ystr + sdstr;
-		if(contains(k, " ")) {
-			CERR "*** Whitespace error on [" << k << "]" ENDL;
-			assert( false && "*** Whitespace is probably not intended? Columns should be tab separated"); // just check for
+		if(fix_sd == -1) assert(v.size() == NUM_VARS + 2); // must have sd
+		else        	 assert(v.size() >= NUM_VARS + 1); // may have sd
+		
+		X_t x;
+		
+		size_t i=0;
+		for(;i<NUM_VARS;i++) {
+			x[i] = string_to<D>(v[i]);
+			assert(not contains(v[i]," "));
+			
+			data_x.push_back(x[i]); // all are just counted here in the mean -- maybe not a great idea
 		}
+		assert(not contains(v[i]," "));
+		auto y = string_to<D>(v[i]); i++; 
+		assert(not contains(v[i]," "));
+		auto sdstr = v[i]; // processed below
 		
 		// process percentages
 		double sd; 
-		if(sdstr[sdstr.length()-1] == '%') sd = y * std::stod(sdstr.substr(0, sdstr.length()-1)) / 100; // it's a percentage
-		else                               sd = std::stod(sdstr);		
+		if(fix_sd != -1) {
+			sd = fix_sd;
+		}
+		else {
+			// process the line 
+			if(sdstr[sdstr.length()-1] == '%') sd = y * std::stod(sdstr.substr(0, sdstr.length()-1)) / 100; // it's a percentage
+			else                               sd = std::stod(sdstr);								
+		}
+				
 		assert(sd > 0.0 && "*** You probably didn't want a zero SD?");
 		
-		COUT "# Data:\t" << x TAB y TAB sd ENDL;
+//		COUT "# Data:\t" << x TAB y TAB sd ENDL;
 		
-		data_x.push_back(x);
 		data_y.push_back(y);
 		
 		mydata.emplace_back(x,y,sdscale*(double)sd);
+		
+		if(mydata.size() == head_data) break;
 	}
 	
 	data_X_mean = mean(data_x);
@@ -445,6 +506,8 @@ int main(int argc, char** argv){
 	// Run MCTS
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
+	TopN<MyHypothesis> best(1);
+	
 	MyMCTS m(h0, FleetArgs::explore, &mydata);
 	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# ") ) {
 
@@ -454,6 +517,8 @@ int main(int argc, char** argv){
 		// and non-polynomials (NOTE: This is why we have "not" in the next line
 		if(polynomial_degree > -1 and not (get_polynomial_degree(h.get_value(), h.constants) <= polynomial_degree)) 
 			continue;
+		
+		best << h;
 		
 		// It's important here that we do a structure_string without a dot, because
 		// we want to store hypotheses in the same place, even if they came from different MCTS nodes
@@ -508,20 +573,25 @@ int main(int argc, char** argv){
 			sz = logplusexp(sz, h.posterior);
 		}
 		
+		X_t ones;  ones.fill(1.0);
+		X_t zeros; zeros.fill(0.0);
+		
 		for(auto h : R.values()) {
 			COUT std::setprecision(14) <<
 				 QQ(h.structure_string()) TAB 
 				 best_posterior TAB 
 				 ( (h.posterior-sz) + (best_posterior-Z)) TAB 
 				 h.posterior TAB h.prior TAB h.likelihood TAB
-				 h.callOne(0.0, NaN) TAB 
-				 h.callOne(1.0, NaN) TAB 
+				 h.callOne(ones, NaN) TAB 
+				 h.callOne(zeros, NaN) TAB 
 				 get_polynomial_degree(h.get_value(), h.constants) TAB 
 				 Q(h.string()) // TAB 
 				 //Q(h.serialize()) 
 				 ENDL;
 		}
 	}
+	
+	best.print("# ");
 	
 	
 //	COUT "# MCTS tree size:" TAB m.count() ENDL;	

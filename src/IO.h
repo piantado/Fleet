@@ -148,30 +148,45 @@ std::string gulp(std::string filename) {
 template<size_t N>
 std::vector<std::array<std::string,N>> read_csv(const std::string path, bool skipheader, const char delimiter='\t') {
 	
-	FILE* fp = fopen(path.c_str(), "r");
-	if(fp==nullptr) { CERR "*** ERROR: Cannot open file " << path ENDL; exit(1);}
-	
-	char* line = nullptr; size_t len=0;
-    
-	if(skipheader) { auto __ignored = getline(&line, &len, fp); (void) __ignored; }
-	
+	std::ifstream file(path);
+
+	std::string s;
 	std::vector<std::array<std::string,N>> out;	
-	while( getline(&line, &len, fp) != -1 ) {
-		if( line[0] == '#' ) continue;  // skip comments
-		
-		std::string s = line;
-		
-		// chomp the newline at the end
-		if( (not s.empty()) and s[s.length()-1] == '\n') {
-			s.erase(s.length()-1);
+	while( std::getline(file,s) ) {
+		if( s.size() == 0 or s[0] == '#') continue; // skip comments and blanks
+				
+		if(skipheader) { // skipping the header
+			skipheader = false;
+			continue;
 		}
 		
-		if( s.length() == 0) continue; // skip empty lines 
-		assert(s.length() >= N-1 && "*** Error with reading line -- not enough delimiters");
-				
 		out.push_back(split<N>(s,delimiter));
 	}
-	fclose(fp);
-	
 	return out;
 }
+
+
+std::vector<std::vector<std::string>> read_csv(const std::string path, bool skipheader, const char delimiter='\t') {
+	
+	std::ifstream file(path);
+
+	std::string s;
+	std::vector<std::vector<std::string>> out;	
+	while( std::getline(file,s) ) {
+		if( s.size() == 0 or s[0] == '#') continue; // skip comments and blanks
+				
+		if(skipheader) { // skipping the header
+			skipheader = false;
+			continue;
+		}
+		
+		auto q = split(s,delimiter);
+		std::vector<std::string> v;
+		while(! q.empty()) {
+			v.push_back(q.front()); q.pop_front();			
+		}
+		out.push_back(v);
+	}
+	return out;
+}
+

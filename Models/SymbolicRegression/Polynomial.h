@@ -78,7 +78,7 @@ Polydeg get_polynomial_degree_rec(const Node& n, const std::vector<double>& cons
 		else if(v1.is_const) return Polydeg(-v1.value, true);
 		else            return v1;
     }
-    else if(fmt == "x") {
+    else if(fmt == "x" or (fmt[0] == '%' and fmt[1]=='s' and fmt.size()<=4)) { // x or %s1 %s2, %s3, etc 
         return Polydeg(1.0, false);
     }
 	else if(fmt == "C") { 
@@ -99,7 +99,32 @@ Polydeg get_polynomial_degree_rec(const Node& n, const std::vector<double>& cons
 		else if(v1.is_const) return Polydeg(exp(v1.value), true);
         else            return Polydeg(NaN,false);
     }
+	else if(fmt == "sin(%s)") { 
+        Polydeg v1 = get_polynomial_degree_rec(n.child(0), constants, cidx);
+		if(v1.isnan()) return Polydeg(NaN,false); 
+		else if(v1.is_const) return Polydeg(sin(v1.value), true);
+        else            return Polydeg(NaN,false);
+    }
+	else if(fmt == "cos(%s)") { 
+        Polydeg v1 = get_polynomial_degree_rec(n.child(0), constants, cidx);
+		if(v1.isnan()) return Polydeg(NaN,false); 
+		else if(v1.is_const) return Polydeg(cos(v1.value), true);
+        else            return Polydeg(NaN,false);
+    }
+	else if(fmt == "sq(%s)") {
+        Polydeg v1 = get_polynomial_degree_rec(n.child(0), constants, cidx);
+		if(v1.isnan()) return Polydeg(NaN,false); 
+		else if(v1.is_const) return Polydeg(v1.value*v1.value, true);
+		else                 return Polydeg(2*v1.value, false);
+    }
+	else if(fmt == "sqrt(%s)") {
+        Polydeg v1 = get_polynomial_degree_rec(n.child(0), constants, cidx);
+		if(v1.isnan()) return Polydeg(NaN,false); 
+		else if(v1.is_const) return Polydeg(std::sqrt(v1.value), true);
+		else                 return Polydeg(0.5*v1.value, false);
+    }
 	else {
+		PRINTN("In format string: ", fmt);
 		assert(false && "*** Unmatched format string by polynomial. Did you change the primitives and not update this?");
 	}
 }
