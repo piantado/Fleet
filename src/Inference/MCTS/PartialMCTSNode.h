@@ -17,7 +17,7 @@ class PartialMCTSNode : public MCTSBase<this_t,HYP> {
 	using data_t = typename HYP::data_t;
 	
 	virtual generator<HYP&> search_one(HYP& current) override {
-		if(DEBUG_MCTS) DEBUG("PartialMCTSNode SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
+		if(DEBUG_MCTS) DEBUG("PartialMCTSNode SEARCH ONE ", this, "\t["+current.string()+"] ", (unsigned long)this->nvisits);
 	
 		auto c = this->descend_to_childless(current); //sets current and returns the node. 
 		
@@ -31,7 +31,7 @@ class PartialMCTSNode : public MCTSBase<this_t,HYP> {
 			c->add_children(current); 
 			auto idx = c->sample_child_index(current);
 			current.expand_to_neighbor(idx); 
-			for(auto& h : this->playout(current)) { // the difference is that here, we call playout instead of search_one
+			for(auto& h : c->child(idx).playout(current)) { // the difference is that here, we call playout instead of search_one
 				co_yield h;
 			}
 		}

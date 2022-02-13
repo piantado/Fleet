@@ -56,7 +56,7 @@ public:
 	static double explore; 
 	static data_t* data;
 
-	unsigned int nvisits;  // how many times have I visited each node?
+	std::atomic<unsigned int> nvisits;  // how many times have I visited each node?
 	
 	StreamingStatistics statistics;
     
@@ -64,11 +64,11 @@ public:
 	}
 	
     MCTSBase(HYP& start, this_t* par,  size_t w) : 
-		BaseNode<this_t>(0,par,0),
-		open(true), which_expansion(w), nvisits(0) {
+		BaseNode<this_t>(0,par,0), open(true), which_expansion(w), nvisits(0) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
 		mylock.lock();
-			
+		PRINTN("MCTSBase constructor ", this, par);
+		
 		this->reserve_children(start.neighbors());
 		mylock.unlock();
     }
@@ -110,11 +110,13 @@ public:
 	void print(HYP from, std::ostream& o, const int depth, const bool sort) { 
 		// here from is not a reference since we want to copy when we recurse 
 		
+		if(nvisits == 0) return; // do nothing
+		
         std::string idnt = std::string(depth, '\t'); // how far should we indent?
         
 		std::string opn = (open?" ":"*");
 		
-		o << idnt TAB opn TAB statistics.max TAB statistics.mean TAB statistics.get_sd() TAB "visits=" << nvisits TAB which_expansion TAB from ENDL;
+		o << idnt TAB this TAB opn TAB statistics.max TAB statistics.N TAB statistics.mean TAB statistics.get_sd() TAB "visits=" << nvisits TAB which_expansion TAB from ENDL;
 		
 		// optional sort
 		if(sort) {
@@ -160,15 +162,15 @@ public:
 
     void add_sample(const float v) {
 		
-		// add to my stream
-		statistics << v;
+		// walk up to the root, adding please		
+		auto ptr = this;
+		do { 
+			ptr->statistics << v;
+			
+			ptr = ptr->parent;
+			
+		} while (ptr != nullptr);
 		
-		if(std::isnan(v)) return;
-		
-		// and propagate up the tree
-		if(not this->is_root()) {
-			this->parent->add_sample(v);
-		}		
     }
 	
 	virtual generator<HYP&> run_thread(Control& ctl, HYP h0) override {		
@@ -195,7 +197,7 @@ public:
 			
 		// if its a terminal, compute the posterior
 		current.compute_posterior(*data);
-		add_sample(current.likelihood);
+		add_sample(current.posterior);
 	}
 
 	/**
@@ -243,7 +245,7 @@ public:
 			for(int k=0;k<neigh;k++) {
 				if(this->children[k].open){
 					children_lps[k] = (this->child(k).nvisits == 0 ? 0.0 : (this->statistics.max / this->child(k).statistics.max) +
-																		   FleetArgs::explore * sqrt(log(this->nvisits)/this->children[k].nvisits));
+																		   FleetArgs::explore * sqrt(log(double(this->nvisits))/this->children[k].nvisits));
 				}
 			}
 
@@ -306,6 +308,7 @@ public:
 		
 		// add missing kids if we need them
 		if(this->children.size() < (size_t)current.neighbors()) {
+			this->nvisits--; // take this away so that others will return
 			return reinterpret_cast<this_t*>(this);
 		}
 		
@@ -329,6 +332,7 @@ public:
 		
 		// add missing kids if we need them
 		if(this->children.size() < (size_t)current.neighbors()) {
+			this->nvisits--; // take this away so that others will return
 			this->add_children(current);
 		}
 		
