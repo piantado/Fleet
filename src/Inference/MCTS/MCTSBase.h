@@ -112,11 +112,11 @@ public:
 		
 		if(nvisits == 0) return; // do nothing
 		
-        std::string idnt = std::string(depth, '\t'); // how far should we indent?
+        std::string idnt(depth, '\t'); // how far should we indent?
         
 		std::string opn = (open?" ":"*");
 		
-		o << idnt TAB this TAB opn TAB statistics.max TAB statistics.N TAB statistics.mean TAB statistics.get_sd() TAB "visits=" << nvisits TAB which_expansion TAB from ENDL;
+		o << idnt TAB opn TAB statistics.max TAB statistics.N TAB statistics.mean TAB statistics.get_sd() TAB "visits=" << nvisits TAB which_expansion TAB from ENDL;
 		
 		// optional sort
 		if(sort) {
@@ -300,6 +300,8 @@ public:
 	 * @param current
 	 */
 	virtual this_t* descend_to_childless(HYP& current) {
+		if(DEBUG_MCTS) DEBUG("descend_to_childless ", this, "\t["+current.string()+"] ", (unsigned long)this->nvisits);
+		
 		this->nvisits++; // change on the way down so other threads don't follow
 			
 		if(current.is_evaluable()) {
@@ -324,6 +326,8 @@ public:
 	 * @param current
 	 */
 	virtual this_t* descend_to_evaluable(HYP& current) {
+		if(DEBUG_MCTS) DEBUG("descend_to_evaluable ", this, "\t["+current.string()+"] ", (unsigned long)this->nvisits);
+		
 		this->nvisits++; // change on the way down so other threads don't follow
 			
 		if(current.is_evaluable()) {

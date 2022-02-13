@@ -14,7 +14,7 @@ size_t nsamples = 100; // 100 // how many per structure?
 size_t nstructs = 100; //100 // print out all the samples from the top this many structures
 int    polynomial_degree = -1; //-1 means do everything, otherwise store ONLY polynomials less than or equal to this bound
 
-size_t BURN_N = 1000; // burn this many at the start of each MCMC chain
+size_t BURN_N = 0; // 1000; // burn this many at the start of each MCMC chain -- probably NOT needed if doing weighted samples
 
 const size_t trim_at = 5000; // when we get this big in overall_sample structures
 const size_t trim_to = 1000;  // trim to this size
@@ -82,6 +82,8 @@ public:
 		add("log(%s)",    +[](D a)          -> D { return log(a); }),
 		
 		add("1",          +[]()             -> D { return 1.0; }),
+		add("0.5",          +[]()           -> D { return 0.5; }),
+		add("2",          +[]()             -> D { return 2.0; }),
 		
 		// give the type to add and then a vms function
 		add_vms<D>("C", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
@@ -397,10 +399,11 @@ public:
 			co_yield h0;
 		}
 		else {
+			
 			// else we run vanilla MCMC
 			MCMCChain chain(h0, data);
 			for(auto& h : chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart)) | burn(BURN_N) )  {
-				add_sample(h.posterior);
+				this->add_sample(h.posterior);
 				co_yield h;
 			}
 
@@ -421,6 +424,7 @@ int main(int argc, char** argv){
 	
 	FleetArgs::inner_timestring = "1m"; // default inner time
 	FleetArgs::inner_restart = 2500; // set this as the default 
+	int space_sep=1;
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	Fleet fleet("Symbolic regression");
@@ -429,6 +433,7 @@ int main(int argc, char** argv){
 	fleet.add_option("--fix-sd", fix_sd, "Should we force the sd to have a particular value?");
 	fleet.add_option("--nsamples", nsamples, "How many samples per structure?");
 	fleet.add_option("--nstructs", nstructs, "How many structures?");
+	fleet.add_option("--space", space_sep, "If 1, our data is space-separated");
 	fleet.add_option("--polynomial-degree",   polynomial_degree,   "Defaultly -1 means we store everything, otherwise only keep polynomials <= this bound");
 	fleet.initialize(argc, argv);
 	
@@ -450,7 +455,7 @@ int main(int argc, char** argv){
 	std::vector<double> data_y;
 	
 //	for(auto [xstr, ystr, sdstr] : read_csv<3>(FleetArgs::input_path, false, '\t')) {
-	for(auto v : read_csv(FleetArgs::input_path, false, ' ')) { // NOTE: MUST BE \t for our data!!
+	for(auto v : read_csv(FleetArgs::input_path, false, space_sep ? ' ' : '\t')) { // NOTE: MUST BE \t for our data!!
 		
 		if(fix_sd == -1) assert(v.size() == NUM_VARS + 2); // must have sd
 		else        	 assert(v.size() >= NUM_VARS + 1); // may have sd

@@ -19,7 +19,7 @@ class FullMCTSNode : public MCTSBase<this_t,HYP> {
 	
     virtual generator<HYP&> search_one(HYP& current) override {
 		
-		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
+		if(DEBUG_MCTS) DEBUG("MCTS SEARCH ONE ", this, "\t["+current.string()+"] ", (unsigned long) this->nvisits);
 				
 		auto c = this->descend_to_evaluable(current); //sets current and returns the node. 
 		c->process_evaluable(current);

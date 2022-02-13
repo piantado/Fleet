@@ -72,7 +72,8 @@ void ERRN(FIRST f, ARGS... args) {
 template<typename FIRST, typename... ARGS>
 void DEBUG(FIRST f, ARGS... args) {
 	std::lock_guard guard(output_lock);
-	OUTPUTN(std::cout, "DEBUG", std::this_thread::get_id(), f, args...);
+	std::stringstream ss; ss << std::this_thread::get_id();
+	OUTPUTN(std::cout, "DEBUG [thread "+ss.str()+"]", f, args...);
 }
 
 /**

@@ -17,7 +17,7 @@ class MinimalMCTSNode : public MCTSBase<this_t,HYP> {
 	using data_t = typename HYP::data_t;
 	
 	virtual generator<HYP&>  search_one(HYP& current) override {
-		if(DEBUG_MCTS) DEBUG("MinimalMCTSNode SEARCH ONE ", this, "\t["+current.string()+"] ", this->nvisits);
+		if(DEBUG_MCTS) DEBUG("MinimalMCTSNode SEARCH ONE ", this, "\t["+current.string()+"] ", (unsigned long) this->nvisits);
 	
 		auto c = this->descend_to_childless(current); //sets current and returns the node. 
 		

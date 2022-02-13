@@ -33,7 +33,7 @@ std::set<HYP> get_partitions(HYP& h0, const size_t max_depth, const size_t max_s
 			for(int n=0;n<neigh;n++) {
 				auto newh = h;
 				newh.expand_to_neighbor(n);
-				PRINTN(h.string(), newh.string(), n, dd, max_depth);
+//				PRINTN(h.string(), newh.string(), n, dd, max_depth);
 				
 				// now we need to check here and make sure that there aren't any complete trees
 				// because if there are, we won't include them in any trees below
