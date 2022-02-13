@@ -66,7 +66,7 @@ public:
 		if(std::isnan(x) or std::isinf(x)) 
 			return; 
 		
-		// get hte lock
+		// get the lock
 		std::lock_guard guard(lock);
 
 		streaming_median << x;
