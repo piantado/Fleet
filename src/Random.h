@@ -95,7 +95,7 @@ T myrandom(T max) {
 	 * @param max
 	 * @return 
 	 */
-	
+	assert(max>0);
 	std::uniform_int_distribution<T> r(0, max-1);
 	return r(rng);
 }

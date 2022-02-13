@@ -326,12 +326,12 @@ public:
 MyHypothesis::data_t mydata;
 
 // keep a big set of samples form structures to the best found for each structure
-std::map<std::string,ReservoirSample<MyHypothesis>> overall_samples; 
+std::map<std::string,PosteriorWeightedReservoirSample<MyHypothesis>> overall_samples; 
 
 // useful for extracting the max
 std::function posterior = [](const MyHypothesis& h) {return h.posterior; };
 
-double max_posterior(const ReservoirSample<MyHypothesis>& rs) {
+double max_posterior(const PosteriorWeightedReservoirSample<MyHypothesis>& rs) {
 	return max_of(rs.values(), posterior).second;
 }
 
@@ -359,7 +359,7 @@ void trim_overall_samples(const size_t N) {
 	while(it != overall_samples.end()) {
 		double b = max_posterior(it->second);
 		if(b < cutoff) { // if we erase
-			it = overall_samples.erase(it);// wow, erase returns a new iterator which is valid
+			it = overall_samples.erase(it); // wow, erases returns a new iterator which is valid
 		}
 		else {
 			++it;
@@ -591,10 +591,9 @@ int main(int argc, char** argv){
 		}
 	}
 	
-	best.print("# ");
-	
-	
-//	COUT "# MCTS tree size:" TAB m.count() ENDL;	
+	best.print("# Overall best: "+best.best().structure_string()+"\t");
+	PRINTN("# Overall samples size:" , overall_samples.size());
+	PRINTN("# MCTS tree size:", m.count());
 }
 
 #endif 
