@@ -21,7 +21,7 @@ namespace Proposals {
 	template<typename GrammarType>
 	std::pair<Node,double> prior_proposal(GrammarType* grammar, const Node& from) {
 		auto g = grammar->generate(from.nt());
-		return std::make_pair(g, grammar->log_probability(g) - grammar->log_probability(from));
+		return {g, grammar->log_probability(g) - grammar->log_probability(from)};
 	}
 	
 	/**
@@ -95,7 +95,7 @@ namespace Proposals {
 		Node ret = from; // copy
 
 		if(from.sum<double>(can_resample) == 0.0) {
-			return std::make_pair(ret, 0.0);
+			return {ret, 0.0};
 		}
 		
 		auto [s, slp] = sample<Node,Node>(ret, can_resample);
@@ -119,7 +119,7 @@ namespace Proposals {
 			
 		#endif
 
-		return std::make_pair(ret, fb);
+		return {ret, fb};
 	}
 	
 	/**
@@ -145,7 +145,7 @@ namespace Proposals {
 		Node ret = from; // copy
 
 		if(from.sum<double>(my_can_resample) == 0.0) {
-			return std::make_pair(ret, 0.0);
+			return {ret, 0.0};
 		}
 		
 		auto [s, slp] = sample<Node,Node>(ret, my_can_resample);
@@ -157,7 +157,7 @@ namespace Proposals {
 		double fb = slp + grammar->log_probability(*s.first) 
 				  - (log(my_can_resample(*s.first)) - log(ret.sum(my_can_resample)) + oldgp);
 
-		return std::make_pair(ret, fb);
+		return {ret, fb};
 	}
 
 	
@@ -175,7 +175,7 @@ namespace Proposals {
 		Node ret = from; // copy
 
 		if(ret.sum<double>(can_resample) == 0.0) {
-			return std::make_pair(ret, 0.0);
+			return {ret, 0.0};
 		}
 		
 		// So: 
@@ -243,7 +243,7 @@ namespace Proposals {
 		assert(not std::isinf(backward));
 		
 		
-		return std::make_pair(ret, forward-backward);		
+		return {ret, forward-backward};		
 	}
 	
 	template<typename GrammarType>
@@ -259,7 +259,7 @@ namespace Proposals {
 		Node ret = from; // copy
 
 		if(ret.sum(can_resample) == 0.0) {
-			return std::make_pair(ret, 0.0);
+			return {ret, 0.0};
 		}
 		
 		// s is who we edit at
@@ -292,7 +292,7 @@ namespace Proposals {
 		assert(not std::isinf(forward));
 		assert(not std::isinf(backward));
 		
-		return std::make_pair(ret, forward-backward);		
+		return {ret, forward-backward};		
 	}
 	
 	
@@ -308,8 +308,10 @@ namespace Proposals {
 		
 		Node ret = from; // copy
 		
-		// TODO CHECK HERE THAT THE SAMPLING WAS POSSIBLE
-		auto [s, slp] = sample<Node,Node>(ret, can_resample);
+		auto z = sample_z<Node,Node>(ret, can_resample);
+		if(z == 0.0) return {ret,0.0};
+		
+		auto [s, slp] = sample<Node,Node>(ret, z, can_resample);
 		
 		// find everything in the grammar that matches s's type
 		std::vector<Rule*> matching_rules;
@@ -336,7 +338,7 @@ namespace Proposals {
 		// here we compute fb while ignoring the normalizing constants which is why we don't use rp
 		double fb = log(sampler(*newr))-log(sampler(oldRule));
 		
-		return std::make_pair(ret, fb); // forward-backward is just probability of sampling rp since s cancels
+		return {ret,fb}; // forward-backward is just probability of sampling rp since s cancels
 	}
 
 
@@ -352,8 +354,14 @@ namespace Proposals {
 		Node ret = from; // copy
 //		PRINTN("Swapping1 ", ret);
 		
-		// TODO CHECK HERE THAT THE SAMPLING WAS POSSIBLE
-		auto [s, slp] = sample<Node,Node>(ret, can_resample);
+		auto z = sample_z<Node,Node>(ret, can_resample);
+		if(z == 0.0) return {ret,0.0};
+		
+		auto [s, slp] = sample<Node,Node>(ret, z, can_resample);
+		
+		if(s->nchildren() <= 1) { 
+			return {ret,0.0};
+		}
 		
 		// who is going to be swapped
 		size_t J = myrandom(s->nchildren()); // check if anything is of this type
@@ -371,7 +379,7 @@ namespace Proposals {
 		
 		if(matching_indices.size() == 0) {
 			
-			return std::make_pair(ret, 0.0);
+			return {ret,0.0};
 			
 		}
 		else {
@@ -385,7 +393,7 @@ namespace Proposals {
 			
 //			PRINTN("Swapping2 ", ret);
 		
-			return std::make_pair(ret, 0.0);
+			return {ret,0.0};
 		}
 	}
 		

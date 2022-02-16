@@ -1,7 +1,18 @@
 
 // ./main --time=1h --inner-time=5s --explore=0.1 --thin=0 --threads=1 --input=./data-sources/Science/Zipf/data.txt --tree=./out/tree.txt
 
+// TODO: ADD INSERT/DELETE TO PROPOSALS 
+// ADD flag for constants vs not 
+
+// Weird, on Feynman dataset, we get 
+// III.8.54	89	prob	sin(E_n*t/(h/(2*pi)))**2
+// λx.(x0*(x1*sin(x2)))
+// But that's only on the first 100 data points -- so maybe we need to sample randomly?
+
 // TODO: Maybe add burn-in??
+
+// Needed when SDs are small, b/c then they can lead to positive likelihoods
+#define NO_BREAKOUT 1
 
 #include <cmath>
 #include "Random.h"
@@ -33,6 +44,8 @@ const size_t MAX_VARS = 9; // arguments are at most this many
 size_t       NUM_VARS = 1; // how many predictor variables 
 
 using X_t = std::array<D,MAX_VARS>;
+
+char sep = '\t'; // default input separator
 
 // we also consider our scale variables as powers of 10
 const int MIN_SCALE = -3; 
@@ -70,33 +83,43 @@ class MyGrammar : public Grammar<X_t,D, D,X_t>,
 public:
 	MyGrammar() {
 		
-		add("(%s+%s)",    +[](D a, D b) -> D     { return a+b; }),
-		add("(%s-%s)",    +[](D a, D b) -> D     { return a-b; }),
+//		add("(%s+%s)",    +[](D a, D b) -> D     { return a+b; }),
+//		add("(%s-%s)",    +[](D a, D b) -> D     { return a-b; }),
 		add("(%s*%s)",    +[](D a, D b) -> D     { return a*b; }),
-		add("(%s/%s)",    +[](D a, D b) -> D     { return (b==0 ? 0 : a/b); }),
+		add("(%s/%s)",    +[](D a, D b) -> D     { return (b==0 ? NaN : a/b); }),
 		
 		add("pow(%s,%s)",    +[](D a, D b) -> D     { return pow(a,b); }),
+
+//		add("rtp",    +[]()          -> D { return std::sqrt(2*M_PI); });
+//		add("sq(%s)",    +[](D a)          -> D { return a*a; }, 1.),
+//		add("expm(%s)",    +[](D a)          -> D { return exp(-a); }, 1.),
 		
 		add("(-%s)",      +[](D a)          -> D { return -a; }),
-		add("exp(%s)",    +[](D a)          -> D { return exp(a); }),
-		add("log(%s)",    +[](D a)          -> D { return log(a); }),
+		add("exp(%s)",    +[](D a)          -> D { return exp(a); }, 1),
+//		add("log(%s)",    +[](D a)          -> D { return log(a); }, 1),
 		
 		add("1",          +[]()             -> D { return 1.0; }),
+		
 		add("0.5",          +[]()           -> D { return 0.5; }),
 		add("2",          +[]()             -> D { return 2.0; }),
+//		add("3",          +[]()             -> D { return 3.0; }),
+		add("pi",          +[]()            -> D { return M_PI; }),
+//		add("sin(%s)",    +[](D a)          -> D { return sin(a); }, 1./3),
+//		add("cos(%s)",    +[](D a)          -> D { return cos(a); }, 1./3),
+//		add("asin(%s)",    +[](D a)         -> D { return asin(a); }, 1./3),
 		
 		// give the type to add and then a vms function
-		add_vms<D>("C", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
-						
-				// Here we are going to use a little hack -- we actually know that vms->program_loader
-				// is of type MyHypothesis, so we will cast to that
-				auto* h = dynamic_cast<ConstantContainer*>(vms->program.loader);
-				if(h == nullptr) { assert(false); }
-				else {
-					assert(h->constant_idx < h->constants.size()); 
-					vms->template push<D>(h->constants.at(h->constant_idx++));
-				}
-		}), 5.0);
+//		add_vms<D>("C", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
+//						
+//				// Here we are going to use a little hack -- we actually know that vms->program_loader
+//				// is of type MyHypothesis, so we will cast to that
+//				auto* h = dynamic_cast<ConstantContainer*>(vms->program.loader);
+//				if(h == nullptr) { assert(false); }
+//				else {
+//					assert(h->constant_idx < h->constants.size()); 
+//					vms->template push<D>(h->constants.at(h->constant_idx++));
+//				}
+//		}), 3.0);
 		
 		add("x",             Builtins::X<MyGrammar>, 1.0);
 		
@@ -174,19 +197,23 @@ public:
 	}
 
 	double compute_single_likelihood(const datum_t& datum) override {
-		
 		double fx = this->callOne(datum.input, NaN);
 		
 		if(std::isnan(fx) or std::isinf(fx)) 
 			return -infinity;
 			
-//		PRINTN(datum.output, fx, normal_lpdf( (fx-datum.output)/datum.reliability ));
+		//PRINTN(string(), datum.output, fx, datum.reliability, normal_lpdf( fx, datum.output, datum.reliability ));
 		
-		return normal_lpdf( (fx-datum.output)/datum.reliability );		
+		return normal_lpdf(fx, datum.output, datum.reliability );		
 	}
 	
 	
 	virtual double compute_prior() override {
+		
+		if(this->value.count() > 16) {
+			return this->prior = -infinity;
+		}
+		
 		this->prior = Super::compute_prior() + ConstantContainer::constant_prior();
 		return this->prior;
 	}
@@ -264,7 +291,7 @@ public:
 		
 		auto NC = count_constants();
 		
-		if(NC > 0 and flip(0.95)){
+		if(NC > 0 and flip(0.80)){
 			MyHypothesis ret = *this;
 			
 			double fb = 0.0; 
@@ -281,15 +308,29 @@ public:
 		}
 		else {
 			
-			auto [ret, fb] = Super::propose(); // a proposal to structure
+			// else we could just propose from Super and then randomize, but we actually want to 
+			// but we actually want to do insert/delete
+			//auto [ret, fb] = Super::propose(); // a proposal to structure
 			
+			std::pair<Node,double> x;
+
+			if(flip(0.5))       x = Proposals::regenerate(&grammar, value);	
+			else if(flip(0.1))  x = Proposals::sample_function_leaving_args(&grammar, value);
+			else if(flip(0.1))  x = Proposals::swap_args(&grammar, value);
+			else if(flip())     x = Proposals::insert_tree(&grammar, value);	
+			else                x = Proposals::delete_tree(&grammar, value);			
+			
+			MyHypothesis ret{std::move(x.first)};
 			ret.randomize_constants(); // with random constants -- this resizes so that it's right for propose
-//			PRINTN("Structural proposal\t", ret.string());
+
+			//			PRINTN("Structural proposal\t", structure_string(), ret.string());
 			
-			return std::make_pair(ret, fb + ret.constant_prior() - this->constant_prior());
+			return std::make_pair(ret, 
+								  x.second + ret.constant_prior()-this->constant_prior()); 
 		}
+			
 	}
-	
+		
 	virtual MyHypothesis restart() const override {
 		MyHypothesis ret = Super::restart(); // reset my structure
 		ret.randomize_constants();
@@ -402,7 +443,7 @@ public:
 			
 			// else we run vanilla MCMC
 			MCMCChain chain(h0, data);
-			for(auto& h : chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart)) | burn(BURN_N) )  {
+			for(auto& h : chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart)) | burn(BURN_N) | thin(FleetArgs::inner_thin) ) {
 				this->add_sample(h.posterior);
 				co_yield h;
 			}
@@ -417,14 +458,17 @@ public:
 
 #include "FleetArgs.h"
 #include "Fleet.h" 
+#include "ParallelTempering.h"
 
 #ifndef DO_NOT_INCLUDE_MAIN
 
 int main(int argc, char** argv){ 
 	
+	std::string strsep = "\t";
+	
 	FleetArgs::inner_timestring = "1m"; // default inner time
 	FleetArgs::inner_restart = 2500; // set this as the default 
-	int space_sep=1;
+	int space_sep=0;
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	Fleet fleet("Symbolic regression");
@@ -435,7 +479,11 @@ int main(int argc, char** argv){
 	fleet.add_option("--nstructs", nstructs, "How many structures?");
 	fleet.add_option("--space", space_sep, "If 1, our data is space-separated");
 	fleet.add_option("--polynomial-degree",   polynomial_degree,   "Defaultly -1 means we store everything, otherwise only keep polynomials <= this bound");
+	fleet.add_option("--sep", strsep, "Separator for input data (usually space or tab)");
 	fleet.initialize(argc, argv);
+	
+	assert(strsep.length()==1);
+	sep = strsep.at(0);
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// set up the accessors of the variables
@@ -455,7 +503,7 @@ int main(int argc, char** argv){
 	std::vector<double> data_y;
 	
 //	for(auto [xstr, ystr, sdstr] : read_csv<3>(FleetArgs::input_path, false, '\t')) {
-	for(auto v : read_csv(FleetArgs::input_path, false, space_sep ? ' ' : '\t')) { // NOTE: MUST BE \t for our data!!
+	for(auto v : read_csv(FleetArgs::input_path, false, sep)) { // NOTE: MUST BE \t for our data!!
 		
 		if(fix_sd == -1) assert(v.size() == NUM_VARS + 2); // must have sd
 		else        	 assert(v.size() >= NUM_VARS + 1); // may have sd
@@ -481,7 +529,7 @@ int main(int argc, char** argv){
 		}
 		else {
 			// process the line 
-			if(sdstr[sdstr.length()-1] == '%') sd = y * std::stod(sdstr.substr(0, sdstr.length()-1)) / 100; // it's a percentage
+			if(sdstr[sdstr.length()-1] == '%') sd = y * std::stod(sdstr.substr(0, sdstr.length()-1)) / 100.0; // it's a percentage
 			else                               sd = std::stod(sdstr);								
 		}
 				
@@ -501,21 +549,43 @@ int main(int argc, char** argv){
 	data_X_sd   = mean(data_x);
 	data_Y_sd   = mean(data_y);
 	
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 	// Set up the grammar and hypothesis
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		
-	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Run MCTS
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	TopN<MyHypothesis> best(1);
+	best.print_best = true;
 	
+	
+//	auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:(-%s);0:\u25A0;0:\u25A0");
+auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:(-%s);0:(%s/%s);0:\u25A0;0:2;0:pow(%s,%s);0:\u25A0;0:\u25A0");
+		
+	for(auto& n : s) { n.can_resample=false; }
+	
+	grammar.complete(s);
+	
+	{
+		MyHypothesis h0(s);
+		MCMCChain m(h0, &mydata);
+		for(auto& h: m.run(Control()) | best | print(FleetArgs::print, "# ")  ) {
+		}
+	}	
+	
+	best.print("# Overall best: "+best.best().structure_string()+"\t");
+	return 0;
+	
+	
+	
+	
+	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
 	MyMCTS m(h0, FleetArgs::explore, &mydata);
-	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# ") ) {
-
+	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# ")  ) {
+	
+//	auto h0 = MyHypothesis::sample(); // NOTE: We do NOT want to sample, since that constrains the MCTS 	
+//	ParallelTempering m(h0, &mydata, FleetArgs::nchains, 2.20);
+//	for(auto& h: m.run(Control()) | print(FleetArgs::print, "# ")  ) {
+			
 		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these
 		
 		// toss non-linear samples here if we request linearity
@@ -596,9 +666,14 @@ int main(int argc, char** argv){
 		}
 	}
 	
+//	auto b = best.best();
+//	for(auto& d : mydata) {
+//		PRINTN(d.input, b.callOne(d.input, NaN), d.output, d.reliability);
+//	}
+	
 	best.print("# Overall best: "+best.best().structure_string()+"\t");
 	PRINTN("# Overall samples size:" , overall_samples.size());
-	PRINTN("# MCTS tree size:", m.count());
+//	PRINTN("# MCTS tree size:", m.count());	
 }
 
 #endif 

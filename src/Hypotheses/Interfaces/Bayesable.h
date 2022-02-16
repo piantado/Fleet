@@ -89,13 +89,11 @@ public:
 		
 		// include this in case a subclass overrides to make it non-iterable -- then it must define its own likelihood
 		if constexpr (is_iterable_v<data_t>) { 
-			
 			// defaultly a sum over datums in data (e.g. assuming independence)
 			likelihood = 0.0;
 			for(const auto& d : data) {
 				
 				auto sll = compute_single_likelihood(d);
-				assert((sll <= 0 or breakout==-infinity) && "*** Cannot use breakout if likelihoods are positive");
 				
 				likelihood += sll;
 				
@@ -103,6 +101,7 @@ public:
 				
 				// This is a breakout in case our ll is too low
 				#ifndef NO_BREAKOUT
+				assert((sll <= 0 or breakout==-infinity) && "*** Cannot use breakout if likelihoods are positive");
 				if(likelihood < breakout) {
 					return likelihood = -infinity; // should not matter what value, but let's make it -infinity
 				}

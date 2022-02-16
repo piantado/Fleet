@@ -232,7 +232,7 @@ public:
 		// first, load up children_lps with whether they have been visited
 		bool all_visited = true;
 		for(int k=0;k<neigh;k++) { 
-			if(this->children[k].open and this->children[k].nvisits == 0) {
+			if(this->child(k).open and this->child(k).nvisits == 0) {
 				all_visited = false;
 				children_lps[k] = current.neighbor_prior(k);
 			}
@@ -243,9 +243,11 @@ public:
 			
 			// this is basically UCT
 			for(int k=0;k<neigh;k++) {
-				if(this->children[k].open){
-					children_lps[k] = (this->child(k).nvisits == 0 ? 0.0 : (this->statistics.max / this->child(k).statistics.max) +
-																		   FleetArgs::explore * sqrt(log(double(this->nvisits))/this->children[k].nvisits));
+				if(this->child(k).open){
+					assert(this->child(k).nvisits > 0);
+					
+					children_lps[k] = exp(this->child(k).statistics.max-this->statistics.max) + //this->statistics.max / this->child(k).statistics.max +
+									  FleetArgs::explore * sqrt(log(double(this->nvisits))/this->child(k).nvisits);
 				}
 			}
 
@@ -275,10 +277,10 @@ public:
 		//			CERR k TAB all_visited TAB children_lps[k] TAB current.neighbor_prior(k) TAB current.string() ENDL;
 		//		}
 
-		// sometimes we'll get all NaNs, which is bad new sfor sampling
+		// sometimes we'll get all NaNs, which is bad news for sampling
 		bool allNaN = true;
 		for(int k=0;k<neigh;k++) {
-			if(this->children[k].open and not std::isnan(children_lps[k])) {
+			if(this->child(k).open and not std::isnan(children_lps[k])) {
 				allNaN = false;
 				break;
 			}
@@ -301,7 +303,7 @@ public:
 	 */
 	virtual this_t* descend_to_childless(HYP& current) {
 		if(DEBUG_MCTS) DEBUG("descend_to_childless ", this, "\t["+current.string()+"] ", (unsigned long)this->nvisits);
-		
+		 
 		this->nvisits++; // change on the way down so other threads don't follow
 			
 		if(current.is_evaluable()) {

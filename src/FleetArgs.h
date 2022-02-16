@@ -25,6 +25,7 @@ namespace FleetArgs {
 	unsigned long runtime          = 0; // in ms
 	unsigned long inner_runtime    = 0; // in ms
 	unsigned long inner_restart    = 0;
+	unsigned long inner_thin       = 0;
 	std::string   timestring       = "0s";
 	std::string   inner_timestring = "0s";
 
@@ -37,4 +38,5 @@ namespace FleetArgs {
 	std::string   input_path   = "input.txt";
 	std::string   tree_path    = "tree.txt";
 	std::string   output_path  = "output";
+	
 }

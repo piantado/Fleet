@@ -21,6 +21,8 @@ class PartialMCTSNode : public MCTSBase<this_t,HYP> {
 	
 		auto c = this->descend_to_childless(current); //sets current and returns the node. 
 		
+//		DEBUG("descend_to_childless ", this, "\t["+current.string()+"] ");
+		
 		// if we are a terminal 
 		if(current.is_evaluable()) {
 			c->process_evaluable(current);

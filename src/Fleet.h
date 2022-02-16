@@ -427,7 +427,7 @@ public:
 		app.add_option("--partition-depth",   FleetArgs::partition_depth, "How deep do we recurse when we do partition-mcmc?");
 		
 		app.add_option("--header",      FleetArgs::print_header, "Set to 0 to not print header");
-			
+				
 		app.add_option("--top-print-best",      FleetArgs::top_print_best, "Should all tops defaultly print their best?");
 		
 		app.add_option("--output",      FleetArgs::output_path, "Where we write output");
@@ -435,6 +435,7 @@ public:
 		app.add_option("-T,--time",     FleetArgs::timestring, "Stop (via CTRL-C) after this much time (takes smhd as seconds/minutes/hour/day units)");
 		app.add_option("--inner-restart",  FleetArgs::inner_restart, "Inner restart");
 		app.add_option("--inner-time",  FleetArgs::inner_timestring, "Inner time");
+		app.add_option("--inner-thin",  FleetArgs::inner_thin, "Inner thinning");
 		app.add_option("--tree",        FleetArgs::tree_path, "Write the tree here");
 		
 //		app.add_flag(  "-q,--quiet",    quiet, "Don't print very much and do so on one line");
@@ -530,7 +531,7 @@ public:
 		
 		// give warning for infinite runs:
 		if(FleetArgs::steps == 0 and FleetArgs::runtime==0) {
-			CERR "# Warning: you haven not specified --time or --mcmc so this will run forever or until CTRL-C." ENDL;
+			CERR "# Warning: you haven not specified --time or --steps so this will run forever or until CTRL-C." ENDL;
 		}
 		
 		return 0;

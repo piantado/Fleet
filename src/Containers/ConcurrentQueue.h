@@ -29,8 +29,8 @@ class ConcurrentQueue {
 	std::condition_variable_any full_cv; // any needed here to use OrderedLock 
 	std::condition_variable_any empty_cv;
 	
-//	mutable std::mutex lock;
 	mutable OrderedLock lock; 
+//	mutable std::mutex lock; 
 	
 public:
 	
@@ -47,8 +47,11 @@ public:
 	bool empty() { return push_idx == pop_idx; }
 	bool full()  { return (push_idx+1) % N == pop_idx; }
 	
-	void push(T& x) {		
+	void push(T& x) {	
+	
 		std::unique_lock lck(lock);
+		
+//		if(full()) PRINTN("FULL");
 		
 		// if we are here, we must wait until a spot frees up
 		while(full()) full_cv.wait(lck);

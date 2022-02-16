@@ -87,6 +87,18 @@ Polydeg get_polynomial_degree_rec(const Node& n, const std::vector<double>& cons
 	else if(fmt == "1") {
         return Polydeg(1.0, true);
     }
+	else if(fmt == "2") {
+        return Polydeg(2.0, true);
+    }
+	else if(fmt == "3") {
+        return Polydeg(3.0, true);
+    }
+	else if(fmt == "0.5") {
+        return Polydeg(0.5, true);
+    }
+	else if(fmt == "pi") {
+        return Polydeg(M_PI, true);
+    }
 	else if(fmt == "log(%s)") { 
         Polydeg v1 = get_polynomial_degree_rec(n.child(0), constants, cidx);
         if(v1.isnan()) return Polydeg(NaN,false); 
@@ -97,6 +109,12 @@ Polydeg get_polynomial_degree_rec(const Node& n, const std::vector<double>& cons
         Polydeg v1 = get_polynomial_degree_rec(n.child(0), constants, cidx);
 		if(v1.isnan()) return Polydeg(NaN,false); 
 		else if(v1.is_const) return Polydeg(exp(v1.value), true);
+        else            return Polydeg(NaN,false);
+    }
+	else if(fmt == "asin(%s)") { 
+        Polydeg v1 = get_polynomial_degree_rec(n.child(0), constants, cidx);
+		if(v1.isnan()) return Polydeg(NaN,false); 
+		else if(v1.is_const) return Polydeg(asin(v1.value), true);
         else            return Polydeg(NaN,false);
     }
 	else if(fmt == "sin(%s)") { 
