@@ -83,8 +83,8 @@ class MyGrammar : public Grammar<X_t,D, D,X_t>,
 public:
 	MyGrammar() {
 		
-//		add("(%s+%s)",    +[](D a, D b) -> D     { return a+b; }),
-//		add("(%s-%s)",    +[](D a, D b) -> D     { return a-b; }),
+		add("(%s+%s)",    +[](D a, D b) -> D     { return a+b; }),
+		add("(%s-%s)",    +[](D a, D b) -> D     { return a-b; }),
 		add("(%s*%s)",    +[](D a, D b) -> D     { return a*b; }),
 		add("(%s/%s)",    +[](D a, D b) -> D     { return (b==0 ? NaN : a/b); }),
 		
@@ -96,17 +96,17 @@ public:
 		
 		add("(-%s)",      +[](D a)          -> D { return -a; }),
 		add("exp(%s)",    +[](D a)          -> D { return exp(a); }, 1),
-//		add("log(%s)",    +[](D a)          -> D { return log(a); }, 1),
+		add("log(%s)",    +[](D a)          -> D { return log(a); }, 1),
 		
 		add("1",          +[]()             -> D { return 1.0; }),
 		
 		add("0.5",          +[]()           -> D { return 0.5; }),
 		add("2",          +[]()             -> D { return 2.0; }),
-//		add("3",          +[]()             -> D { return 3.0; }),
+		add("3",          +[]()             -> D { return 3.0; }),
 		add("pi",          +[]()            -> D { return M_PI; }),
-//		add("sin(%s)",    +[](D a)          -> D { return sin(a); }, 1./3),
-//		add("cos(%s)",    +[](D a)          -> D { return cos(a); }, 1./3),
-//		add("asin(%s)",    +[](D a)         -> D { return asin(a); }, 1./3),
+		add("sin(%s)",    +[](D a)          -> D { return sin(a); }, 1./3),
+		add("cos(%s)",    +[](D a)          -> D { return cos(a); }, 1./3),
+		add("asin(%s)",    +[](D a)         -> D { return asin(a); }, 1./3),
 		
 		// give the type to add and then a vms function
 //		add_vms<D>("C", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
@@ -440,12 +440,24 @@ public:
 			co_yield h0;
 		}
 		else {
+			double best_posterior = -infinity; 
+			long steps_since_best = 0;
 			
 			// else we run vanilla MCMC
 			MCMCChain chain(h0, data);
 			for(auto& h : chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart)) | burn(BURN_N) | thin(FleetArgs::inner_thin) ) {
 				this->add_sample(h.posterior);
+				
 				co_yield h;
+
+				// return if we haven't improved in howevermany samples. 
+				if(h.posterior > best_posterior) {
+					best_posterior = h.posterior;
+					steps_since_best = 0;
+				}
+				
+				//
+				if(steps_since_best > 100000) break; 
 			}
 
 		}
@@ -467,7 +479,7 @@ int main(int argc, char** argv){
 	std::string strsep = "\t";
 	
 	FleetArgs::inner_timestring = "1m"; // default inner time
-	FleetArgs::inner_restart = 2500; // set this as the default 
+//	FleetArgs::inner_restart = 2500; // set this as the default 
 	int space_sep=0;
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
@@ -491,7 +503,7 @@ int main(int argc, char** argv){
 	
 	for(size_t i=0;i<NUM_VARS;i++){
 		std::function fi = [=](X_t x) -> D { return x[i]; };
-		grammar.add("%s"+str(i), fi, 5.0); // hmm 5 each? Or total?
+		grammar.add("%s"+str(i), fi, 8.0); // hmm 5 each? Or total?
 	}
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -557,26 +569,27 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> best(1);
 	best.print_best = true;
 	
-	
-//	auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:(-%s);0:\u25A0;0:\u25A0");
-auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:(-%s);0:(%s/%s);0:\u25A0;0:2;0:pow(%s,%s);0:\u25A0;0:\u25A0");
+/*
+	//	auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:(-%s);0:\u25A0;0:\u25A0");
+	//	auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:(-%s);0:(%s/%s);0:\u25A0;0:2;0:pow(%s,%s);0:\u25A0;0:\u25A0");
+//		auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:(-%s);0:(%s/%s);0:pow(%s,%s);0:\u25A0;0:2;0:2;0:pow(%s,%s);0:\u25A0;0:0.5");
+					
+		auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:\u25A0;0:pow(%s,%s);0:\u25A0;0:\u25A0;0:2;0:pow(%s,%s);0:\u25A0;0:\u25A0");
+
+		for(auto& n : s) { n.can_resample=false; }
 		
-	for(auto& n : s) { n.can_resample=false; }
-	
-	grammar.complete(s);
-	
-	{
-		MyHypothesis h0(s);
-		MCMCChain m(h0, &mydata);
-		for(auto& h: m.run(Control()) | best | print(FleetArgs::print, "# ")  ) {
-		}
-	}	
-	
-	best.print("# Overall best: "+best.best().structure_string()+"\t");
-	return 0;
-	
-	
-	
+		grammar.complete(s);
+		
+		{
+			MyHypothesis h0(s);
+			ParallelTempering m(h0, &mydata, 5, 1.1);
+			for(auto& h: m.run(Control()) | best | print(FleetArgs::print, "# ")  ) {
+			}
+		}	
+		
+		best.print("# Overall best: "+best.best().structure_string()+"\t");
+		return 0;
+*/
 	
 	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
 	MyMCTS m(h0, FleetArgs::explore, &mydata);

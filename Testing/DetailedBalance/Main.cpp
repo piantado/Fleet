@@ -3,7 +3,7 @@
 
 
 // how many proposals per pair of hypotheses do we take?
-size_t NSAMPLES = 10000000;
+size_t NSAMPLES = 10000000; //10000000;
 
 #define DO_NOT_INCLUDE_MAIN 1 
 #include "../Models/FormalLanguageTheory-Simple/Main.cpp"
@@ -47,6 +47,7 @@ int main(int argc, char** argv){
 		if(CTRL_C) continue;
 		auto a = MyHypothesis::sample();
 		auto b = MyHypothesis::sample();
+		//PRINTN(a.string(), b.string());
 		
 		auto pr = std::make_pair(a,b);
 		if(seen.contains(pr)) continue;

@@ -79,6 +79,24 @@ namespace Proposals {
 	}
 
 	/**
+	 * @brief A little helper function that resamples everything below when we can. If we can't, then we'll recurse
+	 * @param grammar
+	 * @param from
+	 */	
+	template<typename GrammarType>
+	void __regenerate_when_can_resample(const GrammarType* grammar, Node& from) {
+		if(from.can_resample) {
+			from.assign(grammar->generate(from.nt())); 
+		}
+		else { // we can't regenerate so we have to recurse
+			for(auto& c : from.get_children()) {
+				__regenerate_when_can_resample(grammar, c);
+			}			
+		}
+		
+	}
+
+	/**
 	 * @brief Regenerate with a rational-rules (Goodman et al.) style regeneration proposal: pick a node uniformly and regenerate it from the grammar. 
 	 * @param grammar - what grammar to use
 	 * @param from - what node are we proposing from
@@ -98,18 +116,24 @@ namespace Proposals {
 			return {ret, 0.0};
 		}
 		
-		auto [s, slp] = sample<Node,Node>(ret, can_resample);
+		// We are changing this as of Feb 2022, we now can *choose* a can_resample Node, but
+		// we won't actually change any unless can_resample is true
+		// BUT if we DO change a can_resample node, we change everything below it. 
+		auto [s, slp] = sample<Node,Node>(ret);
 		
 		#ifdef DEBUG_PROPOSE
 		CERR "PROPOSING AT " TAB (*s) ENDL;
 		#endif
 			
 		double oldgp = grammar->log_probability(*s); // reverse probability generating 
+
+		__regenerate_when_can_resample(grammar,*s);
+//		s->assign(grammar->generate(s->nt())); 
 		
-		s->assign(grammar->generate(s->nt())); 
-		
-		double fb = slp + grammar->log_probability(*s) 
-				  - (log(can_resample(*s)) - log(ret.sum(can_resample)) + oldgp);
+		//double fb = slp + grammar->log_probability(*s) 
+		//		  - (log(can_resample(*s)) - log(ret.sum(can_resample)) + oldgp);
+		double fb = (-log(from.count()) + grammar->log_probability(*s)) - 
+				    (-log(ret.count()) + oldgp);
 
 		#ifdef DEBUG_PROPOSE
 			CERR "FORWARD" TAB slp + grammar->log_probability(*s) ENDL;
@@ -121,6 +145,9 @@ namespace Proposals {
 
 		return {ret, fb};
 	}
+
+	
+	
 	
 	/**
 	 * @brief Regenerate with rational-rules style proposals, but only allow proposals to trees

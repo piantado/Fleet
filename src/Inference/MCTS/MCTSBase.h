@@ -243,11 +243,11 @@ public:
 			
 			// this is basically UCT
 			for(int k=0;k<neigh;k++) {
-				if(this->child(k).open){
-					assert(this->child(k).nvisits > 0);
-					
-					children_lps[k] = exp(this->child(k).statistics.max-this->statistics.max) + //this->statistics.max / this->child(k).statistics.max +
-									  FleetArgs::explore * sqrt(log(double(this->nvisits))/this->child(k).nvisits);
+				if(this->child(k).open){					
+					if(this->child(k).nvisits > 0) { // technically this can happen because multithreading					
+						children_lps[k] = exp(this->child(k).statistics.max-this->statistics.max) + //this->statistics.max / this->child(k).statistics.max +
+										  FleetArgs::explore * sqrt(log(double(this->nvisits))/this->child(k).nvisits);
+					}
 				}
 			}
 
@@ -272,10 +272,6 @@ public:
 //			}
 
 		} 
-		
-		//		for(int k=0;k<neigh;k++) {
-		//			CERR k TAB all_visited TAB children_lps[k] TAB current.neighbor_prior(k) TAB current.string() ENDL;
-		//		}
 
 		// sometimes we'll get all NaNs, which is bad news for sampling
 		bool allNaN = true;
