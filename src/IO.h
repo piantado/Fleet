@@ -150,11 +150,12 @@ template<size_t N>
 std::vector<std::array<std::string,N>> read_csv(const std::string path, bool skipheader, const char delimiter='\t') {
 	
 	std::ifstream file(path);
+	if(file.fail()){ assert(false); }
 
 	std::string s;
 	std::vector<std::array<std::string,N>> out;	
 	while( std::getline(file,s) ) {
-		if( s.size() == 0 or s[0] == '#') continue; // skip comments and blanks
+		if(s.size() == 0 or s[0] == '#') continue; // skip comments and blanks
 				
 		if(skipheader) { // skipping the header
 			skipheader = false;
@@ -170,11 +171,12 @@ std::vector<std::array<std::string,N>> read_csv(const std::string path, bool ski
 std::vector<std::vector<std::string>> read_csv(const std::string path, bool skipheader, const char delimiter='\t') {
 	
 	std::ifstream file(path);
+	if(file.fail()){ assert(false); }
 
 	std::string s;
 	std::vector<std::vector<std::string>> out;	
 	while( std::getline(file,s) ) {
-		if( s.size() == 0 or s[0] == '#') continue; // skip comments and blanks
+		if(s.size() == 0 or s[0] == '#') continue; // skip comments and blanks
 				
 		if(skipheader) { // skipping the header
 			skipheader = false;

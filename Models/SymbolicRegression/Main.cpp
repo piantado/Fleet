@@ -25,6 +25,8 @@ size_t nsamples = 100; // 100 // how many per structure?
 size_t nstructs = 100; //100 // print out all the samples from the top this many structures
 int    polynomial_degree = -1; //-1 means do everything, otherwise store ONLY polynomials less than or equal to this bound
 
+const size_t MY_MAX_NODES = 32;
+
 size_t BURN_N = 0; // 1000; // burn this many at the start of each MCMC chain -- probably NOT needed if doing weighted samples
 
 const size_t trim_at = 5000; // when we get this big in overall_sample structures
@@ -141,7 +143,6 @@ bool isConstant(const Rule* r) { return r->format == "C"; }
 
 class MyHypothesis final : public ConstantContainer,
 						   public LOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar> {
-	/* This class handles enumeration of the structure and critically does MCMC over the constants */
 	
 public:
 
@@ -210,7 +211,7 @@ public:
 	
 	virtual double compute_prior() override {
 		
-		if(this->value.count() > 16) {
+		if(this->value.count() > MY_MAX_NODES) {
 			return this->prior = -infinity;
 		}
 		
@@ -314,6 +315,28 @@ public:
 			
 			std::pair<Node,double> x;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//0.1
 			if(flip(0.5))       x = Proposals::regenerate(&grammar, value);	
 			else if(flip(0.1))  x = Proposals::sample_function_leaving_args(&grammar, value);
 			else if(flip(0.1))  x = Proposals::swap_args(&grammar, value);
@@ -503,7 +526,7 @@ int main(int argc, char** argv){
 	
 	for(size_t i=0;i<NUM_VARS;i++){
 		std::function fi = [=](X_t x) -> D { return x[i]; };
-		grammar.add("%s"+str(i), fi, 8.0); // hmm 5 each? Or total?
+		grammar.add("%s"+str(i), fi, 8.0/NUM_VARS); 
 	}
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -517,8 +540,12 @@ int main(int argc, char** argv){
 //	for(auto [xstr, ystr, sdstr] : read_csv<3>(FleetArgs::input_path, false, '\t')) {
 	for(auto v : read_csv(FleetArgs::input_path, false, sep)) { // NOTE: MUST BE \t for our data!!
 		
+		// get rid of spaces at the end of the line
+		while(v[v.size()-1] == "") { v.erase(--v.end()); }
+		
+		// check that it has the right number of elements
 		if(fix_sd == -1) assert(v.size() == NUM_VARS + 2); // must have sd
-		else        	 assert(v.size() >= NUM_VARS + 1); // may have sd
+		else        	 assert(v.size() == NUM_VARS + 1); 
 		
 		X_t x;
 		
@@ -547,7 +574,7 @@ int main(int argc, char** argv){
 				
 		assert(sd > 0.0 && "*** You probably didn't want a zero SD?");
 		
-//		COUT "# Data:\t" << x TAB y TAB sd ENDL;
+		COUT "# Data:\t" << x TAB y TAB sd ENDL;
 		
 		data_y.push_back(y);
 		
@@ -569,27 +596,29 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> best(1);
 	best.print_best = true;
 	
-/*
+
 	//	auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:(-%s);0:\u25A0;0:\u25A0");
 	//	auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:(-%s);0:(%s/%s);0:\u25A0;0:2;0:pow(%s,%s);0:\u25A0;0:\u25A0");
 //		auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:(-%s);0:(%s/%s);0:pow(%s,%s);0:\u25A0;0:2;0:2;0:pow(%s,%s);0:\u25A0;0:0.5");
 					
-		auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:\u25A0;0:pow(%s,%s);0:\u25A0;0:\u25A0;0:2;0:pow(%s,%s);0:\u25A0;0:\u25A0");
+		//auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:\u25A0;0:pow(%s,%s);0:\u25A0;0:\u25A0;0:2;0:pow(%s,%s);0:\u25A0;0:\u25A0");
 
-		for(auto& n : s) { n.can_resample=false; }
-		
-		grammar.complete(s);
+//		auto s = grammar.from_parseable("0:\u25A0");
+//		for(auto& n : s) { n.can_resample=false; }
+//		
+//		grammar.complete(s);
 		
 		{
-			MyHypothesis h0(s);
-			ParallelTempering m(h0, &mydata, 5, 1.1);
+//			MyHypothesis h0(s);
+			MyHypothesis h0 = MyHypothesis::sample();
+			ParallelTempering m(h0, &mydata, FleetArgs::nchains, 1.1);
 			for(auto& h: m.run(Control()) | best | print(FleetArgs::print, "# ")  ) {
 			}
 		}	
 		
 		best.print("# Overall best: "+best.best().structure_string()+"\t");
 		return 0;
-*/
+
 	
 	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
 	MyMCTS m(h0, FleetArgs::explore, &mydata);

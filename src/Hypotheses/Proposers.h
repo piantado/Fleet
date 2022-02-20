@@ -195,10 +195,6 @@ namespace Proposals {
 		// in the replaced tree. NOTE: it must regenerate something with the right nonterminal
 		// since that's what's being replaced! 
 		
-		#ifdef DEBUG_PROPOSE
-			CERR "INSERT-TREE"  TAB from.string()  ENDL;
-		#endif
-
 		Node ret = from; // copy
 
 		if(ret.sum<double>(can_resample) == 0.0) {
@@ -212,6 +208,11 @@ namespace Proposals {
 		
 		auto [s, slp] = sample<Node,Node>(ret, can_resample); // s is a ptr into ret
 //		PRINTN("Choosing s=", s->string());
+		
+		#ifdef DEBUG_PROPOSE
+			DEBUG("INSERT-TREE", from, *s);
+		#endif
+
 		
 		Node old_s = *s; // the old value of s, copied -- needed for fb and for replacement
 		
@@ -278,10 +279,6 @@ namespace Proposals {
 		// This proposal selects a node, regenerates, and then copies what was there before somewhere below 
 		// in the replaced tree. NOTE: it must regenerate something with the right nonterminal
 		// since that's what's being replaced
-		
-		#ifdef DEBUG_PROPOSE
-			CERR "DELETE-TREE"  TAB from.string()  ENDL;
-		#endif
 
 		Node ret = from; // copy
 
@@ -292,6 +289,10 @@ namespace Proposals {
 		// s is who we edit at
 		auto [s, slp] = sample<Node,Node>(ret, can_resample); // s is a ptr to ret
 		Node old_s = *s; // the old value of s, copied -- needed for fb
+		
+		#ifdef DEBUG_PROPOSE
+			DEBUG("DELETE-TREE", from, *s);
+		#endif
 
 		Node* captured_s = s; // clang doesn't like capturing s for some reason
 		std::function can_resample_matches_s_nt = [&](const Node& n) -> double { 
@@ -333,12 +334,17 @@ namespace Proposals {
 	template<typename GrammarType>
 	std::pair<Node,double> sample_function_leaving_args(GrammarType* grammar, const Node& from) {
 		
+		
 		Node ret = from; // copy
 		
 		auto z = sample_z<Node,Node>(ret, can_resample);
 		if(z == 0.0) return {ret,0.0};
 		
 		auto [s, slp] = sample<Node,Node>(ret, z, can_resample);
+		
+		#ifdef DEBUG_PROPOSE
+			DEBUG("SAMPLE-LEAVING-ARGS", from, *s);
+		#endif
 		
 		// find everything in the grammar that matches s's type
 		std::vector<Rule*> matching_rules;
@@ -385,6 +391,10 @@ namespace Proposals {
 		if(z == 0.0) return {ret,0.0};
 		
 		auto [s, slp] = sample<Node,Node>(ret, z, can_resample);
+		
+		#ifdef DEBUG_PROPOSE
+			DEBUG("SWAP-ARGS", from, *s);
+		#endif
 		
 		if(s->nchildren() <= 1) { 
 			return {ret,0.0};

@@ -194,7 +194,7 @@ public:
 
 					#ifdef DEBUG_MCMC
 					// they are equal but we just use current here
-					DEBUG("# Proposed", current.posterior, current.prior, current.likelihood, "fb="+str(fb), current.string());
+					DEBUG("# Proposed(eq)", current.posterior, current.prior, current.likelihood, current.string(), "fb="+str(fb));
 					#endif 
 							
 				}
@@ -223,7 +223,7 @@ public:
 					proposal.compute_posterior(*data, breakoutpair);
 					
 					#ifdef DEBUG_MCMC
-						DEBUG("# Proposed", proposal.posterior, proposal.prior, proposal.likelihood, "fb="+str(fb), proposal.string());
+						DEBUG("# Proposed", proposal.posterior, proposal.prior, proposal.likelihood, proposal.string(), "fb="+str(fb));
 					#endif 
 					
 					const double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
