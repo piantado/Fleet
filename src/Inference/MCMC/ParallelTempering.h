@@ -97,9 +97,9 @@ public:
 				double Tnow = this->pool[k-1].at_temperature(this->pool[k-1].temperature)   + this->pool[k].at_temperature(this->pool[k].temperature);
 				double Tswp = this->pool[k-1].at_temperature(this->pool[k].temperature)     + this->pool[k].at_temperature(this->pool[k-1].temperature);
 				double R = Tswp-Tnow;
-			
-//				CERR R TAB  this->pool[k].getCurrent().likelihood TAB  this->pool[k-1].getCurrent().likelihood ENDL;
-			
+	
+//				DEBUG("Swap p: ", k, R, this->pool[k-1].samples, this->pool[k-1].getCurrent().posterior, this->pool[k-1].getCurrent()); 
+				
 				if(R >= 0 or uniform() < exp(R)) { 
 										
 					#ifdef PARALLEL_TEMPERING_SHOW_DETAIL

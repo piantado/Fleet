@@ -165,10 +165,8 @@ public:
 		// walk up to the root, adding please		
 		auto ptr = this;
 		do { 
-			ptr->statistics << v;
-			
-			ptr = ptr->parent;
-			
+			ptr->statistics << v;			
+			ptr = ptr->parent;			
 		} while (ptr != nullptr);
 		
     }
@@ -247,6 +245,8 @@ public:
 					if(this->child(k).nvisits > 0) { // technically this can happen because multithreading					
 						children_lps[k] = exp(this->child(k).statistics.max-this->statistics.max) + //this->statistics.max / this->child(k).statistics.max +
 										  FleetArgs::explore * sqrt(log(double(this->nvisits))/this->child(k).nvisits);
+//						children_lps[k] = exp(this->child(k).statistics.median-this->statistics.median) + //this->statistics.max / this->child(k).statistics.max +
+//										 FleetArgs::explore * sqrt(log(double(this->nvisits))/this->child(k).nvisits);
 					}
 				}
 			}

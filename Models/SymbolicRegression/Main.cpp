@@ -110,7 +110,7 @@ public:
 		add("pi",          +[]()            -> D { return M_PI; }),
 		add("sin(%s)",    +[](D a)          -> D { return sin(a); }, 1./3),
 		add("cos(%s)",    +[](D a)          -> D { return cos(a); }, 1./3),
-		add("asin(%s)",    +[](D a)         -> D { return asin(a); }, 1./3),
+		add("asin(%s)",    +[](D a)         -> D { return asin(a); }, 1./3);
 		
 		// give the type to add and then a vms function
 //		add_vms<D>("C", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
@@ -125,7 +125,7 @@ public:
 //				}
 //		}), 3.0);
 		
-		add("x",             Builtins::X<MyGrammar>, 1.0);
+//		add("x",             Builtins::X<MyGrammar>, 1.0);
 		
 		// NOTE: Below we must add all the accessors like		
 //		add("%s1", 			+[](X_t x) -> D { return x[1]; });
@@ -440,8 +440,8 @@ void trim_overall_samples(const size_t N) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
-
 #include "PartialMCTSNode.h"
+#include "ParallelTempering.h"
 #include "MCMCChain.h"
 
 class MyMCTS : public PartialMCTSNode<MyMCTS, MyHypothesis> {
@@ -464,26 +464,28 @@ public:
 		// check to see if we have no gaps and no resamples, then we just run one sample. 
 		std::function no_resamples = +[](const Node& n) -> bool { return not n.can_resample;};
 		if(h0.count_constants() == 0 and h0.get_value().all(no_resamples)) {
-			h0.compute_posterior(*data);
+			this->process_evaluable(current);
 			co_yield h0;
 		}
 		else {
+			
 			double best_posterior = -infinity; 
 			long steps_since_best = 0;
 			
 			// else we run vanilla MCMC
 			MCMCChain chain(h0, data);
+//			ParallelTempering chain(h0, &mydata, 10, 100.0 ); 
 			for(auto& h : chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart)) | burn(BURN_N) | thin(FleetArgs::inner_thin) ) {
-				this->add_sample(h.posterior);
 				
-				co_yield h;
-
 				// return if we haven't improved in howevermany samples. 
 				if(h.posterior > best_posterior) {
 					best_posterior = h.posterior;
 					steps_since_best = 0;
 				}
 				
+				this->add_sample(h.posterior); 
+				co_yield h;
+
 				//
 				if(steps_since_best > 100000) break; 
 			}
@@ -498,7 +500,7 @@ public:
 
 #include "FleetArgs.h"
 #include "Fleet.h" 
-#include "ParallelTempering.h"
+
 
 #ifndef DO_NOT_INCLUDE_MAIN
 
@@ -529,11 +531,20 @@ int main(int argc, char** argv){
 	// set up the accessors of the variables
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	for(size_t i=0;i<NUM_VARS;i++){
-		std::function fi = [=](X_t x) -> D { return x[i]; };
-		grammar.add("%s"+str(i), fi, 8.0/NUM_VARS); 
+//	for(size_t i=0;i<NUM_VARS;i++){
+//		std::function fi = [=](X_t x) -> D { return x[i]; };
+//		grammar.add("%s"+str(i), fi, 8.0/NUM_VARS); 
+//	}
+//	
+
+	// We'll add these as special functions for each i, so they don't take time in MCTS 
+	for(size_t i=0;i<NUM_VARS;i++){		
+		auto l = [=](MyGrammar::VirtualMachineState_t* vms, int) {
+			vms->push<D>(vms->xstack.top().at(i));
+		};
+		auto f = new std::function(l);	*f = l;
+		grammar.add_vms<D>("x"+str(i), f);
 	}
-	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// set up the data
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -613,18 +624,18 @@ int main(int argc, char** argv){
 //		
 //		grammar.complete(s);
 		
-		{
-//			MyHypothesis h0(s);
-			MyHypothesis h0 = MyHypothesis::sample();
-			//ParallelTempering m(h0, &mydata, FleetArgs::nchains, 1.1);
-			ParallelTempering m(h0, &mydata, {3000.0, 5000.0});
-//			MCMCChain m(h0, &mydata);
-			for(auto& h: m.run(Control()) | best | print(FleetArgs::print, "# ")  ) {
-			}
-		}	
-		
-		best.print("# Overall best: "+best.best().structure_string()+"\t");
-		return 0;
+//		{
+////			MyHypothesis h0(s);
+//			MyHypothesis h0 = MyHypothesis::sample();
+//			//ParallelTempering m(h0, &mydata, FleetArgs::nchains, 1.1);
+//			ParallelTempering m(h0, &mydata, 100, 1000.0 ); //.0, 5.0, 10.0}); //, 100.0, 1000.0}); //5.0, 10.0, 100.0});
+////			MCMCChain m(h0, &mydata);
+//			for(auto& h: m.run(Control()) | best | print(FleetArgs::print, "# ")  ) {
+//			}
+//		}	
+//		
+//		best.print("# Overall best: "+best.best().structure_string()+"\t");
+//		return 0;
 
 	
 	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 

@@ -221,10 +221,15 @@ public:
 					const auto breakoutpair = std::make_pair(u + current.at_temperature(temperature) + fb, (double)temperature);
 					
 					proposal.compute_posterior(*data, breakoutpair);
+//					proposal.compute_posterior(*data);
 					
 					#ifdef DEBUG_MCMC
-						DEBUG("# Proposed", proposal.posterior, proposal.prior, proposal.likelihood, proposal.string(), "fb="+str(fb));
-					#endif 
+					DEBUG("# Proposed", proposal.posterior, proposal.prior, proposal.likelihood, proposal.string(), "fb="+str(fb));
+					#endif
+//					if(temperature == 1000.0){
+//						DEBUG("# current", current.posterior, current.posterior, current.prior, current.likelihood, current.string(), "fb="+str(fb));
+//						DEBUG("# Proposed", proposal.posterior, proposal.prior, proposal.likelihood, proposal.string(), "fb="+str(fb));
+//					}
 					
 					const double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
 					

@@ -51,12 +51,10 @@ class PartialMCTSNode : public MCTSBase<this_t,HYP> {
 		}
 		else {
 			PriorInference samp(current.get_grammar(), this->data, &current);
-			double mx = -infinity;
 			for(auto& h : samp.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart))){
-				mx = std::max(mx, h.posterior);
 				co_yield h;
+				this->add_sample(h.posterior);
 			}
-			this->add_sample(mx); // this stores our value
 		}
 	}	
 };
