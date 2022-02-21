@@ -90,21 +90,23 @@ public:
 		add("(%s*%s)",    +[](D a, D b) -> D     { return a*b; }),
 		add("(%s/%s)",    +[](D a, D b) -> D     { return (b==0 ? NaN : a/b); }),
 		
-		add("pow(%s,%s)",    +[](D a, D b) -> D     { return pow(a,b); }),
+//		add("pow(%s,%s)",    +[](D a, D b) -> D     { return pow(a,b); }),
 
-//		add("rtp",    +[]()          -> D { return std::sqrt(2*M_PI); });
-//		add("sq(%s)",    +[](D a)          -> D { return a*a; }, 1.),
-//		add("expm(%s)",    +[](D a)          -> D { return exp(-a); }, 1.),
+		add("tau",         +[]()             -> D { return 2*M_PI; });
+		add("sqrt(%s)",    +[](D a)          -> D { return a*a; }, 1.),
+		add("pow(%s,2)",   +[](D a)          -> D { return a*a; }, 1.),
+		add("pow(%s,3)",   +[](D a)          -> D { return a*a*a; }, 1.),
+		add("expm(%s)",    +[](D a)          -> D { return exp(-a); }, 1),
 		
-		add("(-%s)",      +[](D a)          -> D { return -a; }),
-		add("exp(%s)",    +[](D a)          -> D { return exp(a); }, 1),
-		add("log(%s)",    +[](D a)          -> D { return log(a); }, 1),
+//		add("(-%s)",      +[](D a)          -> D { return -a; }),
+//		add("exp(%s)",    +[](D a)          -> D { return exp(a); }, 1),
+//		add("log(%s)",    +[](D a)          -> D { return log(a); }, 1),
 		
 		add("1",          +[]()             -> D { return 1.0; }),
 		
 		add("0.5",          +[]()           -> D { return 0.5; }),
-		add("2",          +[]()             -> D { return 2.0; }),
-		add("3",          +[]()             -> D { return 3.0; }),
+//		add("2",          +[]()             -> D { return 2.0; }),
+//		add("3",          +[]()             -> D { return 3.0; }),
 		add("pi",          +[]()            -> D { return M_PI; }),
 		add("sin(%s)",    +[](D a)          -> D { return sin(a); }, 1./3),
 		add("cos(%s)",    +[](D a)          -> D { return cos(a); }, 1./3),
@@ -335,13 +337,16 @@ public:
 
 
 
-
+			x = Proposals::regenerate(&grammar, value);	
+//			else if(flip(0.1))  x = Proposals::sample_function_leaving_args(&grammar, value);
+//			else                x = Proposals::swap_args(&grammar, value);
+			
 //0.1
-			if(flip(0.5))       x = Proposals::regenerate(&grammar, value);	
-			else if(flip(0.1))  x = Proposals::sample_function_leaving_args(&grammar, value);
-			else if(flip(0.1))  x = Proposals::swap_args(&grammar, value);
-			else if(flip())     x = Proposals::insert_tree(&grammar, value);	
-			else                x = Proposals::delete_tree(&grammar, value);			
+//			if(flip(0.5))       x = Proposals::regenerate(&grammar, value);	
+//			else if(flip(0.1))  x = Proposals::sample_function_leaving_args(&grammar, value);
+//			else if(flip(0.1))  x = Proposals::swap_args(&grammar, value);
+//			else if(flip())     x = Proposals::insert_tree(&grammar, value);	
+//			else                x = Proposals::delete_tree(&grammar, value);			
 			
 			MyHypothesis ret{std::move(x.first)};
 			ret.randomize_constants(); // with random constants -- this resizes so that it's right for propose
@@ -611,7 +616,9 @@ int main(int argc, char** argv){
 		{
 //			MyHypothesis h0(s);
 			MyHypothesis h0 = MyHypothesis::sample();
-			ParallelTempering m(h0, &mydata, FleetArgs::nchains, 1.1);
+			//ParallelTempering m(h0, &mydata, FleetArgs::nchains, 1.1);
+			ParallelTempering m(h0, &mydata, {3000.0, 5000.0});
+//			MCMCChain m(h0, &mydata);
 			for(auto& h: m.run(Control()) | best | print(FleetArgs::print, "# ")  ) {
 			}
 		}	

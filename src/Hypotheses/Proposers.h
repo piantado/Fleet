@@ -106,9 +106,6 @@ namespace Proposals {
 	std::pair<Node,double> regenerate(GrammarType* grammar, const Node& from) {
 				
 		// copy, regenerate a random node, and return that and forward-backward prob
-		#ifdef DEBUG_PROPOSE
-			CERR "REGENERATE" TAB from.string() ENDL;
-		#endif
 
 		Node ret = from; // copy
 
@@ -122,7 +119,7 @@ namespace Proposals {
 		auto [s, slp] = sample<Node,Node>(ret);
 		
 		#ifdef DEBUG_PROPOSE
-		CERR "PROPOSING AT " TAB (*s) ENDL;
+			DEBUG("REGENERATE", from, *s);
 		#endif
 			
 		double oldgp = grammar->log_probability(*s); // reverse probability generating 

@@ -48,6 +48,7 @@ public:
 	ChainPool() {}
 	
 	ChainPool(HYP& h0, typename HYP::data_t* d, size_t n) : running(n, RunningState::READY) {
+		assert(n>=1 && "*** You probably shouldn't have a chain pool with 0 elements");
 		for(size_t i=0;i<n;i++) {
 			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), d));
 		}
