@@ -287,7 +287,7 @@ public:
 	/// Implement MCMC moves as changes to constants
 	/// *****************************************************************************
 	
-	virtual std::pair<MyHypothesis,double> propose() const override {
+	virtual std::optional<std::pair<MyHypothesis,double>> propose() const override {
 		// Our proposals will either be to constants, or entirely from the prior
 		// Note that if we have no constants, we will always do prior proposals
 //		PRINTN("\nProposing from\t\t", string());
@@ -336,8 +336,11 @@ public:
 
 
 
-
-			x = Proposals::regenerate(&grammar, value);	
+			auto p = Proposals::regenerate(&grammar, value);	
+			if(not p) return {};
+			
+			x = p.value();
+			
 //			else if(flip(0.1))  x = Proposals::sample_function_leaving_args(&grammar, value);
 //			else                x = Proposals::swap_args(&grammar, value);
 			

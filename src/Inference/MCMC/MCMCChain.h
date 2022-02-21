@@ -177,7 +177,10 @@ public:
 				std::lock_guard guard(current_mutex); // lock below otherwise others can modify
 
 				// propose, but restart if we're -infinity
-				auto [proposal, fb] = current.propose();			
+				auto p = current.propose();
+				if(not p) { continue;  }// proposal failed
+					
+				auto [proposal, fb] = p.value();			
 				
 				++proposals;
 				

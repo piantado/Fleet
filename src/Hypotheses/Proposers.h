@@ -2,6 +2,7 @@
 
 //#define DEBUG_PROPOSE 1
 
+#include <optional>
 #include <utility>
 #include <tuple>
 
@@ -19,7 +20,7 @@ namespace Proposals {
 	}
 	
 	template<typename GrammarType>
-	std::pair<Node,double> prior_proposal(GrammarType* grammar, const Node& from) {
+	std::optional<std::pair<Node,double>> prior_proposal(GrammarType* grammar, const Node& from) {
 		auto g = grammar->generate(from.nt());
 		return {g, grammar->log_probability(g) - grammar->log_probability(from)};
 	}
@@ -103,15 +104,14 @@ namespace Proposals {
 	 * @return A pair of the new proposed tree and the forward-backward log probability (for use in MCMC)
 	 */
 	template<typename GrammarType>
-	std::pair<Node,double> regenerate(GrammarType* grammar, const Node& from) {
+	std::optional<std::pair<Node,double>> regenerate(GrammarType* grammar, const Node& from) {
 				
 		// copy, regenerate a random node, and return that and forward-backward prob
 
 		Node ret = from; // copy
 
-		if(from.sum<double>(can_resample) == 0.0) {
-			return {ret, 0.0};
-		}
+		if(from.sum<double>(can_resample) == 0.0) 
+			return {};
 		
 		// We are changing this as of Feb 2022, we now can *choose* a can_resample Node, but
 		// we won't actually change any unless can_resample is true
@@ -140,7 +140,7 @@ namespace Proposals {
 			
 		#endif
 
-		return {ret, fb};
+		return std::make_pair(ret, fb);
 	}
 
 	
@@ -156,7 +156,7 @@ namespace Proposals {
 	 * @return 
 	 */
 	template<typename GrammarType, int D>
-	std::pair<Node,double> regenerate_shallow(GrammarType* grammar, const Node& from) {
+	std::optional<std::pair<Node,double>> regenerate_shallow(GrammarType* grammar, const Node& from) {
 		
 		auto my_can_resample = +[](const Node& n) {
 			return (n.can_resample and n.depth() <= D )*1.0;
@@ -168,9 +168,8 @@ namespace Proposals {
 
 		Node ret = from; // copy
 
-		if(from.sum<double>(my_can_resample) == 0.0) {
-			return {ret, 0.0};
-		}
+		if(from.sum<double>(my_can_resample) == 0.0) 
+			return {};
 		
 		auto [s, slp] = sample<Node,Node>(ret, my_can_resample);
 		
@@ -181,22 +180,21 @@ namespace Proposals {
 		double fb = slp + grammar->log_probability(*s.first) 
 				  - (log(my_can_resample(*s.first)) - log(ret.sum(my_can_resample)) + oldgp);
 
-		return {ret, fb};
+		return std::make_pair(ret, fb);
 	}
 
 	
 
 	template<typename GrammarType>
-	std::pair<Node, double> insert_tree(GrammarType* grammar, const Node& from) {
+	std::optional<std::pair<Node, double>> insert_tree(GrammarType* grammar, const Node& from) {
 		// This proposal selects a node, regenerates, and then copies what was there before somewhere below 
 		// in the replaced tree. NOTE: it must regenerate something with the right nonterminal
 		// since that's what's being replaced! 
 		
 		Node ret = from; // copy
 
-		if(ret.sum<double>(can_resample) == 0.0) {
-			return {ret, 0.0};
-		}
+		if(ret.sum<double>(can_resample) == 0.0) 
+			return {};
 		
 		// So: 
 		// we pick node s to be replaced.
@@ -268,20 +266,19 @@ namespace Proposals {
 		assert(not std::isinf(backward));
 		
 		
-		return {ret, forward-backward};		
+		return std::make_pair(ret, forward-backward);
 	}
 	
 	template<typename GrammarType>
-	std::pair<Node, double> delete_tree(GrammarType* grammar, const Node& from) {
+	std::optional<std::pair<Node, double>> delete_tree(GrammarType* grammar, const Node& from) {
 		// This proposal selects a node, regenerates, and then copies what was there before somewhere below 
 		// in the replaced tree. NOTE: it must regenerate something with the right nonterminal
 		// since that's what's being replaced
 
 		Node ret = from; // copy
 
-		if(ret.sum(can_resample) == 0.0) {
-			return {ret, 0.0};
-		}
+		if(ret.sum(can_resample) == 0.0) 
+			return {};
 		
 		// s is who we edit at
 		auto [s, slp] = sample<Node,Node>(ret, can_resample); // s is a ptr to ret
@@ -317,7 +314,7 @@ namespace Proposals {
 		assert(not std::isinf(forward));
 		assert(not std::isinf(backward));
 		
-		return {ret, forward-backward};		
+		return std::make_pair(ret, forward-backward);
 	}
 	
 	
@@ -329,13 +326,13 @@ namespace Proposals {
 	 * @return 
 	 */	
 	template<typename GrammarType>
-	std::pair<Node,double> sample_function_leaving_args(GrammarType* grammar, const Node& from) {
+	std::optional<std::pair<Node,double>> sample_function_leaving_args(GrammarType* grammar, const Node& from) {
 		
 		
 		Node ret = from; // copy
 		
 		auto z = sample_z<Node,Node>(ret, can_resample);
-		if(z == 0.0) return {ret,0.0};
+		if(z == 0.0) return {};
 		
 		auto [s, slp] = sample<Node,Node>(ret, z, can_resample);
 		
@@ -368,7 +365,7 @@ namespace Proposals {
 		// here we compute fb while ignoring the normalizing constants which is why we don't use rp
 		double fb = log(sampler(*newr))-log(sampler(oldRule));
 		
-		return {ret,fb}; // forward-backward is just probability of sampling rp since s cancels
+		return std::make_pair(ret,fb); // forward-backward is just probability of sampling rp since s cancels
 	}
 
 
@@ -379,13 +376,13 @@ namespace Proposals {
 	 * @return 
 	 */
 	template<typename GrammarType>
-	std::pair<Node,double> swap_args(GrammarType* grammar, const Node& from) {
+	std::optional<std::pair<Node,double>> swap_args(GrammarType* grammar, const Node& from) {
 		
 		Node ret = from; // copy
 //		PRINTN("Swapping1 ", ret);
 		
 		auto z = sample_z<Node,Node>(ret, can_resample);
-		if(z == 0.0) return {ret,0.0};
+		if(z == 0.0) return {};
 		
 		auto [s, slp] = sample<Node,Node>(ret, z, can_resample);
 		
@@ -394,7 +391,7 @@ namespace Proposals {
 		#endif
 		
 		if(s->nchildren() <= 1) { 
-			return {ret,0.0};
+			return {};
 		}
 		
 		// who is going to be swapped
@@ -413,7 +410,7 @@ namespace Proposals {
 		
 		if(matching_indices.size() == 0) {
 			
-			return {ret,0.0};
+			return {};
 			
 		}
 		else {
@@ -427,7 +424,7 @@ namespace Proposals {
 			
 //			PRINTN("Swapping2 ", ret);
 		
-			return {ret,0.0};
+			return std::make_pair(ret,0.0);
 		}
 	}
 		

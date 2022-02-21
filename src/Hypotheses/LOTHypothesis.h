@@ -122,10 +122,13 @@ public:
 	 * @brief Default proposal is rational-rules style regeneration. 
 	 * @return 
 	 */
-	[[nodiscard]] virtual std::pair<this_t,double> propose() const override {
+	[[nodiscard]] virtual std::optional<std::pair<this_t,double>> propose() const override {
 
 		// simplest way of doing proposals
-		auto x = Proposals::regenerate(grammar, value);	
+		auto p = Proposals::regenerate(grammar, value);	
+		if(not p) return {}; // if failed
+		
+		auto x = p.value();
 		
 		// return a pair of Hypothesis and forward-backward probabilities
 		return std::make_pair(this_t(std::move(x.first)), x.second); // return this_t and fb

@@ -252,7 +252,7 @@ public:
 	 *        Each individual factor is proposed to with p_factor_propose
 	 * @return 
 	 */	
-	[[nodiscard]] virtual std::pair<this_t,double> propose() const override {
+	[[nodiscard]] virtual std::optional<std::pair<this_t,double>> propose() const override {
 
 		// let's first make a vector to see which factor we propose to.
 		std::vector<bool> should_propose(factors.size(), false);
@@ -268,7 +268,10 @@ public:
 		int idx = 0;
 		for(auto& [k,f] : factors) {
 			if(should_propose[idx]) {
-				auto [h, _fb] = f.propose();
+				auto p = f.propose();
+				if(not p) continue;
+				
+				auto [h, _fb] = p.value();
 				x.factors[k] = h;
 				fb += _fb;
 			} else {
@@ -278,7 +281,7 @@ public:
 		}
 		assert(x.factors.size() == factors.size());
 		
-		return std::make_pair(x, fb);									
+		return {x,fb};									
 	}
 
 	
