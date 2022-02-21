@@ -482,7 +482,7 @@ public:
 	 * @param breakout
 	 * @return 
 	 */		
-	[[nodiscard]] virtual std::pair<this_t,double> propose() const override {
+	[[nodiscard]] virtual std::optional<std::pair<this_t,double>> propose() const override {
 		
 		// make a copy
 		this_t out(*static_cast<const this_t*>(this)); 
@@ -493,25 +493,33 @@ public:
 			double myfb = 0.0;
 			switch(myrandom(4)) {
 				case 0: {
-					auto [ v, fb ] = alpha.propose();
+					auto p = alpha.propose();
+					if(not p) return {};
+					auto [ v, fb ] = p.value();
 					out.alpha = v;
 					myfb += fb;
 					break;
 				}
 				case 1: {
-					auto [ v, fb ] = llt.propose();
+					auto p = llt.propose();
+					if(not p) return {};
+					auto [ v, fb ] = p.value();
 					out.llt = v;
 					myfb += fb;
 					break;
 				}
 				case 2: {
-					auto [ v, fb ] = pt.propose();
+					auto p = pt.propose();
+					if(not p) return {};
+					auto [ v, fb ] = p.value();
 					out.pt = v;
 					myfb += fb;
 					break;
 				}
 				case 3: {
-					auto [ v, fb ] = decay.propose();
+					auto p = decay.propose();
+					if(not p) return {};
+					auto [ v, fb ] = p.value();
 					out.decay = v;
 					myfb += fb;
 					break;
@@ -527,7 +535,9 @@ public:
 		}		
 		else {
 			//CERR "HERE" ENDL;
-			auto [ v, fb ] = logA.propose();
+			auto p = logA.propose();
+			if(not p) return {};
+			auto [ v, fb ] = p.value();
 			out.logA = v;
 			return std::make_pair(out, fb);
 		}

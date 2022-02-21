@@ -287,7 +287,7 @@ public:
 	/// Implement MCMC moves as changes to constants
 	/// *****************************************************************************
 	
-	virtual std::optional<std::pair<MyHypothesis,double>> propose() const override {
+	virtual ProposalType propose() const override {
 		// Our proposals will either be to constants, or entirely from the prior
 		// Note that if we have no constants, we will always do prior proposals
 //		PRINTN("\nProposing from\t\t", string());
@@ -311,45 +311,16 @@ public:
 		}
 		else {
 			
-			// else we could just propose from Super and then randomize, but we actually want to 
-			// but we actually want to do insert/delete
-			//auto [ret, fb] = Super::propose(); // a proposal to structure
+			ProposalType p; 
 			
-			std::pair<Node,double> x;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			auto p = Proposals::regenerate(&grammar, value);	
+			if(flip(0.5))       p = Proposals::regenerate(&grammar, value);	
+			else if(flip(0.1))  p = Proposals::sample_function_leaving_args(&grammar, value);
+			else if(flip(0.1))  p = Proposals::swap_args(&grammar, value);
+			else if(flip())     p = Proposals::insert_tree(&grammar, value);	
+			else                p = Proposals::delete_tree(&grammar, value);			
+			
 			if(not p) return {};
-			
-			x = p.value();
-			
-//			else if(flip(0.1))  x = Proposals::sample_function_leaving_args(&grammar, value);
-//			else                x = Proposals::swap_args(&grammar, value);
-			
-//0.1
-//			if(flip(0.5))       x = Proposals::regenerate(&grammar, value);	
-//			else if(flip(0.1))  x = Proposals::sample_function_leaving_args(&grammar, value);
-//			else if(flip(0.1))  x = Proposals::swap_args(&grammar, value);
-//			else if(flip())     x = Proposals::insert_tree(&grammar, value);	
-//			else                x = Proposals::delete_tree(&grammar, value);			
+			auto x = p.value();
 			
 			MyHypothesis ret{std::move(x.first)};
 			ret.randomize_constants(); // with random constants -- this resizes so that it's right for propose
@@ -641,13 +612,13 @@ int main(int argc, char** argv){
 //		return 0;
 
 	
-	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
-	MyMCTS m(h0, FleetArgs::explore, &mydata);
-	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# ")  ) {
+//	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
+//	MyMCTS m(h0, FleetArgs::explore, &mydata);
+//	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# ")  ) {
 	
-//	auto h0 = MyHypothesis::sample(); // NOTE: We do NOT want to sample, since that constrains the MCTS 	
-//	ParallelTempering m(h0, &mydata, FleetArgs::nchains, 2.20);
-//	for(auto& h: m.run(Control()) | print(FleetArgs::print, "# ")  ) {
+	auto h0 = MyHypothesis::sample(); // NOTE: We do NOT want to sample, since that constrains the MCTS 	
+	ParallelTempering m(h0, &mydata, 100, 100.0);
+	for(auto& h: m.run(Control()) | print(FleetArgs::print, "# ")  ) {
 			
 		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these
 		
@@ -675,7 +646,7 @@ int main(int argc, char** argv){
 	}
 	
 	// print our trees if we want them
-	m.print(h0, FleetArgs::tree_path.c_str());
+//	m.print(h0, FleetArgs::tree_path.c_str());
 	
 	//------------------
 	// Postprocessing

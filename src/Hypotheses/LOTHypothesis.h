@@ -51,6 +51,9 @@ public:
 	using output_t  = _output_t;
 	using VirtualMachineState_t = _VirtualMachineState_t;
 	
+	// proposals return this:
+	using ProposalType = std::optional<std::pair<this_t,double>>;
+	
 	// this splits the prior,likelihood,posterior,and value
 	static const char SerializationDelimiter = '\t';
 	
@@ -122,7 +125,7 @@ public:
 	 * @brief Default proposal is rational-rules style regeneration. 
 	 * @return 
 	 */
-	[[nodiscard]] virtual std::optional<std::pair<this_t,double>> propose() const override {
+	[[nodiscard]] virtual ProposalType propose() const override {
 
 		// simplest way of doing proposals
 		auto p = Proposals::regenerate(grammar, value);	
