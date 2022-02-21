@@ -205,16 +205,21 @@ public:
 	
 	static constexpr double regenerate_p = 0.7;
 	
-	[[nodiscard]] virtual std::pair<InnerHypothesis,double> propose() const override {
+	[[nodiscard]] virtual std::optional<std::pair<InnerHypothesis,double>> propose() const override {
 		
 		std::pair<Node,double> x;
 		if(flip(regenerate_p)) {
-			x = Proposals::regenerate(&grammar, value);	
+			auto p = Proposals::regenerate(&grammar, value);	
+			if(not p) return {};
+			x = p.value();
 		}
 		else {
-			if(flip()) x = Proposals::insert_tree(&grammar, value);	
-			else       x = Proposals::delete_tree(&grammar, value);	
+			auto p = flip() ? Proposals::insert_tree(&grammar, value) :
+							  Proposals::delete_tree(&grammar, value);	
+			if(not p) return {};
+			x = p.value();
 		}
+		
 		return std::make_pair(InnerHypothesis(std::move(x.first)), x.second); 
 	}	
 	

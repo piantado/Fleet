@@ -269,11 +269,14 @@ public:
 		for(auto& [k,f] : factors) {
 			if(should_propose[idx]) {
 				auto p = f.propose();
-				if(not p) continue;
-				
-				auto [h, _fb] = p.value();
-				x.factors[k] = h;
-				fb += _fb;
+				if(p){
+					auto [h, _fb] = p.value();
+					x.factors[k] = h;
+					fb += _fb;
+				}
+				else {
+					x.factors[k] = f; // on failed proposal just copy
+				}
 			} else {
 				x.factors[k] = f;
 			}
@@ -281,7 +284,7 @@ public:
 		}
 		assert(x.factors.size() == factors.size());
 		
-		return {x,fb};									
+		return std::make_pair(x,fb);									
 	}
 
 	

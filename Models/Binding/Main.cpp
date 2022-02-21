@@ -207,15 +207,18 @@ public:
 		else					     return this->prior = this->get_grammar()->log_probability(value);
 	}
 	
-	[[nodiscard]] virtual std::pair<InnerHypothesis,double> propose() const override {
+	[[nodiscard]] virtual std::optional<std::pair<InnerHypothesis,double>> propose() const override {
 		
-		std::pair<Node,double> x;
+		std::optional<std::pair<Node,double>> p;
 
-		if(flip(0.5))       x = Proposals::regenerate(&grammar, value);	
-		else if(flip(0.1))  x = Proposals::sample_function_leaving_args(&grammar, value);
-		else if(flip(0.1))  x = Proposals::swap_args(&grammar, value);
-		else if(flip())     x = Proposals::insert_tree(&grammar, value);	
-		else                x = Proposals::delete_tree(&grammar, value);			
+		if(flip(0.5))       p = Proposals::regenerate(&grammar, value);	
+		else if(flip(0.1))  p = Proposals::sample_function_leaving_args(&grammar, value);
+		else if(flip(0.1))  p = Proposals::swap_args(&grammar, value);
+		else if(flip())     p = Proposals::insert_tree(&grammar, value);	
+		else                p = Proposals::delete_tree(&grammar, value);			
+		
+		if(not p) return {};
+		auto x = p.value();
 		
 		return std::make_pair(InnerHypothesis(std::move(x.first)), x.second); 
 	}	
