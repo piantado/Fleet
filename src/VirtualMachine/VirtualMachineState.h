@@ -254,21 +254,22 @@ public:
 				(*f)(const_cast<this_t*>(this), i.arg);
 				 
 			} // end while loop over ops
-	
-			// and when we exit, set the status to complete if we are good
-			// otherwise, leave it where it was!
-			if(status == vmstatus_t::GOOD) {
-				status = vmstatus_t::COMPLETE;
-				return get_output();
-			}
 			
 		} catch (VMSRuntimeError& e) {
 			// this may be thrown by a primitive
 			status = vmstatus_t::ERROR;
 		}
 		
-		// if we get here, there was a problem 
-		return err;
+		// when we exit, set the status to complete if we are good
+		// otherwise, leave it where it was
+		if(status == vmstatus_t::GOOD) {
+			status = vmstatus_t::COMPLETE;
+			return get_output();
+		}
+		else {
+			// if we get here, there was a problem 
+			return err;
+		}
 	}	
 	
 };
