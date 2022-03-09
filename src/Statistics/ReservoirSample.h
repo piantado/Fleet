@@ -25,7 +25,7 @@ protected:
 	//mutable std::mutex lock;		
 
 public:
-	ReservoirSample(size_t n=100) : N(0), capacity(n) {	}	
+	ReservoirSample(size_t n=100) : capacity(n), N(0) {	}	
 
 	void set_reservoir_size(const size_t s) const {
 		/**

@@ -32,6 +32,8 @@ public:
 	
 	typename HYP::data_t* data;
 	
+	// this stores the maximum found since we've restarted
+	// (not the overall max)
 	double maxval;
 	
 	unsigned long samples; // total number of samples we've done
@@ -100,6 +102,14 @@ public:
 		return current; 
 	}
 	
+	const HYP& getCurrent() const {
+		/**
+		 * @brief get a reference to the current value
+		 * @return 
+		 */		
+		return current; 
+	}
+	
 	void runOnCurrent() {
 		/**
 		 * @brief This is called by the constructor to compute the posterior. NOTE it does not callback
@@ -114,6 +124,15 @@ public:
 	const HYP& getMax() { 
 		return maxval; 
 	} 
+	
+	void restart() { 
+		
+		current = current.restart();
+		current.compute_posterior(*data);
+		
+		steps_since_improvement = 0; // reset the couter
+		maxval = current.posterior; // and the new max
+	}
 	
 	/**
 	 * @brief Run MCMC according to the control parameters passed in.
@@ -131,6 +150,7 @@ public:
 		// I may have copied its start time from somewhere else, so change that here
 		ctl.start();		
 		do {
+			std::lock_guard guard(current_mutex);
 			
 			if(current.posterior > maxval) { // if we improve, store it
 				maxval = current.posterior;
@@ -144,28 +164,16 @@ public:
 			if(ctl.restart>0 and steps_since_improvement > ctl.restart){
 				[[unlikely]];
 				
-				std::lock_guard guard(current_mutex);
-				
-				current = current.restart();
-				current.compute_posterior(*data);
-				
-				steps_since_improvement = 0; // reset the couter
-				maxval = current.posterior; // and the new max
-				
-				co_yield current;// must be done with lock
+				restart();
 			}
 			else if (std::isnan(current.posterior) or current.posterior == -infinity) {
+				[[unlikely]];
 				// This is a special case where we just propose from restarting 
 				
-				std::lock_guard guard(current_mutex);
-				
-				current = current.restart();
-				current.compute_posterior(*data); // always must compute full posterior, no breakout
-		  
+				restart();
+
 				// Should we count in history? 
 				// Hmm maybe not. 
-//				history << true;
-//				++acceptances;
 			}
 			else {
 				// normally we go here and do a proper proposal
@@ -174,8 +182,6 @@ public:
 				DEBUG("# Current", current.posterior, current.prior, current.likelihood, current.string());
 				#endif 
 				
-				std::lock_guard guard(current_mutex); // lock below otherwise others can modify
-
 				// propose, but restart if we're -infinity
 				auto p = current.propose();
 				if(not p) { continue;  }// proposal failed
@@ -229,10 +235,6 @@ public:
 					#ifdef DEBUG_MCMC
 					DEBUG("# Proposed", proposal.posterior, proposal.prior, proposal.likelihood, proposal.string(), "fb="+str(fb));
 					#endif
-//					if(temperature == 1000.0){
-//						DEBUG("# current", current.posterior, current.posterior, current.prior, current.likelihood, current.string(), "fb="+str(fb));
-//						DEBUG("# Proposed", proposal.posterior, proposal.prior, proposal.likelihood, proposal.string(), "fb="+str(fb));
-//					}
 					
 					const double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
 					

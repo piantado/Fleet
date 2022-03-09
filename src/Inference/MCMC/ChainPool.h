@@ -66,6 +66,18 @@ public:
 		}
 	}
 	
+	
+	size_t nchains() const {
+		return pool.size();
+	}
+	
+	void print(std::string prefix) const { 
+		for(size_t i=0;i<nchains();i++) {
+			std::lock_guard guard(this->pool[i].current_mutex);
+			PRINTN(prefix, i, (double)this->pool[i].temperature, this->pool[i].getCurrent().posterior, this->pool[i].getCurrent());
+		}
+	}
+	
 	/**
 	 * @brief This run helper is called internally by multiple different threads, and runs a given pool.
 	 * @param ctl

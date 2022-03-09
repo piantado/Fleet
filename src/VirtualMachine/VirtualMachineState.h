@@ -90,7 +90,7 @@ public:
 	vmstatus_t status; // are we still running? Did we get an error?
 	
 	// what do we use to count up instructions 
-	// NOTE for now this may be a bit slower and unnecessary but it doesnt' seem so bad at the
+	// NOTE for now this may be a bit slower and unnecessary but it doesn't seem so bad at the
 	// moment so this may need to be optimized later to be optional
 	RuntimeCounter runtime_counter;
 	

@@ -1,15 +1,5 @@
-
-// ./main --time=1h --inner-time=5s --explore=0.1 --thin=0 --threads=1 --input=./data-sources/Science/Zipf/data.txt --tree=./out/tree.txt
-
-// TODO: ADD INSERT/DELETE TO PROPOSALS 
-// ADD flag for constants vs not 
-
-// Weird, on Feynman dataset, we get 
-// III.8.54	89	prob	sin(E_n*t/(h/(2*pi)))**2
-// λx.(x0*(x1*sin(x2)))
-// But that's only on the first 100 data points -- so maybe we need to sample randomly?
-
-// TODO: Maybe add burn-in??
+// we have a "feynman" flag -- when true, we use the feynman grammar, only search for the best, etc. 
+//#define FEYNMAN 0
 
 // Needed when SDs are small, b/c then they can lead to positive likelihoods
 #define NO_BREAKOUT 1
@@ -25,7 +15,7 @@ size_t nsamples = 100; // 100 // how many per structure?
 size_t nstructs = 100; //100 // print out all the samples from the top this many structures
 int    polynomial_degree = -1; //-1 means do everything, otherwise store ONLY polynomials less than or equal to this bound
 
-const size_t MY_MAX_NODES = 32;
+const size_t MY_MAX_NODES = 35;
 
 size_t BURN_N = 0; // 1000; // burn this many at the start of each MCMC chain -- probably NOT needed if doing weighted samples
 
@@ -45,6 +35,8 @@ double data_Y_sd   = NaN;
 const size_t MAX_VARS = 9; // arguments are at most this many 
 size_t       NUM_VARS = 1; // how many predictor variables 
 
+// What time do we store our argument as? We use this
+// format because it allows multiple variables
 using X_t = std::array<D,MAX_VARS>;
 
 char sep = '\t'; // default input separator
@@ -52,6 +44,11 @@ char sep = '\t'; // default input separator
 // we also consider our scale variables as powers of 10
 const int MIN_SCALE = -3; 
 const int MAX_SCALE = 4;
+
+double best_possible_ll = NaN; // what is the best ll we could have gotten?
+
+double end_at_likelihood = infinity; // if we get this value in log likelihood, we can stop everything (for Feynman)
+
 
 // Proposals and random generation happen on a variety of scales
 double random_scale() { return pow(10, myrandom(-4, 5)); }
@@ -90,44 +87,43 @@ public:
 		add("(%s*%s)",    +[](D a, D b) -> D     { return a*b; }),
 		add("(%s/%s)",    +[](D a, D b) -> D     { return (b==0 ? NaN : a/b); }),
 		
-//		add("pow(%s,%s)",    +[](D a, D b) -> D     { return pow(a,b); }),
+		add("1",          +[]()             -> D { return 1.0; }),
+		
+#if FEYNMAN
 
 		add("tau",         +[]()             -> D { return 2*M_PI; });
 		add("sqrt(%s)",    +[](D a)          -> D { return a*a; }, 1.),
 		add("pow(%s,2)",   +[](D a)          -> D { return a*a; }, 1.),
 		add("pow(%s,3)",   +[](D a)          -> D { return a*a*a; }, 1.),
 		add("expm(%s)",    +[](D a)          -> D { return exp(-a); }, 1),
-		
-//		add("(-%s)",      +[](D a)          -> D { return -a; }),
-//		add("exp(%s)",    +[](D a)          -> D { return exp(a); }, 1),
-//		add("log(%s)",    +[](D a)          -> D { return log(a); }, 1),
-		
-		add("1",          +[]()             -> D { return 1.0; }),
-		
+
 		add("0.5",          +[]()           -> D { return 0.5; }),
-//		add("2",          +[]()             -> D { return 2.0; }),
-//		add("3",          +[]()             -> D { return 3.0; }),
 		add("pi",          +[]()            -> D { return M_PI; }),
 		add("sin(%s)",    +[](D a)          -> D { return sin(a); }, 1./3),
 		add("cos(%s)",    +[](D a)          -> D { return cos(a); }, 1./3),
 		add("asin(%s)",    +[](D a)         -> D { return asin(a); }, 1./3);
-		
+
+#else
+		add("(-%s)",      +[](D a)          -> D { return -a; }),
+		add("exp(%s)",    +[](D a)          -> D { return exp(a); }, 1),
+		add("log(%s)",    +[](D a)          -> D { return log(a); }, 1),
+		add("pow(%s,%s)",    +[](D a, D b) -> D     { return pow(a,b); }),
+				
 		// give the type to add and then a vms function
-//		add_vms<D>("C", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
-//						
-//				// Here we are going to use a little hack -- we actually know that vms->program_loader
-//				// is of type MyHypothesis, so we will cast to that
-//				auto* h = dynamic_cast<ConstantContainer*>(vms->program.loader);
-//				if(h == nullptr) { assert(false); }
-//				else {
-//					assert(h->constant_idx < h->constants.size()); 
-//					vms->template push<D>(h->constants.at(h->constant_idx++));
-//				}
-//		}), 3.0);
-		
+		add_vms<D>("C", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
+						
+				// Here we are going to use a little hack -- we actually know that vms->program_loader
+				// is of type MyHypothesis, so we will cast to that
+				auto* h = dynamic_cast<ConstantContainer*>(vms->program.loader);
+				if(h == nullptr) { assert(false); }
+				else {
+					assert(h->constant_idx < h->constants.size()); 
+					vms->template push<D>(h->constants.at(h->constant_idx++));
+				}
+		}), 3.0);		
+#endif 
+
 //		add("x",             Builtins::X<MyGrammar>, 1.0);
-		
-		// NOTE: Below we must add all the accessors like		
 //		add("%s1", 			+[](X_t x) -> D { return x[1]; });
 		
 	}					  
@@ -449,7 +445,7 @@ public:
 			// else we run vanilla MCMC
 			MCMCChain chain(h0, data);
 //			ParallelTempering chain(h0, &mydata, 10, 100.0 ); 
-			for(auto& h : chain.run(Control(FleetArgs::inner_steps, FleetArgs::inner_runtime, 1, FleetArgs::inner_restart)) | burn(BURN_N) | thin(FleetArgs::inner_thin) ) {
+			for(auto& h : chain.run(InnerControl()) | burn(BURN_N) | thin(FleetArgs::inner_thin) ) {
 				
 				// return if we haven't improved in howevermany samples. 
 				if(h.posterior > best_posterior) {
@@ -483,7 +479,6 @@ int main(int argc, char** argv){
 	std::string strsep = "\t";
 	
 	FleetArgs::inner_timestring = "1m"; // default inner time
-//	FleetArgs::inner_restart = 2500; // set this as the default 
 	int space_sep=0;
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
@@ -494,6 +489,7 @@ int main(int argc, char** argv){
 	fleet.add_option("--nsamples", nsamples, "How many samples per structure?");
 	fleet.add_option("--nstructs", nstructs, "How many structures?");
 	fleet.add_option("--space", space_sep, "If 1, our data is space-separated");
+	fleet.add_option("--end-at-likelihood", end_at_likelihood, "Stop everything if we make it to this likelihood (presumably, perfect)");
 	fleet.add_option("--polynomial-degree",   polynomial_degree,   "Defaultly -1 means we store everything, otherwise only keep polynomials <= this bound");
 	fleet.add_option("--sep", strsep, "Separator for input data (usually space or tab)");
 	fleet.initialize(argc, argv);
@@ -517,7 +513,7 @@ int main(int argc, char** argv){
 			vms->push<D>(vms->xstack.top().at(i));
 		};
 		auto f = new std::function(l);	*f = l;
-		grammar.add_vms<D>("x"+str(i), f);
+		grammar.add_vms<D>("x"+str(i), f, 10.0/NUM_VARS);
 	}
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// set up the data
@@ -526,8 +522,8 @@ int main(int argc, char** argv){
 	// store the x and y values so we can do constant proposals
 	std::vector<double> data_x;
 	std::vector<double> data_y;
+	best_possible_ll = 0.0;
 	
-//	for(auto [xstr, ystr, sdstr] : read_csv<3>(FleetArgs::input_path, false, '\t')) {
 	for(auto v : read_csv(FleetArgs::input_path, false, sep)) { // NOTE: MUST BE \t for our data!!
 		
 		// get rid of spaces at the end of the line
@@ -555,6 +551,11 @@ int main(int argc, char** argv){
 		double sd; 
 		if(fix_sd != -1) {
 			sd = fix_sd;
+			
+			// Wow, I *think* if we don't add this amount of noise, then we will tend to overfit, which means that we
+			// get stuck in hypotheses and don't search the space very well. I'm not sure why exactly, 
+			// but it seems like MCMC just goes to things which are *too* good if it can. 
+			//y = y + random_normal(0.0, sd); 
 		}
 		else {
 			// process the line 
@@ -566,6 +567,7 @@ int main(int argc, char** argv){
 		
 		COUT "# Data:\t" << x TAB y TAB sd ENDL;
 		
+		best_possible_ll += normal_lpdf(0.0, 0.0, sd);
 		data_y.push_back(y);
 		
 		mydata.emplace_back(x,y,sdscale*(double)sd);
@@ -584,7 +586,10 @@ int main(int argc, char** argv){
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	TopN<MyHypothesis> best(1);
+
+#if FEYNMAN
 	best.print_best = true;
+#endif 
 	
 
 	//	auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:(-%s);0:\u25A0;0:\u25A0");
@@ -612,13 +617,13 @@ int main(int argc, char** argv){
 //		return 0;
 
 	
-//	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
-//	MyMCTS m(h0, FleetArgs::explore, &mydata);
-//	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# ")  ) {
+	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
+	MyMCTS m(h0, FleetArgs::explore, &mydata);
+	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# "+str(best_possible_ll)+" ")  ) {
 	
-	auto h0 = MyHypothesis::sample(); // NOTE: We do NOT want to sample, since that constrains the MCTS 	
-	ParallelTempering m(h0, &mydata, 100, 100.0);
-	for(auto& h: m.run(Control()) | print(FleetArgs::print, "# ")  ) {
+//	auto h0 = MyHypothesis::sample(); // NOTE: We do NOT want to sample, since that constrains the MCTS 	
+//	ParallelTempering m(h0, &mydata, 150, 1.10); // 100, 100.0);
+//	for(auto& h: m.run(Control()) | print(FleetArgs::print, "# ")  ) {
 			
 		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these
 		
@@ -629,24 +634,32 @@ int main(int argc, char** argv){
 		
 		best << h;
 		
-		// It's important here that we do a structure_string without a dot, because
-		// we want to store hypotheses in the same place, even if they came from different MCTS nodes
-		auto ss = h.structure_string(false); 
+#if !FEYNMAN
+			// It's important here that we do a structure_string without a dot, because
+			// we want to store hypotheses in the same place, even if they came from different MCTS nodes
+			auto ss = h.structure_string(false); 
+			
+			if(not overall_samples.count(ss)) { // create this if it doesn't exist
+				overall_samples.emplace(ss,nsamples);
+			}
+			
+			// and add it
+			overall_samples[ss] << h;
+			
+			if(overall_samples.size() >= trim_at) {
+				trim_overall_samples(trim_to);
+			}
+#endif 
 		
-		if(not overall_samples.count(ss)) { // create this if it doesn't exist
-			overall_samples.emplace(ss,nsamples);
-		}
-		
-		// and add it
-		overall_samples[ss] << h;
-		
-		if(overall_samples.size() >= trim_at) {
-			trim_overall_samples(trim_to);
+		if(h.likelihood > end_at_likelihood) {
+			CTRL_C = true; // kill nicely. 
 		}
 	}
 	
-	// print our trees if we want them
-//	m.print(h0, FleetArgs::tree_path.c_str());
+//	m.print("# Final pool state:");
+		
+	// print our trees if we want them 
+	m.print(h0, FleetArgs::tree_path.c_str());
 	
 	//------------------
 	// Postprocessing
@@ -670,7 +683,7 @@ int main(int argc, char** argv){
 	std::sort(K.begin(), K.end());
 	
 	// And display!
-	COUT "structure\tstructure.max\tweighted.posterior\tposterior\tprior\tlikelihood\tf0\tf1\tpolynomial.degree\th" ENDL;//\tparseable.h" ENDL;
+	COUT "structure\tstructure.max\tweighted.posterior\tposterior\tprior\tlikelihood\tbest.possible.likelihood\tf0\tf1\tpolynomial.degree\th" ENDL;//\tparseable.h" ENDL;
 	for(auto& k : K) {
 		double best_posterior = k.first;
 		auto& ss = k.second; 
@@ -691,8 +704,9 @@ int main(int argc, char** argv){
 				 best_posterior TAB 
 				 ( (h.posterior-sz) + (best_posterior-Z)) TAB 
 				 h.posterior TAB h.prior TAB h.likelihood TAB
-				 h.callOne(ones, NaN) TAB 
+				 best_possible_ll TAB
 				 h.callOne(zeros, NaN) TAB 
+				 h.callOne(ones, NaN) TAB 
 				 get_polynomial_degree(h.get_value(), h.constants) TAB 
 				 Q(h.string()) // TAB 
 				 //Q(h.serialize()) 
@@ -705,6 +719,7 @@ int main(int argc, char** argv){
 //		PRINTN(d.input, b.callOne(d.input, NaN), d.output, d.reliability);
 //	}
 	
+	PRINTN("# Best possible likelihood:", best_possible_ll);
 	best.print("# Overall best: "+best.best().structure_string()+"\t");
 	PRINTN("# Overall samples size:" , overall_samples.size());
 //	PRINTN("# MCTS tree size:", m.count());	

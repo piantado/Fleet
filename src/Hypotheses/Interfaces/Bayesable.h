@@ -101,10 +101,10 @@ public:
 				
 				// This is a breakout in case our ll is too low
 				#ifndef NO_BREAKOUT
-				assert((sll <= 0 or breakout==-infinity) && "*** Cannot use breakout if likelihoods are positive");
-				if(likelihood < breakout) {
-					return likelihood = -infinity; // should not matter what value, but let's make it -infinity
-				}
+					assert((sll <= 0 or breakout==-infinity) && "*** Cannot use breakout if likelihoods are positive");
+					if(likelihood < breakout) {
+						return likelihood = -infinity; // should not matter what value, but let's make it -infinity
+					}
 				#endif 
 				
 				// add a break here 
