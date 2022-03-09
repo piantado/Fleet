@@ -173,8 +173,7 @@ namespace Builtins {
 			assert(vms->program.loader != nullptr);
 							
 			if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
-				vms->status = vmstatus_t::RECURSION_DEPTH;
-				return;
+				throw VMSRuntimeError();
 			}
 
 			// if we get here, then we have processed our arguments and they are stored in the input_t stack. 
@@ -224,8 +223,7 @@ namespace Builtins {
 		using mykey_t = short; // this is just the default type used for non-lex recursion
 		
 		if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
-			vms->status = vmstatus_t::RECURSION_DEPTH;
-			return;
+			throw VMSRuntimeError();
 		}
 				
 		auto x = vms->template getpop<input_t>(); // get the argument
@@ -276,8 +274,7 @@ namespace Builtins {
 			assert(vms->program.loader != nullptr);
 							
 			if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
-				vms->status = vmstatus_t::RECURSION_DEPTH;
-				return;
+				throw VMSRuntimeError();
 			}
 			
 			// the key here is the index into the lexicon
@@ -327,8 +324,7 @@ namespace Builtins {
 		assert(vms->program.loader != nullptr);
 						
 		if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
-			vms->status = vmstatus_t::RECURSION_DEPTH;
-			return;
+			throw VMSRuntimeError();
 		}
 		
 		auto key = vms->template getpop<key_t>();

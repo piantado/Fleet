@@ -240,8 +240,7 @@ public:
 			while(status == vmstatus_t::GOOD and (not program.empty()) ) {
 				
 				if(program.size() + runtime_counter.total > MAX_RUN_PROGRAM ) {  // if we've run too long or we couldn't possibly finish
-					status = vmstatus_t::RUN_TOO_LONG;
-					break;
+					throw VMSRuntimeError();
 				}
 				
 				FleetStatistics::vm_ops++;
