@@ -77,7 +77,7 @@ int main(int argc, char** argv){
 			decay_pos->push_back(i++);
 			
 			// add a check that we're using the right alphabet here
-			for(auto& c: s) assert(contains(alphabet,c));
+			check_alphabet(s, alphabet);
 		}
 		size_t ndata = this_data->size(); // note that below we might change this_data's pointer, but we still need this length
 			
@@ -94,7 +94,7 @@ int main(int argc, char** argv){
 										  .ndata=ndata, 
 										  .predict=const_cast<S*>(&EMPTY_STRING), 
 										  .responses=m,
-										  .chance=0.0, // 1e-30, // TODO: UPDATE ~~~~~~
+										  .chance=NaN, // should not be used via human_chance_lp above
 										  .decay_position=decay_pos,
 										  .my_decay_position=i-1
 										  });
@@ -196,7 +196,6 @@ int main(int argc, char** argv){
 					// now figure out the full set of strings
 					#pragma omp critical
 					{
-						
 						// find the MAP model hypothesis for this data point
 						double max_post = 0.0; 
 						size_t max_hi = 0;

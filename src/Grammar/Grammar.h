@@ -700,7 +700,7 @@ public:
 	// If eigen is defined we can get the transition matrix	
 	#ifdef AM_I_USING_EIGEN
 	Matrix get_nonterminal_transition_matrix() {
-		size_t NT = count_nonterminals();
+		const size_t NT = count_nonterminals();
 		Matrix m = Matrix::Zero(NT,NT);
 		for(size_t nt=0;nt<NT;nt++) {
 			double z = rule_normalizer(nt);
@@ -716,6 +716,41 @@ public:
 	}
 	#endif
 	
+	/**
+	 * @brief This computes the expected length of productions from this grammar, counting terminals and nonterminals as 1 each
+	 * 		   NOTE: We can do this smarter with a matrix eigenvalues, but its a bit less flexible/extensible
+	 * @param max_depth
+	 * @return 
+	 */	
+//	double get_expected_length(size_t max_depth=50) const { 
+//		
+//		const size_t NT = count_nonterminals();
+//		nonterminal_t start = nt<output_t>();
+//		// we'll build up a NT x max_depth dynamic programming table
+//		
+//		Vector2D<double> tab(NT, max_depth);
+//		tab.fill(0.0);
+//		tab[start,0] = 1; // start with 1
+//		
+//		for(size_t d=1;d<max_depth;d++) {
+//			for(nonterminal_t nt=0;nt<NT;nt++) {
+//				
+//				double z = rule_normalizer(nt);
+//				for(auto& r : rules[nt]) {
+//					double p = r.p / z;
+//					for(auto& to : r.get_child_types()) {
+//						m(to,nt) += p;
+//					}
+//				}
+//				
+//					tab[d][nt] = 0.0;
+//			}
+//		}
+//		
+//		
+//		double l = 0.0;
+//	}
+//	
 	
 	double log_probability(const Node& n) const {
 		/**

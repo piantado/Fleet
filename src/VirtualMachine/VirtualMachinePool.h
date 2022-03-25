@@ -95,7 +95,7 @@ public:
 		// we won't add stuff that's worse than MIN_LP or that will never run
 		// (it will never run if it's lp < worst_lp and we don't have enough steps to get there)
 		return lp > MIN_LP and 
-			   (Q.size() <= (MAX_STEPS-total_vms_steps) or lp > worst_lp);
+			   (Q.size() + total_vms_steps <= MAX_STEPS or lp > worst_lp);
 	}
 	
 	/**
@@ -168,7 +168,6 @@ public:
 			
 			VirtualMachineState_t* vms = Q.top(); Q.pop();
 			assert(vms->status == vmstatus_t::GOOD);
-			assert(vms->lp >= MIN_LP);
 			
 			// if we ever go back to the non-pointer version, we might need fanciness to move out of top https://stackoverflow.com/questions/20149471/move-out-element-of-std-priority-queue-in-c11
 			assert(vms->lp >= MIN_LP);
@@ -188,13 +187,13 @@ public:
 				delete vms; // if our previous copy isn't pushed back on the stack, delete it
 			} 
 			else {
-				// else restore to running order when we're RANDOM_CHOICE_NO_DELETE
+				// else restore to running order when we're RANDOM_CHOICE_NO_DELETE so it keeps running
 				vms->status = vmstatus_t::GOOD;
 			}
 		}
 
 		// this leaves some in the stack, but they are cleaned up by the destructor
-		
+		// (this way we can resume running if we want to)
 		return out;		
 	}
 	

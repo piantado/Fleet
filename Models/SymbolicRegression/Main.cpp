@@ -92,7 +92,7 @@ public:
 #if FEYNMAN
 
 		add("tau",         +[]()             -> D { return 2*M_PI; });
-		add("sqrt(%s)",    +[](D a)          -> D { return a*a; }, 1.),
+		add("sqrt(%s)",    +[](D a)          -> D { return std::sqrt(a); }, 1.),
 		add("pow(%s,2)",   +[](D a)          -> D { return a*a; }, 1.),
 		add("pow(%s,3)",   +[](D a)          -> D { return a*a*a; }, 1.),
 		add("expm(%s)",    +[](D a)          -> D { return exp(-a); }, 1),
@@ -107,7 +107,7 @@ public:
 		add("(-%s)",      +[](D a)          -> D { return -a; }),
 		add("exp(%s)",    +[](D a)          -> D { return exp(a); }, 1),
 		add("log(%s)",    +[](D a)          -> D { return log(a); }, 1),
-		add("pow(%s,%s)",    +[](D a, D b) -> D     { return pow(a,b); }),
+		add("pow(%s,%s)", +[](D a, D b)     -> D { return pow(a,b); }),
 				
 		// give the type to add and then a vms function
 		add_vms<D>("C", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {

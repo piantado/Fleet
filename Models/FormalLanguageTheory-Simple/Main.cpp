@@ -1,7 +1,12 @@
 
+// include before anything else
+#include "EigenLib.h"
+
+
 #include <string>
 #include <unistd.h> // for getpid
 using S = std::string; // just for convenience
+
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Set up some basic variables (which may get overwritten)
@@ -155,7 +160,6 @@ double MyHypothesis::regenerate_p = 0.75;
 #include "VMSRuntimeError.h"
 
 #include "HillClimbing.h"
-
 
 int main(int argc, char** argv){ 
 	
