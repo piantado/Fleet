@@ -14,6 +14,9 @@ namespace FleetStatistics {
 	std::atomic<uintmax_t> beam_steps(0);
 	std::atomic<uintmax_t> enumeration_steps(0);
 	
+	std::atomic<uintmax_t> depth_exceptions(0); // count up the grammar depth exceptions
+	
+	
 	void reset() {
 		posterior_calls = 0;
 		hypothesis_births = 0;

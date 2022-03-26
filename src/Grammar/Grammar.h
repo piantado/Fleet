@@ -14,7 +14,11 @@
 #include "Builtins.h"
 
 // an exception for recursing too deep
-class DepthException : public std::exception {};
+struct DepthException : public std::exception {
+	DepthException() {
+		++FleetStatistics::depth_exceptions;
+	}
+};
 
 /**
  * @class Grammar
@@ -187,6 +191,14 @@ public:
 		}
 		return n;
 	}
+	
+	void change_probability(const std::string& s, const double newp) {
+		Rule* r = get_rule(s);
+		Z[r->nt] -= r->p;
+		r->p = newp;
+		Z[r->nt] += r->p;
+	}
+	
 	size_t count_terminals(nonterminal_t nt) const {
 		/**
 		 * @brief Count the number of terminal rules of return type nt
@@ -556,12 +568,13 @@ public:
 		 * NOTE: this may throw a if the grammar recurses too far (usually that means the grammar is improper)
 		 */
 		
-		
 		if(depth >= GRAMMAR_MAX_DEPTH) {
-			CERR "*** Grammar exceeded max depth, are you sure the grammar probabilities are right?" ENDL;
-			CERR "*** You might be able to figure out what's wrong with gdb and then looking at the backtrace of" ENDL;
-			CERR "*** which nonterminals are called." ENDL;
-			CERR "*** Or.... maybe this nonterminal does not rewrite to a terminal?" ENDL;
+			#ifndef NO_WARN_DEPTH_EXCEPTION
+				CERR "*** Grammar exceeded max depth, are you sure the grammar probabilities are right?" ENDL;
+				CERR "*** You might be able to figure out what's wrong with gdb and then looking at the backtrace of" ENDL;
+				CERR "*** which nonterminals are called." ENDL;
+				CERR "*** Or.... maybe this nonterminal does not rewrite to a terminal?" ENDL;
+			#endif
 			throw DepthException();
 		}
 		
@@ -576,7 +589,9 @@ public:
 			}
 			
 		} catch(const DepthException& e) { 
-			CERR ntfrom << " ";
+			#ifndef NO_WARN_DEPTH_EXCEPTION
+				CERR ntfrom << " ";
+			#endif
 			throw e;
 		}
 		

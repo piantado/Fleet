@@ -6,7 +6,7 @@ include $(FLEET_ROOT)/Fleet.mk
 
 
 all:
-	g++ Main.cpp -o main -O2 -pthread $(FLEET_FLAGS) $(FLEET_INCLUDE) $(FLEET_LIBS) 
+	g++ Main.cpp -o main -O2 -pthread $(FLEET_FLAGS) $(FLEET_INCLUDE) $(FLEET_LIBS)  -fopenmp 
 clang:
 	clang++ Main.cpp -o main -O2 $(CLANG_FLAGS) $(FLEET_INCLUDE) $(FLEET_LIBS)
 debug:

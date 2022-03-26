@@ -1,4 +1,8 @@
 
+
+// stop us from warning about depth exceptions
+#define NO_WARN_DEPTH_EXCEPTION 1
+
 // include before anything else
 #include "EigenLib.h"
 
@@ -60,7 +64,7 @@ public:
 		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
 		add("not(%s)",       Builtins::Not<MyGrammar>);
 		
-		add("x",               Builtins::X<MyGrammar>, 10);
+		add("x",               Builtins::X<MyGrammar>, 10.0);
 		add("if_s(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
 		add("if_c(%s,%s,%s)",  Builtins::If<MyGrammar,char>);
 		add("flip()",          Builtins::Flip<MyGrammar>, 10.0);
@@ -117,23 +121,28 @@ public:
 	 */
 	
 	[[nodiscard]] virtual std::optional<std::pair<MyHypothesis,double>> propose() const override {
-		
-		std::pair<Node,double> x;
-		if(flip(regenerate_p)) {
-			auto p = Proposals::regenerate(&grammar, value);	
-			if(not p) return {};
-			x = p.value();
+		try { 
+			
+			std::pair<Node,double> x;
+			if(flip(regenerate_p)) {
+				auto p = Proposals::regenerate(&grammar, value);	
+				if(not p) return {};
+				x = p.value();
+			}
+			else {
+				auto p = flip() ? Proposals::insert_tree(&grammar, value) :
+								  Proposals::delete_tree(&grammar, value);	
+				if(not p) return {};
+				x = p.value();
+			}
+			return std::make_pair(MyHypothesis(std::move(x.first)), x.second); 
+			
+		}  catch (DepthException& e) {
+			return {};
 		}
-		else {
-			auto p = flip() ? Proposals::insert_tree(&grammar, value) :
-							  Proposals::delete_tree(&grammar, value);	
-			if(not p) return {};
-			x = p.value();
-		}
 		
-		return std::make_pair(MyHypothesis(std::move(x.first)), x.second); 
 	}	
-	
+//	
 	void print(std::string prefix="") override {
 		// we're going to make this print by showing the language we created on the line before
 		prefix = prefix+"#\n#" +  this->call("", "<err>").string() + "\n";
@@ -201,16 +210,46 @@ int main(int argc, char** argv){
 	assert(not contains(alphabet, ":"));// can't have these or else our string_to doesn't work
 	assert(not contains(alphabet, ","));
 	for(auto& di : mydata) {
-		for(auto& c: di.output) {
-			assert(contains(alphabet, c));
-		}
+		check_alphabet(di.output, alphabet);
 	}
 	
 	//------------------
 	// Run
 	//------------------
 
+	// update the rule probabilities
+	for(size_t i=0;i<1000;i++) {
+		//for(double cp=30.0;cp>3.0;cp -= 1.0) {
+		for(double cp=3.0;cp>0.1;cp -= 0.1) {
 			
+			grammar.change_probability("\u00D8", cp);
+			grammar.change_probability("x", cp);
+	
+			for(const char c : alphabet) {
+				grammar.change_probability( Q(S(1,c)), c/alphabet.length());
+			}
+	
+			#pragma omp parallel for 
+			for(size_t r=0;r<8;r++) { // need to write it this way because we can't change grammar in threads
+				TopN<MyHypothesis> best(1);
+				auto h0 = MyHypothesis::sample();
+				MCMCChain samp(h0, &mydata);
+				for(auto h : samp.run(Control()) | best ) {
+					UNUSED(h);
+				}
+				PRINTN(cp, best.best().posterior, QQ(best.best().string()));
+			}
+		}
+	}
+//			
+//	auto h0 = MyHypothesis::sample();
+//	for(size_t i=0;i<1000;i++) {
+//		auto p = h0.propose();
+//		if(p) PRINTN(h0, p.value().first);
+//	}
+//
+//	return 1; 
+	
 //	Fleet::Statistics::TopN<MyHypothesis> tn(10);
 //	for(enumerationidx_t z=0;z<10000000 and !CTRL_C;z++) {
 //		auto n = grammar.expand_from_integer(0, z);
@@ -227,7 +266,7 @@ int main(int argc, char** argv){
 //	tn.print();
 //
 //	return 0;
-
+/*
 	top.print_best = true;
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 1.20);
@@ -246,6 +285,8 @@ int main(int argc, char** argv){
 
 	}
 	top.print();
+
+*/
 
 }
 
