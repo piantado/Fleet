@@ -138,7 +138,14 @@ public:
 	}	
 
 	[[nodiscard]] static this_t sample() {
-		return this_t(grammar->generate());
+		// NOTE: This will try to genreate and if it fails enough times due to grammar depth,
+		// we will give an assertion error
+		for(size_t tries=0;tries<1000;tries++) {
+			try {
+				return this_t(grammar->generate());
+			} catch (DepthException& e) { pass; }
+		}
+		assert(false && "*** Unable to initialize in sample()");
 	}
 
 	/**

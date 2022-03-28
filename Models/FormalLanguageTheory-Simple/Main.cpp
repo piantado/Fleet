@@ -57,17 +57,17 @@ public:
 			else 						    a += b; 
 		}));
 
-		add("\u00D8",        +[]()         -> S          { return S(""); }, 10.0);
+		add("\u00D8",        +[]()         -> S          { return S(""); }, 3.0);
 		add("eq(%s,%s)",      +[](S x, S y) -> bool       { return x==y; });
 
 		add("and(%s,%s)",    Builtins::And<MyGrammar>);
 		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
 		add("not(%s)",       Builtins::Not<MyGrammar>);
 		
-		add("x",               Builtins::X<MyGrammar>, 10.0);
+		add("x",               Builtins::X<MyGrammar>, 3.0);
 		add("if_s(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
 		add("if_c(%s,%s,%s)",  Builtins::If<MyGrammar,char>);
-		add("flip()",          Builtins::Flip<MyGrammar>, 10.0);
+		add("flip()",          Builtins::Flip<MyGrammar>, 3.0);
 		add("F(%s)",           Builtins::Recurse<MyGrammar>);
 		add("Fm(%s)",          Builtins::MemRecurse<MyGrammar>);
 	}
@@ -183,7 +183,7 @@ int main(int argc, char** argv){
 	//------------------	
 	
 	for(const char c : alphabet) {
-		grammar.add_terminal( Q(S(1,c)), c, 10.0/alphabet.length());
+		grammar.add_terminal( Q(S(1,c)), c, 3.0/alphabet.length());
 	}
 		
 	//------------------
@@ -217,30 +217,6 @@ int main(int argc, char** argv){
 	// Run
 	//------------------
 
-	// update the rule probabilities
-	for(size_t i=0;i<1000;i++) {
-		//for(double cp=30.0;cp>3.0;cp -= 1.0) {
-		for(double cp=3.0;cp>0.1;cp -= 0.1) {
-			
-			grammar.change_probability("\u00D8", cp);
-			grammar.change_probability("x", cp);
-	
-			for(const char c : alphabet) {
-				grammar.change_probability( Q(S(1,c)), c/alphabet.length());
-			}
-	
-			#pragma omp parallel for 
-			for(size_t r=0;r<8;r++) { // need to write it this way because we can't change grammar in threads
-				TopN<MyHypothesis> best(1);
-				auto h0 = MyHypothesis::sample();
-				MCMCChain samp(h0, &mydata);
-				for(auto h : samp.run(Control()) | best ) {
-					UNUSED(h);
-				}
-				PRINTN(cp, best.best().posterior, QQ(best.best().string()));
-			}
-		}
-	}
 //			
 //	auto h0 = MyHypothesis::sample();
 //	for(size_t i=0;i<1000;i++) {
@@ -266,7 +242,7 @@ int main(int argc, char** argv){
 //	tn.print();
 //
 //	return 0;
-/*
+
 	top.print_best = true;
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 1.20);
@@ -286,7 +262,7 @@ int main(int argc, char** argv){
 	}
 	top.print();
 
-*/
+
 
 }
 

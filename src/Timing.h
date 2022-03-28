@@ -76,7 +76,7 @@ std::string datestring() {
 /// Time conversions for fleet
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-time_t convert_time(std::string& s) {
+time_t convert_time(const std::string& s) {
 	/**
 	 * @brief Converts our own time format to ms, which is what Fleet's time utilities use
 	 * 		  The time format we accept is #+(.#+)[smhd] where shmd specifies seconds, minutes, hours days 

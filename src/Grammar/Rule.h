@@ -10,9 +10,6 @@
 #include "Strings.h"
 #include "IO.h"
 
-
-
-
  /**
   * @class Rule
   * @author piantado

@@ -555,7 +555,7 @@ public:
 				COUT "# Total enumeration steps:" TAB FleetStatistics::enumeration_steps ENDL;
 			}		
 			if(FleetStatistics::depth_exceptions > 0){
-				COUT "# Warning: " TAB FleetStatistics::enumeration_steps TAB " grammar depth exceptions." ENDL;
+				COUT "# Warning: " TAB FleetStatistics::depth_exceptions TAB " grammar depth exceptions." ENDL;
 			}
 			
 			COUT "# Total posterior calls:" TAB FleetStatistics::posterior_calls ENDL;
