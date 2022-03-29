@@ -11,7 +11,7 @@ Inheritance diagram for Chain\+Pool$<$ H\+YP $>$\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=333pt]{class_chain_pool__inherit__graph}
+\includegraphics[width=350pt]{class_chain_pool__inherit__graph}
 \end{center}
 \end{figure}
 
@@ -21,7 +21,7 @@ Collaboration diagram for Chain\+Pool$<$ H\+YP $>$\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=313pt]{class_chain_pool__coll__graph}
+\includegraphics[width=339pt]{class_chain_pool__coll__graph}
 \end{center}
 \end{figure}
 \doxysubsection*{Public Types}
@@ -41,6 +41,10 @@ enum \mbox{\hyperlink{class_chain_pool_a5a4f9d83b4492d9457a7db8581e25b75}{Runnin
 \item 
 void \mbox{\hyperlink{class_chain_pool_a6c186d7addcd0e1ab0733aae3a760a47}{set\+\_\+data}} (typename H\+Y\+P\+::data\+\_\+t $\ast$d, bool recompute=true)
 \begin{DoxyCompactList}\small\item\em Set this data. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{class_chain_pool_aeec4366901f693ebe3a4275ac00dde2a}{nchains}} () const
+\item 
+void \mbox{\hyperlink{class_chain_pool_a38e61af5e8d4c0399ac0a30e2a0e18ce}{print}} (std\+::string prefix) const
+\item 
 \mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ H\+YP \& $>$ \mbox{\hyperlink{class_chain_pool_a84ad82009e98da528a9ab9aa97b6e81c}{run\+\_\+thread}} (\mbox{\hyperlink{struct_control}{Control}} \&ctl) override
 \begin{DoxyCompactList}\small\item\em This run helper is called internally by multiple different threads, and runs a given pool. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
@@ -110,6 +114,20 @@ D\+O\+NE&\\
 
 
 \doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_chain_pool_aeec4366901f693ebe3a4275ac00dde2a}\label{class_chain_pool_aeec4366901f693ebe3a4275ac00dde2a}} 
+\index{ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}!nchains@{nchains}}
+\index{nchains@{nchains}!ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{nchains()}{nchains()}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+size\+\_\+t \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP $>$\+::nchains (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_chain_pool_a38e61af5e8d4c0399ac0a30e2a0e18ce}\label{class_chain_pool_a38e61af5e8d4c0399ac0a30e2a0e18ce}} 
+\index{ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}!print@{print}}
+\index{print@{print}!ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+void \mbox{\hyperlink{class_chain_pool}{Chain\+Pool}}$<$ H\+YP $>$\+::\mbox{\hyperlink{structprint}{print}} (\begin{DoxyParamCaption}\item[{std\+::string}]{prefix }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
 \mbox{\Hypertarget{class_chain_pool_a84ad82009e98da528a9ab9aa97b6e81c}\label{class_chain_pool_a84ad82009e98da528a9ab9aa97b6e81c}} 
 \index{ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}!run\_thread@{run\_thread}}
 \index{run\_thread@{run\_thread}!ChainPool$<$ HYP $>$@{ChainPool$<$ HYP $>$}}

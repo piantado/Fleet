@@ -1,7 +1,7 @@
 <map id="src/Threads/OrderedLock.h" name="src/Threads/OrderedLock.h">
-<area shape="rect" id="node1" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="89,5,269,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,80,67,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="91,80,149,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="174,80,301,107"/>
-<area shape="rect" id="node5" title=" " alt="" coords="325,80,382,107"/>
+<area shape="rect" id="node1" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="95,5,289,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,80,72,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="96,80,160,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="185,80,327,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="351,80,414,107"/>
 </map>

@@ -34,12 +34,18 @@ class MyGrammar : public Grammar<S,S,     S,char,bool,double,StrSet,int>,
 				  public Singleton<MyGrammar> {
 public:
 	MyGrammar() {
+		// add a primitive here
+		add("substitute(%s,%s,%s)", +[](S s) -> S {
+			
+		});
+
+		
 		add("tail(%s)", +[](S s) -> S { 
 			if(s.length()>0) 
 				s.erase(0); 
 			return s;
 		});
-		
+				
 		add_vms<S,S,S>("append(%s,%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
 			S b = vms->getpop<S>();
 			S& a = vms->stack<S>().topref();

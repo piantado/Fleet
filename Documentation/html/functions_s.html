@@ -76,7 +76,6 @@ $(function() {
 , <a class="el" href="class_l_o_t_hypothesis.html#aba852f52c5979b542402be563882f421">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_m_c_m_cable.html#a376572ac482cac6d5352f45dbfefcb51">MCMCable&lt; this_t, Args &gt;</a>
 , <a class="el" href="struct_object.html#a6961d5811ef36022afaef8ae9c0546ae">Object&lt; feature_t &gt;</a>
-, <a class="el" href="class_reservoir_sample.html#adc52ee8c3b5cbb7fd364315614d35595">ReservoirSample&lt; T &gt;</a>
 </li>
 <li>sample_child_index()
 : <a class="el" href="class_m_c_t_s_base.html#aa4acc03a923f7d9fac613ec76303ee46">MCTSBase&lt; this_t, HYP &gt;</a>
@@ -86,6 +85,8 @@ $(function() {
 </li>
 <li>samples
 : <a class="el" href="class_m_c_m_c_chain.html#a0921800317c0fa39639b8f40cefee432">MCMCChain&lt; HYP &gt;</a>
+, <a class="el" href="class_posterior_weighted_reservoir_sample.html#a60d564989b6a6ffad36723caa301e481">PosteriorWeightedReservoirSample&lt; T &gt;</a>
+, <a class="el" href="class_reservoir_sample.html#a820a482d5cb2ac74629e36b08dac2ca0">ReservoirSample&lt; T &gt;</a>
 </li>
 <li>SD
 : <a class="el" href="class_t_normal_variable.html#a70478964ada03ce39fe74ec5bd013610">TNormalVariable&lt; f &gt;</a>
@@ -110,7 +111,7 @@ $(function() {
 : <a class="el" href="class_grammar_hypothesis.html#a35d301f2c65f60fd8e7de84a071cb1fd">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
 , <a class="el" href="class_lexicon.html#a9cc0c92e5ed9e16f35627806452d102b">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#a5fc6e161f67c02a174955cd55a373a99">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
-, <a class="el" href="struct_reservoir_sample_1_1_item.html#a92696114cc5bb287b99c0c3452e0973b">ReservoirSample&lt; T &gt;::Item</a>
+, <a class="el" href="class_posterior_weighted_reservoir_sample.html#a570f7bcd1e7cddf3167f7b440375666e">PosteriorWeightedReservoirSample&lt; T &gt;</a>
 , <a class="el" href="class_reservoir_sample.html#a6ec29a6f3fa43ef921f59e86b917fcfd">ReservoirSample&lt; T &gt;</a>
 , <a class="el" href="class_serializable.html#ab3bc104a1b1defa794505d221c8586d2">Serializable&lt; T &gt;</a>
 , <a class="el" href="class_top_n.html#af399e4461070ce1749fa4fd0fec30e89">TopN&lt; T &gt;</a>
@@ -142,7 +143,8 @@ $(function() {
 : <a class="el" href="class_top_n.html#a378be54915dab8603b8408ee72310bb7">TopN&lt; T &gt;</a>
 </li>
 <li>set_reservoir_size()
-: <a class="el" href="class_reservoir_sample.html#ae67a44361cb145cc2f355290ff4babad">ReservoirSample&lt; T &gt;</a>
+: <a class="el" href="class_posterior_weighted_reservoir_sample.html#a6097243c7f61c8e204df00cd8bdf8061">PosteriorWeightedReservoirSample&lt; T &gt;</a>
+, <a class="el" href="class_reservoir_sample.html#ae67a44361cb145cc2f355290ff4babad">ReservoirSample&lt; T &gt;</a>
 </li>
 <li>set_size()
 : <a class="el" href="class_top_n.html#a37c7506de12038af705c55fc479dba7b">TopN&lt; T &gt;</a>
@@ -166,6 +168,7 @@ $(function() {
 </li>
 <li>size()
 : <a class="el" href="class_discrete_distribution.html#ad74207d32c2ed6c5c26b3f991f4fedba">DiscreteDistribution&lt; T &gt;</a>
+, <a class="el" href="class_posterior_weighted_reservoir_sample.html#a590661a17a025e08cab005eb5c9cd8f6">PosteriorWeightedReservoirSample&lt; T &gt;</a>
 , <a class="el" href="class_reservoir_sample.html#a53a41ec89cedfec21c7924aa98347659">ReservoirSample&lt; T &gt;</a>
 , <a class="el" href="class_stack.html#aa34222dbc28544189d97add837498b71">Stack&lt; T &gt;</a>
 , <a class="el" href="class_top_n.html#ae32d3e10d1571af34f84f32f5ca78fff">TopN&lt; T &gt;</a>
@@ -184,7 +187,7 @@ $(function() {
 : <a class="el" href="class_stack.html#aefee698059467258bbd79045aca62a63">Stack&lt; T &gt;</a>
 </li>
 <li>stack()
-: <a class="el" href="class_virtual_machine_state.html#a580428f53e64cde8aef3c0a6a79838ec">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#adc77f615f164e83ee4a25f06b3a5b64d">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>start
 : <a class="el" href="class_base_node_1_1_node_iterator.html#a0583943df31aaf646c09338a1ba866c1">BaseNode&lt; this_t &gt;::NodeIterator</a>

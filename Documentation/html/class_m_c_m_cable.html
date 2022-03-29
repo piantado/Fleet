@@ -79,8 +79,8 @@ Inheritance diagram for MCMCable&lt; this_t, Args &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_m_c_m_cable__inherit__graph.png" border="0" usemap="#_m_c_m_cable_3_01this__t_00_01_args_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="_m_c_m_cable_3_01this__t_00_01_args_01_4_inherit__map" id="_m_c_m_cable_3_01this__t_00_01_args_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,80,184,107"/>
-<area shape="rect" href="class_bayesable.html" title=" " alt="" coords="22,5,167,32"/>
+<area shape="rect" title=" " alt="" coords="5,80,200,107"/>
+<area shape="rect" href="class_bayesable.html" title=" " alt="" coords="22,5,183,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -88,8 +88,8 @@ Collaboration diagram for MCMCable&lt; this_t, Args &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_m_c_m_cable__coll__graph.png" border="0" usemap="#_m_c_m_cable_3_01this__t_00_01_args_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="_m_c_m_cable_3_01this__t_00_01_args_01_4_coll__map" id="_m_c_m_cable_3_01this__t_00_01_args_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="5,80,184,107"/>
-<area shape="rect" href="class_bayesable.html" title=" " alt="" coords="22,5,167,32"/>
+<area shape="rect" title=" " alt="" coords="5,80,200,107"/>
+<area shape="rect" href="class_bayesable.html" title=" " alt="" coords="22,5,183,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -97,8 +97,8 @@ Collaboration diagram for MCMCable&lt; this_t, Args &gt;:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3bc2cc7dd7cf2385ade7c82a51f3a566"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_m_cable.html#a3bc2cc7dd7cf2385ade7c82a51f3a566">MCMCable</a> ()</td></tr>
 <tr class="separator:a3bc2cc7dd7cf2385ade7c82a51f3a566"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98b52f1867ea0d72c1c91b4496d756d2"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; this_t, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_m_cable.html#a98b52f1867ea0d72c1c91b4496d756d2">propose</a> () const =0</td></tr>
-<tr class="separator:a98b52f1867ea0d72c1c91b4496d756d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4d53c768669da021c6136bb4dffc82d"><td class="memItemLeft" align="right" valign="top">virtual std::optional&lt; std::pair&lt; this_t, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_m_cable.html#af4d53c768669da021c6136bb4dffc82d">propose</a> () const =0</td></tr>
+<tr class="separator:af4d53c768669da021c6136bb4dffc82d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7017e18b4a1508bc4cff90fb82a8ec1"><td class="memItemLeft" align="right" valign="top">virtual this_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_m_cable.html#aa7017e18b4a1508bc4cff90fb82a8ec1">restart</a> () const =0</td></tr>
 <tr class="separator:aa7017e18b4a1508bc4cff90fb82a8ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b35c04d3d1326b930cfc69dfe0bd207"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_c_m_cable.html#a7b35c04d3d1326b930cfc69dfe0bd207">operator==</a> (const this_t &amp;h) const =0</td></tr>
@@ -251,8 +251,8 @@ template&lt;typename this_t , typename... Args&gt; </div>
 
 </div>
 </div>
-<a id="a98b52f1867ea0d72c1c91b4496d756d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98b52f1867ea0d72c1c91b4496d756d2">&#9670;&nbsp;</a></span>propose()</h2>
+<a id="af4d53c768669da021c6136bb4dffc82d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4d53c768669da021c6136bb4dffc82d">&#9670;&nbsp;</a></span>propose()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -263,7 +263,7 @@ template&lt;typename this_t , typename... Args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::pair&lt;this_t,double&gt; <a class="el" href="class_m_c_m_cable.html">MCMCable</a>&lt; this_t, Args &gt;::propose </td>
+          <td class="memname">virtual std::optional&lt;std::pair&lt;this_t,double&gt; &gt; <a class="el" href="class_m_c_m_cable.html">MCMCable</a>&lt; this_t, Args &gt;::propose </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -276,7 +276,7 @@ template&lt;typename this_t , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_t_normal_variable.html#ad749023d34d2fad8b465aa2bfeba51a3">TNormalVariable&lt;+[](float x) -&gt;</a>.</p>
+<p>Implemented in <a class="el" href="class_t_normal_variable.html#a69221930d9babce05fe51cafba22a0fe">TNormalVariable&lt;+[](float x) -&gt;</a>.</p>
 
 </div>
 </div>

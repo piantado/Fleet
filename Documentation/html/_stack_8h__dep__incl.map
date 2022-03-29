@@ -1,10 +1,10 @@
 <map id="src/Containers/Stack.h" name="src/Containers/Stack.h">
-<area shape="rect" id="node1" title="Many things in Fleet are stacks and this is designed to allow for rapid changse to the stack type in ..." alt="" coords="256,5,412,32"/>
-<area shape="rect" id="node2" href="$_program_8h.html" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="211,80,350,121"/>
-<area shape="rect" id="node8" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="343,169,498,211"/>
-<area shape="rect" id="node3" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="175,177,319,203"/>
-<area shape="rect" id="node7" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="7,333,227,360"/>
-<area shape="rect" id="node4" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="303,333,432,360"/>
-<area shape="rect" id="node5" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="337,259,504,285"/>
-<area shape="rect" id="node6" href="$_proposers_8h.html" title=" " alt="" coords="23,259,211,285"/>
+<area shape="rect" id="node1" title="Many things in Fleet are stacks and this is designed to allow for rapid changse to the stack type in ..." alt="" coords="268,5,435,32"/>
+<area shape="rect" id="node2" href="$_program_8h.html" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="220,80,372,121"/>
+<area shape="rect" id="node8" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="361,169,532,211"/>
+<area shape="rect" id="node3" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="180,177,337,203"/>
+<area shape="rect" id="node7" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="6,333,242,360"/>
+<area shape="rect" id="node4" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="319,333,459,360"/>
+<area shape="rect" id="node5" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="351,259,536,285"/>
+<area shape="rect" id="node6" href="$_proposers_8h.html" title=" " alt="" coords="22,259,225,285"/>
 </map>

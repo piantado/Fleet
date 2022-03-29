@@ -1,16 +1,16 @@
 <map id="src/VirtualMachine/RuntimeCounter.h" name="src/VirtualMachine/RuntimeCounter.h">
-<area shape="rect" id="node1" title="This class manages counting operations at runtime and interfaces operations to a grammar NOTE: Curren..." alt="" coords="233,5,364,47"/>
-<area shape="rect" id="node2" title=" " alt="" coords="133,95,195,121"/>
-<area shape="rect" id="node3" title=" " alt="" coords="219,95,277,121"/>
-<area shape="rect" id="node4" href="$_instruction_8h.html" title="f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg is just a supplemental ar..." alt="" coords="302,95,397,121"/>
-<area shape="rect" id="node12" href="$_miscellaneous_8h.html" title=" " alt="" coords="617,95,733,121"/>
-<area shape="rect" id="node5" title=" " alt="" coords="5,169,75,196"/>
-<area shape="rect" id="node6" title=" " alt="" coords="99,169,171,196"/>
-<area shape="rect" id="node7" title=" " alt="" coords="195,169,256,196"/>
-<area shape="rect" id="node8" href="$_v_m_s_runtime_error_8h.html" title=" " alt="" coords="280,169,419,196"/>
-<area shape="rect" id="node10" href="$_ops_8h.html" title=" " alt="" coords="443,169,501,196"/>
-<area shape="rect" id="node11" href="$_v_m_status_8h.html" title=" " alt="" coords="525,169,616,196"/>
-<area shape="rect" id="node9" title=" " alt="" coords="310,244,389,271"/>
-<area shape="rect" id="node13" title=" " alt="" coords="640,169,709,196"/>
-<area shape="rect" id="node14" title=" " alt="" coords="733,169,795,196"/>
+<area shape="rect" id="node1" title="This class manages counting operations at runtime and interfaces operations to a grammar NOTE: Curren..." alt="" coords="251,5,395,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="147,95,213,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="238,95,301,121"/>
+<area shape="rect" id="node4" href="$_instruction_8h.html" title="f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg is just a supplemental ar..." alt="" coords="325,95,427,121"/>
+<area shape="rect" id="node12" href="$_miscellaneous_8h.html" title=" " alt="" coords="653,95,779,121"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,169,80,196"/>
+<area shape="rect" id="node6" title=" " alt="" coords="104,169,184,196"/>
+<area shape="rect" id="node7" title=" " alt="" coords="209,169,277,196"/>
+<area shape="rect" id="node8" href="$_v_m_s_runtime_error_8h.html" title=" " alt="" coords="301,169,451,196"/>
+<area shape="rect" id="node10" href="$_ops_8h.html" title=" " alt="" coords="475,169,533,196"/>
+<area shape="rect" id="node11" href="$_v_m_status_8h.html" title=" " alt="" coords="557,169,653,196"/>
+<area shape="rect" id="node9" title=" " alt="" coords="333,244,419,271"/>
+<area shape="rect" id="node13" title=" " alt="" coords="677,169,755,196"/>
+<area shape="rect" id="node14" title=" " alt="" coords="779,169,845,196"/>
 </map>

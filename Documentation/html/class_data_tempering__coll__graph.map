@@ -1,8 +1,8 @@
 <map id="DataTempering&lt; HYP &gt;" name="DataTempering&lt; HYP &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="119,365,281,392"/>
-<area shape="rect" id="node2" href="$class_parallel_tempering.html" title=" " alt="" coords="133,275,267,316"/>
-<area shape="rect" id="node3" href="$class_chain_pool.html" title=" " alt="" coords="75,199,210,225"/>
-<area shape="rect" id="node4" href="$class_threaded_inference_interface.html" title=" " alt="" coords="5,95,187,136"/>
-<area shape="rect" id="node5" href="$class_concurrent_queue.html" title=" " alt="" coords="8,5,184,32"/>
-<area shape="rect" id="node6" href="$class_ordered_lock.html" title=" " alt="" coords="211,102,307,129"/>
+<area shape="rect" id="node1" title=" " alt="" coords="135,365,313,392"/>
+<area shape="rect" id="node2" href="$class_parallel_tempering.html" title=" " alt="" coords="149,275,299,316"/>
+<area shape="rect" id="node3" href="$class_chain_pool.html" title=" " alt="" coords="93,199,235,225"/>
+<area shape="rect" id="node4" href="$class_threaded_inference_interface.html" title=" " alt="" coords="5,95,208,136"/>
+<area shape="rect" id="node5" href="$class_concurrent_queue.html" title=" " alt="" coords="11,5,202,32"/>
+<area shape="rect" id="node6" href="$class_ordered_lock.html" title=" " alt="" coords="232,102,336,129"/>
 </map>

@@ -1,8 +1,8 @@
 <map id="src/VirtualMachine/Builtins.h" name="src/VirtualMachine/Builtins.h">
-<area shape="rect" id="node1" title="The Builtin type basically just stores a function pointer and an Op command. This makes it a bit hand..." alt="" coords="131,5,262,47"/>
-<area shape="rect" id="node2" href="$_errors_8h.html" title=" " alt="" coords="113,95,181,121"/>
-<area shape="rect" id="node6" href="$_primitive_8h.html" title=" " alt="" coords="205,95,289,121"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,169,84,196"/>
-<area shape="rect" id="node4" title=" " alt="" coords="108,169,187,196"/>
-<area shape="rect" id="node5" title=" " alt="" coords="211,169,265,196"/>
+<area shape="rect" id="node1" title="The Builtin type basically just stores a function pointer and an Op command. This makes it a bit hand..." alt="" coords="141,5,284,47"/>
+<area shape="rect" id="node2" href="$_errors_8h.html" title=" " alt="" coords="123,95,195,121"/>
+<area shape="rect" id="node6" href="$_primitive_8h.html" title=" " alt="" coords="219,95,313,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,169,92,196"/>
+<area shape="rect" id="node4" title=" " alt="" coords="116,169,203,196"/>
+<area shape="rect" id="node5" title=" " alt="" coords="227,169,286,196"/>
 </map>

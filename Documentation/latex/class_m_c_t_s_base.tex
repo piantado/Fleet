@@ -77,7 +77,7 @@ bool \mbox{\hyperlink{class_m_c_t_s_base_a095bdcbb5fb6496d9785c92e4b25f247}{open
 \item 
 int \mbox{\hyperlink{class_m_c_t_s_base_a077933a17328588e3b23a850d4c232b7}{which\+\_\+expansion}}
 \item 
-unsigned int \mbox{\hyperlink{class_m_c_t_s_base_a7436eedfe21533cb6f7f0c41dc18805a}{nvisits}}
+std\+::atomic$<$ unsigned int $>$ \mbox{\hyperlink{class_m_c_t_s_base_a6eee1fcf7b064e7537dfd068a8f81772}{nvisits}}
 \item 
 \mbox{\hyperlink{class_streaming_statistics}{Streaming\+Statistics}} \mbox{\hyperlink{class_m_c_t_s_base_a97aa55c6561985f29cac5557d061bf27}{statistics}}
 \end{DoxyCompactItemize}
@@ -327,12 +327,12 @@ double \mbox{\hyperlink{class_m_c_t_s_base}{M\+C\+T\+S\+Base}}$<$ this\+\_\+t, H
 {\footnotesize\ttfamily template$<$typename this\+\_\+t , typename H\+YP $>$ \\
 \mbox{\hyperlink{class_spin_lock}{Spin\+Lock}} \mbox{\hyperlink{class_m_c_t_s_base}{M\+C\+T\+S\+Base}}$<$ this\+\_\+t, H\+YP $>$\+::mylock}
 
-\mbox{\Hypertarget{class_m_c_t_s_base_a7436eedfe21533cb6f7f0c41dc18805a}\label{class_m_c_t_s_base_a7436eedfe21533cb6f7f0c41dc18805a}} 
+\mbox{\Hypertarget{class_m_c_t_s_base_a6eee1fcf7b064e7537dfd068a8f81772}\label{class_m_c_t_s_base_a6eee1fcf7b064e7537dfd068a8f81772}} 
 \index{MCTSBase$<$ this\_t, HYP $>$@{MCTSBase$<$ this\_t, HYP $>$}!nvisits@{nvisits}}
 \index{nvisits@{nvisits}!MCTSBase$<$ this\_t, HYP $>$@{MCTSBase$<$ this\_t, HYP $>$}}
 \doxysubsubsection{\texorpdfstring{nvisits}{nvisits}}
 {\footnotesize\ttfamily template$<$typename this\+\_\+t , typename H\+YP $>$ \\
-unsigned int \mbox{\hyperlink{class_m_c_t_s_base}{M\+C\+T\+S\+Base}}$<$ this\+\_\+t, H\+YP $>$\+::nvisits}
+std\+::atomic$<$unsigned int$>$ \mbox{\hyperlink{class_m_c_t_s_base}{M\+C\+T\+S\+Base}}$<$ this\+\_\+t, H\+YP $>$\+::nvisits}
 
 \mbox{\Hypertarget{class_m_c_t_s_base_a095bdcbb5fb6496d9785c92e4b25f247}\label{class_m_c_t_s_base_a095bdcbb5fb6496d9785c92e4b25f247}} 
 \index{MCTSBase$<$ this\_t, HYP $>$@{MCTSBase$<$ this\_t, HYP $>$}!open@{open}}

@@ -66,7 +66,7 @@ virtual double \mbox{\hyperlink{class_grammar_hypothesis_a769eea50d9e40668022b12
 \begin{DoxyCompactList}\small\item\em This computes the likelihood of the {\itshape human data}. \end{DoxyCompactList}\item 
 virtual this\+\_\+t \mbox{\hyperlink{class_grammar_hypothesis_a85c5aad5990900d4da6eca5a24deb3e6}{restart}} () const override
 \item 
-virtual std\+::pair$<$ this\+\_\+t, double $>$ \mbox{\hyperlink{class_grammar_hypothesis_a8e6d781ab5fa0a6656b09b607a906735}{propose}} () const override
+virtual std\+::optional$<$ std\+::pair$<$ this\+\_\+t, double $>$ $>$ \mbox{\hyperlink{class_grammar_hypothesis_a0a913896ba7c1e4590f7082145badbd0}{propose}} () const override
 \begin{DoxyCompactList}\small\item\em Propose to the hypothesis. The sometimes does grammar parameters and sometimes other parameters, which are all stored as Vector\+Hypotheses. It is sure to call the recompute functions when necessary. \end{DoxyCompactList}\item 
 virtual Vector \mbox{\hyperlink{class_grammar_hypothesis_a67803dc9b323fade04efa3dc3505fc7d}{hypothesis\+\_\+prior}} (const Matrix \&myC) const
 \begin{DoxyCompactList}\small\item\em Compute a vector of the prior (one for each hypothesis) using the given counts matrix (hypotheses x rules), AT the specified temperature. \end{DoxyCompactList}\item 
@@ -339,12 +339,12 @@ Need to override print since it will print in a different format.
 
 Reimplemented from \mbox{\hyperlink{class_bayesable_a87d5d9481d6a72b017e44b175071fa5e}{Bayesable$<$ Args... $>$}}.
 
-\mbox{\Hypertarget{class_grammar_hypothesis_a8e6d781ab5fa0a6656b09b607a906735}\label{class_grammar_hypothesis_a8e6d781ab5fa0a6656b09b607a906735}} 
+\mbox{\Hypertarget{class_grammar_hypothesis_a0a913896ba7c1e4590f7082145badbd0}\label{class_grammar_hypothesis_a0a913896ba7c1e4590f7082145badbd0}} 
 \index{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}!propose@{propose}}
 \index{propose@{propose}!GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$@{GrammarHypothesis$<$ this\_t, \_HYP, datum\_t, data\_t $>$}}
 \doxysubsubsection{\texorpdfstring{propose()}{propose()}}
 {\footnotesize\ttfamily template$<$typename this\+\_\+t , typename \+\_\+\+H\+YP , typename datum\+\_\+t  = Human\+Datum$<$\+\_\+\+H\+Y\+P$>$, typename data\+\_\+t  = std\+::vector$<$datum\+\_\+t$>$$>$ \\
-virtual std\+::pair$<$this\+\_\+t,double$>$ \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis}}$<$ this\+\_\+t, \+\_\+\+H\+YP, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} $>$\+::propose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+virtual std\+::optional$<$std\+::pair$<$this\+\_\+t,double$>$ $>$ \mbox{\hyperlink{class_grammar_hypothesis}{Grammar\+Hypothesis}}$<$ this\+\_\+t, \+\_\+\+H\+YP, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} $>$\+::propose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 

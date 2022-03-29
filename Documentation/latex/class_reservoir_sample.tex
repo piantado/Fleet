@@ -11,7 +11,7 @@ Inheritance diagram for Reservoir\+Sample$<$ T $>$\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=231pt]{class_reservoir_sample__inherit__graph}
+\includegraphics[width=248pt]{class_reservoir_sample__inherit__graph}
 \end{center}
 \end{figure}
 
@@ -21,14 +21,9 @@ Collaboration diagram for Reservoir\+Sample$<$ T $>$\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{class_reservoir_sample__coll__graph}
+\includegraphics[width=248pt]{class_reservoir_sample__coll__graph}
 \end{center}
 \end{figure}
-\doxysubsection*{Classes}
-\begin{DoxyCompactItemize}
-\item 
-class \mbox{\hyperlink{struct_reservoir_sample_1_1_item}{Item}}
-\end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -42,9 +37,7 @@ virtual void \mbox{\hyperlink{class_reservoir_sample_a12257ed4961156b6614eeddacd
 \item 
 void \mbox{\hyperlink{class_reservoir_sample_a06e60e404cf49a9261f51d6b07bbf017}{operator$<$$<$}} (T x)
 \item 
-std\+::vector$<$ T $>$ \mbox{\hyperlink{class_reservoir_sample_a0f0abf510882715b487f2254b6af25b1}{values}} () const
-\begin{DoxyCompactList}\small\item\em Get a multiset of values (ignoring the reservoir weights) \end{DoxyCompactList}\item 
-T \mbox{\hyperlink{class_reservoir_sample_adc52ee8c3b5cbb7fd364315614d35595}{sample}} () const
+const std\+::vector$<$ T $>$ \& \mbox{\hyperlink{class_reservoir_sample_a7dd272a0c61670daa768638d4139a0c3}{values}} () const
 \item 
 void \mbox{\hyperlink{class_reservoir_sample_a8527b800cc94f227a7793e8c93055d82}{clear}} ()
 \item 
@@ -58,7 +51,9 @@ static \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}}$<$ T $>$ \mb
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{class_top_n}{TopN}}$<$ \mbox{\hyperlink{struct_reservoir_sample_1_1_item}{Item}} $>$ \mbox{\hyperlink{class_reservoir_sample_a94a92f438328cbca4aa5f0ba92867142}{top}}
+std\+::vector$<$ T $>$ \mbox{\hyperlink{class_reservoir_sample_a820a482d5cb2ac74629e36b08dac2ca0}{samples}}
+\item 
+size\+\_\+t \mbox{\hyperlink{class_reservoir_sample_a5652893c70d0bb0937ef5ed30801eb0f}{capacity}}
 \item 
 unsigned long \mbox{\hyperlink{class_reservoir_sample_a33f6cc3a51f9591f6e25dacf0cf8e663}{N}}
 \end{DoxyCompactItemize}
@@ -115,16 +110,6 @@ static \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}}$<$T$>$ \mbox
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 void \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}}$<$ T $>$\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{T}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_reservoir_sample_adc52ee8c3b5cbb7fd364315614d35595}\label{class_reservoir_sample_adc52ee8c3b5cbb7fd364315614d35595}} 
-\index{ReservoirSample$<$ T $>$@{ReservoirSample$<$ T $>$}!sample@{sample}}
-\index{sample@{sample}!ReservoirSample$<$ T $>$@{ReservoirSample$<$ T $>$}}
-\doxysubsubsection{\texorpdfstring{sample()}{sample()}}
-{\footnotesize\ttfamily template$<$typename T $>$ \\
-T \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}}$<$ T $>$\+::sample (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
-
-Return a sample from my vals \begin{DoxyReturn}{Returns}
-
-\end{DoxyReturn}
 \mbox{\Hypertarget{class_reservoir_sample_a6ec29a6f3fa43ef921f59e86b917fcfd}\label{class_reservoir_sample_a6ec29a6f3fa43ef921f59e86b917fcfd}} 
 \index{ReservoirSample$<$ T $>$@{ReservoirSample$<$ T $>$}!serialize@{serialize}}
 \index{serialize@{serialize}!ReservoirSample$<$ T $>$@{ReservoirSample$<$ T $>$}}
@@ -154,23 +139,23 @@ size\+\_\+t \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}}$<$ T $>
 How many elements are currently stored? \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_reservoir_sample_a0f0abf510882715b487f2254b6af25b1}\label{class_reservoir_sample_a0f0abf510882715b487f2254b6af25b1}} 
+\mbox{\Hypertarget{class_reservoir_sample_a7dd272a0c61670daa768638d4139a0c3}\label{class_reservoir_sample_a7dd272a0c61670daa768638d4139a0c3}} 
 \index{ReservoirSample$<$ T $>$@{ReservoirSample$<$ T $>$}!values@{values}}
 \index{values@{values}!ReservoirSample$<$ T $>$@{ReservoirSample$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{values()}{values()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-std\+::vector$<$T$>$ \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}}$<$ T $>$\+::values (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+const std\+::vector$<$T$>$\& \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}}$<$ T $>$\+::values (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
-
-
-Get a multiset of values (ignoring the reservoir weights) 
-
-\begin{DoxyReturn}{Returns}
-
-\end{DoxyReturn}
 
 
 \doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_reservoir_sample_a5652893c70d0bb0937ef5ed30801eb0f}\label{class_reservoir_sample_a5652893c70d0bb0937ef5ed30801eb0f}} 
+\index{ReservoirSample$<$ T $>$@{ReservoirSample$<$ T $>$}!capacity@{capacity}}
+\index{capacity@{capacity}!ReservoirSample$<$ T $>$@{ReservoirSample$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{capacity}{capacity}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+size\+\_\+t \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}}$<$ T $>$\+::capacity}
+
 \mbox{\Hypertarget{class_reservoir_sample_a33f6cc3a51f9591f6e25dacf0cf8e663}\label{class_reservoir_sample_a33f6cc3a51f9591f6e25dacf0cf8e663}} 
 \index{ReservoirSample$<$ T $>$@{ReservoirSample$<$ T $>$}!N@{N}}
 \index{N@{N}!ReservoirSample$<$ T $>$@{ReservoirSample$<$ T $>$}}
@@ -178,12 +163,12 @@ Get a multiset of values (ignoring the reservoir weights)
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 unsigned long \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}}$<$ T $>$\+::N}
 
-\mbox{\Hypertarget{class_reservoir_sample_a94a92f438328cbca4aa5f0ba92867142}\label{class_reservoir_sample_a94a92f438328cbca4aa5f0ba92867142}} 
-\index{ReservoirSample$<$ T $>$@{ReservoirSample$<$ T $>$}!top@{top}}
-\index{top@{top}!ReservoirSample$<$ T $>$@{ReservoirSample$<$ T $>$}}
-\doxysubsubsection{\texorpdfstring{top}{top}}
+\mbox{\Hypertarget{class_reservoir_sample_a820a482d5cb2ac74629e36b08dac2ca0}\label{class_reservoir_sample_a820a482d5cb2ac74629e36b08dac2ca0}} 
+\index{ReservoirSample$<$ T $>$@{ReservoirSample$<$ T $>$}!samples@{samples}}
+\index{samples@{samples}!ReservoirSample$<$ T $>$@{ReservoirSample$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{samples}{samples}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-\mbox{\hyperlink{class_top_n}{TopN}}$<$\mbox{\hyperlink{struct_reservoir_sample_1_1_item}{Item}}$>$ \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}}$<$ T $>$\+::top}
+std\+::vector$<$T$>$ \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}}$<$ T $>$\+::samples}
 
 
 

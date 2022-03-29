@@ -1,9 +1,9 @@
 <map id="src/VirtualMachine/Program/Program.h" name="src/VirtualMachine/Program/Program.h">
-<area shape="rect" id="node1" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="233,5,371,47"/>
-<area shape="rect" id="node2" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="230,102,374,129"/>
-<area shape="rect" id="node6" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="364,259,584,285"/>
-<area shape="rect" id="node7" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="31,95,186,136"/>
-<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="85,259,215,285"/>
-<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="5,184,172,211"/>
-<area shape="rect" id="node5" href="$_proposers_8h.html" title=" " alt="" coords="248,184,436,211"/>
+<area shape="rect" id="node1" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="251,5,403,47"/>
+<area shape="rect" id="node2" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="249,102,406,129"/>
+<area shape="rect" id="node6" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="388,259,624,285"/>
+<area shape="rect" id="node7" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="34,95,205,136"/>
+<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="93,259,233,285"/>
+<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="5,184,191,211"/>
+<area shape="rect" id="node5" href="$_proposers_8h.html" title=" " alt="" coords="266,184,469,211"/>
 </map>

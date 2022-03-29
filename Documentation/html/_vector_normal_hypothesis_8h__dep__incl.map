@@ -1,4 +1,4 @@
 <map id="src/Hypotheses/VectorNormalHypothesis.h" name="src/Hypotheses/VectorNormalHypothesis.h">
-<area shape="rect" id="node1" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior...." alt="" coords="31,5,229,47"/>
-<area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,95,255,121"/>
+<area shape="rect" id="node1" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior...." alt="" coords="34,5,250,47"/>
+<area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,95,279,121"/>
 </map>

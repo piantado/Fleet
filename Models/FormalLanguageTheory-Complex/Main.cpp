@@ -31,8 +31,8 @@ const size_t MAX_PR_LINES = 1000000;
 const double MAX_TEMP = 1.20; 
 unsigned long PRINT_STRINGS; // print at most this many strings for each hypothesis
 
-//std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
-std::vector<S> data_amounts={"100"}; // 
+std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
+//std::vector<S> data_amounts={"100"}; // 
 
 size_t current_ntokens = 0; // how many tokens are there currently? Just useful to know
 
@@ -209,13 +209,13 @@ public:
 	
 	[[nodiscard]] virtual std::optional<std::pair<InnerHypothesis,double>> propose() const override {
 		try { 
+			
 			std::optional<std::pair<Node,double>> x;
-
-			if(flip(regenerate_p))       x = Proposals::regenerate(&grammar, value);	
-			else if(flip(0.1))  x = Proposals::sample_function_leaving_args(&grammar, value);
-			else if(flip(0.1))  x = Proposals::swap_args(&grammar, value);
-			else if(flip())     x = Proposals::insert_tree(&grammar, value);	
-			else                x = Proposals::delete_tree(&grammar, value);			
+			if(flip(regenerate_p))  x = Proposals::regenerate(&grammar, value);	
+			else if(flip(0.1))  	x = Proposals::sample_function_leaving_args(&grammar, value);
+			else if(flip(0.1))  	x = Proposals::swap_args(&grammar, value);
+			else if(flip())     	x = Proposals::insert_tree(&grammar, value);	
+			else                	x = Proposals::delete_tree(&grammar, value);			
 			
 			if(not x) { return {}; }
 			
@@ -302,8 +302,9 @@ public:
 		auto [prec, rec] = get_precision_and_recall(o, prdata, PREC_REC_N);
 		COUT "#\n";
 		COUT "# "; o.print(PRINT_STRINGS);	COUT "\n";
-		COUT prefix << current_data TAB current_ntokens TAB mem_pr.first TAB mem_pr.second TAB this->born TAB this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->serialize()) TAB prec TAB rec;
-		COUT "" TAB QQ(this->string()) ENDL
+		COUT prefix << current_data TAB current_ntokens TAB mem_pr.first TAB mem_pr.second TAB 
+			 this->born TAB this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->serialize()) 
+			 TAB prec TAB rec TAB QQ(this->string()) ENDL
 	}
 	
 	 
@@ -349,7 +350,6 @@ int main(int argc, char** argv){
 	
 	COUT "# Using alphabet=" << alphabet ENDL;
 
-
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Set up the grammar using command line arguments
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -392,13 +392,14 @@ int main(int argc, char** argv){
 		
 	// Build up an initial hypothesis with the right number of factors
 	MyHypothesis h0;
-	for(size_t i=0;i<nfactors;i++) { h0[i] = InnerHypothesis::sample(); }
+	for(size_t i=0;i<nfactors;i++) { 
+		h0[i] = InnerHypothesis::sample(); 
+	}
  
 	// where to store these hypotheses
 	TopN<MyHypothesis> all; 
 	
 	ParallelTempering samp(h0, &datas[0], FleetArgs::nchains, MAX_TEMP); 
-//	ChainPool samp(h0, &datas[0], NTEMPS); 
 
 	// Set these up as the defaults as below
 	VirtualMachineControl::MAX_STEPS  = 1024; // TODO: Change to MAX_RUN_PROGRAM or remove?
@@ -429,7 +430,7 @@ int main(int argc, char** argv){
 		// set this global variable so we know
 		current_ntokens = 0;
 		for(auto& d : this_data) { UNUSED(d); current_ntokens++; }
-				
+//		for(auto& h : samp.run_thread(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, FleetArgs::restart))) {
 		for(auto& h : samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, FleetArgs::restart))
 						| print(FleetArgs::print) | all) {
 			UNUSED(h);

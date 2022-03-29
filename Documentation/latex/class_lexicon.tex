@@ -68,7 +68,7 @@ virtual void \mbox{\hyperlink{class_lexicon_a970ca24ab5c6ae8065809e820861162d}{c
 \begin{DoxyCompactList}\small\item\em Fill in all the holes in this hypothesis, at random, modifying self. N\+O\+TE for L\+O\+T\+Hypotheses this will also compile, which is what we need to do for a \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}}. \end{DoxyCompactList}\item 
 virtual double \mbox{\hyperlink{class_lexicon_a82e06fa6c6a0892ed6de3694f5abc1b5}{compute\+\_\+prior}} () override
 \begin{DoxyCompactList}\small\item\em Compute the prior -- defaultly not defined. \end{DoxyCompactList}\item 
-virtual std\+::pair$<$ this\+\_\+t, double $>$ \mbox{\hyperlink{class_lexicon_a09591a3a0ef84702a263bdeaaeeb376f}{propose}} () const override
+virtual std\+::optional$<$ std\+::pair$<$ this\+\_\+t, double $>$ $>$ \mbox{\hyperlink{class_lexicon_a5de4f2940877e8b55305c1400e540eca}{propose}} () const override
 \begin{DoxyCompactList}\small\item\em This proposal guarantees that there will be at least one factor that is proposed to. Each individual factor is proposed to with p\+\_\+factor\+\_\+propose. \end{DoxyCompactList}\item 
 virtual this\+\_\+t \mbox{\hyperlink{class_lexicon_a85ac08b4f9c4483f460f845ac80318af}{restart}} () const override
 \item 
@@ -373,12 +373,12 @@ I\+N\+N\+ER\& \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, key\+\_\
 {\footnotesize\ttfamily template$<$typename this\+\_\+t , typename key\+\_\+t , typename I\+N\+N\+ER , typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename datum\+\_\+t  = defaultdatum\+\_\+t$<$\+\_\+input\+\_\+t, \+\_\+output\+\_\+t$>$, typename \+\_\+\+Virtual\+Machine\+State\+\_\+t  = typename I\+N\+N\+E\+R\+::\+Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t$>$ \\
 const I\+N\+N\+ER\& \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, key\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{const key\+\_\+t \&}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
-\mbox{\Hypertarget{class_lexicon_a09591a3a0ef84702a263bdeaaeeb376f}\label{class_lexicon_a09591a3a0ef84702a263bdeaaeeb376f}} 
+\mbox{\Hypertarget{class_lexicon_a5de4f2940877e8b55305c1400e540eca}\label{class_lexicon_a5de4f2940877e8b55305c1400e540eca}} 
 \index{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}!propose@{propose}}
 \index{propose@{propose}!Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$@{Lexicon$<$ this\_t, key\_t, INNER, \_input\_t, \_output\_t, datum\_t, \_VirtualMachineState\_t $>$}}
 \doxysubsubsection{\texorpdfstring{propose()}{propose()}}
 {\footnotesize\ttfamily template$<$typename this\+\_\+t , typename key\+\_\+t , typename I\+N\+N\+ER , typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename datum\+\_\+t  = defaultdatum\+\_\+t$<$\+\_\+input\+\_\+t, \+\_\+output\+\_\+t$>$, typename \+\_\+\+Virtual\+Machine\+State\+\_\+t  = typename I\+N\+N\+E\+R\+::\+Grammar\+\_\+t\+::\+Virtual\+Machine\+State\+\_\+t$>$ \\
-virtual std\+::pair$<$this\+\_\+t,double$>$ \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, key\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::propose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+virtual std\+::optional$<$std\+::pair$<$this\+\_\+t,double$>$ $>$ \mbox{\hyperlink{class_lexicon}{Lexicon}}$<$ this\+\_\+t, key\+\_\+t, I\+N\+N\+ER, \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, \mbox{\hyperlink{class_bayesable_a9f1a6c0cd7855550fa10b1a8f13a5867}{datum\+\_\+t}}, \+\_\+\+Virtual\+Machine\+State\+\_\+t $>$\+::propose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 

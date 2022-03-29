@@ -82,8 +82,8 @@ Inheritance diagram for Combinators::SKGrammar:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_combinators_1_1_s_k_grammar__inherit__graph.png" border="0" usemap="#_combinators_1_1_s_k_grammar_inherit__map" alt="Inheritance graph"/></div>
 <map name="_combinators_1_1_s_k_grammar_inherit__map" id="_combinators_1_1_s_k_grammar_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,95,181,121"/>
-<area shape="rect" href="class_grammar.html" title=" " alt="" coords="14,5,173,47"/>
+<area shape="rect" title=" " alt="" coords="5,95,197,121"/>
+<area shape="rect" href="class_grammar.html" title=" " alt="" coords="15,5,188,47"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -91,8 +91,8 @@ Collaboration diagram for Combinators::SKGrammar:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_combinators_1_1_s_k_grammar__coll__graph.png" border="0" usemap="#_combinators_1_1_s_k_grammar_coll__map" alt="Collaboration graph"/></div>
 <map name="_combinators_1_1_s_k_grammar_coll__map" id="_combinators_1_1_s_k_grammar_coll__map">
-<area shape="rect" title=" " alt="" coords="5,95,181,121"/>
-<area shape="rect" href="class_grammar.html" title=" " alt="" coords="14,5,173,47"/>
+<area shape="rect" title=" " alt="" coords="5,95,197,121"/>
+<area shape="rect" href="class_grammar.html" title=" " alt="" coords="15,5,188,47"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -122,6 +122,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:acb0ad7c8f130df2dd73bb5040bdf0fa2 inherit pub_methods_class_grammar"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6f447aca4141c52f3197eac688c0be7 inherit pub_methods_class_grammar"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#af6f447aca4141c52f3197eac688c0be7">count_rules</a> () const</td></tr>
 <tr class="separator:af6f447aca4141c52f3197eac688c0be7 inherit pub_methods_class_grammar"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13e6a10b4707908a35e11b3afed14206 inherit pub_methods_class_grammar"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a13e6a10b4707908a35e11b3afed14206">change_probability</a> (const std::string &amp;s, const double newp)</td></tr>
+<tr class="separator:a13e6a10b4707908a35e11b3afed14206 inherit pub_methods_class_grammar"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44c81f50a71a83e95b558d32fa1715c4 inherit pub_methods_class_grammar"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a44c81f50a71a83e95b558d32fa1715c4">count_terminals</a> (<a class="el" href="_nonterminal_8h.html#a1c5bfe9b903f69c83bbde5da7035fef3">nonterminal_t</a> <a class="el" href="class_grammar.html#ac7ec043aec5203a2cfac44f9cec50132">nt</a>) const</td></tr>
 <tr class="separator:a44c81f50a71a83e95b558d32fa1715c4 inherit pub_methods_class_grammar"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6325e79ee8789f3fe851927f7354d91 inherit pub_methods_class_grammar"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#af6325e79ee8789f3fe851927f7354d91">add_vms</a> (std::string fmt, <a class="el" href="class_grammar.html#af9b9935f4da29e68087b25ef75f22564">FT</a> *f, double p=1.0, <a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45ab">Op</a> o=<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abaeb6d8ae6f20283755b339c0dc273988b">Op::Standard</a>, int a=0)</td></tr>
@@ -170,6 +172,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aac5f819cd2708982cb22caa49949c225 inherit pub_methods_class_grammar"><td class="memItemLeft" align="right" valign="top">std::vector&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#aac5f819cd2708982cb22caa49949c225">get_counts</a> (const std::map&lt; K, T &gt; &amp;v) const</td></tr>
 <tr class="separator:aac5f819cd2708982cb22caa49949c225 inherit pub_methods_class_grammar"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44385654719beb219184074602ee7440 inherit pub_methods_class_grammar"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a44385654719beb219184074602ee7440">log_probability</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
+<tr class="memdesc:a44385654719beb219184074602ee7440 inherit pub_methods_class_grammar"><td class="mdescLeft">&#160;</td><td class="mdescRight">This computes the expected length of productions from this grammar, counting terminals and nonterminals as 1 each NOTE: We can do this smarter with a matrix eigenvalues, but its a bit less flexible/extensible.  <a href="class_grammar.html#a44385654719beb219184074602ee7440">More...</a><br /></td></tr>
 <tr class="separator:a44385654719beb219184074602ee7440 inherit pub_methods_class_grammar"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63a4c7f6584fdd70aaa2882a19c2f04f inherit pub_methods_class_grammar"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a63a4c7f6584fdd70aaa2882a19c2f04f">from_parseable</a> (std::deque&lt; std::string &gt; &amp;q) const</td></tr>
 <tr class="separator:a63a4c7f6584fdd70aaa2882a19c2f04f inherit pub_methods_class_grammar"><td class="memSeparator" colspan="2">&#160;</td></tr>

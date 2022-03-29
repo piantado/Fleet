@@ -76,37 +76,80 @@ Functions</h2></td></tr>
 <tr class="memitem:a73f20ef1547bc5beef3e6e3adad2139c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a> (const <a class="el" href="class_node.html">Node</a> &amp;n)</td></tr>
 <tr class="memdesc:a73f20ef1547bc5beef3e6e3adad2139c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function for whether we can resample from a node (just accesses n.can_resample)  <a href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">More...</a><br /></td></tr>
 <tr class="separator:a73f20ef1547bc5beef3e6e3adad2139c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add01a544339cc3713d02f663c331f33b"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
-<tr class="memitem:add01a544339cc3713d02f663c331f33b"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#add01a544339cc3713d02f663c331f33b">prior_proposal</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
-<tr class="separator:add01a544339cc3713d02f663c331f33b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3012f5a65ba25baf5fa053cf7be71a4c"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
+<tr class="memitem:a3012f5a65ba25baf5fa053cf7be71a4c"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#a3012f5a65ba25baf5fa053cf7be71a4c">prior_proposal</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
+<tr class="separator:a3012f5a65ba25baf5fa053cf7be71a4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ddee063d47a51537e6c7a6ecdefa1aa"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
 <tr class="memitem:a8ddee063d47a51537e6c7a6ecdefa1aa"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#a8ddee063d47a51537e6c7a6ecdefa1aa">p_regeneration_propose_to</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;a, const <a class="el" href="class_node.html">Node</a> &amp;b)</td></tr>
 <tr class="memdesc:a8ddee063d47a51537e6c7a6ecdefa1aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Probability of proposing from a to b under regeneration.  <a href="namespace_proposals.html#a8ddee063d47a51537e6c7a6ecdefa1aa">More...</a><br /></td></tr>
 <tr class="separator:a8ddee063d47a51537e6c7a6ecdefa1aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedcca10b4519a9aad7739878036019f3"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
-<tr class="memitem:aedcca10b4519a9aad7739878036019f3"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#aedcca10b4519a9aad7739878036019f3">regenerate</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
-<tr class="memdesc:aedcca10b4519a9aad7739878036019f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Regenerate with a rational-rules (Goodman et al.) style regeneration proposal: pick a node uniformly and regenerate it from the grammar.  <a href="namespace_proposals.html#aedcca10b4519a9aad7739878036019f3">More...</a><br /></td></tr>
-<tr class="separator:aedcca10b4519a9aad7739878036019f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c990430ad048f427224a481f5f2a557"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType , int D&gt; </td></tr>
-<tr class="memitem:a0c990430ad048f427224a481f5f2a557"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#a0c990430ad048f427224a481f5f2a557">regenerate_shallow</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
-<tr class="memdesc:a0c990430ad048f427224a481f5f2a557"><td class="mdescLeft">&#160;</td><td class="mdescRight">Regenerate with rational-rules style proposals, but only allow proposals to trees with a max depth of D. This encourages smaller changes, but also gets you stuck pretty bad in local maxima since you can't take big hops. Probably will work best with restarts.  <a href="namespace_proposals.html#a0c990430ad048f427224a481f5f2a557">More...</a><br /></td></tr>
-<tr class="separator:a0c990430ad048f427224a481f5f2a557"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8714ac1333d5aff2d248ef10a8eb5493"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
-<tr class="memitem:a8714ac1333d5aff2d248ef10a8eb5493"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#a8714ac1333d5aff2d248ef10a8eb5493">insert_tree</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
-<tr class="separator:a8714ac1333d5aff2d248ef10a8eb5493"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a785ec0b4f2f5df9b78bbb8c0c5f16118"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
-<tr class="memitem:a785ec0b4f2f5df9b78bbb8c0c5f16118"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#a785ec0b4f2f5df9b78bbb8c0c5f16118">delete_tree</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
-<tr class="separator:a785ec0b4f2f5df9b78bbb8c0c5f16118"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7f6d33ccb0ba81730e267d1de60c476"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
-<tr class="memitem:aa7f6d33ccb0ba81730e267d1de60c476"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#aa7f6d33ccb0ba81730e267d1de60c476">sample_function_leaving_args</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
-<tr class="memdesc:aa7f6d33ccb0ba81730e267d1de60c476"><td class="mdescLeft">&#160;</td><td class="mdescRight">This samples functions f(a,b) -&gt; g(a,b) (e.g. without destroying what's below). This uses a little trick that the node only stores the rule, so we can swap it out if we want.  <a href="namespace_proposals.html#aa7f6d33ccb0ba81730e267d1de60c476">More...</a><br /></td></tr>
-<tr class="separator:aa7f6d33ccb0ba81730e267d1de60c476"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88343558ba97fd2c5cf57cbb609ffdf1"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
-<tr class="memitem:a88343558ba97fd2c5cf57cbb609ffdf1"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#a88343558ba97fd2c5cf57cbb609ffdf1">swap_args</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
-<tr class="memdesc:a88343558ba97fd2c5cf57cbb609ffdf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This propose swaps around arguments of the same type.  <a href="namespace_proposals.html#a88343558ba97fd2c5cf57cbb609ffdf1">More...</a><br /></td></tr>
-<tr class="separator:a88343558ba97fd2c5cf57cbb609ffdf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa58341a97b9dd0098e8d9b3cfd9d4ae5"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
+<tr class="memitem:aa58341a97b9dd0098e8d9b3cfd9d4ae5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#aa58341a97b9dd0098e8d9b3cfd9d4ae5">__regenerate_when_can_resample</a> (const GrammarType *grammar, <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
+<tr class="memdesc:aa58341a97b9dd0098e8d9b3cfd9d4ae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">A little helper function that resamples everything below when we can. If we can't, then we'll recurse.  <a href="namespace_proposals.html#aa58341a97b9dd0098e8d9b3cfd9d4ae5">More...</a><br /></td></tr>
+<tr class="separator:aa58341a97b9dd0098e8d9b3cfd9d4ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf13014284cb355d53f6321fd67c7924"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
+<tr class="memitem:abf13014284cb355d53f6321fd67c7924"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#abf13014284cb355d53f6321fd67c7924">regenerate</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
+<tr class="memdesc:abf13014284cb355d53f6321fd67c7924"><td class="mdescLeft">&#160;</td><td class="mdescRight">Regenerate with a rational-rules (Goodman et al.) style regeneration proposal: pick a node uniformly and regenerate it from the grammar.  <a href="namespace_proposals.html#abf13014284cb355d53f6321fd67c7924">More...</a><br /></td></tr>
+<tr class="separator:abf13014284cb355d53f6321fd67c7924"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0b4274b605df07754cb5969a027a79e"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType , int D&gt; </td></tr>
+<tr class="memitem:ab0b4274b605df07754cb5969a027a79e"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#ab0b4274b605df07754cb5969a027a79e">regenerate_shallow</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
+<tr class="memdesc:ab0b4274b605df07754cb5969a027a79e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Regenerate with rational-rules style proposals, but only allow proposals to trees with a max depth of D. This encourages smaller changes, but also gets you stuck pretty bad in local maxima since you can't take big hops. Probably will work best with restarts.  <a href="namespace_proposals.html#ab0b4274b605df07754cb5969a027a79e">More...</a><br /></td></tr>
+<tr class="separator:ab0b4274b605df07754cb5969a027a79e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80fac26925c5ecc3da882b120071e38a"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
+<tr class="memitem:a80fac26925c5ecc3da882b120071e38a"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#a80fac26925c5ecc3da882b120071e38a">insert_tree</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
+<tr class="separator:a80fac26925c5ecc3da882b120071e38a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d56c952fccbc336182eb79f1db6e296"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
+<tr class="memitem:a2d56c952fccbc336182eb79f1db6e296"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#a2d56c952fccbc336182eb79f1db6e296">delete_tree</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
+<tr class="separator:a2d56c952fccbc336182eb79f1db6e296"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9239140f112d50a80ae101c98bd7f0f6"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
+<tr class="memitem:a9239140f112d50a80ae101c98bd7f0f6"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#a9239140f112d50a80ae101c98bd7f0f6">sample_function_leaving_args</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
+<tr class="memdesc:a9239140f112d50a80ae101c98bd7f0f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This samples functions f(a,b) -&gt; g(a,b) (e.g. without destroying what's below). This uses a little trick that the node only stores the rule, so we can swap it out if we want.  <a href="namespace_proposals.html#a9239140f112d50a80ae101c98bd7f0f6">More...</a><br /></td></tr>
+<tr class="separator:a9239140f112d50a80ae101c98bd7f0f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d4e7cd154fe31641434b35c515a5ab8"><td class="memTemplParams" colspan="2">template&lt;typename GrammarType &gt; </td></tr>
+<tr class="memitem:a0d4e7cd154fe31641434b35c515a5ab8"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::pair&lt; <a class="el" href="class_node.html">Node</a>, double &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_proposals.html#a0d4e7cd154fe31641434b35c515a5ab8">swap_args</a> (GrammarType *grammar, const <a class="el" href="class_node.html">Node</a> &amp;from)</td></tr>
+<tr class="memdesc:a0d4e7cd154fe31641434b35c515a5ab8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This propose swaps around arguments of the same type.  <a href="namespace_proposals.html#a0d4e7cd154fe31641434b35c515a5ab8">More...</a><br /></td></tr>
+<tr class="separator:a0d4e7cd154fe31641434b35c515a5ab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="aa58341a97b9dd0098e8d9b3cfd9d4ae5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa58341a97b9dd0098e8d9b3cfd9d4ae5">&#9670;&nbsp;</a></span>__regenerate_when_can_resample()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename GrammarType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void Proposals::__regenerate_when_can_resample </td>
+          <td>(</td>
+          <td class="paramtype">const GrammarType *&#160;</td>
+          <td class="paramname"><em>grammar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_node.html">Node</a> &amp;&#160;</td>
+          <td class="paramname"><em>from</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A little helper function that resamples everything below when we can. If we can't, then we'll recurse. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">grammar</td><td></td></tr>
+    <tr><td class="paramname">from</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a73f20ef1547bc5beef3e6e3adad2139c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a73f20ef1547bc5beef3e6e3adad2139c">&#9670;&nbsp;</a></span>can_resample()</h2>
 
@@ -134,8 +177,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a785ec0b4f2f5df9b78bbb8c0c5f16118"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a785ec0b4f2f5df9b78bbb8c0c5f16118">&#9670;&nbsp;</a></span>delete_tree()</h2>
+<a id="a2d56c952fccbc336182eb79f1db6e296"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d56c952fccbc336182eb79f1db6e296">&#9670;&nbsp;</a></span>delete_tree()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -143,7 +186,7 @@ Functions</h2></td></tr>
 template&lt;typename GrammarType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt;<a class="el" href="class_node.html">Node</a>, double&gt; Proposals::delete_tree </td>
+          <td class="memname">std::optional&lt;std::pair&lt;<a class="el" href="class_node.html">Node</a>, double&gt; &gt; Proposals::delete_tree </td>
           <td>(</td>
           <td class="paramtype">GrammarType *&#160;</td>
           <td class="paramname"><em>grammar</em>, </td>
@@ -165,8 +208,8 @@ template&lt;typename GrammarType &gt; </div>
 
 </div>
 </div>
-<a id="a8714ac1333d5aff2d248ef10a8eb5493"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8714ac1333d5aff2d248ef10a8eb5493">&#9670;&nbsp;</a></span>insert_tree()</h2>
+<a id="a80fac26925c5ecc3da882b120071e38a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80fac26925c5ecc3da882b120071e38a">&#9670;&nbsp;</a></span>insert_tree()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -174,7 +217,7 @@ template&lt;typename GrammarType &gt; </div>
 template&lt;typename GrammarType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt;<a class="el" href="class_node.html">Node</a>, double&gt; Proposals::insert_tree </td>
+          <td class="memname">std::optional&lt;std::pair&lt;<a class="el" href="class_node.html">Node</a>, double&gt; &gt; Proposals::insert_tree </td>
           <td>(</td>
           <td class="paramtype">GrammarType *&#160;</td>
           <td class="paramname"><em>grammar</em>, </td>
@@ -243,8 +286,8 @@ template&lt;typename GrammarType &gt; </div>
 
 </div>
 </div>
-<a id="add01a544339cc3713d02f663c331f33b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add01a544339cc3713d02f663c331f33b">&#9670;&nbsp;</a></span>prior_proposal()</h2>
+<a id="a3012f5a65ba25baf5fa053cf7be71a4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3012f5a65ba25baf5fa053cf7be71a4c">&#9670;&nbsp;</a></span>prior_proposal()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -252,7 +295,7 @@ template&lt;typename GrammarType &gt; </div>
 template&lt;typename GrammarType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt;<a class="el" href="class_node.html">Node</a>,double&gt; Proposals::prior_proposal </td>
+          <td class="memname">std::optional&lt;std::pair&lt;<a class="el" href="class_node.html">Node</a>,double&gt; &gt; Proposals::prior_proposal </td>
           <td>(</td>
           <td class="paramtype">GrammarType *&#160;</td>
           <td class="paramname"><em>grammar</em>, </td>
@@ -273,8 +316,8 @@ template&lt;typename GrammarType &gt; </div>
 
 </div>
 </div>
-<a id="aedcca10b4519a9aad7739878036019f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedcca10b4519a9aad7739878036019f3">&#9670;&nbsp;</a></span>regenerate()</h2>
+<a id="abf13014284cb355d53f6321fd67c7924"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf13014284cb355d53f6321fd67c7924">&#9670;&nbsp;</a></span>regenerate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -282,7 +325,7 @@ template&lt;typename GrammarType &gt; </div>
 template&lt;typename GrammarType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt;<a class="el" href="class_node.html">Node</a>,double&gt; Proposals::regenerate </td>
+          <td class="memname">std::optional&lt;std::pair&lt;<a class="el" href="class_node.html">Node</a>,double&gt; &gt; Proposals::regenerate </td>
           <td>(</td>
           <td class="paramtype">GrammarType *&#160;</td>
           <td class="paramname"><em>grammar</em>, </td>
@@ -313,8 +356,8 @@ template&lt;typename GrammarType &gt; </div>
 
 </div>
 </div>
-<a id="a0c990430ad048f427224a481f5f2a557"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c990430ad048f427224a481f5f2a557">&#9670;&nbsp;</a></span>regenerate_shallow()</h2>
+<a id="ab0b4274b605df07754cb5969a027a79e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0b4274b605df07754cb5969a027a79e">&#9670;&nbsp;</a></span>regenerate_shallow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -322,7 +365,7 @@ template&lt;typename GrammarType &gt; </div>
 template&lt;typename GrammarType , int D&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt;<a class="el" href="class_node.html">Node</a>,double&gt; Proposals::regenerate_shallow </td>
+          <td class="memname">std::optional&lt;std::pair&lt;<a class="el" href="class_node.html">Node</a>,double&gt; &gt; Proposals::regenerate_shallow </td>
           <td>(</td>
           <td class="paramtype">GrammarType *&#160;</td>
           <td class="paramname"><em>grammar</em>, </td>
@@ -353,8 +396,8 @@ template&lt;typename GrammarType , int D&gt; </div>
 
 </div>
 </div>
-<a id="aa7f6d33ccb0ba81730e267d1de60c476"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa7f6d33ccb0ba81730e267d1de60c476">&#9670;&nbsp;</a></span>sample_function_leaving_args()</h2>
+<a id="a9239140f112d50a80ae101c98bd7f0f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9239140f112d50a80ae101c98bd7f0f6">&#9670;&nbsp;</a></span>sample_function_leaving_args()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -362,7 +405,7 @@ template&lt;typename GrammarType , int D&gt; </div>
 template&lt;typename GrammarType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt;<a class="el" href="class_node.html">Node</a>,double&gt; Proposals::sample_function_leaving_args </td>
+          <td class="memname">std::optional&lt;std::pair&lt;<a class="el" href="class_node.html">Node</a>,double&gt; &gt; Proposals::sample_function_leaving_args </td>
           <td>(</td>
           <td class="paramtype">GrammarType *&#160;</td>
           <td class="paramname"><em>grammar</em>, </td>
@@ -393,8 +436,8 @@ template&lt;typename GrammarType &gt; </div>
 
 </div>
 </div>
-<a id="a88343558ba97fd2c5cf57cbb609ffdf1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a88343558ba97fd2c5cf57cbb609ffdf1">&#9670;&nbsp;</a></span>swap_args()</h2>
+<a id="a0d4e7cd154fe31641434b35c515a5ab8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d4e7cd154fe31641434b35c515a5ab8">&#9670;&nbsp;</a></span>swap_args()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -402,7 +445,7 @@ template&lt;typename GrammarType &gt; </div>
 template&lt;typename GrammarType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt;<a class="el" href="class_node.html">Node</a>,double&gt; Proposals::swap_args </td>
+          <td class="memname">std::optional&lt;std::pair&lt;<a class="el" href="class_node.html">Node</a>,double&gt; &gt; Proposals::swap_args </td>
           <td>(</td>
           <td class="paramtype">GrammarType *&#160;</td>
           <td class="paramname"><em>grammar</em>, </td>

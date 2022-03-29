@@ -129,97 +129,115 @@ $(function() {
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> FIRST, <span class="keyword">typename</span>... ARGS&gt;</div>
 <div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="_i_o_8h.html#a69bfeadd71c3650be17f98956cb4e66e">   73</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="_i_o_8h.html#a69bfeadd71c3650be17f98956cb4e66e">DEBUG</a>(FIRST f, ARGS... args) {</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    std::lock_guard guard(<a class="code" href="_i_o_8h.html#a5601d33ab71bf86bd00332675c55be51">output_lock</a>);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="_i_o_8h.html#a69e31dd29ab761526291c2210bc7ded0">OUTPUTN</a>(std::cout, <span class="stringliteral">&quot;DEBUG&quot;</span>, std::this_thread::get_id(), f, args...);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="_i_o_8h.html#a96c995bb00590c0945415eee56bf0eb2">   84</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="_i_o_8h.html#a96c995bb00590c0945415eee56bf0eb2">save</a>(std::string filename, T&amp; hypotheses) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    std::ofstream out(filename);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; v: hypotheses) {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        out &lt;&lt; v.serialize() <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    out.close();    </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;}</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> HYP&gt;</div>
-<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="_i_o_8h.html#aeadafe3418f48a79ec06a8e582bd809a">  102</a></span>&#160;std::vector&lt;HYP&gt; <a class="code" href="_i_o_8h.html#aeadafe3418f48a79ec06a8e582bd809a">load</a>(std::string filename) {</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    std::vector&lt;HYP&gt; out;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    std::ifstream fs(filename);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    std::string line;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordflow">while</span>(std::getline(fs, line)) {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">//      auto [col1, col2] = split&lt;2&gt;(line, &#39;\t&#39;);</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        out.push_back(HYP::deserialize(line)); <span class="comment">// we&#39;ve stored hypotheses in position 1</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment">//      CERR line ENDL;</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    }</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordflow">return</span> out;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;}</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="_i_o_8h.html#abd92671c9b71c77653e36bfd92877875">  123</a></span>&#160;std::string <a class="code" href="_i_o_8h.html#abd92671c9b71c77653e36bfd92877875">gulp</a>(std::string filename) {</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    std::string ret;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    std::ifstream fs(filename);</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    std::string line;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">while</span>(std::getline(fs, line)) {</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keywordflow">if</span>(line.length() &gt; 0 and line[0] != <span class="charliteral">&#39;#&#39;</span>){</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            ret += line + <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        }</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    }</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    ret.erase(ret.size()-1); <span class="comment">// remove last newline</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordflow">return</span> ret;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;}</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> N&gt;</div>
-<div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="_i_o_8h.html#a917c5bd217eff49da014535e85121975">  149</a></span>&#160;std::vector&lt;std::array&lt;std::string,N&gt;&gt; <a class="code" href="_i_o_8h.html#a917c5bd217eff49da014535e85121975">read_csv</a>(<span class="keyword">const</span> std::string path, <span class="keywordtype">bool</span> skipheader, <span class="keyword">const</span> <span class="keywordtype">char</span> delimiter=<span class="charliteral">&#39;\t&#39;</span>) {</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    </div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    FILE* fp = fopen(path.c_str(), <span class="stringliteral">&quot;r&quot;</span>);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keywordflow">if</span>(fp==<span class="keyword">nullptr</span>) { <a class="code" href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a> <span class="stringliteral">&quot;*** ERROR: Cannot open file &quot;</span> &lt;&lt; path <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>; exit(1);}</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordtype">char</span>* line = <span class="keyword">nullptr</span>; <span class="keywordtype">size_t</span> len=0;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    </div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keywordflow">if</span>(skipheader) { <span class="keyword">auto</span> __ignored = getline(&amp;line, &amp;len, fp); (void) __ignored; }</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    </div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    std::vector&lt;std::array&lt;std::string,N&gt;&gt; out; </div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keywordflow">while</span>( getline(&amp;line, &amp;len, fp) != -1 ) {</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <span class="keywordflow">if</span>( line[0] == <span class="charliteral">&#39;#&#39;</span> ) <span class="keywordflow">continue</span>;  <span class="comment">// skip comments</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        std::string s = line;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="comment">// chomp the newline at the end</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <span class="keywordflow">if</span>( (not s.empty()) and s[s.length()-1] == <span class="charliteral">&#39;\n&#39;</span>) {</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            s.erase(s.length()-1);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        }</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <span class="keywordflow">if</span>( s.length() == 0) <span class="keywordflow">continue</span>; <span class="comment">// skip empty lines </span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        assert(s.length() &gt;= N-1 &amp;&amp; <span class="stringliteral">&quot;*** Error with reading line -- not enough delimiters&quot;</span>);</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                </div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        out.push_back(split&lt;N&gt;(s,delimiter));</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    }</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    fclose(fp);</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordflow">return</span> out;</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;}</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    std::stringstream ss; ss &lt;&lt; std::this_thread::get_id();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="_i_o_8h.html#a69e31dd29ab761526291c2210bc7ded0">OUTPUTN</a>(std::cout, <span class="stringliteral">&quot;DEBUG [thread &quot;</span>+ss.str()+<span class="stringliteral">&quot;]&quot;</span>, f, args...);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="_i_o_8h.html#a96c995bb00590c0945415eee56bf0eb2">   85</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="_i_o_8h.html#a96c995bb00590c0945415eee56bf0eb2">save</a>(std::string filename, T&amp; hypotheses) {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    std::ofstream out(filename);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; v: hypotheses) {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        out &lt;&lt; v.serialize() <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    out.close();    </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;}</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> HYP&gt;</div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="_i_o_8h.html#aeadafe3418f48a79ec06a8e582bd809a">  103</a></span>&#160;std::vector&lt;HYP&gt; <a class="code" href="_i_o_8h.html#aeadafe3418f48a79ec06a8e582bd809a">load</a>(std::string filename) {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    std::vector&lt;HYP&gt; out;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    std::ifstream fs(filename);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    std::string line;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordflow">while</span>(std::getline(fs, line)) {</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">//      auto [col1, col2] = split&lt;2&gt;(line, &#39;\t&#39;);</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        out.push_back(HYP::deserialize(line)); <span class="comment">// we&#39;ve stored hypotheses in position 1</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment">//      CERR line ENDL;</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    }</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordflow">return</span> out;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;}</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="_i_o_8h.html#abd92671c9b71c77653e36bfd92877875">  124</a></span>&#160;std::string <a class="code" href="_i_o_8h.html#abd92671c9b71c77653e36bfd92877875">gulp</a>(std::string filename) {</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    std::string ret;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    std::ifstream fs(filename);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    std::string line;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordflow">while</span>(std::getline(fs, line)) {</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        <span class="keywordflow">if</span>(line.length() &gt; 0 and line[0] != <span class="charliteral">&#39;#&#39;</span>){</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            ret += line + <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        }</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    }</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    ret.erase(ret.size()-1); <span class="comment">// remove last newline</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;}</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> N&gt;</div>
+<div class="line"><a name="l00150"></a><span class="lineno"><a class="line" href="_i_o_8h.html#a5159eda50418e68b5242ed53c19f10b9">  150</a></span>&#160;std::vector&lt;std::array&lt;std::string,N&gt;&gt; <a class="code" href="_i_o_8h.html#a5159eda50418e68b5242ed53c19f10b9">read_csv</a>(<span class="keyword">const</span> std::string path, <span class="keywordtype">bool</span> skipheader, <span class="keyword">const</span> <span class="keywordtype">char</span> delimiter=<span class="charliteral">&#39;\t&#39;</span>) {</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    </div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    std::ifstream file(path);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordflow">if</span>(file.fail()){ assert(<span class="keyword">false</span>); }</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    std::string s;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    std::vector&lt;std::array&lt;std::string,N&gt;&gt; out; </div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keywordflow">while</span>( std::getline(file,s) ) {</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordflow">if</span>(s.size() == 0 or s[0] == <span class="charliteral">&#39;#&#39;</span>) <span class="keywordflow">continue</span>; <span class="comment">// skip comments and blanks</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                </div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <span class="keywordflow">if</span>(skipheader) { <span class="comment">// skipping the header</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            skipheader = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        }</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        </div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        out.push_back(split&lt;N&gt;(s,delimiter));</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    }</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordflow">return</span> out;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;}</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;std::vector&lt;std::vector&lt;std::string&gt;&gt; <a class="code" href="_i_o_8h.html#a5159eda50418e68b5242ed53c19f10b9">read_csv</a>(<span class="keyword">const</span> std::string path, <span class="keywordtype">bool</span> skipheader, <span class="keyword">const</span> <span class="keywordtype">char</span> delimiter=<span class="charliteral">&#39;\t&#39;</span>) {</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    </div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    std::ifstream file(path);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordflow">if</span>(file.fail()){ assert(<span class="keyword">false</span>); }</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    std::string s;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    std::vector&lt;std::vector&lt;std::string&gt;&gt; out;  </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="keywordflow">while</span>( std::getline(file,s) ) {</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <span class="keywordflow">if</span>(s.size() == 0 or s[0] == <span class="charliteral">&#39;#&#39;</span>) <span class="keywordflow">continue</span>; <span class="comment">// skip comments and blanks</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                </div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        <span class="keywordflow">if</span>(skipheader) { <span class="comment">// skipping the header</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            skipheader = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        }</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        </div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        <span class="keyword">auto</span> q = <a class="code" href="_strings_8h.html#a60d3a9b47a988443407a595730086318">split</a>(s,delimiter);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        std::vector&lt;std::string&gt; v;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        <span class="keywordflow">while</span>(! q.empty()) {</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            v.push_back(q.front()); q.pop_front();          </div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        }</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        out.push_back(v);</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    }</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keywordflow">return</span> out;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;}</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="a_i_o_8h_html_a1f78a4433f8ff9e6d006b66e299061a3"><div class="ttname"><a href="_i_o_8h.html#a1f78a4433f8ff9e6d006b66e299061a3">err_lock</a></div><div class="ttdeci">OrderedLock err_lock</div><div class="ttdef"><b>Definition:</b> IO.h:32</div></div>
-<div class="ttc" id="a_i_o_8h_html_aeadafe3418f48a79ec06a8e582bd809a"><div class="ttname"><a href="_i_o_8h.html#aeadafe3418f48a79ec06a8e582bd809a">load</a></div><div class="ttdeci">std::vector&lt; HYP &gt; load(std::string filename)</div><div class="ttdoc">Simple loading for a vector of hypotheses.</div><div class="ttdef"><b>Definition:</b> IO.h:102</div></div>
+<div class="ttc" id="a_i_o_8h_html_aeadafe3418f48a79ec06a8e582bd809a"><div class="ttname"><a href="_i_o_8h.html#aeadafe3418f48a79ec06a8e582bd809a">load</a></div><div class="ttdeci">std::vector&lt; HYP &gt; load(std::string filename)</div><div class="ttdoc">Simple loading for a vector of hypotheses.</div><div class="ttdef"><b>Definition:</b> IO.h:103</div></div>
 <div class="ttc" id="a_i_o_8h_html_a69e31dd29ab761526291c2210bc7ded0"><div class="ttname"><a href="_i_o_8h.html#a69e31dd29ab761526291c2210bc7ded0">OUTPUTN</a></div><div class="ttdeci">void OUTPUTN(std::ostream &amp;o, FIRST f, ARGS... args)</div><div class="ttdoc">This assumes o has been appropriately locked.</div><div class="ttdef"><b>Definition:</b> IO.h:40</div></div>
-<div class="ttc" id="a_i_o_8h_html_a176c0577baa96c686397bca42f7ee6ff"><div class="ttname"><a href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a></div><div class="ttdeci">#define CERR</div><div class="ttdef"><b>Definition:</b> IO.h:23</div></div>
 <div class="ttc" id="a_i_o_8h_html_a90dc3f3ee970394e0080300526390a84"><div class="ttname"><a href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a></div><div class="ttdeci">#define ENDL</div><div class="ttdef"><b>Definition:</b> IO.h:21</div></div>
-<div class="ttc" id="a_i_o_8h_html_a96c995bb00590c0945415eee56bf0eb2"><div class="ttname"><a href="_i_o_8h.html#a96c995bb00590c0945415eee56bf0eb2">save</a></div><div class="ttdeci">void save(std::string filename, T &amp;hypotheses)</div><div class="ttdoc">Simple saving of a vector of hypotheses.</div><div class="ttdef"><b>Definition:</b> IO.h:84</div></div>
+<div class="ttc" id="a_i_o_8h_html_a96c995bb00590c0945415eee56bf0eb2"><div class="ttname"><a href="_i_o_8h.html#a96c995bb00590c0945415eee56bf0eb2">save</a></div><div class="ttdeci">void save(std::string filename, T &amp;hypotheses)</div><div class="ttdoc">Simple saving of a vector of hypotheses.</div><div class="ttdef"><b>Definition:</b> IO.h:85</div></div>
+<div class="ttc" id="a_i_o_8h_html_a5159eda50418e68b5242ed53c19f10b9"><div class="ttname"><a href="_i_o_8h.html#a5159eda50418e68b5242ed53c19f10b9">read_csv</a></div><div class="ttdeci">std::vector&lt; std::array&lt; std::string, N &gt; &gt; read_csv(const std::string path, bool skipheader, const char delimiter='\t')</div><div class="ttdoc">Load data – divides in columns at the delimiter. NOTE: we are required to say whether we skip a heade...</div><div class="ttdef"><b>Definition:</b> IO.h:150</div></div>
 <div class="ttc" id="a_i_o_8h_html_a5601d33ab71bf86bd00332675c55be51"><div class="ttname"><a href="_i_o_8h.html#a5601d33ab71bf86bd00332675c55be51">output_lock</a></div><div class="ttdeci">OrderedLock output_lock</div><div class="ttdef"><b>Definition:</b> IO.h:31</div></div>
 <div class="ttc" id="a_i_o_8h_html_acacbcbf8ead646e28c70c0780802f158"><div class="ttname"><a href="_i_o_8h.html#acacbcbf8ead646e28c70c0780802f158">OUTPUT_SEP</a></div><div class="ttdeci">const std::string OUTPUT_SEP</div><div class="ttdef"><b>Definition:</b> IO.h:28</div></div>
 <div class="ttc" id="a_i_o_8h_html_a69bfeadd71c3650be17f98956cb4e66e"><div class="ttname"><a href="_i_o_8h.html#a69bfeadd71c3650be17f98956cb4e66e">DEBUG</a></div><div class="ttdeci">void DEBUG(FIRST f, ARGS... args)</div><div class="ttdoc">Print to std:ccout with debugging info.</div><div class="ttdef"><b>Definition:</b> IO.h:73</div></div>
 <div class="ttc" id="a_i_o_8h_html_a5e727e0c710d35259cfee7d2e8722dd5"><div class="ttname"><a href="_i_o_8h.html#a5e727e0c710d35259cfee7d2e8722dd5">PRINTN</a></div><div class="ttdeci">void PRINTN(FIRST f, ARGS... args)</div><div class="ttdoc">Lock output_lcok and print to std:cout.</div><div class="ttdef"><b>Definition:</b> IO.h:53</div></div>
 <div class="ttc" id="a_i_o_8h_html_a171cb8ce17745ec454e4f5069eeda81e"><div class="ttname"><a href="_i_o_8h.html#a171cb8ce17745ec454e4f5069eeda81e">ERRN</a></div><div class="ttdeci">void ERRN(FIRST f, ARGS... args)</div><div class="ttdoc">Lock err_lock and print to std:cerr.</div><div class="ttdef"><b>Definition:</b> IO.h:63</div></div>
-<div class="ttc" id="a_i_o_8h_html_abd92671c9b71c77653e36bfd92877875"><div class="ttname"><a href="_i_o_8h.html#abd92671c9b71c77653e36bfd92877875">gulp</a></div><div class="ttdeci">std::string gulp(std::string filename)</div><div class="ttdoc">Read this entire file as a string Skipping comment # lines.</div><div class="ttdef"><b>Definition:</b> IO.h:123</div></div>
-<div class="ttc" id="a_i_o_8h_html_a917c5bd217eff49da014535e85121975"><div class="ttname"><a href="_i_o_8h.html#a917c5bd217eff49da014535e85121975">read_csv</a></div><div class="ttdeci">std::vector&lt; std::array&lt; std::string, N &gt; &gt; read_csv(const std::string path, bool skipheader, const char delimiter='\t')</div><div class="ttdoc">Load data – divides in columns at the delimiter. NOTE: we are required to say whether we skip a heade...</div><div class="ttdef"><b>Definition:</b> IO.h:149</div></div>
+<div class="ttc" id="a_i_o_8h_html_abd92671c9b71c77653e36bfd92877875"><div class="ttname"><a href="_i_o_8h.html#abd92671c9b71c77653e36bfd92877875">gulp</a></div><div class="ttdeci">std::string gulp(std::string filename)</div><div class="ttdoc">Read this entire file as a string Skipping comment # lines.</div><div class="ttdef"><b>Definition:</b> IO.h:124</div></div>
 <div class="ttc" id="aclass_ordered_lock_html"><div class="ttname"><a href="class_ordered_lock.html">OrderedLock</a></div><div class="ttdef"><b>Definition:</b> OrderedLock.h:16</div></div>
 <div class="ttc" id="a_ordered_lock_8h_html"><div class="ttname"><a href="_ordered_lock_8h.html">OrderedLock.h</a></div><div class="ttdoc">A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating-a-lock-that-p...</div></div>
+<div class="ttc" id="a_strings_8h_html_a60d3a9b47a988443407a595730086318"><div class="ttname"><a href="_strings_8h.html#a60d3a9b47a988443407a595730086318">split</a></div><div class="ttdeci">std::deque&lt; std::string &gt; split(const std::string &amp;s, const char delimiter)</div><div class="ttdoc">Split is returns a deque of s split up at the character delimiter. It handles these special cases: sp...</div><div class="ttdef"><b>Definition:</b> Strings.h:256</div></div>
 <div class="ttc" id="a_strings_8h_html"><div class="ttname"><a href="_strings_8h.html">Strings.h</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

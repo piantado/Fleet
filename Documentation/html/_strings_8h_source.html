@@ -426,7 +426,7 @@ $(function() {
 <div class="line"><a name="l00503"></a><span class="lineno"><a class="line" href="_strings_8h.html#aa8cda3705f8674293669932185337ebb">  503</a></span>&#160;T <a class="code" href="_strings_8h.html#aa8cda3705f8674293669932185337ebb">string_to</a>(<span class="keyword">const</span> std::string s) {</div>
 <div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;    </div>
 <div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;    <span class="comment">// process some special cases here</span></div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;    <span class="keywordflow">if</span> constexpr(<a class="code" href="structis__specialization.html">is_specialization&lt;T,std::map&gt;::value</a>) {</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;    <span class="keywordflow">if</span> constexpr(is_specialization&lt;T,std::map&gt;::value) {</div>
 <div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;        T m;</div>
 <div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; r : <a class="code" href="_strings_8h.html#a60d3a9b47a988443407a595730086318">split</a>(s, <span class="charliteral">&#39;,&#39;</span>)) { <span class="comment">// TODO might want a diff delim here</span></div>
 <div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;            <span class="keyword">auto</span> [x, y] = split&lt;2&gt;(r, <span class="charliteral">&#39;:&#39;</span>);</div>
@@ -434,18 +434,18 @@ $(function() {
 <div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;        }</div>
 <div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;        <span class="keywordflow">return</span> m;</div>
 <div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;    }</div>
-<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;    <span class="keywordflow">if</span> constexpr(<a class="code" href="structis__specialization.html">is_specialization&lt;T,std::pair&gt;::value</a>) {</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;    <span class="keywordflow">if</span> constexpr(is_specialization&lt;T,std::pair&gt;::value) {</div>
 <div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;        <span class="keyword">auto</span> [x,y] = split&lt;2&gt;(s, <span class="charliteral">&#39;:&#39;</span>);</div>
 <div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;        <span class="keywordflow">return</span> {string_to&lt;typename T::first_type&gt;(x), string_to&lt;typename T::second_type&gt;(y)};       </div>
 <div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;    }</div>
-<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr(<a class="code" href="structis__specialization.html">is_specialization&lt;T,std::vector&gt;::value</a>) {</div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr(is_specialization&lt;T,std::vector&gt;::value) {</div>
 <div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;        T v;</div>
 <div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; x : <a class="code" href="_strings_8h.html#a60d3a9b47a988443407a595730086318">split</a>(s, <span class="charliteral">&#39;,&#39;</span>)) {</div>
 <div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;            v.push_back(string_to&lt;typename T::value_type&gt;(x));</div>
 <div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;        }</div>
 <div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;        <span class="keywordflow">return</span> v;</div>
 <div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;    }</div>
-<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr(<a class="code" href="structis__specialization.html">is_specialization&lt;T,std::multiset&gt;::value</a>) {</div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr(is_specialization&lt;T,std::multiset&gt;::value) {</div>
 <div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;        T ret;</div>
 <div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; x : <a class="code" href="_strings_8h.html#a60d3a9b47a988443407a595730086318">split</a>(s, <span class="charliteral">&#39;,&#39;</span>)) {</div>
 <div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;            ret.insert( string_to&lt;typename T::key_type&gt;(x));</div>
@@ -489,7 +489,6 @@ $(function() {
 <div class="ttc" id="astruct_vector3_d_html"><div class="ttname"><a href="struct_vector3_d.html">Vector3D</a></div><div class="ttdoc">Like Vector2D, but one dimension bigger. TODO: Replace this and Vector2D with a template please.</div><div class="ttdef"><b>Definition:</b> Vector3D.h:13</div></div>
 <div class="ttc" id="a_numerics_8h_html"><div class="ttname"><a href="_numerics_8h.html">Numerics.h</a></div></div>
 <div class="ttc" id="a_strings_8h_html_a95521755321516e684a5bf762eb001d7"><div class="ttname"><a href="_strings_8h.html#a95521755321516e684a5bf762eb001d7">reverse</a></div><div class="ttdeci">std::string reverse(std::string x)</div><div class="ttdef"><b>Definition:</b> Strings.h:365</div></div>
-<div class="ttc" id="astructis__specialization_html"><div class="ttname"><a href="structis__specialization.html">is_specialization</a></div><div class="ttdef"><b>Definition:</b> Miscellaneous.h:135</div></div>
 <div class="ttc" id="a_strings_8h_html_aa9f801c0b3a93e9baf742fc2ce79b1b8"><div class="ttname"><a href="_strings_8h.html#aa9f801c0b3a93e9baf742fc2ce79b1b8">replace_all</a></div><div class="ttdeci">void replace_all(std::string &amp;s, const std::string &amp;x, const std::string &amp;y, int add=0)</div><div class="ttdoc">Replace all occurances of x with y in s.</div><div class="ttdef"><b>Definition:</b> Strings.h:188</div></div>
 <div class="ttc" id="a_strings_8h_html_a1bb5ec0bee0c8456e3fcc87cc012d055"><div class="ttname"><a href="_strings_8h.html#a1bb5ec0bee0c8456e3fcc87cc012d055">Q</a></div><div class="ttdeci">std::string Q(std::string x)</div><div class="ttdef"><b>Definition:</b> Strings.h:379</div></div>
 <div class="ttc" id="a_strings_8h_html_adc4dfce03cc4717ed6be9b64b04a695a"><div class="ttname"><a href="_strings_8h.html#adc4dfce03cc4717ed6be9b64b04a695a">check_alphabet</a></div><div class="ttdeci">void check_alphabet(const std::string &amp;s, const std::string &amp;a)</div><div class="ttdoc">Check that s only uses characters from a. On failure, we print the string and assert false.</div><div class="ttdef"><b>Definition:</b> Strings.h:395</div></div>

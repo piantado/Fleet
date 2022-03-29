@@ -1,6 +1,6 @@
 <map id="ChainPool&lt; HYP &gt;" name="ChainPool&lt; HYP &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="150,199,285,225"/>
-<area shape="rect" id="node2" href="$class_threaded_inference_interface.html" title=" " alt="" coords="5,95,187,136"/>
-<area shape="rect" id="node3" href="$class_concurrent_queue.html" title=" " alt="" coords="8,5,184,32"/>
-<area shape="rect" id="node4" href="$class_ordered_lock.html" title=" " alt="" coords="211,102,307,129"/>
+<area shape="rect" id="node1" title=" " alt="" coords="167,199,310,225"/>
+<area shape="rect" id="node2" href="$class_threaded_inference_interface.html" title=" " alt="" coords="5,95,208,136"/>
+<area shape="rect" id="node3" href="$class_concurrent_queue.html" title=" " alt="" coords="11,5,202,32"/>
+<area shape="rect" id="node4" href="$class_ordered_lock.html" title=" " alt="" coords="232,102,336,129"/>
 </map>

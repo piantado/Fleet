@@ -105,7 +105,7 @@ $(function() {
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="_random_8h.html#a763d241ae5509542501d09a5132bfc9f">   49</a></span>&#160;T <a class="code" href="_random_8h.html#a763d241ae5509542501d09a5132bfc9f">normal_lpdf</a>(T x, T mu=0.0, T <a class="code" href="_numerics_8h.html#a33cc66b086176a9298c6b276e3e86564">sd</a>=1.0) {</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="comment">//https://stackoverflow.com/questions/10847007/using-the-gaussian-probability-density-function-in-c</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">const</span> T linv_sqrt_2pi = -0.5*log(2*<a class="code" href="_numerics_8h.html#ad172e8d1a294401209781f9aeaa77410">pi</a>*<a class="code" href="_numerics_8h.html#a33cc66b086176a9298c6b276e3e86564">sd</a>);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">const</span> T linv_sqrt_2pi = -0.5*log(2*<a class="code" href="_numerics_8h.html#ad172e8d1a294401209781f9aeaa77410">pi</a>*<a class="code" href="_numerics_8h.html#a33cc66b086176a9298c6b276e3e86564">sd</a>*<a class="code" href="_numerics_8h.html#a33cc66b086176a9298c6b276e3e86564">sd</a>);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">const</span> T z = (x-mu)/<a class="code" href="_numerics_8h.html#a33cc66b086176a9298c6b276e3e86564">sd</a>;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">return</span> linv_sqrt_2pi  - z*z / 2.0;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
@@ -132,6 +132,7 @@ $(function() {
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="_random_8h.html#a80379e9c4dd11a0b2260f1a4ee934d44">   92</a></span>&#160;T <a class="code" href="_random_8h.html#a80379e9c4dd11a0b2260f1a4ee934d44">myrandom</a>(T max) {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    assert(max&gt;0);</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    std::uniform_int_distribution&lt;T&gt; r(0, max-1);</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordflow">return</span> r(<a class="code" href="_rng_8h.html#a9aee8b16f4c2f21fdebf0ecb0b514b96">rng</a>);</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>

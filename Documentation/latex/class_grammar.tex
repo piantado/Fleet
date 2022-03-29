@@ -45,6 +45,8 @@ size\+\_\+t \mbox{\hyperlink{class_grammar_acb0ad7c8f130df2dd73bb5040bdf0fa2}{co
 \item 
 size\+\_\+t \mbox{\hyperlink{class_grammar_af6f447aca4141c52f3197eac688c0be7}{count\+\_\+rules}} () const
 \item 
+void \mbox{\hyperlink{class_grammar_a13e6a10b4707908a35e11b3afed14206}{change\+\_\+probability}} (const std\+::string \&s, const double newp)
+\item 
 size\+\_\+t \mbox{\hyperlink{class_grammar_a44c81f50a71a83e95b558d32fa1715c4}{count\+\_\+terminals}} (\mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} \mbox{\hyperlink{class_grammar_ac7ec043aec5203a2cfac44f9cec50132}{nt}}) const
 \item 
 size\+\_\+t \mbox{\hyperlink{class_grammar_acf1de192a73f1c07c44375eb9e08d309}{count\+\_\+nonterminals}} (\mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} \mbox{\hyperlink{class_grammar_ac7ec043aec5203a2cfac44f9cec50132}{nt}}) const
@@ -92,7 +94,7 @@ std\+::vector$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_grammar_a354a5d9bdaced96
 {\footnotesize template$<$typename K , typename T $>$ }\\std\+::vector$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_grammar_aac5f819cd2708982cb22caa49949c225}{get\+\_\+counts}} (const std\+::map$<$ K, T $>$ \&v) const
 \item 
 double \mbox{\hyperlink{class_grammar_a44385654719beb219184074602ee7440}{log\+\_\+probability}} (const \mbox{\hyperlink{class_node}{Node}} \&n) const
-\item 
+\begin{DoxyCompactList}\small\item\em This computes the expected length of productions from this grammar, counting terminals and nonterminals as 1 each N\+O\+TE\+: We can do this smarter with a matrix eigenvalues, but its a bit less flexible/extensible. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar_a63a4c7f6584fdd70aaa2882a19c2f04f}{from\+\_\+parseable}} (std\+::deque$<$ std\+::string $>$ \&q) const
 \item 
 \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar_a55ebb2d60067684f17d721e5ff0cbebf}{from\+\_\+parseable}} (std\+::string s) const
@@ -320,6 +322,13 @@ void \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+outp
 \doxysubsubsection{\texorpdfstring{begin()}{begin()}}
 {\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
 \mbox{\hyperlink{class_grammar_1_1_rule_iterator}{Rule\+Iterator}} \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_grammar_a13e6a10b4707908a35e11b3afed14206}\label{class_grammar_a13e6a10b4707908a35e11b3afed14206}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!change\_probability@{change\_probability}}
+\index{change\_probability@{change\_probability}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
+\doxysubsubsection{\texorpdfstring{change\_probability()}{change\_probability()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+void \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::change\+\_\+probability (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s,  }\item[{const double}]{newp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_grammar_a1524560f792f87da632c21f665666d21}\label{class_grammar_a1524560f792f87da632c21f665666d21}} 
 \index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!complete@{complete}}
@@ -648,6 +657,18 @@ For a given nt, returns the number of finite trees that nt can expand to if its 
 {\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
 double \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::log\+\_\+probability (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_node}{Node}} \&}]{n }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
+
+
+This computes the expected length of productions from this grammar, counting terminals and nonterminals as 1 each N\+O\+TE\+: We can do this smarter with a matrix eigenvalues, but its a bit less flexible/extensible. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em max\+\_\+depth} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
 Compute the log probability of a tree according to the grammar. N\+O\+TE\+: here we ignore nodes that are Null meaning that we compute the partial probability 
 \begin{DoxyParams}{Parameters}
 {\em n} & \\

@@ -162,7 +162,7 @@ public:
 			return this_t(grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
 		}
 		else {
-			return this_t(grammar->generate());
+			return this_t::sample(); //this_t(grammar->generate());
 		}
 	}
 	

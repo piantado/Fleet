@@ -60,7 +60,7 @@ This graph shows which files directly or indirectly include this file\+:
 \begin{DoxyCompactList}\small\item\em Simple loading for a vector of hypotheses. \end{DoxyCompactList}\item 
 std\+::string \mbox{\hyperlink{_i_o_8h_abd92671c9b71c77653e36bfd92877875}{gulp}} (std\+::string filename)
 \begin{DoxyCompactList}\small\item\em Read this entire file as a string Skipping comment \# lines. \end{DoxyCompactList}\item 
-{\footnotesize template$<$size\+\_\+t N$>$ }\\std\+::vector$<$ std\+::array$<$ std\+::string, N $>$ $>$ \mbox{\hyperlink{_i_o_8h_a917c5bd217eff49da014535e85121975}{read\+\_\+csv}} (const std\+::string path, bool skipheader, const char delimiter=\textquotesingle{}\textbackslash{}t\textquotesingle{})
+{\footnotesize template$<$size\+\_\+t N$>$ }\\std\+::vector$<$ std\+::array$<$ std\+::string, N $>$ $>$ \mbox{\hyperlink{_i_o_8h_a5159eda50418e68b5242ed53c19f10b9}{read\+\_\+csv}} (const std\+::string path, bool skipheader, const char delimiter=\textquotesingle{}\textbackslash{}t\textquotesingle{})
 \begin{DoxyCompactList}\small\item\em Load data -- divides in columns at the delimiter. N\+O\+TE\+: we are required to say whether we skip a header (first line) or not. Checks tha tthere are exactly N on each line. So we can use like\+: ~\newline
  for(auto \mbox{[}b1, b2, b3, b4, c\mbox{]} \+: read\+\_\+csv$<$5$>$(\+Fleet\+Args\+::input\+\_\+path, true)) \{ .... \}. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
@@ -231,12 +231,12 @@ Lock output\+\_\+lcok and print to std\+:cout.
 {\em f} & \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{_i_o_8h_a917c5bd217eff49da014535e85121975}\label{_i_o_8h_a917c5bd217eff49da014535e85121975}} 
+\mbox{\Hypertarget{_i_o_8h_a5159eda50418e68b5242ed53c19f10b9}\label{_i_o_8h_a5159eda50418e68b5242ed53c19f10b9}} 
 \index{IO.h@{IO.h}!read\_csv@{read\_csv}}
 \index{read\_csv@{read\_csv}!IO.h@{IO.h}}
 \doxysubsubsection{\texorpdfstring{read\_csv()}{read\_csv()}}
 {\footnotesize\ttfamily template$<$size\+\_\+t N$>$ \\
-std\+::vector$<$std\+::array$<$std\+::string,N$>$ $>$ read\+\_\+csv (\begin{DoxyParamCaption}\item[{const std\+::string}]{path,  }\item[{bool}]{skipheader,  }\item[{const char}]{delimiter = {\ttfamily \textquotesingle{}\textbackslash{}t\textquotesingle{}} }\end{DoxyParamCaption})}
+std\+::vector$<$ std\+::vector$<$ std\+::string $>$ $>$ read\+\_\+csv (\begin{DoxyParamCaption}\item[{const std\+::string}]{path,  }\item[{bool}]{skipheader,  }\item[{const char}]{delimiter = {\ttfamily \textquotesingle{}\textbackslash{}t\textquotesingle{}} }\end{DoxyParamCaption})}
 
 
 

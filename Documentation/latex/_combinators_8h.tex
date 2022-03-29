@@ -9,6 +9,7 @@ A grammar for SK combinatory logic. N\+O\+TE\+: Custom\+Ops must be defined here
 {\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Grammar.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Node.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Builtins.\+h\char`\"{}}\newline
 Include dependency graph for Combinators.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -27,8 +28,6 @@ struct \mbox{\hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}}
 class \mbox{\hyperlink{class_combinators_1_1_s_k_grammar}{Combinators\+::\+S\+K\+Grammar}}
 \item 
 class \mbox{\hyperlink{class_combinators_1_1_reduction_exception}{Combinators\+::\+Reduction\+Exception}}
-\item 
-class \mbox{\hyperlink{class_combinators_1_1_lazy_normal_forms}{Combinators\+::\+Lazy\+Normal\+Forms}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
@@ -40,13 +39,13 @@ class \mbox{\hyperlink{class_combinators_1_1_lazy_normal_forms}{Combinators\+::\
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{class_builtin}{Builtin}}$<$ \mbox{\hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}} $>$ \mbox{\hyperlink{namespace_builtins_afe1446ba92e6e07331409d827b8b3cba}{Builtins\+::\+C\+L\+\_\+I}} (Op\+::\+C\+L\+\_\+I, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{assert(false);\})
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_primitive}{Primitive}}$<$ \mbox{\hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}} $>$ \mbox{\hyperlink{namespace_builtins_a9cf51cec1bb7dc7917558410d1aa4b39}{Builtins\+::\+C\+L\+\_\+I}} (Op\+::\+C\+L\+\_\+I, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{assert(false);\})
 \item 
-{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{class_builtin}{Builtin}}$<$ \mbox{\hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}} $>$ \mbox{\hyperlink{namespace_builtins_ac96edbc51e01af439a34431911df6088}{Builtins\+::\+C\+L\+\_\+S}} (Op\+::\+C\+L\+\_\+S, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{assert(false);\})
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_primitive}{Primitive}}$<$ \mbox{\hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}} $>$ \mbox{\hyperlink{namespace_builtins_ae8b632fec16fea274d112bd85592d9f8}{Builtins\+::\+C\+L\+\_\+S}} (Op\+::\+C\+L\+\_\+S, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{assert(false);\})
 \item 
-{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{class_builtin}{Builtin}}$<$ \mbox{\hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}} $>$ \mbox{\hyperlink{namespace_builtins_ae4ee43b6a6f98511f57536be1c90cc6c}{Builtins\+::\+C\+L\+\_\+K}} (Op\+::\+C\+L\+\_\+K, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{assert(false);\})
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_primitive}{Primitive}}$<$ \mbox{\hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}} $>$ \mbox{\hyperlink{namespace_builtins_a59cea210a169776fcb5e88aeff847e1e}{Builtins\+::\+C\+L\+\_\+K}} (Op\+::\+C\+L\+\_\+K, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{assert(false);\})
 \item 
-{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{class_builtin}{Builtin}}$<$ \mbox{\hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}}, \mbox{\hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}}, \mbox{\hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}} $>$ \mbox{\hyperlink{namespace_builtins_a702cd60e1528b142c68e9484574aa15a}{Builtins\+::\+C\+L\+\_\+\+Apply}} (Op\+::\+C\+L\+\_\+\+Apply, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{assert(false);\})
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_primitive}{Primitive}}$<$ \mbox{\hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}}, \mbox{\hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}}, \mbox{\hyperlink{struct_combinators_1_1_c_l}{Combinators\+::\+CL}} $>$ \mbox{\hyperlink{namespace_builtins_a40f3d7c1534a8176ef4978064059e0a0}{Builtins\+::\+C\+L\+\_\+\+Apply}} (Op\+::\+C\+L\+\_\+\+Apply, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{assert(false);\})
 \item 
 {\footnotesize template$<$Op $>$ }\\bool \mbox{\hyperlink{namespace_combinators_aa3c93f1edab6764d54dda56aafac9cd3}{Combinators\+::can\+\_\+reduce}} (const \mbox{\hyperlink{class_node}{Node}} \&n)
 \item 

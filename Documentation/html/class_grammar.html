@@ -120,6 +120,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:acb0ad7c8f130df2dd73bb5040bdf0fa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6f447aca4141c52f3197eac688c0be7"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#af6f447aca4141c52f3197eac688c0be7">count_rules</a> () const</td></tr>
 <tr class="separator:af6f447aca4141c52f3197eac688c0be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13e6a10b4707908a35e11b3afed14206"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a13e6a10b4707908a35e11b3afed14206">change_probability</a> (const std::string &amp;s, const double newp)</td></tr>
+<tr class="separator:a13e6a10b4707908a35e11b3afed14206"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44c81f50a71a83e95b558d32fa1715c4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a44c81f50a71a83e95b558d32fa1715c4">count_terminals</a> (<a class="el" href="_nonterminal_8h.html#a1c5bfe9b903f69c83bbde5da7035fef3">nonterminal_t</a> <a class="el" href="class_grammar.html#ac7ec043aec5203a2cfac44f9cec50132">nt</a>) const</td></tr>
 <tr class="separator:a44c81f50a71a83e95b558d32fa1715c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf1de192a73f1c07c44375eb9e08d309"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#acf1de192a73f1c07c44375eb9e08d309">count_nonterminals</a> (<a class="el" href="_nonterminal_8h.html#a1c5bfe9b903f69c83bbde5da7035fef3">nonterminal_t</a> <a class="el" href="class_grammar.html#ac7ec043aec5203a2cfac44f9cec50132">nt</a>) const</td></tr>
@@ -177,6 +179,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aac5f819cd2708982cb22caa49949c225"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; size_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_grammar.html#aac5f819cd2708982cb22caa49949c225">get_counts</a> (const std::map&lt; K, T &gt; &amp;v) const</td></tr>
 <tr class="separator:aac5f819cd2708982cb22caa49949c225"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44385654719beb219184074602ee7440"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a44385654719beb219184074602ee7440">log_probability</a> (const <a class="el" href="class_node.html">Node</a> &amp;n) const</td></tr>
+<tr class="memdesc:a44385654719beb219184074602ee7440"><td class="mdescLeft">&#160;</td><td class="mdescRight">This computes the expected length of productions from this grammar, counting terminals and nonterminals as 1 each NOTE: We can do this smarter with a matrix eigenvalues, but its a bit less flexible/extensible.  <a href="class_grammar.html#a44385654719beb219184074602ee7440">More...</a><br /></td></tr>
 <tr class="separator:a44385654719beb219184074602ee7440"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63a4c7f6584fdd70aaa2882a19c2f04f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a63a4c7f6584fdd70aaa2882a19c2f04f">from_parseable</a> (std::deque&lt; std::string &gt; &amp;q) const</td></tr>
 <tr class="separator:a63a4c7f6584fdd70aaa2882a19c2f04f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -757,6 +760,44 @@ template&lt;typename _input_t , typename _output_t , typename... GRAMMAR_TYPES&g
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a13e6a10b4707908a35e11b3afed14206"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13e6a10b4707908a35e11b3afed14206">&#9670;&nbsp;</a></span>change_probability()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename _input_t , typename _output_t , typename... GRAMMAR_TYPES&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_grammar.html">Grammar</a>&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;::change_probability </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>newp</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -1687,6 +1728,15 @@ template&lt;typename _input_t , typename _output_t , typename... GRAMMAR_TYPES&g
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>This computes the expected length of productions from this grammar, counting terminals and nonterminals as 1 each NOTE: We can do this smarter with a matrix eigenvalues, but its a bit less flexible/extensible. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">max_depth</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 <p>Compute the log probability of a tree according to the grammar. NOTE: here we ignore nodes that are Null meaning that we compute the partial probability </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td></td></tr>

@@ -1,7 +1,8 @@
 <map id="src/Inference/MCMC/ChainPool.h" name="src/Inference/MCMC/ChainPool.h">
-<area shape="rect" id="node1" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="204,5,348,47"/>
-<area shape="rect" id="node2" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="204,95,348,136"/>
-<area shape="rect" id="node3" href="$_testing_2_basics_2main_8cpp.html" title=" " alt="" coords="5,191,171,218"/>
-<area shape="rect" id="node4" href="$_testing_2_detailed_balance_2main_8cpp.html" title=" " alt="" coords="195,184,357,225"/>
-<area shape="rect" id="node5" href="$_testing_2_insert_delete_probability_2main_8cpp.html" title=" " alt="" coords="381,184,581,225"/>
+<area shape="rect" id="node1" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="338,5,490,47"/>
+<area shape="rect" id="node2" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="337,95,491,136"/>
+<area shape="rect" id="node3" href="$_testing_2_basics_2main_8cpp.html" title=" " alt="" coords="5,191,183,218"/>
+<area shape="rect" id="node4" href="$_testing_2_detailed_balance_2main_8cpp.html" title=" " alt="" coords="207,184,386,225"/>
+<area shape="rect" id="node5" href="$_testing_2_grammar_terminal_weights_2main_8cpp.html" title=" " alt="" coords="410,184,653,225"/>
+<area shape="rect" id="node6" href="$_testing_2_insert_delete_probability_2main_8cpp.html" title=" " alt="" coords="677,184,900,225"/>
 </map>

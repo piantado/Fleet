@@ -1,8 +1,8 @@
 <map id="src/VirtualMachine/Builtins.h" name="src/VirtualMachine/Builtins.h">
-<area shape="rect" id="node1" title="The Builtin type basically just stores a function pointer and an Op command. This makes it a bit hand..." alt="" coords="85,5,215,47"/>
-<area shape="rect" id="node2" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="138,95,282,121"/>
-<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="5,169,172,196"/>
-<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="99,244,228,271"/>
-<area shape="rect" id="node5" href="$_proposers_8h.html" title=" " alt="" coords="248,169,436,196"/>
-<area shape="rect" id="node6" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="279,244,499,271"/>
+<area shape="rect" id="node1" title="The Builtin type basically just stores a function pointer and an Op command. This makes it a bit hand..." alt="" coords="43,5,186,47"/>
+<area shape="rect" id="node2" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="45,244,185,271"/>
+<area shape="rect" id="node3" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="167,95,324,121"/>
+<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="22,169,207,196"/>
+<area shape="rect" id="node5" href="$_proposers_8h.html" title=" " alt="" coords="283,169,485,196"/>
+<area shape="rect" id="node6" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="335,244,571,271"/>
 </map>

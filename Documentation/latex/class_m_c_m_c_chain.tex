@@ -11,7 +11,7 @@ Collaboration diagram for M\+C\+M\+C\+Chain$<$ H\+YP $>$\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=313pt]{class_m_c_m_c_chain__coll__graph}
+\includegraphics[width=338pt]{class_m_c_m_c_chain__coll__graph}
 \end{center}
 \end{figure}
 \doxysubsection*{Public Member Functions}
@@ -31,9 +31,13 @@ void \mbox{\hyperlink{class_m_c_m_c_chain_a58af3b738ed10f410b69962558b1c87b}{set
 \begin{DoxyCompactList}\small\item\em Set this data. \end{DoxyCompactList}\item 
 H\+YP \& \mbox{\hyperlink{class_m_c_m_c_chain_a3883a237b83af34b851c614606e90664}{get\+Current}} ()
 \item 
+const H\+YP \& \mbox{\hyperlink{class_m_c_m_c_chain_a233a563b37ba7858ca4057ca58fce8ad}{get\+Current}} () const
+\item 
 void \mbox{\hyperlink{class_m_c_m_c_chain_a6b1d9daf8f6fc0a455f2ad5c8637a657}{run\+On\+Current}} ()
 \item 
 const H\+YP \& \mbox{\hyperlink{class_m_c_m_c_chain_abd63fb5f2082f023b11d04fc25472e64}{get\+Max}} ()
+\item 
+void \mbox{\hyperlink{class_m_c_m_c_chain_a73142930585c8a42586b0aeb4f82982c}{restart}} ()
 \item 
 \mbox{\hyperlink{_coroutines_8h_ab06a612c41229b9582ada8655001e2b0}{generator}}$<$ H\+YP \& $>$ \mbox{\hyperlink{class_m_c_m_c_chain_a36a9ad234b12f1b3aee01dd877b91170}{run}} (\mbox{\hyperlink{struct_control}{Control}} ctl)
 \begin{DoxyCompactList}\small\item\em Run M\+C\+MC according to the control parameters passed in. N\+O\+TE\+: ctl cannot be passed by reference. \end{DoxyCompactList}\item 
@@ -147,9 +151,19 @@ Return my current posterior at a given temperature t
 \mbox{\Hypertarget{class_m_c_m_c_chain_a3883a237b83af34b851c614606e90664}\label{class_m_c_m_c_chain_a3883a237b83af34b851c614606e90664}} 
 \index{MCMCChain$<$ HYP $>$@{MCMCChain$<$ HYP $>$}!getCurrent@{getCurrent}}
 \index{getCurrent@{getCurrent}!MCMCChain$<$ HYP $>$@{MCMCChain$<$ HYP $>$}}
-\doxysubsubsection{\texorpdfstring{getCurrent()}{getCurrent()}}
+\doxysubsubsection{\texorpdfstring{getCurrent()}{getCurrent()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
 H\+YP\& \mbox{\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}}$<$ H\+YP $>$\+::get\+Current (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+get a reference to the current value \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_m_c_m_c_chain_a233a563b37ba7858ca4057ca58fce8ad}\label{class_m_c_m_c_chain_a233a563b37ba7858ca4057ca58fce8ad}} 
+\index{MCMCChain$<$ HYP $>$@{MCMCChain$<$ HYP $>$}!getCurrent@{getCurrent}}
+\index{getCurrent@{getCurrent}!MCMCChain$<$ HYP $>$@{MCMCChain$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{getCurrent()}{getCurrent()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+const H\+YP\& \mbox{\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}}$<$ H\+YP $>$\+::get\+Current (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 get a reference to the current value \begin{DoxyReturn}{Returns}
 
@@ -160,6 +174,13 @@ get a reference to the current value \begin{DoxyReturn}{Returns}
 \doxysubsubsection{\texorpdfstring{getMax()}{getMax()}}
 {\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
 const H\+YP\& \mbox{\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}}$<$ H\+YP $>$\+::get\+Max (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{class_m_c_m_c_chain_a73142930585c8a42586b0aeb4f82982c}\label{class_m_c_m_c_chain_a73142930585c8a42586b0aeb4f82982c}} 
+\index{MCMCChain$<$ HYP $>$@{MCMCChain$<$ HYP $>$}!restart@{restart}}
+\index{restart@{restart}!MCMCChain$<$ HYP $>$@{MCMCChain$<$ HYP $>$}}
+\doxysubsubsection{\texorpdfstring{restart()}{restart()}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+void \mbox{\hyperlink{class_m_c_m_c_chain}{M\+C\+M\+C\+Chain}}$<$ H\+YP $>$\+::restart (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 \mbox{\Hypertarget{class_m_c_m_c_chain_ade59d4ace25fa52b106353c6c7285f50}\label{class_m_c_m_c_chain_ade59d4ace25fa52b106353c6c7285f50}} 
 \index{MCMCChain$<$ HYP $>$@{MCMCChain$<$ HYP $>$}!run@{run}}

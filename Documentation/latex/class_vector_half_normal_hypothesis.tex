@@ -11,7 +11,7 @@ Inheritance diagram for Vector\+Half\+Normal\+Hypothesis\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=233pt]{class_vector_half_normal_hypothesis__inherit__graph}
+\includegraphics[width=248pt]{class_vector_half_normal_hypothesis__inherit__graph}
 \end{center}
 \end{figure}
 
@@ -21,7 +21,7 @@ Collaboration diagram for Vector\+Half\+Normal\+Hypothesis\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=233pt]{class_vector_half_normal_hypothesis__coll__graph}
+\includegraphics[width=248pt]{class_vector_half_normal_hypothesis__coll__graph}
 \end{center}
 \end{figure}
 \doxysubsection*{Public Types}
@@ -48,7 +48,7 @@ virtual double \mbox{\hyperlink{class_vector_half_normal_hypothesis_a9bc5fb2392c
 \begin{DoxyCompactList}\small\item\em Compute the prior -- defaultly not defined. \end{DoxyCompactList}\item 
 virtual double \mbox{\hyperlink{class_vector_half_normal_hypothesis_ac11337651ba0be2f81751a01c7dac7c1}{compute\+\_\+likelihood}} (const \mbox{\hyperlink{class_bayesable_aa2788c4d7718c0a824e1d28c4c98f921}{data\+\_\+t}} \&data, const double breakout=-\/\mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e}{infinity}}) override
 \begin{DoxyCompactList}\small\item\em Compute the likelihood of a collection of data, by calling compute\+\_\+single\+\_\+likelihood on each. This stops if our likelihood falls below breakout. \end{DoxyCompactList}\item 
-std\+::pair$<$ \mbox{\hyperlink{class_vector_half_normal_hypothesis_aa169571925876701368c66f646483bf3}{self\+\_\+t}}, double $>$ \mbox{\hyperlink{class_vector_half_normal_hypothesis_a9797d04ba10f25780527e1ea27625a43}{propose}} () const override
+virtual std\+::optional$<$ std\+::pair$<$ \mbox{\hyperlink{class_vector_half_normal_hypothesis_aa169571925876701368c66f646483bf3}{self\+\_\+t}}, double $>$ $>$ \mbox{\hyperlink{class_vector_half_normal_hypothesis_a2dd214b485a4e29e7167d835143beb2b}{propose}} () const override
 \item 
 virtual \mbox{\hyperlink{class_vector_half_normal_hypothesis_aa169571925876701368c66f646483bf3}{self\+\_\+t}} \mbox{\hyperlink{class_vector_half_normal_hypothesis_ab3dad3a1b5babe38e004ad6f237a36b9}{restart}} () const override
 \item 
@@ -168,11 +168,11 @@ Implements \mbox{\hyperlink{class_bayesable_a1b057a17212ced123545133e2297c01b}{B
 
 Implements \mbox{\hyperlink{class_m_c_m_cable_a7b35c04d3d1326b930cfc69dfe0bd207}{M\+C\+M\+Cable$<$ Vector\+Half\+Normal\+Hypothesis, void $\ast$ $>$}}.
 
-\mbox{\Hypertarget{class_vector_half_normal_hypothesis_a9797d04ba10f25780527e1ea27625a43}\label{class_vector_half_normal_hypothesis_a9797d04ba10f25780527e1ea27625a43}} 
+\mbox{\Hypertarget{class_vector_half_normal_hypothesis_a2dd214b485a4e29e7167d835143beb2b}\label{class_vector_half_normal_hypothesis_a2dd214b485a4e29e7167d835143beb2b}} 
 \index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!propose@{propose}}
 \index{propose@{propose}!VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}}
 \doxysubsubsection{\texorpdfstring{propose()}{propose()}}
-{\footnotesize\ttfamily std\+::pair$<$\mbox{\hyperlink{class_vector_half_normal_hypothesis_aa169571925876701368c66f646483bf3}{self\+\_\+t}},double$>$ Vector\+Half\+Normal\+Hypothesis\+::propose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
+{\footnotesize\ttfamily virtual std\+::optional$<$std\+::pair$<$\mbox{\hyperlink{class_vector_half_normal_hypothesis_aa169571925876701368c66f646483bf3}{self\+\_\+t}},double$>$ $>$ Vector\+Half\+Normal\+Hypothesis\+::propose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 \mbox{\Hypertarget{class_vector_half_normal_hypothesis_ab3dad3a1b5babe38e004ad6f237a36b9}\label{class_vector_half_normal_hypothesis_ab3dad3a1b5babe38e004ad6f237a36b9}} 
 \index{VectorHalfNormalHypothesis@{VectorHalfNormalHypothesis}!restart@{restart}}

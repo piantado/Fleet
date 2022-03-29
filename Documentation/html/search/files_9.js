@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['main_2ecpp_930',['main.cpp',['../main_8cpp.html',1,'(Global Namespace)'],['../_testing_2_basics_2main_8cpp.html',1,'(Global Namespace)'],['../_testing_2_detailed_balance_2main_8cpp.html',1,'(Global Namespace)'],['../_testing_2_insert_delete_probability_2main_8cpp.html',1,'(Global Namespace)']]],
+  ['main_2ecpp_930',['main.cpp',['../main_8cpp.html',1,'(Global Namespace)'],['../_testing_2_basics_2main_8cpp.html',1,'(Global Namespace)'],['../_testing_2_detailed_balance_2main_8cpp.html',1,'(Global Namespace)'],['../_testing_2_grammar_terminal_weights_2main_8cpp.html',1,'(Global Namespace)'],['../_testing_2_insert_delete_probability_2main_8cpp.html',1,'(Global Namespace)']]],
   ['mcmcable_2eh_931',['MCMCable.h',['../_m_c_m_cable_8h.html',1,'']]],
   ['mcmcchain_2eh_932',['MCMCChain.h',['../_m_c_m_c_chain_8h.html',1,'']]],
   ['mctsbase_2eh_933',['MCTSBase.h',['../_m_c_t_s_base_8h.html',1,'']]],

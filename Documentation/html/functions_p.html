@@ -113,6 +113,9 @@ $(function() {
 <li>posterior
 : <a class="el" href="class_bayesable.html#a268442b9aae5b763c17ca29c39231915">Bayesable&lt; _datum_t, _data_t &gt;</a>
 </li>
+<li>PosteriorWeightedReservoirSample()
+: <a class="el" href="class_posterior_weighted_reservoir_sample.html#a1ddcd50fc5e10685e0b5e243b1f7a800">PosteriorWeightedReservoirSample&lt; T &gt;</a>
+</li>
 <li>predict
 : <a class="el" href="struct_human_datum.html#a664f632e8ad57dde30d989e6d8976275">HumanDatum&lt; HYP, _input_t, _output_t, _response_t, _data_t &gt;</a>
 </li>
@@ -131,11 +134,11 @@ $(function() {
 <li>print()
 : <a class="el" href="class_base_node.html#acbfcc951fe5858d0c85a5b3dc8843f05">BaseNode&lt; this_t &gt;</a>
 , <a class="el" href="class_bayesable.html#a87d5d9481d6a72b017e44b175071fa5e">Bayesable&lt; _datum_t, _data_t &gt;</a>
-, <a class="el" href="class_discrete_distribution.html#a6ec6f590a3659c8bef32aaab77a8052e">DiscreteDistribution&lt; T &gt;</a>
+, <a class="el" href="class_chain_pool.html#a38e61af5e8d4c0399ac0a30e2a0e18ce">ChainPool&lt; HYP &gt;</a>
+, <a class="el" href="class_discrete_distribution.html#a58bc689015e6b594ed1a53130758ba6f">DiscreteDistribution&lt; T &gt;</a>
 , <a class="el" href="class_grammar_hypothesis.html#a7b791d9da5ae86c52a42a2383c1c6bc0">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
 , <a class="el" href="class_m_c_t_s_base.html#a6ddfccb4d7b2b8b7ad1d8f7e0e9a130b">MCTSBase&lt; this_t, HYP &gt;</a>
 , <a class="el" href="structprint.html#a7e141bb2af61d6edf8895cf964ce130d">print</a>
-, <a class="el" href="struct_reservoir_sample_1_1_item.html#aefa79bdf7a5dd70f62a41f6ccb0ac066">ReservoirSample&lt; T &gt;::Item</a>
 , <a class="el" href="class_top_n.html#a5064ec2e4e9f1defdc3cb62d9b7ddd00">TopN&lt; T &gt;</a>
 </li>
 <li>print_best
@@ -167,32 +170,35 @@ $(function() {
 <li>proposals
 : <a class="el" href="class_m_c_m_c_chain.html#a1176ff0b7ed33fd9ac67e1e96583bc52">MCMCChain&lt; HYP &gt;</a>
 </li>
+<li>ProposalType
+: <a class="el" href="class_l_o_t_hypothesis.html#a56b055927dc4d3267c71eba75bfe9e0b">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
+</li>
 <li>propose()
-: <a class="el" href="class_grammar_hypothesis.html#a8e6d781ab5fa0a6656b09b607a906735">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
-, <a class="el" href="class_lexicon.html#a09591a3a0ef84702a263bdeaaeeb376f">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#a15fd4334d03f4ea238943f3e274a1cd3">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
-, <a class="el" href="class_m_c_m_cable.html#a98b52f1867ea0d72c1c91b4496d756d2">MCMCable&lt; this_t, Args &gt;</a>
-, <a class="el" href="class_t_normal_variable.html#ad749023d34d2fad8b465aa2bfeba51a3">TNormalVariable&lt; f &gt;</a>
-, <a class="el" href="class_vector_half_normal_hypothesis.html#a9797d04ba10f25780527e1ea27625a43">VectorHalfNormalHypothesis</a>
-, <a class="el" href="class_vector_normal_hypothesis.html#afe56f3d3e501c5add4857ae8e5db4296">VectorNormalHypothesis</a>
+: <a class="el" href="class_grammar_hypothesis.html#a0a913896ba7c1e4590f7082145badbd0">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+, <a class="el" href="class_lexicon.html#a5de4f2940877e8b55305c1400e540eca">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_l_o_t_hypothesis.html#afaf1e27b95bb2e19a25fa65ab538e4f2">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_m_c_m_cable.html#af4d53c768669da021c6136bb4dffc82d">MCMCable&lt; this_t, Args &gt;</a>
+, <a class="el" href="class_t_normal_variable.html#a69221930d9babce05fe51cafba22a0fe">TNormalVariable&lt; f &gt;</a>
+, <a class="el" href="class_vector_half_normal_hypothesis.html#a2dd214b485a4e29e7167d835143beb2b">VectorHalfNormalHypothesis</a>
+, <a class="el" href="class_vector_normal_hypothesis.html#a5f0cf0ab7fd9344f3a0ea4493d7d2e2e">VectorNormalHypothesis</a>
 </li>
 <li>pt
 : <a class="el" href="class_grammar_hypothesis.html#a3dfa8da300156a045ac542bdd5364e0f">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
 </li>
 <li>push()
 : <a class="el" href="class_concurrent_queue.html#a6baf689e7763e243a53f26181fecf951">ConcurrentQueue&lt; T &gt;</a>
-, <a class="el" href="class_integerized_stack.html#affd28eb928362de80e35cd4e1ecdf96b">IntegerizedStack</a>
+, <a class="el" href="class_integerized_stack.html#a721481e52e56398bee39edf6a3d2ff80">IntegerizedStack</a>
 , <a class="el" href="class_stack.html#a6e8312460808f468b004d709d3308757">Stack&lt; T &gt;</a>
 , <a class="el" href="class_virtual_machine_pool.html#a9b164d9dc604f77825716e24323034a4">VirtualMachinePool&lt; VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_virtual_machine_state.html#a1f7aab5a5bb3b9cc4d79b50f6191ed36">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>push_back()
-: <a class="el" href="class_base_node.html#a6971173d807967deda4501eb70676533">BaseNode&lt; this_t &gt;</a>
+: <a class="el" href="class_base_node.html#ab5a808e3ec22f8061022f9ec286d4a03">BaseNode&lt; this_t &gt;</a>
 </li>
 <li>push_program()
 : <a class="el" href="class_lexicon.html#a996469fca2205a7cfc086d16992f6362">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#a00d33f253d0982d399f1295675e9725f">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
-, <a class="el" href="class_program_loader.html#a41988c061c0b76869a6bca14148af592">ProgramLoader&lt; VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_program_loader.html#ae39b6a0b028bd96251d1f1a59eca6b77">ProgramLoader&lt; VirtualMachineState_t &gt;</a>
 </li>
 <li>push_x()
 : <a class="el" href="class_virtual_machine_state.html#a3d67a597eda47200e61434ff8048bc46">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>

@@ -608,7 +608,12 @@ public:
 		 */
 		
 		if(f(node)){
-			return generate(node.rule->nt);
+			for(size_t tries=0;tries<1000;tries++) {
+				try {
+					return generate(node.rule->nt);
+				} catch(DepthException& e) { }
+			}
+			assert(false && "*** could not copy_resample");
 		}
 		else {
 		

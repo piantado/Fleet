@@ -1,9 +1,10 @@
 <map id="src/Grammar/Nonterminal.h" name="src/Grammar/Nonterminal.h">
-<area shape="rect" id="node1" title=" " alt="" coords="57,5,240,32"/>
-<area shape="rect" id="node2" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="133,80,273,107"/>
-<area shape="rect" id="node5" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="5,229,172,256"/>
-<area shape="rect" id="node3" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="138,155,282,181"/>
-<area shape="rect" id="node4" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="99,304,228,331"/>
-<area shape="rect" id="node6" href="$_proposers_8h.html" title=" " alt="" coords="248,229,436,256"/>
-<area shape="rect" id="node7" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="279,304,499,331"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,209,32"/>
+<area shape="rect" id="node2" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="115,80,267,107"/>
+<area shape="rect" id="node5" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="61,229,247,256"/>
+<area shape="rect" id="node3" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="345,155,502,181"/>
+<area shape="rect" id="node8" href="$_constant_container_8h.html" title=" " alt="" coords="62,155,321,181"/>
+<area shape="rect" id="node4" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="164,304,304,331"/>
+<area shape="rect" id="node6" href="$_proposers_8h.html" title=" " alt="" coords="322,229,525,256"/>
+<area shape="rect" id="node7" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="356,304,592,331"/>
 </map>

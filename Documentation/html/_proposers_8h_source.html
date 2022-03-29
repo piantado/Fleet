@@ -76,11 +76,11 @@ $(function() {
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//#define DEBUG_PROPOSE 1</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;tuple&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_node_8h.html">Node.h</a>&quot;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;optional&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;tuple&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_node_8h.html">Node.h</a>&quot;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
 <div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="namespace_proposals.html">   11</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_proposals.html">Proposals</a> { </div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        </div>
@@ -89,9 +89,9 @@ $(function() {
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    }</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> GrammarType&gt;</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="namespace_proposals.html#add01a544339cc3713d02f663c331f33b">   23</a></span>&#160;    std::pair&lt;Node,double&gt; <a class="code" href="namespace_proposals.html#add01a544339cc3713d02f663c331f33b">prior_proposal</a>(GrammarType* grammar, <span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; from) {</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="namespace_proposals.html#a3012f5a65ba25baf5fa053cf7be71a4c">   23</a></span>&#160;    std::optional&lt;std::pair&lt;Node,double&gt;&gt; <a class="code" href="namespace_proposals.html#a3012f5a65ba25baf5fa053cf7be71a4c">prior_proposal</a>(GrammarType* grammar, <span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; from) {</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keyword">auto</span> g = grammar-&gt;generate(from.<a class="code" href="class_node.html#a4abe3acdc804489a01ef13a25b130fd8">nt</a>());</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keywordflow">return</span> std::make_pair(g, grammar-&gt;log_probability(g) - grammar-&gt;log_probability(from));</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keywordflow">return</span> {g, grammar-&gt;log_probability(g) - grammar-&gt;log_probability(from)};</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    }</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> GrammarType&gt;</div>
@@ -141,319 +141,354 @@ $(function() {
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> GrammarType&gt;</div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="namespace_proposals.html#aedcca10b4519a9aad7739878036019f3">   89</a></span>&#160;    std::pair&lt;Node,double&gt; <a class="code" href="namespace_proposals.html#aedcca10b4519a9aad7739878036019f3">regenerate</a>(GrammarType* grammar, <span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; from) {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="comment">// copy, regenerate a random node, and return that and forward-backward prob</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">        #ifdef DEBUG_PROPOSE</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <a class="code" href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a> <span class="stringliteral">&quot;REGENERATE&quot;</span> <a class="code" href="_i_o_8h.html#ad58a1fbfc85c7e4790fc55e654f50221">TAB</a> from.<a class="code" href="class_node.html#a5d2a0e17dd2a00a79e6d1f763c9114d0">string</a>() <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">        #endif</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <a class="code" href="class_node.html">Node</a> ret = from; <span class="comment">// copy</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordflow">if</span>(from.<a class="code" href="class_base_node.html#a32872bacb6a7c7e8f592a0abdb6dbb6d">sum</a>&lt;<span class="keywordtype">double</span>&gt;(<a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>) == 0.0) {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keywordflow">return</span> std::make_pair(ret, 0.0);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keyword">auto</span> [s, slp] = sample&lt;Node,Node&gt;(ret, <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">        #ifdef DEBUG_PROPOSE</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <a class="code" href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a> <span class="stringliteral">&quot;PROPOSING AT &quot;</span> <a class="code" href="_i_o_8h.html#ad58a1fbfc85c7e4790fc55e654f50221">TAB</a> (*s) <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">        #endif</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordtype">double</span> oldgp = grammar-&gt;log_probability(*s); <span class="comment">// reverse probability generating </span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        s-&gt;assign(grammar-&gt;generate(s-&gt;nt())); </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordtype">double</span> fb = slp + grammar-&gt;log_probability(*s) </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                  - (log(<a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>(*s)) - log(ret.<a class="code" href="class_base_node.html#a32872bacb6a7c7e8f592a0abdb6dbb6d">sum</a>(<a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>)) + oldgp);</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">        #ifdef DEBUG_PROPOSE</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <a class="code" href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a> <span class="stringliteral">&quot;FORWARD&quot;</span> <a class="code" href="_i_o_8h.html#ad58a1fbfc85c7e4790fc55e654f50221">TAB</a> slp + grammar-&gt;log_probability(*s) <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <a class="code" href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a> <span class="stringliteral">&quot;BACKWARD&quot;</span> <a class="code" href="_i_o_8h.html#ad58a1fbfc85c7e4790fc55e654f50221">TAB</a> log(<a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>(*s)) - log(ret.<a class="code" href="class_base_node.html#a32872bacb6a7c7e8f592a0abdb6dbb6d">sum</a>(<a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>)) + oldgp <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            <a class="code" href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a> <span class="stringliteral">&quot;PROPOSING&quot;</span> <a class="code" href="_i_o_8h.html#ad58a1fbfc85c7e4790fc55e654f50221">TAB</a> ret <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            <a class="code" href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a> <span class="stringliteral">&quot;----------------&quot;</span> <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="preprocessor">        #endif</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="keywordflow">return</span> std::make_pair(ret, fb);</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    }</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    </div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> GrammarType, <span class="keywordtype">int</span> D&gt;</div>
-<div class="line"><a name="l00136"></a><span class="lineno"><a class="line" href="namespace_proposals.html#a0c990430ad048f427224a481f5f2a557">  136</a></span>&#160;    std::pair&lt;Node,double&gt; <a class="code" href="namespace_proposals.html#a0c990430ad048f427224a481f5f2a557">regenerate_shallow</a>(GrammarType* grammar, <span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; from) {</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        </div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="keyword">auto</span> my_can_resample = +[](<span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; n) {</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            <span class="keywordflow">return</span> (n.can_resample and n.depth() &lt;= D )*1.0;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        };</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">//      #ifdef DEBUG_PROPOSE</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">//          CERR &quot;REGENERATE_SHALLOW&quot; TAB from.string() ENDL;</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">//      #endif</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> GrammarType&gt;</div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="namespace_proposals.html#aa58341a97b9dd0098e8d9b3cfd9d4ae5">   88</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="namespace_proposals.html#aa58341a97b9dd0098e8d9b3cfd9d4ae5">__regenerate_when_can_resample</a>(<span class="keyword">const</span> GrammarType* grammar, <a class="code" href="class_node.html">Node</a>&amp; from) {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">if</span>(from.<a class="code" href="class_node.html#a98c14a51b240fbc7e438f40a12276257">can_resample</a>) {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            from.<a class="code" href="class_node.html#a80b47d9e0cf67b84d925c2f355199675">assign</a>(grammar-&gt;generate(from.<a class="code" href="class_node.html#a4abe3acdc804489a01ef13a25b130fd8">nt</a>())); </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordflow">else</span> { <span class="comment">// we can&#39;t regenerate so we have to recurse</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; c : from.<a class="code" href="class_base_node.html#a7177763ffa8b3e658124c586dde30be9">get_children</a>()) {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                <a class="code" href="namespace_proposals.html#aa58341a97b9dd0098e8d9b3cfd9d4ae5">__regenerate_when_can_resample</a>(grammar, c);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            }           </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> GrammarType&gt;</div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="namespace_proposals.html#abf13014284cb355d53f6321fd67c7924">  107</a></span>&#160;    std::optional&lt;std::pair&lt;Node,double&gt;&gt; <a class="code" href="namespace_proposals.html#abf13014284cb355d53f6321fd67c7924">regenerate</a>(GrammarType* grammar, <span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; from) {</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="comment">// copy, regenerate a random node, and return that and forward-backward prob</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <a class="code" href="class_node.html">Node</a> ret = from; <span class="comment">// copy</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">if</span>(from.<a class="code" href="class_base_node.html#a32872bacb6a7c7e8f592a0abdb6dbb6d">sum</a>&lt;<span class="keywordtype">double</span>&gt;(<a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>) == 0.0) </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="comment">// We are changing this as of Feb 2022, we now can *choose* a can_resample Node, but</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="comment">// we won&#39;t actually change any unless can_resample is true</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="comment">// BUT if we DO change a can_resample node, we change everything below it. </span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keyword">auto</span> [s, slp] = sample&lt;Node,Node&gt;(ret);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="preprocessor">        #ifdef DEBUG_PROPOSE</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <a class="code" href="_i_o_8h.html#a69bfeadd71c3650be17f98956cb4e66e">DEBUG</a>(<span class="stringliteral">&quot;REGENERATE&quot;</span>, from, *s);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">        #endif</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <span class="keywordtype">double</span> oldgp = grammar-&gt;log_probability(*s); <span class="comment">// reverse probability generating </span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <a class="code" href="namespace_proposals.html#aa58341a97b9dd0098e8d9b3cfd9d4ae5">__regenerate_when_can_resample</a>(grammar,*s);</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">//      s-&gt;assign(grammar-&gt;generate(s-&gt;nt())); </span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        </div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        <span class="comment">//double fb = slp + grammar-&gt;log_probability(*s) </span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="comment">//        - (log(can_resample(*s)) - log(ret.sum(can_resample)) + oldgp);</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="keywordtype">double</span> fb = (-log(from.<a class="code" href="class_base_node.html#a4007d1c72991b8599a6ff5a21c054ba5">count</a>()) + grammar-&gt;log_probability(*s)) - </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                    (-log(ret.<a class="code" href="class_base_node.html#a4007d1c72991b8599a6ff5a21c054ba5">count</a>()) + oldgp);</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="preprocessor">        #ifdef DEBUG_PROPOSE</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            <a class="code" href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a> <span class="stringliteral">&quot;FORWARD&quot;</span> <a class="code" href="_i_o_8h.html#ad58a1fbfc85c7e4790fc55e654f50221">TAB</a> slp + grammar-&gt;log_probability(*s) <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            <a class="code" href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a> <span class="stringliteral">&quot;BACKWARD&quot;</span> <a class="code" href="_i_o_8h.html#ad58a1fbfc85c7e4790fc55e654f50221">TAB</a> log(<a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>(*s)) - log(ret.<a class="code" href="class_base_node.html#a32872bacb6a7c7e8f592a0abdb6dbb6d">sum</a>(<a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>)) + oldgp <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <a class="code" href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a> <span class="stringliteral">&quot;PROPOSING&quot;</span> <a class="code" href="_i_o_8h.html#ad58a1fbfc85c7e4790fc55e654f50221">TAB</a> ret <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            <a class="code" href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a> <span class="stringliteral">&quot;----------------&quot;</span> <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            </div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="preprocessor">        #endif</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="keywordflow">return</span> std::make_pair(ret, fb);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    }</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <a class="code" href="class_node.html">Node</a> ret = from; <span class="comment">// copy</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keywordflow">if</span>(from.<a class="code" href="class_base_node.html#a32872bacb6a7c7e8f592a0abdb6dbb6d">sum</a>&lt;<span class="keywordtype">double</span>&gt;(my_can_resample) == 0.0) {</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            <span class="keywordflow">return</span> std::make_pair(ret, 0.0);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        }</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="keyword">auto</span> [s, slp] = sample&lt;Node,Node&gt;(ret, my_can_resample);</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <span class="keywordtype">double</span> oldgp = grammar-&gt;log_probability(*s); <span class="comment">// reverse probability generating </span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        </div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        s-&gt;assign(grammar-&gt;generate(s.first-&gt;nt())); </div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        </div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordtype">double</span> fb = slp + grammar-&gt;log_probability(*s.first) </div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                  - (log(my_can_resample(*s.first)) - log(ret.<a class="code" href="class_base_node.html#a32872bacb6a7c7e8f592a0abdb6dbb6d">sum</a>(my_can_resample)) + oldgp);</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <span class="keywordflow">return</span> std::make_pair(ret, fb);</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    }</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> GrammarType&gt;</div>
-<div class="line"><a name="l00167"></a><span class="lineno"><a class="line" href="namespace_proposals.html#a8714ac1333d5aff2d248ef10a8eb5493">  167</a></span>&#160;    std::pair&lt;Node, double&gt; <a class="code" href="namespace_proposals.html#a8714ac1333d5aff2d248ef10a8eb5493">insert_tree</a>(GrammarType* grammar, <span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; from) {</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        <span class="comment">// This proposal selects a node, regenerates, and then copies what was there before somewhere below </span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <span class="comment">// in the replaced tree. NOTE: it must regenerate something with the right nonterminal</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        <span class="comment">// since that&#39;s what&#39;s being replaced! </span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        </div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="preprocessor">        #ifdef DEBUG_PROPOSE</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;            <a class="code" href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a> <span class="stringliteral">&quot;INSERT-TREE&quot;</span>  <a class="code" href="_i_o_8h.html#ad58a1fbfc85c7e4790fc55e654f50221">TAB</a> from.<a class="code" href="class_node.html#a5d2a0e17dd2a00a79e6d1f763c9114d0">string</a>()  <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="preprocessor">        #endif</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <a class="code" href="class_node.html">Node</a> ret = from; <span class="comment">// copy</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        <span class="keywordflow">if</span>(ret.<a class="code" href="class_base_node.html#a32872bacb6a7c7e8f592a0abdb6dbb6d">sum</a>&lt;<span class="keywordtype">double</span>&gt;(<a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>) == 0.0) {</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            <span class="keywordflow">return</span> std::make_pair(ret, 0.0);</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        }</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        <span class="comment">// So: </span></div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        <span class="comment">// we pick node s to be replaced.</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        <span class="comment">// we create t to replace it with</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <span class="comment">// then somewhere below t, we choose something of type s.nt(), called q, to put s</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        <span class="keyword">auto</span> [s, slp] = sample&lt;Node,Node&gt;(ret, <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>); <span class="comment">// s is a ptr into ret</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment">//      PRINTN(&quot;Choosing s=&quot;, s-&gt;string());</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <a class="code" href="class_node.html">Node</a> old_s = *s; <span class="comment">// the old value of s, copied -- needed for fb and for replacement</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        </div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <a class="code" href="class_node.html">Node</a>* captured_s = s; <span class="comment">// clang doesn&#39;t like taking s for some reason</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        std::function can_resample_matches_s_nt = [captured_s](<span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; n) -&gt; <span class="keywordtype">double</span> { </div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>(n)*(n.nt() == captured_s-&gt;<a class="code" href="class_node.html#a4abe3acdc804489a01ef13a25b130fd8">nt</a>()); </div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        };</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        </div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="comment">// make something of the same type as s that we can </span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="comment">// put s into as a subtree below</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        <a class="code" href="class_node.html">Node</a> t = grammar-&gt;generate(s-&gt;nt()); </div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">//      PRINTN(&quot;Generated t=&quot;, t.string());</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        s-&gt;<a class="code" href="class_node.html#a80b47d9e0cf67b84d925c2f355199675">assign</a>(t);<span class="comment">// copy, not move, since we need it below</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment">//      s-&gt;fullprint();</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="comment">//      checkNode(grammar, *s);</span></div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                </div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        <span class="comment">// q is the thing in t that s will replace</span></div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <span class="comment">// this is sampeld from t, but we do it from s after assignment</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="comment">// since that was a bug before ught</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keyword">auto</span> [q, qlp] = sample&lt;Node,Node&gt;(*s, can_resample_matches_s_nt); </div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="comment">//      PRINTN(&quot;Choosing q=&quot;, q-&gt;string());</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        </div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="comment">// and then we assign the subtree, q, to be the original s</span></div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        q-&gt;assign(old_s);</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="comment">//      PRINTN(&quot;Ret after Q assignment=&quot;, ret.string());</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="comment">//      s-&gt;fullprint();</span></div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        </div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="comment">//      checkNode(grammar, *s);</span></div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="comment">// now if we replace something below t with s, there are multiples ones we could have done...</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        <span class="keyword">auto</span> lpq = <a class="code" href="_random_8h.html#a898a8e7dc41231c2fbb5c5704f48cf4b">lp_sample_eq</a>(*q, *s, can_resample_matches_s_nt); <span class="comment">// </span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            </div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="comment">//      CERR &quot;----INSERT-----------&quot; ENDL;</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="comment">//      CERR from ENDL;</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="comment">//      CERR *s ENDL;</span></div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="comment">//      CERR t ENDL;</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="comment">//      CERR s.second TAB grammar-&gt;log_probability(t) TAB grammar-&gt;log_probability(old_s) TAB lpq ENDL;</span></div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        </div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        <span class="comment">// forward is choosing s, generating everything *except* what replaced s, and then replacing</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        <span class="keywordtype">double</span> forward = slp +  <span class="comment">// must get exactly this s</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                         (grammar-&gt;log_probability(t)-grammar-&gt;log_probability(old_s)) +  <span class="comment">// generate the rest of the tree</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;                         lpq; <span class="comment">// probability of getting any s</span></div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        </div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <span class="keywordtype">double</span> backward = lp_sample_one&lt;Node,Node&gt;(t, ret, <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>) + </div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;                          lp_sample_eq&lt;Node,Node&gt;(old_s, *s, can_resample_matches_s_nt);</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="comment">//      PRINTN(&quot;RETURNINGI&quot;, ret);</span></div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        </div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;<span class="comment">//      if(std::isinf(forward)) {</span></div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;<span class="comment">//          PRINTN(slp, lpq, grammar-&gt;log_probability(t), grammar-&gt;log_probability(old_s) );</span></div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="comment">//          PRINTN(s-&gt;string(), t.string());</span></div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="comment">//          </span></div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment">//      }</span></div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        assert(not std::isinf(forward));</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        assert(not std::isinf(backward));</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        </div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        </div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        <span class="keywordflow">return</span> std::make_pair(ret, forward-backward);       </div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    }</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    </div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> GrammarType&gt;</div>
-<div class="line"><a name="l00251"></a><span class="lineno"><a class="line" href="namespace_proposals.html#a785ec0b4f2f5df9b78bbb8c0c5f16118">  251</a></span>&#160;    std::pair&lt;Node, double&gt; <a class="code" href="namespace_proposals.html#a785ec0b4f2f5df9b78bbb8c0c5f16118">delete_tree</a>(GrammarType* grammar, <span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; from) {</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <span class="comment">// This proposal selects a node, regenerates, and then copies what was there before somewhere below </span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <span class="comment">// in the replaced tree. NOTE: it must regenerate something with the right nonterminal</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="comment">// since that&#39;s what&#39;s being replaced</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        </div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="preprocessor">        #ifdef DEBUG_PROPOSE</span></div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            <a class="code" href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a> <span class="stringliteral">&quot;DELETE-TREE&quot;</span>  <a class="code" href="_i_o_8h.html#ad58a1fbfc85c7e4790fc55e654f50221">TAB</a> from.<a class="code" href="class_node.html#a5d2a0e17dd2a00a79e6d1f763c9114d0">string</a>()  <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="preprocessor">        #endif</span></div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        <a class="code" href="class_node.html">Node</a> ret = from; <span class="comment">// copy</span></div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        <span class="keywordflow">if</span>(ret.<a class="code" href="class_base_node.html#a32872bacb6a7c7e8f592a0abdb6dbb6d">sum</a>(<a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>) == 0.0) {</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            <span class="keywordflow">return</span> std::make_pair(ret, 0.0);</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        }</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        </div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <span class="comment">// s is who we edit at</span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="keyword">auto</span> [s, slp] = sample&lt;Node,Node&gt;(ret, <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>); <span class="comment">// s is a ptr to ret</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        <a class="code" href="class_node.html">Node</a> old_s = *s; <span class="comment">// the old value of s, copied -- needed for fb</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        <a class="code" href="class_node.html">Node</a>* captured_s = s; <span class="comment">// clang doesn&#39;t like capturing s for some reason</span></div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        std::function can_resample_matches_s_nt = [&amp;](<span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; n) -&gt; <span class="keywordtype">double</span> { </div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>(n)*(n.nt() == captured_s-&gt;<a class="code" href="class_node.html#a4abe3acdc804489a01ef13a25b130fd8">nt</a>()); </div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        };</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        </div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <span class="comment">// q is who we promote here</span></div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        <span class="keyword">auto</span> [q, qlp] = <a class="code" href="_random_8h.html#a3585a6278806f57b964ccd1060f3b8ee">sample</a>(*s, can_resample_matches_s_nt);</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <a class="code" href="class_node.html">Node</a> newq = *q; <span class="comment">// must make a copy since q gets deleted in assignment... TODO: Can clean up with std::move?</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        </div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        <span class="comment">// forward is choosing s, and then anything equal to q within</span></div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        <span class="keywordtype">double</span> forward = slp + lp_sample_eq&lt;Node,Node&gt;(*q, *s, can_resample_matches_s_nt); </div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        </div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        <span class="comment">// probability of generating everything in s except q</span></div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        <span class="keywordtype">double</span> tlp = grammar-&gt;log_probability(old_s) - grammar-&gt;log_probability(*q); </div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        </div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="comment">// promote q here</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        s-&gt;assign(newq);</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    </div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keywordtype">double</span> backward = lp_sample_one&lt;Node,Node&gt;(*s,ret,<a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>) + </div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                          tlp + </div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                          lp_sample_eq&lt;Node,Node&gt;(newq,old_s,can_resample_matches_s_nt);</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        </div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        assert(not std::isinf(forward));</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        assert(not std::isinf(backward));</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    </div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    </div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    </div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> GrammarType, <span class="keywordtype">int</span> D&gt;</div>
+<div class="line"><a name="l00159"></a><span class="lineno"><a class="line" href="namespace_proposals.html#ab0b4274b605df07754cb5969a027a79e">  159</a></span>&#160;    std::optional&lt;std::pair&lt;Node,double&gt;&gt; <a class="code" href="namespace_proposals.html#ab0b4274b605df07754cb5969a027a79e">regenerate_shallow</a>(GrammarType* grammar, <span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; from) {</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <span class="keyword">auto</span> my_can_resample = +[](<span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; n) {</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <span class="keywordflow">return</span> (n.can_resample and n.depth() &lt;= D )*1.0;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        };</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        </div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">//      #ifdef DEBUG_PROPOSE</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">//          CERR &quot;REGENERATE_SHALLOW&quot; TAB from.string() ENDL;</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">//      #endif</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <a class="code" href="class_node.html">Node</a> ret = from; <span class="comment">// copy</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <span class="keywordflow">if</span>(from.<a class="code" href="class_base_node.html#a32872bacb6a7c7e8f592a0abdb6dbb6d">sum</a>&lt;<span class="keywordtype">double</span>&gt;(my_can_resample) == 0.0) </div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        </div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="keyword">auto</span> [s, slp] = sample&lt;Node,Node&gt;(ret, my_can_resample);</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <span class="keywordtype">double</span> oldgp = grammar-&gt;log_probability(*s); <span class="comment">// reverse probability generating </span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        s-&gt;assign(grammar-&gt;generate(s.first-&gt;nt())); </div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        </div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        <span class="keywordtype">double</span> fb = slp + grammar-&gt;log_probability(*s.first) </div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                  - (log(my_can_resample(*s.first)) - log(ret.<a class="code" href="class_base_node.html#a32872bacb6a7c7e8f592a0abdb6dbb6d">sum</a>(my_can_resample)) + oldgp);</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        <span class="keywordflow">return</span> std::make_pair(ret, fb);</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    }</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    </div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> GrammarType&gt;</div>
+<div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="namespace_proposals.html#a80fac26925c5ecc3da882b120071e38a">  189</a></span>&#160;    std::optional&lt;std::pair&lt;Node, double&gt;&gt; <a class="code" href="namespace_proposals.html#a80fac26925c5ecc3da882b120071e38a">insert_tree</a>(GrammarType* grammar, <span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; from) {</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <span class="comment">// This proposal selects a node, regenerates, and then copies what was there before somewhere below </span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        <span class="comment">// in the replaced tree. NOTE: it must regenerate something with the right nonterminal</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <span class="comment">// since that&#39;s what&#39;s being replaced! </span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        </div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        <a class="code" href="class_node.html">Node</a> ret = from; <span class="comment">// copy</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <span class="keywordflow">if</span>(ret.<a class="code" href="class_base_node.html#a32872bacb6a7c7e8f592a0abdb6dbb6d">sum</a>&lt;<span class="keywordtype">double</span>&gt;(<a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>) == 0.0) </div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        </div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        <span class="comment">// So: </span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="comment">// we pick node s to be replaced.</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <span class="comment">// we create t to replace it with</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        <span class="comment">// then somewhere below t, we choose something of type s.nt(), called q, to put s</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        </div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        <span class="keyword">auto</span> [s, slp] = sample&lt;Node,Node&gt;(ret, <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>); <span class="comment">// s is a ptr into ret</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment">//      PRINTN(&quot;Choosing s=&quot;, s-&gt;string());</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        </div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="preprocessor">        #ifdef DEBUG_PROPOSE</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            <a class="code" href="_i_o_8h.html#a69bfeadd71c3650be17f98956cb4e66e">DEBUG</a>(<span class="stringliteral">&quot;INSERT-TREE&quot;</span>, from, *s);</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="preprocessor">        #endif</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        </div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        <a class="code" href="class_node.html">Node</a> old_s = *s; <span class="comment">// the old value of s, copied -- needed for fb and for replacement</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        </div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        <a class="code" href="class_node.html">Node</a>* captured_s = s; <span class="comment">// clang doesn&#39;t like taking s for some reason</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        std::function can_resample_matches_s_nt = [captured_s](<span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; n) -&gt; <span class="keywordtype">double</span> { </div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>(n)*(n.nt() == captured_s-&gt;<a class="code" href="class_node.html#a4abe3acdc804489a01ef13a25b130fd8">nt</a>()); </div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        };</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        </div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        <span class="comment">// make something of the same type as s that we can </span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        <span class="comment">// put s into as a subtree below</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <a class="code" href="class_node.html">Node</a> t = grammar-&gt;generate(s-&gt;nt()); </div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="comment">//      PRINTN(&quot;Generated t=&quot;, t.string());</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        s-&gt;<a class="code" href="class_node.html#a80b47d9e0cf67b84d925c2f355199675">assign</a>(t);<span class="comment">// copy, not move, since we need it below</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="comment">//      s-&gt;fullprint();</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="comment">//      checkNode(grammar, *s);</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;                </div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        <span class="comment">// q is the thing in t that s will replace</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        <span class="comment">// this is sampeld from t, but we do it from s after assignment</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <span class="comment">// since that was a bug before ught</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="keyword">auto</span> [q, qlp] = sample&lt;Node,Node&gt;(*s, can_resample_matches_s_nt); </div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="comment">//      PRINTN(&quot;Choosing q=&quot;, q-&gt;string());</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        </div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <span class="comment">// and then we assign the subtree, q, to be the original s</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        q-&gt;assign(old_s);</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="comment">//      PRINTN(&quot;Ret after Q assignment=&quot;, ret.string());</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="comment">//      s-&gt;fullprint();</span></div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        </div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;<span class="comment">//      checkNode(grammar, *s);</span></div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        <span class="comment">// now if we replace something below t with s, there are multiples ones we could have done...</span></div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        <span class="keyword">auto</span> lpq = <a class="code" href="_random_8h.html#a898a8e7dc41231c2fbb5c5704f48cf4b">lp_sample_eq</a>(*q, *s, can_resample_matches_s_nt); <span class="comment">// </span></div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            </div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="comment">//      CERR &quot;----INSERT-----------&quot; ENDL;</span></div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="comment">//      CERR from ENDL;</span></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="comment">//      CERR *s ENDL;</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="comment">//      CERR t ENDL;</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment">//      CERR s.second TAB grammar-&gt;log_probability(t) TAB grammar-&gt;log_probability(old_s) TAB lpq ENDL;</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        </div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="comment">// forward is choosing s, generating everything *except* what replaced s, and then replacing</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keywordtype">double</span> forward = slp +  <span class="comment">// must get exactly this s</span></div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                         (grammar-&gt;log_probability(t)-grammar-&gt;log_probability(old_s)) +  <span class="comment">// generate the rest of the tree</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                         lpq; <span class="comment">// probability of getting any s</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        </div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="keywordtype">double</span> backward = lp_sample_one&lt;Node,Node&gt;(t, ret, <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>) + </div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                          lp_sample_eq&lt;Node,Node&gt;(old_s, *s, can_resample_matches_s_nt);</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment">//      PRINTN(&quot;RETURNINGI&quot;, ret);</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        </div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="comment">//      if(std::isinf(forward)) {</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="comment">//          PRINTN(slp, lpq, grammar-&gt;log_probability(t), grammar-&gt;log_probability(old_s) );</span></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="comment">//          PRINTN(s-&gt;string(), t.string());</span></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="comment">//          </span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="comment">//      }</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        </div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        assert(not std::isinf(forward));</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        assert(not std::isinf(backward));</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        </div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        </div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        <span class="keywordflow">return</span> std::make_pair(ret, forward-backward);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    }</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    </div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> GrammarType&gt;</div>
+<div class="line"><a name="l00273"></a><span class="lineno"><a class="line" href="namespace_proposals.html#a2d56c952fccbc336182eb79f1db6e296">  273</a></span>&#160;    std::optional&lt;std::pair&lt;Node, double&gt;&gt; <a class="code" href="namespace_proposals.html#a2d56c952fccbc336182eb79f1db6e296">delete_tree</a>(GrammarType* grammar, <span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; from) {</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        <span class="comment">// This proposal selects a node, regenerates, and then copies what was there before somewhere below </span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <span class="comment">// in the replaced tree. NOTE: it must regenerate something with the right nonterminal</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        <span class="comment">// since that&#39;s what&#39;s being replaced</span></div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <a class="code" href="class_node.html">Node</a> ret = from; <span class="comment">// copy</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        <span class="keywordflow">if</span>(ret.<a class="code" href="class_base_node.html#a32872bacb6a7c7e8f592a0abdb6dbb6d">sum</a>(<a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>) == 0.0) </div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;            <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        </div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        <span class="comment">// s is who we edit at</span></div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <span class="keyword">auto</span> [s, slp] = sample&lt;Node,Node&gt;(ret, <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>); <span class="comment">// s is a ptr to ret</span></div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <a class="code" href="class_node.html">Node</a> old_s = *s; <span class="comment">// the old value of s, copied -- needed for fb</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        </div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="preprocessor">        #ifdef DEBUG_PROPOSE</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;            <a class="code" href="_i_o_8h.html#a69bfeadd71c3650be17f98956cb4e66e">DEBUG</a>(<span class="stringliteral">&quot;DELETE-TREE&quot;</span>, from, *s);</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="preprocessor">        #endif</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160; </div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        <a class="code" href="class_node.html">Node</a>* captured_s = s; <span class="comment">// clang doesn&#39;t like capturing s for some reason</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        std::function can_resample_matches_s_nt = [&amp;](<span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; n) -&gt; <span class="keywordtype">double</span> { </div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>(n)*(n.nt() == captured_s-&gt;<a class="code" href="class_node.html#a4abe3acdc804489a01ef13a25b130fd8">nt</a>()); </div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        };</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        </div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        <span class="keywordflow">return</span> std::make_pair(ret, forward-backward);       </div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    }</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    </div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    </div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> GrammarType&gt;</div>
-<div class="line"><a name="l00308"></a><span class="lineno"><a class="line" href="namespace_proposals.html#aa7f6d33ccb0ba81730e267d1de60c476">  308</a></span>&#160;    std::pair&lt;Node,double&gt; <a class="code" href="namespace_proposals.html#aa7f6d33ccb0ba81730e267d1de60c476">sample_function_leaving_args</a>(GrammarType* grammar, <span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; from) {</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        </div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <a class="code" href="class_node.html">Node</a> ret = from; <span class="comment">// copy</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        </div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        <span class="comment">// TODO CHECK HERE THAT THE SAMPLING WAS POSSIBLE</span></div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        <span class="keyword">auto</span> [s, slp] = sample&lt;Node,Node&gt;(ret, <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>);</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        </div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        <span class="comment">// find everything in the grammar that matches s&#39;s type</span></div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        std::vector&lt;Rule*&gt; matching_rules;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; r: grammar-&gt;rules[s-&gt;rule-&gt;nt]) {</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;            <span class="keywordflow">if</span>(r.child_types == s-&gt;rule-&gt;child_types) {</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                matching_rules.push_back(&amp;r);</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<span class="comment">//              PRINTN(&quot;Matching &quot;, r, *s-&gt;rule);</span></div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;            }</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        }</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        assert(matching_rules.size() &gt;= 1); <span class="comment">// we had to have matche done...</span></div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        </div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <span class="comment">// now sample from one</span></div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        std::function sampler = +[](<span class="keyword">const</span> <a class="code" href="class_rule.html">Rule</a>* r) -&gt; <span class="keywordtype">double</span> { <span class="keywordflow">return</span> r-&gt;p; };</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;        <span class="keyword">auto</span> [newr, __rp] = sample&lt;Rule*&gt;(matching_rules, sampler); <span class="comment">// sample according to p</span></div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        assert(newr != <span class="keyword">nullptr</span> and *newr != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        assert( (*newr)-&gt;nt == s-&gt;rule-&gt;nt);</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        <span class="comment">// NOTE: confusingly, newr is a Rule** so it must be deferenced to get a poitner </span></div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        <span class="keyword">const</span> <a class="code" href="class_rule.html">Rule</a>* oldRule = s-&gt;rule; </div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        </div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="comment">// set the rule and its probability -- save us the copying</span></div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        s-&gt;rule = *newr;</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        s-&gt;lp = (*newr)-&gt;<a class="code" href="class_rule.html#acd7e4d41d59dec76f60ca16238ab391a">p</a> / grammar-&gt;Z[s-&gt;rule-&gt;nt];</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        <span class="comment">// q is who we promote here</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        <span class="keyword">auto</span> [q, qlp] = <a class="code" href="_random_8h.html#a3585a6278806f57b964ccd1060f3b8ee">sample</a>(*s, can_resample_matches_s_nt);</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        <a class="code" href="class_node.html">Node</a> newq = *q; <span class="comment">// must make a copy since q gets deleted in assignment... TODO: Can clean up with std::move?</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        </div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <span class="comment">// forward is choosing s, and then anything equal to q within</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        <span class="keywordtype">double</span> forward = slp + lp_sample_eq&lt;Node,Node&gt;(*q, *s, can_resample_matches_s_nt); </div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        </div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <span class="comment">// probability of generating everything in s except q</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        <span class="keywordtype">double</span> tlp = grammar-&gt;log_probability(old_s) - grammar-&gt;log_probability(*q); </div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        </div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        <span class="comment">// promote q here</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        s-&gt;assign(newq);</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    </div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <span class="keywordtype">double</span> backward = lp_sample_one&lt;Node,Node&gt;(*s,ret,<a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>) + </div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                          tlp + </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                          lp_sample_eq&lt;Node,Node&gt;(newq,old_s,can_resample_matches_s_nt);</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        </div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        assert(not std::isinf(forward));</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        assert(not std::isinf(backward));</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        </div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        <span class="keywordflow">return</span> std::make_pair(ret, forward-backward);</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    }</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    </div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    </div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> GrammarType&gt;</div>
+<div class="line"><a name="l00329"></a><span class="lineno"><a class="line" href="namespace_proposals.html#a9239140f112d50a80ae101c98bd7f0f6">  329</a></span>&#160;    std::optional&lt;std::pair&lt;Node,double&gt;&gt; <a class="code" href="namespace_proposals.html#a9239140f112d50a80ae101c98bd7f0f6">sample_function_leaving_args</a>(GrammarType* grammar, <span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; from) {</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        </div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        </div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        <a class="code" href="class_node.html">Node</a> ret = from; <span class="comment">// copy</span></div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        </div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        <span class="keyword">auto</span> z = sample_z&lt;Node,Node&gt;(ret, <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>);</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        <span class="keywordflow">if</span>(z == 0.0) <span class="keywordflow">return</span> {};</div>
 <div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        </div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        <span class="comment">// here we compute fb while ignoring the normalizing constants which is why we don&#39;t use rp</span></div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        <span class="keywordtype">double</span> fb = log(sampler(*newr))-log(sampler(oldRule));</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        </div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        <span class="keywordflow">return</span> std::make_pair(ret, fb); <span class="comment">// forward-backward is just probability of sampling rp since s cancels</span></div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    }</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160; </div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160; </div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> GrammarType&gt;</div>
-<div class="line"><a name="l00351"></a><span class="lineno"><a class="line" href="namespace_proposals.html#a88343558ba97fd2c5cf57cbb609ffdf1">  351</a></span>&#160;    std::pair&lt;Node,double&gt; <a class="code" href="namespace_proposals.html#a88343558ba97fd2c5cf57cbb609ffdf1">swap_args</a>(GrammarType* grammar, <span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; from) {</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        <span class="keyword">auto</span> [s, slp] = sample&lt;Node,Node&gt;(ret, z, <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>);</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        </div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="preprocessor">        #ifdef DEBUG_PROPOSE</span></div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;            <a class="code" href="_i_o_8h.html#a69bfeadd71c3650be17f98956cb4e66e">DEBUG</a>(<span class="stringliteral">&quot;SAMPLE-LEAVING-ARGS&quot;</span>, from, *s);</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<span class="preprocessor">        #endif</span></div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        </div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        <span class="comment">// find everything in the grammar that matches s&#39;s type</span></div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        std::vector&lt;Rule*&gt; matching_rules;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; r: grammar-&gt;rules[s-&gt;rule-&gt;nt]) {</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;            <span class="keywordflow">if</span>(r.child_types == s-&gt;rule-&gt;child_types) {</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;                matching_rules.push_back(&amp;r);</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="comment">//              PRINTN(&quot;Matching &quot;, r, *s-&gt;rule);</span></div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;            }</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        }</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        assert(matching_rules.size() &gt;= 1); <span class="comment">// we had to have matche done...</span></div>
 <div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        </div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        <a class="code" href="class_node.html">Node</a> ret = from; <span class="comment">// copy</span></div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<span class="comment">//      PRINTN(&quot;Swapping1 &quot;, ret);</span></div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        </div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        <span class="comment">// TODO CHECK HERE THAT THE SAMPLING WAS POSSIBLE</span></div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        <span class="keyword">auto</span> [s, slp] = sample&lt;Node,Node&gt;(ret, <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>);</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        </div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        <span class="comment">// who is going to be swapped</span></div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        <span class="keywordtype">size_t</span> J = <a class="code" href="_random_8h.html#a80379e9c4dd11a0b2260f1a4ee934d44">myrandom</a>(s-&gt;nchildren()); <span class="comment">// check if anything is of this type</span></div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        </div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        <span class="comment">// with what</span></div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        std::vector&lt;int&gt; matching_indices;</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i=0;i&lt;s-&gt;nchildren();i++) {</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;            <span class="keywordflow">if</span>(i == J) </div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                </div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;            <span class="keywordflow">if</span>(s-&gt;child(i).rule-&gt;nt == s-&gt;child(J).rule-&gt;nt) {</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;                matching_indices.push_back(i);</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;            }</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        }</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        </div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        <span class="keywordflow">if</span>(matching_indices.size() == 0) {</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;            </div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;            <span class="keywordflow">return</span> std::make_pair(ret, 0.0);</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;            </div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        }</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;            </div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;            <span class="comment">// choose one</span></div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;            <span class="keyword">auto</span> i = matching_indices[<a class="code" href="_random_8h.html#a80379e9c4dd11a0b2260f1a4ee934d44">myrandom</a>(matching_indices.size())];</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;            </div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;            <a class="code" href="class_node.html">Node</a> tmp = s-&gt;<a class="code" href="class_base_node.html#ac2ed3b362a2563e86063a157daa1c288">child</a>(i); <span class="comment">// copy (unfortunatley -- probably not necessary using std::swap)</span></div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;            s-&gt;<a class="code" href="class_node.html#a639ca55ac71fa4e7865f1ae7e3d23134">set_child</a>(i, std::move(s-&gt;child(J)));</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;            s-&gt;set_child(J, std::move(tmp));</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;            </div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="comment">//          PRINTN(&quot;Swapping2 &quot;, ret);</span></div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        <span class="comment">// now sample from one</span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        std::function sampler = +[](<span class="keyword">const</span> <a class="code" href="class_rule.html">Rule</a>* r) -&gt; <span class="keywordtype">double</span> { <span class="keywordflow">return</span> r-&gt;p; };</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        <span class="keyword">auto</span> [newr, __rp] = sample&lt;Rule*&gt;(matching_rules, sampler); <span class="comment">// sample according to p</span></div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        assert(newr != <span class="keyword">nullptr</span> and *newr != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        assert( (*newr)-&gt;nt == s-&gt;rule-&gt;nt);</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        <span class="comment">// NOTE: confusingly, newr is a Rule** so it must be deferenced to get a poitner </span></div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        <span class="keyword">const</span> <a class="code" href="class_rule.html">Rule</a>* oldRule = s-&gt;rule; </div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        </div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        <span class="comment">// set the rule and its probability -- save us the copying</span></div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        s-&gt;rule = *newr;</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        s-&gt;lp = (*newr)-&gt;<a class="code" href="class_rule.html#acd7e4d41d59dec76f60ca16238ab391a">p</a> / grammar-&gt;Z[s-&gt;rule-&gt;nt];</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        </div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        <span class="comment">// here we compute fb while ignoring the normalizing constants which is why we don&#39;t use rp</span></div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        <span class="keywordtype">double</span> fb = log(sampler(*newr))-log(sampler(oldRule));</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        </div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        <span class="keywordflow">return</span> std::make_pair(ret,fb); <span class="comment">// forward-backward is just probability of sampling rp since s cancels</span></div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    }</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160; </div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160; </div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> GrammarType&gt;</div>
+<div class="line"><a name="l00379"></a><span class="lineno"><a class="line" href="namespace_proposals.html#a0d4e7cd154fe31641434b35c515a5ab8">  379</a></span>&#160;    std::optional&lt;std::pair&lt;Node,double&gt;&gt; <a class="code" href="namespace_proposals.html#a0d4e7cd154fe31641434b35c515a5ab8">swap_args</a>(GrammarType* grammar, <span class="keyword">const</span> <a class="code" href="class_node.html">Node</a>&amp; from) {</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        </div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <a class="code" href="class_node.html">Node</a> ret = from; <span class="comment">// copy</span></div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;<span class="comment">//      PRINTN(&quot;Swapping1 &quot;, ret);</span></div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        </div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        <span class="keyword">auto</span> z = sample_z&lt;Node,Node&gt;(ret, <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>);</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        <span class="keywordflow">if</span>(z == 0.0) <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;        </div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        <span class="keyword">auto</span> [s, slp] = sample&lt;Node,Node&gt;(ret, z, <a class="code" href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">can_resample</a>);</div>
 <div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        </div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;            <span class="keywordflow">return</span> std::make_pair(ret, 0.0);</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        }</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    }</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;<span class="preprocessor">        #ifdef DEBUG_PROPOSE</span></div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;            <a class="code" href="_i_o_8h.html#a69bfeadd71c3650be17f98956cb4e66e">DEBUG</a>(<span class="stringliteral">&quot;SWAP-ARGS&quot;</span>, from, *s);</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;<span class="preprocessor">        #endif</span></div>
 <div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        </div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;        </div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160; </div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;}</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;        <span class="keywordflow">if</span>(s-&gt;nchildren() &lt;= 1) { </div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;            <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        }</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        </div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        <span class="comment">// who is going to be swapped</span></div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        <span class="keywordtype">size_t</span> J = <a class="code" href="_random_8h.html#a80379e9c4dd11a0b2260f1a4ee934d44">myrandom</a>(s-&gt;nchildren()); <span class="comment">// check if anything is of this type</span></div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        </div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        <span class="comment">// with what</span></div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        std::vector&lt;int&gt; matching_indices;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i=0;i&lt;s-&gt;nchildren();i++) {</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;            <span class="keywordflow">if</span>(i == J) </div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;                </div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;            <span class="keywordflow">if</span>(s-&gt;child(i).rule-&gt;nt == s-&gt;child(J).rule-&gt;nt) {</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;                matching_indices.push_back(i);</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;            }</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        }</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        </div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        <span class="keywordflow">if</span>(matching_indices.size() == 0) {</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;            </div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;            <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;            </div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        }</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;            </div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;            <span class="comment">// choose one</span></div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;            <span class="keyword">auto</span> i = matching_indices[<a class="code" href="_random_8h.html#a80379e9c4dd11a0b2260f1a4ee934d44">myrandom</a>(matching_indices.size())];</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;            </div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;            <a class="code" href="class_node.html">Node</a> tmp = s-&gt;<a class="code" href="class_base_node.html#ac2ed3b362a2563e86063a157daa1c288">child</a>(i); <span class="comment">// copy (unfortunatley -- probably not necessary using std::swap)</span></div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;            s-&gt;<a class="code" href="class_node.html#a639ca55ac71fa4e7865f1ae7e3d23134">set_child</a>(i, std::move(s-&gt;child(J)));</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;            s-&gt;set_child(J, std::move(tmp));</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;            </div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;<span class="comment">//          PRINTN(&quot;Swapping2 &quot;, ret);</span></div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;        </div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;            <span class="keywordflow">return</span> std::make_pair(ret,0.0);</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;        }</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    }</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;        </div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;        </div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160; </div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclass_node_html_a5d2a0e17dd2a00a79e6d1f763c9114d0"><div class="ttname"><a href="class_node.html#a5d2a0e17dd2a00a79e6d1f763c9114d0">Node::string</a></div><div class="ttdeci">virtual std::string string(bool usedot=true) const override</div><div class="ttdef"><b>Definition:</b> Node.h:202</div></div>
-<div class="ttc" id="anamespace_proposals_html_aa7f6d33ccb0ba81730e267d1de60c476"><div class="ttname"><a href="namespace_proposals.html#aa7f6d33ccb0ba81730e267d1de60c476">Proposals::sample_function_leaving_args</a></div><div class="ttdeci">std::pair&lt; Node, double &gt; sample_function_leaving_args(GrammarType *grammar, const Node &amp;from)</div><div class="ttdoc">This samples functions f(a,b) -&gt; g(a,b) (e.g. without destroying what's below). This uses a little tr...</div><div class="ttdef"><b>Definition:</b> Proposers.h:308</div></div>
+<div class="ttc" id="anamespace_proposals_html_a80fac26925c5ecc3da882b120071e38a"><div class="ttname"><a href="namespace_proposals.html#a80fac26925c5ecc3da882b120071e38a">Proposals::insert_tree</a></div><div class="ttdeci">std::optional&lt; std::pair&lt; Node, double &gt; &gt; insert_tree(GrammarType *grammar, const Node &amp;from)</div><div class="ttdef"><b>Definition:</b> Proposers.h:189</div></div>
+<div class="ttc" id="anamespace_proposals_html_a2d56c952fccbc336182eb79f1db6e296"><div class="ttname"><a href="namespace_proposals.html#a2d56c952fccbc336182eb79f1db6e296">Proposals::delete_tree</a></div><div class="ttdeci">std::optional&lt; std::pair&lt; Node, double &gt; &gt; delete_tree(GrammarType *grammar, const Node &amp;from)</div><div class="ttdef"><b>Definition:</b> Proposers.h:273</div></div>
+<div class="ttc" id="anamespace_proposals_html_abf13014284cb355d53f6321fd67c7924"><div class="ttname"><a href="namespace_proposals.html#abf13014284cb355d53f6321fd67c7924">Proposals::regenerate</a></div><div class="ttdeci">std::optional&lt; std::pair&lt; Node, double &gt; &gt; regenerate(GrammarType *grammar, const Node &amp;from)</div><div class="ttdoc">Regenerate with a rational-rules (Goodman et al.) style regeneration proposal: pick a node uniformly ...</div><div class="ttdef"><b>Definition:</b> Proposers.h:107</div></div>
 <div class="ttc" id="aclass_base_node_html_abae4d16401a958dc41d2852dedcf0721"><div class="ttname"><a href="class_base_node.html#abae4d16401a958dc41d2852dedcf0721">BaseNode::nchildren</a></div><div class="ttdeci">size_t nchildren() const</div><div class="ttdef"><b>Definition:</b> BaseNode.h:199</div></div>
+<div class="ttc" id="anamespace_proposals_html_a3012f5a65ba25baf5fa053cf7be71a4c"><div class="ttname"><a href="namespace_proposals.html#a3012f5a65ba25baf5fa053cf7be71a4c">Proposals::prior_proposal</a></div><div class="ttdeci">std::optional&lt; std::pair&lt; Node, double &gt; &gt; prior_proposal(GrammarType *grammar, const Node &amp;from)</div><div class="ttdef"><b>Definition:</b> Proposers.h:23</div></div>
+<div class="ttc" id="aclass_base_node_html_a7177763ffa8b3e658124c586dde30be9"><div class="ttname"><a href="class_base_node.html#a7177763ffa8b3e658124c586dde30be9">BaseNode::get_children</a></div><div class="ttdeci">decltype(children) &amp; get_children()</div><div class="ttdef"><b>Definition:</b> BaseNode.h:159</div></div>
 <div class="ttc" id="aclass_base_node_html_a4007d1c72991b8599a6ff5a21c054ba5"><div class="ttname"><a href="class_base_node.html#a4007d1c72991b8599a6ff5a21c054ba5">BaseNode::count</a></div><div class="ttdeci">virtual size_t count() const</div><div class="ttdoc">How many nodes total are below me?</div><div class="ttdef"><b>Definition:</b> BaseNode.h:349</div></div>
+<div class="ttc" id="anamespace_proposals_html_a0d4e7cd154fe31641434b35c515a5ab8"><div class="ttname"><a href="namespace_proposals.html#a0d4e7cd154fe31641434b35c515a5ab8">Proposals::swap_args</a></div><div class="ttdeci">std::optional&lt; std::pair&lt; Node, double &gt; &gt; swap_args(GrammarType *grammar, const Node &amp;from)</div><div class="ttdoc">This propose swaps around arguments of the same type.</div><div class="ttdef"><b>Definition:</b> Proposers.h:379</div></div>
 <div class="ttc" id="a_i_o_8h_html_ad58a1fbfc85c7e4790fc55e654f50221"><div class="ttname"><a href="_i_o_8h.html#ad58a1fbfc85c7e4790fc55e654f50221">TAB</a></div><div class="ttdeci">#define TAB</div><div class="ttdef"><b>Definition:</b> IO.h:19</div></div>
-<div class="ttc" id="anamespace_proposals_html_a8714ac1333d5aff2d248ef10a8eb5493"><div class="ttname"><a href="namespace_proposals.html#a8714ac1333d5aff2d248ef10a8eb5493">Proposals::insert_tree</a></div><div class="ttdeci">std::pair&lt; Node, double &gt; insert_tree(GrammarType *grammar, const Node &amp;from)</div><div class="ttdef"><b>Definition:</b> Proposers.h:167</div></div>
 <div class="ttc" id="a_i_o_8h_html_a176c0577baa96c686397bca42f7ee6ff"><div class="ttname"><a href="_i_o_8h.html#a176c0577baa96c686397bca42f7ee6ff">CERR</a></div><div class="ttdeci">#define CERR</div><div class="ttdef"><b>Definition:</b> IO.h:23</div></div>
 <div class="ttc" id="a_i_o_8h_html_a90dc3f3ee970394e0080300526390a84"><div class="ttname"><a href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a></div><div class="ttdeci">#define ENDL</div><div class="ttdef"><b>Definition:</b> IO.h:21</div></div>
 <div class="ttc" id="aclass_base_node_html_a32872bacb6a7c7e8f592a0abdb6dbb6d"><div class="ttname"><a href="class_base_node.html#a32872bacb6a7c7e8f592a0abdb6dbb6d">BaseNode::sum</a></div><div class="ttdeci">T sum(std::function&lt; T(const this_t &amp;)&gt; &amp;f) const</div><div class="ttdef"><b>Definition:</b> BaseNode.h:416</div></div>
 <div class="ttc" id="aclass_base_node_html_ac2ed3b362a2563e86063a157daa1c288"><div class="ttname"><a href="class_base_node.html#ac2ed3b362a2563e86063a157daa1c288">BaseNode::child</a></div><div class="ttdeci">this_t &amp; child(const size_t i)</div><div class="ttdef"><b>Definition:</b> BaseNode.h:166</div></div>
 <div class="ttc" id="a_random_8h_html_a3585a6278806f57b964ccd1060f3b8ee"><div class="ttname"><a href="_random_8h.html#a3585a6278806f57b964ccd1060f3b8ee">sample</a></div><div class="ttdeci">std::pair&lt; t *, double &gt; sample(const T &amp;s, double z, const std::function&lt; double(const t &amp;)&gt; &amp;f=[](const t &amp;v){return 1.0;})</div><div class="ttdef"><b>Definition:</b> Random.h:146</div></div>
 <div class="ttc" id="aclass_node_html"><div class="ttname"><a href="class_node.html">Node</a></div><div class="ttdef"><b>Definition:</b> Node.h:21</div></div>
-<div class="ttc" id="anamespace_proposals_html_aedcca10b4519a9aad7739878036019f3"><div class="ttname"><a href="namespace_proposals.html#aedcca10b4519a9aad7739878036019f3">Proposals::regenerate</a></div><div class="ttdeci">std::pair&lt; Node, double &gt; regenerate(GrammarType *grammar, const Node &amp;from)</div><div class="ttdoc">Regenerate with a rational-rules (Goodman et al.) style regeneration proposal: pick a node uniformly ...</div><div class="ttdef"><b>Definition:</b> Proposers.h:89</div></div>
 <div class="ttc" id="anamespace_proposals_html_a73f20ef1547bc5beef3e6e3adad2139c"><div class="ttname"><a href="namespace_proposals.html#a73f20ef1547bc5beef3e6e3adad2139c">Proposals::can_resample</a></div><div class="ttdeci">double can_resample(const Node &amp;n)</div><div class="ttdoc">Helper function for whether we can resample from a node (just accesses n.can_resample)</div><div class="ttdef"><b>Definition:</b> Proposers.h:18</div></div>
 <div class="ttc" id="aclass_node_html_a4abe3acdc804489a01ef13a25b130fd8"><div class="ttname"><a href="class_node.html#a4abe3acdc804489a01ef13a25b130fd8">Node::nt</a></div><div class="ttdeci">nonterminal_t nt() const</div><div class="ttdef"><b>Definition:</b> Node.h:153</div></div>
 <div class="ttc" id="a_random_8h_html_a898a8e7dc41231c2fbb5c5704f48cf4b"><div class="ttname"><a href="_random_8h.html#a898a8e7dc41231c2fbb5c5704f48cf4b">lp_sample_eq</a></div><div class="ttdeci">double lp_sample_eq(const t &amp;x, const T &amp;s, std::function&lt; double(const t &amp;)&gt; &amp;f=[](const t &amp;v){return 1.0;})</div><div class="ttdef"><b>Definition:</b> Random.h:276</div></div>
-<div class="ttc" id="aclass_rule_html_acd7e4d41d59dec76f60ca16238ab391a"><div class="ttname"><a href="class_rule.html#acd7e4d41d59dec76f60ca16238ab391a">Rule::p</a></div><div class="ttdeci">double p</div><div class="ttdef"><b>Definition:</b> Rule.h:31</div></div>
+<div class="ttc" id="aclass_rule_html_acd7e4d41d59dec76f60ca16238ab391a"><div class="ttname"><a href="class_rule.html#acd7e4d41d59dec76f60ca16238ab391a">Rule::p</a></div><div class="ttdeci">double p</div><div class="ttdef"><b>Definition:</b> Rule.h:29</div></div>
 <div class="ttc" id="aclass_node_html_a80b47d9e0cf67b84d925c2f355199675"><div class="ttname"><a href="class_node.html#a80b47d9e0cf67b84d925c2f355199675">Node::assign</a></div><div class="ttdeci">void assign(Node &amp;n)</div><div class="ttdoc">Assign will set everything to n BUT it will not copy the parent points etc since we're assuming this ...</div><div class="ttdef"><b>Definition:</b> Node.h:58</div></div>
-<div class="ttc" id="anamespace_proposals_html_a88343558ba97fd2c5cf57cbb609ffdf1"><div class="ttname"><a href="namespace_proposals.html#a88343558ba97fd2c5cf57cbb609ffdf1">Proposals::swap_args</a></div><div class="ttdeci">std::pair&lt; Node, double &gt; swap_args(GrammarType *grammar, const Node &amp;from)</div><div class="ttdoc">This propose swaps around arguments of the same type.</div><div class="ttdef"><b>Definition:</b> Proposers.h:351</div></div>
+<div class="ttc" id="a_i_o_8h_html_a69bfeadd71c3650be17f98956cb4e66e"><div class="ttname"><a href="_i_o_8h.html#a69bfeadd71c3650be17f98956cb4e66e">DEBUG</a></div><div class="ttdeci">void DEBUG(FIRST f, ARGS... args)</div><div class="ttdoc">Print to std:ccout with debugging info.</div><div class="ttdef"><b>Definition:</b> IO.h:73</div></div>
 <div class="ttc" id="aclass_node_html_a639ca55ac71fa4e7865f1ae7e3d23134"><div class="ttname"><a href="class_node.html#a639ca55ac71fa4e7865f1ae7e3d23134">Node::set_child</a></div><div class="ttdeci">void set_child(const size_t i, Node &amp;n)</div><div class="ttdef"><b>Definition:</b> Node.h:83</div></div>
-<div class="ttc" id="anamespace_proposals_html_a785ec0b4f2f5df9b78bbb8c0c5f16118"><div class="ttname"><a href="namespace_proposals.html#a785ec0b4f2f5df9b78bbb8c0c5f16118">Proposals::delete_tree</a></div><div class="ttdeci">std::pair&lt; Node, double &gt; delete_tree(GrammarType *grammar, const Node &amp;from)</div><div class="ttdef"><b>Definition:</b> Proposers.h:251</div></div>
 <div class="ttc" id="aclass_node_html_a02f5c9463cceb270ad5730760f19c722"><div class="ttname"><a href="class_node.html#a02f5c9463cceb270ad5730760f19c722">Node::rule</a></div><div class="ttdeci">const Rule * rule</div><div class="ttdef"><b>Definition:</b> Node.h:31</div></div>
 <div class="ttc" id="a_node_8h_html"><div class="ttname"><a href="_node_8h.html">Node.h</a></div><div class="ttdoc">A Node is the primary internal representation for a program – it recursively stores a rule and the ar...</div></div>
-<div class="ttc" id="anamespace_proposals_html_a0c990430ad048f427224a481f5f2a557"><div class="ttname"><a href="namespace_proposals.html#a0c990430ad048f427224a481f5f2a557">Proposals::regenerate_shallow</a></div><div class="ttdeci">std::pair&lt; Node, double &gt; regenerate_shallow(GrammarType *grammar, const Node &amp;from)</div><div class="ttdoc">Regenerate with rational-rules style proposals, but only allow proposals to trees with a max depth of...</div><div class="ttdef"><b>Definition:</b> Proposers.h:136</div></div>
 <div class="ttc" id="aclass_node_html_a98c14a51b240fbc7e438f40a12276257"><div class="ttname"><a href="class_node.html#a98c14a51b240fbc7e438f40a12276257">Node::can_resample</a></div><div class="ttdeci">bool can_resample</div><div class="ttdef"><b>Definition:</b> Node.h:33</div></div>
-<div class="ttc" id="aclass_rule_html"><div class="ttname"><a href="class_rule.html">Rule</a></div><div class="ttdef"><b>Definition:</b> Rule.h:23</div></div>
-<div class="ttc" id="anamespace_proposals_html_add01a544339cc3713d02f663c331f33b"><div class="ttname"><a href="namespace_proposals.html#add01a544339cc3713d02f663c331f33b">Proposals::prior_proposal</a></div><div class="ttdeci">std::pair&lt; Node, double &gt; prior_proposal(GrammarType *grammar, const Node &amp;from)</div><div class="ttdef"><b>Definition:</b> Proposers.h:23</div></div>
+<div class="ttc" id="aclass_rule_html"><div class="ttname"><a href="class_rule.html">Rule</a></div><div class="ttdef"><b>Definition:</b> Rule.h:21</div></div>
+<div class="ttc" id="anamespace_proposals_html_aa58341a97b9dd0098e8d9b3cfd9d4ae5"><div class="ttname"><a href="namespace_proposals.html#aa58341a97b9dd0098e8d9b3cfd9d4ae5">Proposals::__regenerate_when_can_resample</a></div><div class="ttdeci">void __regenerate_when_can_resample(const GrammarType *grammar, Node &amp;from)</div><div class="ttdoc">A little helper function that resamples everything below when we can. If we can't,...</div><div class="ttdef"><b>Definition:</b> Proposers.h:88</div></div>
+<div class="ttc" id="anamespace_proposals_html_ab0b4274b605df07754cb5969a027a79e"><div class="ttname"><a href="namespace_proposals.html#ab0b4274b605df07754cb5969a027a79e">Proposals::regenerate_shallow</a></div><div class="ttdeci">std::optional&lt; std::pair&lt; Node, double &gt; &gt; regenerate_shallow(GrammarType *grammar, const Node &amp;from)</div><div class="ttdoc">Regenerate with rational-rules style proposals, but only allow proposals to trees with a max depth of...</div><div class="ttdef"><b>Definition:</b> Proposers.h:159</div></div>
 <div class="ttc" id="anamespace_proposals_html"><div class="ttname"><a href="namespace_proposals.html">Proposals</a></div><div class="ttdef"><b>Definition:</b> Proposers.h:11</div></div>
+<div class="ttc" id="anamespace_proposals_html_a9239140f112d50a80ae101c98bd7f0f6"><div class="ttname"><a href="namespace_proposals.html#a9239140f112d50a80ae101c98bd7f0f6">Proposals::sample_function_leaving_args</a></div><div class="ttdeci">std::optional&lt; std::pair&lt; Node, double &gt; &gt; sample_function_leaving_args(GrammarType *grammar, const Node &amp;from)</div><div class="ttdoc">This samples functions f(a,b) -&gt; g(a,b) (e.g. without destroying what's below). This uses a little tr...</div><div class="ttdef"><b>Definition:</b> Proposers.h:329</div></div>
 <div class="ttc" id="a_random_8h_html_a80379e9c4dd11a0b2260f1a4ee934d44"><div class="ttname"><a href="_random_8h.html#a80379e9c4dd11a0b2260f1a4ee934d44">myrandom</a></div><div class="ttdeci">T myrandom(T max)</div><div class="ttdef"><b>Definition:</b> Random.h:92</div></div>
 <div class="ttc" id="a_numerics_8h_html_a558a1133b9942f8debd559bb9317bca3"><div class="ttname"><a href="_numerics_8h.html#a558a1133b9942f8debd559bb9317bca3">logplusexp</a></div><div class="ttdeci">T logplusexp(const T a, const T b)</div><div class="ttdef"><b>Definition:</b> Numerics.h:87</div></div>
 <div class="ttc" id="anamespace_proposals_html_a8ddee063d47a51537e6c7a6ecdefa1aa"><div class="ttname"><a href="namespace_proposals.html#a8ddee063d47a51537e6c7a6ecdefa1aa">Proposals::p_regeneration_propose_to</a></div><div class="ttdeci">double p_regeneration_propose_to(GrammarType *grammar, const Node &amp;a, const Node &amp;b)</div><div class="ttdoc">Probability of proposing from a to b under regeneration.</div><div class="ttdef"><b>Definition:</b> Proposers.h:36</div></div>

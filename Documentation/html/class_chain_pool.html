@@ -80,11 +80,11 @@ Inheritance diagram for ChainPool&lt; HYP &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_chain_pool__inherit__graph.png" border="0" usemap="#_chain_pool_3_01_h_y_p_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="_chain_pool_3_01_h_y_p_01_4_inherit__map" id="_chain_pool_3_01_h_y_p_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="106,95,241,121"/>
-<area shape="rect" href="class_parallel_tempering.html" title=" " alt="" coords="20,169,153,211"/>
-<area shape="rect" href="class_partition_m_c_m_c.html" title=" " alt="" coords="178,177,342,203"/>
-<area shape="rect" href="class_threaded_inference_interface.html" title=" " alt="" coords="83,5,264,47"/>
-<area shape="rect" href="class_data_tempering.html" title=" " alt="" coords="5,259,168,285"/>
+<area shape="rect" title=" " alt="" coords="116,95,259,121"/>
+<area shape="rect" href="class_parallel_tempering.html" title=" " alt="" coords="19,169,169,211"/>
+<area shape="rect" href="class_partition_m_c_m_c.html" title=" " alt="" coords="193,177,368,203"/>
+<area shape="rect" href="class_threaded_inference_interface.html" title=" " alt="" coords="86,5,289,47"/>
+<area shape="rect" href="class_data_tempering.html" title=" " alt="" coords="5,259,183,285"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -92,10 +92,10 @@ Collaboration diagram for ChainPool&lt; HYP &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_chain_pool__coll__graph.png" border="0" usemap="#_chain_pool_3_01_h_y_p_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="_chain_pool_3_01_h_y_p_01_4_coll__map" id="_chain_pool_3_01_h_y_p_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="150,199,285,225"/>
-<area shape="rect" href="class_threaded_inference_interface.html" title=" " alt="" coords="5,95,187,136"/>
-<area shape="rect" href="class_concurrent_queue.html" title=" " alt="" coords="8,5,184,32"/>
-<area shape="rect" href="class_ordered_lock.html" title=" " alt="" coords="211,102,307,129"/>
+<area shape="rect" title=" " alt="" coords="167,199,310,225"/>
+<area shape="rect" href="class_threaded_inference_interface.html" title=" " alt="" coords="5,95,208,136"/>
+<area shape="rect" href="class_concurrent_queue.html" title=" " alt="" coords="11,5,202,32"/>
+<area shape="rect" href="class_ordered_lock.html" title=" " alt="" coords="232,102,336,129"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -116,6 +116,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6c186d7addcd0e1ab0733aae3a760a47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#a6c186d7addcd0e1ab0733aae3a760a47">set_data</a> (typename HYP::data_t *d, bool recompute=true)</td></tr>
 <tr class="memdesc:a6c186d7addcd0e1ab0733aae3a760a47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this data.  <a href="class_chain_pool.html#a6c186d7addcd0e1ab0733aae3a760a47">More...</a><br /></td></tr>
 <tr class="separator:a6c186d7addcd0e1ab0733aae3a760a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeec4366901f693ebe3a4275ac00dde2a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#aeec4366901f693ebe3a4275ac00dde2a">nchains</a> () const</td></tr>
+<tr class="separator:aeec4366901f693ebe3a4275ac00dde2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38e61af5e8d4c0399ac0a30e2a0e18ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#a38e61af5e8d4c0399ac0a30e2a0e18ce">print</a> (std::string prefix) const</td></tr>
+<tr class="separator:a38e61af5e8d4c0399ac0a30e2a0e18ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84ad82009e98da528a9ab9aa97b6e81c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_coroutines_8h.html#ab06a612c41229b9582ada8655001e2b0">generator</a>&lt; HYP &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chain_pool.html#a84ad82009e98da528a9ab9aa97b6e81c">run_thread</a> (<a class="el" href="struct_control.html">Control</a> &amp;ctl) override</td></tr>
 <tr class="memdesc:a84ad82009e98da528a9ab9aa97b6e81c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This run helper is called internally by multiple different threads, and runs a given pool.  <a href="class_chain_pool.html#a84ad82009e98da528a9ab9aa97b6e81c">More...</a><br /></td></tr>
 <tr class="separator:a84ad82009e98da528a9ab9aa97b6e81c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -268,6 +272,61 @@ template&lt;typename HYP &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aeec4366901f693ebe3a4275ac00dde2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeec4366901f693ebe3a4275ac00dde2a">&#9670;&nbsp;</a></span>nchains()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename HYP &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="class_chain_pool.html">ChainPool</a>&lt; HYP &gt;::nchains </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a38e61af5e8d4c0399ac0a30e2a0e18ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38e61af5e8d4c0399ac0a30e2a0e18ce">&#9670;&nbsp;</a></span>print()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename HYP &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_chain_pool.html">ChainPool</a>&lt; HYP &gt;::<a class="el" href="structprint.html">print</a> </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>prefix</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a84ad82009e98da528a9ab9aa97b6e81c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a84ad82009e98da528a9ab9aa97b6e81c">&#9670;&nbsp;</a></span>run_thread()</h2>
 

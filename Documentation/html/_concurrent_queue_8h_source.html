@@ -93,8 +93,8 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    std::condition_variable_any full_cv; <span class="comment">// any needed here to use OrderedLock </span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    std::condition_variable_any empty_cv;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">//  mutable std::mutex lock;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">mutable</span> <a class="code" href="class_ordered_lock.html">OrderedLock</a> lock; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">mutable</span> <a class="code" href="class_ordered_lock.html">OrderedLock</a> lock; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//  mutable std::mutex lock; </span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    </div>
@@ -111,38 +111,41 @@ $(function() {
 <div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="class_concurrent_queue.html#ad46199753ce77c58b3b256074c1df5e2">   47</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_concurrent_queue.html#ad46199753ce77c58b3b256074c1df5e2">empty</a>() { <span class="keywordflow">return</span> push_idx == pop_idx; }</div>
 <div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="class_concurrent_queue.html#ae0b58b1b52a9a73b5a308b240c722fbf">   48</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_concurrent_queue.html#ae0b58b1b52a9a73b5a308b240c722fbf">full</a>()  { <span class="keywordflow">return</span> (push_idx+1) % N == pop_idx; }</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    </div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="class_concurrent_queue.html#a6baf689e7763e243a53f26181fecf951">   50</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_concurrent_queue.html#a6baf689e7763e243a53f26181fecf951">push</a>(T&amp; x) {       </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        std::unique_lock lck(lock);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="comment">// if we are here, we must wait until a spot frees up</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">while</span>(<a class="code" href="class_concurrent_queue.html#ae0b58b1b52a9a73b5a308b240c722fbf">full</a>()) full_cv.wait(lck);</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="class_concurrent_queue.html#a6baf689e7763e243a53f26181fecf951">   50</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_concurrent_queue.html#a6baf689e7763e243a53f26181fecf951">push</a>(T&amp; x) {   </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        std::unique_lock lck(lock);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">//      if(full()) PRINTN(&quot;FULL&quot;);</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        to_yield[push_idx] = x;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        push_idx = (push_idx + 1) % N;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        empty_cv.notify_one();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    </div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="class_concurrent_queue.html#a6412cc45f2c19f1090611fbd1930b8e2">   63</a></span>&#160;    T <a class="code" href="class_concurrent_queue.html#a6412cc45f2c19f1090611fbd1930b8e2">pop</a>() {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        std::unique_lock lck(lock);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="comment">// we are empty so we must wait</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordflow">while</span>(<a class="code" href="class_concurrent_queue.html#ad46199753ce77c58b3b256074c1df5e2">empty</a>()) empty_cv.wait(lck);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="comment">// if we are here, we must wait until a spot frees up</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordflow">while</span>(<a class="code" href="class_concurrent_queue.html#ae0b58b1b52a9a73b5a308b240c722fbf">full</a>()) full_cv.wait(lck);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        to_yield[push_idx] = x;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        push_idx = (push_idx + 1) % N;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        empty_cv.notify_one();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    </div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="class_concurrent_queue.html#a6412cc45f2c19f1090611fbd1930b8e2">   66</a></span>&#160;    T <a class="code" href="class_concurrent_queue.html#a6412cc45f2c19f1090611fbd1930b8e2">pop</a>() {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        std::unique_lock lck(lock);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        T ret = std::move(to_yield[pop_idx]);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        pop_idx = (pop_idx + 1) % N;;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        full_cv.notify_one();       </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">return</span> ret;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;};</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="comment">// we are empty so we must wait</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">while</span>(<a class="code" href="class_concurrent_queue.html#ad46199753ce77c58b3b256074c1df5e2">empty</a>()) empty_cv.wait(lck);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        T ret = std::move(to_yield[pop_idx]);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        pop_idx = (pop_idx + 1) % N;;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        full_cv.notify_one();       </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclass_concurrent_queue_html"><div class="ttname"><a href="class_concurrent_queue.html">ConcurrentQueue</a></div><div class="ttdef"><b>Definition:</b> ConcurrentQueue.h:20</div></div>
 <div class="ttc" id="aclass_concurrent_queue_html_a6baf689e7763e243a53f26181fecf951"><div class="ttname"><a href="class_concurrent_queue.html#a6baf689e7763e243a53f26181fecf951">ConcurrentQueue::push</a></div><div class="ttdeci">void push(T &amp;x)</div><div class="ttdef"><b>Definition:</b> ConcurrentQueue.h:50</div></div>
-<div class="ttc" id="aclass_concurrent_queue_html_a6412cc45f2c19f1090611fbd1930b8e2"><div class="ttname"><a href="class_concurrent_queue.html#a6412cc45f2c19f1090611fbd1930b8e2">ConcurrentQueue::pop</a></div><div class="ttdeci">T pop()</div><div class="ttdef"><b>Definition:</b> ConcurrentQueue.h:63</div></div>
+<div class="ttc" id="aclass_concurrent_queue_html_a6412cc45f2c19f1090611fbd1930b8e2"><div class="ttname"><a href="class_concurrent_queue.html#a6412cc45f2c19f1090611fbd1930b8e2">ConcurrentQueue::pop</a></div><div class="ttdeci">T pop()</div><div class="ttdef"><b>Definition:</b> ConcurrentQueue.h:66</div></div>
 <div class="ttc" id="aclass_concurrent_queue_html_ac1d39ba7c6a7191b60c63ea5aac50fa5"><div class="ttname"><a href="class_concurrent_queue.html#ac1d39ba7c6a7191b60c63ea5aac50fa5">ConcurrentQueue::resize</a></div><div class="ttdeci">void resize(size_t n)</div><div class="ttdef"><b>Definition:</b> ConcurrentQueue.h:41</div></div>
 <div class="ttc" id="aclass_concurrent_queue_html_ad46199753ce77c58b3b256074c1df5e2"><div class="ttname"><a href="class_concurrent_queue.html#ad46199753ce77c58b3b256074c1df5e2">ConcurrentQueue::empty</a></div><div class="ttdeci">bool empty()</div><div class="ttdef"><b>Definition:</b> ConcurrentQueue.h:47</div></div>
 <div class="ttc" id="aclass_concurrent_queue_html_ae0b58b1b52a9a73b5a308b240c722fbf"><div class="ttname"><a href="class_concurrent_queue.html#ae0b58b1b52a9a73b5a308b240c722fbf">ConcurrentQueue::full</a></div><div class="ttdeci">bool full()</div><div class="ttdef"><b>Definition:</b> ConcurrentQueue.h:48</div></div>
