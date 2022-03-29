@@ -1,8 +1,4 @@
 
-
-// stop us from warning about depth exceptions
-#define NO_WARN_DEPTH_EXCEPTION 1
-
 // include before anything else
 #include "EigenLib.h"
 

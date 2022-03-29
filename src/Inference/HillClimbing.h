@@ -93,27 +93,29 @@ public:
 					if(ctl.steps > 0 and samples++ > ctl.steps) break; 
 					
 					// now propose to this
-					auto [proposal, fb] = h.propose();			
-					
-					// A lot of proposals end up with the same function, so if so, save time by not
-					// computing the posterior
-					if(proposal != h) {
-						proposal.compute_posterior(*data);
+					auto pr = h.propose();			
+					if(pr) { 
 						
-						if(proposal.posterior > -infinity)
-							newTop << proposal;
+						auto [proposal, fb] = pr.value();
+						// A lot of proposals end up with the same function, so if so, save time by not
+						// computing the posterior
+						if(proposal != h) {
+							proposal.compute_posterior(*data);
 							
-						co_yield proposal;
+							if(proposal.posterior > -infinity)
+								newTop << proposal;
+								
+							co_yield proposal;
+						}
+										
+						if(proposal.posterior > top.best().posterior) {
+							steps_since_improvement = 0;
+						}
+						else {
+							steps_since_improvement++;
+						}
+						
 					}
-					
-					if(proposal.posterior > top.best().posterior) {
-						steps_since_improvement = 0;
-					}
-					else {
-						steps_since_improvement++;
-					}
-					
-					
 				}
 			}
 				

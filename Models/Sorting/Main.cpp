@@ -107,7 +107,7 @@ public:
 			return int(c-'0'); // int here starting at '0'
 		});
 		
-		add("x",             Builtins::X<MyGrammar>, 10);
+		add("x",             Builtins::X<MyGrammar>, 3);
 		add("if_s(%s,%s,%s)",  Builtins::If<MyGrammar,S>, 1./3);
 		add("if_c(%s,%s,%s)",  Builtins::If<MyGrammar,char>, 1./3);
 		add("if_i(%s,%s,%s)",  Builtins::If<MyGrammar,int>, 1./3);
@@ -121,13 +121,10 @@ public:
 
 #include "LOTHypothesis.h"
 
-// Declare a hypothesis base class (required to be a template
-// so that others can override with CRTP)
 enum class ProposalType { RationalRules, InsertDelete, Prior};
+ProposalType whichProposal = ProposalType::RationalRules; // default proposal type
 
-// default proposal type
-static ProposalType whichProposal = ProposalType::RationalRules;
-
+// Declare a hypothesis base class 
 class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar> {
 public:
 	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar>;
@@ -163,29 +160,35 @@ public:
 	}
 	
 	
-	[[nodiscard]] virtual std::pair<MyHypothesis,double> propose() const override {
-		switch(whichProposal) {
-			case ProposalType::RationalRules: {
-				return Super::propose();
-			}
-			case ProposalType::InsertDelete: {
-				std::pair<Node,double> x;
-				if(flip()) {
-					x = Proposals::regenerate(this->get_grammar(), value);	
+	[[nodiscard]] virtual std::optional<std::pair<MyHypothesis,double>> propose() const override {
+		try {
+			switch(whichProposal) {
+				case ::ProposalType::RationalRules: {
+					return Super::propose();
 				}
-				else {
-					if(flip()) x = Proposals::insert_tree(this->get_grammar(), value);	
-					else       x = Proposals::delete_tree(this->get_grammar(), value);	
+				case ::ProposalType::InsertDelete: {
+					std::optional<std::pair<Node,double>> x;
+					if(flip()) {
+						x = Proposals::regenerate(this->get_grammar(), value);	
+					}
+					else {
+						if(flip()) x = Proposals::insert_tree(this->get_grammar(), value);	
+						else       x = Proposals::delete_tree(this->get_grammar(), value);	
+					}
+					
+					if(x) return std::make_pair(MyHypothesis(std::move(x.value().first)), x.value().second);
+					else return {};
+				} 
+				case ::ProposalType::Prior: {
+					auto g = this->get_grammar()->generate();	
+					return std::make_pair(MyHypothesis(g), this->get_grammar()->log_probability(g) - this->get_grammar()->log_probability(value));
 				}
-				return std::make_pair(MyHypothesis(std::move(x.first)), x.second);
-			} 
-			case ProposalType::Prior: {
-				auto g = this->get_grammar()->generate();	
-				return std::make_pair(MyHypothesis(g), this->get_grammar()->log_probability(g) - this->get_grammar()->log_probability(value));
+				default:
+					assert(false);
 			}
-			default:
-				assert(false);
-		}
+			
+		} catch (DepthException& e) { return {}; }
+
 	}	
 
 	
@@ -316,7 +319,7 @@ int main(int argc, char** argv){
 	// interestingly if we remove the alphabet, that's even better since we can't
 	// just memorize the data. 
 	for(const char c : alphabet) {
-		grammar.add_terminal( Q(S(1,c)), c, 10.0/alphabet.length());
+		grammar.add_terminal( Q(S(1,c)), c, 3.0/alphabet.length());
 	}
 	
 	//------------------

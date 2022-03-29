@@ -569,7 +569,7 @@ public:
 		 */
 		
 		if(depth >= GRAMMAR_MAX_DEPTH) {
-			#ifndef NO_WARN_DEPTH_EXCEPTION
+			#ifdef WARN_DEPTH_EXCEPTION
 				CERR "*** Grammar exceeded max depth, are you sure the grammar probabilities are right?" ENDL;
 				CERR "*** You might be able to figure out what's wrong with gdb and then looking at the backtrace of" ENDL;
 				CERR "*** which nonterminals are called." ENDL;
@@ -589,7 +589,7 @@ public:
 			}
 			
 		} catch(const DepthException& e) { 
-			#ifndef NO_WARN_DEPTH_EXCEPTION
+			#ifdef WARN_DEPTH_EXCEPTION
 				CERR ntfrom << " ";
 			#endif
 			throw e;

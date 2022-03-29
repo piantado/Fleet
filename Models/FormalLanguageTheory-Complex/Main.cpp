@@ -20,6 +20,8 @@ size_t max_length = 128; // (more than 256 needed for count, a^2^n, a^n^2, etc -
 size_t max_setsize = 64; // throw error if we have more than this
 size_t nfactors = 2; // how may factors do we run on? (defaultly)
 
+const double CONSTANT_P = 3.0; // upweight probability for grammar constants. 
+
 static constexpr float alpha = 0.01; // probability of insert/delete errors (must be a float for the string function below)
 
 size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite so we won't see some stuff
@@ -29,8 +31,8 @@ const size_t MAX_PR_LINES = 1000000;
 const double MAX_TEMP = 1.20; 
 unsigned long PRINT_STRINGS; // print at most this many strings for each hypothesis
 
-std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
-//std::vector<S> data_amounts={"100"}; // 
+//std::vector<S> data_amounts={"1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000", "50000", "100000"}; // how many data points do we run on?
+std::vector<S> data_amounts={"100"}; // 
 
 size_t current_ntokens = 0; // how many tokens are there currently? Just useful to know
 
@@ -73,7 +75,7 @@ public:
 
 //		add("c2s(%s)", +[](char c) -> S { return S(1,c); });
 		add("head(%s)", +[](S s) -> S { return (s.empty() ? emptystring : S(1,s.at(0))); }); // head here could be a char, except that it complicates stuff, so we'll make it a string str
-		add("\u00D8", +[]() -> S { return emptystring; }, 10.0);
+		add("\u00D8", +[]() -> S { return emptystring; }, CONSTANT_P);
 		add("(%s==%s)", +[](S x, S y) -> bool { return x==y; });
 		add("empty(%s)", +[](S x) -> bool { 	return x.length()==0; });
 		
@@ -91,7 +93,7 @@ public:
 				out.append(x.substr(pos));
 				return out;
 			}				
-		}, 0.2);
+		});
 		
 		
 		// add an alphabet symbol (\Sigma)
@@ -101,12 +103,12 @@ public:
 				out.emplace(1,a);
 			}
 			return out;
-		}, 5.0);
+		}, CONSTANT_P);
 		
 		// set operations:
 		add("{%s}", +[](S x) -> StrSet  { 
 			StrSet s; s.insert(x); return s; 
-		}, 10.0);
+		}, CONSTANT_P);
 		
 		add("(%s\u222A%s)", +[](StrSet s, StrSet x) -> StrSet { 
 			for(auto& xi : x) {
@@ -166,27 +168,27 @@ public:
 		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
 		add("not(%s)",       Builtins::Not<MyGrammar>);
 		
-		add("x",             Builtins::X<MyGrammar>, 5);
+		add("x",             Builtins::X<MyGrammar>, CONSTANT_P);
 		
 		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
 		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,StrSet>);
 		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,double>);
 
-		add("flip(%s)",      Builtins::FlipP<MyGrammar>, 10.0);
+		add("flip(%s)",      Builtins::FlipP<MyGrammar>, CONSTANT_P);
 
 		const int pdenom=24;
 		for(int a=1;a<=pdenom/2;a++) { 
 			std::string s = str(a/std::gcd(a,pdenom)) + "/" + str(pdenom/std::gcd(a,pdenom)); 
 			if(a==pdenom/2) {
-				add_terminal( s, double(a)/pdenom, 5.0);
+				add_terminal( s, double(a)/pdenom, CONSTANT_P);
 			}
 			else {
 				add_terminal( s, double(a)/pdenom, 1.0);
 			}
 		}
 		
-		add("F%s(%s)" ,  Builtins::LexiconRecurse<MyGrammar,int>, 1./4.);
-		add("Fm%s(%s)",  Builtins::LexiconMemRecurse<MyGrammar,int>, 1./4.);
+		add("F%s(%s)" ,  Builtins::LexiconRecurse<MyGrammar,int>, 1./2.);
+		add("Fm%s(%s)",  Builtins::LexiconMemRecurse<MyGrammar,int>, 1./2.);
 //		add("Fs%s(%s)",  Builtins::LexiconSafeRecurse<MyGrammar,int>, 1./4.);
 //		add("Fsm%s(%s)", Builtins::LexiconSafeMemRecurse<MyGrammar,int>, 1./4.);
 	}
@@ -206,21 +208,20 @@ public:
 	static constexpr double regenerate_p = 0.7;
 	
 	[[nodiscard]] virtual std::optional<std::pair<InnerHypothesis,double>> propose() const override {
-		
-		std::pair<Node,double> x;
-		if(flip(regenerate_p)) {
-			auto p = Proposals::regenerate(&grammar, value);	
-			if(not p) return {};
-			x = p.value();
-		}
-		else {
-			auto p = flip() ? Proposals::insert_tree(&grammar, value) :
-							  Proposals::delete_tree(&grammar, value);	
-			if(not p) return {};
-			x = p.value();
-		}
-		
-		return std::make_pair(InnerHypothesis(std::move(x.first)), x.second); 
+		try { 
+			std::optional<std::pair<Node,double>> x;
+
+			if(flip(regenerate_p))       x = Proposals::regenerate(&grammar, value);	
+			else if(flip(0.1))  x = Proposals::sample_function_leaving_args(&grammar, value);
+			else if(flip(0.1))  x = Proposals::swap_args(&grammar, value);
+			else if(flip())     x = Proposals::insert_tree(&grammar, value);	
+			else                x = Proposals::delete_tree(&grammar, value);			
+			
+			if(not x) { return {}; }
+			
+			return std::make_pair(InnerHypothesis(std::move(x.value().first)), x.value().second); 
+				
+		} catch (DepthException& e) { return {}; }
 	}	
 	
 };
@@ -359,7 +360,7 @@ int main(int argc, char** argv){
 	}
 		
 	for(const char c : alphabet) {
-		grammar.add_terminal( Q(S(1,c)), c, 5.0/alphabet.length());
+		grammar.add_terminal( Q(S(1,c)), c, CONSTANT_P/alphabet.length());
 	}
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -371,12 +372,7 @@ int main(int argc, char** argv){
 	
 	load_data_file(prdata, prdata_path.c_str()); // put all the data in prdata
 	for(auto d : prdata) {	// Add a check for any data not in the alphabet
-		for(size_t i=0;i<d.output.length();i++){
-			if(alphabet.find(d.output.at(i)) == std::string::npos) {
-				CERR "*** Character '" << d.output.at(i) << "' in " << d.output << " is not in the alphabet '" << alphabet << "'" ENDL;
-				assert(0);
-			}
-		}
+		check_alphabet(d.output, alphabet);
 	}
 	
 	// We are going to build up the data
