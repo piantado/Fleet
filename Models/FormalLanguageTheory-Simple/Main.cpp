@@ -117,26 +117,19 @@ public:
 	 */
 	
 	[[nodiscard]] virtual std::optional<std::pair<MyHypothesis,double>> propose() const override {
-		try { 
-			
-			std::pair<Node,double> x;
-			if(flip(regenerate_p)) {
-				auto p = Proposals::regenerate(&grammar, value);	
-				if(not p) return {};
-				x = p.value();
-			}
-			else {
-				auto p = flip() ? Proposals::insert_tree(&grammar, value) :
-								  Proposals::delete_tree(&grammar, value);	
-				if(not p) return {};
-				x = p.value();
-			}
-			return std::make_pair(MyHypothesis(std::move(x.first)), x.second); 
-			
-		}  catch (DepthException& e) {
-			return {};
+		std::pair<Node,double> x;
+		if(flip(regenerate_p)) {
+			auto p = Proposals::regenerate(&grammar, value);	
+			if(not p) return {};
+			x = p.value();
 		}
-		
+		else {
+			auto p = flip() ? Proposals::insert_tree(&grammar, value) :
+							  Proposals::delete_tree(&grammar, value);	
+			if(not p) return {};
+			x = p.value();
+		}
+		return std::make_pair(MyHypothesis(std::move(x.first)), x.second); 		
 	}	
 //	
 	void print(std::string prefix="") override {

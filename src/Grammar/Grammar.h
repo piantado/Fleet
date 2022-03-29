@@ -60,6 +60,10 @@ public:
 	// This is the function type
 	using FT = typename VirtualMachineState_t::FT; 
 	
+	// How many times will we silently ignore a DepthException
+	// before tossing an assert error
+	static const size_t GENERATE_DEPTH_EXCEPTION_RETRIES = 1000; 
+	
 	// get the n'th type
 	//template<size_t N>
 	//using type = typename std::tuple_element<N, TypeTuple>::type;
@@ -558,7 +562,7 @@ public:
 	}
 	
 
-	Node generate(const nonterminal_t ntfrom=nt<output_t>(), unsigned long depth=0) const {
+	Node __generate(const nonterminal_t ntfrom=nt<output_t>(), unsigned long depth=0) const {
 		/**
 		 * @brief Sample an entire tree from this grammar (keeping track of depth in case we recurse too far) of return type nt. This samples a rule, makes them with makeNode, and then recurses. 
 		 * @param nt
@@ -585,7 +589,7 @@ public:
 		try {
 			
 			for(size_t i=0;i<r->N;i++) {
-				n.set_child(i, generate(r->type(i), depth+1)); // recurse down
+				n.set_child(i, __generate(r->type(i), depth+1)); // recurse down
 			}
 			
 		} catch(const DepthException& e) { 
@@ -597,6 +601,24 @@ public:
 		
 		return n;
 	}	
+
+	/**
+	 * @brief A wrapper to catch DepthExcpetions and retry. This means that defaultly we try to generate GENERATE_DEPTH_EXCEPTION_RETRIES
+	 * 	      times and if ALL of them fail, we throw an assert error. Presumably, unless the grammar is terrible
+	 * 		  one of them will work. This makes our DepthExceptions generally silent to the outside since
+	 * 		  they won't call __generate typically 
+	 * @param ntfrom
+	 * @param depth
+	 * @return 
+	 */	
+	Node generate(const nonterminal_t ntfrom=nt<output_t>(), unsigned long depth=0) const {
+		for(size_t tries=0;tries<GENERATE_DEPTH_EXCEPTION_RETRIES;tries++) {
+			try {
+				return __generate(ntfrom, depth);
+			} catch(DepthException& e) { }
+		}
+		assert(false && "*** Generate failed due to repeated depth exceptions");
+	}
 	
 	Node copy_resample(const Node& node, bool f(const Node& n)) const {
 		/**
@@ -608,12 +630,7 @@ public:
 		 */
 		
 		if(f(node)){
-			for(size_t tries=0;tries<1000;tries++) {
-				try {
-					return generate(node.rule->nt);
-				} catch(DepthException& e) { }
-			}
-			assert(false && "*** could not copy_resample");
+			return generate(node.rule->nt);
 		}
 		else {
 		

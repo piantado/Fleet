@@ -161,34 +161,31 @@ public:
 	
 	
 	[[nodiscard]] virtual std::optional<std::pair<MyHypothesis,double>> propose() const override {
-		try {
-			switch(whichProposal) {
-				case ::ProposalType::RationalRules: {
-					return Super::propose();
-				}
-				case ::ProposalType::InsertDelete: {
-					std::optional<std::pair<Node,double>> x;
-					if(flip()) {
-						x = Proposals::regenerate(this->get_grammar(), value);	
-					}
-					else {
-						if(flip()) x = Proposals::insert_tree(this->get_grammar(), value);	
-						else       x = Proposals::delete_tree(this->get_grammar(), value);	
-					}
-					
-					if(x) return std::make_pair(MyHypothesis(std::move(x.value().first)), x.value().second);
-					else return {};
-				} 
-				case ::ProposalType::Prior: {
-					auto g = this->get_grammar()->generate();	
-					return std::make_pair(MyHypothesis(g), this->get_grammar()->log_probability(g) - this->get_grammar()->log_probability(value));
-				}
-				default:
-					assert(false);
+		switch(whichProposal) {
+			case ::ProposalType::RationalRules: {
+				return Super::propose();
 			}
-			
-		} catch (DepthException& e) { return {}; }
-
+			case ::ProposalType::InsertDelete: {
+				std::optional<std::pair<Node,double>> x;
+				if(flip()) {
+					x = Proposals::regenerate(this->get_grammar(), value);	
+				}
+				else {
+					if(flip()) x = Proposals::insert_tree(this->get_grammar(), value);	
+					else       x = Proposals::delete_tree(this->get_grammar(), value);	
+				}
+				
+				if(x) return std::make_pair(MyHypothesis(std::move(x.value().first)), x.value().second);
+				else return {};
+			} 
+			case ::ProposalType::Prior: {
+				auto g = this->get_grammar()->generate();	
+				return std::make_pair(MyHypothesis(g), this->get_grammar()->log_probability(g) - this->get_grammar()->log_probability(value));
+			}
+			default:
+				assert(false);
+		}
+		
 	}	
 
 	
