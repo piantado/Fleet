@@ -4,6 +4,8 @@
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "ConstantContainer.h"
 #include "LOTHypothesis.h"
+#include "Random.h"
+
 
 // we also consider our scale variables (proposals to constants) as powers of 10
 const int MIN_SCALE = -3; 

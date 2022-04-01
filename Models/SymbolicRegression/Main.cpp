@@ -1,13 +1,14 @@
 // we have a "feynman" flag -- when true, we use the feynman grammar, only search for the best, etc. 
 //#define FEYNMAN 0
 
-#define DEBUG_PARTITION_MCMC 1
+//#define DEBUG_PARTITION_MCMC 1
 
 // Needed when SDs are small, b/c then they can lead to positive likelihoods
 #define NO_BREAKOUT 1
 
+
 #include <cmath>
-#include "Random.h"
+#include "Numerics.h"
 
 using D = double;
 
@@ -15,7 +16,7 @@ const double sdscale  = 1.0; // can change if we want
 size_t nsamples = 100; // 100 // how many per structure?
 size_t nstructs = 100; //100 // print out all the samples from the top this many structures
 int    polynomial_degree = -1; //-1 means do everything, otherwise store ONLY polynomials less than or equal to this bound
-
+double end_at_likelihood = infinity; // if we get this value in log likelihood, we can stop everything (for Feynman)
 
 size_t BURN_N = 0; // 1000; // burn this many at the start of each MCMC chain -- probably NOT needed if doing weighted samples
 
@@ -31,6 +32,11 @@ double data_X_mean = NaN;
 double data_Y_mean = NaN;
 double data_X_sd   = NaN;
 double data_Y_sd   = NaN;
+double best_possible_ll = NaN; // what is the best ll we could have gotten?
+char sep = '\t'; // default input separator
+
+// Define a type for our arguments (which is essentially a tuple/array that prints nice)
+#include "Strings.h"
 
 const size_t MAX_VARS = 9; // arguments are at most this many 
 size_t       NUM_VARS = 1; // how many predictor variables 
@@ -38,17 +44,6 @@ size_t       NUM_VARS = 1; // how many predictor variables
 // What time do we store our argument as? We use this
 // format because it allows multiple variables
 using X_t = std::array<D,MAX_VARS>;
-
-char sep = '\t'; // default input separator
-
-
-const double TERMINAL_P = 2.0;
-
-double best_possible_ll = NaN; // what is the best ll we could have gotten?
-
-double end_at_likelihood = infinity; // if we get this value in log likelihood, we can stop everything (for Feynman)
-
-
 
 // Friendly printing of variable names but only the first NUM_VARS of them
 std::ostream& operator <<(std::ostream& o, X_t a) {
@@ -344,6 +339,10 @@ int main(int argc, char** argv){
 	std::sort(K.begin(), K.end());
 	
 	// And display!
+	
+	X_t ones;  ones.fill(1.0);
+	X_t zeros; zeros.fill(0.0);
+	
 	COUT "structure\tstructure.max\tweighted.posterior\tposterior\tprior\tlikelihood\tbest.possible.likelihood\tf0\tf1\tpolynomial.degree\th" ENDL;//\tparseable.h" ENDL;
 	for(auto& k : K) {
 		double best_posterior = k.first;
@@ -355,9 +354,6 @@ int main(int argc, char** argv){
 		for(auto& h : R.values()) {
 			sz = logplusexp(sz, h.posterior);
 		}
-		
-		X_t ones;  ones.fill(1.0);
-		X_t zeros; zeros.fill(0.0);
 		
 		for(auto h : R.values()) {
 			COUT std::setprecision(14) <<

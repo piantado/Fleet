@@ -6,6 +6,7 @@
 #include "Singleton.h"
 #include "Grammar.h"
 
+const double TERMINAL_P = 2.0;
 
 class MyGrammar : public Grammar<X_t,D, D,X_t>,
 				  public Singleton<MyGrammar> {
