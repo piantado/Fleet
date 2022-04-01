@@ -78,8 +78,9 @@ public:
 	 */
 	PartitionMCMC(HYP& h0, size_t max_depth, typename HYP::data_t* data, size_t max_size=0) {
 
-		auto cur = get_partitions(h0, max_depth, max_size);
+		assert(not h0.is_evaluable() && "*** You should not call PartitionMCMC on a complete node (usually you want it to be empty)");
 		
+		auto cur = get_partitions(h0, max_depth, max_size);
 		
 		// now make an MCMC chain on each of these
 		// (all must use the callback)
@@ -95,9 +96,11 @@ public:
 			this->running.push_back(ChainPool<HYP>::RunningState::READY);
 			
 			#ifdef DEBUG_PARTITION_MCMC
-				COUT "Starting PartitionMCMC on " << x.string() ENDL;
+				PRINTN("Starting PartitionMCMC on ", h.string(), "\t", x.string());
 			#endif
 		}
+		
+		PRINTN("# Initialized ", this->pool.size(), " partitions");
 		
 	}
 	

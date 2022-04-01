@@ -1,12 +1,13 @@
 // we have a "feynman" flag -- when true, we use the feynman grammar, only search for the best, etc. 
 //#define FEYNMAN 0
 
+#define DEBUG_PARTITION_MCMC 1
+
 // Needed when SDs are small, b/c then they can lead to positive likelihoods
 #define NO_BREAKOUT 1
 
 #include <cmath>
 #include "Random.h"
-#include "ConstantContainer.h"
 
 using D = double;
 
@@ -15,7 +16,6 @@ size_t nsamples = 100; // 100 // how many per structure?
 size_t nstructs = 100; //100 // print out all the samples from the top this many structures
 int    polynomial_degree = -1; //-1 means do everything, otherwise store ONLY polynomials less than or equal to this bound
 
-const size_t MY_MAX_NODES = 35;
 
 size_t BURN_N = 0; // 1000; // burn this many at the start of each MCMC chain -- probably NOT needed if doing weighted samples
 
@@ -41,20 +41,16 @@ using X_t = std::array<D,MAX_VARS>;
 
 char sep = '\t'; // default input separator
 
-// we also consider our scale variables as powers of 10
-const int MIN_SCALE = -3; 
-const int MAX_SCALE = 4;
+
+const double TERMINAL_P = 2.0;
 
 double best_possible_ll = NaN; // what is the best ll we could have gotten?
 
 double end_at_likelihood = infinity; // if we get this value in log likelihood, we can stop everything (for Feynman)
 
 
-// Proposals and random generation happen on a variety of scales
-double random_scale() { return pow(10, myrandom(-4, 5)); }
 
-
-// Friendly printing but only the first NUM_VARS of them
+// Friendly printing of variable names but only the first NUM_VARS of them
 std::ostream& operator <<(std::ostream& o, X_t a) {
 	
 	std::string out = "";
@@ -69,302 +65,17 @@ std::ostream& operator <<(std::ostream& o, X_t a) {
 	return o;
 }
 
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Define grammar
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#include "MyGrammar.h"
+#include "MyHypothesis.h"
+#include "MyMCTS.h"
 
-#include "Singleton.h"
-#include "Grammar.h"
-
-
-class MyGrammar : public Grammar<X_t,D, D,X_t>,
-				  public Singleton<MyGrammar> {
-public:
-	MyGrammar() {
-		
-		add("(%s+%s)",    +[](D a, D b) -> D     { return a+b; }),
-		add("(%s-%s)",    +[](D a, D b) -> D     { return a-b; }),
-		add("(%s*%s)",    +[](D a, D b) -> D     { return a*b; }),
-		add("(%s/%s)",    +[](D a, D b) -> D     { return (b==0 ? NaN : a/b); }),
-		
-		add("1",          +[]()             -> D { return 1.0; }),
-		
-#if FEYNMAN
-
-		add("tau",         +[]()             -> D { return 2*M_PI; });
-		add("sqrt(%s)",    +[](D a)          -> D { return std::sqrt(a); }, 1.),
-		add("pow(%s,2)",   +[](D a)          -> D { return a*a; }, 1.),
-		add("pow(%s,3)",   +[](D a)          -> D { return a*a*a; }, 1.),
-		add("expm(%s)",    +[](D a)          -> D { return exp(-a); }, 1),
-
-		add("0.5",          +[]()           -> D { return 0.5; }),
-		add("pi",          +[]()            -> D { return M_PI; }),
-		add("sin(%s)",    +[](D a)          -> D { return sin(a); }, 1./3),
-		add("cos(%s)",    +[](D a)          -> D { return cos(a); }, 1./3),
-		add("asin(%s)",    +[](D a)         -> D { return asin(a); }, 1./3);
-
-#else
-		add("(-%s)",      +[](D a)          -> D { return -a; }),
-		add("exp(%s)",    +[](D a)          -> D { return exp(a); }, 1),
-		add("log(%s)",    +[](D a)          -> D { return log(a); }, 1),
-		add("pow(%s,%s)", +[](D a, D b)     -> D { return pow(a,b); }),
-				
-		// give the type to add and then a vms function
-		add_vms<D>("C", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
-						
-				// Here we are going to use a little hack -- we actually know that vms->program_loader
-				// is of type MyHypothesis, so we will cast to that
-				auto* h = dynamic_cast<ConstantContainer*>(vms->program.loader);
-				if(h == nullptr) { assert(false); }
-				else {
-					assert(h->constant_idx < h->constants.size()); 
-					vms->template push<D>(h->constants.at(h->constant_idx++));
-				}
-		}), 3.0);		
-#endif 
-
-//		add("x",             Builtins::X<MyGrammar>, 1.0);
-//		add("%s1", 			+[](X_t x) -> D { return x[1]; });
-		
-	}					  
-					  
-} grammar;
-
-// check if a rule is constant 
-bool isConstant(const Rule* r) { return r->format == "C"; }
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Define hypothesis
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#include "LOTHypothesis.h"
-
-class MyHypothesis final : public ConstantContainer,
-						   public LOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar> {
-	
-public:
-
-	using Super = LOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar>;
-	using Super::Super;
-
-	virtual D callOne(const X_t x, const D err) {
-		// We need to override this because LOTHypothesis::callOne asserts that the program is non-empty
-		// but actually ours can be if we are only a constant. 
-		// my own wrapper that zeros the constant_i counter
-		
-		constant_idx = 0;
-		const auto out = Super::callOne(x,err);
-		assert(constant_idx == constants.size()); // just check we used all constants
-		return out;
-	}
-	
-	size_t count_constants() const override {
-		size_t cnt = 0;
-		for(const auto& x : value) {
-			cnt += isConstant(x.rule);
-		}
-		return cnt;
-	}
-	
-	// Propose to a constant c, returning a new value and fb
-	// NOTE: When we use a symmetric drift kernel, fb=0
-	std::pair<double,double> constant_proposal(double c) const override { 
-			
-		if(flip(0.5)) {
-			return std::make_pair(random_normal(c, random_scale()), 0.0);
-		}
-		else { 
-			
-			// one third probability for each of the other choices
-			if(flip(0.33)) { 
-				auto v = random_normal(data_X_mean, data_X_sd);
-				double fb = normal_lpdf(v, data_X_mean, data_X_sd) - 
-							normal_lpdf(c, data_X_mean, data_X_sd);
-				return std::make_pair(v,fb);
-			}
-			else if(flip(0.5)) {
-				auto v = random_normal(data_Y_mean, data_Y_sd);
-				double fb = normal_lpdf(v, data_Y_mean, data_Y_sd) - 
-							normal_lpdf(c, data_Y_mean, data_Y_sd);
-				return std::make_pair(v,fb);
-			}
-			else {
-				// do nothing
-				return std::make_pair(c,0.0);
-			}
-		}
-	}
-
-	double compute_single_likelihood(const datum_t& datum) override {
-		double fx = this->callOne(datum.input, NaN);
-		
-		if(std::isnan(fx) or std::isinf(fx)) 
-			return -infinity;
-			
-		//PRINTN(string(), datum.output, fx, datum.reliability, normal_lpdf( fx, datum.output, datum.reliability ));
-		
-		return normal_lpdf(fx, datum.output, datum.reliability );		
-	}
-	
-	
-	virtual double compute_prior() override {
-		
-		if(this->value.count() > MY_MAX_NODES) {
-			return this->prior = -infinity;
-		}
-		
-		this->prior = Super::compute_prior() + ConstantContainer::constant_prior();
-		return this->prior;
-	}
-	
-	virtual std::string __my_string_recurse(const Node* n, size_t& idx) const {
-		// we need this to print strings -- its in a similar format to evaluation
-		if(isConstant(n->rule)) {
-			return "("+to_string_with_precision(constants[idx++], 14)+")";
-		}
-		else if(n->rule->N == 0) {
-			return n->rule->format;
-		}
-		else {
-			
-			// strings are evaluated in right->left order so we have to 
-			// use that here (since we use them to index idx)
-			std::vector<std::string> childStrings(n->nchildren());
-			
-			/// recurse on the children. NOTE: they are linearized left->right, 
-			// which means that they are popped 
-			for(size_t i=0;i<n->rule->N;i++) {
-				childStrings[i] = __my_string_recurse(&n->child(i),idx);
-			}
-			
-			std::string s = n->rule->format;
-			for(size_t i=0;i<n->rule->N;i++) { // can't be size_t for counting down
-				auto pos = s.find(Rule::ChildStr);
-				assert(pos != std::string::npos); // must contain the ChildStr for all children all children
-				s.replace(pos, Rule::ChildStr.length(), childStrings[i]);
-			}
-			
-			return s;
-		}
-	}
-	
-	virtual std::string string(std::string prefix="") const override { 
-		// we can get here where our constants have not been defined it seems...
-		if(not this->is_evaluable()) 
-			return structure_string(); // don't fill in constants if we aren't complete
-		
-		assert(constants.size() == count_constants()); // or something is broken
-		
-		size_t idx = 0;
-		return  prefix + LAMBDAXDOT_STRING +  __my_string_recurse(&value, idx);
-	}
-	
-	virtual std::string structure_string(bool usedot=true) const {
-		return Super::string("", usedot);
-	}
-	
-	/// *****************************************************************************
-	/// Change equality to include equality of constants
-	/// *****************************************************************************
-	
-	virtual bool operator==(const MyHypothesis& h) const override {
-		// equality requires our constants to be equal 
-		return this->Super::operator==(h) and ConstantContainer::operator==(h);
-	}
-
-	virtual size_t hash() const override {
-		// hash includes constants so they are only ever equal if constants are equal
-		size_t h = Super::hash();
-		hash_combine(h, ConstantContainer::hash());
-		return h;
-	}
-	
-	/// *****************************************************************************
-	/// Implement MCMC moves as changes to constants
-	/// *****************************************************************************
-	
-	virtual ProposalType propose() const override {
-		// Our proposals will either be to constants, or entirely from the prior
-		// Note that if we have no constants, we will always do prior proposals
-//		PRINTN("\nProposing from\t\t", string());
-		
-		auto NC = count_constants();
-		
-		if(NC > 0 and flip(0.80)){
-			MyHypothesis ret = *this;
-			
-			double fb = 0.0; 
-			
-			// now add to all that I have
-			for(size_t i=0;i<NC;i++) { 
-				auto [v, __fb] = constant_proposal(constants[i]);
-				ret.constants[i] = v;
-				fb += __fb;
-			}
-			
-//			PRINTN("Constant Proposal\t", ret.string());
-			return std::make_pair(ret, fb);
-		}
-		else {
-			
-			ProposalType p; 
-			
-			if(flip(0.5))       p = Proposals::regenerate(&grammar, value);	
-			else if(flip(0.1))  p = Proposals::sample_function_leaving_args(&grammar, value);
-			else if(flip(0.1))  p = Proposals::swap_args(&grammar, value);
-			else if(flip())     p = Proposals::insert_tree(&grammar, value);	
-			else                p = Proposals::delete_tree(&grammar, value);			
-			
-			if(not p) return {};
-			auto x = p.value();
-			
-			MyHypothesis ret{std::move(x.first)};
-			ret.randomize_constants(); // with random constants -- this resizes so that it's right for propose
-
-			//			PRINTN("Structural proposal\t", structure_string(), ret.string());
-			
-			return std::make_pair(ret, 
-								  x.second + ret.constant_prior()-this->constant_prior()); 
-		}
-			
-	}
-		
-	virtual MyHypothesis restart() const override {
-		MyHypothesis ret = Super::restart(); // reset my structure
-		ret.randomize_constants();
-		return ret;
-	}
-	
-	virtual void complete() override {
-		Super::complete();
-		randomize_constants();
-	}
-	
-	virtual MyHypothesis make_neighbor(int k) const override {
-		auto ret = Super::make_neighbor(k);
-		ret.randomize_constants();
-		return ret;
-	}
-	virtual void expand_to_neighbor(int k) override {
-		Super::expand_to_neighbor(k);
-		randomize_constants();		
-	}
-	
-	[[nodiscard]] static MyHypothesis sample() {
-		auto ret = Super::sample();
-		ret.randomize_constants();
-		return ret;
-	}
-};
-
+MyHypothesis::data_t mydata;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "Polynomial.h"
 #include "ReservoirSample.h"
-
-MyHypothesis::data_t mydata;
 
 // keep a big set of samples form structures to the best found for each structure
 std::map<std::string,PosteriorWeightedReservoirSample<MyHypothesis>> overall_samples; 
@@ -410,67 +121,10 @@ void trim_overall_samples(const size_t N) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
-#include "PartialMCTSNode.h"
-#include "ParallelTempering.h"
-#include "MCMCChain.h"
 
-class MyMCTS : public PartialMCTSNode<MyMCTS, MyHypothesis> {
-	using Super = PartialMCTSNode<MyMCTS, MyHypothesis>;
-	using Super::Super;
-
-public:
-	MyMCTS(MyMCTS&&) { assert(false); } // must be defined but not used
-
-	virtual generator<MyHypothesis&> playout(MyHypothesis& current) override {
-		// define our own playout here to call our callback and add sample to the MCTS
-		
-		MyHypothesis h0 = current; // need a copy to change resampling on 
-		for(auto& n : h0.get_value() ){
-			n.can_resample = false;
-		}
-
-		h0.complete(); // fill in any structural gaps	
-		
-		// check to see if we have no gaps and no resamples, then we just run one sample. 
-		std::function no_resamples = +[](const Node& n) -> bool { return not n.can_resample;};
-		if(h0.count_constants() == 0 and h0.get_value().all(no_resamples)) {
-			this->process_evaluable(current);
-			co_yield h0;
-		}
-		else {
-			
-			double best_posterior = -infinity; 
-			long steps_since_best = 0;
-			
-			// else we run vanilla MCMC
-			MCMCChain chain(h0, data);
-//			ParallelTempering chain(h0, &mydata, 10, 100.0 ); 
-			for(auto& h : chain.run(InnerControl()) | burn(BURN_N) | thin(FleetArgs::inner_thin) ) {
-				
-				// return if we haven't improved in howevermany samples. 
-				if(h.posterior > best_posterior) {
-					best_posterior = h.posterior;
-					steps_since_best = 0;
-				}
-				
-				this->add_sample(h.posterior); 
-				co_yield h;
-
-				//
-				if(steps_since_best > 100000) break; 
-			}
-
-		}
-	}
-	
-};
-
-////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////
-
+#include "PartitionMCMC.h"
 #include "FleetArgs.h"
 #include "Fleet.h" 
-
 
 #ifndef DO_NOT_INCLUDE_MAIN
 
@@ -501,11 +155,6 @@ int main(int argc, char** argv){
 	// set up the accessors of the variables
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-//	for(size_t i=0;i<NUM_VARS;i++){
-//		std::function fi = [=](X_t x) -> D { return x[i]; };
-//		grammar.add("%s"+str(i), fi, 8.0/NUM_VARS); 
-//	}
-//	
 
 	// We'll add these as special functions for each i, so they don't take time in MCTS 
 	for(size_t i=0;i<NUM_VARS;i++){		
@@ -513,7 +162,7 @@ int main(int argc, char** argv){
 			vms->push<D>(vms->xstack.top().at(i));
 		};
 		auto f = new std::function(l);	*f = l;
-		grammar.add_vms<D>("x"+str(i), f, 10.0/NUM_VARS);
+		grammar.add_vms<D>("x"+str(i), f, TERMINAL_P/NUM_VARS);
 	}
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// set up the data
@@ -580,7 +229,6 @@ int main(int argc, char** argv){
 	data_X_sd   = mean(data_x);
 	data_Y_sd   = mean(data_y);
 	
-	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Run MCTS
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -617,13 +265,26 @@ int main(int argc, char** argv){
 //		return 0;
 
 	
-	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
-	MyMCTS m(h0, FleetArgs::explore, &mydata);
-	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# "+str(best_possible_ll)+" ")  ) {
-	
+//	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
+//	MyMCTS m(h0, FleetArgs::explore, &mydata);
+//	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# "+str(best_possible_ll)+" ")  ) {
+//	
 //	auto h0 = MyHypothesis::sample(); // NOTE: We do NOT want to sample, since that constrains the MCTS 	
 //	ParallelTempering m(h0, &mydata, 150, 1.10); // 100, 100.0);
-//	for(auto& h: m.run(Control()) | print(FleetArgs::print, "# ")  ) {
+//	MCMCChain m(h0, &mydata); // 100, 100.0);
+
+	MyHypothesis h0; 
+	PartitionMCMC m(h0, 3, &mydata);
+//	
+//	auto cur = get_partitions(h0, 6, 1000);
+//	for(auto& h: cur) {
+//		PRINTN(h);
+//	}
+//	
+//	return 0;
+//			
+
+	for(auto& h: m.run(Control()) | print(FleetArgs::print, "# ")  ) {
 			
 		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these
 		
@@ -659,7 +320,7 @@ int main(int argc, char** argv){
 //	m.print("# Final pool state:");
 		
 	// print our trees if we want them 
-	m.print(h0, FleetArgs::tree_path.c_str());
+//	m.print(h0, FleetArgs::tree_path.c_str());
 	
 	//------------------
 	// Postprocessing

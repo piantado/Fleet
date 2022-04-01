@@ -17,6 +17,8 @@ std::vector<std::string> words = {"REXP", "him", "his", "he", "himself"};
 static const double alpha = 0.95; 
 int NDATA = 10; // how many data points from each sentence are we looking at?
 
+const double TERMINAL_P = 3.0;
+
 using S = std::string;
 
 /**
@@ -61,22 +63,13 @@ public:
 			return x->root();
 		});		
 
-		// linear order predicates
-		add("linear(%s)",        +[](BindingTree* x) -> int { 
-			if(x==nullptr) throw TreeException();			
-			return x->linear_order; 
-		});
-		
-		add("gt(%s,%s)",         +[](int a, int b) -> bool { return (a>b); });
-		
 		// equality
 		add("eq_bool(%s,%s)",   +[](bool a, bool b) -> bool { return (a==b); });		
-		add("eq_int(%s,%s)",   +[](int a, int b) -> bool { return (a==b); });		
 		add("eq_str(%s,%s)",   +[](S a, S b) -> bool { return (a==b); });		
 		add("eq_pos(%s,%s)",   +[](POS a, POS b) -> bool { return (a==b); });		
 		add("eq_bt(%s,%s)",   +[](BindingTree* x, BindingTree* y) -> bool { return x == y;});
 
-		// pos predicates
+		// pos predicates -- part of speech (NOT position)
 		add("pos(%s)",           +[](BindingTree* x) -> POS { 
 			if(x==nullptr) throw TreeException();
 			return x->pos;
@@ -126,34 +119,26 @@ public:
 			}
 		});			
 			
-		add("true",          +[]() -> bool               { return true; }, 5);
-		add("false",         +[]() -> bool               { return false; }, 5);
+		add("true",          +[]() -> bool               { return true; }, TERMINAL_P);
+		add("false",         +[]() -> bool               { return false; }, TERMINAL_P);
 		add("and(%s,%s)",    Builtins::And<MyGrammar>);
 		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
 		add("not(%s)",       Builtins::Not<MyGrammar>);
 		
-//		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,int>);
-//		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
-//		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,POS>);
-//		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,BindingTree*>);
-//	
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,POS>);
+		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,BindingTree*>);
+
 		add("x",              Builtins::X<MyGrammar>, 10);	
 		
 		for(auto& w : words) {
-			add_terminal<S>(Q(w), w, 5.0/words.size());
+			add_terminal<S>(Q(w), w, TERMINAL_P/words.size());
 		}
 		
 		for(auto [l,p] : posmap) {
-			add_terminal<POS>(Q(l), p, 5.0/posmap.size());		
+			add_terminal<POS>(Q(l), p, TERMINAL_P/posmap.size());		
 		}
 		
-		
-		// for absolute positions (up top 24)
-		for(int p=0;p<24;p++) {
-			add_terminal<int>("abs"+str(p), p, 5.0/24.);
-		}
-
-
 		// NOTE THIS DOES NOT WORK WITH THE CACHED VERSION
 //		add("F(%s,%s)" ,  Builtins::LexiconRecurse<MyGrammar,S>); // note the number of arguments here
 	}
@@ -176,8 +161,7 @@ public:
 	using output_t = Super::output_t;
 	using data_t = Super::data_t;
 	
-	InnerHypothesis(const InnerHypothesis& c) : Super(c), CCH(c) {}
-	
+	InnerHypothesis(const InnerHypothesis& c) : Super(c), CCH(c) {}	
 	InnerHypothesis(const InnerHypothesis&& c) :  Super(c), CCH(c) { }	
 	
 	InnerHypothesis& operator=(const InnerHypothesis& c) {
@@ -231,7 +215,6 @@ class MyHypothesis : public Lexicon<MyHypothesis, std::string, InnerHypothesis, 
 	using Super = Lexicon<MyHypothesis, std::string, InnerHypothesis, BindingTree*, std::string>;
 	using Super::Super; // inherit the constructors
 public:	
-
 
 	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		
@@ -326,9 +309,45 @@ MyHypothesis target;
 	
 int main(int argc, char** argv){ 
 	
+	int include_linear = 1; 
+	int include_absolute = 1; 
+	
 	Fleet fleet("Learn principles of binding theory");
 	fleet.add_option("--ndata",   NDATA, "Run at a different likelihood temperature (strength of data)"); 
+	fleet.add_option("--include-linear",  include_linear, "Should we include primitives for linear order?"); 
+	fleet.add_option("--include-absolute",  include_absolute, "Should we include absolute primitives?"); 
 	fleet.initialize(argc, argv);
+	
+	//------------------
+	// Add linear hypotheses if needed
+	//------------------
+	
+	if(include_absolute) {
+		
+		// for absolute positions (up top 24)
+		for(int p=0;p<24;p++) {
+			grammar.add_terminal<int>("abs"+str(p), p, TERMINAL_P/24.);
+		}	
+	}
+	
+	if(include_linear) {
+		// linear order predicates
+		grammar.add("linear(%s)",        +[](BindingTree* x) -> int { 
+			if(x==nullptr) throw TreeException();			
+			return x->linear_order; 
+		});
+		
+		grammar.add("gt(%s,%s)",         +[](int a, int b) -> bool { return (a>b); });
+		
+	}
+
+	// these primitives get included for either (but only once)
+	if(include_absolute or include_linear) {
+		
+		grammar.add("eq_int(%s,%s)",   +[](int a, int b) -> bool { return (a==b); });		
+		
+		grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,int>);
+	}
 	
 	//------------------
 	// set up the hypothesis
@@ -391,7 +410,7 @@ int main(int argc, char** argv){
 			// assert that there is only one target per tree
 			assert( myt->sum( +[](const BindingTree& bt) -> double { return 1.0*bt.target; }) == 1); 
 			
-			PRINTN("#", myt->string());
+			//PRINTN("#", myt->string());
 			
 			MyHypothesis::datum_t d1 = {myt->get_target(), myt->get_target()->word, alpha};	
 			mydata.push_back(d1);
@@ -454,12 +473,10 @@ int main(int argc, char** argv){
 	//////////////////////////////////
 	
 	TopN<MyHypothesis> top;
-
 //	top.print_best = true;
+
 	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1.20);
-//	ChainPool chain(h0, &mydata, FleetArgs::nchains);	
 //	MCMCChain chain(h0, &mydata);
-	
 	for(auto& h : chain.run(Control()) | top | print(FleetArgs::print)) {
 		UNUSED(h);
 	}
