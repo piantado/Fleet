@@ -1,3 +1,5 @@
+#pragma once 
+
 #include "PartialMCTSNode.h"
 #include "ParallelTempering.h"
 #include "MCMCChain.h"

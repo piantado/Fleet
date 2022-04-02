@@ -1,3 +1,4 @@
+#pragma once 
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Define grammar
@@ -5,6 +6,7 @@
 
 #include "Singleton.h"
 #include "Grammar.h"
+#include "ConstantContainer.h"
 
 const double TERMINAL_P = 2.0;
 

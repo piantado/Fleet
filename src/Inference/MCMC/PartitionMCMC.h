@@ -21,13 +21,16 @@
  * @return 
  */
 template<typename HYP>
-std::set<HYP> get_partitions(HYP& h0, const size_t max_depth, const size_t max_size) {
+std::set<HYP> get_partitions(const HYP& h0, const size_t max_depth, const size_t max_size) {
 	assert(not (max_depth==0 and max_size==0));
 	
 	std::set<HYP> cur = {h0};
 	std::set<HYP> nxt;
 		
 	for(size_t dd=0;(max_depth==0 or dd<max_depth) and (max_size==0 or cur.size() < max_size);dd++) {
+		
+		if(CTRL_C) break; 
+		
 		for(auto& h: cur) {
 			auto neigh = h.neighbors();
 			for(int n=0;n<neigh;n++) {

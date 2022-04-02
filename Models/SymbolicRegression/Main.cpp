@@ -152,13 +152,17 @@ int main(int argc, char** argv){
 	
 
 	// We'll add these as special functions for each i, so they don't take time in MCTS 
-	for(size_t i=0;i<NUM_VARS;i++){		
+	for(size_t i=0;i<NUM_VARS;i++){
+		
 		auto l = [=](MyGrammar::VirtualMachineState_t* vms, int) {
 			vms->push<D>(vms->xstack.top().at(i));
 		};
+		
 		auto f = new std::function(l);	*f = l;
+		
 		grammar.add_vms<D>("x"+str(i), f, TERMINAL_P/NUM_VARS);
 	}
+	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// set up the data
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -195,11 +199,6 @@ int main(int argc, char** argv){
 		double sd; 
 		if(fix_sd != -1) {
 			sd = fix_sd;
-			
-			// Wow, I *think* if we don't add this amount of noise, then we will tend to overfit, which means that we
-			// get stuck in hypotheses and don't search the space very well. I'm not sure why exactly, 
-			// but it seems like MCMC just goes to things which are *too* good if it can. 
-			//y = y + random_normal(0.0, sd); 
 		}
 		else {
 			// process the line 
@@ -267,17 +266,18 @@ int main(int argc, char** argv){
 //	auto h0 = MyHypothesis::sample(); // NOTE: We do NOT want to sample, since that constrains the MCTS 	
 //	ParallelTempering m(h0, &mydata, 150, 1.10); // 100, 100.0);
 //	MCMCChain m(h0, &mydata); // 100, 100.0);
-
-	MyHypothesis h0; 
-	PartitionMCMC m(h0, 3, &mydata);
-//	
-//	auto cur = get_partitions(h0, 6, 1000);
+	
+//	MyHypothesis h0; 
+//	auto cur = get_partitions(h0, 5, 0);
 //	for(auto& h: cur) {
 //		PRINTN(h);
 //	}
 //	
-//	return 0;
-//			
+	
+	PRINTN("# Initializing parititons...");
+	MyHypothesis h0; 
+	PartitionMCMC m(h0, 5, &mydata);
+	
 
 	for(auto& h: m.run(Control()) | print(FleetArgs::print, "# ")  ) {
 			
