@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <signal.h>
 
+#include "FleetArgs.h"
 #include "Errors.h"
 #include "Datum.h"
 #include "IO.h"
@@ -48,14 +49,8 @@ public:
 	Bayesable() : prior(NaN), likelihood(NaN), posterior(NaN), born(++FleetStatistics::hypothesis_births), born_chain_idx(0) {	}
 	
 	// Stuff for subclasses to implement: 
-
 	virtual size_t hash() const=0;
-	
-	virtual std::string string(std::string prefix="") const = 0; // my subclasses must implement string
-	
-	/**
-	 * @brief Compute the prior -- defaultly not defined
-	 */
+	virtual std::string string(std::string prefix="") const = 0; 
 	virtual double compute_prior() = 0; 	
 	
 	/**
@@ -185,7 +180,7 @@ public:
 		/**
 		 * @brief Allow sorting of Bayesable hypotheses. We defaultly sort by posterior so that TopN works right. 
 		 * 		  But we also need to be careful because std::set uses this to determine equality, so this
-		 *        also checks priors and then hashes. 
+		 *        also checks priors and then finally hashes (which should represent values). 
 		 * @param l
 		 * @return 
 		 */		
@@ -235,6 +230,12 @@ std::ostream& operator<<(std::ostream& o, Bayesable<_datum_t,_data_t>& x) {
 // little helper functions 
 template<typename HYP>
 std::function get_posterior = [](const HYP& h) {return h.posterior; };
+
+template<typename HYP>
+std::function get_prior = [](const HYP& h) {return h.prior; };
+
+template<typename HYP>
+std::function get_likelihood = [](const HYP& h) {return h.likelihood; };
 
 
 // Interface for std::fmt

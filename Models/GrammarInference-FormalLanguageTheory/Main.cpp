@@ -1,12 +1,23 @@
 /*
  * 	TODO: This likelihood is not quite right because people in the experiment are sampling
  *        without replacement.
+ * 
+ * 	Languages:
+ * 	- FLT language
+ *  - Simplified FLT
+ *  - Dehaene
+ * 	- Dehaene + subst
+ *  - FLT plus subst
+ * 
+ * 
+ * 	
  * */
- 
-// We will define this so we can read from the NumberGame without main
-//#define DO_NOT_INCLUDE_MAIN 1
 
-#include "../FormalLanguageTheory-Complex/Main.cpp"
+//#define DO_NOT_INCLUDE_MAIN 1
+#include <cstddef>
+#include <vector>
+
+//#include "../FormalLanguageTheory-Complex/Main.cpp"
 const size_t MAX_FACTORS = 3;
 
 #include "Data/HumanDatum.h"
@@ -17,11 +28,21 @@ const size_t MAX_FACTORS = 3;
 #include "MCMCChain.h"
 #include "Coroutines.h"
 
+std::string alphabet = "abcd";
 std::string hypothesis_path = "hypotheses.txt";
 std::string runtype         = "both"; // can be both, hypotheses (just find hypotheses), or grammar (just do mcmc, loading from hypothesis_path)
 
 std::vector<size_t> ntops = {1,5,10,25,100,250,500,1000}; // save the top this many from each hypothesis
 
+using S = std::string; 
+
+std::string substitute(std::string newA, std::string s) {			
+	for(size_t i=0;i<s.size();i++) {
+		auto idx = alphabet.find(s[i]);
+		s[i] = newA[idx % newA.size()]; // takes mod newA.size
+	}
+	return s;
+}
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare a grammar
@@ -34,10 +55,15 @@ class MyGrammar : public Grammar<S,S,     S,char,bool,double,StrSet,int>,
 				  public Singleton<MyGrammar> {
 public:
 	MyGrammar() {
-		// add a primitive here
-		add("substitute(%s,%s,%s)", +[](S s) -> S {
-			
-		});
+		
+		
+		// add a primitive here that stochastically samples a substitution
+		// from the alphabet
+		
+		
+		
+		
+		add("substitute(%s,%s)", substitute);
 
 		
 		add("tail(%s)", +[](S s) -> S { 
@@ -178,8 +204,6 @@ public:
 		
 		add("F%s(%s)" ,  Builtins::LexiconRecurse<MyGrammar,int>, 1./2.);
 		add("Fm%s(%s)",  Builtins::LexiconMemRecurse<MyGrammar,int>, 1./2.);
-//		add("Fs%s(%s)",  Builtins::LexiconSafeRecurse<MyGrammar,int>, 1./4.);
-//		add("Fsm%s(%s)", Builtins::LexiconSafeMemRecurse<MyGrammar,int>, 1./4.);
 	}
 } grammar;
 
