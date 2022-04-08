@@ -205,7 +205,9 @@ public:
 					// they are equal but we just use current here
 					DEBUG("# Proposed(eq)", current.posterior, current.prior, current.likelihood, current.string(), "fb="+str(fb));
 					#endif 
-							
+					
+					if(not FleetArgs::MCMCYieldOnlyChanges)
+						co_yield current; // must be done with lock
 				}
 				else {
 					
@@ -258,9 +260,8 @@ public:
 						history << false;
 					}
 				
-				}
-
-				co_yield current; // must be done with lock
+					co_yield current; // must be done with lock
+				}				
 			}
 			
 			++samples;			

@@ -82,7 +82,6 @@ public:
  * @file ReservoirSample.h
  * @brief Same as ReservoirSample but chooses proportional to h.posterior. 
  */
-
 template<typename T>
 class PosteriorWeightedReservoirSample : public Serializable<PosteriorWeightedReservoirSample<T>> {
 	

@@ -100,12 +100,12 @@ public:
 				if(likelihood == -infinity or std::isnan(likelihood)) break; // no need to continue
 				
 				// This is a breakout in case our ll is too low
-				#ifndef NO_BREAKOUT
+				if(FleetArgs::LIKELIHOOD_BREAKOUT){
 					assert((sll <= 0 or breakout==-infinity) && "*** Cannot use breakout if likelihoods are positive");
 					if(likelihood < breakout) {
 						return likelihood = -infinity; // should not matter what value, but let's make it -infinity
 					}
-				#endif 
+				}
 				
 				// add a break here 
 				if(CTRL_C) break; 
@@ -232,6 +232,9 @@ std::ostream& operator<<(std::ostream& o, Bayesable<_datum_t,_data_t>& x) {
 }
 
 
+// little helper functions 
+template<typename HYP>
+std::function get_posterior = [](const HYP& h) {return h.posterior; };
 
 
 // Interface for std::fmt

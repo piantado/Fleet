@@ -47,7 +47,7 @@ public:
 	// NOTE: When we use a symmetric drift kernel, fb=0
 	std::pair<double,double> constant_proposal(double c) const override { 
 			
-		if(flip(0.5)) {
+		if(flip(0.1)) {
 			auto sc = pow(10, myrandom(MIN_SCALE, MAX_SCALE)); // pick a scale here 
 			
 			return std::make_pair(random_normal(c,  sc), 0.0);
@@ -91,6 +91,20 @@ public:
 		if(this->value.count() > MY_MAX_NODES) {
 			return this->prior = -infinity;
 		}
+		
+		// check to see if it uses all variables. 
+		#ifdef REQUIRE_USE_ALL_VARIABLES
+		std::vector<bool> uses_variable(NUM_VARS, false);
+		for(const auto& n : this->value) {
+			if(n.rule->format[0] == 'x') {
+				std::string s = n.rule->format; s.erase(0,1); // remove x
+				uses_variable[string_to<int>(s)] = true;
+			}
+		}
+		for(const auto& v : uses_variable) { // check that we used everything
+			if(not v) return this->prior = -infinity; 
+		}
+		#endif
 		
 		this->prior = Super::compute_prior() + ConstantContainer::constant_prior();
 		return this->prior;
@@ -167,9 +181,11 @@ public:
 		// Note that if we have no constants, we will always do prior proposals
 //		PRINTN("\nProposing from\t\t", string());
 		
+		const double CONST_PROP_P = 0.5; 
+		
 		auto NC = count_constants();
 		
-		if(NC > 0 and flip(0.80)){
+		if(NC > 0 and flip(CONST_PROP_P)){
 			MyHypothesis ret = *this;
 			
 			double fb = 0.0; 
@@ -199,8 +215,14 @@ public:
 			MyHypothesis ret{std::move(x.first)};
 			ret.randomize_constants(); // with random constants -- this resizes so that it's right for propose
 			
-			return std::make_pair(ret, 
-								  x.second + ret.constant_prior()-this->constant_prior()); 
+			double fb = x.second + ret.constant_prior()-this->constant_prior();
+			
+			// Need to account for f/b when we add constants....
+			if(NC==0 and ret.count_constants() > 0) {
+				fb += -log(CONST_PROP_P);
+			}
+			
+			return std::make_pair(ret, fb); 
 		}
 			
 	}

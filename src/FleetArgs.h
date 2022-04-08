@@ -7,7 +7,6 @@
  * classes throughout Fleet. This means the e.g. default size of TopN is set to be ntop here, which is whatever
  * was specified on the command line. This prevents us from having to pass these all around. 
  * */
-
 namespace FleetArgs {
 	
 	unsigned long steps         = 0;
@@ -38,5 +37,18 @@ namespace FleetArgs {
 	std::string   input_path   = "input.txt";
 	std::string   tree_path    = "tree.txt";
 	std::string   output_path  = "output";
+	
+	
+	// If this is true, then we do NOT yeild from an MCMC chain unless 
+	// it has changed (e.g. removing duplicates). This lets multiple chains
+	// run much faster because they aren't contending for the global queue, 
+	// and is fine if you are not using the sampler as a sampler (but using 
+	// a TopN finite approximation)
+	bool MCMCYieldOnlyChanges = false; 
+	
+	// If true, we will break out of likleihood computations when they 
+	// are too low to be accepted. When this is true
+	// it MUST be the case that all likelihoods are negative of course. 
+	bool LIKELIHOOD_BREAKOUT = true;
 	
 }

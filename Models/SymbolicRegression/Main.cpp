@@ -1,11 +1,12 @@
+// NOTE: Currently in MyHypothesis we require it to use ALL the input variables
+
 // we have a "feynman" flag -- when true, we use the feynman grammar, only search for the best, etc. 
 //#define FEYNMAN 0
 
 //#define DEBUG_PARTITION_MCMC 1
 
-// Needed when SDs are small, b/c then they can lead to positive likelihoods
-#define NO_BREAKOUT 1
-
+// if we want to require that hypotheses use all variables
+//#define REQUIRE_USE_ALL_VARIABLES 1
 
 #include <cmath>
 #include "Numerics.h"
@@ -13,12 +14,13 @@
 using D = double;
 
 const double sdscale  = 1.0; // can change if we want
-size_t nsamples = 100; // 100 // how many per structure?
-size_t nstructs = 100; //100 // print out all the samples from the top this many structures
 int    polynomial_degree = -1; //-1 means do everything, otherwise store ONLY polynomials less than or equal to this bound
 double end_at_likelihood = infinity; // if we get this value in log likelihood, we can stop everything (for Feynman)
 
 size_t BURN_N = 0; // 1000; // burn this many at the start of each MCMC chain -- probably NOT needed if doing weighted samples
+
+size_t nsamples = 100; // 100 // how many per structure?
+size_t nstructs = 100; //100 // print out all the samples from the top this many structures
 
 const size_t trim_at = 5000; // when we get this big in overall_sample structures
 const size_t trim_to = 1000;  // trim to this size
@@ -72,47 +74,65 @@ MyHypothesis::data_t mydata;
 #include "Polynomial.h"
 #include "ReservoirSample.h"
 
-// keep a big set of samples form structures to the best found for each structure
-std::map<std::string,PosteriorWeightedReservoirSample<MyHypothesis>> overall_samples; 
+class StructuresToSamples : public Singleton<StructuresToSamples>, 
+					        public std::map<std::string,PosteriorWeightedReservoirSample<MyHypothesis>> { 
+public:
 
-// useful for extracting the max
-std::function posterior = [](const MyHypothesis& h) {return h.posterior; };
-
-double max_posterior(const PosteriorWeightedReservoirSample<MyHypothesis>& rs) {
-	return max_of(rs.values(), posterior).second;
-}
-
-/**
- * @brief This trims overall_samples to the top N different structures with the best scores.
- * 			NOTE: This is a bit inefficient because we really could avoid adding structures until they have
- * 		 		a high enough score (as we do in Top) but then if we did find a good sample, we'd
- * 			    have missed everything before...
- */
-void trim_overall_samples(const size_t N) {
+	const size_t trim_at = 5000; // when we get this big in overall_sample structures
+	const size_t trim_to = 1000;  // trim to this size
 	
-	if(overall_samples.size() < N or N <= 0) return;
-	
-	std::vector<double> structureScores;
-	for(auto& [ss, R] : overall_samples) {
-		structureScores.push_back( max_posterior(R) );
-	}
-
-	// sorts low to high to find the nstructs best's score
-	std::sort(structureScores.begin(), structureScores.end(), std::greater<double>());	
-	double cutoff = structureScores[N-1];
-	
-	// now go through and trim
-	auto it = overall_samples.begin();
-	while(it != overall_samples.end()) {
-		double b = max_posterior(it->second);
-		if(b < cutoff) { // if we erase
-			it = overall_samples.erase(it); // wow, erases returns a new iterator which is valid
+	void add(MyHypothesis& h) {
+		
+		// convert to a structure string
+		auto ss = h.structure_string(false); 
+		
+		// create it if it doesn't exist
+		if(not this->count(ss)) { 
+			this->emplace(ss,nsamples);
 		}
-		else {
-			++it;
+		
+		// and add it
+		(*this)[ss] << h;
+		
+		// and trim if we must
+		if(this->size() >= trim_at) {
+			trim(trim_to);
 		}
 	}
-}
+	void operator<<(MyHypothesis& h) { add(h);}
+	
+	double max_posterior(const PosteriorWeightedReservoirSample<MyHypothesis>& rs) {
+		return max_of(rs.values(), get_posterior<MyHypothesis>).second;
+	}
+
+	void trim(const size_t N) {
+		
+		if(this->size() < N or N <= 0) 
+			return;
+		
+		std::vector<double> structureScores;
+		for(auto& [ss, R] : *this) {
+			structureScores.push_back( max_posterior(R) );
+		}
+
+		// sorts low to high to find the nstructs best's score
+		std::sort(structureScores.begin(), structureScores.end(), std::greater<double>());	
+		double cutoff = structureScores[N-1];
+		
+		// now go through and trim
+		auto it = this->begin();
+		while(it != this->end()) {
+			double b = max_posterior(it->second);
+			if(b < cutoff) { // if we erase
+				it = this->erase(it); // wow, erases returns a new iterator which is valid
+			}
+			else {
+				++it;
+			}
+		}
+	}
+	
+} overall_samples;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -124,6 +144,10 @@ void trim_overall_samples(const size_t N) {
 #ifndef DO_NOT_INCLUDE_MAIN
 
 int main(int argc, char** argv){ 
+	
+	
+	// cannot have a likelhood breakout because some likelihoods are positive
+	FleetArgs::LIKELIHOOD_BREAKOUT = false; 
 	
 	std::string strsep = "\t";
 	
@@ -150,6 +174,8 @@ int main(int argc, char** argv){
 	// set up the accessors of the variables
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
+	// must have single digits or checking whether all are use will break
+	assert(NUM_VARS < 10); 
 
 	// We'll add these as special functions for each i, so they don't take time in MCTS 
 	for(size_t i=0;i<NUM_VARS;i++){
@@ -233,51 +259,19 @@ int main(int argc, char** argv){
 	best.print_best = true;
 #endif 
 	
-
-	//	auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:(-%s);0:\u25A0;0:\u25A0");
-	//	auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:(-%s);0:(%s/%s);0:\u25A0;0:2;0:pow(%s,%s);0:\u25A0;0:\u25A0");
-//		auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:(-%s);0:(%s/%s);0:pow(%s,%s);0:\u25A0;0:2;0:2;0:pow(%s,%s);0:\u25A0;0:0.5");
-					
-		//auto s = grammar.from_parseable("0:(%s/%s);0:exp(%s);0:\u25A0;0:pow(%s,%s);0:\u25A0;0:\u25A0;0:2;0:pow(%s,%s);0:\u25A0;0:\u25A0");
-
-//		auto s = grammar.from_parseable("0:\u25A0");
-//		for(auto& n : s) { n.can_resample=false; }
-//		
-//		grammar.complete(s);
-		
-//		{
-////			MyHypothesis h0(s);
-//			MyHypothesis h0 = MyHypothesis::sample();
-//			//ParallelTempering m(h0, &mydata, FleetArgs::nchains, 1.1);
-//			ParallelTempering m(h0, &mydata, 100, 1000.0 ); //.0, 5.0, 10.0}); //, 100.0, 1000.0}); //5.0, 10.0, 100.0});
-////			MCMCChain m(h0, &mydata);
-//			for(auto& h: m.run(Control()) | best | print(FleetArgs::print, "# ")  ) {
-//			}
-//		}	
-//		
-//		best.print("# Overall best: "+best.best().structure_string()+"\t");
-//		return 0;
-
-	
 //	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
 //	MyMCTS m(h0, FleetArgs::explore, &mydata);
 //	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# "+str(best_possible_ll)+" ")  ) {
-//	
-//	auto h0 = MyHypothesis::sample(); // NOTE: We do NOT want to sample, since that constrains the MCTS 	
-//	ParallelTempering m(h0, &mydata, 150, 1.10); // 100, 100.0);
-//	MCMCChain m(h0, &mydata); // 100, 100.0);
 	
+//	PRINTN("# Initializing parititons...");
 //	MyHypothesis h0; 
-//	auto cur = get_partitions(h0, 5, 0);
-//	for(auto& h: cur) {
-//		PRINTN(h);
-//	}
+//	PartitionMCMC m(h0, FleetArgs::partition_depth, &mydata);	
 //	
-	
-	PRINTN("# Initializing parititons...");
-	MyHypothesis h0; 
-	PartitionMCMC m(h0, 5, &mydata);
-	
+	auto h0 = MyHypothesis::sample();
+	ParallelTempering m(h0, &mydata, 50, 1.5); // 100, 100.0);
+
+//	auto h0 = MyHypothesis::sample();
+//	MCMCChain m(h0, &mydata); // 100, 100.0);
 
 	for(auto& h: m.run(Control()) | print(FleetArgs::print, "# ")  ) {
 			
@@ -291,20 +285,7 @@ int main(int argc, char** argv){
 		best << h;
 		
 #if !FEYNMAN
-			// It's important here that we do a structure_string without a dot, because
-			// we want to store hypotheses in the same place, even if they came from different MCTS nodes
-			auto ss = h.structure_string(false); 
-			
-			if(not overall_samples.count(ss)) { // create this if it doesn't exist
-				overall_samples.emplace(ss,nsamples);
-			}
-			
-			// and add it
-			overall_samples[ss] << h;
-			
-			if(overall_samples.size() >= trim_at) {
-				trim_overall_samples(trim_to);
-			}
+		overall_samples << h;
 #endif 
 		
 		if(h.likelihood > end_at_likelihood) {
@@ -312,8 +293,6 @@ int main(int argc, char** argv){
 		}
 	}
 	
-//	m.print("# Final pool state:");
-		
 	// print our trees if we want them 
 //	m.print(h0, FleetArgs::tree_path.c_str());
 	
@@ -323,26 +302,24 @@ int main(int argc, char** argv){
 	
 	COUT "# Trimming." ENDL;
 	
-	trim_overall_samples(nstructs);
+	overall_samples.trim(nstructs);
 
 	// figure out the structure normalizer
 	double Z = -infinity;
 	for(auto& [ss,R]: overall_samples) {
-		Z = logplusexp(Z, max_posterior(R));
+		Z = logplusexp(Z, overall_samples.max_posterior(R));
 	}
 	
 	// sort the keys into overall_samples by highest posterior so we print out in order
 	std::vector<std::pair<double,std::string>> K;
 	for(auto& [ss,R] : overall_samples) {
-		K.emplace_back(max_posterior(R), ss);
+		K.emplace_back(overall_samples.max_posterior(R), ss);
 	}
 	std::sort(K.begin(), K.end());
 	
-	// And display!
-	
+	// And display!	
 	X_t ones;  ones.fill(1.0);
-	X_t zeros; zeros.fill(0.0);
-	
+	X_t zeros; zeros.fill(0.0);	
 	COUT "structure\tstructure.max\tweighted.posterior\tposterior\tprior\tlikelihood\tbest.possible.likelihood\tf0\tf1\tpolynomial.degree\th" ENDL;//\tparseable.h" ENDL;
 	for(auto& k : K) {
 		double best_posterior = k.first;
