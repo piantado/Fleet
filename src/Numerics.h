@@ -135,9 +135,8 @@ double logsumexp(const std::vector<t>& v, double f(const t&) ) {
 	return lse;
 }
 
-
 double mylgamma(double v) {
-	// thread safe version
+	// thread safe version gives our own place to store sgn
 	int sgn = 1;
 	auto ret = lgamma_r(v, &sgn);
 	return ret;

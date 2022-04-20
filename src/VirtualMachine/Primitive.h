@@ -5,7 +5,7 @@
  * @author Steven Piantadosi
  * @date 13/11/21
  * @file Builtins.h
- * @brief The Builtin type basically just stores a function pointer and an Op command. 
+ * @brief The Builtin type just stores a function pointer and an Op command. 
  * 		  This makes it a bit handier to define Primitives because they all take this
  *        form. 
  */

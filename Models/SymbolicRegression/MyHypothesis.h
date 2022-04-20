@@ -35,6 +35,20 @@ public:
 		return out;
 	}
 	
+	virtual double constant_prior() const override {
+		// we're going to override and do a LSE over scales 
+		double lp = 0.0;
+		for(auto& c : constants) {
+			double clp = -infinity;
+			for(int ls=MIN_SCALE;ls<=MAX_SCALE;ls++) {
+				clp = logplusexp(clp, normal_lpdf(c, 0.0, pow(10,ls)));
+			}
+			lp += clp; 
+		} 
+		return lp;
+	}
+
+	
 	size_t count_constants() const override {
 		size_t cnt = 0;
 		for(const auto& x : value) {
@@ -106,7 +120,7 @@ public:
 		}
 		#endif
 		
-		this->prior = Super::compute_prior() + ConstantContainer::constant_prior();
+		this->prior = Super::compute_prior() + this->constant_prior();
 		return this->prior;
 	}
 	

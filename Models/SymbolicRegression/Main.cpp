@@ -19,17 +19,18 @@ double end_at_likelihood = infinity; // if we get this value in log likelihood, 
 
 size_t BURN_N = 0; // 1000; // burn this many at the start of each MCMC chain -- probably NOT needed if doing weighted samples
 
-size_t nsamples = 100; // 100 // how many per structure?
+size_t nsamples = 100; // Need lots of samples per structure in order to get reliable IQR for e.g. means
 size_t nstructs = 100; //100 // print out all the samples from the top this many structures
 
-const size_t trim_at = 5000; // when we get this big in overall_sample structures
-const size_t trim_to = 1000;  // trim to this size
+const size_t trim_at = 500; // when we get this big in overall_sample structures
+const size_t trim_to = 200;  // trim to this size
 
 size_t head_data = 0; // if nonzero, this is the max number of lines we'll read in
 
 double fix_sd = -1; // when -1, we won't fix the SD to any particular value
 
-// these are used for some constant proposals
+// these are used for some constant proposals, and so must be defined before
+// hypotheses. They ar efilled in when we read the data
 double data_X_mean = NaN;
 double data_Y_mean = NaN;
 double data_X_sd   = NaN;
@@ -65,74 +66,9 @@ std::ostream& operator <<(std::ostream& o, X_t a) {
 #include "MyGrammar.h"
 #include "MyHypothesis.h"
 #include "MyMCTS.h"
+#include "StructureToSamples.h"
 
 MyHypothesis::data_t mydata;
-
-////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////
-
-#include "Polynomial.h"
-#include "ReservoirSample.h"
-
-class StructuresToSamples : public Singleton<StructuresToSamples>, 
-					        public std::map<std::string,PosteriorWeightedReservoirSample<MyHypothesis>> { 
-public:
-
-	const size_t trim_at = 5000; // when we get this big in overall_sample structures
-	const size_t trim_to = 1000;  // trim to this size
-	
-	void add(MyHypothesis& h) {
-		
-		// convert to a structure string
-		auto ss = h.structure_string(false); 
-		
-		// create it if it doesn't exist
-		if(not this->count(ss)) { 
-			this->emplace(ss,nsamples);
-		}
-		
-		// and add it
-		(*this)[ss] << h;
-		
-		// and trim if we must
-		if(this->size() >= trim_at) {
-			trim(trim_to);
-		}
-	}
-	void operator<<(MyHypothesis& h) { add(h);}
-	
-	double max_posterior(const PosteriorWeightedReservoirSample<MyHypothesis>& rs) {
-		return max_of(rs.values(), get_posterior<MyHypothesis>).second;
-	}
-
-	void trim(const size_t N) {
-		
-		if(this->size() < N or N <= 0) 
-			return;
-		
-		std::vector<double> structureScores;
-		for(auto& [ss, R] : *this) {
-			structureScores.push_back( max_posterior(R) );
-		}
-
-		// sorts low to high to find the nstructs best's score
-		std::sort(structureScores.begin(), structureScores.end(), std::greater<double>());	
-		double cutoff = structureScores[N-1];
-		
-		// now go through and trim
-		auto it = this->begin();
-		while(it != this->end()) {
-			double b = max_posterior(it->second);
-			if(b < cutoff) { // if we erase
-				it = this->erase(it); // wow, erases returns a new iterator which is valid
-			}
-			else {
-				++it;
-			}
-		}
-	}
-	
-} overall_samples;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -145,7 +81,11 @@ public:
 
 int main(int argc, char** argv){ 
 	
+	//FleetArgs::MCMCYieldOnlyChanges = true;
 	
+	double maxT = 1.1; // max temperature we see
+	bool pt_test_output = false; // output what we want for the PT testing
+		
 	// cannot have a likelhood breakout because some likelihoods are positive
 	FleetArgs::LIKELIHOOD_BREAKOUT = false; 
 	
@@ -165,6 +105,8 @@ int main(int argc, char** argv){
 	fleet.add_option("--end-at-likelihood", end_at_likelihood, "Stop everything if we make it to this likelihood (presumably, perfect)");
 	fleet.add_option("--polynomial-degree",   polynomial_degree,   "Defaultly -1 means we store everything, otherwise only keep polynomials <= this bound");
 	fleet.add_option("--sep", strsep, "Separator for input data (usually space or tab)");
+	fleet.add_option("--maxT", maxT, "Max temperature for parallel tempering");
+	fleet.add_option("--pt-test-output", pt_test_output, "Should we output only the convenient format for parallel tempering testing?");
 	fleet.initialize(argc, argv);
 	
 	assert(strsep.length()==1);
@@ -234,7 +176,8 @@ int main(int argc, char** argv){
 				
 		assert(sd > 0.0 && "*** You probably didn't want a zero SD?");
 		
-		COUT "# Data:\t" << x TAB y TAB sd ENDL;
+		if(not pt_test_output)
+			COUT "# Data:\t" << x TAB y TAB sd ENDL;
 		
 		best_possible_ll += normal_lpdf(0.0, 0.0, sd);
 		data_y.push_back(y);
@@ -255,38 +198,45 @@ int main(int argc, char** argv){
 	
 	TopN<MyHypothesis> best(1);
 
+	// if we are on feynman but NOT testing, then make best print
 #if FEYNMAN
-	best.print_best = true;
+
+	// we will run faster if we only queue the changes
+	FleetArgs::MCMCYieldOnlyChanges = true;
+
+	// for feynman we want to print everything
+	if(not pt_test_output)
+		best.print_best = true;
 #endif 
 	
-//	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
-//	MyMCTS m(h0, FleetArgs::explore, &mydata);
-//	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# "+str(best_possible_ll)+" ")  ) {
-	
-//	PRINTN("# Initializing parititons...");
-//	MyHypothesis h0; 
-//	PartitionMCMC m(h0, FleetArgs::partition_depth, &mydata);	
-//	
+	//	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
+	//	MyMCTS m(h0, FleetArgs::explore, &mydata);
+	//	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# "+str(best_possible_ll)+" ")  ) {
+		
+	//	PRINTN("# Initializing parititons...");
+	//	MyHypothesis h0; 
+	//	PartitionMCMC m(h0, FleetArgs::partition_depth, &mydata);	
+	//	
 	auto h0 = MyHypothesis::sample();
-	ParallelTempering m(h0, &mydata, 50, 1.5); // 100, 100.0);
+	ParallelTempering m(h0, &mydata, FleetArgs::nchains, maxT); // 100, 100.0);
 
-//	auto h0 = MyHypothesis::sample();
-//	MCMCChain m(h0, &mydata); // 100, 100.0);
+	//	auto h0 = MyHypothesis::sample();
+	//	MCMCChain m(h0, &mydata); // 100, 100.0);
 
-	for(auto& h: m.run(Control()) | print(FleetArgs::print, "# ")  ) {
+	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | print(FleetArgs::print, "# ")  ) {
 			
 		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these
 		
 		// toss non-linear samples here if we request linearity
-		// and non-polynomials (NOTE: This is why we have "not" in the next line
+		// and non-polynomials (which have NAN values -- NOTE: This is why we have "not" in the next line)
 		if(polynomial_degree > -1 and not (get_polynomial_degree(h.get_value(), h.constants) <= polynomial_degree)) 
 			continue;
 		
 		best << h;
 		
-#if !FEYNMAN
+		#if !FEYNMAN
 		overall_samples << h;
-#endif 
+		#endif 
 		
 		if(h.likelihood > end_at_likelihood) {
 			CTRL_C = true; // kill nicely. 
@@ -294,69 +244,117 @@ int main(int argc, char** argv){
 	}
 	
 	// print our trees if we want them 
-//	m.print(h0, FleetArgs::tree_path.c_str());
+	//	m.print(h0, FleetArgs::tree_path.c_str());
 	
 	//------------------
 	// Postprocessing
 	//------------------
 	
-	COUT "# Trimming." ENDL;
-	
-	overall_samples.trim(nstructs);
-
-	// figure out the structure normalizer
-	double Z = -infinity;
-	for(auto& [ss,R]: overall_samples) {
-		Z = logplusexp(Z, overall_samples.max_posterior(R));
-	}
-	
-	// sort the keys into overall_samples by highest posterior so we print out in order
-	std::vector<std::pair<double,std::string>> K;
-	for(auto& [ss,R] : overall_samples) {
-		K.emplace_back(overall_samples.max_posterior(R), ss);
-	}
-	std::sort(K.begin(), K.end());
-	
 	// And display!	
-	X_t ones;  ones.fill(1.0);
-	X_t zeros; zeros.fill(0.0);	
-	COUT "structure\tstructure.max\tweighted.posterior\tposterior\tprior\tlikelihood\tbest.possible.likelihood\tf0\tf1\tpolynomial.degree\th" ENDL;//\tparseable.h" ENDL;
-	for(auto& k : K) {
-		double best_posterior = k.first;
-		auto& ss = k.second; 
-		auto& R = overall_samples[ss]; // the reservoir sample for ss
-			
-		// find the normalizer for this structure
-		double sz = -infinity;
-		for(auto& h : R.values()) {
-			sz = logplusexp(sz, h.posterior);
+	if(pt_test_output) { // special one-line output for testing inference schemes 
+		PRINTN(FleetArgs::restart, FleetArgs::nchains, maxT, 
+			   best.best().posterior, QQ(best.best().structure_string()), QQ(best.best().string()));
+		
+	}
+	else {
+		
+		PRINTN("# Trimming.");
+		
+		overall_samples.trim(nstructs);
+
+		// figure out the structure normalizer
+		double Z = -infinity;
+		for(auto& [ss,R]: overall_samples) {
+			Z = logplusexp(Z, overall_samples.max_posterior(R));
 		}
 		
-		for(auto h : R.values()) {
-			COUT std::setprecision(14) <<
-				 QQ(h.structure_string()) TAB 
-				 best_posterior TAB 
-				 ( (h.posterior-sz) + (best_posterior-Z)) TAB 
-				 h.posterior TAB h.prior TAB h.likelihood TAB
-				 best_possible_ll TAB
-				 h.callOne(zeros, NaN) TAB 
-				 h.callOne(ones, NaN) TAB 
-				 get_polynomial_degree(h.get_value(), h.constants) TAB 
-				 Q(h.string()) // TAB 
-				 //Q(h.serialize()) 
-				 ENDL;
+		// sort the keys into overall_samples by highest posterior so we print out in order
+		std::vector<std::pair<double,std::string>> K;
+		for(auto& [ss,R] : overall_samples) {
+			K.emplace_back(overall_samples.max_posterior(R), ss);
 		}
+		std::sort(K.begin(), K.end());
+		
+		std::cout << std::setprecision(14);
+		
+		// for computing the f0 distribuiton in case we want it
+		std::vector<std::pair<double,double>> f0distribution;
+		
+		
+		X_t ones;  ones.fill(1.0);
+		X_t zeros; zeros.fill(0.0);	
+		COUT "structure\tstructure.max\tweighted.posterior\tposterior\tprior\tlikelihood\tbest.possible.likelihood\tf0\tf1\tpolynomial.degree\th" ENDL;//\tparseable.h" ENDL;
+		for(auto& [best_posterior, ss] : K) {
+			auto& R = overall_samples[ss]; // the reservoir sample for ss
+				
+			// find the normalizer for this structure
+			double sz = -infinity;
+			for(auto& h : R.values()) {
+				sz = logplusexp(sz, h.posterior);
+			}
+			
+			for(auto h : R.values()) {
+				PRINTN(  QQ(h.structure_string()),
+						 best_posterior,
+						 ( (h.posterior-sz) + (best_posterior-Z)), 
+						 h.posterior, h.prior, h.likelihood,
+						 best_possible_ll,
+						 h.callOne(zeros, NaN),
+						 h.callOne(ones, NaN),
+						 get_polynomial_degree(h.get_value(), h.constants),
+						 Q(h.string()));
+						 //Q(h.serialize()) 
+						 
+						 
+				// for computing the f0 distribution
+				f0distribution.emplace_back(h.callOne(zeros, NaN), ( (h.posterior-sz) + (best_posterior-Z)) );
+			}
+		}
+			
+			//	auto b = best.best();
+	//	for(auto& d : mydata) {
+	//		PRINTN(d.input, b.callOne(d.input, NaN), d.output, d.reliability);
+	//	}
+		
+		PRINTN("# Best possible likelihood:", best_possible_ll);
+		best.print("# Overall best: "+best.best().structure_string()+"\t");
+		PRINTN("# Overall samples size:" , overall_samples.size());
+	//	PRINTN("# MCTS tree size:", m.count());	
+		
+		
+		
+		
+		
+		
+		
+		// compute a SD on f0 (for debugging mean)
+//		std::sort(f0distribution.begin(), f0distribution.end());
+////		double f0z = -infinity;
+////		for(auto [f0, lp] : f0distribution) {
+////			f0z = logplusexp(f0z, lp);
+////		}
+////		
+////		double v25 = 0;
+////		double v75 = 0;
+////		bool p25 = false;
+////		bool p75 = 0;
+////		double t = -infinity;
+////		for(auto [f0, lp] : f0distribution) {
+////			t = logplusexp(t, lp);
+////			if(exp(t-f0z) > 0.25 and not p25){
+////				p25 = true;
+////				v25 = f0;
+////			}
+////			if(exp(t-f0z) > 0.75 and not p75){
+////				p75 = true;
+////				v75 = f0;
+////			}
+////		}
+//		auto v25 = f0distribution[0.25*f0distribution.size()].first;
+//		auto v75 = f0distribution[0.75*f0distribution.size()].first;		
+//		PRINTN(v25, v75, v75-v25);
 	}
-	
-//	auto b = best.best();
-//	for(auto& d : mydata) {
-//		PRINTN(d.input, b.callOne(d.input, NaN), d.output, d.reliability);
-//	}
-	
-	PRINTN("# Best possible likelihood:", best_possible_ll);
-	best.print("# Overall best: "+best.best().structure_string()+"\t");
-	PRINTN("# Overall samples size:" , overall_samples.size());
-//	PRINTN("# MCTS tree size:", m.count());	
+
 }
 
 #endif 

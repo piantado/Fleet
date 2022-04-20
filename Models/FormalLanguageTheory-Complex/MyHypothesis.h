@@ -34,6 +34,8 @@ public:
 class MyHypothesis final : public Lexicon<MyHypothesis, int,InnerHypothesis, S, S> {
 public:	
 	
+	unsigned long PRINT_STRINGS = 128;
+	
 	using Super = Lexicon<MyHypothesis, int,InnerHypothesis, S, S>;
 	using Super::Super;
 
@@ -52,11 +54,37 @@ public:
 	 // We assume input,output with reliability as the number of counts that input was seen going to that output
 	 virtual double compute_single_likelihood(const datum_t& datum) override { assert(0); }
 	 
+	 // a helpful little function so other functions (like grammar inference) can get
+	 // likelihoods
+	 static double string_likelihood(const DiscreteDistribution<S>& M, const data_t& data, const double breakout=-infinity) {
+		 
+		const float log_A = log(alphabet.size());
+
+		double ll = 0.0;
+		for(const auto& a : data) {
+			double alp = -infinity; // the model's probability of this
+			for(const auto& m : M.values()) {				
+				// we can always take away all character and generate a anew
+				alp = logplusexp(alp, m.second + p_delete_append<alpha,alpha>(m.first, a.output, log_A));
+			}
+			ll += alp * a.count; 
+			
+			if(ll == -infinity) {
+				return ll;
+			}
+			if(ll < breakout) {	
+				ll = -infinity;
+				break;				
+			}
+		}
+		return ll;
+	 }
+	 
 
 	 double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		// this version goes through and computes the predictive probability of each prefix
 		 
-		const auto& M = call(emptystring, errorstring); 
+		const auto& M = call(EMPTY_STRING, errorstring); 
 		
 		// calling "call" first made was_called false on everything, and
 		// this will only be set to true if it was called (via push_program)
@@ -72,27 +100,7 @@ public:
 		}
 		
 		// otherwise let's compute the likelihood
-		
-		const float log_A = log(alphabet.size());
-
-		likelihood = 0.0;
-		for(const auto& a : data) {
-			double alp = -infinity; // the model's probability of this
-			for(const auto& m : M.values()) {				
-				// we can always take away all character and generate a anew
-				alp = logplusexp(alp, m.second + p_delete_append<alpha,alpha>(m.first, a.output, log_A));
-			}
-			likelihood += alp * a.count; 
-			
-			if(likelihood == -infinity) {
-				return likelihood;
-			}
-			if(likelihood < breakout) {	
-				likelihood = -infinity;
-				break;				
-			}
-		}
-		return likelihood; 
+		return likelihood = string_likelihood(M, data, breakout); 
 	
 	 }
 	 
@@ -101,7 +109,7 @@ public:
 		extern MyHypothesis::data_t prdata;
 		extern std::string current_data;
 		extern std::pair<double,double> mem_pr;
-		auto o = this->call(emptystring, errorstring);
+		auto o = this->call(EMPTY_STRING, errorstring);
 		auto [prec, rec] = get_precision_and_recall(o, prdata, PREC_REC_N);
 		COUT "#\n";
 		COUT "# "; o.print(PRINT_STRINGS);	COUT "\n";

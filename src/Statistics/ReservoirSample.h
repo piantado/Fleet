@@ -80,7 +80,9 @@ public:
  * @author Steven Piantadosi
  * @date 12/02/22
  * @file ReservoirSample.h
- * @brief Same as ReservoirSample but chooses proportional to h.posterior. 
+ * @brief Same as ReservoirSample but chooses proportional to h.posterior -- using Algorithm A-Chao from wiki. 
+ * 		  NOTE that with this it is likely important to use some burn-in because otherwise it will start off
+ *        full of crummy samples. 
  */
 template<typename T>
 class PosteriorWeightedReservoirSample : public Serializable<PosteriorWeightedReservoirSample<T>> {

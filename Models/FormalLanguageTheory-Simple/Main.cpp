@@ -167,6 +167,9 @@ int main(int argc, char** argv){
 	fleet.add_option("-d,--data",     datastr, "Comma separated list of input data strings");	
 	fleet.initialize(argc, argv);
 	
+	// since we are only storing the top, we can ignore repeats from MCMC 
+	FleetArgs::MCMCYieldOnlyChanges = true;
+	
 	//------------------
 	// Add the terminals to the grammar
 	//------------------	

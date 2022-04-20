@@ -15,18 +15,15 @@ using S = std::string;
 using StrSet = std::set<S>;
 
 const std::string my_default_input = "data/English"; 
+
 S alphabet="nvadtp";
 size_t max_length = 128; // (more than 256 needed for count, a^2^n, a^n^2, etc -- see command line arg)
 size_t max_setsize = 64; // throw error if we have more than this
 size_t nfactors = 2; // how may factors do we run on? (defaultly)
 
-const double CONSTANT_P = 3.0; // upweight probability for grammar constants. 
-
 static constexpr float alpha = 0.01; // probability of insert/delete errors (must be a float for the string function below)
 
-size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite so we won't see some stuff
-const size_t MAX_LINES    = 1000000; // how many lines of data do we load? The more data, the slower...
-const size_t MAX_PR_LINES = 1000000; 
+size_t PREC_REC_N   = 25;  // number of top strings that we use to approximate precision and recall
 
 const double MAX_TEMP = 1.20; 
 unsigned long PRINT_STRINGS; // print at most this many strings for each hypothesis
@@ -36,7 +33,6 @@ std::vector<S> data_amounts={"100"}; //
 
 size_t current_ntokens = 0; // how many tokens are there currently? Just useful to know
 
-const std::string emptystring = "";
 const std::string errorstring = "<err>";
 
 #include "MyGrammar.h"
@@ -46,7 +42,6 @@ std::string prdata_path = "";
 MyHypothesis::data_t prdata; // used for computing precision and recall -- in case we want to use more strings?
 S current_data = "";
 bool long_output = false; // if true, we allow extra strings, recursions etc. on output
-bool long_strings = false; 
 std::pair<double,double> mem_pr; 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,6 +73,10 @@ int main(int argc, char** argv){
 	fleet.add_option("--prN",  PREC_REC_N, "How many data points to compute precision and recall?");	
 	fleet.add_flag("-l,--long-output",  long_output, "Allow extra computation/recursion/strings when we output");
 	fleet.initialize(argc, argv); 
+
+	// since we are only storing the top, we can ignore repeats from MCMC 
+	FleetArgs::MCMCYieldOnlyChanges = true;
+	
 	
 	COUT "# Using alphabet=" << alphabet ENDL;
 
@@ -138,7 +137,6 @@ int main(int argc, char** argv){
 	VirtualMachineControl::MIN_LP = -15;
 	PRINT_STRINGS = 512;	
 	
-	tic();	
 	for(size_t di=0;di<datas.size() and !CTRL_C;di++) {
 		auto& this_data = datas[di];
 		
@@ -190,7 +188,6 @@ int main(int argc, char** argv){
 		}
 		
 	}
-	tic();
 	
 }
 

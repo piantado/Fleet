@@ -206,8 +206,9 @@ public:
 					DEBUG("# Proposed(eq)", current.posterior, current.prior, current.likelihood, current.string(), "fb="+str(fb));
 					#endif 
 					
-					if(not FleetArgs::MCMCYieldOnlyChanges)
+					if(not FleetArgs::MCMCYieldOnlyChanges) {
 						co_yield current; // must be done with lock
+					}
 				}
 				else {
 					
@@ -255,12 +256,20 @@ public:
 		  
 						history << true;
 						++acceptances;
+						
+						// we always yield accepts
+						co_yield current; // must be done with lock
 					}
 					else {
 						history << false;
+						
+						// only yield rejects when not MCMCYieldOnlyChanges 
+						if(not FleetArgs::MCMCYieldOnlyChanges) {
+							co_yield current; 
+						}
 					}
 				
-					co_yield current; // must be done with lock
+					
 				}				
 			}
 			

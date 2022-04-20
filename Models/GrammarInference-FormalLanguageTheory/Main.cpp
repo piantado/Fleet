@@ -13,11 +13,9 @@
  * 	
  * */
 
-//#define DO_NOT_INCLUDE_MAIN 1
 #include <cstddef>
 #include <vector>
 
-//#include "../FormalLanguageTheory-Complex/Main.cpp"
 const size_t MAX_FACTORS = 3;
 
 #include "Data/HumanDatum.h"
@@ -34,9 +32,28 @@ std::string runtype         = "both"; // can be both, hypotheses (just find hypo
 
 std::vector<size_t> ntops = {1,5,10,25,100,250,500,1000}; // save the top this many from each hypothesis
 
-using S = std::string; 
+size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite so we won't see some stuff
+static constexpr float alpha = 0.01; // probability of insert/delete errors (must be a float for the string function below)
+size_t max_length = 128; // (more than 256 needed for count, a^2^n, a^n^2, etc -- see command line arg)
+size_t max_setsize = 64; // throw error if we have more than this
+size_t nfactors = 2; // how may factors do we run on? (defaultly)
+const std::string errorstring = "<err>";
+const double CONSTANT_P = 3.0; // upweight probability for grammar constants. 
+size_t current_ntokens = 0; // how many tokens are there currently? Just useful to know
+std::string current_data = "";
+std::string prdata_path = ""; 
 
-std::string substitute(std::string newA, std::string s) {			
+std::pair<double,double> mem_pr; 
+
+using S = std::string; 
+using StrSet = std::set<S>;
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// A few handy functions here
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+std::string substitute(std::string newA, std::string s) {
+	if(newA.size() == 0) return s; // just don't do anything if missing alphabet
 	for(size_t i=0;i<s.size();i++) {
 		auto idx = alphabet.find(s[i]);
 		s[i] = newA[idx % newA.size()]; // takes mod newA.size
@@ -51,20 +68,16 @@ std::string substitute(std::string newA, std::string s) {
 #include "Grammar.h"
 #include "Singleton.h"
 
-class MyGrammar : public Grammar<S,S,     S,char,bool,double,StrSet,int>,
+class MyGrammar : public Grammar<S,S,     S,char,bool,double,StrSet,int,size_t>,
 				  public Singleton<MyGrammar> {
 public:
 	MyGrammar() {
 		
-		
-		// add a primitive here that stochastically samples a substitution
-		// from the alphabet
-		
-		
+		// TODO: We want here some stochastic version of replace, that maybe tkaes
+		// a string and replaces one character with an unused one. 
 		
 		
 		add("substitute(%s,%s)", substitute);
-
 		
 		add("tail(%s)", +[](S s) -> S { 
 			if(s.length()>0) 
@@ -89,8 +102,8 @@ public:
 		}));
 
 //		add("c2s(%s)", +[](char c) -> S { return S(1,c); });
-		add("head(%s)", +[](S s) -> S { return (s.empty() ? emptystring : S(1,s.at(0))); }); // head here could be a char, except that it complicates stuff, so we'll make it a string str
-		add("\u00D8", +[]() -> S { return emptystring; }, CONSTANT_P);
+		add("head(%s)", +[](S s) -> S { return (s.empty() ? EMPTY_STRING : S(1,s.at(0))); }); // head here could be a char, except that it complicates stuff, so we'll make it a string str
+		add("\u00D8", +[]() -> S { return EMPTY_STRING; }, CONSTANT_P);
 		add("(%s==%s)", +[](S x, S y) -> bool { return x==y; });
 		add("empty(%s)", +[](S x) -> bool { 	return x.length()==0; });
 		
@@ -142,43 +155,25 @@ public:
 			
 			return output;
 		});
-
-		// Define our custom op here, which works on the VMS, because otherwise sampling is very slow
-		// here we can optimize the small s examples
-		add_vms<S,StrSet>("sample(%s)", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
-						
-			// implement sampling from the set.
-			// to do this, we read the set and then push all the alternatives onto the stack
-			StrSet s = vms->template getpop<StrSet>();
-				
-			if(s.size() == 0 or s.size() > max_setsize) {
-				throw VMSRuntimeError();
-			}
+		
+		
+		add("repeat(%s,%s)", +[](const S a, size_t i) -> S {
+			if(a.length()*i > max_length) throw VMSRuntimeError();
 			
-			// One useful optimization here is that sometimes that set only has one element. So first we check that, and if so we don't need to do anything 
-			// also this is especially convenient because we only have one element to pop
-			if(s.size() == 1) {
-				auto it = s.begin();
-				S x = *it;
-				vms->push<S>(std::move(x));
-			}
-			else {
-				// else there is more than one, so we have to copy the stack and increment the lp etc for each
-				// NOTE: The function could just be this latter branch, but that's much slower because it copies vms
-				// even for single stack elements
-				
-				// now just push on each, along with their probability
-				// which is here decided to be uniform.
-				const double lp = -log(s.size());
-				for(const auto& x : s) {
-					bool b = vms->pool->copy_increment_push(vms,x,lp);
-					if(not b) break; // we can break since all of these have the same lp -- if we don't add one, we won't add any!
-				}
-				
-				vms->status = vmstatus_t::RANDOM_CHOICE; // we don't continue with this context		
-			}
-		}));
+			S out = a;
+			for(size_t j=1;j<i;j++) 
+				out = out + a;
+			return out;				
+		});
+		add("len(%s)", +[](const S a) -> size_t { return a.length(); });
+		
+		for(size_t i=1;i<10;i++) {
+			add_terminal(str(i), i, CONSTANT_P/10.0);
+		}
 			
+		add("sample(%s)",     Builtins::Sample<MyGrammar, S>, CONSTANT_P);
+		add("sample_int(%s)", Builtins::Sample_int<MyGrammar>, CONSTANT_P);
+		
 		add("and(%s,%s)",    Builtins::And<MyGrammar>);
 		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
 		add("not(%s)",       Builtins::Not<MyGrammar>);
@@ -211,122 +206,10 @@ public:
 /// Declare an inner hypothesis type
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "LOTHypothesis.h"
+#include "../FormalLanguageTheory-Complex/Data.h"
+#include "../FormalLanguageTheory-Complex/MyHypothesis.h"
 
-class InnerHypothesis : public LOTHypothesis<InnerHypothesis,S,S,MyGrammar,&grammar> {
-public:
-	using Super = LOTHypothesis<InnerHypothesis,S,S,MyGrammar,&grammar>;
-	using Super::Super;
-	
-	static constexpr double regenerate_p = 0.7;
-	
-	[[nodiscard]] virtual std::optional<std::pair<InnerHypothesis,double>> propose() const override {
-		try { 
-			std::optional<std::pair<Node,double>> x;
-
-			if(flip(regenerate_p))       x = Proposals::regenerate(&grammar, value);	
-			else if(flip(0.1))  x = Proposals::sample_function_leaving_args(&grammar, value);
-			else if(flip(0.1))  x = Proposals::swap_args(&grammar, value);
-			else if(flip())     x = Proposals::insert_tree(&grammar, value);	
-			else                x = Proposals::delete_tree(&grammar, value);			
-			
-			if(not x) { return {}; }
-			
-			return std::make_pair(InnerHypothesis(std::move(x.value().first)), x.value().second); 
-				
-		} catch (DepthException& e) { return {}; }
-	}	
-	
-};
-
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Declare our hypothesis type
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#include "Lexicon.h"
-
-class MyHypothesis final : public Lexicon<MyHypothesis, int,InnerHypothesis, S, S> {
-public:	
-	
-	using Super = Lexicon<MyHypothesis, int,InnerHypothesis, S, S>;
-	using Super::Super;
-
-	virtual DiscreteDistribution<S> call(const S x, const S& err=S{}) {
-		// this calls by calling only the last factor, which, according to our prior,
-		
-		// make myself the loader for all factors
-		for(auto& [k,f] : factors) {
-			f.program.loader = this; 
-			f.was_called = false; // zero this please
-		}
-
-		return factors[factors.size()-1].call(x, err); // we call the factor but with this as the loader.  
-	}
-	 
-	 // We assume input,output with reliability as the number of counts that input was seen going to that output
-	 virtual double compute_single_likelihood(const datum_t& datum) override { assert(0); }
-	 
-
-	 double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
-		// this version goes through and computes the predictive probability of each prefix
-		 
-		const auto& M = call(emptystring, errorstring); 
-		
-		// calling "call" first made was_called false on everything, and
-		// this will only be set to true if it was called (via push_program)
-		// so here we check and make sure everything was used and if not
-		// we give it a -inf likelihood
-		// NOTE: This is a slow way to do this because it requires running the hypothesis
-		// but that's hard to get around with how factosr work. 
-		// NOTE that this checks factors over ALL prob. outcomes
-		for(auto& [k,f] : factors) {
-			if(not f.was_called) {
-				return likelihood=-infinity;
-			}
-		}
-		
-		// otherwise let's compute the likelihood
-		
-		const float log_A = log(alphabet.size());
-
-		likelihood = 0.0;
-		for(const auto& a : data) {
-			double alp = -infinity; // the model's probability of this
-			for(const auto& m : M.values()) {				
-				// we can always take away all character and generate a anew
-				alp = logplusexp(alp, m.second + p_delete_append<alpha,alpha>(m.first, a.output, log_A));
-			}
-			likelihood += alp * a.count; 
-			
-			if(likelihood == -infinity) {
-				return likelihood;
-			}
-			if(likelihood < breakout) {	
-				likelihood = -infinity;
-				break;				
-			}
-		}
-		return likelihood; 
-	
-	 }
-	 
-	 void print(std::string prefix="") override {
-		std::lock_guard guard(output_lock); // better not call Super wtih this here
-		extern MyHypothesis::data_t prdata;
-		extern std::string current_data;
-		extern std::pair<double,double> mem_pr;
-		auto o = this->call(emptystring, errorstring);
-		auto [prec, rec] = get_precision_and_recall(o, prdata, PREC_REC_N);
-		COUT "#\n";
-		COUT "# "; o.print(PRINT_STRINGS);	COUT "\n";
-		COUT prefix << current_data TAB current_ntokens TAB mem_pr.first TAB mem_pr.second TAB this->born TAB this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->serialize()) TAB prec TAB rec;
-		COUT "" TAB QQ(this->string()) ENDL
-	}
-	
-	 
-};
-
+MyHypothesis::data_t prdata; // used for computing precision and recall -- in case we want to use more strings?
 
 
 // The format of data for grammar inferece
@@ -343,10 +226,65 @@ public:
 	
 	virtual double human_chance_lp(const typename datum_t::output_t& r, const datum_t& hd) const override {
 		// here we are going to make chance be exponential in the length of the response
-		return -(double)r.length()*log(alphabet.size()); // NOTE: Without the double case, we negate r.length() first and it's awful
+		return -(double)(r.length()+1)*log(alphabet.size()+1); // NOTE: Without the double case, we negate r.length() first and it's awful
 	}
+	
+	
+	// We are going to overrdie this function because it normally would call the likelihood
+	// on EVERY data point, which would be a catastrophe, becuase compute_likelihood will re-run
+	// each program. We want to run each program once, since programs here are stochastic
+	// and thunks
+	virtual void recompute_LL(std::vector<HYP>& hypotheses, const data_t& human_data) override {
+		assert(which_data == std::addressof(human_data));
+	
+		// For each HumanDatum::data, figure out the max amount of data it contains
+		std::unordered_map<typename datum_t::data_t*, size_t> max_sizes;
+		for(auto& d : human_data) {
+			if( (not max_sizes.contains(d.data)) or max_sizes[d.data] < d.ndata) {
+				max_sizes[d.data] = d.ndata;
+			}
+		}
+	
+		LL.reset(new LL_t()); 
+		LL->reserve(max_sizes.size()); // reserve for the same number of elements 
+		
+		// now go through and compute the likelihood of each hypothesis on each data set
+		for(const auto& [dptr, sz] : max_sizes) {
+			if(CTRL_C) break;
+				
+			LL->emplace(dptr, nhypotheses()); // in this place, make something of size nhypotheses
+			
+			#pragma omp parallel for
+			for(size_t h=0;h<nhypotheses();h++) {
+				
+				// set up all the likelihoods here
+				Vector data_lls  = Vector::Zero(sz);				
+				
+				// call this just onece and then use it for all the string likelihoods
+				const auto M = hypotheses[h].call(EMPTY_STRING);
+				
+				// read the max size from above and compute all the likelihoods
+				for(size_t i=0;i<max_sizes[dptr];i++) {
+					typename HYP::data_t d;
+					d.push_back(dptr->at(i));
+					
+					data_lls(i) = MyHypothesis::string_likelihood(M, d);
+					
+					assert(not std::isnan(data_lls(i))); // NaNs will really mess everything up
+				}
+				
+				#pragma omp critical
+				LL->at(dptr)[h] = data_lls;
+			}
+		}
+		
+	}
+	
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////
+// Main
+////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char** argv){ 	
 	

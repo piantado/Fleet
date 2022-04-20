@@ -57,8 +57,10 @@ public:
 		}), TERMINAL_P);		
 #endif 
 
-//		add("x",             Builtins::X<MyGrammar>, TERMINAL_P);
-//		add("%s1", 			+[](X_t x) -> D { return x[1]; }, TERMINAL_P);
+		// NOTE: These are now added in main so we can dynamically have different numbers of arguments
+		// and display them in a friendly way 
+		//add("x",             Builtins::X<MyGrammar>, TERMINAL_P);
+		//add("%s1", 			+[](X_t x) -> D { return x[1]; }, TERMINAL_P);
 		
 	}					  
 					  

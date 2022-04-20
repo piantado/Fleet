@@ -88,8 +88,7 @@ namespace Builtins {
 		else {
 			vms->status = vmstatus_t::RANDOM_CHOICE; 
 		}
-	});
-	
+	});	
 	
 	template<typename Grammar_t>
 	Primitive<bool,double> FlipP(Op::FlipP, BUILTIN_LAMBDA {
@@ -147,6 +146,50 @@ namespace Builtins {
 		else {
 			vms->status = vmstatus_t::RANDOM_CHOICE; 
 		}
+	});
+	
+	template<typename Grammar_t, typename t, typename T=std::set<t>>
+	Primitive<t, T> Sample(Op::Sample, BUILTIN_LAMBDA {
+				
+		// implement sampling from the set.
+		// to do this, we read the set and then push all the alternatives onto the stack
+		auto s = vms->template getpop<T>();
+			
+		// One useful optimization here is that sometimes that set only has one element. So first we check that, and if so we don't need to do anything 
+		// also this is especially convenient because we only have one element to pop
+		if(s.size() == 1) {
+			auto v = std::move(*s.begin());
+			vms->template push<t>(std::move(v));
+		}
+		else {
+			// else there is more than one, so we have to copy the stack and increment the lp etc for each
+			// NOTE: The function could just be this latter branch, but that's much slower because it copies vms
+			// even for single stack elements
+			
+			// now just push on each, along with their probability
+			// which is here decided to be uniform.
+			const double lp = -log(s.size());
+			for(const auto& x : s) {
+				bool b = vms->pool->copy_increment_push(vms,x,lp);
+				if(not b) break; // we can break since all of these have the same lp -- if we don't add one, we won't add any!
+			}
+			
+			vms->status = vmstatus_t::RANDOM_CHOICE; // we don't continue with this context		
+		}	
+	});
+	
+	template<typename Grammar_t>
+	Primitive<int, int> Sample_int(Op::Sample, BUILTIN_LAMBDA {
+		// sample 0,1,2,3, ... <first argument>-1
+		
+		const int mx = vms->template getpop<int>();
+		
+		const double lp = -log(mx);
+		for(int i=0;i<mx;i++) { 
+			bool b = vms->pool->copy_increment_push(vms,i,lp);
+			if(not b) break; // we can break since all of these have the same lp -- if we don't add one, we won't add any!
+		}
+		vms->status = vmstatus_t::RANDOM_CHOICE; // we don't continue with this context		
 	});
 	
 	
