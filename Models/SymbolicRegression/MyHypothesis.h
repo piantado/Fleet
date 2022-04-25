@@ -61,7 +61,7 @@ public:
 	// NOTE: When we use a symmetric drift kernel, fb=0
 	std::pair<double,double> constant_proposal(double c) const override { 
 			
-		if(flip(0.1)) {
+		if(flip(0.95)) {
 			auto sc = pow(10, myrandom(MIN_SCALE, MAX_SCALE)); // pick a scale here 
 			
 			return std::make_pair(random_normal(c,  sc), 0.0);
@@ -195,7 +195,7 @@ public:
 		// Note that if we have no constants, we will always do prior proposals
 //		PRINTN("\nProposing from\t\t", string());
 		
-		const double CONST_PROP_P = 0.5; 
+		const double CONST_PROP_P = 0.95; 
 		
 		auto NC = count_constants();
 		
@@ -206,7 +206,7 @@ public:
 			
 			// now add to all that I have
 			for(size_t i=0;i<NC;i++) { 
-				auto [v, __fb] = constant_proposal(constants[i]);
+				auto [v, __fb] = this->constant_proposal(constants[i]);
 				ret.constants[i] = v;
 				fb += __fb;
 			}

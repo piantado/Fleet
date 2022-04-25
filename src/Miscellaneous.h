@@ -145,3 +145,30 @@ struct is_specialization : std::false_type {};
 
 template<template<typename...> class Ref, typename... Args>
 struct is_specialization<Ref<Args...>, Ref>: std::true_type {};
+
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Weighted quantiles
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+template<typename T>
+T weighted_quantile(std::vector<std::pair<T,double>>& v, double q) {
+	// find the weighted quantile, from a list of pairs <T,logprobability>
+	// NOTE: may modify v..
+	
+	std::sort(v.begin(), v.end()); // sort by T 
+	
+	// get the normalizer (log space)
+	double z = -infinity;
+	for(auto [x,lp] : v) z = logplusexp(z,lp);
+	
+	double cumulative = -infinity;
+	for(auto [x,lp] : v) {
+		cumulative = logplusexp(cumulative, lp);
+		if(exp(cumulative-z) > q) {
+			return x;
+		}
+	}
+	
+	assert(false);
+}

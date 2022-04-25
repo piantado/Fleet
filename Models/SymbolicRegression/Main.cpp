@@ -22,9 +22,6 @@ size_t BURN_N = 0; // 1000; // burn this many at the start of each MCMC chain --
 size_t nsamples = 100; // Need lots of samples per structure in order to get reliable IQR for e.g. means
 size_t nstructs = 100; //100 // print out all the samples from the top this many structures
 
-const size_t trim_at = 500; // when we get this big in overall_sample structures
-const size_t trim_to = 200;  // trim to this size
-
 size_t head_data = 0; // if nonzero, this is the max number of lines we'll read in
 
 double fix_sd = -1; // when -1, we won't fix the SD to any particular value
@@ -81,7 +78,9 @@ MyHypothesis::data_t mydata;
 
 int main(int argc, char** argv){ 
 	
-	//FleetArgs::MCMCYieldOnlyChanges = true;
+	// Just a note here -- if we are storing samples via a weighted sampler, then we don't
+	// want multiple duplicates of the same sample. If we are using an unweighted version, then we do.
+//	FleetArgs::MCMCYieldOnlyChanges = true;
 	
 	double maxT = 1.1; // max temperature we see
 	bool pt_test_output = false; // output what we want for the PT testing
@@ -89,10 +88,10 @@ int main(int argc, char** argv){
 	// cannot have a likelhood breakout because some likelihoods are positive
 	FleetArgs::LIKELIHOOD_BREAKOUT = false; 
 	
+	// how we separate times
 	std::string strsep = "\t";
 	
 	FleetArgs::inner_timestring = "1m"; // default inner time
-	int space_sep=0;
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	Fleet fleet("Symbolic regression");
@@ -101,7 +100,6 @@ int main(int argc, char** argv){
 	fleet.add_option("--fix-sd", fix_sd, "Should we force the sd to have a particular value?");
 	fleet.add_option("--nsamples", nsamples, "How many samples per structure?");
 	fleet.add_option("--nstructs", nstructs, "How many structures?");
-	fleet.add_option("--space", space_sep, "If 1, our data is space-separated");
 	fleet.add_option("--end-at-likelihood", end_at_likelihood, "Stop everything if we make it to this likelihood (presumably, perfect)");
 	fleet.add_option("--polynomial-degree",   polynomial_degree,   "Defaultly -1 means we store everything, otherwise only keep polynomials <= this bound");
 	fleet.add_option("--sep", strsep, "Separator for input data (usually space or tab)");
@@ -264,39 +262,36 @@ int main(int argc, char** argv){
 
 		// figure out the structure normalizer
 		double Z = -infinity;
-		for(auto& [ss,R]: overall_samples) {
+		for(auto& [k,R]: overall_samples) {
 			Z = logplusexp(Z, overall_samples.max_posterior(R));
 		}
 		
 		// sort the keys into overall_samples by highest posterior so we print out in order
-		std::vector<std::pair<double,std::string>> K;
-		for(auto& [ss,R] : overall_samples) {
-			K.emplace_back(overall_samples.max_posterior(R), ss);
+		std::vector<std::pair<double,std::pair<std::string,double>>> K;
+		for(auto& [k,R] : overall_samples) {
+			K.emplace_back(overall_samples.max_posterior(R), k);
 		}
 		std::sort(K.begin(), K.end());
 		
-		std::cout << std::setprecision(14);
+		std::cout << std::setprecision(10);
 		
 		// for computing the f0 distribuiton in case we want it
 		std::vector<std::pair<double,double>> f0distribution;
 		
-		
 		X_t ones;  ones.fill(1.0);
 		X_t zeros; zeros.fill(0.0);	
 		COUT "structure\tstructure.max\tweighted.posterior\tposterior\tprior\tlikelihood\tbest.possible.likelihood\tf0\tf1\tpolynomial.degree\th" ENDL;//\tparseable.h" ENDL;
-		for(auto& [best_posterior, ss] : K) {
-			auto& R = overall_samples[ss]; // the reservoir sample for ss
-				
-			// find the normalizer for this structure
-			double sz = -infinity;
-			for(auto& h : R.values()) {
-				sz = logplusexp(sz, h.posterior);
-			}
+		for(auto& [best_posterior, k] : K) {
+			auto& R = overall_samples[k]; // the reservoir sample for k
 			
 			for(auto h : R.values()) {
+				
+				// max estimate for structure, uniform for samples within since they're weighted reservoir samples
+				double weighted_h_estimate =  ( -log(R.size()) + (best_posterior-Z));
+				
 				PRINTN(  QQ(h.structure_string()),
 						 best_posterior,
-						 ( (h.posterior-sz) + (best_posterior-Z)), 
+						 weighted_h_estimate, 
 						 h.posterior, h.prior, h.likelihood,
 						 best_possible_ll,
 						 h.callOne(zeros, NaN),
@@ -305,9 +300,10 @@ int main(int argc, char** argv){
 						 Q(h.string()));
 						 //Q(h.serialize()) 
 						 
-						 
+
 				// for computing the f0 distribution
-				f0distribution.emplace_back(h.callOne(zeros, NaN), ( (h.posterior-sz) + (best_posterior-Z)) );
+				if(get_polynomial_degree(h.get_value(), h.constants) == 1)
+					f0distribution.emplace_back( h.callOne(ones, NaN) - h.callOne(zeros, NaN), weighted_h_estimate);
 			}
 		}
 			
@@ -324,34 +320,8 @@ int main(int argc, char** argv){
 		
 		
 		
-		
-		
-		
-		// compute a SD on f0 (for debugging mean)
-//		std::sort(f0distribution.begin(), f0distribution.end());
-////		double f0z = -infinity;
-////		for(auto [f0, lp] : f0distribution) {
-////			f0z = logplusexp(f0z, lp);
-////		}
-////		
-////		double v25 = 0;
-////		double v75 = 0;
-////		bool p25 = false;
-////		bool p75 = 0;
-////		double t = -infinity;
-////		for(auto [f0, lp] : f0distribution) {
-////			t = logplusexp(t, lp);
-////			if(exp(t-f0z) > 0.25 and not p25){
-////				p25 = true;
-////				v25 = f0;
-////			}
-////			if(exp(t-f0z) > 0.75 and not p75){
-////				p75 = true;
-////				v75 = f0;
-////			}
-////		}
-//		auto v25 = f0distribution[0.25*f0distribution.size()].first;
-//		auto v75 = f0distribution[0.75*f0distribution.size()].first;		
+//		auto v25 = weighted_quantile(f0distribution, 0.25);
+//		auto v75 = weighted_quantile(f0distribution, 0.75);
 //		PRINTN(v25, v75, v75-v25);
 	}
 
