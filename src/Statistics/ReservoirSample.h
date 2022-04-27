@@ -51,8 +51,8 @@ public:
 			samples.push_back(x);
 		}
 		else { 
-			if(uniform()*N < 1.0) {
-				auto which = myrandom(capacity);
+			auto which = myrandom(N);
+			if(which < capacity) {
 				samples[which] = x;
 			}		
 		}		
