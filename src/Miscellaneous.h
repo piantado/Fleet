@@ -165,7 +165,7 @@ T weighted_quantile(std::vector<std::pair<T,double>>& v, double q) {
 	double cumulative = -infinity;
 	for(auto [x,lp] : v) {
 		cumulative = logplusexp(cumulative, lp);
-		if(exp(cumulative-z) > q) {
+		if(exp(cumulative-z) >= q) {
 			return x;
 		}
 	}

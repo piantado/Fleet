@@ -273,7 +273,7 @@ int main(int argc, char** argv){
 		}
 		std::sort(K.begin(), K.end());
 		
-		std::cout << std::setprecision(10);
+		std::cout << std::setprecision(3);
 		
 		// for computing the f0 distribuiton in case we want it
 		std::vector<std::pair<double,double>> f0distribution;
@@ -298,12 +298,11 @@ int main(int argc, char** argv){
 						 h.callOne(ones, NaN),
 						 get_polynomial_degree(h.get_value(), h.constants),
 						 Q(h.string()));
-						 //Q(h.serialize()) 
-						 
+						 //Q(h.serialize()) 						 
 
 				// for computing the f0 distribution
-				if(get_polynomial_degree(h.get_value(), h.constants) == 1)
-					f0distribution.emplace_back( h.callOne(ones, NaN) - h.callOne(zeros, NaN), weighted_h_estimate);
+				//if(get_polynomial_degree(h.get_value(), h.constants) == 1)
+				f0distribution.emplace_back( h.callOne(ones, NaN) - h.callOne(zeros, NaN), weighted_h_estimate);
 			}
 		}
 			
@@ -320,9 +319,9 @@ int main(int argc, char** argv){
 		
 		
 		
-//		auto v25 = weighted_quantile(f0distribution, 0.25);
-//		auto v75 = weighted_quantile(f0distribution, 0.75);
-//		PRINTN(v25, v75, v75-v25);
+		auto v25 = weighted_quantile(f0distribution, 0.25);
+		auto v75 = weighted_quantile(f0distribution, 0.75);
+		PRINTN(v25, v75, v75-v25);
 	}
 
 }

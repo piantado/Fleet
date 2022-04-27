@@ -51,7 +51,7 @@ public:
 			samples.push_back(x);
 		}
 		else { 
-			auto which = myrandom(N);
+			auto which = myrandom(N); // NOTE: it's not capacity, it's N!
 			if(which < capacity) {
 				samples[which] = x;
 			}		
