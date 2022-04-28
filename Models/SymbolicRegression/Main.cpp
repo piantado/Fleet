@@ -273,7 +273,7 @@ int main(int argc, char** argv){
 		}
 		std::sort(K.begin(), K.end());
 		
-		std::cout << std::setprecision(3);
+		std::cout << std::setprecision(10);
 		
 		// for computing the f0 distribuiton in case we want it
 		std::vector<std::pair<double,double>> f0distribution;
@@ -319,9 +319,9 @@ int main(int argc, char** argv){
 		
 		
 		
-		auto v25 = weighted_quantile(f0distribution, 0.25);
-		auto v75 = weighted_quantile(f0distribution, 0.75);
-		PRINTN(v25, v75, v75-v25);
+		//auto v25 = weighted_quantile(f0distribution, 0.25);
+		//auto v75 = weighted_quantile(f0distribution, 0.75);
+		//PRINTN(v25, v75, v75-v25);
 	}
 
 }
