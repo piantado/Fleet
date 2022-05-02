@@ -3,6 +3,8 @@
 #include <memory>
 #include <chrono>
 
+#include "Numerics.h"
+
 //#include "IO.h"
 
 // From https://stackoverflow.com/questions/478898/how-to-execute-a-command-and-get-output-of-command-within-c-using-posix

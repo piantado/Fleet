@@ -39,7 +39,7 @@ public:
 	using Super = Lexicon<MyHypothesis, int,InnerHypothesis, S, S>;
 	using Super::Super;
 
-	virtual DiscreteDistribution<S> call(const S x, const S& err=S{}) {
+	virtual DiscreteDistribution<S> call(const S x=EMPTY_STRING, const S& err=S{}) {
 		// this calls by calling only the last factor, which, according to our prior,
 		
 		// make myself the loader for all factors

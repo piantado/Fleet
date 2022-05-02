@@ -33,17 +33,20 @@ std::string runtype         = "both"; // can be both, hypotheses (just find hypo
 std::vector<size_t> ntops = {1,5,10,25,100,250,500,1000}; // save the top this many from each hypothesis
 
 size_t PREC_REC_N   = 25;  // if we make this too high, then the data is finite so we won't see some stuff
-static constexpr float alpha = 0.01; // probability of insert/delete errors (must be a float for the string function below)
+static constexpr float alpha = 0.1; // probability of insert/delete errors (must be a float for the string function below)
 size_t max_length = 128; // (more than 256 needed for count, a^2^n, a^n^2, etc -- see command line arg)
 size_t max_setsize = 64; // throw error if we have more than this
 size_t nfactors = 2; // how may factors do we run on? (defaultly)
-const std::string errorstring = "<err>";
+
+const std::string errorstring = "";
 const double CONSTANT_P = 3.0; // upweight probability for grammar constants. 
-size_t current_ntokens = 0; // how many tokens are there currently? Just useful to know
+
+// These are necessary for MyHypothesis
+size_t current_ntokens = 0; 
+std::pair<double,double> mem_pr; 
+
 std::string current_data = "";
 std::string prdata_path = ""; 
-
-std::pair<double,double> mem_pr; 
 
 using S = std::string; 
 using StrSet = std::set<S>;
@@ -61,146 +64,7 @@ std::string substitute(std::string newA, std::string s) {
 	return s;
 }
 
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Declare a grammar
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#include "Grammar.h"
-#include "Singleton.h"
-
-class MyGrammar : public Grammar<S,S,     S,char,bool,double,StrSet,int,size_t>,
-				  public Singleton<MyGrammar> {
-public:
-	MyGrammar() {
-		
-		// TODO: We want here some stochastic version of replace, that maybe tkaes
-		// a string and replaces one character with an unused one. 
-		
-		
-		add("substitute(%s,%s)", substitute);
-		
-		add("tail(%s)", +[](S s) -> S { 
-			if(s.length()>0) 
-				s.erase(0); 
-			return s;
-		});
-				
-		add_vms<S,S,S>("append(%s,%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
-			S b = vms->getpop<S>();
-			S& a = vms->stack<S>().topref();
-			
-			if(a.length() + b.length() > max_length) throw VMSRuntimeError();
-			else 									 a += b; 
-		}));
-		
-		add_vms<S,S,char>("pair(%s,%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
-			char b = vms->getpop<char>();
-			S& a = vms->stack<S>().topref();
-			
-			if(a.length() + 1 > max_length) throw VMSRuntimeError();
-			else 							a += b; 
-		}));
-
-//		add("c2s(%s)", +[](char c) -> S { return S(1,c); });
-		add("head(%s)", +[](S s) -> S { return (s.empty() ? EMPTY_STRING : S(1,s.at(0))); }); // head here could be a char, except that it complicates stuff, so we'll make it a string str
-		add("\u00D8", +[]() -> S { return EMPTY_STRING; }, CONSTANT_P);
-		add("(%s==%s)", +[](S x, S y) -> bool { return x==y; });
-		add("empty(%s)", +[](S x) -> bool { 	return x.length()==0; });
-		
-		add("insert(%s,%s)", +[](S x, S y) -> S { 
-			size_t l = x.length();
-			if(l == 0) 
-				return y;
-			else if(l + y.length() > max_length) 
-				throw VMSRuntimeError();
-			else {
-				// put y into the middle of x
-				size_t pos = l/2;
-				S out = x.substr(0, pos); 
-				out.append(y);
-				out.append(x.substr(pos));
-				return out;
-			}				
-		});
-		
-		
-		// add an alphabet symbol (\Sigma)
-		add("\u03A3", +[]() -> StrSet {
-			StrSet out; 
-			for(const auto& a: alphabet) {
-				out.emplace(1,a);
-			}
-			return out;
-		}, CONSTANT_P);
-		
-		// set operations:
-		add("{%s}", +[](S x) -> StrSet  { 
-			StrSet s; s.insert(x); return s; 
-		}, CONSTANT_P);
-		
-		add("(%s\u222A%s)", +[](StrSet s, StrSet x) -> StrSet { 
-			for(auto& xi : x) {
-				s.insert(xi);
-				if(s.size() > max_setsize) throw VMSRuntimeError();
-			}
-			return s;
-		});
-		
-		add("(%s\u2216%s)", +[](StrSet s, StrSet x) -> StrSet {
-			StrSet output; 
-			
-			// this would usually be implemented like this, but it's overkill (and slower) because normally 
-			// we just have single elemnents
-			std::set_difference(s.begin(), s.end(), x.begin(), x.end(), std::inserter(output, output.begin()));
-			
-			return output;
-		});
-		
-		
-		add("repeat(%s,%s)", +[](const S a, size_t i) -> S {
-			if(a.length()*i > max_length) throw VMSRuntimeError();
-			
-			S out = a;
-			for(size_t j=1;j<i;j++) 
-				out = out + a;
-			return out;				
-		});
-		add("len(%s)", +[](const S a) -> size_t { return a.length(); });
-		
-		for(size_t i=1;i<10;i++) {
-			add_terminal(str(i), i, CONSTANT_P/10.0);
-		}
-			
-		add("sample(%s)",     Builtins::Sample<MyGrammar, S>, CONSTANT_P);
-		add("sample_int(%s)", Builtins::Sample_int<MyGrammar>, CONSTANT_P);
-		
-		add("and(%s,%s)",    Builtins::And<MyGrammar>);
-		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
-		add("not(%s)",       Builtins::Not<MyGrammar>);
-		
-		add("x",             Builtins::X<MyGrammar>, CONSTANT_P);
-		
-		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,S>);
-		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,StrSet>);
-		add("if(%s,%s,%s)",  Builtins::If<MyGrammar,double>);
-
-		add("flip(%s)",      Builtins::FlipP<MyGrammar>, CONSTANT_P);
-
-		const int pdenom=24;
-		for(int a=1;a<=pdenom/2;a++) { 
-			std::string s = str(a/std::gcd(a,pdenom)) + "/" + str(pdenom/std::gcd(a,pdenom)); 
-			if(a==pdenom/2) {
-				add_terminal( s, double(a)/pdenom, CONSTANT_P);
-			}
-			else {
-				add_terminal( s, double(a)/pdenom, 1.0);
-			}
-		}
-		
-		add("F%s(%s)" ,  Builtins::LexiconRecurse<MyGrammar,int>, 1./2.);
-		add("Fm%s(%s)",  Builtins::LexiconMemRecurse<MyGrammar,int>, 1./2.);
-	}
-} grammar;
+#include "MyGrammar.h"
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare an inner hypothesis type
@@ -215,28 +79,26 @@ MyHypothesis::data_t prdata; // used for computing precision and recall -- in ca
 // The format of data for grammar inferece
 using MyHumanDatum = HumanDatum<MyHypothesis>;
 
-#include "GrammarHypothesis.h"
+#include "ThunkGrammarHypothesis.h"
 
-// Define a grammar inference class -- nothing special needed here
-class MyGrammarHypothesis final : public GrammarHypothesis<MyGrammarHypothesis, MyHypothesis, MyHumanDatum> {
+class MyGrammarHypothesis final : public ThunkGrammarHypothesis<MyGrammarHypothesis, MyHypothesis, MyHumanDatum> { 
 public:
-	using Super = GrammarHypothesis<MyGrammarHypothesis, MyHypothesis, MyHumanDatum>;
+	using Super = ThunkGrammarHypothesis<MyGrammarHypothesis, MyHypothesis, MyHumanDatum>;
 	using Super::Super;
-	using data_t = Super::data_t;		
-	
+	using data_t = Super::data_t;
+
 	virtual double human_chance_lp(const typename datum_t::output_t& r, const datum_t& hd) const override {
 		// here we are going to make chance be exponential in the length of the response
 		return -(double)(r.length()+1)*log(alphabet.size()+1); // NOTE: Without the double case, we negate r.length() first and it's awful
-	}
+	}	
 	
-	
-	// We are going to overrdie this function because it normally would call the likelihood
-	// on EVERY data point, which would be a catastrophe, becuase compute_likelihood will re-run
-	// each program. We want to run each program once, since programs here are stochastic
-	// and thunks
 	virtual void recompute_LL(std::vector<HYP>& hypotheses, const data_t& human_data) override {
-		assert(which_data == std::addressof(human_data));
-	
+		assert(this->which_data == std::addressof(human_data));
+		
+		// we need to define a version of LL where we DO NOT include the observed strings in the model-based
+		// likelihood, since people aren't allowed to respond with them. 
+		
+		
 		// For each HumanDatum::data, figure out the max amount of data it contains
 		std::unordered_map<typename datum_t::data_t*, size_t> max_sizes;
 		for(auto& d : human_data) {
@@ -245,23 +107,37 @@ public:
 			}
 		}
 	
-		LL.reset(new LL_t()); 
-		LL->reserve(max_sizes.size()); // reserve for the same number of elements 
+		this->LL.reset(new LL_t()); 
+		this->LL->reserve(max_sizes.size()); // reserve for the same number of elements 
 		
 		// now go through and compute the likelihood of each hypothesis on each data set
 		for(const auto& [dptr, sz] : max_sizes) {
 			if(CTRL_C) break;
 				
-			LL->emplace(dptr, nhypotheses()); // in this place, make something of size nhypotheses
+			this->LL->emplace(dptr, this->nhypotheses()); // in this place, make something of size nhypotheses
 			
 			#pragma omp parallel for
-			for(size_t h=0;h<nhypotheses();h++) {
+			for(size_t h=0;h<this->nhypotheses();h++) {
 				
 				// set up all the likelihoods here
 				Vector data_lls  = Vector::Zero(sz);				
 				
 				// call this just onece and then use it for all the string likelihoods
-				const auto M = hypotheses[h].call(EMPTY_STRING);
+				auto M = hypotheses[h].call();
+				
+				// now we need to renormalize for the fact that we can't produce strings in the 
+				// observed set of data (NOTE This assumes that the data can't be noisy versions of
+				// strings that were in teh set too). 
+				for(size_t i=0;i<max_sizes[dptr];i++) {
+					const auto& s = dptr->at(i).output;
+					if(M.contains(s)) M.erase(s);
+				}
+				
+				// and renormalize M with the strings removed
+				double Z = M.Z();
+				for(auto [s,lp] : M){
+					M.m[s] = lp-Z;
+				}
 				
 				// read the max size from above and compute all the likelihoods
 				for(size_t i=0;i<max_sizes[dptr];i++) {
@@ -274,11 +150,33 @@ public:
 				}
 				
 				#pragma omp critical
-				LL->at(dptr)[h] = data_lls;
+				this->LL->at(dptr)[h] = std::move(data_lls);
 			}
 		}
 		
 	}
+		
+		
+	virtual std::map<typename HYP::output_t, double> compute_model_predictions(const size_t i, const Matrix& hposterior) const override {
+		
+		// NOTE: we must also define a version of this which renormalizes  by the data
+		// we could do this in P except then P would have to be huge for thunks since P
+		// would depend on the data. So we will do it here. 
+	
+		std::map<typename HYP::output_t, double> model_predictions;
+		
+		for(int h=0;h<hposterior.rows();h++) {
+			if(hposterior(h,i) < 1e-6) continue;  // skip very low probability for speed
+			
+			for(const auto& [outcome,outcomeprob] : this->P->at(h,0)) {						
+				model_predictions[outcome] += hposterior(h,i) * outcomeprob;
+			}
+		}
+		
+		return model_predictions;
+	}
+	
+	
 	
 };
 
@@ -304,7 +202,7 @@ int main(int argc, char** argv){
 	for(const char c : alphabet) {
 		grammar.add_terminal( Q(S(1,c)), c, CONSTANT_P/alphabet.length());
 	}
-
+	
 	///////////////////////////////
 	// Read the human data
 	///////////////////////////////	
@@ -331,13 +229,13 @@ int main(int argc, char** argv){
 		
 		// This glom thing will use anything overlapping in mcmc_data, and give
 		// us a new pointer if it can. This decreases the amount we need to run MCMC search
-		// on and saves memory; NOTE: This changes this_data
+		// on and saves memory; NOTE: This (often) changes this_data
 		glom(mcmc_data, this_data); 	
 		
 		// now just put into the data
 		human_data.push_back(MyHumanDatum{.data=this_data, 
 										  .ndata=ndata, 
-										  .predict=const_cast<S*>(&EMPTY_STRING), 
+										  .predict=nullptr, // const_cast<S*>(&EMPTY_STRING), 
 										  .responses=m,
 										  .chance=NaN, // should not be used via human_chance_lp above
 										  .decay_position=decay_pos,
@@ -399,18 +297,39 @@ int main(int argc, char** argv){
 	if(runtype == "grammar" or runtype == "both") { 
 		
 		auto hypotheses = load<MyHypothesis>(hypothesis_path);
-		COUT "# Hypothesis size: " TAB hypotheses.size() ENDL;
+		PRINTN("# Hypothesis size: ", hypotheses.size(), std::addressof(hypotheses));
 		assert(hypotheses.size() > 0 && "*** Somehow we don't have any hypotheses!");
 	
 		// store the best
-		TopN<MyGrammarHypothesis> topMAP(1); // keeps track of the map
+		TopN<MyGrammarHypothesis> MAPGrammar(1); // keeps track of the map
 	
+		// initial hypothesis
+		auto h0 = MyGrammarHypothesis::sample(hypotheses, &human_data);
+		
+		// lets force probabilities and integers to have fixed, uniform priors 
+		{
+			size_t i = 0;
+			for(auto& r : grammar) {
+				// don't do inference over numbers, alphabet (char), or probs (double)
+				if(r.nt == grammar.nt<size_t>() or 
+				   r.nt == grammar.nt<int>() or 
+				   r.nt == grammar.nt<char>() or 
+				   r.nt == grammar.nt<double>()) {					
+					//contains(r.format, "/") or 
+					// r.format.at(0)=='#') { 
+					h0.logA.set(i, 0.0); // set the value to 1 (you MUST do this) 
+					h0.set_can_propose(i, false);
+				}
+				i++;
+			}
+		}
+		
 		// the MCMC chain we run over grammars
-		auto thechain = MCMCChain<MyGrammarHypothesis>(MyGrammarHypothesis::sample(hypotheses, &human_data), &human_data);
+		auto thechain = MCMCChain<MyGrammarHypothesis>(h0, &human_data);
 		
 		// Main MCMC running loop!
 		size_t nloops = 0;
-		for(const auto& h : thechain.run(Control()) | topMAP | print(FleetArgs::print) | thin(FleetArgs::thin) ) {
+		for(const auto& h : thechain.run(Control()) | MAPGrammar | print(FleetArgs::print) | thin(FleetArgs::thin) ) {
 			
 			{
 				std::ofstream outsamples(FleetArgs::output_path+"/samples.txt", std::ofstream::app);
@@ -423,10 +342,8 @@ int main(int argc, char** argv){
 				
 				// Now when we're done, show the model predicted outputs on the data
 				// We'll use the MAP grammar hypothesis for this
-				auto& MAP = topMAP.best();
-				const Matrix hposterior = MAP.compute_normalized_posterior(); 
-				
-				//PRINTN("#", h.posterior ); 
+				auto& MAP = MAPGrammar.best();
+				const auto hposterior = MAP.compute_normalized_posterior(); 
 				
 				std::ofstream outMAP(FleetArgs::output_path+"/MAP-strings.txt");
 				std::ofstream outtop(FleetArgs::output_path+"/top-H.txt");
@@ -461,9 +378,12 @@ int main(int argc, char** argv){
 						
 						// get all of the strings output by people or the model
 						std::set<std::string> all_strings;
+
+						// model strings
 						for(const auto& [s,p] : model_predictions) {
-							all_strings.insert(s);
-							UNUSED(p);
+							if(p > 0.001) { // don't print things that are crazy low probability
+								all_strings.insert(s);
+							}
 						}
 						
 						std::map<std::string, size_t> m; // make a map of outputs so we can index easily below
@@ -481,6 +401,17 @@ int main(int argc, char** argv){
 					
 				}
 				outMAP.close();
+				outtop.close();
+				
+				// store total posterior if we leave out each primitive 
+//				std::ofstream outLOO(FleetArgs::output_path+"/LOO-scores.txt");
+//				for(nonterminal_t nt=0;nt<grammar.nts();nt++) {
+//					for(auto& r : grammar.rules[nt]){
+//					
+//						MyHypothesis G = MAPGrammar; // copy the MAP
+//						G.compute_posterior()
+//					}
+//				}
 						
 			}
 			

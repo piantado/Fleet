@@ -61,9 +61,9 @@ public:
 	// a reasonably shaped prior
 //	TNormalVariable< +[](float x)->float { return 1.0/(1.0+expf(-1.7*x)); }> alpha;
 	TNormalVariable< +[](float x)->float { return 1.0/(1.0+expf(-1.0*x)); }> alpha;
-	TNormalVariable< +[](float x)->float { return expf((x-0.33)/1.50); }>    llt;
+//	TNormalVariable< +[](float x)->float { return expf((x-0.33)/1.50); }>    llt;
 //	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            llt;
-	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            pt;
+//	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            pt;
 	TNormalVariable< +[](float x)->float { return expf(x-2); }>              decay;  // peaked near zero
 	
 	typename HYP::Grammar_t* grammar;
@@ -82,22 +82,28 @@ public:
 	
 	// stored so we can remember what we computed for. 
 	const data_t* which_data; 
-			
+	const std::vector<HYP>* which_hypotheses;
+
 	GrammarHypothesis() {	}
 		
 	GrammarHypothesis(std::vector<HYP>& hypotheses, const data_t* human_data) {
 		// This has to take human_data as a pointer because of how MCMCable::make works -- can't forward a reference
 		// but the rest of this class likes the references, so we convert here
-		this->set_hypotheses_and_data(hypotheses, *human_data);
+		this->set_hypotheses_and_data(hypotheses, *human_data);		
 	}	
 	
 	// we overwrite this because in MCMCable, this wants to check get_value, which is not defined here
-	template<typename... A>
-	[[nodiscard]] static this_t sample(A... a) {
-		auto h = this_t(a...);
+//	template<typename... A>
+//	[[nodiscard]] static this_t sample(A... a) {
+//		auto h = this_t(std::forward<A>(a)...);
+//		return h.restart();
+//	}
+	[[nodiscard]] static this_t sample(std::vector<HYP>& hypotheses, const data_t* human_data) {
+		// NOTE: Cannot use templates because then it doesn't pass my hypotheses ref the right way
+		auto h = this_t(hypotheses, human_data);
 		return h.restart();
 	}
-	
+
 	/**
 	 * @brief This is the primary function for setting hypothese and data on construction. 
 	 * @param hypotheses
@@ -107,6 +113,7 @@ public:
 		
 		// set first because it's required below
 		which_data = std::addressof(human_data);
+		which_hypotheses = std::addressof(hypotheses);
 		
 		// read the hypothesis from the first grammar, and check its the same for everyone	
 		grammar = hypotheses.at(0).get_grammar();		
@@ -117,15 +124,15 @@ public:
 		logA.set_size(grammar->count_rules());
 		
 		// when we are initialized this way, we compute C, LL, P, and the decayed ll. 
-		recompute_C(hypotheses);
+		this->recompute_C(hypotheses);
 		COUT "# Done computing prior counts" ENDL;
-		recompute_LL(hypotheses, human_data);
+		this->recompute_LL(hypotheses, human_data);
 		COUT "# Done computing incremental likelihoods " ENDL;
-		recompute_P(hypotheses, human_data);
+		this->recompute_P(hypotheses, human_data);
 		COUT "# Done computing model predictions" ENDL;
 		// this gets constructed here so it doesn't need to be reallocated each time we call recompute_decayedLikelihood
-		decayedLikelihood.reset(new Matrix(C->rows(), human_data.size()));
-		recompute_decayedLikelihood(human_data);
+		this->decayedLikelihood.reset(new Matrix(C->rows(), human_data.size()));
+		this->recompute_decayedLikelihood(human_data);
 		COUT "# Done computing decayedLikelihood" ENDL;
 		COUT "# Starting MCMC" ENDL;
 	}
@@ -172,7 +179,7 @@ public:
 			assert(hypotheses[i].get_grammar() == grammar); // just a check that the grammars are identical
 			
 			#pragma omp critical
-			C->row(i) = cv;
+			C->row(i) = std::move(cv);
 		}
 		
 		assert( (size_t)C->rows() == hypotheses.size());
@@ -187,7 +194,7 @@ public:
 	 */
 	virtual void recompute_LL(std::vector<HYP>& hypotheses, const data_t& human_data) {
 		assert(which_data == std::addressof(human_data));
-	
+			
 		// For each HumanDatum::data, figure out the max amount of data it contains
 		std::unordered_map<typename datum_t::data_t*, size_t> max_sizes;
 		for(auto& d : human_data) {
@@ -226,7 +233,7 @@ public:
 				}
 				
 				#pragma omp critical
-				LL->at(dptr)[h] = data_lls;
+				LL->at(dptr)[h] = std::move(data_lls);
 			}
 		}
 		
@@ -322,7 +329,7 @@ public:
 				}
 
 				#pragma omp critical
-				P->at(h,di) = v;
+				P->at(h,di) = std::move(v);
 			}
 		}
 	}
@@ -331,8 +338,8 @@ public:
 	virtual double compute_prior() override {
 		return this->prior = logA.compute_prior() + 
 							 alpha.compute_prior() +
-							 llt.compute_prior() + 
-							 pt.compute_prior() + 
+							 //llt.compute_prior() + 
+							 //pt.compute_prior() + 
 							 decay.compute_prior();
 	}
 	
@@ -346,9 +353,10 @@ public:
 		// the model's posterior
 		// do we need to normalize the prior here? The answer is no -- because its just a constant
 		// and that will get normalized away in posterior
-		Matrix hposterior = (*decayedLikelihood / llt.get()).colwise() 
-							+ 
-						    this->hypothesis_prior(*C);
+		const auto hprior =  this->hypothesis_prior(*C);
+//		const auto hlikelihood = (*decayedLikelihood / llt.get());
+//		auto hposterior = hlikelihood.colwise() + hprior;
+		Matrix hposterior = (*decayedLikelihood).colwise() + hprior;
 		
 		// now normalize it and convert to probabilities
 		#pragma omp parallel for
@@ -365,6 +373,16 @@ public:
 			hposterior.col(di) = lv;
 		}
 		
+//		{ // print out posteriors for a given data point
+//			auto di = 0; //hposterior.cols()-1;
+//			for(size_t hi=0;hi<nhypotheses();hi++) {
+//				if(hposterior(hi,di) > 0.01) {
+//					PRINTN(hi, hprior(hi,di), (*decayedLikelihood)(hi,di), hposterior(hi,di),  which_hypotheses->at(hi), str(this->P->at(hi,0)));
+//				}
+//			}
+//			
+//		}
+		
 		return hposterior;
 	}
 	
@@ -375,7 +393,7 @@ public:
 	 * @param hd
 	 * @param hposterior
 	 */
-	std::map<typename HYP::output_t, double> compute_model_predictions(const size_t i, const Matrix& hposterior) const {
+	virtual std::map<typename HYP::output_t, double> compute_model_predictions(const size_t i, const Matrix& hposterior) const {
 	
 		std::map<typename HYP::output_t, double> model_predictions;
 		
@@ -441,6 +459,7 @@ public:
 				auto& di = human_data[i];
 				for(const auto& [r,cnt] : di.responses) {
 					
+
 //					PRINTN(i, r, cnt, ll, alpha.get(), human_chance_lp(r,di), model_predictions[r]);
 
 					ll += cnt * logplusexp( log(1-alpha.get()) + human_chance_lp(r,di), 
@@ -466,9 +485,9 @@ public:
 		out.logA = logA.restart();
 		
 		out.alpha = alpha.restart();
-		out.llt   = llt.restart();
 		out.decay = decay.restart();
-		out.pt    = pt.restart();
+//		out.llt   = llt.restart();
+//		out.pt    = pt.restart();
 		
 		out.recompute_decayedLikelihood(*out.which_data);
 		
@@ -491,7 +510,7 @@ public:
 			
 			// see what to propose to
 			double myfb = 0.0;
-			switch(myrandom(4)) {
+			switch(myrandom(2)) {
 				case 0: {
 					auto p = alpha.propose();
 					if(not p) return {};
@@ -500,23 +519,23 @@ public:
 					myfb += fb;
 					break;
 				}
+//				case 1: {
+//					auto p = llt.propose();
+//					if(not p) return {};
+//					auto [ v, fb ] = p.value();
+//					out.llt = v;
+//					myfb += fb;
+//					break;
+//				}
+//				case 1: {
+//					auto p = pt.propose();
+//					if(not p) return {};
+//					auto [ v, fb ] = p.value();
+//					out.pt = v;
+//					myfb += fb;
+//					break;
+//				}
 				case 1: {
-					auto p = llt.propose();
-					if(not p) return {};
-					auto [ v, fb ] = p.value();
-					out.llt = v;
-					myfb += fb;
-					break;
-				}
-				case 2: {
-					auto p = pt.propose();
-					if(not p) return {};
-					auto [ v, fb ] = p.value();
-					out.pt = v;
-					myfb += fb;
-					break;
-				}
-				case 3: {
 					auto p = decay.propose();
 					if(not p) return {};
 					auto [ v, fb ] = p.value();
@@ -557,7 +576,16 @@ public:
 		
 		// TODO: Do we normalize the prior? Probably need to or else we end up getting
 		// multiple hypotheses that have prior approx 1	
-		return lognormalize( (*C * -logA.value) / pt.get() );	
+//		auto ru = uniform();
+//		
+//		auto v =  (*C) * (-logA.value) / pt.get() ;
+//		auto vn = lognormalize( v );
+//		for(size_t di=0;di<this->nhypotheses();di++) {
+//			PRINTN(ru, di, v[di], vn[di], QQ(which_hypotheses->at(di).string()));
+//		}
+//		
+		return lognormalize( (*C) * (-logA.value) );			
+//		return lognormalize( (*C) * (-logA.value) / pt.get() );	
 		
 		// This version does the rational-rule thing and requires that logA store the log of the A values
 		// that ends up giving kinda crazy values. NOTE: This version also constrains each NT to sum to 1,
@@ -603,8 +631,8 @@ public:
 		return (C == h.C and LL == h.LL and P == h.P) and 
 				(logA == h.logA)   and 
 				(alpha == h.alpha) and
-				(llt   == h.llt)   and
-				(pt    == h.pt)    and
+//				(llt   == h.llt)   and
+//				(pt    == h.pt)    and
 				(decay == h.decay);
 	}
 	
@@ -624,8 +652,8 @@ public:
 		out += prefix + "-1\tparameter.prior" +"\t"+ str(this->prior) + "\n";
 		out += prefix + "-1\thuman.likelihood" +"\t"+ str(this->likelihood) + "\n";
 		out += prefix + "-1\talpha" +"\t"+ str(alpha.get()) + "\n";
-		out += prefix + "-1\tllt" +"\t"+ str(llt.get()) + "\n";
-		out += prefix + "-1\tpt" +"\t"+ str(pt.get()) + "\n";
+//		out += prefix + "-1\tllt" +"\t"+ str(llt.get()) + "\n";
+//		out += prefix + "-1\tpt" +"\t"+ str(pt.get()) + "\n";
 		out += prefix + "-1\tdecay" +"\t"+ str(decay.get()) + "\n";
 		
 		// now add the grammar operations
@@ -653,7 +681,7 @@ public:
 	
 	virtual size_t hash() const override { 
 		size_t output = logA.hash();
-		hash_combine(output, alpha.hash(), llt.hash(), pt.hash(), decay.hash());
+		hash_combine(output, alpha.hash(), decay.hash()); // llt.hash(),  pt.hash(),
 		return output;
 	}
 	

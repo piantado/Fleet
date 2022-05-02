@@ -13,6 +13,7 @@
 // need a fixed order of words to correspond to factor levels
 // We use REXP here (John, Mary, etc) so that we don't have to distinguish which
 std::vector<std::string> words = {"REXP", "him", "his", "he", "himself"};
+std::vector<double> data_amounts = {1, 2, 5, 10, 15, 20, 30, 40, 50, 75, 100, 110, 125, 150, 175, 200, 300, 400, 500, 1000, 1500, 2000, 2500, 5000};
 
 static const double alpha = 0.95; 
 int NDATA = 10; // how many data points from each sentence are we looking at?
@@ -349,17 +350,7 @@ int main(int argc, char** argv){
 		grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,int>);
 	}
 	
-	//------------------
-	// set up the hypothesis
-	//------------------
-	
-	MyHypothesis h0;
-	for(const auto& w : words) {
-		h0[w] = InnerHypothesis::sample();
-	}
 
-	MyHypothesis::p_factor_propose = 0.2;
-	
 
 	//------------------
 	// set up the data
@@ -466,22 +457,53 @@ int main(int argc, char** argv){
 	
 	
 	PRINTN("# Target:", target.compute_posterior(mydata));
+
+
+	//////////////////////////////////
+	// run on increasing amounts of data
+	//////////////////////////////////
+
+	TopN<MyHypothesis> top;
+
+	// set up the hypothesis
+	MyHypothesis h0;
+	for(const auto& w : words) {
+		h0[w] = InnerHypothesis::sample();
+	}
+	MyHypothesis::p_factor_propose = 0.2;
 	
+	
+	for(auto di : data_amounts) {
+		
+		// update data and top
+		NDATA = di; // used in compute_posterior
+		top = top.compute_posterior(mydata);
+		
+		ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1.20);
+		for(auto& h : chain.run(Control()) | top | print(FleetArgs::print)) {
+			UNUSED(h);
+		}
+
+		// start from the best next time
+		h0 = top.best();
+		
+		top.print();		
+	}
 	
 	//////////////////////////////////
 	// run MCMC
 	//////////////////////////////////
 	
-	TopN<MyHypothesis> top;
-//	top.print_best = true;
-
-	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1.20);
-//	MCMCChain chain(h0, &mydata);
-	for(auto& h : chain.run(Control()) | top | print(FleetArgs::print)) {
-		UNUSED(h);
-	}
-	
-	top.print();
+//	TopN<MyHypothesis> top;
+////	top.print_best = true;
+//
+//	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1.20);
+////	MCMCChain chain(h0, &mydata);
+//	for(auto& h : chain.run(Control()) | top | print(FleetArgs::print)) {
+//		UNUSED(h);
+//	}
+//	
+//	top.print();
 
 	//------------------
 	// Print all the data

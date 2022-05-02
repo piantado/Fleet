@@ -10,7 +10,6 @@
  * @file VectorNormalHypothesis.h
  * @brief Distribution on half-normals. Man, it was a pain to try to make this inherit from VectorNormalHypothesis
  */
-
 class VectorHalfNormalHypothesis : public MCMCable<VectorHalfNormalHypothesis, void*> {
 	// This represents a vector of reals, defaultly here just unit normals. 
 	// This gets used in GrammarHypothesis to store both the grammar values and
@@ -84,7 +83,7 @@ public:
 		size_t i;
 		do {
 			i = myrandom(this->value.size()); 
-		} while(!this->can_propose[i]);
+		} while(not this->can_propose[i]);
 		
 		// propose to one coefficient w/ SD of 0.1
 		// note the abs here -- 
@@ -98,15 +97,13 @@ public:
 		double b = logplusexp( normal_lpdf((double)abs(out.value(i)-this->value(i)), 0.0, this->PROPOSAL_SCALE),
 							   normal_lpdf((double)    out.value(i)+this->value(i),  0.0, this->PROPOSAL_SCALE));
 		
-		// everything is symmetrical so fb=0
 		return std::make_pair(out, f-b);	
 	}
 	
 	virtual self_t restart() const override {
 		self_t out = *this;
 		for(auto i=0;i<this->value.size();i++) {
-			if(out.can_propose[i]) {
-				// we don't want to change parameters unless we can propose to them
+			if(out.can_propose[i]) { // we don't want to change parameters unless we can propose to them
 				out.value(i) = abs(this->MEAN + this->SD*random_normal());
 			}
 		}

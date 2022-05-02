@@ -118,6 +118,13 @@ public:
 		}
 	}
 	
+	bool contains(const T& x) const { 
+		return m.contains(x);
+	}
+	
+	auto begin() { return m.begin(); }
+	auto end()   { return m.end();   }
+	
 	const std::map<T,double>& values() const {
 		/**
 		 * @brief Get all of the values in this distribution

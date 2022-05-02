@@ -59,13 +59,12 @@ public:
 	}
 	
 	virtual std::optional<std::pair<self_t,double>> propose() const override {
+		if(not can_propose) return {};
+		
 		self_t out = *this;
-		
-		if(can_propose)
-			out.set(value + PROPOSAL_SCALE*random_normal());
-		
-		// everything is symmetrical so fb=0
-		return std::make_pair(out, 0.0);	
+		out.set(value + PROPOSAL_SCALE*random_normal());
+		return std::make_pair(out, 0.0); // everything is symmetrical so fb=0
+			
 	}
 	
 	virtual self_t restart() const override {

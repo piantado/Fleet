@@ -82,6 +82,7 @@ public:
 		
 		// choose an index
 		// (NOTE -- if can_propose is all false, this might loop infinitely...)
+		// but we should have caught that up in set_can_propose
 		size_t i;
 		do {
 			i = myrandom(value.size()); 
@@ -93,6 +94,7 @@ public:
 		// everything is symmetrical so fb=0
 		return std::make_pair(out, 0.0);	
 	}
+	
 	virtual self_t restart() const override {
 		self_t out = *this;
 		for(auto i=0;i<value.size();i++) {
