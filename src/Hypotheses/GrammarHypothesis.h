@@ -2,6 +2,7 @@
  
  // Tune up eigen wrt thread safety
 #include <assert.h>
+#include <utility>
 #include <regex>
 #include <signal.h>
 #include <unordered_map>
@@ -40,19 +41,20 @@ extern volatile sig_atomic_t CTRL_C;
 template<typename this_t, 
          typename _HYP, 
 		 typename datum_t=HumanDatum<_HYP>, 
-		 typename data_t=std::vector<datum_t>>	// HYP here is the type of the thing we do inference over
+		 typename data_t=std::vector<datum_t>,
+		 typename _Predict_t=Vector2D<std::vector<std::pair<typename _HYP::output_t,double>>>>	// HYP here is the type of the thing we do inference over
 class GrammarHypothesis : public MCMCable<this_t, datum_t, data_t>,
 						  public Serializable<this_t> {
 public:
 	using HYP = _HYP;
 
-	// take a data pointer and map it to a hypothesis x i'th item for that data point
-	using LL_t = std::unordered_map<typename datum_t::data_t*, std::vector<Vector> >; 
-
 	// a prediction is a list of pairs of outputs and NON-log probabilities
 	// we used to stored this as a map--a DiscreteDistribution--but that was slow to 
 	// iterate so now we might make a map in constructing, but we stores as a vector of pairs
-	using Predict_t = Vector2D<std::vector<std::pair<typename HYP::output_t,double>>>; 
+	using Predict_t = _Predict_t; 
+
+	// take a data pointer and map it to a hypothesis x i'th item for that data point
+	using LL_t = std::unordered_map<typename datum_t::data_t*, std::vector<Vector> >; 
 	
 	VectorHalfNormalHypothesis logA; 
 	
@@ -126,10 +128,11 @@ public:
 		// when we are initialized this way, we compute C, LL, P, and the decayed ll. 
 		this->recompute_C(hypotheses);
 		COUT "# Done computing prior counts" ENDL;
+		this->recompute_P(hypotheses, human_data); // note this comes before LL because LL might use P
+		COUT "# Done computing model predictions" ENDL;
 		this->recompute_LL(hypotheses, human_data);
 		COUT "# Done computing incremental likelihoods " ENDL;
-		this->recompute_P(hypotheses, human_data);
-		COUT "# Done computing model predictions" ENDL;
+
 		// this gets constructed here so it doesn't need to be reallocated each time we call recompute_decayedLikelihood
 		this->decayedLikelihood.reset(new Matrix(C->rows(), human_data.size()));
 		this->recompute_decayedLikelihood(human_data);
@@ -302,36 +305,40 @@ public:
 	virtual void recompute_P(std::vector<HYP>& hypotheses, const data_t& human_data) {
 		assert(which_data == std::addressof(human_data));
 		
-		P.reset(new Predict_t(hypotheses.size(), human_data.size())); 
-		
-		#pragma omp parallel for
-		for(size_t h=0;h<hypotheses.size();h++) {			
+		// this code is only good when Predict_t is a vector of pairs
+		if constexpr (std::is_same<Predict_t, Vector2D<std::vector<std::pair<typename _HYP::output_t,double>>>>::value) {
 			
-			// sometimes our predicted data is the same as our previous data
-			// so we are going to include that so we don't keep recomputing it
-			auto ret = hypotheses[h].call(*human_data[0].predict);
+			P.reset(new Predict_t(hypotheses.size(), human_data.size())); 
 			
-			for(size_t di=0;di<human_data.size();di++) {	
+			#pragma omp parallel for
+			for(size_t h=0;h<hypotheses.size();h++) {			
 				
-				// only change ret if its different
-				if(di > 0 and (*human_data[di].predict != *human_data[di-1].predict))
-					ret = hypotheses[h].call(*human_data[di].predict);
+				// sometimes our predicted data is the same as our previous data
+				// so we are going to include that so we don't keep recomputing it
+				auto ret = hypotheses[h].call(*human_data[0].predict);
 				
-				// we get back a discrete distribution, but we'd like to store it as a vector
-				// so its faster to iterate. NOTE: the second elemnt here is exp(x.second), 
-				// so we are NOT in log probability anymore
-				std::vector<std::pair<typename HYP::output_t,double>> v;
-				v.reserve(ret.size());
-				
-				// TODO: Do we normalize? Here we won't....
-				for(const auto& x : ret.values()) {
-					v.push_back(std::make_pair(x.first, exp(x.second)));
-				}
+				for(size_t di=0;di<human_data.size();di++) {	
+					
+					// only change ret if its different
+					if(di > 0 and (*human_data[di].predict != *human_data[di-1].predict))
+						ret = hypotheses[h].call(*human_data[di].predict);
+					
+					// we get back a discrete distribution, but we'd like to store it as a vector
+					// so its faster to iterate. NOTE: the second elemnt here is exp(x.second), 
+					// so we are NOT in log probability anymore
+					std::vector<std::pair<typename HYP::output_t,double>> v;
+					v.reserve(ret.size());
+					
+					// TODO: Do we normalize? Here we won't....
+					for(const auto& x : ret.values()) {
+						v.push_back(std::make_pair(x.first, exp(x.second)));
+					}
 
-				#pragma omp critical
-				P->at(h,di) = std::move(v);
+					#pragma omp critical
+					P->at(h,di) = std::move(v);
+				}
 			}
-		}
+		} else throw NotImplementedError();
 	}
 
 	
@@ -393,7 +400,7 @@ public:
 	 * @param hd
 	 * @param hposterior
 	 */
-	virtual std::map<typename HYP::output_t, double> compute_model_predictions(const size_t i, const Matrix& hposterior) const {
+	virtual std::map<typename HYP::output_t, double> compute_model_predictions(const data_t& human_data, const size_t i, const Matrix& hposterior) const {
 	
 		std::map<typename HYP::output_t, double> model_predictions;
 		
@@ -453,7 +460,7 @@ public:
 			#pragma omp parallel for
 			for(size_t i=0;i<human_data.size();i++) {
 				
-				auto model_predictions = compute_model_predictions(i, hposterior);			
+				auto model_predictions = compute_model_predictions(human_data, i, hposterior);			
 				
 				double ll = 0.0; // the likelihood here
 				auto& di = human_data[i];

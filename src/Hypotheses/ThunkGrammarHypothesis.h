@@ -15,11 +15,12 @@
 template<typename this_t, 
          typename _HYP, 
 		 typename datum_t=HumanDatum<_HYP>, 
-		 typename data_t=std::vector<datum_t>>
-class ThunkGrammarHypothesis : public GrammarHypothesis<this_t, _HYP, datum_t, data_t> {
+		 typename data_t=std::vector<datum_t>,
+		 typename _Predict_t=Vector2D<std::vector<std::pair<typename _HYP::output_t,double>>>>
+class ThunkGrammarHypothesis : public GrammarHypothesis<this_t, _HYP, datum_t, data_t, _Predict_t> {
 public:
 	using HYP = _HYP;
-	using Super = GrammarHypothesis<this_t, _HYP, datum_t, data_t>;
+	using Super = GrammarHypothesis<this_t, _HYP, datum_t, data_t, _Predict_t>;
 	using Super::Super;
 	using LL_t = Super::LL_t;
 	using Predict_t = Super::Predict_t;
@@ -90,28 +91,32 @@ public:
 	virtual void recompute_P(std::vector<HYP>& hypotheses, const data_t& human_data) override {
 		assert(this->which_data == std::addressof(human_data));
 		
-		this->P.reset(new Predict_t(hypotheses.size(), 1)); 
-		
-		#pragma omp parallel for
-		for(size_t h=0;h<hypotheses.size();h++) {			
+		// this code is only good when Predict_t is a vector of pairs
+		if constexpr (std::is_same<Predict_t, Vector2D<std::vector<std::pair<typename _HYP::output_t,double>>>>::value) {
+				
+			this->P.reset(new Predict_t(hypotheses.size(), 1)); 
 			
-			// call this with no arguments
-			auto ret = hypotheses[h].call();
-			
-			// we get back a discrete distribution, but we'd like to store it as a vector
-			// so its faster to iterate. NOTE: the second element here is exp(x.second), 
-			// so we are NOT in log probability anymore
-			std::vector<std::pair<typename HYP::output_t,double>> v;
-			v.reserve(ret.size());
-			
-			// TODO: Do we normalize? Here we won't....
-			for(const auto& x : ret.values()) {
-				v.push_back(std::make_pair(x.first, exp(x.second)));
-			}
+			#pragma omp parallel for
+			for(size_t h=0;h<hypotheses.size();h++) {			
+				
+				// call this with no arguments
+				auto ret = hypotheses[h].call();
+				
+				// we get back a discrete distribution, but we'd like to store it as a vector
+				// so its faster to iterate. NOTE: the second element here is exp(x.second), 
+				// so we are NOT in log probability anymore
+				std::vector<std::pair<typename HYP::output_t,double>> v;
+				v.reserve(ret.size());
+				
+				// TODO: Do we normalize? Here we won't....
+				for(const auto& x : ret.values()) {
+					v.push_back(std::make_pair(x.first, exp(x.second)));
+				}
 
-			#pragma omp critical
-			this->P->at(h,0) = std::move(v);
-		}
+				#pragma omp critical
+				this->P->at(h,0) = std::move(v);
+			}
+		} else throw NotImplementedError();
 	}
 	
 	/**
@@ -119,39 +124,12 @@ public:
 	 * @param i
 	 * @param hposterior
 	 */	
-	virtual std::map<typename HYP::output_t, double> compute_model_predictions(const size_t i, const Matrix& hposterior) const override {
+	virtual std::map<typename HYP::output_t, double> compute_model_predictions(const data_t& human_data, const size_t i, const Matrix& hposterior) const override {
 		
 		std::map<typename HYP::output_t, double> model_predictions;
 		
 		for(int h=0;h<hposterior.rows();h++) {
 			if(hposterior(h,i) < 1e-6) continue;  // skip very low probability for speed
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			double z = -infinity; 
-			for(auto& [s,lp] : this->P->at(h,0)) { // 0 since its a thunk 
-				
-			}
-			
 			
 			for(const auto& [outcome,outcomeprob] : this->P->at(h,0)) {						
 				model_predictions[outcome] += hposterior(h,i) * outcomeprob;
