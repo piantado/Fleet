@@ -171,22 +171,6 @@ public:
 		
 	}
 	
-	virtual void recompute_P(std::vector<HYP>& hypotheses, const data_t& human_data) override {
-		assert(this->which_data == std::addressof(human_data));
-		
-		this->P.reset(new Predict_t(hypotheses.size(), 1)); 
-		
-		#pragma omp parallel for
-		for(size_t h=0;h<hypotheses.size();h++) {			
-			
-			// call this with no arguments
-			auto ret = hypotheses[h].call();
-			
-			#pragma omp critical
-			this->P->at(h,0) = std::move(ret);
-		}
-	}
-	
 
 	virtual std::map<typename HYP::output_t, double> compute_model_predictions(const data_t& human_data, const size_t i, const Matrix& hposterior) const override {
 		

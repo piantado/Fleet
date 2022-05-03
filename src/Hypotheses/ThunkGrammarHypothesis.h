@@ -16,7 +16,7 @@ template<typename this_t,
          typename _HYP, 
 		 typename datum_t=HumanDatum<_HYP>, 
 		 typename data_t=std::vector<datum_t>,
-		 typename _Predict_t=Vector2D<std::vector<std::pair<typename _HYP::output_t,double>>>>
+		 typename _Predict_t=DiscreteDistribution<typename _HYP::output_t>>
 class ThunkGrammarHypothesis : public GrammarHypothesis<this_t, _HYP, datum_t, data_t, _Predict_t> {
 public:
 	using HYP = _HYP;
@@ -61,8 +61,8 @@ public:
 				// set up all the likelihoods here
 				Vector data_lls  = Vector::Zero(sz);				
 				
-				// call this just onece and then use it for all the string likelihoods
-				const auto M = hypotheses[h].call();
+				//  We can use this because it was stored in P
+				const auto M = this->P->at(h,0);
 				
 				// read the max size from above and compute all the likelihoods
 				for(size_t i=0;i<max_sizes[dptr];i++) {
@@ -91,32 +91,17 @@ public:
 	virtual void recompute_P(std::vector<HYP>& hypotheses, const data_t& human_data) override {
 		assert(this->which_data == std::addressof(human_data));
 		
-		// this code is only good when Predict_t is a vector of pairs
-		if constexpr (std::is_same<Predict_t, Vector2D<std::vector<std::pair<typename _HYP::output_t,double>>>>::value) {
-				
-			this->P.reset(new Predict_t(hypotheses.size(), 1)); 
+		this->P.reset(new Predict_t(hypotheses.size(), 1)); 
+		
+		#pragma omp parallel for
+		for(size_t h=0;h<hypotheses.size();h++) {			
 			
-			#pragma omp parallel for
-			for(size_t h=0;h<hypotheses.size();h++) {			
-				
-				// call this with no arguments
-				auto ret = hypotheses[h].call();
-				
-				// we get back a discrete distribution, but we'd like to store it as a vector
-				// so its faster to iterate. NOTE: the second element here is exp(x.second), 
-				// so we are NOT in log probability anymore
-				std::vector<std::pair<typename HYP::output_t,double>> v;
-				v.reserve(ret.size());
-				
-				// TODO: Do we normalize? Here we won't....
-				for(const auto& x : ret.values()) {
-					v.push_back(std::make_pair(x.first, exp(x.second)));
-				}
-
-				#pragma omp critical
-				this->P->at(h,0) = std::move(v);
-			}
-		} else throw NotImplementedError();
+			// call this with no arguments
+			auto ret = hypotheses[h].call();
+			
+			#pragma omp critical
+			this->P->at(h,0) = std::move(ret);
+		}
 	}
 	
 	/**
@@ -131,8 +116,8 @@ public:
 		for(int h=0;h<hposterior.rows();h++) {
 			if(hposterior(h,i) < 1e-6) continue;  // skip very low probability for speed
 			
-			for(const auto& [outcome,outcomeprob] : this->P->at(h,0)) {						
-				model_predictions[outcome] += hposterior(h,i) * outcomeprob;
+			for(const auto& [outcome,outcomelp] : this->P->at(h,0)) {						
+				model_predictions[outcome] += hposterior(h,i) * exp(outcomelp);
 			}
 		}
 		

@@ -42,7 +42,7 @@ template<typename this_t,
          typename _HYP, 
 		 typename datum_t=HumanDatum<_HYP>, 
 		 typename data_t=std::vector<datum_t>,
-		 typename _Predict_t=Vector2D<std::vector<std::pair<typename _HYP::output_t,double>>>>	// HYP here is the type of the thing we do inference over
+		 typename _Predict_t=DiscreteDistribution<typename _HYP::output_t>>	// HYP here is the type of the thing we do inference over
 class GrammarHypothesis : public MCMCable<this_t, datum_t, data_t>,
 						  public Serializable<this_t> {
 public:
@@ -304,41 +304,27 @@ public:
 	 */
 	virtual void recompute_P(std::vector<HYP>& hypotheses, const data_t& human_data) {
 		assert(which_data == std::addressof(human_data));
-		
-		// this code is only good when Predict_t is a vector of pairs
-		if constexpr (std::is_same<Predict_t, Vector2D<std::vector<std::pair<typename _HYP::output_t,double>>>>::value) {
-			
-			P.reset(new Predict_t(hypotheses.size(), human_data.size())); 
-			
-			#pragma omp parallel for
-			for(size_t h=0;h<hypotheses.size();h++) {			
-				
-				// sometimes our predicted data is the same as our previous data
-				// so we are going to include that so we don't keep recomputing it
-				auto ret = hypotheses[h].call(*human_data[0].predict);
-				
-				for(size_t di=0;di<human_data.size();di++) {	
-					
-					// only change ret if its different
-					if(di > 0 and (*human_data[di].predict != *human_data[di-1].predict))
-						ret = hypotheses[h].call(*human_data[di].predict);
-					
-					// we get back a discrete distribution, but we'd like to store it as a vector
-					// so its faster to iterate. NOTE: the second elemnt here is exp(x.second), 
-					// so we are NOT in log probability anymore
-					std::vector<std::pair<typename HYP::output_t,double>> v;
-					v.reserve(ret.size());
-					
-					// TODO: Do we normalize? Here we won't....
-					for(const auto& x : ret.values()) {
-						v.push_back(std::make_pair(x.first, exp(x.second)));
-					}
 
-					#pragma omp critical
-					P->at(h,di) = std::move(v);
+		P.reset(new Predict_t(hypotheses.size(), human_data.size())); 
+		
+		#pragma omp parallel for
+		for(size_t h=0;h<hypotheses.size();h++) {			
+			
+			// sometimes our predicted data is the same as our previous data
+			// so we are going to include that so we don't keep recomputing it
+			auto ret = hypotheses[h].call(*human_data[0].predict);
+			
+			for(size_t di=0;di<human_data.size();di++) {	
+				
+				// only change ret if its different
+				if(di > 0 and (*human_data[di].predict != *human_data[di-1].predict)) {
+					ret = hypotheses[h].call(*human_data[di].predict);
 				}
+				
+				#pragma omp critical
+				P->at(h,di) = std::move(ret);
 			}
-		} else throw NotImplementedError();
+		}
 	}
 
 	
@@ -411,8 +397,8 @@ public:
 		for(int h=0;h<hposterior.rows();h++) {
 			if(hposterior(h,i) < 1e-6) continue;  // skip very low probability for speed
 			
-			for(const auto& [outcome,outcomeprob] : P->at(h,i)) {						
-				model_predictions[outcome] += hposterior(h,i) * outcomeprob;
+			for(const auto& [outcome,outcomelp] : P->at(h,i)) {						
+				model_predictions[outcome] += hposterior(h,i) * exp(outcomelp);
 			}
 		}
 		
