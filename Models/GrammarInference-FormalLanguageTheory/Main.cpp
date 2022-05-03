@@ -186,8 +186,8 @@ public:
 			auto M = P->at(h,0);
 			remove_strings_and_renormalize(M, human_data[i].data, human_data[i].ndata);
 			
-			for(const auto& [outcome,outcomeprob] : M) {						
-				model_predictions[outcome] += hposterior(h,i) * outcomeprob;
+			for(const auto& [outcome,outlp] : M) {						
+				model_predictions[outcome] += hposterior(h,i) * exp(outlp);
 			}
 		}
 		
@@ -346,17 +346,16 @@ int main(int argc, char** argv){
 		auto thechain = MCMCChain<MyGrammarHypothesis>(h0, &human_data);
 		
 		// Main MCMC running loop!
-		size_t nloops = 0;
 		for(const auto& h : thechain.run(Control()) | MAPGrammar | print(FleetArgs::print) | thin(FleetArgs::thin) ) {
 			
-			{
-				std::ofstream outsamples(FleetArgs::output_path+"/samples.txt", std::ofstream::app);
-				outsamples << h.string(str(thechain.samples)+"\t") ENDL;
-				outsamples.close();
-			}
-			
 			// Every this many steps (AFTER thinning) we print out the model predictions
-			if(nloops++ % 100 == 0) {
+			if(thechain.samples % 100 == 0) {
+				
+				{
+					std::ofstream outsamples(FleetArgs::output_path+"/samples.txt", std::ofstream::app);
+					outsamples << h.string(str(thechain.samples)+"\t") ENDL;
+					outsamples.close();
+				}
 				
 				// Now when we're done, show the model predicted outputs on the data
 				// We'll use the MAP grammar hypothesis for this
