@@ -16,7 +16,7 @@ template<typename this_t,
          typename _HYP, 
 		 typename datum_t=HumanDatum<_HYP>, 
 		 typename data_t=std::vector<datum_t>,
-		 typename _Predict_t=DiscreteDistribution<typename _HYP::output_t>>
+		 typename _Predict_t=Vector2D<DiscreteDistribution<typename _HYP::output_t>>>
 class ThunkGrammarHypothesis : public GrammarHypothesis<this_t, _HYP, datum_t, data_t, _Predict_t> {
 public:
 	using HYP = _HYP;

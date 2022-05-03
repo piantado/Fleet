@@ -42,7 +42,7 @@ template<typename this_t,
          typename _HYP, 
 		 typename datum_t=HumanDatum<_HYP>, 
 		 typename data_t=std::vector<datum_t>,
-		 typename _Predict_t=DiscreteDistribution<typename _HYP::output_t>>	// HYP here is the type of the thing we do inference over
+		 typename _Predict_t=Vector2D<DiscreteDistribution<typename _HYP::output_t>> >	// HYP here is the type of the thing we do inference over
 class GrammarHypothesis : public MCMCable<this_t, datum_t, data_t>,
 						  public Serializable<this_t> {
 public:

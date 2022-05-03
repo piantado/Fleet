@@ -152,7 +152,9 @@ public:
 				
 				// call this just onece and then use it for all the string likelihoods
 				auto M = P->at(h,0); // can just copy 
+				//!!
 				remove_strings_and_renormalize(M, dptr, max_sizes[dptr]);
+				//!!
 				
 				// read the max size from above and compute all the likelihoods
 				for(size_t i=0;i<max_sizes[dptr];i++) {
@@ -184,7 +186,9 @@ public:
 			if(hposterior(h,i) < 1e-6) continue;  // skip very low probability for speed
 			
 			auto M = P->at(h,0);
+			//!!
 			remove_strings_and_renormalize(M, human_data[i].data, human_data[i].ndata);
+			//!!
 			
 			for(const auto& [outcome,outlp] : M) {						
 				model_predictions[outcome] += hposterior(h,i) * exp(outlp);
@@ -348,79 +352,76 @@ int main(int argc, char** argv){
 		// Main MCMC running loop!
 		for(const auto& h : thechain.run(Control()) | MAPGrammar | print(FleetArgs::print) | thin(FleetArgs::thin) ) {
 			
-			// Every this many steps (AFTER thinning) we print out the model predictions
-			if(thechain.samples % 100 == 0) {
+			{
+				std::ofstream outsamples(FleetArgs::output_path+"/samples.txt", std::ofstream::app);
+				outsamples << h.string(str(thechain.samples)+"\t") ENDL;
+				outsamples.close();
+			}
+			
+			// Now when we're done, show the model predicted outputs on the data
+			// We'll use the MAP grammar hypothesis for this
+			auto& MAP = MAPGrammar.best();
+			const auto hposterior = MAP.compute_normalized_posterior(); 
+			
+			std::ofstream outMAP(FleetArgs::output_path+"/MAP-strings.txt");
+			std::ofstream outtop(FleetArgs::output_path+"/top-H.txt");
+			
+			#pragma omp parallel for
+			for(size_t i=0;i<human_data.size();i++) {
+				auto& hd = human_data[i];
 				
+				// compute model predictions on each data point
+				auto model_predictions = MAP.compute_model_predictions(human_data, i, hposterior);		
+				
+				// now figure out the full set of strings
+				#pragma omp critical
 				{
-					std::ofstream outsamples(FleetArgs::output_path+"/samples.txt", std::ofstream::app);
-					outsamples << h.string(str(thechain.samples)+"\t") ENDL;
-					outsamples.close();
-				}
-				
-				// Now when we're done, show the model predicted outputs on the data
-				// We'll use the MAP grammar hypothesis for this
-				auto& MAP = MAPGrammar.best();
-				const auto hposterior = MAP.compute_normalized_posterior(); 
-				
-				std::ofstream outMAP(FleetArgs::output_path+"/MAP-strings.txt");
-				std::ofstream outtop(FleetArgs::output_path+"/top-H.txt");
-				
-				#pragma omp parallel for
-				for(size_t i=0;i<human_data.size();i++) {
-					auto& hd = human_data[i];
+					// find the MAP model hypothesis for this data point
+					double max_post = 0.0; 
+					size_t max_hi = 0;
+					double lse = -infinity;
+					for(auto hi=0;hi<hposterior.rows();hi++) {
+						lse = logplusexp(lse, (double)log(hposterior(hi,i)));
+						if(hposterior(hi,i) > max_post) { 
+							max_post = hposterior(hi,i); 
+							max_hi = hi;
+						}
+					}					
 					
-					// compute model predictions on each data point
-					auto model_predictions = MAP.compute_model_predictions(human_data, i, hposterior);		
+					// store the top hypothesis found
+					auto mapH = hypotheses[max_hi];
+					auto cll = mapH.call("");
+					OUTPUTN(outtop, "#", cll.string());
+					OUTPUTN(outtop, i, max_hi, max_post, lse, QQ(mapH.string()), QQ(str(slice(*hd.data, 0, hd.ndata))));
 					
-					// now figure out the full set of strings
-					#pragma omp critical
-					{
-						// find the MAP model hypothesis for this data point
-						double max_post = 0.0; 
-						size_t max_hi = 0;
-						double lse = -infinity;
-						for(auto hi=0;hi<hposterior.rows();hi++) {
-							lse = logplusexp(lse, (double)log(hposterior(hi,i)));
-							if(hposterior(hi,i) > max_post) { 
-								max_post = hposterior(hi,i); 
-								max_hi = hi;
-							}
-						}					
-						
-						// store the top hypothesis found
-						auto mapH = hypotheses[max_hi];
-						auto cll = mapH.call("");
-						OUTPUTN(outtop, "#", cll.string());
-						OUTPUTN(outtop, i, max_hi, max_post, lse, QQ(mapH.string()), QQ(str(slice(*hd.data, 0, hd.ndata))));
-						
-						// get all of the strings output by people or the model
-						std::set<std::string> all_strings;
+					// get all of the strings output by people or the model
+					std::set<std::string> all_strings;
 
-						// model strings
-						for(const auto& [s,p] : model_predictions) {
-							if(p > 0.001) { // don't print things that are crazy low probability
-								all_strings.insert(s);
-							}
-						}
-						
-						std::map<std::string, size_t> m; // make a map of outputs so we can index easily below
-						size_t N = 0; // total number
-						for(const auto& [s,c] : hd.responses)  {
+					// model strings
+					for(const auto& [s,p] : model_predictions) {
+						if(p > 0.001) { // don't print things that are crazy low probability
 							all_strings.insert(s);
-							N += c;
-							m[s] = c;
-						}
-					
-						for(const auto& s : all_strings) {
-							OUTPUTN(outMAP, i, Q(s), get(model_predictions, s, 0), get(m, s, 0), N);
 						}
 					}
 					
-				}
-				outMAP.close();
-				outtop.close();
+					std::map<std::string, size_t> m; // make a map of outputs so we can index easily below
+					size_t N = 0; // total number
+					for(const auto& [s,c] : hd.responses)  {
+						all_strings.insert(s);
+						N += c;
+						m[s] = c;
+					}
 				
-				// store total posterior if we leave out each primitive 
+					for(const auto& s : all_strings) {
+						OUTPUTN(outMAP, i, Q(s), get(model_predictions, s, 0), get(m, s, 0), N);
+					}
+				}
+				
+			}
+			outMAP.close();
+			outtop.close();
+			
+			// store total posterior if we leave out each primitive 
 //				std::ofstream outLOO(FleetArgs::output_path+"/LOO-scores.txt");
 //				for(nonterminal_t nt=0;nt<grammar.nts();nt++) {
 //					for(auto& r : grammar.rules[nt]){
@@ -429,8 +430,6 @@ int main(int argc, char** argv){
 //						G.compute_posterior()
 //					}
 //				}
-						
-			}
 			
 		}		
 		
