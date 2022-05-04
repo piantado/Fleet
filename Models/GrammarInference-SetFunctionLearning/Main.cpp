@@ -24,12 +24,16 @@
 // I must declare my own in order to fill in the this_t in the template
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "GrammarHypothesis.h" 
+#include "DeterministicGrammarHypothesis.h" 
 
-class MyGrammarHypothesis final : public GrammarHypothesis<MyGrammarHypothesis, MyHypothesis> {
+class MyGrammarHypothesis final : public DeterministicGrammarHypothesis<MyGrammarHypothesis, MyHypothesis> {
 public:
-	using Super = GrammarHypothesis<MyGrammarHypothesis, MyHypothesis>;
+	using Super = DeterministicGrammarHypothesis<MyGrammarHypothesis, MyHypothesis>;
 	using Super::Super;
+	
+	MyGrammarHypothesis(std::vector<HYP>& hypotheses, const data_t* human_data) {
+		this->set_hypotheses_and_data(hypotheses, *human_data);
+	}	
 };
 
 

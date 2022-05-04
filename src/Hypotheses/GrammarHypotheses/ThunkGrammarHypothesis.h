@@ -1,6 +1,6 @@
 #pragma once 
  
-#include "GrammarHypothesis.h"
+#include "BaseGrammarHypothesis.h"
 
 
 /**
@@ -8,7 +8,7 @@
  * @author Steven Piantadosi
  * @date 02/05/22
  * @file ThunkGrammarHypothesis.h
- * @brief A version of a GrammarHypothesis where the hypotheses are thunks (functions of no arguments). In 
+ * @brief A version of a BaseGrammarHypothesis where the hypotheses are thunks (functions of no arguments). In 
  * 		  this case we can get a lot of memory/time savings because we don't have to store predictions for
  * 	 	  each input. 
  */
@@ -17,10 +17,10 @@ template<typename this_t,
 		 typename datum_t=HumanDatum<_HYP>, 
 		 typename data_t=std::vector<datum_t>,
 		 typename _Predict_t=Vector2D<DiscreteDistribution<typename _HYP::output_t>>>
-class ThunkGrammarHypothesis : public GrammarHypothesis<this_t, _HYP, datum_t, data_t, _Predict_t> {
+class ThunkGrammarHypothesis : public BaseGrammarHypothesis<this_t, _HYP, datum_t, data_t, _Predict_t> {
 public:
 	using HYP = _HYP;
-	using Super = GrammarHypothesis<this_t, _HYP, datum_t, data_t, _Predict_t>;
+	using Super = BaseGrammarHypothesis<this_t, _HYP, datum_t, data_t, _Predict_t>;
 	using Super::Super;
 	using LL_t = Super::LL_t;
 	using Predict_t = Super::Predict_t;
