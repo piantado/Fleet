@@ -51,7 +51,8 @@ public:
 				}
 				
 				#pragma omp critical
-				this->P->at(h,di) = std::move(ret);
+//				this->P->at(h,di) = std::move(ret);
+				this->P->set(h,di,std::move(ret));
 			}
 		}
 	}
@@ -64,7 +65,7 @@ public:
 		for(int h=0;h<hposterior.rows();h++) {
 			if(hposterior(h,i) < 1e-6) continue;  // skip very low probability for speed
 						
-			model_predictions[this->P->at(h,i)] += hposterior(h,i);
+			model_predictions[this->P->get(h,i)] += hposterior(h,i);
 		}
 		
 		return model_predictions;

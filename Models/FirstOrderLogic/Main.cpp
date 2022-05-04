@@ -81,21 +81,21 @@ public:
 				if(not f(x)) return false;
 			}
 			return true;
-		}), 
+		}); 
 		
 		add("exists(%s, %s)",   +[](ObjectToBool f, ObjectSet s)    -> bool { 
 			for(auto& x : s) {
 				if(f(x)) return true;
 			}
 			return false;
-		}), 
+		}); 
 		
 		add("contains(%s, %s)",   +[](MyObject z, ObjectSet s)    -> bool { 
 			for(auto& x : s) {
 				if(z == x) return true;
 			}
 			return false;
-		}), 
+		}); 
 		
 		add("filter(%s, %s)",   +[](ObjectSet s, ObjectToBool f)    -> ObjectSet { 
 			ObjectSet out;
@@ -103,63 +103,52 @@ public:
 				if(f(x)) out.push_back(x);
 			}
 			return out;
-		}), 
+		}); 
 		
 		add("empty(%s)",   +[](ObjectSet s)    -> bool { 
 			return s.empty();
-		}), 
+		}); 
 
 		add("iota(%s)",   +[](ObjectSet s)    -> MyObject { 
 			// return the unique element in the set. If not, we throw an exception
 			// which must be caught in calling below. 
 			if(s.size() != 1) throw VMSRuntimeError();
 			else             return *s.begin();
-		}), 
+		}); 
 		
 		// Relations -- these will require currying
 		add("same_shape",   +[]() -> ObjectxObjectToBool { 
 			return +[](MyObject x, MyObject y) { return x.get<Shape>() == y.get<Shape>();}; 
-		}),
+		});
 		
 		add("same_color",   +[]() -> ObjectxObjectToBool { 
 			return +[](MyObject x, MyObject y) { return x.get<Color>() == y.get<Color>();}; 
-		}),
+		});
 		
 		add("same_size",   +[]() -> ObjectxObjectToBool { 
 			return +[](MyObject x, MyObject y) { return x.get<Size>() == y.get<Size>();}; 
-		}),
+		});
 		
 		add("size-lt",   +[]() -> ObjectxObjectToBool { 
 			// we can cast to int to compare gt size
 			return +[](MyObject x, MyObject y) { return (int)x.get<Size>() < (int)y.get<Size>();}; 
-		}, 0.25),
+		});
 		
 		add("size-leq",   +[]() -> ObjectxObjectToBool { 
 			// we can cast to int to compare gt size
 			return +[](MyObject x, MyObject y) { return (int)x.get<Size>() <= (int)y.get<Size>();}; 
-		}, 0.25),
-		
-		// Since we only curry by taking the first arg, we include both orders here (and give them low priors)
-		add("size-gt",   +[]() -> ObjectxObjectToBool { 
-			// we can cast to int to compare gt size
-			return +[](MyObject x, MyObject y) { return (int)x.get<Size>() > (int)y.get<Size>();}; 
-		}, 0.25),
-		
-		add("size-geq",   +[]() -> ObjectxObjectToBool { 
-			// we can cast to int to compare gt size
-			return +[](MyObject x, MyObject y) { return (int)x.get<Size>() >= (int)y.get<Size>();}; 
-		}, 0.25),
+		});
 		
 		add("apply(%s,%s)",   +[](ObjectxObjectToBool f, MyObject x) -> ObjectToBool { 
 			return [f,x](MyObject y) { return f(x,y); }; 
-		}),
+		});
 		
 		// add an application operator
-		add("apply(%s,%s)",       +[](ObjectToBool f, MyObject x)  -> bool { return f(x); }, 10.0),
+		add("apply(%s,%s)",       +[](ObjectToBool f, MyObject x)  -> bool { return f(x); }, 5.0);
 		
 		// And we assume that we're passed a tuple of an object and set
-		add("%s.o",       +[](MyInput t)  -> MyObject  { return std::get<0>(t); }),
-		add("%s.s",       +[](MyInput t)  -> ObjectSet { return std::get<1>(t); }),
+		add("%s.o",       +[](MyInput t)  -> MyObject  { return std::get<0>(t); });
+		add("%s.s",       +[](MyInput t)  -> ObjectSet { return std::get<1>(t); });
 		add("x",          Builtins::X<MyGrammar>);
 		
 	}

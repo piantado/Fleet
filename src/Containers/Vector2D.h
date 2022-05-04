@@ -44,15 +44,34 @@ struct Vector2D {
 	}
 	
 	T& at(const int x, const int y) {
-		return value.at(x*ysize + y);
+		if constexpr (std::is_same<T,bool>::value) { assert(false && "*** Golly you can't have references in std::vector<bool>."); }
+		else { 
+			return value.at(x*ysize + y);
+		}
 	}
 	
+	
 	T& operator()(const int x, const int y) {
-		return value.at(x*ysize + y);
+		if constexpr (std::is_same<T,bool>::value) { assert(false && "*** Golly you can't have references in std::vector<bool>."); }
+		else { 
+			return value.at(x*ysize + y);
+		}
 	}
 	
 	const T& operator()(const int x, const int y) const {
 		return value.at(x*ysize + y);
+	}
+	
+	
+	// get and Set here are used without references (letting us to 2D vectors of bools)
+	void set(const int x, const int y, const T& val) {
+		value.at(x*ysize + y) = val; 
+	}
+	void set(const int x, const int y, const T&& val) {
+		value.at(x*ysize + y) = val; 
+	}
+	T get(const int x, const int y) {
+		return value.at(x*ysize+y);
 	}
 	
 	template<typename X>
@@ -70,10 +89,10 @@ struct Vector2D {
  * @brief A little trick here to force bools to act like chars and have normal std::vector iterators etc.
  * 		  This wastes space but prevents us from writing other code. 
  */
-
-template<>
-struct Vector2D<bool> : Vector2D<unsigned char> {
-	using Super = Vector2D<unsigned char>;
-	using Super::Super;
-	
-};
+//
+//template<>
+//struct Vector2D<bool> : Vector2D<unsigned char> {
+//	using Super = Vector2D<unsigned char>;
+//	using Super::Super;
+//	
+//};
