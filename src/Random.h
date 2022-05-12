@@ -61,6 +61,12 @@ T normal_lpdf(T x, T mu=0.0, T sd=1.0) {
     return linv_sqrt_2pi  - z*z / 2.0;
 }
 
+template<typename T>
+double normal_cdf(T x, T mu, T sd) {
+	T z = (x-mu)/sd;
+    return std::erfc(-z/std::sqrt(2))/2;
+}
+
 double lpmf_geometric(size_t k, double p) {
 	return log(p) + (k-1)*log(1-p);
 }

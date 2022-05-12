@@ -1,5 +1,7 @@
 #pragma once 
 
+#include "Instruction.h"
+
 /**
  * @class Builtin
  * @author Steven Piantadosi

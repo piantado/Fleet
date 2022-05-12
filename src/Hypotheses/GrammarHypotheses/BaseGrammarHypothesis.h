@@ -42,15 +42,16 @@ template<typename this_t,
          typename _HYP, 
 		 typename datum_t=HumanDatum<_HYP>, 
 		 typename data_t=std::vector<datum_t>,
-		 typename _Predict_t=Vector2D<DiscreteDistribution<typename _HYP::output_t>> >	// HYP here is the type of the thing we do inference over
+		 typename _Predict_t=Vector2D<DiscreteDistribution<typename _HYP::output_t>> >	// The type here for Predict_t will depend on the subtype (deterministic or not; thunk or not)
 class BaseGrammarHypothesis : public MCMCable<this_t, datum_t, data_t>,
 						      public Serializable<this_t> {
 public:
 	using HYP = _HYP;
 
-	// a prediction is a list of pairs of outputs and NON-log probabilities
-	// we used to stored this as a map--a DiscreteDistribution--but that was slow to 
-	// iterate so now we might make a map in constructing, but we stores as a vector of pairs
+	// The type for predictions varies between subclasses -- might be a Vector2D of DiscreteDistribution (for FullGrammarHypothesis),
+	// a Vector2D of single outputs (for deterministic), or a Vector2D with only one value for the second dimension when it 
+	// is a thunk. These variants are the whole reason we have subclasses, although there is a lot of repeated code
+	// so this migth change in the future. 
 	using Predict_t = _Predict_t; 
 
 	// take a data pointer and map it to a hypothesis x i'th item for that data point

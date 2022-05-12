@@ -1,7 +1,6 @@
 #pragma once 
 
 // NOTE: We switched to use boost vector because otherwise we can't do Vector2D of bools, thanks C++
-//#include <boost/container/vector.hpp>
 #include <vector>
 
 /**
@@ -16,7 +15,6 @@ struct Vector2D {
 	int ysize = 0;
 
 	std::vector<T> value; 
-//	boost::container::vector<bool> value;
 	
 	Vector2D() { }
 	

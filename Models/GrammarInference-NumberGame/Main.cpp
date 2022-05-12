@@ -22,12 +22,14 @@ std::string runtype         = "both"; // can be both, hypotheses (just find hypo
 // NOTE: This overrides the standard HumanDatum types since NumberGame naturally has a different format
 using MyHumanDatum = HumanDatum<MyHypothesis, int, NumberSet, std::vector<std::pair<int,int>>>;
 
-#include "GrammarHypothesis.h"
+#include "DeterministicGrammarHypothesis.h"
 
-// Now define a GrammarHypothesis that uses this data type:
-class MyGrammarHypothesis final : public GrammarHypothesis<MyGrammarHypothesis, MyHypothesis, MyHumanDatum> {
+// Now define a GrammarHypothesis that uses this data type
+// TODO: This does NOT incorporate into the likelihood the fact that we can't respond with the existing set, 
+// and that is bad news. 
+class MyGrammarHypothesis final : public DeterministicGrammarHypothesis<MyGrammarHypothesis, MyHypothesis, MyHumanDatum> {
 public:
-	using Super = GrammarHypothesis<MyGrammarHypothesis, MyHypothesis, MyHumanDatum>;
+	using Super = DeterministicGrammarHypothesis<MyGrammarHypothesis, MyHypothesis, MyHumanDatum>;
 	using Super::Super;
 	using data_t = Super::data_t;		
 	
@@ -55,9 +57,7 @@ public:
 				// these contribute very little and should be skipped
 				if(hposterior(h,i) < 1e-6) continue; 
 				
-				assert(P->at(h,i).size() == 1); // should be just one element
-				assert(P->at(h,i)[0].second == 1.0); // should be 100% probability
-				NumberSet& ns = P->at(h,i)[0].first; // this hypothesis' number set
+				NumberSet& ns = P->at(h,i); // this hypothesis' number set
 				
 				for(auto& n : ns) {
 					ps[n] += hposterior(h,i);

@@ -99,7 +99,10 @@ namespace Builtins {
 		
 		// some checking
 		if(std::isnan(p)) { p = 0.0; } // treat nans as 0s
-		assert(p <= 1.0 and p >= 0.0);
+		if(p > 1.0 or p < 0.0) {
+			PRINTN("*** Error, received p not in [0,1]:", p);
+			assert(false);
+		}
 		
 		// push both routes onto the stack
 		vms->pool->copy_increment_push(vms, true, log(p));

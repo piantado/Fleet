@@ -7,6 +7,7 @@
 #include "FiniteHistory.h"
 #include "Control.h"
 #include "OrderedLock.h"
+#include "FleetStatistics.h"
 
 //#define DEBUG_MCMC 1
 

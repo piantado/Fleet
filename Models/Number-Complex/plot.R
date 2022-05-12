@@ -4,7 +4,7 @@ NDATA <- 2000 # the amount of data we computed on
 
 logsumexp <- function(x) { m=max(x); log(sum(exp(x-m)))+m }
 
-alld <- read.table("out/out.txt", header=F)
+alld <- read.table("out/out-10m.txt", header=F)
 names(alld) <- c("type", "KL", "recurse", "posterior", "prior", "likelihood",  "hypothesis")
 
 alld$likelihood.per <- alld$likelihood / NDATA
@@ -26,7 +26,7 @@ alld$KnowerLevel <- unlist(alld$KnowerLevel) # R is such horseshit
 
 d <- subset(alld, type=="normal")
 
-print(table(d$KnowerLevel))
+print(table(d$KnowerLevel, d$ANS))
 
 ###################################################################################################
 ## Make Banana plot
@@ -52,7 +52,8 @@ for(di in c(0,100,500)) {
         xlab("Prior penalty (worse \U27f6 )") + ylab("Fit to data (worse \U27f6 )") +
         theme(legend.position="none") +
         ggtitle(paste0(di, " data points"))
-    ggsave(plt, filename=paste0("banana-",di,".pdf"), height=2.5, width=2.5, device = cairo_pdf) # Cairo needed for unicode arrow output
+#     ggsave(plt, filename=paste0("banana-",di,".pdf"), height=2.5, width=2.5, device = cairo_pdf) # Cairo needed for unicode arrow output
+    ggsave(plt, filename=paste0("banana-",di,".png"), height=2.5, width=2.5) # Cairo needed 
 }
 
 # Old style banana plot with hypothesis labels
@@ -81,11 +82,12 @@ for(di in c(0,100,500)) {
 
 ###################################################################################################
 ## Plot learning curves
+###################################################################################################
 
 
 make_learning_curves <- function(q) {
     D <- NULL
-    for(amt in seq(1,800,5)) {
+    for(amt in seq(1,1000,5)) {
 
         q$newpost <- q$prior + amt*q$likelihood.per # compute a new approximate posterior by scaling the ll-per-datapoint 
         q$newpost <- exp(q$newpost - logsumexp(q$newpost)) #normalize and convert to probability
@@ -99,8 +101,6 @@ make_learning_curves <- function(q) {
 
 
 D <- make_learning_curves(subset(alld, type=="normal"))
-
-
 plt <- ggplot(D, aes(x=data.amount,y=newpost,color=KnowerLevel,group=KnowerLevel)) + 
     geom_line(width=1.5, data=subset(D,!ANS)) + 
     geom_line(data=subset(D,ANS), linetype="dashed", width=1.5) +
@@ -115,20 +115,31 @@ ggsave("curves.pdf",height=3, width=7)
 # 
 # ###################################################################################################
 # ## Plot with variable kinds of data
-# 
-# Dlt <- make_learning_curves(subset(alld, type=="lt4"))
-# 
-# plt <- ggplot(Dlt, aes(x=data.amount,y=newpost,color=KnowerLevel,group=KnowerLevel)) + 
-#     geom_line(width=1.5, data=subset(Dlt,!ANS)) + 
-#     geom_line(data=subset(Dlt,ANS), linetype="dashed", width=1.5) +
-#     theme_bw() + theme(legend.position=c(.85,.5)) +
-#     xlab("Amount of data") + ylab("Posterior probability of knower-levels")
-#     
-# Dgt <- make_learning_curves(subset(alld, type=="gt4"))
-# 
-# plt <- ggplot(Dgt, aes(x=data.amount,y=newpost,color=KnowerLevel,group=KnowerLevel)) + 
-#     geom_line(width=1.5, data=subset(Dgt,!ANS)) + 
-#     geom_line(data=subset(Dgt,ANS), linetype="dashed", width=1.5) +
-#     theme_bw() + theme(legend.position=c(.85,.5)) +
-#     xlab("Amount of data") + ylab("Posterior probability of knower-levels")
+
+
+Dorear <- make_learning_curves(subset(alld, type=="orear"))
+plt <- ggplot(Dorear, aes(x=data.amount,y=newpost,color=KnowerLevel,group=KnowerLevel)) + 
+    geom_line(width=1.5, data=subset(Dorear,!ANS)) + 
+    geom_line(data=subset(Dorear,ANS), linetype="dashed", width=1.5) +
+    theme_bw() + theme(legend.position=c(.85,.5)) +
+    xlab("Amount of data") + ylab("Posterior probability of knower-levels")
+ggsave("orear.pdf",height=3, width=7)
+
+
+Dlt <- make_learning_curves(subset(alld, type=="lt4"))
+
+plt <- ggplot(Dlt, aes(x=data.amount,y=newpost,color=KnowerLevel,group=KnowerLevel)) + 
+    geom_line(width=1.5, data=subset(Dlt,!ANS)) + 
+    geom_line(data=subset(Dlt,ANS), linetype="dashed", width=1.5) +
+    theme_bw() + theme(legend.position=c(.85,.5)) +
+    xlab("Amount of data") + ylab("Posterior probability of knower-levels")
+ggsave("lt.pdf",plt, height=3, width=7)
+
+Dgt <- make_learning_curves(subset(alld, type=="gt4"))
+plt <- ggplot(Dgt, aes(x=data.amount,y=newpost,color=KnowerLevel,group=KnowerLevel)) + 
+    geom_line(width=1.5, data=subset(Dgt,!ANS)) + 
+    geom_line(data=subset(Dgt,ANS), linetype="dashed", width=1.5) +
+    theme_bw() + theme(legend.position=c(.85,.5)) +
+    xlab("Amount of data") + ylab("Posterior probability of knower-levels")
+ggsave("gt.pdf",plt, height=3, width=7)
 

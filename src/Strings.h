@@ -92,7 +92,7 @@ std::string str(const std::array<T, N>& a ){
 
 
 template<typename T>
-std::string str(const std::vector<T>& a ){
+std::string str(const std::vector<T>& a, const std::string sep=","){
 	/**
 	 * @brief A pythonesque string function
 	 * @param x
@@ -100,7 +100,7 @@ std::string str(const std::vector<T>& a ){
 	 */
 	std::string out = "[";
 	for(auto& x : a) {
-		out += str(x) + ",";
+		out += str(x) + sep;
 	}
 	if(a.size()>0) 
 		out.erase(out.size()-1); // remove that last dumb comma

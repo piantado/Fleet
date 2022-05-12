@@ -154,13 +154,15 @@ double lfactorial(double x) {
 	return mylgamma(x+1);
 }
 
-double mean(std::vector<double>& v){
+template<typename T>
+double mean(std::vector<T>& v){
 	double s = 0.0;
 	for(auto& x : v) s += x;
 	return s/v.size();
 }
 
-double sd(std::vector<double>& v) {
+template<typename T>
+double sd(std::vector<T>& v) {
 	assert(v.size() > 1);
 	double m = mean(v);
 	double s = 0.0;
