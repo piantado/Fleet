@@ -17,8 +17,14 @@ public:
 		// a string and replaces one character with an unused one. 
 		
 		
+
 		add("substitute(%s,%s)", substitute);
-		
+//		//add_vms<S,char,S>("substitute(%s,%s)", 
+//		add_vms<S,S,S>("substitute(%s,%s)",  new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
+//		
+//			
+//		}));
+//		
 		add("tail(%s)", +[](S s) -> S { 
 			if(s.length()>0) 
 				s.erase(0); 

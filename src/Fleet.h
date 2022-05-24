@@ -366,7 +366,7 @@ int main(int argc, char** argv){
 #include <signal.h>
 #include <string>
 
-const std::string FLEET_VERSION = "0.1.07";
+const std::string FLEET_VERSION = "0.1.08";
 
 #include "Random.h"
 #include "Timing.h"
