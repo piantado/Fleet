@@ -159,18 +159,18 @@ public:
 /// a PCFG prior and regeneration proposals, but I have to define a likelihood
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "LOTHypothesis.h"
+#include "DeterministicLOTHypothesis.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar,&grammar> {
+class MyHypothesis final : public DeterministicLOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar,&grammar> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar,&grammar>;
+	using Super = DeterministicLOTHypothesis<MyHypothesis,MyInput,bool,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors
 	
 	// Now, if we defaultly assume that our data is a std::vector of t_data, then we 
 	// can just define the likelihood of a single data point, which is here the true
 	// value with probability x.reliability, and otherwise a coin flip. 
 	double compute_single_likelihood(const datum_t& x) override {
-		bool out = callOne(x.input, false);			
+		bool out = call(x.input, false);			
 		
 		return out == x.output ? log(x.reliability + (1.0-x.reliability)/2.0) : log((1.0-x.reliability)/2.0);
 	}

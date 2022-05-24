@@ -4,7 +4,7 @@
 /// Define hypothesis
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "ConstantContainer.h"
-#include "LOTHypothesis.h"
+#include "DeterministicLOTHypothesis.h"
 #include "Random.h"
 
 
@@ -17,20 +17,20 @@ const size_t MY_MAX_NODES = 35;
 
 
 class MyHypothesis final : public ConstantContainer,
-						   public LOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar> {
+						   public DeterministicLOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar> {
 	
 public:
 
-	using Super = LOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar>;
+	using Super = DeterministicLOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar>;
 	using Super::Super;
 
-	virtual D callOne(const X_t x, const D err) {
-		// We need to override this because LOTHypothesis::callOne asserts that the program is non-empty
+	virtual D call(const X_t x, const D err) {
+		// We need to override this because DeterministicLOTHypothesis::call asserts that the program is non-empty
 		// but actually ours can be if we are only a constant. 
 		// my own wrapper that zeros the constant_i counter
 		
 		constant_idx = 0;
-		const auto out = Super::callOne(x,err);
+		const auto out = Super::call(x,err);
 		assert(constant_idx == constants.size()); // just check we used all constants
 		return out;
 	}
@@ -89,7 +89,7 @@ public:
 	}
 
 	double compute_single_likelihood(const datum_t& datum) override {
-		double fx = this->callOne(datum.input, NaN);
+		double fx = this->call(datum.input, NaN);
 		
 		if(std::isnan(fx) or std::isinf(fx)) 
 			return -infinity;

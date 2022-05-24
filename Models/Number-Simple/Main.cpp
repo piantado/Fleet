@@ -99,11 +99,11 @@ public:
 /// Declare our hypothesis type
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "LOTHypothesis.h"
+#include "DeterministicLOTHypothesis.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,set,word,MyGrammar,&grammar> {
+class MyHypothesis final : public DeterministicLOTHypothesis<MyHypothesis,set,word,MyGrammar,&grammar> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,set,word,MyGrammar,&grammar>;
+	using Super = DeterministicLOTHypothesis<MyHypothesis,set,word,MyGrammar,&grammar>;
 	using Super::Super;
 	
 	double compute_prior() override {
@@ -115,7 +115,7 @@ public:
 	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		this->likelihood = 0.0;
 		for(int x=1;x<10;x++) {
-			auto v = callOne(make_set(x), U);
+			auto v = call(make_set(x), U);
 			// Likelihood is a little special here -- if we have U, then we treat it as though there
 			// were no predictions (not out of 10)
 			this->likelihood += Ndata*Np[x]*log( v == U ? (1.0-alpha) : (1.0-alpha)/10.0 + (v==x)*alpha);
@@ -126,7 +126,7 @@ public:
 	virtual void print(std::string prefix="") override {
 		std::string outputstring;
 		for(int x=1;x<=10;x++) {
-			auto v = callOne(make_set(x), U);
+			auto v = call(make_set(x), U);
 			outputstring += (v == U ? "U" : str(v)) + ".";
 		}
 		

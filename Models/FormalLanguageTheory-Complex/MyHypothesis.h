@@ -4,11 +4,11 @@
 /// Declare our hypothesis type
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "LOTHypothesis.h"
+#include "StochasticLOTHypothesis.h"
 
-class InnerHypothesis : public LOTHypothesis<InnerHypothesis,S,S,MyGrammar,&grammar> {
+class InnerHypothesis : public StochasticLOTHypothesis<InnerHypothesis,S,S,MyGrammar,&grammar> {
 public:
-	using Super = LOTHypothesis<InnerHypothesis,S,S,MyGrammar,&grammar>;
+	using Super = StochasticLOTHypothesis<InnerHypothesis,S,S,MyGrammar,&grammar>;
 	using Super::Super;
 	
 	static constexpr double regenerate_p = 0.7;

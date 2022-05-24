@@ -307,21 +307,21 @@ int main(int argc, char** argv){
 						 weighted_h_estimate, 
 						 h.posterior, h.prior, h.likelihood,
 						 best_possible_ll,
-						 h.callOne(zeros, NaN),
-						 h.callOne(ones, NaN),
+						 h.call(zeros, NaN),
+						 h.call(ones, NaN),
 						 get_polynomial_degree(h.get_value(), h.constants),
 						 Q(h.string()));
 						 //Q(h.serialize()) 						 
 
 				// for computing the f0 distribution
 				//if(get_polynomial_degree(h.get_value(), h.constants) == 1)
-				f0distribution.emplace_back( h.callOne(ones, NaN) - h.callOne(zeros, NaN), weighted_h_estimate);
+				f0distribution.emplace_back( h.call(ones, NaN) - h.call(zeros, NaN), weighted_h_estimate);
 			}
 		}
 			
 			//	auto b = best.best();
 	//	for(auto& d : mydata) {
-	//		PRINTN(d.input, b.callOne(d.input, NaN), d.output, d.reliability);
+	//		PRINTN(d.input, b.call(d.input, NaN), d.output, d.reliability);
 	//	}
 		
 		PRINTN("# Best possible likelihood:", best_possible_ll);

@@ -73,12 +73,12 @@ public:
 /// Declare our hypothesis type
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "LOTHypothesis.h"
+#include "StochasticLOTHypothesis.h"
 
 // Declare a hypothesis class
-class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar> {
+class MyHypothesis : public StochasticLOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar> {
 public:
-	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar>;
+	using Super =  StochasticLOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors
 	
 	static double regenerate_p;

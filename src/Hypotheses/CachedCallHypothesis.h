@@ -26,7 +26,7 @@ public:
 	}
 	
 	template<typename data_t>
-	void cached_callOne(const data_t& data, bool break_on_error=true) {
+	void cached_call(const data_t& data, bool break_on_error=true) {
 		
 		// NOTE THIS DOES NOT WORK IF WE HAVE RECURSION 
 		// at the level of a lexicon!
@@ -36,7 +36,7 @@ public:
 			cache.resize(data.size());
 			for(size_t di=0;di<data.size();di++) {
 				try { 				
-					cache[di] = static_cast<this_t*>(this)->callOne(data[di].input); 
+					cache[di] = static_cast<this_t*>(this)->call(data[di].input); 
 				} catch( std::exception& e){  
 					got_error = true; 
 					cache[di] = output_t{};

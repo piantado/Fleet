@@ -119,15 +119,15 @@ public:
 /// Declare our hypothesis type
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "LOTHypothesis.h"
+#include "StochasticLOTHypothesis.h"
 
 enum class ProposalType { RationalRules, InsertDelete, Prior};
 ProposalType whichProposal = ProposalType::RationalRules; // default proposal type
 
-// Declare a hypothesis base class 
-class MyHypothesis : public LOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar> {
+
+class MyHypothesis : public StochasticLOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar> {
 public:
-	using Super =  LOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar>;
+	using Super =  StochasticLOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors
 	
 	double compute_single_likelihood(const datum_t& x) override {	

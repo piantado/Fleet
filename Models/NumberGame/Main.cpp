@@ -150,18 +150,18 @@ public:
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include<set>
-#include "LOTHypothesis.h"
+#include "DeterministicLOTHypothesis.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,int,NumberSet,MyGrammar,&grammar,std::multiset<int> > {
+class MyHypothesis final : public DeterministicLOTHypothesis<MyHypothesis,int,NumberSet,MyGrammar,&grammar,std::multiset<int> > {
 public:
-	using Super = LOTHypothesis<MyHypothesis,int,NumberSet,MyGrammar,&grammar,std::multiset<int> >;
+	using Super = DeterministicLOTHypothesis<MyHypothesis,int,NumberSet,MyGrammar,&grammar,std::multiset<int> >;
 	using Super::Super; // inherit the constructors
 	
 	// Ok so technically since we don't take any args, this will callOne for each data point
 	// but it shouldn't matter because all of our data is of length 1. 
 	// NOTE: This is needed for GrammarHypothesis, so we can't just overwrite compute_likelihood
 	virtual double compute_single_likelihood(const datum_t& datum) override {
-		NumberSet out = callOne(1); // just give x=1
+		NumberSet out = call(1); // just give x=1
 		double sz = out.size();
 		
 		double ll = 0.0;

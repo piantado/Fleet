@@ -204,11 +204,11 @@ public:
 /// Declare our hypothesis type
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include "LOTHypothesis.h"
+#include "StochasticLOTHypothesis.h"
 
-class MyHypothesis final : public LOTHypothesis<MyHypothesis,utterance,word,MyGrammar,&grammar> {
+class MyHypothesis final : public StochasticLOTHypothesis<MyHypothesis,utterance,word,MyGrammar,&grammar> {
 public:
-	using Super = LOTHypothesis<MyHypothesis,utterance,word,MyGrammar,&grammar>;
+	using Super = StochasticLOTHypothesis<MyHypothesis,utterance,word,MyGrammar,&grammar>;
 	using Super::Super;
 	
 	double compute_prior() override {

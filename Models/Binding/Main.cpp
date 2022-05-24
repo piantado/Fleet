@@ -147,15 +147,15 @@ public:
 } grammar;
 
 
-#include "LOTHypothesis.h"
+#include "DeterministicLOTHypothesis.h"
 #include "Timing.h"
 #include "Lexicon.h"
 #include "CachedCallHypothesis.h"
 
-class InnerHypothesis : public LOTHypothesis<InnerHypothesis,BindingTree*,bool,MyGrammar,&grammar>, 
+class InnerHypothesis : public DeterministicLOTHypothesis<InnerHypothesis,BindingTree*,bool,MyGrammar,&grammar>, 
 						public CachedCallHypothesis<InnerHypothesis,bool> {
 public:
-	using Super = LOTHypothesis<InnerHypothesis,BindingTree*,bool,MyGrammar,&grammar>;
+	using Super = DeterministicLOTHypothesis<InnerHypothesis,BindingTree*,bool,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors
 	using CCH = CachedCallHypothesis<InnerHypothesis,bool>;
 	
@@ -225,7 +225,7 @@ public:
 		// make sure everyone's cache is right on this data
 		for(auto& [k, f] : factors) {
 			//f.clear_cache(); // if we always want to recompute (e.g. if using recursion)
-			f.cached_callOne(data); 
+			f.cached_call(data); 
 			
 			// now if anything threw an error, break out, we don't have to compute
 			if(f.got_error) 
