@@ -3,8 +3,6 @@
 // we have a "feynman" flag -- when true, we use the feynman grammar, only search for the best, etc. 
 //#define FEYNMAN 0
 
-//#define DEBUG_PARTITION_MCMC 1
-
 // if we want to require that hypotheses use all variables
 //#define REQUIRE_USE_ALL_VARIABLES 1
 
@@ -24,7 +22,7 @@ size_t nstructs = 100; //100 // print out all the samples from the top this many
 
 size_t head_data = 0; // if nonzero, this is the max number of lines we'll read in
 
-double fix_sd = -1; // when -1, we won't fix the SD to any particular value
+double FEYNMAN_SD = 0.1; //1.0; // when we run feynman, use this SD (times the data Y SD)
 
 // these are used for some constant proposals, and so must be defined before
 // hypotheses. They ar efilled in when we read the data
@@ -46,7 +44,7 @@ size_t       NUM_VARS = 1; // how many predictor variables
 using X_t = std::array<D,MAX_VARS>;
 
 // Friendly printing of variable names but only the first NUM_VARS of them
-std::ostream& operator <<(std::ostream& o, X_t a) {
+std::ostream& operator<<(std::ostream& o, X_t a) {
 	
 	std::string out = "";
 	
@@ -97,10 +95,8 @@ int main(int argc, char** argv){
 	Fleet fleet("Symbolic regression");
 	fleet.add_option("--nvars", NUM_VARS, "How many predictor variables are there?");
 	fleet.add_option("--head-data", head_data, "Only take this many lines of data (default: 0 means all)");
-	fleet.add_option("--fix-sd", fix_sd, "Should we force the sd to have a particular value?");
 	fleet.add_option("--nsamples", nsamples, "How many samples per structure?");
 	fleet.add_option("--nstructs", nstructs, "How many structures?");
-	fleet.add_option("--end-at-likelihood", end_at_likelihood, "Stop everything if we make it to this likelihood (presumably, perfect)");
 	fleet.add_option("--polynomial-degree",   polynomial_degree,   "Defaultly -1 means we store everything, otherwise only keep polynomials <= this bound");
 	fleet.add_option("--sep", strsep, "Separator for input data (usually space or tab)");
 	fleet.add_option("--maxT", maxT, "Max temperature for parallel tempering");
@@ -144,9 +140,12 @@ int main(int argc, char** argv){
 		while(v[v.size()-1] == "") { v.erase(--v.end()); }
 		
 		// check that it has the right number of elements
-		if(fix_sd == -1) assert(v.size() == NUM_VARS + 2); // must have sd
-		else        	 assert(v.size() == NUM_VARS + 1); 
-		
+		#if FEYNMAN
+			assert(v.size() == NUM_VARS + 1);
+		#else
+			assert(v.size() == NUM_VARS + 2);
+		#endif
+
 		X_t x;
 		
 		size_t i=0;
@@ -163,21 +162,19 @@ int main(int argc, char** argv){
 		
 		// process percentages
 		double sd; 
-		if(fix_sd != -1) {
-			sd = fix_sd;
-		}
-		else {
+		#if FEYNMAN
+			sd = NaN;
+		#else
 			// process the line 
 			if(sdstr[sdstr.length()-1] == '%') sd = y * std::stod(sdstr.substr(0, sdstr.length()-1)) / 100.0; // it's a percentage
-			else                               sd = std::stod(sdstr);								
-		}
+			else                               sd = std::stod(sdstr);	
+			
+			assert(sd > 0.0 && "*** You probably didn't want a zero SD?");
+		#endif
 				
-		assert(sd > 0.0 && "*** You probably didn't want a zero SD?");
-		
 		if(not pt_test_output)
 			COUT "# Data:\t" << x TAB y TAB sd ENDL;
 		
-		best_possible_ll += normal_lpdf(0.0, 0.0, sd);
 		data_y.push_back(y);
 		
 		mydata.emplace_back(x,y,sdscale*(double)sd);
@@ -187,8 +184,8 @@ int main(int argc, char** argv){
 	
 	data_X_mean = mean(data_x);
 	data_Y_mean = mean(data_y);
-	data_X_sd   = mean(data_x);
-	data_Y_sd   = mean(data_y);
+	data_X_sd   = sd(data_x);
+	data_Y_sd   = sd(data_y);
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Run MCTS
@@ -203,8 +200,19 @@ int main(int argc, char** argv){
 	FleetArgs::MCMCYieldOnlyChanges = true;
 
 	// for feynman we want to print everything
-	if(not pt_test_output)
+	if(not pt_test_output) {
 		best.print_best = true;
+	}
+	
+	// go through and scale the SDs
+	best_possible_ll = 0.0; 
+	for(auto& d : mydata) {
+		d.reliability = FEYNMAN_SD; // NOTE: If you change this, change at_temperature in MyHypothesis
+		best_possible_ll += normal_lpdf(0.0, 0.0, d.reliability);
+	}
+	
+	end_at_likelihood = best_possible_ll - 0.001; // a tiny bit of numerical error
+		
 #endif 
 	
 	//	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
@@ -216,7 +224,11 @@ int main(int argc, char** argv){
 	//	PartitionMCMC m(h0, FleetArgs::partition_depth, &mydata);	
 	//	
 	auto h0 = MyHypothesis::sample();
-	ParallelTempering m(h0, &mydata, FleetArgs::nchains, maxT); // 100, 100.0);
+	ParallelTempering m(h0, &mydata, FleetArgs::nchains, maxT); 
+	
+//	ParallelTempering m(h0, &mydata, {0.01, 0.05, 0.1, 0.25, 0.5, 1.0, 1.5, 2.5, 5.0} ); // 100, 100.0);
+	//ParallelTempering m(h0, &mydata, {1.0, 10.0, 100.0, 1000.0} ); // 100, 100.0);
+	//ParallelTempering m(h0, &mydata, {10000, 100000, 1000000}); //1.0, 1.58, 2.51, 3.9, 6.3, 10, 15.85, 39.81, 63, 100, 158.5, 251., 398, 630, 1000}); //1.0, 10.0, 100.0, 1000.0} );
 
 	//	auto h0 = MyHypothesis::sample();
 	//	MCMCChain m(h0, &mydata); // 100, 100.0);
@@ -236,7 +248,8 @@ int main(int argc, char** argv){
 		overall_samples << h;
 		#endif 
 		
-		if(h.likelihood > end_at_likelihood) {
+		if(end_at_likelihood > -infinity and h.likelihood >= end_at_likelihood) {
+			PRINTN("Ending on ", h.likelihood,  h.string());
 			CTRL_C = true; // kill nicely. 
 		}
 	}

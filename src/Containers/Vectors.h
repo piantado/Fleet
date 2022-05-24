@@ -3,7 +3,7 @@
 #include <vector>
 
 template<typename T>
-std::vector<T> slice(const std::vector<T> &v, size_t start, int len) {
+std::vector<T> slice(const std::vector<T>& v, const size_t start, const int len) {
 	/**
 	 * @brief Take a slice of a vector v starting at start of length len
 	 * @param v
@@ -21,7 +21,7 @@ std::vector<T> slice(const std::vector<T> &v, size_t start, int len) {
 }
 
 template<typename T>
-std::vector<T> slice(const std::vector<T> &v, size_t start) {
+std::vector<T> slice(const std::vector<T> &v, const size_t start) {
 	/**
 	 * @brief Take a slice of a vector until its end
 	 * @param v
@@ -34,7 +34,7 @@ std::vector<T> slice(const std::vector<T> &v, size_t start) {
 }
 
 template<typename T>
-void increment(std::vector<T>& v, size_t idx, T count=1) {
+void increment(std::vector<T>& v, const size_t idx, T count=1) {
 	// Increment and potentially increase my vector size if needed
 	if(idx >= v.size()) {
 		v.resize(idx+1,0);

@@ -99,6 +99,21 @@ public:
 		return normal_lpdf(fx, datum.output, datum.reliability );		
 	}
 	
+//#if FEYNMAN	
+//	virtual double at_temperature(double t) const override {
+//		// we override this so that we can treat "temperature" as a normal SD, not just as  
+//		// a multiplier on likelihood. When we compute SD, we use FEYNMAN_SD
+//		// but this converts it to the likelihood for any other t
+//		//PRINTN(t, posterior, prior + (likelihood + log(FEYNMAN_SD))/t - log(t), string());
+//		
+//		const auto c = 0.5*log(tau);
+//		
+//		// extract the sum squared term from our likelihood
+//		const auto xmu_sq = pow(FEYNMAN_SD,2)*(likelihood + log(FEYNMAN_SD) + c);
+//		
+//		return prior +  xmu_sq/pow(FEYNMAN_SD*t,2) - c - log(FEYNMAN_SD*t);
+//	}
+//#endif 
 	
 	virtual double compute_prior() override {
 		

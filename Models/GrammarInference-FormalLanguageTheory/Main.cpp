@@ -110,7 +110,7 @@ int main(int argc, char** argv){
 	
 	std::vector<MyHumanDatum> human_data;         // what do we run grammar inference on
 	std::vector<MyHypothesis::data_t*> mcmc_data; // what will we run search over MyHypothesis on?
-	for(auto [row, stimulus, all_responses] : read_csv<3>("human-data.csv", '\t')) {
+	for(auto [row, stimulus, all_responses] : read_csv<3>("train-data.csv", '\t')) {
 		
 		// split up stimulus into components
 		auto this_data = new MyHypothesis::data_t();
@@ -245,71 +245,67 @@ int main(int argc, char** argv){
 			const auto hposterior = MAP.compute_normalized_posterior(); 
 			
 			
-			std::ofstream outprior(FleetArgs::output_path+"/MAP-prior.txt");
+			
 			{
+				std::ofstream outprior(FleetArgs::output_path+"/MAP-prior.txt");
 				auto v = MAP.hypothesis_prior(*MAP.C);
 				for(size_t hi=0;hi<MAP.nhypotheses();hi++){
 					OUTPUTN(outprior, hi, v[hi], hypotheses[hi].compute_prior(), QQ(hypotheses[hi].string()));
 				}
 			}
 			
-			std::ofstream outMAP(FleetArgs::output_path+"/MAP-strings.txt");
-			std::ofstream outtop(FleetArgs::output_path+"/top-H.txt");
-			
-			#pragma omp parallel for
-			for(size_t i=0;i<human_data.size();i++) {
-				auto& hd = human_data[i];
+			{
+				std::ofstream outstrings(FleetArgs::output_path+"/strings.txt");
+				std::ofstream outtop(FleetArgs::output_path+"/top-H.txt");
 				
-				// compute model predictions on each data point
-				auto model_predictions = MAP.compute_model_predictions(human_data, i, hposterior);		
-				
-				// now figure out the full set of strings
-				#pragma omp critical
-				{
-					// find the MAP model hypothesis for this data point
-					double max_post = 0.0; 
-					size_t max_hi = 0;
-					double lse = -infinity;
-					for(auto hi=0;hi<hposterior.rows();hi++) {
-						lse = logplusexp(lse, (double)log(hposterior(hi,i)));
-						if(hposterior(hi,i) > max_post) { 
-							max_post = hposterior(hi,i); 
-							max_hi = hi;
+				#pragma omp parallel for
+				for(size_t i=0;i<human_data.size();i++) {
+					auto& hd = human_data[i];
+					
+					// compute model predictions on each data point
+					auto model_predictions = MAP.compute_model_predictions(human_data, i, hposterior);		
+					
+					// now figure out the full set of strings
+					#pragma omp critical
+					{
+						
+						// find the MAP model hypothesis for this data point
+						double max_post = 0.0; 
+						size_t max_hi = 0;
+						double lse = -infinity;
+						for(auto hi=0;hi<hposterior.rows();hi++) {
+							lse = logplusexp(lse, (double)log(hposterior(hi,i)));
+							if(hposterior(hi,i) > max_post) { 
+								max_post = hposterior(hi,i); 
+								max_hi = hi;
+							}
+						}					
+						
+						// store the top hypothesis found
+						auto mapH = hypotheses[max_hi];
+						auto cll = mapH.call("");
+						OUTPUTN(outtop, "#", cll.string());
+						OUTPUTN(outtop, i, max_hi, max_post, lse, QQ(mapH.string()), QQ(str(slice(*hd.data, 0, hd.ndata))));
+						
+							
+						// Let's get the model predictions for the most likely human strings 
+						std::map<std::string, double> m; // make a map of outputs so we can index easily below
+						for(const auto& [s,p] : model_predictions) { m[s] = p; }
+						size_t N = 0; // total number
+						for(const auto& [s,c] : hd.responses)  { N += c; }
+						
+						for(const auto& [s,c] : hd.responses)  {
+							if(c > 5) {  // all stirngs with at least this many counts
+								OUTPUTN(outstrings, i, QQ(s), get(m,s,0), c, N);
+							}
 						}
-					}					
 					
-					// store the top hypothesis found
-					auto mapH = hypotheses[max_hi];
-					auto cll = mapH.call("");
-					OUTPUTN(outtop, "#", cll.string());
-					OUTPUTN(outtop, i, max_hi, max_post, lse, QQ(mapH.string()), QQ(str(slice(*hd.data, 0, hd.ndata))));
-					
-					// get all of the strings output by people or the model
-					std::set<std::string> all_strings;
-
-					// model strings
-					for(const auto& [s,p] : model_predictions) {
-						if(p > 0.001) { // don't print things that are crazy low probability
-							all_strings.insert(s);
-						}
 					}
 					
-					std::map<std::string, size_t> m; // make a map of outputs so we can index easily below
-					size_t N = 0; // total number
-					for(const auto& [s,c] : hd.responses)  {
-						all_strings.insert(s);
-						N += c;
-						m[s] = c;
-					}
-				
-					for(const auto& s : all_strings) {
-						OUTPUTN(outMAP, i, Q(s), get(model_predictions, s, 0), get(m, s, 0), N);
-					}
 				}
-				
+				outstrings.close();
+				outtop.close();
 			}
-			outMAP.close();
-			outtop.close();
 			
 			// store total posterior if we leave out each primitive 
 //				std::ofstream outLOO(FleetArgs::output_path+"/LOO-scores.txt");
@@ -321,9 +317,57 @@ int main(int argc, char** argv){
 //					}
 //				}
 			
-		}		
+		} // end mcmc		
 		
 		
+	} // end runtype 
+	
+	if(runtype == "compare") {
+		
+		// In this version, we run each hypothesis through the human data and 
+		// see what training on the human data data would give as the most likely 
+		// hypothesis, as compared to the training data. 
+		
+		auto hypotheses = load<MyHypothesis>(hypothesis_path);
+		PRINTN("# Hypothesis size: ", hypotheses.size(), std::addressof(hypotheses));
+		assert(hypotheses.size() > 0 && "*** Somehow we don't have any hypotheses!");
+	
+		#pragma omp parallel for
+		for(size_t hdi=0;hdi<human_data.size();hdi++) {
+			if(!CTRL_C) {
+			
+				const auto& d = human_data[hdi];
+				
+				// convert to ordinary data
+				MyHypothesis::data_t hdata; // human data as training
+				for(auto& [s,cnt] : d.responses) {
+					hdata.push_back({.input=EMPTY_STRING, .output=s, .count=double(cnt)});
+				}
+				
+				TopN<MyHypothesis> best_fromhuman(1);
+				for(auto h : hypotheses) {  // make a copy
+					if(CTRL_C) break;
+					h.compute_posterior(hdata);
+					best_fromhuman << h;
+				}
+				
+				TopN<MyHypothesis> best_fromdata(1);
+				auto learningdata = slice(*d.data, 0, (int)d.ndata);
+				for(auto h : hypotheses) {  // make a copy
+					if(CTRL_C) break;
+					h.compute_posterior(learningdata);
+					best_fromdata << h;
+				}
+				
+				#pragma omp critical
+				PRINTN(hdi, QQ(str(learningdata)), 
+							QQ(best_fromdata.best().string()),
+							QQ(str(d.responses)), 
+							QQ(best_fromhuman.best().string()) 
+							);
+			}
+		}
+	
 	}
 	
 }

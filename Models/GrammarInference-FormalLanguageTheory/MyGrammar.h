@@ -13,7 +13,7 @@ class MyGrammar : public Grammar<S,S,     S,char,bool,double,StrSet,int,size_t>,
 public:
 	MyGrammar() {
 		
-		// TODO: We want here some stochastic version of replace, that maybe tkaes
+		// TODO: We want here some stochastic version of replace, that maybe takes
 		// a string and replaces one character with an unused one. 
 		
 		

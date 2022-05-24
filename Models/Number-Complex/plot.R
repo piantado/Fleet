@@ -4,7 +4,13 @@ NDATA <- 2000 # the amount of data we computed on
 
 logsumexp <- function(x) { m=max(x); log(sum(exp(x-m)))+m }
 
-alld <- read.table("out/out-10m.txt", header=F)
+# we are going to read some shorter runs as well as longer in order to 
+# include more stuff from the prior
+alld <- rbind(read.table("out/out-1h.txt", header=F),
+			  read.table("out/out-1m.txt", header=F),
+			  read.table("out/out-10m.txt", header=F))
+#alld <- read.table("out/out-1h.txt", header=F)
+alld <- unique(alld)
 names(alld) <- c("type", "KL", "recurse", "posterior", "prior", "likelihood",  "hypothesis")
 
 alld$likelihood.per <- alld$likelihood / NDATA

@@ -66,9 +66,9 @@ public:
 		}
 		else {
 			for(size_t i=0;i<n;i++) {
-				
 				this->pool[i].temperature = exp(i * log(maxT)/(n-1));
 				swap_history.emplace_back();
+				//PRINTN("t=", double(this->pool[i].temperature));
 			}
 		}
 	}
