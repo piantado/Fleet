@@ -19,10 +19,15 @@ namespace SExpression {
 	
 	std::vector<std::string> tokenize(std::string s) {
 		assert_check_parens(s);
-		std::vector<std::string> out;
-		std::string x;
+		std::vector<std::string> out; // list of tokens
+		std::string x; // build up the token 
 		for(char c : s) {
-			if(c == '(' or c == ')') {
+			if(c == '(' or c == ')' or c == ' ') {
+				
+				// remove leading spaces
+				while(x[0] == ' ') {
+					x.erase(0, 1);
+				}
 				
 				// remove trailing spaces
 				while(x[x.size()-1] == ' ') {
@@ -33,7 +38,11 @@ namespace SExpression {
 					out.push_back(x);
 				}
 				x = "";
-				out.push_back(std::string(1,c));
+				
+				// and accumulate the paren if its parens
+				if(c != ' ') {
+					out.push_back(std::string(1,c));
+				}
 			}
 			else { // just accumulate here
 				x += c;

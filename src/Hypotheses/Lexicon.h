@@ -84,6 +84,15 @@ public:
 		
 		return out;
 	}
+	[[nodiscard]] static this_t sample(const std::vector<key_t>& lst) {
+		
+		this_t out;
+		for(auto& k : lst){
+			out[k] = INNER::sample();
+		}
+		
+		return out;
+	}
 	
 	virtual std::string string(std::string prefix="") const override {
 		/**

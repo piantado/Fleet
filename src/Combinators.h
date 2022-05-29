@@ -127,7 +127,6 @@ namespace Combinators {
 	void reduce(Node& n, size_t& remaining_calls) {
 		// returns true if we change anything
 		
-		
 		bool modified; // did we change anything?
 		do { // do this without recursion since its faster and we don't have the depth limit
 		
@@ -135,7 +134,6 @@ namespace Combinators {
 			for(size_t c=0;c<n.nchildren();c++){
 				reduce(n.child(c), remaining_calls);
 			}
-			
 			
 			if(remaining_calls-- == 0) throw reduction_exception;
 

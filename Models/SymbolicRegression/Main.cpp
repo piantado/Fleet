@@ -207,7 +207,7 @@ int main(int argc, char** argv){
 	// go through and scale the SDs
 	best_possible_ll = 0.0; 
 	for(auto& d : mydata) {
-		d.reliability = FEYNMAN_SD; // NOTE: If you change this, change at_temperature in MyHypothesis
+		d.reliability = FEYNMAN_SD * data_Y_sd; // Here it's important to scale by data_Y_sd since SDs vary across concepts
 		best_possible_ll += normal_lpdf(0.0, 0.0, d.reliability);
 	}
 	
