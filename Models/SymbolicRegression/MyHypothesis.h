@@ -24,7 +24,7 @@ public:
 	using Super = DeterministicLOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar>;
 	using Super::Super;
 
-	virtual D call(const X_t x, const D err) {
+	virtual D call(const X_t x, const D err=NaN) {
 		// We need to override this because DeterministicLOTHypothesis::call asserts that the program is non-empty
 		// but actually ours can be if we are only a constant. 
 		// my own wrapper that zeros the constant_i counter

@@ -366,6 +366,7 @@ int main(int argc, char** argv){
 		
 		BindingTree* t = new BindingTree(SExpression::parse<BindingTree>(ds));	
 		assert(t != nullptr);
+		PRINTN("t=", t->string());
 		
 		// and set the linear order of t
 		// and count how many have coreferents (we need to make that many copies)
@@ -412,6 +413,8 @@ int main(int argc, char** argv){
 		delete t;
 	}
 		
+	return 0;
+	
 	
 	//------------------
 	// Make target hypothesis to compare

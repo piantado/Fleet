@@ -1,5 +1,7 @@
 // NOTE: Currently in MyHypothesis we require it to use ALL the input variables
 
+//#define DEBUG_MCMC 1
+
 // we have a "feynman" flag -- when true, we use the feynman grammar, only search for the best, etc. 
 //#define FEYNMAN 0
 
@@ -146,9 +148,9 @@ int main(int argc, char** argv){
 			assert(v.size() == NUM_VARS + 2);
 		#endif
 
-		X_t x;
 		
-		size_t i=0;
+		
+		X_t x; size_t i=0;
 		for(;i<NUM_VARS;i++) {
 			x[i] = string_to<D>(v[i]);
 			assert(not contains(v[i]," "));
@@ -194,8 +196,7 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> best(1);
 
 	// if we are on feynman but NOT testing, then make best print
-#if FEYNMAN
-
+	#if FEYNMAN
 	// we will run faster if we only queue the changes
 	FleetArgs::MCMCYieldOnlyChanges = true;
 
@@ -205,15 +206,22 @@ int main(int argc, char** argv){
 	}
 	
 	// go through and scale the SDs
-	best_possible_ll = 0.0; 
-	for(auto& d : mydata) {
+	for(const auto& d : mydata) {
 		d.reliability = FEYNMAN_SD * data_Y_sd; // Here it's important to scale by data_Y_sd since SDs vary across concepts
+	}
+	#endif 
+
+
+	// compute the best possible likelihood
+	best_possible_ll = 0.0; 
+	for(const auto& d : mydata) {
 		best_possible_ll += normal_lpdf(0.0, 0.0, d.reliability);
 	}
 	
+	
+	#if FEYNMAN
 	end_at_likelihood = best_possible_ll - 0.001; // a tiny bit of numerical error
-		
-#endif 
+	#endif
 	
 	//	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
 	//	MyMCTS m(h0, FleetArgs::explore, &mydata);
@@ -224,15 +232,7 @@ int main(int argc, char** argv){
 	//	PartitionMCMC m(h0, FleetArgs::partition_depth, &mydata);	
 	//	
 	auto h0 = MyHypothesis::sample();
-	ParallelTempering m(h0, &mydata, FleetArgs::nchains, maxT); 
-	
-//	ParallelTempering m(h0, &mydata, {0.01, 0.05, 0.1, 0.25, 0.5, 1.0, 1.5, 2.5, 5.0} ); // 100, 100.0);
-	//ParallelTempering m(h0, &mydata, {1.0, 10.0, 100.0, 1000.0} ); // 100, 100.0);
-	//ParallelTempering m(h0, &mydata, {10000, 100000, 1000000}); //1.0, 1.58, 2.51, 3.9, 6.3, 10, 15.85, 39.81, 63, 100, 158.5, 251., 398, 630, 1000}); //1.0, 10.0, 100.0, 1000.0} );
-
-	//	auto h0 = MyHypothesis::sample();
-	//	MCMCChain m(h0, &mydata); // 100, 100.0);
-
+	ParallelTempering m(h0, &mydata, FleetArgs::nchains, maxT);
 	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | print(FleetArgs::print, "# ")  ) {
 			
 		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these
@@ -289,7 +289,7 @@ int main(int argc, char** argv){
 		std::cout << std::setprecision(10);
 		
 		// for computing the f0 distribuiton in case we want it
-		std::vector<std::pair<double,double>> f0distribution;
+		//std::vector<std::pair<double,double>> f0distribution;
 		
 		X_t ones;  ones.fill(1.0);
 		X_t zeros; zeros.fill(0.0);	
@@ -315,7 +315,7 @@ int main(int argc, char** argv){
 
 				// for computing the f0 distribution
 				//if(get_polynomial_degree(h.get_value(), h.constants) == 1)
-				f0distribution.emplace_back( h.call(ones, NaN) - h.call(zeros, NaN), weighted_h_estimate);
+				//f0distribution.emplace_back( h.call(ones, NaN) - h.call(zeros, NaN), weighted_h_estimate);
 			}
 		}
 			
@@ -326,10 +326,7 @@ int main(int argc, char** argv){
 		
 		PRINTN("# Best possible likelihood:", best_possible_ll);
 		best.print("# Overall best: "+best.best().structure_string()+"\t");
-		PRINTN("# Overall samples size:" , overall_samples.size());
-	//	PRINTN("# MCTS tree size:", m.count());	
-		
-		
+		PRINTN("# Overall samples size:" , overall_samples.size());		
 		
 		
 		//auto v25 = weighted_quantile(f0distribution, 0.25);

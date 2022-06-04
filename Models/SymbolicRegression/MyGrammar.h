@@ -33,7 +33,7 @@ public:
 		add("pow(%s,3)",   +[](D a)          -> D { return a*a*a; }, 1.),
 		
 		add("0.5",          +[]()           -> D { return 0.5; }, TERMINAL_P),
-//		add("pi",          +[]()            -> D { return M_PI; }),
+//		add("pi",          +[]()            -> D { return M_PI; }, TERMINAL_P), 
 		add("tanh(%s)",    +[](D a)          -> D { return tanh(a); }, 1./4),
 		add("sin(%s)",    +[](D a)          -> D { return sin(a); }, 1./4),
 		add("cos(%s)",    +[](D a)          -> D { return cos(a); }, 1./4),

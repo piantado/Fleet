@@ -48,6 +48,7 @@ namespace SExpression {
 				x += c;
 			}
 		}
+		//PRINTN(str(out));
 		return out;	
 	}	
 	
@@ -61,20 +62,17 @@ namespace SExpression {
 	template<typename T>
 	T parse(std::vector<std::string>& tok) {
 		// recursive parsing of tokenized s-expression. Not high quality.
-		// Requires that T can be constructed with a string argument
+		// Requires that T can be constructable with a string argument
 		assert(tok.size() > 1);
 		
-		// optionally allow us to start with "(" (makes the recursion simpler)
-		// NOTE: We do NOT allow multiple nesting at the start ((NP bb) ..) because
-		// we assume that the first token is the label
-		auto o = pop_front(tok);
-		if(o == "(") {
-			o = pop_front(tok);
-			assert(o != "(");
+		std::string lab = "";
+		if(tok.front() != "(") { 
+			lab = pop_front(tok);				
 		}
-		T out(o);
-
-		while(true){
+		
+		T out(lab);
+		
+		while(not tok.empty()){
 			auto x = pop_front(tok);
 			if(x == "(")      out.push_back(parse<T>(tok)); 
 			else if(x == ")") break; // when we get this, we must be a close (since lower-down stuff has been handled in the recursion)
@@ -83,6 +81,7 @@ namespace SExpression {
 		
 		return out;	
 	}
+
 
 	template<typename T>
 	T parse(std::string s) {

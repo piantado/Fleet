@@ -77,9 +77,11 @@ public:
 		if(posmap.count(label) != 0){
 			pos = posmap[label];
 		}
-		else {
-			assert(label == ""); 
-		}
+		//else {
+			//PRINTN("label=",label);
+			//	PRINTN("s=", s);
+			//assert(label == ""); 
+		//}
 		
 	}
 

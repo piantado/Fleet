@@ -22,47 +22,7 @@ const std::vector<S> symbols = {"true", "false", "and", "or", "not"};
 
 using CL=Combinators::CL;
 
-#include "BaseNode.h"
-
-class CLNode : public BaseNode<CLNode> {
-public:
-	std::string label; // these really just need labels
-	
-	CLNode() { }
-	CLNode(std::string& l) : BaseNode<CLNode>() {
-		label = l;
-	}
-	
-	virtual std::string string(bool usedot=true) const override {
-		PRINTN(">"+label+"<");
-		
-		std::string out = "("+label;
-		for(const auto& c : this->children) {
-			out = out + " " + c.string();
-		}
-		out += ")";
-		return out; 
-	}
-	
-	// convert a tree of CLNodes into a CL itself 
-	Combinators::CL to_CL(std::map<std::string, Combinators::CL>& m) {
-		
-		
-		assert(false); // NotImplemented
-		
-		
-		
-		
-		if(this->nchildren() == 0) {
-			return m[label];
-		}
-		else {
-			
-		}		
-	}
-	
-};
-
+#include "CLNode.h"
 
 /**
  * @class CLDatum
@@ -182,7 +142,12 @@ int main(int argc, char** argv){
 	Fleet fleet("Combinatory logic");
 	fleet.initialize(argc, argv);
 	
-	auto g = SExpression::parse<CLNode>("(and (or not (blah x x)) true)");
+	auto g = SExpression::parse<CLNode>("((K K) S)");
+	
+	PRINTN(g.string());
+	
+	g.reduce();
+	
 	PRINTN(g.string());
 	
 	return 0;
