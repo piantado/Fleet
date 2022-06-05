@@ -57,8 +57,6 @@ public:
 
 #include "Lexicon.h"
 
-Rule* applyRule = Combinators::skgrammar.get_rule("(%s %s)"); 
-
 /**
  * @class MyHypothesis
  * @author piantado
@@ -71,63 +69,44 @@ public:
 	
 	using Super = Lexicon<MyHypothesis, S, InnerHypothesis, CL, CL>;
 	using Super::Super;	
-	
-	const Node& C(std::string x) const {
-		// map a symbol string x to its combinator
-		return this->at(x).get_value();
-	}
 
-	static Node apply(Node f, Node x) {
-		// we write our own so we can store applyRule above there
-		Node n(applyRule);
-		n.set_child(0, f);
-		n.set_child(1, x);
-			
-		Combinators::reduce(n);
-			
-		return n;
-	}
-
-	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
+//	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		// Here we have just written by hand all of the relations we want
 		// This differs from churiso in that churiso will push constraints when possible
 		
 		// Enforce uniqueness
-		for(auto& x : symbols) 
-		for(auto& y : symbols) {
-			if(x != y and C(x) == C(y)) {
-				return likelihood = -infinity;
-			}
-		}
-	
-		// And check these bounds
-		int error = 0;	
-		error += (apply(C("not"), C("true"))  != C("false"));
-		error += (apply(C("not"), C("false")) != C("true"));
-		
-		error += (apply(apply(C("and"), C("false")), C("false")) != C("false"));
-		error += (apply(apply(C("and"), C("false")), C("true"))  != C("false"));
-		error += (apply(apply(C("and"), C("true")), C("false"))  != C("false"));
-		error += (apply(apply(C("and"), C("true")), C("true"))   != C("true"));
-		
-		error += (apply(apply(C("or"), C("false")), C("false")) != C("false"));
-		error += (apply(apply(C("or"), C("false")), C("true"))  != C("true"));
-		error += (apply(apply(C("or"), C("true")), C("false"))  != C("true"));
-		error += (apply(apply(C("or"), C("true")), C("true"))   != C("true"));
-				
-		likelihood = -100.0*error; 
-		return likelihood; 
-	
-	 }
+//		for(auto& x : symbols) 
+//		for(auto& y : symbols) {
+//			if(x != y and C(x) == C(y)) {
+//				return likelihood = -infinity;
+//			}
+//		}
+//	
+//		// And check these bounds
+//		int error = 0;	
+//		error += (apply(C("not"), C("true"))  != C("false"));
+//		error += (apply(C("not"), C("false")) != C("true"));
+//		
+//		error += (apply(apply(C("and"), C("false")), C("false")) != C("false"));
+//		error += (apply(apply(C("and"), C("false")), C("true"))  != C("false"));
+//		error += (apply(apply(C("and"), C("true")), C("false"))  != C("false"));
+//		error += (apply(apply(C("and"), C("true")), C("true"))   != C("true"));
+//		
+//		error += (apply(apply(C("or"), C("false")), C("false")) != C("false"));
+//		error += (apply(apply(C("or"), C("false")), C("true"))  != C("true"));
+//		error += (apply(apply(C("or"), C("true")), C("false"))  != C("true"));
+//		error += (apply(apply(C("or"), C("true")), C("true"))   != C("true"));
+//				
+//		likelihood = -100.0*error; 
+//		return likelihood; 
+//	
+//	 }
 	 
 };
 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-
-std::tuple PRIMITIVES; // must be defined
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "TopN.h"
@@ -141,6 +120,20 @@ int main(int argc, char** argv){
 	
 	Fleet fleet("Combinatory logic");
 	fleet.initialize(argc, argv);
+	
+	for(size_t k=0;k<1000;k++) {
+		try {
+			auto x = Combinators::skgrammar.generate();
+		
+			CLNode n{x};
+			PRINTN(n.string());
+			n.reduce();
+			PRINTN(n.string());
+			PRINTN("------------");
+		} catch(Combinators::ReductionException& e) {
+			
+		}
+	}
 	
 	auto g = SExpression::parse<CLNode>("((K K) S)");
 	

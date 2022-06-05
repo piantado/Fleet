@@ -58,25 +58,10 @@ namespace Combinators {
 			add("I", CL_I<SKGrammar>);
 			add("S", CL_S<SKGrammar>);
 			add("K", CL_K<SKGrammar>);
-			add("(%s %s)", CL_Apply<SKGrammar>);		
+			add("(%s %s)", CL_Apply<SKGrammar>, 3.0);		
 		}
+		
 	} skgrammar;
-
-
-	/**
-	 * @brief check if a tree n is in SK normal form, meaning that no subnodes can be reduced
-	 * @param n
-	 * @return boolean
-	 */
-//	bool is_normal_form(const Node& n) {
-//		// Check if n can be reduced at all
-//		for(const auto& ni : n) {
-//			if(can_reduce<Op::CL_I>(ni) or
-//			   can_reduce<Op::CL_S>(ni) or
-//			   can_reduce<Op::CL_K>(ni)) return false;
-//		}
-//		return true;	
-//	}
 			
 	/**
 	 * @class ReductionException

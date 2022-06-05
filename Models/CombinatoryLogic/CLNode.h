@@ -1,7 +1,8 @@
 #pragma once 
 
-
+#include "Combinators.h"
 #include "BaseNode.h"
+#include "Node.h"
 
 /**
  * @class CLNode
@@ -12,14 +13,28 @@
  *        all that other mess. 
  */
 
-class CLNode : public BaseNode<CLNode> {
+class CLNode : public BaseNode<CLNode> {	
 public:
+
 	using Super = BaseNode<CLNode>;
 	
 	std::string label; // these really just need labels
 	
 	CLNode() { }
 	CLNode(std::string& l) : BaseNode<CLNode>(), label(l) {
+	}
+	CLNode(const Node& n) {
+		// convert a node to a CL Node
+//		if(s)
+		if(n.rule->format != "(%s %s)") {
+			label = n.rule->format;
+		}
+		
+		for(size_t i=0;i<n.nchildren();i++){
+			push_back(CLNode{n.child(i)});
+		}
+		
+		
 	}
 	
 	void assign(CLNode& n) {
@@ -60,7 +75,7 @@ public:
 	
 	void reduce(size_t& remaining_calls) {
 		// returns true if we change anything
-		PRINTN("REDUCE", string());
+		//PRINTN("REDUCE", string());
 		
 		bool modified; // did we change anything?
 		do { // do this without recursion since its faster and we don't have the depth limit
@@ -69,7 +84,7 @@ public:
 				this->child(c).reduce(remaining_calls);
 			}
 			
-			if(remaining_calls-- == 0) 
+			if(remaining_calls-- == 0)
 				throw Combinators::reduction_exception;
 
 			modified = false;
