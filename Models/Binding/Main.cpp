@@ -13,14 +13,18 @@
 // need a fixed order of words to correspond to factor levels
 // We use REXP here (John, Mary, etc) so that we don't have to distinguish which
 std::vector<std::string> words = {"REXP", "him", "his", "he", "himself"};
-std::vector<double> data_amounts = {1, 2, 5, 10, 15, 20, 30, 40, 50, 75, 100, 110, 125, 150, 175, 200, 300, 400, 500, 1000, 1500, 2000, 2500, 5000};
+//std::vector<double> data_amounts = {1, 2, 5, 10, 15, 20, 30, 40, 50, 75, 100, 110, 125, 150, 175, 200, 300, 400, 500, 1000, 1500, 2000, 2500, 5000};
+std::vector<double> data_amounts = {1300};
 
 static const double alpha = 0.95; 
 int NDATA = 10; // how many data points from each sentence are we looking at?
+const double MAX_T = 100.0;
 
 const double TERMINAL_P = 3.0;
 
 using S = std::string;
+int include_linear = 1; 
+int include_absolute = 1; 
 
 /**
  * @class TreeException
@@ -35,11 +39,6 @@ class TreeException : public std::exception {};
 #include "MyGrammar.h"
 #include "MyHypothesis.h"
 
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Main code
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 #include "Fleet.h" 
 
 #include "TopN.h"
@@ -48,13 +47,14 @@ class TreeException : public std::exception {};
 #include "ParallelTempering.h"
 #include "SExpression.h"
 
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Main code
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 MyHypothesis::data_t target_precisionrecall_data; // data for computing precision/recall 
 MyHypothesis target;
 	
 int main(int argc, char** argv){ 
-	
-	int include_linear = 1; 
-	int include_absolute = 1; 
 	
 	Fleet fleet("Learn principles of binding theory");
 	fleet.add_option("--ndata",   NDATA, "Run at a different likelihood temperature (strength of data)"); 
@@ -108,8 +108,10 @@ int main(int argc, char** argv){
 		// for(auto k : SExpression::tokenize(ds)) { COUT ">>" << k << "<<" ENDL;}
 		
 		BindingTree* t = new BindingTree(SExpression::parse<BindingTree>(ds));	
-		assert(t != nullptr);
+		t->convert_from_SExpression(); // fix the fact that as S-expressions, the words are listed as first children
 		PRINTN("t=", t->string());
+		
+		assert(t != nullptr);
 		
 		// and set the linear order of t
 		// and count how many have coreferents (we need to make that many copies)
@@ -156,7 +158,7 @@ int main(int argc, char** argv){
 		delete t;
 	}
 		
-	return 0;
+//	return 0;
 	
 	
 	//------------------
@@ -164,10 +166,10 @@ int main(int argc, char** argv){
 	//------------------
 	
 	//"REXP", "him", "his", "he", "himself"
-	target["REXP"] = InnerHypothesis(grammar.simple_parse("not(and(corefers(x),dominates(parent(coreferent(x)),x)))"));
-	target["him"] = InnerHypothesis(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
-	target["his"] = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));
-	target["he"] = InnerHypothesis(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
+	target["REXP"]    = InnerHypothesis(grammar.simple_parse("not(and(corefers(x),dominates(parent(coreferent(x)),x)))"));
+	target["him"]     = InnerHypothesis(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
+	target["his"]     = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));
+	target["he"]      = InnerHypothesis(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
 	target["himself"] = InnerHypothesis(grammar.simple_parse("and(corefers(x),dominates(parent(coreferent(x)),x))"));
 
 //	MyHypothesis target2;
@@ -225,7 +227,7 @@ int main(int argc, char** argv){
 		NDATA = di; // used in compute_posterior
 		top = top.compute_posterior(mydata);
 		
-		ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1.20);
+		ParallelTempering chain(h0, &mydata, FleetArgs::nchains, MAX_T);
 		for(auto& h : chain.run(Control()) | top | print(FleetArgs::print)) {
 			UNUSED(h);
 		}

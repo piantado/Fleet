@@ -29,7 +29,9 @@ std::map<std::string,POS> posmap = { // just for decoding strings to tags -- ugh
 									{"A", POS::A},
 									{"NP-POSS", POS::NPPOSS},
 								   };
-								   
+	
+
+							   
 /**
  * @class BindingTree
  * @author piantado
@@ -49,40 +51,55 @@ public:
 	std::string label;
 	std::string word; 
 	
+	/**
+	 * @brief This constructor gets called by SExpression, and we need to call convert_from_SExpression() to 
+	 * 		  really fill in referent, target, word, etc. 
+	 * @param s
+	 */
 	BindingTree(std::string s="") :
-		referent(-1), target(false), linear_order(0), pos(POS::None), word("") {
-
-		if(s.find(' ') != std::string::npos) {
-			auto [l, w] = split<2>(s, ' '); // must be two
-			label = l;
-			word = w;
-		}
-		else label = s;  // no word
-		
+		referent(-1), target(false), linear_order(0), pos(POS::None), word(""){
 		
 		// set up the referent if we can
+		// NOTE: There referent is on the POS
 		auto p = s.find(".");
 		if(p != std::string::npos) {
-			referent = stoi(s.substr(p+1));
+			referent = stoi(s.substr(p+1)); // only single digits!!
 			label = s.substr(0,p);
+		}
+		else {
+			label = s;
 		}
 		
 		// and then fix label if it has a star
 		if(label.length() > 0 and label.at(0) == '>')  {
 			target = true;
 			label = label.substr(1,std::string::npos);
-		}
-		
+		}	
+	
 		// and set the POS accordingly
 		if(posmap.count(label) != 0){
 			pos = posmap[label];
-		}
-		//else {
-			//PRINTN("label=",label);
-			//	PRINTN("s=", s);
-			//assert(label == ""); 
-		//}
+		}		
+	}
+	
+	/**
+	 * @brief This is needed because when we make these with an S-expression, it doesn't correctly set the referent, POS, etc. 
+	 */	
+	void convert_from_SExpression() {
 		
+		// this is the main thing S-expression parsing does wrong -- it makes the 
+		// "word" into the first child
+		if(this->nchildren() > 0 and this->child(0).nchildren() == 0) {
+			std::string s = this->child(0).label;
+			word = s; 
+			
+			// erase the first child since it's going to be the word
+			children.erase(children.begin());
+		}	
+
+		for(auto& c : children) {
+			c.convert_from_SExpression();
+		}
 	}
 
 	/////////////////////////////////
