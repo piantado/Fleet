@@ -25,16 +25,7 @@ public:
 	
 	virtual size_t count_constants() const = 0; // must implement 
 	virtual std::pair<double,double> constant_proposal(double) const = 0; // must implmenet
-	
-	virtual void randomize_constants() {
-		
-		// NOTE: Because of how fb is computed in propose, we need to make this the same as the prior
-		constants.resize(count_constants());
-		for(size_t i=0;i<constants.size();i++) {			
-			auto [v, __fb] = constant_proposal(0.0);
-			constants[i] = v;
-		}
-	}
+	virtual void randomize_constants() = 0; 
 	
 	virtual bool operator==(const ConstantContainer& h) const {
 		return constants == h.constants;
@@ -49,13 +40,13 @@ public:
 		return hsh;
 	}
 	
-	virtual double constant_prior() const {
-		double lp = 0.0;
-		for(auto& c : constants) {
-			lp += normal_lpdf(c, 0.0, 1.0);
-		} 
-		return lp;
-	}
+//	virtual double constant_prior() const {
+//		double lp = 0.0;
+//		for(auto& c : constants) {
+//			lp += normal_lpdf(c, 0.0, 1.0);
+//		} 
+//		return lp;
+//	}
 
 
 };

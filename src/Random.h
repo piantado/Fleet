@@ -62,6 +62,45 @@ T normal_lpdf(T x, T mu=0.0, T sd=1.0) {
 }
 
 template<typename T>
+T laplace_lpdf(T x, T mu=0.0, T b=1.0) {
+	/**
+	 * @brief Compute the log PDF of a laplace distribution
+	 * @param x
+	 * @param mu
+	 * @param sd
+	 * @return 
+	 */
+	
+    //https://stackoverflow.com/questions/10847007/using-the-gaussian-probability-density-function-in-c
+    return -log(2*b) - std::abs(x-mu)/b;
+}
+
+
+template<typename T>
+T random_exponential(T l=1.0) {
+	/**
+	 * @brief Random sample from an exponential distribution
+	 * @param x
+	 * @param mu
+	 * @param sd
+	 * @return 
+	 */
+	return -log(uniform())/l;
+}
+
+
+template<typename T>
+T random_laplace(T mu=0.0, T b=1.0) {
+	/**
+	 * @brief Random sample from laplace distribution
+	 * @param x
+	 * @param mu
+	 * @param sd
+	 * @return 
+	 */
+	return mu + random_exponential(b) - random_exponential(b);
+}
+template<typename T>
 double normal_cdf(T x, T mu, T sd) {
 	T z = (x-mu)/sd;
     return std::erfc(-z/std::sqrt(2))/2;

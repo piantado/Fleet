@@ -15,6 +15,13 @@ const int MAX_SCALE = 4;
 // most nodes we'll consider in a hypothesis
 const size_t MY_MAX_NODES = 35;
 
+// we use at most this many constants; note that if we have higher, we are given zero prior. 
+// this value kinda matters because we assume we always have this many, in order to avoid problems
+// with changing dimensionality.  
+const size_t N_CONSTANTS = 8; 
+
+const double LAPLACE_SCALE = 1.0;
+
 
 class MyHypothesis final : public ConstantContainer,
 						   public DeterministicLOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar> {
@@ -35,21 +42,31 @@ public:
 		return out;
 	}
 	
-	virtual double constant_prior() const override {
+	virtual double constant_prior() const {
 		// we're going to override and do a LSE over scales 
 		double lp = 0.0;
 		for(auto& c : constants) {
-			double clp = -infinity;
-			for(int ls=MIN_SCALE;ls<=MAX_SCALE;ls++) {
-				clp = logplusexp(clp, normal_lpdf(c, 0.0, pow(10,ls)));
-			}
-			lp += clp; 
+			lp += laplace_lpdf(c, 0., LAPLACE_SCALE);
+			// This sums over scales:
+//			double clp = -infinity;
+//			for(int ls=MIN_SCALE;ls<=MAX_SCALE;ls++) {
+//				clp = logplusexp(clp, normal_lpdf(c, 0.0, pow(10,ls)));
+//			}
+//			lp += clp; 
 		} 
 		return lp;
 	}
-
+	
+	virtual void randomize_constants() override {
+		// NOTE: this MUST match how the prior is computed
+		constants.resize(N_CONSTANTS);
+		for(size_t i=0;i<N_CONSTANTS;i++) {		
+			constants[i] = random_laplace(0.0, LAPLACE_SCALE);
+		}
+	}
 	
 	size_t count_constants() const override {
+		// below is if we actually want to count
 		size_t cnt = 0;
 		for(const auto& x : value) {
 			cnt += isConstant(x.rule);
@@ -61,30 +78,23 @@ public:
 	// NOTE: When we use a symmetric drift kernel, fb=0
 	std::pair<double,double> constant_proposal(double c) const override { 
 			
-		if(flip(0.98)) {
+		if(flip(0.90)) {
 			auto sc = pow(10, myrandom(MIN_SCALE, MAX_SCALE)); // pick a scale here 
 			
 			return std::make_pair(random_normal(c,  sc), 0.0);
 		}
-		else { 
-			
+		else if(flip(0.5)) { 
 			// one third probability for each of the other choices
-			if(flip(0.33)) { 
-				auto v = random_normal(data_X_mean, data_X_sd);
-				double fb = normal_lpdf(v, data_X_mean, data_X_sd) - 
-							normal_lpdf(c, data_X_mean, data_X_sd);
-				return std::make_pair(v,fb);
-			}
-			else if(flip(0.5)) {
-				auto v = random_normal(data_Y_mean, data_Y_sd);
-				double fb = normal_lpdf(v, data_Y_mean, data_Y_sd) - 
-							normal_lpdf(c, data_Y_mean, data_Y_sd);
-				return std::make_pair(v,fb);
-			}
-			else {
-				// do nothing
-				return std::make_pair(c,0.0);
-			}
+			auto v = random_normal(data_X_mean, data_X_sd);
+			double fb = normal_lpdf(v, data_X_mean, data_X_sd) - 
+						normal_lpdf(c, data_X_mean, data_X_sd);
+			return std::make_pair(v,fb);
+		}
+		else {
+			auto v = random_normal(data_Y_mean, data_Y_sd);
+			double fb = normal_lpdf(v, data_Y_mean, data_Y_sd) - 
+						normal_lpdf(c, data_Y_mean, data_Y_sd);
+			return std::make_pair(v,fb);
 		}
 	}
 
@@ -98,22 +108,6 @@ public:
 		
 		return normal_lpdf(fx, datum.output, datum.reliability );		
 	}
-	
-//#if FEYNMAN	
-//	virtual double at_temperature(double t) const override {
-//		// we override this so that we can treat "temperature" as a normal SD, not just as  
-//		// a multiplier on likelihood. When we compute SD, we use FEYNMAN_SD
-//		// but this converts it to the likelihood for any other t
-//		//PRINTN(t, posterior, prior + (likelihood + log(FEYNMAN_SD))/t - log(t), string());
-//		
-//		const auto c = 0.5*log(tau);
-//		
-//		// extract the sum squared term from our likelihood
-//		const auto xmu_sq = pow(FEYNMAN_SD,2)*(likelihood + log(FEYNMAN_SD) + c);
-//		
-//		return prior +  xmu_sq/pow(FEYNMAN_SD*t,2) - c - log(FEYNMAN_SD*t);
-//	}
-//#endif 
 	
 	virtual double compute_prior() override {
 		
@@ -208,7 +202,6 @@ public:
 	virtual ProposalType propose() const override {
 		// Our proposals will either be to constants, or entirely from the prior
 		// Note that if we have no constants, we will always do prior proposals
-//		PRINTN("\nProposing from\t\t", string());
 		
 		const double CONST_PROP_P = 0.85; 
 		
@@ -220,7 +213,7 @@ public:
 			double fb = 0.0; 
 			
 			// now add to all that I have
-			for(size_t i=0;i<NC;i++) { 
+			for(size_t i=0;i<N_CONSTANTS;i++) {  // note N_CONSTANTS here, so we propose to the whole vector
 				auto [v, __fb] = this->constant_proposal(constants[i]);
 				ret.constants[i] = v;
 				fb += __fb;
@@ -245,12 +238,7 @@ public:
 			ret.randomize_constants(); // with random constants -- this resizes so that it's right for propose
 			
 			double fb = x.second + ret.constant_prior()-this->constant_prior();
-			
-			// Need to account for f/b when we add constants....
-			if(NC==0 and ret.count_constants() > 0) {
-				fb += -log(CONST_PROP_P);
-			}
-			
+						
 			return std::make_pair(ret, fb); 
 		}
 			
