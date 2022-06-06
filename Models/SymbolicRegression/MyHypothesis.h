@@ -18,8 +18,9 @@ const size_t MY_MAX_NODES = 35;
 // we use at most this many constants; note that if we have higher, we are given zero prior. 
 // this value kinda matters because we assume we always have this many, in order to avoid problems
 // with changing dimensionality.  
-const size_t N_CONSTANTS = 8; 
+const size_t N_CONSTANTS = 4; 
 
+// scale for the prior on constants
 const double LAPLACE_SCALE = 1.0;
 
 
@@ -37,22 +38,29 @@ public:
 		// my own wrapper that zeros the constant_i counter
 		
 		constant_idx = 0;
-		const auto out = Super::call(x,err);
-		assert(constant_idx == constants.size()); // just check we used all constants
-		return out;
+		try { 
+			const auto out = Super::call(x,err);
+			if(constant_idx != count_constants()) {
+				PRINTN(string());
+			}
+			assert(constant_idx == count_constants()); // just check we used all constants
+			return out;
+		}
+		catch(TooManyConstantsException& e) {
+			return err;
+		}
 	}
 	
 	virtual double constant_prior() const {
 		// we're going to override and do a LSE over scales 
+		
+		if(count_constants() > N_CONSTANTS) {
+			return -infinity;
+		}
+		
 		double lp = 0.0;
 		for(auto& c : constants) {
 			lp += laplace_lpdf(c, 0., LAPLACE_SCALE);
-			// This sums over scales:
-//			double clp = -infinity;
-//			for(int ls=MIN_SCALE;ls<=MAX_SCALE;ls++) {
-//				clp = logplusexp(clp, normal_lpdf(c, 0.0, pow(10,ls)));
-//			}
-//			lp += clp; 
 		} 
 		return lp;
 	}
@@ -169,8 +177,6 @@ public:
 		if(not this->is_evaluable()) 
 			return structure_string(); // don't fill in constants if we aren't complete
 		
-		assert(constants.size() == count_constants()); // or something is broken
-		
 		size_t idx = 0;
 		return  prefix + LAMBDAXDOT_STRING +  __my_string_recurse(&value, idx);
 	}
@@ -203,20 +209,25 @@ public:
 		// Our proposals will either be to constants, or entirely from the prior
 		// Note that if we have no constants, we will always do prior proposals
 		
-		const double CONST_PROP_P = 0.85; 
-		
-		auto NC = count_constants();
-		
-		if(NC > 0 and flip(CONST_PROP_P)){
+		if(flip(0.85)){
 			MyHypothesis ret = *this;
 			
 			double fb = 0.0; 
 			
+			// ensure we sample at least one
+			std::vector<bool> should_propose(N_CONSTANTS, false);
+			for(size_t i=0;i<N_CONSTANTS;i++) {
+				should_propose[i] = flip(0.1);
+			}
+			should_propose[myrandom(N_CONSTANTS)] = true; // always ensure one
+			
 			// now add to all that I have
 			for(size_t i=0;i<N_CONSTANTS;i++) {  // note N_CONSTANTS here, so we propose to the whole vector
-				auto [v, __fb] = this->constant_proposal(constants[i]);
-				ret.constants[i] = v;
-				fb += __fb;
+				if(should_propose[i]) {
+					auto [v, __fb] = this->constant_proposal(constants[i]);
+					ret.constants[i] = v;
+					fb += __fb;
+				}
 			}
 			
 			return std::make_pair(ret, fb);

@@ -39,14 +39,5 @@ public:
 		}
 		return hsh;
 	}
-	
-//	virtual double constant_prior() const {
-//		double lp = 0.0;
-//		for(auto& c : constants) {
-//			lp += normal_lpdf(c, 0.0, 1.0);
-//		} 
-//		return lp;
-//	}
-
 
 };

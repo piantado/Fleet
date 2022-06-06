@@ -10,6 +10,9 @@
 
 const double TERMINAL_P = 2.0;
 
+struct TooManyConstantsException : public VMSRuntimeError {};
+
+
 class MyGrammar : public Grammar<X_t,D, D,X_t>,
 				  public Singleton<MyGrammar> {
 public:
@@ -51,8 +54,13 @@ public:
 				auto* h = dynamic_cast<ConstantContainer*>(vms->program.loader);
 				if(h == nullptr) { assert(false); }
 				else {
-					assert(h->constant_idx < h->constants.size()); 
-					vms->template push<D>(h->constants.at(h->constant_idx++));
+					// now we might have too many since the size of our constants is constrained
+					if(h->constant_idx >= h->constants.size()) { 
+						throw TooManyConstantsException();
+					}
+					else { 
+						vms->template push<D>(h->constants.at(h->constant_idx++));
+					}
 				}
 		}), TERMINAL_P);		
 #endif 
