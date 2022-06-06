@@ -366,7 +366,7 @@ int main(int argc, char** argv){
 #include <signal.h>
 #include <string>
 
-const std::string FLEET_VERSION = "0.1.08";
+const std::string FLEET_VERSION = "0.1.09";
 
 #include "Random.h"
 #include "Timing.h"
@@ -560,6 +560,9 @@ public:
 			
 			COUT "# Total posterior calls:" TAB FleetStatistics::posterior_calls ENDL;
 			COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds ENDL;
+			
+			COUT "# Fleet completed at " <<  datestring() ENDL;
+			
 		}
 		
 		// setting this makes sure we won't call it again
