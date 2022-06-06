@@ -1,4 +1,7 @@
-<map id="src/Hypotheses/VectorNormalHypothesis.h" name="src/Hypotheses/VectorNormalHypothesis.h">
-<area shape="rect" id="node1" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior...." alt="" coords="34,5,250,47"/>
-<area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,95,279,121"/>
+<map id="src/Hypotheses/StochasticVariables/VectorNormalHypothesis.h" name="src/Hypotheses/StochasticVariables/VectorNormalHypothesis.h">
+<area shape="rect" id="node1" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior...." alt="" coords="296,5,559,47"/>
+<area shape="rect" id="node2" href="$_base_grammar_hypothesis_8h.html" title="This class does grammar inference with some collection of HumanData and fixed set of hypotheses." alt="" coords="295,95,560,136"/>
+<area shape="rect" id="node3" href="$_deterministic_grammar_hypothesis_8h.html" title="Here, the hypotheses are deterministic so we don&#39;t need Preidct_t to be a DiscreteDistribution,..." alt="" coords="5,184,271,225"/>
+<area shape="rect" id="node4" href="$_full_grammar_hypothesis_8h.html" title="This class does grammar inference with some collection of HumanData and fixed set of hypotheses." alt="" coords="295,184,560,225"/>
+<area shape="rect" id="node5" href="$_thunk_grammar_hypothesis_8h.html" title="A version of a BaseGrammarHypothesis where the hypotheses are thunks (functions of no arguments)...." alt="" coords="584,184,849,225"/>
 </map>

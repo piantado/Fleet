@@ -68,22 +68,26 @@ $(function() {
 
 <h3><a id="index_r"></a>- r -</h3><ul>
 <li>randomize_constants()
-: <a class="el" href="struct_constant_container.html#ab05c118dfde77df31001d0b70e9e555a">ConstantContainer</a>
+: <a class="el" href="struct_constant_container.html#af459c893b7c1742de3a589496a89c398">ConstantContainer</a>
 </li>
 <li>rbegin()
 : <a class="el" href="class_stack.html#a701344656df8b58c9e0a41fe5b5e2c2e">Stack&lt; T &gt;</a>
 </li>
 <li>recompute_C()
-: <a class="el" href="class_grammar_hypothesis.html#a6a1fadc201aa1ab1c9fe32102886ae2c">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#a1ffb7f527a13c3e6ca25cdfad54e5b11">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
 </li>
 <li>recompute_decayedLikelihood()
-: <a class="el" href="class_grammar_hypothesis.html#a8476132b0ea0f4d0743dde525ce37ba9">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#a5dc2b79f8d1ae1011e32f611d11e8210">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
 </li>
 <li>recompute_LL()
-: <a class="el" href="class_grammar_hypothesis.html#aa55913a4798b21974f225ec40193cfc1">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#ab60e175515fde43ee298501df557043f">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_thunk_grammar_hypothesis.html#a95636113e426117ceb6bbd50a7d04ca4">ThunkGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
 </li>
 <li>recompute_P()
-: <a class="el" href="class_grammar_hypothesis.html#a5dc4c47ed55185ec1d1376bd0e7cdb40">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#a49e39e7ce721d069a237b280aaff6af6">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_deterministic_grammar_hypothesis.html#ac31eb4bf8ed61c4123082535fd4cfb57">DeterministicGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_full_grammar_hypothesis.html#af3970a9fbf188fe52637f03d77722bd7">FullGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_thunk_grammar_hypothesis.html#a322c6dbc3341d1b890b0cb0ffdc39bf5">ThunkGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
 </li>
 <li>recursion_count()
 : <a class="el" href="class_l_o_t_hypothesis.html#a754c906d7c93fb59d142e1f506ac8234">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
@@ -125,9 +129,9 @@ $(function() {
 <li>responses
 : <a class="el" href="struct_human_datum.html#a802e17b684cdc52a10f3b2dd53b242b8">HumanDatum&lt; HYP, _input_t, _output_t, _response_t, _data_t &gt;</a>
 </li>
-<li>restart
-: <a class="el" href="struct_control.html#acd75b8aa48fdb33f063bae7469a9721b">Control</a>
-, <a class="el" href="class_grammar_hypothesis.html#a85c5aad5990900d4da6eca5a24deb3e6">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+<li>restart()
+: <a class="el" href="class_base_grammar_hypothesis.html#a41ebbf68dad14faa25d8926a23c890d6">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="struct_control.html#acd75b8aa48fdb33f063bae7469a9721b">Control</a>
 , <a class="el" href="class_lexicon.html#a85ac08b4f9c4483f460f845ac80318af">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#aa302e4e72c76aaee7902d7a8f71b0398">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_m_c_m_cable.html#aa7017e18b4a1508bc4cff90fb82a8ec1">MCMCable&lt; this_t, Args &gt;</a>

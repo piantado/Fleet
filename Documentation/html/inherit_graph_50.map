@@ -1,3 +1,27 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_searchable.html" title=" " alt="" coords="5,5,155,47"/>
+<area shape="rect" id="node1" href="$class_bayesable.html" title=" " alt="" coords="5,195,167,222"/>
+<area shape="rect" id="node2" href="$class_m_c_m_cable.html" title=" " alt="" coords="255,71,449,98"/>
+<area shape="rect" id="node3" href="$class_m_c_m_cable.html" title=" " alt="" coords="233,188,471,229"/>
+<area shape="rect" id="node5" href="$class_m_c_m_cable.html" title=" " alt="" coords="233,465,471,536"/>
+<area shape="rect" id="node10" href="$class_m_c_m_cable.html" title=" " alt="" coords="218,611,486,667"/>
+<area shape="rect" id="node15" href="$class_m_c_m_cable.html" title=" " alt="" coords="243,780,461,821"/>
+<area shape="rect" id="node18" href="$class_m_c_m_cable.html" title=" " alt="" coords="240,5,464,47"/>
+<area shape="rect" id="node20" href="$class_m_c_m_cable.html" title=" " alt="" coords="215,123,489,164"/>
+<area shape="rect" id="node4" href="$class_lexicon.html" title=" " alt="" coords="577,231,765,301"/>
+<area shape="rect" id="node6" href="$class_l_o_t_hypothesis.html" title=" " alt="" coords="543,326,799,411"/>
+<area shape="rect" id="node7" href="$class_l_o_t_hypothesis.html" title=" " alt="" coords="539,436,803,565"/>
+<area shape="rect" id="node8" href="$class_deterministic_l_o_t_hypothesis.html" title=" " alt="" coords="878,383,1142,453"/>
+<area shape="rect" id="node9" href="$class_stochastic_l_o_t_hypothesis.html" title=" " alt="" coords="853,477,1167,548"/>
+<area shape="rect" id="node11" href="$class_base_grammar_hypothesis.html" title=" " alt="" coords="577,699,766,755"/>
+<area shape="rect" id="node12" href="$class_base_grammar_hypothesis.html" title=" " alt="" coords="537,590,805,675"/>
+<area shape="rect" id="node13" href="$class_deterministic_grammar_hypothesis.html" title=" " alt="" coords="887,594,1133,650"/>
+<area shape="rect" id="node14" href="$class_full_grammar_hypothesis.html" title=" " alt="" coords="920,674,1100,730"/>
+<area shape="rect" id="node16" href="$class_t_normal_variable.html" title=" " alt="" coords="588,846,755,873"/>
+<area shape="rect" id="node17" href="$class_t_normal_variable.html" title=" " alt="" coords="589,780,753,821"/>
+<area shape="rect" id="node19" href="$class_vector_half_normal_hypothesis.html" title=" " alt="" coords="565,13,777,39"/>
+<area shape="rect" id="node21" href="$class_vector_normal_hypothesis.html" title=" " alt="" coords="579,130,764,157"/>
+<area shape="rect" id="node22" href="$class_program_loader.html" title=" " alt="" coords="215,400,489,441"/>
+<area shape="rect" id="node23" href="$class_program_loader.html" title=" " alt="" coords="225,254,479,310"/>
+<area shape="rect" id="node24" href="$class_searchable.html" title=" " alt="" coords="271,335,433,376"/>
+<area shape="rect" id="node25" href="$class_serializable.html" title=" " alt="" coords="270,561,434,587"/>
 </map>

@@ -68,24 +68,22 @@ $(function() {
 
 <h3><a id="index_c"></a>- c -</h3><ul>
 <li>C
-: <a class="el" href="class_grammar_hypothesis.html#a2b056bde1754e6e18d9a7ebfa753fc60">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#ac0e41fdff37f52dda82085431b298931">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
 </li>
 <li>cache
 : <a class="el" href="class_cached_call_hypothesis.html#abd80824c6c00d54b72963772b4733701">CachedCallHypothesis&lt; this_t, output_t &gt;</a>
 </li>
-<li>cached_callOne()
-: <a class="el" href="class_cached_call_hypothesis.html#a913f55f46a8a9eb1b665c82ca1b3c1c4">CachedCallHypothesis&lt; this_t, output_t &gt;</a>
+<li>cached_call()
+: <a class="el" href="class_cached_call_hypothesis.html#a27c34d51235a0e966adbe8c6611155f5">CachedCallHypothesis&lt; this_t, output_t &gt;</a>
 </li>
 <li>CachedCallHypothesis()
 : <a class="el" href="class_cached_call_hypothesis.html#a83f74c8114466604be2a160fe9276b39">CachedCallHypothesis&lt; this_t, output_t &gt;</a>
 </li>
 <li>call()
-: <a class="el" href="class_lexicon.html#a06b3a524733df90ba00f8a9ab5408b61">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
-, <a class="el" href="class_l_o_t_hypothesis.html#a625f5094ee8f59e8ada3a7bf5a6dd68f">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
+: <a class="el" href="class_deterministic_l_o_t_hypothesis.html#a9f756d7422a3fc1d0ea18802894ddcd8">DeterministicLOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_lexicon.html#a06b3a524733df90ba00f8a9ab5408b61">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="struct_primitive.html#ac2f9a4640510bce6dd5aa8d411c501fc">Primitive&lt; T, args &gt;</a>
-</li>
-<li>callOne()
-: <a class="el" href="class_l_o_t_hypothesis.html#ae32b66c4156d5536d8bd4da2157b2334">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_stochastic_l_o_t_hypothesis.html#acab9c4a02d9bbd6892d708bd17b9bfc8">StochasticLOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
 </li>
 <li>can_propose
 : <a class="el" href="class_t_normal_variable.html#aa2ad3b60a888a46a3841055ad668dbcd">TNormalVariable&lt; f &gt;</a>
@@ -123,9 +121,6 @@ $(function() {
 <li>ChildStr
 : <a class="el" href="class_rule.html#a3ffb425ebd6c508ca47234e3800f769c">Rule</a>
 </li>
-<li>cl_void()
-: <a class="el" href="struct_combinators_1_1cl__void.html#a36793fa25a966353ab9bf43b4c12b718">Combinators::cl_void</a>
-</li>
 <li>clear()
 : <a class="el" href="class_posterior_weighted_reservoir_sample.html#a55b839873921eed97d447a1cc53df6da">PosteriorWeightedReservoirSample&lt; T &gt;</a>
 , <a class="el" href="class_reservoir_sample.html#a8527b800cc94f227a7793e8c93055d82">ReservoirSample&lt; T &gt;</a>
@@ -154,17 +149,20 @@ $(function() {
 , <a class="el" href="class_searchable.html#a29ab2eb0471e2e9d96d39f0349f21571">Searchable&lt; this_t, Args &gt;</a>
 </li>
 <li>compute_likelihood()
-: <a class="el" href="class_bayesable.html#a202493156cec15937bee304d807fdbdb">Bayesable&lt; _datum_t, _data_t &gt;</a>
-, <a class="el" href="class_grammar_hypothesis.html#a769eea50d9e40668022b120b6fddfe06">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#a3fbcd9cce692e52f28d53727c534a324">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_bayesable.html#a202493156cec15937bee304d807fdbdb">Bayesable&lt; _datum_t, _data_t &gt;</a>
 , <a class="el" href="class_t_normal_variable.html#a77e4954e8d30140fce241eca6d9abfa2">TNormalVariable&lt; f &gt;</a>
 , <a class="el" href="class_vector_half_normal_hypothesis.html#ac11337651ba0be2f81751a01c7dac7c1">VectorHalfNormalHypothesis</a>
 , <a class="el" href="class_vector_normal_hypothesis.html#a8d705b46b3644217f5beac10a4d36f8d">VectorNormalHypothesis</a>
 </li>
 <li>compute_model_predictions()
-: <a class="el" href="class_grammar_hypothesis.html#a6723f24308d44cba97627da66a207333">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#a558e3ea82f404a3897c334e47691dea0">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_deterministic_grammar_hypothesis.html#abb478a57af98ec4e5faa8ed6c877338b">DeterministicGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_full_grammar_hypothesis.html#af77706da6c58d1ac6f9cd56f45d77cba">FullGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_thunk_grammar_hypothesis.html#a229210f4d6ef693e15937dffe3b8463a">ThunkGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
 </li>
 <li>compute_normalized_posterior()
-: <a class="el" href="class_grammar_hypothesis.html#a0f096449a99464944b3b92fe370a3af5">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#aa090ee4859f65bc76ebb0792cb4c0166">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
 </li>
 <li>compute_possible_referents()
 : <a class="el" href="class_full_l_z_enumeration.html#aee896745e339daebd45270cc799db262">FullLZEnumeration&lt; Grammar_t &gt;</a>
@@ -175,8 +173,8 @@ $(function() {
 , <a class="el" href="class_top_n.html#a890f0653ac1c56e1af99a0f93dd3224a">TopN&lt; T &gt;</a>
 </li>
 <li>compute_prior()
-: <a class="el" href="class_bayesable.html#a1b057a17212ced123545133e2297c01b">Bayesable&lt; _datum_t, _data_t &gt;</a>
-, <a class="el" href="class_grammar_hypothesis.html#a8ad537345ab55b581825b89c9b2cfad3">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#a9476252b74317a4cdf8537c3e3ba4db6">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_bayesable.html#a1b057a17212ced123545133e2297c01b">Bayesable&lt; _datum_t, _data_t &gt;</a>
 , <a class="el" href="class_lexicon.html#a82e06fa6c6a0892ed6de3694f5abc1b5">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#aeeff5760a4d0c2bc586618d51f38ac80">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_t_normal_variable.html#a5cb6223529b451239b505b3e5dbdd605">TNormalVariable&lt; f &gt;</a>
@@ -193,9 +191,6 @@ $(function() {
 <li>constant_idx
 : <a class="el" href="struct_constant_container.html#ab2d260021aefc49504bb9c9921337ecf">ConstantContainer</a>
 </li>
-<li>constant_prior()
-: <a class="el" href="struct_constant_container.html#a7e9a709cebb921243e47fc5b7a9d033a">ConstantContainer</a>
-</li>
 <li>constant_proposal()
 : <a class="el" href="struct_constant_container.html#aef89e88a9d4169b73a29ab20ca884fbe">ConstantContainer</a>
 </li>
@@ -203,7 +198,8 @@ $(function() {
 : <a class="el" href="struct_constant_container.html#a5b39622a70e55a7ce1b868a0b7fa109e">ConstantContainer</a>
 </li>
 <li>contains()
-: <a class="el" href="class_top_n.html#a2e948bc78d03a92abd1623ae8f8bd3d4">TopN&lt; T &gt;</a>
+: <a class="el" href="class_discrete_distribution.html#aff3ca2b28089edd93a88a072bf628165">DiscreteDistribution&lt; T &gt;</a>
+, <a class="el" href="class_top_n.html#a2e948bc78d03a92abd1623ae8f8bd3d4">TopN&lt; T &gt;</a>
 </li>
 <li>Control()
 : <a class="el" href="struct_control.html#ae1520bca9129f40109cb5c0ef9835c52">Control</a>
@@ -230,7 +226,7 @@ $(function() {
 : <a class="el" href="class_grammar.html#ab0bae5bff5a5a8f97116ae49eb6d3a15">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
 </li>
 <li>count_rules()
-: <a class="el" href="class_grammar.html#acb0ad7c8f130df2dd73bb5040bdf0fa2">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
+: <a class="el" href="class_grammar.html#af6f447aca4141c52f3197eac688c0be7">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
 </li>
 <li>count_terminals()
 : <a class="el" href="class_base_node.html#adb6326eefe4ddc311651b4a4a5cb119e">BaseNode&lt; this_t &gt;</a>

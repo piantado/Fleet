@@ -1,11 +1,11 @@
 <map id="src/VirtualMachine" name="src/VirtualMachine">
 <area shape="rect" id="node2" href="dir_ebbb08ef9bb22b706f77b56555854265.html" title="Program" alt="" coords="69,159,147,207"/>
-<area shape="rect" id="edge3-headlabel" href="dir_000017_000018.html" title="2" alt="" coords="107,132,116,147"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000019_000020.html" title="3" alt="" coords="107,132,116,147"/>
 <area shape="rect" id="node4" href="dir_6fdd8960e488ddc37ec3b0a7ad177f67.html" title="Statistics" alt="" coords="189,159,272,207"/>
-<area shape="rect" id="edge2-headlabel" href="dir_000017_000015.html" title="1" alt="" coords="183,134,193,148"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000019_000017.html" title="1" alt="" coords="183,134,193,148"/>
 <area shape="rect" id="node3" href="dir_e378baa8d587564728b7986d6e7c1141.html" title="Containers" alt="" coords="129,255,221,303"/>
-<area shape="rect" id="edge4-headlabel" href="dir_000018_000006.html" title="1" alt="" coords="150,228,159,242"/>
-<area shape="rect" id="edge1-headlabel" href="dir_000015_000006.html" title="1" alt="" coords="200,236,210,251"/>
+<area shape="rect" id="edge4-headlabel" href="dir_000020_000006.html" title="1" alt="" coords="150,228,159,242"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000017_000006.html" title="1" alt="" coords="200,236,210,251"/>
 <area shape="rect" id="clust2" href="dir_69acd907a0659b8a578a2751af70f096.html" alt="" coords="27,52,168,217"/>
 <area shape="rect" id="clust1" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html" title="src" alt="" coords="16,16,179,228"/>
 </map>

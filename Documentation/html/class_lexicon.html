@@ -155,7 +155,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a970ca24ab5c6ae8065809e820861162d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill in all the holes in this hypothesis, at random, modifying self. NOTE for LOTHypotheses this will also compile, which is what we need to do for a <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>.  <a href="class_lexicon.html#a970ca24ab5c6ae8065809e820861162d">More...</a><br /></td></tr>
 <tr class="separator:a970ca24ab5c6ae8065809e820861162d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82e06fa6c6a0892ed6de3694f5abc1b5"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexicon.html#a82e06fa6c6a0892ed6de3694f5abc1b5">compute_prior</a> () override</td></tr>
-<tr class="memdesc:a82e06fa6c6a0892ed6de3694f5abc1b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the prior &ndash; defaultly not defined.  <a href="class_lexicon.html#a82e06fa6c6a0892ed6de3694f5abc1b5">More...</a><br /></td></tr>
 <tr class="separator:a82e06fa6c6a0892ed6de3694f5abc1b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5de4f2940877e8b55305c1400e540eca"><td class="memItemLeft" align="right" valign="top">virtual std::optional&lt; std::pair&lt; this_t, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexicon.html#a5de4f2940877e8b55305c1400e540eca">propose</a> () const override</td></tr>
 <tr class="memdesc:a5de4f2940877e8b55305c1400e540eca"><td class="mdescLeft">&#160;</td><td class="mdescRight">This proposal guarantees that there will be at least one factor that is proposed to. Each individual factor is proposed to with p_factor_propose.  <a href="class_lexicon.html#a5de4f2940877e8b55305c1400e540eca">More...</a><br /></td></tr>
@@ -235,6 +234,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ae2154b9ad23fa6ad2e844bdf4ffb00d9"><td class="memItemLeft" align="right" valign="top">static this_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexicon.html#ae2154b9ad23fa6ad2e844bdf4ffb00d9">sample</a> (std::initializer_list&lt; key_t &gt; lst)</td></tr>
 <tr class="memdesc:ae2154b9ad23fa6ad2e844bdf4ffb00d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample with n factors.  <a href="class_lexicon.html#ae2154b9ad23fa6ad2e844bdf4ffb00d9">More...</a><br /></td></tr>
 <tr class="separator:ae2154b9ad23fa6ad2e844bdf4ffb00d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52013c53391c373a46905d06e60d057d"><td class="memItemLeft" align="right" valign="top">static this_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexicon.html#a52013c53391c373a46905d06e60d057d">sample</a> (const std::vector&lt; key_t &gt; &amp;lst)</td></tr>
+<tr class="separator:a52013c53391c373a46905d06e60d057d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b08b7f7f30a5292b2f11d2f17f2f600"><td class="memTemplParams" colspan="2">template&lt;typename... A&gt; </td></tr>
 <tr class="memitem:a0b08b7f7f30a5292b2f11d2f17f2f600"><td class="memTemplItemLeft" align="right" valign="top">static this_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_lexicon.html#a0b08b7f7f30a5292b2f11d2f17f2f600">make</a> (A... a)</td></tr>
 <tr class="separator:a0b08b7f7f30a5292b2f11d2f17f2f600"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -529,8 +530,6 @@ template&lt;typename this_t , typename key_t , typename INNER , typename _input_
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Compute the prior &ndash; defaultly not defined. </p>
 
 <p>Implements <a class="el" href="class_bayesable.html#a1b057a17212ced123545133e2297c01b">Bayesable&lt; Args... &gt;</a>.</p>
 
@@ -1070,8 +1069,36 @@ template&lt;typename this_t , typename key_t , typename INNER , typename _input_
 
 </div>
 </div>
+<a id="a52013c53391c373a46905d06e60d057d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52013c53391c373a46905d06e60d057d">&#9670;&nbsp;</a></span>sample() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename this_t , typename key_t , typename INNER , typename _input_t , typename _output_t , typename datum_t  = defaultdatum_t&lt;_input_t, _output_t&gt;, typename _VirtualMachineState_t  = typename INNER::Grammar_t::VirtualMachineState_t&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static this_t <a class="el" href="class_lexicon.html">Lexicon</a>&lt; this_t, key_t, INNER, _input_t, _output_t, <a class="el" href="class_bayesable.html#a9f1a6c0cd7855550fa10b1a8f13a5867">datum_t</a>, _VirtualMachineState_t &gt;::sample </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; key_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lst</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ae2154b9ad23fa6ad2e844bdf4ffb00d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2154b9ad23fa6ad2e844bdf4ffb00d9">&#9670;&nbsp;</a></span>sample()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2154b9ad23fa6ad2e844bdf4ffb00d9">&#9670;&nbsp;</a></span>sample() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

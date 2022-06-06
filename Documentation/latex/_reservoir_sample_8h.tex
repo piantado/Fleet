@@ -27,4 +27,4 @@ class \mbox{\hyperlink{class_posterior_weighted_reservoir_sample}{Posterior\+Wei
 \doxysubsection{Detailed Description}
 A simple resevoir sampling algorithm. One great disappointment is that this doesn\textquotesingle{}t implement the version where you draw a random unifom for each number and store the lowest. That\textquotesingle{}s such a pretty idea. 
 
-Same as \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}} but chooses proportional to h.\+posterior.
+Same as \mbox{\hyperlink{class_reservoir_sample}{Reservoir\+Sample}} but chooses proportional to h.\+posterior -- using Algorithm A-\/\+Chao from wiki. N\+O\+TE that with this it is likely important to use some burn-\/in because otherwise it will start off full of crummy samples.

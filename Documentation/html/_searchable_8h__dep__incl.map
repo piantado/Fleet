@@ -1,5 +1,7 @@
 <map id="src/Hypotheses/Interfaces/Searchable.h" name="src/Hypotheses/Interfaces/Searchable.h">
-<area shape="rect" id="node1" title="A class is searchable if permits us to enumerate and make its neighbors. This class is used by MCTS a..." alt="" coords="121,5,312,47"/>
-<area shape="rect" id="node2" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="5,95,193,121"/>
-<area shape="rect" id="node3" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="217,95,453,121"/>
+<area shape="rect" id="node1" title="A class is searchable if permits us to enumerate and make its neighbors. This class is used by MCTS a..." alt="" coords="248,5,439,47"/>
+<area shape="rect" id="node2" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="108,95,344,121"/>
+<area shape="rect" id="node5" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="368,95,556,121"/>
+<area shape="rect" id="node3" href="$_deterministic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="5,169,220,211"/>
+<area shape="rect" id="node4" href="$_stochastic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="244,169,437,211"/>
 </map>

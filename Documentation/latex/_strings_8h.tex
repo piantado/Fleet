@@ -42,7 +42,7 @@ std\+::string \mbox{\hyperlink{_strings_8h_a21b313a5a03eda533ac68a4501c68c17}{st
 \item 
 {\footnotesize template$<$typename T , size\+\_\+t N$>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_a66fc50785d7283d32f7f2e039e31b982}{str}} (const std\+::array$<$ T, N $>$ \&a)
 \item 
-{\footnotesize template$<$typename T $>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_ac841190187b17808b2c4a82ecde6a140}{str}} (const std\+::vector$<$ T $>$ \&a)
+{\footnotesize template$<$typename T $>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_aec1f39140cd40cc9f1868877e0e3d7c2}{str}} (const std\+::vector$<$ T $>$ \&a, const std\+::string \+\_\+sep=\char`\"{},\char`\"{})
 \item 
 {\footnotesize template$<$typename T , typename U $>$ }\\std\+::string \mbox{\hyperlink{_strings_8h_ac9fcb52c2f5a3b3dee61e4f5d3fdc1ff}{str}} (const std\+::map$<$ T, U $>$ \&a)
 \item 
@@ -436,12 +436,12 @@ A pythonesque string function
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{_strings_8h_ac841190187b17808b2c4a82ecde6a140}\label{_strings_8h_ac841190187b17808b2c4a82ecde6a140}} 
+\mbox{\Hypertarget{_strings_8h_aec1f39140cd40cc9f1868877e0e3d7c2}\label{_strings_8h_aec1f39140cd40cc9f1868877e0e3d7c2}} 
 \index{Strings.h@{Strings.h}!str@{str}}
 \index{str@{str}!Strings.h@{Strings.h}}
 \doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [8/9]}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{a }\end{DoxyParamCaption})}
+std\+::string str (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{a,  }\item[{const std\+::string}]{\+\_\+sep = {\ttfamily \char`\"{},\char`\"{}} }\end{DoxyParamCaption})}
 
 A pythonesque string function 
 \begin{DoxyParams}{Parameters}

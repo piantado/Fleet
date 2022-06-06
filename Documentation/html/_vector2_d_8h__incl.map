@@ -1,4 +1,4 @@
 <map id="src/Containers/Vector2D.h" name="src/Containers/Vector2D.h">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,196,32"/>
+<area shape="rect" id="node1" title="A little trick here to force bools to act like chars and have normal std::vector iterators etc...." alt="" coords="5,5,196,32"/>
 <area shape="rect" id="node2" title=" " alt="" coords="69,80,132,107"/>
 </map>

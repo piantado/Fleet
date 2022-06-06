@@ -2,9 +2,11 @@
 \label{_builtins_8h}\index{src/VirtualMachine/Builtins.h@{src/VirtualMachine/Builtins.h}}
 
 
-The \mbox{\hyperlink{class_builtin}{Builtin}} type basically just stores a function pointer and an Op command. This makes it a bit handier to define Primitives because they all take this form.  
+The \mbox{\hyperlink{class_builtin}{Builtin}} type just stores a function pointer and an Op command. This makes it a bit handier to define Primitives because they all take this form.  
 
 
+{\ttfamily \#include \char`\"{}Numerics.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}I\+O.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Primitive.\+h\char`\"{}}\newline
 Include dependency graph for Builtins.\+h\+:
@@ -12,7 +14,7 @@ Include dependency graph for Builtins.\+h\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=311pt]{_builtins_8h__incl}
+\includegraphics[width=350pt]{_builtins_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:
@@ -52,9 +54,13 @@ This graph shows which files directly or indirectly include this file\+:
 \item 
 {\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_primitive}{Primitive}}$<$ bool $>$ \mbox{\hyperlink{namespace_builtins_a6888aa01e830dbc435af2316c2c74f0e}{Builtins\+::\+Flip}} (Op\+::\+Flip, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ assert(vms-\/$>$pool !=nullptr);vms-\/$>$pool-\/$>$copy\+\_\+increment\+\_\+push(vms, true, -\/\mbox{\hyperlink{_numerics_8h_a1cab50ac2cae826eca1b03bb33eae1f1}{L\+O\+G2}});bool b=vms-\/$>$pool-\/$>$increment\+\_\+push(vms, false, -\/\mbox{\hyperlink{_numerics_8h_a1cab50ac2cae826eca1b03bb33eae1f1}{L\+O\+G2}});if(b) \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE}};\} else \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE}};\} \})
 \item 
-{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_primitive}{Primitive}}$<$ bool, double $>$ \mbox{\hyperlink{namespace_builtins_a73debdddae4e83ec3de69a730943ec73}{Builtins\+::\+FlipP}} (Op\+::\+FlipP, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ assert(vms-\/$>$pool !=nullptr);double p=vms-\/$>$template getpop$<$ double $>$();if(std\+::isnan(p)) \{ p=0.\+0;\} assert(p$<$=1.\+0 and p $>$=0.\+0);vms-\/$>$pool-\/$>$copy\+\_\+increment\+\_\+push(vms, true, log(p));bool b=vms-\/$>$pool-\/$>$increment\+\_\+push(vms, false, log(1.\+0-\/p));if(b) \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE}};\} else \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE}};\} \})
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_primitive}{Primitive}}$<$ bool, double $>$ \mbox{\hyperlink{namespace_builtins_aae2d39a107a794003d023715f6610f96}{Builtins\+::\+FlipP}} (Op\+::\+FlipP, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ assert(vms-\/$>$pool !=nullptr);double p=vms-\/$>$template getpop$<$ double $>$();if(std\+::isnan(p)) \{ p=0.\+0;\} if(p $>$ 1.\+0 or p$<$ 0.\+0) \{ \mbox{\hyperlink{_i_o_8h_a5e727e0c710d35259cfee7d2e8722dd5}{P\+R\+I\+N\+TN}}(\char`\"{}$\ast$$\ast$$\ast$ Error, received p not in \mbox{[}0,1\mbox{]}\+:\char`\"{}, p);assert(false);\} vms-\/$>$pool-\/$>$copy\+\_\+increment\+\_\+push(vms, true, log(p));bool b=vms-\/$>$pool-\/$>$increment\+\_\+push(vms, false, log(1.\+0-\/p));if(b) \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE}};\} else \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE}};\} \})
 \item 
 {\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_primitive}{Primitive}}$<$ bool, double $>$ \mbox{\hyperlink{namespace_builtins_a467be9c940565b464234b395389aacb7}{Builtins\+::\+Safe\+FlipP}} (Op\+::\+Safe\+FlipP, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ assert(vms-\/$>$pool !=nullptr);double p=vms-\/$>$template getpop$<$ double $>$();if(std\+::isnan(p)) p=0.\+0;else if(p $>$ 1.\+0) p=1.\+0;else if(p$<$ 0.\+0) p=0.\+0;vms-\/$>$pool-\/$>$copy\+\_\+increment\+\_\+push(vms, true, log(p));bool b=vms-\/$>$pool-\/$>$increment\+\_\+push(vms, false, log(1.\+0-\/p));if(b) \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+C\+E\+\_\+\+N\+O\+\_\+\+D\+E\+L\+E\+TE}};\} else \{ vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE}};\} \})
+\item 
+{\footnotesize template$<$typename Grammar\+\_\+t , typename t , typename T  = std\+::set$<$t$>$$>$ }\\\mbox{\hyperlink{struct_primitive}{Primitive}}$<$ t, T $>$ \mbox{\hyperlink{namespace_builtins_ab2ec850110ac1149c73a9408a1bb950a}{Builtins\+::\+Sample}} (Op\+::\+Sample, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ auto s=vms-\/$>$template getpop$<$ T $>$();if(s.\+size()==1) \{ auto v=std\+::move($\ast$s.\+begin());vms-\/$>$template push$<$ t $>$(std\+::move(v));\} else \{ const double lp=-\/log(s.\+size());for(const auto \&x \+:s) \{ bool b=vms-\/$>$pool-\/$>$copy\+\_\+increment\+\_\+push(vms, x, lp);if(not b) break;\} vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE}};\} \})
+\item 
+{\footnotesize template$<$typename Grammar\+\_\+t $>$ }\\\mbox{\hyperlink{struct_primitive}{Primitive}}$<$ int, int $>$ \mbox{\hyperlink{namespace_builtins_accdefd925ab335a23128914646319190}{Builtins\+::\+Sample\+\_\+int}} (\mbox{\hyperlink{_ops_8h_a588e6b56097e045c733b60d25c4d45abac5dd1b2697720fe692c529688d3f4f8d}{Op\+::\+Sample}}, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ const int mx=vms-\/$>$template getpop$<$ int $>$();const double lp=-\/log(mx);for(int i=0;i$<$ mx;i++) \{ bool b=vms-\/$>$pool-\/$>$copy\+\_\+increment\+\_\+push(vms, i, lp);if(not b) break;\} vms-\/$>$status=\mbox{\hyperlink{_v_m_status_8h_a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974}{vmstatus\+\_\+t\+::\+R\+A\+N\+D\+O\+M\+\_\+\+C\+H\+O\+I\+CE}};\})
 \item 
 {\footnotesize template$<$typename Grammar\+\_\+t , typename key\+\_\+t , typename output\+\_\+t  = typename Grammar\+\_\+t\+::output\+\_\+t$>$ }\\\mbox{\hyperlink{struct_primitive}{Primitive}} \mbox{\hyperlink{namespace_builtins_a41afa777e99c28cbf1ac3501464ba8e9}{Builtins\+::\+Mem}} (Op\+::\+Mem, \mbox{\hyperlink{_builtins_8h_ad05e94221ff2967761018674d5cbb960}{B\+U\+I\+L\+T\+I\+N\+\_\+\+L\+A\+M\+B\+DA}} \{ auto memindex=vms-\/$>$template memstack$<$ key\+\_\+t $>$().top();vms-\/$>$template memstack$<$ key\+\_\+t $>$().pop();if(vms-\/$>$template mem$<$ key\+\_\+t $>$().\mbox{\hyperlink{_strings_8h_ae6eafa3700b097b96c1601a141a45de4}{count}}(memindex)==0) \{ vms-\/$>$template mem$<$ key\+\_\+t $>$()\mbox{[}memindex\mbox{]}=vms-\/$>$template gettop$<$ output\+\_\+t $>$();\} \})
 \item 
@@ -79,7 +85,7 @@ This graph shows which files directly or indirectly include this file\+:
 
 
 \doxysubsection{Detailed Description}
-The \mbox{\hyperlink{class_builtin}{Builtin}} type basically just stores a function pointer and an Op command. This makes it a bit handier to define Primitives because they all take this form. 
+The \mbox{\hyperlink{class_builtin}{Builtin}} type just stores a function pointer and an Op command. This makes it a bit handier to define Primitives because they all take this form. 
 
 
 

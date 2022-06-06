@@ -70,17 +70,21 @@ $(function() {
 <li>generate()
 : <a class="el" href="class_grammar.html#abbf87abced1821fb1b6a2e1ed43eba74">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
 </li>
+<li>GENERATE_DEPTH_EXCEPTION_RETRIES
+: <a class="el" href="class_grammar.html#ab0add2774a090ed81975c0a2e4f29a71">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
+</li>
 <li>get()
 : <a class="el" href="class_discrete_distribution.html#a358b322e98fe036c0d9297f72f6bb5f5">DiscreteDistribution&lt; T &gt;</a>
 , <a class="el" href="struct_object.html#a380e8d879bd922eedbf3c6aabcd64a61">Object&lt; feature_t &gt;</a>
 , <a class="el" href="class_runtime_counter.html#a6f7c4448508536e393d60003696871f5">RuntimeCounter</a>
 , <a class="el" href="class_t_normal_variable.html#ad87e3aaa4a13df9c911a26a973f76d47">TNormalVariable&lt; f &gt;</a>
+, <a class="el" href="struct_vector2_d.html#a9f840e388e197d1c6008747e8ac47a07">Vector2D&lt; T &gt;</a>
 </li>
 <li>get_child_types()
 : <a class="el" href="class_rule.html#a0688b2f904b086d51972abf3c09602c5">Rule</a>
 </li>
 <li>get_children()
-: <a class="el" href="class_base_node.html#ac79321f007da678d5854dc91746c6fc4">BaseNode&lt; this_t &gt;</a>
+: <a class="el" href="class_base_node.html#a7177763ffa8b3e658124c586dde30be9">BaseNode&lt; this_t &gt;</a>
 </li>
 <li>get_counts()
 : <a class="el" href="class_grammar.html#a354a5d9bdaced96748c599bc7c3bd64a">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
@@ -145,7 +149,8 @@ $(function() {
 : <a class="el" href="class_cached_call_hypothesis.html#aecd699d070b3e6ff29d76668b2e0f512">CachedCallHypothesis&lt; this_t, output_t &gt;</a>
 </li>
 <li>grammar
-: <a class="el" href="class_basic_enumeration.html#a8d9991185d9224218f73f3c2e9065480">BasicEnumeration&lt; Grammar_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#a44c9a49ac9e962be81598a8ed3f34001">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_basic_enumeration.html#a8d9991185d9224218f73f3c2e9065480">BasicEnumeration&lt; Grammar_t &gt;</a>
 , <a class="el" href="class_enumeration_inference.html#a5cf6f925271a9f24e128a7a11ac8c1c9">EnumerationInference&lt; HYP, Grammar_t, Enumerator &gt;</a>
 , <a class="el" href="class_enumeration_interface.html#a47e4b669ebbec7a22de8b0140045ef41">EnumerationInterface&lt; Grammar_t, ARGS &gt;</a>
 </li>
@@ -154,7 +159,6 @@ $(function() {
 </li>
 <li>grammar
 : <a class="el" href="class_grammar_1_1_rule_iterator.html#aee52bbcb041f228356990946845495fd">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;::RuleIterator</a>
-, <a class="el" href="class_grammar_hypothesis.html#afa17cc4569b9ac59eb3d232919a73917">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
 , <a class="el" href="class_prior_inference.html#a69fcff9932a2d61863848217000fba7f">PriorInference&lt; HYP &gt;</a>
 , <a class="el" href="class_subtree_enumeration.html#a4645f617e60f31e565cc013c8dfe660c">SubtreeEnumeration&lt; Grammar_t &gt;</a>
 </li>
@@ -164,9 +168,7 @@ $(function() {
 <li>Grammar_t
 : <a class="el" href="class_lexicon.html#ad31914cd93f183a0a44867682f83e2ba">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#aea8a655b606b49e2afd101913499915f">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
-</li>
-<li>GrammarHypothesis()
-: <a class="el" href="class_grammar_hypothesis.html#a83e43512aae4bfcbd0e3907a62c71132">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+, <a class="el" href="class_stochastic_l_o_t_hypothesis.html#adb09e31b8996a0fc6b19ddf6b16d5dc3">StochasticLOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->

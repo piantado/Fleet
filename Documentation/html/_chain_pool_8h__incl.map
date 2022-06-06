@@ -1,51 +1,52 @@
 <map id="src/Inference/MCMC/ChainPool.h" name="src/Inference/MCMC/ChainPool.h">
-<area shape="rect" id="node1" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="1761,5,1913,47"/>
-<area shape="rect" id="node2" title=" " alt="" coords="1894,617,1958,644"/>
-<area shape="rect" id="node3" title=" " alt="" coords="2088,543,2151,569"/>
-<area shape="rect" id="node4" href="$_errors_8h.html" title=" " alt="" coords="97,543,169,569"/>
-<area shape="rect" id="node8" href="$_m_c_m_c_chain_8h.html" title="This represents an MCMC hain on a hypothesis of type HYP. It uses HYP::propose and HYP::compute_poste..." alt="" coords="1407,95,1520,121"/>
-<area shape="rect" id="node20" href="$_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="1704,393,1820,420"/>
-<area shape="rect" id="node47" href="$_timing_8h.html" title=" " alt="" coords="272,393,351,420"/>
-<area shape="rect" id="node48" href="$_threaded_inference_interface_8h.html" title="This manages multiple threads for running inference. This requires a subclass to define run_thread,..." alt="" coords="1875,95,2089,121"/>
-<area shape="rect" id="node5" title=" " alt="" coords="116,617,203,644"/>
-<area shape="rect" id="node6" title=" " alt="" coords="5,617,92,644"/>
-<area shape="rect" id="node7" title=" " alt="" coords="279,617,338,644"/>
-<area shape="rect" id="node9" title=" " alt="" coords="1327,169,1387,196"/>
-<area shape="rect" id="node10" title=" " alt="" coords="424,543,511,569"/>
-<area shape="rect" id="node11" href="$_coroutines_8h.html" title=" " alt="" coords="1411,169,1515,196"/>
-<area shape="rect" id="node43" href="$_finite_history_8h.html" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="1583,319,1698,345"/>
-<area shape="rect" id="node45" href="$_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="860,244,941,271"/>
-<area shape="rect" id="node12" title=" " alt="" coords="1407,244,1520,271"/>
-<area shape="rect" id="node13" href="$_top_n_8h.html" title=" " alt="" coords="1285,244,1351,271"/>
-<area shape="rect" id="node14" title=" " alt="" coords="1163,468,1206,495"/>
-<area shape="rect" id="node15" title=" " alt="" coords="1230,468,1281,495"/>
-<area shape="rect" id="node16" href="$_i_o_8h.html" title=" " alt="" coords="1191,319,1239,345"/>
-<area shape="rect" id="node31" href="$_numerics_8h.html" title=" " alt="" coords="683,543,779,569"/>
-<area shape="rect" id="node41" href="$_fleet_args_8h.html" title=" " alt="" coords="522,319,618,345"/>
-<area shape="rect" id="node42" href="$_serializable_8h.html" title=" " alt="" coords="1381,319,1559,345"/>
-<area shape="rect" id="node17" title=" " alt="" coords="1729,617,1793,644"/>
-<area shape="rect" id="node18" title=" " alt="" coords="1226,617,1306,644"/>
-<area shape="rect" id="node19" title=" " alt="" coords="535,543,608,569"/>
-<area shape="rect" id="node24" href="$_strings_8h.html" title=" " alt="" coords="1115,393,1193,420"/>
-<area shape="rect" id="node40" title=" " alt="" coords="911,393,1090,420"/>
-<area shape="rect" id="node21" title=" " alt="" coords="1042,543,1109,569"/>
-<area shape="rect" id="node22" title=" " alt="" coords="1907,468,2049,495"/>
-<area shape="rect" id="node23" title=" " alt="" coords="1475,468,1537,495"/>
-<area shape="rect" id="node25" title=" " alt="" coords="738,468,813,495"/>
-<area shape="rect" id="node26" title=" " alt="" coords="837,468,893,495"/>
-<area shape="rect" id="node27" title=" " alt="" coords="1714,468,1781,495"/>
-<area shape="rect" id="node28" title=" " alt="" coords="917,468,988,495"/>
-<area shape="rect" id="node29" href="$_miscellaneous_8h.html" title=" " alt="" coords="1012,468,1139,495"/>
-<area shape="rect" id="node35" href="$_random_8h.html" title="This is a thread_local rng whose first object is used to see others (in other threads)...." alt="" coords="474,468,562,495"/>
-<area shape="rect" id="node39" href="$_vector3_d_8h.html" title=" " alt="" coords="1356,468,1451,495"/>
-<area shape="rect" id="node30" title=" " alt="" coords="1133,543,1210,569"/>
-<area shape="rect" id="node32" title=" " alt="" coords="603,617,675,644"/>
-<area shape="rect" id="node33" title=" " alt="" coords="699,617,774,644"/>
-<area shape="rect" id="node34" title=" " alt="" coords="799,617,867,644"/>
-<area shape="rect" id="node36" href="$_rng_8h.html" title=" " alt="" coords="959,543,1018,569"/>
-<area shape="rect" id="node37" title=" " alt="" coords="1044,617,1149,644"/>
-<area shape="rect" id="node38" title=" " alt="" coords="909,617,1020,644"/>
-<area shape="rect" id="node44" title=" " alt="" coords="1504,393,1588,420"/>
-<area shape="rect" id="node46" title=" " alt="" coords="373,319,447,345"/>
-<area shape="rect" id="node49" href="$_concurrent_queue_8h.html" title="A concurrent queue class that allows multiple threads to push and consume. Note that this has a fixed..." alt="" coords="1925,319,2071,345"/>
+<area shape="rect" id="node1" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="671,5,823,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="2307,617,2371,644"/>
+<area shape="rect" id="node3" title=" " alt="" coords="2188,543,2251,569"/>
+<area shape="rect" id="node4" href="$_errors_8h.html" title=" " alt="" coords="117,543,189,569"/>
+<area shape="rect" id="node8" href="$_m_c_m_c_chain_8h.html" title="This represents an MCMC hain on a hypothesis of type HYP. It uses HYP::propose and HYP::compute_poste..." alt="" coords="531,95,644,121"/>
+<area shape="rect" id="node20" href="$_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="633,393,749,420"/>
+<area shape="rect" id="node47" href="$_timing_8h.html" title=" " alt="" coords="111,393,189,420"/>
+<area shape="rect" id="node49" href="$_threaded_inference_interface_8h.html" title="This manages multiple threads for running inference. This requires a subclass to define run_thread,..." alt="" coords="1199,95,1413,121"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,617,92,644"/>
+<area shape="rect" id="node6" title=" " alt="" coords="116,617,203,644"/>
+<area shape="rect" id="node7" title=" " alt="" coords="242,617,301,644"/>
+<area shape="rect" id="node9" title=" " alt="" coords="447,169,507,196"/>
+<area shape="rect" id="node10" title=" " alt="" coords="663,543,749,569"/>
+<area shape="rect" id="node11" href="$_coroutines_8h.html" title=" " alt="" coords="803,169,907,196"/>
+<area shape="rect" id="node43" href="$_finite_history_8h.html" title="A FiniteHistory stores the previous N examples of something of type T. This is used e...." alt="" coords="531,319,646,345"/>
+<area shape="rect" id="node45" href="$_control_8h.html" title="This class has all the information for running MCMC or MCTS in a little package. It defaultly constru..." alt="" coords="368,244,449,271"/>
+<area shape="rect" id="node48" href="$_fleet_statistics_8h.html" title=" " alt="" coords="1017,169,1144,196"/>
+<area shape="rect" id="node12" title=" " alt="" coords="799,244,912,271"/>
+<area shape="rect" id="node13" href="$_top_n_8h.html" title=" " alt="" coords="943,244,1010,271"/>
+<area shape="rect" id="node14" title=" " alt="" coords="2057,468,2099,495"/>
+<area shape="rect" id="node15" title=" " alt="" coords="1982,468,2033,495"/>
+<area shape="rect" id="node16" href="$_i_o_8h.html" title=" " alt="" coords="822,319,870,345"/>
+<area shape="rect" id="node31" href="$_numerics_8h.html" title=" " alt="" coords="1777,543,1873,569"/>
+<area shape="rect" id="node41" href="$_fleet_args_8h.html" title=" " alt="" coords="361,319,457,345"/>
+<area shape="rect" id="node42" href="$_serializable_8h.html" title=" " alt="" coords="894,319,1073,345"/>
+<area shape="rect" id="node17" title=" " alt="" coords="1043,617,1107,644"/>
+<area shape="rect" id="node18" title=" " alt="" coords="1269,617,1349,644"/>
+<area shape="rect" id="node19" title=" " alt="" coords="860,543,933,569"/>
+<area shape="rect" id="node24" href="$_strings_8h.html" title=" " alt="" coords="1500,393,1579,420"/>
+<area shape="rect" id="node40" title=" " alt="" coords="825,393,1003,420"/>
+<area shape="rect" id="node21" title=" " alt="" coords="571,543,638,569"/>
+<area shape="rect" id="node22" title=" " alt="" coords="825,468,968,495"/>
+<area shape="rect" id="node23" title=" " alt="" coords="1044,468,1107,495"/>
+<area shape="rect" id="node25" title=" " alt="" coords="1273,468,1347,495"/>
+<area shape="rect" id="node26" title=" " alt="" coords="1371,468,1427,495"/>
+<area shape="rect" id="node27" title=" " alt="" coords="1182,468,1249,495"/>
+<area shape="rect" id="node28" title=" " alt="" coords="1452,468,1523,495"/>
+<area shape="rect" id="node29" href="$_miscellaneous_8h.html" title=" " alt="" coords="1660,468,1787,495"/>
+<area shape="rect" id="node35" href="$_random_8h.html" title="This is a thread_local rng whose first object is used to see others (in other threads)...." alt="" coords="1547,468,1635,495"/>
+<area shape="rect" id="node39" href="$_vector3_d_8h.html" title=" " alt="" coords="1863,468,1957,495"/>
+<area shape="rect" id="node30" title=" " alt="" coords="1491,543,1569,569"/>
+<area shape="rect" id="node32" title=" " alt="" coords="1727,617,1799,644"/>
+<area shape="rect" id="node33" title=" " alt="" coords="1917,617,1991,644"/>
+<area shape="rect" id="node34" title=" " alt="" coords="1824,617,1892,644"/>
+<area shape="rect" id="node36" href="$_rng_8h.html" title=" " alt="" coords="1643,543,1702,569"/>
+<area shape="rect" id="node37" title=" " alt="" coords="1597,617,1703,644"/>
+<area shape="rect" id="node38" title=" " alt="" coords="1463,617,1573,644"/>
+<area shape="rect" id="node44" title=" " alt="" coords="367,393,451,420"/>
+<area shape="rect" id="node46" title=" " alt="" coords="263,319,336,345"/>
+<area shape="rect" id="node50" href="$_concurrent_queue_8h.html" title="A concurrent queue class that allows multiple threads to push and consume. Note that this has a fixed..." alt="" coords="1097,319,1243,345"/>
 </map>

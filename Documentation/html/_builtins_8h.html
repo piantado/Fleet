@@ -77,21 +77,58 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>The <a class="el" href="class_builtin.html">Builtin</a> type basically just stores a function pointer and an Op command. This makes it a bit handier to define Primitives because they all take this form.  
+<p>The <a class="el" href="class_builtin.html">Builtin</a> type just stores a function pointer and an Op command. This makes it a bit handier to define Primitives because they all take this form.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="_errors_8h_source.html">Errors.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_numerics_8h_source.html">Numerics.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_i_o_8h_source.html">IO.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_errors_8h_source.html">Errors.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_primitive_8h_source.html">Primitive.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Builtins.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_builtins_8h__incl.png" border="0" usemap="#src_2_virtual_machine_2_builtins_8h" alt=""/></div>
 <map name="src_2_virtual_machine_2_builtins_8h" id="src_2_virtual_machine_2_builtins_8h">
-<area shape="rect" title="The Builtin type basically just stores a function pointer and an Op command. This makes it a bit hand..." alt="" coords="141,5,284,47"/>
-<area shape="rect" href="_errors_8h.html" title=" " alt="" coords="123,95,195,121"/>
-<area shape="rect" href="_primitive_8h.html" title=" " alt="" coords="219,95,313,121"/>
-<area shape="rect" title=" " alt="" coords="5,169,92,196"/>
-<area shape="rect" title=" " alt="" coords="116,169,203,196"/>
-<area shape="rect" title=" " alt="" coords="227,169,286,196"/>
+<area shape="rect" title="The Builtin type just stores a function pointer and an Op command. This makes it a bit handier to def..." alt="" coords="1441,5,1583,47"/>
+<area shape="rect" href="_numerics_8h.html" title=" " alt="" coords="1037,319,1133,345"/>
+<area shape="rect" href="_i_o_8h.html" title=" " alt="" coords="1097,95,1145,121"/>
+<area shape="rect" href="_errors_8h.html" title=" " alt="" coords="1625,319,1697,345"/>
+<area shape="rect" href="_primitive_8h.html" title=" " alt="" coords="1700,95,1793,121"/>
+<area shape="rect" title=" " alt="" coords="1043,393,1115,420"/>
+<area shape="rect" title=" " alt="" coords="1492,393,1572,420"/>
+<area shape="rect" title=" " alt="" coords="1892,393,1967,420"/>
+<area shape="rect" title=" " alt="" coords="950,393,1018,420"/>
+<area shape="rect" title=" " alt="" coords="1404,393,1468,420"/>
+<area shape="rect" title=" " alt="" coords="5,393,69,420"/>
+<area shape="rect" title=" " alt="" coords="553,319,626,345"/>
+<area shape="rect" title=" " alt="" coords="1596,393,1655,420"/>
+<area shape="rect" href="_ordered_lock_8h.html" title="A FIFO mutex (from stackoverflow) https://stackoverflow.com/questions/14792016/creating&#45;a&#45;lock&#45;that&#45;p..." alt="" coords="198,169,314,196"/>
+<area shape="rect" href="_strings_8h.html" title=" " alt="" coords="879,169,958,196"/>
+<area shape="rect" title=" " alt="" coords="1032,169,1211,196"/>
+<area shape="rect" title=" " alt="" coords="461,319,528,345"/>
+<area shape="rect" title=" " alt="" coords="75,244,218,271"/>
+<area shape="rect" title=" " alt="" coords="294,244,357,271"/>
+<area shape="rect" title=" " alt="" coords="753,244,828,271"/>
+<area shape="rect" title=" " alt="" coords="852,244,908,271"/>
+<area shape="rect" title=" " alt="" coords="932,244,983,271"/>
+<area shape="rect" title=" " alt="" coords="1007,244,1049,271"/>
+<area shape="rect" title=" " alt="" coords="1073,244,1140,271"/>
+<area shape="rect" title=" " alt="" coords="1165,244,1235,271"/>
+<area shape="rect" href="_miscellaneous_8h.html" title=" " alt="" coords="551,244,678,271"/>
+<area shape="rect" href="_random_8h.html" title="This is a thread_local rng whose first object is used to see others (in other threads)...." alt="" coords="1311,244,1399,271"/>
+<area shape="rect" href="_vector3_d_8h.html" title=" " alt="" coords="433,244,527,271"/>
+<area shape="rect" title=" " alt="" coords="651,319,728,345"/>
+<area shape="rect" title=" " alt="" coords="1311,319,1398,345"/>
+<area shape="rect" href="_rng_8h.html" title=" " alt="" coords="1228,319,1287,345"/>
+<area shape="rect" title=" " alt="" coords="2045,393,2131,420"/>
+<area shape="rect" title=" " alt="" coords="1679,393,1766,420"/>
+<area shape="rect" title=" " alt="" coords="1274,393,1379,420"/>
+<area shape="rect" title=" " alt="" coords="1139,393,1250,420"/>
+<area shape="rect" title=" " alt="" coords="374,319,437,345"/>
+<area shape="rect" href="_instruction_8h.html" title="f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg is just a supplemental ar..." alt="" coords="1793,244,1895,271"/>
+<area shape="rect" title=" " alt="" coords="1722,319,1790,345"/>
+<area shape="rect" href="_v_m_s_runtime_error_8h.html" title=" " alt="" coords="2068,319,2217,345"/>
+<area shape="rect" href="_ops_8h.html" title=" " alt="" coords="1815,319,1873,345"/>
+<area shape="rect" href="_v_m_status_8h.html" title=" " alt="" coords="1897,319,1993,345"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -99,12 +136,13 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_builtins_8h__dep__incl.png" border="0" usemap="#src_2_virtual_machine_2_builtins_8hdep" alt=""/></div>
 <map name="src_2_virtual_machine_2_builtins_8hdep" id="src_2_virtual_machine_2_builtins_8hdep">
-<area shape="rect" title="The Builtin type basically just stores a function pointer and an Op command. This makes it a bit hand..." alt="" coords="43,5,186,47"/>
-<area shape="rect" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="45,244,185,271"/>
-<area shape="rect" href="_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="167,95,324,121"/>
-<area shape="rect" href="_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="22,169,207,196"/>
-<area shape="rect" href="_proposers_8h.html" title=" " alt="" coords="283,169,485,196"/>
-<area shape="rect" href="_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="335,244,571,271"/>
+<area shape="rect" title="The Builtin type just stores a function pointer and an Op command. This makes it a bit handier to def..." alt="" coords="135,5,277,47"/>
+<area shape="rect" href="_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="211,95,369,121"/>
+<area shape="rect" href="_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="5,169,191,196"/>
+<area shape="rect" href="_proposers_8h.html" title=" " alt="" coords="215,169,418,196"/>
+<area shape="rect" href="_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="268,244,504,271"/>
+<area shape="rect" href="_deterministic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="165,319,380,360"/>
+<area shape="rect" href="_stochastic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="404,319,597,360"/>
 </map>
 </div>
 </div>
@@ -146,12 +184,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a6888aa01e830dbc435af2316c2c74f0e"><td class="memTemplParams" colspan="2">template&lt;typename Grammar_t &gt; </td></tr>
 <tr class="memitem:a6888aa01e830dbc435af2316c2c74f0e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="struct_primitive.html">Primitive</a>&lt; bool &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_builtins.html#a6888aa01e830dbc435af2316c2c74f0e">Builtins::Flip</a> (Op::Flip, <a class="el" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> { assert(vms-&gt;pool !=nullptr);vms-&gt;pool-&gt;copy_increment_push(vms, true, -<a class="el" href="_numerics_8h.html#a1cab50ac2cae826eca1b03bb33eae1f1">LOG2</a>);bool b=vms-&gt;pool-&gt;increment_push(vms, false, -<a class="el" href="_numerics_8h.html#a1cab50ac2cae826eca1b03bb33eae1f1">LOG2</a>);if(b) { vms-&gt;status=<a class="el" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460">vmstatus_t::RANDOM_CHOICE_NO_DELETE</a>;} else { vms-&gt;status=<a class="el" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974">vmstatus_t::RANDOM_CHOICE</a>;} })</td></tr>
 <tr class="separator:a6888aa01e830dbc435af2316c2c74f0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73debdddae4e83ec3de69a730943ec73"><td class="memTemplParams" colspan="2">template&lt;typename Grammar_t &gt; </td></tr>
-<tr class="memitem:a73debdddae4e83ec3de69a730943ec73"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="struct_primitive.html">Primitive</a>&lt; bool, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_builtins.html#a73debdddae4e83ec3de69a730943ec73">Builtins::FlipP</a> (Op::FlipP, <a class="el" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> { assert(vms-&gt;pool !=nullptr);double p=vms-&gt;template getpop&lt; double &gt;();if(std::isnan(p)) { p=0.0;} assert(p&lt;=1.0 and p &gt;=0.0);vms-&gt;pool-&gt;copy_increment_push(vms, true, log(p));bool b=vms-&gt;pool-&gt;increment_push(vms, false, log(1.0-p));if(b) { vms-&gt;status=<a class="el" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460">vmstatus_t::RANDOM_CHOICE_NO_DELETE</a>;} else { vms-&gt;status=<a class="el" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974">vmstatus_t::RANDOM_CHOICE</a>;} })</td></tr>
-<tr class="separator:a73debdddae4e83ec3de69a730943ec73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae2d39a107a794003d023715f6610f96"><td class="memTemplParams" colspan="2">template&lt;typename Grammar_t &gt; </td></tr>
+<tr class="memitem:aae2d39a107a794003d023715f6610f96"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="struct_primitive.html">Primitive</a>&lt; bool, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_builtins.html#aae2d39a107a794003d023715f6610f96">Builtins::FlipP</a> (Op::FlipP, <a class="el" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> { assert(vms-&gt;pool !=nullptr);double p=vms-&gt;template getpop&lt; double &gt;();if(std::isnan(p)) { p=0.0;} if(p &gt; 1.0 or p&lt; 0.0) { <a class="el" href="_i_o_8h.html#a5e727e0c710d35259cfee7d2e8722dd5">PRINTN</a>(&quot;*** Error, received p not in [0,1]:&quot;, p);assert(false);} vms-&gt;pool-&gt;copy_increment_push(vms, true, log(p));bool b=vms-&gt;pool-&gt;increment_push(vms, false, log(1.0-p));if(b) { vms-&gt;status=<a class="el" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460">vmstatus_t::RANDOM_CHOICE_NO_DELETE</a>;} else { vms-&gt;status=<a class="el" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974">vmstatus_t::RANDOM_CHOICE</a>;} })</td></tr>
+<tr class="separator:aae2d39a107a794003d023715f6610f96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a467be9c940565b464234b395389aacb7"><td class="memTemplParams" colspan="2">template&lt;typename Grammar_t &gt; </td></tr>
 <tr class="memitem:a467be9c940565b464234b395389aacb7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="struct_primitive.html">Primitive</a>&lt; bool, double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_builtins.html#a467be9c940565b464234b395389aacb7">Builtins::SafeFlipP</a> (Op::SafeFlipP, <a class="el" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> { assert(vms-&gt;pool !=nullptr);double p=vms-&gt;template getpop&lt; double &gt;();if(std::isnan(p)) p=0.0;else if(p &gt; 1.0) p=1.0;else if(p&lt; 0.0) p=0.0;vms-&gt;pool-&gt;copy_increment_push(vms, true, log(p));bool b=vms-&gt;pool-&gt;increment_push(vms, false, log(1.0-p));if(b) { vms-&gt;status=<a class="el" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a62e4b4888c0e06f92db375155a5f5460">vmstatus_t::RANDOM_CHOICE_NO_DELETE</a>;} else { vms-&gt;status=<a class="el" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974">vmstatus_t::RANDOM_CHOICE</a>;} })</td></tr>
 <tr class="separator:a467be9c940565b464234b395389aacb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2ec850110ac1149c73a9408a1bb950a"><td class="memTemplParams" colspan="2">template&lt;typename Grammar_t , typename t , typename T  = std::set&lt;t&gt;&gt; </td></tr>
+<tr class="memitem:ab2ec850110ac1149c73a9408a1bb950a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="struct_primitive.html">Primitive</a>&lt; t, T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_builtins.html#ab2ec850110ac1149c73a9408a1bb950a">Builtins::Sample</a> (Op::Sample, <a class="el" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> { auto s=vms-&gt;template getpop&lt; T &gt;();if(s.size()==1) { auto v=std::move(*s.begin());vms-&gt;template push&lt; t &gt;(std::move(v));} else { const double lp=-log(s.size());for(const auto &amp;x :s) { bool b=vms-&gt;pool-&gt;copy_increment_push(vms, x, lp);if(not b) break;} vms-&gt;status=<a class="el" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974">vmstatus_t::RANDOM_CHOICE</a>;} })</td></tr>
+<tr class="separator:ab2ec850110ac1149c73a9408a1bb950a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accdefd925ab335a23128914646319190"><td class="memTemplParams" colspan="2">template&lt;typename Grammar_t &gt; </td></tr>
+<tr class="memitem:accdefd925ab335a23128914646319190"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="struct_primitive.html">Primitive</a>&lt; int, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_builtins.html#accdefd925ab335a23128914646319190">Builtins::Sample_int</a> (<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abac5dd1b2697720fe692c529688d3f4f8d">Op::Sample</a>, <a class="el" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> { const int mx=vms-&gt;template getpop&lt; int &gt;();const double lp=-log(mx);for(int i=0;i&lt; mx;i++) { bool b=vms-&gt;pool-&gt;copy_increment_push(vms, i, lp);if(not b) break;} vms-&gt;status=<a class="el" href="_v_m_status_8h.html#a6202215407ab29590bb936ca2996cf64a1a2e4f5a61984625db01a97518e16974">vmstatus_t::RANDOM_CHOICE</a>;})</td></tr>
+<tr class="separator:accdefd925ab335a23128914646319190"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41afa777e99c28cbf1ac3501464ba8e9"><td class="memTemplParams" colspan="2">template&lt;typename Grammar_t , typename key_t , typename output_t  = typename Grammar_t::output_t&gt; </td></tr>
 <tr class="memitem:a41afa777e99c28cbf1ac3501464ba8e9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="struct_primitive.html">Primitive</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespace_builtins.html#a41afa777e99c28cbf1ac3501464ba8e9">Builtins::Mem</a> (Op::Mem, <a class="el" href="_builtins_8h.html#ad05e94221ff2967761018674d5cbb960">BUILTIN_LAMBDA</a> { auto memindex=vms-&gt;template memstack&lt; key_t &gt;().top();vms-&gt;template memstack&lt; key_t &gt;().pop();if(vms-&gt;template mem&lt; key_t &gt;().<a class="el" href="_strings_8h.html#ae6eafa3700b097b96c1601a141a45de4">count</a>(memindex)==0) { vms-&gt;template mem&lt; key_t &gt;()[memindex]=vms-&gt;template gettop&lt; output_t &gt;();} })</td></tr>
 <tr class="separator:a41afa777e99c28cbf1ac3501464ba8e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -184,7 +228,7 @@ Functions</h2></td></tr>
 <tr class="separator:ab9990f6f6dbba65ec6517b50b13986d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The <a class="el" href="class_builtin.html">Builtin</a> type basically just stores a function pointer and an Op command. This makes it a bit handier to define Primitives because they all take this form. </p>
+<div class="textblock"><p>The <a class="el" href="class_builtin.html">Builtin</a> type just stores a function pointer and an Op command. This makes it a bit handier to define Primitives because they all take this form. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ad05e94221ff2967761018674d5cbb960"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad05e94221ff2967761018674d5cbb960">&#9670;&nbsp;</a></span>BUILTIN_LAMBDA</h2>

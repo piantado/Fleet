@@ -68,7 +68,7 @@ $(function() {
 
 <h3><a id="index_s"></a>- s -</h3><ul>
 <li>sample()
-: <a class="el" href="class_grammar_hypothesis.html#a377d4ba55cd1884f0cba70bbaf6f4e9e">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#a3f0e10d0a97330913c51fb01dc45e519">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
 , <a class="el" href="class_lexicon.html#ae2154b9ad23fa6ad2e844bdf4ffb00d9">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#aba852f52c5979b542402be563882f421">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_m_c_m_cable.html#a376572ac482cac6d5352f45dbfefcb51">MCMCable&lt; this_t, Args &gt;</a>
@@ -87,7 +87,7 @@ $(function() {
 : <a class="el" href="class_rng.html#a19501f5255db60ada6b92b20a87709e7">Rng</a>
 </li>
 <li>serialize()
-: <a class="el" href="class_grammar_hypothesis.html#a35d301f2c65f60fd8e7de84a071cb1fd">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#a5d02cb8a75dcc1ea65f652ce3fe90767">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
 , <a class="el" href="class_lexicon.html#a9cc0c92e5ed9e16f35627806452d102b">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#a5fc6e161f67c02a174955cd55a373a99">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_posterior_weighted_reservoir_sample.html#a570f7bcd1e7cddf3167f7b440375666e">PosteriorWeightedReservoirSample&lt; T &gt;</a>
@@ -99,11 +99,12 @@ $(function() {
 : <a class="el" href="struct_object.html#a520a6392c6c1acf0a0a53a08b8ffaa7d">Object&lt; feature_t &gt;</a>
 , <a class="el" href="struct_shape_color_size_object.html#a44455cb6e325e1876ebd5465cdd74c74">ShapeColorSizeObject</a>
 , <a class="el" href="class_t_normal_variable.html#ac0a63cdcc0949ea8ec5d3c45773c0df2">TNormalVariable&lt; f &gt;</a>
+, <a class="el" href="struct_vector2_d.html#a91fdba3d22caad495256d74c2bd406e7">Vector2D&lt; T &gt;</a>
 , <a class="el" href="class_vector_half_normal_hypothesis.html#a58c2acb588a9c35bf009d940e465575e">VectorHalfNormalHypothesis</a>
 , <a class="el" href="class_vector_normal_hypothesis.html#aaa0574c1f42d415c56cd605403e6c7c2">VectorNormalHypothesis</a>
 </li>
 <li>set_can_propose()
-: <a class="el" href="class_grammar_hypothesis.html#af658323081d132788bb5bebbd07c93e8">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#a51660623b8112bc6ac9dcc035331445c">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
 , <a class="el" href="class_vector_half_normal_hypothesis.html#af6b30dc227b62e6f648b00a479c429c8">VectorHalfNormalHypothesis</a>
 , <a class="el" href="class_vector_normal_hypothesis.html#ae1c1010991b3835a3296e9647ecee2b3">VectorNormalHypothesis</a>
 </li>
@@ -116,7 +117,7 @@ $(function() {
 , <a class="el" href="class_m_c_m_c_chain.html#a58af3b738ed10f410b69962558b1c87b">MCMCChain&lt; HYP &gt;</a>
 </li>
 <li>set_hypotheses_and_data()
-: <a class="el" href="class_grammar_hypothesis.html#a4073539c064e62f00e77998a04a693cb">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#a9b02ba39823eeacfce1e11261276b67f">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
 </li>
 <li>set_print_best()
 : <a class="el" href="class_top_n.html#a378be54915dab8603b8408ee72310bb7">TopN&lt; T &gt;</a>
@@ -152,9 +153,6 @@ $(function() {
 , <a class="el" href="class_stack.html#aa34222dbc28544189d97add837498b71">Stack&lt; T &gt;</a>
 , <a class="el" href="class_top_n.html#ae32d3e10d1571af34f84f32f5ca78fff">TopN&lt; T &gt;</a>
 </li>
-<li>SKGrammar()
-: <a class="el" href="class_combinators_1_1_s_k_grammar.html#a6bdc75326a1d81758bb23036de2819f0">Combinators::SKGrammar</a>
-</li>
 <li>sorted()
 : <a class="el" href="class_discrete_distribution.html#a94488cfd094f6cde47f15a1f4c7cdbb9">DiscreteDistribution&lt; T &gt;</a>
 , <a class="el" href="class_top_n.html#a3a5d2196e2181a75aea82e7e133e090b">TopN&lt; T &gt;</a>
@@ -166,20 +164,20 @@ $(function() {
 : <a class="el" href="class_stack.html#aefee698059467258bbd79045aca62a63">Stack&lt; T &gt;</a>
 </li>
 <li>stack()
-: <a class="el" href="class_virtual_machine_state.html#a580428f53e64cde8aef3c0a6a79838ec">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
+: <a class="el" href="class_virtual_machine_state.html#adc77f615f164e83ee4a25f06b3a5b64d">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
 <li>start()
 : <a class="el" href="struct_control.html#a933994a3524f2f6d7ef0a17086e7cf66">Control</a>
 , <a class="el" href="class_grammar.html#a7126c9e6abbedc4c43047c0ddd2cce5a">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
 </li>
 <li>StreamingStatistics()
-: <a class="el" href="class_streaming_statistics.html#a2ee20794cfeed51064973dd896b8301d">StreamingStatistics</a>
+: <a class="el" href="class_streaming_statistics.html#a92bd26dffa8b7569afc01c4a6ebe4e87">StreamingStatistics</a>
 </li>
 <li>string()
-: <a class="el" href="class_base_node.html#a079dae7bec84f4de8eef6d6cb9368a22">BaseNode&lt; this_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#af62d3217225afc2308a7291fef0bd640">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_base_node.html#a079dae7bec84f4de8eef6d6cb9368a22">BaseNode&lt; this_t &gt;</a>
 , <a class="el" href="class_bayesable.html#ab6944b4bfe5620c96048287a51d019c1">Bayesable&lt; _datum_t, _data_t &gt;</a>
 , <a class="el" href="class_discrete_distribution.html#a87d866919f4698e488aee9ce4bc42ed5">DiscreteDistribution&lt; T &gt;</a>
-, <a class="el" href="class_grammar_hypothesis.html#a4f978eb7e5b7e5dc86f8a434297f8c8e">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
 , <a class="el" href="class_lexicon.html#a90b7fbb8f47821de444910d1c5348a66">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#a601690bfe4d9e9bf568ecc40e8746856">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_node.html#a5d2a0e17dd2a00a79e6d1f763c9114d0">Node</a>
@@ -194,7 +192,7 @@ $(function() {
 : <a class="el" href="class_subtree_enumeration.html#a69497d89d26273149772f503a9d3e998">SubtreeEnumeration&lt; Grammar_t &gt;</a>
 </li>
 <li>sum()
-: <a class="el" href="class_base_node.html#a1d71d0fee70974903720768c86a98d03">BaseNode&lt; this_t &gt;</a>
+: <a class="el" href="class_base_node.html#a32872bacb6a7c7e8f592a0abdb6dbb6d">BaseNode&lt; this_t &gt;</a>
 </li>
 <li>sysrandom()
 : <a class="el" href="class_rng.html#ad6313804b4505225c9af44975ea6b1b1">Rng</a>

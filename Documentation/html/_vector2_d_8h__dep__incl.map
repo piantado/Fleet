@@ -1,4 +1,7 @@
 <map id="src/Containers/Vector2D.h" name="src/Containers/Vector2D.h">
-<area shape="rect" id="node1" title=" " alt="" coords="47,5,237,32"/>
-<area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,80,279,107"/>
+<area shape="rect" id="node1" title="A little trick here to force bools to act like chars and have normal std::vector iterators etc...." alt="" coords="332,5,523,32"/>
+<area shape="rect" id="node2" href="$_base_grammar_hypothesis_8h.html" title="This class does grammar inference with some collection of HumanData and fixed set of hypotheses." alt="" coords="295,80,560,121"/>
+<area shape="rect" id="node3" href="$_deterministic_grammar_hypothesis_8h.html" title="Here, the hypotheses are deterministic so we don&#39;t need Preidct_t to be a DiscreteDistribution,..." alt="" coords="5,169,271,211"/>
+<area shape="rect" id="node4" href="$_full_grammar_hypothesis_8h.html" title="This class does grammar inference with some collection of HumanData and fixed set of hypotheses." alt="" coords="295,169,560,211"/>
+<area shape="rect" id="node5" href="$_thunk_grammar_hypothesis_8h.html" title="A version of a BaseGrammarHypothesis where the hypotheses are thunks (functions of no arguments)...." alt="" coords="584,169,849,211"/>
 </map>

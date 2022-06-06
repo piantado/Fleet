@@ -190,13 +190,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afda1517e3cc79e871ecfbd7989f05530"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#afda1517e3cc79e871ecfbd7989f05530">complete</a> () override</td></tr>
 <tr class="memdesc:afda1517e3cc79e871ecfbd7989f05530"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify this hypothesis's value by filling in all the gaps.  <a href="class_l_o_t_hypothesis.html#afda1517e3cc79e871ecfbd7989f05530">More...</a><br /></td></tr>
 <tr class="separator:afda1517e3cc79e871ecfbd7989f05530"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae32b66c4156d5536d8bd4da2157b2334"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_l_o_t_hypothesis.html#aeca47f6ec628c77e629fa41247198b6a">output_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#ae32b66c4156d5536d8bd4da2157b2334">callOne</a> (const <a class="el" href="class_l_o_t_hypothesis.html#aad56e3ff6bdae00d73defa434658a487">input_t</a> x, const <a class="el" href="class_l_o_t_hypothesis.html#aeca47f6ec628c77e629fa41247198b6a">output_t</a> &amp;err=<a class="el" href="class_l_o_t_hypothesis.html#aeca47f6ec628c77e629fa41247198b6a">output_t</a>{})</td></tr>
-<tr class="memdesc:ae32b66c4156d5536d8bd4da2157b2334"><td class="mdescLeft">&#160;</td><td class="mdescRight">A variant of call that assumes no stochasticity and therefore outputs only a single value. (This uses a nullptr virtual machine pool, so will throw an error on flip)  <a href="class_l_o_t_hypothesis.html#ae32b66c4156d5536d8bd4da2157b2334">More...</a><br /></td></tr>
-<tr class="separator:ae32b66c4156d5536d8bd4da2157b2334"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a625f5094ee8f59e8ada3a7bf5a6dd68f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt; <a class="el" href="class_l_o_t_hypothesis.html#aeca47f6ec628c77e629fa41247198b6a">output_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a625f5094ee8f59e8ada3a7bf5a6dd68f">call</a> (const <a class="el" href="class_l_o_t_hypothesis.html#aad56e3ff6bdae00d73defa434658a487">input_t</a> x, const <a class="el" href="class_l_o_t_hypothesis.html#aeca47f6ec628c77e629fa41247198b6a">output_t</a> &amp;err=<a class="el" href="class_l_o_t_hypothesis.html#aeca47f6ec628c77e629fa41247198b6a">output_t</a>{})</td></tr>
-<tr class="memdesc:a625f5094ee8f59e8ada3a7bf5a6dd68f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the virtual machine on input x, and marginalize over execution paths to return a distribution on outputs. Note that loader must be a program loader, and that is to handle recursion and other function calls.  <a href="class_l_o_t_hypothesis.html#a625f5094ee8f59e8ada3a7bf5a6dd68f">More...</a><br /></td></tr>
-<tr class="separator:a625f5094ee8f59e8ada3a7bf5a6dd68f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5246924e3dbeff77e7c3f682fe7d3bd0"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#a5246924e3dbeff77e7c3f682fe7d3bd0">neighbors</a> () const override</td></tr>
+<tr class="memdesc:a5246924e3dbeff77e7c3f682fe7d3bd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">A variant of call that assumes no stochasticity and therefore outputs only a single value. (This uses a nullptr virtual machine pool, so will throw an error on flip)  <a href="class_l_o_t_hypothesis.html#a5246924e3dbeff77e7c3f682fe7d3bd0">More...</a><br /></td></tr>
 <tr class="separator:a5246924e3dbeff77e7c3f682fe7d3bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef1f480e342420aa2a2c657c6650f47c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_o_t_hypothesis.html#aef1f480e342420aa2a2c657c6650f47c">expand_to_neighbor</a> (int k) override</td></tr>
 <tr class="memdesc:aef1f480e342420aa2a2c657c6650f47c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify this hypothesis to become the k'th neighbor. NOTE This does not compile since it might not be complete.  <a href="class_l_o_t_hypothesis.html#aef1f480e342420aa2a2c657c6650f47c">More...</a><br /></td></tr>
@@ -607,103 +602,6 @@ template&lt;typename this_t , typename _input_t , typename _output_t , typename 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a625f5094ee8f59e8ada3a7bf5a6dd68f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a625f5094ee8f59e8ada3a7bf5a6dd68f">&#9670;&nbsp;</a></span>call()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename this_t , typename _input_t , typename _output_t , typename _Grammar_t , _Grammar_t * grammar, typename _datum_t  = defaultdatum_t&lt;_input_t, _output_t&gt;, typename _data_t  = std::vector&lt;_datum_t&gt;, typename _VirtualMachineState_t  = typename _Grammar_t::VirtualMachineState_t&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="class_discrete_distribution.html">DiscreteDistribution</a>&lt;<a class="el" href="class_l_o_t_hypothesis.html#aeca47f6ec628c77e629fa41247198b6a">output_t</a>&gt; <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;::call </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_l_o_t_hypothesis.html#aad56e3ff6bdae00d73defa434658a487">input_t</a>&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="class_l_o_t_hypothesis.html#aeca47f6ec628c77e629fa41247198b6a">output_t</a> &amp;&#160;</td>
-          <td class="paramname"><em>err</em> = <code><a class="el" href="class_l_o_t_hypothesis.html#aeca47f6ec628c77e629fa41247198b6a">output_t</a>{}</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Run the virtual machine on input x, and marginalize over execution paths to return a distribution on outputs. Note that loader must be a program loader, and that is to handle recursion and other function calls. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">x</td><td>- input </td></tr>
-    <tr><td class="paramname">err</td><td>- output value on error </td></tr>
-    <tr><td class="paramname">loader</td><td>- where to load recursive calls </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="ae32b66c4156d5536d8bd4da2157b2334"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae32b66c4156d5536d8bd4da2157b2334">&#9670;&nbsp;</a></span>callOne()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename this_t , typename _input_t , typename _output_t , typename _Grammar_t , _Grammar_t * grammar, typename _datum_t  = defaultdatum_t&lt;_input_t, _output_t&gt;, typename _data_t  = std::vector&lt;_datum_t&gt;, typename _VirtualMachineState_t  = typename _Grammar_t::VirtualMachineState_t&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="class_l_o_t_hypothesis.html#aeca47f6ec628c77e629fa41247198b6a">output_t</a> <a class="el" href="class_l_o_t_hypothesis.html">LOTHypothesis</a>&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;::callOne </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_l_o_t_hypothesis.html#aad56e3ff6bdae00d73defa434658a487">input_t</a>&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="class_l_o_t_hypothesis.html#aeca47f6ec628c77e629fa41247198b6a">output_t</a> &amp;&#160;</td>
-          <td class="paramname"><em>err</em> = <code><a class="el" href="class_l_o_t_hypothesis.html#aeca47f6ec628c77e629fa41247198b6a">output_t</a>{}</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>A variant of call that assumes no stochasticity and therefore outputs only a single value. (This uses a nullptr virtual machine pool, so will throw an error on flip) </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">x</td><td></td></tr>
-    <tr><td class="paramname">err</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
 <a id="a22550030c8f89e613d44a3c9c30b2ea2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a22550030c8f89e613d44a3c9c30b2ea2">&#9670;&nbsp;</a></span>compile()</h2>
 
@@ -1135,6 +1033,16 @@ template&lt;typename this_t , typename _input_t , typename _output_t , typename 
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>A variant of call that assumes no stochasticity and therefore outputs only a single value. (This uses a nullptr virtual machine pool, so will throw an error on flip) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td></td></tr>
+    <tr><td class="paramname">err</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

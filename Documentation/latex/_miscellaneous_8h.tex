@@ -2,12 +2,13 @@
 \label{_miscellaneous_8h}\index{src/Miscellaneous.h@{src/Miscellaneous.h}}
 {\ttfamily \#include $<$memory$>$}\newline
 {\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include \char`\"{}Numerics.\+h\char`\"{}}\newline
 Include dependency graph for Miscellaneous.\+h\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=206pt]{_miscellaneous_8h__incl}
+\includegraphics[width=350pt]{_miscellaneous_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:
@@ -40,7 +41,9 @@ void \mbox{\hyperlink{_miscellaneous_8h_a3889263b112d3cf0441f8306419bd40f}{hash\
 {\footnotesize template$<$typename T , typename... Rest$>$ }\\void \mbox{\hyperlink{_miscellaneous_8h_a82f7966be3aea0476ded2ac21f703595}{hash\+\_\+combine}} (std\+::size\+\_\+t \&seed, const T \&v, Rest... rest)
 \begin{DoxyCompactList}\small\item\em Combine hash functions. \end{DoxyCompactList}\item 
 {\footnotesize template$<$typename X , typename... Ts$>$ }\\constexpr bool \mbox{\hyperlink{_miscellaneous_8h_a88e3d8e9f8a97406cabe4044308e649b}{contains\+\_\+type}} ()
-\begin{DoxyCompactList}\small\item\em $\ast$$\ast$ \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em $\ast$$\ast$ \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{_miscellaneous_8h_aaa40c0e9f61d6084c2b1af0adbf8b5b7}{weighted\+\_\+quantile}} (std\+::vector$<$ std\+::pair$<$ T, double $>$$>$ \&v, double q)
+\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
@@ -151,7 +154,32 @@ Call cmd on the system
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\mbox{\Hypertarget{_miscellaneous_8h_aaa40c0e9f61d6084c2b1af0adbf8b5b7}\label{_miscellaneous_8h_aaa40c0e9f61d6084c2b1af0adbf8b5b7}} 
+\index{Miscellaneous.h@{Miscellaneous.h}!weighted\_quantile@{weighted\_quantile}}
+\index{weighted\_quantile@{weighted\_quantile}!Miscellaneous.h@{Miscellaneous.h}}
+\doxysubsubsection{\texorpdfstring{weighted\_quantile()}{weighted\_quantile()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T weighted\+\_\+quantile (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::pair$<$ T, double $>$$>$ \&}]{v,  }\item[{double}]{q }\end{DoxyParamCaption})}
 
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    Check \textcolor{keywordflow}{if} a type is a specialization of another}
+\DoxyCodeLine{   \string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~ */}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{//https://stackoverflow.com/questions/16337610/how-\/to-\/know-\/if-\/a-\/type-\/is-\/a-\/specialization-\/of-\/stdvector}}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename} Test, \textcolor{keyword}{template}<\textcolor{keyword}{typename}...> \textcolor{keyword}{class }Ref>}
+\DoxyCodeLine{\textcolor{keyword}{struct }is\_specialization : std::false\_type \{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{template}<\textcolor{keyword}{typename}...> \textcolor{keyword}{class }Ref, \textcolor{keyword}{typename}... Args>}
+\DoxyCodeLine{\textcolor{keyword}{struct }is\_specialization<Ref<Args...>, Ref>: std::true\_type \{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\end{DoxyCode}
+ \begin{DoxyVerb}Weighted quantiles
+\end{DoxyVerb}
+ $\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$$\sim$ 
 
 \doxysubsection{Variable Documentation}
 \mbox{\Hypertarget{_miscellaneous_8h_adf72477d5b96869bf84dffe9ef52037c}\label{_miscellaneous_8h_adf72477d5b96869bf84dffe9ef52037c}} 

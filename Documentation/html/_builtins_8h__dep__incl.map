@@ -1,8 +1,9 @@
 <map id="src/VirtualMachine/Builtins.h" name="src/VirtualMachine/Builtins.h">
-<area shape="rect" id="node1" title="The Builtin type basically just stores a function pointer and an Op command. This makes it a bit hand..." alt="" coords="43,5,186,47"/>
-<area shape="rect" id="node2" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="45,244,185,271"/>
-<area shape="rect" id="node3" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="167,95,324,121"/>
-<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="22,169,207,196"/>
-<area shape="rect" id="node5" href="$_proposers_8h.html" title=" " alt="" coords="283,169,485,196"/>
-<area shape="rect" id="node6" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="335,244,571,271"/>
+<area shape="rect" id="node1" title="The Builtin type just stores a function pointer and an Op command. This makes it a bit handier to def..." alt="" coords="135,5,277,47"/>
+<area shape="rect" id="node2" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="211,95,369,121"/>
+<area shape="rect" id="node3" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="5,169,191,196"/>
+<area shape="rect" id="node4" href="$_proposers_8h.html" title=" " alt="" coords="215,169,418,196"/>
+<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="268,244,504,271"/>
+<area shape="rect" id="node6" href="$_deterministic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="165,319,380,360"/>
+<area shape="rect" id="node7" href="$_stochastic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="404,319,597,360"/>
 </map>

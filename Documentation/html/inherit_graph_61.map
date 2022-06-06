@@ -1,3 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_streaming_statistics.html" title=" " alt="" coords="5,5,155,32"/>
+<area shape="rect" id="node1" href="$class_base_node.html" title=" " alt="" coords="29,49,184,75"/>
+<area shape="rect" id="node2" href="$class_m_c_t_s_base.html" title=" " alt="" coords="256,78,447,105"/>
+<area shape="rect" id="node3" href="$class_full_m_c_t_s_node.html" title=" " alt="" coords="510,5,665,47"/>
+<area shape="rect" id="node4" href="$class_minimal_m_c_t_s_node.html" title=" " alt="" coords="495,71,680,112"/>
+<area shape="rect" id="node5" href="$class_partial_m_c_t_s_node.html" title=" " alt="" coords="500,136,675,177"/>
+<area shape="rect" id="node6" href="$class_threaded_inference_interface.html" title=" " alt="" coords="5,100,208,141"/>
 </map>

@@ -1,24 +1,27 @@
 <map id="src/Containers/TopN.h" name="src/Containers/TopN.h">
-<area shape="rect" id="node1" title=" " alt="" coords="855,5,1018,32"/>
-<area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="45,355,319,382"/>
-<area shape="rect" id="node3" href="$_batch_8h.html" title=" " alt="" coords="109,266,268,293"/>
-<area shape="rect" id="node4" href="$_hill_climbing_8h.html" title="This cute kind of inference keeps a body of N top hypotheses, and successively proposes to them using..." alt="" coords="1163,177,1366,203"/>
-<area shape="rect" id="node5" href="$_reservoir_sample_8h.html" title="A simple resevoir sampling algorithm. One great disappointment is that this doesn&#39;t implement the ver..." alt="" coords="1786,80,1957,121"/>
-<area shape="rect" id="node6" href="$_coroutines_8h.html" title=" " alt="" coords="845,87,1028,114"/>
-<area shape="rect" id="node10" href="$_testing_2_basics_2main_8cpp.html" title=" " alt="" coords="369,445,547,471"/>
-<area shape="rect" id="node13" href="$_testing_2_detailed_balance_2main_8cpp.html" title=" " alt="" coords="818,437,997,479"/>
-<area shape="rect" id="node14" href="$_testing_2_grammar_terminal_weights_2main_8cpp.html" title=" " alt="" coords="102,437,345,479"/>
-<area shape="rect" id="node15" href="$_testing_2_insert_delete_probability_2main_8cpp.html" title=" " alt="" coords="571,437,793,479"/>
-<area shape="rect" id="node7" href="$_threaded_inference_interface_8h.html" title="This manages multiple threads for running inference. This requires a subclass to define run_thread,..." alt="" coords="907,169,1139,211"/>
-<area shape="rect" id="node9" href="$_inference_2_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="773,259,967,300"/>
-<area shape="rect" id="node22" href="$_m_c_m_c_chain_8h.html" title="This represents an MCMC hain on a hypothesis of type HYP. It uses HYP::propose and HYP::compute_poste..." alt="" coords="433,169,585,211"/>
-<area shape="rect" id="node8" href="$_beam_search_8h.html" title="This is an implementation of beam search that maintains a priority queue of partial states and attemp..." alt="" coords="1168,266,1372,293"/>
-<area shape="rect" id="node11" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="991,259,1143,300"/>
-<area shape="rect" id="node16" href="$_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="597,259,749,300"/>
-<area shape="rect" id="node17" href="$_m_c_t_s_base_8h.html" title=" " alt="" coords="1786,348,1933,389"/>
-<area shape="rect" id="node21" href="$_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="1447,266,1661,293"/>
-<area shape="rect" id="node12" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="597,348,751,389"/>
-<area shape="rect" id="node18" href="$_full_m_c_t_s_node_8h.html" title=" " alt="" coords="1786,437,1933,479"/>
-<area shape="rect" id="node19" href="$_minimal_m_c_t_s_node_8h.html" title=" " alt="" coords="1957,437,2119,479"/>
-<area shape="rect" id="node20" href="$_partial_m_c_t_s_node_8h.html" title=" " alt="" coords="1611,437,1761,479"/>
+<area shape="rect" id="node1" title=" " alt="" coords="1546,5,1709,32"/>
+<area shape="rect" id="node2" href="$_base_grammar_hypothesis_8h.html" title="This class does grammar inference with some collection of HumanData and fixed set of hypotheses." alt="" coords="581,348,847,389"/>
+<area shape="rect" id="node6" href="$_batch_8h.html" title=" " alt="" coords="749,266,908,293"/>
+<area shape="rect" id="node7" href="$_hill_climbing_8h.html" title="This cute kind of inference keeps a body of N top hypotheses, and successively proposes to them using..." alt="" coords="1854,177,2057,203"/>
+<area shape="rect" id="node8" href="$_reservoir_sample_8h.html" title="A simple resevoir sampling algorithm. One great disappointment is that this doesn&#39;t implement the ver..." alt="" coords="2477,80,2647,121"/>
+<area shape="rect" id="node9" href="$_coroutines_8h.html" title=" " alt="" coords="1536,87,1719,114"/>
+<area shape="rect" id="node13" href="$_testing_2_basics_2main_8cpp.html" title=" " alt="" coords="1141,445,1319,471"/>
+<area shape="rect" id="node16" href="$_testing_2_detailed_balance_2main_8cpp.html" title=" " alt="" coords="1590,437,1769,479"/>
+<area shape="rect" id="node17" href="$_testing_2_grammar_terminal_weights_2main_8cpp.html" title=" " alt="" coords="874,437,1117,479"/>
+<area shape="rect" id="node18" href="$_testing_2_insert_delete_probability_2main_8cpp.html" title=" " alt="" coords="1343,437,1565,479"/>
+<area shape="rect" id="node3" href="$_deterministic_grammar_hypothesis_8h.html" title="Here, the hypotheses are deterministic so we don&#39;t need Preidct_t to be a DiscreteDistribution,..." alt="" coords="295,437,560,479"/>
+<area shape="rect" id="node4" href="$_full_grammar_hypothesis_8h.html" title="This class does grammar inference with some collection of HumanData and fixed set of hypotheses." alt="" coords="584,437,849,479"/>
+<area shape="rect" id="node5" href="$_thunk_grammar_hypothesis_8h.html" title="A version of a BaseGrammarHypothesis where the hypotheses are thunks (functions of no arguments)...." alt="" coords="5,437,271,479"/>
+<area shape="rect" id="node10" href="$_threaded_inference_interface_8h.html" title="This manages multiple threads for running inference. This requires a subclass to define run_thread,..." alt="" coords="1598,169,1830,211"/>
+<area shape="rect" id="node12" href="$_inference_2_enumeration_inference_8h.html" title="Enumeration inferences enumerates hypotheses using a counting algorithm from the grammar...." alt="" coords="1464,259,1657,300"/>
+<area shape="rect" id="node25" href="$_m_c_m_c_chain_8h.html" title="This represents an MCMC hain on a hypothesis of type HYP. It uses HYP::propose and HYP::compute_poste..." alt="" coords="1135,169,1287,211"/>
+<area shape="rect" id="node11" href="$_beam_search_8h.html" title="This is an implementation of beam search that maintains a priority queue of partial states and attemp..." alt="" coords="1859,266,2063,293"/>
+<area shape="rect" id="node14" href="$_chain_pool_8h.html" title="A ChainPool stores a bunch of MCMCChains and allows you to run them serially or in parallel...." alt="" coords="1682,259,1834,300"/>
+<area shape="rect" id="node19" href="$_partition_m_c_m_c_8h.html" title="This takes a grammar and expands to a given depth, and then runs a separate MCMC chain in each partia..." alt="" coords="1287,259,1439,300"/>
+<area shape="rect" id="node20" href="$_m_c_t_s_base_8h.html" title=" " alt="" coords="2477,348,2623,389"/>
+<area shape="rect" id="node24" href="$_prior_inference_8h.html" title="Inference by sampling from the prior – doesn&#39;t tend to work well, but might be a useful baseline." alt="" coords="2138,266,2351,293"/>
+<area shape="rect" id="node15" href="$_parallel_tempering_8h.html" title="This is a chain pool that runs multiple chains on a ladder of different temperatures and adjusts temp..." alt="" coords="1287,348,1442,389"/>
+<area shape="rect" id="node21" href="$_full_m_c_t_s_node_8h.html" title=" " alt="" coords="2477,437,2623,479"/>
+<area shape="rect" id="node22" href="$_minimal_m_c_t_s_node_8h.html" title=" " alt="" coords="2647,437,2810,479"/>
+<area shape="rect" id="node23" href="$_partial_m_c_t_s_node_8h.html" title=" " alt="" coords="2301,437,2452,479"/>
 </map>

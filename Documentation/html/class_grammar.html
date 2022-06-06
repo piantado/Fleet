@@ -163,7 +163,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a427f722a7cc03e06d2ae9321a8b5b757"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec960301035c8f5f1f8e62338bb3f860"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#aec960301035c8f5f1f8e62338bb3f860">makeNode</a> (const <a class="el" href="class_rule.html">Rule</a> *r) const</td></tr>
 <tr class="separator:aec960301035c8f5f1f8e62338bb3f860"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a263ca363a94f8f3ae4d32012c90e9432"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a263ca363a94f8f3ae4d32012c90e9432">__generate</a> (const <a class="el" href="_nonterminal_8h.html#a1c5bfe9b903f69c83bbde5da7035fef3">nonterminal_t</a> ntfrom=<a class="el" href="class_grammar.html#ac7ec043aec5203a2cfac44f9cec50132">nt</a>&lt; <a class="el" href="class_grammar.html#aee7630d758322022048d06605b07e697">output_t</a> &gt;(), unsigned long depth=0) const</td></tr>
+<tr class="separator:a263ca363a94f8f3ae4d32012c90e9432"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbf87abced1821fb1b6a2e1ed43eba74"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#abbf87abced1821fb1b6a2e1ed43eba74">generate</a> (const <a class="el" href="_nonterminal_8h.html#a1c5bfe9b903f69c83bbde5da7035fef3">nonterminal_t</a> ntfrom=<a class="el" href="class_grammar.html#ac7ec043aec5203a2cfac44f9cec50132">nt</a>&lt; <a class="el" href="class_grammar.html#aee7630d758322022048d06605b07e697">output_t</a> &gt;(), unsigned long depth=0) const</td></tr>
+<tr class="memdesc:abbf87abced1821fb1b6a2e1ed43eba74"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper to catch DepthExcpetions and retry. This means that defaultly we try to generate GENERATE_DEPTH_EXCEPTION_RETRIES times and if ALL of them fail, we throw an assert error. Presumably, unless the grammar is terrible one of them will work. This makes our DepthExceptions generally silent to the outside since they won't call __generate typically.  <a href="class_grammar.html#abbf87abced1821fb1b6a2e1ed43eba74">More...</a><br /></td></tr>
 <tr class="separator:abbf87abced1821fb1b6a2e1ed43eba74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ce6fefd39e27641085efc3ad6a3b077"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a9ce6fefd39e27641085efc3ad6a3b077">copy_resample</a> (const <a class="el" href="class_node.html">Node</a> &amp;node, bool f(const <a class="el" href="class_node.html">Node</a> &amp;n)) const</td></tr>
 <tr class="separator:a9ce6fefd39e27641085efc3ad6a3b077"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -225,6 +228,8 @@ Public Attributes</h2></td></tr>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a845af53585cb7b104458b4f4b6da114f"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#a845af53585cb7b104458b4f4b6da114f">N_NTs</a> = std::tuple_size&lt;<a class="el" href="class_grammar.html#abfb390f3654ce837c97c8b3d0d3b5f0f">TypeTuple</a>&gt;::value</td></tr>
 <tr class="separator:a845af53585cb7b104458b4f4b6da114f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0add2774a090ed81975c0a2e4f29a71"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_grammar.html#ab0add2774a090ed81975c0a2e4f29a71">GENERATE_DEPTH_EXCEPTION_RETRIES</a> = 1000</td></tr>
+<tr class="separator:ab0add2774a090ed81975c0a2e4f29a71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename _input_t, typename _output_t, typename... GRAMMAR_TYPES&gt;<br />
@@ -414,6 +419,53 @@ template&lt;typename _input_t , typename _output_t , typename... GRAMMAR_TYPES&g
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a263ca363a94f8f3ae4d32012c90e9432"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a263ca363a94f8f3ae4d32012c90e9432">&#9670;&nbsp;</a></span>__generate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename _input_t , typename _output_t , typename... GRAMMAR_TYPES&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="class_grammar.html">Grammar</a>&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;::__generate </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="_nonterminal_8h.html#a1c5bfe9b903f69c83bbde5da7035fef3">nonterminal_t</a>&#160;</td>
+          <td class="paramname"><em>ntfrom</em> = <code><a class="el" href="class_grammar.html#ac7ec043aec5203a2cfac44f9cec50132">nt</a>&lt;<a class="el" href="class_grammar.html#aee7630d758322022048d06605b07e697">output_t</a>&gt;()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>depth</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sample an entire tree from this grammar (keeping track of depth in case we recurse too far) of return type nt. This samples a rule, makes them with makeNode, and then recurses. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nt</td><td></td></tr>
+    <tr><td class="paramname">depth</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns a <a class="el" href="class_node.html">Node</a> sampled from the grammar.</dd></dl>
+<p>NOTE: this may throw a if the grammar recurses too far (usually that means the grammar is improper)</p>
+
+</div>
+</div>
 <a id="a2efa36c5150274bb68288e906b92874e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2efa36c5150274bb68288e906b92874e">&#9670;&nbsp;</a></span>add() <span class="overload">[1/3]</span></h2>
 
@@ -1270,15 +1322,16 @@ template&lt;typename _input_t , typename _output_t , typename... GRAMMAR_TYPES&g
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Sample an entire tree from this grammar (keeping track of depth in case we recurse too far) of return type nt. This samples a rule, makes them with makeNode, and then recurses. </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>A wrapper to catch DepthExcpetions and retry. This means that defaultly we try to generate GENERATE_DEPTH_EXCEPTION_RETRIES times and if ALL of them fail, we throw an assert error. Presumably, unless the grammar is terrible one of them will work. This makes our DepthExceptions generally silent to the outside since they won't call __generate typically. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">nt</td><td></td></tr>
+    <tr><td class="paramname">ntfrom</td><td></td></tr>
     <tr><td class="paramname">depth</td><td></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns a <a class="el" href="class_node.html">Node</a> sampled from the grammar.</dd></dl>
-<p>NOTE: this may throw a if the grammar recurses too far (usually that means the grammar is improper)</p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -2050,6 +2103,30 @@ template&lt;typename _input_t , typename _output_t , typename... GRAMMAR_TYPES&g
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="ab0add2774a090ed81975c0a2e4f29a71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0add2774a090ed81975c0a2e4f29a71">&#9670;&nbsp;</a></span>GENERATE_DEPTH_EXCEPTION_RETRIES</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename _input_t , typename _output_t , typename... GRAMMAR_TYPES&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const size_t <a class="el" href="class_grammar.html">Grammar</a>&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;::GENERATE_DEPTH_EXCEPTION_RETRIES = 1000</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a87c7974198d014c9fd324fbfd39b62e6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a87c7974198d014c9fd324fbfd39b62e6">&#9670;&nbsp;</a></span>GRAMMAR_MAX_DEPTH</h2>
 

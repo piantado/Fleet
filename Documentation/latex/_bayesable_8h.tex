@@ -8,6 +8,7 @@ The \mbox{\hyperlink{class_bayesable}{Bayesable}} class provides an interface fo
 {\ttfamily \#include $<$utility$>$}\newline
 {\ttfamily \#include $<$iomanip$>$}\newline
 {\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Fleet\+Args.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Errors.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Datum.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}I\+O.\+h\char`\"{}}\newline
@@ -43,6 +44,12 @@ class \mbox{\hyperlink{class_bayesable}{Bayesable$<$ \+\_\+datum\+\_\+t, \+\_\+d
 \begin{DoxyCompactItemize}
 \item 
 volatile sig\+\_\+atomic\+\_\+t \mbox{\hyperlink{_bayesable_8h_a6f7c4963bb8a36031664821219e3159e}{C\+T\+R\+L\+\_\+C}}
+\item 
+{\footnotesize template$<$typename H\+YP $>$ }\\std\+::function \mbox{\hyperlink{_bayesable_8h_aa3726ae0727291732d991a513ae52cd2}{get\+\_\+posterior}} = \mbox{[}$\,$\mbox{]}(const H\+YP\& h) \{return h.\+posterior; \}
+\item 
+{\footnotesize template$<$typename H\+YP $>$ }\\std\+::function \mbox{\hyperlink{_bayesable_8h_a9c0f7f9d535b777700f02e7b9ec1311d}{get\+\_\+prior}} = \mbox{[}$\,$\mbox{]}(const H\+YP\& h) \{return h.\+prior; \}
+\item 
+{\footnotesize template$<$typename H\+YP $>$ }\\std\+::function \mbox{\hyperlink{_bayesable_8h_a9618c9a25988c5c88c05641bced5a421}{get\+\_\+likelihood}} = \mbox{[}$\,$\mbox{]}(const H\+YP\& h) \{return h.\+likelihood; \}
 \end{DoxyCompactItemize}
 
 
@@ -67,4 +74,25 @@ std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \
 \index{CTRL\_C@{CTRL\_C}!Bayesable.h@{Bayesable.h}}
 \doxysubsubsection{\texorpdfstring{CTRL\_C}{CTRL\_C}}
 {\footnotesize\ttfamily volatile sig\+\_\+atomic\+\_\+t C\+T\+R\+L\+\_\+C}
+
+\mbox{\Hypertarget{_bayesable_8h_a9618c9a25988c5c88c05641bced5a421}\label{_bayesable_8h_a9618c9a25988c5c88c05641bced5a421}} 
+\index{Bayesable.h@{Bayesable.h}!get\_likelihood@{get\_likelihood}}
+\index{get\_likelihood@{get\_likelihood}!Bayesable.h@{Bayesable.h}}
+\doxysubsubsection{\texorpdfstring{get\_likelihood}{get\_likelihood}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+std\+::function get\+\_\+likelihood = \mbox{[}$\,$\mbox{]}(const H\+YP\& h) \{return h.\+likelihood; \}}
+
+\mbox{\Hypertarget{_bayesable_8h_aa3726ae0727291732d991a513ae52cd2}\label{_bayesable_8h_aa3726ae0727291732d991a513ae52cd2}} 
+\index{Bayesable.h@{Bayesable.h}!get\_posterior@{get\_posterior}}
+\index{get\_posterior@{get\_posterior}!Bayesable.h@{Bayesable.h}}
+\doxysubsubsection{\texorpdfstring{get\_posterior}{get\_posterior}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+std\+::function get\+\_\+posterior = \mbox{[}$\,$\mbox{]}(const H\+YP\& h) \{return h.\+posterior; \}}
+
+\mbox{\Hypertarget{_bayesable_8h_a9c0f7f9d535b777700f02e7b9ec1311d}\label{_bayesable_8h_a9c0f7f9d535b777700f02e7b9ec1311d}} 
+\index{Bayesable.h@{Bayesable.h}!get\_prior@{get\_prior}}
+\index{get\_prior@{get\_prior}!Bayesable.h@{Bayesable.h}}
+\doxysubsubsection{\texorpdfstring{get\_prior}{get\_prior}}
+{\footnotesize\ttfamily template$<$typename H\+YP $>$ \\
+std\+::function get\+\_\+prior = \mbox{[}$\,$\mbox{]}(const H\+YP\& h) \{return h.\+prior; \}}
 

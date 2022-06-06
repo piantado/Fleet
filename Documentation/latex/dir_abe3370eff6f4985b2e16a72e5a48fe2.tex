@@ -11,7 +11,11 @@ Directory dependency graph for Hypotheses\+:
 \doxysubsection*{Directories}
 \begin{DoxyCompactItemize}
 \item 
+directory \mbox{\hyperlink{dir_dc4e04f50e9b9a59a1fc1d189e0338c4}{Grammar\+Hypotheses}}
+\item 
 directory \mbox{\hyperlink{dir_67097051198f01804fd0491398ca5ff2}{Interfaces}}
+\item 
+directory \mbox{\hyperlink{dir_e618c07e9bc341c3d2819507620952ab}{Stochastic\+Variables}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Files}
 \begin{DoxyCompactItemize}
@@ -20,17 +24,13 @@ file \mbox{\hyperlink{_cached_call_hypothesis_8h}{Cached\+Call\+Hypothesis.\+h}}
 \begin{DoxyCompactList}\small\item\em This is a hypothesis that allows you to cache an entire call on data. N\+O\+TE\+: This only catches std\+::exception, which is not good news. \end{DoxyCompactList}\item 
 file \mbox{\hyperlink{_constant_container_8h}{Constant\+Container.\+h}}
 \item 
-file \mbox{\hyperlink{_grammar_hypothesis_8h}{Grammar\+Hypothesis.\+h}}
-\begin{DoxyCompactList}\small\item\em This stores the human data, as a list of data to condition on data\mbox{[}0\+:ndata\mbox{]}, the data you predict on, and then correct/total counts We defaultly use the H\+YP\textquotesingle{}s output, datum, and data types, but this allows us to specify something different if that\textquotesingle{}s more convenient. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{_deterministic_l_o_t_hypothesis_8h}{Deterministic\+L\+O\+T\+Hypothesis.\+h}}
+\item 
 file \mbox{\hyperlink{_lexicon_8h}{Lexicon.\+h}}
 \begin{DoxyCompactList}\small\item\em A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically a \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}}). Each of these components is called a \char`\"{}factor.\char`\"{}. \end{DoxyCompactList}\item 
 file \mbox{\hyperlink{_l_o_t_hypothesis_8h}{L\+O\+T\+Hypothesis.\+h}}
 \begin{DoxyCompactList}\small\item\em A \mbox{\hyperlink{class_l_o_t_hypothesis}{L\+O\+T\+Hypothesis}} is the basic unit for doing L\+OT models. It store a \mbox{\hyperlink{class_node}{Node}} as its value, and handles all of the proposing and computing priors, likelihoods, etc. It compiles this \mbox{\hyperlink{class_node}{Node}} into a \char`\"{}program\char`\"{} which is used to make function calls, which means that the value should only be changed via \mbox{\hyperlink{class_l_o_t_hypothesis_af4c0128f8fd37bb8a02418e2f58c2bc0}{L\+O\+T\+Hypothesis\+::set\+\_\+value}}. \end{DoxyCompactList}\item 
 file \mbox{\hyperlink{_proposers_8h}{Proposers.\+h}}
 \item 
-file \mbox{\hyperlink{_t_normal_variable_8h}{T\+Normal\+Variable.\+h}}
-\item 
-file \mbox{\hyperlink{_vector_half_normal_hypothesis_8h}{Vector\+Half\+Normal\+Hypothesis.\+h}}
-\item 
-file \mbox{\hyperlink{_vector_normal_hypothesis_8h}{Vector\+Normal\+Hypothesis.\+h}}
-\begin{DoxyCompactList}\small\item\em A \mbox{\hyperlink{class_t_normal_variable}{T\+Normal\+Variable}} encapsulates M\+C\+MC operations on a single real number with a standard normal prior. This is useful for variables in e.\+g. Grammar\+Inference. This has a normal prior on a parameter and then allows an output transformation, which is cached for speed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+file \mbox{\hyperlink{_stochastic_l_o_t_hypothesis_8h}{Stochastic\+L\+O\+T\+Hypothesis.\+h}}
+\end{DoxyCompactItemize}

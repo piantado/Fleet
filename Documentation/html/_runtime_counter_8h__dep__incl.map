@@ -2,5 +2,4 @@
 <area shape="rect" id="node1" title="This class manages counting operations at runtime and interfaces operations to a grammar NOTE: Curren..." alt="" coords="26,5,170,47"/>
 <area shape="rect" id="node2" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="13,95,183,136"/>
 <area shape="rect" id="node3" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="5,184,191,211"/>
-<area shape="rect" id="node4" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="28,259,168,285"/>
 </map>

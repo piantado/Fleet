@@ -1,8 +1,12 @@
 <map id="src/Containers/DiscreteDistribution.h" name="src/Containers/DiscreteDistribution.h">
-<area shape="rect" id="node1" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="290,5,551,32"/>
-<area shape="rect" id="node2" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,87,279,114"/>
-<area shape="rect" id="node3" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="303,87,539,114"/>
-<area shape="rect" id="node4" href="$_virtual_machine_pool_8h.html" title="A little class that any VirtualMachinePool AND VirtualMachines inherit to control their behavior...." alt="" coords="563,80,727,121"/>
-<area shape="rect" id="node5" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="552,169,737,196"/>
-<area shape="rect" id="node6" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="575,244,715,271"/>
+<area shape="rect" id="node1" title="This stores a distribution from values of T to log probabilities. It is used as the return value from..." alt="" coords="753,5,1014,32"/>
+<area shape="rect" id="node2" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="223,87,459,114"/>
+<area shape="rect" id="node5" href="$_base_grammar_hypothesis_8h.html" title="This class does grammar inference with some collection of HumanData and fixed set of hypotheses." alt="" coords="751,80,1016,121"/>
+<area shape="rect" id="node9" href="$_virtual_machine_pool_8h.html" title="A little class that any VirtualMachinePool AND VirtualMachines inherit to control their behavior...." alt="" coords="1189,80,1353,121"/>
+<area shape="rect" id="node3" href="$_deterministic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="5,169,220,211"/>
+<area shape="rect" id="node4" href="$_stochastic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="244,169,437,211"/>
+<area shape="rect" id="node6" href="$_deterministic_grammar_hypothesis_8h.html" title="Here, the hypotheses are deterministic so we don&#39;t need Preidct_t to be a DiscreteDistribution,..." alt="" coords="461,169,727,211"/>
+<area shape="rect" id="node7" href="$_full_grammar_hypothesis_8h.html" title="This class does grammar inference with some collection of HumanData and fixed set of hypotheses." alt="" coords="751,169,1016,211"/>
+<area shape="rect" id="node8" href="$_thunk_grammar_hypothesis_8h.html" title="A version of a BaseGrammarHypothesis where the hypotheses are thunks (functions of no arguments)...." alt="" coords="1040,169,1305,211"/>
+<area shape="rect" id="node10" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="1329,177,1515,203"/>
 </map>

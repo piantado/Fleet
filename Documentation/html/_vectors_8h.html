@@ -89,9 +89,12 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_vectors_8h__dep__incl.png" border="0" usemap="#src_2_containers_2_vectors_8hdep" alt=""/></div>
 <map name="src_2_containers_2_vectors_8hdep" id="src_2_containers_2_vectors_8hdep">
-<area shape="rect" title=" " alt="" coords="52,5,232,32"/>
-<area shape="rect" href="_batch_8h.html" title=" " alt="" coords="63,80,221,107"/>
-<area shape="rect" href="_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="5,155,279,181"/>
+<area shape="rect" title=" " alt="" coords="337,5,517,32"/>
+<area shape="rect" href="_batch_8h.html" title=" " alt="" coords="348,80,507,107"/>
+<area shape="rect" href="_base_grammar_hypothesis_8h.html" title="This class does grammar inference with some collection of HumanData and fixed set of hypotheses." alt="" coords="295,155,560,196"/>
+<area shape="rect" href="_deterministic_grammar_hypothesis_8h.html" title="Here, the hypotheses are deterministic so we don&#39;t need Preidct_t to be a DiscreteDistribution,..." alt="" coords="5,244,271,285"/>
+<area shape="rect" href="_full_grammar_hypothesis_8h.html" title="This class does grammar inference with some collection of HumanData and fixed set of hypotheses." alt="" coords="295,244,560,285"/>
+<area shape="rect" href="_thunk_grammar_hypothesis_8h.html" title="A version of a BaseGrammarHypothesis where the hypotheses are thunks (functions of no arguments)...." alt="" coords="584,244,849,285"/>
 </map>
 </div>
 </div>
@@ -99,15 +102,15 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a49912de77a43aa7b0982a00e374adeb8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a49912de77a43aa7b0982a00e374adeb8"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_vectors_8h.html#a49912de77a43aa7b0982a00e374adeb8">slice</a> (const std::vector&lt; T &gt; &amp;v, size_t start, int len)</td></tr>
-<tr class="separator:a49912de77a43aa7b0982a00e374adeb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c6a7eabfd9d59fdfab904eda8bd1bf3"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a5c6a7eabfd9d59fdfab904eda8bd1bf3"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_vectors_8h.html#a5c6a7eabfd9d59fdfab904eda8bd1bf3">slice</a> (const std::vector&lt; T &gt; &amp;v, size_t start)</td></tr>
-<tr class="separator:a5c6a7eabfd9d59fdfab904eda8bd1bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c668deb0d49823fc26f2efca4b338be"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a3c668deb0d49823fc26f2efca4b338be"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_vectors_8h.html#a3c668deb0d49823fc26f2efca4b338be">increment</a> (std::vector&lt; T &gt; &amp;v, size_t idx, T <a class="el" href="_strings_8h.html#ae6eafa3700b097b96c1601a141a45de4">count</a>=1)</td></tr>
-<tr class="separator:a3c668deb0d49823fc26f2efca4b338be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae11572812e4ad802473804201cc473f1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ae11572812e4ad802473804201cc473f1"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_vectors_8h.html#ae11572812e4ad802473804201cc473f1">slice</a> (const std::vector&lt; T &gt; &amp;v, const size_t start, const int len)</td></tr>
+<tr class="separator:ae11572812e4ad802473804201cc473f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24e2169af51574ac00dcbbca1d7da55b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a24e2169af51574ac00dcbbca1d7da55b"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_vectors_8h.html#a24e2169af51574ac00dcbbca1d7da55b">slice</a> (const std::vector&lt; T &gt; &amp;v, const size_t start)</td></tr>
+<tr class="separator:a24e2169af51574ac00dcbbca1d7da55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa96585fa2a4daa3b21c97b26a937f653"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aa96585fa2a4daa3b21c97b26a937f653"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_vectors_8h.html#aa96585fa2a4daa3b21c97b26a937f653">increment</a> (std::vector&lt; T &gt; &amp;v, const size_t idx, T <a class="el" href="_strings_8h.html#ae6eafa3700b097b96c1601a141a45de4">count</a>=1)</td></tr>
+<tr class="separator:aa96585fa2a4daa3b21c97b26a937f653"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81e872a75b38d3d09b6dd7b724ed940a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a81e872a75b38d3d09b6dd7b724ed940a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_vectors_8h.html#a81e872a75b38d3d09b6dd7b724ed940a">glom</a> (std::vector&lt; std::vector&lt; T &gt; * &gt; &amp;X, std::vector&lt; T &gt; *&amp;v)</td></tr>
 <tr class="memdesc:a81e872a75b38d3d09b6dd7b724ed940a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Glom here takes a vector of pointers to vectors. It searches through X to find if anything matches the beginning of v, and if so, it will append the additional elements, and use the existing data. It then MODIFIES the v pointer (which is passed by reference). If no match can be found, glom will append v into x.  <a href="_vectors_8h.html#a81e872a75b38d3d09b6dd7b724ed940a">More...</a><br /></td></tr>
@@ -145,7 +148,7 @@ template&lt;typename T &gt; </div>
 <p>Glom here takes a vector of pointers to vectors. It searches through X to find if anything matches the beginning of v, and if so, it will append the additional elements, and use the existing data. It then MODIFIES the v pointer (which is passed by reference). If no match can be found, glom will append v into x. </p>
 <p>Thus, at the end of this, v points to something in X, but preferentially re-uses data in X. This is especially useful when we're compiling incremental data for learning models.</p>
 <p>NOTE: that sizes must be stored externally, since if a vector is stored in here, it may be appended to (so whatever is using X can't just compute the size)</p>
-<p>This is used primarily for <a class="el" href="class_grammar_hypothesis.html">GrammarHypothesis</a> storage of MCMC data, where we want to load multiple datasets and share overlap whenever possible (so we don't duplicate MCMC sampling)</p>
+<p>This is used primarily for GrammarHypothesis storage of MCMC data, where we want to load multiple datasets and share overlap whenever possible (so we don't duplicate MCMC sampling)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">X</td><td></td></tr>
@@ -157,8 +160,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a3c668deb0d49823fc26f2efca4b338be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c668deb0d49823fc26f2efca4b338be">&#9670;&nbsp;</a></span>increment()</h2>
+<a id="aa96585fa2a4daa3b21c97b26a937f653"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa96585fa2a4daa3b21c97b26a937f653">&#9670;&nbsp;</a></span>increment()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -174,7 +177,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype">const size_t&#160;</td>
           <td class="paramname"><em>idx</em>, </td>
         </tr>
         <tr>
@@ -193,8 +196,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a5c6a7eabfd9d59fdfab904eda8bd1bf3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c6a7eabfd9d59fdfab904eda8bd1bf3">&#9670;&nbsp;</a></span>slice() <span class="overload">[1/2]</span></h2>
+<a id="a24e2169af51574ac00dcbbca1d7da55b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24e2169af51574ac00dcbbca1d7da55b">&#9670;&nbsp;</a></span>slice() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -210,7 +213,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype">const size_t&#160;</td>
           <td class="paramname"><em>start</em>&#160;</td>
         </tr>
         <tr>
@@ -231,8 +234,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a49912de77a43aa7b0982a00e374adeb8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a49912de77a43aa7b0982a00e374adeb8">&#9670;&nbsp;</a></span>slice() <span class="overload">[2/2]</span></h2>
+<a id="ae11572812e4ad802473804201cc473f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae11572812e4ad802473804201cc473f1">&#9670;&nbsp;</a></span>slice() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -248,13 +251,13 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype">const size_t&#160;</td>
           <td class="paramname"><em>start</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">const int&#160;</td>
           <td class="paramname"><em>len</em>&#160;</td>
         </tr>
         <tr>

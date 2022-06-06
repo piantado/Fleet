@@ -1,9 +1,10 @@
 <map id="src/Grammar/Rule.h" name="src/Grammar/Rule.h">
-<area shape="rect" id="node1" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="290,5,442,32"/>
-<area shape="rect" id="node2" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="171,80,329,107"/>
-<area shape="rect" id="node7" href="$_constant_container_8h.html" title=" " alt="" coords="353,80,611,107"/>
-<area shape="rect" id="node3" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="5,229,145,256"/>
-<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="48,155,233,181"/>
-<area shape="rect" id="node5" href="$_proposers_8h.html" title=" " alt="" coords="258,155,461,181"/>
-<area shape="rect" id="node6" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="311,229,547,256"/>
+<area shape="rect" id="node1" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="357,5,509,32"/>
+<area shape="rect" id="node2" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="238,80,395,107"/>
+<area shape="rect" id="node8" href="$_constant_container_8h.html" title=" " alt="" coords="419,80,678,107"/>
+<area shape="rect" id="node3" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="5,155,191,181"/>
+<area shape="rect" id="node4" href="$_proposers_8h.html" title=" " alt="" coords="215,155,418,181"/>
+<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="268,229,504,256"/>
+<area shape="rect" id="node6" href="$_deterministic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="165,304,380,345"/>
+<area shape="rect" id="node7" href="$_stochastic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="404,304,597,345"/>
 </map>

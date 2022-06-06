@@ -93,13 +93,17 @@ $(function() {
 <li>Grammar_t
 : <a class="el" href="class_lexicon.html#ad31914cd93f183a0a44867682f83e2ba">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#aea8a655b606b49e2afd101913499915f">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_stochastic_l_o_t_hypothesis.html#adb09e31b8996a0fc6b19ddf6b16d5dc3">StochasticLOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
 </li>
 </ul>
 
 
 <h3><a id="index_h"></a>- h -</h3><ul>
 <li>HYP
-: <a class="el" href="class_grammar_hypothesis.html#a28fc99df28de741179719c94ecd77699">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#a12ac30ae59ac2bf27bd26ba1aca56c1a">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_deterministic_grammar_hypothesis.html#abfa87ec14506b3ef96f4767c7aeb2572">DeterministicGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_full_grammar_hypothesis.html#a17b6e7c0a27577d213f4596ba6fea7d2">FullGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_thunk_grammar_hypothesis.html#a88513b85abd31c900d25b4c2d49f95a5">ThunkGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
 </li>
 </ul>
 
@@ -107,10 +111,12 @@ $(function() {
 <h3><a id="index_i"></a>- i -</h3><ul>
 <li>input_t
 : <a class="el" href="classdefaultdatum__t.html#a1fb4da2bbde290bca1ad4f52b4437284">defaultdatum_t&lt; __input_t, __output_t &gt;</a>
+, <a class="el" href="class_deterministic_l_o_t_hypothesis.html#a454d0787b1fbb7c6ff33763e32b9301b">DeterministicLOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_grammar.html#a11116f6d2f48f79def498a97549c67d4">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
 , <a class="el" href="struct_human_datum.html#a5eaf5b3742079d872b1a728079baa27b">HumanDatum&lt; HYP, _input_t, _output_t, _response_t, _data_t &gt;</a>
 , <a class="el" href="class_lexicon.html#ab33b798113eab99e91ec863e628cf28e">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#aad56e3ff6bdae00d73defa434658a487">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_stochastic_l_o_t_hypothesis.html#ab7c83a9389ff2f2f3d229ab1983cac30">StochasticLOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_virtual_machine_pool.html#a8cbea2d216d16e9d23e074457b2997a0">VirtualMachinePool&lt; VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_virtual_machine_state.html#aeb5e01ec57466fd3734e0c29f2b8da0a">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
@@ -119,7 +125,10 @@ $(function() {
 
 <h3><a id="index_l"></a>- l -</h3><ul>
 <li>LL_t
-: <a class="el" href="class_grammar_hypothesis.html#a7c6a6c59b0ba1ca6e225079d0cb7143b">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#aa79dc398d19a9a78cad2b3959990ff8e">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_deterministic_grammar_hypothesis.html#a437c330d92397a11ccce1dfc8e410c6a">DeterministicGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_full_grammar_hypothesis.html#ad99c046a3c31e2d779a5f7d8cf1323db">FullGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_thunk_grammar_hypothesis.html#a316a2f44397b04ee27e083ced82b664a">ThunkGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
 </li>
 </ul>
 
@@ -134,10 +143,12 @@ $(function() {
 <h3><a id="index_o"></a>- o -</h3><ul>
 <li>output_t
 : <a class="el" href="classdefaultdatum__t.html#a0d7fadad452e2ddd0c17895a6c042d0e">defaultdatum_t&lt; __input_t, __output_t &gt;</a>
+, <a class="el" href="class_deterministic_l_o_t_hypothesis.html#ab6d18defbac2a9949246c1869578226d">DeterministicLOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_grammar.html#aee7630d758322022048d06605b07e697">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
 , <a class="el" href="struct_human_datum.html#a39ca44799fcb6b3f1fb6b2695f7ad9df">HumanDatum&lt; HYP, _input_t, _output_t, _response_t, _data_t &gt;</a>
 , <a class="el" href="class_lexicon.html#af1f548f77ea928618921f940439e9c18">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#aeca47f6ec628c77e629fa41247198b6a">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_stochastic_l_o_t_hypothesis.html#af9312d51ec2519327b2d44cdbc3a77ef">StochasticLOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_virtual_machine_pool.html#a1e659e76790f4aa4ae074d82a8c381e1">VirtualMachinePool&lt; VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_virtual_machine_state.html#a1015cee5061f82f82ef6a953b51f9bd5">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>
 </li>
@@ -146,7 +157,10 @@ $(function() {
 
 <h3><a id="index_p"></a>- p -</h3><ul>
 <li>Predict_t
-: <a class="el" href="class_grammar_hypothesis.html#aa5ecc4d2215fa50a9c2b4e7c682c7cd7">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>
+: <a class="el" href="class_base_grammar_hypothesis.html#a8732d2afea83d5d9d290e746ee08130d">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_deterministic_grammar_hypothesis.html#a6419f0ad0129cfa2bfb9d928921550d7">DeterministicGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_full_grammar_hypothesis.html#a52ed3fdb9ec4b1a403b89f53619b3117">FullGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_thunk_grammar_hypothesis.html#a494c309431f50d4f7bcf52f73db494b1">ThunkGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
 </li>
 <li>ProposalType
 : <a class="el" href="class_l_o_t_hypothesis.html#a56b055927dc4d3267c71eba75bfe9e0b">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
@@ -168,7 +182,12 @@ $(function() {
 , <a class="el" href="class_vector_normal_hypothesis.html#a09cee749dded61833bfa243aa84fd138">VectorNormalHypothesis</a>
 </li>
 <li>Super
-: <a class="el" href="struct_shape_color_size_object.html#a94fae3a9deb8abb65346cd045d7e858d">ShapeColorSizeObject</a>
+: <a class="el" href="class_deterministic_grammar_hypothesis.html#a2bc373585aae00b6174c1de12d67d9f1">DeterministicGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="class_deterministic_l_o_t_hypothesis.html#a1b21621e02b91b20872b41671d3707e8">DeterministicLOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_full_grammar_hypothesis.html#a4035fc6e286ea8b18637e3c084a3120e">FullGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
+, <a class="el" href="struct_shape_color_size_object.html#a94fae3a9deb8abb65346cd045d7e858d">ShapeColorSizeObject</a>
+, <a class="el" href="class_stochastic_l_o_t_hypothesis.html#aa478265eba87a63da8202f3d51d4f229">StochasticLOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_thunk_grammar_hypothesis.html#ad87a518978741d15ac807f867afc17d8">ThunkGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>
 </li>
 </ul>
 
@@ -189,9 +208,11 @@ $(function() {
 
 <h3><a id="index_v"></a>- v -</h3><ul>
 <li>VirtualMachineState_t
-: <a class="el" href="class_grammar.html#a62e87cde3f753a426cc6688c4dde40b8">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
+: <a class="el" href="class_deterministic_l_o_t_hypothesis.html#ac2cb2803528eaf3b8f0c9a19447a5049">DeterministicLOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_grammar.html#a62e87cde3f753a426cc6688c4dde40b8">Grammar&lt; _input_t, _output_t, GRAMMAR_TYPES &gt;</a>
 , <a class="el" href="class_lexicon.html#a37916cf677e3d9f3fe097453f27edb58">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>
 , <a class="el" href="class_l_o_t_hypothesis.html#aee006574a5f8f7b2b948af0d566d2bad">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
+, <a class="el" href="class_stochastic_l_o_t_hypothesis.html#aa127de6f246221aeda2d2cc9a3237e20">StochasticLOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>
 </li>
 <li>VMSStack
 : <a class="el" href="class_virtual_machine_state.html#aaa272d9002040c8c15908170fbe16a88">VirtualMachineState&lt; _t_input, _t_output, VM_TYPES &gt;</a>

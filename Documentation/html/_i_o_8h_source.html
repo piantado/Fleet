@@ -179,7 +179,7 @@ $(function() {
 <div class="line"><a name="l00150"></a><span class="lineno"><a class="line" href="_i_o_8h.html#a5159eda50418e68b5242ed53c19f10b9">  150</a></span>&#160;std::vector&lt;std::array&lt;std::string,N&gt;&gt; <a class="code" href="_i_o_8h.html#a5159eda50418e68b5242ed53c19f10b9">read_csv</a>(<span class="keyword">const</span> std::string path, <span class="keywordtype">bool</span> skipheader, <span class="keyword">const</span> <span class="keywordtype">char</span> delimiter=<span class="charliteral">&#39;\t&#39;</span>) {</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    </div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    std::ifstream file(path);</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordflow">if</span>(file.fail()){ assert(<span class="keyword">false</span>); }</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordflow">if</span>(file.fail()){ assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;*** File does not exist&quot;</span>); }</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    std::string s;</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    std::vector&lt;std::array&lt;std::string,N&gt;&gt; out; </div>
@@ -200,7 +200,7 @@ $(function() {
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;std::vector&lt;std::vector&lt;std::string&gt;&gt; <a class="code" href="_i_o_8h.html#a5159eda50418e68b5242ed53c19f10b9">read_csv</a>(<span class="keyword">const</span> std::string path, <span class="keywordtype">bool</span> skipheader, <span class="keyword">const</span> <span class="keywordtype">char</span> delimiter=<span class="charliteral">&#39;\t&#39;</span>) {</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    </div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    std::ifstream file(path);</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordflow">if</span>(file.fail()){ assert(<span class="keyword">false</span>); }</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordflow">if</span>(file.fail()){ assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;*** File does not exist&quot;</span>); }</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    std::string s;</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    std::vector&lt;std::vector&lt;std::string&gt;&gt; out;  </div>

@@ -79,18 +79,21 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_ops_8h__dep__incl.png" border="0" usemap="#src_2_virtual_machine_2_program_2_ops_8hdep" alt=""/></div>
 <map name="src_2_virtual_machine_2_program_2_ops_8hdep" id="src_2_virtual_machine_2_program_2_ops_8hdep">
-<area shape="rect" title=" " alt="" coords="423,5,566,47"/>
-<area shape="rect" href="_instruction_8h.html" title="f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg is just a supplemental ar..." alt="" coords="411,95,578,136"/>
-<area shape="rect" href="_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="243,191,395,218"/>
-<area shape="rect" href="_program_8h.html" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="419,184,571,225"/>
-<area shape="rect" href="_runtime_counter_8h.html" title="This class manages counting operations at runtime and interfaces operations to a grammar NOTE: Curren..." alt="" coords="603,184,747,225"/>
-<area shape="rect" href="_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="412,281,569,307"/>
-<area shape="rect" href="_constant_container_8h.html" title=" " alt="" coords="5,281,264,307"/>
-<area shape="rect" href="_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="625,437,765,464"/>
-<area shape="rect" href="_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="667,363,853,389"/>
-<area shape="rect" href="_proposers_8h.html" title=" " alt="" coords="389,363,592,389"/>
-<area shape="rect" href="_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="234,437,470,464"/>
-<area shape="rect" href="_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="593,273,764,315"/>
+<area shape="rect" title=" " alt="" coords="203,5,346,47"/>
+<area shape="rect" href="_instruction_8h.html" title="f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg is just a supplemental ar..." alt="" coords="191,95,358,136"/>
+<area shape="rect" href="_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="455,191,607,218"/>
+<area shape="rect" href="_primitive_8h.html" title=" " alt="" coords="287,184,430,225"/>
+<area shape="rect" href="_program_8h.html" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="5,273,157,315"/>
+<area shape="rect" href="_runtime_counter_8h.html" title="This class manages counting operations at runtime and interfaces operations to a grammar NOTE: Curren..." alt="" coords="119,184,263,225"/>
+<area shape="rect" href="_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="355,370,512,397"/>
+<area shape="rect" href="_constant_container_8h.html" title=" " alt="" coords="488,281,747,307"/>
+<area shape="rect" href="_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="115,452,301,479"/>
+<area shape="rect" href="_proposers_8h.html" title=" " alt="" coords="325,452,528,479"/>
+<area shape="rect" href="_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="309,527,545,553"/>
+<area shape="rect" href="_deterministic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="206,601,421,643"/>
+<area shape="rect" href="_stochastic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="445,601,638,643"/>
+<area shape="rect" href="_builtins_8h.html" title="The Builtin type just stores a function pointer and an Op command. This makes it a bit handier to def..." alt="" coords="270,273,413,315"/>
+<area shape="rect" href="_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="109,363,280,404"/>
 </map>
 </div>
 </div>
@@ -122,19 +125,20 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba9ffbd422925a6839ee820ddbc59278c5">Op::Flip</a>, 
 <a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba5602c03a0d45790d7fe165e26c852291">Op::FlipP</a>, 
 <a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba7844dd5b72152559f4244d829e606ae0">Op::SafeFlipP</a>, 
-<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abadba5553473d129a7985fb532dc249ff4">Op::Mem</a>, 
+<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abac5dd1b2697720fe692c529688d3f4f8d">Op::Sample</a>, 
 <br />
-&#160;&#160;<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba60832e2e4bbebccf26555b9ba658bad5">Op::NoOp</a>, 
+&#160;&#160;<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abadba5553473d129a7985fb532dc249ff4">Op::Mem</a>, 
+<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba60832e2e4bbebccf26555b9ba658bad5">Op::NoOp</a>, 
 <a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba562c8c99e2e0d9f20d5e7017b45b33ce">Op::CL_I</a>, 
 <a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba7a08f6d182bdbb1be7e6b1eb6092b27b">Op::CL_S</a>, 
-<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abaf1d70317b3258fef8e24bf9501d7ad0c">Op::CL_K</a>, 
 <br />
-&#160;&#160;<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba6dd1e6a125b95957fee5612e7c200d9e">Op::CL_Apply</a>, 
+&#160;&#160;<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abaf1d70317b3258fef8e24bf9501d7ad0c">Op::CL_K</a>, 
+<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba6dd1e6a125b95957fee5612e7c200d9e">Op::CL_Apply</a>, 
 <a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45ababfacbbe4e8be8fbc78a60cd9f8e67dd5">Op::Custom1</a>, 
 <a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba1d8ba0be5e8d76a3e6fb571c80929db2">Op::Custom2</a>, 
-<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba01cd47f19cbca3337e2f0864d20544c8">Op::Custom3</a>, 
 <br />
-&#160;&#160;<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abaadea16898400a3a8fa1921341144807e">Op::Custom4</a>, 
+&#160;&#160;<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45aba01cd47f19cbca3337e2f0864d20544c8">Op::Custom3</a>, 
+<a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abaadea16898400a3a8fa1921341144807e">Op::Custom4</a>, 
 <a class="el" href="_ops_8h.html#a588e6b56097e045c733b60d25c4d45abaee827f906d1f4427dd97b4d5d1a11118">Op::Custom5</a>
 <br />
  }</td></tr>
@@ -180,6 +184,7 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a588e6b56097e045c733b60d25c4d45aba9ffbd422925a6839ee820ddbc59278c5"></a>Flip&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a588e6b56097e045c733b60d25c4d45aba5602c03a0d45790d7fe165e26c852291"></a>FlipP&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a588e6b56097e045c733b60d25c4d45aba7844dd5b72152559f4244d829e606ae0"></a>SafeFlipP&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a588e6b56097e045c733b60d25c4d45abac5dd1b2697720fe692c529688d3f4f8d"></a>Sample&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a588e6b56097e045c733b60d25c4d45abadba5553473d129a7985fb532dc249ff4"></a>Mem&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a588e6b56097e045c733b60d25c4d45aba60832e2e4bbebccf26555b9ba658bad5"></a>NoOp&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a588e6b56097e045c733b60d25c4d45aba562c8c99e2e0d9f20d5e7017b45b33ce"></a>CL_I&#160;</td><td class="fielddoc"></td></tr>

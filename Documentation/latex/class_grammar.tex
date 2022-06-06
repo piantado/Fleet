@@ -81,8 +81,10 @@ virtual \mbox{\hyperlink{class_rule}{Rule}} $\ast$ \mbox{\hyperlink{class_gramma
 \item 
 \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar_aec960301035c8f5f1f8e62338bb3f860}{make\+Node}} (const \mbox{\hyperlink{class_rule}{Rule}} $\ast$r) const
 \item 
-\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar_abbf87abced1821fb1b6a2e1ed43eba74}{generate}} (const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} ntfrom=\mbox{\hyperlink{class_grammar_ac7ec043aec5203a2cfac44f9cec50132}{nt}}$<$ \mbox{\hyperlink{class_grammar_aee7630d758322022048d06605b07e697}{output\+\_\+t}} $>$(), unsigned long depth=0) const
+\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar_a263ca363a94f8f3ae4d32012c90e9432}{\+\_\+\+\_\+generate}} (const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} ntfrom=\mbox{\hyperlink{class_grammar_ac7ec043aec5203a2cfac44f9cec50132}{nt}}$<$ \mbox{\hyperlink{class_grammar_aee7630d758322022048d06605b07e697}{output\+\_\+t}} $>$(), unsigned long depth=0) const
 \item 
+\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar_abbf87abced1821fb1b6a2e1ed43eba74}{generate}} (const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}} ntfrom=\mbox{\hyperlink{class_grammar_ac7ec043aec5203a2cfac44f9cec50132}{nt}}$<$ \mbox{\hyperlink{class_grammar_aee7630d758322022048d06605b07e697}{output\+\_\+t}} $>$(), unsigned long depth=0) const
+\begin{DoxyCompactList}\small\item\em A wrapper to catch Depth\+Excpetions and retry. This means that defaultly we try to generate G\+E\+N\+E\+R\+A\+T\+E\+\_\+\+D\+E\+P\+T\+H\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+N\+\_\+\+R\+E\+T\+R\+I\+ES times and if A\+LL of them fail, we throw an assert error. Presumably, unless the grammar is terrible one of them will work. This makes our Depth\+Exceptions generally silent to the outside since they won\textquotesingle{}t call \+\_\+\+\_\+generate typically. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar_a9ce6fefd39e27641085efc3ad6a3b077}{copy\+\_\+resample}} (const \mbox{\hyperlink{class_node}{Node}} \&node, bool f(const \mbox{\hyperlink{class_node}{Node}} \&n)) const
 \item 
 std\+::vector$<$ size\+\_\+t $>$ \mbox{\hyperlink{class_grammar_a842ec663d0131ac6b8175f71cf003ce2}{get\+\_\+cumulative\+\_\+indices}} () const
@@ -134,6 +136,8 @@ size\+\_\+t \mbox{\hyperlink{class_grammar_a87c7974198d014c9fd324fbfd39b62e6}{G\
 \begin{DoxyCompactItemize}
 \item 
 static constexpr size\+\_\+t \mbox{\hyperlink{class_grammar_a845af53585cb7b104458b4f4b6da114f}{N\+\_\+\+N\+Ts}} = std\+::tuple\+\_\+size$<$\mbox{\hyperlink{class_grammar_abfb390f3654ce837c97c8b3d0d3b5f0f}{Type\+Tuple}}$>$\+::value
+\item 
+static const size\+\_\+t \mbox{\hyperlink{class_grammar_ab0add2774a090ed81975c0a2e4f29a71}{G\+E\+N\+E\+R\+A\+T\+E\+\_\+\+D\+E\+P\+T\+H\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+N\+\_\+\+R\+E\+T\+R\+I\+ES}} = 1000
 \end{DoxyCompactItemize}
 
 
@@ -219,7 +223,24 @@ using \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+out
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_grammar_a2efa36c5150274bb68288e906b92874e}\label{class_grammar_a2efa36c5150274bb68288e906b92874e}} 
+\mbox{\Hypertarget{class_grammar_a263ca363a94f8f3ae4d32012c90e9432}\label{class_grammar_a263ca363a94f8f3ae4d32012c90e9432}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!\_\_generate@{\_\_generate}}
+\index{\_\_generate@{\_\_generate}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
+\doxysubsubsection{\texorpdfstring{\_\_generate()}{\_\_generate()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+\mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::\+\_\+\+\_\+generate (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}}]{ntfrom = {\ttfamily \mbox{\hyperlink{class_grammar_ac7ec043aec5203a2cfac44f9cec50132}{nt}}$<$\mbox{\hyperlink{class_grammar_aee7630d758322022048d06605b07e697}{output\+\_\+t}}$>$()},  }\item[{unsigned long}]{depth = {\ttfamily 0} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sample an entire tree from this grammar (keeping track of depth in case we recurse too far) of return type nt. This samples a rule, makes them with make\+Node, and then recurses. 
+\begin{DoxyParams}{Parameters}
+{\em nt} & \\
+\hline
+{\em depth} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a \mbox{\hyperlink{class_node}{Node}} sampled from the grammar.
+\end{DoxyReturn}
+N\+O\+TE\+: this may throw a if the grammar recurses too far (usually that means the grammar is improper)\mbox{\Hypertarget{class_grammar_a2efa36c5150274bb68288e906b92874e}\label{class_grammar_a2efa36c5150274bb68288e906b92874e}} 
 \index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!add@{add}}
 \index{add@{add}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
 \doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
@@ -484,17 +505,21 @@ Expand from names where s is delimited by \textquotesingle{}\+:\textquotesingle{
 {\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
 \mbox{\hyperlink{class_node}{Node}} \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::generate (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{_nonterminal_8h_a1c5bfe9b903f69c83bbde5da7035fef3}{nonterminal\+\_\+t}}}]{ntfrom = {\ttfamily \mbox{\hyperlink{class_grammar_ac7ec043aec5203a2cfac44f9cec50132}{nt}}$<$\mbox{\hyperlink{class_grammar_aee7630d758322022048d06605b07e697}{output\+\_\+t}}$>$()},  }\item[{unsigned long}]{depth = {\ttfamily 0} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
-Sample an entire tree from this grammar (keeping track of depth in case we recurse too far) of return type nt. This samples a rule, makes them with make\+Node, and then recurses. 
+
+
+A wrapper to catch Depth\+Excpetions and retry. This means that defaultly we try to generate G\+E\+N\+E\+R\+A\+T\+E\+\_\+\+D\+E\+P\+T\+H\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+N\+\_\+\+R\+E\+T\+R\+I\+ES times and if A\+LL of them fail, we throw an assert error. Presumably, unless the grammar is terrible one of them will work. This makes our Depth\+Exceptions generally silent to the outside since they won\textquotesingle{}t call \+\_\+\+\_\+generate typically. 
+
+
 \begin{DoxyParams}{Parameters}
-{\em nt} & \\
+{\em ntfrom} & \\
 \hline
 {\em depth} & \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Returns a \mbox{\hyperlink{class_node}{Node}} sampled from the grammar.
+
 \end{DoxyReturn}
-N\+O\+TE\+: this may throw a if the grammar recurses too far (usually that means the grammar is improper)\mbox{\Hypertarget{class_grammar_a354a5d9bdaced96748c599bc7c3bd64a}\label{class_grammar_a354a5d9bdaced96748c599bc7c3bd64a}} 
+\mbox{\Hypertarget{class_grammar_a354a5d9bdaced96748c599bc7c3bd64a}\label{class_grammar_a354a5d9bdaced96748c599bc7c3bd64a}} 
 \index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!get\_counts@{get\_counts}}
 \index{get\_counts@{get\_counts}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
 \doxysubsubsection{\texorpdfstring{get\_counts()}{get\_counts()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
@@ -793,6 +818,13 @@ The start nonterminal type.
 
 
 \doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_grammar_ab0add2774a090ed81975c0a2e4f29a71}\label{class_grammar_ab0add2774a090ed81975c0a2e4f29a71}} 
+\index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!GENERATE\_DEPTH\_EXCEPTION\_RETRIES@{GENERATE\_DEPTH\_EXCEPTION\_RETRIES}}
+\index{GENERATE\_DEPTH\_EXCEPTION\_RETRIES@{GENERATE\_DEPTH\_EXCEPTION\_RETRIES}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}
+\doxysubsubsection{\texorpdfstring{GENERATE\_DEPTH\_EXCEPTION\_RETRIES}{GENERATE\_DEPTH\_EXCEPTION\_RETRIES}}
+{\footnotesize\ttfamily template$<$typename \+\_\+input\+\_\+t , typename \+\_\+output\+\_\+t , typename... G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES$>$ \\
+const size\+\_\+t \mbox{\hyperlink{class_grammar}{Grammar}}$<$ \+\_\+input\+\_\+t, \+\_\+output\+\_\+t, G\+R\+A\+M\+M\+A\+R\+\_\+\+T\+Y\+P\+ES $>$\+::G\+E\+N\+E\+R\+A\+T\+E\+\_\+\+D\+E\+P\+T\+H\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+N\+\_\+\+R\+E\+T\+R\+I\+ES = 1000\hspace{0.3cm}{\ttfamily [static]}}
+
 \mbox{\Hypertarget{class_grammar_a87c7974198d014c9fd324fbfd39b62e6}\label{class_grammar_a87c7974198d014c9fd324fbfd39b62e6}} 
 \index{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}!GRAMMAR\_MAX\_DEPTH@{GRAMMAR\_MAX\_DEPTH}}
 \index{GRAMMAR\_MAX\_DEPTH@{GRAMMAR\_MAX\_DEPTH}!Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$@{Grammar$<$ \_input\_t, \_output\_t, GRAMMAR\_TYPES $>$}}

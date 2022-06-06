@@ -1,4 +1,6 @@
 <map id="src/Hypotheses/Proposers.h" name="src/Hypotheses/Proposers.h">
-<area shape="rect" id="node1" title=" " alt="" coords="22,5,225,32"/>
-<area shape="rect" id="node2" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="5,80,241,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="125,5,327,32"/>
+<area shape="rect" id="node2" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="108,80,344,107"/>
+<area shape="rect" id="node3" href="$_deterministic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="5,155,220,196"/>
+<area shape="rect" id="node4" href="$_stochastic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="244,155,437,196"/>
 </map>

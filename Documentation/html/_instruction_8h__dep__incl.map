@@ -1,13 +1,16 @@
 <map id="src/VirtualMachine/Program/Instruction.h" name="src/VirtualMachine/Program/Instruction.h">
-<area shape="rect" id="node1" title="f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg is just a supplemental ar..." alt="" coords="411,5,578,47"/>
-<area shape="rect" id="node2" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="243,102,395,129"/>
-<area shape="rect" id="node9" href="$_program_8h.html" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="419,95,571,136"/>
-<area shape="rect" id="node11" href="$_runtime_counter_8h.html" title="This class manages counting operations at runtime and interfaces operations to a grammar NOTE: Curren..." alt="" coords="603,95,747,136"/>
-<area shape="rect" id="node3" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="412,191,569,218"/>
-<area shape="rect" id="node8" href="$_constant_container_8h.html" title=" " alt="" coords="5,191,264,218"/>
-<area shape="rect" id="node4" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="625,348,765,375"/>
-<area shape="rect" id="node5" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="667,273,853,300"/>
-<area shape="rect" id="node6" href="$_proposers_8h.html" title=" " alt="" coords="389,273,592,300"/>
-<area shape="rect" id="node7" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="234,348,470,375"/>
-<area shape="rect" id="node10" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="593,184,764,225"/>
+<area shape="rect" id="node1" title="f here is a point to a void(VirtualMachineState_t* vms, int arg), where arg is just a supplemental ar..." alt="" coords="191,5,358,47"/>
+<area shape="rect" id="node2" href="$_rule_8h.html" title="A Rule stores one possible expansion in the grammar, specifying a nonterminal type,..." alt="" coords="455,102,607,129"/>
+<area shape="rect" id="node10" href="$_primitive_8h.html" title=" " alt="" coords="287,95,430,136"/>
+<area shape="rect" id="node12" href="$_program_8h.html" title="A program here stores just a stack of instructions which can be executed by the VirtualMachineState_t..." alt="" coords="5,184,157,225"/>
+<area shape="rect" id="node14" href="$_runtime_counter_8h.html" title="This class manages counting operations at runtime and interfaces operations to a grammar NOTE: Curren..." alt="" coords="119,95,263,136"/>
+<area shape="rect" id="node3" href="$_node_8h.html" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="355,281,512,307"/>
+<area shape="rect" id="node9" href="$_constant_container_8h.html" title=" " alt="" coords="488,191,747,218"/>
+<area shape="rect" id="node4" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="115,363,301,389"/>
+<area shape="rect" id="node5" href="$_proposers_8h.html" title=" " alt="" coords="325,363,528,389"/>
+<area shape="rect" id="node6" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="309,437,545,464"/>
+<area shape="rect" id="node7" href="$_deterministic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="206,512,421,553"/>
+<area shape="rect" id="node8" href="$_stochastic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="445,512,638,553"/>
+<area shape="rect" id="node11" href="$_builtins_8h.html" title="The Builtin type just stores a function pointer and an Op command. This makes it a bit handier to def..." alt="" coords="270,184,413,225"/>
+<area shape="rect" id="node13" href="$_virtual_machine_state_8h.html" title="This represents the state of a partial evaluation of a program, corresponding to the value of all of ..." alt="" coords="109,273,280,315"/>
 </map>

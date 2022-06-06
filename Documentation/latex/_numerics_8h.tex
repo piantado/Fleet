@@ -48,9 +48,9 @@ double \mbox{\hyperlink{_numerics_8h_a5fdae733d4a94abc71ba1177024a375d}{mygamma}
 \item 
 double \mbox{\hyperlink{_numerics_8h_a4bd5e68efa9ae0bd7383f132b766bb57}{lfactorial}} (double x)
 \item 
-double \mbox{\hyperlink{_numerics_8h_a898de0863d7a472197c7efcbb5d4c40e}{mean}} (std\+::vector$<$ double $>$ \&v)
+{\footnotesize template$<$typename T $>$ }\\double \mbox{\hyperlink{_numerics_8h_a8071864d7328f6884c4b525705f79842}{mean}} (std\+::vector$<$ T $>$ \&v)
 \item 
-double \mbox{\hyperlink{_numerics_8h_a33cc66b086176a9298c6b276e3e86564}{sd}} (std\+::vector$<$ double $>$ \&v)
+{\footnotesize template$<$typename T $>$ }\\double \mbox{\hyperlink{_numerics_8h_a5708d665c46dc134dfbe57c4433b20c4}{sd}} (std\+::vector$<$ T $>$ \&v)
 \end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -62,6 +62,8 @@ constexpr double \mbox{\hyperlink{_numerics_8h_af9434aea82baf2f6a5d9b6f9e36db08e
 constexpr double \mbox{\hyperlink{_numerics_8h_a23cd69b9bcaba6ec06598bc08ed5b6c3}{NaN}} = std\+::numeric\+\_\+limits$<$double$>$\+::quiet\+\_\+\+NaN()
 \item 
 constexpr double \mbox{\hyperlink{_numerics_8h_ad172e8d1a294401209781f9aeaa77410}{pi}} = M\+\_\+\+PI
+\item 
+constexpr double \mbox{\hyperlink{_numerics_8h_a84309c3d1ecc52d6d02bb7a304931357}{tau}} = 2$\ast$\mbox{\hyperlink{_numerics_8h_ad172e8d1a294401209781f9aeaa77410}{pi}}
 \end{DoxyCompactItemize}
 
 
@@ -140,11 +142,12 @@ Compute log(sum(exp(v)). For now, this just unrolls logplusexp, but we might con
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
-\mbox{\Hypertarget{_numerics_8h_a898de0863d7a472197c7efcbb5d4c40e}\label{_numerics_8h_a898de0863d7a472197c7efcbb5d4c40e}} 
+\mbox{\Hypertarget{_numerics_8h_a8071864d7328f6884c4b525705f79842}\label{_numerics_8h_a8071864d7328f6884c4b525705f79842}} 
 \index{Numerics.h@{Numerics.h}!mean@{mean}}
 \index{mean@{mean}!Numerics.h@{Numerics.h}}
 \doxysubsubsection{\texorpdfstring{mean()}{mean()}}
-{\footnotesize\ttfamily double mean (\begin{DoxyParamCaption}\item[{std\+::vector$<$ double $>$ \&}]{v }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+double mean (\begin{DoxyParamCaption}\item[{std\+::vector$<$ T $>$ \&}]{v }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{_numerics_8h_a5fdae733d4a94abc71ba1177024a375d}\label{_numerics_8h_a5fdae733d4a94abc71ba1177024a375d}} 
 \index{Numerics.h@{Numerics.h}!mygamma@{mygamma}}
@@ -158,11 +161,12 @@ Compute log(sum(exp(v)). For now, this just unrolls logplusexp, but we might con
 \doxysubsubsection{\texorpdfstring{mylgamma()}{mylgamma()}}
 {\footnotesize\ttfamily double mylgamma (\begin{DoxyParamCaption}\item[{double}]{v }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{_numerics_8h_a33cc66b086176a9298c6b276e3e86564}\label{_numerics_8h_a33cc66b086176a9298c6b276e3e86564}} 
+\mbox{\Hypertarget{_numerics_8h_a5708d665c46dc134dfbe57c4433b20c4}\label{_numerics_8h_a5708d665c46dc134dfbe57c4433b20c4}} 
 \index{Numerics.h@{Numerics.h}!sd@{sd}}
 \index{sd@{sd}!Numerics.h@{Numerics.h}}
 \doxysubsubsection{\texorpdfstring{sd()}{sd()}}
-{\footnotesize\ttfamily double sd (\begin{DoxyParamCaption}\item[{std\+::vector$<$ double $>$ \&}]{v }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+double sd (\begin{DoxyParamCaption}\item[{std\+::vector$<$ T $>$ \&}]{v }\end{DoxyParamCaption})}
 
 
 
@@ -190,4 +194,10 @@ Compute log(sum(exp(v)). For now, this just unrolls logplusexp, but we might con
 \index{pi@{pi}!Numerics.h@{Numerics.h}}
 \doxysubsubsection{\texorpdfstring{pi}{pi}}
 {\footnotesize\ttfamily constexpr double pi = M\+\_\+\+PI\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{_numerics_8h_a84309c3d1ecc52d6d02bb7a304931357}\label{_numerics_8h_a84309c3d1ecc52d6d02bb7a304931357}} 
+\index{Numerics.h@{Numerics.h}!tau@{tau}}
+\index{tau@{tau}!Numerics.h@{Numerics.h}}
+\doxysubsubsection{\texorpdfstring{tau}{tau}}
+{\footnotesize\ttfamily constexpr double tau = 2$\ast$\mbox{\hyperlink{_numerics_8h_ad172e8d1a294401209781f9aeaa77410}{pi}}\hspace{0.3cm}{\ttfamily [constexpr]}}
 

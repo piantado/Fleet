@@ -86,84 +86,90 @@ $(function() {
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_threaded_inference_interface_8h.html">ThreadedInferenceInterface.h</a>&quot;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> HYP&gt;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="_partition_m_c_m_c_8h.html#a7a4d0aee453e0210a4d117edfead4a97">   24</a></span>&#160;std::set&lt;HYP&gt; <a class="code" href="_partition_m_c_m_c_8h.html#a7a4d0aee453e0210a4d117edfead4a97">get_partitions</a>(HYP&amp; h0, <span class="keyword">const</span> <span class="keywordtype">size_t</span> max_depth, <span class="keyword">const</span> <span class="keywordtype">size_t</span> max_size) {</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="_partition_m_c_m_c_8h.html#a5ab60aae4508c7c5d51db935591c9337">   24</a></span>&#160;std::set&lt;HYP&gt; <a class="code" href="_partition_m_c_m_c_8h.html#a5ab60aae4508c7c5d51db935591c9337">get_partitions</a>(<span class="keyword">const</span> HYP&amp; h0, <span class="keyword">const</span> <span class="keywordtype">size_t</span> max_depth, <span class="keyword">const</span> <span class="keywordtype">size_t</span> max_size) {</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    assert(not (max_depth==0 and max_size==0));</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    </div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    std::set&lt;HYP&gt; cur = {h0};</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    std::set&lt;HYP&gt; nxt;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> dd=0;(max_depth==0 or dd&lt;max_depth) and (max_size==0 or cur.size() &lt; max_size);dd++) {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; h: cur) {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keyword">auto</span> neigh = h.neighbors();</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <span class="keywordflow">for</span>(<span class="keywordtype">int</span> n=0;n&lt;neigh;n++) {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                <span class="keyword">auto</span> newh = h;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                newh.expand_to_neighbor(n);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//              PRINTN(h.string(), newh.string(), n, dd, max_depth);</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                <span class="comment">// now we need to check here and make sure that there aren&#39;t any complete trees</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                <span class="comment">// because if there are, we won&#39;t include them in any trees below</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                <span class="keywordflow">if</span>(not newh.is_evaluable()) {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                    nxt.insert(newh);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="comment">// if we made too many, return what we had, else keep going</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">if</span>(max_size &gt; 0 and nxt.size() &gt; max_size){</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">return</span> cur; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            cur = nxt;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keywordflow">if</span>(<a class="code" href="_base_grammar_hypothesis_8h.html#a6f7c4963bb8a36031664821219e3159e">CTRL_C</a>) <span class="keywordflow">break</span>; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; h: cur) {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keyword">auto</span> neigh = h.neighbors();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="keywordflow">for</span>(<span class="keywordtype">int</span> n=0;n&lt;neigh;n++) {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                <span class="keyword">auto</span> newh = h;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                newh.expand_to_neighbor(n);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                <span class="comment">//PRINTN(h.string(), newh.string(), newh.is_evaluable(), n, dd, max_depth);</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                <span class="comment">// now we need to check here and make sure that there aren&#39;t any complete trees</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                <span class="comment">// because if there are, we won&#39;t include them in any trees below</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keywordflow">if</span>(not newh.is_evaluable()) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                    nxt.insert(newh);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                }</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="comment">// if we made too many, return what we had, else keep going</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordflow">if</span>(max_size &gt; 0 and nxt.size() &gt; max_size){</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keywordflow">return</span> cur; </div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">return</span> cur;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> HYP&gt;</div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="class_partition_m_c_m_c.html">   68</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_partition_m_c_m_c.html">PartitionMCMC</a> : <span class="keyword">public</span> <a class="code" href="class_chain_pool.html">ChainPool</a>&lt;HYP&gt; { </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    </div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="class_partition_m_c_m_c.html#ae7d213440bf87e289376a1e0bfebbda5">   79</a></span>&#160;    <a class="code" href="class_partition_m_c_m_c.html#ae7d213440bf87e289376a1e0bfebbda5">PartitionMCMC</a>(HYP&amp; h0, <span class="keywordtype">size_t</span> max_depth, <span class="keyword">typename</span> HYP::data_t* data, <span class="keywordtype">size_t</span> max_size=0) {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keyword">auto</span> cur = <a class="code" href="_partition_m_c_m_c_8h.html#a7a4d0aee453e0210a4d117edfead4a97">get_partitions</a>(h0, max_depth, max_size);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="comment">// now make an MCMC chain on each of these</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="comment">// (all must use the callback)</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; h: cur) {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            HYP x = h;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; n : x.get_value() ){</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                n.can_resample = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            x.complete(); <span class="comment">// fill in any structural gaps</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            this-&gt;<a class="code" href="class_chain_pool.html#aca174138c188771e02ef6cb2e0e9d42b">pool</a>.push_back(<a class="code" href="class_m_c_m_c_chain.html">MCMCChain&lt;HYP&gt;</a>(x, data));</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            this-&gt;<a class="code" href="class_chain_pool.html#a5bba2491596087935cea0fe02c7af423">running</a>.push_back(<a class="code" href="class_chain_pool.html">ChainPool&lt;HYP&gt;::RunningState::READY</a>);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">            #ifdef DEBUG_PARTITION_MCMC</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                <a class="code" href="_i_o_8h.html#a8c54b10b84183429bcbcbc82c92fcca9">COUT</a> <span class="stringliteral">&quot;Starting PartitionMCMC on &quot;</span> &lt;&lt; x.string() <a class="code" href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">            #endif</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    }</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;};  </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            cur = nxt;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">return</span> cur;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> HYP&gt;</div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="class_partition_m_c_m_c.html">   71</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_partition_m_c_m_c.html">PartitionMCMC</a> : <span class="keyword">public</span> <a class="code" href="class_chain_pool.html">ChainPool</a>&lt;HYP&gt; { </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    </div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="class_partition_m_c_m_c.html#ae7d213440bf87e289376a1e0bfebbda5">   82</a></span>&#160;    <a class="code" href="class_partition_m_c_m_c.html#ae7d213440bf87e289376a1e0bfebbda5">PartitionMCMC</a>(HYP&amp; h0, <span class="keywordtype">size_t</span> max_depth, <span class="keyword">typename</span> HYP::data_t* data, <span class="keywordtype">size_t</span> max_size=0) {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        assert(not h0.is_evaluable() &amp;&amp; <span class="stringliteral">&quot;*** You should not call PartitionMCMC on a complete node (usually you want it to be empty)&quot;</span>);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keyword">auto</span> cur = <a class="code" href="_partition_m_c_m_c_8h.html#a5ab60aae4508c7c5d51db935591c9337">get_partitions</a>(h0, max_depth, max_size);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="comment">// now make an MCMC chain on each of these</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="comment">// (all must use the callback)</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; h: cur) {</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            HYP x = h;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; n : x.get_value() ){</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                n.can_resample = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            x.complete(); <span class="comment">// fill in any structural gaps</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            this-&gt;<a class="code" href="class_chain_pool.html#aca174138c188771e02ef6cb2e0e9d42b">pool</a>.push_back(<a class="code" href="class_m_c_m_c_chain.html">MCMCChain&lt;HYP&gt;</a>(x, data));</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            this-&gt;<a class="code" href="class_chain_pool.html#a5bba2491596087935cea0fe02c7af423">running</a>.push_back(<a class="code" href="class_chain_pool.html">ChainPool&lt;HYP&gt;::RunningState::READY</a>);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">            #ifdef DEBUG_PARTITION_MCMC</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                <a class="code" href="_i_o_8h.html#a5e727e0c710d35259cfee7d2e8722dd5">PRINTN</a>(<span class="stringliteral">&quot;Starting PartitionMCMC on &quot;</span>, h.string(), <span class="stringliteral">&quot;\t&quot;</span>, x.string());</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">            #endif</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <a class="code" href="_i_o_8h.html#a5e727e0c710d35259cfee7d2e8722dd5">PRINTN</a>(<span class="stringliteral">&quot;# Initialized &quot;</span>, this-&gt;<a class="code" href="class_chain_pool.html#aca174138c188771e02ef6cb2e0e9d42b">pool</a>.size(), <span class="stringliteral">&quot; partitions&quot;</span>);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    }</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;};  </div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="a_errors_8h_html"><div class="ttname"><a href="_errors_8h.html">Errors.h</a></div></div>
-<div class="ttc" id="a_i_o_8h_html_a8c54b10b84183429bcbcbc82c92fcca9"><div class="ttname"><a href="_i_o_8h.html#a8c54b10b84183429bcbcbc82c92fcca9">COUT</a></div><div class="ttdeci">#define COUT</div><div class="ttdef"><b>Definition:</b> IO.h:24</div></div>
-<div class="ttc" id="a_i_o_8h_html_a90dc3f3ee970394e0080300526390a84"><div class="ttname"><a href="_i_o_8h.html#a90dc3f3ee970394e0080300526390a84">ENDL</a></div><div class="ttdeci">#define ENDL</div><div class="ttdef"><b>Definition:</b> IO.h:21</div></div>
-<div class="ttc" id="aclass_partition_m_c_m_c_html"><div class="ttname"><a href="class_partition_m_c_m_c.html">PartitionMCMC</a></div><div class="ttdef"><b>Definition:</b> PartitionMCMC.h:68</div></div>
+<div class="ttc" id="a_base_grammar_hypothesis_8h_html_a6f7c4963bb8a36031664821219e3159e"><div class="ttname"><a href="_base_grammar_hypothesis_8h.html#a6f7c4963bb8a36031664821219e3159e">CTRL_C</a></div><div class="ttdeci">volatile sig_atomic_t CTRL_C</div></div>
+<div class="ttc" id="a_partition_m_c_m_c_8h_html_a5ab60aae4508c7c5d51db935591c9337"><div class="ttname"><a href="_partition_m_c_m_c_8h.html#a5ab60aae4508c7c5d51db935591c9337">get_partitions</a></div><div class="ttdeci">std::set&lt; HYP &gt; get_partitions(const HYP &amp;h0, const size_t max_depth, const size_t max_size)</div><div class="ttdoc">Compute &quot;partitions&quot; meaning trees with holes where we can run MCMC on the hole. This takes either a ...</div><div class="ttdef"><b>Definition:</b> PartitionMCMC.h:24</div></div>
+<div class="ttc" id="aclass_partition_m_c_m_c_html"><div class="ttname"><a href="class_partition_m_c_m_c.html">PartitionMCMC</a></div><div class="ttdef"><b>Definition:</b> PartitionMCMC.h:71</div></div>
 <div class="ttc" id="a_threaded_inference_interface_8h_html"><div class="ttname"><a href="_threaded_inference_interface_8h.html">ThreadedInferenceInterface.h</a></div><div class="ttdoc">This manages multiple threads for running inference. This requires a subclass to define run_thread,...</div></div>
-<div class="ttc" id="a_partition_m_c_m_c_8h_html_a7a4d0aee453e0210a4d117edfead4a97"><div class="ttname"><a href="_partition_m_c_m_c_8h.html#a7a4d0aee453e0210a4d117edfead4a97">get_partitions</a></div><div class="ttdeci">std::set&lt; HYP &gt; get_partitions(HYP &amp;h0, const size_t max_depth, const size_t max_size)</div><div class="ttdoc">Compute &quot;partitions&quot; meaning trees with holes where we can run MCMC on the hole. This takes either a ...</div><div class="ttdef"><b>Definition:</b> PartitionMCMC.h:24</div></div>
 <div class="ttc" id="aclass_chain_pool_html_a5bba2491596087935cea0fe02c7af423"><div class="ttname"><a href="class_chain_pool.html#a5bba2491596087935cea0fe02c7af423">ChainPool::running</a></div><div class="ttdeci">std::vector&lt; RunningState &gt; running</div><div class="ttdef"><b>Definition:</b> ChainPool.h:45</div></div>
 <div class="ttc" id="aclass_chain_pool_html"><div class="ttname"><a href="class_chain_pool.html">ChainPool</a></div><div class="ttdef"><b>Definition:</b> ChainPool.h:25</div></div>
+<div class="ttc" id="a_i_o_8h_html_a5e727e0c710d35259cfee7d2e8722dd5"><div class="ttname"><a href="_i_o_8h.html#a5e727e0c710d35259cfee7d2e8722dd5">PRINTN</a></div><div class="ttdeci">void PRINTN(FIRST f, ARGS... args)</div><div class="ttdoc">Lock output_lcok and print to std:cout.</div><div class="ttdef"><b>Definition:</b> IO.h:53</div></div>
 <div class="ttc" id="a_timing_8h_html"><div class="ttname"><a href="_timing_8h.html">Timing.h</a></div></div>
-<div class="ttc" id="aclass_m_c_m_c_chain_html"><div class="ttname"><a href="class_m_c_m_c_chain.html">MCMCChain</a></div><div class="ttdef"><b>Definition:</b> MCMCChain.h:22</div></div>
-<div class="ttc" id="aclass_partition_m_c_m_c_html_ae7d213440bf87e289376a1e0bfebbda5"><div class="ttname"><a href="class_partition_m_c_m_c.html#ae7d213440bf87e289376a1e0bfebbda5">PartitionMCMC::PartitionMCMC</a></div><div class="ttdeci">PartitionMCMC(HYP &amp;h0, size_t max_depth, typename HYP::data_t *data, size_t max_size=0)</div><div class="ttdoc">This specifies both a max_Size and a max_depth which are the most partitions we'll make....</div><div class="ttdef"><b>Definition:</b> PartitionMCMC.h:79</div></div>
+<div class="ttc" id="aclass_m_c_m_c_chain_html"><div class="ttname"><a href="class_m_c_m_c_chain.html">MCMCChain</a></div><div class="ttdef"><b>Definition:</b> MCMCChain.h:23</div></div>
+<div class="ttc" id="aclass_partition_m_c_m_c_html_ae7d213440bf87e289376a1e0bfebbda5"><div class="ttname"><a href="class_partition_m_c_m_c.html#ae7d213440bf87e289376a1e0bfebbda5">PartitionMCMC::PartitionMCMC</a></div><div class="ttdeci">PartitionMCMC(HYP &amp;h0, size_t max_depth, typename HYP::data_t *data, size_t max_size=0)</div><div class="ttdoc">This specifies both a max_Size and a max_depth which are the most partitions we'll make....</div><div class="ttdef"><b>Definition:</b> PartitionMCMC.h:82</div></div>
 <div class="ttc" id="a_m_c_m_c_chain_8h_html"><div class="ttname"><a href="_m_c_m_c_chain_8h.html">MCMCChain.h</a></div><div class="ttdoc">This represents an MCMC hain on a hypothesis of type HYP. It uses HYP::propose and HYP::compute_poste...</div></div>
 <div class="ttc" id="aclass_chain_pool_html_aca174138c188771e02ef6cb2e0e9d42b"><div class="ttname"><a href="class_chain_pool.html#aca174138c188771e02ef6cb2e0e9d42b">ChainPool::pool</a></div><div class="ttdeci">std::vector&lt; MCMCChain&lt; HYP &gt; &gt; pool</div><div class="ttdef"><b>Definition:</b> ChainPool.h:28</div></div>
 <!-- start footer part -->

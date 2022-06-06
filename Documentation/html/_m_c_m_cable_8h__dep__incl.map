@@ -1,9 +1,14 @@
 <map id="src/Hypotheses/Interfaces/MCMCable.h" name="src/Hypotheses/Interfaces/MCMCable.h">
-<area shape="rect" id="node1" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="493,5,683,47"/>
-<area shape="rect" id="node2" href="$_vector_half_normal_hypothesis_8h.html" title=" " alt="" coords="5,95,200,136"/>
-<area shape="rect" id="node4" href="$_vector_normal_hypothesis_8h.html" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior...." alt="" coords="224,95,440,136"/>
-<area shape="rect" id="node5" href="$_t_normal_variable_8h.html" title=" " alt="" coords="464,102,712,129"/>
-<area shape="rect" id="node6" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="737,102,925,129"/>
-<area shape="rect" id="node7" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="949,102,1185,129"/>
-<area shape="rect" id="node3" href="$_grammar_hypothesis_8h.html" title="This stores the human data, as a list of data to condition on data[0:ndata], the data you predict on,..." alt="" coords="195,184,469,211"/>
+<area shape="rect" id="node1" title="A class is MCMCable if it is Bayesable and lets us propose, restart, and check equality (which MCMC d..." alt="" coords="589,5,780,47"/>
+<area shape="rect" id="node2" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="108,102,344,129"/>
+<area shape="rect" id="node5" href="$_lexicon_8h.html" title="A lexicon stores an association of numbers (in a vector) to some other kind of hypotheses (typically ..." alt="" coords="368,102,556,129"/>
+<area shape="rect" id="node6" href="$_t_normal_variable_8h.html" title=" " alt="" coords="580,95,789,136"/>
+<area shape="rect" id="node11" href="$_vector_half_normal_hypothesis_8h.html" title=" " alt="" coords="813,95,1103,136"/>
+<area shape="rect" id="node12" href="$_vector_normal_hypothesis_8h.html" title="A TNormalVariable encapsulates MCMC operations on a single real number with a standard normal prior...." alt="" coords="1127,95,1389,136"/>
+<area shape="rect" id="node3" href="$_deterministic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="5,184,220,225"/>
+<area shape="rect" id="node4" href="$_stochastic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="244,184,437,225"/>
+<area shape="rect" id="node7" href="$_base_grammar_hypothesis_8h.html" title="This class does grammar inference with some collection of HumanData and fixed set of hypotheses." alt="" coords="825,184,1091,225"/>
+<area shape="rect" id="node8" href="$_deterministic_grammar_hypothesis_8h.html" title="Here, the hypotheses are deterministic so we don&#39;t need Preidct_t to be a DiscreteDistribution,..." alt="" coords="536,273,801,315"/>
+<area shape="rect" id="node9" href="$_full_grammar_hypothesis_8h.html" title="This class does grammar inference with some collection of HumanData and fixed set of hypotheses." alt="" coords="825,273,1091,315"/>
+<area shape="rect" id="node10" href="$_thunk_grammar_hypothesis_8h.html" title="A version of a BaseGrammarHypothesis where the hypotheses are thunks (functions of no arguments)...." alt="" coords="1115,273,1380,315"/>
 </map>

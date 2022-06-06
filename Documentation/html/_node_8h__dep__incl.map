@@ -1,7 +1,8 @@
 <map id="src/Grammar/Node.h" name="src/Grammar/Node.h">
-<area shape="rect" id="node1" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="171,5,329,32"/>
-<area shape="rect" id="node2" href="$_combinators_8h.html" title="A grammar for SK combinatory logic. NOTE: CustomOps must be defined here." alt="" coords="5,155,145,181"/>
-<area shape="rect" id="node3" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="48,80,233,107"/>
-<area shape="rect" id="node4" href="$_proposers_8h.html" title=" " alt="" coords="258,80,461,107"/>
-<area shape="rect" id="node5" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="311,155,547,181"/>
+<area shape="rect" id="node1" title="A Node is the primary internal representation for a program – it recursively stores a rule and the ar..." alt="" coords="238,5,395,32"/>
+<area shape="rect" id="node2" href="$_grammar_8h.html" title="A grammar stores all of the rules associated with any kind of nonterminal and permits us to sample as..." alt="" coords="5,80,191,107"/>
+<area shape="rect" id="node3" href="$_proposers_8h.html" title=" " alt="" coords="215,80,418,107"/>
+<area shape="rect" id="node4" href="$_l_o_t_hypothesis_8h.html" title="A LOTHypothesis is the basic unit for doing LOT models. It store a Node as its value,..." alt="" coords="268,155,504,181"/>
+<area shape="rect" id="node5" href="$_deterministic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="165,229,380,271"/>
+<area shape="rect" id="node6" href="$_stochastic_l_o_t_hypothesis_8h.html" title=" " alt="" coords="404,229,597,271"/>
 </map>

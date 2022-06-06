@@ -113,7 +113,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab6944b4bfe5620c96048287a51d019c1 inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#ab6944b4bfe5620c96048287a51d019c1">string</a> (std::string prefix=&quot;&quot;) const=0</td></tr>
 <tr class="separator:ab6944b4bfe5620c96048287a51d019c1 inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b057a17212ced123545133e2297c01b inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a1b057a17212ced123545133e2297c01b">compute_prior</a> ()=0</td></tr>
-<tr class="memdesc:a1b057a17212ced123545133e2297c01b inherit pub_methods_class_bayesable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the prior &ndash; defaultly not defined.  <a href="class_bayesable.html#a1b057a17212ced123545133e2297c01b">More...</a><br /></td></tr>
 <tr class="separator:a1b057a17212ced123545133e2297c01b inherit pub_methods_class_bayesable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87d195bfe5cdf6d293dae5fc01ae2e6c inherit pub_methods_class_bayesable"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bayesable.html#a87d195bfe5cdf6d293dae5fc01ae2e6c">compute_single_likelihood</a> (const <a class="el" href="class_bayesable.html#a9f1a6c0cd7855550fa10b1a8f13a5867">datum_t</a> &amp;datum)</td></tr>
 <tr class="memdesc:a87d195bfe5cdf6d293dae5fc01ae2e6c inherit pub_methods_class_bayesable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the likelihood of a single data point.  <a href="class_bayesable.html#a87d195bfe5cdf6d293dae5fc01ae2e6c">More...</a><br /></td></tr>
@@ -247,7 +246,7 @@ template&lt;typename this_t , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_lexicon.html#a7623a6f5ad5156789088e461dbe9d2f6">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>, <a class="el" href="class_grammar_hypothesis.html#a5af8ece466cdc1d0fc2a960ae1d63462">GrammarHypothesis&lt; this_t, _HYP, datum_t, data_t &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#aab4eec5c502d4a3c11c93a81975fcde0">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>, <a class="el" href="class_vector_half_normal_hypothesis.html#ad6c4a4f67f0b53f35132295c00bedb2f">VectorHalfNormalHypothesis</a>, <a class="el" href="class_vector_normal_hypothesis.html#aabe2e0f4c86e52c04add65a55a046b6a">VectorNormalHypothesis</a>, <a class="el" href="class_t_normal_variable.html#add62dd259e5d400ce6711f11e3e77455">TNormalVariable&lt; f &gt;</a>, and <a class="el" href="class_t_normal_variable.html#add62dd259e5d400ce6711f11e3e77455">TNormalVariable&lt;+[](float x) -&gt;</a>.</p>
+<p>Implemented in <a class="el" href="class_lexicon.html#a7623a6f5ad5156789088e461dbe9d2f6">Lexicon&lt; this_t, key_t, INNER, _input_t, _output_t, datum_t, _VirtualMachineState_t &gt;</a>, <a class="el" href="class_base_grammar_hypothesis.html#aeec20e79d4b8bdce63389234b62b1536">BaseGrammarHypothesis&lt; this_t, _HYP, datum_t, data_t, _Predict_t &gt;</a>, <a class="el" href="class_base_grammar_hypothesis.html#aeec20e79d4b8bdce63389234b62b1536">BaseGrammarHypothesis&lt; this_t, _HYP, HumanDatum&lt; _HYP &gt;, std::vector&lt; HumanDatum&lt; _HYP &gt; &gt;, Vector2D&lt; typename _HYP::output_t &gt; &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#aab4eec5c502d4a3c11c93a81975fcde0">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, _datum_t, _data_t, _VirtualMachineState_t &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#aab4eec5c502d4a3c11c93a81975fcde0">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, defaultdatum_t&lt; _input_t, _output_t &gt;, std::vector&lt; defaultdatum_t&lt; _input_t, _output_t &gt; &gt;, typename _Grammar_t::VirtualMachineState_t &gt;</a>, <a class="el" href="class_vector_half_normal_hypothesis.html#ad6c4a4f67f0b53f35132295c00bedb2f">VectorHalfNormalHypothesis</a>, <a class="el" href="class_vector_normal_hypothesis.html#aabe2e0f4c86e52c04add65a55a046b6a">VectorNormalHypothesis</a>, <a class="el" href="class_t_normal_variable.html#add62dd259e5d400ce6711f11e3e77455">TNormalVariable&lt; f &gt;</a>, and <a class="el" href="class_t_normal_variable.html#add62dd259e5d400ce6711f11e3e77455">TNormalVariable&lt;+[](float x) -&gt;</a>.</p>
 
 </div>
 </div>
@@ -276,7 +275,7 @@ template&lt;typename this_t , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_t_normal_variable.html#a69221930d9babce05fe51cafba22a0fe">TNormalVariable&lt;+[](float x) -&gt;</a>.</p>
+<p>Implemented in <a class="el" href="class_base_grammar_hypothesis.html#a151794c978a9fad0968e1e95e5002a26">BaseGrammarHypothesis&lt; this_t, _HYP, HumanDatum&lt; _HYP &gt;, std::vector&lt; HumanDatum&lt; _HYP &gt; &gt;, Vector2D&lt; typename _HYP::output_t &gt; &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#afaf1e27b95bb2e19a25fa65ab538e4f2">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, defaultdatum_t&lt; _input_t, _output_t &gt;, std::vector&lt; defaultdatum_t&lt; _input_t, _output_t &gt; &gt;, typename _Grammar_t::VirtualMachineState_t &gt;</a>, and <a class="el" href="class_t_normal_variable.html#a69221930d9babce05fe51cafba22a0fe">TNormalVariable&lt;+[](float x) -&gt;</a>.</p>
 
 </div>
 </div>
@@ -305,7 +304,7 @@ template&lt;typename this_t , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_t_normal_variable.html#aacaa3c0962cf32dcee93f7e459cd0eac">TNormalVariable&lt;+[](float x) -&gt;</a>.</p>
+<p>Implemented in <a class="el" href="class_base_grammar_hypothesis.html#a41ebbf68dad14faa25d8926a23c890d6">BaseGrammarHypothesis&lt; this_t, _HYP, HumanDatum&lt; _HYP &gt;, std::vector&lt; HumanDatum&lt; _HYP &gt; &gt;, Vector2D&lt; typename _HYP::output_t &gt; &gt;</a>, <a class="el" href="class_l_o_t_hypothesis.html#aa302e4e72c76aaee7902d7a8f71b0398">LOTHypothesis&lt; this_t, _input_t, _output_t, _Grammar_t, grammar, defaultdatum_t&lt; _input_t, _output_t &gt;, std::vector&lt; defaultdatum_t&lt; _input_t, _output_t &gt; &gt;, typename _Grammar_t::VirtualMachineState_t &gt;</a>, and <a class="el" href="class_t_normal_variable.html#aacaa3c0962cf32dcee93f7e459cd0eac">TNormalVariable&lt;+[](float x) -&gt;</a>.</p>
 
 </div>
 </div>
