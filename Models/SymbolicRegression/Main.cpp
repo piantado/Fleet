@@ -225,7 +225,7 @@ int main(int argc, char** argv){
 	
 	//	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
 	//	MyMCTS m(h0, FleetArgs::explore, &mydata);
-	//	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# "+str(best_possible_ll)+" ")  ) {
+	//	for(auto& h: m.run(Control(), h0) | printer(FleetArgs::print, "# "+str(best_possible_ll)+" ")  ) {
 		
 	//	PRINTN("# Initializing parititons...");
 //		MyHypothesis h0; 
@@ -234,7 +234,7 @@ int main(int argc, char** argv){
 	
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering m(h0, &mydata, FleetArgs::nchains, maxT);
-	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | print(FleetArgs::print, "# ")  ) {
+	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | printer(FleetArgs::print, "# ")  ) {
 			
 		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these
 		

@@ -325,9 +325,9 @@ int main(int argc, char** argv){
 	MCMCChain c(h0, &mydata, top);
 	 
 	// Actually run -- note this uses C++'s new coroutines (like python generators)
-	// the | print(FleetArgs::print) here will print out every FleetArgs::print steps
+	// the | printer(FleetArgs::print) here will print out every FleetArgs::print steps
 	// (which is set via --print=1000). Defaultly FleetArgs::print=0, which does not print. 
-	for(auto& h : c.run(Control() | print(FleetArgs::print) ) {
+	for(auto& h : c.run(Control() | printer(FleetArgs::print) ) {
 		top << h; // add h to top
 		 
 		// we can do other stuff with h in here if we want to. 

@@ -371,25 +371,25 @@ int main(int argc, char** argv){
 	}
 	else if(method == "prior-sampling") {
 		PriorInference<MyHypothesis> pri(&grammar, &mydata);
-		for(auto& h : pri.run(Control()) | print(FleetArgs::print)) {
+		for(auto& h : pri.run(Control()) | printer(FleetArgs::print)) {
 			top << h;
 		}
 	}
 	else if(method == "basic-enumeration") {
 		EnumerationInference<MyHypothesis,MyGrammar,BasicEnumeration<MyGrammar>> e(&grammar, &mydata);
-		for(auto& h : e.run(Control()) | print(FleetArgs::print)){
+		for(auto& h : e.run(Control()) | printer(FleetArgs::print)){
 			top << h;
 		}
 	}
 	else if(method == "partial-LZ-enumeration") {
 		EnumerationInference<MyHypothesis,MyGrammar,PartialLZEnumeration<MyGrammar>> e(&grammar, &mydata);
-		for(auto& h : e.run(Control()) | print(FleetArgs::print)) {
+		for(auto& h : e.run(Control()) | printer(FleetArgs::print)) {
 			top << h;
 		}
 	}
 	else if(method == "full-LZ-enumeration") {
 		EnumerationInference<MyHypothesis,MyGrammar,FullLZEnumeration<MyGrammar>> e(&grammar, &mydata);
-		for(auto& h : e.run(Control()) | print(FleetArgs::print) ){
+		for(auto& h : e.run(Control()) | printer(FleetArgs::print) ){
 			top << h;
 		}
 	}
@@ -403,7 +403,7 @@ int main(int argc, char** argv){
 	else if(method == "chain-pool") {
 		auto h0 = MyHypothesis::sample();
 		ChainPool c(h0, &mydata, FleetArgs::nchains);
-		for(auto& h : c.run(Control()) | print(FleetArgs::print) ) {
+		for(auto& h : c.run(Control()) | printer(FleetArgs::print) ) {
 			top << h;
 		}
 	}

@@ -376,7 +376,7 @@ int main(int argc, char** argv) {
 		auto h0 = MyHypothesis::sample();
 //		MCMCChain samp(h0, &alldata[di]);
 		ParallelTempering samp(h0, &alldata[di], FleetArgs::nchains, 1.20);
-		for(auto& h : samp.run(Control()) | alltops[di] | print(FleetArgs::print)) {
+		for(auto& h : samp.run(Control()) | alltops[di] | printer(FleetArgs::print)) {
 			UNUSED(h);
 		}
 		

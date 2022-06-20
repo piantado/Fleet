@@ -161,7 +161,7 @@ int main(int argc, char** argv){
 		for(auto& d : this_data) { UNUSED(d); current_ntokens++; }
 //		for(auto& h : samp.run_thread(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, FleetArgs::restart))) {
 		for(auto& h : samp.run(Control(FleetArgs::steps/datas.size(), FleetArgs::runtime/datas.size(), FleetArgs::nthreads, FleetArgs::restart))
-						| print(FleetArgs::print) | all) {
+						| printer(FleetArgs::print) | all) {
 			UNUSED(h);
 		}	
 

@@ -228,7 +228,7 @@ int main(int argc, char** argv){
 		top = top.compute_posterior(mydata);
 		
 		ParallelTempering chain(h0, &mydata, FleetArgs::nchains, MAX_T);
-		for(auto& h : chain.run(Control()) | top | print(FleetArgs::print)) {
+		for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
 			UNUSED(h);
 		}
 
@@ -247,7 +247,7 @@ int main(int argc, char** argv){
 //
 //	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1.20);
 ////	MCMCChain chain(h0, &mydata);
-//	for(auto& h : chain.run(Control()) | top | print(FleetArgs::print)) {
+//	for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
 //		UNUSED(h);
 //	}
 //	

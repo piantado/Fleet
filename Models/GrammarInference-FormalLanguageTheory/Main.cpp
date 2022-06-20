@@ -231,7 +231,7 @@ int main(int argc, char** argv){
 		auto thechain = MCMCChain<MyGrammarHypothesis>(h0, &human_data);
 		
 		// Main MCMC running loop!
-		for(const auto& h : thechain.run(Control()) | MAPGrammar | print(FleetArgs::print) | thin(FleetArgs::thin) ) {
+		for(const auto& h : thechain.run(Control()) | MAPGrammar | printer(FleetArgs::print) | thin(FleetArgs::thin) ) {
 			
 			{
 				std::ofstream outsamples(FleetArgs::output_path+"/samples.txt", std::ofstream::app);

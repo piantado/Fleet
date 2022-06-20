@@ -164,7 +164,7 @@ int main(int argc, char** argv){
 	MyHypothesis::data_t dummy_data;
 	
 	ParallelTempering chain(h0, &dummy_data, FleetArgs::nchains, 10.0);
-	for(auto& h : chain.run(Control()) | top | print(FleetArgs::print)) {
+	for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
 		UNUSED(h);
 	}
 	

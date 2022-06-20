@@ -63,12 +63,12 @@ generator<T&> operator|(generator<T&> g, burn t) {
 	}
 }
 
-struct print { 
+struct printer { 
 	size_t every;
 	size_t cnt;
 	std::string prefix; 
 	
-	print(size_t e, const std::string p="") : every(e), cnt(0), prefix(p) { }
+	printer(size_t e, const std::string p="") : every(e), cnt(0), prefix(p) { }
 
 	// funny little increment here returns true for when we print
 	bool operator++() {
@@ -83,7 +83,7 @@ struct print {
 };
 
 template<typename T> 
-generator<T&> operator|(generator<T&> g, print t) {
+generator<T&> operator|(generator<T&> g, printer t) {
 	for(auto& x : g) {
 		if(++t) x.print(t.prefix);
 		co_yield x;
