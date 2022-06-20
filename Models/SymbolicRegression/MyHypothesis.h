@@ -24,9 +24,10 @@ const size_t N_CONSTANTS = 4;
 const double PRIOR_SCALE = 1.0;
 
 // a normal distribution with integrated out range on MIN_SCALE, MAX_SCALE
-double compoundNormalLogUniform_lpdf(const double x) {
-	return (std::erfc(x*exp(-MIN_SCALE)/ROOT2) - 
-		    std::erfc(x*exp(-MAX_SCALE)/ROOT2)) / (2*x*(MAX_SCALE-MIN_SCALE));
+double compoundNormalLogUniform_lpdf(const double _x) {
+	auto x = std::abs(_x);
+	return log(std::erfc(x*exp(-MAX_SCALE)/ROOT2)-std::erfc(x*exp(-MIN_SCALE)/ROOT2)) - 
+		   LOG2 - log(x) - log(MAX_SCALE-MIN_SCALE);
 }
 
 class MyHypothesis final : public ConstantContainer,
