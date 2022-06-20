@@ -9,8 +9,8 @@
 
 
 // we also consider our scale variables (proposals to constants) as powers of 10
-const int MIN_SCALE = -5; 
-const int MAX_SCALE = 5;
+const int MIN_SCALE = -6; 
+const int MAX_SCALE = 12;
 
 // most nodes we'll consider in a hypothesis
 const size_t MY_MAX_NODES = 35;
@@ -21,7 +21,7 @@ const size_t MY_MAX_NODES = 35;
 const size_t N_CONSTANTS = 4; 
 
 // scale for the prior on constants
-const double PRIOR_SCALE = 1.0;
+//const double PRIOR_SCALE = 1.0;
 
 // a normal distribution with integrated out range on MIN_SCALE, MAX_SCALE
 double compoundNormalLogUniform_lpdf(const double _x) {
@@ -48,9 +48,6 @@ public:
 		constant_idx = 0;
 		try { 
 			const auto out = Super::call(x,err);
-//			if(constant_idx != count_constants()) {
-//				PRINTN(structure_string());
-//			}
 			assert(constant_idx == count_constants()); // just check we used all constants
 			return out;
 		}
@@ -68,7 +65,7 @@ public:
 		
 		double lp = 0.0;
 		for(auto& c : constants) {
-			lp += compoundNormalLogUniform_lpdf(std::abs(c));
+			lp += compoundNormalLogUniform_lpdf(std::abs(c)); // NOTE: NOT normalized
 			//lp += -log(std::abs(c)); // 1/x prior
 			//lp += t_lpdf(c, PRIOR_SCALE);
 		} 
