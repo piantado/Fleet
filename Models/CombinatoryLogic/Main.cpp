@@ -126,10 +126,10 @@ int main(int argc, char** argv){
 			auto x = Combinators::skgrammar.generate();
 		
 			CLNode n{x};
-			PRINTN(n.string());
+			print(n.string());
 			n.reduce();
-			PRINTN(n.string());
-			PRINTN("------------");
+			print(n.string());
+			print("------------");
 		} catch(Combinators::ReductionException& e) {
 			
 		}
@@ -137,11 +137,11 @@ int main(int argc, char** argv){
 	
 	auto g = SExpression::parse<CLNode>("((K K) S)");
 	
-	PRINTN(g.string());
+	print(g.string());
 	
 	g.reduce();
 	
-	PRINTN(g.string());
+	print(g.string());
 	
 	return 0;
 	

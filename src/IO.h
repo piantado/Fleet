@@ -50,7 +50,7 @@ void OUTPUTN(std::ostream& o, FIRST f, ARGS... args) {
  * @param f
  */
 template<typename FIRST, typename... ARGS>
-void PRINTN(FIRST f, ARGS... args) {
+void print(FIRST f, ARGS... args) {
 	std::lock_guard guard(output_lock);
 	OUTPUTN(std::cout, f, args...);
 }

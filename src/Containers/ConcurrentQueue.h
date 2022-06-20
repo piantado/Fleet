@@ -51,7 +51,7 @@ public:
 	
 		std::unique_lock lck(lock);
 		
-//		if(full()) PRINTN("FULL");
+//		if(full()) print("FULL");
 		
 		// if we are here, we must wait until a spot frees up
 		while(full()) full_cv.wait(lck);

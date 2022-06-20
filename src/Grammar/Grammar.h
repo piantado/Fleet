@@ -955,7 +955,7 @@ public:
 		
 		for(size_t i=0;i<s.length();i++){
 			char c = s.at(i);
-			// PRINTN("C=", c, opencount, openpos, commas.size(),closepos);
+			// print("C=", c, opencount, openpos, commas.size(),closepos);
 			
 			if(opencount==0 and openpos==-1 and c=='(') {
 				openpos = i;
@@ -989,7 +989,7 @@ public:
 	 * @return 
 	 */
 	Node simple_parse(std::string s) {
-		//PRINTN("Parsing ", s);
+		//print("Parsing ", s);
 		
 		// remove the lambda x. if its there
 		if(s.substr(0,3) == LAMBDAXDOT_STRING) s.erase(0,3);			

@@ -3,6 +3,7 @@
 #include <functional>
 #include <stack>
 
+#include "IO.h"
 #include "Miscellaneous.h"
 #include "Rule.h"
 #include "Program.h"
@@ -386,11 +387,11 @@ public:
 		std::string tb;
 		for(size_t i=0;i<tab;i++) tb += "\t";
 		
-		PRINTN(tb, "this="+str(this), "parent="+str(parent), pi, children.size() == rule->N, rule->format);
+		::print(tb, "this="+str(this), "parent="+str(parent), pi, children.size() == rule->N, rule->format);
 		for(size_t i=0;i<children.size();i++) {
 			children[i].fullprint(tab+1);
-			if(children[i].parent != this) PRINTN("*** Warning child above does not have correct parent pointer.");
-			if(children[i].pi != i) PRINTN("*** Warning child above does not have correct parent index.");
+			if(children[i].parent != this) ::print("*** Warning child above does not have correct parent pointer.");
+			if(children[i].pi != i) ::print("*** Warning child above does not have correct parent index.");
 			
 		}
 	}

@@ -67,7 +67,7 @@ public:
 		BaseNode<this_t>(0,par,0), open(true), which_expansion(w), nvisits(0) {
 		// here we don't expand the children because this is the constructor called when enlarging the tree
 		mylock.lock();
-//		PRINTN("MCTSBase constructor ", this, par);
+//		print("MCTSBase constructor ", this, par);
 		
 		this->reserve_children(start.neighbors());
 		mylock.unlock();

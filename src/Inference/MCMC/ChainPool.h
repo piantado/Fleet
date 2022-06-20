@@ -74,7 +74,7 @@ public:
 	void print(std::string prefix) const { 
 		for(size_t i=0;i<nchains();i++) {
 			std::lock_guard guard(this->pool[i].current_mutex);
-			PRINTN(prefix, i, (double)this->pool[i].temperature, this->pool[i].getCurrent().posterior, this->pool[i].getCurrent());
+			print(prefix, i, (double)this->pool[i].temperature, this->pool[i].getCurrent().posterior, this->pool[i].getCurrent());
 		}
 	}
 	
@@ -159,7 +159,7 @@ public:
 					// hmm.... Need a more complex solution it seems...
 					ctl.done_steps += to_run_steps;
 					
-//					PRINTN(">>", idx, ctl.steps, ctl.done_steps, to_run_steps, this->steps_before_change);
+//					print(">>", idx, ctl.steps, ctl.done_steps, to_run_steps, this->steps_before_change);
 				}
 				
 			

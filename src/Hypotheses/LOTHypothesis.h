@@ -264,7 +264,7 @@ public:
 //		if constexpr (std::is_same<typename VirtualMachineState_t::input_t, input_t>::value and 
 //					  std::is_same<typename VirtualMachineState_t::output_t, output_t>::value) {
 //			
-//			if(program.empty()) PRINTN(">>", string(), program.size());
+//			if(program.empty()) print(">>", string(), program.size());
 //						  
 //			assert(not program.empty());
 //			

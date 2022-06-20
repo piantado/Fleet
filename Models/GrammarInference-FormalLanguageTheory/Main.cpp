@@ -200,7 +200,7 @@ int main(int argc, char** argv){
 	if(runtype == "grammar" or runtype == "both") { 
 		
 		auto hypotheses = load<MyHypothesis>(hypothesis_path);
-		PRINTN("# Hypothesis size: ", hypotheses.size(), std::addressof(hypotheses));
+		print("# Hypothesis size: ", hypotheses.size(), std::addressof(hypotheses));
 		assert(hypotheses.size() > 0 && "*** Somehow we don't have any hypotheses!");
 	
 		// store the best
@@ -329,7 +329,7 @@ int main(int argc, char** argv){
 		// hypothesis, as compared to the training data. 
 		
 		auto hypotheses = load<MyHypothesis>(hypothesis_path);
-		PRINTN("# Hypothesis size: ", hypotheses.size(), std::addressof(hypotheses));
+		print("# Hypothesis size: ", hypotheses.size(), std::addressof(hypotheses));
 		assert(hypotheses.size() > 0 && "*** Somehow we don't have any hypotheses!");
 	
 		#pragma omp parallel for
@@ -360,7 +360,7 @@ int main(int argc, char** argv){
 				}
 				
 				#pragma omp critical
-				PRINTN(hdi, QQ(str(learningdata)), 
+				print(hdi, QQ(str(learningdata)), 
 							QQ(best_fromdata.best().string()),
 							QQ(str(d.responses)), 
 							QQ(best_fromhuman.best().string()) 

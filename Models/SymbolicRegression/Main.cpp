@@ -227,7 +227,7 @@ int main(int argc, char** argv){
 	//	MyMCTS m(h0, FleetArgs::explore, &mydata);
 	//	for(auto& h: m.run(Control(), h0) | printer(FleetArgs::print, "# "+str(best_possible_ll)+" ")  ) {
 		
-	//	PRINTN("# Initializing parititons...");
+	//	print("# Initializing parititons...");
 //		MyHypothesis h0; 
 	//	PartitionMCMC m(h0, FleetArgs::partition_depth, &mydata);	
 	//	
@@ -250,7 +250,7 @@ int main(int argc, char** argv){
 		#endif 
 		
 		if(end_at_likelihood > -infinity and h.likelihood >= end_at_likelihood) {
-			PRINTN("Ending on ", h.likelihood,  h.string());
+			print("Ending on ", h.likelihood,  h.string());
 			CTRL_C = true; // kill nicely. 
 		}
 	}
@@ -264,13 +264,13 @@ int main(int argc, char** argv){
 	
 	// And display!	
 	if(pt_test_output) { // special one-line output for testing inference schemes 
-		PRINTN(FleetArgs::restart, FleetArgs::nchains, maxT, 
+		print(FleetArgs::restart, FleetArgs::nchains, maxT, 
 			   best.best().posterior, QQ(best.best().structure_string()), QQ(best.best().string()));
 		
 	}
 	else {
 		
-		PRINTN("# Trimming.");
+		print("# Trimming.");
 		
 		overall_samples.trim(nstructs);
 
@@ -303,7 +303,7 @@ int main(int argc, char** argv){
 				// max estimate for structure, uniform for samples within since they're weighted reservoir samples
 				double weighted_h_estimate =  ( -log(R.size()) + (best_posterior-Z));
 				
-				PRINTN(  QQ(h.structure_string()),
+				print(  QQ(h.structure_string()),
 						 best_posterior,
 						 weighted_h_estimate, 
 						 h.posterior, h.prior, h.likelihood,
@@ -322,17 +322,17 @@ int main(int argc, char** argv){
 			
 			//	auto b = best.best();
 	//	for(auto& d : mydata) {
-	//		PRINTN(d.input, b.call(d.input, NaN), d.output, d.reliability);
+	//		print(d.input, b.call(d.input, NaN), d.output, d.reliability);
 	//	}
 		
-		PRINTN("# Best possible likelihood:", best_possible_ll);
+		print("# Best possible likelihood:", best_possible_ll);
 		best.print("# Overall best: "+best.best().structure_string()+"\t");
-		PRINTN("# Overall samples size:" , overall_samples.size());		
+		print("# Overall samples size:" , overall_samples.size());		
 		
 		
 		//auto v25 = weighted_quantile(f0distribution, 0.25);
 		//auto v75 = weighted_quantile(f0distribution, 0.75);
-		//PRINTN(v25, v75, v75-v25);
+		//print(v25, v75, v75-v25);
 	}
 
 }

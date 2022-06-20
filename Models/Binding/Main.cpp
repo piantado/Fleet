@@ -109,7 +109,7 @@ int main(int argc, char** argv){
 		
 		BindingTree* t = new BindingTree(SExpression::parse<BindingTree>(ds));	
 		t->convert_from_SExpression(); // fix the fact that as S-expressions, the words are listed as first children
-		PRINTN("t=", t->string());
+		print("t=", t->string());
 		
 		assert(t != nullptr);
 		
@@ -125,7 +125,7 @@ int main(int argc, char** argv){
 			if(n.is_terminal()) n.linear_order = lc++;
 			else                n.linear_order = -1;
 		}
-		// PRINTN(t->string());
+		// print(t->string());
 		
 		for(int cr=0;cr<ncoref;cr++) {
 			raw_data.push_back(ds); // save for later in case we want to see
@@ -147,7 +147,7 @@ int main(int argc, char** argv){
 			// assert that there is only one target per tree
 			assert( myt->sum( +[](const BindingTree& bt) -> double { return 1.0*bt.target; }) == 1); 
 			
-			//PRINTN("#", myt->string());
+			//print("#", myt->string());
 			
 			MyHypothesis::datum_t d1 = {myt->get_target(), myt->get_target()->word, alpha};	
 			mydata.push_back(d1);
@@ -195,7 +195,7 @@ int main(int argc, char** argv){
 //		target2.compute_posterior(thisdata);
 //		
 //		if(target.likelihood != target2.likelihood)  {
-//			PRINTN(target.likelihood, target2.likelihood, di.input->root()->string());
+//			print(target.likelihood, target2.likelihood, di.input->root()->string());
 //		}
 //	
 //	}
@@ -204,7 +204,7 @@ int main(int argc, char** argv){
 //	
 	
 	
-	PRINTN("# Target:", target.compute_posterior(mydata));
+	print("# Target:", target.compute_posterior(mydata));
 
 
 	//////////////////////////////////
@@ -261,7 +261,7 @@ int main(int argc, char** argv){
 //	
 //	for(size_t i=0;i<mydata.size();i++) {
 //		auto& di = mydata[i];
-//		PRINTN("#", i, mydata.size(), di.input->root()->string()); //.at(i));
+//		print("#", i, mydata.size(), di.input->root()->string()); //.at(i));
 //		
 //		size_t fi = 0;
 //		for(auto& w : words) {
@@ -270,7 +270,7 @@ int main(int argc, char** argv){
 //			try { 				
 //				b = 1*best.factors[fi].callOne(di.input, false); 
 //			} catch( TreeException& e) {  }
-//			PRINTN("#", b, w);
+//			print("#", b, w);
 //			++fi;
 //		}
 //	}

@@ -47,7 +47,7 @@ int main(int argc, char** argv){
 		if(CTRL_C) continue;
 		auto a = MyHypothesis::sample();
 		auto b = MyHypothesis::sample();
-		//PRINTN(a.string(), b.string());
+		//print(a.string(), b.string());
 		
 		auto pr = std::make_pair(a,b);
 		if(seen.contains(pr)) continue;

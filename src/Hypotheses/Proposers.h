@@ -202,7 +202,7 @@ namespace Proposals {
 		// then somewhere below t, we choose something of type s.nt(), called q, to put s
 		
 		auto [s, slp] = sample<Node,Node>(ret, can_resample); // s is a ptr into ret
-//		PRINTN("Choosing s=", s->string());
+//		print("Choosing s=", s->string());
 		
 		#ifdef DEBUG_PROPOSE
 			DEBUG("INSERT-TREE", from, *s);
@@ -219,7 +219,7 @@ namespace Proposals {
 		// make something of the same type as s that we can 
 		// put s into as a subtree below
 		Node t = grammar->generate(s->nt()); 
-//		PRINTN("Generated t=", t.string());
+//		print("Generated t=", t.string());
 		s->assign(t);// copy, not move, since we need it below
 //		s->fullprint();
 //		checkNode(grammar, *s);
@@ -228,11 +228,11 @@ namespace Proposals {
 		// this is sampeld from t, but we do it from s after assignment
 		// since that was a bug before ught
 		auto [q, qlp] = sample<Node,Node>(*s, can_resample_matches_s_nt); 
-//		PRINTN("Choosing q=", q->string());
+//		print("Choosing q=", q->string());
 		
 		// and then we assign the subtree, q, to be the original s
 		q->assign(old_s);
-//		PRINTN("Ret after Q assignment=", ret.string());
+//		print("Ret after Q assignment=", ret.string());
 //		s->fullprint();
 		
 //		checkNode(grammar, *s);
@@ -254,11 +254,11 @@ namespace Proposals {
 		/// backward is we choose t exactly, then we pick anything below that is equal to s
 		double backward = lp_sample_one<Node,Node>(t, ret, can_resample) + 
 						  lp_sample_eq<Node,Node>(old_s, *s, can_resample_matches_s_nt);
-//		PRINTN("RETURNINGI", ret);
+//		print("RETURNINGI", ret);
 		
 //		if(std::isinf(forward)) {
-//			PRINTN(slp, lpq, grammar->log_probability(t), grammar->log_probability(old_s) );
-//			PRINTN(s->string(), t.string());
+//			print(slp, lpq, grammar->log_probability(t), grammar->log_probability(old_s) );
+//			print(s->string(), t.string());
 //			
 //		}
 		
@@ -345,7 +345,7 @@ namespace Proposals {
 		for(auto& r: grammar->rules[s->rule->nt]) {
 			if(r.child_types == s->rule->child_types) {
 				matching_rules.push_back(&r);
-//				PRINTN("Matching ", r, *s->rule);
+//				print("Matching ", r, *s->rule);
 			}
 		}
 		assert(matching_rules.size() >= 1); // we had to have matche done...
@@ -379,7 +379,7 @@ namespace Proposals {
 	std::optional<std::pair<Node,double>> swap_args(GrammarType* grammar, const Node& from) {
 		
 		Node ret = from; // copy
-//		PRINTN("Swapping1 ", ret);
+//		print("Swapping1 ", ret);
 		
 		auto z = sample_z<Node,Node>(ret, can_resample);
 		if(z == 0.0) return {};
@@ -422,7 +422,7 @@ namespace Proposals {
 			s->set_child(i, std::move(s->child(J)));
 			s->set_child(J, std::move(tmp));
 			
-//			PRINTN("Swapping2 ", ret);
+//			print("Swapping2 ", ret);
 		
 			return std::make_pair(ret,0.0);
 		}

@@ -165,7 +165,7 @@ Polydeg get_polynomial_degree_rec(const Node& n, const std::vector<double>& cons
 		else                 return Polydeg(3*v1.value, false);
     }
 	else {
-		PRINTN("In format string: ", fmt);
+		print("In format string: ", fmt);
 		assert(false && "*** Unmatched format string by polynomial. Did you change the primitives and not update this?");
 	}
 }

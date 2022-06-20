@@ -37,7 +37,7 @@ public:
 		while(ctl.running()) {
 			enumerationidx_t nxt = (enumerationidx_t) this->next_index();
 			auto n = ge.toNode(nxt, grammar->start());
-			//PRINTN(n.string());
+			//print(n.string());
 			
 			MyHypothesis h(n); 
 			h.compute_posterior(*data);

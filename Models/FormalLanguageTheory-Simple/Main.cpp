@@ -211,7 +211,7 @@ int main(int argc, char** argv){
 //	auto h0 = MyHypothesis::sample();
 //	for(size_t i=0;i<1000;i++) {
 //		auto p = h0.propose();
-//		if(p) PRINTN(h0, p.value().first);
+//		if(p) print(h0, p.value().first);
 //	}
 //
 //	return 1; 

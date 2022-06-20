@@ -102,7 +102,7 @@ namespace Builtins {
 		// some checking
 		if(std::isnan(p)) { p = 0.0; } // treat nans as 0s
 		if(p > 1.0 or p < 0.0) {
-			PRINTN("*** Error, received p not in [0,1]:", p);
+			print("*** Error, received p not in [0,1]:", p);
 			assert(false);
 		}
 		
