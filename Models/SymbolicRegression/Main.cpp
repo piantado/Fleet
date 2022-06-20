@@ -228,9 +228,10 @@ int main(int argc, char** argv){
 	//	for(auto& h: m.run(Control(), h0) | print(FleetArgs::print, "# "+str(best_possible_ll)+" ")  ) {
 		
 	//	PRINTN("# Initializing parititons...");
-	//	MyHypothesis h0; 
+//		MyHypothesis h0; 
 	//	PartitionMCMC m(h0, FleetArgs::partition_depth, &mydata);	
 	//	
+	
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering m(h0, &mydata, FleetArgs::nchains, maxT);
 	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | print(FleetArgs::print, "# ")  ) {

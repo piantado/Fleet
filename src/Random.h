@@ -13,14 +13,64 @@ double uniform() {
 	 * @brief Sample from a uniform distribution
 	 * @return 
 	 */
-	std::uniform_real_distribution<double> uniform_dist(0.0, 1.0);
-	return uniform_dist(rng);
+	std::uniform_real_distribution<double> d(0.0, 1.0);
+	return d(rng);
 }
+
+double uniform(const double a, const double b) {
+	std::uniform_real_distribution<double> d(a,b);
+	return d(rng);
+}
+
+bool flip(float p = 0.5) {
+	/**
+	 * @brief Random bool
+	 * @return 
+	 */
+	
+	return uniform() < p;
+}
+
 
 double random_normal(double mu=0, double sd=1.0) {
 	std::normal_distribution<float> normal(0.0, 1.0);
 	return normal(rng)*sd + mu;
 }
+
+template<typename T>
+T normal_lpdf(T x, T mu=0.0, T sd=1.0) {
+	/**
+	 * @brief Compute the log PDF of a normal distribution
+	 * @param x
+	 * @param mu
+	 * @param sd
+	 * @return 
+	 */
+	
+    //https://stackoverflow.com/questions/10847007/using-the-gaussian-probability-density-function-in-c
+    const T linv_sqrt_2pi = -0.5*log(2*pi*sd*sd);
+	const T z = (x-mu)/sd;
+    return linv_sqrt_2pi  - z*z / 2.0;
+}
+
+template<typename T>
+T normal_cdf(T x, T mu, T sd) {
+	T z = (x-mu)/sd;
+    return std::erfc(-z/std::sqrt(2))/2;
+}
+
+template<typename T>
+T random_t(T nu) {
+	std::student_t_distribution<double> dist(nu);
+	return dist(rng);
+}
+
+template<typename T>
+T t_lpdf(T x, T nu) {
+	return mylgamma((nu+1)/2) - log(nu*pi)/2 - mylgamma(nu/2) + 
+		   log(1+x*x/nu)*(-(nu+1)/2);
+}
+
 
 double random_cauchy() {
 	/**
@@ -45,21 +95,6 @@ T cauchy_lpdf(T x, T loc=0.0, T gamma=1.0) {
     return -log(pi) - log(gamma) - log(1+((x-loc)/gamma)*((x-loc)/gamma));
 }
 
-template<typename T>
-T normal_lpdf(T x, T mu=0.0, T sd=1.0) {
-	/**
-	 * @brief Compute the log PDF of a normal distribution
-	 * @param x
-	 * @param mu
-	 * @param sd
-	 * @return 
-	 */
-	
-    //https://stackoverflow.com/questions/10847007/using-the-gaussian-probability-density-function-in-c
-    const T linv_sqrt_2pi = -0.5*log(2*pi*sd*sd);
-	const T z = (x-mu)/sd;
-    return linv_sqrt_2pi  - z*z / 2.0;
-}
 
 template<typename T>
 T laplace_lpdf(T x, T mu=0.0, T b=1.0) {
@@ -100,13 +135,9 @@ T random_laplace(T mu=0.0, T b=1.0) {
 	 */
 	return mu + random_exponential(b) - random_exponential(b);
 }
-template<typename T>
-double normal_cdf(T x, T mu, T sd) {
-	T z = (x-mu)/sd;
-    return std::erfc(-z/std::sqrt(2))/2;
-}
 
-double lpmf_geometric(size_t k, double p) {
+
+double geometric_lpdf(size_t k, double p) {
 	return log(p) + (k-1)*log(1-p);
 }
 
@@ -156,16 +187,6 @@ T myrandom(T min, T max) {
 		
 	std::uniform_int_distribution<T> r(min,max-1);
 	return r(rng);
-}
-
-
-bool flip(float p = 0.5) {
-	/**
-	 * @brief Random bool
-	 * @return 
-	 */
-	
-	return uniform() < p;
 }
 
 

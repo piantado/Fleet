@@ -100,7 +100,7 @@ public:
 	
 //				DEBUG("Swap p: ", k, R, this->pool[k-1].samples, this->pool[k-1].getCurrent().posterior, this->pool[k-1].getCurrent()); 
 				
-				if(R >= 0 or uniform() < exp(R)) { 
+				if(R >= 0 or flip(exp(R))) { 
 										
 					#ifdef PARALLEL_TEMPERING_SHOW_DETAIL
 					COUT "# Swapping " <<k<< " and " <<(k-1)<<"." TAB Tnow TAB Tswp TAB this->pool[k].current.likelihood TAB this->pool[k-1].current.likelihood ENDL;

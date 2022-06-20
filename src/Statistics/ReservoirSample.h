@@ -127,7 +127,7 @@ public:
 			samples.push_back(x);
 		}
 		else {
-			if(uniform() < exp(x.posterior - weight_lse)) {
+			if(flip(exp(x.posterior - weight_lse))) {
 				auto which = myrandom(capacity);
 				samples[which] = x;
 			}			

@@ -289,8 +289,8 @@ MyHypothesis::datum_t sample_datum() {
 		s.append(std::string(nx,tx));
 		
 		if(i==0) { // first time captures the intended type
-			if(uniform() < 1.0-alpha) w = myrandom(1,11);  // are we noise?
-			else       				  w = nx; // not noise
+			if(flip(1.0-alpha)) w = myrandom(1,11);  // are we noise?
+			else       	   	    w = nx; // not noise
 			t = tx; // the type is never considered to be noise here
 		}				
 		ntypes++;     

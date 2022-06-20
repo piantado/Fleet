@@ -43,17 +43,24 @@ public:
 	}
 	
 	virtual std::string string(bool usedot=true) const override {
-		std::string out = "("+label;
-		if(label != "") { out += " "; }
-	
-		for(const auto& c : this->children) {
-			out += c.string() + " ";
-		}	
 		
-		out.erase(out.length()-1);
+		if(this->nchildren() == 1) {
+			return label;
+		}
+		else { 
 		
-		out += ")";
-		return out; 
+			std::string out = "("+label;
+			if(label != "") { out += " "; }
+		
+			for(const auto& c : this->children) {
+				out += c.string() + " ";
+			}	
+			
+			out.erase(out.length()-1);
+			
+			out += ")";
+			return out; 
+		}
 	}	
 	
 	void substitute(const std::map<std::string, CLNode>& m) {
@@ -77,30 +84,45 @@ public:
 		// returns true if we change anything
 		//PRINTN("REDUCE", string());
 		
-		bool modified; // did we change anything?
-		do { // do this without recursion since its faster and we don't have the depth limit
+
+		
+		bool modified = true; // did we change anything?
+		while(modified) { // do this without recursion since its faster and we don't have the depth limit
+			modified = false;
+
+
+
+
+
+
+			// HMMMMM WHEN DO WE REDUCE CHILDREN?
+				
+
+
+
+
+
 			// first ensure that my children have all been reduced
 			for(size_t c=0;c<this->nchildren();c++){
 				this->child(c).reduce(remaining_calls);
 			}
-			
+		
 			if(remaining_calls-- == 0)
 				throw Combinators::reduction_exception;
 
-			modified = false;
+			///
+///((K) ((S) (((K) ((K) ((S) (S)))) (I)))) (S)
 			
 			// try to evaluate n according to the rules
 			if(this->nchildren() > 0 and 
-			   this->child(0).label == "I"){
-				// (I x) = x
+			   this->child(0).label == "I"){ 				// (I x) = x
 				auto x = std::move(this->child(1));
 				assign(x);
 				modified = true;
 			}
 			else if(this->nchildren() == 2 and // remember the root note in ((K x) y) has two children, but (K x) has one
 			        this->child(0).nchildren() == 1 and
-			        this->child(0).child(0).label == "K") {
-				// ((K x) y) = x
+			        this->child(0).child(0).label == "K") {	// ((K x) y) = x
 				auto x = std::move(this->child(0).child(0));
 				assign(x);
 				modified = true;
@@ -108,8 +130,7 @@ public:
 			else if(this->nchildren() == 2 and 
 				    this->child(0).nchildren() == 2 and
 				    this->child(0).child(0).nchildren() == 1 and
-				    this->child(0).child(0).child(0).label == "S") {
-				// (((S x) y) z) = ((x z) (y z))
+				    this->child(0).child(0).child(0).label == "S") { // (((S x) y) z) = ((x z) (y z))
 //				Rule* rule = skgrammar.get_rule(skgrammar.nt<CL>(), Op::CL_Apply);
 				
 				// just make the notation handier here
@@ -135,6 +156,6 @@ public:
 				modified = true; 
 			}
 			
-		} while(modified);
+		} // end while
 	}
 };

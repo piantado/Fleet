@@ -14,6 +14,7 @@
 /////////////////////////////////////////////////////////////
 
 const double LOG2 = log(2.0); // clang doesn't like constexpr??
+const double ROOT2 = sqrt(2.0);
 constexpr double infinity = std::numeric_limits<double>::infinity();
 constexpr double NaN = std::numeric_limits<double>::quiet_NaN();
 constexpr double pi  = M_PI;
@@ -101,7 +102,6 @@ T logplusexp(const T a, const T b) {
 	// it should only be run once at the start.
 	static const float breakout = get_log1pexp_breakout_bound<T>(1e-6, +[](T x) -> T { return log1p(exp(x)); });
 
-	
 	T z  = std::min(a,b)-mx;
 	if(z < breakout) {
 		return mx; // save us from having to do anything
@@ -136,6 +136,10 @@ double logsumexp(const std::vector<t>& v, double f(const t&) ) {
 	return lse;
 }
 
+/////////////////////////////////////////////////////////////
+// Numerical functions
+/////////////////////////////////////////////////////////////
+
 double mylgamma(double v) {
 	// thread safe version gives our own place to store sgn
 	int sgn = 1;
@@ -150,40 +154,6 @@ double mygamma(double v) {
 	return sgn*exp(ret);
 }
 
-
 double lfactorial(double x) {
 	return mylgamma(x+1);
 }
-
-template<typename T>
-double mean(std::vector<T>& v){
-	double s = 0.0;
-	for(auto& x : v) s += x;
-	return s/v.size();
-}
-
-template<typename T>
-double sd(std::vector<T>& v) {
-	assert(v.size() > 1);
-	double m = mean(v);
-	double s = 0.0;
-	for(auto& x : v) {
-		s += pow(m-x,2.);
-	}
-	return sqrt(s / (v.size()-1));
-}
-
-/**
- * @brief This allows sorting of things that contain NaN
- * @param x
- * @param y
- * @return 
- */
-template<typename T>
-struct floating_point_compare {
-	bool operator()(const T &x, const T &y) const {
-		if(std::isnan(x)) return false;
-		if(std::isnan(y)) return true;
-		return x < y;
-	}
-};

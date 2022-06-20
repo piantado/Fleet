@@ -174,3 +174,42 @@ T weighted_quantile(std::vector<std::pair<T,double>>& v, double q) {
 	
 	assert(false);
 }
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Mean, sd
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+template<typename T>
+double mean(std::vector<T>& v){
+	double s = 0.0;
+	for(auto& x : v) s += x;
+	return s/v.size();
+}
+
+template<typename T>
+double sd(std::vector<T>& v) {
+	assert(v.size() > 1);
+	double m = mean(v);
+	double s = 0.0;
+	for(auto& x : v) {
+		s += pow(m-x,2.);
+	}
+	return sqrt(s / (v.size()-1));
+}
+
+
+
+/**
+ * @brief This allows sorting of things that contain NaN
+ * @param x
+ * @param y
+ * @return 
+ */
+template<typename T>
+struct floating_point_compare {
+	bool operator()(const T &x, const T &y) const {
+		if(std::isnan(x)) return false;
+		if(std::isnan(y)) return true;
+		return x < y;
+	}
+};

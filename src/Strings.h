@@ -362,6 +362,17 @@ size_t count(const std::string& str, const std::string& sub) {
     return count;
 }
 
+
+size_t count(const std::string& str, const char x) {
+	size_t count = 0;
+	for(auto& a : str) { 
+		if(a == x) 
+			count++;
+    }
+    return count;
+}
+
+
 std::string reverse(std::string x) {
 	return std::string(x.rbegin(),x.rend()); 
 }
@@ -483,7 +494,7 @@ double p_KashyapOommen1984_edit(const std::string x, const std::string y, const 
 	// now we sum up
 	double lp_yGx = -infinity; // p(Y|X)
 	for(int t=std::max(0,n-m); t<=std::min(T,E+n-m);t++){
-		double qt = lpmf_geometric(t+1,1.0-perr); // probability of t insertions -- but must use t+1 to allow t=0 (geometric is defined on 1,2,3,...)
+		double qt = geometric_lpdf(t+1,1.0-perr); // probability of t insertions -- but must use t+1 to allow t=0 (geometric is defined on 1,2,3,...)
 		lp_yGx = logplusexp(lp_yGx, W(t,m-n+t,n-t) + qt + lfactorial(m)+lfactorial(t)-lfactorial(m+t));
 	}
 	return lp_yGx;

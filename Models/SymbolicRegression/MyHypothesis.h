@@ -9,8 +9,8 @@
 
 
 // we also consider our scale variables (proposals to constants) as powers of 10
-const int MIN_SCALE = -3; 
-const int MAX_SCALE = 4;
+const int MIN_SCALE = -5; 
+const int MAX_SCALE = 5;
 
 // most nodes we'll consider in a hypothesis
 const size_t MY_MAX_NODES = 35;
@@ -21,8 +21,13 @@ const size_t MY_MAX_NODES = 35;
 const size_t N_CONSTANTS = 4; 
 
 // scale for the prior on constants
-const double LAPLACE_SCALE = 1.0;
+const double PRIOR_SCALE = 1.0;
 
+// a normal distribution with integrated out range on MIN_SCALE, MAX_SCALE
+double compoundNormalLogUniform_lpdf(const double x) {
+	return (std::erfc(x*exp(-MIN_SCALE)/ROOT2) - 
+		    std::erfc(x*exp(-MAX_SCALE)/ROOT2)) / (2*x*(MAX_SCALE-MIN_SCALE));
+}
 
 class MyHypothesis final : public ConstantContainer,
 						   public DeterministicLOTHypothesis<MyHypothesis,X_t,D,MyGrammar,&grammar> {
@@ -37,12 +42,14 @@ public:
 		// but actually ours can be if we are only a constant. 
 		// my own wrapper that zeros the constant_i counter
 		
+		assert(constants.size() == N_CONSTANTS);
+		
 		constant_idx = 0;
 		try { 
 			const auto out = Super::call(x,err);
-			if(constant_idx != count_constants()) {
-				PRINTN(string());
-			}
+//			if(constant_idx != count_constants()) {
+//				PRINTN(structure_string());
+//			}
 			assert(constant_idx == count_constants()); // just check we used all constants
 			return out;
 		}
@@ -60,7 +67,9 @@ public:
 		
 		double lp = 0.0;
 		for(auto& c : constants) {
-			lp += laplace_lpdf(c, 0., LAPLACE_SCALE);
+			lp += compoundNormalLogUniform_lpdf(std::abs(c));
+			//lp += -log(std::abs(c)); // 1/x prior
+			//lp += t_lpdf(c, PRIOR_SCALE);
 		} 
 		return lp;
 	}
@@ -69,7 +78,8 @@ public:
 		// NOTE: this MUST match how the prior is computed
 		constants.resize(N_CONSTANTS);
 		for(size_t i=0;i<N_CONSTANTS;i++) {		
-			constants[i] = random_laplace(0.0, LAPLACE_SCALE);
+			constants[i] = random_normal(0.0, exp(uniform(MIN_SCALE,MAX_SCALE))); // propose with random and random scale
+			//constants[i] = random_t(PRIOR_SCALE);
 		}
 	}
 	
@@ -87,9 +97,8 @@ public:
 	std::pair<double,double> constant_proposal(double c) const override { 
 			
 		if(flip(0.90)) {
-			auto sc = pow(10, myrandom(MIN_SCALE, MAX_SCALE)); // pick a scale here 
-			
-			return std::make_pair(random_normal(c,  sc), 0.0);
+			auto sc = exp(uniform(MIN_SCALE, MAX_SCALE)); 
+			return std::make_pair(random_normal(c,sc), 0.0);
 		}
 		else if(flip(0.5)) { 
 			// one third probability for each of the other choices
@@ -208,6 +217,7 @@ public:
 	virtual ProposalType propose() const override {
 		// Our proposals will either be to constants, or entirely from the prior
 		// Note that if we have no constants, we will always do prior proposals
+		assert(constants.size() == N_CONSTANTS);
 		
 		if(flip(0.85)){
 			MyHypothesis ret = *this;
@@ -246,10 +256,17 @@ public:
 			auto x = p.value();
 			
 			MyHypothesis ret{std::move(x.first)};
-			ret.randomize_constants(); // with random constants -- this resizes so that it's right for propose
 			
-			double fb = x.second + ret.constant_prior()-this->constant_prior();
-						
+			double fb = x.second;
+			assert( constants.size() == N_CONSTANTS);
+			if(flip(0.5)) {
+				ret.randomize_constants(); // with random constants 
+				fb += ret.constant_prior()-this->constant_prior();
+			}
+			else { // else just copy our constants
+				ret.constants = constants; 
+			}
+			
 			return std::make_pair(ret, fb); 
 		}
 			

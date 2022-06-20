@@ -2,11 +2,9 @@
 // include before anything else
 #include "EigenLib.h"
 
-
 #include <string>
 #include <unistd.h> // for getpid
 using S = std::string; // just for convenience
-
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Set up some basic variables (which may get overwritten)
@@ -76,7 +74,7 @@ public:
 #include "StochasticLOTHypothesis.h"
 
 // Declare a hypothesis class
-class MyHypothesis : public StochasticLOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar> {
+class MyHypothesis final : public StochasticLOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar> {
 public:
 	using Super =  StochasticLOTHypothesis<MyHypothesis,S,S,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors
