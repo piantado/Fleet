@@ -209,9 +209,12 @@ namespace Builtins {
 		
 	template<typename Grammar_t>
 	Primitive<> NoOp(Op::NoOp, BUILTIN_LAMBDA {	
-		
 	});
 
+	template<typename Grammar_t>
+	Primitive<> UnusedNoOp(Op::NoOp, BUILTIN_LAMBDA {	
+		assert(false);
+	});
 	
 	template<typename Grammar_t,
 			 typename input_t=typename Grammar_t::input_t,

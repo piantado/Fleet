@@ -124,18 +124,19 @@ int main(int argc, char** argv){
 	for(size_t k=0;k<1000;k++) {
 		try {
 			auto x = Combinators::skgrammar.generate();
-		
+//			print(x);
+//			print(SExpression::parse<CLNode>("("+x.string()+")"));
 			CLNode n{x};
 			print(n.string());
 			n.reduce();
 			print(n.string());
 			print("------------");
 		} catch(Combinators::ReductionException& e) {
-			
+			print("Reduction error");
 		}
 	}
-	
-	auto g = SExpression::parse<CLNode>("((K K) S)");
+//	
+	auto g = SExpression::parse<CLNode>("((K K) (K (K K)))");
 	
 	print(g.string());
 	
