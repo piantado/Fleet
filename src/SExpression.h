@@ -16,23 +16,29 @@ namespace SExpression {
 		}
 	}
 	
+	std::string trim(std::string x) {
+		// remove leading spaces
+		while(x[0] == ' ') {
+			x.erase(0, 1);
+		}
+		
+		// remove trailing spaces
+		while(x[x.size()-1] == ' ') {
+			x.erase(x.size()-1, 1);
+		}
+		return x; 
+	}
+	
 	
 	std::vector<std::string> tokenize(std::string s) {
 		assert_check_parens(s);
 		std::vector<std::string> out; // list of tokens
+		
 		std::string x; // build up the token 
 		for(char c : s) {
 			if(c == '(' or c == ')' or c == ' ') {
 				
-				// remove leading spaces
-				while(x[0] == ' ') {
-					x.erase(0, 1);
-				}
-				
-				// remove trailing spaces
-				while(x[x.size()-1] == ' ') {
-					x.erase(x.size()-1, 1);
-				}
+				x = trim(x);
 				
 				if(x != "" and x != " ") {
 					out.push_back(x);
@@ -48,6 +54,11 @@ namespace SExpression {
 				x += c;
 			}
 		}
+		
+		if(x != "") {
+			out.push_back(trim(x));
+		}
+		
 		//PRINTN(str(out));
 		return out;	
 	}	
@@ -59,29 +70,51 @@ namespace SExpression {
 		return x; 
 	}
 	
+
+	/**
+	 * @brief Recursive parsing of S-expressions. Not high qualtiy. 
+	 * 		Basically, if we get ((A...) B...) then we call T's constructor with no arguments and make (A...) the first
+	 * 		child. If we get (A ....) then we call with "A" as the first argument to the constructor because in some
+	 *      cases (like Binding) we want to handle this as a "label" on the node; in others like CL we want it to be an Node itself
+	 * @param tok
+	 * @return 
+	 */
 	template<typename T>
-	T parse(std::vector<std::string>& tok) {
-		// recursive parsing of tokenized s-expression. Not high quality.
-		// Requires that T can be constructable with a string argument
-		assert(tok.size() > 1);
+	T __parse(std::vector<std::string>& tok) {
 		
-		std::string lab = "";
-		if(tok.front() != "(") { 
-			lab = pop_front(tok);				
-		}
+		assert(tok.size() > 0);
 		
-		T out(lab);
-		
-		while(not tok.empty()){
+		T out;		
+		while(not tok.empty()) {
 			auto x = pop_front(tok);
-			if(x == "(")      out.push_back(parse<T>(tok)); 
+			//::print("x=",x);
+			if(x == "(")      out.push_back(__parse<T>(tok)); 
 			else if(x == ")") break; // when we get this, we must be a close (since lower-down stuff has been handled in the recursion)
 			else              out.push_back(T(x)); // just a string
 		}
 		
 		return out;	
 	}
-
+	
+	
+	/**
+	 * @brief Wrapper to parse to remove outer (...)
+	 * @param tok
+	 * @return 
+	 */	
+	template<typename T>
+	T parse(std::vector<std::string>& tok) {
+		
+		if(tok.size() == 1) {
+			return T(pop_front(tok));
+		}
+		
+		if(tok.front() == "(") { 
+			pop_front(tok);
+		}
+		
+		return __parse<T>(tok); 
+	}	
 
 	template<typename T>
 	T parse(std::string s) {

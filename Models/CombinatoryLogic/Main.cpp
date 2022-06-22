@@ -1,3 +1,5 @@
+// Add catch for binary trees -- if they're not, then the evaluator gets messed up
+
 #include <assert.h>
 
 /* Re-implement churiso here, to do this, we can use integer coding to enumerate trees in a smart way
@@ -11,7 +13,6 @@ using S = std::string;
 
 // this maps each symbol to an index; 
 const std::vector<S> symbols = {"true", "false", "and", "or", "not"};
-//const std::map<S,size_t> symbol2idx = {{"true",0}, {"false",1}, {"and",2}, {"or",3}, {"not",4}};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
@@ -23,6 +24,7 @@ const std::vector<S> symbols = {"true", "false", "and", "or", "not"};
 using CL=Combinators::CL;
 
 #include "CLNode.h"
+#include "SExpression.h"
 
 /**
  * @class CLDatum
@@ -32,14 +34,19 @@ using CL=Combinators::CL;
  * @brief A datatype for a CL datum involving a LHS and a RHS consisting of BaseNodes
  * 		  with the right labels
  */
-//struct CLDatum { 
-//	CLNode lhs;
-//	CLNode rhs;
-//	bool equal = true; 
-//	
-//	CLDatum(S& l, S& r, bool e=true) : lhs(l), rhs(r), equal(e) {
-//	}
-//};
+struct CLDatum { 
+	CLNode lhs;
+	CLNode rhs;
+	bool equal = true; 
+	
+	CLDatum(std::string s) {
+		
+		auto [l, r] = split<2>(s, '=');
+		
+		lhs = SExpression::parse<CLNode>(l);
+		rhs = SExpression::parse<CLNode>(r);		
+	}
+};
 
 /**
  * @class InnerHypothesis
@@ -64,43 +71,63 @@ public:
  * @file Main.cpp
  * @brief A version of Churiso that works with MCMC on a simple boolean example
  */
-class MyHypothesis final : public Lexicon<MyHypothesis, S, InnerHypothesis, CL, CL> {
+class MyHypothesis final : public Lexicon<MyHypothesis, S, InnerHypothesis, CL, CL, CLDatum> {
 public:	
 	
-	using Super = Lexicon<MyHypothesis, S, InnerHypothesis, CL, CL>;
+	using Super = Lexicon<MyHypothesis, S, InnerHypothesis, CL, CL, CLDatum>;
 	using Super::Super;	
 
-//	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
-		// Here we have just written by hand all of the relations we want
-		// This differs from churiso in that churiso will push constraints when possible
+	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		
-		// Enforce uniqueness
-//		for(auto& x : symbols) 
-//		for(auto& y : symbols) {
-//			if(x != y and C(x) == C(y)) {
-//				return likelihood = -infinity;
-//			}
-//		}
-//	
-//		// And check these bounds
-//		int error = 0;	
-//		error += (apply(C("not"), C("true"))  != C("false"));
-//		error += (apply(C("not"), C("false")) != C("true"));
-//		
-//		error += (apply(apply(C("and"), C("false")), C("false")) != C("false"));
-//		error += (apply(apply(C("and"), C("false")), C("true"))  != C("false"));
-//		error += (apply(apply(C("and"), C("true")), C("false"))  != C("false"));
-//		error += (apply(apply(C("and"), C("true")), C("true"))   != C("true"));
-//		
-//		error += (apply(apply(C("or"), C("false")), C("false")) != C("false"));
-//		error += (apply(apply(C("or"), C("false")), C("true"))  != C("true"));
-//		error += (apply(apply(C("or"), C("true")), C("false"))  != C("true"));
-//		error += (apply(apply(C("or"), C("true")), C("true"))   != C("true"));
-//				
-//		likelihood = -100.0*error; 
-//		return likelihood; 
-//	
-//	 }
+		for(auto& x : symbols) 
+		for(auto& y : symbols) {
+			if(x != y) {
+				
+				// check to be sure their reduced forms are different
+				CLNode xn = at(x).get_value(); // make a copy
+				CLNode yn = at(y).get_value(); 
+				
+				try {
+					xn.reduce();
+					yn.reduce();
+				} catch(Combinators::ReductionException& e) {
+					return -infinity; 
+				}
+				
+				if(xn == yn){
+					return likelihood = -infinity;
+				}
+			}
+		}
+		//::print(string());
+		
+		likelihood = 0.0;
+		for(auto& d : data) {
+			CLNode lhs = d.lhs; // make a copy
+			CLNode rhs = d.rhs; 
+			
+			try { 
+//				::print(lhs.string(), rhs.string());
+				
+				lhs.substitute(*this);
+				rhs.substitute(*this);
+//				::print(lhs.string(), rhs.string());
+				lhs.reduce();
+				rhs.reduce();
+				//::print(lhs.string(), "--------", rhs.string());
+				
+				// check if they are right 
+				if((lhs == rhs) != (d.equal == true)) {
+					likelihood -= 100;
+				}
+			} catch(Combinators::ReductionException& e) {
+				likelihood -= 100; // penalty for exceptions 
+			}
+		}
+
+		return likelihood; 
+	
+	 }
 	 
 };
 
@@ -112,7 +139,7 @@ public:
 #include "TopN.h"
 #include "MCMCChain.h"
 #include "ParallelTempering.h"
-#include "SExpression.h"
+
 
 #include "Fleet.h" 
 
@@ -123,9 +150,14 @@ int main(int argc, char** argv){
 	
 //	for(size_t k=0;k<1000;k++) {
 //		try {
-//			auto x = Combinators::skgrammar.generate();
-////			print(x);
-////			print(SExpression::parse<CLNode>("("+x.string()+")"));
+//			CLNode x{Combinators::skgrammar.generate()};
+//
+//			// let's check that our S-expression parser is doing what we want
+//			auto y = SExpression::parse<CLNode>(x.string());
+//			print(x.fullstring());
+//			print(y.fullstring());
+//			assert(x==y);
+//			
 //			CLNode n{x};
 //			print(n.string());
 //			n.reduce();
@@ -135,36 +167,35 @@ int main(int argc, char** argv){
 //			print("Reduction error");
 //		}
 //	}
-//	
-	auto g = SExpression::parse<CLNode>("(((S (S K)) ((K I) (S K))) (S K))");
+//
+//	return 0;
+
+	// NOTE: The data here MUST be binary trees
+	std::vector<std::string> data_strings = {
+		"((and false) false) = false", 
+		"((and false) true) = false", 
+		"((and true) false) = false", 
+		"((and true) true) = true",
+		
+		"((or false) false) = false", 
+		"((or false) true) = true", 
+		"((or true) false) = true", 
+		"((or true) true) = true",
+		
+		"(not false) = true", 
+		"(not true) = false"
+	};
 	
-	print(g.string());
-	
-	g.reduce();
-	
-	print(g.string());
-	
-	return 0;
-	
-//	Combinators::LazyNormalForms lnf;
-//	for(size_t i=0;!CTRL_C;i++) {
-//		Node n = lnf.at(i);
-//		auto s = n.string();
-//		auto len = n.count_terminals();
-//		Fleet::Combinators::reduce(n);
-//		COUT i TAB len TAB s TAB n.string() ENDL;
-//	}
+	MyHypothesis::data_t mydata;
+	for(auto& ds : data_strings) {
+		mydata.push_back(CLDatum{ds});
+	}
 
 	MyHypothesis h0 = MyHypothesis::sample(symbols);
-//	for(auto x : symbols) {;
-//		h0.factors.push_back(InnerHypothesis::sample());
-//	}
-	
+
 	TopN<MyHypothesis> top;
-	
-	MyHypothesis::data_t dummy_data;
-	
-	ParallelTempering chain(h0, &dummy_data, FleetArgs::nchains, 10.0);
+	top.print_best = true;
+	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 10.0);
 	for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
 		UNUSED(h);
 	}

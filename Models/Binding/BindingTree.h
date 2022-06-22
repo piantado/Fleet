@@ -51,12 +51,16 @@ public:
 	std::string label;
 	std::string word; 
 	
+	BindingTree() : referent(-1), target(false), linear_order(0), pos(POS::None), word("") {
+		
+	}
+	
 	/**
 	 * @brief This constructor gets called by SExpression, and we need to call convert_from_SExpression() to 
 	 * 		  really fill in referent, target, word, etc. 
 	 * @param s
 	 */
-	BindingTree(std::string s="") :
+	BindingTree(const std::string& s) :
 		referent(-1), target(false), linear_order(0), pos(POS::None), word(""){
 		
 		// set up the referent if we can

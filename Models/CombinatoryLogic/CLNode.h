@@ -16,14 +16,16 @@ const std::string APPLY = ".";  // internal label used to signify apply
 	
 class CLNode : public BaseNode<CLNode> {	
 public:
-
 	
 	using Super = BaseNode<CLNode>;
 	
 	std::string label; // Some nodes have labels (S and K) with their arg
 	
-	CLNode() { }
-	CLNode(std::string& l) : BaseNode<CLNode>(), label(l) {
+	CLNode() : label(APPLY) { }
+	CLNode(const std::string& l) : BaseNode<CLNode>() {
+		// SExpression::parse will call this wtih the first element of the list -- if its non-null
+		// then we want to make it actually our first child
+		label = l;
 	}
 	CLNode(const Node& n) {
 		
@@ -59,7 +61,7 @@ public:
 		}
 		else { 
 		
-			std::string out = "(" ;
+			std::string out = "(";//+label+": " ;
 		
 			for(const auto& c : this->children) {
 				out += c.string() + " ";
@@ -72,9 +74,31 @@ public:
 		}
 	}	
 	
-	void substitute(const std::map<std::string, CLNode>& m) {
-		if(m.contains(label)) {
-			auto v = m.at(label); // copy
+		
+	virtual std::string fullstring() const {
+		
+		if(this->nchildren() == 0) {
+			return label;
+		}
+		else { 
+		
+			std::string out = "("+label+": " ;
+		
+			for(const auto& c : this->children) {
+				out += c.fullstring() + " ";
+			}	
+			
+			out.erase(out.length()-1);
+			
+			out += ")";
+			return out; 
+		}
+	}	
+	
+	template<typename L>
+	void substitute(const L& m) {
+		if(m.factors.contains(label)) {
+			auto v = m.at(label).get_value(); // copy
 			this->assign(v);
 		}
 		
@@ -102,13 +126,16 @@ public:
 				this->child(c).reduce(remaining_calls);
 			}
 		
-//			::print("REDUCE", this, string());
+		
+//			std::string original = string();
+//			::print("REDUCE", this, label, string());
 			
 			if(remaining_calls-- == 0)
 				throw Combinators::reduction_exception;
 
 			// try to evaluate n according to the rules
 			const auto NC = this->nchildren();
+			assert(NC <= 2); // we don't handle this -- 3+ children should have been caught in the constructor 
 			
 			if(NC == 2 and label == APPLY) { // we are an application node
 				if(this->child(0).label == "I"){ 				// (I x) = x
@@ -159,9 +186,13 @@ public:
 //				::print("HERE APP", string());
 			}
 			
-//			::print("GOT", this, string());
+//			::print("GOT", this, label, original, string());
 			
 			
 		} while(modified); // end while
+	}
+	
+	virtual bool operator==(const CLNode& n) const override {
+		return label == n.label and children == n.children;
 	}
 };

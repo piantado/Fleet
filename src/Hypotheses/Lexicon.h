@@ -62,6 +62,10 @@ public:
 		  INNER& operator[](const key_t& k) { return factors[k]; }
 	const INNER& operator[](const key_t& k) const { return factors[k]; }
 	
+	bool contains(const key_t& key) {
+		return factors.contains(key);
+	}
+	
 	Grammar_t* get_grammar() {
 		// NOTE that since LOTHypothesis has grammar as its type, all INNER Must have the 
 		// same grammar type (But this may change in the future -- if it does, we need to 
