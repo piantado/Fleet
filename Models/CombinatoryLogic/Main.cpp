@@ -121,22 +121,22 @@ int main(int argc, char** argv){
 	Fleet fleet("Combinatory logic");
 	fleet.initialize(argc, argv);
 	
-	for(size_t k=0;k<1000;k++) {
-		try {
-			auto x = Combinators::skgrammar.generate();
-//			print(x);
-//			print(SExpression::parse<CLNode>("("+x.string()+")"));
-			CLNode n{x};
-			print(n.string());
-			n.reduce();
-			print(n.string());
-			print("------------");
-		} catch(Combinators::ReductionException& e) {
-			print("Reduction error");
-		}
-	}
+//	for(size_t k=0;k<1000;k++) {
+//		try {
+//			auto x = Combinators::skgrammar.generate();
+////			print(x);
+////			print(SExpression::parse<CLNode>("("+x.string()+")"));
+//			CLNode n{x};
+//			print(n.string());
+//			n.reduce();
+//			print(n.string());
+//			print("------------");
+//		} catch(Combinators::ReductionException& e) {
+//			print("Reduction error");
+//		}
+//	}
 //	
-	auto g = SExpression::parse<CLNode>("((K K) (K (K K)))");
+	auto g = SExpression::parse<CLNode>("(((S (S K)) ((K I) (S K))) (S K))");
 	
 	print(g.string());
 	

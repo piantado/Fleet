@@ -23,7 +23,7 @@ const size_t N_CONSTANTS = 4;
 // scale for the prior on constants
 //const double PRIOR_SCALE = 1.0;
 
-// a normal distribution with integrated out range on MIN_SCALE, MAX_SCALE
+// a normal distribution with SD exp(s) with s uniform on MIN_SCALE, MAX_SCALE
 double compoundNormalLogUniform_lpdf(const double _x) {
 	auto x = std::abs(_x);
 	return log(std::erfc(x*exp(-MAX_SCALE)/ROOT2)-std::erfc(x*exp(-MIN_SCALE)/ROOT2)) - 
@@ -66,7 +66,6 @@ public:
 		double lp = 0.0;
 		for(auto& c : constants) {
 			lp += compoundNormalLogUniform_lpdf(std::abs(c)); // NOTE: NOT normalized
-			//lp += -log(std::abs(c)); // 1/x prior
 			//lp += t_lpdf(c, PRIOR_SCALE);
 		} 
 		return lp;
@@ -95,6 +94,8 @@ public:
 	std::pair<double,double> constant_proposal(double c) const override { 
 			
 		if(flip(0.90)) {
+			// we use fb=0 here because we can consider an auxilliary variable
+			// to be the scale variable
 			auto sc = exp(uniform(MIN_SCALE, MAX_SCALE)); 
 			return std::make_pair(random_normal(c,sc), 0.0);
 		}

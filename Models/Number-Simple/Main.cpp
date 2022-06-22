@@ -11,7 +11,7 @@ using set  = std::bitset<16>;
 
 const word U = -999;
 const double alpha = 0.9;
-const double Ndata = 250; // how many data points?
+double Ndata = 250; // how many data points?
 double recursion_penalty = -25.0;
 
 // probability of each set size 0,1,2,...
@@ -145,19 +145,16 @@ public:
 
 int main(int argc, char** argv) { 
 	Fleet fleet("Simple number inference model");
+	fleet.add_option("--ndata", Ndata, "How many data points do we simulate on?");
 	fleet.initialize(argc, argv);
-
-	//------------------
-	// Run the MCMC
-	//------------------	
 	
-	MyHypothesis::data_t mydata; // just dummy
+	MyHypothesis::data_t mydata; // just dummy data because it's computed on its own in the likelihood
 
 	// Run parallel tempering
 	TopN<MyHypothesis> top;
 	auto h0 = MyHypothesis::sample();
-	ParallelTempering samp(h0, &mydata, 10, 100.0);
-	for(auto& h : samp.run(Control())){
+	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 5.0);
+	for(auto& h : samp.run(Control()) | thin(FleetArgs::thin) | printer(FleetArgs::print)){
 		top << h;
 	}
 	
