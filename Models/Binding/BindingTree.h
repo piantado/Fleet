@@ -93,12 +93,44 @@ public:
 		
 		// this is the main thing S-expression parsing does wrong -- it makes the 
 		// "word" into the first child
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		::print(string(), this->nchildren());
 		if(this->nchildren() > 0 and this->child(0).nchildren() == 0) {
-			std::string s = this->child(0).label;
-			word = s; 
 			
-			// erase the first child since it's going to be the word
-			children.erase(children.begin());
+			::print("HERE ", this->child(0).label);
+				
+			// if I have no label, I need to get it from my first child
+			// which should be a label only
+			if(label == "") {
+				assert(this->child(0).word == "");
+				
+				label = this->child(0).label;
+				children.erase(children.begin());				
+			}
+			else {
+				// otherwise I need to get my word from 
+				assert(this->child(0).word == "");
+				
+				word = this->child(0).label; 
+				
+				// erase the first child since it's going to be the word
+				children.erase(children.begin());
+				::print("HERE2 ", string());
+				
+			}
 		}	
 
 		for(auto& c : children) {
@@ -165,9 +197,9 @@ public:
 	
 	std::string string(bool usedot=true) const override {
 		std::string out = "[" + (target ? std::string(">") : "") + 
-		                        label + 
+		                        "L="+label + 
 								(referent > -1 ? "."+str(referent) : "") + 
-								" " + 
+								";W=" + 
 								word;
 		for(auto& c : children) {
 			out += " " + c.string();

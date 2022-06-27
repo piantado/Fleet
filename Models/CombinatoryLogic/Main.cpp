@@ -12,7 +12,9 @@
 using S = std::string; 
 
 // this maps each symbol to an index; 
-const std::vector<S> symbols = {"true", "false", "and", "or", "not"};
+//const std::vector<S> symbols = {"true", "false", "and", "or", "not"};
+//const std::vector<S> symbols = {"first", "rest", "cons"};
+const std::vector<S> symbols = {"succ", "one", "two", "three", "four"};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
@@ -43,8 +45,8 @@ struct CLDatum {
 		
 		auto [l, r] = split<2>(s, '=');
 		
-		lhs = SExpression::parse<CLNode>(l);
-		rhs = SExpression::parse<CLNode>(r);		
+		lhs = l;
+		rhs = r;		
 	}
 };
 
@@ -111,7 +113,7 @@ public:
 				
 				lhs.substitute(*this);
 				rhs.substitute(*this);
-//				::print(lhs.string(), rhs.string());
+				//::print(lhs.string(), rhs.string());
 				lhs.reduce();
 				rhs.reduce();
 				//::print(lhs.string(), "--------", rhs.string());
@@ -171,21 +173,33 @@ int main(int argc, char** argv){
 //	return 0;
 
 	// NOTE: The data here MUST be binary trees
+//	std::vector<std::string> data_strings = {
+//		"((and false) false) = false", 
+//		"((and false) true) = false", 
+//		"((and true) false) = false", 
+//		"((and true) true) = true",
+//		
+//		"((or false) false) = false", 
+//		"((or false) true) = true", 
+//		"((or true) false) = true", 
+//		"((or true) true) = true",
+//		
+//		"(not false) = true", 
+//		"(not true) = false"
+//	};
+
+//	std::vector<std::string> data_strings = {
+//		"(first ((cons x) y)) = x", 
+//		"(rest  ((cons x) y)) = y"
+//	};
+//	
 	std::vector<std::string> data_strings = {
-		"((and false) false) = false", 
-		"((and false) true) = false", 
-		"((and true) false) = false", 
-		"((and true) true) = true",
-		
-		"((or false) false) = false", 
-		"((or false) true) = true", 
-		"((or true) false) = true", 
-		"((or true) true) = true",
-		
-		"(not false) = true", 
-		"(not true) = false"
+		"(succ one) = two", 
+		"(succ two) = three",
+		"(succ three) = four"
 	};
 	
+
 	MyHypothesis::data_t mydata;
 	for(auto& ds : data_strings) {
 		mydata.push_back(CLDatum{ds});

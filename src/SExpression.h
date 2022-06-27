@@ -1,8 +1,42 @@
 #pragma once
 
+#include<utility>
+#include<string>
+
+#include "BaseNode.h"
+
+
 // Code for parsing and dealing with S-expressions
 namespace SExpression {
+	
+	/**
+	 * @class SENode
+	 * @author Steven Piantadosi
+	 * @date 26/06/22
+	 * @file SExpression.h
+	 * @brief This is the return type of parsing S-expressions. It contains an optional label and
+	 * 		  typically we be converted into a different type. 
+	 */
+	struct SENode : public BaseNode<SENode> {
+		std::optional<std::string> label;
+
+		SENode() : label() { }
+		SENode(const std::string& s) : label(s) {}
+		SENode(const SENode& s) : BaseNode<SENode>(), label(s.label) {}
 		
+		SENode& operator=(const SENode& n) {
+			label = n.label;
+			children = n.children;
+			return *this;
+		}
+		SENode& operator=(const SENode&& n) {
+			label = std::move(n.label);
+			children = std::move(n.children);
+			return *this;
+		}
+	};
+
+	
 	void assert_check_parens(const std::string& s) {
 		int nopen = 0;
 		for(char c : s) {
@@ -79,18 +113,17 @@ namespace SExpression {
 	 * @param tok
 	 * @return 
 	 */
-	template<typename T>
-	T __parse(std::vector<std::string>& tok) {
+	SENode __parse(std::vector<std::string>& tok) {
 		
 		assert(tok.size() > 0);
 		
-		T out;		
+		SENode out;		
 		while(not tok.empty()) {
 			auto x = pop_front(tok);
 			//::print("x=",x);
-			if(x == "(")      out.push_back(__parse<T>(tok)); 
+			if(x == "(")      out.push_back(__parse(tok)); 
 			else if(x == ")") break; // when we get this, we must be a close (since lower-down stuff has been handled in the recursion)
-			else              out.push_back(T(x)); // just a string
+			else              out.push_back(SENode(x)); // just a string
 		}
 		
 		return out;	
@@ -102,24 +135,22 @@ namespace SExpression {
 	 * @param tok
 	 * @return 
 	 */	
-	template<typename T>
-	T parse(std::vector<std::string>& tok) {
+	SENode parse(std::vector<std::string>& tok) {
 		
 		if(tok.size() == 1) {
-			return T(pop_front(tok));
+			return SENode(pop_front(tok));
 		}
 		
 		if(tok.front() == "(") { 
 			pop_front(tok);
 		}
 		
-		return __parse<T>(tok); 
+		return __parse(tok); 
 	}	
 
-	template<typename T>
-	T parse(std::string s) {
+	SENode parse(std::string s) {
 		auto tok = tokenize(s);
-		return parse<T>(tok);
+		return parse(tok);
 	}
 
 	

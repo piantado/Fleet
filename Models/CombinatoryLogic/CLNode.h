@@ -1,5 +1,6 @@
 #pragma once 
 
+#include "SExpression.h"
 #include "Combinators.h"
 #include "BaseNode.h"
 #include "Node.h"
@@ -27,10 +28,20 @@ public:
 		// then we want to make it actually our first child
 		label = l;
 	}
-	CLNode(const Node& n) {
+	CLNode(const SExpression::SENode& n) {
 		
-		// convert a node to a CL Node
-		if(n.rule->format == "(%s %s)") {
+		// how to convert a SENode (returned by S-expression parsing) into a CLNode
+		
+		// TODO: Add some fanciness to make this *binary* trees please
+		
+		assert(n.nchildren() <= 2);
+		
+		if(n.label.has_value()) { // if its a terminal 
+			assert(n.nchildren() == 0); 
+			label = n.label.value();
+		}
+		else {
+			
 			label = APPLY;
 			
 			// now go through and process the children 		
@@ -38,9 +49,27 @@ public:
 				push_back(CLNode{n.child(i)});
 			}
 		}
-		else {
-			assert(n.nchildren() == 0);
+	}
+	CLNode(const Node& n) {
+		
+		// how to convert a Node (returned by S-expression parsing) into a CLNode
+		
+		// TODO: Add some fanciness to make this *binary* trees please
+		
+		assert(n.nchildren() <= 2);
+		
+		if(n.rule->format != "(%s %s)") { // if its a terminal 
+			assert(n.nchildren() == 0); 
 			label = n.rule->format;
+		}
+		else {
+			
+			label = APPLY;
+			
+			// now go through and process the children 		
+			for(size_t i=0;i<n.nchildren();i++){
+				push_back(CLNode{n.child(i)});
+			}
 		}
 	}
 	
@@ -125,7 +154,6 @@ public:
 			for(size_t c=0;c<this->nchildren();c++){
 				this->child(c).reduce(remaining_calls);
 			}
-		
 		
 //			std::string original = string();
 //			::print("REDUCE", this, label, string());

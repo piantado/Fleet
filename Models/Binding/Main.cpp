@@ -147,7 +147,7 @@ int main(int argc, char** argv){
 			// assert that there is only one target per tree
 			assert( myt->sum( +[](const BindingTree& bt) -> double { return 1.0*bt.target; }) == 1); 
 			
-			//print("#", myt->string());
+			print("#", myt->string());
 			
 			MyHypothesis::datum_t d1 = {myt->get_target(), myt->get_target()->word, alpha};	
 			mydata.push_back(d1);
