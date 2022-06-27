@@ -45,10 +45,10 @@ struct CLDatum {
 		
 		auto [l, r] = split<2>(s, '=');
 		
-		lhs = l;
-		rhs = r;
+		lhs = SExpression::parse(l);
+		rhs = SExpression::parse(r);
 
-		::print("LHSRHS=", lhs.string(), rhs.string());
+		::print("LHS=", QQ(l), SExpression::parse(l).string(), lhs.string());
 	}
 };
 
@@ -206,6 +206,8 @@ int main(int argc, char** argv){
 	for(auto& ds : data_strings) {
 		mydata.push_back(CLDatum{ds});
 	}
+
+return 0;
 
 	MyHypothesis h0 = MyHypothesis::sample(symbols);
 

@@ -23,26 +23,48 @@ public:
 	std::string label; // Some nodes have labels (S and K) with their arg
 	
 	CLNode() : label(APPLY) { }
-	CLNode(const std::string& l) : BaseNode<CLNode>() {
-		// SExpression::parse will call this wtih the first element of the list -- if its non-null
-		// then we want to make it actually our first child
-		label = l;
-	}
+//	CLNode(const std::string& l) : BaseNode<CLNode>() {
+//		// SExpression::parse will call this wtih the first element of the list -- if its non-null
+//		// then we want to make it actually our first child
+//		label = l;
+//	}
 	CLNode(const SExpression::SENode& n) {
+		
+		
+		
+		
+		
+		
+		AAAHHHHHH
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		// how to convert a SENode (returned by S-expression parsing) into a CLNode
 		
 		// TODO: Add some fanciness to make this *binary* trees please
 		
+//		children = n.children; // copy and convert the kids
+		
 		// here we need to see if the first child is a label, we use that 
 		// for our label 
-		if(n.nchildren() == 1 and n.child(0).label.has_value()) {
+		if(n.nchildren() >= 1 and n.child(0).label.has_value()) {
 			label = n.child(0).label.value();
+			//children.erase(0); // take my first child's label as my own
 		}
 		else {
 			assert(n.nchildren() <= 2);
-			if(n.nchildren() > 0) 
-				assert(not n.child(0).label.has_value());
+			//if(n.nchildren() > 0) 
+			//	assert(not n.child(0).label.has_value());
 			
 			label = APPLY;
 			
@@ -98,7 +120,8 @@ public:
 				out += c.string() + " ";
 			}	
 			
-			out.erase(out.length()-1);
+			if(nchildren() > 0)
+				out.erase(out.length()-1);
 			
 			out += ")";
 			return out; 

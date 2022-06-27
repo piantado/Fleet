@@ -22,7 +22,7 @@ namespace SExpression {
 
 		SENode() : label() { }
 		SENode(const std::string& s) : label(s) {}
-		SENode(const SENode& s) : BaseNode<SENode>(), label(s.label) {}
+		SENode(const SENode& s) : BaseNode<SENode>(s), label(s.label) {}
 		
 		SENode& operator=(const SENode& n) {
 			label = n.label;
@@ -44,15 +44,16 @@ namespace SExpression {
 			}
 			else { 
 			
-				std::string out = "(";
+				std::string out = "["; // we use square braces so we can see how it's different than paren inputs
 			
 				for(const auto& c : this->children) {
 					out += c.string() + " ";
 				}	
 				
-				out.erase(out.length()-1);
+				if(nchildren() > 0)
+					out.erase(out.length()-1);
 				
-				out += ")";
+				out += "]";
 				return out; 
 			}
 	}	
