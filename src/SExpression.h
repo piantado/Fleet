@@ -34,6 +34,28 @@ namespace SExpression {
 			children = std::move(n.children);
 			return *this;
 		}
+		
+			
+		virtual std::string string() const {
+			
+			if(label) {
+				assert(nchildren() == 0);
+				return label.value();
+			}
+			else { 
+			
+				std::string out = "(";
+			
+				for(const auto& c : this->children) {
+					out += c.string() + " ";
+				}	
+				
+				out.erase(out.length()-1);
+				
+				out += ")";
+				return out; 
+			}
+	}	
 	};
 
 	

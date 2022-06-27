@@ -12,9 +12,9 @@
 using S = std::string; 
 
 // this maps each symbol to an index; 
-//const std::vector<S> symbols = {"true", "false", "and", "or", "not"};
+const std::vector<S> symbols = {"true", "false", "and", "or", "not"};
 //const std::vector<S> symbols = {"first", "rest", "cons"};
-const std::vector<S> symbols = {"succ", "one", "two", "three", "four"};
+//const std::vector<S> symbols = {"succ", "one", "two", "three", "four"};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
@@ -46,7 +46,9 @@ struct CLDatum {
 		auto [l, r] = split<2>(s, '=');
 		
 		lhs = l;
-		rhs = r;		
+		rhs = r;
+
+		::print("LHSRHS=", lhs.string(), rhs.string());
 	}
 };
 
@@ -86,7 +88,7 @@ public:
 			if(x != y) {
 				
 				// check to be sure their reduced forms are different
-				CLNode xn = at(x).get_value(); // make a copy
+				CLNode xn = at(x).get_value(); // make a copy and convert to CLNode
 				CLNode yn = at(y).get_value(); 
 				
 				try {
@@ -109,14 +111,14 @@ public:
 			CLNode rhs = d.rhs; 
 			
 			try { 
-//				::print(lhs.string(), rhs.string());
+				::print(lhs.string(), rhs.string());
 				
 				lhs.substitute(*this);
 				rhs.substitute(*this);
-				//::print(lhs.string(), rhs.string());
+				::print(lhs.string(), rhs.string());
 				lhs.reduce();
 				rhs.reduce();
-				//::print(lhs.string(), "--------", rhs.string());
+				::print(lhs.string(), "--------", rhs.string());
 				
 				// check if they are right 
 				if((lhs == rhs) != (d.equal == true)) {
@@ -173,31 +175,31 @@ int main(int argc, char** argv){
 //	return 0;
 
 	// NOTE: The data here MUST be binary trees
-//	std::vector<std::string> data_strings = {
-//		"((and false) false) = false", 
-//		"((and false) true) = false", 
-//		"((and true) false) = false", 
-//		"((and true) true) = true",
-//		
-//		"((or false) false) = false", 
-//		"((or false) true) = true", 
-//		"((or true) false) = true", 
-//		"((or true) true) = true",
-//		
-//		"(not false) = true", 
-//		"(not true) = false"
-//	};
+	std::vector<std::string> data_strings = {
+		"((and false) false) = false", 
+		"((and false) true) = false", 
+		"((and true) false) = false", 
+		"((and true) true) = true",
+		
+		"((or false) false) = false", 
+		"((or false) true) = true", 
+		"((or true) false) = true", 
+		"((or true) true) = true",
+		
+		"(not false) = true", 
+		"(not true) = false"
+	};
 
 //	std::vector<std::string> data_strings = {
 //		"(first ((cons x) y)) = x", 
 //		"(rest  ((cons x) y)) = y"
 //	};
 //	
-	std::vector<std::string> data_strings = {
-		"(succ one) = two", 
-		"(succ two) = three",
-		"(succ three) = four"
-	};
+//	std::vector<std::string> data_strings = {
+//		"(succ one) = two", 
+//		"(succ two) = three",
+//		"(succ three) = four"
+//	};
 	
 
 	MyHypothesis::data_t mydata;

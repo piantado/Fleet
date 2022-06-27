@@ -34,13 +34,15 @@ public:
 		
 		// TODO: Add some fanciness to make this *binary* trees please
 		
-		assert(n.nchildren() <= 2);
-		
-		if(n.label.has_value()) { // if its a terminal 
-			assert(n.nchildren() == 0); 
-			label = n.label.value();
+		// here we need to see if the first child is a label, we use that 
+		// for our label 
+		if(n.nchildren() == 1 and n.child(0).label.has_value()) {
+			label = n.child(0).label.value();
 		}
 		else {
+			assert(n.nchildren() <= 2);
+			if(n.nchildren() > 0) 
+				assert(not n.child(0).label.has_value());
 			
 			label = APPLY;
 			
@@ -103,29 +105,12 @@ public:
 		}
 	}	
 	
-		
-	virtual std::string fullstring() const {
-		
-		if(this->nchildren() == 0) {
-			return label;
-		}
-		else { 
-		
-			std::string out = "("+label+": " ;
-		
-			for(const auto& c : this->children) {
-				out += c.fullstring() + " ";
-			}	
-			
-			out.erase(out.length()-1);
-			
-			out += ")";
-			return out; 
-		}
-	}	
+	
 	
 	template<typename L>
 	void substitute(const L& m) {
+		//::print("LABEL=",label, m.factors.contains(label));
+		
 		if(m.factors.contains(label)) {
 			auto v = m.at(label).get_value(); // copy
 			this->assign(v);
