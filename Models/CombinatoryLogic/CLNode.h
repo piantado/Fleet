@@ -23,48 +23,25 @@ public:
 	std::string label; // Some nodes have labels (S and K) with their arg
 	
 	CLNode() : label(APPLY) { }
-//	CLNode(const std::string& l) : BaseNode<CLNode>() {
-//		// SExpression::parse will call this wtih the first element of the list -- if its non-null
-//		// then we want to make it actually our first child
-//		label = l;
-//	}
 	CLNode(const SExpression::SENode& n) {
-		
-		
-		
-		
-		
-		
-		AAAHHHHHH
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		// how to convert a SENode (returned by S-expression parsing) into a CLNode
-		
-		// TODO: Add some fanciness to make this *binary* trees please
-		
-//		children = n.children; // copy and convert the kids
 		
 		// here we need to see if the first child is a label, we use that 
 		// for our label 
 		if(n.nchildren() >= 1 and n.child(0).label.has_value()) {
 			label = n.child(0).label.value();
-			//children.erase(0); // take my first child's label as my own
+			// copy AFTER the first since the first was my symbol
+			for(size_t i=1;i<n.nchildren();i++){
+				push_back(CLNode{n.child(i)});
+			} 
+		}
+		else if(nchildren() == 0 and n.label.has_value()) {
+			//assert(n.label.has_value());
+			
+			label = n.label.value();
 		}
 		else {
+			// otherwise we're an apply node
 			assert(n.nchildren() <= 2);
-			//if(n.nchildren() > 0) 
-			//	assert(not n.child(0).label.has_value());
 			
 			label = APPLY;
 			
@@ -114,14 +91,13 @@ public:
 		}
 		else { 
 		
-			std::string out = "(";//+label+": " ;
+			std::string out = "("+label+": " ;
 		
 			for(const auto& c : this->children) {
 				out += c.string() + " ";
 			}	
 			
-			if(nchildren() > 0)
-				out.erase(out.length()-1);
+			out.erase(out.length()-1);
 			
 			out += ")";
 			return out; 

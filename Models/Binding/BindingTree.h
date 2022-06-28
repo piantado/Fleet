@@ -8,6 +8,7 @@
 #include <functional>
 
 #include "BaseNode.h"
+#include "SExpression.h"
 
 // Some parts of speech here as a class 
 enum class POS { None, S, SBAR, NP, NPS, NPO, NPPOSS, VP, MD, PP, CP, CC, N, V, P, A};
@@ -56,88 +57,63 @@ public:
 	}
 	
 	/**
-	 * @brief This constructor gets called by SExpression, and we need to call convert_from_SExpression() to 
-	 * 		  really fill in referent, target, word, etc. 
+	 * @brief This is a convertion from S-expression parsing
 	 * @param s
 	 */
-	BindingTree(const std::string& s) :
+	BindingTree(const SExpression::SENode& n) :
 		referent(-1), target(false), linear_order(0), pos(POS::None), word(""){
 		
-		// set up the referent if we can
-		// NOTE: There referent is on the POS
-		auto p = s.find(".");
-		if(p != std::string::npos) {
-			referent = stoi(s.substr(p+1)); // only single digits!!
-			label = s.substr(0,p);
-		}
-		else {
-			label = s;
-		}
-		
-		// and then fix label if it has a star
-		if(label.length() > 0 and label.at(0) == '>')  {
-			target = true;
-			label = label.substr(1,std::string::npos);
-		}	
-	
-		// and set the POS accordingly
-		if(posmap.count(label) != 0){
-			pos = posmap[label];
-		}		
-	}
-	
-	/**
-	 * @brief This is needed because when we make these with an S-expression, it doesn't correctly set the referent, POS, etc. 
-	 */	
-	void convert_from_SExpression() {
-		
-		// this is the main thing S-expression parsing does wrong -- it makes the 
-		// "word" into the first child
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		::print(string(), this->nchildren());
-		if(this->nchildren() > 0 and this->child(0).nchildren() == 0) {
+		int copy_from = 0; // where do we start copying the children from?
 			
-			::print("HERE ", this->child(0).label);
+		if(n.nchildren()>0 and n.child(0).label.has_value()) {
+			const std::string& s = n.child(0).label.value();
+			copy_from = 1; 
 				
-			// if I have no label, I need to get it from my first child
-			// which should be a label only
-			if(label == "") {
-				assert(this->child(0).word == "");
-				
-				label = this->child(0).label;
-				children.erase(children.begin());				
+			// set up the referent if we can
+			// NOTE: There referent is on the POS
+			auto p = s.find(".");
+			if(p != std::string::npos) {
+				referent = stoi(s.substr(p+1)); // only single digits!!
+				label = s.substr(0,p);
 			}
 			else {
-				// otherwise I need to get my word from 
-				assert(this->child(0).word == "");
+				label = s;
+			}
+			
+			
+			// and then fix label if it has a star
+			if(label.length() > 0 and label.at(0) == '>')  {
+				target = true;
+				label = label.substr(1,std::string::npos);
+			}	
+		
+			// and set the POS accordingly
+			if(posmap.count(label) != 0){
+				pos = posmap[label];
+			}		
+			
+			
+			// and check if there is a word next
+			if(n.nchildren() > 1 and n.child(1).label.has_value()) {
 				
-				word = this->child(0).label; 
+				copy_from = 2; 
 				
-				// erase the first child since it's going to be the word
-				children.erase(children.begin());
-				::print("HERE2 ", string());
+				word = n.child(1).label.value();				
+			}
+		
+			for(size_t i=copy_from;i<n.nchildren();i++) {
+				
+				push_back(BindingTree{n.child(i)});
 				
 			}
-		}	
-
-		for(auto& c : children) {
-			c.convert_from_SExpression();
+		
 		}
+		
+		
+		
+		
 	}
-
+	
 	/////////////////////////////////
 	// I need these because I need to call basenode, which overrides 
 	// so that children are correctly set
@@ -197,9 +173,9 @@ public:
 	
 	std::string string(bool usedot=true) const override {
 		std::string out = "[" + (target ? std::string(">") : "") + 
-		                        "L="+label + 
+		                        label + 
 								(referent > -1 ? "."+str(referent) : "") + 
-								";W=" + 
+								";" + 
 								word;
 		for(auto& c : children) {
 			out += " " + c.string();

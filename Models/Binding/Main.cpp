@@ -13,8 +13,8 @@
 // need a fixed order of words to correspond to factor levels
 // We use REXP here (John, Mary, etc) so that we don't have to distinguish which
 std::vector<std::string> words = {"REXP", "him", "his", "he", "himself"};
-std::vector<double> data_amounts = {1, 2, 5, 10, 15, 20, 30, 40, 50, 75, 100, 110, 125, 150, 175, 200, 300, 400, 500, 1000, 1500, 2000, 2500, 5000};
-//std::vector<double> data_amounts = {1300};
+//std::vector<double> data_amounts = {1, 2, 5, 10, 15, 20, 30, 40, 50, 75, 100, 110, 125, 150, 175, 200, 300, 400, 500, 1000, 1500, 2000, 2500, 5000};
+std::vector<double> data_amounts = {1300};
 
 static const double alpha = 0.95; 
 int NDATA = 10; // how many data points from each sentence are we looking at?
@@ -104,11 +104,7 @@ int main(int argc, char** argv){
 	std::vector<std::string> raw_data; 	
 	for(auto& [ds, sentence] : read_csv<2>("lasnik-extensive.csv", false, ',')){
 		
-		// look at tokenization
-		// for(auto k : SExpression::tokenize(ds)) { COUT ">>" << k << "<<" ENDL;}
-		
-		BindingTree* t = new BindingTree(SExpression::parse<BindingTree>(ds));	
-		t->convert_from_SExpression(); // fix the fact that as S-expressions, the words are listed as first children
+		BindingTree* t = new BindingTree(SExpression::parse(ds));	
 		print("t=", t->string());
 		
 		assert(t != nullptr);

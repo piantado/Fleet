@@ -16,6 +16,8 @@ const std::vector<S> symbols = {"true", "false", "and", "or", "not"};
 //const std::vector<S> symbols = {"first", "rest", "cons"};
 //const std::vector<S> symbols = {"succ", "one", "two", "three", "four"};
 
+const double LL_PENALTY = 100;
+
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Declare our hypothesis type
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,7 +50,8 @@ struct CLDatum {
 		lhs = SExpression::parse(l);
 		rhs = SExpression::parse(r);
 
-		::print("LHS=", QQ(l), SExpression::parse(l).string(), lhs.string());
+		::print("#LHS=", QQ(l), SExpression::parse(l).string(), lhs.string());
+		::print("#RHS=", QQ(r), SExpression::parse(r).string(), rhs.string());
 	}
 };
 
@@ -111,21 +114,21 @@ public:
 			CLNode rhs = d.rhs; 
 			
 			try { 
-				::print(lhs.string(), rhs.string());
+				//::print(lhs.string(), rhs.string());
 				
 				lhs.substitute(*this);
 				rhs.substitute(*this);
-				::print(lhs.string(), rhs.string());
+				//::print(lhs.string(), rhs.string());
 				lhs.reduce();
 				rhs.reduce();
-				::print(lhs.string(), "--------", rhs.string());
-				
+				//::print(lhs.string(), "--------", rhs.string());
+				//::print( (lhs==rhs));
 				// check if they are right 
 				if((lhs == rhs) != (d.equal == true)) {
-					likelihood -= 100;
+					likelihood -= LL_PENALTY;
 				}
 			} catch(Combinators::ReductionException& e) {
-				likelihood -= 100; // penalty for exceptions 
+				likelihood -= LL_PENALTY; // penalty for exceptions 
 			}
 		}
 
@@ -184,10 +187,10 @@ int main(int argc, char** argv){
 		"((or false) false) = false", 
 		"((or false) true) = true", 
 		"((or true) false) = true", 
-		"((or true) true) = true",
+		"((or true) true) = true"/*,
 		
 		"(not false) = true", 
-		"(not true) = false"
+		"(not true) = false"*/
 	};
 
 //	std::vector<std::string> data_strings = {
@@ -207,7 +210,7 @@ int main(int argc, char** argv){
 		mydata.push_back(CLDatum{ds});
 	}
 
-return 0;
+//return 0;
 
 	MyHypothesis h0 = MyHypothesis::sample(symbols);
 
