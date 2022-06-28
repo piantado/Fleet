@@ -35,7 +35,6 @@ namespace SExpression {
 			return *this;
 		}
 		
-			
 		virtual std::string string() const {
 			if(label) {
 				assert(nchildren() == 0);

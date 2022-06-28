@@ -86,6 +86,8 @@ public:
 
 	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		
+		
+		// enforce uniqueness among the symbols 
 		for(auto& x : symbols) 
 		for(auto& y : symbols) {
 			if(x != y) {
@@ -118,11 +120,11 @@ public:
 				
 				lhs.substitute(*this);
 				rhs.substitute(*this);
-				//::print(lhs.string(), rhs.string());
+				//::print("\t", lhs.string(), rhs.string());
 				lhs.reduce();
 				rhs.reduce();
-				//::print(lhs.string(), "--------", rhs.string());
-				//::print( (lhs==rhs));
+				//::print("\t", lhs.string(), "--------", rhs.string());
+				//::print("\t", (lhs==rhs));
 				// check if they are right 
 				if((lhs == rhs) != (d.equal == true)) {
 					likelihood -= LL_PENALTY;
@@ -187,10 +189,10 @@ int main(int argc, char** argv){
 		"((or false) false) = false", 
 		"((or false) true) = true", 
 		"((or true) false) = true", 
-		"((or true) true) = true"/*,
+		"((or true) true) = true",
 		
 		"(not false) = true", 
-		"(not true) = false"*/
+		"(not true) = false"
 	};
 
 //	std::vector<std::string> data_strings = {

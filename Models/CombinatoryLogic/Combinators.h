@@ -58,7 +58,7 @@ namespace Combinators {
 			add("I", CL_I<SKGrammar>);
 			add("S", CL_S<SKGrammar>);
 			add("K", CL_K<SKGrammar>);
-			add("(%s %s)", CL_Apply<SKGrammar>, 3.0);		
+			add("(%s %s)", CL_Apply<SKGrammar>, 2.0);		
 		}
 		
 	} skgrammar;
