@@ -6,37 +6,36 @@
 
 #include "BaseNode.h"
 
-
 // Code for parsing and dealing with S-expressions
 namespace SExpression {
 	
 	/**
-	 * @class SENode
+	 * @class SExpNode
 	 * @author Steven Piantadosi
 	 * @date 26/06/22
 	 * @file SExpression.h
 	 * @brief This is the return type of parsing S-expressions. It contains an optional label and
 	 * 		  typically we be converted into a different type. 
 	 */
-	struct SENode : public BaseNode<SENode> {
+	struct SExpNode : public BaseNode<SExpNode> {
 		std::optional<std::string> label;
 		
-		SENode() : label() { }
-		SENode(const std::string& s) : label(s) {}
-		SENode(const SENode& s) : BaseNode<SENode>(s), label(s.label) {}
+		SExpNode() : label() { }
+		SExpNode(const std::string& s) : label(s) {}
+		SExpNode(const SExpNode& s) : BaseNode<SExpNode>(s), label(s.label) {}
 		
-		SENode& operator=(const SENode& n) {
+		SExpNode& operator=(const SExpNode& n) {
 			label = n.label;
 			children = n.children;
 			return *this;
 		}
-		SENode& operator=(const SENode&& n) {
+		SExpNode& operator=(const SExpNode&& n) {
 			label = std::move(n.label);
 			children = std::move(n.children);
 			return *this;
 		}
 		
-		virtual bool operator==(const SENode& n) const override {
+		virtual bool operator==(const SExpNode& n) const override {
 			return label == n.label and children == n.children;
 		}
 		
@@ -148,17 +147,17 @@ namespace SExpression {
 	 * @param tok
 	 * @return 
 	 */
-	SENode __parse(std::vector<std::string>& tok) {
+	SExpNode __parse(std::vector<std::string>& tok) {
 		
 		assert(tok.size() > 0);
 		
-		SENode out;		
+		SExpNode out;		
 		while(not tok.empty()) {
 			auto x = pop_front(tok);
 			//::print("x=",x);
 			if(x == "(")      out.push_back(__parse(tok)); 
 			else if(x == ")") break; // when we get this, we must be a close (since lower-down stuff has been handled in the recursion)
-			else              out.push_back(SENode(x)); // just a string
+			else              out.push_back(SExpNode(x)); // just a string
 		}
 		
 		return out;	
@@ -170,10 +169,10 @@ namespace SExpression {
 	 * @param tok
 	 * @return 
 	 */	
-	SENode parse(std::vector<std::string>& tok) {
+	SExpNode parse(std::vector<std::string>& tok) {
 		
 		if(tok.size() == 1) {
-			return SENode(pop_front(tok));
+			return SExpNode(pop_front(tok));
 		}
 		
 		if(tok.front() == "(") { 
@@ -183,7 +182,7 @@ namespace SExpression {
 		return __parse(tok); 
 	}	
 
-	SENode parse(std::string s) {
+	SExpNode parse(std::string s) {
 		auto tok = tokenize(s);
 		return parse(tok);
 	}

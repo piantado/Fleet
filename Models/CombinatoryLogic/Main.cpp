@@ -13,7 +13,7 @@ using S = std::string;
 
 // this maps each symbol to an index; 
 const std::vector<S> symbols = {"true", "false", "and", "or", "not"};
-const std::vector free_symbols = {"true", "not", "and", "or"}; // if we search, which ones are "free" variables? (e.g. from which all others are defined on the rhs?)
+//const std::vector free_symbols = {"true", "not", "and", "or"}; // if we search, which ones are "free" variables? (e.g. from which all others are defined on the rhs?)
 
 //const std::vector<S> symbols = {"first", "rest", "cons"};
 //const std::vector<S> free_symbols = {"first", "rest", "cons"};
@@ -30,7 +30,8 @@ const double LL_PENALTY = 100;
 #include "Combinators.h"
 #include "DeterministicLOTHypothesis.h"
 
-using CL=Combinators::CL;
+using CL = Combinators::CL;
+using SExpNode = SExpression::SExpNode;
 
 #include "CLNode.h"
 #include "SExpression.h"
@@ -44,8 +45,8 @@ using CL=Combinators::CL;
  * 		  with the right labels
  */
 struct CLDatum { 
-	SExpression::SENode lhs;
-	SExpression::SENode rhs;
+	SExpNode lhs;
+	SExpNode rhs;
 	bool equal = true; 
 	
 	CLDatum(std::string s) {

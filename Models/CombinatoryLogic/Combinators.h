@@ -73,11 +73,13 @@ namespace Combinators {
 	 * @brief A class that gets thrown when we've reduced too much 
 	 */
 	class ReductionException: public std::exception {} reduction_exception;
-	
 		
-		
-
-	void reduce(SExpression::SENode& n, int& remaining_calls) {
+	/**
+	 * @brief Combinator reduction, assuming that n is a SExpNode
+	 * @param n
+	 * @param remaining_calls
+	 */
+	void reduce(SExpression::SExpNode& n, int& remaining_calls) {
 		// returns true if we change anything
 		
 		bool modified; // did we change anything?
@@ -124,13 +126,13 @@ namespace Combinators {
 					auto x = std::move(n.child(0).child(0).child(1));
 					auto y = std::move(n.child(0).child(1));
 					auto z = std::move(n.child(1));
-					SExpression::SENode zz = z; // copy 
+					SExpression::SExpNode zz = z; // copy 
 					
-					SExpression::SENode q; // build our rule
+					SExpression::SExpNode q; // build our rule
 					q.set_child(0, std::move(x)); 
 					q.set_child(1, std::move(zz)); //copy
 					
-					SExpression::SENode r;
+					SExpression::SExpNode r;
 					r.set_child(0, std::move(y));
 					r.set_child(1, std::move(z));
 					
@@ -154,43 +156,43 @@ namespace Combinators {
 		} while(modified); // end while
 	}
 
-	void reduce(SExpression::SENode& n) {
+	void reduce(SExpression::SExpNode& n) {
 		int remaining_calls = 256;
 		reduce(n,remaining_calls);
 	}
 
-	SExpression::SENode NodeToSENode(const Node& n) {
+	SExpression::SExpNode NodeToSExpNode(const Node& n) {
 		Rule* rapp = Combinators::skgrammar.get_rule(Combinators::skgrammar.nt<CL>(), "(%s %s)");
 		
 		if(n.rule == rapp) {
-			SExpression::SENode out;
+			SExpression::SExpNode out;
 			for(size_t i=0;i<n.nchildren();i++){
-				out.set_child(i, NodeToSENode(n.child(i)));
+				out.set_child(i, NodeToSExpNode(n.child(i)));
 			}
 			return out; 
 		}
 		else {
 			assert(n.nchildren() == 0); // must be a terminal 
-			return SExpression::SENode(n.format()); // must match ISK
+			return SExpression::SExpNode(n.format()); // must match ISK
 		}
 		
 	}
 
-	Node SENodeToNode(const SExpression::SENode& n) {	
+	Node SExpNodeToNode(const SExpression::SExpNode& n) {	
 		if(n.nchildren() == 0) {
 			assert(n.label.has_value());
 			Rule* rl = Combinators::skgrammar.get_rule(Combinators::skgrammar.nt<CL>(), n.label.value());
 			return Node(rl);
 		}
 		else if(n.nchildren() == 1) {
-			return SENodeToNode(n.child(0));		
+			return SExpNodeToNode(n.child(0));		
 		}
 		else if(n.nchildren() == 2) {
 			Rule* rapp = Combinators::skgrammar.get_rule(Combinators::skgrammar.nt<CL>(), "(%s %s)");
 			assert(rapp != nullptr);
 			Node out(rapp);
 			for(size_t i=0;i<n.nchildren();i++){
-				out.set_child(i, SENodeToNode(n.child(i)));
+				out.set_child(i, SExpNodeToNode(n.child(i)));
 			}
 			return out; 
 		}
@@ -200,12 +202,12 @@ namespace Combinators {
 	}
 
 	template<typename L>
-	void substitute(SExpression::SENode& n, const L& m) {
+	void substitute(SExpression::SExpNode& n, const L& m) {
 		//::print(n.string(), "LABEL=",n.get_label(), m.factors.contains(n.get_label()));
 		
 		if(n.label.has_value() and m.factors.contains(n.label.value())) {
 			auto v = m.at(n.label.value()).get_value(); // copy
-			n = NodeToSENode(v);
+			n = NodeToSExpNode(v);
 		}
 		
 		for(auto& c : n.get_children()) {

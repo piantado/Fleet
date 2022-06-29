@@ -16,7 +16,7 @@ public:
 	using Super::Super; // inherit constructors
 	
 	InnerHypothesis(std::string s) {
-		Node n = Combinators::SENodeToNode(SExpression::parse(s));
+		Node n = Combinators::SExpNodeToNode(SExpression::parse(s));
 		this->set_value(std::move(n), false);
 	}
 };
@@ -40,9 +40,9 @@ public:
 	virtual double compute_prior() override {
 		
 		// enforce uniqueness among the symbols 
-		std::vector<SExpression::SENode> seen; 		
+		std::vector<SExpression::SExpNode> seen; 		
 		for(auto& x : symbols) {
-			SExpression::SENode xn = Combinators::NodeToSENode(at(x).get_value());
+			SExpression::SExpNode xn = Combinators::NodeToSExpNode(at(x).get_value());
 			
 			try{
 				Combinators::reduce(xn);
@@ -67,8 +67,8 @@ public:
 		
 		likelihood = 0.0;
 		for(const auto& d : data) {
-			SExpression::SENode lhs = d.lhs; // make a copy
-			SExpression::SENode rhs = d.rhs; 
+			SExpression::SExpNode lhs = d.lhs; // make a copy
+			SExpression::SExpNode rhs = d.rhs; 
 			
 			try { 
 				//::print(lhs.string(), rhs.string());
