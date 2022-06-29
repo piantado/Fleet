@@ -10,8 +10,7 @@
  * @author Steven Piantadosi
  * @date 29/05/22
  * @file Main.cpp
- * @brief An improved implementation of combinators. Here, we storea label on terminals
- * 		  and only terminals!
+ * @brief An improved implementation of combinators.
  */
 const std::string APPLY = ".";  // internal label used to signify apply
 	
@@ -74,6 +73,23 @@ public:
 		}
 	}
 	
+	Node toNode() {
+		
+		if(label == APPLY) {
+			Rule* r = Combinators::skgrammar.get_rule(Combinators::skgrammar.nt<CL>(), "(%s %s)");
+			Node out(r);
+			for(auto& c : children){
+				out.push_back(c.toNode());
+			}
+			return out; 
+		}
+		else {
+			assert(nchildren() == 0);
+			Rule* r = Combinators::skgrammar.get_rule(Combinators::skgrammar.nt<CL>(), label);
+			return Node{r};			
+		}
+	}
+	
 	void assign(CLNode& n) {
 		label = n.label; // must assign label first?
 		this->Super::operator=(n);		
@@ -91,20 +107,33 @@ public:
 		}
 		else { 
 		
-			std::string out = "("+label+": " ;
+			std::string out = "("+(label == APPLY ? "" : label+" ");
 		
 			for(const auto& c : this->children) {
 				out += c.string() + " ";
 			}	
 			
-			out.erase(out.length()-1);
+			if(nchildren() > 0)
+				out.erase(out.length()-1);
 			
 			out += ")";
 			return out; 
 		}
 	}	
 	
-	
+	/**
+	 * @brief Returns true if we only use CL terms
+	 * @return 
+	 */	
+	bool is_only_CL() {
+		for(auto& n : *this) {
+			if(n.label != APPLY and n.label != "S" and n.label != "K" and n.label != "I") {
+				::print("LABEL   ", n.label);
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	template<typename L>
 	void substitute(const L& m) {

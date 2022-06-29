@@ -12,10 +12,13 @@
 using S = std::string; 
 
 // this maps each symbol to an index; 
-const std::vector<S> symbols = {"true", "false", "and", "or", "not"};
-//const std::vector<S> symbols = {"first", "rest", "cons"};
-//const std::vector<S> symbols = {"succ", "one", "two", "three", "four"};
+//const std::vector<S> symbols = {"true", "false", "and", "or", "not"};
+//const std::vector free_symbols = {"true", "and", "or", "not"}; // if we search, which ones are "free" variables? (e.g. from which all others are defined on the rhs?)
 
+//const std::vector<S> symbols = {"first", "rest", "cons"};
+const std::vector<S> symbols = {"succ", "one", "two", "three", "four"};
+const std::vector free_symbols = {"succ", "one"}; // if we search, which ones are "free" variables? (e.g. from which all others are defined on the rhs?)
+	
 const double LL_PENALTY = 100;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,97 +53,13 @@ struct CLDatum {
 		lhs = SExpression::parse(l);
 		rhs = SExpression::parse(r);
 
-		::print("#LHS=", QQ(l), SExpression::parse(l).string(), lhs.string());
-		::print("#RHS=", QQ(r), SExpression::parse(r).string(), rhs.string());
+		::print("# LHS=", QQ(l), SExpression::parse(l).string(), lhs.string());
+		::print("# RHS=", QQ(r), SExpression::parse(r).string(), rhs.string());
 	}
 };
 
-/**
- * @class InnerHypothesis
- * @author piantado
- * @date 04/05/20
- * @file Main.cpp
- * @brief This just stores nodes from SKGrammar, and doesn't permit calling input/output
- */
-class InnerHypothesis final : public DeterministicLOTHypothesis<InnerHypothesis,CL,CL,Combinators::SKGrammar,&Combinators::skgrammar> {
-public:
-	using Super = DeterministicLOTHypothesis<InnerHypothesis,CL,CL,Combinators::SKGrammar,&Combinators::skgrammar>;
-	using Super::Super; // inherit constructors
-};
 
-
-#include "Lexicon.h"
-
-/**
- * @class MyHypothesis
- * @author piantado
- * @date 04/05/20
- * @file Main.cpp
- * @brief A version of Churiso that works with MCMC on a simple boolean example
- */
-class MyHypothesis final : public Lexicon<MyHypothesis, S, InnerHypothesis, CL, CL, CLDatum> {
-public:	
-	
-	using Super = Lexicon<MyHypothesis, S, InnerHypothesis, CL, CL, CLDatum>;
-	using Super::Super;	
-
-	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
-		
-		
-		// enforce uniqueness among the symbols 
-		for(auto& x : symbols) 
-		for(auto& y : symbols) {
-			if(x != y) {
-				
-				// check to be sure their reduced forms are different
-				CLNode xn = at(x).get_value(); // make a copy and convert to CLNode
-				CLNode yn = at(y).get_value(); 
-				
-				try {
-					xn.reduce();
-					yn.reduce();
-				} catch(Combinators::ReductionException& e) {
-					return -infinity; 
-				}
-				
-				if(xn == yn){
-					return likelihood = -infinity;
-				}
-			}
-		}
-		//::print(string());
-		
-		likelihood = 0.0;
-		for(auto& d : data) {
-			CLNode lhs = d.lhs; // make a copy
-			CLNode rhs = d.rhs; 
-			
-			try { 
-				//::print(lhs.string(), rhs.string());
-				
-				lhs.substitute(*this);
-				rhs.substitute(*this);
-				//::print("\t", lhs.string(), rhs.string());
-				lhs.reduce();
-				rhs.reduce();
-				//::print("\t", lhs.string(), "--------", rhs.string());
-				//::print("\t", (lhs==rhs));
-				// check if they are right 
-				if((lhs == rhs) != (d.equal == true)) {
-					likelihood -= LL_PENALTY;
-				}
-			} catch(Combinators::ReductionException& e) {
-				likelihood -= LL_PENALTY; // penalty for exceptions 
-			}
-		}
-
-		return likelihood; 
-	
-	 }
-	 
-};
-
-
+#include "MyHypothesis.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -148,7 +67,7 @@ public:
 #include "TopN.h"
 #include "MCMCChain.h"
 #include "ParallelTempering.h"
-
+#include "Enumeration.h"
 
 #include "Fleet.h" 
 
@@ -156,6 +75,8 @@ int main(int argc, char** argv){
 	
 	Fleet fleet("Combinatory logic");
 	fleet.initialize(argc, argv);
+	
+//	MyHypothesis::p_factor_propose = 0.5;
 	
 //	for(size_t k=0;k<1000;k++) {
 //		try {
@@ -180,31 +101,31 @@ int main(int argc, char** argv){
 //	return 0;
 
 	// NOTE: The data here MUST be binary trees
-	std::vector<std::string> data_strings = {
-		"((and false) false) = false", 
-		"((and false) true) = false", 
-		"((and true) false) = false", 
-		"((and true) true) = true",
-		
-		"((or false) false) = false", 
-		"((or false) true) = true", 
-		"((or true) false) = true", 
-		"((or true) true) = true",
-		
-		"(not false) = true", 
-		"(not true) = false"
-	};
+//	std::vector<std::string> data_strings = {
+//		"((and true) true) = true",
+//		"((and false) false) = false", 
+//		"((and false) true) = false", 
+//		"((and true) false) = false", 
+//		
+//		"((or false) false) = false", 
+//		"((or false) true) = true", 
+//		"((or true) false) = true", 
+//		"((or true) true) = true",
+//		
+//		"(not false) = true", 
+//		"(not true) = false"
+//	};
 
 //	std::vector<std::string> data_strings = {
 //		"(first ((cons x) y)) = x", 
 //		"(rest  ((cons x) y)) = y"
 //	};
 //	
-//	std::vector<std::string> data_strings = {
-//		"(succ one) = two", 
-//		"(succ two) = three",
-//		"(succ three) = four"
-//	};
+	std::vector<std::string> data_strings = {
+		"(succ one) = two", 
+		"(succ two) = three",
+		"(succ three) = four"
+	};
 	
 
 	MyHypothesis::data_t mydata;
@@ -212,16 +133,61 @@ int main(int argc, char** argv){
 		mydata.push_back(CLDatum{ds});
 	}
 
-//return 0;
 
-	MyHypothesis h0 = MyHypothesis::sample(symbols);
+	// TODO: Here we really should implement a churiso-like inference maybe relying on enumeration
 
 	TopN<MyHypothesis> top;
 	top.print_best = true;
-	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 10.0);
-	for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
-		UNUSED(h);
+	for(enumerationidx_t e;!CTRL_C;e++) {
+		IntegerizedStack is{e};
+		
+		MyHypothesis h; 
+		
+		// we split here into the defining terms
+		auto values = is.split(free_symbols.size());
+		for(size_t i=0;i<values.size();i++) {
+			IntegerizedStack q{values[i]};
+			h[free_symbols[i]] = expand_from_integer(&Combinators::skgrammar, Combinators::skgrammar.nt<CL>(), q);
+		}
+
+		// now go through and push constraints
+		// NOTE: Here we need a way to convert a CL node back into a normal node!
+		// NOTE: here we only push left->right
+		for(const auto& d : mydata) {
+			CLNode rhs = d.rhs; 
+			CLNode lhs = d.lhs; // make a copy
+			lhs.substitute(h); // fill in what we got
+			::print("HERE", lhs.string(), lhs.is_only_CL());
+			if(lhs.is_only_CL() and rhs.nchildren() == 0 and not h.contains(rhs.label)) {
+				::print(">> ", rhs.label, lhs);
+				lhs.reduce();
+				InnerHypothesis ihr; ihr.set_value(lhs.toNode());
+				h[rhs.label] = ihr; // push this constraint
+			}
+		}
+//		
+		::print(h);
+
+		h.compute_posterior(mydata);
+		
+		top << h;
+		
+//		if(h.likelihood > -700)	
+//			h.print();
+		
+		
 	}
-	
-	top.print();
+
+//return 0;
+
+//	MyHypothesis h0 = MyHypothesis::sample(symbols);
+//
+//	TopN<MyHypothesis> top;
+//	top.print_best = true;
+//	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1000.0);
+//	for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
+//		UNUSED(h);
+//	}
+//	
+//	top.print();
 }
