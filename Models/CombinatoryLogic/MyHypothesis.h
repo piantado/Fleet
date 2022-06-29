@@ -14,13 +14,13 @@ public:
 	using Super = DeterministicLOTHypothesis<InnerHypothesis,CL,CL,Combinators::SKGrammar,&Combinators::skgrammar>;
 	using Super::Super; // inherit constructors
 	
-	InnerHypothesis(CLNode& n) {
-		this->set_value(n.toNode(), false); // don't compile please
-	}
-	
+//	InnerHypothesis(SExpression::SENode& n) {
+//		this->set_value(n.toNode(), false); // don't compile please
+//	}
+//	
 	InnerHypothesis(std::string s) {
-		CLNode n = SExpression::parse(s);
-		this->set_value(n.toNode(), false);
+		Node n = SENodeToNode(SExpression::parse(s));
+		this->set_value(std::move(n), false);
 	}
 };
 
@@ -43,12 +43,12 @@ public:
 	virtual double compute_prior() override {
 		
 		// enforce uniqueness among the symbols 
-		std::vector<CLNode> seen; 		
-		for(auto& x : free_symbols) {
-			CLNode xn(at(x).get_value());
+		std::vector<SExpression::SENode> seen; 		
+		for(auto& x : symbols) {
+			SExpression::SENode xn = NodeToSENode(at(x).get_value());
 			
 			try{
-				xn.reduce();
+				CLreduce(xn);
 			} catch(Combinators::ReductionException& e) {
 				return prior = -infinity;
 			}
@@ -70,22 +70,22 @@ public:
 		
 		likelihood = 0.0;
 		for(const auto& d : data) {
-			CLNode lhs = d.lhs; // make a copy
-			CLNode rhs = d.rhs; 
+			SExpression::SENode lhs = d.lhs; // make a copy
+			SExpression::SENode rhs = d.rhs; 
 			
 			try { 
-				::print(lhs.string(), rhs.string());
+				//::print(lhs.string(), rhs.string());
 				
-				lhs.substitute(*this);
-				rhs.substitute(*this);
-				::print("\t", lhs.string(), rhs.string());
-				lhs.reduce();
-				rhs.reduce();
-				::print("\t", lhs.string(), rhs.string());
-				::print("\t", (lhs==rhs));
+				substitute(lhs, *this);
+				substitute(rhs, *this);
+				//::print("\t", lhs.string(), rhs.string());
+				CLreduce(lhs);
+				CLreduce(rhs);
+				//::print("\t", lhs.string(), rhs.string());
+				//::print("\t", (lhs==rhs));
 				// check if they are right 
 				if((lhs == rhs) != (d.equal == true)) {
-					::print("\t", d.lhs.string(), d.rhs.string());
+					//::print("\t", d.lhs.string(), d.rhs.string());
 					likelihood -= LL_PENALTY;
 				}
 			} catch(Combinators::ReductionException& e) {

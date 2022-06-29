@@ -71,6 +71,10 @@ public:
 		fix_child_info();
 	}
 	
+	const std::string& format() const {
+		return this->rule->format;
+	}
+	
 	nonterminal_t type(const size_t i) const {
 		/**
 		 * @brief Return the type of the i'th child

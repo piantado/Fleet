@@ -19,7 +19,7 @@ namespace SExpression {
 	 */
 	struct SENode : public BaseNode<SENode> {
 		std::optional<std::string> label;
-
+		
 		SENode() : label() { }
 		SENode(const std::string& s) : label(s) {}
 		SENode(const SENode& s) : BaseNode<SENode>(s), label(s.label) {}
@@ -33,6 +33,19 @@ namespace SExpression {
 			label = std::move(n.label);
 			children = std::move(n.children);
 			return *this;
+		}
+		
+		virtual bool operator==(const SENode& n) const override {
+			return label == n.label and children == n.children;
+		}
+		
+		std::string get_label() {
+			if(label.has_value()) {
+				return label.value();
+			}
+			else {
+				return "<NA>";
+			}
 		}
 		
 		virtual std::string string() const {

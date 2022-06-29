@@ -44,8 +44,8 @@ using CL=Combinators::CL;
  * 		  with the right labels
  */
 struct CLDatum { 
-	CLNode lhs;
-	CLNode rhs;
+	SExpression::SENode lhs;
+	SExpression::SENode rhs;
 	bool equal = true; 
 	
 	CLDatum(std::string s) {
@@ -136,6 +136,13 @@ int main(int argc, char** argv){
 	}
 
 
+//	size_t cnt = 256; 
+//	SExpression::SENode k = SExpression::parse("(((S ((S K) S)) (K K) ) (K K))");
+//	print(k.string());	
+//	CLreduce(k,cnt);
+//	print(k.string());	
+//	return 0;
+
 	// for testing reduction in the boolean case
 	
 //	CLNode k = SExpression::parse("((S ((S K) S)) (K K) )");
@@ -154,78 +161,79 @@ int main(int argc, char** argv){
 //	
 //	return 0;
 	
-	MyHypothesis tst;
-	tst["and"] = InnerHypothesis("((S (S (S S))) (K (K K)))");
-	tst["or"]  = InnerHypothesis("((S S) (K (K K)))");
-	tst["not"] = InnerHypothesis("((S ((S K) S)) (K K) )");
-	tst["true"]  = InnerHypothesis("(K K)");
-	tst["false"]  = InnerHypothesis("(K)");
-
-	auto d1 = mydata[0].lhs;
-	d1.substitute(tst);
-	print(d1.string());
-	
+//	MyHypothesis tst;
+//	tst["and"] = InnerHypothesis("((S (S (S S))) (K (K K)))");
+//	tst["or"]  = InnerHypothesis("((S S) (K (K K)))");
+//	tst["not"] = InnerHypothesis("((S ((S K) S)) (K K) )");
+//	tst["true"]  = InnerHypothesis("(K K)");
+//	tst["false"]  = InnerHypothesis("(K)");
+//
+//	auto d1 = mydata[0].lhs;
+//	print(d1.string());
+//	substitute(d1, tst);
+//	print(d1.string());
+//	
 //	tst.compute_posterior(mydata);
 //	print(tst.string());
 //	print(tst.posterior);
-	
-	return 0;
+//	
+//	return 0;
 
 	// TODO: Here we really should implement a churiso-like inference maybe relying on enumeration
 
-	TopN<MyHypothesis> top;
-	top.print_best = true;
-	for(enumerationidx_t e=0;!CTRL_C;e++) {
-		IntegerizedStack is{e};
-		
-		MyHypothesis h; 
-		
-		// we split here into the defining terms
-		auto values = is.split(free_symbols.size());
-		for(size_t i=0;i<values.size();i++) {
-			//::print(e, i, free_symbols[i], values[i]);
-			IntegerizedStack q{values[i]};
-			h[free_symbols[i]] = expand_from_integer(&Combinators::skgrammar, Combinators::skgrammar.nt<CL>(), q);
-		}
-		
-		
-		//::print(h);
-
-		try { 
-
-			// now go through and push constraints
-			// NOTE: Here we need a way to convert a CL node back into a normal node!
-			// NOTE: here we only push left->right
-			for(const auto& d : mydata) {
-				CLNode rhs = d.rhs; 
-				CLNode lhs = d.lhs; // make a copy
-				lhs.substitute(h); // fill in what we got
-				if(lhs.is_only_CL() and rhs.nchildren() == 0 and not h.contains(rhs.label)) {
-					lhs.reduce();
-					InnerHypothesis ihr; ihr.set_value(lhs.toNode(), false); // convert to an Node, then an InnerHypothesis and push as the value
-					h[rhs.label] = ihr; // push this constraint
-				}
-			}
-	//		
-
-			h.compute_posterior(mydata);
-			
-			top << h;
-		} catch(Combinators::ReductionException& err) { } // just skip on reduciton errors
-	}
-	
-	top.print();
-
-//return 0;
-
-//	MyHypothesis h0 = MyHypothesis::sample(symbols);
-//
 //	TopN<MyHypothesis> top;
 //	top.print_best = true;
-//	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1000.0);
-//	for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
-//		UNUSED(h);
+//	for(enumerationidx_t e=0;!CTRL_C;e++) {
+//		IntegerizedStack is{e};
+//		
+//		MyHypothesis h; 
+//		
+//		// we split here into the defining terms
+//		auto values = is.split(free_symbols.size());
+//		for(size_t i=0;i<values.size();i++) {
+//			//::print(e, i, free_symbols[i], values[i]);
+//			IntegerizedStack q{values[i]};
+//			h[free_symbols[i]] = expand_from_integer(&Combinators::skgrammar, Combinators::skgrammar.nt<CL>(), q);
+//		}
+//		
+//		
+//		//::print(h);
+//
+//		try { 
+//
+//			// now go through and push constraints
+//			// NOTE: Here we need a way to convert a CL node back into a normal node!
+//			// NOTE: here we only push left->right
+//			for(const auto& d : mydata) {
+//				CLNode rhs = d.rhs; 
+//				CLNode lhs = d.lhs; // make a copy
+//				lhs.substitute(h); // fill in what we got
+//				if(lhs.is_only_CL() and rhs.nchildren() == 0 and not h.contains(rhs.label)) {
+//					lhs.reduce();
+//					InnerHypothesis ihr; ihr.set_value(lhs.toNode(), false); // convert to an Node, then an InnerHypothesis and push as the value
+//					h[rhs.label] = ihr; // push this constraint
+//				}
+//			}
+//	//		
+//
+//			h.compute_posterior(mydata);
+//			
+//			top << h;
+//		} catch(Combinators::ReductionException& err) { } // just skip on reduciton errors
 //	}
 //	
 //	top.print();
+
+//return 0;
+
+	MyHypothesis h0 = MyHypothesis::sample(symbols);
+
+	TopN<MyHypothesis> top;
+	top.print_best = true;
+	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1000.0);
+	for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
+		UNUSED(h);
+	}
+	
+	top.print();
 }
