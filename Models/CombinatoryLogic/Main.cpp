@@ -12,12 +12,14 @@
 using S = std::string; 
 
 // this maps each symbol to an index; 
-//const std::vector<S> symbols = {"true", "false", "and", "or", "not"};
-//const std::vector free_symbols = {"true", "and", "or", "not"}; // if we search, which ones are "free" variables? (e.g. from which all others are defined on the rhs?)
+const std::vector<S> symbols = {"true", "false", "and", "or", "not"};
+const std::vector free_symbols = {"true", "not", "and", "or"}; // if we search, which ones are "free" variables? (e.g. from which all others are defined on the rhs?)
 
 //const std::vector<S> symbols = {"first", "rest", "cons"};
-const std::vector<S> symbols = {"succ", "one", "two", "three", "four"};
-const std::vector free_symbols = {"succ", "one"}; // if we search, which ones are "free" variables? (e.g. from which all others are defined on the rhs?)
+//const std::vector<S> free_symbols = {"first", "rest", "cons"};
+
+//const std::vector<S> symbols = {"succ", "one", "two", "three", "four"};
+//const std::vector free_symbols = {"succ", "one"}; // if we search, which ones are "free" variables? (e.g. from which all others are defined on the rhs?)
 	
 const double LL_PENALTY = 100;
 
@@ -101,32 +103,32 @@ int main(int argc, char** argv){
 //	return 0;
 
 	// NOTE: The data here MUST be binary trees
-//	std::vector<std::string> data_strings = {
-//		"((and true) true) = true",
-//		"((and false) false) = false", 
-//		"((and false) true) = false", 
-//		"((and true) false) = false", 
-//		
-//		"((or false) false) = false", 
-//		"((or false) true) = true", 
-//		"((or true) false) = true", 
-//		"((or true) true) = true",
-//		
-//		"(not false) = true", 
-//		"(not true) = false"
-//	};
+	std::vector<std::string> data_strings = {
+		"(not true) = false", // this is first so that we can define false in terms of true/not
+		"(not false) = true",
+		
+		"((and true) true) = true",
+		"((and false) false) = false", 
+		"((and false) true) = false", 
+		"((and true) false) = false", 
+		
+		"((or false) false) = false", 
+		"((or false) true) = true", 
+		"((or true) false) = true", 
+		"((or true) true) = true"
+	};
 
 //	std::vector<std::string> data_strings = {
 //		"(first ((cons x) y)) = x", 
 //		"(rest  ((cons x) y)) = y"
 //	};
 //	
-	std::vector<std::string> data_strings = {
-		"(succ one) = two", 
-		"(succ two) = three",
-		"(succ three) = four"
-	};
-	
+//	std::vector<std::string> data_strings = {
+//		"(succ one) = two", 
+//		"(succ two) = three",
+//		"(succ three) = four"
+//	};
+
 
 	MyHypothesis::data_t mydata;
 	for(auto& ds : data_strings) {
@@ -150,32 +152,30 @@ int main(int argc, char** argv){
 			h[free_symbols[i]] = expand_from_integer(&Combinators::skgrammar, Combinators::skgrammar.nt<CL>(), q);
 		}
 
-		// now go through and push constraints
-		// NOTE: Here we need a way to convert a CL node back into a normal node!
-		// NOTE: here we only push left->right
-		for(const auto& d : mydata) {
-			CLNode rhs = d.rhs; 
-			CLNode lhs = d.lhs; // make a copy
-			lhs.substitute(h); // fill in what we got
-			::print("HERE", lhs.string(), lhs.is_only_CL());
-			if(lhs.is_only_CL() and rhs.nchildren() == 0 and not h.contains(rhs.label)) {
-				::print(">> ", rhs.label, lhs);
-				lhs.reduce();
-				InnerHypothesis ihr; ihr.set_value(lhs.toNode());
-				h[rhs.label] = ihr; // push this constraint
-			}
-		}
-//		
-		::print(h);
+		try { 
 
-		h.compute_posterior(mydata);
-		
-		top << h;
-		
-//		if(h.likelihood > -700)	
-//			h.print();
-		
-		
+			// now go through and push constraints
+			// NOTE: Here we need a way to convert a CL node back into a normal node!
+			// NOTE: here we only push left->right
+			for(const auto& d : mydata) {
+				CLNode rhs = d.rhs; 
+				CLNode lhs = d.lhs; // make a copy
+				lhs.substitute(h); // fill in what we got
+				//::print("HERE", lhs.string());
+				//::print(lhs.is_only_CL());
+				if(lhs.is_only_CL() and rhs.nchildren() == 0 and not h.contains(rhs.label)) {
+					lhs.reduce();
+					InnerHypothesis ihr; ihr.set_value(lhs.toNode(), false);
+					h[rhs.label] = ihr; // push this constraint
+				}
+			}
+	//		
+			//::print(h);
+
+			h.compute_posterior(mydata);
+			
+			top << h;
+		} catch(Combinators::ReductionException& err) { } // just skip on reduciton errors
 	}
 
 //return 0;

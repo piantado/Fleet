@@ -10,7 +10,8 @@
  * @author Steven Piantadosi
  * @date 29/05/22
  * @file Main.cpp
- * @brief An improved implementation of combinators.
+ * @brief An improved implementation of combinators. This kind of node is necessary because it stores arbitrary
+ * 		  objects as labels, without having to interface with the grammar. 
  */
 const std::string APPLY = ".";  // internal label used to signify apply
 	
@@ -30,7 +31,7 @@ public:
 			label = n.child(0).label.value();
 			// copy AFTER the first since the first was my symbol
 			for(size_t i=1;i<n.nchildren();i++){
-				push_back(CLNode{n.child(i)});
+				set_child(i-1, CLNode{n.child(i)});
 			} 
 		}
 		else if(nchildren() == 0 and n.label.has_value()) {
@@ -46,7 +47,7 @@ public:
 			
 			// now go through and process the children 		
 			for(size_t i=0;i<n.nchildren();i++){
-				push_back(CLNode{n.child(i)});
+				set_child(i, CLNode{n.child(i)});
 			}
 		}
 	}
@@ -55,7 +56,7 @@ public:
 		// how to convert a Node (returned by S-expression parsing) into a CLNode
 		
 		// TODO: Add some fanciness to make this *binary* trees please
-		
+		//::print("::CL=", n.string());
 		assert(n.nchildren() <= 2);
 		
 		if(n.rule->format != "(%s %s)") { // if its a terminal 
@@ -68,25 +69,26 @@ public:
 			
 			// now go through and process the children 		
 			for(size_t i=0;i<n.nchildren();i++){
-				push_back(CLNode{n.child(i)});
+				set_child(i, CLNode{n.child(i)});
 			}
 		}
 	}
 	
-	Node toNode() {
-		
+	Node toNode() {		
 		if(label == APPLY) {
 			Rule* r = Combinators::skgrammar.get_rule(Combinators::skgrammar.nt<CL>(), "(%s %s)");
+			assert(r != nullptr);
 			Node out(r);
-			for(auto& c : children){
-				out.push_back(c.toNode());
+			for(size_t i=0;i<nchildren();i++){
+				out.set_child(i, child(i).toNode());
 			}
 			return out; 
 		}
 		else {
 			assert(nchildren() == 0);
 			Rule* r = Combinators::skgrammar.get_rule(Combinators::skgrammar.nt<CL>(), label);
-			return Node{r};			
+			assert(r != nullptr);
+			return Node(r);			
 		}
 	}
 	
@@ -126,9 +128,11 @@ public:
 	 * @return 
 	 */	
 	bool is_only_CL() {
-		for(auto& n : *this) {
-			if(n.label != APPLY and n.label != "S" and n.label != "K" and n.label != "I") {
-				::print("LABEL   ", n.label);
+		for(auto& n : get_children()) {
+			if(not n.is_only_CL()) {
+				return false;
+			}
+			else if(n.label != APPLY and n.label != "S" and n.label != "K" and n.label != "I") {
 				return false;
 			}
 		}

@@ -166,13 +166,13 @@ public:
 	 * @brief Set the value to v. (NOTE: This compiles into a program)
 	 * @param v
 	 */
-	void set_value(Node&  v) { 
+	void set_value(Node&  v, bool should_compile=true) { 
 		value = v; 
-		this->compile(); // compile with myself defaultly as a loader
+		if(should_compile) this->compile(); // compile with myself defaultly as a loader
 	}
-	void set_value(Node&& v) { 
+	void set_value(Node&& v, bool should_compile=true) { 
 		value = v;
-		this->compile();
+		if(should_compile) this->compile();
 	}
 	
 	Grammar_t* get_grammar() const { return grammar; }
