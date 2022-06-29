@@ -136,11 +136,46 @@ int main(int argc, char** argv){
 	}
 
 
+	// for testing reduction in the boolean case
+	
+//	CLNode k = SExpression::parse("((S ((S K) S)) (K K) )");
+//	print(k.string());
+//	k.reduce();
+//	print(k.string());	
+//	return 0;
+	
+//	auto ih = InnerHypothesis("((S ((S K) S)) (K K) )");
+//	
+//	print(ih.string());
+//	CLNode k = ih.get_value();
+//	print(k.string());
+//	k.reduce();
+//	print(k.string());
+//	
+//	return 0;
+	
+	MyHypothesis tst;
+	tst["and"] = InnerHypothesis("((S (S (S S))) (K (K K)))");
+	tst["or"]  = InnerHypothesis("((S S) (K (K K)))");
+	tst["not"] = InnerHypothesis("((S ((S K) S)) (K K) )");
+	tst["true"]  = InnerHypothesis("(K K)");
+	tst["false"]  = InnerHypothesis("(K)");
+
+	auto d1 = mydata[0].lhs;
+	d1.substitute(tst);
+	print(d1.string());
+	
+//	tst.compute_posterior(mydata);
+//	print(tst.string());
+//	print(tst.posterior);
+	
+	return 0;
+
 	// TODO: Here we really should implement a churiso-like inference maybe relying on enumeration
 
 	TopN<MyHypothesis> top;
 	top.print_best = true;
-	for(enumerationidx_t e;!CTRL_C;e++) {
+	for(enumerationidx_t e=0;!CTRL_C;e++) {
 		IntegerizedStack is{e};
 		
 		MyHypothesis h; 
@@ -148,9 +183,13 @@ int main(int argc, char** argv){
 		// we split here into the defining terms
 		auto values = is.split(free_symbols.size());
 		for(size_t i=0;i<values.size();i++) {
+			//::print(e, i, free_symbols[i], values[i]);
 			IntegerizedStack q{values[i]};
 			h[free_symbols[i]] = expand_from_integer(&Combinators::skgrammar, Combinators::skgrammar.nt<CL>(), q);
 		}
+		
+		
+		//::print(h);
 
 		try { 
 
@@ -161,22 +200,21 @@ int main(int argc, char** argv){
 				CLNode rhs = d.rhs; 
 				CLNode lhs = d.lhs; // make a copy
 				lhs.substitute(h); // fill in what we got
-				//::print("HERE", lhs.string());
-				//::print(lhs.is_only_CL());
 				if(lhs.is_only_CL() and rhs.nchildren() == 0 and not h.contains(rhs.label)) {
 					lhs.reduce();
-					InnerHypothesis ihr; ihr.set_value(lhs.toNode(), false);
+					InnerHypothesis ihr; ihr.set_value(lhs.toNode(), false); // convert to an Node, then an InnerHypothesis and push as the value
 					h[rhs.label] = ihr; // push this constraint
 				}
 			}
 	//		
-			//::print(h);
 
 			h.compute_posterior(mydata);
 			
 			top << h;
 		} catch(Combinators::ReductionException& err) { } // just skip on reduciton errors
 	}
+	
+	top.print();
 
 //return 0;
 

@@ -13,6 +13,15 @@ class InnerHypothesis final : public DeterministicLOTHypothesis<InnerHypothesis,
 public:
 	using Super = DeterministicLOTHypothesis<InnerHypothesis,CL,CL,Combinators::SKGrammar,&Combinators::skgrammar>;
 	using Super::Super; // inherit constructors
+	
+	InnerHypothesis(CLNode& n) {
+		this->set_value(n.toNode(), false); // don't compile please
+	}
+	
+	InnerHypothesis(std::string s) {
+		CLNode n = SExpression::parse(s);
+		this->set_value(n.toNode(), false);
+	}
 };
 
 
@@ -65,18 +74,18 @@ public:
 			CLNode rhs = d.rhs; 
 			
 			try { 
-				//::print(lhs.string(), rhs.string());
+				::print(lhs.string(), rhs.string());
 				
 				lhs.substitute(*this);
 				rhs.substitute(*this);
-				//::print("\t", lhs.string(), rhs.string());
+				::print("\t", lhs.string(), rhs.string());
 				lhs.reduce();
 				rhs.reduce();
-				//::print("\t", lhs.string(), rhs.string());
-				//::print("\t", (lhs==rhs));
+				::print("\t", lhs.string(), rhs.string());
+				::print("\t", (lhs==rhs));
 				// check if they are right 
 				if((lhs == rhs) != (d.equal == true)) {
-					//::print("\t", d.lhs.string(), d.rhs.string());
+					::print("\t", d.lhs.string(), d.rhs.string());
 					likelihood -= LL_PENALTY;
 				}
 			} catch(Combinators::ReductionException& e) {

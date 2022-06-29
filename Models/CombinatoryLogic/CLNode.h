@@ -23,6 +23,7 @@ public:
 	std::string label; // Some nodes have labels (S and K) with their arg
 	
 	CLNode() : label(APPLY) { }
+	CLNode(std::string& s) : label(s) {}; // NOTE: does NOT parse
 	CLNode(const SExpression::SENode& n) {
 		
 		// here we need to see if the first child is a label, we use that 
@@ -74,21 +75,35 @@ public:
 		}
 	}
 	
-	Node toNode() {		
+	Node toNode() {	
+		
+		::print("STR", label, string(), nchildren());
 		if(label == APPLY) {
-			Rule* r = Combinators::skgrammar.get_rule(Combinators::skgrammar.nt<CL>(), "(%s %s)");
-			assert(r != nullptr);
-			Node out(r);
+			Rule* rapp = Combinators::skgrammar.get_rule(Combinators::skgrammar.nt<CL>(), "(%s %s)");
+			assert(rapp != nullptr);
+			Node out(rapp);
 			for(size_t i=0;i<nchildren();i++){
 				out.set_child(i, child(i).toNode());
 			}
 			return out; 
 		}
-		else {
-			assert(nchildren() == 0);
-			Rule* r = Combinators::skgrammar.get_rule(Combinators::skgrammar.nt<CL>(), label);
-			assert(r != nullptr);
-			return Node(r);			
+		else { 
+			
+			Rule* rl = Combinators::skgrammar.get_rule(Combinators::skgrammar.nt<CL>(), label);
+			if(nchildren() == 0) { // just a node
+				return Node(rl);
+			}
+			else { // we need an apply
+				// label becomes first child
+				Rule* rapp = Combinators::skgrammar.get_rule(Combinators::skgrammar.nt<CL>(), "(%s %s)");
+				Node out(rapp);
+				out.set_child(0,Node(rl));
+				for(size_t i=0;i<nchildren();i++){
+					out.set_child(i+1, child(i).toNode());
+				}
+				return out;
+				
+			}
 		}
 	}
 	
@@ -140,7 +155,7 @@ public:
 	}
 	
 	template<typename L>
-	void substitute(const L& m) {
+	CLNode substitute(const L& m) {
 		//::print("LABEL=",label, m.factors.contains(label));
 		
 		if(m.factors.contains(label)) {
@@ -148,7 +163,7 @@ public:
 			this->assign(v);
 		}
 		
-		for(auto& c : children) {
+		for(auto& c : get_children()) {
 			c.substitute(m);
 		}
 	}
