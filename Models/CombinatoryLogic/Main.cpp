@@ -12,15 +12,9 @@
 using S = std::string; 
 
 // this maps each symbol to an index; 
-const std::vector<S> symbols = {"true", "false", "and", "or", "not"};
+std::vector<S> symbols;// = {"true", "false", "and", "or", "not"};
 //const std::vector free_symbols = {"true", "not", "and", "or"}; // if we search, which ones are "free" variables? (e.g. from which all others are defined on the rhs?)
 
-//const std::vector<S> symbols = {"first", "rest", "cons"};
-//const std::vector<S> free_symbols = {"first", "rest", "cons"};
-
-//const std::vector<S> symbols = {"succ", "one", "two", "three", "four"};
-//const std::vector free_symbols = {"succ", "one"}; // if we search, which ones are "free" variables? (e.g. from which all others are defined on the rhs?)
-	
 const double LL_PENALTY = 100;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -32,9 +26,6 @@ const double LL_PENALTY = 100;
 
 using CL = Combinators::CL;
 using SExpNode = SExpression::SExpNode;
-
-#include "CLNode.h"
-#include "SExpression.h"
 
 /**
  * @class CLDatum
@@ -71,114 +62,40 @@ struct CLDatum {
 #include "MCMCChain.h"
 #include "ParallelTempering.h"
 #include "Enumeration.h"
+#include "Strings.h"
 
 #include "Fleet.h" 
 
 int main(int argc, char** argv){ 
 	
+	FleetArgs::input_path = "domains/boolean.txt"; // default
+	
 	Fleet fleet("Combinatory logic");
 	fleet.initialize(argc, argv);
 	
-//	MyHypothesis::p_factor_propose = 0.5;
-	
-//	for(size_t k=0;k<1000;k++) {
-//		try {
-//			CLNode x{Combinators::skgrammar.generate()};
-//
-//			// let's check that our S-expression parser is doing what we want
-//			auto y = SExpression::parse<CLNode>(x.string());
-//			print(x.fullstring());
-//			print(y.fullstring());
-//			assert(x==y);
-//			
-//			CLNode n{x};
-//			print(n.string());
-//			n.reduce();
-//			print(n.string());
-//			print("------------");
-//		} catch(Combinators::ReductionException& e) {
-//			print("Reduction error");
-//		}
-//	}
-//
-//	return 0;
-
-	// NOTE: The data here MUST be binary trees
-	std::vector<std::string> data_strings = {
-		"(not true) = false", // this is first so that we can define false in terms of true/not
-		"(not false) = true",
-		
-		"((and true) true) = true",
-		"((and false) false) = false", 
-		"((and false) true) = false", 
-		"((and true) false) = false", 
-		
-		"((or false) false) = false", 
-		"((or false) true) = true", 
-		"((or true) false) = true", 
-		"((or true) true) = true"
-	};
-
-//	std::vector<std::string> data_strings = {
-//		"(first ((cons x) y)) = x", 
-//		"(rest  ((cons x) y)) = y"
-//	};
-//	
-//	std::vector<std::string> data_strings = {
-//		"(succ one) = two", 
-//		"(succ two) = three",
-//		"(succ three) = four"
-//	};
-
-
 	MyHypothesis::data_t mydata;
-	for(auto& ds : data_strings) {
-		mydata.push_back(CLDatum{ds});
+	for(auto& line : split(gulp(FleetArgs::input_path), '\n')) {
+		if(is_prefix<std::string>("symbols ", line)) { // process symbol lists
+			auto s = split(line, ' '); 
+			s.pop_front(); // skip the first
+			for(auto& x : s) 
+				symbols.push_back(x);
+		}
+		else if(line.length() > 2) { // skip whitespace
+			mydata.push_back(CLDatum{line});
+		}
 	}
 
+	MyHypothesis h0 = MyHypothesis::sample(symbols);
+	TopN<MyHypothesis> top;
+	top.print_best = true;
+	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1000.0);
+	for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
+		UNUSED(h);
+	}
+	
+	top.print();
 
-//	size_t cnt = 256; 
-//	SExpression::SENode k = SExpression::parse("(((S ((S K) S)) (K K) ) (K K))");
-//	print(k.string());	
-//	CLreduce(k,cnt);
-//	print(k.string());	
-//	return 0;
-
-	// for testing reduction in the boolean case
-	
-//	CLNode k = SExpression::parse("((S ((S K) S)) (K K) )");
-//	print(k.string());
-//	k.reduce();
-//	print(k.string());	
-//	return 0;
-	
-//	auto ih = InnerHypothesis("((S ((S K) S)) (K K) )");
-//	
-//	print(ih.string());
-//	CLNode k = ih.get_value();
-//	print(k.string());
-//	k.reduce();
-//	print(k.string());
-//	
-//	return 0;
-	
-//	MyHypothesis tst;
-//	tst["and"] = InnerHypothesis("((S (S (S S))) (K (K K)))");
-//	tst["or"]  = InnerHypothesis("((S S) (K (K K)))");
-//	tst["not"] = InnerHypothesis("((S ((S K) S)) (K K) )");
-//	tst["true"]  = InnerHypothesis("(K K)");
-//	tst["false"]  = InnerHypothesis("(K)");
-//
-//	auto d1 = mydata[0].lhs;
-//	print(d1.string());
-//	substitute(d1, tst);
-//	print(d1.string());
-//	
-//	tst.compute_posterior(mydata);
-//	print(tst.string());
-//	print(tst.posterior);
-//	
-//	return 0;
 
 	// TODO: Here we really should implement a churiso-like inference maybe relying on enumeration
 
@@ -227,14 +144,55 @@ int main(int argc, char** argv){
 
 //return 0;
 
-	MyHypothesis h0 = MyHypothesis::sample(symbols);
-
-	TopN<MyHypothesis> top;
-	top.print_best = true;
-	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1000.0);
-	for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
-		UNUSED(h);
-	}
-	
-	top.print();
 }
+
+
+
+/* Some old testing code:
+
+
+
+//	size_t cnt = 256; 
+//	SExpression::SENode k = SExpression::parse("(((S ((S K) S)) (K K) ) (K K))");
+//	print(k.string());	
+//	CLreduce(k,cnt);
+//	print(k.string());	
+//	return 0;
+
+	// for testing reduction in the boolean case
+	
+//	CLNode k = SExpression::parse("((S ((S K) S)) (K K) )");
+//	print(k.string());
+//	k.reduce();
+//	print(k.string());	
+//	return 0;
+	
+//	auto ih = InnerHypothesis("((S ((S K) S)) (K K) )");
+//	
+//	print(ih.string());
+//	CLNode k = ih.get_value();
+//	print(k.string());
+//	k.reduce();
+//	print(k.string());
+//	
+//	return 0;
+	
+//	MyHypothesis tst;
+//	tst["and"] = InnerHypothesis("((S (S (S S))) (K (K K)))");
+//	tst["or"]  = InnerHypothesis("((S S) (K (K K)))");
+//	tst["not"] = InnerHypothesis("((S ((S K) S)) (K K) )");
+//	tst["true"]  = InnerHypothesis("(K K)");
+//	tst["false"]  = InnerHypothesis("(K)");
+//
+//	auto d1 = mydata[0].lhs;
+//	print(d1.string());
+//	substitute(d1, tst);
+//	print(d1.string());
+//	
+//	tst.compute_posterior(mydata);
+//	print(tst.string());
+//	print(tst.posterior);
+//	
+//	return 0;
+
+*/

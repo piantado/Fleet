@@ -1,0 +1,4 @@
+symbols pair first rest
+
+(first ((pair x) y)) = x
+(rest  ((pair x) y)) = y

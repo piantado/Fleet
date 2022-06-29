@@ -1,0 +1,5 @@
+symbols succ one two three four
+
+(succ one) = two
+(succ two) = three
+(succ three) = four

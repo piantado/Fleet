@@ -1,0 +1,15 @@
+symbols win lose draw rock paper scissors
+
+win  = (rock scissors)
+draw = (rock rock)
+draw = (scissors scissors)
+win  = (scissors paper)
+win  = (paper rock) 
+draw = (paper paper) 
+lose = (rock paper) 
+lose = (paper scissors) 
+lose = (scissors rock) 
+
+
+
+

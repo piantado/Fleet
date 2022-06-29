@@ -1,0 +1,24 @@
+# Add an example of an arbitrary graph
+
+symbols braintree downtown park alewife riverside government northstation bowdoin state wonderland downtown foresthill oakgrove
+
+downtown = (red-north braintree)
+park     = (red-north downtown)
+alewife  = (red-north park)
+
+park         = (green-north riverside)
+government   = (green-north park)
+northstation = (green-north government)
+
+downtown = (orange-north foresthill)
+state    = (orange-north downtown)
+northstation = (orange-north state)
+oakgrove     = (orange-north northstation)
+
+government    = (blue-north bowdoin)
+state    = (blue-north government)
+wonderland   = (blue-north state)
+
+
+
+

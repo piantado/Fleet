@@ -1,0 +1,7 @@
+symbols reverse
+
+((reverse x) y) = (y x)
+
+
+
+

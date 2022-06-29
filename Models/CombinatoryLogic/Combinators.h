@@ -92,7 +92,7 @@ namespace Combinators {
 			}
 		
 	//			std::string original = string();
-	//			::print("REDUCE", this, label, string());
+		//	::print("REDUCE", n.string());
 			
 			if(remaining_calls-- == 0)
 				throw Combinators::reduction_exception;

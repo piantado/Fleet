@@ -1,0 +1,5 @@
+symbols repeat
+
+(f (f x)) = ((repeat f) x) 
+
+
