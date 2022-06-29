@@ -2,6 +2,7 @@
 
 #include<utility>
 #include<string>
+#include<optional>
 
 #include "BaseNode.h"
 

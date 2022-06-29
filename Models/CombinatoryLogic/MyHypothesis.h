@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "DeterministicLOTHypothesis.h"
+#include "Combinators.h"
 
 /**
  * @class InnerHypothesis
@@ -14,12 +15,8 @@ public:
 	using Super = DeterministicLOTHypothesis<InnerHypothesis,CL,CL,Combinators::SKGrammar,&Combinators::skgrammar>;
 	using Super::Super; // inherit constructors
 	
-//	InnerHypothesis(SExpression::SENode& n) {
-//		this->set_value(n.toNode(), false); // don't compile please
-//	}
-//	
 	InnerHypothesis(std::string s) {
-		Node n = SENodeToNode(SExpression::parse(s));
+		Node n = Combinators::SENodeToNode(SExpression::parse(s));
 		this->set_value(std::move(n), false);
 	}
 };
@@ -45,10 +42,10 @@ public:
 		// enforce uniqueness among the symbols 
 		std::vector<SExpression::SENode> seen; 		
 		for(auto& x : symbols) {
-			SExpression::SENode xn = NodeToSENode(at(x).get_value());
+			SExpression::SENode xn = Combinators::NodeToSENode(at(x).get_value());
 			
 			try{
-				CLreduce(xn);
+				Combinators::reduce(xn);
 			} catch(Combinators::ReductionException& e) {
 				return prior = -infinity;
 			}
@@ -76,11 +73,11 @@ public:
 			try { 
 				//::print(lhs.string(), rhs.string());
 				
-				substitute(lhs, *this);
-				substitute(rhs, *this);
+				Combinators::substitute(lhs, *this);
+				Combinators::substitute(rhs, *this);
 				//::print("\t", lhs.string(), rhs.string());
-				CLreduce(lhs);
-				CLreduce(rhs);
+				Combinators::reduce(lhs);
+				Combinators::reduce(rhs);
 				//::print("\t", lhs.string(), rhs.string());
 				//::print("\t", (lhs==rhs));
 				// check if they are right 
