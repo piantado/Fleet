@@ -85,7 +85,7 @@ struct printer {
 template<typename T> 
 generator<T&> operator|(generator<T&> g, printer t) {
 	for(auto& x : g) {
-		if(++t) x.print(t.prefix);
+		if(++t) x.show(t.prefix);
 		co_yield x;
 	}
 }

@@ -47,8 +47,8 @@ struct CLDatum {
 		lhs = SExpression::parse(l);
 		rhs = SExpression::parse(r);
 
-		::print("# LHS=", QQ(l), SExpression::parse(l).string(), lhs.string());
-		::print("# RHS=", QQ(r), SExpression::parse(r).string(), rhs.string());
+		print("# LHS=", QQ(l), SExpression::parse(l).string(), lhs.string());
+		print("# RHS=", QQ(r), SExpression::parse(r).string(), rhs.string());
 	}
 };
 
@@ -109,13 +109,13 @@ int main(int argc, char** argv){
 //		// we split here into the defining terms
 //		auto values = is.split(free_symbols.size());
 //		for(size_t i=0;i<values.size();i++) {
-//			//::print(e, i, free_symbols[i], values[i]);
+//			//print(e, i, free_symbols[i], values[i]);
 //			IntegerizedStack q{values[i]};
 //			h[free_symbols[i]] = expand_from_integer(&Combinators::skgrammar, Combinators::skgrammar.nt<CL>(), q);
 //		}
 //		
 //		
-//		//::print(h);
+//		//print(h);
 //
 //		try { 
 //

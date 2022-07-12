@@ -205,7 +205,7 @@ public:
 		}
 	}
 	
-	virtual void print(std::string prefix="") {
+	virtual void show(std::string prefix="") {
 		/**
 		 * @brief Default printing of a hypothesis includes its posterior, prior, likelihood, and quoted string version 
 		 * @param prefix

@@ -104,7 +104,7 @@ public:
 	
 	 }
 	 
-	 void print(std::string prefix="") override {
+	 void show(std::string prefix="") override {
 		std::lock_guard guard(output_lock); // better not call Super wtih this here
 		extern MyHypothesis::data_t prdata;
 		extern std::string current_data;
@@ -112,7 +112,7 @@ public:
 		auto o = this->call(EMPTY_STRING, errorstring);
 		auto [prec, rec] = get_precision_and_recall(o, prdata, PREC_REC_N);
 		COUT "#\n";
-		COUT "# "; o.print(PRINT_STRINGS);	COUT "\n";
+		COUT "# "; o.show(PRINT_STRINGS);	COUT "\n";
 		COUT prefix << current_data TAB current_ntokens TAB mem_pr.first TAB mem_pr.second TAB 
 			 this->born TAB this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->serialize()) 
 			 TAB prec TAB rec TAB QQ(this->string()) ENDL

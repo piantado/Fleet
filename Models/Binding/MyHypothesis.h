@@ -39,7 +39,11 @@ public:
 				
 				ntrue += 1*b;
 				
-				if(d.output == w) wtrue = b;			
+				if(d.output == w) wtrue = b;	
+
+//				if(b) {
+//					print(w);
+//				}
 			}
 
 			// Noisy size-principle likelihood

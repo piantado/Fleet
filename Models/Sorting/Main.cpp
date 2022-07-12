@@ -302,7 +302,7 @@ int main(int argc, char** argv){
 	std::string method = "parallel-tempering";
 	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
-	Fleet fleet("A simple, one-factor formal language learner");
+	Fleet fleet("Learning simple list functions like sorting");
 	fleet.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
 	fleet.add_option("-d,--data",     datastr, "Comma separated list of input data strings");	
 	fleet.add_option("--prefix",      arg_prefix, "Print a prefix before output");	

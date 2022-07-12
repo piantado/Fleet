@@ -60,7 +60,7 @@ public:
 	 * @brief This is a convertion from S-expression parsing
 	 * @param s
 	 */
-	BindingTree(const SExpression::SENode& n) :
+	BindingTree(const SExpression::SExpNode& n) :
 		referent(-1), target(false), linear_order(0), pos(POS::None), word(""){
 		
 		int copy_from = 0; // where do we start copying the children from?

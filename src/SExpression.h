@@ -154,7 +154,7 @@ namespace SExpression {
 		SExpNode out;		
 		while(not tok.empty()) {
 			auto x = pop_front(tok);
-			//::print("x=",x);
+			//print("x=",x);
 			if(x == "(")      out.push_back(__parse(tok)); 
 			else if(x == ")") break; // when we get this, we must be a close (since lower-down stuff has been handled in the recursion)
 			else              out.push_back(SExpNode(x)); // just a string

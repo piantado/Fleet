@@ -464,13 +464,13 @@ public:
 	}
 	
 	
-	void print(size_t t=0) const {
+	void show(size_t t=0) const {
 		
 		std::string tabs(t,'\t');		
 		
 		COUT tabs << this->my_string() ENDL;
 		for(auto& c : children) {
-			c.print(t+1);
+			c.show(t+1);
 		}		
 	}
 	

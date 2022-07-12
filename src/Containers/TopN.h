@@ -151,7 +151,7 @@ public:
 				T xcpy = x;
 				
 				if(print_best and (empty() or best() < x ))  {
-					xcpy.print();
+					xcpy.show();
 				}
 			
 				// add this one
@@ -235,7 +235,7 @@ public:
 		 */
 		
 		for(auto& h : sorted()) {
-			h.print(prefix);
+			h.show(prefix);
 		}
 	}
 	

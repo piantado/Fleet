@@ -92,7 +92,7 @@ namespace Combinators {
 			}
 		
 	//			std::string original = string();
-		//	::print("REDUCE", n.string());
+		//	print("REDUCE", n.string());
 			
 			if(remaining_calls-- == 0)
 				throw Combinators::reduction_exception;
@@ -107,14 +107,14 @@ namespace Combinators {
 					auto x = std::move(n.child(1));
 					n = x; 
 					modified = true;
-	//					::print("HERE I", string());
+	//					print("HERE I", string());
 				}
 				else if(n.child(0).nchildren() == 2 and
 						n.child(0).child(0).get_label() == "K") {	// ((K x) y) = x
 					assert(n.child(0).child(0).nchildren() == 0);
 					auto x = std::move(n.child(0).child(1));
 					n = x; 
-	//					::print("HERE K", string());
+	//					print("HERE K", string());
 					modified = true;
 				} 
 				else if(n.child(0).nchildren() == 2 and
@@ -140,17 +140,17 @@ namespace Combinators {
 					n.set_child(0,std::move(q));
 					n.set_child(1,std::move(r));
 					modified = true;
-	//					::print("HERE S", string());
+	//					print("HERE S", string());
 				}
 			}
 			else if( (not n.label.has_value()) and n.nchildren() == 1) {
 				auto x = std::move(n.child(0));
 				n = x; // ((x)) = x
 				modified = true; 
-	//				::print("HERE APP", string());
+	//				print("HERE APP", string());
 			}
 			
-	//			::print("GOT", this, label, original, string());
+	//			print("GOT", this, label, original, string());
 			
 			
 		} while(modified); // end while
@@ -203,7 +203,7 @@ namespace Combinators {
 
 	template<typename L>
 	void substitute(SExpression::SExpNode& n, const L& m) {
-		//::print(n.string(), "LABEL=",n.get_label(), m.factors.contains(n.get_label()));
+		//print(n.string(), "LABEL=",n.get_label(), m.factors.contains(n.get_label()));
 		
 		if(n.label.has_value() and m.factors.contains(n.label.value())) {
 			auto v = m.at(n.label.value()).get_value(); // copy

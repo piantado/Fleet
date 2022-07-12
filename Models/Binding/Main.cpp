@@ -166,7 +166,23 @@ int main(int argc, char** argv){
 	target["him"]     = InnerHypothesis(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
 	target["his"]     = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));
 	target["he"]      = InnerHypothesis(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
-	target["himself"] = InnerHypothesis(grammar.simple_parse("and(corefers(x),dominates(parent(coreferent(x)),x))"));
+	target["himself"] = InnerHypothesis(grammar.simple_parse("and(eq_pos('NP-O',pos(x)),and(corefers(x),dominates(parent(coreferent(x)),x)))"));
+
+	for(auto& di : mydata){ 
+		//print(di.input->root()->string());
+		
+		// make a little mini dataset
+		MyHypothesis::data_t thisdata;
+		thisdata.push_back(di);
+		
+		for(auto& w:words) {
+			target[w].clear_cache();
+		}
+
+		target.compute_posterior(thisdata);
+	}
+
+	return 0;
 
 //	MyHypothesis target2;
 //	target2["REXP"] = InnerHypothesis(grammar.simple_parse("not(and(corefers(x),dominates(parent(coreferent(x)),x)))"));

@@ -63,7 +63,7 @@ public:
 		
 	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		
-		//::print(string());
+		//print(string());
 		
 		likelihood = 0.0;
 		for(const auto& d : data) {
@@ -71,18 +71,18 @@ public:
 			SExpression::SExpNode rhs = d.rhs; 
 			
 			try { 
-				//::print(lhs.string(), rhs.string());
+				//print(lhs.string(), rhs.string());
 				
 				Combinators::substitute(lhs, *this);
 				Combinators::substitute(rhs, *this);
-				//::print("\t", lhs.string(), rhs.string());
+				//print("\t", lhs.string(), rhs.string());
 				Combinators::reduce(lhs);
 				Combinators::reduce(rhs);
-				//::print("\t", lhs.string(), rhs.string());
-				//::print("\t", (lhs==rhs));
+				//print("\t", lhs.string(), rhs.string());
+				//print("\t", (lhs==rhs));
 				// check if they are right 
 				if((lhs == rhs) != (d.equal == true)) {
-					//::print("\t", d.lhs.string(), d.rhs.string());
+					//print("\t", d.lhs.string(), d.rhs.string());
 					likelihood -= LL_PENALTY;
 				}
 			} catch(Combinators::ReductionException& e) {
@@ -90,7 +90,7 @@ public:
 			}
 		}
 		
-		//::print(likelihood);
+		//print(likelihood);
 
 		return likelihood; 
 	
