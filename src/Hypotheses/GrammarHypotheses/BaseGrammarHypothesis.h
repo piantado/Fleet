@@ -595,8 +595,8 @@ public:
 	 * @brief Need to override print since it will print in a different format
 	 * @return 
 	 */	
-	virtual void print(std::string prefix="") override {
-		COUT string(prefix) ENDL;
+	virtual void show(std::string prefix="") override {
+		print(string(prefix));
 	}
 	
 	virtual size_t hash() const override { 

@@ -210,11 +210,12 @@ public:
 		 * @brief Default printing of a hypothesis includes its posterior, prior, likelihood, and quoted string version 
 		 * @param prefix
 		 */
-		
-		std::lock_guard guard(output_lock);
-		// TODO: Include  this->born  once that is updated correctly
-		// NOTE cannot use PRINT here because we already took lock_guard
-		COUT std::setprecision(14) << prefix << this->posterior TAB this->prior TAB this->likelihood TAB QQ(this->string()) ENDL;		
+		if(prefix != "") {
+			print(prefix, this->posterior, this->prior, this->likelihood, QQ(this->string())); 
+		}
+		else {
+			print(this->posterior, this->prior, this->likelihood, QQ(this->string())); 
+		}
 	}
 };
 
