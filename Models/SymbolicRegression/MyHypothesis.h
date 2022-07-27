@@ -42,7 +42,6 @@ public:
 		// We need to override this because DeterministicLOTHypothesis::call asserts that the program is non-empty
 		// but actually ours can be if we are only a constant. 
 		// my own wrapper that zeros the constant_i counter
-		
 		assert(constants.size() == N_CONSTANTS);
 		
 		constant_idx = 0;
@@ -92,7 +91,7 @@ public:
 	// Propose to a constant c, returning a new value and fb
 	// NOTE: When we use a symmetric drift kernel, fb=0
 	std::pair<double,double> constant_proposal(double c) const override { 
-			
+		
 		if(flip(0.90)) {
 			// we use fb=0 here because we can consider an auxilliary variable
 			// to be the scale variable
@@ -222,15 +221,9 @@ public:
 			MyHypothesis ret = *this;
 			
 			double fb = 0.0; 
-			
-			// ensure we sample at least one
-			std::vector<bool> should_propose(N_CONSTANTS, false);
-			for(size_t i=0;i<N_CONSTANTS;i++) {
-				should_propose[i] = flip(0.1);
-			}
-			should_propose[myrandom(N_CONSTANTS)] = true; // always ensure one
-			
+
 			// now add to all that I have
+			auto should_propose = random_nonempty_subset(N_CONSTANTS, 0.1);
 			for(size_t i=0;i<N_CONSTANTS;i++) {  // note N_CONSTANTS here, so we propose to the whole vector
 				if(should_propose[i]) {
 					auto [v, __fb] = this->constant_proposal(constants[i]);

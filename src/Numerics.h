@@ -21,7 +21,7 @@ constexpr double pi  = M_PI;
 constexpr double tau = 2*pi;
 
 /////////////////////////////////////////////////////////////
-// A fater logarithm 
+// A faster logarithm 
 /////////////////////////////////////////////////////////////
 
 //float __int_as_float(int32_t a) { float r; memcpy(&r, &a, sizeof(r)); return r;}

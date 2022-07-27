@@ -125,13 +125,19 @@ std::string gulp(std::string filename) {
 	std::string ret;
 	std::ifstream fs(filename);
 	
+	if(fs.fail()) { 
+		assert(false && "*** Error file could not be opened.");
+	}
+	
 	std::string line;
 	while(std::getline(fs, line)) {
 		if(line.length() > 0 and line[0] != '#'){
 			ret += line + "\n";
 		}
 	}
-	ret.erase(ret.size()-1); // remove last newline
+	if(ret.size() > 0) 
+		ret.erase(ret.size()-1); // remove last newline
+		
 	return ret;
 }
 

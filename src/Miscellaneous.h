@@ -197,7 +197,19 @@ double sd(std::vector<T>& v) {
 	return sqrt(s / (v.size()-1));
 }
 
-
+template<typename T>
+double median(std::vector<T>& v) {
+	const size_t n = v.size();
+	assert(n> 0);
+	std::sort(v.begin(), v.end());
+	
+	if(n % 2 == 0) {
+		return (v[n/2] + v[n/2-1]) / 2;
+	}
+	else {
+		return v[n/2];
+	}
+}
 
 /**
  * @brief This allows sorting of things that contain NaN

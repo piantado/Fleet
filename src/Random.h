@@ -189,6 +189,25 @@ T myrandom(T min, T max) {
 	return r(rng);
 }
 
+/**
+ * @brief Returns a random *nonempty* subset of n elements, as a vector<bool> of length n
+ * 		  with trues for elements in the subset and falses otherwise. Each element is included
+ * 		  with probability p 
+ */
+std::vector<bool> random_nonempty_subset(const size_t n, const double p) {
+	assert(n>0); 
+	
+	std::vector<bool> output(n, false);
+	for(size_t i=0;i<n;i++) {
+		output[i] = flip(p);
+	}
+	output[myrandom(n)] = true; // always ensure one is true
+	
+	return output; 
+}
+
+
+
 
 template<typename t, typename T> 
 double sample_z(const T& s, const std::function<double(const t&)>& f) {

@@ -268,11 +268,7 @@ public:
 	[[nodiscard]] virtual std::optional<std::pair<this_t,double>> propose() const override {
 
 		// let's first make a vector to see which factor we propose to.
-		std::vector<bool> should_propose(factors.size(), false);
-		for(size_t i=0;i<factors.size();i++) {
-			should_propose[i] = flip(p_factor_propose);
-		}
-		should_propose[myrandom(should_propose.size())] = true; // always ensure one
+		auto should_propose = random_nonempty_subset(factors.size() p_factor_propose);
 		
 		// now go through and propose to those factors
 		// (NOTE fb is always zero)
