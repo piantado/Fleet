@@ -10,7 +10,7 @@
  * 			NOTE: This only catches std::exception, which is not good news
  */
 
-template<typename this_t, typename output_t> // the LOTHypothesis_type from which we read outputs and data etc
+template<typename this_t, typename datum_t, typename output_t> // the LOTHypothesis_type from which we read outputs and data etc
 class CachedCallHypothesis  {
 	
 	void const* cached_data = nullptr; // when null, we recompute the cache
@@ -25,8 +25,17 @@ public:
 		got_error = false;
 	}
 	
-	template<typename data_t>
-	void cached_call(const data_t& data, bool break_on_error=true) {
+	/**
+	 * @brief This is how we access the data before calling -- needed to say how this interfaces with the data
+	 * @param di
+	 * @return 
+	 */	
+	virtual output_t cached_call_wrapper(const datum_t& di) { throw NotImplementedError(); }
+// {
+//		return static_cast<this_t*>(this)->call(di.input);
+//	}
+//	
+	void cached_call(const std::vector<datum_t>& data, bool break_on_error=true) {
 		
 		// NOTE THIS DOES NOT WORK IF WE HAVE RECURSION 
 		// at the level of a lexicon!
@@ -36,7 +45,7 @@ public:
 			cache.resize(data.size());
 			for(size_t di=0;di<data.size();di++) {
 				try { 				
-					cache[di] = static_cast<this_t*>(this)->call(data[di].input); 
+					cache[di] = this->cached_call_wrapper(data[di]);
 				} catch( std::exception& e){  
 					got_error = true; 
 					cache[di] = output_t{};
@@ -46,9 +55,6 @@ public:
 			// store who is cached
 			cached_data = &data;
 		}
-		//else {
-		//	PRINTN("CACHE HIT", this, cached_data, string());			
-		//}
 	}
 	
 };

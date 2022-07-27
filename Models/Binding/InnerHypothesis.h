@@ -7,11 +7,15 @@
 #include "CachedCallHypothesis.h"
 
 class InnerHypothesis : public DeterministicLOTHypothesis<InnerHypothesis,BindingTree*,bool,MyGrammar,&grammar>, 
-						public CachedCallHypothesis<InnerHypothesis,bool> {
+						public CachedCallHypothesis<InnerHypothesis,
+													defaultdatum_t<BindingTree*,std::string>, // need to use MyHypothesis' datum type
+													bool> {
 public:
 	using Super = DeterministicLOTHypothesis<InnerHypothesis,BindingTree*,bool,MyGrammar,&grammar>;
 	using Super::Super; // inherit the constructors
-	using CCH = CachedCallHypothesis<InnerHypothesis,bool>;
+	using CCH = CachedCallHypothesis<InnerHypothesis,
+									 defaultdatum_t<BindingTree*,std::string>,
+									 bool>;
 	
 	using output_t = Super::output_t;
 	using data_t = Super::data_t;
@@ -37,6 +41,11 @@ public:
 	void set_value(Node&& v) { 
 		Super::set_value(v);
 		CachedCallHypothesis::clear_cache();
+	}
+	
+	virtual bool cached_call_wrapper(const defaultdatum_t<BindingTree*,std::string>& di) override {
+		// override how cached_call accesses the data
+		return this->call(di.input);
 	}
 	
 	virtual double compute_prior() override {

@@ -57,7 +57,7 @@ public:
 		return likelihood; 
 	 }	 	
 
-	virtual void print(std::string prefix="") override {
+	virtual void show(std::string prefix="") override {
 		
 		extern MyHypothesis::data_t target_precisionrecall_data;
 		extern MyHypothesis target;

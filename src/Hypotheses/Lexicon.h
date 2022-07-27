@@ -268,7 +268,7 @@ public:
 	[[nodiscard]] virtual std::optional<std::pair<this_t,double>> propose() const override {
 
 		// let's first make a vector to see which factor we propose to.
-		auto should_propose = random_nonempty_subset(factors.size() p_factor_propose);
+		auto should_propose = random_nonempty_subset(factors.size(), p_factor_propose);
 		
 		// now go through and propose to those factors
 		// (NOTE fb is always zero)
@@ -357,6 +357,7 @@ public:
 	/********************************************************
 	 * How to call 
 	 ********************************************************/
+
 	virtual DiscreteDistribution<output_t> call(const key_t k, const input_t x, const output_t& err=output_t{}) {
 		throw NotImplementedError();
 	}

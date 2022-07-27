@@ -83,8 +83,6 @@ T get_log1pexp_breakout_bound(const double precision, T f(T), const T lower=-1e6
 }
 
 
-
-
 template<typename T>
 T logplusexp(const T a, const T b) {
 	// An approximate logplusexp -- the check on z<-25 makes it much faster since it saves many log,exp operations
