@@ -182,7 +182,7 @@ int main(int argc, char** argv){
 		target.compute_posterior(thisdata);
 	}
 
-	return 0;
+//	return 0;
 
 //	MyHypothesis target2;
 //	target2["REXP"] = InnerHypothesis(grammar.simple_parse("not(and(corefers(x),dominates(parent(coreferent(x)),x)))"));
