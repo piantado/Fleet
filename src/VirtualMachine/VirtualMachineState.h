@@ -16,7 +16,7 @@
 
 // if defined, we do NOT check that the stack sizes are empty at the end. 
 // You might want this if we are using one VirtualMachineState to compute multiple outputs.
-// NOTE: This is risky because if we mess up something in implementation, this check often 
+// NOTE: This is risky to disable because if we mess up something in implementation, this check often 
 // helps to find it 
 //#define NO_CHECK_END_STACK_SIZE 1 
 

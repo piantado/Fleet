@@ -97,6 +97,18 @@ public:
 		
 		return std::forward<T&>(value.back());
 	}
+
+	[[nodiscard]] T toppop() {
+		/**
+		 * @brief Return the top element.
+		 * @return 
+		 */
+		auto o = value.back();
+		pop();
+		return o;
+	}
+
+
 	
 	const std::vector<T>& get_value() const {
 		return value;
