@@ -2,12 +2,6 @@
 // In this setup we get utterances like "All the squares are red" nd so the shape/color objects in 
 // the utterance are the correct arguments to the quantifier, but it must sort out which is which 
 
-// TODO: this current version does not have informativity weights -- coming soon!
-
-// Add: weights, accuracy (presup and literal), 
-// spreading -- bunny and classical
-// only conservative in prior 
-
 #include <string>
 #include <vector>
 #include <assert.h>
@@ -29,7 +23,8 @@ static const double alpha_t = 0.8;
  
 static const size_t MAX_NODES = 16;
  
-const int NDATA = 1500; // how many data points to sample?
+const int NDATA = 1000; // how many data points to sample?
+const int PRDATA = 1000; // how much data for precision/recall?
 
 // Define some object types etc here
 enum class MyColor { Red, Green, Blue,          __count };
@@ -49,12 +44,17 @@ struct Utterance {
 	std::string word;
 };
 
-// our target stores a mapping from strings in w to functions that compute them correctly
-std::map<std::string, std::function<TruthValue(Set,Set,Set)> > target;
+
+std::vector<Utterance> prdata; // data for computing precision/recall
 
 #include "DSL.h"
 #include "MyGrammar.h"
 #include "MyHypothesis.h"
+
+// our target stores a mapping from strings in w to functions that compute them correctly
+MyHypothesis target;
+MyHypothesis bunny_spread;
+MyHypothesis classical_spread;
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Main code
@@ -65,6 +65,55 @@ std::map<std::string, std::function<TruthValue(Set,Set,Set)> > target;
 #include "Random.h"
 #include "ParallelTempering.h"
 
+MyHypothesis::datum_t sample_data() {
+	
+	Set context; 
+	int ctx_size = 1+myrandom(10); // up to this many objects
+	for(int c=0;c<ctx_size;c++) 
+		context.insert( MyObject::sample() ); 
+	
+	// figure out what we're talking about here
+	const MyColor c = static_cast<MyColor>(myrandom(static_cast<int>(MyColor::__count)));
+	Set color = DSL::filter_color(c,context);
+	
+	const MyShape s = static_cast<MyShape>(myrandom(static_cast<int>(MyShape::__count)));
+	const Set shape = DSL::filter_shape(s,context);
+	
+	// sample the word (don't need multisets here)
+	std::set<std::string> wtrue;
+	std::set<std::string> wpresup;
+	
+	// evaluate all the words
+	for(auto& w : words) {
+		Utterance utt{.context=context, .shape=shape, .color=color, .word=EMPTY_STRING};
+		auto o = target.at(w).call(utt);
+		
+		if(o == TruthValue::True)      
+			wtrue.insert(w);
+		
+		if(o != TruthValue::Undefined) 
+			wpresup.insert(w);
+	}
+	
+	/// only use if there is something true to say
+//		if(wtrue.size() == 0) continue; 
+	
+	// now sample
+	std::string word; // 
+	if(flip(alpha_p) and wpresup.size() > 0) {
+		if(flip(alpha_t) and wtrue.size() > 0 ) 
+			word = *sample<std::string, decltype(wtrue)>(wtrue).first;
+		else              
+			word = *sample<std::string, decltype(wpresup)>(wpresup).first;
+	}
+	else {
+		word = *sample<std::string, decltype(words)>(words).first;
+	}
+	
+	return Utterance{.context=context, .shape=shape, .color=color, .word=word};	
+}
+
+
 int main(int argc, char** argv){ 
 
 
@@ -73,123 +122,45 @@ int main(int argc, char** argv){
 	Fleet fleet("Adorable implementation of quantifier learner");
 	fleet.initialize(argc, argv);
 	
+	target["NA"]       = InnerHypothesis(grammar.simple_parse("presup(true,true)"));
+	target["every"]    = InnerHypothesis(grammar.simple_parse("presup(not(empty(shape(x))),subset(shape(x),color(x)))"));
+	target["some"]     = InnerHypothesis(grammar.simple_parse("presup(not(empty(shape(x))),not(empty(intersection(shape(x),color(x)))))"));
+	target["one"]      = InnerHypothesis(grammar.simple_parse("presup(not(empty(shape(x))),singleton(intersection(shape(x),color(x))))"));
+	target["the"]      = InnerHypothesis(grammar.simple_parse("presup(singleton(shape(x)),singleton(intersection(shape(x),color(x))))"));
+	target["a"]        = InnerHypothesis(grammar.simple_parse("presup(true,singleton(intersection(shape(x),color(x))))"));
+	target["both"]     = InnerHypothesis(grammar.simple_parse("presup(doubleton(shape(x)),singleton(intersection(shape(x),color(x))))"));
+	target["neither"]  = InnerHypothesis(grammar.simple_parse("presup(doubleton(shape(x)),empty(intersection(shape(x),color(x))))"));
+	target["most"]     = InnerHypothesis(grammar.simple_parse("presup(not(empty(shape(x))),card_gt(intersection(shape(x),color(x)),difference(shape(x),color(x))))"));
+	target["no"]       = InnerHypothesis(grammar.simple_parse("presup(not(empty(shape(x))),empty(intersection(shape(x),color(x))))"));
 	
-	{
-		using namespace DSL;
-		
-		target["NA"] = +[](Set s, Set c, Set x) -> TruthValue { // you can always say this -- nothing
-			return presup(true,true);
-		};	
-		
-		target["every"] = +[](Set s, Set c, Set x) -> TruthValue {
-			return presup(not empty(s), subset(s,c));
-		};	
-		
-		target["some"] = +[](Set s, Set c, Set x) -> TruthValue {
-			return presup(not empty(s), not empty(intersection(s,c)));
-		};	
-		
-		target["one"] = +[](Set s, Set c, Set x) -> TruthValue {
-			return presup(true, singleton(intersection(s,c)));
-		};		
-				
-		target["a"] = +[](Set s, Set c, Set x) -> TruthValue {
-			return presup(true, not empty(intersection(s,c)));
-		};		
-		
-		target["both"] = +[](Set s, Set c, Set x) -> TruthValue {
-			return presup(doubleton(s), subset(s,c));
-		};		
-		
-		target["neither"] = +[](Set s, Set c, Set x) -> TruthValue {
-			return presup(doubleton(s), empty(intersection(s,c)));
-		};		
-		
-		
-		target["the"] = +[](Set s, Set c, Set x) -> TruthValue {
-			return presup(singleton(s), subset(s,c));
-		};	
-
-		target["most"] = +[](Set s, Set c, Set x) -> TruthValue {
-			return presup(not empty(s), intersection(s,c).size() > s.size()/2 );
-		};		
-		
-		target["no"] = +[](Set s, Set c, Set x) -> TruthValue {
-			return presup(not empty(s), empty(intersection(s,c)));
-		};	
-		
-	}
+	bunny_spread = target;
+	bunny_spread["every"]    = InnerHypothesis(grammar.simple_parse("presup(not(empty(shape(x))),equal(shape(x),color(x)))"));
 	
+	classical_spread = target;
+	classical_spread["every"]    = InnerHypothesis(grammar.simple_parse("presup(not(empty(shape(x))),and(equal(shape(x),color(x)), equal(shape(x), context(x))))"));
 	
 	//------------------
 	// set up the data
 	//------------------
 	
 	std::vector<Utterance> mydata;
-	while(mydata.size() < NDATA) {
-		
-		Set context; 
-		int ctx_size = 1+myrandom(10); // up to this many objects
-		for(int c=0;c<ctx_size;c++) 
-			context.insert( MyObject::sample() ); 
-		
-		// figure out what we're talking about here
-		const MyColor c = static_cast<MyColor>(myrandom(static_cast<int>(MyColor::__count)));
-		Set color = DSL::filter_color(c,context);
-		
-		const MyShape s = static_cast<MyShape>(myrandom(static_cast<int>(MyShape::__count)));
-		const Set shape = DSL::filter_shape(s,context);
-		
-		// sample the word (don't need multisets here)
-		std::set<std::string> wtrue;
-		std::set<std::string> wpresup;
-		
-		// evaluate all the words
-		for(auto& w : words) {
-			auto o = target[w](shape, color, context);
-			
-			if(o == TruthValue::True)      
-				wtrue.insert(w);
-			
-			if(o != TruthValue::Undefined) 
-				wpresup.insert(w);
-		}
-		
-		/// only use if there is something true to say
-//		if(wtrue.size() == 0) continue; 
-		
-		// now sample
-		std::string word; // 
-		if(flip(alpha_p) and wpresup.size() > 0) {
-			if(flip(alpha_t) and wtrue.size() > 0 ) 
-				word = *sample<std::string, decltype(wtrue)>(wtrue).first;
-			else              
-				word = *sample<std::string, decltype(wpresup)>(wpresup).first;
-		}
-		else {
-			word = *sample<std::string, decltype(words)>(words).first;
-		}
-		
+	for(size_t i=0;i<NDATA;i++){
 		// if we print these out
-		COUT word TAB static_cast<int>(target[word](shape, color, context)) TAB static_cast<int>(s) TAB static_cast<int>(c) << "\t";
-		for(auto& o : context) COUT o;
-		COUT "\n";
+//		COUT word TAB static_cast<int>(target[word](shape, color, context)) TAB static_cast<int>(s) TAB static_cast<int>(c) << "\t";
+//		for(auto& o : context) COUT o;
+//		COUT "\n";
 		
-		
-		Utterance u{.context=context, .shape=shape, .color=color, .word=word};		
-		mydata.push_back(u);
+		mydata.push_back(sample_data());
 	}
 	
+	for(size_t i=0;i<PRDATA;i++){
+		prdata.push_back(sample_data());
+	}
 
-	
-//	
-//	Utterance u{ .context={{MyColor::Red, MyShape::Square}, {MyColor::Blue,MyShape::Rectangle}},
-//				 .color=MyColor::Red,
-//				 .shape=MyShape::Square,
-//				 .word="every"
-//				 };
-//	mydata.push_back(u);
-//		
+	target.compute_posterior(mydata);
+	bunny_spread.compute_posterior(mydata);
+	classical_spread.compute_posterior(mydata);
+		
 	//////////////////////////////////
 	// run MCMC
 	//////////////////////////////////

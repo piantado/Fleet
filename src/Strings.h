@@ -38,6 +38,7 @@ std::string str(T x){
 	}
 }
 
+
 std::string str(const std::string& x){
 	// Need to specialize this, otherwise std::to_string fails
 	return x;
@@ -134,6 +135,23 @@ std::string str(const std::atomic<T>& a ){
 	 * @return 
 	 */
 	return str(a.load());
+}
+
+
+template<typename... Args>
+std::string str(std::string sep, Args... args){
+
+	std::string out = "";
+	((out += str(args)+sep), ...);
+	
+	// at the end of this we have one extra sep, so let's delete it 
+	out.erase(out.size()-sep.size());
+	
+	return out; 
+	//  std::ostringstream oss;
+//  (oss << ... << (sep+str(args)));
+//  return oss.str();
+
 }
 
 

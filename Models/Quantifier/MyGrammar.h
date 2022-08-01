@@ -5,6 +5,7 @@
 
 #include "DSL.h"
 
+double TERMINAL_WEIGHT = 3.0;
 
 // declare a grammar with our primitives
 // Note that this ordering of primitives defines the order in Grammar
@@ -28,16 +29,16 @@ public:
 		add("subset(%s,%s)",  subset);
 		add("card_gt(%s,%s)", card_gt);
 		add("card_eq(%s,%s)", card_eq);
-		add("eq(%s,%s)", eq); 
+		add("equal(%s,%s)", eq); 
 	
 		// bool x bool -> TruthValue
-		add("presup(%s ; %s)",  presup);
+		add("presup(%s,%s)",  presup);
 		
 		// Set
 		add("\u00D8",  emptyset);		
-		add("%s.context", context);
-		add("%s.shape", shape);
-		add("%s.color", color);
+		add("context(%s)", context,TERMINAL_WEIGHT);
+		add("shape(%s)", shape,TERMINAL_WEIGHT);
+		add("color(%s)", color,TERMINAL_WEIGHT);
 		
 		// Set -> Set
 		add("intersection(%s,%s)", intersection);		
@@ -51,7 +52,7 @@ public:
 		add("or(%s,%s)",     Builtins::Or<MyGrammar>);
 		add("not(%s)",       Builtins::Not<MyGrammar>);
 			
-		add("u",              Builtins::X<MyGrammar>);	
+		add("x",              Builtins::X<MyGrammar>);	
 		
 //		// add recursive calls
 //		for(size_t a=0;a<words.size();a++) {	

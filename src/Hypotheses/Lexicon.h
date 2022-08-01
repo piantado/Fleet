@@ -17,7 +17,7 @@
  */
 
 template<typename this_t, 
-		 typename key_t,
+		 typename _key_t,
 		 typename INNER, 
 		 typename _input_t,
 		 typename _output_t, 
@@ -33,6 +33,7 @@ public:
 	using Grammar_t = typename INNER::Grammar_t;
 	using input_t   = _input_t;
 	using output_t  = _output_t;
+	using key_t = _key_t;
 	using VirtualMachineState_t = _VirtualMachineState_t;
 	
 	// Store a lexicon of type INNER elements
