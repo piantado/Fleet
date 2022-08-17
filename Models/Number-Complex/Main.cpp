@@ -229,7 +229,7 @@ public:
 	}	
 
 	
-	virtual void print(std::string prefix="") override {
+	virtual void show(std::string prefix="") override {
 		
 		// Hmm let's run over all the data and just get the modal response
 		// for each data output from the training data set 
@@ -255,7 +255,7 @@ public:
 		}
 		
 		prefix += QQ(outputstring)+"\t"+std::to_string(this->recursion_count())+"\t";
-		Super::print(prefix);
+		Super::show(prefix);
 		
 	}
 };
@@ -372,7 +372,8 @@ int main(int argc, char** argv) {
 //	tic();
 
 	// just simple mcmc on one
-	for(size_t di=0;di<alldata.size();di++){
+	//for(size_t di=0;di<alldata.size();di++){
+			size_t di = alldata.size()-1; {
 		auto h0 = MyHypothesis::sample();
 //		MCMCChain samp(h0, &alldata[di]);
 		ParallelTempering samp(h0, &alldata[di], FleetArgs::nchains, 1.20);

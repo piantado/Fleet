@@ -33,6 +33,9 @@ std::string str(T x){
 		address << (void const *)x;
 		return address.str();
 	}
+	else if constexpr(std::is_same<T,char>::value) {
+		return S(1,x);
+	}
 	else {
 		return std::to_string(x);
 	}
@@ -139,17 +142,17 @@ std::string str(const std::atomic<T>& a ){
 
 
 template<typename... Args>
-std::string str(std::string sep, Args... args){
+std::string str(std::string _sep, Args... args){
 
 	std::string out = "";
-	((out += str(args)+sep), ...);
+	((out += str(args)+_sep), ...);
 	
 	// at the end of this we have one extra sep, so let's delete it 
-	out.erase(out.size()-sep.size());
+	out.erase(out.size()-_sep.size());
 	
 	return out; 
 	//  std::ostringstream oss;
-//  (oss << ... << (sep+str(args)));
+//  (oss << ... << (_sep+str(args)));
 //  return oss.str();
 
 }
@@ -507,8 +510,7 @@ double p_KashyapOommen1984_edit(const std::string x, const std::string y, const 
 				W(t,d,s) = logplusexp(W(t-1,d,s)+lp_insert,
 						   logplusexp(W(t,d-1,s)+lp_delete,
 								      W(t,d,s-1)+Sab(t+s-1,d+s-1))); // shoot me in the face	
-	
-	
+		
 	// now we sum up
 	double lp_yGx = -infinity; // p(Y|X)
 	for(int t=std::max(0,n-m); t<=std::min(T,E+n-m);t++){

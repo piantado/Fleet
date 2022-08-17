@@ -76,7 +76,7 @@ private:
 	struct stack_t { std::tuple<VMSStack<args>...> value; };
 	stack_t<VM_TYPES...> _stack; // our stacks of different types
 	
-	// same for defining memoizaition types -- here these are the only ones we allow
+	// same for defining memoization types -- here these are the only ones we allow
 	template<typename... args>
 	struct mem_t { std::tuple<std::map<std::pair<args,input_t>,output_t>...> value; };
 	mem_t<LEXICON_MEMOIZATION_TYPES> _mem;

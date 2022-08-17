@@ -18,34 +18,34 @@ class MyGrammar : public Grammar<X_t,D, D,X_t>,
 public:
 	MyGrammar() {
 		
-		add("(%s+%s)",    +[](D a, D b) -> D     { return a+b; }),
-		add("(%s-%s)",    +[](D a, D b) -> D     { return a-b; }),
-		add("(%s*%s)",    +[](D a, D b) -> D     { return a*b; }),
-		add("(%s/%s)",    +[](D a, D b) -> D     { return (b==0 ? NaN : a/b); }),
-		add("(-%s)",      +[](D a)          -> D { return -a; }),
+		add("(%s+%s)",    +[](D a, D b) -> D     { return a+b; });
+		add("(%s-%s)",    +[](D a, D b) -> D     { return a-b; });
+		add("(%s*%s)",    +[](D a, D b) -> D     { return a*b; });
+		add("(%s/%s)",    +[](D a, D b) -> D     { return (b==0 ? NaN : a/b); });
+		add("(-%s)",      +[](D a)          -> D { return -a; });
 		
-		add("exp(%s)",     +[](D a)          -> D { return exp(a); }, 1),
+		add("exp(%s)",     +[](D a)          -> D { return exp(a); }, 1);
 
-		add("1",          +[]()             -> D { return 1.0; }, TERMINAL_P),
+		add("1",          +[]()             -> D { return 1.0; }, TERMINAL_P);
 
 #if FEYNMAN
 
 		add("tau",         +[]()             -> D { return 2*M_PI; }, TERMINAL_P);
-		add("sqrt(%s)",    +[](D a)          -> D { return std::sqrt(a); }, 1.),
-		add("pow(%s,2)",   +[](D a)          -> D { return a*a; }, 1.),
-		add("pow(%s,3)",   +[](D a)          -> D { return a*a*a; }, 1.),
+		add("pow(%s,2)",   +[](D a)          -> D { return a*a; }, 1.);
+		add("pow(%s,3)",   +[](D a)          -> D { return a*a*a; }, 1.);
 		
-		add("0.5",          +[]()           -> D { return 0.5; }, TERMINAL_P),
-//		add("pi",          +[]()            -> D { return M_PI; }, TERMINAL_P), 
-		add("tanh(%s)",    +[](D a)          -> D { return tanh(a); }, 1./4),
-		add("sin(%s)",    +[](D a)          -> D { return sin(a); }, 1./4),
-		add("cos(%s)",    +[](D a)          -> D { return cos(a); }, 1./4),
+		add("0.5",          +[]()           -> D { return 0.5; }, TERMINAL_P);
+//		add("pi",          +[]()            -> D { return M_PI; }, TERMINAL_P); 
+		add("tanh(%s)",    +[](D a)          -> D { return tanh(a); }, 1./4);
+		add("sin(%s)",    +[](D a)          -> D { return sin(a); }, 1./4);
+		add("cos(%s)",    +[](D a)          -> D { return cos(a); }, 1./4);
 		add("asin(%s)",    +[](D a)         -> D { return asin(a); }, 1./4);
 
 #else
-		add("log(%s)",    +[](D a)          -> D { return log(a); }),
-		add("pow(%s,%s)", +[](D a, D b)     -> D { return pow(a,b); }),
-
+		add("log(%s)",    +[](D a)          -> D { return log(a); });
+		add("pow(%s,%s)", +[](D a, D b)     -> D { return pow(a,b); });
+		add("sqrt(%s)",    +[](D a)          -> D { return std::sqrt(a); }, 1.);
+		
 		// give the type to add and then a vms function
 		add_vms<D>("C", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
 						
