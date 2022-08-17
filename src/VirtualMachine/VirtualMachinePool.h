@@ -80,8 +80,9 @@ public:
 	virtual void clear() {
 		while(not Q.empty()) {
 			VirtualMachineState_t* vms = Q.top(); Q.pop();
-			delete vms;
+			delete vms; 
 		}
+		
 		total_vms_steps = 0;
 		worst_lp = infinity;
 	}
