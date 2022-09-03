@@ -2,7 +2,7 @@
 
 enum class Op {
 	Standard, 
-	And, Or, Not, 
+	And, Or, Not, Implies, Iff,
 	X,
 	If, Jmp,
 	Recurse, PopX, SafeRecurse, MemRecurse, SafeMemRecurse,

@@ -20,7 +20,7 @@ namespace Builtins {
 	Primitive<bool,bool,bool> And(Op::And, BUILTIN_LAMBDA {
 	
 		// process the short circuit
-		bool b = vms->template getpop<bool>(); // bool has already evaluted
+		bool b = vms->template getpop<bool>(); // bool has already evaluated
 			
 		if(!b) {
 			vms->program.popn(arg); // pop off the other branch 
@@ -35,7 +35,7 @@ namespace Builtins {
 	Primitive<bool,bool,bool> Or(Op::Or, BUILTIN_LAMBDA {
 	
 		// process the short circuit
-		bool b = vms->template getpop<bool>(); // bool has already evaluted
+		bool b = vms->template getpop<bool>(); // bool has already evaluated
 			
 		if(b) {
 			vms->program.popn(arg); // pop off the other branch 
@@ -49,6 +49,22 @@ namespace Builtins {
 	template<typename Grammar_t>
 	Primitive<bool,bool> Not(Op::Not, BUILTIN_LAMBDA {
 		vms->push(not vms->template getpop<bool>()); 
+	});
+	
+	
+	template<typename Grammar_t>
+	Primitive<bool,bool,bool> Implies(Op::Implies, BUILTIN_LAMBDA {
+		bool x = vms->template getpop<bool>(); 
+		bool y = vms->template getpop<bool>(); 
+		vms->template push<bool>( (not x) or y);
+	});
+	
+		
+	template<typename Grammar_t>
+	Primitive<bool,bool,bool> Iff(Op::Iff, BUILTIN_LAMBDA {
+		bool x = vms->template getpop<bool>(); 
+		bool y = vms->template getpop<bool>(); 
+		vms->template push<bool>( x==y );
 	});
 	
 	
