@@ -55,6 +55,8 @@ public:
 	 * @return 
 	 */	
 	double get_weight_fromcache() const {
+		if(cache.size() == 0) { return 1.0; } // for empty cache
+		
 		int numtrue = 0;
 		for(auto& v : cache) {
 			numtrue += (v == TruthValue::True);
@@ -81,6 +83,12 @@ class MyHypothesis : public Lexicon<MyHypothesis, std::string, InnerHypothesis, 
 	using Super = Lexicon<MyHypothesis, std::string, InnerHypothesis, ignore_t,ignore_t, Utterance>;
 	using Super::Super; // inherit the constructors
 public:	
+
+	void clear_cache() {
+		for(auto& [k,f] : factors) {
+			f.clear_cache();
+		}
+	}
 
 
 	virtual double compute_likelihood(const data_t& data, double breakout=-infinity) override {
@@ -120,7 +128,7 @@ public:
 			for(auto& [k,f] : factors) {
 				// we just call the right factor on utterance -- note that the "word" in u is
 				// ignored within the function call
-				auto tv = f.cache[i];
+				auto tv = f.cache.at(i);
 				
 				if(tv != TruthValue::Undefined) {
 					Wp += weights[k]; // presup met
@@ -195,7 +203,7 @@ public:
 		extern MyHypothesis bunny_spread; 
 		extern MyHypothesis classical_spread; 
 
-		print("#", this->posterior, this->prior, this->likelihood, target.likelihood, bunny_spread.likelihood, classical_spread.likelihood);
+		print(":", prefix, this->posterior, this->prior, this->likelihood, target.likelihood, bunny_spread.likelihood, classical_spread.likelihood);
 		print(this->string()); 
 	}
 };

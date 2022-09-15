@@ -17,4 +17,4 @@ CLANG_LIBCPP=/usr/lib/llvm-12/include/llvm/
 CLANG_LIB_PATH=/usr/lib/llvm-12/lib/
 
 #CLANG_FLAGS= -std=c++20 -stdlib=libc++ -Wall -fdiagnostics-color=auto -Wimplicit-fallthrough -Wall -Wextra -Wextra-semi -Wpedantic -Wvla -Wnull-dereference -Wswitch-enum -Wno-unused-parameter -march=native -fexceptions -L $(CLANG_LIB_PATH) -I $(CLANG_LIBCPP)
-CLANG_FLAGS= -std=c++20 -stdlib=libc++ -Wall -fdiagnostics-color=auto -Wimplicit-fallthrough -Wall -Wextra -Wextra-semi -Wpedantic -Wvla -Wnull-dereference -Wswitch-enum -Wno-unused-parameter -march=native -fexceptions -L $(CLANG_LIB_PATH) -I $(CLANG_LIBCPP)
+CLANG_FLAGS= -std=c++20 -Wall -fdiagnostics-color=auto -Wimplicit-fallthrough -Wall -Wextra -Wextra-semi -Wpedantic -Wvla -Wnull-dereference -Wswitch-enum -Wno-unused-parameter -march=native -fexceptions -L $(CLANG_LIB_PATH) -I $(CLANG_LIBCPP)

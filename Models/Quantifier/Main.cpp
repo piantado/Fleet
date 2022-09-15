@@ -17,14 +17,14 @@ const std::vector<std::string> words = {"NA", "every", "some", "a", "one", "both
 static const double alpha_p = 0.95; 
 static const double alpha_t = 0.8;
 
-//const std::vector<size_t> data_amounts = {0, 1, 5, 10, 25, 50, 75, 100, 250, 500, 750, 1000, 2500};
+const std::vector<size_t> data_amounts = {0,100}; // {0, 1, 5, 10, 25, 50, 75, 100, 250, 500, 750, 1000, 2500, 5000};
 
 //bool only_conservative = false; // do we only allow conservative quantifiers? (via the likelihood)
  
-static const size_t MAX_NODES = 16;
+static const size_t MAX_NODES = 10;
  
-const int NDATA = 1000; // how many data points to sample?
-const int PRDATA = 1000; // how much data for precision/recall?
+//const int NDATA = 1000; // how many data points to sample?
+const int PRDATA = 5000; // how much data for precision/recall?
 
 // Define some object types etc here
 enum class MyColor { Red, Green, Blue,          __count };
@@ -139,42 +139,51 @@ int main(int argc, char** argv){
 	classical_spread = target;
 	classical_spread["every"]    = InnerHypothesis(grammar.simple_parse("presup(not(empty(shape(x))),and(equal(shape(x),color(x)), equal(shape(x), context(x))))"));
 	
-	//------------------
-	// set up the data
-	//------------------
-	
-	std::vector<Utterance> mydata;
-	for(size_t i=0;i<NDATA;i++){
-		// if we print these out
-//		COUT word TAB static_cast<int>(target[word](shape, color, context)) TAB static_cast<int>(s) TAB static_cast<int>(c) << "\t";
-//		for(auto& o : context) COUT o;
-//		COUT "\n";
-		
-		mydata.push_back(sample_data());
-	}
-	
+	// set up the data	
 	for(size_t i=0;i<PRDATA;i++){
 		prdata.push_back(sample_data());
 	}
-
-	target.compute_posterior(mydata);
-	bunny_spread.compute_posterior(mydata);
-	classical_spread.compute_posterior(mydata);
+	
+	
+	/////////////////////////////////////////////
+	// Now run: 
+	/////////////////////////////////////////////
+	
+	TopN<MyHypothesis> top; // stored across rules
+	
+	for(size_t ndata : data_amounts) {
 		
-	//////////////////////////////////
-	// run MCMC
-	//////////////////////////////////
-	
-	TopN<MyHypothesis> top;
-	top.print_best = true;
+		std::vector<Utterance> mydata;
+		for(size_t i=0;i<ndata;i++){			
+			mydata.push_back(sample_data());
+		}
 
-	auto h0 = MyHypothesis::sample(words);
-	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 10.0);
-//	MetropolisHastings chain(h0, &mydata);
-
-	for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
-		UNUSED(h);
+		// update top on all new data
+		TopN<MyHypothesis> newtop;
+		for(auto h : top.values()) { // copy so we can modify
+			
+			h.clear_cache(); // previous data, clear out
+			h.compute_posterior(mydata);
+			newtop << h; 
+		}
+		top = newtop;
+				
+		target.clear_cache(); target.compute_posterior(mydata);
+		bunny_spread.clear_cache(); bunny_spread.compute_posterior(mydata);
+		classical_spread.clear_cache(); classical_spread.compute_posterior(mydata);
+		
+		// run MCMC
+		auto h0 = MyHypothesis::sample(words);
+		ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1.10);
+		for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
+			UNUSED(h);
+		}
+				
+		// now print		
+		for(auto h : top.values()) {
+			h.show(str(ndata));
+		}
+		
+		
 	}
-	
-	top.print();
 }

@@ -152,7 +152,9 @@ public:
 				return *this;
 			}
 
-			bool operator==(const RuleIterator& rhs) { return current_nt == rhs.current_nt and current_rule == rhs.current_rule; }
+			bool operator==(const RuleIterator& rhs) const { 
+				return current_nt == rhs.current_nt and current_rule == rhs.current_rule; 
+			}
 	};	
 	
 	// these are set up to 

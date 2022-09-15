@@ -31,7 +31,7 @@ public:
 	}
 	
 	
-	virtual bool operator!=(const this_t& h)   const {
+	virtual bool operator!=(const this_t& h) const {
 		return not this->operator==(h);
 	}
 };

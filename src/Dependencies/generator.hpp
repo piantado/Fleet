@@ -5,23 +5,6 @@
 
 #pragma once 
 
-#ifdef __clang__
-	#include <experimental/coroutine>
-	
-	//  This is horrible but we have to fix these names 
-	// UGH FIX THIS:
-	namespace std { 
-		using suspend_always = std::experimental::suspend_always;
-		using suspend_never  = std::experimental::suspend_never;
-		
-		template<typename T> 
-		using coroutine_handle = std::experimental::coroutine_handle<T>;
-	}
-	
-	// this is probably important since otherwise we always think GNUC is defined. Wtf clang
-	#undef __GNUC__ 
-#endif 
-
 #ifdef __GNUC__
 	#include <coroutine>
 #endif
