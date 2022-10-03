@@ -17,7 +17,7 @@ const std::vector<std::string> words = {"NA", "every", "some", "a", "one", "both
 static const double alpha_p = 0.95; 
 static const double alpha_t = 0.8;
 
-const std::vector<size_t> data_amounts = {0,100}; // {0, 1, 5, 10, 25, 50, 75, 100, 250, 500, 750, 1000, 2500, 5000};
+const std::vector<size_t> data_amounts = {0, 1, 5, 10, 25, 50, 75, 100, 250, 500, 750, 1000, 2500, 5000};
 
 //bool only_conservative = false; // do we only allow conservative quantifiers? (via the likelihood)
  

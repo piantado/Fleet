@@ -12,12 +12,17 @@
  * 		  is primarily used in GrammarInference to represent parameters, but it could be used
  *  	  in any other too
  */
-class VectorNormalHypothesis : public MCMCable<VectorNormalHypothesis, void*> {
+template<typename _self_t, typename _datum_t=void*, typename _data_t=void*>
+class VectorNormalHypothesis : public MCMCable<_self_t, 
+											   _datum_t, 
+											   _data_t> {
 	// This represents a vector of reals, defaultly here just unit normals. 
 	// This gets used in GrammarHypothesis to store both the grammar values and
 	// parameters for the model. 
 public:
-	using self_t = VectorNormalHypothesis;
+	using self_t = _self_t;
+	using datum_t = _datum_t;
+	using data_t = _data_t;
 	
 	double MEAN = 0.0;
 	double SD   = 1.0;
@@ -71,14 +76,14 @@ public:
 		return this->prior;
 	}
 	
-	
 	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
 		throw YouShouldNotBeHereError("*** Should not call likelihood here");
 	}
 	
 	
 	virtual std::optional<std::pair<self_t,double>> propose() const override {
-		self_t out = *this;
+		self_t out; // NOTE: THIS DOESN'T COPY EVERYTHING (other inherited stuff) -- TODO: FIX THIS
+		out.value = value; 
 		
 		// choose an index
 		// (NOTE -- if can_propose is all false, this might loop infinitely...)
@@ -96,11 +101,14 @@ public:
 	}
 	
 	virtual self_t restart() const override {
-		self_t out = *this;
+		self_t out;  // NOTE: THIS DOESN'T COPY EVERYTHING (other inherited stuff) -- TODO: FIX THIS
 		for(auto i=0;i<value.size();i++) {
 			if(out.can_propose[i]) {
 				// we don't want to change parameters unless we can propose to them
 				out.value(i) = MEAN + SD*random_normal();
+			}
+			else {
+				out.value(i) = value(i);
 			}
 		}
 		return out;
@@ -121,10 +129,11 @@ public:
 	}
 	
 	virtual std::string string(std::string prefix="") const override {
-		std::string out = prefix+"NV<";
+		std::string out = prefix+"<";
 		for(auto i=0;i<value.size();i++) {
-			out += str(value(i));
+			out += str(value(i))+",";
 		}
+		out.erase(out.size()-1);
 		out += ">";
 		return out; 
 	}

@@ -136,6 +136,15 @@ public:
 	}
 	
 	/**
+	 * @brief This allows us to overwrite/enforce stuff about proposals in subclasses of MCMCChain
+	 * @param p
+	 * @return 
+	 */	
+	virtual bool check(const HYP& p) {
+		return true; 
+	}
+	
+	/**
 	 * @brief Run MCMC according to the control parameters passed in.
 	 * 		  NOTE: ctl cannot be passed by reference. 
 	 * @param ctl
@@ -190,6 +199,13 @@ public:
 				auto [proposal, fb] = p.value();			
 				
 				++proposals;
+				
+				// we add a subroutine "check" here that can reject proposals right away
+				// this is useful for enforcing some constraints on the proposals
+				// defaultly, check does nothing
+				if(not check(proposal)) {
+					continue; 
+				}
 				
 				// A lot of proposals end up with the same function, so if so, save time by not
 				// computing the posterior

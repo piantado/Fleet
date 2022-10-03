@@ -135,16 +135,6 @@ public:
 		
 		++FleetStatistics::posterior_calls; // just keep track of how many calls 
 		
-//		auto hsh = this->hash();
-//		if(posterior_cache.exists(hsh)) {
-//			CERR "HIT" ENDL;
-//			auto q = posterior_cache.get(hsh); // TODO: Should also set likelihood and prior
-//			this->posterior  = std::get<0>(q);
-//			this->prior      = std::get<1>(q);
-//			this->likelihood = std::get<2>(q);
-//			return posterior;
-//		}
-		
 		// Always compute a prior
 		prior = compute_prior();
 		
@@ -159,8 +149,6 @@ public:
 			likelihood = compute_likelihood(data, (b-prior)*t);
 			posterior = prior + likelihood;	
 		}
-		
-//		posterior_cache.put(hsh, std::make_tuple(posterior, prior, likelihood));
 		
 		return posterior;
 	}
