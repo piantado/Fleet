@@ -19,10 +19,11 @@
  * @brief This represents an MCMC hain on a hypothesis of type HYP. It uses HYP::propose and HYP::compute_posterior
  * 		  to implement MetropolicHastings. 
  */
-template<typename HYP> 
+template<typename _HYP> 
 class MCMCChain {
 	
 public:
+	using HYP = _HYP;
 	
 	 HYP current;
 	
@@ -140,7 +141,7 @@ public:
 	 * @param p
 	 * @return 
 	 */	
-	virtual bool check(const HYP& p) {
+	virtual bool check(HYP& p) {
 		return true; 
 	}
 	

@@ -223,6 +223,23 @@ public:
 		return m < x.m;
 	}
 	
+	bool operator==(const DiscreteDistribution<T>& other) const {
+		// we can compare elements -- NOTE we set a tolerance so they don't have to be exactly
+		// equal (I hope this doesn't cause you troubles)
+		const double threshold = 1e-6;
+		
+		std::set<T> keys;
+		std::transform(m.begin(),             m.end(), std::inserter(keys, keys.end()), [](auto pair){ return pair.first; });
+		std::transform(other.m.begin(), other.m.end(), std::inserter(keys, keys.end()), [](auto pair){ return pair.first; });
+		
+		for(auto& k : keys) {
+			if(abs(at(k) - other.at(k)) > threshold) 
+				return false; 
+		}
+		
+		return true; 
+	}
+	
 };
 
 

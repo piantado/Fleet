@@ -19,6 +19,7 @@ public:
 	using Grammar_t = _Grammar_t;
 	using input_t   = _input_t;
 	using output_t  = _output_t;
+	using call_output_t = DiscreteDistribution<output_t>; // what does call output?
 	using VirtualMachineState_t = _VirtualMachineState_t;
 	
 	/**

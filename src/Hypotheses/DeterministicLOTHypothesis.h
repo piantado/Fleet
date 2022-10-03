@@ -19,6 +19,7 @@ public:
 	
 	using input_t   = Super::input_t;
 	using output_t  = Super::output_t;
+	using call_output_t = output_t;
 	using VirtualMachineState_t = Super::VirtualMachineState_t;
 	
 	/**

@@ -237,7 +237,7 @@ public:
 		
 		// This version anneals on data, giving each chain a different amount in datas order
 		for(size_t i=0;i<datas.size();i++) {
-			this->pool.push_back(MCMCChain(i==0?h0:h0.restart(), &(datas[i])));
+			this->pool.push_back(ChainPool<HYP>(i==0?h0:h0.restart(), &(datas[i])));
 			this->pool[i].temperature = 1.0;
 			swap_history.emplace_back();
 		}

@@ -21,11 +21,12 @@
  * 		  NOTE: When you use a ChainPool, the results will not be reproducible with seed because timing determines when you
  *        switch chains. 
  */
-template<typename HYP>
+template<typename HYP, typename Chain_t=MCMCChain<HYP>>
 class ChainPool : public ThreadedInferenceInterface<HYP> { 
-	
 public:
-	std::vector<MCMCChain<HYP>> pool;
+
+	// the pool stores a bunch of chains
+	std::vector<Chain_t> pool;
 	
 	// these parameters define the amount of a thread spends on each chain before changing to another
 	// NOTE: these interact with ParallelTempering swap/adapt values (because if these are too small, then
@@ -47,14 +48,13 @@ public:
 	
 	ChainPool() {}
 	
-	ChainPool(HYP& h0, typename HYP::data_t* d, size_t n) : running(n, RunningState::READY) {
+	ChainPool(HYP& h0, typename HYP::data_t* d, size_t n) {
 		assert(n>=1 && "*** You probably shouldn't have a chain pool with 0 elements");
 		for(size_t i=0;i<n;i++) {
-			pool.push_back(MCMCChain<HYP>(i==0?h0:h0.restart(), d));
+			add_chain(i==0?h0:h0.restart(), d);
 		}
 	}
-	
-	
+		
 	/**
 	 * @brief Set this data
 	 * @param d -- what data to set
@@ -64,6 +64,20 @@ public:
 		for(auto& c : pool) {
 			c.set_data(d, recompute);
 		}
+	}
+	
+	/**
+	 * @brief Lock and modify the pool
+	 * @param h0
+	 * @param d
+	 */	
+	template<typename... ARGS>
+	void add_chain(ARGS... args) {
+		
+		std::lock_guard guard(running_lock);
+		
+		pool.emplace_back(args...);
+		running.push_back(RunningState::READY);
 	}
 	
 	
