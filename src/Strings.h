@@ -42,6 +42,7 @@ std::string str(T x){
 }
 
 
+
 std::string str(const std::string& x){
 	// Need to specialize this, otherwise std::to_string fails
 	return x;
@@ -131,6 +132,25 @@ std::string str(const std::map<T,U>& a ){
 }
 
 template<typename T>
+std::string str(const std::set<T>& a ){
+	/**
+	 * @brief A pythonesque string function
+	 * @param x
+	 * @return 
+	 */
+	std::string out = "{";
+	for(auto& x : a) {
+		out += str(x)+",";
+	}
+	if(a.size()>0) 
+		out.erase(out.size()-1); // remove that last dumb comma
+	out += "}";
+	
+	return out;
+}
+
+
+template<typename T>
 std::string str(const std::atomic<T>& a ){
 	/**
 	 * @brief A pythonesque string function
@@ -139,6 +159,8 @@ std::string str(const std::atomic<T>& a ){
 	 */
 	return str(a.load());
 }
+
+
 
 
 template<typename... Args>

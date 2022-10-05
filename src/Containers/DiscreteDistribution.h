@@ -248,3 +248,8 @@ std::ostream& operator<<(std::ostream& o, const DiscreteDistribution<T>& x) {
 	o << x.string();
 	return o;
 }
+
+template<typename T>
+std::string str(const DiscreteDistribution<T>& a ){
+	return a.string();
+}

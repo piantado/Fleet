@@ -160,7 +160,11 @@ public:
 		
 		// I may have copied its start time from somewhere else, so change that here
 		ctl.start();		
-		do {
+		while(true) {
+			
+			if(not ctl.running()) 
+				break;
+			
 			std::lock_guard guard(current_mutex);
 			
 			if(current.posterior > maxval) { // if we improve, store it
@@ -179,12 +183,11 @@ public:
 			}
 			else if (std::isnan(current.posterior) or current.posterior == -infinity) {
 				[[unlikely]];
-				// This is a special case where we just propose from restarting 
 				
+				// This is a special case where we just propose from restarting 
 				restart();
 
-				// Should we count in history? 
-				// Hmm maybe not. 
+				// Should we count in history? 	// Hmm maybe not. 
 			}
 			else {
 				// normally we go here and do a proper proposal
@@ -203,9 +206,13 @@ public:
 				
 				// we add a subroutine "check" here that can reject proposals right away
 				// this is useful for enforcing some constraints on the proposals
-				// defaultly, check does nothing
+				// defaultly, check does nothing. NOTE: ti is important to the shibbholeth sampler that
+				// this happens before we compute posteriors
 				if(not check(proposal)) {
-					continue; 
+					
+					history << false;
+					
+					continue;
 				}
 				
 				// A lot of proposals end up with the same function, so if so, save time by not
@@ -294,7 +301,9 @@ public:
 			++samples;			
 			++FleetStatistics::global_sample_count;
 			
-		} while(ctl.running()); // end the main loop	-- at the end because ctl.running() counts the samples we've taken
+			
+			
+		}
 	}
 	
 	void run() { 
