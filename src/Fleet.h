@@ -360,6 +360,7 @@ int main(int argc, char** argv){
 
 #pragma once 
 
+#include <filesystem>
 #include <sys/resource.h> // just for setting priority defaulty 
 #include <unistd.h>
 #include <stdlib.h>
@@ -509,23 +510,21 @@ public:
 			// and build the command to get the md5 checksum of myself
 			char tmp[64]; sprintf(tmp, "md5sum /proc/%d/exe", getpid());
 		
-			COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
-			COUT "# Running Fleet on " << hostname << " with PID=" << getpid() << " by user " << getenv("USER") << " at " <<  datestring() ENDL;
-			COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;
-			COUT "# Fleet version: " << FLEET_VERSION ENDL;
-			COUT "# Executable checksum: " << system_exec(tmp);
-			COUT "# Run options: " ENDL;
-			COUT "# \t --input=" << FleetArgs::input_path ENDL;
-			COUT "# \t --threads=" << FleetArgs::nthreads ENDL;
-			COUT "# \t --chains=" << FleetArgs::nchains ENDL;
-			COUT "# \t --steps=" << FleetArgs::steps ENDL;
-			COUT "# \t --inner_steps=" << FleetArgs::inner_steps ENDL;
-			COUT "# \t --thin=" << FleetArgs::thin ENDL;
-			COUT "# \t --print=" << FleetArgs::print ENDL;
-			COUT "# \t --time=" << FleetArgs::timestring << " (" << FleetArgs::runtime << " ms)" ENDL;
-			COUT "# \t --restart=" << FleetArgs::restart ENDL;
-			COUT "# \t --seed=" << random_seed ENDL;
-			COUT "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ENDL;	
+				
+			std::filesystem::path cwd = std::filesystem::current_path();
+			std::string exc = system_exec(tmp); exc.erase(exc.length()-1); // came with a newline?
+			
+			print("# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			print("# Running Fleet on " +  std::string(hostname) + " with PID=" + str(getpid()) + " by user " + getenv("USER") + " at " + datestring());
+			print("# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			print("# Fleet version: ", FLEET_VERSION);
+			print("# Executable checksum: ", exc);
+			print("# Path:", cwd.string() );
+			print("# Run options: ");
+			for(int a=0;a<argc;a++) {
+				print("# \t", argv[a]);
+			}
+			print("# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");	
 			
 		}
 		
