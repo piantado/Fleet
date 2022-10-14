@@ -92,7 +92,7 @@ public:
 	// NOTE: When we use a symmetric drift kernel, fb=0
 	std::pair<double,double> constant_proposal(double c) const override { 
 		
-		if(flip(0.90)) {
+		if(flip(0.95)) {
 			// we use fb=0 here because we can consider an auxilliary variable
 			// to be the scale variable
 			auto sc = exp(uniform(MIN_SCALE, MAX_SCALE)); 

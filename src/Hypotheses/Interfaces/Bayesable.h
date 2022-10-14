@@ -80,7 +80,6 @@ public:
 	 * @return 
 	 */	
 	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) {
-
 		
 		// include this in case a subclass overrides to make it non-iterable -- then it must define its own likelihood
 		if constexpr (is_iterable_v<data_t>) { 

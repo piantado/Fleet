@@ -206,7 +206,7 @@ int main(int argc, char** argv){
 	}
 	
 	// go through and scale the SDs
-	for(const auto& d : mydata) {
+	for(auto& d : mydata) {
 		d.reliability = FEYNMAN_SD * data_Y_sd; // Here it's important to scale by data_Y_sd since SDs vary across concepts
 	}
 	#endif 
@@ -217,7 +217,6 @@ int main(int argc, char** argv){
 	for(const auto& d : mydata) {
 		best_possible_ll += normal_lpdf(0.0, 0.0, d.reliability);
 	}
-	
 	
 	#if FEYNMAN
 	end_at_likelihood = best_possible_ll - 0.001; // a tiny bit of numerical error

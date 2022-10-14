@@ -204,17 +204,6 @@ public:
 				
 				++proposals;
 				
-				// we add a subroutine "check" here that can reject proposals right away
-				// this is useful for enforcing some constraints on the proposals
-				// defaultly, check does nothing. NOTE: ti is important to the shibbholeth sampler that
-				// this happens before we compute posteriors
-				if(not check(proposal)) {
-					
-					history << false;
-					
-					continue;
-				}
-				
 				// A lot of proposals end up with the same function, so if so, save time by not
 				// computing the posterior
 				if(proposal == current) {
@@ -236,6 +225,19 @@ public:
 					}
 				}
 				else {
+					
+					// we add a subroutine "check" here that can reject proposals right away
+					// this is useful for enforcing some constraints on the proposals
+					// defaultly, check does nothing. NOTE: ti is important to the shibbholeth sampler that
+					// this happens before we compute posteriors
+					if(not check(proposal)) {
+						
+						history << false;
+						
+						continue;
+					}
+					
+					
 					
 					// here we actually need to compute, but we can do so at the breakout
 					// TODO: This is a little inefficient in that we compute log(uniform()) even

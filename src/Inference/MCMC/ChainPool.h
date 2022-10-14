@@ -85,7 +85,7 @@ public:
 		return pool.size();
 	}
 	
-	void print(std::string prefix) const { 
+	void show(std::string prefix) const { 
 		for(size_t i=0;i<nchains();i++) {
 			std::lock_guard guard(this->pool[i].current_mutex);
 			print(prefix, i, (double)this->pool[i].temperature, this->pool[i].getCurrent().posterior, this->pool[i].getCurrent());

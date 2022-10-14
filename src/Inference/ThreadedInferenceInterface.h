@@ -1,5 +1,6 @@
 #pragma once 
 
+
 #include <atomic>
 #include <mutex>
 #include <thread>
@@ -122,9 +123,10 @@ public:
 		// because it's hard to debug otherwise 
 		
 		std::cerr << "*** Warning running unthreaded_run (intended for debugging)" << std::endl;
-		
+		ctl.start();
 		for(auto& x : run_thread(ctl, args...)) {
 			co_yield x;
+			if(CTRL_C) break;
 		}		
 	}
 	
