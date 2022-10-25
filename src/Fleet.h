@@ -439,6 +439,8 @@ public:
 		app.add_option("--inner-thin",  FleetArgs::inner_thin, "Inner thinning");
 		app.add_option("--tree",        FleetArgs::tree_path, "Write the tree here");
 		
+		app.add_option("--omp-threads",        FleetArgs::omp_threads, "How many threads to run with OMP");
+		
 //		app.add_flag(  "-q,--quiet",    quiet, "Don't print very much and do so on one line");
 //		app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");
 

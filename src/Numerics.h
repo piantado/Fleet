@@ -109,6 +109,18 @@ T logplusexp(const T a, const T b) {
 	}
 }
 
+/**
+ * @brief logsumexp with no shortcuts for precision
+ * @param a
+ * @param b
+ * @return 
+ */
+template<typename T>
+T logplusexp_full(const T a, const T b) {
+	T mx = std::max(a,b);
+	return mx + log1p(exp(std::min(a,b)-mx));
+}
+
 
 /**
  * @brief Compute log(sum(exp(v)).

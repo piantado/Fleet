@@ -38,6 +38,7 @@ namespace FleetArgs {
 	std::string   tree_path    = "tree.txt";
 	std::string   output_path  = "output";
 	
+	int omp_threads = 0;
 	
 	// If this is true, then we do NOT yeild from an MCMC chain unless 
 	// it has changed (e.g. removing duplicates). This lets multiple chains

@@ -51,7 +51,7 @@ public:
 	// The type for predictions varies between subclasses -- might be a Vector2D of DiscreteDistribution (for FullGrammarHypothesis),
 	// a Vector2D of single outputs (for deterministic), or a Vector2D with only one value for the second dimension when it 
 	// is a thunk. These variants are the whole reason we have subclasses, although there is a lot of repeated code
-	// so this migth change in the future. 
+	// so this might change in the future. 
 	using Predict_t = _Predict_t; 
 
 	// take a data pointer and map it to a hypothesis x i'th item for that data point
@@ -62,10 +62,8 @@ public:
 	// Here is a list of built-in parameters that we can use. Each stores a standard
 	// normal and a value under the specified transformation, which is chosen here to give 
 	// a reasonably shaped prior
-//	TNormalVariable< +[](float x)->float { return 1.0/(1.0+expf(-1.7*x)); }> alpha;
 	TNormalVariable< +[](float x)->float { return 1.0/(1.0+expf(-1.0*x)); }> alpha;
 	TNormalVariable< +[](float x)->float { return expf((x-0.33)/1.50); }>    llt;
-//	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            llt;
 	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            pt;
 	TNormalVariable< +[](float x)->float { return expf(x-2); }>              decay;  // peaked near zero
 	
@@ -87,9 +85,14 @@ public:
 	const data_t* which_data; 
 	const std::vector<HYP>* which_hypotheses;
 
-	BaseGrammarHypothesis() {	}
+	// if this is true, then we don't propose to any of logA, and we treat logA just as a bunch of zeros
+	protected:
+		bool flat_prior; 
+	public:
+
+	BaseGrammarHypothesis() : flat_prior(false) {	}
 		
-	BaseGrammarHypothesis(std::vector<HYP>& hypotheses, const data_t* human_data) {
+	BaseGrammarHypothesis(std::vector<HYP>& hypotheses, const data_t* human_data) : flat_prior(false) {
 		// This has to take human_data as a pointer because of how MCMCable::make works -- can't forward a reference
 		// but the rest of this class likes the references, so we convert here
 		this->set_hypotheses_and_data(hypotheses, *human_data);		
@@ -146,6 +149,16 @@ public:
 		logA.set_can_propose(i,b);
 		
 		if(logA(i) != 0.0) { CERR "# Warning, set_can_propose is setting false to logA(" << str(i) << ") != 0.0 (this is untransformed space)" ENDL; }
+	}
+	
+	
+	void set_flat_prior(bool fp) {
+		flat_prior = fp;
+		if(flat_prior) {
+			for(size_t i=0;i<logA.size();i++) {
+				logA.set(i,0.0);
+			}
+		}
 	}
 	
 	/**
@@ -239,7 +252,9 @@ public:
 	}
 	
 	/**
-	 * @brief Recomputes the decayed likelihood (e.g. at the given decay level, the total ll for each data point
+	 * @brief Recomputes the decayed likelihood (e.g. at the given decay level, the total ll for each data point.
+	 * 		  NOTE: This does NOT create a new decayed likelihood -- that must be done manually. This refills our
+	 *        current pointer
 	 * @param hypotheses
 	 * @param human_data
 	 * @return 
@@ -300,7 +315,7 @@ public:
 	 */
 	virtual void recompute_P(std::vector<HYP>& hypotheses, const data_t& human_data) = 0;
 	
-		/**
+	/**
 	 * @brief This uses hposterior (computed via this->compute_normalized_posterior()) to compute the model predictions
 	 * 		  on a the i'th human data point. To do this, we marginalize over hypotheses, computing the weighted sum of
 	 *        outputs. 
@@ -339,7 +354,7 @@ public:
 		// the model's posterior
 		// do we need to normalize the prior here? The answer is no -- because its just a constant
 		// and that will get normalized away in posterior
-		const auto hprior =  this->hypothesis_prior(*C);
+		const auto hprior =  this->hypothesis_prior();
 		const auto hlikelihood = (*decayedLikelihood / llt.get());
 		Matrix hposterior = hlikelihood.colwise() + hprior;
 		//Matrix hposterior = (*decayedLikelihood).colwise() + hprior;
@@ -378,7 +393,6 @@ public:
 			assert(false);
 		}		
 
-
 		// Ok this needs a little explanation. If we have overwritten the types, then we can get compilation
 		// errors below because for instance r.first won't be of the right type to index into model_predictions.
 		// So this line catches that and removes this chunk of code at compile time if we have removed
@@ -386,23 +400,22 @@ public:
 		// compute_likelihood if you change these types
 		if constexpr(std::is_same<std::vector<std::pair<typename HYP::output_t,size_t>>, typename datum_t::response_t>::value) {
 			
-			Matrix hposterior = this->compute_normalized_posterior();
+			const Matrix hposterior = this->compute_normalized_posterior();
 			
 			this->likelihood  = 0.0; // for all the human data
 			
 			#pragma omp parallel for
 			for(size_t i=0;i<human_data.size();i++) {
 				
-				auto model_predictions = compute_model_predictions(human_data, i, hposterior);			
+				const auto model_predictions = compute_model_predictions(human_data, i, hposterior);			
 				
 				double ll = 0.0; // the likelihood here
 				auto& di = human_data[i];
 				for(const auto& [r,cnt] : di.responses) {
-					ll += cnt * logplusexp( log(1-alpha.get()) + human_chance_lp(r,di), 
-											log(alpha.get()) + log(model_predictions[r])); 
+					ll += cnt * logplusexp_full( log(1-alpha.get()) + human_chance_lp(r,di), 
+											log(alpha.get()) + log(get(model_predictions, r, 0.0))); 
 				}
-				
-				
+								
 				#pragma omp atomic
 				this->likelihood += ll;
 			}
@@ -439,10 +452,12 @@ public:
 	 */		
 	[[nodiscard]] virtual std::optional<std::pair<this_t,double>> propose() const override {
 		
+		// TODO: Can probably speed this up by not making the copy if the proposal fails
+		
 		// make a copy
 		this_t out(*static_cast<const this_t*>(this)); 
 		
-		if(flip(0.15)){
+		if(flat_prior or flip(0.15)){ // if flat, we NEVER propose to logA
 			
 			// see what to propose to
 			double myfb = 0.0;
@@ -477,15 +492,13 @@ public:
 					auto [ v, fb ] = p.value();
 					out.decay = v;
 					myfb += fb;
+					out.decayedLikelihood.reset(new Matrix(C->rows(), out.which_data->size())); // we need a NEW decayed ll
+					out.recompute_decayedLikelihood(*out.which_data); // must recompute this when we get to likelihood
 					break;
 				}
 				default: assert(false);
 			}
 			
-			// if we need to recompute the decay:
-			if(decay != out.decay)	{
-				out.recompute_decayedLikelihood(*out.which_data); // must recompute this when we get to likelihood
-			}			
 			return std::make_pair(out, myfb);
 		}		
 		else {
@@ -501,11 +514,30 @@ public:
 	/**
 	 * @brief Compute a vector of the prior (one for each hypothesis) using the given counts matrix (hypotheses x rules), AT the specified
 	 * 	      temperature
-	 * @param C
+	 * @param 
 	 * @return 
 	 */	
-	virtual Vector hypothesis_prior(const Matrix& myC) const {
-		return lognormalize( (*C) * (-logA.value) / pt.get() );			
+	virtual Vector hypothesis_prior() const {
+		
+		if(flat_prior) {
+			return Vector::Zero(C->rows());
+		}
+		
+		// We might want this version, but actually if we normalize, I think
+		// that the prior then becomes underdetermined because we can scale 
+		// everything by a constant; otoh without this it isn't normalized,
+		// which is probably fine
+//		return lognormalize( (*C) * (-logA.value) / pt.get() );			
+
+		// The unnormalized version -- note that pt here also lets us scale to possibly weird 
+		// value. 
+		//return (*C) * (-logA.value) / pt.get();			
+
+		return (*C) * (-logA.value);			
+		
+		// One alternative is to have "pt" be the amount of heldou tmass?
+		//return lognormalize( (*C) * (-logA.value) - pt.get() );			
+
 		
 		// This version does the rational-rule thing and requires that logA store the log of the A values
 		// that ends up giving kinda crazy values. NOTE: This version also constrains each NT to sum to 1,
@@ -582,7 +614,7 @@ public:
 			if(logA.can_propose[xi]) { // we'll skip the things we set as effectively constants (but still increment xi)
 				std::string rs = r.format;
 				rs = std::regex_replace(rs, std::regex("\\%s"), "X");
-				out += prefix + str(r.nt) + "\t" + QQ(rs) +"\t" + str(logA(xi)) + "\n"; // unlogged here
+				out += prefix + str(r.nt) + "\t" + QQ(rs) +"\t" + str(flat_prior ? 0.0 : logA(xi)) + "\n"; // unlogged here
 			}
 			xi++;
 		}	

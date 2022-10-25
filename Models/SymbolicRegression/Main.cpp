@@ -82,7 +82,7 @@ int main(int argc, char** argv){
 	// want multiple duplicates of the same sample. If we are using an unweighted version, then we do.
 //	FleetArgs::MCMCYieldOnlyChanges = true;
 	
-	double maxT = 1.1; // max temperature we see
+	double maxT = 10.0; // max temperature we see
 	bool pt_test_output = false; // output what we want for the PT testing
 		
 	// cannot have a likelhood breakout because some likelihoods are positive
@@ -157,6 +157,7 @@ int main(int argc, char** argv){
 			
 			data_x.push_back(x[i]); // all are just counted here in the mean -- maybe not a great idea
 		}
+		print("=="+v[i]+"==", contains(v[i]," "));
 		assert(not contains(v[i]," "));
 		auto y = string_to<D>(v[i]); i++; 
 		assert(not contains(v[i]," "));

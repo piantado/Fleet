@@ -65,6 +65,10 @@ public:
 		can_propose.resize(n,true);
 	}
 	
+	size_t size() const {
+		return value.size();
+	}
+	
 	virtual double compute_prior() override {
 		// Defaultly a unit normal 
 		this->prior = 0.0;

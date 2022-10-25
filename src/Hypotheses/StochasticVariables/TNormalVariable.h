@@ -13,7 +13,7 @@
  * 		  This has a normal prior on a parameter and then allows an output transformation, which is 
  * 		  cached for speed
  */
-template<float (*f)(float) > // transformat set at compile time
+template<float (*f)(float) > // transform set at compile time
 class TNormalVariable : public MCMCable<TNormalVariable<f>, void*> {
 public:
 	using self_t = TNormalVariable<f>;

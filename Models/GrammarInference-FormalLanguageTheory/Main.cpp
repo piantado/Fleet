@@ -1,6 +1,4 @@
 /*
- * 	TODO: This likelihood is not quite right because people in the experiment are sampling
- *        without replacement.
  * 
  * 	Languages:
  * 	- FLT language
@@ -48,6 +46,9 @@ std::pair<double,double> mem_pr;
 std::string current_data = "";
 std::string prdata_path = ""; 
 
+// should we be doing a uniform grammar?
+int flat_prior = 0; 	
+
 using S = std::string; 
 using StrSet = std::set<S>;
 
@@ -86,14 +87,23 @@ using MyHumanDatum = HumanDatum<MyHypothesis>;
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char** argv){ 	
+		
+	std::cout << std::setprecision(32);
 	
+
+		
 	alphabet = "abcd"; // set this as the default. 
 	
 	Fleet fleet("An example of grammar inference for formal languages");
 	fleet.add_option("--hypotheses",  hypothesis_path, "Where to load or save hypotheses.");
 	fleet.add_option("--runtype",  runtype, "hypotheses = do we just do mcmc on hypotheses; grammar = mcmc on the grammar, loading the hypotheses; both = do both");
 	fleet.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
+	fleet.add_option("-f,--flat-prior", flat_prior, "Should the grammar be uniform?"); 	// add my own args
 	fleet.initialize(argc, argv);
+
+	// set the number of omp threads
+	if(FleetArgs::omp_threads > 0)
+		omp_set_num_threads(FleetArgs::omp_threads);
 
 	// Add to the grammar
 	for(size_t i=0;i<MAX_FACTORS;i++) {	
@@ -208,6 +218,7 @@ int main(int argc, char** argv){
 	
 		// initial hypothesis
 		auto h0 = MyGrammarHypothesis::sample(hypotheses, &human_data);
+		h0.set_flat_prior(flat_prior);
 		
 		// lets force probabilities and integers to have fixed, uniform priors 
 		{
@@ -230,6 +241,8 @@ int main(int argc, char** argv){
 		// the MCMC chain we run over grammars
 		auto thechain = MCMCChain<MyGrammarHypothesis>(h0, &human_data);
 		
+		
+		
 		// Main MCMC running loop!
 		for(const auto& h : thechain.run(Control()) | MAPGrammar | printer(FleetArgs::print) | thin(FleetArgs::thin) ) {
 			
@@ -238,17 +251,16 @@ int main(int argc, char** argv){
 				outsamples << h.string(str(thechain.samples)+"\t") ENDL;
 				outsamples.close();
 			}
-			
+
 			// Now when we're done, show the model predicted outputs on the data
 			// We'll use the MAP grammar hypothesis for this
-			auto& MAP = MAPGrammar.best();
+			const auto& MAP = MAPGrammar.best();
+			
 			const auto hposterior = MAP.compute_normalized_posterior(); 
-			
-			
 			
 			{
 				std::ofstream outprior(FleetArgs::output_path+"/MAP-prior.txt");
-				auto v = MAP.hypothesis_prior(*MAP.C);
+				auto v = MAP.hypothesis_prior();
 				for(size_t hi=0;hi<MAP.nhypotheses();hi++){
 					OUTPUTN(outprior, hi, v[hi], hypotheses[hi].compute_prior(), QQ(hypotheses[hi].string()));
 				}
@@ -295,9 +307,9 @@ int main(int argc, char** argv){
 						for(const auto& [s,c] : hd.responses)  { N += c; }
 						
 						for(const auto& [s,c] : hd.responses)  {
-							if(c > 5) {  // all stirngs with at least this many counts
+							//if(c > 5) {  // all strings with at least this many counts -- NOTE When you do this it messes up the probs
 								OUTPUTN(outstrings, i, QQ(s), get(m,s,0), c, N);
-							}
+							//}
 						}
 					
 					}
@@ -306,17 +318,33 @@ int main(int argc, char** argv){
 				outstrings.close();
 				outtop.close();
 			}
+
 			
-			// store total posterior if we leave out each primitive 
-//				std::ofstream outLOO(FleetArgs::output_path+"/LOO-scores.txt");
-//				for(nonterminal_t nt=0;nt<grammar.nts();nt++) {
-//					for(auto& r : grammar.rules[nt]){
-//					
-//						MyHypothesis G = MAPGrammar; // copy the MAP
-//						G.compute_posterior()
-//					}
-//				}
-			
+			{
+				// Store the human likelihood if we zero/max each primitive
+				// NOTE: This is pretty slow, so we don't want to run this every sample for sure
+				std::ofstream outL(FleetArgs::output_path+"/ZeroPrimitive.txt");
+				size_t xi=0;
+				for(auto& r : grammar) {
+					if(CTRL_C) break;
+					
+					if(MAPGrammar.best().logA.can_propose[xi]) {  // skip the ones we don't propose to
+						MyGrammarHypothesis G(MAP); // copy the MAP
+						G.logA.set(xi,-99999.0); // set r to effectively impossible
+						auto l99 = G.compute_likelihood(human_data);
+						
+						MyGrammarHypothesis G2(MAP); // copy the MAP
+						G2.logA.set(xi,0.0); // set r to (effectively) zero 
+						auto l0 = G2.compute_likelihood(human_data);
+						
+						//print(r.format, l99, l0, G.logA.string(), G2.logA.string());
+						OUTPUTN(outL, QQ(r.format), MAPGrammar.best().logA(xi), 
+								MAP.likelihood, l99, l0);		
+					}
+					xi++;
+				}
+			}
+		
 		} // end mcmc		
 		
 		

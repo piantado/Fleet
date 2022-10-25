@@ -58,6 +58,10 @@ public:
 		can_propose.resize(n,true);
 	}
 	
+	size_t size() const {
+		return value.size();
+	}
+	
 	virtual double compute_prior() override {
 		// Defaultly a unit normal 
 		this->prior = 0.0;
@@ -127,8 +131,9 @@ public:
 	virtual std::string string(std::string prefix="") const override {
 		std::string out = prefix+"NV<";
 		for(auto i=0;i<value.size();i++) {
-			out += str(value(i));
+			out += str(value(i))+",";
 		}
+		if(value.size()>0) out.erase(out.length()-1); // reomve last comma
 		out += ">";
 		return out; 
 	}

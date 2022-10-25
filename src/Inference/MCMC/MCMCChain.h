@@ -290,6 +290,10 @@ public:
 					else {
 						history << false;
 						
+						#ifdef DEBUG_MCMC
+							DEBUG("# REJECT");
+						#endif 
+						
 						// only yield rejects when not MCMCYieldOnlyChanges 
 						if(not FleetArgs::MCMCYieldOnlyChanges) {
 							co_yield current; 

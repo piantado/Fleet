@@ -17,22 +17,21 @@ public:
 	static void remove_strings_and_renormalize(DiscreteDistribution<S>& M, datum_t::data_t* dptr, const size_t n) {
 		// now we need to renormalize for the fact that we can't produce strings in the 
 		// observed set of data (NOTE This assumes that the data can't be noisy versions of
-		// strings that were in teh set too). 
-		for(size_t i=0;i<n;i++) {
-			const auto& s = dptr->at(i).output;
-			if(M.contains(s)) {
-				M.erase(s);
-			}
-		}
-		
-		// and renormalize M with the strings removed
-		double Z = M.Z();
-		for(auto [s,lp] : M){
-			M.m[s] = lp-Z;
-		}
+		// strings that were in the set too). 
+//		for(size_t i=0;i<n;i++) {
+//			const auto& s = dptr->at(i).output;
+//			if(M.contains(s)) {
+//				M.erase(s);
+//			}
+//		}
+//		
+//		// and renormalize M with the strings removed
+//		double Z = M.Z();
+//		for(auto& [s,lp] : M){
+//			M.m[s] = lp-Z;
+//		}
 		
 	}
-
 
 	virtual double human_chance_lp(const typename datum_t::output_t& r, const datum_t& hd) const override {
 		// here we are going to make chance be exponential in the length of the response
@@ -42,9 +41,8 @@ public:
 	virtual void recompute_LL(std::vector<HYP>& hypotheses, const data_t& human_data) override {
 		assert(this->which_data == std::addressof(human_data));
 		
-		// we need to define a version of LL where we DO NOT include the observed strings in the model-based
-		// likelihood, since people aren't allowed to respond with them. 
-		
+		// define a version of LL where we DO NOT include the observed strings in the model-based
+		// likelihood, since people aren't allowed to respond with them. 		
 		
 		// For each HumanDatum::data, figure out the max amount of data it contains
 		std::unordered_map<typename datum_t::data_t*, size_t> max_sizes;
@@ -105,13 +103,23 @@ public:
 			if(hposterior(h,i) < 1e-6) continue;  // skip very low probability for speed
 			
 			auto M = P->at(h,0);
+			//print(">>>>", M["abbbbbbbbbbbb"]);
+			
 			//!!
 			remove_strings_and_renormalize(M, human_data[i].data, human_data[i].ndata);
 			//!!
 			
-			for(const auto& [outcome,outlp] : M) {						
+			for(const auto& [outcome,outlp] : M) {
 				model_predictions[outcome] += hposterior(h,i) * exp(outlp);
 			}
+			
+//			std::vector<std::pair<HYP::output_t,double>> o;
+//			for(auto& m : M) { o.push_back(m); }
+//			std::sort(o.begin(), o.end());
+//
+//			for(const auto& [outcome, outlp] : o){
+//				model_predictions[outcome] += hposterior(h,i)*exp(outlp);
+//			}
 		}
 		
 		return model_predictions;
