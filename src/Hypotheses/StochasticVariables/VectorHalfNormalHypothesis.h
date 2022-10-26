@@ -7,7 +7,7 @@
  * @class VectorHalfNormalHypothesis
  * @author Steven Piantadosi
  * @date 13/07/21
- * @file VectorNormalHypothesis.h
+ * @file VectorHalfNormalHypothesis.h
  * @brief Distribution on half-normals. Man, it was a pain to try to make this inherit from VectorNormalHypothesis
  */
 class VectorHalfNormalHypothesis : public MCMCable<VectorHalfNormalHypothesis, void*> {
@@ -106,9 +106,9 @@ public:
 	
 	virtual self_t restart() const override {
 		self_t out = *this;
-		for(auto i=0;i<this->value.size();i++) {
-			if(out.can_propose[i]) { // we don't want to change parameters unless we can propose to them
-				out.value(i) = abs(this->MEAN + this->SD*random_normal());
+		for(auto i=0;i<value.size();i++) {
+			if(out.can_propose.at(i)) { // we don't want to change parameters unless we can propose to them
+				out.value(i) = abs(MEAN + SD*random_normal());
 			}
 		}
 		return out;

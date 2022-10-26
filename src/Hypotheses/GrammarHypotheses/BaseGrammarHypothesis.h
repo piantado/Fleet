@@ -131,9 +131,6 @@ public:
 		COUT "# Done computing model predictions" ENDL;
 		this->recompute_LL(hypotheses, human_data);
 		COUT "# Done computing incremental likelihoods " ENDL;
-
-		// this gets constructed here so it doesn't need to be reallocated each time we call recompute_decayedLikelihood
-		this->decayedLikelihood.reset(new Matrix(C->rows(), human_data.size()));
 		this->recompute_decayedLikelihood(human_data);
 		COUT "# Done computing decayedLikelihood" ENDL;
 		COUT "# Starting MCMC" ENDL;
@@ -253,15 +250,17 @@ public:
 	
 	/**
 	 * @brief Recomputes the decayed likelihood (e.g. at the given decay level, the total ll for each data point.
-	 * 		  NOTE: This does NOT create a new decayed likelihood -- that must be done manually. This refills our
-	 *        current pointer
+	 * 		  NOTE: This does create a new decayed likelihood each time we compute
 	 * @param hypotheses
 	 * @param human_data
 	 * @return 
 	 */
 	virtual void recompute_decayedLikelihood(const data_t& human_data) {
 		assert(which_data == std::addressof(human_data));
-		
+
+		// we need a NEW decayed ll if we change it
+		decayedLikelihood.reset(new Matrix(nhypotheses(), human_data.size()));
+					
 		// find the max power we'll ever need
 		int MX = -1;
 		for(auto& di : human_data) {
@@ -277,12 +276,6 @@ public:
 		for(int i=1;i<MX;i++) { // intentionally leaving powers(0) = 1 here
 			powers(i) = powf(i,-decay.get());
 		}
-		
-		// fix it if its the wrong size
-		if(decayedLikelihood->rows() != C->rows() or
-		   decayedLikelihood->cols() != (int)human_data.size()) {
-			decayedLikelihood.reset(new Matrix(nhypotheses(), human_data.size()));
-	    } // else we don't need to do anything since it' all overwritten below
 		   
 		// sum up with the memory decay
 		#pragma omp parallel for
@@ -492,7 +485,6 @@ public:
 					auto [ v, fb ] = p.value();
 					out.decay = v;
 					myfb += fb;
-					out.decayedLikelihood.reset(new Matrix(C->rows(), out.which_data->size())); // we need a NEW decayed ll
 					out.recompute_decayedLikelihood(*out.which_data); // must recompute this when we get to likelihood
 					break;
 				}
@@ -502,7 +494,6 @@ public:
 			return std::make_pair(out, myfb);
 		}		
 		else {
-			//CERR "HERE" ENDL;
 			auto p = logA.propose();
 			if(not p) return {};
 			auto [ v, fb ] = p.value();
@@ -535,7 +526,7 @@ public:
 
 		return (*C) * (-logA.value);			
 		
-		// One alternative is to have "pt" be the amount of heldou tmass?
+		// One alternative is to have "pt" be the amount of heldout mass?
 		//return lognormalize( (*C) * (-logA.value) - pt.get() );			
 
 		

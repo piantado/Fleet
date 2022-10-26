@@ -8,21 +8,18 @@
  * @author Steven Piantadosi
  * @date 09/08/20
  * @file VectorNormalHypothesis.h
- * @brief This has all of the MCMCable interfaces but jsut represents n unit Gaussians. This
+ * @brief This has all of the MCMCable interfaces but just represents n unit Gaussians. This
  * 		  is primarily used in GrammarInference to represent parameters, but it could be used
  *  	  in any other too
- */
-template<typename _self_t, typename _datum_t=void*, typename _data_t=void*>
-class VectorNormalHypothesis : public MCMCable<_self_t, 
-											   _datum_t, 
-											   _data_t> {
+ */\
+class VectorNormalHypothesis : public MCMCable<VectorNormalHypothesis, void*> {
 	// This represents a vector of reals, defaultly here just unit normals. 
 	// This gets used in GrammarHypothesis to store both the grammar values and
 	// parameters for the model. 
 public:
-	using self_t = _self_t;
-	using datum_t = _datum_t;
-	using data_t = _data_t;
+	using self_t = VectorNormalHypothesis;
+//	using datum_t = _datum_t;
+//	using data_t = _data_t;
 	
 	double MEAN = 0.0;
 	double SD   = 1.0;
@@ -86,8 +83,7 @@ public:
 	
 	
 	virtual std::optional<std::pair<self_t,double>> propose() const override {
-		self_t out; // NOTE: THIS DOESN'T COPY EVERYTHING (other inherited stuff) -- TODO: FIX THIS
-		out.value = value; 
+		self_t out = *this; 
 		
 		// choose an index
 		// (NOTE -- if can_propose is all false, this might loop infinitely...)
@@ -95,7 +91,7 @@ public:
 		size_t i;
 		do {
 			i = myrandom(value.size()); 
-		} while(!can_propose[i]);
+		} while(!can_propose.at(i));
 		
 		// propose to one coefficient w/ SD of 0.1
 		out.value(i) = value(i) + PROPOSAL_SCALE*random_normal();
@@ -105,14 +101,10 @@ public:
 	}
 	
 	virtual self_t restart() const override {
-		self_t out;  // NOTE: THIS DOESN'T COPY EVERYTHING (other inherited stuff) -- TODO: FIX THIS
+		self_t out = *this;
 		for(auto i=0;i<value.size();i++) {
-			if(out.can_propose[i]) {
-				// we don't want to change parameters unless we can propose to them
+			if(out.can_propose.at(i)) {// we don't want to change parameters unless we can propose to them
 				out.value(i) = MEAN + SD*random_normal();
-			}
-			else {
-				out.value(i) = value(i);
 			}
 		}
 		return out;

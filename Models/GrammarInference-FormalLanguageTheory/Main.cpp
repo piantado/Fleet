@@ -88,10 +88,6 @@ using MyHumanDatum = HumanDatum<MyHypothesis>;
 
 int main(int argc, char** argv){ 	
 		
-	std::cout << std::setprecision(32);
-	
-
-		
 	alphabet = "abcd"; // set this as the default. 
 	
 	Fleet fleet("An example of grammar inference for formal languages");
@@ -308,7 +304,7 @@ int main(int argc, char** argv){
 						
 						for(const auto& [s,c] : hd.responses)  {
 							//if(c > 5) {  // all strings with at least this many counts -- NOTE When you do this it messes up the probs
-								OUTPUTN(outstrings, i, QQ(s), get(m,s,0), c, N);
+							OUTPUTN(outstrings, i, QQ(s), get(m,s,0), c, N);
 							//}
 						}
 					

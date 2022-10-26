@@ -18,18 +18,18 @@ public:
 		// now we need to renormalize for the fact that we can't produce strings in the 
 		// observed set of data (NOTE This assumes that the data can't be noisy versions of
 		// strings that were in the set too). 
-//		for(size_t i=0;i<n;i++) {
-//			const auto& s = dptr->at(i).output;
-//			if(M.contains(s)) {
-//				M.erase(s);
-//			}
-//		}
-//		
-//		// and renormalize M with the strings removed
-//		double Z = M.Z();
-//		for(auto& [s,lp] : M){
-//			M.m[s] = lp-Z;
-//		}
+		for(size_t i=0;i<n;i++) {
+			const auto& s = dptr->at(i).output;
+			if(M.contains(s)) {
+				M.erase(s);
+			}
+		}
+		
+		// and renormalize M with the strings removed
+		double Z = M.Z();
+		for(auto& [s,lp] : M){
+			M.m[s] = lp-Z;
+		}
 		
 	}
 
@@ -103,7 +103,6 @@ public:
 			if(hposterior(h,i) < 1e-6) continue;  // skip very low probability for speed
 			
 			auto M = P->at(h,0);
-			//print(">>>>", M["abbbbbbbbbbbb"]);
 			
 			//!!
 			remove_strings_and_renormalize(M, human_data[i].data, human_data[i].ndata);
@@ -113,13 +112,6 @@ public:
 				model_predictions[outcome] += hposterior(h,i) * exp(outlp);
 			}
 			
-//			std::vector<std::pair<HYP::output_t,double>> o;
-//			for(auto& m : M) { o.push_back(m); }
-//			std::sort(o.begin(), o.end());
-//
-//			for(const auto& [outcome, outlp] : o){
-//				model_predictions[outcome] += hposterior(h,i)*exp(outlp);
-//			}
 		}
 		
 		return model_predictions;

@@ -7,7 +7,7 @@
  * @class TNormalVariable
  * @author Steven Piantadosi
  * @date 11/09/20
- * @file VectorNormalHypothesis.h
+ * @file TNormalVariable.h
  * @brief A TNormalVariable encapsulates MCMC operations on a single
  * 		  real number with a standard normal prior. This is useful for variables in e.g. GrammarInference.
  * 		  This has a normal prior on a parameter and then allows an output transformation, which is 

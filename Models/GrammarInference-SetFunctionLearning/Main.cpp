@@ -149,13 +149,13 @@ int main(int argc, char** argv){
 
 		auto hypotheses = load<MyHypothesis>(hypothesis_path);
 		assert(hypotheses.size() > 0 && "*** Somehow we don't have any hypotheses!");
-		COUT "# Hypothesis size: " TAB hypotheses.size() ENDL;
+		print("# Hypothesis size: ", hypotheses.size());
 		
 		auto h0 = MyGrammarHypothesis::sample(hypotheses, &human_data);
 	
 		auto thechain = MCMCChain(h0, &human_data);
 		for(auto& h : thechain.run(Control()) | thin(FleetArgs::thin) ){
-			COUT h.string(str(thechain.samples)+"\t") ENDL;
+			print(h.string(str(thechain.samples)+"\t"));
 		}	
 	}
 	

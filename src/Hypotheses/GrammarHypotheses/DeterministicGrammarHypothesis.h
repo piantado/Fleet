@@ -41,13 +41,13 @@ public:
 			
 			// sometimes our predicted data is the same as our previous data
 			// so we are going to include that so we don't keep recomputing it
-			auto ret = hypotheses[h].callOne(*human_data[0].predict);
+			auto ret = hypotheses[h].call(*human_data[0].predict);
 			
 			for(size_t di=0;di<human_data.size();di++) {	
 				
 				// only change ret if its different
 				if(di > 0 and (*human_data[di].predict != *human_data[di-1].predict)) {
-					ret = hypotheses[h].callOne(*human_data[di].predict);
+					ret = hypotheses[h].call(*human_data[di].predict);
 				}
 				
 				#pragma omp critical
