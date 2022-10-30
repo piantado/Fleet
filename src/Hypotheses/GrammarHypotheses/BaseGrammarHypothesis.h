@@ -265,7 +265,7 @@ public:
 		int MX = -1;
 		for(auto& di : human_data) {
 			for(auto& dp : *di.decay_position) {
-				MX = std::max(MX, dp+1); // need +2 since 0 decay needs one value
+				MX = std::max(MX, dp+1); // need +1 since 0 decay needs one value
 			}
 		}
 		

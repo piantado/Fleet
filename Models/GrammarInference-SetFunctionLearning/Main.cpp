@@ -80,7 +80,7 @@ int main(int argc, char** argv){
 	size_t ndata = 0;
 	int    decay_position_counter = 0;
 	S prev_conceptlist = ""; // what was the previous concept/list we saw? 
-	size_t LEANER_RESERVE_SIZE = 128; // reserve this much so our pointers don't break;
+	size_t LEARNER_RESERVE_SIZE = 128; // reserve this much so our pointers don't break;
 	
 	while(! infile.eof() ) {
 		if(CTRL_C) break;
@@ -98,7 +98,7 @@ int main(int argc, char** argv){
 			// need to reserve enough here so that we don't have to move -- or else the pointers break
 			learner_data = new MyHypothesis::data_t();
 			decay_position = new std::vector<int>();
-			learner_data->reserve(LEANER_RESERVE_SIZE);		
+			learner_data->reserve(LEARNER_RESERVE_SIZE);		
 			ndata = 0;
 			decay_position_counter = 0;
 		}
@@ -109,7 +109,7 @@ int main(int argc, char** argv){
 			MyInput inp{objs->at(i), *objs};
 			learner_data->emplace_back(inp, corrects->at(i), alpha);
 			decay_position->push_back(decay_position_counter); // these all occur at the same decay position
-			assert(learner_data->size() < LEANER_RESERVE_SIZE);
+			assert(learner_data->size() < LEARNER_RESERVE_SIZE);
 		}
 
 		// now unpack this data into human_data for each point in the concept
@@ -118,8 +118,6 @@ int main(int argc, char** argv){
 			std::vector<std::pair<bool,size_t>> v;
 			v.push_back(std::make_pair(true,yeses->at(i)));
 			v.push_back(std::make_pair(false,nos->at(i)));
-			
-//			std::map<bool,size_t> m; m[true] = (*yeses)[i]; m[false] = (*nos)[i];
 			
 			HumanDatum<MyHypothesis> hd{learner_data, ndata, &( learner_data->at(ndata+i).input ), v, 0.5, decay_position, decay_position_counter};
 		

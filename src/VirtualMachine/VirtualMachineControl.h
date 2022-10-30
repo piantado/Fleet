@@ -35,6 +35,12 @@ struct VirtualMachineControl {
 	// prune VirtualMachineStates with less than this log probability
 	static double MIN_LP;
 	
+	// count up how often we break for different reasons (useful for seeing what bounds matter)
+//	static unsigned long BREAK_output;
+//	static unsigned long BREAK_steps;
+//	static unsigned long BREAK_recurse;
+	
+	
 };
 
 // The defaults:
@@ -44,3 +50,7 @@ unsigned long VirtualMachineControl::MAX_RUN_PROGRAM = 10000; // updated to have
 unsigned long VirtualMachineControl::MAX_STEPS = 512;
 unsigned long VirtualMachineControl::MAX_OUTPUTS = 512;
 double VirtualMachineControl::MIN_LP = -10;
+
+//unsigned long VirtualMachineControl::BREAK_output = 0;
+//unsigned long VirtualMachineControl::BREAK_steps = 0;
+//unsigned long VirtualMachineControl::BREAK_recurse = 0;
