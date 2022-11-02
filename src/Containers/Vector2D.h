@@ -1,7 +1,8 @@
 #pragma once 
 
-// NOTE: We switched to use boost vector because otherwise we can't do Vector2D of bools, thanks C++
 #include <vector>
+#include <assert.h>
+#include "IO.h"
 
 /**
  * @class Vector2D
@@ -41,6 +42,13 @@ struct Vector2D {
 		value.reserve(x*y);
 	}
 	
+	const T& at(const int x, const int y) const {
+		if constexpr (std::is_same<T,bool>::value) { assert(false && "*** Golly you can't have references in std::vector<bool>."); }
+		else { 
+			return value.at(x*ysize + y);
+		}
+	}
+	
 	T& at(const int x, const int y) {
 		if constexpr (std::is_same<T,bool>::value) { assert(false && "*** Golly you can't have references in std::vector<bool>."); }
 		else { 
@@ -48,15 +56,14 @@ struct Vector2D {
 		}
 	}
 	
-	
-	T& operator()(const int x, const int y) {
+	T& operator()(const int x, const int y) const {
 		if constexpr (std::is_same<T,bool>::value) { assert(false && "*** Golly you can't have references in std::vector<bool>."); }
 		else { 
 			return value.at(x*ysize + y);
 		}
 	}
 	
-	const T& operator()(const int x, const int y) const {
+	const T& operator()(const int x, const int y) {
 		return value.at(x*ysize + y);
 	}
 	

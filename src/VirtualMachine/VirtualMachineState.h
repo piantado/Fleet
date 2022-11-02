@@ -248,11 +248,6 @@ public:
 				
 				Instruction i = program.top(); program.pop();
 				
-//				print(i, stack<S>().size());
-//				if(stack<S>().size() > 0){
-//					print("\t", stack<S>().top());
-//				}
-				
 				// keep track of what instruction we've run
 				runtime_counter.increment(i);
 				

@@ -176,6 +176,7 @@ public:
 			total_vms_steps++;
 			
 			auto y = vms->run();
+			//print("!", (int)vms->status, vms->recursion_depth, total_vms_steps);
 			
 			if(vms->status == vmstatus_t::COMPLETE) { // can't add up probability for errors
 				out.addmass(y, vms->lp);
