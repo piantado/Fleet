@@ -11,7 +11,7 @@ using set  = std::bitset<16>;
 
 const word U = -999;
 const double alpha = 0.9;
-double Ndata = 250; // how many data points?
+double Ndata = 500; // how many data points?
 double recursion_penalty = -25.0;
 
 // probability of each set size 0,1,2,...
@@ -123,7 +123,7 @@ public:
 		return this->likelihood;
 	}	
 	
-	virtual void print(std::string prefix="") override {
+	virtual void show(std::string prefix="") override {
 		std::string outputstring;
 		for(int x=1;x<=10;x++) {
 			auto v = call(make_set(x), U);
@@ -131,7 +131,7 @@ public:
 		}
 		
 		prefix += QQ(outputstring)+"\t"+std::to_string(this->recursion_count())+"\t";
-		Super::print(prefix);		
+		Super::show(prefix);		
 	}
 };
 
@@ -158,6 +158,30 @@ int main(int argc, char** argv) {
 		top << h;
 	}
 	
-	top.print();
+	//top.print();
+	
+	// let's print out the counts
+	for(auto& h : top.values()) {
+		auto c = grammar.get_counts(h.get_value());
+		auto cs = str(c); cs.erase(0,1); cs.erase(cs.length()-1,1);
+		
+		// replace commas with tabs
+		for(size_t i=0;i<cs.length();i++){
+			if(cs.at(i) == ',') 
+				cs[i] = '\t';
+		}
+		
+		print(h.likelihood / Ndata, cs, QQ(h.string()));
+	}
+	
+	{
+		size_t gi = 0;
+		for(auto& r : grammar) {
+			print(gi, r.nt, r.p, Q(r.format));
+			gi++;
+		}
+		
+	}
+	
 }
 

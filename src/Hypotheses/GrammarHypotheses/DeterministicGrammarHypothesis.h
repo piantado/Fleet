@@ -51,8 +51,7 @@ public:
 				}
 				
 				#pragma omp critical
-//				this->P->at(h,di) = std::move(ret);
-				this->P->set(h,di,std::move(ret));
+				this->P->set(h,di,ret); // NOTE: Cannot move here because we might use "ret" again
 			}
 		}
 	}

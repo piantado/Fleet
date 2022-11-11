@@ -262,7 +262,7 @@ public:
 		decayedLikelihood.reset(new Matrix(nhypotheses(), human_data.size()));
 					
 		// find the max power we'll ever need
-		int MX = -1;
+		int MX = 0; // we could start this at -1 but then for zero data things go bad
 		for(auto& di : human_data) {
 			for(auto& dp : *di.decay_position) {
 				MX = std::max(MX, dp+1); // need +1 since 0 decay needs one value
@@ -406,7 +406,8 @@ public:
 				auto& di = human_data[i];
 				for(const auto& [r,cnt] : di.responses) {
 					ll += cnt * logplusexp_full( log(1-alpha.get()) + human_chance_lp(r,di), 
-											log(alpha.get()) + log(get(model_predictions, r, 0.0))); 
+												 log(alpha.get())   + log(get(model_predictions, r, 0.0))); 
+					//print(cnt,ll, r, get(model_predictions, r, 0.0));
 				}
 								
 				#pragma omp atomic

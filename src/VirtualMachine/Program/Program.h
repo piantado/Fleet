@@ -22,7 +22,7 @@ public:
 	// that a lexicon calls every factor or something
 	bool was_called; 
 
-	// This is a bit of hack -- we need a line here for eahc kind of key we might want to a lexicon. 
+	// This is a bit of hack -- we need a line here for each kind of key we might want to a lexicon. 
 	// For reasons I don't fully understand, the linker will not find this if templated. 
 	
 	virtual void push_program(Program<VirtualMachineState_t>& s)                      { throw NotImplementedError(); }

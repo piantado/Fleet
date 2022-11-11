@@ -54,7 +54,7 @@ public:
 				}
 				
 				#pragma omp critical
-				P->at(h,di) = std::move(ret);
+				P->at(h,di) = ret; // cannot move because ret might be reused
 			}
 		}
 	}
