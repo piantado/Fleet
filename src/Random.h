@@ -14,12 +14,12 @@ double uniform() {
 	 * @return 
 	 */
 	std::uniform_real_distribution<double> d(0.0, 1.0);
-	return d(rng);
+	return d(DefaultRNG);
 }
 
 double uniform(const double a, const double b) {
 	std::uniform_real_distribution<double> d(a,b);
-	return d(rng);
+	return d(DefaultRNG);
 }
 
 bool flip(float p = 0.5) {
@@ -31,10 +31,14 @@ bool flip(float p = 0.5) {
 	return uniform() < p;
 }
 
+int rbinomial(const int N, const double p) {
+	std::binomial_distribution<int> bd(N,p);
+	return bd(DefaultRNG);
+}
 
 double random_normal(double mu=0, double sd=1.0) {
 	std::normal_distribution<float> normal(0.0, 1.0);
-	return normal(rng)*sd + mu;
+	return normal(DefaultRNG)*sd + mu;
 }
 
 template<typename T>
@@ -62,7 +66,7 @@ T normal_cdf(T x, T mu, T sd) {
 template<typename T>
 T random_t(T nu) {
 	std::student_t_distribution<double> dist(nu);
-	return dist(rng);
+	return dist(DefaultRNG);
 }
 
 template<typename T>
@@ -155,7 +159,7 @@ std::vector<t> random_multinomial(t a, size_t len) {
 	std::vector<t> out(len);
 	t total = 0.0;
 	for(size_t i =0;i<len;i++){
-		out[i] = g(rng);
+		out[i] = g(DefaultRNG);
 		total += out[i];
 	}
 	for(size_t i=0;i<len;i++){
@@ -173,7 +177,7 @@ T myrandom(T max) {
 	 */
 	assert(max>0);
 	std::uniform_int_distribution<T> r(0, max-1);
-	return r(rng);
+	return r(DefaultRNG);
 }
 
 template<typename T>
@@ -186,7 +190,7 @@ T myrandom(T min, T max) {
 	 */
 		
 	std::uniform_int_distribution<T> r(min,max-1);
-	return r(rng);
+	return r(DefaultRNG);
 }
 
 /**

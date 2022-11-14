@@ -122,7 +122,10 @@ public:
 			assert(h.get_grammar() == grammar && "*** It's bad news for GrammarHypothesis if your hypotheses don't all have the same grammar.");
 		}
 		
-		logA.set_size(grammar->count_rules());
+		if(logA.size() != grammar->count_rules()) {
+			if(logA.size() > 0) print("*** Warning: resizing and zeroing logA");
+			logA.set_size(grammar->count_rules());
+		}
 		
 		// when we are initialized this way, we compute C, LL, P, and the decayed ll. 
 		this->recompute_C(hypotheses);
@@ -133,7 +136,6 @@ public:
 		COUT "# Done computing incremental likelihoods " ENDL;
 		this->recompute_decayedLikelihood(human_data);
 		COUT "# Done computing decayedLikelihood" ENDL;
-		COUT "# Starting MCMC" ENDL;
 	}
 		
 	/**
@@ -225,7 +227,7 @@ public:
 			for(size_t h=0;h<nhypotheses();h++) {
 				
 				// set up all the likelihoods here
-				Vector data_lls  = Vector::Zero(sz);				
+				Vector data_lls = Vector::Zero(sz);				
 				
 				// read the max size from above and compute all the likelihoods
 				for(size_t i=0;i<max_sizes[dptr];i++) {
@@ -233,18 +235,29 @@ public:
 					// here we could do 
 					// data_lls(i) = hypotheses[h].compute_single_likelihood(x.first->at(i));
 					// but the problem is that isn't defined for some hypotheses. So we'll use 
-					// the slower
-					typename HYP::data_t d;
-					d.push_back(dptr->at(i));
+					// the slightly slower
+					typename HYP::data_t d = { dptr->at(i) };
 					data_lls(i) = hypotheses[h].compute_likelihood(d);
-										
+								
+					//print(hypotheses[h].string(), data_lls(i) , str(dptr->at(i)), hypotheses[h].call(dptr->at(i).input), dptr->at(i).output);
+		
 					assert(not std::isnan(data_lls(i))); // NaNs will really mess everything up
 				}
 				
 				#pragma omp critical
+				//print(h, max_sizes[dptr], data_lls.transpose(), hypotheses[h].string());
 				LL->at(dptr)[h] = std::move(data_lls);
+				
 			}
 		}
+		
+		
+		
+		
+		
+		//print("HEERRRE", LL->at(human_data[87].data)[1], str(*human_data[87].data));
+		//print("HEERRRE", LL->at(human_data[8].data)[1], str(*human_data[8].data));
+		
 		
 	}
 	
@@ -264,9 +277,7 @@ public:
 		// find the max power we'll ever need
 		int MX = 0; // we could start this at -1 but then for zero data things go bad
 		for(auto& di : human_data) {
-			for(auto& dp : *di.decay_position) {
-				MX = std::max(MX, dp+1); // need +1 since 0 decay needs one value
-			}
+			MX = std::max(MX, di.decay_index+1); // need +1 since 0 decay needs one value
 		}
 		
 		// just compute this once -- should be faster to use vector intrinsics? 
@@ -284,12 +295,9 @@ public:
 				const datum_t& d = human_data[di];
 				const Vector& v = LL->at(d.data)[h]; // get the pre-computed vector of data here
 				
-				// what is the decay position of the thing we are using?Rs
-				const int K = d.my_decay_position;
-			
-				double dl = 0.0; // the decayed likelihood value here
+				double dl = 0.0; // the decayed likelihood value
 				for(size_t k=0;k<d.ndata;k++) {
-					dl += v(k) * powers(K - d.decay_position->at(k)); // TODO: This could be stored as a vector -- might be faster w/o loop?
+					dl += v(k) * powers(d.decay_index - d.decay_position->at(k)); // TODO: This could be stored as a vector -- might be faster w/o loop?
 				}
 
 				// #pragma may not be needed?
@@ -401,6 +409,7 @@ public:
 			for(size_t i=0;i<human_data.size();i++) {
 				
 				const auto model_predictions = compute_model_predictions(human_data, i, hposterior);			
+				//print(str(model_predictions));
 				
 				double ll = 0.0; // the likelihood here
 				auto& di = human_data[i];

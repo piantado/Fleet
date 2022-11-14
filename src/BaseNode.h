@@ -92,10 +92,19 @@ public:
 	 * @brief Define an interator for nodes. This iterates in prefix order, which is the standard in the library
 	 * 		  because it's used for linearization
 	 */	
-	class NodeIterator : public std::iterator<std::forward_iterator_tag, this_t> {
+	class NodeIterator {
 		// Define an iterator class to make managing trees easier. 
 		// This iterates in postfix order, which is standard in the library
 		// because it is the order of linearization
+		
+		// these are require din here for this to be an iterator
+		using iterator_category = std::forward_iterator_tag;
+		using value_type = this_t;
+		using difference_type = int;
+		using pointer = this_t*;
+		using reference = this_t&;
+
+		
 		protected:
 			this_t*  current;
 			

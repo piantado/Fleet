@@ -159,6 +159,8 @@ double MyHypothesis::regenerate_p = 0.75;
 
 int main(int argc, char** argv){ 
 	
+	FleetArgs::top_print_best = true; // default print best
+	
 	// default include to process a bunch of global variables: mcts_steps, mcc_steps, etc
 	Fleet fleet("A simple, one-factor formal language learner");
 	fleet.add_option("-a,--alphabet", alphabet, "Alphabet we will use"); 	// add my own args
@@ -233,7 +235,6 @@ int main(int argc, char** argv){
 //
 //	return 0;
 
-	top.print_best = true;
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 1.20);
 //	ChainPool samp(h0, &mydata, FleetArgs::nchains);
@@ -250,7 +251,7 @@ int main(int argc, char** argv){
 //		}
 
 	}
-	top.print();
+	//top.print();
 
 
 

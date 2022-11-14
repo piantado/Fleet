@@ -28,7 +28,7 @@ struct HumanDatum {
 	const response_t         responses; // vector giving how many of each type of response you see
 	const double             chance; // how many responses are alltogether possible? Needed for chance responding. 
 	std::vector<int>* const  decay_position; // a pointer to memory decay positions for each of ndata (i'th point is decayed (my_decay_position-decay_position[i])**(-decay))
-	const int				 my_decay_position; // what position was I in terms of decay?
+	const int				 decay_index; // what position was I in terms of decay?
 };
 
 

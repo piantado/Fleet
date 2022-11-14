@@ -68,7 +68,7 @@ public:
 	}
 
 	
-} rng;
+} DefaultRNG;
 
 std::mutex Rng::mymut;
 Rng* Rng::base = nullptr; 

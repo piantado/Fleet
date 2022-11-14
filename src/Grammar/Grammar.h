@@ -104,7 +104,16 @@ public:
 	 * @brief This allows us to iterate over rules in a grammar, guaranteed to be in a fixed order (first by 
 	 * 		  nonterminals, then by rule sort order. 
 	 */	
-	class RuleIterator : public std::iterator<std::forward_iterator_tag, Rule> {
+	class RuleIterator {
+		
+		// these are require din here for this to be an iterator
+		using iterator_category = std::forward_iterator_tag;
+		using value_type = Rule;
+		using difference_type = int;
+		using pointer = Rule;
+		using reference = Rule&;
+
+		
 	protected:
 			this_t* grammar;
 			nonterminal_t current_nt;

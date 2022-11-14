@@ -1,17 +1,16 @@
 #pragma once
 
 #include <sstream>
-#include <queue>
-#include <array>
-#include <map>
-#include <set>
 #include <atomic>
-#include <string.h>
+#include <string>
 
 #include "Miscellaneous.h"
 #include "Numerics.h"
 #include "Random.h"
 #include "Vector3D.h"
+
+// This holds our conversions to and from strings
+#include "str.h"
 
 // This constant is occasionally useful, especially in grammar inference where we might
 // want a reference to an empty input
@@ -19,167 +18,6 @@ const std::string EMPTY_STRING = "";
 
 const std::string LAMBDA_STRING = "\u03BB";
 const std::string LAMBDAXDOT_STRING = LAMBDA_STRING+"x.";
-
-template<typename T>
-std::string str(T x){
-	/**c
-	 * @brief A pythonesque string function
-	 * @param x
-	 * @return 
-	 */
-	 
-	if constexpr (std::is_pointer<T>::value) {
-		std::ostringstream address;
-		address << (void const *)x;
-		return address.str();
-	}
-	else if constexpr(std::is_same<T,char>::value) {
-		return S(1,x);
-	}
-	else {
-		return std::to_string(x);
-	}
-}
-
-
-
-std::string str(const std::string& x){
-	// Need to specialize this, otherwise std::to_string fails
-	return x;
-}
-
-template<typename... T, size_t... I >
-std::string str(const std::tuple<T...>& x, std::index_sequence<I...> idx){
-	/**
-	 * @brief A pythonesque string function
-	 * @param x
-	 * @return 
-	 */
-	return "<" + ( (std::to_string(std::get<I>(x)) + ",") + ...) + ">";
-}
-template<typename... T>
-std::string str(const std::tuple<T...>& x ){
-	/**
-	 * @brief A pythonesque string function
-	 * @param x
-	 * @return 
-	 */
-	return str(x, std::make_index_sequence<sizeof...(T)>() );
-}
-
-template<typename A, typename B >
-std::string str(const std::pair<A,B> x){
-	/**
-	 * @brief A pythonesque string function
-	 * @param x
-	 * @return 
-	 */
-	return "<" + str(x.first) + "," + str(x.second) + ">";
-}
-
-template<typename T, size_t N>
-std::string str(const std::array<T, N>& a ){
-	/**
-	 * @brief A pythonesque string function
-	 * @param x
-	 * @return 
-	 */
-	std::string out = "<";
-	for(auto& x : a) {
-		out += str(x) + ",";
-	}
-	
-	if(a.size()>0) 
-		out.erase(out.size()-1); // remove that last dumb comma
-	
-	return out+">";
-}
-
-
-template<typename T>
-std::string str(const std::vector<T>& a, const std::string _sep=","){
-	/**
-	 * @brief A pythonesque string function
-	 * @param x
-	 * @return 
-	 */
-	std::string out = "[";
-	for(auto& x : a) {
-		out += str(x) + _sep;
-	}
-	if(a.size()>0) 
-		out.erase(out.size()-1); // remove that last dumb comma
-	
-	return out+"]";
-}
-
-template<typename T, typename U>
-std::string str(const std::map<T,U>& a ){
-	/**
-	 * @brief A pythonesque string function
-	 * @param x
-	 * @return 
-	 */
-	std::string out = "{";
-	for(auto& x : a) {
-		out += str(x.first) + ":" + str(x.second) + ",";
-	}
-	if(a.size()>0) 
-		out.erase(out.size()-1); // remove that last dumb comma
-	out += "}";
-	
-	return out;
-}
-
-template<typename T>
-std::string str(const std::set<T>& a ){
-	/**
-	 * @brief A pythonesque string function
-	 * @param x
-	 * @return 
-	 */
-	std::string out = "{";
-	for(auto& x : a) {
-		out += str(x)+",";
-	}
-	if(a.size()>0) 
-		out.erase(out.size()-1); // remove that last dumb comma
-	out += "}";
-	
-	return out;
-}
-
-
-template<typename T>
-std::string str(const std::atomic<T>& a ){
-	/**
-	 * @brief A pythonesque string function
-	 * @param x
-	 * @return 
-	 */
-	return str(a.load());
-}
-
-
-
-
-template<typename... Args>
-std::string str(std::string _sep, Args... args){
-
-	std::string out = "";
-	((out += str(args)+_sep), ...);
-	
-	// at the end of this we have one extra sep, so let's delete it 
-	out.erase(out.size()-_sep.size());
-	
-	return out; 
-	//  std::ostringstream oss;
-//  (oss << ... << (_sep+str(args)));
-//  return oss.str();
-
-}
-
-
 
 template <typename T>
 std::string to_string_with_precision(const T a_value, const int n = 14) {
@@ -227,13 +65,31 @@ bool contains(const std::string& s, const char x) {
  * @param y
  * @param add -- replace x plus this many characters
  */
-
 void replace_all(std::string& s, const std::string& x, const std::string& y, int add=0) {
 	auto pos = s.find(x);
 	while(pos != std::string::npos) {
 		s.replace(pos,x.length()+add,y);
 		pos = s.find(x);
 	}
+}
+
+
+/**
+ * @brief Remove all characters in rem from s. TODO: Not very optimized here yeah
+ * @param s
+ * @param rem
+ */
+std::string remove_characters(std::string s, const std::string& rem) {
+	// to optimize you know we could load rem into a map
+	for(auto it=s.begin(); it != s.end();) {
+		if(contains(rem, *it)) {
+			it = s.erase(it);
+		}
+		else {
+			++it;
+		}
+	}
+	return s; 
 }
 
 
@@ -285,71 +141,6 @@ inline double p_delete_append(const std::string& x, const std::string& y, const 
 	return lp;
 }
 
-
-/**
- * @brief Split is returns a deque of s split up at the character delimiter. 
- * It handles these special cases:
- * split("a:", ':') -> ["a", ""]
- * split(":", ':')  -> [""]
- * split(":a", ':') -> ["", "a"]
- * @param s
- * @param delimiter
- * @return 
- */
-std::deque<std::string> split(const std::string& s, const char delimiter) {
-	std::deque<std::string> tokens;
-	
-	if(s.length() == 0) {
-		return tokens;
-	}
-	
-	size_t i = 0;
-	while(i < s.size()) {
-		size_t k = s.find(delimiter, i);
-		
-		if(k == std::string::npos) {
-			tokens.push_back(s.substr(i,std::string::npos));
-			return tokens;
-		}
-		else {		
-			tokens.push_back(s.substr(i,k-i));
-			i=k+1;
-		}
-	}	
-
-	// if we get here, that means that the last found k was the last
-	// character, which means we need to append ""
-	tokens.push_back("");
-	return tokens;
-}
-
-/**
- * @brief Split iwith a fixed return size, useful in parsing csv
- * @param s
- * @param delimiter
- * @return 
- */
-template<size_t N>
-std::array<std::string, N> split(const std::string& s, const char delimiter) {
-	std::array<std::string, N> out;
-	
-	auto q = split(s, delimiter);
-	
-	// must be the right size 
-	if(q.size() != N) {
-		std::cerr << "*** String in split<N> has " << q.size() << " not " << N << " elements: " << s << std::endl;
-		assert(false);
-	}
-	
-	// convert to an array now that we know it's the right size
-	size_t i = 0;
-	for(auto& x : q) {
-		out[i++] = x;
-	}
-
-	return out;
-}
-
 std::pair<std::string, std::string> divide(const std::string& s, const char delimiter) {
 	// divide this string into two pieces at the first occurance of delimiter
 	auto k = s.find(delimiter);
@@ -357,31 +148,6 @@ std::pair<std::string, std::string> divide(const std::string& s, const char deli
 	return std::make_pair(s.substr(0,k), s.substr(k+1));
 }
 
-
-
-unsigned int levenshtein_distance(const std::string& s1, const std::string& s2) {
-	/**
-	 * @brief Compute levenshtein distiance between two strings (NOTE: Or O(N^2))
-	 * @param s1
-	 * @param s2
-	 * @return 
-	 */
-	
-	// From https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
-
-	const std::size_t len1 = s1.size(), len2 = s2.size();
-	std::vector<std::vector<unsigned int>> d(len1 + 1, std::vector<unsigned int>(len2 + 1));
-
-	d[0][0] = 0;
-	for(unsigned int i = 1; i <= len1; ++i) d[i][0] = i;
-	for(unsigned int i = 1; i <= len2; ++i) d[0][i] = i;
-
-	for(unsigned int i = 1; i <= len1; ++i)
-		for(unsigned int j = 1; j <= len2; ++j)
-			  d[i][j] = std::min(d[i - 1][j] + 1, std::min(d[i][j - 1] + 1, d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1) ));
-			  
-	return d[len1][len2];
-}
 
 
 size_t count(const std::string& str, const std::string& sub) {
@@ -421,7 +187,7 @@ std::string reverse(std::string x) {
 }
 
 
-std::string QQ(std::string x) {
+std::string QQ(const std::string& x) {
 	/**
 	 * @brief Handy adding double quotes to a string
 	 * @param x - input string
@@ -430,7 +196,7 @@ std::string QQ(std::string x) {
 	
 	return std::string("\"") + x + std::string("\"");
 }
-std::string Q(std::string x) {
+std::string Q(const std::string& x) {
 	/**
 	 * @brief Handy adding single quotes to a string 
 	 * @param x - input string
@@ -460,6 +226,31 @@ void check_alphabet(std::vector<std::string> t, const std::string& a){
 		check_alphabet(x,a);
 	}
 }
+
+/**
+ * @brief Compute levenshtein distiance between two strings (NOTE: Or O(N^2))
+ * @param s1
+ * @param s2
+ * @return 
+ */
+unsigned int levenshtein_distance(const std::string& s1, const std::string& s2) {
+	
+	// From https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
+
+	const std::size_t len1 = s1.size(), len2 = s2.size();
+	std::vector<std::vector<unsigned int>> d(len1 + 1, std::vector<unsigned int>(len2 + 1));
+
+	d[0][0] = 0;
+	for(unsigned int i = 1; i <= len1; ++i) d[i][0] = i;
+	for(unsigned int i = 1; i <= len2; ++i) d[0][i] = i;
+
+	for(unsigned int i = 1; i <= len1; ++i)
+		for(unsigned int j = 1; j <= len2; ++j)
+			  d[i][j] = std::min(d[i - 1][j] + 1, std::min(d[i][j - 1] + 1, d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1) ));
+			  
+	return d[len1][len2];
+}
+
 
 /**
  * @brief The string probability model from Kashyap & Oommen, 1983, basically giving a string
@@ -543,63 +334,3 @@ double p_KashyapOommen1984_edit(const std::string x, const std::string y, const 
 	
 }
 
-
-/**
- * @brief Fleet includes this templated function to allow us to convert strings to a variety of formats. 
- * 		  This is mostly used for reading data from text files. This recursively will unpack containers
- * 		  with some standard delimiters. Since it can handle Fleet types (e.g. defaultdata_t) it
- *        can be used to unpack data stored in strings (see e.g. Models/Sorting)
- * @param s
- * @return 
- */
-template<typename T>
-T string_to(const std::string s) {
-	
-	// process some special cases here
-	if constexpr(is_specialization<T,std::map>::value) {
-		T m;
-		for(auto& r : split(s, ',')) { // TODO might want a diff delim here
-			auto [x, y] = split<2>(r, ':');
-			m[string_to<typename T::key_type>(x)] = string_to<typename T::mapped_type>(y);	
-		}
-		return m;
-	}
-	if constexpr(is_specialization<T,std::pair>::value) {
-		auto [x,y] = split<2>(s, ':');
-		return {string_to<typename T::first_type>(x), string_to<typename T::second_type>(y)};		
-	}
-	else if constexpr(is_specialization<T,std::vector>::value) {
-		T v;
-		for(auto& x : split(s, ',')) {
-			v.push_back(string_to<typename T::value_type>(x));
-		}
-		return v;
-	}
-	else if constexpr(is_specialization<T,std::multiset>::value) {
-		T ret;
-		for(auto& x : split(s, ',')) {
-			ret.insert( string_to<typename T::key_type>(x));
-		}
-		return ret; 
-	}
-	else {
-		// Otherwise we must have a string constructor
-		return T{s};
-//		assert(false);
-//		return T{};
-	}	
-}
-
-template<> std::string   string_to(const std::string s) { return s; }
-template<> int           string_to(const std::string s) { return std::stoi(s); }
-template<> long          string_to(const std::string s) { return std::stol(s); }
-template<> unsigned long string_to(const std::string s) { return std::stoul(s); }
-template<> double        string_to(const std::string s) { return std::stod(s); }
-template<> float         string_to(const std::string s) { return std::stof(s); }
-template<> bool          string_to(const std::string s) { assert(s.size()==1); return s=="1"; } // 0/1 for t/f
-
-//template<typename T, typename U>
-//std::pair<T,U> string_to(const std::string s) {	
-//	auto [x,y] = split<2>(s, ':');
-//	return {string_to<T>(x), string_to<U>(y)};		
-//}

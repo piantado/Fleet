@@ -83,12 +83,17 @@ struct Object {
 		return __sample<feature_t...>();
 	}
 	
+	std::string string() const {
+		std::string out = "[Object";
+		(out += str((int)get<feature_t>()), ...);
+		out += "]";
+		return out;
+	}
+	
 };
 
 template<typename... feature_t> 
 std::ostream& operator<<(std::ostream& o, const Object<feature_t...>& t) {
-	o << "[Object ";
-	(o << ... << (int)t.template get<feature_t>()); // NOTE: This casts to ints
-	o << "]";
+	o << t.string();
 	return o;
 }
