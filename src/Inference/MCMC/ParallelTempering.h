@@ -110,6 +110,11 @@ public:
 					
 					// swap the chains
 					std::swap(this->pool[k].getCurrent(), this->pool[k-1].getCurrent());
+					
+					// and let's swap their steps since improvement so that the steps-since-improvement
+					// stays with a chain 
+					std::swap(this->pool[k].steps_since_improvement, this->pool[k-1].steps_since_improvement);
+
 
 					swap_history.at(k) << true;
 				}
