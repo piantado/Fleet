@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <chrono>
+#include <algorithm>
 
 #include "Numerics.h"
 

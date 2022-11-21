@@ -128,14 +128,16 @@ public:
 		}
 		
 		// when we are initialized this way, we compute C, LL, P, and the decayed ll. 
+		COUT "# Computing prior counts" ENDL;
 		this->recompute_C(hypotheses);
-		COUT "# Done computing prior counts" ENDL;
+		COUT "# Computing model predictions" ENDL;
 		this->recompute_P(hypotheses, human_data); // note this comes before LL because LL might use P
-		COUT "# Done computing model predictions" ENDL;
+		COUT "# Coputing incremental likelihoods " ENDL;
 		this->recompute_LL(hypotheses, human_data);
-		COUT "# Done computing incremental likelihoods " ENDL;
+		COUT "# Computing decayedLikelihood" ENDL;
 		this->recompute_decayedLikelihood(human_data);
-		COUT "# Done computing decayedLikelihood" ENDL;
+		COUT "# Done. " ENDL;
+		
 	}
 		
 	/**

@@ -47,9 +47,17 @@ namespace FleetArgs {
 	// a TopN finite approximation)
 	bool MCMCYieldOnlyChanges = false; 
 	
+	// if true, then ChainPool (and its derivatives like ParallelTempering) only yield
+	// the base (temperature=1) chain. You probably do NOT want this for ChainPool
+	// but you do to make ParallelTempering when you need representative samples
+	// (as in SymbolicRegression)
+	bool yieldOnlyChainOne = false; 
+	
 	// If true, we will break out of likleihood computations when they 
 	// are too low to be accepted. When this is true
 	// it MUST be the case that all likelihoods are negative of course. 
 	bool LIKELIHOOD_BREAKOUT = true;
+	
+	
 	
 }

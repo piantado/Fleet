@@ -69,12 +69,8 @@ public:
 			}
 			ll += alp * a.count; 
 			
-			if(ll == -infinity) {
-				return ll;
-			}
-			if(ll < breakout) {	
-				ll = -infinity;
-				break;				
+			if(ll == -infinity or ll < breakout) {
+				return -infinity;
 			}
 		}
 		return ll;

@@ -111,6 +111,7 @@ plt <- ggplot(D, aes(x=data.amount,y=newpost,color=KnowerLevel,group=KnowerLevel
     geom_line(width=1.5, data=subset(D,!ANS)) + 
     geom_line(data=subset(D,ANS), linetype="dashed", width=1.5) +
     theme_bw() + theme(legend.position=c(.85,.5)) +
+    labs(color="Knower-Level") +
     xlab("Amount of data") + ylab("Posterior probability of knower-levels")
 
 ggsave("curves.pdf",height=3, width=7)
@@ -128,6 +129,7 @@ plt <- ggplot(Dorear, aes(x=data.amount,y=newpost,color=KnowerLevel,group=Knower
     geom_line(width=1.5, data=subset(Dorear,!ANS)) + 
     geom_line(data=subset(Dorear,ANS), linetype="dashed", width=1.5) +
     theme_bw() + theme(legend.position=c(.85,.5)) +
+    labs(color="Knower-Level") +
     xlab("Amount of data") + ylab("Posterior probability of knower-levels")
 ggsave("orear.pdf",height=3, width=7)
 
@@ -138,6 +140,7 @@ plt <- ggplot(Dlt, aes(x=data.amount,y=newpost,color=KnowerLevel,group=KnowerLev
     geom_line(width=1.5, data=subset(Dlt,!ANS)) + 
     geom_line(data=subset(Dlt,ANS), linetype="dashed", width=1.5) +
     theme_bw() + theme(legend.position=c(.85,.5)) +
+    labs(color="Knower-Level") +
     xlab("Amount of data") + ylab("Posterior probability of knower-levels")
 ggsave("lt.pdf",plt, height=3, width=7)
 
@@ -146,6 +149,7 @@ plt <- ggplot(Dgt, aes(x=data.amount,y=newpost,color=KnowerLevel,group=KnowerLev
     geom_line(width=1.5, data=subset(Dgt,!ANS)) + 
     geom_line(data=subset(Dgt,ANS), linetype="dashed", width=1.5) +
     theme_bw() + theme(legend.position=c(.85,.5)) +
+    labs(color="Knower-Level") +
     xlab("Amount of data") + ylab("Posterior probability of knower-levels")
 ggsave("gt.pdf",plt, height=3, width=7)
 

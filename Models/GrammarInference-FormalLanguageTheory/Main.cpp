@@ -8,6 +8,8 @@
  *  - FLT plus subst
  * 
  * 
+ * 	NOTE: I think that the non-repetition is accounted for in the human likelihood but not when we compute string likelihood for the model?
+ * 
  * 	
  * */
 
@@ -146,7 +148,7 @@ int main(int argc, char** argv){
 										  .responses=m,
 										  .chance=NaN, // should not be used via human_chance_lp above
 										  .decay_position=decay_pos,
-										  .my_decay_position=i-1
+										  .decay_index=i
 										  });
 	}
 	
@@ -241,7 +243,7 @@ int main(int argc, char** argv){
 		
 		// Main MCMC running loop!
 		for(const auto& h : thechain.run(Control()) | MAPGrammar | printer(FleetArgs::print) | thin(FleetArgs::thin) ) {
-			
+						
 			{
 				std::ofstream outsamples(FleetArgs::output_path+"/samples.txt", std::ofstream::app);
 				outsamples << h.string(str(thechain.samples)+"\t") ENDL;

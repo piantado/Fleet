@@ -160,6 +160,11 @@ public:
 		add("{o}",           +[]() -> wmset { return (wmset)1; });
 		add("{o,o}",         +[]() -> wmset { return (wmset)2; });
 		add("{o,o,o}",       +[]() -> wmset { return (wmset)3; });
+		
+//		// For the MIX version 
+//		add("{o,o,o,o}",         +[]() -> wmset { return (wmset)4; });
+//		add("{o,o,o,o,o}",       +[]() -> wmset { return (wmset)5; });
+//		add("{o,o,o,o,o,o}",     +[]() -> wmset { return (wmset)6; });	
 			
 		// ANS operations 
 		add("ANSeq(%s,%s)",     +[](set a, set b)       -> double { return ANSzero(a.length(), b.length()); }, 1.0/3.0);

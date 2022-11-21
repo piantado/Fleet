@@ -123,14 +123,18 @@ public:
 		return this->likelihood;
 	}	
 	
-	virtual void show(std::string prefix="") override {
-		std::string outputstring;
+	std::string KLstring() {
+		// get the knower-level string
+		std::string out;
 		for(int x=1;x<=10;x++) {
 			auto v = call(make_set(x), U);
-			outputstring += (v == U ? "U" : str(v)) + ".";
+			out += (v == U ? "U" : str(v)) + ".";
 		}
-		
-		prefix += QQ(outputstring)+"\t"+std::to_string(this->recursion_count())+"\t";
+		return out;
+	}
+	
+	virtual void show(std::string prefix="") override {
+		prefix += QQ(KLstring())+"\t"+std::to_string(this->recursion_count())+"\t";
 		Super::show(prefix);		
 	}
 };
@@ -161,7 +165,7 @@ int main(int argc, char** argv) {
 	//top.print();
 	
 	// let's print out the counts
-	for(auto& h : top.values()) {
+	for(auto h : top.values()) {
 		auto c = grammar.get_counts(h.get_value());
 		auto cs = str(c); cs.erase(0,1); cs.erase(cs.length()-1,1);
 		
@@ -171,13 +175,14 @@ int main(int argc, char** argv) {
 				cs[i] = '\t';
 		}
 		
-		print(h.likelihood / Ndata, cs, QQ(h.string()));
+		print(h.likelihood / Ndata, QQ(h.KLstring()), cs, QQ(h.string()));
 	}
-	
+
+	// print out the grammar
 	{
 		size_t gi = 0;
 		for(auto& r : grammar) {
-			print(gi, r.nt, r.p, Q(r.format));
+			print(gi, r.nt, r.p / grammar.rule_normalizer(r.nt), Q(r.format));
 			gi++;
 		}
 		

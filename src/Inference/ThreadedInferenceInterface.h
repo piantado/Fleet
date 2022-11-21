@@ -61,7 +61,8 @@ public:
 		
 		for(auto& x : run_thread(ctl, args...)) {
 			
-			to_yield.push(x);
+			if(thr==0 or not FleetArgs::yieldOnlyChainOne)
+				to_yield.push(x);
 			
 			if(CTRL_C) break;
 		}

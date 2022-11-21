@@ -62,7 +62,7 @@ public:
 				Vector data_lls  = Vector::Zero(sz);				
 				
 				//  We can use this because it was stored in P
-				const auto M = this->P->at(h,0);
+				const auto& M = this->P->at(h,0);
 				
 				// read the max size from above and compute all the likelihoods
 				for(size_t i=0;i<max_sizes[dptr];i++) {

@@ -88,6 +88,9 @@ int main(int argc, char** argv){
 	// cannot have a likelhood breakout because some likelihoods are positive
 	FleetArgs::LIKELIHOOD_BREAKOUT = false; 
 	
+	// we use parallel tempering for real samples, so we only want temp=1
+	FleetArgs::yieldOnlyChainOne = true; 
+	
 	// how we separate times
 	std::string strsep = "\t";
 	
@@ -148,8 +151,6 @@ int main(int argc, char** argv){
 			assert(v.size() == NUM_VARS + 2);
 		#endif
 
-		
-		
 		X_t x; size_t i=0;
 		for(;i<NUM_VARS;i++) {
 			x[i] = string_to<D>(v[i]);
@@ -157,7 +158,6 @@ int main(int argc, char** argv){
 			
 			data_x.push_back(x[i]); // all are just counted here in the mean -- maybe not a great idea
 		}
-		print("=="+v[i]+"==", contains(v[i]," "));
 		assert(not contains(v[i]," "));
 		auto y = string_to<D>(v[i]); i++; 
 		assert(not contains(v[i]," "));
@@ -235,13 +235,14 @@ int main(int argc, char** argv){
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering m(h0, &mydata, FleetArgs::nchains, maxT);
 	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | printer(FleetArgs::print, "# ")  ) {
-			
+		
 		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these
 		
 		// toss non-linear samples here if we request linearity
 		// and non-polynomials (which have NAN values -- NOTE: This is why we have "not" in the next line)
 		if(polynomial_degree > -1 and not (get_polynomial_degree(h.get_value(), h.constants) <= polynomial_degree)) 
 			continue;
+		
 		
 		best << h;
 		
