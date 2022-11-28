@@ -69,7 +69,6 @@ public:
 		}
 	}
 	
-	
 	bool is_a(Op o) const {
 		return o == op;
 	}

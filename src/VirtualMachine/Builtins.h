@@ -9,11 +9,7 @@
 #define BUILTIN_LAMBDA             +[](typename Grammar_t::VirtualMachineState_t* vms, int arg) -> void
 
 namespace Builtins {
-	
-
-	//	bool is_recursive(void* fptr) {
-	
-	
+		
 	
 	template<typename Grammar_t>
 	Primitive<typename Grammar_t::input_t> X(Op::X, BUILTIN_LAMBDA {
