@@ -146,7 +146,6 @@ public:
 	 * @return 
 	 */	
 	[[nodiscard]] virtual this_t restart() const override {
-		//DEBUGN("RESTART");
 		// This is used in MCMC to restart chains 
 		// this ordinarily would be a resample from the grammar, but sometimes we have can_resample=false
 		// and in that case we want to leave the non-propose nodes alone. 
@@ -168,11 +167,13 @@ public:
 	 */
 	void set_value(Node&  v, bool should_compile=true) { 
 		value = v; 
-		if(should_compile) this->compile(); // compile with myself defaultly as a loader
+		if(should_compile) 
+			this->compile(); // compile with myself defaultly as a loader
 	}
 	void set_value(Node&& v, bool should_compile=true) { 
 		value = v;
-		if(should_compile) this->compile();
+		if(should_compile)
+			this->compile();
 	}
 	
 	Grammar_t* get_grammar() const { return grammar; }
@@ -240,7 +241,7 @@ public:
 	}
 	
 	/**
-	 * @brief Modify this hypothesis's value by filling in all the gaps. 
+	 * @brief Modify this hypothesis's value by (randomly) filling in all the gaps. 
 	 */	
 	virtual void complete() override {
 		if(value.is_null()) {
@@ -315,10 +316,7 @@ public:
 	size_t recursion_count() {
 		size_t cnt = 0;
 		for(auto& n : value) {
-			cnt +=  n.rule->is_a(Op::Recurse) + 
-					n.rule->is_a(Op::MemRecurse) +
-					n.rule->is_a(Op::SafeRecurse) +
-					n.rule->is_a(Op::SafeMemRecurse);
+			cnt +=  n.rule->is_recursive();
 		}
 		return cnt;
 	} 	

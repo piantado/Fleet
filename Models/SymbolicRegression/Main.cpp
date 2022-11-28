@@ -80,7 +80,7 @@ int main(int argc, char** argv){
 	
 	// Just a note here -- if we are storing samples via a weighted sampler, then we don't
 	// want multiple duplicates of the same sample. If we are using an unweighted version, then we do.
-//	FleetArgs::MCMCYieldOnlyChanges = true;
+	FleetArgs::MCMCYieldOnlyChanges = false;
 	
 	double maxT = 10.0; // max temperature we see
 	bool pt_test_output = false; // output what we want for the PT testing

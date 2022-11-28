@@ -10,6 +10,11 @@
 
 namespace Builtins {
 	
+
+	//	bool is_recursive(void* fptr) {
+	
+	
+	
 	template<typename Grammar_t>
 	Primitive<typename Grammar_t::input_t> X(Op::X, BUILTIN_LAMBDA {
 		assert(!vms->xstack.empty());

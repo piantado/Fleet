@@ -52,7 +52,7 @@ public:
 	virtual ~Node() {}
 	
 	/**
-	 * @brief Assign will set everything to n BUT it will not copy the parent points etc since we're assuming
+	 * @brief Assign will set everything to n BUT it will not copy the parent pointer etc since we're assuming
 	 *        this node is staying in the same place
 	 * @param n
 	 */
@@ -277,13 +277,13 @@ public:
 		 * @brief convert tree to a linear sequence of operations. 
 		 * 		To do this, we first linearize the kids, leaving their values as the top on the stack
 		 *		then we compute our value, remove our kids' values to clean up the stack, and push on our return
-		 *		the only fanciness is for if: here we will use the following layout 
+		 *		the only fanciness is for if/and/or: here we will use the following layout 
 		 *		<TOP OF STACK> <bool> op_IF(xsize) X-branch JUMP(ysize) Y-branch
 		 *		
 		 *		NOTE: Inline here lets gcc inline a few recursions of this function, which ends up speeding
 		 *		us up a bit (otherwise recursive inlining only happens at -O3)
 		 *		This optimization is why we do set max-inline-insns-recursive in Fleet.mk
-		 * @param ops
+		 * @param program to place our computation in 
 		 * @return This returns the *size* of the program that was pushed onto ops. This is useful for saving us
 		 *         lots of calls to program_size, which ends up being an important optimization. 
 		 */
@@ -300,6 +300,7 @@ public:
 		
 		// If we are an if, then we must do some fancy short-circuiting
 		if( rule->is_a(Op::If) ) {
+			[[unlikely]]
 			assert(rule->N == 3 && "BuiltinOp::op_IF require three arguments"); // must have 3 parts
 			
 			int ysize = children[2].linearize<VirtualMachineState_t,Grammar_t>(program);
@@ -318,6 +319,8 @@ public:
 			return ysize + xsize + boolsize + 1; // +1 for if
 		}
 		else if( rule->is_a(Op::And) or rule->is_a(Op::Or)) {
+			[[unlikely]]
+			
 			// short circuit forms of and(x,y) and or(x,y)
 			assert(rule->N == 2 and children.size() == 2 && "BuiltinOp::op_AND and BuiltinOp::op_OR require two arguments");
 			
@@ -335,6 +338,8 @@ public:
 			return children[0].linearize<VirtualMachineState_t,Grammar_t>(program)+ysize+1;			
 		}
 		else {
+			[[likely]]
+			
 			/* Else we just process a normal child. 
 			 * Here we push the children in increasing order. Then, when we pop rightmost first (as Primitive does), it 
 			 * assigns the correct index.  */
@@ -351,7 +356,7 @@ public:
 	
 	virtual bool operator==(const Node& n) const override {
 		/**
-		 * @brief Check equality between notes. Note this compares rule objects. 
+		 * @brief Check equality between notes. Note this compares rules, then size (checking completeness), then children. 
 		 * @param n
 		 * @return 
 		 */
@@ -363,7 +368,8 @@ public:
 			return false; 
 	
 		for(size_t i=0;i<this->children.size();i++){
-			if(not (this->children[i] == n.children[i])) return false;
+			if(not (this->children[i] == n.children[i])) 
+				return false;
 		}
 		return true;
 	}
