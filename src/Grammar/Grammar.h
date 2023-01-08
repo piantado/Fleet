@@ -332,7 +332,7 @@ public:
 		
 		// create a lambda on the heap that is a function of a VMS, since
 		// this is what an instruction must be. This implements the calling order convention too. 
-		//auto newf = new auto ( [=](VirtualMachineState_t* vms) -> void {
+		//auto newf = new auto ( [=](VirtualMachineState_t*, int) -> void {
 		auto fvms = new FT([=](VirtualMachineState_t* vms, int _a=0) -> void {
 				assert(vms != nullptr);
 			
@@ -349,7 +349,7 @@ public:
 					vms->push(f(std::move(a0), std::move(a1)));
 				}
 				else if constexpr (sizeof...(args) ==  3) {
-					auto a2 = vms->template getpop_nth<2,args...>();	;
+					auto a2 = vms->template getpop_nth<2,args...>();	
 					auto a1 = vms->template getpop_nth<1,args...>();	
 					auto a0 = vms->template getpop_nth<0,args...>();	
 					vms->push(f(std::move(a0), std::move(a1), std::move(a2)));

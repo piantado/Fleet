@@ -3,6 +3,7 @@
 #include <memory>
 #include <chrono>
 #include <algorithm>
+#include <array> 
 
 #include "Numerics.h"
 

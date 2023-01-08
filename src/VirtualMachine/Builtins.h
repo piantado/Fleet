@@ -328,6 +328,41 @@ namespace Builtins {
 		}
 	});
 	
+	/**
+	 * @brief This is a kind of recursion that, when it reaches the max recursion depth, returns empty string. This allows
+	 * 		  us to (approximately) deal with infinite sequences. 
+	 * @return 
+	 */
+	template<typename Grammar_t,
+			 typename input_t=typename Grammar_t::input_t,
+			 typename output_t=typename Grammar_t::output_t>
+	Primitive<output_t,input_t> RecurseEmptyOnDepthException(Op::Recurse, BUILTIN_LAMBDA {
+			
+			assert(vms->program.loader != nullptr);
+							
+			if(vms->recursion_depth++ > vms->MAX_RECURSE) { // there is one of these for each recurse
+				auto mynewx = vms->template getpop<input_t>();
+				vms->template push<output_t>(output_t{});
+			}
+			else {
+
+				// if we get here, then we have processed our arguments and they are stored in the input_t stack. 
+				// so we must move them to the x stack (where there are accessible by op_X)
+				auto mynewx = vms->template getpop<input_t>();
+				vms->xstack.push(std::move(mynewx));
+				vms->program.push(Builtins::PopX<Grammar_t>.makeInstruction()); // we have to remember to remove X once the other program evaluates, *after* everything has evaluated
+				
+				// push this program 
+				// but we give i.arg so that we can pass factorized recursed
+				// in argument if we want to
+				vms->program.loader->push_program(vms->program); 
+				
+				// after execution is done, the result will be pushed onto output_t
+				// which is what gets returned when we are all done
+			}
+	});
+
+	
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	

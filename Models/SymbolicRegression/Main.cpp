@@ -24,7 +24,7 @@ size_t nstructs = 100; //100 // print out all the samples from the top this many
 
 size_t head_data = 0; // if nonzero, this is the max number of lines we'll read in
 
-double FEYNMAN_SD = 0.1; //1.0; // when we run feynman, use this SD (times the data Y SD)
+double FEYNMAN_SD = 0.01; //1.0; // when we run feynman, use this SD (times the data Y SD)
 
 // these are used for some constant proposals, and so must be defined before
 // hypotheses. They ar efilled in when we read the data
@@ -166,7 +166,7 @@ int main(int argc, char** argv){
 		// process percentages
 		double sd; 
 		#if FEYNMAN
-			sd = NaN;
+			sd = FEYNMAN_SD; // NaN;
 		#else
 			// process the line 
 			if(sdstr[sdstr.length()-1] == '%') sd = y * std::stod(sdstr.substr(0, sdstr.length()-1)) / 100.0; // it's a percentage
@@ -183,6 +183,7 @@ int main(int argc, char** argv){
 		mydata.emplace_back(x,y,sdscale*(double)sd);
 		
 		if(mydata.size() == head_data) break;
+		if(CTRL_C) break;
 	}
 	
 	data_X_mean = mean(data_x);
@@ -207,9 +208,10 @@ int main(int argc, char** argv){
 	}
 	
 	// go through and scale the SDs
-	for(auto& d : mydata) {
-		d.reliability = FEYNMAN_SD * data_Y_sd; // Here it's important to scale by data_Y_sd since SDs vary across concepts
-	}
+	// WE EITHER set the SD above or here
+//	for(auto& d : mydata) {
+//		d.reliability = FEYNMAN_SD * data_Y_sd; // Here it's important to scale by data_Y_sd since SDs vary across concepts
+//	}
 	#endif 
 
 
@@ -234,7 +236,7 @@ int main(int argc, char** argv){
 	
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering m(h0, &mydata, FleetArgs::nchains, maxT);
-	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | printer(FleetArgs::print, "# ")  ) {
+	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | printer(FleetArgs::print, "# ") | show_statistics(100) ) {
 		
 		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these
 		
