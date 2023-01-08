@@ -82,6 +82,27 @@ struct printer {
 	}
 };
 
+template<typename T>
+struct show_statistics { 
+	size_t every;
+	size_t cnt;
+	T& sampler;
+	
+	show_statistics(size_t e, T& m) : every(e), cnt(0), sampler(m) { }
+
+	// funny little increment here returns true for when we print
+	bool operator++() {
+		if(++cnt == every and every!=0) {
+			cnt = 0;
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+};
+
+
 template<typename T> 
 generator<T&> operator|(generator<T&> g, printer t) {
 	for(auto& x : g) {
@@ -89,6 +110,18 @@ generator<T&> operator|(generator<T&> g, printer t) {
 		co_yield x;
 	}
 }
+
+
+template<typename T, typename Q> 
+generator<T&> operator|(generator<T&> g, show_statistics<Q> t) {
+	for(auto& x : g) {
+		if(++t){
+			t.sampler.show_statistics();
+		}
+		co_yield x;
+	}
+}
+
 
 
 

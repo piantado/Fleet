@@ -236,7 +236,7 @@ int main(int argc, char** argv){
 	
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering m(h0, &mydata, FleetArgs::nchains, maxT);
-	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | printer(FleetArgs::print, "# ") | show_statistics(100) ) {
+	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | printer(FleetArgs::print, "# ") | show_statistics(10000, m) ) {
 		
 		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these
 		
