@@ -94,7 +94,9 @@ public:
 	double mean() {
 		std::lock_guard guard(mutex);
 		double sm=0;
-		for(const auto& a: history) sm += a;
+		for(const auto& a: history) 
+			sm += a;
+			
 		return double(sm) / history.size();
 	}
 	

@@ -146,9 +146,16 @@ int main(int argc, char** argv){
 		
 		// check that it has the right number of elements
 		#if FEYNMAN
+				if(v.size() != NUM_VARS + 1) {
+				print("## ERROR: v.size() == NUM_VARS+1 Failed", v.size(), NUM_VARS);
+				assert(false);
+			}
 			assert(v.size() == NUM_VARS + 1);
 		#else
-			assert(v.size() == NUM_VARS + 2);
+			if(v.size() != NUM_VARS + 2) {
+				print("## ERROR: v.size() == NUM_VARS+2 Failed", v.size(), NUM_VARS);
+				assert(false);
+			}
 		#endif
 
 		X_t x; size_t i=0;
@@ -201,7 +208,8 @@ int main(int argc, char** argv){
 	#if FEYNMAN
 	// we will run faster if we only queue the changes
 	FleetArgs::MCMCYieldOnlyChanges = true;
-
+	FleetArgs::yieldOnlyChainOne = false; // we want all the chains since we're looking for the best
+	
 	// for feynman we want to print everything
 	if(not pt_test_output) {
 		best.print_best = true;
@@ -222,7 +230,7 @@ int main(int argc, char** argv){
 	}
 	
 	#if FEYNMAN
-	end_at_likelihood = best_possible_ll - 0.001; // a tiny bit of numerical error
+	end_at_likelihood = best_possible_ll - 0.001; // allow a tiny bit of numerical error
 	#endif
 	
 	//	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
@@ -236,7 +244,8 @@ int main(int argc, char** argv){
 	
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering m(h0, &mydata, FleetArgs::nchains, maxT);
-	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | printer(FleetArgs::print, "# ") | show_statistics(10000, m) ) {
+	m.swap_every = 5000; m.adapt_every = 60000;
+	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | printer(FleetArgs::print, "# ") | show_statistics(100000, m) ) {
 		
 		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these
 		
@@ -246,7 +255,34 @@ int main(int argc, char** argv){
 			continue;
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		// ADD BACK IN BEST: 
+		
+		
+		
+		
+		
+		
 		best << h;
+		
+		
+		
+		
+		
+		
+		
 		
 		#if !FEYNMAN
 		overall_samples << h;

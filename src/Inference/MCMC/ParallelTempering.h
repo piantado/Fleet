@@ -33,7 +33,7 @@ public:
 	time_ms swap_every = 250; // try a round of swaps this often 
 	time_ms adapt_every = 5000; // 
 	
-	OrderedLock overall_mutex; // we need a mutex to control access to chains, otherwise swappers and adapters etc can lock
+	OrderedLock overall_mutex; // This mutex coordinates swappers, adapters, and printers, otherwise they can lock each other out
 	
 	std::vector<double> temperatures;
 	
@@ -85,11 +85,11 @@ public:
 				std::this_thread::sleep_for(std::chrono::milliseconds(time_resolution_ms)); 
 			
 			// Here we are going to go through and swap each chain with its neighbor
+			std::lock_guard og(overall_mutex); // must get this so we don't lock by another thread stealing one of below
 			for(size_t k=this->pool.size()-1;k>=1;k--) { // swap k with k-1; starting at the bottom so stuff can percolate up
 				if(CTRL_C or terminate) break; 
 				
 				// get both of these thread locks
-				std::lock_guard og(overall_mutex); // must get this so we don't lock by another thread stealing one of below
 				std::lock_guard guard1(this->pool[k-1].current_mutex);
 				std::lock_guard guard2(this->pool[k  ].current_mutex);
 				
@@ -98,7 +98,7 @@ public:
 				double Tswp = this->pool[k-1].at_temperature(this->pool[k].temperature)     + this->pool[k].at_temperature(this->pool[k-1].temperature);
 				double R = Tswp-Tnow;
 	
-//				DEBUG("Swap p: ", k, R, this->pool[k-1].samples, this->pool[k-1].getCurrent().posterior, this->pool[k-1].getCurrent()); 
+				//DEBUG("Swap p: ", k, R, this->pool[k-1].samples, this->pool[k-1].getCurrent().posterior, this->pool[k-1].getCurrent()); 
 				
 				if(R >= 0 or flip(exp(R))) { 
 										
@@ -171,19 +171,26 @@ public:
 	
 	void show_statistics() {
 		
+		// TODO: This raelly needs a lock, but for some reason there is a lock problem that eventually hangs
+		// when we do it. Not sure why, very hard to debug/understand. Might be that the current_mutex is held
+		// by the generator so when we try to get to this inside the generator loop, its a disaster?
+		
+		//std::lock_guard og(overall_mutex);
+			
 		COUT "# Pool info: \n";
 		for(size_t i=0;i<this->pool.size();i++) {
 			
-			// must hold the lock or this can lock with the other
-			std::lock_guard og(overall_mutex);
-			std::lock_guard guard(this->pool[i].current_mutex);
+			//std::lock_guard guard(this->pool[i].current_mutex);
 			
-			// NOTE: WE would normally want a lock guard here, EXCEPT that when we call this inside a loop, we can't get the guard
-			// because it's being held by the generator. So for now, there is no output lock
-//			std::lock_guard guard1(this->pool[i].current_mutex); // definitely need this to print
-			COUT "# " << i TAB this->pool[i].temperature TAB this->pool[i].current.posterior TAB
-					     this->pool[i].acceptance_ratio() TAB swap_history[i].mean() TAB swap_history[i].N TAB this->pool[i].samples TAB this->pool[i].current.string()
-						 ENDL;
+			print(i, 
+					double(this->pool[i].temperature),
+					this->pool[i].current.posterior,
+					this->pool[i].acceptance_ratio(),
+					swap_history[i].mean(),
+					int(swap_history[i].N),
+					this->pool[i].samples,
+					this->pool[i].current.string()
+					);
 		}
 	}
 	
@@ -192,7 +199,8 @@ public:
 	}
 	
 	void adapt(double v=3, double t0=1000000) {
-		//show_statistics();
+		std::lock_guard og(overall_mutex);
+		// no total lock necessary since we don't modify anything except the (atomic) temperature
 		
 		std::vector<double> sw(this->pool.size());
 		
@@ -206,10 +214,11 @@ public:
 		}
 		
 		// Reset all of the swap histories (otherwise we keep adapting in a bad way)
-		for(size_t i=1;i<this->pool.size();i++) { 
-			swap_history[i].reset();
-			swap_history[i] << true; swap_history[i] << false; // this is a little +1 smoothing
-		}
+		// As of Jan 2023 we don't reset the histories since these are finite_histories 
+		//for(size_t i=1;i<this->pool.size();i++) { 
+		//	swap_history[i].reset();
+		//	swap_history[i] << true; swap_history[i] << false; // this is a little +1 smoothing
+		//	}
 		
 		// and then convert S to temperatures again
 		// but never adjust i=0 (T=1) OR the last one

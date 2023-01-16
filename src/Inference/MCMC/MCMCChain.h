@@ -228,7 +228,7 @@ public:
 					
 					// we add a subroutine "check" here that can reject proposals right away
 					// this is useful for enforcing some constraints on the proposals
-					// defaultly, check does nothing. NOTE: ti is important to the shibbholeth sampler that
+					// defaultly, check does nothing. NOTE: it is important to the shibbholeth sampler that
 					// this happens before we compute posteriors
 					if(not check(proposal)) {
 						
