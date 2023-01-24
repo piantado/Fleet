@@ -102,6 +102,10 @@ public:
 		 * @param n
 		 */
 		assert(i < rule->N);
+		if(n.rule != NullRule and n.nt() != rule->type(i)) {
+			print("### Error in set_child: ", n.string(), " does not match required type", rule->type(i), n.nt(), string());
+			assert(false);
+		}
 		assert(n.rule == NullRule or n.nt() == rule->type(i)); // no type checking when the rule is null
 		BaseNode<Node>::set_child(i,std::move(n));
 	}

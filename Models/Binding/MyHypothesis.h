@@ -67,22 +67,22 @@ public:
 		COUT std::setprecision(5) << prefix << NDATA TAB this->posterior TAB this->prior TAB this->likelihood TAB "";
 		
 		// when we print, we are going to compute overlap with each target item
-		for(auto& w : words) {
-			int nagree = 0;
-			int ntot = 0;
-			
-			for(size_t di=0;di<target_precisionrecall_data.size();di++) {
-//				auto& d = target_precisionrecall_data[di];
-			
-				if(factors[w].cache.at(di) == target.factors[w].cache.at(di)) {
-					++nagree;
-				}
-				++ntot;
-			}
-			
-			COUT float(nagree)/float(ntot) TAB "";
-		}
-		
+//		for(auto& w : words) {
+//			int nagree = 0;
+//			int ntot = 0;
+//			
+//			for(size_t di=0;di<target_precisionrecall_data.size();di++) {
+////				auto& d = target_precisionrecall_data[di];
+//			
+//				if(factors[w].cache.at(di) == target.factors[w].cache.at(di)) {
+//					++nagree;
+//				}
+//				++ntot;
+//			}
+//			
+//			COUT float(nagree)/float(ntot) TAB "";
+//		}
+//		
 		COUT QQ(this->string()) ENDL;
 
 	}

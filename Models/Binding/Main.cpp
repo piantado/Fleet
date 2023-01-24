@@ -23,8 +23,9 @@ const double MAX_T = 100.0;
 const double TERMINAL_P = 3.0;
 
 using S = std::string;
-int include_linear = 1; 
-int include_absolute = 1; 
+int include_linear = 0; 
+int include_absolute = 0; 
+
 
 /**
  * @class TreeException
@@ -162,11 +163,42 @@ int main(int argc, char** argv){
 	//------------------
 	
 	//"REXP", "him", "his", "he", "himself"
-	target["REXP"]    = InnerHypothesis(grammar.simple_parse("not(and(corefers(x),dominates(parent(coreferent(x)),x)))"));
-	target["him"]     = InnerHypothesis(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
-	target["his"]     = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));
-	target["he"]      = InnerHypothesis(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
-	target["himself"] = InnerHypothesis(grammar.simple_parse("and(eq_pos('NP-O',pos(x)),and(corefers(x),dominates(parent(coreferent(x)),x)))"));
+//	target["REXP"]    = InnerHypothesis(grammar.simple_parse("not(and(corefers(x),dominates(parent(coreferent(x)),x)))"));
+//	target["him"]     = InnerHypothesis(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
+//	target["his"]     = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));
+//	target["he"]      = InnerHypothesis(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
+//	target["himself"] = InnerHypothesis(grammar.simple_parse("and(eq_pos('NP-O',pos(x)),and(corefers(x),dominates(parent(coreferent(x)),x)))"));
+
+	target["himself"]    = InnerHypothesis(grammar.simple_parse("eq_tree(applyR(coreferent,x),head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x))))))"));
+	target["him"]     = InnerHypothesis(grammar.simple_parse("not(eq_tree(applyR(coreferent,x),head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x)))))))"));
+	target["his"]     = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(applyR(parent,x)))"));
+	target["he"]      = InnerHypothesis(grammar.simple_parse("eq_pos('NP-S',pos(x))"));
+	target["REXP"] = InnerHypothesis(grammar.simple_parse("empty(filter(eq_tree(applyR(coreferent,x)),map_append(children,applyS(ancestors,applyR(parent,x)))))"));
+
+
+/*
+ * Tree sequence
+ * closure(Tree, parent) -> Sequence)
+ * children(Sequence) -> Sequence 
+ * parent(Sequence)
+ * 
+ * corefer(first(children(closure(x,parent)), has_index), x)
+ * 
+ * a b c
+ * a1 a2 a3 b1 b2 b3..
+ * 
+ * 
+ * 
+ * first( Tree->Tree, Tree->bool ) -> Tree->Tree
+ * child_has( Tree, Tree->bool) 
+ * 
+ * first( 
+ * 
+ * first(parent, has_index) -> first dominating node with an index
+ * 
+ * exists
+ * 
+ * */
 
 	for(auto& di : mydata){ 
 		//print(di.input->root()->string());
@@ -178,45 +210,14 @@ int main(int argc, char** argv){
 		for(auto& w:words) {
 			target[w].clear_cache();
 		}
-
 		target.compute_posterior(thisdata);
 	}
 
 //	return 0;
 
-//	MyHypothesis target2;
-//	target2["REXP"] = InnerHypothesis(grammar.simple_parse("not(and(corefers(x),dominates(parent(coreferent(x)),x)))"));
-//	target2["him"] = InnerHypothesis(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
-//	target2["his"] = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));
-//	target2["he"] = InnerHypothesis(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
-//	target2["himself"] = InnerHypothesis(grammar.simple_parse("and(eq_bool(eq_pos('NP-POSS',pos(parent(x))),eq_pos('NP-S',pos(x))),corefers(x))"));
-//	
-//	// Find sentences where these are different
-//	for(auto& di : mydata){ 
-//	
-//		// make a little mini dataset
-//		MyHypothesis::data_t thisdata;
-//		thisdata.push_back(di);
-//		
-//		for(auto& w:words) {
-//			target[w].clear_cache();
-//			target2[w].clear_cache();
-//		}
-//		
-//		target.compute_posterior(thisdata);
-//		target2.compute_posterior(thisdata);
-//		
-//		if(target.likelihood != target2.likelihood)  {
-//			print(target.likelihood, target2.likelihood, di.input->root()->string());
-//		}
-//	
-//	}
-//	
-//	return 0;
-//	
 	
 	
-	print("# Target:", target.compute_posterior(mydata));
+//	print("# Target:", target.compute_posterior(mydata));
 
 
 	//////////////////////////////////
@@ -240,6 +241,7 @@ int main(int argc, char** argv){
 		top = top.compute_posterior(mydata);
 		
 		ParallelTempering chain(h0, &mydata, FleetArgs::nchains, MAX_T);
+//		MCMCChain chain(h0, &mydata);
 		for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
 			UNUSED(h);
 		}
@@ -268,22 +270,20 @@ int main(int argc, char** argv){
 	//------------------
 	// Print all the data
 	//------------------
+	auto best = top.best();
+	
+	for(size_t i=0;i<mydata.size();i++) {
+		auto& di = mydata[i];
+		print("#", i, mydata.size(), di.input->root()->string()); //.at(i));
 		
-//	for(auto& f : best.factors) f.program.loader = &best; 
-//	
-//	for(size_t i=0;i<mydata.size();i++) {
-//		auto& di = mydata[i];
-//		print("#", i, mydata.size(), di.input->root()->string()); //.at(i));
-//		
-//		size_t fi = 0;
-//		for(auto& w : words) {
-//	
-//			int b = -1; // default value
-//			try { 				
-//				b = 1*best.factors[fi].callOne(di.input, false); 
-//			} catch( TreeException& e) {  }
-//			print("#", b, w);
-//			++fi;
-//		}
-//	}
+		COUT "\t" << di.output << ":\t";
+		for(auto& w : words) {
+			try { 				
+				if(best.factors[w].call(di.input, false)) {
+					COUT w << " ";
+				}
+			} catch( TreeException& e) { }
+		}
+		COUT "\n";
+	}
 }
