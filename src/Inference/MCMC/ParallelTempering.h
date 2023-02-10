@@ -207,7 +207,7 @@ public:
 		
 		std::vector<double> sw(this->pool.size());
 		
-		for(size_t i=1;i<this->pool.size()-1;i++) { // never adjust i=0 (T=1) or the max temperature
+		for(size_t i=1;i<=this->pool.size()-1;i++) { // never adjust i=0 (T=1) or the max temperature
 			sw[i] = log(this->pool[i].temperature - this->pool[i-1].temperature);
 			
 			if( swap_history[i].N>0 && swap_history[i+1].N>0 ) { // only adjust if there are samples
@@ -225,7 +225,7 @@ public:
 		
 		// and then convert S to temperatures again
 		// but never adjust i=0 (T=1) OR the last one
-		for(size_t i=1;i<this->pool.size()-1;i++) { 
+		for(size_t i=1;i<this->pool.size();i++) { 
 			this->pool[i].temperature = this->pool[i-1].temperature + exp(sw[i]);
 		}
 	}

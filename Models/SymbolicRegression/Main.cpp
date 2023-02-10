@@ -1,12 +1,13 @@
-// NOTE: Currently in MyHypothesis we require it to use ALL the input variables
-
 //#define DEBUG_MCMC 1
 
 // we have a "feynman" flag -- when true, we use the feynman grammar, only search for the best, etc. 
 //#define FEYNMAN 0
 
 // if we want to require that hypotheses use all variables
-//#define REQUIRE_USE_ALL_VARIABLES 1
+// here we will defaultly require that for FEYNMAN 
+//#if FEYNMAN
+//	#define REQUIRE_USE_ALL_VARIABLES 1
+//#endif 
 
 #include <cmath>
 #include "Numerics.h"
@@ -24,7 +25,7 @@ size_t nstructs = 100; //100 // print out all the samples from the top this many
 
 size_t head_data = 0; // if nonzero, this is the max number of lines we'll read in
 
-double FEYNMAN_SD = 0.01; //1.0; // when we run feynman, use this SD (times the data Y SD)
+double FEYNMAN_SD = 0.1; //0.01; // when we run feynman, use this SD (times the data Y SD)
 
 // these are used for some constant proposals, and so must be defined before
 // hypotheses. They ar efilled in when we read the data
@@ -243,8 +244,8 @@ int main(int argc, char** argv){
 	
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering m(h0, &mydata, FleetArgs::nchains, maxT);
-	m.swap_every = 5000; m.adapt_every = 60000;
-	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | printer(FleetArgs::print, "# ")) { // | show_statistics(50000, m) ) {
+	//m.swap_every = 1000; m.adapt_every = 60000; // let's not mess with these
+	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | printer(FleetArgs::print, "# ") | show_statistics(10000, m) ) { // (NOTE: If we show_Statistics it will only be that many yielded (diferent) samples)
 		
 		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these
 		

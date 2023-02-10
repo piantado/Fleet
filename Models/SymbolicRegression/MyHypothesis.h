@@ -217,7 +217,9 @@ public:
 		// Note that if we have no constants, we will always do prior proposals
 		assert(constants.size() == N_CONSTANTS);
 		
-		if(flip(0.85)){
+		// most of the time we are going to propose to a constant 
+		// UNLESS we are using FEYNMAN (in which case we never should)
+		if((not FEYNMAN) and flip(0.85)){
 			MyHypothesis ret = *this;
 			
 			double fb = 0.0; 
@@ -250,14 +252,19 @@ public:
 			MyHypothesis ret{std::move(x.first)};
 			
 			double fb = x.second;
-			assert( constants.size() == N_CONSTANTS);
-			if(flip(0.5)) {
-				ret.randomize_constants(); // with random constants 
-				fb += ret.constant_prior()-this->constant_prior();
-			}
-			else { // else just copy our constants
+			
+			#if FEYNMAN
 				ret.constants = constants; 
-			}
+			#else
+				assert( constants.size() == N_CONSTANTS);
+				if(flip(0.5)) {
+					ret.randomize_constants(); // with random constants 
+					fb += ret.constant_prior()-this->constant_prior();
+				}
+				else { // else just copy our constants
+					ret.constants = constants; 
+				}
+			#endif 
 			
 			return std::make_pair(ret, fb); 
 		}
