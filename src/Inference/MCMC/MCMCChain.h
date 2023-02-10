@@ -181,7 +181,7 @@ public:
 				
 				restart();
 			}
-			else if (std::isnan(current.posterior) or current.posterior == -infinity) {
+			else if (std::isnan(current.posterior) or std::isinf(current.posterior)) { // either inf is a restart
 				[[unlikely]];
 				
 				// This is a special case where we just propose from restarting 

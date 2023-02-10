@@ -14,11 +14,11 @@
 // We use REXP here (John, Mary, etc) so that we don't have to distinguish which
 std::vector<std::string> words = {"REXP", "him", "his", "he", "himself"};
 //std::vector<double> data_amounts = {1, 2, 5, 10, 15, 20, 30, 40, 50, 75, 100, 110, 125, 150, 175, 200, 300, 400, 500, 1000, 1500, 2000, 2500, 5000};
-std::vector<double> data_amounts = {1300};
+std::vector<double> data_amounts = {500};
 
 static const double alpha = 0.95; 
 int NDATA = 10; // how many data points from each sentence are we looking at?
-const double MAX_T = 100.0;
+const double MAX_T = 10.0;
 
 const double TERMINAL_P = 3.0;
 
@@ -106,7 +106,7 @@ int main(int argc, char** argv){
 	for(auto& [ds, sentence] : read_csv<2>("lasnik-extensive.csv", false, ',')){
 		
 		BindingTree* t = new BindingTree(SExpression::parse(ds));	
-		print("t=", t->string());
+		//print("t=", t->string());
 		
 		assert(t != nullptr);
 		
@@ -144,7 +144,7 @@ int main(int argc, char** argv){
 			// assert that there is only one target per tree
 			assert( myt->sum( +[](const BindingTree& bt) -> double { return 1.0*bt.target; }) == 1); 
 			
-			print("#", myt->string());
+			//print("#", myt->string());
 			
 			MyHypothesis::datum_t d1 = {myt->get_target(), myt->get_target()->word, alpha};	
 			mydata.push_back(d1);
@@ -154,71 +154,36 @@ int main(int argc, char** argv){
 		
 		delete t;
 	}
-		
-//	return 0;
-	
 	
 	//------------------
 	// Make target hypothesis to compare
 	//------------------
 	
 	//"REXP", "him", "his", "he", "himself"
-//	target["REXP"]    = InnerHypothesis(grammar.simple_parse("not(and(corefers(x),dominates(parent(coreferent(x)),x)))"));
-//	target["him"]     = InnerHypothesis(grammar.simple_parse("eq_bool(eq_pos('NP-O',pos(x)),null(first-dominating('PP',x)))"));
-//	target["his"]     = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(parent(x)))"));
-//	target["he"]      = InnerHypothesis(grammar.simple_parse("eq_pos('S',pos(parent(x)))"));
-//	target["himself"] = InnerHypothesis(grammar.simple_parse("and(eq_pos('NP-O',pos(x)),and(corefers(x),dominates(parent(coreferent(x)),x)))"));
-
-	target["himself"]    = InnerHypothesis(grammar.simple_parse("eq_tree(applyR(coreferent,x),head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x))))))"));
-	target["him"]     = InnerHypothesis(grammar.simple_parse("not(eq_tree(applyR(coreferent,x),head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x)))))))"));
+	target["himself"] = InnerHypothesis(grammar.simple_parse("and(not(eq_pos('NP-S',pos(x))),applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x)))))))"));
+	target["him"]     = InnerHypothesis(grammar.simple_parse("not(or(or(eq_pos('NP-S',pos(x)),not(empty(filter(is_subject,applyS(ancestors,x))))),applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x))))))))"));
 	target["his"]     = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(applyR(parent,x)))"));
 	target["he"]      = InnerHypothesis(grammar.simple_parse("eq_pos('NP-S',pos(x))"));
-	target["REXP"] = InnerHypothesis(grammar.simple_parse("empty(filter(eq_tree(applyR(coreferent,x)),map_append(children,applyS(ancestors,applyR(parent,x)))))"));
+	target["REXP"]    = InnerHypothesis(grammar.simple_parse("empty(filter(applyC(corefers,x),map_append(children,applyS(ancestors,applyR(parent,x)))))"));
 
-
-/*
- * Tree sequence
- * closure(Tree, parent) -> Sequence)
- * children(Sequence) -> Sequence 
- * parent(Sequence)
- * 
- * corefer(first(children(closure(x,parent)), has_index), x)
- * 
- * a b c
- * a1 a2 a3 b1 b2 b3..
- * 
- * 
- * 
- * first( Tree->Tree, Tree->bool ) -> Tree->Tree
- * child_has( Tree, Tree->bool) 
- * 
- * first( 
- * 
- * first(parent, has_index) -> first dominating node with an index
- * 
- * exists
- * 
- * */
-
-	for(auto& di : mydata){ 
-		//print(di.input->root()->string());
+	// check that the target works on the data
+	for(const auto& di : mydata){ 
 		
 		// make a little mini dataset
 		MyHypothesis::data_t thisdata;
 		thisdata.push_back(di);
 		
-		for(auto& w:words) {
-			target[w].clear_cache();
+		target.clear_cache();	
+
+		if(not target[di.output].call(di.input)) {
+			print("## Error target does not predict data:", di.input->root()->string(), di.output);
 		}
-		target.compute_posterior(thisdata);
+
+		target.compute_likelihood(thisdata);
+		//print(target.likelihood, di.output, di.input->root()->string());
+		assert(not std::isnan(target.likelihood));
+		assert(not std::isinf(target.likelihood));
 	}
-
-//	return 0;
-
-	
-	
-//	print("# Target:", target.compute_posterior(mydata));
-
 
 	//////////////////////////////////
 	// run on increasing amounts of data
@@ -240,8 +205,12 @@ int main(int argc, char** argv){
 		NDATA = di; // used in compute_posterior
 		top = top.compute_posterior(mydata);
 		
+		target.clear_cache();
+		target.compute_posterior(mydata);
+		print("# Target[", str(di), "]:", target.posterior, target.likelihood);
+		
 		ParallelTempering chain(h0, &mydata, FleetArgs::nchains, MAX_T);
-//		MCMCChain chain(h0, &mydata);
+		// MCMCChain chain(h0, &mydata);
 		for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
 			UNUSED(h);
 		}
@@ -252,38 +221,42 @@ int main(int argc, char** argv){
 		top.print();		
 	}
 	
-	//////////////////////////////////
-	// run MCMC
-	//////////////////////////////////
+	//------------------
+	// Print all the data for the best hypothesis and the target
+	//------------------
 	
-//	TopN<MyHypothesis> top;
-////	top.print_best = true;
-//
-//	ParallelTempering chain(h0, &mydata, FleetArgs::nchains, 1.20);
-////	MCMCChain chain(h0, &mydata);
-//	for(auto& h : chain.run(Control()) | top | printer(FleetArgs::print)) {
-//		UNUSED(h);
-//	}
-//	
-//	top.print();
-
-	//------------------
-	// Print all the data
-	//------------------
 	auto best = top.best();
 	
 	for(size_t i=0;i<mydata.size();i++) {
 		auto& di = mydata[i];
-		print("#", i, mydata.size(), di.input->root()->string()); //.at(i));
 		
-		COUT "\t" << di.output << ":\t";
+		std::vector<S> hwords;
 		for(auto& w : words) {
-			try { 				
-				if(best.factors[w].call(di.input, false)) {
-					COUT w << " ";
-				}
+			try { 			
+				best.factors[w].clear_cache();	
+				if(best.factors[w].call(di.input, false)) 
+					hwords.push_back(w);
 			} catch( TreeException& e) { }
 		}
-		COUT "\n";
+
+		
+		std::vector<S> twords;
+		for(auto& w : words) {
+			try { 		
+				target[w].clear_cache();		
+				if(target[w].call(di.input, false))	
+					twords.push_back(w);
+			} catch( TreeException& e) { }
+		}
+
+		if(hwords != twords) {
+			print("#", i, mydata.size(), di.input->root()->string()); //.at(i));
+			print("#\tBest:",   str(hwords));
+			print("#\tTarget:", str(twords));
+		}
+//		COUT "\t" << di.output << ":\t";
+		
+
+//		COUT "\n";
 	}
 }

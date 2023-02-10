@@ -149,7 +149,7 @@ public:
 		// This is used in MCMC to restart chains 
 		// this ordinarily would be a resample from the grammar, but sometimes we have can_resample=false
 		// and in that case we want to leave the non-propose nodes alone. 
-
+		
 		if(not value.is_null()) { // if we are null
 			return this_t(grammar->copy_resample(value, [](const Node& n) { return n.can_resample; }));
 		}

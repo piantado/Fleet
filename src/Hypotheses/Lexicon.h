@@ -296,7 +296,6 @@ public:
 		
 		return std::make_pair(x,fb);									
 	}
-
 	
 	
 	[[nodiscard]] virtual this_t restart() const override {

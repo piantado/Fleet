@@ -180,16 +180,19 @@ public:
 		COUT "# Pool info: \n";
 		for(size_t i=0;i<this->pool.size();i++) {
 			
-			//std::lock_guard guard(this->pool[i].current_mutex);
+			// ugh locking doesn't work here..
+			//std::unique_lock guard(this->pool[i].current_mutex);
+			auto cpy = this->pool[i].current; // otherwise, without a mutex, it can change between accessing string and posterior, which is gnarly
+			//guard.unlock();
 			
 			print(i, 
 					double(this->pool[i].temperature),
-					this->pool[i].current.posterior,
+					cpy.posterior,
 					this->pool[i].acceptance_ratio(),
 					swap_history[i].mean(),
 					int(swap_history[i].N),
 					this->pool[i].samples,
-					this->pool[i].current.string()
+					cpy.string()
 					);
 		}
 	}

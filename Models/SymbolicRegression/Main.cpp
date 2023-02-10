@@ -137,8 +137,6 @@ int main(int argc, char** argv){
 	// store the x and y values so we can do constant proposals
 	std::vector<double> data_x;
 	std::vector<double> data_y;
-	best_possible_ll = 0.0;
-	
 	for(auto v : read_csv(FleetArgs::input_path, false, sep)) { // NOTE: MUST BE \t for our data!!
 		
 		// get rid of spaces at the end of the line
@@ -206,20 +204,20 @@ int main(int argc, char** argv){
 
 	// if we are on feynman but NOT testing, then make best print
 	#if FEYNMAN
-	// we will run faster if we only queue the changes
-	FleetArgs::MCMCYieldOnlyChanges = true;
-	FleetArgs::yieldOnlyChainOne = false; // we want all the chains since we're looking for the best
-	
-	// for feynman we want to print everything
-	if(not pt_test_output) {
-		best.print_best = true;
-	}
-	
-	// go through and scale the SDs
-	// WE EITHER set the SD above or here
-//	for(auto& d : mydata) {
-//		d.reliability = FEYNMAN_SD * data_Y_sd; // Here it's important to scale by data_Y_sd since SDs vary across concepts
-//	}
+		// we will run faster if we only queue the changes
+		FleetArgs::MCMCYieldOnlyChanges = true;
+		FleetArgs::yieldOnlyChainOne = false; // we want all the chains since we're looking for the best
+		
+		// for feynman we want to print everything
+		if(not pt_test_output) {
+			best.print_best = true;
+		}
+		
+		// go through and scale the SDs
+		// WE EITHER set the SD above or here
+		for(auto& d : mydata) {
+			d.reliability = FEYNMAN_SD * data_Y_sd; // Here it's important to scale by data_Y_sd since SDs vary across concepts
+		}
 	#endif 
 
 
@@ -228,6 +226,7 @@ int main(int argc, char** argv){
 	for(const auto& d : mydata) {
 		best_possible_ll += normal_lpdf(0.0, 0.0, d.reliability);
 	}
+	print("# Best possible likelihood", best_possible_ll);
 	
 	#if FEYNMAN
 	end_at_likelihood = best_possible_ll - 0.001; // allow a tiny bit of numerical error
@@ -245,7 +244,7 @@ int main(int argc, char** argv){
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering m(h0, &mydata, FleetArgs::nchains, maxT);
 	m.swap_every = 5000; m.adapt_every = 60000;
-	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | printer(FleetArgs::print, "# ") | show_statistics(100000, m) ) {
+	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | printer(FleetArgs::print, "# ")) { // | show_statistics(50000, m) ) {
 		
 		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these
 		
@@ -255,33 +254,7 @@ int main(int argc, char** argv){
 			continue;
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		// ADD BACK IN BEST: 
-		
-		
-		
-		
-		
-		
 		best << h;
-		
-		
-		
-		
-		
-		
 		
 		
 		#if !FEYNMAN

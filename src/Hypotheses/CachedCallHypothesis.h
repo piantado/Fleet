@@ -43,6 +43,11 @@ public:
 		if(cached_data != &data) {
 			// PRINTN("CACHE MISS", this, cached_data, string());
 			cache.resize(data.size());
+			
+			// store who is cached
+			cached_data = &data;
+			
+			// now process the data
 			for(size_t di=0;di<data.size();di++) {
 				try { 				
 					cache[di] = this->cached_call_wrapper(data[di]);
@@ -52,8 +57,7 @@ public:
 					if(break_on_error) break; // this break is useful when errors give us -inf, it's much faster
 				} 
 			}
-			// store who is cached
-			cached_data = &data;
+
 		}
 	}
 	

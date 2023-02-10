@@ -44,7 +44,7 @@ public:
 #else
 		add("log(%s)",    +[](D a)          -> D { return log(a); });
 		add("pow(%s,%s)", +[](D a, D b)     -> D { return pow(a,b); });
-		add("sqrt(%s)",    +[](D a)          -> D { return std::sqrt(a); }, 1.);
+		add("sqrt(%s)",    +[](D a)          -> D { return std::sqrt(a); });
 		
 		// give the type to add and then a vms function
 		add_vms<D>("C", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {

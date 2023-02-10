@@ -9,20 +9,29 @@ class MyHypothesis : public Lexicon<MyHypothesis, std::string, InnerHypothesis, 
 	using Super::Super; // inherit the constructors
 public:	
 
+	void clear_cache() {
+		for(auto& [k,f] : factors) {
+			f.clear_cache();
+		}
+	}
+
 	double compute_likelihood(const data_t& data, const double breakout=-infinity) override {
-		
 		// TODO: Can set to null so that we get an error on recurse
-		for(auto& [k, f] : factors) f.program.loader = this; 
+		for(auto& [k, f] : factors) 
+			f.program.loader = this; 
 		
 		// make sure everyone's cache is right on this data
 		for(auto& [k, f] : factors) {
-			//f.clear_cache(); // if we always want to recompute (e.g. if using recursion)
+			//f.clear_cache(); // if we always want to recompute (e.g. if using recursion) -- normally we don't want this!
 			f.cached_call(data); 
 			
 			// now if anything threw an error, break out, we don't have to compute
-			if(f.got_error) 
+			if(f.got_error) {
 				return likelihood = -infinity;
+				
+			}
 		}
+		
 		
 		// The likelihood here samples from all words that are true
 		likelihood = 0.0;
@@ -35,22 +44,27 @@ public:
 			
 			// see which words are permitted
 			for(const auto& w : words) {
+				
 				auto b = factors[w].cache.at(di);
 				
 				ntrue += 1*b;
 				
-				if(d.output == w) wtrue = b;	
-
-//				if(b) {
-//					print(w);
-//				}
+				if(d.output == w) 
+					wtrue = b;	
+				
+			
+				//print(">>>", w, b);
+				//if(b) {
+				//	print("Word is true:", w);
+				//}
 			}
 
 			// Noisy size-principle likelihood
 			likelihood += (double(NDATA)/double(data.size())) * log( (wtrue ? d.reliability/ntrue : 0.0) + 
 							                                         (1.0-d.reliability)/words.size());
 									   
-			if(likelihood < breakout) return likelihood = -infinity;
+			if(likelihood < breakout) 
+				return likelihood = -infinity;
 
 		}
 		
