@@ -52,7 +52,7 @@ public:
 	
 	virtual double compute_prior() override {
 		/* This ends up being a really important check -- otherwise we spend tons of time on really long
-		 * this_totheses */
+		 * hypotheses */
 		if(this->value.count() > MAX_NODES) return this->prior = -infinity;
 		else					     return this->prior = this->get_grammar()->log_probability(value);
 	}

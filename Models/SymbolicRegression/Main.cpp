@@ -244,7 +244,8 @@ int main(int argc, char** argv){
 	
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering m(h0, &mydata, FleetArgs::nchains, maxT);
-	//m.swap_every = 1000; m.adapt_every = 60000; // let's not mess with these
+	m.swap_every = 1000; // this seems to matter a lot for Feynman 
+	m.adapt_every = 60000;
 	for(auto& h: m.run(Control()) | burn(FleetArgs::burn) | printer(FleetArgs::print, "# ") | show_statistics(10000, m) ) { // (NOTE: If we show_Statistics it will only be that many yielded (diferent) samples)
 		
 		if(h.posterior == -infinity or std::isnan(h.posterior)) continue; // ignore these

@@ -18,7 +18,7 @@ std::vector<double> data_amounts = {500};
 
 static const double alpha = 0.95; 
 int NDATA = 10; // how many data points from each sentence are we looking at?
-const double MAX_T = 10.0;
+const double MAX_T = 100.0;
 
 const double TERMINAL_P = 3.0;
 
@@ -160,8 +160,8 @@ int main(int argc, char** argv){
 	//------------------
 	
 	//"REXP", "him", "his", "he", "himself"
-	target["himself"] = InnerHypothesis(grammar.simple_parse("and(not(eq_pos('NP-S',pos(x))),applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x)))))))"));
-	target["him"]     = InnerHypothesis(grammar.simple_parse("not(or(or(eq_pos('NP-S',pos(x)),not(empty(filter(is_subject,applyS(ancestors,x))))),applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x))))))))"));
+	target["himself"] = InnerHypothesis(grammar.simple_parse("and(eq_pos('NP-O',pos(x)),applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x)))))))"));
+	target["him"]     = InnerHypothesis(grammar.simple_parse("and(eq_pos('NP-O',pos(x)),not(applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x))))))))"));
 	target["his"]     = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(applyR(parent,x)))"));
 	target["he"]      = InnerHypothesis(grammar.simple_parse("eq_pos('NP-S',pos(x))"));
 	target["REXP"]    = InnerHypothesis(grammar.simple_parse("empty(filter(applyC(corefers,x),map_append(children,applyS(ancestors,applyR(parent,x)))))"));
