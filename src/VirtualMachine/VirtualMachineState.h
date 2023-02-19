@@ -114,8 +114,8 @@ public:
 	 * @param m
 	 * @return 
 	 */
-	bool operator<(const VirtualMachineState& m) const {
-		return lp < m.lp; 
+	auto operator<=>(const VirtualMachineState& m) const {
+		return lp <=> m.lp; 
 	}
 	
 	/**

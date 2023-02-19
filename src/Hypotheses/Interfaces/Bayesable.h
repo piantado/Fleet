@@ -162,8 +162,9 @@ public:
 		// temperature here applies to the likelihood only
 		return prior + likelihood/t;
 	}
-		
-	virtual bool operator<(const Bayesable<datum_t,data_t>& l) const {
+	
+	// Defaultly we search by posterior 
+	auto operator<=>(const Bayesable<datum_t,data_t>& other) const {
 		/**
 		 * @brief Allow sorting of Bayesable hypotheses. We defaultly sort by posterior so that TopN works right. 
 		 * 		  But we also need to be careful because std::set uses this to determine equality, so this
@@ -172,23 +173,17 @@ public:
 		 * @return 
 		 */		
 		
-		if(posterior < l.posterior) {
-			return true;
+		if(posterior != other.posterior) {
+			return fp_ordering(posterior, other.posterior); 
 		}
-		else if(l.posterior < posterior) {
-			return false;
-		}
-		else if(prior < l.prior) {
-			return true;
-		}
-		else if(l.prior < prior) {
-			return false;
+		else if(prior != other.prior) {
+			return fp_ordering(prior,other.prior); 
 		}
 		else {
 			// we could be equal, but we only want to say that if we are. 
 			// otherwise this is decided by the hash function 
 			// so we must ensure that the hash function is only equal for equal values
-			return this->hash() < l.hash();
+			return this->hash() <=> other.hash(); 
 		}
 	}
 	

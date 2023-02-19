@@ -236,3 +236,35 @@ struct floating_point_compare {
 		return x < y;
 	}
 };
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Hash combinations
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+template<typename T> 
+std::strong_ordering fp_ordering(T& x, T& y) {
+/**
+ * @brief Convert a std::partial_ordering on x and y (floats or doubles) into a strong one by sorting NaN to last.
+ * 		  so that fp_ordering(x,y) is the same as (x<=>y) with NaN sorting to last, and NaNs comparing to equal 
+ * @param x
+ * @param y
+ * @return 
+ */
+	if( std::isnan(x) and std::isnan(y)) { 
+		return std::strong_ordering::equivalent; 
+	}
+	else if( std::isnan(x) ) {
+		return std::strong_ordering::less;
+	}
+	else if (std::isnan(y)) {
+		return std::strong_ordering::greater;
+	}
+	else {
+		auto v = (x <=> y);
+		
+		if     (v == std::partial_ordering::less)       return std::strong_ordering::less;
+		else if(v == std::partial_ordering::greater)    return std::strong_ordering::greater;
+		else if(v == std::partial_ordering::equivalent) return std::strong_ordering::equivalent;
+		else assert(false);
+	}
+}

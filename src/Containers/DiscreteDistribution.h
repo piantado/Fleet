@@ -219,8 +219,8 @@ public:
 	 * @param x
 	 * @return 
 	 */
-	bool operator<(const DiscreteDistribution<T>& x) const {
-		return m < x.m;
+	auto operator<=>(const DiscreteDistribution<T>& x) const {
+		return m <=> x.m;
 	}
 	
 	bool operator==(const DiscreteDistribution<T>& other) const {

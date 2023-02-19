@@ -97,7 +97,7 @@ public:
 	}
 	
 	
-	bool operator<(const Rule& r) const {
+	auto operator<=>(const Rule& r) const {
 		/**
 		 * @brief We sort rules so that they can be stored in arrays in a standard order. For enumeration, it's actually important that we sort them with the terminals first. 
 		 * 		  So we sort first by terminals and then by probability (higher first). 
@@ -108,14 +108,18 @@ public:
 		// This is structured so that we always put terminals first and then we put the HIGHER probability things first. 
 		// this helps in enumeration
 		if( (N==0) != (r.N==0) ) 
-			return (r.N==0) < (N==0);
-		else if(p != r.p) 
-			return p > r.p; // weird, but helpful, that we sort in decreasing order of probability
+			return (r.N==0) <=> (N==0);
+		else if(p != r.p) {
+			// We sort in DECREASING order of prob, so this is needed here
+			// NOTE: we can't use spaceship because of nan
+			return fp_ordering(r.p, p);
+		}
 		else if(format != r.format) // if probabilities and children are equal, set a fixed order based on hash
-			return format < r.format;
+			return format <=> r.format;
 		else
-			return my_hash < r.my_hash;
+			return my_hash <=> r.my_hash;
 	}
+	
 	bool operator==(const Rule& r) const {
 		/**
 		 * @brief Two rules are equal if they have the same instructions, nonterminal, format, children, and children types
@@ -159,12 +163,12 @@ public:
 	}
 	
 	std::string string() const {
-		std::string out = "[RULE " + format + " : ";
+		std::string out = "[RULE " + format + ", ";
 		for(size_t i =0;i<N;i++) {
 			out += str(child_types[i]) + "x";
 		}
-		out = out.erase(out.size()-1); // remove last x
-		out += " -> " + str(nt) + ", p \u221D " + str(p) + "]";
+		if(N > 0) out = out.erase(out.size()-1); // remove last x
+		out += "->" + str(nt) + ", p\u221D" + str(p) + "]";
 		return out;
 	}
 	

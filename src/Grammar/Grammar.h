@@ -387,7 +387,7 @@ public:
 	 * @param a
 	 */
 	template<typename T>
-	void add_terminal(std::string fmt,  T x, double p=1.0, Op o=Op::Standard, int a=0) {
+	void add_terminal(std::string fmt, T x, double p=1.0, Op o=Op::Standard, int a=0) {
 		add(fmt, std::function( [=]()->T { return x; }), p, o, a);
 	}	
 	

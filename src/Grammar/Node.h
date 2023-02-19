@@ -131,31 +131,25 @@ public:
 		this->can_resample = n.can_resample;
 	}
 	
-	bool operator<(const Node& n) const {
+	auto operator<=>(const Node& other) const {
 		// We will sort based on the rules, except we recurse when they are unequal. 
 		// This therefore sorts by the uppermost-leftmost rule that doesn't match. We are less than 
 		// if we have fewer children
-		if(*rule < *n.rule) {
-			return true;
-		}
-		else if(*n.rule < *rule) {
-			return false;
+		if(*rule != *other.rule) {
+			return (*rule) <=> (*other.rule);
 		}
 		else {
 			
-			if(this->children.size() != n.children.size()) {
-				return this->children.size() < n.children.size();
+			if(this->children.size() != other.children.size()) {
+				return this->children.size() <=> other.children.size();
 			}
 
-			for(size_t i=0;i<n.children.size();i++) {
-				if(this->child(i) < n.child(i)) 
-					return true;
-				else if (n.child(i) < this->child(i)) {
-					return false;
-				}
+			for(size_t i=0;i<other.children.size();i++) {
+				if(this->child(i) != other.child(i)) 
+					return this->child(i) <=> other.child(i);
 			}
 			
-			return false;
+			return std::strong_ordering::equal;
 		}
 	}
 	
