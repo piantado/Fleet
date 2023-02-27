@@ -21,31 +21,33 @@ public:
 		add("(%s+%s)",    +[](D a, D b) -> D     { return a+b; });
 		add("(%s-%s)",    +[](D a, D b) -> D     { return a-b; });
 		add("(%s*%s)",    +[](D a, D b) -> D     { return a*b; });
-		add("(%s/%s)",    +[](D a, D b) -> D     { return (b==0 ? NaN : a/b); });
+		add("(%s/%s)",    +[](D a, D b) -> D     { return a/b; });
 		add("(-%s)",      +[](D a)          -> D { return -a; });
 		
 		add("exp(%s)",     +[](D a)          -> D { return exp(a); }, 1);
-
+		add("log(%s)",    +[](D a)          -> D { return log(a); });
+	
 		add("1",          +[]()             -> D { return 1.0; }, TERMINAL_P);
-
+		add("sqrt(%s)",    +[](D a)          -> D { return std::sqrt(a); });
+	
 #if FEYNMAN
 
-		add("tau",         +[]()             -> D { return 2*M_PI; }, TERMINAL_P);
-		add("pow(%s,2)",   +[](D a)          -> D { return a*a; }, 1.);
-		add("pow(%s,3)",   +[](D a)          -> D { return a*a*a; }, 1.);
-		
+		add("tau",         +[]()             -> D { return 2*M_PI; }, TERMINAL_P); // pi is for losers
 		add("0.5",          +[]()           -> D { return 0.5; }, TERMINAL_P);
-//		add("pi",          +[]()            -> D { return M_PI; }, TERMINAL_P); 
-		add("tanh(%s)",    +[](D a)          -> D { return tanh(a); }, 1./4);
-		add("sin(%s)",    +[](D a)          -> D { return sin(a); }, 1./4);
-		add("cos(%s)",    +[](D a)          -> D { return cos(a); }, 1./4);
-		add("asin(%s)",    +[](D a)         -> D { return asin(a); }, 1./4);
-
-#else
-		add("log(%s)",    +[](D a)          -> D { return log(a); });
-		add("pow(%s,%s)", +[](D a, D b)     -> D { return pow(a,b); });
-		add("sqrt(%s)",    +[](D a)          -> D { return std::sqrt(a); });
 		
+		add("pow(%s,2)",   +[](D a)          -> D { return a*a; }, 1./2);
+		add("pow(%s,3)",   +[](D a)          -> D { return a*a*a; }, 1./2);
+		
+		add("tanh(%s)",    +[](D a)          -> D { return tanh(a); }, 1./5);
+		add("sin(%s)",    +[](D a)          -> D { return sin(a); }, 1./5);
+		add("cos(%s)",    +[](D a)          -> D { return cos(a); }, 1./5);
+		add("asin(%s)",    +[](D a)         -> D { return asin(a); }, 1./5);
+		add("acos(%s)",    +[](D a)         -> D { return acos(a); }, 1./5);
+		
+#else
+		// we're only going to use unrestricted pow in non-FEYNMAN cases, just for simplicity
+		add("pow(%s,%s)", +[](D a, D b)     -> D { return pow(a,b); });
+	
 		// give the type to add and then a vms function
 		add_vms<D>("C", new std::function(+[](MyGrammar::VirtualMachineState_t* vms, int) {
 						

@@ -3,6 +3,7 @@
 #include <memory>
 #include <chrono>
 #include <algorithm>
+#include <map>
 #include <array> 
 
 #include "Numerics.h"
@@ -191,17 +192,22 @@ T weighted_quantile(std::vector<std::pair<T,double>>& v, double q) {
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 template<typename T>
-double mean(std::vector<T>& v){
-	double s = 0.0;
+T sum(std::vector<T>& v){
+	T s = 0.0;
 	for(auto& x : v) s += x;
-	return s/v.size();
+	return s;
 }
 
 template<typename T>
-double sd(std::vector<T>& v) {
+T mean(std::vector<T>& v){
+	return sum(v)/v.size();
+}
+
+template<typename T>
+T sd(std::vector<T>& v) {
 	assert(v.size() > 1);
-	double m = mean(v);
-	double s = 0.0;
+	T m = mean(v);
+	T s = 0.0;
 	for(auto& x : v) {
 		s += pow(m-x,2.);
 	}
@@ -209,7 +215,17 @@ double sd(std::vector<T>& v) {
 }
 
 template<typename T>
-double median(std::vector<T>& v) {
+T quantile(std::vector<T>& v, double q) {
+	const size_t n = v.size();
+	assert(n> 0);
+	std::sort(v.begin(), v.end());
+	
+	int i = floor(n*q); // floor for small n
+	return v.at(i);
+}
+
+template<typename T>
+T median(std::vector<T>& v) {
 	const size_t n = v.size();
 	assert(n> 0);
 	std::sort(v.begin(), v.end());
@@ -221,6 +237,34 @@ double median(std::vector<T>& v) {
 		return v[n/2];
 	}
 }
+
+template<typename T>
+T mymax(std::vector<T>& v) {
+	const size_t n = v.size();
+	assert(n> 0);
+	
+	auto m = v[0];
+	for(size_t i=0;i<n;i++) 
+		m = std::max(v[i], m);
+		
+	return m;
+}
+
+
+/**
+ * @brief Get max of the values
+ * @param v
+ * @return 
+ */
+template<typename T, typename K>
+K mymax(std::map<T,K>& v) {
+	auto m = v.begin()->second;
+	for(const auto& x : v) {
+		m = std::max(x.second, m);
+	}
+	return m;
+}
+
 
 /**
  * @brief This allows sorting of things that contain NaN

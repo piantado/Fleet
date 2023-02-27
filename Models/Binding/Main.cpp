@@ -13,8 +13,9 @@
 // need a fixed order of words to correspond to factor levels
 // We use REXP here (John, Mary, etc) so that we don't have to distinguish which
 std::vector<std::string> words = {"REXP", "him", "his", "he", "himself"};
-//std::vector<double> data_amounts = {1, 2, 5, 10, 15, 20, 30, 40, 50, 75, 100, 110, 125, 150, 175, 200, 300, 400, 500, 1000, 1500, 2000, 2500, 5000};
-std::vector<double> data_amounts = {500};
+//std::vector<double> data_amounts = {1, 2, 5, 10, 15, 20, 30, 40, 50, 75, 100, 110, 125, 150, 175, 200, 300, 400, 
+//								    500, 600, 700, 800, 900, 1000, 1250, 1500, 2000, 2500, 5000, 7500, 10000};
+std::vector<double> data_amounts = {5000};
 
 static const double alpha = 0.95; 
 int NDATA = 10; // how many data points from each sentence are we looking at?
@@ -23,8 +24,9 @@ const double MAX_T = 100.0;
 const double TERMINAL_P = 3.0;
 
 using S = std::string;
+
+// should we include linear positions?
 int include_linear = 0; 
-int include_absolute = 0; 
 
 
 /**
@@ -59,42 +61,16 @@ int main(int argc, char** argv){
 	
 	Fleet fleet("Learn principles of binding theory");
 	fleet.add_option("--ndata",   NDATA, "Run at a different likelihood temperature (strength of data)"); 
-	fleet.add_option("--include-linear",  include_linear, "Should we include primitives for linear order?"); 
-	fleet.add_option("--include-absolute",  include_absolute, "Should we include absolute primitives?"); 
+	fleet.add_flag("--include-linear",  include_linear, "Should we include primitives for linear order?"); 
 	fleet.initialize(argc, argv);
 	
 	//------------------
 	// Add linear hypotheses if needed
 	//------------------
 	
-	if(include_absolute) {
-		
-		// for absolute positions (up top 24)
-		for(int p=0;p<24;p++) {
-			grammar.add_terminal<int>("abs"+str(p), p, TERMINAL_P/24.);
-		}	
+	if(include_linear) {		// linear order predicate
+		grammar.add("gt_linear",  +[]() -> TxTtoBool { return  gt_linear; } );		
 	}
-	
-	if(include_linear) {
-		// linear order predicates
-		grammar.add("linear(%s)",        +[](BindingTree* x) -> int { 
-			if(x==nullptr) throw TreeException();			
-			return x->linear_order; 
-		});
-		
-		grammar.add("gt(%s,%s)",         +[](int a, int b) -> bool { return (a>b); });
-		
-	}
-
-	// these primitives get included for either (but only once)
-	if(include_absolute or include_linear) {
-		
-		grammar.add("eq_int(%s,%s)",   +[](int a, int b) -> bool { return (a==b); });		
-		
-		grammar.add("if(%s,%s,%s)",  Builtins::If<MyGrammar,int>);
-	}
-	
-
 
 	//------------------
 	// set up the data
@@ -160,11 +136,18 @@ int main(int argc, char** argv){
 	//------------------
 	
 	//"REXP", "him", "his", "he", "himself"
-	target["himself"] = InnerHypothesis(grammar.simple_parse("and(eq_pos('NP-O',pos(x)),applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x)))))))"));
-	target["him"]     = InnerHypothesis(grammar.simple_parse("and(eq_pos('NP-O',pos(x)),not(applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x))))))))"));
-	target["his"]     = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(applyR(parent,x)))"));
-	target["he"]      = InnerHypothesis(grammar.simple_parse("eq_pos('NP-S',pos(x))"));
+//	target["himself"] = InnerHypothesis(grammar.simple_parse("and(eq_pos('NP-O',pos(x)),applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x)))))))"));
+//	target["him"]     = InnerHypothesis(grammar.simple_parse("and(eq_pos('NP-O',pos(x)),not(applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x))))))))"));
+//	target["his"]     = InnerHypothesis(grammar.simple_parse("eq_pos('NP-POSS',pos(applyR(parent,x)))"));
+//	target["he"]      = InnerHypothesis(grammar.simple_parse("eq_pos('NP-S',pos(x))"));
+//	target["REXP"]    = InnerHypothesis(grammar.simple_parse("empty(filter(applyC(corefers,x),map_append(children,applyS(ancestors,applyR(parent,x)))))"));
+
+	target["himself"] = InnerHypothesis(grammar.simple_parse("and(applyB(eq_pos('NP-O'),x),applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x)))))))"));
+	target["him"]     = InnerHypothesis(grammar.simple_parse("and(applyB(eq_pos('NP-O'),x),not(applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x))))))))"));
+	target["his"]     = InnerHypothesis(grammar.simple_parse("applyB(eq_pos('NP-POSS'),applyR(parent,x))"));
+	target["he"]      = InnerHypothesis(grammar.simple_parse("applyB(eq_pos('NP-S'),x)"));
 	target["REXP"]    = InnerHypothesis(grammar.simple_parse("empty(filter(applyC(corefers,x),map_append(children,applyS(ancestors,applyR(parent,x)))))"));
+
 
 	// check that the target works on the data
 	for(const auto& di : mydata){ 

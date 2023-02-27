@@ -211,7 +211,36 @@ public:
 	/// *****************************************************************************
 	/// Implement MCMC moves as changes to constants
 	/// *****************************************************************************
-	
+
+#if FEYNMAN
+
+	virtual ProposalType propose() const override {
+		// Our proposals will either be to constants, or entirely from the prior
+		// Note that if we have no constants, we will always do prior proposals
+		assert(constants.size() == N_CONSTANTS);
+		
+		ProposalType p; 
+		
+		if(flip(0.75))      p = Proposals::regenerate(&grammar, value);	
+		else if(flip(0.1))  p = Proposals::sample_function_leaving_args(&grammar, value);
+		else if(flip(0.1))  p = Proposals::swap_args(&grammar, value);
+		else if(flip())     p = Proposals::insert_tree(&grammar, value);	
+		else                p = Proposals::delete_tree(&grammar, value);			
+		
+		if(not p) return {};
+		auto x = p.value();
+		
+		MyHypothesis ret{std::move(x.first)};
+		ret.constants = constants; 
+		
+		double fb = x.second;
+		
+		
+		return std::make_pair(ret, fb); 
+	}
+
+#else
+
 	virtual ProposalType propose() const override {
 		// Our proposals will either be to constants, or entirely from the prior
 		// Note that if we have no constants, we will always do prior proposals
@@ -219,7 +248,7 @@ public:
 		
 		// most of the time we are going to propose to a constant 
 		// UNLESS we are using FEYNMAN (in which case we never should)
-		if((not FEYNMAN) and flip(0.85)){
+		if(flip(0.85)){
 			MyHypothesis ret = *this;
 			
 			double fb = 0.0; 
@@ -270,6 +299,8 @@ public:
 		}
 			
 	}
+	
+#endif
 		
 	virtual MyHypothesis restart() const override {
 		MyHypothesis ret = Super::restart(); // reset my structure

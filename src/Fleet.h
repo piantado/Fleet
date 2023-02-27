@@ -367,6 +367,13 @@ int main(int argc, char** argv){
 #include <signal.h>
 #include <string>
 
+// For macs:
+#ifdef __APPLE__
+    #include <sys/syslimits.h> // used to get PATH_MAX
+    #include <mach-o/dyld.h> // dynamic link editor with method to get executable path
+#endif
+
+
 const std::string FLEET_VERSION = "0.1.2";
 
 #include "Random.h"
@@ -508,10 +515,17 @@ public:
 		if(FleetArgs::print_header) {
 			// Print standard fleet header
 			gethostname(hostname, HOST_NAME_MAX);
-
-			// and build the command to get the md5 checksum of myself
-			char tmp[64]; sprintf(tmp, "md5sum /proc/%d/exe", getpid());
-		
+			
+			#ifdef __APPLE__
+			     char path[PATH_MAX+1]; 
+				uint32_t size = sizeof(path); 
+				_NSGetExecutablePath(path, &size); 
+				char tmp[128]; sprintf(tmp, "md5sum %s", path);
+			#else 
+			
+				// and build the command to get the md5 checksum of myself
+				char tmp[128]; sprintf(tmp, "md5sum /proc/%d/exe", getpid());
+			#endif
 				
 			std::filesystem::path cwd = std::filesystem::current_path();
 			std::string exc = system_exec(tmp); exc.erase(exc.length()-1); // came with a newline?
@@ -524,7 +538,7 @@ public:
 			print("# Path:", cwd.string() );
 			print("# Run options: ");
 			for(int a=0;a<argc;a++) {
-				print("# \t", argv[a]);
+				print("#\t", argv[a]);
 			}
 			print("# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");	
 			

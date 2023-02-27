@@ -145,6 +145,10 @@ double geometric_lpdf(size_t k, double p) {
 	return log(p) + (k-1)*log(1-p);
 }
 
+double random_gamma(double a, double b) {
+	std::gamma_distribution<double> g(a,b);
+	return g(DefaultRNG);
+}
 
 template<typename t>
 std::vector<t> random_multinomial(t a, size_t len) {

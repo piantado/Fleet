@@ -74,7 +74,7 @@ struct Control {
 			return false; 
 		}
 		
-		if(steps > 0 and done_steps >= steps) {
+		if(steps > 0 and done_steps >= steps+1) {
 			#ifdef DEBUG_CONTROL
 				std::cerr << "Control break on steps"  << std::endl;
 			#endif			
