@@ -180,7 +180,7 @@ std::string str(const std::vector<T>& a, const std::string _sep=","){
 	 * @return 
 	 */
 	std::string out = "[";
-	for(auto& x : a) {
+	for(const auto& x : a) {
 		out += str(x) + _sep;
 	}
 	if(a.size()>0) 

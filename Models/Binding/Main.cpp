@@ -13,15 +13,17 @@
 // need a fixed order of words to correspond to factor levels
 // We use REXP here (John, Mary, etc) so that we don't have to distinguish which
 std::vector<std::string> words = {"REXP", "him", "his", "he", "himself"};
-//std::vector<double> data_amounts = {1, 2, 5, 10, 15, 20, 30, 40, 50, 75, 100, 110, 125, 150, 175, 200, 300, 400, 
-//								    500, 600, 700, 800, 900, 1000, 1250, 1500, 2000, 2500, 5000, 7500, 10000};
-std::vector<double> data_amounts = {5000};
+std::vector<double> data_amounts = {0, 1, 2, 5, 10, 15, 20, 30, 40, 50, 75, 100, 110, 125, 150, 175, 200, 300, 400, 
+								    500, 600, 700, 800, 900, 1000}; //, 1250, 1500, 2000, 2500, 5000, 7500, 10000};
+//std::vector<double> data_amounts = {1000};
 
 static const double alpha = 0.95; 
 int NDATA = 10; // how many data points from each sentence are we looking at?
 const double MAX_T = 100.0;
 
 const double TERMINAL_P = 3.0;
+
+std::string data_files = "data/data-full.csv"; // take a list of comma-separated file names
 
 using S = std::string;
 
@@ -50,36 +52,11 @@ class TreeException : public std::exception {};
 #include "ParallelTempering.h"
 #include "SExpression.h"
 
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Main code
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MyHypothesis::data_t target_precisionrecall_data; // data for computing precision/recall 
-MyHypothesis target;
+MyHypothesis::data_t load_data(std::string filename) {
+	MyHypothesis::data_t data;
 	
-int main(int argc, char** argv){ 
-	
-	Fleet fleet("Learn principles of binding theory");
-	fleet.add_option("--ndata",   NDATA, "Run at a different likelihood temperature (strength of data)"); 
-	fleet.add_flag("--include-linear",  include_linear, "Should we include primitives for linear order?"); 
-	fleet.initialize(argc, argv);
-	
-	//------------------
-	// Add linear hypotheses if needed
-	//------------------
-	
-	if(include_linear) {		// linear order predicate
-		grammar.add("gt_linear",  +[]() -> TxTtoBool { return  gt_linear; } );		
-	}
-
-	//------------------
-	// set up the data
-	//------------------
-	
-	// convert to data
-	MyHypothesis::data_t mydata;
-	std::vector<std::string> raw_data; 	
-	for(auto& [ds, sentence] : read_csv<2>("lasnik-extensive.csv", false, ',')){
+	for(auto& [ds, sentence] : read_csv<2>(filename, false, ',')){
 		
 		BindingTree* t = new BindingTree(SExpression::parse(ds));	
 		//print("t=", t->string());
@@ -101,7 +78,7 @@ int main(int argc, char** argv){
 		// print(t->string());
 		
 		for(int cr=0;cr<ncoref;cr++) {
-			raw_data.push_back(ds); // save for later in case we want to see
+			//raw_data.push_back(ds); // save for later in case we want to see
 		
 			BindingTree* myt = new BindingTree(*t);
 
@@ -123,12 +100,54 @@ int main(int argc, char** argv){
 			//print("#", myt->string());
 			
 			MyHypothesis::datum_t d1 = {myt->get_target(), myt->get_target()->word, alpha};	
-			mydata.push_back(d1);
 			
-			target_precisionrecall_data.push_back(d1);
+			// and store where we need them:
+			data.push_back(d1);
 		}
 		
 		delete t;
+	}
+	
+	return data; 
+}
+
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Main code
+///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+MyHypothesis::data_t target_precisionrecall_data; // data for computing precision/recall 
+MyHypothesis target;
+	
+int main(int argc, char** argv){ 
+	
+	Fleet fleet("Learn principles of binding theory");
+	fleet.add_option("--ndata",   NDATA, "Run at a different likelihood temperature (strength of data)"); 
+	fleet.add_option("--data",  data_files, "A comma-separated list of data files to include");
+	fleet.add_flag("--include-linear",  include_linear, "Should we include primitives for linear order?"); 
+	fleet.initialize(argc, argv);
+	
+	//------------------
+	// Add linear hypotheses if needed
+	//------------------
+	
+	if(include_linear) {		// linear order predicate
+		grammar.add("gt_linear",  +[]() -> TxTtoBool { return  gt_linear; } );		
+	}
+
+	//------------------
+	// set up the data
+	//------------------
+	
+
+	// always compute precision/recall on the whole dataset
+	target_precisionrecall_data = load_data("data/data-full.csv");
+	
+	// we have to loop over the comma-separated list of data files
+	MyHypothesis::data_t mydata;
+	for(auto& filename : split(data_files, ',')) {	
+		print("# Loading data file", filename);
+		auto d = load_data(filename);
+		mydata.insert(std::end(mydata), std::begin(d), std::end(d));	
 	}
 	
 	//------------------
@@ -147,6 +166,33 @@ int main(int argc, char** argv){
 	target["his"]     = InnerHypothesis(grammar.simple_parse("applyB(eq_pos('NP-POSS'),applyR(parent,x))"));
 	target["he"]      = InnerHypothesis(grammar.simple_parse("applyB(eq_pos('NP-S'),x)"));
 	target["REXP"]    = InnerHypothesis(grammar.simple_parse("empty(filter(applyC(corefers,x),map_append(children,applyS(ancestors,applyR(parent,x)))))"));
+
+//
+//	MyHypothesis t2; 
+//	t2["himself"] = InnerHypothesis(grammar.simple_parse("and(applyB(eq_pos('NP-O'),x),applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x)))))))"));
+//	t2["him"]     = InnerHypothesis(grammar.simple_parse("and(applyB(eq_pos('NP-O'),x),not(applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x))))))))"));
+//	t2["his"]     = InnerHypothesis(grammar.simple_parse("applyB(eq_pos('NP-POSS'),applyR(parent,x))"));
+//	t2["he"]      = InnerHypothesis(grammar.simple_parse("applyB(eq_pos('NP-S'),x)"));
+//	t2["REXP"]    = InnerHypothesis(grammar.simple_parse("empty(filter(applyC(corefers,x),map_append(children,tail(append(filter(eq_posT(x),applyS(ancestors,x)),applyS(ancestors,x))))))"));
+//
+//
+//	for(const auto& di : mydata) {
+//		
+//		for(const auto& w : words) {
+//			target.clear_cache();	
+//			t2.clear_cache();	
+//			if(target[w].call(di.input) != t2[w].call(di.input)) {
+//				target.clear_cache();	
+//				t2.clear_cache();	
+//				print(target[w].call(di.input),
+//					  t2[w].call(di.input),
+//					  di.input->root()->string());
+//			}
+//			
+//		}
+//	}
+//
+//return 1; 
 
 
 	// check that the target works on the data

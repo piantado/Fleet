@@ -80,23 +80,31 @@ public:
 		
 		COUT std::setprecision(5) << prefix << NDATA TAB this->posterior TAB this->prior TAB this->likelihood TAB "";
 		
+		
+		// now we need to clear the caches and recompute -- NOTE this is very slow
+		target.clear_cache(); target.compute_posterior(target_precisionrecall_data);
+		this->clear_cache(); this->compute_posterior(target_precisionrecall_data);
+		
 		// when we print, we are going to compute overlap with each target item
-//		for(auto& w : words) {
-//			int nagree = 0;
-//			int ntot = 0;
-//			
-//			for(size_t di=0;di<target_precisionrecall_data.size();di++) {
-////				auto& d = target_precisionrecall_data[di];
-//			
-//				if(factors[w].cache.at(di) == target.factors[w].cache.at(di)) {
-//					++nagree;
-//				}
-//				++ntot;
-//			}
-//			
-//			COUT float(nagree)/float(ntot) TAB "";
-//		}
-//		
+		for(auto& w : words) {
+			int nagree = 0;
+			int ntot = 0;
+			
+			for(size_t di=0;di<target_precisionrecall_data.size();di++) {
+				auto& d = target_precisionrecall_data.at(di);
+			
+				if(factors[w].cache.at(di) == target.factors[w].cache.at(di)) {
+					++nagree;
+				}
+				++ntot;
+			}
+			
+			COUT float(nagree)/float(ntot) TAB "";
+		}
+		
+		this->clear_cache();
+		
+		
 		COUT QQ(this->string()) ENDL;
 
 	}

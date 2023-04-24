@@ -50,7 +50,11 @@ public:
 			
 			return out;
 			
-		} else { UNUSED(x); UNUSED(err); assert(false && "*** Cannot use call when VirtualMachineState_t has different input_t or output_t."); }
+		} else {
+			print(typeid(input_t).name(), typeid(output_t).name(), typeid(typename VirtualMachineState_t::input_t).name(), typeid(typename VirtualMachineState_t::output_t).name()); 
+			UNUSED(x); UNUSED(err); 
+			assert(false && "*** Cannot use call when VirtualMachineState_t has different input_t or output_t."); 
+		}
 	}
 	
 };

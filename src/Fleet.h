@@ -574,7 +574,7 @@ public:
 			}
 			
 			COUT "# Total posterior calls:" TAB FleetStatistics::posterior_calls ENDL;
-			COUT "# VM ops per second:" TAB FleetStatistics::vm_ops/elapsed_seconds ENDL;
+			COUT "# Millions of VM ops per second:" TAB (FleetStatistics::vm_ops/1000000)/elapsed_seconds ENDL;
 			
 			COUT "# Fleet completed at " <<  datestring() ENDL;
 			

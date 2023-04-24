@@ -80,12 +80,13 @@ public:
 	 * @return 
 	 */	
 	virtual double compute_likelihood(const data_t& data, const double breakout=-infinity) {
-		
+	
 		// include this in case a subclass overrides to make it non-iterable -- then it must define its own likelihood
 		if constexpr (is_iterable_v<data_t>) { 
 			// defaultly a sum over datums in data (e.g. assuming independence)
 			likelihood = 0.0;
 			for(const auto& d : data) {
+				
 				
 				auto sll = compute_single_likelihood(d);
 				
