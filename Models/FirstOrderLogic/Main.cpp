@@ -51,30 +51,30 @@ public:
 		
 		// these are funny primitives that to fleet are functions with no arguments, but themselves
 		// return functions from objects to bool (ObjectToBool):
-		add("yellow",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Yellow);}; }),
-		add("green",     +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Green);}; }),
-		add("blue",      +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Blue);}; }),
+		add("yellow",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Yellow);}; });
+		add("green",     +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Green);}; });
+		add("blue",      +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Color::Blue);}; });
 
-		add("rectangle", +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Rectangle);}; }),
-		add("triangle",  +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Triangle);}; }),
-		add("circle",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Circle);}; }),
+		add("rectangle", +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Rectangle);}; });
+		add("triangle",  +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Triangle);}; });
+		add("circle",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Shape::Circle);}; });
 		
-		add("size1",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Size::size1);}; }),
-		add("size2",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Size::size2);}; }),
-		add("size3",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Size::size3);}; }),
+		add("size1",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Size::size1);}; });
+		add("size2",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Size::size2);}; });
+		add("size3",    +[]() -> ObjectToBool { return +[](MyObject x) {return x.is(Size::size3);}; });
 		
 		// Define logical operators as operating over the functions. These combine functions from MyObject->Bool into 
 		// new ones from MyObject->Bool. Note that these inner lambdas must capture by copy, not reference, since when we 
 		// call them, a and b may not be around anymore. We've written them with [] to remind us their arguments are functions, not objects
 		// NOTE: These do not short circuit...
-		add("and[%s,%s]",   +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) and b(x);}; }, 2.0), // optional specification of prior weight (default=1.0)
-		add("or[%s,%s]",    +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) or b(x);}; }), 
-		add("not[%s]",      +[](ObjectToBool a)                 -> ObjectToBool { return [=](MyObject x) { return not a(x);}; }), 
+		add("and[%s,%s]",   +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) and b(x);}; }, 2.0); // optional specification of prior weight (default=1.0)
+		add("or[%s,%s]",    +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) or b(x);}; }); 
+		add("not[%s]",      +[](ObjectToBool a)                 -> ObjectToBool { return [=](MyObject x) { return not a(x);}; }); 
 		
-		add("nand[%s,%s]",      +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return not(a(x) and b(x));}; }, .25),
-		add("nor[%s,%s]",       +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return not(a(x) or b(x));}; }, .25), 
-		add("iff[%s,%s]",       +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) == b(x);}; }, .25), 
-		add("implies[%s,%s]",   +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return (not a(x)) or b(x);};}, .25 ), 
+		add("nand[%s,%s]",      +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return not(a(x) and b(x));}; }, .25);
+		add("nor[%s,%s]",       +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return not(a(x) or b(x));}; }, .25);
+		add("iff[%s,%s]",       +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return a(x) == b(x);}; }, .25); 
+		add("implies[%s,%s]",   +[](ObjectToBool a, ObjectToBool b) -> ObjectToBool { return [=](MyObject x) { return (not a(x)) or b(x);};}, .25 ); 
 		
 		add("forall(%s,%s)",   +[](ObjectToBool f, ObjectSet s)    -> bool { 
 			for(auto& x : s) {

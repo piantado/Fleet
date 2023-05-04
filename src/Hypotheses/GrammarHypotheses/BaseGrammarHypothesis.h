@@ -98,6 +98,20 @@ public:
 		this->set_hypotheses_and_data(hypotheses, *human_data);		
 	}	
 	
+	
+	void copy_parameters(const BaseGrammarHypothesis& h) {
+		// sometimes we want the parameters of h, but on some new (e.g. heldout) data
+		
+		this->logA  = h.logA;
+		this->alpha = h.alpha;
+		this->llt   = h.llt;
+		this->pt    = h.pt;
+		this->decay = h.decay;		
+		
+		// must recompute since we (presumably) changed decay
+		this->recompute_decayedLikelihood(*which_data);
+	}
+	
 	// we overwrite this because in MCMCable, this wants to check get_value, which is not defined here
 	[[nodiscard]] static this_t sample(std::vector<HYP>& hypotheses, const data_t* human_data) {
 		// NOTE: Cannot use templates because then it doesn't pass my hypotheses ref the right way
@@ -132,7 +146,7 @@ public:
 		this->recompute_C(hypotheses);
 		COUT "# Computing model predictions" ENDL;
 		this->recompute_P(hypotheses, human_data); // note this comes before LL because LL might use P
-		COUT "# Coputing incremental likelihoods " ENDL;
+		COUT "# Computing incremental likelihoods " ENDL;
 		this->recompute_LL(hypotheses, human_data);
 		COUT "# Computing decayedLikelihood" ENDL;
 		this->recompute_decayedLikelihood(human_data);
@@ -327,6 +341,20 @@ public:
 	 */
 	virtual std::map<typename HYP::output_t, double> compute_model_predictions(const data_t& human_data, const size_t i, const Matrix& hposterior) const = 0;
 	
+	
+	virtual const HYP& computeMAP( const size_t di, const Matrix& hposterior) const {
+		// compute the MAP hypothesis at a given data amount	
+		int best_idx = 0;
+		double best_score = -infinity;
+		
+		for(int h=0;h<hposterior.rows();h++) {
+			if(hposterior(h,di) > best_score) {
+				best_idx = h;
+				best_score = hposterior(h,di);				
+			}
+		}
+		return std::ref(which_hypotheses->at(best_idx));
+	}
 	
 	/**
 	 * @brief Get the chance probability of response r in hd (i.e. of a human response). This may typically be pretty boring (like just hd.chance) but w

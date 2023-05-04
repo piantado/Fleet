@@ -22,6 +22,7 @@ class Rule {
 
 public:
 	static const std::string ChildStr; // how do strings get substituted?
+	static const std::string SilentChildStr; // these are arguments to the function but not substituted in when displaying
 
 	nonterminal_t                      nt;
 	std::string                        format; // how am I printed?
@@ -63,6 +64,7 @@ public:
 			
 		// check that the format string has the right number of %s
 		// NOTE: here we ONLY check "%", not "%s" since we now allow %1, %2, %3, etc. 
+		assert(ChildStr.substr(0,1) == SilentChildStr.substr(0,1)); // this must be true ya know for the next line to be right
 		if(N != count(fmt, ChildStr.substr(0,1))) {
 			CERR "*** Wrong number of format string arguments in " << fmt ENDL;
 			assert(false);
@@ -184,3 +186,4 @@ std::ostream& operator<<(std::ostream& o, const Rule& r) {
 const Rule* NullRule = new Rule((nonterminal_t)0, nullptr, "\u25A0", {}, 0.0);
 
 const std::string Rule::ChildStr = "%s";
+const std::string Rule::SilentChildStr = "%!";
