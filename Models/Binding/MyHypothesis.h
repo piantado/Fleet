@@ -83,7 +83,7 @@ public:
 		
 		// now we need to clear the caches and recompute -- NOTE this is very slow
 		target.clear_cache(); target.compute_posterior(target_precisionrecall_data);
-		this->clear_cache(); this->compute_posterior(target_precisionrecall_data);
+		this->clear_cache();   this->compute_posterior(target_precisionrecall_data);
 		
 		// when we print, we are going to compute overlap with each target item
 		for(auto& w : words) {
@@ -91,7 +91,7 @@ public:
 			int ntot = 0;
 			
 			for(size_t di=0;di<target_precisionrecall_data.size();di++) {
-				auto& d = target_precisionrecall_data.at(di);
+//				auto& d = target_precisionrecall_data.at(di);
 			
 				if(factors[w].cache.at(di) == target.factors[w].cache.at(di)) {
 					++nagree;
@@ -108,5 +108,18 @@ public:
 		COUT QQ(this->string()) ENDL;
 
 	}
+	
+	// Our restart will just choose one of the factors to restart
+	[[nodiscard]] virtual MyHypothesis restart() const override {
+		auto x = *this; 
+		
+		print(str(x));
+		auto which = myrandom(factors.size());
+		x[words[which]] = x[words[which]].restart();
+		print(str(x));
+		
+		return x;
+	}
+	
  
 };

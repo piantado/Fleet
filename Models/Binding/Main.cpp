@@ -13,8 +13,7 @@
 // need a fixed order of words to correspond to factor levels
 // We use REXP here (John, Mary, etc) so that we don't have to distinguish which
 std::vector<std::string> words = {"REXP", "him", "his", "he", "himself"};
-std::vector<double> data_amounts = {0, 1, 2, 5, 10, 15, 20, 30, 40, 50, 75, 100, 110, 125, 150, 175, 200, 300, 400, 
-								    500, 600, 700, 800, 900, 1000}; //, 1250, 1500, 2000, 2500, 5000, 7500, 10000};
+std::vector<double> data_amounts = {0, 1, 2, 5, 10, 15, 20, 30, 40, 50, 75, 100, 110, 125, 150, 175, 200, 300, 400, 500}; // , 600, 700, 800, 900, 1000}; //, 1250, 1500, 2000, 2500, 5000, 7500, 10000};
 //std::vector<double> data_amounts = {1000};
 
 static const double alpha = 0.95; 

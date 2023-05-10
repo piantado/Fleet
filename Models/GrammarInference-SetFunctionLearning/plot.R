@@ -1,6 +1,6 @@
 library(ggplot2)
 
-d <- read.table("output/o.txt",header=F)
+d <- read.table("output/parameters.txt",header=F)
 names(d) <- c("samples", "nt", "variable", "value")
 d$nt <- as.factor(d$nt)
 

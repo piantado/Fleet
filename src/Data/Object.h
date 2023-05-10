@@ -5,6 +5,7 @@
 #include<tuple>
 
 #include "Random.h"
+#include "Strings.h"
 
 /**
  * @class Object

@@ -435,6 +435,10 @@ public:
 			
 			this->likelihood  = 0.0; // for all the human data
 			
+			// precompute these so we don't keep doing it
+			const auto log_alpha = log(alpha.get());
+			const auto log_1malpha = log(1.0-alpha.get());
+			
 			#pragma omp parallel for
 			for(size_t i=0;i<human_data.size();i++) {
 				
@@ -444,8 +448,8 @@ public:
 				double ll = 0.0; // the likelihood here
 				auto& di = human_data[i];
 				for(const auto& [r,cnt] : di.responses) {
-					ll += cnt * logplusexp_full( log(1-alpha.get()) + human_chance_lp(r,di), 
-												 log(alpha.get())   + log(get(model_predictions, r, 0.0))); 
+					ll += cnt * logplusexp_full( log_1malpha + human_chance_lp(r,di), 
+												 log_alpha   + log(get(model_predictions, r, 0.0))); 
 					//print(cnt,ll, r, get(model_predictions, r, 0.0));
 				}
 								

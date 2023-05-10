@@ -34,13 +34,6 @@ public:
 	MyGrammarHypothesis(std::vector<HYP>& hypotheses, const data_t* human_data) {
 		this->set_hypotheses_and_data(hypotheses, *human_data);
 	}	
-	
-	// Override this to print out the held-out data
-//	virtual std::string string(std::string prefix="") const override {
-//		
-//		
-//		
-//	}
 };
 
 
@@ -73,6 +66,7 @@ int main(int argc, char** argv){
 	std::vector<std::string> human_data_key; // store the raw strings so we can output more friendly
 	
 	std::vector<HumanDatum<MyHypothesis>> heldout_data;
+	std::vector<std::string> heldout_data_key;
 	
 	// We need to read the data and collapse same setNumbers and concepts to the same "set", since this is the new
 	// data format for the model. 
@@ -108,10 +102,9 @@ int main(int argc, char** argv){
 			if(learner_data != nullptr) 
 				mcmc_data.push_back(learner_data);
 			
-			// need to reserve enough here so that we don't have to move -- or else the pointers break
 			learner_data = new MyHypothesis::data_t();
 			decay_position = new std::vector<int>();
-			learner_data->reserve(LEARNER_RESERVE_SIZE);		
+			learner_data->reserve(LEARNER_RESERVE_SIZE); // need to reserve enough here so that we don't have to move -- or else the pointers break		
 			ndata = 0;
 			decay_position_counter = 0;
 			data_idx = 0;
@@ -142,7 +135,15 @@ int main(int argc, char** argv){
 										
 			// we will hold out list 2:
 			if(contains(conceptlist,"L2")) {
+				heldout_data_key.push_back(conceptlist+"\t"+
+										 str(data_idx)+"\t"+
+										 str(*decay_position->rbegin())+"\t"+
+										 str(corrects->at(i))+"\t"+
+										 str(yeses->at(i))+"\t"+
+										 str(nos->at(i)));
+				
 				heldout_data.push_back(std::move(hd));
+				
 			}
 			else {
 				human_data_key.push_back(conceptlist+"\t"+
@@ -151,6 +152,7 @@ int main(int argc, char** argv){
 										 str(corrects->at(i))+"\t"+
 										 str(yeses->at(i))+"\t"+
 										 str(nos->at(i)));
+										 
 				human_data.push_back(std::move(hd));
 				
 				data_idx++;
@@ -208,17 +210,32 @@ int main(int argc, char** argv){
 		}	
 		
 		
+
 		// Now at the end let's output some model predictions along with the stored human_data_key 
 		// we had from above, that gives us what data point we're talkign about
 		{
 			auto best = top.best();
 			auto hposterior = best.compute_normalized_posterior();
-			std::ofstream out("output/best-predictions.txt");
+			std::ofstream out("output/training-best-predictions.txt");
 			for(size_t i=0;i<human_data.size();i++) {
 				auto pr = best.compute_model_predictions(human_data, i, hposterior);
-				out << human_data_key[i]+"\t"+str(get(pr,true,0.0))+QQ( best.computeMAP(i,hposterior).string()) << "\n";			
+				out << human_data_key[i]+"\t"+str(best.alpha.get())+"\t"+str(get(pr,true,0.0))+"\t"+QQ( best.computeMAP(i,hposterior).string()) << "\n";			
 			}
 			out.close();
+			
+			print("# Best training likelihood:", str(best.likelihood));
+		}
+		
+		{
+			hhout.copy_parameters(top.best());
+			auto hposterior = hhout.compute_normalized_posterior();
+			std::ofstream out("output/heldout-best-predictions.txt");
+			for(size_t i=0;i<heldout_data.size();i++) {
+				auto pr = hhout.compute_model_predictions(heldout_data, i, hposterior);
+				out << heldout_data_key[i]+"\t"+str(hhout.alpha.get())+"\t"+str(get(pr,true,0.0))+"\t"+QQ( hhout.computeMAP(i,hposterior).string()) << "\n";			
+			}
+			out.close();
+			print("# Best heldout likelihood:", str(hhout.likelihood));
 		}
 		
 		
