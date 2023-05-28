@@ -39,7 +39,7 @@ std::vector<std::set<HYP>> get_hypotheses_from_mcmc(const HYP& h0, const std::ve
 			auto givendata = slice(*(mcmc_data[vi]), 0, di); // slices [0,i]
 						
 			MCMCChain chain(myh0, &givendata);
-			for(auto& h : chain.run(Control(c))) { top << h; } // NOTE must run on copy of c
+			for(auto& h : chain.run(Control(c)) ) { top << h; } // NOTE must run on copy of c
 			
 			#pragma omp critical
 			{

@@ -97,7 +97,6 @@ int main(int argc, char** argv){
 		// (and put the file pointer back to the start of the next chunk)
 		auto [objs, corrects, yeses, nos, conceptlist] = get_next_human_data(infile);
 		// could assert that the sizes of these are all the same
-		print("### -", conceptlist);
 			
 		// if we are on a new conceptlist, then make a new learner data (on stack)
 		if(conceptlist != prev_conceptlist) {

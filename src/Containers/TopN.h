@@ -184,6 +184,16 @@ public:
 			add(h);
 		}
 	}
+	void add(const std::set<T>& x) { // add from a whole other topN
+		/**
+		 * @brief Add everything in x to this one. 
+		 * @param x
+		 */
+	
+		for(auto& h: x){
+			add(h);
+		}
+	}
 	void operator<<(const TopN<T>& x) {
 		add(x);
 	}

@@ -285,7 +285,7 @@ MyHypothesis::datum_t sample_datum() {
 	int NT = myrandom(1,4); // how many times do I try to add types?
 	
 	for(int i=0;i<NT;i++) {
-		int nx = number_distribution(rng);  // sample how many things we'll do
+		int nx = number_distribution(DefaultRNG);  // sample how many things we'll do
 		objectkind tx;
 		do { 
 			tx = OBJECTS[myrandom<size_t>(0,OBJECTS.size())];
@@ -378,7 +378,9 @@ int main(int argc, char** argv) {
 
 	// just simple mcmc on one
 	//for(size_t di=0;di<alldata.size();di++){
-			size_t di = alldata.size()-1; {
+	
+	{
+		size_t di = alldata.size()-1; 
 		auto h0 = MyHypothesis::sample();
 //		MCMCChain samp(h0, &alldata[di]);
 		ParallelTempering samp(h0, &alldata[di], FleetArgs::nchains, 1.20);

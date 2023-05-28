@@ -18,9 +18,10 @@
 
 template<typename T>
 class ConcurrentQueue {
-	
+
 	size_t N;  // length of the queue
 
+	// NOTE: We have tried to align to_yield better for multithreading, but nothing seems to improve speed
 	std::vector<T> to_yield;
 
 	std::atomic<size_t> push_idx;
@@ -30,7 +31,6 @@ class ConcurrentQueue {
 	std::condition_variable_any empty_cv;
 	
 	mutable OrderedLock lock; 
-//	mutable std::mutex lock; 
 	
 public:
 	
@@ -44,14 +44,13 @@ public:
 		to_yield.resize(n);
 	}
 	
-	bool empty() { return push_idx == pop_idx; }
-	bool full()  { return (push_idx+1) % N == pop_idx; }
+	bool empty()  { return push_idx == pop_idx; }
+	bool full()   { return (push_idx+1) % N == pop_idx; }
+	size_t size() { return (pop_idx - push_idx + N) % N; } 
 	
 	void push(T& x) {	
 	
 		std::unique_lock lck(lock);
-		
-//		if(full()) print("FULL");
 		
 		// if we are here, we must wait until a spot frees up
 		while(full()) full_cv.wait(lck);

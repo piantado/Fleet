@@ -93,7 +93,7 @@ public:
 		ctl2.start(); 
 
 		// give this just some extra space here
-		to_yield.resize(4*ctl.nthreads); // just some extra space here
+		to_yield.resize(FleetArgs::MCMC_QUEUE_MULTIPLIER*ctl.nthreads); // just some extra space here
 
 		// start each thread
 		for(unsigned long thr=0;thr<ctl.nthreads;thr++) {
@@ -104,6 +104,7 @@ public:
 		// now yield as long as we have some that are running
 		while(__nrunning > 0 and !CTRL_C) { // we don't want to stop when its empty because a thread might fill it
 			if(not to_yield.empty()) { // w/o this we might pop when its empty...
+				//print((size_t)to_yield.push_idx, (size_t)to_yield.pop_idx, to_yield.size(), to_yield.N);
 				co_yield to_yield.pop();
 			}
 		}

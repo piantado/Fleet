@@ -280,10 +280,10 @@ double p_KashyapOommen1984_edit(const std::string x, const std::string y, const 
 	const double lp_insert = -log(nalphabet); // P(y_t|lambda) - probability of generating a single character from nothing
 	const double lp_delete = log(perr);           // P(phi|d_x) -- probability of deleting
 	
-	Vector3D<double> W(T+1,E+1,T+1);
+	Vector3D<double> mytable(T+1,E+1,T+1);
 	
 	// set to 1 in log space
-	W(0,0,0) = 0.0; 
+	mytable(0,0,0) = 0.0; 
 	
 	// indexes into y and x, and returns the swap probability
 	// when they are different. Also corrects so i,j are 0-indexed
@@ -294,41 +294,41 @@ double p_KashyapOommen1984_edit(const std::string x, const std::string y, const 
 	};
 	
 	for(int t=1;t<=T;t++) 
-		W(t,0,0) = W(t-1,0,0) + lp_insert;
+		mytable(t,0,0) = mytable(t-1,0,0) + lp_insert;
 		
 	for(int d=1;d<=E;d++)
-		W(0,d,0) = W(0,d-1,0) + lp_delete;
+		mytable(0,d,0) = mytable(0,d-1,0) + lp_delete;
 	
 	for(int s=1;s<=R;s++) 
-		W(0,0,s) = W(0,0,s-1) + Sab(s-1,s-1);
+		mytable(0,0,s) = mytable(0,0,s-1) + Sab(s-1,s-1);
 		
 	for(int t=1;t<=T;t++) 
 		for(int d=1;d<=E;d++) 
-			W(t,d,0) = logplusexp(W(t-1,d,0)+lp_insert, 
-								  W(t,d-1,0)+lp_delete);
+			mytable(t,d,0) = logplusexp(mytable(t-1,d,0)+lp_insert, 
+								        mytable(t,d-1,0)+lp_delete);
 			
 	for(int t=1;t<=T;t++)
 		for(int s=1;s<=n-t;s++)
-			W(t,0,s) = logplusexp(W(t-1,0,s)+lp_insert,
-								  W(t,0,s-1)+Sab(s+t-1,s-1));
+			mytable(t,0,s) = logplusexp(mytable(t-1,0,s)+lp_insert,
+									    mytable(t,0,s-1)+Sab(s+t-1,s-1));
 	
 	for(int d=1;d<=E;d++)
 		for(int s=1;s<=m-d;s++) 
-			W(0,d,s) = logplusexp(W(0,d-1,s)+lp_delete, 
-								  W(0,d,s-1)+Sab(s-1,s+d-1));
+			mytable(0,d,s) = logplusexp(mytable(0,d-1,s)+lp_delete, 
+								        mytable(0,d,s-1)+Sab(s-1,s+d-1));
 
 	for(int t=1;t<=T;t++)
 		for(int d=1;d<=E;d++)
 			for(int s=1;s<=std::min(n-t,m-d);s++)
-				W(t,d,s) = logplusexp(W(t-1,d,s)+lp_insert,
-						   logplusexp(W(t,d-1,s)+lp_delete,
-								      W(t,d,s-1)+Sab(t+s-1,d+s-1))); // shoot me in the face	
+				mytable(t,d,s) = logplusexp(mytable(t-1,d,s)+lp_insert,
+								 logplusexp(mytable(t,d-1,s)+lp_delete,
+								            mytable(t,d,s-1)+Sab(t+s-1,d+s-1))); // shoot me in the face	
 		
 	// now we sum up
 	double lp_yGx = -infinity; // p(Y|X)
 	for(int t=std::max(0,n-m); t<=std::min(T,E+n-m);t++){
 		double qt = geometric_lpdf(t+1,1.0-perr); // probability of t insertions -- but must use t+1 to allow t=0 (geometric is defined on 1,2,3,...)
-		lp_yGx = logplusexp(lp_yGx, W(t,m-n+t,n-t) + qt + lfactorial(m)+lfactorial(t)-lfactorial(m+t));
+		lp_yGx = logplusexp(lp_yGx, mytable(t,m-n+t,n-t) + qt + lfactorial(m)+lfactorial(t)-lfactorial(m+t));
 	}
 	return lp_yGx;
 	

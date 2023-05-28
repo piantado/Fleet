@@ -46,7 +46,7 @@ void OUTPUTN(std::ostream& o, FIRST f, ARGS... args) {
 }
 
 /**
- * @brief Lock output_lcok and print to std:cout
+ * @brief Lock output_lock and print to std:cout
  * @param f
  */
 template<typename FIRST, typename... ARGS>

@@ -200,20 +200,44 @@ namespace Builtins {
 		}	
 	});
 	
-	template<typename Grammar_t>
-	Primitive<int, int> Sample_int(Op::Sample, BUILTIN_LAMBDA {
+	template<typename T, typename Grammar_t, size_t MX>
+	Primitive<T, T> Sample_int(Op::Sample, BUILTIN_LAMBDA {
 		// sample 0,1,2,3, ... <first argument>-1
 		
-		const int mx = vms->template getpop<int>();
+		const auto mx = vms->template getpop<T>();
+		if(mx >= MX) throw VMSRuntimeError(); // MX stops us from having stupidly high values
 		
 		const double lp = -log(mx);
-		for(int i=0;i<mx;i++) { 
+		for(T i=0;i<mx;i++) { 
 			bool b = vms->pool->copy_increment_push(vms,i,lp);
 			if(not b) break; // we can break since all of these have the same lp -- if we don't add one, we won't add any!
 		}
 		vms->status = vmstatus_t::RANDOM_CHOICE; // we don't continue with this context		
 	});
 	
+	
+		
+	template<typename T, typename Grammar_t, size_t MX>
+	Primitive<T, T, double> Sample_int_geom(Op::Sample, BUILTIN_LAMBDA {
+		// sample 0,1,2,3, ... <first argument>-1
+		
+		const auto mx = vms->template getpop<T>();
+		if(mx >= MX) throw VMSRuntimeError(); // MX stops us from having stupidly high values
+		const auto p = vms->template getpop<double>();
+		
+		// find the normalizing constant (NOTE: not in log space for now)
+		double z = 0.0;
+		for(size_t i=0;i<mx;i++) 
+			z += pow(p,i)*(1-p);
+		const double lz = log(z);
+		
+		for(T i=0;i<mx;i++) { 
+			const double lp = i * log(p) + log(1-p) - lz;
+			bool b = vms->pool->copy_increment_push(vms,i,lp);
+			if(not b) break; // we can break since all of these have the same lp -- if we don't add one, we won't add any!
+		}
+		vms->status = vmstatus_t::RANDOM_CHOICE; // we don't continue with this context		
+	});
 	
 	template<typename Grammar_t, typename key_t, typename output_t=typename Grammar_t::output_t>
 	Primitive<> Mem(Op::Mem, BUILTIN_LAMBDA {	

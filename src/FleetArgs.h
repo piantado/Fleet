@@ -58,6 +58,8 @@ namespace FleetArgs {
 	// it MUST be the case that all likelihoods are negative of course. 
 	bool LIKELIHOOD_BREAKOUT = true;
 	
-	
+	// When we do multithreading, we put MCMC samples into a ConcurrentQueue of this size (times
+	// the number of threads)
+	int MCMC_QUEUE_MULTIPLIER = 16; 
 	
 }

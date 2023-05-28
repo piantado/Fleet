@@ -110,16 +110,90 @@ public:
 	}
 	
 	// Our restart will just choose one of the factors to restart
-	[[nodiscard]] virtual MyHypothesis restart() const override {
-		auto x = *this; 
-		
-		print(str(x));
-		auto which = myrandom(factors.size());
-		x[words[which]] = x[words[which]].restart();
-		print(str(x));
-		
-		return x;
-	}
+//	[[nodiscard]] virtual MyHypothesis restart() const override {
+//		auto x = *this; 
+//		
+//		auto which = myrandom(factors.size());
+//		x[words[which]] = x[words[which]].restart();
+//		
+//		return x;
+//	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * Proposals for debugging him
+	 * 
+	 * 
+	 * 
+	 * */
+	
+//	virtual std::string string(std::string prefix="") const override {
+//		/**
+//		 * @brief Convert a lexicon to a string -- defaultly includes all arguments. 
+//		 * @return 
+//		 */
+//		return factors.at("him").string();
+//	}
+//	[[nodiscard]] virtual std::optional<std::pair<MyHypothesis,double>> propose() const override {
+//
+//		// now go through and propose to those factors
+//		// (NOTE fb is always zero)
+//		// NOTE: This is not great because it doesn't copy like we might want...
+//		MyHypothesis x; double fb = 0.0;
+//		for(auto& [k,f] : factors) {
+//			if(k == "him") {
+//				auto p = f.propose();
+//				if(p){
+//					auto [h, _fb] = p.value();
+//					x.factors[k] = h;
+//					fb += _fb;
+//				}
+//				else {
+//					x.factors[k] = f; // on failed proposal just copy
+//				}
+//			} else {
+//				x.factors[k] = f;
+//			}
+//		}
+//		assert(x.factors.size() == factors.size());
+//		
+//		return std::make_pair(x,fb);									
+//	}
+//		[[nodiscard]] virtual MyHypothesis restart() const override {
+//		auto x = *this; 
+//		
+//		x["him"] = x["him"].restart();
+//		
+//		return x;
+//	}
  
 };

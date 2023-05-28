@@ -12,9 +12,10 @@
 
 // need a fixed order of words to correspond to factor levels
 // We use REXP here (John, Mary, etc) so that we don't have to distinguish which
-std::vector<std::string> words = {"REXP", "him", "his", "he", "himself"};
-std::vector<double> data_amounts = {0, 1, 2, 5, 10, 15, 20, 30, 40, 50, 75, 100, 110, 125, 150, 175, 200, 300, 400, 500}; // , 600, 700, 800, 900, 1000}; //, 1250, 1500, 2000, 2500, 5000, 7500, 10000};
-//std::vector<double> data_amounts = {1000};
+const std::vector<std::string> words = {"REXP", "him", "his", "he", "himself"};
+//std::vector<double> data_amounts = {0, 1, 2, 5, 10, 15, 20, 30, 40, 50, 75, 100, 110, 125, 150, 175, 200, 300, 400, 500, 600, 700, 800, 900, 1000}; //, 1250, 1500, 2000, 2500, 5000, 7500, 10000};
+//std::vector<double> data_amounts = {5000};
+std::vector<double> data_amounts = {0, 1, 2, 5, 10, 15, 20, 30, 40, 50, 75, 100, 125, 150, 250, 500, 750, 1000, 1500, 2500, 5000, 7500, 10000}; //, 1250, 1500, 2000, 2500, 5000, 7500, 10000};
 
 static const double alpha = 0.95; 
 int NDATA = 10; // how many data points from each sentence are we looking at?
@@ -225,6 +226,23 @@ int main(int argc, char** argv){
 		h0[w] = InnerHypothesis::sample();
 	}
 	MyHypothesis::p_factor_propose = 0.2;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	
+//	h0["himself"] = InnerHypothesis(grammar.simple_parse("and(applyB(eq_pos('NP-O'),x),applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x)))))))"));
+////	h0["him"]     = InnerHypothesis(grammar.simple_parse("and(applyB(eq_pos('NP-O'),x),not(applyCC(corefers,x,head(filter(has_index,map_append(children,applyS(ancestors,applyR(parent,x))))))))"));
+//	h0["his"]     = InnerHypothesis(grammar.simple_parse("applyB(eq_pos('NP-POSS'),applyR(parent,x))"));
+//	h0["he"]      = InnerHypothesis(grammar.simple_parse("applyB(eq_pos('NP-S'),x)"));
+//	h0["REXP"]    = InnerHypothesis(grammar.simple_parse("empty(filter(applyC(corefers,x),map_append(children,applyS(ancestors,applyR(parent,x)))))"));
+
 	
 	
 	for(auto di : data_amounts) {

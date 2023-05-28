@@ -17,7 +17,7 @@ public:
 									 defaultdatum_t<BindingTree*,std::string>,
 									 bool>;
 	
-	const double MAX_NODES = 32; 
+	const double MAX_NODES = 40; 
 	
 	using output_t = Super::output_t;
 	using data_t = Super::data_t;
