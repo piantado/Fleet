@@ -27,19 +27,27 @@ std::vector<std::set<HYP>> get_hypotheses_from_mcmc(const HYP& h0, const std::ve
 		
 		#pragma omp critical
 		{
-			COUT "# Running " TAB vi TAB " of " TAB mcmc_data.size() TAB mcmc_data[vi] ENDL;
+			print("# Running ", vi, " of ", mcmc_data.size(), mcmc_data[vi]);
 		}
 		
 		// start at di=0 so we actually always include prior samples
 		// maybe this isn't a good way to do it
 		for(size_t di=0;di<=mcmc_data[vi]->size() and !CTRL_C;di++) {
-			
+			#pragma omp critical
+			{
+				COUT "# Running " TAB vi TAB " of " TAB mcmc_data.size() TAB mcmc_data[vi]  TAB di ENDL;
+			}
 			TopN<HYP> top(maxntop);
 			HYP myh0 = h0.restart();
 			auto givendata = slice(*(mcmc_data[vi]), 0, di); // slices [0,i]
 						
 			MCMCChain chain(myh0, &givendata);
-			for(auto& h : chain.run(Control(c)) ) { top << h; } // NOTE must run on copy of c
+			for(auto& h : chain.run(Control(c)) | top | printer(FleetArgs::print) ) { UNUSED(h); } 
+			
+			#pragma omp critical
+			{
+				COUT "# Done " TAB vi TAB " of " TAB mcmc_data.size() TAB mcmc_data[vi]  TAB di ENDL;
+			}
 			
 			#pragma omp critical
 			{

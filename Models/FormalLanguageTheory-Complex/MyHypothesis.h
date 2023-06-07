@@ -63,7 +63,8 @@ public:
 		double ll = 0.0;
 		for(const auto& a : data) {
 			double alp = -infinity; // the model's probability of this
-			for(const auto& m : M.values()) {				
+			for(const auto& m : M.values()) {	
+
 				// we can always take away all character and generate a anew
 				alp = logplusexp(alp, m.second + p_delete_append<alpha,alpha>(m.first, a.output, log_A));
 			}
@@ -81,13 +82,13 @@ public:
 		// this version goes through and computes the predictive probability of each prefix
 		 
 		const auto& M = call(EMPTY_STRING, errorstring); 
-		
+				
 		// calling "call" first made was_called false on everything, and
 		// this will only be set to true if it was called (via push_program)
 		// so here we check and make sure everything was used and if not
 		// we give it a -inf likelihood
 		// NOTE: This is a slow way to do this because it requires running the hypothesis
-		// but that's hard to get around with how factosr work. 
+		// but that's hard to get around with how factors work. 
 		// NOTE that this checks factors over ALL prob. outcomes
 		for(auto& [k,f] : factors) {
 			if(not f.was_called) {

@@ -364,7 +364,7 @@ int main(int argc, char** argv){
 #include <sys/resource.h> // just for setting priority defaulty 
 #include <unistd.h>
 #include <stdlib.h>
-#include <signal.h>
+#include <csignal>
 #include <string>
 
 // For macs:
@@ -498,8 +498,8 @@ public:
 							   // if we catch exit codes, we silently keep running without parsing...
 		
 		// set our own handlers -- defaulty HUP won't stop
-		signal(SIGINT, Fleet::fleet_interrupt_handler);
-		signal(SIGHUP, Fleet::fleet_interrupt_handler);
+		std::signal(SIGINT, Fleet::fleet_interrupt_handler);
+		std::signal(SIGHUP, Fleet::fleet_interrupt_handler);
 		
 		// give us a defaultly kinda nice niceness
 		setpriority(PRIO_PROCESS, 0, 5);
