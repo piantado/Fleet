@@ -60,7 +60,7 @@ public:
 	// how many steps have I run so far? -- this needs to be global so that we can keep track of 
 	// whether we should push a new state that occurs too late. 
 	unsigned long total_vms_steps; 
-	double        worst_lp;
+	double worst_lp;
 	unsigned long total_instruction_count;
 	
 	std::priority_queue<VirtualMachineState_t*, std::vector<VirtualMachineState_t*>, VirtualMachinePool::compare_VirtualMachineState_t_prt> Q; // Q of states sorted by probability

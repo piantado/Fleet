@@ -408,7 +408,8 @@ public:
 	
 	size_t get_index_of(const Rule* r) const {
 		/**
-		 * @brief Find the index in rules of where r is.
+		 * @brief Find the index in rules of where r is. This should be used whenever we convert a rule to an index
+		 * 		  in an array (though note it is O(n), since it loops through all rules)
 		 * @param r
 		 * @return 
 		 */
@@ -673,6 +674,8 @@ public:
 		}
 		return rule_cumulative;
 	}
+	
+	
 	
 	std::vector<size_t> get_counts(const Node& node) const {
 		/**
