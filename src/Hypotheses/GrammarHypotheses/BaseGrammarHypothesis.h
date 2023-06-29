@@ -24,6 +24,8 @@ extern volatile sig_atomic_t CTRL_C;
 #include "VectorNormalHypothesis.h"
 #include "TNormalVariable.h"
 #include "Batch.h"
+#include "LOTHypothesis.h"
+#include "Grammar.h"
 
 /**
  * @class BaseGrammarHypothesis
@@ -195,15 +197,19 @@ public:
 
 		C.reset(new Matrix(hypotheses.size(), nRules)); 
 
+		const auto indexer = grammar->get_rule_indexer(); // map rules to 
+		const auto R = grammar->count_rules();
+
 		#pragma omp parallel for
 		for(size_t i=0;i<hypotheses.size();i++) {
-			auto c = hypotheses[i].get_grammar()->get_counts(hypotheses[i].get_value());
-			Vector cv = Vector::Zero(c.size());
-			for(size_t k=0;k<c.size();k++){
-				cv(k) = c[k];
-			}
+			assert(hypotheses[i].get_grammar() == grammar); // this only works if they have the same grammar, since they share an indexer
 			
-			assert(hypotheses[i].get_grammar() == grammar); // just a check that the grammars are identical
+			// hypotheses here are factors so we have to sum them
+			Vector cv = Vector::Zero(R);
+			
+			auto c = grammar->get_counts(hypotheses[i].get_value(), indexer); // extract counts using indexer
+			for(size_t r=0;r<R;r++)  // update cv 
+				cv[r] += c[r];
 			
 			#pragma omp critical
 			C->row(i) = std::move(cv);
