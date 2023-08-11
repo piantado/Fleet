@@ -156,7 +156,7 @@ template<size_t N>
 std::vector<std::array<std::string,N>> read_csv(const std::string path, bool skipheader, const char delimiter='\t') {
 	
 	std::ifstream file(path);
-	if(file.fail()){ assert(false && "*** File does not exist"); }
+	if(file.fail()){ print("*** File does not exist", path); assert(false); }
 
 	std::string s;
 	std::vector<std::array<std::string,N>> out;	

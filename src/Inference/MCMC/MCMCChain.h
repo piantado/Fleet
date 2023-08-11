@@ -262,9 +262,12 @@ public:
 					proposal.compute_posterior(*data, breakoutpair);
 //					proposal.compute_posterior(*data);
 					
-					#ifdef DEBUG_MCMC
-					DEBUG("# Proposed", proposal.posterior, proposal.prior, proposal.likelihood, proposal.string(), "fb="+str(fb));
-					#endif
+//					#ifdef DEBUG_MCMC
+//					DEBUG("# Proposed", proposal.posterior, proposal.prior, proposal.likelihood, proposal.string(), "fb="+str(fb));
+//					#endif
+					if(FleetArgs::print_proposals != 0) [[unlikely]] {
+						print("#Proposed", proposal.posterior, proposal.prior, proposal.likelihood, proposal.string(), "fb="+str(fb));
+					}
 					
 					const double ratio = proposal.at_temperature(temperature) - current.at_temperature(temperature) - fb;
 					

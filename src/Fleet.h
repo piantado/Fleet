@@ -426,6 +426,7 @@ public:
 		app.add_option("--burn",        FleetArgs::burn, "Burn this many steps");
 		app.add_option("--thin",        FleetArgs::thin, "Thinning on callbacks");
 		app.add_option("--print",       FleetArgs::print, "Print out every this many");
+		app.add_option("--print-proposals",       FleetArgs::print_proposals, "If 1 we print proposals");
 		app.add_option("--top",         FleetArgs::ntop, "The number to store");
 		app.add_option("-n,--threads",  FleetArgs::nthreads, "Number of threads for parallel search");
 		app.add_option("--explore",     FleetArgs::explore, "Exploration parameter for MCTS");

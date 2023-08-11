@@ -31,6 +31,7 @@ namespace FleetArgs {
 	unsigned long restart = 0;
 	unsigned long thin = 0;
 	unsigned long print = 0;
+	unsigned long print_proposals = 0;
 	
 	unsigned long top_print_best = 0; // default for printing top's best
 	

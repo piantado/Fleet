@@ -68,7 +68,7 @@ std::deque<std::string> split(const std::string& s, const char delimiter) {
 }
 
 /**
- * @brief Split iwith a fixed return size, useful in parsing csv
+ * @brief Split with a fixed return size, useful in parsing csv
  * @param s
  * @param delimiter
  * @return 
@@ -292,8 +292,6 @@ T string_to(const std::string s) {
 	else {
 		// Otherwise we must have a string constructor
 		return T{s};
-//		assert(false);
-//		return T{};
 	}	
 }
 

@@ -12,7 +12,7 @@
  */
 
 class CharacterNGram {
-	
+protected:
 	int n; 
 	std::map<std::string, size_t> count; 
 	std::map<std::string, size_t> count_nm1; // for computing conditional 
@@ -51,12 +51,25 @@ public:
 		}
 	}
 	
+	virtual double probability(const std::string&) = 0; 
+};
+
+class AddLambdaSmoothedNGram : public CharacterNGram {
 	
-	double add_l_smoothed_probability(const std::string& x, double l, int a) {
+	int alphabet_size; // needed for smoothing
+	double lambda; 
+
+public:
+
+	AddLambdaSmoothedNGram(int _n, int a, double l) : CharacterNGram(_n), alphabet_size(a), lambda(l) {
+		
+	}
+	
+	virtual double probability(const std::string& x) override {
 		// probability of the LAST character of x, given the previous,
 		// using add_l smoothing, with alphabet size a
 		// NOTE: returns prob, not logprob!
 //		print(n, "GETTING", QQ(x), get(count, x, 0), QQ(x.substr(0,x.size()-1)), get(count_nm1, x.substr(0,x.size()-1), 0));
-		return (get(count, x, 0) + l) / (get(count_nm1, x.substr(0,x.size()-1), 0) + l*a);		
+		return (get(count, x, 0) + lambda) / (get(count_nm1, x.substr(0,x.size()-1), 0) + lambda * alphabet_size);				
 	}
 };
