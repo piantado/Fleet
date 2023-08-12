@@ -28,14 +28,21 @@ public:
 	virtual void randomize_constants() = 0; 
 	
 	virtual bool operator==(const ConstantContainer& h) const {
-		return constants == h.constants;
+		auto C = count_constants();
+		for(size_t i=0;i<C;i++) {
+			if(constants.at(i) != h.constants.at(i))
+				return false; 
+		}
+		return true; 
+//		return constants == h.constants;
 	}
 	
 	virtual size_t hash() const {
 		// hash includes constants so they are only ever equal if constants are equal
+		auto C = count_constants();
 		size_t hsh = 1;
-		for(size_t i=0;i<constants.size();i++) {
-			hash_combine(hsh, i, constants[i]);
+		for(size_t i=0;i<C;i++) {
+			hash_combine(hsh, i, constants.at(i));
 		}
 		return hsh;
 	}

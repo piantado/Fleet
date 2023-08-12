@@ -129,24 +129,29 @@ public:
 		return s.find(x) != s.end();
 	}
 
-	void add(const T& x) { 
+	/**
+	 * @brief Adds x to the TopN. This will return true if we added (false otherwise)
+	 * @param x
+	 * @return 
+	 */
+	[[maybe_unused]] bool add(const T& x) { 
 		/**
 		 * @brief Add x. NOTE that we do not add objects x such that x.posterior == -infinity or NaN
 		 * @param x
 		 */
 		 
-		if(N == 0) return; // if we happen to not store anything
+		if(N == 0) return false; // if we happen to not store anything
 		
 		// enable this when we use posterior as the variable, we don't add -inf values
 		if constexpr (HasPosterior<T>::value) {			
-			if(std::isnan(x.posterior) or x.posterior == -infinity) return;
+			if(std::isnan(x.posterior) or x.posterior == -infinity) 
+				return false;
 		}
 		
 		std::lock_guard guard(lock);
 
 		// if we aren't in there and our posterior is better than the worst
 		if(not contains(x)) {
-			
 			if(s.size() < N or (empty() or worst() < x )) { // skip adding if its the worst -- can't call worst_score due to lock
 				T xcpy = x;
 				
@@ -161,17 +166,22 @@ public:
 				while(s.size() > N) {
 					s.erase(s.begin()); 
 				}
+				
+				return true; // we added
 			}
 		} 
 		
+		return false; // we didn't add
+		
 	}
-	void operator<<(const T& x) {
+	
+	[[maybe_unused]] bool operator<<(const T& x) {
 		/**
 		 * @brief Friendlier syntax for adding.
 		 * @param x
 		 */
 		
-		add(x);
+		return add(x);
 	}
 	
 	void add(const TopN<T>& x) { // add from a whole other topN

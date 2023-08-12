@@ -238,6 +238,41 @@ T median(std::vector<T>& v) {
 	}
 }
 
+
+template<typename T>
+T trimmed_mean(std::vector<T>& v, float pct) {
+	const size_t n = v.size();
+	assert(n> 0);
+	std::sort(v.begin(), v.end());
+	assert(pct < 0.5 && "*** Bad range in trimmed_mean");
+	
+	double s = 0.0;
+	double k = 0;
+	for(int i=pct*n;i<=(1-pct)*n;i++) {
+		s += v.at(i); 
+		k++;
+	}
+	return s/k;	
+}
+
+
+template<typename T>
+T trimmed_mean(std::vector<T>& v, float a, float b) {
+	const size_t n = v.size();
+	assert(n> 0);
+	std::sort(v.begin(), v.end());
+	assert(a >= 0.0 and b <= 1.0 and a<b && "*** Bad range in trimmed_mean");
+	
+	double s = 0.0;
+	double k = 0;
+	for(int i=a*n;i<=b*n;i++) {
+		s += v.at(i); 
+		k++;
+	}
+	return s/k;	
+}
+
+
 template<typename T>
 T mymax(std::vector<T>& v) {
 	const size_t n = v.size();
