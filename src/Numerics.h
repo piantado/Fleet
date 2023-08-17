@@ -146,6 +146,10 @@ double logsumexp(const std::vector<t>& v, double f(const t&) ) {
 	return lse;
 }
 
+template<typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 /////////////////////////////////////////////////////////////
 // Numerical functions
 /////////////////////////////////////////////////////////////
