@@ -79,18 +79,18 @@ public:
 		}
 	}
 	
-	size_t count_constants() const override {
-		// below is if we actually want to count
+	virtual size_t count_constants() const override {
 		size_t cnt = 0;
 		for(const auto& x : value) {
-			cnt += isConstant(x.rule);
+			cnt += (x.nt() == grammar.nt<Constant>());
 		}
+		
 		return cnt;
 	}
 	
 	// Propose to a constant c, returning a new value and fb
 	// NOTE: When we use a symmetric drift kernel, fb=0
-	std::pair<double,double> constant_proposal(double c) const override { 
+	std::pair<double,double> constant_proposal(Constant c) const override { 
 		
 		if(flip(0.95)) {
 			// we use fb=0 here because we can consider an auxilliary variable
@@ -101,14 +101,14 @@ public:
 		else if(flip(0.5)) { 
 			// one third probability for each of the other choices
 			auto v = random_normal(data_X_mean, data_X_sd);
-			double fb = normal_lpdf(v, data_X_mean, data_X_sd) - 
-						normal_lpdf(c, data_X_mean, data_X_sd);
+			double fb = normal_lpdf(   v, data_X_mean, data_X_sd) - 
+						normal_lpdf<D>(c, data_X_mean, data_X_sd);
 			return std::make_pair(v,fb);
 		}
 		else {
 			auto v = random_normal(data_Y_mean, data_Y_sd);
-			double fb = normal_lpdf(v, data_Y_mean, data_Y_sd) - 
-						normal_lpdf(c, data_Y_mean, data_Y_sd);
+			double fb = normal_lpdf(   v, data_Y_mean, data_Y_sd) - 
+						normal_lpdf<D>(c, data_Y_mean, data_Y_sd);
 			return std::make_pair(v,fb);
 		}
 	}
@@ -150,8 +150,8 @@ public:
 	
 	virtual std::string __my_string_recurse(const Node* n, size_t& idx) const {
 		// we need this to print strings -- its in a similar format to evaluation
-		if(isConstant(n->rule)) {
-			return "("+to_string_with_precision(constants[idx++], 14)+")";
+		if(n->rule->nt == grammar.nt<Constant>()) {
+			return "("+to_string_with_precision(constants[idx++], 8)+")";
 		}
 		else if(n->rule->N == 0) {
 			return n->rule->format;

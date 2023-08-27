@@ -13,13 +13,22 @@
 // Constants
 /////////////////////////////////////////////////////////////
 
-const double LOG2 = log(2.0); // clang doesn't like constexpr??
-const double ROOT2 = sqrt(2.0);
+const double LOG2         = log(2.0); // clang doesn't like constexpr??
+const double ROOT2        = sqrt(2.0);
 constexpr double infinity = std::numeric_limits<double>::infinity();
-constexpr double NaN = std::numeric_limits<double>::quiet_NaN();
-constexpr double pi  = M_PI;
-constexpr double tau = 2*pi;
+constexpr double NaN      = std::numeric_limits<double>::quiet_NaN();
+constexpr double pi       = M_PI;
+constexpr double tau      = 2*pi;
 
+/////////////////////////////////////////////////////////////
+// Rounding 
+/////////////////////////////////////////////////////////////
+
+template<typename T>
+T round(T v, int n) {
+	auto m = pow(10,n);
+	return std::round(v*m)/m;
+}
 /////////////////////////////////////////////////////////////
 // A faster logarithm 
 /////////////////////////////////////////////////////////////

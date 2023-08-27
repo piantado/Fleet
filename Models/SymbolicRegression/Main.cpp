@@ -128,7 +128,7 @@ int main(int argc, char** argv){
 		
 		auto f = new std::function(l);	*f = l;
 		
-		grammar.add_vms<D>("x"+str(i), f, TERMINAL_P/NUM_VARS);
+		grammar.add_vms<D>("x"+str(i), f, X_P/NUM_VARS);
 	}
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

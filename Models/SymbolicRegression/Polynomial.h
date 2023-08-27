@@ -23,7 +23,7 @@ public:
 };
 
 
-Polydeg get_polynomial_degree_rec(const Node& n, const std::vector<double>& constants, size_t cidx) {
+Polydeg get_polynomial_degree_rec(const Node& n, const std::vector<Constant>& constants, size_t cidx) {
 	
 	const std::string fmt = n.rule->format;
 	
@@ -63,13 +63,13 @@ Polydeg get_polynomial_degree_rec(const Node& n, const std::vector<double>& cons
         else if(v2.is_const) return v1; // v1 is an exponent, constant doesn't matter
         return Polydeg(NaN,true); 
     }
-    else if(fmt == "(%s^%s)" or fmt == "pow(%s,%s)") { // either format allowed
+    else if(fmt == "(%s^%s)" or fmt == "pow_abs(%s,%s)") { // either format allowed
         Polydeg v1 = get_polynomial_degree_rec(n.child(0), constants, cidx);
         Polydeg v2 = get_polynomial_degree_rec(n.child(1), constants, cidx);
 		if(v1.isnan() or v2.isnan()) return Polydeg(NaN,false); 
-        else if(v1.is_const && v2.is_const) return Polydeg(pow(v1.value,v2.value),true); // if both constants, take their power
+        else if(v1.is_const && v2.is_const) return Polydeg(pow(std::abs(v1.value),v2.value),true); // if both constants, take their power
         else if(v1.is_const) return Polydeg(NaN,false); // 2.3 ^ x -- not a polynomial
-        else if(v2.is_const) return Polydeg(v1.value*v2.value,false); // x^{2.3} -- is a polynomial, so multiply the exponents
+        else if(v2.is_const) return Polydeg(std::abs(v1.value)*v2.value,false); // x^{2.3} -- is a polynomial, so multiply the exponents
         return Polydeg(NaN,false); // both are exponents but not a polynomial so forget it
     }
     else if(fmt == "(-%s)") {
@@ -146,23 +146,23 @@ Polydeg get_polynomial_degree_rec(const Node& n, const std::vector<double>& cons
 		else if(v1.is_const) return Polydeg(v1.value*v1.value, true);
 		else                 return Polydeg(2*v1.value, false);
     }
-	else if(fmt == "sqrt(%s)") {
+	else if(fmt == "sqrt_abs(%s)") {
         Polydeg v1 = get_polynomial_degree_rec(n.child(0), constants, cidx);
 		if(v1.isnan()) return Polydeg(NaN,false); 
-		else if(v1.is_const) return Polydeg(std::sqrt(v1.value), true);
-		else                 return Polydeg(0.5*v1.value, false);
+		else if(v1.is_const) return Polydeg(std::sqrt(std::abs(v1.value)), true);
+		else                 return Polydeg(0.5*std::abs(v1.value), false);
     }
-	else if(fmt == "pow(%s,2)") {
+	else if(fmt == "pow_abs(%s,2)") {
         Polydeg v1 = get_polynomial_degree_rec(n.child(0), constants, cidx);
 		if(v1.isnan()) return Polydeg(NaN,false); 
-		else if(v1.is_const) return Polydeg(powf(v1.value,2), true);
-		else                 return Polydeg(2*v1.value, false);
+		else if(v1.is_const) return Polydeg(powf(std::abs(v1.value),2), true);
+		else                 return Polydeg(2*std::abs(v1.value), false);
     }
-	else if(fmt == "pow(%s,3)") {
+	else if(fmt == "pow_abs(%s,3)") {
         Polydeg v1 = get_polynomial_degree_rec(n.child(0), constants, cidx);
 		if(v1.isnan()) return Polydeg(NaN,false); 
-		else if(v1.is_const) return Polydeg(powf(v1.value,3), true);
-		else                 return Polydeg(3*v1.value, false);
+		else if(v1.is_const) return Polydeg(powf(std::abs(v1.value),3), true);
+		else                 return Polydeg(3*std::abs(v1.value), false);
     }
 	else {
 		print("In format string: ", fmt);
@@ -170,7 +170,7 @@ Polydeg get_polynomial_degree_rec(const Node& n, const std::vector<double>& cons
 	}
 }
 
-double get_polynomial_degree(const Node& n, const std::vector<double>& constants) {
+double get_polynomial_degree(const Node& n, const std::vector<Constant>& constants) {
 	size_t cidx = 0;
     Polydeg r = get_polynomial_degree_rec(n, constants, cidx);
 	if(r.isnan()) return NaN;

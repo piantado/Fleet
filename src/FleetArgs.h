@@ -19,6 +19,7 @@ namespace FleetArgs {
 	double        explore         = 1.0; // we want to exploit the string prefixes we find
 	size_t        nthreads        = 1;
 	size_t        nchains         = 1;
+	size_t        chainsthreads   = 0; // for when we specify chains and threads at the same time
 	size_t        partition_depth = 3;
 
 	unsigned long runtime          = 0; // in ms
@@ -31,9 +32,9 @@ namespace FleetArgs {
 	unsigned long restart = 0;
 	unsigned long thin = 0;
 	unsigned long print = 0;
-	unsigned long print_proposals = 0;
 	
-	unsigned long top_print_best = 0; // default for printing top's best
+	bool          print_proposals = 0;
+	bool          top_print_best = 0; // default for printing top's best
 	
 	std::string   input_path   = "input.txt";
 	std::string   tree_path    = "tree.txt";

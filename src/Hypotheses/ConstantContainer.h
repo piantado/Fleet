@@ -5,7 +5,30 @@
 
 #include "Miscellaneous.h"
 #include "Rule.h"
-
+	
+using constant_t = float; 
+	
+/**
+ * @class Constant
+ * @author Steven Piantadosi
+ * @date 17/08/23
+ * @file ConstantContainer.h
+ * @brief This is a struct to basically hold a double (or float) for use in SymbolicRegression etc
+ * 		  This allows us to define rules that specifically take Constants instead of doubles/floats
+ * 		  which is useful in e.g. linear regression type parts of equations
+ */
+struct Constant {
+	
+	float value;
+	Constant() : value(0) {}
+	Constant(constant_t v) : value(v) {}
+	
+	void operator=(const constant_t v) {
+		value = v; 
+	}
+	constant_t get_value() const { return value; }
+	operator constant_t() const { return value; }
+};
 
 /**
  * @class ConstantContainer
@@ -20,21 +43,25 @@
  */
 struct ConstantContainer {
 public:
-	std::vector<double> constants;
-	size_t         constant_idx; // in evaluation, this variable stores what constant we are in 
+	std::vector<Constant> constants;
+	size_t                constant_idx; // in evaluation, this variable stores what constant we are in 
 	
 	virtual size_t count_constants() const = 0; // must implement 
-	virtual std::pair<double,double> constant_proposal(double) const = 0; // must implmenet
+	virtual std::pair<double,double> constant_proposal(Constant) const = 0; // must implmenet
 	virtual void randomize_constants() = 0; 
 	
 	virtual bool operator==(const ConstantContainer& h) const {
 		auto C = count_constants();
+		
+		if(h.count_constants() != C) 
+			return false; 
+		
 		for(size_t i=0;i<C;i++) {
-			if(constants.at(i) != h.constants.at(i))
+			if(constants.at(i).get_value() != h.constants.at(i).get_value()) {
 				return false; 
+			}
 		}
 		return true; 
-//		return constants == h.constants;
 	}
 	
 	virtual size_t hash() const {
@@ -42,7 +69,7 @@ public:
 		auto C = count_constants();
 		size_t hsh = 1;
 		for(size_t i=0;i<C;i++) {
-			hash_combine(hsh, i, constants.at(i));
+			hash_combine(hsh, i, constants.at(i).get_value());
 		}
 		return hsh;
 	}

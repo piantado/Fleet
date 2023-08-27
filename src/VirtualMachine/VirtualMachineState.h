@@ -4,6 +4,7 @@
 #include <map>
 #include <utility>
 #include <tuple>
+#include <typeindex>
 
 #include "Errors.h"
 #include "Program.h"
@@ -145,7 +146,14 @@ public:
 	template<typename T>
 	T getpop() {
 		static_assert(contains_type<T,VM_TYPES...>() && "*** Error type T missing from VM_TYPES");
-		assert(stack<T>().size() > 0 && "Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities.");
+//		print(typeid(T)::name());
+
+		// Should not happen -- we must not be empty
+		if(stack<T>().size() == 0) {
+			std::type_index a(typeid(T));
+			print("*** Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities:", a.name());
+			assert(false);
+		}
 		
 		T x = std::move(stack<T>().top());
 		stack<T>().pop();
@@ -240,13 +248,14 @@ public:
 			while(status == vmstatus_t::GOOD and (not program.empty()) ) {
 				
 				if(program.size() + runtime_counter.total > MAX_RUN_PROGRAM ) {  // if we've run too long or we couldn't possibly finish
-					//print("HEEERE");
+//					print("HEEERE");
 					throw VMSRuntimeError();
 				}
 				
 				FleetStatistics::vm_ops++;
 				
 				Instruction i = program.top(); program.pop();
+//				print("Instruction", i);
 				
 				// keep track of what instruction we've run
 				runtime_counter.increment(i);

@@ -420,33 +420,35 @@ public:
 	
 	Fleet(std::string brief) : app{brief}, done(false) {
 
-		app.add_option("--seed",        random_seed, "Seed the rng (0 is no seed)");
-		app.add_option("--steps",       FleetArgs::steps, "Number of MCMC or MCTS search steps to run");
-		app.add_option("--inner-steps", FleetArgs::inner_steps, "Steps to run inner loop of a search");
-		app.add_option("--burn",        FleetArgs::burn, "Burn this many steps");
-		app.add_option("--thin",        FleetArgs::thin, "Thinning on callbacks");
-		app.add_option("--print",       FleetArgs::print, "Print out every this many");
-		app.add_option("--print-proposals",       FleetArgs::print_proposals, "If 1 we print proposals");
-		app.add_option("--top",         FleetArgs::ntop, "The number to store");
-		app.add_option("-n,--threads",  FleetArgs::nthreads, "Number of threads for parallel search");
-		app.add_option("--explore",     FleetArgs::explore, "Exploration parameter for MCTS");
-		app.add_option("--restart",     FleetArgs::restart, "If we don't improve after this many, restart a chain");
-		app.add_option("-c,--chains",   FleetArgs::nchains, "How many chains to run");
+		app.add_option("-S,--seed",      random_seed, "Seed the rng (0 is no seed)");
+		app.add_option("-s,--steps",     FleetArgs::steps, "Number of MCMC or MCTS search steps to run");
+		app.add_option("--inner-steps",  FleetArgs::inner_steps, "Steps to run inner loop of a search");
+		app.add_option("--burn",         FleetArgs::burn, "Burn this many steps");
+		app.add_option("--thin",         FleetArgs::thin, "Thinning on callbacks");
+		app.add_option("-p,--print",     FleetArgs::print, "Print out every this many");
+		app.add_option("-t,--top",       FleetArgs::ntop, "The number to store");
+		app.add_option("-n,--threads",   FleetArgs::nthreads, "Number of threads for parallel search");
+		app.add_option("--explore",      FleetArgs::explore, "Exploration parameter for MCTS");
+		app.add_option("--restart",      FleetArgs::restart, "If we don't improve after this many, restart a chain");
+		app.add_option("-c,--chains",    FleetArgs::nchains, "How many chains to run");
+		app.add_option("--ct",           FleetArgs::chainsthreads, "Specify chains and threads at the same time");
+		
 		app.add_option("--partition-depth",   FleetArgs::partition_depth, "How deep do we recurse when we do partition-mcmc?");
-		
-		app.add_option("--header",      FleetArgs::print_header, "Set to 0 to not print header");
 				
-		app.add_option("--top-print-best",      FleetArgs::top_print_best, "Should all tops defaultly print their best?");
-		
-		app.add_option("--output",      FleetArgs::output_path, "Where we write output");
-		app.add_option("--input",       FleetArgs::input_path, "Read standard input from here");
-		app.add_option("-T,--time",     FleetArgs::timestring, "Stop (via CTRL-C) after this much time (takes smhd as seconds/minutes/hour/day units)");
+		app.add_option("-o,--output",      FleetArgs::output_path, "Where we write output");
+		app.add_option("--input",          FleetArgs::input_path, "Read standard input from here");
+		app.add_option("-T,--time",        FleetArgs::timestring, "Stop (via CTRL-C) after this much time (takes smhd as seconds/minutes/hour/day units)");
 		app.add_option("--inner-restart",  FleetArgs::inner_restart, "Inner restart");
-		app.add_option("--inner-time",  FleetArgs::inner_timestring, "Inner time");
-		app.add_option("--inner-thin",  FleetArgs::inner_thin, "Inner thinning");
-		app.add_option("--tree",        FleetArgs::tree_path, "Write the tree here");
+		app.add_option("--inner-time",     FleetArgs::inner_timestring, "Inner time");
+		app.add_option("--inner-thin",     FleetArgs::inner_thin, "Inner thinning");
+		app.add_option("--tree",           FleetArgs::tree_path, "Write the tree here");
+
+		app.add_option("--omp-threads",    FleetArgs::omp_threads, "How many threads to run with OMP");
 		
-		app.add_option("--omp-threads",        FleetArgs::omp_threads, "How many threads to run with OMP");
+		app.add_option("--header",         FleetArgs::print_header, "Set to 0 to not print header");
+				
+		app.add_flag("--top-print-best",   FleetArgs::top_print_best, "Should all tops defaultly print their best?");
+		app.add_flag("--print-proposals",  FleetArgs::print_proposals, "Should we print out proposals?");
 		
 //		app.add_flag(  "-q,--quiet",    quiet, "Don't print very much and do so on one line");
 //		app.add_flag(  "-C,--checkpoint",   checkpoint, "Checkpoint every this many steps");
@@ -508,6 +510,14 @@ public:
 		// convert everything to ms
 		FleetArgs::runtime = convert_time(FleetArgs::timestring);	
 		FleetArgs::inner_runtime = convert_time(FleetArgs::inner_timestring);
+
+
+		// 
+		if( FleetArgs::chainsthreads != 0) {
+			assert((FleetArgs::nchains == 1 and FleetArgs::nthreads==1) && "*** Cannot specify chains or threads with --ct");
+			FleetArgs::nchains  = FleetArgs::chainsthreads;
+			FleetArgs::nthreads = FleetArgs::chainsthreads;
+		}
 
 		// seed the rng
 		DefaultRNG.seed(random_seed);
