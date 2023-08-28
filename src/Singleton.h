@@ -12,4 +12,5 @@ public:
 	}
 	
 };
+
 template<typename T> bool Singleton<T>::exists = false;

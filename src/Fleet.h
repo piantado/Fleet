@@ -374,7 +374,7 @@ int main(int argc, char** argv){
 #endif
 
 
-const std::string FLEET_VERSION = "0.1.3";
+const std::string FLEET_VERSION = "0.1.4";
 
 #include "Random.h"
 #include "Timing.h"
