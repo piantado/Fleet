@@ -172,18 +172,18 @@ public:
 				steps_since_improvement = 0;
 			}
 			else { // else keep track of how long
-				steps_since_improvement++;
+				++steps_since_improvement;
 			}
 			
 			// if we haven't improved
 			if(ctl.restart>0 and steps_since_improvement > ctl.restart){
 				[[unlikely]];
-				
 				restart();
+				print("RESTARTING (from no improvement)", current.string());
 			}
 			else if (std::isnan(current.posterior) or std::isinf(current.posterior)) { // either inf is a restart
 				[[unlikely]];
-				
+				print("RESTARTING (from -inf)", current.string());
 				// This is a special case where we just propose from restarting 
 				restart();
 
@@ -230,14 +230,11 @@ public:
 					// this is useful for enforcing some constraints on the proposals
 					// defaultly, check does nothing. NOTE: it is important to the shibbholeth sampler that
 					// this happens before we compute posteriors
-					if(not check(proposal)) {
-						
-						history << false;
-						
+					if(not check(proposal)) {						
+						history << false;						
 						continue;
 					}
-					
-					
+										
 					
 					// here we actually need to compute, but we can do so at the breakout
 					// TODO: This is a little inefficient in that we compute log(uniform()) even

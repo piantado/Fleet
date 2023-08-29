@@ -327,17 +327,22 @@ namespace Proposals {
 	 */	
 	template<typename GrammarType>
 	std::optional<std::pair<Node,double>> sample_function_leaving_args(GrammarType* grammar, const Node& from) {
-		
+	
+		// We add a restriction here that it must be a function (not a leaf)
+		// since the leaves get well-done by regenration
+		std::function allowed = +[](const Node& n) {
+			return can_resample(n) and n.nchildren() > 0; 
+		};
 		
 		Node ret = from; // copy
 		
-		auto z = sample_z<Node,Node>(ret, can_resample);
+		auto z = sample_z<Node,Node>(ret, allowed);
 		if(z == 0.0) return {};
 		
-		auto [s, slp] = sample<Node,Node>(ret, z, can_resample);
+		auto [s, slp] = sample<Node,Node>(ret, z, allowed);
 		
 		#ifdef DEBUG_PROPOSE
-			DEBUG("SAMPLE-LEAVING-ARGS", from, *s);
+			print("SAMPLE-LEAVING-ARGS", from, *s);
 		#endif
 		
 		// find everything in the grammar that matches s's type
@@ -348,7 +353,10 @@ namespace Proposals {
 //				print("Matching ", r, *s->rule);
 			}
 		}
-		assert(matching_rules.size() >= 1); // we had to have matche done...
+		assert(matching_rules.size() >= 1); // we had to have matchd one...
+		if(matching_rules.size() == 1) { // don't do this proposal if there is only one rule
+			return {};
+		}
 		
 		// now sample from one
 		std::function sampler = +[](const Rule* r) -> double { return r->p; };
@@ -379,53 +387,44 @@ namespace Proposals {
 	std::optional<std::pair<Node,double>> swap_args(GrammarType* grammar, const Node& from) {
 		
 		Node ret = from; // copy
-//		print("Swapping1 ", ret);
 		
 		auto z = sample_z<Node,Node>(ret, can_resample);
 		if(z == 0.0) return {};
 		
 		auto [s, slp] = sample<Node,Node>(ret, z, can_resample);
-		
-		#ifdef DEBUG_PROPOSE
-			DEBUG("SWAP-ARGS", from, *s);
-		#endif
-		
 		if(s->nchildren() <= 1) { 
 			return {};
 		}
+			
+		auto N = s->nchildren();
 		
-		// who is going to be swapped
-		size_t J = myrandom(s->nchildren()); // check if anything is of this type
-		
-		// with what
-		std::vector<int> matching_indices;
-		for(size_t i=0;i<s->nchildren();i++) {
-			if(i == J) 
-				continue;
-				
-			if(s->child(i).rule->nt == s->child(J).rule->nt) {
-				matching_indices.push_back(i);
+		// go through and find children of the same type
+		// this is a bit inefficient but the ns here are very small typically
+		std::vector<int> possible_indices; // for swapping
+		for(size_t i=0;i<N;i++) {
+			for(size_t j=i+1;j<N;j++) {
+				if(s->child(j).rule->nt == s->child(i).rule->nt) { // if there is something else with the same type, we can swap 
+					possible_indices.push_back(i);
+					break; 
+				}
 			}
 		}
+		if(possible_indices.size() == 0) return {}; 
+
 		
-		if(matching_indices.size() == 0) {
-			
-			return {};
-			
-		}
-		else {
-			
-			// choose one
-			auto i = matching_indices[myrandom(matching_indices.size())];
-			
-			Node tmp = s->child(i); // copy (unfortunatley -- probably not necessary using std::swap)
-			s->set_child(i, std::move(s->child(J)));
-			s->set_child(J, std::move(tmp));
-			
-//			print("Swapping2 ", ret);
+//		#ifdef DEBUG_PROPOSE
+			DEBUG("SWAP-ARGS", from, *s);
+//		#endif
 		
-			return std::make_pair(ret,0.0);
-		}
+		// Sample one we can swap 
+		auto x = possible_indices.at(sample_int(possible_indices.size()).first);
+		auto y = sample_int(N, [&](const int v) { return 1*(s->child(v).rule->nt == s->child(x).rule->nt and v != x); }).first;
+			
+		Node tmp = s->child(x); // copy (unfortunately, though maybe it won't be necessary if we use std::swap)
+		s->set_child(x, std::move(s->child(y)));
+		s->set_child(y, std::move(tmp));
+		print("SWAPPED:", ret);
+		return std::make_pair(ret,0.0);
 	}
 		
 		

@@ -25,14 +25,15 @@ struct Control {
 	time_ms runtime;
 	size_t nthreads;
 	unsigned long restart;
-	
+
 	timept start_time;
-	
 	
 	// NOTE TODO: THE BELOW SHOULD BE UPDATED TO BE ATOMIC SINCE ITS ACCESSED BY MULTPLE THREADS 
 	std::atomic<unsigned long> done_steps; // how many have we done -- updated by multiple threads
 
 	bool break_CTRLC; // should we break on ctrl_c?
+
+
 
 	Control(unsigned long st=FleetArgs::steps, 
 			unsigned long t=FleetArgs::runtime,

@@ -266,7 +266,7 @@ std::pair<t*,double> sample(const T& s, const std::function<double(const t&)>& f
 
 
 std::pair<int,double> sample_int(unsigned int max, const std::function<double(const int)>& f = [](const int v){return 1.0;}) {
-	// special form for where the ints (e.g. indices) Are what f takes)
+	// special form for where the ints (e.g. indices) are what f takes
 	double z = 0.0;
 	for(size_t i=0;i<max;i++){
 		z += f(i);

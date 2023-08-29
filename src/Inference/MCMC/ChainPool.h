@@ -122,7 +122,9 @@ public:
 				}
 				
 				// Actually run and yield, being sure to save where everything came from 
-				for(auto& x : pool[idx].run(Control(steps_before_change, 0, 1))) {
+				Control c = ctl; // make a copy of everything in control
+				c.steps = steps_before_change; c.nthreads = 1; c.runtime = 0; // but update to 
+				for(auto& x : pool[idx].run(c)) {
 					x.born_chain_idx = idx; // set this
 					co_yield x;
 				}
@@ -177,7 +179,9 @@ public:
 				
 			
 				// Actually run and yield, being sure to save where everything came from 
-				for(auto& x : pool[idx].run(Control(to_run_steps, 0, 1))) {
+				Control c = ctl; // make a copy of everything in control
+				c.steps = to_run_steps; c.nthreads = 1; c.runtime = 0; // but update to 
+				for(auto& x : pool[idx].run(c)) {
 					x.born_chain_idx = idx; // set this
 					co_yield x;
 				}
