@@ -179,11 +179,11 @@ public:
 			if(ctl.restart>0 and steps_since_improvement > ctl.restart){
 				[[unlikely]];
 				restart();
-				print("RESTARTING (from no improvement)", current.string());
+				//print("RESTARTING (from no improvement)", current.string());
 			}
 			else if (std::isnan(current.posterior) or std::isinf(current.posterior)) { // either inf is a restart
 				[[unlikely]];
-				print("RESTARTING (from -inf)", current.string());
+				//print("RESTARTING (from -inf)", current.string());
 				// This is a special case where we just propose from restarting 
 				restart();
 

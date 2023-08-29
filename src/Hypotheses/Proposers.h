@@ -265,7 +265,6 @@ namespace Proposals {
 		assert(not std::isinf(forward));
 		assert(not std::isinf(backward));
 		
-		
 		return std::make_pair(ret, forward-backward);
 	}
 	
@@ -413,7 +412,7 @@ namespace Proposals {
 
 		
 //		#ifdef DEBUG_PROPOSE
-			DEBUG("SWAP-ARGS", from, *s);
+//			DEBUG("SWAP-ARGS", from, *s);
 //		#endif
 		
 		// Sample one we can swap 
@@ -423,7 +422,8 @@ namespace Proposals {
 		Node tmp = s->child(x); // copy (unfortunately, though maybe it won't be necessary if we use std::swap)
 		s->set_child(x, std::move(s->child(y)));
 		s->set_child(y, std::move(tmp));
-		print("SWAPPED:", ret);
+//		print("SWAPPED:", ret);
+
 		return std::make_pair(ret,0.0);
 	}
 		
