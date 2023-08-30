@@ -50,6 +50,12 @@ public:
 	virtual std::pair<double,double> constant_proposal(Constant) const = 0; // must implmenet
 	virtual void randomize_constants() = 0; 
 	
+//	ConstantContainer& operator=(const ConstantContainer& c) {
+//		constants = c.constants; 
+//		constant_idx = c.constant_idx;
+//		return *this;
+//	}		
+	
 	virtual bool operator==(const ConstantContainer& h) const {
 		auto C = count_constants();
 		
