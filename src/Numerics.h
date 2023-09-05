@@ -22,6 +22,21 @@ constexpr double NaN      = std::numeric_limits<double>::quiet_NaN();
 constexpr double pi       = M_PI;
 constexpr double tau      = 2*pi; // fuck pi
 
+
+/////////////////////////////////////////////////////////////
+// An inherited integral type so we can subtype double, int, etc. 
+/////////////////////////////////////////////////////////////
+
+template<typename T>
+struct InheritedIntegral {
+	T value; 
+	InheritedIntegral(T v) : value(v) {}
+	InheritedIntegral()    : value(0) {}
+	
+	operator T() const { return value; }
+};
+
+
 /////////////////////////////////////////////////////////////
 // Rounding 
 /////////////////////////////////////////////////////////////
@@ -158,9 +173,24 @@ double logsumexp(const std::vector<t>& v, double f(const t&) ) {
 	return lse;
 }
 
+/**
+ * @brief Sign function
+ * @param val
+ * @return 
+ */
 template<typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
+
+/**
+ * @brief The log of |val| but with sign preserved
+ * @param val
+ * @return 
+ */
+template<typename T> T sgnlog(T val) {
+    return sgn(val)*log(std::abs(val));
+}
+
 
 /////////////////////////////////////////////////////////////
 // Numerical functions

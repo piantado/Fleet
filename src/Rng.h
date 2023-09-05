@@ -25,7 +25,7 @@ public:
 
 	Rng() : std::mt19937() {
 		
-		// allow only one constructor at a time
+		// allow only one constructor at a time since we need to set the base seed
 		std::lock_guard guard(mymut);
 		
 		if(base == nullptr) {
@@ -38,16 +38,20 @@ public:
 			base = this;
 		}
 		else {
-			
-			// seed from base -- so we get replicable numbers assuming the 
-			// order of construction is fixed
-			std::array<unsigned long, std::mt19937::state_size> state;
-			for(size_t i=0;i<state.size();i++){
-				state[i] = base->operator()();
-			}
-			std::seed_seq seedseq(state.begin(), state.end());
-			this->std::mt19937::seed(seedseq);
+			randomize();
 		}
+	}
+	
+	void randomize() {
+		// seed from base with random numbers.
+		// This will get us replicable numbers assuming the 
+		// order of construction is fixed
+		std::array<unsigned long, std::mt19937::state_size> state;
+		for(size_t i=0;i<state.size();i++){
+			state[i] = base->operator()();
+		}
+		std::seed_seq seedseq(state.begin(), state.end());
+		this->std::mt19937::seed(seedseq);
 	}
 	
 	/**

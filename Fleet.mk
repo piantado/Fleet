@@ -12,6 +12,9 @@ FLEET_FLAGS= -std=c++20 -Wall -fdiagnostics-color=auto -Wimplicit-fallthrough -W
 
 FLEET_LIBS=-lm -pthread
 
+# for running with a santisizer -- catches/debugs a lot!
+SANITARY_FLAGS= -fsanitize=thread,undefined 
+
 # Might need to set the path for libc++ for clang:
 CLANG_LIBCPP=/usr/lib/llvm-12/include/llvm/
 CLANG_LIB_PATH=/usr/lib/llvm-12/lib/

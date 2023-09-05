@@ -79,23 +79,23 @@ namespace Proposals {
 		}
 	}
 
-	/**
-	 * @brief A little helper function that resamples everything below when we can. If we can't, then we'll recurse
-	 * @param grammar
-	 * @param from
-	 */	
-	template<typename GrammarType>
-	void __regenerate_when_can_resample(const GrammarType* grammar, Node& from) {
-		if(from.can_resample) {
-			from.assign(grammar->generate(from.nt())); 
-		}
-		else { // we can't regenerate so we have to recurse
-			for(auto& c : from.get_children()) {
-				__regenerate_when_can_resample(grammar, c);
-			}			
-		}
-		
-	}
+//	/**
+//	 * @brief A little helper function that resamples everything below when we can. If we can't, then we'll recurse
+//	 * @param grammar
+//	 * @param from
+//	 */	
+//	template<typename GrammarType>
+//	void __regenerate_when_can_resample(const GrammarType* grammar, Node& from) {
+//		if(from.can_resample) {
+//			from.assign(grammar->generate(from.nt())); 
+//		}
+//		else { // we can't regenerate so we have to recurse
+//			for(auto& c : from.get_children()) {
+//				__regenerate_when_can_resample(grammar, c);
+//			}			
+//		}
+//		
+//	}
 
 	/**
 	 * @brief Regenerate with a rational-rules (Goodman et al.) style regeneration proposal: pick a node uniformly and regenerate it from the grammar. 
@@ -113,19 +113,22 @@ namespace Proposals {
 		if(from.sum<double>(can_resample) == 0.0) 
 			return {};
 		
-		// We are changing this as of Feb 2022, we now can *choose* a can_resample Node, but
-		// we won't actually change any unless can_resample is true
-		// BUT if we DO change a can_resample node, we change everything below it. 
-		auto [s, slp] = sample<Node,Node>(ret);
+		// 9/2023 -- No ide what this note below was, or what that edit was. 
+			// We are changing this as of Feb 2022, we now can *choose* a can_resample Node, but
+			// we won't actually change any unless can_resample is true
+			// BUT if we DO change a can_resample node, we change everything below it. 
+		// I changed to sample only those we can resample:
+		auto [s, slp] = sample<Node,Node>(ret, +[](const Node& n) { return 1.0*n.can_resample;});
 		
-		#ifdef DEBUG_PROPOSE
-			DEBUG("REGENERATE", from, *s);
-		#endif
+//		#ifdef DEBUG_PROPOSE
+//			DEBUG("REGENERATE", from, *s, s->can_resample);
+//		#endif
 			
 		double oldgp = grammar->log_probability(*s); // reverse probability generating 
 
-		__regenerate_when_can_resample(grammar,*s);
-//		s->assign(grammar->generate(s->nt())); 
+		s->assign(grammar->generate(s->nt())); 
+		// also removed 9/2023:
+//		__regenerate_when_can_resample(grammar,*s);
 		
 		//double fb = slp + grammar->log_probability(*s) 
 		//		  - (log(can_resample(*s)) - log(ret.sum(can_resample)) + oldgp);
