@@ -9,7 +9,7 @@
 #include "ChainPool.h"
 #include "Timing.h"
 
-extern volatile sig_atomic_t CTRL_C; 
+extern std::atomic<bool> CTRL_C; //volatile sig_atomic_t CTRL_C; 
 
 /**
  * @class ParallelTempering

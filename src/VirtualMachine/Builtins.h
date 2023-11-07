@@ -10,6 +10,17 @@
 
 namespace Builtins {
 		
+	//	return a pointer to the current hypothesis being evaluated 
+	template<typename Grammar_t, typename HYP>
+	Primitive<HYP*> selfptr(Op::selfptr, BUILTIN_LAMBDA {
+			
+			assert(vms->program.loader != nullptr);
+				
+			// We access self via the proram.loader, so pay attention
+			// to that when we call recursive lexica and stuff
+			vms->template push<HYP*>(dynamic_cast<HYP*>(vms->program.loader));
+	});
+	
 	
 	template<typename Grammar_t>
 	Primitive<typename Grammar_t::input_t> X(Op::X, BUILTIN_LAMBDA {

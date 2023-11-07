@@ -130,7 +130,8 @@ int main(int argc, char** argv){
 	TopN<MyHypothesis> all; 
 	
 	ParallelTempering samp(h0, &datas[0], FleetArgs::nchains, MAX_TEMP); 
-
+//	ChainPool samp(h0, &datas[0], FleetArgs::nchains);
+	
 	// Set these up as the defaults as below
 	VirtualMachineControl::MAX_STEPS  = 1024; // TODO: Change to MAX_RUN_PROGRAM or remove?
 	VirtualMachineControl::MAX_OUTPUTS = 256; 

@@ -79,18 +79,28 @@ MyHypothesis::data_t mydata;
 
 int main(int argc, char** argv){ 
 	
-	// Just a note here -- if we are storing samples via a weighted sampler, then we don't
-	// want multiple duplicates of the same sample. If we are using an unweighted version, then we do.
-	FleetArgs::MCMCYieldOnlyChanges = false;
+	// cannot have a likelhood breakout because some likelihoods are positive
+	FleetArgs::LIKELIHOOD_BREAKOUT = false; 
+		
+	#if FEYNMAN
+		// we will run faster if we only queue the changes
+		FleetArgs::MCMCYieldOnlyChanges = true;
+		FleetArgs::yieldOnlyChainOne = false; // we want all the chains since we're looking for the best
+		
+	#else
+		// Just a note here -- if we are storing samples via a weighted sampler, then we don't
+		// want multiple duplicates of the same sample. If we are using an unweighted version, then we do.
+		FleetArgs::MCMCYieldOnlyChanges = false;
+		
+		// we use parallel tempering for real samples, so we only want temp=1
+		FleetArgs::yieldOnlyChainOne = true; 
+	
+	#endif 
+	
+	// Variables for command line args
 	
 	double maxT = 10.0; // max temperature we see
 	bool pt_test_output = false; // output what we want for the PT testing
-		
-	// cannot have a likelhood breakout because some likelihoods are positive
-	FleetArgs::LIKELIHOOD_BREAKOUT = false; 
-	
-	// we use parallel tempering for real samples, so we only want temp=1
-	FleetArgs::yieldOnlyChainOne = true; 
 	
 	// how we separate times
 	std::string strsep = "\t";
@@ -138,7 +148,7 @@ int main(int argc, char** argv){
 	// store the x and y values so we can do constant proposals
 	std::vector<double> data_x;
 	std::vector<double> data_y;
-	for(auto v : read_csv(FleetArgs::input_path, false, sep)) { // NOTE: MUST BE \t for our data!!
+	for(auto v : read_csv(FleetArgs::input_path, false, sep)) { 
 		
 		// get rid of spaces at the end of the line
 		while(v[v.size()-1] == "") { v.erase(--v.end()); }
@@ -172,7 +182,7 @@ int main(int argc, char** argv){
 		// process percentages
 		double sd; 
 		#if FEYNMAN
-			sd = FEYNMAN_SD; // NaN;
+			sd = FEYNMAN_SD;
 		#else
 			// process the line 
 			if(sdstr[sdstr.length()-1] == '%') sd = y * std::stod(sdstr.substr(0, sdstr.length()-1)) / 100.0; // it's a percentage
@@ -205,10 +215,7 @@ int main(int argc, char** argv){
 
 	// if we are on feynman but NOT testing, then make best print
 	#if FEYNMAN
-		// we will run faster if we only queue the changes
-		FleetArgs::MCMCYieldOnlyChanges = true;
-		FleetArgs::yieldOnlyChainOne = false; // we want all the chains since we're looking for the best
-		
+	
 		// for feynman we want to print everything
 		if(not pt_test_output) {
 			best.print_best = true;
@@ -221,7 +228,6 @@ int main(int argc, char** argv){
 		}
 	#endif 
 
-
 	// compute the best possible likelihood
 	best_possible_ll = 0.0; 
 	for(const auto& d : mydata) {
@@ -230,7 +236,7 @@ int main(int argc, char** argv){
 	print("# Best possible likelihood", best_possible_ll);
 	
 	#if FEYNMAN
-	end_at_likelihood = best_possible_ll - 0.001; // allow a tiny bit of numerical error
+		end_at_likelihood = best_possible_ll - 0.001; // allow a tiny bit of error
 	#endif
 	
 	//	MyHypothesis h0; // NOTE: We do NOT want to sample, since that constrains the MCTS 
@@ -255,12 +261,10 @@ int main(int argc, char** argv){
 		if(polynomial_degree > -1 and not (get_polynomial_degree(h.get_value(), h.constants) <= polynomial_degree)) 
 			continue;
 		
-		
 		best << h;
 		
-		
 		#if !FEYNMAN
-		overall_samples << h;
+			overall_samples << h;
 		#endif 
 		
 		if(end_at_likelihood > -infinity and h.likelihood >= end_at_likelihood) {

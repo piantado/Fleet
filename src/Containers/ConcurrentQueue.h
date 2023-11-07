@@ -58,6 +58,7 @@ public:
 		to_yield[push_idx] = x;
 
 		push_idx = (push_idx + 1) % N;
+		assert(push_idx != pop_idx); // better not
 		
 		empty_cv.notify_one();
 	}
@@ -68,6 +69,7 @@ public:
 		// we are empty so we must wait
 		while(empty()) empty_cv.wait(lck);
 		
+		assert(push_idx != pop_idx); // better not
 		T ret = std::move(to_yield[pop_idx]);
 		pop_idx = (pop_idx + 1) % N;;
 

@@ -339,7 +339,7 @@ public:
 				if constexpr (sizeof...(args) ==  0){	
 					vms->push( f() );
 				}
-				if constexpr (sizeof...(args) ==  1) {
+				else if constexpr (sizeof...(args) ==  1) {
 					auto a0 = vms->template getpop_nth<0,args...>();		
 					vms->push(f(std::move(a0)));
 				}
@@ -360,6 +360,28 @@ public:
 					auto a1 = vms->template getpop_nth<1,args...>();	
 					auto a0 = vms->template getpop_nth<0,args...>();		
 					vms->push(f(std::move(a0), std::move(a1), std::move(a2), std::move(a3)));
+				}
+				else if constexpr (sizeof...(args) ==  5) {
+					auto a4 = vms->template getpop_nth<4,args...>();	
+					auto a3 = vms->template getpop_nth<3,args...>();	
+					auto a2 = vms->template getpop_nth<2,args...>();	
+					auto a1 = vms->template getpop_nth<1,args...>();	
+					auto a0 = vms->template getpop_nth<0,args...>();		
+					vms->push(f(std::move(a0), std::move(a1), std::move(a2), std::move(a3), std::move(a4)));
+				}
+				else if constexpr (sizeof...(args) ==  6) {
+					auto a5 = vms->template getpop_nth<5,args...>();	
+					auto a4 = vms->template getpop_nth<4,args...>();	
+					auto a3 = vms->template getpop_nth<3,args...>();	
+					auto a2 = vms->template getpop_nth<2,args...>();	
+					auto a1 = vms->template getpop_nth<1,args...>();	
+					auto a0 = vms->template getpop_nth<0,args...>();		
+					vms->push(f(std::move(a0), std::move(a1), std::move(a2), std::move(a3), std::move(a4), std::move(a5)));
+				}
+				else {
+					print("*** Error -- too many arguments for a function. Must be updated in Grammar.h ", sizeof...(args) );
+
+					assert(false);
 				}
 			});
 			

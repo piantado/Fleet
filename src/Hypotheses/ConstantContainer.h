@@ -8,6 +8,10 @@
 	
 using constant_t = float; 
 	
+
+struct TooManyConstantsException : public VMSRuntimeError {};
+
+	
 /**
  * @class Constant
  * @author Steven Piantadosi
@@ -55,6 +59,20 @@ public:
 //		constant_idx = c.constant_idx;
 //		return *this;
 //	}		
+	virtual void reset_constant_index() {
+		constant_idx = 0;
+	}
+	
+	virtual Constant next_constant() {
+		
+		// now we might have too many since the size of our constants is constrained
+		if(constant_idx >= constants.size()) { 
+			throw TooManyConstantsException();
+		}
+		else { 
+			return constants.at(constant_idx++);
+		}
+	}
 	
 	virtual bool operator==(const ConstantContainer& h) const {
 		auto C = count_constants();
@@ -81,3 +99,4 @@ public:
 	}
 
 };
+

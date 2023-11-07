@@ -27,7 +27,11 @@ Polydeg get_polynomial_degree_rec(const Node& n, const std::vector<Constant>& co
 	
 	const std::string fmt = n.rule->format;
 	
-    if(fmt == "(%s+%s)") {
+	if(fmt == "%s") { // single arguments we just pass through
+		assert(n.nchildren() == 1);
+		return get_polynomial_degree_rec(n.child(0), constants, cidx);
+	}
+    else if(fmt == "(%s+%s)") {
         Polydeg v1 = get_polynomial_degree_rec(n.child(0), constants, cidx); 
         Polydeg v2 = get_polynomial_degree_rec(n.child(1), constants, cidx);
 		if(v1.isnan() or v2.isnan()) return Polydeg(NaN,false); // doesn't matter whether its const or not
@@ -84,7 +88,7 @@ Polydeg get_polynomial_degree_rec(const Node& n, const std::vector<Constant>& co
         return Polydeg(1.0, false);
     }
 	else if(fmt == "C") { 
-        return Polydeg(constants.at(cidx++), true);
+        return Polydeg(constants.at(cidx++).get_value(), true);
     }
 	else if(fmt == "1") {
         return Polydeg(1.0, true);

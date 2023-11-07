@@ -21,10 +21,10 @@
 template<typename T>
 class Stack  {
 		
-	std::vector<T> value;
+	
 	
 public:
-
+std::vector<T> value;
 	Stack() {
 //		reserve(100); // does nothing
 	}

@@ -158,7 +158,7 @@ int main(int argc, char** argv) {
 	TopN<MyHypothesis> top;
 	auto h0 = MyHypothesis::sample();
 	ParallelTempering samp(h0, &mydata, FleetArgs::nchains, 5.0);
-	for(auto& h : samp.run(Control()) | thin(FleetArgs::thin) | printer(FleetArgs::print)){
+	for(auto h : samp.run(Control()) | thin(FleetArgs::thin) | printer(FleetArgs::print)){
 		top << h;
 	}
 	

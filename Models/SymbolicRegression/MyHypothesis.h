@@ -44,7 +44,7 @@ public:
 		// my own wrapper that zeros the constant_i counter
 		assert(constants.size() == N_CONSTANTS);
 		
-		constant_idx = 0;
+		reset_constant_index();
 		try { 
 			const auto out = Super::call(x,err);
 			assert(constant_idx == count_constants()); // just check we used all constants

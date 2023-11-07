@@ -241,7 +241,7 @@ int main(int argc, char** argv){
 //	MCMCChain samp(h0, &mydata);
 //	HillClimbing samp(h0, &mydata);
 
-	for(auto h : samp.run(Control()) | top | printer(FleetArgs::print) | thin(FleetArgs::thin)) {
+	for(auto& h : samp.run(Control()) | top | printer(FleetArgs::print) | thin(FleetArgs::thin)) {
 		UNUSED(h);
 	
 //		CERR h.born_chain_idx TAB h.string() ENDL;

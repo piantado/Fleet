@@ -14,7 +14,7 @@
 // if we define this, then we won't use breakouts
 //#define NO_BREAKOUT 1
 
-extern volatile sig_atomic_t CTRL_C;
+extern std::atomic<bool> CTRL_C;
 
 /**
  * @class Bayesable

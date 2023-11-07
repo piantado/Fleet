@@ -390,7 +390,8 @@ unsigned long random_seed  = 0;
 
 // This is global that checks whether CTRL_C has been pressed
 // NOTE: this must be registered in main with signal(SIGINT, Fleet::fleet_interrupt_handler);
-volatile sig_atomic_t CTRL_C = false;
+//volatile sig_atomic_t CTRL_C = false;
+std::atomic<bool> CTRL_C = false; 
 
 // apparently some OSes don't define this
 #ifndef HOST_NAME_MAX

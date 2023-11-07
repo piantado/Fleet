@@ -37,6 +37,22 @@ struct InheritedIntegral {
 };
 
 
+/**
+ * @brief This allows sorting of things that contain NaN
+ * @param x
+ * @param y
+ * @return 
+ */
+template<typename T>
+struct floating_point_compare {
+	bool operator()(const T &x, const T &y) const {
+		if(std::isnan(x)) return false;
+		if(std::isnan(y)) return true;
+		return x < y;
+	}
+};
+
+
 /////////////////////////////////////////////////////////////
 // Rounding 
 /////////////////////////////////////////////////////////////
@@ -316,37 +332,27 @@ T median(std::vector<T>& v) {
 }
 
 
+
+
 template<typename T>
-T trimmed_mean(std::vector<T>& v, float pct) {
+T trimmed_mean(std::vector<T>& v, float a, float b) {
 	const size_t n = v.size();
-	assert(n> 0);
-	std::sort(v.begin(), v.end());
-	assert(pct < 0.5 && "*** Bad range in trimmed_mean");
+	assert(n > 0);
+	std::sort(v.begin(), v.end(), floating_point_compare<T>());
+	assert(a >= 0.0 and b <= 1.0 and a<b && "*** Bad range in trimmed_mean");
 	
 	double s = 0.0;
 	double k = 0;
-	for(int i=pct*n;i<=(1-pct)*n;i++) {
+	for(int i=a*n;i<b*n;i++) {
 		s += v.at(i); 
 		k++;
 	}
 	return s/k;	
 }
 
-
 template<typename T>
-T trimmed_mean(std::vector<T>& v, float a, float b) {
-	const size_t n = v.size();
-	assert(n> 0);
-	std::sort(v.begin(), v.end());
-	assert(a >= 0.0 and b <= 1.0 and a<b && "*** Bad range in trimmed_mean");
-	
-	double s = 0.0;
-	double k = 0;
-	for(int i=a*n;i<=b*n;i++) {
-		s += v.at(i); 
-		k++;
-	}
-	return s/k;	
+T trimmed_mean(std::vector<T>& v, float pct) {
+	return trimmed_mean(v,pct,pct);
 }
 
 
@@ -377,21 +383,6 @@ K mymax(std::map<T,K>& v) {
 	return m;
 }
 
-
-/**
- * @brief This allows sorting of things that contain NaN
- * @param x
- * @param y
- * @return 
- */
-template<typename T>
-struct floating_point_compare {
-	bool operator()(const T &x, const T &y) const {
-		if(std::isnan(x)) return false;
-		if(std::isnan(y)) return true;
-		return x < y;
-	}
-};
 
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Hash combinations
