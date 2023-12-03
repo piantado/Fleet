@@ -103,8 +103,8 @@ std::string remove_characters(std::string s, const std::string& rem) {
  * @param log_alphabet - log of the size of alphabet
  * @return The probability of converting x to y by deleting characters with probability del_p and then adding with probability add_p
  */
- template<const float& add_p, const float& del_p>
-inline double p_delete_append(const std::string& x, const std::string& y, const float log_alphabet) {
+ template<const float& add_p, const float& del_p, typename T=std::string>
+inline double p_delete_append(const T& x, const T& y, const float log_alphabet) {
 	/**
 	 * @brief This function computes the probability that x would be converted into y, when we insert with probability add_p and delete with probabiltiy del_p
 	 * 		  and when we add we add from an alphabet of size log_alphabet. Note that this is a template function because otherwise
@@ -123,15 +123,15 @@ inline double p_delete_append(const std::string& x, const std::string& y, const 
 	
 	
 	// Well we can always delete the whole thing and add on the remainder
-	float lp = log_del_p*x.length()                 + // we don't add log_1mdel_p again here since we can't delete past the beginning
-			   (log_add_p-log_alphabet)*y.length() + log_1madd_p;
+	float lp = log_del_p*x.size()                 + // we don't add log_1mdel_p again here since we can't delete past the beginning
+			   (log_add_p-log_alphabet)*y.size() + log_1madd_p;
 	
 	// now as long as they are equal, we can take only down that far if we want
 	// here we index over mi, the length of the string that so far is equal
-	for(size_t mi=1;mi<=std::min(x.length(),y.length());mi++){
-		if(x[mi-1] == y[mi-1]) {
-			lp = logplusexp(lp, log_del_p*(x.length()-mi)                + log_1mdel_p + 
-							    (log_add_p-log_alphabet)*(y.length()-mi) + log_1madd_p);
+	for(size_t mi=1;mi<=std::min(x.size(),y.size());mi++){
+		if(x.at(mi-1) == y.at(mi-1)) {
+			lp = logplusexp(lp, log_del_p*(x.size()-mi)                + log_1mdel_p + 
+							    (log_add_p-log_alphabet)*(y.size()-mi) + log_1madd_p);
 		}
 		else {
 			break;

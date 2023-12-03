@@ -13,7 +13,10 @@
  * @return 
  */
 template<typename HYP>
-std::vector<std::set<HYP>> get_hypotheses_from_mcmc(const HYP& h0, const std::vector<typename HYP::data_t*>& mcmc_data, Control c, const std::vector<size_t> ntop) {
+std::vector<std::set<HYP>> get_hypotheses_from_mcmc(const HYP& h0, 
+													const std::vector<typename HYP::data_t*>& mcmc_data, 
+													Control c, 
+													const std::vector<size_t> ntop) {
 	assert(not ntop.empty());
 	
 	// find the largest top
@@ -39,7 +42,7 @@ std::vector<std::set<HYP>> get_hypotheses_from_mcmc(const HYP& h0, const std::ve
 			}
 			TopN<HYP> top(maxntop);
 			HYP myh0 = h0.restart();
-			auto givendata = slice(*(mcmc_data[vi]), 0, di); // slices [0,i]
+			auto givendata = slice(*(mcmc_data[vi]), 0, di); // slices [0,di]
 						
 			MCMCChain chain(myh0, &givendata);
 			for(auto& h : chain.run(Control(c)) | top | printer(FleetArgs::print) ) { UNUSED(h); } 
@@ -72,7 +75,7 @@ std::vector<std::set<HYP>> get_hypotheses_from_mcmc(const HYP& h0, const std::ve
 
 template<typename HYP>
 std::set<HYP> get_hypotheses_from_mcmc(const HYP& h0, const std::vector<typename HYP::data_t*>& mcmc_data, Control c, const size_t ntop) {
-	auto v = get_hypotheses_from_mcmc(h0, mcmc_data, c, std::vector<size_t>{1,ntop});
+	auto v = get_hypotheses_from_mcmc(h0, mcmc_data, c, std::vector<size_t>(1,ntop));
 	assert(v.size() == 1);
 	return *v.begin();
 }

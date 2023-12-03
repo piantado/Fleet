@@ -33,3 +33,37 @@ struct HumanDatum {
 
 
 
+///**
+// * @class HumanDataSeries
+// * @author Steven Piantadosi
+// * @date 02/12/23
+// * @file HumanDatum.h
+// * @brief A human data series contains a list of human data points, some of which may be presented at the same "position" (meaning there is no decay between)
+// */
+//struct HumanDataSeries {
+//	std::vector<int> decay_position; 
+//	std::vector<HumanDatum> hd;
+//	int max_decay_position = 0;
+//	
+//	
+//	void add(HumanDatum& d, int decaypos) {
+//		decay_position.push_back(decaypos);
+//		hd.push_back(d);
+//		max_decay_position = std::max(max_decay_position, decaypos);
+//	}
+//	
+//	/**
+//	 * @brief Returns the decay time in computing the likelihood for the n'th data point, using the i'th back
+//	 * @param n
+//	 * @param i
+//	 * @return 
+//	 */	
+//	size_t decay_t(size_t n, size_t i) {
+//		return decay_position.at(n)-decay_position.at(i);
+//	}
+//
+//	size_t size() {
+//		return hd.size();
+//	}
+//	
+//}

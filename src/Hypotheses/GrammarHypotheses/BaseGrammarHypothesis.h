@@ -18,7 +18,7 @@
 #include "TopN.h"
 #include "MCMCChain.h"
 
-extern volatile sig_atomic_t CTRL_C;
+//extern volatile sig_atomic_t CTRL_C;
 
 #include "VectorHalfNormalHypothesis.h"
 #include "VectorNormalHypothesis.h"
@@ -66,7 +66,7 @@ public:
 	// a reasonably shaped prior
 	TNormalVariable< +[](float x)->float { return 1.0/(1.0+expf(-1.0*x)); }> alpha;
 	TNormalVariable< +[](float x)->float { return expf((x-0.33)/1.50); }>    llt;
-	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            pt;
+	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            pt; // NOTE: Pt is not currently in use!
 	TNormalVariable< +[](float x)->float { return expf(x-2); }>              decay;  // peaked near zero
 	
 	typename HYP::Grammar_t* grammar;

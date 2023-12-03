@@ -31,8 +31,8 @@ bool flip(float p = 0.5) {
 	return uniform() < p;
 }
 
-int rbinomial(const int N, const double p) {
-	std::binomial_distribution<int> bd(N,p);
+int rbinomial(const int n, const double p) {
+	std::binomial_distribution<int> bd(n,p);
 	return bd(DefaultRNG);
 }
 
@@ -197,6 +197,21 @@ T myrandom(T min, T max) {
 	return r(DefaultRNG);
 }
 
+std::vector<int> random_int_vector(int min, int max, size_t n) {
+	/**
+	 * @brief Random vector of N ints in [min,max-1]
+	 * @param min
+	 * @param max
+	 * @return 
+	 */
+	std::vector<int> out; out.reserve(n);
+	for(size_t i=0;i<n;i++) {
+		out.push_back(myrandom(min,max));
+	}
+	return out;
+}
+
+
 /**
  * @brief Returns a random *nonempty* subset of n elements, as a vector<bool> of length n
  * 		  with trues for elements in the subset and falses otherwise. Each element is included
@@ -217,6 +232,8 @@ std::vector<bool> random_nonempty_subset(const size_t n, const double p) {
 
 
 
+
+
 template<typename t, typename T> 
 double sample_z(const T& s, const std::function<double(const t&)>& f) {
 	/**
@@ -229,8 +246,10 @@ double sample_z(const T& s, const std::function<double(const t&)>& f) {
 	double z = 0.0;
 	for(auto& x: s) {
 		auto fx = f(x);
-		if(not std::isnan(fx))
-			z += f(x);
+		if(not std::isnan(fx)) {
+			assert(fx > 0 && "*** Cannot use sample/sample_z with negative probabilities. Did you mean to use sample_lp/sample_lp_z?");
+			z += f(x);			
+		}
 	}
 	return z; 
 }
@@ -263,6 +282,54 @@ std::pair<t*,double> sample(const T& s, const std::function<double(const t&)>& f
 	// An interface to sample that computes the normalizer for you 
 	return sample<t,T>(s, sample_z<t,T>(s,f), f);
 }
+
+
+
+
+
+
+
+template<typename t, typename T> 
+double sample_lp_z(const T& s, const std::function<double(const t&)>& f) {
+	/**
+	 * @brief Sample but where f gives LOG probabilities
+	 * @return 
+	 */
+		
+	double z = -infinity; 
+	for(auto& x: s) {
+		auto fx = f(x);
+		if(not std::isnan(fx))
+			z = logplusexp(z,fx);
+	}
+	return z; 
+}
+
+template<typename t, typename T> 
+std::pair<t*,double> sample_lp(const T& s, double z, const std::function<double(const t&)>& f = [](const t& v){return 0.0;}) {
+	// Sample where f gives LOG probabilities
+	assert(z > -infinity && "*** Cannot call sample with zero (-infinity) normalizer -- is s empty?");
+	double r = z  + log(uniform());
+	double tot = -infinity;
+	for(auto& x : s) {		
+		auto fx = f(x);
+		if(std::isnan(fx)) continue; // treat as zero prob
+		tot = logplusexp(tot, fx);
+		if(tot > r) return std::make_pair(const_cast<t*>(&x), log(fx)-log(z));
+	}
+	
+	throw YouShouldNotBeHereError("*** Should not get here in sampling");	
+}
+
+template<typename t, typename T> 
+std::pair<t*,double> sample_lp(const T& s, const std::function<double(const t&)>& f = [](const t& v){return 0.0;}) {
+	// An interface to sample that computes the normalizer for you 
+	return sample_lp<t,T>(s, sample_lp_z<t,T>(s,f), f);
+}
+
+
+
+
 
 
 std::pair<int,double> sample_int(unsigned int max, const std::function<double(const int)>& f = [](const int v){return 1.0;}) {
