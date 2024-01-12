@@ -247,7 +247,7 @@ double sample_z(const T& s, const std::function<double(const t&)>& f) {
 	for(auto& x: s) {
 		auto fx = f(x);
 		if(not std::isnan(fx)) {
-			assert(fx > 0 && "*** Cannot use sample/sample_z with negative probabilities. Did you mean to use sample_lp/sample_lp_z?");
+			assert(fx >= 0.0 && "*** Cannot use sample/sample_z with negative probabilities. Did you mean to use sample_lp/sample_lp_z?");
 			z += f(x);			
 		}
 	}

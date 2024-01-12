@@ -126,6 +126,12 @@ std::vector<T> value;
 		return str(value);
 	}
 	
+//	void print_stack(std::string prefix) const {
+//		for(size_t i=0;i<value.size();i++) {
+//			print(prefix, "[i]=", value.at(i));
+//		}
+//	}
+	
 	/**
 	 * @brief These are for iterating through the underlying vector. 
 	 */	

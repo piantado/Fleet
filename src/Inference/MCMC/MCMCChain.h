@@ -2,7 +2,7 @@
 
 #include <utility>
 #include <functional>
-#include "Coroutines.h"
+#include "SampleStreams.h"
 #include "MCMCChain.h"
 #include "FiniteHistory.h"
 #include "Control.h"

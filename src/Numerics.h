@@ -27,7 +27,8 @@ constexpr double tau      = 2*pi; // fuck pi
 // An inherited integral type so we can subtype double, int, etc. 
 /////////////////////////////////////////////////////////////
 
-template<typename T>
+// here we give N so that we can define different types if we want to!
+template<typename T, int N=1>
 struct InheritedIntegral {
 	T value; 
 	InheritedIntegral(T v) : value(v) {}
@@ -284,6 +285,12 @@ T weighted_quantile(std::vector<std::pair<T,double>>& v, double q) {
 /// Mean, sd
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+/**
+ * @brief Sum
+ * @param v
+ * @return 
+ */
+
 template<typename T>
 T sum(std::vector<T>& v){
 	T s = 0.0;
@@ -291,10 +298,21 @@ T sum(std::vector<T>& v){
 	return s;
 }
 
+/**
+ * @brief Mean 
+ * @param v
+ * @return 
+ */
 template<typename T>
 T mean(std::vector<T>& v){
 	return sum(v)/v.size();
 }
+
+/**
+ * @brief Standard deviation
+ * @param v
+ * @return 
+ */
 
 template<typename T>
 T sd(std::vector<T>& v) {
@@ -307,21 +325,52 @@ T sd(std::vector<T>& v) {
 	return sqrt(s / (v.size()-1));
 }
 
+
+/**
+ * @brief Median absolute deviation
+ * @param v
+ * @return 
+ */
+template<typename T>
+T MAD(std::vector<T>& v) {
+	auto m = median(v);
+	auto n = v.size();
+	
+	std::vector<T> d(n);
+	for(size_t i=0;i<n;i++) {
+		d[i] = std::abs(v.at(i) - m);
+	}
+	
+	return median(d);
+}
+
+/**
+ * @brief Return a quantile of a set of samples
+ * @param v
+ * @param q
+ * @return 
+ */
 template<typename T>
 T quantile(std::vector<T>& v, double q) {
 	const size_t n = v.size();
 	assert(n> 0);
-	std::sort(v.begin(), v.end());
+	std::sort(v.begin(), v.end(),  floating_point_compare<T>());
 	
 	int i = floor(n*q); // floor for small n
 	return v.at(i);
 }
 
+/**
+ * @brief Return the median 
+ * @param v
+ * @return 
+ */
+
 template<typename T>
 T median(std::vector<T>& v) {
 	const size_t n = v.size();
-	assert(n> 0);
-	std::sort(v.begin(), v.end());
+	assert(n>0);
+	std::sort(v.begin(), v.end(), floating_point_compare<T>());
 	
 	if(n % 2 == 0) {
 		return (v[n/2] + v[n/2-1]) / 2;
@@ -332,7 +381,13 @@ T median(std::vector<T>& v) {
 }
 
 
-
+/**
+ * @brief Trim based on quantiles to [a,b] and return the mean
+ * @param v
+ * @param a
+ * @param b
+ * @return 
+ */
 
 template<typename T>
 T trimmed_mean(std::vector<T>& v, float a, float b) {
@@ -350,12 +405,23 @@ T trimmed_mean(std::vector<T>& v, float a, float b) {
 	return s/k;	
 }
 
+/**
+ * @brief Trimmed mean with pct from both ends
+ * @param v
+ * @param pct
+ * @return 
+ */
 template<typename T>
 T trimmed_mean(std::vector<T>& v, float pct) {
 	return trimmed_mean(v,pct,pct);
 }
 
 
+/**
+ * @brief Max of a collection
+ * @param v
+ * @return 
+ */
 template<typename T>
 T mymax(std::vector<T>& v) {
 	const size_t n = v.size();
@@ -370,7 +436,7 @@ T mymax(std::vector<T>& v) {
 
 
 /**
- * @brief Get max of the values
+ * @brief Max of a collection
  * @param v
  * @return 
  */
@@ -383,10 +449,6 @@ K mymax(std::map<T,K>& v) {
 	return m;
 }
 
-
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Hash combinations
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 template<typename T> 
 std::strong_ordering fp_ordering(T& x, T& y) {

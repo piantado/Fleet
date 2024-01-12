@@ -8,7 +8,7 @@
 
 #include <utility>
 #include <functional>
-#include "Coroutines.h"
+#include "SampleStreams.h"
 #include "ChainPool.h"
 #include "FiniteHistory.h"
 #include "Control.h"

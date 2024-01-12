@@ -2,6 +2,7 @@
 
 //#define PARALLEL_TEMPERING_SHOW_DETAIL
 
+
 #include <signal.h>
 #include <functional>
 
@@ -32,6 +33,7 @@ public:
 	
 	time_ms swap_every = 250; // try a round of swaps this often 
 	time_ms adapt_every = 5000; // 
+	time_ms show_every = 5000;
 	
 	OrderedLock overall_mutex; // This mutex coordinates swappers, adapters, and printers, otherwise they can lock each other out
 	
@@ -71,6 +73,23 @@ public:
 				//print("t=", double(this->pool[i].temperature));
 			}
 		}
+	}
+	
+	void __shower_thread() {
+		
+		while(not (terminate or CTRL_C) ) {
+			
+			// we will sleep for adapt_every but in tiny chunks so that 
+			// we can be stopped with CTRL_C
+			auto last = now();
+			while(time_since(last) < show_every and (not CTRL_C) and (not terminate))
+				std::this_thread::sleep_for(std::chrono::milliseconds(time_resolution_ms)); 
+			
+			if(CTRL_C or terminate) return;
+			
+			show_statistics();
+		}
+		
 	}
 	
 	void __swapper_thread() {
@@ -115,7 +134,6 @@ public:
 					// stays with a chain 
 					std::swap(this->pool[k].steps_since_improvement, this->pool[k-1].steps_since_improvement);
 
-
 					swap_history.at(k) << true;
 				}
 				else {
@@ -140,9 +158,9 @@ public:
 			
 			// This is not interruptible with CTRL_C: std::this_thread::sleep_for(std::chrono::milliseconds(adapt_every));
 			
-//			#ifdef PARALLEL_TEMPERING_SHOW_DETAIL
-//				show_statistics();
-//			#endif
+			#ifdef PARALLEL_TEMPERING_SHOW_DETAIL
+				show_statistics();
+			#endif
 				
 			adapt(); // TOOD: Check what counts as t
 		}
@@ -156,6 +174,10 @@ public:
 		std::thread swapper(&ParallelTempering<HYP>::__swapper_thread, this); // pass in the non-static mebers like this:
 		std::thread adapter(&ParallelTempering<HYP>::__adapter_thread, this);
 
+		#ifdef PARALLEL_TEMPERING_SHOW_DETAIL
+		std::thread shower(&ParallelTempering<HYP>::__shower_thread, this);
+		#endif
+
 		// run normal pool run
 		for(auto& h : ChainPool<HYP>::run(ctl)) {
 			co_yield h;
@@ -166,6 +188,11 @@ public:
 		
 		swapper.join();
 		adapter.join();
+		
+		#ifdef PARALLEL_TEMPERING_SHOW_DETAIL
+		shower.join();
+		#endif
+
 		
 	}
 	
@@ -260,6 +287,7 @@ public:
 		}
 	}
 	
+	
 	// Same as ParallelTempering, but no adapter
 	generator<HYP&> run(Control ctl, time_ms swap_every, time_ms adapt_every) {
 		
@@ -279,3 +307,4 @@ public:
 	
 	void adapt(double v=3, double t0=1000000) { assert(false && "*** You should not call adapt for DataTempering");}
 };
+

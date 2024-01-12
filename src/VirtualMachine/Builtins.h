@@ -31,7 +31,7 @@ namespace Builtins {
 	template<typename Grammar_t>
 	Primitive<bool,bool,bool> And(Op::And, BUILTIN_LAMBDA {
 	
-		// process the short circuit
+		// process the short circuitF
 		bool b = vms->template getpop<bool>(); // bool has already evaluated
 			
 		if(!b) {

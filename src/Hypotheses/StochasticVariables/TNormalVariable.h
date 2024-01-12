@@ -93,3 +93,6 @@ public:
 };
 
 
+using UniformVariable = TNormalVariable< +[](float x)->float { return normal_cdf<float>(x, 0.0, 1.0); }>;
+
+using ExponentialVariable = TNormalVariable< +[](float x)->float { return -log(normal_cdf<float>(x, 0.0, 1.0)); }>;

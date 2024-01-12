@@ -135,3 +135,22 @@ generator<T&> operator|(generator<T&> g, TopN<T>& tn) { // NOTE: tn MUST be a re
 		co_yield x; // and yield 
 	}
 }
+
+#include "ReservoirSample.h"
+
+template<typename T> 
+generator<T&> operator|(generator<T&> g, ReservoirSample<T>& tn) { // NOTE: tn MUST be a ref here...
+	for(auto& x : g) {
+		tn << x; // add
+		co_yield x; // and yield 
+	}
+}
+
+template<typename T> 
+generator<T&> operator|(generator<T&> g, std::vector<T>& tn) { // NOTE: tn MUST be a ref here...
+	for(auto& x : g) {
+		tn.push_back(x);
+		co_yield x; // and yield 
+	}
+}
+

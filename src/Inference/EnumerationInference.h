@@ -5,7 +5,7 @@
 
 #include "BasicEnumeration.h"
 #include "Control.h"
-#include "Coroutines.h"
+#include "SampleStreams.h"
 
 #include "ThreadedInferenceInterface.h"
 

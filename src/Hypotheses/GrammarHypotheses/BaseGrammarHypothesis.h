@@ -64,10 +64,10 @@ public:
 	// Here is a list of built-in parameters that we can use. Each stores a standard
 	// normal and a value under the specified transformation, which is chosen here to give 
 	// a reasonably shaped prior
-	TNormalVariable< +[](float x)->float { return 1.0/(1.0+expf(-1.0*x)); }> alpha;
+	UniformVariable alpha; // uniform in [0,1]
+	ExponentialVariable decay;  // expoential decay parameter
 	TNormalVariable< +[](float x)->float { return expf((x-0.33)/1.50); }>    llt;
 	TNormalVariable< +[](float x)->float { return expf(x/5.0); }>            pt; // NOTE: Pt is not currently in use!
-	TNormalVariable< +[](float x)->float { return expf(x-2); }>              decay;  // peaked near zero
 	
 	typename HYP::Grammar_t* grammar;
 	
@@ -456,7 +456,6 @@ public:
 				for(const auto& [r,cnt] : di.responses) {
 					ll += cnt * logplusexp_full( log_1malpha + human_chance_lp(r,di), 
 												 log_alpha   + log(get(model_predictions, r, 0.0))); 
-					//print(cnt,ll, r, get(model_predictions, r, 0.0));
 				}
 								
 				#pragma omp atomic
@@ -493,6 +492,7 @@ public:
 	 * @param breakout
 	 * @return 
 	 */		
+
 	[[nodiscard]] virtual std::optional<std::pair<this_t,double>> propose() const override {
 		
 		// TODO: Can probably speed this up by not making the copy if the proposal fails
@@ -502,43 +502,40 @@ public:
 		
 		if(flat_prior or flip(0.15)){ // if flat, we NEVER propose to logA
 			
-			// see what to propose to
 			double myfb = 0.0;
-			switch(myrandom(4)) {
-				case 0: {
-					auto p = alpha.propose();
-					if(not p) return {};
-					auto [ v, fb ] = p.value();
-					out.alpha = v;
-					myfb += fb;
-					break;
-				}
-				case 1: {
-					auto p = llt.propose();
-					if(not p) return {};
-					auto [ v, fb ] = p.value();
-					out.llt = v;
-					myfb += fb;
-					break;
-				}
-				case 2: {
-					auto p = pt.propose();
-					if(not p) return {};
-					auto [ v, fb ] = p.value();
-					out.pt = v;
-					myfb += fb;
-					break;
-				}
-				case 3: {
-					auto p = decay.propose();
-					if(not p) return {};
-					auto [ v, fb ] = p.value();
-					out.decay = v;
-					myfb += fb;
-					out.recompute_decayedLikelihood(*out.which_data); // must recompute this when we get to likelihood
-					break;
-				}
-				default: assert(false);
+			auto which = random_nonempty_subset(4, 0.25);
+	
+			if(which.at(0)) {
+				auto p = alpha.propose();
+				if(not p) return {}; // Hmm can change this -- failed proposals can just be skipped here
+				auto [ v, fb ] = p.value();
+				out.alpha = v;
+				myfb += fb;
+			}
+			
+			if(which.at(1)){
+				auto p = llt.propose();
+				if(not p) return {};
+				auto [ v, fb ] = p.value();
+				out.llt = v;
+				myfb += fb;
+			}
+			
+			if(which.at(2)) {
+				auto p = pt.propose();
+				if(not p) return {};
+				auto [ v, fb ] = p.value();
+				out.pt = v;
+				myfb += fb;
+			}
+			
+			if(which.at(3)) {
+				auto p = decay.propose();
+				if(not p) return {};
+				auto [ v, fb ] = p.value();
+				out.decay = v;
+				myfb += fb;
+				out.recompute_decayedLikelihood(*out.which_data); // must recompute this when we get to likelihood
 			}
 			
 			return std::make_pair(out, myfb);
@@ -550,8 +547,7 @@ public:
 			out.logA = v;
 			return std::make_pair(out, fb);
 		}
-	}
-	
+	}	
 	/**
 	 * @brief Compute a vector of the prior (one for each hypothesis) using the given counts matrix (hypotheses x rules), AT the specified
 	 * 	      temperature

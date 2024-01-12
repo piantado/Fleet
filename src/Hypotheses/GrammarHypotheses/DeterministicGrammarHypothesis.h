@@ -35,6 +35,7 @@ public:
 		assert(this->which_data == std::addressof(human_data));
 
 		this->P.reset(new Predict_t(hypotheses.size(), human_data.size())); 
+		if(human_data.size() == 0) return ; 
 		
 		#pragma omp parallel for
 		for(size_t h=0;h<hypotheses.size();h++) {			

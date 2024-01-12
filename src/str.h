@@ -28,6 +28,7 @@ class has_string
 public:
     enum { value = sizeof(test<T>(0)) == sizeof(char) };
 };
+
     
 
 /**
@@ -109,7 +110,7 @@ std::string str(T x){
 		return address.str();
 	}
 	else if constexpr(std::is_same<T,char>::value) {
-		return S(1,x);
+		return std::string(1,x);
 	}
 	else if constexpr(has_string<T>::value) {
 		return x.string();

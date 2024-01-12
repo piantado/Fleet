@@ -6,7 +6,7 @@
 #include <thread>
 
 #include "Control.h"
-#include "Coroutines.h"
+#include "SampleStreams.h"
 #include "ConcurrentQueue.h"
 
 /**

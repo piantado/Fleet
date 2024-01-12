@@ -151,6 +151,7 @@ public:
 		// Should not happen -- we must not be empty
 		if(stack<T>().size() == 0) {
 			std::type_index a(typeid(T));
+			//print(stack<T>().size());
 			print("*** Cannot pop from an empty stack -- this should not happen! Something is likely wrong with your grammar's argument types, return type, or arities:", a.name());
 			assert(false);
 		}

@@ -1,7 +1,7 @@
 # pragma once
 
 #include "TopN.h"
-#include "Coroutines.h"
+#include "SampleStreams.h"
 
 /**
  * @class HillClimbing
